@@ -948,6 +948,7 @@ export const commonMethods = {
   },
   showChanCommonPop (showYn) {
     var gChanPop = document.getElementById('gChannelPopup')
+    if (!gChanPop) return
     if (showYn) {
       /*  if (loadingCompo.style.display === 'flex') */
       gChanPop.style.display = 'block'

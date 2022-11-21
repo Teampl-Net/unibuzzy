@@ -1,12 +1,13 @@
 <template>
   <div class="leftTabBase fl pSide-1" style='background: #eeeeee50;' >
-    <div class="w-100P mtop-05" style="position: relative;">
+    <div class="w-100P mtop-05" style="position: relative; min-height: 30px; padding: 0 20px; padding-right: 0;">
+      <p class="fl textLeft font18 fontBold">멤버 유형</p>
       <!-- <p class=' fr font16 commonBlack textRight' style="" @click='closePop' >{{tempBackImg}}</p> -->
       <div class="fr textLeft font12 commonBlack tempLeftTabBtn fontBold" style="margin-top: 3px;" @click="closePop">{{tempBackImg}}</div>
     </div>
 
     <div class="fl w-100P  " style="position: relative; ">
-      <div v-for="(list, index) in leftTabTitle" :key="index" class="fl w-100P" style="padding: 10px 0;">
+      <div v-for="(list, index) in mMemberTypeList" :key="index" class="fl w-100P" style="padding: 10px 0;">
         <cLeftTab :propData="list" @cardEmit='cardEmit' :compoIdx='index' />
       </div>
       <gBtnSmall :btnTitle="'추가'" @click="addInputPopYn = true" style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%);"/>
@@ -22,7 +23,7 @@ export default {
     cLeftTab
   },
   props: {
-    memberTypeList: {}
+    propMemberTypeList: {}
   },
   created () {
     this.readyFunc()
@@ -30,6 +31,7 @@ export default {
   },
   data () {
     return {
+      mMemberTypeList: [],
       tempBackImg: '<<',
       leftShowYn: false,
       leftTabTitle: {},
@@ -38,7 +40,8 @@ export default {
   },
   methods: {
     readyFunc () {
-      this.leftTabTitle = JSON.parse(JSON.stringify(this.memberTypeList))
+      this.mMemberTypeList = this.propMemberTypeList
+      this.leftTabTitle = JSON.parse(JSON.stringify(this.propMemberTypeList))
       this.changeTab(this.leftTabTitle[0], 0)
       console.log(this.leftTabTitle)
     },

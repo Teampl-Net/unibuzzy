@@ -13,7 +13,7 @@
             <p class="font14  fontBold fl" style="width: 125px;">권한</p>
         </div> -->
         <div class="receptListBtnStyle fr">
-          <!-- <gBtnSmall @click="openMemberTypePop" btnTitle="유형관리" style="padding: 0 10px !important;" class="cursorP fl"/> -->
+          <gBtnSmall @click="openMemberTypePop" btnTitle="유형관리" style="padding: 0 10px !important;" class="cursorP fl"/>
           <gBtnSmall @click="openReceptListPop" btnTitle="신청목록" style="padding: 0 10px !important;" class="cursorP fl mright-05"/>
         </div>
     </div>
@@ -55,7 +55,7 @@ export default {
       // activeTabList: [/* { display: '멤버', name: 'M' },  */{ display: '전체', name: 'F' }/* , { display: '매니저', name: 'Admin' } */],
       // activeTabList: [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Show' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }],
       // activeTabList: [{ display: '전체', name: 'A' }, { display: '멤버', name: 'M' }, { display: '구독자', name: 'F' }],
-      activeTabList: [{ display: '전체', name: 'A' }],
+      activeTabList: [{ display: '전체', name: 'A' }, { display: '멤버', name: 'M' }, { display: '매니저', name: 'AD' } ],
       activeTab: 'A',
       tab: 'F',
       managerList: [],
@@ -97,7 +97,6 @@ export default {
       param.targetType = 'editMemberTypePop'
       param.popHeaderText = '멤버유형관리'
       param.teamKey = this.propData.teamKey
-      param.teamKey = this.propData.teamKey
       this.$emit('openPop', param)
     },
     closeRecMemberPop () {
@@ -137,6 +136,7 @@ export default {
     },
     changeTab (typeName) {
       this.activeTab = typeName
+      this.getFollowerList()
       // this.tab = typeName
       // this.getFollowerList()
     },
@@ -182,6 +182,12 @@ export default {
       var paramMap = new Map()
        // paramMap.set('showProfileYn', true)
       paramMap.set('teamKey', this.propData.teamKey)
+      // paramMap.set('adminYn', true)
+      if (this.activeTab === 'AD') {
+        paramMap.set('managerYn', true)
+      } else if (this.activeTab === 'M') {
+        paramMap.set('memberYn', true)
+      }
       paramMap.set('adminYn', true)
       paramMap.set('pageSize', 1000)
 

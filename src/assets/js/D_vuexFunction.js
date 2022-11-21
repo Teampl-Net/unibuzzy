@@ -172,6 +172,7 @@ export const functions = {
   async addChanList (teamKey) {
     // alert(teamKey)
     var result = null
+    debugger
     if (g_axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
     g_axiosQueue.push('addChanList')
     var paramMap = new Map()

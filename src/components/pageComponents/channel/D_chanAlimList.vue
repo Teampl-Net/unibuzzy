@@ -1,6 +1,9 @@
 
 <template>
   <div id="alimWrap" v-if="this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH" ref="chanScrollWrap" style="overflow: scroll;" :style="'background-image: url(' + (this.CHANNEL_DETAIL.bgDomainPath ? this.CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext : CHANNEL_DETAIL.bgPathMtext) + ')'" class="chanDetailWrap">
+      <div id="gChannelPopup" style="display: none;display: absolute; top: 0; left: 0; z-index: 999;">
+        <gChannelPop :propTeamKey="this.CHANNEL_DETAIL.teamKey" v-if="this.GE_USER" />
+      </div>
       <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
       <welcomePopUp type="follow" v-if="mOpenWelcomePopShowYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="mOpenWelcomePopShowYn = false" @closePop="okMember" @applyMember="openReqMemPop" />
       <div v-if="mReceptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999" ></div>
@@ -229,9 +232,9 @@ export default {
       this.$emit('openPop', param)
     },
     async readyFunction () {
+      this.$showAxiosLoading(true)
       // eslint-disable-next-line no-debugger
       debugger
-      this.$showAxiosLoading(true)
       /* if (this.axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
       this.axiosQueue.push('addChanList') */
       await this.$addChanList(this.chanDetail.targetKey)

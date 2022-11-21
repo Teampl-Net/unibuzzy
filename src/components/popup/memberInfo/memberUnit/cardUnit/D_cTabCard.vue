@@ -6,7 +6,7 @@
       <img class="img-w20" src="../../../../../assets/images/editChan/icon_user_Gray.svg" alt="">
     </div>
 
-    <p class="fl textLeft fontBold font16 commonDarkGray textOverdot" style='line-height:30px; width: calc(100% - 40px)'>{{propData.mFormTitle}}</p>
+    <p class="fl textLeft fontBold font16 commonDarkGray textOverdot" style='line-height:30px; width: calc(100% - 40px)'>{{this.$changeText(propData.nameMtext)}}</p>
   </div>
 
   <div class="fr cursorP" style="display: flex; align-items: center;" @click="emit('add')">

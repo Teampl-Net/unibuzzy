@@ -1,7 +1,7 @@
 <template>
     <div @click="closeXPop" style="position: absolute; width: 100%; height: 100%; background: #00000025;"></div>
     <div v-if="reqPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100%; background: #00000040;"></div>
-    <repMemberPop v-if="reqPopShowYn" @closeXPop="closeReqMemPop" :memberData="selectMemberObj"/>
+    <repMemberPop v-if="reqPopShowYn" @closeXPop="closeReqMemPop" :propTeamDetail="this.CHANNEL_DETAIL" :propMemberData="selectMemberObj"/>
     <div v-if="CHANNEL_DETAIL" style="width: 100%; height: 100%; display: flex; justify-content: center; position: absolute; z-index: 99;">
         <div :style="popupStyle" style="width: 80%; background: #FFF; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem;">
             <div style="width: 100%; height: 100px; float: left; display: flex; align-items: center; padding-bottom: 0;" class="commonChanPopPadding" >
@@ -21,9 +21,9 @@
                         활동할 <br> 멤버유형
                     </div>
                     <div style="width: calc(100% - 135px); float: left; display: flex; flex-direction: column;">
-                        <div style="width: 100%; min-height: 30px;" v-for="(member, index) in memberList" :key="index">
-                            <input @click="selectMemberObj = member" class="fl" type="radio" name="memberSelectRadio" style="margin-top: 8px; margin-right: 5px;" :id="'member'+member.memberKey">
-                            <label class="fl fontBold font16" style="line-height: 30px;" :for="'member'+member.memberKey">{{this.$changeText(member.memberNameMtext)}}</label>
+                        <div style="width: 100%; min-height: 30px;" v-for="(member, index) in mMemberTypeList" :key="index">
+                            <input @click="selectMemberObj = member" class="fl" type="radio" name="memberSelectRadio" style="margin-top: 8px; margin-right: 5px;" :id="'member'+member.memberTypeKey">
+                            <label class="fl fontBold font16" style="line-height: 30px;" :for="'member'+member.memberTypeKey">{{this.$changeText(member.nameMtext)}}</label>
                         </div>
                     </div>
                     <div @click="openReqPop" style="height: 30px; padding: 0px 10px; line-height: 30px; border-radius: 5px; background: #5F61BD; color: #fff; text-align: center;">
@@ -49,26 +49,43 @@ export default {
     repMemberPop
   },
   props: {
-    // teamKey: {}
+    propTeamKey: {}
     // popTitle: {}
     // btnList: {}
     // popMessage: {}
     // popSize: {}
   },
   created () {
+    console.log(this.propTeamKey)
     if (this.memberPopYn) {
       this.popSize = 'L'
     }
     if (this.popSize === 'L') {
       this.popupStyle = 'height: 50%; max-height: 400px; margin-top: 30%;'
     }
-    if (this.teamKey) {
-      this.getChanDetail(this.teamKey)
+    if (this.propTeamKey) {
+      this.getChanDetail(this.propTeamKey)
+      this.getMemberTypeList()
     }
   },
   methods: {
-    getChanDetail (teamKey) {
-      this.$addChanList(teamKey)
+    getChanDetail (propTeamKey) {
+      this.$addChanList(propTeamKey)
+    },
+    async getMemberTypeList () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.sampleYn = true
+      var memberTypeList = await this.$commonAxiosFunction({
+        url: 'service/tp.getMemberTypeList',
+        param: param
+      })
+      console.log(memberTypeList)
+      if (memberTypeList.data.result) {
+        this.mMemberTypeList = memberTypeList.data.memberTypeList
+      }
+      // eslint-disable-next-line no-debugger
+      debugger
     },
     openReqPop () {
       if (!this.selectMemberObj) {
@@ -90,7 +107,9 @@ export default {
   },
   computed: {
     CHANNEL_DETAIL () {
-      var detail = this.$getDetail('TEAM', this.teamKey)
+      // eslint-disable-next-line no-debugger
+      debugger
+      var detail = this.$getDetail('TEAM', this.propTeamKey)
       if (detail && detail.length > 0) {
         console.log('CHANNEL_DETAIL')
         console.log(detail[0])
@@ -113,7 +132,7 @@ export default {
   },
   data () {
     return {
-      teamKey: 556,
+      // propTeamKey: 556,
       popSize: 'L',
       memberPopYn: true,
       popTitle: '멤버신청 필요',
@@ -122,71 +141,7 @@ export default {
       popupStyle: 'height: 40%; max-height: 300px; margin-top: 50%;',
       selectMemberObj: null,
       reqPopShowYn: false,
-      memberList: [
-        {
-          memberNameMtext: '입주민',
-          memberKey: 0,
-          certiUserYn: true,
-          qList: [
-            {
-              qTitle: '동',
-              qKey: 0,
-              ansType: 'S',
-              selectList: [
-                { selectKey: 0, selectTitle: '101' },
-                { selectKey: 1, selectTitle: '102' },
-                { selectKey: 2, selectTitle: '103' },
-                { selectKey: 3, selectTitle: '104' }
-              ],
-              wirteOnlyNum: undefined
-            },
-            {
-              qTitle: '호수',
-              qKey: 1,
-              ansType: 'W',
-              selectList: [],
-              writeMaxLength: 3,
-              wirteOnlyNum: false
-            },
-            {
-              qTitle: '거주유형',
-              qKey: 2,
-              ansType: 'S',
-              selectList: [
-                { selectKey: 4, selectTitle: '세대주' },
-                { selectKey: 5, selectTitle: '세대원' }
-              ],
-              wirteOnlyNum: undefined
-            }
-          ]
-        },
-        {
-          memberNameMtext: '관리직원',
-          memberKey: 1,
-          certiUserYn: false,
-          qList: [
-            {
-              qTitle: '직원유형',
-              qKey: 4,
-              ansType: 'S',
-              selectList: [
-                { selectKey: 0, selectTitle: '관리소장' },
-                { selectKey: 1, selectTitle: '일반직원' },
-                { selectKey: 2, selectTitle: '입대의' }
-              ],
-              wirteOnlyNum: undefined
-            },
-            {
-              qTitle: '자격번호',
-              qKey: 5,
-              ansType: 'W',
-              selectList: [],
-              writeMaxLength: 10,
-              wirteOnlyNum: true
-            }
-          ]
-        }
-      ]
+      mMemberTypeList: []
     }
   }
 }
