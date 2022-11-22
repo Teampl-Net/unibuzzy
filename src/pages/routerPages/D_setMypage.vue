@@ -291,6 +291,7 @@ export default {
       user.userDispMtext = 'KO$^$' + this.tempUserDispName
       param.user = user
       param.updateYn = true
+      param.firstYn = true
       // console.log(param)
 
       var result = await this.$changeDispName(param)
@@ -323,26 +324,8 @@ export default {
     },
     async closeLogoutPop (request) {
       this.logOutShowYn = false
-      var result = await this.$commonAxiosFunction({
-       url: 'service/tp.logout'
-      })
-      if (result) {
-        if (request !== undefined && request !== null && request !== '') {
-            this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
-            this.$store.commit('D_USER/MU_CLEAN_USER')
-            // window.localStorage.setItem('sessionUser', '')
-            // window.localStorage.setItem('user', '')
-            window.localStorage.setItem('loginYn', false)
-            window.localStorage.removeItem('vuex')
-            window.localStorage.removeItem('loginType')
-            // window.localStorage.removeItem('sessionUser')
-            // window.localStorage.removeItem('user')
-            // window.localStorage.removeItem('loginYn')
-            window.localStorage.removeItem('testYn')
-            this.$router.replace('/policies')
-        }
-      }
 
+      this.$d_AlimLogout()
     },
     openPolicyPop (type) {
       this.policyType = type

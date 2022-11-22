@@ -110,6 +110,10 @@ export default {
       var param = {}
       param.targetType = targetType
       if (targetType === 'requestPush') {
+        if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn) {
+          this.$showToastPop('알림 발송의 권한이 없습니다.')
+          return
+        }
         param.targetType = 'writeContents'
         param.contentsJobkindId = 'ALIM'
       } else if (targetType === 'writeBoard') {

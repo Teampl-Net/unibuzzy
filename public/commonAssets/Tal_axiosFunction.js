@@ -30,7 +30,6 @@ export async function commonAxiosFunction (setItem, nonLoadingYn) {
   console.log('####parameter is: ')
   console.log(setItem.param)
   if (setItem.firstYn) {
-    ;
   } else {
     await methods.userLoginCheck()
   }
@@ -225,6 +224,22 @@ export const methods = {
       }
       window.localStorage.removeItem('testYn')
       localStorage.setItem('loginYn', false)
+    }
+  },
+  async d_AlimLogout () {
+    var result = await commonAxiosFunction({
+      url: 'service/tp.logout',
+      firstYn: true
+    })
+    console.log(result)
+    if (result) {
+      this.$router.replace('/login')
+      this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+      this.$store.commit('D_USER/MU_CLEAN_USER')
+      window.localStorage.setItem('loginYn', false)
+      window.localStorage.removeItem('vuex')
+      window.localStorage.removeItem('loginType')
+      window.localStorage.removeItem('testYn')
     }
   },
   async getTeamList (paramMap, noneLoadingYn) {
@@ -575,5 +590,6 @@ export default {
     Vue.config.globalProperties.$getContentsOnly = methods.getContentsOnly
     Vue.config.globalProperties.$getMemoCount = methods.getMemoCount
     Vue.config.globalProperties.$saveFcmToken = methods.saveFcmToken
+    Vue.config.globalProperties.$d_AlimLogout = methods.d_AlimLogout
   }
 }

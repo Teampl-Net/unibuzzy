@@ -36,13 +36,17 @@
             </div> -->
         </div>
 
+        <!-- <div id="chanListPageHeader" ref="chanListHeader" class="chanListHeader" style="width: 95%; min-height: 50px; padding-top: 10px; position: absolute; background-color: #FFF; top: 10%; left: 2.5%; z-index: 2;">
+          <gActiveBar :searchYn='true' :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab"></gActiveBar>
+        </div> -->
+
         <div v-if="this.mMainMChanList || this.mMainChanList" style="background: #FFFFFF; margin-top: 15px; padding: 20px; padding-right: 0; border-radius: 30px 0px 0px 30px; width: 100%; float: left;">
             <div v-if="this.mMainMChanList"  style="width: 100%; height: 30px; float: left;">
                 <img src="../../assets/images/main/main_settingIcon.png" style="float: left; margin-right: 8px;" class="img-w27" alt="">
                 <p class="font20 fontBold deepBorderColor textLeft" style="line-height: 26px;">내 관리 채널</p>
             </div>
             <div v-if="this.mMainMChanList" style="width: 100%; height: 85px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
-                <div style="height: 100%; min-width: 100%; display:flex; gap">
+                <div style="height: 100%; min-width: 100%; display:flex;">
                     <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" @openPop="openPop"/>
                     <createChanIcon @openPop="openPop" style="margin-right:3rem"/>
                 </div>
@@ -54,7 +58,7 @@
             <div v-if="this.mMainChanList" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%; display:flex; gap: 10px;">
                     <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index" @openPop="openPop"/>
-                    <searchChanIcon />
+                    <searchChanIcon @openPop="openPop" />
                 </div>
             </div>
         </div>
@@ -92,7 +96,8 @@ export default {
       mMainAlimList: [],
       mMainChanList: [],
       mMainMChanList: [],
-      mAxiosQueue: []
+      mAxiosQueue: [],
+      mActiveTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }]
     }
   },
   components: {
@@ -146,9 +151,6 @@ export default {
     this.mLoadingYn = false
   },
   methods: {
-    handleScroll () {
-      this.$emit('scrollEvnt', this.$refs.mainScrollWrap.scrollTop)
-    },
     async getMainBoard () {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')
@@ -270,7 +272,7 @@ export default {
 <style scoped>
 
 /* main */
-.userProfileWrap{ display:flex; align-items: flex-start; margin-top: 0; height: 50px;}
+.userProfileWrap{ display:flex; align-items: center; margin-top: 0; height: 50px;}
   .userProfileTextWrap{width: calc(100% - 85px); text-align: left; position: relative;}
   .userProfileTextWrap >p{margin-bottom: 0.2rem;}
   .userProfileTextWrap img{ width:1rem; margin-right: 0.2rem;}

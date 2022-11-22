@@ -65,7 +65,7 @@
         </th>
       </tr>
 
-      <!-- <tr @click="openEditMemberPop">
+      <tr @click="openEditMemberPop">
         <th class="font16 w-100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">
@@ -78,7 +78,7 @@
             <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
           </div>
         </th>
-      </tr> -->
+      </tr>
 
       <!-- <tr @click="autoAnswerClick">
         <th class="font16 w-100P">

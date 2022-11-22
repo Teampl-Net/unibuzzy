@@ -14,7 +14,7 @@
         </div> -->
         <div @click="routePage('/chanList')" class="footerRouter col-4">
           <div class="commonColor fontBold text-center font12">
-            <img v-if="this.$route.path === '/chanList'" :src="footerIcon[2].fullIcon"/> <img v-else :src="footerIcon[2].icon"/>
+            <img v-if="this.$route.path === '/chanList'" :src="footerIcon[2].fullIcon" /> <img v-else :src="footerIcon[2].icon"/>
             <p :class="this.$route.path === '/chanList'? 'activeFooterMenu' : 'font12'">채널</p>
           </div>
         </div>
@@ -62,7 +62,7 @@ export default {
 <style>
 .TalFooterWrap{display: flex; box-sizing: border-box; justify-content: flex-start; text-align: left; width: 100%; height: 60px; z-index: 99;}
 .footerRouter {text-decoration-line: none; }
-.footerRouter img{width: 1.2rem}
+.footerRouter img{width: 1.4rem}
 p{margin-bottom: 0; color: #6768A7;}
 .activeFooterMenu{ font-weight: bolder; font-size: 13px;}
 </style>

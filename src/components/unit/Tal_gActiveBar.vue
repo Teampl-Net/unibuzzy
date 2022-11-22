@@ -1,60 +1,66 @@
 <template>
 <!-- :class="{ssss: tabList.length > 3}" -->
-    <div style="float: left; width: 100%;margin-top: 0;" :style="this.modeType === 'write' ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
-        <div ref="tabbar" class="pagePaddingWrap" style="padding-top: 10px; background: #FFF; border-bottom: 0.5px solid #6768A78A; height: 40px; float: left; position: relative; width: 100%;" :style="this.modeType === 'write' ? 'background: transparent' : ''" >
-            <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;">
-                <!-- <p :style="activebarWidth" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p> -->
-                <p :style="activebarWidth" :class="{mWidth : tabTrimLength(tab.display) > 3}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
-            </div>
-            <!-- <div class="activeBar"  ref="activeBar" :style="activebarWidth" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div> -->
-            <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
-            <div style="float: left; width: 100%; min-height: 6px;" v-if="searchYn">
-                <div class="fr" style="position: absolute; height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
-                <!-- <div class="activeSearchInput fl" @click="this.$emit('openFindPop')" ref="alimSearchKey" /> -->
-                <!-- <img class="fl mright-1" style="width: 20px;" src="../../assets/images/common/common_filter.svg" alt=""> -->
-                <img class="fl cursorP img-w20" style="line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
-                </div>
+    <div v-if="testYn === true" class="fl w-100P" style="margin-top: 0;background: #FFF;">
+      <div ref="tabbar" class="w-100P fl" style="padding-top: 10px; background: #FFF; border-bottom: 3px solid #ccc; height: 41px; position: relative; display:flex;" >
+        <div class="fl tabTitleBox textLeft " v-for="(tab, index) in tabList" @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap; flex:1">
+          <p :style="activebarWidth" class="tabItem font16 fontBold" :class="{commonColor: index === this.activetab, lightGray: index !== this.activetab}" style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
+        </div>
+        <div class="activeBar fl "  ref="activeBar" :style="activebarWidth" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px; left:0"></div>
+      </div>
 
-            </div>
+      <div class="fl w-100P" style="min-height: 6px;" v-if="searchYn">
+        <div class="fl mtop-03" style="" v-if="false">
+          <cSearchBox class="mright-03" :propSearchYn='true' :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" />
         </div>
-        <div v-if="searchYn && resultSearchKeyList && resultSearchKeyList.length > 0" class="pagePaddingWrap" style="padding-top: 0; box-shadow: 0 4px 4px -4px #ccc; width: 100%; float: left; background: #fff;">
-            <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
+        <div class="fr" style="height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
+          <img class="fl cursorP img-w20" style="line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
         </div>
+      </div>
+      <div v-if="searchYn && resultSearchKeyList && resultSearchKeyList.length > 0" class="" style="padding-top: 0; box-shadow: 0 4px 4px -4px #ccc; width: 100%; float: left; background: #fff;">
+          <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
+      </div>
+    </div>
+    <div v-else style="float: left; width: 100%;margin-top: 0;" :style="this.modeType === 'write' ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
+      <div ref="tabbar" class="pagePaddingWrap" style="padding-top: 10px; background: #FFF; border-bottom: 0.5px solid #6768A78A; height: 40px; float: left; position: relative; width: 100%;" :style="this.modeType === 'write' ? 'background: transparent' : ''" >
+        <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;">
+          <p :style="activebarWidth" :class="{mWidth : tabTrimLength(tab.display) > 3}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
+        </div>
+        <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
+        <div style="float: left; width: 100%; min-height: 6px;" v-if="searchYn">
+          <div class="fr" style="position: absolute; height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
+          <img class="fl cursorP img-w20" style="line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+          </div>
+        </div>
+      </div>
+      <div v-if="searchYn && resultSearchKeyList && resultSearchKeyList.length > 0" class="pagePaddingWrap" style="padding-top: 0; width: 100%; float: left">
+        <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
+      </div>
     </div>
 </template>
 <script>
 import searchResult from '../../components/unit/Tal_searchResult.vue'
+import cSearchBox from './D_cSearchBox.vue'
 export default {
   components: {
+    cSearchBox,
     searchResult
   },
   props: {
     tabList: {},
     activetabProp: {},
     searchYn: { type: Boolean, default: false },
-    modeType: { type: String, default: 'Basic' },
-    resultSearchKeyList: {}
+    resultSearchKeyList: {},
+    testYn: { type: Boolean, default: false }
   },
   data () {
     return {
+      mSearchList: [{ searchType: '정렬', dispName: '전체' }, { searchType: '산업군', dispName: '전체' }, { searchType: '유형', dispName: '전체' }],
       transition: 'slide-next',
       activetab: 0,
-      // tabwidth: 4.8,
       tabwidth: 3,
       touch: { sx: null, sy: null, st: null, ex: null, ey: null, et: null },
       selectedTabName: ''
     }
-  },
-  mounted () {
-    // window.addEventListener('resize', () => {
-    //   if (window.innerWidth < 360) {
-    //     this.tabwidth = 3.5
-    //     if (window.innerWidth < 290) {
-    //       this.tabwidth = 3.0
-    //     }
-    //   }
-    // })
-    // this.$refs.activeBar.style.setProperty('--tabwidth', 5.5 + 'rem')
   },
   computed: {
     pointer () {
@@ -62,9 +68,17 @@ export default {
       else return false
     },
     activebarWidth () {
-      return {
-        '--tabwidth': this.tabwidth + 'rem',
-        '--transform': 'translateX(' + (this.activetab * this.tabwidth * 1) + 'rem' + ')'
+      var tabWidth = 100 / this.tabList.length
+      if (this.testYn === true) {
+        return {
+          '--tabwidth': tabWidth + '%',
+          '--transform': 'translateX(' + (this.activetab * 100) + '%' + ')'
+        }
+      } else {
+        return {
+          '--tabwidth': this.tabwidth + 'rem',
+          '--transform': 'translateX(' + (this.activetab * this.tabwidth * 1) + 'rem' + ')'
+        }
       }
     }
   },

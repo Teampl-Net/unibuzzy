@@ -1,13 +1,19 @@
 <template>
-<div class="" style="width: 100%; height: 100%; position: relative; padding: 0 1rem; padding-top: 10px; overflow: hidden; float: left;">
+<div style="width: 100%; height: 100%; position: relative; padding-top: 10px !important; overflow: hidden; float: left; background: #fff;">
   <loadingCompo v-if="mLoadingYn === true"/>
-  <div id="chanListPageHeader" ref="chanListHeader" class="chanListHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'" v-on="handleScroll">
-    <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.mChanFindPopShowYn = true" :resultSearchKeyList="this.mResultSearchKeyList" ref="activeBar" :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab"></gActiveBar>
+  <!-- <div class="chanListHeaderBase " > -->
+  <div class="chanListHeader " v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
+    <gActiveBar :testYn='true' :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.mChanFindPopShowYn = true" :resultSearchKeyList="this.mResultSearchKeyList" ref="activeBar" :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab"></gActiveBar>
   </div>
-    <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' />
-  <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
+  <!-- </div> -->
+  <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' />
+  <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
     <gEmty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
-    <gChannelList v-show="mListShowYn" ref="gChannelListCompo" @moreList="loadMore"  class="moveBox" :chanList="this.GE_DISP_TEAM_LIST"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/>
+    <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
+      <channelCard class="moveBox chanRow" :chanElement="chanEle" @openPop="openPop" @scrollMove="scrollMove" />
+      <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="loadMore" class="fl wich" />
+    </template>
+    <!-- <gChannelList v-show="mListShowYn" ref="gChannelListCompo" @moreList="loadMore"  class="moveBox" :chanList="this.GE_DISP_TEAM_LIST"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/> -->
   </div>
   <img src="../../assets/images/button/Icon_CreChanBtn.png" @click="clickCreateChannel" alt="채널 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
   <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 7rem; right: calc(10% + 7px);" @click="refreshAll">
@@ -17,12 +23,14 @@
 </template>
 
 <script>
+import channelCard from '../../components/list/D_channelCard.vue'
 import findChannelList from '../../components/popup/common/Tal_findChannelList.vue'
 import loadingCompo from '../../components/layout/Tal_loading.vue'
 
 export default {
   name: 'user',
   components: {
+    channelCard,
     findChannelList,
     loadingCompo
   },
@@ -67,9 +75,9 @@ export default {
   mounted () {
     this.mChanListScrollBox = document.getElementById('chanListWrap')
     this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
-    if (this.mViewTab === 'user') {
+    if (this.mViewTab === 'all') {
       this.$refs.activeBar.switchtab(0)
-    } else if (this.mViewTab === 'all') {
+    } else if (this.mViewTab === 'user') {
       this.$refs.activeBar.switchtab(1)
     } else if (this.mViewTab === 'mychannel') {
       this.$refs.activeBar.switchtab(2)
@@ -122,9 +130,10 @@ export default {
       return uniqueArr
     },
     findPaddingTopChan () {
+      // 검색 시 리스트와 검색팝업 패딩 설정
       var element = document.getElementById('searchResultWrapLength')
       if (element) {
-        this.mPaddingTop = element.clientHeight + 20
+        this.mPaddingTop = element.clientHeight + 50
       }
     },
     async refreshAll () {
@@ -132,7 +141,7 @@ export default {
       this.$emit('openLoading')
       this.mLoadingYn = true
       this.mResultSearchKeyList = []
-      this.changeTab('user')
+      this.changeTab('all')
       await this.$refs.activeBar.switchtab(0)
       var chanListWrap = await this.$refs.chanListWrap
       await chanListWrap.scrollTo({ top: 0 })
@@ -182,6 +191,7 @@ export default {
             this.mScrolledYn = false
           }
         }
+        console.log(this.mScrollDirection)
         this.mScrollPosition = this.mChanListScrollBox.scrollTop
       }
     },
@@ -290,7 +300,7 @@ export default {
       this.scrollMove()
       this.introChanPageTab()
     },
-    goDetail (value) {
+    goChannelMain (value) {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = 'chanDetail'
@@ -304,6 +314,9 @@ export default {
       this.$emit('openPop', params)
 
       // this.$router.replace({ name: 'subsDetail', params: { chanKey: idx } })
+    },
+    openPop (openPopParam) {
+      this.$emit('openPop', openPopParam)
     },
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
       if (this.mAxiosQueue.findIndex((item) => item === 'getChannelList') !== -1) return
@@ -364,7 +377,7 @@ export default {
       }
       this.mChannelList = resultList.content
       this.mViewTab = 'all'
-      this.$refs.activeBar.switchtab(1)// 전체
+      this.$refs.activeBar.switchtab(0)// 전체
       this.$refs.activeBar.selectTab('all')// 전체
       this.mChanFindPopShowYn = false
     },
@@ -381,7 +394,7 @@ export default {
     async changeSearchList (idx) {
       this.mResultSearchKeyList.splice(idx, 1)
       if (this.mResultSearchKeyList.length === 0) {
-        this.mPaddingTop = 20
+        this.mPaddingTop = 50
       }
       this.mOffsetInt = 0
       var resultList = await this.getChannelList(null, null, true)
@@ -406,7 +419,7 @@ export default {
   data () {
     return {
       mChannelList: [],
-      mPaddingTop: 20,
+      mPaddingTop: 50,
       mChanListScrollBox: null,
       mScrollPosition: 0,
       mScrollDirection: null,
@@ -415,8 +428,8 @@ export default {
       mHeaderTop: 0,
       mOffsetInt: 0,
       mEndListYn: false,
-      mViewTab: 'user',
-      mActiveTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
+      mViewTab: 'all',
+      mActiveTabList: [{ display: '전체', name: 'all' }, { display: '구독중', name: 'user' }, { display: '관리채널', name: 'mychannel' }],
       mChanFindPopShowYn: false,
       mResultSearchKeyList: '',
       myChanListPopYn: false,
@@ -445,6 +458,13 @@ export default {
     transform: translateY(15rem);
     transition: .5s;
 }
+/* .chanListHeaderBase {
+  width: 100%;
+  min-height: 100px;
+  position: relative;
+  background-color: #FFF !important;
+
+} */
 .chanListHeader {
     width: 100%;
     /* min-height: 132px; */
@@ -457,6 +477,7 @@ export default {
     z-index: 2;
     will-change: transform;
     transition: transform 0.3s linear;
+    padding: 0 1.5rem;
 }
 
 .chanListHeader--pinned {

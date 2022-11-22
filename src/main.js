@@ -107,6 +107,7 @@ app.component('gCheckBtn', gCheckBtn)
 app.component('gInputPop', gInputSmallPop)
 app.component('gChannelPop', gChannelPop)
 app.component('gMainTab', gMainTab)
+
 app.use(webViewBridge)
 app.use(axiosFunction)
 app.use(uploadFile)

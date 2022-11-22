@@ -1,4 +1,5 @@
 <template>
+    <div v-if="mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
     <div v-if="this.CONT_DETAIL" style="width: 100%; background: #FFF; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative;">
         <div class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 16px 20px;">
             <div @click="goChannelMain()" :style="this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
@@ -21,15 +22,15 @@
                         <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 0; top: 0;" alt="" @click="contentMenuClick">
                     </template>
                 </div>
-                <!-- <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
-                    <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
-                  </div> -->
                 <div style="width: 100%; paosition: relative; height: 50%; min-height: 30px;">
                     <p @click="goUserProfile()" style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
                       <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
                       {{this.$changeText(CONT_DETAIL.nameMtext)}}<span style="font-weight: normal; mleft-02"><span class="font-weight: normal; mSide-02">{{'|'}}</span>{{this.$changeText(CONT_DETAIL.creUserName)}}</span></p>
                     <p class="fr CLDeepGrayColor font12" style="line-height: 23px;">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
                     <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
+                </div>
+                <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
+                  <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
                 </div>
             </div>
         </div>
@@ -115,6 +116,7 @@ export default {
   },
   data () {
     return {
+      mLoadingShowYn: false,
       mContMenuShowYn: false,
       mConfirmText: '',
       mConfirmType: 'one',
@@ -152,6 +154,12 @@ export default {
     this.setContentsMoreText()
   },
   methods: {
+    cancelConfirm () {
+      this.mConfirmText = '알림 발송을 취소 하시겠습니까?'
+      this.mCurrentConfirmType = 'alimCancel'
+      this.mConfirmType = 'two'
+      this.mConfirmPopShowYn = true
+    },
     setIntervalTimer (date, contentsKey) {
       var time = this.$cancelTimer(date)
       // var innerHTML = '<p class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" id="contentsTime' + contentsKey +'"></p> <p class="font12 fr textRight" id="contentsTime' + contentsKey + '"></p>'
@@ -172,10 +180,10 @@ export default {
         })
       }
     },
-    cancelTimerShowCheck (alim) {
+    cancelTimerShowCheck (contents) {
       var result = false
-      if (alim.jobkindId === 'ALIM' && alim.creUserKey === this.GE_USER.userKey) {
-        var time = this.$cancelTimer(alim.creDate)
+      if (contents.jobkindId === 'ALIM' && contents.creUserKey === this.GE_USER.userKey) {
+        var time = this.$cancelTimer(contents.creDate)
         if (time !== false) {
           result = true
         }
@@ -238,6 +246,34 @@ export default {
 
       this.mCurrentConfirmType = ''
       this.mConfirmPopShowYn = false
+    },
+    async alimCancle () {
+      // 현재 시간과 비교하며 3분이 지났으면 false가 오고있음 혹시 모르니 한번 더 체크하는 중
+      var checkTime = this.$cancelTimer(this.contentsEle.creDate)
+      if (checkTime !== false) {
+        this.mLoadingShowYn = true
+        try {
+          var param = {}
+          param = this.contentsEle
+          var result = await this.$commonAxiosFunction({
+            url: 'service/tp.deleteContents',
+            param: param
+          })
+          console.log(result)
+          if (result) {
+            this.$emit('contDelete', this.propContIndex)
+            // this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', [this.contentsEle])
+            this.$showToastPop('알림 발송을 취소하였습니다.')
+          }
+        } catch (e) {
+          this.$showToastPop('취소하지 못했습니다. 앱을 다시 실행 후 시도해주세요.')
+          console.log(e)
+        } finally {
+          this.mLoadingShowYn = false
+        }
+      } else {
+        this.$showToastPop('3분이 지나 취소가 불가능합니다.')
+      }
     },
     editable (type, allYn) {
       this.mContMenuShowYn = false
@@ -417,7 +453,7 @@ export default {
       }
     },
     async saveMemo (saveMemoHTML) {
-      this.saveMemoLoadingYn = true
+      this.mLoadingShowYn = true
       var memo = {}
       memo.parentMemoKey = null
       if (this.mMememoValue !== undefined && this.mMememoValue !== null && this.mMememoValue !== {}) {
@@ -466,7 +502,7 @@ export default {
         console.error(e)
       } finally {
         this.memoShowYn = false
-        this.saveMemoLoadingYn = false
+        this.mLoadingShowYn = false
       }
     },
 
@@ -685,7 +721,6 @@ export default {
       this.mWorkStateCodePopShowYn = true
     },
     addImgEvnt () {
-      console.log(this.imgClickYn)
       if (!this.imgClickYn) return
       // console.log(this.CONT_DETAIL)
       var contBody = document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)

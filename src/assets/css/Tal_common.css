@@ -136,6 +136,15 @@ input, select {
   .img-w12{width: 10px !important}
   .img-w11{width: 9px !important}
   .img-w10{width: 8px !important}
+  .img-w9{width: 7px !important}
+  .img-w8{width: 6px !important}
+  .img-w7{width: 5px !important}
+  .img-w6{width: 4px !important}
+  .img-w5{width: 4px !important}
+  .img-w4{width: 4px !important}
+  .img-w3{width: 3px !important}
+  .img-w2{width: 2px !important}
+  .img-w1{width: 1px !important}
 
   .pagePaddingWrap {
     padding: 0 0.7rem;
@@ -221,8 +230,20 @@ input, select {
 }
 @font-face {
   font-family: 'KoPubDotumMedium';
+  src: url('https://cdn.jsdelivr.net/gh/webfontworld/kopus/KoPubWorldDotumBold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'KoPubDotumMedium';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/KoPubDotumMedium.woff') format('woff');
-  font-weight: normal;
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'KoPubDotumMedium';
+  src: url('https://cdn.jsdelivr.net/gh/webfontworld/kopus/KoPubWorldDotumLight.woff') format('woff');
+  font-weight: 300;
   font-style: normal;
 }
 
@@ -345,6 +366,16 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .img-w12{width: 12px}
 .img-w11{width: 11px}
 .img-w10{width: 10px}
+.img-w9{width: 9px}
+.img-w8{width: 8px}
+.img-w7{width: 7px}
+.img-w6{width: 6px}
+.img-w5{width: 5px}
+.img-w4{width: 4px}
+.img-w3{width: 3px}
+.img-w2{width: 2px}
+.img-w1{width: 1px}
+
 
 .imgCircle {
   width: 50px;
@@ -392,12 +423,16 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .CWhiteColor{ color: #F1F1FF !important; }
 .CWhiteBgColor{ background-color: #F1F1FF !important;}
 .attachFileBg {background-color: #AEB0FB !important;}
-.whiteColor{color: #fff;}
+.whiteColor{color: #fff !important;}
+.whiteBG{background: #fff !important;}
 .deepColor{color: #3E3F6A;}
 .CLDeepGrayColor {color: #636363;}
 .commonBlue{color: #3b3dce!important;}
 .commonLightColor {color: #7678E2!important;}
-.commonColor{color:#6768A7;}
+.commonColor{color:#6768A7 !important;}
+.commonColor{color:#5F61BD !important;}
+
+.commonColorBorder{border:1px solid #6768A7 !important;}
 .userDoColor {color: #B9B9B9;}
 .commonBlack{color: #303030;}
 .highLightYellow{background: #FFE926; height: 7px;}

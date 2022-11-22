@@ -12,9 +12,9 @@
             <!-- <div :style="chanElement.blackYn === 1? 'background: #00000040;' : 'background: #FFFFFF90;' " style="width: calc(100% - 10px); border-radius: 5px; height: 50px; padding: 5px; position: absolute; left: 5px; bottom: 5px;">
                  -->
             </div>
-            <p class="font14 w-100P fontBold textOverdot textLeft" style="color: #fff; position: absolute; z-index: 1; bottom: 2px; line-height: 20px;">
+            <p class="font14 w-100P fontBold textOverdot textLeft" style="color: #fff; position: absolute; z-index: 1; bottom: 2px; line-height: 18px;">
                 <!-- <p :style="chanElement.blackYn === 1? 'color: #fff!important;' : '' " class="commonGray font14 w-100P textOverdot textLeft" style=""> -->
-                <img v-if="chanElement.officialYn" src="../../../assets/images/main/main_officialMark_white.svg" class="img-w12 mright-01" alt="">{{this.$changeText(chanElement.nameMtext)}}
+                <img v-if="chanElement.officialYn" src="../../../assets/images/main/main_officialMark_white.svg" class="img-w9 mright-01" alt="">{{this.$changeText(chanElement.nameMtext)}}
                 <br><pp class="font12 w-100P textOverdot">{{this.$changeText(chanElement.memoMtext)}}</pp>
             </p>
         </div>
