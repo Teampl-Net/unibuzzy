@@ -1,33 +1,50 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-  <div class="findPopupWrap pagePaddingWrap" style="padding-top: 60px;">
+  <div class="findPopupWrap " style="padding-top: 60px;">
     <popHeader headerTitle="채널 검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
-    <div class="findPopBody  mtop-05">
+    <div class="findPopBody mtop-05" style=" padding: 0 1.5rem">
       <div style="position: relative; margin: 1rem 0; min-height: 50px;">
-        <img @click="findChannel" class="searchIcon cursorP img-w20" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
-        <input class="searchInput font14" id="chanSearchInput" ref="channelSearchKey" @keyup.enter="findChannel" v-model="nameMtext" placeholder="채널 검색하기" />
+        <img @click="findChannel" class="searchIcon cursorP img-w20" src="../../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
+        <input class="searchInput font14 fontBold" id="chanSearchInput"  @click="searchPopClear()" ref="channelSearchKey" @keyup.enter="findChannel" v-model="nameMtext" placeholder="채널명을 검색해주세요" />
+        <img src="../../../assets/images/common/grayXIcon.svg" v-if="mFindKeyWord !== ''" @click="searchPopClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
       </div>
 
       <template v-if="mFindKeyWord === ''">
         <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">최근 검색어</p>
-        <template v-if="mKeyWordList.length > 0">
-          <div v-for="(data, index) in mKeyWordList" :key="index" class="fl w-100P" style=" padding: 10px 0; border-bottom:1px solid #CCCCCC90; ">
-            <p class="fl font14 grayBlack" style="">{{data}}</p>
-            <img src="../../../assets/images/common/grayXIcon.svg" @click="$emit('closePop')" class="fr img-w10 mtop-03" alt="">
+        <template v-if="mSearchHistoryList.length > 0">
+          <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style=" padding: 10px 0; border-bottom:1px solid #CCCCCC90; ">
+            <p class="fl font14 grayBlack textLeft" style="width: calc(100% - 20px)" @click="nameMtext = data, findChannel()">{{data}}</p>
+            <img src="../../../assets/images/common/grayXIcon.svg" @click="searchHistoryDelete(index)" class="fr img-w10 mtop-03" alt="">
           </div>
-          <p class="fl w-100P font12 lightGray textRight mtop-05" @click="keyWordClear()">전체삭제</p>
+
+          <p v-if="mSearchHistoryList.length > 0" class="fr font12 lightGray mtop-05" @click="searchHistoryClear()">전체삭제</p>
         </template>
         <div v-else>
           <p class="fl w-100P font16 lightGray textCenter mtop-1">최근 검색한 결과가 없어요</p>
         </div>
       </template>
-
     </div>
+
+    <template v-if="mFindKeyWord !== '' && this.GE_DISP_TEAM_LIST.length > 0">
+      <div class="w-100P fl" style="overflow: auto; height: calc(100% - 90px);">
+        <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
+          <channelCard class="moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
+          <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="loadMore" class="fl wich" />
+        </template>
+      </div>
+    </template>
+    <template v-if="mFindKeyWord !== '' && this.GE_DISP_TEAM_LIST.length === 0">
+      <div class="w-100P fl" style="overflow: auto; height: calc(100% - 200px); position: relative;">
+        <gListEmpty title='검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' />
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
+import channelCard from '../../../components/list/D_channelCard.vue'
 export default {
+  components: { channelCard },
   data () {
     return {
       newestSearchKeyWordList: {},
@@ -35,14 +52,37 @@ export default {
       nameMtext: '',
       popId: null,
 
-      mKeyWordList: [],
-      mFindKeyWord: ''
+      mSearchHistoryList: [],
+      mFindKeyWord: '',
+      mChannelList: [],
+      mAxiosQueue: [],
+      mEndListYn: false,
+      mOffsetInt: 0
     }
   },
   props: {
     tab: {}
   },
   computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
+    GE_DISP_TEAM_LIST () {
+      var index = null
+      var teamList = this.GE_MAIN_CHAN_LIST
+      for (var i = 0; i < this.mChannelList.length; i++) {
+        index = teamList.findIndex((item) => item.teamKey === this.mChannelList[i].teamKey)
+        if (index !== -1) {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.mChannelList[i] = teamList[index]
+        }
+      }
+      var returnData = this.mChannelList
+      return returnData
+    },
     historyStack () {
       return this.$store.getters['D_HISTORY/hRPage']
     },
@@ -73,32 +113,101 @@ export default {
   },
   mounted () {
     document.getElementById('chanSearchInput').focus()
-    var localKeyWordOBJ = JSON.parse(localStorage.getItem('searchKeyWordList'))
+    var localKeyWordOBJ = JSON.parse(localStorage.getItem('searchKeyWordHistoryList'))
     if (localKeyWordOBJ === undefined || localKeyWordOBJ === null || localKeyWordOBJ === '') {
-      localStorage.setItem('searchKeyWordList', JSON.stringify([]))
-      localKeyWordOBJ = JSON.parse(localStorage.getItem('searchKeyWordList'))
+      localStorage.setItem('searchKeyWordHistoryList', JSON.stringify([]))
+      localKeyWordOBJ = JSON.parse(localStorage.getItem('searchKeyWordHistoryList'))
     }
     console.log(localKeyWordOBJ)
-    this.mKeyWordList = localKeyWordOBJ
-    console.log(this.mKeyWordList)
+    this.mSearchHistoryList = localKeyWordOBJ
+    console.log(this.mSearchHistoryList)
   },
   methods: {
-    keyWordClear () {
-      localStorage.setItem('searchKeyWordList', JSON.stringify([]))
-      this.mKeyWordList = []
+    openPop (openPopParam) {
+      this.$emit('goChannelMain', openPopParam)
+    },
+    async getChannelList (mLoadingYn) {
+      if (this.mAxiosQueue.findIndex((item) => item === 'getChannelList') !== -1) return
+      this.mAxiosQueue.push('getChannelList')
+      var paramMap = new Map()
+
+      paramMap.set('fUserKey', this.GE_USER.userKey)
+      paramMap.set('nameMtext', this.nameMtext)
+      paramMap.set('offsetInt', this.mOffsetInt)
+      paramMap.set('pageSize', 10)
+
+      // if (this.mViewTab === 'user') {
+      //   paramMap.set('userKey', userKey)
+      // } else if (this.mViewTab === 'all') {
+      //   paramMap.set('fUserKey', userKey)
+      // } else if (this.mViewTab === 'mychannel') {
+      //   paramMap.set('userKey', userKey)
+      //   paramMap.set('managerYn', true)
+      // }
+      // if (this.mResultSearchKeyList.length > 0) {
+      //   paramMap.set('nameMtext', this.mResultSearchKeyList[0].keyword)
+      // }
+      // if (offsetInput !== undefined) {
+      //   paramMap.set('offsetInt', offsetInput)
+      // } else {
+      //   paramMap.set('offsetInt', this.mOffsetInt)
+      // }
+      // if (pageSize) {
+      //   paramMap.set('pageSize', pageSize)
+      // } else {
+      //   paramMap.set('pageSize', 10)
+      // }
+      var noneLoadingYn = true
+      if (mLoadingYn) {
+        noneLoadingYn = false
+      }
+      var result = await this.$getTeamList(paramMap, noneLoadingYn)
+      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getChannelList')
+      this.mAxiosQueue.splice(queueIndex, 1)
+      var resultList = result.data
+      this.endListSetFunc(resultList)
+      return resultList
+    },
+    endListSetFunc (resultList) {
+      if (resultList === undefined || resultList === null || resultList === '') return
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.mEndListYn = true
+        if (this.mOffsetInt > 0) this.mOffsetInt -= 1
+      } else {
+        this.mEndListYn = false
+        this.mOffsetInt += 1
+      }
+    },
+    searchHistoryDelete (idx) {
+      this.mSearchHistoryList.splice(idx, 1)
+      localStorage.setItem('searchKeyWordHistoryList', JSON.stringify(this.mSearchHistoryList))
+    },
+    searchHistoryClear () {
+      localStorage.setItem('searchKeyWordHistoryList', JSON.stringify([]))
+      this.mSearchHistoryList = []
+    },
+    searchPopClear () {
+      this.mFindKeyWord = ''
+      this.nameMtext = ''
+      this.mChannelList = []
     },
     closeXPop () {
       this.$emit('closePop')
     },
-    findChannel () {
-      this.mKeyWordList.push(this.nameMtext)
-      localStorage.setItem('searchKeyWordList', JSON.stringify(this.mKeyWordList))
+    async findChannel () {
+      var find = this.mSearchHistoryList.findIndex(item => item === this.nameMtext)
+      if (find !== -1) { this.mSearchHistoryList.splice(find, 1) }
+      this.mSearchHistoryList.unshift(this.nameMtext)
+      localStorage.setItem('searchKeyWordHistoryList', JSON.stringify(this.mSearchHistoryList))
       this.mFindKeyWord = this.nameMtext
-      var paramMap = new Map()
-      if (this.nameMtext !== undefined && this.nameMtext !== null && this.nameMtext !== '') {
-        paramMap.set('nameMtext', this.nameMtext)
-      }
-      this.$emit('searchList', paramMap)
+      // var paramMap = new Map()
+      // if (this.nameMtext !== undefined && this.nameMtext !== null && this.nameMtext !== '') {
+      //   paramMap.set('nameMtext', this.nameMtext)
+      // }
+      // this.$emit('searchList', paramMap)
+      var result = await this.getChannelList(true)
+      this.mChannelList = result.content
+      console.log(this.mChannelList)
     }
   }
 }
@@ -113,7 +222,7 @@ export default {
   width: 100%;
   height: 40px;
   margin-bottom: 5px!important;
-  border-radius: 12px;
+  border-radius: 12px !important;
   padding: 0.4rem;
   padding-left: 2rem !important;
   box-sizing: border-box;

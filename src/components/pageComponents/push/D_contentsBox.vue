@@ -23,11 +23,19 @@
                     </template>
                 </div>
                 <div style="width: 100%; paosition: relative; height: 50%; min-height: 30px;">
-                    <p @click="goUserProfile()" style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
+                    <p style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
                       <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                      {{this.$changeText(CONT_DETAIL.nameMtext)}}<span style="font-weight: normal; mleft-02"><span class="font-weight: normal; mSide-02">{{'|'}}</span>{{this.$changeText(CONT_DETAIL.creUserName)}}</span></p>
+                      {{this.$changeText(CONT_DETAIL.nameMtext)}}
+                      <span @click="goUserProfile()" style="font-weight: normal;" class="mleft-05">
+                        <!-- <span class="font-weight: normal; mSide-02">{{'|'}}</span> -->
+                        <img src="../../../assets/images/footer/icon_people.svg" class="img-w12" alt="">
+                        {{this.$changeText(CONT_DETAIL.creUserName)}}
+                      </span>
+                    </p>
+
                     <p class="fr CLDeepGrayColor font12" style="line-height: 23px;">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
                     <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
+                    <p class="fr font14 lightGray mright-03" v-if="CONT_DETAIL.jobkindId === 'ALIM'" >{{CONT_DETAIL.rUserCount === -1 ? '전체' : CONT_DETAIL.rUserCount + '명' }}</p>
                 </div>
                 <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
                   <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>

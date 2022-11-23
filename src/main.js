@@ -61,6 +61,8 @@ import gContentsBox from './components/pageComponents/push/D_contentsBox.vue'
 
 import gMainTab from './components/popup/memberInfo/memberUnit/D_commonMainTabCompo.vue'
 
+import channelCard from './components/list/D_channelCard.vue'
+
 import webViewBridge from './assets/js/webViewBridge'
 const app = createApp(moTheAlim).use(router).use(store)
 app.use(commonjs)
@@ -107,6 +109,7 @@ app.component('gCheckBtn', gCheckBtn)
 app.component('gInputPop', gInputSmallPop)
 app.component('gChannelPop', gChannelPop)
 app.component('gMainTab', gMainTab)
+app.component('channelCard', channelCard)
 
 app.use(webViewBridge)
 app.use(axiosFunction)

@@ -6,7 +6,9 @@
     <gActiveBar :testYn='true' :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.mChanFindPopShowYn = true" :resultSearchKeyList="this.mResultSearchKeyList" ref="activeBar" :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab" :propSearchList='mSearchList' @searchBoxClick='searchBoxClick'></gActiveBar>
   </div>
   <!-- </div> -->
-  <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' />
+
+  <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' />
+
   <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
     <gEmty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
     <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
@@ -124,6 +126,10 @@ export default {
     this.mLoadingYn = false
   },
   methods: {
+    searchCloseNopenPop (openPopParam) {
+      this.mChanFindPopShowYn = false
+      this.openPop(openPopParam)
+    },
     bottSheetEmit (pramData) {
       var targetType = pramData.targetType
       var dispName = pramData.dispName

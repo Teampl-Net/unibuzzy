@@ -9,7 +9,7 @@
                 <p class="commonLightColor font16 textLeft " style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
                 <div style="float: left; height: calc(100% - 20px); width: 100%;">
                     <div style="float: left; height: 100%; position: relative;">
-                        <p class="fl fontBold font18" style="position: absolute; z-index: 1;">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
+                        <p class="fl fontBold font18 CDeepColor" style="position: absolute; z-index: 1;">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
                         <p class="fl fontBold font18" style="color: transparent!important">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
                         <div class="highLightYellow w-100P" style="position: absolute; bottom: 5px; left: 0;"></div>
                     </div>
@@ -43,7 +43,7 @@
         <div v-if="this.mMainMChanList || this.mMainChanList" style="background: #FFFFFF; margin-top: 15px; padding: 20px; padding-right: 0; border-radius: 30px 0px 0px 30px; width: 100%; float: left;">
             <div v-if="this.mMainMChanList"  style="width: 100%; height: 30px; float: left;">
                 <img src="../../assets/images/main/main_settingIcon.png" style="float: left; margin-right: 8px;" class="img-w27" alt="">
-                <p class="font20 fontBold deepBorderColor textLeft" style="line-height: 26px;">내 관리 채널</p>
+                <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">내 관리 채널</p>
             </div>
             <div v-if="this.mMainMChanList" style="width: 100%; height: 85px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%; display:flex;">
@@ -53,19 +53,19 @@
             </div>
             <div v-if="this.mMainChanList"  style="width: 100%; height: 30px; float: left;">
                 <img src="../../assets/images/main/main_followIcon.png" style="float: left; margin-right: 8px;" class="img-w27" alt="">
-                <p class="font20 fontBold deepBorderColor textLeft" style="line-height: 26px;">구독중인 채널</p>
+                <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">구독중인 채널</p>
             </div>
             <div v-if="this.mMainChanList" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%; display:flex; gap: 10px;">
                     <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index" @openPop="openPop"/>
-                    <searchChanIcon @openPop="openPop" />
+                    <searchChanIcon @openPop="openPop" v-if="false" />
                 </div>
             </div>
         </div>
         <div style="margin-top: 15px; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
             <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; border-bottom: 2px; solid #F4F7FF!important">
                 <img src="../../assets/images/main/main_contentsBellIcon.png" style="float: left; margin-right: 8px;" class="img-w22" alt="">
-                <p class="font20 fontBold deepBorderColor textLeft" style="line-height: 26px;">도착한 알림, 게시글</p>
+                <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글</p>
             </div>
             <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px;" >
                 <mainContsList :propUserKey="this.GE_USER.userKey" @openPop='openPop' />

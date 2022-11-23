@@ -12,6 +12,7 @@ import policies from '../pages/intro/Tal_policies.vue'
 import pushList from '../pages/routerPages/Tal_pushList.vue'
 import chanList from '../pages/routerPages/D_chanList.vue'
 import logList from '../pages/routerPages/Tal_logList.vue'
+import search from '../pages/routerPages/D_searchPage.vue'
 // import { loginCheck } from '../assets/js/Tal_common'
 import savePhone from '../pages/routerPages/Tal_savePhone.vue'
 import saveName from '../pages/routerPages/Tal_saveName.vue'
@@ -62,6 +63,12 @@ const routes = [
             next('/policies')
           }
         } */
+      },
+      {
+        path: '/search',
+        name: 'search',
+        props: true,
+        component: search
       },
       {
         path: '/myPage',

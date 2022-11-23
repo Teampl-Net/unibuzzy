@@ -18,7 +18,6 @@
       <div class="fl w-100P" style='display: contents;'>
         <p class="fl commonBlack creChanInput w-100P font16 fontBold" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
         <img v-if="readOnlyYn && !changeYn && selfYn" src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
-
         <div v-show="changeYn" class="fl creChanInput" style="">
             <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
             <div class="fl" style="width: 100px">
@@ -46,7 +45,7 @@
       </div>
 
       <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
-      <div v-if="readOnlyYn && mobileYn" class="fl w-100P mtop-3" style=" min-height: 70px; display: flex; flex-direction: row; justify-content: space-around;">
+      <div v-if="readOnlyYn" class="fl w-100P mtop-3" style=" min-height: 70px; display: flex; flex-direction: row; justify-content: space-around;">
         <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="fl" style="display: flex; flex-direction: row; align-items: center; justify-content: center">
           <div style="display: flex; flex-direction: column; align-items: center;">
             <div class="nativeServiceBtnWrap">
@@ -114,7 +113,7 @@ export default {
             userProfileImg : undefined,
             domainPath : '',
             systemName: 'iOS',
-            mobileYn: this.$getMobileYn(),
+            // mobileYn: this.$getMobileYn(),
             popSize: 0,
             changeUserIconShowYn: false,
             changeUserIconPop: null,
@@ -259,6 +258,8 @@ export default {
             param.targetType = 'writeContents'
             param.contentsJobkindId = 'ALIM'
             param.teamKey =  this.propData.teamKey
+            param.targetKey =  this.propData.teamKey
+            param.currentTeamKey =  this.propData.teamKey
             param.userKey = this.propData.userKey
             param.userName = this.memName
             param.targetUserKey = this.thisUserKey

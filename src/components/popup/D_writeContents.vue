@@ -20,7 +20,7 @@
             <template v-if="contentType === 'ALIM'">
               <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
                 <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">수신</p>
-                <div class="fl" style="min-height: 2rem; float: left; width: calc(100% - 3.5rem);" >
+                <div class="fl" style="min-height: 2rem; float: left; width: calc(100% - 3.5rem);" v-if="!params.userKey">
                   <checkBtnArea class="mleft-05" title='전체' :selectedYn='allRecvYn' @click="allRecvYn = true" />
                   <checkBtnArea class="mleft-05" title='선택' :selectedYn='!allRecvYn' @click="allRecvYn = false" />
                   <p class="fr commonDarkGray font14" style="line-height: 30px;">{{allRecvYn === false ? receiverText : '전체' }}</p>
@@ -38,6 +38,10 @@
                     <img class="fr img-w17 mright-05"  src="../../assets/images/formEditor/icon_formEditPlus.svg" />
                   </div>
                 </div>
+                <p v-else class="fl w-100P font16 textLeft commomBlack">
+                  <img src="../../assets/images/footer/icon_people.svg" class="fl img-w15 mtop-02 mleft-05 mright-03" alt="">
+                  {{params.userName}}
+                  </p>
               </div>
 
               <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
@@ -189,6 +193,11 @@ export default {
         }
         this.getCabinetDetail(this.propData.cabinetKey)
       }
+    }
+    // alert(JSON.stringify(this.params))
+    // alert(JSON.stringify(this.propData))
+    if (this.params.userKey) {
+      this.allRecvYn = false
     }
   },
   mounted () {
@@ -482,10 +491,12 @@ export default {
           await this.settingRecvList()
           if (this.selectedReceiverList.length > 0) {
           } else {
-            this.errorText = '수신자를 선택해주세요'
-            this.failPopYn = true
-            this.complexOkYn = false
-            return
+            if (!this.params.userKey) {
+              this.errorText = '수신자를 선택해주세요'
+              this.failPopYn = true
+              this.complexOkYn = false
+              return
+            }
           }
         }
 
@@ -838,13 +849,17 @@ export default {
           //   param.parentContentsKey = this.params.targetContentsKey
           //   param.actorList = [{ accessKind: 'U', accessKey: this.params.creUserKey }]
           // } else {
-          await this.settingRecvList()
-          if (this.selectedReceiverList.length > 0) {
-            param.actorList = this.selectedReceiverList
+          if (this.params.userKey) {
+            param.actorList = [{ accessKind: 'U', accessKey: this.params.userKey }]
           } else {
-            this.errorText = '수신자를 선택해주세요'
-            this.failPopYn = true
-            return
+            await this.settingRecvList()
+            if (this.selectedReceiverList.length > 0) {
+              param.actorList = this.selectedReceiverList
+            } else {
+              this.errorText = '수신자를 선택해주세요'
+              this.failPopYn = true
+              return
+            }
           }
           // }
         }
