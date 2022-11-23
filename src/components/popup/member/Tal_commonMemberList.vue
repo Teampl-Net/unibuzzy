@@ -1,6 +1,6 @@
 <template>
     <!-- eslint-disable-next-line vue/no-multiple-template-root -->
-    <div class="memberCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :style="currentTab === 'Mem' ? !member.memberYn ? 'display: none !important;' : '' : ''" :key="index" >
+    <div class="memberCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :style="currentTab === 'Mem' ? !member.memberNameMtext ? 'display: none !important;' : '' : ''" :key="index" >
       <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" />
       <div class="fl w-100P" style="position: relative; width: calc(100% - 125px)" @click="memberInfo(member)">
         <div v-if="member.userProfileImg"  class="managerPicImgWrap">

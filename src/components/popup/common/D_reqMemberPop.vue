@@ -4,24 +4,24 @@
         <p class="font20 fontBold textLeft">[{{this.$changeText(propMemberData.nameMtext)}}] 멤버신청</p>
     </div>
     <div style="width: 100%; height: calc(100% - 110px); padding: 10px 20px; float: left;">
-        <div style="width: 100%; height: 60px; float: left;">
-            <p class="font14 w-100P grayBlack fontBold fl textLeft" style="line-height: 30px;" >{{propMemberData.certiYn? '실명 인증이 필요한 유형입니다.': '실명인증이 필요하지 않은 유형입니다.'}}</p>
-            <p class="font16 fontBold fl textLeft w-100P" v-if="GE_USER.certiYn">실명인증회원</p>
-            <p class="font16 fontBold fl textLeft" style="line-height: 30px;" v-else>실명 인증이 필요합니다.</p>
-            <gBtnSmall v-if="!GE_USER.certiYn" btnTitle="인증하기"/>
+        <div style="width: 100%; min-height: 30px; float: left;">
+            <p class="font14 w-100P grayBlack fontBold fl textLeft" style="line-height: 30px;" >{{propMemberData.certiYn === 1? '실명 인증이 필요한 유형입니다.': '실명인증이 필요하지 않은 유형입니다.'}}</p>
+            <p class="font16 fontBold fl textLeft w-100P" v-if="propMemberData.certiYn === 1 && GE_USER.certiYn === 1">실명인증회원</p>
+            <p class="font16 fontBold fl textLeft" style="line-height: 30px;" v-else-if="propMemberData.certiYn === 1">실명 인증이 필요합니다.</p>
+            <gBtnSmall v-if="propMemberData.certiYn === 1 && !GE_USER.certiYn === 1" btnTitle="인증하기"/>
         </div>
         <div style="width: 100%; height: 1px; border-bottom: 1px solid #ccc; margin-top: 10px; float: left;" ></div>
         <div style="width: 100%; height: calc(100% - 60px); float: left; ">
             <p class="font16 fontBold textLeft mbottom-05 mtop-05">신청서 작성</p>
-            <div style="width: 100%; min-height: 50px; float: left; padding: 10px; margin-bottom: 10px; display: flex;" :id="'question'+typeItem.itemKey" v-for="(typeItem, index) in memberTypeItemList" :key="index">
-                <p class="font16 textLeft fl grayBlack fontBold" style="width: 80px;">{{typeItem.itemNameMtext}}</p>
-                <div style="width: calc(100% - 80px);" v-if="typeItem.itemType === 'F'">
+            <div style="width: 100%; min-height: 50px; float: left; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column;" :id="'question'+typeItem.itemKey" v-for="(typeItem, index) in memberTypeItemList" :key="index">
+                <p class="font16 textLeft fl grayBlack fontBold" style="width: 100%;">- {{this.$changeText(typeItem.itemNameMtext)}}</p>
+                <div style="width: calc(100%);" v-if="typeItem.itemType === 'F'">
                     <select v-model="typeItem.value" style="width: 100%; height: 30px;" >
                         <option hidden selected>선택하세요</option>
                         <option style="whith: 100%; height: 30px;" class="font16" :value="sub" v-for="(sub, subIndex) in convertSelectListStr(typeItem.optListStr)" :key="subIndex">{{sub}}</option>
                     </select>
                 </div>
-                <div style="width: calc(100% - 80px);" v-else-if="typeItem.itemType === 'T'">
+                <div style="width: calc(100%);" v-else-if="typeItem.itemType === 'T'">
                     <input :type="typeItem.numberYn?  'number': 'text'" v-model="typeItem.value" :max="typeItem.maxLen" :maxLength="typeItem.maxLen" :placeholder="this.$changeText(typeItem.itemNameMtext) + '를(을) 입력하세요'" style="width: 100%; height: 30px; padding: 0 10px;" class="font16 textLeft" name="" id="">
                 </div>
             </div>

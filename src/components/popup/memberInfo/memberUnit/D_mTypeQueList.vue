@@ -1,8 +1,8 @@
 <template>
-  <div class="fl w-100P" :key="queListReloadKey" >
-    <draggable class="ghostClass" :v-model="queList" ghost-class="ghost" :dragging="dragging" @end="end" delay="200" handle=".movePoint">
+  <div v-if="propMemberTypeObj" class="fl w-100P" :key="queListReloadKey" >
+    <draggable class="ghostClass" :v-model="memberTypeItemList" ghost-class="ghost" :dragging="dragging" @end="end" delay="200" handle=".movePoint">
       <transition-group>
-        <div v-for="(list, index) in queList" :key="index" class="fl w-100P" style="padding: 0.3rem 0">
+        <div v-for="(list, index) in memberTypeItemList" :key="index" class="fl w-100P" style="padding: 0.3rem 0">
           <queCard :propData="list" @cardEmit='cardEmit' :compoIdx='index' class="mbottom-05"/>
         </div>
         </transition-group>
@@ -22,7 +22,7 @@ export default {
     draggable: VueDraggableNext
   },
   props: {
-    questionList: {}
+    propMemberTypeObj: {}
   },
   created () {
     this.readyFunc()
@@ -30,17 +30,40 @@ export default {
   },
   data () {
     return {
-      queListReloadKey: 0
+      queListReloadKey: 0,
+      memberTypeItemList: []
     }
+  },
+  updated () {
+    // this.readyFunc()
   },
   methods: {
     readyFunc () {
+      this.getMemberTypeItemList()
+      // eslint-disable-next-line no-debugger
+      /* debugger
+      propMemberTypeObj
       this.queList = JSON.parse(JSON.stringify(this.questionList))
       // this.changeTab(this.queList[0], 0)
-      console.log(this.queList)
+      console.log(this.queList) */
     },
     addQuestion () {
       this.$emit('addQuestion')
+    },
+    async getMemberTypeItemList () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.memberTypeKey = this.propMemberTypeObj.memberTypeKey
+      var memberTypeItemList = await this.$commonAxiosFunction({
+        url: 'service/tp.getMemberTypeItemList',
+        param: param
+      })
+      console.log(memberTypeItemList)
+      if (memberTypeItemList.data.result) {
+        this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
+      }
+      // eslint-disable-next-line no-debugger
+      debugger
     },
     cardEmit (param) {
       console.log(param)

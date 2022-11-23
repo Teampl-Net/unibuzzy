@@ -50,6 +50,7 @@ export default {
   },
   props: {
     propTeamKey: {},
+    propCateItemKey: {},
     // popTitle: {}
     // btnList: {}
     propPopMessage: {}
@@ -75,7 +76,8 @@ export default {
     async getMemberTypeList () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.sampleYn = true
+      // param.sampleYn = true
+      param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction({
         url: 'service/tp.getMemberTypeList',
         param: param

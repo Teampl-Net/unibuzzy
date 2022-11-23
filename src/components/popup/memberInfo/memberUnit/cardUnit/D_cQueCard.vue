@@ -1,31 +1,29 @@
 <template>
-<div class="fl w-100P" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;" :style="this.propData.InfoQueType === 'siList' ? 'align-items: flex-start;' : ''">
+<div class="fl w-100P" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;" :style="this.propData.itemType === 'siList' ? 'align-items: flex-start;' : ''">
   <div class="fl " style="width:100px">
-    <p class="fl textLeft fontBold font16 commonDarkGray" style="">{{propData.InfoQueTitle}}</p>
+    <p class="fl textLeft fontBold font16 commonDarkGray" style="">{{propData.itemNameMtext}}</p>
   </div>
-
   <div class="fl" style="width: calc(100% - 200px);">
 
-    <template v-if="propData.InfoQueType === 'su'">
+    <template v-if="propData.itemType === 'T'">
       <div class="fr w-100P" style="background:white; border: 1px dashed #ccc; padding-left:0.5rem;">
-        <p class="lightGray fl textLeft font16">텍스트 </p>
+        <p class="lightGray fl textLeft font16">텍스트</p>
       </div>
     </template>
 
-    <template v-if="propData.InfoQueType === 'si' && options">
+    <template v-if="propData.InfoQueType === 'F' && options">
       <div class="fr textLeft w-100P">
         <select class="fr commonDarkGray" v-model="selectOption" style="border: 1px solid #ccc; width:100%; min-height:30px" >
-          <option v-for="(answer, index) in options" :key="index" class="fl w-100P" style="display: flex; align-items: center; padding-bottom:0.5rem">
-            {{ answer.answerName }}
-          </option>
+            <option hidden selected>선택하세요</option>
+            <option class="fl w-100P" style="display: flex; align-items: center; padding-bottom:0.5rem" :value="sub" v-for="(sub, subIndex) in convertSelectListStr(typeItem.optListStr)" :key="subIndex">{{sub}}</option>{{ answer.answerName }}
         </select>
       </div>
     </template>
 
-    <template v-if="propData.InfoQueType === 'siList' && options">
+    <template v-if="propData.InfoQueType === 'L' && options">
       <div class="fr textLeft w-100P" >
-        <div class="fr w-100P mbottom-05 commonDarkGray" v-for="(value, aIndex) in options" :key="aIndex">
-          <gCheckBtn class="fr commonDarkGray" :title="value.answerName" :selectedYn="selectOption === value.answerName" @click="selectOption = value.answerName"/>
+        <div class="fr w-100P mbottom-05 commonDarkGray" v-for="(value, aIndex) in convertSelectListStr(typeItem.optListStr)" :key="aIndex">
+          <gCheckBtn class="fr commonDarkGray" :title="value" :selectedYn="selectOption === value" @click="selectOption = value"/>
         </div>
       </div>
     </template>
@@ -66,6 +64,11 @@ export default {
       param.data = this.propData
       param.index = this.compoIdx
       this.$emit('cardEmit', param)
+    },
+    convertSelectListStr (str) {
+      var returnList = null
+      returnList = str.split('$#$')
+      return returnList
     }
   }
 }

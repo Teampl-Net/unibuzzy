@@ -86,7 +86,7 @@ export default {
       }
     },
     changeDot (type, data) {
-      if (this.propData.memberYn === 1) {
+      if (this.propData.memberNameMtext) {
         return data
       } else {
         return this.$changeFollowerInfo(type, data)

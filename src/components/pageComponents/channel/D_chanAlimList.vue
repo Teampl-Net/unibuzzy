@@ -2,7 +2,7 @@
 <template>
   <div id="alimWrap" v-if="this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH" ref="chanScrollWrap" style="overflow: scroll;" :style="'background-image: url(' + (this.CHANNEL_DETAIL.bgDomainPath ? this.CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext : CHANNEL_DETAIL.bgPathMtext) + ')'" class="chanDetailWrap">
       <div id="gChannelPopup" v-if="commonChanPopShowYn" style="display: absolute; top: 0; left: 0; z-index: 999;">
-        <gChannelPop :propTeamKey="this.CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop'/>
+        <gChannelPop :propCateItemKey="this.CHANNEL_DETAIL.cateKey" :propTeamKey="this.CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop'/>
       </div>
       <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
       <welcomePopUp type="follow" v-if="mOpenWelcomePopShowYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="mOpenWelcomePopShowYn = false" @closePop="okMember" @applyMember="openReqMemPop" />
@@ -55,15 +55,15 @@
               </div>
               <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
                   <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" >
-                    <template v-if="this.CHANNEL_DETAIL.cateKey === 3">
+                    <template >
                         <p class="fl font14 cursorP fontBold commonColor" v-if="this.CHANNEL_DETAIL.userTeamInfo && !this.CHANNEL_DETAIL.userTeamInfo.ownerYn && !CHANNEL_DETAIL.userTeamInfo.memberNameMtext" @click="this.openReqMemPop()" >멤버신청</p>
-                        <p class="fl font14 cursorP fontBold " v-else-if="this.CHANNEL_DETAIL.cateKey === 3? this.CHANNEL_DETAIL.userTeamInfo.ownerYn || this.CHANNEL_DETAIL.userTeamInfo && CHANNEL_DETAIL.userTeamInfo.memberNameMtext : CHANNEL_DETAIL.userTeamInfo && (CHANNEL_DETAIL.userTeamInfo.memberYn || CHANNEL_DETAIL.userTeamInfo.memberYn === 1)">멤버</p>
+                        <p class="fl font14 cursorP fontBold " v-else>멤버</p>
                     </template>
-                    <template v-else>
+                    <!-- <template v-else>
                         <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '00' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  @click="this.openReqMemPop()" >멤버신청</p>
                         <p class="fl font14 cursorP fontBold" v-else-if="this.REQ_MEM_OBJ.reqMemberStatus === '01' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1" >멤버대기중</p>
                         <p class="fl font14 cursorP fontBold" v-else-if="this.REQ_MEM_OBJ.reqMemberStatus === '99' || CHANNEL_DETAIL.userTeamInfo.memberYn === 1"  >멤버</p>
-                    </template>
+                    </template> -->
                       <!-- <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '00' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  @click="this.openReqMemPop()" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버신청</p> -->
                       <!-- <p class="fl font14 cursorP fontBold" v-else-if="this.REQ_MEM_OBJ.reqMemberStatus === '01' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버대기중</p>
                       <p class="fl font14 cursorP fontBold" v-else-if="this.REQ_MEM_OBJ.reqMemberStatus === '99' || CHANNEL_DETAIL.userTeamInfo.memberYn === 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버</p> -->
@@ -93,7 +93,7 @@
       <div v-else-if="this.mChanInfoPopShowYn" >
           <chanDetailComp ref="chanDetailRef" @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @closeXPop="this.closeDetailPop" @changeshowProfileYn='changeshowProfileYn' :parentshowProfileYn="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn" :adminYn="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.CHANNEL_DETAIL" style="background-color: #fff;"></chanDetailComp>
       </div>
-      <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" v-if="(this.CHANNEL_DETAIL.cateKey === 3 || (this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1)) && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true) && mPushListMainTab === 'P' && this.mWriteBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%; z-index:9" class="img-78 img-w66">
+      <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" v-if="CHANNEL_DETAIL.userTeamInfo && CHANNEL_DETAIL.userTeamInfo.memberTypeKey  && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true) && mPushListMainTab === 'P' && this.mWriteBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%; z-index:9" class="img-78 img-w66">
       <img id='writeBtn' src="../../../assets/images/button/Icon_WriteBoardBtn.png" v-if="mPushListMainTab === 'B' && this.mWriteBtnShowYn" @click="openWritePushPop" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%; " class="img-78 img-w66">
       <gConfirmPop :confirmText='mErrorPopBodyStr' :confirmType='mErrorPopBtnType' @no='mErrorPopShowYn=false' v-if="mErrorPopShowYn" @ok="confirmOk"/>
   </div>
@@ -372,13 +372,9 @@ export default {
               this.mErrorPopShowYn = true
             }
           } else {
-            if (this.CHANNEL_DETAIL.cateKey === 3) {
-              await this.okMember()
-              this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>더 많은 활동을 위해 멤버 신청을 해주세요!'
-              this.commonChanPopShowYn = true
-            } else {
-              this.mOpenWelcomePopShowYn = true
-            }
+            await this.okMember()
+            this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>더 많은 활동을 위해 멤버 신청을 해주세요!'
+            this.commonChanPopShowYn = true
           }
         }
       }

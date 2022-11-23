@@ -6,7 +6,7 @@
       <div class="fr textLeft font12 commonBlack tempLeftTabBtn fontBold" style="margin-top: 3px;" @click="closePop">{{tempBackImg}}</div>
     </div>
 
-    <div class="fl w-100P  " style="position: relative; ">
+    <div class="fl w-100P  " style="position: relative; padding: 0 20px; padding-right: 0;">
       <div v-for="(list, index) in mMemberTypeList" :key="index" class="fl w-100P" style="padding: 10px 0;">
         <cLeftTab :propData="list" @cardEmit='cardEmit' :compoIdx='index' />
       </div>
@@ -26,6 +26,7 @@ export default {
     propMemberTypeList: {}
   },
   created () {
+    console.log(this.propMemberTypeList)
     this.readyFunc()
     // 추후 back버튼을 위해 history관리가 들어와야함
   },
@@ -37,6 +38,17 @@ export default {
       leftTabTitle: {},
       addInputPopYn: false
     }
+  },
+  watch: {
+    propMemberTypeList: {
+      handler (value, old) {
+        if (!value) return
+        this.mMemberTypeList = value
+      }
+    }
+  },
+  updated () {
+    this.mMemberTypeList = this.propMemberTypeList
   },
   methods: {
     readyFunc () {
@@ -68,7 +80,7 @@ export default {
           this.leftTabTitle[i].selectedYn = true
         }
       }
-      this.$emit('changeTab', idx)
+      this.$emit('changeTab', data)
     },
     closePop () {
     // 추후 back버튼을 위해 history관리가 들어와야함

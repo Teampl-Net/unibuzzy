@@ -173,6 +173,8 @@ export const functions = {
     // alert(teamKey)
     var result = null
     debugger
+    console.log('과연????')
+    console.log(g_axiosQueue.findIndex((item) => item === 'addChanList'))
     if (g_axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
     g_axiosQueue.push('addChanList')
     var paramMap = new Map()

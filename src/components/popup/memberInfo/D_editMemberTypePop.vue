@@ -2,7 +2,7 @@
   <div  class="pSide-15 ptop-50 wh-100P" style="overflow-x: scroll; white-space:nowrap;" :style="leftShowYn === true ? 'padding: 50px 0 0 0; display: flex;' : ''">
     <leftTab v-show="leftShowYn" :class="{'ani-leftIn': leftanimaYn === true, 'ani-leftOut': leftanimaYn === false}" :propMemberTypeList='mMemberTypeList' @changeTab='changeTab' @addMemberType='saveMemberType' @closePop='leftBack()' />
 
-    <memberTypeDetail />
+    <memberTypeDetail @addQuestion="addQuestion" @editQue="editQue" :propMemberTypeDetail="mSelectedMemberTypeObj" />
   </div>
 </template>
 <script>
@@ -29,7 +29,7 @@ export default {
         { mFormKey: 2, mFormTitle: '더알림 임직원', rNameAuthYn: false, creDate: '2022-05-04 15:00', InfoQueList: [{ InfoQueKey: 0, InfoQueTitle: '직급', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 1, InfoQueTitle: '소속', InfoQueType: 'si', essentialYn: true, answerList: [{ answerName: '개발팀' }, { answerName: '디자인팀' }, { answerName: '지원팀' }] }, { InfoQueKey: 2, InfoQueTitle: '근무 층', essentialYn: true, InfoQueType: 'siList', answerList: [{ answerName: '1층' }, { answerName: '2층' }, { answerName: '3층' }] }, { InfoQueKey: 3, InfoQueTitle: '확인코드', essentialYn: true, InfoQueType: 'su' }] },
         { mFormKey: 3, mFormTitle: '멤버', rNameAuthYn: false, creDate: '2021-12-04 15:00', InfoQueList: [{ InfoQueKey: 0, InfoQueTitle: '이름', InfoQueType: 'su', essentialYn: true }, { InfoQueKey: 1, InfoQueTitle: '소속', InfoQueType: 'si', essentialYn: true, answerList: [{ answerName: '개발팀' }, { answerName: '디자인팀' }, { answerName: '지원팀' }] }] }],
       mMemberTypeList: [],
-      currentListIDX: 0,
+      mSelectedMemberTypeObj: {},
       reloadKey: 0,
       leftanimaYn: true
     }
@@ -41,7 +41,8 @@ export default {
       saveParam.teamKey = this.propData.teamKey
       saveParam.nameMtext = 'KO$^$' + data
       saveParam.certiYn = false
-      saveParam.creUserKey = this.GE_USER.creUserKey
+      saveParam.sampleYn = false
+      saveParam.creUserKey = this.GE_USER.userKey
       var saveMemberType = await this.$commonAxiosFunction({
         url: 'service/tp.saveMemberType',
         param: { member: saveParam }
@@ -97,9 +98,12 @@ export default {
       param.targetType = 'memInfoCreEditPop'
       param.popHeaderText = '멤버정보 추가'
       param.teamKey = this.propData.teamKey
+      param.selectedMemberType = this.mSelectedMemberTypeObj
       this.$emit('openPop', param)
     },
     editQue (params) {
+      // eslint-disable-next-line no-debugger
+      debugger
       if (!this.propData.teamKey) return
       var param = {}
       param.newYn = false
@@ -110,9 +114,9 @@ export default {
       console.log(param)
       this.$emit('openPop', param)
     },
-    changeTab (listIDX) {
-      console.log(listIDX)
-      this.currentListIDX = listIDX
+    changeTab (selectedObj) {
+      console.log(selectedObj)
+      this.mSelectedMemberTypeObj = selectedObj
       this.reloadKey += 1
     }
   },

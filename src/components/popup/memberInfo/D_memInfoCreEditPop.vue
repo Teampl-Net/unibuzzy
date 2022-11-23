@@ -17,7 +17,7 @@
 
     <div class="fl w-100P mtop-1" style="padding:0 1rem !important">
 
-      <template v-if="selectOption === 'su'">
+      <template v-if="selectOption === 'T'">
         <div class="fl wh-100P" style="display: flex;">
           <p class="fl font16 commonColr textLeft fontBold h-100P" style="flex:2">제시글</p>
           <div class="fl h-100P" style="flex:3">
@@ -31,7 +31,7 @@
         </div>
       </template>
 
-      <template v-if="selectOption === 'si' || selectOption === 'siList'">
+      <template v-if="selectOption === 'F' || selectOption === 'L'">
         <div class="fl wh-100P" style="display: flex;">
           <p class="fl font16 commonColr textLeft fontBold mbottom-05  h-100P" style="flex:2">선택항</p>
 
@@ -75,8 +75,8 @@ export default {
   },
   data () {
     return {
-      selectOption: 'su',
-      options: [{ title: '주관식', InfoQueType: 'su' }, { title: '객관식(드롭다운)', InfoQueType: 'si' }, { title: '객관식(리스트)', InfoQueType: 'siList' }],
+      selectOption: 'T',
+      options: [{ title: '주관식', InfoQueType: 'T' }, { title: '객관식(드롭다운)', InfoQueType: 'F' }, { title: '객관식(리스트)', InfoQueType: 'L' }],
       answerList: [{ answerName: '' }],
       answerTitle: '',
       InfoQueTitle: '',
@@ -108,18 +108,34 @@ export default {
     deleteInfoQue (idx) {
       this.answerList.splice(idx, 1)
     },
-    save () {
+    async save () {
       var param = {}
-      param.InfoQueTitle = this.InfoQueTitle
-      param.InfoQueType = this.selectOption
-      if (this.selectOption === 'su') {
-        param.maxLengthYn = this.maxLengthYn
-        if (this.maxLengthYn === true) param.maxLength = this.maxLength
-        param.onlyNumYn = this.onlyNumYn
+      param.itemNameMtext = this.InfoQueTitle
+      param.memberTypeKey = this.propData.selectedMemberType.memberTypeKey
+      param.itemType = this.selectOption
+      if (this.selectOption === 'T') {
+        param.maxLen = this.maxLengthYn
+        if (this.maxLengthYn === true) param.maxLen = this.maxLength
+        param.numberYn = this.onlyNumYn
       } else {
-        param.answerList = this.answerList
+        // eslint-disable-next-line no-unused-vars
+        var selectListStr = ''
+        for (var i = 0; i < this.answerList.length; i++) {
+          if (i === 0) {
+            selectListStr += (this.answerList[i])
+          }
+          selectListStr += ('$#$' + this.answerList[i])
+        }
+        param.optListStr = this.selectListStr
       }
       console.log(param)
+      var saveItem = await this.$commonAxiosFunction({
+        url: 'service/tp.saveMemberTypeItem',
+        param: { member: param }
+      })
+      console.log(saveItem)
+      // eslint-disable-next-line no-debugger
+      debugger
       // this.$emit('saveMemInfoQuestion', param)
 
       this.$emit('closeXPop')

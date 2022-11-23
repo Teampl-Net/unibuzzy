@@ -403,7 +403,7 @@ export const commonMethods = {
     }
     if (data.followYn) {
       followerText = '구독자'
-      if (data.memberInfoList.length > 0 && data.memberInfoList[0].memberTypeKey) {
+      if (data.memberInfoList && data.memberInfoList.length > 0 && data.memberInfoList[0].memberTypeKey) {
         followerText = this.changeText(data.memberNameMtext)
         followerText += '( '
         for (var i = 0; i < data.memberInfoList.length; i++) {
@@ -412,7 +412,7 @@ export const commonMethods = {
           }
           // eslint-disable-next-line no-debugger
           debugger
-          followerText += data.memberInfoList[i].itemVal + data.memberInfoList[i].memberTypeItemNameMtext
+          followerText += data.memberInfoList[i].itemVal + this.changeText(data.memberInfoList[i].memberTypeItemNameMtext)
         }
         followerText += ' )'
       } else {

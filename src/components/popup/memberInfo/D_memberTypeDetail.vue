@@ -10,7 +10,7 @@
         <gToggle class="fl mleft-1" style="scale: 1.2;" id="certiYn" :toggleId='this.$changeText(mMemberTypeDetail.nameMtext)' @changeToggle='mMemberTypeDetail.certiYn = !mMemberTypeDetail.certiYn' :isChecked="mMemberTypeDetail.certiYn" />
         <p class="fl w-100P font14 commonColor textLeft">(성명, 전화번호)</p>
         <!-- propMemberTypeDetail -->
-        <mTypeQueList :propMemberTypeObj="mMemberTypeDetail" @addQuestion="addQuestion" @editQue="editQue" class="mtop-1" />
+        <mTypeQueList :propMemberTypeObj="mMemberTypeDetail" @addQuestion="this.$emit('addQuestion')" @editQue="editQue" class="mtop-1" />
       </div>
 
       <div class="w-100P" style="position: absolute; left:0; bottom:0; min-height:50px; display: flex; align-items: center; justify-content: center; border-top: 1px solid #ccc;">
@@ -36,6 +36,15 @@ export default {
   },
   created () {
     this.mMemberTypeDetail = this.propMemberTypeDetail
+  },
+  updated () {
+    console.log(this.propMemberTypeDetail)
+    this.mMemberTypeDetail = this.propMemberTypeDetail
+  },
+  methods: {
+    editQue (memberTypeItemObj) {
+      this.$emit('editQue', memberTypeItemObj)
+    }
   }
 }
 </script>
