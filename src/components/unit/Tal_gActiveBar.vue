@@ -9,8 +9,8 @@
       </div>
 
       <div class="fl w-100P" style="min-height: 6px;" v-if="searchYn">
-        <div class="fl mtop-03" style="" v-if="false">
-          <cSearchBox class="mright-03" :propSearchYn='true' :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" />
+        <div class="fl mtop-03" v-if="propSearchList">
+          <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
         </div>
         <div class="fr" style="height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
           <img class="fl cursorP img-w20" style="line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
@@ -20,6 +20,7 @@
           <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
       </div>
     </div>
+
     <div v-else style="float: left; width: 100%;margin-top: 0;" :style="this.modeType === 'write' ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
       <div ref="tabbar" class="pagePaddingWrap" style="padding-top: 10px; background: #FFF; border-bottom: 0.5px solid #6768A78A; height: 40px; float: left; position: relative; width: 100%;" :style="this.modeType === 'write' ? 'background: transparent' : ''" >
         <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;">
@@ -46,6 +47,7 @@ export default {
     searchResult
   },
   props: {
+    propSearchList: {},
     tabList: {},
     activetabProp: {},
     searchYn: { type: Boolean, default: false },
@@ -54,7 +56,6 @@ export default {
   },
   data () {
     return {
-      mSearchList: [{ searchType: '정렬', dispName: '전체' }, { searchType: '산업군', dispName: '전체' }, { searchType: '유형', dispName: '전체' }],
       transition: 'slide-next',
       activetab: 0,
       tabwidth: 3,
@@ -62,27 +63,10 @@ export default {
       selectedTabName: ''
     }
   },
-  computed: {
-    pointer () {
-      if (window.PointerEvent) return true
-      else return false
-    },
-    activebarWidth () {
-      var tabWidth = 100 / this.tabList.length
-      if (this.testYn === true) {
-        return {
-          '--tabwidth': tabWidth + '%',
-          '--transform': 'translateX(' + (this.activetab * 100) + '%' + ')'
-        }
-      } else {
-        return {
-          '--tabwidth': this.tabwidth + 'rem',
-          '--transform': 'translateX(' + (this.activetab * this.tabwidth * 1) + 'rem' + ')'
-        }
-      }
-    }
-  },
   methods: {
+    searchBoxClick (searchData) {
+      this.$emit('searchBoxClick', searchData)
+    },
     tabTrimLength (displayName) {
       if (this.modeType === 'Basic') {
         var text = displayName.replaceAll(' ', '')
@@ -127,6 +111,26 @@ export default {
       this.tabwidth = 3
     }
     // }
+  },
+  computed: {
+    pointer () {
+      if (window.PointerEvent) return true
+      else return false
+    },
+    activebarWidth () {
+      var tabWidth = 100 / this.tabList.length
+      if (this.testYn === true) {
+        return {
+          '--tabwidth': tabWidth + '%',
+          '--transform': 'translateX(' + (this.activetab * 100) + '%' + ')'
+        }
+      } else {
+        return {
+          '--tabwidth': this.tabwidth + 'rem',
+          '--transform': 'translateX(' + (this.activetab * this.tabwidth * 1) + 'rem' + ')'
+        }
+      }
+    }
   }
 }
 </script>

@@ -1,10 +1,10 @@
 <template>
-  <div class="fl commonColorBorder" style="border-radius: 7px; padding:4px 5px;">
-    <template v-if="propSearchYn === true">
+  <div class="fl commonColorBorder" style="border-radius: 7px; padding:3px 7px;" @click="searchFunc()">
+    <template v-if="propChanSearchYn === true">
       <p class="fl font14 lightGray">{{propSearchBox.searchType}}</p>
       <p class="fl font14 commonColor mleft-03">{{propSearchBox.dispName}}</p>
     </template>
-    <template v-if="propSearchYn === false">
+    <template v-if="propChanSearchYn === false">
       <p class="fl font14 commonColor">{{propSearchBox.dispName}}</p>
     </template>
   </div>
@@ -14,11 +14,16 @@
 export default {
   props: {
     propSearchBox: {},
-    propSearchYn: { type: Boolean, default: false }
+    propChanSearchYn: { type: Boolean, default: false }
   },
   data () {
     return {
 
+    }
+  },
+  methods: {
+    searchFunc () {
+      this.$emit('searchBoxClick', this.propSearchBox)
     }
   }
 }

@@ -241,9 +241,6 @@ export default {
         this.mErrorPopYn = true
         return
       }
-      if (this.mPageType === '생성') {
-        this.mInputChannelMemo = this.mSelectTypeText + '의 산업군을 가진 채널입니다.'
-      }
       this.mCreCheckPopYn = true
     },
     async setParam () {

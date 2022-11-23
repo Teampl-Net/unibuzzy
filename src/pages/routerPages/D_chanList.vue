@@ -3,7 +3,7 @@
   <loadingCompo v-if="mLoadingYn === true"/>
   <!-- <div class="chanListHeaderBase " > -->
   <div class="chanListHeader " v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
-    <gActiveBar :testYn='true' :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.mChanFindPopShowYn = true" :resultSearchKeyList="this.mResultSearchKeyList" ref="activeBar" :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab"></gActiveBar>
+    <gActiveBar :testYn='true' :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.mChanFindPopShowYn = true" :resultSearchKeyList="this.mResultSearchKeyList" ref="activeBar" :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab" :propSearchList='mSearchList' @searchBoxClick='searchBoxClick'></gActiveBar>
   </div>
   <!-- </div> -->
   <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' />
@@ -13,13 +13,13 @@
       <channelCard class="moveBox chanRow" :chanElement="chanEle" @openPop="openPop" @scrollMove="scrollMove" />
       <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="loadMore" class="fl wich" />
     </template>
-    <!-- <gChannelList v-show="mListShowYn" ref="gChannelListCompo" @moreList="loadMore"  class="moveBox" :chanList="this.GE_DISP_TEAM_LIST"  @goDetail="goDetail" id='chanlist' @scrollMove="scrollMove"/> -->
   </div>
   <img src="../../assets/images/button/Icon_CreChanBtn.png" @click="clickCreateChannel" alt="채널 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
   <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 7rem; right: calc(10% + 7px);" @click="refreshAll">
     <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
   </div>
 </div>
+<bottomSheets v-if="mBottomSheetOpenYn" :propSelectSearchObj='mSelectSearchObj' @closePop='mBottomSheetOpenYn = false' @bottSheetEmit='bottSheetEmit' />
 </template>
 
 <script>
@@ -27,49 +27,53 @@ import channelCard from '../../components/list/D_channelCard.vue'
 import findChannelList from '../../components/popup/common/Tal_findChannelList.vue'
 import loadingCompo from '../../components/layout/Tal_loading.vue'
 
+import bottomSheets from '../../components/pageComponents/main/unit/D_commonBottomSheets.vue'
+
 export default {
   name: 'user',
   components: {
+    bottomSheets,
     channelCard,
     findChannelList,
     loadingCompo
+  },
+  data () {
+    return {
+      mSearchList: [{ searchType: '정렬', dispName: '전체' }, { searchType: '산업군', dispName: '전체' }, { searchType: '유형', dispName: '전체' }],
+      mSelectSearchObj: {},
+      mBottomSheetOpenYn: false,
+      mChannelList: [],
+      mPaddingTop: 50,
+      mChanListScrollBox: null,
+      mScrollPosition: 0,
+      mScrollDirection: null,
+      mFirstContOffsetY: null,
+      mScrolledYn: false,
+      mHeaderTop: 0,
+      mOffsetInt: 0,
+      mEndListYn: false,
+      mViewTab: 'all',
+      mActiveTabList: [{ display: '전체', name: 'all' }, { display: '구독중', name: 'user' }, { display: '관리채널', name: 'mychannel' }],
+      mChanFindPopShowYn: false,
+      mResultSearchKeyList: '',
+      myChanListPopYn: false,
+      mScrollCheckSec: 0,
+      mListShowYn: true,
+      mCurrentTabName: '전체',
+      mEmptyYn: true,
+      mLoadingYn: false,
+      mAxiosQueue: []
+    }
+  },
+  props: {
+    params: {},
+    popYn: Boolean,
+    propData: {}
   },
   updated () {
     this.mChanListScrollBox = document.getElementById('chanListWrap')
     if (this.mChanFindPopShowYn) {
       this.findPaddingTopChan()
-    }
-  },
-  computed: {
-    calcPaddingTop () {
-      return {
-        '--paddingTopLength': this.mPaddingTop + 'px'
-      }
-    },
-    GE_NEW_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_NEW_CHAN_LIST']
-    },
-    GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
-    },
-    GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
-    },
-    GE_DISP_TEAM_LIST () {
-      var index = null
-      var teamList = this.GE_MAIN_CHAN_LIST
-      for (var i = 0; i < this.mChannelList.length; i++) {
-        index = teamList.findIndex((item) => item.teamKey === this.mChannelList[i].teamKey)
-        if (index !== -1) {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.mChannelList[i] = teamList[index]
-        }
-      }
-      var returnData = this.mChannelList
-      return returnData
-    },
-    historyStack () {
-      return this.$store.state.historyStack
     }
   },
   mounted () {
@@ -120,6 +124,25 @@ export default {
     this.mLoadingYn = false
   },
   methods: {
+    bottSheetEmit (pramData) {
+      var targetType = pramData.targetType
+      var dispName = pramData.dispName
+      var idx
+      if (targetType === 'changeOrderBy') {
+        idx = this.mSearchList.findIndex(item => item.searchType === '정렬')
+      } else if (targetType === 'changeBusiness') {
+        idx = this.mSearchList.findIndex(item => item.searchType === '산업군')
+      } else if (targetType === 'changeAdmin') {
+        idx = this.mSearchList.findIndex(item => item.searchType === '유형')
+      }
+      if (idx !== -1) this.mSearchList[idx].dispName = dispName
+      this.mBottomSheetOpenYn = false
+    },
+    searchBoxClick (searchData) {
+      this.mSelectSearchObj = searchData
+      this.mBottomSheetOpenYn = true
+      // alert(JSON.stringify(searchData))
+    },
     replaceArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex(({ teamKey }) => teamKey === current.teamKey) === -1) {
@@ -242,8 +265,6 @@ export default {
           ...resultList.content
         ]
         this.mChannelList = newArr
-      } else {
-        this.$refs.gChannelListCompo.loadingRefHide()
       }
     },
     clickCreateChannel () {
@@ -351,9 +372,6 @@ export default {
       var result = await this.$getTeamList(paramMap, noneLoadingYn)
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getChannelList')
       this.mAxiosQueue.splice(queueIndex, 1)
-      if (result.empty) {
-        this.$refs.gChannelListCompo.loadingRefHide()
-      }
       var resultList = result.data
       this.endListSetFunc(resultList)
       return resultList
@@ -361,6 +379,7 @@ export default {
     async requestSearchList (paramMap) {
       this.mResultSearchKeyList = await this.castingSearchMap(paramMap)
       var resultList = await this.getChannelList(null, null, true)
+      console.log(resultList)
       var newArr = []
       for (var i = 0; i < resultList.content.length; i++) {
         if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
@@ -398,6 +417,7 @@ export default {
       }
       this.mOffsetInt = 0
       var resultList = await this.getChannelList(null, null, true)
+      console.log(resultList)
       var newArr = []
       for (var i = 0; i < resultList.content.length; i++) {
         if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
@@ -416,35 +436,37 @@ export default {
       }
     }
   },
-  data () {
-    return {
-      mChannelList: [],
-      mPaddingTop: 50,
-      mChanListScrollBox: null,
-      mScrollPosition: 0,
-      mScrollDirection: null,
-      mFirstContOffsetY: null,
-      mScrolledYn: false,
-      mHeaderTop: 0,
-      mOffsetInt: 0,
-      mEndListYn: false,
-      mViewTab: 'all',
-      mActiveTabList: [{ display: '전체', name: 'all' }, { display: '구독중', name: 'user' }, { display: '관리채널', name: 'mychannel' }],
-      mChanFindPopShowYn: false,
-      mResultSearchKeyList: '',
-      myChanListPopYn: false,
-      mScrollCheckSec: 0,
-      mListShowYn: true,
-      mCurrentTabName: '구독중',
-      mEmptyYn: true,
-      mLoadingYn: false,
-      mAxiosQueue: []
+  computed: {
+    calcPaddingTop () {
+      return {
+        '--paddingTopLength': this.mPaddingTop + 'px'
+      }
+    },
+    GE_NEW_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_NEW_CHAN_LIST']
+    },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_DISP_TEAM_LIST () {
+      var index = null
+      var teamList = this.GE_MAIN_CHAN_LIST
+      for (var i = 0; i < this.mChannelList.length; i++) {
+        index = teamList.findIndex((item) => item.teamKey === this.mChannelList[i].teamKey)
+        if (index !== -1) {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          this.mChannelList[i] = teamList[index]
+        }
+      }
+      var returnData = this.mChannelList
+      return returnData
+    },
+    historyStack () {
+      return this.$store.state.historyStack
     }
-  },
-  props: {
-    params: {},
-    popYn: Boolean,
-    propData: {}
   }
 }
 </script>
