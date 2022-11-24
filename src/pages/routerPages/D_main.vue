@@ -53,7 +53,7 @@
             </div>
             <div v-if="this.mMainChanList"  style="width: 100%; height: 30px; float: left;">
                 <img src="../../assets/images/main/main_followIcon.png" style="float: left; margin-right: 8px;" class="img-w27" alt="">
-                <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">구독중인 채널</p>
+                <p @click="goChannelPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">구독중인 채널</p>
             </div>
             <div v-if="this.mMainChanList" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%; display:flex; gap: 10px;">
@@ -65,7 +65,7 @@
         <div style="margin-top: 15px; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
             <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; border-bottom: 2px; solid #F4F7FF!important">
                 <img src="../../assets/images/main/main_contentsBellIcon.png" style="float: left; margin-right: 8px;" class="img-w22" alt="">
-                <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글</p>
+                <p @click="goContentListPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글</p>
             </div>
             <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px;" >
                 <mainContsList :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
@@ -151,6 +151,12 @@ export default {
     this.mLoadingYn = false
   },
   methods: {
+    goChannelPop () {
+
+    },
+    goContentListPop () {
+
+    },
     async getMainBoard () {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')

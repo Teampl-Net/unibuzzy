@@ -61,8 +61,10 @@ export default {
       mSelectedChan: 0,
       mSeleteWriteTypePopShowYn: false,
 
-      // 첫 진입과 삭제 후 리스트를 다시 못 그려주기에 추가
-      mReloadKey: 0
+      // 첫 진입과 삭제 후 리스트를 다시 못 그려주기에 watch 추가
+      mReloadKey: 0,
+      mCreateYn: true
+      //
     }
   },
   props: {
@@ -322,11 +324,19 @@ export default {
       console.log('GE_DISP_CONTS_LIST')
       console.log(this.mContsList)
     },
-    mContsList () {
-      console.log('mContsList')
-      console.log(this.mContsList)
-      // 메인화면으로 처음 진입했을 때 리스트를 받아오고 다시 못 그려주기에 추가
-      this.mReloadKey += 1
+    mContsList: {
+      handler (value, old) {
+        if (value) {
+          if (this.mCreateYn === true) {
+            // eslint-disable-next-line
+            this.mCreateYn = false
+            console.log('mContsList')
+            console.log(this.mContsList)
+            // 메인화면으로 처음 진입했을 때 리스트를 받아오고 다시 못 그려주기에 추가
+            this.mReloadKey += 1
+          }
+        }
+      }
     },
     GE_NEW_CONT_LIST: {
       handler (value, old) {
