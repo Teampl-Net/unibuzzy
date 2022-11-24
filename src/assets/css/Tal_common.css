@@ -35,6 +35,7 @@ pre {
   font-family: KoPubDotumMedium !important;
   /* font-family: NotoSans !important; */
   font-size: 14px !important;
+  text-align: left !important;
 }
 pre span{
   white-space: pre-wrap; word-break: break-all; overflow: auto;
@@ -42,6 +43,8 @@ pre span{
   /* font-family: NotoSans !important; */
   font-size: 14px !important;
 }
+
+
 
 /* .cursorDragAll {
   -webkit-user-select: all !important;
@@ -184,7 +187,6 @@ input, select {
     border: 2px solid transparent;
 
 }
-
 .okScrollBar::-webkit-scrollbar-track {
     background-color: rgb(255, 255, 255);
     border-radius: 5px;
@@ -1014,5 +1016,16 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
 }
 
 
-.mainConts .formText{ padding: 0 20px; text-align: left;}
+.mainConts .formText{ padding: 0 20px !important; text-align: left !important;}
 .mainConts img {padding: 0!important}
+
+/* .mainConts .cursorDragText { padding: 0 20px !important; text-align: left !important; } */
+
+
+/* .mainConts img {
+  padding: 0 !important;
+}
+.mainConts {
+  padding: 0 20px !important;
+  text-align: left !important;
+} */

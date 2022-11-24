@@ -26,7 +26,7 @@
         </template>
 
         <!-- 산업군 -->
-        <div v-if="mBusinessItemList.length > 0 && false" class="fl w-100P" style="min-height: 50px; float: left; display: flex; flex-wrap: wrap; gap: 10px;">
+        <div v-if="mBusinessItemList.length > 0" class="fl w-100P" style="min-height: 50px; float: left; display: flex; flex-wrap: wrap; gap: 10px;">
           <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">산업군별 찾기</p>
           <div v-for="(business, index) in mBusinessItemList" :key="index" class="fl " style="padding:5px; border-radius:8px; border: 1px solid #7678E2; min-width:32px;">
             <p class="font12 CLDeepGrayColor">{{$changeText(business.itemNameMtext)}}</p>
@@ -54,9 +54,9 @@
     </template>
 
     <!-- 검색 키워드가 있다면 -->
-    <template v-else>
-      <div class="w-100P h-100P" style="position: absolute; overflow:auto; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10">
-        <div class="fl w-100P" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: space-around; position: fixed; z-index: 2; background: white;">
+    <template v-if="mSearchModeYn === true">
+      <div v-if="mSearchModeYn === true" class="w-100P h-100P" style="position: absolute; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10; overflow:hidden;">
+        <div class="fl w-100P" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: space-around; position: fixed; z-index: 3; background: white;">
           <img @click="searchClear()" src="../../assets/images/common/icon_back.png" class="fl img-w12" alt="">
           <div class="fl w-100P" style="width:calc(100% - 50px); position: relative;">
             <img @click="findData()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
@@ -64,40 +64,44 @@
             <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
           </div>
         </div>
-        <div class="w-100P fl pSide-1" style="margin-top: 60px;" >
+        <!-- 공통 검색 영역 -->
+        <div class="w-100P fl pSide-1 chanListHeader " style="margin-top: 60px;" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
           <gActiveBar :testYn='true' ref="activeBar" :tabList="this.mActiveSearchTabList" class="fl" @changeTab="changeSearchTab" />
           <div v-if="mActiveSearch === 'CONT'" class="fl w-100P mtop-05" style="display: flex;">
             <p v-for="(tab, index) in mSearchContentTabList" :key="index" @click="changeContentsTab(tab.name)" class="fl font16 " :class=" this.mSearchContentTab === tab.name ? 'commonLightColorBorder2 fontBold commonLightColor' : 'commonGrayBorderColor lightGray'" style="flex:1; padding: 10px 0;"> {{tab.display}}</p>
           </div>
         </div>
-        <!-- 채널 검색 -->
-        <div v-if="mActiveSearch === 'CHAN'" class="w-100P fl" style="overflow: auto; height: calc(100% - 90px);">
-          <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
-            <channelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
-            <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="recommendLoadMore" class="fl wich" />
-          </template>
-          <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true " class="w-100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
-            <gListEmpty title='검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' />
+
+        <div class="fl wh-100P chanListWrap"  id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style=" overflow:auto; padding-top: calc(25px + var(--paddingTopLength)); " >
+          <!-- 채널 검색 -->
+          <div v-if="mActiveSearch === 'CHAN'" class="w-100P fl" style="overflow: auto; ">
+            <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
+              <channelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
+              <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="recommendLoadMore" class="fl wich" />
+            </template>
+            <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true " class="w-100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
+              <gListEmpty title='검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' />
+            </div>
+          </div>
+
+          <!-- 컨텐츠 검색 -->
+          <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" style="margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 40px;">
+            <div class="w-100P fl chanRow" style="height:1px;" />
+            <template v-if="this.mSearchContentTab === 'ALL'" >
+              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index" />
+              <gListEmpty v-if="this.GE_DISP_ALL_LIST.length === 0 && mEmptyYn === true" title='콘텐츠 전체 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+            </template>
+            <template v-if="this.mSearchContentTab === 'ALIM'" >
+              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index" />
+              <gListEmpty v-if="this.GE_DISP_ALIM_LIST.length === 0 && mEmptyYn === true" title='알림 콘텐츠 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+            </template>
+            <template v-if="this.mSearchContentTab === 'BOAR'" >
+              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index" />
+              <gListEmpty v-if="this.GE_DISP_BOAR_LIST.length === 0 && mEmptyYn === true" title='게시판 콘텐츠 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+            </template>
+            <myObserver @triggerIntersected="contentsLoadMore" id="observer" class="fl w-100P" style=""></myObserver>
           </div>
         </div>
-
-        <!-- 컨텐츠 검색 -->
-        <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" :style="calcPaddingTop"  id="chanListWrap" class="chanListWrap " ref="chanListWrap" style="margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 40px; padding-top: calc(25px + var(--paddingTopLength));">
-          <template v-if="this.mSearchContentTab === 'ALL'" >
-            <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index" />
-            <gListEmpty v-if="this.GE_DISP_ALL_LIST.length === 0 && mEmptyYn === true" title='콘텐츠 전체 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
-          </template>
-          <template v-if="this.mSearchContentTab === 'ALIM'" >
-            <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index" />
-            <gListEmpty v-if="this.GE_DISP_ALIM_LIST.length === 0 && mEmptyYn === true" title='알림 콘텐츠 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
-          </template>
-          <template v-if="this.mSearchContentTab === 'BOAR'" >
-            <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index" />
-            <gListEmpty v-if="this.GE_DISP_BOAR_LIST.length === 0 && mEmptyYn === true" title='게시판 콘텐츠 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
-          </template>
-          <myObserver @triggerIntersected="contentsLoadMore" id="observer" class="fl w-100P" style=""></myObserver>
-        </div>
-
       </div>
     </template>
 </template>
@@ -106,7 +110,6 @@
 export default {
   data () {
     return {
-      mPaddingTop: 50,
       mSearchModeYn: false,
       mBusinessItemList: [],
       mInputText: '',
@@ -143,15 +146,20 @@ export default {
       mScrollDirection: null,
       mFirstContOffsetY: null,
       mScrolledYn: false,
-      mHeaderTop: 0
+      mHeaderTop: 0,
+      mScrollCheckSec: 0
     }
   },
   props: {
 
   },
   mounted () {
-    // this.mChanListScrollBox = document.getElementById('chanListWrap')
-    // this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
+  },
+  updated () {
+    if (this.mSearchModeYn === true) {
+      this.mChanListScrollBox = window.document.getElementById('chanListWrap')
+      this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
+    }
   },
   created () {
     // gMainHearder에서 changePageHeader === '검색' ? 'white' 를 하고 있음
@@ -159,11 +167,14 @@ export default {
     this.readyFunc()
   },
   methods: {
+    getAbsoluteTop (element) {
+      return window.pageYOffset + element.getBoundingClientRect().top
+    },
     handleScroll () {
       var currentTime = new Date()
       var time = currentTime - this.mScrollCheckSec
       var element = document.getElementsByClassName('chanRow')[0]
-      var parentElement = element.parentElement
+      // var parentElement = element.parentElement
       // this.mFirstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
       this.mFirstContOffsetY = this.getAbsoluteTop(element)
       if (this.mFirstContOffsetY > 0) {
@@ -171,8 +182,8 @@ export default {
         this.mScrolledYn = false
       }
       if (time / 1000 > 1 && this.$diffInt(this.mChanListScrollBox.scrollTop, this.mScrollPosition) > 150) {
-        var test = document.getElementById('chanListPageHeader')
-        this.mHeaderTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
+        // var test = document.getElementById('chanListPageHeader')
+        // this.mHeaderTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
         this.mScrollCheckSec = currentTime
 
         if (this.mFirstContOffsetY < 0) {
@@ -439,7 +450,10 @@ export default {
     },
     async findData () {
       this.mInputFocusYn = false
-      if (this.mSearchModeYn === false) this.mTempRecommendList = this.mChannelList
+      if (this.mSearchModeYn === false) {
+        this.mTempRecommendList = this.mChannelList
+        this.searchMode()
+      }
       this.mEmptyYn = false
       this.mOffsetInt = 0
       var find = this.mSearchHistoryList.findIndex(item => item === this.mInputText)
@@ -447,7 +461,7 @@ export default {
       this.mSearchHistoryList.unshift(this.mInputText)
       localStorage.setItem('searchKeyWordHistoryList', JSON.stringify(this.mSearchHistoryList))
       this.mFindText = this.mInputText
-      this.mSearchModeYn = true
+
       if (this.mSearchModeYn === true && this.mActiveSearch === 'CONT') {
         this.changeContentsTab('ALL')
       } else {
@@ -610,12 +624,50 @@ export default {
         var resultList = result
         return resultList
       }
+    },
+    closeXPop () {
+      try {
+        var history = this.$store.getters['D_HISTORY/hStack']
+        var removePage = history[history.length - 1]
+        history = history.filter((element, index) => index < history.length - 1)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', history)
+        this.$store.dispatch('D_HISTORY/AC_REMOVE_POP_HISTORY_STACK')
+      } catch (e) {
+        console.log(e)
+      } finally {
+        this.mSearchModeYn = false
+      }
+    },
+    searchMode () {
+      this.mSearchModeYn = true
+      try {
+        this.$store.dispatch('D_HISTORY/AC_ADD_POP_HISTORY_STACK', 'searchPop')
+        this.$store.dispatch('D_HISTORY/AC_ADD_ALL_HISTORY_STACK', 'searchPop')
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      if (removePage === 'searchPop') {
+        this.closeXPop()
+      }
     }
   },
   computed: {
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hStack']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
     calcPaddingTop () {
       return {
-        '--paddingTopLength': this.mPaddingTop + 'px'
+        '--paddingTopLength': (this.mActiveSearch === 'CHAN' ? 80 : 120) + 'px'
       }
     },
     GE_DISP_ALIM_LIST () {
@@ -822,4 +874,21 @@ export default {
   border: 1px solid #cccccc;
 }
 .searchPageIconWich{ position: absolute; top:0.6rem; left: 8px;}
+.chanListHeader {
+  width: 100%;
+  will-change: transform;
+  transition: transform 0.3s linear;
+  padding: 0 1.5rem;
+  background-color: #FFF;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+}
+.chanListHeader--pinned {
+    transform: translateY(0%);
+}
+.chanListHeader--unpinned {
+    transform: translateY(-100%);
+}
 </style>
