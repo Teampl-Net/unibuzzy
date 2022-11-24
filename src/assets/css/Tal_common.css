@@ -190,7 +190,28 @@ input, select {
     border-radius: 5px;
     box-shadow: inset 0px 0px 5px rgba((255, 255, 255, 0.719)11, 211, 211);
 }
+.thinScrollBar::-webkit-scrollbar {
+  cursor: pointer;
+  display: block;
+  position: absolute;
+  right: 0;
 
+  width: 4px;
+  height: 10px;
+}
+.thinScrollBar::-webkit-scrollbar-thumb {
+  height: 30%; /* 스크롤바의 길이 */
+  background: #6768A750; /* 스크롤바의 색상 */
+
+  border-radius: 5px;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+.thinScrollBar::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.479);
+  /* border-radius: 5px; */
+  /* box-shadow: inset 0px 0px 5px rgba((255, 255, 255, 0.719)11, 211, 211); */
+}
 /* @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css); */
 @font-face {font-family: 'NotoSans';font-style: normal;font-weight: bold;
   src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff2)
@@ -429,6 +450,8 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .CLDeepGrayColor {color: #636363;}
 .commonBlue{color: #3b3dce!important;}
 .commonLightColor {color: #7678E2!important;}
+.commonLightColorBorder {border: 1px solid #7678E2!important;}
+.commonLightColorBorder2 {border: 2px solid #7678E2!important;}
 .commonColor{color:#6768A7 !important;}
 .commonColor{color:#5F61BD !important;}
 

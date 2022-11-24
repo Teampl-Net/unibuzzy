@@ -1,6 +1,6 @@
 <template>
 <!--  -->
-  <template v-if="this.mFindText === ''">
+  <template v-if="mSearchModeYn === false">
     <div class="w-100P h-100P" style=" overflow:auto; margin-bottom: 1rem;">
       <div class="searchBodyTop pSide-1" style="background: white">
         <div class="fl w-100P" style="height: 30px; float: left;">
@@ -15,14 +15,14 @@
         </div>
 
         <!-- input 박스에 포커스가 되면 최근 검색이 등장 -->
-        <template v-if="mInputFocusYn === true">
-          <div class="fl w-100P pSide-05" style="max-height:200px;">
+        <template v-if="mInputFocusYn === true && mSearchHistoryList.length > 0">
+          <div class="fl w-100P pSide-05 thinScrollBar" style="max-height:200px; overflow: auto">
             <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style=" padding: 10px 0; border-bottom:1px solid #CCCCCC90; ">
               <p class="fl font14 grayBlack textLeft" style="width: calc(100% - 20px)" @click="mInputText = data, findData()">{{data}}</p>
               <img src="../../assets/images/common/grayXIcon.svg" @click="searchHistoryDelete(index)" class="fr img-w10 mtop-03" alt="">
             </div>
-            <p v-if="mSearchHistoryList.length > 0" class="fr font12 lightGray mtop-05" @click="searchHistoryClear()">전체삭제</p>
           </div>
+          <p v-if="mSearchHistoryList.length > 0" class="fr font12 lightGray mtop-05 pSide-05" @click="searchHistoryClear()">전체삭제</p>
         </template>
 
         <!-- 산업군 -->
@@ -45,7 +45,7 @@
         </div>
         <div class="w-100P fl" style="overflow: auto; height: calc(100% - 90px);">
           <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
-            <channelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
+            <channelCard class=" moveBox" :chanElement="chanEle" @openPop="openPop" />
             <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="recommendLoadMore" class="fl wich" />
           </template>
         </div>
@@ -56,16 +56,47 @@
     <!-- 검색 키워드가 있다면 -->
     <template v-else>
       <div class="w-100P h-100P" style="position: absolute; overflow:auto; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10">
-        <div class="fl w-100P mtop-05" style="padding: 10px; display: flex; align-items: center; justify-content: space-around;">
+        <div class="fl w-100P" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: space-around; position: fixed; z-index: 2; background: white;">
           <img @click="searchClear()" src="../../assets/images/common/icon_back.png" class="fl img-w12" alt="">
           <div class="fl w-100P" style="width:calc(100% - 50px); position: relative;">
             <img @click="findData()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
-            <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="findData()" v-model="mInputText" placeholder="채널명을 검색해주세요" />
+            <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" ref="channelSearchKey" @keyup.enter="findData()" v-model="mInputText" placeholder="채널명을 검색해주세요" />
             <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
           </div>
         </div>
+        <div class="w-100P fl pSide-1" style="margin-top: 60px;" >
+          <gActiveBar :testYn='true' ref="activeBar" :tabList="this.mActiveSearchTabList" class="fl" @changeTab="changeSearchTab" />
+          <div v-if="mActiveSearch === 'CONT'" class="fl w-100P mtop-05" style="display: flex;">
+            <p v-for="(tab, index) in mSearchContentTabList" :key="index" @click="changeContentsTab(tab.name)" class="fl font16 " :class=" this.mSearchContentTab === tab.name ? 'commonLightColorBorder2 fontBold commonLightColor' : 'commonGrayBorderColor lightGray'" style="flex:1; padding: 10px 0;"> {{tab.display}}</p>
+          </div>
+        </div>
+        <!-- 채널 검색 -->
+        <div v-if="mActiveSearch === 'CHAN'" class="w-100P fl" style="overflow: auto; height: calc(100% - 90px);">
+          <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
+            <channelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
+            <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="recommendLoadMore" class="fl wich" />
+          </template>
+          <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true " class="w-100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
+            <gListEmpty title='검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' />
+          </div>
+        </div>
 
-        <gActiveBar :testYn='true' ref="activeBar" :tabList="this.mActiveSearchTabList" class="fl" @changeTab="changeSearchTab" />
+        <!-- 컨텐츠 검색 -->
+        <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" :style="calcPaddingTop"  id="chanListWrap" class="chanListWrap " ref="chanListWrap" style="margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 40px; padding-top: calc(25px + var(--paddingTopLength));">
+          <template v-if="this.mSearchContentTab === 'ALL'" >
+            <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index" />
+            <gListEmpty v-if="this.GE_DISP_ALL_LIST.length === 0 && mEmptyYn === true" title='콘텐츠 전체 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+          </template>
+          <template v-if="this.mSearchContentTab === 'ALIM'" >
+            <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index" />
+            <gListEmpty v-if="this.GE_DISP_ALIM_LIST.length === 0 && mEmptyYn === true" title='알림 콘텐츠 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+          </template>
+          <template v-if="this.mSearchContentTab === 'BOAR'" >
+            <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index" />
+            <gListEmpty v-if="this.GE_DISP_BOAR_LIST.length === 0 && mEmptyYn === true" title='게시판 콘텐츠 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+          </template>
+          <myObserver @triggerIntersected="contentsLoadMore" id="observer" class="fl w-100P" style=""></myObserver>
+        </div>
 
       </div>
     </template>
@@ -75,6 +106,8 @@
 export default {
   data () {
     return {
+      mPaddingTop: 50,
+      mSearchModeYn: false,
       mBusinessItemList: [],
       mInputText: '',
       mFindText: '',
@@ -87,11 +120,38 @@ export default {
       mAxiosQueue: [],
       mInputFocusYn: false,
       mSearchHistoryList: [],
-      mActiveSearchTabList: [{ display: '채널', name: 'CHAN' }, { display: '콘텐츠', name: 'CONT' }]
+      mActiveSearchTabList: [{ display: '채널', name: 'CHAN' }, { display: '콘텐츠', name: 'CONT' }],
+      mActiveSearch: 'CHAN',
+
+      mTempRecommendList: [],
+
+      mContentReloadKey: 0,
+      mSearchContentTabList: [{ display: '전체', name: 'ALL' }, { display: '알림', name: 'ALIM' }, { display: '게시글', name: 'BOAR' }],
+      mSearchContentTab: 'ALL',
+      mContentsOffsetInt: 0,
+      mFindKeyList: {},
+
+      mAlimContentsList: [],
+      mBoardContentsList: [],
+      mAllContentsList: [],
+
+      mComputedYn: true,
+      mEmptyYn: false,
+      mCanLoadYn: true,
+      mChanListScrollBox: null,
+      mScrollPosition: 0,
+      mScrollDirection: null,
+      mFirstContOffsetY: null,
+      mScrolledYn: false,
+      mHeaderTop: 0
     }
   },
   props: {
 
+  },
+  mounted () {
+    // this.mChanListScrollBox = document.getElementById('chanListWrap')
+    // this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
   },
   created () {
     // gMainHearder에서 changePageHeader === '검색' ? 'white' 를 하고 있음
@@ -99,18 +159,245 @@ export default {
     this.readyFunc()
   },
   methods: {
+    handleScroll () {
+      var currentTime = new Date()
+      var time = currentTime - this.mScrollCheckSec
+      var element = document.getElementsByClassName('chanRow')[0]
+      var parentElement = element.parentElement
+      // this.mFirstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+      this.mFirstContOffsetY = this.getAbsoluteTop(element)
+      if (this.mFirstContOffsetY > 0) {
+        this.mScrollDirection = 'up'
+        this.mScrolledYn = false
+      }
+      if (time / 1000 > 1 && this.$diffInt(this.mChanListScrollBox.scrollTop, this.mScrollPosition) > 150) {
+        var test = document.getElementById('chanListPageHeader')
+        this.mHeaderTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
+        this.mScrollCheckSec = currentTime
+
+        if (this.mFirstContOffsetY < 0) {
+          if (this.mChanListScrollBox.scrollTop > this.mScrollPosition) {
+            this.mScrollDirection = 'down'
+            this.mScrolledYn = true
+          } else if (this.mChanListScrollBox.scrollTop <= this.mScrollPosition) {
+            this.mScrollDirection = 'up'
+            this.mScrolledYn = false
+          }
+        }
+        console.log(this.mScrollDirection)
+        this.mScrollPosition = this.mChanListScrollBox.scrollTop
+      }
+    },
     inputBlur () {
-      setTimeout(() => {
-        this.mInputFocusYn = false
-      }, 1)
+      // setTimeout(() => {
+      //   this.mInputFocusYn = false
+      // }, 1)
     },
     openPop (openPopParam) {
       this.$emit('openPop', openPopParam)
     },
-    changeSearchTab (name) {
-      // this.
+    async contentsLoadMore () {
+      if (this.mCanLoadYn) {
+        this.mCanLoadYn = false
+        try {
+          var resultList = await this.getPushContentsList(null, null, false)
+          if (resultList === undefined || resultList === '') {
+            return
+          }
+          // 더 불러온 컨텐츠에 D_MEMO_LIST가 없어 넣어주고 있음
+          /* if (resultList.content) {
+            if (resultList.content.length > 0) {
+              for (let i = 0; i < resultList.content.length; i++) {
+                if (resultList.content[i].D_MEMO_LIST === undefined || resultList.content[i].D_MEMO_LIST === null || resultList.content[i].D_MEMO_LIST === '') {
+                  resultList.content[i].D_MEMO_LIST = resultList.content[i].memoList
+                }
+              }
+            }
+          } */
+          var newArr = []
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+
+          if (this.mSearchContentTab === 'ALIM') {
+            newArr = [
+              ...resultList.content,
+              ...this.GE_DISP_ALIM_LIST
+            ]
+            this.mAlimContentsList = this.replaceContentListArr(newArr)
+          } else if (this.mSearchContentTab === 'BORE') {
+            newArr = [
+              ...resultList.content,
+              ...this.GE_DISP_BOAR_LIST
+            ]
+            this.mBoardContentsList = this.replaceContentListArr(newArr)
+          } else if (this.mSearchContentTab === 'ALL') {
+            newArr = [
+              ...resultList.content,
+              ...this.GE_DISP_ALL_LIST
+            ]
+            this.mAllContentsList = this.replaceContentListArr(newArr)
+          }
+
+          this.$emit('numberOfElements', resultList.totalElements)
+        } catch (e) {
+          console.log(e)
+        } finally {
+          this.mCanLoadYn = true
+        }
+      }
+    },
+    async changeContentsTab (name) {
+      this.mOffsetInt = 0
+      this.mEmptyYn = false
+      this.mSearchContentTab = name
+
+      var resultList = await this.getPushContentsList(null, null, true)
+      var contentList = []
+      if (resultList && resultList.content) {
+        contentList = resultList.content
+      }
+      // if (!resultList || resultList === '') return
+      // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      // this.mAlimContentsList = resultList.content
+      var newArr = []
+      var cont
+      var tempContentDetail
+      var contentDetail
+
+      this.mAlimContentsList = []
+      this.mBoardContentsList = []
+      this.mAllContentsList = []
+
+      if (this.mSearchContentTab === 'ALIM') {
+        newArr = [
+          ...contentList
+        ]
+        this.mAlimContentsList = this.replaceContentListArr(newArr)
+        for (let i = 0; i < this.mAlimContentsList.length; i++) {
+          cont = this.mAlimContentsList[i]
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          if (tempContentDetail) {
+            contentDetail = tempContentDetail[0]
+          } else {
+            contentDetail = null
+          }
+          if (!cont.D_MEMO_LIST) {
+            cont.D_MEMO_LIST = cont.memoList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          } else {
+            // eslint-disable-next-line no-redeclare
+            var test = contentDetail?.D_MEMO_LIST
+            if (!test) {
+              if (!contentDetail) {
+                test = []
+              } else {
+                test = contentDetail.memoList
+              }
+            }
+            // eslint-disable-next-line no-redeclare
+            var newArr = [
+              ...test,
+              ...cont.memoList
+            ]
+            // eslint-disable-next-line no-redeclare
+            var newList = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          }
+        }
+      } else if (this.mSearchContentTab === 'BOAR') {
+        newArr = [
+          ...contentList
+        ]
+        this.mBoardContentsList = this.replaceContentListArr(newArr)
+        for (let i = 0; i < this.mBoardContentsList.length; i++) {
+          cont = this.mBoardContentsList[i]
+          tempContentDetail = []
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          if (tempContentDetail) {
+            contentDetail = tempContentDetail[0]
+          } else {
+            contentDetail = null
+          }
+
+          if (!cont.D_MEMO_LIST) {
+            cont.D_MEMO_LIST = cont.memoList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          } else {
+            // eslint-disable-next-line no-redeclare
+            var test = contentDetail?.D_MEMO_LIST
+            if (!test) {
+              if (!contentDetail) {
+                test = []
+              } else {
+                test = contentDetail.memoList
+              }
+            }
+            // eslint-disable-next-line no-redeclare
+            var newArr = [
+              ...test,
+              ...cont.memoList
+            ]
+            // eslint-disable-next-line no-redeclare
+            var newList = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          }
+        }
+      } else if (this.mSearchContentTab === 'ALL') {
+        newArr = [
+          ...contentList
+        ]
+        this.mAllContentsList = this.replaceContentListArr(newArr)
+        for (let i = 0; i < this.mAllContentsList.length; i++) {
+          cont = this.mAllContentsList[i]
+          tempContentDetail = []
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          if (tempContentDetail) {
+            contentDetail = tempContentDetail[0]
+          } else {
+            contentDetail = null
+          }
+
+          if (!cont.D_MEMO_LIST) {
+            cont.D_MEMO_LIST = cont.memoList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          } else {
+            // eslint-disable-next-line no-redeclare
+            var test = contentDetail?.D_MEMO_LIST
+            if (!test) {
+              if (!contentDetail) {
+                test = []
+              } else {
+                test = contentDetail.memoList
+              }
+            }
+            // eslint-disable-next-line no-redeclare
+            var newArr = [
+              ...test,
+              ...cont.memoList
+            ]
+            // eslint-disable-next-line no-redeclare
+            var newList = this.replaceMemoArr(newArr)
+            cont.D_MEMO_LIST = newList
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          }
+        }
+      }
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
+      this.mContentReloadKey += 1
+      // this.endListSetFunc(resultList)
+      // this.findPopShowYn = false
+      // this.introPushPageTab()
+      // this.scrollMove()
+    },
+    async changeSearchTab (name) {
+      this.mEmptyYn = false
+      this.mActiveSearch = name
+      this.mOffsetInt = 0
+      this.findData()
     },
     async changeRecommendTab (name) {
+      this.mEmptyYn = false
       this.mActiveRecommend = name
       this.mOffsetInt = 0
       this.mChannelList = []
@@ -150,17 +437,47 @@ export default {
       this.mBusinessItemList = cateItemList.data.cateItemList
       // this.mBusinessItemList.unshift({ cateKey: 0, itemNameMtext: 'KO$^$전체' })
     },
-    findData () {
+    async findData () {
+      this.mInputFocusYn = false
+      if (this.mSearchModeYn === false) this.mTempRecommendList = this.mChannelList
+      this.mEmptyYn = false
+      this.mOffsetInt = 0
       var find = this.mSearchHistoryList.findIndex(item => item === this.mInputText)
       if (find !== -1) { this.mSearchHistoryList.splice(find, 1) }
       this.mSearchHistoryList.unshift(this.mInputText)
       localStorage.setItem('searchKeyWordHistoryList', JSON.stringify(this.mSearchHistoryList))
-
       this.mFindText = this.mInputText
+      this.mSearchModeYn = true
+      if (this.mSearchModeYn === true && this.mActiveSearch === 'CONT') {
+        this.changeContentsTab('ALL')
+      } else {
+        this.mChannelList = []
+        var resultList = await this.getChannelList()
+        console.log(' ==== find Content or Channel ==== ')
+        console.log(resultList)
+        if (resultList === undefined || resultList.content === undefined) { this.mEmptyYn = true; return }
+        if (resultList.content.length === 0) this.mEmptyYn = true
+        this.mChannelList = resultList.content
+      }
     },
     searchClear () {
+      this.mSearchModeYn = false
       this.mInputText = ''
       this.mFindText = ''
+      if (this.mTempRecommendList.length > 0) this.mChannelList = this.mTempRecommendList
+    },
+    replaceContentListArr (arr) {
+      if (!arr && arr.length === 0) return []
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
+          data.push(current)
+        }
+        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.contentsKey - a.contentsKey
+        })
+        return data
+      }, [])
+      return uniqueArr
     },
     async recommendLoadMore () {
       if (this.mEndListYn === false) {
@@ -199,30 +516,24 @@ export default {
       //   paramMap.set('userKey', userKey)
       //   paramMap.set('managerYn', true)
       // }
-      // if (this.mResultSearchKeyList.length > 0) {
-      //   paramMap.set('nameMtext', this.mResultSearchKeyList[0].keyword)
-      // }
-      // if (offsetInput !== undefined) {
-      //   paramMap.set('offsetInt', offsetInput)
-      // } else {
-      //   paramMap.set('offsetInt', this.mOffsetInt)
-      // }
-      // if (pageSize) {
-      //   paramMap.set('pageSize', pageSize)
-      // } else {
-      //   paramMap.set('pageSize', 10)
-      // }
+
+      if (this.mFindText !== '') {
+        paramMap.set('nameMtext', this.mFindText)
+      }
+
       var noneLoadingYn = true
       if (mLoadingYn) {
         noneLoadingYn = false
       }
       var result = await this.$getTeamList(paramMap, noneLoadingYn)
+
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getChannelList')
       this.mAxiosQueue.splice(queueIndex, 1)
       var resultList = result.data
       this.endListSetFunc(resultList)
       return resultList
     },
+
     endListSetFunc (resultList) {
       if (resultList === undefined || resultList === null || resultList === '') return
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -232,9 +543,243 @@ export default {
         this.mEndListYn = false
         this.mOffsetInt += 1
       }
+    },
+    async getPushContentsList (pageSize, offsetInput, loadingYn) {
+      if (this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') === -1) {
+        this.mAxiosQueue.push('getPushContentsList')
+        // @point
+        // eslint-disable-next-line no-new-object
+        var param = new Object()
+
+        // param.offsetInt = this.mContentsOffsetInt
+        param.offsetInt = this.mOffsetInt
+        if (this.mFindText) this.mFindKeyList.searchKey = this.mFindText
+
+        if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = 10 }
+
+        if (this.mFindKeyList.searchKey !== undefined && this.mFindKeyList.searchKey !== null && this.mFindKeyList.searchKey !== '') {
+          param.title = this.mFindKeyList.searchKey
+        } if (this.mFindKeyList.creTeamNameMtext !== undefined && this.mFindKeyList.creTeamNameMtext !== null && this.mFindKeyList.creTeamNameMtext !== '') {
+          param.creTeamNameMtext = this.mFindKeyList.creTeamNameMtext
+        } if (this.mFindKeyList.toCreDateStr !== undefined && this.mFindKeyList.toCreDateStr !== null && this.mFindKeyList.toCreDateStr !== '') {
+          param.toCreDateStr = this.mFindKeyList.toCreDateStr
+        } if (this.mFindKeyList.fromCreDateStr !== undefined && this.mFindKeyList.fromCreDateStr !== null && this.mFindKeyList.fromCreDateStr !== '') {
+          param.fromCreDateStr = this.mFindKeyList.fromCreDateStr
+        } if (this.mFindKeyList.workStatCodeKey !== undefined && this.mFindKeyList.workStatCodeKey !== null && this.mFindKeyList.workStatCodeKey !== '') {
+          param.workStatCodeKey = this.mFindKeyList.workStatCodeKey
+        } if (this.mFindKeyList.creUserName !== undefined && this.mFindKeyList.creUserName !== null && this.mFindKeyList.creUserName !== '') {
+          param.creUserName = this.mFindKeyList.creUserName
+        }
+        param.findLogReadYn = null
+        param.findActLikeYn = false
+        param.findActStarYn = false
+        param.DESCYn = true
+
+        // if (this.viewTab === 'N') {
+        // } else if (this.viewTab === 'L') {
+        //   param.findActYn = true
+        //   param.findActLikeYn = true
+        // } else if (this.viewTab === 'S') {
+        //   param.findActYn = true
+        //   param.findActStarYn = true
+        // } else if (this.viewTab === 'M') {
+        //   param.creUserKey = this.GE_USER.userKey
+        // }
+        if (this.mSearchContentTab === 'ALIM') {
+          param.jobkindId = 'ALIM'
+          param.ownUserKey = this.GE_USER.userKey
+        } else if (this.mSearchContentTab === 'BOAR') {
+          param.jobkindId = 'BOAR'
+          // if (this.viewTab === 'N') {
+          param.boardYn = true
+          // } else {
+          //   param.ownUserKey = this.GE_USER.userKey
+          // }
+        } else if (this.mSearchContentTab === 'ALL') {
+          param.allYn = true
+          param.ownUserKey = this.GE_USER.userKey
+        }
+        var nonLoading = true
+        if (loadingYn) {
+          nonLoading = false
+        }
+        var result = await this.$getContentsList(param, nonLoading)
+        await this.endListSetFunc(result)
+        var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList')
+        this.mAxiosQueue.splice(queueIndex, 1)
+        var resultList = result
+        return resultList
+      }
     }
   },
   computed: {
+    calcPaddingTop () {
+      return {
+        '--paddingTopLength': this.mPaddingTop + 'px'
+      }
+    },
+    GE_DISP_ALIM_LIST () {
+      console.log(this.ALIM_LIST_RELOAD_CONT)
+      var idx1, idx2
+      var returnAlimList = []
+      var chanDetail = null
+      var dataList = null
+      var i = 0
+      if (!this.mComputedYn) return
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.mComputedYn = false
+      for (i = 0; i < this.mAlimContentsList.length; i++) {
+        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mAlimContentsList[i].creTeamKey)
+        if (idx1 === -1) {
+          var this_ = this
+          var teamKey = this.mAlimContentsList[i].creTeamKey
+          // eslint-disable-next-line vue/no-async-in-computed-properties
+          this.$addChanList(teamKey).then((res) => {
+            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
+            if (idx1 === -1) {
+              returnAlimList.push(this_.mAlimContentsList[i])
+            } else {
+              chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
+              dataList = chanDetail.ELEMENTS.alimList
+              idx2 = dataList.findIndex((item) => item.contentsKey === this_.mAlimContentsList[i].contentsKey)
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+              if (idx2 !== -1) {
+                this.mAlimContentsList[i] = dataList[idx2]
+                returnAlimList.push(dataList[idx2])
+              } else {
+                returnAlimList.push(this_.mAlimContentsList[i])
+              }
+            }
+          })
+        } else {
+          chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+          dataList = chanDetail.ELEMENTS.alimList
+          idx2 = dataList.findIndex((item) => item.contentsKey === this.mAlimContentsList[i].contentsKey)
+          if (idx2 !== -1) {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.mAlimContentsList[i] = dataList[idx2]
+            returnAlimList.push(dataList[idx2])
+          } else {
+            returnAlimList.push(this.mAlimContentsList[i])
+          }
+        }
+      }
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      if (returnAlimList.length === 0) this.mEmptyYn = true
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.mComputedYn = true
+      return this.replaceContentListArr(returnAlimList)
+    },
+    GE_DISP_BOAR_LIST () {
+      var idx1, idx2
+      var returnBoardList = []
+      var chanDetail = null
+      var dataList = null
+      var i = 0
+      for (i = 0; i < this.mBoardContentsList.length; i++) {
+        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mBoardContentsList[i].creTeamKey)
+        if (idx1 === -1) {
+          var this_ = this
+          var teamKey = this.mBoardContentsList[i].creTeamKey
+          // eslint-disable-next-line vue/no-async-in-computed-properties
+          this.$addChanList(teamKey).then(() => {
+            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
+            if (idx1 === -1) {
+              returnBoardList.push(this_.mBoardContentsList[i])
+            } else {
+              chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
+              dataList = chanDetail.ELEMENTS.boardList
+              idx2 = dataList.findIndex((item) => item.contentsKey === this_.mBoardContentsList[i].contentsKey)
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+              if (idx2 !== -1) {
+                this.mBoardContentsList[i] = dataList[idx2]
+                returnBoardList.push(dataList[idx2])
+              } else {
+                returnBoardList.push(this_.mBoardContentsList[i])
+              }
+            }
+          })
+        } else {
+          chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+          dataList = chanDetail.ELEMENTS.boardList
+          idx2 = dataList.findIndex((item) => item.contentsKey === this.mBoardContentsList[i].contentsKey)
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+          if (idx2 !== -1) {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.mBoardContentsList[i] = dataList[idx2]
+            returnBoardList.push(dataList[idx2])
+          } else {
+            returnBoardList.push(this.mBoardContentsList[i])
+          }
+        }
+      }
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      if (returnBoardList.length === 0) this.mEmptyYn = true
+
+      return this.replaceContentListArr(returnBoardList)
+    },
+    GE_DISP_ALL_LIST () {
+      var idx1, idx2
+      var returnAllList = []
+      var chanDetail = null
+      var dataList = null
+      var i = 0
+      for (i = 0; i < this.mAllContentsList.length; i++) {
+        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mAllContentsList[i].creTeamKey)
+        if (idx1 === -1) {
+          var this_ = this
+          var jobkindId = this.mAllContentsList[i].jobkindId
+          var teamKey = this.mAllContentsList[i].creTeamKey
+          // eslint-disable-next-line vue/no-async-in-computed-properties
+          this.$addChanList(teamKey).then(() => {
+            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
+            if (idx1 === -1) {
+              returnAllList.push(this_.mAllContentsList[i])
+            } else {
+              chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
+              if (jobkindId === 'ALIM') {
+                dataList = chanDetail.ELEMENTS.alimList
+              } else if (jobkindId === 'BOAR') {
+                dataList = chanDetail.ELEMENTS.boardList
+              }
+              idx2 = dataList.findIndex((item) => item.contentsKey === this_.mAllContentsList[i].contentsKey)
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+              if (idx2 !== -1) {
+                this.mAllContentsList[i] = dataList[idx2]
+                returnAllList.push(dataList[idx2])
+              } else {
+                returnAllList.push(this_.mAllContentsList[i])
+              }
+            }
+          })
+        } else {
+          chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+          if (this.mAllContentsList[i].jobkindId === 'ALIM') {
+            dataList = chanDetail.ELEMENTS.alimList
+          } else if (this.mAllContentsList[i].jobkindId === 'BOAR') {
+            dataList = chanDetail.ELEMENTS.boardList
+          }
+          idx2 = dataList.findIndex((item) => item.contentsKey === this.mAllContentsList[i].contentsKey)
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
+          if (idx2 !== -1) {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.mAllContentsList[i] = dataList[idx2]
+            returnAllList.push(dataList[idx2])
+          } else {
+            returnAllList.push(this.mAllContentsList[i])
+          }
+        }
+      }
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      if (returnAllList.length === 0) this.mEmptyYn = true
+
+      return this.replaceContentListArr(returnAllList)
+    },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     },

@@ -18,12 +18,12 @@
             <p :class="this.$route.path === '/chanList'? 'activeFooterMenu' : 'font12'">채널</p>
           </div>
         </div>
-        <!-- <div @click="routePage('/search')" class="footerRouter" style="flex: 1 !important">
+        <div @click="routePage('/search')" class="footerRouter" style="flex: 1 !important">
           <div class="commonColor fontBold text-center font12">
             <img v-if="this.$route.path === '/search'" :src="footerIcon[1].fullIcon" /> <img v-else :src="footerIcon[1].icon"/>
             <p :class="this.$route.path === '/search'? 'activeFooterMenu' : 'font12'">검색</p>
           </div>
-        </div> -->
+        </div>
         <div @click="routePage('/myPage')" class="footerRouter" style="flex: 1 !important">
           <div class="commonColor fontBold text-center font12">
             <img v-if="this.$route.path === '/myPage'" :src="footerIcon[3].fullIcon"/> <img v-else :src="footerIcon[3].icon"/>
