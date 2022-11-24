@@ -21,7 +21,10 @@
     <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
   </div>
 </div>
-<bottomSheets v-if="mBottomSheetOpenYn" :propSelectSearchObj='mSelectSearchObj' @closePop='mBottomSheetOpenYn = false' @bottSheetEmit='bottSheetEmit' />
+<div v-if="mBottomSheetOpenYn"  @click="mBottomSheetOpenYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
+<transition name="showUp" >
+  <bottomSheets v-if="mBottomSheetOpenYn" :propSelectSearchObj='mSelectSearchObj' @closePop='mBottomSheetOpenYn = false' @bottSheetEmit='bottSheetEmit' />
+</transition>
 </template>
 
 <script>
@@ -41,7 +44,8 @@ export default {
   },
   data () {
     return {
-      mSearchList: [{ searchType: '정렬', dispName: '전체' }, { searchType: '산업군', dispName: '전체' }, { searchType: '유형', dispName: '전체' }],
+      // mSearchList: [{ searchType: '정렬', dispName: '전체' }, { searchType: '산업군', dispName: '전체' }, { searchType: '유형', dispName: '전체' }],
+      mSearchList: [{ searchType: '산업군', dispName: '전체' }],
       mSelectSearchObj: {},
       mBottomSheetOpenYn: false,
       mChannelList: [],
@@ -64,7 +68,8 @@ export default {
       mCurrentTabName: '전체',
       mEmptyYn: true,
       mLoadingYn: false,
-      mAxiosQueue: []
+      mAxiosQueue: [],
+      mSearchCateKey: 0
     }
   },
   props: {
@@ -131,6 +136,7 @@ export default {
       this.openPop(openPopParam)
     },
     bottSheetEmit (pramData) {
+      console.log(pramData)
       var targetType = pramData.targetType
       var dispName = pramData.dispName
       var idx
@@ -138,6 +144,8 @@ export default {
         idx = this.mSearchList.findIndex(item => item.searchType === '정렬')
       } else if (targetType === 'changeBusiness') {
         idx = this.mSearchList.findIndex(item => item.searchType === '산업군')
+        this.mSearchCateKey = pramData.cateKey
+        this.changeTab(this.mViewTab)
       } else if (targetType === 'changeAdmin') {
         idx = this.mSearchList.findIndex(item => item.searchType === '유형')
       }
@@ -357,6 +365,9 @@ export default {
       } else if (this.mViewTab === 'mychannel') {
         paramMap.set('userKey', userKey)
         paramMap.set('managerYn', true)
+      }
+      if (this.mSearchCateKey !== 0) {
+        paramMap.set('cateItemKey', this.mSearchCateKey)
       }
       if (this.mResultSearchKeyList.length > 0) {
         paramMap.set('nameMtext', this.mResultSearchKeyList[0].keyword)

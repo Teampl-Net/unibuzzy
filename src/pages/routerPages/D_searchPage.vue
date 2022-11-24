@@ -8,7 +8,7 @@
           <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">무엇을 찾고 계신가요?</p>
         </div>
         <!-- input Box -->
-        <div class="fl w-100P" style="position: relative; margin: 1rem 0; min-height: 50px;">
+        <div class="fl w-100P" style="position: relative; margin-top: 1rem; min-height: 50px;">
           <img @click="findData()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
           <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="findData()" v-model="mInputText" placeholder="채널명을 검색해주세요" />
           <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
@@ -28,8 +28,8 @@
         <!-- 산업군 -->
         <div v-if="mBusinessItemList.length > 0" class="fl w-100P" style="min-height: 50px; float: left; display: flex; flex-wrap: wrap; gap: 10px;">
           <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">산업군별 찾기</p>
-          <div v-for="(business, index) in mBusinessItemList" :key="index" class="fl " style="padding:5px; border-radius:8px; border: 1px solid #7678E2; min-width:32px;">
-            <p class="font12 CLDeepGrayColor">{{$changeText(business.itemNameMtext)}}</p>
+          <div v-for="(business, index) in mBusinessItemList" @click="setCataItem(business.cateKey)" :key="index" class="fl font12" style="padding:5px; border-radius:8px; min-width:32px;" :class=" this.mCateItem === business.cateKey ? 'commonLightBGColor fontBold CWhiteColor' : 'commonGrayBorderColor lightGray'">
+            {{$changeText(business.itemNameMtext)}}
           </div>
         </div>
       </div>
@@ -64,27 +64,30 @@
             <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
           </div>
         </div>
-        <!-- 공통 검색 영역 -->
+        <!-- 공통 검색 탭 영역 -->
         <div class="w-100P fl pSide-1 chanListHeader " style="margin-top: 60px;" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
           <gActiveBar :testYn='true' ref="activeBar" :tabList="this.mActiveSearchTabList" class="fl" @changeTab="changeSearchTab" />
+            <template v-if="mActiveSearch === 'CHAN'">
+              <cSearchBox class="mright-03 mtop-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" @searchBoxClick='searchBoxClick' />
+            </template>
           <div v-if="mActiveSearch === 'CONT'" class="fl w-100P mtop-05" style="display: flex;">
-            <p v-for="(tab, index) in mSearchContentTabList" :key="index" @click="changeContentsTab(tab.name)" class="fl font16 " :class=" this.mSearchContentTab === tab.name ? 'commonLightColorBorder2 fontBold commonLightColor' : 'commonGrayBorderColor lightGray'" style="flex:1; padding: 10px 0;"> {{tab.display}}</p>
+            <p v-for="(tab, index) in mSearchContentTabList" :key="index" @click="changeContentsTab(tab.name)" class="fl font16 " :class=" this.mSearchContentTab === tab.name ? 'commonLightColorBorder2 fontBold commonLightColor' : 'commonGrayBorderColor lightGray'" style="flex:1; padding: 5px 0;"> {{tab.display}}</p>
           </div>
         </div>
 
         <div class="fl wh-100P chanListWrap"  id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style=" overflow:auto; padding-top: calc(25px + var(--paddingTopLength)); " >
-          <!-- 채널 검색 -->
+          <!-- 채널 리스트 -->
           <div v-if="mActiveSearch === 'CHAN'" class="w-100P fl" style="overflow: auto; ">
             <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
               <channelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
               <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="recommendLoadMore" class="fl wich" />
             </template>
-            <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true " class="w-100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
+            <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true && this.GE_DISP_TEAM_LIST.length === 0" class="w-100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
               <gListEmpty title='검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' />
             </div>
           </div>
 
-          <!-- 컨텐츠 검색 -->
+          <!-- 컨텐츠 리스트 -->
           <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" style="margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 40px;">
             <div class="w-100P fl chanRow" style="height:1px;" />
             <template v-if="this.mSearchContentTab === 'ALL'" >
@@ -104,10 +107,17 @@
         </div>
       </div>
     </template>
+    <div v-if="mBottomSheetOpenYn"  @click="mBottomSheetOpenYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
+    <transition name="showUp" >
+      <bottomSheets v-if="mBottomSheetOpenYn" :propSelectSearchObj='mSelectSearchObj' @closePop='mBottomSheetOpenYn = false' @bottSheetEmit='bottSheetEmit' :propBusinessItemList='mBusinessItemList' />
+    </transition>
 </template>
 
 <script>
+import bottomSheets from '../../components/pageComponents/main/unit/D_commonBottomSheets.vue'
+import cSearchBox from '../../components/unit/D_cSearchBox.vue'
 export default {
+  components: { cSearchBox, bottomSheets },
   data () {
     return {
       mSearchModeYn: false,
@@ -116,6 +126,8 @@ export default {
       mFindText: '',
       mActiveTabRecommendList: [{ display: '인기', name: 'POPU' }, { display: '맞춤', name: 'CUST' }],
       mActiveRecommend: 'POPU',
+      mCateItem: '',
+      mTempCateItem: '',
 
       mChannelList: [],
       mOffsetInt: 0,
@@ -147,7 +159,12 @@ export default {
       mFirstContOffsetY: null,
       mScrolledYn: false,
       mHeaderTop: 0,
-      mScrollCheckSec: 0
+      mScrollCheckSec: 0,
+
+      // mSearchList: [{ searchType: '정렬', dispName: '전체' }, { searchType: '산업군', dispName: '전체' }, { searchType: '유형', dispName: '전체' }],
+      mSearchList: [{ searchType: '산업군', dispName: '전체' }],
+      mSelectSearchObj: {},
+      mBottomSheetOpenYn: false
     }
   },
   props: {
@@ -167,6 +184,34 @@ export default {
     this.readyFunc()
   },
   methods: {
+    searchBoxClick (searchData) {
+      this.mSelectSearchObj = searchData
+      this.mBottomSheetOpenYn = true
+    },
+    bottSheetEmit (pramData) {
+      console.log(pramData)
+      var targetType = pramData.targetType
+      var dispName = pramData.dispName
+      var idx
+      if (targetType === 'changeOrderBy') {
+        idx = this.mSearchList.findIndex(item => item.searchType === '정렬')
+      } else if (targetType === 'changeBusiness') {
+        idx = this.mSearchList.findIndex(item => item.searchType === '산업군')
+        this.setCataItem(pramData.cateKey)
+      } else if (targetType === 'changeAdmin') {
+        idx = this.mSearchList.findIndex(item => item.searchType === '유형')
+      }
+      if (idx !== -1) this.mSearchList[idx].dispName = dispName
+      this.mBottomSheetOpenYn = false
+    },
+    setCataItem (cateKey) {
+      if (this.mCateItem === cateKey) {
+        this.mCateItem = ''
+      } else {
+        this.mCateItem = cateKey
+      }
+      this.changeRecommendTab(this.mActiveRecommend)
+    },
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
@@ -447,12 +492,15 @@ export default {
       })
       this.mBusinessItemList = cateItemList.data.cateItemList
       // this.mBusinessItemList.unshift({ cateKey: 0, itemNameMtext: 'KO$^$전체' })
+      console.log(this.mBusinessItemList)
     },
     async findData () {
       this.mInputFocusYn = false
       if (this.mSearchModeYn === false) {
         this.mTempRecommendList = this.mChannelList
-        this.searchMode()
+        this.mTempCateItem = this.mCateItem
+        this.mCateItem = ''
+        this.searchPopOpen()
       }
       this.mEmptyYn = false
       this.mOffsetInt = 0
@@ -478,6 +526,8 @@ export default {
       this.mSearchModeYn = false
       this.mInputText = ''
       this.mFindText = ''
+
+      if (this.mTempCateItem) this.mCateItem = this.mTempCateItem
       if (this.mTempRecommendList.length > 0) this.mChannelList = this.mTempRecommendList
     },
     replaceContentListArr (arr) {
@@ -521,6 +571,7 @@ export default {
       paramMap.set('fUserKey', this.GE_USER.userKey)
       paramMap.set('offsetInt', this.mOffsetInt)
       paramMap.set('pageSize', 10)
+      if (this.mCateItem) paramMap.set('cateItemKey', this.mCateItem)
 
       // if (this.mViewTab === 'user') {
       //   paramMap.set('userKey', userKey)
@@ -639,8 +690,12 @@ export default {
         this.mSearchModeYn = false
       }
     },
-    searchMode () {
+    searchPopOpen () {
       this.mSearchModeYn = true
+      this.mScrolledYn = false // 다시 들어왔을 때 공통 탭 영역이 접혀있는 경우가 있음
+      this.mEmptyYn = false
+      this.mSearchList = [{ searchType: '산업군', dispName: '전체' }]
+      this.changeSearchTab('CHAN')
       try {
         this.$store.dispatch('D_HISTORY/AC_ADD_POP_HISTORY_STACK', 'searchPop')
         this.$store.dispatch('D_HISTORY/AC_ADD_ALL_HISTORY_STACK', 'searchPop')
@@ -667,7 +722,7 @@ export default {
     },
     calcPaddingTop () {
       return {
-        '--paddingTopLength': (this.mActiveSearch === 'CHAN' ? 80 : 120) + 'px'
+        '--paddingTopLength': (this.mActiveSearch === 'CHAN' ? 100 : 120) + 'px'
       }
     },
     GE_DISP_ALIM_LIST () {

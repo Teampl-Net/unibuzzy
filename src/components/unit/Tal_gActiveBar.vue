@@ -9,7 +9,7 @@
       </div>
 
       <div class="fl w-100P" style="min-height: 6px;" v-if="searchYn">
-        <div class="fl mtop-03" v-if="propSearchList && false">
+        <div class="fl mtop-03" v-if="propSearchList">
           <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
         </div>
         <div class="fr" style="height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
