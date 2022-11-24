@@ -1,7 +1,7 @@
 <template>
 <div class="fl w-100P" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;" :style="this.propData.itemType === 'siList' ? 'align-items: flex-start;' : ''">
   <div class="fl " style="width:100px">
-    <p class="fl textLeft fontBold font16 commonDarkGray" style="">{{propData.itemNameMtext}}</p>
+    <p class="fl textLeft fontBold font16 commonDarkGray" style="">{{this.$changeText(propData.itemNameMtext)}}</p>
   </div>
   <div class="fl" style="width: calc(100% - 200px);">
 

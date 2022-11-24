@@ -58,7 +58,7 @@
 
     </div>
     <div class="w-100P" style="position: absolute; left:0; bottom:0; min-height:50px; display: flex; align-items: center; justify-content: center; border-top: 1px solid #ccc;">
-      <gBtnSmall :btnTitle="'저장'" @click="save" class="mright-05" style=""/>
+      <gBtnSmall :btnTitle="'저장'" @click="saveMemberTypeItem" class="mright-05" style=""/>
       <gBtnSmall :btnTitle="'닫기'" @click="closeXPop" class="mleft-05" style=""/>
     </div>
   </div>
@@ -88,16 +88,25 @@ export default {
   created () {
     console.log(' %%%%%%%%%%%%%%%%%%%%%% ')
     console.log(this.propData)
-    if (this.propData && this.propData.data) {
-      this.setting(this.propData.data)
+    if (this.propData && this.propData.selectedMemberType) {
+      this.setting(this.propData.selectedMemberType)
     }
     this.$showToastPop('현재 테스트 화면이며, 작동되지 않습니다. 추후 업데이트를 기다려주세요!')
   },
   methods: {
     setting (data) {
-      this.selectOption = data.InfoQueType
-      this.InfoQueTitle = data.InfoQueTitle
-      this.answerList = data.answerList
+      this.selectOption = data.itemType
+      this.InfoQueTitle = this.$changeText(data.itemNameMtext)
+      if (data.maxLen) {
+        this.maxLengthYn = true
+        this.maxLength = data.maxLen
+      }
+      if (data.numberYn || data.numberYn === 1) {
+        this.onlyNumYn = true
+      }
+      if (data.optListStr) {
+        this.answerList = data.optListStr.split('$#$')
+      }
     },
     addInfo () {
       var temp = {}
@@ -108,10 +117,17 @@ export default {
     deleteInfoQue (idx) {
       this.answerList.splice(idx, 1)
     },
-    async save () {
+    async saveMemberTypeItem () {
       var param = {}
-      param.itemNameMtext = this.InfoQueTitle
-      param.memberTypeKey = this.propData.selectedMemberType.memberTypeKey
+      if (this.propData.selectedMemberType.itemKey) {
+        param.itemKey = this.propData.selectedMemberType.itemKey
+      }
+      param.itemNameMtext = 'KO$^$' + this.InfoQueTitle
+      if (this.propData.selectedMemberType) {
+        param.memberTypeKey = this.propData.selectedMemberType.memberTypeKey
+      } else if (this.propData.selectedMemberType) {
+        param.memberTypeKey = this.propData.selectedMemberType.memberTypeKey
+      }
       param.itemType = this.selectOption
       if (this.selectOption === 'T') {
         param.maxLen = this.maxLengthYn
@@ -138,7 +154,7 @@ export default {
       debugger
       // this.$emit('saveMemInfoQuestion', param)
 
-      this.$emit('closeXPop')
+      this.$emit('closeXPop', true)
     },
     closeXPop () {
       this.$emit('closeXPop')

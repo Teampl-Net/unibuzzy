@@ -2,7 +2,7 @@
   <div  class="pSide-15 ptop-50 wh-100P" style="overflow-x: scroll; white-space:nowrap;" :style="leftShowYn === true ? 'padding: 50px 0 0 0; display: flex;' : ''">
     <leftTab v-show="leftShowYn" :class="{'ani-leftIn': leftanimaYn === true, 'ani-leftOut': leftanimaYn === false}" :propMemberTypeList='mMemberTypeList' @changeTab='changeTab' @addMemberType='saveMemberType' @closePop='leftBack()' />
 
-    <memberTypeDetail @addQuestion="addQuestion" @editQue="editQue" :propMemberTypeDetail="mSelectedMemberTypeObj" />
+    <memberTypeDetail ref="memberTypeDetail" @addQuestion="addQuestion" @editQue="editQue" :propMemberTypeDetail="mSelectedMemberTypeObj" />
   </div>
 </template>
 <script>
@@ -65,6 +65,10 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
     },
+    refreshList () {
+      this.getMemberTypeList()
+      this.$refs.memberTypeDetail.refreshList()
+    },
     closeXPop () {
       this.$emit('closeXPop')
     },
@@ -110,7 +114,7 @@ export default {
       param.targetType = 'memInfoCreEditPop'
       param.popHeaderText = '멤버정보 수정'
       param.teamKey = this.propData.teamKey
-      param.data = params.data
+      param.selectedMemberType = params.data
       console.log(param)
       this.$emit('openPop', param)
     },

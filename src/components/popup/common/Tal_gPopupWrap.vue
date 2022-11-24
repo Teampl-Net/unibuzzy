@@ -50,7 +50,7 @@
       <errorPage :pPopId="popId" v-if=" popId &&  this.targetType === 'errorPage'" :propData="this.propParams" @openPop="openPop" />
       <creAddressBook :pPopId="popId" v-if="this.targetType === 'creAddressBook'" :propData="this.propParams" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop" @saveCabinet="saveCabinet" />
       <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 999999999;"/>
-      <editMemberTypePop :pPopId="popId" v-if="popId && this.targetType === 'editMemberTypePop'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
+      <editMemberTypePop ref="editMemberTypePop" :pPopId="popId" v-if="popId && this.targetType === 'editMemberTypePop'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <memInfoCreEditPop :pPopId="popId" v-if="popId && this.targetType === 'memInfoCreEditPop'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <notiHitstory :pPopId="popId" v-if="popId && this.targetType === 'notiHitstory'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
     </div>
@@ -394,11 +394,13 @@ export default {
       console.log('**** closePop ****')
       console.log(this.targetType)
       if (this.targetType === 'boardMain' || this.targetType === 'chanDetail' || this.targetType === 'followerManagement') reloadYn = true
+      if (this.targetType === 'editMemberTypePop') {
+        this.$refs.editMemberTypePop.refreshList()
+      }
       this.popShowYn = false
       var gPopHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
       gPopHistory = gPopHistory.filter((element, index) => index < gPopHistory.length - 1)
       this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', gPopHistory)
-
       var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
