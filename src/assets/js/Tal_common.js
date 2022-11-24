@@ -421,7 +421,7 @@ export const commonMethods = {
       if (data.ownerYn) {
         followerText = '소유자'
       } else {
-        if (data.memberYn && data.managerKey && data.managerKey > 0) {
+        if (data.memberNameMtext && data.managerKey && data.managerKey > 0) {
           followerText = '관리자('
           if (data.mngTeamYn === true || data.mngTeamYn === 1) {
             followerText = followerText + '채널'
