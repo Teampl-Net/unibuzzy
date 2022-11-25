@@ -1,8 +1,8 @@
 <template>
   <div  class="pSide-15 ptop-50 wh-100P" style="overflow-x: scroll; white-space:nowrap;" :style="leftShowYn === true ? 'padding: 50px 0 0 0; display: flex;' : ''">
-    <leftTab v-show="leftShowYn" :class="{'ani-leftIn': leftanimaYn === true, 'ani-leftOut': leftanimaYn === false}" :propMemberTypeList='mMemberTypeList' @changeTab='changeTab' @addMemberType='saveMemberType' @closePop='leftBack()' />
+    <leftTab ref="editMemPopRef" v-show="leftShowYn" :class="{'ani-leftIn': leftShowYn === true, 'ani-leftOut': leftShowYn === false}" :propMemberTypeList='mMemberTypeList' @changeTab='changeTab' @addMemberType='saveMemberType' @closePop='leftBack()' />
 
-    <memberTypeDetail ref="memberTypeDetail" @addQuestion="addQuestion" @editQue="editQue" :propMemberTypeDetail="mSelectedMemberTypeObj" />
+    <memberTypeDetail ref="memberTypeDetail" @addQuestion="addQuestion" @editQue="editQue" :propMemberTypeDetail="mSelectedMemberTypeObj" :key="reloadKey" :propLeftYn='leftShowYn' @showLeftBar='showLeftBar' />
   </div>
 </template>
 <script>
@@ -35,6 +35,10 @@ export default {
     }
   },
   methods: {
+    showLeftBar () {
+      this.leftShowYn = true
+      this.reloadKey += 1
+    },
     async saveMemberType (data) {
       // eslint-disable-next-line no-new-object
       var saveParam = new Object()
@@ -61,6 +65,9 @@ export default {
       })
       if (memberTypeList.data.result) {
         this.mMemberTypeList = memberTypeList.data.memberTypeList
+        this.$nextTick(() => {
+          this.$refs.editMemPopRef.changeTab(this.mMemberTypeList[0], 0)
+        })
       }
       // eslint-disable-next-line no-debugger
       debugger
@@ -80,20 +87,6 @@ export default {
     },
     readyFunc () {
       this.getMemberTypeList()
-    },
-    getMemType () {
-      if (!this.propData.teamKey) return
-      // var param = {}
-      // param.teamKey = this.propData.teamKey
-      // await this.$commonAxiosFunction({
-      //   url: 'service/tp.getMemberTypeList',
-      //   param: param
-      // }).then((result)=>{
-      //   console.log(result)
-      // this.memberTypeList = result
-      // })
-
-      this.mMemberTypeList = this.dummyData
     },
     addQuestion () {
       if (!this.propData.teamKey) return

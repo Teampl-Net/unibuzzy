@@ -1,14 +1,14 @@
 <template>
     <div v-if="mMemberTypeDetail" class="fl wh-100P" :style="innerWidth" style="white-space:nowrap; display: inline; padding-top:1.5rem; min-width: var(--minwidth); position: relative; ">
-      <div class="fl textLeft font12 commonDarkGray tempLeftTabBtn fontBold" style="margin-top: 3px;" @click="leftShowYn = true, leftanimaYn = true" v-show="leftShowYn === false">{{tempLeftImg}}</div>
-      <p class="fl font18 fontBold textLeft commonDarkGray mleft-05 ">{{mMemberTypeDetail.mFormTitle}}</p>
+      <div class="fl textLeft font12 commonDarkGray tempLeftTabBtn fontBold" style="margin-top: 3px;" v-if="propLeftYn === false"  @click="showLeftBar" >{{mTempLeftImg}}</div>
+      <p class="fl font18 fontBold textLeft commonDarkGray mleft-05 ">{{this.$changeText(mMemberTypeDetail.nameMtext)}}</p>
 
       <templine class="fl" style="border-bottom:1px solid #ccc; width:100%; height:1px;" />
 
-      <div class="fl mtop-1" :key="reloadKey" style="padding: 0 10px">
+      <div class="fl mtop-1" :key="reloadKey" style="padding: 0 10px" :style="propLeftYn === false ? 'width:100%': ''">
         <label class='fl font16 commonColor fontBold' :for="certiYn">실명인증</label>
         <gToggle class="fl mleft-1" style="scale: 1.2;" id="certiYn" :toggleId='this.$changeText(mMemberTypeDetail.nameMtext)' @changeToggle='mMemberTypeDetail.certiYn = !mMemberTypeDetail.certiYn' :isChecked="mMemberTypeDetail.certiYn" />
-        <p class="fl w-100P font14 commonColor textLeft">(성명, 전화번호)</p>
+        <!-- <p class="fl w-100P font14 commonColor textLeft">(성명, 전화번호)</p> -->
         <!-- propMemberTypeDetail -->
         <mTypeQueList ref="mTypeQueList" :propMemberTypeObj="mMemberTypeDetail" @addQuestion="this.$emit('addQuestion')" @editQue="editQue" class="mtop-1" />
       </div>
@@ -26,10 +26,12 @@ export default {
     mTypeQueList
   },
   props: {
+    propLeftYn: {},
     propMemberTypeDetail: {}
   },
   data () {
     return {
+      mTempLeftImg: '>>',
       mMemberTypeList: [],
       mMemberTypeDetail: {}
     }
@@ -42,6 +44,12 @@ export default {
     this.mMemberTypeDetail = this.propMemberTypeDetail
   },
   methods: {
+    showLeftBar () {
+      this.$emit('showLeftBar')
+      // eslint-disable-next-line vue/no-mutating-props
+      // this.propLeftYn = true
+      // this.leftanimaYn = true
+    },
     refreshList () {
       this.$refs.mTypeQueList.getMemberTypeItemList()
     },

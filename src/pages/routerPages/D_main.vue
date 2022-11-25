@@ -40,9 +40,9 @@
           <gActiveBar :searchYn='true' :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab"></gActiveBar>
         </div> -->
 
-        <div v-if="this.mMainMChanList || this.mMainChanList" style="background: #FFFFFF; margin-top: 15px; padding: 20px; padding-right: 0; border-radius: 30px 0px 0px 30px; width: 100%; float: left;">
+        <div v-if="this.mMainMChanList || this.mMainChanList" style="background: #FFFFFF; margin-top: 15px; padding: 20px; padding-right: 0; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
             <div v-if="this.mMainMChanList"  style="width: 100%; height: 30px; float: left;">
-                <img src="../../assets/images/main/main_settingIcon.png" style="float: left; margin-right: 8px;" class="img-w27" alt="">
+                <img src="../../assets/images/main/main_settingIcon2.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
                 <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">내 관리 채널</p>
             </div>
             <div v-if="this.mMainMChanList" style="width: 100%; height: 85px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
@@ -51,8 +51,8 @@
                     <createChanIcon @openPop="openPop" style="margin-right:3rem"/>
                 </div>
             </div>
-            <div v-if="this.mMainChanList"  style="width: 100%; height: 30px; float: left;">
-                <img src="../../assets/images/main/main_followIcon.png" style="float: left; margin-right: 8px;" class="img-w27" alt="">
+            <div v-if="this.mMainChanList" class="mtop-1 " style="width: 100%; height: 30px; float: left;">
+                <img src="../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
                 <p @click="goChannelPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">구독중인 채널</p>
             </div>
             <div v-if="this.mMainChanList" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;">
@@ -62,14 +62,25 @@
                 </div>
             </div>
         </div>
-        <div style="margin-top: 15px; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
+        <!-- <div style="margin-top: 15px; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
             <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; border-bottom: 2px; solid #F4F7FF!important">
-                <img src="../../assets/images/main/main_contentsBellIcon.png" style="float: left; margin-right: 8px;" class="img-w22" alt="">
+                <img src="../../assets/images/main/main_contentsBellIcon2.png" style="float: left; margin-right: 8px;" class="img-w24" alt="">
                 <p @click="goContentListPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글</p>
             </div>
             <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px;" >
                 <mainContsList :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
             </div>
+        </div> -->
+        <div style="border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
+          <div  style="width:100%; background-color: #E7EDFF; float:left;">
+            <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; border-bottom: 2px; solid #F4F7FF!important; margin-top: 15px;">
+              <img src="../../assets/images/main/main_contentsBellIcon2.png" style="float: left; margin-right: 8px;" class="img-w24" alt="">
+              <p @click="goContentListPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글</p>
+            </div>
+          </div>
+          <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px; background: #F4F4F4; padding: 8px; " >
+            <mainContsList :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
+          </div>
         </div>
     </div>
     <!-- <div style="width: 100%; box-shadow: rgb(183 180 180 / 25%) 0px 0px 7px 3px; height: calc(100% + 10px); float: left; margin-top: 10px; padding-top: 10px; background: #FFF;">
@@ -259,6 +270,15 @@ export default {
     },
     GE_RECENT_CHANGE_TEAM () {
       return this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM']
+    },
+    GE_CREATE_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_CREATE_CHAN_LIST']
+    },
+    GE_REMOVE_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_REMOVE_CHAN_LIST']
+    },
+    GE_UPDATE_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_UPDATE_CHAN_LIST']
     }
   },
 
@@ -270,6 +290,77 @@ export default {
           this.mAppCloseYn = true
         }
       }
+    },
+
+    GE_CREATE_CHAN_LIST: {
+      handler (value, old) {
+        if (!value || value.length === 0) return
+        console.log(' 생성 감지!!! ')
+        console.log(value)
+        this.mMainMChanList.unshift(value[0])
+        this.mMainChanList.unshift(value[0])
+
+        this.$store.dispatch('D_CHANNEL/AC_CREATE_CHANNEL_DEL', value[0])
+      },
+      deep: true
+    },
+    GE_REMOVE_CHAN_LIST: {
+      handler (value, old) {
+        if (!value || value.length === 0) return
+        console.log(' 삭제 감지!!! ')
+        console.log(value[0])
+        try {
+          var findDelIdx = this.mMainMChanList.findIndex(item => item.teamKey === value[0].teamKey)
+          if (findDelIdx !== -1) {
+            this.mMainMChanList.splice(findDelIdx, 1)
+          } else {
+            return false
+          }
+          findDelIdx = this.mMainChanList.findIndex(item => item.teamKey === value[0].teamKey)
+          if (findDelIdx !== -1) {
+            this.mMainChanList.splice(findDelIdx, 1)
+          } else {
+            return false
+          }
+        } catch (error) {
+          return false
+        } finally {
+          this.$store.dispatch('D_CHANNEL/AC_REMOVE_CHANNEL_DEL', value[0])
+        }
+      },
+      deep: true
+    },
+    GE_UPDATE_CHAN_LIST: {
+      async handler (value, old) {
+        if (!value || value.length === 0) return
+        var updateData = value[0]
+        console.log(' 수정 감지!!! ')
+        console.log(value[0])
+        try {
+          var detail = await this.$getDetail('TEAM', updateData.teamKey)[0]
+          console.log(detail)
+          var findIdx = this.mMainMChanList.findIndex(item => item.teamKey === updateData.teamKey)
+          if (findIdx !== -1) {
+            this.mMainMChanList[findIdx] = detail
+          } else {
+            return false
+          }
+          console.log(findIdx)
+
+          findIdx = this.mMainChanList.findIndex(item => item.teamKey === updateData.teamKey)
+          if (findIdx !== -1) {
+            this.mMainChanList[findIdx] = detail
+          } else {
+            return false
+          }
+          console.log(findIdx)
+        } catch (error) {
+          return false
+        } finally {
+          this.$store.dispatch('D_CHANNEL/AC_DEL_UPDATE_CHAN_LIST', updateData)
+        }
+      },
+      deep: true
     }
   }
 }

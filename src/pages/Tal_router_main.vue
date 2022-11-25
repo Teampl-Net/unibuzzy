@@ -1,7 +1,7 @@
 <template>
   <div class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden " > <!-- v-if="notiDetailShowYn" -->
     <!-- <pushPop @closePushPop="closePushPop" @goDetail="goDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  /> -->
-    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="mMenuShowYn" @click="hideMenu"/>
+    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:999;" v-if="mMenuShowYn" @click="hideMenu"/>
     <transition name="show_view">
       <TalMenu transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle " v-if="mMenuShowYn" />
     </transition>
@@ -326,9 +326,10 @@ export default {
   box-sizing: border-box;
   width: 65%;
   max-width: 400px;
-  background-color: #6768a7;
-  color: #ffffff;
-  z-index: 999999;
+  /* background-color: #6768a7; */
+  background-color: white;
+  color: #5F61BD;
+  z-index: 1000;
   right: 0;
 }
 

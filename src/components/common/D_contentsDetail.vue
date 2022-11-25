@@ -149,8 +149,10 @@ export default {
       }
       console.log(cont)
       if (cont) {
+        // this.setMemoReverse(cont[0].D_MEMO_LIST)
         return cont[0]
       } else {
+        // this.setMemoReverse(this.cDetail.D_MEMO_LIST)
         return this.cDetail
       }
     },
@@ -211,6 +213,16 @@ export default {
     }
   },
   methods: {
+    setMemoReverse (arr) {
+      if (arr !== undefined || arr !== null || arr !== '' || arr.length > 0) {
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i].cmemoList && arr[i].cmemoList.length > 0) {
+            arr[i].cmemoList = arr[i].cmemoList.reverse()
+          }
+        }
+      }
+      return arr
+    },
     handleScroll () {
       if (!this.$refs.myContentsBox) return
       this.$refs.myContentsBox.handleScroll()

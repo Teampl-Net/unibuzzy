@@ -1,10 +1,12 @@
 <template>
-  <div class="leftTabBase fl pSide-1" style='background: #eeeeee50;' >
-    <div class="w-100P mtop-05" style="position: relative; min-height: 30px; padding: 0 20px; padding-right: 0;">
+  <div class="leftTabBase fl " style='background: #eeeeee50;' >
+    <div class="w-100P pSide-1" style="position: relative; min-height: 30px; padding: 0 20px; padding-right: 0;     padding-top: 1.5rem;">
       <p class="fl textLeft font18 fontBold">멤버 유형</p>
       <!-- <p class=' fr font16 commonBlack textRight' style="" @click='closePop' >{{tempBackImg}}</p> -->
-      <div class="fr textLeft font12 commonBlack tempLeftTabBtn fontBold" style="margin-top: 3px;" @click="closePop">{{tempBackImg}}</div>
+      <div class="fr textLeft font12 commonBlack tempLeftTabBtn fontBold" style="margin-top: 3px; margin-right: 10px;" @click="closePop">{{tempBackImg}}</div>
     </div>
+
+    <templine class="fl" style="border-bottom:1px solid #ccc; width:100%; height:1px;" />
 
     <div class="fl w-100P  " style="position: relative; padding: 0 20px; padding-right: 0;">
       <div v-for="(list, index) in mMemberTypeList" :key="index" class="fl w-100P" style="padding: 10px 0;">
@@ -35,7 +37,6 @@ export default {
       mMemberTypeList: [],
       tempBackImg: '<<',
       leftShowYn: false,
-      leftTabTitle: {},
       addInputPopYn: false
     }
   },
@@ -44,6 +45,7 @@ export default {
       handler (value, old) {
         if (!value) return
         this.mMemberTypeList = value
+        console.log(this.mMemberTypeList)
       }
     }
   },
@@ -53,9 +55,8 @@ export default {
   methods: {
     readyFunc () {
       this.mMemberTypeList = this.propMemberTypeList
-      this.leftTabTitle = JSON.parse(JSON.stringify(this.propMemberTypeList))
-      this.changeTab(this.leftTabTitle[0], 0)
-      console.log(this.leftTabTitle)
+      this.changeTab(this.mMemberTypeList[0], 0)
+      console.log(this.mMemberTypeList)
     },
     addMemberType (data) {
       console.log(data)
@@ -72,12 +73,11 @@ export default {
       }
     },
     changeTab (data, idx) {
-      // this.leftTabTitle.findIndex(item => data.)
       if (idx === undefined || idx === null || idx === '') idx = 0
-      for (let i = 0; i < this.leftTabTitle.length; i++) {
-        this.leftTabTitle[i].selectedYn = false
-        if (data.mFormKey === this.leftTabTitle[i].mFormKey) {
-          this.leftTabTitle[i].selectedYn = true
+      for (let i = 0; i < this.mMemberTypeList.length; i++) {
+        this.mMemberTypeList[i].selectedYn = false
+        if (data.memberTypeKey === this.mMemberTypeList[i].memberTypeKey) {
+          this.mMemberTypeList[i].selectedYn = true
         }
       }
       this.$emit('changeTab', data)

@@ -7,7 +7,8 @@
                 <img src="../../../assets/images/channel/ownerChannel_crown.svg" style="width: 100%; flaot: left;" v-if="chanElement.ownerYn" alt="">
                 <img src="../../../assets/images/common/icon_setting_gear.svg" style="width: 100%; flaot: left;" v-else alt="">
             </div> -->
-            <div style="width: 10px; height: 10px; border-radius: 100%; border: 1px solid #FFFFFF; background: #ED4956; position: absolute; right: 8px; top: 5px; z-index:1"></div>
+            <!-- 따로 컴포넌트는 없고 그냥 태그 명칭만 이렇게 해두었습니다. -->
+            <redDot v-if="false" style="width: 10px; height: 10px; border-radius: 100%; border: 1px solid #FFFFFF; background: #ED4956; position: absolute; right: 8px; top: 5px; z-index:1"></redDot>
             <div style="width: calc(100%); height: 100%; border-radius: 5px; background: #00000040; padding: 5px; position: absolute; left: 0px; bottom: 0px; background: linear-gradient(0deg, #00000099, transparent) !important;">
             <!-- <div :style="chanElement.blackYn === 1? 'background: #00000040;' : 'background: #FFFFFF90;' " style="width: calc(100% - 10px); border-radius: 5px; height: 50px; padding: 5px; position: absolute; left: 5px; bottom: 5px;">
                  -->

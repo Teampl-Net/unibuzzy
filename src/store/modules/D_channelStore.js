@@ -16,10 +16,18 @@ const D_CHANNEL = {
     addShowProfileUserList: [],
     delContentsList: [],
     chanNotiQueue: [],
-    updateChanList: []
+    updateChanList: [],
+    createChanList: [],
+    removeChanList: []
 
   },
   getters: {
+    GE_REMOVE_CHAN_LIST (state) {
+      return state.removeChanList
+    },
+    GE_CREATE_CHAN_LIST (state) {
+      return state.createChanList
+    },
     GE_UPDATE_CHAN_LIST (state) {
       return state.updateChanList
     },
@@ -601,10 +609,41 @@ const D_CHANNEL = {
       chanList[idx1] = chanDetail
       state.chanList = chanList
       // if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
+    },
+    MU_CREATE_CHANNEL: (state, payload) => {
+      // state.updateChanList.push(payload)
+      state.createChanList.push(payload)
+    },
+    MU_CREATE_CHANNEL_DEL: (state, payload) => {
+      var idx = state.createChanList.indexOf(payload)
+      if (idx !== -1) {
+        state.createChanList.splice(idx, 1)
+      }
+    },
+    MU_REMOVE_CHANNEL: (state, payload) => {
+      state.removeChanList.push(payload)
+    },
+    MU_REMOVE_CHANNEL_DEL: (state, payload) => {
+      var idx = state.removeChanList.indexOf(payload)
+      if (idx !== -1) {
+        state.removeChanList.splice(idx, 1)
+      }
     }
   },
   // dispatch 를 사용하면 됨
   actions: {
+    AC_REMOVE_CHANNEL: ({ commit }, payload) => { // 삭제한 채널
+      commit('MU_REMOVE_CHANNEL', payload)
+    },
+    AC_CREATE_CHANNEL: ({ commit }, payload) => { // 새로 만든 채널
+      commit('MU_CREATE_CHANNEL', payload)
+    },
+    AC_REMOVE_CHANNEL_DEL: ({ commit }, payload) => { // 삭제한 채널
+      commit('MU_REMOVE_CHANNEL_DEL', payload)
+    },
+    AC_CREATE_CHANNEL_DEL: ({ commit }, payload) => { // 새로 만든 채널
+      commit('MU_CREATE_CHANNEL_DEL', payload)
+    },
     AC_ADD_UPDATE_CHAN_LIST: ({ commit }, payload) => { // 새로고침 할 채널을 추가
       commit('MU_ADD_UPDATE_CHAN_LIST', payload)
     },

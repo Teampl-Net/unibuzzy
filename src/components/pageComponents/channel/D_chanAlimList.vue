@@ -46,7 +46,7 @@
                   <div class="mleft-05" style="display:flex; flex-direction: column;">
                       <p @click="goProfile" class="font16 textLeft">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
                       <div>
-                          <p class="fl font14 textLeft commonBlack">{{this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)}}</p>
+                        <p class="fl font14 textLeft commonBlack">{{this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)}}</p>
                       </div>
                   </div>
               </div>
@@ -54,12 +54,9 @@
                   <match :color="'#6768a7'"/>
               </div>
               <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
-                  <!-- <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" >
-                    <template >
-                        <p class="fl font14 cursorP fontBold commonColor" v-if="this.CHANNEL_DETAIL.userTeamInfo && !this.CHANNEL_DETAIL.userTeamInfo.ownerYn && !CHANNEL_DETAIL.userTeamInfo.memberNameMtext" @click="this.openReqMemPop()" >멤버신청</p>
-                        <p class="fl font14 cursorP fontBold " v-else>멤버</p>
-                    </template>
-                  </div> -->
+                  <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" v-if="(this.CHANNEL_DETAIL.userTeamInfo && this.CHANNEL_DETAIL.userTeamInfo.ownerYn === undefined && CHANNEL_DETAIL.userTeamInfo.memberNameMtext === undefined) || this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH) === '구독자'" >
+                    <p class="fl font14 cursorP fontBold commonColor" @click="this.openReqMemPop()" >멤버신청</p>
+                  </div>
                   <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
                   <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
                   <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
@@ -85,9 +82,13 @@
       <div v-else-if="this.mChanInfoPopShowYn" >
           <chanDetailComp ref="chanDetailRef" @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @closeXPop="this.closeDetailPop" @changeshowProfileYn='changeshowProfileYn' :parentshowProfileYn="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn" :adminYn="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.CHANNEL_DETAIL" style="background-color: #fff;"></chanDetailComp>
       </div>
-      <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" v-if="CHANNEL_DETAIL.D_CHAN_AUTH && (CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1)  && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true) && mPushListMainTab === 'P' && this.mWriteBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%; z-index:9" class="img-78 img-w66">
+      <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" v-if="CHANNEL_DETAIL.D_CHAN_AUTH && (CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1)  && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true) && (mPushListMainTab === 'P' || mPushListMainTab === 'A') && this.mWriteBtnShowYn" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%; z-index:9" class="img-78 img-w66">
       <img id='writeBtn' src="../../../assets/images/button/Icon_WriteBoardBtn.png" v-if="mPushListMainTab === 'B' && this.mWriteBtnShowYn" @click="openWritePushPop" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%; " class="img-78 img-w66">
       <gConfirmPop :confirmText='mErrorPopBodyStr' :confirmType='mErrorPopBtnType' @no='mErrorPopShowYn=false' v-if="mErrorPopShowYn" @ok="confirmOk"/>
+      <div v-if="writeBottSheetYn" @click="writeBottSheetYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
+      <transition name="showUp">
+        <writeBottSheet v-if="writeBottSheetYn === true" @openPop='openWriteContentsPop' @closePop='writeBottSheetYn = false' :propTeamKey='CHANNEL_DETAIL.teamKey' />
+      </transition>
   </div>
   <writeContents  v-if="writeContentsYn"  ref="chanAlimListWritePushRefs" :contentType="mPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWritePushPop' :params="mWriteAlimData"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="mWriteBoardData" />
 </template>
@@ -102,6 +103,7 @@ import writeContents from '../../popup/D_writeContents.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
 import recMemberPop from '../../popup/member/D_recMemberPop.vue'
 // import boardWrite from '../../board/Tal_boardWrite.vue'
+import writeBottSheet from '../../pageComponents/main/unit/D_contentsWriteBottSheet.vue'
 export default {
   data () {
     return {
@@ -122,7 +124,7 @@ export default {
       writeAlimPopId: '',
       mChanNameLongYn: false,
       mSaveFollowerType: '',
-      mPushListMainTab: 'P',
+      mPushListMainTab: 'A',
       axiosQueue: [],
       mWriteBoardData: {},
       mWriteBoardPopId: '',
@@ -130,7 +132,8 @@ export default {
       mWriteBtnShowYn: true,
       mMakeDeepLinkIng: false,
       mChanPopMessage: '',
-      commonChanPopShowYn: false
+      commonChanPopShowYn: false,
+      writeBottSheetYn: false
       // errorPopYn: false
     }
   },
@@ -141,6 +144,7 @@ export default {
     popYn: { type: Boolean, default: false }
   },
   components: {
+    writeBottSheet,
     pushList,
     chanDetailComp,
     welcomePopUp,
@@ -172,6 +176,10 @@ export default {
     }
   },
   methods: {
+    openWriteContentsPop (openPopParam) {
+      this.writeBottSheetYn = false
+      this.$emit('openPop', openPopParam)
+    },
     async closeChannelPop (refreshYn) {
       this.commonChanPopShowYn = false
       if (refreshYn === true) {
@@ -203,11 +211,12 @@ export default {
     },
     openReqMemPop () {
       // 재준
-      if (this.CHANNEL_DETAIL.cateKey !== 3) {
-        this.mReceptMemPopShowYn = true
-      } else {
-        this.commonChanPopShowYn = true
-      }
+      this.commonChanPopShowYn = true
+      // if (this.CHANNEL_DETAIL.cateKey !== 3) {
+      //   this.mReceptMemPopShowYn = true
+      // } else {
+      //   this.commonChanPopShowYn = true
+      // }
     },
     async closeReqMemPop (yn) {
       console.log(yn)
@@ -434,6 +443,11 @@ export default {
     },
     openWritePushPop () {
       var history = this.$store.getters['D_HISTORY/hStack']
+      alert(this.mPushListMainTab)
+      if (this.mPushListMainTab === 'A') {
+        this.writeBottSheetYn = true
+        return
+      }
       if (this.mPushListMainTab === 'P') {
       // eslint-disable-next-line no-new-object
         var params = new Object()
@@ -529,8 +543,8 @@ export default {
       this.mChanMainScrollPosition = this.mChanMainScrollWrap.scrollTop
       if (this.mChanMainScrollDirection === 'down' && this.mChanMainScrollPosition > 250) {
         blockBox.style.height = 50 + 'px'
-
-        if (this.mChanMainScrollPosition < 60) this.mChanMainScrollWrap.style.overflow = 'hidden'
+        console.log(this.mChanMainScrollPosition)
+        if (this.mChanMainScrollPosition > 290) this.mChanMainScrollWrap.style.overflow = 'hidden'
 
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
 

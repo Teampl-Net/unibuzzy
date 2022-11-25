@@ -256,7 +256,7 @@ export default {
           // eslint-disable-next-line no-debugger
           debugger
           var result = await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com/service/tp.updateWorkStat',
+            url: 'service/tp.updateWorkStat',
             param: param
           })
           // eslint-disable-next-line no-debugger

@@ -28,11 +28,11 @@
                     </div>
                 </div>
                 <div style="width: calc(100% - 50px); min-height: 20px; float: left; display: flex; flex-direction: column;">
-                    <p class="fl font16 grayBlack" style="text-align:left; width:calc(100%); line-height:23px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden scroll; font-weight: bold;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
+                    <p class="fl font16 grayBlack" style="text-align:left; width:calc(100%); line-height:23px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-weight: bold;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
                     <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold  textLeft textOverdot w-100P">{{member.userEmail? member.userEmail: '이메일 정보 없음'}}</p>
-                    <p v-else class="grayBlack font12 fontBold textLeft">{{this.$changeFollowerInfo('email', member.userEmail)}}</p>
-                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold textLeft">{{member.phoneEnc? member.phoneEnc: '휴대폰 정보 없음'}}</p>
-                    <p v-else class="grayBlack font12 fontBold textLeft">{{this.$changeFollowerInfo('phone', member.phoneEnc)}}</p>
+                    <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{this.$changeFollowerInfo('email', member.userEmail)}}</p>
+                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold textLeft textOverdot">{{member.phoneEnc? member.phoneEnc: '휴대폰 정보 없음'}}</p>
+                    <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{this.$changeFollowerInfo('phone', member.phoneEnc)}}</p>
                     <div class="w-100P fl">
                         <p class="textLeft fl fontBold grayBlack font12" v-for="(info, index) in member.memberInfoList" :key="index">
                             {{index !== 0 ? ' | ' : ''}}{{'' + this.$changeText(info.memberTypeItemNameMtext)}}: {{info.itemVal}}

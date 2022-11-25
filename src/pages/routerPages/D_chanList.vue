@@ -483,6 +483,53 @@ export default {
     },
     historyStack () {
       return this.$store.state.historyStack
+    },
+    GE_CREATE_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_CREATE_CHAN_LIST']
+    },
+    GE_REMOVE_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_REMOVE_CHAN_LIST']
+    },
+    GE_UPDATE_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_UPDATE_CHAN_LIST']
+    }
+  },
+  watch: {
+    GE_CREATE_CHAN_LIST: {
+      handler (value, old) {
+        if (!value || value.length === 0) return
+        console.log(' 생성 감지!!! ')
+        console.log(value)
+        this.mChannelList.unshift(value[0])
+
+        this.$store.dispatch('D_CHANNEL/AC_CREATE_CHANNEL_DEL', value[0])
+      },
+      deep: true
+    },
+    GE_REMOVE_CHAN_LIST: {
+      handler (value, old) {
+        if (!value || value.length === 0) return
+        console.log(' 삭제 감지!!! ')
+        console.log(value[0])
+        var findDelIdx = this.mChannelList.findIndex(item => item.teamKey === value[0].teamKey)
+        if (findDelIdx !== -1) {
+          this.mChannelList.splice(findDelIdx, 1)
+          this.$store.dispatch('D_CHANNEL/AC_REMOVE_CHANNEL_DEL', value[0])
+        } else {
+          return false
+        }
+      },
+      deep: true
+    },
+    GE_UPDATE_CHAN_LIST: {
+      handler (value, old) {
+        if (!value || value.length === 0) return
+        console.log(' 수정 감지!!! ')
+        console.log(value[0])
+        this.$addChanList(value[0].teamKey)
+        this.$store.dispatch('D_CHANNEL/AC_DEL_UPDATE_CHAN_LIST', value[0])
+      },
+      deep: true
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
     <div v-if="mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
-    <div v-if="this.CONT_DETAIL" style="width: 100%; background: #FFF; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative;">
+    <div v-if="this.CONT_DETAIL" style="width: 100%; background: #FFF; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative;     border-radius: 8px;">
         <div class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 16px 20px;">
             <div @click="goChannelMain()" :style="this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
                 <div :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext : CONT_DETAIL.logoPathMtext) + ');'" style="width: calc(100% - 2px); height:  calc(100% - 2px); border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;">
@@ -54,7 +54,7 @@
             <div class="contentsCardUserDoArea" style="width: 100%; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 15px; padding: 0 20px;">
                 <div style="float: left; width: 50%; height: 100%;">
                     <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="img-w20" src="../../../assets/images/contents/icon_heart.png" alt="">
+                        <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="img-w20" src="../../../assets/images/contents/icon_heart_red.png" alt="">
                         <img v-else src="../../../assets/images/contents/icon_heart_on.png" alt="" class="img-w20">
                         <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.likeCount}}</p>
                     </div>
@@ -160,8 +160,29 @@ export default {
       scrollWrap.addEventListener('scroll', this.handleScroll)
     }
     this.setContentsMoreText()
+    this.setPreTagInFirstTextLine()
   },
   methods: {
+    setPreTagInFirstTextLine () {
+      if (!window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)) return
+      if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
+
+      var contents = window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)
+      console.log(contents.childNodes)
+
+      if (contents.childNodes.length > 0) {
+        var child = contents.childNodes[0]
+        if (child.id === 'formEditText') {
+          // child.classList.add('firstTextLine')
+          var tempDiv = document.createElement('div')
+          tempDiv.classList.add('firstTextLine')
+          child.prepend(tempDiv)
+          console.log('통과')
+        } else {
+          console.log('미통과')
+        }
+      }
+    },
     cancelConfirm () {
       this.mConfirmText = '알림 발송을 취소 하시겠습니까?'
       this.mCurrentConfirmType = 'alimCancel'
@@ -886,5 +907,8 @@ export default {
 }
 .overHidden{
   overflow: hidden;
+}
+pre div[id='formEditText'] {
+  border-top: 1px solid #ccc;
 }
 </style>

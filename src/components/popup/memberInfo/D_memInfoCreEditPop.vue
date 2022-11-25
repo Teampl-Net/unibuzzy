@@ -91,7 +91,7 @@ export default {
     if (this.propData && this.propData.selectedMemberType) {
       this.setting(this.propData.selectedMemberType)
     }
-    this.$showToastPop('현재 테스트 화면이며, 작동되지 않습니다. 추후 업데이트를 기다려주세요!')
+    // this.$showToastPop('현재 테스트 화면이며, 작동되지 않습니다. 추후 업데이트를 기다려주세요!')
   },
   methods: {
     setting (data) {

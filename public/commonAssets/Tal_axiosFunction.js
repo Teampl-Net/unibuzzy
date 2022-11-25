@@ -556,7 +556,7 @@ export const methods = {
     param.updateYn = true
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://mo.d-alim.com/service/tp.saveUser',
+      url: 'service/tp.saveUser',
       param: param
     })
     result = response

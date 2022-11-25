@@ -124,7 +124,8 @@ export default {
       mBusinessItemList: [],
       mInputText: '',
       mFindText: '',
-      mActiveTabRecommendList: [{ display: '인기', name: 'POPU' }, { display: '맞춤', name: 'CUST' }],
+      // mActiveTabRecommendList: [{ display: '인기', name: 'POPU' }, { display: '맞춤', name: 'CUST' }],
+      mActiveTabRecommendList: [{ display: '최신', name: 'POPU' }],
       mActiveRecommend: 'POPU',
       mCateItem: '',
       mTempCateItem: '',
@@ -205,6 +206,7 @@ export default {
       this.mBottomSheetOpenYn = false
     },
     setCataItem (cateKey) {
+      if (this.GE_DISP_TEAM_LIST.length === 0) return
       if (this.mCateItem === cateKey) {
         this.mCateItem = ''
       } else {

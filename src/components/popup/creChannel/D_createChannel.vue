@@ -316,6 +316,9 @@ export default {
           }
 
           if (this.mDeleteYn !== true) await this.$addChanList(teamKey)
+          if (this.mDeleteYn === true) {
+            await this.$store.dispatch('D_CHANNEL/AC_REMOVE_CHANNEL', gParam)
+          }
 
           console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
           console.log(params)
@@ -329,18 +332,19 @@ export default {
     },
     async changeTeamInfo (data) {
       await this.$addChanList(this.CHANNEL_DETAIL.teamKey)
-      // var temp = this.CHANNEL_DETAIL
-      // temp.nameMtext = data.nameMtext
-      // temp.memoMtext = data.memoMtext
-      // temp.teamType = data.teamType
-      // temp.teamType = data.teamType
-      // temp.teamKey = data.teamType
-      // temp.logoFilekey = data.logoFilekey
-      // temp.picMfilekey = data.picMfilekey
-      // temp.teamKeyWord = data.teamKeyWord
-      // temp.creUserName = data.creUserName
-      // temp.deleteYn = data.deleteYn
-      // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [temp])
+      console.log(' /// !!!! 이거 꼭!!!! /// ')
+      console.log(data)
+      var temp = this.CHANNEL_DETAIL
+      temp.nameMtext = data.nameMtext
+      temp.memoMtext = data.memoMtext
+      temp.teamType = data.teamType
+      temp.teamKey = this.CHANNEL_DETAIL.teamKey
+      temp.logoFilekey = data.logoFilekey
+      temp.picMfilekey = data.picMfilekey
+      temp.teamKeyWord = data.teamKeyWord
+      temp.creUserName = data.creUserName
+      temp.deleteYn = data.deleteYn
+      this.$store.dispatch('D_CHANNEL/AC_ADD_UPDATE_CHAN_LIST', temp)
     },
     async newChannelInPool (newCreTeamKey) {
       var paramMap = new Map()
@@ -351,7 +355,8 @@ export default {
       console.log(resultList)
       var response = resultList.data.content[0]
       response.detailPageYn = true
-      await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response)
+      // await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
+      await this.$store.dispatch('D_CHANNEL/AC_CREATE_CHANNEL', response)
     }
   },
   computed: {

@@ -1,12 +1,11 @@
 <template>
 <div class="fl w-100P" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;" :style="this.propData.itemType === 'siList' ? 'align-items: flex-start;' : ''">
-  <div class="fl " style="width:100px">
+  <div class="fl " style="flex:1">
     <p class="fl textLeft fontBold font16 commonDarkGray" style="">{{this.$changeText(propData.itemNameMtext)}}</p>
   </div>
-  <div class="fl" style="width: calc(100% - 200px);">
-
+  <div class="fl" style="width: calc(100% - 200px); flex:2" @click="emit('editQue')">
     <template v-if="propData.itemType === 'T'">
-      <div class="fr w-100P" style="background:white; border: 1px dashed #ccc; padding-left:0.5rem;">
+      <div class="fr w-100P" style="background:white; border: 1px dashed #ccc; padding-left:0.5rem;" >
         <p class="lightGray fl textLeft font16">텍스트</p>
       </div>
     </template>
@@ -30,10 +29,10 @@
 
   </div>
 
-  <div class="fr mleft-05" style="width:80px; display:flex; justify-content: space-between; gap:10px ">
-    <img class="fl img-w20" src="../../../../../assets/images/board/icon_edit.svg" @click="emit('editQue')" alt="">
+  <div class="fr mleft-05" style="width:50px; display:flex; justify-content: space-between; gap:10px: flex:1">
+    <!-- <img class="fl img-w20" src="../../../../../assets/images/board/icon_edit.svg" @click="emit('editQue')" alt=""> -->
     <img class="fl img-w20" src="../../../../../assets/images/board/icon_trash.svg" @click="emit('deleteQue')" alt="">
-    <div class="fl movePoint" style="width: 30px; height: 100%; flex-shrink: 0; flex-grow: 0;background: rgba(255, 255, 255, 0.75); "><img src="../../../../../assets/images/formEditor/icon_formEdit_movePointer.svg" class="img-w15" style="flex-shrink: 0; flex-grow: 0" alt=""></div>
+    <!-- <div class="fl movePoint" style="width: 30px; height: 100%; flex-shrink: 0; flex-grow: 0;background: rgba(255, 255, 255, 0.75); "><img src="../../../../../assets/images/formEditor/icon_formEdit_movePointer.svg" class="img-w15" style="flex-shrink: 0; flex-grow: 0" alt=""></div> -->
   </div>
 
 </div>
