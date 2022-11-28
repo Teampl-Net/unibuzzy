@@ -73,8 +73,8 @@ export default {
     openPop (value) {
       console.log(' top5CotentList openPop Param ')
 
-      value.alimTabType = this.mViewTab
-      console.log(value)
+      // value.alimTabType = this.mViewTab
+      // console.log(value)
       this.$emit('openPop', value)
     },
     async changeTab (tabName) {

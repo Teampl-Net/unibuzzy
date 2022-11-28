@@ -222,7 +222,8 @@ const routes = [
     name: 'certiPhone',
     props: true,
     component: certiPhone
-  }/* ,
+  }
+  /* ,
   {
     path: '/test',
     name: 'test',

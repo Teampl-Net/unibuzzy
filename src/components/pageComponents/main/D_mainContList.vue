@@ -43,8 +43,8 @@ export default {
   },
   methods: {
     contDelete (contentIndex) {
-      console.log(contentIndex)
-      console.log(this.GE_DISP_CONTS_LIST[contentIndex])
+      // console.log(contentIndex)
+      // console.log(this.GE_DISP_CONTS_LIST[contentIndex])
       this.GE_DISP_CONTS_LIST.splice(contentIndex, 1)
 
       // 삭제 후 리로드가 되지 않아 상위 div에 reload키를 넣어 다시 그려주었습니다. -- 스크롤 이동하지 않았음
@@ -196,7 +196,7 @@ export default {
       var resultList = await this.$getTeamList(paramMap, nonLoading)
       this.mSelectChanList = resultList.data.content
       this.mSelectedChan = this.mSelectChanList[0].teamKey
-      console.log(resultList)
+      // console.log(resultList)
     },
     openWritePushPop () { // eslint-disable-next-line no-new-object
       var writeParam = new Object()
@@ -293,24 +293,33 @@ export default {
     }
   },
   watch: {
-    // GE_DISP_CONTS_LIST () {
-    //   console.log('GE_DISP_CONTS_LIST')
-    //   console.log(this.mContsList)
-    // },
-    mContsList: {
+    GE_DISP_CONTS_LIST: {
       handler (value, old) {
-        if (value) {
-          if (this.mCreateYn === true) {
-            // eslint-disable-next-line
-            this.mCreateYn = false
-            console.log('mContsList')
-            console.log(this.mContsList)
-            // 메인화면으로 처음 진입했을 때 리스트를 받아오고 다시 못 그려주기에 추가
-            this.mReloadKey += 1
-          }
-        }
+        if (!value && this.mCreateYn === false) return
+        console.log(value)
+        // eslint-disable-next-line
+        this.mCreateYn = false
+        console.log('mContsList')
+        console.log(this.mContsList)
+        // 메인화면으로 처음 진입했을 때 리스트를 받아오고 다시 못 그려주기에 추가
+        this.mReloadKey += 1
       }
     },
+    // mContsList: {
+    //   handler (value, old) {
+    //     if (value) {
+    //       if (this.mCreateYn === true) {
+    //         console.log(value)
+    //         // eslint-disable-next-line
+    //         this.mCreateYn = false
+    //         console.log('mContsList')
+    //         console.log(this.mContsList)
+    //         // 메인화면으로 처음 진입했을 때 리스트를 받아오고 다시 못 그려주기에 추가
+    //         this.mReloadKey += 1
+    //       }
+    //     }
+    //   }
+    // },
     GE_NEW_CONT_LIST: {
       handler (value, old) {
         var newArr = []

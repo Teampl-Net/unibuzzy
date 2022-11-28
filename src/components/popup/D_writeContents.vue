@@ -983,7 +983,7 @@ export default {
       // 소문자로 변환
       fileExt = fileExt.toLowerCase()
       if (
-        ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+        ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
       ) {
         console.log('originalFile instanceof Blob', file instanceof Blob) // true
         console.log(`originalFile size ${file.size / 1024 / 1024} MB`)
@@ -1025,7 +1025,7 @@ export default {
       // 소문자로 변환
       fileExt = fileExt.toLowerCase()
       if (
-        ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+        ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
       ) {
         // FileReader 를 활용하여 파일을 읽는다
         var reader = new FileReader()

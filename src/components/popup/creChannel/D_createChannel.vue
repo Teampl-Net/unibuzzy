@@ -136,7 +136,7 @@ export default {
         { teamNameMtext: '기업', teamType: 'C' },
         { teamNameMtext: '정부', teamType: 'G' },
         { teamNameMtext: '학교', teamType: 'S' },
-        { teamNameMtext: '종교 단체', teamType: 'H' },
+        { teamNameMtext: '종교', teamType: 'H' },
         { teamNameMtext: '동호회', teamType: 'D' },
         { teamNameMtext: '병원', teamType: 'Q' },
         { teamNameMtext: '약국', teamType: 'V' },
@@ -195,7 +195,9 @@ export default {
       } else {
         this.mBtnColor = false
       }
+      console.log(this.CHANNEL_DETAIL)
       var param = {}
+      param.cateKey = this.CHANNEL_DETAIL.cateKey
       param.teamType = this.CHANNEL_DETAIL.teamType
       this.setTypeData(param)
     },
@@ -205,6 +207,8 @@ export default {
       }
     },
     setTypeData (param) {
+      console.log(' ####  !!  ############## @@ #### ')
+      console.log(param)
       this.mSelectedTeamTypeKey = param.cateKey
       this.mSelectTypeText = this.$teamTypeString(param.cateKey)
       this.mSelectTeamTypePopYn = false

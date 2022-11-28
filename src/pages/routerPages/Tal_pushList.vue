@@ -6,8 +6,6 @@
     <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:999999"><div class="spinner"></div></div>
 
     <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left;" >
-      <!-- <pushLoadingCompo  :style="isOpen === 'chanAlim' ? 'width: 100%; height: 100%; position: ; top: 0; left: 0' : ''" v-if="loadingYn === true "/> -->
-      <!-- <pushLoadingCompo  :style="isOpen === 'chanAlim' ? 'width: 100%; height: 100%; z-index: 5!important; position: fixed!important; top: 0; left: 0' : ''" v-if="loadingYn === true && isOpen !== 'chanAlim'"/> -->
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <div :style="!popYn ? ' padding-top: 20px;' : ''" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; "> -->
@@ -25,16 +23,18 @@
       <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); "> -->
         <!-- <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="!popYn ? 'padding: 0 1rem ; padding-top:' + this.paddingTop + 'px;' : 'padding-top:' + (this.paddingTop) + 'px;' " style="position: relative; margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); "> -->
         <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top:' + this.paddingTop + 'px;'" style="position: relative; margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); padding-bottom: 40px; ">
-            <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
-                <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'"/>
-            </template>
-            <template  v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index">
-                <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'"/>
-            </template>
-            <template  v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
-                <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'"/>
-            </template>
-            <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
+          <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
+          <div class="w-100P fl commonListContentBox" style="height:1px;" />
+          <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
+              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'"/>
+          </template>
+          <template  v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index">
+              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'"/>
+          </template>
+          <template  v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
+              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'"/>
+          </template>
+          <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
@@ -85,8 +85,6 @@ export default {
     pushListAndDetailYn: {},
     propParams: {},
     targetContents: {},
-    // 라우터메인에서 여는 푸시화면과 gPop에서 여는 푸시화면 구분에 필요함 // gPop에서 열었으면 gpop이 들어옴
-    isOpen: {},
 
     chanAlimYn: {},
     pChannelDetail: {},

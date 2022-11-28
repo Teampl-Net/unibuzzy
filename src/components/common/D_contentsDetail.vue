@@ -238,7 +238,7 @@ export default {
       // 소문자로 변환
       fileExt = fileExt.toLowerCase()
       if (
-        ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'raw', 'svg'].includes(fileExt)
+        ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'raw', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
       ) {
         fileScr = '/resource/fileIcon/fileType_img.svg'
       } else if (
@@ -374,7 +374,7 @@ export default {
       console.log(resultList)
       var detailData = resultList.content[0]
       // eslint-disable-next-line no-debugger
-      detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
+      detailData.D_CONT_USER_DO = await this.$settingUserDo(detailData.userDoList)
       if (!detailData.D_MEMO_LIST && (!detailData.memoList || detailData.memoList.length === 0)) detailData.D_MEMO_LIST = []
       this.cDetail = detailData
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
@@ -1162,35 +1162,35 @@ export default {
       }
       return changeText
     },
-    async settingUserDo (userDo) {
-      var D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
+    // async settingUserDo (userDo) {
+    //   var D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
 
-      if (userDo !== undefined && userDo !== null && userDo !== '') {
-        // eslint-disable-next-line no-array-constructor
-        /* this.userDoStickerList = new Array() */
-        for (var i = 0; i < userDo.length; i++) {
-          if (userDo[i].doType === 'LI') {
-            D_CONT_USER_DO[1].doKey = userDo[i].doKey
-          }
-          if (userDo[i].doType === 'ST') {
-            D_CONT_USER_DO[0].doKey = userDo[i].doKey
-          }
-          if (userDo[i].doType === 'RE') {
-            D_CONT_USER_DO[2].doKey = true
-          }
-          if (userDo[i].doType === 'SB') {
-            D_CONT_USER_DO[3].doKey = userDo[i].doKey
-          }
-          /* if (userDo[i].doType === 'SK') {
-            this.userDoStickerList.push(userDo[i].sticker)
-          } */
-        }
-      }
-      /* var cont = this.CONT_DETAIL
-      cont.D_CONT_USER_DO = D_CONT_USER_DO
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
-      return D_CONT_USER_DO
-    },
+    //   if (userDo !== undefined && userDo !== null && userDo !== '') {
+    //     // eslint-disable-next-line no-array-constructor
+    //     /* this.userDoStickerList = new Array() */
+    //     for (var i = 0; i < userDo.length; i++) {
+    //       if (userDo[i].doType === 'LI') {
+    //         D_CONT_USER_DO[1].doKey = userDo[i].doKey
+    //       }
+    //       if (userDo[i].doType === 'ST') {
+    //         D_CONT_USER_DO[0].doKey = userDo[i].doKey
+    //       }
+    //       if (userDo[i].doType === 'RE') {
+    //         D_CONT_USER_DO[2].doKey = true
+    //       }
+    //       if (userDo[i].doType === 'SB') {
+    //         D_CONT_USER_DO[3].doKey = userDo[i].doKey
+    //       }
+    //       /* if (userDo[i].doType === 'SK') {
+    //         this.userDoStickerList.push(userDo[i].sticker)
+    //       } */
+    //     }
+    //   }
+    //   /* var cont = this.CONT_DETAIL
+    //   cont.D_CONT_USER_DO = D_CONT_USER_DO
+    //   this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
+    //   return D_CONT_USER_DO
+    // },
 
     async changeAct (act, key) {
       // eslint-disable-next-line no-unused-vars

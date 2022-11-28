@@ -88,9 +88,9 @@
             <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"  style=" width:calc(100%);"/>
           </div>
           <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%); padding-bottom: 40px;" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
-            <!-- {{CAB_DETAIL.shareAuth}}
-            {{CAB_DETAIL.blindYn}} -->
 
+            <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
+            <div class="w-100P fl commonBoardListContentBox" style="height:1px;" />
             <gContentsBox :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.BOARD_CONT_LIST" :key="index"/>
             <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
             <!-- <boardList :emptyYn="BOARD_CONT_LIST.length === 0? true: false" :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
@@ -199,6 +199,11 @@ export default {
           this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
         })
       }
+
+      this.listBox = this.$refs.commonBoardListWrapCompo
+      if (this.listBox) {
+        this.listBox.addEventListener('scroll', this.handleScroll)
+      }
       // eslint-disable-next-line no-unused-vars
       if (this.findPopShowYn) {
         this.findPaddingTopBoard()
@@ -208,9 +213,10 @@ export default {
   mounted () {
     if (this.CAB_DETAIL) {
       // this.boardListWrap = this.$refs.boardListWrap
-      // this.boardListWrap.addEventListener('scroll', this.saveScroll)
+      this.boardListWrap.addEventListener('scroll', this.saveScroll)
       // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
-      // this.listBox.addEventListener('scroll', this.handleScroll)
+      this.listBox = this.$refs.commonBoardListWrapCompo
+      this.listBox.addEventListener('scroll', this.handleScroll)
       this.box = this.$refs.boardListWrap // 이 dom scroll 이벤트를 모니터링합니다
       if (this.box) {
         this.box.addEventListener('scroll', this.updateScroll)
@@ -782,9 +788,13 @@ export default {
       var element = document.getElementsByClassName('commonBoardListContentBox')[0]
       var parentElement = element.parentElement
       this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+      console.log(this.scrollDirection + ' // ' + this.firstContOffsetY)
       if (this.firstContOffsetY > 0) {
         this.scrollDirection = 'up'
         this.scrolledYn = false
+        if (this.firstContOffsetY > 59) {
+          this.box.style.overflow = 'scroll'
+        }
       }
       if (time / 1000 > 1 && this.$diffInt(this.listBox.scrollTop, this.scrollPosition) > 150) {
         this.scrollCheckSec = currentTime
@@ -798,7 +808,6 @@ export default {
           }
         }
       }
-
       // var test = document.getElementById('boardPageHeader')
       // parentElement = element.parentElement
       // this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
@@ -933,12 +942,18 @@ export default {
       } else if (this.box.scrollTop < this.scrollPosition) {
         this.scrollDirection = 'up'
       }
+      console.log(this.scrollDirection)
 
       this.scrollPosition = this.box.scrollTop
 
       if (this.scrollDirection === 'down' && this.scrollPosition > 200) {
         blockBox.style.height = '50px'
         // blockBox.scrollHeight = 100
+        console.log(this.scrollPosition)
+        if (this.scrollPosition > 249) {
+          this.box.style.overflow = 'hidden'
+        }
+
         document.getElementById('boardInfoSummary').classList.add('displayNIm')
         // document.getElementById('boardInfoSummary2').classList.add('displayBIm')
         document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')

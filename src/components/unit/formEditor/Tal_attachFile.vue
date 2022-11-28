@@ -77,7 +77,7 @@ export default {
           // 소문자로 변환
           fileExt = fileExt.toLowerCase()
           if (
-            ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+            ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
           ) {
             console.log('originalFile instanceof Blob', this.selectFile instanceof Blob) // true
             console.log(`originalFile size ${this.selectFile.size / 1024 / 1024} MB`)
@@ -155,7 +155,7 @@ export default {
           // 소문자로 변환
           fileExt = fileExt.toLowerCase()
           if (
-            ['jpeg', 'jpg', 'png', 'gif', 'bmp'].includes(fileExt)
+            ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
           ) {
             var reader = new FileReader()
             var thisthis = this

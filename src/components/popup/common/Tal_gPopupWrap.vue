@@ -20,6 +20,9 @@
       <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  this.targetType === 'chanList'">
         <chanList :pPopId="popId" :propData="this.propParams" ref="gPopChan" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
       </div>
+      <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if="popId &&  this.targetType === 'searchPop'">
+        <searchPage :pPopId="popId" :propData="this.propParams" :popYn="true" @openPop="openPop" />
+      </div>
       <changeInfo :pPopId="popId" @closeLoading="this.loadingYn = false"  @successUpdate="this.closeXPop(true)" :kind="this.changInfoType" v-if=" popId &&  this.targetType === 'changeInfo'" />
       <askTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop" :propData='this.propParams' />
       <talInfo :pPopId="popId"  @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'theAlimInfo'" />
@@ -61,6 +64,7 @@ import pushPop from '../push/Tal_pushDetailPopup.vue'
 import changeInfo from '../info/Tal_changeInfo.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 import chanList from '../../../pages/routerPages/D_chanList.vue'
+import searchPage from '../../../pages/routerPages/D_searchPage.vue'
 import chanAlimList from '../../pageComponents/channel/D_chanAlimList.vue'
 import askTal from '../info/Tal_askTheAlim.vue'
 import talInfo from '../info/Tal_theAlimInfo.vue'
@@ -134,6 +138,7 @@ export default {
     parentPopN: {}
   },
   components: {
+    searchPage,
     memInfoCreEditPop,
     editMemberTypePop,
     setMypage,

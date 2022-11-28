@@ -296,7 +296,7 @@ export default {
       // 소문자로 변환
       fileExt = fileExt.toLowerCase()
       if (
-        ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'raw', 'svg'].includes(fileExt)
+        ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'raw', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
       ) {
         fileScr = '/resource/fileIcon/fileType_img.svg'
       } else if (

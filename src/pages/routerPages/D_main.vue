@@ -43,7 +43,7 @@
         <div v-if="this.mMainMChanList || this.mMainChanList" style="background: #FFFFFF; margin-top: 15px; padding: 20px; padding-right: 0; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
             <div v-if="this.mMainMChanList"  style="width: 100%; height: 30px; float: left;">
                 <img src="../../assets/images/main/main_settingIcon2.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
-                <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">내 관리 채널</p>
+                <p @click="goChannelPop('mychannel')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">내 관리 채널 ></p>
             </div>
             <div v-if="this.mMainMChanList" style="width: 100%; height: 85px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%; display:flex;">
@@ -53,12 +53,12 @@
             </div>
             <div v-if="this.mMainChanList" class="mtop-1 " style="width: 100%; height: 30px; float: left;">
                 <img src="../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
-                <p @click="goChannelPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">구독중인 채널</p>
+                <p @click="goChannelPop('user')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">구독중인 채널 ></p>
             </div>
             <div v-if="this.mMainChanList" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%; display:flex; gap: 10px;">
                     <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index" @openPop="openPop"/>
-                    <searchChanIcon @openPop="openPop" v-if="false" />
+                    <searchChanIcon @openPop="openPop" />
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@
           <div  style="width:100%; background-color: #E7EDFF; float:left;">
             <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; border-bottom: 2px; solid #F4F7FF!important; margin-top: 15px;">
               <img src="../../assets/images/main/main_contentsBellIcon2.png" style="float: left; margin-right: 8px;" class="img-w24" alt="">
-              <p @click="goContentListPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글</p>
+              <p @click="goContentListPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글 ></p>
             </div>
           </div>
           <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px; background: #F4F4F4; padding: 8px; " >
@@ -162,11 +162,18 @@ export default {
     this.mLoadingYn = false
   },
   methods: {
-    goChannelPop () {
-
+    goChannelPop (type) {
+      var openPopParam = {}
+      openPopParam.targetType = 'chanList'
+      openPopParam.popHeaderText = '채널'
+      openPopParam.channelTabType = type
+      this.openPop(openPopParam)
     },
     goContentListPop () {
-
+      var openPopParam = {}
+      openPopParam.targetType = 'pushList'
+      openPopParam.popHeaderText = '도착한 알림, 게시글'
+      this.openPop(openPopParam)
     },
     async getMainBoard () {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return

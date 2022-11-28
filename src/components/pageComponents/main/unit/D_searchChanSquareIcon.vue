@@ -13,7 +13,7 @@ export default {
   methods: {
     goSearchChannel () {
       var openPopParam = {}
-      openPopParam.targetType = 'searchChannel'
+      openPopParam.targetType = 'searchPop'
       openPopParam.popHeaderText = '채널 찾기'
       this.$emit('openPop', openPopParam)
     }

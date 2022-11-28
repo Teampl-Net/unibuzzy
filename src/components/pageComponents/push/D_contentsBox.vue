@@ -35,7 +35,17 @@
 
                     <p class="fr CLDeepGrayColor font12" style="line-height: 23px;">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
                     <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
-                    <p class="fr font14 lightGray mright-03" v-if="CONT_DETAIL.jobkindId === 'ALIM'" >{{CONT_DETAIL.rUserCount === -1 ? '전체' : CONT_DETAIL.rUserCount + '명' }}</p>
+                    <p class="fr font12 lightGray mright-03" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 3px; border-radius: 8px; display: flex; align-items: center;" >
+                      <pp class="font12 fl ">수신</pp>
+                      <span class="font12 mSide-02">{{'|'}}</span>
+                      <template v-if="CONT_DETAIL.rUserCount === -1">
+                        전체
+                      </template>
+                      <template v-else-if="CONT_DETAIL.rUserCount !== -1">
+                        <img src="../../../assets/images/footer/icon_people.svg" class="img-w10 fl" alt="">
+                        <p class="font12 fl mleft-01" style="line-height: 1; margin-top: 1px;">{{CONT_DETAIL.rUserCount}}</p>
+                      </template>
+                    </p>
                 </div>
                 <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
                   <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
@@ -98,21 +108,21 @@
         </template>
     </div>
     <div @click="mFilePopShowYn = false"  v-if="mFilePopShowYn"  style="width: 100%; height: 100%;     position: absolute;; background: #00000020; z-index: 2; top: 0;"></div>
-    <div v-if="mFilePopShowYn" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 2; overflow: hidden auto; position: absolute">
-      <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; ">
-        <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
-        <img @click="mFilePopShowYn = false"  src="../../../assets/images/common/grayXIcon.svg" style="position: absolute; right: 5px; top: 0px;" alt="">
-        <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
-          <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
-            <!-- <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p> -->
-            <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
-            <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
-            {{value.fileName}}
-            </a>
-          </div>
-        </templete>
+      <div v-if="mFilePopShowYn" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 2; overflow: hidden auto; position: absolute;">
+        <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; ">
+          <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
+          <img @click="mFilePopShowYn = false"  src="../../../assets/images/common/grayXIcon.svg" style="position: absolute; right: 5px; top: 0px;" alt="">
+          <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
+            <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
+              <!-- <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p> -->
+              <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
+              <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
+              {{value.fileName}}
+              </a>
+            </div>
+          </templete>
+        </div>
       </div>
-    </div>
 <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
 <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
 <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
@@ -180,14 +190,40 @@ export default {
     this.setContentsMoreText()
     this.setPreTagInFirstTextLine()
 
-    if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST) {
-      this.settingFileList()
-    }
+    // if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST) {
+    //   this.settingFileList()
+    // }
   },
   methods: {
-    clickFileDownload () {
-      this.mFilePopShowYn = !this.mFilePopShowYn
-      this.settingFileList()
+    async clickFileDownload () {
+      if (this.propDetailYn === true) {
+        // this.propDetailYn <- detail화면에서 true로 값을 보내고 있고, 디테일로 열었을 시 axios가 달라 filelist를 같이 보내주고 있으므로 아래의 else 함수가 필요하지 않음
+        this.$emit('fileDownload')
+      } else {
+        // mainList화면에서 실행한 axios에는 fileList가 없으므로 클릭시 리스트를 받아오기 위해 넣었습니다.
+        await this.getContentsDetail()
+        await this.settingFileList()
+        this.mFilePopShowYn = !this.mFilePopShowYn
+      }
+    },
+    async getContentsDetail () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.contentsKey = this.contentsEle.contentsKey
+      param.targetKey = this.contentsEle.contentsKey
+      param.jobkindId = this.contentsEle.jobkindId
+      param.userKey = this.GE_USER.userKey
+      param.ownUserKey = this.GE_USER.userKey
+      var resultList = await this.$getContentsList(param)
+      console.log(param)
+      console.log(resultList)
+      var detailData = resultList.content[0]
+      // // eslint-disable-next-line no-debugger
+      // detailData.D_CONT_USER_DO = await this.$settingUserDo(detailData.userDoList)
+      // if (!detailData.D_MEMO_LIST && (!detailData.memoList || detailData.memoList.length === 0)) detailData.D_MEMO_LIST = []
+      // // this.contentsEle = detailData
+
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
     async settingFileList () {
       try {
@@ -226,22 +262,31 @@ export default {
       }
     },
     setPreTagInFirstTextLine () {
+      // 본문 영역에 첫번째 줄이 사진이 아닐 경우 라인을 그어주기 위한 함수
       if (!window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)) return
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
 
       var contents = window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)
-      console.log(contents.childNodes)
-
+      // console.log(contents.childNodes)
       if (contents.childNodes.length > 0) {
-        var child = contents.childNodes[0]
+        var i = 0
+        var child = contents.childNodes[i]
+
+        while (child.innerText === '') {
+          child = contents.childNodes[i]
+          i += 1
+        }
+        // console.log(child.innerText)
         if (child.id === 'formEditText') {
-          // child.classList.add('firstTextLine')
-          var tempDiv = document.createElement('div')
-          tempDiv.classList.add('firstTextLine')
-          child.prepend(tempDiv)
-          console.log('통과')
+          // 밑에 체크를 안해주면 중복으로 줄이 생김
+          var tempCheck = window.document.getElementById('firstTextLine' + this.contentsEle.contentsKey)
+          if (tempCheck === undefined || tempCheck === null) {
+            var tempDiv = document.createElement('div')
+            tempDiv.id = 'firstTextLine' + this.contentsEle.contentsKey
+            tempDiv.classList.add('firstTextLine')
+            child.prepend(tempDiv)
+          }
         } else {
-          console.log('미통과')
         }
       }
     },
@@ -297,7 +342,7 @@ export default {
     writeMeMemo (memoObj) {
       this.mMememoValue = {}
       this.mMememoValue = memoObj
-      console.log(this.mMememoValue)
+      // console.log(this.mMememoValue)
       this.$refs.gMemoRef.setMememo(memoObj)
     },
     memoEmitFunc (emitData) {
