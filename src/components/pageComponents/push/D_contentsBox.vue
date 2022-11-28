@@ -74,7 +74,8 @@
                             data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
                                 :data-clipboard-text="CONT_DETAIL.copyTextStr">
                     </div>
-                    <div @click="this.$emit('fileDownload')" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                    <!-- this.$emit('fileDownload') -->
+                    <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                         <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                     </div>
@@ -95,6 +96,22 @@
             <!-- 밑에는 댓글 작성 창 -->
             <gMemoPop style="position: fixed; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
         </template>
+    </div>
+    <div @click="mFilePopShowYn = false"  v-if="mFilePopShowYn"  style="width: 100%; height: 100%;     position: absolute;; background: #00000020; z-index: 2; top: 0;"></div>
+    <div v-if="mFilePopShowYn" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 2; overflow: hidden auto; position: absolute">
+      <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; ">
+        <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
+        <img @click="mFilePopShowYn = false"  src="../../../assets/images/common/grayXIcon.svg" style="position: absolute; right: 5px; top: 0px;" alt="">
+        <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
+          <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
+            <!-- <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p> -->
+            <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
+            <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
+            {{value.fileName}}
+            </a>
+          </div>
+        </templete>
+      </div>
     </div>
 <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
 <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
@@ -124,6 +141,7 @@ export default {
   },
   data () {
     return {
+      mFilePopShowYn: false,
       mLoadingShowYn: false,
       mContMenuShowYn: false,
       mConfirmText: '',
@@ -161,8 +179,52 @@ export default {
     }
     this.setContentsMoreText()
     this.setPreTagInFirstTextLine()
+
+    if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST) {
+      this.settingFileList()
+    }
   },
   methods: {
+    clickFileDownload () {
+      this.mFilePopShowYn = !this.mFilePopShowYn
+      this.settingFileList()
+    },
+    async settingFileList () {
+      try {
+        console.log(this.CONT_DETAIL)
+        // eslint-disable-next-line no-debugger
+        debugger
+
+        if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
+          var attachFileList = []
+          for (var a = 0; a < this.CONT_DETAIL.attachFileList.length; a++) {
+            if (this.CONT_DETAIL.attachFileList[a].attachYn) {
+              attachFileList.push(this.CONT_DETAIL.attachFileList[a])
+            }
+          }
+          var bodyImgFileList = []
+          var addFalseImgList = document.querySelectorAll('#contentsBodyArea .formCard .addFalse')
+          if (addFalseImgList) {
+            for (var s = 0; s < this.CONT_DETAIL.attachFileList.length; s++) {
+              var attFile = this.CONT_DETAIL.attachFileList[s]
+              for (var i = 0; i < addFalseImgList.length; i++) {
+                if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
+                  addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
+                  bodyImgFileList.push(attFile)
+                  break
+                }
+              }
+            }
+          }
+          var cont = this.CONT_DETAIL
+          cont.D_ATTATCH_FILE_LIST = attachFileList
+          cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
+          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
     setPreTagInFirstTextLine () {
       if (!window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)) return
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return

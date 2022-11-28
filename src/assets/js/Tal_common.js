@@ -345,7 +345,7 @@ export const commonMethods = {
     }
 
     var result = await commonAxiosFunction({
-      url: 'service/tp.getShortDynamicLink',
+      url: 'https://mo.d-alim.com/service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     })
     console.log(JSON.parse(result.data.shortLink))
@@ -1020,6 +1020,50 @@ export const commonMethods = {
       str = str.replaceAll('formCard formText ', 'formCard formText completeWork ')
     }
     return str
+  },
+  settingFileIcon (fileName) {
+    let fileExt = fileName.substring(
+      fileName.lastIndexOf('.') + 1
+    )
+    var fileScr = ''
+    // 소문자로 변환
+    fileExt = fileExt.toLowerCase()
+    if (
+      ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'raw', 'svg'].includes(fileExt)
+    ) {
+      fileScr = '/resource/fileIcon/fileType_img.svg'
+    } else if (
+      ['mp4', 'avi', 'mov'].includes(fileExt)
+    ) {
+      fileScr = '/resource/fileIcon/fileType_mov.svg'
+    } else if (
+      ['mp3', 'wav'].includes(fileExt)
+    ) {
+      fileScr = '/resource/fileIcon/fileType_music.svg'
+    } else if (
+      ['xls'].includes(fileExt)
+    ) {
+      fileScr = '/resource/fileIcon/fileType_excel.svg'
+    } else if (
+      ['pdf'].includes(fileExt)
+    ) {
+      fileScr = '/resource/fileIcon/fileType_pdf.svg'
+    } else if (
+      ['ppt'].includes(fileExt)
+    ) {
+      fileScr = '/resource/fileIcon/fileType_ppt.svg'
+    } else if (
+      ['doc'].includes(fileExt)
+    ) {
+      fileScr = '/resource/fileIcon/fileType_doc.svg'
+    } else if (
+      ['zip'].includes(fileExt)
+    ) {
+      fileScr = '/resource/fileIcon/fileType_zip.svg'
+    } else {
+      fileScr = '/resource/fileIcon/fileType_common.svg'
+    }
+    return fileScr
   }
 }
 
@@ -1078,5 +1122,6 @@ export default {
     Vue.config.globalProperties.$gobackDev = commonMethods.gobackDev
     Vue.config.globalProperties.$notPerText = commonMethods.notPerText
     Vue.config.globalProperties.$setBodyLength = commonMethods.setBodyLength
+    Vue.config.globalProperties.$settingFileIcon = commonMethods.settingFileIcon
   }
 }

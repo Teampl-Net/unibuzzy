@@ -443,7 +443,6 @@ export default {
     },
     openWritePushPop () {
       var history = this.$store.getters['D_HISTORY/hStack']
-      alert(this.mPushListMainTab)
       if (this.mPushListMainTab === 'A') {
         this.writeBottSheetYn = true
         return
