@@ -6,7 +6,7 @@
       <div class="fr textLeft font12 commonBlack tempLeftTabBtn fontBold" style="margin-top: 3px; margin-right: 10px;" @click="closePop">{{tempBackImg}}</div>
     </div>
 
-    <templine class="fl" style="border-bottom:1px solid #ccc; width:100%; height:1px;" />
+    <div class="fl" style="border-bottom:1px solid #ccc; width:100%; height:1px;" />
 
     <div class="fl w-100P  " style="position: relative; padding: 0 20px; padding-right: 0;">
       <div v-for="(list, index) in mMemberTypeList" :key="index" class="fl w-100P" style="padding: 10px 0;">
@@ -61,6 +61,7 @@ export default {
     addMemberType (data) {
       console.log(data)
       this.$emit('addMemberType', data)
+      this.addInputPopYn = false
     },
     cardEmit (param) {
       console.log(param)

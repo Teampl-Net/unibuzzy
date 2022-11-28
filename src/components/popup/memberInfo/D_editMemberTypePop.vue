@@ -2,7 +2,7 @@
   <div  class="pSide-15 ptop-50 wh-100P" style="overflow-x: scroll; white-space:nowrap;" :style="leftShowYn === true ? 'padding: 50px 0 0 0; display: flex;' : ''">
     <leftTab ref="editMemPopRef" v-show="leftShowYn" :class="{'ani-leftIn': leftShowYn === true, 'ani-leftOut': leftShowYn === false}" :propMemberTypeList='mMemberTypeList' @changeTab='changeTab' @addMemberType='saveMemberType' @closePop='leftBack()' />
 
-    <memberTypeDetail ref="memberTypeDetail" @addQuestion="addQuestion" @editQue="editQue" :propMemberTypeDetail="mSelectedMemberTypeObj" :key="reloadKey" :propLeftYn='leftShowYn' @showLeftBar='showLeftBar' />
+    <memberTypeDetail ref="memberTypeDetail" @addQuestion="addQuestion" @deleteQue="deleteQuestion" @editQue="editQue" :propMemberTypeDetail="mSelectedMemberTypeObj" :key="reloadKey" :propLeftYn='leftShowYn' @showLeftBar='showLeftBar' @deleteType='deleteMemberType' />
   </div>
 </template>
 <script>
@@ -39,6 +39,37 @@ export default {
       this.leftShowYn = true
       this.reloadKey += 1
     },
+    async deleteQuestion (deleteData) {
+      console.log(deleteData)
+
+      var deleteParam = {}
+      deleteParam.itemKey = parseInt(deleteData.data.itemKey)
+      var deleteResult = await this.$commonAxiosFunction({
+        url: 'service/tp.deteteMemberTypeItem',
+        param: deleteParam
+      })
+      console.log(deleteResult)
+
+      await this.getMemberTypeList()
+      // this.reloadKey += 1
+    },
+    async deleteMemberType (deleteData) {
+      console.log(deleteData)
+
+      var deleteParam = {}
+      deleteParam.memberTypeKey = deleteData.memberTypeKey
+      var deleteResult = await this.$commonAxiosFunction({
+        url: 'service/tp.deteteMemberType',
+        param: deleteParam
+      })
+      console.log(deleteResult)
+
+      await this.getMemberTypeList()
+      this.$nextTick(() => {
+        this.$refs.editMemPopRef.changeTab(this.mMemberTypeList[0], 0)
+      })
+      // this.reloadKey += 1
+    },
     async saveMemberType (data) {
       // eslint-disable-next-line no-new-object
       var saveParam = new Object()
@@ -52,8 +83,8 @@ export default {
         param: { member: saveParam }
       })
       console.log(saveMemberType)
-      // eslint-disable-next-line no-debugger
-      debugger
+      this.getMemberTypeList()
+      // this.reloadKey += 1
     },
     async getMemberTypeList () {
       // eslint-disable-next-line no-new-object
@@ -65,9 +96,6 @@ export default {
       })
       if (memberTypeList.data.result) {
         this.mMemberTypeList = memberTypeList.data.memberTypeList
-        this.$nextTick(() => {
-          this.$refs.editMemPopRef.changeTab(this.mMemberTypeList[0], 0)
-        })
       }
       // eslint-disable-next-line no-debugger
       debugger
@@ -85,8 +113,11 @@ export default {
         this.leftShowYn = false
       }, 300)
     },
-    readyFunc () {
-      this.getMemberTypeList()
+    async readyFunc () {
+      await this.getMemberTypeList()
+      this.$nextTick(() => {
+        this.$refs.editMemPopRef.changeTab(this.mMemberTypeList[0], 0)
+      })
     },
     addQuestion () {
       if (!this.propData.teamKey) return

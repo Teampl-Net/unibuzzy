@@ -69,20 +69,21 @@ export default {
       console.log(param)
       var type = param.targetType
       var data = param.data
-      var idx = param.index
+      // var idx = param.index
       console.log(data)
       if (type === 'editQue') {
         this.$emit('editQue', param)
       } else if (type === 'deleteQue') {
-        this.tempDelQue(data, idx)
+        // this.tempDelQue(data, idx)
+        this.$emit('deleteQue', param)
         // this.$emit('deleteQue', param)
       }
     },
-    tempDelQue (data, index) {
-      console.log(data)
-      this.queList.splice(index, 1)
-      this.queListReloadKey += 1
-    },
+    // tempDelQue (data, index) {
+    //   console.log(data)
+    //   this.memberTypeItemList.splice(index, 1)
+    //   this.queListReloadKey += 1
+    // },
     closePop () {
     // 추후 back버튼을 위해 history관리가 들어와야함
       this.$emit('closePop')

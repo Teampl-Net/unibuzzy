@@ -42,8 +42,11 @@ export default {
       console.log('gggggggggggggggggggg')
       console.log(this.propData)
       param.cabinet = this.propData.cabinet
-      param.cabinet.cabinetNameMtext = this.inputAddressBookName
 
+      delete param.cabinet.mUserList // mUserList가 있으면 서비스에서 모델 바인딩할 때 에러 납니다.
+
+      param.cabinet.cabinetNameMtext = this.inputAddressBookName
+      console.log(param)
       try {
         var result
         result = await this.$saveCabinet(param)
