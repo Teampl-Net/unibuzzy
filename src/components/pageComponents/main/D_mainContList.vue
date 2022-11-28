@@ -254,7 +254,7 @@ export default {
               returnContsList.push(this_.mContsList[i])
             } else {
               chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
-              if (this.mContsList[i].jobkindId === 'ALIM') {
+              if (this_.mContsList[i].jobkindId === 'ALIM') {
                 dataList = chanDetail.ELEMENTS.alimList
               } else {
                 dataList = chanDetail.ELEMENTS.boardList

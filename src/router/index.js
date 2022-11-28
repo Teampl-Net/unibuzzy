@@ -38,6 +38,7 @@ import myPage from '../pages/routerPages/D_myPage.vue'
 // import suminTest from '../components/unit/formEditor/Tal_attachFile.vue'
 import admLogin from '../pages/intro/Tal_Adm_login.vue'
 import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue'
+import certiPhone from '../components/pageComponents/intro/D_certi_phone.vue'
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
 const routes = [
   {
@@ -215,6 +216,12 @@ const routes = [
     name: 'saveName',
     props: true,
     component: saveName
+  },
+  {
+    path: '/certiPhone',
+    name: 'certiPhone',
+    props: true,
+    component: certiPhone
   }/* ,
   {
     path: '/test',
