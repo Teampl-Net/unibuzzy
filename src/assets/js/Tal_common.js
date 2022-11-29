@@ -537,6 +537,33 @@ export const commonMethods = {
       return true
     }
   },
+  /**
+   * 현재 3바이트 이모지는 입력이 되지만 4바이트 이모지는 입력이 되지 않으므로 삭제해주는 함수입니다.
+   * @url https://cirius.tistory.com/1769
+   */
+  deleteEmoji (text) {
+    // eslint-disable-next-line
+    const reg = /\F0[\90-\BF][\80-\BF]{2}|[\F1-\F3][\80-\BF]{3}|\F4[\80-\8F][\80-\BF]{2}/g
+    var changeText
+    changeText = text.replace(reg, '')
+    return changeText
+  },
+  cutText (text, maxLength) {
+    // reg = 모든 태그 제거
+    const reg = /<[^>]*>?/g
+    // regLn = 줄바꿈 등 글자수에 관계없는 text 제거
+    const regLn = /\r\n|\r|\n|&gt;|&lt;/g
+    var cutText = text.replace(reg, '')
+    cutText = cutText.replace(regLn, '')
+    cutText = cutText.trimLeft()
+    if (cutText === '') return
+    // console.log(cutText)
+
+    var maxNum = parseInt(maxLength)
+    cutText = cutText.length > maxNum ? cutText.substring(0, maxNum) + '..' : cutText.substring(0, maxNum)
+    return cutText
+  },
+
   titleToBody (inHtml) {
     // // eslint-disable-next-line no-debugger
     // debugger
@@ -1094,8 +1121,8 @@ export const commonMethods = {
     this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
     return D_CONT_USER_DO
   },
+  // 지연 시킬 타임과 함수를 넣으면 해당 시간이 지난 후 그 함수를 실행합니다.
   async delayAfterFunc (delayTime, afterFunc) {
-    // 지연 시킬 타임과 함수를 넣으면 해당 시간이 지난 후 그 함수를 실행합니다.
     const delay = (time) => new Promise((resolve) => setTimeout(() => resolve(), time))
     await delay(delayTime)
     afterFunc()
@@ -1159,6 +1186,8 @@ export default {
     Vue.config.globalProperties.$setBodyLength = commonMethods.setBodyLength
     Vue.config.globalProperties.$settingFileIcon = commonMethods.settingFileIcon
     Vue.config.globalProperties.$settingUserDo = commonMethods.settingUserDo
-    Vue.config.globalProperties.$delayFunc = commonMethods.delayFunc
+    Vue.config.globalProperties.$delayAfterFunc = commonMethods.delayAfterFunc
+    Vue.config.globalProperties.$cutText = commonMethods.cutText
+    Vue.config.globalProperties.$deleteEmoji = commonMethods.deleteEmoji
   }
 }

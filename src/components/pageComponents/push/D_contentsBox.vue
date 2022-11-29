@@ -64,18 +64,23 @@
             <div class="contentsCardUserDoArea" style="width: 100%; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 15px; padding: 0 20px;">
                 <div style="float: left; width: 50%; height: 100%;">
                     <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="img-w20" src="../../../assets/images/contents/icon_heart_red.png" alt="">
-                        <img v-else src="../../../assets/images/contents/icon_heart_on.png" alt="" class="img-w20">
-                        <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.likeCount}}</p>
+                      <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="img-w20" src="../../../assets/images/contents/icon_heart_red.png" alt="">
+                      <img v-else src="../../../assets/images/contents/icon_heart_on.png" alt="" class="img-w20">
+                      <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.likeCount}}</p>
                     </div>
                     <div  @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" class="img-w17" src="../../../assets/images/contents/icon_scrap.png" alt="">
-                        <img v-else src="../../../assets/images/contents/icon_scrap_on.png" alt="" class="img-w17">
-                        <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.starCount}}</p>
+                      <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" class="img-w17" src="../../../assets/images/contents/icon_scrap.png" alt="">
+                      <img v-else src="../../../assets/images/contents/icon_scrap_on.png" alt="" class="img-w17">
+                      <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.starCount}}</p>
                     </div>
                     <div @click="goContentsDetail()" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <img  src="../../../assets/images/contents/icon_memo.png" class="img-w20" alt="">
-                        <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
+                      <img  src="../../../assets/images/contents/icon_memo.png" class="img-w20" alt="">
+                      <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
+                    </div>
+                    <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                      <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w17" alt="">
+                      <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
+                      <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.fileList}}</p>
                     </div>
                 </div>
                 <div style="float: right; width: 50%; height: 100%; float: left;">
@@ -85,10 +90,10 @@
                                 :data-clipboard-text="CONT_DETAIL.copyTextStr">
                     </div>
                     <!-- this.$emit('fileDownload') -->
-                    <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                    <!-- <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                         <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
-                    </div>
+                    </div> -->
                     <div @click="subScribeContents" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/contents/icon_bell_on.png" class="img-w20" alt="">
                         <img v-else src="../../../assets/images/contents/icon_bell.png" class="img-w20" alt="">
@@ -107,27 +112,31 @@
             <gMemoPop style="position: fixed; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
         </template>
     </div>
-    <div @click="mFilePopShowYn = false"  v-if="mFilePopShowYn"  style="width: 100%; height: 100%;     position: absolute;; background: #00000020; z-index: 2; top: 0;"></div>
-      <div v-if="mFilePopShowYn" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 2; overflow: hidden auto; position: absolute;">
-        <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; ">
-          <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
-          <img @click="mFilePopShowYn = false"  src="../../../assets/images/common/grayXIcon.svg" style="position: absolute; right: 5px; top: 0px;" alt="">
-          <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
-            <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
-              <!-- <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p> -->
-              <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
-              <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
-              {{value.fileName}}
-              </a>
-            </div>
-          </templete>
-        </div>
+    <div @click="mFilePopShowYn = false"  v-if="mFilePopShowYn === true"  style="width: 100vw; height: 100vh; position: absolute;; background: #00000020; z-index: 999; top: 0;"></div>
+    <div id="dlTskdy" v-if="this.mFilePopShowYn === true" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 999; overflow: hidden auto; position: absolute;">
+      <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; ">
+        <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
+        <img @click="mFilePopShowYn = false"  src="../../../assets/images/common/grayXIcon.svg" style="position: absolute; right: 5px; top: 0px;" alt="">
+        <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
+          <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
+            <!-- <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p> -->
+            <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
+            <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
+            {{value.fileName}}
+            </a>
+          </div>
+        </templete>
       </div>
-<gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
-<gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
-<statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
-<gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" v-if="mSelectBoardPopShowYn" :boardDetail="mMoveContentsDetailValue" />
-<imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
+    </div>
+  <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
+  <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
+  <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
+  <div v-if="mSelectBoardPopShowYn === true" style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 999; top: 0; left: 0" />
+  <div v-if="mSelectBoardPopShowYn === true" style="width: 100vw; height: 100vh; position: fixed;  z-index: 999; top: 0; left: 0 ">
+    <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" :boardDetail="mMoveContentsDetailValue" />
+  </div>
+  <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
+
 <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
 </template>
 <script>
@@ -197,21 +206,24 @@ export default {
   methods: {
     async clickFileDownload () {
       if (this.propDetailYn === true) {
+        // alert(1)
         // this.propDetailYn <- detail화면에서 true로 값을 보내고 있고, 디테일로 열었을 시 axios가 달라 filelist를 같이 보내주고 있으므로 아래의 else 함수가 필요하지 않음
-        this.$emit('fileDownload')
+        // this.$emit('fileDownload')
       } else {
         // mainList화면에서 실행한 axios에는 fileList가 없으므로 클릭시 리스트를 받아오기 위해 넣었습니다.
         await this.getContentsDetail()
         await this.settingFileList()
-        this.mFilePopShowYn = !this.mFilePopShowYn
+        // this.mFilePopShowYn = true
+        // alert(true)
       }
+      this.$emit('fileDownload', this.propContIndex)
     },
     async getContentsDetail () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.contentsKey = this.contentsEle.contentsKey
-      param.targetKey = this.contentsEle.contentsKey
-      param.jobkindId = this.contentsEle.jobkindId
+      param.contentsKey = this.CONT_DETAIL.contentsKey
+      param.targetKey = this.CONT_DETAIL.contentsKey
+      param.jobkindId = this.CONT_DETAIL.jobkindId
       param.userKey = this.GE_USER.userKey
       param.ownUserKey = this.GE_USER.userKey
       var resultList = await this.$getContentsList(param)
@@ -436,6 +448,18 @@ export default {
         this.textCopy()
       }
     },
+    editBoard () {
+      var param = {}
+      param.targetKey = this.CONT_DETAIL.contentsKey
+      param.targetType = 'writeContents'
+      param.contentsJobkindId = 'BOAR'
+      param.creTeamKey = this.CONT_DETAIL.creTeamKey
+      if (this.CONT_DETAIL.attachMfilekey) { param.attachMfilekey = this.CONT_DETAIL.attachMfilekey }
+      param.bodyFullStr = this.CONT_DETAIL.bodyFullStr
+      param.modiContentsKey = this.CONT_DETAIL.contentsKey
+      param.titleStr = this.CONT_DETAIL.title
+      this.$emit('openPop', param)
+    },
     deleteConfirm () {
       if (this.contentsEle.jobkindId === 'ALIM') {
         this.mConfirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
@@ -481,7 +505,7 @@ export default {
     },
     moveOrCopyContent (type) {
       this.mSelectBoardType = type
-      this.mMoveContentsDetailValue = this.contentsEle
+      this.mMoveContentsDetailValue = this.CONT_DETAIL
       this.mSelectBoardPopShowYn = true
     },
     closeSelectBoardPop () {

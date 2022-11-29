@@ -196,9 +196,9 @@ input, select {
   cursor: pointer;
   display: block;
   position: absolute;
-  right: 0;
+  right: 5px;
 
-  width: 4px;
+  width: 5px;
   height: 10px;
 }
 .thinScrollBar::-webkit-scrollbar-thumb {
@@ -419,12 +419,12 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 
 .CWhiteGrayColor{ color: #F5F5F9 !important; }
 .CWhiteGrayBgColor{ background-color: #F5F5F9 !important;}
-.CWhiteGrayBoarderColor{ border: 1px solid #F5F5F9 !important;}
+.CWhiteGrayBorderColor{ border: 1px solid #F5F5F9 !important;}
 
 
 .CWDeepGrayColor{ color: #A7A7A7 !important; }
 .CWDeepGrayBgColor{ background-color: #A7A7A7 !important;}
-.CWDeepGrayBoarderColor{ border: 1px solid #A7A7A7 !important;}
+.CWDeepGrayBorderColor{ border: 1px solid #A7A7A7 !important;}
 
 .CBaseColor{ color: #6768A8 !important; }
 .CBaseBgColor{ background-color: #6768A8 !important;}

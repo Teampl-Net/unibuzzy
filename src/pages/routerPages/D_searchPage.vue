@@ -4,7 +4,7 @@
     <div class="w-100P h-100P" style=" overflow:auto; margin-bottom: 1rem;">
       <div class="searchBodyTop pSide-1" style="background: white">
         <div class="fl w-100P" style="height: 30px; float: left;">
-          <img src="../../assets/images/main/icon_3d_search.png" style="float: left; margin-right: 8px;" class="img-w27" alt="">
+          <img src="../../assets/images/main/icon_3d_search.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
           <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">무엇을 찾고 계신가요?</p>
         </div>
         <!-- input Box -->
@@ -15,13 +15,15 @@
         </div>
 
         <!-- input 박스에 포커스가 되면 최근 검색이 등장 -->
-        <template v-if="mInputFocusYn === true && mSearchHistoryList.length > 0">
+        <template v-if="mInputFocusYn === true">
+          <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft mtop-05">최근 검색어</p>
           <div class="fl w-100P pSide-05 thinScrollBar" style="max-height:200px; overflow: auto">
             <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style=" padding: 10px 0; border-bottom:1px solid #CCCCCC90; ">
               <p class="fl font14 grayBlack textLeft" style="width: calc(100% - 20px)" @click="mInputText = data, findData()">{{data}}</p>
               <img src="../../assets/images/common/grayXIcon.svg" @click="searchHistoryDelete(index)" class="fr img-w10 mtop-03" alt="">
             </div>
           </div>
+          <p v-if="mSearchHistoryList.length === 0" class="w-100P fl mtop-2 mbottom-2 font16 lightGray textCenter">최근 검색한 결과가 없어요</p>
           <p v-if="mSearchHistoryList.length > 0" class="fr font12 lightGray mtop-05 pSide-05" @click="searchHistoryClear()">전체삭제</p>
         </template>
 
@@ -37,7 +39,7 @@
       <!-- 채널 추천 영역 -->
       <div class="wh-100P fl mtop-1 ptop-1" style="background: white; ">
         <div class="fl w-100P pSide-1" style="height: 30px; float: left;">
-          <img src="../../assets/images/main/icon_3d_star.png" style="float: left; margin-right: 8px;" class="img-w27" alt="">
+          <img src="../../assets/images/main/icon_3d_star.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
           <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">채널을 추천해드릴게요!</p>
         </div>
         <div class="w-100P fl pSide-1" >

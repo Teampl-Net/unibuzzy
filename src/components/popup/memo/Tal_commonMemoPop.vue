@@ -11,12 +11,13 @@
 
     <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px; line-height: 80px; margin-top: 1rem" class="fl mright-02" alt="">
 
-    <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;">
-      <pre placeholder="댓글을 작성해주세요." @focus="test" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding" :class="{width65: meMemoData !== null}" style="width:calc(100% - 50px); min-height:2.5rem; text-align:left; float: left; resize: none;"  contenteditable=true />
-      <div style="position: absolute; right:1rem; width: 30px; height: 100%; display: flex;">
-        <img @click="saveMemo" src="../../../assets/images/common/icon_send.svg" alt="" class="fl img-w35">
-      </div>
-    </div>
+    <!-- <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;"> -->
+      <pre placeholder="댓글을 작성해주세요." @focus="test" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding " :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}" style="width:calc(100% - 40px); min-height:2.5rem; text-align:left; float: left; resize: none; border-radius: 10px; border: 1px solid #a7a7a7"  contenteditable=true  @input="inputTextCheck"/>
+      <!-- <div style="width: 30px; height: 100%;"> -->
+      <img v-if="mWatchInputData.trim() !== ''" @click="saveMemo()" src="../../../assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mtop-05 mleft-05">
+      <img v-else @click="$showToastPop('댓글을 작성해주세요.')" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mtop-05 mleft-05">
+      <!-- </div> -->
+    <!-- </div> -->
   </div>
 </template>
 
@@ -32,16 +33,20 @@ export default {
     return {
       memoText: '',
       meMemoData: null,
-      okResetYn: false
+      okResetYn: false,
+      mWatchInputData: ''
     }
   },
   updated () {
-    this.settingPop()
+    // this.settingPop()
   },
   mounted () {
     this.settingPop()
   },
   methods: {
+    inputTextCheck (e) {
+      this.mWatchInputData = e.target.innerText
+    },
     test () {
       if (this.$checkMobile() === 'IOS') {
         this.$emit('writeMemoScrollMove')
@@ -140,6 +145,7 @@ export default {
         inputMemoArea.classList.remove('memoTextPadding')
         var html = inputMemoArea.innerHTML
         html = this.$findUrlChangeAtag(html)
+        html = this.$deleteEmoji(html)
         this.$emit('saveMemoText', html)
         inputMemoArea.classList.add('memoTextPadding')
       } else {

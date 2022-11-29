@@ -4,7 +4,7 @@
             <p class="commonBlack textLeft font14 fontBold">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
         </div>
         <div style="width: calc(100% - 100px); min-height: 20px;" @click="emit({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
-            <p class="commonBlack textLeft font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)"></p>
+            <p class="commonBlack textLeft font14" v-html="$cutText($decodeHTML(propMemoEle.bodyFullStr), 80)"></p>
         </div>
     </div>
     <div v-else-if="propMemoEle" style="width: 100%; float: left; height: 100%; margin-bottom: 20px; border-bottom: 1px solid #cccccc50;">

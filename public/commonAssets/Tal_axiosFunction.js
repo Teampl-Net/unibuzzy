@@ -190,6 +190,7 @@ export const methods = {
 
     paramMap.set('mobileYn', isMobile())
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
+    if (result.data.resultCode === undefined) return
     console.log(result.data.resultCode)
     console.log('result~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
     if (result.data.resultCode === 'OK') {
