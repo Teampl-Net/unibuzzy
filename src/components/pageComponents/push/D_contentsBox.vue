@@ -112,14 +112,23 @@
             <gMemoPop style="position: fixed; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
         </template>
     </div>
-    <div @click="mFilePopShowYn = false"  v-if="mFilePopShowYn === true"  style="width: 100vw; height: 100vh; position: absolute;; background: #00000020; z-index: 999; top: 0;"></div>
-    <div id="dlTskdy" v-if="this.mFilePopShowYn === true" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 999; overflow: hidden auto; position: absolute;">
+  <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
+  <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
+  <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
+  <div v-if="mSelectBoardPopShowYn === true" style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 999; top: 0; left: 0" />
+  <div v-if="mSelectBoardPopShowYn === true" style="width: 100vw; height: 100vh; position: fixed;  z-index: 999; top: 0; left: 0 ">
+    <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" :boardDetail="mMoveContentsDetailValue" />
+  </div>
+
+  <div @click="mFilePopShowYn = false"  v-if="mFilePopShowYn === true"  style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 999; top: 0; left: 0"></div>
+  <div v-if="this.mFilePopShowYn === true" style="width: 100vw; height: 100vh; position: fixed;  z-index: 999; top: 0; left: 0 ">
+    <div style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 999; overflow: hidden auto; position: absolute;">
       <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; ">
         <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
         <img @click="mFilePopShowYn = false"  src="../../../assets/images/common/grayXIcon.svg" style="position: absolute; right: 5px; top: 0px;" alt="">
+
         <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
           <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
-            <!-- <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p> -->
             <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
             <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
             {{value.fileName}}
@@ -128,13 +137,8 @@
         </templete>
       </div>
     </div>
-  <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
-  <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
-  <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
-  <div v-if="mSelectBoardPopShowYn === true" style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 999; top: 0; left: 0" />
-  <div v-if="mSelectBoardPopShowYn === true" style="width: 100vw; height: 100vh; position: fixed;  z-index: 999; top: 0; left: 0 ">
-    <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" :boardDetail="mMoveContentsDetailValue" />
   </div>
+
   <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
 
 <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
@@ -208,15 +212,14 @@ export default {
       if (this.propDetailYn === true) {
         // alert(1)
         // this.propDetailYn <- detail화면에서 true로 값을 보내고 있고, 디테일로 열었을 시 axios가 달라 filelist를 같이 보내주고 있으므로 아래의 else 함수가 필요하지 않음
-        // this.$emit('fileDownload')
+        this.$emit('fileDownload')
       } else {
         // mainList화면에서 실행한 axios에는 fileList가 없으므로 클릭시 리스트를 받아오기 위해 넣었습니다.
         await this.getContentsDetail()
         await this.settingFileList()
-        // this.mFilePopShowYn = true
+        this.mFilePopShowYn = true
         // alert(true)
       }
-      this.$emit('fileDownload', this.propContIndex)
     },
     async getContentsDetail () {
       // eslint-disable-next-line no-new-object

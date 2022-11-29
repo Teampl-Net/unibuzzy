@@ -61,11 +61,8 @@ export default {
   },
   methods: {
     fileDownload (index) {
-      alert(1)
       this.mFilePopData = this.GE_DISP_CONTS_LIST[index]
-      alert(2)
       this.mFilePopYn = !this.mFilePopYn
-      alert(3)
     },
     contDelete (contentIndex) {
       // console.log(contentIndex)
