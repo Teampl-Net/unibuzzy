@@ -268,27 +268,7 @@ export default {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mContsList[i].creTeamKey)
         if (idx1 === -1) {
           var this_ = this
-          var teamKey = this.mContsList[i].creTeamKey
-          // eslint-disable-next-line vue/no-async-in-computed-properties
-          this.$addChanList(teamKey).then((res) => {
-            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
-            if (idx1 === -1) {
-              returnContsList.push(this_.mContsList[i])
-            } else {
-              chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
-              if (this_.mContsList[i].jobkindId === 'ALIM') {
-                dataList = chanDetail.ELEMENTS.alimList
-              } else {
-                dataList = chanDetail.ELEMENTS.boardList
-              }
-              idx2 = dataList.findIndex((item) => item.contentsKey === this_.mContsList[i].contentsKey)
-              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-              // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
-              if (idx2 !== -1) {
-                this_.mContsList[i] = dataList[idx2]
-              }
-            }
-          })
+          returnContsList.push(this_.mContsList[i])
         } else {
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
           if (this.mContsList[i].jobkindId === 'ALIM') {
@@ -299,13 +279,15 @@ export default {
           idx2 = dataList.findIndex((item) => item.contentsKey === this.mContsList[i].contentsKey)
           if (idx2 !== -1) {
             // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            this.mContsList[i] = dataList[idx2]
+            // this.mContsList[i] = dataList[idx2]
+            returnContsList.push(dataList[idx2])
           } else {
+            returnContsList.push(this.mContsList[i])
           }
         }
       }
 
-      return this.replaceArr(this.mContsList)
+      return this.replaceArr(returnContsList)
     },
     GE_NEW_MEMO_LIST (state) {
       return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
@@ -324,7 +306,7 @@ export default {
         console.log('mContsList')
         console.log(this.mContsList)
         // 메인화면으로 처음 진입했을 때 리스트를 받아오고 다시 못 그려주기에 추가
-        this.mReloadKey += 1
+        // this.mReloadKey += 1
       }
     },
     // mContsList: {
