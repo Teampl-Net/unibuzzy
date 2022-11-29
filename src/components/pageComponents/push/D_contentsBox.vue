@@ -62,7 +62,7 @@
         </div>
         <template v-if="((CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)">
             <div class="contentsCardUserDoArea" style="width: 100%; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 15px; padding: 0 20px;">
-                <div style="float: left; width: 50%; height: 100%;">
+                <div style="float: left; width: calc(100% - 70px); height: 100%;">
                     <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                       <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="img-w20" src="../../../assets/images/contents/icon_heart_red.png" alt="">
                       <img v-else src="../../../assets/images/contents/icon_heart_on.png" alt="" class="img-w20">
@@ -83,7 +83,7 @@
                       <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.fileList}}</p>
                     </div>
                 </div>
-                <div style="float: right; width: 50%; height: 100%; float: left;">
+                <div style="float: right; width: 90px; height: 100%; float: left;">
                     <div style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <img src="../../../assets/images/contents/icon_share.png" class="img-w20 fl" alt="공유 아이콘"
                             data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
@@ -118,25 +118,6 @@
   <div v-if="mSelectBoardPopShowYn === true" style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 999; top: 0; left: 0" />
   <div v-if="mSelectBoardPopShowYn === true" style="width: 100vw; height: 100vh; position: fixed;  z-index: 999; top: 0; left: 0 ">
     <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" :boardDetail="mMoveContentsDetailValue" />
-  </div>
-
-  <div @click="mFilePopShowYn = false"  v-if="mFilePopShowYn === true"  style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 999; top: 0; left: 0"></div>
-  <div v-if="this.mFilePopShowYn === true" style="width: 100vw; height: 100vh; position: fixed;  z-index: 999; top: 0; left: 0 ">
-    <div style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 999; overflow: hidden auto; position: absolute;">
-      <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; ">
-        <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
-        <img @click="mFilePopShowYn = false"  src="../../../assets/images/common/grayXIcon.svg" style="position: absolute; right: 5px; top: 0px;" alt="">
-
-        <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
-          <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
-            <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
-            <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
-            {{value.fileName}}
-            </a>
-          </div>
-        </templete>
-      </div>
-    </div>
   </div>
 
   <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
@@ -215,65 +196,11 @@ export default {
         this.$emit('fileDownload')
       } else {
         // mainList화면에서 실행한 axios에는 fileList가 없으므로 클릭시 리스트를 받아오기 위해 넣었습니다.
-        await this.getContentsDetail()
-        await this.settingFileList()
-        this.mFilePopShowYn = true
+        // await this.getContentsDetail()
+        // await this.settingFileList()
+        // this.mFilePopShowYn = true
         // alert(true)
-      }
-    },
-    async getContentsDetail () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.contentsKey = this.CONT_DETAIL.contentsKey
-      param.targetKey = this.CONT_DETAIL.contentsKey
-      param.jobkindId = this.CONT_DETAIL.jobkindId
-      param.userKey = this.GE_USER.userKey
-      param.ownUserKey = this.GE_USER.userKey
-      var resultList = await this.$getContentsList(param)
-      console.log(param)
-      console.log(resultList)
-      var detailData = resultList.content[0]
-      // // eslint-disable-next-line no-debugger
-      // detailData.D_CONT_USER_DO = await this.$settingUserDo(detailData.userDoList)
-      // if (!detailData.D_MEMO_LIST && (!detailData.memoList || detailData.memoList.length === 0)) detailData.D_MEMO_LIST = []
-      // // this.contentsEle = detailData
-
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
-    },
-    async settingFileList () {
-      try {
-        console.log(this.CONT_DETAIL)
-        // eslint-disable-next-line no-debugger
-        debugger
-
-        if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
-          var attachFileList = []
-          for (var a = 0; a < this.CONT_DETAIL.attachFileList.length; a++) {
-            if (this.CONT_DETAIL.attachFileList[a].attachYn) {
-              attachFileList.push(this.CONT_DETAIL.attachFileList[a])
-            }
-          }
-          var bodyImgFileList = []
-          var addFalseImgList = document.querySelectorAll('#contentsBodyArea .formCard .addFalse')
-          if (addFalseImgList) {
-            for (var s = 0; s < this.CONT_DETAIL.attachFileList.length; s++) {
-              var attFile = this.CONT_DETAIL.attachFileList[s]
-              for (var i = 0; i < addFalseImgList.length; i++) {
-                if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
-                  addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
-                  bodyImgFileList.push(attFile)
-                  break
-                }
-              }
-            }
-          }
-          var cont = this.CONT_DETAIL
-          cont.D_ATTATCH_FILE_LIST = attachFileList
-          cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-        }
-      } catch (error) {
-        console.log(error)
+        this.$emit('fileDownload', this.propContIndex)
       }
     },
     setPreTagInFirstTextLine () {

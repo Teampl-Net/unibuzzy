@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px; " :key="mReloadKey">
+  <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px; " :key="mReloadKey" v-if="GE_DISP_CONTS_LIST.length > 0">
     <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" >
       <gContentsBox :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' @fileDownload="fileDownload" />
       <myObserver v-if="this.GE_DISP_CONTS_LIST.length > 5 ?  index === this.GE_DISP_CONTS_LIST.length - 5 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
@@ -12,14 +12,14 @@
       <writeBottSheet v-if="mSeleteWriteTypePopShowYn" @openPop='openPop' @closePop='mSeleteWriteTypePopShowYn = false' />
     </transition>
   </div>
-  <div @click="mFilePopShowYn = false"  v-if="mFilePopShowYn === true"  style="width: 100vw; height: 100vh; position: absolute;; background: #00000020; z-index: 999; top: 0;"></div>
-    <div id="dlTskdy" v-if="this.mFilePopShowYn === true" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 999; overflow: hidden auto; position: absolute;">
-      <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; ">
+  <div @click="mFilePopYn = false"  v-if="mFilePopYn === true"  style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 999; top: 0; left: 0"></div>
+  <div v-if="mFilePopYn === true" style="width: 100vw; height: 100vh; position: fixed;  z-index: 999; top: 0; left: 0 ">
+    <div id="dlTskdy" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 999; overflow: hidden auto; position: absolute;">
+      <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; " >
         <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
-        <img @click="mFilePopShowYn = false"  src="../../../assets/images/common/grayXIcon.svg" style="position: absolute; right: 5px; top: 0px;" alt="">
-        <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
-          <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
-            <!-- <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p> -->
+        <img @click="mFilePopYn = false"  src="../../../assets/images/common/grayXIcon.svg" style="position: absolute; right: 5px; top: 0px;" alt="">
+        <templete v-for="(value, index) in this.mFilePopData.D_ATTATCH_FILE_LIST" :key="index">
+          <div style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
             <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
             <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
             {{value.fileName}}
@@ -28,6 +28,7 @@
         </templete>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -60,10 +61,71 @@ export default {
     propTab: {}
   },
   methods: {
-    fileDownload (index) {
+    async fileDownload (index) {
       this.mFilePopData = this.GE_DISP_CONTS_LIST[index]
-      this.mFilePopYn = !this.mFilePopYn
+      this.mFilePopData.index = index
+      await this.getContentsDetail()
+      await this.settingFileList()
+      if (this.mFilePopData.D_ATTATCH_FILE_LIST.length > 0) {
+        this.mFilePopYn = true
+      }
+      // this.mFilePopYn = !this.mFilePopYn
     },
+    async getContentsDetail () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.contentsKey = this.mFilePopData.contentsKey
+      param.targetKey = this.mFilePopData.contentsKey
+      param.jobkindId = this.mFilePopData.jobkindId
+      param.userKey = this.GE_USER.userKey
+      param.ownUserKey = this.GE_USER.userKey
+      var resultList = await this.$getContentsList(param)
+      console.log(param)
+      console.log(resultList)
+      var detailData = resultList.content[0]
+
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+    },
+    async settingFileList () {
+      try {
+        console.log(this.mFilePopData)
+        // eslint-disable-next-line no-debugger
+        debugger
+
+        if (this.mFilePopData && this.mFilePopData.attachFileList !== undefined && this.mFilePopData.attachFileList.length > 0) {
+          var attachFileList = []
+          for (var a = 0; a < this.mFilePopData.attachFileList.length; a++) {
+            if (this.mFilePopData.attachFileList[a].attachYn) {
+              attachFileList.push(this.mFilePopData.attachFileList[a])
+            }
+          }
+          var bodyImgFileList = []
+          var addFalseImgList = document.querySelectorAll('#contentsBodyArea .formCard .addFalse')
+          if (addFalseImgList) {
+            for (var s = 0; s < this.mFilePopData.attachFileList.length; s++) {
+              var attFile = this.mFilePopData.attachFileList[s]
+              for (var i = 0; i < addFalseImgList.length; i++) {
+                if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
+                  addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
+                  bodyImgFileList.push(attFile)
+                  break
+                }
+              }
+            }
+          }
+          var cont = this.mFilePopData
+          cont.D_ATTATCH_FILE_LIST = attachFileList
+          cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
+          this.mFilePopData.D_ATTATCH_FILE_LIST = attachFileList
+          this.mFilePopData.D_BODY_IMG_FILE_LIST = bodyImgFileList
+          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    //
+    //
     contDelete (contentIndex) {
       // console.log(contentIndex)
       // console.log(this.GE_DISP_CONTS_LIST[contentIndex])
@@ -133,31 +195,6 @@ export default {
         newArr = resultList.content
       }
       this.mContsList = this.replaceArr(newArr)
-      /* for (let i = 0; i < this.mContsList.length; i++) {
-        cont = this.mContsList[i]
-
-        tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
-
-        if (tempContentDetail) {
-          contentDetail = tempContentDetail[0]
-        } else {
-          contentDetail = this.mContsList[i]
-        }
-        if (!contentDetail.D_MEMO_LIST) contentDetail.D_MEMO_LIST = []
-        if (!cont.D_MEMO_LIST) {
-          cont.D_MEMO_LIST = cont.memoList
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-        } else {
-          // eslint-disable-next-line no-redeclare
-          var newArr = [
-            ...contentDetail.D_MEMO_LIST,
-            ...cont.memoList
-          ]
-          var newList = this.replaceMemoArr(newArr)
-          cont.D_MEMO_LIST = newList
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-        }
-      } */
     },
     replaceMemoArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
@@ -166,7 +203,6 @@ export default {
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
           return b.memoKey - a.memoKey
-          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data
       }, [])
@@ -249,6 +285,9 @@ export default {
       this_.setContsList(result)
     })
   },
+  mounted () {
+    // this.$delayAfterFunc(6000, this.check)
+  },
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
@@ -297,33 +336,6 @@ export default {
     }
   },
   watch: {
-    GE_DISP_CONTS_LIST: {
-      handler (value, old) {
-        if (!value && this.mCreateYn === false) return
-        console.log(value)
-        // eslint-disable-next-line
-        this.mCreateYn = false
-        console.log('mContsList')
-        console.log(this.mContsList)
-        // 메인화면으로 처음 진입했을 때 리스트를 받아오고 다시 못 그려주기에 추가
-        // this.mReloadKey += 1
-      }
-    },
-    // mContsList: {
-    //   handler (value, old) {
-    //     if (value) {
-    //       if (this.mCreateYn === true) {
-    //         console.log(value)
-    //         // eslint-disable-next-line
-    //         this.mCreateYn = false
-    //         console.log('mContsList')
-    //         console.log(this.mContsList)
-    //         // 메인화면으로 처음 진입했을 때 리스트를 받아오고 다시 못 그려주기에 추가
-    //         this.mReloadKey += 1
-    //       }
-    //     }
-    //   }
-    // },
     GE_NEW_CONT_LIST: {
       handler (value, old) {
         var newArr = []
