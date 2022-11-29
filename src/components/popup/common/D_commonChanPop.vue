@@ -77,6 +77,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // param.sampleYn = true
+      param.teamKey = this.propTeamKey
       param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction({
         url: 'service/tp.getMemberTypeList',
