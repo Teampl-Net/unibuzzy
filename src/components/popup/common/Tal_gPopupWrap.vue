@@ -43,8 +43,8 @@
       <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if=" popId &&  this.targetType === 'setMypage'">
         <setMypage :pPopId="popId" v-if=" popId &&  this.targetType === 'setMypage'" @closeXPop="closeXPop" @openPop="openPop" />
       </div>
-      <editMyChanMenu :pPopId="popId" v-if=" popId &&  this.targetType === 'myChanMenuEdit'" :propData="this.propParams" @openPop="openPop"  />
-      <editBoardPop :pPopId="popId" v-if=" popId &&  this.targetType === 'editBoard'" :propData="this.propParams" @openPop="openPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
+      <editMyChanMenu :pPopId="popId" v-if=" popId && this.targetType === 'myChanMenuEdit'" :propData="this.propParams" @openPop="openPop"  />
+      <editBoardPop :pPopId="popId" v-if=" popId && this.targetType === 'editBoard'" :propData="this.propParams" @openPop="openPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
       <chanInfoComp :pPopId="popId" ref="gPopChanDetailRef" v-if=" popId &&  this.targetType === 'chanInfo'" :propData="this.propParams" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @closeXPop="closeXPop" @pageReload="reloadPop" @openPop="openPop" @changeFollowYn="changeFollowYn"  :alimSubPopYn="alimListToDetail" :chanDetail="this.propParams.value" style="background-color: #fff;"></chanInfoComp>
       <autoAnswerList :pPopId="popId" v-if=" popId &&  this.targetType === 'autoAnswer'" :propData="this.propParams" @openPop="openPop"  />
       <memberFormList :pPopId="popId" v-if=" popId &&  this.targetType === 'memberFormList'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />

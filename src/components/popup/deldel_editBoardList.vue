@@ -1,45 +1,67 @@
 <template>
 <!-- <div style="width: 100%; height: 100vh; position: absolute; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
-  <div v-if="CHANNEL_DETAIL" class="channelMenuEditWrap pagePaddingWrap" style="overflow: hidden auto;">
+  <div v-if="CHANNEL_DETAIL" class="channelMenuEditWrap pagePaddingWrap" style="padding-top:0; ">
+    <!-- <popHeader @closeXPop="goNo" style="" class="menuHeader" headerTitle="게시판 관리" :chanName='teamNameText' /> -->
+    <!-- <div class="" style="overflow: auto; height:calc(100% - 50px); margin-top: 50px; padding-top: 10px; "> -->
+      <div class="" style="overflow: auto; height: 100%; margin-top: 50px; padding-top: 10px; ">
       <draggable  ref="editableArea" @end="changePosTeamMenu" class="ghostClass" :options="{ghostClass:'sortable-ghost',animation:150}" v-model="cabinetList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
         <transition-group>
+          <!-- eslint-disable-next-line vue/no-v-for-template-key -->
           <template v-for="(data, index) in cabinetList" :key='index'>
-            <boardCard :propData='data' @cardEmit='cardEmit' :compoIdx='index' />
+            <div :id="'board' + data.cabinetKey" :index="index" :class="{addNewEffect: index === 0}" class="fl boardListCard" >
+              <!-- <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
+                <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
+              </div> -->
+              <div @click="openModiBoardPop(data)" class="textLeft" style="width: calc(100% - 85px); float: left; height: 100%; display: flex; flex-direction: row; align-items: center;">
+                <!-- <img v-if="!data.picBgPath" class="img-w20 mright-05" src="../../assets/images/board/icon_lock.svg" alt=""> -->
+                <img v-if="!data.picBgPath" class="img-w20 mright-05" src="../../assets/images/board/icon_lock_gray.svg" alt="">
+                <div v-else style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; float: left; flex-shrink: 0; flex-grow: 0;"  :style="{ background: data.picBgPath || '#ffffff' }"></div>
+                <div v-html="this.$changeText(data.cabinetNameMtext)" :id="'boardName' + data.cabinetKey" :style="!data.picBgPath ? 'color:#999' : ''" class="boardNameText" />
+              </div>
+
+              <div class="fl " style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
+                <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; margin: 0 10px;" class="fr" @click="openModiBoardPop(data)" >
+                <img src="../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px; margin: 0 10px;" class="fr" @click="checkDelete(data, index)" >
+              </div>
+
+              <!-- </div> -->
+            </div>
           </template>
         </transition-group>
       </draggable>
-      <img src="../../../assets/images/button/Icon_CreBoardBtn.png" @click="addBoardRow" alt="게시판 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
-      <gListEmpty v-if="cabinetList.length === 0" title='게시판이 없어요' subTitle='버튼을 눌러 게시판을 생성해보세요.' option='EDIT' />
-  </div>
-  <gConfirmPop :confirmText='errorBoxText' confirmType='two' @no='errorBoxYn = false' @ok='confirmfunc' v-if="errorBoxYn"/>
-  <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' @openPop='openPop'/>
+      <!-- <div class="btnPlus" @click="addBoardRow"><p style="font-size:40px;">+</p></div> -->
+      <img src="../../assets/images/button/Icon_CreBoardBtn.png" @click="addBoardRow" alt="게시판 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
+    </div>
+    <gConfirmPop :confirmText='errorBoxText' confirmType='two' @no='errorBoxYn = false' @ok='confirmfunc' v-if="errorBoxYn"/>
+    <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' @openPop='openPop'/>
+</div>
 
 </template>
 
 <script>
-import boardCard from './editBoardUnit/D_commonBoardCard .vue'
+/* eslint-disable */
 import { VueDraggableNext } from 'vue-draggable-next'
-import modiBoardPop from './D_modiBoardPopup.vue'
+// eslint-disable-next-line
+import modiBoardPop from './Tal_modiBoardPopup.vue'
 export default {
   props: {
     // editList: {},
     teamNameText: {},
 
-    propData: {},
-    pPopId: {}
+    propData: {}
 
   },
   computed: {
     CAB_DETAIL () {
-      if (this.cabinetList.length === 0) {
-        return []
-      }
-      // for (var i = 0; i <this.cabinetList.length; i++) {
+        if (this.cabinetList.length === 0) {
+            return []
+        }
+        // for (var i = 0; i <this.cabinetList.length; i++) {
 
-      //  console.log(this.cabinetList[i])
-      /* this.cabinetList[i].shareAuth = this.$checkUserAuth(this.cabinetList[i].mShareItemList) */
-      // }
-      return this.cabinetList
+            //  console.log(this.cabinetList[i])
+            /* this.cabinetList[i].shareAuth = this.$checkUserAuth(this.cabinetList[i].mShareItemList) */
+        // }
+        return this.cabinetList
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
@@ -47,8 +69,8 @@ export default {
     CHANNEL_DETAIL () {
       return this.$getDetail('TEAM', this.propData.teamKey)[0]
     },
-    history () {
-      return this.$store.getters['D_HISTORY/hStack']
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hRPage']
     },
     pageUpdate () {
       return this.$store.getters['D_HISTORY/hUpdate']
@@ -56,21 +78,22 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      if (this.modiBoardPopShowYn === true) {
+      var hStack = this.$store.getters['D_HISTORY/hStack']
+      if (hStack[hStack.length - 1] === 'modiBoardPop') {
+      }
+      if (this.modiBoardPopShowYn === true ) {
+        alert('tlq;f')
         this.closeNrefresh()
         return
       }
-      // if (this.history[this.history.length - 1] === 'modiBoardPop') {
-      //   this.closeNrefresh()
-      //   return
-      // }
-      if (this.popId === this.history[this.history.length - 1]) {
+      if (this.popId === hStack[hStack.length - 1]) {
         this.goNo()
       }
+    },
+    historyStack (value, old) {
     }
   },
   created () {
-    if (this.pPopId) this.popId = JSON.parse(JSON.stringify(this.pPopId))
     this.$emit('openLoading')
     // console.log(this.propData)
     this.getTeamMenuList()
@@ -94,25 +117,11 @@ export default {
     }
   },
   components: {
-    boardCard,
     modiBoardPop,
     draggable: VueDraggableNext
     // longPress: VueDirectiveLongPress
   },
   methods: {
-    cardEmit (param) {
-      console.log(param)
-      var type = param.targetType
-      var data = param.data
-      var idx = param.index
-      if (type === 'open') {
-        this.openModiBoardPop(data)
-      } else if (type === 'edit') {
-        this.openModiBoardPop(data)
-      } else if (type === 'delete') {
-        this.checkDelete(data, idx)
-      }
-    },
     async checkDelete (data, index) {
       var param = {}
       // console.log(data)
@@ -133,7 +142,7 @@ export default {
       // console.log(data)
       this.tempDeleteData = temp
       this.currentConfirmType = 'delete'
-      if (totalElements === undefined) {
+      if (totalElements === undefined){
         this.errorBoxText = '게시판을 삭제하시겠습니까?'
       } else {
         this.errorBoxText = totalElements + '개의 게시글이 있는 게시판입니다. \n 정말 삭제하시겠습니까?'
@@ -150,7 +159,7 @@ export default {
       }
     },
     closeNrefresh () {
-      // this.$checkDeleteHistory('modiBoardPop')
+      this.$checkDeleteHistory('modiBoardPop')
       this.modiBoardPopShowYn = false
       this.getTeamMenuList()
     },
@@ -214,7 +223,7 @@ export default {
       }
     },
     openModiBoardPop (data) {
-      // this.$addHistoryStack('modiBoardPop')
+      this.$addHistoryStack('modiBoardPop')
       this.modiBoardDetailProps = data
       this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
       this.modiBoardPopShowYn = true
@@ -308,9 +317,9 @@ export default {
       // await this.getTeamMenuList()
 
       // if (result.data.result === true) {
-      // this.cabinetList = teamMenuList
-      // this.boardList = []
-      // await this.getTeamMenuList()
+        // this.cabinetList = teamMenuList
+        // this.boardList = []
+        // await this.getTeamMenuList()
       //   this.boardList = new Array(tempList)[0]
       //   // console.log(this.boardList)
       // }
@@ -339,10 +348,22 @@ export default {
 .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%); color: #FFFFFF; }
 
 .channelMenuEditWrap{
+  /* width:100% ;
+  position: absolute; z-index: 999;
+  height: 100vh;
+  top: 0;
+  right: 0; */
+
   width:100% ;
-  height: 100%;
+  /* height:100vh !important; */
+  /* position: absolute; */
+  /* z-index: 999; */
+  height: calc(100vh - 20%);
   top: 0;
   right: 0;
+
+  /* // box-shadow: 0 0 9px 2px #b8b8b8; */
+
   background-color: white;
   }
 

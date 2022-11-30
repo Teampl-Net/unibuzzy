@@ -136,6 +136,7 @@ export default {
     openEditBoardPop () {
       this.mCommonParam.targetType = 'editBoard'
       this.mCommonParam.popHeaderText = '게시판 관리'
+      this.mCommonParam.targetKey = this.propData.teamKey
       this.openPop()
     },
     chanDetailClick () {

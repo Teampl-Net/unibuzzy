@@ -24,17 +24,16 @@ export default {
   },
   mounted () {
     window.document.addEventListener('touchstart', (e) => {
-      console.log('touchstart', e.touches[0].pageX)
+      // console.log('touchstart', e.touches[0].pageX)
       this.startPoint = e.touches[0].pageX // 터치가 시작되는 위치 저장
     })
 
     window.document.addEventListener('touchend', (e) => {
-      console.log('touchend', e.changedTouches[0].pageX)
+      // console.log('touchend', e.changedTouches[0].pageX)
       this.endPoint = e.changedTouches[0].pageX // 터치가 끝나는 위치 저장
       if (this.startPoint < 20 && this.startPoint - this.endPoint < -100) {
         // 오른쪽으로 스와이프 된 경우
         this.$gobackDev()
-        console.log('prev move')
       } else if (this.startPoint > this.endPoint) {
         // 왼쪽으로 스와이프 된 경우
         // console.log('next move')

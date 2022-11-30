@@ -242,6 +242,7 @@ export default {
     // // console.log(this.chanInfo)
 
     //
+    this.$addHistoryStack('modiBoardPop')
   },
   computed: {
     CAB_FUNCTION_TEXT () {
@@ -282,26 +283,23 @@ export default {
         return null
       }
     },
-    historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
-    },
     pageUpdate () {
       return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    history () {
+      return this.$store.getters['D_HISTORY/hStack']
     }
+  },
+  unmounted () {
+    this.$checkDeleteHistory('modiBoardPop')
   },
   watch: {
     pageUpdate (value, old) {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
-      if (this.popId === hStack[hStack.length - 1]) {
-        var history = this.$store.getters['D_HISTORY/hStack']
-        var removePage = history[history.length - 1]
-        history = history.filter((element, index) => index < history.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', history)
+      alert(3333)
+      if (this.history[this.history.length - 1] === 'modiBoardPop') {
+        alert('tlqkf?')
         this.$emit('closePop')
       }
-    },
-    historyStack (value, old) {
     }
   },
   data () {

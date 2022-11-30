@@ -218,20 +218,23 @@ export default {
       return this.$store.getters['D_HISTORY/hUpdate']
     }
   },
+  unmounted () {
+    this.$checkDeleteHistory('modiBoardPop')
+  },
   watch: {
-    pageUpdate (value, old) {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
-      if (this.popId === hStack[hStack.length - 1]) {
-        var history = this.$store.getters['D_HISTORY/hStack']
-        var removePage = history[history.length - 1]
-        history = history.filter((element, index) => index < history.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', history)
-        this.$emit('closePop')
-      }
-    },
-    historyStack (value, old) {
-    }
+    // pageUpdate (value, old) {
+    //   var hStack = this.$store.getters['D_HISTORY/hStack']
+    //   if (this.popId === hStack[hStack.length - 1]) {
+    //     var history = this.$store.getters['D_HISTORY/hStack']
+    //     var removePage = history[history.length - 1]
+    //     history = history.filter((element, index) => index < history.length - 1)
+    //     this.$store.commit('D_HISTORY/setRemovePage', removePage)
+    //     this.$store.commit('D_HISTORY/updateStack', history)
+    //     this.$emit('closePop')
+    //   }
+    // },
+    // historyStack (value, old) {
+    // }
   },
   data () {
     return {
@@ -677,6 +680,7 @@ export default {
           this.selectedList.data = this.shareGroup.selectedList
           this.shareActorItemType = itemType
           this.receiverAccessListYn = true
+          this.$addHistoryStack('modiPopReceiverSelecPop')
         } else {
           this.$showToastPop('먼저 공유대상을 선택해주세요.')
         }
@@ -996,6 +1000,7 @@ export default {
         console.log('prop selectedList 값')
         console.log(this.selectedList)
         this.selectBookListShowYn = true
+        this.$addHistoryStack('modiPopReceiverSelecPop')
       } else {
         // 선택한 주소에서 고르기
         this.selectShareActorItem(type)
