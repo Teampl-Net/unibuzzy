@@ -2,7 +2,7 @@
   <div class="wh-100P pSide-15 ptop-50 fl" style="position: relative;">
 
     <div class="queInfoRow fl ">
-      <p class="fontBold  textLeft font16 fr" style="width: 100px;">명칭</p>
+      <p class="fontBold  textLeft font16 fr" style="width: 100px;">질문</p>
       <input class="fl" style="width: calc(100%);" v-model="InfoQueTitle" type="text" placeholder="멤버 정보 명을 입력해주세요." id="channelName">
     </div>
 
@@ -79,7 +79,7 @@ export default {
       options: [{ title: '주관식', InfoQueType: 'T' }, { title: '객관식(드롭다운)', InfoQueType: 'F' }, { title: '객관식(리스트)', InfoQueType: 'L' }],
       answerList: [{ answerName: '' }],
       answerTitle: '',
-      InfoQueTitle: '',
+      InfoQueTitle: { type: String, default: '' },
       maxLengthYn: '',
       maxLength: 0,
       onlyNumYn: ''
@@ -117,7 +117,21 @@ export default {
     deleteInfoQue (idx) {
       this.answerList.splice(idx, 1)
     },
+    checkData () {
+      var passYn = true
+      if (this.InfoQueTitle === undefined || this.InfoQueTitle === null || this.InfoQueTitle === '') {
+        this.$showToastPop('질문을 입력해주세요')
+        passYn = false
+      }
+      if (this.selectOption === undefined || this.selectOption === null || this.selectOption === '') {
+        this.$showToastPop('질문의 유형을 선택해주세요.')
+        passYn = false
+      }
+      return passYn
+    },
     async saveMemberTypeItem () {
+      if (await this.checkData() === false) return
+
       var param = {}
       if (this.propData.selectedMemberType.itemKey) {
         param.itemKey = this.propData.selectedMemberType.itemKey

@@ -15,7 +15,7 @@
       </template>
 
       <template v-if="btnType === 'one'">
-        <gBtnSmall  @click="emit('save')" btnTitle="저장"  />
+        <gBtnSmall  @click="saveClick()" btnTitle="저장"  />
       </template>
     </div>
   </div>
@@ -39,6 +39,13 @@ export default {
     closeXPop () {
       // 추후 back 추가
       this.emit('goNo')
+    },
+    saveClick () {
+      if (this.inputText.trim() !== '') {
+        this.emit('save')
+      } else {
+        this.$showToastPop('멤버 유형을 입력해주세요.')
+      }
     },
     emit (type) {
       // var param = {}

@@ -1,6 +1,6 @@
 <template>
-  <div class="w-100P h-100P pagePaddingWrap" style="padding-top: 0; overflow:auto; margin-bottom: 1rem;">
-    <loadingCompo v-if="mLoadingYn === true"/>
+  <div class="w-100P h-100P pagePaddingWrap" style="padding-top: 0; overflow:auto; margin-bottom: 1rem; position: relative;">
+    <loadingCompo v-if="mLoadingYn === true" />
     <div class="myProfileWrap" @click="goSetMyPage">
       <div class="myProfileLeft">
         <div v-if="GE_USER.userProfileImg !== undefined && GE_USER.userProfileImg !== null && GE_USER.userProfileImg !== ''" class="myPagePicImgWrap" :style="'background-position: center; background-image: url(' + (GE_USER.domainPath ? GE_USER.domainPath + GE_USER.userProfileImg : GE_USER.userProfileImg) + ')'"  style="background-size: cover; background-repeat: no-repeat;"></div>
