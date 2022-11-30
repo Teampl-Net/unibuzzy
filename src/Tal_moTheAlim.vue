@@ -18,8 +18,33 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]
   },
+  unmounted () {
+    window.document.removeEventListener('touchstart')
+    window.document.removeEventListener('touchend')
+  },
+  mounted () {
+    window.document.addEventListener('touchstart', (e) => {
+      console.log('touchstart', e.touches[0].pageX)
+      this.startPoint = e.touches[0].pageX // 터치가 시작되는 위치 저장
+    })
+
+    window.document.addEventListener('touchend', (e) => {
+      console.log('touchend', e.changedTouches[0].pageX)
+      this.endPoint = e.changedTouches[0].pageX // 터치가 끝나는 위치 저장
+      if (this.startPoint < 20 && this.startPoint - this.endPoint < -100) {
+        // 오른쪽으로 스와이프 된 경우
+        this.$gobackDev()
+        console.log('prev move')
+      } else if (this.startPoint > this.endPoint) {
+        // 왼쪽으로 스와이프 된 경우
+        // console.log('next move')
+      }
+    })
+  },
   data () {
     return {
+      startPoint: 0,
+      endPoint: 0,
       headerTitle: '아이디어스',
       popShowYn: false,
       pushPopShowYn: false,
@@ -93,36 +118,6 @@ export default {
         }
       }
     }
-  },
-  beforeUnmount () {
-    /* document.getElementById('FullScreenToggle').remove() */
-    // PullToRefresh.destroyAll()
-  },
-  mounted () {
-    /*  this.createToggle() */
-    /*  window.addEventListener('beforeunload', (event) => {
-      // 표준에 따라 기본 동작 방지
-      event.preventDefault()
-      // Chrome에서는 returnValue 설정이 필요함
-      event.returnValue = ''
-    }) */
-    /* window.addEventListener('resize', this.handleResize)
-    this.handleResize() */
-    // PullToRefresh.init({
-    //   mainElement: 'listRefresh',
-    //   distThreshold: '80', // 최소 새로고침 길이( 이 길이가 되면 새로고침 시작)
-    //   distMax: '100', // 최대 거리 (영역이 길어질 수 있는 최대 거리)
-    //   distReload: '80', // 새로고침 후 갖고있는 영역의 크기
-    //   instructionsReleaseToRefresh: ' ', // 최소 새로고침에 도달 했을 때 문구
-    //   instructionsPullToRefresh: ' ', // 끌고 있을 때 문구
-    //   instructionsRefreshing: ' ', // 새로고침 중 문구
-    //   onRefresh () {
-    //     window.location.reload()
-    //   }
-    // })
-  },
-  unmounted () {
-    /* window.removeEventListener('resize', this.handleResize) */
   }
 }
 </script>

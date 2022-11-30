@@ -163,7 +163,7 @@ export default {
       if (this.contentType === 'ALIM') {
         if (this.params.UseAnOtherYn) {
           // 게시글을 -> 알림 // 알림 -> 게시글을 할 땐 decode가 필요없기에 구분
-          this.bodyString = this.params.bodyFullStr
+          this.bodyString = this.decodeContents(this.params.bodyFullStr)
           if (this.params.titleStr) {
             this.titleShowYn = true
             this.writePushTitle = this.params.titleStr
@@ -173,6 +173,8 @@ export default {
         }
       } else if (this.contentType === 'BOAR') {
         this.titleShowYn = true
+        console.log(' 여기 여기 여기 여기 여기 여기 여기 ')
+        console.log(this.propData.bodyFullStr)
         if (this.propData.UseAnOtherYn) {
           this.bodyString = this.decodeContents(this.propData.bodyFullStr)
           this.selectBoardYn = true

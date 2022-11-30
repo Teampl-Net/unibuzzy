@@ -95,20 +95,6 @@ export default {
       }
     }
   },
-  computed: {
-    historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
-    },
-    pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
-    }
-  },
-  watch: {
-    selectedList () {
-      console.log('######!!!!!!!!##########!!!!!!!!!########')
-      console.log(this.selectedList)
-    }
-  },
   components: { bookList, memberList, selectedListCompo },
   methods: {
     changeTab (type) {
@@ -265,15 +251,13 @@ export default {
     },
 
     backClick () {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
-      console.log(' back back back back back back back ')
-      if (this.subPopId === hStack[hStack.length - 1]) {
-        hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        var removePage = hStack[hStack.length - 1]
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
+      if (this.detailOpenYn === true) {
+        var removePage = this.historyStack[this.historyStack.length - 1]
+        if (removePage === 'commonBookMemberList') {
+          this.$removeHistoryStack()
+        }
         this.memberEditYn = false
-        this.receiverTitle = '주소록 선택'
+        this.receiverTitle = '그룹 선택'
         this.detailOpenYn = false
       } else {
         this.$emit('closeXPop')
@@ -286,10 +270,11 @@ export default {
         this.detailOpenYn = true
 
         this.selectBookDetail = data
-        var history = this.$store.getters['D_HISTORY/hStack']
-        this.subPopId = 'commonBookMemberList' + history.length
-        history.push(this.subPopId)
-        this.$store.commit('D_HISTORY/updateStack', history)
+        // var history = this.$store.getters['D_HISTORY/hStack']
+        // this.subPopId = 'commonBookMemberList' + history.length
+        // history.push(this.subPopId)
+        // this.$store.commit('D_HISTORY/updateStack', history)
+        this.$addHistoryStack('commonBookMemberList')
         console.log(' open open open open open open open open open ')
         console.log(history)
 
@@ -298,6 +283,19 @@ export default {
           this.receiverTitle = '대상 선택'
         }
       }
+    }
+  },
+  computed: {
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hStack']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    }
+  },
+  watch: {
+    pageUpdate () {
+      this.backClick()
     }
   }
 }

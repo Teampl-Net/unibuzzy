@@ -47,23 +47,38 @@ export default {
     },
     goNo () {
       this.$emit('no')
-    },
-    timeOut () {
-      if (this.confirmType === 'timeout') {
-        setTimeout(() => {
-          this.$emit('no')
-        }, 2000)
-      }
     }
-
   },
   computed: {
-    /* popLeft () {
-      return { left: (window.innerWidth - 280) / 2 + 'px' }
-    } */
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    history () {
+      return this.$store.getters['D_HISTORY/hStack']
+    }
+  },
+  unmounted () {
+    this.$checkDeleteHistory('gConfirmPop')
+  },
+  watch: {
+    pageUpdate () {
+      if (this.history[this.history.length - 1] === 'gConfirmPop') {
+        if (this.$route.path === '/') {
+          this.$emit('appClose')
+        }
+        this.goNo()
+      }
+    }
   },
   created () {
-    this.timeOut()
+    this.$addHistoryStack('gConfirmPop')
+  },
+  mounted () {
+    if (this.confirmType === 'timeout') {
+      this.$delayAfterFunc(2000, this.goNo)
+
+      // this.tiemOut()
+    }
   }
 }
 </script>

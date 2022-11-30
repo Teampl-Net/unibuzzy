@@ -90,6 +90,7 @@ export default {
   methods: {
     async openReceptListPop () {
       await this.getReqMemList()
+      this.$addHistoryStack('receptListPop')
       this.receptListPopShowYn = true
     },
     openMemberTypePop () {
@@ -100,6 +101,7 @@ export default {
       this.$emit('openPop', param)
     },
     closeRecMemberPop () {
+        this.$checkDeleteHistory('receptListPop')
         this.receptListPopShowYn = false
     },
     memberFormClick(){
@@ -334,9 +336,20 @@ export default {
     },
     GE_MAIN_CHAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    history () {
+      return this.$store.getters['D_HISTORY/hStack']
     }
   },
   watch: {
+    pageUpdate () {
+      if (this.history[this.history.length - 1] === 'receptListPop') {
+        this.closeRecMemberPop()
+      }
+    },
     GE_NEW_SHOW_LIST: {
         handler (value, old) {
             if (value[0].teamKey !== this.CHANNEL_DETAIL.teamKey) {

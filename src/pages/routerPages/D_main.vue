@@ -1,7 +1,7 @@
 <template>
   <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" id="mainAllWrap" class="" ref="mainScrollWrap" style="padding-top: 10px;height: 100%; overflow: hidden scroll;">
     <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
-    <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
+    <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
 
     <div style="width: 100%; float: left;">
         <div class="userProfileWrap" style=" border-radius: 0.8rem; padding: 0 1.5rem;" >
@@ -89,7 +89,7 @@
   </div>
 </template>
 <script>
-/* import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue' */
+import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
 import loadingCompo from '../../components/layout/Tal_loading.vue'
 /* import pushList from '../routerPages/Tal_pushList.vue' */
@@ -113,7 +113,7 @@ export default {
   },
   components: {
     // initModal,
-    /* commonConfirmPop, */
+    commonConfirmPop,
     /* pushList, */
     searchChanIcon,
     createChanIcon,
@@ -294,8 +294,10 @@ export default {
       var history = this.historyStack
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
         if (this.$route.path === '/') {
-          this.mAppCloseYn = true
+          if (this.$checkMobile() !== 'IOS') this.mAppCloseYn = true
         }
+      } else if (history[0] === 'mainPage') {
+        this.$removeHistoryStack()
       }
     },
 

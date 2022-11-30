@@ -17,7 +17,7 @@
         <router-view @scrollEvnt="this.scrollEvnt" :popYn="false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" ref="routerViewCompo" />
     </div>
     <TalFooter @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
-    <!-- <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div> -->
+    <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div>
   </div>
 </template>
 
@@ -76,9 +76,24 @@ export default {
     },
     GE_NEW_NOTI () {
       return this.$store.getters['D_NOTI/GE_NEW_NOTI']
+    },
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hStack']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
     }
   },
   watch: {
+    pageUpdate (value, old) {
+      var history = this.historyStack
+      history = history[history.length - 1]
+      console.log('###########')
+      console.log(history)
+      if (history === 'mainMenu') {
+        this.hideMenu()
+      }
+    },
     GE_NEW_NOTI: {
       handler (value, old) {
         if (value) {
@@ -162,9 +177,13 @@ export default {
       this.notiDetailShowYn = false
     }, */
     showMenu () {
+      this.$addHistoryStack('mainPage')
+      this.$addHistoryStack('mainMenu')
       this.mMenuShowYn = true
+      this.$showHistoryStack()
     },
     hideMenu () {
+      this.$removeHistoryStack()
       this.mMenuShowYn = false
     },
     async openPop (params) {

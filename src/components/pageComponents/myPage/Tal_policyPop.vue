@@ -333,10 +333,27 @@ export default {
   mounted () {
     this.settingPop()
   },
-  components: {
+  computed: {
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    history () {
+      return this.$store.getters['D_HISTORY/hStack']
+    }
+  },
+  watch: {
+    pageUpdate () {
+      if (this.history[this.history.length - 1] === 'PolicyPop') {
+        this.closeXPop()
+      }
+    }
+  },
+  unmounted () {
+    this.$checkDeleteHistory('PolicyPop')
   },
   methods: {
     settingPop () {
+      this.$addHistoryStack('PolicyPop')
       if (this.policyType === 'useTheAlim') { this.headerTitle = '이용약관' } else if (this.policyType === 'personalInfo') { this.headerTitle = '개인정보 이용동의 약관' }
     },
     closeXPop (pThisPopN) { // 내 팝업 닫기

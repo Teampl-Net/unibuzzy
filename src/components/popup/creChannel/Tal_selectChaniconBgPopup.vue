@@ -1,7 +1,7 @@
 <template>
   <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
   <div style="width: 100%; float: left;">
-    <div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="this.$emit('no')"></div>
+    <div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="closePop()"></div>
     <div class="confirmPopWrap" >
     <!-- <div style="width: 50%; height: 50%; padding: 0 20px; overflow: auto;" > -->
         <div class="creChanIntroTextWrap" style="width: 100%; min-height: 50px; text-align: left;">
@@ -72,6 +72,7 @@ export default {
       this.$refs.activeBar.switchtab(1)
       this.$refs.activeBar.selectTab('img')
     }
+    this.$addHistoryStack('channelImgChangePop')
   },
   created () {
     // console.log(this.selectIcon)
@@ -225,6 +226,7 @@ export default {
         param.selectPath = this.selectedImgPath
         param.iconType = this.viewTab
         // console.log(param)
+        this.$removeHistoryStack()
         this.$emit('makeParam', param)
       }
     },
@@ -487,6 +489,10 @@ export default {
         this.$showToastPop('파일을 선택해주세요.')
       }
       return true
+    },
+    closePop () {
+      this.$removeHistoryStack()
+      this.$emit('no')
     }
   },
   computed: {
@@ -495,9 +501,18 @@ export default {
         // '--chanBoxSize': window.innerWidth / 4 - 20 + 'px'
         '--chanBoxSize': window.innerWidth / 4 - 20 + 'px'
       }
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
     }
   },
   watch: {
+    pageUpdate () {
+      var history = this.$store.getters['D_HISTORY/hStack']
+      if (history[history.length - 1] === 'channelImgChangePop') {
+        this.closePop()
+      }
+    }
   }
 }
 </script>

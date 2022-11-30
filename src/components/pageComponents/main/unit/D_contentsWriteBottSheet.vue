@@ -53,6 +53,7 @@ export default {
       this.mSelectChanList.push(this.propTeamKey)
       this.mSelectedChan = this.propTeamKey
     }
+    this.$addHistoryStack('bottomWriteSheets')
   },
   methods: {
     async getTeamList (loadingYn) {
@@ -74,6 +75,7 @@ export default {
     },
     closePop () {
       this.$emit('closePop')
+      this.$removeHistoryStack()
     },
     selectWriteType (jobkindId) {
       this.mSelectedWriteType = jobkindId
@@ -108,6 +110,17 @@ export default {
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    }
+  },
+  watch: {
+    pageUpdate () {
+      var history = this.$store.getters['D_HISTORY/hStack']
+      if (history[history.length - 1] === 'bottomWriteSheets') {
+        this.closePop()
+      }
     }
   }
 }

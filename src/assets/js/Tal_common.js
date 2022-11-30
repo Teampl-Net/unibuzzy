@@ -353,7 +353,40 @@ export const commonMethods = {
     // alert(response)
     return response
   },
-  addHistoryStack (n) {
+  addHistoryStack (openPageId) {
+    console.log(openPageId)
+    store.dispatch('D_HISTORY/AC_ADD_POP_HISTORY_STACK', openPageId)
+    store.dispatch('D_HISTORY/AC_ADD_ALL_HISTORY_STACK', openPageId)
+  },
+  removeHistoryStack () {
+    var history = store.getters['D_HISTORY/hStack']
+    var removePage = history[history.length - 1]
+    console.log(removePage)
+    history = history.filter((element, index) => index < history.length - 1)
+    store.commit('D_HISTORY/setRemovePage', removePage)
+    store.commit('D_HISTORY/updateStack', history)
+    store.dispatch('D_HISTORY/AC_REMOVE_POP_HISTORY_STACK')
+    history = store.getters['D_HISTORY/hStack']
+    console.log(history)
+  },
+  checkDeleteHistory (deletePage) {
+    var result = false
+    try {
+      var history = store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      if (deletePage === removePage) {
+        commonMethods.removeHistoryStack()
+      }
+      result = true
+    } catch (error) {
+      console.log(error)
+      result = false
+    }
+    console.log('history delete 결과 : ' + result)
+  },
+  showHistoryStack () {
+    var history = store.getters['D_HISTORY/hStack']
+    console.log(history)
   },
   isJsonString (str) {
     try {
@@ -1020,13 +1053,16 @@ export const commonMethods = {
     routerMain.methods.openPop(param)
   },
   gobackDev () {
+    // Tal_moTheAlim.vue 파일에서 touch Event로 뒤로가기 쓰고 있어요!! (ios 뒤로가기 기능!!)
     // alert(JSON.stringify(this.$route.path))
     if (store.getters['D_USER/GE_NET_STATE'] === false || store.getters['D_USER/GE_NET_STATE'] === 'false') return
     var history = store.getters['D_HISTORY/hStack']
+    console.log(history)
     if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
       router.replace({ path: '/' })
     }
     var current = store.getters['D_HISTORY/hUpdate']
+    console.log(current)
     store.commit('D_HISTORY/updatePage', current + 1)
   },
   notPerText () {
@@ -1125,6 +1161,8 @@ export const commonMethods = {
   async delayAfterFunc (delayTime, afterFunc) {
     const delay = (time) => new Promise((resolve) => setTimeout(() => resolve(), time))
     await delay(delayTime)
+
+    // 여기서 오류난다면 함수뒤에 ()빼세요!
     afterFunc()
   }
 }
@@ -1140,6 +1178,8 @@ export default {
     Vue.config.globalProperties.$changeText = commonMethods.changeText
     Vue.config.globalProperties.$addHistoryStack = commonMethods.addHistoryStack
     Vue.config.globalProperties.$removeHistoryStack = commonMethods.removeHistoryStack
+    Vue.config.globalProperties.$showHistoryStack = commonMethods.showHistoryStack
+    Vue.config.globalProperties.$checkDeleteHistory = commonMethods.checkDeleteHistory
     Vue.config.globalProperties.$removeHistoryStackForPage = commonMethods.removeHistoryStackForPage
     Vue.config.globalProperties.$isJsonString = commonMethods.isJsonString
 

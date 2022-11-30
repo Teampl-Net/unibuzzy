@@ -159,8 +159,6 @@ export default {
     pPopId: {}
   },
   created () {
-    // console.log(this.CAB_DETAIL)
-    // console.log('this.CAB_DETAIL')
     this.$emit('openLoading')
     var this_ = this
 
@@ -178,7 +176,6 @@ export default {
       })
     })
     /* var resultList = await this.getContentsList()
-    console.log('####  CREATED  #####')
     console.log(resultList) */
 
     // this.mCabContentsList = resultList.content
@@ -942,14 +939,12 @@ export default {
       } else if (this.box.scrollTop < this.scrollPosition) {
         this.scrollDirection = 'up'
       }
-      console.log(this.scrollDirection)
 
       this.scrollPosition = this.box.scrollTop
 
       if (this.scrollDirection === 'down' && this.scrollPosition > 200) {
         blockBox.style.height = '50px'
         // blockBox.scrollHeight = 100
-        console.log(this.scrollPosition)
         if (this.scrollPosition > 249) {
           this.box.style.overflow = 'hidden'
         }

@@ -28,7 +28,23 @@ export default {
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    history () {
+      return this.$store.getters['D_HISTORY/hStack']
     }
+  },
+  watch: {
+    pageUpdate () {
+      if (this.history[this.history.length - 1] === 'selectBoardList') {
+        this.closeXPop()
+      }
+    }
+  },
+  unmounted () {
+    this.$checkDeleteHistory('selectBoardList')
   },
   data () {
     return {
@@ -42,6 +58,8 @@ export default {
     }
   },
   created () {
+    this.$addHistoryStack('selectBoardList')
+
     if (this.type === 'move') {
       this.mainText = '이동'
     } else if (this.type === 'copy') {

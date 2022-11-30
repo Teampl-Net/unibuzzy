@@ -1,6 +1,5 @@
 <template>
 <div style="width: 100%; height: 100%; float: left;">
-  <selecTypePopup  v-if="mSelectTeamTypePopYn" @no='mSelectTeamTypePopYn=false' @makeParam='setTypeData' />
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
     <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
       <div class="createChanContentsWrap">
@@ -86,12 +85,11 @@
     </div>
     <gConfirmPop :confirmText="mCreCheckPopText === null ? ('[' + mInputChannelName + '] 채널을 ' + mPageType + '하겠습니다') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='setParam' />
     <gConfirmPop :confirmText="'채널이' + mPageType + '되었습니다.'" @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="mCreatedSuccessPopYn" />
-    <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
+    <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn === true" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
 </div>
 </template>
 
 <script>
-import selecTypePopup from './Tal_selectChanTypePopup.vue'
 import seleciconBgPopup from './Tal_selectChaniconBgPopup.vue'
 export default {
   created () {
@@ -201,11 +199,6 @@ export default {
       param.teamType = this.CHANNEL_DETAIL.teamType
       this.setTypeData(param)
     },
-    channelTypeClick () {
-      if (this.mSelectTeamTypePopYn === false) {
-        this.mSelectTeamTypePopYn = true
-      }
-    },
     setTypeData (param) {
       console.log(' ####  !!  ############## @@ #### ')
       console.log(param)
@@ -240,7 +233,7 @@ export default {
         this.mErrorPopYn = true
         return
       }
-      if (this.mSelectTypeText === '클릭해서 산업군을 선택해주세요.') {
+      if (this.mSelectedTeamTypeKey === undefined || this.mSelectedTeamTypeKey === null || this.mSelectedTeamTypeKey === '') {
         this.mErrorPopMsg = '채널의 산업군을 선택해주세요'
         this.mErrorPopYn = true
         return
@@ -382,7 +375,7 @@ export default {
     }
   },
   components: {
-    selecTypePopup, seleciconBgPopup
+    seleciconBgPopup
   }
 
 }
