@@ -47,6 +47,9 @@
             </div>
             <div v-if="this.mMainMChanList" style="width: 100%; height: 85px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%; display:flex;">
+                    <template v-if="this.mMainMChanList.length === 0">
+                        <circleSkeleton v-for="(value) in 10" :key="value"/>
+                    </template>
                     <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" @openPop="openPop"/>
                     <createChanIcon @openPop="openPop" style="margin-right:3rem"/>
                 </div>
@@ -57,6 +60,9 @@
             </div>
             <div v-if="this.mMainChanList" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%; display:flex; gap: 10px;">
+                    <template v-if="this.mMainChanList.length === 0">
+                        <squareSkeleton v-for="(value) in 10" :key="value"/>
+                    </template>
                     <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index" @openPop="openPop"/>
                     <searchChanIcon @openPop="openPop" />
                 </div>
@@ -99,6 +105,8 @@ import mainContsList from '../../components/pageComponents/main/D_mainContList.v
 
 import createChanIcon from '../../components/pageComponents/main/unit/D_createChanRoundIcon.vue'
 import searchChanIcon from '../../components/pageComponents/main/unit/D_searchChanSquareIcon.vue'
+import circleSkeleton from '../../components/pageComponents/main/D_mainChanCircleSkeleton.vue'
+import squareSkeleton from '../../components/pageComponents/main/D_mainChansquareSkeleton.vue'
 export default {
   data () {
     return {
@@ -120,7 +128,9 @@ export default {
     loadingCompo,
     chanRoundIcon,
     chanSquareIcon,
-    mainContsList
+    mainContsList,
+    circleSkeleton,
+    squareSkeleton
   },
   created () {
     var urlString = location.search

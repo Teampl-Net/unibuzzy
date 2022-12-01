@@ -5,7 +5,7 @@
         <gChannelPop :propCateItemKey="this.CHANNEL_DETAIL.cateKey" :propTeamKey="this.CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop'/>
       </div>
       <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
-      <welcomePopUp type="follow" v-if="mOpenWelcomePopShowYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="mOpenWelcomePopShowYn = false" @closePop="okMember" @applyMember="openReqMemPop" />
+      <welcomePopUp type="follow" v-if="mOpenWelcomePopShowYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="mOpenWelcomePopShowYn = false" @applyMember="openReqMemPop" />
       <div v-if="mReceptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999" ></div>
       <recMemberPop :chanDetail="this.CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" />
       <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{officialTitle: CHANNEL_DETAIL.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" /> <p class="font20 fontBold textOverdot"  :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: #6768a7' ">{{changeText(CHANNEL_DETAIL.nameMtext)}}</p></div>
@@ -64,7 +64,7 @@
                       <img class="img-w20" src="../../../assets/images/common/icon_share_square.svg" alt="">
                   </div>
               </div>
-              <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn == false" @click="changeFollowYn" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
+              <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn == false" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
                   <p class="fl w-100P font16 fontBold textLeft"> [ {{changeText(CHANNEL_DETAIL.nameMtext)}} ] 채널을 구독하고 알림을 받아보세요!</p>
                   <gBtnSmall @click="changeFollowYn" class="fl w-100P mtop-1 fontBold font14" btnTitle="구독하기" />
               </div>
@@ -307,7 +307,7 @@ export default {
       if (result.result || result) {
         if (result.message === 'OK') {
           this.mOpenWelcomePopShowYn = false
-          await this.$addChanList(this.CHANNEL_DETAIL.teamKey)
+          // await this.$addChanList(this.CHANNEL_DETAIL.teamKey)
           // var queueIndex = this.axiosQueue.findIndex((item) => item === 'addChanList')
           // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
 
@@ -328,6 +328,7 @@ export default {
       this.$emit('closeLoading')
     },
     async confirmOk () {
+      console.log(1223)
       this.mErrorPopShowYn = false
       if (this.mSaveFollowerType === 'follow') {
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {

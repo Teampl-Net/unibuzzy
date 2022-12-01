@@ -8,7 +8,9 @@
   <!-- </div> -->
 
   <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' />
-
+  <div v-if="GE_DISP_TEAM_LIST.length === 0" style="margin-top: 80px; width: 100%; min-height: 100%;">
+      <chanSkeleton  v-for="(value) in 10" :key="value"/>
+  </div>
   <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
     <gEmty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
     <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
@@ -33,14 +35,15 @@ import findChannelList from '../../components/popup/common/Tal_findChannelList.v
 import loadingCompo from '../../components/layout/Tal_loading.vue'
 
 import bottomSheets from '../../components/pageComponents/main/unit/D_commonBottomSheets.vue'
-
+import chanSkeleton from '../../components/pageComponents/channel/D_channelSkeleton.vue'
 export default {
   name: 'user',
   components: {
     bottomSheets,
     channelCard,
     findChannelList,
-    loadingCompo
+    loadingCompo,
+    chanSkeleton
   },
   data () {
     return {
