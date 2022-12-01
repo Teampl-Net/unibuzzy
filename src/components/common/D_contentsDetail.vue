@@ -14,6 +14,16 @@
                         </a>
                     </div>
                 </templete>
+                <p class="text16 fontBold textLeft">본문에 추가된 이미지</p>
+                {{this.CONT_DETAIL.D_BODY_IMG_FILE_LIST}}
+                <templete v-for="(value, index) in this.CONT_DETAIL.D_BODY_IMG_FILE_LIST" :key="index">
+                <div  v-if="value"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
+                    <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
+                    <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
+                    {{value.fileName}}
+                    </a>
+                </div>
+                </templete>
             </div>
         </div>
     </div>
@@ -81,7 +91,6 @@ export default {
     this.settingAtag()
     var contsScrollWrap = document.getElementById('contsScrollWrap')
     if (!contsScrollWrap) {
-      console.log(contsScrollWrap)
       // eslint-disable-next-line no-debugger
       debugger
       return
@@ -121,8 +130,6 @@ export default {
     },
     CHANNEL_DETAIL () {
       var chan = this.$getDetail('TEAM', this.propParams.teamKey)
-      console.log(chan)
-      console.log('CHANNEL_DETAIL')
       if (chan) {
         return chan[0]
       } else {
@@ -139,8 +146,6 @@ export default {
     },
     // eslint-disable-next-line vue/return-in-computed-property
     CONT_DETAIL () {
-      console.log('CONT_DETAIL')
-      console.log(this.cDetail)
       if (!this.cDetail || !this.CHANNEL_DETAIL) return
       var cont = this.$getContentsDetail(null, this.cDetail.contentsKey, this.CHANNEL_DETAIL.teamKey)
       if (!cont) {
@@ -319,8 +324,6 @@ export default {
       this.tempMemoData = undefined
     },
     async readyFunction () {
-      console.log('#!@!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@!#!#!#@')
-      console.log(this.propParams)
       try {
         this.loadingYn = true
         if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
@@ -336,7 +339,7 @@ export default {
           this.CONT_DETAIL.D_MEMO_LIST = []
           await this.getMemoList()
         }
-        if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST) {
+        if (this.CONT_DETAIL.attachMfilekey && (!this.CONT_DETAIL.D_ATTATCH_FILE_LIST || this.CONT_DETAIL.D_ATTATCH_FILE_LIST.length === 0)) {
           this.settingFileList()
         }
       } catch (e) {
@@ -355,10 +358,6 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       this.cabinetDetail = resultList
-      console.log('')
-      console.log(this.propParams)
-
-      console.log(this.cabinetDetail)
     },
     async getContentsDetail () {
       // eslint-disable-next-line no-new-object
@@ -369,8 +368,6 @@ export default {
       param.userKey = this.GE_USER.userKey
       param.ownUserKey = this.GE_USER.userKey
       var resultList = await this.$getContentsList(param)
-      console.log(param)
-      console.log(resultList)
       var detailData = resultList.content[0]
       // eslint-disable-next-line no-debugger
       detailData.D_CONT_USER_DO = await this.$settingUserDo(detailData.userDoList)
@@ -1017,7 +1014,6 @@ export default {
     endListCheckFunc (resultList) {
       if (resultList === undefined || resultList === null || resultList === '') return
       var dispTotalMemoCount = this.$countingTotalMemo(this.CONT_DETAIL.D_MEMO_LIST)
-      console.log(dispTotalMemoCount)
       if (resultList.totalElements === dispTotalMemoCount) {
         this.mCheckMemoEndListYn = true
         // if (this.mOffsetInt > 0) this.mOffsetInt -= 1
@@ -1101,8 +1097,6 @@ export default {
           url: 'service/tp.saveMemo',
           param: { memo: memo }
         })
-        console.log('-------------------------console.log(result) ------------------------------')
-        console.log(result)
         // if (result.data.result === true || result.data.result === 'true') {
         if (result) {
           // this.memoShowYn = false

@@ -164,8 +164,6 @@ export default {
 
     this.getCabinetDetail().then(() => {
       this_.getContentsList().then(response => {
-        console.log('===============')
-        console.log(response)
         if (!response.content) return
         this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
         var newArr = [
@@ -785,7 +783,6 @@ export default {
       var element = document.getElementsByClassName('commonBoardListContentBox')[0]
       var parentElement = element.parentElement
       this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
-      console.log(this.scrollDirection + ' // ' + this.firstContOffsetY)
       if (this.firstContOffsetY > 0) {
         this.scrollDirection = 'up'
         this.scrolledYn = false
@@ -978,8 +975,6 @@ export default {
       if (resultList && resultList.mCabinet) {
         this.cabinetDetail = resultList.mCabinet
       }
-      console.log('##################### CAB_DETAIL #################')
-      console.log(this.cabinetDetail)
       // this.updateStoreData(resultList.mCabinet)
       // eslint-disable-next-line no-new-object
 
@@ -1049,8 +1044,6 @@ export default {
       }
 
       var resultList = await this.$getContentsList(param)
-      console.log('****************************')
-      console.log(resultList)
       if (this.viewTab === 'N') {
         this.totalElements = resultList.totalElements
       }
@@ -1149,7 +1142,6 @@ export default {
 
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       var resultList = await this.getContentsList()
-      console.log(resultList)
       this.mCabContentsList = resultList.content
       if (!resultList || resultList === '') {
         this.endListYn = false

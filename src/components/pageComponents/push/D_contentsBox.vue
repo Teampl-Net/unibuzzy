@@ -209,14 +209,16 @@ export default {
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
 
       var contents = window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)
+      if (!contents || !contents.childNodes || contents.childNodes.length === 0) return
       // console.log(contents.childNodes)
       if (contents.childNodes.length > 0) {
         var i = 0
         var child = contents.childNodes[i]
-
         while (child.innerText === '') {
           child = contents.childNodes[i]
           i += 1
+
+          if (contents.childNodes.length === i) break
         }
         // console.log(child.innerText)
         if (child.id === 'formEditText') {
@@ -904,7 +906,8 @@ export default {
       if (!this.contentsEle) return
       var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKey)
       if (!cont) {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
+        cont = [this.contentsEle]
+        // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
       }
       // console.log(cont)
       if (cont && cont.length > 0) {

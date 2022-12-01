@@ -25,11 +25,9 @@ export default {
     chanElement: {}
   },
   created () {
-    console.log(this.chanElement)
   },
   methods: {
     goChannelMain (chanElement) {
-      console.log(this.chanElement)
       var openPopParam = {}
       openPopParam.targetKey = this.chanElement.teamKey
       openPopParam.targetType = 'chanDetail'

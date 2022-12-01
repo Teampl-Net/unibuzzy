@@ -746,8 +746,6 @@ export default {
         try {
           // eslint-disable-next-line no-undef
           var compressedFile = await this.$imageCompression(file, options)
-          console.log(compressedFile)
-          console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
           var src = null
           if (compressedFile instanceof Blob) {
             src = await this.$imageCompression.getDataUrlFromFile(compressedFile)

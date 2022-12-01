@@ -572,16 +572,12 @@ export default {
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', this.chanDetail.targetKey)
       if (detail && detail.length > 0) {
-        console.log(detail)
         if (!detail[0].copyTextStr) {
           var title = '[더알림]' + this.$changeText(detail[0].nameMtext)
           var message = this.$changeText(detail[0].memoMtext)
           var this_ = this
           this.$makeShareLink(detail[0].teamKey, 'chanDetail', message, title).then(res => {
-            console.log('복사링크 없음!!!!!!!!!!!!!!!!!!!!!!!!')
-            console.log(res)
             detail[0].copyTextStr = res
-            console.log(detail[0].copyTextStr)
             this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', detail[0])
           })
         }
@@ -605,9 +601,6 @@ export default {
         }
       } else {
         if (this.CHANNEL_DETAIL) {
-          console.log('CHANNEL_DETAIL')
-          console.log(this.CHANNEL_DETAIL)
-
           if (this.CHANNEL_DETAIL && (this.CHANNEL_DETAIL.blackYn !== undefined && this.CHANNEL_DETAIL.blackYn !== null && this.CHANNEL_DETAIL.blackYn !== '')) {
             this.$emit('bgcolor', this.CHANNEL_DETAIL.blackYn)
           } else {

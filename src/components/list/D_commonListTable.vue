@@ -52,7 +52,6 @@ export default {
       param.chanName = data.nameMtext
       param.targetContentsKey = data.contentsKey
       param.jobkindId = data.jobkindId
-      console.log(param)
       this.$emit('goChanDetail', param)
     },
     resizeText (text, name) {

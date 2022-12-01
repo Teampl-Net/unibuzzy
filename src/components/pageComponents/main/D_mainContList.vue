@@ -80,15 +80,12 @@ export default {
       param.userKey = this.GE_USER.userKey
       param.ownUserKey = this.GE_USER.userKey
       var resultList = await this.$getContentsList(param)
-      console.log(param)
-      console.log(resultList)
       var detailData = resultList.content[0]
 
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
     async settingFileList () {
       try {
-        console.log(this.mFilePopData)
         // eslint-disable-next-line no-debugger
         debugger
 
@@ -209,7 +206,6 @@ export default {
       return uniqueArr
     },
     async loadMore (descYn) {
-      console.log('this.mCanLoadYn : ' + this.mCanLoadYn + ' this.mEndListYn : ' + this.mEndListYn)
       if (this.mCanLoadYn && this.mEndListYn === false) {
         this.mCanLoadYn = false
         try {

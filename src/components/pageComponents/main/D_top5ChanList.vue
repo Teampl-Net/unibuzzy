@@ -83,7 +83,6 @@ export default {
       }
     },
     openPop (value) {
-      console.log(value)
       var params = value
       params.targetType = value.targetType
       params.targetKey = value.teamKey

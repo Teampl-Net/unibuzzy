@@ -1143,7 +1143,6 @@ export default {
       var param = {}
       param.targetType = 'contentsDetail'
       param.targetKey = value.contentsKey
-      console.log(param)
       if (value.jobkindId === 'ALIM') {
         param.popHeaderText = value.nameMtext
       } else if (value.jobkindId === 'BOAR') {
@@ -1158,7 +1157,6 @@ export default {
       param.value = value
       value.readYn = 1
       param.readYn = value.readYn
-      console.log(param)
       this.$emit('goDetail', param)
     },
 
@@ -1249,7 +1247,6 @@ export default {
         str = Base64.decode(str)
         str.replace('contenteditable= true', '')
         if(completeYn){
-            console.log(str)
             str = str.replaceAll('formCard formText ', 'formCard formText completeWork ')
         }
         return str
@@ -1268,18 +1265,12 @@ export default {
             if (cList[i].childNodes.length > 0) {
                 var imgs = cList[i].querySelector('img')
                 var text = cList[i].querySelector('div')
-                console.log(imgs)
-                console.log(text)
-                console.log(cList[i])
-                console.log('==========================')
                 if (imgs){
-                  console.log(imgs.height)
                     height += imgs.height
                 } else {
                     height += 21
                 }
                 if (text) {
-                  console.log(text.clientHeight)
                   height += text.height
                 } else {
                   height += 21

@@ -47,7 +47,6 @@ export default {
     } */
   },
   created () {
-    console.log(this.alimDetail)
     if (this.alimDetail) {
       if (this.alimDetail.workToDate) {
         this.dateHolder = this.settingDate(this.alimDetail.workToDate)
@@ -74,7 +73,6 @@ export default {
         }
       }
     }
-    console.log(this.parentList)
   },
   props: {
     codeList: {},
@@ -172,7 +170,6 @@ export default {
           setOkYn = true
         }
         if (this.selectedList.memberList.length > 0 && this.selectedList.memberList[0]) {
-          console.log(this.selectedList.memberList[0])
           param.workUserKey = this.selectedList.memberList[0].accessKey
           param.workUserName = this.selectedList.memberList[0].userDispMtext
           param.memoHeaderStr += '담당자 ' + this.$changeText(this.selectedList.memberList[0].userDispMtext)

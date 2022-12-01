@@ -94,6 +94,7 @@ export default {
       this.$refs.activeBar.switchtab(2)
     }
     this.$emit('closeLoading')
+    this.mLoadingYn = false
   },
   async created () {
     this.$emit('changePageHeader', '채널')

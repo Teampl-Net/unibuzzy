@@ -264,7 +264,6 @@ export default {
       /* var queueIndex = this.axiosQueue.findIndex((item) => item === 'addChanList')
       this.axiosQueue = this.axiosQueue.splice(queueIndex, 1) */
       if (this.CHANNEL_DETAIL) {
-        console.log(this.CHANNEL_DETAIL)
         if (!this.CHANNEL_DETAIL.copyTextStr && !this.mMakeDeepLinkIng) {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.mMakeDeepLinkIng = true
@@ -281,8 +280,6 @@ export default {
       }
       this.$emit('closeLoading')
       this.$showAxiosLoading(false)
-      console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrr')
-      console.log(this.CHANNEL_DETAIL)
       /* if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.userTeamInfo && (this.CHANNEL_DETAIL.userTeamInfo.memberInfoList.length === 0 || !this.CHANNEL_DETAIL.userTeamInfo.memberInfoList[0].memberTypeKey)) this.commonChanPopShowYn = true */
     },
     setSelectedList (data) {
@@ -542,7 +539,6 @@ export default {
       this.mChanMainScrollPosition = this.mChanMainScrollWrap.scrollTop
       if (this.mChanMainScrollDirection === 'down' && this.mChanMainScrollPosition > 250) {
         blockBox.style.height = 50 + 'px'
-        console.log(this.mChanMainScrollPosition)
         if (this.mChanMainScrollPosition > 290) this.mChanMainScrollWrap.style.overflow = 'hidden'
 
         document.getElementById('chanInfoSummary').classList.add('displayNIm')

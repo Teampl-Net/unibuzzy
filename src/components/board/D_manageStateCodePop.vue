@@ -103,16 +103,13 @@ export default {
   },
   created () {
     this.openSelectPop()
-    console.log(this.alimDetail)
     if (this.alimDetail) {
       if (this.alimDetail.workToDate) {
         this.dateHolder = this.settingDate(this.alimDetail.workToDate)
-        console.log(this.dateHolder)
       }
       if (this.alimDetail.shareList) {
         for (var i = 0; i < this.alimDetail.shareList.length; i++) {
           var accessKind = this.alimDetail.shareList[i].accessKind
-          console.log(this.alimDetail.shareList[i])
           if (accessKind === 'U') {
             this.parentList.memberList.push(this.alimDetail.shareList[i])
           } else {
@@ -136,7 +133,6 @@ export default {
         if (idx !== -1) this.selectedList.memberList.push(this.parentList.memberList[idx])
       }
     }
-    console.log(this.parentList)
   },
   props: {
     codeList: {},
@@ -149,8 +145,6 @@ export default {
   methods: {
     setSelectedList (datas) {
       // 권한 선택시 실행
-      console.log('-------------------------------------')
-      console.log(datas)
       this.selectedShareList = []
       var data = datas
       this.selectBookListShowYn = false
@@ -227,7 +221,6 @@ export default {
         if (this.workDate.toDate !== undefined && this.workDate.toDate !== null && this.workDate.toDate !== '') {
           // eslint-disable-next-line no-debugger
           debugger
-          console.log(this.workDate.toDate)
           var toDate = this.settingDate(this.workDate.toDate)
           param.workToDateStr = toDate
           param.memoHeaderStr += '목표일 ' + this.settingDate(this.workDate.toDate)
@@ -235,7 +228,6 @@ export default {
           setOkYn = true
         }
         if (this.selectedList.memberList.length > 0 && this.selectedList.memberList[0]) {
-          console.log(this.selectedList.memberList[0])
           param.workUserKey = this.selectedList.memberList[0].accessKey
           param.workUserName = this.selectedList.memberList[0].userDispMtext
           param.memoHeaderStr += '담당자 ' + this.$changeText(this.selectedList.memberList[0].userDispMtext)
@@ -268,8 +260,6 @@ export default {
             newParam.contentsKey = result.data.contents.contentsKey
             newParam.jobkindId = 'BOAR'
             await this.$getContentsList(newParam).then(newReslute => {
-              console.log('newReslute')
-              console.log(newReslute)
               this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
             })
             this.$showToastPop('업무 상태가 변경되었습니다.')

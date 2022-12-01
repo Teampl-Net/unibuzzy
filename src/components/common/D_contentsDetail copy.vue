@@ -199,8 +199,6 @@ export default {
     },
     CHANNEL_DETAIL () {
       var chan = this.$getDetail('TEAM', this.propParams.teamKey)
-      console.log(chan)
-      console.log('CHANNEL_DETAIL')
       if (chan) {
         return chan[0]
       } else {
@@ -217,14 +215,11 @@ export default {
     },
     // eslint-disable-next-line vue/return-in-computed-property
     CONT_DETAIL () {
-      console.log('CONT_DETAIL')
-      console.log(this.cDetail)
       if (!this.cDetail || !this.CHANNEL_DETAIL) return
       var cont = this.$getContentsDetail(null, this.cDetail.contentsKey, this.CHANNEL_DETAIL.teamKey)
       if (!cont) {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.cDetail])
       }
-      console.log(cont)
       if (cont) {
         return cont[0]
       } else {
@@ -378,8 +373,6 @@ export default {
       this.tempMemoData = undefined
     },
     async readyFunction () {
-      console.log('#!@!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@!#!#!#@')
-      console.log(this.propParams)
       try {
         this.loadingYn = true
         if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
@@ -428,8 +421,6 @@ export default {
       param.userKey = this.GE_USER.userKey
       param.ownUserKey = this.GE_USER.userKey
       var resultList = await this.$getContentsList(param)
-      console.log(param)
-      console.log(resultList)
       var detailData = resultList.content[0]
       // eslint-disable-next-line no-debugger
       detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
@@ -1148,8 +1139,6 @@ export default {
           url: 'service/tp.saveMemo',
           param: { memo: memo }
         })
-        console.log('-------------------------console.log(result) ------------------------------')
-        console.log(result)
         // if (result.data.result === true || result.data.result === 'true') {
         if (result) {
           // this.memoShowYn = false
