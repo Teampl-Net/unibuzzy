@@ -146,6 +146,14 @@ export default {
     /* this.getMainBoard().then(res => {
       this.mLoadingYn = false
     }) */
+
+    var this_ = this
+    this.$userLoginCheck().then(() => {
+      this.getMainBoard()
+    })
+    setTimeout(() => {
+      this_.mLoadingYn = false
+    }, 3000)
     this.mLoadingYn = true
     this.$store.commit('D_HISTORY/setRemovePage', '')
     this.$store.commit('D_HISTORY/updateStack', [])
@@ -157,13 +165,13 @@ export default {
   }, */
   mounted () {
     // this.mLoadingYn = false
-    this.$userLoginCheck()
+    /* this.$userLoginCheck()
     var this_ = this
     setTimeout(() => {
       this_.mLoadingYn = false
     }, 3000)
     if (!this.GE_USER) return
-    this.getMainBoard()
+    this.getMainBoard() */
     // var this_ = this
     /* this.$nextTick(() => {
       this_.mLoadingYn = false
@@ -186,6 +194,7 @@ export default {
       this.openPop(openPopParam)
     },
     async getMainBoard () {
+      console.log('getMainBoard')
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')
       var paramMap = new Map()
@@ -200,8 +209,10 @@ export default {
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {
+        console.log(response.data)
         this.mMainChanList = response.data.teamList
         this.mMainMChanList = response.data.mTeamList
+        this.mMainAlimList = response.data.alimList
         await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
       }
       console.log(this.mMainChanList)

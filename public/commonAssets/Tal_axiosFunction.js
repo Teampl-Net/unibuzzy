@@ -553,8 +553,12 @@ export const methods = {
     var user = new Object()
     // param.user = this.userInfo
     user = store.getters['D_USER/GE_USER']
+    if (user.email !== undefined && user.email !== null && user.email !== '') { user.soEmail = user.email }
+    if (user.name !== undefined && user.name !== null && user.name !== '') {
+      user.soName = user.name
+    }
     param.user = user
-    param.updateYn = true
+    // param.updateYn = true
     var result = null
     var response = await commonAxiosFunction({
       url: 'service/tp.saveUser',

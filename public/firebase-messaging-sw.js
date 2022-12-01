@@ -97,14 +97,14 @@ self.addEventListener('activate', function (event) {
 
 self.addEventListener('notificationclick', function (event) {
   console.log('Notification click Received.', event)
-  if (event.action === 'close') {
+  if (event.action === 'goTab') {
+    if (push_url != null) {
+      event.waitUntil(
+        clients.openWindow(push_url)
+
+      )
+    }
+  } else {
     event.notification.close()
-  }
-
-  if (push_url != null) {
-    event.waitUntil(
-      clients.openWindow(push_url)
-
-    )
   }
 })
