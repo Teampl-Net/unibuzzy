@@ -64,6 +64,7 @@ import gMainTab from './components/popup/memberInfo/memberUnit/D_commonMainTabCo
 import channelCard from './components/list/D_channelCard.vue'
 
 import webViewBridge from './assets/js/webViewBridge'
+// import attatchFileListPop from './components/pageComponents/main/unit/D_commonAttatchFileListPop.vue'
 const app = createApp(moTheAlim).use(router).use(store)
 app.use(commonjs)
 app.use(getjs)
@@ -110,6 +111,7 @@ app.component('gInputPop', gInputSmallPop)
 app.component('gChannelPop', gChannelPop)
 app.component('gMainTab', gMainTab)
 app.component('channelCard', channelCard)
+// app.component('attatchFileListPop', attatchFileListPop)
 
 app.use(webViewBridge)
 app.use(axiosFunction)

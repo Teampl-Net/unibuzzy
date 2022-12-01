@@ -190,18 +190,10 @@ export default {
   },
   methods: {
     async clickFileDownload () {
-      if (this.propDetailYn === true) {
-        // alert(1)
-        // this.propDetailYn <- detail화면에서 true로 값을 보내고 있고, 디테일로 열었을 시 axios가 달라 filelist를 같이 보내주고 있으므로 아래의 else 함수가 필요하지 않음
-        this.$emit('fileDownload')
-      } else {
-        // mainList화면에서 실행한 axios에는 fileList가 없으므로 클릭시 리스트를 받아오기 위해 넣었습니다.
-        // await this.getContentsDetail()
-        // await this.settingFileList()
-        // this.mFilePopShowYn = true
-        // alert(true)
-        this.$emit('fileDownload', this.propContIndex)
-      }
+      // fileListPop은 mainContList, ContentsDetail이 열고 있으며 this.propContIndex는 MainContList가 필요해서 쓰고 있어요!
+      // 두개로 나눠 놓은 이유는 contList는 attatchList를 가지고 있지 않아서 axios를 한 번 갔다와야 하고,
+      // detailPop은 create시점에 axios를 갔다 오기에 한 번 더 axios를 호출 할 필요가 없기에 두개로 열고 있어요!
+      this.$emit('fileDownload', this.propContIndex)
     },
     setPreTagInFirstTextLine () {
       // 본문 영역에 첫번째 줄이 사진이 아닐 경우 라인을 그어주기 위한 함수

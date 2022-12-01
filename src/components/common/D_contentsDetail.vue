@@ -1,7 +1,10 @@
 <template>
     <div ref="contScrollWrap" id="contsScrollWrap" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
         <gContentsBox @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
-        <div @click="filePopShowYn =false"  v-if="filePopShowYn"  style="width: 100%; height: 100%;     position: absolute;; background: #00000020; z-index: 2; top: 0;"></div>
+
+        <attatchFileListPop :propFileData="this.CONT_DETAIL" v-if="filePopShowYn === true" @closePop="filePopShowYn = false"/>
+
+        <!-- <div @click="filePopShowYn =false"  v-if="filePopShowYn"  style="width: 100%; height: 100%;     position: absolute;; background: #00000020; z-index: 2; top: 0;"></div>
         <div v-if="filePopShowYn" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 2; overflow: hidden auto; position: absolute">
             <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; ">
                 <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
@@ -25,10 +28,11 @@
                 </div>
                 </templete>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
+import attatchFileListPop from '../pageComponents/main/unit/D_commonAttatchFileListPop.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
 
 export default {
@@ -82,6 +86,7 @@ export default {
     pPopId: {}
   },
   components: {
+    attatchFileListPop
   },
   created () {
     this.readyFunction()
@@ -1122,25 +1127,28 @@ export default {
       debugger
       if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
         var attachFileList = []
-        for (var a = 0; a < this.CONT_DETAIL.attachFileList.length; a++) {
-          if (this.CONT_DETAIL.attachFileList[a].attachYn) {
-            attachFileList.push(this.CONT_DETAIL.attachFileList[a])
-          }
-        }
         var bodyImgFileList = []
-        var addFalseImgList = document.querySelectorAll('#contentsBodyArea .formCard .addFalse')
-        if (addFalseImgList) {
-          for (var s = 0; s < this.CONT_DETAIL.attachFileList.length; s++) {
-            var attFile = this.CONT_DETAIL.attachFileList[s]
-            for (var i = 0; i < addFalseImgList.length; i++) {
-              if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
-                addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
-                bodyImgFileList.push(attFile)
-                break
-              }
-            }
+        for (var a = 0; a < this.CONT_DETAIL.attachFileList.length; a++) {
+          if (this.CONT_DETAIL.attachFileList[a].attachYn === true) {
+            attachFileList.push(this.CONT_DETAIL.attachFileList[a])
+          } else if (this.CONT_DETAIL.attachFileList[a].attachYn === false) {
+            bodyImgFileList.push(this.CONT_DETAIL.attachFileList[a])
           }
         }
+        // var bodyImgFileList = []
+        // var addFalseImgList = document.querySelectorAll('#contentsBodyArea .formCard .addFalse')
+        // if (addFalseImgList) {
+        //   for (var s = 0; s < this.CONT_DETAIL.attachFileList.length; s++) {
+        //     var attFile = this.CONT_DETAIL.attachFileList[s]
+        //     for (var i = 0; i < addFalseImgList.length; i++) {
+        //       if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
+        //         addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
+        //         bodyImgFileList.push(attFile)
+        //         break
+        //       }
+        //     }
+        //   }
+        // }
         var cont = this.CONT_DETAIL
         cont.D_ATTATCH_FILE_LIST = attachFileList
         cont.D_BODY_IMG_FILE_LIST = bodyImgFileList

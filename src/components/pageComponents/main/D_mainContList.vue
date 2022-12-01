@@ -12,29 +12,15 @@
       <writeBottSheet v-if="mSeleteWriteTypePopShowYn" @openPop='openPop' @closePop='mSeleteWriteTypePopShowYn = false' />
     </transition>
   </div>
-  <div @click="mFilePopYn = false"  v-if="mFilePopYn === true"  style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 999; top: 0; left: 0"></div>
-  <div v-if="mFilePopYn === true" style="width: 100vw; height: 100vh; position: fixed;  z-index: 999; top: 0; left: 0 ">
-    <div id="dlTskdy" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 999; overflow: hidden auto; position: absolute;">
-      <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; " >
-        <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
-        <img @click="mFilePopYn = false"  src="../../../assets/images/common/grayXIcon.svg" style="position: absolute; right: 5px; top: 0px;" alt="">
-        <templete v-for="(value, index) in this.mFilePopData.D_ATTATCH_FILE_LIST" :key="index">
-          <div style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
-            <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
-            <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
-            {{value.fileName}}
-            </a>
-          </div>
-        </templete>
-      </div>
-    </div>
-  </div>
+
+  <attatchFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
 </template>
 
 <script>
+import attatchFileListPop from './unit/D_commonAttatchFileListPop.vue'
 import writeBottSheet from './unit/D_contentsWriteBottSheet.vue'
 export default {
-  components: { writeBottSheet },
+  components: { attatchFileListPop, writeBottSheet },
   data () {
     return {
       mOffsetInt: 0,
@@ -62,18 +48,18 @@ export default {
   },
   methods: {
     async fileDownload (index) {
-      this.mFilePopData = this.GE_DISP_CONTS_LIST[index]
-      this.mFilePopData.index = index
+      this.mFilePopData = await this.GE_DISP_CONTS_LIST[index]
+      console.log('ddddddddddddddddddddddddddddddddddddddddddd')
+
       await this.getContentsDetail()
       await this.settingFileList()
-      if (this.mFilePopData.D_ATTATCH_FILE_LIST.length > 0) {
+
+      if (this.mFilePopData.attachFileList.length > 0) {
         this.mFilePopYn = true
       }
-      // this.mFilePopYn = !this.mFilePopYn
     },
     async getContentsDetail () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.contentsKey = this.mFilePopData.contentsKey
       param.targetKey = this.mFilePopData.contentsKey
       param.jobkindId = this.mFilePopData.jobkindId
@@ -81,35 +67,34 @@ export default {
       param.ownUserKey = this.GE_USER.userKey
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
-
+      this.mFilePopData = detailData
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
     async settingFileList () {
       try {
-        // eslint-disable-next-line no-debugger
-        debugger
-
         if (this.mFilePopData && this.mFilePopData.attachFileList !== undefined && this.mFilePopData.attachFileList.length > 0) {
           var attachFileList = []
-          for (var a = 0; a < this.mFilePopData.attachFileList.length; a++) {
-            if (this.mFilePopData.attachFileList[a].attachYn) {
-              attachFileList.push(this.mFilePopData.attachFileList[a])
-            }
-          }
           var bodyImgFileList = []
-          var addFalseImgList = document.querySelectorAll('#contentsBodyArea .formCard .addFalse')
-          if (addFalseImgList) {
-            for (var s = 0; s < this.mFilePopData.attachFileList.length; s++) {
-              var attFile = this.mFilePopData.attachFileList[s]
-              for (var i = 0; i < addFalseImgList.length; i++) {
-                if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
-                  addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
-                  bodyImgFileList.push(attFile)
-                  break
-                }
-              }
+          for (var a = 0; a < this.mFilePopData.attachFileList.length; a++) {
+            if (this.mFilePopData.attachFileList[a].attachYn === true) {
+              attachFileList.push(this.mFilePopData.attachFileList[a])
+            } else if (this.mFilePopData.attachFileList[a].attachYn === false) {
+              bodyImgFileList.push(this.mFilePopData.attachFileList[a])
             }
           }
+          // var addFalseImgList = document.querySelectorAll('#contentsBodyArea .formCard .addFalse')
+          // if (addFalseImgList) {
+          //   for (var s = 0; s < this.mFilePopData.attachFileList.length; s++) {
+          //     var attFile = this.mFilePopData.attachFileList[s]
+          //     for (var i = 0; i < addFalseImgList.length; i++) {
+          //       if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
+          //         addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
+          //         bodyImgFileList.push(attFile)
+          //         break
+          //       }
+          //     }
+          //   }
+          // }
           var cont = this.mFilePopData
           cont.D_ATTATCH_FILE_LIST = attachFileList
           cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
@@ -121,14 +106,12 @@ export default {
         console.log(error)
       }
     },
-    //
-    //
     contDelete (contentIndex) {
       // console.log(contentIndex)
       // console.log(this.GE_DISP_CONTS_LIST[contentIndex])
       this.GE_DISP_CONTS_LIST.splice(contentIndex, 1)
 
-      // 삭제 후 리로드가 되지 않아 상위 div에 reload키를 넣어 다시 그려주었습니다. -- 스크롤 이동하지 않았음
+      // 삭제 후 리로드가 되지 않아 상위 div에 reload키를 넣어 다시 그려주었습니다. -- 다시 그려도 스크롤 이동하지 않았음
       this.mReloadKey += 1
     },
     openPop (openPopParam) {
@@ -291,38 +274,42 @@ export default {
     GE_MAIN_CHAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
     },
+    // eslint-disable-next-line vue/return-in-computed-property
     GE_DISP_CONTS_LIST () {
-      // console.log(this.ALIM_LIST_RELOAD_CONT)
-      var idx1, idx2
-      var returnContsList = []
-      var chanDetail = null
-      var dataList = null
-      var i = 0
-      if (!this.mContsList.length === 0) return []
-      for (i = 0; i < this.mContsList.length; i++) {
-        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mContsList[i].creTeamKey)
-        if (idx1 === -1) {
-          var this_ = this
-          returnContsList.push(this_.mContsList[i])
-        } else {
-          chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          if (this.mContsList[i].jobkindId === 'ALIM') {
-            dataList = chanDetail.ELEMENTS.alimList
+      try {
+        var idx1, idx2
+        var returnContsList = []
+        var chanDetail = null
+        var dataList = null
+        var i = 0
+        if (!this.mContsList.length === 0) return []
+        for (i = 0; i < this.mContsList.length; i++) {
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mContsList[i].creTeamKey)
+          if (idx1 === -1) {
+            var this_ = this
+            returnContsList.push(this_.mContsList[i])
           } else {
-            dataList = chanDetail.ELEMENTS.boardList
-          }
-          idx2 = dataList.findIndex((item) => item.contentsKey === this.mContsList[i].contentsKey)
-          if (idx2 !== -1) {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            // this.mContsList[i] = dataList[idx2]
-            returnContsList.push(dataList[idx2])
-          } else {
-            returnContsList.push(this.mContsList[i])
+            chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+            if (this.mContsList[i].jobkindId === 'ALIM') {
+              dataList = chanDetail.ELEMENTS.alimList
+            } else {
+              dataList = chanDetail.ELEMENTS.boardList
+            }
+            idx2 = dataList.findIndex((item) => item.contentsKey === this.mContsList[i].contentsKey)
+            if (idx2 !== -1) {
+              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+              // this.mContsList[i] = dataList[idx2]
+              returnContsList.push(dataList[idx2])
+            } else {
+              returnContsList.push(this.mContsList[i])
+            }
           }
         }
-      }
 
-      return this.replaceArr(returnContsList)
+        return this.replaceArr(returnContsList)
+      } catch (error) {
+        console.log(error)
+      }
     },
     GE_NEW_MEMO_LIST (state) {
       return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
