@@ -1,8 +1,5 @@
 <template>
   <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px; " :key="mReloadKey" >
-    <template v-if="GE_DISP_CONTS_LIST.length === 0">
-        <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
-    </template>
     <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" >
       <gContentsBox :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' @fileDownload="fileDownload" />
       <myObserver v-if="this.GE_DISP_CONTS_LIST.length > 5 ?  index === this.GE_DISP_CONTS_LIST.length - 5 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
@@ -22,10 +19,9 @@
 <script>
 import attatchFileListPop from './unit/D_commonAttatchFileListPop.vue'
 import writeBottSheet from './unit/D_contentsWriteBottSheet.vue'
-import SkeletonBox from '../push/D_contentsSkeleton'
 
 export default {
-  components: { attatchFileListPop, writeBottSheet, SkeletonBox },
+  components: { attatchFileListPop, writeBottSheet },
   data () {
     return {
       mOffsetInt: 0,
@@ -49,7 +45,8 @@ export default {
   },
   props: {
     propUserKey: {},
-    propTab: {}
+    propTab: {},
+    pMainAlimList: {}
   },
   methods: {
     async fileDownload (index) {
@@ -265,9 +262,14 @@ export default {
   },
   created () {
     var this_ = this
-    this.getMyContentsList().then((result) => {
-      this_.setContsList(result)
-    })
+    if (this.pMainAlimList) {
+      this.mContsList = this.pMainAlimList
+    }
+    if (this.mContsList.length === 0) {
+      this.getMyContentsList().then((result) => {
+        this_.setContsList(result)
+      })
+    }
   },
   mounted () {
     // this.$delayAfterFunc(6000, this.check)

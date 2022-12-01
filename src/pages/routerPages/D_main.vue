@@ -84,8 +84,11 @@
               <p @click="goContentListPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글 ></p>
             </div>
           </div>
-          <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px; background: #F4F4F4; padding: 8px; " >
-            <mainContsList :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
+          <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px; background: #F4F4F4; padding: 8px;" >
+            <template v-if="mMainAlimList.length === 0">
+                <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
+            </template>
+            <mainContsList v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
           </div>
         </div>
     </div>
@@ -107,6 +110,7 @@ import createChanIcon from '../../components/pageComponents/main/unit/D_createCh
 import searchChanIcon from '../../components/pageComponents/main/unit/D_searchChanSquareIcon.vue'
 import circleSkeleton from '../../components/pageComponents/main/D_mainChanCircleSkeleton.vue'
 import squareSkeleton from '../../components/pageComponents/main/D_mainChansquareSkeleton.vue'
+import SkeletonBox from '../../components/pageComponents/push/D_contentsSkeleton'
 export default {
   data () {
     return {
@@ -130,7 +134,8 @@ export default {
     chanSquareIcon,
     mainContsList,
     circleSkeleton,
-    squareSkeleton
+    squareSkeleton,
+    SkeletonBox
   },
   created () {
     var urlString = location.search
@@ -148,9 +153,7 @@ export default {
     }) */
 
     var this_ = this
-    this.$userLoginCheck().then(() => {
-      this.getMainBoard()
-    })
+    this.getMainBoard()
     setTimeout(() => {
       this_.mLoadingYn = false
     }, 3000)
@@ -204,7 +207,13 @@ export default {
       } else {
         paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       }
-      var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
+      if (this.GE_USER.soAccessToken !== undefined && this.GE_USER.soAccessToken !== null && this.GE_USER.soAccessToken !== '') { paramMap.set('soAccessToken', this.GE_USER.soAccessToken) }
+      if (this.GE_USER.fcmKey !== undefined && this.GE_USER.fcmKey !== null && this.GE_USER.fcmKey !== '') { paramMap.set('fcmKey', this.GE_USER.fcmKey) }
+      paramMap.set('userEmail', this.GE_USER.userEmail)
+      paramMap.set('soEmail', this.GE_USER.soEmail)
+      var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      paramMap.set('mobileYn', isMobile)
+      var response = await this.$axios.post('service/tp.firstLoginCheck', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
@@ -212,8 +221,9 @@ export default {
         console.log(response.data)
         this.mMainChanList = response.data.teamList
         this.mMainMChanList = response.data.mTeamList
-        this.mMainAlimList = response.data.alimList
+        this.mMainAlimList = response.data.alimList.content
         await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
+        await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
       }
       console.log(this.mMainChanList)
       console.log(this.mMainMChanList)
