@@ -20,13 +20,13 @@
               </div>
           </div>
         </div>
-        <form v-else :style="settingCardHeight" @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 70px;height: var(--cardHeight);position: relative;height: var(--cardHeight)" method="post">
-            <div v-if="selectFileList.length === 0" style="cursor: pointer; background: #FFF; width: calc(100%); height: 100%;display: flex; font-size: 14px;color: rgb(103, 104, 167);justify-content: center;align-items: center;">
+        <form v-else :style="settingCardHeight" @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 70px; position: relative; " method="post">
+            <div v-if="selectFileList.length === 0" style="cursor: pointer; background: #FFF; width: calc(100%); min-height: 70px; height: 100%;display: flex; font-size: 14px;color: rgb(103, 104, 167);justify-content: center;align-items: center;">
                 <img  class="fl" src="../../../assets/images/formEditor/gallery_gray.svg" style="width: 20px;"  alt="">
             </div>
             <input class="formImageFile" multiple type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="handleImageUpload(event)"/>
             <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100%)">
-                <div  class="fl mright-05" :style="settingImgSize" style="width:100%;">
+                <div  class="fl mright-05" :style="settingImgSize" style="width:100%;" >
                     <img  class="editorImg" style="width:100%;" :class="{addTrue :  firstFile.addYn}" :src="firstFile.previewImgUrl" />
                     <!-- <span @click="deleteFile(index)" style="position: absolute; top: 0; right: 7px; cursor: pointer;">x</span> -->
                 </div>
@@ -37,6 +37,12 @@
             selectFileList : {{ selectFileList }}
         </div> -->
         </form>
+        <!-- <div v-if="propSelectRow === targetKey && this.firstFile.previewImgUrl" class="fl imgRotationFuncBox">
+            <div @click="rotationImg(270)" class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 6px;"><img class="img-w15" src="../../../assets/images/formEditor/icon_rotate_left.svg" alt=""></div>
+            <div @click="rotationImg(180)" class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 5px;"><img  class="img-w15" src="../../../assets/images/formEditor/icon_rotate_180.svg" alt=""></div>
+            <div @click="rotationImg(90)"  class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 5px;"><img  class="img-w15" src="../../../assets/images/formEditor/icon_rotate_right.svg" alt=""></div>
+        </div>
+         <canvas id="canvas" style="display:none;"></canvas> -->
 </template>
 <script>
 /* eslint-disable no-debugger */
@@ -74,7 +80,8 @@ export default {
     pSrc: {},
     pFilekey: {},
     pasteImgYn: { type: Boolean, default: false },
-    multiFileSrc: {}
+    multiFileSrc: {},
+    propSelectRow: {}
   },
   data () {
     return {
@@ -113,6 +120,74 @@ export default {
     }
   },
   methods: {
+    async rotationImg (angle) {
+      console.log(this.firstFile)
+      console.log(this.selectFileList)
+      var tempImage = new Image()
+      tempImage.src = this.firstFile.previewImgUrl
+      var this_ = this
+      tempImage.onload = await function () {
+        // Resize image
+        var canvas = document.getElementById('canvas')
+        var canvasContext = canvas.getContext('2d')
+        console.log(tempImage.width + ' // ' + tempImage.height)
+        if (angle === 270) {
+          // @details 270° 회전의 경우 이미지의 높이와 넓이를 서로 바꿔준다.
+          canvas.width = tempImage.height
+          canvas.height = tempImage.width
+          canvasContext.rotate((270) * Math.PI / 180)
+          // @details 이미지가 270° 회전 했을 경우 x축의 값을 업로드 이미지의 넓이를 음수로 변경한다.
+          canvasContext.drawImage(this, (tempImage.width * -1), 0)
+        } else if (angle === 90) {
+          // @details 90° 회전의 경우 이미지의 높이와 넓이를 서로 바꿔준다.
+          canvas.width = tempImage.height
+          canvas.height = tempImage.width
+          canvasContext.rotate(Math.PI / 2)
+          // @details 이미지가 90° 회전 했을 경우 y축의 값을 업로드 이미지의 높이를 음수로 변경한다.
+          canvasContext.drawImage(this, 0, (tempImage.height * -1))
+        } else if (angle === 180) {
+          canvas.width = tempImage.width
+          canvas.height = tempImage.height
+          canvasContext.rotate(Math.PI)
+          // @details 이미지가 180° 회전 했을 경우 x, y축의 값을 업로드 이미지의 넓이와 높이를 음수로 변경한다.
+          canvasContext.drawImage(this, (tempImage.width * -1), (tempImage.height * -1))
+        } else if (angle === 0) {
+          canvas.width = tempImage.width
+          canvas.height = tempImage.height
+          canvasContext.drawImage(this, 0, 0)
+        }
+        // @breif 캔버스의 이미지
+        var dataURI = canvas.toDataURL('image/png')
+        console.log(dataURI === this_.selectFileList[0].previewImgUrl)
+        console.log(this_.selectFileList)
+
+        const decodImg = atob(dataURI.split(',')[1])
+        const array = []
+        for (let i = 0; i < decodImg.length; i++) {
+          array.push(decodImg.charCodeAt(i))
+        }
+        const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+        var newFile = new File([Bfile], this_.firstFile.file.name)
+
+        this_.selectFileList[0].previewImgUrl = dataURI
+        this_.selectFileList[0].file = newFile
+        this_.$emit('success', { targetKey: this_.targetKey, selectFileList: this_.selectFileList, originalType: 'image' })
+        if (this_.$refs.selectFile.files.length === 1) {
+          this_.previewImgUrl = dataURI
+          this_.firstFile = this_.selectFileList[0]
+        } else {
+          this_.firstFile = this_.selectFileList[0]
+          // }
+        }
+        // this.$emit('updateImgForm', this.previewImgUrl)
+        setTimeout(() => {
+          this_.cardHeight = this_.$refs.imageBox.scrollHeight
+        }, 10)
+        this_.fileCnt += 1
+        this_.firstFile.previewImgUrl = dataURI
+        // if (this_.multiFileSrc) this_.multiFileSrc = dataURI
+      }
+    },
     async handleImageUpload (event) {
       this.selectFile = null
       const options = {
@@ -154,6 +229,14 @@ export default {
               } else {
                 src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
               }
+
+              // var image = new Image()
+              // image.src = src
+
+              // image.onload = function () {
+              //   // Resize image
+              //   console.log(image.width + ' // ' + image.height)
+              // }
 
               console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
               console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
@@ -281,4 +364,35 @@ export default {
 
 }
 .imageBorder{box-shadow: rgb(191 191 218) 0px 0px 2px 0px;}
+.imgRotationFuncBox {
+    width: calc(100%) !important;
+    display: flex;
+    gap: 10px;
+    float: left;
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem auto 0px;
+    min-height: 40px;
+    position: absolute;
+    bottom: 0px;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.314);
+    width: calc(100%) !important;
+    padding: 6px 10px !important;
+
+    /* width: calc(100%) !important;
+    display: flex;
+    gap:10px;
+    float: left;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    min-height: 40px;
+    padding: 6px 10px !important;
+    margin-top: 0.5rem" */
+}
+.imgRotationFuncBox div{
+  background-color: white;
+}
+
 </style>

@@ -41,9 +41,9 @@
                       <!-- <img v-if="this.selectedCardKey === value.targetKey" @click="delFormCard(value.targetKey)" src="../../assets/images/formEditor/xIcon.svg" style="position: absolute; top: 0; right: 0; cursor: pointer; z-index: 999" alt="">
                       --><!-- position: absolute; top: var(--selectFromScrollH); left: 10px; -->
                       <!-- A9AACD -->
-                      <div v-for="(value, index) in formCardList" :index="index" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === value.targetKey? 'border: 1px solid #ccc;':''" style="position: relative; " :key="value.targetKey" :id="'formCard'+value.targetKey" class="formDiv commonFormCard" @click="clickForm(value, value.targetKey)">
+                      <div v-for="(value, index) in formCardList" :index="index" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === value.targetKey? 'border: 1px solid #ccc;':''" style="position: relative; " :key="value.targetKey" :id="'formCard'+value.targetKey" class="fl formDiv commonFormCard" @click="clickForm(value, value.targetKey)">
                         <formText id="formEditText" @setMultiFile="setMultiFile" @inputScroll="inputScroll" v-if="value.type === 'text'" style="" :ref="'textForm'+value.targetKey" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="value.targetKey" @success="successImgPreview"  @click="clickTextArea(index)"  contenteditable  />
-                        <formImage @setMultiFile="setMultiFile" :multiFileSrc="value.multiFileSrc" v-else-if="value.type === 'image'" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="value.targetKey" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable :pasteImgYn='pasteImgYn' @pasteEnd='pasteEnd' />
+                        <formImage @setMultiFile="setMultiFile" :multiFileSrc="value.multiFileSrc" v-else-if="value.type === 'image'" :ref="'imgForm'+value.targetKey" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="value.targetKey" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable :pasteImgYn='pasteImgYn' @pasteEnd='pasteEnd' :propSelectRow='selectRow' />
                         <formVideo v-else-if="false" />
                         <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="value.targetKey"/>
                         <formDot v-else-if="value.type === 'dot'"  style="" ref="dotForm" :targetKey="value.targetKey"/>
@@ -351,7 +351,14 @@ export default {
     },
     async successImgPreview (target) {
       // await this.addFormCard('text')
-      this.progressBarList.push({ name: target.selectFileList[0].file.name, target: target.targetKey, percentage: 0 })
+      console.log(target.targetKey)
+      var index = this.progressBarList.findIndex(item => item.target === target.targetKey)
+      console.log(index)
+      if (index === -1) {
+        this.progressBarList.push({ name: target.selectFileList[0].file.name, targetKey: target.targetKey, percentage: 0 })
+      } else {
+        this.progressBarList.splice(index, 1, { name: target.selectFileList[0].file.name, targetKey: target.targetKey, percentage: 0 })
+      }
 
       this.toolBoxShowYn = false
       var tempList = this.uploadFileList

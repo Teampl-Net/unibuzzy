@@ -564,6 +564,22 @@ export default {
         editor.ui.getEditableElement()
       )
     },
+    replaceUploadListArr (arr) {
+      // var this_ = this
+      if (!arr && arr.length === 0) return []
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex((item) => Number(item.targetKey) === Number(current.targetKey)) === -1) {
+        /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
+          data.push(current)
+        }
+        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.targetKey - a.targetKey
+          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
+        return data
+      }, [])
+      return uniqueArr
+    },
     changeUploadList (upList) {
       if (this.uploadFileList.length > 0) {
         var temp = this.uploadFileList

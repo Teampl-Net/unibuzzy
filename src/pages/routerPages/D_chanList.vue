@@ -309,7 +309,10 @@ export default {
       this.mOffsetInt = 0
       this.mListShowYn = false
       this.mEmptyYn = false
+      this.mChannelList = []
+      // this.GE_DISP_TEAM_LIST = []
       var resultList = await this.getChannelList(undefined, undefined, true)
+
       var addList = []
       for (var i = 0; i < resultList.content.length; i++) {
         if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
