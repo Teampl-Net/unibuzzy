@@ -101,7 +101,6 @@ self.addEventListener('notificationclick', function (event) {
     if (push_url != null) {
       event.waitUntil(
         clients.openWindow(push_url)
-
       )
     }
   } else {

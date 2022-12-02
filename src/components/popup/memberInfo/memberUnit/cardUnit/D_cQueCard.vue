@@ -1,17 +1,15 @@
 <template>
-<div class="fl w-100P" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center;" :style="this.propData.itemType === 'siList' ? 'align-items: flex-start;' : ''">
-  <div class="fl " style="flex:1" @click="emit('editQue')">
-    <p class="fl textLeft fontBold font16 commonDarkGray">{{'질문 ' + (compoIdx + 1) + '.'}}</p>
+<div class="fl w-100P" style="display: flex; align-items: center;" :style="this.propData.itemType === 'siList' ? 'align-items: flex-start;' : ''">
+  <div style="width: 30px; display: flex; align-items: center;" @click="modiItemDetail('editQue')">
+    <p class="textLeft fontBold font16 commonDarkGray" style="line-height: 30px;">{{(compoIdx + 1) + '.'}}</p>
   </div>
-  <div class="fl" style="width: calc(100% - 200px); flex:2" @click="emit('editQue')">
-    <template v-if="propData.itemType === 'T'">
-      <div class="fr w-100P" style="background:white; border: 1px dashed #ccc; padding-left:0.5rem;" >
-        <!-- <p class="lightGray fl textLeft font16">텍스트</p> -->
-        <p class="fl textLeft fontBold font16 lightGray" style="">{{this.$changeText(propData.itemNameMtext)}}</p>
-      </div>
-    </template>
+  <div  style="width: calc(100% - 60px);" @click="modiItemDetail('editQue')">
+    <div class=" w-100P" style="background:white; border: 1px dashed #ccc; height: 30px; padding: 0 5px;" >
+    <!-- <p class="lightGray fl textLeft font16">텍스트</p> -->
+    <p class=" textLeft font14 lightGray textOverdot" style="line-height: 30px;">{{this.mTypeItemDetailMessage}}</p>
+    </div>
 
-    <template v-if="propData.InfoQueType === 'F' && options">
+    <!-- <template v-if="propData.InfoQueType === 'F' && options">
       <div class="fr textLeft w-100P">
         <p class="fl textLeft fontBold font16 lightGray" style="">{{this.$changeText(propData.itemNameMtext)}}</p>
         <select class="fr commonDarkGray" v-model="selectOption" style="border: 1px solid #ccc; width:100%; min-height:30px" >
@@ -28,13 +26,13 @@
           <gCheckBtn class="fr commonDarkGray" :title="value" :selectedYn="selectOption === value" @click="selectOption = value"/>
         </div>
       </div>
-    </template>
+    </template> -->
 
   </div>
 
-  <div class="fr mleft-05" style="width:50px; display:flex; justify-content: space-between; gap:10px: flex:1">
+  <div class="fr " style="width:30px; display:flex;     justify-content: flex-end; ">
     <!-- <img class="fl img-w20" src="../../../../../assets/images/board/icon_edit.svg" @click="emit('editQue')" alt=""> -->
-    <img class="fl img-w20" src="../../../../../assets/images/board/icon_trash.svg" @click="emit('deleteQue')" alt="">
+    <img class="fl img-w20" src="../../../../../assets/images/board/icon_trash.svg" @click="modiItemDetail('deleteQue')" alt="">
     <!-- <div class="fl movePoint" style="width: 30px; height: 100%; flex-shrink: 0; flex-grow: 0;background: rgba(255, 255, 255, 0.75); "><img src="../../../../../assets/images/formEditor/icon_formEdit_movePointer.svg" class="img-w15" style="flex-shrink: 0; flex-grow: 0" alt=""></div> -->
   </div>
 
@@ -50,18 +48,38 @@ export default {
   data () {
     return {
       options: {},
-      selectOption: {}
+      selectOption: {},
+      mTypeItemDetailMessage: ''
     }
   },
   created () {
     console.log(this.propData)
+    this.setMemberItemDetailText()
     if (this.propData.InfoQueType === 'si' || this.propData.InfoQueType === 'siList') {
       this.options = this.propData.answerList
       this.selectOption = this.propData.answerList[0].answerName
     }
   },
   methods: {
-    emit (type) {
+    setMemberItemDetailText () {
+      this.mTypeItemDetailMessage = this.$changeText(this.propData.itemNameMtext) + '('
+      console.log(this.propData)
+      if (this.propData.itemType === 'T') {
+        this.mTypeItemDetailMessage += '주관식'
+        if (this.propData.maxLen) {
+          this.mTypeItemDetailMessage += '/최대' + this.propData.maxLen + '글자'
+        }
+        if (this.propData.numberYn) {
+          this.mTypeItemDetailMessage += '/숫자만'
+        }
+      } else if (this.propData.itemType === 'L') {
+        this.mTypeItemDetailMessage += '객관식/리스트'
+      } else if (this.propData.itemType === 'F') {
+        this.mTypeItemDetailMessage += '객관식/드롭다운'
+      }
+      this.mTypeItemDetailMessage += ')'
+    },
+    modiItemDetail (type) {
       var param = {}
       param.targetType = type
       param.data = this.propData

@@ -1,9 +1,9 @@
 <template>
   <div class="leftTabBase fl " style='background: #eeeeee50;' >
-    <div class="w-100P pSide-1" style="position: relative; min-height: 30px; padding: 0 20px; padding-right: 0;     padding-top: 1.5rem;">
-      <p class="fl textLeft font18 fontBold">멤버 유형</p>
+    <div class="w-100P pSide-1" style="position: relative; min-height: 30px; padding: 0 20px; padding-right: 0; padding-top: 0.5rem;">
+      <p class="fl textLeft font16 fontBold">멤버유형 종류</p>
       <!-- <p class=' fr font16 commonBlack textRight' style="" @click='closePop' >{{tempBackImg}}</p> -->
-      <div class="fr textLeft font12 commonBlack tempLeftTabBtn fontBold" style="margin-top: 3px; margin-right: 10px;" @click="closePop">{{tempBackImg}}</div>
+      <!-- <div class="fr textLeft font12 commonBlack tempLeftTabBtn fontBold" style="margin-top: 3px; margin-right: 10px;" @click="closePop">{{tempBackImg}}</div> -->
     </div>
 
     <div class="fl" style="border-bottom:1px solid #ccc; width:100%; height:1px;" />
@@ -92,7 +92,7 @@ export default {
 </script>
 <style>
 .leftTabBase{
-  width:70% ;
+  width:130px ;
   max-width: 500px;
   /* position: absolute; z-index: 999; */
   height: 100%;

@@ -1,8 +1,8 @@
 <template>
   <div  class="pSide-15 ptop-50 wh-100P" style="overflow-x: scroll; white-space:nowrap;" :style="leftShowYn === true ? 'padding: 50px 0 0 0; display: flex;' : ''">
-    <leftTab ref="editMemPopRef" v-show="leftShowYn" :class="{'ani-leftIn': leftShowYn === true, 'ani-leftOut': leftShowYn === false}" :propMemberTypeList='mMemberTypeList' @changeTab='changeTab' @addMemberType='saveMemberType' @closePop='leftBack()' />
+    <leftTab :selectedKey="mSelectedMemberTypeObj.memberTypeKey" ref="editMemPopRef" :propMemberTypeList='mMemberTypeList' @changeTab='changeTab' @addMemberType='saveMemberType' @closePop='leftBack()' />
 
-    <memberTypeDetail ref="memberTypeDetail" @addQuestion="addQuestion" @deleteQue="deleteQuestion" @editQue="editQue" :propMemberTypeDetail="mSelectedMemberTypeObj" :key="reloadKey" :propLeftYn='leftShowYn' @showLeftBar='showLeftBar' @deleteType='deleteMemberType' />
+    <memberTypeDetail style="width: calc(100% - 130px);" @reloadPage="getMemberTypeList" ref="memberTypeDetail" @addQuestion="addQuestion" @editQue="editQue" :propMemberTypeDetail="mSelectedMemberTypeObj" :key="reloadKey" :propLeftYn='leftShowYn' @showLeftBar='showLeftBar' @deleteType='deleteMemberType' />
   </div>
 </template>
 <script>
@@ -38,20 +38,6 @@ export default {
     showLeftBar () {
       this.leftShowYn = true
       this.reloadKey += 1
-    },
-    async deleteQuestion (deleteData) {
-      console.log(deleteData)
-
-      var deleteParam = {}
-      deleteParam.itemKey = parseInt(deleteData.data.itemKey)
-      var deleteResult = await this.$commonAxiosFunction({
-        url: 'service/tp.deteteMemberTypeItem',
-        param: deleteParam
-      })
-      console.log(deleteResult)
-
-      await this.getMemberTypeList()
-      // this.reloadKey += 1
     },
     async deleteMemberType (deleteData) {
       console.log(deleteData)
@@ -93,7 +79,7 @@ export default {
       var memberTypeList = await this.$commonAxiosFunction({
         url: 'service/tp.getMemberTypeList',
         param: param
-      })
+      }, true)
       if (memberTypeList.data.result) {
         this.mMemberTypeList = memberTypeList.data.memberTypeList
       }

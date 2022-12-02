@@ -89,12 +89,12 @@ export default {
     console.log(' %%%%%%%%%%%%%%%%%%%%%% ')
     console.log(this.propData)
     if (this.propData && this.propData.selectedMemberType) {
-      this.setting(this.propData.selectedMemberType)
+      this.settingMemberItem(this.propData.selectedMemberType)
     }
     // this.$showToastPop('현재 테스트 화면이며, 작동되지 않습니다. 추후 업데이트를 기다려주세요!')
   },
   methods: {
-    setting (data) {
+    settingMemberItem (data) {
       this.selectOption = data.itemType
       this.InfoQueTitle = this.$changeText(data.itemNameMtext)
       if (data.maxLen) {
@@ -105,7 +105,14 @@ export default {
         this.onlyNumYn = true
       }
       if (data.optListStr) {
-        this.answerList = data.optListStr.split('$#$')
+        // eslint-disable-next-line no-debugger
+        debugger
+        var objList = data.optListStr.split('$#$')
+        this.answerList = []
+        for (var i = 0; i < objList.length; i++) {
+          if (objList[i].trim() === '') continue
+          this.answerList.push({ answerName: objList[i] })
+        }
       }
     },
     addInfo () {
@@ -133,7 +140,7 @@ export default {
       if (await this.checkData() === false) return
 
       var param = {}
-      if (this.propData.selectedMemberType.itemKey) {
+      if (this.propData && this.propData.selectedMemberType && this.propData.selectedMemberType.itemKey) {
         param.itemKey = this.propData.selectedMemberType.itemKey
       }
       param.itemNameMtext = 'KO$^$' + this.InfoQueTitle
@@ -148,15 +155,18 @@ export default {
         if (this.maxLengthYn === true) param.maxLen = this.maxLength
         param.numberYn = this.onlyNumYn
       } else {
+        // eslint-disable-next-line no-debugger
+        debugger
         // eslint-disable-next-line no-unused-vars
         var selectListStr = ''
         for (var i = 0; i < this.answerList.length; i++) {
           if (i === 0) {
-            selectListStr += (this.answerList[i])
+            selectListStr += (this.answerList[i].answerName)
+          } else {
+            selectListStr += ('$#$' + this.answerList[i].answerName)
           }
-          selectListStr += ('$#$' + this.answerList[i])
         }
-        param.optListStr = this.selectListStr
+        param.optListStr = selectListStr
       }
       console.log(param)
       var saveItem = await this.$commonAxiosFunction({

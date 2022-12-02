@@ -15,7 +15,7 @@
             <p class="font16 fontBold textLeft mbottom-05 mtop-05">신청서 작성</p>
             <div style="width: 100%; min-height: 50px; float: left; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column;" :id="'question'+typeItem.itemKey" v-for="(typeItem, index) in memberTypeItemList" :key="index">
                 <p class="font16 textLeft fl grayBlack fontBold" style="width: 100%;">- {{this.$changeText(typeItem.itemNameMtext)}}</p>
-                <div style="width: calc(100%);" v-if="typeItem.itemType === 'F'">
+                <div style="width: calc(100%);" v-if="typeItem.itemType === 'F' || typeItem.itemType === 'L'">
                     <select v-model="typeItem.value" style="width: 100%; height: 30px;" >
                         <option hidden selected>선택하세요</option>
                         <option style="whith: 100%; height: 30px;" class="font16" :value="sub" v-for="(sub, subIndex) in convertSelectListStr(typeItem.optListStr)" :key="subIndex">{{sub}}</option>

@@ -1,15 +1,16 @@
 <template>
-  <div v-if="propMemberTypeObj" class="fl w-100P" :key="queListReloadKey" >
+  <div v-if="propMemberTypeObj" style="" class="fl w-100P" >
+    <p class="textLeft font16 fontBold commonDarkGray">정보</p>
     <draggable class="ghostClass" :v-model="memberTypeItemList" ghost-class="ghost" :dragging="dragging" @end="end" delay="200" handle=".movePoint">
       <transition-group>
-        <div v-for="(list, index) in memberTypeItemList" :key="index" class="fl w-100P" style="padding: 0.3rem 0">
+        <div v-for="(list, index) in memberTypeItemList" :key="list.itemKey" class="fl w-100P" style="padding: 0.3rem 0">
           <queCard :propData="list" @cardEmit='cardEmit' :compoIdx='index' class="mbottom-05"/>
         </div>
-        </transition-group>
+      </transition-group>
       </draggable>
 
     <div class="w-100P" style="display:flex; align-items: center; justify-content: center;">
-      <gBtnSmall :btnTitle="'추가'" @click="addQuestion" class="mleft-05 mtop-05" style="float:left !important;"/>
+        <div @click="addQuestion"  style="width: 100%; height: 25px; border-radius: 5px; border: 1px solid #ccc;"> + </div>
     </div>
   </div>
 </template>
@@ -30,7 +31,6 @@ export default {
   },
   data () {
     return {
-      queListReloadKey: 0,
       memberTypeItemList: []
     }
   },
@@ -40,12 +40,6 @@ export default {
   methods: {
     readyFunc () {
       this.getMemberTypeItemList()
-      // eslint-disable-next-line no-debugger
-      /* debugger
-      propMemberTypeObj
-      this.queList = JSON.parse(JSON.stringify(this.questionList))
-      // this.changeTab(this.queList[0], 0)
-      console.log(this.queList) */
     },
     addQuestion () {
       this.$emit('addQuestion')
@@ -59,9 +53,7 @@ export default {
         param: param
       })
       console.log(memberTypeItemList)
-      if (memberTypeItemList.data.result) {
-        this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
-      }
+      this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
       // eslint-disable-next-line no-debugger
       debugger
     },
@@ -75,14 +67,29 @@ export default {
         this.$emit('editQue', param)
       } else if (type === 'deleteQue') {
         // this.tempDelQue(data, idx)
-        this.$emit('deleteQue', param)
+        this.deleteQue(param)
+        // alert(JSON.stringify(this.memberTypeItemList[param.index]))
         // this.$emit('deleteQue', param)
       }
+    },
+    async deleteQue (deleteData) {
+      if (deleteData.targetType === 'deleteQue') {
+        console.log(deleteData)
+
+        var deleteParam = {}
+        deleteParam.itemKey = parseInt(deleteData.data.itemKey)
+        await this.$commonAxiosFunction({
+          url: 'service/tp.deteteMemberTypeItem',
+          param: deleteParam
+        })
+        this.getMemberTypeItemList()
+      }
+
+      // this.reloadKey += 1
     },
     // tempDelQue (data, index) {
     //   console.log(data)
     //   this.memberTypeItemList.splice(index, 1)
-    //   this.queListReloadKey += 1
     // },
     closePop () {
     // 추후 back버튼을 위해 history관리가 들어와야함
