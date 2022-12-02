@@ -1,7 +1,7 @@
 <template>
 <div class="w-100P fl">
   <img src="../../assets/images/common/icon_box_empty.svg" style="width:50px;" alt="">
-  <p class="mtop-05 font18 fontBold">{{midleText}}</p>
+  <p class="mtop-05 font18 fontBold commonColor">{{midleText}}</p>
 </div>
 
 </template>
@@ -46,6 +46,16 @@ export default {
         this.midleText = '스크랩을 한 게시글이 없습니다.'
       } else if (this.tabName === '내가 보낸') {
         this.midleText = '내가 쓴 게시글이 없습니다.'
+      }
+    } else if (this.contentName === '전체') {
+      if (this.tabName === '최신') {
+        this.midleText = '컨텐츠가 없습니다.'
+      } else if (this.tabName === '좋아요') {
+        this.midleText = '좋아요를 누른 컨텐츠가 없습니다.'
+      } else if (this.tabName === '스크랩') {
+        this.midleText = '스크랩을 한 컨텐츠가 없습니다.'
+      } else if (this.tabName === '내가 보낸') {
+        this.midleText = '내가 쓴 컨텐츠가 없습니다.'
       }
     }
   }

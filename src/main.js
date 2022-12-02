@@ -42,7 +42,7 @@ import gAxiosLoading from './components/D_axiosLoadingSpinner.vue'
 import gToggle from './components/pageComponents/myPage/Tal_commonToggle.vue'
 import gSvg from './components/Tal_svgCollection.vue'
 import Iconwink from './components/Tal_winkAlimLogo.vue'
-import gEmty from './components/unit/Tal_commonEmty.vue'
+import gEmpty from './components/unit/Tal_commonEmpty.vue'
 import gReport from './components/unit/Tal_commonReport.vue'
 import gStepProgress from './components/unit/Tal_stepProgressBar.vue'
 import imgLongClickPop from './components/popup/Tal_imgLongClickPop.vue'
@@ -98,7 +98,7 @@ app.component('gLoadingS', gLoadingS)
 app.component('gToggle', gToggle)
 app.component('gSvg', gSvg)
 app.component('iconWink', Iconwink)
-app.component('gEmty', gEmty)
+app.component('gEmpty', gEmpty)
 app.component('gReport', gReport)
 app.component('gStepProgress', gStepProgress)
 app.component('imgLongClickPop', imgLongClickPop)

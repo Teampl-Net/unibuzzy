@@ -6,7 +6,7 @@
     <div class="chanTop5Wrap fl" >
         <div v-if="emptyYn && this.chanList.length === 0" class="w-100P">
         <!-- 다른 이미지로 대체하면 된다 -->
-        <gEmty :tabName="currentTabName" contentName="채널" style="margin-top:50px;" />
+        <gEmpty :tabName="currentTabName" contentName="채널" style="margin-top:50px;" />
         <!-- <img src="/resource/common/placeholder_white.png" /> -->
         </div>
         <!-- <div class="w-100P top5ChannelRow" v-for="(value, index) in chanList"  :key="index" v-on:click="openPop(value)" :class="{top5MyChanColor : value.ownerYn}"> -->

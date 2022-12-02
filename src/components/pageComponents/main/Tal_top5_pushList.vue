@@ -8,7 +8,7 @@
                 <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/>
             </div>
             <div id="top5ListWrap" class="pushListWrap fl">
-            <gEmty :tabName="currentTabName" contentName="알림" v-if="emptyYn && this.pushList.length === 0" style="margin-top:50px;" />
+            <gEmpty :tabName="currentTabName" contentName="알림" v-if="emptyYn && this.pushList.length === 0" style="margin-top:50px;" />
             <commonListTable :commonListData="this.pushList" v-if="listShowYn"  @goDetail="openPop" />
             </div>
         </div>

@@ -28,12 +28,17 @@
           <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
               <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'"/>
           </template>
+          <gEmpty :tabName="currentTabName" contentName="게시판" v-if="this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
+
           <template  v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index">
-              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'"/>
+              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'" />
           </template>
+          <gEmpty :tabName="currentTabName" contentName="알림" v-if="this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
+
           <template  v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
               <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'"/>
           </template>
+          <gEmpty :tabName="currentTabName" contentName="전체" v-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
           <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
@@ -1338,6 +1343,7 @@ export default {
         this.currentTabName = '스크랩'
         this.imgUrl = '/resource/common/placeholder_white.png'
       }
+      this.mEmptyReloadKey += 1
     },
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
@@ -1961,6 +1967,7 @@ export default {
   },
   data () {
     return {
+      mEmptyReloadKey: 0,
       allContentsList: [],
       alimContentsList: [],
       boardContentsList: [],
