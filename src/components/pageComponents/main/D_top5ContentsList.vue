@@ -73,7 +73,7 @@ export default {
     openPop (value) {
       console.log(' top5CotentList openPop Param ')
 
-      // value.alimTabType = this.mViewTab
+      value.alimTabType = this.mViewTab
       // console.log(value)
       this.$emit('openPop', value)
     },

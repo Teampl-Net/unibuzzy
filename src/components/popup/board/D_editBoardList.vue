@@ -56,10 +56,6 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      if (this.modiBoardPopShowYn === true) {
-        this.closeNrefresh()
-        return
-      }
       // if (this.history[this.history.length - 1] === 'modiBoardPop') {
       //   this.closeNrefresh()
       //   return

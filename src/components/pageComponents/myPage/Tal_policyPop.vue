@@ -348,7 +348,7 @@ export default {
       }
     }
   },
-  unmounted () {
+  beforeUnmount () {
     this.$checkDeleteHistory('PolicyPop')
   },
   methods: {

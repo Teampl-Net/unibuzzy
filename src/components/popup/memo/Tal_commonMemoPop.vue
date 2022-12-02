@@ -140,12 +140,12 @@ export default {
       var inputMemoArea = window.document.getElementById('memoTextTag')
 
       // var inputMemoArea = this.$refs.memoTextTag
-      var regText = inputMemoArea.innerText
+      var regText = JSON.parse(JSON.stringify(inputMemoArea.innerText))
       if (regText.trim() !== '') {
         inputMemoArea.classList.remove('memoTextPadding')
         var html = inputMemoArea.innerHTML
         html = this.$findUrlChangeAtag(html)
-        html = this.$deleteEmoji(html)
+        // html = this.$deleteEmoji(html)
         this.$emit('saveMemoText', html)
         inputMemoArea.classList.add('memoTextPadding')
       } else {

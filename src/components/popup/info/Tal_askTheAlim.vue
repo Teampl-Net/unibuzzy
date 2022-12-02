@@ -173,13 +173,21 @@ export default {
       return changeText
     },
     changeUploadList (upList) {
+      // console.log(upList)
+      // upList.selectFileList.targetKey = upList.targetKey
       if (this.uploadFileList.length > 0) {
-        var temp = this.uploadFileList
-        this.uploadFileList = []
-        this.uploadFileList = [
-          ...temp,
-          upList
-        ]
+        var index = this.uploadFileList.findIndex(item => item.targetKey === upList.targetKey)
+        // console.log(index)
+        if (index === -1) {
+          var temp = this.uploadFileList
+          this.uploadFileList = []
+          this.uploadFileList = [
+            ...temp,
+            upList
+          ]
+        } else if (index !== -1) {
+          this.uploadFileList.splice(index, 1, upList)
+        }
       } else {
         this.uploadFileList.push(upList)
       }

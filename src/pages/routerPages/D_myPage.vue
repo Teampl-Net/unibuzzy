@@ -60,6 +60,7 @@ export default {
     })
 
     this.$emit('changePageHeader', '마이페이지')
+    this.mLoadingYn = false
   },
   computed: {
     GE_USER () {

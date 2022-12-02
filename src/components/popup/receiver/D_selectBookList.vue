@@ -59,6 +59,9 @@ export default {
     }
     this.getBookList()
   },
+  beforeUnmount () {
+    this.$checkDeleteHistory('modiPopReceiverSelecPop')
+  },
   mounted () {
     if (this.pSelectedList) {
       this.selectedList = []
@@ -260,6 +263,7 @@ export default {
         this.receiverTitle = '그룹 선택'
         this.detailOpenYn = false
       } else {
+        this.$checkDeleteHistory('modiPopReceiverSelecPop')
         this.$emit('closeXPop')
       }
     },

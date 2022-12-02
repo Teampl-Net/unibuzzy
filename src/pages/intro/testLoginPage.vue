@@ -6,7 +6,7 @@
     <div class="introWhiteCard" style=" min-height: 450px;">
       <div class="pagePaddingWrap" style="padding-top: 20px;">
         <div class="mbottom-1 mtop-1">
-          <img class="mbottom-05" src="../../assets/images/main/message_logo.png" style="width: 5rem" alt="">
+          <img class="mbottom-05" src="../../assets/images/main/message_logo.png" style="width: 5rem" alt="" @click="testLogin">
           <p class="font20 mbottom-05 fontBold">환영합니다!</p>
         </div>
         <div class="mtop-05 introText" style="height: 40px;">
@@ -45,8 +45,8 @@ export default {
       userPw: '',
       errorText: '',
       failPopYn: false,
-      pushdata: {}
-
+      pushdata: {},
+      testLoginCount: 0
       // testYn:true
     }
   },
@@ -56,6 +56,17 @@ export default {
     // pushDetail
   },
   methods: {
+    testLogin () {
+      if (this.testLoginCount !== 7) {
+        this.testLoginCount += 1
+        return
+      }
+      this.testLoginCount = 0
+
+      this.userId = 'teampl'
+      this.userPw = 'teampl123'
+      this.saveUser()
+    },
     back () {
       this.$router.replace({ path: 'login' })
     },

@@ -37,12 +37,12 @@
             selectFileList : {{ selectFileList }}
         </div> -->
         </form>
-        <!-- <div v-if="propSelectRow === targetKey && this.firstFile.previewImgUrl" class="fl imgRotationFuncBox">
+        <div v-if="propSelectRow === targetKey && this.firstFile.previewImgUrl" class="fl imgRotationFuncBox">
             <div @click="rotationImg(270)" class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 6px;"><img class="img-w15" src="../../../assets/images/formEditor/icon_rotate_left.svg" alt=""></div>
             <div @click="rotationImg(180)" class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 5px;"><img  class="img-w15" src="../../../assets/images/formEditor/icon_rotate_180.svg" alt=""></div>
             <div @click="rotationImg(90)"  class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 5px;"><img  class="img-w15" src="../../../assets/images/formEditor/icon_rotate_right.svg" alt=""></div>
         </div>
-         <canvas id="canvas" style="display:none;"></canvas> -->
+         <canvas id="canvas" style="display:none;" ref="canvasRef"></canvas>
 </template>
 <script>
 /* eslint-disable no-debugger */
@@ -53,9 +53,9 @@ export default {
     // eslint-disable-next-line no-unused-vars
     var test = this.$refs.imageBox
 
-    console.log('!!!!!!!!!!!!!!')
-    console.log(this.pSrc)
-    console.log(this.multiFileSrc)
+    // console.log('!!!!!!!!!!!!!!')
+    // console.log(this.pSrc)
+    // console.log(this.multiFileSrc)
 
     this.cardHeight = this.$refs.imageBox.scrollHeight
     // if (!this.pSrc) {
@@ -121,12 +121,13 @@ export default {
   },
   methods: {
     async rotationImg (angle) {
-      console.log(this.firstFile)
-      console.log(this.selectFileList)
+      // console.log(this.firstFile)
+      // console.log(this.selectFileList)
       var tempImage = new Image()
       tempImage.src = this.firstFile.previewImgUrl
+      tempImage.ref = 'tempImageRefs'
       var this_ = this
-      tempImage.onload = await function () {
+      tempImage.onload = await async function () {
         // Resize image
         var canvas = document.getElementById('canvas')
         var canvasContext = canvas.getContext('2d')
@@ -158,8 +159,6 @@ export default {
         }
         // @breif 캔버스의 이미지
         var dataURI = canvas.toDataURL('image/png')
-        console.log(dataURI === this_.selectFileList[0].previewImgUrl)
-        console.log(this_.selectFileList)
 
         const decodImg = atob(dataURI.split(',')[1])
         const array = []
@@ -208,6 +207,7 @@ export default {
           if (
             ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
           ) {
+            console.log(this.selectFile)
             console.log('originalFile instanceof Blob', this.selectFile instanceof Blob) // true
             console.log(`originalFile size ${this.selectFile.size / 1024 / 1024} MB`)
 
@@ -239,7 +239,7 @@ export default {
               // }
 
               console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-              console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+              // console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
               this.selectFileList.push({ previewImgUrl: src, addYn: true, file: newFile })
               this.$emit('success', { targetKey: this.targetKey, selectFileList: [{ previewImgUrl: src, originalFile: this.selectFile, addYn: true, file: newFile }], originalType: 'image' })

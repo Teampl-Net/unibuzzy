@@ -18,7 +18,7 @@
             <img :src="src">
         </div> -->
         <!-- {{indexRef}} -->
-        <vue-easy-lightbox :zoomScale="0.4" :initIndex="startIndex" :indexRef="indexRef" :swipeTolerance="5" :visible="true" :imgs="imgList" :index="index" @hide="handleHide">
+        <vue-easy-lightbox :zoomScale="0.6" :initIndex="startIndex" :indexRef="indexRef" :swipeTolerance="5" :visible="true" :imgs="imgList" :index="index" @hide="handleHide" :maskClosable="true">
             <!-- <template style="position: absolute; bottom: 0;"  v-slot:toolbar="{ toolbarMethods }">
                 <button @click="toolbarMethods.zoomIn">zoom in</button>
                 <button @click="toolbarMethods.zoomOut">zoom out</button>
@@ -101,7 +101,7 @@ export default {
     // document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0')
     // document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=2.0')
   },
-  unmounted () {
+  beforeUnmount () {
     // document.getElementById('viewport').setAttribute('content', 'initial-scale=1.0, maximum-scale=1.0')
   },
   methods: {

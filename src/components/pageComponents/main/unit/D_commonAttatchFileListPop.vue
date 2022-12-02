@@ -44,7 +44,7 @@ export default {
     console.log(this.mAttatchFileList)
     this.$addHistoryStack('gAttatchFileList')
   },
-  unmounted () {
+  beforeUnmount () {
     this.$checkDeleteHistory('gAttatchFileList')
   },
   methods: {

@@ -351,6 +351,13 @@ export default {
         console.log(e)
       }
       this.loadingYn = false
+
+      if (this.propParams.memoScrollYn) {
+        var memoTop
+        memoTop = await this.$refs.myContentsBox.getMemoTop()
+        console.log('contentDetail : ' + memoTop)
+        this.$refs.contScrollWrap.scrollTo({ top: memoTop, behavior: 'smooth' })
+      }
     },
     async getCabinetDetail (teamKey) {
       // eslint-disable-next-line no-new-object

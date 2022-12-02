@@ -18,7 +18,7 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]
   },
-  unmounted () {
+  beforeUnmount () {
     window.document.removeEventListener('touchstart')
     window.document.removeEventListener('touchend')
   },

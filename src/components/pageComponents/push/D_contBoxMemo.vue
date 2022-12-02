@@ -5,7 +5,7 @@
         </div>
         <div style="width: calc(100% - 100px); min-height: 20px;" @click="emit({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
             <!-- <p class="commonBlack textLeft font14" v-html="$cutText($decodeHTML(propMemoEle.bodyFullStr), 80)"></p> -->
-            <p class="commonBlack textLeft font14" v-html="$decodeHTML(propMemoEle.bodyFullStr)"></p>
+            <pre class="commonBlack textLeft font14" v-html="$decodeHTML(propMemoEle.bodyFullStr)"></pre>
         </div>
     </div>
     <div v-else-if="propMemoEle" style="width: 100%; float: left; height: 100%; margin-bottom: 20px; border-bottom: 1px solid #cccccc50;">
@@ -19,7 +19,7 @@
                     <p class="commonBlack "><pp class="fl commonBlack mright-05 textLeft font14 fontBold" @click="emit({ targetType: 'goUserProfile', value: propMemoEle })">{{this.$changeText(propMemoEle.userDispMtext)}}</pp><pp class="fl commonGray font12"  style="font-weight:normal;">{{this.$changeDateMemoFormat(propMemoEle.creDate)}}</pp></p>
                 </div>
                 <div style="min-height: 20px; width: 100%; min-height: 20px;">
-                    <p class="commonBlack textLeft font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></p>
+                    <pre class="commonBlack textLeft font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></pre>
                 </div>
                 <div style="min-height: 20px; margin-top: 10px;  width: 100%; padding-right: 10px; min-height: 20px;">
                     <p class="commonGray textLeft font12 fl" @click="writeMeMemo(propMemoEle)">답글달기</p>
@@ -39,7 +39,7 @@
                         <p class="commonBlack "><pp class="fl commonBlack mright-05 textLeft font14 fontBold"  @click="emit({ targetType: 'goUserProfile', value: cmemo })">{{this.$changeText(cmemo.userDispMtext)}}</pp><pp class="fl commonGray font12"  style="font-weight:normal; line-height: 22px;">{{this.$changeDateMemoFormat(cmemo.creDate)}}</pp></p>
                     </div>
                     <div style="min-height: 20px; width: 100%; min-height: 20px; margin-top: 5px;">
-                        <p class="commonBlack textLeft font14" v-html="this.$decodeHTML(cmemo.bodyFullStr)" :id="'memoFullStr'+cmemo.memoKey" ></p>
+                        <pre class="commonBlack textLeft font14" v-html="this.$decodeHTML(cmemo.bodyFullStr)" :id="'memoFullStr'+cmemo.memoKey" ></pre>
                     </div>
                     <div style="min-height: 20px; width: 100%; margin-top: 5px; padding-right: 10px; min-height: 20px;">
                         <p class="commonGray textLeft font12 fl"  @click="writeMeMemo(cmemo)">답글달기</p>

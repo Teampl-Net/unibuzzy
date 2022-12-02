@@ -351,9 +351,9 @@ export default {
     },
     async successImgPreview (target) {
       // await this.addFormCard('text')
-      console.log(target.targetKey)
+      target.selectFileList[0].targetKey = target.targetKey
       var index = this.progressBarList.findIndex(item => item.target === target.targetKey)
-      console.log(index)
+      // console.log(index)
       if (index === -1) {
         this.progressBarList.push({ name: target.selectFileList[0].file.name, targetKey: target.targetKey, percentage: 0 })
       } else {
@@ -380,6 +380,7 @@ export default {
         this.uploadFileKeyList.push(this.formCount)
       }
       // console.log(this.uploadFileList)
+      // this.$emit('changeUploadList', target.selectFileList)
       this.$emit('changeUploadList', target.selectFileList)
       if (this.formCardList[this.formCount] && this.formCardList[this.formCount].selectFileList) {
         this.formCardList[this.formCount].selectFileList = target.selectFileList

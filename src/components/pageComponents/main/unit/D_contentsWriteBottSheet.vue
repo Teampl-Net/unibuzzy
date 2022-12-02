@@ -7,9 +7,10 @@
   <div style="width: 100%; min-height: 100px;">
       <div style="width: 100%; min-height: 100px; display: flex;  float: left; justify-content: space-between;">
           <div @click="selectWriteType('ALIM')"  class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'ALIM' ? 'border: 3px solid #7678E2!important; ' : ''">
+            <div v-if="mAlimClickYn === false" class="noneClickCSS fl wh-100P"></div>
               <img style="width: 36px;" src="../../../../assets/images/main/main_contentsBellIcon2.png" alt="">
               <img v-if="this.mSelectedWriteType === 'ALIM'" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
-              <p :class="{lightGray: this.mSelectedWriteType !== 'ALIM' }" class="font14 fontBold mtop-05 commonColor">알림</p>
+              <p :class="{lightGray: this.mSelectedWriteType !== 'ALIM' }" class="font14 fontBold mtop-05 commonColor">{{mAlimClickYn === true ? '알림' : '권한이 없습니다.'}}</p>
           </div>
           <div @click="selectWriteType('BOAR')" class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'BOAR' ? 'border: 3px solid #7678E2!important; ' : ''">
               <img class="img-w30" src="../../../../assets/images/main/baordIcon.svg" alt="">
@@ -43,7 +44,8 @@ export default {
     return {
       mSelectedWriteType: 'ALIM',
       mSelectedChan: 0,
-      mSelectChanList: []
+      mSelectChanList: [],
+      mAlimClickYn: true
     }
   },
   created () {
@@ -52,10 +54,27 @@ export default {
     } else {
       this.mSelectChanList.push(this.propTeamKey)
       this.mSelectedChan = this.propTeamKey
+      this.checkPermi()
     }
     this.$addHistoryStack('bottomWriteSheets')
   },
+  mounted () {
+    console.log(this.CHANNEL_DETAIL)
+  },
+  beforeUnmount () {
+    console.log(' beforeUnmount ')
+    this.$checkDeleteHistory('bottomWriteSheets')
+  },
   methods: {
+    checkPermi () {
+      if (!this.propTeamKey === undefined) return
+      if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn) {
+        this.mSelectedWriteType = 'BOAR'
+        this.mAlimClickYn = false
+      } else {
+        this.mAlimClickYn = true
+      }
+    },
     async getTeamList (loadingYn) {
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
@@ -75,9 +94,10 @@ export default {
     },
     closePop () {
       this.$emit('closePop')
-      this.$removeHistoryStack()
     },
     selectWriteType (jobkindId) {
+      // 알림의 권한이 없으면 바꿀 수 없게
+      if (this.mAlimClickYn === false) return
       this.mSelectedWriteType = jobkindId
       if (!this.propTeamKey) {
         this.mSelectedChan = 0
@@ -86,6 +106,12 @@ export default {
       }
     },
     openWritePushPop () {
+      if (this.propTeamKey && this.mSelectedWriteType === 'ALIM' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.memberInfoList.length === 0) {
+        this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
+        this.$checkDeleteHistory('bottomWriteSheets')
+        this.$emit('openMember')
+        return
+      }
       var writeParam = {}
       writeParam.contentsJobkindId = this.mSelectedWriteType
       writeParam.targetKey = this.mSelectedChan
@@ -104,10 +130,30 @@ export default {
       // this.mSeleteWriteTypePopShowYn = false
     },
     openPop (openPopParam) {
+      this.$checkDeleteHistory('bottomWriteSheets')
       this.$emit('openPop', openPopParam)
     }
   },
   computed: {
+    CHANNEL_DETAIL () {
+      if (this.propTeamKey) {
+        var detail = this.$getDetail('TEAM', this.propTeamKey)
+        if (detail && detail.length > 0) {
+          if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {
+            return this.CHANNEL_DETAIL
+          } else {
+            return detail[0]
+          }
+        } else {
+          if (this.CHANNEL_DETAIL) {
+            return this.CHANNEL_DETAIL
+          } else {
+            return null
+          }
+        }
+      }
+      return null
+    },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     },
@@ -129,5 +175,11 @@ export default {
 <style>
 .writeTypeBtnStyle {
     float:left; width: calc(50% - 10px); height: 95px; cursor:pointer; border-radius: 6px;position: relative; border: 3px solid #F4F4F4; display: flex; flex-direction: column; justify-content: center; align-items: center;
+}
+.noneClickCSS {
+  border-radius: 6px;
+  position: absolute;
+  background: #00000030;
+  /* background: #cccccc; */
 }
 </style>

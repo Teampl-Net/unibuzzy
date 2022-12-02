@@ -8,7 +8,7 @@
   <!-- </div> -->
 
   <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' />
-  <div v-if="GE_DISP_TEAM_LIST.length === 0" style="margin-top: 80px; width: 100%; min-height: 100%;">
+  <div v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false" style="margin-top: 80px; width: 100%; min-height: 100%;">
       <chanSkeleton  v-for="(value) in 10" :key="value"/>
   </div>
   <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
@@ -61,8 +61,8 @@ export default {
       mHeaderTop: 0,
       mOffsetInt: 0,
       mEndListYn: false,
-      mViewTab: 'all',
-      mActiveTabList: [{ display: '전체', name: 'all' }, { display: '구독중', name: 'user' }, { display: '관리채널', name: 'mychannel' }],
+      mViewTab: 'user',
+      mActiveTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '관리채널', name: 'mychannel' }],
       mChanFindPopShowYn: false,
       mResultSearchKeyList: '',
       myChanListPopYn: false,
@@ -82,16 +82,17 @@ export default {
   },
   updated () {
     this.mChanListScrollBox = document.getElementById('chanListWrap')
+    if (document.getElementsByClassName('chanRow')) this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
     if (this.mChanFindPopShowYn) {
       this.findPaddingTopChan()
     }
   },
   mounted () {
     this.mChanListScrollBox = document.getElementById('chanListWrap')
-    this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
-    if (this.mViewTab === 'all') {
+    // this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
+    if (this.mViewTab === 'user') {
       this.$refs.activeBar.switchtab(0)
-    } else if (this.mViewTab === 'user') {
+    } else if (this.mViewTab === 'all') {
       this.$refs.activeBar.switchtab(1)
     } else if (this.mViewTab === 'mychannel') {
       this.$refs.activeBar.switchtab(2)
@@ -182,7 +183,7 @@ export default {
       this.$emit('openLoading')
       this.mLoadingYn = true
       this.mResultSearchKeyList = []
-      this.changeTab('all')
+      this.changeTab('user')
       await this.$refs.activeBar.switchtab(0)
       var chanListWrap = await this.$refs.chanListWrap
       await chanListWrap.scrollTo({ top: 0 })
@@ -192,8 +193,10 @@ export default {
       }, 500)
     },
     scrollMove () {
-      var chanListWrap = this.$refs.chanListWrap
-      chanListWrap.scrollTo({ top: 0, behavior: 'smooth' })
+      if (this.GE_DISP_TEAM_LIST.length > 0) {
+        var chanListWrap = this.$refs.chanListWrap
+        chanListWrap.scrollTo({ top: 0, behavior: 'smooth' })
+      }
     },
     introChanPageTab () {
       if (this.mViewTab === 'user') {
@@ -420,7 +423,7 @@ export default {
       }
       this.mChannelList = resultList.content
       this.mViewTab = 'all'
-      this.$refs.activeBar.switchtab(0)// 전체
+      this.$refs.activeBar.switchtab(1)// 전체
       this.$refs.activeBar.selectTab('all')// 전체
       this.mChanFindPopShowYn = false
     },

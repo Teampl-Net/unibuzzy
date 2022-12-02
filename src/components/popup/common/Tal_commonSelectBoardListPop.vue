@@ -43,7 +43,7 @@ export default {
       }
     }
   },
-  unmounted () {
+  beforeUnmount () {
     this.$checkDeleteHistory('selectBoardList')
   },
   data () {

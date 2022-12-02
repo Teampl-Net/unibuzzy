@@ -122,7 +122,7 @@ export default {
       return this.$store.getters['D_HISTORY/hUpdate']
     }
   },
-  unmounted () {
+  beforeUnmount () {
     this.$checkDeleteHistory('gRePortPop')
   },
   watch: {

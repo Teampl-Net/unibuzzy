@@ -77,7 +77,7 @@ export default {
       })
     }
   },
-  unmounted () {
+  beforeUnmount () {
     // window.removeEventListener('load')
   }
 }

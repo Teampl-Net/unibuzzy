@@ -1,7 +1,7 @@
 <template>
 <!-- 이 페이지는 gPop에서 열어주지 않고 있고, editBoard 파일에서 가지고 있다. -->
 <div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" style="">
-  <popHeader @closeXPop="this.$emit('closePop')" headerTitle="게시판 수정" />
+  <popHeader @closeXPop="closePop()" headerTitle="게시판 수정" />
   <loadingCompo v-if="loadingYn" />
 
   <!-- 헤더를 제외한 나머지 부분 // 스크롤을 위해 넣었으나, overflow가 되면서 밑 권한 설정 화면에서 쉐도우 처리 양 끝이 hidden 됨-->
@@ -156,6 +156,7 @@ export default {
     // // console.log(this.chanInfo)
 
     //
+    this.$addHistoryStack('modiBoardPop')
   },
   computed: {
     TLeftPosition () {
@@ -211,30 +212,19 @@ export default {
         return null
       }
     },
-    historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+    history () {
+      return this.$store.getters['D_HISTORY/hStack']
     },
     pageUpdate () {
       return this.$store.getters['D_HISTORY/hUpdate']
     }
   },
-  unmounted () {
-    this.$checkDeleteHistory('modiBoardPop')
-  },
   watch: {
-    // pageUpdate (value, old) {
-    //   var hStack = this.$store.getters['D_HISTORY/hStack']
-    //   if (this.popId === hStack[hStack.length - 1]) {
-    //     var history = this.$store.getters['D_HISTORY/hStack']
-    //     var removePage = history[history.length - 1]
-    //     history = history.filter((element, index) => index < history.length - 1)
-    //     this.$store.commit('D_HISTORY/setRemovePage', removePage)
-    //     this.$store.commit('D_HISTORY/updateStack', history)
-    //     this.$emit('closePop')
-    //   }
-    // },
-    // historyStack (value, old) {
-    // }
+    pageUpdate (value, old) {
+      if (this.history[this.history.length - 1] === 'modiBoardPop') {
+        this.closePop()
+      }
+    }
   },
   data () {
     return {
@@ -979,6 +969,7 @@ export default {
       // this.$store.dispatch('D_CHANNEL/AC_ADD_UPDATE_CHAN_LIST', 'CABINET')
     },
     closePop () {
+      this.$checkDeleteHistory('modiBoardPop')
       this.$emit('closePop')
     },
     // 주소록 전체에서 고르기
@@ -1007,7 +998,7 @@ export default {
       }
     },
     goNo () {
-      this.$emit('closePop')
+      this.closePop()
     },
     boardTypeClick () {
       this.selectTypePopShowYn = true

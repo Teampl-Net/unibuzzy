@@ -376,13 +376,14 @@ export const commonMethods = {
       var removePage = history[history.length - 1]
       if (deletePage === removePage) {
         commonMethods.removeHistoryStack()
+        result = true
       }
-      result = true
     } catch (error) {
       console.log(error)
       result = false
     }
-    console.log('history delete 결과 : ' + result)
+    console.log(' history popName check delete 결과 : ' + result)
+    console.log(history)
   },
   showHistoryStack () {
     var history = store.getters['D_HISTORY/hStack']
@@ -570,17 +571,7 @@ export const commonMethods = {
       return true
     }
   },
-  /**
-   * 현재 3바이트 이모지는 입력이 되지만 4바이트 이모지는 입력이 되지 않으므로 삭제해주는 함수입니다.
-   * @url https://cirius.tistory.com/1769
-   */
-  deleteEmoji (text) {
-    // eslint-disable-next-line
-    const reg = /\F0[\90-\BF][\80-\BF]{2}|[\F1-\F3][\80-\BF]{3}|\F4[\80-\8F][\80-\BF]{2}/g
-    var changeText
-    changeText = text.replace(reg, '')
-    return changeText
-  },
+
   cutText (text, maxLength) {
     // reg = 모든 태그 제거
     const reg = /<[^>]*>?/g
@@ -590,7 +581,6 @@ export const commonMethods = {
     cutText = cutText.replace(regLn, '')
     cutText = cutText.trimLeft()
     if (cutText === '') return
-    // console.log(cutText)
 
     var maxNum = parseInt(maxLength)
     cutText = cutText.length > maxNum ? cutText.substring(0, maxNum) + '..' : cutText.substring(0, maxNum)
@@ -1228,6 +1218,5 @@ export default {
     Vue.config.globalProperties.$settingUserDo = commonMethods.settingUserDo
     Vue.config.globalProperties.$delayAfterFunc = commonMethods.delayAfterFunc
     Vue.config.globalProperties.$cutText = commonMethods.cutText
-    Vue.config.globalProperties.$deleteEmoji = commonMethods.deleteEmoji
   }
 }

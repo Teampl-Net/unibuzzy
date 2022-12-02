@@ -24,8 +24,10 @@
                 </div>
                 <div style="width: 100%; paosition: relative; height: 50%; min-height: 30px;">
                     <p style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
-                      <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                      {{this.$changeText(CONT_DETAIL.nameMtext)}}
+                      <pp class="fl" @click="goChannelMain()">
+                        <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
+                        {{this.$changeText(CONT_DETAIL.nameMtext)}}
+                      </pp>
                       <span @click="goUserProfile()" style="font-weight: normal;" class="mleft-05">
                         <!-- <span class="font-weight: normal; mSide-02">{{'|'}}</span> -->
                         <img src="../../../assets/images/footer/icon_people.svg" class="img-w12" alt="">
@@ -56,13 +58,13 @@
             <div v-if="(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
             <div v-else-if="(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
             <div v-else class="h-400max overHidden fl w-100P"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
-              <pre :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
+              <pre @loadeddata="testLoad" :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
             </div>
             <p :id="'bodyMore'+CONT_DETAIL.contentsKey" class="font16 cursorP textRight fr mright-1 lightGray" style="display:none">더보기 > </p>
         </div>
         <template v-if="((CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)">
             <div class="contentsCardUserDoArea" style="width: 100%; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 15px; padding: 0 20px;">
-                <div style="float: left; width: calc(100% - 70px); height: 100%;">
+                <div style="float: left; width: calc(100% - 70px); height: 100%;" v-if="this.CONT_DETAIL.D_CONT_USER_DO">
                     <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                       <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="img-w20" src="../../../assets/images/contents/icon_heart_red.png" alt="">
                       <img v-else src="../../../assets/images/contents/icon_heart_on.png" alt="" class="img-w20">
@@ -101,10 +103,12 @@
                 </div>
             </div>
             <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1; width: calc(100% - 40px); margin: 10px 20px; float: left;"></div>
-            <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" >
+            <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
                 <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
                     <memoCompo :propContDetail="this.CONT_DETAIL" :diplayCount="-1" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
                 </template>
+                <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
+                <p v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기</p>
                 <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
             </div>
 
@@ -122,7 +126,7 @@
 
   <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
 
-<imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
+  <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
 </template>
 <script>
 import memoCompo from './D_contBoxMemo.vue'
@@ -171,22 +175,21 @@ export default {
       mSelectImgObject: {}
     }
   },
-  mounted () {
+  async mounted () {
     // this.addImgEvnt()
-    var this_ = this
-    this.$nextTick(() => {
-      this_.addImgEvnt()
-    })
     var scrollWrap = document.getElementById('mainAllWrap')
     if (scrollWrap) {
       scrollWrap.addEventListener('scroll', this.handleScroll)
     }
-    this.setContentsMoreText()
-    this.setPreTagInFirstTextLine()
-
     // if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST) {
     //   this.settingFileList()
     // }
+    var this_ = this
+    this.$nextTick(async () => {
+      this_.addImgEvnt()
+    })
+    await this.setContentsMoreText()
+    await this.setPreTagInFirstTextLine()
   },
   methods: {
     async clickFileDownload () {
@@ -195,12 +198,12 @@ export default {
       // detailPop은 create시점에 axios를 갔다 오기에 한 번 더 axios를 호출 할 필요가 없기에 두개로 열고 있어요!
       this.$emit('fileDownload', this.propContIndex)
     },
-    setPreTagInFirstTextLine () {
+    async setPreTagInFirstTextLine () {
       // 본문 영역에 첫번째 줄이 사진이 아닐 경우 라인을 그어주기 위한 함수
       if (!window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)) return
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
 
-      var contents = window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)
+      var contents = await window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)
       if (!contents || !contents.childNodes || contents.childNodes.length === 0) return
       // console.log(contents.childNodes)
       if (contents.childNodes.length > 0) {
@@ -225,6 +228,14 @@ export default {
         } else {
         }
       }
+    },
+    async getMemoTop () {
+      // contentsDetail.vue에서 댓글 영역 최 상단 위치를 리턴 받아 스크롤 무브로 사용하고 있습니다.
+      if (this.propDetailYn === false) return
+
+      var memoFristTop = await window.document.getElementById('contentsCardMemoArea' + this.CONT_DETAIL.contentsKey).offsetTop
+      console.log('contentBox : ' + memoFristTop)
+      return memoFristTop
     },
     cancelConfirm () {
       this.mConfirmText = '알림 발송을 취소 하시겠습니까?'
@@ -288,7 +299,8 @@ export default {
         this.goUserProfile(data.creUserKey)
         // alert(data.creUserKey)
       } else if (type === 'goContentsDetail') {
-        this.goContentsDetail()
+        // 댓글로 스크롤하기 위해 2번째 파라미터를 true로 보내줌 (1번째는 컨텐츠 더보기 유무)
+        this.goContentsDetail(undefined, true)
       } else if (type === 'writeMeMemo') {
         this.writeMeMemo(data)
       }
@@ -589,21 +601,42 @@ export default {
         this.mLoadingShowYn = false
       }
     },
-
     /** 컨텐츠의 크기를 비교해서 더보기> 버튼 보여주는 함수 */
     async setContentsMoreText () {
       // 컨텐츠가 게시글이면서 권한이 없으면 리턴
       if (!window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)) return
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
       try {
-        // 이미지를 불러오는 이유는 마운트 시점에 이미지의 크기를 못받오기에 추가함
         if (this.propDetailYn === true) { this.alimBigView(); return }
+
         var contents = await window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey).offsetHeight
+
+        // 이미지를 불러오는 이유는 마운트 시점에 이미지의 크기를 못받오기에 추가함
         var imgList = await window.document.querySelectorAll('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
-        var bodyMoreText = await window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
-        if (contents > 400 || imgList.length > 0) {
-          bodyMoreText.style.display = 'block'
+        if (imgList && imgList.length > 0) {
+          for (let i = 0; i < imgList.length; i++) {
+            console.log(imgList[i])
+            imgList[i].addEventListener('load', (event) => {
+              // console.log('page is fully loaded')
+              // console.log(event)
+              // console.log(event.path[0].clientHeight)
+              var imgsHeight = 0
+              imgsHeight += event.path[0].clientHeight
+              var contentHeight = contents + imgsHeight
+              var bodyMoreText = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
+              if (contentHeight > 399) {
+                bodyMoreText.style.display = 'block'
+              }
+            })
+          }
+        } else {
+          var contentHeight = contents
+          var bodyMoreText = await window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
+          if (contentHeight > 399) {
+            bodyMoreText.style.display = 'block'
+          }
         }
+        // })
       } catch (e) {
         console.log(e)
       }
@@ -651,7 +684,7 @@ export default {
       openPopParam.readOnlyYn = true
       this.$emit('openPop', openPopParam)
     },
-    goContentsDetail (moreCheckYn) {
+    goContentsDetail (moreCheckYn, memoScrollYn) {
       if (this.propDetailYn) return
       // 권한이 없는 컨텐츠는 이동하지 못하게 리턴
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
@@ -668,6 +701,7 @@ export default {
       openPopParam.targetKey = this.CONT_DETAIL.contentsKey
       openPopParam.teamKey = this.CONT_DETAIL.creTeamKey
       openPopParam.jobkindId = this.CONT_DETAIL.jobkindId
+      if (memoScrollYn) openPopParam.memoScrollYn = true
 
       if (this.CONT_DETAIL.jobkindId === 'ALIM') {
         openPopParam.popHeaderText = this.CONT_DETAIL.nameMtext
@@ -857,11 +891,11 @@ export default {
     openImgDetailAlert (img) {
       console.log(this.imgClickYn)
       if (this.imgClickYn === false) return
-      var history = this.$store.getters['D_HISTORY/hStack']
-      this.alertPopId = 'imgDetailAlertPop' + history.length
-      this.alertPopId = this.$setParentsId(this.pPopId, this.alertPopId)
-      history.push(this.alertPopId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      // var history = this.$store.getters['D_HISTORY/hStack']
+      // this.alertPopId = 'imgDetailAlertPop' + history.length
+      // this.alertPopId = this.$setParentsId(this.pPopId, this.alertPopId)
+      // history.push(this.alertPopId)
+      // this.$store.commit('D_HISTORY/updateStack', history)
       // console.log(this.$store.getters['D_HISTORY/hStack'])
       this.mImgDetailAlertShowYn = true
       this.mClickEndYn = false
@@ -876,6 +910,7 @@ export default {
       }
     },
     async imgDownload () {
+      console.log(this.mSelectImgObject)
       // eslint-disable-next-line no-debugger
       debugger
       try {
@@ -885,11 +920,12 @@ export default {
           console.log(this.mSelectImgObject)
           // eslint-disable-next-line no-unused-vars
           var result = await this.$downloadFile(this.mSelectImgObject.fileKey, this.mSelectImgObject.path)
+          console.log(result)
         }
         this.$showToastPop('저장되었습니다.')
         this.mImgDetailAlertShowYn = false
       } catch (error) {
-        // // console.log(error)
+        console.log(error)
       }
     }
   },

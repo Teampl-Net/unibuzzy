@@ -1,7 +1,7 @@
 <!-- eslint-disable no-irregular-whitespace -->
 <template>
   <div style="width: 100%; float: left;">
-    <div style="width:100%; height:100%; position:fixed; top:0; left:0; background:#00000050; z-index:9999" @click="emit({type: 'closePop'})"></div>
+    <div style="width:100%; height:100%; position:fixed; top:0; left:0; background:#00000050; z-index:9999" @click="closePop()"></div>
     <div class="imgAlertWrap" style="margin: 1rem 0rem;">
       <div class="fl " style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
         <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit({type: 'clickBtn', option: 'download'})">다운로드</p>
@@ -37,10 +37,25 @@ export default {
       }
     }
   },
+  beforeUnmount () {
+    this.$checkDeleteHistory('imgLongClick')
+  },
   mounted () {
     this.$addHistoryStack('imgLongClick')
   },
+  data () {
+    return {
+      mCloseOkYn: false
+    }
+  },
   methods: {
+    closePop () {
+      if (this.mCloseOkYn === false) {
+        this.mCloseOkYn = true
+        return
+      }
+      this.emit({type: 'closePop'})
+    },
     emit (emitObj) {
       var type = emitObj.type
       this.$emit(emitObj.type, emitObj.option)

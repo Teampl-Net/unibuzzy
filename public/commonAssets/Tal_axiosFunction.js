@@ -234,7 +234,7 @@ export const methods = {
     })
     console.log(result)
     if (result) {
-      this.$router.replace('/login')
+      await this.$router.replace('/login')
       this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
       this.$store.commit('D_USER/MU_CLEAN_USER')
       window.localStorage.setItem('loginYn', false)

@@ -221,7 +221,7 @@ export default {
       }
     }
   },
-  unmounted () {
+  beforeUnmount () {
     document.removeEventListener('message', e => this.recvNoti(e))
     window.removeEventListener('message', e => this.recvNoti(e))
   },

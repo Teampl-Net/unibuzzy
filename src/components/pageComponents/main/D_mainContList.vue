@@ -2,7 +2,7 @@
   <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px; " :key="mReloadKey" >
     <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" >
       <gContentsBox :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' @fileDownload="fileDownload" />
-      <myObserver v-if="this.GE_DISP_CONTS_LIST.length > 5 ?  index === this.GE_DISP_CONTS_LIST.length - 5 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
+      <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 5 ?  index === this.GE_DISP_CONTS_LIST.length - 5 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
     </template>
     <div class="fl" style="width: 40px; height: 40px;border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index:9;">
       <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="height: auto;" class="img-w66 fl">
@@ -24,7 +24,7 @@ export default {
   components: { attatchFileListPop, writeBottSheet },
   data () {
     return {
-      mOffsetInt: 0,
+      mOffsetInt: 1,
       mPageSize: 10,
       mAxiosQueue: [],
       mContsList: [],
@@ -191,6 +191,7 @@ export default {
       return uniqueArr
     },
     async loadMore (descYn) {
+      console.log(' Main Contents List LoadMore ')
       if (this.mCanLoadYn && this.mEndListYn === false) {
         this.mCanLoadYn = false
         try {

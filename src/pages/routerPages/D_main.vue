@@ -16,8 +16,8 @@
                     <p style="font-weight: 600;" @click="openNotiHistoryPop" class="font16 fl commonLightColor">님!</p>
                 </div>
             </div>
-            <div style="width: 60px; height: 60px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; border:2.5px solid #5B1CFC; float: left; display: flex; padding: 2px;">
-                <div @click="goUserProfile" v-if="this.GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.$changeUrlBackslash(this.GE_USER.userProfileImg) : this.GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+            <div @click="goUserProfile" style="width: 60px; height: 60px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; border:2.5px solid #5B1CFC; float: left; display: flex; padding: 2px;">
+                <div v-if="this.GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.$changeUrlBackslash(this.GE_USER.userProfileImg) : this.GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
                 <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
             </div>
             <!-- <div class="userProfileTextWrap" >
@@ -49,7 +49,7 @@
                 <div style="height: 100%; min-width: 100%; display:flex;">
                     <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" @openPop="openPop"/>
                     <createChanIcon @openPop="openPop" />
-                    <template v-if="this.mMainMChanList.length === 0">
+                    <template v-if="this.mMainMChanList.length === 0 && this.mMainChanList.length === 0">
                         <circleSkeleton v-for="(value) in 10" :key="value"/>
                     </template>
                 </div>
@@ -179,7 +179,7 @@ export default {
     /* this.$nextTick(() => {
       this_.mLoadingYn = false
     }) */
-    this.$refs.mainScrollWrap.addEventListener('scroll', this.handleScroll)
+    // this.$refs.mainScrollWrap.addEventListener('scroll', this.handleScroll)
     this.mLoadingYn = false
   },
   methods: {

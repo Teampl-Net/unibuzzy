@@ -104,14 +104,26 @@ export default {
         })
       })
       console.log(this.CHANNEL_DETAIL)
+
+      if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn) {
+        this.mConvenienceFuncList = [{ title: '게시글작성', targetType: 'writeBoard' }]
+      }
     },
     /** 편리기능에 있는 버튼 클릭 함수 입니다.  */
     async convenienceFunc (targetType) {
       var param = {}
       param.targetType = targetType
-      if (targetType === 'requestPush') {
-        if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn) {
-          this.$showToastPop('알림 발송의 권한이 없습니다.')
+      if (targetType === 'writeContents') {
+        if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.memberInfoList.length === 0) {
+          this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
+          // this.$checkDeleteHistory('bottomWriteSheets')
+          var history = this.$store.getters['D_HISTORY/hStack']
+          var removePage = history[history.length - 1]
+          history = history.filter((element, index) => index < history.length - 1)
+          await this.$store.commit('D_HISTORY/setRemovePage', removePage)
+          await this.$store.commit('D_HISTORY/updateStack', history)
+
+          this.$emit('openChanMsgPop')
           return
         }
         param.targetType = 'writeContents'
@@ -126,8 +138,8 @@ export default {
       param.targetKey = this.mChanAlimListTeamKey
       param.currentTeamKey = this.mChanAlimListTeamKey
 
-      var history = this.$store.getters['D_HISTORY/hStack']
-      var removePage = history[history.length - 1]
+      history = this.$store.getters['D_HISTORY/hStack']
+      removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
       await this.$store.commit('D_HISTORY/setRemovePage', removePage)
       await this.$store.commit('D_HISTORY/updateStack', history)
@@ -136,7 +148,19 @@ export default {
 
       this.$emit('closePop')
     },
-    clickEditChanBtn () {
+    async clickEditChanBtn () {
+      if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.memberInfoList.length === 0) {
+        this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
+        // this.$checkDeleteHistory('bottomWriteSheets')
+        var history = this.$store.getters['D_HISTORY/hStack']
+        var removePage = history[history.length - 1]
+        history = history.filter((element, index) => index < history.length - 1)
+        await this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        await this.$store.commit('D_HISTORY/updateStack', history)
+
+        this.$emit('openChanMsgPop')
+        return
+      }
       var param = {}
       param.targetType = 'myChanMenuEdit'
       param.popHeaderText = '채널 관리'

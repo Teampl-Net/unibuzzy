@@ -57,7 +57,7 @@ export default {
       return this.$store.getters['D_HISTORY/hStack']
     }
   },
-  unmounted () {
+  beforeUnmount () {
     this.$checkDeleteHistory('gConfirmPop')
   },
   watch: {
