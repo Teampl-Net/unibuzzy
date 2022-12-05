@@ -89,6 +89,9 @@ export default {
       })
       console.log(memberTypeItemList)
       this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
+      if (this.memberTypeItemList.length === 0) {
+        this.addQuestion(0)
+      }
       // eslint-disable-next-line no-debugger
       debugger
     },
