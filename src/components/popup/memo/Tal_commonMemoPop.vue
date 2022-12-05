@@ -139,8 +139,9 @@ export default {
     saveMemo () {
       var inputMemoArea = window.document.getElementById('memoTextTag')
 
-      // var inputMemoArea = this.$refs.memoTextTag
       var regText = JSON.parse(JSON.stringify(inputMemoArea.innerText))
+      console.log(inputMemoArea)
+
       if (regText.trim() !== '') {
         inputMemoArea.classList.remove('memoTextPadding')
         var html = inputMemoArea.innerHTML

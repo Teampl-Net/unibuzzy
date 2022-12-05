@@ -18,11 +18,15 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]
   },
-  beforeUnmount () {
-    window.document.removeEventListener('touchstart')
-    window.document.removeEventListener('touchend')
-  },
+  // beforeUnmount () {
+  //   window.document.removeEventListener('touchstart')
+  //   window.document.removeEventListener('touchend')
+  // },
   mounted () {
+    // window.document.addEventListener('wheel', (e) => {
+    //   var test = e.deltaY < 0 ? 'down' : 'up'
+    //   console.log(test)
+    // })
     window.document.addEventListener('touchstart', (e) => {
       // console.log('touchstart', e.touches[0].pageX)
       this.startPoint = e.touches[0].pageX // 터치가 시작되는 위치 저장
@@ -131,12 +135,18 @@ export default {
   overflow-x: hidden;
   box-sizing: border-box;
   height: 100%;
+  width: 100%;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
   max-width: 1000px ;
 }
+/* #moTheAlimWrap {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 1000px ;
+} */
 
 #nav {
   padding: 30px;
