@@ -3,34 +3,22 @@
         <div style="width: 500px; height: 100px; background: #FFFFFF;  border-radius: 10px; position: absolute; top: 16%; left: 40%; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
         </div>
     </div> -->
-    <div ref="toolBoxRef" style="position: fixed!important; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 40px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px; padding: 5px 10px;z-index: 999999; background: #FFFFFF;">
-          <div class="fl h-100P " style="width: 25%;">
-            <p style=" color: #6768A7; float: left; line-height: 35px; margin-right: 5px; font-size: 18px; width: 100%; " @mousedown="toolBoxShowYn? clickSelectBox():''">폰트 {{this.tools.ftSize}}</p>
-            <div v-if="fontSelectBoxShowYn && toolBoxShowYn" style="width: 25%; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
-              <div @mousedown="changeFontSize(20)" style="font-size: 20px; height: 30px;  color: #6768A7;" value="20">큰사이즈</div>
-              <div @mousedown="changeFontSize(16)" style="font-size: 16px; height: 30px; color: #6768A7;" value="16">중간사이즈</div>
-              <div @mousedown="changeFontSize(12)" style="font-size: 12px; height: 30px; color: #6768A7;" value="12">작은사이즈</div>
-            </div>
-            <!-- <div  @mousedown="clickSelectBox" style="width: 110px; float: left; height: 100%; ">{{this.tools.ftSize}}</div> -->
-            <!-- <select @mousedown="clickSelectBox" name="" @change="changeTextStyle('ftSize')" class="fl" v-model="this.tools.ftSize" :class="'fontSize'+this.tools.ftSize" id="" style="width: 100px;  margin-right: 5px; background: #FFF; height: 30px; border: none; color: #6768A7">
-                <option style="font-size: 20px; color: #6768A7;" value="20">큰사이즈</option>
-                <option style="font-size: 16px; color: #6768A7;" value="16">중간사이즈</option>
-                <option style="font-size: 12px; color: #6768A7;" value="12">작은사이즈</option>
-            </select> -->
-          </div>
-          <div   class="fl" style="display: flex; width: 45%;height: 100%; align-ite ms: center; justify-content: space-around; around; align-items: center;">
-            <div @click="toolBoxShowYn? changeTextStyle('bold'):''" :class="this.tools.boldYn === true ? 'selectedStyle': ''" class="fl" style=" width: 25px; text-align: center;cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/boldIcon.svg" alt=""></div>
-            <div @click="toolBoxShowYn? changeTextStyle('italic'):''" :class="this.tools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/italicIcon.svg" alt=""></div>
-            <div @click="toolBoxShowYn? changeTextStyle('underLine'):''" :class="this.tools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/underlineIcon.svg" alt=""></div>
-            <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" class="fl" style="width: 24px; margin-left: 5px; cursor: pointer;" alt="">
-            <!-- <img src="../../../assets/images/formEditor/addPerson.svg" @click="convertName" style="width: 23px; margin-left: 5px; margin-right: 10px; margin-top: 5px;" class="fl" alt=""> -->
-          </div>
-          <!-- <div class="fl" style="height: 100%; width: 30%; padding: 5px 10px 5px 5px;">
-            <gBtnSmall @click="setParamInnerHtml" style="" class="fr" btnTitle="적용" />
-          </div> -->
-          <!-- <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" style="position: absolute; top: 8px; right: 10px; width: 30px; cursor: pointer; z-index: 999" alt=""> -->
-
+    <div v-if="false" ref="toolBoxRef" style="position: absolute !important; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 40px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px; padding: 5px 10px;z-index: 999999; background: #FFFFFF;">
+      <div class="fl h-100P " style="width: 25%;">
+        <p style=" color: #6768A7; float: left; line-height: 35px; margin-right: 5px; font-size: 18px; width: 100%; " @mousedown="toolBoxShowYn? clickSelectBox():''">폰트 {{this.tools.ftSize}}</p>
+        <div v-if="fontSelectBoxShowYn && toolBoxShowYn" style="width: 25%; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
+          <div @mousedown="changeFontSize(20)" style="font-size: 20px; height: 30px;  color: #6768A7;" value="20">큰사이즈</div>
+          <div @mousedown="changeFontSize(16)" style="font-size: 16px; height: 30px; color: #6768A7;" value="16">중간사이즈</div>
+          <div @mousedown="changeFontSize(12)" style="font-size: 12px; height: 30px; color: #6768A7;" value="12">작은사이즈</div>
+        </div>
       </div>
+      <div   class="fl" style="display: flex; width: 45%;height: 100%; align-ite ms: center; justify-content: space-around; around; align-items: center;">
+        <div @click="toolBoxShowYn? changeTextStyle('bold'):''" :class="this.tools.boldYn === true ? 'selectedStyle': ''" class="fl" style=" width: 25px; text-align: center;cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/boldIcon.svg" alt=""></div>
+        <div @click="toolBoxShowYn? changeTextStyle('italic'):''" :class="this.tools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/italicIcon.svg" alt=""></div>
+        <div @click="toolBoxShowYn? changeTextStyle('underLine'):''" :class="this.tools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/underlineIcon.svg" alt=""></div>
+        <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" class="fl" style="width: 24px; margin-left: 5px; cursor: pointer;" alt="">
+      </div>
+    </div>
     <!-- v-if="toolBoxShowYn" -->
       <!-- <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; height: calc(100%); min-height: 300px; border: 1px solid #6768a745; border-radius: 5px; overflow-x: hidden; background: #ffffff; position: relative; ">
         <div style="width: 100%; height: 100%; box-shadow: 0px 3px 9px 0px #ccc; min-height: 700px; height: 100%; border-radius: 0.5rem 0.5rem 0 0; overflow: hidden; "> -->
@@ -99,6 +87,9 @@ export default {
   },
   mounted () {
     this.addFormCard('text')
+
+    // 툴박스에 값을 계속 보내주기 위한 함수
+    this.postToolBoxOption()
   },
   props: {
     propFormData: {},
@@ -154,7 +145,18 @@ export default {
       }
     } */
   },
+  watch: {
+    tools: {
+      handler (value, old) {
+        this.postToolBoxOption()
+      },
+      deep: true
+    }
+  },
   methods: {
+    postToolBoxOption () {
+      this.$emit('postToolBox', this.tools)
+    },
     test (event) {
       // eslint-disable-next-line no-debugger
       debugger
@@ -189,12 +191,12 @@ export default {
     setFormCard (data) {
       this.formCardList = data
     },
-    inputScroll (param) {
-      // if (this.$checkMobile() === 'IOS') {
-      //   this.$refs.toolBoxRef.style.position = 'absolute'
-      // }
-      this.$emit('inputScroll', param)
-    },
+    // inputScroll (param) {
+    //   // if (this.$checkMobile() === 'IOS') {
+    //   //   this.$refs.toolBoxRef.style.position = 'absolute'
+    //   // }
+    //   this.$emit('inputScroll', param)
+    // },
     async changePosTeamMenu (event) {
       // eslint-disable-next-line no-debugger
       debugger
@@ -520,7 +522,7 @@ export default {
         spanWrap.innerHTML = spanWrap.outerHTML.replaceAll('font-size: 12px;', '')
         spanWrap.innerHTML = spanWrap.outerHTML.replaceAll('font-size: 20px;', '')
 
-        spanWrap.setAttribute('style', 'font-size: ' + this.tools.ftSize + 'px')
+        spanWrap.setAttribute('style', 'font-size: ' + this.tools.ftSize + 'px !important;')
 
         this.fontSelectBoxShowYn = false
       }
@@ -529,7 +531,9 @@ export default {
 
       range1.insertNode(spanWrap)
       window.getSelection().addRange(range1)
-      document.getElementById('formTextArea' + this.selectedCardKey).focus()
+      var nextFormText = document.getElementById('formTextArea' + this.selectedCardKey)
+      if (nextFormText) nextFormText.focus()
+      // document.getElementById('formTextArea' + this.selectedCardKey).focus()
     },
 
     async convertName () {

@@ -14,7 +14,7 @@
     <div id="textMsgAskBox" class="pageMsgArea" style="">
       <!-- <pre id="textMsgBox" class="editableContent"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></pre> -->
       <!-- <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div> -->
-      <formEditor ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText"/>
+      <formEditor ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText" @postToolBox='postToolBox'/>
       <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
 
     </div>
@@ -26,8 +26,9 @@
     </div> -->
   </div>
   <gBtnLarge v-on:click="clickPageTopBtn"  :btnTitle="this.completeBtnTitle" style="width:90%; position: absolute; bottom:50px; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" />
-
+  <gToolBox :propTools='mToolBoxOptions' @changeTextStyle='changeFormEditorStyle' />
 </div>
+
 <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
  <!-- <div v-if="formEditorShowYn" style="position: absolute; top: 0; left: 0; width: 100%; background: #fff; height: 100vh; z-index: 99999999999999999999">
   <popHeader @closeXPop="this.formEditorShowYn = false" class="commonPopHeader" headerTitle="게시글작성" />
@@ -56,7 +57,8 @@ export default {
       uploadFileList: [],
       addFalseList: [],
       selectFileList: [],
-      complexOkYn: false
+      complexOkYn: false,
+      mToolBoxOptions: {}
     }
   },
   mounted () {
@@ -127,6 +129,22 @@ export default {
     propData: {}
   },
   methods: {
+    changeFormEditorStyle (changeParam) {
+      // 전부 선택된 box로 처리를 하기에 ref로 접근해서 함수를 실행하고 있습니다.
+      // bold, italic, underLine은 text만 넘겨줘도 기능이 작동하기에 따로 구분을 하지 않았습니다.
+      var targetType = changeParam.type
+      if (targetType === 'font') {
+        this.$refs.complexEditor.changeFontSize(changeParam.size)
+      } else if (targetType === 'delFormCard') {
+        this.$refs.complexEditor.delFormCard()
+      } else {
+        this.$refs.complexEditor.changeTextStyle(targetType)
+      }
+    },
+    postToolBox (toolBoxOption) {
+      // toolbox에 들어간 option들을 formEditor에서 watch로 계속 넘겨받고 prop으로 넘겨주고 있습니다! -j
+      this.mToolBoxOptions = toolBoxOption
+    },
     async previewFile (file) {
       let fileExt = file.name.substring(
         file.name.lastIndexOf('.') + 1

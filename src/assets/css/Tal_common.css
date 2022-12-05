@@ -41,7 +41,9 @@ pre span{
   white-space: pre-wrap; word-break: break-all; overflow: auto;
   font-family: KoPubDotumMedium !important;
   /* font-family: NotoSans !important; */
-  font-size: 14px !important;
+
+  /* font-size를 지정하니 폰트사이즈가 적용 안됩니다...! */
+  /* font-size: 14px; */
 }
 pre img {
   -webkit-text-size-adjust:none;

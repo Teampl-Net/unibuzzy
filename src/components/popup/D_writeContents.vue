@@ -1,100 +1,102 @@
 <template>
-<div style="width: 100%; float: left;">
-  <div style="position: absolute; top:0; left:0; z-index:10; background:#00000050;" class="fl w-100P h-100P"></div>
-    <div class="whitePaper">
-        <!-- 컨텐츠 작성 헤더 영역 -->
-        <div class="w-100P fl" style="padding: 1rem 1.5rem 0 1.5rem; display: flex; flex-direction: column; align-items: flex-start;">
-          <div class="fl w-100P" style="display: flex; align-items: center; justify-content: space-between;">
-            <p v-if="contentType === 'ALIM'" class="fontBold commonColor font20 fl">알림{{requestPushYn === false ? '작성' : '신청' }}</p>
-            <p v-if="contentType === 'BOAR'" class="fontBold commonColor font20 fl">게시글{{modiYn?'수정' : '작성'}}</p>
-            <div class="fr" style="display: flex; flex-direction: row; align-items: center;">
-              <gBtnSmall class="writeContenBtn" v-if="contentType === 'ALIM'"   :btnTitle="contentType === 'ALIM' && requestPushYn === false ? '발송하기' : '신청하기'" @click="clickPageTopBtn()"  />
-              <gBtnSmall class="writeContenBtn" v-if="contentType === 'BOAR'"   :btnTitle="contentType === 'BOAR' && modiYn === true ? '수정하기' : '게시하기'" @click="boardDataCheck()"   />
-              <img style="width: 1rem;" @click="closeXPop" class="mleft-2 fr cursorP"  src="../../assets/images/common/popup_close.png"/>
+<!-- <div style="width: 100%; float: left;"> -->
+  <div class="whitePaper">
+      <!-- 컨텐츠 작성 헤더 영역 -->
+      <div class="w-100P fl" style="padding: 1rem 1.5rem 0 1.5rem; display: flex; flex-direction: column; align-items: flex-start;">
+        <div class="fl w-100P" style="display: flex; align-items: center; justify-content: space-between;">
+          <p v-if="contentType === 'ALIM'" class="fontBold commonColor font20 fl">알림{{requestPushYn === false ? '작성' : '신청' }}</p>
+          <p v-if="contentType === 'BOAR'" class="fontBold commonColor font20 fl">게시글{{modiYn?'수정' : '작성'}}</p>
+          <div class="fr" style="display: flex; flex-direction: row; align-items: center;">
+            <gBtnSmall class="writeContenBtn" v-if="contentType === 'ALIM'"   :btnTitle="contentType === 'ALIM' && requestPushYn === false ? '발송하기' : '신청하기'" @click="clickPageTopBtn()"  />
+            <gBtnSmall class="writeContenBtn" v-if="contentType === 'BOAR'"   :btnTitle="contentType === 'BOAR' && modiYn === true ? '수정하기' : '게시하기'" @click="boardDataCheck()"   />
+            <img style="width: 1rem;" @click="closeXPop" class="mleft-2 fr cursorP"  src="../../assets/images/common/popup_close.png"/>
+          </div>
+        </div>
+        <div class="fl mtop-05" style="width:100%; border-bottom: 2px solid #5F61BD;"></div>
+      </div>
+      <div class="fl w-100P h-100P" id="scrollFormArea" ref="scrollFormArea" style="overflow: hidden auto">
+        <!-- 알림 영역 -->
+        <template v-if="contentType === 'ALIM'">
+          <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
+            <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">수신</p>
+            <div class="fl" style="min-height: 2rem; float: left; width: calc(100% - 3.5rem);" v-if="!params.userKey">
+              <checkBtnArea class="mleft-05" title='전체' :selectedYn='allRecvYn' @click="allRecvYn = true" />
+              <checkBtnArea class="mleft-05" title='선택' :selectedYn='!allRecvYn' @click="allRecvYn = false" />
+              <p class="fr commonDarkGray font14" style="line-height: 30px;">{{allRecvYn === false ? receiverText : '전체' }}</p>
+              <div v-if="!allRecvYn" class="fl w-100P textLeft mleft-05 mtop-05" @click="openPushReceiverSelect" style="border:1px solid #ccc; border-radius:8px; min-height: 30px; background: white; padding-left: 5px; display: flex; justify-content: space-between; align-items: center;">
+                <div v-if="this.receiverList.list && this.receiverList.list.length > 0" class="fl w-100P">
+                  <div v-for="(value, index) in this.receiverList.list" :key="index" class="fl mright-1" style="display: flex;">
+                    <img v-if="value.type === 'BOOK'" class="img-w15 fl" src="../../assets/images/channel/channer_addressBook.svg" alt="">
+                    <img v-if="value.type === 'USER'" class="img-w15 fl" src="../../assets/images/footer/icon_people.svg" alt="">
+                    <p class="fl font14 mleft-01 commonDarkGray">{{value.name}}</p>
+                  </div>
+                </div>
+                <p class='font12 fl' style="color:#aaa; " v-else >알림을 보낼 대상을 선택해주세요.</p>
+                <!-- 이미지 임시!!! -->
+                <!-- <img class="fr img-w17 mright-05"  src="../../assets/images/push/plusIcon.svg" /> -->
+                <img class="fr img-w17 mright-05"  src="../../assets/images/formEditor/icon_formEditPlus.svg" />
+              </div>
+            </div>
+            <p v-else class="fl w-100P font16 textLeft commomBlack">
+              <img src="../../assets/images/footer/icon_people.svg" class="fl img-w15 mtop-02 mleft-05 mright-03" alt="">
+              {{params.userName}}
+              </p>
+          </div>
+
+          <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
+            <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">옵션</p>
+            <div style="min-height: 2rem; float: left;">
+              <checkBtnArea class="mleft-05" title='실명' :selectedYn='showCreNameYn' @click="showCreNameYn = !showCreNameYn" />
+              <checkBtnArea class="mleft-05" title='댓글' :selectedYn='canReplyYn' @click="canReplyYn = !canReplyYn" />
+              <checkBtnArea class="mleft-05" title='제목' :selectedYn='titleShowYn' @click="titleShowYn = !titleShowYn" />
             </div>
           </div>
-          <div class="fl mtop-05" style="width:100%; border-bottom: 2px solid #5F61BD;"></div>
-        </div>
-          <div class="fl w-100P h-100P" id="scrollFormArea" style="overflow: hidden auto">
-            <!-- 알림 영역 -->
-            <template v-if="contentType === 'ALIM'">
-              <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-                <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">수신</p>
-                <div class="fl" style="min-height: 2rem; float: left; width: calc(100% - 3.5rem);" v-if="!params.userKey">
-                  <checkBtnArea class="mleft-05" title='전체' :selectedYn='allRecvYn' @click="allRecvYn = true" />
-                  <checkBtnArea class="mleft-05" title='선택' :selectedYn='!allRecvYn' @click="allRecvYn = false" />
-                  <p class="fr commonDarkGray font14" style="line-height: 30px;">{{allRecvYn === false ? receiverText : '전체' }}</p>
-                  <div v-if="!allRecvYn" class="fl w-100P textLeft mleft-05 mtop-05" @click="openPushReceiverSelect" style="border:1px solid #ccc; border-radius:8px; min-height: 30px; background: white; padding-left: 5px; display: flex; justify-content: space-between; align-items: center;">
-                    <div v-if="this.receiverList.list && this.receiverList.list.length > 0" class="fl w-100P">
-                      <div v-for="(value, index) in this.receiverList.list" :key="index" class="fl mright-1" style="display: flex;">
-                        <img v-if="value.type === 'BOOK'" class="img-w15 fl" src="../../assets/images/channel/channer_addressBook.svg" alt="">
-                        <img v-if="value.type === 'USER'" class="img-w15 fl" src="../../assets/images/footer/icon_people.svg" alt="">
-                        <p class="fl font14 mleft-01 commonDarkGray">{{value.name}}</p>
-                      </div>
-                    </div>
-                    <p class='font12 fl' style="color:#aaa; " v-else >알림을 보낼 대상을 선택해주세요.</p>
-                    <!-- 이미지 임시!!! -->
-                    <!-- <img class="fr img-w17 mright-05"  src="../../assets/images/push/plusIcon.svg" /> -->
-                    <img class="fr img-w17 mright-05"  src="../../assets/images/formEditor/icon_formEditPlus.svg" />
-                  </div>
-                </div>
-                <p v-else class="fl w-100P font16 textLeft commomBlack">
-                  <img src="../../assets/images/footer/icon_people.svg" class="fl img-w15 mtop-02 mleft-05 mright-03" alt="">
-                  {{params.userName}}
-                  </p>
-              </div>
+        </template>
 
-              <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-                <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">옵션</p>
-                <div style="min-height: 2rem; float: left;">
-                  <checkBtnArea class="mleft-05" title='실명' :selectedYn='showCreNameYn' @click="showCreNameYn = !showCreNameYn" />
-                  <checkBtnArea class="mleft-05" title='댓글' :selectedYn='canReplyYn' @click="canReplyYn = !canReplyYn" />
-                  <checkBtnArea class="mleft-05" title='제목' :selectedYn='titleShowYn' @click="titleShowYn = !titleShowYn" />
-                </div>
-              </div>
-            </template>
-
-            <!-- 게시판 영역 -->
-            <template v-if="contentType === 'BOAR'">
-              <div v-if="selectBoardYn === true" class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-                <p class="fontBold commonColor CDeepColor font16 fl mright-05" style="word-break: keep-all; position: relative;">게시판<pss class="font12 fl" style="position: absolute; left: 0; bottom: -1rem;" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</pss></p>
-                <!-- <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p> -->
-                <div class="fl " style=" width: calc(100% - 3.5rem); height: 2rem; overflow: auto; white-space: nowrap; display: flex; align-items: center" >
-                  <div v-for="(data, index) in selectBoardList" :key="index" class="fl mleft-05 font12 fontBold" @click="selectBoard(data, index)" style=" border-radius:10px; display: inline-flex;" :style="{background: data.picBgPath}" :class="{'CDeepBorderColor selectPadding' : selectBoardIndex === index, 'noneSelectPadding' : selectBoardIndex !== index, 'mleft-0': index === 0}">
-                    <div class="fl"> <img class="img-w15" v-if="selectBoardIndex === index" src="../../assets/images/common/icon_check_commonColor.svg" /></div>
-                    <label class="mleft-03 font14"  :class="{'commonColor selectBoardBorder' : selectBoardIndex === index}" :for="'selectBoardCheckBox'+index">{{this.$changeText(data.cabinetNameMtext)}}</label>
-                  </div>
-                </div>
-              </div>
-            </template>
-
-            <!-- 공통 영역 -->
-            <div v-if="titleShowYn" class="fl w-100P mtop-1" style="display: flex; align-items: center; padding: 0 1.5rem;">
-              <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">제목</p>
-              <input class="fl mleft-05 titlePlaceholder" style="width: calc(100% - 3.5rem); min-height:30px; background-color:white !important;" type="text" v-if="titleShowYn" id="pushTitleInput" placeholder="알림 제목을 입력해주세요" v-model="writePushTitle" >
-            </div>
-
-            <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-              <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">파일</p>
-              <div style="width: calc(100% - 3.5rem); min-height: 30px; " class="fl mleft-05">
-                <attachFileList @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+        <!-- 게시판 영역 -->
+        <template v-if="contentType === 'BOAR'">
+          <div v-if="selectBoardYn === true" class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
+            <p class="fontBold commonColor CDeepColor font16 fl mright-05" style="word-break: keep-all; position: relative;">게시판<pss class="font12 fl" style="position: absolute; left: 0; bottom: -1rem;" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</pss></p>
+            <!-- <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p> -->
+            <div class="fl " style=" width: calc(100% - 3.5rem); height: 2rem; overflow: auto; white-space: nowrap; display: flex; align-items: center" >
+              <div v-for="(data, index) in selectBoardList" :key="index" class="fl mleft-05 font12 fontBold" @click="selectBoard(data, index)" style=" border-radius:10px; display: inline-flex;" :style="{background: data.picBgPath}" :class="{'CDeepBorderColor selectPadding' : selectBoardIndex === index, 'noneSelectPadding' : selectBoardIndex !== index, 'mleft-0': index === 0}">
+                <div class="fl"> <img class="img-w15" v-if="selectBoardIndex === index" src="../../assets/images/common/icon_check_commonColor.svg" /></div>
+                <label class="mleft-03 font14"  :class="{'commonColor selectBoardBorder' : selectBoardIndex === index}" :for="'selectBoardCheckBox'+index">{{this.$changeText(data.cabinetNameMtext)}}</label>
               </div>
             </div>
+          </div>
+        </template>
 
-        <!-- 작성 창 영역 -->
-        <div id="pageMsgAreaWrap" class="pageMsgArea mtop-1 w-100P fl" style=" padding: 0px 1.5rem 0rem 1.5rem; ">
-          <formEditor style="margin-top:1rem; margin-bottom: 1rem;" class="fl" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText" @inputScroll='inputScroll'/>
-          <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
+        <!-- 공통 영역 -->
+        <div v-if="titleShowYn" class="fl w-100P mtop-1" style="display: flex; align-items: center; padding: 0 1.5rem;">
+          <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">제목</p>
+          <input class="fl mleft-05 titlePlaceholder" style="width: calc(100% - 3.5rem); min-height:30px; background-color:white !important;" type="text" v-if="titleShowYn" id="pushTitleInput" placeholder="알림 제목을 입력해주세요" v-model="writePushTitle" >
         </div>
+
+        <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
+          <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">파일</p>
+          <div style="width: calc(100% - 3.5rem); min-height: 30px; " class="fl mleft-05">
+            <attachFileList @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+          </div>
+        </div>
+
+      <!-- 작성 창 영역 -->
+      <div id="pageMsgAreaWrap" class="pageMsgArea mtop-1 w-100P fl" style=" padding: 0px 1.5rem 0rem 1.5rem; ">
+        <formEditor style="margin-top:1rem; margin-bottom: 1rem;" class="fl" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText" @inputScroll='inputScroll' @postToolBox='postToolBox'/>
+        <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
       </div>
+    </div>
+
   </div>
-    <commonConfirmPop v-if="failPopYn" @no="failPopYn = false" confirmType="timeout" :confirmText="errorText" />
-    <gConfirmPop v-if="contentType === 'ALIM' && checkPopYn" :confirmText="'알림을 ' + (requestPushYn === false ? '발송' : '신청') + ' 하시겠습니까?'" @ok='sendMsg(), checkPopYn=false' @no='confirmNo()' />
-    <gConfirmPop v-if="contentType === 'BOAR' && checkPopYn" :confirmText="modiYn? '게시글을 수정 하시겠습니까?' : '게시글을 저장하시겠습니까?'" @ok='sendBoard(), checkPopYn=false' @no='confirmNo()'   />
-    <gConfirmPop @no="closeXPop()" :confirmText="contentType === 'ALIM' ? '신청되었습니다.' : '저장 되었습니다.' " confirmType='timeout' v-if="okPopYn" />
-    <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
-    <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
-</div>
+  <gToolBox :propTools='mToolBoxOptions' @changeTextStyle='changeFormEditorStyle' />
+
+  <commonConfirmPop v-if="failPopYn" @no="failPopYn = false" confirmType="timeout" :confirmText="errorText" />
+  <gConfirmPop v-if="contentType === 'ALIM' && checkPopYn" :confirmText="'알림을 ' + (requestPushYn === false ? '발송' : '신청') + ' 하시겠습니까?'" @ok='sendMsg(), checkPopYn=false' @no='confirmNo()' />
+  <gConfirmPop v-if="contentType === 'BOAR' && checkPopYn" :confirmText="modiYn? '게시글을 수정 하시겠습니까?' : '게시글을 저장하시겠습니까?'" @ok='sendBoard(), checkPopYn=false' @no='confirmNo()'   />
+  <gConfirmPop @no="closeXPop()" :confirmText="contentType === 'ALIM' ? '신청되었습니다.' : '저장 되었습니다.' " confirmType='timeout' v-if="okPopYn" />
+  <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
+  <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
+<!-- </div> -->
 </template>
 
 <script>
@@ -139,7 +141,9 @@ export default {
       selectBoardIndex: null,
       selectBoardCabinetKey: null,
       writeBoardPlaceHolder: '',
-      cabBlindYn: false
+      cabBlindYn: false,
+
+      mToolBoxOptions: {}
     }
   },
   props: {
@@ -315,9 +319,30 @@ export default {
     }
   },
   methods: {
-    inputScroll (inputScroll) {
-      window.document.getElementById('scrollFormArea').scrollTo()
+    changeFormEditorStyle (changeParam) {
+      // 전부 선택된 box로 처리를 하기에 ref로 접근해서 함수를 실행하고 있습니다.
+      // bold, italic, underLine은 text만 넘겨줘도 기능이 작동하기에 따로 구분을 하지 않았습니다.
+      var targetType = changeParam.type
+      if (targetType === 'font') {
+        this.$refs.complexEditor.changeFontSize(changeParam.size)
+      } else if (targetType === 'delFormCard') {
+        this.$refs.complexEditor.delFormCard()
+      } else {
+        this.$refs.complexEditor.changeTextStyle(targetType)
+      }
     },
+    postToolBox (toolBoxOption) {
+      // toolbox에 들어간 option들을 formEditor에서 watch로 계속 넘겨받고 prop으로 넘겨주고 있습니다! -j
+      this.mToolBoxOptions = toolBoxOption
+    },
+    // inputScroll (inputScroll) {
+    //   var scrollArea = this.$refs.scrollFormArea
+    //   // var a = window.document.getElementById('scrollFormArea').scrollTo()
+    //   var tempTop = scrollArea.scrollTo
+    //   // alert(JSON.stringify(tempTop))
+    //   window.document.getElementById('scrollFormArea').scrollTo({ top: 10 })
+    //   window.document.getElementById('scrollFormArea').scrollTo({ top: tempTop, behavior: 'smooth' })
+    // },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
@@ -1198,7 +1223,8 @@ export default {
 
 .whitePaper {
       /* overflow: auto; */
-      position: fixed;
+      /* position: fixed; */
+      position: absolute;
       /* left: 5%; */
       /* bottom: 0; */
       top: 5%;
@@ -1214,7 +1240,7 @@ export default {
       min-height: 600px;
 
       /* background-color: #f9f9f9; */
-      background-color: #f5f5f5;
+      background-color: #f5f5f5 !important;
       color: #363c5f;
       /* padding: 1.5rem; */
       text-align: left;

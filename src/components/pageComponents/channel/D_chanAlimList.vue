@@ -1,6 +1,8 @@
 
 <template>
-  <div id="alimWrap" v-if="this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH" ref="chanScrollWrap" style="overflow: scroll;" :style="'background-image: url(' + (this.CHANNEL_DETAIL.bgDomainPath ? this.CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext : CHANNEL_DETAIL.bgPathMtext) + ')'" class="chanDetailWrap">
+<!-- getWindowWidth, getWindowHeight -->
+<!-- -->
+  <div id="alimWrap" v-if="this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH" ref="chanScrollWrap" style="overflow: scroll;" :style="settingBackground" class="chanDetailWrap">
       <div id="gChannelPopup" v-if="commonChanPopShowYn" style="display: absolute; top: 0; left: 0; z-index: 999;">
         <gChannelPop :propCateItemKey="this.CHANNEL_DETAIL.cateKey" :propTeamKey="this.CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop'/>
       </div>
@@ -91,7 +93,8 @@
         <writeBottSheet v-if="writeBottSheetYn === true" @openPop='openWriteContentsPop' @closePop='writeBottSheetYn = false' :propTeamKey='CHANNEL_DETAIL.teamKey' @openMember='openChannelMsgPop()' />
       </transition>
   </div>
-  <writeContents  v-if="writeContentsYn"  ref="chanAlimListWritePushRefs" :contentType="mPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWritePushPop' :params="mWriteAlimData"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="mWriteBoardData" />
+  <div v-if="writeContentsYn === true" style="position: absolute; top:0; left:0; z-index:10; background:#00000050; width: 100vw; min-height: 100vh;" class=""></div>
+  <writeContents  v-if="writeContentsYn === true"  ref="chanAlimListWritePushRefs" :contentType="mPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWritePushPop' :params="mWriteAlimData"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="mWriteBoardData" />
 </template>
 
 <script>
@@ -134,7 +137,10 @@ export default {
       mMakeDeepLinkIng: false,
       mChanPopMessage: '',
       commonChanPopShowYn: false,
-      writeBottSheetYn: false
+      writeBottSheetYn: false,
+      mwWidth: 0,
+      mwHeight: 0,
+      prevVisualViewport: 0
       // errorPopYn: false
     }
   },
@@ -175,8 +181,27 @@ export default {
         this.mChanMainScrollDirection = e.deltaY > 0 ? 'down' : 'up'
       })
     }
+    this.setWindowSize()
+    window.addEventListener('resize', this.handleResize)
+  },
+  beforeUnmount () {
+    // window.removeEventListener('resize', () => { this.setWindowSize() })
   },
   methods: {
+    setWindowSize () {
+      this.mwWidth = window.innerWidth
+      var nowHeight = window.innerHeight
+
+      if (this.mwHeight < nowHeight) this.mwHeight = nowHeight
+    },
+    handleResize (event) {
+      if (this.$checkMobile() === 'IOS') {
+      } else {
+        this.setWindowSize()
+      }
+      // alert(eventName)
+      // emitEvent.call(event, eventName)
+    },
     openChannelMsgPop () {
       this.writeBottSheetYn = false
       this.commonChanPopShowYn = true
@@ -663,11 +688,21 @@ export default {
     GE_RECENT_CHANGE_TEAM () {
       return this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM']
     },
-    setBlockBoxHeight () {
+    settingBackground () {
+      var imgPath = 'url(' + (this.CHANNEL_DETAIL.bgDomainPath ? this.CHANNEL_DETAIL.bgDomainPath + this.CHANNEL_DETAIL.bgPathMtext : this.CHANNEL_DETAIL.bgPathMtext) + ')'
       return {
-        '--height': 300 - this.mChanMainScrollPosition + 'px'
+        '--wWidth': this.$getMobileYn() === true ? this.mwWidth + 'px ' : '100% ',
+        '--wHeight': this.$getMobileYn() === true ? this.mwHeight + 'px ' : '100% ',
+        // '--wWidth': this.$getMobileYn() === true ? window.innerWidth + 'px ' : '100% ',
+        // '--wHeight': this.$getMobileYn() === true ? window.innerHeight + 'px ' : '100% ',
+        '--backImg': imgPath
       }
     },
+    // getWindowHeight () {
+    //   return {
+
+    //   }
+    // },
     REQ_MEM_OBJ () {
       if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.userTeamInfo && this.CHANNEL_DETAIL.userTeamInfo.reqMemberStatus) {
         return { reqMemberStatus: this.CHANNEL_DETAIL.userTeamInfo.reqMemberStatus, reqMemberStr: this.CHANNEL_DETAIL.userTeamInfo.reqMemberStr }
@@ -733,11 +768,17 @@ export default {
 }
 
 .chanDetailWrap{
-  height: 100vh;
   /* min-height: 900px;
   max-height: 1000px; */
   background-repeat: no-repeat;
   background-size: cover;
+  max-width: 1000px;
+  /* max-height: 1000px; */
+  /* height: 100%vh */
+
+  width: var(--wWidth);
+  height: var(--wHeight);
+  background-image: var(--backImg)
 }
 .officialTitle{
   padding-right: 30px;

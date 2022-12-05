@@ -111,11 +111,11 @@
                 <p v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기</p>
                 <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
             </div>
-
-            <!-- 밑에는 댓글 작성 창 -->
-            <gMemoPop style="position: fixed; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
         </template>
     </div>
+    <!-- 밑에는 댓글 작성 창 -->
+    <gMemoPop style="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
+
   <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
   <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
   <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
@@ -615,7 +615,7 @@ export default {
         var imgList = await window.document.querySelectorAll('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
         if (imgList && imgList.length > 0) {
           for (let i = 0; i < imgList.length; i++) {
-            console.log(imgList[i])
+            // console.log(imgList[i])
             imgList[i].addEventListener('load', (event) => {
               // console.log('page is fully loaded')
               // console.log(event)

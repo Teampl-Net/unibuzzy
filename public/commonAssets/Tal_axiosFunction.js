@@ -160,8 +160,12 @@ export const methods = {
       // 정재준테스트
       paramMap.set('fcmKey', '22222222')
       paramMap.set('soAccessToken', 'djWQ33dQRz-mzUVjQmggEz:APA91bHLvbLuEmuvBnh9o8TAC2SgI6zSP836eC8g3zq5HqkfhZenv6zC_hcWK14MI5ZE5PoYAeV5U7FYCH-EGYMTaoXTWC-UleipjRydqG7z0r-wu0gT4TT9b6e89P4FR5l353DFK0C-')
-      // paramMap.set('soAccessToken', 'BBAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
       paramMap.set('userKey', 255)
+
+      // paramMap.set('fcmKey', 'fp75GU331khRuUTTka5UYW:APA91bG1ZFejkmPfjMtjUuxvsUxE4zW8Ei2Vi9IgjkM7i9Bl_atL6A7P4lNafjQ6uLvF9IcbPLnOSiAuWI3muSR9UuPKkbCFdHAUd9Q0w5vA4bTmn64h0bjSEYGiMxsO83RSnC2uAuce')
+      // paramMap.set('soAccessToken', 'AAAAOLhYTcTPrzQ8DVqU31n04kh-VWmdXvnqXXGATAevs4Re1eAUnJ81mhrvLexek-FWOPf90Dp3yWCdKsRiRunztm0')
+      // paramMap.set('userKey', 123)
+
       // // 최유민테스트
       // paramMap.set('fcmKey', '11111111')
       // paramMap.set('soAccessToken', 'ABAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')

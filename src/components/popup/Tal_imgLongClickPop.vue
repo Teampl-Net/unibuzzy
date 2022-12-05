@@ -50,10 +50,10 @@ export default {
   },
   methods: {
     closePop () {
-      if (this.mCloseOkYn === false) {
-        this.mCloseOkYn = true
-        return
-      }
+      // if (this.mCloseOkYn === false) {
+      //   this.mCloseOkYn = true
+      //   return
+      // }
       this.emit({type: 'closePop'})
     },
     emit (emitObj) {

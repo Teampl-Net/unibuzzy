@@ -260,8 +260,9 @@ export default {
         this.clearMemo()
       } */
       // var memoObj = JSON.parse(JSON.stringify(memo))
+
       this.mCurrentMemoObj = JSON.parse(JSON.stringify(memo))
-      if ((this.propContDetail.jobkindId === 'ALIM' && this.propContDetail.canReplyYn === 1) || (this.propContDetail.jobkindId === 'BOAR' && this.propContDetail.shareAuth.R === true)) {
+      if ((this.propContDetail.jobkindId === 'ALIM' && this.propContDetail.canReplyYn === 1) || (this.propContDetail.jobkindId === 'BOAR' && this.$checkUserAuth(this.propContDetail.shareItem).R === true)) {
         var data = {}
         data.parentMemoKey = this.mCurrentMemoObj.memoKey // 대댓글때 사용하는것임
         if (this.mCurrentMemoObj.parentMemoKey !== undefined && this.mCurrentMemoObj.parentMemoKey !== null && this.mCurrentMemoObj.parentMemoKey !== '') {

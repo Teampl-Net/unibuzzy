@@ -18,16 +18,18 @@ export default {
     inputHtml: {}
   },
   mounted () {
-    document.querySelector('#formCard' + this.targetKey).addEventListener('paste', (e) => {
-      var items = (e.clipboardData || e.originalEvent.clipboardData).items
-      for (const i of items) {
-        var item = i
-        if (item.type.indexOf('image') !== -1) {
-          e.preventDefault()
-          // uploadFile(file);
+    if (this.targetKey) {
+      document.querySelector('#formCard' + this.targetKey).addEventListener('paste', (e) => {
+        var items = (e.clipboardData || e.originalEvent.clipboardData).items
+        for (const i of items) {
+          var item = i
+          if (item.type.indexOf('image') !== -1) {
+            e.preventDefault()
+            // uploadFile(file);
+          }
         }
-      }
-    })
+      })
+    }
     this.init()
     if (this.inputHtml) {
       this.$nextTick(() => {
@@ -81,14 +83,15 @@ export default {
   methods: {
     test () {
       this.$emit('showToolBox', { tools: this.tools })
-      var tt = this.$refs.formTextArea
-      var formArea = document.getElementById('scrollFormArea')
-      if (formArea) {
-        var sTop = formArea.scrollTop
-        formArea.scrollTo({ top: sTop + 5, behavior: 'smooth' })
-      }
+      // var tt = this.$refs.formTextArea
+      // var formArea = document.getElementById('scrollFormArea')
+      // if (formArea) {
+      //   var sTop = formArea.scrollTop
+      //   formArea.scrollTo({ top: sTop + 5, behavior: 'smooth' })
+      // }
       // console.log(tt)
-      this.$emit('inputScroll', tt.scrollHeight)
+      // this.$emit('inputScroll', tt.scrollHeight)
+      // this.$emit('inputScroll')
     },
     focusInput () {
       this.$nextTick(() => {
