@@ -186,6 +186,10 @@ export default {
     },
     async openPop (params) {
       console.log(params)
+      /* if (params.targetType === 'chanDetail') {
+        this.goChanDetail(params)
+        return
+      } */
       this.mPopParams = params
       this.mGPopShowYn = true
       this.hideMenu()
@@ -236,12 +240,16 @@ export default {
         this.openPop(detailParam)
       }
     },
-    goChanDetail (detailValue) {
+    async goChanDetail (detailValue) {
       var goChanDetailParam = {}
       goChanDetailParam.targetType = 'chanDetail'
       console.log(detailValue)
-      goChanDetailParam.teamKey = detailValue.creTeamKey
-      goChanDetailParam.targetKey = detailValue.creTeamKey
+      var teamKey = detailValue.targetKey
+      if (!teamKey && detailValue.creTeamKey) {
+        teamKey = detailValue.creTeamKey
+      }
+      goChanDetailParam.teamKey = teamKey
+      goChanDetailParam.targetKey = teamKey
       goChanDetailParam.nameMtext = detailValue.nameMtext
       goChanDetailParam.chanName = detailValue.nameMtext
       if (detailValue.contentsKey) {
@@ -252,7 +260,20 @@ export default {
       if (detailValue.creUserKey === this.GE_USER.userKey) {
         goChanDetailParam.ownerYn = true
       }
+
+      /* console.log(detailValue)
+      var paramMap = new Map()
+      paramMap.set('teamKey', detailValue.targetKey)
+      paramMap.set('fUserKey', this.GE_USER.userKey)
+      var result = await this.$getViewData({ url: 'service/tp.getUserTeamList', param: Object.fromEntries(paramMap) }, false)
+      if (!result || !result.data || !result.data.content || !result.data.content.length > 1) {
+        alert('채널을 찾을 수 없습니다!')
+        return
+      }
+      await this.$addChanVuex(result.data.content[0]) */
       this.openPop(goChanDetailParam)
+      /* this.mPopParams = goChanDetailParam
+      this.mGPopShowYn = true */
     },
     async recvNotiFormBridge (notiDetail, currentPage, vuexResultData) {
       try {

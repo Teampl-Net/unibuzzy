@@ -114,7 +114,7 @@ export default {
       var param = {}
       param.targetType = targetType
       if (targetType === 'writeContents') {
-        if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.memberInfoList.length === 0) {
+        if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
           this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
           // this.$checkDeleteHistory('bottomWriteSheets')
           var history = this.$store.getters['D_HISTORY/hStack']
@@ -149,7 +149,7 @@ export default {
       this.$emit('closePop')
     },
     async clickEditChanBtn () {
-      if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.memberInfoList.length === 0) {
+      if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
         this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
         // this.$checkDeleteHistory('bottomWriteSheets')
         var history = this.$store.getters['D_HISTORY/hStack']

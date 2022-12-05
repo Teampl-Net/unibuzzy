@@ -26,6 +26,7 @@ import smallPop from './components/popup/confirmPop/Tal_smallCommonConfirmPop.vu
 import myObserver from './components/Tal_ScrollObserver.vue'
 import gMemoPop from './components/popup/memo/Tal_commonMemoPop.vue'
 import gMemoList from './components/popup/memo/Tal_commonMemoList.vue'
+import openView from './assets/js/D_openView'
 import commonjs from './assets/js/Tal_common'
 import getjs from './assets/js/D_vuexFunction'
 import commonSharejs from './assets/js/Tal_commonShare'
@@ -69,6 +70,7 @@ import webViewBridge from './assets/js/webViewBridge'
 // import attatchFileListPop from './components/pageComponents/main/unit/D_commonAttatchFileListPop.vue'
 const app = createApp(moTheAlim).use(router).use(store)
 app.use(commonjs)
+app.use(openView)
 app.use(getjs)
 app.use(Vuex)
 app.use(commonSharejs)

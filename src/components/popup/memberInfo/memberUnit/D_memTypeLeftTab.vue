@@ -1,20 +1,19 @@
 <template>
   <div class="leftTabBase fl " style='background: #eeeeee50;' >
-    <div class="w-100P pSide-1" style="position: relative; min-height: 30px; padding: 0 20px; padding-right: 0; padding-top: 0.5rem;">
-      <p class="fl textLeft font16 fontBold">멤버유형 종류</p>
+    <div class="w-100P pSide-1" style="position: relative;border-bottom:1px solid #ccc; min-height: 30px; padding: 0 10px; height: 40px; padding-right: 0; padding-top: 0.5rem;">
+      <div style="width: 2.5px; height: 15px; background: #5F61BD; margin-top: 3px; margin-right: 4px;" class="fl" > </div>
+      <p class="fl textLeft font16 commonColor fontBold">목록</p>
+      <gBtnSmall :btnTitle="'추가'" @click="addInputPopYn = true" style="position: absolute; top: 7px; padding: 0 5px; right: 5px; height: 25px; line-height: 25px;"/>
       <!-- <p class=' fr font16 commonBlack textRight' style="" @click='closePop' >{{tempBackImg}}</p> -->
       <!-- <div class="fr textLeft font12 commonBlack tempLeftTabBtn fontBold" style="margin-top: 3px; margin-right: 10px;" @click="closePop">{{tempBackImg}}</div> -->
     </div>
 
-    <div class="fl" style="border-bottom:1px solid #ccc; width:100%; height:1px;" />
-
-    <div class="fl w-100P  " style="position: relative; padding: 0 20px; padding-right: 0;">
+    <div class="fl w-100P  " style="padding: 0 10px; padding-right: 0;">
       <div v-for="(list, index) in mMemberTypeList" :key="index" class="fl w-100P" style="padding: 10px 0;">
         <cLeftTab :propData="list" @cardEmit='cardEmit' :compoIdx='index' />
       </div>
-      <gBtnSmall :btnTitle="'추가'" @click="addInputPopYn = true" style="position: absolute; bottom: -40px; left: 50%; transform: translateX(-50%);"/>
-
-      <gInputPop v-if="addInputPopYn === true" class="" style="bottom: -180px;" title='멤버추가' type='one' @save='addMemberType' @goNo='addInputPopYn = false' />
+      <div v-if="addInputPopYn === true" @click='addInputPopYn = false' style="width: 100%; height: 100%; position: absolute;z-index: 8; background: #00000030; left: 0; top: 0"></div>
+      <gInputPop v-if="addInputPopYn === true" class="" style="left: 60px; top: 25%; width: calc(100% - 120px); max-width: none; z-index: 9; height:" title='멤버추가' type='one' @save='addMemberType' @goNo='addInputPopYn = false' />
     </div>
   </div>
 </template>

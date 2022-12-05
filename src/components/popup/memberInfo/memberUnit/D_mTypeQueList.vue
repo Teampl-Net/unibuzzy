@@ -1,26 +1,29 @@
 <template>
-  <div v-if="propMemberTypeObj" style="" class="fl w-100P" >
-    <p class="textLeft font16 fontBold commonDarkGray">정보</p>
-    <draggable class="ghostClass" :v-model="memberTypeItemList" ghost-class="ghost" :dragging="dragging" @end="end" delay="200" handle=".movePoint">
-      <transition-group>
-        <div v-for="(list, index) in memberTypeItemList" :key="list.itemKey" class="fl w-100P" style="padding: 0.3rem 0">
-          <queCard :propData="list" @cardEmit='cardEmit' :compoIdx='index' class="mbottom-05"/>
-        </div>
-      </transition-group>
-      </draggable>
+    <div v-if="propMemberTypeObj" style="" class="fl w-100P" >
+        <p class="textLeft font15 fontBold commonColor">부가정보</p>
+        <draggable class="ghostClass" :v-model="memberTypeItemList" ghost-class="ghost" :dragging="dragging" @end="end" delay="200" handle=".itemMovePoint">
+            <transition-group>
+                <div v-for="(list, index) in memberTypeItemList" :reloadKey="mReloadListKey" :key="list.itemKey" :listIndex="index" class="fl w-100P" style="padding: 0.3rem 0; padding-left: 10px;">
+                    <queCard :propData="list" @cardEmit='cardEmit' :compoIdx='index' :listIndex="index"  class="memTypeItemListRow mbottom-05"/>
+                </div>
+            </transition-group>
+        </draggable>
 
-    <div class="w-100P" style="display:flex; align-items: center; justify-content: center;">
-        <div @click="addQuestion"  style="width: 100%; height: 25px; border-radius: 5px; border: 1px solid #ccc;"> + </div>
+        <!-- <div class="w-100P cursorP fl" style="display:flex; margin: 0 auto; align-items: center; justify-content: center; margin-top: 30px;">
+            <div @click="addQuestion"  class="commonColor font30" style="width: 40px; height: 40px;line-height: 39px; border-radius: 100%; border: 2px solid #5F61BD;"> + </div>
+        </div> -->
+        <memInfoCreEditPop @changeMemberItem="changeMemberItem" v-if="mEditMemInfoPopShowYn"  :propData="this.mMemInfoData" @openPop="openPop" @closeXPop="closeMemInfoPop" />
     </div>
-  </div>
 </template>
 <script>
 import { VueDraggableNext } from 'vue-draggable-next'
+import memInfoCreEditPop from '../D_memInfoCreEditPop.vue'
 import queCard from './cardUnit/D_cQueCard.vue'
 export default {
   components: {
     queCard,
-    draggable: VueDraggableNext
+    draggable: VueDraggableNext,
+    memInfoCreEditPop
   },
   props: {
     propMemberTypeObj: {}
@@ -31,18 +34,50 @@ export default {
   },
   data () {
     return {
-      memberTypeItemList: []
+      memberTypeItemList: [],
+      mMemInfoData: {},
+      mEditMemInfoPopShowYn: false
     }
   },
   updated () {
     // this.readyFunc()
   },
   methods: {
+    closeMemInfoPop () {
+      this.mEditMemInfoPopShowYn = false
+    },
     readyFunc () {
       this.getMemberTypeItemList()
     },
-    addQuestion () {
-      this.$emit('addQuestion')
+    sendListToParents () {
+      console.log(this.memberTypeItemList)
+      this.$emit('sendListToParents', this.memberTypeItemList)
+    },
+    changeMemberItem (changeItemData) {
+      for (var i = 0; i < this.memberTypeItemList.length; i++) {
+        if (changeItemData.itemKey) {
+          if (changeItemData.itemKey === this.memberTypeItemList[i].itemKey) {
+            this.memberTypeItemList[i] = changeItemData
+            break
+          }
+        } else if (changeItemData.newDate) {
+          if (changeItemData.newDate === this.memberTypeItemList[i].newDate) {
+            this.memberTypeItemList[i] = changeItemData
+            break
+          }
+        }
+      }
+    },
+    deleteQueList (index) {
+      this.memberTypeItemList.splice(index, 1)
+    },
+    addQuestion (index) {
+      var newObj = { itemNameMtext: '새로운 정보', itemType: 'T', newYn: true }
+      newObj.newDate = new Date()
+      newObj.memberTypeKey = this.propMemberTypeObj.memberTypeKey
+      this.memberTypeItemList.splice(index + 1, 0, newObj)
+      // this.memberTypeItemList.push(newObj)
+      // this.$emit('addQuestion')
     },
     async getMemberTypeItemList () {
       // eslint-disable-next-line no-new-object
@@ -59,17 +94,21 @@ export default {
     },
     cardEmit (param) {
       console.log(param)
+      param.selectedMemberType = param.data
       var type = param.targetType
       var data = param.data
       // var idx = param.index
       console.log(data)
       if (type === 'editQue') {
-        this.$emit('editQue', param)
-      } else if (type === 'deleteQue') {
+        this.mMemInfoData = param
+        this.mEditMemInfoPopShowYn = true
+      } else if (type === 'delete') {
         // this.tempDelQue(data, idx)
-        this.deleteQue(param)
+        this.deleteQueList(param.index)
         // alert(JSON.stringify(this.memberTypeItemList[param.index]))
         // this.$emit('deleteQue', param)
+      } else if (type === 'add') {
+        this.addQuestion(param.index)
       }
     },
     async deleteQue (deleteData) {

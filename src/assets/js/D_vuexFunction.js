@@ -169,6 +169,9 @@ export const functions = {
       return detailData
     }
   },
+  async addChanVuex (data) {
+    await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', data)
+  },
   async addChanList (teamKey) {
     // alert(teamKey)
     var result = null
@@ -372,5 +375,6 @@ export default {
     Vue.config.globalProperties.$addContents = functions.addContents
     Vue.config.globalProperties.$getContentsMemoList = functions.getContentsMemoList
     Vue.config.globalProperties.$recvNotiFromBridge = functions.recvNotiFromBridge
+    Vue.config.globalProperties.$addChanVuex = functions.addChanVuex
   }
 }
