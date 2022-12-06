@@ -64,7 +64,7 @@
     <gConfirmPop :confirmText='checkVersionText' class="" confirmType='two' @ok="goPlayStore" @no='checkVersionPopShowYn = false' v-if="checkVersionPopShowYn"/>
     <gConfirmPop :confirmText='reloadShowText' class="" confirmType='two' @ok="reloadOk" @no='reloadShowYn = false' v-if="reloadShowYn"/>
     <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
-    <DevNotiSettingPop :id="devPopId" v-show="devModePopShowYn" @closeXPop="backClick" />
+    <DevNotiSettingPop :id="devPopId" v-if="devModePopShowYn" @closeXPop="backClick" />
   </div>
 </template>
 
