@@ -26,17 +26,17 @@
           <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
           <div class="w-100P fl commonListContentBox" style="height:1px;" />
           <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
-              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'"/>
+              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'" @fileDownload="fileDownload"/>
           </template>
           <gEmpty :tabName="currentTabName" contentName="게시판" v-if="this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template  v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index">
-              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'" />
+              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'" @fileDownload="fileDownload"/>
           </template>
           <gEmpty :tabName="currentTabName" contentName="알림" v-if="this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template  v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
-              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'"/>
+              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
               <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
           </template>
           <gEmpty :tabName="currentTabName" contentName="전체" v-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
@@ -54,6 +54,9 @@
           <gMemoPop ref="gMemoRef" :resetMemoYn="resetMemoYn" transition="showMemoPop" :style="getWindowSizeBottom" v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="z-index:999999; height: fit-content;" :writeMemoTempData='tempMemoData'/>
         </transition>
     </div>
+
+    <!-- <attatchFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/> -->
+
 <!--     eslint-disable-next-line vue/no-multiple-template-root -->
     <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false' />
   <!-- </div> -->
@@ -68,9 +71,13 @@ import imgLongClickPop from '../../components/popup/Tal_imgLongClickPop.vue'
 /* import cancelPop from '../../components/popup/common/Tal_commonCancelReasonPop.vue' */
 import { onMessage } from '../../assets/js/webviewInterface'
 import statCodeComponent from '../../components/board/D_manageStateCodePop.vue'
+
+// import attatchFileListPop from '../../components/pageComponents/main/unit/D_commonAttatchFileListPop.vue'
+
 export default {
   name: 'pushList',
   components: {
+    // attatchFileListPop,
     findContentsList,
     commonConfirmPop,
     imgPreviewPop,
@@ -519,6 +526,13 @@ export default {
     } */
   },
   methods: {
+    // fileDownload (fileData) {
+    //   if (!fileData) return
+    //   this.mFilePopData = fileData
+    //   if (this.mFilePopData.attachFileList.length > 0) {
+    //     this.mFilePopYn = true
+    //   }
+    // },
     async initGetContentsList () {
       var newArr = []
       // var contListEle
@@ -527,10 +541,8 @@ export default {
 
       // var this_ = this
       var result = await this.getPushContentsList(null, null, false)
-
       if (!result || result === '' || !result.content) return
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
-
+      await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
       if (this.viewMainTab === 'P') {
         newArr = [
           ...this.alimContentsList,
@@ -1257,22 +1269,26 @@ export default {
       }
     },
     async getMCabContYn (contentsKey) {
-      if (this.axiosQueue.findIndex((item) => item === 'getMCabContYn') !== -1) return
-      this.axiosQueue.push('getMCabContYn')
-      var paramMap = new Map()
-      paramMap.set('targetKey', contentsKey)
-      paramMap.set('ownUserKey', this.GE_USER.userKey)
-      paramMap.set('jobkindId', 'ALIM')
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getMCabContentsList',
-        param: Object.fromEntries(paramMap)
-      })
-      var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')
-      this.axiosQueue.splice(queueIndex, 1)
-      if (result.data.length > 0) {
-        return true
-      } else {
-        return false
+      try {
+        if (this.axiosQueue.findIndex((item) => item === 'getMCabContYn') !== -1) return
+        this.axiosQueue.push('getMCabContYn')
+        var paramMap = new Map()
+        paramMap.set('targetKey', contentsKey)
+        paramMap.set('ownUserKey', this.GE_USER.userKey)
+        paramMap.set('jobkindId', 'ALIM')
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.getMCabContentsList',
+          param: Object.fromEntries(paramMap)
+        })
+        var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')
+        this.axiosQueue.splice(queueIndex, 1)
+        if (result.data.length > 0) {
+          return true
+        } else {
+          return false
+        }
+      } catch (error) {
+        // alert('mCabContYn \n ' + error)
       }
       //
     },
@@ -2032,7 +2048,9 @@ export default {
       tempMemoData: {},
       ALIM_LIST_RELOAD_CONT: 0,
       workStateCodePopShowYn: false,
-      workStateCodePopProps: {}
+      workStateCodePopProps: {},
+      mFilePopYn: false,
+      mFilePopData: {}
       // scrollIngYn: false
     }
   }

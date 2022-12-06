@@ -82,7 +82,7 @@
                     <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                       <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w17" alt="">
                       <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
-                      <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.fileList}}</p>
+                      <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
                     </div>
                 </div>
                 <div style="float: right; width: 90px; height: 100%; float: left;">
@@ -127,6 +127,8 @@
   <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
 
   <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
+
+  <attatchFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
 </template>
 <script>
 import memoCompo from './D_contBoxMemo.vue'
@@ -134,8 +136,11 @@ import { onMessage } from '../../../assets/js/webviewInterface'
 import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import statCodeComponent from '@/components/board/D_manageStateCode.vue'
 import statCodePop from '@/components/board/D_manageStateCodePop.vue'
+import attatchFileListPop from '../main/unit/D_commonAttatchFileListPop.vue'
+
 export default {
   components: {
+    attatchFileListPop,
     memoCompo,
     statCodeComponent,
     statCodePop,
@@ -172,7 +177,11 @@ export default {
       mSelectedImgIndex: 0,
       mImgDetailAlertShowYn: false,
       mPreviewPopShowYn: false,
-      mSelectImgObject: {}
+      mSelectImgObject: {},
+      mFileDownData: {},
+
+      mFilePopData: {},
+      mFilePopYn: false
     }
   },
   async mounted () {
@@ -190,13 +199,55 @@ export default {
     })
     await this.setContentsMoreText()
     await this.setPreTagInFirstTextLine()
+    // console.log(this.CONT_DETAIL)
   },
   methods: {
     async clickFileDownload () {
-      // fileListPop은 mainContList, ContentsDetail이 열고 있으며 this.propContIndex는 MainContList가 필요해서 쓰고 있어요!
-      // 두개로 나눠 놓은 이유는 contList는 attatchList를 가지고 있지 않아서 axios를 한 번 갔다와야 하고,
-      // detailPop은 create시점에 axios를 갔다 오기에 한 번 더 axios를 호출 할 필요가 없기에 두개로 열고 있어요!
-      this.$emit('fileDownload', this.propContIndex)
+      if (!this.propDetailYn) {
+        await this.getContentsDetail()
+        await this.settingFileList()
+        this.mFilePopData = this.mFileDownData
+      } else {
+        this.mFilePopData = this.contentsEle
+      }
+      // this.$emit('fileDownload', this.mFileDownData)
+      this.mFilePopYn = true
+    },
+    async getContentsDetail () {
+      var param = {}
+      param.contentsKey = this.contentsEle.contentsKey
+      param.targetKey = this.contentsEle.contentsKey
+      param.jobkindId = this.contentsEle.jobkindId
+      param.userKey = this.GE_USER.userKey
+      param.ownUserKey = this.GE_USER.userKey
+      var resultList = await this.$getContentsList(param)
+      var detailData = resultList.content[0]
+      this.mFileDownData = detailData
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+    },
+    async settingFileList () {
+      try {
+        if (this.contentsEle && this.contentsEle.attachFileList !== undefined && this.contentsEle.attachFileList.length > 0) {
+          var attachFileList = []
+          var bodyImgFileList = []
+          for (var a = 0; a < this.contentsEle.attachFileList.length; a++) {
+            if (this.contentsEle.attachFileList[a].attachYn === true) {
+              attachFileList.push(this.contentsEle.attachFileList[a])
+            } else if (this.contentsEle.attachFileList[a].attachYn === false) {
+              bodyImgFileList.push(this.contentsEle.attachFileList[a])
+            }
+          }
+
+          var cont = this.contentsEle
+          cont.D_ATTATCH_FILE_LIST = attachFileList
+          cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
+          this.mFileDownData.D_ATTATCH_FILE_LIST = attachFileList
+          this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
+          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        }
+      } catch (error) {
+        console.log(error)
+      }
     },
     async setPreTagInFirstTextLine () {
       // 본문 영역에 첫번째 줄이 사진이 아닐 경우 라인을 그어주기 위한 함수
@@ -230,7 +281,7 @@ export default {
       }
     },
     async getMemoTop () {
-      // contentsDetail.vue에서 댓글 영역 최 상단 위치를 리턴 받아 스크롤 무브로 사용하고 있습니다.
+      // contentsDetail.vue에서 스크롤 무브로 사용하고 있습니다.
       if (this.propDetailYn === false) return
 
       var memoFristTop = await window.document.getElementById('contentsCardMemoArea' + this.CONT_DETAIL.contentsKey).offsetTop

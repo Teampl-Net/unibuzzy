@@ -167,6 +167,17 @@ export default {
     this.getMainBoard()
   }, */
   mounted () {
+    // window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+    // window.webkitStorageInfo.requestQuota(
+    //   window.PERSISTENT,
+    //   fsize,
+    //   function (bytes) {
+    //     alert('Quota is available: ' + bytes)
+    //   },
+    //   function (e) {
+    //     alert('Error allocating quota: ' + e)
+    //   }
+    // )
     // this.mLoadingYn = false
     /* this.$userLoginCheck()
     var this_ = this

@@ -158,31 +158,6 @@ export default {
     propData: {},
     pPopId: {}
   },
-  created () {
-    this.$emit('openLoading')
-    var this_ = this
-
-    this.getCabinetDetail().then(() => {
-      this_.getContentsList().then(response => {
-        if (!response.content) return
-        this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
-        var newArr = [
-          ...this_.BOARD_CONT_LIST,
-          ...response.content
-        ]
-        this_.mCabContentsList = this.replaceArr(newArr)
-      })
-    })
-    /* var resultList = await this.getContentsList()
-    console.log(resultList) */
-
-    // this.mCabContentsList = resultList.content
-    // if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-    //   this.endListYn = true
-    // } else {[]
-    //   this.endListYn = false
-    // }
-  },
   updated () {
     if (this.CAB_DETAIL) {
       // this.boardListWrap.scrollTop = this.currentScroll
@@ -205,21 +180,40 @@ export default {
       }
     }
   },
-  mounted () {
-    if (this.CAB_DETAIL) {
-      // this.boardListWrap = this.$refs.boardListWrap
-      this.boardListWrap.addEventListener('scroll', this.saveScroll)
-      // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
-      this.listBox = this.$refs.commonBoardListWrapCompo
-      this.listBox.addEventListener('scroll', this.handleScroll)
-      this.box = this.$refs.boardListWrap // 이 dom scroll 이벤트를 모니터링합니다
-      if (this.box) {
-        this.box.addEventListener('scroll', this.updateScroll)
-        this.box.addEventListener('mousewheel', e => {
-          this.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
+  created () {
+    this.$emit('openLoading')
+    if (!this.propData.initData) {
+      var this_ = this
+      this.getCabinetDetail().then(() => {
+        this_.getContentsList().then(response => {
+          if (!response.content) return
+          this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
+          var newArr = [
+            ...this_.BOARD_CONT_LIST,
+            ...response.content
+          ]
+          this_.mCabContentsList = this.replaceArr(newArr)
         })
+      })
+    } else {
+      var propBoardInitData = JSON.parse(JSON.stringify(this.propData.initData))
+      this.cabinetDetail = propBoardInitData.cabinet
+      this.cabinetDetail.shareAuth = this.$checkUserAuth(propBoardInitData.cabinet.mShareItemList)
+
+      console.log(this.cabinetDetail)
+
+      if (propBoardInitData.contentsListPage) {
+        this.mCabContentsList = propBoardInitData.contentsListPage.content
+        this.totalElements = propBoardInitData.contentsListPage.totalElements
+
+        console.log(this.mCabContentsList)
+      } else {
+        this.mCabContentsList = []
       }
     }
+  },
+  mounted () {
+    this.readyFunction()
   },
   beforeUnmount () {
     document.removeEventListener('message', e => this.recvNoti(e))
@@ -285,6 +279,27 @@ export default {
   },
 
   methods: {
+    async readyFunction () {
+      var this_ = this
+      if (this.CAB_DETAIL) {
+        // this.boardListWrap = this.$refs.boardListWrap
+        this.$nextTick(() => {
+          // this_.boardListWrap.addEventListener('scroll', this_.saveScroll)
+          // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
+          this_.listBox = this_.$refs.commonBoardListWrapCompo
+          this_.listBox.addEventListener('scroll', this_.handleScroll)
+          this_.box = this_.$refs.boardListWrap // 이 dom scroll 이벤트를 모니터링합니다
+          if (this_.box) {
+            this_.box.addEventListener('scroll', this_.updateScroll)
+            this_.box.addEventListener('mousewheel', e => {
+              this_.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
+            })
+          }
+        })
+      }
+
+      this.$emit('closeLoading')
+    },
     memoPopNo () {
       this.memoShowYn = false
       this.tempMemoData = this.$refs.gMemoRef.getMemoData()
@@ -996,6 +1011,7 @@ export default {
       } */
       this.$emit('closeLoading')
       param.cabinetKey = this.propData.targetKey
+      if (this.offsetInt === 0 && this.mCabContentsList.length > 0) this.offsetInt += 1
       param.offsetInt = this.offsetInt
       if (offsetInput !== undefined) {
         param.offsetInt = offsetInput
@@ -1298,7 +1314,7 @@ export default {
   },
   computed: {
     CHANNEL_DETAIL () {
-      var team = this.$getDetail('TEAM', this.propData.currentTeamKey)
+      var team = this.$getDetail('TEAM', this.propData.teamKey)
       if (team) {
         return team[0]
       } else {

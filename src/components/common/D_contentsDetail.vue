@@ -2,7 +2,7 @@
     <div ref="contScrollWrap" id="contsScrollWrap" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
         <gContentsBox @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
 
-        <attatchFileListPop :propFileData="this.CONT_DETAIL" v-if="filePopShowYn === true" @closePop="filePopShowYn = false"/>
+        <!-- <attatchFileListPop :propFileData="this.CONT_DETAIL" v-if="filePopShowYn === true" @closePop="filePopShowYn = false"/> -->
 
         <!-- <div @click="filePopShowYn =false"  v-if="filePopShowYn"  style="width: 100%; height: 100%;     position: absolute;; background: #00000020; z-index: 2; top: 0;"></div>
         <div v-if="filePopShowYn" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 2; overflow: hidden auto; position: absolute">
@@ -32,7 +32,7 @@
     </div>
 </template>
 <script>
-import attatchFileListPop from '../pageComponents/main/unit/D_commonAttatchFileListPop.vue'
+// import attatchFileListPop from '../pageComponents/main/unit/D_commonAttatchFileListPop.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
 
 export default {
@@ -86,7 +86,7 @@ export default {
     pPopId: {}
   },
   components: {
-    attatchFileListPop
+    // attatchFileListPop
   },
   created () {
     this.readyFunction()
@@ -109,19 +109,27 @@ export default {
     this.filePopShowYn = false
   },
 
-  mounted () {
+  async mounted () {
     var this_ = this
     this.$nextTick(() => {
       this_.addImgEvnt()
     })
     var contsScrollWrap = document.getElementById('contsScrollWrap')
     if (!contsScrollWrap) {
-      console.log(contsScrollWrap)
+      // console.log(contsScrollWrap)
       // eslint-disable-next-line no-debugger
       debugger
       return
     }
-    contsScrollWrap.addEventListener('scroll', this_.handleScroll)
+    contsScrollWrap.addEventListener('scroll', this.handleScroll)
+
+    if (this.propParams.memoScrollYn) {
+      var memoTop
+      memoTop = await this.$refs.myContentsBox.getMemoTop()
+      console.log('contentDetail : ' + memoTop)
+
+      this.scrollMove(memoTop)
+    }
   },
   computed: {
     historyStack () {
@@ -144,6 +152,8 @@ export default {
     CAB_DETAIL () {
       if (this.propParams.jobkindId === 'BOAR') {
         if (!this.cabinetDetail) return null
+        if (!this.cabinetDetail.mCabinet) return this.cabinetDetail
+
         return this.cabinetDetail.mCabinet
       } else {
         return null
@@ -152,18 +162,18 @@ export default {
     // eslint-disable-next-line vue/return-in-computed-property
     CONT_DETAIL () {
       if (!this.cDetail || !this.CHANNEL_DETAIL) return
-      var cont = this.$getContentsDetail(null, this.cDetail.contentsKey, this.CHANNEL_DETAIL.teamKey)
-      if (!cont) {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.cDetail])
-      }
-      console.log(cont)
-      if (cont) {
-        // this.setMemoReverse(cont[0].D_MEMO_LIST)
-        return cont[0]
-      } else {
-        // this.setMemoReverse(this.cDetail.D_MEMO_LIST)
-        return this.cDetail
-      }
+      // var cont = this.$getContentsDetail(null, this.cDetail.contentsKey, this.CHANNEL_DETAIL.teamKey)
+      // if (!cont) {
+      //   this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.cDetail])
+      // }
+      // console.log(cont)
+      // if (cont) {
+      //   // this.setMemoReverse(cont[0].D_MEMO_LIST)
+      //   return cont[0]
+      // } else {
+      // this.setMemoReverse(this.cDetail.D_MEMO_LIST)
+      return this.cDetail
+      // }
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
@@ -222,6 +232,10 @@ export default {
     }
   },
   methods: {
+    scrollMove (wich) {
+      if (!wich) return
+      this.$refs.contScrollWrap.scrollTo({ top: wich, behavior: 'smooth' })
+    },
     setMemoReverse (arr) {
       if (arr !== undefined || arr !== null || arr !== '' || arr.length > 0) {
         for (let i = 0; i < arr.length; i++) {
@@ -331,14 +345,22 @@ export default {
     async readyFunction () {
       try {
         this.loadingYn = true
-        if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
-          await this.$addChanList(this.propParams.teamKey)
-        }
-        if (this.propParams.jobkindId === 'BOAR') {
-          this.getCabinetDetail(this.propParams.creTeamKey)
-        }
-        if ((!this.CONT_DETAIL || (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST))) {
-          await this.getContentsDetail()
+        if (!this.propParams.initData) {
+          if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
+            await this.$addChanList(this.propParams.teamKey)
+          }
+          if (this.propParams.jobkindId === 'BOAR') {
+            this.getCabinetDetail(this.propParams.creTeamKey)
+          }
+          if ((!this.CONT_DETAIL || (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST))) {
+            await this.getContentsDetail()
+          }
+        } else {
+          var pInitData = JSON.parse(JSON.stringify(this.propParams.initData))
+          this.cDetail = pInitData.content
+          this.cabinetDetail = pInitData.contentCabinet
+          console.log('!!!!!!!!!!!!!!!!!!!!!!!!')
+          console.log(pInitData)
         }
         if (!this.CONT_DETAIL.D_MEMO_LIST) {
           this.CONT_DETAIL.D_MEMO_LIST = []
@@ -351,13 +373,7 @@ export default {
         console.log(e)
       }
       this.loadingYn = false
-
-      if (this.propParams.memoScrollYn) {
-        var memoTop
-        memoTop = await this.$refs.myContentsBox.getMemoTop()
-        console.log('contentDetail : ' + memoTop)
-        this.$refs.contScrollWrap.scrollTo({ top: memoTop, behavior: 'smooth' })
-      }
+      // console.log(this.propParams.memoScrollYn)
     },
     async getCabinetDetail (teamKey) {
       // eslint-disable-next-line no-new-object
@@ -866,15 +882,6 @@ export default {
     },
     writeMemoScrollMove () {
       this.$refs.contScrollWrap.scrollTo()
-    },
-    scrollMove (wich) {
-      var middle = (document.innerHeight || window.innerHeight) / 2 - 100
-      var memoArea = this.$refs.memoarea
-      if (wich === -1) {
-        wich = document.getElementById(this.CONT_DETAIL.D_MEMO_LIST[this.CONT_DETAIL.D_MEMO_LIST.length - 1].memoKey).offsetTop
-        this.$refs.boardMemoListCompo[0].anima(this.CONT_DETAIL.D_MEMO_LIST[this.CONT_DETAIL.D_MEMO_LIST.length - 1].memoKey)
-      }
-      memoArea.scrollTo({ top: (wich - middle), behavior: 'smooth' })
     },
     writeMemo () {
       if ((this.CONT_DETAIL.jobkindId === 'ALIM' && this.CONT_DETAIL.canReplyYn === 1) || (this.CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL.shareAuth.R === true)) {

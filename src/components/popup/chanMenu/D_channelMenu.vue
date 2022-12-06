@@ -315,19 +315,42 @@ export default {
 
       this.$emit('openPop', param)
     },
-    boardContentsClick (data) {
-      var params = {}
-      params.targetType = 'boardMain'
-      if (this.propData.value) {
-        params.nameMtext = this.propData.value.nameMtext
-        params.ownerYn = this.propData.value.ownerYn
-      } else {
-        params.nameMtext = this.propData.nameMtext
+    async boardContentsClick (boardListData) {
+      console.log(boardListData)
+      console.log(this.propData)
+      var resultMainData = await this.$getBoardMainData(boardListData)
+
+      if (resultMainData.contentsListPage) {
+        var contentList = resultMainData.contentsListPage.content
+        for (let i = 0; i < contentList.length; i++) {
+          contentList[i].shareItem = resultMainData.cabinet.mShareItemList
+        }
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
+        console.log('!!!!!!!!!!!!!!!!!')
       }
-      params.currentTeamKey = this.mChanAlimListTeamKey
-      params.targetKey = data.cabinetKey
-      params.value = data
-      this.$emit('openItem', params)
+      var goBoardMainParam = {}
+      goBoardMainParam.initData = resultMainData
+      goBoardMainParam.targetType = 'boardMain'
+      goBoardMainParam.teamKey = boardListData.teamKey
+      goBoardMainParam.targetKey = boardListData.cabinetKey
+      goBoardMainParam.cabinetNameMtext = boardListData.cabinetNameMtext
+
+      this.$emit('openItem', goBoardMainParam)
+      // var boardDetail = result
+
+      // var params = {}
+      // params.targetType = 'boardMain'
+      // if (this.propData.value) {
+      //   params.nameMtext = this.propData.value.nameMtext
+      //   params.ownerYn = this.propData.value.ownerYn
+      // } else {
+      //   params.nameMtext = this.propData.nameMtext
+      // }
+      // params.currentTeamKey = this.mChanAlimListTeamKey
+      // params.targetKey = data.cabinetKey
+      // params.value = data
+
+      // this.$emit('openItem', params)
     },
     teamName () {
       var teamName

@@ -205,6 +205,9 @@ export default {
       if (params.targetType === 'chanDetail') {
         this.goChanDetail(params)
         return
+      } else if (params.targetType === 'contentsDetail') {
+        this.goDetail(params)
+        return
       }
       this.mPopParams = params
       this.mGPopShowYn = true
@@ -234,26 +237,67 @@ export default {
       if (detailValue.chanYn) {
         this.goChanDetail(detailValue)
       } else {
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        console.log(detailValue)
         var detailParam = {}
         detailParam.targetType = 'contentsDetail'
-        detailParam.targetKey = detailValue.contentsKey
-        // param.targetType = value.contentsKey
+        detailParam.targetKey = detailValue.targetKey
+        if (!detailParam.targetKey) detailParam.targetKey = detailValue.contentsKey
+
+        detailParam.jobkindId = detailValue.jobkindId
+        detailParam.teamKey = detailValue.teamKey
+        if (!detailParam.teamKey) detailParam.teamKey = detailValue.creTeamKey
+
+        detailParam.popHeaderText = detailValue.popHeaderText
+        detailParam.memoScrollYn = detailValue.memoScrollYn
         if (detailValue.jobkindId === 'BOAR') {
           detailParam.cabinetKey = detailValue.cabinetKey
-          detailParam.cabinetNameMtext = detailValue.cabinetNameMtext
-          detailParam.popHeaderText = detailValue.cabinetNameMtext
+          detailParam.cabinetNameMtext = this.$changeText(detailValue.cabinetNameMtext)
+          if (detailValue.cabinetNameMtext) detailParam.popHeaderText = detailValue.cabinetNameMtext
         } else {
-          detailParam.nameMtext = detailValue.nameMtext
-          detailParam.teamName = detailValue.nameMtext
-          detailParam.popHeaderText = detailValue.nameMtext
+          detailParam.nameMtext = this.$changeText(detailValue.nameMtext)
+          detailParam.teamName = this.$changeText(detailValue.nameMtext)
+          if (detailValue.nameMtext) detailParam.popHeaderText = detailValue.nameMtext
         }
-        if (detailParam.popHeaderText === undefined) detailParam.popHeaderText = detailValue.popHeaderText
-        detailParam.contentsKey = detailValue.contentsKey
-        detailParam.jobkindId = detailValue.jobkindId
-        detailParam.teamKey = detailValue.creTeamKey
+        detailParam.popHeaderText = this.$changeText(detailParam.popHeaderText)
+
+        var axiosParam = {}
+        // axiosParam = detailParam
+        axiosParam.targetKey = detailValue.targetKey
+        axiosParam.contentsKey = detailValue.targetKey
+        axiosParam.teamKey = detailValue.teamKey || detailValue.creTeamKey
+        axiosParam.userKey = this.GE_USER.userKey
+        axiosParam.ownUserKey = this.GE_USER.userKey
+
+        axiosParam.creTeamKey = detailParam.teamKey
+        axiosParam.cabinetKey = detailParam.cabinetKey
+
+        var result = await this.$getContentDetailData(axiosParam, false)
+        console.log(result)
+        if (!result) return
+        detailParam.initData = result
         detailParam.notiYn = true
-        detailParam.value = detailValue
-        this.openPop(detailParam)
+
+        this.mPopParams = detailParam
+        this.mGPopShowYn = true
+        // // param.targetType = value.contentsKey
+        // if (detailValue.jobkindId === 'BOAR') {
+        //   detailParam.cabinetKey = detailValue.cabinetKey
+        //   detailParam.cabinetNameMtext = detailValue.cabinetNameMtext
+        //   detailParam.popHeaderText = detailValue.cabinetNameMtext
+        // } else {
+        //   detailParam.nameMtext = detailValue.nameMtext
+        //   detailParam.teamName = detailValue.nameMtext
+        //   detailParam.popHeaderText = detailValue.nameMtext
+        // }
+        // if (detailParam.popHeaderText === undefined) detailParam.popHeaderText = detailValue.popHeaderText
+        // detailParam.contentsKey = detailValue.contentsKey
+        // detailParam.jobkindId = detailValue.jobkindId
+        // detailParam.teamKey = detailValue.creTeamKey
+        // detailParam.notiYn = true
+        // detailParam.value = detailValue
+
+        // this.openPop(detailParam)
       }
     },
     async goChanDetail (detailValue) {
@@ -264,6 +308,12 @@ export default {
       if (!teamKey && detailValue.creTeamKey) {
         teamKey = detailValue.creTeamKey
       }
+      /* if (teamKey === 377) {
+        if (this.$checkMobile() === 'IOS') {
+          this.$showToastPop('죄송합니다! 현재 더알림 채널을 정비하고 있습니다!!')
+          return
+        }
+      } */
       goChanDetailParam.teamKey = teamKey
       goChanDetailParam.targetKey = teamKey
       goChanDetailParam.nameMtext = detailValue.nameMtext
@@ -281,20 +331,23 @@ export default {
       var paramMap = new Map()
       paramMap.set('teamKey', detailValue.targetKey)
       paramMap.set('fUserKey', this.GE_USER.userKey)
-
-      var result = await this.$getViewData({ url: 'service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
-      if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
-        alert('채널을 찾을 수 없습니다!')
-        return
+      try {
+        var result = await this.$getViewData({ url: 'service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+        if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
+          this.$showToastPop('채널을 찾을 수 없습니다!')
+          return
+        }
+        var teamDetail = result.data.team.content[0]
+        // var contentsList = result.data.contentsListPage.content
+        await this.$addChanVuex([teamDetail])
+        // eslint-disable-next-line no-new-object
+        var initData = new Object()
+        initData.team = teamDetail
+        initData.contentsList = result.data.contentsListPage
+      } catch (error) {
+        this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
+        console.err(error)
       }
-      var teamDetail = result.data.team.content[0]
-      var contentsList = result.data.contentsListPage.content
-      await this.$addChanVuex([teamDetail])
-      await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentsList)
-      // eslint-disable-next-line no-new-object
-      var initData = new Object()
-      initData.team = teamDetail
-      initData.contentsList = result.data.contentsListPage
       goChanDetailParam.initData = initData
       // this.openPop(goChanDetailParam)
       this.mPopParams = goChanDetailParam

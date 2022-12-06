@@ -37,7 +37,7 @@
             selectFileList : {{ selectFileList }}
         </div> -->
         </form>
-        <div v-if="propSelectRow === targetKey && this.firstFile.previewImgUrl" class="fl imgRotationFuncBox">
+        <div v-if="propSelectRow === targetKey && this.firstFile.previewImgUrl && false" class="fl imgRotationFuncBox">
             <div @click="rotationImg(270)" class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 6px;"><img class="img-w15" src="../../../assets/images/formEditor/icon_rotate_left.svg" alt=""></div>
             <div @click="rotationImg(180)" class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 5px;"><img  class="img-w15" src="../../../assets/images/formEditor/icon_rotate_180.svg" alt=""></div>
             <div @click="rotationImg(90)"  class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 5px;"><img  class="img-w15" src="../../../assets/images/formEditor/icon_rotate_right.svg" alt=""></div>
@@ -121,13 +121,18 @@ export default {
   },
   methods: {
     async rotationImg (angle) {
+      // const options = {
+      //   maxSizeMB: 1,
+      //   maxWidthOrHeight: 1500,
+      //   useWebWorker: true
+      // }
       // console.log(this.firstFile)
       // console.log(this.selectFileList)
       var tempImage = new Image()
       tempImage.src = this.firstFile.previewImgUrl
       tempImage.ref = 'tempImageRefs'
       var this_ = this
-      tempImage.onload = await async function () {
+      tempImage.onload = async function () {
         // Resize image
         var canvas = document.getElementById('canvas')
         var canvasContext = canvas.getContext('2d')
@@ -165,11 +170,42 @@ export default {
         for (let i = 0; i < decodImg.length; i++) {
           array.push(decodImg.charCodeAt(i))
         }
-        const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
-        var newFile = new File([Bfile], this_.firstFile.file.name)
+        const Bfile = await new Blob([new Uint8Array(array)], { type: 'image/png' })
+
+        // var compressedFile = await this.$imageCompression(Bfile, options)
+        // console.log(compressedFile)
+        // console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
+
+        var nFile = await new File([Bfile], this_.firstFile.file.name)
+
+        console.log(nFile)
+
+        console.log('originalFile instanceof Blob', nFile instanceof Blob) // true
+        console.log(`originalFile size ${nFile.size / 1024 / 1024} MB`)
+
+        // var src = null
+        // src = this_.$imageCompression.getDataUrlFromFile(nFile)
+
+        // var src = null
+        // if (compressedFile instanceof Blob) {
+        //   src = this_.$imageCompression.getDataUrlFromFile(compressedFile)
+        //   const decodeImg = atob(src.split(',')[1])
+        //   const tempList = []
+        //   for (let i = 0; i < decodeImg.length; i++) {
+        //     tempList.push(decodeImg.charCodeAt(i))
+        //   }
+        //   const newBfile = new Blob([new Uint8Array(tempList)], { type: 'image/png' })
+        //   var newFile = new File([newBfile], compressedFile.name)
+        // } else {
+        //   src = this_.$imageCompression.getDataUrlFromFile(compressedFile)
+        // }
+
+        // this_.selectFileList[0].previewImgUrl = src
+        // this_.selectFileList[0].file = newFile
 
         this_.selectFileList[0].previewImgUrl = dataURI
-        this_.selectFileList[0].file = newFile
+        this_.selectFileList[0].file = nFile
+
         this_.$emit('success', { targetKey: this_.targetKey, selectFileList: this_.selectFileList, originalType: 'image' })
         if (this_.$refs.selectFile.files.length === 1) {
           this_.previewImgUrl = dataURI

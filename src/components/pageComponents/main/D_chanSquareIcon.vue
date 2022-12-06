@@ -30,6 +30,8 @@ export default {
   methods: {
     goChannelMain () {
       var openPopParam = {}
+      openPopParam = this.chanElement
+      openPopParam.value = this.chanElement
       openPopParam.targetKey = this.chanElement.teamKey
       openPopParam.targetType = 'chanDetail'
       this.$emit('openPop', openPopParam)

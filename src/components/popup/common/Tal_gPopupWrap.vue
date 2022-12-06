@@ -347,7 +347,7 @@ export default {
         target = this.successChanParam
       }
       // alert(JSON.stringify(target))
-      this.headerTitle = target.popHeaderText
+      this.headerTitle = this.$changeText(target.popHeaderText)
       this.targetType = target.targetType
       if (this.targetType === 'contentsDetail' || this.targetType === 'chanDetail') {
         /* if (!this.targeType || !target.targetKey) return */
@@ -388,6 +388,10 @@ export default {
     },
 
     openPop (params) {
+      if (params.targetType === 'chanDetail') {
+        this.goChanDetail(params)
+        return
+      }
       // console.log('hahahaha')
       console.log(params)
       this.popParams = params
@@ -488,30 +492,72 @@ export default {
     closePushPop () {
       this.notiDetailShowYn = false
     },
-    goChanDetail (data) {
-      var currentPage = this.$store.getters['D_HISTORY/hCPage']
+    async goChanDetail (detailValue) {
+      console.log(' -- chanDetail Function -- ')
+      // var currentPage = this.$store.getters['D_HISTORY/hCPage']
+      // var indexOf = currentPage.indexOf('chanDetail')
+      // if (indexOf !== -1) {
+      //   if (this.propParams.targetKey === data.creTeamKey) {
+      //     return
+      //   }
+      // }
+      // // eslint-disable-next-line no-new-object
+      // var param = new Object()
+      // param.targetType = 'chanDetail'
+      // param.targetKey = data.creTeamKey
+      // param.nameMtext = data.nameMtext
+      // param.chanName = data.nameMtext
+      // if (data.contentsKey) {
+      //   param.jobkindId = data.jobkindId
+      //   param.targetContentsKey = data.contentsKey
+      // }
+      // // 세션에서 유저키 받아오기
+      // if (data.creUserKey === this.GE_USER.userKey) {
+      //   param.ownerYn = true
+      // }
 
-      var indexOf = currentPage.indexOf('chanDetail')
-      if (indexOf !== -1) {
-        if (this.propParams.targetKey === data.creTeamKey) {
-          return
-        }
+      var goChanDetailParam = {}
+      goChanDetailParam.targetType = 'chanDetail'
+      console.log(detailValue)
+      var teamKey = detailValue.targetKey
+      if (!teamKey && detailValue.creTeamKey) {
+        teamKey = detailValue.creTeamKey
       }
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.targetType = 'chanDetail'
-      param.targetKey = data.creTeamKey
-      param.nameMtext = data.nameMtext
-      param.chanName = data.nameMtext
-      if (data.contentsKey) {
-        param.jobkindId = data.jobkindId
-        param.targetContentsKey = data.contentsKey
+      goChanDetailParam.teamKey = teamKey
+      goChanDetailParam.targetKey = teamKey
+      goChanDetailParam.nameMtext = detailValue.nameMtext
+      goChanDetailParam.chanName = detailValue.nameMtext
+      if (detailValue.contentsKey) {
+        goChanDetailParam.jobkindId = detailValue.jobkindId
+        goChanDetailParam.targetContentsKey = detailValue.contentsKey
       }
       // 세션에서 유저키 받아오기
-      if (data.creUserKey === this.GE_USER.userKey) {
-        param.ownerYn = true
+      if (detailValue.creUserKey === this.GE_USER.userKey) {
+        goChanDetailParam.ownerYn = true
       }
-      this.openPop(param)
+
+      console.log(detailValue)
+      var paramMap = new Map()
+      paramMap.set('teamKey', detailValue.targetKey)
+      paramMap.set('fUserKey', this.GE_USER.userKey)
+      var result = await this.$getViewData({ url: 'service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+      if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
+        alert('채널을 찾을 수 없습니다!')
+        return
+      }
+      var teamDetail = result.data.team.content[0]
+      var contentsList = result.data.contentsListPage.content
+      await this.$addChanVuex([teamDetail])
+      await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentsList)
+      // eslint-disable-next-line no-new-object
+      var initData = new Object()
+      initData.team = teamDetail
+      initData.contentsList = result.data.contentsListPage
+      goChanDetailParam.initData = initData
+
+      this.popParams = goChanDetailParam
+      this.popShowYn = true
+      // this.openPop(param)
     },
     async targetKeyYn (targetKey, jobkindId) {
       // var result = null

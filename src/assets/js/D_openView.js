@@ -25,6 +25,49 @@ export const openView = {
     resultData = await commonAxiosFunction(param, nonLoadingYn)
     return resultData
   },
+  async getBoardMainData (param, nonLoadingYn) {
+    if (!nonLoadingYn) nonLoadingYn = false
+    var paramMap = new Map()
+    paramMap.set('currentTeamKey', param.teamKey)
+    paramMap.set('cabinetKey', param.cabinetKey)
+
+    var result = await openView.getViewData({ url: 'service/tp.getCabinetMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
+    if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
+      commonMethods.showToastPop('해당 게시판의 정보를 찾을 수 없습니다!')
+      return
+    }
+    console.log(result.data)
+    return result.data
+  },
+  async getContentDetailData (inputParam, nonLoadingYn) {
+    if (!nonLoadingYn) nonLoadingYn = false
+    var result = {}
+    console.log(inputParam)
+    var paramSet = {}
+    if (inputParam) {
+      paramSet = inputParam
+      paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
+    }
+    var contentDetail = await openView.getViewData({ url: 'service/tp.getMyContentsList', param: paramSet }, nonLoadingYn)
+    console.log(contentDetail)
+    if (!contentDetail || !contentDetail.data) {
+      commonMethods.showToastPop('해당 컨텐츠의 정보를 찾을 수 없습니다!')
+      return
+    }
+    var content = contentDetail.data.content[0]
+
+    content.D_CONT_USER_DO = await this.$settingUserDo(content.userDoList)
+    if (!content.D_MEMO_LIST && (!content.memoList || content.memoList.length === 0)) content.D_MEMO_LIST = []
+
+    this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [content])
+    result.content = content
+    if (content.jobkindId === 'BOAR') {
+      var cabinetInfo = content.cabinet
+      cabinetInfo.shareAuth = commonMethods.checkUserAuth(cabinetInfo.mShareItemList)
+      result.contentCabinet = cabinetInfo
+    }
+    return result
+  },
   async getRouterViewData (page) {
     var resultData = null
     if (page === 'myPage') {
@@ -88,6 +131,8 @@ export const openView = {
 export default {
   install (Vue) {
     Vue.config.globalProperties.$getViewData = openView.getViewData
+    Vue.config.globalProperties.$getBoardMainData = openView.getBoardMainData
+    Vue.config.globalProperties.$getContentDetailData = openView.getContentDetailData
     Vue.config.globalProperties.$getRouterViewData = openView.getRouterViewData
     Vue.config.globalProperties.$getMainBoard = openView.getMainBoard
   }

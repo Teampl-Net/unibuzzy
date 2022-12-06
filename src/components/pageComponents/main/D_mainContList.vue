@@ -13,15 +13,18 @@
     </transition>
   </div>
 
-  <attatchFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
+  <!-- <attatchFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/> -->
 </template>
 
 <script>
-import attatchFileListPop from './unit/D_commonAttatchFileListPop.vue'
+// import attatchFileListPop from './unit/D_commonAttatchFileListPop.vue'
 import writeBottSheet from './unit/D_contentsWriteBottSheet.vue'
 
 export default {
-  components: { attatchFileListPop, writeBottSheet },
+  components: {
+    // attatchFileListPop,
+    writeBottSheet
+  },
   data () {
     return {
       mOffsetInt: 1,
@@ -37,9 +40,9 @@ export default {
 
       // 첫 진입과 삭제 후 리스트를 다시 못 그려주기에 watch 추가
       mReloadKey: 0,
-      mCreateYn: true,
-      mFilePopYn: false,
-      mFilePopData: {}
+      mCreateYn: true
+      // mFilePopYn: false,
+      // mFilePopData: {}
       //
     }
   },
@@ -49,65 +52,13 @@ export default {
     pMainAlimList: {}
   },
   methods: {
-    async fileDownload (index) {
-      this.mFilePopData = await this.GE_DISP_CONTS_LIST[index]
-      console.log('ddddddddddddddddddddddddddddddddddddddddddd')
-
-      await this.getContentsDetail()
-      await this.settingFileList()
-
-      if (this.mFilePopData.attachFileList.length > 0) {
-        this.mFilePopYn = true
-      }
-    },
-    async getContentsDetail () {
-      var param = {}
-      param.contentsKey = this.mFilePopData.contentsKey
-      param.targetKey = this.mFilePopData.contentsKey
-      param.jobkindId = this.mFilePopData.jobkindId
-      param.userKey = this.GE_USER.userKey
-      param.ownUserKey = this.GE_USER.userKey
-      var resultList = await this.$getContentsList(param)
-      var detailData = resultList.content[0]
-      this.mFilePopData = detailData
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
-    },
-    async settingFileList () {
-      try {
-        if (this.mFilePopData && this.mFilePopData.attachFileList !== undefined && this.mFilePopData.attachFileList.length > 0) {
-          var attachFileList = []
-          var bodyImgFileList = []
-          for (var a = 0; a < this.mFilePopData.attachFileList.length; a++) {
-            if (this.mFilePopData.attachFileList[a].attachYn === true) {
-              attachFileList.push(this.mFilePopData.attachFileList[a])
-            } else if (this.mFilePopData.attachFileList[a].attachYn === false) {
-              bodyImgFileList.push(this.mFilePopData.attachFileList[a])
-            }
-          }
-          // var addFalseImgList = document.querySelectorAll('#contentsBodyArea .formCard .addFalse')
-          // if (addFalseImgList) {
-          //   for (var s = 0; s < this.mFilePopData.attachFileList.length; s++) {
-          //     var attFile = this.mFilePopData.attachFileList[s]
-          //     for (var i = 0; i < addFalseImgList.length; i++) {
-          //       if (Number(addFalseImgList[i].attributes.filekey.value) === Number(attFile.fileKey)) {
-          //         addFalseImgList[i].setAttribute('mmFilekey', attFile.mmFilekey)
-          //         bodyImgFileList.push(attFile)
-          //         break
-          //       }
-          //     }
-          //   }
-          // }
-          var cont = this.mFilePopData
-          cont.D_ATTATCH_FILE_LIST = attachFileList
-          cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.mFilePopData.D_ATTATCH_FILE_LIST = attachFileList
-          this.mFilePopData.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    },
+    // fileDownload (fileData) {
+    //   if (!fileData) return
+    //   this.mFilePopData = fileData
+    //   if (this.mFilePopData.attachFileList.length > 0) {
+    //     this.mFilePopYn = true
+    //   }
+    // },
     contDelete (contentIndex) {
       // console.log(contentIndex)
       // console.log(this.GE_DISP_CONTS_LIST[contentIndex])
