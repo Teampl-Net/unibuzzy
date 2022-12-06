@@ -122,7 +122,9 @@ export default {
   },
   watch: {
     propAlimList: {
+      immediate: true,
       handler (value, old) {
+        console.log(value)
         // eslint-disable-next-line no-debugger
         debugger
         this.mContentsList = value

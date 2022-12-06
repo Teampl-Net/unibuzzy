@@ -82,7 +82,7 @@
           <div v-if="mActiveSearch === 'CHAN'" class="w-100P fl" style="overflow: auto; ">
             <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
               <channelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
-              <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="recommendLoadMore" class="fl wich" />
+              <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="recommendLoadMore" class="fl wich" />
             </template>
             <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true && this.GE_DISP_TEAM_LIST.length === 0" class="w-100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
               <gListEmpty title='검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' />
@@ -171,7 +171,7 @@ export default {
     }
   },
   props: {
-
+    initData: {}
   },
   mounted () {
   },
@@ -467,8 +467,15 @@ export default {
       this.mChannelList = result.content
     },
     readyFunc () {
-      this.getCateItemList()
-      this.changeRecommendTab(this.mActiveRecommend)
+      if (this.initData) {
+        this.mBusinessItemList = this.initData.cateItemList
+        this.mEmptyYn = false
+        this.mOffsetInt = 0
+        this.mChannelList = this.initData.teamList.content
+        this.endListSetFunc(this.initData.teamList)
+      }
+      // this.getCateItemList()
+      // this.changeRecommendTab(this.mActiveRecommend)
       this.getSearchHistory()
     },
     getSearchHistory () {

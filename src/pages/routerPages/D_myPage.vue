@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100P h-100P pagePaddingWrap" style="padding-top: 0; overflow:auto; margin-bottom: 1rem; position: relative;">
+  <div  class="w-100P h-100P pagePaddingWrap" style="padding-top: 0; overflow:auto; margin-bottom: 1rem; position: relative;">
     <loadingCompo v-if="mLoadingYn === true" />
     <div class="myProfileWrap" @click="goSetMyPage">
       <div class="myProfileLeft">
@@ -15,7 +15,7 @@
       <div class="h-100P fl font20 grayBlack" style="width: 20px; line-height: 50px;">></div>
     </div>
 
-    <top5Alim    class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPop" ref="topAlim" />
+    <top5Alim class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPop" ref="topAlim" />
     <top5Channel class="mainContentsBoxArea" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" style="margin-bottom: 1rem;" />
 
     <div v-if="false" class="commonBlack " style="width: 100%; flaot: left; height: 100%;">
@@ -42,6 +42,13 @@ export default {
       mAxiosQueue: []
     }
   },
+  props: {
+    initData: {
+      type: Object,
+      // eslint-disable-next-line no-new-object
+      default: new Object()
+    }
+  },
   components: {
     top5Channel,
     top5Alim,
@@ -51,13 +58,21 @@ export default {
   },
   async created () {
     this.mLoadingYn = true
-    var this_ = this
-    this.getMainBoard().then(res => {
+    if (this.initData) {
+      // this.mInitData = this.initData
+      this.mContsList = this.replaceArr(this.initData.alimList.content)
+      this.mMainChanList = this.initData.chanList
+      this.mMainMChanList = this.initData.mChanList
+      // this.mContsList = this.initData.alimList.content
+    }
+    console.log(this.initData)
+    // var this_ = this
+    /* this.getMainBoard().then(res => {
       this_.mLoadingYn = false
-    })
-    this.getMyContentsList().then((result) => {
+    }) */
+    /* this.getMyContentsList().then((result) => {
       this_.setContsList(result)
-    })
+    }) */
 
     this.$emit('changePageHeader', '마이페이지')
     this.mLoadingYn = false
@@ -90,28 +105,8 @@ export default {
       for (i = 0; i < this.mContsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mContsList[i].creTeamKey)
         if (idx1 === -1) {
-          var this_ = this
-          var teamKey = this.mContsList[i].creTeamKey
+          returnContsList.push(this.mContsList[i])
           // eslint-disable-next-line vue/no-async-in-computed-properties
-          this.$addChanList(teamKey).then((res) => {
-            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
-            if (idx1 === -1) {
-              returnContsList.push(this_.mContsList[i])
-            } else {
-              chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
-              if (this.mContsList[i].jobkindId === 'ALIM') {
-                dataList = chanDetail.ELEMENTS.alimList
-              } else {
-                dataList = chanDetail.ELEMENTS.boardList
-              }
-              idx2 = dataList.findIndex((item) => item.contentsKey === this_.mContsList[i].contentsKey)
-              // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-              // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
-              if (idx2 !== -1) {
-                this.mContsList[i] = dataList[idx2]
-              }
-            }
-          })
         } else {
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
           if (this.mContsList[i].jobkindId === 'ALIM') {
@@ -121,17 +116,21 @@ export default {
           }
           idx2 = dataList.findIndex((item) => item.contentsKey === this.mContsList[i].contentsKey)
           if (idx2 !== -1) {
+            returnContsList.push(dataList[idx2])
             // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            this.mContsList[i] = dataList[idx2]
+            // this.mContsList[i] = dataList[idx2]
           } else {
+            returnContsList.push(this.mContsList[i])
           }
         }
       }
-      return this.replaceArr(this.mContsList)
+      var returnList = this.replaceArr(returnContsList)
+      console.log(returnList)
+      return returnList
     }
   },
   methods: {
-    async getMyContentsList (pageSize, offsetInput, loadingYn) {
+    /* async getMyContentsList (pageSize, offsetInput, loadingYn) {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
       this.mAxiosQueue.push('getPushContentsList')
       // eslint-disable-next-line no-new-object
@@ -153,7 +152,7 @@ export default {
       var resultList = result
       this.loadingYn = false
       return resultList
-    },
+    }, */
     async setContsList (resultList) {
       if (!resultList || resultList === '') return
       var newArr = []
@@ -205,25 +204,6 @@ export default {
     },
     openPop (openPopData) {
       this.$emit('openPop', openPopData)
-    },
-    async getMainBoard () {
-      if (this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
-      this.mAxiosQueue.push('getMainBoard')
-      var paramMap = new Map()
-      if (this.GE_USER.userKey) {
-        paramMap.set('userKey', this.GE_USER.userKey)
-      } else {
-        paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
-      }
-      var response = await this.$axios.post('service/tp.getMainBoard', Object.fromEntries(paramMap)
-      )
-      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
-      this.mAxiosQueue.splice(queueIndex, 1)
-      if (response.status === 200 || response.status === '200') {
-        this.mMainChanList = response.data.teamList.splice(0, 5)
-        this.mMainMChanList = response.data.mTeamList
-        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
-      }
     }
   }
 }

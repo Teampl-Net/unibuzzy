@@ -135,9 +135,12 @@ export default {
     }
   },
   watch: {
-    propChanList (value, old) {
-      if (value) {
-        this.mMainChanList = JSON.parse(JSON.stringify(value))
+    propChanList: {
+      immediate: true,
+      handler (value, old) {
+        if (value) {
+          this.mMainChanList = JSON.parse(JSON.stringify(value))
+        }
       }
     },
     GE_MAIN_CHAN_LIST: {

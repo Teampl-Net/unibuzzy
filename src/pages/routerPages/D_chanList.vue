@@ -15,7 +15,7 @@
     <gEmpty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
     <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
       <channelCard class="moveBox chanRow" :chanElement="chanEle" @openPop="openPop" @scrollMove="scrollMove" />
-      <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="loadMore" class="fl wich" />
+      <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
     </template>
   </div>
   <img src="../../assets/images/button/Icon_CreChanBtn.png" @click="clickCreateChannel" alt="채널 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
@@ -78,7 +78,8 @@ export default {
   props: {
     params: {},
     popYn: Boolean,
-    propData: {}
+    propData: {},
+    initData: {}
   },
   updated () {
     this.mChanListScrollBox = document.getElementById('chanListWrap')
@@ -111,7 +112,15 @@ export default {
     if (this.popYn === false) {
       localStorage.setItem('notiReloadPage', 'none')
     }
-    if (!this.GE_DISP_TEAM_LIST || this.GE_DISP_TEAM_LIST.length === 0) {
+    if (this.initData) {
+      this.mChannelList = this.initData.content
+      if (this.initData.totalElements < (this.initData.pageable.offset + this.initData.pageable.pageSize)) {
+        this.mEndListYn = true
+      } else {
+        this.mEndListYn = false
+      }
+    }
+    /* if (!this.GE_DISP_TEAM_LIST || this.GE_DISP_TEAM_LIST.length === 0) {
       var resultList = await this.getChannelList(null, null, false)
       var newArr = []
       for (var i = 0; i < resultList.content.length; i++) {
@@ -128,7 +137,7 @@ export default {
       } else {
         this.mEndListYn = false
       }
-    }
+    } */
 
     this.introChanPageTab()
     this.mScrolledYn = false

@@ -1,9 +1,9 @@
 <template>
     <div class="py-3 px-4 TalFooterWrap">
-        <div @click="routePage('/')" class="footerRouter" style="flex: 1 !important">
+        <div @click="routePage('main')" class="footerRouter" style="flex: 1 !important">
           <div class="commonColor fontBold text-center font12" >
-            <img v-if="this.$route.path === '/'" :src="footerIcon[0].fullIcon"/> <img v-else :src="footerIcon[0].icon"/>
-            <p :class="this.$route.path === '/'? 'activeFooterMenu' : 'font12'">홈</p>
+            <img v-if="this.$route.path === 'main'" :src="footerIcon[0].fullIcon"/> <img v-else :src="footerIcon[0].icon"/>
+            <p :class="this.$route.path === 'main'? 'activeFooterMenu' : 'font12'">홈</p>
           </div>
         </div>
         <!-- <div @click="routePage('/pushList')" class="footerRouter col-3">
@@ -12,22 +12,22 @@
             <p :class="this.$route.path === '/pushList'? 'activeFooterMenu' : 'font12'">알림</p>
           </div>
         </div> -->
-        <div @click="routePage('/chanList')" class="footerRouter" style="flex: 1 !important">
+        <div @click="routePage('chanList')" class="footerRouter" style="flex: 1 !important">
           <div class="commonColor fontBold text-center font12">
-            <img v-if="this.$route.path === '/chanList'" :src="footerIcon[2].fullIcon" /> <img v-else :src="footerIcon[2].icon"/>
-            <p :class="this.$route.path === '/chanList'? 'activeFooterMenu' : 'font12'">채널</p>
+            <img v-if="this.$route.path === 'chanList'" :src="footerIcon[2].fullIcon" /> <img v-else :src="footerIcon[2].icon"/>
+            <p :class="this.$route.path === 'chanList'? 'activeFooterMenu' : 'font12'">채널</p>
           </div>
         </div>
-        <div @click="routePage('/search')" class="footerRouter" style="flex: 1 !important">
+        <div @click="routePage('search')" class="footerRouter" style="flex: 1 !important">
           <div class="commonColor fontBold text-center font12">
-            <img v-if="this.$route.path === '/search'" :src="footerIcon[1].fullIcon" /> <img v-else :src="footerIcon[1].icon"/>
-            <p :class="this.$route.path === '/search'? 'activeFooterMenu' : 'font12'">검색</p>
+            <img v-if="this.$route.path === 'search'" :src="footerIcon[1].fullIcon" /> <img v-else :src="footerIcon[1].icon"/>
+            <p :class="this.$route.path === 'search'? 'activeFooterMenu' : 'font12'">검색</p>
           </div>
         </div>
-        <div @click="routePage('/myPage')" class="footerRouter" style="flex: 1 !important">
+        <div @click="routePage('myPage')" class="footerRouter" style="flex: 1 !important">
           <div class="commonColor fontBold text-center font12">
-            <img v-if="this.$route.path === '/myPage'" :src="footerIcon[3].fullIcon"/> <img v-else :src="footerIcon[3].icon"/>
-            <p :class="this.$route.path === '/myPage'? 'activeFooterMenu' : 'font12'">내정보</p>
+            <img v-if="this.$route.path === 'myPage'" :src="footerIcon[3].fullIcon"/> <img v-else :src="footerIcon[3].icon"/>
+            <p :class="this.$route.path === 'myPage'? 'activeFooterMenu' : 'font12'">내정보</p>
           </div>
         </div>
     </div>
@@ -44,7 +44,7 @@ export default {
         { fullIcon: '/resource/footer/icon_channel_fillin.svg', icon: '/resource/footer/icon_channel.svg' },
         { fullIcon: '/resource/footer/icon_people_fillin.svg', icon: '/resource/footer/icon_people.svg' }
       ],
-      activeFooter: '/'
+      activeFooter: 'main'
     }
   },
   methods: {

@@ -14,7 +14,7 @@
     </transition>
     <TalHeader @showMenu="showMenu" ref="mainHeaderWrap" class="header_footer " :mRouterHeaderText="this.mRouterHeaderText" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
     <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
-        <router-view @scrollEvnt="this.scrollEvnt" :popYn="false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" ref="routerViewCompo" />
+        <router-view :initData="sendInitData" @scrollEvnt="this.scrollEvnt" :popYn="false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" ref="routerViewCompo" />
     </div>
     <TalFooter @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
     <!-- <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div> -->
@@ -38,7 +38,8 @@ export default {
       mErrorPopBodyStr: '',
       mErrorPopShowYn: false,
       mBackBtnShowYn: JSON.parse(localStorage.getItem('backBtnShowYn')),
-      devMode: false
+      devMode: false,
+      sendInitData: null
     }
   },
   props: {},
@@ -169,7 +170,22 @@ export default {
       }, 2000)
     },
     async changeRouterPath (page) {
-      await this.$router.replace(page)
+      var pageData = await this.$getRouterViewData(page)
+      console.log(page)
+      this.sendInitData = pageData
+      console.log({ initData: pageData })
+      // this.$router.push({ path: page, params: { initData: pageData } })
+      this.$router.replace({
+        name: page
+        // params: { initData: pageData }
+        /* query: { initData: pageData } */
+
+      })
+
+      /* if (pageData) {
+      } else {
+        await this.$router.push({ name: page })
+      } */
     },
     /* closePushPop () {
       this.notiDetailShowYn = false
@@ -265,6 +281,7 @@ export default {
       var paramMap = new Map()
       paramMap.set('teamKey', detailValue.targetKey)
       paramMap.set('fUserKey', this.GE_USER.userKey)
+
       var result = await this.$getViewData({ url: 'service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
       if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
         alert('채널을 찾을 수 없습니다!')

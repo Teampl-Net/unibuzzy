@@ -23,8 +23,8 @@ import commonListTable from '../../list/Tal_commonListTable.vue'
 export default {
   name: 'top5PushList',
   async created () {
-    if (this.alimList) {
-      this.pushList = this.alimList
+    if (this.propAlimList) {
+      this.pushList = this.propAlimList
     } else {
       var resultList = await this.getContentsList()
       this.pushList = resultList.content
@@ -46,7 +46,7 @@ export default {
     }
   },
   props: {
-    alimList: {}
+    propAlimList: {}
   },
   mounted () {
     document.addEventListener('message', e => this.recvNoti(e))
