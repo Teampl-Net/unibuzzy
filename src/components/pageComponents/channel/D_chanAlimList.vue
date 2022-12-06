@@ -78,7 +78,7 @@
       </div>
 
       <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
-          <pushList @goScroll="this.mChanMainScrollWrap.style.overflow = 'scroll'" @cMemoEditYn="changeMemoEditYn" :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit'/>
+          <pushList @goScroll="this.mChanMainScrollWrap.style.overflow = 'scroll'" :initData="this.chanDetail.initData.contentsList" @cMemoEditYn="changeMemoEditYn" :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit'/>
       </div>
 
       <div v-else-if="this.mChanInfoPopShowYn" >
@@ -290,24 +290,29 @@ export default {
       debugger
       /* if (this.axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
       this.axiosQueue.push('addChanList') */
-      await this.$addChanList(this.chanDetail.targetKey)
-      /* var queueIndex = this.axiosQueue.findIndex((item) => item === 'addChanList')
-      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1) */
-      if (this.CHANNEL_DETAIL) {
-        if (!this.CHANNEL_DETAIL.copyTextStr && !this.mMakeDeepLinkIng) {
+      console.log(this.chanDetail)
+      if (this.chanDetail.initData) {
+        if (this.CHANNEL_DETAIL) {
+          console.log(this.chanDetail.initData.team.copyTextStr === undefined)
+          if ((this.chanDetail.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.mMakeDeepLinkIng = true
-          var title = '[더알림]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
-          var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
-          var this_ = this
-          this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
-            console.log('복사링크 없음!!!!!!!!!!!!!!!!!!!!!!!!')
-            this.CHANNEL_DETAIL.copyTextStr = res
-            this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
-            this_.mMakeDeepLinkIng = false
-          })
+            this.mMakeDeepLinkIng = true
+            var title = '[더알림]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+            var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
+            var this_ = this
+            this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
+              console.log('복사링크 없음!!!!!!!!!!!!!!!!!!!!!!!!')
+              this.CHANNEL_DETAIL.copyTextStr = res
+              this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+              this_.mMakeDeepLinkIng = false
+            })
+          }
         }
       }
+      // await this.$addChanList(this.chanDetail.targetKey)
+      /* var queueIndex = this.axiosQueue.findIndex((item) => item === 'addChanList')
+      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1) */
+
       this.$emit('closeLoading')
       this.$showAxiosLoading(false)
       /* if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.userTeamInfo && (this.CHANNEL_DETAIL.userTeamInfo.memberInfoList.length === 0 || !this.CHANNEL_DETAIL.userTeamInfo.memberInfoList[0].memberTypeKey)) this.commonChanPopShowYn = true */
@@ -655,7 +660,7 @@ export default {
   },
   computed: {
     CHANNEL_DETAIL () {
-      var detail = this.$getDetail('TEAM', this.chanDetail.targetKey)
+      var detail = this.$getDetail('TEAM', this.chanDetail.initData.team.teamKey)
       if (detail && detail.length > 0) {
         if (detail[0].blackYn) this.$emit('bgcolor', detail[0].blackYn)
 

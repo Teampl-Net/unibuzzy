@@ -37,9 +37,9 @@
 
           <template  v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
               <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'"/>
+              <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
           </template>
           <gEmpty :tabName="currentTabName" contentName="전체" v-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
-          <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
@@ -82,6 +82,7 @@ export default {
     // searchResult
   },
   props: {
+    initData: {},
     chanAlimTargetType: {},
     popYn: Boolean,
     alimListYn: Boolean,
@@ -567,33 +568,36 @@ export default {
     async readyFunction () {
       this.scrolledYn = false
       // this.$showAxiosLoading(true)
-      if (this.targetContents !== undefined && this.targetContents !== null && this.targetContents !== '') {
-        if (this.targetContents.jobkindId === 'BOAR') {
-          this.viewMainTab = 'B'
-          this.$emit('changeMainTab', this.viewMainTab)
-        }
-        this.targetCKey = this.targetContents.targetContentsKey
-        if (this.targetCKey) {
-          console.log(this.targetCKey + '/////' + this.targetContents.jobkindId)
-          var contentsAlreadyYn = await this.$addContents(this.targetCKey, this.targetContents.jobkindId)
-          console.log(contentsAlreadyYn)
-          if (contentsAlreadyYn === false) {
-            alert('해당컨텐츠는 삭제되었거나,\n열람 권한이 없습니다\n나중에 다시시도해주세요.')
-            return
+      if (this.initData) {
+        this.allContentsList = this.initData.content
+        this.endListYn = false
+        this.offsetInt += 1
+        this.canLoadYn = true
+      } else {
+        if (this.targetContents !== undefined && this.targetContents !== null && this.targetContents !== '') {
+          if (this.targetContents.jobkindId === 'BOAR') {
+            this.viewMainTab = 'B'
+            this.$emit('changeMainTab', this.viewMainTab)
+          }
+          this.targetCKey = this.targetContents.targetContentsKey
+          if (this.targetCKey) {
+            console.log(this.targetCKey + '/////' + this.targetContents.jobkindId)
+            var contentsAlreadyYn = await this.$addContents(this.targetCKey, this.targetContents.jobkindId)
+            console.log(contentsAlreadyYn)
+            if (contentsAlreadyYn === false) {
+              alert('해당컨텐츠는 삭제되었거나,\n열람 권한이 없습니다\n나중에 다시시도해주세요.')
+              return
+            }
           }
         }
-      }
-      await this.initGetContentsList()
-      this.findPopShowYn = false
-      if (this.readySearchList) {
-        this.requestSearchList(this.readySearchList)
+        await this.initGetContentsList()
+        this.findPopShowYn = false
+        if (this.readySearchList) {
+          this.requestSearchList(this.readySearchList)
+        }
       }
       this.introPushPageTab()
-
       this.loadingYn = false
-
-      var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')
-      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
       this.$emit('closeLoading')
     },
     memoPopNo () {

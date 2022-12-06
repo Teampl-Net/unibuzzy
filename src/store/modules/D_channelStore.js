@@ -698,7 +698,6 @@ const D_CHANNEL = {
 
       for (var i = 0; i < payload.length; i++) {
         var userDo = payload[i].userDoList
-        console.log(payload)
         var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
         if (userDo) {
           var index = userDo.findIndex((item) => item.doType === 'ST')

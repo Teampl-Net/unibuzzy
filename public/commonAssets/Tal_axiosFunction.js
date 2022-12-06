@@ -38,6 +38,12 @@ export async function commonAxiosFunction (setItem, nonLoadingYn) {
   } else {
     commonMethods.showAxiosLoading(true)
   }
+  // 패치해라!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  var devModeYn = true
+  var url = setItem.url
+  if (!devModeYn) {
+    url = 'https://mo.d-alim.com/' + url
+  }
   await axios.post(setItem.url, setItem.param, { withCredentials: true }
   ).then(response => {
     result = response

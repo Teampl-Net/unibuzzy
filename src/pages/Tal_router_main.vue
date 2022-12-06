@@ -186,10 +186,10 @@ export default {
     },
     async openPop (params) {
       console.log(params)
-      /* if (params.targetType === 'chanDetail') {
+      if (params.targetType === 'chanDetail') {
         this.goChanDetail(params)
         return
-      } */
+      }
       this.mPopParams = params
       this.mGPopShowYn = true
       this.hideMenu()
@@ -261,19 +261,27 @@ export default {
         goChanDetailParam.ownerYn = true
       }
 
-      /* console.log(detailValue)
+      console.log(detailValue)
       var paramMap = new Map()
       paramMap.set('teamKey', detailValue.targetKey)
       paramMap.set('fUserKey', this.GE_USER.userKey)
-      var result = await this.$getViewData({ url: 'service/tp.getUserTeamList', param: Object.fromEntries(paramMap) }, false)
-      if (!result || !result.data || !result.data.content || !result.data.content.length > 1) {
+      var result = await this.$getViewData({ url: 'service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+      if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
         alert('채널을 찾을 수 없습니다!')
         return
       }
-      await this.$addChanVuex(result.data.content[0]) */
-      this.openPop(goChanDetailParam)
-      /* this.mPopParams = goChanDetailParam
-      this.mGPopShowYn = true */
+      var teamDetail = result.data.team.content[0]
+      var contentsList = result.data.contentsListPage.content
+      await this.$addChanVuex([teamDetail])
+      await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentsList)
+      // eslint-disable-next-line no-new-object
+      var initData = new Object()
+      initData.team = teamDetail
+      initData.contentsList = result.data.contentsListPage
+      goChanDetailParam.initData = initData
+      // this.openPop(goChanDetailParam)
+      this.mPopParams = goChanDetailParam
+      this.mGPopShowYn = true
     },
     async recvNotiFormBridge (notiDetail, currentPage, vuexResultData) {
       try {

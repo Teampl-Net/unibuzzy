@@ -66,6 +66,20 @@ export default {
       console.log(memberTypeItemList)
       if (memberTypeItemList.data.result) {
         this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
+        if (this.memberTypeItemList.length === 0) {
+          // eslint-disable-next-line no-new-object
+          var typeParam = new Object()
+          if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
+            typeParam.followerKey = this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
+          }
+          typeParam.memberTypeKey = this.propMemberData.memberTypeKey
+          await this.$commonAxiosFunction({
+            url: 'service/tp.saveFollower',
+            param: { follower: typeParam }
+          })
+          this.closeXPop(true)
+          return
+        }
       }
       // eslint-disable-next-line no-debugger
       debugger
@@ -90,8 +104,8 @@ export default {
         ansObj.memberTypeKey = this.memberTypeItemList[i].memberTypeKey
         ansObj.userKey = this.GE_USER.userKey
         ansObj.teamKey = this.propTeamDetail.teamKey
-        if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.followerKey) {
-          ansObj.followerKey = this.CHANNEL_DETAIL.followerKey
+        if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
+          ansObj.followerKey = this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
         }
         ansList.push(ansObj)
       }

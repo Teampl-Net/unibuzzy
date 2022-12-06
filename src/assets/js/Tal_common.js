@@ -347,7 +347,7 @@ export const commonMethods = {
     var result = await commonAxiosFunction({
       url: 'service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
-    })
+    }, true)
     console.log(JSON.parse(result.data.shortLink))
     var response = JSON.parse(result.data.shortLink).shortLink
     // alert(response)
