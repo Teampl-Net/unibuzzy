@@ -207,7 +207,6 @@ export default {
     // }
     await this.setContentsMoreText()
     await this.setPreTagInFirstTextLine()
-    console.log(this.CONT_DETAIL)
   },
   methods: {
     async clickFileDownload () {
