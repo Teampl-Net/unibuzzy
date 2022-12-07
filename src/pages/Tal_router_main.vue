@@ -344,7 +344,9 @@ export default {
         // eslint-disable-next-line no-new-object
         var initData = new Object()
         initData.team = teamDetail
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
+        if (result.data.contentsListPage && result.data.contentsListPage.content && result.data.contentsListPage.content.length > 0) {
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
+        }
         // result.data.contentsListPage.content = this.$settingUserDo(result.data.contentsListPage.content)
         initData.contentsList = result.data.contentsListPage
       } catch (error) {
