@@ -70,6 +70,7 @@ export default {
       // this.leftanimaYn = true
     },
     refreshList () {
+      console.log('여기지롱')
       this.$refs.mTypeQueList.getMemberTypeItemList()
     },
     editQue (memberTypeItemObj) {

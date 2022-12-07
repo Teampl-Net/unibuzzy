@@ -47,7 +47,15 @@ export default {
       this.mEditMemInfoPopShowYn = false
     },
     readyFunc () {
-      this.getMemberTypeItemList()
+      console.log(this.propMemberTypeObj)
+      if (this.propMemberTypeObj.itemList) {
+        this.memberTypeItemList = this.propMemberTypeObj.itemList
+        if (this.memberTypeItemList.length === 0) {
+          this.addQuestion(0)
+        }
+      } else {
+        this.getMemberTypeItemList(true)
+      }
     },
     sendListToParents () {
       console.log(this.memberTypeItemList)

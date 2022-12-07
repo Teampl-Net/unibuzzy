@@ -84,12 +84,32 @@ export default {
         this.mMemberTypeList = memberTypeList.data.memberTypeList
       }
     },
-    openReqPop () {
+    async openReqPop () {
       if (!this.selectMemberObj) {
         alert('멤버 유형을 선택해주세요!')
         return
       }
+      await this.getMemberTypeItemList()
       this.reqPopShowYn = true
+    },
+    async getMemberTypeItemList () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.memberTypeKey = this.selectMemberObj.memberTypeKey
+      var memberTypeItemList = await this.$commonAxiosFunction({
+        url: 'service/tp.getMemberTypeItemList',
+        param: param
+      })
+      console.log(memberTypeItemList)
+      if (memberTypeItemList.data.result) {
+        this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
+        // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
+      } else {
+        this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
+      }
+      // eslint-disable-next-line no-debugger
+      debugger
+      return true
     },
     closeReqMemPop (pCloseYn) {
       this.reqPopShowYn = false

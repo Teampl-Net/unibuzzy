@@ -96,11 +96,39 @@ export default {
       this.$addHistoryStack('receptListPop')
       this.receptListPopShowYn = true
     },
-    openMemberTypePop () {
+    async openMemberTypePop () {
       var param = {}
       param.targetType = 'editMemberTypePop'
       param.popHeaderText = '멤버유형관리'
       param.teamKey = this.propData.teamKey
+      var resultList = null
+      var memberTypeList = await this.$commonAxiosFunction({
+        url: 'service/tp.getMemberTypeList',
+        param: param
+      }, true)
+      if (memberTypeList.data.result) {
+        resultList = memberTypeList.data.memberTypeList
+        var itemList = null
+        if (resultList.length > 0) {
+            // eslint-disable-next-line no-new-object
+            var itemParam = new Object()
+            itemParam.memberTypeKey = resultList[0].memberTypeKey
+            var memberTypeItemList = await this.$commonAxiosFunction({
+                url: 'service/tp.getMemberTypeItemList',
+                param: itemParam
+            }, true)
+            itemList = memberTypeItemList.data.memberTypeItemList
+            resultList[0].itemList = itemList
+            // eslint-disable-next-line no-debugger
+            debugger
+        }
+        console.log(resultList)
+        param.initData = resultList
+      }
+      // eslint-disable-next-line no-debugger
+      debugger
+
+
       this.$emit('openPop', param)
     },
     closeRecMemberPop () {

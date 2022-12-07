@@ -1020,6 +1020,7 @@ export const commonMethods = {
     } else gChanPop.style.display = 'none'
   },
   showAxiosLoading (showYn) {
+    console.log(showYn)
     var loadingCompo = document.getElementById('axiosShadow')
     var gLoadingPop = document.querySelectorAll('.gLoadingPop')
     if (gLoadingPop.length > 0) {

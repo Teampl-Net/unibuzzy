@@ -36,6 +36,7 @@ export async function commonAxiosFunction (setItem, nonLoadingYn) {
   var result = false
   if (nonLoadingYn === true) {
   } else {
+    console.log('여기다')
     commonMethods.showAxiosLoading(true)
   }
   // 패치해라!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -47,7 +47,26 @@ export default {
   },
   created () {
     // this.reqData = this.propMemberData
-    this.getMemberTypeItemList()
+    if (this.propMemberData.initData) {
+      this.memberTypeItemList = this.propMemberData.initData
+      var this_ = this
+      if (this.memberTypeItemList.length === 0) {
+        // eslint-disable-next-line no-new-object
+        var typeParam = new Object()
+        if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
+          typeParam.followerKey = this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
+        }
+        typeParam.memberTypeKey = this.propMemberData.memberTypeKey
+        this.$commonAxiosFunction({
+          url: 'service/tp.saveFollower',
+          param: { follower: typeParam }
+        }).then(() => {
+          this_.closeXPop(true)
+        })
+      }
+    } else {
+      this.getMemberTypeItemList()
+    }
   },
   methods: {
     convertSelectListStr (str) {

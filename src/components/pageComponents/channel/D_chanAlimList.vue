@@ -241,7 +241,8 @@ export default {
     },
     openReqMemPop () {
       // 재준
-      this.commonChanPopShowYn = true
+      this.openChannelMsgPop()
+      // this.commonChanPopShowYn = true
       // if (this.CHANNEL_DETAIL.cateKey !== 3) {
       //   this.mReceptMemPopShowYn = true
       // } else {
@@ -292,6 +293,9 @@ export default {
       this.axiosQueue.push('addChanList') */
       console.log(this.chanDetail)
       if (this.chanDetail.initData) {
+        if (this.chanDetail.initData.team.D_CHAN_AUTH && this.chanDetail.initData.team.D_CHAN_AUTH.followYn) {
+          this.$emit('followYn')
+        }
         if (this.CHANNEL_DETAIL) {
           console.log(this.chanDetail.initData.team.copyTextStr === undefined)
           if ((this.chanDetail.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
@@ -408,7 +412,7 @@ export default {
           } else {
             await this.okMember()
             this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>더 많은 활동을 위해 멤버 신청을 해주세요!'
-            this.commonChanPopShowYn = true
+            this.openChannelMsgPop()
           }
         }
       }

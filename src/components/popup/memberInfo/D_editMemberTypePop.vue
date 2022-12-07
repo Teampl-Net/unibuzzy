@@ -100,10 +100,16 @@ export default {
       }, 300)
     },
     async readyFunc () {
-      await this.getMemberTypeList()
-      this.$nextTick(() => {
+      if (this.propData.initData) {
+        this.mMemberTypeList = this.propData.initData
+        this.mSelectedMemberTypeObj = this.mMemberTypeList[0]
+        console.log(this.mSelectedMemberTypeObj)
+      } else {
+        await this.getMemberTypeList() // 추후 제거
+      }
+      /* this.$nextTick(() => {
         this.$refs.editMemPopRef.changeTab(this.mMemberTypeList[0], 0)
-      })
+      }) */
     },
     addQuestion () {
       if (!this.propData.teamKey) return
