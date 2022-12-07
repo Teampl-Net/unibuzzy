@@ -438,66 +438,67 @@ const D_CHANNEL = {
         var chanList = state.chanList
         if (addContList.length === 0) return
         if (!addContList[0]) return
-        idx1 = chanList.findIndex((item) => item.teamKey === addContList[0].creTeamKey)
-        if (idx1 !== -1) {
+
+        for (var i = 0; i < addContList.length; i++) {
+          idx1 = chanList.findIndex((item) => item.teamKey === addContList[i].creTeamKey)
+          if (idx1 === -1) continue
           var chanDetail = chanList[idx1]
-          for (var i = 0; i < addContList.length; i++) {
+
+          if (addContList[i].jobkindId === 'BOAR') {
+            idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
+          } else {
+            idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
+          }
+          // alert(idx2)
+          if (idx2 === -1) {
             if (addContList[i].jobkindId === 'BOAR') {
+              chanList[idx1].ELEMENTS.boardList.push(addContList[i])
               idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
             } else {
+              chanList[idx1].ELEMENTS.alimList.push(addContList[i])
               idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
             }
-            // alert(idx2)
-            if (idx2 === -1) {
-              if (addContList[i].jobkindId === 'BOAR') {
-                chanList[idx1].ELEMENTS.boardList.push(addContList[i])
-                idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
-              } else {
-                chanList[idx1].ELEMENTS.alimList.push(addContList[i])
-                idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
-              }
-              if (state.addContsList.length > 30) {
-                state.addContsList.splice(0, 30)
-              }
-              state.addContsList.unshift(addContList[i])
+            if (state.addContsList.length > 30) {
+              state.addContsList.splice(0, 30)
             }
+            state.addContsList.unshift(addContList[i])
+          }
 
-            var dataList = null
-            if (addContList[i].jobkindId === 'BOAR') {
-              dataList = chanDetail.ELEMENTS.boardList[idx2]
-            } else {
-              dataList = chanDetail.ELEMENTS.alimList[idx2]
-            }
-            if (!dataList.D_MEMO_LIST) {
-              dataList.D_MEMO_LIST = []
-            }
-            if (!addContList[i].memoList) {
-              addContList[i].memoList = []
-            }
-            var newMemoArr = [
-              ...dataList.D_MEMO_LIST,
-              ...addContList[i].memoList
-            ]
-            var uniqueArr = []
-            if (newMemoArr.length > 0) {
-              uniqueArr = newMemoArr.reduce(function (data, current) {
-                // var addData = []
-                if (data.findIndex((item) => item.memoKey === current.memoKey) === -1) {
-                  data.push(current)
-                }
-                data = data.sort(function (a, b) { // num으로 오름차순 정렬
-                  return b.memoKey - a.memoKey
-                  // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
-                })
-                return data
-              }, [])
-            }
-            addContList[i].D_MEMO_LIST = uniqueArr
-            if (addContList[i].jobkindId === 'BOAR') {
-              chanList[idx1].ELEMENTS.boardList[idx2] = addContList[i]
-            } else {
-              chanList[idx1].ELEMENTS.alimList[idx2] = addContList[i]
-            }
+          var dataList = null
+          if (addContList[i].jobkindId === 'BOAR') {
+            dataList = chanDetail.ELEMENTS.boardList[idx2]
+          } else {
+            dataList = chanDetail.ELEMENTS.alimList[idx2]
+          }
+          if (!dataList.D_MEMO_LIST) {
+            dataList.D_MEMO_LIST = []
+          }
+          if (!addContList[i].memoList) {
+            addContList[i].memoList = []
+          }
+          var newMemoArr = [
+            ...dataList.D_MEMO_LIST,
+            ...addContList[i].memoList
+          ]
+          var uniqueArr = []
+          if (newMemoArr.length > 0) {
+            uniqueArr = newMemoArr.reduce(function (data, current) {
+              // var addData = []
+              if (data.findIndex((item) => item.memoKey === current.memoKey) === -1) {
+                data.push(current)
+              }
+              data = data.sort(function (a, b) { // num으로 오름차순 정렬
+                return b.memoKey - a.memoKey
+                // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+              })
+              return data
+            }, [])
+          }
+          addContList[i].D_MEMO_LIST = uniqueArr
+          if (addContList[i].jobkindId === 'BOAR') {
+            chanList[idx1].ELEMENTS.boardList[idx2] = addContList[i]
+          } else {
+            chanList[idx1].ELEMENTS.alimList[idx2] = addContList[i]
           }
         }
         state.chanList = chanList
