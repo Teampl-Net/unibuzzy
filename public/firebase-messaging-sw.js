@@ -63,25 +63,33 @@ self.addEventListener('push', event => {
   } else if (userDo.targetKind === 'CABI') {
     targetKey = userDo.targetKey
     push_url = 'https://mo.d-alim.com?targetType=contentsDetail&targetKey=' + userDo.ISub + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
-  } else if (userDo.targetKind === 'CONT') {
-    targetKey = userDo.targetKey
-    push_url = 'https://mo.d-alim.com?targetType=chanDetail&targetKey=' + targetKey
-  } else {
-    push_url = push_data
+  }
+  var icon = './resource/common/thealim_header_logo_back.png'
+  if (push_data.data.largeIcon) {
+    icon = push_data.data.largeIcon
   }
   const title = push_data.notification.title
-  const options = {
-    body: push_data.notification.body,
-    icon: './resource/common/thealim_header_logo_back.png',
-    image: './resource/common/thealim_header_logo_back.png',
-    actions: [{
-      title: '화면보기',
-      action: 'goTab'
-    },
-    {
-      title: '닫기',
-      action: 'close'
-    }]
+  var options = null
+  if (userDo.targetKind === 'CONT' || userDo.targetKind === 'CABI') {
+    options = {
+      body: push_data.notification.body,
+      icon: icon,
+      image: icon,
+      actions: [{
+        title: '화면보기',
+        action: 'goTab'
+      },
+      {
+        title: '닫기',
+        action: 'close'
+      }]
+    }
+  } else {
+    options = {
+      body: push_data.notification.body,
+      icon: icon,
+      image: icon
+    }
   }
 
   event.waitUntil(self.registration.showNotification(title, options))
