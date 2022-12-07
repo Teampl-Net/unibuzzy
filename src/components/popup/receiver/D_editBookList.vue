@@ -68,7 +68,12 @@ export default {
     propBookDetailPopYn: {}
   },
   mounted () {
-    this.getBookList()
+    if (!this.propData.initData) {
+      this.getBookList()
+    } else {
+      this.mEditBookList = this.propData.initData
+    }
+
     if (this.propData.value && this.propData.value.clickData) {
       this.openMCabUserList(this.propData.value.clickData)
     }

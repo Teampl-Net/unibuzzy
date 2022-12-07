@@ -127,14 +127,41 @@ export default {
     }
   },
   methods: {
-    openEditCabinetPop () {
+    async openEditCabinetPop () {
       this.mCommonParam.targetType = 'editBookList'
+      delete this.mCommonParam.param
+      var paramMap = new Map()
+      paramMap.set('adminYn', true)
+      paramMap.set('teamKey', this.propData.teamKey)
+      paramMap.set('pageSize', 100)
+      paramMap.set('sysCabinetCode', 'USER')
+      this.mCommonParam.param = paramMap
+      var initData = await this.$getManagingPageData(this.mCommonParam)
+      if (!initData) {
+        this.$showToastPop('죄송합니다. 잠시 후 다시 시도해 주세요')
+        return
+      }
+      this.mCommonParam.initData = initData
+
       this.mCommonParam.chanName = this.propData.teamNameMtext
       this.mCommonParam.popHeaderText = '주소록 관리'
       this.openPop()
     },
-    openEditBoardPop () {
+    async openEditBoardPop () {
       this.mCommonParam.targetType = 'editBoard'
+      var paramMap = new Map()
+      paramMap.set('teamKey', this.propData.teamKey)
+      paramMap.set('sysCabinetCode', 'BOAR')
+      paramMap.set('userKey', this.GE_USER.userKey)
+      paramMap.set('adminYn', true)
+      this.mCommonParam.param = paramMap
+      var initData = await this.$getManagingPageData(this.mCommonParam)
+      if (!initData) {
+        this.$showToastPop('죄송합니다. 잠시 후 다시 시도해 주세요')
+        return
+      }
+      this.mCommonParam.initData = initData
+
       this.mCommonParam.popHeaderText = '게시판 관리'
       this.mCommonParam.targetKey = this.propData.teamKey
       this.openPop()
@@ -153,6 +180,7 @@ export default {
     },
     async openEditManagerPop () {
       this.mCommonParam.targetType = 'memberManagement'
+      delete this.mCommonParam.param
       var paramMap = new Map()
       paramMap.set('adminYn', true)
       paramMap.set('teamKey', this.propData.teamKey)

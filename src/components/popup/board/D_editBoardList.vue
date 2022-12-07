@@ -69,7 +69,11 @@ export default {
     if (this.pPopId) this.popId = JSON.parse(JSON.stringify(this.pPopId))
     this.$emit('openLoading')
     // console.log(this.propData)
-    this.getTeamMenuList()
+    if (!this.propData.initData) {
+      this.getTeamMenuList()
+    } else {
+      this.cabinetList = this.propData.initData
+    }
     this.$emit('closeLoading')
   },
   data () {

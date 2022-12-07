@@ -37,7 +37,7 @@
             selectFileList : {{ selectFileList }}
         </div> -->
         </form>
-        <div v-if="propSelectRow === targetKey && this.firstFile.previewImgUrl && false" class="fl imgRotationFuncBox">
+        <div v-if="propSelectRow === targetKey && this.firstFile.previewImgUrl" class="fl imgRotationFuncBox">
             <div @click="rotationImg(270)" class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 6px;"><img class="img-w15" src="../../../assets/images/formEditor/icon_rotate_left.svg" alt=""></div>
             <div @click="rotationImg(180)" class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 5px;"><img  class="img-w15" src="../../../assets/images/formEditor/icon_rotate_180.svg" alt=""></div>
             <div @click="rotationImg(90)"  class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 5px;"><img  class="img-w15" src="../../../assets/images/formEditor/icon_rotate_right.svg" alt=""></div>

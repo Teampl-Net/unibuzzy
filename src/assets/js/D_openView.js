@@ -84,12 +84,32 @@ export const openView = {
     var resultData = null
     if (page === 'memberManagement') {
       return await openView.getFollowerList(data.param)
-    } else if (page === 'search') {
-      return await openView.getSearchMainBoard()
-    } else if (page === 'chanList') {
-      return await openView.getMainChanList()
+    } else if (page === 'editBookList') {
+      return await openView.getBookList(data.param)
+    } else if (page === 'editBoard') {
+      return await openView.getBoardList(data.param)
     }
     return resultData
+  },
+  async getBoardList (paramMap) {
+    var result = await commonAxiosFunction({
+      url: 'service/tp.getTeamMenuList',
+      param: Object.fromEntries(paramMap)
+    })
+    console.log(result)
+    if (result.status === 200) {
+      return result.data
+    }
+  },
+  async getBookList (paramMap) {
+    var result = await commonAxiosFunction({
+      url: 'service/tp.getTeamMenuList',
+      param: Object.fromEntries(paramMap)
+    })
+    console.log(result)
+    if (result.status === 200) {
+      return result.data
+    }
   },
   async getGPopData (data) {
     var page = data.targetType
