@@ -9,7 +9,7 @@
         </div>
         <div class="fl" style="display: flex; align-items: center;" :style="option === 'EDIT' ? 'width: calc(100% - 150px);' : 'width: calc(100% - 100px);' " @click="clickEvntToParents('open')">
           <div class="textLeft fl textOverdot w-100P" style="" >
-            <p class="fl font16 commonDarkGray fontBold textOverdot w-100P">{{propData.cabinetNameMtext}}</p>
+            <p class="fl font16 commonDarkGray fontBold textOverdot w-100P">{{this.$changeText(propData.cabinetNameMtext)}}</p>
             <p class="fl font14 commonDarkGray textOverdot" style="width: calc(100%)" >{{cabinetNames}}</p>
           </div>
         </div>
