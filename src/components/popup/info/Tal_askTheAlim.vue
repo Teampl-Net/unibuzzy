@@ -162,7 +162,7 @@ export default {
           image.onload = async function () {
             var result = await thisthis.$saveFileSize(image, file)
             thisthis.$refs.complexEditor.addFormCard('image', result.path, true)
-            thisthis.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: result.path, addYn: true, file: result.file }], originalType: 'image' })
+            thisthis.$refs.complexEditor.successImgPreview({ selectFileList: { previewImgUrl: result.path, addYn: true, file: result.file }, originalType: 'image' })
             // this.$emit('updateImgForm', this.previewImgUrl)
             // editorImgResize1(canvas.toDataURL('image/png', 0.8))
             // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))

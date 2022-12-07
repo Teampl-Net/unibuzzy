@@ -276,7 +276,7 @@ export default {
           innerHtml += formC[i].outerHTML
           jsonObj.innerHtml = formC[i].innerHTML
           jsonObj.type = 'image'
-          jsonObj.targetKey = i
+          jsonObj.targetKey = i - 1
           for (var c = 0; c < formC[i].classList.length; c++) {
             // // eslint-disable-next-line no-debugger
             // debugger
@@ -603,9 +603,11 @@ export default {
     },
 
     changeUploadList (upList) {
-      // console.log(upList)
+      console.log(upList)
+      console.log(this.uploadFileList)
       // upList.selectFileList.targetKey = upList.targetKey
       if (this.uploadFileList.length > 0) {
+        console.log(this.uploadFileList.findIndex(item => item.targetKey === upList.targetKey))
         var index = this.uploadFileList.findIndex(item => item.targetKey === upList.targetKey)
         // console.log(index)
         if (index === -1) {
@@ -843,6 +845,7 @@ export default {
         var innerHtml = ''
         param.bodyHtmlYn = true // 기본알림또한 html형식으로 들어감
         var targetMsgDiv = null
+        console.log(this.uploadFileList)
         if (this.uploadFileList.length > 0) {
           this.progressShowYn = true
           await this.formSubmit()
@@ -930,13 +933,15 @@ export default {
 
         param.showCreNameYn = this.showCreNameYn
         param.canReplyYn = this.canReplyYn
-        var result
+        // var result
         if (this.requestPushYn === true) {
           param.requestTitle = this.requestTitle
           this.okPopYn = true
           return
         }
-        result = await this.$saveContents(param)
+        // eslint-disable-next-line no-debugger
+        debugger
+        var result = await this.$saveContents(param)
         param = {}
         param.contentsKey = result.contents.contentsKey
         param.jobkindId = result.contents.jobkindId
@@ -1002,9 +1007,10 @@ export default {
           setObj.attachYn = false
         }
         setObj.fileKey = this.uploadFileList[i].fileKey
-        setObj.fileName = (this.uploadFileList[i])[0].file.name
+        setObj.fileName = this.uploadFileList[i].file.name
         newAttachFileList.push(setObj)
       }
+      console.log(newAttachFileList)
       return newAttachFileList
     },
     async openPushReceiverSelect () {
@@ -1064,10 +1070,10 @@ export default {
           }
 
           console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-          console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+          // console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
           var pasteImg = true
           this.$refs.complexEditor.addFormCard('image', src, true, pasteImg)
-          this.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: src, addYn: true, file: newFile }], originalType: 'image' })
+          this.$refs.complexEditor.successImgPreview({ targetKey: document.querySelectorAll('#eContentsWrap .formDiv').length - 1, selectFileList: { previewImgUrl: src, addYn: true, file: newFile, targetKey: newFile.name }, originalType: 'image' })
         } catch (error) {
           console.log(error)
         }
@@ -1091,7 +1097,7 @@ export default {
           image.onload = async function () {
             var result = await thisthis.$saveFileSize(image, file)
             thisthis.$refs.complexEditor.addFormCard('image', result.path, true)
-            thisthis.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: result.path, addYn: true, file: result.file }], originalType: 'image' })
+            thisthis.$refs.complexEditor.successImgPreview({ targetKey: document.querySelectorAll('#eContentsWrap .formDiv').length - 1, selectFileList: { previewImgUrl: result.path, addYn: true, file: result.file, targetKey: result.file.name }, originalType: 'image' })
             // this.$emit('updateImgForm', this.previewImgUrl)
             // editorImgResize1(canvas.toDataURL('image/png', 0.8))
             // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
@@ -1106,6 +1112,8 @@ export default {
       }
     },
     async formSubmit () {
+      // eslint-disable-next-line no-debugger
+      debugger
       if (this.uploadFileList.length > 0) {
         var iList = document.querySelectorAll('.formCard .addTrue')
         // Form 필드 생성
@@ -1117,7 +1125,7 @@ export default {
           form = new FormData()
           // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
           // thisthis.uploadFileList[i].previewImgUrl = Base64.decode(thisthis.uploadFileList[i].previewImgUrl.replaceAll('data:image/png;base64,', ''))
-          form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
+          form.append('files[0]', (thisthis.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
             .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
@@ -1133,9 +1141,9 @@ export default {
                 }
               })
             .then(res => {
-              // console.log(res)
+              console.log(res)
               if (res.data.length > 0) {
-                if ((this.uploadFileList[i])[0].attachYn === true) {
+                if (this.uploadFileList[i].attachYn === true) {
                   this.uploadFileList[i].attachYn = true
                 } else {
                 }
@@ -1162,8 +1170,8 @@ export default {
                 // console.log(uploadFile[0].previewImgUrl)
                 // console.log(iList[il].src)
                 // console.log('여기!!!!!!!!!끝!!!!!!!!!!!!!!!!!!!!!!')
-                if (!uploadFile[0].attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
-                  if (iList[il].src === uploadFile[0].previewImgUrl) {
+                if (!uploadFile.attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
+                  if (iList[il].src === uploadFile.previewImgUrl) {
                     iList[il].src = uploadFile.filePath
                     // eslint-disable-next-line no-unused-vars
                     iList[il].setAttribute('fileKey', uploadFile.fileKey)

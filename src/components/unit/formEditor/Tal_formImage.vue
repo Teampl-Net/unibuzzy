@@ -233,6 +233,7 @@ export default {
 
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
+        // var filesYn = this.$refs.selectFile.files.length > 1
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
           this.selectFile = this.$refs.selectFile.files[k]
           let fileExt = this.selectFile.name.substring(
@@ -278,7 +279,12 @@ export default {
               // console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
               this.selectFileList.push({ previewImgUrl: src, addYn: true, file: newFile })
-              this.$emit('success', { targetKey: this.targetKey, selectFileList: [{ previewImgUrl: src, originalFile: this.selectFile, addYn: true, file: newFile }], originalType: 'image' })
+              console.log(document.querySelectorAll('#eContentsWrap .formDiv').length)
+              if (k === 0) {
+                this.$emit('success', { targetKey: document.querySelectorAll('#eContentsWrap .formDiv').length - 2, selectFileList: { previewImgUrl: src, originalFile: this.selectFile, addYn: true, file: newFile }, originalType: 'image' })
+              } else {
+                this.$emit('success', { targetKey: document.querySelectorAll('#eContentsWrap .formDiv').length - 1, selectFileList: { previewImgUrl: src, originalFile: this.selectFile, addYn: true, file: newFile }, originalType: 'image' })
+              }
               if (this.$refs.selectFile.files.length === 1) {
                 this.previewImgUrl = src
                 this.firstFile = { previewImgUrl: src, addYn: true, file: newFile }

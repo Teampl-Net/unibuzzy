@@ -115,7 +115,7 @@ export default {
           image.onload = async function () {
             // Resize image
             var result = await thisthis.$saveFileSize(image, file)
-            thisthis.$refs.complexEditor.successImgPreview({ targetKey: document.querySelectorAll('#eContentsWrap .formDiv').length - 1, selectFileList: [{ previewImgUrl: result.path, addYn: true, file: result.file }], originalType: 'image' })
+            thisthis.$refs.complexEditor.successImgPreview({ targetKey: document.querySelectorAll('#eContentsWrap .formDiv').length - 1, selectFileList: { previewImgUrl: result.path, addYn: true, file: result.file }, originalType: 'image' })
             thisthis.$refs.complexEditor.addFormCard('image', result.path, true)
           }
           image.onerror = function () {

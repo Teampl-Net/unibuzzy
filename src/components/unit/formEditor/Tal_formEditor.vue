@@ -346,14 +346,15 @@ export default {
       } */
     },
     async successImgPreview (target) {
+      console.log(target)
       // await this.addFormCard('text')
-      target.selectFileList[0].targetKey = target.targetKey
+      target.selectFileList.targetKey = target.targetKey
       var index = this.progressBarList.findIndex(item => item.target === target.targetKey)
       // console.log(index)
       if (index === -1) {
-        this.progressBarList.push({ name: target.selectFileList[0].file.name, targetKey: target.targetKey, percentage: 0 })
+        this.progressBarList.push({ name: target.selectFileList.file.name, targetKey: target.targetKey, percentage: 0 })
       } else {
-        this.progressBarList.splice(index, 1, { name: target.selectFileList[0].file.name, targetKey: target.targetKey, percentage: 0 })
+        this.progressBarList.splice(index, 1, { name: target.selectFileList.file.name, targetKey: target.targetKey, percentage: 0 })
       }
 
       this.toolBoxShowYn = false
@@ -371,6 +372,9 @@ export default {
           ...tempKeyList,
           this.formCount
         ]
+        console.log('this.uploadFileList')
+        console.log(this.uploadFileList)
+        // this.$emit('changeUploadList', this.uploadFileList)
       } else {
         this.uploadFileList.push(target.selectFileList)
         this.uploadFileKeyList.push(this.formCount)
@@ -593,7 +597,7 @@ export default {
             try {
             // eslint-disable-next-line no-undef
               var compressedFile = await this.$imageCompression(this.selectFile, options)
-              console.log(compressedFile)
+              // console.log(compressedFile)
               console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
               var src = null
               if (compressedFile instanceof Blob) {
@@ -610,7 +614,7 @@ export default {
               }
 
               console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-              console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+              // console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
               this.addFormCard('image', newFile)
             /* await uploadToServer(compressedFile) */ // write your own logic

@@ -762,7 +762,7 @@ export default {
 
           console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
           console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
-          this.$refs.complexEditor.successImgPreview({ selectFileList: [{ previewImgUrl: src, addYn: true, file: newFile }], originalType: 'image' })
+          this.$refs.complexEditor.successImgPreview({ selectFileList: { previewImgUrl: src, addYn: true, file: newFile }, originalType: 'image' })
           this.$refs.complexEditor.addFormCard('image', src, true)
         } catch (error) {
           console.log(error)
