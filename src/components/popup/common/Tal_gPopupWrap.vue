@@ -25,7 +25,7 @@
       <changeInfo :pPopId="popId" @closeLoading="this.loadingYn = false"  @successUpdate="this.closeXPop(true)" :kind="this.changInfoType" v-if=" popId &&  this.targetType === 'changeInfo'" />
       <askTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop" :propData='this.propParams' />
       <talInfo :pPopId="popId"  @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'theAlimInfo'" />
-      <question :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'question'" @openPop = "openPop"/>
+      <question :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'question'" @openPop="openPop"/>
       <leaveTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
       <createChannel :pPopId="popId" v-if=" popId &&  this.targetType === 'createChannel'" :chanDetail="this.propParams"  @closeXPop="closeXPop(true)" @closePop="closePop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @successCreChan='successCreChan' @openPop='openPop' />
 

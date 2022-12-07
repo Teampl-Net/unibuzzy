@@ -705,9 +705,17 @@ const D_CHANNEL = {
         var userDo = payload[i].userDoList
         var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
         if (userDo) {
-          var index = userDo.findIndex((item) => item.doType === 'ST')
-          if (index >= 0) {
-            userDoList[0].doKey = userDo[index].doKey
+          var starIndex = userDo.findIndex((item) => item.doType === 'ST')
+          if (starIndex !== -1) {
+            userDoList[0].doKey = userDo[starIndex].doKey
+          } else {
+            userDoList[0].doKey = 0
+          }
+          var likeIndex = userDo.findIndex((item) => item.doType === 'LI')
+          if (likeIndex !== -1) {
+            userDoList[1].doKey = userDo[likeIndex].doKey
+          } else {
+            userDoList[1].doKey = 0
           }
         }
         payload[i].D_CONT_USER_DO = userDoList

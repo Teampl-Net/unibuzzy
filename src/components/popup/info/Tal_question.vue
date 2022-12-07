@@ -28,7 +28,7 @@ export default {
       questionList: [
         { question: '구독을 안하면 알림을 받지 못하나요?', answer: '네 맞아요. 구독한 채널의 알림만 받으실 수 있어요!' },
         { question: '멤버와 구독자의 차이점은 무엇인가요?', answer: '우선 구독자가 되면 채널에서 다양한 형태의 소통을 할 수 있게되는데요.<br>채널의 일원으로서 더 많은 권한을 얻고 활동을 하기 원하면 멤버신청을 통해 멤버가 될 수 있답니다.' },
-        { question: '개인정보를 수정하고싶어요', answer: '더알림 하단 메뉴 우측 My > 프로필 카드를 클릭하면 나오는 설정페이지에서 자유롭게 정보를 수정해봐요!' },
+        { question: '개인정보를 수정하고싶어요', answer: '더알림 하단 메뉴 우측 내정보 > 프로필 카드를 클릭하면 나오는 설정페이지에서 자유롭게 정보를 수정해봐요!' },
         { question: '개인정보는 안전하게 보호되나요?', answer: '더알림은 소셜로그인을 통해 들어오게 되기 때문에 개인 정보는 더알림이 아닌 해당 소셜의 정책에 따라 보호받게 됩니다.' }
       ]
     }
@@ -51,6 +51,8 @@ export default {
       var params = new Object()
       params.targetType = 'chanDetail'
       params.targetKey = 377
+      params.teamKey = 377
+      // params.nameMtext = 'KO$^$더알림'
       this.$emit('openPop', params)
     }
   }

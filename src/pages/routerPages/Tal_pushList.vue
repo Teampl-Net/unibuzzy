@@ -136,6 +136,7 @@ export default {
       this.$refs.activeBar.switchtab(3)
     }
     this.findPaddingTopPush()
+    this.settingScrollUpEventListener()
   },
   unmounted () {
     document.removeEventListener('message', e => this.recvNoti(e))
@@ -526,6 +527,30 @@ export default {
     } */
   },
   methods: {
+    settingScrollUpEventListener () {
+      // contentsList가 빈값이거나 별로 없을 경우 스크롤이 되지 않아 추가하였습니다.
+      window.document.addEventListener('touchstart', (e) => {
+        this.mScrollStartPoint = e.touches[0].pageY
+      })
+      window.document.addEventListener('touchend', (e) => {
+        this.mScrollEndPoint = e.changedTouches[0].pageY
+        if (this.mScrollStartPoint - this.mScrollEndPoint < -100) {
+          if (this.box.scrollTop < 10) {
+            this.$emit('goScroll')
+          }
+        } else if (this.mScrollStartPoint > this.mScrollEndPoint) {
+        }
+      })
+      window.document.addEventListener('wheel', (e) => {
+        var scrollType = e.deltaY < 0 ? 'down' : 'up'
+        if (scrollType === 'down') {
+          console.log(this.box.scrollTop)
+          if (this.box.scrollTop < 10) {
+            this.$emit('goScroll')
+          }
+        }
+      })
+    },
     // fileDownload (fileData) {
     //   if (!fileData) return
     //   this.mFilePopData = fileData
@@ -2050,7 +2075,9 @@ export default {
       workStateCodePopShowYn: false,
       workStateCodePopProps: {},
       mFilePopYn: false,
-      mFilePopData: {}
+      mFilePopData: {},
+      mScrollStartPoint: 0,
+      mScrollEndPoint: 0
       // scrollIngYn: false
     }
   }

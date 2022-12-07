@@ -23,7 +23,7 @@ export default {
   data () {
     return {
       menuList: [
-        { iconUrl: 'resource/menu/icon_home_color.svg', menuText: '홈', link: '', type: 'page' },
+        { iconUrl: 'resource/menu/icon_home_color.svg', menuText: '홈', link: 'main', type: 'page' },
         { iconUrl: 'resource/menu/icon_user_group_color.svg', menuText: '채널', link: 'chanList', type: 'page' },
         { iconUrl: 'resource/menu/icon_search_color.svg', menuText: '검색', link: 'search', type: 'page' },
         { iconUrl: 'resource/menu/icon_user_color.svg', menuText: '마이페이지', link: 'myPage', type: 'page' },

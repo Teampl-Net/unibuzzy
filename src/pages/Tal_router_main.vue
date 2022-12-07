@@ -3,7 +3,7 @@
     <!-- <pushPop @closePushPop="closePushPop" @goDetail="goDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  /> -->
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:999;" v-if="mMenuShowYn" @click="hideMenu"/>
     <transition name="show_view">
-      <TalMenu transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="goPage" class="TalmenuStyle " v-if="mMenuShowYn" />
+      <TalMenu transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="changeRouterPath" class="TalmenuStyle " v-if="mMenuShowYn" />
     </transition>
     <gConfirmPop :confirmText="mErrorPopBodyStr" confirmType='one' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" style="z-index: 9999999999999999999999;"/>
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
@@ -170,6 +170,7 @@ export default {
       }, 2000)
     },
     async changeRouterPath (page) {
+      this.mMenuShowYn = false
       var pageData = await this.$getRouterViewData(page)
       console.log(page)
       this.sendInitData = pageData
@@ -343,11 +344,12 @@ export default {
         // eslint-disable-next-line no-new-object
         var initData = new Object()
         initData.team = teamDetail
-        result.data.contentsListPage.content = this.$settingUserDo(result.data.contentsListPage.content)
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
+        // result.data.contentsListPage.content = this.$settingUserDo(result.data.contentsListPage.content)
         initData.contentsList = result.data.contentsListPage
       } catch (error) {
         this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
-        console.err(error)
+        console.error(error)
       }
       goChanDetailParam.initData = initData
       // this.openPop(goChanDetailParam)
