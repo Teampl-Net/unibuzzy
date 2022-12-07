@@ -117,10 +117,11 @@
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
   <!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propData="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
-  <div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:999">
+  <!-- <div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:999"> -->
     <!-- <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :propData="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/> -->
-    <writeContents  ref="chanAlimListWritePushRefs" @successWrite="successWriteBoard" @successSave="getContentsList" :contentType="currentPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWriteBoardPop' :params="boardWriteData" style="position: absolute; width:100%; height:100%; min-height:100vh; top:0; left:0;"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="boardWriteData" />
-  </div>
+  <div v-if="boardWriteYn" style="position: absolute; top:0; left:0; z-index:10; background:#00000050; width: 100vw; height: 100vh;"></div>
+  <writeContents v-if="boardWriteYn"  ref="chanAlimListWritePushRefs" @successWrite="successWriteBoard" @successSave="getContentsList" :contentType="currentPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWriteBoardPop' :params="boardWriteData" style="position: absolute; width:100%; height:100%; min-height:100vh; top:0; left:0;"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="boardWriteData" />
+  <!-- </div> -->
   <div v-if="memoShowYn === true" class="boardMainMemoBoxBackground" @click="memoPopNo()"></div>
   <transition name="showMemoPop">
     <gMemoPop ref="gMemoRef" transition="showMemoPop"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="z-index:999999; height: fit-content;" :writeMemoTempData='tempMemoData'/>
@@ -917,13 +918,17 @@ export default {
       /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     openWriteBoard () {
+      console.log(this.propData)
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = 'writeContents'
       params.actorList = this.actorList
       params.targetNameMtext = this.propData.nameMtext
       params.teamKey = this.propData.currentTeamKey
+      if (!params.teamKey) params.teamKey = this.propData.teamKey
       params.currentTeamKey = this.propData.currentTeamKey
+      if (!params.currentTeamKey) params.currentTeamKey = this.propData.teamKey
+
       params.bodyFullStr = ''
       params.cabinetNameMtext = this.$changeText(this.CAB_DETAIL.cabinetNameMtext)
       params.cabinetKey = this.CAB_DETAIL.cabinetKey
@@ -1284,14 +1289,17 @@ export default {
         if (this.viewTab === 'N') {
           tempCabData.totalContentsCount = resultList.totalElements
         }
+        console.log(resultList)
         if (!resultList || resultList === '') {
           this.endListYn = false
         } else {
-          if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-            this.endListYn = true
-          } else {
-            this.offsetInt += 1
-            this.endListYn = false
+          if (resultList.pageable) {
+            if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+              this.endListYn = true
+            } else {
+              this.offsetInt += 1
+              this.endListYn = false
+            }
           }
         }
       } else {

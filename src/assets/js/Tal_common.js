@@ -1120,34 +1120,20 @@ export const commonMethods = {
     }
     return fileScr
   },
-  async settingUserDo (userDo) {
-    var D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
-
-    if (userDo !== undefined && userDo !== null && userDo !== '') {
-      // eslint-disable-next-line no-array-constructor
-      /* this.userDoStickerList = new Array() */
-      for (var i = 0; i < userDo.length; i++) {
-        if (userDo[i].doType === 'LI') {
-          D_CONT_USER_DO[1].doKey = userDo[i].doKey
+  settingUserDo (payload) {
+    if (!payload || payload.length === 0) return
+    for (var i = 0; i < payload.length; i++) {
+      var userDo = payload[i].userDoList
+      var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
+      if (userDo) {
+        var index = userDo.findIndex((item) => item.doType === 'ST')
+        if (index >= 0) {
+          userDoList[0].doKey = userDo[index].doKey
         }
-        if (userDo[i].doType === 'ST') {
-          D_CONT_USER_DO[0].doKey = userDo[i].doKey
-        }
-        if (userDo[i].doType === 'RE') {
-          D_CONT_USER_DO[2].doKey = true
-        }
-        if (userDo[i].doType === 'SB') {
-          D_CONT_USER_DO[3].doKey = userDo[i].doKey
-        }
-        /* if (userDo[i].doType === 'SK') {
-          this.userDoStickerList.push(userDo[i].sticker)
-        } */
       }
+      payload[i].D_CONT_USER_DO = userDoList
     }
-    /* var cont = this.CONT_DETAIL
-    cont.D_CONT_USER_DO = D_CONT_USER_DO
-    this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
-    return D_CONT_USER_DO
+    return payload
   },
   // 지연 시킬 타임과 함수를 넣으면 해당 시간이 지난 후 그 함수를 실행합니다.
   async delayAfterFunc (delayTime, afterFunc) {

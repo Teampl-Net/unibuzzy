@@ -30,7 +30,7 @@
                       --><!-- position: absolute; top: var(--selectFromScrollH); left: 10px; -->
                       <!-- A9AACD -->
                       <div v-for="(value, index) in formCardList" :index="index" :class="value.type === 'text' ? 'formCardBackground': 'formLineCard'" :style="this.selectRow === value.targetKey? 'border: 1px solid #ccc;':''" style="position: relative; " :key="value.targetKey" :id="'formCard'+value.targetKey" class="fl formDiv commonFormCard" @click="clickForm(value, value.targetKey)">
-                        <formText id="formEditText" @setMultiFile="setMultiFile" @inputScroll="inputScroll" v-if="value.type === 'text'" style="" :ref="'textForm'+value.targetKey" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="value.targetKey" @success="successImgPreview"  @click="clickTextArea(index)"  contenteditable  />
+                        <formText id="formEditText" @setMultiFile="setMultiFile" v-if="value.type === 'text'" style="" :ref="'textForm'+value.targetKey" @blurCard="blurCard"  @updateCard="updateTextCard" :inputHtml="value.innerHtml" :targetKey="value.targetKey" @success="successImgPreview"  @click="clickTextArea(index)"  contenteditable  />
                         <formImage @setMultiFile="setMultiFile" :multiFileSrc="value.multiFileSrc" v-else-if="value.type === 'image'" :ref="'imgForm'+value.targetKey" :selectFileListProp="value.selectFileList" :class="value.addYn? addTrue : '' " :targetKey="value.targetKey" @success="successImgPreview" :pSrc="value.pSrc" :pFilekey="value.pFilekey" @click="clickImg(index)"  :src="value.src" contenteditable :pasteImgYn='pasteImgYn' @pasteEnd='pasteEnd' :propSelectRow='selectRow' />
                         <formVideo v-else-if="false" />
                         <formLine v-else-if="value.type === 'line'" style="" ref="lineForm" :targetKey="value.targetKey"/>
@@ -191,12 +191,6 @@ export default {
     setFormCard (data) {
       this.formCardList = data
     },
-    // inputScroll (param) {
-    //   // if (this.$checkMobile() === 'IOS') {
-    //   //   this.$refs.toolBoxRef.style.position = 'absolute'
-    //   // }
-    //   this.$emit('inputScroll', param)
-    // },
     async changePosTeamMenu (event) {
       // eslint-disable-next-line no-debugger
       debugger

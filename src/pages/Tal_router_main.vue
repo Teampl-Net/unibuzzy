@@ -343,6 +343,7 @@ export default {
         // eslint-disable-next-line no-new-object
         var initData = new Object()
         initData.team = teamDetail
+        result.data.contentsListPage.content = this.$settingUserDo(result.data.contentsListPage.content)
         initData.contentsList = result.data.contentsListPage
       } catch (error) {
         this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')

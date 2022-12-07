@@ -134,7 +134,7 @@ export default {
     this.popId = 'searchPop' + history.length
     history.push(this.popId)
     this.$store.commit('D_HISTORY/updateStack', history)
-    this.getCodeList()
+    if (this.tpGroupCode && this.tpGroupCode.length > 5) this.getCodeList()
   },
   mounted () {
     // document.getElementById('findContentListConfo').setAttribute('readonly', 'readonly')

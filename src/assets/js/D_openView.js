@@ -31,7 +31,7 @@ export const openView = {
     paramMap.set('currentTeamKey', param.teamKey)
     paramMap.set('cabinetKey', param.cabinetKey)
 
-    var result = await openView.getViewData({ url: 'service/tp.getCabinetMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
+    var result = await commonAxiosFunction({ url: 'service/tp.getCabinetMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
     if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
       commonMethods.showToastPop('해당 게시판의 정보를 찾을 수 없습니다!')
       return
@@ -48,7 +48,7 @@ export const openView = {
       paramSet = inputParam
       paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
     }
-    var contentDetail = await openView.getViewData({ url: 'service/tp.getMyContentsList', param: paramSet }, nonLoadingYn)
+    var contentDetail = await commonAxiosFunction({ url: 'service/tp.getMyContentsList', param: paramSet }, nonLoadingYn)
     console.log(contentDetail)
     if (!contentDetail || !contentDetail.data) {
       commonMethods.showToastPop('해당 컨텐츠의 정보를 찾을 수 없습니다!')
@@ -56,7 +56,7 @@ export const openView = {
     }
     var content = contentDetail.data.content[0]
 
-    content.D_CONT_USER_DO = await this.$settingUserDo(content.userDoList)
+    content = await commonMethods.settingUserDo(content)
     if (!content.D_MEMO_LIST && (!content.memoList || content.memoList.length === 0)) content.D_MEMO_LIST = []
 
     this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [content])
@@ -146,6 +146,51 @@ export const openView = {
       return response.data
     }
   },
+  async getWriteBoardData (teamKey) {
+    if (!teamKey) return
+    var resultData = {}
+    var paramMap = new Map()
+    paramMap.set('teamKey', teamKey)
+    paramMap.set('currentTeamKey', teamKey)
+    paramMap.set('sysCabinetCode', 'BOAR')
+    paramMap.set('shareType', 'W')
+    paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
+    // console.log(paramMap)
+    var response = await commonAxiosFunction({ url: 'service/tp.getCabinetListForMyShareType', param: Object.fromEntries(paramMap) }, false)
+    console.log(response)
+    if (response.status === 200 || response.statusText === 'OK') {
+      resultData = response.data
+      return resultData
+    } else {
+      return false
+    }
+    // if (!teamKey) return
+    // var resultData = {}
+    // var paramMap = new Map()
+    // paramMap.set('teamKey', teamKey)
+    // paramMap.set('currentTeamKey', teamKey)
+    // paramMap.set('sysCabinetCode', 'BOAR')
+    // paramMap.set('shareType', 'W')
+    // paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
+    // // console.log(paramMap)
+    // var response = await commonAxiosFunction({ url: 'service/tp.getTeamMenuList', param: Object.fromEntries(paramMap) }, false)
+    // console.log(response)
+    // if (response.status === 200 || response.statusText === 'OK') {
+    //   resultData.teamList = response.data
+    // }
+    // // console.log(paramMap)
+    // response = null
+    // response = await this.$commonAxiosFunction({
+    //   // url: 'service/tp.getCabinetDetail',
+    //   url: 'service/tp.getCabinetListForMyShareType',
+    //   param: Object.fromEntries(paramMap)
+    // }, true)
+    // console.log(response)
+    // if (response.status === 200 || response.statusText === 'OK') {
+    //   resultData.writeCabinetList = response.data
+    // }
+    // return resultData
+  },
   async getFollowerList (paramMap) {
     var result = await commonAxiosFunction({
       url: 'service/tp.getFollowerList',
@@ -185,5 +230,6 @@ export default {
     Vue.config.globalProperties.$getRouterViewData = openView.getRouterViewData
     Vue.config.globalProperties.$getManagingPageData = openView.getManagingPageData
     Vue.config.globalProperties.$getGPopData = openView.getGPopData
+    Vue.config.globalProperties.$getWriteBoardData = openView.getWriteBoardData
   }
 }

@@ -38,7 +38,8 @@
 <script>
 export default {
   props: {
-    propTeamKey: {}
+    propTeamKey: {},
+    propChanList: {}
   },
   data () {
     return {
@@ -49,12 +50,17 @@ export default {
     }
   },
   created () {
-    if (!this.propTeamKey) {
-      this.getTeamList()
+    if (this.propChanList) {
+      this.mSelectChanList = JSON.parse(JSON.stringify(this.propChanList))
+      this.mSelectedChan = this.mSelectChanList[0].teamKey
     } else {
-      this.mSelectChanList.push(this.propTeamKey)
-      this.mSelectedChan = this.propTeamKey
-      this.checkPermi()
+      if (!this.propTeamKey) {
+        this.getTeamList()
+      } else {
+        this.mSelectChanList.push(this.propTeamKey)
+        this.mSelectedChan = this.propTeamKey
+        this.checkPermi()
+      }
     }
     this.$addHistoryStack('bottomWriteSheets')
   },
@@ -105,7 +111,7 @@ export default {
         this.getTeamList(false)
       }
     },
-    openWritePushPop () {
+    async openWritePushPop () {
       if (this.propTeamKey && this.mSelectedWriteType === 'ALIM' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
         this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
         this.$checkDeleteHistory('bottomWriteSheets')
@@ -124,7 +130,13 @@ export default {
           writeParam.targetNameMtext = this.mSelectChanList[index].nameMtext
         }
       } else if (this.mSelectedWriteType === 'BOAR') {
+        var teamList = await this.$getWriteBoardData(this.mSelectedChan)
+        if (teamList === false) {
+          this.$showToastPop('채널을 다시 선택 후 확인 버튼을 눌러주세요!')
+          return
+        }
         writeParam.selectBoardYn = true
+        writeParam.initData = teamList
       }
       this.openPop(writeParam)
       // this.mSeleteWriteTypePopShowYn = false

@@ -4,6 +4,7 @@
         <div class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 16px 20px;">
             <div @click="goChannelMain()" :style="this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
                 <div :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext : CONT_DETAIL.logoPathMtext) + ');'" style="width: calc(100% - 2px); height:  calc(100% - 2px); border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;">
+
                 </div>
             </div>
             <div style="width: calc(100% - 55px); margin-left: 10px; height: 100%; float: left; display: flex; flex-direction: column;" >
@@ -197,9 +198,16 @@ export default {
     this.$nextTick(async () => {
       this_.addImgEvnt()
     })
+    // if (window.document.readyState !== 'loading') {
+    //   this.setContentsMoreText()
+    // } else {
+    //   window.document.addEventListener('DOMContentLoaded', function () {
+    //     this.setContentsMoreText()
+    //   })
+    // }
     await this.setContentsMoreText()
     await this.setPreTagInFirstTextLine()
-    // console.log(this.CONT_DETAIL)
+    console.log(this.CONT_DETAIL)
   },
   methods: {
     async clickFileDownload () {
@@ -666,17 +674,18 @@ export default {
         var imgList = await window.document.querySelectorAll('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
         if (imgList && imgList.length > 0) {
           for (let i = 0; i < imgList.length; i++) {
-            // console.log(imgList[i])
             imgList[i].addEventListener('load', (event) => {
-              // console.log('page is fully loaded')
-              // console.log(event)
-              // console.log(event.path[0].clientHeight)
-              var imgsHeight = 0
-              imgsHeight += event.path[0].clientHeight
-              var contentHeight = contents + imgsHeight
-              var bodyMoreText = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
-              if (contentHeight > 399) {
-                bodyMoreText.style.display = 'block'
+              try {
+                var imgsHeight = 0
+                imgsHeight += imgList[i].clientHeight
+                // imgsHeight += event.path[0].clientHeight
+                var contentHeight = contents + imgsHeight
+                var bodyMoreText = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
+                if (contentHeight > 399) {
+                  bodyMoreText.style.display = 'block'
+                }
+              } catch (error) {
+                // alert(error)
               }
             })
           }

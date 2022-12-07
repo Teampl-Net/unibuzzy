@@ -83,7 +83,7 @@
 
       <!-- 작성 창 영역 -->
       <div id="pageMsgAreaWrap" class="pageMsgArea mtop-1 w-100P fl" style=" padding: 0px 1.5rem 0rem 1.5rem; ">
-        <formEditor style="margin-top:1rem; margin-bottom: 1rem;" class="fl" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText" @inputScroll='inputScroll' @postToolBox='postToolBox'/>
+        <formEditor style="margin-top:1rem; margin-bottom: 1rem;" class="fl" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText" @postToolBox='postToolBox'/>
         <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
       </div>
     </div>
@@ -186,8 +186,6 @@ export default {
         }
       } else if (this.contentType === 'BOAR') {
         this.titleShowYn = true
-        console.log(' 여기 여기 여기 여기 여기 여기 여기 ')
-        console.log(this.propData.bodyFullStr)
         if (this.propData.UseAnOtherYn) {
           this.bodyString = this.decodeContents(this.propData.bodyFullStr)
           this.selectBoardYn = true
@@ -315,13 +313,22 @@ export default {
       }
       if (this.propData.selectBoardYn === true) {
         this.selectBoardYn = true
-        this.getTeamMenuList()
+        if (!this.propData.initData) {
+          this.getTeamMenuList()
+        } else {
+          // initData <- selectBoard에서도 구분하고 있음 수정 시 같이 봐야함!
+          this.selectBoardList = this.propData.initData
+          if (this.selectBoardList.length > 0) {
+            console.log(this.selectBoardList[0])
+            this.selectBoard(this.selectBoardList[0], 0)
+          }
+        }
       }
     }
   },
   methods: {
     changeFormEditorStyle (changeParam) {
-      // 전부 선택된 box로 처리를 하기에 ref로 접근해서 함수를 실행하고 있습니다.
+      // toolbox에 기능 전부, 선택된 formEditor에 드레그 한 text로 처리를 하기에 ref로 접근해서 함수를 실행하고 있습니다.
       // bold, italic, underLine은 text만 넘겨줘도 기능이 작동하기에 따로 구분을 하지 않았습니다.
       var targetType = changeParam.type
       if (targetType === 'font') {
@@ -336,14 +343,6 @@ export default {
       // toolbox에 들어간 option들을 formEditor에서 watch로 계속 넘겨받고 prop으로 넘겨주고 있습니다! -j
       this.mToolBoxOptions = toolBoxOption
     },
-    // inputScroll (inputScroll) {
-    //   var scrollArea = this.$refs.scrollFormArea
-    //   // var a = window.document.getElementById('scrollFormArea').scrollTo()
-    //   var tempTop = scrollArea.scrollTo
-    //   // alert(JSON.stringify(tempTop))
-    //   window.document.getElementById('scrollFormArea').scrollTo({ top: 10 })
-    //   window.document.getElementById('scrollFormArea').scrollTo({ top: tempTop, behavior: 'smooth' })
-    // },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
@@ -351,6 +350,7 @@ export default {
     },
     async getCabinetDetail (cabinetKey) {
       var paramMap = new Map()
+      console.log(this.propData)
       paramMap.set('teamKey', this.propData.currentTeamKey)
       paramMap.set('currentTeamKey', this.propData.currentTeamKey)
       paramMap.set('cabinetKey', cabinetKey)
@@ -359,9 +359,12 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       // console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: 'service/tp.getCabinetDetail',
+        // url: 'service/tp.getCabinetDetail',
+        url: 'service/tp.getCabinetListForMyShareType',
         param: Object.fromEntries(paramMap)
-      })
+      }, true)
+      console.log('!!!!!!!!!!!!!!!!!!!!!!@!@@@@@@@@@@@@@@@@@')
+      console.log(response)
       var mCabinet = response.data.mCabinet
       // console.log(mCabinet)
       this.fileYn = mCabinet.fileYn
@@ -369,42 +372,37 @@ export default {
     },
     async selectBoard (data, index) {
       this.selectBoardIndex = index
-      var mCabinet = await this.getCabinetDetail(data.cabinetKey)
-      // var cardList = document.querySelectorAll('.commonFormCard')
-      if (mCabinet.guideFullStr) {
-        /* for (var i = 0; i < cardList.length; i++) {
-          cardList[i].remove()
-        } */
-        // this.bodyString = this.decodeContents(mCabinet.guideFullStr)
-        // eslint-disable-next-line no-debugger
-        // debugger
-        this.$refs.complexEditor.addFormCard('text', this.decodeContents(mCabinet.guideFullStr))
-        // this.settingAlim()
-      } else {
-        // this.$refs.complexEditor.addFormCard('text')
-        /* this.bodyString = ''
-        // eslint-disable-next-line no-debugger
-        debugger
-        this.settingAlim() */
-      }
-      if (mCabinet.blindYn) {
-        this.cabBlindYn = true
-      }
-      var mCabinetShare = mCabinet.mShareItemList
-      // console.log(mCabinetShare)
-
-      if (mCabinetShare[0]) {
-        if (mCabinetShare[0].shareType) {
-          this.selectBoardCabinetKey = mCabinetShare[0].cabinetKey
-          this.cabinetName = data.cabinetNameMtext
-          this.writeBoardPlaceHolder = ''
+      var mCabinet
+      if (!this.propData.initData) {
+        mCabinet = await this.getCabinetDetail(data.cabinetKey)
+        console.log(mCabinet.mShareItemList)
+        var mCabinetShare = mCabinet.mShareItemList
+        if (mCabinetShare[0]) {
+          if (mCabinetShare[0].shareType) {
+            this.selectBoardCabinetKey = mCabinetShare[0].cabinetKey
+            this.cabinetName = data.cabinetNameMtext
+            this.writeBoardPlaceHolder = ''
+          } else {
+            this.selectBoardCabinetKey = null
+            this.writeBoardPlaceHolder = '권한없음'
+            return
+          }
         } else {
           this.selectBoardCabinetKey = null
           this.writeBoardPlaceHolder = '권한없음'
+          return
         }
       } else {
-        this.selectBoardCabinetKey = null
-        this.writeBoardPlaceHolder = '권한없음'
+        mCabinet = data
+        this.selectBoardCabinetKey = mCabinet.cabinetKey
+        this.cabinetName = mCabinet.cabinetNameMtext
+      }
+      // var cardList = document.querySelectorAll('.commonFormCard')
+      if (mCabinet.guideFullStr) {
+        this.$refs.complexEditor.addFormCard('text', this.decodeContents(mCabinet.guideFullStr))
+      }
+      if (mCabinet.blindYn) {
+        this.cabBlindYn = true
       }
     },
     async getTeamMenuList () {

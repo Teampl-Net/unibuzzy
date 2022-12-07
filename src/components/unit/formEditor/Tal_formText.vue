@@ -83,15 +83,6 @@ export default {
   methods: {
     test () {
       this.$emit('showToolBox', { tools: this.tools })
-      // var tt = this.$refs.formTextArea
-      // var formArea = document.getElementById('scrollFormArea')
-      // if (formArea) {
-      //   var sTop = formArea.scrollTop
-      //   formArea.scrollTo({ top: sTop + 5, behavior: 'smooth' })
-      // }
-      // console.log(tt)
-      // this.$emit('inputScroll', tt.scrollHeight)
-      // this.$emit('inputScroll')
     },
     focusInput () {
       this.$nextTick(() => {
@@ -126,27 +117,15 @@ export default {
             var result = await thisthis.$saveFileSize(image, file)
             thisthis.$refs.complexEditor.successImgPreview({ targetKey: document.querySelectorAll('#eContentsWrap .formDiv').length - 1, selectFileList: [{ previewImgUrl: result.path, addYn: true, file: result.file }], originalType: 'image' })
             thisthis.$refs.complexEditor.addFormCard('image', result.path, true)
-            // this.$emit('updateImgForm', this.previewImgUrl)
-            // editorImgResize1(canvas.toDataURL('image/png', 0.8))
-            // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
           }
           image.onerror = function () {
 
           }
           image.src = e.target.result
-          // this.previewImgUrl = e.target.result
         }
         reader.readAsDataURL(file)
-        // await this.$editorImgResize(this.selectFile)
       }
-      /* if (thisthis.$refs.selectFile.files.length > 1) {
-        thisthis.$emit('setMultiFile', thisthis.selectFileList)
-      } */
     }
-    // eslint-disable-next-line no-unused-vars
-    /* blurEvnt () {
-      this.$emit('updateCard', { type: 'goBlur' })
-    } */
   }
 }
 </script>

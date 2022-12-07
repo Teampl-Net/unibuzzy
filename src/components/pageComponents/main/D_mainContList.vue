@@ -9,7 +9,7 @@
     </div>
     <div v-if="mSeleteWriteTypePopShowYn" @click="mSeleteWriteTypePopShowYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
     <transition name="showUp">
-      <writeBottSheet v-if="mSeleteWriteTypePopShowYn" @openPop='openPop' @closePop='mSeleteWriteTypePopShowYn = false' />
+      <writeBottSheet v-if="mSeleteWriteTypePopShowYn" @openPop='openPop' @closePop='mSeleteWriteTypePopShowYn = false' :propChanList='mSelectChanList' />
     </transition>
   </div>
 
@@ -35,7 +35,6 @@ export default {
       mEndListYn: false,
       mSelectedWriteType: 'ALIM',
       mSelectChanList: [],
-      mSelectedChan: 0,
       mSeleteWriteTypePopShowYn: false,
 
       // 첫 진입과 삭제 후 리스트를 다시 못 그려주기에 watch 추가
@@ -68,7 +67,7 @@ export default {
       this.mReloadKey += 1
     },
     openPop (openPopParam) {
-      // 바텀시트 ( 컨텐츠 작성 버튼을 누른 후 아래에서 올라오는 팝업으로 컨텐츠 작성을 누를 시 바텀시트를 닫아주는 중! )
+      // 컨텐츠 작성을 누를 시 바텀시트를 닫아주는 중!
       if (this.mSeleteWriteTypePopShowYn === true) this.mSeleteWriteTypePopShowYn = false
       this.$emit('openPop', openPopParam)
     },
@@ -166,19 +165,14 @@ export default {
         this.mOffsetInt += 1
       }
     },
-    selectWriteType (jobkindId) {
-      this.mSelectedWriteType = jobkindId
-      this.mSelectedChan = 0
-      this.mSelectChanList = []
-      this.getTeamList(false)
-    },
     async getTeamList (loadingYn) {
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
       paramMap.set('pageSize', 100)
-      if (this.mSelectedWriteType === 'ALIM') {
-        paramMap.set('canSendAlim', true)
-      }
+      // if (this.mSelectedWriteType === 'ALIM') {
+      // 기본 선택값이 ALIM이기에 ALIM에 관한 CHANNEL를 얻기 위함
+      paramMap.set('canSendAlim', true)
+      // }
       var nonLoading = true
       if (loadingYn) {
         nonLoading = false
@@ -186,29 +180,9 @@ export default {
 
       var resultList = await this.$getTeamList(paramMap, nonLoading)
       this.mSelectChanList = resultList.data.content
-      this.mSelectedChan = this.mSelectChanList[0].teamKey
-      // console.log(resultList)
     },
-    openWritePushPop () { // eslint-disable-next-line no-new-object
-      var writeParam = new Object()
-      writeParam.contentsJobkindId = this.mSelectedWriteType
-      writeParam.targetKey = this.mSelectedChan
-      writeParam.teamKey = this.mSelectedChan
-      writeParam.currentTeamKey = this.mSelectedChan
-      writeParam.targetType = 'writeContents'
-      if (this.mSelectedWriteType === 'ALIM') {
-        var index = this.mSelectChanList.findIndex((item) => item.teamKey === this.mSelectedChan)
-        if (index !== -1) {
-          writeParam.targetNameMtext = this.mSelectChanList[index].nameMtext
-        }
-      } else if (this.mSelectedWriteType === 'BOAR') {
-        writeParam.selectBoardYn = true
-      }
-      this.openPop(writeParam)
-      this.mSeleteWriteTypePopShowYn = false
-    },
-    openSelectWriteTypePop () {
-      this.getTeamList()
+    async openSelectWriteTypePop () {
+      await this.getTeamList(true)
       this.mSeleteWriteTypePopShowYn = true
     }
   },

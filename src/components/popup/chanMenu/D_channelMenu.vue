@@ -96,7 +96,7 @@ export default {
       this.$store.commit('D_HISTORY/updateStack', history)
       this.mScreenHeight = window.innerHeight
 
-      this.getTeamCabList().then(temp => {
+      this.getTeamCabList(false).then(temp => {
         this.getTeamMenuList().then(teemp => {
           this.boardListLength()
           this.bookListLength()
@@ -187,7 +187,7 @@ export default {
       params.teamNameMtext = this.teamName()
       this.$emit('openItem', params)
     },
-    async getTeamCabList () {
+    async getTeamCabList (loadingYn) {
       var paramMap = new Map()
       paramMap.set('teamKey', this.mChanAlimListTeamKey)
       paramMap.set('sysCabinetCode', 'USER')
@@ -195,7 +195,7 @@ export default {
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getTeamMenuList',
         param: Object.fromEntries(paramMap)
-      }, true)
+      }, !(loadingYn === false))
       var tempList = []
       tempList = result.data
       for (var i = 0; i < tempList.length; i++) {
