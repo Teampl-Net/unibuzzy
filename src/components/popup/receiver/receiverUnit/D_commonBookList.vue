@@ -79,7 +79,7 @@ export default {
     setAddressList () {
       this.mAddressBookList = this.propBookList
       for (let i = 0; i < this.mAddressBookList.length; i++) {
-        this.mAddressBookList[i].jobKindId = 'BOOK'
+        this.mAddressBookList[i].jobkindId = 'BOOK'
       }
     },
     receiveCardEmit (param) {
@@ -130,7 +130,7 @@ export default {
         for (var i = 0; i < this.mAddressBookList.length; i++) {
           this.mAddressBookList[i].selectedYn = false
           for (var s = 0; s < this.mSelectedBookList.length; s++) {
-            if (this.mSelectedBookList[s].accessKey === this.mAddressBookList[i].cabinetKey) {
+            if (this.mSelectedBookList[s].accessKey === (this.mAddressBookList[i].cabinetKey || this.mAddressBookList[i].memberTypeKey)) {
               this.mAddressBookList[i].selectedYn = true
               break
             }
@@ -142,9 +142,15 @@ export default {
       if (!this.mSelectedBookList) {
         this.mSelectedBookList = []
       }
-      data.shareSeq = data.cabinetKey
-      if (!data.accessKey) data.accessKey = data.cabinetKey
-      var indexOf = this.mSelectedBookList.findIndex(i => i.accessKey === data.cabinetKey)
+      var aKey = null
+      if (data.memberYn) {
+        aKey = data.memberTypeKey
+      } else {
+        aKey = data.cabinetKey
+      }
+      data.shareSeq = aKey
+      if (!data.accessKey) data.accessKey = aKey
+      var indexOf = this.mSelectedBookList.findIndex(i => i.accessKey === aKey)
       if (indexOf === -1) {
         this.mSelectedBookList.push(data)
         this.mAddressBookList[index].selectedYn = true

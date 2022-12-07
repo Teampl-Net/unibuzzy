@@ -26,7 +26,8 @@
               <div v-if="!allRecvYn" class="fl w-100P textLeft mleft-05 mtop-05" @click="openPushReceiverSelect" style="border:1px solid #ccc; border-radius:8px; min-height: 30px; background: white; padding-left: 5px; display: flex; justify-content: space-between; align-items: center;">
                 <div v-if="this.receiverList.list && this.receiverList.list.length > 0" class="fl w-100P">
                   <div v-for="(value, index) in this.receiverList.list" :key="index" class="fl mright-1" style="display: flex;">
-                    <img v-if="value.type === 'BOOK'" class="img-w15 fl" src="../../assets/images/channel/channer_addressBook.svg" alt="">
+                    <img v-if="value.type === 'BOOK' && !value.memberYn" class="img-w15 fl" src="../../assets/images/channel/channer_addressBook.svg" alt="">
+                    <img v-if="value.type === 'BOOK' && value.memberYn" class="img-w15 fl" src="../../assets/images/common/memberIcon.svg" alt="">
                     <img v-if="value.type === 'USER'" class="img-w15 fl" src="../../assets/images/footer/icon_people.svg" alt="">
                     <p class="fl font14 mleft-01 commonDarkGray">{{value.name}}</p>
                   </div>
@@ -456,7 +457,12 @@ export default {
       for (let i = 0; i < this.receiverList.bookList.length; i++) {
         temp = {}
         temp.type = 'BOOK'
-        temp.name = this.$changeText(this.receiverList.bookList[i].cabinetNameMtext)
+        temp.memberYn = this.receiverList.bookList[i].memberYn
+        if (!this.receiverList.bookList[i].memberYn) {
+          temp.name = this.$changeText(this.receiverList.bookList[i].cabinetNameMtext)
+        } else {
+          temp.name = this.$changeText(this.receiverList.bookList[i].nameMtext)
+        }
         this.receiverList.list.push(temp)
       }
       this.list = []
@@ -954,11 +960,15 @@ export default {
       if (this.receiverList.bookList) {
         for (let i = 0; i < this.receiverList.bookList.length; i++) {
           var selectedBookList = this.receiverList.bookList[i]
-
-          shareItemBookObject = {}
-          shareItemBookObject.accessKind = 'C'
-          shareItemBookObject.accessKey = selectedBookList.cabinetKey
-
+          if (!selectedBookList.memberYn) {
+            shareItemBookObject = {}
+            shareItemBookObject.accessKind = 'C'
+            shareItemBookObject.accessKey = selectedBookList.cabinetKey
+          } else {
+            shareItemBookObject = {}
+            shareItemBookObject.accessKind = 'M'
+            shareItemBookObject.accessKey = selectedBookList.memberTypeKey
+          }
           /* this.list.push(this.receiverList.bookList[i].cabinetKey) */
           // this.receiverText += ', ' + selectedBookList.cabinetNameMtext
           // this.list.push(shareItemBookObject)
@@ -999,13 +1009,17 @@ export default {
       }
       return newAttachFileList
     },
-    openPushReceiverSelect () {
+    async openPushReceiverSelect () {
       var param = {}
       param.targetType = 'selectBookList'
       param.targetKey = this.params.targetKey
       param.teamKey = this.params.targetKey
       param.teamNameMtext = this.params.teamNameMtext
-
+      var selectListParamMap = new Map()
+      selectListParamMap.set('teamKey', this.params.targetKey)
+      param.param = selectListParamMap
+      var initData = await this.$getGPopData(param)
+      param.initData = initData
       var selectedList = this.receiverList
       param.pSelectedList = selectedList
 

@@ -233,7 +233,7 @@ export default {
           bookType: this.bookType,
           excelList: this.excelFileList,
           cabinetKey: this.cabinetKey,
-          jobKindId: 'USER',
+          jobkindId: 'USER',
           targetKey: this.targetKEy
         }
       })

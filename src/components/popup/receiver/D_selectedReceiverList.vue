@@ -7,25 +7,34 @@
     </div>
     <div class="selecteItemdArea">
       <!-- <div v-for="(data, index) in receiverList" :key="index" class=" fl mright-1"  style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <template v-if="data.jobKindId === 'BOOK'">
+        <template v-if="data.jobkindId === 'BOOK'">
           <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl mright-05" style="width:20px" alt="">
           <p class="fl font15 commonBlack">{{this.$changeText(data.cabinetNameMtext)}}</p>
         </template>
-        <template v-else-if="data.jobKindId === 'USER'">
+        <template v-else-if="data.jobkindId === 'USER'">
           <div class="middleBgColor fl" >
             <div v-if="data.userProfileImg" :style="'background-image: url(' + (data.domainPath? data.domainPath + data.userProfileImg : data.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
             <div v-else style="background-image: url('../../../../assets/images/main/main_subscriber.png');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
           </div>
           <p class="fl font15 commonBlack">{{this.GE_USER.userKey === data.userKey ? '나' : this.$changeText(data.userDispMtext)}}</p>
         </template>
-        <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn((data.jobKindId === 'BOOK' ? 'book' : 'user'),index, team.cabinetKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
+        <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn((data.jobkindId === 'BOOK' ? 'book' : 'user'),index, team.cabinetKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
       </div> -->
       <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl mright-1"  style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; max-width:60px">
-        <div class="middleBgColor fl imgCircle"  >
-          <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl img-w20" alt="">
+        <div style="width: 100%; float: left;" v-if="!team.memberYn">
+            <div class="middleBgColor fl imgCircle"  >
+                <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl img-w20" alt="">
+            </div>
+            <p class="fl font15 commonBlack textOverdot w-100P">{{this.$changeText(team.cabinetNameMtext)}}</p>
+            <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('book', index, team.cabinetKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
         </div>
-        <p class="fl font15 commonBlack textOverdot w-100P">{{this.$changeText(team.cabinetNameMtext)}}</p>
-        <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('book', index, team.cabinetKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
+        <div style="width: 100%; float: left;" v-else-if="team.memberYn">
+            <div class="middleBgColor fl imgCircle"  >
+                <img src="../../../assets/images/common/memberIcon.svg" class="fl img-w20" alt="">
+            </div>
+            <p class="fl font15 commonBlack textOverdot w-100P">{{this.$changeText(team.nameMtext)}}</p>
+            <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('book', index, team.memberTypeKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
+        </div>
       </div>
 
       <div v-for="(member, index) in teamList.memberList" :key='index'  class=" fl mright-1"  style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; max-width:60px">
@@ -102,7 +111,7 @@ export default {
     //       for (let i = 0; i < this.listData.bookList.length; i++) {
     //         temp = {}
     //         temp = this.listData.bookList[i]
-    //         temp.jobKindId = 'BOOK'
+    //         temp.jobkindId = 'BOOK'
     //         selectedReceiverList.push(temp)
     //       }
     //     }
@@ -110,7 +119,7 @@ export default {
     //       for (let i = 0; i < this.listData.memberList.length; i++) {
     //         temp = {}
     //         temp = this.listData.memberList[i]
-    //         temp.jobKindId = 'USER'
+    //         temp.jobkindId = 'USER'
     //         selectedReceiverList.push(temp)
     //       }
     //     }

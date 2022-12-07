@@ -112,7 +112,7 @@ export default {
           var accessKind = this.alimDetail.shareList[i].accessKind
           if (accessKind === 'U') {
             this.parentList.memberList.push(this.alimDetail.shareList[i])
-          } else {
+          } else if (accessKind === 'C' || accessKind === 'M') {
             if (this.alimDetail.shareList[i].muserList && this.alimDetail.shareList[i].muserList.length > 0) {
               for (var s = 0; s < this.alimDetail.shareList[i].muserList.length; s++) {
                 var shareUser = this.alimDetail.shareList[i].muserList[s]
@@ -120,11 +120,36 @@ export default {
                 settingObj.accessKind = 'U'
                 settingObj.accessKey = shareUser.userKey
                 settingObj.userDispMtext = shareUser.userDispMtext
+                settingObj.phoneEnc = shareUser.phoneEnc
+                settingObj.userEmail = shareUser.userEmail
+                settingObj.userProfileImg = shareUser.userProfileImg
+                settingObj.domainPath = shareUser.domainPath
                 settingObj.shareseq = undefined
                 this.parentList.memberList.push(settingObj)
               }
             }
             // this.parentList.bookList.push(this.alimDetail.shareList[i])
+          } else if (accessKind === 'T') {
+            var paramMap = new Map()
+            paramMap.set('teamKey', this.teamKey)
+            paramMap.set('currentTeamKey', this.teamKey)
+            var this_ = this
+            this.$getFollowerList(paramMap).then((res) => {
+              console.log(res)
+              for (var s = 0; s < res.length; s++) {
+                var shareUser = res[s]
+                var settingObj = {}
+                settingObj.accessKind = 'U'
+                settingObj.accessKey = shareUser.userKey
+                settingObj.userDispMtext = shareUser.userDispMtext
+                settingObj.phoneEnc = shareUser.phoneEnc
+                settingObj.userEmail = shareUser.userEmail
+                settingObj.userProfileImg = shareUser.userProfileImg
+                settingObj.domainPath = shareUser.domainPath
+                settingObj.shareseq = undefined
+                this_.parentList.memberList.push(settingObj)
+              }
+            })
           }
         }
       }

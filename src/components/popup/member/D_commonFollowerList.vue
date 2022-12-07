@@ -34,8 +34,9 @@
                     <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold textLeft textOverdot">{{member.phoneEnc? member.phoneEnc: '휴대폰 정보 없음'}}</p>
                     <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{this.$changeFollowerInfo('phone', member.phoneEnc)}}</p>
                     <div class="w-100P fl">
+                        <p class="textLeft fl fontBold grayBlack font12 " >{{this.$changeText(member.memberNameMtext)}}</p>
                         <p class="textLeft fl fontBold grayBlack font12" v-for="(info, index) in member.memberInfoList" :key="index">
-                            {{index !== 0 ? ' | ' : ''}}{{'' + this.$changeText(info.memberTypeItemNameMtext)}}: {{info.itemVal}}
+                            {{index !== 0 ? ' | ' : '('}}{{'' + this.$changeText(info.memberTypeItemNameMtext)}}: {{info.itemVal}}{{index === member.memberInfoList.length - 1? ')' : ''}}
                         </p>
                     </div>
                 </div>

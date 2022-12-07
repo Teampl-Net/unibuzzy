@@ -131,7 +131,7 @@ export default {
       console.log(this.propMemberList)
       this.memberList = this.propMemberList
       for (let i = 0; i < this.memberList.length; i++) {
-        this.memberList[i].jobKindId = 'USER'
+        this.memberList[i].jobkindId = 'USER'
       }
       console.log(this.memberList)
     },

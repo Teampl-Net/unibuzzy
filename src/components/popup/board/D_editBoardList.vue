@@ -113,7 +113,7 @@ export default {
       var param = {}
       // console.log(data)
       param.currentTeamKey = data.creTeamKey
-      param.jobKindId = 'BOAR'
+      param.jobkindId = 'BOAR'
       param.cabinetKey = data.cabinetKey
       param.offsetInt = 0
       param.pageSize = 1

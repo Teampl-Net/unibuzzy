@@ -82,7 +82,7 @@ export default {
       console.log(this.propMemberList)
       this.mCommonMemberList = this.propMemberList
       for (let i = 0; i < this.mCommonMemberList.length; i++) {
-        this.mCommonMemberList[i].jobKindId = 'USER'
+        this.mCommonMemberList[i].jobkindId = 'USER'
       }
       console.log(this.mCommonMemberList)
     },

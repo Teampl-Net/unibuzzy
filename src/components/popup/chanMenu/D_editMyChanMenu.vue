@@ -151,9 +151,16 @@ export default {
       this.mCommonParam.modiYn = true
       this.openPop()
     },
-    openEditManagerPop () {
+    async openEditManagerPop () {
       this.mCommonParam.targetType = 'memberManagement'
+      var paramMap = new Map()
+      paramMap.set('adminYn', true)
+      paramMap.set('teamKey', this.propData.teamKey)
+      paramMap.set('pageSize', 1000)
+      this.mCommonParam.param = paramMap
+      var initData = await this.$getManagingPageData(this.mCommonParam)
       this.mCommonParam.popHeaderText = '구독자 관리'
+      this.mCommonParam.initData = initData
       this.openPop()
     },
     autoAnswerClick () {

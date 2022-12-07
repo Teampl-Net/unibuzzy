@@ -99,7 +99,7 @@ export default {
     setAddressList () {
       this.mAddressBookList = this.listData
       for (let i = 0; i < this.mAddressBookList.length; i++) {
-        this.mAddressBookList[i].jobKindId = 'BOOK'
+        this.mAddressBookList[i].jobkindId = 'BOOK'
       }
     },
     receiveCardEmit (param) {

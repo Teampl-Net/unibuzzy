@@ -290,6 +290,15 @@ export const methods = {
     resultList = result.data
     return resultList
   },
+  async getFollowerList (paramMap) {
+    var result = await this.$commonAxiosFunction({
+      url: 'service/tp.getFollowerList',
+      param: Object.fromEntries(paramMap)
+    })
+    return result.data.content
+    // // console.log(this.managingList)
+    // paramMap.set('followerType', 'M')
+  },
   async saveUserDo (inputParam, type) {
     var param = {}
     if (inputParam) {
@@ -606,5 +615,6 @@ export default {
     Vue.config.globalProperties.$getMemoCount = methods.getMemoCount
     Vue.config.globalProperties.$saveFcmToken = methods.saveFcmToken
     Vue.config.globalProperties.$d_AlimLogout = methods.d_AlimLogout
+    Vue.config.globalProperties.$getFollowerList = methods.getFollowerList
   }
 }

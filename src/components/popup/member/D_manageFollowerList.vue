@@ -81,7 +81,10 @@ export default {
   },
   created () {
     console.log(this.propData)
-    this.getFollowerList()
+    if (this.propData.initData) {
+        this.managerList = this.propData.initData.content
+    }
+    // this.getFollowerList()
 
   },
   mounted () {

@@ -37,6 +37,7 @@ export default {
   created () {
     console.log(this.selectList)
     console.log(this.chanInfo)
+    console.log(this.parentList)
     console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
     // console.log(this.parentList)
 

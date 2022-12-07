@@ -437,8 +437,12 @@ export const commonMethods = {
     }
     if (data.followYn) {
       followerText = '구독자'
-      if (data.memberInfoList && data.memberInfoList.length > 0 && data.memberInfoList[0].memberTypeKey) {
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (data.memberNameMtext) {
         followerText = this.changeText(data.memberNameMtext)
+      }
+      if (data.memberInfoList && data.memberInfoList.length > 0 && data.memberInfoList[0].memberTypeKey) {
         followerText += '( '
         for (var i = 0; i < data.memberInfoList.length; i++) {
           if (i !== 0) {
@@ -449,8 +453,6 @@ export const commonMethods = {
           followerText += data.memberInfoList[i].itemVal + this.changeText(data.memberInfoList[i].memberTypeItemNameMtext)
         }
         followerText += ' )'
-      } else {
-        followerText = '구독자'
       }
       if (data.ownerYn) {
         followerText = '소유자'

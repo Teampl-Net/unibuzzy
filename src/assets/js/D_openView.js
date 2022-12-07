@@ -79,6 +79,26 @@ export const openView = {
     }
     return resultData
   },
+  async getManagingPageData (data) {
+    var page = data.targetType
+    var resultData = null
+    if (page === 'memberManagement') {
+      return await openView.getFollowerList(data.param)
+    } else if (page === 'search') {
+      return await openView.getSearchMainBoard()
+    } else if (page === 'chanList') {
+      return await openView.getMainChanList()
+    }
+    return resultData
+  },
+  async getGPopData (data) {
+    var page = data.targetType
+    var resultData = null
+    if (page === 'selectBookList') {
+      return await openView.getSelectBookList(data.param)
+    }
+    return resultData
+  },
   async getMainBoard () {
     var paramMap = new Map()
     paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
@@ -125,6 +145,35 @@ export const openView = {
       await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response.data.content)
       return response.data
     }
+  },
+  async getFollowerList (paramMap) {
+    var result = await commonAxiosFunction({
+      url: 'service/tp.getFollowerList',
+      param: Object.fromEntries(paramMap)
+    })
+    debugger
+    console.log(result)
+    if (result.status === 200) {
+      return result.data
+    }
+    // // console.log(this.managingList)
+    // paramMap.set('followerType', 'M')
+  },
+  async getSelectBookList (paramMap) {
+    paramMap.set('sysCabinetCode', 'USER')
+    paramMap.set('adminYn', true)
+    var result = await commonAxiosFunction({
+      url: 'service/tp.getTeamMenuList',
+      param: Object.fromEntries(paramMap)
+    })
+    console.log(result)
+    if (result.status === 200) {
+      for (var i = 0; i < result.data.length; i++) {
+        result.data[i].jobkindId = 'BOOK'
+      }
+      return result.data
+    }
+    // this.editBookSelectedList()
   }
 }
 
@@ -134,6 +183,7 @@ export default {
     Vue.config.globalProperties.$getBoardMainData = openView.getBoardMainData
     Vue.config.globalProperties.$getContentDetailData = openView.getContentDetailData
     Vue.config.globalProperties.$getRouterViewData = openView.getRouterViewData
-    Vue.config.globalProperties.$getMainBoard = openView.getMainBoard
+    Vue.config.globalProperties.$getManagingPageData = openView.getManagingPageData
+    Vue.config.globalProperties.$getGPopData = openView.getGPopData
   }
 }

@@ -64,12 +64,12 @@ export default {
         this.popId = 'selectBookNMemPop' + history.length
         history.push(this.popId)
         this.$store.commit('D_HISTORY/updateStack', history)
-
+        console.log(this.selectBookNList)
         if (this.selectBookNList.memberList !== undefined && this.selectBookNList.memberList !== null && this.selectBookNList.memberList !== []) {
             if (this.selectBookNList.memberList.length > 0) {
                 this.memberList = [...this.selectBookNList.memberList]
                 for (var i = 0; i < this.memberList.length; i++) {
-									this.memberList[i].jobKindId = 'USER'
+									this.memberList[i].jobkindId = 'USER'
 									this.memberList[i].selectedYn = false
                 }
             }
@@ -78,7 +78,7 @@ export default {
             if (this.selectBookNList.bookList.length > 0) {
                 this.bookList = [...this.selectBookNList.bookList]
                 for (var i = 0; i < this.bookList.length; i++) {
-									this.bookList[i].jobKindId = 'BOOK'
+									this.bookList[i].jobkindId = 'BOOK'
 									this.bookList[i].selectedYn = false
                 }
             }
@@ -141,7 +141,7 @@ export default {
 				if (type === 'add') {
 					this.addSelectedList(data, idx)
 				} else if (type === 'open') {
-                    if (data.jobKindId === 'BOOK') this.$emit('detail', data)
+                    if (data.jobkindId === 'BOOK') this.$emit('detail', data)
                 }
     	},
         setParentSelectList () {
@@ -202,7 +202,7 @@ export default {
             console.log(data)
             console.log(type)
             if (type === undefined){
-                type = data.jobKindId === 'BOOK' ? 'C' : 'U'
+                type = data.jobkindId === 'BOOK' ? 'C' : 'U'
             }
             if (type === 'U') {
                 var indexOf = this.setSelectedList.memberList.findIndex(i => (i.accessKey === data.accessKey && i.selectedYn === true))

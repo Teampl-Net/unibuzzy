@@ -2,6 +2,7 @@
 <div class="selectBookListWrap">
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' />
     <div class="pagePaddingWrap selectBookListContents">
+      <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
       <div class="bookListStyle">
         <bookList :propBookList="bookList" :teamInfo="this.propData" :parentSelectList="pSelectedBookList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
         <transition name="showGroup">
@@ -45,8 +46,8 @@ export default {
       oriList: {},
       pSelectedBookList: {},
       pSelectedMemberList: {},
-      activeTabList: [{ display: '주소록', name: 'A' }, { display: '멤버유형', name: 'M' }],
-      activeTab: 'A'
+      activeTabList: [{ display: '주소록', name: 'B' }, { display: '멤버유형', name: 'M' }],
+      activeTab: 'B'
     }
   },
   created () {
@@ -57,7 +58,11 @@ export default {
       this.selectedTeamList = this.selectedList.selectedTeamList
       this.selectedMemberList = this.selectedList.selectedMemberList
     }
-    this.getBookList()
+    if (this.propData.initData) {
+      this.bookList = this.propData.initData
+    }
+    this.editBookSelectedList()
+    // this.getBookList()
   },
   beforeUnmount () {
     this.$checkDeleteHistory('modiPopReceiverSelecPop')
@@ -102,20 +107,29 @@ export default {
   methods: {
     changeTab (type) {
       this.activeTab = type
-      this.getMemberTypeList()
+      this.detailOpenYn = false
+      if (this.activeTab === 'B') {
+        this.getBookList()
+      } else if (this.activeTab === 'M') {
+        this.getMemberTypeList()
+      }
     },
     async getMemberTypeList () {
       var param = {}
       param.teamKey = this.propData.teamKey
-      await this.$commonAxiosFunction({
+      var result = await this.$commonAxiosFunction({
         url: 'service/tp.getMemberTypeList',
         param: param
-      }).then(result => {
-        console.log(result)
-        if (result.result === true || result.result === 'true') {
-          this.bookList = result.data
-        }
       })
+      if (result.status === 200) {
+        this.bookList = result.data.memberTypeList
+        // eslint-disable-next-line no-debugger
+        debugger
+        for (var i = 0; i < this.bookList.length; i++) {
+          this.bookList[i].memberYn = true
+        }
+        console.log(this.bookList)
+      }
     },
     async getBookList () {
       var paramMap = new Map()
@@ -229,7 +243,7 @@ export default {
         for (var m = 0; m < this.bookList.length; m++) {
           this.bookList[m].selectedYn = false
           for (var c = 0; c < changeList.length; c++) {
-            if (changeList[c].cabinetKey === this.bookList[m].cabinetKey) {
+            if (((!bookList[m].memberYn) && changeList[c].cabinetKey === this.bookList[m].cabinetKey) || ((bookList[m].memberYn) && changeList[c].memberTypeKey === this.bookList[m].memberTypeKey)) {
               this.bookList[m].selectedYn = true
             }
           }
@@ -267,10 +281,28 @@ export default {
         this.$emit('closeXPop')
       }
     },
+    async openMemberUserList () {
+      var paramMap = new Map()
+      paramMap.set('memberTypeKey', this.selectBookDetail.memberTypeKey)
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.getFollowerMemberList',
+        param: Object.fromEntries(paramMap)
+      })
+      var userList = result.data.userList
+      for (var i = 0; i < userList.length; i++) {
+        userList[i].jobkindId = 'USER'
+      }
+      this.memberList = userList
+      console.log(userList)
+    },
     async openMCabUserList (data) {
       if (!this.teamEditYn) {
         this.selectBookDetail = data
-        await this.getBookMemberList()
+        if (data.memberYn) {
+          await this.openMemberUserList(data)
+        } else {
+          await this.getBookMemberList()
+        }
         this.detailOpenYn = true
 
         this.selectBookDetail = data

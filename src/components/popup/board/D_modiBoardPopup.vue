@@ -334,13 +334,23 @@ export default {
     },
     setSelectReceiveCount (selectGroup) {
       if (!selectGroup || !selectGroup.bookList || !selectGroup.memberList) return
-      var bookSize = selectGroup.bookList.length
-      var memberSize = selectGroup.memberList.length
-
+      var bookList = selectGroup.bookList
+      var memberSize = 0
+      var bookSize = 0
+      for (var i = 0; i < bookList.length; i++) {
+        if (!bookList[i].memberYn) {
+          bookSize += 1
+        } else if (bookList[i].memberYn) {
+          memberSize += 1
+        }
+      }
+      // eslint-disable-next-line no-debugger
+      debugger
+      var userSize = selectGroup.memberList.length
       // var text = ''
       var text = {}
       var list = []
-      if (bookSize === 0 && memberSize === 0) {
+      if (userSize === 0 && bookSize === 0 && memberSize === 0) {
         return ''
       } else {
         if (bookSize && bookSize > 0) {
@@ -354,13 +364,24 @@ export default {
           list.push(text)
         }
         if (memberSize && memberSize > 0) {
-          // text += '유저' + memberSize
+          // text += '주소록' + bookSize
+          // if (memberSize > 0) {
+          //   text += ', '
+          // }
           text = {}
-          text.type = 'user'
+          text.type = 'member'
           text.count = memberSize
           list.push(text)
         }
+        if (userSize && userSize > 0) {
+          // text += '유저' + memberSize
+          text = {}
+          text.type = 'user'
+          text.count = userSize
+          list.push(text)
+        }
         // return text
+        console.log(list)
         return list
       }
     },
@@ -372,7 +393,12 @@ export default {
       var memberSize = selectGroup.memberList
       var temp = ''
       for (let i = 0; i < bookSize.length; i++) {
-        temp += this.$changeText(bookSize[i].cabinetNameMtext) + ', '
+        console.log(bookSize[i])
+        if (!bookSize[i].memberYn) {
+          temp += this.$changeText(bookSize[i].cabinetNameMtext) + ', '
+        } else if (bookSize[i].memberYn) {
+          temp += this.$changeText(bookSize[i].nameMtext) + ', '
+        }
       }
       for (let i = 0; i < memberSize.length; i++) {
         temp += this.$changeText(memberSize[i].userDispMtext) + ', '
@@ -482,8 +508,19 @@ export default {
               }
               cabShareList[i].cabinetKey = cabShareList[i].accessKey
               this.shareGroup.selectedList.bookList.push(cabShareList[i])
-            }
-            if (cabShareList[i].accessKind === 'U') {
+              if (cabShareList[i].muserList) {
+                cabShareList[i].mUserList = cabShareList[i].muserList
+              }
+            } else if (cabShareList[i].accessKind === 'M') {
+              if (cabShareList[i].nameMtext === null) continue
+              cabShareList[i].memberYn = true
+              cabShareList[i].memberTypeKey = cabShareList[i].accessKey
+              cabShareList[i].cabinetKey = this.modiBoardDetailProps.cabinetKey
+              if (cabShareList[i].muserList) {
+                cabShareList[i].mUserList = cabShareList[i].muserList
+              }
+              this.shareGroup.selectedList.bookList.push(cabShareList[i])
+            } else if (cabShareList[i].accessKind === 'U') {
               // shareMemCount += 1
               this.shareGroup.selectedList.memberList.push(cabShareList[i])
             }
@@ -534,8 +571,18 @@ export default {
           debugger
           if (cabShareList[cIndex].cabinetNameMtext === null) continue
           mShareItemList[i].cabinetNameMtext = this.$changeText(cabShareList[cIndex].cabinetNameMtext)
-        }
-        if (mShareItemList[i].accessKind === 'U') {
+        } else if (mShareItemList[i].accessKind === 'M') {
+          // mShareItemList[i].accessKey = mShareItemList[i].accessKey
+          mShareItemList[i].shareSeq = cabShareList[cIndex].accessKey
+          if (cabShareList[cIndex].nameMtext === null) continue
+          mShareItemList[i].memberYn = true
+          mShareItemList[i].cabinetKey = this.modiBoardDetailProps.cabinetKey
+          mShareItemList[i].memberTypeKey = cabShareList[cIndex].accessKey
+          mShareItemList[i].nameMtext = this.$changeText(cabShareList[cIndex].nameMtext)
+          if (cabShareList[cIndex].muserList) {
+            cabShareList[cIndex].mUserList = cabShareList[i].muserList
+          }
+        } else if (mShareItemList[i].accessKind === 'U') {
           mShareItemList[i].shareSeq = cabShareList[cIndex].accessKey
           mShareItemList[i].userKey = cabShareList[cIndex].accessKey
           mShareItemList[i].userDispMtext = this.$changeText(cabShareList[cIndex].userDispMtext)
@@ -557,6 +604,8 @@ export default {
               debugger
               // this.permissionWGroup.selectedList.bookList = []
               this.permissionWGroup.selectedList.bookList.push(mShareItemList[i])
+            } else if (mShareItemList[i].accessKind === 'M') {
+              this.permissionWGroup.selectedList.bookList.push(mShareItemList[i])
             }
             if (mShareItemList[i].accessKind === 'U') {
               // this.permissionWGroup.selectedList.memberList = []
@@ -573,6 +622,9 @@ export default {
             if (mShareItemList[i].accessKind === 'C') {
               // this.permissionVGroup.selectedList.bookList = []
               this.permissionVGroup.selectedList.bookList.push(mShareItemList[i])
+            } else if (mShareItemList[i].accessKind === 'M') {
+              // this.permissionVGroup.selectedList.bookList = []
+              this.permissionVGroup.selectedList.bookList.push(mShareItemList[i])
             }
             if (mShareItemList[i].accessKind === 'U') {
               // this.permissionVGroup.selectedList.memberList = []
@@ -587,6 +639,9 @@ export default {
           } else {
             this.permissionRGroup.type = 'S'
             if (mShareItemList[i].accessKind === 'C') {
+              // this.permissionRGroup.selectedList.bookList = []
+              this.permissionRGroup.selectedList.bookList.push(mShareItemList[i])
+            } else if (mShareItemList[i].accessKind === 'M') {
               // this.permissionRGroup.selectedList.bookList = []
               this.permissionRGroup.selectedList.bookList.push(mShareItemList[i])
             }
@@ -733,11 +788,22 @@ export default {
         shareSeqList = this.shareGroup.selectedList.bookList
         for (var i = 0; i < shareSeqList.length; i++) {
           share = {}
-          share.accessKind = 'C'
-          share.accessKey = shareSeqList[i].accessKey
-          share.cabinetKey = this.modiBoardDetailProps.cabinetKey
-          share.shareSeq = shareSeqList[i].accessKey
-          if (shareSeqList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(shareSeqList[i].cabinetNameMtext)
+          // eslint-disable-next-line no-debugger
+          debugger
+          if (shareSeqList[i].memberYn) {
+            share.accessKind = 'M'
+            share.accessKey = shareSeqList[i].accessKey
+            share.shareSeq = shareSeqList[i].accessKey
+            share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+            if (shareSeqList[i].cabinetNameMtext) share.nameMtext = this.$changeText(shareSeqList[i].nameMtext)
+          } else {
+            share.accessKind = 'C'
+            share.accessKey = shareSeqList[i].accessKey
+            share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+            share.shareSeq = shareSeqList[i].accessKey
+            if (shareSeqList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(shareSeqList[i].cabinetNameMtext)
+          }
+
           var index = shareList.findIndex(item => item.accessKey === shareSeqList[i].accessKey)
           if (index === -1) {
             shareList.push(share)
@@ -746,6 +812,8 @@ export default {
         // eslint-disable-next-line no-array-constructor
         /* shareSeqList = new Array()
         shareSeqList = this.shareGroup.selectedList.memberList */
+        // eslint-disable-next-line no-debugger
+        debugger
         for (i = 0; i < this.shareGroup.selectedList.length; i++) {
           share = {}
           share.accessKind = 'U'
@@ -785,20 +853,34 @@ export default {
             index = shareList.findIndex(item => item.shareSeq === this.permissionWGroup.selectedList.bookList[i].accessKey)
             if (index === -1) {
               share = {}
-              share.accessKind = 'C'
+              // eslint-disable-next-line no-debugger
+              debugger
+              if (!this.permissionWGroup.selectedList.bookList[i].memberYn) {
+                share.accessKind = 'C'
+                share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+                if (this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext)
+              } else {
+                share.memberYn = true
+                share.accessKind = 'M'
+                share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+                share.nameMtext = this.$changeText(this.permissionWGroup.selectedList.bookList[i].nameMtext)
+              }
               share.accessKey = this.permissionWGroup.selectedList.bookList[i].accessKey
-              share.cabinetKey = this.modiBoardDetailProps.cabinetKey
               share.shareSeq = this.permissionWGroup.selectedList.bookList[i].accessKey
-              if (this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext)
               console.log('shareList.push')
               console.log(share)
               shareList.push(share)
             }
             teampItemList = {}
             teampItemList.shareType = 'W'
-            teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+            if (!this.permissionWGroup.selectedList.bookList[i].memberYn) {
+              if (this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext) teampItemList.cabinetNameMtext = this.$changeText(this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext)
+              teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+            } else {
+              teampItemList.nameMtext = this.$changeText(this.permissionWGroup.selectedList.bookList[i].nameMtext)
+            }
+
             teampItemList.shareSeq = this.permissionWGroup.selectedList.bookList[i].accessKey
-            if (this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext) teampItemList.cabinetNameMtext = this.$changeText(this.permissionWGroup.selectedList.bookList[i].cabinetNameMtext)
             itemList.push(teampItemList)
             // if(teampItemList.shareType !== data.bookList[i].shareType ){
           }
@@ -848,18 +930,29 @@ export default {
             index = shareList.findIndex(item => item.shareSeq === this.permissionVGroup.selectedList.bookList[i].accessKey)
             if (index === -1) {
               share = {}
-              share.accessKind = 'C'
+              if (!this.permissionVGroup.selectedList.bookList[i].memberYn) {
+                share.accessKind = 'C'
+                share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+                if (this.permissionVGroup.selectedList.bookList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(this.permissionVGroup.selectedList.bookList[i].cabinetNameMtext)
+              } else {
+                share.accessKind = 'M'
+                share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+                share.nameMtext = this.$changeText(this.permissionVGroup.selectedList.bookList[i].nameMtext)
+              }
               share.cabinetKey = this.modiBoardDetailProps.cabinetKey
               share.accessKey = this.permissionVGroup.selectedList.bookList[i].accessKey
               share.shareSeq = this.permissionVGroup.selectedList.bookList[i].accessKey
-              if (this.permissionVGroup.selectedList.bookList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(this.permissionVGroup.selectedList.bookList[i].cabinetNameMtext)
               shareList.push(share)
             }
             teampItemList = {}
             teampItemList.shareType = 'V'
-            teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+            if (!this.permissionVGroup.selectedList.bookList[i].memberYn) {
+              if (this.permissionVGroup.selectedList.bookList[i].cabinetNameMtext) teampItemList.cabinetNameMtext = this.$changeText(this.permissionVGroup.selectedList.bookList[i].cabinetNameMtext)
+              teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+            } else {
+              teampItemList.nameMtext = this.$changeText(this.permissionVGroup.selectedList.bookList[i].nameMtext)
+            }
             teampItemList.shareSeq = this.permissionVGroup.selectedList.bookList[i].accessKey
-            if (this.permissionVGroup.selectedList.bookList[i].cabinetNameMtext) teampItemList.cabinetNameMtext = this.$changeText(this.permissionVGroup.selectedList.bookList[i].cabinetNameMtext)
             itemList.push(teampItemList)
             // if(teampItemList.shareType !== data.bookList[i].shareType ){
           }
@@ -910,18 +1003,29 @@ export default {
             index = shareList.findIndex(item => item.shareSeq === this.permissionRGroup.selectedList.bookList[i].accessKey)
             if (index === -1) {
               share = {}
-              share.accessKind = 'C'
+              if (!this.permissionRGroup.selectedList.bookList[i].memberYn) {
+                share.accessKind = 'C'
+                share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+                if (this.permissionRGroup.selectedList.bookList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(this.permissionRGroup.selectedList.bookList[i].cabinetNameMtext)
+              } else {
+                share.accessKind = 'M'
+                share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+                share.nameMtext = this.$changeText(this.permissionRGroup.selectedList.bookList[i].nameMtext)
+              }
               share.accessKey = this.permissionRGroup.selectedList.bookList[i].accessKey
-              share.cabinetKey = this.modiBoardDetailProps.cabinetKey
               share.shareSeq = this.permissionRGroup.selectedList.bookList[i].accessKey
-              if (this.permissionRGroup.selectedList.bookList[i].cabinetNameMtext) share.cabinetNameMtext = this.$changeText(this.permissionRGroup.selectedList.bookList[i].cabinetNameMtext)
               shareList.push(share)
             }
             teampItemList = {}
             teampItemList.shareType = 'R'
+            if (!this.permissionRGroup.selectedList.bookList[i].memberYn) {
+              if (this.permissionRGroup.selectedList.bookList[i].cabinetNameMtext) teampItemList.cabinetNameMtext = this.$changeText(this.permissionRGroup.selectedList.bookList[i].cabinetNameMtext)
+              teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+            } else {
+              teampItemList.nameMtext = this.$changeText(this.permissionRGroup.selectedList.bookList[i].nameMtext)
+            }
             teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
             teampItemList.shareSeq = this.permissionRGroup.selectedList.bookList[i].accessKey
-            if (this.permissionRGroup.selectedList.bookList[i].cabinetNameMtext) teampItemList.cabinetNameMtext = this.$changeText(this.permissionRGroup.selectedList.bookList[i].cabinetNameMtext)
             itemList.push(teampItemList)
             // if(teampItemList.shareType !== data.bookList[i].shareType ){
           }
@@ -973,7 +1077,7 @@ export default {
       this.$emit('closePop')
     },
     // 주소록 전체에서 고르기
-    showSelectBookPop (type) {
+    async showSelectBookPop (type) {
       console.log(type)
       this.currentSelectBookType = type
       if (this.shareGroup.type === 'A' || (this.shareGroup.type === 'S' && type === 'select')) {
@@ -990,6 +1094,15 @@ export default {
         }
         console.log('prop selectedList 값')
         console.log(this.selectedList)
+        var selectListParamMap = new Map()
+        selectListParamMap.set('teamKey', this.CHANNEL_DETAIL.teamKey)
+        // eslint-disable-next-line no-new-object
+        var param = new Object()
+        param.targetType = 'selectBookList'
+        param.param = selectListParamMap
+        var initData = await this.$getGPopData(param)
+        this.chanProps.initData = initData
+        // param.initData = initData
         this.selectBookListShowYn = true
         this.$addHistoryStack('modiPopReceiverSelecPop')
       } else {
@@ -1035,18 +1148,25 @@ export default {
         // bookCount = books.length
         for (var i = 0; i < books.length; i++) {
           var tempList = {}
-          tempList.cabinetNameMtext = this.$changeText(books[i].cabinetNameMtext)
           var accKey = null
           if (books[i].shareSeq) {
             accKey = books[i].shareSeq
           } else if (books[i].accessKey) {
             accKey = books[i].accessKey
           }
+          if (!books[i].memberYn) {
+            tempList.cabinetNameMtext = this.$changeText(books[i].cabinetNameMtext)
+            tempList.accessKind = 'C'
+            tempList.mUserList = books[i].mUserList
+            tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          } else {
+            tempList.nameMtext = this.$changeText(books[i].nameMtext)
+            tempList.accessKind = 'M'
+            tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          }
           tempList.accessKey = accKey
-          tempList.accessKind = 'C'
-          tempList.mUserList = books[i].mUserList
-          tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
           tempList.shareSeq = accKey
+
           settingBookList.push(tempList)
         }
         if (this.currentSelectBookType === 'W') {
@@ -1144,19 +1264,25 @@ export default {
         const books = datas.bookList
         for (var i = 0; i < books.length; i++) {
           var tempList = {}
-          // tempList.cabinetNameMtext = this.$changeText(books[i].cabinetNameMtext)
-          // tempList.accessKey = books[i].shareSeq
-          // tempList.accessKind = 'C'
-          // tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
-          // tempList.shareSeq = books[i].shareSeq
-          tempList.cabinetNameMtext = this.$changeText(books[i].cabinetNameMtext)
-          tempList.accessKey = books[i].accessKey
-          tempList.accessKind = 'C'
-          tempList.mUserList = books[i].mUserList
-          // tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
-          tempList.cabinetKey = books[i].accessKey
-          // mShareItemList[i].cabinetKey = mShareItemList[i].accessKey
-          tempList.shareSeq = books[i].shareSeq
+          var accKey = null
+          if (books[i].shareSeq) {
+            accKey = books[i].shareSeq
+          } else if (books[i].accessKey) {
+            accKey = books[i].accessKey
+          }
+          if (!books[i].memberYn) {
+            tempList.cabinetNameMtext = this.$changeText(books[i].cabinetNameMtext)
+            tempList.accessKind = 'C'
+            tempList.mUserList = books[i].mUserList
+            tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          } else {
+            tempList.memberYn = true
+            tempList.nameMtext = this.$changeText(books[i].nameMtext)
+            tempList.accessKind = 'M'
+            tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
+          }
+          tempList.accessKey = accKey
+          tempList.shareSeq = accKey
 
           settingBookList.push(tempList)
         }
@@ -1399,7 +1525,7 @@ export default {
   display: flex; align-items: center; padding: 0.6rem 0;
 }
 .permissionBox {
-  width: calc(100% - 50px);
+  width: calc(100% - 80px);
 }
 @media screen and (max-width:350px){
   .jjjPaddingWrap{
