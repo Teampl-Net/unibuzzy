@@ -209,10 +209,32 @@ export default {
       } else if (params.targetType === 'chanList') {
         this.goChannelListPop(params)
         return
+      } else if (params.targetType === 'pushList') {
+        this.goPushListPop(params)
+        return
       }
       this.mPopParams = params
       this.mGPopShowYn = true
       this.hideMenu()
+    },
+    async goPushListPop (params) {
+      console.log(params)
+
+      var pushListParam = {}
+      pushListParam.allYn = true
+      pushListParam.ownUserKey = this.GE_USER.userKey
+      pushListParam.DESCYn = true
+      pushListParam.pageSize = 10
+      pushListParam.offsetInt = 0
+
+      var initData = await this.$getOpenPushListPopData(pushListParam)
+      console.log(initData)
+      var openPopParams = {}
+      openPopParams = params
+      openPopParams.initData = initData
+
+      this.mPopParams = openPopParams
+      this.mGPopShowYn = true
     },
     async goChannelListPop (params) {
       var channelListDataParam = {}

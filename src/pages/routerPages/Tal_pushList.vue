@@ -1178,7 +1178,12 @@ export default {
         if (this.pChannelDetail !== undefined && this.pChannelDetail !== null && this.pChannelDetail !== '') {
           param.creTeamKey = this.pChannelDetail.teamKey
         }
-        if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.offsetInt }
+        if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') {
+          param.offsetInt = offsetInput
+        } else {
+          if (this.initData && this.offsetInt === 0) this.offsetInt = 1
+          param.offsetInt = this.offsetInt
+        }
 
         if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = 10 }
 

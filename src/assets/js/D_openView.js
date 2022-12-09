@@ -261,6 +261,16 @@ export const openView = {
     } else {
       return false
     }
+  },
+  async getOpenPushListPopData (inputParam) {
+    var paramSet = {}
+    if (inputParam) {
+      paramSet = inputParam
+      paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
+    }
+    var result = await commonAxiosFunction({ url: 'service/tp.getMyContentsList', param: paramSet }, false)
+    console.log(result)
+    return result.data
   }
 }
 
@@ -274,5 +284,6 @@ export default {
     Vue.config.globalProperties.$getGPopData = openView.getGPopData
     Vue.config.globalProperties.$getWriteBoardData = openView.getWriteBoardData
     Vue.config.globalProperties.$getOpenChannelListPopData = openView.getOpenChannelListPopData
+    Vue.config.globalProperties.$getOpenPushListPopData = openView.getOpenPushListPopData
   }
 }
