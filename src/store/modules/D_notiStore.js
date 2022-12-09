@@ -65,7 +65,7 @@ const D_NOTI = {
           }, [])
           state.allNotiList = uniqueArr
         } catch (error) {
-          alert(error)
+          // alert(error)
         }
         // alert(findIndex)
         // if (findIndex === -1) {

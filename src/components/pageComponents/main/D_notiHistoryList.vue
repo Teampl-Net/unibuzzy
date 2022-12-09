@@ -2,8 +2,9 @@
     <div style="width: 100%; height: 100%; padding: 60px 1.5rem; padding-bottom: 0;float: left; background: #fff; overflow: hidden scroll;">
         <p class="notiTitle font18 fontBold commonColor textLeft">최근 받은 알림</p>
         <p class="font10 lightGray mbottom-05 textLeft">최근 이력은 앱 설치 후 받은 이력입니다. </p>
-        <p class="font10 lightGray mbottom-05 textLeft fr" @click="notiClear()">전체 삭제 </p>
+        <p class="font10 lightGray mbottom-05 textLeft fr" @click="mConfirmPopShowYn = true">전체 삭제 </p>
         <notiCompo @clickNoti="goNotiDetail" v-for="(noti, index) in GE_RECENT_NOTI_LIST" :mNotiEle="noti" :key="index" />
+        <gConfirmPop confirmText='받은 이력을 전부 삭제하시겠습니까?' confirmType='two' @no='mConfirmPopShowYn = false' v-if="mConfirmPopShowYn" @ok="notiClear"/>
     </div>
 </template>
 
@@ -12,7 +13,8 @@ import notiCompo from './D_notiCompo.vue'
 export default {
   data () {
     return {
-      mNotiList: []
+      mNotiList: [],
+      mConfirmPopShowYn: false
     }
   },
   created () {
@@ -26,6 +28,7 @@ export default {
   methods: {
     notiClear () {
       this.$store.dispatch('D_NOTI/AC_CLEAR_NOTI_LIST')
+      this.mConfirmPopShowYn = false
     },
     async goNotiDetail (message) {
       message.clickListYn = true
