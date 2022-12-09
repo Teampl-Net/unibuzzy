@@ -126,23 +126,20 @@ export default {
       deep: true
     },
     async GE_DEEP_LINK_QUEUE (value, old) {
-      var history = this.$store.getters['D_HISTORY/hStack']
-      if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
-        if (value.length > 0) {
-          var target = value[value.length - 1]
-          if (!target) return
-          // eslint-disable-next-line no-new-object
-          var param = new Object()
-          if (!target.targetKind || !(target.targetKind === 'chanDetail' || target.targetKind === 'contentsDetail')) return
-          param.targetType = target.targetKind
-          param.creTeamKey = Number(target.targetKey)
-          if (target.targetKind === 'chanDetail') {
-            this.goChanDetail(param)
-          } else {
-            this.goDetail(param)
-          }
-          this.$store.commit('D_HISTORY/changeDeepLinkQueue', [])
+      if (value.length > 0) {
+        var target = value[value.length - 1]
+        if (!target) return
+        if (!target.targetKind || !(target.targetKind === 'chanDetail' || target.targetKind === 'contentsDetail')) return
+
+        var param = {}
+        param.targetType = target.targetKind
+        param.creTeamKey = Number(target.targetKey)
+        if (target.targetKind === 'chanDetail') {
+          this.goChanDetail(param)
+        } else {
+          this.goDetail(param)
         }
+        this.$store.commit('D_HISTORY/changeDeepLinkQueue', [])
       }
     }
   },
