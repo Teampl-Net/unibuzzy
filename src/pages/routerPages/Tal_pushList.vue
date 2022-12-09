@@ -552,13 +552,6 @@ export default {
         }
       })
     },
-    // fileDownload (fileData) {
-    //   if (!fileData) return
-    //   this.mFilePopData = fileData
-    //   if (this.mFilePopData.attachFileList.length > 0) {
-    //     this.mFilePopYn = true
-    //   }
-    // },
     async initGetContentsList () {
       var newArr = []
       // var contListEle
