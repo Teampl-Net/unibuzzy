@@ -6,9 +6,9 @@
     <div style="width: 100%; height: calc(100% - 110px); padding: 10px 20px; float: left;">
         <div style="width: 100%; min-height: 30px; float: left;">
             <p class="font14 w-100P grayBlack fontBold fl textLeft" style="line-height: 30px;" >{{propMemberData.certiYn === 1? '실명 인증이 필요한 유형입니다.': '실명인증이 필요하지 않은 유형입니다.'}}</p>
-            <p class="font16 fontBold fl textLeft w-100P" v-if="propMemberData.certiYn === 1 && GE_USER.certiYn === 1">실명인증회원</p>
+            <p class="font16 fontBold fl textLeft w-100P" v-if="propMemberData.certiYn === 1 && GE_USER.certiDate">실명인증회원</p>
             <p class="font16 fontBold fl textLeft" style="line-height: 30px;" v-else-if="propMemberData.certiYn === 1">실명 인증이 필요합니다.</p>
-            <gBtnSmall v-if="propMemberData.certiYn === 1 && !GE_USER.certiYn === 1" btnTitle="인증하기"/>
+            <gBtnSmall v-if="propMemberData.certiYn === 1 && !GE_USER.certiDate" btnTitle="인증하기"/>
         </div>
         <div style="width: 100%; height: 1px; border-bottom: 1px solid #ccc; margin-top: 10px; float: left;" ></div>
         <div style="width: 100%; height: calc(100% - 60px); float: left; ">

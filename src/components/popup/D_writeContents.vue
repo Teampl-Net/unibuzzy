@@ -1199,7 +1199,7 @@ export default {
       debugger
       if (dFile.addYn) {
         for (var d = 0; d < this.uploadFileList.length; d++) {
-          if (this.uploadFileList[d][0].attachYn === true && this.uploadFileList[d][0].attachKey === dFile.attachKey) {
+          if (this.uploadFileList[d].attachYn === true && this.uploadFileList[d].attachKey === dFile.attachKey) {
             this.uploadFileList.splice(d, 1)
           }
         }
@@ -1208,7 +1208,7 @@ export default {
       }
     },
     setSelectedAttachFileList (sFile) {
-      if (sFile[0].addYn === true) {
+      if (sFile.addYn === true) {
         this.uploadFileList.push(sFile)
       }
       // console.log(this.uploadFileList)

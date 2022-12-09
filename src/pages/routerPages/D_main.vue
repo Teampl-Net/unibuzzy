@@ -8,7 +8,7 @@
             <div style="width: calc(100% - 42px); float: left; height: 100%;">
                 <p class="commonLightColor font16 textLeft fl" style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
                 <div class="fr" style="position:relative;">
-                  <redDot style="width: 12px; height: 12px; border-radius: 100%; border: 2px solid #F4F7FF; background: #ED4956; position: absolute; right: 15px; top: 0px; z-index:1"></redDot>
+                  <!-- <redDot style="width: 12px; height: 12px; border-radius: 100%; border: 2px solid #F4F7FF; background: #ED4956; position: absolute; right: 15px; top: 0px; z-index:1"></redDot> -->
                   <img src="../../assets/images/contents/icon_bell.png" class=" img-w22 mright-1" alt="" @click="openNotiHistoryPop">
                 </div>
                 <div style="float: left; height: calc(100% - 20px); width: 100%;">
@@ -20,9 +20,13 @@
                     <p style="font-weight: 600;" class="font16 fl commonLightColor">님!</p>
                 </div>
             </div>
-            <div @click="goUserProfile" style="width: 60px; height: 60px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; border:2.5px solid #5B1CFC; float: left; display: flex; padding: 2px; flex-grow: 0; flex-shrink: 0;">
-                <div v-if="this.GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.$changeUrlBackslash(this.GE_USER.userProfileImg) : this.GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-                <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;"></div>
+            <div @click="goUserProfile" style="position: relative; width: 60px; height: 60px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; border:2.5px solid #5B1CFC; float: left; display: flex; padding: 2px; flex-grow: 0; flex-shrink: 0;">
+                <div v-if="this.GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.$changeUrlBackslash(this.GE_USER.userProfileImg) : this.GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;">
+                    <img v-if="this.GE_USER.certiDate" style="position: absolute; width: 20px; bottom: 0px; right: -5px;" src="../../assets/images/common/userCertiIcon.svg" alt="">
+                </div>
+                <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+                    <img v-if="this.GE_USER.certiDate" style="position: absolute; width: 20px; bottom: 0px; right: -5px;" src="../../assets/images/common/userCertiIcon.svg" alt="">
+                </div>
             </div>
             <!-- <div class="userProfileTextWrap" >
                 <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{$changeText(this.GE_USER.userDispMtext)}}</p>
@@ -429,7 +433,7 @@ export default {
   .userProfileTextWrap >p{margin-bottom: 0.2rem;}
   .userProfileTextWrap img{ width:1rem; margin-right: 0.2rem;}
   .userProfileTextWrap .profileTitle{font-weight: bold; color: #5B1CFC; margin-right: 0.4rem;}
-.picImgWrap {width: 100%; height: 100%; position: relative; border-radius: 100%; overflow: hidden; display: flex; background-color: #fff;
+.picImgWrap {width: 100%; height: 100%; border-radius: 100%; overflow: hidden; display: flex; background-color: #fff;
 }
 
 .mainContentsBoxArea {

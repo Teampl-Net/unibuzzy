@@ -98,7 +98,7 @@ export default {
                 router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
               } else */
 
-      await saveUser(userProfile) // 서버에 save요청
+      await saveUser(userProfile, true) // 서버에 save요청
       localStorage.setItem('loginYn', true)
       this.$router.replace({ path: '/' })
     },
@@ -146,7 +146,7 @@ export default {
       )
     },
     onLogin () {
-      var thisthis = this
+      // var thisthis = this
       localStorage.setItem('loginType', 'google')
       authService.login('Google').then(async function (result) {
         // console.log(result)
@@ -166,9 +166,9 @@ export default {
                 router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
               } else */
 
-        await saveUser(userProfile) // 서버에 save요청
-        localStorage.setItem('loginYn', true)
-        thisthis.$router.replace({ path: '/' })
+        await saveUser(userProfile, true) // 서버에 save요청
+        /* localStorage.setItem('loginYn', true)
+        thisthis.$router.replace({ path: '/' }) */
       })
     },
     pictureResponse (data) {

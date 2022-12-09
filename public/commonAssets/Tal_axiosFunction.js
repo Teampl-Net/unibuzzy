@@ -87,7 +87,7 @@ export function isMobile () {
   return mobileYn
 }
 
-export async function saveUser (userProfile) {
+export async function saveUser (userProfile, loginYn) {
   var user = {}
   // var testYn = localStorage.getItem('testYn')
   // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
@@ -136,10 +136,20 @@ export async function saveUser (userProfile) {
     param: setParam,
     firstYn: true
   })
+  // eslint-disable-next-line no-debugger
+  debugger
   if (result.data.message === 'OK') {
     localStorage.setItem('user', JSON.stringify(result.data.userMap))
-    store.dispatch('D_USER/AC_USER', result.data.userMap)
+    await store.dispatch('D_USER/AC_USER', result.data.userMap)
     localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
+    if (loginYn) {
+      var userInfo = result.data.userMap
+      if (!userInfo.certiDate && (userInfo.userKey === 228 || !(/Mobi/i.test(window.navigator.userAgent)))) {
+        // router.replace({ path: '/' })
+        router.replace({ path: '/savePhone' })
+        return
+      }
+    }
     router.replace({ path: '/' })
   } else if (result.data.message === 'NG') {
     store.commmit('D_USER/MU_CLEAN_USER')

@@ -9,6 +9,7 @@
             <span v-if="this.uItem === '이메일'" class="fl">{{this.GE_USER.userEmail}}</span>
             <span v-else-if="this.uItem === '휴대폰 번호'" class="fl">{{this.$setPhone(this.GE_USER.phoneEnc)}}</span>
             <gBtnSmall v-if="this.uItem === '이메일'" btnThema="light" style="float: right;" btnTitle="변경" v-on:click="openChangePop(uItem)" />
+            <gBtnSmall v-if="this.uItem === '휴대폰 번호' && this.GE_USER.userKey === 228 || this.GE_USER.userKey === 255 || !isMobile" btnThema="light" style="float: right;" btnTitle="실명인증" v-on:click="openChangePop(uItem)" />
         </div>
     </div>
 </template>
@@ -18,6 +19,7 @@ export default {
   emits: ['openPop'],
   data () {
     return {
+      isMobile: /Mobi/i.test(window.navigator.userAgent)
     //   uItem: [
     //     { icon: '', title: '이메일', value: '', btnText: '', link: '' }
     //   ]
@@ -25,6 +27,10 @@ export default {
   },
   methods: {
     openChangePop (target) {
+      if (target === '휴대폰 번호') {
+        target = ''
+        target = 'changePhone'
+      }
       this.$emit('openPop', target)
     }
   },

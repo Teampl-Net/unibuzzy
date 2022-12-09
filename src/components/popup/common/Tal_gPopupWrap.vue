@@ -58,6 +58,7 @@
       <editMemberTypePop ref="editMemberTypePop" :pPopId="popId" v-if="popId && this.targetType === 'editMemberTypePop'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <memInfoCreEditPop :pPopId="popId" v-if="popId && this.targetType === 'memInfoCreEditPop'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <notiHitstory :pPopId="popId" v-if="popId && this.targetType === 'notiHitstory'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
+      <savePhone @openPop="openPop" @closeXPop="closeXPop" :popYn="true" :pPopId="popId" v-if="popId && this.targetType === 'changePhone'" />
     </div>
 </template>
 
@@ -101,6 +102,7 @@ import creAddressBook from '../receiver/D_creAddressBook.vue'
 import editMemberTypePop from '../memberInfo/D_editMemberTypePop.vue'
 import memInfoCreEditPop from '../memberInfo/D_memInfoCreEditPop.vue'
 import notiHitstory from '../../pageComponents/main/D_notiHistoryList.vue'
+import savePhone from '../../../pages/routerPages/Tal_savePhone.vue'
 export default {
   created () {
     console.log(this.propParams)
@@ -140,6 +142,7 @@ export default {
     parentPopN: {}
   },
   components: {
+    savePhone,
     searchPage,
     memInfoCreEditPop,
     editMemberTypePop,
@@ -362,6 +365,8 @@ export default {
       } else if (this.targetType === 'changeEmail') {
         this.changInfoType = this.targetType
         this.targetType = 'changeInfo'
+      } else if (this.targetType === 'changePhone') {
+        this.headerTitle = '실명인증'
       } else if (this.targetType === 'editBookList' || this.targetType === 'memberManagement') {
         this.helpYn = true
       } else if (this.targetType === 'selectBookList') {

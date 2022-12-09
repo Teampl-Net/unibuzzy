@@ -108,7 +108,7 @@ export default {
               this.preImgUr = src
               this.selectFile = compressedFile
               this.sFileList.push({ preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
-              this.$emit('setSelectedAttachFileList', [{ attachYn: true, preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile }])
+              this.$emit('setSelectedAttachFileList', { attachYn: true, preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
               this.uploadCnt += 1
             /* await uploadToServer(compressedFile) */ // write your own logic
             } catch (error) {
@@ -125,7 +125,7 @@ export default {
             }
             // console.log(this.sFileList)
             this.sFileList.push({ fileYn: true, attachKey: this.gAttachKey, addYn: true, attachYn: true, file: this.selectFile })
-            this.$emit('setSelectedAttachFileList', [{ attachYn: true, fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile }])
+            this.$emit('setSelectedAttachFileList', { attachYn: true, fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile })
           }
         }
       } else {

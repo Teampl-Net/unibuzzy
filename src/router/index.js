@@ -39,6 +39,7 @@ import myPage from '../pages/routerPages/D_myPage.vue'
 import admLogin from '../pages/intro/Tal_Adm_login.vue'
 import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue'
 import certiPhone from '../components/pageComponents/intro/D_certi_phone.vue'
+import certiPhoneReturn from '../components/pageComponents/intro/D_certi_phone_return.vue'
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
 const routes = [
   {
@@ -222,6 +223,12 @@ const routes = [
     name: 'certiPhone',
     props: true,
     component: certiPhone
+  },
+  {
+    path: '/certiPhoneReturn',
+    name: 'certiPhoneReturn',
+    props: true,
+    component: certiPhoneReturn
   }
   /* ,
   {

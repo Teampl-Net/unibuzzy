@@ -7,8 +7,11 @@
     </div> -->
     <div class="w-100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem; position: relative;">
 
-        <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="userProfileImgWrap">
+        <div style="position: relative; " :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
+            <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="userProfileImgWrap">
             <!--  <img :src="this.domainPath + userProfileImg" /> -->
+                <img v-if="this.GE_USER.certiDate" class="img-w38" style="position: absolute; bottom: 0px; right: 10px;" src="../../../assets/images/common/userCertiIcon.svg" alt="">
+            </div>
         </div>
         <div v-if="selfYn" @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 0; left: 60%; transform: translateX(-50%); z-index: 9999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
         <!-- <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="  float: left; " /> -->
@@ -17,6 +20,7 @@
 
       <div class="fl w-100P" style='display: contents;'>
         <p class="fl commonBlack creChanInput w-100P font16 fontBold" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
+        <p class="fl commonGray creChanInput w-100P font14 " v-if="readOnlyYn && !changeYn && this.GE_USER.certiDate" >{{this.GE_USER.userNameMtext}}</p>
         <img v-if="readOnlyYn && !changeYn && selfYn" src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
         <div v-show="changeYn" class="fl creChanInput" style="">
             <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
