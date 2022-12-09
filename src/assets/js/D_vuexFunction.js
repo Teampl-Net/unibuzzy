@@ -47,7 +47,7 @@ export const functions = {
   },
   async actionVuex (type, data, targetKey, allYn, replaceYn, creTeamKey, creCabinetKey) {
     var ActName
-    if (type === 'TEAM' || type === 'CABI' || type === 'CONT') {
+    if (type === 'T' || type === 'B' || type === 'C') {
       ActName = 'D_CHANNEL/AC_MAIN_CHAN_LIST'
     } else if (type === 'COMMONCONT') {
       ActName = 'D_CHANNEL/AC_SET_CHAN_CONT_LIST'
@@ -59,7 +59,7 @@ export const functions = {
       if (replaceYn) {
         var dataList, team, childList, cabIndex, contIndex, cabiList, cabiDetail
         var index
-        if (type === 'TEAM') {
+        if (type === 'T') {
           dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
           index = dataList.findIndex((item) => item.teamKey === targetKey)
           dataList[index] = data
@@ -67,7 +67,7 @@ export const functions = {
           /* if (data.detailPageYn) {
             store.dispatch('D_CHANNEL/AC_RECENT_CHANGE_TEAM', targetKey)
           } */
-        } else if (type === 'CABI') {
+        } else if (type === 'B') {
           dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
           index = dataList.findIndex((item) => item.teamKey === creTeamKey)
           team = dataList[index]
@@ -81,7 +81,7 @@ export const functions = {
           dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
           index = dataList.findIndex((item) => item.teamKey === targetKey)
           dataList[index] = data
-        } else if (type === 'CONT') {
+        } else if (type === 'C') {
           if (creCabinetKey) {
             dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
             index = dataList.findIndex((item) => item.teamKey === creTeamKey)
@@ -220,7 +220,7 @@ export const functions = {
       }
       store.dispatch('D_NOTI/AC_ADD_NOTI_LIST', notiDetail)
       // alert(JSON.stringify(notiDetail))
-      if (JSON.parse(notiDetail.userDo).targetKind === 'CONT') {
+      if (JSON.parse(notiDetail.userDo).targetKind === 'C') {
         /* if (notiDetail.actType === 'LI') {} */
         if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {
           var memo = await functions.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
@@ -234,9 +234,9 @@ export const functions = {
         }
         // ('addVueResult: ' + addVueResult)
         // alert(JSON.stringify(addVueResult))
-      } else if (JSON.parse(notiDetail.userDo).targetKind === 'CABI') {
+      } else if (JSON.parse(notiDetail.userDo).targetKind === 'B') {
         addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
-      } else if (JSON.parse(notiDetail.userDo).targetKind === 'TEAM') {
+      } else if (JSON.parse(notiDetail.userDo).targetKind === 'T') {
         // alert(true)
         addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
       } /* else if (JSON.parse(notiDetail.userDo).targetKind === 'MEMO') {

@@ -239,6 +239,26 @@ export const openView = {
       return result.data
     }
     // this.editBookSelectedList()
+  },
+  async getOpenChannelListPopData (tabName) {
+    var paramMap = new Map()
+    if (tabName === 'user') {
+      paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
+    } else if (tabName === 'all') {
+      paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
+    } else if (tabName === 'mychannel') {
+      paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
+      paramMap.set('managerYn', true)
+    }
+    paramMap.set('offsetInt', 0)
+    paramMap.set('pageSize', 10)
+    var result = await commonAxiosFunction({ url: 'service/tp.getUserTeamList', param: Object.fromEntries(paramMap) }, false)
+    console.log(result)
+    if (result.status === 200 || result.statusText === 'OK') {
+      return result.data
+    } else {
+      return false
+    }
   }
 }
 
@@ -251,5 +271,6 @@ export default {
     Vue.config.globalProperties.$getManagingPageData = openView.getManagingPageData
     Vue.config.globalProperties.$getGPopData = openView.getGPopData
     Vue.config.globalProperties.$getWriteBoardData = openView.getWriteBoardData
+    Vue.config.globalProperties.$getOpenChannelListPopData = openView.getOpenChannelListPopData
   }
 }

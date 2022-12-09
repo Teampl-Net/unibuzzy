@@ -49,13 +49,7 @@ export default {
     propAlimList: {}
   },
   mounted () {
-    document.addEventListener('message', e => this.recvNoti(e))
-    window.addEventListener('message', e => this.recvNoti(e))
     this.settingAtag()
-  },
-  unmounted () {
-    document.removeEventListener('message', e => this.recvNoti(e))
-    window.removeEventListener('message', e => this.recvNoti(e))
   },
   updated () {
     this.settingAtag()
@@ -88,31 +82,7 @@ export default {
         this.imgUrl = '/resource/common/placeholder_white.png'
       }
     },
-    async recvNoti (e) {
-      var message
-      try {
-        if (this.$isJsonString(e.data) === true) {
-          message = JSON.parse(e.data)
-        } else {
-          message = e.data
-        }
-        if (message.type === 'pushmsg') {
-          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
-          } else {
-            this.notiDetail = JSON.parse(message.pushMessage).noti.data
-          }
-          var currentPage = this.$store.getters['D_HISTORY/hCPage']
-          if ((currentPage === 0 || currentPage === undefined)) {
-            if (JSON.parse(this.notiDetail.userDo).targetKind === 'CONT') {
-              this.getContentsList()
-            }
-          }
-        }
-      } catch (err) {
-        console.error('메세지를 파싱할수 없음 ' + err)
-      }
-    },
+
     openPop (value) {
       // eslint-disable-next-line no-new-object
       var params = new Object()

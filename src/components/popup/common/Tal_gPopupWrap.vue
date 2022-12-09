@@ -13,11 +13,11 @@
         <chanAlimList :pPopId="popId" :propData="this.propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="propParams" v-if=" popId && targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
       </div>
       <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  this.targetType === 'pushList'">
-        <pushList :pPopId="popId" style="" :propParams="this.propParams" :ref="'gPopPush'" :popYn="true" :readySearchList="this.readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
+        <pushList :pPopId="popId" style="" :initData='this.propParams.initData' :propParams="this.propParams" :ref="'gPopPush'" :popYn="true" :readySearchList="this.readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
       </div>
 
       <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  this.targetType === 'chanList'">
-        <chanList :pPopId="popId" :propData="this.propParams" ref="gPopChan" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
+        <chanList :pPopId="popId" :initData='this.propParams.initData' :propData="this.propParams" ref="gPopChan" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
       </div>
       <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if="popId &&  this.targetType === 'searchPop'">
         <searchPage :pPopId="popId" :propData="this.propParams" :popYn="true" @openPop="openPop" />
@@ -671,7 +671,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var goDetailParam = new Object()
       goDetailParam.creTeamKey = Number(notiDetail.creTeamKey)
-      if (notiUserDo.targetKind === 'CONT') {
+      if (notiUserDo.targetKind === 'C') {
         goDetailParam.contentsKey = notiUserDo.targetKey
         goDetailParam.targetKey = notiUserDo.targetKey
         goDetailParam.jobkindId = notiDetail.jobkindId
@@ -682,7 +682,7 @@ export default {
           goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
           goDetailParam.cabinetKey = vuexResultData.cabinetKey
         }
-      } else if (notiUserDo.targetKind === 'CABI') {
+      } else if (notiUserDo.targetKind === 'B') {
         goDetailParam.contentsKey = notiUserDo.ISub
         goDetailParam.jobkindId = notiDetail.jobkindId
         if (goDetailParam.jobkindId === 'ALIM') {
@@ -691,7 +691,7 @@ export default {
           goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
           goDetailParam.cabinetKey = vuexResultData.cabinetKey
         }
-      } else if (notiUserDo.targetKind === 'TEAM') {
+      } else if (notiUserDo.targetKind === 'T') {
         // this.$router.replace({ path: '/' })
         goDetailParam.chanYn = true
         goDetailParam.targetKey = notiUserDo.targetKey
@@ -700,9 +700,9 @@ export default {
       }
       goDetailParam.notiYn = true
       // goDetailParam.value = vuexResultData
-      if (notiUserDo.targetKind === 'TEAM') {
+      if (notiUserDo.targetKind === 'T') {
         this.goChanDetail(goDetailParam)
-      } else if (notiUserDo.targetKind === 'CONT' || notiUserDo.targetKind === 'CABI') {
+      } else if (notiUserDo.targetKind === 'C' || notiUserDo.targetKind === 'B') {
         this.goDetail(goDetailParam)
       }
     },

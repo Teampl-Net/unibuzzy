@@ -209,10 +209,26 @@ export default {
       } else if (params.targetType === 'contentsDetail') {
         this.goDetail(params)
         return
+      } else if (params.targetType === 'chanList') {
+        this.goChannelListPop(params)
+        return
       }
       this.mPopParams = params
       this.mGPopShowYn = true
       this.hideMenu()
+    },
+    async goChannelListPop (params) {
+      var channelListDataParam = {}
+      channelListDataParam.channelTabType = params.channelTabType
+      channelListDataParam.targetType = params.targetType
+      var result = await this.$getOpenChannelListPopData(params.targetType)
+      console.log(result)
+      if (!result) return
+      channelListDataParam.initData = result
+      channelListDataParam.popHeaderText = params.popHeaderText
+
+      this.mPopParams = channelListDataParam
+      this.mGPopShowYn = true
     },
     async successWriteBoard (inParam) {
       this.$router.go(0)
@@ -365,7 +381,7 @@ export default {
           // eslint-disable-next-line no-new-object
           var goDetailParam = new Object()
           goDetailParam.creTeamKey = Number(notiDetail.creTeamKey)
-          if (notiUserDo.targetKind === 'CONT') {
+          if (notiUserDo.targetKind === 'C') {
             goDetailParam.contentsKey = notiUserDo.targetKey
             goDetailParam.targetKey = notiUserDo.targetKey
             goDetailParam.jobkindId = notiDetail.jobkindId
@@ -376,7 +392,7 @@ export default {
               goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
               goDetailParam.cabinetKey = vuexResultData.cabinetKey
             }
-          } else if (notiUserDo.targetKind === 'CABI') {
+          } else if (notiUserDo.targetKind === 'B') {
             goDetailParam.contentsKey = notiUserDo.ISub
             goDetailParam.jobkindId = notiDetail.jobkindId
             if (goDetailParam.jobkindId === 'ALIM') {
@@ -385,16 +401,16 @@ export default {
               goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
               goDetailParam.cabinetKey = vuexResultData.cabinetKey
             }
-          } else if (notiUserDo.targetKind === 'TEAM') {
+          } else if (notiUserDo.targetKind === 'T') {
             this.$router.replace({ path: '/' })
             goDetailParam.chanYn = true
             goDetailParam.targetKey = notiUserDo.targetKey
           }
           goDetailParam.notiYn = true
           // goDetailParam.value = vuexResultData
-          if (notiUserDo.targetKind === 'TEAM') {
+          if (notiUserDo.targetKind === 'T') {
             this.goChanDetail(goDetailParam)
-          } else if (notiUserDo.targetKind === 'CONT' || notiUserDo.targetKind === 'CABI') {
+          } else if (notiUserDo.targetKind === 'C' || notiUserDo.targetKind === 'B') {
             this.goDetail(goDetailParam)
           }
         } else {

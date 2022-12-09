@@ -7,13 +7,32 @@
             <p class="font14 commonBlack fontBold textLeft">{{mNotiEle.title}}</p>
             <p class="font14 commonBlack textLeft">{{mNotiEle.body}}</p>
         </div>
+        <p class="font12 fontBold lightGray mbottom-05 textLeft">{{$changeDateMemoFormat(parseUserDo.creDate)}}</p>
     </div>
+    <div class="fl w-100P" style="overflow:auto">
+      {{parseCreDate}}
+    </div>
+
 </template>
 
 <script>
 export default {
   props: {
     mNotiEle: {}
+  },
+  data () {
+    return {
+      parseUserDo: {},
+      parseCreDate: {}
+    }
+  },
+  created () {
+    if (this.mNotiEle.userDo) {
+      this.parseUserDo = JSON.parse(this.mNotiEle.userDo)
+      this.parseCreDate = JSON.parse(JSON.stringify(this.parseUserDo.creDate))
+      // var date = new Date(this.parseCreDate)
+      // alert(date)
+    }
   }
 }
 </script>

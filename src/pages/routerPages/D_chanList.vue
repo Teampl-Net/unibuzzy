@@ -91,13 +91,20 @@ export default {
   mounted () {
     this.mChanListScrollBox = document.getElementById('chanListWrap')
     // this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
-    if (this.mViewTab === 'user') {
-      this.$refs.activeBar.switchtab(0)
-    } else if (this.mViewTab === 'all') {
-      this.$refs.activeBar.switchtab(1)
-    } else if (this.mViewTab === 'mychannel') {
-      this.$refs.activeBar.switchtab(2)
-    }
+    var this_ = this
+    this.$nextTick(() => {
+      if (this_.mViewTab === 'user') {
+        this_.$refs.activeBar.switchtab(0)
+      } else if (this_.mViewTab === 'all') {
+        this_.$refs.activeBar.switchtab(1)
+      } else if (this_.mViewTab === 'mychannel') {
+        this_.$refs.activeBar.switchtab(2)
+      }
+    })
+    if (!this.initData) this.changeTab(this.mViewTab)
+    console.log(this.initData)
+    console.log(this.mViewTab)
+
     this.$emit('closeLoading')
     this.mLoadingYn = false
   },
@@ -394,6 +401,7 @@ export default {
       if (offsetInput !== undefined) {
         paramMap.set('offsetInt', offsetInput)
       } else {
+        if (this.mOffsetInt === 0 && this.mChannelList.length === 10) this.mOffsetInt = 1
         paramMap.set('offsetInt', this.mOffsetInt)
       }
       if (pageSize) {

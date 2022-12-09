@@ -110,6 +110,7 @@ export default {
     if (this.propParams && this.propParams.alimTabType) {
       this.viewMainTab = this.propParams.alimTabType
     }
+
     this.readyFunction()
     /*  } */
   },
@@ -544,7 +545,7 @@ export default {
       window.document.addEventListener('wheel', (e) => {
         var scrollType = e.deltaY < 0 ? 'down' : 'up'
         if (scrollType === 'down') {
-          console.log(this.box.scrollTop)
+          // console.log(this.box.scrollTop)
           if (this.box.scrollTop < 10) {
             this.$emit('goScroll')
           }

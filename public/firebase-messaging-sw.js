@@ -57,10 +57,10 @@ self.addEventListener('push', event => {
   console.log(push_data)
   var userDo = JSON.parse(push_data.data.userDo)
   console.log(userDo)
-  if (userDo.targetKind === 'CONT') {
+  if (userDo.targetKind === 'C') {
     targetKey = userDo.targetKey
     push_url = 'https://mo.d-alim.com?targetType=contentsDetail&targetKey=' + targetKey + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
-  } else if (userDo.targetKind === 'CABI') {
+  } else if (userDo.targetKind === 'B') {
     targetKey = userDo.targetKey
     push_url = 'https://mo.d-alim.com?targetType=contentsDetail&targetKey=' + userDo.ISub + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
   }
@@ -70,7 +70,7 @@ self.addEventListener('push', event => {
   }
   const title = push_data.notification.title
   var options = null
-  if (userDo.targetKind === 'CONT' || userDo.targetKind === 'CABI') {
+  if (userDo.targetKind === 'C' || userDo.targetKind === 'B') {
     options = {
       body: push_data.notification.body,
       icon: icon,

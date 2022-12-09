@@ -26,15 +26,22 @@ const D_NOTI = {
     },
     MU_ADD_NOTI_LIST: (state, payload) => {
       if (!payload) return
-      state.allNotiList.unshift(payload)
-      var notiSetList = state.allNotiList
-      var uniqueArr = notiSetList.reduce(function (data, current) {
-        if (data.findIndex((item) => (item.tag !== current.tag)) === -1) {
-          data.push(current)
-        }
-        return data
-      }, [])
-      state.allNotiList = uniqueArr
+      var allNotiLIst = state.allNotiList
+      var findIndex = allNotiLIst.findIndex(item => item.tag === payload.tag)
+
+      console.log(findIndex)
+
+      if (findIndex === -1) {
+        state.allNotiList.unshift(payload)
+        var notiSetList = state.allNotiList
+        var uniqueArr = notiSetList.reduce(function (data, current) {
+          if (data.findIndex((item) => (item.tag !== current.tag)) === -1) {
+            data.push(current)
+          }
+          return data
+        }, [])
+        state.allNotiList = uniqueArr
+      }
     }
   },
   actions: {
