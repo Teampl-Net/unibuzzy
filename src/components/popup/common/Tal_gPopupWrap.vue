@@ -391,6 +391,9 @@ export default {
       if (params.targetType === 'chanDetail') {
         this.goChanDetail(params)
         return
+      } else if (params.targetType === 'contentsDetail') {
+        this.goDetail(params)
+        return
       }
       // console.log('hahahaha')
       console.log(params)
@@ -569,11 +572,19 @@ export default {
       }
     },
     async goDetail (detailValue) {
+      console.log(' $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ')
+      console.log(detailValue)
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // var history = this.$store.getters['D_HISTORY/hStack']
       var currentPage = this.$store.getters['D_HISTORY/hCPage']
       var indexOf = null
+
+      var targetKey = detailValue.contentsKey
+      var teamKey = detailValue.creTeamKey
+
+      if (!targetKey) targetKey = detailValue.targetKey
+      if (!teamKey) teamKey = detailValue.teamKey
 
       if (detailValue.chanYn) {
         this.goChanDetail(detailValue)
@@ -581,15 +592,15 @@ export default {
         param.targetType = 'contentsDetail'
         indexOf = currentPage.indexOf('contentsDetail')
         if (indexOf !== -1) {
-          if (this.propParams.targetKey === detailValue.contentsKey) {
-            await this.$addContents(detailValue.contentsKey, detailValue.jobkindId)
+          if (this.propParams.targetKey === targetKey) {
+            await this.$addContents(targetKey, detailValue.jobkindId)
             return
           }
         }
         // eslint-disable-next-line no-new-object
         var detailParam = new Object()
         detailParam.targetType = 'contentsDetail'
-        detailParam.targetKey = detailValue.contentsKey
+        detailParam.targetKey = targetKey
         // param.targetType = value.contentsKey
         if (detailValue.jobkindId === 'BOAR') {
           detailParam.cabinetKey = detailValue.cabinetKey
@@ -600,13 +611,34 @@ export default {
           detailParam.teamName = detailValue.nameMtext
           detailParam.popHeaderText = detailValue.nameMtext
         }
-        detailParam.contentsKey = detailValue.contentsKey
+        if (!detailParam.popHeaderText) detailParam.popHeaderText = detailValue.popHeaderText
+        detailParam.contentsKey = targetKey
         detailParam.jobkindId = detailValue.jobkindId
-        detailParam.teamKey = detailValue.creTeamKey
+        detailParam.teamKey = teamKey
         detailParam.notiYn = true
         detailParam.value = detailValue
 
-        this.openPop(detailParam)
+        var axiosParam = {}
+        axiosParam.targetKey = targetKey
+        axiosParam.contentsKey = targetKey
+
+        axiosParam.teamKey = Number(teamKey)
+        axiosParam.userKey = this.GE_USER.userKey
+        axiosParam.ownUserKey = this.GE_USER.userKey
+        axiosParam.creTeamKey = Number(teamKey)
+        axiosParam.cabinetKey = detailValue.cabinetKey
+
+        var result = await this.$getContentDetailData(axiosParam, false)
+
+        if (!result || result === false) {
+          this.$showToastPop('해당 컨텐츠를 찾을 수 없습니다.')
+          return
+        }
+        detailParam.initData = result
+        if (result) {
+          this.popParams = detailParam
+          this.popShowYn = true
+        }
       }
     },
     async getContentsMemoList (targetKey, memoKey, parentMemoKey) {

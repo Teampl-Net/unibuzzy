@@ -167,6 +167,7 @@ export const openView = {
     }
   },
   async getWriteBoardData (teamKey) {
+    // 컨텐츠 작성 팝업을 열 때 작성 가능한 게시판를 주고있습니다.
     if (!teamKey) return
     var resultData = {}
     var paramMap = new Map()
@@ -241,6 +242,7 @@ export const openView = {
     // this.editBookSelectedList()
   },
   async getOpenChannelListPopData (tabName) {
+    // 채널리스트를 메인에서 팝업으로 열 시 데이터를 미리 보내주기 위해 만듬
     var paramMap = new Map()
     if (tabName === 'user') {
       paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
