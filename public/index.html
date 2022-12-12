@@ -64,6 +64,11 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-messaging.js"></script>
+
+    <!-- jQuery -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.8.js"></script>
     <script>
       document.addEventListener('AppleIDSignInOnSuccess', (data) => {
           //handle successful response
@@ -83,7 +88,21 @@
             .catch(function (error) { console.log('서비스워커 등록실패 :', error) })
         }
       }
-      
+      if (!("Notification" in window)) {
+            console.log("데스크톱 알림을 지원하지 않는 브라우저입니다.");
+        }
+        // 데스크탑 알림 권한 요청
+        Notification.requestPermission(function (result) {
+            // 권한 거절
+            if(result == 'denied') {
+                Notification.requestPermission();
+                alert('알림을 차단하셨습니다.\n브라우저의 사이트 설정에서 변경하실 수 있습니다.');
+                return false;
+            }
+            else if (result == 'granted'){
+                console.log('알림을 허용하셨습니다.');
+            }
+        });
 
     </script>
     <!-- // google -->

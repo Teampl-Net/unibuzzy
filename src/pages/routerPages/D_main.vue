@@ -89,7 +89,7 @@
           <div  style="width:100%; background-color: #E7EDFF; float:left;">
             <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; border-bottom: 2px; solid #F4F7FF!important; margin-top: 15px;">
               <img src="../../assets/images/main/main_contentsBellIcon2.png" style="float: left; margin-right: 8px;" class="img-w24" alt="">
-              <p @click="goContentListPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글 ></p>
+              <p @click="goContentListPop()" class="font20 fontBold deepBorderColor fl textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글 ></p>
             </div>
           </div>
           <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px; background: #F4F4F4; padding: 8px;" >

@@ -74,8 +74,10 @@ const isJsonString = (str) => {
           message = e.data
         }
         if (message.type === 'userInfo' || message.type === 'successLogin') {
+          //  alert(message.type)
           if (message.loginYn === true) {
             var userProfile = JSON.parse(message.userInfo)
+
             localStorage.setItem('loginYn', true)
             await saveUser(userProfile, true) // 서버에 save요청
             router.replace({ path: '/' })
@@ -123,7 +125,6 @@ const isJsonString = (str) => {
           }
           var isMobile = /Mobi/i.test(window.navigator.userAgent)
           var addVueResult = await functions.recvNotiFromBridge(message, isMobile)
-          // alert(JSON.stringify(addVueResult))
           if (appActiveYn !== true && appActiveYn !== 'true') {
             if (JSON.parse(notiDetailObj.userDo).userKey === store.getters['D_USER/GE_USER'].userKey) {
               return

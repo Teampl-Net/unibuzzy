@@ -22,6 +22,7 @@ import gChannelList from './components/list/D_commonChanList.vue'
 import gSearchBox from './components/unit/Tal_searchBox.vue'
 import gColorPicker from './components/unit/D_colorPicker.vue'
 import gConfirmPop from './components/popup/confirmPop/Tal_commonConfirmPop.vue'
+import gCertiPop from './components/popup/confirmPop/D_commonCertiPop.vue'
 import smallPop from './components/popup/confirmPop/Tal_smallCommonConfirmPop.vue'
 import myObserver from './components/Tal_ScrollObserver.vue'
 import gMemoPop from './components/popup/memo/Tal_commonMemoPop.vue'
@@ -76,6 +77,7 @@ app.use(Vuex)
 app.use(commonSharejs)
 app.use(BootstrapVue3)
 app.use(VueEasyLightbox)
+app.component('gCertiPop', gCertiPop)
 app.component('gLoadingS', gLoadingS)
 app.component('gContentsBox', gContentsBox)
 app.component('gAlertPop', gAlertPop)

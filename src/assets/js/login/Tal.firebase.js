@@ -31,6 +31,8 @@ if (!isMobile) {
     })
     .then(function (token) {
       localStorage.setItem('fcmKey', token)
+      // eslint-disable-next-line no-debugger
+      debugger
       var user = store.getters['D_USER/GE_USER']
       if (user && user.fcmKey) {
         if (user.fcmKey) {
@@ -48,17 +50,17 @@ if (!isMobile) {
       console.log('Error Occured')
     })
 
-  messaging.onMessage(function (payload) {
+  /* messaging.onMessage(function (payload) {
     console.log('onMessage: ', payload)
     var message = payload.data
     functions.recvNotiFromBridge(message, false)
-    /* var title = payload.notification.title
+    var title = payload.notification.title
     var options = {
       body: payload.notification.body,
       data: payload.notification,
       icon: './resource/common/thealim_header_logo_back.png',
       actions: [{
-        title: '화면보기',
+        title: '11',
         action: 'goTab'
       },
       {
@@ -70,8 +72,9 @@ if (!isMobile) {
     navigator.serviceWorker.ready.then(function (registration) {
       // eslint-disable-next-line no-unused-vars
       var notiAlarm = registration.showNotification(title, options)
-    }) */
+      console.log(registration)
+    })
 
     // alert(payload.notification.title + '\n' + payload.notification.body)
-  })
+  }) */
 }

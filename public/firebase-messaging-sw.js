@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-tabs */
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable no-eval */
@@ -87,12 +88,11 @@ self.addEventListener('push', event => {
   } else {
     options = {
       body: push_data.notification.body,
-      icon: icon,
-      image: icon
+      icon: icon
+      // image: icon
     }
   }
-
-  event.waitUntil(self.registration.showNotification(title, options))
+  /* event.waitUntil(self.registration.showNotification(title, options)) */
 })
 self.addEventListener('install', function (event) {
   self.skipWaiting()

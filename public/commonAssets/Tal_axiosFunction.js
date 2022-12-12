@@ -582,12 +582,17 @@ export const methods = {
     // eslint-disable-next-line no-new-object
     var user = new Object()
     // param.user = this.userInfo
-    user = store.getters['D_USER/GE_USER']
-    if (user.email !== undefined && user.email !== null && user.email !== '') { user.soEmail = user.email }
-    if (user.name !== undefined && user.name !== null && user.name !== '') {
-      user.soName = user.name
+    var localUser = store.getters['D_USER/GE_USER']
+    if (localUser.userEmail !== undefined && localUser.userEmail !== null && localUser.userEmail !== '') { user.soEmail = localUser.userEmail }
+    if (localUser.userKey !== undefined && localUser.userKey !== null && localUser.userKey !== '') { user.userKey = localUser.userKey }
+    if (localUser.soAccessToken !== undefined && localUser.soAccessToken !== null && localUser.soAccessToken !== '') { user.soAccessToken = localUser.soAccessToken }
+    var localFcm = localStorage.getItem('fcmKey')
+    if (localFcm) {
+      user.fcmKey = localFcm
     }
+    user.mobileYn = false
     param.user = user
+
     // param.updateYn = true
     var result = null
     var response = await commonAxiosFunction({

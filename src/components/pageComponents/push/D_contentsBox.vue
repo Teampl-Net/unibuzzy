@@ -77,7 +77,7 @@
                       <img v-else src="../../../assets/images/contents/icon_scrap_on.png" alt="" class="img-w17">
                       <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.starCount}}</p>
                     </div>
-                    <div @click="goContentsDetail()" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                    <div @click="this.goContentsDetail(undefined, true)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                       <img  src="../../../assets/images/contents/icon_memo.png" class="img-w20" alt="">
                       <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
                     </div>
@@ -355,7 +355,8 @@ export default {
       var type = emitData.targetType
       var data = emitData.value
       if (type === 'goUserProfile') {
-        this.goUserProfile(data.creUserKey)
+        /* this.goUserProfile(data.creUserKey) */
+        this.goContentsDetail(undefined, true)
         // alert(data.creUserKey)
       } else if (type === 'goContentsDetail') {
         // 댓글로 스크롤하기 위해 2번째 파라미터를 true로 보내줌 (1번째는 컨텐츠 더보기 유무)
@@ -675,6 +676,7 @@ export default {
         if (imgList && imgList.length > 0) {
           for (let i = 0; i < imgList.length; i++) {
             imgList[i].addEventListener('load', (event) => {
+              console.log(event)
               try {
                 var imgsHeight = 0
                 imgsHeight += imgList[i].clientHeight
@@ -749,11 +751,8 @@ export default {
       // 권한이 없는 컨텐츠는 이동하지 못하게 리턴
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
       if (moreCheckYn) {
-        var moreTextDisplay = window.document.getElementById('bodyMore' + this.CONT_DETAIL.contentsKey).style.display
-        if (moreTextDisplay === 'block') {
-          this.alimBigView()
-          return
-        }
+        this.alimBigView()
+        return
       }
       console.log(this.CONT_DETAIL)
       var openPopParam = {}

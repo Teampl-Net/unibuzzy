@@ -1,32 +1,33 @@
 <template>
-<div style="width: 100%; height: 100%; position: relative; padding-top: 10px !important; overflow: hidden; float: left; background: #fff;">
-  <loadingCompo v-if="mLoadingYn === true"/>
-  <!-- <div class="chanListHeaderBase " > -->
-  <div class="chanListHeader " v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
-    <gActiveBar :testYn='true' :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.mChanFindPopShowYn = true" :resultSearchKeyList="this.mResultSearchKeyList" ref="activeBar" :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab" :propSearchList='mSearchList' @searchBoxClick='searchBoxClick'></gActiveBar>
-  </div>
-  <!-- </div> -->
+    <div style="width: 100%; height: 100%; position: relative; padding-top: 10px !important; overflow: hidden; float: left; background: #fff;">
+        <loadingCompo v-if="mLoadingYn === true"/>
+        <!-- <div class="chanListHeaderBase " > -->
+        <div class="chanListHeader " v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
+            <gActiveBar :testYn='true' :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.mChanFindPopShowYn = true" :resultSearchKeyList="this.mResultSearchKeyList" ref="activeBar" :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab" :propSearchList='mSearchList' @searchBoxClick='searchBoxClick'></gActiveBar>
+        </div>
+        <!-- </div> -->
 
-  <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' />
-  <div v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false" style="margin-top: 80px; width: 100%; min-height: 100%;">
-      <chanSkeleton  v-for="(value) in 10" :key="value"/>
-  </div>
-  <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
-    <gEmpty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
-    <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
-      <channelCard class="moveBox chanRow" :chanElement="chanEle" @openPop="openPop" @scrollMove="scrollMove" />
-      <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
-    </template>
-  </div>
-  <img src="../../assets/images/button/Icon_CreChanBtn.png" @click="clickCreateChannel" alt="채널 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
-  <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 7rem; right: calc(10% + 7px);" @click="refreshAll">
-    <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
-  </div>
-</div>
-<div v-if="mBottomSheetOpenYn"  @click="mBottomSheetOpenYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
-<transition name="showUp" >
-  <bottomSheets v-if="mBottomSheetOpenYn" :propSelectSearchObj='mSelectSearchObj' @closePop='mBottomSheetOpenYn = false' @bottSheetEmit='bottSheetEmit' />
-</transition>
+        <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' />
+        <div v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false" style="margin-top: 80px; width: 100%; min-height: 100%;">
+            <chanSkeleton  v-for="(value) in 10" :key="value"/>
+        </div>
+        <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="padding-top: calc(25px + var(--paddingTopLength)); overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
+            <gEmpty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
+            <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
+            <channelCard class="moveBox chanRow" :chanElement="chanEle" @openPop="openPop" @scrollMove="scrollMove" />
+            <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
+            </template>
+        </div>
+        <img src="../../assets/images/button/Icon_CreChanBtn.png" @click="clickCreateChannel" alt="채널 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
+        <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 7rem; right: calc(10% + 7px);" @click="refreshAll">
+            <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
+        </div>
+    </div>
+    <gCertiPop :pPopText="'실명인증을 하면 채널을 생성할 수 있어요'" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  />
+    <div v-if="mBottomSheetOpenYn"  @click="mBottomSheetOpenYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
+    <transition name="showUp" >
+        <bottomSheets v-if="mBottomSheetOpenYn" :propSelectSearchObj='mSelectSearchObj' @closePop='mBottomSheetOpenYn = false' @bottSheetEmit='bottSheetEmit' />
+    </transition>
 </template>
 
 <script>
@@ -72,7 +73,8 @@ export default {
       mEmptyYn: true,
       mLoadingYn: false,
       mAxiosQueue: [],
-      mSearchCateKey: 0
+      mSearchCateKey: 0,
+      gCertiPopShowYn: false
     }
   },
   props: {
@@ -152,6 +154,13 @@ export default {
     this.mLoadingYn = false
   },
   methods: {
+    goSavePhonePop () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetType = 'changePhone'
+      this.gCertiPopShowYn = false
+      this.openPop(param)
+    },
     searchCloseNopenPop (openPopParam) {
       this.mChanFindPopShowYn = false
       this.openPop(openPopParam)
@@ -309,6 +318,15 @@ export default {
       tempParam.targetType = 'createChannel'
       tempParam.popHeaderText = '채널 생성'
       this.$emit('openPop', tempParam)
+      /* this.gCertiPopShowYn = true */
+    /*       if (this.GE_USER.certiDate) {
+        var tempParam = {}
+        tempParam.targetType = 'createChannel'
+        tempParam.popHeaderText = '채널 생성'
+        this.$emit('openPop', tempParam)
+      } else {
+        this.gCertiPopShowYn = true
+      } */
     },
     openManagerChanDetail (openParam) {
       this.$emit('openPop', openParam)

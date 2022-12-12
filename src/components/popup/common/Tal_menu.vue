@@ -27,7 +27,7 @@ export default {
         { iconUrl: 'resource/menu/icon_user_group_color.svg', menuText: '채널', link: 'chanList', type: 'page' },
         { iconUrl: 'resource/menu/icon_search_color.svg', menuText: '검색', link: 'search', type: 'page' },
         { iconUrl: 'resource/menu/icon_user_color.svg', menuText: '마이페이지', link: 'myPage', type: 'page' },
-        { iconUrl: 'resource/menu/icon_D-alim_color.svg', menuText: '더알림이란?', link: 'theAlimInfo', type: 'pop' },
+        { iconUrl: 'resource/menu/icon_D-alim_color.svg', menuText: '더알림 소개', link: 'theAlimInfo', type: 'pop' },
         { iconUrl: 'resource/menu/icon_text_color.svg', menuText: '자주 찾는 질문', link: 'question', type: 'pop' },
         { iconUrl: 'resource/menu/icon_board_color.svg', menuText: '문의하기', link: 'askTal', type: 'pop', jobKind: 'QUES' },
         { iconUrl: 'resource/menu/icon_report_color.svg', menuText: '오류접수', link: 'askTal', type: 'pop', jobKind: 'ERRO' }

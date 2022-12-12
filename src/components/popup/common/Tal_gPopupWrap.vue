@@ -583,6 +583,7 @@ export default {
       var param = new Object()
       // var history = this.$store.getters['D_HISTORY/hStack']
       var currentPage = this.$store.getters['D_HISTORY/hCPage']
+      console.log(currentPage)
       var indexOf = null
 
       var targetKey = detailValue.contentsKey

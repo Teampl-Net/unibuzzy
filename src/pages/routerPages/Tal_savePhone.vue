@@ -7,7 +7,7 @@
             <img class="mbottom-05" src="../../assets/images/main/message_logo.png" style="width: 4rem" alt="">
         </div>
         <div class="fl w-100P introText">
-            <p class="fl textLeft font18 grayBlack fontBold"> {{this.$changeText(this.GE_USER.userDispMtext)}}</p><p class="fl textLeft font16 commonColor fontBold" style="line-height: 30px;">님</p>
+            <p v-if="this.GE_USER" class="fl textLeft font18 grayBlack fontBold"> {{this.$changeText(this.GE_USER.userDispMtext)}}</p><p class="fl textLeft font16 commonColor fontBold" style="line-height: 30px;">님</p>
             <p class="fl textLeft w-100P font16 commonColor fontBold" v-html="mCertiMessage"></p>
         </div>
         <div style="width: 100%; height: 2px; background: #CCC; float: left;" class="mbottom-2 mtop-1"></div>
@@ -110,7 +110,9 @@ export default {
       // window.open('', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
       document.form_chk.action = 'https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb'
       document.form_chk.EncodeData.value = encodeData
-      document.form_chk.target = 'popupChk'
+      // eslint-disable-next-line no-debugger
+      debugger
+      document.form_chk.target = '`popupChk`'
       // submit! (본인인증 화면으로 전환)
       document.form_chk.submit()
     },
