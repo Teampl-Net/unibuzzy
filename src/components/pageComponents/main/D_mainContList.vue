@@ -109,6 +109,15 @@ export default {
       }, [])
       return uniqueArr
     },
+    async setClearList (resultList) {
+      if (!resultList || resultList === '') return
+      this.endListSetFunc(resultList)
+      /* var cont
+      var tempContentDetail
+      var contentDetail */
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      this.mContsList = this.replaceArr(resultList.content)
+    },
     async setContsList (resultList) {
       if (!resultList || resultList === '') return
       var newArr = []
@@ -139,6 +148,15 @@ export default {
         return data
       }, [])
       return uniqueArr
+    },
+    async refreshMainContList () {
+      try {
+        var resultList = await this.getMyContentsList(10, 0, false)
+        this.setClearList(resultList)
+      } catch (e) {
+        console.log(e)
+      } finally {
+      }
     },
     async loadMore (descYn) {
       console.log(' Main Contents List LoadMore ')

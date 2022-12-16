@@ -1,6 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-const publicFunction = {
-  testAlert (test) {
-    alert(test)
-  }
+/* eslint-disable no-unused-vars */
+function testAlert (test) {
+  alert(test)
 }

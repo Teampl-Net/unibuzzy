@@ -119,6 +119,9 @@ export default {
             }, true)
             itemList = memberTypeItemList.data.memberTypeItemList
             resultList[0].itemList = itemList
+            for (var i = 0; i < itemList.length; i ++) {
+                itemList[i].addYn = false
+            }
             // eslint-disable-next-line no-debugger
             debugger
         }

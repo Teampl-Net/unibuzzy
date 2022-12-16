@@ -4,7 +4,7 @@
         <draggable class="ghostClass" :v-model="memberTypeItemList" ghost-class="ghost" :dragging="dragging" @end="end" delay="200" handle=".itemMovePoint">
             <transition-group>
                 <div v-for="(list, index) in memberTypeItemList" :reloadKey="mReloadListKey" :key="list.itemKey" :listIndex="index" class="fl w-100P" style="padding: 0.3rem 0; padding-left: 10px;">
-                    <queCard :propData="list" @cardEmit='cardEmit' :compoIdx='index' :listIndex="index"  class="memTypeItemListRow mbottom-05"/>
+                    <queCard v-if="!list.deleteYn" :propData="list" @cardEmit='cardEmit' :compoIdx='index' :listIndex="index"  class="memTypeItemListRow mbottom-05"/>
                 </div>
             </transition-group>
         </draggable>
@@ -36,7 +36,8 @@ export default {
     return {
       memberTypeItemList: [],
       mMemInfoData: {},
-      mEditMemInfoPopShowYn: false
+      mEditMemInfoPopShowYn: false,
+      mDelItemList: []
     }
   },
   updated () {
@@ -59,7 +60,17 @@ export default {
     },
     sendListToParents () {
       console.log(this.memberTypeItemList)
-      this.$emit('sendListToParents', this.memberTypeItemList)
+      var sendList = null
+      console.log(this.memberTypeItemList)
+      console.log(this.mDelItemList)
+      sendList = this.memberTypeItemList
+      if (this.mDelItemList.length > 0) {
+        sendList = [
+          ...this.memberTypeItemList,
+          ...this.mDelItemList
+        ]
+      }
+      this.$emit('sendListToParents', sendList)
     },
     changeMemberItem (changeItemData) {
       for (var i = 0; i < this.memberTypeItemList.length; i++) {
@@ -77,6 +88,11 @@ export default {
       }
     },
     deleteQueList (index) {
+      console.log(this.memberTypeItemList[index].addYn)
+      if (this.memberTypeItemList[index].addYn === false) {
+        this.memberTypeItemList[index].deleteYn = true
+        this.mDelItemList.push(this.memberTypeItemList[index])
+      }
       this.memberTypeItemList.splice(index, 1)
     },
     addQuestion (index) {
@@ -97,6 +113,9 @@ export default {
       })
       console.log(memberTypeItemList)
       this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
+      for (var i = 0; i < this.memberTypeItemList.length; i++) {
+        this.memberTypeItemList[i].addYn = false
+      }
       if (this.memberTypeItemList.length === 0) {
         this.addQuestion(0)
       }

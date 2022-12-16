@@ -14,7 +14,7 @@
     </transition>
     <TalHeader @showMenu="showMenu" ref="mainHeaderWrap" class="header_footer " :mRouterHeaderText="this.mRouterHeaderText" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
     <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
-        <router-view :initData="sendInitData" @scrollEvnt="this.scrollEvnt" :popYn="false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" ref="routerViewCompo" />
+        <router-view ref="routerViewCompo"  :initData="sendInitData" @goSearchDirect="goSearchDirect" @scrollEvnt="this.scrollEvnt" :popYn="false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
     </div>
     <TalFooter @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
     <!-- <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div> -->
@@ -166,11 +166,40 @@ export default {
         this_.mNetReturnPopShowYn = false
       }, 2000)
     },
+    async goSearchDirect () {
+      var pageData = await this.$getRouterViewData('search')
+      this.sendInitData = pageData
+      pageData.pSearchObj = { text: 'test', type: 'CONT' }
+      console.log({ initData: pageData })
+      // this.$router.push({ path: page, params: { initData: pageData } })
+      await this.$router.replace({
+        name: 'search'
+        // params: { initData: pageData }
+        /* query: { initData: pageData } */
+
+      })
+      /* var this_ = this
+      this.$refs.routerViewCompo.$nextTick(() => {
+        console.log(this_.$refs.routerViewCompo)
+        alert(true)
+
+        // eslint-disable-next-line no-debugger
+        debugger
+        this_.$refs.routerViewCompo.$el.findData('test')
+      }) */
+    },
     async changeRouterPath (page) {
       this.mMenuShowYn = false
       var pageData = await this.$getRouterViewData(page)
       console.log(page)
       this.sendInitData = pageData
+      if (this.$router.currentRoute._rawValue.path === '/' && page === 'main') {
+        const unit = this.$refs.routerViewCompo
+        if (unit.$el) {
+          unit.$el.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+      }
+
       console.log({ initData: pageData })
       // this.$router.push({ path: page, params: { initData: pageData } })
       this.$router.replace({
@@ -179,6 +208,8 @@ export default {
         /* query: { initData: pageData } */
 
       })
+
+      // this.$refs.routerViewCompo.scrollTo({ top: 0 })
 
       /* if (pageData) {
       } else {
@@ -307,6 +338,8 @@ export default {
 
         axiosParam.creTeamKey = detailParam.teamKey
         axiosParam.cabinetKey = detailParam.cabinetKey
+
+        axiosParam.jobkindId = detailParam.jobkindId
 
         var result = await this.$getContentDetailData(axiosParam, false)
         console.log(result)

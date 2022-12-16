@@ -19,12 +19,15 @@
                     <p class="commonBlack "><pp class="fl commonBlack mright-05 textLeft font14 fontBold" @click="emit({ targetType: 'goUserProfile', value: propMemoEle })">{{this.$changeText(propMemoEle.userDispMtext)}}</pp><pp class="fl commonGray font12"  style="font-weight:normal;">{{this.$changeDateMemoFormat(propMemoEle.creDate)}}</pp></p>
                 </div>
                 <div style="min-height: 20px; width: 100%; min-height: 20px;">
-                    <pre class="commonBlack textLeft font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></pre>
+                    <pre v-if="!this.mChangeMemoYn" class="commonBlack textLeft font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></pre>
+                    <pre v-else ref="modiMemoInput" :id="'memoFullStr'+propMemoEle.memoKey" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-html="mModiMemoInput"></pre>
                 </div>
                 <div style="min-height: 20px; margin-top: 10px;  width: 100%; padding-right: 10px; min-height: 20px;">
-                    <p class="commonGray textLeft font12 fl" @click="writeMeMemo(propMemoEle)">답글달기</p>
-                    <p @click="deleteConfirm(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey" class="commonGray textLeft font12 fr">삭제</p>
-                    <!-- <p class="commonGray textLeft font12 fr mright-1" v-if="this.GE_USER.userKey === propMemoEle.creUserKey">수정</p> -->
+                    <p class="commonGray textLeft font12 fl" v-if="!this.mChangeMemoYn" @click="writeMeMemo(propMemoEle)">답글달기</p>
+                    <p @click="deleteConfirm(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">삭제</p>
+                    <p @click="this.mChangeMemoYn = false" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">닫기</p>
+                    <p class="commonGray textLeft font12 cursorP fr " @click="modiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn">수정</p>
+                    <p class="commonGray textLeft font12 cursorP fr " @click="saveModiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn">저장</p>
                 </div>
             </div>
         </div>
@@ -44,7 +47,7 @@
                     <div style="min-height: 20px; width: 100%; margin-top: 5px; padding-right: 10px; min-height: 20px;">
                         <p class="commonGray textLeft font12 fl"  @click="writeMeMemo(cmemo)">답글달기</p>
                         <p @click="deleteConfirm(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey" class="commonGray textLeft font12 fr">삭제</p>
-                        <!-- <p class="commonGray textLeft font12 fr mright-1" v-if="this.GE_USER.userKey === cmemo.creUserKey">수정</p> -->
+                        <p class="commonGray textLeft font12 fr cursorP mright-1" @click="writeMeMemo(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey">수정</p>
                     </div>
                 </div>
             </div>
@@ -75,13 +78,35 @@ export default {
       mCurrentConfirmType: '',
       mTempData: null,
       mCurrentMemoObj: {},
-      mContMenuShowYn: false
+      mContMenuShowYn: false,
+      mChangeMemoYn: false,
+      mModiMemoInput: ''
     }
   },
   created () {
+    console.log(this.propMemoEle)
+    if (this.propMemoEle.bodyFullStr) {
+      console.log(this.propMemoEle.bodyFullStr)
+      this.mModiMemoInput = this.propMemoEle.bodyFullStr
+    }
     // console.log(this.childShowYn)
   },
   methods: {
+    saveModiMemo (oriMemo) {
+      this.mChangeMemoYn = false
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.memoKey = oriMemo.memoKey
+      param.bodyFullStr = this.$refs.modiMemoInput.innerHTML
+      param.bodyMinStr = this.$refs.modiMemoInput.innerHTML
+      param.targetType = oriMemo.targetType
+      param.targetKey = oriMemo.targetKey
+
+      this.$emit('saveModiMemo', { oriMemo: oriMemo, param: param })
+    },
+    modiMemo (memo) {
+      this.mChangeMemoYn = true
+    },
     contMenuClick (memoContents) {
       this.mTempData = memoContents
       this.mContMenuShowYn = true

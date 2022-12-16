@@ -49,9 +49,10 @@ export default {
   },
   methods: {
     async routePage (page) {
-      if (page === this.$router.currentRoute._rawValue.path) {
+      // alert(page)
+      /* if ('/' + page === this.$router.currentRoute._rawValue.path) {
         return
-      }
+      } */
       this.activeFooter = page
       // await this.$router.push(page)
       this.$emit('changeRouterPath', page)

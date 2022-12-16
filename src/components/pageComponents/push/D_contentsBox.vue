@@ -107,7 +107,7 @@
             <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1; width: calc(100% - 40px); margin: 10px 20px; float: left;"></div>
             <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
                 <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
-                    <memoCompo :propContDetail="this.CONT_DETAIL" :diplayCount="-1" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
+                    <memoCompo :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
                 </template>
                 <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
                 <p v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기</p>
@@ -210,6 +210,47 @@ export default {
     await this.setPreTagInFirstTextLine()
   },
   methods: {
+    async saveModiMemo (modiMemoObj) {
+      var memo = null
+      if (modiMemoObj.param) {
+        memo = modiMemoObj.param
+      }
+      try {
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.saveMemo',
+          param: { memo: memo }
+        })
+        console.log('-------------------------console.log(result) ------------------------------')
+        console.log(result)
+        // if (result.data.result === true || result.data.result === 'true') {
+        if (result.data && result.data.result) {
+          this.$refs.gMemoRef.clearMemo()
+          this.mMememoValue = {}
+          //   this.getMemoList(true)
+          if (result.data.resultList && result.data.resultList.memoList.length > 0) {
+            console.log(result.data.resultList)
+            var saveMemoObj = {}
+            var index
+            if (memo.parentMemoKey) {
+              // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 키값을 찾음
+              index = await result.data.resultList.memoList.findIndex((item) => item.memoKey === memo.parentMemoKey)
+              saveMemoObj = await result.data.resultList.memoList[index]
+            } else {
+              saveMemoObj = await result.data.resultList.memoList[0]
+            }
+            saveMemoObj.creTeamKey = this.CONT_DETAIL.creTeamKey
+            saveMemoObj.jobkindId = this.CONT_DETAIL.jobkindId
+            await this.$store.commit('D_CHANNEL/MU_ADD_MEMO', saveMemoObj)
+          }
+        }
+      } catch (e) {
+        console.error('D_contentsDetail 오류')
+        console.error(e)
+      } finally {
+        this.memoShowYn = false
+        this.mLoadingShowYn = false
+      }
+    },
     async clickFileDownload () {
       if (!this.propDetailYn) {
         await this.getContentsDetail()
@@ -507,8 +548,41 @@ export default {
     closeSelectBoardPop () {
       this.mSelectBoardPopShowYn = false
     },
-
-    makeNewContents (type) {
+    async makeNewContents (type) {
+      if (this.contentsEle.creTeamKey && type !== 'writeBoard' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
+        // eslint-disable-next-line no-debugger
+        debugger
+        console.log(this.CHANNEL_DETAIL)
+        this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
+        // this.$checkDeleteHistory('bottomWriteSheets')
+        // this.$emit('openMember')
+        return
+      }
+      var writeParam = {}
+      writeParam.contentsJobkindId = type === 'writeBoard' ? 'BOAR' : 'ALIM'
+      writeParam.targetKey = this.contentsEle.creTeamKey
+      writeParam.teamKey = this.contentsEle.creTeamKey
+      writeParam.currentTeamKey = this.contentsEle.creTeamKey
+      writeParam.targetType = 'writeContents'
+      if (writeParam.contentsJobkindId === 'ALIM') {
+        writeParam.targetNameMtext = this.CHANNEL_DETAIL.nameMtext
+      } else if (writeParam.contentsJobkindId === 'BOAR') {
+        var teamList = await this.$getWriteBoardData(this.contentsEle.creTeamKey)
+        if (teamList === false) {
+          this.$showToastPop('채널이 확인되지 않습니다 나중에 다시시도해주세요!')
+          return
+        }
+        writeParam.selectBoardYn = true
+        writeParam.UseAnOtherYn = true
+        writeParam.initData = teamList
+      }
+      writeParam.titleStr = this.contentsEle.title
+      writeParam.bodyFullStr = this.contentsEle.bodyFullStr
+      writeParam.modiContentsKey = this.contentsEle.contentsKey
+      this.$emit('openPop', writeParam)
+      // this.mSeleteWriteTypePopShowYn = false
+    },
+    /* makeNewContents (type) {
       var tempData = JSON.parse(JSON.stringify(this.contentsEle))
       console.log(type)
       tempData.contentsJobkindId = type === 'writeBoard' ? 'BOAR' : type === 'writeAlim' ? 'ALIM' : undefined
@@ -523,7 +597,7 @@ export default {
       tempData.modiContentsKey = tempData.contentsKey
 
       this.$emit('openPop', tempData)
-    },
+    }, */
     bloc (type) {
       var typeText = type === 'USER' ? '유저를' : '게시글을'
       this.mConfirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
@@ -989,6 +1063,24 @@ export default {
     }
   },
   computed: {
+    CHANNEL_DETAIL () {
+      var detail = this.$getDetail('TEAM', this.contentsEle.creTeamKey)
+      if (detail && detail.length > 0) {
+        // eslint-disable-next-line no-debugger
+        debugger
+        if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {
+          return this.CHANNEL_DETAIL
+        } else {
+          return detail[0]
+        }
+      } else {
+        if (this.CHANNEL_DETAIL) {
+          return this.CHANNEL_DETAIL
+        } else {
+          return null
+        }
+      }
+    },
     CONT_DETAIL () {
       if (!this.contentsEle) return
       var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKey)

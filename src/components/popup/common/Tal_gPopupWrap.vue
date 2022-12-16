@@ -633,6 +633,7 @@ export default {
         axiosParam.ownUserKey = this.GE_USER.userKey
         axiosParam.creTeamKey = Number(teamKey)
         axiosParam.cabinetKey = detailValue.cabinetKey
+        axiosParam.jobkindId = detailValue.jobkindId
 
         var result = await this.$getContentDetailData(axiosParam, false)
 

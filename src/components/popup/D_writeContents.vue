@@ -167,6 +167,8 @@ export default {
     }
   },
   created () {
+    // eslint-disable-next-line no-debugger
+    debugger
     if (this.contentType === 'BOAR') this.titleShowYn = true
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth

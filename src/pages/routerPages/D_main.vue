@@ -87,16 +87,24 @@
         </div> -->
         <div style="border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
           <div  style="width:100%; background-color: #E7EDFF; float:left;">
-            <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; border-bottom: 2px; solid #F4F7FF!important; margin-top: 15px;">
+            <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; position: relative; border-bottom: 2px; solid #F4F7FF!important; margin-top: 15px;">
               <img src="../../assets/images/main/main_contentsBellIcon2.png" style="float: left; margin-right: 8px;" class="img-w24" alt="">
-              <p @click="goContentListPop()" class="font20 fontBold deepBorderColor fl textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글 ></p>
+              <p @click="goContentListPop()" class="font20 fontBold deepBorderColor fl textLeft CDeepColor" style="line-height: 26px;">받은 알림, 게시글 ></p>
+                <!-- <div class="fl" style="position: relative; width: 80px; margin-left: 10px; min-height: 50px;">
+                    <img @click="findData()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
+                    <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="findData()" v-model="mInputText" placeholder="검색키워드를 입력해주세요" />
+                    <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
+                </div> -->
+                <div style="position: absolute; top:15px; right:25px; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshMainList">
+                    <img src="../../assets/images/common/reload_button.svg" class="cursorP img-w20" />
+                </div>
             </div>
           </div>
           <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px; background: #F4F4F4; padding: 8px;" >
             <template v-if="mMainAlimList.length === 0">
                 <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
             </template>
-            <mainContsList v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
+            <mainContsList ref="mainContsList" v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
           </div>
         </div>
     </div>
@@ -202,6 +210,15 @@ export default {
     this.mLoadingYn = false
   },
   methods: {
+    scrollTop0 () {
+      const unit = this.$refs.mainScrollWrap
+      if (unit) {
+        unit.scrollTo({ top: 0, behavior: 'smooth' })
+      }
+    },
+    refreshMainList () {
+      this.$refs.mainContsList.refreshMainContList()
+    },
     goChannelPop (type) {
       var openPopParam = {}
       openPopParam.targetType = 'chanList'
@@ -210,6 +227,7 @@ export default {
       this.openPop(openPopParam)
     },
     goContentListPop () {
+      /* this.$emit('goSearchDirect') */
       var openPopParam = {}
       openPopParam.targetType = 'pushList'
       openPopParam.popHeaderText = '도착한 알림, 게시글'
@@ -448,5 +466,17 @@ export default {
   .mainUserName {font-size: 15px!important;}
   .mainIcon {width: 0.7rem!important;}
   .mainRefreshBtn {width: 20px!important}
+}
+.quickSearchInput {
+    background: #e4e4e463;
+    width: 100%;
+    height: 32px;
+    margin-bottom: 5px!important;
+    border-radius: 12px !important;
+    padding: 0.4rem;
+    padding-left: 2rem !important;
+    box-sizing: border-box;
+    float: left;
+    border: 1px solid #cccccc;
 }
 </style>

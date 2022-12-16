@@ -1,3 +1,4 @@
+
 <template>
   <div class="pagePaddingWrap loginContentsWrap">
     <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
@@ -29,11 +30,8 @@
 </template>
 
 <script>
-
+/* eslint-disable no-undef */
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
-import firebase from 'firebase/compat/app'
-// Other libraries might need to also be prefixed with "compat":
-import 'firebase/compat/auth'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',

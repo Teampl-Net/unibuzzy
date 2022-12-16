@@ -94,7 +94,12 @@ export default {
       console.log(dragItemList)
       var saveList = []
       for (var i = 0; i < dragItemList.length; i++) {
-        saveList.push(itemList[Number(dragItemList[i].attributes.listindex.value)])
+        if (!itemList[Number(dragItemList[i].attributes.listindex.value)].deleteYn) saveList.push(itemList[Number(dragItemList[i].attributes.listindex.value)])
+      }
+      for (var s = 0; s < itemList.length; s++) {
+        if (itemList[s].deleteYn) {
+          saveList.push(itemList[s])
+        }
       }
       saveParam.memberTypeItemList = saveList
       console.log(saveParam)

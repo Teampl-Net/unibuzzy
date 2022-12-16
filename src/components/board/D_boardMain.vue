@@ -1016,13 +1016,14 @@ export default {
       } */
       this.$emit('closeLoading')
       param.cabinetKey = this.propData.targetKey
-      if (this.offsetInt === 0 && this.mCabContentsList.length > 0) this.offsetInt += 1
+      if (this.offsetInt === 0 && this.mCabContentsList && this.mCabContentsList.length > 0) this.offsetInt += 1
       param.offsetInt = this.offsetInt
       if (offsetInput !== undefined) {
         param.offsetInt = offsetInput
       // } else {
         // param.offsetInt = this.offsetInt
       }
+      console.log(param.offsetInt)
       if (pageSize) {
         param.pageSize = pageSize
       } else {
@@ -1040,6 +1041,8 @@ export default {
           param.fromCreDateStr = this.findKeyList.fromCreDateStr
         } if (this.findKeyList.workStatCodeKey !== undefined && this.findKeyList.workStatCodeKey !== null && this.findKeyList.workStatCodeKey !== '') {
           param.workStatCodeKey = this.findKeyList.workStatCodeKey
+        } if (this.findKeyList.creUserName !== undefined && this.findKeyList.creUserName !== null && this.findKeyList.creUserName !== '') {
+          param.creUserName = this.findKeyList.creUserName
         }
       }
       param.jobkindId = 'BOAR'
@@ -1120,7 +1123,7 @@ export default {
       this.offsetInt = 0
       // this.mCabContentsList = []
       this.emptyYn = false
-      var resultList = await this.getContentsList()
+      var resultList = await this.getContentsList(null, 0)
       // if (resultList)
       if (!resultList || (resultList.content && resultList.content.length === 0)) {
         this.mCabContentsList = []
@@ -1146,11 +1149,14 @@ export default {
     },
     async requestSearchList (param) {
       this.offsetInt = 0
+      console.log(param)
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey
         } if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
           this.findKeyList.creTeamNameMtext = param.creTeamNameMtext
+        } if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
+          this.findKeyList.creUserName = param.creUserName
         } if (param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
           this.findKeyList.toCreDateStr = param.toCreDateStr
         } if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '') {
@@ -1162,7 +1168,7 @@ export default {
       }
 
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      var resultList = await this.getContentsList()
+      var resultList = await this.getContentsList(null, 0)
       this.mCabContentsList = resultList.content
       if (!resultList || resultList === '') {
         this.endListYn = false
@@ -1185,6 +1191,13 @@ export default {
         searchObj.typeName = '제목'
         searchObj.type = 'searchKey'
         searchObj.keyword = param.searchKey
+        resultArray.push(searchObj)
+      }
+      searchObj = {}
+      if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
+        searchObj.typeName = '작성자'
+        searchObj.type = 'creUserName'
+        searchObj.keyword = param.creUserName
         resultArray.push(searchObj)
       }
       searchObj = {}
@@ -1219,13 +1232,15 @@ export default {
         delete this.findKeyList.fromCreDateStr
       } else if (type === 'workStatCodeKey') {
         delete this.findKeyList.workStatCodeKey
+      } else if (type === 'creUserName') {
+        delete this.findKeyList.creUserName
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       if (this.resultSearchKeyList.length === 0) {
         this.paddingTop = 0
       }
       // await this.getCabinetDetail()
-      var resultList = await this.getContentsList()
+      var resultList = await this.getContentsList(null, 0)
       this.mCabContentsList = resultList.content
       this.findPaddingTopBoard()
       if (!resultList || resultList === '') {

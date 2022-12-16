@@ -45,14 +45,14 @@ const firebaseConfig = {
   appId: '1:777053173385:web:46b92863d81076f61d3858',
   measurementId: 'G-NHD2EKJML0'
 }
-// firebase.initializeApp(firebaseConfig);
-
-!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
-
-var messaging = firebase.messaging()
+firebase.initializeApp(firebaseConfig)
+const messaging = firebase.messaging()
 messaging.usePublicVapidKey('BKz1oF6HiJg6kscmJ2I0hil9fAsP68N0OrkQN7Vgo_DBQYPmnswNcIK7P71CFvKrdvwLRlemD-DfAppHIZfQ46g')
 var push_url
+
 self.addEventListener('push', event => {
+  /* methods.testAlertz() */
+  push_url = ''
   var push_data = eval('(' + event.data.text() + ')')
   console.log('comeIn : ')
   console.log(push_data)
@@ -65,6 +65,14 @@ self.addEventListener('push', event => {
     targetKey = userDo.targetKey
     push_url = 'https://mo.d-alim.com?targetType=contentsDetail&targetKey=' + userDo.ISub + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
   }
+  if (push_data.data.largeIcon) {
+    icon = push_data.data.largeIcon
+  }
+})
+messaging.onBackgroundMessage((push_data) => {
+  console.log('[firebase-messaging-sw.js] Received background message ', push_data)
+  // Customize notification here
+  var userDo = JSON.parse(push_data.data.userDo)
   var icon = './resource/common/thealim_header_logo_back.png'
   if (push_data.data.largeIcon) {
     icon = push_data.data.largeIcon
@@ -75,7 +83,7 @@ self.addEventListener('push', event => {
     options = {
       body: push_data.notification.body,
       icon: icon,
-      image: icon,
+      // image: icon,
       actions: [{
         title: '화면보기',
         action: 'goTab'
@@ -92,8 +100,10 @@ self.addEventListener('push', event => {
       // image: icon
     }
   }
-  /* event.waitUntil(self.registration.showNotification(title, options)) */
+  self.registration.showNotification(title,
+    options)
 })
+
 self.addEventListener('install', function (event) {
   self.skipWaiting()
   console.log('Installed', event)

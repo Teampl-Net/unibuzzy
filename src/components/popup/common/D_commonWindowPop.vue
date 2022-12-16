@@ -34,7 +34,7 @@ export default {
       // const attr = 'top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + ', resizable=no,status=no'
       // 1. 윈도우 팝업 띄우기
       try {
-        this.windowRef = window.open('https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
+        this.windowRef = window.open('', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
         if (this.windowRef != null) {
           this.windowRef.addEventListener('beforeunload', this.evtClose)
         } else {

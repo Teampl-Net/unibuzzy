@@ -10,7 +10,7 @@
         <!-- input Box -->
         <div class="fl w-100P" style="position: relative; margin-top: 1rem; min-height: 50px;">
           <img @click="findData()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
-          <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="findData()" v-model="mInputText" placeholder="채널명을 검색해주세요" />
+          <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="findData()" v-model="mInputText" placeholder="검색키워드를 입력해주세요" />
           <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
         </div>
 
@@ -468,6 +468,11 @@ export default {
     },
     readyFunc () {
       if (this.initData) {
+        if (this.initData.pSearchObj) {
+          this.mInputText = this.initData.pSearchObj.text
+          this.mActiveSearch = this.initData.pSearchObj.type
+          this.findData(this.initData.pSearchObj.type)
+        }
         this.mBusinessItemList = this.initData.cateItemList
         this.mEmptyYn = false
         this.mOffsetInt = 0
@@ -505,13 +510,13 @@ export default {
       // this.mBusinessItemList.unshift({ cateKey: 0, itemNameMtext: 'KO$^$전체' })
       console.log(this.mBusinessItemList)
     },
-    async findData () {
+    async findData (searchKind) {
       this.mInputFocusYn = false
       if (this.mSearchModeYn === false) {
         this.mTempRecommendList = this.mChannelList
         this.mTempCateItem = this.mCateItem
         this.mCateItem = ''
-        this.searchPopOpen()
+        this.searchPopOpen(searchKind)
       }
       this.mEmptyYn = false
       this.mOffsetInt = 0
@@ -701,12 +706,16 @@ export default {
         this.mSearchModeYn = false
       }
     },
-    searchPopOpen () {
+    searchPopOpen (searchKind) {
       this.mSearchModeYn = true
       this.mScrolledYn = false // 다시 들어왔을 때 공통 탭 영역이 접혀있는 경우가 있음
       this.mEmptyYn = false
-      this.mSearchList = [{ searchType: '산업군', dispName: '전체' }]
-      this.changeSearchTab('CHAN')
+      if (searchKind) {
+        this.changeSearchTab(searchKind)
+      } else {
+        this.changeSearchTab('CHAN')
+        this.mSearchList = [{ searchType: '산업군', dispName: '전체' }]
+      }
       try {
         this.$store.dispatch('D_HISTORY/AC_ADD_POP_HISTORY_STACK', 'searchPop')
         this.$store.dispatch('D_HISTORY/AC_ADD_ALL_HISTORY_STACK', 'searchPop')

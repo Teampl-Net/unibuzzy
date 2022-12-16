@@ -70,7 +70,9 @@ export const openView = {
   },
   async getRouterViewData (page) {
     var resultData = null
-    if (page === 'myPage') {
+    if (page === 'main') {
+      return await openView.getMainBoard()
+    } if (page === 'myPage') {
       return await openView.getMainBoard()
     } else if (page === 'search') {
       return await openView.getSearchMainBoard()
