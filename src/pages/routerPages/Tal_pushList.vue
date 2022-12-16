@@ -1669,7 +1669,7 @@ export default {
 
       // this.offsetInt = 0
       // this.emptyYn = false
-      var resultList = await this.getPushContentsList(null, null, true)
+      var resultList = await this.getPushContentsList(null, 0, true)
       var contentList = []
       if (resultList && resultList.content) {
         contentList = resultList.content

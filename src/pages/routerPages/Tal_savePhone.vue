@@ -112,7 +112,7 @@ export default {
       document.form_chk.EncodeData.value = encodeData
       // eslint-disable-next-line no-debugger
       debugger
-      document.form_chk.target = '`popupChk`'
+      document.form_chk.target = 'popupChk'
       // submit! (본인인증 화면으로 전환)
       document.form_chk.submit()
     },
