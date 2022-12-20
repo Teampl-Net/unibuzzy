@@ -41,7 +41,10 @@ export default {
     },
     async deleteMemberType (deleteData) {
       console.log(deleteData)
-
+      if (this.mMemberTypeList.length === 1) {
+        this.$showToastPop('적어도 멤버 유형은 1개 이상 존재해야 합니다!')
+        return
+      }
       var deleteParam = {}
       deleteParam.memberTypeKey = deleteData.memberTypeKey
       var deleteResult = await this.$commonAxiosFunction({

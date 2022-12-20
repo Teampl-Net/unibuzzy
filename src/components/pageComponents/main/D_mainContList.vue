@@ -13,16 +13,16 @@
     </transition>
   </div>
 
-  <!-- <attatchFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/> -->
+  <!-- <attachFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/> -->
 </template>
 
 <script>
-// import attatchFileListPop from './unit/D_commonAttatchFileListPop.vue'
+// import attachFileListPop from './unit/D_commonAttatchFileListPop.vue'
 import writeBottSheet from './unit/D_contentsWriteBottSheet.vue'
 
 export default {
   components: {
-    // attatchFileListPop,
+    // attachFileListPop,
     writeBottSheet
   },
   data () {

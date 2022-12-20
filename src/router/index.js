@@ -229,14 +229,13 @@ const routes = [
     name: 'certiPhoneReturn',
     props: true,
     component: certiPhoneReturn
-  }
-  /* ,
+  },
   {
     path: '/test',
     name: 'test',
     props: true,
     component: suminTest
-  }, */
+  }
   // {
   //   path: '/myChanList',
   //   name: 'myChanList',

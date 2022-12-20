@@ -11,7 +11,8 @@
 
       <div class="confirmPopBody" >
         <p class="confirmText" v-html="confirmText"></p>
-
+      </div>
+      <div style="width: 100%; height: 50px; float:left;">
         <div class="confirmBtnArea" v-if="confirmType==='timeout'">
           <gBtnSmall class="btnBig" v-on:click="goNo" btnTitle="닫기"/>
         </div>
@@ -89,7 +90,7 @@ export default {
 .confirmPopHeader{height: 55px; width: 100%; border-bottom: 1px solid #6768A7; padding: 0.8rem 0.5rem;}
 .confirmPopHeader img{width: 1.7rem; margin: 0 0.4rem}
 .confirmText{color: #3E3F6A; font-size: 18px; font-weight: bold;}
-.confirmPopBody{width: 100%; padding: 3rem 1rem}
+.confirmPopBody{width: 100%; min-height: calc(130px); padding: 0 20px; height: calc(100% - 110px); display: flex; align-items: center; justify-content: center; float: left;}
 .confirmBtnArea{display: flex; justify-content:center;}
 
 </style>

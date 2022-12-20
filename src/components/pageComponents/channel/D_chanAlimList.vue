@@ -210,9 +210,31 @@ export default {
       this.writeBottSheetYn = false
       this.$emit('openPop', openPopParam)
     },
-    async closeChannelPop (refreshYn) {
+    async closeChannelPop (resultReqData) {
       this.commonChanPopShowYn = false
-      if (refreshYn === true) {
+      if (resultReqData) {
+        var memberInfoText = ''
+        if (resultReqData.memberYn && resultReqData.memberType) {
+          memberInfoText += '"'
+          memberInfoText += this.$changeText(resultReqData.memberType.nameMtext)
+          if (resultReqData.memberType.initData && resultReqData.memberType.initData.length > 0) {
+          /* this.mReqResultMsg += '<br><p class="textLeft commonColor font16 fontBold">부가정보</p>' */
+            memberInfoText += '('
+            for (var i = 0; i < resultReqData.memberType.initData.length; i++) {
+              memberInfoText += (i !== 0 ? '/' : '')
+              memberInfoText += this.$changeText(resultReqData.memberType.initData[i].itemNameMtext) + ': ' + resultReqData.memberType.initData[i].value
+              memberInfoText += (i === resultReqData.memberType.initData.length - 1 ? ')' : '')
+            }
+          }
+          memberInfoText += '"'
+          memberInfoText += '<br>정상적으로 신청되었습니다!'
+        } else {
+          memberInfoText += '회원님은 현재 구독자상태이며,<br>언제든지 다시 멤버신청을 할 수 있습니다!'
+        }
+
+        this.mErrorPopBodyStr = memberInfoText
+        this.mErrorPopBtnType = 'one'
+        this.mErrorPopShowYn = true
         await this.$addChanList(this.chanDetail.targetKey)
       }
     },
@@ -373,6 +395,7 @@ export default {
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
           this.mErrorPopBodyStr = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
           this.mErrorPopShowYn = true
+          this.mErrorPopBtnType = 'two'
         } else {
           var fStatus = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
           // eslint-disable-next-line no-new-object
@@ -411,7 +434,7 @@ export default {
             }
           } else {
             await this.okMember()
-            this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>더 많은 활동을 위해 멤버 신청을 해주세요!'
+            this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>1. 채널을 관리하는 관리자가 될 수 있어요!<br>2. 알림을 보내는 권한을 가질 수 있어요!<br>3. 멤버간 프로필카드를 조회하고 더 활발하게 소통할 수 있어요'
             this.openChannelMsgPop()
           }
         }
@@ -421,7 +444,7 @@ export default {
       this.mSaveFollowerType = 'follow'
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn === true) {
         this.mErrorPopBodyStr = '구독을 취소하시겠습니까?'
-        this.confirmType = 'two'
+        this.mErrorPopBtnType = 'two'
         this.mErrorPopShowYn = true
       } else {
         this.confirmOk()

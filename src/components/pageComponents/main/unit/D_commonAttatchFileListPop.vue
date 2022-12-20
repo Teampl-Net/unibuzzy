@@ -3,14 +3,14 @@
   <div class="" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px; left: 10%; top: 20%; background: #fff; z-index: 21; position: fixed;">
     <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; " >
       <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
-      <img @click="closePop()" src="../../../../assets/images/common/grayXIcon.svg" style="position: absolute; right: 5px; top: 0px;" alt="">
+      <img @click="closePop()" src="../../../../assets/images/common/grayXIcon.svg" class="cursorP" style="position: absolute; right: 5px; top: 0px;" alt="">
 
       <div class="fl w-100P thinScrollBar" style="padding-left:0.5rem; min-height: 150px; max-height: 250px; height: 35%; overflow: hidden auto;">
         <p class="fl font14 fontBold w-100P textLeft mbottom-05" v-if="mAttatchFileList.D_ATTATCH_FILE_LIST.length > 0">첨부파일</p>
         <templete v-for="(value, index) in mAttatchFileList.D_ATTATCH_FILE_LIST" :key="index">
           <div style="width: 100%; word-break: break-all;min-height: 30px; float: left; padding-left:0.3rem" >
             <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
-            <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
+            <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot cursorP"  >
             {{value.fileName}}
             </a>
           </div>
@@ -19,7 +19,7 @@
         <templete v-for="(value, index) in mAttatchFileList.D_BODY_IMG_FILE_LIST" :key="index">
           <div style="width: 100%; word-break: break-all;min-height: 30px; float: left; padding-left:0.3rem" >
             <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
-            <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
+            <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray cursorP textOverdot"  >
             {{value.fileName}}
             </a>
           </div>

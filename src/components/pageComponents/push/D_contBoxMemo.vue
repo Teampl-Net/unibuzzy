@@ -9,61 +9,98 @@
         </div>
     </div>
     <div v-else-if="propMemoEle" style="width: 100%; float: left; height: 100%; margin-bottom: 20px; border-bottom: 1px solid #cccccc50;">
-        <div style="width: 100%; min-height: 20px; display: flex; margin-bottom: 5px;float: left; position: relative;">
-            <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(propMemoEle)">
-            <div :style="this.GE_USER.userKey === propMemoEle.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
-                <div :style="'background-image: url(' + propMemoEle.domainPath + propMemoEle.userProfileImg + ');'" style="height: 36px; width: 36px; border-radius: 100%;  background-repeat: no-repeat; background-position: center; background-size: cover;"></div>
-            </div>
-            <div style="width: calc(100% - 40px); min-height: 40px; display: flex; flex-direction: column;">
-                <div style="width: 100%; margin-right: 10px; min-height: 20px; margin-top: 5px;">
-                    <p class="commonBlack "><pp class="fl commonBlack mright-05 textLeft font14 fontBold" @click="emit({ targetType: 'goUserProfile', value: propMemoEle })">{{this.$changeText(propMemoEle.userDispMtext)}}</pp><pp class="fl commonGray font12"  style="font-weight:normal;">{{this.$changeDateMemoFormat(propMemoEle.creDate)}}</pp></p>
+        <div style="width: 100%; min-height: 20px; display: flex; flex-direction: column; margin-bottom: 5px;float: left; position: relative;">
+            <div style="width: 100%; min-height: 40px; display: flex;">
+                <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(propMemoEle)">
+                <div :style="this.GE_USER.userKey === propMemoEle.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
+                    <div :style="'background-image: url(' + propMemoEle.domainPath + propMemoEle.userProfileImg + ');'" style="height: 36px; width: 36px; border-radius: 100%;  background-repeat: no-repeat; background-position: center; background-size: cover;"></div>
                 </div>
+                <div style="float: left; display: flex; flex-direction: column; margin-right: 10px; min-height: 20px; margin-top: 5px;">
+                    <p class="fl commonBlack mright-05 textLeft font14 fontBold" @click="emit({ targetType: 'goUserProfile', value: propMemoEle })">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
+                    <p class="fl commonGray textLeft font12"  style="font-weight:normal;">{{this.$changeDateMemoFormat(propMemoEle.creDate)}}</p>
+                </div>
+            </div>
+            <div style="width: calc(100%); padding-left: 10px; min-height: 40px; display: flex; flex-direction: column;">
                 <div style="min-height: 20px; width: 100%; min-height: 20px;">
-                    <pre v-if="!this.mChangeMemoYn" class="commonBlack textLeft font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></pre>
-                    <pre v-else ref="modiMemoInput" :id="'memoFullStr'+propMemoEle.memoKey" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-html="mModiMemoInput"></pre>
+                    <div style="width: 100%; float: left; margin-top: 10px;margin-top: 10px;" v-if="getAttachTrueFile(propMemoEle.attachFileList).length > 0">
+                        <p @click="showFileDownloadPop(propMemoEle)" class="textLeft cursorP fr font12 mright-1 fontBold commonColor">첨부파일({{getAttachTrueFile(propMemoEle.attachFileList).length}})</p>
+                    </div>
+                    <div v-if="getAttachFalseFile(propMemoEle.attachFileList).length > 0" :style="'height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'" style="float: left; max-width: 100%; background: rgb(238 238 238); float: left; border: 1px solid #aaa; padding-left: 10px ; margin: 10px 0; overflow: scroll hidden;">
+                        <div id="memoBodyImgWrap" style="float: left; height: 100%; display:flex; align-items: center;" :style="'width:' + getImgListWidthSize(propMemoEle.attachFileList) + 'px'">
+                            <img @click="this.openImgPop(propMemoEle, index)" :style="'max-height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'" style="border-right: 1px solid #aaa; border-left: 1px solid #aaa; margin-right: 10px; float: left; min-width: 70px" :fileKey="img.fileKey" v-for="(img, index) in getAttachFalseFile(propMemoEle.attachFileList)" :key="index" :src="img.domainPath + img.pathMtext" alt="">
+                        </div>
+                    </div>
+                    <pre v-if="!this.mChangeMemoYn" class="commonBlack w-100P textLeft fl font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></pre>
+                    <pre v-else ref="modiMemoInput" :id="'memoFullStr'+propMemoEle.memoKey" class="editableContent  w-100P textLeft font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-html="mModiMemoInput"></pre>
                 </div>
                 <div style="min-height: 20px; margin-top: 10px;  width: 100%; padding-right: 10px; min-height: 20px;">
-                    <p class="commonGray textLeft font12 fl" v-if="!this.mChangeMemoYn" @click="writeMeMemo(propMemoEle)">답글달기</p>
                     <p @click="deleteConfirm(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">삭제</p>
                     <p @click="this.mChangeMemoYn = false" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">닫기</p>
-                    <p class="commonGray textLeft font12 cursorP fr " @click="modiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn">수정</p>
-                    <p class="commonGray textLeft font12 cursorP fr " @click="saveModiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn">저장</p>
+                    <p class="commonGray textLeft font12 fr" v-if="!this.mChangeMemoYn" @click="writeMeMemo(propMemoEle)">답글달기</p>
+                    <!-- <p class="commonGray textLeft font12 cursorP fr " @click="modiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn">수정</p>
+                    <p class="commonGray textLeft font12 cursorP fr " @click="saveModiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn">저장</p> -->
                 </div>
             </div>
         </div>
         <div style="width: 100%; float: left; padding-left: 40px; min-height: 20px;">
-            <div v-for="(cmemo, cIndex) in propMemoEle.cmemoList" :key="cIndex" style="width: 100%; min-height: 20px; display: flex; margin-bottom: 5px;float: left; position: relative;">
-                <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(cmemo)">
-                <div :style="this.GE_USER.userKey === cmemo.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
-                    <div :style="'background-image: url(' + cmemo.domainPath + cmemo.userProfileImg + ');'" style="height: 36px; width: 36px; border-radius: 100%;  background-repeat: no-repeat; background-position: center; background-size: cover;"></div>
+            <div v-for="(cmemo, cIndex) in propMemoEle.cmemoList" :key="cIndex" style="width: 100%; min-height: 20px; display: flex; flex-direction: column; margin-bottom: 5px;float: left; position: relative;">
+                <div style="width: 100%; min-height: 40px; display: flex;">
+                    <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(cmemo)">
+                    <div :style="this.GE_USER.userKey === cmemo.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
+                        <div :style="'background-image: url(' + cmemo.domainPath + cmemo.userProfileImg + ');'" style="height: 36px; width: 36px; border-radius: 100%;  background-repeat: no-repeat; background-position: center; background-size: cover;"></div>
+                    </div>
+                    <div style="float: left; display: flex; flex-direction: column; margin-right: 10px; min-height: 20px;">
+                        <p class="fl commonBlack mright-05 textLeft font14 fontBold" @click="emit({ targetType: 'goUserProfile', value: cmemo })">{{this.$changeText(cmemo.userDispMtext)}}</p>
+                        <p class="fl commonGray textLeft font12"  style="font-weight:normal;">{{this.$changeDateMemoFormat(cmemo.creDate)}}</p>
+                    </div>
                 </div>
-                <div style="width: calc(100% - 40px); min-height: 40px; display: flex; flex-direction: column;">
-                    <div style="width: 100%; margin-right: 10px; min-height: 20px;">
-                        <p class="commonBlack "><pp class="fl commonBlack mright-05 textLeft font14 fontBold"  @click="emit({ targetType: 'goUserProfile', value: cmemo })">{{this.$changeText(cmemo.userDispMtext)}}</pp><pp class="fl commonGray font12"  style="font-weight:normal; line-height: 22px;">{{this.$changeDateMemoFormat(cmemo.creDate)}}</pp></p>
+                <div style="width: calc(100%); margin-top: 10px; padding-left: 10px; min-height: 40px; display: flex; flex-direction: column;">
+                    <div style="width: 100%; float: left; min-height: 20px;" v-if="cmemo.attachMfilekey && cmemo.attachFileList && cmemo.attachFileList.length > 0">
+                        <div style="width: 100%; float: left; margin-top: 10px;" v-if="cmemo.attachFileList && cmemo.attachFileList.length > 0 && getAttachTrueFile(cmemo.attachFileList).length > 0">
+                            <p @click="showFileDownloadPop(cmemo)" class="textLeft cursorP fr font12 mright-1 fontBold commonColor">첨부파일({{getAttachTrueFile(cmemo.attachFileList).length}})</p>
+                        </div>
+                        <div v-if="cmemo.attachFileList && cmemo.attachFileList.length > 0" :style="'height: ' + getMaxHeight(cmemo.attachFileList) + 'px'" style="max-width: 100%; float: left; background: rgb(238 238 238); float: left; border: 1px solid #aaa; padding-left: 10px ; float: left;  overflow: scroll hidden;">
+                            <div id="mememoBodyImgWrap" style="float: left; height: 100%;" :style="'width:' + getImgListWidthSize(cmemo.attachFileList) + 'px'">
+                                <template v-for="(cImg, cIndex) in cmemo.attachFileList" :key="cIndex"  >
+                                    <img  @click="openImgPop(cmemo, cIndex)" :style="'max-height: ' + getMaxHeight(cmemo.attachFileList) + 'px'" style="border-right: 1px solid #aaa; border-left: 1px solid #aaa; margin-right: 10px; float: left; min-width: 70px;" :fileKey="cImg.fileKey" v-if="!cImg.attachYn" :src="cImg.domainPath + cImg.pathMtext" alt="">
+                                </template>
+                            </div>
+                        </div>
                     </div>
                     <div style="min-height: 20px; width: 100%; min-height: 20px; margin-top: 5px;">
                         <pre class="commonBlack textLeft font14" v-html="this.$decodeHTML(cmemo.bodyFullStr)" :id="'memoFullStr'+cmemo.memoKey" ></pre>
                     </div>
                     <div style="min-height: 20px; width: 100%; margin-top: 5px; padding-right: 10px; min-height: 20px;">
-                        <p class="commonGray textLeft font12 fl"  @click="writeMeMemo(cmemo)">답글달기</p>
-                        <p @click="deleteConfirm(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey" class="commonGray textLeft font12 fr">삭제</p>
-                        <p class="commonGray textLeft font12 fr cursorP mright-1" @click="writeMeMemo(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey">수정</p>
+                        <p @click="deleteConfirm(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey" class="commonGray mleft-1 textLeft font12 fr">삭제</p>
+                        <p class="commonGray textLeft font12 fr"  @click="writeMeMemo(cmemo)">답글달기</p>
+                        <!-- <p class="commonGray textLeft font12 fr cursorP mright-1" @click="writeMeMemo(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey">수정</p> -->
                     </div>
                 </div>
             </div>
         </div>
+        <attachFileListPop :propFileData="this.mAttachFileList" v-if="mFilePopShowYn === true" @closePop="mFilePopShowYn = false"/>
+        <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
+
+        <imgPreviewPop :startIndex="startIndex" :mFileKey="selectedImgPopObj.attachMfilekey"  @closePop="this.mPreviewPopShowYn = false " v-if="selectedImgPopObj && mPreviewPopShowYn && selectedImgPopObj.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :creUserName="selectedImgPopObj.userDispMtext"  />
         <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk()" @no='mConfirmPopShowYn=false'/>
     </div>
 <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="propMemoEle" contentType="MEMO" :contentOwner="this.GE_USER.userKey === propMemoEle.creUserKey"/>
 </template>
 
 <script>
+import { onMessage } from '../../../assets/js/webviewInterface'
+import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
+import attachFileListPop from '../main/unit/D_commonAttatchFileListPop.vue'
 export default {
   props: {
     propMemoEle: {},
     diplayCount: {},
     childShowYn: {},
     propContDetail: {}
+  },
+  components: {
+    attachFileListPop,
+    imgPreviewPop
   },
   computed: {
     GE_USER () {
@@ -72,6 +109,9 @@ export default {
   },
   data () {
     return {
+      mImgDetailAlertShowYn: false,
+      mPreviewPopShowYn: false,
+      mChildrenPreviewPopShowYn: false,
       mConfirmText: '',
       mConfirmType: 'one',
       mConfirmPopShowYn: false,
@@ -80,8 +120,17 @@ export default {
       mCurrentMemoObj: {},
       mContMenuShowYn: false,
       mChangeMemoYn: false,
-      mModiMemoInput: ''
+      mModiMemoInput: '',
+      attachTrueFileList: [],
+      attachFalseFileList: [],
+      mFilePopShowYn: false,
+      mAttachFileList: { D_ATTATCH_FILE_LIST: [], D_BODY_IMG_FILE_LIST: [] },
+      selectedImgPopObj: null,
+      startIndex: 0
     }
+  },
+  mounted () {
+    // this.addImgEvnt()
   },
   created () {
     console.log(this.propMemoEle)
@@ -89,9 +138,125 @@ export default {
       console.log(this.propMemoEle.bodyFullStr)
       this.mModiMemoInput = this.propMemoEle.bodyFullStr
     }
-    // console.log(this.childShowYn)
+    if (this.propMemoEle.attachMfilekey && this.propMemoEle.attachFileList && this.propMemoEle.attachFileList.length > 0) {
+      for (var i = 0; i < this.propMemoEle.attachFileList.length; i++) {
+        if (this.propMemoEle.attachFileList[i].attachYn) {
+          this.attachTrueFileList.push(this.propMemoEle.attachFileList[i])
+        } else if (!this.propMemoEle.attachFileList[i].attachYn) {
+          this.attachFalseFileList.push(this.propMemoEle.attachFileList[i])
+        }
+      }
+    }
+    console.log(this.propFileData)
+  },
+  updated () {
+    /* try {
+      if (this.propMemoEle.attachMfilekey && this.propMemoEle.attachFileList && this.propMemoEle.attachFileList.length > 0) {
+        this.attachTrueFileList = []
+        this.attachFalseFileList = []
+        for (var i = 0; i < this.propMemoEle.attachFileList.length; i++) {
+          if (this.propMemoEle.attachFileList[i].attachYn) {
+            this.attachTrueFileList.push(this.propMemoEle.attachFileList[i])
+          } else if (!this.propMemoEle.attachFileList[i].attachYn) {
+            this.attachFalseFileList.push(this.propMemoEle.attachFileList[i])
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    } */
   },
   methods: {
+    getAttachTrueFile (list) {
+      if (!list) return []
+      var resultList = []
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].attachYn) {
+          resultList.push(list[i])
+        }
+      }
+      return resultList
+    },
+    getAttachFalseFile (list) {
+      if (!list) return []
+      var resultList = []
+      for (var i = 0; i < list.length; i++) {
+        if (!list[i].attachYn) {
+          resultList.push(list[i])
+        }
+      }
+      return resultList
+    },
+    getMaxHeight (imgList) {
+      var maxHeight = 0
+      for (var i = 0; i < imgList.length; i++) {
+        if (imgList[i].attachYn) {
+          continue
+        }
+        var img = new Image()
+        img.src = imgList[i].domainPath + imgList[i].pathMtext
+        var imgH = img.height
+        if (maxHeight < imgH && imgH <= 300) {
+          maxHeight = imgH
+        }
+        if (maxHeight === 0) maxHeight = 300
+      }
+      return maxHeight
+    },
+    getImgListWidthSize (imgList) {
+      var imgWidth = 0
+      for (var i = 0; i < imgList.length; i++) {
+        if (imgList[i].attachYn) {
+          continue
+        }
+        var img = new Image()
+        img.src = imgList[i].domainPath + imgList[i].pathMtext
+        var imgW = img.width
+        if (img.height && img.height > 300) {
+          imgW = img.width * (300 / img.height)
+        }
+        if (imgW) imgWidth += (imgW + 12)
+        else imgWidth += 300
+      }
+      return imgWidth
+    },
+    openImgPop (value, index) {
+      this.selectedImgPopObj = value
+      this.startIndex = index
+      console.log(this.selectedImgPopObj)
+      this.mPreviewPopShowYn = true
+    },
+    async imgDownload () {
+      console.log(this.mSelectImgObject)
+      // eslint-disable-next-line no-debugger
+      debugger
+      try {
+        if (this.$getMobileYn()) {
+          onMessage('REQ', 'saveCameraRoll', this.mSelectImgObject.path)
+        } else {
+          console.log(this.mSelectImgObject)
+          // eslint-disable-next-line no-unused-vars
+          var result = await this.$downloadFile(this.mSelectImgObject.fileKey, this.mSelectImgObject.path)
+          console.log(result)
+        }
+        this.$showToastPop('저장되었습니다.')
+        this.mImgDetailAlertShowYn = false
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    showFileDownloadPop (fileObj) {
+      if (fileObj.attachMfilekey && fileObj.attachFileList && fileObj.attachFileList.length > 0) {
+        for (var i = 0; i < fileObj.attachFileList.length; i++) {
+          if (fileObj.attachFileList[i].attachYn) {
+            this.mAttachFileList.D_ATTATCH_FILE_LIST.push(fileObj.attachFileList[i])
+          } else if (!fileObj.attachFileList[i].attachYn) {
+            this.mAttachFileList.D_BODY_IMG_FILE_LIST.push(fileObj.attachFileList[i])
+          }
+        }
+      }
+      this.mFilePopShowYn = true
+    },
     saveModiMemo (oriMemo) {
       this.mChangeMemoYn = false
       // eslint-disable-next-line no-new-object

@@ -3,7 +3,7 @@
       <div style="width: 100%; height: 32px; border-bottom: 1px solid #ccc; float: left; position: relative;">
           <p class="fl font16 fontBold textLeft commonColor mleft-05 ">멤버유형 상세</p>
           <div style="position: absolute; right: 10px; top: -1px;">
-            <gBtnSmall :btnTitle="'삭제'" @click="this.$emit('deleteType', this.mMemberTypeDetail)" btnThema="light" class="mleft-05" style=" height: 25px; padding: 0 5px; line-height: 25px;"/>
+            <gBtnSmall :btnTitle="'삭제'" @click="deleteMemberType(mMemberTypeDetail)" btnThema="light" class="mleft-05" style=" height: 25px; padding: 0 5px; line-height: 25px;"/>
             <gBtnSmall :btnTitle="'저장'" @click="this.saveListForChild" btnThema="deep" class="mleft-05" style=" height: 25px; line-height: 25px; padding: 0 5px;"/>
             <!-- <gBtnSmall :btnTitle="'복사'" @click="this.copyMemberType" btnThema="deep" class="mleft-05" style=""/> -->
           </div>
@@ -63,6 +63,9 @@ export default {
   computed: {
   },
   methods: {
+    deleteMemberType (memberTypeDetail) {
+      this.$emit('deleteType', memberTypeDetail)
+    },
     showLeftBar () {
       this.$emit('showLeftBar')
       // eslint-disable-next-line vue/no-mutating-props

@@ -2,7 +2,7 @@
     <div ref="contScrollWrap" id="contsScrollWrap" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
         <gContentsBox @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
 
-        <!-- <attatchFileListPop :propFileData="this.CONT_DETAIL" v-if="filePopShowYn === true" @closePop="filePopShowYn = false"/> -->
+        <!-- <attachFileListPop :propFileData="this.CONT_DETAIL" v-if="filePopShowYn === true" @closePop="filePopShowYn = false"/> -->
 
         <!-- <div @click="filePopShowYn =false"  v-if="filePopShowYn"  style="width: 100%; height: 100%;     position: absolute;; background: #00000020; z-index: 2; top: 0;"></div>
         <div v-if="filePopShowYn" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px;  min-height: 200px; max-height: 30%; left: 10%; top: 20%; background: #fff; z-index: 2; overflow: hidden auto; position: absolute">
@@ -32,7 +32,7 @@
     </div>
 </template>
 <script>
-// import attatchFileListPop from '../pageComponents/main/unit/D_commonAttatchFileListPop.vue'
+// import attachFileListPop from '../pageComponents/main/unit/D_commonAttatchFileListPop.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
 
 export default {
@@ -86,7 +86,7 @@ export default {
     pPopId: {}
   },
   components: {
-    // attatchFileListPop
+    // attachFileListPop
   },
   created () {
     this.readyFunction()

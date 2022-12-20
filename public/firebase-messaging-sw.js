@@ -45,7 +45,7 @@ const firebaseConfig = {
   appId: '1:777053173385:web:46b92863d81076f61d3858',
   measurementId: 'G-NHD2EKJML0'
 }
-firebase.initializeApp(firebaseConfig)
+!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
 const messaging = firebase.messaging()
 messaging.usePublicVapidKey('BKz1oF6HiJg6kscmJ2I0hil9fAsP68N0OrkQN7Vgo_DBQYPmnswNcIK7P71CFvKrdvwLRlemD-DfAppHIZfQ46g')
 var push_url

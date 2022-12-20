@@ -174,7 +174,7 @@ export default {
     this.screenInnerWidth = window.innerWidth
     // console.log('// console.log(this.params)// console.log(this.params)// console.log(this.params)// console.log(this.params)')
     console.log(this.params)
-    if (this.params.bodyFullStr || this.propData.guideFullStr) {
+    if (this.params && (this.params.bodyFullStr || this.propData.guideFullStr)) {
       if (this.contentType === 'ALIM') {
         if (this.params.UseAnOtherYn) {
           // 게시글을 -> 알림 // 알림 -> 게시글을 할 땐 decode가 필요없기에 구분
@@ -211,28 +211,30 @@ export default {
     }
     // alert(JSON.stringify(this.params))
     // alert(JSON.stringify(this.propData))
-    if (this.params.userKey) {
+    if (this.params && this.params.userKey) {
       this.allRecvYn = false
     }
   },
   mounted () {
-    document.querySelector('#pageMsgAreaWrap').addEventListener('paste', (e) => {
-      var items = (e.clipboardData || e.originalEvent.clipboardData).items
+    if (document.querySelector('#pageMsgAreaWrap')) {
+      document.querySelector('#pageMsgAreaWrap').addEventListener('paste', (e) => {
+        var items = (e.clipboardData || e.originalEvent.clipboardData).items
 
-      for (const i of items) {
-        var item = i
-        if (item.type.indexOf('image') !== -1) {
+        for (const i of items) {
+          var item = i
+          if (item.type.indexOf('image') !== -1) {
           /* this.editorType = 'complex' */
-          var file = item.getAsFile()
-          this.handleImageUpload(file)
+            var file = item.getAsFile()
+            this.handleImageUpload(file)
           // console.log(file);
           // uploadFile(file);
-        } else {}
-      }
-      e.preventDefault()
-      var textData = (e.originalEvent || e).clipboardData.getData('Text')
-      document.execCommand('insertHTML', false, textData)
-    })
+          } else {}
+        }
+        e.preventDefault()
+        var textData = (e.originalEvent || e).clipboardData.getData('Text')
+        document.execCommand('insertHTML', false, textData)
+      })
+    }
 
     // var screenSize = document.querySelector('#alimWrap')
     var textArea = document.querySelector('#textMsgBoxPush')
@@ -313,7 +315,7 @@ export default {
         // console.log(this.propData.parentAttachTrueFileList)
         // this.formEditorShowYn = true
       }
-      if (this.propData.selectBoardYn === true) {
+      if (this.propData && this.propData.selectBoardYn === true) {
         this.selectBoardYn = true
         if (!this.propData.initData) {
           this.getTeamMenuList()

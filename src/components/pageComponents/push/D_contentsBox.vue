@@ -46,8 +46,8 @@
                         전체
                       </template>
                       <template v-else-if="CONT_DETAIL.rUserCount !== -1">
-                        <img src="../../../assets/images/footer/icon_people.svg" class="img-w10 fl" alt="">
-                        <p class="font12 fl mleft-01" style="line-height: 1; margin-top: 1px;">{{CONT_DETAIL.rUserCount}}</p>
+                        <img @click="openRecvActorListPop" src="../../../assets/images/footer/icon_people.svg" class="img-w10 fl" alt="">
+                        <p @click="openRecvActorListPop" class="font12 fl mleft-01" style="line-height: 1; margin-top: 1px;">{{CONT_DETAIL.rUserCount}}</p>
                       </template>
                     </p>
                 </div>
@@ -104,7 +104,7 @@
                     </div>
                 </div>
             </div>
-            <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1; width: calc(100% - 40px); margin: 10px 20px; float: left;"></div>
+            <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1;  width: calc(100% - 40px); margin: 10px 20px; margin-bottom: 30px;float: left;"></div>
             <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
                 <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
                     <memoCompo :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
@@ -130,7 +130,7 @@
 
   <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
 
-  <attatchFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
+  <attachFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
 </template>
 <script>
 import memoCompo from './D_contBoxMemo.vue'
@@ -138,11 +138,11 @@ import { onMessage } from '../../../assets/js/webviewInterface'
 import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import statCodeComponent from '@/components/board/D_manageStateCode.vue'
 import statCodePop from '@/components/board/D_manageStateCodePop.vue'
-import attatchFileListPop from '../main/unit/D_commonAttatchFileListPop.vue'
+import attachFileListPop from '../main/unit/D_commonAttatchFileListPop.vue'
 
 export default {
   components: {
-    attatchFileListPop,
+    attachFileListPop,
     memoCompo,
     statCodeComponent,
     statCodePop,
@@ -210,6 +210,24 @@ export default {
     await this.setPreTagInFirstTextLine()
   },
   methods: {
+    async openRecvActorListPop () {
+      var paramMap = new Map()
+      paramMap.set('contentsKey', this.contentsEle.contentsKey)
+      try {
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.getContentsActorList',
+          param: Object.fromEntries(paramMap)
+        })
+        console.log('-------------------------console.log(result) ------------------------------')
+        console.log(result)
+      } catch (e) {
+        console.error('D_contentsDetail 오류')
+        console.error(e)
+      } finally {
+        this.memoShowYn = false
+        this.mLoadingShowYn = false
+      }
+    },
     async saveModiMemo (modiMemoObj) {
       var memo = null
       if (modiMemoObj.param) {
@@ -237,6 +255,16 @@ export default {
               saveMemoObj = await result.data.resultList.memoList[index]
             } else {
               saveMemoObj = await result.data.resultList.memoList[0]
+
+              saveMemoObj = await result.data.resultList.memoList[0]
+              var newMemoList = [
+                ...this.CONT_DETAIL.D_MEMO_LIST,
+                ...result.data.resultList.memoList
+              ]
+
+              this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newMemoList)
+              // eslint-disable-next-line vue/no-mutating-props
+              this.contentsEle.D_MEMO_LIST = this.replaceArr(newMemoList)
             }
             saveMemoObj.creTeamKey = this.CONT_DETAIL.creTeamKey
             saveMemoObj.jobkindId = this.CONT_DETAIL.jobkindId
@@ -682,15 +710,19 @@ export default {
         this.$showToastPop('복사하지 못했습니다.')
       }
     },
-    async saveMemo (saveMemoHTML) {
+    async saveMemo (inSaveMemoObj) {
+      if (inSaveMemoObj.saveMemoHtml === undefined) return
       this.mLoadingShowYn = true
       var memo = {}
+      if (inSaveMemoObj.attachFileList) {
+        memo.attachFileList = inSaveMemoObj.attachFileList
+      }
       memo.parentMemoKey = null
       if (this.mMememoValue !== undefined && this.mMememoValue !== null && this.mMememoValue !== {}) {
         memo.parentMemoKey = this.mMememoValue.parentMemoKey
       }
 
-      memo.bodyFullStr = saveMemoHTML
+      memo.bodyFullStr = inSaveMemoObj.saveMemoHtml
       /* memo.bodyFilekey  */
       memo.targetKind = 'C'
       memo.targetKey = this.CONT_DETAIL.contentsKey

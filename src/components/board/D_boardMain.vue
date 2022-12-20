@@ -335,7 +335,8 @@ export default {
 
       return result.data.memoList
     },
-    async saveMemo (text) {
+    async saveMemo (inSaveMemoObj) {
+      if (!inSaveMemoObj.saveMemoHtml) return
       if (this.axiosQueue.findIndex((item) => item === 'saveMemo') !== -1) return
       this.axiosQueue.push('saveMemo')
       this.saveMemoLoadingYn = true
@@ -345,7 +346,10 @@ export default {
       if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
         memo.parentMemoKey = this.mememoValue.parentMemoKey
       }
-      memo.bodyFullStr = text
+      memo.bodyFullStr = inSaveMemoObj.saveMemoHtml
+      if (inSaveMemoObj.attachFileList) {
+        memo.attachFileList = inSaveMemoObj.attachFileList
+      }
       /* memo.bodyFilekey  */
       memo.targetKind = 'C'
       memo.targetKey = this.currentContentsKey

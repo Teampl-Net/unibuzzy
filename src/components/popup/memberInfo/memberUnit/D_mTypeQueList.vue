@@ -1,13 +1,21 @@
 <template>
     <div v-if="propMemberTypeObj" style="" class="fl w-100P" >
         <p class="textLeft font15 fontBold commonColor">부가정보</p>
-        <draggable class="ghostClass" :v-model="memberTypeItemList" ghost-class="ghost" :dragging="dragging" @end="end" delay="200" handle=".itemMovePoint">
-            <transition-group>
-                <div v-for="(list, index) in memberTypeItemList" :reloadKey="mReloadListKey" :key="list.itemKey" :listIndex="index" class="fl w-100P" style="padding: 0.3rem 0; padding-left: 10px;">
-                    <queCard v-if="!list.deleteYn" :propData="list" @cardEmit='cardEmit' :compoIdx='index' :listIndex="index"  class="memTypeItemListRow mbottom-05"/>
-                </div>
-            </transition-group>
-        </draggable>
+        <div v-if="memberTypeItemList && memberTypeItemList.length === 0">
+            <p class="font15 fontBold grayBlack textCenter mtop-1">설정된 값이 없습니다. 지금바로 추가해보세요!</p>
+            <div @click="addQuestion(0)" style="width: 100%; float: left; display: flex; align-items: center; justify-content: center;" class="mtop-1 cursorP">
+                <div style="width: 40px; height: 40px; border-radius: 100%; border: 1px solid #5F61BD; font-size: 25px" class="commonColor"> + </div>
+            </div>
+        </div>
+        <template v-else>
+            <draggable class="ghostClass" :v-model="memberTypeItemList" ghost-class="ghost" :dragging="dragging" @end="end" delay="200" handle=".itemMovePoint">
+                <transition-group>
+                    <div v-for="(list, index) in memberTypeItemList" :reloadKey="mReloadListKey" :key="list.itemKey" :listIndex="index" class="fl w-100P" style="padding: 0.3rem 0; padding-left: 10px;">
+                        <queCard v-if="!list.deleteYn" :propData="list" @cardEmit='cardEmit' :compoIdx='index' :listIndex="index"  class="memTypeItemListRow mbottom-05"/>
+                    </div>
+                </transition-group>
+            </draggable>
+        </template>
 
         <!-- <div class="w-100P cursorP fl" style="display:flex; margin: 0 auto; align-items: center; justify-content: center; margin-top: 30px;">
             <div @click="addQuestion"  class="commonColor font30" style="width: 40px; height: 40px;line-height: 39px; border-radius: 100%; border: 2px solid #5F61BD;"> + </div>
@@ -52,7 +60,7 @@ export default {
       if (this.propMemberTypeObj.itemList) {
         this.memberTypeItemList = this.propMemberTypeObj.itemList
         if (this.memberTypeItemList.length === 0) {
-          this.addQuestion(0)
+          // this.addQuestion(0)
         }
       } else {
         this.getMemberTypeItemList(true)
@@ -117,7 +125,7 @@ export default {
         this.memberTypeItemList[i].addYn = false
       }
       if (this.memberTypeItemList.length === 0) {
-        this.addQuestion(0)
+        // this.addQuestion(0)
       }
       // eslint-disable-next-line no-debugger
       debugger

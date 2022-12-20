@@ -1,20 +1,10 @@
 <template>
 <div class="pagePaddingWrap" >
-  <div class="mt-header introText">
-      <p v-html="this.introText"></p>
-  </div>
-  <div class="textLeft" v-if="this.kind === 'changeMobile'">
-    <select>
-      <option>대한민국(+82)</option>
-    </select>
-  </div>
-  <div class="inputWrap">
-    <input type="number" v-model="test" :placeholder="this.kindText + ' 입력'" name="" id="" >
-    <gBtnSmall :btnTitle="this.sendNumberBtn" @click="testClick" class="inputBtn" />
-  </div>
-  <div class="inputWrap">
-    <input type="number" placeholder="인증번호 입력" name="" id="" >
-    </div>
+  <gBtnSmall @click="getListData" btnTitle="test"/>
+  <childCompo1 :propInitData="propInitData" />
+  <childCompo2 :propInitData="propInitData" />
+  <childCompo3 :propInitData="propInitData" />
+  <!-- <div v-for="(value, index) in GE_SERV_DATA"></div> -->
 </div>
 </template>
 
@@ -28,7 +18,30 @@ export default {
       kindText: '',
       beforeEmail: '',
       beforePhone: '',
-      test: ''
+      test: '',
+      realDataList: [],
+      propInitData: null
+    }
+  },
+  computed: {
+    GE_SERV_DISP_DATA () {
+      var servData = null
+      servData = this.realDataList[0]
+      var index = null
+      // var servKey = this.realDataList[0].servKey
+      // 1
+      /* for (var i = 0; i < GE_SERV_DATA_LIST.length; i++) {
+        servData = GE_SERV_DATA_LIST[index]
+      } */
+      // 2
+      index = this.GE_SERV_DATA_LIST.findIndex()
+      if (index !== -1) {
+        servData = this.GE_SERV_DATA_LIST[index]
+      }
+      return servData
+    },
+    GE_SERV_DATA_LIST () {
+      return this.$store.getter['D_CONTENTS/GE_SERV_DATA_LIST']
     }
   },
   created () {
@@ -38,6 +51,25 @@ export default {
     kind: {}
   },
   methods: {
+    async getListData () {
+      var param = {}
+      param.testKey = 1
+      var result = await this.$axios('/service/tp.get~~~~~', param)
+      /* var result.content = [
+
+      ] */
+      // result.content = [{실제 데이터1}, {실제 데이터2}]
+      return result.content // : array
+    },
+    async openPop () {
+      this.propInitData = await this.$getListData() // 1
+      if (!this.propInitData || this.propInitData.length === 0) {
+        alert('컨텐츠를 찾을 수 없습니다')
+        return
+      }
+      this.$store.dispatch('D_CONTENTS/AC_SET_USERDATA', this.propInitData) // array // 2
+      this.childrenPopShowYn = true // 3 자식 열어주기
+    },
     async testClick () {
       var t = '0314294216'
       // eslint-disable-next-line no-new-object

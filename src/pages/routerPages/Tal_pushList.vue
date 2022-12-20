@@ -55,7 +55,7 @@
         </transition>
     </div>
 
-    <!-- <attatchFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/> -->
+    <!-- <attachFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/> -->
 
 <!--     eslint-disable-next-line vue/no-multiple-template-root -->
     <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false' />
@@ -72,12 +72,12 @@ import imgLongClickPop from '../../components/popup/Tal_imgLongClickPop.vue'
 import { onMessage } from '../../assets/js/webviewInterface'
 import statCodeComponent from '../../components/board/D_manageStateCodePop.vue'
 
-// import attatchFileListPop from '../../components/pageComponents/main/unit/D_commonAttatchFileListPop.vue'
+// import attachFileListPop from '../../components/pageComponents/main/unit/D_commonAttatchFileListPop.vue'
 
 export default {
   name: 'pushList',
   components: {
-    // attatchFileListPop,
+    // attachFileListPop,
     findContentsList,
     commonConfirmPop,
     imgPreviewPop,
@@ -1003,7 +1003,7 @@ export default {
 
       this.writeMemoTempTeamKey = param.teamKey
     },
-    async saveMemo (text) {
+    /* async saveMemo (text) {
       // var testIdx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
       // var testCont = this.alimContentsList[testIdx]
       // console.log(testIdx)
@@ -1019,7 +1019,6 @@ export default {
         memo.parentMemoKey = this.mememoValue.parentMemoKey
       }
       memo.bodyFullStr = text
-      /* memo.bodyFilekey  */
       memo.targetKind = 'C'
       memo.targetKey = this.currentContentsKey
       // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
@@ -1132,7 +1131,7 @@ export default {
       } finally {
         this.saveMemoLoadingYn = false
       }
-    },
+    }, */
     memoOpenClick (params) {
     },
     async getContentsMemoList (key, pageSize, offsetInt) {

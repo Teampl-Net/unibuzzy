@@ -1117,7 +1117,8 @@ export default {
         param: param
       })
     }, */
-    async saveMemo (text) {
+    async saveMemo (inSaveMemoObj) {
+      if (!inSaveMemoObj.saveMemoHtml) return
       this.saveMemoLoadingYn = true
       // eslint-disable-next-line no-new-object
       var memo = new Object()
@@ -1125,8 +1126,13 @@ export default {
       if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
         memo.parentMemoKey = this.mememoValue.parentMemoKey
       }
-
-      memo.bodyFullStr = text
+      // memo.bodyFullStr = text
+      if (inSaveMemoObj.saveMemoHtml) {
+        memo.bodyFollStr = inSaveMemoObj.saveMemoHtml
+      }
+      if (inSaveMemoObj.attachFileList) {
+        memo.attachFileList = inSaveMemoObj.attachFileList
+      }
       /* memo.bodyFilekey  */
       memo.targetKind = 'C'
       memo.targetKey = this.CONT_DETAIL.contentsKey

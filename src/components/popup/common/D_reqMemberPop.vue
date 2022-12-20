@@ -1,20 +1,19 @@
 <template>
   <div v-if="propMemberData" style="width: 90%; height: 60%; max-height: 800px; position: absolute; z-index: 100; top: 15%; left: 5%; background: #FFF; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem; min-height: 500px;">
     <div style="width: 100%; position: relative; height: 50px; border-bottom: 1px solid #6768A7; float: left; padding: 10px 20px;">
-        <p class="font20 fontBold textLeft">[{{this.$changeText(propMemberData.nameMtext)}}] 멤버신청</p>
+        <p class="font20 fontBold commonColor textLeft">[{{this.$changeText(propMemberData.nameMtext)}}] 멤버신청</p>
     </div>
     <div style="width: 100%; height: calc(100% - 110px); padding: 10px 20px; float: left;">
-        <div style="width: 100%; min-height: 30px; float: left;">
+        <div v-if="propMemberData.certiYn === 1" style="width: 100%; min-height: 30px; float: left;">
             <p class="font14 w-100P grayBlack fontBold fl textLeft" style="line-height: 30px;" >{{propMemberData.certiYn === 1? '실명 인증이 필요한 유형입니다.': '실명인증이 필요하지 않은 유형입니다.'}}</p>
             <p class="font16 fontBold fl textLeft w-100P" v-if="propMemberData.certiYn === 1 && GE_USER.certiDate">실명인증회원</p>
             <p class="font16 fontBold fl textLeft" style="line-height: 30px;" v-else-if="propMemberData.certiYn === 1">실명 인증이 필요합니다.</p>
             <gBtnSmall v-if="propMemberData.certiYn === 1 && !GE_USER.certiDate" btnTitle="인증하기"/>
         </div>
-        <div style="width: 100%; height: 1px; border-bottom: 1px solid #ccc; margin-top: 10px; float: left;" ></div>
+        <div v-if="propMemberData.certiYn === 1" style="width: 100%; height: 1px; border-bottom: 1px solid #ccc; margin-top: 10px; float: left;" ></div>
         <div style="width: 100%; height: calc(100% - 60px); float: left; ">
-            <p class="font16 fontBold textLeft mbottom-05 mtop-05">신청서 작성</p>
             <div style="width: 100%; min-height: 50px; float: left; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column;" :id="'question'+typeItem.itemKey" v-for="(typeItem, index) in memberTypeItemList" :key="index">
-                <p class="font16 textLeft fl grayBlack fontBold" style="width: 100%;">- {{this.$changeText(typeItem.itemNameMtext)}}</p>
+                <p class="font16 textLeft fl grayBlack fontBold" style="width: 100%;"> {{this.$changeText(typeItem.itemNameMtext)}}</p>
                 <div style="width: calc(100%);" v-if="typeItem.itemType === 'F' || typeItem.itemType === 'L'">
                     <select v-model="typeItem.value" style="width: 100%; height: 30px;" >
                         <option hidden selected>선택하세요</option>
@@ -49,7 +48,7 @@ export default {
     // this.reqData = this.propMemberData
     if (this.propMemberData.initData) {
       this.memberTypeItemList = this.propMemberData.initData
-      var this_ = this
+      /* var this_ = this
       if (this.memberTypeItemList.length === 0) {
         // eslint-disable-next-line no-new-object
         var typeParam = new Object()
@@ -63,7 +62,7 @@ export default {
         }).then(() => {
           this_.closeXPop(true)
         })
-      }
+      } */
     } else {
       this.getMemberTypeItemList()
     }
@@ -118,6 +117,7 @@ export default {
           alert(this.$changeText(this.memberTypeItemList[i].itemNameMtext) + '이(가) 입력되지 않았습니다!')
           return
         }
+        ansObj.itemNameMtext = this.memberTypeItemList[i].itemNameMtext
         ansObj.itemVal = this.memberTypeItemList[i].value
         ansObj.memberTypeItemKey = this.memberTypeItemList[i].itemKey
         ansObj.memberTypeKey = this.memberTypeItemList[i].memberTypeKey
@@ -136,7 +136,7 @@ export default {
       })
       console.log(memberResult)
       if (memberResult.data.result) {
-        this.closeXPop(true)
+        this.$emit('saveMemberData', memberResult.data.memberInfo)
       }
       console.log(memberResult)
       // eslint-disable-next-line no-debugger
