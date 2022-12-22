@@ -25,30 +25,31 @@
                 </div>
                 <div style="width: 100%; paosition: relative; height: 50%; min-height: 30px;">
                     <p style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
-                      <pp class="fl" @click="goChannelMain()">
-                        <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                        {{this.$changeText(CONT_DETAIL.nameMtext)}}
-                      </pp>
-                      <span @click="goUserProfile()" style="font-weight: normal;" class="mleft-05">
-                        <!-- <span class="font-weight: normal; mSide-02">{{'|'}}</span> -->
-                        <img src="../../../assets/images/footer/icon_people.svg" class="img-w12" alt="">
-                        {{this.$changeText(CONT_DETAIL.creUserName)}}
-                      </span>
+                        <pp class="fl" @click="goChannelMain()">
+                            <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
+                            {{this.$changeText(CONT_DETAIL.nameMtext)}}
+                        </pp>
+                        <span @click="goUserProfile()" style="font-weight: normal;" class="mleft-05">
+                            <!-- <span class="font-weight: normal; mSide-02">{{'|'}}</span> -->
+                            <img src="../../../assets/images/footer/icon_people.svg" class="img-w12" alt="">
+                            {{this.$changeText(CONT_DETAIL.creUserName)}}
+                        </span>
                     </p>
 
                     <p class="fr CLDeepGrayColor font12" style="line-height: 23px;">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
                     <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
                     <!-- <p class="fr font12 lightGray mright-03" @click="CONT_DETAIL.rUserCount !== -1? this.openRecvListPop(): ''" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" > -->
-                    <p class="fr font12 lightGray mright-03" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" >
-                      <pp class="font12 fl ">수신</pp>
-                      <span class="font12 mSide-02">{{'|'}}</span>
-                      <template v-if="CONT_DETAIL.rUserCount === -1">
-                        전체
-                      </template>
-                      <template v-else-if="CONT_DETAIL.rUserCount !== -1">
-                        <img @click="openRecvActorListPop" src="../../../assets/images/footer/icon_people.svg" class="img-w10 fl" alt="">
-                        <p @click="openRecvActorListPop" class="font12 fl mleft-01" style="line-height: 1; margin-top: 1px;">{{CONT_DETAIL.rUserCount}}</p>
-                      </template>
+                    <p class="fl commonColor font12 fl textLeft fontBold mleft-05 cursorP" v-if="CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" style="margin-top: 2px;" @click="sendReply">답장하기</p>
+                    <p @click="openRecvActorListPop(CONT_DETAIL.rUserCount === -1? true : '')" class="fr cursorP font12 lightGray mright-03" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" >
+                        <pp  class="font12 fl ">수신</pp>
+                        <span class="font12 mSide-02">{{'|'}}</span>
+                        <template   v-if="CONT_DETAIL.rUserCount === -1">
+                            전체
+                        </template>
+                        <template v-else-if="CONT_DETAIL.rUserCount !== -1">
+                            <img src="../../../assets/images/footer/icon_people.svg" class="img-w10 fl" alt="">
+                            <p class="font12 fl mleft-01" style="line-height: 1; margin-top: 1px;">{{CONT_DETAIL.rUserCount}}</p>
+                        </template>
                     </p>
                 </div>
                 <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
@@ -62,7 +63,7 @@
             <div v-else class="h-400max overHidden fl w-100P"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
               <pre @loadeddata="testLoad" :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
             </div>
-            <p :id="'bodyMore'+CONT_DETAIL.contentsKey" class="font16 cursorP textRight fr mright-1 lightGray" style="display:none">더보기 > </p>
+            <p :id="'bodyMore'+CONT_DETAIL.contentsKey" class="fr font14 commonColor fontBold mtop-05  mright-1" style="display:none">더보기 > </p>
         </div>
         <template v-if="((CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)">
             <div class="contentsCardUserDoArea" style="width: 100%; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 15px; padding: 0 20px;">
@@ -110,7 +111,7 @@
                     <memoCompo :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
                 </template>
                 <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
-                <p v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기</p>
+                <p v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기 ></p>
                 <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
             </div>
         </template>
@@ -129,7 +130,10 @@
   <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
 
   <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
-
+  <template v-if="mContRecvPopShowYn">
+    <div @click="this.$refs.recvListPop.closeXPop()" style="width: 100%; height: 100%; top: 0; z-index: 10; position: absolute; background: #00000026"></div>
+    <recvListPop ref="recvListPop" @closeXPop="closeRecvListPop" :initData="mActorListInitDataList"/>
+  </template>
   <attachFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
 </template>
 <script>
@@ -139,6 +143,7 @@ import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import statCodeComponent from '@/components/board/D_manageStateCode.vue'
 import statCodePop from '@/components/board/D_manageStateCodePop.vue'
 import attachFileListPop from '../main/unit/D_commonAttatchFileListPop.vue'
+import recvListPop from './D_contentsRecvListPop.vue'
 
 export default {
   components: {
@@ -146,7 +151,8 @@ export default {
     memoCompo,
     statCodeComponent,
     statCodePop,
-    imgPreviewPop
+    imgPreviewPop,
+    recvListPop
   },
   props: {
     contentsEle: {},
@@ -181,9 +187,10 @@ export default {
       mPreviewPopShowYn: false,
       mSelectImgObject: {},
       mFileDownData: {},
-
       mFilePopData: {},
-      mFilePopYn: false
+      mFilePopYn: false,
+      mContRecvPopShowYn: false,
+      mActorListInitDataList: []
     }
   },
   async mounted () {
@@ -210,9 +217,41 @@ export default {
     await this.setPreTagInFirstTextLine()
   },
   methods: {
-    async openRecvActorListPop () {
+    closeRecvListPop (openPopParam) {
+      this.mContRecvPopShowYn = false
+      if (openPopParam) {
+        this.openWriteContentsPop(openPopParam)
+      }
+    },
+    openWriteContentsPop (openPopParam) {
+      var param = {}
+      param.selectedList = openPopParam
+      param.targetType = 'writeContents'
+      param.targetKey = this.contentsEle.creTeamKey
+      param.popHeaderText = this.contentsEle.nameMtext
+      this.$emit('openPop', param)
+    },
+    sendReply () {
+      var selectedList = { memberList: [], bookList: [] }
+      var creUserObj = {}
+      creUserObj.accessKind = 'U'
+      creUserObj.accessKey = this.contentsEle.creUserKey
+      creUserObj.userDispMtext = 'KO$^$' + this.contentsEle.creUserName
+      selectedList.memberList.push(creUserObj)
+      this.openWriteContentsPop(selectedList)
+    },
+    async openRecvActorListPop (allYn) {
+      if (allYn === true) {
+        this.$showToastPop('채널 전체 대상 알림입니다!')
+        return
+      }
+      if (this.contentsEle.creUserKey !== this.GE_USER.userKey) {
+        this.$showToastPop('내가 보낸 알림만 수신자 확인이 가능합니다!')
+        return
+      }
       var paramMap = new Map()
       paramMap.set('contentsKey', this.contentsEle.contentsKey)
+      paramMap.set('teamKey', this.contentsEle.creTeamKey)
       try {
         var result = await this.$commonAxiosFunction({
           url: 'service/tp.getContentsActorList',
@@ -220,12 +259,17 @@ export default {
         })
         console.log('-------------------------console.log(result) ------------------------------')
         console.log(result)
+        if (result && result.data && result.data.length > 0) {
+          var actorList = result.data
+          this.mActorListInitDataList.actorList = actorList
+          this.mContRecvPopShowYn = true
+        }
       } catch (e) {
         console.error('D_contentsDetail 오류')
         console.error(e)
       } finally {
-        this.memoShowYn = false
-        this.mLoadingShowYn = false
+        /* this.memoShowYn = false
+        this.mLoadingShowYn = false */
       }
     },
     async saveModiMemo (modiMemoObj) {

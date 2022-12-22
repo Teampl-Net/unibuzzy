@@ -434,7 +434,7 @@ export default {
             }
           } else {
             await this.okMember()
-            this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>1. 채널을 관리하는 관리자가 될 수 있어요!<br>2. 알림을 보내는 권한을 가질 수 있어요!<br>3. 멤버간 프로필카드를 조회하고 더 활발하게 소통할 수 있어요'
+            this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>우리채널에 알림을 보낼 수 있어요!<br>멤버들끼리 자유롭게 소통할 수 있어요!'
             this.openChannelMsgPop()
           }
         }
