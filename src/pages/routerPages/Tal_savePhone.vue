@@ -1,7 +1,7 @@
 <template>
 <div class="introBackground" style="background: rgb(220, 221, 235);">
-  <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
-    <div class="introWhiteCard" style=" min-height: 450px;     margin-top: 30px;">
+  <commonConfirmPop v-if="failPopYn" @no="this.$router.push({path: '/'})" confirmType="one" :confirmText="errorText" />
+    <div class="introWhiteCard" style=" min-height: 500px;     margin-top: 30px;">
       <div class="pagePaddingWrap" style="padding-top: 20px;">
         <div class="fl mbottom-1 w-100P mtop-05">
             <img class="mbottom-05" src="../../assets/images/main/message_logo.png" style="width: 4rem" alt="">
@@ -9,6 +9,10 @@
         <div class="fl w-100P introText">
             <p v-if="this.GE_USER" class="fl textLeft font18 grayBlack fontBold"> {{this.$changeText(this.GE_USER.userDispMtext)}}</p><p class="fl textLeft font16 commonColor fontBold" style="line-height: 30px;">님</p>
             <p class="fl textLeft w-100P font16 commonColor fontBold" v-html="mCertiMessage"></p>
+        </div>
+        <div style="width: 100%; height: 40px; float: left;">
+            <input v-model="inName" style="width: 30%; float: left; height: 35px; padding: 0 10px;" placeholder="이름을 입력해주세요" class="font16 textLeft" type="text">
+            <input v-model="inPhone" style="width: calc(70% - 5px); float: left; height: 35px; padding: 0 10px; margin-left: 5px;" placeholder="휴대폰번호를 입력해주세요" class="font16 textLeft" type="number">
         </div>
         <div style="width: 100%; height: 2px; background: #CCC; float: left;" class="mbottom-2 mtop-1"></div>
         <div class="fl w-100P  introText mbottom-2">
@@ -26,7 +30,7 @@
         </div> -->
         <div class="inputWrap fl w-100P  mtop-1">
           <!-- <input type="tel" v-model="phoneNum" placeholder="휴대전화 번호입력" name="" id="" > -->
-          <gBtnLarge @click="checkIdentity" btnTitle="인증하기" btnThema=""/>
+          <gBtnLarge @click="onClickCertification" btnTitle="인증하기" btnThema=""/>
           <a href="" @click="closeXPop" class="commonGray font14 mtop-05 textCenter w-100P fl">나중에하기</a>
           <!-- <gBtnSmall @click="savePhone" btnTitle="등록" class="inputBtn" /> -->
           <!-- <p :class="{noSavePhone: regPhoneNumber(phoneNum) == false}"  class="fr mright-05">{{regPhoneText}}</p> -->
@@ -37,16 +41,11 @@
       </div>
     </div>
   </div>
-    <form name="form_chk" method="post">
-      <input type="hidden" name="m" value="checkplusService">
-      <input type="hidden" name="EncodeData" value="">
-    </form>
-    <WinPopup id="popupChk" ref="winPopup"  @onClose="evtCloseWinPopup"  @onRecvEvtFromWinPop="onRecvWinPop" />
 </template>
 
 <script>
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
-import WinPopup from '../../components/popup/common/D_commonWindowPop.vue'
+import { onMessage } from '../../assets/js/webviewInterface'
 export default {
   data () {
     return {
@@ -57,13 +56,17 @@ export default {
       mCertiMessage: '',
       winPopShowYn: false,
       routerYn: this.$route.path === '/savePhone',
-      isMobile: /Mobi/i.test(window.navigator.userAgent)
+      isMobile: /Mobi/i.test(window.navigator.userAgent),
+      inPhone: '',
+      request_id: null,
+      success: null,
+      imp_uid: null,
+      certiInfo: {}
 
       // regPhoneText:'휴대전화 형식이 아닙니다.'
     }
   },
   components: {
-    WinPopup,
     commonConfirmPop
   },
   created () {
@@ -79,6 +82,38 @@ export default {
         this.mCertiMessage = '현재 등록된 휴대폰 번호: ' + this.GE_USER.phoneEnc
       } */
     }
+    const query = window.location.search
+    if (query == null || query === '') {
+      let nativeUrl = window.location.href
+      nativeUrl = nativeUrl.replace('/#', '')
+
+      const url = new URL(nativeUrl)
+      const urlParams = url.searchParams
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (!urlParams) return
+      /*  alert(urlParams.get('imp_uid'))
+      alert(urlParams.get('success'))
+      alert(urlParams.get('request_id')) */
+      this.imp_uid = urlParams.get('imp_uid')
+      this.success = urlParams.get('success')
+      this.request_id = urlParams.get('request_id')
+      this.inName = urlParams.get('name')
+      this.inPhone = urlParams.get('phone')
+    } else {
+      const param = new URLSearchParams(query)
+      if (param != null) {
+        this.imp_uid = param.get('imp_uid')
+        this.success = param.get('success')
+        this.request_id = param.get('request_id')
+        this.inName = param.get('name')
+        this.inPhone = param.get('phone')
+      } else {
+        alert('cannot get query!!')
+      }
+    }
+
+    this.getCertiInfo()
     console.log(this.mCertiMessage)
   },
   props: {
@@ -91,78 +126,52 @@ export default {
     }
   },
   methods: {
-    async checkIdentity () {
-      // const wl = window.location
-      // 인증 후 callback URLhttps://mo.d-alim.com/service/tp.checkplus_success
-      // 패치해라
-      const returnSuccessUrl = 'service/tp.successUserCertification'
-      const returnErrorUrl = 'service/tp.successUserCertification'
-      // callback 후 WAS에서 최종적으로 redirect 시킬 URL(결과 화면)
-      // const redirectUrl = 'https://222.233.118.96:8080'
-      var res = await this.$commonAxiosFunction({
-        url: 'service/tp.getNiceToken',
-        param: { returnSuccessUrl: returnSuccessUrl, returnErrorUrl: returnErrorUrl }
-      })
-      this.winPopShowYn = true
-      const encodeData = res.data
-      this.$refs.winPopup.openWinPop('', 1560, 700)
-      // this.openWinPop()
-      // window.open('', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
-      document.form_chk.action = 'https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb'
-      document.form_chk.EncodeData.value = encodeData
-      // eslint-disable-next-line no-debugger
-      debugger
-      document.form_chk.target = 'popupChk'
-      // submit! (본인인증 화면으로 전환)
-      document.form_chk.submit()
-    },
-    openWinPop () {
-      /* this.windowRef = window.open('', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
-      // alert(this.windowRef)
-      if (this.windowRef != null) {
-        this.windowRef.addEventListener('beforeunload', this.evtClose)
-      } else {
-        alert('window.open fail!!!!')
-      } */
+    async getCertiInfo () {
+      this.$showAxiosLoading(true)
+      try {
+      // 인증 토큰 발급 받기
+        var paramMap = new Map()
+        paramMap.set('imp_key', '6177573148818220')
+        paramMap.set('imp_uid', this.imp_uid)
+        paramMap.set('inPhone', this.inPhone)
+        paramMap.set('inName', this.inName)
+        paramMap.set('imp_secret', 'wTNFKJQlzH6slVXAQbbUQ92zEtEojkbbeJ9yqznuSDfcz3jzSJZE2ImNO6tZeS1AqclulDxikkYNaAq9')
+        const getToken = await this.$commonAxiosFunction({
+          url: 'service/tp.getUserCertiInfo',
+          param: Object.fromEntries(paramMap)
+        })
+        console.log(getToken)
+        // eslint-disable-next-line camelcase
 
-      // 2.  새로 띄운 윈도우 팝업창으로 부터 수신 메세지 이벤트 처리
-      window.addEventListener('message', this.recvEvtFromChild, false)
-      document.addEventListener('message', this.recvEvtFromChild, false)
-      // vue의 라우터에 등록한 팝업창 주소를 uri로 설정하도록 한다
-      // const uri = '/test'
-      // this.$refs.winPopup.openWinPop(uri, 1560, 700)
-    },
-    onRecvWinPop (recvObj) {
-      console.log('onRecvWinPop  ---------')
-      console.log(recvObj)
-      if (recvObj.evt != null) { // 저장이 정상적으로 완료된 경우
-        switch (recvObj.evt) {
-          case 'message' :
-            if (recvObj.message) {
-              var userCertiInfo = recvObj.message
-              var user = {}
-              user.userKey = this.GE_USER.userKey
-              user.phoneEnc = userCertiInfo.sMobileNo
-              user.userNameMtext = userCertiInfo.sName
-              user.certiYn = true
-              this.savePhone(user)
-            }
-            console.log('윈 팝업으로 부터 수신 메세지 : ')
-            console.log(recvObj.message)
-            break
+        // console.log(JSON.parse(access_token))
+        // alert(certificationsInfo.name)
+        if (getToken.data.result) {
+          this.certiInfo = JSON.parse(getToken.data.certiInfo) // 인증 토큰
+          await this.savePhone()
+          // this.$showAxiosLoading(false)
+          this.errorText = '사용자 정보가 변경되어<br>메인으로 이동합니다.'
+          this.failPopYn = true
         }
+      } catch (e) {
+        console.error(e)
       }
     },
-    sendToChild () {
-      this.$refs.winPopup.sendEvtToChild({ msg: 'abcde' })
-    },
-    async savePhone (user) {
+    async savePhone () {
+      /* if (this.certiInfo.inName !== this.certiInfo.name) {
+        this.$showToastPop('휴대폰명의자가 일치하지 않습니다.')
+      } */
       // KO$^$수망고$#$EN$^$sumango
       var param = {}
-
+      var user = {}
+      user.userKey = this.GE_USER.userKey
+      user.phoneEnc = this.inPhone
+      user.userNameMtext = this.inName
+      user.certiYn = true
       param.user = user
       param.updateYn = true
-
+      // var testYn = true
+      // console.log(param)
+      // if (testYn) return
       var result = await this.$changeDispName(param)
       // console.log(result)
       if (result.data) {
@@ -172,11 +181,66 @@ export default {
         /* this.$router.replace({ path: '/' })
         this.$emit('closeXPop') */
         this.$showToastPop('인증에 성공하였습니다!')
-        this.closeXPop()
+        // this.closeXPop()
         // this.userInfo.userDispMtext =  this.$changeText(param.user.userDispMtext)
         // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
       } else {
 
+      }
+    },
+    telValidator (args) {
+      const msg = '유효하지 않는 전화번호입니다.'
+      // IE 브라우저에서는 당연히 var msg로 변경
+
+      if (/^[0-9]{2,3}[0-9]{3,4}[0-9]{4}/.test(args)) {
+        return true
+      }
+      alert(msg)
+      return false
+    },
+    onClickCertification () {
+      if (this.inName === '') {
+        this.$showToastPop('이름을 입력해주세요')
+        return
+      }
+      var telValidYn = this.telValidator(this.inPhone)
+      if (!telValidYn) return
+      /* 가맹점 식별코드 */
+      const userCode = 'imp44771042'
+
+      /* 본인인증 데이터 정의하기 */
+      const data = {
+        merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
+        name: this.inName, // 이름
+        phone: '0' + this.inPhone // 전화번호
+      }
+      var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      if (isMobile) {
+        /* 리액트 네이티브 환경에 대응하기 */
+        const params = {
+          userCode, // 가맹점 식별코드
+          data, // 본인인증 데이터
+          callbackUrl: '/#/savePhone',
+          type: 'certification' // 결제와 본인인증 구분을 위한 필드
+        }
+        const paramsToString = JSON.stringify(params)
+        onMessage('REQ', 'certification', paramsToString)
+      } else {
+        /* 그 외 환경의 경우 */
+        /* 가맹점 식별하기 */
+        const { IMP } = window
+        IMP.init(userCode)
+        /* 본인인증 창 호출하기 */
+        IMP.certification(data, this.callback)
+      }
+    },
+    callback (data) {
+      console.log(data)
+      if (data.success === true) {
+        this.imp_uid = data.imp_uid
+        this.success = data.success
+        this.request_id = data.request_id
+        this.getCertiInfo()
       }
     },
     closeXPop () {

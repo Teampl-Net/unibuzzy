@@ -6,7 +6,7 @@
     <div style="width: 100%; float: left;">
         <div class="userProfileWrap" style=" border-radius: 0.8rem; padding: 0 1.5rem;" >
             <div style="width: calc(100% - 42px); float: left; height: 100%;">
-                <p class="commonLightColor font16 textLeft fl" style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
+                <p @click="this.$router.push({path: '/certiPhone'})" class="commonLightColor font16 textLeft fl" style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
                 <div class="fr" style="position:relative;">
                   <!-- <redDot style="width: 12px; height: 12px; border-radius: 100%; border: 2px solid #F4F7FF; background: #ED4956; position: absolute; right: 15px; top: 0px; z-index:1"></redDot> -->
                   <img src="../../assets/images/contents/icon_bell.png" class=" img-w22 mright-1" alt="" @click="openNotiHistoryPop">

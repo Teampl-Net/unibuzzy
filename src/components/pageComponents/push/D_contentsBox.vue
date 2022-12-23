@@ -23,7 +23,7 @@
                         <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 0; top: 0;" alt="" @click="contentMenuClick">
                     </template>
                 </div>
-                <div style="width: 100%; paosition: relative; height: 50%; min-height: 30px;">
+                <div style="width: 100%; paosition: relative; height: 50%; min-height: 25px;">
                     <p style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
                         <pp class="fl" @click="goChannelMain()">
                             <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
@@ -37,10 +37,15 @@
                     </p>
 
                     <p class="fr CLDeepGrayColor font12" style="line-height: 23px;">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
+                </div>
+                <div style="width: 100%; float: left;">
                     <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
                     <!-- <p class="fr font12 lightGray mright-03" @click="CONT_DETAIL.rUserCount !== -1? this.openRecvListPop(): ''" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" > -->
-                    <p class="fl commonColor font12 fl textLeft fontBold mleft-05 cursorP" v-if="CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" style="margin-top: 2px;" @click="sendReply">답장하기</p>
-                    <p @click="openRecvActorListPop(CONT_DETAIL.rUserCount === -1? true : '')" class="fr cursorP font12 lightGray mright-03" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" >
+                    <p class="fl commonColor font12 fl textLeft fontBold cursorP" v-if="CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" style="margin-top: 2px;" @click="sendReply">답장하기</p>
+                    <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
+                        <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
+                    </div>
+                    <p @click="openRecvActorListPop(CONT_DETAIL.rUserCount === -1? true : '')" class="fr cursorP font12 lightGray" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" >
                         <pp  class="font12 fl ">수신</pp>
                         <span class="font12 mSide-02">{{'|'}}</span>
                         <template   v-if="CONT_DETAIL.rUserCount === -1">
@@ -51,9 +56,6 @@
                             <p class="font12 fl mleft-01" style="line-height: 1; margin-top: 1px;">{{CONT_DETAIL.rUserCount}}</p>
                         </template>
                     </p>
-                </div>
-                <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
-                  <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
                 </div>
             </div>
         </div>
@@ -1185,14 +1187,9 @@ export default {
         if (!value || value.length === 0) return
         var content = null
         content = this.CONT_DETAIL
-        if (content === undefined || content === null) content = this.contentsEle
-        if (content === undefined || content === null) return
+        // if (this.contentsEle && (content === undefined || content === null)) content = this.contentsEle
         if (value[0].targetKey !== content.contentsKey) return
-        // var count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
-        // this.CONT_DETAIL.memoCount = count
-        // eslint-disable-next-line no-debugger
-        debugger
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
+        // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
         var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
         if (memoAleadyIdx !== -1) {
           content.D_MEMO_LIST[memoAleadyIdx] = value[0]

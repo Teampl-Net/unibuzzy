@@ -2,15 +2,15 @@
 <template>
   <div class="home">
     <h2 class="text-center p-3">본인인증</h2>
-    <button @click="checkIdentity" class="btn btn-sm btn-primary mt-5">
+    <button @click="onClickCertification" class="btn btn-sm btn-primary mt-5">
       본인인증
     </button>
     <!-- nice 서버에 submit할 form -->
-    <form name="form_chk" method="post">
+    <!-- <form name="form_chk" method="post">
       <input type="hidden" name="m" value="checkplusService">
       <input type="hidden" name="EncodeData" value="">
     </form>
-    <WinPopup id="popupChk" ref="winPopup"  @onClose="evtCloseWinPopup(val)"  @onRecvEvtFromWinPop="onRecvWinPop(val)" />
+    <WinPopup id="popupChk" ref="winPopup"  @onClose="evtCloseWinPopup(val)"  @onRecvEvtFromWinPop="onRecvWinPop(val)" /> -->
   </div>
 </template>
 
@@ -18,15 +18,62 @@
 import WinPopup from '../../popup/common/D_commonWindowPop.vue'
 /* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
+import { onMessage } from '../../../assets/js/webviewInterface'
 export default {
   name: 'Home',
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     WinPopup
+  },
+  watch: {
+    GE_CERTI: {
+      handler (value, old) {
+        console.log(value)
+      },
+      deep: true
+    }
+  },
+  computed: {
+    GE_CERTI () {
+      return this.$store.getters['D_USER/GE_CERTI']
+    }
   },
   methods: {
     getReturnValue (returnValue) {
       // alert(returnValue)
       console.log(returnValue)
+    },
+    onClickCertification () {
+      /* 가맹점 식별코드 */
+      const userCode = 'imp44771042'
+
+      /* 본인인증 데이터 정의하기 */
+      const data = {
+        merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
+        name: '홍길동', // 이름
+        phone: '01012341234' // 전화번호
+      }
+      var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      if (isMobile) {
+        /* 리액트 네이티브 환경에 대응하기 */
+        const params = {
+          userCode, // 가맹점 식별코드
+          data, // 본인인증 데이터
+          callbackUrl: 'http://192.168.0.10:8080/#/certiPhoneReturn',
+          type: 'certification' // 결제와 본인인증 구분을 위한 필드
+        }
+        const paramsToString = JSON.stringify(params)
+        onMessage('REQ', 'certification', paramsToString)
+      } else {
+        /* 그 외 환경의 경우 */
+        /* 가맹점 식별하기 */
+        const { IMP } = window
+        IMP.init(userCode)
+        /* 본인인증 창 호출하기 */
+        IMP.certification(data, this.callback)
+      }
+    },
+    callback () {
     },
     onCertification () {
       /* 1. 가맹점 식별하기 */
@@ -36,7 +83,7 @@ export default {
       /* 2. 본인인증 데이터 정의하기 */
       const data = {
         merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
-        m_redirect_url: '{http://localhost:8080/#/certiPhone_return}',
+        m_redirect_url: '{http://192.168.0.10:8080/#/certiPhone_return}',
         // PC환경에서는 popup 파라메터가 무시되고 항상 true 로 적용됨
         popup: false
       }

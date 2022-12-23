@@ -14,9 +14,11 @@ const D_USER = {
     picMfilekey: '', */
     userInfo: null,
     deviceInfo: null,
-    netStateYn: null
+    netStateYn: null,
+    userCerti: { certiYn: null, certi: {}, saveYn: false }
   },
   getters: {
+    GE_CERTI: state => state.userCerti,
     /* GE_USER_USER_NAME: state => state.userNameMtext,
     GE_USER_DISP_NAME: state => state.userDispMtext,
     GE_USER_USER_KEY: state => state.userKey,
@@ -119,6 +121,12 @@ const D_USER = {
     },
     MU_NET_STATE (state, payload) {
       state.netStateYn = payload
+    },
+    MU_SET_CERTI (state, payload) {
+      if (payload.success) {
+        state.userCerti.certiYn = payload.success
+        state.userCerti.certi = payload
+      }
     }
   },
   actions: {
@@ -127,6 +135,9 @@ const D_USER = {
     },
     AC_NET_STATE ({ commit }, payload) {
       commit('MU_NET_STATE', payload)
+    },
+    AC_SET_CERTI ({ commit }, payload) {
+      commit('MU_SET_CERTI', payload)
     }
   }
 }

@@ -1369,7 +1369,7 @@ export default {
       // this.changeTab('N')
       this.$refs.activeBar.switchtab(0)
       // this.$refs.activeBar.switchtab(0)
-      // this.refreshList()
+      this.refreshList()
       this.canLoadYn = true
     },
     introPushPageTab () {
