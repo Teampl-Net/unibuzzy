@@ -46,11 +46,12 @@ export default {
   methods: {
     goChanDetail (data) {
       var param = {}
-      param.targetType = 'chanDetail'
-      param.targetKey = data.creTeamKey
+      param.targetType = 'contentsDetail'
+      param.targetKey = data.contentsKey
       param.nameMtext = data.nameMtext
+      param.teamKey = data.creTeamKey
       param.chanName = data.nameMtext
-      param.targetContentsKey = data.contentsKey
+      // param.targetContentsKey = data.contentsKey
       param.jobkindId = data.jobkindId
       this.$emit('goChanDetail', param)
     },

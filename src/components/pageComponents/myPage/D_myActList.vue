@@ -146,6 +146,7 @@ export default {
       }
     },
     myActOpenPop (value) {
+      console.log(value)
       this.$emit('openContentsDetailPop', value)
     },
     async getMyActContentsList (pageSize, offsetInput) {

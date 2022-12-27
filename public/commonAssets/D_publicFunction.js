@@ -1,4 +1,4 @@
 /* eslint-disable no-unused-vars */
-function testAlert (test) {
+export function testAlert (test) {
   alert(test)
 }

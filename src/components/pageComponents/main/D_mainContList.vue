@@ -151,8 +151,10 @@ export default {
     },
     async refreshMainContList () {
       try {
+        this.mContsList = []
         var resultList = await this.getMyContentsList(10, 0, false)
         this.setClearList(resultList)
+        return resultList
       } catch (e) {
         console.log(e)
       } finally {

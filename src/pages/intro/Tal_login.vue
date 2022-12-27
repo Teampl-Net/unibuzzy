@@ -46,6 +46,7 @@ import { onMessage } from '../../assets/js/webviewInterface'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 import { setUserInfo } from '../../assets/js/login/Tal_userSetting'
 
+console.log(firebaseApp)
 const authService = new AuthService(firebaseApp)
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -156,15 +157,10 @@ export default {
           user.email = result.user.email
           user.mobile = result.user.phoneNumber
           user.name = result.user.displayName
-          user.aToken = result.user.accessToken
+          user.aToken = result.credential.accessToken
           user.rToken = ''
         }
         var userProfile = await setUserInfo(user)
-
-        /* if (userProfile.mobile === undefined || userProfile.mobile === null || userProfile.mobile === 'null' || userProfile.mobile === '') {
-                // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
-                router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
-              } else */
 
         await saveUser(userProfile, true) // 서버에 save요청
         /* localStorage.setItem('loginYn', true)

@@ -33,7 +33,7 @@
 /* eslint-disable no-undef */
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 
-const firebaseConfig = {
+/* const firebaseConfig = {
   apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
   authDomain: 'thealim-2602c.firebaseapp.com',
   projectId: 'thealim-2602c',
@@ -41,7 +41,7 @@ const firebaseConfig = {
   messagingSenderId: '777053173385',
   appId: '1:777053173385:web:0de7347501346c761d3858',
   measurementId: 'G-0BYBFKL8TS'
-}
+} */
 export default {
   name: '',
   data () {
@@ -61,7 +61,7 @@ export default {
   },
   created () {
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
-    firebase.initializeApp(firebaseConfig)
+    /* firebase.initializeApp(firebaseConfig) */
     this.naverLoginURL += '&client_id=' + this.CLIENTIDforNAVER
     this.naverLoginURL += '&redirect_uri=' + this.redirectURIforNAVER
     this.naverLoginURL += '&state=' + this.stateforNAVER

@@ -71,7 +71,7 @@ export default {
       return resultData
     },
     openPop (value) {
-      console.log(' top5CotentList openPop Param ')
+      console.log(value)
 
       value.alimTabType = this.mViewTab
       // console.log(value)

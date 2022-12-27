@@ -1,5 +1,7 @@
-import { initializeApp } from 'firebase/app'
+
 /* eslint-disable no-undef */
+// eslint-disable-next-line no-unused-vars
+import { initializeApp } from 'firebase/app'
 // eslint-disable-next-line camelcase
 import { methods } from '../../../../public/commonAssets/Tal_axiosFunction'
 import store from '../../../store'
@@ -15,10 +17,10 @@ const firebaseConfig = {
   measurementId: 'G-0BYBFKL8TS'
 }
 
-export const firebaseApp = initializeApp(firebaseConfig)
+// export const firebaseApp = initializeApp(firebaseConfig)
 
-firebase.initializeApp(firebaseConfig)
-
+export const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
+console.log(firebaseApp)
 var isMobile = /Mobi/i.test(window.navigator.userAgent)
 if (!isMobile) {
   var messaging = firebase.messaging()

@@ -1342,7 +1342,7 @@ export default {
       this.findKeyList.toCreDateStr = null
       this.findKeyList.fromCreDateStr = null
       this.resultSearchKeyList = []
-      this.changeMainTab('P')
+      this.changeMainTab('A')
       this.changeTab('N')
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       ScrollWrap.scrollTo({ top: 0 })

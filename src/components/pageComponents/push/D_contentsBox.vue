@@ -486,7 +486,6 @@ export default {
       var type = emitData.targetType
       var data = emitData.value
       if (type === 'goUserProfile') {
-        console.log(emitData)
         if (this.propDetailYn) {
           this.goUserProfile(data.creUserKey)
         } else {
@@ -513,8 +512,6 @@ export default {
         } else return false
         param.creUserKey = this.GE_USER.userKey
         toastText = '해당 유저를 차단했습니다.'
-        console.log(param)
-        console.log(toastText)
         this.saveActAxiosFunc(param, toastText)
       } else if (this.mCurrentConfirmType === 'alimDEL') {
         this.deleteContents('알림을 나에게서 삭제하였습니다.')
@@ -539,7 +536,6 @@ export default {
             url: 'service/tp.deleteContents',
             param: param
           })
-          console.log(result)
           if (result) {
             this.$emit('contDelete', this.propContIndex)
             // this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', [this.contentsEle])
@@ -557,7 +553,6 @@ export default {
     },
     editable (type, allYn) {
       this.mContMenuShowYn = false
-      console.log(type)
       if (type === 'edit') {
         if (this.contentsEle.jobkindId === 'BOAR') {
           this.editBoard()
@@ -627,7 +622,6 @@ export default {
         })
       }
       if (result) {
-        console.log(result)
         this.$showToastPop(toastText)
       }
       // 반복문에 index값을 prop으로 받아 해당 함수가 리스트에 몇번째에서 발생한지 인지하고 그 인덱스를 삭제
@@ -645,9 +639,6 @@ export default {
     },
     async makeNewContents (type) {
       if (this.contentsEle.creTeamKey && type !== 'writeBoard' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
-        // eslint-disable-next-line no-debugger
-        debugger
-        console.log(this.CHANNEL_DETAIL)
         this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
         // this.$checkDeleteHistory('bottomWriteSheets')
         // this.$emit('openMember')
@@ -730,9 +721,6 @@ export default {
       param.targetKind = targetKind
       param.targetKey = parseInt(targetKey)
       param.creUserKey = this.GE_USER.userKey
-      console.log(type)
-      console.log(param)
-      console.log(toastText)
       this.saveActAxiosFunc(param, toastText)
     },
     /** 신고, 차단, 탈퇴를 할 수 있는 axios함수 // actType, targetKind, targetKey, creUserKey 보내기 */
@@ -742,7 +730,6 @@ export default {
           url: 'service/tp.saveClaimLog',
           param: param
         })
-        console.log(result)
         if (result) {
           this.$showToastPop(toastText)
         }
@@ -811,10 +798,8 @@ export default {
           this.mMememoValue = {}
           //   this.getMemoList(true)
           if (result.data.resultList && result.data.resultList.memoList.length > 0) {
-            console.log(result.data.resultList)
             var saveMemoObj = {}
             var index
-            console.log('scrollToMemoTop')
             this.$emit('scrollToMemoTop')
             if (memo.parentMemoKey) {
               // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 키값을 찾음
@@ -851,7 +836,6 @@ export default {
         if (imgList && imgList.length > 0) {
           for (let i = 0; i < imgList.length; i++) {
             imgList[i].addEventListener('load', (event) => {
-              console.log(event)
               try {
                 var imgsHeight = 0
                 imgsHeight += imgList[i].clientHeight

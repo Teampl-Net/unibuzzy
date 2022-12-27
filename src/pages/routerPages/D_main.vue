@@ -218,8 +218,10 @@ export default {
         unit.scrollTo({ top: 0, behavior: 'smooth' })
       }
     },
-    refreshMainList () {
-      this.$refs.mainContsList.refreshMainContList()
+    async refreshMainList () {
+      this.mMainAlimList = []
+      var res = await this.$refs.mainContsList.refreshMainContList()
+      this.mMainAlimList = res.content
     },
     goChannelPop (type) {
       var openPopParam = {}

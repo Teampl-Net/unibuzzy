@@ -88,6 +88,7 @@ export function isMobile () {
 }
 
 export async function saveUser (userProfile, loginYn) {
+  console.log(userProfile)
   var user = {}
   // var testYn = localStorage.getItem('testYn')
   // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
@@ -152,7 +153,9 @@ export async function saveUser (userProfile, loginYn) {
     }
     router.replace({ path: '/' })
   } else if (result.data.message === 'NG') {
-    store.commmit('D_USER/MU_CLEAN_USER')
+    if (store !== undefined && store !== null) {
+      store.commmit('D_USER/MU_CLEAN_USER')
+    }
     localStorage.setItem('user', '')
     alert('로그인에 실패하였으니, 다른방식으로 재로그인 해주세요.')
     router.replace({ path: '/policies' })
@@ -234,12 +237,16 @@ export const methods = {
       if (result.data.resultCode === 'NG') {
         commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
         router.replace('/policies')
-        store.commmit('D_USER/MU_CLEAN_USER')
+        if (store !== undefined && store !== null) {
+          store.commmit('D_USER/MU_CLEAN_USER')
+        }
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
       }
       if (user === undefined || user === null || user === '') {
-        store.commmit('D_USER/MU_CLEAN_USER')
+        if (store !== undefined && store !== null) {
+          store.commmit('D_USER/MU_CLEAN_USER')
+        }
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
         router.replace('/policies')
@@ -255,9 +262,12 @@ export const methods = {
     })
     console.log(result)
     if (result) {
-      await this.$router.replace('/login')
-      this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
-      this.$store.commit('D_USER/MU_CLEAN_USER')
+      await router.replace('/login')
+      store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+      if (store !== undefined && store !== null) {
+        store.commmit('D_USER/MU_CLEAN_USER')
+      }
+
       window.localStorage.setItem('loginYn', false)
       window.localStorage.removeItem('vuex')
       window.localStorage.removeItem('loginType')
