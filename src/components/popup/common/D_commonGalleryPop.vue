@@ -5,6 +5,8 @@
 
 <script>
 import PhotoSwipeLightbox from 'photoswipe/dist/photoswipe-lightbox.esm.js'
+import { onMessage } from '../../../assets/js/webviewInterface'
+
 import 'photoswipe/dist/photoswipe.css'
 export default {
   name: 'SimpleGallery',
@@ -30,7 +32,6 @@ export default {
   created () {
     var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'previewImgPop' + history.length
-    // console.log(history)
     history.push(this.popId)
     this.$store.commit('D_HISTORY/updateStack', history)
   },
@@ -68,8 +69,10 @@ export default {
         console.log(this.propImgList[i])
         // img.src = this.propImgList[i].domainPath + this.propImgList[i].pathMtext
         img.src = this.propImgList[i].currentSrc
-
+        // eslint-disable-next-line no-debugger
+        debugger
         imgObject.src = img.src
+        imgObject.fileKey = Number(this.propImgList[i].attributes.fileKey.value)
         imgObject.width = this.propImgList[i].width
         imgObject.height = this.propImgList[i].height
         returnImgList.push(imgObject)
@@ -92,6 +95,23 @@ export default {
         this.$emit('closeXPop')
       } else {
 
+      }
+    },
+    async download (img) {
+      var imgPath = img.src
+      var fKey = img.fileKey
+      try {
+        var isMobile = /Mobi/i.test(window.navigator.userAgent)
+        if (isMobile) {
+          onMessage('REQ', 'saveCameraRoll', imgPath)
+        } else {
+          var result = await this.$downloadFile(fKey, imgPath)
+          console.log(result)
+        }
+        this.$showToastPop('정상적으로 저장되었습니다!')
+        // this.saveOkPopShowYn = true
+      } catch (error) {
+        // console.log(error)
       }
     }
   },
@@ -119,10 +139,10 @@ export default {
             outlineID: 'pswp__icn-download'
           },
           onClick: (event, el, pswp) => {
-            console.log(pswp)
-            if (confirm('Do you want to toggle zoom?')) {
-              this.lightbox.pswp.toggleZoom()
-            } // 추후 이미지 다운로드를 위한 코드로 변경 필요
+            console.log(pswp.currIndex)
+            var index = pswp.currIndex
+            var targetImg = this.GE_IMG_LIST[index]
+            this.download(targetImg)
           }
         })
       })

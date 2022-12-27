@@ -17,13 +17,11 @@ const firebaseConfig = {
   measurementId: 'G-0BYBFKL8TS'
 }
 
-// export const firebaseApp = initializeApp(firebaseConfig)
-
 export const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
 console.log(firebaseApp)
 var isMobile = /Mobi/i.test(window.navigator.userAgent)
 if (!isMobile) {
-  var messaging = firebase.messaging()
+  const messaging = firebase.messaging()
   messaging.usePublicVapidKey('BKz1oF6HiJg6kscmJ2I0hil9fAsP68N0OrkQN7Vgo_DBQYPmnswNcIK7P71CFvKrdvwLRlemD-DfAppHIZfQ46g')
   // token값 알아내기
   messaging.requestPermission()

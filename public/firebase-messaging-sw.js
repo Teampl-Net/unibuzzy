@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-tabs */
 /* eslint-disable no-mixed-spaces-and-tabs */
@@ -8,8 +7,48 @@
 // Give the service worker access to Firebase Messaging.
 // Note that you can only use Firebase Messaging here, other Firebase libraries
 // are not available in the service worker.
-// eslint-disable-next-line import/no-absolute-path
-// import { testAlert } from './commonAssets/D_publicFunction'
+/* import { publicFunction } from './commonAssets/D_publicFunction' */
+importScripts('https://www.gstatic.com/firebasejs/7.20.0/firebase.js')
+importScripts('https://www.gstatic.com/firebasejs/7.20.0/firebase-messaging.js')
+// Initialize the Firebase app in the service worker by passing in the
+// messagingSenderId.
+
+/* !firebase.apps.length ? firebase.initializeApp({
+  apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
+  authDomain: 'thealim-2602c.firebaseapp.com',
+  projectId: 'thealim-2602c',
+  storageBucket: 'thealim-2602c.appspot.com',
+  messagingSenderId: '777053173385',
+  appId: '1:777053173385:web:46b92863d81076f61d3858',
+  measurementId: 'G-NHD2EKJML0'
+}) : firebase.app() */
+// Retrieve an instance of Firebase Messaging so that it can handle background
+// messages.
+/* const messaging = firebase.messaging()
+messaging.usePublicVapidKey('BKz1oF6HiJg6kscmJ2I0hil9fAsP68N0OrkQN7Vgo_DBQYPmnswNcIK7P71CFvKrdvwLRlemD-DfAppHIZfQ46g')
+document.addEventListener('DOMContentLoaded', function() {
+    //...생략
+
+    if(navigator.serviceWorker){
+        navigator.serviceWorker.register('/firebase-messaging-sw.js')
+            .then(function(reg){console.log('서비스워커 등록성공 :', reg)})
+            .catch(function(error){console.log('서비스워커 등록실패 :', error)});
+    }
+}); */
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
+  authDomain: 'thealim-2602c.firebaseapp.com',
+  projectId: 'thealim-2602c',
+  storageBucket: 'thealim-2602c.appspot.com',
+  messagingSenderId: '777053173385',
+  appId: '1:777053173385:web:46b92863d81076f61d3858',
+  measurementId: 'G-NHD2EKJML0'
+}
+!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
+const messaging = firebase.messaging()
+// messaging.usePublicVapidKey('BKz1oF6HiJg6kscmJ2I0hil9fAsP68N0OrkQN7Vgo_DBQYPmnswNcIK7P71CFvKrdvwLRlemD-DfAppHIZfQ46g')
+
 var push_url
 
 self.addEventListener('push', event => {
