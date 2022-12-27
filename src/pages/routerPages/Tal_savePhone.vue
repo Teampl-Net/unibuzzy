@@ -1,6 +1,6 @@
 <template>
 <div class="introBackground" style="background: rgb(220, 221, 235);">
-  <commonConfirmPop v-if="failPopYn" @no="this.$router.push({path: '/'})" confirmType="one" :confirmText="errorText" />
+  <commonConfirmPop v-if="failPopYn" @no="closeXPop" confirmType="one" :confirmText="errorText" />
     <div class="introWhiteCard" style=" min-height: 500px;     margin-top: 30px;">
       <div class="pagePaddingWrap" style="padding-top: 20px;">
         <div class="fl mbottom-1 w-100P mtop-05">
@@ -123,6 +123,24 @@ export default {
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_CERTI () {
+      return this.$store.getters['D_USER/GE_CERTI']
+    }
+  },
+  watch: {
+    GE_CERTI: {
+      handler (value, old) {
+        // alert(JSON.stringify(value))
+        this.imp_uid = value.certi.imp_uid
+        this.success = value.certiYn
+        this.request_id = value.certi.request_id
+        this.inName = value.certi.inName
+        this.inPhone = value.certi.inPhone
+        this.getCertiInfo()
+        // store.dispatch('D_USER/AC_SET_CERTI', message.certiInfo)
+      },
+      deep: true
     }
   },
   methods: {
@@ -149,7 +167,7 @@ export default {
           this.certiInfo = JSON.parse(getToken.data.certiInfo) // 인증 토큰
           await this.savePhone()
           // this.$showAxiosLoading(false)
-          this.errorText = '사용자 정보가 변경되어<br>메인으로 이동합니다.'
+          this.errorText = '인증되었습니다.'
           this.failPopYn = true
         }
       } catch (e) {
@@ -164,7 +182,7 @@ export default {
       var param = {}
       var user = {}
       user.userKey = this.GE_USER.userKey
-      user.phoneEnc = this.inPhone
+      // user.phoneEnc = '0' + this.inPhone
       user.userNameMtext = this.inName
       user.certiYn = true
       param.user = user
@@ -209,6 +227,7 @@ export default {
       const userCode = 'imp44771042'
 
       /* 본인인증 데이터 정의하기 */
+      this.inPhone = '0' + this.inPhone
       const data = {
         merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
         name: this.inName, // 이름

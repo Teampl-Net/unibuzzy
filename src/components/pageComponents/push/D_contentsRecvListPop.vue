@@ -2,13 +2,13 @@
     <div style="width: calc(100% - 40px); display: flex; flex-direction: column; height: 400px; position: absolute; border-radius: 0.8rem; z-index: 11; top: 20%; left: 20px; background: #fff;">
         <div style="width: 100%; height: 50px; float: left; padding: 5px 10px; display: flex; align-items: center; position: relative;" class="headerShadow">
             <p class="font22 fontBold textLeft commonColor">수신자 목록</p>
-            <img @click="closeXPop(false)"  src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute; right: 15px; top: 13px;" alt="">
+            <img @click="closeXPop(false)"  src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute; right: 15px; top: 13px; cursor: pointer;" alt="">
         </div>
         <div style="width: 100%; height: calc(100% - 100px); overflow: hidden scroll; " class="okScrollBar">
             <div v-for="(actor, index) in this.mActorList" style="width: calc(100% - 40px); height: 100%; display: flex; border-bottom: 1px solid #ccc; height: 80px; align-items: center; margin: 10px 20px;" :key="index">
                 <template v-if="actor.accessKind === 'C'">
                     <div class="imgCircle middleBgColor fl" @click="clickEvntToParents('open')" >
-                        <img src="../../../assets/images/board/icon_book.svg" class="content img-w25"/>
+                        <img src="../../../assets/images/board/icon_book.svg" class="fl content img-w25"/>
                     </div>
                     <div class="fl mleft-05" style="display: flex; align-items: center; width: calc(100% - 100px); ">
                         <div class="textLeft fl textOverdot w-100P" style="" >
@@ -42,7 +42,7 @@
                         <div class="textLeft fl w-100P " style="" >
                             <p class="fl font16 commonDarkGray fontBold w-100P"><img v-if="actor.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../assets/images/editChan/icon_self.svg">{{this.$changeText(actor.userDispMtext)}}</p>
                             <p class="fl font14 commonDarkGray " style="" >{{actor.userEmail ? changeDot('email', actor.userEmail) : '등록된 이메일이 없습니다.'}}</p>
-                            <pp class="fl font14 commonDarkGray" style="margin: 0 0.3rem">|</pp>
+                            <p class="fl font14 commonDarkGray" style="margin: 0 0.3rem">|</p>
                             <p class="fl font14 commonDarkGray " style="" >{{actor.phoneEnc ? changeDot('phone', actor.phoneEnc) : '등록된 번호가 없습니다.'}}</p>
                         </div>
                     </div>

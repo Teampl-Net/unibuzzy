@@ -1,16 +1,16 @@
 <template>
-  <div v-if="propMemberData" style="width: 90%; height: 60%; max-height: 800px; position: absolute; z-index: 100; top: 15%; left: 5%; background: #FFF; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem; min-height: 500px;">
+  <div v-if="propMemberData" style="width: 90%; height: 60%; max-height: 800px; position: absolute; z-index: 10; top: 15%; left: 5%; background: #FFF; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem; min-height: 500px;">
     <div style="width: 100%; position: relative; height: 50px; border-bottom: 1px solid #6768A7; float: left; padding: 10px 20px;">
         <p class="font20 fontBold commonColor textLeft">[{{this.$changeText(propMemberData.nameMtext)}}] 멤버신청</p>
     </div>
     <div style="width: 100%; height: calc(100% - 110px); padding: 10px 20px; float: left;">
-        <div v-if="propMemberData.certiYn === 1" style="width: 100%; min-height: 30px; float: left;">
-            <p class="font14 w-100P grayBlack fontBold fl textLeft" style="line-height: 30px;" >{{propMemberData.certiYn === 1? '실명 인증이 필요한 유형입니다.': '실명인증이 필요하지 않은 유형입니다.'}}</p>
-            <p class="font16 fontBold fl textLeft w-100P" v-if="propMemberData.certiYn === 1 && GE_USER.certiDate">실명인증회원</p>
-            <p class="font16 fontBold fl textLeft" style="line-height: 30px;" v-else-if="propMemberData.certiYn === 1">실명 인증이 필요합니다.</p>
-            <gBtnSmall v-if="propMemberData.certiYn === 1 && !GE_USER.certiDate" btnTitle="인증하기"/>
+        <div v-if="propMemberData.certiYn === true" style="width: 100%; min-height: 30px; float: left;">
+            <p class="font16 w-100P grayBlack fontBold fl textLeft" style="line-height: 30px;" >{{propMemberData.certiYn === true? '실명 인증이 필요한 유형': '실명인증이 필요하지 않은 유형입니다.'}}</p>
+            <p class="font14 fontBold commonColor fl textLeft w-100P" v-if="propMemberData.certiYn === true && GE_USER.certiDate">{{this.$changeText(GE_USER.userDispMtext)}}님은 실명인증완료된 회원입니다.</p>
+            <p class="font16 fontBold fl textLeft" style="line-height: 30px;" v-else-if="propMemberData.certiYn === true">실명 인증이 필요합니다.</p>
+            <gBtnSmall v-if="propMemberData.certiYn === true && !GE_USER.certiDate" @click="gCertiPopShowYn = true " btnTitle="인증하기"/>
         </div>
-        <div v-if="propMemberData.certiYn === 1" style="width: 100%; height: 1px; border-bottom: 1px solid #ccc; margin-top: 10px; float: left;" ></div>
+        <div v-if="propMemberData.certiYn === true" style="width: 100%; height: 1px; border-bottom: 1px solid #ccc; margin-top: 10px; float: left;" ></div>
         <div style="width: 100%; height: calc(100% - 60px); float: left; ">
             <div style="width: 100%; min-height: 50px; float: left; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column;" :id="'question'+typeItem.itemKey" v-for="(typeItem, index) in memberTypeItemList" :key="index">
                 <p class="font16 textLeft fl grayBlack fontBold" style="width: 100%;"> {{this.$changeText(typeItem.itemNameMtext)}}</p>
@@ -25,6 +25,7 @@
                 </div>
             </div>
         </div>
+        <gCertiPop :pPopText="'실명인증을 하면 멤버신청이 가능해요!'" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  />
         <div style="width: 100%; justify-content: center; display: flex; height: 60px; float: left;">
             <gBtnSmall btnTitle="신청" @click="sendReq" style="margin-right: 0.5rem;"/>
             <gBtnSmall btnThema="light" @click="closeXPop(false)" btnTitle="닫기"/>
@@ -41,7 +42,8 @@ export default {
   },
   data: function () {
     return {
-      memberTypeItemList: null
+      memberTypeItemList: null,
+      gCertiPopShowYn: false
     }
   },
   created () {
@@ -68,6 +70,13 @@ export default {
     }
   },
   methods: {
+    goSavePhonePop () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetType = 'changePhone'
+      this.gCertiPopShowYn = false
+      this.$emit('openPop', param)
+    },
     convertSelectListStr (str) {
       var returnList = null
       returnList = str.split('$#$')
@@ -106,6 +115,11 @@ export default {
       this.$emit('closeXPop', pCloseYn)
     },
     async sendReq () {
+      if (this.propMemberData.certiYn === true && !this.GE_USER.certiDate) {
+        this.gCertiPopShowYn = true
+        // this.$showToastPop('먼저 실명인증을 해주세요.')
+        return
+      }
       // eslint-disable-next-line no-new-object
       var param = new Object()
       var ansList = []

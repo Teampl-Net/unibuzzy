@@ -24,17 +24,17 @@
                     </template>
                 </div>
                 <div style="width: 100%; paosition: relative; height: 50%; min-height: 25px;">
-                    <p style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
-                        <pp class="fl" @click="goChannelMain()">
+                    <div style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
+                        <p class="CLDeepGrayColor font14 fl textLeft fontBold " @click="goChannelMain()">
                             <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
                             {{this.$changeText(CONT_DETAIL.nameMtext)}}
-                        </pp>
+                        </p>
                         <span @click="goUserProfile()" style="font-weight: normal;" class="mleft-05">
                             <!-- <span class="font-weight: normal; mSide-02">{{'|'}}</span> -->
                             <img src="../../../assets/images/footer/icon_people.svg" class="img-w12" alt="">
                             {{this.$changeText(CONT_DETAIL.creUserName)}}
                         </span>
-                    </p>
+                    </div>
 
                     <p class="fr CLDeepGrayColor font12" style="line-height: 23px;">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
                 </div>
@@ -45,8 +45,8 @@
                     <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
                         <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
                     </div>
-                    <p @click="openRecvActorListPop(CONT_DETAIL.rUserCount === -1? true : '')" class="fr cursorP font12 lightGray" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" >
-                        <pp  class="font12 fl ">수신</pp>
+                    <div @click="openRecvActorListPop(CONT_DETAIL.rUserCount === -1? true : '')" class="fr cursorP font12 lightGray" v-if="CONT_DETAIL.jobkindId === 'ALIM'" :style="CONT_DETAIL.rUserCount !== -1 && CONT_DETAIL.creUserKey === GE_USER.userKey? 'background: rgb(221 229 251)!important;':''" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" >
+                        <p  class="font12 fl lightGray">수신</p>
                         <span class="font12 mSide-02">{{'|'}}</span>
                         <template   v-if="CONT_DETAIL.rUserCount === -1">
                             전체
@@ -55,7 +55,7 @@
                             <img src="../../../assets/images/footer/icon_people.svg" class="img-w10 fl" alt="">
                             <p class="font12 fl mleft-01" style="line-height: 1; margin-top: 1px;">{{CONT_DETAIL.rUserCount}}</p>
                         </template>
-                    </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,28 +70,29 @@
         <template v-if="((CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)">
             <div class="contentsCardUserDoArea" style="width: 100%; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 15px; padding: 0 20px;">
                 <div style="float: left; width: calc(100% - 70px); height: 100%;" v-if="this.CONT_DETAIL.D_CONT_USER_DO">
-                    <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                      <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="img-w20" src="../../../assets/images/contents/icon_heart_red.png" alt="">
-                      <img v-else src="../../../assets/images/contents/icon_heart_on.png" alt="" class="img-w20">
+                    <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                      <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="img-w20" src="../../../assets/images/contents/cont_like_no.svg" alt="">
+                      <img v-else src="../../../assets/images/contents/cont_like.svg" alt="" class="img-w20">
                       <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.likeCount}}</p>
                     </div>
-                    <div  @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                      <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" class="img-w17" src="../../../assets/images/contents/icon_scrap.png" alt="">
-                      <img v-else src="../../../assets/images/contents/icon_scrap_on.png" alt="" class="img-w17">
+                    <div  @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                      <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" class="img-w17" src="../../../assets/images/contents/cont_star_no.svg" alt="">
+                      <img v-else src="../../../assets/images/contents/cont_star.svg" alt="" class="img-w17">
                       <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.starCount}}</p>
                     </div>
-                    <div @click="this.goContentsDetail(undefined, true)" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                      <img  src="../../../assets/images/contents/icon_memo.png" class="img-w20" alt="">
+                    <div @click="this.goContentsDetail(undefined, true)" style="width: 30px; height: 35px; display: flex; cursor: pointer;  float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                      <img v-if="mWriteMemoYn" src="../../../assets/images/contents/cont_memo.svg" class="img-w20" alt="">
+                      <img v-else src="../../../assets/images/contents/cont_memo_no.svg" class="img-w20" alt="">
                       <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
                     </div>
-                    <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                    <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                       <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w17" alt="">
                       <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                       <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
                     </div>
                 </div>
                 <div style="float: right; width: 90px; height: 100%; float: left;">
-                    <div style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                    <div style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; cursor: pointer;justify-content: center; align-items: center;">
                         <img src="../../../assets/images/contents/icon_share.png" class="img-w20 fl" alt="공유 아이콘"
                             data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
                                 :data-clipboard-text="CONT_DETAIL.copyTextStr">
@@ -101,19 +102,19 @@
                         <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                         <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                     </div> -->
-                    <div @click="subScribeContents" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                    <div @click="subScribeContents" style="width: 30px; height: 35px; display: flex; float: right;cursor: pointer;  margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/contents/icon_bell_on.png" class="img-w20" alt="">
                         <img v-else src="../../../assets/images/contents/icon_bell.png" class="img-w20" alt="">
                     </div>
                 </div>
             </div>
             <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1;  width: calc(100% - 40px); margin: 10px 20px; margin-bottom: 30px;float: left;"></div>
-            <div class="contentsCardMemoArea" style="width: 100%; float: left; padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
+            <div class="contentsCardMemoArea" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
                 <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
                     <memoCompo :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
                 </template>
                 <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
-                <p v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기 ></p>
+                <p v-if="propDetailYn === false && this.mMoreMemoBtnShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기 ></p>
                 <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
             </div>
         </template>
@@ -192,7 +193,9 @@ export default {
       mFilePopData: {},
       mFilePopYn: false,
       mContRecvPopShowYn: false,
-      mActorListInitDataList: []
+      mActorListInitDataList: [],
+      mWriteMemoYn: false,
+      mMoreMemoBtnShowYn: false
     }
   },
   async mounted () {
@@ -208,17 +211,29 @@ export default {
     this.$nextTick(async () => {
       this_.addImgEvnt()
     })
-    // if (window.document.readyState !== 'loading') {
-    //   this.setContentsMoreText()
-    // } else {
-    //   window.document.addEventListener('DOMContentLoaded', function () {
-    //     this.setContentsMoreText()
-    //   })
-    // }
     await this.setContentsMoreText()
     await this.setPreTagInFirstTextLine()
   },
   methods: {
+    setMoreMemoBtn () {
+      if (!this.CONT_DETAIL) return
+      var memoList = this.CONT_DETAIL.D_MEMO_LIST
+      if (!memoList) {
+        memoList = this.CONT_DETAIL.memoList
+      }
+      /* if (memoList.length > 3) {
+        return true
+      } */
+      var leng = memoList.length
+      for (var i = 0; i < memoList.length; i++) {
+        if (memoList[i].creUserKey === this.GE_USER.userKey) this.mWriteMemoYn = true
+        for (var c = 0; c < memoList[i].cmemoList.length; c++) {
+          if (memoList[i].cmemoList[c].creUserKey === this.GE_USER.userKey) this.mWriteMemoYn = true
+        }
+        leng += memoList[i].cmemoList.length
+      }
+      if (leng > 3) this.mMoreMemoBtnShowYn = true
+    },
     closeRecvListPop (openPopParam) {
       this.mContRecvPopShowYn = false
       if (openPopParam) {
@@ -452,6 +467,7 @@ export default {
       this.$emit('memoLoadMore')
     },
     writeMemoScrollMove () {
+      console.log('writeMemoScrollMove')
       this.$emit('writeMemoScrollMove')
     },
     handleScroll () {
@@ -470,8 +486,13 @@ export default {
       var type = emitData.targetType
       var data = emitData.value
       if (type === 'goUserProfile') {
-        /* this.goUserProfile(data.creUserKey) */
-        this.goContentsDetail(undefined, true)
+        console.log(emitData)
+        if (this.propDetailYn) {
+          this.goUserProfile(data.creUserKey)
+        } else {
+          this.goContentsDetail(undefined, true)
+        }
+        //
         // alert(data.creUserKey)
       } else if (type === 'goContentsDetail') {
         // 댓글로 스크롤하기 위해 2번째 파라미터를 true로 보내줌 (1번째는 컨텐츠 더보기 유무)
@@ -793,6 +814,8 @@ export default {
             console.log(result.data.resultList)
             var saveMemoObj = {}
             var index
+            console.log('scrollToMemoTop')
+            this.$emit('scrollToMemoTop')
             if (memo.parentMemoKey) {
               // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 키값을 찾음
               index = await result.data.resultList.memoList.findIndex((item) => item.memoKey === memo.parentMemoKey)
@@ -1181,6 +1204,12 @@ export default {
     }
   },
   watch: {
+    CONT_DETAIL: {
+      immediate: true,
+      handler (value, index) {
+        this.setMoreMemoBtn()
+      }
+    },
     GE_NEW_MEMO_LIST: {
       async handler (value, old) {
         var newArr = []

@@ -1,9 +1,9 @@
 <template>
-    <div @click="noMemberClose" style="position: absolute; width: 100%; height: 100%; background: #00000050; z-index: 99"></div>
-    <div v-if="reqPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100%; z-index: 100; background: #00000040;"></div>
-    <repMemberPop @saveMemberData="setSaveMemberData" v-if="reqPopShowYn" @closeXPop="closeReqMemPop" :propTeamDetail="this.CHANNEL_DETAIL" :propMemberData="selectMemberObj"/>
+    <div @click="noMemberClose" style="position: absolute; width: 100%; height: 100%; background: #00000050; z-index: 9"></div>
+    <div v-if="reqPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100%; z-index: 10; background: #00000040;"></div>
+    <repMemberPop  @openPop="openPop"  @saveMemberData="setSaveMemberData" v-if="reqPopShowYn" @closeXPop="closeReqMemPop" :propTeamDetail="this.CHANNEL_DETAIL" :propMemberData="selectMemberObj"/>
     <resultMemberPop :propReqData="resultReqData" v-if="resultPopShowYn"/>
-    <div v-if="CHANNEL_DETAIL"  :style="popupStyle" style="width: calc(100% - 40px); position: absolute; z-index: 99;  background: #FFF; overflow: auto; left: 20px; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem; min-height: 500px;">
+    <div v-if="CHANNEL_DETAIL"  :style="popupStyle" style="width: calc(100% - 40px); position: absolute; z-index: 9;  background: #FFF; overflow: auto; left: 20px; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem; min-height: 500px;">
         <div style="width: 100%; height: 100px; float: left; display: flex; align-items: center; padding-bottom: 0;" class="commonChanPopPadding" >
         <!-- box-shadow: 0 4px 10px -4px #ccc -->
             <div :style="'background-image: url(' + CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext + '); background-position: center;  background-size: cover; background-repeat: no-repeat'" style="width: 60px; height: 60px; display: flex; justify-content: center; border-radius: 100%; border: 2px solid #5F61BD ; center; align-items: center;"></div>
@@ -67,6 +67,10 @@ export default {
     this.$addHistoryStack('gChannelConfirmPop')
   },
   methods: {
+    openPop (param) {
+      console.log(param)
+      this.$emit('openPop', param)
+    },
     setSaveMemberData (data) {
       this.resultReqData.memberYn = true
       this.resultReqData.memberType = this.selectMemberObj

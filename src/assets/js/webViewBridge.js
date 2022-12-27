@@ -88,6 +88,8 @@ const isJsonString = (str) => {
           router.replace({ name: 'permissions' })
         } else if (message.type === 'returnImpData') {
           store.dispatch('D_USER/AC_SET_CERTI', message.certi)
+        } else if (message.type === 'certiInfo') {
+          store.dispatch('D_USER/AC_SET_CERTI', message.certiInfo)
         } else if (message.type === 'requestUserPermission') {
           router.replace({ path: '/' })
         } else if (message.type === 'deviceSystemName') {

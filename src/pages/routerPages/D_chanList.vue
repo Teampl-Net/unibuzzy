@@ -324,14 +324,14 @@ export default {
       tempParam.popHeaderText = '채널 생성'
       this.$emit('openPop', tempParam)
       /* this.gCertiPopShowYn = true */
-    /*       if (this.GE_USER.certiDate) {
-        var tempParam = {}
+      if (this.GE_USER.certiDate) {
+        /* var tempParam = {}
         tempParam.targetType = 'createChannel'
         tempParam.popHeaderText = '채널 생성'
-        this.$emit('openPop', tempParam)
+        this.$emit('openPop', tempParam) */
       } else {
         this.gCertiPopShowYn = true
-      } */
+      }
     },
     openManagerChanDetail (openParam) {
       this.$emit('openPop', openParam)

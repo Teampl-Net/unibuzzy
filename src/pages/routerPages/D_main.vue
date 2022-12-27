@@ -6,7 +6,8 @@
     <div style="width: 100%; float: left;">
         <div class="userProfileWrap" style=" border-radius: 0.8rem; padding: 0 1.5rem;" >
             <div style="width: calc(100% - 42px); float: left; height: 100%;">
-                <p @click="this.$router.push({path: '/certiPhone'})" class="commonLightColor font16 textLeft fl" style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
+                <p class="commonLightColor font16 textLeft fl" style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
+                <!-- @click="this.$router.push({path: '/certiPhone'})"  -->
                 <div class="fr" style="position:relative;">
                   <!-- <redDot style="width: 12px; height: 12px; border-radius: 100%; border: 2px solid #F4F7FF; background: #ED4956; position: absolute; right: 15px; top: 0px; z-index:1"></redDot> -->
                   <img src="../../assets/images/contents/icon_bell.png" class=" img-w22 mright-1" alt="" @click="openNotiHistoryPop">
@@ -20,14 +21,15 @@
                     <p style="font-weight: 600;" class="font16 fl commonLightColor">님!</p>
                 </div>
             </div>
-            <div @click="goUserProfile" style="position: relative; width: 60px; height: 60px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; border:2.5px solid #5B1CFC; float: left; display: flex; padding: 2px; flex-grow: 0; flex-shrink: 0;">
+            <gProfileImg :selfYn="true" @click="goUserProfile" />
+            <!-- <div @click="goUserProfile" style="position: relative; width: 60px; height: 60px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; border:2.5px solid #5B1CFC; float: left; display: flex; padding: 2px; flex-grow: 0; flex-shrink: 0;">
                 <div v-if="this.GE_USER.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.$changeUrlBackslash(this.GE_USER.userProfileImg) : this.GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;">
                     <img v-if="this.GE_USER.certiDate" style="position: absolute; width: 20px; bottom: 0px; right: -5px;" src="../../assets/images/common/userCertiIcon.svg" alt="">
                 </div>
                 <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
                     <img v-if="this.GE_USER.certiDate" style="position: absolute; width: 20px; bottom: 0px; right: -5px;" src="../../assets/images/common/userCertiIcon.svg" alt="">
                 </div>
-            </div>
+            </div> -->
             <!-- <div class="userProfileTextWrap" >
                 <p ref="userName" class="mainUserName font18 fontBold grayBlack">{{$changeText(this.GE_USER.userDispMtext)}}</p>
                 <img  src="../../assets/images/common/ico_refresh.png" @click="refreshBtnClick" class="mainRefreshBtn" style="position: absolute; right: 0; top: 0; width: 25px;" alt="">
@@ -51,7 +53,7 @@
         <div v-if="this.mMainMChanList || this.mMainChanList" style="background: #FFFFFF; margin-top: 15px; padding: 20px; padding-right: 0; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
             <div v-if="this.mMainMChanList"  style="width: 100%; height: 30px; float: left;">
                 <img src="../../assets/images/main/main_settingIcon2.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
-                <p @click="goChannelPop('mychannel')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">내 관리 채널 ></p>
+                <p @click="goChannelPop('mychannel')" class="font20 fontBold deepBorderColor textLeft CDeepColor cursorP" style="line-height: 26px;">내 관리 채널 ></p>
             </div>
             <div v-if="this.mMainMChanList" style="width: 100%; height: 85px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;">
                 <div style="height: 100%; min-width: 100%; display:flex;">
@@ -63,7 +65,7 @@
                 </div>
             </div>
             <div v-if="this.mMainChanList" class="mtop-1 " style="width: 100%; height: 30px; float: left;">
-                <img src="../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
+                <img src="../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
                 <p @click="goChannelPop('user')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">구독중인 채널 ></p>
             </div>
             <div v-if="this.mMainChanList" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;">
@@ -89,7 +91,7 @@
           <div  style="width:100%; background-color: #E7EDFF; float:left;">
             <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; position: relative; border-bottom: 2px; solid #F4F7FF!important; margin-top: 15px;">
               <img src="../../assets/images/main/main_contentsBellIcon2.png" style="float: left; margin-right: 8px;" class="img-w24" alt="">
-              <p @click="goContentListPop()" class="font20 fontBold deepBorderColor fl textLeft CDeepColor" style="line-height: 26px;">받은 알림, 게시글 ></p>
+              <p @click="goContentListPop()" class="font20 fontBold deepBorderColor fl textLeft cursorP CDeepColor" style="line-height: 26px;">받은 알림, 게시글 ></p>
                 <!-- <div class="fl" style="position: relative; width: 80px; margin-left: 10px; min-height: 50px;">
                     <img @click="findData()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
                     <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="findData()" v-model="mInputText" placeholder="검색키워드를 입력해주세요" />
@@ -451,18 +453,13 @@ export default {
   .userProfileTextWrap >p{margin-bottom: 0.2rem;}
   .userProfileTextWrap img{ width:1rem; margin-right: 0.2rem;}
   .userProfileTextWrap .profileTitle{font-weight: bold; color: #5B1CFC; margin-right: 0.4rem;}
-.picImgWrap {width: 100%; height: 100%; border-radius: 100%; overflow: hidden; display: flex; background-color: #fff;
-}
 
 .mainContentsBoxArea {
   background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px; box-shadow: 0 0 7px 3px #b7b4b440;
 }
 
 @media screen and (max-width: 300px) {
-  .picImgWrap{
-    /* width: 60px!important;
-    height: 60px!important; */
-  }
+
   .mainUserName {font-size: 15px!important;}
   .mainIcon {width: 0.7rem!important;}
   .mainRefreshBtn {width: 20px!important}

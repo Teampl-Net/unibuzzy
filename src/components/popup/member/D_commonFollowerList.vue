@@ -6,10 +6,7 @@
         <div style="width: 100%; min-height: 40px; height: 100%; float: left; display: flex;     align-items: center;">
             <div class="fl mleft-01 w-100P" style="position: relative; display: flex;min-height: 40px; height: 100%; width: calc(100% - 130px)"  @click="goMemberInfo(member)">
                 <div style="float: left; display: flex; flex-direction: column; width: 35px; margin-right: 15px; justify-content: center; align-items: center;">
-                    <div v-if="member.userProfileImg"  class="managerPicImgWrap">
-                        <img :src="(member.domainPath? member.domainPath + member.userProfileImg : member.userProfileImg)" />
-                    </div>
-                    <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style=" width: 30px; float: left; " />
+                    <gProfileImg :smallYn="true" :userInfo="member" style="width: 35px; height: 35px;" />
                     <!-- <div class="fl adminTag" :class="{nonTag: (!member.managerKey > 0 && currentTab === 'Show') || (!member.managerKey > 0 && currentTab === 'Admin') }">
                     <p v-if="member.ownerYn" class="font8 commonBlack fontBold" style="">관리자</p>
                     <p v-else class="font8 commonBlack fontBold" style="">매니저</p>

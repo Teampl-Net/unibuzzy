@@ -50,6 +50,7 @@ import gStepProgress from './components/unit/Tal_stepProgressBar.vue'
 import imgLongClickPop from './components/popup/Tal_imgLongClickPop.vue'
 
 import gAlertPop from './components/popup/Tal_commonAlertPop.vue'
+import gProfileImg from './components/common/D_commonProfile.vue'
 import VueCropper from 'vue-cropperjs'
 import 'cropperjs/dist/cropper.css'
 import gSelectBoardPop from './components/popup/common/Tal_commonSelectBoardListPop.vue'
@@ -77,6 +78,8 @@ app.use(Vuex)
 app.use(commonSharejs)
 app.use(BootstrapVue3)
 app.use(VueEasyLightbox)
+
+app.component('gProfileImg', gProfileImg)
 app.component('gCertiPop', gCertiPop)
 app.component('gLoadingS', gLoadingS)
 app.component('gContentsBox', gContentsBox)

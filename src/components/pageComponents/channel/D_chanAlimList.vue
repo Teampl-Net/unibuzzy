@@ -4,7 +4,7 @@
 <!-- -->
   <div id="alimWrap" v-if="this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH" ref="chanScrollWrap" style="overflow: scroll;" :style="settingBackground" class="chanDetailWrap">
       <div id="gChannelPopup" v-if="commonChanPopShowYn" style="display: absolute; top: 0; left: 0; z-index: 999;">
-        <gChannelPop :propCateItemKey="this.CHANNEL_DETAIL.cateKey" :propTeamKey="this.CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop'/>
+        <gChannelPop :propCateItemKey="this.CHANNEL_DETAIL.cateKey" @openPop="openCertiPop"  :propTeamKey="this.CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop'/>
       </div>
       <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
       <welcomePopUp type="follow" v-if="mOpenWelcomePopShowYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="mOpenWelcomePopShowYn = false" @applyMember="openReqMemPop" />
@@ -44,7 +44,7 @@
           </div>
           <div id="userCardWrap" class="fl w-100P" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content: space-between;">
             <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; align-items: center;">
-              <div @click="goProfile" :style="'background-image: url(' + (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.GE_USER.userProfileImg : this.GE_USER.userProfileImg) + ');'" style=" background-size: cover; background-repeat: no-repeat; background-position: center; width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden;"></div>
+              <gProfileImg :smallYn="true" :selfYn="true" style="width: 35px; margin-right: 10px; height: 35px;" />
               <div class="mleft-05" style="display:flex; flex-direction: column;">
                 <p @click="goProfile" class="font16 textLeft">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
                 <div>
@@ -188,6 +188,10 @@ export default {
     // window.removeEventListener('resize', () => { this.setWindowSize() })
   },
   methods: {
+    openCertiPop (param) {
+      console.log(param)
+      this.$emit('openPop', param)
+    },
     setWindowSize () {
       this.mwWidth = window.innerWidth
       var nowHeight = window.innerHeight
@@ -215,19 +219,20 @@ export default {
       if (resultReqData) {
         var memberInfoText = ''
         if (resultReqData.memberYn && resultReqData.memberType) {
-          memberInfoText += '"'
+          memberInfoText += '환영합니다!<br>"'
           memberInfoText += this.$changeText(resultReqData.memberType.nameMtext)
+          memberInfoText += '" 멤버가 되었습니다<br>'
           if (resultReqData.memberType.initData && resultReqData.memberType.initData.length > 0) {
           /* this.mReqResultMsg += '<br><p class="textLeft commonColor font16 fontBold">부가정보</p>' */
             memberInfoText += '('
             for (var i = 0; i < resultReqData.memberType.initData.length; i++) {
-              memberInfoText += (i !== 0 ? '/' : '')
-              memberInfoText += this.$changeText(resultReqData.memberType.initData[i].itemNameMtext) + ': ' + resultReqData.memberType.initData[i].value
+              memberInfoText += (i !== 0 ? ' ' : '')
+              memberInfoText += this.$changeText(resultReqData.memberType.initData[i].itemNameMtext) + '  ' + resultReqData.memberType.initData[i].value
               memberInfoText += (i === resultReqData.memberType.initData.length - 1 ? ')' : '')
             }
           }
-          memberInfoText += '"'
-          memberInfoText += '<br>정상적으로 신청되었습니다!'
+          // memberInfoText += '"'
+          // memberInfoText += '<br>정상적으로 신청되었습니다!'
         } else {
           memberInfoText += '회원님은 현재 구독자상태이며,<br>언제든지 다시 멤버신청을 할 수 있습니다!'
         }

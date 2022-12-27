@@ -440,7 +440,7 @@ export const commonMethods = {
       // eslint-disable-next-line no-debugger
       debugger
       if (data.memberNameMtext) {
-        followerText = this.changeText(data.memberNameMtext)
+        followerText = commonMethods.changeText(data.memberNameMtext)
       }
       if (data.memberInfoList && data.memberInfoList.length > 0 && data.memberInfoList[0].memberTypeKey) {
         followerText += '( '

@@ -1,6 +1,6 @@
 <template>
     <div ref="contScrollWrap" id="contsScrollWrap" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
-        <gContentsBox @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
+        <gContentsBox @scrollToMemoTop="scrollToMemoTop" @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
 
         <!-- <attachFileListPop :propFileData="this.CONT_DETAIL" v-if="filePopShowYn === true" @closePop="filePopShowYn = false"/> -->
 
@@ -128,7 +128,7 @@ export default {
       memoTop = await this.$refs.myContentsBox.getMemoTop()
       console.log('contentDetail : ' + memoTop)
 
-      this.scrollMove(memoTop)
+      this.scrollMove(memoTop - 100)
     }
   },
   computed: {
@@ -232,6 +232,21 @@ export default {
     }
   },
   methods: {
+    async scrollToMemoTop () {
+      if (this.propParams.memoScrollYn) {
+        var memoTop = await this.$refs.myContentsBox.getMemoTop()
+        // eslint-disable-next-line no-unused-vars
+        var test = this.$refs.contScrollWrap
+        // eslint-disable-next-line no-debugger
+        debugger
+        console.log(this.$refs.contScrollWrap.scrollHeight + '///' + memoTop)
+        if (this.$refs.contScrollWrap.scrollTop < memoTop) {
+          console.log('contentDetail : ' + memoTop)
+
+          this.scrollMove(memoTop - 100)
+        }
+      }
+    },
     scrollMove (wich) {
       if (!wich) return
       this.$refs.contScrollWrap.scrollTo({ top: wich, behavior: 'smooth' })
@@ -362,10 +377,10 @@ export default {
           console.log('!!!!!!!!!!!!!!!!!!!!!!!!')
           console.log(pInitData)
         }
-        if (!this.CONT_DETAIL.D_MEMO_LIST) {
+        /* if (!this.CONT_DETAIL.D_MEMO_LIST) {
           this.CONT_DETAIL.D_MEMO_LIST = []
           await this.getMemoList()
-        }
+        } */
         if (this.CONT_DETAIL.attachMfilekey && (!this.CONT_DETAIL.D_ATTATCH_FILE_LIST || this.CONT_DETAIL.D_ATTATCH_FILE_LIST.length === 0)) {
           this.settingFileList()
         }
@@ -1003,7 +1018,7 @@ export default {
       if (this.mCanLoadYn && this.mCheckMemoEndListYn === false) {
         this.mCanLoadYn = false
         try {
-          await this.getMemoList()
+          await this.getMemoList(undefined, true)
         } catch (error) {
           console.log(error)
         } finally {
@@ -1041,7 +1056,7 @@ export default {
         // this.mOffsetInt += 1
       }
     },
-    async getMemoList (refreshYn) {
+    async getMemoList (refreshYn, loadingYn) {
       // eslint-disable-next-line no-new-object
       var memo = new Object()
       memo.targetKind = 'C'
@@ -1051,11 +1066,14 @@ export default {
       // memo.pagesize = 5
       memo.pageSize = this.$countingTotalMemo(this.CONT_DETAIL.D_MEMO_LIST) + 5
       memo.offsetInt = 0
-
+      var nonLoadingYn = false
+      if (loadingYn) {
+        nonLoadingYn = true
+      }
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getMemoList',
         param: memo
-      })
+      }, nonLoadingYn)
       console.log(result)
       if (result.data.memoList) {
         var tempList = []
@@ -1320,7 +1338,7 @@ export default {
     padding-bottom: 50px;
 }
 .boardBorder{width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;}
-.boardDetailWrap{height: fit-content; width: 100%; height: 100%; padding-top: 50px; padding-bottom: 20px; overflow: scroll; width: 100%; background: #FFF; height: calc(100vh);}
+.boardDetailWrap{height: fit-content; width: 100%; height: 100%; padding-top: 50px; padding-bottom: 40px; overflow: scroll; width: 100%; background: #FFF; height: calc(100vh); }
 .pushDetailTopArea{min-height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 50px;height: 50px;}
 /* .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;} */

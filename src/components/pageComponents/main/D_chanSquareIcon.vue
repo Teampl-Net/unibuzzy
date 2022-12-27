@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 150px; height: 100%; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center;" @click="goChannelMain">
+    <div style="width: 150px;cursor: pointer; height: 100%; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center;" @click="goChannelMain">
         <div v-if="chanElement" style="position: relative; padding: 5px 8px; border: 0.5px solid rgba(0, 0, 0, 0.1); width: 140px; height: 107px; float: left; border-radius: 10px; background-repeat: no-repeat; background-size: cover; background-position: center;"
             :style="'background-image: url(' + (chanElement.bgDomainPath !== undefind ? chanElement.bgDomainPath + chanElement.bgPathMtext : chanElement.bgPathMtext) + ');'" >
             <div style="width: 32px; height: 32px; float: left; border: 2px solid #FFF; border-radius: 100%; position: absolute; top: 5px; left: 8px; z-index: 1; background-repeat: no-repeat; background-size: cover; background-position: center;" :style="'background-image: url(' + (chanElement.logoDomainPath !== undefind ? chanElement.logoDomainPath + chanElement.logoPathMtext : chanElement.logoPathMtext) + ');'"></div>
@@ -13,11 +13,11 @@
             <!-- <div :style="chanElement.blackYn === 1? 'background: #00000040;' : 'background: #FFFFFF90;' " style="width: calc(100% - 10px); border-radius: 5px; height: 50px; padding: 5px; position: absolute; left: 5px; bottom: 5px;">
                  -->
             </div>
-            <p class="font14 w-100P fontBold textOverdot textLeft" style="color: #fff; position: absolute; z-index: 1; bottom: 2px; line-height: 18px;">
+            <div class="font14 w-100P fontBold textOverdot textLeft" style="color: #fff; position: absolute; z-index: 1; bottom: 2px; line-height: 18px;">
                 <!-- <p :style="chanElement.blackYn === 1? 'color: #fff!important;' : '' " class="commonGray font14 w-100P textOverdot textLeft" style=""> -->
                 <img v-if="chanElement.officialYn" src="../../../assets/images/main/main_officialMark_white.svg" class="img-w9 mright-01" alt="">{{this.$changeText(chanElement.nameMtext)}}
-                <br><pp class="font12 w-100P textOverdot">{{this.$changeText(chanElement.memoMtext)}}</pp>
-            </p>
+                <br><p class="font12 w-100P textOverdot" style="color: #fff;">{{this.$changeText(chanElement.memoMtext)}}</p>
+            </div>
         </div>
 
     </div>

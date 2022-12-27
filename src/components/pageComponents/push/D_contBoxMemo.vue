@@ -1,9 +1,9 @@
 <template>
     <div v-if="!childShowYn" style="width: 100%; min-height: 20px; display: flex; margin-bottom: 5px; ">
-        <div style="width: 90px; margin-right: 10px; height: 100%;" @click="emit({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
+        <div style="width: 90px; margin-right: 10px; height: 100%;" @click="clickMemoEvnt({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
             <p class="commonBlack textLeft font14 fontBold">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
         </div>
-        <div style="width: calc(100% - 100px); min-height: 20px;" @click="emit({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
+        <div style="width: calc(100% - 100px); min-height: 20px;" @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
             <!-- <p class="commonBlack textLeft font14" v-html="$cutText($decodeHTML(propMemoEle.bodyFullStr), 80)"></p> -->
             <pre class="commonBlack textLeft font14" v-html="$decodeHTML(propMemoEle.bodyFullStr)"></pre>
         </div>
@@ -12,11 +12,12 @@
         <div style="width: 100%; min-height: 20px; display: flex; flex-direction: column; margin-bottom: 5px;float: left; position: relative;">
             <div style="width: 100%; min-height: 40px; display: flex;">
                 <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(propMemoEle)">
-                <div :style="this.GE_USER.userKey === propMemoEle.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
+                <!-- <div :style="this.GE_USER.userKey === propMemoEle.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
                     <div :style="'background-image: url(' + propMemoEle.domainPath + propMemoEle.userProfileImg + ');'" style="height: 36px; width: 36px; border-radius: 100%;  background-repeat: no-repeat; background-position: center; background-size: cover;"></div>
-                </div>
+                </div> -->
+                <gProfileImg :selfYn="propMemoEle.creUserKey === this.GE_USER.userKey ? true: false" :userInfo="propMemoEle" style="width: 40px; height: 40px; margin-right: 5px; margin-top: 3px; margin-bottom: 5px;" />
                 <div style="float: left; display: flex; flex-direction: column; margin-right: 10px; min-height: 20px; margin-top: 5px;">
-                    <p class="fl commonBlack mright-05 textLeft font14 fontBold" @click="emit({ targetType: 'goUserProfile', value: propMemoEle })">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
+                    <p class="fl commonBlack mright-05 textLeft font14 fontBold" @click="clickMemoEvnt({ targetType: 'goUserProfile', value: propMemoEle })">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
                     <p class="fl commonGray textLeft font12"  style="font-weight:normal;">{{this.$changeDateMemoFormat(propMemoEle.creDate)}}</p>
                 </div>
             </div>
@@ -46,11 +47,9 @@
             <div v-for="(cmemo, cIndex) in propMemoEle.cmemoList" :key="cIndex" style="width: 100%; min-height: 20px; display: flex; flex-direction: column; margin-bottom: 5px;float: left; position: relative;">
                 <div style="width: 100%; min-height: 40px; display: flex;">
                     <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(cmemo)">
-                    <div :style="this.GE_USER.userKey === cmemo.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
-                        <div :style="'background-image: url(' + cmemo.domainPath + cmemo.userProfileImg + ');'" style="height: 36px; width: 36px; border-radius: 100%;  background-repeat: no-repeat; background-position: center; background-size: cover;"></div>
-                    </div>
-                    <div style="float: left; display: flex; flex-direction: column; margin-right: 10px; min-height: 20px;">
-                        <p class="fl commonBlack mright-05 textLeft font14 fontBold" @click="emit({ targetType: 'goUserProfile', value: cmemo })">{{this.$changeText(cmemo.userDispMtext)}}</p>
+                    <gProfileImg :selfYn="cmemo.creUserKey === this.GE_USER.userKey ? true: false" :userInfo="cmemo" style="width: 40px; height: 40px; margin-right: 5px; margin-bottom: 5px;" />
+                    <div style="float: left; display: flex; flex-direction: column; margin-top: 2px; margin-right: 10px; min-height: 20px;">
+                        <p class="fl commonBlack mright-05 textLeft font14 fontBold" @click="clickMemoEvnt({ targetType: 'goUserProfile', value: cmemo })">{{this.$changeText(cmemo.userDispMtext)}}</p>
                         <p class="fl commonGray textLeft font12"  style="font-weight:normal;">{{this.$changeDateMemoFormat(cmemo.creDate)}}</p>
                     </div>
                 </div>
@@ -133,9 +132,7 @@ export default {
     // this.addImgEvnt()
   },
   created () {
-    console.log(this.propMemoEle)
     if (this.propMemoEle.bodyFullStr) {
-      console.log(this.propMemoEle.bodyFullStr)
       this.mModiMemoInput = this.propMemoEle.bodyFullStr
     }
     if (this.propMemoEle.attachMfilekey && this.propMemoEle.attachFileList && this.propMemoEle.attachFileList.length > 0) {
@@ -147,7 +144,6 @@ export default {
         }
       }
     }
-    console.log(this.propFileData)
   },
   updated () {
     /* try {
@@ -223,21 +219,17 @@ export default {
     openImgPop (value, index) {
       this.selectedImgPopObj = value
       this.startIndex = index
-      console.log(this.selectedImgPopObj)
       this.mPreviewPopShowYn = true
     },
     async imgDownload () {
-      console.log(this.mSelectImgObject)
       // eslint-disable-next-line no-debugger
       debugger
       try {
         if (this.$getMobileYn()) {
           onMessage('REQ', 'saveCameraRoll', this.mSelectImgObject.path)
         } else {
-          console.log(this.mSelectImgObject)
           // eslint-disable-next-line no-unused-vars
           var result = await this.$downloadFile(this.mSelectImgObject.fileKey, this.mSelectImgObject.path)
-          console.log(result)
         }
         this.$showToastPop('저장되었습니다.')
         this.mImgDetailAlertShowYn = false
@@ -305,7 +297,6 @@ export default {
         // } else return false
         param.creUserKey = this.GE_USER.userKey
         toastText = '해당 유저를 차단했습니다.'
-        console.log(param)
         console.log(toastText)
         this.saveActAxiosFunc(param, toastText)
       } else if (this.mCurrentConfirmType === 'memoDEL') {
@@ -345,9 +336,6 @@ export default {
       param.targetKind = targetKind
       param.targetKey = parseInt(targetKey)
       param.creUserKey = this.GE_USER.userKey
-      console.log(type)
-      console.log(param)
-      console.log(toastText)
       this.saveActAxiosFunc(param, toastText)
     },
     /** 신고, 차단, 탈퇴를 할 수 있는 axios함수 // actType, targetKind, targetKey, creUserKey 보내기 */
@@ -367,7 +355,7 @@ export default {
         this.mContMenuShowYn = false
       }
     },
-    emit (emitData) {
+    clickMemoEvnt (emitData) {
       this.$emit('memoEmitFunc', emitData)
     },
     deleteConfirm (data) {
@@ -410,14 +398,11 @@ export default {
           url: 'service/tp.deleteMemo',
           param: memo
         })
-        console.log('===================')
-        console.log(result)
 
         if (result.data.result === true) {
           // var cont = this.currentMemoObj
           var cont = this.propContDetail
           var index, cmemoListIdx
-          console.log(cont)
           if (this.mTempData.parentMemoKey) {
             // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 키값을 찾음
             index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === this.mTempData.parentMemoKey)
@@ -432,7 +417,6 @@ export default {
             cont.D_MEMO_LIST.splice(index, 1)
           }
           cont.memoCount -= 1
-          console.log(cont)
           this.$store.dispatch('D_CHANNEL/AC_DEL_MEMO_REPLACE_CONTENT', [cont])
           // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
         }
@@ -459,9 +443,8 @@ export default {
           data.parentMemoKey = this.mCurrentMemoObj.parentMemoKey
         }
         data.memo = this.mCurrentMemoObj
-        console.log(data)
 
-        this.emit({ targetType: 'writeMeMemo', value: data })
+        this.clickMemoEvnt({ targetType: 'writeMeMemo', value: data })
       } else {
         this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
         this.confirmPopShowYn = true

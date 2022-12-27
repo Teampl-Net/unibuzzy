@@ -90,6 +90,7 @@ export default {
       var saveParam = new Object()
       saveParam.memberTypeKey = this.mMemberTypeDetail.memberTypeKey
       saveParam.nameMtext = 'KO$^$' + this.mMemberTypeNameMtext
+      saveParam.certiYn = this.mMemberTypeDetail.certiYn
       console.log(saveParam)
       var dragItemList = document.getElementsByClassName('memTypeItemListRow')
       // eslint-disable-next-line no-debugger

@@ -1318,9 +1318,16 @@ export default {
         // memberCount = data.memberList.length
         for (let i = 0; i < data.memberList.length; i++) {
           tempList = {}
+          var uAccKey = data.memberList[i].userKey
+          if (!uAccKey) {
+            uAccKey = data.memberList[i].accessKey
+          }
+          if (!uAccKey) {
+            uAccKey = data.memberList[i].shareSeq
+          }
           tempList.userDispMtext = this.$changeText(data.memberList[i].userDispMtext)
           tempList.userNameMtext = this.$changeText(data.memberList[i].userNameMtext)
-          tempList.accessKey = data.memberList[i].userKey
+          tempList.accessKey = uAccKey
           tempList.accessKind = 'U'
 
           tempList.domainPath = data.memberList[i].domainPath
@@ -1330,7 +1337,7 @@ export default {
           tempList.userEmail = data.memberList[i].userEmail
 
           tempList.cabinetKey = this.modiBoardDetailProps.cabinetKey
-          tempList.shareSeq = data.memberList[i].shareSeq
+          tempList.shareSeq = uAccKey
           settingMemList.push(tempList)
         }
         if (this.currentSelectBookType === 'select') {

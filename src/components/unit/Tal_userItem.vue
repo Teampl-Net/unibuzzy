@@ -19,7 +19,8 @@ export default {
   emits: ['openPop'],
   data () {
     return {
-      isMobile: /Mobi/i.test(window.navigator.userAgent)
+      isMobile: /Mobi/i.test(window.navigator.userAgent),
+      systemName: localStorage.getItem('systemName')
     //   uItem: [
     //     { icon: '', title: '이메일', value: '', btnText: '', link: '' }
     //   ]
