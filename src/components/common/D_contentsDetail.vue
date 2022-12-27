@@ -1,6 +1,6 @@
 <template>
     <div ref="contScrollWrap" id="contsScrollWrap" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
-        <gContentsBox @scrollToMemoTop="scrollToMemoTop" @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
+        <gContentsBox @openImgPop="openImgPop" @scrollToMemoTop="scrollToMemoTop" @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
 
         <!-- <attachFileListPop :propFileData="this.CONT_DETAIL" v-if="filePopShowYn === true" @closePop="filePopShowYn = false"/> -->
 
@@ -232,6 +232,9 @@ export default {
     }
   },
   methods: {
+    openImgPop (param) {
+      this.$emit('openImgPop', param)
+    },
     async scrollToMemoTop () {
       if (this.propParams.memoScrollYn) {
         var memoTop = await this.$refs.myContentsBox.getMemoTop()

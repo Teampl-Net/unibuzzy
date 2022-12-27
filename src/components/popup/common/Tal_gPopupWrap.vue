@@ -3,14 +3,14 @@
       <loadingCompo style="z-index: 999!important; position:absolute; top:0; left:0;" v-if="loadingYn" />
       <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
       <transition name="showModal">
-        <fullModal @goScrollTarget="goScrollTarget" @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonGPopWrap" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
+        <fullModal @openImgPop="openImgPop" @goScrollTarget="goScrollTarget" @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonGPopWrap" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :propParams="this.popParams" :propData="this.propParams" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload' @closeNewPop='closeNewPop'                                        />
       </transition>
       <popHeader  ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="(targetType === 'chanDetail' || targetType === 'boardMain')? 'chanDetailPopHeader': ''" :chanName="this.propParams.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="this.propParams.targetKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"
       v-if="targetType !=='writeContents'" :followYn="this.headerFollowYn"
       @openMenu='openChanMenuYn = true' :bgblack='this.bgblackYn' :propBookDetailPopYn='this.mBookDetailPopYn' @closeBookDetail='mBookDetailPopYn = false' :targetType='targetType' />
       <div class="w-100P h-100P" style=" position: relative;" v-if=" popId &&  this.targetType === 'chanDetail'">
-        <chanAlimList :pPopId="popId" :propData="this.propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="propParams" v-if=" popId && targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
+        <chanAlimList @openImgPop="openImgPop" :pPopId="popId" :propData="this.propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="propParams" v-if=" popId && targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
       </div>
       <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  this.targetType === 'pushList'">
         <pushList :pPopId="popId" style="" :initData='this.propParams.initData' :propParams="this.propParams" :ref="'gPopPush'" :popYn="true" :readySearchList="this.readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
@@ -35,7 +35,7 @@
       <selectBookList :pPopId="popId" v-if=" popId &&  this.targetType === 'selectBookList'" :pSelectedList="this.selectPlist" :selectPopYn='true' :propData='this.propParams' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
       <chanMenu :pPopId="popId" ref="chanMenuCompo" :propData="this.propParams" @openPop="openPop" :propChanAlimListTeamKey="this.propParams.targetKey" v-if='openChanMenuYn === true && popId' @closePop='openChanMenuYn = false' @openItem='openPop' @openChanMsgPop="closeNopenChanMsg()"/>
       <boardMain :pPopId="popId" ref="boardMainPop" :propData="this.propParams" :chanAlimListTeamKey="this.propParams.targetKey" v-if=" popId &&  this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="this.loadingYn = false" @openLoading="this.loadingYn = true"/>
-      <contentsDetail :pPopId="popId" @closeAndNewPop="closeAndNewPop" :propData="this.propParams" ref="boardDetailCompo" v-if=" popId &&  this.targetType === 'contentsDetail'" @openPop="openPop" :propParams='this.propParams' @reloadParent='reloadParent' @closeXPop="closeXPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
+      <contentsDetail @openImgPop="openImgPop" :pPopId="popId" @closeAndNewPop="closeAndNewPop" :propData="this.propParams" ref="boardDetailCompo" v-if=" popId &&  this.targetType === 'contentsDetail'" @openPop="openPop" :propParams='this.propParams' @reloadParent='reloadParent' @closeXPop="closeXPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
       <editBookList :pPopId="popId" ref="editBookListComp" @closeXPop="closeXPop" :propData="this.propParams" :chanAlimListTeamKey="this.propParams.targetKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @showToastPop="showToastPop" @openBookDetailPop='openBookDetailPop' :propBookDetailPopYn='this.mBookDetailPopYn' />
       <editManagerList :pPopId="popId" ref="editManagerListComp" :propData="this.propParams" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
       <bookMemberDetail :pPopId="popId" @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.propParams" v-if="this.targetType=== 'bookMemberDetail'" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
@@ -242,6 +242,9 @@ export default {
     }
   },
   methods: {
+    openImgPop (param) {
+      this.$emit('openImgPop', param)
+    },
     closeNopenChanMsg () {
       this.openChanMenuYn = false
       this.$refs.gPopChanAlimList.openReqMemPop()

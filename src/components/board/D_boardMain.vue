@@ -95,7 +95,7 @@
             <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
             <!-- <boardList :emptyYn="BOARD_CONT_LIST.length === 0? true: false" :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
               @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
-              @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'
+              @writeMememo="writeMememo" @riteMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'
               @clearMemo='clearMemo'/> -->
             <gEmpty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && BOARD_CONT_LIST.length === 0 " />
             <!-- <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents"
@@ -161,7 +161,7 @@ export default {
   },
   updated () {
     if (this.CAB_DETAIL) {
-      // this.boardListWrap.scrollTop = this.currentScroll
+      // this.boardListWrap.scrolTop = this.currentScroll
       // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
       this.box = this.$refs.boardListWrap // 이 dom scroll 이벤트를 모니터링합니다
       if (this.box) {

@@ -62,7 +62,7 @@
         <div @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px;">
             <div v-if="(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
             <div v-else-if="(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
-            <div v-else class="h-400max overHidden fl w-100P"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
+            <div v-else class="h-400max overHidden fl w-100P" ref="contentsBoxRef"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
               <pre @loadeddata="testLoad" :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
             </div>
             <p :id="'bodyMore'+CONT_DETAIL.contentsKey" class="fr font14 commonColor fontBold mtop-05  mright-1" style="display:none">더보기 > </p>
@@ -346,7 +346,7 @@ export default {
         await this.settingFileList()
         this.mFilePopData = this.mFileDownData
       } else {
-        this.mFilePopData = this.contentsEle
+        this.mFilePopData = this.CONT_DETAIL
       }
       // this.$emit('fileDownload', this.mFileDownData)
       this.mFilePopYn = true
@@ -363,28 +363,47 @@ export default {
       this.mFileDownData = detailData
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
-    async settingFileList () {
+    async settingFileList_old () {
       try {
-        if (this.contentsEle && this.contentsEle.attachFileList !== undefined && this.contentsEle.attachFileList.length > 0) {
+        if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
           var attachFileList = []
           var bodyImgFileList = []
-          for (var a = 0; a < this.contentsEle.attachFileList.length; a++) {
-            if (this.contentsEle.attachFileList[a].attachYn === true) {
-              attachFileList.push(this.contentsEle.attachFileList[a])
-            } else if (this.contentsEle.attachFileList[a].attachYn === false) {
-              bodyImgFileList.push(this.contentsEle.attachFileList[a])
+          for (var a = 0; a < this.CONT_DETAIL.attachFileList.length; a++) {
+            if (this.CONT_DETAIL.attachFileList[a].attachYn === true) {
+              attachFileList.push(this.CONT_DETAIL.attachFileList[a])
+            } else if (this.CONT_DETAIL.attachFileList[a].attachYn === false) {
+              bodyImgFileList.push(this.CONT_DETAIL.attachFileList[a])
             }
           }
 
-          var cont = this.contentsEle
+          /*  var cont = this.contentsEle
           cont.D_ATTATCH_FILE_LIST = attachFileList
           cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
           this.mFileDownData.D_ATTATCH_FILE_LIST = attachFileList
           this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
+          return bodyImgFileList
         }
       } catch (error) {
         console.log(error)
+      }
+    },
+    async settingFileList () {
+      if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
+        var bodyImgFileList = []
+        for (var a = 0; a < this.CONT_DETAIL.attachFileList.length; a++) {
+          if (this.CONT_DETAIL.attachFileList[a].attachYn === false) {
+            bodyImgFileList.push(this.CONT_DETAIL.attachFileList[a])
+          }
+        }
+
+        /*  var cont = this.contentsEle
+          cont.D_ATTATCH_FILE_LIST = attachFileList
+          cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
+          this.mFileDownData.D_ATTATCH_FILE_LIST = attachFileList
+          this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
+          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
+        return bodyImgFileList
       }
     },
     async setPreTagInFirstTextLine () {
@@ -1056,58 +1075,23 @@ export default {
       console.log(this.mWorkStateCodePopProps)
       this.mWorkStateCodePopShowYn = true
     },
-    addImgEvnt () {
-      if (!this.imgClickYn) return
+    async addImgEvnt () {
+      // if (!this.imgClickYn) return
       // console.log(this.CONT_DETAIL)
-      var contBody = document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
+      var contBody = this.$refs.contentsBoxRef
+      console.log(contBody)
       if (!contBody) return
+      var fileList = await this.settingFileList()
       this.mClickImgList = contBody.querySelectorAll('img')
+      console.log(fileList)
       for (let m = 0; m < this.mClickImgList.length; m++) {
-        var thisthis = this
-        thisthis.mClickImgList[m].addEventListener('touchstart', () => {
-          thisthis.mClickTime = Date.now()
-          thisthis.mClickEndYn = false
-          thisthis.mClickImgList[m].style.opacity = 0.8
-          setTimeout(() => {
-            if (thisthis.mClickEndYn === false) {
-              thisthis.memoShowYn = false
-              thisthis.mSelectImgObject.path = thisthis.mClickImgList[m].src
-              thisthis.mSelectImgObject.fileKey = Number(thisthis.mClickImgList[m].attributes.filekey.value)
-              thisthis.mSelectedImgIndex = m
-              thisthis.mClickImgList[m].style.opacity = 1
-              this.openImgDetailAlert(thisthis.mClickImgList[m])
-            }
-          }, 300)
-          // thisthis.mPreviewPopShowYn = true
-        })
-        thisthis.mClickImgList[m].addEventListener('touchend', () => {
-          thisthis.mClickEndYn = true
-          thisthis.mClickImgList[m].style.opacity = 1
-        })
-
-        thisthis.mClickImgList[m].addEventListener('mousedown', () => {
-          thisthis.mClickTime = Date.now()
-          thisthis.mClickEndYn = false
-          thisthis.mClickImgList[m].style.opacity = 0.8
-          setTimeout(() => {
-            if (thisthis.mClickEndYn === false) {
-              thisthis.memoShowYn = false
-              thisthis.mSelectImgObject.path = thisthis.mClickImgList[m].src
-              thisthis.mSelectImgObject.fileKey = Number(thisthis.mClickImgList[m].attributes.filekey.value)
-              this.openImgDetailAlert(thisthis.mClickImgList[m])
-              thisthis.mSelectedImgIndex = m
-              thisthis.mClickImgList[m].style.opacity = 1
-            }
-          }, 1000)
-        })
-        thisthis.mClickImgList[m].addEventListener('mouseup', () => {
-          thisthis.mClickEndYn = true
-          thisthis.mClickImgList[m].style.opacity = 1
+        var this_ = this
+        this_.mClickImgList[m].addEventListener('click', () => {
+          this_.$emit('openImgPop', [this_.mClickImgList, m])
         })
       }
     },
     openImgDetailAlert (img) {
-      console.log(this.imgClickYn)
       if (this.imgClickYn === false) return
       // var history = this.$store.getters['D_HISTORY/hStack']
       // this.alertPopId = 'imgDetailAlertPop' + history.length

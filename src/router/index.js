@@ -2,6 +2,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 // import { useStore } from 'vuex'
 
+import jisuTest from '../jisuTest.vue'
+
 import routerMain from '../pages/Tal_router_main.vue'
 
 import testLoginPage from '../pages/intro/testLoginPage.vue'
@@ -42,6 +44,11 @@ import certiPhone from '../components/pageComponents/intro/D_certi_phone.vue'
 import certiPhoneReturn from '../components/pageComponents/intro/D_certi_phone_return.vue'
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
 const routes = [
+  {
+    path: '/jisuTest',
+    name: 'jisuTest',
+    component: jisuTest
+  },
   {
     path: '/',
     name: 'routerMain',

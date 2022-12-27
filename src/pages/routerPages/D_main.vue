@@ -106,7 +106,7 @@
             <template v-if="mMainAlimList.length === 0">
                 <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
             </template>
-            <mainContsList ref="mainContsList" v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
+            <mainContsList  @openImgPop="oepnImgPop" ref="mainContsList" v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
           </div>
         </div>
     </div>
@@ -212,6 +212,9 @@ export default {
     this.mLoadingYn = false
   },
   methods: {
+    oepnImgPop (param) {
+      this.$emit('openImgPop', param)
+    },
     scrollTop0 () {
       const unit = this.$refs.mainScrollWrap
       if (unit) {

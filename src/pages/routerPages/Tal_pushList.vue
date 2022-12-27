@@ -26,17 +26,17 @@
           <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
           <div class="w-100P fl commonListContentBox" style="height:1px;" />
           <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
-              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'" @fileDownload="fileDownload"/>
+              <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'" @fileDownload="fileDownload"/>
           </template>
           <gEmpty :tabName="currentTabName" contentName="게시판" v-if="this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template  v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index">
-              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'" @fileDownload="fileDownload"/>
+              <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'" @fileDownload="fileDownload"/>
           </template>
           <gEmpty :tabName="currentTabName" contentName="알림" v-if="this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template  v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
-              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
+              <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
               <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
           </template>
           <gEmpty :tabName="currentTabName" contentName="전체" v-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
@@ -528,6 +528,9 @@ export default {
     } */
   },
   methods: {
+    openImgPop (param) {
+      this.$emit('openImgPop', param)
+    },
     settingScrollUpEventListener () {
       // contentsList가 빈값이거나 별로 없을 경우 스크롤이 되지 않아 추가하였습니다.
       window.document.addEventListener('touchstart', (e) => {

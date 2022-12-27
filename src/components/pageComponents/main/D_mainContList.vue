@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px; " :key="mReloadKey" >
     <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" >
-      <gContentsBox :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
+      <gContentsBox @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
       <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 5 ?  index === this.GE_DISP_CONTS_LIST.length - 5 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
     </template>
     <div class="fl" style="width: 40px; height: 40px;border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index:9;">
@@ -51,6 +51,9 @@ export default {
     pMainAlimList: {}
   },
   methods: {
+    openImgPop (param) {
+      this.$emit('openImgPop', param)
+    },
     // fileDownload (fileData) {
     //   if (!fileData) return
     //   this.mFilePopData = fileData

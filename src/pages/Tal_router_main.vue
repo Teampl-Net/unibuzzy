@@ -1,5 +1,6 @@
 <template>
   <div class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden" > <!-- v-if="notiDetailShowYn" -->
+    <gImgPop @closeXPop="closeXPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" />
     <!-- <pushPop @closePushPop="closePushPop" @goDetail="goDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  /> -->
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:999;" v-if="mMenuShowYn" @click="hideMenu"/>
     <transition name="show_view">
@@ -10,11 +11,11 @@
     <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
     <div v-if="mShadowScreenShowYn" @click="changeNetStatePop" style="width:100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 99999999999999;"></div>
     <transition name="showModal">
-      <fullModal @successWrite="successWriteBoard" ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" v-if="this.mGPopShowYn === true && this.mPopParams" parentPopN="0" :propParams="this.mPopParams" @closeNewPop='closeNewPop' @parentClose='parentClose' />
+      <fullModal @openImgPop="openImgPop" @successWrite="successWriteBoard" ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" v-if="this.mGPopShowYn === true && this.mPopParams" parentPopN="0" :propParams="this.mPopParams" @closeNewPop='closeNewPop' @parentClose='parentClose' />
     </transition>
     <TalHeader @showMenu="showMenu" ref="mainHeaderWrap" class="header_footer " :mRouterHeaderText="this.mRouterHeaderText" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
     <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
-        <router-view ref="routerViewCompo"  :initData="sendInitData" @goSearchDirect="goSearchDirect" @scrollEvnt="this.scrollEvnt" :popYn="false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
+        <router-view @openImgPop="openImgPop" ref="routerViewCompo"  :initData="sendInitData" @goSearchDirect="goSearchDirect" @scrollEvnt="this.scrollEvnt" :popYn="false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
     </div>
     <TalFooter @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
     <!-- <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div> -->
@@ -39,7 +40,10 @@ export default {
       mErrorPopShowYn: false,
       mBackBtnShowYn: JSON.parse(localStorage.getItem('backBtnShowYn')),
       devMode: false,
-      sendInitData: null
+      sendInitData: null,
+      mGImgPopShowYn: false,
+      mPropImgList: [],
+      mPropFirstIndex: 0
     }
   },
   props: {},
@@ -144,6 +148,17 @@ export default {
     }
   },
   methods: {
+    closeXPop () {
+      this.mGImgPopShowYn = false
+    },
+    openImgPop (param) {
+      console.log(param)
+      if (param) {
+        this.mPropFirstIndex = param[1]
+        this.mPropImgList = param[0]
+        this.mGImgPopShowYn = true
+      }
+    },
     parentClose () {
       this.$refs.routerViewCompo.refreshAll()
     },
