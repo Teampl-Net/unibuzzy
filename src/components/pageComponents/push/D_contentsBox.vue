@@ -111,7 +111,7 @@
             <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1;  width: calc(100% - 40px); margin: 10px 20px; margin-bottom: 30px;float: left;"></div>
             <div class="contentsCardMemoArea" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
                 <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
-                    <memoCompo :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
+                    <memoCompo @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
                 </template>
                 <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
                 <p v-if="propDetailYn === false && this.mMoreMemoBtnShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기 ></p>
@@ -165,6 +165,8 @@ export default {
   },
   data () {
     return {
+      mMoreYn: false,
+
       mFilePopShowYn: false,
       mLoadingShowYn: false,
       mContMenuShowYn: false,
@@ -218,6 +220,9 @@ export default {
     await this.setPreTagInFirstTextLine()
   },
   methods: {
+    openImgPop (param) {
+      this.$emit('openImgPop', param)
+    },
     setMoreMemoBtn () {
       if (!this.CONT_DETAIL) return
       var memoList = this.CONT_DETAIL.D_MEMO_LIST
@@ -865,6 +870,7 @@ export default {
                 var contentHeight = contents + imgsHeight
                 var bodyMoreText = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
                 if (contentHeight > 399) {
+                  this.mMoreYn = true
                   bodyMoreText.style.display = 'block'
                 }
               } catch (error) {
@@ -889,6 +895,7 @@ export default {
       var bodyMoreArea = window.document.getElementById('bodyMore' + this.CONT_DETAIL.contentsKey)
       contentsBodyBoxArea.style.maxHeight = '100%'
       bodyMoreArea.style.display = 'none'
+      this.mMoreYn = false
     },
     async contentsSharePop () {
       var link = await this.$makeShareLink(this.CONT_DETAIL.contentsKey, 'contentsDetail', this.CONT_DETAIL.bodyFullStr, this.CONT_DETAIL.title)
@@ -1090,7 +1097,9 @@ export default {
       for (let m = 0; m < this.mClickImgList.length; m++) {
         var this_ = this
         this_.mClickImgList[m].addEventListener('click', () => {
-          this_.$emit('openImgPop', [this_.mClickImgList, m])
+          if (!this_.mMoreYn) {
+            this_.$emit('openImgPop', [this_.mClickImgList, m])
+          }
         })
       }
     },

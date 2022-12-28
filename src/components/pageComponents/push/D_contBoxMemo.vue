@@ -28,7 +28,7 @@
                     </div>
                     <div v-if="getAttachFalseFile(propMemoEle.attachFileList).length > 0" :style="'height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'" style="float: left; max-width: 100%; background: rgb(238 238 238); float: left; border: 1px solid #aaa; padding-left: 10px ; margin: 10px 0; overflow: scroll hidden;">
                         <div id="memoBodyImgWrap" style="float: left; height: 100%; display:flex; align-items: center;" :style="'width:' + getImgListWidthSize(propMemoEle.attachFileList) + 'px'">
-                            <img @click="this.openImgPop(propMemoEle, index)" :style="'max-height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'" style="border-right: 1px solid #aaa; border-left: 1px solid #aaa; margin-right: 10px; float: left; min-width: 70px" :fileKey="img.fileKey" v-for="(img, index) in getAttachFalseFile(propMemoEle.attachFileList)" :key="index" :src="img.domainPath + img.pathMtext" alt="">
+                            <img @click="this.openImgPop(getAttachFalseFile(propMemoEle.attachFileList), index)" :style="'max-height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'" style="border-right: 0px solid #aaa; border-left: 1px solid #aaa; margin-right: 10px; float: left; min-width: 70px" :fileKey="img.fileKey" v-for="(img, index) in getAttachFalseFile(propMemoEle.attachFileList)" :key="index" :src="img.domainPath + img.pathMtext" alt="">
                         </div>
                     </div>
                     <pre v-if="!this.mChangeMemoYn" class="commonBlack w-100P textLeft fl font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></pre>
@@ -61,7 +61,7 @@
                         <div v-if="cmemo.attachFileList && cmemo.attachFileList.length > 0" :style="'height: ' + getMaxHeight(cmemo.attachFileList) + 'px'" style="max-width: 100%; float: left; background: rgb(238 238 238); float: left; border: 1px solid #aaa; padding-left: 10px ; float: left;  overflow: scroll hidden;">
                             <div id="mememoBodyImgWrap" style="float: left; height: 100%;" :style="'width:' + getImgListWidthSize(cmemo.attachFileList) + 'px'">
                                 <template v-for="(cImg, cIndex) in cmemo.attachFileList" :key="cIndex"  >
-                                    <img  @click="openImgPop(cmemo, cIndex)" :style="'max-height: ' + getMaxHeight(cmemo.attachFileList) + 'px'" style="border-right: 1px solid #aaa; border-left: 1px solid #aaa; margin-right: 10px; float: left; min-width: 70px;" :fileKey="cImg.fileKey" v-if="!cImg.attachYn" :src="cImg.domainPath + cImg.pathMtext" alt="">
+                                    <img  @click="openImgPop(cmemo.attachFileList, cIndex)" :style="'max-height: ' + getMaxHeight(cmemo.attachFileList) + 'px'" style="border-right: 1px solid #aaa; border-left: 1px solid #aaa; margin-right: 10px; float: left; min-width: 70px;" :fileKey="cImg.fileKey" v-if="!cImg.attachYn" :src="cImg.domainPath + cImg.pathMtext" alt="">
                                 </template>
                             </div>
                         </div>
@@ -216,10 +216,21 @@ export default {
       }
       return imgWidth
     },
-    openImgPop (value, index) {
-      this.selectedImgPopObj = value
-      this.startIndex = index
-      this.mPreviewPopShowYn = true
+    openImgPop (imgList, index) {
+      var value = imgList
+      var returnImgList = []
+      for (var i = 0; i < value.length; i++) {
+        var imgObject = {}
+        var img = new Image()
+        // img.src = this.propImgList[i].domainPath + this.propImgList[i].pathMtext
+        img.src = value[i].domainPath + value[i].pathMtext
+        imgObject.src = img.src
+        imgObject.fileKey = Number(value[i].fileKey)
+        imgObject.width = img.width
+        imgObject.height = img.height
+        returnImgList.push(imgObject)
+      }
+      this.$emit('openImgPop', [returnImgList, index])
     },
     async imgDownload () {
       // eslint-disable-next-line no-debugger

@@ -6,11 +6,16 @@
       <!-- <img src="../../../../assets/images/common/grayXIcon.svg" @click="closePop()" style="width: 20px; position: absolute; right: 8px;top: 5px;" alt=""> -->
       <p class="font20 " style="line-height:35px;" >메뉴</p>
     </div>
-    <div style="margin-top: 50px;">
+    <div style="margin-top: 50px">
       <div class="menuRow fontBold"  v-for="(value, index) in menuList" :key="index" :style="(index + 1) % 4 === 0 ? 'border-bottom: 3px solid #F5F5F9; ': '' ">
-        <img class="fl mright-1 mtop-02" :src="value.iconUrl" alt="">
-        <div class="fl" v-on:click="goPage(value.link)" v-if="value.type === 'page'">{{value.menuText}}</div>
-        <div class="fl" v-else v-on:click="openPop(value)">{{value.menuText}}</div>
+        <div v-if="value.type === 'page'" style="width: 100%; height: 100%;" v-on:click="goPage(value.link)">
+          <img class="fl mright-1 mtop-02" :src="value.iconUrl" alt="">
+          <div class="fl">{{value.menuText}}</div>
+        </div>
+        <div class="fl" style="width: 100%; height: 100%;" v-else v-on:click="openPop(value)">
+          <img class="fl mright-1 mtop-02" :src="value.iconUrl" alt="">
+          <div class="fl">{{value.menuText}}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -60,5 +65,5 @@ export default {
 .menuHeader {padding:0.5rem 0;position: absolute; top: 0; left: 0; width: 100%; height: 50px; border-bottom: 2px solid #6768A8;}
 .menuHeader p{color: #5F61BD; text-align: center; font-weight: bold;}
 /* .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%) } */
-.menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; }
+.menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; width: 100%;}
 </style>

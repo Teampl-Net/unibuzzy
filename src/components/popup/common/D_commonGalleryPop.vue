@@ -62,22 +62,22 @@ export default {
     },
     GE_IMG_LIST () {
       if (!this.propImgList || this.propImgList.length === 0) return
+      if (!this.propImgList[0].attributes) {
+        console.log(this.propImgList)
+        return this.propImgList
+      }
       var returnImgList = []
       for (var i = 0; i < this.propImgList.length; i++) {
         var imgObject = {}
         var img = new Image()
-        console.log(this.propImgList[i])
         // img.src = this.propImgList[i].domainPath + this.propImgList[i].pathMtext
         img.src = this.propImgList[i].currentSrc
-        // eslint-disable-next-line no-debugger
-        debugger
         imgObject.src = img.src
         imgObject.fileKey = Number(this.propImgList[i].attributes.fileKey.value)
         imgObject.width = this.propImgList[i].width
         imgObject.height = this.propImgList[i].height
         returnImgList.push(imgObject)
       }
-      console.log(returnImgList)
       return returnImgList
     }
   },

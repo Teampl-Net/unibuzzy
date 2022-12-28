@@ -51,6 +51,9 @@ export default {
     pMainAlimList: {}
   },
   methods: {
+    click () {
+      alert('hi')
+    },
     openImgPop (param) {
       this.$emit('openImgPop', param)
     },
