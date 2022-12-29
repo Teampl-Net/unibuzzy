@@ -3,7 +3,7 @@
   <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <!-- <div :class="{popHeight :popYn == true}" style="position: absolute; top:0;left:0; z-index:9999; height: calc(100vh - 120px); position: absolute; top:0;left:0;background-color:white;"> -->
     <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
-    <div id="boardWrap" v-if="CAB_DETAIL" :style="CAB_DETAIL.picBgPath? 'background: ' + CAB_DETAIL.picBgPath + ';' : 'background: #ece6cc;'" style="overflow: auto;" ref="boardListWrap" class="boardListWrap">
+    <div id="boardWrap" v-if="CAB_DETAIL" :style="CAB_DETAIL.picBgPath? 'background: ' + CAB_DETAIL.picBgPath + ';' + 'padding-top: ' + this.$STATUS_HEIGHT + 'px' : 'background: #ece6cc;' + 'padding-top: ' + this.$STATUS_HEIGHT + 'px'" style="overflow: auto;" ref="boardListWrap" class="boardListWrap">
       <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
       <p class="font20 fontBold" :style="CAB_DETAIL.cabinetNameMtext.length > 15 ? 'font-size:14px !important;' :'' " style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</p>
       <div id="summaryHeader" class="summaryHeader">
@@ -129,7 +129,7 @@
 
   <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
   <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
-
+  <gCertiPop :pPopText="'실명인증을 하면 익명게시판에 글을 작성할 수 있어요'" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  />
   <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @editable="editable" @report="report" @bloc="bloc" />
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
   <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" :boardValue="detailVal" />
@@ -275,11 +275,20 @@ export default {
       mobileYn: this.$getMobileYn(),
       axiosQueue: [],
       saveMemoLoadingYn: false,
-      tempMemoData: {}
+      tempMemoData: {},
+      gCertiPopShowYn: false
     }
   },
 
   methods: {
+    goSavePhonePop () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetType = 'changePhone'
+      this.gCertiPopShowYn = false
+      this.$emit('openPop', param)
+      // this.openPop(param)
+    },
     openImgPop (param) {
       this.$emit('openImgPop', param)
     },
@@ -925,7 +934,12 @@ export default {
       /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     openWriteBoard () {
-      console.log(this.propData)
+      // console.log(this.propData)
+      if ((!this.GE_USER.certiDate) && (this.CAB_DETAIL.blindYn === 1 || this.CAB_DETAIL.blindYn === true)) {
+        // 익명게시판일 떄
+        this.gCertiPopShowYn = true
+        return
+      }
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = 'writeContents'

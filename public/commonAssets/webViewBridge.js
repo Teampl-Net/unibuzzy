@@ -78,7 +78,6 @@ const isJsonString = (str) => {
             var userProfile = JSON.parse(message.userInfo)
             localStorage.setItem('loginYn', true)
             await saveUser(userProfile) // 서버에 save요청
-            router.replace({ path: '/' })
           } else {
             router.replace({ path: 'policies' })
           }

@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 }); */
 
-const firebaseConfig = {
+/* const firebaseConfig = {
   apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
   authDomain: 'thealim-2602c.firebaseapp.com',
   projectId: 'thealim-2602c',
@@ -45,10 +45,21 @@ const firebaseConfig = {
   appId: '1:777053173385:web:46b92863d81076f61d3858',
   measurementId: 'G-NHD2EKJML0'
 }
-!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
+!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app() */
+importScripts('https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js')
+importScripts('https://www.gstatic.com/firebasejs/8.4.3/firebase-messaging.js')
+var firebaseConfig = {
+  apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
+  authDomain: 'thealim-2602c.firebaseapp.com',
+  projectId: 'thealim-2602c',
+  storageBucket: 'thealim-2602c.appspot.com',
+  messagingSenderId: '777053173385',
+  appId: '1:777053173385:web:46b92863d81076f61d3858',
+  measurementId: 'G-NHD2EKJML0'
+}
+firebase.initializeApp(firebaseConfig)
+firebase.messaging()
 const messaging = firebase.messaging()
-// messaging.usePublicVapidKey('BKz1oF6HiJg6kscmJ2I0hil9fAsP68N0OrkQN7Vgo_DBQYPmnswNcIK7P71CFvKrdvwLRlemD-DfAppHIZfQ46g')
-
 var push_url
 
 self.addEventListener('push', event => {
@@ -57,7 +68,9 @@ self.addEventListener('push', event => {
   var push_data = eval('(' + event.data.text() + ')')
   console.log('comeIn : ')
   console.log(push_data)
+
   var userDo = JSON.parse(push_data.data.userDo)
+  var tag = userDo.targetKind + userDo.targetKey + userDo.doType
   console.log(userDo)
   if (userDo.targetKind === 'C') {
     targetKey = userDo.targetKey
@@ -69,11 +82,11 @@ self.addEventListener('push', event => {
   if (push_data.data.largeIcon) {
     icon = push_data.data.largeIcon
   }
-  const title = push_data.notification.title
+  const title = push_data.data.title
   var options = null
   if (userDo.targetKind === 'C' || userDo.targetKind === 'B') {
     options = {
-      body: push_data.notification.body,
+      body: push_data.data.body,
       icon: icon,
       // image: icon,
       actions: [{
@@ -83,53 +96,30 @@ self.addEventListener('push', event => {
       {
         title: '닫기',
         action: 'close'
-      }]
+      }],
+      tag: tag
     }
   } else {
     options = {
-      body: push_data.notification.body,
+      body: push_data.data.body,
       icon: icon
       // image: icon
     }
   }
-  self.registration.showNotification(title,
-    options)
+  console.log(tag)
+  const e = new CustomEvent('swMessageCome', { detail: push_data })
+  self.dispatchEvent(e)
+  self.registration.getNotifications({ tag })
+    .then(() => {
+      // const icon = `/path/to/icon`;
+      return self.registration
+        .showNotification(title, options)
+    })
 })
-/* messaging.onBackgroundMessage((push_data) => {
-  console.log('[firebase-messaging-sw.js] Received background message ', push_data)
-  // Customize notification here
-  var userDo = JSON.parse(push_data.data.userDo)
-  var icon = './resource/common/thealim_header_logo_back.png'
-  if (push_data.data.largeIcon) {
-    icon = push_data.data.largeIcon
-  }
-  const title = push_data.notification.title
-  var options = null
-  if (userDo.targetKind === 'C' || userDo.targetKind === 'B') {
-    options = {
-      body: push_data.notification.body,
-      icon: icon,
-      // image: icon,
-      actions: [{
-        title: '화면보기',
-        action: 'goTab'
-      },
-      {
-        title: '닫기',
-        action: 'close'
-      }]
-    }
-  } else {
-    options = {
-      body: push_data.notification.body,
-      icon: icon
-      // image: icon
-    }
-  }
-  self.registration.showNotification(title,
-    options)
-}) */
 
+self.addEventListener('message', function (event) {
+  console.log('message', event)
+})
 self.addEventListener('install', function (event) {
   self.skipWaiting()
   console.log('Installed', event)

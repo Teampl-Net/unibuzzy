@@ -3,14 +3,14 @@
   <div class="popUpBackgroundGray" @click="goNo"></div>
   <div class="channelMenuWrap showModal-enter " :class="{'showModal-leave': mCloseEventYn === true  }" >
 
-    <div class="menuHeader newHeaderLine">
+    <div class="menuHeader newHeaderLine" :style="'height:' + (this.$STATUS_HEIGHT + 50)+ 'px; top: 0; padding-top: ' + (this.$STATUS_HEIGHT) + 'px'" >
       <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
       <p class="fontBold font20 fl editColor" style="white-space: nowrap;" >{{mMenuHeaderTitle}}</p>
       <img v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1)" class="fr cursorP img-w23" style="margin-right:10px;" src="../../../assets/images/editChan/icon_setting.svg" @click="clickEditChanBtn"  />
       <div v-else />
     </div>
 
-    <div class="fl w-100P h-100P" style="overflow: hidden scroll;">
+    <div class="fl w-100P h-100P" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'"  style="overflow: hidden scroll;">
       <div class="fl w-100P mtop-2" style="margin-top:50px; border-bottom: 2px solid #6768a730" >
         <p class="fl font14 cursorP commonColor fontBold textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730" @click="boardDropDown">
           <pp class="mleft-1">게시판</pp>
@@ -413,7 +413,6 @@ export default {
 .menuHeader {
   padding: 0.5rem 0;
   width: 100%;
-  height: 50px;
   border-bottom: 1px solid #fff;
   border-top-left-radius: 10px;
   display: flex;
@@ -425,7 +424,6 @@ export default {
   max-width:500px;
   position: absolute;
   right: 0;
-  top: 0;
 }
 .menuHeader p{color: #FFFFFF; text-align: center;}
 

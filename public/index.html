@@ -104,11 +104,6 @@
         var messaging = firebase.messaging()
         messaging.usePublicVapidKey('BKz1oF6HiJg6kscmJ2I0hil9fAsP68N0OrkQN7Vgo_DBQYPmnswNcIK7P71CFvKrdvwLRlemD-DfAppHIZfQ46g')
          */
-        if (navigator.serviceWorker) {
-            navigator.serviceWorker.register('./firebase-messaging-sw.js')
-            .then(function (reg) { console.log('서비스워커 등록성공 :', reg) })
-            .catch(function (error) { console.log('서비스워커 등록실패 :', error) })
-        }
       }
       if (!("Notification" in window)) {
             console.log("데스크톱 알림을 지원하지 않는 브라우저입니다.");

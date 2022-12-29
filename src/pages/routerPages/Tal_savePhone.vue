@@ -182,7 +182,7 @@ export default {
       var param = {}
       var user = {}
       user.userKey = this.GE_USER.userKey
-      // user.phoneEnc = '0' + this.inPhone
+      user.phoneEnc = this.inPhone
       user.userNameMtext = this.inName
       user.certiYn = true
       param.user = user
@@ -231,7 +231,7 @@ export default {
       const data = {
         merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
         name: this.inName, // 이름
-        phone: '0' + this.inPhone // 전화번호
+        phone: this.inPhone // 전화번호
       }
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       if (isMobile) {

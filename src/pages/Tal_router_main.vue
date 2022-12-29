@@ -1,5 +1,6 @@
 <template>
-  <div class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden" > <!-- v-if="notiDetailShowYn" -->
+  <div class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden"  > <!-- v-if="notiDetailShowYn" -->
+    <commonConfirmPop v-if="mAppUpdatePopShwoYn" @no="goAppStore" confirmType="one" confirmText="버전 업데이트가 필요합니다.<br>앱스토어로 이동합니다." />
     <gImgPop @closeXPop="closeXPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" />
     <!-- <pushPop @closePushPop="closePushPop" @goDetail="goDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  /> -->
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:999;" v-if="mMenuShowYn" @click="hideMenu"/>
@@ -13,9 +14,9 @@
     <transition name="showModal">
       <fullModal @openImgPop="openImgPop" @successWrite="successWriteBoard" ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" v-if="this.mGPopShowYn === true && this.mPopParams" parentPopN="0" :propParams="this.mPopParams" @closeNewPop='closeNewPop' @parentClose='parentClose' />
     </transition>
-    <TalHeader @showMenu="showMenu" ref="mainHeaderWrap" class="header_footer " :mRouterHeaderText="this.mRouterHeaderText" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
-    <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }" class="" style="height: calc(100vh - 60px); padding-top: 50px; overflow: hidden; width:100%;">
-        <router-view @openImgPop="openImgPop" ref="routerViewCompo"  :initData="sendInitData" @goSearchDirect="goSearchDirect" @scrollEvnt="this.scrollEvnt" :popYn="false" class="" style="margin-bottom: 60px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
+    <TalHeader @click="test" @showMenu="showMenu" ref="mainHeaderWrap" class="header_footer " :mRouterHeaderText="this.mRouterHeaderText" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
+    <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }"  class="" :style="'height: calc(100% - ' + (this.$STATUS_HEIGHT + 20)+ 'px)'" style="overflow: hidden; width:100%;">
+        <router-view @openImgPop="openImgPop" ref="routerViewCompo"  :initData="sendInitData" @goSearchDirect="goSearchDirect" @scrollEvnt="this.scrollEvnt" :popYn="false" class="" style="margin-bottom: 100px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
     </div>
     <TalFooter @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
     <!-- <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div> -->
@@ -25,6 +26,7 @@
 <script>
 /* import pushPop from '../components/popup/push/Tal_pushDetailPopup.vue' */
 import TalMenu from '../components/popup/common/Tal_menu.vue'
+import commonConfirmPop from '../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 export default {
   data () {
     return {
@@ -43,19 +45,41 @@ export default {
       sendInitData: null,
       mGImgPopShowYn: false,
       mPropImgList: [],
-      mPropFirstIndex: 0
+      mPropFirstIndex: 0,
+      mAppUpdatePopShwoYn: false,
+      systemName: null
     }
   },
   props: {},
   name: 'mainRouter',
   components: {
-    TalMenu
+    TalMenu,
+    commonConfirmPop
     /* pushPop */
   },
   beforeUnmount () {
   },
   mounted () {
     this.$showChanCommonPop(false)
+    if (
+      localStorage.getItem('systemName') !== undefined &&
+    localStorage.getItem('systemName') !== 'undefined' &&
+    localStorage.getItem('systemName') !== null
+    ) {
+      this.systemName = localStorage.getItem('systemName')
+    }
+    var appInfo = localStorage.getItem('appInfo')
+    if (appInfo) {
+      appInfo = JSON.parse(appInfo)
+    }
+
+    if (this.systemName && (this.systemName === 'android' || this.systemName === 'Android' || this.systemName === 'ios' || this.systemName === 'iOS')) {
+      // alert(appInfo.current !== appInfo.last)
+      if (appInfo.current !== appInfo.last) {
+        this.mAppUpdatePopShwoYn = true
+        // alert(appInfo.current !== appInfo.last)
+      }
+    }
   },
   computed: {
     BACK_BTN_SHOWYN () {
@@ -148,6 +172,14 @@ export default {
     }
   },
   methods: {
+    goAppStore () {
+      this.mAppUpdatePopShwoYn = false
+      if (this.systemName === 'android' || this.systemName === 'Android') {
+        window.open('https://play.google.com/store/apps/details?id=com.tal_project', '_blank')
+      } else {
+        window.open('https://itunes.apple.com/app/id1620854215', '_blank')
+      }
+    },
     closeXPop () {
       this.mGImgPopShowYn = false
     },

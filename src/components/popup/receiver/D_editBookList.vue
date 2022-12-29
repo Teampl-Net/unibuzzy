@@ -1,7 +1,7 @@
 <template>
-  <div v-if="CHANNEL_DETAIL" class="editBookListWrap">
+  <div v-if="CHANNEL_DETAIL"  class="editBookListWrap">
     <gConfirmPop :confirmText='mConfirmText' :confirmType="mConfirmType" v-if="mConfirmPopShowYn" @no='mConfirmPopShowYn=false' @ok='confirmOk' />
-    <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: hidden; padding-top: 60px !important;" >
+    <div class="pagePaddingWrap longHeight"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'"  style="height:calc(100% - 300px); overflow: hidden; " >
 
       <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin:5px 0; overflow: hidden; " v-if="mCabinetName !== ''" >
 

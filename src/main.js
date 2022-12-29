@@ -177,6 +177,17 @@ axios.interceptors.response.use(function (response) {
   // }
 })
 
+var varUA = localStorage.getItem('systemName')
+if (varUA !== undefined && varUA !== null && varUA !== '') {
+  if (varUA === 'android' || varUA === '"Android"' || varUA === 'ios' || varUA === '"iOS"') {
+    app.config.globalProperties.$STATUS_HEIGHT = 0 // 35
+  } else {
+    app.config.globalProperties.$STATUS_HEIGHT = 0
+  }
+} else {
+  app.config.globalProperties.$STATUS_HEIGHT = 0
+}
+
 app.config.silent = true
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$Vuex = Vuex
@@ -192,3 +203,24 @@ app.mount('#app')
 window.app = app
 document.title = '더알림'
 localStorage.setItem('loginYn', false)
+if (navigator.serviceWorker) {
+  navigator.serviceWorker.register('./firebase-messaging-sw.js')
+    .then(function (reg) {
+      console.log('서비스워커 등록성공 :', reg)
+      reg.addEventListener('message', evnt => {
+        console.log(evnt)
+      })
+      reg.addEventListener('push', evnt => {
+        console.log(evnt)
+      })
+    })
+    .catch(function (error) { console.log('서비스워커 등록실패 :', error) })
+  navigator.serviceWorker.addEventListener('message', (event) => {
+    // event is a MessageEvent object
+    console.log(event)
+  })
+  navigator.serviceWorker.addEventListener('swMessageCome', (event) => {
+    // event is a MessageEvent object
+    console.log(event)
+  })
+}

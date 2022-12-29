@@ -351,7 +351,7 @@ export default {
     async clickFileDownload () {
       if (!this.propDetailYn) {
         await this.getContentsDetail()
-        await this.settingFileList()
+        await this.settingFileList_downAtt()
         this.mFilePopData = this.mFileDownData
       } else {
         this.mFilePopData = this.CONT_DETAIL
@@ -371,6 +371,31 @@ export default {
       this.mFileDownData = detailData
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
+    async settingFileList_downAtt () {
+      try {
+        if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
+          var attachFileList = []
+          var bodyImgFileList = []
+          for (var a = 0; a < this.CONT_DETAIL.attachFileList.length; a++) {
+            if (this.CONT_DETAIL.attachFileList[a].attachYn === true) {
+              attachFileList.push(this.CONT_DETAIL.attachFileList[a])
+            } else if (this.CONT_DETAIL.attachFileList[a].attachYn === false) {
+              bodyImgFileList.push(this.CONT_DETAIL.attachFileList[a])
+            }
+          }
+
+          var cont = this.contentsEle
+          cont.D_ATTATCH_FILE_LIST = attachFileList
+          cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
+          this.mFileDownData.D_ATTATCH_FILE_LIST = attachFileList
+          this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
+          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          return bodyImgFileList
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    },
     async settingFileList_old () {
       try {
         if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
@@ -384,12 +409,12 @@ export default {
             }
           }
 
-          /*  var cont = this.contentsEle
+          var cont = this.contentsEle
           cont.D_ATTATCH_FILE_LIST = attachFileList
           cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
           this.mFileDownData.D_ATTATCH_FILE_LIST = attachFileList
           this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
+          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
           return bodyImgFileList
         }
       } catch (error) {
@@ -1089,7 +1114,6 @@ export default {
       // if (!this.imgClickYn) return
       // console.log(this.CONT_DETAIL)
       var contBody = this.$refs.contentsBoxRef
-      console.log(contBody)
       if (!contBody) return
       var fileList = await this.settingFileList()
       this.mClickImgList = contBody.querySelectorAll('img')

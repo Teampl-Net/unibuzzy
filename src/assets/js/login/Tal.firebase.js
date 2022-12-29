@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 /* eslint-disable no-undef */
 // eslint-disable-next-line no-unused-vars
@@ -16,6 +17,8 @@ const firebaseConfig = {
   appId: '1:777053173385:web:0de7347501346c761d3858',
   measurementId: 'G-0BYBFKL8TS'
 }
+
+!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
 
 export const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
 console.log(firebaseApp)
@@ -54,7 +57,7 @@ if (!isMobile) {
     var message = payload.data
     functions.recvNotiFromBridge(message, false)
     var userDo = JSON.parse(payload.data.userDo)
-    var title = payload.notification.title
+    var title = payload.data.title
     var options = null
     var icon = './resource/common/thealim_header_logo_back.png'
     if (payload.data.largeIcon) {
@@ -62,7 +65,7 @@ if (!isMobile) {
     }
     if (userDo.targetKind === 'C' || userDo.targetKind === 'B') {
       options = {
-        body: payload.notification.body,
+        body: payload.data.body,
         icon: icon,
         // image: icon,
         actions: [{
@@ -76,20 +79,16 @@ if (!isMobile) {
       }
     } else {
       options = {
-        body: payload.notification.body,
+        body: payload.data.body,
         icon: icon
       // image: icon
       }
     }
-    navigator.serviceWorker.ready.then(function (registration) {
-      // eslint-disable-next-line no-unused-vars
-      var notiAlarm = registration.showNotification(title, options)
-      console.log(registration)
-    })
-    /* var title = payload.notification.title
+
+    /* var title = payload.data.title
     var options = {
-      body: payload.notification.body,
-      data: payload.notification,
+      body: payload.data.body,
+      data: payload.data,
       icon: './resource/common/thealim_header_logo_back.png',
       actions: [{
         title: '11',
@@ -107,6 +106,6 @@ if (!isMobile) {
       console.log(registration)
     }) */
 
-    // alert(payload.notification.title + '\n' + payload.notification.body)
+    // alert(payload.data.title + '\n' + payload.data.body)
   })
 }

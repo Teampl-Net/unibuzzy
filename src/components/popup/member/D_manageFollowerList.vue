@@ -1,5 +1,5 @@
 <template>
-<div class="w-100P h-100P" style="position: absolute; top: 0; padding: 60px 1rem 0 1rem; ">
+<div class="w-100P h-100P"  style="position: absolute; top: 0; padding: 60px 1rem 0 1rem; " :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
     <!-- <div style="width: 100%; float: left; height: 40px;">
         <p class="font16 fontBold fl mright-05 grayBlack">필터: </p>
         <div class="font16 filterBlock" style="">관리자<img class="cursorP" style="" src="../../../assets/images/common/searchXIcon.svg" alt=""></div>

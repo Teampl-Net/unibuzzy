@@ -15,6 +15,7 @@ const D_USER = {
     userInfo: null,
     deviceInfo: null,
     netStateYn: null,
+    statusBarHeight: '30px',
     userCerti: { certiYn: null, certi: {}, saveYn: false }
   },
   getters: {
@@ -127,6 +128,9 @@ const D_USER = {
         state.userCerti.certiYn = payload.success
         state.userCerti.certi = payload
       }
+    },
+    MU_STATUS_BAR_HEIGHT (state, payload) {
+      state.statusBarHeight = payload
     }
   },
   actions: {

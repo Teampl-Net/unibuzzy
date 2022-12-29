@@ -2,7 +2,7 @@
 <template>
 <!-- getWindowWidth, getWindowHeight -->
 <!-- -->
-  <div id="alimWrap" v-if="this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH" ref="chanScrollWrap" style="overflow: scroll;" :style="settingBackground" class="chanDetailWrap">
+  <div  id="alimWrap" v-if="this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH" ref="chanScrollWrap" style="overflow: scroll;" :style="settingBackground" class="chanDetailWrap">
       <div id="gChannelPopup" v-if="commonChanPopShowYn" style="display: absolute; top: 0; left: 0; z-index: 999;">
         <gChannelPop :propCateItemKey="this.CHANNEL_DETAIL.cateKey" @openPop="openCertiPop"  :propTeamKey="this.CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop'/>
       </div>
@@ -735,7 +735,8 @@ export default {
         '--wHeight': this.$getMobileYn() === true ? this.mwHeight + 'px ' : '100% ',
         // '--wWidth': this.$getMobileYn() === true ? window.innerWidth + 'px ' : '100% ',
         // '--wHeight': this.$getMobileYn() === true ? window.innerHeight + 'px ' : '100% ',
-        '--backImg': imgPath
+        '--backImg': imgPath,
+        '--paddingTop': this.$STATUS_HEIGHT + 'px'
       }
     },
     // getWindowHeight () {
@@ -818,7 +819,8 @@ export default {
 
   width: var(--wWidth);
   height: var(--wHeight);
-  background-image: var(--backImg)
+  background-image: var(--backImg);
+  padding-top: var(--paddingTop);
 }
 .officialTitle{
   padding-right: 30px;

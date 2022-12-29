@@ -201,27 +201,35 @@ export const functions = {
     return response
     // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   },
-  async recvNotiFromBridge (message, mobileYn) {
+  async recvNotiFromBridge (message, mobileYn, inNotiDetail) {
     debugger
     var addVueResult = false
     try {
-      if (!mobileYn) {
-        notiDetail = message
+      // 협의필요
+      if (inNotiDetail) {
+        notiDetail = inNotiDetail
       } else {
-        if (JSON.parse(message.pushMessage).backgroundYn) {
-          notiDetail = JSON.parse(message.pushMessage)
+        if (!mobileYn) {
+          notiDetail = message
         } else {
-          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-            notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
-          } else {
+          if (
+            JSON.parse(message.pushMessage).noti.data !== undefined &&
+                    JSON.parse(message.pushMessage).noti.data !== undefined &&
+                    JSON.parse(message.pushMessage).noti.data !== null &&
+                    JSON.parse(message.pushMessage).noti.data !== ''
+          ) {
             notiDetail = JSON.parse(message.pushMessage).noti.data
+            if (JSON.parse(message.pushMessage).noti.data.item) {
+              notiDetail = JSON.parse(message.pushMessage).noti.data.item
+            }
+          } else {
+            notiDetail = JSON.parse(message.pushMessage).noti
           }
         }
       }
       store.dispatch('D_NOTI/AC_ADD_NOTI_LIST', notiDetail)
       // alert(JSON.stringify(notiDetail))
       if (JSON.parse(notiDetail.userDo).targetKind === 'C') {
-        /* if (notiDetail.actType === 'LI') {} */
         if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {
           var memo = await functions.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
           memo.jobkindId = notiDetail.jobkindId
@@ -239,9 +247,7 @@ export const functions = {
       } else if (JSON.parse(notiDetail.userDo).targetKind === 'T') {
         // alert(true)
         addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
-      } /* else if (JSON.parse(notiDetail.userDo).targetKind === 'MEMO') {
-          functions.settingMemoNoti(message)
-        } */
+      }
     } catch (err) {
       console.error('메세지를 파싱할수 없음 ' + err)
     }

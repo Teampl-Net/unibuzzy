@@ -1,5 +1,5 @@
 <template>
-  <div class="commonPopHeaderWrap " :class="{ 'newHeaderLine' : !chanAlimListTeamKey && targetType !== 'createChannel' && targetType !== 'contentsDetail' && targetType !== 'boardMain' , 'headerShadow' : chanAlimListTeamKey}" :style="targetType === 'chanInfo' ? 'background:transparent !important' : ''">
+  <div class="commonPopHeaderWrap " :class="{ 'newHeaderLine' : !chanAlimListTeamKey && targetType !== 'createChannel' && targetType !== 'contentsDetail' && targetType !== 'boardMain' , 'headerShadow' : chanAlimListTeamKey}" :style="targetType === 'chanInfo' ? 'background:transparent !important;' : ';' + 'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;' + 'padding-bottom: 1.7rem'">
     <!-- <img src="../../../assets/images/common/icon_back_white.png" v-on:click="goBack" class="fl" style=" width: 0.8rem;" > -->
     <div v-on:click="closeXPop" class="fl cursorP " style="width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <img v-if="bgblack === true " src="../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" >
@@ -97,7 +97,7 @@ export default {
 
 <style>
 .commonPopHeaderWrapImg {position: absolute; left: 1rem;}
-.commonPopHeaderWrap{ position: absolute; justify-content: center; align-items: center; top: 0; left: 0;
+.commonPopHeaderWrap{ position: fixed; justify-content: center; align-items: center;  left: 0;
   box-sizing: border-box; display: flex;
   padding: 0.7rem 0.5rem;
   width: 100%; height: 50px; list-style: none; text-align: center; z-index: 10; background: #FFF; }

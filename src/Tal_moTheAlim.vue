@@ -44,8 +44,11 @@ export default {
       }
     })
   },
+  created () {
+  },
   data () {
     return {
+      mobileYn: this.$getMobileYn(),
       startPoint: 0,
       endPoint: 0,
       headerTitle: '아이디어스',

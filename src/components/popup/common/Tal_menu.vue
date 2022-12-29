@@ -1,12 +1,12 @@
 <template>
   <div class="pagePaddingWrap" style="padding-top: 0 !important;" >
-    <div class="menuHeader" >
+    <div class="menuHeader" :style="'top:' + (this.$STATUS_HEIGHT)+ 'px'"  >
       <!-- <img v-on:click="this.$emit('hideMenu')" class="mtop-05 cursorP mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/> -->
       <img v-on:click="this.$emit('hideMenu')" class="mtop-05 cursorP mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/grayXIcon.svg"/>
       <!-- <img src="../../../../assets/images/common/grayXIcon.svg" @click="closePop()" style="width: 20px; position: absolute; right: 8px;top: 5px;" alt=""> -->
       <p class="font20 " style="line-height:35px;" >메뉴</p>
     </div>
-    <div style="margin-top: 50px">
+    <div  :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'" style=" margin-top: 50px">
       <div class="menuRow fontBold"  v-for="(value, index) in menuList" :key="index" :style="(index + 1) % 4 === 0 ? 'border-bottom: 3px solid #F5F5F9; ': '' ">
         <div v-if="value.type === 'page'" style="width: 100%; height: 100%;" v-on:click="goPage(value.link)">
           <img class="fl mright-1 mtop-02" :src="value.iconUrl" alt="">
@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style scoped>
-.menuHeader {padding:0.5rem 0;position: absolute; top: 0; left: 0; width: 100%; height: 50px; border-bottom: 2px solid #6768A8;}
+.menuHeader {padding:0.5rem 0;position: absolute; left: 0; width: 100%; height: 50px; border-bottom: 2px solid #6768A8;}
 .menuHeader p{color: #5F61BD; text-align: center; font-weight: bold;}
 /* .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%) } */
 .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; width: 100%;}

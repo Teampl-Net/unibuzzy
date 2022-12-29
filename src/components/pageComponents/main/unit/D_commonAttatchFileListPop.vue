@@ -6,7 +6,7 @@
       <img @click="closePop()" src="../../../../assets/images/common/grayXIcon.svg" class="cursorP" style="position: absolute; right: 5px; top: 0px;" alt="">
 
       <div class="fl w-100P thinScrollBar" style="padding-left:0.5rem; min-height: 150px; max-height: 250px; height: 35%; overflow: hidden auto;">
-        <p class="fl font14 fontBold w-100P textLeft mbottom-05" v-if="mAttatchFileList.D_ATTATCH_FILE_LIST.length > 0">첨부파일</p>
+        <p class="fl font14 fontBold w-100P textLeft mbottom-05" v-if="mAttatchFileList.D_ATTATCH_FILE_LIST && mAttatchFileList.D_ATTATCH_FILE_LIST.length > 0">첨부파일</p>
         <templete v-for="(value, index) in mAttatchFileList.D_ATTATCH_FILE_LIST" :key="index">
           <div style="width: 100%; word-break: break-all;min-height: 30px; float: left; padding-left:0.3rem" >
             <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
@@ -15,7 +15,7 @@
             </a>
           </div>
         </templete>
-        <p class="fl font14 fontBold w-100P textLeft mbottom-05" v-if="mAttatchFileList.D_BODY_IMG_FILE_LIST.length > 0">본문 이미지</p>
+        <p class="fl font14 fontBold w-100P textLeft mbottom-05" v-if="mAttatchFileList.D_BODY_IMG_FILE_LIST && mAttatchFileList.D_BODY_IMG_FILE_LIST.length > 0">본문 이미지</p>
         <templete v-for="(value, index) in mAttatchFileList.D_BODY_IMG_FILE_LIST" :key="index">
           <div style="width: 100%; word-break: break-all;min-height: 30px; float: left; padding-left:0.3rem" >
             <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">

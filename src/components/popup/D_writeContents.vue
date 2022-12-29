@@ -8,7 +8,7 @@
           <p v-if="contentType === 'BOAR'" class="fontBold commonColor font20 fl">게시글{{modiYn?'수정' : '작성'}}</p>
           <div class="fr" style="display: flex; flex-direction: row; align-items: center;">
             <gBtnSmall class="writeContenBtn" v-if="contentType === 'ALIM'"   :btnTitle="contentType === 'ALIM' && requestPushYn === false ? '발송하기' : '신청하기'" @click="clickPageTopBtn()"  />
-            <gBtnSmall class="writeContenBtn" v-if="contentType === 'BOAR'"   :btnTitle="contentType === 'BOAR' && modiYn === true ? '수정하기' : '게시하기'" @click="boardDataCheck()"   />
+            <gBtnSmall :btnThema="mCanWriteYn? '' : 'light'" :style="!mCanWriteYn? 'background: #FFF; cursor: default;' : ''" class="writeContenBtn" v-if="contentType === 'BOAR'"   :btnTitle="contentType === 'BOAR' && modiYn === true ? '수정하기' : '게시하기'" @click="mCanWriteYn? boardDataCheck(): ''"   />
             <img style="width: 1rem;" @click="closeXPop" class="mleft-2 fr cursorP"  src="../../assets/images/common/popup_close.png"/>
           </div>
         </div>
@@ -90,6 +90,7 @@
 
   </div>
   <gToolBox :propTools='mToolBoxOptions' @changeTextStyle='changeFormEditorStyle' />
+  <gCertiPop :pPopText="'실명인증을 하면 익명게시판에 글을 작성할 수 있어요'" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  />
 
   <commonConfirmPop v-if="failPopYn" @no="failPopYn = false" confirmType="timeout" :confirmText="errorText" />
   <gConfirmPop v-if="contentType === 'ALIM' && checkPopYn" :confirmText="'알림을 ' + (requestPushYn === false ? '발송' : '신청') + ' 하시겠습니까?'" @ok='sendMsg(), checkPopYn=false' @no='confirmNo()' />
@@ -144,7 +145,9 @@ export default {
       writeBoardPlaceHolder: '',
       cabBlindYn: false,
 
-      mToolBoxOptions: {}
+      mToolBoxOptions: {},
+      gCertiPopShowYn: false,
+      mCanWriteYn: true
     }
   },
   props: {
@@ -153,6 +156,17 @@ export default {
     contentType: { type: String, default: 'ALIM' }
   },
   watch: {
+    GE_USER: {
+      handler (value, old) {
+        console.log(value)
+        if (!value || !value.certiDate) return
+        console.log(value.certiDate)
+        console.log(this.selectBoardIndex)
+        console.log(this.selectBoardList)
+        if (value.certiDate) this.mCanWriteYn = true
+      },
+      deep: true
+    },
     uploadFileList: {
       handler () {
         console.log(' ****************************** ')
@@ -335,6 +349,14 @@ export default {
     }
   },
   methods: {
+    goSavePhonePop () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.targetType = 'changePhone'
+      this.gCertiPopShowYn = false
+      this.openPop(param)
+      // this.openPop(param)
+    },
     changeFormEditorStyle (changeParam) {
       // toolbox에 기능 전부, 선택된 formEditor에 드레그 한 text로 처리를 하기에 ref로 접근해서 함수를 실행하고 있습니다.
       // bold, italic, underLine은 text만 넘겨줘도 기능이 작동하기에 따로 구분을 하지 않았습니다.
@@ -375,11 +397,14 @@ export default {
       console.log(response)
       var mCabinet = response.data.mCabinet
       // console.log(mCabinet)
-      this.fileYn = mCabinet.fileYn
+      if (mCabinet && mCabinet.fileYn) {
+        this.fileYn = mCabinet.fileYn
+      }
       return mCabinet
     },
     async selectBoard (data, index) {
       this.selectBoardIndex = index
+      this.mCanWriteYn = true
       var mCabinet
       if (!this.propData.initData) {
         mCabinet = await this.getCabinetDetail(data.cabinetKey)
@@ -402,6 +427,13 @@ export default {
         }
       } else {
         mCabinet = data
+        // alert(this.contentType)
+        if (this.contentType === 'BOAR' && (!this.GE_USER.certiDate) && (mCabinet.blindYn === 1 || mCabinet.blindYn === true)) {
+        // 익명게시판일 떄
+          this.mCanWriteYn = false
+          this.gCertiPopShowYn = true
+          return
+        }
         this.selectBoardCabinetKey = mCabinet.cabinetKey
         this.cabinetName = mCabinet.cabinetNameMtext
       }

@@ -1,5 +1,5 @@
 <template>
-    <div id="gPopup" v-if="reloadYn === false && this.popId" :style="this.targetType === 'writeContents'? 'background: transparent' : ''" class="commonPopWrap">
+    <div id="gPopup" v-if="reloadYn === false && this.popId" :style="this.targetType === 'writeContents'? 'background: transparent' : '' + mobileYn && (targetType !== 'chanDetail' && targetType !== 'boardMain')? 'padding-top: ' + this.$STATUS_HEIGHT + 'px':''" class="commonPopWrap">
       <loadingCompo style="z-index: 999!important; position:absolute; top:0; left:0;" v-if="loadingYn" />
       <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
       <transition name="showModal">
@@ -7,7 +7,7 @@
                                         @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :propParams="this.popParams" :propData="this.propParams" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload' @closeNewPop='closeNewPop'                                        />
       </transition>
       <popHeader  ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="(targetType === 'chanDetail' || targetType === 'boardMain')? 'chanDetailPopHeader': ''" :chanName="this.propParams.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="this.propParams.targetKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"
-      v-if="targetType !=='writeContents'" :followYn="this.headerFollowYn"
+      v-if="targetType !=='writeContents'" :followYn="this.headerFollowYn" :style="'top:' + 0 + 'px'"
       @openMenu='openChanMenuYn = true' :bgblack='this.bgblackYn' :propBookDetailPopYn='this.mBookDetailPopYn' @closeBookDetail='mBookDetailPopYn = false' :targetType='targetType' />
       <div class="w-100P h-100P" style=" position: relative;" v-if=" popId &&  this.targetType === 'chanDetail'">
         <chanAlimList @openImgPop="openImgPop" :pPopId="popId" :propData="this.propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="propParams" v-if=" popId && targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
@@ -111,6 +111,7 @@ export default {
   },
   data () {
     return {
+      mobileYn: this.$getMobileYn(),
       helpYn: false,
       notiDetail: {},
       notiDetailShowYn: false,
@@ -580,18 +581,13 @@ export default {
       }
     },
     async goDetail (detailValue) {
-      console.log(' $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ')
-      console.log(detailValue)
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      // var history = this.$store.getters['D_HISTORY/hStack']
       var currentPage = this.$store.getters['D_HISTORY/hCPage']
       console.log(currentPage)
       var indexOf = null
-
       var targetKey = detailValue.contentsKey
       var teamKey = detailValue.creTeamKey
-
       if (!targetKey) targetKey = detailValue.targetKey
       if (!teamKey) teamKey = detailValue.teamKey
 
@@ -599,13 +595,16 @@ export default {
         this.goChanDetail(detailValue)
       } else {
         param.targetType = 'contentsDetail'
-        indexOf = currentPage.indexOf('contentsDetail')
-        if (indexOf !== -1) {
-          if (this.propParams.targetKey === targetKey) {
-            await this.$addContents(targetKey, detailValue.jobkindId)
-            return
+        if (currentPage) {
+          indexOf = currentPage.indexOf('contentsDetail')
+          if (indexOf !== -1) {
+            if (this.propParams.targetKey === targetKey) {
+              await this.$addContents(targetKey, detailValue.jobkindId)
+              return
+            }
           }
         }
+
         // eslint-disable-next-line no-new-object
         var detailParam = new Object()
         detailParam.targetType = 'contentsDetail'

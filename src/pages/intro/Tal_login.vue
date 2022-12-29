@@ -40,14 +40,14 @@
 import naver from '../Tal_naverCompo.vue'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import AuthService from '../../assets/js/login/Tal.authService'
-import { firebaseApp } from '../../assets/js/login/Tal.firebase'
+import { firebaseInitialize } from '../../assets/js/login/Tal.firebase'
 import { onMessage } from '../../assets/js/webviewInterface'
 
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 import { setUserInfo } from '../../assets/js/login/Tal_userSetting'
 
-console.log(firebaseApp)
-const authService = new AuthService(firebaseApp)
+console.log(firebaseInitialize)
+const authService = new AuthService(firebaseInitialize)
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: '',

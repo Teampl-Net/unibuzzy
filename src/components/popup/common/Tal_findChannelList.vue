@@ -1,7 +1,7 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-  <div class="findPopupWrap " style="padding-top: 60px;">
-    <popHeader headerTitle="채널 검색" @closeXPop="closeXPop" style="box-shadow: 0px 7px 9px -9px #00000036;"/>
+  <div class="findPopupWrap " :style="'padding-top:' + (this.$STATUS_HEIGHT + 50 )+ 'px'" >
+    <popHeader headerTitle="채널 검색" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody mtop-05" style=" padding: 0 1.5rem">
       <div style="position: relative; margin: 1rem 0; min-height: 50px;">
         <img @click="findChannel" class="searchIcon cursorP img-w20" src="../../../assets/images/common/iocn_search_gray.png" alt="검색버튼">

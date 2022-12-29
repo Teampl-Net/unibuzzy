@@ -1,5 +1,5 @@
 <template>
-  <div  class="w-100P h-100P pagePaddingWrap" style="padding-top: 0; overflow:auto; margin-bottom: 1rem; position: relative;">
+  <div  class="w-100P h-100P pagePaddingWrap"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 50)+ 'px'" style=" overflow:auto; padding-bottom: 40px; position: relative;">
     <loadingCompo v-if="mLoadingYn === true" />
     <div class="myProfileWrap" @click="goSetMyPage">
       <div class="myProfileLeft">

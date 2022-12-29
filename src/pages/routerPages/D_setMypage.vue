@@ -235,25 +235,27 @@ export default {
 
     },
     goPlayStore () {
-        if (this.systemName === 'android' || this.systemName === 'Android') {
-            var aTag = document.getElementById('updateAppPage')
-            if (aTag == null) {
-              aTag = document.createElement('a')
-              aTag.id = 'updateAppPage'
-              aTag.style.display = 'none'
-              document.body.appendChild(aTag)
-            }
-            aTag.href = this.appInfo.playStoreUrl
-            // aTag.target = '_blank'
-
-            // aTag.click()
-            aTag.click()
-            onMessage('closeApp', 'requestUserPermission').then(res => {
-                aTag.click()
-            })
+      this.checkVersionPopShowYn = false
+      if (
+        localStorage.getItem('systemName') !== undefined &&
+        localStorage.getItem('systemName') !== 'undefined' &&
+        localStorage.getItem('systemName') !== null
+      ) {
+        var systemName = localStorage.getItem('systemName')
+      }
+      var appInfo = localStorage.getItem('appInfo')
+      if (appInfo) {
+        appInfo = JSON.parse(appInfo)
+      }
+      if (systemName === 'android' || systemName === 'Android') {
+        if (appInfo.current !== appInfo.last) {
+          // alert('버전업데이트 필요')
+          window.open('https://play.google.com/store/apps/details?id=com.tal_project', '_blank')
+        /* onMessage('closeApp', 'requestUserPermission').then(res => {
+        aTag.click()
+      }) */
         }
-
-
+      }
             // document.body.removeChild(aTag)
     },
     reloadApp () {

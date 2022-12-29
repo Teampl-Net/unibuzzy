@@ -1,5 +1,5 @@
 <template>
-    <div style="float: left; width: 100%; height: 100%;   padding-top: 10px !important;position: relative; overflow: hidden;">
+    <div style="float: left; width: 100%; height: 100%;  position: relative; overflow: hidden; padding-bottom: 80px;" :style="'margin-top:' + (this.$STATUS_HEIGHT + 50)+ 'px'">
         <div style="width: 100%; height: 100%;  float: left; background: #fff;">
             <!-- <loadingCompo v-if="mLoadingYn === true"/> -->
             <!-- <div class="chanListHeaderBase " > -->
@@ -19,8 +19,8 @@
                 <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
                 </template>
             </div>
-            <img src="../../assets/images/button/Icon_CreChanBtn.png" @click="clickCreateChannel" alt="채널 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
-            <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 7rem; right: calc(10% + 7px);" @click="refreshList">
+            <img src="../../assets/images/button/Icon_CreChanBtn.png" @click="clickCreateChannel" alt="채널 만들기 버튼" style="position: absolute;  right: 10%;" :style="'bottom:' + (this.$STATUS_HEIGHT + 100)+ 'px'" class="img-78 img-w66">
+            <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px;  right: calc(10% + 7px);" :style="'bottom:' + (this.$STATUS_HEIGHT + 180)+ 'px'"  @click="refreshList">
                 <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
             </div>
         </div>
@@ -319,16 +319,16 @@ export default {
       }
     },
     clickCreateChannel () {
-      var tempParam = {}
+      /* var tempParam = {}
       tempParam.targetType = 'createChannel'
       tempParam.popHeaderText = '채널 생성'
-      this.$emit('openPop', tempParam)
+      this.$emit('openPop', tempParam) */
       /* this.gCertiPopShowYn = true */
       if (this.GE_USER.certiDate) {
-        /* var tempParam = {}
+        var tempParam = {}
         tempParam.targetType = 'createChannel'
         tempParam.popHeaderText = '채널 생성'
-        this.$emit('openPop', tempParam) */
+        this.$emit('openPop', tempParam)
       } else {
         this.gCertiPopShowYn = true
       }
