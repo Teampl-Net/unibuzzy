@@ -446,7 +446,8 @@ export default {
       } */
       // var memoObj = JSON.parse(JSON.stringify(memo))
 
-      this.mCurrentMemoObj = JSON.parse(JSON.stringify(memo))
+      // this.mCurrentMemoObj = JSON.parse(JSON.stringify(memo)) 20221230: 수민삭제
+      this.mCurrentMemoObj = memo
       if ((this.propContDetail.jobkindId === 'ALIM' && this.propContDetail.canReplyYn === 1) || (this.propContDetail.jobkindId === 'BOAR' && this.$checkUserAuth(this.propContDetail.shareItem).R === true)) {
         var data = {}
         data.parentMemoKey = this.mCurrentMemoObj.memoKey // 대댓글때 사용하는것임

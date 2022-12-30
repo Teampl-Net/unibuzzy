@@ -50,8 +50,8 @@ export default {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetType = 'chanDetail'
-      params.targetKey = 377
-      params.teamKey = 377
+      params.targetKey = this.$DALIM_TEAM_KEY
+      params.teamKey = this.$DALIM_TEAM_KEY
       // params.nameMtext = 'KO$^$더알림'
       this.$emit('openPop', params)
     }

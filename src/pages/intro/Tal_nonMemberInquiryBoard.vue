@@ -111,7 +111,7 @@ export default {
       /* if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
         param.creTeamKey = this.chanDetailKey
       } */
-      param.cabinetKey = 11188
+      param.cabinetKey = this.$DALIM_MUN_CAB_KEY
       param.offsetInt = this.offsetInt
       if (offsetInput !== undefined) {
         param.offsetInt = offsetInput
@@ -237,9 +237,9 @@ export default {
       params.targetType = 'writeContents'
       params.contentsJobkindId = 'BOAR'
       params.targetNameMtext = 'KO$^$더알림'
-      params.currentTeamKey = 377
+      params.currentTeamKey = this.$DALIM_TEAM_KEY
       params.cabinetNameMtext = '비회원 문의게시판'
-      params.cabinetKey = 11188
+      params.cabinetKey = this.$DALIM_MUN_CAB_KEY
       params.nonMemYn = true
       this.$emit('openPop', params)
     },
@@ -289,10 +289,10 @@ export default {
       // eslint-disable-next-line no-new-object
       var params = new Object()
       params.targetNameMtext = 'KO$^$더알림'
-      params.currentTeamKey = 377
+      params.currentTeamKey = this.$DALIM_TEAM_KEY
       params.cabinetNameMtext = '비회원 문의게시판'
-      params.cabinetKey = 11188
-      params.targetKey = 11188
+      params.cabinetKey = this.$DALIM_MUN_CAB_KEY
+      params.targetKey = this.$DALIM_MUN_CAB_KEY
       value.value = params
       value.targetType = 'contentsDetail'
       value.popHeaderText = '비회원 문의게시판'

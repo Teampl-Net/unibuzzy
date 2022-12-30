@@ -502,7 +502,7 @@ export default {
         }
         param.onlyManagerYn = false
         // 12006
-        if (param.cabinetKey === 12006 || param.cabinetKey === 11015) {
+        if (param.cabinetKey === this.$DALIM_ORYU_CAB_KEY) {
           param.onlyManagerYn = true
         }
         param.creTeamKey = this.propData.currentTeamKey || this.propData.creTeamKey

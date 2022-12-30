@@ -458,9 +458,11 @@ export default {
       param.cabinetKey = this.modiBoardDetailProps.cabinetKey
       param.adminYn = true
       var resultList = await this.$getCabinetDetail(param)
+      console.log(resultList)
       this.settingCabDetail(resultList)
     },
     async settingCabDetail (data) {
+      if (!data.mCabinet) return
       if (data.mCabinet) {
         this.boardName = await this.$changeText(data.mCabinet.cabinetNameMtext)
       }

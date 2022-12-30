@@ -811,7 +811,7 @@ export default {
           param.actorList = this.propData.actorList
         }
         param.onlyManagerYn = false
-        if (param.cabinetKey === 12006 || param.cabinetKey === 11188) {
+        if (param.cabinetKey === this.$DALIM_MUN_CAB_KEY) {
           param.onlyManagerYn = true
         }
         param.creTeamKey = this.propData.currentTeamKey || this.propData.creTeamKey

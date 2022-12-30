@@ -180,14 +180,16 @@ axios.interceptors.response.use(function (response) {
 var varUA = localStorage.getItem('systemName')
 if (varUA !== undefined && varUA !== null && varUA !== '') {
   if (varUA === 'android' || varUA === '"Android"' || varUA === 'ios' || varUA === '"iOS"') {
-    app.config.globalProperties.$STATUS_HEIGHT = 0 // 35
+    app.config.globalProperties.$STATUS_HEIGHT = 35 // 35
   } else {
-    app.config.globalProperties.$STATUS_HEIGHT = 0
+    app.config.globalProperties.$STATUS_HEIGHT = 35
   }
 } else {
   app.config.globalProperties.$STATUS_HEIGHT = 0
 }
-
+app.config.globalProperties.$DALIM_TEAM_KEY = 377
+app.config.globalProperties.$DALIM_MUN_CAB_KEY = 11188
+app.config.globalProperties.$DALIM_ORYU_CAB_KEY = 12006
 app.config.silent = true
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$Vuex = Vuex

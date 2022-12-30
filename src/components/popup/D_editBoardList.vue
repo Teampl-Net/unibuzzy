@@ -247,6 +247,8 @@ export default {
       }
     },
     anima () {
+      var addNewEffect = document.getElementsByClassName('addNewEffect')
+      if (!addNewEffect || addNewEffect.length === 0 ) return
       document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
       setTimeout(() => {
         document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = ''

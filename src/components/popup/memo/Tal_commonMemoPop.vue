@@ -331,18 +331,23 @@ export default {
       console.log(mememo)
       var myCreHtml = null
       myCreHtml = '<span id="parentNameCard" style="padding:0 5px; border-radius: 10px;" class="parentNameCard CLightBgColor" @click="findmememoMemo(parentKey' + mememo.memo.memoKey + ')"  id="parentKey' + mememo.memo.memoKey + '">'
-      myCreHtml += '@' + this.$changeText(mememo.memo.userDispMtext || mememo.memo.userNameMtext)
+      myCreHtml += '@' + this.$changeText(mememo.memo.userDispMtext)
       myCreHtml += '</span> '
       this.$nextTick(() => {
         try {
-          this.$refs.memoTextTag.focus()
           console.log(myCreHtml)
-          var spanTag = document.querySelectorAll('#memoTextTag .parentNameCard')
-          for (var i = 0; i < spanTag.length; i++) {
+          // var spanTag = document.querySelectorAll('#memoTextTag .parentNameCard')
+          this.$refs.memoTextTag.innerHTML = ''
+          // 20221230 수민삭제
+          /* for (var i = 0; i < spanTag.length; i++) {
             this.$refs.memoTextTag.innerText.leftTrim()
             spanTag[i].remove()
-          }
+          } */
+          // this.$refs.memoTextTag.append(myCreHtml)
+          this.$refs.memoTextTag.focus()
           this.$pasteHtmlAtCaret(myCreHtml)
+          this.$refs.memoTextTag.blur()
+          this.$refs.memoTextTag.focus()
         } catch (error) {
         }
       })

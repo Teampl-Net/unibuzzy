@@ -3,7 +3,7 @@
 <gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
 <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
 <div class="pagePaddingWrap" style="display: flex; flex-direction: column; text-align: left; height: 100%; position: relative;">
-  <div style="width: 100%; height: calc(100% - 4rem); ">
+  <div style="width: 100%; overflow: hidden auto; height: calc(100% - 4rem); ">
     <!-- <select class="askBoxWrap">
       <option class="askCommonFont">문의 유형</option>
     </select> -->
@@ -267,7 +267,7 @@ export default {
     delAttachFile (dFile) {
       if (dFile.addYn) {
         for (var d = 0; d < this.uploadFileList.length; d++) {
-          if (this.uploadFileList[d].attachYn === true && this.uploadFileList[d].attachKey === dFile[0].attachKey) {
+          if (this.uploadFileList[d].attachYn === true && this.uploadFileList[d].attachKey === dFile.attachKey) {
             this.uploadFileList.splice(d, 1)
           }
         }
@@ -276,7 +276,7 @@ export default {
       }
     },
     setSelectedAttachFileList (sFile) {
-      if (sFile[0].addYn === true) {
+      if (sFile.addYn === true) {
         this.uploadFileList.push(sFile)
       }
       // console.log(this.uploadFileList)
@@ -341,7 +341,7 @@ export default {
             setObj.attachYn = false
           }
           setObj.fileKey = this.uploadFileList[i].fileKey
-          setObj.fileName = (this.uploadFileList[i])[0].file.name
+          setObj.fileName = (this.uploadFileList[i]).file.name
           newAttachFileList.push(setObj)
         }
       }
@@ -380,12 +380,13 @@ export default {
         param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 
         param.jobkindId = 'BOAR'
-        param.creTeamKey = 377 // 더알림 공식 채널 teamKey
+        param.creTeamKey = this.$DALIM_TEAM_KEY // 더알림 공식 채널 teamKey
 
+        param.workStatCodeKey = 40
         // param.cabinetKey = 12006 // 더알림 공식 채널의 오류 게시판 키
-        if (this.propData.jobKind === 'ERRO') param.cabinetKey = 12006
+        if (this.propData.jobKind === 'ERRO') param.cabinetKey = this.$DALIM_ORYU_CAB_KEY
         // param.cabinetKey = 11188 // 더알림 공식 채널의 문의 게시판 키
-        if (this.propData.jobKind === 'QUES') param.cabinetKey = 11188
+        if (this.propData.jobKind === 'QUES') param.cabinetKey = this.$DALIM_MUN_CAB_KEY
 
         param.onlyManagerYn = true
         // param.creTeamKey = JSON.parse(localStorage.getItem('sessionTeam')).teamKey
@@ -419,7 +420,7 @@ export default {
           form = new FormData()
           // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
           // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
-          form.append('files[0]', (thisthis.uploadFileList[i])[0].file)
+          form.append('files[0]', (thisthis.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
             .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
@@ -437,7 +438,7 @@ export default {
             .then(res => {
               // console.log(res)
               if (res.data.length > 0) {
-                if ((this.uploadFileList[i])[0].attachYn === true) {
+                if ((this.uploadFileList[i]).attachYn === true) {
                   this.uploadFileList[i].attachYn = true
                 } else {
                 }
@@ -463,7 +464,7 @@ export default {
             // console.log(uploadFile)
             if (uploadFile.successSave) {
               for (var il = 0; il < iList.length; il++) {
-                if (!uploadFile[0].attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
+                if (!uploadFile.attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
                   iList[il].src = uploadFile.filePath
                   // eslint-disable-next-line no-unused-vars
                   iList[il].setAttribute('fileKey', uploadFile.fileKey)
