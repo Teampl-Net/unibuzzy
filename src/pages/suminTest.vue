@@ -1,6 +1,6 @@
 <template>
 <div class="pagePaddingWrap" >
-  <gBtnSmall @click="getListData" btnTitle="test"/>
+  <gBtnSmall @click="testClick1" btnTitle="test"/>
   <childCompo1 :propInitData="propInitData" />
   <childCompo2 :propInitData="propInitData" />
   <childCompo3 :propInitData="propInitData" />
@@ -89,16 +89,9 @@ export default {
       debugger
     },
     async testClick1 () {
-      var t = 'suman9o@susoft.co.kr'
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      param.address = t
-      param.title = 'testtest'
-      param.message = '1111testtest'
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.sendMail',
-        param: param
-      })
+      var result = await this.$axios.post('eduPl/edu.getCourseList', param)
       console.log(result)
       // eslint-disable-next-line no-debugger
       debugger

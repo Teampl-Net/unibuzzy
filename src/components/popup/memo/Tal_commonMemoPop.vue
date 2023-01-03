@@ -37,12 +37,21 @@
     <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px; line-height: 80px; margin-top: 1rem" class="fl mright-02" alt="">
 
     <!-- <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;"> -->
-      <pre placeholder="댓글을 작성해주세요." @focus="test" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding " :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}" style="width:calc(100% - 40px); min-height:2.5rem; text-align:left; float: left; resize: none; border-radius: 10px; border: 1px solid #a7a7a7"  contenteditable=true  @input="inputTextCheck"/>
-      <!-- <div style="width: 30px; height: 100%;"> -->
-      <img v-if="mWatchInputData.trim() !== ''" @click="saveMemo()" src="../../../assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mtop-05 mleft-05">
-      <img v-else @click="$showToastPop('댓글을 작성해주세요.')" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mtop-05 mleft-05">
+      <div style="width: 100%; display: flex; align-items: center; float: left;">
+        <div style="width: 40px; height: 40px; margin-right: 8px; border-radius: 5px; background: #dcddeb; float: left; font-size: 30px;color: #FFF; font-weight: bold">+</div>
+        <pre placeholder="댓글을 작성해주세요." @focus="test" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding " :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}" style="width:calc(100% - 80px); min-height:2.5rem; text-align:left; float: left; resize: none; border-radius: 10px; border: 1px solid #a7a7a7"  contenteditable=true  @input="inputTextCheck"/>
+        <!-- <div style="width: 30px; height: 100%;"> -->
+        <img v-if="mWatchInputData.trim() !== ''" @click="saveMemo()" src="../../../assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mleft-05">
+        <img v-else @click="$showToastPop('댓글을 작성해주세요.')" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mleft-05">
+      </div>
       <!-- </div> -->
     <!-- </div> -->
+    <!-- <div style="width: 100%; height: 100%; position: flex; top: 0; left: 0; background: #00000026; z-index: 98;"></div>
+    <transition name="showUp">
+        <div style="width: 100%; height: 100px; position: fixed; bottom: 0; background: #FFF; z-index: 99; border-radius: 10px 10px 0 0; box-shadow: 0 0 4px 4px #00000030; left: 0;">
+            <div></div>
+        </div>
+    </transition> -->
   </div>
 </template>
 

@@ -1,14 +1,16 @@
 <template>
     <div v-if="!childShowYn" style="width: 100%; min-height: 20px; display: flex; margin-bottom: 5px; ">
-        <div style="width: 90px; margin-right: 10px; height: 100%;" @click="clickMemoEvnt({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
+        <div style="width: 90px; margin-right: 10px; min-height: 20px;" @click="clickMemoEvnt({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
             <p class="commonBlack textLeft font14 fontBold">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
         </div>
-        <div style="width: calc(100% - 100px); min-height: 20px;" @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
+        <img v-if="propMemoEle.attachMfilekey" src="../../../assets/images/contents/icon_clip.png" class="" style="width: 14px; height: 16px; margin-top: 1px; margin-right: 5px;" alt="">
+        <div :style="propMemoEle.attachMfilekey? 'width: calc(100% - 170px);' : 'width: calc(100% - 150px);'" style=" min-height: 20px;" @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
             <!-- <p class="commonBlack textLeft font14" v-html="$cutText($decodeHTML(propMemoEle.bodyFullStr), 80)"></p> -->
             <pre class="commonBlack textLeft font14" v-html="$decodeHTML(propMemoEle.bodyFullStr)"></pre>
         </div>
+        <p class="fl commonGray textLeft mleft-05 font12"  style="font-weight:normal;">{{this.$changeDateMemoFormat(propMemoEle.creDate)}}</p>
     </div>
-    <div v-else-if="propMemoEle" style="width: 100%; float: left; height: 100%; margin-bottom: 20px; border-bottom: 1px solid #cccccc50;">
+    <div v-else-if="propMemoEle" style="width: 100%; float: left; min-height: 20px; margin-bottom: 5px; border-bottom: 1px solid #cccccc50;">
         <div style="width: 100%; min-height: 20px; display: flex; flex-direction: column; margin-bottom: 5px;float: left; position: relative;">
             <div style="width: 100%; min-height: 40px; display: flex;">
                 <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(propMemoEle)">
@@ -23,7 +25,7 @@
             </div>
             <div style="width: calc(100%); padding-left: 10px; min-height: 40px; display: flex; flex-direction: column;">
                 <div style="min-height: 20px; width: 100%; min-height: 20px;">
-                    <div style="width: 100%; float: left; margin-top: 10px;margin-top: 10px;" v-if="getAttachTrueFile(propMemoEle.attachFileList).length > 0">
+                    <div style="width: 100%; float: left; " v-if="getAttachTrueFile(propMemoEle.attachFileList).length > 0">
                         <p @click="showFileDownloadPop(propMemoEle)" class="textLeft cursorP fr font12 mright-1 fontBold commonColor">첨부파일({{getAttachTrueFile(propMemoEle.attachFileList).length}})</p>
                     </div>
                     <div v-if="getAttachFalseFile(propMemoEle.attachFileList).length > 0" :style="'height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'" style="float: left; max-width: 100%; background: rgb(238 238 238); float: left; border: 1px solid #aaa; padding-left: 10px ; margin: 10px 0; overflow: scroll hidden;">
@@ -55,7 +57,7 @@
                 </div>
                 <div style="width: calc(100%); margin-top: 10px; padding-left: 10px; min-height: 40px; display: flex; flex-direction: column;">
                     <div style="width: 100%; float: left; min-height: 20px;" v-if="cmemo.attachMfilekey && cmemo.attachFileList && cmemo.attachFileList.length > 0">
-                        <div style="width: 100%; float: left; margin-top: 10px;" v-if="cmemo.attachFileList && cmemo.attachFileList.length > 0 && getAttachTrueFile(cmemo.attachFileList).length > 0">
+                        <div style="width: 100%; float: left;" v-if="cmemo.attachFileList && cmemo.attachFileList.length > 0 && getAttachTrueFile(cmemo.attachFileList).length > 0">
                             <p @click="showFileDownloadPop(cmemo)" class="textLeft cursorP fr font12 mright-1 fontBold commonColor">첨부파일({{getAttachTrueFile(cmemo.attachFileList).length}})</p>
                         </div>
                         <div v-if="cmemo.attachFileList && cmemo.attachFileList.length > 0" :style="'height: ' + getMaxHeight(cmemo.attachFileList) + 'px'" style="max-width: 100%; float: left; background: rgb(238 238 238); float: left; border: 1px solid #aaa; padding-left: 10px ; float: left;  overflow: scroll hidden;">
