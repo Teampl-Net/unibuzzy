@@ -2,7 +2,7 @@
   <div @click="click" id="fileBoxWrap" style="width: 100%; height: 100%; padding: 10px; background-color: #dcddeb;">
     <div style="width: 100%; background-color: #FFF; height: 140px; padding: 10px 0 10px 10px; border-radius: 0.8rem; display: flex; flex-direction: column; justify-content: space-between;">
       <div v-if="this.mMainChanList" style="width: 100%; height: 30px; float: left;">
-        <img src="./assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
+        <img src="../../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
         <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">채널</p>
       </div>
       <div v-if="this.mMainChanList" style="width: 100%; height: 85px; float: left; overflow: scroll hidden;">
@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import chanRoundIcon from './components/pageComponents/main/D_chanRoundIcon.vue'
-import circleSkeleton from './components/pageComponents/main/D_mainChanCircleSkeleton.vue'
+import chanRoundIcon from '../../pageComponents/main/D_chanRoundIcon.vue'
+import circleSkeleton from '../../pageComponents/main/D_mainChanCircleSkeleton.vue'
 export default {
   name: 'App',
   components: {
@@ -63,12 +63,13 @@ export default {
     async getAllFileList () {
       const paramMap = new Map()
       paramMap.set('creUserKey', this.GE_USER.userKey)
-      paramMap.set('pageSize', 10)
+      paramMap.set('pageSize', 30)
       paramMap.set('offsetInt', 0)
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getMyFileList',
         param: Object.fromEntries(paramMap)
       })
+      console.log(result)
       var resultFileList = result.data.content.filter((item) => {
         return item.contents
       })

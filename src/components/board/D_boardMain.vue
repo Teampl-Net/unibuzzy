@@ -40,7 +40,7 @@
           </div>
           <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
             <p class="cBlack fl font15" style="width: 100%; ">공유 {{CAB_DETAIL.mShareItemCnt}}명</p>
-            <p class="cBlack fl font15" style="width: 100%; border-left: 1px solid white">게시글 {{this.totalElements}}개</p>
+            <p class="cBlack fl font15" style="width: 100%; border-left: 1px solid white">게시글 {{this.totalElements? this.totalElements:0}}개</p>
           </div>
 
           <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">

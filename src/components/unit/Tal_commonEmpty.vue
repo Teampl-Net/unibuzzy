@@ -57,6 +57,8 @@ export default {
       } else if (this.tabName === '내가 보낸') {
         this.midleText = '내가 쓴 컨텐츠가 없습니다.'
       }
+    } else if (this.contentName === '파일함') {
+      this.midleText = '업로드한 파일이 없습니다.'
     }
   }
 }

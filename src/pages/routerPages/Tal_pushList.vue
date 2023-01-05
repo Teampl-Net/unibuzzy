@@ -13,6 +13,7 @@
             <div @click="changeMainTab('A')" :class="viewMainTab === 'A'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">전체</div>
             <div @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">알림</div>
             <div @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">게시글</div>
+            <div @click="changeMainTab('F')" :class="viewMainTab === 'F'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">파일함</div>
         </div>
         <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
       </div>
@@ -40,13 +41,18 @@
               <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
           </template>
           <gEmpty :tabName="currentTabName" contentName="전체" v-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
+          <template  v-for="(cont, index) in this.GE_FILE_LIST" :key="index">
+              <gFileBox ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'F'"/>
+              <myObserver v-if="index === this.GE_FILE_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
+          </template>
+          <gEmpty :tabName="currentTabName" contentName="파일함" v-if="this.viewMainTab === 'F' && GE_FILE_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
         </div>
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
           <img src="../../assets/images/common/reload_button.svg" class="cursorP img-w20" />
         </div>
-        <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
-        <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
+        <!-- <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  /> -->
+        <!-- <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" /> -->
         <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" />
         <!-- <cancelPop/> -->
         <div v-if="memoShowYn === true" class="pushListMemoBoxBackground" @click="memoPopNo()"></div>
@@ -64,10 +70,10 @@
 </template>
 <script>
 /* import pushLoadingCompo from '../../components/layout/Tal_loading.vue' */
-import imgPreviewPop from '../../components/popup/file/Tal_imgPreviewPop.vue'
+// import imgPreviewPop from '../../components/popup/file/Tal_imgPreviewPop.vue'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../../components/popup/common/D_findContentsList.vue'
-import imgLongClickPop from '../../components/popup/Tal_imgLongClickPop.vue'
+// import imgLongClickPop from '../../components/popup/Tal_imgLongClickPop.vue'
 /* import cancelPop from '../../components/popup/common/Tal_commonCancelReasonPop.vue' */
 import { onMessage } from '../../assets/js/webviewInterface'
 import statCodeComponent from '../../components/board/D_manageStateCodePop.vue'
@@ -80,9 +86,9 @@ export default {
     // attachFileListPop,
     findContentsList,
     commonConfirmPop,
-    imgPreviewPop,
+    // imgPreviewPop,
     /* pushLoadingCompo, */
-    imgLongClickPop,
+    // imgLongClickPop,
     statCodeComponent
 
     /* cancelPop */
@@ -311,6 +317,9 @@ export default {
     }
   },
   computed: {
+    GE_FILE_LIST () {
+      return this.fileList
+    },
     getWindowSizeBottom () {
       console.log(window.innerHeight)
       return {
@@ -521,13 +530,36 @@ export default {
       var stickerDivWidth = 0
       for (var i = 0; i < stickerCnt; i++) {
         stickerDivWidth += this.stickerList[i].stickerName.length * textWidth + 10
-      }
-      return {
+      } return {
         '--stickerDivWidth': stickerDivWidth + 'px'
       }
     } */
   },
   methods: {
+    async getFileList (pageSize, offsetInput) {
+      const paramMap = new Map()
+      paramMap.set('creUserKey', this.GE_USER.userKey)
+      paramMap.set('creTeamKey', this.GE_CHANNEL_DETAIL.teamKey)
+      if (pageSize && offsetInput) {
+        paramMap.set('pageSize', pageSize)
+        paramMap.set('offsetInt', offsetInput)
+      } else {
+        paramMap.set('pageSize', this.pageSize)
+        paramMap.set('offsetInt', this.offsetInt)
+      }
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.getMyFileList',
+        param: Object.fromEntries(paramMap)
+      })
+
+      return result
+      // var resultFileList = result.data.content.filter((item) => {
+      //   return item.contents
+      // })
+      // this.fileList = resultFileList
+      // console.log('============================')
+      // console.log(this.fileList)
+    },
     openImgPop (param) {
       this.$emit('openImgPop', param)
     },
@@ -1351,7 +1383,7 @@ export default {
       ScrollWrap.scrollTo({ top: 0 })
       this.$refs.activeBar.switchtab(0)
     },
-    changeMainTab (tab) {
+    async changeMainTab (tab) {
       this.paddingTop = 75
       this.$showAxiosLoading(true)
       // this.targetCKey = null
@@ -1374,6 +1406,18 @@ export default {
       // this.$refs.activeBar.switchtab(0)
       this.refreshList()
       this.canLoadYn = true
+      if (tab === 'F') {
+        var result = await this.getFileList(10, 0)
+        console.log('************************')
+        console.log(result)
+        var resultFileList = result.data.content.filter((item) => {
+          return item.contents
+        })
+        if (this.offsetInt === 0) {
+          this.offsetInt += 1
+        }
+        this.fileList = resultFileList
+      }
     },
     introPushPageTab () {
       if (this.viewTab === 'N') {
@@ -1557,74 +1601,93 @@ export default {
       if (this.canLoadYn && this.endListYn === false) {
         this.loadMoreDESCYn = descYn
         this.canLoadYn = false
+        var resultList = []
+        var newArr = []
         try {
-          var resultList = await this.getPushContentsList(null, null, false)
-          if (resultList === undefined || resultList === '') {
-            return
-          }
-          // 더 불러온 컨텐츠에 D_MEMO_LIST가 없어 넣어주고 있음
-          /* if (resultList.content) {
-            if (resultList.content.length > 0) {
-              for (let i = 0; i < resultList.content.length; i++) {
-                if (resultList.content[i].D_MEMO_LIST === undefined || resultList.content[i].D_MEMO_LIST === null || resultList.content[i].D_MEMO_LIST === '') {
-                  resultList.content[i].D_MEMO_LIST = resultList.content[i].memoList
-                }
-              }
+          if (this.viewMainTab === 'F') {
+            resultList = await this.getFileList(null, null)
+            console.log('------------------------')
+            console.log(resultList)
+            if (resultList === undefined || resultList === '') {
+              return
             }
-          } */
-          var newArr = []
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
-          if (descYn) {
-            if (this.viewMainTab === 'P') {
-              newArr = [
-                ...resultList.content,
-                ...this.GE_DISP_ALIM_LIST
-              ]
-              this.alimContentsList = this.replaceArr(newArr)
-            } else if (this.viewMainTab === 'B') {
-              newArr = [
-                ...resultList.content,
-                ...this.GE_DISP_BOAR_LIST
-              ]
-              this.boardContentsList = this.replaceArr(newArr)
-            } else if (this.viewMainTab === 'A') {
-              newArr = [
-                ...resultList.content,
-                ...this.GE_DISP_ALL_LIST
-              ]
-              this.allContentsList = this.replaceArr(newArr)
-            }
+            var resultFileList = resultList.data.content.filter((item) => {
+              return item.contents
+            })
+            newArr = [
+              ...this.GE_FILE_LIST,
+              ...resultFileList
+            ]
+            this.fileList = this.replaceFileArr(newArr)
             await this.endListSetFunc(resultList)
           } else {
-            if (resultList.content.length < 0) { this.canUpLoadYn = false } else { this.upOffSetInt += 1 }
-            if (this.viewMainTab === 'P') {
-              newArr = [
-                ...resultList.content,
-                ...this.GE_DISP_ALIM_LIST
-              ]
-              this.alimContentsList = this.replaceArr(newArr)
-            } else if (this.viewMainTab === 'B') {
-              newArr = [
-                ...resultList.content,
-                ...this.GE_DISP_BOAR_LIST
-              ]
-              this.boardContentsList = this.replaceArr(newArr)
-            } else if (this.viewMainTab === 'A') {
-              newArr = [
-                ...resultList.content,
-                ...this.GE_DISP_ALL_LIST
-              ]
-              this.allContentsList = this.replaceArr(newArr)
+            resultList = await this.getPushContentsList(null, null, false)
+            console.log(resultList)
+            if (resultList === undefined || resultList === '') {
+              return
             }
+            // 더 불러온 컨텐츠에 D_MEMO_LIST가 없어 넣어주고 있음
+            /* if (resultList.content) {
+              if (resultList.content.length > 0) {
+                for (let i = 0; i < resultList.content.length; i++) {
+                  if (resultList.content[i].D_MEMO_LIST === undefined || resultList.content[i].D_MEMO_LIST === null || resultList.content[i].D_MEMO_LIST === '') {
+                    resultList.content[i].D_MEMO_LIST = resultList.content[i].memoList
+                  }
+                }
+              }
+            } */
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+            if (descYn) {
+              if (this.viewMainTab === 'P') {
+                newArr = [
+                  ...resultList.content,
+                  ...this.GE_DISP_ALIM_LIST
+                ]
+                this.alimContentsList = this.replaceArr(newArr)
+              } else if (this.viewMainTab === 'B') {
+                newArr = [
+                  ...resultList.content,
+                  ...this.GE_DISP_BOAR_LIST
+                ]
+                this.boardContentsList = this.replaceArr(newArr)
+              } else if (this.viewMainTab === 'A') {
+                newArr = [
+                  ...resultList.content,
+                  ...this.GE_DISP_ALL_LIST
+                ]
+                this.allContentsList = this.replaceArr(newArr)
+              }
+              await this.endListSetFunc(resultList)
+            } else {
+              if (resultList.content.length < 0) { this.canUpLoadYn = false } else { this.upOffSetInt += 1 }
+              if (this.viewMainTab === 'P') {
+                newArr = [
+                  ...resultList.content,
+                  ...this.GE_DISP_ALIM_LIST
+                ]
+                this.alimContentsList = this.replaceArr(newArr)
+              } else if (this.viewMainTab === 'B') {
+                newArr = [
+                  ...resultList.content,
+                  ...this.GE_DISP_BOAR_LIST
+                ]
+                this.boardContentsList = this.replaceArr(newArr)
+              } else if (this.viewMainTab === 'A') {
+                newArr = [
+                  ...resultList.content,
+                  ...this.GE_DISP_ALL_LIST
+                ]
+                this.allContentsList = this.replaceArr(newArr)
+              }
+            }
+            this.contentsList = this.replaceArr(newArr)
+            this.$emit('numberOfElements', resultList.totalElements)
           }
-          this.contentsList = this.replaceArr(newArr)
-          this.$emit('numberOfElements', resultList.totalElements)
         } catch (e) {
           console.log(e)
         } finally {
           this.canLoadYn = true
         }
-      } else {
       }
     },
     closeSearchPop () {
@@ -1643,6 +1706,22 @@ export default {
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
           return b.contentsKey - a.contentsKey
+          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
+        return data
+      }, [])
+      return uniqueArr
+    },
+    replaceFileArr (arr) {
+      // var this_ = this
+      if (!arr && arr.length === 0) return []
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex((item) => Number(item.fileKey) === Number(current.fileKey)) === -1) {
+        /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
+          data.push(current)
+        }
+        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.fileKey - a.fileKey
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data
@@ -2078,8 +2157,9 @@ export default {
       mFilePopYn: false,
       mFilePopData: {},
       mScrollStartPoint: 0,
-      mScrollEndPoint: 0
+      mScrollEndPoint: 0,
       // scrollIngYn: false
+      fileList: []
     }
   }
 }

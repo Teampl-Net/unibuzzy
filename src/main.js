@@ -73,6 +73,8 @@ import gToolBox from './components/popup/writeContentUnit/D_commonToolBox.vue'
 import webViewBridge from './assets/js/webViewBridge'
 // import attatchFileListPop from './components/pageComponents/main/unit/D_commonAttatchFileListPop.vue'
 
+import gFileBox from './components/unit/D_fileBox.vue'
+
 const app = createApp(moTheAlim).use(router).use(store)
 app.use(commonjs)
 app.use(openView)
@@ -125,6 +127,7 @@ app.component('gMainTab', gMainTab)
 app.component('channelCard', channelCard)
 app.component('gToolBox', gToolBox)
 app.component('gImgPop', gImgPop)
+app.component('gFileBox', gFileBox)
 // app.component('attatchFileListPop', attatchFileListPop)
 
 app.use(webViewBridge)

@@ -59,6 +59,7 @@
       <memInfoCreEditPop :pPopId="popId" v-if="popId && this.targetType === 'memInfoCreEditPop'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <notiHitstory :pPopId="popId" v-if="popId && this.targetType === 'notiHitstory'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <savePhone @openPop="openPop" @closeXPop="closeXPop" :popYn="true" :pPopId="popId" v-if="popId && this.targetType === 'changePhone'" />
+      <totalFileList :pPopId="popId" v-if=" popId && this.targetType === 'totalFileList'" @closeXPop="closeXPop" @openPop="openPop"/>
     </div>
 </template>
 
@@ -103,6 +104,7 @@ import editMemberTypePop from '../memberInfo/D_editMemberTypePop.vue'
 import memInfoCreEditPop from '../memberInfo/D_memInfoCreEditPop.vue'
 import notiHitstory from '../../pageComponents/main/D_notiHistoryList.vue'
 import savePhone from '../../../pages/routerPages/Tal_savePhone.vue'
+import totalFileList from '../../popup/file/D_totalFileList.vue'
 export default {
   created () {
     console.log(this.propParams)
@@ -179,7 +181,8 @@ export default {
     memberFormPreView,
     errorPage,
     creAddressBook,
-    notiHitstory
+    notiHitstory,
+    totalFileList
   },
   updated () {
   },

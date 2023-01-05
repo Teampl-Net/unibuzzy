@@ -34,6 +34,7 @@
     <div class="subPaddingWrap">
       <table>
         <!-- <tr @click="settingAlimPopYn = true"><th colspan="2">알림 설정</th></tr> -->
+        <tr><th class="font16">파일함</th></tr>
         <tr><th>가입일</th><td class="textRight">{{this.$dayjs(GE_USER.creDate).format('YYYY/MM/DD')}}</td></tr>
         <!-- <tr><th class="font16">가입일</th><td class="textRight font16">{{this.$changeDateFormat(GE_USER.creDate, true)}}</td></tr> -->
         <tr @click="openPolicyPop('personalInfo')"><th class="font16" colspan="2">개인정보 처리방침</th></tr>
