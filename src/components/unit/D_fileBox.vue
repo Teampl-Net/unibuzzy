@@ -10,7 +10,7 @@
         <div style="clear: both; font-weight: normal; display: flex; align-items: center; justify-content: space-between;" class="font14 textLeft">
           <div class="textOverdot" style="width: 100%;">
             <img src="../../assets/images/footer/icon_people.svg" class="img-w12" alt="">
-            &nbsp;{{ contentsEle.accessCreUserName }}
+            &nbsp;{{ changeUserName(contentsEle.accessCreUserName) }}
             <p class="font12 fr mleft-1 mtop-01" style="max-width: 70px;">{{ this.$changeDateFormat(contentsEle.creDate) }}</p>
           </div>
         </div>
@@ -41,6 +41,11 @@ export default {
     }
   },
   methods: {
+    changeUserName (userName) {
+      var idx = userName.lastIndexOf('$')
+      var result = userName.substring(idx + 1)
+      return result
+    },
     getFileExt (fileName) {
       var fileExt = fileName.substring(
         fileName.lastIndexOf('.') + 1
