@@ -457,9 +457,6 @@ async changeAct (act, contentsKey, idx) {
 .alimCheckContents{width: 100%;float: left; min-height: 30px;     position: relative}
 .alimCheckContents > img {margin-top: 3px;}
 
-.pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
-.pushDetailStickerWrap{max-width: calc(100% - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
-.stickerDiv img{width: 20px; margin-right: 5px; float: left;}
 .chanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc;}
 .pushMbox{margin-bottom: 20px;}
 

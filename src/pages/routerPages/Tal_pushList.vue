@@ -524,16 +524,6 @@ export default {
     currentPage () {
       return this.$store.getters['D_HISTORY/hCPage']
     }
-    /* setStickerWidth () {
-      var stickerCnt = this.stickerList.length
-      var textWidth = 16
-      var stickerDivWidth = 0
-      for (var i = 0; i < stickerCnt; i++) {
-        stickerDivWidth += this.stickerList[i].stickerName.length * textWidth + 10
-      } return {
-        '--stickerDivWidth': stickerDivWidth + 'px'
-      }
-    } */
   },
   methods: {
     async getFileList (pageSize, offsetInput) {
@@ -2112,7 +2102,6 @@ export default {
       endListYn: false,
       scrollPosition: 0,
       findPopShowYn: false,
-      /* stickerList: [], */
       activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 만든', name: 'M' }],
       viewTab: 'N',
       viewMainTab: 'A',
@@ -2170,9 +2159,6 @@ export default {
 }
 </script>
 <style scoped>
-.stickerWrap{width: 100%; box-sizing: border-box; height: 40px; overflow-x: scroll; overflow-y: hidden;}
-.stickerFrame{min-width: 100%;  width: var(--stickerDivWidth); height: 40px;}
-.stickerDiv p {line-height: 20px;}
 .popHeight{
   margin-top: 150px;
   height: calc(100% - 150px);

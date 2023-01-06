@@ -224,9 +224,6 @@ export default {
 
 .pushListCover{min-height: 3.6rem; margin-bottom: 1rem}
 
-/* .stickerWrap{width: 100%; overflow-x: scroll; overflow-y: hidden;} */
-.stickerFrame{min-width: 100%;  width: var(--stickerDivWidth); height: 40px;}
-.stickerDiv p {line-height: 20px;}
 
 .popHeight{
   padding-right: 0; padding-left: 0;

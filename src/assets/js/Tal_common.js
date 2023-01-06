@@ -803,14 +803,17 @@ export const commonMethods = {
     aTag = document.getElementById('updateAppPage')
     if (aTag == null) {
       aTag = document.createElement('a')
-      aTag.id = 'hiddenDownloaderForAndroid'
+      aTag.id = 'hiddenDownrloaderForAndroid'
       aTag.style.display = 'none'
       document.body.appendChild(aTag)
     }
     aTag.href = api + '/tp.downloadFile?fileKey=' + fileKey
-    aTag.click()
+    var varUA = localStorage.getItem('systemName')
+    if (varUA === 'android' || varUA === 'Android') {
+      aTag.target = '_blank'
+    }
     document.body.removeChild(aTag)
-    // aTag.target = '_blank'
+    aTag.click()
 
     /* aTag.click()
     document.body.removeChild(aTag)

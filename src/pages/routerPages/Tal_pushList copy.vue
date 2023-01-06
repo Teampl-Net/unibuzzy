@@ -2042,9 +2042,6 @@ export default {
 }
 </script>
 <style scoped>
-.stickerWrap{width: 100%; box-sizing: border-box; height: 40px; overflow-x: scroll; overflow-y: hidden;}
-.stickerFrame{min-width: 100%;  width: var(--stickerDivWidth); height: 40px;}
-.stickerDiv p {line-height: 20px;}
 .popHeight{
   margin-top: 150px;
   height: calc(100% - 150px);

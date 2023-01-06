@@ -157,10 +157,6 @@ export default {
 .alimCheckContents{width: 100%;float: right; height: 30px;}
 .alimCheckContents > img {margin-top: 3px;}
 
-.pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
-.pushDetailStickerWrap{max-width: calc(100% - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
-.stickerDiv img{width: 20px; margin-right: 5px; float: left;}
-
 .pushBackground{width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:99999999999999999;}
 
 .pushDetailPopChanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}

@@ -1351,10 +1351,6 @@ export default {
 #alimCheckArea{min-height: 35px;}
 .alimCheckContents{width: 100%;float: right; min-height: 30px;}
 
-.pushDetailStickerWrap .stickerDiv{margin-bottom: 5px; width: 30px; height: 30px; margin-right: 5px; border-radius: 15px; float: left; padding: 5px 5px;}
-.pushDetailStickerWrap{max-width: calc(100% - 145px);  margin-left: 0.5rem; min-height: 50px; float: left;}
-.stickerDiv img{width: 20px; margin-right: 5px; float: left;}
-
 .pushMbox{margin-bottom: 20px;}
 
 .pushMbox{margin-bottom: 20px;}
