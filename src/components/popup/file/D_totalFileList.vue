@@ -65,7 +65,7 @@ export default {
   methods: {
     async getAllFileList () {
       const paramMap = new Map()
-      paramMap.set('creUserKey', this.GE_USER.userKey)
+      paramMap.set('ownUserKey', this.GE_USER.userKey)
       paramMap.set('pageSize', 30)
       paramMap.set('offsetInt', 0)
       var result = await this.$commonAxiosFunction({

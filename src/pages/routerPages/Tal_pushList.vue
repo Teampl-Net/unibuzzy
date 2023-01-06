@@ -538,7 +538,7 @@ export default {
   methods: {
     async getFileList (pageSize, offsetInput) {
       const paramMap = new Map()
-      paramMap.set('creUserKey', this.GE_USER.ownUserKey)
+      paramMap.set('ownUserKey', this.GE_USER.userKey)
       paramMap.set('creTeamKey', this.GE_CHANNEL_DETAIL.teamKey)
       if (pageSize && offsetInput) {
         paramMap.set('pageSize', pageSize)
