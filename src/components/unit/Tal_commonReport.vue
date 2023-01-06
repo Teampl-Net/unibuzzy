@@ -5,7 +5,7 @@
     <div v-show="reportPopStep === 0" class="reportCompoArea" style="margin: 1rem 0rem;">
       <div class="fl " style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
       <!--  <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('sendPush')" v-if="contentOwner && contentType !== 'ALIM'" >알림으로 공유</p> -->
-        <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('move')" v-if="contentOwner && contentType === 'BOAR'" >{{contentText}} 이동</p>
+        <p class="fl font16 w-100P commonColor rowText" style="min-height:50px; line-height:50px; " @click="emit('move')" v-if="contentOwner && contentType === 'BOAR'" >{{contentText}} 이동</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('copy')" v-if="contentOwner && contentType === 'BOAR' " >{{contentText}} 복사</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType === 'BOAR'">{{contentText}} 수정</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('writeBoard')" v-if="contentOwner && contentType === 'ALIM' " :style="contentType === 'ALIM' ? 'border-top:none;' : '' " >{{contentText}}을 게시글로 작성</p>

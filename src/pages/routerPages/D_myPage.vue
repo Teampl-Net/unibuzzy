@@ -14,13 +14,13 @@
       <div class="h-100P fl font20 grayBlack" style="width: 20px; line-height: 50px;">></div>
     </div>
 
-    <div @click="goTotalFileList" class="w-100P fl" style=" padding: 10px; background-color: #fff; border-radius: 0.6rem; margin-top: 10px; height: 50px; display: flex; align-items: center; cursor: pointer;">
+    <!-- <div @click="goTotalFileList" class="w-100P fl" style=" padding: 10px; background-color: #fff; border-radius: 0.6rem; margin-top: 10px; height: 50px; display: flex; align-items: center; cursor: pointer;">
       <div style="display: flex; align-items: center; width: calc(100% - 30px);">
         <img class="mright-03" src="../../assets/images/common/icon_fileBox.svg" style="width: 19.2px; height: auto;" alt="">
         <p class="commonColor fontBold font18" style="margin-top: 2px;">파일함</p>
       </div>
       <div class="h-100P font20 grayBlack" style="width: 20px;">></div>
-    </div>
+    </div> -->
     <top5Alim class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPop" ref="topAlim" />
     <top5Channel class="mainContentsBoxArea" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" style="margin-bottom: 1rem;" />
 

@@ -25,7 +25,7 @@
           <!-- <div style="padding: 0 10px; background: #ccc; position: absolute; bottom: -20px; border-radius: 5px; margin-bottom: 5px;">{{followTypeText}}</div> -->
         </div>
         <div v-if="followYn === true && this.followTypeText !== '소유자'" class="mtop-05">
-          <gBtnSmall @click="saveMember" class="fl" :btnTitle="this.showProfileYn === 1 || this.showProfileYn? '멤버취소': '멤버신청'"/>
+          <!-- <gBtnSmall @click="saveMember" class="fl" :btnTitle="this.showProfileYn === 1 || this.showProfileYn? '멤버취소': '멤버신청'"/> -->
           <gBtnSmall @click="changeRecvAlimYn" class="fl mright-03" :btnTitle="recvAlimYn === true? '알림취소': '알림받기'" />
           <gBtnSmall v-if="chanDetail.teamKey !== this.$DALIM_TEAM_KEY" @click="changeFollowYn" class="fl mright-03" btnTitle="구독취소" />
         </div>
@@ -155,44 +155,6 @@ export default {
     this.$emit('closeLoading')
   },
   methods: {
-    async saveMember () {
-      this.smallPopYn = true
-      if (this.showProfileYn || this.showProfileYn === 1) {
-        this.confirmMsg = '멤버 취소가 완료되었습니다.'
-        this.addSmallMsg = '(언제든 다시 ' + this.$changeText(this.chanDetail.nameMtext) + '의 멤버가 될 수 있습니다.)'
-      } else {
-        this.confirmMsg = '멤버 신청이 완료되었습니다.'
-        this.addSmallMsg = '(관리자는 멤버의 프로필 정보를 조회할 수 있습니다.)'
-      }
-      var params = null
-      var param = {}
-      param.followerKey = this.chanDetail.userTeamInfo.followerKey
-      param.teamKey = this.chanDetail.teamKey
-      param.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext) || this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userNameMtext)
-      param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-      param.showProfileYn = true
-      param.teamName = this.$changeText(this.chanDetail.nameMtext)
-      if (this.showProfileYn || this.showProfileYn === 1) {
-        param.showProfileYn = false
-        params = { follower: param }
-      } else {
-        params = { follower: param, doType: 'ME' }
-      }
-      // // console.log(param)
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveFollower',
-        param: params
-      })
-      if (result.data.result === true) {
-        if (this.showProfileYn || this.showProfileYn === 1) {
-          this.showProfileYn = false
-        } else {
-          this.showProfileYn = true
-        }
-        // param = {}
-        this.$emit('changeshowProfileYn', this.showProfileYn)
-      }
-    },
     editChan () {
       // eslint-disable-next-line no-new-object
       var param = new Object()

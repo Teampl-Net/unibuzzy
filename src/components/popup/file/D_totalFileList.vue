@@ -1,5 +1,5 @@
 <template>
-  <div @click="click" id="fileBoxWrap" style="width: 100%; height: 100%; padding: 10px; background-color: #dcddeb;">
+  <div @click="click" id="fileBoxWrap"  style="width: 100%; height: 100%; padding: 10px; background-color: #dcddeb;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px;'">
     <div style="width: 100%; background-color: #FFF; height: 140px; padding: 10px 0 10px 10px; border-radius: 0.8rem; display: flex; flex-direction: column; justify-content: space-between;">
       <div v-if="this.mMainChanList" style="width: 100%; height: 30px; float: left;">
         <img src="../../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
@@ -7,6 +7,9 @@
       </div>
       <div v-if="this.mMainChanList" style="width: 100%; height: 85px; float: left; overflow: scroll hidden;">
         <div style="height: 100%; min-width: 100%; display:flex;">
+          <div style="border: 0.5px solid rgba(0, 0, 0, 0.1); width: 65px; height: 65px; border-radius: 100%; float: left;">
+
+          </div>
           <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index"/>
           <template v-if="this.mMainChanList.length === 0">
               <circleSkeleton v-for="(value) in 10" :key="value"/>
@@ -17,7 +20,7 @@
 
     <div style="width: 100%; height: calc(100% - 150px); overflow: auto; margin-top: 10px;" v-if="fileList.length > 0">
       <template v-for="(date, index) in dateList" :key="index">
-        <div class="textLeft fontBold font16" style="width: fit-content; padding: 3px 8px; border-radius: 8px; margin-top: 20px; background-color: #6768A8; color: #fff;">{{ date }}</div>
+        <div class="textLeft fontBold font14 attachFileBg" style="width: fit-content; padding: 0px 8px; border-radius: 5px; margin-top: 20px; color: #fff;">{{ date }}</div>
         <div style="width: 98%; margin-left: 2%; margin-top: 8px;">
           <template v-for="(cont, index) in fileList" :key="index">
             <gFileBox listType="T" :contentsEle="cont" :key="index" v-if="$changeDateFormat(cont.contents.creDate) === date"/>

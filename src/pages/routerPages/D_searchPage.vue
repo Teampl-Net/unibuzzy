@@ -126,9 +126,9 @@ export default {
       mBusinessItemList: [],
       mInputText: '',
       mFindText: '',
-      // mActiveTabRecommendList: [{ display: '인기', name: 'POPU' }, { display: '맞춤', name: 'CUST' }],
-      mActiveTabRecommendList: [{ display: '최신', name: 'POPU' }],
-      mActiveRecommend: 'POPU',
+      // mActiveTabRecommendList: [{ display: '인기', name: 'P' }, { display: '맞춤', name: 'CUST' }],
+      mActiveTabRecommendList: [{ display: '인기', name: 'P' }, { display: '최신', name: 'N' }],
+      mActiveRecommend: 'P',
       mCateItem: '',
       mTempCateItem: '',
 
@@ -583,7 +583,11 @@ export default {
       if (this.mAxiosQueue.findIndex((item) => item === 'getChannelList') !== -1) return
       this.mAxiosQueue.push('getChannelList')
       var paramMap = new Map()
+      if (this.mActiveRecommend === 'P') {
+        paramMap.set('orderbyStr', 'followerCount DESC')
+      } else if (this.mActiveRecommend === 'N') {
 
+      }
       paramMap.set('fUserKey', this.GE_USER.userKey)
       paramMap.set('offsetInt', this.mOffsetInt)
       paramMap.set('pageSize', 10)

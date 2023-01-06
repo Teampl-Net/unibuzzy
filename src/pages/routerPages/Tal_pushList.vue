@@ -9,13 +9,13 @@
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <div :style="!popYn ? ' padding-top: 20px;' : ''" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; "> -->
-        <div style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ;">
+        <div style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ; padding-right: 50px; overflow: auto hidden;">
             <div @click="changeMainTab('A')" :class="viewMainTab === 'A'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">전체</div>
             <div @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">알림</div>
             <div @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">게시글</div>
             <div @click="changeMainTab('F')" :class="viewMainTab === 'F'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">파일함</div>
         </div>
-        <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
+        <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " />
       </div>
       <transition name="showModal">
         <findContentsList :tpGroupCode="this.viewMainTab === 'B' ? 'C_STAT' : ''" :contentsListTargetType="this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop" :teamKey='this.pChannelDetail?.teamKey'/>
@@ -1403,6 +1403,11 @@ export default {
       this.justChangeTabPosition('N')
       // this.changeTab('N')
       this.$refs.activeBar.switchtab(0)
+      if (tab === 'F') {
+        this.activeTabList = [{ display: '최신', name: 'N' }]
+      } else {
+        this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 만든', name: 'M' }]
+      }
       // this.$refs.activeBar.switchtab(0)
       this.refreshList()
       this.canLoadYn = true

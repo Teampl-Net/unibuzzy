@@ -91,7 +91,7 @@ export default {
     async testClick1 () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      var result = await this.$axios.post('eduPl/edu.getCourseList', param)
+      var result = await this.$axios.post('apt123/a2.getHouseList', param)
       console.log(result)
       // eslint-disable-next-line no-debugger
       debugger

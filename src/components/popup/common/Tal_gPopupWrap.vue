@@ -714,6 +714,7 @@ export default {
       var notiUserDo = JSON.parse(notiDetail.userDo)
       // eslint-disable-next-line no-new-object
       var goDetailParam = new Object()
+      goDetailParam.notiYn = true
       goDetailParam.creTeamKey = Number(notiDetail.creTeamKey)
       if (notiUserDo.targetKind === 'C') {
         goDetailParam.contentsKey = notiUserDo.targetKey
@@ -726,28 +727,26 @@ export default {
           goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
           goDetailParam.cabinetKey = vuexResultData.cabinetKey
         }
-      } else if (notiUserDo.targetKind === 'B') {
-        goDetailParam.contentsKey = notiUserDo.ISub
+        this.goDetail(goDetailParam)
+      } if (notiUserDo.targetKind === 'R') {
+        goDetailParam.contentsKey = notiUserDo.targetKey
+        goDetailParam.targetKey = notiUserDo.targetKey
         goDetailParam.jobkindId = notiDetail.jobkindId
         if (goDetailParam.jobkindId === 'ALIM') {
+          goDetailParam.chanName = vuexResultData.nameMtext
           goDetailParam.nameMtext = vuexResultData.nameMtext
         } else if (goDetailParam.jobkindId === 'BOAR') {
           goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
           goDetailParam.cabinetKey = vuexResultData.cabinetKey
         }
-      } else if (notiUserDo.targetKind === 'T') {
+        this.goDetail(goDetailParam)
+      } else if (notiUserDo.targetKind === 'T' || notiUserDo.targetKind === 'M' || notiUserDo.targetKind === 'N') {
         // this.$router.replace({ path: '/' })
         goDetailParam.chanYn = true
         goDetailParam.targetKey = notiUserDo.targetKey
+        this.goChanDetail(goDetailParam)
         // goDetailParam.chanName = vuexResultData.nameMtext
         // goDetailParam.nameMtext = vuexResultData.nameMtext
-      }
-      goDetailParam.notiYn = true
-      // goDetailParam.value = vuexResultData
-      if (notiUserDo.targetKind === 'T') {
-        this.goChanDetail(goDetailParam)
-      } else if (notiUserDo.targetKind === 'C' || notiUserDo.targetKind === 'B') {
-        this.goDetail(goDetailParam)
       }
     },
     async recvNoti (e) {

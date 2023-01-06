@@ -161,7 +161,7 @@ export default {
 
         var param = {}
         param.targetType = target.targetKind
-        param.creTeamKey = Number(target.targetKey)
+        param.targetKey = Number(target.targetKey)
         if (target.targetKind === 'chanDetail') {
           this.goChanDetail(param)
         } else {
@@ -357,40 +357,38 @@ export default {
         detailParam.targetType = 'contentsDetail'
         detailParam.targetKey = detailValue.targetKey
         if (!detailParam.targetKey) detailParam.targetKey = detailValue.contentsKey
-
-        detailParam.jobkindId = detailValue.jobkindId
-        detailParam.teamKey = detailValue.teamKey
-        if (!detailParam.teamKey) detailParam.teamKey = detailValue.creTeamKey
-
-        detailParam.popHeaderText = detailValue.popHeaderText
         detailParam.memoScrollYn = detailValue.memoScrollYn
-        if (detailValue.jobkindId === 'BOAR') {
-          detailParam.cabinetKey = detailValue.cabinetKey
-          detailParam.cabinetNameMtext = this.$changeText(detailValue.cabinetNameMtext)
-          if (detailValue.cabinetNameMtext) detailParam.popHeaderText = detailValue.cabinetNameMtext
-        } else {
-          detailParam.nameMtext = this.$changeText(detailValue.nameMtext)
-          detailParam.teamName = this.$changeText(detailValue.nameMtext)
-          if (detailValue.nameMtext) detailParam.popHeaderText = detailValue.nameMtext
-        }
-        detailParam.popHeaderText = this.$changeText(detailParam.popHeaderText)
 
         var axiosParam = {}
         // axiosParam = detailParam
         axiosParam.targetKey = detailValue.targetKey
         axiosParam.contentsKey = detailValue.targetKey
         axiosParam.teamKey = detailValue.teamKey || detailValue.creTeamKey
-        axiosParam.userKey = this.GE_USER.userKey
-        axiosParam.ownUserKey = this.GE_USER.userKey
-
-        axiosParam.creTeamKey = detailParam.teamKey
-        axiosParam.cabinetKey = detailParam.cabinetKey
-
         axiosParam.jobkindId = detailParam.jobkindId
+        if (axiosParam.jobkindId) {
+          axiosParam.userKey = this.GE_USER.userKey
+          axiosParam.ownUserKey = this.GE_USER.userKey
+          axiosParam.creTeamKey = detailParam.teamKey
+          axiosParam.cabinetKey = detailParam.cabinetKey
+        }
 
         var result = await this.$getContentDetailData(axiosParam, false)
         console.log(result)
         if (!result) return
+        if (!detailParam.jobkindId) {
+          detailParam.jobkindId = result.content.jobkindId
+          detailParam.teamKey = result.content.creTeamKey
+          detailParam.popHeaderText = result.content.nameMtext
+          if (detailParam.jobkindId === 'BOAR') {
+            detailParam.cabinetKey = result.content.cabinetKey
+            detailParam.cabinetNameMtext = this.$changeText(result.content.cabinetNameMtext)
+            if (result.content.cabinetNameMtext) detailParam.popHeaderText = result.content.cabinetNameMtext
+          } else {
+            detailParam.nameMtext = this.$changeText(detailValue.nameMtext)
+            detailParam.teamName = this.$changeText(detailValue.nameMtext)
+            if (result.content.nameMtext) detailParam.popHeaderText = result.content.nameMtext
+          }
+        }
         detailParam.initData = result
         detailParam.notiYn = true
 
@@ -479,8 +477,25 @@ export default {
         if ((currentPage === 0 || currentPage === undefined)) {
           // eslint-disable-next-line no-new-object
           var goDetailParam = new Object()
+          goDetailParam.notiYn = true
           goDetailParam.creTeamKey = Number(notiDetail.creTeamKey)
           if (notiUserDo.targetKind === 'C') {
+            goDetailParam.contentsKey = notiUserDo.targetKey
+            goDetailParam.targetKey = notiUserDo.targetKey
+            goDetailParam.jobkindId = notiDetail.jobkindId
+            if (notiUserDo.iSub) {
+              goDetailParam.cabinetKey = notiUserDo.iSub
+            }
+
+            if (goDetailParam.jobkindId === 'ALIM') {
+              goDetailParam.chanName = vuexResultData.nameMtext
+              goDetailParam.nameMtext = vuexResultData.nameMtext
+            } else if (goDetailParam.jobkindId === 'BOAR') {
+              goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
+              goDetailParam.cabinetKey = vuexResultData.cabinetKey
+            }
+            this.goDetail(goDetailParam)
+          } if (notiUserDo.targetKind === 'R') {
             goDetailParam.contentsKey = notiUserDo.targetKey
             goDetailParam.targetKey = notiUserDo.targetKey
             goDetailParam.jobkindId = notiDetail.jobkindId
@@ -491,27 +506,14 @@ export default {
               goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
               goDetailParam.cabinetKey = vuexResultData.cabinetKey
             }
-          } else if (notiUserDo.targetKind === 'B') {
-            goDetailParam.contentsKey = notiUserDo.ISub
-            goDetailParam.jobkindId = notiDetail.jobkindId
-            if (goDetailParam.jobkindId === 'ALIM') {
-              goDetailParam.nameMtext = vuexResultData.nameMtext
-            } else if (goDetailParam.jobkindId === 'BOAR') {
-              goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
-              goDetailParam.cabinetKey = vuexResultData.cabinetKey
-            }
-          } else if (notiUserDo.targetKind === 'T') {
+            this.goDetail(goDetailParam)
+          } else if (notiUserDo.targetKind === 'T' || notiUserDo.targetKind === 'M' || notiUserDo.targetKind === 'N') {
             this.$router.replace({ path: '/' })
             goDetailParam.chanYn = true
             goDetailParam.targetKey = notiUserDo.targetKey
-          }
-          goDetailParam.notiYn = true
-          // goDetailParam.value = vuexResultData
-          if (notiUserDo.targetKind === 'T') {
             this.goChanDetail(goDetailParam)
-          } else if (notiUserDo.targetKind === 'C' || notiUserDo.targetKind === 'B') {
-            this.goDetail(goDetailParam)
           }
+          // goDetailParam.value = vuexResultData
         } else {
           this.$refs.mainGPopWrap.recvNotiFromMain(notiDetail, currentPage, vuexResultData)
         }

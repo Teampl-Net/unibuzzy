@@ -50,8 +50,8 @@ export default {
     }
   },
   created () {
-    if (this.propChanList) {
-      this.mSelectChanList = JSON.parse(JSON.stringify(this.propChanList))
+    if (this.propChanList && this.propChanList.length > 0) {
+      this.mSelectChanList = this.propChanList
       this.mSelectedChan = this.mSelectChanList[0].teamKey
     } else {
       if (!this.propTeamKey) {
@@ -94,8 +94,10 @@ export default {
       }
 
       var resultList = await this.$getTeamList(paramMap, nonLoading)
-      this.mSelectChanList = resultList.data.content
-      this.mSelectedChan = this.mSelectChanList[0].teamKey
+      if (resultList.data.content) {
+        this.mSelectChanList = resultList.data.content
+        this.mSelectedChan = this.mSelectChanList[0].teamKey
+      }
       console.log(resultList)
     },
     closePop () {

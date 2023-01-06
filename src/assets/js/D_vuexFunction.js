@@ -231,19 +231,16 @@ export const functions = {
       // alert(JSON.stringify(notiDetail))
       if (JSON.parse(notiDetail.userDo).targetKind === 'C') {
         if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {
-          var memo = await functions.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
-          memo.jobkindId = notiDetail.jobkindId
-          memo.creTeamKey = notiDetail.creTeamKey
-          await store.commit('D_CHANNEL/MU_ADD_MEMO', memo)
-          addVueResult = await functions.addContents(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
-          // alert('addVueResult: ' + addVueResult)
+          addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, 'BOAR')
         } else {
           addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
         }
-        // ('addVueResult: ' + addVueResult)
-        // alert(JSON.stringify(addVueResult))
-      } else if (JSON.parse(notiDetail.userDo).targetKind === 'B') {
-        addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
+      } else if (JSON.parse(notiDetail.userDo).targetKind === 'R') {
+        var memo = await functions.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
+        memo.jobkindId = notiDetail.jobkindId
+        memo.creTeamKey = notiDetail.creTeamKey
+        await store.commit('D_CHANNEL/MU_ADD_MEMO', memo)
+        addVueResult = await functions.addContents(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
       } else if (JSON.parse(notiDetail.userDo).targetKind === 'T') {
         // alert(true)
         addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
@@ -315,7 +312,7 @@ export const functions = {
     var user = result.data.content
     return user
   },
-  async settingChanNoti (message) {
+  /* async settingChanNoti (message) {
     if (notiDetail.actType === 'FM' || notiDetail.actType === 'FL' || this.notiDetail.actType === 'RQ' || this.notiDetail.actType === 'AP' || notiDetail.actType === 'RM' || notiDetail.actType === 'MA' || notiDetail.actType === 'CR') {
       await functions.addChanList(Number(JSON.parse(notiDetail.userDo)))
     }
@@ -351,7 +348,7 @@ export const functions = {
         // this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
       }
     }
-  },
+  }, */
   async settingMemoNoti (message) {
     var memo_ = await functions.getContentsMemoList(null, Number(JSON.parse(notiDetail.userDo).ISub), Number(JSON.parse(notiDetail.userDo).targetKey))
     memo_.jobkindId = notiDetail.jobkindId

@@ -74,17 +74,24 @@ self.addEventListener('push', event => {
   console.log(userDo)
   if (userDo.targetKind === 'C') {
     targetKey = userDo.targetKey
+    if (userDo.iSub) {
+      targetKey = userDo.iSub
+    }
+
     push_url = 'https://mo.d-alim.com?targetType=contentsDetail&targetKey=' + targetKey + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
-  } else if (userDo.targetKind === 'B') {
+  } else if (userDo.targetKind === 'R') {
+    targetKey = userDo.targetKey
+    push_url = 'https://mo.d-alim.com?targetType=contentsDetail&targetKey=' + targetKey + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
+  } /* else if (userDo.targetKind === 'B') {
     targetKey = userDo.targetKey
     push_url = 'https://mo.d-alim.com?targetType=contentsDetail&targetKey=' + userDo.ISub + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
-  }
+  } */
   if (push_data.data.largeIcon) {
     icon = push_data.data.largeIcon
   }
   const title = push_data.data.title
   var options = null
-  if (userDo.targetKind === 'C' || userDo.targetKind === 'B') {
+  if (userDo.targetKind === 'C') {
     options = {
       body: push_data.data.body,
       icon: icon,

@@ -157,9 +157,16 @@ export default {
   },
   created () {
     var urlString = location.search
-    var test = this.getParamMap(urlString)
-    if (test.targetType) {
-      this.goPage(test)
+    var param = this.getParamMap(urlString)
+    if (param.targetType) {
+      this.goPage(param)
+    }
+    if (param.contentsDetail || param.chanDetail) {
+      if (param.contentsDetail) {
+        this.openPagePop('contentsDetail', param.contentsDetail)
+      } else if (param.chanDetail) {
+        this.openPagePop('chanDetail', param.chanDetail)
+      }
     }
     // alert(urlString)
     if (!this.GE_USER) {
@@ -272,8 +279,23 @@ export default {
       console.log(this.mMainChanList)
       console.log(this.mMainMChanList)
     },
+    async openPagePop (targetKind, targetKey) {
+      var param = {}
+      param.targetType = targetKind
+      param.targetKey = Number(targetKey)
+      console.log(param)
+      this.openPop(param)
+    },
     async goPage (test) {
       console.log(test)
+      /* if (test && test.targetType === 'chanDetail') {
+        detailParam.targetKey =
+      } */
+      /* if (test.targetType === 'chanDetail') {
+        detailParam.cabinetKey = detailValue.cabinetKey
+        detailParam.cabinetNameMtext = detailValue.cabinetNameMtext
+        detailParam.popHeaderText = detailValue.cabinetNameMtext
+      } */
       if (test && test.targetType && test.targetKey && test.creTeamKey) {
         var detailValue = await this.$addContents(Number(test.targetKey), test.jobkindId)
         if (detailValue !== false) {
@@ -298,8 +320,12 @@ export default {
       }
     },
     getParamMap (urlString) {
+      console.log(urlString)
+      // eslint-disable-next-line no-debugger
+      debugger
       const splited = urlString.replace('?', '').split(/[=?&]/)
       const param = {}
+      console.log(splited)
       for (let i = 0; i < splited.length; i++) {
         param[splited[i]] = splited[++i]
       }

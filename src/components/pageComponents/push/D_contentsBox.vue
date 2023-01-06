@@ -1,7 +1,7 @@
 <template>
     <div v-if="mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
-    <div v-if="this.CONT_DETAIL" :style="'padding-bottom:' + (this.$STATUS_HEIGHT)+ 'px'" style="width: 100%; background: #FFF; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative;     border-radius: 8px;">
-        <div class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 16px 20px;">
+    <div v-if="this.CONT_DETAIL" :style="'padding-bottom:' + (this.$STATUS_HEIGHT)+ 'px;'" style="width: 100%; background: #FFF; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative;     border-radius: 8px;">
+        <div :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 16px 20px;">
             <div @click="goChannelMain()" :style="this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
                 <div :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext : CONT_DETAIL.logoPathMtext) + ');'" style="width: calc(100% - 2px); height:  calc(100% - 2px); border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;">
 
@@ -15,7 +15,7 @@
                         </p>
                     </template>
                     <template v-else>
-                        <p @click="goContentsDetail()" class=" textLeft textOverdot commonBlack fontBold font16" style="width: calc(100% - 35px);">
+                        <p @click="goContentsDetail()" class=" textLeft textOverdot commonBlack fontBold font16" :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''"  style="width: calc(100% - 35px);">
                             <img v-if="CONT_DETAIL.jobkindId === 'ALIM'" src="../../../assets/images/push/contTitle_alim.svg" style="width: 20px; margin-top: 2px; float: left; margin-right: 5px;" alt="">
                             <img v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" src="../../../assets/images/push/contTitle_board.svg" style="width: 20px; margin-top: 2px;  float: left; margin-right: 5px;" alt="">
                             {{CONT_DETAIL.title}}
@@ -59,7 +59,7 @@
                 </div>
             </div>
         </div>
-        <div @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px;">
+        <div :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px;">
             <div v-if="(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
             <div v-else-if="(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
             <div v-else class="h-400max overHidden fl w-100P" ref="contentsBoxRef"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
@@ -67,7 +67,7 @@
             </div>
             <p :id="'bodyMore'+CONT_DETAIL.contentsKey" class="fr font14 commonColor fontBold mtop-05  mright-1" style="display:none">더보기 > </p>
         </div>
-        <template v-if="((CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)">
+        <template :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  v-if="((CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)">
             <div class="contentsCardUserDoArea" style="width: 100%; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 15px; padding: 0 20px;">
                 <div style="float: left; width: calc(100% - 70px); height: 100%;" v-if="this.CONT_DETAIL.D_CONT_USER_DO">
                     <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
@@ -156,6 +156,10 @@ export default {
     statCodePop,
     imgPreviewPop,
     recvListPop
+  },
+  created () {
+    console.log('this.contentsEle!!!!!!!!!!!!!!!!!!!!!!')
+    console.log(this.contentsEle)
   },
   props: {
     contentsEle: {},

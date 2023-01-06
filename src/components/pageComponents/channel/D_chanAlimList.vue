@@ -372,7 +372,7 @@ export default {
     async okMember () {
       var result = null
       this.$emit('openLoading')
-      result = await this.$changeFollower({ follower: this.mSaveFollowerParam, doType: 'FL' }, 'save')
+      result = await this.$changeFollower({ follower: this.mSaveFollowerParam, doType: 'CR' }, 'save')
       if (result.result || result) {
         if (result.message === 'OK') {
           this.mOpenWelcomePopShowYn = false
@@ -418,7 +418,7 @@ export default {
             // console.log(this.mSaveFollowerParam)
             if (this.axiosQueue.findIndex((item) => item === 'changeFollower') !== -1) return
             this.axiosQueue.push('changeFollower')
-            result = await this.$changeFollower({ follower: this.mSaveFollowerParam, doType: 'FL' }, 'del')
+            result = await this.$changeFollower({ follower: this.mSaveFollowerParam, doType: 'CR' }, 'del')
             var queueIndex = this.axiosQueue.findIndex((item) => item === 'changeFollower')
             // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
             this.axiosQueue.splice(queueIndex, 1)

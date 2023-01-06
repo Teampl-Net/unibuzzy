@@ -870,6 +870,9 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   from {opacity:1;} to {opacity: 0;}
 }
 
+.opacity05 {
+    opacity: 0.5;
+}
 
 .zoomInOutPop {
   transform: scaleY(0.01) scaleX(0);

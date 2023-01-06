@@ -1,6 +1,6 @@
 <template>
     <div ref="contScrollWrap" id="contsScrollWrap" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
-        <gContentsBox @openImgPop="openImgPop" @scrollToMemoTop="scrollToMemoTop" @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.CONT_DETAIL" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
+        <gContentsBox @openImgPop="openImgPop" @scrollToMemoTop="scrollToMemoTop" @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.cDetail" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
 
         <!-- <attachFileListPop :propFileData="this.CONT_DETAIL" v-if="filePopShowYn === true" @closePop="filePopShowYn = false"/> -->
 
@@ -150,7 +150,7 @@ export default {
       }
     },
     CAB_DETAIL () {
-      if (this.propParams.jobkindId === 'BOAR') {
+      if (this.propParams.jobkindId === 'BOAR' || this.CONT_DETAIL.jobkindId === 'BOAR') {
         if (!this.cabinetDetail) return null
         if (!this.cabinetDetail.mCabinet) return this.cabinetDetail
 
@@ -362,6 +362,7 @@ export default {
     },
     async readyFunction () {
       try {
+        console.log(this.propParams)
         this.loadingYn = true
         if (!this.propParams.initData) {
           if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
@@ -378,13 +379,13 @@ export default {
           this.cDetail = pInitData.content
           this.cabinetDetail = pInitData.contentCabinet
           console.log('!!!!!!!!!!!!!!!!!!!!!!!!')
-          console.log(pInitData)
+          console.log(this.cDetail)
         }
         /* if (!this.CONT_DETAIL.D_MEMO_LIST) {
           this.CONT_DETAIL.D_MEMO_LIST = []
           await this.getMemoList()
         } */
-        if (this.CONT_DETAIL.attachMfilekey && (!this.CONT_DETAIL.D_ATTATCH_FILE_LIST || this.CONT_DETAIL.D_ATTATCH_FILE_LIST.length === 0)) {
+        if (this.CONT_DETAIL && this.CONT_DETAIL.attachMfilekey && (!this.CONT_DETAIL.D_ATTATCH_FILE_LIST || this.CONT_DETAIL.D_ATTATCH_FILE_LIST.length === 0)) {
           this.settingFileList()
         }
       } catch (e) {
