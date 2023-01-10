@@ -1,20 +1,23 @@
 <template>
-  <div v-if="GE_FILE_LIST" style="margin-bottom: 10px; width: 100%; height: 150px; background-color: #fff; box-shadow: rgb(103 104 167 / 40%) 0px 1px 3px; border-radius: 8px; padding: 12px 20px; display: flex; flex-direction: column; justify-content: space-between;">
+  <div v-if="GE_FILE_LIST" style="margin-bottom: 10px; width: 100%; background-color: #fff; box-shadow: rgb(103 104 167 / 40%) 0px 1px 3px; border-radius: 8px; padding: 12px 20px; display: flex; flex-direction: column; justify-content: space-between;">
       <div class="attachedFileTitle" style="width: 100%; height: 50px;">
-        <p @click="download" class="fl cursorP textLeft textOverdot commonBlack fontBold font16" style="max-width: calc(100% - 110px);" >
-          <img :src="$settingFileIcon(contentsEle.fileName)" style="float: left; margin-right: 5px; margin-top: 4px;" alt="">
-          {{getFileName(contentsEle.fileName)}}
+        <p @click="download" class="fl cursorP textLeft textOverdot commonBlack fontBold font16" style="max-width: calc(100% - 110px); line-height: 24px;" >
+          <img :src="this.$settingFileIcon(contentsEle.fileName)" style="width: 16px; float: left; margin-right: 5px;" alt="">
+          {{ getFileName(contentsEle.fileName) }}
         </p>
         <p class="fl textLeft commonBlack fontBold font16" style="width: 30px;">.{{ getFileExt(contentsEle.fileName) }}</p>
-        <p class="fr textLeft commonBlack font12 font Bold mtop-03">({{ $byteConvert(contentsEle.fileSizeKb) }})</p>
+        <p class="fr textLeft commonBlack font12 font Bold mtop-03">{{ this.$byteConvert(contentsEle.fileSizeKb) }}</p>
         <div style="clear: both; font-weight: normal; display: flex; align-items: center; justify-content: space-between;" class="font14 textLeft">
           <div class="textOverdot" style="width: 100%;">
             <img src="../../assets/images/footer/icon_people.svg" class="img-w12" alt="">
-            &nbsp;{{ changeUserName(contentsEle.accessCreUserName) }}
+            &nbsp;{{ this.$changeText(contentsEle.accessCreUserName) }}
             <p class="font12 fr mleft-1 mtop-01" style="max-width: 70px;">{{ this.$changeDateFormat(contentsEle.creDate) }}</p>
           </div>
         </div>
+        <!-- <img @click="selectAttachedFile" style="cursor: pointer; width: 20px; height: 19px; margin-left: 5px;" :src="this.myFilekey !== null? require('../../assets/images/common/colorStarIcon.svg'):require('../../assets/images/common/starIcon.svg')" alt=""> -->
       </div>
+      <img v-if="contentsEle.fileType === 'I'" @click="openImgPop" style="width: 100%; height: auto; margin-top: 20px; margin-bottom: 20px;" :src="this.contentsEle.domainPath ? this.contentsEle.domainPath + this.contentsEle.pathMtext : this.contentsEle.pathMtext" alt="">
+      <div class="textLeft font12 fontBold ml-04">관련 컨텐츠</div>
       <smallContentsBox @click="goDetail" class="cursorP" :contentsEle="GE_FILE_LIST"></smallContentsBox>
       <!-- <p class="font14 textRight" style="width: 100%;">다운 {{ contentsEle.dnCount }}</p> -->
     </div>
@@ -30,6 +33,14 @@ export default {
   props: {
     contentsEle: {}
   },
+  created () {
+    this.myFilekey = this.contentsEle.myFilekey
+  },
+  data () {
+    return {
+      myFilekey: null
+    }
+  },
   computed: {
     GE_FILE_LIST () {
       var newArr = []
@@ -41,10 +52,46 @@ export default {
     }
   },
   methods: {
-    changeUserName (userName) {
-      var idx = userName.lastIndexOf('$')
-      var result = userName.substring(idx + 1)
-      return result
+    async selectAttachedFile () {
+      // eslint-disable-next-line no-new-object
+      var file = new Object()
+      if (this.myFilekey === null) {
+        file.fileKey = this.contentsEle.fileKey
+        file.accessKind = this.contentsEle.accessKind
+        file.accessKey = this.contentsEle.accessKey
+        file.accessCreUserKey = this.contentsEle.accessCreUserKey
+        file.ownUserKey = this.GE_USER.userKey
+        file.addYn = true
+        alert('추가')
+      } else {
+        file.myFilekey = this.myFilekey
+        file.addYn = false
+        alert('삭제')
+      }
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.saveMyFile',
+        param: { file: file }
+      })
+      this.myFilekey = result.data.myFileKey
+    },
+    openImgPop () {
+      var returnImgList = []
+      var imgObject = {}
+      var img = new Image()
+      // img.src = this.propImgList[i].domainPath + this.propImgList[i].pathMtext
+      img.src = this.contentsEle.domainPath + this.contentsEle.pathMtext
+      imgObject.src = img.src
+      imgObject.fileKey = Number(this.contentsEle.fileKey)
+      imgObject.width = img.width
+      imgObject.height = img.height
+      returnImgList.push(imgObject)
+      this.$emit('openImgPop', [returnImgList, 0])
+    },
+    getFileName (fileFullName) {
+      var fileName = fileFullName.substring(
+        0, fileFullName.lastIndexOf('.')
+      )
+      return fileName
     },
     getFileExt (fileName) {
       var fileExt = fileName.substring(
@@ -69,11 +116,6 @@ export default {
         if (this.GE_FILE_LIST.nameMtext) param.popHeaderText = this.GE_FILE_LIST.nameMtext
       }
       this.$emit('openPop', param)
-    },
-    getFileName (fileFullName) {
-      var idx = fileFullName.lastIndexOf('.') + 1
-      var fileName = fileFullName.substring(0, idx - 1)
-      return fileName
     },
     async download () {
       try {

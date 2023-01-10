@@ -327,6 +327,7 @@ export default {
       var memo = {}
       memo.targetKind = 'C'
       memo.targetKey = key
+      memo.ownUserKey = this.GE_USER.userKey
       // eslint-disable-next-line no-unused-vars
       var idx, cont
 

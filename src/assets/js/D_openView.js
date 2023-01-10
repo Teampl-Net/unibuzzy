@@ -49,7 +49,6 @@ export const openView = {
       paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
     }
     var contentDetail = await commonAxiosFunction({ url: 'service/tp.getMyContentsList', param: paramSet }, nonLoadingYn)
-    console.log(contentDetail)
     if (!contentDetail || !contentDetail.data) {
       commonMethods.showToastPop('해당 컨텐츠의 정보를 찾을 수 없습니다!')
       return

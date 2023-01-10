@@ -1,5 +1,5 @@
 <template>
-    <div style="float: left; width: 100%; height: 100%;  position: relative; overflow: hidden; padding-bottom: 80px;" :style="'margin-top:' + (this.$STATUS_HEIGHT + 50)+ 'px'">
+    <div style="float: left; width: 100%; height: 100%;  position: relative; overflow: hidden;" :style="this.$route.path === '/chanList'? 'margin-top:' + (this.$STATUS_HEIGHT + 50)+ 'px; padding-bottom: 80px;':''">
         <div style="width: 100%; height: 100%;  float: left; background: #fff;">
             <!-- <loadingCompo v-if="mLoadingYn === true"/> -->
             <!-- <div class="chanListHeaderBase " > -->

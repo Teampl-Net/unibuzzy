@@ -6,22 +6,24 @@
       <img @click="closePop()" src="../../../../assets/images/common/grayXIcon.svg" class="cursorP" style="position: absolute; right: 5px; top: 0px;" alt="">
 
       <div class="fl w-100P thinScrollBar" style="padding-left:0.5rem; min-height: 150px; max-height: 250px; height: 35%; overflow: hidden auto;">
-        <p class="fl font14 fontBold w-100P textLeft mbottom-05" v-if="mAttatchFileList.D_ATTATCH_FILE_LIST && mAttatchFileList.D_ATTATCH_FILE_LIST.length > 0">첨부파일</p>
+        <p class="fl font14 fontBold w-100P textLeft" v-if="mAttatchFileList.D_ATTATCH_FILE_LIST && mAttatchFileList.D_ATTATCH_FILE_LIST.length > 0">첨부파일</p>
         <templete v-for="(value, index) in mAttatchFileList.D_ATTATCH_FILE_LIST" :key="index">
-          <div style="width: 100%; word-break: break-all;min-height: 30px; float: left; padding-left:0.3rem" >
+          <div style="display: flex; align-items: center; width: 100%; word-break: break-all; min-height: 30px; padding-left:0.3rem" >
             <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
-            <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot cursorP"  >
+            <a style="width: calc(100% - 45px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot cursorP"  >
             {{value.fileName}}
             </a>
+            <img @click="selectAttachedFile(value.myFilekey, value, index, 'F')" style="cursor: pointer; width: 20px; height: 19px; margin-left: 5px;" :src="value.myFilekey? require('../../../../assets/images/common/colorStarIcon.svg'):require('../../../../assets/images/common/starIcon.svg')" alt="">
           </div>
         </templete>
-        <p class="fl font14 fontBold w-100P textLeft mbottom-05" v-if="mAttatchFileList.D_BODY_IMG_FILE_LIST && mAttatchFileList.D_BODY_IMG_FILE_LIST.length > 0">본문 이미지</p>
+        <p class="fl font14 fontBold w-100P textLeft mtop-05" v-if="mAttatchFileList.D_BODY_IMG_FILE_LIST && mAttatchFileList.D_BODY_IMG_FILE_LIST.length > 0">본문 이미지</p>
         <templete v-for="(value, index) in mAttatchFileList.D_BODY_IMG_FILE_LIST" :key="index">
-          <div style="width: 100%; word-break: break-all;min-height: 30px; float: left; padding-left:0.3rem" >
+          <div style="display: flex; align-items: center; width: 100%; word-break: break-all;min-height: 30px; padding-left:0.3rem" >
             <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
-            <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray cursorP textOverdot"  >
+            <a style="width: calc(100% - 45px); text-align: left;" :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray cursorP textOverdot"  >
             {{value.fileName}}
             </a>
+            <img @click="selectAttachedFile(value.myFilekey, value, index, 'I')" style="width: 20px; margin-left: 5px;" :src="value.myFilekey? require('../../../../assets/images/common/colorStarIcon.svg'):require('../../../../assets/images/common/starIcon.svg')" alt="">
           </div>
         </templete>
       </div>
@@ -37,11 +39,11 @@ export default {
     }
   },
   props: {
-    propFileData: {}
+    propFileData: {},
+    propTargetType: {}
   },
   created () {
     if (this.propFileData) this.mAttatchFileList = JSON.parse(JSON.stringify(this.propFileData))
-    console.log(this.mAttatchFileList)
     this.$addHistoryStack('gAttatchFileList')
   },
   beforeUnmount () {
@@ -50,6 +52,31 @@ export default {
   methods: {
     closePop () {
       this.$emit('closePop')
+    },
+    async selectAttachedFile (myFilekey, value, index, fileType) {
+      // eslint-disable-next-line no-new-object
+      var file = new Object()
+      if (myFilekey === null) {
+        file.fileKey = value.fileKey
+        file.accessKind = this.propTargetType
+        file.accessKey = this.mAttatchFileList.contentsKey
+        file.accessCreUserKey = this.mAttatchFileList.creUserKey
+        file.ownUserKey = this.GE_USER.userKey
+        file.addYn = true
+      } else {
+        file.myFilekey = myFilekey
+        file.addYn = false
+      }
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.saveMyFile',
+        param: { file: file }
+      })
+      if (fileType === 'F') {
+        this.mAttatchFileList.D_ATTATCH_FILE_LIST[index].myFilekey = result.data.myFileKey
+      } else if (fileType === 'I') {
+        this.mAttatchFileList.D_BODY_IMG_FILE_LIST[index].myFilekey = result.data.myFileKey
+      }
+      this.$emit('updateMemo', this.mAttatchFileList.D_ATTATCH_FILE_LIST)
     }
   },
   watch: {
@@ -65,6 +92,9 @@ export default {
     },
     history () {
       return this.$store.getters['D_HISTORY/hStack']
+    },
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
     }
   }
 }

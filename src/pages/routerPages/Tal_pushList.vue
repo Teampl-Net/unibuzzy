@@ -18,7 +18,7 @@
         <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " />
       </div>
       <transition name="showModal">
-        <findContentsList :tpGroupCode="this.viewMainTab === 'B' ? 'C_STAT' : ''" :contentsListTargetType="this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop" :teamKey='this.pChannelDetail?.teamKey'/>
+        <findContentsList :tpGroupCode="this.viewMainTab === 'B' ? 'C_STAT' : ''" :contentsListTargetType="viewMainTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop" :teamKey='this.pChannelDetail?.teamKey'/>
       </transition>
 
       <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); "> -->
@@ -41,12 +41,14 @@
               <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
           </template>
           <gEmpty :tabName="currentTabName" contentName="전체" v-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
+
           <template  v-for="(cont, index) in this.GE_FILE_LIST" :key="index">
-              <gFileBox ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'F'"/>
-              <myObserver v-if="index === this.GE_FILE_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
+              <gFileBox @openImgPop="openImgPop" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'F'"/>
+              <myObserver v-if="index === this.GE_FILE_LIST.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
           </template>
           <gEmpty :tabName="currentTabName" contentName="파일함" v-if="this.viewMainTab === 'F' && GE_FILE_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
         </div>
+
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
           <img src="../../assets/images/common/reload_button.svg" class="cursorP img-w20" />
@@ -526,29 +528,34 @@ export default {
     }
   },
   methods: {
-    async getFileList (pageSize, offsetInput) {
+    async getFileList (pageSize, offsetInput, nonLoadingYn) {
       const paramMap = new Map()
+      if (JSON.stringify(this.findKeyList) !== '{}') {
+        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
+          paramMap.set('fileName', this.findKeyList.searchKey)
+        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
+          paramMap.set('toCreDateStr', this.findKeyList.toCreDateStr)
+        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
+          paramMap.set('fromCreDateStr', this.findKeyList.fromCreDateStr)
+        } if (this.findKeyList.creUserName !== undefined && this.findKeyList.creUserName !== null && this.findKeyList.creUserName !== '') {
+          paramMap.set('creUserName', this.findKeyList.creUserName)
+        }
+      }
       paramMap.set('ownUserKey', this.GE_USER.userKey)
       paramMap.set('creTeamKey', this.GE_CHANNEL_DETAIL.teamKey)
-      if (pageSize && offsetInput) {
-        paramMap.set('pageSize', pageSize)
+      if (offsetInput) {
         paramMap.set('offsetInt', offsetInput)
       } else {
-        paramMap.set('pageSize', this.pageSize)
         paramMap.set('offsetInt', this.offsetInt)
       }
+      paramMap.set('pageSize', 10)
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getMyFileList',
         param: Object.fromEntries(paramMap)
-      })
+      }, nonLoadingYn)
 
+      console.log(result)
       return result
-      // var resultFileList = result.data.content.filter((item) => {
-      //   return item.contents
-      // })
-      // this.fileList = resultFileList
-      // console.log('============================')
-      // console.log(this.fileList)
     },
     openImgPop (param) {
       this.$emit('openImgPop', param)
@@ -1403,14 +1410,13 @@ export default {
       this.canLoadYn = true
       if (tab === 'F') {
         var result = await this.getFileList(10, 0)
-        console.log('************************')
-        console.log(result)
         var resultFileList = result.data.content.filter((item) => {
           return item.contents
         })
-        if (this.offsetInt === 0) {
-          this.offsetInt += 1
-        }
+        resultFileList = resultFileList.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.fileKey - a.fileKey
+          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
         this.fileList = resultFileList
       }
     },
@@ -1600,7 +1606,7 @@ export default {
         var newArr = []
         try {
           if (this.viewMainTab === 'F') {
-            resultList = await this.getFileList(null, null)
+            resultList = await this.getFileList(null, null, true)
             console.log('------------------------')
             console.log(resultList)
             if (resultList === undefined || resultList === '') {
@@ -1614,7 +1620,7 @@ export default {
               ...resultFileList
             ]
             this.fileList = this.replaceFileArr(newArr)
-            await this.endListSetFunc(resultList)
+            await this.endListSetFunc(resultList.data)
           } else {
             resultList = await this.getPushContentsList(null, null, false)
             console.log(resultList)
@@ -1911,7 +1917,20 @@ export default {
       debugger
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       this.findPaddingTopPush()
-      var resultList = await this.getPushContentsList(10, 0, true)
+      if (this.viewMainTab === 'F') {
+        var result = await this.getFileList(null, null)
+        var resultFileList = result.data.content.filter((item) => {
+          return item.contents
+        })
+        resultFileList = resultFileList.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.fileKey - a.fileKey
+          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
+        this.fileList = resultFileList
+        this.endListSetFunc(result.data)
+      } else {
+        var resultList = await this.getPushContentsList(10, 0, true)
+      }
       // eslint-disable-next-line no-debugger
       debugger
       if (resultList === '') {
@@ -2011,7 +2030,20 @@ export default {
         this.paddingTop = 75
       }
       // this.findPaddingTopPush()
-      var resultList = await this.getPushContentsList(pageSize, this.offsetInt, true)
+      if (this.viewMainTab === 'F') {
+        var result = await this.getFileList(null, null)
+        var resultFileList = result.data.content.filter((item) => {
+          return item.contents
+        })
+        resultFileList = resultFileList.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.fileKey - a.fileKey
+          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
+        this.fileList = resultFileList
+        this.endListSetFunc(result.data)
+      } else {
+        var resultList = await this.getPushContentsList(pageSize, this.offsetInt, true)
+      }
       if (resultList === '') {
         // eslint-disable-next-line no-debugger
         debugger

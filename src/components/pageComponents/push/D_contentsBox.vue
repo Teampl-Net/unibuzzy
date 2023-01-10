@@ -109,9 +109,9 @@
                 </div>
             </div>
             <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1;  width: calc(100% - 40px); margin: 10px 20px; margin-bottom: 10px;float: left;"></div>
-            <div class="contentsCardMemoArea" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
+            <div @click="click" class="contentsCardMemoArea" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 50px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
                 <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
-                    <memoCompo @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
+                    <memoCompo @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" @memoEmitFunc='memoEmitFunc' />
                 </template>
                 <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
                 <p v-if="propDetailYn === false && this.mMoreMemoBtnShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기 ></p>
@@ -137,7 +137,7 @@
     <div @click="this.$refs.recvListPop.closeXPop()" style="width: 100%; height: 100%; top: 0; z-index: 10; position: absolute; background: #00000026"></div>
     <recvListPop ref="recvListPop" @closeXPop="closeRecvListPop" :initData="mActorListInitDataList"/>
   </template>
-  <attachFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
+  <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
 </template>
 <script>
 import memoCompo from './D_contBoxMemo.vue'
@@ -224,6 +224,18 @@ export default {
     await this.setPreTagInFirstTextLine()
   },
   methods: {
+    updateMemo (param) {
+      var idx
+      var idx2
+      if (param[2] !== null) {
+        idx = this.CONT_DETAIL.D_MEMO_LIST.findIndex((item) => item.memoKey === Number(param[2]))
+        idx2 = this.CONT_DETAIL.D_MEMO_LIST[idx].cmemoList.findIndex((item) => item.memoKey === Number(param[1]))
+        this.CONT_DETAIL.D_MEMO_LIST[idx].cmemoList[idx2].attachFileList = param[0]
+      } else {
+        idx = this.CONT_DETAIL.D_MEMO_LIST.findIndex((item) => item.memoKey === Number(param[1]))
+        this.CONT_DETAIL.D_MEMO_LIST[idx].attachFileList = param[0]
+      }
+    },
     openImgPop (param) {
       this.$emit('openImgPop', param)
     },
@@ -306,6 +318,7 @@ export default {
       if (modiMemoObj.param) {
         memo = modiMemoObj.param
       }
+      console.log(memo)
       try {
         var result = await this.$commonAxiosFunction({
           url: 'service/tp.saveMemo',
@@ -323,7 +336,7 @@ export default {
             var saveMemoObj = {}
             var index
             if (memo.parentMemoKey) {
-              // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 키값을 찾음
+              // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 ^memo%키값을 찾음
               index = await result.data.resultList.memoList.findIndex((item) => item.memoKey === memo.parentMemoKey)
               saveMemoObj = await result.data.resultList.memoList[index]
             } else {
@@ -353,13 +366,16 @@ export default {
       }
     },
     async clickFileDownload () {
-      if (!this.propDetailYn) {
-        await this.getContentsDetail()
-        await this.settingFileList_downAtt()
-        this.mFilePopData = this.mFileDownData
-      } else {
-        this.mFilePopData = this.CONT_DETAIL
-      }
+      await this.getContentsDetail()
+      await this.settingFileList_downAtt()
+      this.mFilePopData = this.mFileDownData
+      // if (!this.propDetailYn) {
+      //   await this.getContentsDetail()
+      //   await this.settingFileList_downAtt()
+      //   this.mFilePopData = this.mFileDownData
+      // } else {
+      //   this.mFilePopData = this.CONT_DETAIL
+      // }
       // this.$emit('fileDownload', this.mFileDownData)
       this.mFilePopYn = true
     },
@@ -1119,9 +1135,9 @@ export default {
       // console.log(this.CONT_DETAIL)
       var contBody = this.$refs.contentsBoxRef
       if (!contBody) return
-      var fileList = await this.settingFileList()
+      // var fileList = await this.settingFileList()
       this.mClickImgList = contBody.querySelectorAll('img')
-      console.log(fileList)
+      // console.log(fileList)
       for (let m = 0; m < this.mClickImgList.length; m++) {
         var this_ = this
         this_.mClickImgList[m].addEventListener('click', () => {
@@ -1215,7 +1231,6 @@ export default {
     CONT_DETAIL: {
       immediate: true,
       handler (value, index) {
-        console.log(value)
         this.setMoreMemoBtn()
       }
     },
@@ -1241,7 +1256,6 @@ export default {
         this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newArr)
         // eslint-disable-next-line vue/no-mutating-props
         this.contentsEle.D_MEMO_LIST = this.replaceArr(newArr)
-        console.log(this.CONT_DETAIL.D_MEMO_LIST)
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
       },
       deep: true

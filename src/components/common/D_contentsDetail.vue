@@ -1070,6 +1070,7 @@ export default {
       // memo.pagesize = 5
       memo.pageSize = this.$countingTotalMemo(this.CONT_DETAIL.D_MEMO_LIST) + 5
       memo.offsetInt = 0
+      memo.ownUserKey = this.GE_USER.userKey
       var nonLoadingYn = false
       if (loadingYn) {
         nonLoadingYn = true

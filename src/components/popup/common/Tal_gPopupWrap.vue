@@ -59,7 +59,7 @@
       <memInfoCreEditPop :pPopId="popId" v-if="popId && this.targetType === 'memInfoCreEditPop'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <notiHitstory :pPopId="popId" v-if="popId && this.targetType === 'notiHitstory'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <savePhone @openPop="openPop" @closeXPop="closeXPop" :popYn="true" :pPopId="popId" v-if="popId && this.targetType === 'changePhone'" />
-      <totalFileList :pPopId="popId" v-if=" popId && this.targetType === 'totalFileList'" @closeXPop="closeXPop" @openPop="openPop"/>
+      <totalFileList @openImgPop="openImgPop" :pPopId="popId" v-if=" popId && this.targetType === 'totalFileList'" @closeXPop="closeXPop" @openPop="openPop"/>
     </div>
 </template>
 

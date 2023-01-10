@@ -1,9 +1,9 @@
 <template>
     <div style="width: 100%; float: left;" :style="pOneLineYn? 'display: flex; align-items: center; height: 40px;':''">
       <gConfirmPop @no="this.errorShowYn = false" confirmText='파일은 최대 10MB까지 첨부할 수 있습니다.' confirmType='timeout' v-if="errorShowYn" />
-      <form  @submit.prevent="formSubmit" class="font14 whiteColor attachFileBg fl " style="font-weight:500; overflow: hidden;cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " method="post">
+      <form @submit.prevent="formSubmit" class="font14 whiteColor attachFileBg fl " style="font-weight:500; overflow: hidden;cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " method="post">
           <!-- 파일 선택 -->
-          + 첨부
+          +첨부
           <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%;" id="input-file" @change="handleImageUpload"/>
       </form>
       <div v-if="this.sFileList.length > 0" :class="pOneLineYn? '' : 'mtop-05'" class="fl" style="width: 100%; overflow: auto;" :style="pOneLineYn? 'width: calc(100% - 55px); margin-top: 2px;': ''">

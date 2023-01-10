@@ -55,12 +55,12 @@
                         <p class="fl commonGray textLeft font12"  style="font-weight:normal;">{{this.$changeDateMemoFormat(cmemo.creDate)}}</p>
                     </div>
                 </div>
-                <div style="width: calc(100%); margin-top: 10px; padding-left: 10px; min-height: 40px; display: flex; flex-direction: column;">
+                <div style="width: calc(100%); padding-left: 10px; min-height: 40px; display: flex; flex-direction: column;">
                     <div style="width: 100%; float: left; min-height: 20px;" v-if="cmemo.attachMfilekey && cmemo.attachFileList && cmemo.attachFileList.length > 0">
                         <div style="width: 100%; float: left;" v-if="cmemo.attachFileList && cmemo.attachFileList.length > 0 && getAttachTrueFile(cmemo.attachFileList).length > 0">
                             <p @click="showFileDownloadPop(cmemo)" class="textLeft cursorP fr font12 mright-1 fontBold commonColor">첨부파일({{getAttachTrueFile(cmemo.attachFileList).length}})</p>
                         </div>
-                        <div v-if="cmemo.attachFileList && cmemo.attachFileList.length > 0" :style="'height: ' + getMaxHeight(cmemo.attachFileList) + 'px'" style="max-width: 100%; float: left; background: rgb(238 238 238); float: left; border: 1px solid #aaa; padding-left: 10px ; float: left;  overflow: scroll hidden;">
+                        <div v-if="getAttachFalseFile(propMemoEle.attachFileList).length > 0" :style="'height: ' + getMaxHeight(cmemo.attachFileList) + 'px'" style="margin-top: 10px; max-width: 100%; float: left; background: rgb(238 238 238); float: left; border: 1px solid #aaa; padding-left: 10px ; float: left;  overflow: scroll hidden;">
                             <div id="mememoBodyImgWrap" style="float: left; height: 100%;" :style="'width:' + getImgListWidthSize(cmemo.attachFileList) + 'px'">
                                 <template v-for="(cImg, cIndex) in cmemo.attachFileList" :key="cIndex"  >
                                     <img  @click="openImgPop(cmemo.attachFileList, cIndex)" :style="'max-height: ' + getMaxHeight(cmemo.attachFileList) + 'px'" style="border-right: 1px solid #aaa; border-left: 1px solid #aaa; margin-right: 10px; float: left; min-width: 70px;" :fileKey="cImg.fileKey" v-if="!cImg.attachYn" :src="cImg.domainPath + cImg.pathMtext" alt="">
@@ -79,7 +79,7 @@
                 </div>
             </div>
         </div>
-        <attachFileListPop :propFileData="this.mAttachFileList" v-if="mFilePopShowYn === true" @closePop="mFilePopShowYn = false"/>
+        <attachFileListPop @updateMemo="updateMemo" propTargetType="R" :propFileData="this.mResultParam" v-if="mFilePopShowYn === true" @closePop="mFilePopShowYn = false"/>
         <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
 
         <imgPreviewPop :startIndex="startIndex" :mFileKey="selectedImgPopObj.attachMfilekey"  @closePop="this.mPreviewPopShowYn = false " v-if="selectedImgPopObj && mPreviewPopShowYn && selectedImgPopObj.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :creUserName="selectedImgPopObj.userDispMtext"  />
@@ -127,7 +127,9 @@ export default {
       mFilePopShowYn: false,
       mAttachFileList: { D_ATTATCH_FILE_LIST: [], D_BODY_IMG_FILE_LIST: [] },
       selectedImgPopObj: null,
-      startIndex: 0
+      startIndex: 0,
+      mResultParam: {},
+      targetMemo: {}
     }
   },
   mounted () {
@@ -165,6 +167,9 @@ export default {
     } */
   },
   methods: {
+    updateMemo (param) {
+      this.$emit('updateMemo', [param, this.targetMemo.memoKey, this.targetMemo.parentMemoKey])
+    },
     getAttachTrueFile (list) {
       if (!list) return []
       var resultList = []
@@ -251,6 +256,8 @@ export default {
       }
     },
     showFileDownloadPop (fileObj) {
+      this.mAttachFileList.D_ATTATCH_FILE_LIST = []
+      this.mAttachFileList.D_BODY_IMG_FILE_LIST = []
       if (fileObj.attachMfilekey && fileObj.attachFileList && fileObj.attachFileList.length > 0) {
         for (var i = 0; i < fileObj.attachFileList.length; i++) {
           if (fileObj.attachFileList[i].attachYn) {
@@ -260,7 +267,15 @@ export default {
           }
         }
       }
+      var resultObj = {}
+      resultObj.contentsKey = this.propMemoEle.targetKey
+      resultObj.creUserKey = this.propMemoEle.creUserKey
+      resultObj = { D_ATTATCH_FILE_LIST: this.mAttachFileList.D_ATTATCH_FILE_LIST, ...resultObj }
+
+      this.mResultParam = resultObj
       this.mFilePopShowYn = true
+      this.targetMemo = fileObj
+      // console.log(this.$getContentsMemoList(this.propMemoEle.targetKey, ))
     },
     saveModiMemo (oriMemo) {
       this.mChangeMemoYn = false
@@ -404,14 +419,13 @@ export default {
     },
     async deleteMemo () {
       var memo = {}
-      memo.memoKey = this.mTempData.memoKey
 
+      memo.memoKey = this.mTempData.memoKey
       try {
         var result = await this.$commonAxiosFunction({
           url: 'service/tp.deleteMemo',
           param: memo
         })
-
         if (result.data.result === true) {
           // var cont = this.currentMemoObj
           var cont = this.propContDetail
