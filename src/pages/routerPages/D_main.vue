@@ -89,9 +89,10 @@
         </div> -->
         <div style="border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
           <div  style="width:100%; background-color: #E7EDFF; float:left;">
-            <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; position: relative; border-bottom: 2px; solid #F4F7FF!important; margin-top: 15px;">
+            <div style="width: 100%; display: flex; align-items: center; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; position: relative; border-bottom: 2px; solid #F4F7FF!important; margin-top: 15px;">
               <img src="../../assets/images/main/main_contentsBellIcon2.png" style="float: left; margin-right: 8px;" class="img-w24" alt="">
               <p @click="goContentListPop()" class="font20 fontBold deepBorderColor fl textLeft cursorP CDeepColor" style="line-height: 26px;">받은 알림, 게시글 ></p>
+              <img class="fr cursorP" @click="openFindPop"  style="width: 25px; position: absolute;right: 65px;" src="../../assets/images/common/iocn_search.png" alt="">
                 <!-- <div class="fl" style="position: relative; width: 80px; margin-left: 10px; min-height: 50px;">
                     <img @click="findData()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
                     <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="findData()" v-model="mInputText" placeholder="검색키워드를 입력해주세요" />
@@ -106,7 +107,7 @@
             <template v-if="mMainAlimList.length === 0">
                 <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
             </template>
-            <mainContsList  @openImgPop="oepnImgPop" ref="mainContsList" v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
+            <mainContsList @goSearchDirect="goSearchDirect"  @openImgPop="oepnImgPop" ref="mainContsList" v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
           </div>
         </div>
     </div>
@@ -219,6 +220,9 @@ export default {
     this.mLoadingYn = false
   },
   methods: {
+    openFindPop () {
+      this.$refs.mainContsList.openFindPop()
+    },
     oepnImgPop (param) {
       this.$emit('openImgPop', param)
     },
@@ -239,6 +243,9 @@ export default {
       openPopParam.popHeaderText = '채널'
       openPopParam.channelTabType = type
       this.openPop(openPopParam)
+    },
+    goSearchDirect (param) {
+      this.$emit('goSearchDirect', param)
     },
     goContentListPop () {
       /* this.$emit('goSearchDirect') */

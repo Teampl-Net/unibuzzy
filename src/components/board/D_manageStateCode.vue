@@ -164,10 +164,12 @@ export default {
         }
         if (this.workDate.toDate !== '') {
           var toDate = this.settingDate(this.workDate.toDate)
-          param.workToDateStr = toDate
-          param.memoHeaderStr += '목표일 ' + this.settingDate(this.workDate.toDate)
-          // param.memoHeaderStr = '<p class="commonMemoWorkStatHeaderColor" style="font-weight: bold; text-align: left; font-size: 14px; width: 100%;">접수일 ' + this. + '<br></p>'
-          setOkYn = true
+          if (toDate !== 'Invalid Date') {
+            param.workToDateStr = toDate
+            param.memoHeaderStr += '목표일 ' + this.settingDate(this.workDate.toDate)
+            // param.memoHeaderStr = '<p class="commonMemoWorkStatHeaderColor" style="font-weight: bold; text-align: left; font-size: 14px; width: 100%;">접수일 ' + this. + '<br></p>'
+            setOkYn = true
+          }
         }
         if (this.selectedList.memberList.length > 0 && this.selectedList.memberList[0]) {
           param.workUserKey = this.selectedList.memberList[0].accessKey

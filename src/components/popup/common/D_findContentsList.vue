@@ -6,7 +6,7 @@
     <popHeader v-else-if="(contentsListTargetType === 'fileBox')" headerTitle="파일 검색" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
     <popHeader v-else headerTitle="알림 검색" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody  mtop-05">
-        <div class="findPopMainSearchArea">
+        <div v-if="pTitleShowYn !== false" class="findPopMainSearchArea">
             <input v-if="contentsListTargetType === 'myActList'" class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="게시글 제목을 입력해주세요" />
             <input v-if="contentsListTargetType === 'fileBox'" class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="파일명을 입력해주세요" />
             <input v-else class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="제목을 입력해주세요" />
@@ -28,6 +28,12 @@
           placeholder="날짜를 선택해주세요"
           titleFormat="YYYY-MM-DD"
         ></Datepicker>
+        <div style="width: 100%; margin-top: 10px; float: left; min-height: 30px;">
+            <p class="fontBold font16 commonColor textLeft mtop-1 fl w-100P mbottom-05">분류 선택</p>
+            <template v-for="(value, index) in mStickerList" :key="index" >
+                <gStickerLine v-if="value" @click="selectSticker(value)" :pSelectedYn="selectedSticker && value.stickerKey === selectedSticker.stickerKey" style="float: left; margin-right: 10px; min-width: 30px;" :pSticker="value" />
+            </template>
+        </div>
         <div v-if="tpGroupCode && tpGroupCode.length > 5" class="findPopMainSearchArea mtop-05">
             <select v-model="stateCode" class="searchInput selectInput font14 mtop-05" name="" id="statCodeKeyInput">
                 <option hidden value="0">업무 상태를 선택해주세요</option>
@@ -97,7 +103,8 @@ export default {
   props: {
     contentsListTargetType: {},
     tpGroupCode: {},
-    teamKey: {}
+    teamKey: {},
+    pTitleShowYn: {}
   },
   data () {
     return {
@@ -128,10 +135,13 @@ export default {
       infoMemList: [],
       answerList: [],
       selectAnswer: '',
-      siListSelect: ''
+      siListSelect: '',
+      mStickerList: [],
+      selectedSticker: null
     }
   },
   created () {
+    this.getMyStickerList()
     var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'searchPop' + history.length
     history.push(this.popId)
@@ -147,6 +157,9 @@ export default {
     },
     pageUpdate () {
       return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
     }
   },
   watch: {
@@ -160,6 +173,23 @@ export default {
     }
   },
   methods: {
+    selectSticker (val) {
+      if (val.stickerKey === this.selectedSticker) {
+        this.selectedSticker = null
+      } else {
+        this.selectedSticker = val
+      }
+    },
+    async getMyStickerList () {
+      var param = {}
+      param.creUserKey = this.GE_USER.userKey
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.getStickerList',
+        param: param
+      })
+      this.mStickerList = result.data
+      console.log(result)
+    },
     // settingAnswerList () {
     //   var qList = this.receivList[this.selectOption].InfoQueList[].answerList
     //   for (let i = 0; i < qList.length; i++) {
@@ -245,6 +275,9 @@ export default {
       }
       if (this.creUserName !== '') {
         param.creUserName = this.creUserName
+      }
+      if (this.selectedSticker) {
+        param.selectedSticker = this.selectedSticker
       }
       if (this.creDate !== '') {
         if (this.creDate.length > 1) {

@@ -145,6 +145,7 @@ export const openView = {
     var paramMap = new Map()
     paramMap.set('cateGroupKey', 2)
     paramMap.set('orderbyStr', 'followerCount DESC')
+    paramMap.set('creUserKey', store.getters['D_USER/GE_USER'].userKey)
     var response = await commonAxiosFunction({ url: 'service/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, false)
     // eslint-disable-next-line no-debugger
     debugger

@@ -45,9 +45,11 @@ document.addEventListener('DOMContentLoaded', function() {
   appId: '1:777053173385:web:46b92863d81076f61d3858',
   measurementId: 'G-NHD2EKJML0'
 }
+
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app() */
 importScripts('https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js')
 importScripts('https://www.gstatic.com/firebasejs/8.4.3/firebase-messaging.js')
+
 var firebaseConfig = {
   apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
   authDomain: 'thealim-2602c.firebaseapp.com',
@@ -91,7 +93,7 @@ self.addEventListener('push', event => {
   }
   const title = push_data.data.title
   var options = null
-  if (userDo.targetKind === 'C') {
+  if (userDo.targetKind === 'C' || userDo.targetKind === 'R') {
     options = {
       body: push_data.data.body,
       icon: icon,
@@ -113,15 +115,13 @@ self.addEventListener('push', event => {
       // image: icon
     }
   }
-  console.log(tag)
-  const e = new CustomEvent('swMessageCome', { detail: push_data })
-  self.dispatchEvent(e)
-  self.registration.getNotifications({ tag })
-    .then(() => {
-      // const icon = `/path/to/icon`;
-      return self.registration
-        .showNotification(title, options)
-    })
+  self.registration.showNotification(title, options)
+
+  const channel = new BroadcastChannel('new-server-post')
+  channel.postMessage({ noti: push_data })
+
+  /* var vm = window.app
+  vm.$root.$childeren[0].$refs.componentRef.sample() */
 })
 
 self.addEventListener('message', function (event) {

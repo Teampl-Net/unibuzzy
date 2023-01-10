@@ -72,9 +72,11 @@ import gToolBox from './components/popup/writeContentUnit/D_commonToolBox.vue'
 
 import webViewBridge from './assets/js/webViewBridge'
 // import attatchFileListPop from './components/pageComponents/main/unit/D_commonAttatchFileListPop.vue'
-
+import './registerServiceWorker'
 import gFileBox from './components/unit/D_fileBox.vue'
-
+import gSticker from './components/common/D_commonSticker.vue'
+import gSelectStickerPop from './components/popup/sticker/D_myStickerListPop.vue'
+import gStickerLine from './components/common/D_commonStickerLine.vue'
 const app = createApp(moTheAlim).use(router).use(store)
 app.use(commonjs)
 app.use(openView)
@@ -85,6 +87,8 @@ app.use(BootstrapVue3)
 app.use(VueEasyLightbox)
 
 app.component('gProfileImg', gProfileImg)
+app.component('gSticker', gSticker)
+app.component('gStickerLine', gStickerLine)
 app.component('gCertiPop', gCertiPop)
 app.component('gLoadingS', gLoadingS)
 app.component('gContentsBox', gContentsBox)
@@ -128,6 +132,8 @@ app.component('channelCard', channelCard)
 app.component('gToolBox', gToolBox)
 app.component('gImgPop', gImgPop)
 app.component('gFileBox', gFileBox)
+app.component('gSelectStickerPop', gSelectStickerPop)
+
 // app.component('attatchFileListPop', attatchFileListPop)
 
 app.use(webViewBridge)
@@ -208,7 +214,7 @@ app.mount('#app')
 window.app = app
 document.title = '더알림'
 localStorage.setItem('loginYn', false)
-if (navigator.serviceWorker) {
+/* if (navigator.serviceWorker) {
   navigator.serviceWorker.register('./firebase-messaging-sw.js')
     .then(function (reg) {
       console.log('서비스워커 등록성공 :', reg)
@@ -228,4 +234,4 @@ if (navigator.serviceWorker) {
     // event is a MessageEvent object
     console.log(event)
   })
-}
+} */

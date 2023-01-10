@@ -227,6 +227,8 @@ export const functions = {
           }
         }
       }
+
+      console.log(notiDetail)
       store.dispatch('D_NOTI/AC_ADD_NOTI_LIST', notiDetail)
       // alert(JSON.stringify(notiDetail))
       if (JSON.parse(notiDetail.userDo).targetKind === 'C') {

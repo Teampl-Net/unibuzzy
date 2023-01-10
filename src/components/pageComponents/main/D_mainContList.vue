@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px; " :key="mReloadKey" >
     <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" >
-      <gContentsBox @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
+      <gContentsBox @requestSearchSticker="requestSearchSticker" @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
       <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 5 ?  index === this.GE_DISP_CONTS_LIST.length - 5 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
     </template>
     <div class="fl" style="width: 40px; height: 40px;border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index:9;">
@@ -9,7 +9,10 @@
     </div>
     <div v-if="mSeleteWriteTypePopShowYn" @click="mSeleteWriteTypePopShowYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
     <transition name="showUp">
-      <writeBottSheet v-if="mSeleteWriteTypePopShowYn" @openPop='openPop' @closePop='mSeleteWriteTypePopShowYn = false' :propChanList='mSelectChanList' />
+      <writeBottSheet transition="showUp" v-if="mSeleteWriteTypePopShowYn" @openPop='openPop' @closePop='mSeleteWriteTypePopShowYn = false' :propChanList='mSelectChanList' />
+    </transition>
+    <transition name="showModal">
+        <findContentsList transition="showModal" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="this.mFindPopShowYn = false" />
     </transition>
   </div>
 
@@ -19,11 +22,12 @@
 <script>
 // import attachFileListPop from './unit/D_commonAttatchFileListPop.vue'
 import writeBottSheet from './unit/D_contentsWriteBottSheet.vue'
-
+import findContentsList from '@/components/popup/common/D_findContentsList.vue'
 export default {
   components: {
     // attachFileListPop,
-    writeBottSheet
+    writeBottSheet,
+    findContentsList
   },
   data () {
     return {
@@ -39,7 +43,8 @@ export default {
 
       // 첫 진입과 삭제 후 리스트를 다시 못 그려주기에 watch 추가
       mReloadKey: 0,
-      mCreateYn: true
+      mCreateYn: true,
+      mFindPopShowYn: false
       // mFilePopYn: false,
       // mFilePopData: {}
       //
@@ -51,6 +56,60 @@ export default {
     pMainAlimList: {}
   },
   methods: {
+    requestSearchSticker (data) {
+      this.requestSearchList(data)
+    },
+    requestSearchList (data) {
+      console.log(data)
+      var searchObj = {}
+      var index = null
+      var mSearchList = []
+      if (data.searchKey) {
+        searchObj = { accessKind: 'title', accessKey: data.searchKey, dispName: data.searchKey, searchType: '제목' }
+        index = mSearchList.findIndex(item => item.searchType === '제목')
+        if (index !== -1) {
+          mSearchList.splice(index, 1)
+        }
+        mSearchList.push(searchObj)
+      }
+      if (data.creTeamNameMtext) {
+        searchObj = { accessKind: 'nameMtext', accessKey: data.creTeamNameMtext, dispName: data.creTeamNameMtext, searchType: '채널명' }
+        index = mSearchList.findIndex(item => item.searchType === '채널명')
+        if (index !== -1) {
+          mSearchList.splice(index, 1)
+        }
+        mSearchList.push(searchObj)
+      }
+      if (data.creUserName) {
+        searchObj = { accessKind: 'creUserName', accessKey: data.creUserName, dispName: data.creUserName, searchType: '작성자' }
+        index = mSearchList.findIndex(item => item.searchType === '작성자')
+        if (index !== -1) {
+          mSearchList.splice(index, 1)
+        }
+        mSearchList.push(searchObj)
+      }
+      if (data.fromCreDateStr && data.toCreDateStr) {
+        searchObj = { accessKind: 'creUserName', accessKey: data.fromCreDateStr + '~' + data.toCreDateStr, dispName: data.fromCreDateStr + '~' + data.toCreDateStr, searchType: '날짜' }
+        index = mSearchList.findIndex(item => item.searchType === '날짜')
+        if (index !== -1) {
+          mSearchList.splice(index, 1)
+        }
+        mSearchList.push(searchObj)
+      }
+      if (data.selectedSticker) {
+        searchObj = { accessKind: 'SK', accessKey: data.selectedSticker.stickerKey, dispName: this.$changeText(data.selectedSticker.nameMtext), searchType: '분류' }
+        index = mSearchList.findIndex(item => item.searchType === '분류')
+        if (index !== -1) {
+          mSearchList.splice(index, 1)
+        }
+        mSearchList.push(searchObj)
+      }
+      this.$emit('goSearchDirect', mSearchList)
+      this.mFindPopShowYn = false
+    },
+    openFindPop () {
+      this.mFindPopShowYn = true
+    },
     openImgPop (param) {
       this.$emit('openImgPop', param)
     },

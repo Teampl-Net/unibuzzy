@@ -68,7 +68,7 @@ export default {
 </script>
 
 <style>
-.TalFooterWrap{display: flex; box-sizing: border-box; background: #F4F7FF!important; justify-content: flex-start; text-align: left; width: 100%; height: 60px; z-index: 99;}
+.TalFooterWrap{display: flex; box-sizing: border-box; background: #E7EDFF!important; justify-content: flex-start; text-align: left; width: 100%; height: 60px; z-index: 99;}
 .footerRouter {text-decoration-line: none; }
 .footerRouter img{width: 1.4rem}
 p{margin-bottom: 0; color: #7E7E7E;}

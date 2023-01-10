@@ -1065,6 +1065,10 @@ export default {
           param.workStatCodeKey = this.findKeyList.workStatCodeKey
         } if (this.findKeyList.creUserName !== undefined && this.findKeyList.creUserName !== null && this.findKeyList.creUserName !== '') {
           param.creUserName = this.findKeyList.creUserName
+        } if (this.findKeyList.selectedSticker) {
+          param.findActStickerYn = true
+          param.findActYn = true
+          param.stickerKey = this.findKeyList.selectedSticker.stickerKey
         }
       }
       param.jobkindId = 'BOAR'
@@ -1186,6 +1190,8 @@ export default {
         } if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
           this.findKeyList.workStatCodeKey = param.workStatCodeKey
           this.findKeyList.codeNameMtext = param.codeNameMtext
+        } if (param.selectedSticker !== undefined && param.selectedSticker !== null && param.selectedSticker !== '') {
+          this.findKeyList.selectedSticker = param.selectedSticker
         }
       }
 
@@ -1243,6 +1249,12 @@ export default {
         searchObj.keyword = param.codeNameMtext
         resultArray.push(searchObj)
       }
+      if (param.selectedSticker !== undefined && param.selectedSticker !== null && param.selectedSticker !== '') {
+        searchObj.typeName = '분류'
+        searchObj.type = 'stickerKey'
+        searchObj.keyword = this.$changeText(param.selectedSticker.nameMtext)
+        resultArray.push(searchObj)
+      }
       return resultArray
     },
     async changeSearchList (type) {
@@ -1256,6 +1268,8 @@ export default {
         delete this.findKeyList.workStatCodeKey
       } else if (type === 'creUserName') {
         delete this.findKeyList.creUserName
+      } else if (type === 'stickerKey') {
+        delete this.findKeyList.selectedSticker
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       if (this.resultSearchKeyList.length === 0) {

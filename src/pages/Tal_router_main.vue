@@ -11,9 +11,7 @@
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
     <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
     <div v-if="mShadowScreenShowYn" @click="changeNetStatePop" style="width:100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 99999999999999;"></div>
-    <transition name="showModal">
-      <fullModal @openImgPop="openImgPop" @successWrite="successWriteBoard" ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" v-if="this.mGPopShowYn === true && this.mPopParams" parentPopN="0" :propParams="this.mPopParams" @closeNewPop='closeNewPop' @parentClose='parentClose' />
-    </transition>
+    <fullModal @openPop="openPop" @openImgPop="openImgPop" @successWrite="successWriteBoard" ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" v-if="mGPopShowYn" parentPopN="0" :propParams="mPopParams" @closeNewPop='closeNewPop' @parentClose='parentClose' />
     <TalHeader @click="test" @showMenu="showMenu" ref="mainHeaderWrap" class="header_footer " :mRouterHeaderText="this.mRouterHeaderText" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
     <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }"  class="" :style="'height: calc(100% - ' + (this.$STATUS_HEIGHT + 20)+ 'px)'" style="overflow: hidden; width:100%;">
         <router-view @openImgPop="openImgPop" ref="routerViewCompo"  :initData="sendInitData" @goSearchDirect="goSearchDirect" @scrollEvnt="this.scrollEvnt" :popYn="false" class="" style="margin-bottom: 100px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
@@ -47,7 +45,9 @@ export default {
       mPropImgList: [],
       mPropFirstIndex: 0,
       mAppUpdatePopShwoYn: false,
-      systemName: null
+      systemName: null,
+      popList: [],
+      isMobile: /Mobi/i.test(window.navigator.userAgent)
     }
   },
   props: {},
@@ -57,7 +57,22 @@ export default {
     commonConfirmPop
     /* pushPop */
   },
-  beforeUnmount () {
+  beforeCreate () {
+    if (!this.isMobile) {
+      if ('serviceWorker' in navigator && 'SyncManager' in window) {
+        const channel = new BroadcastChannel('new-server-post')
+        // service worker가 보낸 message 수신
+        channel.addEventListener('message', event => {
+          const response = event.data
+          var message = response.noti.data
+          console.log('onMessage: ', message)
+          this.$recvNotiFromBridge(null, null, message)
+        // const oldPost = this.posts.filter(p => p.id === response.oldId)[0]
+        // id를 server로 부터 받은 id로 바꿈
+        // this.$set(this.posts, this.posts.indexOf(oldPost), response.newData)
+        })
+      }
+    }
   },
   mounted () {
     this.$showChanCommonPop(false)
@@ -213,10 +228,10 @@ export default {
         this_.mNetReturnPopShowYn = false
       }, 2000)
     },
-    async goSearchDirect () {
+    async goSearchDirect (data) {
       var pageData = await this.$getRouterViewData('search')
+      pageData.pSearchList = data
       this.sendInitData = pageData
-      pageData.pSearchObj = { text: 'test', type: 'CONT' }
       console.log({ initData: pageData })
       // this.$router.push({ path: page, params: { initData: pageData } })
       await this.$router.replace({
@@ -293,6 +308,7 @@ export default {
       }
       this.mPopParams = params
       this.mGPopShowYn = true
+      // this.popList.push(params)
       this.hideMenu()
     },
     async goPushListPop (params) {
@@ -393,6 +409,7 @@ export default {
         detailParam.notiYn = true
 
         this.mPopParams = detailParam
+        // this.popList.push(detailParam)
         this.mGPopShowYn = true
         // // param.targetType = value.contentsKey
         // if (detailValue.jobkindId === 'BOAR') {
@@ -469,6 +486,8 @@ export default {
       goChanDetailParam.initData = initData
       // this.openPop(goChanDetailParam)
       this.mPopParams = goChanDetailParam
+      console.log(this.mPopParam)
+      // this.popList.push(goChanDetailParam)
       this.mGPopShowYn = true
     },
     async recvNotiFormBridge (notiDetail, currentPage, vuexResultData) {

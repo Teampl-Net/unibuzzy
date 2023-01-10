@@ -53,7 +53,7 @@ if (!isMobile) {
       console.log('Error Occured')
     })
   messaging.onMessage(function (payload) {
-    console.log('onMessage: ', payload)
+    /* console.log('onMessage: ', payload)
     var message = payload.data
     functions.recvNotiFromBridge(message, false)
     var userDo = JSON.parse(payload.data.userDo)
@@ -83,8 +83,7 @@ if (!isMobile) {
         icon: icon
       // image: icon
       }
-    }
-
+    } */
     /* var title = payload.data.title
     var options = {
       body: payload.data.body,

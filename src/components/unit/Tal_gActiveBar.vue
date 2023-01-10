@@ -2,12 +2,11 @@
 <!-- :class="{ssss: tabList.length > 3}" -->
     <div v-if="testYn === true" class="fl w-100P" style="margin-top: 0;background: #FFF;">
       <div ref="tabbar" class="w-100P fl" style="padding-top: 10px; background: #FFF; border-bottom: 3px solid #ccc; height: 41px; position: relative; display:flex;" >
-        <div class="fl tabTitleBox textLeft " v-for="(tab, index) in tabList" @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap; flex:1">
-          <p :style="activebarWidth" class="tabItem font16 fontBold" :class="{commonColor: index === this.activetab, lightGray: index !== this.activetab}" style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
+        <div class="fl tabTitleBox textLeft " v-for="(tab, index) in tabList" @click="switchtab(index)" :key="index === activetab" ref="tab" style="white-space: nowrap; flex:1">
+          <p :style="activebarWidth" class="tabItem font16 fontBold" :class="{commonColor: index === activetab, lightGray: index !== activetab}" style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
         </div>
         <div class="activeBar fl "  ref="activeBar" :style="activebarWidth" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px; left:0"></div>
       </div>
-
       <div class="fl w-100P" style="min-height: 6px;" v-if="searchYn">
         <div class="fl mtop-03" v-if="propSearchList">
           <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
@@ -77,19 +76,24 @@ export default {
       this.$emit('changeSearchList', type)
     },
     switchtab (n) {
+      console.log(n)
+      this.activetab = Number(n)
+      var this_ = this
       this.$nextTick(() => {
-        this.activetab = n
+        this_.activetab = Number(n)
       })
     },
     selectTab (tab, displayName) {
       if (displayName !== undefined && displayName !== null && displayName !== '') {
         this.selectedTabName = displayName.replaceAll(' ', '')
       }
+      console.log(tab)
       this.$emit('changeTab', tab)
     }
   },
   created () {
     // this.selectedTabName = this.tabList.display
+    console.log(this.activetabProp)
     if (this.activetabProp) {
       for (var i = 0; i < this.tabList.length; i++) {
         if (this.tabList[i].name === this.activetabProp) {

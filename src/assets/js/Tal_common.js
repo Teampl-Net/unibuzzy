@@ -165,7 +165,7 @@ export const commonMethods = {
           // format = 'HH시 mm분'
         } else {
           // 같은 년도, 월이 같으면
-          format = 'MM/DD'
+          format = 'MM/DD HH:mm'
           // format = 'MM월 DD일'
         }
       } else {

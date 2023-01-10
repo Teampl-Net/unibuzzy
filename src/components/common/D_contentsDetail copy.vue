@@ -423,7 +423,9 @@ export default {
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
       // eslint-disable-next-line no-debugger
-      detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
+      var userDo = await this.settingUserDo(detailData.userDoList)
+      detailData.D_CONT_USER_DO = userDo.D_CONT_USER_DO
+      detailData.D_CONT_USER_STICKER_LIST = userDo.D_CONT_USER_STICKER_LIST
       if (!detailData.D_MEMO_LIST && (!detailData.memoList || detailData.memoList.length === 0)) detailData.D_MEMO_LIST = []
       this.cDetail = detailData
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
@@ -1205,7 +1207,7 @@ export default {
     },
     async settingUserDo (userDo) {
       var D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
-
+      var D_CONT_USER_STICKER_LIST = []
       if (userDo !== undefined && userDo !== null && userDo !== '') {
         // eslint-disable-next-line no-array-constructor
         /* this.userDoStickerList = new Array() */
@@ -1222,15 +1224,15 @@ export default {
           if (userDo[i].doType === 'SB') {
             D_CONT_USER_DO[3].doKey = userDo[i].doKey
           }
-          /* if (userDo[i].doType === 'SK') {
-            this.userDoStickerList.push(userDo[i].sticker)
-          } */
+          if (userDo[i].doType === 'SK') {
+            D_CONT_USER_STICKER_LIST.push(userDo[i])
+          }
         }
       }
       /* var cont = this.CONT_DETAIL
       cont.D_CONT_USER_DO = D_CONT_USER_DO
       this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
-      return D_CONT_USER_DO
+      return { D_CONT_USER_DO: D_CONT_USER_DO, D_CONT_USER_STICKER_LIST: D_CONT_USER_STICKER_LIST }
     },
 
     async changeAct (act, key) {
@@ -1354,7 +1356,6 @@ export default {
 
 #alimCheckArea{min-height: 35px;}
 .alimCheckContents{width: 100%;float: right; min-height: 30px;}
-
 
 .pushMbox{margin-bottom: 20px;}
 

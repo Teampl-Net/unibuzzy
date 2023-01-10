@@ -1231,6 +1231,10 @@ export default {
             param.workStatCodeKey = this.findKeyList.workStatCodeKey
           } if (this.findKeyList.creUserName !== undefined && this.findKeyList.creUserName !== null && this.findKeyList.creUserName !== '') {
             param.creUserName = this.findKeyList.creUserName
+          } if (this.findKeyList.selectedSticker) {
+            param.findActStickerYn = true
+            param.findActYn = true
+            param.stickerKey = this.findKeyList.selectedSticker.stickerKey
           }
         }
         param.findLogReadYn = null
@@ -1897,6 +1901,7 @@ export default {
     async requestSearchList (param) {
       this.offsetInt = 0
       this.targetCKey = null
+      console.log(param)
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey
@@ -1911,10 +1916,10 @@ export default {
         } if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
           this.findKeyList.workStatCodeKey = param.workStatCodeKey
           this.findKeyList.codeNameMtext = param.codeNameMtext
+        } if (param.selectedSticker !== undefined && param.selectedSticker !== null && param.selectedSticker !== '') {
+          this.findKeyList.selectedSticker = param.selectedSticker
         }
       }
-      // eslint-disable-next-line no-debugger
-      debugger
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       this.findPaddingTopPush()
       if (this.viewMainTab === 'F') {
@@ -1931,8 +1936,6 @@ export default {
       } else {
         var resultList = await this.getPushContentsList(10, 0, true)
       }
-      // eslint-disable-next-line no-debugger
-      debugger
       if (resultList === '') {
         if (this.viewMainTab === 'P') {
           this.alimContentsList = []
@@ -2007,6 +2010,14 @@ export default {
         searchObj.keyword = param.codeNameMtext
         resultArray.push(searchObj)
       }
+      searchObj = {}
+      if (param.selectedSticker !== undefined && param.selectedSticker !== null && param.selectedSticker !== '') {
+        searchObj.typeName = '분류'
+        searchObj.type = 'stickerKey'
+        searchObj.keyword = this.$changeText(param.selectedSticker.nameMtext)
+        resultArray.push(searchObj)
+      }
+      console.log(resultArray)
       this.findPopShowYn = false
       return resultArray
     },
@@ -2022,6 +2033,8 @@ export default {
         delete this.findKeyList.workStatCodeKey
       } else if (type === 'creUserName') {
         delete this.findKeyList.creUserName
+      } else if (type === 'stickerKey') {
+        delete this.findKeyList.selectedSticker
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       // getPushContentsList (pageSize, offsetInput)

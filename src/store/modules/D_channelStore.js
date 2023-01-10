@@ -560,8 +560,10 @@ const D_CHANNEL = {
         if (idx2 !== -1) {
           if (payload[i].jobkindId === 'BOAR') {
             chanDetail.ELEMENTS.boardList[idx2].D_CONT_USER_DO = payload[i].D_CONT_USER_DO
+            chanDetail.ELEMENTS.boardList[idx2].D_CONT_USER_STICKER_LIST = payload[i].D_CONT_USER_STICKER_LIST
           } else {
             chanDetail.ELEMENTS.alimList[idx2].D_CONT_USER_DO = payload[i].D_CONT_USER_DO
+            chanDetail.ELEMENTS.alimList[idx2].D_CONT_USER_STICKER_LIST = payload[i].D_CONT_USER_STICKER_LIST
           }
         }
       }
@@ -669,7 +671,9 @@ const D_CHANNEL = {
       if (payload.length > 0) {
         for (var i = 0; i < payload.length; i++) {
           var userDo = payload[i].userDoList
+          console.log(userDo)
           var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
+          var D_CONT_USER_STICKER_LIST = []
           if (userDo) {
             var index = userDo.findIndex((item) => item.doType === 'ST')
             if (index >= 0) {
@@ -687,8 +691,14 @@ const D_CHANNEL = {
             if (index >= 0) {
               userDoList[3].doKey = userDo[index].doKey
             }
+            for (var u = 0; u < userDo.length; u++) {
+              if (userDo[u].doType === 'SK') {
+                D_CONT_USER_STICKER_LIST.push(userDo[u])
+              }
+            }
           }
           payload[i].D_CONT_USER_DO = userDoList
+          payload[i].D_CONT_USER_STICKER_LIST = D_CONT_USER_STICKER_LIST
         }
         commit('MU_REPLACE_CONTENTS', payload)
       }
@@ -704,6 +714,7 @@ const D_CHANNEL = {
       for (var i = 0; i < payload.length; i++) {
         var userDo = payload[i].userDoList
         var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
+        var D_CONT_USER_STICKER_LIST = []
         if (userDo) {
           var starIndex = userDo.findIndex((item) => item.doType === 'ST')
           if (starIndex !== -1) {
@@ -717,8 +728,14 @@ const D_CHANNEL = {
           } else {
             userDoList[1].doKey = 0
           }
+          for (var u = 0; u < userDo.length; u++) {
+            if (userDo[u].doType === 'SK') {
+              D_CONT_USER_STICKER_LIST.push(userDo[u])
+            }
+          }
         }
         payload[i].D_CONT_USER_DO = userDoList
+        payload[i].D_CONT_USER_STICKER_LIST = D_CONT_USER_STICKER_LIST
         commit('MU_ADD_CONTENTS', payload)
       }
     },

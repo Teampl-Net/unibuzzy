@@ -1,65 +1,66 @@
 <template>
-    <div id="gPopup" v-if="reloadYn === false && this.popId" :style="this.targetType === 'writeContents'? 'background: transparent' : '' + mobileYn && (targetType !== 'chanDetail' && targetType !== 'boardMain')? 'padding-top: ' + this.$STATUS_HEIGHT + 'px':''" class="commonPopWrap">
-      <loadingCompo style="z-index: 999!important; position:absolute; top:0; left:0;" v-if="loadingYn" />
-      <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
-      <transition name="showModal">
-        <fullModal @openImgPop="openImgPop" @goScrollTarget="goScrollTarget" @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonGPopWrap" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
-                                        @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.thisPopN" :propParams="this.popParams" :propData="this.propParams" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload' @closeNewPop='closeNewPop'                                        />
-      </transition>
-      <popHeader  ref="gPopupHeader" :checkOfficialChanYn="this.propData" :helpYn="this.helpYn" :class="(targetType === 'chanDetail' || targetType === 'boardMain')? 'chanDetailPopHeader': ''" :chanName="this.propParams.chanName" :headerTitle="this.headerTitle" :chanAlimListTeamKey="this.propParams.targetKey" @closeXPop="closeXPop" :thisPopN="this.thisPopN" class="commonPopHeader"
-      v-if="targetType !=='writeContents'" :followYn="this.headerFollowYn" :style="'top:' + 0 + 'px'"
-      @openMenu='openChanMenuYn = true' :bgblack='this.bgblackYn' :propBookDetailPopYn='this.mBookDetailPopYn' @closeBookDetail='mBookDetailPopYn = false' :targetType='targetType' />
-      <div class="w-100P h-100P" style=" position: relative;" v-if=" popId &&  this.targetType === 'chanDetail'">
-        <chanAlimList @openImgPop="openImgPop" :pPopId="popId" :propData="this.propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="this.loadingYn = false" :chanDetail="propParams" v-if=" popId && targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
-      </div>
-      <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  this.targetType === 'pushList'">
-        <pushList :pPopId="popId" style="" :initData='this.propParams.initData' :propParams="this.propParams" :ref="'gPopPush'" :popYn="true" :readySearchList="this.readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
-      </div>
+    <div id="gPopup" v-if="reloadYn === false && popId" :style="targetType === 'writeContents'? 'background: transparent' : '' + mobileYn && (targetType !== 'chanDetail' && targetType !== 'boardMain')? 'padding-top: ' + $STATUS_HEIGHT + 'px':''" class="commonPopWrap">
+        <loadingCompo style="z-index: 999!important; position:absolute; top:0; left:0;" v-if="loadingYn" />
+        <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
+        <transition name="showModal">
+            <fullModal @openImgPop="openImgPop" @goScrollTarget="goScrollTarget" @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonGPopWrap" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
+                                            @closePop="closePop" v-if="popShowYn" :parentPopN="thisPopN" :propParams="popParams" :propData="propParams" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload' @closeNewPop='closeNewPop'                                        />
+        </transition>
+        <popHeader  ref="gPopupHeader" :checkOfficialChanYn="propData" :helpYn="helpYn" :class="(targetType === 'chanDetail' || targetType === 'boardMain')? 'chanDetailPopHeader': ''" :chanName="propParams.chanName" :headerTitle="headerTitle" :chanAlimListTeamKey="propParams.targetKey" @closeXPop="closeXPop" :thisPopN="thisPopN" class="commonPopHeader"
+        v-if="targetType !=='writeContents'" :followYn="headerFollowYn" :style="'top:' + 0 + 'px'"
+        @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :propBookDetailPopYn='mBookDetailPopYn' @closeBookDetail='mBookDetailPopYn = false' :targetType='targetType' />
 
-      <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  this.targetType === 'chanList'">
-        <chanList :pPopId="popId" :initData='this.propParams.initData' :propData="this.propParams" ref="gPopChan" :popYn="true" @closeLoading="this.loadingYn = false" @openPop = "openPop"/>
-      </div>
-      <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if="popId &&  this.targetType === 'searchPop'">
-        <searchPage :pPopId="popId" :propData="this.propParams" :popYn="true" @openPop="openPop" />
-      </div>
-      <changeInfo :pPopId="popId" @closeLoading="this.loadingYn = false"  @successUpdate="this.closeXPop(true)" :kind="this.changInfoType" v-if=" popId &&  this.targetType === 'changeInfo'" />
-      <askTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop" :propData='this.propParams' />
-      <talInfo :pPopId="popId"  @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'theAlimInfo'" />
-      <question :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'question'" @openPop="openPop"/>
-      <leaveTal :pPopId="popId" @closeLoading="this.loadingYn = false" v-if=" popId &&  this.targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
-      <createChannel :pPopId="popId" v-if=" popId &&  this.targetType === 'createChannel'" :chanDetail="this.propParams"  @closeXPop="closeXPop(true)" @closePop="closePop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @successCreChan='successCreChan' @openPop='openPop' />
+        <div class="w-100P h-100P" style=" position: relative;" v-if=" popId &&  targetType === 'chanDetail'">
+            <chanAlimList @openImgPop="openImgPop" :pPopId="popId" :propData="propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="loadingYn = false" :chanDetail="propParams" v-if=" popId && targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
+        </div>
+        <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  targetType === 'pushList'">
+            <pushList :pPopId="popId" style="" :initData='propParams.initData' :propParams="propParams" :ref="'gPopPush'" :popYn="true" :readySearchList="readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
+        </div>
 
-      <div v-if="popId &&  this.targetType === 'writeContents'" style="position: absolute; top:0; left:0; z-index:10; background:#00000050; width: 100vw; height: 100vh;"></div>
-      <writeContents :pPopId="popId" ref="writeContentsCompo" v-if="popId &&  this.targetType === 'writeContents'" :contentType="this.propParams.contentsJobkindId" :params="this.propParams" :propData="this.propParams" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' @toAlimFromBoard="toAlimFromBoard" />
+        <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  targetType === 'chanList'">
+            <chanList :pPopId="popId" :initData='propParams.initData' :propData="propParams" ref="gPopChan" :popYn="true" @closeLoading="loadingYn = false" @openPop = "openPop"/>
+        </div>
+        <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if="popId &&  targetType === 'searchPop'">
+            <searchPage :pPopId="popId" :propData="propParams" :popYn="true" @openPop="openPop" />
+        </div>
+        <changeInfo :pPopId="popId" @closeLoading="loadingYn = false"  @successUpdate="closeXPop(true)" :kind="changInfoType" v-if=" popId &&  targetType === 'changeInfo'" />
+        <askTal :pPopId="popId" @closeLoading="loadingYn = false" v-if=" popId &&  targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop" :propData='propParams' />
+        <talInfo :pPopId="popId"  @closeLoading="loadingYn = false" v-if=" popId &&  targetType === 'theAlimInfo'" />
+        <question :pPopId="popId" @closeLoading="loadingYn = false" v-if=" popId &&  targetType === 'question'" @openPop="openPop"/>
+        <leaveTal :pPopId="popId" @closeLoading="loadingYn = false" v-if=" popId &&  targetType === 'leaveTheAlim'" @closeXPop="closeXPop" />
+        <createChannel :pPopId="popId" v-if=" popId &&  targetType === 'createChannel'" :chanDetail="propParams"  @closeXPop="closeXPop(true)" @closePop="closePop" @openLoading="loadingYn = true" @closeLoading="loadingYn = false" @successCreChan='successCreChan' @openPop='openPop' />
 
-      <selectBookList :pPopId="popId" v-if=" popId &&  this.targetType === 'selectBookList'" :pSelectedList="this.selectPlist" :selectPopYn='true' :propData='this.propParams' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
-      <chanMenu :pPopId="popId" ref="chanMenuCompo" :propData="this.propParams" @openPop="openPop" :propChanAlimListTeamKey="this.propParams.targetKey" v-if='openChanMenuYn === true && popId' @closePop='openChanMenuYn = false' @openItem='openPop' @openChanMsgPop="closeNopenChanMsg()"/>
-      <boardMain @openImgPop="openImgPop" :pPopId="popId" ref="boardMainPop" :propData="this.propParams" :chanAlimListTeamKey="this.propParams.targetKey" v-if=" popId &&  this.targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="this.loadingYn = false" @openLoading="this.loadingYn = true"/>
-      <contentsDetail @openImgPop="openImgPop" :pPopId="popId" @closeAndNewPop="closeAndNewPop" :propData="this.propParams" ref="boardDetailCompo" v-if=" popId &&  this.targetType === 'contentsDetail'" @openPop="openPop" :propParams='this.propParams' @reloadParent='reloadParent' @closeXPop="closeXPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
-      <editBookList :pPopId="popId" ref="editBookListComp" @closeXPop="closeXPop" :propData="this.propParams" :chanAlimListTeamKey="this.propParams.targetKey" v-if="this.targetType=== 'editBookList'" @openPop='openPop' @showToastPop="showToastPop" @openBookDetailPop='openBookDetailPop' :propBookDetailPopYn='this.mBookDetailPopYn' />
-      <editManagerList :pPopId="popId" ref="editManagerListComp" :propData="this.propParams" @openPop="openPop" :managerOpenYn='true'   v-if="this.targetType=== 'editManagerList'" />
-      <bookMemberDetail :pPopId="popId" @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="this.propParams" v-if="this.targetType=== 'bookMemberDetail'" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
-      <onlyMemberSelectPop :pPopId="popId"  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="this.propParams.pSelectedList" :propData="this.propParams" v-if="this.targetType=== 'selectMemberPop'" @closeXPop='closeXPop' @saveCabinet='saveCabinet' />
-      <memberManagement :pPopId="popId" :propData="this.propParams" ref="mamberManagementCompo" v-if=" popId &&  this.targetType === 'memberManagement'" @openPop='openPop'/>
-      <selectAddressBookList :pPopId="popId" :propData="this.propParams" v-if=" popId &&  this.targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
-      <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if=" popId &&  this.targetType === 'setMypage'">
-        <setMypage :pPopId="popId" v-if=" popId &&  this.targetType === 'setMypage'" @closeXPop="closeXPop" @openPop="openPop" />
-      </div>
-      <editMyChanMenu :pPopId="popId" v-if=" popId && this.targetType === 'myChanMenuEdit'" :propData="this.propParams" @openPop="openPop"  />
-      <editBoardPop :pPopId="popId" v-if=" popId && this.targetType === 'editBoard'" :propData="this.propParams" @openPop="openPop" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" />
-      <chanInfoComp :pPopId="popId" ref="gPopChanDetailRef" v-if=" popId &&  this.targetType === 'chanInfo'" :propData="this.propParams" @openLoading="this.loadingYn = true" @closeLoading="this.loadingYn = false" @closeXPop="closeXPop" @pageReload="reloadPop" @openPop="openPop" @changeFollowYn="changeFollowYn"  :alimSubPopYn="alimListToDetail" :chanDetail="this.propParams.value" style="background-color: #fff;"></chanInfoComp>
-      <autoAnswerList :pPopId="popId" v-if=" popId &&  this.targetType === 'autoAnswer'" :propData="this.propParams" @openPop="openPop"  />
-      <memberFormList :pPopId="popId" v-if=" popId &&  this.targetType === 'memberFormList'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
-      <memberForm :pPopId="popId" v-if=" popId &&  this.targetType === 'memberForm'" :propData="this.propParams" @closeXPop="closeXPop" @openPop="openPop" />
-      <memberFormPreView :pPopId="popId" v-if=" popId &&  this.targetType === 'mQPreview'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
-      <errorPage :pPopId="popId" v-if=" popId &&  this.targetType === 'errorPage'" :propData="this.propParams" @openPop="openPop" />
-      <creAddressBook :pPopId="popId" v-if="this.targetType === 'creAddressBook'" :propData="this.propParams" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop" @saveCabinet="saveCabinet" />
-      <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 999999999;"/>
-      <editMemberTypePop ref="editMemberTypePop" :pPopId="popId" v-if="popId && this.targetType === 'editMemberTypePop'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
-      <memInfoCreEditPop :pPopId="popId" v-if="popId && this.targetType === 'memInfoCreEditPop'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
-      <notiHitstory :pPopId="popId" v-if="popId && this.targetType === 'notiHitstory'" :propData="this.propParams" @openPop="openPop" @closeXPop="closeXPop" />
-      <savePhone @openPop="openPop" @closeXPop="closeXPop" :popYn="true" :pPopId="popId" v-if="popId && this.targetType === 'changePhone'" />
-      <totalFileList @openImgPop="openImgPop" :pPopId="popId" v-if=" popId && this.targetType === 'totalFileList'" @closeXPop="closeXPop" @openPop="openPop"/>
+        <div v-if="popId &&  targetType === 'writeContents'" style="position: absolute; top:0; left:0; z-index:10; background:#00000050; width: 100vw; height: 100vh;"></div>
+        <writeContents :pPopId="popId" ref="writeContentsCompo" v-if="popId &&  targetType === 'writeContents'" :contentType="propParams.contentsJobkindId" :params="propParams" :propData="propParams" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' @toAlimFromBoard="toAlimFromBoard" />
+
+        <selectBookList :pPopId="popId" v-if=" popId &&  targetType === 'selectBookList'" :pSelectedList="selectPlist" :selectPopYn='true' :propData='propParams' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
+        <chanMenu :pPopId="popId" ref="chanMenuCompo" :propData="propParams" @openPop="openPop" :propChanAlimListTeamKey="propParams.targetKey" v-if='openChanMenuYn === true && popId' @closePop='openChanMenuYn = false' @openItem='openPop' @openChanMsgPop="closeNopenChanMsg()"/>
+        <boardMain @openImgPop="openImgPop" :pPopId="popId" ref="boardMainPop" :propData="propParams" :chanAlimListTeamKey="propParams.targetKey" v-if=" popId &&  targetType === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"  @closeLoading="loadingYn = false" @openLoading="loadingYn = true"/>
+        <contentsDetail @openImgPop="openImgPop" :pPopId="popId" @closeAndNewPop="closeAndNewPop" :propData="propParams" ref="boardDetailCompo" v-if=" popId &&  targetType === 'contentsDetail'" @openPop="openPop" :propParams='propParams' @reloadParent='reloadParent' @closeXPop="closeXPop" @openLoading="loadingYn = true" @closeLoading="loadingYn = false" />
+        <editBookList :pPopId="popId" ref="editBookListComp" @closeXPop="closeXPop" :propData="propParams" :chanAlimListTeamKey="propParams.targetKey" v-if="targetType=== 'editBookList'" @openPop='openPop' @showToastPop="showToastPop" @openBookDetailPop='openBookDetailPop' :propBookDetailPopYn='mBookDetailPopYn' />
+        <editManagerList :pPopId="popId" ref="editManagerListComp" :propData="propParams" @openPop="openPop" :managerOpenYn='true'   v-if="targetType=== 'editManagerList'" />
+        <bookMemberDetail :pPopId="popId" @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="propParams" v-if="targetType=== 'bookMemberDetail'" @openLoading="loadingYn = true" @closeLoading="loadingYn = false" />
+        <onlyMemberSelectPop :pPopId="popId"  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="propParams.pSelectedList" :propData="propParams" v-if="targetType=== 'selectMemberPop'" @closeXPop='closeXPop' @saveCabinet='saveCabinet' />
+        <memberManagement :pPopId="popId" :propData="propParams" ref="mamberManagementCompo" v-if=" popId &&  targetType === 'memberManagement'" @openPop='openPop'/>
+        <selectAddressBookList :pPopId="popId" :propData="propParams" v-if=" popId &&  targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
+        <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if=" popId &&  targetType === 'setMypage'">
+            <setMypage :pPopId="popId" v-if=" popId &&  targetType === 'setMypage'" @closeXPop="closeXPop" @openPop="openPop" />
+        </div>
+        <editMyChanMenu :pPopId="popId" v-if=" popId && targetType === 'myChanMenuEdit'" :propData="propParams" @openPop="openPop"  />
+        <editBoardPop :pPopId="popId" v-if=" popId && targetType === 'editBoard'" :propData="propParams" @openPop="openPop" @openLoading="loadingYn = true" @closeLoading="loadingYn = false" />
+        <chanInfoComp :pPopId="popId" ref="gPopChanDetailRef" v-if=" popId &&  targetType === 'chanInfo'" :propData="propParams" @openLoading="loadingYn = true" @closeLoading="loadingYn = false" @closeXPop="closeXPop" @pageReload="reloadPop" @openPop="openPop" @changeFollowYn="changeFollowYn"  :alimSubPopYn="alimListToDetail" :chanDetail="propParams.value" style="background-color: #fff;"></chanInfoComp>
+        <autoAnswerList :pPopId="popId" v-if=" popId &&  targetType === 'autoAnswer'" :propData="propParams" @openPop="openPop"  />
+        <memberFormList :pPopId="popId" v-if=" popId &&  targetType === 'memberFormList'" :propData="propParams" @openPop="openPop" @closeXPop="closeXPop" />
+        <memberForm :pPopId="popId" v-if=" popId &&  targetType === 'memberForm'" :propData="propParams" @closeXPop="closeXPop" @openPop="openPop" />
+        <memberFormPreView :pPopId="popId" v-if=" popId &&  targetType === 'mQPreview'" :propData="propParams" @openPop="openPop" @closeXPop="closeXPop" />
+        <errorPage :pPopId="popId" v-if=" popId &&  targetType === 'errorPage'" :propData="propParams" @openPop="openPop" />
+        <creAddressBook :pPopId="popId" v-if="targetType === 'creAddressBook'" :propData="propParams" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop" @saveCabinet="saveCabinet" />
+        <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 999999999;"/>
+        <editMemberTypePop ref="editMemberTypePop" :pPopId="popId" v-if="popId && targetType === 'editMemberTypePop'" :propData="propParams" @openPop="openPop" @closeXPop="closeXPop" />
+        <memInfoCreEditPop :pPopId="popId" v-if="popId && targetType === 'memInfoCreEditPop'" :propData="propParams" @openPop="openPop" @closeXPop="closeXPop" />
+        <notiHitstory :pPopId="popId" v-if="popId && targetType === 'notiHitstory'" :propData="propParams" @openPop="openPop" @closeXPop="closeXPop" />
+        <savePhone @openPop="openPop" @closeXPop="closeXPop" :popYn="true" :pPopId="popId" v-if="popId && targetType === 'changePhone'" />
+        <totalFileList @openImgPop="openImgPop" :pPopId="popId" v-if=" popId && this.targetType === 'totalFileList'" @closeXPop="closeXPop" @openPop="openPop"/>
     </div>
 </template>
 

@@ -484,7 +484,8 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .whitePurpleBG{background-color: #f4f4f9 !important}
 .lightPurple{color: rgba(186, 187, 215, 0.5);}
 .commonRed{color:#DC143C}
-.mainBackgroundColor {background: #F4F7FF!important;}
+.mainBackgroundColor {background: #E7EDFF!important;}
+/* background-color: #F4F7FF; */
 .commonGray{color: #7A7A7A !important;}
 .commonGrayBG {background-color: #F8F8FF !important;}
 .commonPurpleBG{background-color: #F8F8FF;}
