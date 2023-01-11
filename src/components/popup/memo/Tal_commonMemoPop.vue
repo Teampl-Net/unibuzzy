@@ -9,10 +9,14 @@
 
     </div>
     <div style="width: calc(100%); display: flex; align-items: center; min-height: 30px;" class="fl">
-        <div class="attachFileBg fl whiteColor font14" @click="this.$refs.selectFile.click()" style="; min-height: 25px; margin-right: 10px; font-weight: 500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: rgb(255, 255, 255); margin-top: 2px; border-radius: 8px; position: relative;">
-            +사진
+      <div v-if="this.mUploadFileList.length > 0" class="fl mtop-05" style="width: 100%; overflow: auto; width: calc(100% - 55px); margin-top: 2px;">
+        <div :style="attachFileWidth" style="min-width: 100%; float: left; overflow: auto; white-space: nowrap;">
+          <div class="CMiddleBorderColor" style="padding: 3px 10px; float: left; margin-left: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7; border-radius: 8px; position: relative; " v-for="(value, index) in  mUploadFileList" :key="index">
+              <p class="CMiddleColor font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p>
+              <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" style="position: absolute; right: 5px;top: 7px;" alt="">
+          </div>
         </div>
-        <attachFileList ref="attCompo" style="width: calc(100% - 60px);" :pOneLineYn="true" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+      </div>
     </div>
     <form @submit.prevent="formSubmit" hidden style="overflow: hidden; width: 100%; cursor: pointer; height: 300px; position: relative; " method="post">
             <!-- <div v-if="mSelectedImgList.length === 0" style="cursor: pointer; background: #FFF; width: calc(100%); min-height: 70px; height: 100%;display: flex; font-size: 14px;color: rgb(103, 104, 167);justify-content: center;align-items: center;">
@@ -23,7 +27,7 @@
     </form>
     <div v-if="mSelectedImgList && mSelectedImgList.length > 0" style="overflow: hidden; border: 1px solid rgb(167, 167, 167); border-radius: 10px; padding: 8px; margin-bottom: 10px;  width: 100%; cursor: pointer; max-height: 300px; position: relative; " >
         <div v-if="mSelectedImgList && mSelectedImgList.length > 0"  ref="imageBox" class="fl mright-05 formCard" style="position: relative;overflow: scroll hidden; width: 100%; height: calc(100%)">
-            <div  class="fl mright-05" :style="allImgWidth" style="height:100%; width: var(--width)" >
+            <div class="fl mright-05" :style="allImgWidth" style="height:100%; width: var(--width)" >
                 <div style="float: left; height: 100%; position: relative;" v-for="(value, index) in mSelectedImgList" :key="index">
                     <img class="editorImg" :style="{height: setImgSize(index), height: value.scrollHeight + 'px'}" style="min-height: 80px; max-height: 300px;" :id="'addImg' + index" :class="{addTrue :  value.addYn}" :src="value.previewImgUrl" />
                     <div class="cursorP" @click="deleteSelectImgList(index)" style="position: absolute; height: 25px; border-radius: 100%; background: #FFF; padding: 5px; right: 5px; top: 5px; box-shadow: 0 0 4px 4px #00000030; width: 25px;" >
@@ -38,8 +42,20 @@
 
     <!-- <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;"> -->
       <div style="width: 100%; display: flex; align-items: center; float: left;">
-        <div style="width: 40px; height: 40px; margin-right: 8px; border-radius: 5px; background: #dcddeb; float: left; font-size: 30px;color: #FFF; font-weight: bold">+</div>
-        <pre placeholder="댓글을 작성해주세요." @focus="test" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding " :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}" style="width:calc(100% - 80px); min-height:2.5rem; text-align:left; float: left; resize: none; border-radius: 10px; border: 1px solid #a7a7a7"  contenteditable=true  @input="inputTextCheck"/>
+        <div @click="toggleAttatchMenu" style="position: relative; width: 40px; height: 40px; margin-right: 8px; border-radius: 5px; background: #dcddeb; float: left; font-size: 30px;color: #FFF; font-weight: bold">+
+          <div v-if="attatchMenuShowYn" style="width: 150px; background-color: #fff; position: absolute; bottom: 40px; left: 30px; border-radius: 8px; border-bottom-left-radius: 0; box-shadow: rgb(103 104 167 / 40%) 0px 1px 3px;">
+            <div class="font16 commonColor" @click.stop="addImgFile" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 100%; border-bottom: 1px solid #eee;">
+              <img src="../../../assets/images/common/fileType_img.svg" alt="" style="margin-right: 8px;">
+              사진
+            </div>
+            <attachFileList ref="attCompo" style="width: calc(100% - 60px);" :pOneLineYn="true" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+            <div @click.stop="toggleAttatchMenu" class="font16 commonColor" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 100%;">
+              <img src="../../../assets/images/common/searchXIcon.svg" alt="" style="margin-right: 8px;">
+              닫기
+            </div>
+          </div>
+        </div>
+        <pre placeholder="댓글을 작성해주세요." @focus="test" @keydown="inputEnterKey" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding " :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}" style="width:calc(100% - 80px); min-height:2.5rem; text-align:left; float: left; resize: none; border-radius: 10px; border: 1px solid #a7a7a7"  contenteditable=true  @input="inputTextCheck"/>
         <!-- <div style="width: 30px; height: 100%;"> -->
         <img v-if="mWatchInputData.trim() !== ''" @click="saveMemo()" src="../../../assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mleft-05">
         <img v-else @click="$showToastPop('댓글을 작성해주세요.')" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mleft-05">
@@ -74,7 +90,8 @@ export default {
       mWatchInputData: '',
       mUploadFileList: [],
       mSelectedImgList: [],
-      selectFile: null
+      selectFile: null,
+      attatchMenuShowYn: false
     }
   },
   updated () {
@@ -84,6 +101,17 @@ export default {
     this.settingPop()
   },
   computed: {
+    attachFileWidth () {
+      var minW = null
+      if (this.mUploadFileList.length > 0) {
+        minW = 200 * this.mUploadFileList.length + 20 + 'px'
+      } else {
+        minW = '100%'
+      }
+      return {
+        width: minW
+      }
+    },
     allImgWidth () {
       var imgList = this.mSelectedImgList
       console.log(imgList)
@@ -98,6 +126,22 @@ export default {
     }
   },
   methods: {
+    inputEnterKey (event) {
+      if (event.keyCode === 13) {
+        if (!event.shiftKey) {
+          event.preventDefault()
+          this.saveMemo()
+        }
+      }
+    },
+    addImgFile () {
+      this.$refs.selectFile.click()
+      this.toggleAttatchMenu()
+    },
+    toggleAttatchMenu () {
+      this.attatchMenuShowYn = !this.attatchMenuShowYn
+      console.log(this.attatchMenuShowYn)
+    },
     setImgSize (i) {
       this.$nextTick(() => {
         var imgs = document.getElementById('addImg' + i)
@@ -408,6 +452,11 @@ export default {
       } else {
         this.$showToastPop('댓글의 내용을 입력해주세요.')
       }
+    },
+    deleteFileList (value, index) {
+      console.log(this.sFileList)
+      this.$refs.attCompo.deleteFileList(value, index)
+      this.delAttachFile(value)
     }
   }
 }

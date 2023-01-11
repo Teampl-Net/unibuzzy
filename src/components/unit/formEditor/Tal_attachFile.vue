@@ -1,7 +1,13 @@
 <template>
-    <div style="width: 100%; float: left;" :style="pOneLineYn? 'display: flex; align-items: center; height: 40px;':''">
+    <div style="width: 100%; float: left;">
       <gConfirmPop @no="this.errorShowYn = false" confirmText='파일은 최대 10MB까지 첨부할 수 있습니다.' confirmType='timeout' v-if="errorShowYn" />
-      <form @submit.prevent="formSubmit" class="font14 whiteColor attachFileBg fl " style="font-weight:500; overflow: hidden;cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " method="post">
+      <!-- <form v-if="this.targetType === 'memo'" @submit.prevent="formSubmit" class="font16 commonColor" style="position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 150px; border-bottom: 1px solid #eee;" method="post">
+          파일 선택
+          <img src="../../../assets/images/common/fileIcon.svg" alt="" style="margin-right: 8px;">
+          첨부
+          <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%; height: 25px;" id="input-file" @change="handleImageUpload"/>
+      </form> -->
+      <form @submit.prevent="formSubmit" class="font14 whiteColor attachFileBg fl " style="font-weight:500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " method="post">
           <!-- 파일 선택 -->
           +첨부
           <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%;" id="input-file" @change="handleImageUpload"/>
@@ -31,7 +37,8 @@ export default {
   },
   props: {
     attachTrueAddFalseList: {},
-    pOneLineYn: {}
+    pOneLineYn: {},
+    targetType: {}
   },
   created () {
     if (this.attachTrueAddFalseList && this.attachTrueAddFalseList.length > 0) {
@@ -58,7 +65,9 @@ export default {
     }
   },
   methods: {
-    async handleImageUpload (event) {
+    async handleImageUpload () {
+      // eslint-disable-next-line no-debugger
+      debugger
       this.selectFile = null
       const options = {
         maxSizeMB: 1,
