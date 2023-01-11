@@ -16,7 +16,7 @@
                 <gEmpty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
                 <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
                 <channelCard class="moveBox chanRow" :chanElement="chanEle" @openPop="openPop" @scrollMove="scrollMove" />
-                <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
+                <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
                 </template>
             </div>
             <img src="../../assets/images/button/Icon_CreChanBtn.png" @click="clickCreateChannel" alt="채널 만들기 버튼" style="position: absolute;  right: 10%;" :style="'bottom:' + (this.$STATUS_HEIGHT + 100)+ 'px'" class="img-78 img-w66">
@@ -263,6 +263,7 @@ export default {
       }
     },
     async refreshList () {
+      console.log('refreshList')
       this.mEndListYn = false
       this.mChannelList = []
       this.mScrolledYn = false
@@ -300,6 +301,7 @@ export default {
     },
     async loadMore (pageSize) {
       if (this.mEndListYn === false) {
+        console.log('loadMore')
         var resultList = await this.getChannelList()
         if (resultList === undefined) return
         var addList = []
@@ -347,6 +349,7 @@ export default {
       }
     },
     async changeTab (tab) {
+      console.log('changeTab')
       this.mViewTab = tab
       this.mOffsetInt = 0
       this.mListShowYn = false
@@ -405,6 +408,7 @@ export default {
       this.$emit('openPop', openPopParam)
     },
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
+      // alert(offsetInput)
       if (this.mAxiosQueue.findIndex((item) => item === 'getChannelList') !== -1) return
       this.mAxiosQueue.push('getChannelList')
       var paramMap = new Map()
@@ -446,6 +450,7 @@ export default {
       return resultList
     },
     async requestSearchList (paramMap) {
+      console.log('requestSearchList')
       this.mResultSearchKeyList = await this.castingSearchMap(paramMap)
       var resultList = await this.getChannelList(null, null, true)
       console.log(resultList)
@@ -485,6 +490,7 @@ export default {
         this.mPaddingTop = 50
       }
       this.mOffsetInt = 0
+      console.log('changeSearchList')
       var resultList = await this.getChannelList(null, null, true)
       console.log(resultList)
       var newArr = []

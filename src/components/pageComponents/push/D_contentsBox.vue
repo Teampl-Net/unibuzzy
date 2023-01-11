@@ -36,8 +36,18 @@
                             {{this.$changeText(CONT_DETAIL.creUserName)}}
                         </span>
                     </div>
-
                     <p class="fr CLDeepGrayColor font12" style="line-height: 23px;">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
+                    <div @click="openRecvActorListPop(CONT_DETAIL.rUserCount === -1? true : '')" class="fr cursorP font12 commonGrayBG CDeepColor fontBold mtop-02 mright-05 " v-if="CONT_DETAIL.jobkindId === 'ALIM'" :style="CONT_DETAIL.rUserCount !== -1 && CONT_DETAIL.creUserKey === GE_USER.userKey? 'background: rgb(221 229 251)!important;':''" style="padding: 0px 8px; border-radius: 8px; height: 18px; display: flex; align-items: center;" >
+                        <!-- <p  class="font12 fl lightGray">수신</p>
+                        <span class="font12 mSide-02">{{'|'}}</span> -->
+                        <template   v-if="CONT_DETAIL.rUserCount === -1">
+                            전체
+                        </template>
+                        <template v-else-if="CONT_DETAIL.rUserCount !== -1">
+                            <img src="../../../assets/images/push/userIcon.svg" class="img-w13 mright-01 fl" alt="">
+                            <p class="font12 fl mleft-01 CDeepColor" style="line-height: 1; margin-top: 1px;">{{CONT_DETAIL.rUserCount}}</p>
+                        </template>
+                    </div>
                 </div>
                 <div style="width: 100%; float: left;">
                     <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
@@ -45,17 +55,6 @@
                     <p class="fl commonColor font12 fl textLeft fontBold cursorP" v-if="CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" style="margin-top: 2px;" @click="sendReply">답장하기</p>
                     <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
                         <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
-                    </div>
-                    <div @click="openRecvActorListPop(CONT_DETAIL.rUserCount === -1? true : '')" class="fr cursorP font12 lightGray" v-if="CONT_DETAIL.jobkindId === 'ALIM'" :style="CONT_DETAIL.rUserCount !== -1 && CONT_DETAIL.creUserKey === GE_USER.userKey? 'background: rgb(221 229 251)!important;':''" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" >
-                        <p  class="font12 fl lightGray">수신</p>
-                        <span class="font12 mSide-02">{{'|'}}</span>
-                        <template   v-if="CONT_DETAIL.rUserCount === -1">
-                            전체
-                        </template>
-                        <template v-else-if="CONT_DETAIL.rUserCount !== -1">
-                            <img src="../../../assets/images/footer/icon_people.svg" class="img-w10 fl" alt="">
-                            <p class="font12 fl mleft-01" style="line-height: 1; margin-top: 1px;">{{CONT_DETAIL.rUserCount}}</p>
-                        </template>
                     </div>
                 </div>
             </div>
@@ -86,35 +85,48 @@
             <div class="contentsCardUserDoArea" style="width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">
                 <div style="float: left; width: calc(100% - 100px); height: 100%;" v-if="this.CONT_DETAIL.D_CONT_USER_DO">
                     <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                      <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="img-w20" src="../../../assets/images/contents/cont_like_no.svg" alt="">
-                      <img v-else src="../../../assets/images/contents/cont_like.svg" alt="" class="img-w20">
-                      <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.likeCount}}</p>
+                      <div style="width: 100%; height: 20px; float: left;">
+                        <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="" src="../../../assets/images/contents/cont_like_no.svg" alt="">
+                        <img v-else src="../../../assets/images/contents/cont_like.svg" alt="" class="">
+                      </div>
+                      <p class="font12 fl fontBold w-100P mtop-01  userDoColor">{{CONT_DETAIL.likeCount}}</p>
                     </div>
                     <div  @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                      <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" class="img-w17" src="../../../assets/images/contents/cont_star_no.svg" alt="">
-                      <img v-else src="../../../assets/images/contents/cont_star.svg" alt="" class="img-w17">
-                      <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.starCount}}</p>
+                      <div style="width: 100%; height: 20px; float: left;">
+                        <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" class="" src="../../../assets/images/contents/cont_star_no.svg" alt="">
+                        <img v-else src="../../../assets/images/contents/cont_star.svg" alt="" class="">
+                      </div>
+                      <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{CONT_DETAIL.starCount}}</p>
                     </div>
                     <div @click="this.goContentsDetail(undefined, true)" style="width: 30px; height: 35px; display: flex; cursor: pointer;  float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                      <img v-if="mWriteMemoYn" src="../../../assets/images/contents/cont_memo.svg" class="img-w20" alt="">
-                      <img v-else src="../../../assets/images/contents/cont_memo_no.svg" class="img-w20" alt="">
-                      <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
+                      <div style="width: 100%; height: 20px; float: left;">
+                        <img v-if="mWriteMemoYn" src="../../../assets/images/contents/cont_memo.svg" class="" alt="">
+                        <img v-else src="../../../assets/images/contents/cont_memo_no.svg" class="" alt="">
+                      </div>
+                      <p class="font12 fontBold mtop-01 fl w-100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
                     </div>
                     <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                      <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w17" alt="">
-                      <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
-                      <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
+                      <div style="width: 100%; height: 20px; float: left;">
+                        <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
+                          <img v-else src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
+                      </div>
+                      <p class="font12 fontBold mtop-01 fl w-100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
                     </div>
                 </div>
                 <div style="float: right; width: 140px; height: 100%; float: left;">
                     <div style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; cursor: pointer;justify-content: center; align-items: center;">
-                        <img src="../../../assets/images/contents/icon_share.png" class="img-w20 fl" alt="공유 아이콘"
-                            data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
-                                :data-clipboard-text="CONT_DETAIL.copyTextStr">
+                        <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
+                            <img src="../../../assets/images/push/contentsShareIcon.svg" class=" fl" alt="공유 아이콘"
+                                data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
+                                    :data-clipboard-text="CONT_DETAIL.copyTextStr">
+                        </div>
+                        <p class="font12 fl fontBold w-100P mtop-01 userDoColor">공유</p>
                     </div>
                     <div @click="mStickerPopShowYn = true" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                      <img src="../../../assets/images/push/stickerIcon.svg" class="img-w23" alt="">
-                      <!-- <p class="font12 fl w-100P userDoColor">{{CONT_DETAIL.D_CONT_USER_STICKER_LIST.length}}</p> -->
+                      <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
+                        <img src="../../../assets/images/push/stickerIcon.svg" class="img-w20" alt="">
+                      </div>
+                      <p class="font12 fl fontBold w-100P mtop-01 userDoColor">라벨</p>
                     </div>
                     <!-- this.$emit('fileDownload') -->
                     <!-- <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
@@ -122,8 +134,11 @@
                         <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                     </div> -->
                     <div @click="subScribeContents" style="width: 30px; height: 35px; display: flex; float: right;cursor: pointer;  margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/contents/icon_bell_on.png" class="img-w20" alt="">
-                        <img v-else src="../../../assets/images/contents/icon_bell.png" class="img-w20" alt="">
+                        <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center;">
+                            <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/push/contentsBellIcon_on.svg" class=" " alt="">
+                            <img v-else src="../../../assets/images/push/contentsBellIcon.svg" class="" alt="">
+                        </div>
+                        <p class="font12 fontBold fl mtop-01  w-100P userDoColor">관심</p>
                     </div>
                 </div>
             </div>
@@ -520,10 +535,13 @@ export default {
     async getMemoTop () {
       // contentsDetail.vue에서 스크롤 무브로 사용하고 있습니다.
       if (this.propDetailYn === false) return
-
-      var memoFristTop = await window.document.getElementById('contentsCardMemoArea' + this.CONT_DETAIL.contentsKey).offsetTop
-      console.log('contentBox : ' + memoFristTop)
-      return memoFristTop
+      this.$nextTick(() => {
+        var memoFrist = window.document.getElementById('contentsCardMemoArea' + this.CONT_DETAIL.contentsKey)
+        if (!memoFrist) return
+        var memoFristTop = memoFrist.offsetTop
+        console.log('contentBox : ' + memoFristTop)
+        return memoFristTop
+      })
     },
     cancelConfirm () {
       this.mConfirmText = '알림 발송을 취소 하시겠습니까?'

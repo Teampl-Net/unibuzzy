@@ -1,18 +1,20 @@
 <template>
     <div style="width: 100%; float: left;">
       <gConfirmPop @no="this.errorShowYn = false" confirmText='파일은 최대 10MB까지 첨부할 수 있습니다.' confirmType='timeout' v-if="errorShowYn" />
-      <!-- <form v-if="this.targetType === 'memo'" @submit.prevent="formSubmit" class="font16 commonColor" style="position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 150px; border-bottom: 1px solid #eee;" method="post">
-          파일 선택
-          <img src="../../../assets/images/common/fileIcon.svg" alt="" style="margin-right: 8px;">
+      <div @click="this.$refs.selectFileAttach.click()" class="font16 commonColor" style="font-weight:500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " v-if="this.targetType === 'memo'">
+          <img src="../../../assets/images/common/fileIcon.svg" alt="" style="">
           첨부
-          <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%; height: 25px;" id="input-file" @change="handleImageUpload"/>
-      </form> -->
-      <form @submit.prevent="formSubmit" class="font14 whiteColor attachFileBg fl " style="font-weight:500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " method="post">
-          <!-- 파일 선택 -->
-          +첨부
-          <input class="attachFile"  type="file" title ="파일 선택"  ref="selectFile" multiple accept="*" style="width: 100%;" id="input-file" @change="handleImageUpload"/>
+      </div>
+      <div v-else @click="this.$refs.selectFileAttach.click()" class="font14 whiteColor attachFileBg fl" style="font-weight:500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; ">
+        +첨부
+      </div>
+      <form v-if="this.targetType === 'memo'" @submit.prevent="formSubmit" class="font16 commonColor" style="position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 150px; border-bottom: 1px solid #eee;" method="post">
+          <input class="attachFile" hidden type="file" title ="파일 선택"  ref="selectFileAttach" multiple accept="*" style="width: 100%; height: 25px;" id="selectFileAttach" @change="handleImageUpload"/>
       </form>
-      <div v-if="this.sFileList.length > 0" :class="pOneLineYn? '' : 'mtop-05'" class="fl" style="width: 100%; overflow: auto;" :style="pOneLineYn? 'width: calc(100% - 55px); margin-top: 2px;': ''">
+      <form v-else @submit.prevent="formSubmit" hidden class="font14 whiteColor attachFileBg fl " style="font-weight:500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " method="post">
+          <input class="attachFile" hidden  type="file" title ="파일 선택"  ref="selectFileAttach" multiple accept="*" style="width: 100%;" id="selectFileAttach" @change="handleImageUpload"/>
+      </form>
+      <div v-if="this.targetType !== 'memo' && this.sFileList.length > 0" :class="pOneLineYn? '' : 'mtop-05'" class="fl" style="width: 100%; overflow: auto;" :style="pOneLineYn? 'width: calc(100% - 55px); margin-top: 2px;': ''">
           <div :style="attachFileWidth" style="min-width: 100%; float: left; overflow: auto; white-space: nowrap;">
             <div class="CMiddleBorderColor" style="padding: 3px 10px; float: left; margin-left: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7; border-radius: 8px; position: relative; " v-for="(value, index) in this.sFileList" :key="index">
                 <p class="CMiddleColor font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p>
@@ -74,13 +76,15 @@ export default {
         maxWidthOrHeight: 1500,
         useWebWorker: true
       }
-
-      if (this.$refs.selectFile.files.length > 0) {
+      var test = document.getElementById('selectFileAttach')
+      console.log(test)
+      if (this.$refs.selectFileAttach.files.length > 0) {
+        this.uploadCnt = 0
         // 0 번째 파일을 가져 온다.
-        for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
+        for (var k = 0; k < this.$refs.selectFileAttach.files.length; k++) {
           this.selectFile = null
           this.gAttachKey += 1
-          this.selectFile = this.$refs.selectFile.files[k]
+          this.selectFile = this.$refs.selectFileAttach.files[k]
           let fileExt = this.selectFile.name.substring(
             this.selectFile.name.lastIndexOf('.') + 1
           )
@@ -93,7 +97,7 @@ export default {
             console.log(`originalFile size ${this.selectFile.size / 1024 / 1024} MB`)
 
             try {
-              this.selectFile = this.$refs.selectFile.files[this.uploadCnt]
+              this.selectFile = this.$refs.selectFileAttach.files[this.uploadCnt]
               // eslint-disable-next-line no-undef
               var compressedFile = await this.$imageCompression(this.selectFile, options)
               console.log(compressedFile)
@@ -148,14 +152,14 @@ export default {
     async previewFile () {
       this.preImgUrl = null
       // 선택된 파일이 있는가?
-      if (this.$refs.selectFile.files.length > 0) {
+      if (this.$refs.selectFileAttach.files.length > 0) {
         // 0 번째 파일을 가져 온다.
 
-        for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
+        for (var k = 0; k < this.$refs.selectFileAttach.files.length; k++) {
           this.selectFile = null
           this.gAttachKey += 1
-          // console.log(this.$refs.selectFile.files[k])
-          this.selectFile = this.$refs.selectFile.files[k]
+          // console.log(this.$refs.selectFileAttach.files[k])
+          this.selectFile = this.$refs.selectFileAttach.files[k]
 
           // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
 
@@ -173,7 +177,7 @@ export default {
               var image = new Image()
               image.onload = async function () {
                 // Resize image
-                thisthis.selectFile = thisthis.$refs.selectFile.files[thisthis.uploadCnt]
+                thisthis.selectFile = thisthis.$refs.selectFileAttach.files[thisthis.uploadCnt]
                 var result = await thisthis.$saveFileSize(image, thisthis.selectFile)
                 thisthis.preImgUr = result.path
                 thisthis.selectFile = result.file

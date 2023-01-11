@@ -1,12 +1,12 @@
 <template>
 <!-- 이 페이지는 gPop에서 열어주지 않고 있고, editBoard 파일에서 가지고 있다. -->
-<div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" style="">
+<div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'"  style="padding-top: 0;">
   <popHeader @closeXPop="closePop()" headerTitle="게시판 수정" />
   <loadingCompo v-if="loadingYn" />
 
   <!-- 헤더를 제외한 나머지 부분 // 스크롤을 위해 넣었으나, overflow가 되면서 밑 권한 설정 화면에서 쉐도우 처리 양 끝이 hidden 됨-->
 
-  <div class="w-100P h-100P fl ptop-1" style="overflow: auto; height: calc(100% - 70px);" >
+  <div class="w-100P h-100P fl ptop-1" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'"  style="overflow: auto; height: calc(100% - 70px);" >
     <div class="itemWrite fl ">
       <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시판 이름</p>
       <input class="fl" style="width: calc(100% - 140px);" v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" id="channelName">

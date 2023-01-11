@@ -1,4 +1,6 @@
 <template>
+    <div v-if="mModiMemoPopShowYn" @click="this.$refs.modiMemoPop.backClick()" style="width: 100%; height: 100%; position: fixed; background: #00000026; z-index: 10; top: 0; left: 0;"></div>
+    <modiMemoPop :propContDetail="propContDetail" @closeXPop="this.mModiMemoPopShowYn = false" ref="modiMemoPop" :pMemoEle="mModiMemoObj" v-if="mModiMemoPopShowYn" />
     <div v-if="!childShowYn" style="width: 100%; min-height: 20px; display: flex; margin-bottom: 5px; ">
         <div style="width: 90px; margin-right: 10px; min-height: 20px;" @click="clickMemoEvnt({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
             <p class="commonBlack textLeft font14 fontBold">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
@@ -37,11 +39,11 @@
                     <pre v-else ref="modiMemoInput" :id="'memoFullStr'+propMemoEle.memoKey" class="editableContent  w-100P textLeft font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-html="mModiMemoInput"></pre>
                 </div>
                 <div style="min-height: 20px; margin-top: 10px;  width: 100%; padding-right: 10px; min-height: 20px;">
-                    <p @click="deleteConfirm(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">삭제</p>
+                    <!-- <p @click="deleteConfirm(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">삭제</p> -->
                     <p @click="this.mChangeMemoYn = false" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">닫기</p>
                     <p class="commonGray textLeft font12 fr" v-if="!this.mChangeMemoYn" @click="writeMeMemo(propMemoEle)">답글달기</p>
-                    <!-- <p class="commonGray textLeft font12 cursorP fr " @click="modiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn">수정</p>
-                    <p class="commonGray textLeft font12 cursorP fr " @click="saveModiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn">저장</p> -->
+                    <p class="commonGray textLeft font12 mright-05 cursorP fr " @blur="testFunction" @click="openModiMemoPop(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn">수정</p>
+                    <!-- <p class="commonGray textLeft font12 cursorP fr " @click="saveModiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn">저장</p> -->
                 </div>
             </div>
         </div>
@@ -72,16 +74,15 @@
                         <pre class="commonBlack textLeft font14" v-html="this.$decodeHTML(cmemo.bodyFullStr)" :id="'memoFullStr'+cmemo.memoKey" ></pre>
                     </div>
                     <div style="min-height: 20px; width: 100%; margin-top: 5px; padding-right: 10px; min-height: 20px;">
-                        <p @click="deleteConfirm(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey" class="commonGray mleft-1 textLeft font12 fr">삭제</p>
+                        <!-- <p @click="deleteConfirm(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey" class="commonGray mleft-1 textLeft font12 fr">삭제</p> -->
                         <p class="commonGray textLeft font12 fr"  @click="writeMeMemo(cmemo)">답글달기</p>
-                        <!-- <p class="commonGray textLeft font12 fr cursorP mright-1" @click="writeMeMemo(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey">수정</p> -->
+                        <p class="commonGray textLeft font12 fr cursorP mright-1" @click="openModiMemoPop(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey">수정</p>
                     </div>
                 </div>
             </div>
         </div>
         <attachFileListPop @updateMemo="updateMemo" propTargetType="R" :propFileData="this.mResultParam" v-if="mFilePopShowYn === true" @closePop="mFilePopShowYn = false"/>
         <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
-
         <imgPreviewPop :startIndex="startIndex" :mFileKey="selectedImgPopObj.attachMfilekey"  @closePop="this.mPreviewPopShowYn = false " v-if="selectedImgPopObj && mPreviewPopShowYn && selectedImgPopObj.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :creUserName="selectedImgPopObj.userDispMtext"  />
         <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk()" @no='mConfirmPopShowYn=false'/>
     </div>
@@ -91,6 +92,7 @@
 
 <script>
 import { onMessage } from '../../../assets/js/webviewInterface'
+import modiMemoPop from './D_modiMemoPop.vue'
 import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import attachFileListPop from '../main/unit/D_commonAttatchFileListPop.vue'
 // import memoModiPop from '../../board/D_memoModiPop.vue'
@@ -104,6 +106,7 @@ export default {
   components: {
     attachFileListPop,
     imgPreviewPop,
+    modiMemoPop
     // memoModiPop
   },
   computed: {
@@ -133,7 +136,9 @@ export default {
       startIndex: 0,
       mResultParam: {},
       targetMemo: {},
-      memoModiPopShowYn: false
+      memoModiPopShowYn: false,
+      mModiMemoPopShowYn: false,
+      mModiMemoObj: null
     }
   },
   mounted () {
@@ -171,6 +176,13 @@ export default {
     } */
   },
   methods: {
+    openModiMemoPop (memo) {
+      this.mModiMemoObj = memo
+      this.mModiMemoPopShowYn = true
+    },
+    testFunction () {
+      alert(true)
+    },
     updateMemo (param) {
       this.$emit('updateMemo', [param, this.targetMemo.memoKey, this.targetMemo.parentMemoKey])
     },
@@ -355,9 +367,9 @@ export default {
         targetKey = this.propMemoEle.memoKey
         toastText = '해당 댓글이 신고되었습니다.'
       } else if (type === 'CHANNEL') {
-        targetKind = 'T'
+        /* targetKind = 'T'
         targetKey = this.CONT_DETAIL.creTeamKey
-        toastText = '해당 채널이 신고되었습니다.'
+        toastText = '해당 채널이 신고되었습니다.' */
       } else if (type === 'USER') {
         targetKind = 'U'
         targetKey = this.propMemoEle.creUserKey

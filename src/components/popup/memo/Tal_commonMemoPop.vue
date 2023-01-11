@@ -1,5 +1,5 @@
 <template>
-  <div class="fl w-100P" ref='memoPopCompo' style="min-height: 50px; background: #fff; padding: 0.5rem 20px; padding-top: 0px; box-shadow: 0px -2px 3px 0px #eee;">
+  <div class="fl w-100P" ref='memoPopCompo' style="min-height: 50px; background: #fff; padding: 0.5rem 20px; padding-top: 10px; box-shadow: 0px -2px 3px 0px #eee;">
     <div v-if="meMemoData"  class="fl" style="width: calc(100% - 20px);min-height: 30px; margin: 0 10px 10px 10px; border-radius: 5px; background-color: #dddddd90; padding: 0.5rem 1rem; position: relative;" >
         <p class="fl commonBlack font14" >{{this.$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
         <div class="fl mleft-05 mright-05 font14 commonBlack textOverdot w-100P" style="text-align: left;" v-html="meMemoData.memo.bodyFullStr"></div>
@@ -8,10 +8,10 @@
       </div>
 
     </div>
-    <div style="width: calc(100%); display: flex; align-items: center; min-height: 30px;" class="fl">
+    <div v-if="this.mUploadFileList.length > 0" style="width: calc(100%); display: flex; align-items: center; min-height: 30px; " class="fl mbottom-05 mtop-05">
       <div v-if="this.mUploadFileList.length > 0" class="fl mtop-05" style="width: 100%; overflow: auto; width: calc(100% - 55px); margin-top: 2px;">
         <div :style="attachFileWidth" style="min-width: 100%; float: left; overflow: auto; white-space: nowrap;">
-          <div class="CMiddleBorderColor" style="padding: 3px 10px; float: left; margin-left: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7; border-radius: 8px; position: relative; " v-for="(value, index) in  mUploadFileList" :key="index">
+          <div class="CMiddleBorderColor" style="padding: 3px 10px; float: left; margin-right: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7; border-radius: 8px; position: relative; " v-for="(value, index) in  mUploadFileList" :key="index">
               <p class="CMiddleColor font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p>
               <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" style="position: absolute; right: 5px;top: 7px;" alt="">
           </div>
@@ -43,12 +43,12 @@
     <!-- <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;"> -->
       <div style="width: 100%; display: flex; align-items: center; float: left;">
         <div @click="toggleAttatchMenu" style="position: relative; width: 40px; height: 40px; margin-right: 8px; border-radius: 5px; background: #dcddeb; float: left; font-size: 30px;color: #FFF; font-weight: bold">+
-          <div v-if="attatchMenuShowYn" style="width: 150px; background-color: #fff; position: absolute; bottom: 40px; left: 30px; border-radius: 8px; border-bottom-left-radius: 0; box-shadow: rgb(103 104 167 / 40%) 0px 1px 3px;">
+          <div v-show="attatchMenuShowYn" style="width: 150px; background-color: #fff; position: absolute; bottom: 40px; left: 30px; border-radius: 8px; border-bottom-left-radius: 0; box-shadow: rgb(103 104 167 / 40%) 0px 1px 3px;">
             <div class="font16 commonColor" @click.stop="addImgFile" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 100%; border-bottom: 1px solid #eee;">
               <img src="../../../assets/images/common/fileType_img.svg" alt="" style="margin-right: 8px;">
               사진
             </div>
-            <attachFileList ref="attCompo" style="width: calc(100% - 60px);" :pOneLineYn="true" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+            <attachFileList targetType="memo" ref="attCompo" style="width: calc(100%);" :pOneLineYn="true" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
             <div @click.stop="toggleAttatchMenu" class="font16 commonColor" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 100%;">
               <img src="../../../assets/images/common/searchXIcon.svg" alt="" style="margin-right: 8px;">
               닫기
@@ -127,12 +127,12 @@ export default {
   },
   methods: {
     inputEnterKey (event) {
-      if (event.keyCode === 13) {
+      /* if (event.keyCode === 13) {
         if (!event.shiftKey) {
           event.preventDefault()
           this.saveMemo()
         }
-      }
+      } */
     },
     addImgFile () {
       this.$refs.selectFile.click()
@@ -410,22 +410,22 @@ export default {
       this.$emit('clearMemoObj')
     },
     async saveMemo () {
-      this.$showAxiosLoading(true)
-      if (this.mSelectedImgList.length > 0) {
-        this.mUploadFileList = [
-          ...this.mUploadFileList,
-          ...this.mSelectedImgList
-        ]
-      }
-      if (this.mUploadFileList.length > 0) {
-        await this.formSubmit()
-      }
       var inputMemoArea = window.document.getElementById('memoTextTag')
 
       var regText = JSON.parse(JSON.stringify(inputMemoArea.innerText))
       console.log(inputMemoArea)
 
       if (regText.trim() !== '') {
+        if (this.mSelectedImgList.length > 0) {
+          this.mUploadFileList = [
+            ...this.mUploadFileList,
+            ...this.mSelectedImgList
+          ]
+        }
+        if (this.mUploadFileList.length > 0) {
+          await this.formSubmit()
+        }
+        this.$showAxiosLoading(true)
         inputMemoArea.classList.remove('memoTextPadding')
         var html = inputMemoArea.innerHTML
         html = this.$findUrlChangeAtag(html)

@@ -1,7 +1,7 @@
 <template>
 <div class="selectBookListWrap">
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' />
-    <div class="pagePaddingWrap selectBookListContents">
+    <div class="pagePaddingWrap selectBookListContents" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
       <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
       <div class="bookListStyle">
         <bookList :propBookList="bookList" :teamInfo="this.propData" :parentSelectList="pSelectedBookList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
