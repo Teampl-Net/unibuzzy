@@ -26,44 +26,23 @@
                 <div style="width: 100%; min-height: 20px;" class="mtop-1">
                     <p class="font16 fontBold commonColor textLeft  fl " style="padding-left: 20px;">라벨 추가하기</p>
                 <!-- <p class="font14 textLeft commonGray mbottom-05 fl" style="line-height: 24px; padding-left: 20px;">어디로 분류할까요?</p> -->
-                    <div @click="openAddStickerPop" class="cursorP font14" style="color: #FFF; line-height: 24px; float: right; background: #AEB0FB; border-radius: 6px; min-width: 50px; height: 24px; padding: 0 5px; margin-right: 20px;">+ 신규</div>
+                    <gBtnSmall v-if="mManagingMode" btnThema="light" style="height: 24px; line-height: 24px; margin-right: 20px; padding: 0 5px; font-size: 14px;" btnTitle="돌아가기" @click="this.mManagingMode = false"/>
+                    <div v-if="mManagingMode" @click="openStickerDetailPop(mAddStickerObj, true)" class="cursorP font14" style="color: #FFF; line-height: 24px; float: right; background: #AEB0FB; border-radius: 6px; min-width: 50px; height: 24px; padding: 0 5px; margin-right: 5px;">+ 신규</div>
+                    <div v-else  @click="this.mManagingMode = true" class="cursorP font14" style="color: #FFF; line-height: 24px; float: right; background: #AEB0FB; border-radius: 6px; min-width: 50px; height: 24px; padding: 0 5px; margin-right: 20px;">관리모드</div>
                 </div>
                 <div style="width: 100%; height: 48px; overflow: auto hidden; padding: 10px 20px; ">
                     <div :style="stickerBoxScrollWidth" class="thinScrollBar" style="min-width: 100%; width: var(--width); display: flex; align-items: center; height: 100%; padding: 0 0px;">
                         <!-- <div class="cursorP" @click="openAddStickerPop" style="width: 50px; margin-right: 10px;display: flex; align-items: center; justify-content: center; font-size: 20px; height: 50px; border-radius: 100%; float: left; border:1px solid #ccc;"> + </div> -->
                         <p v-if="GE_NON_SELECTED_STICKER_LIST.length === 0" class="font12 textLeft fontBold">선택가능한 분류가 없습니다. <br>분류를 추가해주세요!</p>
-                        <gStickerLine :pSmallYn="true" class="cursorP cursorHover"  @click="selectSticker(value)" style="margin-right: 5px;" v-for="(value) in GE_NON_SELECTED_STICKER_LIST" :pSticker="value" :key="value.stickerKey" />
+                        <gStickerLine :pSmallYn="true" class="cursorP  cursorHover" :class="mManagingMode? 'stickerIcon': ''" @click="mManagingMode? openStickerDetailPop(value, false) : selectSticker(value)" style="margin-right: 5px;" v-for="(value) in GE_NON_SELECTED_STICKER_LIST" :pSticker="value" :key="value.stickerKey" />
                     </div>
                 </div>
             </div>
-            <div v-if="mAddStickerPopShowYn" @click="backClick" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 100; background: #00000026;"></div>
+            <!-- <manageMySticker v-if="this.mStickerList" :pMyStickerList="this.mStickerList"/> -->
+            <div v-if="mAddStickerPopShowYn" @click="this.$refs.stickerDetail.backClick()" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 100; background: #00000026;"></div>
             <transition name="showModal">
-                <div v-if="mAddStickerPopShowYn" transition="showModal" style="width: calc(100% - 60px); height: 350px; border-radius: 0.8rem; z-index: 101; border: 1px solid #ccc; background: #FFF; position: absolute; top: 10%; left: 30px;">
-                    <div  class="newHeaderLine" style="width: 100%; padding: 10px 20px; display: flex; align-items: center; position: relative; height: 50px;">
-                        <p class="fl font20 commonColor fontBold">라벨 추가</p>
-                        <img class="cursorP" @click="backClick" src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute;  right: 15px; top: 15px;" alt="">
-                    </div>
-                    <div class="okScrollBar thinScrollBar" style="width: 100%; overflow: hidden scroll ;padding: 10px; height: calc(100% - 100px); float: left; display: flex; flex-direction: column; align-items: center;">
-                        <p class="textLeft font16 fontBold w-100P commonColor mleft-1 ">라벨이름</p>
-                        <div style="width: 100%; float: left; min-hegiht: 30px; display: flex; align-items: center; padding: 0 10px;">
-                            <input v-model="mAddStickerObj.nameMtext" type="text" name="" placeholder="라벨 이름을 입력해주세요" style="float: left; width: calc(100% - 40px);  margin-top: 0.5rem;height: 30px;" id="">
-                            <div style="width: 30px; height: 30px; border-radius: 100%; float: right; margin-left: 10px; margin-top: 8px;" :style="'background: ' + mAddStickerObj.picBgPath + ';'" ></div>
-                        </div>
-                        <div v-if="mColorPickerShowYn" class="fr" style="width: calc(100% - 20px); margin-top: 10px;">
-                            <gColorPicker :deepYn="true" :inLineYn="isMobile? true : false" :colorPick="mAddStickerObj.picBgPath" @closePop="closeColorPickerPop" v-if="mColorPickerShowYn" @choiceColor='choiceColor' ref="colorPicker" />
-                        </div>
-                        <p class="textLeft mtop-1 font16 fontBold w-100P commonColor mleft-1">미리보기</p>
-                        <div style="width: 100%; min-height: 50px; float: left; padding-left: 10px;">
-                            <gStickerLine  style="width: calc(100% - 40px);" v-if="mAddStickerObj.nameMtext && mAddStickerObj.nameMtext !== ''" :pSticker="mAddStickerObj" />
-                        </div>
-                    </div>
-                    <div style="width: 100%; float: left; background:#FFF; height: 30px; display: flex; justify-content: center; align-items: center;">
-                        <gBtnSmall btnTitle="추가" @click="checkInput" class="mright-05" />
-                        <gBtnSmall btnTitle="취소" btnThema="light"/>
-                    </div>
-                </div>
+                <stickerDetail @deleteSticker="deleteSticker" transition="showModal"  @addMSticker="addMSticker" @closeXPop="mAddStickerPopShowYn = false" ref="stickerDetail" v-if="mAddStickerPopShowYn" :pStickerObj="mAddStickerObj" />
             </transition>
-            <gConfirmPop ref="confirmPop"  :confirmText='mConfirmText' :confirmType='mConfirmType' @ok="saveSticker" v-if="mConfirmPopShowYn" @no='mConfirmPopShowYn = false' />
         </div>
         <div style="display: flex; align-items: center; justify-content: center;width: 100%; height: 60px; float: left">
             <gBtnSmall @click="saveUserDoStickerList" btnTitle="저장" class="mright-05"/>
@@ -73,9 +52,12 @@
 </template>
 
 <script>
-
+/* import manageMySticker from './D_manageMySticker.vue' */
+import stickerDetail from './D_stickerDetailPop.vue'
 export default {
   components: {
+    stickerDetail
+    /* manageMySticker */
   },
   props: {
     pContentsEle: {}
@@ -122,15 +104,16 @@ export default {
       mStickerList: [],
       mContStickerList: [],
       mAddStickerPopShowYn: false,
+      modiStickerObj: {},
       mSelectedColor: '#FFCDD2',
-      mColorPickerShowYn: true,
       mAddStickerObj: { picBgPath: '#FFCDD2', nameMtext: '' },
       mConfirmText: '추가하시겠습니까?',
       mConfirmType: 'timeout',
       mConfirmPopShowYn: false,
       popId: null,
       addStickerPopId: null,
-      isMobile: /Mobi/i.test(window.navigator.userAgent)
+      isMobile: /Mobi/i.test(window.navigator.userAgent),
+      mManagingMode: false
     }
   },
   created () {
@@ -152,13 +135,12 @@ export default {
     this.$store.commit('D_HISTORY/updateStack', history)
   },
   methods: {
-    openAddStickerPop () {
-      var history = this.$store.getters['D_HISTORY/hStack']
-      this.addStickerPopId = 'addStickerPop' + history.length
-      history.push(this.addStickerPopId)
-      console.log(history)
-      this.$store.commit('D_HISTORY/updateStack', history)
-      this.mAddStickerPopShowYn = true
+    deleteSticker (sticker) {
+      console.log(sticker)
+      var idx = this.mStickerList.findIndex((item) => Number(item.stickerKey) === Number(sticker.stickerKey))
+      if (idx !== -1) {
+        this.mStickerList.splice(idx, 1)
+      }
     },
     backClick () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
@@ -169,11 +151,6 @@ export default {
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
         this.$store.commit('D_HISTORY/updateStack', hStack)
         this.$emit('closeXPop')
-      } else if (this.addStickerPopId === hStack[hStack.length - 1]) {
-        hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
-        this.mAddStickerPopShowYn = false
       }
     },
     replaceArr (arr) {
@@ -196,6 +173,18 @@ export default {
       console.log(val)
       this.selectSticker(val, true)
     },
+    openStickerDetailPop (data, newYn) {
+      // selectSticker(value)
+      console.log(data)
+      if (!newYn) {
+        this.mAddStickerObj.modiYn = true
+        this.mAddStickerObj = data
+        this.mAddStickerObj.nameMtext = this.$changeText(this.mAddStickerObj.nameMtext)
+      } else {
+        this.mAddStickerObj = { picBgPath: '#FFCDD2', nameMtext: '' }
+      }
+      this.mAddStickerPopShowYn = true
+    },
     selectSticker (value, delYn) {
       // eslint-disable-next-line no-debugger
       debugger
@@ -216,24 +205,6 @@ export default {
     closeXPop () {
       this.$emit('closeXPop')
     },
-    checkInput () {
-      // eslint-disable-next-line no-debugger
-      debugger
-      if (this.mAddStickerObj.nameMtext.trim() === '') {
-        this.mConfirmType = 'timeout'
-        this.mConfirmText = '분류명을 입력해주세요!'
-        this.mConfirmPopShowYn = true
-        return
-      }
-      this.mConfirmType = 'two'
-      this.mConfirmText = '[' + this.mAddStickerObj.nameMtext + '] 분류를 추가하시겠습니까?'
-      this.mConfirmPopShowYn = true
-    },
-    choiceColor (color) {
-      this.mAddStickerObj.picBgPath = color
-      this.$refs.colorPicker.setColor(color)
-      // console.log(color)
-    },
     async getMyStickerList () {
       var param = {}
       param.creUserKey = this.GE_USER.userKey
@@ -244,41 +215,8 @@ export default {
       this.mStickerList = result.data
       console.log(result)
     },
-    async saveSticker (paramData) {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.nameMtext = 'KO$^$' + this.mAddStickerObj.nameMtext
-      param.picBgPath = this.mAddStickerObj.picBgPath
-      param.creUserKey = this.GE_USER.userKey
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveSticker',
-        param: param
-      })
-      if (result.data.result) {
-        if (result.data.stickerKey) {
-          param.stickerKey = result.data.stickerKey
-
-          /* var newArr = [
-            param,
-            ...this.mStickerList
-          ] */
-          this.mStickerList.unshift(param)
-          this.mConfirmPopShowYn = false
-          var hStack = this.$store.getters['D_HISTORY/hStack']
-          var removePage = hStack[hStack.length - 1]
-          console.log(hStack)
-          if (hStack[hStack.length - 1] === 'gConfirmPop') {
-            hStack = hStack.filter((element, index) => index < hStack.length - 1)
-            this.$store.commit('D_HISTORY/setRemovePage', removePage)
-            this.$store.commit('D_HISTORY/updateStack', hStack)
-            // this.$emit('closeXPop')
-          }
-          /* this.mStickerList = newArr */
-          this.backClick()
-          // this.$emit('successAddSticker', param)
-        }
-      }
-      console.log(result)
+    addMSticker (data) {
+      this.mStickerList.unshift(data)
     },
     async saveUserDoStickerList (paramData) {
       // eslint-disable-next-line no-new-object
@@ -341,4 +279,21 @@ export default {
     border: 2px solid #ccc;
     box-shadow: 0 0 4px 4px #00000020!important;
 } */
+
+.stickerIcon {
+  transform-origin: top;
+  animation: stickerIconAni 3s infinite linear;
+}
+
+@keyframes stickerIconAni{
+  0%, 50%, 100%{
+    transform: rotate(0deg);
+  }
+  5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% {
+    transform: rotate(4deg);
+  }
+  10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90% {
+    transform: rotate(-4deg);
+  }
+}
 </style>

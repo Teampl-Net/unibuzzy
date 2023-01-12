@@ -1,0 +1,188 @@
+<template>
+    <div style="width: calc(100% - 60px); height: 350px; border-radius: 0.8rem; z-index: 101; border: 1px solid #ccc; background: #FFF; position: absolute; top: 10%; left: 30px;">
+        <div  class="newHeaderLine" style="width: 100%; padding: 10px 20px; display: flex; align-items: center; position: relative; height: 50px;">
+            <p class="fl font20 commonColor fontBold">{{mStickerObj.modiYn? '라벨 정보' : '라벨 추가'}}</p>
+            <img class="cursorP" @click="backClick" src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute;  right: 15px; top: 15px;" alt="">
+        </div>
+        <div class="okScrollBar thinScrollBar" style="width: 100%; overflow: hidden scroll ;padding: 10px; height: calc(100% - 100px); float: left; display: flex; flex-direction: column; align-items: center;">
+            <p class="textLeft font16 fontBold w-100P commonColor mleft-1 ">라벨이름</p>
+            <div style="width: 100%; float: left; min-hegiht: 30px; display: flex; align-items: center; padding: 0 10px;">
+                <input v-model="mStickerObj.nameMtext" type="text" name="" placeholder="라벨 이름을 입력해주세요" style="float: left; width: calc(100% - 40px);  margin-top: 0.5rem;height: 30px;" id="">
+                <div style="width: 30px; height: 30px; border-radius: 100%; float: right; margin-left: 10px; margin-top: 8px;" :style="'background: ' + mStickerObj.picBgPath + ';'" ></div>
+            </div>
+            <div class="fr" style="width: calc(100% - 20px); margin-top: 10px;">
+                <gColorPicker :deepYn="true" :inLineYn="isMobile? true : false" :colorPick="mStickerObj.picBgPath" @closePop="closeColorPickerPop" @choiceColor='choiceColor' ref="colorPicker" />
+            </div>
+            <p class="textLeft mtop-1 font16 fontBold w-100P commonColor mleft-1">미리보기</p>
+            <div style="width: 100%; min-height: 50px; float: left; padding-left: 10px;">
+                <gStickerLine  style="width: calc(100% - 40px);" v-if="mStickerObj.nameMtext && mStickerObj.nameMtext !== ''" :pSticker="mStickerObj" />
+            </div>
+        </div>
+        <div style="width: 100%; float: left; background:#FFF; height: 30px; display: flex; justify-content: center; align-items: center;">
+            <gBtnSmall :btnTitle="mStickerObj.modiYn? '수정' : '추가'" @click="checkInput" class="mright-05" />
+            <gBtnSmall v-if="mStickerObj.modiYn" btnTitle="삭제" @click="askDelete"  btnThema="light" class="mright-05"/>
+            <gBtnSmall v-else btnTitle="취소" @click="backClick"  btnThema="light"/>
+        </div>
+        <gConfirmPop ref="confirmPop"  :confirmText='mConfirmText' :confirmType='mConfirmType' @ok="saveSticker" v-if="mConfirmPopShowYn" @no='mConfirmPopShowYn = false' />
+        <gConfirmPop ref="confirmPop"  :confirmText='mConfirmText' :confirmType='mConfirmType' @ok="deleteSticker" v-if="mConfirmDeletePopShowYn" @no='mConfirmDeletePopShowYn = false' />
+    </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      mStickerObj: this.pStickerObj,
+      popId: null,
+      isMobile: /Mobi/i.test(window.navigator.userAgent),
+      mConfirmType: 'timeout',
+      mConfirmText: '',
+      mConfirmPopShowYn: null,
+      mConfirmDeletePopShowYn: null
+    }
+  },
+  created () {
+    console.log(this.pStickerObj)
+    var history = this.$store.getters['D_HISTORY/hStack']
+    this.popId = 'addStickerPop' + history.length
+    history.push(this.popId)
+    console.log(history)
+    this.$store.commit('D_HISTORY/updateStack', history)
+  },
+  methods: {
+    checkInput () {
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (this.mStickerObj.nameMtext.trim() === '') {
+        this.mConfirmType = 'timeout'
+        this.mConfirmText = '분류명을 입력해주세요!'
+        this.mConfirmPopShowYn = true
+        return
+      }
+      this.mConfirmType = 'two'
+      if (!this.mStickerObj.modiYn) {
+        this.mConfirmText = '[' + this.mStickerObj.nameMtext + '] 분류를 추가하시겠습니까?'
+      } else {
+        // this.mConfirmText = '[' + this.pStickerObj.nameMtext + '] 분류를 '
+        this.mConfirmText = '[' + this.mStickerObj.nameMtext + '] 분류로 수정하시겠습니까?'
+      }
+      this.mConfirmPopShowYn = true
+    },
+    askDelete () {
+      this.mConfirmText = '[' + this.mStickerObj.nameMtext + '] 라벨은 관련 컨텐츠에서 자동으로 삭제됩니다.'
+      this.mConfirmType = 'two'
+      this.mConfirmDeletePopShowYn = true
+    },
+    choiceColor (color) {
+      this.mStickerObj.picBgPath = color
+      this.$refs.colorPicker.setColor(color)
+      // console.log(color)
+    },
+    async saveSticker (paramData) {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      if (this.mStickerObj.stickerKey && this.mStickerObj.modiYn) {
+        param.stickerKey = this.mStickerObj.stickerKey
+      }
+      param.nameMtext = 'KO$^$' + this.mStickerObj.nameMtext
+      param.picBgPath = this.mStickerObj.picBgPath
+      param.creUserKey = this.GE_USER.userKey
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.saveSticker',
+        param: param
+      })
+      if (result.data.result) {
+        if (result.data.stickerKey) {
+          param.stickerKey = result.data.stickerKey
+
+          /* var newArr = [
+            param,
+            ...this.mStickerList
+          ] */
+          if (!this.mStickerObj.modiYn) {
+            this.$emit('addMSticker', param)
+          }
+          this.mConfirmPopShowYn = false
+          var hStack = this.$store.getters['D_HISTORY/hStack']
+          var removePage = hStack[hStack.length - 1]
+          console.log(hStack)
+          if (hStack[hStack.length - 1] === 'gConfirmPop') {
+            hStack = hStack.filter((element, index) => index < hStack.length - 1)
+            this.$store.commit('D_HISTORY/setRemovePage', removePage)
+            this.$store.commit('D_HISTORY/updateStack', hStack)
+            // this.$emit('closeXPop')
+          }
+          /* this.mStickerList = newArr */
+          this.backClick()
+          // this.$emit('successAddSticker', param)
+        }
+      }
+      console.log(result)
+    },
+    async deleteSticker () {
+      var param = {}
+      if (!this.mStickerObj.stickerKey) {
+        this.$showToastPop('라벨 삭제에 실패하였습니다.')
+        return
+      }
+      param.stickerKey = this.mStickerObj.stickerKey
+      param.deleteYn = true
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.saveSticker',
+        param: param
+      })
+      if (result.data.result) {
+        this.mConfirmDeletePopShowYn = false
+        var hStack = this.$store.getters['D_HISTORY/hStack']
+        var removePage = hStack[hStack.length - 1]
+        console.log(hStack)
+        if (hStack[hStack.length - 1] === 'gConfirmPop') {
+          hStack = hStack.filter((element, index) => index < hStack.length - 1)
+          this.$store.commit('D_HISTORY/setRemovePage', removePage)
+          this.$store.commit('D_HISTORY/updateStack', hStack)
+          // this.$emit('closeXPop')
+        }
+        this.$emit('deleteSticker', this.mStickerObj)
+        this.backClick()
+        // this.$emit('successAddSticker', param)
+      }
+    },
+    backClick () {
+      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var removePage = hStack[hStack.length - 1]
+      console.log(hStack)
+      if (this.popId === hStack[hStack.length - 1]) {
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$emit('closeXPop')
+      }
+    }
+  },
+  computed: {
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hRPage']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      this.backClick()
+      /* if (this.popId === hStack[hStack.length - 1]) {
+                this.closeSubPop()
+            } */
+    }
+  },
+  props: {
+    pStickerObj: {}
+  }
+}
+</script>
+<style scoped>
+
+</style>
