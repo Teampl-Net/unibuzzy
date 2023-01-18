@@ -169,4 +169,7 @@ export default {
    --pswp-icon-color: #fff;
    --pswp-icon-color-secondary: #333;
  }
+ .pswp__top-bar {
+  padding-top: 30px;
+ }
  </style>

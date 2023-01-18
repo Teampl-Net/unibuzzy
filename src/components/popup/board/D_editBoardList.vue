@@ -242,9 +242,9 @@ export default {
         // this.boardList = []
         await this.getTeamMenuList()
       }
-      if (this.CAB_DETAIL.length > 0) {
-        this.anima()
-      }
+      // if (this.CAB_DETAIL.length > 0) {
+      //   this.anima()
+      // }
     },
     anima () {
       document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'

@@ -96,7 +96,6 @@ export default {
       }
     },
     deleteQueList (index) {
-      console.log(this.memberTypeItemList[index].addYn)
       if (this.memberTypeItemList[index].addYn === false) {
         this.memberTypeItemList[index].deleteYn = true
         this.mDelItemList.push(this.memberTypeItemList[index])

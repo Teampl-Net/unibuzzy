@@ -19,15 +19,25 @@
       </div>
     </div>
 
-    <div v-else style="float: left; width: 100%;margin-top: 0;" :style="this.modeType === 'write' ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
-      <div ref="tabbar" class="pagePaddingWrap" style="padding-top: 10px; background: #FFF; border-bottom: 0.5px solid #6768A78A; height: 40px; float: left; position: relative; width: 100%;" :style="this.modeType === 'write' ? 'background: transparent' : ''" >
-        <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;">
-          <p :style="activebarWidth" :class="{mWidth : tabTrimLength(tab.display) > 3}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
+    <div v-else style="float: left; width: 100%;margin-top: 0;" :style="(this.modeType === 'write' || this.channelYn) ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
+      <div ref="tabbar" :class="!channelYn? 'pagePaddingWrap':''" style="padding-top: 10px; background: #FFF; border-bottom: 0.5px solid #6768A78A; height: 40px; float: left; position: relative; width: 100%;" :style="{color: this.modeType === 'write' ? 'background: transparent' : '', display: channelYn? 'flex':''}" >
+        <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;" :style="channelYn? 'flex: 1 1 0%':''">
+          <p :style="!channelYn? activebarWidth:''" :class="{mWidth : tabTrimLength(tab.display) > 3, commonColor: index === activetab && channelYn, lightGray: index !== activetab && channelYn}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
         </div>
         <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
-        <div style="float: left; width: 100%; min-height: 6px;" v-if="searchYn">
+        <div style="float: left; width: 100%; min-height: 6px;" v-if="searchYn && !channelYn">
           <div class="fr" style="position: absolute; height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
           <img class="fl cursorP img-w20" style="line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+          </div>
+        </div>
+      </div>
+      <div style="width: 100%" v-if="channelYn">
+        <div class="fl w-100P" style="min-height: 6px; background-color: #fff;" v-if="searchYn">
+          <div class="fl mtop-03" v-if="propSearchList">
+            <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
+          </div>
+          <div class="fr" style="height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
+            <img class="fl cursorP img-w20" style="line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
           </div>
         </div>
       </div>
@@ -50,7 +60,8 @@ export default {
     activetabProp: {},
     searchYn: { type: Boolean, default: false },
     resultSearchKeyList: {},
-    testYn: { type: Boolean, default: false }
+    testYn: { type: Boolean, default: false },
+    channelYn: { type: Boolean, default: false }
   },
   data () {
     return {
@@ -75,12 +86,10 @@ export default {
       this.$emit('changeSearchList', type)
     },
     switchtab (n, tab) {
-      console.log(n)
       if (tab) {
         if (tab.display !== undefined && tab.display !== null && tab.display !== '') {
           this.selectedTabName = tab.display.replaceAll(' ', '')
         }
-        console.log(tab.name)
         this.$emit('changeTab', tab.name)
       }
 
@@ -91,17 +100,14 @@ export default {
       })
     },
     selectTab (tab, displayName) {
-      /* alert(tab)
       if (displayName !== undefined && displayName !== null && displayName !== '') {
         this.selectedTabName = displayName.replaceAll(' ', '')
       }
-      console.log(tab)
-      this.$emit('changeTab', tab) */
+      this.$emit('changeTab', tab)
     }
   },
   created () {
     // this.selectedTabName = this.tabList.display
-    console.log(this.activetabProp)
     if (this.activetabProp) {
       for (var i = 0; i < this.tabList.length; i++) {
         if (this.tabList[i].name === this.activetabProp) {
@@ -131,7 +137,7 @@ export default {
     },
     activebarWidth () {
       var tabWidth = 100 / this.tabList.length
-      if (this.testYn === true) {
+      if (this.testYn === true || this.channelYn) {
         return {
           '--tabwidth': tabWidth + '%',
           '--transform': 'translateX(' + (this.activetab * 100) + '%' + ')'

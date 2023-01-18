@@ -157,6 +157,7 @@ export default {
 
     //
     this.$addHistoryStack('modiBoardPop')
+    this.loadingYn = false
   },
   computed: {
     TLeftPosition () {

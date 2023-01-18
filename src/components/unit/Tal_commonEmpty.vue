@@ -44,7 +44,7 @@ export default {
         this.midleText = '좋아요를 누른 게시글이 없습니다.'
       } else if (this.tabName === '스크랩') {
         this.midleText = '스크랩을 한 게시글이 없습니다.'
-      } else if (this.tabName === '내가 보낸') {
+      } else if (this.tabName === '내가 쓴') {
         this.midleText = '내가 쓴 게시글이 없습니다.'
       }
     } else if (this.contentName === '전체') {

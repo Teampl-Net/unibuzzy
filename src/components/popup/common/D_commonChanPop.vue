@@ -113,6 +113,7 @@ export default {
         url: 'service/tp.getMemberTypeItemList',
         param: param
       })
+      console.log('--------------------------')
       console.log(memberTypeItemList)
       if (memberTypeItemList.data.result) {
         var this_ = this

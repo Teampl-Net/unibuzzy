@@ -1,8 +1,10 @@
 <template>
     <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" />
     <gConfirmPop @no="okPopShowYn = false" confirmText='멤버신청을 승인 하시겠습니까?' confirmType='two' @ok="okMember" v-if="okPopShowYn" />
+    <gConfirmPop @no="rejectPopShowYn = false" confirmText='멤버신청을 거절 하시겠습니까?' confirmType='two' @ok="rejectMember" v-if="rejectPopShowYn" />
     <!-- <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" /> -->
     <p class="textLeft fl font16 fontBold" style="line-height: 30px;">신청목록{{'(' + this.managingList.length + ')'}}</p>
+    <gBtnSmall @click="rejectClick" btnTitle="거절" :class="{'CWDeepGrayBgColor' : managingList.length === 0}" style="margin-left: 5px;"/>
     <gBtnSmall @click="accessClick" btnTitle="승인" :class="{'CWDeepGrayBgColor' : managingList.length === 0}" />
     <!-- <gBtnSmall @click="okPopShowYn = true" btnTitle="삭제" /> -->
     <div style="float: right; margin-top: 2px;margin-right: 5px; padding: 2px">
@@ -54,16 +56,25 @@ export default {
       openCommonAlertPopShowYn: false,
       selectedMember: null,
       allClickYn: false,
-      okPopShowYn: false
+      okPopShowYn: false,
+      rejectPopShowYn: false
     }
   },
   created () {
-    console.log(this.managingList)
   },
   methods: {
     accessClick () {
       if (this.managingList.length > 0) {
         this.okPopShowYn = true
+      } else if (this.managingList.length === 0) {
+        this.$showToastPop('신청 가능한 요청 목록이 없습니다.')
+      } else {
+        this.$showToastPop('선택한 목록이 없습니다.')
+      }
+    },
+    rejectClick () {
+      if (this.managingList.length > 0) {
+        this.rejectPopShowYn = true
       } else if (this.managingList.length === 0) {
         this.$showToastPop('신청 가능한 요청 목록이 없습니다.')
       } else {
@@ -85,6 +96,18 @@ export default {
         }
       }
       this.$emit('okMember', okList)
+    },
+    rejectMember () {
+      var checkList = document.querySelectorAll('.reqCheck')
+      var rejectList = []
+      var restList = [] // 거절 후 남은 인원
+      for (var i = 0; i < checkList.length; i++) {
+        if (checkList[i].checked === true) {
+          rejectList.push(this.managingList[i])
+        } else {
+          restList.push(this.managingList[i])
+        }
+      }
     },
     checkBoxValue (allYn) {
       var checkList = document.querySelectorAll('.reqCheck')

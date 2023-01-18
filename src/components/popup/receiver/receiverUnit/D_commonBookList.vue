@@ -83,7 +83,6 @@ export default {
       }
     },
     receiveCardEmit (param) {
-      console.log(param)
       var type = param.targetType
       var data = param.data
       var idx = param.index
@@ -91,10 +90,12 @@ export default {
         this.clickList(data, idx)
       } else if (type === 'edit') {
         this.editAddressBook(data)
-      } else if (type === 'delete') {
-        this.deleteCabinetClick(data, idx)
+      } else if (type === 'deleteList') {
+        this.deleteSelectedBook(data, idx)
       } else if (type === 'add') {
         this.addSelectedList(data, idx)
+      } else if (type === 'delete') {
+        this.deleteCabinetClick(data, idx)
       }
     },
     clickList (data, index) {
@@ -156,16 +157,15 @@ export default {
         this.mAddressBookList[index].selectedYn = true
         this.$emit('changeSelectBookList', this.mSelectedBookList)
       } else {
-        this.$showToastPop('중복 선택입니다.')
+        this.deleteSelectedBook(data)
       }
     },
-    deleteSelectedBook (type, key) {
-      var findIdx = this.mSelectedBookList.findIndex(item => item.accessKey === key)
+    deleteSelectedBook (data, idx) {
+      var findIdx = this.mSelectedBookList.findIndex(item => item.accessKey === data.accessKey)
       if (findIdx !== -1) {
         this.mSelectedBookList.splice(findIdx, 1)
       }
-      console.log('delSelectedList')
-      console.log(this.mSelectedBookList)
+      this.$emit('changeSelectBookList', this.mSelectedBookList)
     },
     editAddressBook (data) {
       var param = {}

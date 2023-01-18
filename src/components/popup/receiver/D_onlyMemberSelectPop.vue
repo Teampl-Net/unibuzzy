@@ -3,7 +3,7 @@
     <!-- <div style="width:100%; height:calc(100%);" > -->
     <memberListCompo class="fl" style="margin-top: 50px; padding: 0 1rem; height: calc(80% - 50px); background-color:white; overflow:auto;" :propMemberList="memberList" ref="memberListCompo"  :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData" />
     <!-- <selectedListCompo class="fl" style="height:calc(50% - 50px);" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' /> -->
-    <selectedListCompo class="fl" style="height:20%; max-height:200px; min-height:150px; position:absolute; bottom:0; left:0;" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
+    <selectedListCompo class="fl" style="height:20%; max-height:200px; min-height:150px; position:absolute; bottom:0; left:0;" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey" @changeSelectMemberList="changeSelectMemberList"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
     <!-- </div> this.propData.selectMemberType==='member'? true:false -->
     <gConfirmPop :confirmText="this.propData.selectMemberType === 'member'? '구성원을 추가하시겠습니까?': '매니저를 추가하시겠습니까?'" confirmType='two' @no='confirmPopShowYn = false' @ok="saveMember" v-if="confirmPopShowYn"/>
 
@@ -38,15 +38,13 @@ export default {
     // eslint-disable-next-line vue/no-mutating-props
     this.propData.memberListOpen = true
     this.pList = a
-    console.log('**********************')
-    console.log(this.pList)
-    console.log(this.pSelectedList)
-    console.log(this.propData.memberListOpen)
     if (this.propData.editBookOpend === true) { this.pList = [] }
   },
   components: { memberListCompo, selectedListCompo },
   methods: {
     async changeDirectMemList (data) {
+      console.log('changeDirectMemList')
+      console.log(data)
       this.directAddMemList.push(data)
       if (this.selectedList.memberList) {
       } else {
@@ -112,9 +110,10 @@ export default {
     },
     changeSelectMemberList (data) {
       this.selectedList.memberList = data
-      console.log(this.selectedList.memberList)
 
+      this.$refs.selectedListCompo.newUpdateMember(data)
       this.$refs.selectedListCompo.upDatePage()
+      this.$refs.memberListCompo.deleteSelectedMember(data, true)
     },
     changeSelectedList (data) {
       var changeList = data.memberList

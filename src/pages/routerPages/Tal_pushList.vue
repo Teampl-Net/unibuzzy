@@ -36,9 +36,9 @@
           </template>
           <gEmpty :tabName="currentTabName" contentName="알림" v-if="this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
 
-          <template  v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
-              <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
-              <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
+          <template v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
+            <gContentsBox :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
+            <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
           </template>
           <gEmpty :tabName="currentTabName" contentName="전체" v-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
 
@@ -79,7 +79,6 @@ import findContentsList from '../../components/popup/common/D_findContentsList.v
 /* import cancelPop from '../../components/popup/common/Tal_commonCancelReasonPop.vue' */
 import { onMessage } from '../../assets/js/webviewInterface'
 import statCodeComponent from '../../components/board/D_manageStateCodePop.vue'
-
 // import attachFileListPop from '../../components/pageComponents/main/unit/D_commonAttatchFileListPop.vue'
 
 export default {
@@ -269,35 +268,20 @@ export default {
             ...this.GE_DISP_ALL_LIST
           ]
           this.allContentsList = this.replaceArr(newArr)
+          this.$nextTick(() => {
+            this.$refs.myContentsBox[0].addAnimation()
+          })
         }
         // }
       },
       deep: true
     },
-    /* GE_NEW_NOTI_LIST: {
+    GE_NEW_NOTI_LIST: {
       handler  (value, old) {
-        // console.log('noti도착----------------------------------------------------')
-        var newArr = null
-        if (this.chanAlimYn) {
-          // eslint-disable-next-line no-debugger
-          debugger
-          if (value[0].creTeamKey === this.pChannelDetail.teamKey) {
-            newArr = [
-              value[0],
-              ...this.alimContentsList
-            ]
-            this.alimContentsList = this.replaceArr(newArr)
-          }
-        } else {
-          newArr = [
-            value[0],
-            ...this.alimContentsList
-          ]
-          this.alimContentsList = this.replaceArr(newArr)
-        }
+        console.log(this.GE_NEW_NOTI_LIST)
       },
       deep: true
-    }, */
+    },
     routerReloadKey () {
       this.refreshList()
     },
@@ -323,7 +307,6 @@ export default {
       return this.fileList
     },
     getWindowSizeBottom () {
-      console.log(window.innerHeight)
       return {
         '--widndowHeight': window.innerHeight + 'px'
       }
@@ -347,7 +330,6 @@ export default {
       return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
     },
     GE_DISP_ALIM_LIST () {
-      console.log(this.ALIM_LIST_RELOAD_CONT)
       var idx1, idx2
       var returnAlimList = []
       var chanDetail = null
@@ -554,7 +536,6 @@ export default {
         param: Object.fromEntries(paramMap)
       }, nonLoadingYn)
 
-      console.log(result)
       return result
     },
     openImgPop (param) {
@@ -644,9 +625,7 @@ export default {
           }
           this.targetCKey = this.targetContents.targetContentsKey
           if (this.targetCKey) {
-            console.log(this.targetCKey + '/////' + this.targetContents.jobkindId)
             var contentsAlreadyYn = await this.$addContents(this.targetCKey, this.targetContents.jobkindId)
-            console.log(contentsAlreadyYn)
             if (contentsAlreadyYn === false) {
               alert('해당컨텐츠는 삭제되었거나,\n열람 권한이 없습니다\n나중에 다시시도해주세요.')
               return
@@ -718,9 +697,7 @@ export default {
       var this_ = this
       this.loadMoreDESCYn = false
       await this_.getPushContentsList(null, null, false).then(response => {
-        console.log('getContents-------------------------------------------------------')
         if (!response || !response.content) return
-        console.log(response.content)
         this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
         var newArr = []
         var cont
@@ -741,7 +718,6 @@ export default {
             } else {
               contentDetail = null
             }
-            console.log(cont.D_MEMO_LIST)
             if (!cont.D_MEMO_LIST) {
               cont.D_MEMO_LIST = cont.memoList
               this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
@@ -832,16 +808,11 @@ export default {
         if (idx !== -1) cont = this.allContentsList[idx]
       }
       var response = await this.getContentsMemoList(contentKey, cont.D_MEMO_LIST.length + 5, 0)
-      console.log(' =================== yesLoadMore   =================== ')
-      console.log(idx)
-      console.log(response)
       var newArr = [
         ...cont.D_MEMO_LIST,
         ...response
       ]
-      console.log(newArr)
       var newList = await this.replaceMemoArr(newArr)
-      console.log(newList)
 
       cont.D_MEMO_LIST = newList
 
@@ -939,14 +910,12 @@ export default {
             }
           }
           cont.memoCount -= 1
-          console.log(cont)
           this.$store.dispatch('D_CHANNEL/AC_DEL_MEMO_REPLACE_CONTENT', [cont])
           // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
         }
         this.$showToastPop('댓글을 삭제하였습니다.')
       } catch (error) {
         this.$showToastPop('정상적으로 완료하지 못했습니다.')
-        console.log(error)
       }
     },
     confirmOk () {
@@ -1195,8 +1164,6 @@ export default {
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
       this.axiosQueue.splice(queueIndex, 1)
-      console.log('console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)console.log(result)')
-      console.log(result)
 
       return result.data.memoList
     },
@@ -1300,6 +1267,7 @@ export default {
       param.selectBoardYn = true
       param.modiContentsKey = data.contentsKey
       param.titleStr = data.title
+      console.log('makeNewContents')
       this.$emit('openPop', param)
     },
     moveOrCopyContent (data) {
@@ -1418,7 +1386,7 @@ export default {
           return item.contents
         })
         resultFileList = resultFileList.sort(function (a, b) { // num으로 오름차순 정렬
-          return b.fileKey - a.fileKey
+          return b.creDate - a.creDate
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         this.fileList = resultFileList
@@ -1600,8 +1568,6 @@ export default {
       }
     },
     async loadMore (descYn) {
-      console.log('this.canLoadYn : ' + this.canLoadYn + ' this.endListYn : ' + this.endListYn)
-      console.log('this.descYn : ' + descYn + ' this.canUpLoadYn : ' + this.canUpLoadYn)
       if (!descYn && !this.canUpLoadYn) return
       if (this.canLoadYn && this.endListYn === false) {
         this.loadMoreDESCYn = descYn
@@ -1611,8 +1577,6 @@ export default {
         try {
           if (this.viewMainTab === 'F') {
             resultList = await this.getFileList(null, null, true)
-            console.log('------------------------')
-            console.log(resultList)
             if (resultList === undefined || resultList === '') {
               return
             }
@@ -1627,7 +1591,6 @@ export default {
             await this.endListSetFunc(resultList.data)
           } else {
             resultList = await this.getPushContentsList(null, null, false)
-            console.log(resultList)
             if (resultList === undefined || resultList === '') {
               return
             }
@@ -1726,7 +1689,7 @@ export default {
           data.push(current)
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
-          return b.fileKey - a.fileKey
+          return b.creDate - a.creDate
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data
@@ -1901,7 +1864,6 @@ export default {
     async requestSearchList (param) {
       this.offsetInt = 0
       this.targetCKey = null
-      console.log(param)
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey
@@ -1928,7 +1890,7 @@ export default {
           return item.contents
         })
         resultFileList = resultFileList.sort(function (a, b) { // num으로 오름차순 정렬
-          return b.fileKey - a.fileKey
+          return b.creDate - a.creDate
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         this.fileList = resultFileList
@@ -2017,7 +1979,6 @@ export default {
         searchObj.keyword = this.$changeText(param.selectedSticker.nameMtext)
         resultArray.push(searchObj)
       }
-      console.log(resultArray)
       this.findPopShowYn = false
       return resultArray
     },
@@ -2049,7 +2010,7 @@ export default {
           return item.contents
         })
         resultFileList = resultFileList.sort(function (a, b) { // num으로 오름차순 정렬
-          return b.fileKey - a.fileKey
+          return b.creDate - a.creDate
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         this.fileList = resultFileList
@@ -2126,7 +2087,6 @@ export default {
     },
     openWorkStatePop (data) {
       this.workStateCodePopProps = data
-      console.log(this.workStateCodePopProps)
       this.workStateCodePopShowYn = true
     }
   },

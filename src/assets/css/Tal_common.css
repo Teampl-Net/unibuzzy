@@ -788,6 +788,17 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   -webkit-animation: slideleftout 0.5s forwards !important;
 }
 
+@keyframes newContents {
+    0% {box-shadow: rgba(103, 104, 167, 0.4) 0px 1px 3px;}
+    50% {box-shadow: rgba(103, 104, 167, 0.7) 0px 1px 7px 7px;}
+    100% {box-shadow: rgba(103, 104, 167, 0.4) 0px 1px 3px;}
+}
+/* @keyframes newContents {
+    0% {background-color: #fff;}
+    50% {background: red;}
+    100% {background-color: #fff;}
+} */
+.newContentsAni {animation: newContents 2s ease-in-out}
 
 .showModal-enter {animation: showModal-dialog-fade-in 0.2s ease;}
 .showModal-leave {animation: showModal-dialog-fade-out 0.2s ease forwards;}
@@ -830,7 +841,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 }
 
 
-.cursorP {cursor: pointer;}
+.cursorP {cursor: pointer !important;}
 
 .overflowYScroll{ overflow-y: scroll; overflow-x: hidden;}
 

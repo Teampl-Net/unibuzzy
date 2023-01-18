@@ -59,7 +59,7 @@
           <div v-if="selectBoardYn === true" class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
             <p class="fontBold commonColor CDeepColor font16 fl mright-05" style="word-break: keep-all; position: relative;">게시판<pss class="font12 fl" style="position: absolute; left: 0; bottom: -1rem;" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</pss></p>
             <!-- <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p> -->
-            <div class="fl " style=" width: calc(100% - 3.5rem); height: 2rem; overflow: auto; white-space: nowrap; display: flex; align-items: center" >
+            <div class="fl " id="boardListWrap" style=" width: calc(100% - 3.5rem); height: 2rem; overflow: auto; white-space: nowrap; display: flex; align-items: center" @wheel="horizontalScroll" >
               <div v-for="(data, index) in selectBoardList" :key="index" class="fl mleft-05 font12 fontBold" @click="selectBoard(data, index)" style=" border-radius:10px; display: inline-flex;" :style="{background: data.picBgPath}" :class="{'CDeepBorderColor selectPadding' : selectBoardIndex === index, 'noneSelectPadding' : selectBoardIndex !== index, 'mleft-0': index === 0}">
                 <div class="fl"> <img class="img-w15" v-if="selectBoardIndex === index" src="../../assets/images/common/icon_check_commonColor.svg" /></div>
                 <label class="mleft-03 font14"  :class="{'commonColor selectBoardBorder' : selectBoardIndex === index}" :for="'selectBoardCheckBox'+index">{{this.$changeText(data.cabinetNameMtext)}}</label>
@@ -349,6 +349,14 @@ export default {
     }
   },
   methods: {
+    horizontalScroll (e) {
+      if (e.deltaY === 0) return
+      e.preventDefault()
+      var channelWrap = document.querySelector(`#${e.currentTarget.id}`)
+      channelWrap.scrollTo({
+        left: channelWrap.scrollLeft + e.deltaY / 10
+      })
+    },
     goSavePhonePop () {
       // eslint-disable-next-line no-new-object
       var param = new Object()

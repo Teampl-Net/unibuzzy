@@ -8,7 +8,7 @@
         <transition-group>
           <!-- eslint-disable-next-line vue/no-v-for-template-key -->
           <template v-for="(data, index) in cabinetList" :key='index'>
-            <div :id="'board' + data.cabinetKey" :index="index" :class="{addNewEffect: index === 0}" class="fl boardListCard" >
+            <div :id="'board' + data.cabinetKey" :index="index" ref="addNewEffect" :class="{addNewEffect: index === 0}" class="fl boardListCard" >
               <!-- <div class="fl movePointerArea" style="width: 30px; background: rgb(242 242 242); display: flex; align-items: center; justify-content: center; height: 100%; position: absolute; left: 0; top: 0;" >
                 <img src="../../assets/images/formEditor/scroll.svg" style="width: 100%;" alt="" >
               </div> -->
@@ -247,7 +247,6 @@ export default {
       }
     },
     anima () {
-      var addNewEffect = document.getElementsByClassName('addNewEffect')
       if (!addNewEffect || addNewEffect.length === 0 ) return
       document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
       setTimeout(() => {

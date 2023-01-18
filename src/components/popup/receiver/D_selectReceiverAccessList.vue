@@ -2,7 +2,7 @@
 <div style="height: 100vh; background-color:white; width:100%; z-index:9999; position:absolute; top:0; left:0">
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  />
     <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
-    <div class="w-100P pagePaddingWrap" style="position:absolute; overflow: auto; padding-top:50px" >
+    <div class="w-100P pagePaddingWrap" style="position:absolute; overflow: auto; padding-top:50px" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
       <div style="width: 100%; position: relative; float: left; height: calc(100% - 95px); overflow: auto;">
         <selectBookNMemberList v-if="detailOpenYn === false" ref="selectBookNMemberListCompo" :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList' :selectList='selectList' @detail='detailOpen' />
         <!-- <selectBookNMemberList ref="selectedMemberListCompo" v-if="detailOpenYn === true" :itemType="itemType" @addSelectList="addSelectList" :selectBookNList='memberList' :selectList='selectList' @detail='detailOpen' :memberOnly='true' /> -->

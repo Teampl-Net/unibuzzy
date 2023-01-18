@@ -5,7 +5,7 @@
       <p class="textLeft fontBold font14 fl commonDarkGray" style="">{{(teamList.bookList.length > 0 ? '주소록' + teamList.bookList.length : '') + ((teamList.bookList.length > 0 && teamList.memberList.length > 0) ? ', ' : '') +  (teamList.memberList.length > 0 ? '인원' + teamList.memberList.length : '')}}</p>
       <gBtnSmall class="fr CDeepBgColor" style="border-radius: 10px" btnTitle='+ 추가하기' @click="sendReceivers" v-if="btnVisible !== false" />
     </div>
-    <div class="selecteItemdArea">
+    <div class="selecteItemdArea" @wheel="horizontalScroll">
       <!-- <div v-for="(data, index) in receiverList" :key="index" class=" fl mright-1"  style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <template v-if="data.jobkindId === 'BOOK'">
           <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl mright-05" style="width:20px" alt="">
@@ -127,6 +127,14 @@ export default {
     //   this.receiverList = selectedReceiverList
     //   console.log(this.receiverList)
     // },
+    horizontalScroll (e) {
+      if (e.deltaY === 0) return
+      e.preventDefault()
+      var channelWrap = document.querySelector(`#${e.currentTarget.id}`)
+      channelWrap.scrollTo({
+        left: channelWrap.scrollLeft + e.deltaY / 5
+      })
+    },
     addNewMember () {
       this.$emit('openAddPop')
     },
@@ -185,23 +193,20 @@ export default {
       this.$emit('btnClick', this.teamList)
     },
     removeSelectedYn (type, index, key) {
-      console.log(' ((((((((((((((())))))))))))))) ')
-      console.log(this.teamList)
       if (type === 'book') {
         this.teamList.bookList.splice(index, 1)
         this.teamList.type = 'C'
+        this.$emit('changeSelectBookList', this.teamList.bookList)
       } else if (type === 'member') {
         this.teamList.memberList.splice(index, 1)
         this.teamList.type = 'U'
+        this.$emit('changeSelectMemberList', this.teamList.memberList)
       }
       if (key !== undefined && key !== null && key !== '') {
         this.teamList.delKey = key
       }
-      console.log(this.teamList)
-      console.log(key)
 
       this.teamList.index = index
-      this.$emit('changeSelectedList', this.teamList)
     },
     teamPlusClick (data, index) {
       // const obj = new Object();

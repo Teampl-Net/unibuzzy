@@ -41,32 +41,30 @@ export default {
         this_.mSearchFilterList = this_.pSearchFilterList
       }
       if (this_.parentSelectList) {
-        console.log('%%%%%')
-        console.log(this.parentSelectList)
         this_.mSelectedMemberList = []
         this_.mSelectedMemberList = JSON.parse(JSON.stringify(this_.parentSelectList))
-        console.log(this_.mSelectedMemberList)
         this_.setParentSelectList()
       }
     })
   },
   methods: {
-    deleteSelectedMember (type, key) {
+    deleteSelectedMember (data, onlyUpdateYn) {
       // 실제 선택한 데이터 중 멤버를 삭제하는 작업
-      var findIdx = this.mSelectedMemberList.findIndex(item => item.accessKey === key)
-      if (findIdx !== -1) {
-        this.mSelectedMemberList.splice(findIdx, 1)
+      if (onlyUpdateYn) {
+        this.mSelectedMemberList = data
+      } else {
+        var findIdx = this.mSelectedMemberList.findIndex(item => item.accessKey === data.userKey)
+        console.log(this.mSelectedMemberList)
+        console.log(data)
+        if (findIdx !== -1) {
+          this.mSelectedMemberList.splice(findIdx, 1)
+        }
+        this.$emit('changeSelectMemberList', this.mSelectedMemberList)
       }
-      console.log(this.mCommonMemberList)
-
-      // 화면에 보이는 SELECT한 효과를 없애기 위해 처리하는 작업
       this.setParentSelectList()
-      console.log('delSelectedList')
-      console.log(this.mSelectedMemberList)
     },
 
     receiveCardEmit (param) {
-      console.log(param)
       var type = param.targetType
       var data = param.data
       var idx = param.index
@@ -76,23 +74,20 @@ export default {
         this.deleteMemberClick(data, idx)
       } else if (type === 'add') {
         this.addSelectedList(data, idx)
+      } else if (type === 'deleteList') {
+        this.deleteSelectedMember(data)
       }
     },
     setMemberList () {
-      console.log(this.propMemberList)
       this.mCommonMemberList = this.propMemberList
       for (let i = 0; i < this.mCommonMemberList.length; i++) {
         this.mCommonMemberList[i].jobkindId = 'USER'
       }
-      console.log(this.mCommonMemberList)
     },
     async refresh () {
       if (this.propData.selectMemberType === 'manager') { await this.getFollowerList() } else { this.$emit('refreshList') }
     },
     setParentSelectList () {
-      console.log('###########')
-      console.log(this.mSelectedMemberList)
-      console.log(this.mCommonMemberList)
       var tempList = this.mCommonMemberList
       this.mCommonMemberList = []
       if (this.mSelectedMemberList) {
@@ -107,8 +102,6 @@ export default {
         }
       }
       this.mCommonMemberList = tempList
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      console.log(this.mCommonMemberList)
     },
     deleteMemberClick (data, index) {
       var param = {}
@@ -118,8 +111,6 @@ export default {
       this.$emit('delAddress', param)
     },
     async deleteMember (data, index) {
-      console.log(this.propData)
-      console.log(data)
       // 주소록 관리에서 주소 삭제가 안되기에 주석처리 하였음.
       // if (this.propData.value.creUserKey !== data.userKey) {
       if (this.propData.selectMemberType === 'manager') {
@@ -151,17 +142,12 @@ export default {
     addSelectedList (data, index) {
       if (!this.mSelectedMemberList) this.mSelectedMemberList = []
 
-      console.log('add ' + data.accessKey)
       if (!data.accessKey) data.accessKey = data.userKey
-      console.log('add after' + data.accessKey)
 
       data.shareSeq = data.userKey
       var findIdx = this.mSelectedMemberList.findIndex(item => item.accessKey === data.accessKey)
       if (findIdx === -1) {
         this.mSelectedMemberList.push(data)
-        console.log('===========================')
-        console.log(data)
-        console.log(this.mSelectedMemberList)
 
         this.mCommonMemberList[index].selectedYn = true
         this.$emit('changeSelectMemberList', this.mSelectedMemberList)
@@ -176,7 +162,6 @@ export default {
   },
   watch: {
     propMemberList () {
-      console.log(this.propMemberList)
       this.setMemberList()
     }
   },

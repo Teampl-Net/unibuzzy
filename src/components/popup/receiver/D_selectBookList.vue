@@ -9,11 +9,12 @@
             <memberList :propMemberList="memberList" :parentSelectList="pSelectedMemberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
         </transition>
       </div>
-      <selectedListCompo class="selectedListStyle" :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" ref="selectedListCompo" style="" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
+      <selectedListCompo class="selectedListStyle" :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" @changeSelectBookList="changeSelectBookList" @changeSelectMemberList="changeSelectMemberList" ref="selectedListCompo" style="" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
     </div>
 </div>
 
 </template>
+
 <script>
 import bookList from './receiverUnit/D_commonBookList.vue'
 import memberList from './receiverUnit/D_commonBookMemberList.vue'
@@ -51,9 +52,6 @@ export default {
     }
   },
   created () {
-    console.log('##################')
-    console.log(this.pSelectedList)
-
     if (this.selectedListYn) {
       this.selectedTeamList = this.selectedList.selectedTeamList
       this.selectedMemberList = this.selectedList.selectedMemberList
@@ -183,7 +181,6 @@ export default {
     },
     // 유민참고
     changeSelectMemberList (data) {
-      console.log(data)
       this.selectedList.memberList = []
       for (let i = 0; i < data.length; i++) {
         this.selectedList.memberList.push(data[i])
@@ -191,9 +188,9 @@ export default {
       this.pSelectedMemberList = []
       this.pSelectedMemberList = this.selectedList.memberList
       this.$refs.selectedListCompo.newUpdateMember(this.selectedList.memberList)
+      this.$refs.memberListRef.deleteSelectedMember(this.selectedList.memberList, true)
     },
     changeSelectBookList (data) {
-      console.log(data)
       this.selectedList.bookList = []
       for (let i = 0; i < data.length; i++) {
         this.selectedList.bookList.push(data[i])
@@ -203,8 +200,6 @@ export default {
       this.$refs.selectedListCompo.newUpdateBook(this.selectedList.bookList)
     },
     changeSelectedList (selectedListData) {
-      console.log('###### changeSelectedList #######')
-      console.log(selectedListData)
       if (selectedListData.type === 'C') {
         this.$refs.teamListRef.deleteSelectedBook(selectedListData.type, selectedListData.delKey)
         delete selectedListData.type
@@ -243,7 +238,7 @@ export default {
         for (var m = 0; m < this.bookList.length; m++) {
           this.bookList[m].selectedYn = false
           for (var c = 0; c < changeList.length; c++) {
-            if (((!bookList[m].memberYn) && changeList[c].cabinetKey === this.bookList[m].cabinetKey) || ((bookList[m].memberYn) && changeList[c].memberTypeKey === this.bookList[m].memberTypeKey)) {
+            if (((bookList[m].memberYn) && changeList[c].cabinetKey === this.bookList[m].cabinetKey) || ((bookList[m].memberYn) && changeList[c].memberTypeKey === this.bookList[m].memberTypeKey)) {
               this.bookList[m].selectedYn = true
             }
           }
@@ -311,8 +306,6 @@ export default {
         // history.push(this.subPopId)
         // this.$store.commit('D_HISTORY/updateStack', history)
         this.$addHistoryStack('commonBookMemberList')
-        console.log(' open open open open open open open open open ')
-        console.log(history)
 
         this.receiverTitle = '구성원 관리'
         if (this.selectPopYn) {

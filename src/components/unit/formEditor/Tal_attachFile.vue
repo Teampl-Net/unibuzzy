@@ -1,14 +1,14 @@
 <template>
     <div style="width: 100%; float: left;">
       <gConfirmPop @no="this.errorShowYn = false" confirmText='파일은 최대 10MB까지 첨부할 수 있습니다.' confirmType='timeout' v-if="errorShowYn" />
-      <div @click="this.$refs.selectFileAttach.click()" class="font16 commonColor" style="font-weight:500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " v-if="this.targetType === 'memo'">
-          <img src="../../../assets/images/common/fileIcon.svg" alt="" style="">
+      <div @click="this.$refs.selectFileAttach.click()" class="font16 commonColor" style="display: flex; align-items: center; justify-content: center; font-weight:500; overflow: hidden; cursor: pointer; text-align: center; margin-top: 2px; position: relative; " v-if="this.targetType === 'memo'">
+          <img src="../../../assets/images/common/fileIcon.svg" alt="" style="margin-right: 8px; width: 12px;">
           첨부
       </div>
       <div v-else @click="this.$refs.selectFileAttach.click()" class="font14 whiteColor attachFileBg fl" style="font-weight:500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; ">
         +첨부
       </div>
-      <form v-if="this.targetType === 'memo'" @submit.prevent="formSubmit" class="font16 commonColor" style="position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 150px; border-bottom: 1px solid #eee;" method="post">
+      <form v-if="this.targetType === 'memo'" @submit.prevent="formSubmit" class="font16 commonColor" style="position: relative; overflow: hidden; display: none; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 150px;" method="post">
           <input class="attachFile" hidden type="file" title ="파일 선택"  ref="selectFileAttach" multiple accept="*" style="width: 100%; height: 25px;" id="selectFileAttach" @change="handleImageUpload"/>
       </form>
       <form v-else @submit.prevent="formSubmit" hidden class="font14 whiteColor attachFileBg fl " style="font-weight:500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " method="post">

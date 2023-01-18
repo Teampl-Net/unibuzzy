@@ -11,12 +11,12 @@
             <gBtnSmall v-if="propMemberData.certiYn === true && !GE_USER.certiDate" @click="gCertiPopShowYn = true " btnTitle="인증하기"/>
         </div>
         <div v-if="propMemberData.certiYn === true" style="width: 100%; height: 1px; border-bottom: 1px solid #ccc; margin-top: 10px; float: left;" ></div>
-        <div style="width: 100%; height: calc(100% - 60px); float: left; ">
+        <div style="width: 100%; height: calc(100% - 35px); float: left; overflow: auto; margin-bottom: 20px;">
             <div style="width: 100%; min-height: 50px; float: left; padding: 10px; margin-bottom: 10px; display: flex; flex-direction: column;" :id="'question'+typeItem.itemKey" v-for="(typeItem, index) in memberTypeItemList" :key="index">
                 <p class="font16 textLeft fl grayBlack fontBold" style="width: 100%;"> {{this.$changeText(typeItem.itemNameMtext)}}</p>
                 <div style="width: calc(100%);" v-if="typeItem.itemType === 'F' || typeItem.itemType === 'L'">
-                    <select v-model="typeItem.value" style="width: 100%; height: 30px;" >
-                        <option hidden selected>선택하세요</option>
+                    <select v-model="typeItem.value" style="width: 100%; height: 30px;">
+                        <option :value="undefined" hidden selected>선택하세요</option>
                         <option style="whith: 100%; height: 30px;" class="font16" :value="sub" v-for="(sub, subIndex) in convertSelectListStr(typeItem.optListStr)" :key="subIndex">{{sub}}</option>
                     </select>
                 </div>
@@ -80,6 +80,7 @@ export default {
     convertSelectListStr (str) {
       var returnList = null
       returnList = str.split('$#$')
+      returnList = returnList.splice(1)
       return returnList
     },
     async getMemberTypeItemList () {

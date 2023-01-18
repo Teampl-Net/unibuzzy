@@ -1,5 +1,5 @@
 <template>
-<div id="addTeamMemberArea" class="addTeamMemberArea" style="margin-top:50px">
+<div id="addTeamMemberArea" class="addTeamMemberArea" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
 <userImgSelectCompo @closeXPop="closeXPop" :pSelectedIconPath="this.mUserInfo.domainPath + mUserInfo.userProfileImg" :parentSelectedIconFileKey="mUserInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
     <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
@@ -7,7 +7,7 @@
     </div> -->
     <div class="w-100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem; position: relative;">
 
-        <div style="position: relative; " :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
+        <div style="position: relative; display: flex; align-items: center; justify-content: center;" :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
             <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="userProfileImgWrap">
             <!--  <img :src="this.domainPath + userProfileImg" /> -->
                 <img v-if="this.GE_USER.certiDate" class="img-w38" style="position: absolute; bottom: 0px; right: 10px;" src="../../../assets/images/common/userCertiIcon.svg" alt="">

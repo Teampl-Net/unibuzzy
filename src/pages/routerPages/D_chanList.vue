@@ -1,10 +1,10 @@
 <template>
-    <div style="float: left; width: 100%; height: 100%;  position: relative; overflow: hidden;" :style="this.$route.path === '/chanList'? 'margin-top:' + (this.$STATUS_HEIGHT + 50)+ 'px; padding-bottom: 80px;':''">
-        <div style="width: 100%; height: 100%;  float: left; background: #fff;">
+    <div style="float: left; width: 100%; height: 100%; overflow: hidden;" :style="this.$route.path === '/chanList'? 'margin-top:' + (this.$STATUS_HEIGHT + 50)+ 'px; padding-bottom: 80px;':''">
+        <div style="width: 100%; height: 100%;  float: left; background: #fff; position: relative;">
             <!-- <loadingCompo v-if="mLoadingYn === true"/> -->
             <!-- <div class="chanListHeaderBase " > -->
             <div class="chanListHeader " v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
-                <gActiveBar :testYn='true' :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.mChanFindPopShowYn = true" :resultSearchKeyList="this.mResultSearchKeyList" ref="activeBar" :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab" :propSearchList='mSearchList' @searchBoxClick='searchBoxClick'></gActiveBar>
+                <gActiveBar :channelYn="true" :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.mChanFindPopShowYn = true" :resultSearchKeyList="this.mResultSearchKeyList" ref="activeBar" :tabList="this.mActiveTabList" class="fl" style="" @changeTab="changeTab" :propSearchList='mSearchList' @searchBoxClick='searchBoxClick'></gActiveBar>
             </div>
             <!-- </div> -->
 
@@ -71,7 +71,7 @@ export default {
       myChanListPopYn: false,
       mScrollCheckSec: 0,
       mListShowYn: true,
-      mCurrentTabName: '전체',
+      mCurrentTabName: '구독중',
       mEmptyYn: true,
       mLoadingYn: false,
       mAxiosQueue: [],
@@ -97,17 +97,19 @@ export default {
     // this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
     var this_ = this
     this.$nextTick(() => {
+      var tab = {}
       if (this_.mViewTab === 'user') {
-        this_.$refs.activeBar.switchtab(0)
+        tab = this.mActiveTabList[0]
+        this_.$refs.activeBar.switchtab(0, tab)
       } else if (this_.mViewTab === 'all') {
-        this_.$refs.activeBar.switchtab(1)
+        tab = this.mActiveTabList[1]
+        this_.$refs.activeBar.switchtab(1, tab)
       } else if (this_.mViewTab === 'mychannel') {
-        this_.$refs.activeBar.switchtab(2)
+        tab = this.mActiveTabList[2]
+        this_.$refs.activeBar.switchtab(2, tab)
       }
     })
     if (!this.initData) this.changeTab(this.mViewTab)
-    console.log(this.initData)
-    console.log(this.mViewTab)
 
     this.$emit('closeLoading')
     this.mLoadingYn = false
@@ -169,7 +171,6 @@ export default {
       this.openPop(openPopParam)
     },
     bottSheetEmit (pramData) {
-      console.log(pramData)
       var targetType = pramData.targetType
       var dispName = pramData.dispName
       var idx
@@ -258,12 +259,10 @@ export default {
             this.mScrolledYn = false
           }
         }
-        console.log(this.mScrollDirection)
         this.mScrollPosition = this.mChanListScrollBox.scrollTop
       }
     },
     async refreshList () {
-      console.log('refreshList')
       this.mEndListYn = false
       this.mChannelList = []
       this.mScrolledYn = false
@@ -301,7 +300,6 @@ export default {
     },
     async loadMore (pageSize) {
       if (this.mEndListYn === false) {
-        console.log('loadMore')
         var resultList = await this.getChannelList()
         if (resultList === undefined) return
         var addList = []
@@ -349,7 +347,6 @@ export default {
       }
     },
     async changeTab (tab) {
-      console.log('changeTab')
       this.mViewTab = tab
       this.mOffsetInt = 0
       this.mListShowYn = false
@@ -450,10 +447,8 @@ export default {
       return resultList
     },
     async requestSearchList (paramMap) {
-      console.log('requestSearchList')
       this.mResultSearchKeyList = await this.castingSearchMap(paramMap)
       var resultList = await this.getChannelList(null, null, true)
-      console.log(resultList)
       var newArr = []
       for (var i = 0; i < resultList.content.length; i++) {
         if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
@@ -490,9 +485,7 @@ export default {
         this.mPaddingTop = 50
       }
       this.mOffsetInt = 0
-      console.log('changeSearchList')
       var resultList = await this.getChannelList(null, null, true)
-      console.log(resultList)
       var newArr = []
       for (var i = 0; i < resultList.content.length; i++) {
         if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
@@ -556,8 +549,6 @@ export default {
     GE_CREATE_CHAN_LIST: {
       handler (value, old) {
         if (!value || value.length === 0) return
-        console.log(' 생성 감지!!! ')
-        console.log(value)
         this.mChannelList.unshift(value[0])
 
         this.$store.dispatch('D_CHANNEL/AC_CREATE_CHANNEL_DEL', value[0])
@@ -567,8 +558,6 @@ export default {
     GE_REMOVE_CHAN_LIST: {
       handler (value, old) {
         if (!value || value.length === 0) return
-        console.log(' 삭제 감지!!! ')
-        console.log(value[0])
         var findDelIdx = this.mChannelList.findIndex(item => item.teamKey === value[0].teamKey)
         if (findDelIdx !== -1) {
           this.mChannelList.splice(findDelIdx, 1)
@@ -582,8 +571,6 @@ export default {
     GE_UPDATE_CHAN_LIST: {
       handler (value, old) {
         if (!value || value.length === 0) return
-        console.log(' 수정 감지!!! ')
-        console.log(value[0])
         this.$addChanList(value[0].teamKey)
         this.$store.dispatch('D_CHANNEL/AC_DEL_UPDATE_CHAN_LIST', value[0])
       },

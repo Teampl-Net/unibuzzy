@@ -5,9 +5,9 @@
         <img src="../../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
         <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">채널</p>
       </div>
-      <div v-if="this.mMainChanList" style="width: 100%; height: 85px; float: left; overflow: scroll hidden;">
+      <div v-if="this.mMainChanList.length > 0" id="fileChannelWrap" style="width: 100%; height: 85px; float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
         <div style="height: 100%; min-width: 100%; display:flex;">
-          <div class="cursorP" :style="selectedChannelIdx === 0? 'border: 2px solid #5F61BD;':'border: 0.5px solid rgba(0, 0, 0, 0.1);'" style="box-sizing: border-box; width: 65px; height: 65px; border-radius: 100%; float: left; margin-right: 10px; text-align: center; line-height: 65px; background-color: #fff;" @click="selectTeam(null, 0)">
+          <div class="cursorP" :style="selectedChannelIdx === 0? 'border: 2px solid #5F61BD;':'border: 0.5px solid rgba(0, 0, 0, 0.1);'" style="flex-shrink: 0; box-sizing: border-box; width: 65px; height: 65px; border-radius: 100%; float: left; margin-right: 10px; text-align: center; line-height: 65px; background-color: #fff;" @click="selectTeam(null, 0)">
             전체
           </div>
           <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :selectedYn="selectedChannelIdx === index + 1? true:false" :key="index" @click="selectTeam(chan.teamKey, index+1)"/>
@@ -109,6 +109,14 @@ export default {
     }
   },
   methods: {
+    horizontalScroll (e) {
+      if (e.deltaY === 0) return
+      e.preventDefault()
+      var channelWrap = document.querySelector(`#${e.currentTarget.id}`)
+      channelWrap.scrollTo({
+        left: channelWrap.scrollLeft + e.deltaY
+      })
+    },
     openImgPop (param) {
       this.$emit('openImgPop', param)
     },
@@ -199,11 +207,12 @@ export default {
       await this.endListSetFunc(result.data)
     },
     returnResultList (result) {
+      if (result.data === '') return
       var resultFileList = result.data.content.filter((item) => {
         return item.contents
       })
       resultFileList = resultFileList.sort(function (a, b) { // num으로 오름차순 정렬
-        return b.fileKey - a.fileKey
+        return b.creDate - a.creDate
       })
       if (this.selectedKind === 'ALIM') {
         resultFileList = resultFileList.filter(item => {
@@ -265,7 +274,7 @@ export default {
       var nonLoading = true
 
       var resultList = await this.$getTeamList(paramMap, nonLoading)
-      this.mMainChanList = resultList.data.content.filter(value => value.teamKey !== this.$DALIM_TEAM_KEY)
+      this.mMainChanList = resultList.data.content
       var newArr = []
       for (var i = 0; i < this.mMainChanList.length; i++) {
         if (!this.$getDetail('TEAM', this.mMainChanList[i].teamKey) || this.$getDetail('TEAM', this.mMainChanList[i].teamKey).length === 0) {
@@ -335,7 +344,7 @@ export default {
           data.push(current)
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
-          return b.fileKey - a.fileKey
+          return b.creDate - a.creDate
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data

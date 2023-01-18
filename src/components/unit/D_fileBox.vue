@@ -1,6 +1,6 @@
 <template>
-  <div v-if="GE_FILE_LIST" style="margin-bottom: 10px; width: 100%; background-color: #fff; box-shadow: rgb(103 104 167 / 40%) 0px 1px 3px; border-radius: 8px; padding: 12px 20px; display: flex; flex-direction: column; justify-content: space-between;">
-      <div class="attachedFileTitle" style="width: 100%; height: 50px;">
+  <div v-if="GE_FILE_LIST" :style="this.contentsEle.ownUserKey === this.contentsEle.accessCreUserKey? 'background-color: #f8f8ff;':'background-color: #fff;'" style="background-color: #fff; margin-bottom: 10px; width: 100%; box-shadow: rgb(103 104 167 / 40%) 0px 1px 3px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
+      <div class="attachedFileTitle" style="width: 100%; padding: 12px 20px;">
         <p @click="download" class="fl cursorP textLeft textOverdot commonBlack fontBold font16" style="max-width: calc(100% - 110px); line-height: 24px;" >
           <img :src="this.$settingFileIcon(contentsEle.fileName)" style="width: 16px; float: left; margin-right: 5px;" alt="">
           {{ getFileName(contentsEle.fileName) }}
@@ -14,11 +14,13 @@
             <p class="font12 fr mleft-1 mtop-01" style="max-width: 70px;">{{ this.$changeDateFormat(contentsEle.creDate) }}</p>
           </div>
         </div>
-        <!-- <img @click="selectAttachedFile" style="cursor: pointer; width: 20px; height: 19px; margin-left: 5px;" :src="this.myFilekey !== null? require('../../assets/images/common/colorStarIcon.svg'):require('../../assets/images/common/starIcon.svg')" alt=""> -->
+        <div class="curosrP" @click="selectAttachedFile" style="float: right; width: 20px; height: 20px;">
+          <img style="width: 20px; height: 19px;" :src="this.myFilekey !== null? require('../../assets/images/common/colorStarIcon.svg'):require('../../assets/images/common/starIcon.svg')" alt="">
+        </div>
       </div>
-      <img v-if="contentsEle.fileType === 'I'" @click="openImgPop" style="width: 100%; height: auto; margin-top: 20px; margin-bottom: 20px;" :src="this.contentsEle.domainPath ? this.contentsEle.domainPath + this.contentsEle.pathMtext : this.contentsEle.pathMtext" alt="">
+      <img v-if="contentsEle.fileType === 'I'" @click="openImgPop" style="width: 100%; height: auto; margin-bottom: 20px;" :src="this.contentsEle.domainPath ? this.contentsEle.domainPath + this.contentsEle.pathMtext : this.contentsEle.pathMtext" alt="">
       <div class="textLeft font12 fontBold ml-04">관련 컨텐츠</div>
-      <smallContentsBox @click="goDetail" class="cursorP" :contentsEle="GE_FILE_LIST"></smallContentsBox>
+      <smallContentsBox style="padding: 12px 20px;" @click="goDetail" :accessKind="contentsEle.accessKind" class="cursorP" :contentsEle="GE_FILE_LIST"></smallContentsBox>
       <!-- <p class="font14 textRight" style="width: 100%;">다운 {{ contentsEle.dnCount }}</p> -->
     </div>
 </template>
@@ -49,6 +51,9 @@ export default {
         return this.contentsEle.contents
       }
       return newArr[0]
+    },
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
     }
   },
   methods: {
@@ -62,11 +67,9 @@ export default {
         file.accessCreUserKey = this.contentsEle.accessCreUserKey
         file.ownUserKey = this.GE_USER.userKey
         file.addYn = true
-        alert('추가')
       } else {
         file.myFilekey = this.myFilekey
         file.addYn = false
-        alert('삭제')
       }
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.saveMyFile',

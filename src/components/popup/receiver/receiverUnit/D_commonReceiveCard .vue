@@ -51,7 +51,7 @@
         <img src="../../../../assets/images/board/icon_trash.svg" class="img-w20 fl" style="width: 20px; margin: 0 10px;" @click="clickEvntToParents('delete')" >
       </div>
 
-      <div v-if="option === 'SELE'" class="fr cursorP" style="display: flex; align-items: center;" @click="clickEvntToParents('add')">
+      <div v-if="option === 'SELE'" class="fr cursorP" style="display: flex; align-items: center;" @click="clickEvntToParents('editList')">
         <div class="fl mright-03" style="width:20px; height:20px; border-radius:100%; border:1px solid #5F61BD; display: flex; justify-content: center; align-items: center;" :class="{ 'CDeepBgColor' : propData.selectedYn === true }">
           <!-- <img v-if="propData.selectedYn === true" class="fl img-w13" src="../../../../assets/images/common/icon_check_white.svg" alt="선택 아이콘"> -->
           <img class="fl img-w13" src="../../../../assets/images/common/icon_check_white.svg" alt="선택 아이콘">
@@ -79,13 +79,20 @@ export default {
   methods: {
     clickEvntToParents (type) {
       var param = {}
-      param.targetType = type
+      if (type === 'editList') {
+        if (this.propData.selectedYn) {
+          param.targetType = 'deleteList'
+        } else {
+          param.targetType = 'add'
+        }
+      } else {
+        param.targetType = type
+      }
       param.data = this.propData
       param.index = this.compoIdx
       this.$emit('receiveCardEmit', param)
     },
     setCabinetNames () {
-      console.log(this.propData.mUserList)
       if (this.propData.mUserList && this.propData.mUserList.length > 0) {
         var list = this.propData.mUserList
         var name = ''
@@ -98,7 +105,6 @@ export default {
       }
     },
     setMemberNames () {
-      console.log(this.propData.muserList)
       if (this.propData.muserList && this.propData.muserList.length > 0) {
         var list = this.propData.muserList
         var name = ''
@@ -119,7 +125,6 @@ export default {
     }
   },
   created () {
-    console.log(this.propData)
     if (this.propData.jobkindId === 'BOOK') {
       if (!this.propData.memberYn) {
         this.setCabinetNames()
@@ -129,7 +134,6 @@ export default {
     }
   },
   updated () {
-    console.log(this.propData)
     if (this.propData.jobkindId === 'BOOK') {
       if (!this.propData.memberYn) {
         this.setCabinetNames()

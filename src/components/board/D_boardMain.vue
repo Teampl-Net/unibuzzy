@@ -1525,7 +1525,6 @@ export default {
   width: 100%;
   /* min-height: 132px; */
   min-height: 50px;
-  padding-top: 1rem;
   position: absolute;
   background-color: #FFF;
   top: 0;

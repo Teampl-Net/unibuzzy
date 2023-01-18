@@ -22,7 +22,7 @@
                 <gProfileImg :selfYn="propMemoEle.creUserKey === this.GE_USER.userKey ? true: false" :userInfo="propMemoEle" style="width: 40px; height: 40px; margin-right: 5px; margin-top: 3px; margin-bottom: 5px;" />
                 <div style="float: left; display: flex; flex-direction: column; margin-right: 10px; min-height: 20px; margin-top: 5px;">
                     <p class="fl commonBlack mright-05 textLeft font14 fontBold" @click="clickMemoEvnt({ targetType: 'goUserProfile', value: propMemoEle })">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
-                    <p class="fl commonGray textLeft font12"  style="font-weight:normal;">{{this.$changeDateMemoFormat(propMemoEle.creDate)}}</p>
+                    <p class="fl commonGray textLeft font12"  style="font-weight:normal;" @click=click>{{this.$changeDateMemoFormat(propMemoEle.creDate)}}</p>
                 </div>
             </div>
             <div style="width: calc(100%); padding-left: 10px; min-height: 40px; display: flex; flex-direction: column;">
@@ -86,7 +86,6 @@
         <imgPreviewPop :startIndex="startIndex" :mFileKey="selectedImgPopObj.attachMfilekey"  @closePop="this.mPreviewPopShowYn = false " v-if="selectedImgPopObj && mPreviewPopShowYn && selectedImgPopObj.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :creUserName="selectedImgPopObj.userDispMtext"  />
         <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk()" @no='mConfirmPopShowYn=false'/>
     </div>
-<!-- <memoModiPop v-if="this.memoModiPopShowYn" /> -->
 <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="propMemoEle" contentType="MEMO" :contentOwner="this.GE_USER.userKey === propMemoEle.creUserKey"/>
 </template>
 
@@ -95,7 +94,6 @@ import { onMessage } from '../../../assets/js/webviewInterface'
 import modiMemoPop from './D_modiMemoPop.vue'
 import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import attachFileListPop from '../main/unit/D_commonAttatchFileListPop.vue'
-// import memoModiPop from '../../board/D_memoModiPop.vue'
 export default {
   props: {
     propMemoEle: {},
@@ -107,7 +105,6 @@ export default {
     attachFileListPop,
     imgPreviewPop,
     modiMemoPop
-    // memoModiPop
   },
   computed: {
     GE_USER () {
@@ -176,6 +173,9 @@ export default {
     } */
   },
   methods: {
+    click () {
+      console.log(this.mResultParam)
+    },
     openModiMemoPop (memo) {
       this.mModiMemoObj = memo
       this.mModiMemoPopShowYn = true
@@ -317,7 +317,6 @@ export default {
       // tempData는 어떤 컨텐츠가 올지, 어떤 Function이 올지 몰라 해당 컨텐츠의 데이터를 일단 받아주는 변수입니다..!
       if (type === 'edit') {
         // 댓글 수정
-        this.memoModiPopShowYn = true
         // this.$refs.commonPushListMemoRefs[0].editMemoClick(this.tempData, this.tempData.index, this.tempData.cIndex)
       } else if (type === 'delete') {
         // 댓글 삭제

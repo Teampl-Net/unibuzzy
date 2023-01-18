@@ -8,10 +8,10 @@
       </div>
 
     </div>
-    <div v-if="this.mUploadFileList.length > 0" style="width: calc(100%); display: flex; align-items: center; min-height: 30px; " class="fl mbottom-05 mtop-05">
-      <div v-if="this.mUploadFileList.length > 0" class="fl mtop-05" style="width: 100%; overflow: auto; width: calc(100% - 55px); margin-top: 2px;">
+    <div v-if="this.attatchTrueFileList.length > 0" style="width: calc(100%); display: flex; align-items: center; min-height: 30px; " class="fl mbottom-05 mtop-05">
+      <div v-if="this.attatchTrueFileList.length > 0" class="fl mtop-05" style="width: 100%; overflow: auto; width: calc(100% - 55px); margin-top: 2px;">
         <div :style="attachFileWidth" style="min-width: 100%; float: left; overflow: auto; white-space: nowrap;">
-          <div class="CMiddleBorderColor" style="padding: 3px 10px; float: left; margin-right: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7; border-radius: 8px; position: relative; " v-for="(value, index) in  mUploadFileList" :key="index">
+          <div class="CMiddleBorderColor" style="padding: 3px 10px; float: left; margin-right: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7; border-radius: 8px; position: relative; " v-for="(value, index) in  attatchTrueFileList" :key="index">
               <p class="CMiddleColor font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p>
               <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" style="position: absolute; right: 5px;top: 7px;" alt="">
           </div>
@@ -41,24 +41,23 @@
     <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px; line-height: 80px; margin-top: 1rem" class="fl mright-02" alt="">
 
     <!-- <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;"> -->
-      <div style="width: 100%; display: flex; align-items: center; float: left;">
-        <div @click="toggleAttatchMenu" style="position: relative; width: 40px; height: 40px; margin-right: 8px; border-radius: 5px; background: #dcddeb; float: left; font-size: 30px;color: #FFF; font-weight: bold">+
-          <div v-show="attatchMenuShowYn" style="width: 150px; background-color: #fff; position: absolute; bottom: 40px; left: 30px; border-radius: 8px; border-bottom-left-radius: 0; box-shadow: rgb(103 104 167 / 40%) 0px 1px 3px;">
-            <div class="font16 commonColor" @click.stop="addImgFile" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 100%; border-bottom: 1px solid #eee;">
-              <img src="../../../assets/images/common/fileType_img.svg" alt="" style="margin-right: 8px;">
-              사진
-            </div>
-            <attachFileList targetType="memo" ref="attCompo" style="width: calc(100%);" :pOneLineYn="true" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
-            <div @click.stop="toggleAttatchMenu" class="font16 commonColor" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 100%;">
-              <img src="../../../assets/images/common/searchXIcon.svg" alt="" style="margin-right: 8px;">
-              닫기
-            </div>
-          </div>
-        </div>
-        <pre placeholder="댓글을 작성해주세요." @focus="test" @keydown="inputEnterKey" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding " :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}" style="width:calc(100% - 80px); min-height:2.5rem; text-align:left; float: left; resize: none; border-radius: 10px; border: 1px solid #a7a7a7"  contenteditable=true  @input="inputTextCheck"/>
+      <div style="width: 100%; display: flex; align-items: center; float: left; flex-wrap: wrap;">
+        <div @click="toggleAttatchMenu" style="position: relative; width: 40px; height: 40px; margin-right: 8px; border-radius: 5px; background: #dcddeb; float: left; font-size: 30px;color: #FFF; font-weight: bold">+</div>
+        <pre placeholder="댓글을 작성해주세요." @focus="test" @keydown="inputEnterKey" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding " :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}" style="width:calc(100% - 81px); min-height:2.5rem; text-align:left; float: left; resize: none; border-radius: 10px; border: 1px solid #a7a7a7"  contenteditable=true  @input="inputTextCheck"/>
         <!-- <div style="width: 30px; height: 100%;"> -->
         <img v-if="mWatchInputData.trim() !== ''" @click="saveMemo()" src="../../../assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mleft-05">
         <img v-else @click="$showToastPop('댓글을 작성해주세요.')" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mleft-05">
+        <div v-show="attatchMenuShowYn" style="width: 100%; height: 50px; display: flex; align-items: center;">
+          <div class="font16 commonColor" @click.stop="addImgFile" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 33%; border-right: 1px solid #eee;">
+            <img src="../../../assets/images/common/fileType_img.svg" alt="" style="margin-right: 8px; width: 12px;">
+            사진
+          </div>
+          <attachFileList @click.stop="attatchMenuShowYn = false" targetType="memo" ref="attCompo" style="width: calc(33%);" :pOneLineYn="true" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+          <div @click.stop="toggleAttatchMenu" class="font16 commonColor" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 33%;">
+            <img src="../../../assets/images/common/searchXIcon.svg" alt="" style="margin-right: 8px; width: 12px;">
+            닫기
+          </div>
+        </div>
       </div>
       <!-- </div> -->
     <!-- </div> -->
@@ -91,7 +90,8 @@ export default {
       mUploadFileList: [],
       mSelectedImgList: [],
       selectFile: null,
-      attatchMenuShowYn: false
+      attatchMenuShowYn: false,
+      firstEnterYn: false
     }
   },
   updated () {
@@ -101,10 +101,17 @@ export default {
     this.settingPop()
   },
   computed: {
+    attatchTrueFileList () {
+      var resultList = this.mUploadFileList.filter(item => {
+        console.log(item.attachYn)
+        return item.attachYn
+      })
+      return resultList
+    },
     attachFileWidth () {
       var minW = null
-      if (this.mUploadFileList.length > 0) {
-        minW = 200 * this.mUploadFileList.length + 20 + 'px'
+      if (this.attatchTrueFileList.length > 0) {
+        minW = 200 * this.attatchTrueFileList.length + 20 + 'px'
       } else {
         minW = '100%'
       }
@@ -114,7 +121,6 @@ export default {
     },
     allImgWidth () {
       var imgList = this.mSelectedImgList
-      console.log(imgList)
       var imgWidth = 0
       for (var i = 0; i < imgList.length; i++) {
         console.log(imgWidth)
@@ -127,12 +133,22 @@ export default {
   },
   methods: {
     inputEnterKey (event) {
-      /* if (event.keyCode === 13) {
-        if (!event.shiftKey) {
+      var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      if (event.keyCode === 13 && !isMobile && !this.nowLoadingYn) {
+        if (!event.shiftKey && !event.ctrlKey) {
           event.preventDefault()
           this.saveMemo()
+        } else if (event.ctrlKey) {
+          var myCreHtml = null
+          // eslint-disable-next-line no-useless-escape
+          myCreHtml = this.$refs.memoTextTag.innerHTML + '<br>'
+          this.$refs.memoTextTag.innerHTML = ''
+          this.$refs.memoTextTag.focus()
+          this.$pasteHtmlAtCaret(myCreHtml)
+          this.$refs.memoTextTag.blur()
+          this.$refs.memoTextTag.focus()
         }
-      } */
+      }
     },
     addImgFile () {
       this.$refs.selectFile.click()
@@ -140,7 +156,6 @@ export default {
     },
     toggleAttatchMenu () {
       this.attatchMenuShowYn = !this.attatchMenuShowYn
-      console.log(this.attatchMenuShowYn)
     },
     setImgSize (i) {
       this.$nextTick(() => {
@@ -388,7 +403,6 @@ export default {
       myCreHtml += '</span> '
       this.$nextTick(() => {
         try {
-          console.log(myCreHtml)
           // var spanTag = document.querySelectorAll('#memoTextTag .parentNameCard')
           this.$refs.memoTextTag.innerHTML = ''
           // 20221230 수민삭제
@@ -410,10 +424,10 @@ export default {
       this.$emit('clearMemoObj')
     },
     async saveMemo () {
+      this.$refs.memoTextTag.blur()
       var inputMemoArea = window.document.getElementById('memoTextTag')
 
       var regText = JSON.parse(JSON.stringify(inputMemoArea.innerText))
-      console.log(inputMemoArea)
 
       if (regText.trim() !== '') {
         if (this.mSelectedImgList.length > 0) {

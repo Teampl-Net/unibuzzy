@@ -33,6 +33,7 @@
 </template>
 <script>
 // import attachFileListPop from '../pageComponents/main/unit/D_commonAttatchFileListPop.vue'
+// import html2pdf from 'html2pdf.js'
 import { onMessage } from '../../assets/js/webviewInterface'
 
 export default {

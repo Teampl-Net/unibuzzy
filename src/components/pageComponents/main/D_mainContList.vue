@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px; " :key="mReloadKey" >
     <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" >
-      <gContentsBox @requestSearchSticker="requestSearchSticker" @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
+      <gContentsBox ref="myContentsBox" @requestSearchSticker="requestSearchSticker" @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
       <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 5 ?  index === this.GE_DISP_CONTS_LIST.length - 5 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
     </template>
     <div class="fl" style="width: 40px; height: 40px;border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index:1;">
@@ -44,7 +44,8 @@ export default {
       // 첫 진입과 삭제 후 리스트를 다시 못 그려주기에 watch 추가
       mReloadKey: 0,
       mCreateYn: true,
-      mFindPopShowYn: false
+      mFindPopShowYn: false,
+      firstLoading: true
       // mFilePopYn: false,
       // mFilePopData: {}
       //
@@ -343,6 +344,14 @@ export default {
           ...this.GE_DISP_CONTS_LIST
         ]
         this.mContsList = this.replaceArr(newArr)
+        if (this.firstLoading) {
+          this.firstLoading = false
+        } else {
+          this.$nextTick(() => {
+            this.$refs.myContentsBox[0].addAnimation()
+          // alert(true)
+          })
+        }
       },
       deep: true
     },

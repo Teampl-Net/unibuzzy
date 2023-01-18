@@ -106,14 +106,12 @@ export default {
       answerTitle: '',
       InfoQueTitle: { type: String, default: '' },
       maxLengthYn: '',
-      maxLength: 0,
+      maxLength: 10,
       onlyNumYn: '',
       mPopId: null
     }
   },
   created () {
-    console.log(' %%%%%%%%%%%%%%%%%%%%%% ')
-    console.log(this.propData)
     var history = this.$store.getters['D_HISTORY/hStack']
     this.mPopId = 'editMemberItemPop' + this.propData.selectedMemberType.memberTypeKey
     // console.log(history)
@@ -206,7 +204,6 @@ export default {
         var dragItemList = document.getElementsByClassName('memberInfoListRow')
         // eslint-disable-next-line no-debugger
         debugger
-        console.log(dragItemList)
         var saveList = []
         for (var i = 0; i < dragItemList.length; i++) {
           saveList.push(this.answerList[Number(dragItemList[i].attributes.listindex.value)])
@@ -220,7 +217,6 @@ export default {
         }
         param.optListStr = selectListStr
       }
-      console.log(param)
       this.$emit('changeMemberItem', param)
       /* var saveItem = await this.$commonAxiosFunction({
         url: 'service/tp.saveMemberTypeItem',
