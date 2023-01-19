@@ -105,8 +105,8 @@ export default {
       mContStickerList: [],
       mAddStickerPopShowYn: false,
       modiStickerObj: {},
-      mSelectedColor: '#FFCDD2',
-      mAddStickerObj: { picBgPath: '#FFCDD2', nameMtext: '' },
+      mSelectedColor: '#E57373',
+      mAddStickerObj: { picBgPath: '#E57373', nameMtext: '' },
       mConfirmText: '추가하시겠습니까?',
       mConfirmType: 'timeout',
       mConfirmPopShowYn: false,
@@ -175,13 +175,13 @@ export default {
     },
     openStickerDetailPop (data, newYn) {
       // selectSticker(value)
-      console.log(data)
-      if (!newYn) {
-        this.mAddStickerObj.modiYn = true
+      console.log(newYn)
+      if (newYn === false) {
         this.mAddStickerObj = data
         this.mAddStickerObj.nameMtext = this.$changeText(this.mAddStickerObj.nameMtext)
+        this.mAddStickerObj.modiYn = true
       } else {
-        this.mAddStickerObj = { picBgPath: '#FFCDD2', nameMtext: '' }
+        this.mAddStickerObj = { picBgPath: '#E57373', nameMtext: '' }
       }
       this.mAddStickerPopShowYn = true
     },

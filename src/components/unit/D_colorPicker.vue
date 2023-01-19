@@ -96,7 +96,7 @@ export default {
   created () {
     this.selectedColor = this.colorPick
     if (this.deepYn) {
-      this.colorList = ['#E57373', '#F06292', '#BA68C8', '#9575CD', '#7986CB', '#64B5F6', '#4FC3F7', '#4DD0E1', '#FF8A65', '#FFB74D', '#FFD54F', '#FFF176', '#DCE775', '#AED581', '#81C784', '#4DB6AC']
+      this.colorList = ['#c98276', '#E57373', '#ff5252', '#BA68C8', '#9575CD', '#7986CB', '#6497b1', '#005b96', '#6e7f80', '#36454f', '#000000', '#011f4b', '#a70000', '#ff0000', '#ff4d00', '#ff9a00', '#4DB6AC']
     }
   },
   components: {

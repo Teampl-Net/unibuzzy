@@ -7,15 +7,14 @@
     <div class="fl" style="width: 40px; height: 40px;border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index:1;">
       <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="height: auto; cursor: pointer;" class="img-w66 fl">
     </div>
-    <div v-if="mSeleteWriteTypePopShowYn" @click="mSeleteWriteTypePopShowYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
-    <transition name="showUp">
-      <writeBottSheet transition="showUp" v-if="mSeleteWriteTypePopShowYn" @openPop='openPop' @closePop='mSeleteWriteTypePopShowYn = false' :propChanList='mSelectChanList' />
-    </transition>
-    <transition name="showModal">
-        <findContentsList transition="showModal" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="this.mFindPopShowYn = false" />
-    </transition>
-  </div>
-
+        <div v-if="mSeleteWriteTypePopShowYn" @click="mSeleteWriteTypePopShowYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
+        <transition name="showUp">
+        <writeBottSheet transition="showUp" v-if="mSeleteWriteTypePopShowYn" @openPop='openPop' @closePop='mSeleteWriteTypePopShowYn = false' :propChanList='mSelectChanList' />
+        </transition>
+        <transition name="showModal">
+            <findContentsList transition="showModal" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="this.mFindPopShowYn = false" />
+        </transition>
+    </div>
   <!-- <attachFileListPop :propFileData="this.mFilePopData" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/> -->
 </template>
 
@@ -45,7 +44,8 @@ export default {
       mReloadKey: 0,
       mCreateYn: true,
       mFindPopShowYn: false,
-      firstLoading: true
+      firstLoading: true,
+      mSelectedStickerKey: null
       // mFilePopYn: false,
       // mFilePopData: {}
       //
@@ -145,6 +145,12 @@ export default {
       if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.mOffsetInt }
 
       if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = this.mPageSize }
+
+      if (this.mSelectedStickerKey != null) {
+        param.findActStickerYn = true
+        param.findActYn = true
+        param.stickerKey = this.mSelectedStickerKey
+      }
       var nonLoading = true
       if (loadingYn) {
         nonLoading = false
@@ -221,6 +227,20 @@ export default {
       } catch (e) {
         console.log(e)
       } finally {
+      }
+    },
+    async getContentsListForSticker (stickerKey) {
+      if (stickerKey === null) stickerKey = null
+      this.mSelectedStickerKey = stickerKey
+      try {
+        var returnList = await this.refreshMainContList()
+        console.log(returnList)
+        if (!returnList || returnList === '') returnList = []
+        return returnList
+      } catch (e) {
+        console.log(e)
+      } finally {
+        this.mCanLoadYn = true
       }
     },
     async loadMore (descYn) {
