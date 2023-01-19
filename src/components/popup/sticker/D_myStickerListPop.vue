@@ -46,7 +46,7 @@
         </div>
         <div style="display: flex; align-items: center; justify-content: center;width: 100%; height: 60px; float: left">
             <gBtnSmall @click="saveUserDoStickerList" btnTitle="저장" class="mright-05"/>
-            <gBtnSmall btnThema="light" btnTitle="취소"/>
+            <gBtnSmall @click="backClick" btnThema="light" btnTitle="취소"/>
         </div>
     </div>
 </template>

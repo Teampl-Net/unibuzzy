@@ -1,7 +1,7 @@
 <template>
 <!--  -->
   <template v-if="mSearchModeYn === false">
-    <div class="w-100P h-100P" :style="'padding-top:' + (this.$STATUS_HEIGHT + 50)+ 'px'"  style=" overflow:auto; padding-bottom: 40px;">
+    <div class="w-100P h-100P" style=" overflow:auto; padding-bottom: 40px;">
       <div class="searchBodyTop pSide-1" style="background: white">
         <div class="fl w-100P" style="height: 30px; float: left;">
           <img src="../../assets/images/main/icon_3d_search.png" style="float: left; margin: 8px;" class="img-w23" alt="">
@@ -106,21 +106,21 @@
           <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" style="margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 40px;">
             <div class="w-100P fl chanRow" style="height:1px;" />
             <template v-if="this.mSearchContentTab === 'ALL'" >
-              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index" />
+              <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index" />
               <template v-if="mGetAxiosYn && GE_DISP_ALL_LIST.length === 0">
                 <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
               </template>
               <gListEmpty v-else-if="this.GE_DISP_ALL_LIST.length === 0 && mEmptyYn === true" title='콘텐츠 전체 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
             </template>
             <template v-if="this.mSearchContentTab === 'ALIM'" >
-              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index" />
+              <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index" />
               <template v-if="mGetAxiosYn && GE_DISP_ALIM_LIST.length === 0">
                 <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
               </template>
               <gListEmpty v-else-if="this.GE_DISP_ALIM_LIST.length === 0 && mEmptyYn === true" title='알림 콘텐츠 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
             </template>
             <template v-if="this.mSearchContentTab === 'BOAR'" >
-              <gContentsBox :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index" />
+              <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index" />
               <template v-if="mGetAxiosYn &&  this.GE_DISP_BOAR_LIST.length === 0">
                 <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
               </template>
@@ -224,6 +224,9 @@ export default {
     this.readyFunc()
   },
   methods: {
+    openImgPop (param) {
+      this.$emit('openImgPop', param)
+    },
     searchBoxClick (searchData) {
       this.mSelectSearchObj = searchData
       this.mBottomSheetOpenYn = true
@@ -1072,12 +1075,18 @@ export default {
     GE_DISP_TEAM_LIST () {
       var index = null
       var teamList = this.GE_MAIN_CHAN_LIST
-      for (var i = 0; i < this.mChannelList.length; i++) {
-        index = teamList.findIndex((item) => item.teamKey === this.mChannelList[i].teamKey)
-        if (index !== -1) {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.mChannelList[i] = teamList[index]
+      if (this.mChannelList.length > 0) {
+        for (var i = 0; i < this.mChannelList.length; i++) {
+          index = teamList.findIndex((item) => item.teamKey === this.mChannelList[i].teamKey)
+          if (index !== -1) {
+            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+            this.mChannelList[i] = teamList[index]
+          }
         }
+      } else {
+        teamList.forEach((item, index) => {
+          this.mChannelList[index] = item
+        })
       }
       var returnData = this.mChannelList
       return returnData

@@ -44,8 +44,7 @@ export default {
       mReloadKey: 0,
       mCreateYn: true,
       mFindPopShowYn: false,
-      firstLoading: true,
-      mSelectedStickerKey: null
+      mSelectedStickerKeY: null
       // mFilePopYn: false,
       // mFilePopData: {}
       //
@@ -350,11 +349,21 @@ export default {
     GE_NEW_MEMO_LIST (state) {
       return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
     },
+    GE_RECENT_NOTI_LIST () {
+      return this.$store.getters['D_NOTI/GE_RECENT_NOTI_LIST']
+    },
     GE_NEW_CONT_LIST () {
       return this.$store.getters['D_CHANNEL/GE_NEW_CONT_LIST']
     }
   },
   watch: {
+    GE_RECENT_NOTI_LIST () {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.$refs.myContentsBox[0].addAnimation()
+        }, 1500)
+      })
+    },
     GE_NEW_CONT_LIST: {
       handler (value, old) {
         var newArr = []
@@ -364,14 +373,6 @@ export default {
           ...this.GE_DISP_CONTS_LIST
         ]
         this.mContsList = this.replaceArr(newArr)
-        if (this.firstLoading) {
-          this.firstLoading = false
-        } else {
-          this.$nextTick(() => {
-            this.$refs.myContentsBox[0].addAnimation()
-          // alert(true)
-          })
-        }
       },
       deep: true
     },

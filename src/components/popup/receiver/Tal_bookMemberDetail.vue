@@ -5,12 +5,12 @@
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
-    <div class="w-100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem; position: relative;">
+    <div class="w-100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
 
-        <div style="position: relative; display: flex; align-items: center; justify-content: center;" :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
-            <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center;" class="userProfileImgWrap">
+        <div style=" display: flex; align-items: center; justify-content: center;" :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
+            <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center; position: relative;" class="userProfileImgWrap">
             <!--  <img :src="this.domainPath + userProfileImg" /> -->
-                <img v-if="this.GE_USER.certiDate" class="img-w38" style="position: absolute; bottom: 0px; right: 10px;" src="../../../assets/images/common/userCertiIcon.svg" alt="">
+                <img v-if="this.GE_USER.certiDate" class="img-w38" style="position: absolute; bottom: 5px; right: 10px;" src="../../../assets/images/common/userCertiIcon.svg" alt="">
             </div>
         </div>
         <div v-if="selfYn" @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 0; left: 60%; transform: translateX(-50%); z-index: 9999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
@@ -351,7 +351,7 @@ export default {
                 else
                     onMessage('REQ', 'sendSms', num)
             } else {
-                alert('전화번호 정  보가 없습니다')
+                alert('전화번호 정보가 없습니다')
             }
         },
         async deleteManager () {
@@ -522,7 +522,7 @@ margin-bottom: 2rem;
     left: 5%;
 }
 
-.userProfileImgWrap { border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745; overflow: hidden;
+.userProfileImgWrap { border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745;
     max-width: 200px;
     max-height: 200px;
     min-width: 125px;

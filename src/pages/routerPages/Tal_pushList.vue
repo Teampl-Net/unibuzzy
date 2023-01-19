@@ -268,17 +268,18 @@ export default {
             ...this.GE_DISP_ALL_LIST
           ]
           this.allContentsList = this.replaceArr(newArr)
-          this.$nextTick(() => {
-            this.$refs.myContentsBox[0].addAnimation()
-          })
         }
         // }
       },
       deep: true
     },
-    GE_NEW_NOTI_LIST: {
+    GE_RECENT_NOTI_LIST: {
       handler  (value, old) {
-        console.log(this.GE_NEW_NOTI_LIST)
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.$refs.myContentsBox[0].addAnimation()
+          }, 1500)
+        })
       },
       deep: true
     },
@@ -323,8 +324,8 @@ export default {
     GE_NEW_CONT_LIST () {
       return this.$store.getters['D_CHANNEL/GE_NEW_CONT_LIST']
     },
-    GE_NEW_NOTI_LIST () {
-      return this.$store.getters['D_UPDATE/GE_NEW_NOTI_LIST']
+    GE_RECENT_NOTI_LIST () {
+      return this.$store.getters['D_NOTI/GE_RECENT_NOTI_LIST']
     },
     GE_NEW_MEMO_LIST (state) {
       return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
@@ -510,6 +511,13 @@ export default {
     }
   },
   methods: {
+    addAnimation () {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          this.$refs.myContentsBox[0].addAnimation()
+        }, 1500)
+      })
+    },
     async getFileList (pageSize, offsetInput, nonLoadingYn) {
       const paramMap = new Map()
       if (JSON.stringify(this.findKeyList) !== '{}') {

@@ -94,7 +94,7 @@
       </transition>
   </div>
   <div v-if="writeContentsYn === true" style="position: absolute; top:0; left:0; z-index:10; background:#00000050; width: 100vw; min-height: 100vh;" class=""></div>
-  <writeContents  v-if="writeContentsYn === true"  ref="chanAlimListWritePushRefs" :contentType="mPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWritePushPop' :params="mWriteAlimData"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="mWriteBoardData" />
+  <writeContents v-if="writeContentsYn === true"  ref="chanAlimListWritePushRefs" :contentType="mPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWritePushPop' :params="mWriteAlimData"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="mWriteBoardData" />
 </template>
 
 <script>
@@ -188,7 +188,7 @@ export default {
     // window.removeEventListener('resize', () => { this.setWindowSize() })
   },
   methods: {
-    openImgPop (param) {
+    penImgPop (param) {
       this.$emit('openImgPop', param)
     },
     openCertiPop (param) {
@@ -280,7 +280,6 @@ export default {
       // }
     },
     async closeReqMemPop (yn) {
-      console.log(yn)
       // 그냥 닫기 눌렀을 때 환영합니다. 팝업이 등장하기 위해 그냥 닫으면 false가 오고 신청을 누르면 아무것도 안오기에 undefind가 뜰 것 입니다.
       if (yn === false) {
       } else {
@@ -321,7 +320,6 @@ export default {
       debugger
       /* if (this.axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
       this.axiosQueue.push('addChanList') */
-      console.log(this.chanDetail)
       if (this.chanDetail.initData) {
         if (this.chanDetail.initData.team.D_CHAN_AUTH && this.chanDetail.initData.team.D_CHAN_AUTH.followYn) {
           this.$emit('followYn')
@@ -335,7 +333,6 @@ export default {
             var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
             var this_ = this
             this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
-              console.log('복사링크 없음!!!!!!!!!!!!!!!!!!!!!!!!')
               this.CHANNEL_DETAIL.copyTextStr = res
               this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
               this_.mMakeDeepLinkIng = false
@@ -397,7 +394,6 @@ export default {
       this.$emit('closeLoading')
     },
     async confirmOk () {
-      console.log(1223)
       this.mErrorPopShowYn = false
       if (this.mSaveFollowerType === 'follow') {
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {

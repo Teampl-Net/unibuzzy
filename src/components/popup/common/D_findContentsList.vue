@@ -174,7 +174,9 @@ export default {
   },
   methods: {
     selectSticker (val) {
-      if (val.stickerKey === this.selectedSticker) {
+      console.log(val)
+      console.log(this.selectedSticker)
+      if (this.selectedSticker && val.stickerKey === this.selectedSticker.stickerKey) {
         this.selectedSticker = null
       } else {
         this.selectedSticker = val

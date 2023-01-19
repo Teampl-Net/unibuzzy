@@ -178,7 +178,7 @@ export default {
 
 <style >
 .selectedBox{background-color:#6768A720;}
-.receiverTeamMemberArea{float: left;  width: 100%;}
+.receiverTeamMemberArea{float: left;  width: 100%; height: 100%;}
 .cBlack{
     color: black;
 }

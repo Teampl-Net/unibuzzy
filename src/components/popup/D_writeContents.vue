@@ -187,7 +187,6 @@ export default {
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth
     // console.log('// console.log(this.params)// console.log(this.params)// console.log(this.params)// console.log(this.params)')
-    console.log(this.params)
     if (this.contentType === 'ALIM') {
       if (this.params.selectedList) {
         this.allRecvYn = false
@@ -416,7 +415,6 @@ export default {
       var mCabinet
       if (!this.propData.initData) {
         mCabinet = await this.getCabinetDetail(data.cabinetKey)
-        console.log(mCabinet.mShareItemList)
         var mCabinetShare = mCabinet.mShareItemList
         if (mCabinetShare[0]) {
           if (mCabinetShare[0].shareType) {
@@ -676,6 +674,7 @@ export default {
       return encodeURI(str)
     },
     openPop (param) {
+      console.log('얍~~')
       this.$emit('openPop', param)
     },
     confirmNo () {
@@ -893,7 +892,6 @@ export default {
         var innerHtml = ''
         param.bodyHtmlYn = true // 기본알림또한 html형식으로 들어감
         var targetMsgDiv = null
-        console.log(this.uploadFileList)
         if (this.uploadFileList.length > 0) {
           this.progressShowYn = true
           await this.formSubmit()

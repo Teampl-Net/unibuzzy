@@ -1,5 +1,5 @@
 <template>
-    <div id="gPopup" v-if="reloadYn === false && popId" :style="targetType === 'writeContents'? 'background: transparent' : '' + mobileYn && (targetType !== 'chanDetail' && targetType !== 'boardMain')? 'padding-top: ' + $STATUS_HEIGHT + 'px':''" class="commonPopWrap">
+    <div id="gPopup" v-if="reloadYn === false && popId" :style="targetType === 'writeContents' || targetType === 'stickerPop'? 'background: transparent' : '' + mobileYn && (targetType !== 'chanDetail' && targetType !== 'boardMain')? 'padding-top: ' + $STATUS_HEIGHT + 'px':''" class="commonPopWrap">
         <loadingCompo style="z-index: 999!important; position:absolute; top:0; left:0;" v-if="loadingYn" />
         <pushPop @closePushPop="closePushPop" @goChanDetail="goChanDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  />
         <transition name="showModal">
@@ -7,7 +7,7 @@
                                             @closePop="closePop" v-if="popShowYn" :parentPopN="thisPopN" :propParams="popParams" :propData="propParams" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload' @closeNewPop='closeNewPop'                                        />
         </transition>
         <popHeader  ref="gPopupHeader" :checkOfficialChanYn="propData" :helpYn="helpYn" :class="(targetType === 'chanDetail' || targetType === 'boardMain')? 'chanDetailPopHeader': ''" :chanName="propParams.chanName" :headerTitle="headerTitle" :chanAlimListTeamKey="propParams.targetKey" @closeXPop="closeXPop" :thisPopN="thisPopN" class="commonPopHeader"
-        v-if="targetType !=='writeContents'" :followYn="headerFollowYn" :style="'top:' + 0 + 'px'"
+        v-if="targetType !=='writeContents' && targetType !== 'stickerPop'" :followYn="headerFollowYn" :style="'top:' + 0 + 'px'"
         @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :propBookDetailPopYn='mBookDetailPopYn' @closeBookDetail='mBookDetailPopYn = false' :targetType='targetType' />
 
         <div class="w-100P h-100P" style=" position: relative;" v-if=" popId &&  targetType === 'chanDetail'">
@@ -21,7 +21,7 @@
             <chanList :pPopId="popId" :initData='propParams.initData' :propData="propParams" ref="gPopChan" :popYn="true" @closeLoading="loadingYn = false" @openPop = "openPop"/>
         </div>
         <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if="popId &&  targetType === 'searchPop'">
-            <searchPage :pPopId="popId" :propData="propParams" :popYn="true" @openPop="openPop" />
+            <searchPage :pPopId="popId" :propData="propParams" :popYn="true" @openPop="openPop" @openImgPop="openImgPop" />
         </div>
         <changeInfo :pPopId="popId" @closeLoading="loadingYn = false"  @successUpdate="closeXPop(true)" :kind="changInfoType" v-if=" popId &&  targetType === 'changeInfo'" />
         <askTal :pPopId="popId" @closeLoading="loadingYn = false" v-if=" popId &&  targetType === 'askTal'" @closeXPop="closeXPop" @openPop = "openPop" :propData='propParams' />
@@ -31,7 +31,10 @@
         <createChannel :pPopId="popId" v-if=" popId &&  targetType === 'createChannel'" :chanDetail="propParams"  @closeXPop="closeXPop(true)" @closePop="closePop" @openLoading="loadingYn = true" @closeLoading="loadingYn = false" @successCreChan='successCreChan' @openPop='openPop' />
 
         <div v-if="popId &&  targetType === 'writeContents'" style="position: absolute; top:0; left:0; z-index:10; background:#00000050; width: 100vw; height: 100vh;"></div>
-        <writeContents :pPopId="popId" ref="writeContentsCompo" v-if="popId &&  targetType === 'writeContents'" :contentType="propParams.contentsJobkindId" :params="propParams" :propData="propParams" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' @toAlimFromBoard="toAlimFromBoard" />
+        <writeContents :pPopId="popId" ref="writeContentsCompo" v-if="popId &&  targetType === 'writeContents'" :contentType="propParams.contentsJobkindId" :params="propParams" :propData="propParams" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' @addNewAlim="addNewContents" @toAlimFromBoard="toAlimFromBoard" />
+
+        <div v-if="popId && targetType === 'stickerPop'" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 8; background: #00000026;"></div>
+        <gSelectStickerPop v-if="popId && targetType === 'stickerPop'" @closeXPop="closeXPop" style="" :pContentsEle="this.propParams.contDetail"/>
 
         <selectBookList :pPopId="popId" v-if=" popId &&  targetType === 'selectBookList'" :pSelectedList="selectPlist" :selectPopYn='true' :propData='propParams' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
         <chanMenu :pPopId="popId" ref="chanMenuCompo" :propData="propParams" @openPop="openPop" :propChanAlimListTeamKey="propParams.targetKey" v-if='openChanMenuYn === true && popId' @closePop='openChanMenuYn = false' @openItem='openPop' @openChanMsgPop="closeNopenChanMsg()"/>
@@ -354,6 +357,7 @@ export default {
     },
     async settingPop (successChanYn) {
       var target = this.propParams
+      console.log(target)
       if (successChanYn === true) {
         target = this.successChanParam
       }

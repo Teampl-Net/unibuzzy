@@ -2,7 +2,8 @@
     <div v-if="mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
         <div :class="animationYn? 'newContentsAni':''" key="animationYn" v-if="this.CONT_DETAIL" :style="'padding-bottom:' + (this.$STATUS_HEIGHT)+ 'px;'" style="width: 100%; background: #FFF; overflow: hidden; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative; padding-top: 5px;  border-radius: 8px;">
           <div v-if="propJustShowYn" :style="propPreStickerList && propPreStickerList.length > 0? 'height: calc(100% - 50px);' : 'height: calc(100%); '" style="width: 100%; position: absolute;left: 0; top: 0; z-index: 99;"></div>
-          <div :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 10px 20px;">
+          <!-- :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" -->
+          <div class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 10px 20px;">
               <div @click="goChannelMain()" :style="this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
                   <div :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext : CONT_DETAIL.logoPathMtext) + ');'" style="width: calc(100% - 2px); height:  calc(100% - 2px); border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;">
 
@@ -26,13 +27,19 @@
                   </div>
                   <div style="width: 100%; paosition: relative; height: 50%; min-height: 25px;">
                       <div style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
-                          <p class="CLDeepGrayColor font14 fl textLeft fontBold " @click="goChannelMain()">
+                          <p v-if="CONT_DETAIL.jobkindId === 'BOAR'" class="CLDeepGrayColor font14 fl textLeft fontBold " @click="goChannelMain()">
+                              <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
+                              <span class="fl">
+                                {{ this.$changeText(CONT_DETAIL.cabinetNameMtext) }}
+                              </span>
+                              <span class="textOverdot fl" style="display: block; max-width: 70px;">
+                                ({{this.$changeText(CONT_DETAIL.nameMtext)}})
+                              </span>
+                          </p>
+                          <p v-else class="CLDeepGrayColor font14 fl textLeft fontBold " @click="goChannelMain()">
                               <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
                               <span class="fl">
                                 {{this.$changeText(CONT_DETAIL.nameMtext)}}
-                              </span>
-                              <span v-if="CONT_DETAIL.jobkindId === 'BOAR'" class="textOverdot fl" style="display: block; max-width: 70px;">
-                                ({{ this.$changeText(CONT_DETAIL.cabinetNameMtext) }})
                               </span>
                           </p>
                           <span @click="goUserProfile()" style="font-weight: normal;" class="mleft-03">
@@ -127,7 +134,7 @@
                           </div>
                           <p class="font12 fl fontBold w-100P mtop-01 userDoColor">공유</p>
                       </div>
-                      <div @click="mStickerPopShowYn = true" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                      <div @click="openStickerPop" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
                           <img src="../../../assets/images/push/stickerIcon.svg" class="img-w20" alt="">
                         </div>
@@ -177,8 +184,8 @@
     <recvListPop ref="recvListPop" @closeXPop="closeRecvListPop" :initData="mActorListInitDataList"/>
   </template>
   <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
-  <div v-if="mStickerPopShowYn" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 8; background: #00000026;"></div>
-  <gSelectStickerPop v-if="mStickerPopShowYn" @closeXPop="mStickerPopShowYn=false" style="" :pContentsEle="this.CONT_DETAIL"/>
+  <!-- <div v-if="mStickerPopShowYn" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 8; background: #00000026;"></div> -->
+  <!-- <gSelectStickerPop v-if="mStickerPopShowYn" @closeXPop="mStickerPopShowYn=false" style="" :pContentsEle="this.CONT_DETAIL"/> -->
 </template>
 <script>
 import memoCompo from './D_contBoxMemo.vue'
@@ -206,6 +213,8 @@ export default {
     propJustShowYn: {},
     propPreStickerList: {},
     index: {}
+  },
+  created () {
   },
   data () {
     return {
@@ -246,9 +255,6 @@ export default {
       animationYn: false
     }
   },
-  created () {
-    console.log(this.CONT_DETAIL)
-  },
   updated () {
     this.addImgEvnt()
   },
@@ -269,6 +275,12 @@ export default {
     await this.setPreTagInFirstTextLine()
   },
   methods: {
+    openStickerPop () {
+      var params = {}
+      params.targetType = 'stickerPop'
+      params.contDetail = this.CONT_DETAIL
+      this.$emit('openPop', params)
+    },
     addAnimation () {
       this.animationYn = true
       var this_ = this
@@ -774,6 +786,7 @@ export default {
       writeParam.currentTeamKey = this.contentsEle.creTeamKey
       writeParam.targetType = 'writeContents'
       if (writeParam.contentsJobkindId === 'ALIM') {
+        writeParam.UseAnOtherYn = true
         writeParam.targetNameMtext = this.CHANNEL_DETAIL.nameMtext
       } else if (writeParam.contentsJobkindId === 'BOAR') {
         var teamList = await this.$getWriteBoardData(this.contentsEle.creTeamKey)
@@ -788,6 +801,7 @@ export default {
       writeParam.titleStr = this.contentsEle.title
       writeParam.bodyFullStr = this.contentsEle.bodyFullStr
       writeParam.modiContentsKey = this.contentsEle.contentsKey
+      console.log(writeParam)
       this.$emit('openPop', writeParam)
       // this.mSeleteWriteTypePopShowYn = false
     },

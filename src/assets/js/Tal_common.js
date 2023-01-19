@@ -450,7 +450,7 @@ export const commonMethods = {
           }
           // eslint-disable-next-line no-debugger
           debugger
-          followerText += data.memberInfoList[i].itemVal + this.changeText(data.memberInfoList[i].memberTypeItemNameMtext)
+          followerText += data.memberInfoList[i].itemVal + commonMethods.changeText(data.memberInfoList[i].memberTypeItemNameMtext)
         }
         followerText += ' )'
       }
