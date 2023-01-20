@@ -6,6 +6,7 @@
     <div style="width: 100%; float: left;">
         <div class="userProfileWrap" style=" border-radius: 0.8rem; padding: 0 1.5rem;" >
             <div style="width: calc(100% - 42px); float: left; height: 100%;">
+                <!-- <a href="web+test://pwa">Americano</a> -->
                 <p @click="test" class="commonLightColor font16 textLeft fl" style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
                 <!-- @click="this.$router.push({path: '/certiPhone'})"  -->
                 <div class="fr" style="position:relative;">
@@ -102,12 +103,21 @@
                     <img src="../../assets/images/common/reload_button.svg" class="cursorP img-w20" />
                 </div>
             </div>
+            <div style="width: 100%; min-height: 30px; background: #FFFFFF; padding: 0 10px; float: left; overflow: auto hidden;">
+                <div @click="getContentsListForSticker({stickerKey: 0})" :class="mSelectedStickerKey === 0 ? 'CDeepBgColor whiteColor' : 'CDeepColor CDeepBorderColor'" class="font14 fontBold " style="float: left; margin-right: 5px;min-width: 30px; height: 25px; padding: 0 10px; display: flex; align-items: center; text-align: center; border-radius: 30px; border position: relative;">전체</div>
+                <template v-for="(sticker, index) in mStickerList" :key="index">
+                    <gStickerLine @click="getContentsListForSticker(sticker)" :pSelectedYn="mSelectedStickerKey === sticker.stickerKey? true: false" class="cursorP fl cursorHover" style="margin-right: 5px;" :pSticker="sticker"/>
+                </template>
+            </div>
           </div>
           <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px; background: #F4F4F4; padding: 8px;" >
-            <template v-if="mMainAlimList.length === 0">
+            <template v-if="mMainAlimList.length === 0 && mContentsEmptyYn === false">
                 <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
             </template>
-            <mainContsList @goSearchDirect="goSearchDirect"  @openImgPop="oepnImgPop" ref="mainContsList" v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
+            <div v-if="mMainAlimList.length === 0 && mContentsEmptyYn === true" style="width: 100%; min-height: 300px; background: #FFFFFF; float: left;">
+                <gEmpty contentName="전체" tabName="최신" class="mtop-2"/>
+            </div>
+            <mainContsList @goSearchDirect="goSearchDirect"   @openImgPop="oepnImgPop" ref="mainContsList" v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
           </div>
         </div>
     </div>
@@ -139,6 +149,9 @@ export default {
       mMainChanList: [],
       mMainMChanList: [],
       mAxiosQueue: [],
+      mStickerList: [],
+      mSelectedStickerKey: 0,
+      mContentsEmptyYn: false,
       mActiveTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }]
     }
   },
@@ -157,6 +170,7 @@ export default {
     SkeletonBox
   },
   created () {
+    // navigator.registerProtocolHandler('web+test', 'test?type=%s')
     var urlString = location.search
     var param = this.getParamMap(urlString)
     if (param.targetType) {
@@ -220,6 +234,36 @@ export default {
     this.mLoadingYn = false
   },
   methods: {
+    async getContentsListForSticker (sticker) {
+      if (!sticker) return
+      this.mSelectedStickerKey = sticker.stickerKey
+      this.mMainAlimList = []
+      this.mContentsEmptyYn = false
+      var res = await this.getMyContentsList()
+      console.log(res)
+      if (!res && res === '') {
+        this.mContentsEmptyYn = true
+      } else if (res && res.content) {
+        this.mMainAlimList = res.content
+        await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
+      }
+    },
+    async getMyContentsList () {
+      var param = {}
+      param.ownUserKey = this.GE_USER.userKey
+      param.subsUserKey = this.GE_USER.userKey
+      param.allYn = true
+      param.pageSize = 10
+      param.offsetInt = 0
+      if (this.mSelectedStickerKey != null && this.mSelectedStickerKey !== 0) {
+        param.findActStickerYn = true
+        param.findActYn = true
+        param.stickerKey = this.mSelectedStickerKey
+      }
+      var result = await this.$getContentsList(param, true)
+      var resultList = result
+      return resultList
+    },
     horizontalScroll (e) {
       if (e.deltaY === 0) return
       e.preventDefault()
@@ -288,6 +332,8 @@ export default {
         this.mMainChanList = response.data.teamList
         this.mMainMChanList = response.data.mTeamList
         this.mMainAlimList = response.data.alimList.content
+        this.mStickerList = response.data.stickerList
+        console.log(this.mStickerList)
         await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
         await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
       }
