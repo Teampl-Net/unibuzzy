@@ -56,7 +56,7 @@
                 <img src="../../assets/images/main/main_settingIcon2.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
                 <p @click="goChannelPop('mychannel')" class="font20 fontBold deepBorderColor textLeft CDeepColor cursorP" style="line-height: 26px;">내 관리 채널 ></p>
             </div>
-            <div v-if="this.mMainMChanList" id="channelWrap" style="width: 100%; height: 85px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
+            <div v-if="this.mMainMChanList" id="channelWrap" style="width: 100%; height: 85px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
                 <div style="height: 100%; min-width: 100%; display:flex;">
                     <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" @openPop="openPop"/>
                     <createChanIcon @openPop="openPop" />
@@ -69,7 +69,7 @@
                 <img src="../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
                 <p @click="goChannelPop('user')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">구독중인 채널 ></p>
             </div>
-            <div v-if="this.mMainChanList" id="subChannelWrap" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
+            <div v-if="this.mMainChanList" :class="!isMobile? 'thinScrollBar':''" id="subChannelWrap" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
                 <div style="height: 100%; min-width: 100%; display:flex; gap: 10px;">
                     <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index" @openPop="openPop"/>
                     <searchChanIcon @openPop="openPop" />
@@ -152,7 +152,8 @@ export default {
       mStickerList: [],
       mSelectedStickerKey: 0,
       mContentsEmptyYn: false,
-      mActiveTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }]
+      mActiveTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
+      isMobile: /Mobi/i.test(window.navigator.userAgent)
     }
   },
   components: {

@@ -10,7 +10,7 @@
             <!-- <p class="commonBlack textLeft font14" v-html="$cutText($decodeHTML(propMemoEle.bodyFullStr), 80)"></p> -->
             <pre class="commonBlack textLeft font14" v-html="$decodeHTML(propMemoEle.bodyFullStr)"></pre>
         </div>
-        <p class="fl commonGray textLeft mleft-05 font12"  style="font-weight:normal;">{{this.$changeDateMemoFormat(propMemoEle.creDate)}}</p>
+        <p class="fl commonGray textLeft mleft-05 font12"  style="font-weight:normal;">{{this.$changeSimpleDateFormat(propMemoEle.creDate)}}</p>
     </div>
     <div v-else-if="propMemoEle" style="width: 100%; float: left; min-height: 20px; margin-bottom: 5px; border-bottom: 1px solid #cccccc50;">
         <div style="width: 100%; min-height: 20px; display: flex; flex-direction: column; margin-bottom: 5px;float: left; position: relative;">

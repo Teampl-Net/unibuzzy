@@ -1,30 +1,69 @@
+<!-- eslint-disable vue/no-deprecated-slot-attribute -->
 <template>
-  <transition name="newContents">
-    <div v-if="this.showYn" style="margin: 0 auto; width: 100px; height: 100px; background-color: #fff; box-shadow: rgba(103, 104, 167, 0.4) 0px 1px 3px;"></div>
-  </transition>
-  <button @click="click">상자 토글</button>
+  <button @click="click">야ㅑ양</button>
+  <vue3-simple-html2pdf
+    ref="vue3SimpleHtml2pdf"
+    :options="pdfOptions"
+    :filename="exportFilename"
+  >
+    <img src="https://www.dummyimage.com/600x400/000/fff" alt="">
+  </vue3-simple-html2pdf>
 </template>
 
 <script>
+
 export default {
   name: 'App',
   components: {
   },
-  created () {
-  },
   data () {
     return {
-      showYn: false
+      pdfOptions: {
+        margin: 15,
+        image: {
+          type: 'jpeg',
+          quality: 1
+        },
+        html2canvas: { scale: 3, useCORS: true },
+        jsPDF: {
+          unit: 'mm',
+          format: 'a4',
+          orientation: 'p'
+        }
+      },
+      exportFilename: 'my-custom-file.pdf'
     }
   },
   watch: {
   },
   methods: {
     click () {
-      this.showYn = !this.showYn
+      this.$refs.vue3SimpleHtml2pdf.download()
     }
   },
   computed: {
   }
 }
 </script>
+
+<style scoped>
+table {
+  width: 100%;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+}
+th {
+  background: #ddd;
+  font-weight: bold;
+}
+td, th {
+    padding: 8px;
+    border: 1px solid #ccc;
+  }
+th {
+    background: #ddd;
+    font-weight: bold;
+  }
+</style>

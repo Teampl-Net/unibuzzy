@@ -152,6 +152,36 @@ export const commonMethods = {
     }
     return this.$dayjs(compareDate).add(9, 'hour').format(format)
   },
+  changeSimpleDateFormat (date) {
+    var compareDate = new Date(date)
+    var toDate = new Date()
+    var format = ''
+    if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(toDate).format('YYYY')) {
+      if (this.$dayjs(compareDate).format('MM') === this.$dayjs(toDate).format('MM')) {
+        if (this.$dayjs(compareDate).format('DD') === this.$dayjs(toDate).format('DD')) {
+          // 년도 월 일 이 같으면 만든 시간, 분
+          format = 'HH:mm'
+          // format = 'HH시 mm분'
+        } else {
+          // 같은 년도, 월이 같으면
+          format = 'MM/DD'
+          // format = 'MM월 DD일'
+        }
+      } else {
+        // 년도만 같으면
+        format = 'MM/DD'
+        // format = 'MM월 DD일'
+      }
+    } else {
+      format = 'YYYY/MM/DD'
+      // if (viewType === 'detail') {
+      //   return this.$dayjs(compareDate).format('yyyyMMDDHHmmss')
+      // } else if (viewType === 'list') {
+      //   return this.$dayjs(compareDate).format('yyyyMMDD')
+      // }
+    }
+    return this.$dayjs(compareDate).add(9, 'hour').format(format)
+  },
   changeDateFormat (date, mustTimeShowYn) {
     // var compareDate = new Date(Number(date))
     var compareDate = new Date(date)
@@ -1169,6 +1199,7 @@ export const commonMethods = {
 
 export default {
   install (Vue) {
+    Vue.config.globalProperties.$changeSimpleDateFormat = commonMethods.changeSimpleDateFormat
     Vue.config.globalProperties.$changeDateFormat = commonMethods.changeDateFormat
     Vue.config.globalProperties.$convertDate = commonMethods.convertDate
     Vue.config.globalProperties.$extractYear = commonMethods.extractYear

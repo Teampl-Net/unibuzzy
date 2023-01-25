@@ -5,7 +5,7 @@
         <img src="../../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
         <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">채널</p>
       </div>
-      <div v-if="this.mMainChanList.length > 0" id="fileChannelWrap" style="width: 100%; height: 85px; float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
+      <div v-if="this.mMainChanList.length > 0" id="fileChannelWrap" :class="!isMobile? 'thinScrollBar':''" style="width: 100%; height: 85px; float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
         <div style="height: 100%; min-width: 100%; display:flex;">
           <div class="cursorP" :style="selectedChannelIdx === 0? 'border: 2px solid #5F61BD;':'border: 0.5px solid rgba(0, 0, 0, 0.1);'" style="flex-shrink: 0; box-sizing: border-box; width: 65px; height: 65px; border-radius: 100%; float: left; margin-right: 10px; text-align: center; line-height: 65px; background-color: #fff;" @click="selectTeam(null, 0)">
             전체
@@ -96,7 +96,8 @@ export default {
       findKeyList: {},
       resultSearchKeyList: [],
       offsetInt: 0,
-      endListYn: false
+      endListYn: false,
+      isMobile: /Mobi/i.test(window.navigator.userAgent)
     }
   },
   watch: {

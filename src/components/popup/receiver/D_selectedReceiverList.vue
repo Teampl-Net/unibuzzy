@@ -5,7 +5,7 @@
       <p class="textLeft fontBold font14 fl commonDarkGray" style="">{{(teamList.bookList.length > 0 ? '주소록' + teamList.bookList.length : '') + ((teamList.bookList.length > 0 && teamList.memberList.length > 0) ? ', ' : '') +  (teamList.memberList.length > 0 ? '인원' + teamList.memberList.length : '')}}</p>
       <gBtnSmall class="fr CDeepBgColor" style="border-radius: 10px" btnTitle='+ 추가하기' @click="sendReceivers" v-if="btnVisible !== false" />
     </div>
-    <div class="selecteItemdArea" @wheel="horizontalScroll">
+    <div class="selecteItemdArea" :class="!isMobile? 'thinScrollBar':''" id="selectedItemWrap" @wheel="horizontalScroll">
       <!-- <div v-for="(data, index) in receiverList" :key="index" class=" fl mright-1"  style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <template v-if="data.jobkindId === 'BOOK'">
           <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl mright-05" style="width:20px" alt="">
@@ -82,7 +82,8 @@ export default {
       teamList: { bookList: [], memberList: [] },
       dragging: false,
       showErrorPopYn: false,
-      receiverList: []
+      receiverList: [],
+      isMobile: /Mobi/i.test(window.navigator.userAgent)
     }
   },
   created () {

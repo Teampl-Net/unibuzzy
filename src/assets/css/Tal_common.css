@@ -60,6 +60,14 @@ pre img {
   -ms-use-select: text !important;
   user-select: text !important;
 }
+.cursorNotDrag {
+  -webkit-text-size-adjust:none;
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
 
 /* .cursorDragAll {
   -webkit-user-select: all !important;
@@ -934,7 +942,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 /*  */
 #eContentsWrap .sortable-chosen {
   max-height: 10rem;
-  width: auto;
+  width: 100%;
   overflow: hidden;
 }
 #eContentsWrap .sortable-chosen img{

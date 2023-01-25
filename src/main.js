@@ -69,6 +69,7 @@ import gMainTab from './components/popup/memberInfo/memberUnit/D_commonMainTabCo
 import channelCard from './components/list/D_channelCard.vue'
 
 import gToolBox from './components/popup/writeContentUnit/D_commonToolBox.vue'
+import Vue3SimpleHtml2pdf from 'vue3-simple-html2pdf'
 
 import webViewBridge from './assets/js/webViewBridge'
 // import attatchFileListPop from './components/pageComponents/main/unit/D_commonAttatchFileListPop.vue'
@@ -85,6 +86,7 @@ app.use(Vuex)
 app.use(commonSharejs)
 app.use(BootstrapVue3)
 app.use(VueEasyLightbox)
+app.use(Vue3SimpleHtml2pdf)
 
 app.component('gProfileImg', gProfileImg)
 app.component('gSticker', gSticker)

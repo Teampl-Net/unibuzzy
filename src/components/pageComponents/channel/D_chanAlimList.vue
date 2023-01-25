@@ -188,6 +188,9 @@ export default {
     // window.removeEventListener('resize', () => { this.setWindowSize() })
   },
   methods: {
+    openImgPop (param) {
+      this.$emit('openImgPop', param)
+    },
     penImgPop (param) {
       this.$emit('openImgPop', param)
     },

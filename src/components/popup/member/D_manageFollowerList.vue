@@ -17,6 +17,16 @@
           <gBtnSmall @click="openReceptListPop" btnTitle="신청목록" style="padding: 0 10px !important;" class="cursorP fl mright-05"/>
         </div>
     </div>
+    <div class="w-100P fl" style="min-width: 120px;">
+      <div class="fl" style="position: relative; margin-top: 10px; width: calc(100% - 120px)">
+        <img @click="searchMember()" class="cursorP" style="float: right; position: absolute; left: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+        <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="searchMember()" placeholder="이름 또는 전화번호를 입력해주세요">
+      </div>
+      <!-- <div class="CDeepBorderColor fr" style="border-radius: 20px; width:100px; min-height: 30px; margin-top: 10px; display: flex; justify-content: center; align-items: center; ">
+        <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'creDate'}">등록순</p>
+        <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">이름순</p>
+      </div> -->
+    </div>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
       <commonMemberList :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
     </div>
@@ -50,6 +60,8 @@ export default {
   },
   data () {
     return {
+      mSearchKeyword: '',
+      mOrderByText: 'creDate',
       errorPopYn : false,
       errorText: '',
       // activeTabList: [/* { display: '멤버', name: 'M' },  */{ display: '전체', name: 'F' }/* , { display: '매니저', name: 'Admin' } */],
@@ -91,6 +103,32 @@ export default {
     this.ownerYn = true
   },
   methods: {
+    changeOrderBy () {
+      this.searchMember()
+    },
+    async searchMember () {
+      var result= {}
+      var paramMap = new Map()
+       // paramMap.set('showProfileYn', true)
+      paramMap.set('teamKey', this.propData.teamKey)
+      if (/^[0-9]*$/g.test(this.mSearchKeyword)) {
+        paramMap.set('phoneEnc', this.mSearchKeyword)
+      } else {
+        paramMap.set('userDispMtext', this.mSearchKeyword)
+      }
+      if (this.activeTab === 'AD') {
+          paramMap.set('managerYn', true)
+        } else if (this.activeTab === 'M') {
+          paramMap.set('memberYn', true)
+        }
+      paramMap.set('adminYn', true)
+      paramMap.set('pageSize', 1000)
+      result = await this.$commonAxiosFunction({
+          url: 'service/tp.getFollowerList',
+          param: Object.fromEntries(paramMap)
+      })
+      this.managerList = result.data.content
+    },
     async openReceptListPop () {
       await this.getReqMemList()
       this.$addHistoryStack('receptListPop')

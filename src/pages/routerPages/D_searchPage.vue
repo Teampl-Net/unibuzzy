@@ -1,10 +1,10 @@
 <template>
 <!--  -->
   <template v-if="mSearchModeYn === false">
-    <div class="w-100P h-100P" style=" overflow:auto; padding-bottom: 40px;">
+    <div class="w-100P h-100P" :style="'padding-top:' + (this.$STATUS_HEIGHT + 50)+ 'px;'" style=" overflow:auto; padding-bottom: 40px;">
       <div class="searchBodyTop pSide-1" style="background: white">
         <div class="fl w-100P" style="height: 30px; float: left;">
-          <img src="../../assets/images/main/icon_3d_search.png" style="float: left; margin: 8px;" class="img-w23" alt="">
+          <img src="../../assets/images/main/icon_3d_search.png" style="float: left; margin: 0 8px 8px 8px;" class="img-w23" alt="">
           <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">무엇을 찾고 계신가요?</p>
         </div>
         <!-- input Box -->
@@ -66,8 +66,8 @@
 
     <!-- 검색 키워드가 있다면 -->
     <template v-if="mSearchModeYn === true">
-      <div v-if="mSearchModeYn === true" class="w-100P h-100P" style="position: absolute; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10; overflow:hidden;">
-        <div class="fl w-100P" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: flex-start; position: fixed; z-index: 3; height:60px; background: white;">
+      <div v-if="mSearchModeYn === true" class="w-100P h-100P"  style="position: absolute; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10; overflow:hidden;">
+        <div class="fl w-100P" :style="`height: ${this.mobileYn? (this.$STATUS_HEIGHT + 50)+60:60}px;`" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: flex-start; position: fixed; z-index: 3; background: white;">
           <img @click="searchClear()" src="../../assets/images/common/icon_back.png" class="fl img-w12 cursorP mright-1 mleft-05" alt="">
           <div class="fl w-100P mright-1" style="width:calc(100% - 90px); position: relative;">
             <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" placeholder="키워드를 검색해주세요" />
@@ -77,7 +77,8 @@
           <img class="fr cursorP" v-if="mActiveSearch === 'CONT'" @click="mActiveSearch === 'CHAN' ? this.mChanFindPopShowYn = true : this.mFindPopShowYn = true"  style="width: 30px;" src="../../assets/images/common/common_filter.svg" alt="">
         </div>
         <!-- 공통 검색 탭 영역 -->
-        <div  class="w-100P fl pSide-1 chanListHeader " style="margin-top: 60px;" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
+        // 60
+        <div  class="w-100P fl pSide-1 chanListHeader " :style="`margin-top: ${this.mobileYn? (this.$STATUS_HEIGHT + 50) + 60:60}px;`" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
           <gActiveBar :testYn='true' ref="mainActiveBar" :tabList="this.mActiveSearchTabList" class="fl" @changeTab="changeSearchTab" />
             <template v-if="mActiveSearch === 'CHAN'">
               <cSearchBox class="mright-03 mtop-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" @searchBoxClick='searchBoxClick' />
@@ -154,6 +155,7 @@ export default {
   components: { cSearchBox, bottomSheets, searchBox, findContentsList, findChannelList, SkeletonBox },
   data () {
     return {
+      mobileYn: this.$getMobileYn(),
       mSearchModeYn: false,
       mBusinessItemList: [],
       mMyStickerList: [],

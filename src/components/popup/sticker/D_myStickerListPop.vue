@@ -30,12 +30,11 @@
                     <div v-if="mManagingMode" @click="openStickerDetailPop(mAddStickerObj, true)" class="cursorP font14" style="color: #FFF; line-height: 24px; float: right; background: #AEB0FB; border-radius: 6px; min-width: 50px; height: 24px; padding: 0 5px; margin-right: 5px;">+ 신규</div>
                     <div v-else  @click="this.mManagingMode = true" class="cursorP font14" style="color: #FFF; line-height: 24px; float: right; background: #AEB0FB; border-radius: 6px; min-width: 50px; height: 24px; padding: 0 5px; margin-right: 20px;">관리모드</div>
                 </div>
-                <div style="width: 100%; height: 48px; overflow: auto hidden; padding: 10px 20px; ">
-                    <div :style="stickerBoxScrollWidth" class="thinScrollBar" style="min-width: 100%; width: var(--width); display: flex; align-items: center; height: 100%; padding: 0 0px;">
-                        <!-- <div class="cursorP" @click="openAddStickerPop" style="width: 50px; margin-right: 10px;display: flex; align-items: center; justify-content: center; font-size: 20px; height: 50px; border-radius: 100%; float: left; border:1px solid #ccc;"> + </div> -->
-                        <p v-if="GE_NON_SELECTED_STICKER_LIST.length === 0" class="font12 textLeft fontBold">선택가능한 분류가 없습니다. <br>분류를 추가해주세요!</p>
-                        <gStickerLine :pSmallYn="true" class="cursorP  cursorHover" :class="mManagingMode? 'stickerIcon': ''" @click="mManagingMode? openStickerDetailPop(value, false) : selectSticker(value)" style="margin-right: 5px;" v-for="(value) in GE_NON_SELECTED_STICKER_LIST" :pSticker="value" :key="value.stickerKey" />
-                    </div>
+                <div></div>
+                <div class="thinScrollBar" style="width: calc(100% - 40px); overflow: auto hidden; margin: 10px 20px; display: flex; align-items: center;" id="stickerListWrap" @wheel="horizontalScroll">
+                    <!-- <div class="cursorP" @click="openAddStickerPop" style="width: 50px; margin-right: 10px;display: flex; align-items: center; justify-content: center; font-size: 20px; height: 50px; border-radius: 100%; float: left; border:1px solid #ccc;"> + </div> -->
+                    <p v-if="GE_NON_SELECTED_STICKER_LIST.length === 0" class="font12 textLeft fontBold">선택가능한 분류가 없습니다. <br>분류를 추가해주세요!</p>
+                    <gStickerLine :pSmallYn="true" class="cursorP  cursorHover" :class="mManagingMode? 'stickerIcon': ''" @click="mManagingMode? openStickerDetailPop(value, false) : selectSticker(value)" style="margin-right: 5px;" v-for="(value) in GE_NON_SELECTED_STICKER_LIST" :pSticker="value" :key="value.stickerKey" />
                 </div>
             </div>
             <!-- <manageMySticker v-if="this.mStickerList" :pMyStickerList="this.mStickerList"/> -->
@@ -135,6 +134,15 @@ export default {
     this.$store.commit('D_HISTORY/updateStack', history)
   },
   methods: {
+    horizontalScroll (e) {
+      if (e.deltaY === 0) return
+      e.preventDefault()
+      var channelWrap = document.querySelector(`#${e.currentTarget.id}`)
+      console.log('list')
+      channelWrap.scrollTo({
+        left: channelWrap.scrollLeft + e.deltaY / 10
+      })
+    },
     deleteSticker (sticker) {
       console.log(sticker)
       var idx = this.mStickerList.findIndex((item) => Number(item.stickerKey) === Number(sticker.stickerKey))
@@ -188,6 +196,7 @@ export default {
     selectSticker (value, delYn) {
       // eslint-disable-next-line no-debugger
       debugger
+      console.log('=====================')
       console.log(value)
       if (delYn) {
         var index = this.mContStickerList.findIndex((item) => Number(item.stickerKey) === Number(value.stickerKey))
@@ -201,6 +210,7 @@ export default {
         } */
         this.mContStickerList.push(value)
       }
+      console.log(this.mContStickerList)
     },
     closeXPop () {
       this.$emit('closeXPop')

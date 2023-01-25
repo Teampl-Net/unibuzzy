@@ -1,7 +1,7 @@
 <template>
 
 <!-- box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; max-height:50px; -->
-    <div v-if="inLineYn !== false" class="" id="colorPickerWrap" style="background-color: #ECECF570; padding: 5px 10px; border-radius: 8px; overflow: auto; white-space: nowrap;     display: flex; flex-direction: row; align-items: center;" @wheel="horizontalScroll">
+    <div v-if="inLineYn !== false" class="" id="colorPickerWrap" style="background-color: #ECECF570; padding: 5px 10px; border-radius: 8px; overflow: auto; white-space: nowrap;     display: flex; flex-direction: row; align-items: center;" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
         <!-- <div :style="'background-color:' + this.selectedColor" style=" width: calc(100% - 100px); margin-left: 10px; float: left; height: 50px; margin-bottom: 20px;">{{this.selectedColor}}</div>
         <gBtnSmall @click="selectColor" style="float: left; height: 23px; margin-bottom: 5px; line-height: 23px;margin-left: 10px" btnTitle="선택"/>
         <gBtnSmall @click="closePop" style="float: left; height: 23px; color: #A9AACD; border: 1px solid #A9AACD; line-height: 23px; background: #FFFFFF; margin-left: 10px" btnTitle="닫기"/> -->
@@ -40,6 +40,7 @@
 export default {
   data () {
     return {
+      isMobile: /Mobi/i.test(window.navigator.userAgent),
       selectedColor: '#FFCDD2',
       colorList: [
         '#FFCDD2', '#F8BBD0', '#E1BEE7', '#D1C4E9', '#C5CAE9', '#BBDEFB', '#B3E5FC', '#B2EBF2', '#FFCCBC', '#FFE0B2', '#FFECB3', '#FFF9C4', '#F0F4C3', '#DCEDC8', '#C8E6C9', '#B2DFDB'

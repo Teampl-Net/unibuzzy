@@ -1,5 +1,7 @@
 <template>
     <div v-if="mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
+      <!-- <button @click="downloadPdf">다운로드</button> -->
+      <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;">
         <div :class="animationYn? 'newContentsAni':''" key="animationYn" v-if="this.CONT_DETAIL" :style="'padding-bottom:' + (this.$STATUS_HEIGHT)+ 'px;'" style="width: 100%; background: #FFF; overflow: hidden; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative; padding-top: 5px;  border-radius: 8px;">
           <div v-if="propJustShowYn" :style="propPreStickerList && propPreStickerList.length > 0? 'height: calc(100% - 50px);' : 'height: calc(100%); '" style="width: 100%; position: absolute;left: 0; top: 0; z-index: 99;"></div>
           <!-- :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" -->
@@ -17,9 +19,9 @@
                           </p>
                       </template>
                       <template v-else>
-                          <p @click="goContentsDetail()" class=" textLeft textOverdot commonBlack fontBold font16" :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''"  style="width: calc(100% - 35px);">
-                              <img v-if="CONT_DETAIL.jobkindId === 'ALIM'" src="../../../assets/images/push/contTitle_alim.svg" style="width: 20px; margin-top: 2px; float: left; margin-right: 5px;" alt="">
-                              <img v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" src="../../../assets/images/push/contTitle_board.svg" style="width: 20px; margin-top: 2px;  float: left; margin-right: 5px;" alt="">
+                          <p @click="goContentsDetail()" class="cursorDragText textLeft textOverdot commonBlack fontBold font16" :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''"  style="width: calc(100% - 35px);">
+                              <img v-if="CONT_DETAIL.jobkindId === 'ALIM'" src="../../../assets/images/push/contTitle_alim.svg" class="cursorNotDrag" style="width: 20px; margin-top: 2px; float: left; margin-right: 5px;" alt="">
+                              <img v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" src="../../../assets/images/push/contTitle_board.svg" class="cursorNotDrag" style="width: 20px; margin-top: 2px;  float: left; margin-right: 5px;" alt="">
                               {{CONT_DETAIL.title}}
                           </p>
                           <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 0; top: 0;" alt="" @click="contentMenuClick">
@@ -165,6 +167,7 @@
               </div>
           </template>
       </div>
+    </vue3-simple-html2pdf>
     <!-- 밑에는 댓글 작성 창 -->
     <gMemoPop style="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
 
@@ -218,6 +221,22 @@ export default {
   },
   data () {
     return {
+      pdfOptions: {
+        margin: 15,
+        image: {
+          type: 'jpeg',
+          quality: 1
+        },
+        html2canvas: { scale: 3, useCORS: true },
+        jsPDF: {
+          unit: 'mm',
+          format: 'a4',
+          orientation: 'p'
+        }
+      },
+      exportFilename: 'my-custom-file.pdf',
+      jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4', compressPDF: true },
+
       mMoreYn: false,
 
       mFilePopShowYn: false,
@@ -275,6 +294,9 @@ export default {
     await this.setPreTagInFirstTextLine()
   },
   methods: {
+    downloadPdf () {
+      this.$refs.vue3SimpleHtml2pdf.download()
+    },
     openStickerPop () {
       var params = {}
       params.targetType = 'stickerPop'
@@ -1275,6 +1297,7 @@ export default {
     CONT_DETAIL () {
       if (!this.contentsEle) return
       var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKey)
+      console.log(cont)
       if (!cont) {
         cont = [this.contentsEle]
         // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
@@ -1350,6 +1373,6 @@ pre div[id='formEditText'] {
 
 <style>
 .contentsCardBodyArea .formLine, .contentsCardBodyArea .formDot {
-  padding-right: 0 !important;
+  padding: 0 10px !important;
 }
 </style>

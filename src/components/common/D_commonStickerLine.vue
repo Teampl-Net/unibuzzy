@@ -1,7 +1,7 @@
 <template>
-    <div style="" :class="pSmallYn === true? 'thinHeight' : 'normalHeight'" >
+    <div style="flex-shrink: 0;" :class="pSmallYn === true? 'thinHeight' : 'normalHeight'" >
         <!-- <p class="fontBold textRight" :class="pSmallYn === true? 'font14' : 'font16'" style="position: absolute; top: 0; right: 10px; z-index:2;">{{this.$changeText(pSticker.nameMtext)}}</p> -->
-        <div v-if="pSmallYn === true" :class="pSelecteModeYn? 'selModePadding': ''" class="normalLineStyle cursorP font12 fontBold" :style="'border: 2px solid ' + pSticker.picBgPath + '; color: ' + pSticker.picBgPath ">
+        <div v-if="pSmallYn === true" :class="pSelecteModeYn? 'selModePadding': ''" style="min-width: 0;" class="normalLineStyle cursorP font12 fontBold" :style="'border: 2px solid ' + pSticker.picBgPath + '; color: ' + pSticker.picBgPath ">
             {{this.$changeText(pSticker.nameMtext)}}
             <span  v-if="pSelecteModeYn" style="cursor: pointer; width: 10px; position: absolute; right: 5px;"  :style="'color: ' + pSticker.picBgPath" class="font16 fontBold">x</span>
             <!-- <img v-if="pSelecteModeYn" src="../../assets/images/common/grayXIcon.svg" style="cursor: pointer; width: 10px; position: absolute; right: 5px;" alt=""> -->
