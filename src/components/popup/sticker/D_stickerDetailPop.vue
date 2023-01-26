@@ -1,5 +1,5 @@
 <template>
-    <div style="width: calc(100% - 60px); height: 350px; border-radius: 0.8rem; z-index: 101; border: 1px solid #ccc; background: #FFF; position: absolute; top: 10%; left: 30px;">
+    <div style="width: calc(100% - 60px); height: 350px; border-radius: 0.8rem; z-index: 101; border: 1px solid #ccc; background: #FFF; position: fixed; top: 30%; left: 30px;">
         <div  class="newHeaderLine" style="width: 100%; padding: 10px 20px; display: flex; align-items: center; position: relative; height: 50px;">
             <p class="fl font20 commonColor fontBold">{{mStickerObj.modiYn? '라벨 정보' : '라벨 추가'}}</p>
             <img class="cursorP" @click="backClick" src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute;  right: 15px; top: 15px;" alt="">
@@ -13,9 +13,12 @@
             <div class="fr" style="width: calc(100% - 20px); margin-top: 10px;">
                 <gColorPicker :deepYn="true" :inLineYn="isMobile? true : false" :colorPick="mStickerObj.picBgPath" @closePop="closeColorPickerPop" @choiceColor='choiceColor' ref="colorPicker" />
             </div>
-            <p class="textLeft mtop-1 font16 fontBold w-100P commonColor mleft-1">미리보기</p>
+            <div class="textLeft mtop-1 fontBold w-100P fl" style="padding: 0 1rem;">
+              <p class="font16 commonColor fl textLeft" style="width: calc(50% - 0.5rem);">미리보기</p>
+              <!-- <p class="fr font14 cursorP textCenter contrastBtn" @click="contrastColor">반전</p> -->
+            </div>
             <div style="width: 100%; min-height: 50px; float: left; padding-left: 10px;">
-                <gStickerLine  style="width: calc(100% - 40px);" v-if="mStickerObj.nameMtext && mStickerObj.nameMtext !== ''" :pSticker="mStickerObj" />
+                <gStickerLine :pContrastColorYn="this.contrastColorYn" style="width: calc(100% - 40px);" v-if="mStickerObj.nameMtext && mStickerObj.nameMtext !== ''" :pSticker="mStickerObj" />
             </div>
         </div>
         <div style="width: 100%; float: left; background:#FFF; height: 30px; display: flex; justify-content: center; align-items: center;">
@@ -32,6 +35,7 @@
 export default {
   data () {
     return {
+      contrastColorYn: false,
       mStickerObj: this.pStickerObj,
       popId: null,
       isMobile: /Mobi/i.test(window.navigator.userAgent),
@@ -50,6 +54,13 @@ export default {
     this.$store.commit('D_HISTORY/updateStack', history)
   },
   methods: {
+    contrastColor () {
+      if (this.contrastColorYn) {
+        this.contrastColorYn = false
+      } else {
+        this.contrastColorYn = true
+      }
+    },
     checkInput () {
       // eslint-disable-next-line no-debugger
       debugger
@@ -184,5 +195,14 @@ export default {
 }
 </script>
 <style scoped>
-
+.contrastBtn {
+  color: #fff;
+  line-height: 24px;
+  background: #5F61BD;
+  border-radius: 6px;
+  width: 35px;
+  height: 24px;
+  padding: 0px 5px;
+  margin-right: 5px;
+}
 </style>

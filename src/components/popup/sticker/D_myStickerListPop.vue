@@ -1,6 +1,6 @@
 <template>
 <!-- box-shadow: rgb(0 0 0 / 20%) 0px 0px 4px 4px; -->
-    <div  style="width: calc(100% - 40px); position: absolute; left: 20px; top: 15%; z-index: 9; height: 70%;  min-height: 400px; border-radius: 0.8rem; border: 1px solid #ccc; background: #FFF; ">
+    <div  style="width: calc(100% - 40px); position: absolute; left: 20px; top: 15%; z-index: 9; height: 50%;  min-height: 400px; border-radius: 0.8rem; border: 1px solid #ccc; background: #FFF; ">
         <div class="newHeaderLine" style="width: 100%; padding: 10px 20px; display: flex; align-items: center; position: relative; height: 50px;">
             <p class="fl font20 commonColor fontBold">라벨설정</p>
             <img @click="backClick" class="cursorP" src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute; right: 15px; top: 15px;" alt="">
@@ -24,14 +24,15 @@
             </div> -->
             <div style="width: 100%; min-height: 50px; float: left; position: relative;">
                 <div style="width: 100%; min-height: 20px;" class="mtop-1">
-                    <p class="font16 fontBold commonColor textLeft  fl " style="padding-left: 20px;">라벨 추가하기</p>
+                    <p class="font16 fontBold commonColor textLeft  fl " style="padding-left: 20px;">라벨 목록</p>
                 <!-- <p class="font14 textLeft commonGray mbottom-05 fl" style="line-height: 24px; padding-left: 20px;">어디로 분류할까요?</p> -->
                     <gBtnSmall v-if="mManagingMode" btnThema="light" style="height: 24px; line-height: 24px; margin-right: 20px; padding: 0 5px; font-size: 14px;" btnTitle="돌아가기" @click="this.mManagingMode = false"/>
                     <div v-if="mManagingMode" @click="openStickerDetailPop(mAddStickerObj, true)" class="cursorP font14" style="color: #FFF; line-height: 24px; float: right; background: #AEB0FB; border-radius: 6px; min-width: 50px; height: 24px; padding: 0 5px; margin-right: 5px;">+ 신규</div>
                     <div v-else  @click="this.mManagingMode = true" class="cursorP font14" style="color: #FFF; line-height: 24px; float: right; background: #AEB0FB; border-radius: 6px; min-width: 50px; height: 24px; padding: 0 5px; margin-right: 20px;">관리모드</div>
                 </div>
                 <div></div>
-                <div class="thinScrollBar" style="width: calc(100% - 40px); overflow: auto hidden; margin: 10px 20px; display: flex; align-items: center;" id="stickerListWrap" @wheel="horizontalScroll">
+                <!-- <div class="thinScrollBar" style="width: calc(100% - 40px); overflow: auto hidden; margin: 10px 20px; display: flex; align-items: center;" id="stickerListWrap" @wheel="horizontalScroll"> -->
+                <div style="width: calc(100% - 40px); margin: 10px 20px; display: flex; align-items: center; flex-wrap: wrap;" id="stickerListWrap">
                     <!-- <div class="cursorP" @click="openAddStickerPop" style="width: 50px; margin-right: 10px;display: flex; align-items: center; justify-content: center; font-size: 20px; height: 50px; border-radius: 100%; float: left; border:1px solid #ccc;"> + </div> -->
                     <p v-if="GE_NON_SELECTED_STICKER_LIST.length === 0" class="font12 textLeft fontBold">선택가능한 분류가 없습니다. <br>분류를 추가해주세요!</p>
                     <gStickerLine :pSmallYn="true" class="cursorP  cursorHover" :class="mManagingMode? 'stickerIcon': ''" @click="mManagingMode? openStickerDetailPop(value, false) : selectSticker(value)" style="margin-right: 5px;" v-for="(value) in GE_NON_SELECTED_STICKER_LIST" :pSticker="value" :key="value.stickerKey" />

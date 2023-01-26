@@ -1,7 +1,7 @@
 <template>
     <div v-if="mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
       <!-- <button @click="downloadPdf">다운로드</button> -->
-      <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;">
+      <!-- <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;"> -->
         <div :class="animationYn? 'newContentsAni':''" key="animationYn" v-if="this.CONT_DETAIL" :style="'padding-bottom:' + (this.$STATUS_HEIGHT)+ 'px;'" style="width: 100%; background: #FFF; overflow: hidden; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative; padding-top: 5px;  border-radius: 8px;">
           <div v-if="propJustShowYn" :style="propPreStickerList && propPreStickerList.length > 0? 'height: calc(100% - 50px);' : 'height: calc(100%); '" style="width: 100%; position: absolute;left: 0; top: 0; z-index: 99;"></div>
           <!-- :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" -->
@@ -27,7 +27,7 @@
                           <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 0; top: 0;" alt="" @click="contentMenuClick">
                       </template>
                   </div>
-                  <div style="width: 100%; paosition: relative; height: 50%; min-height: 25px;">
+                  <div style="width: 100%; position: relative; height: 50%; min-height: 25px;">
                       <div style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
                           <p v-if="CONT_DETAIL.jobkindId === 'BOAR'" class="CLDeepGrayColor font14 fl textLeft fontBold " @click="goChannelMain()">
                               <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
@@ -85,7 +85,8 @@
               </div>
               <div v-if="!propJustShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" style="width: 100%; padding: 5px 10px; padding-left: 20px; padding-bottom: 0; float: left; min-height: 20px;margin-top: 10px;">
                   <template v-for="(value, index) in CONT_DETAIL.D_CONT_USER_STICKER_LIST" :key="index" >
-                      <gStickerLine @click="goStickerContentsList(value.sticker)" v-if="value.sticker" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" />
+                  <!-- <template v-for="(value, index) in this.mContStickerList" :key="index" > -->
+                      <gStickerLine @click="goStickerContentsList(value)" v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" />
                   </template>
               </div>
               <p :id="'bodyMore'+CONT_DETAIL.contentsKey" class="fr font14 commonColor fontBold mtop-05  mright-1" style="display:none">더보기 > </p>
@@ -96,8 +97,9 @@
               </template>
           </div>
           <template :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  v-if="!propJustShowYn && ((CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)">
-              <div class="contentsCardUserDoArea" style="width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">
-                  <div style="float: left; width: calc(100% - 100px); height: 100%;" v-if="this.CONT_DETAIL.D_CONT_USER_DO">
+            <div class="contentsCardUserDoArea" style="position: relative; width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">
+              <stickerListSetting @mContStickerList="saveStickerList"  v-if="this.openStickerListYn" :openStickerListYn="this.openStickerListYn" :contDetail="this.CONT_DETAIL" @openPop="openSettingStickerPop" />
+              <div style="float: left; width: calc(100% - 100px); height: 100%;" v-if="this.CONT_DETAIL.D_CONT_USER_DO">
                       <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left;">
                           <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="" src="../../../assets/images/contents/cont_like_no.svg" alt="">
@@ -142,6 +144,7 @@
                         </div>
                         <p class="font12 fl fontBold w-100P mtop-01 userDoColor">라벨</p>
                       </div>
+
                       <!-- this.$emit('fileDownload') -->
                       <!-- <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                           <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
@@ -167,7 +170,7 @@
               </div>
           </template>
       </div>
-    </vue3-simple-html2pdf>
+    <!-- </vue3-simple-html2pdf> -->
     <!-- 밑에는 댓글 작성 창 -->
     <gMemoPop style="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
 
@@ -188,9 +191,10 @@
   </template>
   <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
   <!-- <div v-if="mStickerPopShowYn" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 8; background: #00000026;"></div> -->
-  <!-- <gSelectStickerPop v-if="mStickerPopShowYn" @closeXPop="mStickerPopShowYn=false" style="" :pContentsEle="this.CONT_DETAIL"/> -->
+  <!-- <gSelectsPop v-if="mStickerPopShowYn" @closeXPop="mStickerPopShowYn=false" style="" :pContentsEle="this.CONT_DETAIL"/> -->
 </template>
 <script>
+import stickerListSetting from '../../popup/common/D_stickerListSetting.vue'
 import memoCompo from './D_contBoxMemo.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
 import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
@@ -201,6 +205,7 @@ import recvListPop from './D_contentsRecvListPop.vue'
 
 export default {
   components: {
+    stickerListSetting,
     attachFileListPop,
     memoCompo,
     statCodeComponent,
@@ -218,27 +223,27 @@ export default {
     index: {}
   },
   created () {
+    // this.saveStickerList()
+
+    if (this.CONT_DETAIL) {
+      console.log(1)
+      if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST) {
+        console.log(2)
+        var stickerList = []
+        for (var s = 0; s < this.CONT_DETAIL.D_CONT_USER_STICKER_LIST.length; s++) {
+          if (!this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[s].sticker) continue
+          stickerList.push(this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[s].sticker)
+          console.log(this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[s].sticker)
+        }
+        this.mContStickerList = this.replaceArr(stickerList)
+      }
+    }
   },
   data () {
     return {
-      pdfOptions: {
-        margin: 15,
-        image: {
-          type: 'jpeg',
-          quality: 1
-        },
-        html2canvas: { scale: 3, useCORS: true },
-        jsPDF: {
-          unit: 'mm',
-          format: 'a4',
-          orientation: 'p'
-        }
-      },
-      exportFilename: 'my-custom-file.pdf',
-      jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4', compressPDF: true },
-
+      mContStickerList: [],
+      openStickerListYn: false,
       mMoreYn: false,
-
       mFilePopShowYn: false,
       mLoadingShowYn: false,
       mContMenuShowYn: false,
@@ -294,13 +299,20 @@ export default {
     await this.setPreTagInFirstTextLine()
   },
   methods: {
-    downloadPdf () {
-      this.$refs.vue3SimpleHtml2pdf.download()
+    saveStickerList (params) {
+      this.mContStickerList = params.mContStickerList
+      console.log('리스트!!')
+      console.log(this.mContStickerList)
     },
     openStickerPop () {
-      var params = {}
-      params.targetType = 'stickerPop'
-      params.contDetail = this.CONT_DETAIL
+      if (!this.openStickerListYn) {
+        this.openStickerListYn = true
+      } else {
+        this.openStickerListYn = false
+      }
+    },
+    openSettingStickerPop (params) {
+      this.openStickerListYn = false
       this.$emit('openPop', params)
     },
     addAnimation () {

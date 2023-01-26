@@ -34,7 +34,9 @@
         <writeContents :pPopId="popId" ref="writeContentsCompo" v-if="popId &&  targetType === 'writeContents'" :contentType="propParams.contentsJobkindId" :params="propParams" :propData="propParams" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' @addNewAlim="addNewContents" @toAlimFromBoard="toAlimFromBoard" />
 
         <div v-if="popId && targetType === 'stickerPop'" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 8; background: #00000026;"></div>
+
         <gSelectStickerPop v-if="popId && targetType === 'stickerPop'" @closeXPop="closeXPop" style="" :pContentsEle="this.propParams.contDetail"/>
+        <!-- <stickerListSetting v-if="targetType === 'stickerPop'" @closeXPop="closeXPop" style="" /> -->
 
         <selectBookList :pPopId="popId" v-if=" popId &&  targetType === 'selectBookList'" :pSelectedList="selectPlist" :selectPopYn='true' :propData='propParams' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
         <chanMenu :pPopId="popId" ref="chanMenuCompo" :propData="propParams" @openPop="openPop" :propChanAlimListTeamKey="propParams.targetKey" v-if='openChanMenuYn === true && popId' @closePop='openChanMenuYn = false' @openItem='openPop' @openChanMsgPop="closeNopenChanMsg()"/>
@@ -68,6 +70,7 @@
 </template>
 
 <script>
+// import stickerListSetting from '../common/D_stickerListSetting.vue'
 import pushPop from '../push/Tal_pushDetailPopup.vue'
 import changeInfo from '../info/Tal_changeInfo.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
@@ -149,6 +152,7 @@ export default {
     parentPopN: {}
   },
   components: {
+    // stickerListSetting,
     savePhone,
     searchPage,
     memInfoCreEditPop,
