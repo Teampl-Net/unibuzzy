@@ -173,7 +173,7 @@ export const methods = {
   async userLoginCheck (maingoYn) {
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
-    if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
+    if (store.getters['D_USER/GE_USER'].userKey && testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
     // 수망고
     //   paramMap.set('fcmKey', '123456789')
     //   paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
