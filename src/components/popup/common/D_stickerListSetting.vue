@@ -1,6 +1,6 @@
 <template>
   <div ref="layerPopUp" v-if="this.openStickerPopYn" @click="saveUserDoStickerList" class="w-100P h-100P layerPopUp"></div>
-    <div v-if="this.openStickerPopYn" style="width: 70%; max-height: 130px; right: 0; right: 10px; bottom: 65px; background: #fff; border: 2px solid #5F61BD; border-radius: 25px; padding: 20px; position: absolute; z-index: 8;">
+    <div v-if="this.openStickerPopYn" style="width: 70%; max-height: 120px; right: 0; right: 10px; bottom: 65px; background: #fff; border: 2px solid #5F61BD; border-radius: 25px; padding: 10px 20px; position: absolute; z-index: 8;">
       <div class="fl w-100P mbottom-05" style="height: 35px; display: flex; align-items: center;overflow: scroll hidden; border-bottom: 2px solid #ccc;" @wheel="horizontalScroll" id="stickerContList">
         <!-- <template style="" v-for="(value, index) in this.contDetail.D_CONT_USER_STICKER_LIST" :key="index"> -->
         <p v-if="this.mContStickerList.length === 0" class="font14 textLeft fontBold">라벨을 추가해주세요!</p>
