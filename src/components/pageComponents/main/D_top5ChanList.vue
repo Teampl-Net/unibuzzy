@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%; float: left;">
     <listTitle :propViewTab="this.mViewTab" propListTitle= "채널" :propMoreLink="mMoreLink" class="fl w-100P" @openPop="openPop" />
-    <div style="width: calc(100% + 20px); height:1.5px; background: rgb(220, 221, 235); margin-left: -10px; float: left; margin-top:0px; margin-bottom: 10px;"></div>
+    <div style="width: calc(100% + 20px); height:1.5px; background: rgb(220, 221, 235); margin-left: -10px; float: left; margin-top:0px;"></div>
     <gActiveBar  ref="activeBarChanListTop5" :tabList="mActiveTabList" class=" fl" @changeTab="changeTab" />
     <div class="chanTop5Wrap fl" >
       <div class="w-100P top5ChannelRow" :style="GE_DISP_CHAN_LIST && index === GE_DISP_CHAN_LIST.length - 1 ? 'border: none!important;' : ''"  v-for="(value, index) in GE_DISP_CHAN_LIST"  :key="index" v-on:click="openPop(value)" >

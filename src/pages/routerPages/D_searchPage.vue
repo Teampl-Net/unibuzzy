@@ -67,7 +67,7 @@
     <!-- 검색 키워드가 있다면 -->
     <template v-if="mSearchModeYn === true">
       <div v-if="mSearchModeYn === true" class="w-100P h-100P"  style="position: absolute; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10; overflow:hidden;">
-        <div class="fl w-100P" :style="`height: ${this.mobileYn? (this.$STATUS_HEIGHT + 50)+60:60}px;`" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: flex-start; position: fixed; z-index: 3; background: white;">
+        <div class="fl w-100P" :style="`height: ${this.mobileYn? (this.$STATUS_HEIGHT + 60):60}px;`" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: flex-start; position: fixed; z-index: 3; background: white;">
           <img @click="searchClear()" src="../../assets/images/common/icon_back.png" class="fl img-w12 cursorP mright-1 mleft-05" alt="">
           <div class="fl w-100P mright-1" style="width:calc(100% - 90px); position: relative;">
             <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" placeholder="키워드를 검색해주세요" />
@@ -78,7 +78,7 @@
         </div>
         <!-- 공통 검색 탭 영역 -->
         // 60
-        <div  class="w-100P fl pSide-1 chanListHeader " :style="`margin-top: ${this.mobileYn? (this.$STATUS_HEIGHT + 50) + 60:60}px;`" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
+        <div  class="w-100P fl pSide-1 chanListHeader " :style="`margin-top: ${this.mobileYn? (this.$STATUS_HEIGHT + 60):60}px;`" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
           <gActiveBar :testYn='true' ref="mainActiveBar" :tabList="this.mActiveSearchTabList" class="fl" @changeTab="changeSearchTab" />
             <template v-if="mActiveSearch === 'CHAN'">
               <cSearchBox class="mright-03 mtop-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" @searchBoxClick='searchBoxClick' />
@@ -596,7 +596,6 @@ export default {
       this.mChannelList = []
 
       var result = await this.getChannelList(true)
-      console.log(result)
       this.mChannelList = result.content
     },
     readyFunc () {

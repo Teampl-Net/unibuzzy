@@ -174,6 +174,12 @@ export default {
       handler () {
         console.log(' ****************************** ')
         console.log(this.uploadFileList)
+        if (this.uploadFileList.length > 0) {
+          this.writePushTitle = this.uploadFileList[0].file.name
+          console.log(this.writePushTitle)
+        } else {
+          this.writePushTitle = ''
+        }
       },
       deep: true
 
@@ -591,7 +597,7 @@ export default {
         var msgData = ''
         msgData = document.getElementById('msgBox').innerText
         msgData = msgData.trim()
-        if (msgData !== undefined && msgData !== null && msgData !== '' && (msgData !== '클릭하여 내용을 작성해주세요' || this.uploadFileList.length > 0)) {
+        if ((msgData !== undefined && msgData !== null && msgData !== '') || (this.uploadFileList.length > 0)) {
         } else {
           this.errorText = '알림 내용을 입력해주세요'
           this.failPopYn = true

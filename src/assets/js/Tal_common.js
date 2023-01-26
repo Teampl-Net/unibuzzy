@@ -1123,7 +1123,6 @@ export const commonMethods = {
     str = str.replaceAll('<pre', '<div')
     str = str.replaceAll('</pre', '</div')
     if (completeYn) {
-      console.log(str)
       str = str.replaceAll('formCard formText ', 'formCard formText completeWork ')
     }
     return str

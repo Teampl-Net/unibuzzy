@@ -114,6 +114,7 @@ export default {
   created () {
     this.loadingYn = true
     this.$emit('changePageHeader', '알림')
+    console.log(this.initData)
     if (this.propParams && this.propParams.alimTabType) {
       this.viewMainTab = this.propParams.alimTabType
     }
@@ -1463,6 +1464,7 @@ export default {
       var cont
       var tempContentDetail
       var contentDetail
+      console.log(resultList.content)
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       // this.endListSetFunc(resultList)
       if (this.viewMainTab === 'P') {

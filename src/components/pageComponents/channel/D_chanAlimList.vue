@@ -458,6 +458,18 @@ export default {
       }
     },
     async copyText () {
+      if ((this.chanDetail.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.mMakeDeepLinkIng = true
+        var title = '[더알림]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+        var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
+        var this_ = this
+        this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
+          this.CHANNEL_DETAIL.copyTextStr = res
+          this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+          this_.mMakeDeepLinkIng = false
+        })
+      }
       var shareItem = { title: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: this.CHANNEL_DETAIL.copyTextStr, url: this.CHANNEL_DETAIL.copyTextStr }
       if (this.$checkMobile() === 'IOS') {
         shareItem = { title: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), url: this.CHANNEL_DETAIL.copyTextStr }
@@ -475,7 +487,7 @@ export default {
       var param = new Object()
       param.followerKey = this.CHANNEL_DETAIL.userTeamInfo.followerKey
       var toastText = ''
-      if (this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn === true) {
+      if (this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn === 1) {
         this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn = false
         param.notiYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn
         toastText = '채널 알림이 비활성화 되었습니다'

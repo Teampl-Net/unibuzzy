@@ -417,7 +417,6 @@ export default {
           this.mMememoValue = {}
           //   this.getMemoList(true)
           if (result.data.resultList && result.data.resultList.memoList.length > 0) {
-            console.log(result.data.resultList)
             var saveMemoObj = {}
             var index
             if (memo.parentMemoKey) {
@@ -823,7 +822,6 @@ export default {
       writeParam.titleStr = this.contentsEle.title
       writeParam.bodyFullStr = this.contentsEle.bodyFullStr
       writeParam.modiContentsKey = this.contentsEle.contentsKey
-      console.log(writeParam)
       this.$emit('openPop', writeParam)
       // this.mSeleteWriteTypePopShowYn = false
     },
@@ -950,8 +948,6 @@ export default {
           url: 'service/tp.saveMemo',
           param: { memo: memo }
         })
-        console.log('-------------------------console.log(result) ------------------------------')
-        console.log(result)
         // if (result.data.result === true || result.data.result === 'true') {
         if (result.data && result.data.result) {
           this.$refs.gMemoRef.clearMemo()
@@ -1045,7 +1041,6 @@ export default {
       } */
     },
     goChannelMain () {
-      console.log(this.CONT_DETAIL)
       var openPopParam = {}
       openPopParam.targetKey = this.CONT_DETAIL.creTeamKey
       openPopParam.targetType = 'chanDetail'
@@ -1054,7 +1049,6 @@ export default {
       this.$emit('openPop', openPopParam)
     },
     goUserProfile (targetUserKey) {
-      console.log(this.CONT_DETAIL)
       var openPopParam = {}
       openPopParam.targetKey = this.CONT_DETAIL.creTeamKey
       openPopParam.teamKey = this.CONT_DETAIL.creTeamKey
@@ -1075,7 +1069,6 @@ export default {
         this.alimBigView()
         return
       }
-      console.log(this.CONT_DETAIL)
       var openPopParam = {}
       openPopParam.targetType = 'contentsDetail'
       openPopParam.targetKey = this.CONT_DETAIL.contentsKey
@@ -1147,7 +1140,6 @@ export default {
           // temp.push({ doType: act.doType, doKey: result.doKey })
           tempDetail.D_CONT_USER_DO = changeUserDoList
           tempDetail.likeCount = result.likeCount
-          console.log(result)
           if (result.result === true && act.doType === 'LI') {
             tempDetail.subsYn = result.subsYn = 1
           }
@@ -1215,7 +1207,6 @@ export default {
     },
     openWorkStatePop (data) {
       this.mWorkStateCodePopProps = data
-      console.log(this.mWorkStateCodePopProps)
       this.mWorkStateCodePopShowYn = true
     },
     async addImgEvnt () {
@@ -1256,17 +1247,14 @@ export default {
       }
     },
     async imgDownload () {
-      console.log(this.mSelectImgObject)
       // eslint-disable-next-line no-debugger
       debugger
       try {
         if (this.$getMobileYn()) {
           onMessage('REQ', 'saveCameraRoll', this.mSelectImgObject.path)
         } else {
-          console.log(this.mSelectImgObject)
           // eslint-disable-next-line no-unused-vars
           var result = await this.$downloadFile(this.mSelectImgObject.fileKey, this.mSelectImgObject.path)
-          console.log(result)
         }
         this.$showToastPop('저장되었습니다.')
         this.mImgDetailAlertShowYn = false
@@ -1297,7 +1285,6 @@ export default {
     CONT_DETAIL () {
       if (!this.contentsEle) return
       var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKey)
-      console.log(cont)
       if (!cont) {
         cont = [this.contentsEle]
         // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
