@@ -1,54 +1,38 @@
 <template>
-<!-- box-shadow: rgb(0 0 0 / 20%) 0px 0px 4px 4px; -->
-    <div  style="width: calc(100% - 40px); position: absolute; left: 20px; top: 15%; z-index: 9; height: 50%;  min-height: 400px; border-radius: 0.8rem; border: 1px solid #ccc; background: #FFF; ">
-        <div class="newHeaderLine" style="width: 100%; padding: 10px 20px; display: flex; align-items: center; position: relative; height: 50px;">
-            <p class="fl font20 commonColor fontBold">라벨설정</p>
-            <img @click="backClick" class="cursorP" src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute; right: 15px; top: 15px;" alt="">
-        </div>
-        <div class="okScrollBar thinScrollBar" style="width: 100%; overflow: hidden auto;  height: calc(100% - 110px); padding: 10px 0;">
-            <!-- <p class="font16 fontBold textLeft commonColor " style="padding: 0 20px;" >대상</p> -->
-            <div style="width: 100%; min-height: 50px; float: left; padding: 0 20px;">
-                <gContentsBox @selectSticker="selectStickerFromBox" :propJustShowYn="true" class="cursorP mbottom-1" style="" :contentsEle="pContentsEle" :propPreStickerList="mContStickerList"/>
-            </div>
-            <!-- <div style="width: 100%; min-height: 50px; float: left">
-                <p class="font16 fontBold commonColor textLeft mbottom-05" style="padding-left: 20px;">선택된 라벨</p>
-                <div style="width: 100%; height: 80px; overflow: auto hidden; padding: 10px 20px; background:#F8F8F8;">
-                    <p v-if="mContStickerList.length === 0"  class="font12 fontBold textLeft">분류가 선택되지 않았습니다.</p>
-                    <div style="min-width: 100%; display: flex; align-items: center; height: 100%;">
-                        <div v-for="(value) in mContStickerList" @click="selectSticker(value, true)" :key="value.stickerKey" style="width: 50px; position: relative; height: 50px; margin-right: 10px;" >
-                            <gSticker class="cursorP" style="" :pSticker="value"  />
-                            <img src="../../../assets/images/common/close_black.svg" style="background: #FFFFFF50; border-radius: 100%; position: absolute; width: 20px; height: 20px; top: 0px; right: -5px;" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-            <div style="width: 100%; min-height: 50px; float: left; position: relative;">
-                <div style="width: 100%; min-height: 20px;" class="mtop-1">
-                    <p class="font16 fontBold commonColor textLeft  fl " style="padding-left: 20px;">라벨 목록</p>
-                <!-- <p class="font14 textLeft commonGray mbottom-05 fl" style="line-height: 24px; padding-left: 20px;">어디로 분류할까요?</p> -->
-                    <gBtnSmall v-if="mManagingMode" btnThema="light" style="height: 24px; line-height: 24px; margin-right: 20px; padding: 0 5px; font-size: 14px;" btnTitle="돌아가기" @click="this.mManagingMode = false"/>
-                    <div v-if="mManagingMode" @click="openStickerDetailPop(mAddStickerObj, true)" class="cursorP font14" style="color: #FFF; line-height: 24px; float: right; background: #AEB0FB; border-radius: 6px; min-width: 50px; height: 24px; padding: 0 5px; margin-right: 5px;">+ 신규</div>
-                    <div v-else  @click="this.mManagingMode = true" class="cursorP font14" style="color: #FFF; line-height: 24px; float: right; background: #AEB0FB; border-radius: 6px; min-width: 50px; height: 24px; padding: 0 5px; margin-right: 20px;">관리모드</div>
-                </div>
-                <div></div>
-                <!-- <div class="thinScrollBar" style="width: calc(100% - 40px); overflow: auto hidden; margin: 10px 20px; display: flex; align-items: center;" id="stickerListWrap" @wheel="horizontalScroll"> -->
-                <div style="width: calc(100% - 40px); margin: 10px 20px; display: flex; align-items: center; flex-wrap: wrap;" id="stickerListWrap">
-                    <!-- <div class="cursorP" @click="openAddStickerPop" style="width: 50px; margin-right: 10px;display: flex; align-items: center; justify-content: center; font-size: 20px; height: 50px; border-radius: 100%; float: left; border:1px solid #ccc;"> + </div> -->
-                    <p v-if="GE_NON_SELECTED_STICKER_LIST.length === 0" class="font12 textLeft fontBold">선택가능한 분류가 없습니다. <br>분류를 추가해주세요!</p>
-                    <gStickerLine :pSmallYn="true" class="cursorP  cursorHover" :class="mManagingMode? 'stickerIcon': ''" @click="mManagingMode? openStickerDetailPop(value, false) : selectSticker(value)" style="margin-right: 5px;" v-for="(value) in GE_NON_SELECTED_STICKER_LIST" :pSticker="value" :key="value.stickerKey" />
-                </div>
-            </div>
-            <!-- <manageMySticker v-if="this.mStickerList" :pMyStickerList="this.mStickerList"/> -->
-            <div v-if="mAddStickerPopShowYn" @click="this.$refs.stickerDetail.backClick()" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 100; background: #00000026;"></div>
-            <transition name="showModal">
-                <stickerDetail @deleteSticker="deleteSticker" transition="showModal"  @addMSticker="addMSticker" @closeXPop="mAddStickerPopShowYn = false" ref="stickerDetail" v-if="mAddStickerPopShowYn" :pStickerObj="mAddStickerObj" />
-            </transition>
-        </div>
-        <div style="display: flex; align-items: center; justify-content: center;width: 100%; height: 60px; float: left">
-            <gBtnSmall @click="saveUserDoStickerList" btnTitle="저장" class="mright-05"/>
-            <gBtnSmall @click="backClick" btnThema="light" btnTitle="취소"/>
-        </div>
+  <div  style="width: calc(100% - 40px); position: absolute; left: 20px; top: 30%; z-index: 9; min-height: 200px; max-height: 40%; border-radius: 0.8rem; border: 1px solid #ccc; background: #FFF; ">
+    <div class="newHeaderLine" style="width: 100%; padding: 10px 20px; display: flex; align-items: center; position: relative; height: 50px;">
+        <p class="fl font20 commonColor fontBold">라벨 설정</p>
+        <img @click="backClick" class="cursorP" src="../../../assets/images/common/popup_close.png" style="width: 20px; position: absolute; right: 15px; top: 15px;" alt="">
     </div>
+    <div class="okScrollBar thinScrollBar" style="width: 100%; overflow: hidden auto;  height: calc(100% - 110px); padding: 10px 0; padding-right: 10px;">
+        <!-- <p class="font16 fontBold textLeft commonColor " style="padding: 0 20px;" >대상</p> -->
+        <!-- <div style="width: 100%; min-height: 50px; float: left; padding: 0 20px;">
+            <gContentsBox @selectSticker="selectStickerFromBox" :propJustShowYn="true" class="cursorP mbottom-1" style="" :contentsEle="pContentsEle" :propPreStickerList="mContStickerList"/>
+        </div> -->
+        <div style="width: 100%; min-height: 50px; float: left; position: relative;">
+            <div style="width: 100%; min-height: 20px;" class="mtop-1">
+              <p class="font16 fontBold commonColor textLeft  fl " style="padding-left: 20px;">라벨 목록</p>
+              <div @click="openStickerDetailPop(mAddStickerObj, true)" class="cursorP font14" style="color: #FFF; line-height: 24px; float: right; background: #AEB0FB; border-radius: 6px; min-width: 25px; height: 24px; padding: 0 5px; margin-right: 5px;">+</div>
+            </div>
+            <p class="font14 textLeft fontBold commonGray mbottom-05 fl w-100P" style="line-height: 24px; padding-left: 20px;">라벨을 클릭해 이름/색깔을 수정하거나 삭제하세요!</p>
+            <!-- <div class="thinScrollBar" style="width: calc(100% - 40px); overflow: auto hidden; margin: 10px 20px; display: flex; align-items: center;" id="stickerListWrap" @wheel="horizontalScroll"> -->
+            <div class="thinScrollBar" style="width: calc(100% - 40px); max-height: 125px; overflow: hidden auto; margin: 10px 20px; display: flex; align-items: center; flex-wrap: wrap; padding: 5px;" id="stickerListWrap">
+                <!-- <div class="cursorP" @click="openAddStickerPop" style="width: 50px; margin-right: 10px;display: flex; align-items: center; justify-content: center; font-size: 20px; height: 50px; border-radius: 100%; float: left; border:1px solid #ccc;"> + </div> -->
+                <p v-if="this.mStickerList.length === 0" class="font12 textLeft fontBold">선택가능한 분류가 없습니다. <br>분류를 추가해주세요!</p>
+                <gStickerLine :pSmallYn="true" class="cursorP stickerIcon cursorHover" @click="openStickerDetailPop(value, false)" style="margin-right: 5px;" v-for="(value) in this.mStickerList" :pSticker="value" :key="value.stickerKey" />
+            </div>
+        </div>
+        <!-- <manageMySticker v-if="this.mStickerList" :pMyStickerList="this.mStickerList"/> -->
+        <div v-if="mAddStickerPopShowYn" @click="this.$refs.stickerDetail.backClick()" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 100; background: #00000026;"></div>
+        <transition name="showModal">
+            <stickerDetail @deleteSticker="deleteSticker" transition="showModal" @addMSticker="addMSticker" @closeXPop="mAddStickerPopShowYn = false" ref="stickerDetail" v-if="mAddStickerPopShowYn" :pStickerObj="mAddStickerObj" />
+        </transition>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: center;width: 100%; height: 60px; float: left">
+        <gBtnSmall @click="saveUserDoStickerList" btnTitle="저장" class="mright-05"/>
+        <gBtnSmall @click="backClick" btnThema="light" btnTitle="취소"/>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -60,7 +44,8 @@ export default {
     /* manageMySticker */
   },
   props: {
-    pContentsEle: {}
+    pContentsEle: {},
+    propStickerList: {}
   },
   computed: {
     GE_NON_SELECTED_STICKER_LIST () {
@@ -127,7 +112,8 @@ export default {
         this.mContStickerList = this.replaceArr(stickerList)
       }
     }
-    this.getMyStickerList()
+    this.mStickerList = this.propStickerList
+    // this.getMyStickerList()
     var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'selectStickerPop' + history.length
     // console.log(history)
@@ -139,19 +125,18 @@ export default {
       if (e.deltaY === 0) return
       e.preventDefault()
       var channelWrap = document.querySelector(`#${e.currentTarget.id}`)
-      console.log('list')
       channelWrap.scrollTo({
         left: channelWrap.scrollLeft + e.deltaY / 10
       })
     },
     deleteSticker (sticker) {
-      console.log(sticker)
       var idx = this.mStickerList.findIndex((item) => Number(item.stickerKey) === Number(sticker.stickerKey))
       if (idx !== -1) {
         this.mStickerList.splice(idx, 1)
       }
     },
     backClick () {
+      this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', this.mStickerList)
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       console.log(hStack)
@@ -196,9 +181,6 @@ export default {
     },
     selectSticker (value, delYn) {
       // eslint-disable-next-line no-debugger
-      debugger
-      console.log('=====================')
-      console.log(value)
       if (delYn) {
         var index = this.mContStickerList.findIndex((item) => Number(item.stickerKey) === Number(value.stickerKey))
         this.mContStickerList.splice(index, 1)
@@ -216,16 +198,15 @@ export default {
     closeXPop () {
       this.$emit('closeXPop')
     },
-    async getMyStickerList () {
-      var param = {}
-      param.creUserKey = this.GE_USER.userKey
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getStickerList',
-        param: param
-      })
-      this.mStickerList = result.data
-      console.log(result)
-    },
+    // async getMyStickerList () {
+    //   var param = {}
+    //   param.creUserKey = this.GE_USER.userKey
+    //   var result = await this.$commonAxiosFunction({
+    //     url: 'service/tp.getStickerList',
+    //     param: param
+    //   })
+    //   this.mStickerList = result.data
+    // },
     addMSticker (data) {
       this.mStickerList.unshift(data)
     },
@@ -233,7 +214,6 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       var keyList = []
-      console.log(this.mContStickerList.length)
       for (var i = 0; i < this.mContStickerList.length; i++) {
         if (!this.mContStickerList[i]) continue
         var stickerKey = this.mContStickerList[i].stickerKey
@@ -262,7 +242,7 @@ export default {
           var cUserDoList = contents.D_CONT_USER_DO
           for (var c = cUserDoList.length - 1; c >= 0; c--) {
             if (cUserDoList[c].doType === 'SK') {
-              cUserDoList.splice(i, 1)
+              cUserDoList.splice(c, 1)
             }
           }
           if (userDoList.length > 0) {
@@ -277,7 +257,9 @@ export default {
           console.log(contents)
           console.log('변경합니다!!!')
           await this.$store.commit('D_CHANNEL/MU_REPLACE_CONTENTS_ONLY_USERDO', [contents])
-          this.$emit('closeXPop')
+          await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', this.mStickerList)
+          this.backClick()
+          // this.$emit('closeXPop')
         }
       }
     }

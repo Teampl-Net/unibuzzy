@@ -172,11 +172,8 @@ export default {
     },
     uploadFileList: {
       handler () {
-        console.log(' ****************************** ')
-        console.log(this.uploadFileList)
         if (this.uploadFileList.length > 0) {
-          this.writePushTitle = this.uploadFileList[0].file.name
-          console.log(this.writePushTitle)
+          // this.writePushTitle = this.uploadFileList[0].file.name
         } else {
           this.writePushTitle = ''
         }

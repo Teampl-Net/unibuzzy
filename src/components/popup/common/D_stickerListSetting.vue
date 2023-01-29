@@ -1,6 +1,6 @@
 <template>
   <div ref="layerPopUp" v-if="this.openStickerPopYn" @click="saveUserDoStickerList" class="w-100P h-100P layerPopUp"></div>
-    <div v-if="this.openStickerPopYn" style="width: 70%; max-height: 120px; right: 0; right: 10px; bottom: 65px; background: #fff; border: 2px solid #5F61BD; border-radius: 25px; padding: 10px 20px; position: absolute; z-index: 8;">
+    <div v-if="this.openStickerPopYn" style="width: 70%; max-height: 140px; right: 0; right: 10px; bottom: 20px; background: #fff; border: 2px solid #5F61BD; border-radius: 25px; padding: 10px 20px; position: absolute; z-index: 8;">
       <div class="fl w-100P mbottom-05" style="height: 35px; display: flex; align-items: center;overflow: scroll hidden; border-bottom: 2px solid #ccc;" @wheel="horizontalScroll" id="stickerContList">
         <!-- <template style="" v-for="(value, index) in this.contDetail.D_CONT_USER_STICKER_LIST" :key="index"> -->
         <p v-if="this.mContStickerList.length === 0" class="font14 textLeft fontBold">라벨을 추가해주세요!</p>
@@ -8,9 +8,9 @@
           <gStickerLine @click="selectStickerFromBox(value)" :pSelecteModeYn="true" :mContStickerList="this.mContStickerList" v-if="value" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value" />
         </template>
       </div>
-      <div class="fl w-100P mbottom-05" style="height: 30px; display: flex; align-items: center;overflow: scroll hidden;" @wheel="horizontalScroll" id="stickerMList">
+      <div class="fl w-100P mbottom-05 thinScrollBar" style="height: 30px; display: flex; align-items: center;overflow: hidden auto;" @wheel="horizontalScroll" id="stickerMList">
         <div @click="openStickerDetailPop(mAddStickerObj, true)" class="cursorP mright-05 fontBold" style="width: 25px; height: 25px; flex-shrink: 0; line-height: 25px; background: #5F61BD; color: #fff; border-radius: 5px;">+</div>
-        <template style="float: left; height: 35px; width: calc(100% - 20px);" v-for="(value, index) in this.mStickerList" :key="index" >
+        <template style="float: left; height: 35px; width: calc(100% - 20px);" v-for="(value, index) in this.GE_NON_SELECTED_STICKER_LIST" :key="index" >
           <!-- <gStickerLine v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" /> -->
           <gStickerLine class="stickerIcon" v-if="value" style="float: left; margin-right: 10px; min-width: 30px; margin-bottom: 0 !important;" :pSticker="value" @click="selectSticker(value)"/>
         </template>
@@ -37,7 +37,23 @@ export default {
   },
   props: {
     contDetail: {},
-    openStickerListYn: {}
+    openStickerListYn: {},
+    propStickerList: {}
+  },
+  watch: {
+    contDetail: {
+      handler (value, old) {
+        if (this.contDetail.D_CONT_USER_STICKER_LIST) {
+          var stickerList = []
+          for (var s = 0; s < this.contDetail.D_CONT_USER_STICKER_LIST.length; s++) {
+            if (!this.contDetail.D_CONT_USER_STICKER_LIST[s].sticker) continue
+            stickerList.push(this.contDetail.D_CONT_USER_STICKER_LIST[s].sticker)
+          }
+          this.mContStickerList = stickerList
+        }
+      },
+      deep: true
+    }
   },
   data () {
     return {
@@ -46,7 +62,8 @@ export default {
       mContStickerList: [],
       mStickerList: [],
       mAddStickerObj: { picBgPath: '#E57373', nameMtext: '' },
-      mAddStickerPopShowYn: false
+      mAddStickerPopShowYn: false,
+      isMobile: /Mobi/i.test(window.navigator.userAgent)
     }
   },
   async created () {
@@ -56,8 +73,9 @@ export default {
         if (!this.contDetail.D_CONT_USER_STICKER_LIST[s].sticker) continue
         stickerList.push(this.contDetail.D_CONT_USER_STICKER_LIST[s].sticker)
       }
-      this.mContStickerList = this.replaceArr(stickerList)
+      this.mContStickerList = stickerList
     }
+    this.mStickerList = this.propStickerList
     // var param = {}
     // param.creUserKey = this.GE_USER.userKey
     // var result = await this.$commonAxiosFunction({
@@ -65,10 +83,8 @@ export default {
     //   param: param
     // })
     // this.mStickerList = result.data
-    this.getMyStickerList()
+    // this.getMyStickerList()
     // creDate 말고 저장Date도 있어야. 가장 마지막으로 저장한 라벨이 맨 앞으로 가도록.
-    console.log(this.mContStickerList)
-    console.log(this.mStickerList)
     var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'selectStickerPop' + history.length
     history.push(this.popId)
@@ -96,6 +112,7 @@ export default {
       var params = {}
       params.targetType = 'stickerPop'
       params.contDetail = this.contDetail
+      params.mStickerList = this.mStickerList
       this.$emit('openPop', params)
     },
     async getMyStickerList () {
@@ -134,11 +151,11 @@ export default {
       if (delYn) {
         var index = this.mContStickerList.findIndex((item) => Number(item.stickerKey) === Number(value.stickerKey))
         this.mContStickerList.splice(index, 1)
-        this.mStickerList.push(value)
+        // this.mStickerList.push(value)
       } else {
-        var StickerIndex = this.mStickerList.findIndex((item) => Number(item.stickerKey) === Number(value.stickerKey))
-        this.mStickerList.splice(StickerIndex, 1)
-        this.mContStickerList.push(value)
+        // var StickerIndex = this.mStickerList.findIndex((item) => Number(item.stickerKey) === Number(value.stickerKey))
+        // this.mStickerList.splice(StickerIndex, 1)
+        this.mContStickerList.unshift(value)
       }
       var params = {}
       params.mContStickerList = this.mContStickerList
@@ -170,7 +187,7 @@ export default {
           var cUserDoList = contents.D_CONT_USER_DO
           for (var c = cUserDoList.length - 1; c >= 0; c--) {
             if (cUserDoList[c].doType === 'SK') {
-              cUserDoList.splice(i, 1)
+              cUserDoList.splice(c, 1)
             }
           }
           if (userDoList.length > 0) {
@@ -205,11 +222,13 @@ export default {
       }
       this.mAddStickerPopShowYn = true
     },
-    addMSticker (data) {
+    async addMSticker (data) {
       this.mStickerList.unshift(data)
+      await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', this.mStickerList)
     },
     async saveUserDoStickerList (paramData) {
       this.openStickerPopYn = false
+      this.$emit('openStickerPop')
     },
     horizontalScroll (e) {
       if (e.deltaY === 0) return

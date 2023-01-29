@@ -7,6 +7,7 @@ import { functions } from '../../assets/js/D_vuexFunction'
 const D_CHANNEL = {
   namespaced: true,
   state: {
+    stickerList: [],
     chanList: [],
     recentChangeTeamKey: null,
     addContsList: [],
@@ -22,6 +23,9 @@ const D_CHANNEL = {
 
   },
   getters: {
+    GE_STICKER_LIST (state) {
+      return state.stickerList
+    },
     GE_REMOVE_CHAN_LIST (state) {
       return state.removeChanList
     },
@@ -60,6 +64,9 @@ const D_CHANNEL = {
     }
   },
   mutations: {
+    MU_STICKER_LIST: (state, payload) => {
+      state.stickerList = payload
+    },
     MU_CLEAN_CHAN_LIST: (state, payload) => {
       state.chanList = []
       state.recentChangeTeamKey = null
@@ -639,6 +646,9 @@ const D_CHANNEL = {
   },
   // dispatch 를 사용하면 됨
   actions: {
+    AC_STICKER_LIST: ({ commit }, payload) => {
+      commit('MU_STICKER_LIST', payload)
+    },
     AC_REMOVE_CHANNEL: ({ commit }, payload) => { // 삭제한 채널
       commit('MU_REMOVE_CHANNEL', payload)
     },

@@ -1,5 +1,5 @@
 <template>
-    <div style="flex-shrink: 0;" :class="pSmallYn === true? 'thinHeight' : 'normalHeight'" >
+    <div v-if="pSticker" style="flex-shrink: 0;" :class="pSmallYn === true? 'thinHeight' : 'normalHeight'" >
         <!-- <p class="fontBold textRight" :class="pSmallYn === true? 'font14' : 'font16'" style="position: absolute; top: 0; right: 10px; z-index:2;">{{this.$changeText(pSticker.nameMtext)}}</p> -->
         <div v-if="pSmallYn === true" :style="this.pContrastColorYn ? 'color: #fff !important; background:' + pSticker.picBgPath + ';' : 'color: ' + pSticker.picBgPath + '; background: #fff;' + 'border: 2px solid ' + pSticker.picBgPath + '; color: ' + pSticker.picBgPath " :class="pSelecteModeYn? 'selModePadding': ''" class="normalLineStyle cursorP font12 fontBold">
             {{this.$changeText(pSticker.nameMtext)}}

@@ -505,6 +505,8 @@ export default {
         var queueIndex = this.axiosQueue.findIndex(item => item === 'changeRecvAlimYn')
         this.axiosQueue.splice(queueIndex, 1)
       })
+      this.CHANNEL_DETAIL.copyTextStr = this.chanDetail.initData.team.copyTextStr
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
       setTimeout(() => {
         this.$showToastPop(toastText)
       }, 500)

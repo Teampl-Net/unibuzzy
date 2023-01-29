@@ -241,7 +241,6 @@ export default {
       this.mMainAlimList = []
       this.mContentsEmptyYn = false
       var res = await this.getMyContentsList()
-      console.log(res)
       if (!res && res === '') {
         this.mContentsEmptyYn = true
       } else if (res && res.content) {
@@ -426,6 +425,9 @@ export default {
     }
   },
   computed: {
+    GE_STICKER_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_STICKER_LIST']
+    },
     historyStack () {
       return this.$store.getters['D_HISTORY/hStack']
     },
@@ -453,6 +455,12 @@ export default {
   },
 
   watch: {
+    GE_STICKER_LIST: {
+      handler (value, old) {
+        this.mStickerList = this.GE_STICKER_LIST
+      },
+      deep: true
+    },
     pageUpdate (value, old) {
       var history = this.historyStack
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {

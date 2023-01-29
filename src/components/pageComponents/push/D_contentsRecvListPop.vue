@@ -1,5 +1,5 @@
 <template>
-    <div style="width: calc(100% - 40px); display: flex; flex-direction: column; height: 400px; position: absolute; border-radius: 0.8rem; z-index: 11; top: 20%; left: 20px; background: #fff;">
+    <div style="width: calc(100% - 40px); display: flex; flex-direction: column; height: 400px; position: fixed; border-radius: 0.8rem; z-index: 11; top: 20%; left: 20px; background: #fff;">
         <div style="width: 100%; height: 50px; float: left; padding: 5px 10px; display: flex; align-items: center; position: relative;" class="headerShadow">
             <p class="font22 fontBold textLeft commonColor">수신자 목록</p>
             <img @click="closeXPop(false)"  src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute; right: 15px; top: 13px; cursor: pointer;" alt="">

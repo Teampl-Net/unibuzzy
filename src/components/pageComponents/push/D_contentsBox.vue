@@ -98,7 +98,7 @@
           </div>
           <template :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  v-if="!propJustShowYn && ((CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)">
             <div class="contentsCardUserDoArea" style="position: relative; width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">
-              <stickerListSetting @mContStickerList="saveStickerList"  v-if="this.openStickerListYn" :openStickerListYn="this.openStickerListYn" :contDetail="this.CONT_DETAIL" @openPop="openSettingStickerPop" />
+              <stickerListSetting @mContStickerList="saveStickerList" @openStickerPop="openStickerPop"  v-if="this.openStickerListYn" :openStickerListYn="this.openStickerListYn" :contDetail="this.CONT_DETAIL" :propStickerList="this.mStickerList" @openPop="openSettingStickerPop" />
               <div style="float: left; width: calc(100% - 100px); height: 100%;" v-if="this.CONT_DETAIL.D_CONT_USER_DO">
                       <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left;">
@@ -186,7 +186,7 @@
 
   <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
   <template v-if="mContRecvPopShowYn">
-    <div @click="this.$refs.recvListPop.closeXPop()" style="width: 100%; height: 100%; top: 0; z-index: 10; position: absolute; background: #00000026"></div>
+    <div @click="this.$refs.recvListPop.closeXPop()" style="width: calc(100% + 1rem); height: 100%; top: 0; z-index: 10; left: -1rem; position: fixed; background: #00000026"></div>
     <recvListPop ref="recvListPop" @closeXPop="closeRecvListPop" :initData="mActorListInitDataList"/>
   </template>
   <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
@@ -241,6 +241,7 @@ export default {
   },
   data () {
     return {
+      mStickerList: [],
       mContStickerList: [],
       openStickerListYn: false,
       mMoreYn: false,
@@ -304,15 +305,28 @@ export default {
       console.log('리스트!!')
       console.log(this.mContStickerList)
     },
-    openStickerPop () {
+    async openStickerPop () {
       if (!this.openStickerListYn) {
+        var param = {}
+        param.creUserKey = this.GE_USER.userKey
+        var result = await this.$commonAxiosFunction({
+          url: 'service/tp.getStickerList',
+          param: param
+        })
+        this.mStickerList = result.data
+        // var index
+        // for (var i = 0; i < this.mContStickerList.length; i++) {
+        //   index = this.mStickerList.findIndex((item) => Number(item.stickerKey) === Number(this.mContStickerList[i].stickerKey))
+        //   if (index !== -1) {
+        //     this.mStickerList.splice(index, 1)
+        //   }
+        // }
         this.openStickerListYn = true
       } else {
         this.openStickerListYn = false
       }
     },
     openSettingStickerPop (params) {
-      this.openStickerListYn = false
       this.$emit('openPop', params)
     },
     addAnimation () {
@@ -1276,6 +1290,9 @@ export default {
     }
   },
   computed: {
+    GE_STICKER_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_STICKER_LIST']
+    },
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', this.contentsEle.creTeamKey)
       if (detail && detail.length > 0) {
@@ -1316,6 +1333,32 @@ export default {
     }
   },
   watch: {
+    GE_STICKER_LIST: {
+      handler (value, old) {
+        if (this.GE_STICKER_LIST.length === 0) {
+          this.CONT_DETAIL.D_CONT_USER_STICKER_LIST = []
+          return
+        }
+        if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0) {
+          var newArr = []
+          var idx
+          for (var i = 0; i < this.CONT_DETAIL.D_CONT_USER_STICKER_LIST.length; i++) {
+            if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker !== null) {
+              idx = this.GE_STICKER_LIST.findIndex((value) => {
+                return value.stickerKey === this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker.stickerKey
+              })
+              if (idx !== -1) {
+                this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker.picBgPath = this.GE_STICKER_LIST[idx].picBgPath
+                this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker.nameMtext = this.GE_STICKER_LIST[idx].nameMtext
+                newArr.push(this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i])
+              }
+            }
+          }
+          this.CONT_DETAIL.D_CONT_USER_STICKER_LIST = newArr
+        }
+      },
+      deep: true
+    },
     CONT_DETAIL: {
       immediate: true,
       handler (value, index) {

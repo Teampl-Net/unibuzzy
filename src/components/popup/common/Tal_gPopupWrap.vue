@@ -35,7 +35,7 @@
 
         <div v-if="popId && targetType === 'stickerPop'" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 8; background: #00000026;"></div>
 
-        <gSelectStickerPop v-if="popId && targetType === 'stickerPop'" @closeXPop="closeXPop" style="" :pContentsEle="this.propParams.contDetail"/>
+        <gSelectStickerPop v-if="popId && targetType === 'stickerPop'" @closeXPop="closeXPop" style="" :propStickerList="this.propParams.mStickerList" :pContentsEle="this.propParams.contDetail"/>
         <!-- <stickerListSetting v-if="targetType === 'stickerPop'" @closeXPop="closeXPop" style="" /> -->
 
         <selectBookList :pPopId="popId" v-if=" popId &&  targetType === 'selectBookList'" :pSelectedList="selectPlist" :selectPopYn='true' :propData='propParams' @closeXPop='closeXPop' @openPop='openPop'  @sendReceivers='selectedReceiverBookNMemberList' />
