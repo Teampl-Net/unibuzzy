@@ -1309,7 +1309,7 @@ export default {
       border-radius: 0.8rem;
       /* height: 90%; */
       height: 78%;
-      min-height: 600px;
+      min-height: 500px;
 
       /* background-color: #f9f9f9; */
       background-color: #f5f5f5 !important;

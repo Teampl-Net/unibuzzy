@@ -3,7 +3,7 @@
   <div class="pagePaddingWrap findPopupWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 50 )+ 'px'" >
     <popHeader v-if="(contentsListTargetType === 'boardMain')" headerTitle="게시글 검색" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
     <popHeader v-else-if="(contentsListTargetType === 'myActList')" headerTitle="나의 활동 검색" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
-    <popHeader v-else-if="(contentsListTargetType === 'fileBox')" headerTitle="파일 검색" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <popHeader v-else-if="(contentsListTargetType === 'fileBox')" headerTitle="파일 검색" @closeXPop="closeXPop"  style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
     <popHeader v-else headerTitle="알림 검색" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody  mtop-05">
         <div v-if="pTitleShowYn !== false" class="findPopMainSearchArea">
@@ -31,7 +31,7 @@
         <div style="width: 100%; margin-top: 10px; float: left; min-height: 30px;">
             <p class="fontBold font16 commonColor textLeft mtop-1 fl w-100P mbottom-05">분류 선택</p>
             <template v-for="(value, index) in mStickerList" :key="index" >
-                <gStickerLine v-if="value" @click="selectSticker(value)" :pSelectedYn="selectedSticker && value.stickerKey === selectedSticker.stickerKey" style="float: left; margin-right: 10px; min-width: 30px;" :pSticker="value" />
+                <gStickerLine v-if="value && contentsListTargetType !== 'fileBox'" @click="selectSticker(value)" :pSelectedYn="selectedSticker && value.stickerKey === selectedSticker.stickerKey" style="float: left; margin-right: 10px; min-width: 30px;" :pSticker="value" />
             </template>
         </div>
         <div v-if="tpGroupCode && tpGroupCode.length > 5" class="findPopMainSearchArea mtop-05">

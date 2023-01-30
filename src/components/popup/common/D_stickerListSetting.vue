@@ -8,7 +8,7 @@
           <gStickerLine @click="selectStickerFromBox(value)" :pSelecteModeYn="true" :mContStickerList="this.mContStickerList" v-if="value" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value" />
         </template>
       </div>
-      <div class="fl w-100P mbottom-05 thinScrollBar" style="height: 30px; display: flex; align-items: center;overflow: hidden auto;" @wheel="horizontalScroll" id="stickerMList">
+      <div class="fl w-100P mbottom-05" :class="!isMobile? 'thinScrollBar':''" style="height: 35px; display: flex; align-items: center;overflow: auto hidden;" @wheel="horizontalScroll" id="stickerMList">
         <div @click="openStickerDetailPop(mAddStickerObj, true)" class="cursorP mright-05 fontBold" style="width: 25px; height: 25px; flex-shrink: 0; line-height: 25px; background: #5F61BD; color: #fff; border-radius: 5px;">+</div>
         <template style="float: left; height: 35px; width: calc(100% - 20px);" v-for="(value, index) in this.GE_NON_SELECTED_STICKER_LIST" :key="index" >
           <!-- <gStickerLine v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" /> -->

@@ -71,8 +71,6 @@ export default {
       return resultData
     },
     openPop (value) {
-      console.log(value)
-
       value.alimTabType = this.mViewTab
       // console.log(value)
       this.$emit('openPop', value)

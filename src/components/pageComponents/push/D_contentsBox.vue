@@ -226,14 +226,11 @@ export default {
     // this.saveStickerList()
 
     if (this.CONT_DETAIL) {
-      console.log(1)
       if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST) {
-        console.log(2)
         var stickerList = []
         for (var s = 0; s < this.CONT_DETAIL.D_CONT_USER_STICKER_LIST.length; s++) {
           if (!this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[s].sticker) continue
           stickerList.push(this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[s].sticker)
-          console.log(this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[s].sticker)
         }
         this.mContStickerList = this.replaceArr(stickerList)
       }

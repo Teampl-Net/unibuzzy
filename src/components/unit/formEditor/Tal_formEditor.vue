@@ -22,7 +22,7 @@
     <!-- v-if="toolBoxShowYn" -->
       <!-- <div ref="eContentsWrap" id="eContentsWrap" style="width: 100%; height: calc(100%); min-height: 300px; border: 1px solid #6768a745; border-radius: 5px; overflow-x: hidden; background: #ffffff; position: relative; ">
         <div style="width: 100%; height: 100%; box-shadow: 0px 3px 9px 0px #ccc; min-height: 700px; height: 100%; border-radius: 0.5rem 0.5rem 0 0; overflow: hidden; "> -->
-      <div ref="eContentsWrap" id="eContentsWrap" class="fl" style="width: 100%; min-height: 300px; border: 1px solid #6768a745; border-radius: 5px; background: #ffffff; position: relative;     margin-bottom: 10rem;">
+      <div ref="eContentsWrap" id="eContentsWrap" class="fl" style="width: 100%; min-height: 250px; border: 1px solid #6768a745; border-radius: 5px; background: #ffffff; position: relative;     margin-bottom: 10rem;">
           <div class="fl" style="width: 100%; height: 100%; height: 100%;">
               <draggable id="dragCompp"  ref="editableArea" class="ghostClass" :v-model="formCardList" ghost-class="ghost" :dragging="dragging" @choose='test' @end="changePosTeamMenu" delay="200" handle=".movePoint">
                   <transition-group>

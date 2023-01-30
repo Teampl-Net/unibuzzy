@@ -84,7 +84,7 @@
       </div>
     </div>
     <gConfirmPop :confirmText="mCreCheckPopText === null ? ('[' + mInputChannelName + '] 채널을 ' + mPageType + '하겠습니다') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='setParam' />
-    <gConfirmPop :confirmText="'채널이' + mPageType + '되었습니다.'" @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="mCreatedSuccessPopYn" />
+    <gConfirmPop :confirmText="'채널이 ' + mPageType + '되었습니다.'" @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="mCreatedSuccessPopYn" />
     <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn === true" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
 </div>
 </template>

@@ -13,7 +13,7 @@
             <div @click="changeMainTab('A')" :class="viewMainTab === 'A'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">전체</div>
             <div @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">알림</div>
             <div @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">게시글</div>
-            <div @click="changeMainTab('F')" :class="viewMainTab === 'F'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">파일함</div>
+            <div v-if="this.$route.path !== '/myPage'" @click="changeMainTab('F')" :class="viewMainTab === 'F'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">파일함</div>
         </div>
         <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " />
       </div>
