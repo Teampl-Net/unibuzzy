@@ -43,7 +43,7 @@
           <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg'');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
         </div>
         <p class="fl font15 commonBlack textOverdot w-100P">{{this.GE_USER.userKey === member.userKey ? '나' : this.$changeText(member.userDispMtext)}}</p>
-        <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('member', index, member.accessKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -5px; top:-5px;">x</span>
+        <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('member', index, member.accessKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -5px; top:-5px; text-align: center;">x</span>
       </div>
       <!-- <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem" >
         <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl mright-05" style="width:20px" alt="">
@@ -199,9 +199,10 @@ export default {
         this.teamList.type = 'C'
         this.$emit('changeSelectBookList', this.teamList.bookList)
       } else if (type === 'member') {
+        var accessKey = this.teamList.memberList[index].accessKey
         this.teamList.memberList.splice(index, 1)
         this.teamList.type = 'U'
-        this.$emit('changeSelectMemberList', this.teamList.memberList)
+        this.$emit('changeSelectMemberList', { params: this.teamList, accessKey: accessKey })
       }
       if (key !== undefined && key !== null && key !== '') {
         this.teamList.delKey = key

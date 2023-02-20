@@ -1344,7 +1344,7 @@ export default {
     padding-bottom: 50px;
 }
 .boardBorder{width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;}
-.boardDetailWrap{height: fit-content; width: 100%; height: 100%; padding-top: 50px; padding-bottom: 40px; overflow: scroll; width: 100%; background: #FFF; height: calc(100vh); }
+.boardDetailWrap{height: fit-content; width: 100%; height: 100%; padding-top: 50px; padding-bottom: 60px; overflow: scroll; width: 100%; background: #FFF; height: calc(100vh); }
 .pushDetailTopArea{min-height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
 .pushDetailChanLogo{width: 50px;height: 50px;}
 /* .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;} */

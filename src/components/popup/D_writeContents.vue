@@ -172,11 +172,10 @@ export default {
     },
     uploadFileList: {
       handler () {
-        if (this.uploadFileList.length > 0) {
-          // this.writePushTitle = this.uploadFileList[0].file.name
-        } else {
-          this.writePushTitle = ''
+        if (this.uploadFileList.length > 0 && this.writePushTitle === '') {
+          this.writePushTitle = this.uploadFileList[0].file.name
         }
+        console.log(this.uploadFileList)
       },
       deep: true
 

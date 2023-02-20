@@ -12,30 +12,27 @@
         </div>
         <p class="fl commonGray textLeft mleft-05 font12"  style="font-weight:normal;">{{this.$changeSimpleDateFormat(propMemoEle.creDate)}}</p>
     </div>
-    <div v-else-if="propMemoEle" style="width: 100%; float: left; min-height: 20px; margin-bottom: 5px; border-bottom: 1px solid #cccccc50;">
+    <div v-else-if="propMemoEle" style="width: 100%; float: left; min-height: 20px; margin-bottom: 5px;" :style="propMIndex !== (propMemoLength - 1)? 'border-bottom: 1px solid #cccccc50;':''">
         <div style="width: 100%; min-height: 20px; display: flex; flex-direction: column; margin-bottom: 5px;float: left; position: relative;">
             <div style="width: 100%; min-height: 40px; display: flex;">
                 <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(propMemoEle)">
                 <!-- <div :style="this.GE_USER.userKey === propMemoEle.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
                     <div :style="'background-image: url(' + propMemoEle.domainPath + propMemoEle.userProfileImg + ');'" style="height: 36px; width: 36px; border-radius: 100%;  background-repeat: no-repeat; background-position: center; background-size: cover;"></div>
                 </div> -->
-                <gProfileImg :selfYn="propMemoEle.creUserKey === this.GE_USER.userKey ? true: false" :userInfo="propMemoEle" style="width: 40px; height: 40px; margin-right: 5px; margin-top: 3px; margin-bottom: 5px;" />
+                <gProfileImg @click="clickMemoEvnt({ targetType: 'goUserProfile', value: propMemoEle })" :selfYn="propMemoEle.creUserKey === this.GE_USER.userKey ? true: false" :userInfo="propMemoEle" style="width: 40px; height: 40px; margin-right: 5px; margin-top: 3px; margin-bottom: 5px;" />
                 <div style="float: left; display: flex; flex-direction: column; margin-right: 10px; min-height: 20px; margin-top: 5px;">
                     <p class="fl commonBlack mright-05 textLeft font14 fontBold" @click="clickMemoEvnt({ targetType: 'goUserProfile', value: propMemoEle })">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
                     <p class="fl commonGray textLeft font12"  style="font-weight:normal;" @click=click>{{this.$changeDateMemoFormat(propMemoEle.creDate)}}</p>
                 </div>
             </div>
-            <div style="width: calc(100%); padding-left: 10px; min-height: 40px; display: flex; flex-direction: column;">
-                <div style="min-height: 20px; width: 100%; min-height: 20px;">
-                    <div style="width: 100%; float: left; " v-if="getAttachTrueFile(propMemoEle.attachFileList).length > 0">
-                        <p @click="showFileDownloadPop(propMemoEle)" class="textLeft cursorP fr font12 mright-1 fontBold commonColor">첨부파일({{getAttachTrueFile(propMemoEle.attachFileList).length}})</p>
-                    </div>
+            <div style="width: calc(100%); padding-left: 10px; min-height: 40px; display: flex; flex-direction: column; margin-top: 10px;">
+                <div style="min-height: 20px; width: 100%;">
                     <div v-if="getAttachFalseFile(propMemoEle.attachFileList).length > 0" :style="'height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'" style="float: left; max-width: 100%; background: rgb(238 238 238); float: left; border: 1px solid #aaa; padding-left: 10px ; margin: 10px 0; overflow: scroll hidden;">
                         <div id="memoBodyImgWrap" style="float: left; height: 100%; display:flex; align-items: center;" :style="'width:' + getImgListWidthSize(propMemoEle.attachFileList) + 'px'">
                             <img @click="this.openImgPop(getAttachFalseFile(propMemoEle.attachFileList), index)" :style="'max-height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'" style="border-right: 0px solid #aaa; border-left: 1px solid #aaa; margin-right: 10px; float: left; min-width: 70px" :fileKey="img.fileKey" v-for="(img, index) in getAttachFalseFile(propMemoEle.attachFileList)" :key="index" :src="img.domainPath + img.pathMtext" alt="">
                         </div>
                     </div>
-                    <pre v-if="!this.mChangeMemoYn" class="commonBlack w-100P textLeft fl font14" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></pre>
+                    <pre v-if="!this.mChangeMemoYn" class="commonBlack w-100P textLeft fl font14 cursorDragText" style="cursor: text;" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></pre>
                     <pre v-else ref="modiMemoInput" :id="'memoFullStr'+propMemoEle.memoKey" class="editableContent  w-100P textLeft font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-html="mModiMemoInput"></pre>
                 </div>
                 <div style="min-height: 20px; margin-top: 10px;  width: 100%; padding-right: 10px; min-height: 20px;">
@@ -44,6 +41,14 @@
                     <p class="commonGray textLeft font12 fr" v-if="!this.mChangeMemoYn" @click="writeMeMemo(propMemoEle)">답글달기</p>
                     <p class="commonGray textLeft font12 mright-05 cursorP fr " @blur="testFunction" @click="openModiMemoPop(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn">수정</p>
                     <!-- <p class="commonGray textLeft font12 cursorP fr " @click="saveModiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn">저장</p> -->
+                </div>
+                <div class="cursorP" style="width: 100%; display: flex; justify-content: flex-end; margin-top: 3px;" v-if="getAttachTrueFile(propMemoEle.attachFileList).length > 0">
+                  <div style="width: 140px; display: flex; justify-content: flex-end;" @click="showFileDownloadPop(propMemoEle)">
+                    <img style="width: auto; height: 18px;" class=" mright-05" src="../../../assets/images/push/attachFileIcon.png" alt="">
+                    <p v-if="getAttachTrueFile(propMemoEle.attachFileList).length === 1" style="max-width: 100px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" class="textLeft font12 fontBold commonColor">{{getFileName(getAttachTrueFile(propMemoEle.attachFileList)[0].fileName)}}</p>
+                    <p v-if="getAttachTrueFile(propMemoEle.attachFileList).length === 1" class="textLeft font12 mright-1 fontBold commonColor">.{{getFileExt(getAttachTrueFile(propMemoEle.attachFileList)[0].fileName)}}</p>
+                    <p v-else class="textLeft font12 mright-1 fontBold commonColor">{{getAttachTrueFile(propMemoEle.attachFileList).length}}개의 파일</p>
+                  </div>
                 </div>
             </div>
         </div>
@@ -96,6 +101,8 @@ import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import attachFileListPop from '../main/unit/D_commonAttatchFileListPop.vue'
 export default {
   props: {
+    propMemoLength: {},
+    propMIndex: {},
     propMemoEle: {},
     diplayCount: {},
     childShowYn: {},
@@ -173,6 +180,18 @@ export default {
     } */
   },
   methods: {
+    getFileName (fileFullName) {
+      var fileName = fileFullName.substring(
+        0, fileFullName.lastIndexOf('.')
+      )
+      return fileName
+    },
+    getFileExt (fileName) {
+      var fileExt = fileName.substring(
+        fileName.lastIndexOf('.') + 1
+      )
+      return fileExt
+    },
     click () {
       console.log(this.mResultParam)
     },

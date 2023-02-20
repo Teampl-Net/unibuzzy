@@ -1,5 +1,5 @@
 <template>
-<div style="width: 100%; float: left;">
+<div style="width: 100%; float: left; padding-bottom: 60px;">
     <div v-for="(data, index) in bookList" :key="index">
         <gReceiveCard :propData="data" option="SELE" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
     </div>
@@ -57,15 +57,18 @@ export default {
         propData: {},
         selectBookNList: {},
         itemType: {},
-        selectList: {}
+        selectList: {},
+        simplePop: false
     },
-    created() {
-        var history = this.$store.getters['D_HISTORY/hStack']
-        this.popId = 'selectBookNMemPop' + history.length
-        history.push(this.popId)
-        this.$store.commit('D_HISTORY/updateStack', history)
-        console.log(this.selectBookNList)
+    created () {
+        if (!this.simplePop) {
+            var history = this.$store.getters['D_HISTORY/hStack']
+            this.popId = 'selectBookNMemPop' + history.length
+            history.push(this.popId)
+            this.$store.commit('D_HISTORY/updateStack', history)
+        }
         if (this.selectBookNList.memberList !== undefined && this.selectBookNList.memberList !== null && this.selectBookNList.memberList !== []) {
+            console.log(this.selectBookNList)
             if (this.selectBookNList.memberList.length > 0) {
                 this.memberList = [...this.selectBookNList.memberList]
                 for (var i = 0; i < this.memberList.length; i++) {
@@ -142,6 +145,9 @@ export default {
 					this.addSelectedList(data, idx)
 				} else if (type === 'open') {
                     if (data.jobkindId === 'BOOK') this.$emit('detail', data)
+                } else if (type === 'deleteList') {
+                    this.delSelectList(data.accessKey, 'U')
+                    this.$emit('delectClick', idx)
                 }
     	},
         setParentSelectList () {

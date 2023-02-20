@@ -243,6 +243,9 @@ export default {
       handler (value, old) {
         var newArr = []
         if (!value[0] || !value) return
+        if (this.chanAlimYn) {
+          if (value[0].creTeamKey !== this.pChannelDetail.teamKey) return
+        }
         // 채널 메인이 아닌 팝업으로 띄웠을 때 pChannelDetail에 teamKey가 없습니다. 없는게 맞구요!!
         // if (value[0].creTeamKey === this.pChannelDetail.teamKey) {
         if (this.viewMainTab === 'P') {
@@ -276,6 +279,9 @@ export default {
     },
     GE_RECENT_NOTI_LIST: {
       handler  (value, old) {
+        if (this.chanAlimYn) {
+          if (Number(value[0].creTeamKey) !== Number(this.pChannelDetail.teamKey)) return
+        }
         this.$nextTick(() => {
           setTimeout(() => {
             this.$refs.myContentsBox[0].addAnimation()

@@ -4,14 +4,14 @@
     <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
     <div class="w-100P pagePaddingWrap" style="position:absolute; overflow: auto; padding-top:50px" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
       <div style="width: 100%; position: relative; float: left; height: calc(100% - 95px); overflow: auto;">
-        <selectBookNMemberList v-if="detailOpenYn === false" ref="selectBookNMemberListCompo" :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList' :selectList='selectList' @detail='detailOpen' />
+        <selectBookNMemberList v-if="detailOpenYn === false" ref="selectBookNMemberListCompo" :simplePop="true" :itemType="itemType" @addSelectList="addSelectList" @delectClick="delectClick" :propData='propData' :selectBookNList='memberList' :selectList='selectList' @detail='detailOpen' />
         <!-- <selectBookNMemberList ref="selectedMemberListCompo" v-if="detailOpenYn === true" :itemType="itemType" @addSelectList="addSelectList" :selectBookNList='memberList' :selectList='selectList' @detail='detailOpen' :memberOnly='true' /> -->
         <transition name="showGroup">
             <!-- <memberList :listData="memberList" :parentSelectList="pSelectedMemberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" /> -->
             <memberList :listData="memberList" :parentSelectList="selectList.memberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
         </transition>
       </div>
-      <selectedListCompo :oneMemberCanAddYn="oneMemberCanAddYn" :itemType="itemType"  @changeSelectedList="changeSelectedItem" ref="testCompo" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" style="float: left; width:100%; position: absolute; bottom:0px; left:0px; min-height: 150px;" />
+      <selectedListCompo :oneMemberCanAddYn="oneMemberCanAddYn" :itemType="itemType"  @changeSelectedList="changeSelectedItem" @changeSelectMemberList="changeSelectMemberList" ref="testCompo" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" style="float: left; width:100%; position: absolute; bottom:0px; left:0px; min-height: 150px;" />
     </div>
 </div>
 
@@ -35,10 +35,7 @@ export default {
 
   },
   created () {
-    console.log(this.selectList)
-    console.log(this.chanInfo)
-    console.log(this.parentList)
-    console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+    this.memberList = this.parentList
     // console.log(this.parentList)
 
 
@@ -84,6 +81,11 @@ export default {
     }
   },
   methods: {
+    changeSelectMemberList ({params, accessKey}) {
+      this.setSelectedList.memberList = params.memberList
+      var idx = this.memberList.memberList.findIndex((item) => item.accessKey === accessKey)
+      this.memberList.memberList[idx].selectedYn = false
+    },
     async detailOpen (data) {
       // this.detailOpenYn = true
 
@@ -196,8 +198,6 @@ export default {
 
     },
     sendReceivers (data) {
-      console.log('$$$$$$$$$$$$$$$')
-      console.log(data)
       if(data.bookList){
         if (data.bookList.length > 0 ) {
           for (var i = 0; i < data.bookList.length; i++) {
@@ -214,8 +214,6 @@ export default {
           }
         }
       }
-      console.log('^^^^^^^^^^^^^^^')
-      console.log(data)
 
       this.$emit('sendReceivers', data)
       this.$emit('closeXPop')
@@ -225,8 +223,8 @@ export default {
       this.$refs.testCompo.upDatePage(data)
     },
 
-    delectClick (data, index) {
-      this.selectReceivers.splice(index, 1)
+    delectClick (index) {
+      this.setSelectedList.memberList.splice(index, 1)
     },
     addTeamList (obj) {
       this.selectReceivers.unshift(obj)
@@ -255,6 +253,13 @@ export default {
         this.teamLength = 100
         this.memberEditYn = false
       } else {
+        var hStack = this.$store.getters['D_HISTORY/hStack']
+        var removePage = hStack[hStack.length - 1]
+        if (this.selectPopId === hStack[hStack.length - 1]) {
+          hStack = hStack.filter((element, index) => index < hStack.length - 1)
+          this.$store.commit('D_HISTORY/setRemovePage', removePage)
+          this.$store.commit('D_HISTORY/updateStack', hStack)
+        }
         this.$emit('closeXPop')
       }
     },

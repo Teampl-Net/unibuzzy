@@ -1,7 +1,7 @@
 <template>
 <!--  -->
   <template v-if="mSearchModeYn === false">
-    <div class="w-100P h-100P" :style="'padding-top:' + (this.$STATUS_HEIGHT + 50)+ 'px;'" style=" overflow:auto; padding-bottom: 40px;">
+    <div class="w-100P h-100P" :style="$route.path === '/search'? `padding-top: ${(this.$STATUS_HEIGHT + 50)}px;`:''" style=" overflow:auto; padding-bottom: 40px;">
       <div class="searchBodyTop pSide-1" style="background: white">
         <div class="fl w-100P" style="height: 30px; float: left;">
           <img src="../../assets/images/main/icon_3d_search.png" style="float: left; margin: 0 8px 8px 8px;" class="img-w23" alt="">

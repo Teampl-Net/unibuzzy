@@ -1,5 +1,5 @@
 <template>
-  <div ref="layerPopUp" v-if="this.openStickerPopYn" @click="saveUserDoStickerList" class="w-100P h-100P layerPopUp"></div>
+  <div ref="layerPopUp" v-if="this.openStickerPopYn" @click="saveUserDoStickerList" @wheel="saveUserDoStickerList" class="w-100P h-100P layerPopUp"></div>
     <div v-if="this.openStickerPopYn" style="width: 70%; max-height: 140px; right: 0; right: 10px; bottom: 20px; background: #fff; border: 2px solid #5F61BD; border-radius: 25px; padding: 10px 20px; position: absolute; z-index: 8;">
       <div class="fl w-100P mbottom-05" style="height: 35px; display: flex; align-items: center;overflow: scroll hidden; border-bottom: 2px solid #ccc;" @wheel="horizontalScroll" id="stickerContList">
         <!-- <template style="" v-for="(value, index) in this.contDetail.D_CONT_USER_STICKER_LIST" :key="index"> -->
@@ -9,7 +9,7 @@
         </template>
       </div>
       <div class="fl w-100P mbottom-05" :class="!isMobile? 'thinScrollBar':''" style="height: 35px; display: flex; align-items: center;overflow: auto hidden;" @wheel="horizontalScroll" id="stickerMList">
-        <div @click="openStickerDetailPop(mAddStickerObj, true)" class="cursorP mright-05 fontBold" style="width: 25px; height: 25px; flex-shrink: 0; line-height: 25px; background: #5F61BD; color: #fff; border-radius: 5px;">+</div>
+        <div @click="openStickerDetailPop(mAddStickerObj)" class="cursorP mright-05 fontBold" style="width: 25px; height: 25px; flex-shrink: 0; line-height: 25px; background: #5F61BD; color: #fff; border-radius: 5px;">+</div>
         <template style="float: left; height: 35px; width: calc(100% - 20px);" v-for="(value, index) in this.GE_NON_SELECTED_STICKER_LIST" :key="index" >
           <!-- <gStickerLine v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" /> -->
           <gStickerLine class="stickerIcon" v-if="value" style="float: left; margin-right: 10px; min-width: 30px; margin-bottom: 0 !important;" :pSticker="value" @click="selectSticker(value)"/>
@@ -41,6 +41,12 @@ export default {
     propStickerList: {}
   },
   watch: {
+    GE_STICKER_LIST: {
+      handler (value, old) {
+        this.mStickerList = this.GE_STICKER_LIST
+      },
+      deep: true
+    },
     contDetail: {
       handler (value, old) {
         if (this.contDetail.D_CONT_USER_STICKER_LIST) {
@@ -91,6 +97,9 @@ export default {
     this.$store.commit('D_HISTORY/updateStack', history)
   },
   computed: {
+    GE_STICKER_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_STICKER_LIST']
+    },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     },
@@ -211,20 +220,20 @@ export default {
     //     this.mStickerList.splice(idx, 1)
     //   }
     // },
-    openStickerDetailPop (data, newYn) {
+    openStickerDetailPop (data) {
       // selectSticker(value)
-      if (newYn === false) {
-        this.mAddStickerObj = data
-        this.mAddStickerObj.nameMtext = this.$changeText(this.mAddStickerObj.nameMtext)
-        this.mAddStickerObj.modiYn = true
-      } else {
-        this.mAddStickerObj = { picBgPath: '#E57373', nameMtext: '' }
-      }
-      this.mAddStickerPopShowYn = true
+      this.mAddStickerObj = { picBgPath: '#E57373', nameMtext: '' }
+      this.mAddStickerObj.modiYn = false
+      console.log(this.mAddStickerObj)
+      var params = {}
+      params.targetType = 'stickerDetail'
+      params.addStickerObj = this.mAddStickerObj
+      params.mStickerList = this.mStickerList
+      this.$emit('openPop', params)
+      // this.mAddStickerPopShowYn = true
     },
     async addMSticker (data) {
       this.mStickerList.unshift(data)
-      await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', this.mStickerList)
     },
     async saveUserDoStickerList (paramData) {
       this.openStickerPopYn = false

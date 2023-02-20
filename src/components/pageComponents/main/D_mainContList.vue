@@ -131,6 +131,7 @@ export default {
     openPop (openPopParam) {
       // 컨텐츠 작성을 누를 시 바텀시트를 닫아주는 중!
       if (this.mSeleteWriteTypePopShowYn === true) this.mSeleteWriteTypePopShowYn = false
+      console.log(openPopParam)
       this.$emit('openPop', openPopParam)
     },
     async getMyContentsList (pageSize, offsetInput, loadingYn) {

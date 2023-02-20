@@ -23,9 +23,9 @@
             </div>
         </div>
         <!-- <manageMySticker v-if="this.mStickerList" :pMyStickerList="this.mStickerList"/> -->
-        <div v-if="mAddStickerPopShowYn" @click="this.$refs.stickerDetail.backClick()" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 100; background: #00000026;"></div>
+        <div v-if="mAddStickerPopShowYn" @click="this.$refs.stickerDetail.backClick()" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 10; background: #00000026;"></div>
         <transition name="showModal">
-            <stickerDetail @deleteSticker="deleteSticker" transition="showModal" @addMSticker="addMSticker" @closeXPop="mAddStickerPopShowYn = false" ref="stickerDetail" v-if="mAddStickerPopShowYn" :pStickerObj="mAddStickerObj" />
+            <stickerDetail @deleteSticker="deleteSticker" transition="showModal" @addMSticker="addMSticker" @closeXPop="mAddStickerPopShowYn = false" ref="stickerDetail" v-if="mAddStickerPopShowYn" :pStickerList="this.mStickerList" :pStickerObj="mAddStickerObj" />
         </transition>
     </div>
     <div style="display: flex; align-items: center; justify-content: center;width: 100%; height: 60px; float: left">
@@ -48,6 +48,9 @@ export default {
     propStickerList: {}
   },
   computed: {
+    GE_STICKER_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_STICKER_LIST']
+    },
     GE_NON_SELECTED_STICKER_LIST () {
       if (this.mContStickerList.length === 0) {
         return this.mStickerList
@@ -77,6 +80,14 @@ export default {
     }
   },
   watch: {
+    GE_STICKER_LIST: {
+      handler (value, old) {
+        if (this.GE_STICKER_LIST.length !== 0) {
+          this.mStickerList = this.GE_STICKER_LIST
+        }
+      },
+      deep: true
+    },
     pageUpdate (value, old) {
       this.backClick()
       /* if (this.popId === hStack[hStack.length - 1]) {
@@ -133,13 +144,12 @@ export default {
       var idx = this.mStickerList.findIndex((item) => Number(item.stickerKey) === Number(sticker.stickerKey))
       if (idx !== -1) {
         this.mStickerList.splice(idx, 1)
+        this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', this.mStickerList)
       }
     },
     backClick () {
-      this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', this.mStickerList)
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
-      console.log(hStack)
       if (this.popId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
@@ -169,7 +179,6 @@ export default {
     },
     openStickerDetailPop (data, newYn) {
       // selectSticker(value)
-      console.log(newYn)
       if (newYn === false) {
         this.mAddStickerObj = data
         this.mAddStickerObj.nameMtext = this.$changeText(this.mAddStickerObj.nameMtext)
@@ -217,7 +226,6 @@ export default {
       for (var i = 0; i < this.mContStickerList.length; i++) {
         if (!this.mContStickerList[i]) continue
         var stickerKey = this.mContStickerList[i].stickerKey
-        console.log(stickerKey)
         keyList.push(stickerKey)
       }
       param.stickerKeyList = keyList
@@ -232,7 +240,6 @@ export default {
       })
       /* this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.cDetail]) */
       /* this.mConfirmPopShowYn = false */
-      console.log(result)
       if (result.data.result) {
         // eslint-disable-next-line no-debugger
         debugger
@@ -254,10 +261,7 @@ export default {
           contents.userDoList = cUserDoList
           contents.D_CONT_USER_DO = cUserDoList
           contents.D_CONT_USER_STICKER_LIST = userDoList
-          console.log(contents)
-          console.log('변경합니다!!!')
           await this.$store.commit('D_CHANNEL/MU_REPLACE_CONTENTS_ONLY_USERDO', [contents])
-          await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', this.mStickerList)
           this.backClick()
           // this.$emit('closeXPop')
         }

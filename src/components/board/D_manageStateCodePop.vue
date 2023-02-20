@@ -1,7 +1,8 @@
 <template>
-  <div class="wh-100P fl" :ref="'stateCodePop' + this.contentsKey" style=" padding: 0 10px; border-radius: 8px; background: #bfbfda;  color: #fff; text-align: left;">
-    <div @click="closeSelectPop" style="width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; background: #00000025; z-index: 999"></div>
-    <div style="display: flex; padding: 10px 0; flex-direction: column; width: 80%; min-height: 300px; height: 80%; position: fixed; box-shadow: rgb(0 0 0 / 12%) 4px 4px 12px 1px; top: 10%; left: 10%; border-radius:0.8rem; background: #FFF; z-index: 9999">
+  <!-- wh-100P 삭제함-->
+  <div class="fl" :ref="'stateCodePop' + this.contentsKey" style=" padding: 0 10px; border-radius: 8px; background: #bfbfda;  color: #fff; text-align: left;">
+    <div @click="closeSelectPop" style="width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; background: #00000025; z-index: 10"></div>
+    <div style="display: flex; padding: 10px 0; flex-direction: column; width: 80%; min-height: 300px; height: 80%; position: fixed; box-shadow: rgb(0 0 0 / 12%) 4px 4px 12px 1px; top: 10%; left: 10%; border-radius:0.8rem; background: #FFF; z-index: 11">
       <div style="width: 100%; position: relative; float: left; padding: 0 20px; box-shadow: 0 4px 4px -4px #ccc; height: 35px; " class="font18 commonColor fontBold">
         업무설정
         <img @click="closeSelectPop" class="cursorP" style="position: absolute; right: 20px; top: 10px;" src="../../assets/images/common/smallPopXIcon.svg" alt="">
@@ -52,7 +53,7 @@
         <gBtnSmall @click="changeContentsStat" btnTitle="적용" class="mright-05"/>
       </div> -->
     </div>
-    <div v-if="selectBookListShowYn"  style="width: 100%; height: 100%; position: fixed;top: 0; left: 0; z-index: 9999999;">
+    <div v-if="selectBookListShowYn"  style="width: 100%; height: 100%; position: fixed;top: 0; left: 0; z-index: 12;">
       <receiverAccessList :oneMemberCanAddYn="true" :propData="{currentTeamKey: this.alimDetail.creTeamKey}" :chanAlimListTeamKey="this.alimDetail.creTeamKey" :itemType="shareActorItemType" @closeXPop='selectBookListShowYn=false' :parentList='parentList' :selectList='selectedList'  @sendReceivers='setSelectedList'/>
     </div>
   </div>
@@ -65,6 +66,7 @@ export default {
   },
   data () {
     return {
+      chanSelectedListYn: false,
       selectedList: { memberList: [], bookList: [] },
       selectPopShowYn: false,
       selectPopId: null,
@@ -101,9 +103,11 @@ export default {
       this.$refs.memoBodyStr.innerHTML = '"상태를 "' + this.$changeText(this.selectedCodeObj.codeNameMtext) + '"(으)로 변경합니다."'
     } */
   },
-  created () {
+  async created () {
     this.openSelectPop()
     if (this.alimDetail) {
+      var this_ = this
+      var paramMap = new Map()
       if (this.alimDetail.workToDate) {
         this.dateHolder = this.settingDate(this.alimDetail.workToDate)
       }
@@ -127,15 +131,35 @@ export default {
                 settingObj.shareseq = undefined
                 this.parentList.memberList.push(settingObj)
               }
+            } else {
+              paramMap = new Map()
+              paramMap.set('teamKey', this.teamKey)
+              paramMap.set('currentTeamKey', this.teamKey)
+              this_ = this
+              this.$getFollowerList(paramMap).then((res) => {
+                console.log(res)
+                for (var s = 0; s < res.length; s++) {
+                  var shareUser = res[s]
+                  var settingObj = {}
+                  settingObj.accessKind = 'U'
+                  settingObj.accessKey = shareUser.userKey
+                  settingObj.userDispMtext = shareUser.userDispMtext
+                  settingObj.phoneEnc = shareUser.phoneEnc
+                  settingObj.userEmail = shareUser.userEmail
+                  settingObj.userProfileImg = shareUser.userProfileImg
+                  settingObj.domainPath = shareUser.domainPath
+                  settingObj.shareseq = undefined
+                  this_.parentList.memberList.push(settingObj)
+                }
+              })
             }
             // this.parentList.bookList.push(this.alimDetail.shareList[i])
           } else if (accessKind === 'T') {
-            var paramMap = new Map()
+            paramMap = new Map()
             paramMap.set('teamKey', this.teamKey)
             paramMap.set('currentTeamKey', this.teamKey)
-            var this_ = this
-            this.$getFollowerList(paramMap).then((res) => {
-              console.log(res)
+            this_ = this
+            await this.$getFollowerList(paramMap).then((res) => {
               for (var s = 0; s < res.length; s++) {
                 var shareUser = res[s]
                 var settingObj = {}
@@ -154,7 +178,9 @@ export default {
         }
       }
       if (this.alimDetail.workUserKey) {
-        var idx = this.parentList.memberList.findIndex((item) => item.accessKey === this.alimDetail.workUserKey)
+        var idx = this.parentList.memberList.findIndex((item) => {
+          return item.accessKey === this.alimDetail.workUserKey
+        })
         if (idx !== -1) this.selectedList.memberList.push(this.parentList.memberList[idx])
       }
     }
@@ -188,6 +214,7 @@ export default {
           settingMemList.push(tempList)
         }
         this.selectedList.memberList = settingMemList
+        this.chanSelectedListYn = true
       }
     },
     changeInputText () {
@@ -252,7 +279,7 @@ export default {
           // param.memoHeaderStr = '<p class="commonMemoWorkStatHeaderColor" style="font-weight: bold; text-align: left; font-size: 14px; width: 100%;">접수일 ' + this. + '<br></p>'
           setOkYn = true
         }
-        if (this.selectedList.memberList.length > 0 && this.selectedList.memberList[0]) {
+        if (this.selectedList.memberList.length > 0 && this.selectedList.memberList[0] && this.chanSelectedListYn) {
           param.workUserKey = this.selectedList.memberList[0].accessKey
           param.workUserName = this.selectedList.memberList[0].userDispMtext
           param.memoHeaderStr += '담당자 ' + this.$changeText(this.selectedList.memberList[0].userDispMtext)

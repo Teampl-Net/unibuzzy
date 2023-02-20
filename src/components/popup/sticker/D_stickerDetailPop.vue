@@ -1,5 +1,5 @@
 <template>
-    <div style="width: calc(100% - 60px); height: 350px; border-radius: 0.8rem; z-index: 101; border: 1px solid #ccc; background: #FFF; position: fixed; top: 30%; left: 30px;">
+    <div style="width: calc(100% - 60px); height: 350px; border-radius: 0.8rem; z-index: 12; border: 1px solid #ccc; background: #FFF; position: fixed; top: 30%; left: 30px;">
         <div  class="newHeaderLine" style="width: 100%; padding: 10px 20px; display: flex; align-items: center; position: relative; height: 50px;">
             <p class="fl font20 commonColor fontBold">{{mStickerObj.modiYn? '라벨 정보' : '라벨 추가'}}</p>
             <img class="cursorP" @click="backClick" src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute;  right: 15px; top: 15px;" alt="">
@@ -36,22 +36,24 @@ export default {
   data () {
     return {
       contrastColorYn: false,
-      mStickerObj: this.pStickerObj,
+      mStickerObj: JSON.parse(JSON.stringify(this.pStickerObj)),
       popId: null,
       isMobile: /Mobi/i.test(window.navigator.userAgent),
       mConfirmType: 'timeout',
       mConfirmText: '',
       mConfirmPopShowYn: null,
-      mConfirmDeletePopShowYn: null
+      mConfirmDeletePopShowYn: null,
+      mStickerList: JSON.parse(JSON.stringify(this.pStickerList))
     }
   },
   created () {
-    console.log(this.pStickerObj)
     var history = this.$store.getters['D_HISTORY/hStack']
-    this.popId = 'addStickerPop' + history.length
+    this.popId = 'stickerDetail' + history.length
     history.push(this.popId)
-    console.log(history)
     this.$store.commit('D_HISTORY/updateStack', history)
+  },
+  updated () {
+    console.log(this.mStickerObj)
   },
   methods: {
     contrastColor () {
@@ -111,12 +113,18 @@ export default {
             ...this.mStickerList
           ] */
           if (!this.mStickerObj.modiYn) {
-            this.$emit('addMSticker', param)
+            this.mStickerList.unshift(param)
+            await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', this.mStickerList)
+          } else {
+            var idx = this.mStickerList.findIndex(item => {
+              return item.stickerKey === this.mStickerObj.stickerKey
+            })
+            this.mStickerList[idx] = this.mStickerObj
+            await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', this.mStickerList)
           }
           this.mConfirmPopShowYn = false
           var hStack = this.$store.getters['D_HISTORY/hStack']
           var removePage = hStack[hStack.length - 1]
-          console.log(hStack)
           if (hStack[hStack.length - 1] === 'gConfirmPop') {
             hStack = hStack.filter((element, index) => index < hStack.length - 1)
             this.$store.commit('D_HISTORY/setRemovePage', removePage)
@@ -128,7 +136,6 @@ export default {
           // this.$emit('successAddSticker', param)
         }
       }
-      console.log(result)
     },
     async deleteSticker () {
       var param = {}
@@ -182,6 +189,9 @@ export default {
     }
   },
   watch: {
+    GE_STICKER_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_STICKER_LIST']
+    },
     pageUpdate (value, old) {
       this.backClick()
       /* if (this.popId === hStack[hStack.length - 1]) {
@@ -190,7 +200,8 @@ export default {
     }
   },
   props: {
-    pStickerObj: {}
+    pStickerObj: {},
+    pStickerList: {}
   }
 }
 </script>

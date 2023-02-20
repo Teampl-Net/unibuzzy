@@ -60,6 +60,7 @@ export default {
       this.bookList = this.propData.initData
     }
     this.editBookSelectedList()
+    this.$addHistoryStack('modiPopReceiverSelecPop')
     // this.getBookList()
   },
   beforeUnmount () {
@@ -181,9 +182,15 @@ export default {
     },
     // 유민참고
     changeSelectMemberList (data) {
-      this.selectedList.memberList = []
-      for (let i = 0; i < data.length; i++) {
-        this.selectedList.memberList.push(data[i])
+      if (data.accessKey !== undefined) {
+        for (let i = 0; i < data.length; i++) {
+          this.selectedList.memberList.push(data.params.memberList[i])
+        }
+      } else {
+        this.selectedList.memberList = []
+        for (let i = 0; i < data.length; i++) {
+          this.selectedList.memberList.push(data[i])
+        }
       }
       this.pSelectedMemberList = []
       this.pSelectedMemberList = this.selectedList.memberList
@@ -331,11 +338,11 @@ export default {
 </script>
 
 <style >
-.selectBookListWrap{height: 100vh; background-color:white; width:100%; z-index:9999; position:absolute; top:0; left:0}
-.bookListStyle{ width: 100%; position: relative; float: left; height: calc(100% - 150px) ; overflow: hidden auto;}
-.memberListStyle{position: absolute; top: 0; overFlow: hidden scroll; background: #fff;}
+.selectBookListWrap{height: 100vh; background-color:white; width:100%; z-index:9999; position:absolute; top:0; left:0;}
+.bookListStyle{ width: 100%; position: relative; float: left; height: calc(100% - 150px) ; overflow: hidden auto; padding-bottom: 60px;}
+.memberListStyle{position: absolute; top: 0; overFlow: hidden scroll; background: #fff; padding-bottom: 60px;}
 
-.selectBookListContents{position:absolute; overflow: auto; }
+.selectBookListContents{position:absolute; overflow: auto;}
 
 .selectedListStyle{float: left; width:100%; position: absolute; bottom:0px; left:0px;
 min-height: 150px;
