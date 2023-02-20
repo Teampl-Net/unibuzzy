@@ -189,15 +189,12 @@ export default {
       this.$router.push('/policies')
       return
     }
-    /* this.getMainBoard().then(res => {
+    this.getMainBoard().then(res => {
       this.mLoadingYn = false
-    }) */
+    })
 
-    var this_ = this
+    // var this_ = this
     this.getMainBoard()
-    setTimeout(() => {
-      this_.mLoadingYn = false
-    }, 3000)
     this.mLoadingYn = true
     this.$store.commit('D_HISTORY/setRemovePage', '')
     this.$store.commit('D_HISTORY/updateStack', [])
@@ -235,6 +232,9 @@ export default {
     this.mLoadingYn = false
   },
   methods: {
+    callbackFunc (e) {
+      console.log(e)
+    },
     async getContentsListForSticker (sticker) {
       if (!sticker) return
       this.mSelectedStickerKey = sticker.stickerKey
@@ -328,27 +328,21 @@ export default {
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {
-        console.log(response.data)
         this.mMainChanList = response.data.teamList
         this.mMainMChanList = response.data.mTeamList
         this.mMainAlimList = response.data.alimList.content
         this.mStickerList = response.data.stickerList
-        console.log(this.mStickerList)
         await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
         await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
       }
-      console.log(this.mMainChanList)
-      console.log(this.mMainMChanList)
     },
     async openPagePop (targetKind, targetKey) {
       var param = {}
       param.targetType = targetKind
       param.targetKey = Number(targetKey)
-      console.log(param)
       this.openPop(param)
     },
     async goPage (test) {
-      console.log(test)
       /* if (test && test.targetType === 'chanDetail') {
         detailParam.targetKey =
       } */
@@ -381,7 +375,6 @@ export default {
       }
     },
     getParamMap (urlString) {
-      console.log(urlString)
       // eslint-disable-next-line no-debugger
       debugger
       const splited = urlString.replace('?', '').split(/[=?&]/)
@@ -475,8 +468,6 @@ export default {
     GE_CREATE_CHAN_LIST: {
       handler (value, old) {
         if (!value || value.length === 0) return
-        console.log(' 생성 감지!!! ')
-        console.log(value)
         this.mMainMChanList.unshift(value[0])
         this.mMainChanList.unshift(value[0])
 
@@ -487,8 +478,6 @@ export default {
     GE_REMOVE_CHAN_LIST: {
       handler (value, old) {
         if (!value || value.length === 0) return
-        console.log(' 삭제 감지!!! ')
-        console.log(value[0])
         try {
           var findDelIdx = this.mMainMChanList.findIndex(item => item.teamKey === value[0].teamKey)
           if (findDelIdx !== -1) {
@@ -514,18 +503,14 @@ export default {
       async handler (value, old) {
         if (!value || value.length === 0) return
         var updateData = value[0]
-        console.log(' 수정 감지!!! ')
-        console.log(value[0])
         try {
           var detail = await this.$getDetail('TEAM', updateData.teamKey)[0]
-          console.log(detail)
           var findIdx = this.mMainMChanList.findIndex(item => item.teamKey === updateData.teamKey)
           if (findIdx !== -1) {
             this.mMainMChanList[findIdx] = detail
           } else {
             return false
           }
-          console.log(findIdx)
 
           findIdx = this.mMainChanList.findIndex(item => item.teamKey === updateData.teamKey)
           if (findIdx !== -1) {
@@ -533,7 +518,6 @@ export default {
           } else {
             return false
           }
-          console.log(findIdx)
         } catch (error) {
           return false
         } finally {

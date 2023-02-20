@@ -34,7 +34,7 @@ export default {
       // const attr = 'top=' + top + ', left=' + left + ', width=' + width + ', height=' + height + ', resizable=no,status=no'
       // 1. 윈도우 팝업 띄우기
       try {
-        this.windowRef = window.open('', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
+        this.windowRef = window.open(uri, 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
         if (this.windowRef != null) {
           this.windowRef.addEventListener('beforeunload', this.evtClose)
         } else {
@@ -45,10 +45,12 @@ export default {
       }
 
       // 2.  새로 띄운 윈도우 팝업창으로 부터 수신 메세지 이벤트 처리
-      window.addEventListener('message', this.recvEvtFromChild, false)
-      document.addEventListener('message', this.recvEvtFromChild, false)
+      window.addEventListener('message', console.log(e), false)
+      document.addEventListener('message', console.log(e), false)
     },
-
+    successLogin (res) {
+      console.log(res)
+    },
     // 윈도우 팝업 닫기
     closeWinPop () {
       if (this.windowRef) {
@@ -88,15 +90,10 @@ export default {
       // console.log(JSON.parse(evt.data).message)
       console.log(evt.data)
       if (evt.data == null) {
-        return
-      }
-      const recvObj = JSON.parse(evt.data)
-      if (recvObj.message && recvObj.message === 'closePop') {
-        this.evtClose()
-        return
+        // return
       }
       // 5. 본 소스 WinPop.vue를 콤포넌트로 사용하는 부모 vue 측에 이벤트 전달
-      this.$emit('onRecvEvtFromWinPop', recvObj)
+      // this.$emit('onRecvEvtFromWinPop', recvObj)
     }
 
   },
@@ -117,4 +114,3 @@ export default {
 <style scoped>
 
 </style>
-[출처] Vue.js 에서 Window.open 팝업 띄우기|작성자 데이비뜨

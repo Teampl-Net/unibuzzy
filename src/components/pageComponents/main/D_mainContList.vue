@@ -282,7 +282,11 @@ export default {
       }
 
       var resultList = await this.$getTeamList(paramMap, nonLoading)
-      this.mSelectChanList = resultList.data.content
+      if (resultList.data) {
+        this.mSelectChanList = resultList.data.content
+      } else {
+        this.mSelectChanList = []
+      }
     },
     async openSelectWriteTypePop () {
       await this.getTeamList(true)
