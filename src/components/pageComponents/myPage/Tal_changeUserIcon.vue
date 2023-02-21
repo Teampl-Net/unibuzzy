@@ -284,7 +284,7 @@ export default {
             .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
               {
                 headers: {
-                  'Content-Type': 'multipart/form-data'
+                  'Content-Type': 'multipart/form-data; charset: UTF-8;'
                 }
               })
             .then(res => {

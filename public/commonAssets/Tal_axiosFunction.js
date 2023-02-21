@@ -154,7 +154,7 @@ export async function saveUser (userProfile, loginYn) {
     router.replace({ path: '/' })
   } else if (result.data.message === 'NG') {
     if (store !== undefined && store !== null) {
-      store.commmit('D_USER/MU_CLEAN_USER')
+      store.commit('D_USER/MU_CLEAN_USER')
     }
     localStorage.setItem('user', '')
     alert('로그인에 실패하였으니, 다른방식으로 재로그인 해주세요.')
@@ -238,14 +238,14 @@ export const methods = {
         commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
         router.replace('/policies')
         if (store !== undefined && store !== null) {
-          store.commmit('D_USER/MU_CLEAN_USER')
+          store.commit('D_USER/MU_CLEAN_USER')
         }
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
       }
       if (user === undefined || user === null || user === '') {
         if (store !== undefined && store !== null) {
-          store.commmit('D_USER/MU_CLEAN_USER')
+          store.commit('D_USER/MU_CLEAN_USER')
         }
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
@@ -265,7 +265,7 @@ export const methods = {
       await router.replace('/login')
       store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
       if (store !== undefined && store !== null) {
-        store.commmit('D_USER/MU_CLEAN_USER')
+        store.commit('D_USER/MU_CLEAN_USER')
       }
 
       window.localStorage.setItem('loginYn', false)

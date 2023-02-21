@@ -173,9 +173,9 @@ export default {
     uploadFileList: {
       handler () {
         if (this.uploadFileList.length > 0 && this.writePushTitle === '') {
-          this.writePushTitle = this.uploadFileList[0].file.name
+          var fileName = this.uploadFileList[0].file.name
+          this.writePushTitle = fileName.normalize('NFC')
         }
-        console.log(this.uploadFileList)
       },
       deep: true
 
@@ -654,6 +654,7 @@ export default {
     },
 
     changeUploadList (upList) {
+      console.log('upList')
       console.log(upList)
       console.log(this.uploadFileList)
       // upList.selectFileList.targetKey = upList.targetKey
@@ -1058,7 +1059,7 @@ export default {
           setObj.attachYn = false
         }
         setObj.fileKey = this.uploadFileList[i].fileKey
-        setObj.fileName = this.uploadFileList[i].file.name
+        setObj.fileName = this.uploadFileList[i].file.name.normalize('NFC')
         newAttachFileList.push(setObj)
       }
       console.log(newAttachFileList)
@@ -1176,7 +1177,9 @@ export default {
           form = new FormData()
           // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
           // thisthis.uploadFileList[i].previewImgUrl = Base64.decode(thisthis.uploadFileList[i].previewImgUrl.replaceAll('data:image/png;base64,', ''))
-          form.append('files[0]', (thisthis.uploadFileList[i]).file)
+          const oldFile = thisthis.uploadFileList[i].file
+          const newFile = new File([oldFile], oldFile.name.normalize('NFC'), { type: oldFile.type })
+          form.append('files[0]', newFile)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
             .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
@@ -1188,7 +1191,7 @@ export default {
               }, */
               {
                 headers: {
-                  'Content-Type': 'multipart/form-data'
+                  'Content-Type': 'multipart/form-data; charset: UTF-8;'
                 }
               })
             .then(res => {
