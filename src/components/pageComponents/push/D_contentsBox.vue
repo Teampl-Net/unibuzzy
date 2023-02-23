@@ -310,15 +310,11 @@ export default {
   methods: {
     saveStickerList (params) {
       this.mContStickerList = params.mContStickerList
-      console.log('리스트!!')
-      console.log(this.mContStickerList)
     },
     async openStickerPop () {
       if (!this.openStickerListYn) {
         var param = {}
         param.creUserKey = this.GE_USER.userKey
-        // eslint-disable-next-line no-debugger
-        debugger
         var result = await this.$commonAxiosFunction({
           url: 'service/tp.getStickerList',
           param: param
@@ -586,7 +582,6 @@ export default {
 
       var contents = await window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)
       if (!contents || !contents.childNodes || contents.childNodes.length === 0) return
-      // console.log(contents.childNodes)
       if (contents.childNodes.length > 0) {
         var i = 0
         var child = contents.childNodes[i]
@@ -596,7 +591,6 @@ export default {
 
           if (contents.childNodes.length === i) break
         }
-        // console.log(child.innerText)
         if (child.id === 'formEditText') {
           // 밑에 체크를 안해주면 중복으로 줄이 생김
           var tempCheck = window.document.getElementById('firstTextLine' + this.contentsEle.contentsKey)
@@ -671,7 +665,6 @@ export default {
     writeMeMemo (memoObj) {
       this.mMememoValue = {}
       this.mMememoValue = memoObj
-      // console.log(this.mMememoValue)
       this.$refs.gMemoRef.setMememo(memoObj)
     },
     memoEmitFunc (emitData) {
@@ -1110,6 +1103,7 @@ export default {
       openPopParam.targetType = 'contentsDetail'
       openPopParam.targetKey = this.CONT_DETAIL.contentsKey
       openPopParam.teamKey = this.CONT_DETAIL.creTeamKey
+      openPopParam.creTeamKey = this.CONT_DETAIL.creTeamKey
       openPopParam.jobkindId = this.CONT_DETAIL.jobkindId
       if (memoScrollYn) openPopParam.memoScrollYn = true
 
@@ -1284,8 +1278,6 @@ export default {
       }
     },
     async imgDownload () {
-      // eslint-disable-next-line no-debugger
-      debugger
       try {
         if (this.$getMobileYn()) {
           onMessage('REQ', 'saveCameraRoll', this.mSelectImgObject.path)

@@ -82,7 +82,7 @@
       <div class="boardItemBox" id="boardItemBox" style="">
         <div style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%;" id="boardListWrap" ref="boardListWrapCompo">
           <transition name="showModal">
-            <findContentsList :tpGroupCode="(CAB_DETAIL.workStatYn === 1 || CAB_DETAIL.workStatYn === true) ? 'C_STAT' : null" :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
+            <findContentsList :pOnlyMineYn="mOnlyMineYn" :tpGroupCode="(CAB_DETAIL.workStatYn === 1 || CAB_DETAIL.workStatYn === true) ? 'C_STAT' : null" :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
           </transition>
           <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll" >
             <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"  style=" width:calc(100%);"/>
@@ -157,7 +157,7 @@ export default {
   },
   props: {
     propData: {},
-    pPopId: {}
+    initData: {}
   },
   updated () {
     if (this.CAB_DETAIL) {
@@ -182,8 +182,19 @@ export default {
     }
   },
   created () {
+    // eslint-disable-next-line no-debugger
+    debugger
+    console.log(this.$route.params.board)
+    if (this.$route.params && this.$route.params.board) {
+      // eslint-disable-next-line vue/no-mutating-props
+      this.mOnlyMineYn = true
+      this.mPropData = JSON.parse(this.$route.params.board)
+    } else {
+      this.mPropData = this.propData
+    }
+    console.log(this.board)
     this.$emit('openLoading')
-    if (!this.propData.initData) {
+    if (!this.mPropData.initData) {
       var this_ = this
       this.getCabinetDetail().then(() => {
         this_.getContentsList().then(response => {
@@ -197,7 +208,7 @@ export default {
         })
       })
     } else {
-      var propBoardInitData = JSON.parse(JSON.stringify(this.propData.initData))
+      var propBoardInitData = JSON.parse(JSON.stringify(this.mPropData.initData))
       this.cabinetDetail = propBoardInitData.cabinet
       this.cabinetDetail.shareAuth = this.$checkUserAuth(propBoardInitData.cabinet.mShareItemList)
 
@@ -276,7 +287,9 @@ export default {
       axiosQueue: [],
       saveMemoLoadingYn: false,
       tempMemoData: {},
-      gCertiPopShowYn: false
+      gCertiPopShowYn: false,
+      mPropData: null,
+      mOnlyMineYn: false
     }
   },
 
@@ -742,7 +755,7 @@ export default {
           message = e.data
         }
 
-        if (message.actType === 'WR' && JSON.parse(message).targetKey === this.propData.targetKey) {
+        if (message.actType === 'WR' && JSON.parse(message).targetKey === this.mPropData.targetKey) {
           this.refresh()
         }
       } catch (err) {
@@ -945,11 +958,11 @@ export default {
       var params = new Object()
       params.targetType = 'writeContents'
       params.actorList = this.actorList
-      params.targetNameMtext = this.propData.nameMtext
-      params.teamKey = this.propData.currentTeamKey
-      if (!params.teamKey) params.teamKey = this.propData.teamKey
-      params.currentTeamKey = this.propData.currentTeamKey
-      if (!params.currentTeamKey) params.currentTeamKey = this.propData.teamKey
+      params.targetNameMtext = this.mPropData.nameMtext
+      params.teamKey = this.mPropData.currentTeamKey
+      if (!params.teamKey) params.teamKey = this.mPropData.teamKey
+      params.currentTeamKey = this.mPropData.currentTeamKey
+      if (!params.currentTeamKey) params.currentTeamKey = this.mPropData.teamKey
 
       params.bodyFullStr = ''
       params.cabinetNameMtext = this.$changeText(this.CAB_DETAIL.cabinetNameMtext)
@@ -1005,8 +1018,8 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // var tt = this.propData
-      param.currentTeamKey = this.propData.currentTeamKey
-      param.cabinetKey = this.propData.targetKey
+      param.currentTeamKey = this.mPropData.currentTeamKey
+      param.cabinetKey = this.mPropData.targetKey
       var resultList = await this.$getCabinetDetail(param)
       // mShareItemList가 잘 들어오면 save잘 된것
       //   this.shareAuth.R = true
@@ -1037,7 +1050,7 @@ export default {
         param.creTeamKey = this.chanDetailKey
       } */
       this.$emit('closeLoading')
-      param.cabinetKey = this.propData.targetKey
+      param.cabinetKey = this.mPropData.targetKey
       if (this.offsetInt === 0 && this.mCabContentsList && this.mCabContentsList.length > 0) this.offsetInt += 1
       param.offsetInt = this.offsetInt
       if (offsetInput !== undefined) {
@@ -1076,7 +1089,10 @@ export default {
       if (this.readCheckBoxYn) {
         param.findLogReadYn = false
       }
-
+      if (this.mOnlyMineYn) {
+        param.creUserKey = this.GE_USER.userKey
+        param.ownUserKey = this.GE_USER.userKey
+      }
       if (this.viewTab === 'L') {
         param.findActYn = true
         param.ownUserKey = this.GE_USER.userKey
@@ -1123,6 +1139,9 @@ export default {
       }
     },
     openPop (value) {
+      console.log(value)
+      if (value && value.targetType === 'chanDetail') return
+      value.onlyMineYn = true
       this.$emit('openPop', value)
     },
     async changeTab (tabName) {
@@ -1373,7 +1392,8 @@ export default {
   },
   computed: {
     CHANNEL_DETAIL () {
-      var team = this.$getDetail('TEAM', this.propData.teamKey)
+      if (!this.mPropData) return null
+      var team = this.$getDetail('TEAM', this.mPropData.teamKey)
       if (team) {
         return team[0]
       } else {

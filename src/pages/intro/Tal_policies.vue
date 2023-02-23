@@ -42,7 +42,11 @@ export default {
   created () {
     onMessage('REQ', 'CheckUserPermission')
     if (localStorage.getItem('policiesOk') === true || localStorage.getItem('policiesOk') === 'true') {
-      this.$router.replace({ path: 'login' })
+      if (this.$route.params.boardData && this.$route.params.boardData !== 'social') {
+        this.$router.replace({ name: 'login', params: { boardData: this.$route.params.boardData } })
+      } else {
+        this.$router.replace({ name: 'login', params: { boardData: 'social' } })
+      }
     }
     /* window.ReactNativeWebView.postMessage(
       JSON.stringify({
@@ -91,7 +95,11 @@ export default {
         return
       }
       localStorage.setItem('policiesOk', true)
-      this.$router.replace({ path: 'login' })
+      if (this.$route.params.boardData && this.$route.params.boardData !== 'social') {
+        this.$router.replace({ name: 'login', params: { boardData: this.$route.params.boardData } })
+      } else {
+        this.$router.replace({ name: 'login', params: { boardData: 'social' } })
+      }
     }
   }
 }

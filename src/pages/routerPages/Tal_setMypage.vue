@@ -347,7 +347,7 @@ export default {
             // window.localStorage.removeItem('user')
             // window.localStorage.removeItem('loginYn')
             window.localStorage.removeItem('testYn')
-            this.$router.replace('/policies')
+            this.$router.replace({name: 'policies', params: { boardData: 'social' }})
         }
       }
 

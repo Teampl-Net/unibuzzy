@@ -12,7 +12,7 @@
             <input v-else class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="제목을 입력해주세요" />
             <!-- <img class="searchIcon mtop-03 cursorP" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼"> -->
         </div>
-        <div class="findPopMainSearchArea">
+        <div v-if="pOnlyMineYn !== true" class="findPopMainSearchArea">
             <input class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="creUserName" placeholder="작성자명을 입력해주세요" />
         </div>
         <input v-if="(contentsListTargetType !== 'chanDetail' && contentsListTargetType !== 'boardMain' && contentsListTargetType !== 'fileBox')" class="searchInput font14" type="text" name="" v-model="creTeam"  placeholder="채널명을 입력해주세요" id="">
@@ -104,7 +104,8 @@ export default {
     contentsListTargetType: {},
     tpGroupCode: {},
     teamKey: {},
-    pTitleShowYn: {}
+    pTitleShowYn: {},
+    pOnlyMineYn: {}
   },
   data () {
     return {

@@ -462,6 +462,7 @@ export default {
       var paramMap = new Map()
       paramMap.set('teamKey', detailValue.targetKey)
       paramMap.set('fUserKey', this.GE_USER.userKey)
+      paramMap.set('userKey', this.GE_USER.userKey)
       try {
         var result = await this.$getViewData({ url: 'service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
@@ -489,6 +490,17 @@ export default {
       console.log(this.mPopParam)
       // this.popList.push(goChanDetailParam)
       this.mGPopShowYn = true
+    },
+    getParamMap (urlString) {
+      // eslint-disable-next-line no-debugger
+      debugger
+      const splited = urlString.replace('?', '').split(/[=?&]/)
+      const param = {}
+      console.log(splited)
+      for (let i = 0; i < splited.length; i++) {
+        param[splited[i]] = splited[++i]
+      }
+      return param
     },
     async recvNotiFormBridge (notiDetail, currentPage, vuexResultData) {
       try {
@@ -549,7 +561,62 @@ export default {
       this.mBackBtnShowYn = JSON.parse(localStorage.getItem('backBtnShowYn'))
     }
     this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST') // 앱 시작 vuex 초기화
-    this.$userLoginCheck(true)
+    var urlString = location.search
+    var param = this.getParamMap(urlString)
+    if (param.fcmKey && param.dcmKey) {
+      var checkParam = {}
+      checkParam.userKey = Number(param.dcmKey)
+      checkParam.fcmKey = param.fcmKey
+      var this_ = this
+      console.log(checkParam)
+      // eslint-disable-next-line no-undef
+      sso.loginCheck2(checkParam, this.callbackFunc).then(result => {
+        // var store = require('../../src/store')
+        if (result.result === true) {
+          console.log(result.userMap)
+          console.log('!!! USER LOGIN CHECK !!!')
+          if (result.userMap) {
+            try {
+              localStorage.setItem('user', JSON.stringify(result.userMap))
+              this_.$store.dispatch('D_USER/AC_USER', result.userMap)
+              localStorage.setItem('sessionUser', JSON.stringify(result.userMap))
+            } catch (error) {
+              console.log(error)
+            }
+          }
+
+          if (typeof (history.pushState) !== 'undefined') {
+            history.pushState(null, null, '')
+            this_.$router.replace('/')
+          } else {
+            // 브라우저가 지원하지 않는 경우 처리
+          }
+          history.pushState(null, null, '')
+          this_.$router.replace({ name: 'main', params: { testYn: true } })
+        } else {
+          this_.$.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
+          this_.$router.replace({ name: 'policies', params: { boardData: 'social' } })
+          if (this_.$store !== undefined && this_.$store !== null) {
+            this_.$store.commmit('D_USER/MU_CLEAN_USER')
+          }
+          localStorage.setItem('sessionUser', '')
+          localStorage.setItem('user', '')
+          this_.$router.replace({ name: 'policies', params: { boardData: 'social' } })
+          window.localStorage.removeItem('testYn')
+          localStorage.setItem('loginYn', false)
+        }
+      })
+    } else {
+      this.$userLoginCheck(true)
+    }
+    // alert(urlString)
+    if (!this.GE_USER) {
+      this.$router.push({ name: 'policies', params: { boardData: 'social' } })
+      return null
+    }
+    /* this.getMainBoard().then(res => {
+      this.mLoadingYn = false
+    }) */
   }
 }
 </script>

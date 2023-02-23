@@ -186,12 +186,9 @@ export default {
     }
   },
   created () {
-    // eslint-disable-next-line no-debugger
-    debugger
     if (this.contentType === 'BOAR') this.titleShowYn = true
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth
-    // console.log('// console.log(this.params)// console.log(this.params)// console.log(this.params)// console.log(this.params)')
     if (this.contentType === 'ALIM') {
       if (this.params.selectedList) {
         this.allRecvYn = false
@@ -215,16 +212,12 @@ export default {
           this.selectBoardYn = true
         } else {
           this.bodyString = this.decodeContents(this.propData.bodyFullStr)
-          // console.log('WOW!!!!' + this.decodeContents(this.bodyString))
           this.modiYn = true
         }
         if (this.propData.guideFullStr) {
-          // eslint-disable-next-line no-debugger
-          debugger
           this.modiYn = false
           this.bodyString = this.decodeContents(this.propData.guideFullStr)
         }
-        console.log(this.bodyString)
         if (this.propData.titleStr) {
           this.writePushTitle = this.propData.titleStr
         }
@@ -333,9 +326,6 @@ export default {
         document.getElementById('msgBox').innerHTML = ''
         document.getElementById('msgBox').innerHTML = innerHtml
         this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
-        // console.log('this.propData.parentAttachTrueFileList')
-        // console.log(this.propData.parentAttachTrueFileList)
-        // this.formEditorShowYn = true
       }
       if (this.propData && this.propData.selectBoardYn === true) {
         this.selectBoardYn = true
@@ -345,7 +335,6 @@ export default {
           // initData <- selectBoard에서도 구분하고 있음 수정 시 같이 봐야함!
           this.selectBoardList = this.propData.initData
           if (this.selectBoardList.length > 0) {
-            console.log(this.selectBoardList[0])
             this.selectBoard(this.selectBoardList[0], 0)
           }
         }
@@ -392,23 +381,18 @@ export default {
     },
     async getCabinetDetail (cabinetKey) {
       var paramMap = new Map()
-      console.log(this.propData)
       paramMap.set('teamKey', this.propData.currentTeamKey)
       paramMap.set('currentTeamKey', this.propData.currentTeamKey)
       paramMap.set('cabinetKey', cabinetKey)
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', this.GE_USER.userKey)
-      // console.log(paramMap)
       var response = await this.$commonAxiosFunction({
         // url: 'service/tp.getCabinetDetail',
         url: 'service/tp.getCabinetListForMyShareType',
         param: Object.fromEntries(paramMap)
       }, true)
-      console.log('!!!!!!!!!!!!!!!!!!!!!!@!@@@@@@@@@@@@@@@@@')
-      console.log(response)
       var mCabinet = response.data.mCabinet
-      // console.log(mCabinet)
       if (mCabinet && mCabinet.fileYn) {
         this.fileYn = mCabinet.fileYn
       }

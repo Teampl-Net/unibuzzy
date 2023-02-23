@@ -107,7 +107,7 @@ export default {
     },
     async checkIdentity () {
       // const wl = window.location
-      // 인증 후 callback URLhttps://mo.d-alim.com/service/tp.checkplus_success
+      // 인증 후 callback URL/service/tp.checkplus_success
       // 패치해라
       const returnSuccessUrl = 'service/tp.successUserCertification'
       const returnErrorUrl = 'service/tp.successUserCertification'
@@ -124,8 +124,6 @@ export default {
       // window.open('', 'popupChk', 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
       document.form_chk.action = 'https://nice.checkplus.co.kr/CheckPlusSafeModel/checkplus.cb'
       document.form_chk.EncodeData.value = encodeData
-      // eslint-disable-next-line no-debugger
-      debugger
       document.form_chk.target = '`popupChk`'
       // submit! (본인인증 화면으로 전환)
       document.form_chk.submit()

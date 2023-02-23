@@ -3,6 +3,7 @@
 import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
 import router from '../../src/router'
+import { params } from 'vue-router'
 import { commonMethods } from '../../src/assets/js/Tal_common'
 import store from '../../src/store'
 import { mapGetters, mapActions } from 'vuex'
@@ -87,7 +88,7 @@ export function isMobile () {
   return mobileYn
 }
 
-export async function saveUser (userProfile, loginYn) {
+export async function saveUser (userProfile, loginYn, routeData) {
   console.log(userProfile)
   var user = {}
   // var testYn = localStorage.getItem('testYn')
@@ -145,20 +146,28 @@ export async function saveUser (userProfile, loginYn) {
     localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
     if (loginYn) {
       var userInfo = result.data.userMap
-      if (!userInfo.certiDate && (userInfo.userKey === 228 || !(/Mobi/i.test(window.navigator.userAgent)))) {
+      if (!userInfo.certiDate && (!(/Mobi/i.test(window.navigator.userAgent)))) {
         // router.replace({ path: '/' })
         router.replace({ path: '/savePhone' })
         return
       }
     }
-    router.replace({ path: '/' })
+    if (routeData && routeData !== 'social') {
+      router.replace({ name: 'boardDetail', query: { boardData: routeData } })
+    } else {
+      router.replace({ path: '/' })
+    }
   } else if (result.data.message === 'NG') {
     if (store !== undefined && store !== null) {
       store.commit('D_USER/MU_CLEAN_USER')
     }
     localStorage.setItem('user', '')
     alert('로그인에 실패하였으니, 다른방식으로 재로그인 해주세요.')
-    router.replace({ path: '/policies' })
+    if (routeData && routeData !== 'social') {
+      router.replace({ name: 'boardDetail', query: { boardData: routeData } })
+    } else {
+      router.replace({ name: 'policies', params: { boardData: 'social' } })
+    }
   }
 }
 export const methods = {
@@ -171,6 +180,8 @@ export const methods = {
     return mobileYn
   },
   async userLoginCheck (maingoYn) {
+    // eslint-disable-next-line no-debugger
+    debugger
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
     if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
@@ -192,6 +203,8 @@ export const methods = {
       // paramMap.set('fcmKey', '33333333')
       // paramMap.set('soAccessToken', 'CCAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
     } else {
+      // eslint-disable-next-line no-debugger
+      debugger
       localStorage.setItem('testYn', false)
       var user = store.getters['D_USER/GE_USER']
       if (!user) {
@@ -199,10 +212,10 @@ export const methods = {
           user = JSON.parse(localStorage.getItem('vuex')).D_USER.userInfo
         }
       }
-      if (user === undefined || user === null || user === '') {
+      if (user === undefined || user === null || user === '' || !user.fcmKey) {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
-        router.replace('/policies')
+        router.replace({ name: 'policies', params: { boardData: 'social' } })
         return
       }
       paramMap.set('userKey', user.userKey)
@@ -213,28 +226,37 @@ export const methods = {
     }
 
     paramMap.set('mobileYn', isMobile())
-    var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
-    if (result.data.resultCode === undefined) return
-    console.log(result.data.resultCode)
-    console.log('result~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-    if (result.data.resultCode === 'OK') {
-      console.log(result.data)
-      console.log('!!! USER LOGIN CHECK !!!')
-      if (result.data.userMap) {
-        try {
-          localStorage.setItem('user', JSON.stringify(result.data.userMap))
-          store.dispatch('D_USER/AC_USER', result.data.userMap)
-          localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
-        } catch (error) {
-          console.log(error)
+    var checkParam = {}
+    checkParam.userKey = Number(user.userKey)
+    checkParam.fcmKey = user.fcmKey
+    // eslint-disable-next-line no-undef
+    /* await sso.loginCheck2(checkParam, this.callbackFunc).then(result => {
+      // if (result.result !== true) return
+      // eslint-disable-next-line no-debugger
+      debugger
+      var store = require('../../src/store')
+      if (result.result === true) {
+        console.log(result.userMap)
+        console.log('!!! USER LOGIN CHECK !!!')
+        if (result.userMap) {
+          try {
+            localStorage.setItem('user', JSON.stringify(result.userMap))
+            store.dispatch('D_USER/AC_USER', result.userMap)
+            localStorage.setItem('sessionUser', JSON.stringify(result.userMap))
+          } catch (error) {
+            console.log(error)
+          }
         }
-      }
 
-      if (maingoYn) {
-        router.replace({ name: 'main', params: { testYn: true } })
-      }
-    } else {
-      if (result.data.resultCode === 'NG') {
+        if (maingoYn) {
+          if (typeof (history.pushState) !== 'undefined') {
+            history.pushState(null, null, '')
+          } else {
+            // 브라우저가 지원하지 않는 경우 처리
+          }
+          router.replace({ name: 'main', params: { testYn: true } })
+        }
+      } else {
         commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
         router.replace('/policies')
         if (store !== undefined && store !== null) {
@@ -247,13 +269,11 @@ export const methods = {
         if (store !== undefined && store !== null) {
           store.commit('D_USER/MU_CLEAN_USER')
         }
-        localStorage.setItem('sessionUser', '')
-        localStorage.setItem('user', '')
-        router.replace('/policies')
+        window.localStorage.removeItem('testYn')
+        localStorage.setItem('loginYn', false)
       }
-      window.localStorage.removeItem('testYn')
-      localStorage.setItem('loginYn', false)
-    }
+    }) */
+    // var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
   },
   async d_AlimLogout () {
     var result = await commonAxiosFunction({
@@ -262,8 +282,9 @@ export const methods = {
     })
     console.log(result)
     if (result) {
-      await router.replace('/login')
+      await router.replace({ name: 'login', params: { boardData: 'social' } })
       store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+      await store.dispatch('D_USER/AC_USER', '')
       if (store !== undefined && store !== null) {
         store.commit('D_USER/MU_CLEAN_USER')
       }
@@ -612,6 +633,7 @@ export const methods = {
       param: param
     })
     result = response
+    store.commit('D_USER/MU_USER', result.data.userMap)
     return result
   }
 }

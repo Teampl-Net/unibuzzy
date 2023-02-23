@@ -1,9 +1,15 @@
 <template>
 <div class="pagePaddingWrap" >
-  <gBtnSmall @click="testClick1" btnTitle="test"/>
-  <childCompo1 :propInitData="propInitData" />
-  <childCompo2 :propInitData="propInitData" />
-  <childCompo3 :propInitData="propInitData" />
+  <gBtnSmall @click="testClick" class="mleft-05" btnTitle="testClick"/>
+  <gBtnSmall @click="goLogin" class="mleft-05" btnTitle="로그인할래"/>
+  <gBtnSmall @click="successLogin" class="mleft-05" btnTitle="로그인성공"/>
+  <gBtnSmall @click="failLogin" btnTitle="로그인실패"/>
+  <div style="width: 100%; min-height: 500px; float: left; margin-top: 20px;">
+    <p class="font20 fontBold commonColor textLeft mbottom-05">로그인 처리 로그</p>
+    <div style="width: 100%; height: 500px; overflow: hidden auto; border: 2px solid #ADADAD; padding: 10px;">
+        <p class="textLeft font14 fontBold" v-for="(item, index) in logList" :key="index" v-html="item"></p>
+    </div>
+  </div>
   <!-- <div v-for="(value, index) in GE_SERV_DATA"></div> -->
 </div>
 </template>
@@ -20,7 +26,8 @@ export default {
       beforePhone: '',
       test: '',
       realDataList: [],
-      propInitData: null
+      propInitData: null,
+      logList: []
     }
   },
   computed: {
@@ -45,79 +52,61 @@ export default {
     }
   },
   created () {
-    this.checkMyInfo()
+    // this.checkMyInfo()
   },
   props: {
     kind: {}
   },
   methods: {
-    async getListData () {
-      var param = {}
-      param.testKey = 1
-      var result = await this.$axios('/service/tp.get~~~~~', param)
-      /* var result.content = [
-
-      ] */
-      // result.content = [{실제 데이터1}, {실제 데이터2}]
-      return result.content // : array
-    },
-    async openPop () {
-      this.propInitData = await this.$getListData() // 1
-      if (!this.propInitData || this.propInitData.length === 0) {
-        alert('컨텐츠를 찾을 수 없습니다')
-        return
-      }
-      this.$store.dispatch('D_CONTENTS/AC_SET_USERDATA', this.propInitData) // array // 2
-      this.childrenPopShowYn = true // 3 자식 열어주기
+    addLogList (log, page) {
+      var nowTime = new Date().toLocaleString()
+      var addLogText = '<span class="font16 fontBold commonColor textLeft">[' + nowTime + '] ' + page + '</span><br>' + log
+      this.logList.unshift(addLogText)
     },
     async testClick () {
-      var t = '0314294216'
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.smsNo = t
-      param.smsKind = 'SMS'
-      param.bodyString = '인증번호는 1234입니다.'
-      param.mmsTitle = '더알림 인증번호'
-      param.trId = '1663545628988'
-      param.recvListStr = '01084860734'
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.sendSms',
-        param: param
-      })
+      var result = await this.$axios.post('http://192.168.0.100:9090/edu.getCourseList', {})
       console.log(result)
-      // eslint-disable-next-line no-debugger
-      debugger
     },
-    async testClick1 () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      var result = await this.$axios.post('apt123/a2.getHouseList', param)
-      console.log(result)
-      // eslint-disable-next-line no-debugger
-      debugger
+    async goLogin () {
+      // eslint-disable-next-line no-undef
+      sso.login(window.location.protocol + '//' + window.location.host, this.addLogList)
     },
-    checkMyInfo () {
-      if (this.kind === 'changeMobile') {
-        this.kindText = '휴대전화 번호'
-        var userMobile = JSON.parse(localStorage.getItem('sessionUser')).phoneEnc
-        if (userMobile !== undefined && userMobile !== 'undefined' && userMobile !== null && userMobile !== 'null' && userMobile !== '' && localStorage.getItem('userMobile').length > 7) {
-          this.targetKind = 'change'
-          this.introText = '기존 휴대폰 번호는 ' + localStorage.getItem('userMobile') + ' 입니다.<br>변경할 휴대폰 번호로 인증 번호 받기'
-        } else {
-          this.targetKind = 'new'
-          this.introText = '현재 등록되어 있는 휴대폰 번호가 없습니다. <br>추가할 휴대폰 번호로 인증번호 받기'
+    async successLogin () {
+      // alert(true)
+      var param = {}
+      var user = this.$store.getters['D_USER/GE_USER']
+      param.userKey = user.userKey
+      param.fcmKey = user.fcmKey
+      // eslint-disable-next-line no-undef
+      sso.loginCheck(param, this.testCallback, this.addLogList)
+    },
+    async failLogin () {
+      var param = {}
+      // var user = this.$store.getters['D_USER/GE_USER']
+      param.userKey = 0
+      param.fcmKey = 123
+      // eslint-disable-next-line no-undef
+      sso.loginCheck(param, this.testCallback, this.addLogList)
+    },
+    testCallback (data) {
+      var logText = '<span class="font16 fontBold commonBlack textLeft">LoginPl로부터 받은 응답:</span>'
+      if (data.result === true) {
+        logText += '<br>유저 인증 성공!'
+        if (data.userMap) {
+          logText += '<br> - dcmKey(유저키값): ' + data.userMap.userKey
+          logText += '<br> - fcmKey: ' + data.userMap.fcmKey
+          logText += '<br> - 이름: ' + data.userMap.userNameMtext
+          logText += '<br> - email: ' + data.userMap.userEmail
+          logText += '<br> - phone: ' + data.userMap.phoneEnc
+          logText += '<br>-----------------------------------------------------'
         }
-      } else if (this.kind === 'changeEmail') {
-        this.kindText = '이메일 주소'
-        var userEmail = JSON.parse(localStorage.getItem('sessionUser')).userEmail
-        if (userEmail !== undefined && userEmail !== 'undefined' && userEmail !== null && userEmail !== 'null' && userEmail !== '' && localStorage.getItem('userEmail').length > 7) {
-          this.targetKind = 'change'
-          this.introText = '기존 이메일은 ' + localStorage.getItem('userEmail') + ' 입니다.<br>변경할 이메일로 인증 메일 받기'
-        } else {
-          this.targetKind = 'new'
-          this.introText = '현재 등록되어 있는 이메일이 없습니다.<br>추가할 이메일로 인증 메일 받기'
-        }
+      } else {
+        setTimeout(() => {
+          this.goLogin()
+        }, 1000)
       }
+      this.addLogList(logText, window.location.href)
+      console.log(data)
     }
   }
 }

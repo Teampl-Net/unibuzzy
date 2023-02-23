@@ -68,7 +68,7 @@ export default {
       this.saveUser()
     },
     back () {
-      this.$router.replace({ path: 'login' })
+      this.$router.replace({ name: 'login' })
     },
     async saveUser () {
       var uId = this.userId

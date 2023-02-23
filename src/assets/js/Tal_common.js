@@ -378,26 +378,22 @@ export const commonMethods = {
       url: 'service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     }, true)
-    console.log(JSON.parse(result.data.shortLink))
     var response = JSON.parse(result.data.shortLink).shortLink
     // alert(response)
     return response
   },
   addHistoryStack (openPageId) {
-    console.log(openPageId)
     store.dispatch('D_HISTORY/AC_ADD_POP_HISTORY_STACK', openPageId)
     store.dispatch('D_HISTORY/AC_ADD_ALL_HISTORY_STACK', openPageId)
   },
   removeHistoryStack () {
     var history = store.getters['D_HISTORY/hStack']
     var removePage = history[history.length - 1]
-    console.log(removePage)
     history = history.filter((element, index) => index < history.length - 1)
     store.commit('D_HISTORY/setRemovePage', removePage)
     store.commit('D_HISTORY/updateStack', history)
     store.dispatch('D_HISTORY/AC_REMOVE_POP_HISTORY_STACK')
     history = store.getters['D_HISTORY/hStack']
-    console.log(history)
   },
   checkDeleteHistory (deletePage) {
     var result = false
@@ -565,7 +561,6 @@ export const commonMethods = {
   findUrlChangeAtag (inputText) {
     const rplcdPttrn1 = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig
     var rplcdTxt = inputText.replace(rplcdPttrn1, '<a href="$1" target="_blank">$1</a>')
-    console.log('rplcdTxt : ', rplcdTxt)
     // const urlRegex = /(http:|https:)?(\/\/)?(www\.)?()\/(watch|embed)?(\?v=|\/)?(\S+)?/g
 
     // var text = 'ref="https://example.com" targ 여기 짱이야 ! '
@@ -795,7 +790,6 @@ export const commonMethods = {
       // await uploadToServer(compressedFile) // 블라블라
       // eslint-disable-next-line no-debugger
       debugger
-      console.log(compressedFile)
       return { path: compressedFile.path, file: compressedFile }
     } catch (error) {
       console.log(error)
@@ -977,7 +971,6 @@ export const commonMethods = {
     if (window.getSelection) {
       // IE9 and non-IE
       sel = window.getSelection()
-      console.log(sel.focusNode.childNodes)
       // if (sel.focusNode)
       if (sel.getRangeAt && sel.rangeCount) {
         range = sel.getRangeAt(0)
@@ -990,8 +983,6 @@ export const commonMethods = {
         var frag = document.createDocumentFragment()
         var node
         var lastNode
-        console.log('^^^^^^^^^^^^^^^^^^^^^^^^')
-        console.log(sel)
         while ((node = el.firstChild)) {
           lastNode = frag.appendChild(node)
         }
@@ -1014,7 +1005,6 @@ export const commonMethods = {
   checkMobile () {
     // var varUA = navigator.userAgent.toLowerCase()
     var varUA = localStorage.getItem('systemName')
-    console.log(varUA)
     if (varUA !== undefined || varUA !== null || varUA !== '') {
       if (varUA === 'ios' || varUA === '"ios"') {
         return 'IOS'
@@ -1071,7 +1061,6 @@ export const commonMethods = {
     } else gChanPop.style.display = 'none'
   },
   showAxiosLoading (showYn) {
-    console.log(showYn)
     var loadingCompo = document.getElementById('axiosShadow')
     var gLoadingPop = document.querySelectorAll('.gLoadingPop')
     if (gLoadingPop.length > 0) {
@@ -1101,12 +1090,10 @@ export const commonMethods = {
     // alert(JSON.stringify(this.$route.path))
     if (store.getters['D_USER/GE_NET_STATE'] === false || store.getters['D_USER/GE_NET_STATE'] === 'false') return
     var history = store.getters['D_HISTORY/hStack']
-    console.log(history)
     if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
       router.replace({ path: '/' })
     }
     var current = store.getters['D_HISTORY/hUpdate']
-    console.log(current)
     store.commit('D_HISTORY/updatePage', current + 1)
   },
   notPerText () {

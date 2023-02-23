@@ -140,7 +140,8 @@ export default {
       writeBottSheetYn: false,
       mwWidth: 0,
       mwHeight: 0,
-      prevVisualViewport: 0
+      prevVisualViewport: 0,
+      mDirectTeamKey: null
       // errorPopYn: false
     }
   },
@@ -318,34 +319,36 @@ export default {
       this.$emit('openPop', param)
     },
     async readyFunction () {
-      this.$showAxiosLoading(true)
-      // eslint-disable-next-line no-debugger
-      debugger
-      /* if (this.axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
-      this.axiosQueue.push('addChanList') */
-      if (this.chanDetail.initData) {
-        if (this.chanDetail.initData.team.D_CHAN_AUTH && this.chanDetail.initData.team.D_CHAN_AUTH.followYn) {
-          this.$emit('followYn')
+      const directUrl = localStorage.getItem('urlString')
+      if (directUrl) {
+        const directUrlObj = JSON.parse(directUrl)
+        if (directUrlObj.teamKey) {
+          const chanDetail = await this.$addChanList(directUrlObj.teamKey)
+          // eslint-disable-next-line vue/no-mutating-props
+          this.mDirectTeamKey = chanDetail
         }
-        if (this.CHANNEL_DETAIL) {
-          console.log(this.chanDetail.initData.team.copyTextStr === undefined)
-          if ((this.chanDetail.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            this.mMakeDeepLinkIng = true
-            var title = '[더알림]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
-            var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
-            var this_ = this
-            this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
-              this.CHANNEL_DETAIL.copyTextStr = res
-              this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
-              this_.mMakeDeepLinkIng = false
-            })
+      } else {
+        this.$showAxiosLoading(true)
+        if (this.chanDetail.initData) {
+          if (this.chanDetail.initData.team.D_CHAN_AUTH && this.chanDetail.initData.team.D_CHAN_AUTH.followYn) {
+            this.$emit('followYn')
+          }
+          if (this.CHANNEL_DETAIL) {
+            console.log(this.chanDetail.initData.team.copyTextStr === undefined)
+            if ((this.chanDetail.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
+              this.mMakeDeepLinkIng = true
+              var title = '[더알림]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+              var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
+              var this_ = this
+              this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
+                this.CHANNEL_DETAIL.copyTextStr = res
+                this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+                this_.mMakeDeepLinkIng = false
+              })
+            }
           }
         }
       }
-      // await this.$addChanList(this.chanDetail.targetKey)
-      /* var queueIndex = this.axiosQueue.findIndex((item) => item === 'addChanList')
-      this.axiosQueue = this.axiosQueue.splice(queueIndex, 1) */
 
       this.$emit('closeLoading')
       this.$showAxiosLoading(false)
@@ -708,7 +711,14 @@ export default {
   },
   computed: {
     CHANNEL_DETAIL () {
-      var detail = this.$getDetail('TEAM', this.chanDetail.initData.team.teamKey)
+      if (!this.chanDetail && !this.mDirectTeamKey) return {}
+      let teamKey
+      if (this.chanDetail) {
+        teamKey = this.chanDetail.initData.team.teamKey
+      } else if (this.mDirectTeamKey) {
+        teamKey = this.mDirectTeamKey.teamKey
+      }
+      var detail = this.$getDetail('TEAM', teamKey)
       if (detail && detail.length > 0) {
         if (detail[0].blackYn) this.$emit('bgcolor', detail[0].blackYn)
 

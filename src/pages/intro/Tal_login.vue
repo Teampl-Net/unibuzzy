@@ -98,10 +98,15 @@ export default {
                 // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
                 router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
               } else */
-
-      await saveUser(userProfile, true) // 서버에 save요청
+      alert(this.$route.params.boardData)
+      await saveUser(userProfile, true, this.$route.params.boardData) // 서버에 save요청
       localStorage.setItem('loginYn', true)
-      this.$router.replace({ path: '/' })
+
+      /* if (this.$route.params.boardData && this.$route.params.boardData !== 'social') {
+        this.$router.replace({ name: 'boardDetail', query: { boardData: this.$route.params.boardData } })
+      } else {
+        this.$router.replace({ path: '/' })
+      } */
     },
     closeApp () {
       onMessage('closeApp', 'requestUserPermission')
@@ -149,6 +154,7 @@ export default {
     onLogin () {
       // var thisthis = this
       localStorage.setItem('loginType', 'google')
+      var this_ = this
       authService.login('Google').then(async function (result) {
         // console.log(result)
         if (result.user) {
@@ -162,7 +168,14 @@ export default {
         }
         var userProfile = await setUserInfo(user)
 
-        await saveUser(userProfile, true) // 서버에 save요청
+        await saveUser(userProfile, true, this_.$route.params.boardData) // 서버에 save요청
+        localStorage.setItem('loginYn', true)
+
+        /* if (this_.$route.params.boardData && this_.$route.params.boardData !== 'social') {
+          this_.$router.replace({ name: 'boardDetail', query: { boardData: this.$route.params.boardData } })
+        } else {
+          this_.$router.replace({ path: '/' })
+        } */
         /* localStorage.setItem('loginYn', true)
         thisthis.$router.replace({ path: '/' }) */
       })

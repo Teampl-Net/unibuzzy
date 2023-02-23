@@ -1,10 +1,10 @@
 <template>
-  <div v-if="propMemberData" style="width: 90%; height: 60%; max-height: 800px; position: absolute; z-index: 10; top: 15%; left: 5%; background: #FFF; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem; min-height: 500px;">
-    <div style="width: 100%; position: relative; height: 50px; border-bottom: 1px solid #6768A7; float: left; padding: 10px 20px;">
+  <div v-if="propMemberData" class="dReqMemberPopWrap">
+    <div class="dReqMemberPopHeader">
         <p class="font20 fontBold commonColor textLeft">[{{this.$changeText(propMemberData.nameMtext)}}] 멤버신청</p>
     </div>
-    <div style="width: 100%; height: calc(100% - 110px); padding: 10px 20px; float: left;">
-        <div v-if="propMemberData.certiYn === true" style="width: 100%; min-height: 30px; float: left;">
+    <div class="dReqMemberPopBody">
+        <div v-if="propMemberData.certiYn === true" class="dReqMemberCertiTrueArea">
             <p class="font16 w-100P grayBlack fontBold fl textLeft" style="line-height: 30px;" >{{propMemberData.certiYn === true? '실명 인증이 필요한 유형': '실명인증이 필요하지 않은 유형입니다.'}}</p>
             <p class="font14 fontBold commonColor fl textLeft w-100P" v-if="propMemberData.certiYn === true && GE_USER.certiDate">{{this.$changeText(GE_USER.userDispMtext)}}님은 실명인증완료된 회원입니다.</p>
             <p class="font16 fontBold fl textLeft" style="line-height: 30px;" v-else-if="propMemberData.certiYn === true">실명 인증이 필요합니다.</p>
@@ -26,7 +26,7 @@
             </div>
         </div>
         <gCertiPop :pPopText="'실명인증을 하면 멤버신청이 가능해요!'" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  />
-        <div style="width: 100%; justify-content: center; display: flex; height: 60px; float: left;">
+        <div class="dReqMemberPopFooter">
             <gBtnSmall btnTitle="신청" @click="sendReq" style="margin-right: 0.5rem;"/>
             <gBtnSmall btnThema="light" @click="closeXPop(false)" btnTitle="닫기"/>
         </div>
@@ -91,7 +91,6 @@ export default {
         url: 'service/tp.getMemberTypeItemList',
         param: param
       })
-      console.log(memberTypeItemList)
       if (memberTypeItemList.data.result) {
         this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
         if (this.memberTypeItemList.length === 0) {
@@ -125,7 +124,6 @@ export default {
       var param = new Object()
       var ansList = []
       var ansObj = {}
-      console.log(this.memberTypeItemList)
       for (var i = 0; i < this.memberTypeItemList.length; i++) {
         ansObj = {}
         if (this.memberTypeItemList[i].value === undefined || this.memberTypeItemList[i].value === null || this.memberTypeItemList[i].value === '') {
@@ -144,19 +142,13 @@ export default {
         ansList.push(ansObj)
       }
       param.memberInfoList = ansList
-      console.log(param.memberInfoList)
       var memberResult = await this.$commonAxiosFunction({
         url: 'service/tp.saveFollowerMemberInfo',
         param: param
       })
-      console.log(memberResult)
       if (memberResult.data.result) {
         this.$emit('saveMemberData', memberResult.data.memberInfo)
       }
-      console.log(memberResult)
-      // eslint-disable-next-line no-debugger
-      debugger
-      // this.closeXPop()
     }
   },
   computed: {
@@ -168,17 +160,11 @@ export default {
       debugger
       var detail = this.$getDetail('TEAM', this.propTeamDetail.teamKey)
       if (detail && detail.length > 0) {
-        console.log('CHANNEL_DETAIL')
-        console.log(detail[0])
         return detail[0]
       } else {
         if (this.CHANNEL_DETAIL) {
-          console.log('CHANNEL_DETAIL')
-          console.log(this.CHANNEL_DETAIL)
           return this.CHANNEL_DETAIL
         } else {
-          console.log('CHANNEL_DETAIL')
-          console.log('null')
           return null
         }
       }
@@ -188,5 +174,19 @@ export default {
 </script>
 
 <style scoped>
-
+.dReqMemberPopWrap {
+    width: 90%; height: 60%; max-height: 800px; position: absolute; z-index: 10; top: 15%; left: 5%; background: #FFF; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem; min-height: 500px;
+}
+.dReqMemberPopHeader {
+    width: 100%; position: relative; height: 50px; border-bottom: 1px solid #6768A7; float: left; padding: 10px 20px;
+}
+.dReqMemberPopBody {
+    width: 100%; height: calc(100% - 110px); padding: 10px 20px; float: left;
+}
+.dReqMemberPopFooter {
+    width: 100%; justify-content: center; display: flex; height: 60px; float: left;
+}
+.dReqMemberCertiTrueArea {
+    width: 100%; min-height: 30px; float: left;
+}
 </style>

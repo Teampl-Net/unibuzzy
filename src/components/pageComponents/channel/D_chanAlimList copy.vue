@@ -459,8 +459,6 @@ export default {
         this.$store.commit('D_HISTORY/updateStack', history)
         this.closeWritePushPop()
       } else if (this.mWriteBoardPopId === hStack[hStack.length - 1]) {
-        // var history = this.$store.getters['D_HISTORY/hStack']
-        // var removePage = history[history.length - 1]
         history = history.filter((element, index) => index < history.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
         this.$store.commit('D_HISTORY/updateStack', history)
@@ -488,9 +486,6 @@ export default {
         this.mChanMainScrollWrap.style.overflow = 'hidden'
         // blockBox.scrollHeight = 100
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
-        // document.getElementById('chanInfoSummary2').classList.add('displayBIm')
-        // document.getElementById('chanInfoArea').classList.add('displayNIm')
-        // document.getElementById('memberInfoArea').classList.add('displayNIm')
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) document.getElementById('followerCancelArea').classList.add('displayNIm')
 
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
@@ -501,8 +496,6 @@ export default {
         document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
       } else if (this.mChanMainScrollDirection === 'up' && this.mChanMainScrollPosition < 300) {
         document.getElementById('chanInfoSummary').classList.remove('displayNIm')
-        // document.getElementById('chanInfoArea').classList.remove('displayNIm')
-        // document.getElementById('memberInfoArea').classList.remove('displayNIm')
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) document.getElementById('followerCancelArea').classList.remove('displayNIm')
 
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) document.getElementById('ownerChannelEditArea').classList.remove('displayNIm')
@@ -512,61 +505,9 @@ export default {
 
         blockBox.style.height = '350px'
         this.mChanMainScrollWrap.style.height = ''
-        // document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
         document.getElementById('channelItemBox').classList.remove('channelItemBoxHeight')
       }
     }
-    /* changeshowProfileYn (data) {
-      this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn = data
-    }, */
-    /* async saveMemberButton () {
-      if (this.axiosQueue.findIndex((item) => item === 'saveMemberButton') !== -1) return
-      this.smallPopYn = true
-      if (this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn === 1) {
-        this.confirmMsg = '내 정보 공개가 취소 완료되었습니다.'
-        this.addSmallMsg = '(언제든 다시 ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + ' 의 정보 공개를 할 수 있습니다.)'
-      } else {
-        this.confirmMsg = '내 정보 공개가 완료되었습니다.'
-        this.addSmallMsg = '(관리자는 당신의 프로필 정보를 조회할 수 있습니다.)'
-      }
-      var params = null
-      var param = {}
-      param.followerKey = this.CHANNEL_DETAIL.userTeamInfo.followerKey
-      param.teamKey = this.CHANNEL_DETAIL.teamKey
-      param.userName = this.$changeText(this.GE_USER.userDispMtext) || this.$changeText(this.GE_USER.userNameMtext)
-      param.userKey = this.GE_USER.userKey
-      param.showProfileYn = true
-      param.teamName = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
-      if (this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn === 1) {
-        param.showProfileYn = false
-        params = { follower: param }
-      } else {
-        params = { follower: param, doType: 'ME' }
-      }
-
-      this.axiosQueue.push('saveMemberButton')
-      var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveFollower',
-        param: params
-      })
-      var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')
-      // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
-      this.axiosQueue.splice(queueIndex, 1)
-      if (result.data.result === true) {
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn === 1) {
-          this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn = false
-        } else {
-          this.CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn = true
-        }
-      }
-      this.mOpenWelcomePopShowYn = false
-      if (this.axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
-      this.axiosQueue.push('addChanList')
-      await this.$addChanList(this.chanDetail.targetKey)
-      queueIndex = this.axiosQueue.findIndex((item) => item === 'addChanList')
-      // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
-      this.axiosQueue.splice(queueIndex, 1)
-    } */
   },
   computed: {
     CHANNEL_DETAIL () {
@@ -589,14 +530,9 @@ export default {
           this.$emit('bgcolor', false)
         }
 
-        console.log(detail[0])
-        // eslint-disable-next-line no-debugger
-        debugger
         if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {
           return this.CHANNEL_DETAIL
         } else {
-          console.log('CHANNEL_DETAIL')
-          console.log(detail[0])
           return detail[0]
         }
       } else {
@@ -608,8 +544,6 @@ export default {
           }
           return this.CHANNEL_DETAIL
         } else {
-          console.log('CHANNEL_DETAIL')
-          console.log('null')
           return null
         }
       }

@@ -22,7 +22,7 @@ export default {
   },
   mounted () {
     // eslint-disable-next-line new-cap
-    this.naverIdLogin = new naver_id_login('BbUrvFqJkUbcMb6ISALy', 'https://mo.d-alim.com/#/naverCallback')
+    this.naverIdLogin = new naver_id_login('BbUrvFqJkUbcMb6ISALy', 'https://mo.d-alim.com/naverCallback')
     this.initF()
     // var paramList = hashData.split('&')
     // window.close()
@@ -83,10 +83,13 @@ export default {
               // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
               router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
             } else */
-
-      await saveUser(userProfile) // 서버에 save요청
-      localStorage.setItem('loginYn', true)
-      location.href = '/#/'
+      if (this.$route.params.boardDetail && this.$route.params.boardDetail !== 'social') {
+        await saveUser(userProfile, true, this.$route.params.boardDetail) // 서버에 save요청
+      } else {
+        await saveUser(userProfile) // 서버에 save요청
+      }
+      /* localStorage.setItem('loginYn', true)
+      location.href = '/' */
       // window.close()
     }
 

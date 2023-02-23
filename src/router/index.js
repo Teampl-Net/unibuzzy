@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 // import { useStore } from 'vuex'
+import { functions } from '../assets/js/D_vuexFunction'
 
 // import jisuTest from '../jisuTest.vue'
-
+import { methods, commonAxiosFunction } from '../../public/commonAssets/Tal_axiosFunction'
 import routerMain from '../pages/Tal_router_main.vue'
 
 import testLoginPage from '../pages/intro/testLoginPage.vue'
@@ -42,10 +43,21 @@ import admLogin from '../pages/intro/Tal_Adm_login.vue'
 import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue'
 import certiPhone from '../components/pageComponents/intro/D_certi_phone.vue'
 import certiPhoneReturn from '../components/pageComponents/intro/D_certi_phone_return.vue'
-/* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
+import ssoLogin from '../pages/backuplogin.vue'
 
 import contDetail from '../pages/routerPages/D_contentsDetail.vue'
 import forSearchContList from '../pages/routerPages/D_forSearchContList.vue'
+import store from '@/store'
+function decodeUnicode (str) {
+  const urlParam = str.replace('?', '')
+  // Going backwards: from bytestream, to percent-encoding, to original string.
+  return decodeURIComponent(atob(urlParam).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+  }).join(''))
+}
+
+/* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
+
 const routes = [
   // {
   //   path: '/jisuTest',
@@ -116,7 +128,7 @@ const routes = [
         component: logList,
         beforeEnter: (to, from, next) => {
           // 만약 로그인 상태라면
-          if (localStorage.getItem('loginYn') !== true) { return next() } else next('/policies')
+          if (localStorage.getItem('loginYn') !== true) { return next() } else next({ name: 'policies', params: { boardData: 'social' } })
         }
       }
     ]
@@ -185,7 +197,7 @@ const routes = [
     component: nonMemInquiryBoard
   },
   {
-    path: '/login',
+    path: '/login/:boardData',
     name: 'login',
     props: true,
     component: login
@@ -211,7 +223,7 @@ const routes = [
     component: permissions
   },
   {
-    path: '/policies',
+    path: '/policies/:boardData',
     name: 'policies',
     props: true,
     component: policies
@@ -247,6 +259,12 @@ const routes = [
     component: suminTest
   },
   {
+    path: '/ssoLogin',
+    name: 'ssoLogin',
+    props: true,
+    component: ssoLogin
+  },
+  {
     path: '/contDetail',
     name: 'contDetail',
     props: true,
@@ -257,6 +275,90 @@ const routes = [
     name: 'contList',
     props: true,
     component: forSearchContList
+  },
+  {
+    path: '/errorPage',
+    name: 'errorPage',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_errorPage.vue')
+  },
+  {
+    path: '/boardDetail',
+    name: 'boardDetail',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../components/board/D_boardMain.vue'),
+    beforeEnter: async (to, from, next) => {
+      // 만약 로그인 상태라면
+      const user = store.getters['D_USER/GE_USER']
+      if (document.referrer.indexOf('officeon') === -1 && document.referrer.indexOf('localhost') === -1) {
+        next('/errorPage')
+        return
+      }
+      var urlString = location.search
+      if (to.query && to.query.boardData) {
+        urlString = to.query.boardData
+      }
+      const paramString = decodeUnicode(urlString)
+      const splited = paramString.split(/[=?&]/)
+      const param = {}
+      const paramMap = new Map()
+      console.log(splited)
+      for (let i = 1; i < splited.length; i++) {
+        const key = splited[i]
+        let val = splited[++i]
+        if (key.indexOf('Key') !== -1 || key.indexOf('key') !== -1) {
+          val = Number(val)
+        }
+        param[key] = val
+        paramMap.set(key, val)
+      }
+      /* if (to.query) {
+        localStorage.setItem('urlString', JSON.stringify(to.query))
+      } */
+      if (user && user.userKey) {
+        paramMap.set('userEmail', user.userEmail)
+        paramMap.set('soAccessToken', user.soAccessToken)
+        paramMap.set('fcmKey', user.fcmKey)
+        paramMap.set('userKey', user.userKey)
+        var result = await commonAxiosFunction({
+          url: 'service/tp.goDirectBoard',
+          param: Object.fromEntries(paramMap)
+        })
+        const resultMainData = result.data.cabinet
+        console.log(result)
+        if (resultMainData.contentsListPage) {
+          var contentList = resultMainData.contentsListPage.content
+          for (let i = 0; i < contentList.length; i++) {
+            contentList[i].shareItem = resultMainData.cabinet.mShareItemList
+          }
+          store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
+        }
+        await functions.addChanList(result.data.cabinet.cabinet.creTeamKey)
+        var goBoardMainParam = {}
+        goBoardMainParam.initData = resultMainData
+        goBoardMainParam.targetType = 'boardMain'
+        goBoardMainParam.teamKey = result.data.cabinet.cabinet.creTeamKey
+        goBoardMainParam.targetKey = result.data.cabinet.cabinet.cabinetKey
+        goBoardMainParam.cabinetNameMtext = result.data.cabinet.cabinet.cabinetNameMtext
+        /* localStorage.setItem('BOAR_DIRECT_DATA', JSON.stringify('')) */
+        if (result.data.result) {
+          console.log(goBoardMainParam)
+          // eslint-disable-next-line no-debugger
+          debugger
+          return next({ name: 'boardMain', params: { board: JSON.stringify(goBoardMainParam) }, replace: true })
+        }
+      } else {
+        console.log(JSON.stringify(param))
+        localStorage.setItem('directParam', JSON.stringify(param))
+        next({ name: 'policies', params: { boardData: urlString } })
+      }
+    }
+  },
+  {
+    path: '/boardMain/:board',
+    name: 'boardMain',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../components/board/D_boardMain.vue')
   }
   // {
   //   path: '/myChanList',

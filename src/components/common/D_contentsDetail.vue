@@ -270,6 +270,11 @@ export default {
       this.$refs.myContentsBox.handleScroll()
     },
     openPop (openPopParam) {
+      console.log(openPopParam)
+      if (this.propParams.onlyMineYn && this.propParams.onlyMineYn === true & openPopParam.targetType !== 'writeContents') {
+        this.$showToastPop('해당 모드에서는 지원하지 않는 기능입니다.')
+        return
+      }
       this.$emit('openPop', openPopParam)
     },
     settingFileIcon (fileName) {

@@ -30,7 +30,7 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
+    <link rel="manifest" href="<%= BASE_URL %>manifest.json" crossorigin="use-credentials">
   </head>
   <body><!--
     <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script> -->
@@ -44,7 +44,8 @@
     
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
     <script src="https://unpkg.com/vue-long-click@0.0.4/dist/libs/vue-long-click.umd.min.js"></script>
-
+    <!-- <script type="text/javascript" src="http://192.168.0.100:18080/static/js/li.sso.js"></script> -->
+    <!-- <script type="text/javascript" src="http://192.168.0.10:8082/static/js/li.sso.js"></script>  -->
 
     <script src="https://unpkg.com/vue@next"></script>
     <script src="https://unpkg.com/vue-easy-lightbox@next/dist/vue-easy-lightbox.umd.min.js"></script>
@@ -105,8 +106,7 @@
         var messaging = firebase.messaging()
         messaging.usePublicVapidKey('BKz1oF6HiJg6kscmJ2I0hil9fAsP68N0OrkQN7Vgo_DBQYPmnswNcIK7P71CFvKrdvwLRlemD-DfAppHIZfQ46g')
          */
-      }
-      if (!("Notification" in window)) {
+         if (!("Notification" in window)) {
             console.log("데스크톱 알림을 지원하지 않는 브라우저입니다.");
         }
         // 데스크탑 알림 권한 요청
@@ -121,6 +121,9 @@
                 console.log('알림을 허용하셨습니다.');
             }
         });
+      }
+      
+      
 
     </script>
     <!-- // google -->
