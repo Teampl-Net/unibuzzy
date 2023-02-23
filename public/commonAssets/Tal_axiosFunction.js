@@ -26,11 +26,11 @@ axios.defaults.withCredentials = true */
 axios.defaults.headers.get.Pragma = 'no-cache' */
 var g_axiosQueue = []
 
-export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
+export async function commonAxiosFunction (setItem, nonLoadingYn) {
   console.log('####-------------------------------commonAxiosFunction.' + setItem.url + '----------------------------------------####')
   console.log('####parameter is: ')
   console.log(setItem.param)
-  if (setItem.firstYn || noAuthYn === true) {
+  if (setItem.firstYn) {
   } else {
     await methods.userLoginCheck()
   }
@@ -235,19 +235,20 @@ export const methods = {
       // eslint-disable-next-line no-debugger
       debugger
       var store = require('../../src/store')
-      if (result.result === true) {
-        console.log(result.userMap)
-        console.log('!!! USER LOGIN CHECK !!!')
-        if (result.userMap) {
-          try {
-            localStorage.setItem('user', JSON.stringify(result.userMap))
-            store.dispatch('D_USER/AC_USER', result.userMap)
-            localStorage.setItem('sessionUser', JSON.stringify(result.userMap))
-          } catch (error) {
-            console.log(error)
-          }
-        }
 
+    }) */
+    var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
+    // eslint-disable-next-line no-debugger
+    debugger
+    if (result.data.resultCode === 'OK') {
+      if (result.data.userMap) {
+        try {
+          localStorage.setItem('user', JSON.stringify(result.data.userMap))
+          await store.dispatch('D_USER/AC_USER', result.data.userMap)
+          localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
+        } catch (error) {
+          console.log(error)
+        }
         if (maingoYn) {
           if (typeof (history.pushState) !== 'undefined') {
             history.pushState(null, null, '')
@@ -256,23 +257,23 @@ export const methods = {
           }
           router.replace({ name: 'main', params: { testYn: true } })
         }
-      } else {
-        commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
-        router.replace('/policies')
-        if (store !== undefined && store !== null) {
-          store.commit('D_USER/MU_CLEAN_USER')
-        }
-        localStorage.setItem('sessionUser', '')
-        localStorage.setItem('user', '')
       }
-      if (user === undefined || user === null || user === '') {
-        if (store !== undefined && store !== null) {
-          store.commit('D_USER/MU_CLEAN_USER')
-        }
-        window.localStorage.removeItem('testYn')
-        localStorage.setItem('loginYn', false)
+    } else {
+      commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
+      router.replace({ name: 'policies', params: { boardData: 'social' } })
+      if (store !== undefined && store !== null) {
+        store.commit('D_USER/MU_CLEAN_USER')
       }
-    }) */
+      localStorage.setItem('sessionUser', '')
+      localStorage.setItem('user', '')
+    }
+    if (user === undefined || user === null || user === '') {
+      if (store !== undefined && store !== null) {
+        store.commit('D_USER/MU_CLEAN_USER')
+      }
+      window.localStorage.removeItem('testYn')
+      localStorage.setItem('loginYn', false)
+    }
     // var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
   },
   async d_AlimLogout () {

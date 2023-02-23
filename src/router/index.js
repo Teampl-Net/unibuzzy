@@ -290,10 +290,10 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       // 만약 로그인 상태라면
       const user = store.getters['D_USER/GE_USER']
-      if (document.referrer.indexOf('officeon') === -1 && document.referrer.indexOf('localhost') === -1) {
+      /* if (document.referrer.indexOf('officeon') === -1 && document.referrer.indexOf('localhost') === -1) {
         next('/errorPage')
         return
-      }
+      } */
       var urlString = location.search
       if (to.query && to.query.boardData) {
         urlString = to.query.boardData
@@ -305,7 +305,7 @@ const routes = [
       console.log(splited)
       for (let i = 1; i < splited.length; i++) {
         const key = splited[i]
-        let val = splited[++i]
+        let val = decodeURIComponent(splited[++i])
         if (key.indexOf('Key') !== -1 || key.indexOf('key') !== -1) {
           val = Number(val)
         }
@@ -320,6 +320,18 @@ const routes = [
         paramMap.set('soAccessToken', user.soAccessToken)
         paramMap.set('fcmKey', user.fcmKey)
         paramMap.set('userKey', user.userKey)
+        const extendInfo = param.extendInfo
+        const extendList = extendInfo.split('$#$')
+        for (let i = 0; i < extendList.length; i++) {
+          const splitList = extendList[i].split('$^$')
+          const key = splitList[0]
+          let val = splitList[1]
+          if (key.indexOf('Key') !== -1 || key.indexOf('key') !== -1) {
+            val = Number(val)
+          }
+          param[key] = val
+          paramMap.set(key, val)
+        }
         var result = await commonAxiosFunction({
           url: 'service/tp.goDirectBoard',
           param: Object.fromEntries(paramMap)
