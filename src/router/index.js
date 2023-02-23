@@ -290,10 +290,10 @@ const routes = [
     beforeEnter: async (to, from, next) => {
       // 만약 로그인 상태라면
       const user = store.getters['D_USER/GE_USER']
-      /* if (document.referrer.indexOf('officeon') === -1 && document.referrer.indexOf('localhost') === -1) {
+      if (document.referrer.indexOf('officeon') === -1 && document.referrer.indexOf('localhost') === -1) {
         next('/errorPage')
         return
-      } */
+      }
       var urlString = location.search
       if (to.query && to.query.boardData) {
         urlString = to.query.boardData
