@@ -4,6 +4,7 @@
     <transition name="showModal">
       <fullModal transition="showModal"  @successWrite="successWriteBoard" id="commonWrap" :propParams="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
     </transition>
+    <router-link style="width: 0; height: 0; display: block;" :to="{name: 'contList', query: {page: 0}}"></router-link>
     <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
     <router-view ref="routerMainWrap" @openPop="openPop" />
   </div>
@@ -43,8 +44,6 @@ export default {
         // console.log('next move')
       }
     })
-  },
-  created () {
   },
   data () {
     return {

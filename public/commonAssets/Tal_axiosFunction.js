@@ -25,11 +25,11 @@ axios.defaults.withCredentials = true */
 axios.defaults.headers.get.Pragma = 'no-cache' */
 var g_axiosQueue = []
 
-export async function commonAxiosFunction (setItem, nonLoadingYn) {
+export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
   console.log('####-------------------------------commonAxiosFunction.' + setItem.url + '----------------------------------------####')
   console.log('####parameter is: ')
   console.log(setItem.param)
-  if (setItem.firstYn) {
+  if (setItem.firstYn || noAuthYn === true) {
   } else {
     await methods.userLoginCheck()
   }
@@ -284,17 +284,19 @@ export const methods = {
     resultList = result
     return resultList
   },
-  async getContentsList (inputParam, nonLoadingYn) {
+  async getContentsList (inputParam, nonLoadingYn, noAuthYn) {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
-      paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
+      if (!noAuthYn) {
+        paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
+      }
     }
     var resultList = null
     var result = await commonAxiosFunction({
       url: 'service/tp.getMyContentsList',
       param: paramSet
-    }, nonLoadingYn)
+    }, nonLoadingYn, noAuthYn)
     resultList = result.data
     return resultList
   },

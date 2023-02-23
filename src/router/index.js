@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory, createWebHistory } from 'vue-router'
 // import { useStore } from 'vuex'
 
 // import jisuTest from '../jisuTest.vue'
@@ -43,6 +43,9 @@ import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue'
 import certiPhone from '../components/pageComponents/intro/D_certi_phone.vue'
 import certiPhoneReturn from '../components/pageComponents/intro/D_certi_phone_return.vue'
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
+
+import contDetail from '../pages/routerPages/D_contentsDetail.vue'
+import forSearchContList from '../pages/routerPages/D_forSearchContList.vue'
 const routes = [
   // {
   //   path: '/jisuTest',
@@ -242,6 +245,18 @@ const routes = [
     name: 'test',
     props: true,
     component: suminTest
+  },
+  {
+    path: '/contDetail',
+    name: 'contDetail',
+    props: true,
+    component: contDetail
+  },
+  {
+    path: '/contList',
+    name: 'contList',
+    props: true,
+    component: forSearchContList
   }
   // {
   //   path: '/myChanList',
@@ -290,7 +305,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(process.env.BASE_URL),
+  history: createWebHistory(process.env.BASE_URL),
   routes
 })
 

@@ -15,7 +15,7 @@
     <div v-else-if="propMemoEle" style="width: 100%; float: left; min-height: 20px; margin-bottom: 5px;" :style="propMIndex !== (propMemoLength - 1)? 'border-bottom: 1px solid #cccccc50;':''">
         <div style="width: 100%; min-height: 20px; display: flex; flex-direction: column; margin-bottom: 5px;float: left; position: relative;">
             <div style="width: 100%; min-height: 40px; display: flex;">
-                <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(propMemoEle)">
+                <img v-if="!pNoAuthYn" src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(propMemoEle)">
                 <!-- <div :style="this.GE_USER.userKey === propMemoEle.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
                     <div :style="'background-image: url(' + propMemoEle.domainPath + propMemoEle.userProfileImg + ');'" style="height: 36px; width: 36px; border-radius: 100%;  background-repeat: no-repeat; background-position: center; background-size: cover;"></div>
                 </div> -->
@@ -38,7 +38,7 @@
                 <div style="min-height: 20px; margin-top: 10px;  width: 100%; padding-right: 10px; min-height: 20px;">
                     <!-- <p @click="deleteConfirm(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">삭제</p> -->
                     <p @click="this.mChangeMemoYn = false" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">닫기</p>
-                    <p class="commonGray textLeft font12 fr" v-if="!this.mChangeMemoYn" @click="writeMeMemo(propMemoEle)">답글달기</p>
+                    <p class="commonGray textLeft font12 fr" v-if="!this.mChangeMemoYn && !pNoAuthYn" @click="writeMeMemo(propMemoEle)">답글달기</p>
                     <p class="commonGray textLeft font12 mright-05 cursorP fr " @blur="testFunction" @click="openModiMemoPop(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn">수정</p>
                     <!-- <p class="commonGray textLeft font12 cursorP fr " @click="saveModiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn">저장</p> -->
                 </div>
@@ -106,7 +106,8 @@ export default {
     propMemoEle: {},
     diplayCount: {},
     childShowYn: {},
-    propContDetail: {}
+    propContDetail: {},
+    pNoAuthYn: {}
   },
   components: {
     attachFileListPop,

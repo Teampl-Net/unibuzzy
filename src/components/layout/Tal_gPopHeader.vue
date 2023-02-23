@@ -3,6 +3,7 @@
     <!-- <img src="../../../assets/images/common/icon_back_white.png" v-on:click="goBack" class="fl" style=" width: 0.8rem;" > -->
     <div v-on:click="closeXPop" class="fl cursorP " style="width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <img v-if="bgblack === true " src="../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" >
+      <img v-else-if="pNoAuthYn === true " src="../../assets/images/footer/icon_home_fillin.svg"  v-on:click="goMain">
       <img v-else src="../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
     </div>
     <div v-for="(value, index) in subTitlebtnList"  :key="index" class="fr ml-04">
@@ -47,6 +48,7 @@ export default {
     targetType: {},
     helpYn: {},
     followYn: {},
+    pNoAuthYn: {},
 
     propBookDetailPopYn: {}
   },
@@ -63,6 +65,9 @@ export default {
         this.clickHelpYn = true
       }
       this.$emit('clickHelp')
+    },
+    goMain () {
+      this.$router.replace({ path: '/' })
     },
     openMenu () {
       // var param = {}
