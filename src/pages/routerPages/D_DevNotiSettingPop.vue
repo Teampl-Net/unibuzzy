@@ -154,7 +154,7 @@ export default {
     changeWebviewUrl () {
       // alert(true)
       // this.$refs.urlInput.blur()
-      location.href = this.changeUrl + '/'
+      location.href = this.changeUrl + '/#/'
     }
   },
   computed: {

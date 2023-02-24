@@ -15,15 +15,15 @@
       </tr>
         <tr v-for="contents, index in this.mContList" :key="index">
           <td>{{ contents.contentsKey }}</td>
-          <td class="cursorP"><a :href="`/contDetail?contentsKey=${contents.contentsKey}`">{{ contents.title }}</a></td>
+          <td class="cursorP"><a :href="`/#/contDetail?contentsKey=${contents.contentsKey}`">{{ contents.title }}</a></td>
           <td>{{ contents.creUserName }}</td>
           <td>{{ $changeDateFormat(contents.creDate) }}</td>
         </tr>
     </table>
     <div style="height: 30px; width: 100%; background-color: lightgray; display: flex; align-items: center; justify-content: center;">
-      <a :href="`/contList?page=${mOffsetInt-1}`"><div class="cursorP" style="width: 30px; height: 30px; background-color: #fff; line-height: 30px; margin-right: 10px;">&lt;</div></a>
+      <router-link style="width: 30px; height: 30px; background-color: #fff; line-height: 30px; margin-right: 10px;" :to="{name: 'contList', query: {page: mOffsetInt-1}}">&lt;</router-link>
       {{ this.mOffsetInt + 1 }} / {{ this.mLastPage }}
-      <a :href="`/contList?page=${mOffsetInt+1}`"><div class="cursorP" style="width: 30px; height: 30px; background-color: #fff; line-height: 30px; margin-right: 10px;">&gt;</div></a>
+      <router-link style="width: 30px; height: 30px; background-color: #fff; line-height: 30px; margin-right: 10px;" :to="{name: 'contList', query: {page: mOffsetInt+1}}">&gt;</router-link>
     </div>
   </div>
 </template>
@@ -37,6 +37,32 @@ export default {
       mContList: {},
       mOffsetInt: 0,
       mLastPage: 1
+    }
+  },
+  watch: {
+    page: {
+      async handler (value, old) {
+        if (value) {
+          this.mOffsetInt = value
+          var param = {}
+          param.offsetInt = this.mOffsetInt
+          param.pageSize = 10
+          var result = await this.$getContentsList(param, false, true)
+          if (result && result.content) {
+            this.mContList = result.content
+            this.mLastPage = result.totalPages
+            if (this.mLastPage < this.mOffsetInt || this.mOffsetInt === -1) {
+              this.mOffsetInt = 1
+            }
+          }
+        }
+      },
+      deep: true
+    }
+  },
+  computed: {
+    page () {
+      return parseInt(this.$route.query.page)
     }
   },
   async created () {

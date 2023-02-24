@@ -239,7 +239,7 @@ export default {
         const params = {
           userCode, // 가맹점 식별코드
           data, // 본인인증 데이터
-          callbackUrl: '/savePhone',
+          callbackUrl: '/#/savePhone',
           type: 'certification' // 결제와 본인인증 구분을 위한 필드
         }
         const paramsToString = JSON.stringify(params)

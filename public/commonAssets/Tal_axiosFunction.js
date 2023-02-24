@@ -26,11 +26,12 @@ axios.defaults.withCredentials = true */
 axios.defaults.headers.get.Pragma = 'no-cache' */
 var g_axiosQueue = []
 
-export async function commonAxiosFunction (setItem, nonLoadingYn) {
+export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
   console.log('####-------------------------------commonAxiosFunction.' + setItem.url + '----------------------------------------####')
   console.log('####parameter is: ')
   console.log(setItem.param)
-  if (setItem.firstYn) {
+  if (setItem.firstYn || noAuthYn !== undefined) {
+    console.log('pass')
   } else {
     await methods.userLoginCheck()
   }
