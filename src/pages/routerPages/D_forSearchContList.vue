@@ -31,7 +31,6 @@
 <script>
 
 export default {
-  name: 'searchContList',
   data () {
     return {
       mContList: {},
@@ -78,6 +77,8 @@ export default {
         this.mOffsetInt = 1
       }
     }
+    document.querySelector('meta[property="og:description"]').setAttribute('content', '더알림 콘텐츠 리스트')
+    document.querySelector('meta[property="og:title"]').setAttribute('content', '더알림 | 콘텐츠 리스트')
   }
 }
 </script>

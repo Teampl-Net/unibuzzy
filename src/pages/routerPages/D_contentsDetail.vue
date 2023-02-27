@@ -1,4 +1,5 @@
 <template>
+    <metainfo />
     <div ref="contScrollWrap" id="contsScrollWrap" class="boardDetailWrap" v-if="cDetail">
       <popHeader :pNoAuthYn="true" ref="gPopupHeader" class="commonPopHeaderWrap headerShadow commonPopHeader"
             :style="'top:' + 0 + 'px'" :headerTitle="cDetail.cabinetNameMtext? cDetail.cabinetNameMtext:cDetail.nameMtext" targetType="contentsDetail"
@@ -37,6 +38,7 @@
 // import attachFileListPop from '../pageComponents/main/unit/D_commonAttatchFileListPop.vue'
 // import html2pdf from 'html2pdf.js'
 import { onMessage } from '../../assets/js/webviewInterface'
+// import { useMeta } from 'vue-meta'
 
 export default {
   components: {
@@ -97,6 +99,11 @@ export default {
     this.mContentsKey = this.$route.query.contentsKey
     this.$store.dispatch('D_USER/AC_USER', { userKey: -1 })
     await this.readyFunction()
+    console.log('updated')
+    if (this.cDetail.title) {
+      document.querySelector('meta[property="og:title"]').setAttribute('content', this.cDetail.title)
+      document.querySelector('meta[property="og:description"]').setAttribute('content', this.cDetail.title)
+    }
   },
   updated () {
     var this_ = this
@@ -752,7 +759,7 @@ export default {
       // memo.pageSize = this.pagesize
       // memo.offsetInt = this.mOffsetInt
       // memo.pagesize = 5
-      memo.pageSize = this.$countingTotalMemo(this.CONT_DETAIL.D_MEMO_LIST) + 5
+      memo.pageSize = this.$countingTotalMemo(this.CONT_DETAIL.memoList) + 5
       memo.offsetInt = 0
       var nonLoadingYn = false
       if (loadingYn) {
@@ -761,8 +768,7 @@ export default {
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getMemoList',
         param: memo
-      }, nonLoadingYn)
-      console.log(result)
+      }, nonLoadingYn, true)
       if (result.data.memoList) {
         var tempList = []
         // 수민_ 대댓글의 경우, 어짜피 전체 리로드를 한번 해줘야 반영되기 때문에 중복제거x

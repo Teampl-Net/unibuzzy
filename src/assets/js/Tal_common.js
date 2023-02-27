@@ -822,6 +822,8 @@ export const commonMethods = {
       iframe.style.display = 'none'
       document.body.appendChild(iframe)
     } */
+    console.log('path')
+    console.log(path)
     var api = path.split('/image')[0]
     var aTag
     aTag = document.getElementById('updateAppPage')
