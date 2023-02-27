@@ -58,15 +58,17 @@ if (!isMobile) {
     }
   })
 
-  navigator.serviceWorker.addEventListener('controllerchange', function () {
-    console.log(true)
-  })
-  navigator.registerProtocolHandler(
-    'web+test', // protocal
-    '/?source=%s', // url
-    { type: 'service-worker', navigation: 'none' } // new option object
-  )
-  document.addEventListener('swUpdated', function (e) {
-    console.log(e)
-  })
+  if (navigator.serviceWorker) {
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      console.log(true)
+    })
+    navigator.registerProtocolHandler(
+      'web+test', // protocal
+      '/?source=%s', // url
+      { type: 'service-worker', navigation: 'none' } // new option object
+    )
+    document.addEventListener('swUpdated', function (e) {
+      console.log(e)
+    })
+  }
 }
