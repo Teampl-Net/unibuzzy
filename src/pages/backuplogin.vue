@@ -115,14 +115,10 @@ export default {
                 router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
               } else */
 
-      await saveUser(userProfile, true, this.$route.params.boardData) // 서버에 save요청
+      await saveUser(userProfile, true) // 서버에 save요청
       localStorage.setItem('loginYn', true)
 
-      if (this.$route.params.boardData && this.$route.params.boardData !== 'social') {
-        this.$router.replace({ path: 'boardDetail?' + this.$route.params.boardData })
-      } else {
-        this.$router.replace({ path: '/' })
-      }
+      this.$router.replace({ path: '/' })
     },
     closeApp () {
       onMessage('closeApp', 'requestUserPermission')
@@ -184,7 +180,7 @@ export default {
         var userProfile = await setUserInfo(user)
         // eslint-disable-next-line no-debugger
         debugger
-        await saveUser(userProfile, true, this.$route.params.boardData)
+        await saveUser(userProfile, true)
         /* localStorage.setItem('loginYn', true)
         thisthis.$router.replace({ path: '/' }) */
       })

@@ -1,6 +1,6 @@
 <template>
   <div class="pagePaddingWrap nonMemBoardWrap">
-    <popHeader :helpYn="true" @clickHelp="clickHelp" @closeXPop="this.$router.replace({name: 'login', params: { boardData: 'social' }})" class="commonPopHeader" headerTitle="비회원 문의 게시판" />
+    <popHeader :helpYn="true" @clickHelp="clickHelp" @closeXPop="this.$router.replace({name: 'login'})" class="commonPopHeader" headerTitle="비회원 문의 게시판" />
     <div v-if="infoShowYn" style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000050; z-index: 9999;" @click="this.infoShowYn = false"></div>
     <div v-if="infoShowYn" class="zoomInOutPop" style="width: 80%; padding: 10px 20px; margin: 0 auto; height: 80%; max-height: 550px; min-height: 300px; background: #ffff; position: absolute; top: 10%; left: 10%; border-radius: 15px; z-index: 9999;">
       <div class="subPopHeader">
@@ -10,7 +10,7 @@
       <p class="font18 mbottom-05 fontBold textLeft">더알림 비회원 문의 안내</p>
       <p class="font15 fontBold commonBlack textLeft">1. 더알림 계정이 있으신가요?</p>
       <p class="font14 mbottom-05 mleft-1 textLeft commonBlack">1) 더알림 채널 > 문의게시판 <br>2) 메뉴 > 문의하기를 통해 문의해주세요!</p>
-      <gBtnSmall btnTitle="로그인하러가기"  @click="this.$router.replace({name: 'login', params: { boardData: 'social' }})" class="w-100P mbottom-2 mtop-05" style="height: 35px; width: 100%;"/>
+      <gBtnSmall btnTitle="로그인하러가기"  @click="this.$router.replace({name: 'login'})" class="w-100P mbottom-2 mtop-05" style="height: 35px; width: 100%;"/>
       <p class="font15 fontBold commonBlack textLeft mtop-3">2. 어떤 도움이 필요하나요?</p>
       <p class="font14 commonBlack mleft-1 textLeft">
         1) [오류]시스템 문제로 앱 사용이 어려운경우

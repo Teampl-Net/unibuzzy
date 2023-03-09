@@ -186,7 +186,7 @@ export default {
     }
     // alert(urlString)
     if (!this.GE_USER) {
-      this.$router.push({ name: 'policies', params: { boardData: 'social' } })
+      this.$router.push({ name: 'policies' })
       return
     }
     this.getMainBoard().then(res => {

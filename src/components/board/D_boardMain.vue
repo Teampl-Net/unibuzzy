@@ -157,7 +157,8 @@ export default {
   },
   props: {
     propData: {},
-    initData: {}
+    initData: {},
+    pOnlyMineYn: {}
   },
   updated () {
     if (this.CAB_DETAIL) {
@@ -185,13 +186,11 @@ export default {
     // eslint-disable-next-line no-debugger
     debugger
     console.log(this.$route.params.board)
-    if (this.$route.params && this.$route.params.board) {
-      // eslint-disable-next-line vue/no-mutating-props
+    if (this.pOnlyMineYn) {
       this.mOnlyMineYn = true
-      this.mPropData = JSON.parse(this.$route.params.board)
-    } else {
-      this.mPropData = this.propData
+      this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }]
     }
+    this.mPropData = this.propData
     console.log(this.board)
     this.$emit('openLoading')
     if (!this.mPropData.initData) {
@@ -199,7 +198,7 @@ export default {
       this.getCabinetDetail().then(() => {
         this_.getContentsList().then(response => {
           if (!response.content) return
-          this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
+          this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', '*')
           var newArr = [
             ...this_.BOARD_CONT_LIST,
             ...response.content
@@ -310,12 +309,18 @@ export default {
       if (this.CAB_DETAIL) {
         // this.boardListWrap = this.$refs.boardListWrap
         this.$nextTick(() => {
+          var blockBox = document.getElementById('summaryHeader')
           // this_.boardListWrap.addEventListener('scroll', this_.saveScroll)
           // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
           this_.listBox = this_.$refs.commonBoardListWrapCompo
           this_.listBox.addEventListener('scroll', this_.handleScroll)
+
           this_.box = this_.$refs.boardListWrap // 이 dom scroll 이벤트를 모니터링합니다
           if (this_.box) {
+            if (this_.mOnlyMineYn) {
+              blockBox.style.height = '50px'
+              this_.box.scrollTop = 250
+            }
             this_.box.addEventListener('scroll', this_.updateScroll)
             this_.box.addEventListener('mousewheel', e => {
               this_.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
@@ -323,7 +328,6 @@ export default {
           }
         })
       }
-
       this.$emit('closeLoading')
     },
     memoPopNo () {

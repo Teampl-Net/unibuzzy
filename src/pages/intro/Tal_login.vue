@@ -1,8 +1,13 @@
 <template>
   <div class="pagePaddingWrap loginContentsWrap">
     <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
-    <div class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; margin-top: 125px; margin-bottom: 80px;">
+    <div v-if="!pPartnerLoginYn" class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; margin-top: 125px; margin-bottom: 80px;">
       <img src="../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
+    </div>
+    <div v-else class="py-3 px-4" style="box-sizing: border-box; width: 100%; min-height: 50px; margin-top: 125px; ">
+      <!-- <img  src="../../assets/images/main/login_Wlogo.png" style="width: 50px;" class="fl" > -->
+      <img src="../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
+      <p class="textCenter fl fontBold font16 " v-html="pPartnerLoginText" style="width: calc(100%); margin-top: 10px; margin-bottom: 10px; color: #D6D6E7;"></p>
     </div>
       <!-- <div class="loginBtn font20" v-on:click="KakaoLoginBtn">
         <img src="../../assets/images/intro/login/login_kakao.png">
@@ -29,10 +34,14 @@
           Apple 로그인
         </div>
       </div>
-      <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
+      <div v-if="pPartnerLoginYn" class="fl" style="width: 100%; height: 80px; display: flex; margin-top: 50px;align-items: center; justify-content: center;">
+        <img style="width: 70px; border-radius: 3px; float: left;" src="../../assets/images/common//DAlimMainQrCode.jpg">
+        <p class="font16 fontBold textLeft mleft-1 fl" style="color: #D6D6E7;">더알림 앱을 휴대폰에 설치하면<br>편하게 실시간으로 알림을 받을 수 있습니다!</p>
+      </div>
+      <!-- <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
       <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
         더알림계정으로 로그인
-      </div>
+      </div> -->
   </div>
 </template>
 
@@ -56,6 +65,14 @@ export default {
       systemName: 'iOS',
       appCloseYn: false,
       mobileYn: this.$getMobileYn()
+    }
+  },
+  props: {
+    pPartnerLoginYn: {
+      default: false
+    },
+    pPartnerLoginText: {
+      default: ''
     }
   },
   components: {
@@ -98,9 +115,9 @@ export default {
                 // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
                 router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
               } else */
-      alert(this.$route.params.boardData)
-      await saveUser(userProfile, true, this.$route.params.boardData) // 서버에 save요청
+      await saveUser(userProfile, true) // 서버에 save요청
       localStorage.setItem('loginYn', true)
+      this.$router.replace({ path: '/' })
 
       /* if (this.$route.params.boardData && this.$route.params.boardData !== 'social') {
         this.$router.replace({ name: 'boardDetail', query: { boardData: this.$route.params.boardData } })
@@ -154,7 +171,6 @@ export default {
     onLogin () {
       // var thisthis = this
       localStorage.setItem('loginType', 'google')
-      var this_ = this
       authService.login('Google').then(async function (result) {
         // console.log(result)
         if (result.user) {
@@ -168,8 +184,7 @@ export default {
         }
         var userProfile = await setUserInfo(user)
 
-        await saveUser(userProfile, true, this_.$route.params.boardData) // 서버에 save요청
-        localStorage.setItem('loginYn', true)
+        await saveUser(userProfile, true) //
 
         /* if (this_.$route.params.boardData && this_.$route.params.boardData !== 'social') {
           this_.$router.replace({ name: 'boardDetail', query: { boardData: this.$route.params.boardData } })

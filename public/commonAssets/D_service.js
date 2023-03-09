@@ -2,7 +2,7 @@
 const dService = {
   goDirectBoard (paramObj) {
     let paramStr = ''
-    const uri = 'https://mo.d-alim.com/boardDetail?'
+    const uri = 'http://localhost:8082/boardDetail?'
     if (!paramObj.cabinetKey || !paramObj.legacyUserKey || !paramObj.partnerId) return '필수정보 누락됨'
     if (paramObj) {
       Object.keys(paramObj).map(function (objectKey, index) {

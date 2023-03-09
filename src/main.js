@@ -33,6 +33,7 @@ import commonjs from './assets/js/Tal_common'
 import getjs from './assets/js/D_vuexFunction'
 import commonSharejs from './assets/js/Tal_commonShare'
 import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_axiosFunction'
+import coreService from '../public/commonAssets/D_coreService'
 import uploadFile from './assets/js/Tal_uploadFile'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
@@ -141,6 +142,7 @@ app.component('gSelectStickerPop', gSelectStickerPop)
 
 app.use(webViewBridge)
 app.use(axiosFunction)
+app.use(coreService)
 app.use(uploadFile)
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'

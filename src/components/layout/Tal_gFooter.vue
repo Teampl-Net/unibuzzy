@@ -49,10 +49,18 @@ export default {
   },
   methods: {
     async routePage (page) {
+      // eslint-disable-next-line no-debugger
+      debugger
       // alert(page)
       /* if ('/' + page === this.$router.currentRoute._rawValue.path) {
         return
       } */
+      if (page === 'myPage' && this.$route.path === '/unknown') {
+        this.activeFooter = 'unknownMypage'
+        // await this.$router.push(page)
+        this.$emit('changeRouterPath', 'unknownMypage')
+        return
+      }
       this.activeFooter = page
       // await this.$router.push(page)
       this.$emit('changeRouterPath', page)

@@ -1,10 +1,10 @@
 <template>
-    <div v-if="GE_USER_INFO !== null" :style="(smallYn? 'padding: 0!important;' : 'padding: 2px; ' ) + (selfYn || this.GE_USER.userKey === this.GE_USER_INFO.userKey?'border:2.5px solid #5B1CFC;' : 'border:2.5px solid #CCC;') " style="position: relative; width: 60px; height: 60px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; float: left; display: flex; flex-grow: 0; flex-shrink: 0;">
+    <div :style="(smallYn? 'padding: 0!important;' : 'padding: 2px; ' ) + (selfYn || this.GE_USER.userKey === this.GE_USER_INFO.userKey?'border:2.5px solid #5B1CFC;' : 'border:2.5px solid #CCC;') " style="position: relative; width: 60px; height: 60px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; float: left; display: flex; flex-grow: 0; flex-shrink: 0;">
         <div v-if="this.GE_USER_INFO && this.GE_USER_INFO.userProfileImg" class="picImgWrap" ref="mainImgAreaRef" :style="'background-image: url('+ (this.GE_USER_INFO.domainPath ? this.GE_USER_INFO.domainPath + this.$changeUrlBackslash(this.GE_USER_INFO.userProfileImg) : this.GE_USER_INFO.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;">
             <img v-if="this.GE_USER_INFO.certiDate" style="position: absolute; width: 20px; " :style="smallYn? 'right: -10px;bottom: -3px;' : ' right: -5px;bottom: 0px;'" src="../../assets/images/common/userCertiIcon.svg" alt="">
         </div>
-        <div v-else class="picImgWrap"  style="background-image: url('../../../public/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-            <img v-if="this.GE_USER_INFO.certiDate" style="position: absolute; width: 20px;  " :style="smallYn? 'right: -10px; bottom: -3px;' : ' right: -5px;bottom: 0px;'" src="../../assets/images/common/userCertiIcon.svg" alt="">
+        <div v-else class="picImgWrap"  style="background-image: url('https://mo.d-alim.com/resource/userCommonIcon/userImg01.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <!-- <img v-if="this.GE_USER_INFO.certiDate" style="position: absolute; width: 20px;  " :style="smallYn? 'right: -10px; bottom: -3px;' : ' right: -5px;bottom: 0px;'" src="../../assets/images/common/userCertiIcon.svg" alt=""> -->
         </div>
     </div>
 </template>

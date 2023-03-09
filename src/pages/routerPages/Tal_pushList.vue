@@ -9,7 +9,7 @@
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <div :style="!popYn ? ' padding-top: 20px;' : ''" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; "> -->
-        <div style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ; padding-right: 50px; overflow: auto hidden;">
+        <div v-if="!pUnknownYn" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ; padding-right: 50px; overflow: auto hidden;">
             <div @click="changeMainTab('A')" :class="viewMainTab === 'A'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">전체</div>
             <div @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">알림</div>
             <div @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">게시글</div>
@@ -50,7 +50,7 @@
         </div>
 
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
-        <div v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
+        <div v-if="!pUnknownYn"  v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
           <img src="../../assets/images/common/reload_button.svg" class="cursorP img-w20" />
         </div>
         <!-- <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  /> -->
@@ -108,7 +108,10 @@ export default {
 
     chanAlimYn: {},
     pChannelDetail: {},
-    notiScrollTarget: {}
+    notiScrollTarget: {},
+    pUnknownYn: {
+      default: false
+    }
     // reloadKey: 0
   },
   created () {
@@ -166,7 +169,15 @@ export default {
       },
       deep: true
     },
-    GE_CHANNEL_DETAIL: {
+    pUnknownYn: {
+      immediate: true,
+      handler (value, old) {
+        if (value === true) {
+          this.activeTabList = [{ display: '최신', name: 'N' }]
+        } else {
+          this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 만든', name: 'M' }]
+        }
+      }
     },
     GE_NEW_MEMO_LIST: {
       async handler (value, old) {

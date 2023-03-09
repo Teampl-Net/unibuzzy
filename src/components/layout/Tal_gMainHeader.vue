@@ -1,7 +1,7 @@
 <template>
     <div class="mainHeaderWrap" :style="mRouterHeaderText === '검색' ? 'background: white;':''">
         <img src="../../assets/images/common/thealim_header_logo.png" class="fl mainHeaderLogo" >
-        <p class="font25 headerFont commonColor fl" v-html="mRouterHeaderText"></p>
+        <p class="font25 headerFont commonColor fl" v-html="mRouterHeaderText? mRouterHeaderText : '더알림'"></p>
         <div class="menuBtn">
             <img class="mainMenuIcon" v-on:click="showMenu()" src="../../assets/images/common/icon_menu.png"/>
         </div>

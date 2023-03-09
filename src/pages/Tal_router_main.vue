@@ -595,13 +595,13 @@ export default {
           this_.$router.replace({ name: 'main', params: { testYn: true } })
         } else {
           this_.$.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
-          this_.$router.replace({ name: 'policies', params: { boardData: 'social' } })
+          this_.$router.replace({ name: 'policies' })
           if (this_.$store !== undefined && this_.$store !== null) {
             this_.$store.commmit('D_USER/MU_CLEAN_USER')
           }
           localStorage.setItem('sessionUser', '')
           localStorage.setItem('user', '')
-          this_.$router.replace({ name: 'policies', params: { boardData: 'social' } })
+          this_.$router.replace({ name: 'policies' })
           window.localStorage.removeItem('testYn')
           localStorage.setItem('loginYn', false)
         }
@@ -611,7 +611,7 @@ export default {
     }
     // alert(urlString)
     if (!this.GE_USER) {
-      this.$router.push({ name: 'policies', params: { boardData: 'social' } })
+      this.$router.push({ name: 'policies' })
       return null
     }
     /* this.getMainBoard().then(res => {

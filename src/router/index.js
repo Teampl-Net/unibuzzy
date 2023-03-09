@@ -1,14 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory, createMemoryHistory } from 'vue-router'
 // import { useStore } from 'vuex'
 import { functions } from '../assets/js/D_vuexFunction'
-
+import axios from 'axios'
 // import jisuTest from '../jisuTest.vue'
 import { methods, commonAxiosFunction } from '../../public/commonAssets/Tal_axiosFunction'
 import routerMain from '../pages/Tal_router_main.vue'
 
 import testLoginPage from '../pages/intro/testLoginPage.vue'
-import main from '../pages/routerPages/D_main.vue'
 import login from '../pages/intro/Tal_login.vue'
 import permissions from '../pages/intro/Tal_permissions.vue'
 import policies from '../pages/intro/Tal_policies.vue'
@@ -48,13 +47,6 @@ import ssoLogin from '../pages/backuplogin.vue'
 import contDetail from '../pages/routerPages/D_contentsDetail.vue'
 import forSearchContList from '../pages/routerPages/D_forSearchContList.vue'
 import store from '@/store'
-function decodeUnicode (str) {
-  const urlParam = str.replace('?', '')
-  // Going backwards: from bytestream, to percent-encoding, to original string.
-  return decodeURIComponent(atob(urlParam).split('').map(function (c) {
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-  }).join(''))
-}
 
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
 
@@ -65,6 +57,12 @@ const routes = [
   //   component: jisuTest
   // },
   {
+    path: '/PARTNER',
+    name: 'D_PARTNER',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../pages/D_coreProxy.vue')
+  },
+  {
     path: '/',
     name: 'routerMain',
     component: routerMain,
@@ -73,10 +71,10 @@ const routes = [
         path: '/',
         name: 'main',
         props: true,
-        component: main,
         meta: {
           page: 1
-        }
+        },
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_main.vue')
         /* ,
         beforeEnter: (to, from, next) => {
           // 만약 로그인 상태라면
@@ -87,6 +85,18 @@ const routes = [
             next('/policies')
           }
         } */
+      },
+      {
+        path: '/unknown',
+        name: 'unknown',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_unknownMain.vue')
+      },
+      {
+        path: '/unknown_mp',
+        name: 'unknownMypage',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_unknownMypage.vue')
       },
       {
         path: '/search',
@@ -128,7 +138,7 @@ const routes = [
         component: logList,
         beforeEnter: (to, from, next) => {
           // 만약 로그인 상태라면
-          if (localStorage.getItem('loginYn') !== true) { return next() } else next({ name: 'policies', params: { boardData: 'social' } })
+          if (localStorage.getItem('loginYn') !== true) { return next() } else next({ name: 'policies' })
         }
       }
     ]
@@ -197,7 +207,7 @@ const routes = [
     component: nonMemInquiryBoard
   },
   {
-    path: '/login/:boardData',
+    path: '/login',
     name: 'login',
     props: true,
     component: login
@@ -223,7 +233,7 @@ const routes = [
     component: permissions
   },
   {
-    path: '/policies/:boardData',
+    path: '/policies',
     name: 'policies',
     props: true,
     component: policies
@@ -286,99 +296,8 @@ const routes = [
     path: '/boardDetail',
     name: 'boardDetail',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../components/board/D_boardMain.vue'),
-    beforeEnter: async (to, from, next) => {
-      // 만약 로그인 상태라면
-      const user = store.getters['D_USER/GE_USER']
-      if (document.referrer.indexOf('officeon') === -1 && document.referrer.indexOf('localhost') === -1) {
-        next('/errorPage')
-        return
-      }
-      var urlString = location.search
-      if (to.query && to.query.boardData) {
-        urlString = to.query.boardData
-      }
-      const paramString = decodeUnicode(urlString)
-      const splited = paramString.split(/[=?&]/)
-      const param = {}
-      const paramMap = new Map()
-      console.log(splited)
-      for (let i = 1; i < splited.length; i++) {
-        const key = splited[i]
-        let val = decodeURIComponent(splited[++i])
-        if (key.indexOf('Key') !== -1 || key.indexOf('key') !== -1) {
-          val = Number(val)
-        }
-        param[key] = val
-        paramMap.set(key, val)
-      }
-      /* if (to.query) {
-        localStorage.setItem('urlString', JSON.stringify(to.query))
-      } */
-      if (user && user.userKey) {
-        paramMap.set('userEmail', user.userEmail)
-        paramMap.set('soAccessToken', user.soAccessToken)
-        paramMap.set('fcmKey', user.fcmKey)
-        paramMap.set('userKey', user.userKey)
-        const extendInfo = param.extendInfo
-        const extendList = extendInfo.split('$#$')
-        for (let i = 0; i < extendList.length; i++) {
-          const splitList = extendList[i].split('$^$')
-          const key = splitList[0]
-          let val = splitList[1]
-          if (key.indexOf('Key') !== -1 || key.indexOf('key') !== -1) {
-            val = Number(val)
-          }
-          param[key] = val
-          paramMap.set(key, val)
-        }
-        var result = await commonAxiosFunction({
-          url: 'service/tp.goDirectBoard',
-          param: Object.fromEntries(paramMap)
-        })
-        const resultMainData = result.data.cabinet
-        console.log(result)
-        if (resultMainData.contentsListPage) {
-          var contentList = resultMainData.contentsListPage.content
-          for (let i = 0; i < contentList.length; i++) {
-            contentList[i].shareItem = resultMainData.cabinet.mShareItemList
-          }
-          store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
-        }
-        await functions.addChanList(result.data.cabinet.cabinet.creTeamKey)
-        var goBoardMainParam = {}
-        goBoardMainParam.initData = resultMainData
-        goBoardMainParam.targetType = 'boardMain'
-        goBoardMainParam.teamKey = result.data.cabinet.cabinet.creTeamKey
-        goBoardMainParam.targetKey = result.data.cabinet.cabinet.cabinetKey
-        goBoardMainParam.cabinetNameMtext = result.data.cabinet.cabinet.cabinetNameMtext
-        /* localStorage.setItem('BOAR_DIRECT_DATA', JSON.stringify('')) */
-        if (result.data.result) {
-          console.log(goBoardMainParam)
-          // eslint-disable-next-line no-debugger
-          debugger
-          return next({ name: 'boardMain', params: { board: JSON.stringify(goBoardMainParam) }, replace: true })
-        }
-      } else {
-        console.log(JSON.stringify(param))
-        localStorage.setItem('directParam', JSON.stringify(param))
-        next({ name: 'policies', params: { boardData: urlString } })
-      }
-    }
-  },
-  {
-    path: '/boardMain/:board',
-    name: 'boardMain',
-    props: true,
     component: () => import(/* webpackChunkName: "about" */ '../components/board/D_boardMain.vue')
   }
-  // {
-  //   path: '/myChanList',
-  //   name: 'myChanList',
-  //   props: true,
-  //   component: myChanList
-  // },
-
   /* {
     path: '/writePushTest',
     name: 'admWritePush',

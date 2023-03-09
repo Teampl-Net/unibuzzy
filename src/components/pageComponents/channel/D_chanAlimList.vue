@@ -43,7 +43,7 @@
             <p class="font16 fl w-100P" style="border-left: 2px solid #00000050">누적 알림 {{CHANNEL_DETAIL.totalContentsCount}}건</p>
           </div>
           <div id="userCardWrap" class="fl w-100P" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content: space-between;">
-            <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; align-items: center;">
+            <div class="fl" style="display: flex; align-items: center;">
               <gProfileImg :smallYn="true" :selfYn="true" style="width: 35px; margin-right: 10px; height: 35px;" />
               <div class="mleft-05" style="display:flex; flex-direction: column;">
                 <p @click="goProfile" class="font16 textLeft">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
@@ -52,24 +52,22 @@
                 </div>
               </div>
             </div>
-            <div v-if="(!CHANNEL_DETAIL.D_CHAN_AUTH === true || CHANNEL_DETAIL.D_CHAN_AUTH.followYn === undefined)" class="fl w-100P">
-              <match :color="'#6768a7'"/>
-            </div>
-            <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
+            <div class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
               <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" v-if="(this.CHANNEL_DETAIL.userTeamInfo && this.CHANNEL_DETAIL.userTeamInfo.ownerYn === undefined && CHANNEL_DETAIL.userTeamInfo.memberNameMtext === undefined) || this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH) === '구독자'" >
                 <p class="fl font14 cursorP fontBold commonColor" @click="this.openReqMemPop()" >멤버신청</p>
               </div>
-              <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
-              <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else src="../../../assets/images/common/icon_bell.svg" alt="">
+              <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="!mUnknownYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
+              <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else-if="!mUnknownYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn" src="../../../assets/images/common/icon_bell.svg" alt="">
               <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
                 :data-clipboard-text="CHANNEL_DETAIL.copyTextStr">
                 <img class="img-w20" src="../../../assets/images/common/icon_share_square.svg" alt="">
               </div>
+              <gBtnSmall @click="changeFollowYn" v-if="mUnknownYn" class="fl w-100P fontBold font14" btnTitle="구독하기" />
             </div>
-            <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn == false" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <!-- <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn == false" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
               <p class="fl w-100P font16 fontBold textLeft"> [ {{changeText(CHANNEL_DETAIL.nameMtext)}} ] 채널을 구독하고 알림을 받아보세요!</p>
               <gBtnSmall @click="changeFollowYn" class="fl w-100P mtop-1 fontBold font14" btnTitle="구독하기" />
-            </div>
+            </div> -->
           </div>
 
           <div id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" class="fr" style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.followYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
@@ -77,11 +75,11 @@
           </div>
       </div>
 
-      <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
-          <pushList @openImgPop="openImgPop" @goScroll="this.mChanMainScrollWrap.style.overflow = 'scroll'" :initData="this.chanDetail.initData.contentsList" @cMemoEditYn="changeMemoEditYn" :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit'/>
+      <div class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 350px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
+          <pushList :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" @goScroll="this.mChanMainScrollWrap.style.overflow = 'scroll'" :initData="this.chanDetail.initData.contentsList" @cMemoEditYn="changeMemoEditYn" :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit'/>
       </div>
 
-      <div v-else-if="this.mChanInfoPopShowYn" >
+      <div v-if="this.mChanInfoPopShowYn" >
         <chanDetailComp ref="chanDetailRef" @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @closeXPop="this.closeDetailPop" @changeshowProfileYn='changeshowProfileYn' :parentshowProfileYn="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn" :adminYn="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" :alimSubPopYn="alimListToDetail" @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.CHANNEL_DETAIL" style="background-color: #fff;"></chanDetailComp>
       </div>
       <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%; z-index:9; cursor: pointer;" class="img-78 img-w66">
@@ -99,7 +97,6 @@
 
 <script>
 /* eslint-disable vue/no-async-in-computed-properties */
-import match from '../../popup/member/Tal_matching.vue'
 import chanDetailComp from './Tal_chanDetail.vue'
 import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 import welcomePopUp from './Tal_chanFollowInfo.vue'
@@ -111,6 +108,7 @@ import writeBottSheet from '../../pageComponents/main/unit/D_contentsWriteBottSh
 export default {
   data () {
     return {
+      mUnknownYn: false,
       smallPopYn: false,
       alimListToDetail: false,
       mChanMainScrollWrap: null,
@@ -157,9 +155,7 @@ export default {
     chanDetailComp,
     welcomePopUp,
     writeContents,
-    recMemberPop,
-    // boardWrite,
-    match
+    recMemberPop
   },
   created () {
     this.$emit('openLoading')
@@ -784,14 +780,18 @@ export default {
       return this.$store.getters['D_HISTORY/hUpdate']
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      const user = this.$store.getters['D_USER/GE_USER']
+      if (user.userKey) { return this.$store.getters['D_USER/GE_USER'] } else return { unknownYn: true }
     }
   },
   watch: {
     CHANNEL_DETAIL: {
+      immediate: true,
       handler (value, old) {
         if (value && value.D_CHAN_AUTH && value.D_CHAN_AUTH.followYn) {
           this.$emit('followYn')
+        } else if (value && value.D_CHAN_AUTH && !value.D_CHAN_AUTH.followYn) {
+          this.mUnknownYn = true
         }
         var blackYn = false
         if (value && (value.blackYn !== undefined && value.blackYn !== null && value.blackYn !== '')) {

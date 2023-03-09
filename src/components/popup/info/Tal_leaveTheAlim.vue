@@ -341,7 +341,7 @@ export default {
       localStorage.setItem('loginYn', false)
       localStorage.setItem('user', '')
       localStorage.setItem('sessionUser', '')
-      this.$router.replace({ name: 'policies', params: { boardData: 'social' } })
+      this.$router.replace({ name: 'policies' })
     }
   },
   components: {

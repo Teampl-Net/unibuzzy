@@ -89,7 +89,7 @@ export function isMobile () {
   return mobileYn
 }
 
-export async function saveUser (userProfile, loginYn, routeData) {
+export async function saveUser (userProfile, loginYn) {
   console.log(userProfile)
   var user = {}
   // var testYn = localStorage.getItem('testYn')
@@ -153,22 +153,14 @@ export async function saveUser (userProfile, loginYn, routeData) {
         return
       }
     }
-    if (routeData && routeData !== 'social') {
-      router.replace({ name: 'boardDetail', query: { boardData: routeData } })
-    } else {
-      router.replace({ path: '/' })
-    }
+    router.replace({ path: '/' })
   } else if (result.data.message === 'NG') {
     if (store !== undefined && store !== null) {
       store.commit('D_USER/MU_CLEAN_USER')
     }
     localStorage.setItem('user', '')
     alert('로그인에 실패하였으니, 다른방식으로 재로그인 해주세요.')
-    if (routeData && routeData !== 'social') {
-      router.replace({ name: 'boardDetail', query: { boardData: routeData } })
-    } else {
-      router.replace({ name: 'policies', params: { boardData: 'social' } })
-    }
+    router.replace({ name: 'policies' })
   }
 }
 export const methods = {
@@ -216,7 +208,7 @@ export const methods = {
       if (user === undefined || user === null || user === '' || !user.fcmKey) {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
-        router.replace({ name: 'policies', params: { boardData: 'social' } })
+        router.replace({ name: 'policies' })
         return
       }
       paramMap.set('userKey', user.userKey)
@@ -261,7 +253,7 @@ export const methods = {
       }
     } else {
       commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
-      router.replace({ name: 'policies', params: { boardData: 'social' } })
+      router.replace({ name: 'policies' })
       if (store !== undefined && store !== null) {
         store.commit('D_USER/MU_CLEAN_USER')
       }
@@ -284,7 +276,7 @@ export const methods = {
     })
     console.log(result)
     if (result) {
-      await router.replace({ name: 'login', params: { boardData: 'social' } })
+      await router.replace({ name: 'login' })
       store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
       await store.dispatch('D_USER/AC_USER', '')
       if (store !== undefined && store !== null) {
