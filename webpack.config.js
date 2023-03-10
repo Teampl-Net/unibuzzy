@@ -1,28 +1,8 @@
 var HtmlwebpackPlugin = require('html-webpack-plugin')
 var UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin')
 var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin')
-
+const webpack = require('webpack')
 module.exports = {
-  devServer: {
-    // 프록시 설정
-    proxy: {
-      // 프록시 요청을 보낼 api의 시작 부분
-      '^/': {
-        target: 'http://192.168.0.22:19090',
-        changeOrigin: true,
-        secure: false,
-        pathRewrite: { '^/': '/' },
-        logLevel: 'debug'
-      },
-      '^/firebase': {
-        target: 'https://firebasedynamiclinks.googleapis.com',
-        changeOrigin: true,
-        secure: false,
-        pathRewrite: { '^/firebase': '/' },
-        logLevel: 'debug'
-      }
-    }
-  },
   entry: {
     vendor: ['babel-polyfill', 'lodash'],
     main: './src/main.js'
@@ -42,11 +22,27 @@ module.exports = {
       { test: /\.hbs$/, loader: 'handlebars-loader' }
     ]
   },
+  resolve: {
+    extensions: ['.ts', '.js'],
+    fallback: {
+      stream: require.resolve('stream-browserify'),
+      buffer: require.resolve('buffer')
+    }
+  },
+
   plugins: [
     new HtmlwebpackPlugin({
-      title: 'Intro to webpack',
+      title: '더알림!',
       template: 'src/index.html'
     }),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer']
+
+    }),
+    new webpack.ProvidePlugin({
+      process: 'process/browser'
+    }),
+
     new UglifyJsPlugin({
       beautify: false,
       mangle: { screw_ie8: true },

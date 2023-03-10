@@ -1,10 +1,14 @@
 
 module.exports = {
+  chainWebpack: (config) => {
+    config.plugins.delete('prefetch')
+  },
   devServer: {
     // 프록시 설정
     proxy: {
       // 프록시 요청을 보낼 api의 시작 부분
       '^/service': {
+        /* target: 'https://mo.d-alim.com', */
         target: 'http://localhost:19090',
         // target: 'http://192.168.219.103:19090',
         // https://mo.d-alim.com:10443
@@ -13,13 +17,54 @@ module.exports = {
         pathRewrite: { '^/service': '/' },
         logLevel: 'debug'
       },
-      '^/fileServer': {
-        // http://m.passtory.net:7443/
-        // target: 'http://222.233.118.96:19091',
-        target: '/fileServer',
+      '^/boardMain/service': {
+        /* target: 'https://mo.d-alim.com', */
+        target: 'http://localhost:19090',
+        // target: 'http://192.168.219.103:19090',
+        // https://mo.d-alim.com:10443
         changeOrigin: true,
         secure: false,
-        pathRewrite: { '^/fileServer': '/' },
+        pathRewrite: { '^/boardMain/service': '/' },
+        logLevel: 'debug'
+      },
+      '^/login/service': {
+        /* target: 'https://mo.d-alim.com', */
+        target: 'http://localhost:19090',
+        // target: 'http://192.168.219.103:19090',
+        // https://mo.d-alim.com:10443
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { '^/login/service': '/' },
+        logLevel: 'debug'
+      },
+      '^/eduPl': {
+        /* target: 'https://mo.d-alim.com', */
+        target: 'http://222.233.118.96:19090',
+        // target: 'http://192.168.219.103:19090',
+        // https://mo.d-alim.com:10443
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { '^/eduPl': '' },
+        logLevel: 'debug'
+      },
+      '^/apt123': {
+        /* target: 'https://mo.d-alim.com', */
+        target: 'http://localhost:8083',
+        // target: 'http://192.168.219.103:19090',
+        // https://mo.d-alim.com:10443
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { '^/apt123': '/' },
+        logLevel: 'debug'
+      },
+      '^/fileServer': {
+        // http://m.passtory.net:7443/
+        // target: 'http://192.168.0.100:9091',
+        // target: 'http://192.168.0.100:9091',
+        target: 'https://m.passtory.net:7443',
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { '^/fileServer': '/fileServer' },
         /* pathRewrite: { '^/fileServer': '/fileServer' }, */
         logLevel: 'debug'
       },
@@ -28,6 +73,13 @@ module.exports = {
         changeOrigin: true,
         secure: false,
         pathRewrite: { '^/firebase': '/' },
+        logLevel: 'debug'
+      },
+      '^/iamport': {
+        target: 'https://api.iamport.kr',
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { '^/iamport': '/' },
         logLevel: 'debug'
       }
     }
