@@ -93,12 +93,6 @@ const routes = [
         component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_main.vue')
       },
       {
-        path: '/unknown_mp',
-        name: 'unknownMypage',
-        props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_unknownMypage.vue')
-      },
-      {
         path: '/search',
         name: 'search',
         props: true,
