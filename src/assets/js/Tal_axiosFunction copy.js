@@ -24,7 +24,8 @@ export async function userLoginCheck () {
     paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
   } else {
     if (localStorage.getItem('user') === undefined || localStorage.getItem('user') === null || localStorage.getItem('user') === '') {
-      this.$router.replace('/policies')
+      // this.$router.replace('/policies')
+      router.replace({ path: '/unknown' })
       return
     }
     var user = JSON.parse(localStorage.getItem('user'))
@@ -42,7 +43,8 @@ export async function userLoginCheck () {
       localStorage.setItem('loginYn', true)
       router.replace({ name: 'main', params: { testYn: true } })
     } else {
-      router.replace('/policies')
+      router.replace({ path: '/unknown' })
+      // router.replace('/policies')
       localStorage.setItem('sessionUser', '')
       localStorage.setItem('user', '')
       localStorage.setItem('loginYn', false)
@@ -51,7 +53,8 @@ export async function userLoginCheck () {
     localStorage.setItem('user', '')
     localStorage.setItem('sessionUser', '')
     localStorage.setItem('loginYn', false)
-    router.replace('/policies')
+    router.replace({ path: '/unknown' })
+    // router.replace('/policies')
     console.warn('ERROR!!!!! : ', error)
   })
 }

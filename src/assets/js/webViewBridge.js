@@ -99,7 +99,8 @@ const isJsonString = (str) => {
             await saveUser(userProfile, true) // 서버에 save요청
             router.replace({ path: '/' })
           } else {
-            router.replace({ path: 'policies' })
+            // router.replace({ path: 'policies' })
+            router.replace({ name: 'unknown' })
           }
         } else if (message.type === 'CheckUserPermission') {
           router.replace({ name: 'permissions' })

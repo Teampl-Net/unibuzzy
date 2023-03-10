@@ -79,7 +79,8 @@ const isJsonString = (str) => {
             localStorage.setItem('loginYn', true)
             await saveUser(userProfile) // 서버에 save요청
           } else {
-            router.replace({ path: 'policies' })
+            router.replace({ name: 'unknown' })
+            // router.replace({ path: 'policies' })
             /* router.replace({ path: '/unknown' }) */
           }
         } else if (message.type === 'CheckUserPermission') {

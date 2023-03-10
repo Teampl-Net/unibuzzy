@@ -28,8 +28,8 @@
           placeholder="날짜를 선택해주세요"
           titleFormat="YYYY-MM-DD"
         ></Datepicker>
-        <div style="width: 100%; margin-top: 10px; float: left; min-height: 30px;">
-            <p class="fontBold font16 commonColor textLeft mtop-1 fl w-100P mbottom-05">분류 선택</p>
+        <div v-if="mStickerList && mStickerList.length > 0" style="width: 100%; margin-top: 10px; float: left; min-height: 30px;">
+            <p class="fontBold font16 commonColor textLeft mtop-1 fl w-100P mbottom-05">라벨 선택</p>
             <template v-for="(value, index) in mStickerList" :key="index" >
                 <gStickerLine v-if="value && contentsListTargetType !== 'fileBox'" @click="selectSticker(value)" :pSelectedYn="selectedSticker && value.stickerKey === selectedSticker.stickerKey" style="float: left; margin-right: 10px; min-width: 30px;" :pSticker="value" />
             </template>
@@ -186,6 +186,7 @@ export default {
     async getMyStickerList () {
       var param = {}
       param.creUserKey = this.GE_USER.userKey
+      if (this.GE_USER.unknownYn) return
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getStickerList',
         param: param

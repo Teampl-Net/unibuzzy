@@ -25,7 +25,7 @@
         <gCheckBtn class="fl gCheck-W mtop-03 mright-03" title='파일첨부' :selectedYn='fileYnInput' @click="fileYnInput = !fileYnInput" />
         <gCheckBtn class="fl gCheck-W mtop-03 mright-03" :title="blindYn === true ? '익명' : '실명'" :selectedYn='blindYn' @click="blindYn = !blindYn" />
         <gCheckBtn class="fl gCheck-W mtop-03 mright-03"  title='상태설정' :selectedYn='workStatYn' @click="workStatYn = !workStatYn" />
-        <gCheckBtn class="fl gCheck-W mtop-03 mright-03" title='제목 비공개(미권한자)' v-show="permissionVGroup.type === 'S'" :selectedYn='titleBlindYn' @click="titleBlindYn = !titleBlindYn" />
+        <gCheckBtn class="fl gCheck-W mtop-03 mright-03" title='제목 비공개(미권한자)' v-show="permissionVGroup.type !== 'A'" :selectedYn='titleBlindYn' @click="titleBlindYn = !titleBlindYn" />
 
       </div>
 
@@ -42,6 +42,7 @@
       <p class="fontBold  textLeft font16 fl" style="width: 100px;">공유 대상</p>
       <div class="fl" style="width: calc(100% - 100px);">
         <gCheckBtn id="all" ref="all" class="fl gCheck-W"  title='전체' :selectedYn="this.shareGroup.type === 'A'" @click="changeSelectType('A')" />
+        <gCheckBtn id="fol" ref="fol" class="fl gCheck-W mleft-05"  title='구독자전체' :selectedYn="this.shareGroup.type === 'F'" @click="changeSelectType('F')" />
         <gCheckBtn id="sel" ref="sel" class="fl gCheck-W mleft-05"  title='선택' :selectedYn="this.shareGroup.type === 'S'" @click="changeSelectType('S')" />
         <!-- <p class="fr font12 commonDarkGray " style="padding-top:12px">{{this.shareGroup.type === 'S' ? setSelectReceiveCount(this.shareGroup.selectedList) : '전체'}}</p> -->
         <p class="fr font12 commonDarkGray " style="padding-top:12px" v-if="this.shareGroup.type === 'A'">전체</p>
@@ -62,7 +63,7 @@
         <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시글 열람</p>
-            <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A'">
+            <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
               <gCheckBtn class="fl gCheck-W"  title='전체' :selectedYn="permissionVGroup.type === 'A'" @click="this.permissionVGroup.type = 'A'" />
               <gCheckBtn class="fl gCheck-W mleft-05"  title='선택' :selectedYn="permissionVGroup.type === 'S'" @click="this.permissionVGroup.type = 'S'" />
               <gCheckBtn class="fl gCheck-W mleft-05"  title='안함' :selectedYn="permissionVGroup.type === 'N'" @click="this.permissionVGroup.type = 'N'" />
@@ -79,7 +80,7 @@
         <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시글 작성</p>
-            <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A'">
+            <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
               <gCheckBtn class="fl gCheck-W"  title='전체' :selectedYn="permissionWGroup.type === 'A'" @click="this.permissionWGroup.type = 'A'" />
               <gCheckBtn class="fl gCheck-W mleft-05"  title='선택' :selectedYn="permissionWGroup.type === 'S'" @click="this.permissionWGroup.type = 'S'" />
               <gCheckBtn class="fl gCheck-W mleft-05"  title='안함' :selectedYn="permissionWGroup.type === 'N'" @click="this.permissionWGroup.type = 'N'" />
@@ -96,7 +97,7 @@
         <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}" style="position: relative;">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl" style="width: 100px;">댓글 작성</p>
-            <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A'">
+            <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
               <gCheckBtn class="fl gCheck-W"  title='전체' :selectedYn="permissionRGroup.type === 'A'" @click="this.permissionRGroup.type = 'A'" />
               <gCheckBtn class="fl gCheck-W mleft-05"  title='선택' :selectedYn="permissionRGroup.type === 'S'" @click="this.permissionRGroup.type = 'S'" />
               <gCheckBtn class="fl gCheck-W mleft-05"  title='안함' :selectedYn="permissionRGroup.type === 'N'" @click="this.permissionRGroup.type = 'N'" />
@@ -165,6 +166,10 @@ export default {
       if (this.shareGroup.type === 'A') {
         // this.$nextTick(() => {
         targetW = window.document.getElementById('all').getBoundingClientRect().left
+        // })
+      } else if (this.shareGroup.type === 'F') {
+        // this.$nextTick(() => {
+        targetW = window.document.getElementById('fol').getBoundingClientRect().left
         // })
       } else {
         // this.$nextTick(() => {
@@ -313,17 +318,17 @@ export default {
     },
     changeSelectType (type) {
       // debugger
+      this.shareGroup.type = type
       if (type === 'S') {
-        this.shareGroup.type = 'S'
-        this.permissionWGroup.type = 'S'
-        this.permissionVGroup.type = 'S'
-        this.permissionRGroup.type = 'S'
-      } else if (type === 'A') {
-        this.shareGroup.type = 'A'
+        this.permissionWGroup.type = type
+        this.permissionVGroup.type = type
+        this.permissionRGroup.type = type
+      } else {
         this.permissionWGroup.type = 'A'
         this.permissionVGroup.type = 'A'
         this.permissionRGroup.type = 'A'
       }
+
       // this.permissionWGroup.selectedList = { bookList: [], memberList: [] }
       // this.permissionVGroup.selectedList = { bookList: [], memberList: [] }
       // this.permissionRGroup.selectedList = { bookList: [], memberList: [] }
@@ -496,45 +501,52 @@ export default {
         this.shareGroup.type = 'A'
         // this.selectedReceiver = '전체에게 공유 중'
       } else {
-        this.shareGroup.type = 'S'
-        this.shareGroup.selectedList = { bookList: [], memberList: [] }
-        // var shareMemCount = 0
-        // var shareBookCount = 0
-        if (cabShareList) {
-          for (let i = 0; i < cabShareList.length; i++) {
-            if (cabShareList[i].accessKey === undefined || cabShareList[i].accessKey === null || cabShareList[i].accessKey === '') continue
-            if (cabShareList[i].accessKind === 'C') {
-              if (cabShareList[i].cabinetNameMtext === null) continue
-              /* shareBookCount += 1 */
-              if (cabShareList[i].muserList) {
-                cabShareList[i].mUserList = cabShareList[i].muserList
-              }
-              cabShareList[i].cabinetKey = cabShareList[i].accessKey
-              this.shareGroup.selectedList.bookList.push(cabShareList[i])
-              if (cabShareList[i].muserList) {
-                cabShareList[i].mUserList = cabShareList[i].muserList
-              }
-            } else if (cabShareList[i].accessKind === 'M') {
-              if (cabShareList[i].nameMtext === null) continue
-              cabShareList[i].memberYn = true
-              cabShareList[i].memberTypeKey = cabShareList[i].accessKey
-              cabShareList[i].cabinetKey = this.modiBoardDetailProps.cabinetKey
-              if (cabShareList[i].muserList) {
-                cabShareList[i].mUserList = cabShareList[i].muserList
-              }
-              this.shareGroup.selectedList.bookList.push(cabShareList[i])
-            } else if (cabShareList[i].accessKind === 'U') {
+        findListInT = cabShareList.findIndex(i => i.accessKind === 'F')
+        if (findListInT !== -1) {
+          this.shareGroup.type = 'F'
+          // this.selectedReceiver = '전체에게 공유 중'
+        } else {
+          this.shareGroup.type = 'S'
+          this.shareGroup.selectedList = { bookList: [], memberList: [] }
+          // var shareMemCount = 0
+          // var shareBookCount = 0
+          if (cabShareList) {
+            for (let i = 0; i < cabShareList.length; i++) {
+              if (cabShareList[i].accessKey === undefined || cabShareList[i].accessKey === null || cabShareList[i].accessKey === '') continue
+              if (cabShareList[i].accessKind === 'C') {
+                if (cabShareList[i].cabinetNameMtext === null) continue
+                /* shareBookCount += 1 */
+                if (cabShareList[i].muserList) {
+                  cabShareList[i].mUserList = cabShareList[i].muserList
+                }
+                cabShareList[i].cabinetKey = cabShareList[i].accessKey
+                this.shareGroup.selectedList.bookList.push(cabShareList[i])
+                if (cabShareList[i].muserList) {
+                  cabShareList[i].mUserList = cabShareList[i].muserList
+                }
+              } else if (cabShareList[i].accessKind === 'M') {
+                if (cabShareList[i].nameMtext === null) continue
+                cabShareList[i].memberYn = true
+                cabShareList[i].memberTypeKey = cabShareList[i].accessKey
+                cabShareList[i].cabinetKey = this.modiBoardDetailProps.cabinetKey
+                if (cabShareList[i].muserList) {
+                  cabShareList[i].mUserList = cabShareList[i].muserList
+                }
+                this.shareGroup.selectedList.bookList.push(cabShareList[i])
+              } else if (cabShareList[i].accessKind === 'U') {
               // shareMemCount += 1
-              this.shareGroup.selectedList.memberList.push(cabShareList[i])
+                this.shareGroup.selectedList.memberList.push(cabShareList[i])
+              }
             }
-          }
-          // this.selectedList = {}
-          console.log('------------------ this.shareGroup.selectedList -----------------')
-          console.log(this.shareGroup.selectedList)
-          console.log(cabShareList)
+            // this.selectedList = {}
+            console.log('------------------ this.shareGroup.selectedList -----------------')
+            console.log(this.shareGroup.selectedList)
+            console.log(cabShareList)
           // this.selectedList.data = this.shareGroup.selectedList
           // this.selectedReceiver = this.shareGroup.selectedList  shareBookCount + '개 그룹, ' + shareMemCount + '명 에게 공유 중'
+          }
         }
+
         /* this.permissionWGroup.type = 'S'
         this.permissionRGroup.type = 'S'
         this.permissionVGroup.type = 'S' */
@@ -598,7 +610,7 @@ export default {
         // // eslint-disable-next-line no-debugger
         // debugger
         if (mShareItemList[i].shareType === 'W') {
-          if (mShareItemList[i].accessKind === 'T') {
+          if (mShareItemList[i].accessKind === 'T' || mShareItemList[i].accessKind === 'F') {
             this.permissionWGroup.type = 'A'
           } else {
             this.permissionWGroup.type = 'S'
@@ -618,7 +630,7 @@ export default {
           w = true
           //
         } else if (mShareItemList[i].shareType === 'V') {
-          if (mShareItemList[i].accessKind === 'T') {
+          if (mShareItemList[i].accessKind === 'T' || mShareItemList[i].accessKind === 'F') {
             this.permissionVGroup.type = 'A'
           } else {
             this.permissionVGroup.type = 'S'
@@ -637,7 +649,7 @@ export default {
           v = true
           //
         } else if (mShareItemList[i].shareType === 'R') {
-          if (mShareItemList[i].accessKind === 'T') {
+          if (mShareItemList[i].accessKind === 'T' || mShareItemList[i].accessKind === 'F') {
             this.permissionRGroup.type = 'A'
           } else {
             this.permissionRGroup.type = 'S'
@@ -780,6 +792,13 @@ export default {
       if (this.shareGroup.type === 'A') {
         share = {}
         share.accessKind = 'T'
+        share.accessKey = this.modiBoardDetailProps.teamKey
+        share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+        share.shareSeq = 0
+        shareList.push(share)
+      } else if (this.shareGroup.type === 'F') {
+        share = {}
+        share.accessKind = 'F'
         share.accessKey = this.modiBoardDetailProps.teamKey
         share.cabinetKey = this.modiBoardDetailProps.cabinetKey
         share.shareSeq = 0
@@ -1083,7 +1102,7 @@ export default {
     async showSelectBookPop (type) {
       console.log(type)
       this.currentSelectBookType = type
-      if (this.shareGroup.type === 'A' || (this.shareGroup.type === 'S' && type === 'select')) {
+      if (this.shareGroup.type === 'A' || this.shareGroup.type === 'F' || (this.shareGroup.type === 'S' && type === 'select')) {
         if (type === 'select') {
           this.selectedList = this.shareGroup.selectedList
         } else {

@@ -49,7 +49,7 @@
               <!--  <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/> -->
               </div>
               <div class="mleft-05" style="display:flex; flex-direction: column;">
-                <p @click="goProfile" class="font16 commonBlack">{{this.$changeText(GE_USER.userDispMtext)}}</p>
+                <p @click="goProfile" class="font16 commonBlack">{{GE_USER.userDispMtext? this.$changeText(GE_USER.userDispMtext): '손님'}}</p>
                 <!-- <div>
                   <p class="fl font14 commonBlack">{{CHANNEL_DETAIL.D_CHAN_AUTH.followTypeText}}</p>
                   <p class="fl commonBlack font14 " v-if="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn">(내정보공개)</p>
@@ -183,9 +183,6 @@ export default {
     }
   },
   created () {
-    // eslint-disable-next-line no-debugger
-    debugger
-    console.log(this.$route.params.board)
     if (this.pOnlyMineYn) {
       this.mOnlyMineYn = true
       this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }]
@@ -952,6 +949,10 @@ export default {
       /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     openWriteBoard () {
+      if (this.GE_USER.unknownYn) {
+        this.$showToastPop('로그인 후 이용해주세요')
+        return
+      }
       // console.log(this.propData)
       if ((!this.GE_USER.certiDate) && (this.CAB_DETAIL.blindYn === 1 || this.CAB_DETAIL.blindYn === true)) {
         // 익명게시판일 떄
@@ -1481,7 +1482,17 @@ export default {
     readCheckBoxYn () {
       this.changeTab(this.viewTab)
     },
-    historyStack (value, old) {
+    GE_USER: {
+      immediate: true,
+      handler (val, old) {
+        if (!val) return
+        // alert(JSON.stringify(val))
+        if (val.unknownYn) {
+          this.activeTabList = [{ display: '최신', name: 'N' }]
+        } else {
+          this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 쓴', name: 'M' }]
+        }
+      }
     },
     GE_NEW_MEMO_LIST: {
       async handler (value, old) {

@@ -319,6 +319,10 @@ export default {
       }
     },
     clickCreateChannel () {
+      if (this.GE_USER.unknownYn) {
+        this.$showToastPop('로그인 후 이용해주세요')
+        return
+      }
       /* var tempParam = {}
       tempParam.targetType = 'createChannel'
       tempParam.popHeaderText = '채널 생성'
@@ -567,6 +571,16 @@ export default {
         }
       },
       deep: true
+    },
+    GE_USER: {
+      immediate: true,
+      handler (val, old) {
+        if (val.unknownYn) {
+          this.mActiveTabList = [{ display: '전체', name: 'all' }]
+        } else {
+          this.mActiveTabList = [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '관리채널', name: 'mychannel' }]
+        }
+      }
     },
     GE_UPDATE_CHAN_LIST: {
       handler (value, old) {

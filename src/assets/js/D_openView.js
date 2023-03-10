@@ -4,6 +4,7 @@
 
 import store from '../../store'
 import { mapGetters, mapActions } from 'vuex'
+import axios from 'axios'
 import { methods, commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
 import { commonMethods } from './Tal_common'
 var this_ = this
@@ -121,6 +122,10 @@ export const openView = {
     return resultData
   },
   async getMainBoard () {
+    if (!(store.getters['D_USER/GE_USER'] && store.getters['D_USER/GE_USER'].userKey)) {
+      await openView.getUnknownMainBoard()
+      return
+    }
     var paramMap = new Map()
     paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
     var response = await commonAxiosFunction({ url: 'service/tp.getMainBoard', param: Object.fromEntries(paramMap) }, false)
@@ -139,6 +144,19 @@ export const openView = {
       await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...resultObject.chanList, ...resultObject.mChanList])
       await store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.data.alimList.content)
       return resultObject
+    }
+  },
+  async getUnknownMainBoard () {
+    var paramMap = new Map()
+    var response = await axios.post('service/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
+    )
+    if (response.status === 200 || response.status === '200') {
+      // eslint-disable-next-line no-new-object
+      var resultObject = new Object()
+      resultObject.chanList = response.data.teamList.content
+      resultObject.alimList = response.data.alimList.content
+      await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultObject.chanList)
+      await store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultObject.alimList)
     }
   },
   async getSearchMainBoard () {

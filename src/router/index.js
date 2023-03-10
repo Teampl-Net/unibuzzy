@@ -90,7 +90,7 @@ const routes = [
         path: '/unknown',
         name: 'unknown',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_unknownMain.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_main.vue')
       },
       {
         path: '/unknown_mp',

@@ -47,6 +47,11 @@ export default {
       activeFooter: 'main'
     }
   },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
+  },
   methods: {
     async routePage (page) {
       // eslint-disable-next-line no-debugger
@@ -55,11 +60,13 @@ export default {
       /* if ('/' + page === this.$router.currentRoute._rawValue.path) {
         return
       } */
-      if (page === 'myPage' && this.$route.path === '/unknown') {
+      if (page === 'myPage' && this.GE_USER.unknownYn) {
+        this.$showToastPop('로그인 후 이용해주세요')
+        return/*
         this.activeFooter = 'unknownMypage'
         // await this.$router.push(page)
         this.$emit('changeRouterPath', 'unknownMypage')
-        return
+        return */
       }
       this.activeFooter = page
       // await this.$router.push(page)

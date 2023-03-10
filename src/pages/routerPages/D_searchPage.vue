@@ -34,7 +34,7 @@
             {{$changeText(business.itemNameMtext)}}
           </div>
         </div>
-        <div v-if="mMyStickerList.length > 0" class="fl w-100P mtop-1" style="min-height: 50px;  float: left; display: flex; flex-wrap: wrap; gap: 10px;">
+        <div v-if="!GE_USER.unknownYn && mMyStickerList.length > 0" class="fl w-100P mtop-1" style="min-height: 50px;  float: left; display: flex; flex-wrap: wrap; gap: 10px;">
           <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">분류별 컨텐츠 찾기</p>
           <template v-for="(sticker, index) in mMyStickerList" :key="index" >
             <gStickerLine @click="searchSticker(sticker)"  v-if="sticker" style="float: left; min-width: 30px;" :pSticker="sticker" />

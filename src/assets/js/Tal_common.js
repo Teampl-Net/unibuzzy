@@ -281,7 +281,8 @@ export const commonMethods = {
       resultMap = JSON.parse(userInfo)
       return resultMap
     } else {
-      this.$router.replace('policies')
+      // this.$router.replace('policies')
+      router.replace({ name: 'unknown' })
     }
   },
 

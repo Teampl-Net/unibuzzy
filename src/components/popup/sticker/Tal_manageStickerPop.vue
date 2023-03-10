@@ -78,6 +78,9 @@ export default {
     }
   },
   computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
     selectedStickerWidth () {
       return {
         '--selectedStickerWidth': this.iconSize * this.selectedStickerList.length + (this.selectedStickerList.length * 10) + 'px'
@@ -132,6 +135,7 @@ export default {
     async getStickerList () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
+      if (this.GE_USER.pUnknownYn) return
       param.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       var resultData = await this.$getStickerList(param)
       this.myStickerList = resultData

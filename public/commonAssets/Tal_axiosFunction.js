@@ -33,7 +33,10 @@ export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
   if (setItem.firstYn || noAuthYn !== undefined) {
     console.log('pass')
   } else {
-    await methods.userLoginCheck()
+    var user = store.getters['D_USER/GE_USER']
+    if (!user.unknownYn) {
+      await methods.userLoginCheck()
+    }
   }
   var result = false
   if (nonLoadingYn === true) {
@@ -160,7 +163,8 @@ export async function saveUser (userProfile, loginYn) {
     }
     localStorage.setItem('user', '')
     alert('로그인에 실패하였으니, 다른방식으로 재로그인 해주세요.')
-    router.replace({ name: 'policies' })
+    router.replace({ name: 'unknown' })
+    // router.replace({ name: 'policies' })
   }
 }
 export const methods = {
@@ -208,7 +212,8 @@ export const methods = {
       if (user === undefined || user === null || user === '' || !user.fcmKey) {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
-        router.replace({ name: 'policies' })
+        router.replace({ name: 'unknown' })
+        // router.replace({ name: 'policies' })
         return
       }
       paramMap.set('userKey', user.userKey)
@@ -253,7 +258,8 @@ export const methods = {
       }
     } else {
       commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
-      router.replace({ name: 'policies' })
+      // router.replace({ name: 'policies' })
+      router.replace({ name: 'unknown' })
       if (store !== undefined && store !== null) {
         store.commit('D_USER/MU_CLEAN_USER')
       }
@@ -303,7 +309,7 @@ export const methods = {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
-      if (!noAuthYn) {
+      if (!noAuthYn && store.getters['D_USER/GE_USER']) {
         paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
       }
     }
@@ -371,6 +377,7 @@ export const methods = {
     return result
   },
   async getStickerList (inputParam) {
+    if (store.getters['D_USER/GE_USER'].unknownYn) return
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {

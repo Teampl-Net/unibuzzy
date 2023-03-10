@@ -341,7 +341,8 @@ export default {
       localStorage.setItem('loginYn', false)
       localStorage.setItem('user', '')
       localStorage.setItem('sessionUser', '')
-      this.$router.replace({ name: 'policies' })
+      // this.$router.replace({ name: 'policies' })
+      this.$router.replace({ name: 'unknown' })
     }
   },
   components: {

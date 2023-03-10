@@ -126,6 +126,7 @@ export default {
     },
     async getMyStickerList () {
       var param = {}
+      if (this.GE_USER.unknownYn) return
       param.creUserKey = this.GE_USER.userKey
       var result = await this.$commonAxiosFunction({
         url: 'service/tp.getStickerList',

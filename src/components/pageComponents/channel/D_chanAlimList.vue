@@ -46,7 +46,7 @@
             <div class="fl" style="display: flex; align-items: center;">
               <gProfileImg :smallYn="true" :selfYn="true" style="width: 35px; margin-right: 10px; height: 35px;" />
               <div class="mleft-05" style="display:flex; flex-direction: column;">
-                <p @click="goProfile" class="font16 textLeft">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
+                <p @click="goProfile" class="font16 textLeft">{{this.GE_USER.userDispMtext? this.$changeText(this.GE_USER.userDispMtext) : '손님'}}</p>
                 <div>
                   <p class="fl font14 textLeft commonBlack">{{this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)}}</p>
                 </div>
@@ -522,6 +522,10 @@ export default {
       this.mChanInfoPopShowYn = false
     },
     openWritePushPop () {
+      if (this.GE_USER.unknownYn) {
+        this.$showToastPop('로그인 후 이용해주세요')
+        return
+      }
       this.writeBottSheetYn = true
       // var history = this.$store.getters['D_HISTORY/hStack']
       // if (this.mPushListMainTab === 'A') {
@@ -780,8 +784,7 @@ export default {
       return this.$store.getters['D_HISTORY/hUpdate']
     },
     GE_USER () {
-      const user = this.$store.getters['D_USER/GE_USER']
-      if (user.userKey) { return this.$store.getters['D_USER/GE_USER'] } else return { unknownYn: true }
+      return this.$store.getters['D_USER/GE_USER']
     }
   },
   watch: {

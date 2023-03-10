@@ -44,7 +44,12 @@ const D_USER = {
       // if (!state.userInfo) {
       //   state.userInfo.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       // }
-      return state.userInfo /* {
+      if (state.userInfo && state.userInfo.userKey) {
+        return state.userInfo
+      } else {
+        return { unknownYn: true }
+      }
+      /* {
         userNameMtext: state.userNameMtext,
         userDispMtext: state.userDispMtext,
         userKey: state.userKey,

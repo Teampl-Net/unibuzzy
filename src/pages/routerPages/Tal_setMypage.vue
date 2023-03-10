@@ -347,7 +347,8 @@ export default {
             // window.localStorage.removeItem('user')
             // window.localStorage.removeItem('loginYn')
             window.localStorage.removeItem('testYn')
-            this.$router.replace({name: 'policies' })
+            this.$router.replace({name: 'unknown' })
+            /* this.$router.replace({name: 'policies' }) */
         }
       }
 

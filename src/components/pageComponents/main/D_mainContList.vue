@@ -139,6 +139,10 @@ export default {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
       this.mAxiosQueue.push('getPushContentsList')
       var param = {}
+
+      if (this.GE_USER.unknownYn) {
+        param.jobkindId = 'BOAR'
+      }
       param.ownUserKey = this.propUserKey
       param.subsUserKey = this.propUserKey
       param.allYn = true
@@ -290,6 +294,10 @@ export default {
       }
     },
     async openSelectWriteTypePop () {
+      if (this.GE_USER.unknownYn) {
+        this.$showToastPop('로그인 후 이용해주세요')
+        return
+      }
       await this.getTeamList(true)
       this.mSeleteWriteTypePopShowYn = true
     }
