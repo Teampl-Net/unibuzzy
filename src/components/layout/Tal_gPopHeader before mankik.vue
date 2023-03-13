@@ -1,5 +1,5 @@
 <template>
-  <div class="commonPopHeaderWrap " style="border:1px solid black" :class="{ 'newHeaderLine' : !chanAlimListTeamKey && targetType !== 'createChannel' && targetType !== 'contentsDetail' && targetType !== 'boardMain' , 'headerShadow' : chanAlimListTeamKey}" :style="targetType === 'chanInfo' ? 'background:transparent !important;' : ';' + 'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;' + 'padding-bottom: 1.7rem'">
+  <div class="commonPopHeaderWrap " :class="{ 'newHeaderLine' : !chanAlimListTeamKey && targetType !== 'createChannel' && targetType !== 'contentsDetail' && targetType !== 'boardMain' , 'headerShadow' : chanAlimListTeamKey}" :style="targetType === 'chanInfo' ? 'background:transparent !important;' : ';' + 'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;' + 'padding-bottom: 1.7rem'">
     <!-- <img src="../../../assets/images/common/icon_back_white.png" v-on:click="goBack" class="fl" style=" width: 0.8rem;" > -->
     <div v-on:click="closeXPop" class="fl cursorP " style="width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <img v-if="bgblack === true " src="../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" >
@@ -9,16 +9,7 @@
     <div v-for="(value, index) in subTitlebtnList"  :key="index" class="fr ml-04">
       <img :src="value.icon" />
     </div>
-    <!-- <div style="width:100%;  margin-bottom: 10px;">
-      <div class="fl" style="">
-        <img src="../../assets/images/common/thealim_header_logo.png"  width="40" height="40" class="fl"/>
-        <p class="fl font25 headerFont commonColor" style="margin-left: 5px; line-height: 40px;">더알림</p>
-      </div>
-      <div class="fl">
-        <gProfileImg :smallYn="true" :selfYn="true" style="width: 35px; margin-right: 10px; height: 35px;" class="fl"/>
-        <p @click="goProfile" class="font16 textLeft fl">{{this.GE_USER.userDispMtext? this.$changeText(this.GE_USER.userDispMtext) : '손님'}}</p>
-      </div>
-    </div> -->
+
     <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'contentsDetail'}" :style="bgblack === true ? 'color:white;':'' ">
       {{this.$changeText(headerTitle)}}
     </span>
@@ -35,8 +26,8 @@
     <!-- <gBtnSmall v-if="this.headerTitle === '알림 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" /> -->
     <!-- <gBtnSmall v-else-if="this.headerTitle === '게시글 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="작성하기" style="position: absolute; right: 1rem" /> -->
     <div v-if="targetType === 'chanDetail' && (chanAlimListTeamKey !== undefined && chanAlimListTeamKey !== null && chanAlimListTeamKey !== '')" class="chanMenubar cursorP" @click="openMenu">
-      <!-- <img v-if="bgblack === true " src="../../assets/images/common/icon_menu_white.png" style="width:1.8rem;"/> -->
-      <img src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
+      <img v-if="bgblack === true " src="../../assets/images/common/icon_menu_white.png" style="width:1.8rem;"/>
+      <img v-else src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
     </div>
     <!-- <gBtnSmall v-if="managerBtn===true"  v-on:click="sendBtnClick" btnTitle="관리" style="position: absolute; right: 1rem" /> -->
   </div>
@@ -62,15 +53,6 @@ export default {
     propBookDetailPopYn: {}
   },
   methods: {
-    goProfile () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.targetType = 'bookMemberDetail'
-      param.readOnlyYn = true
-      param.selfYn = true
-      param.popHeaderText = '내 정보'
-      this.$emit('openPop', param)
-    },
     clickHelp () {
       if (this.headerTitle === '멤버/매니저 관리') {
         this.helpButtonType = 'member'
@@ -113,11 +95,6 @@ export default {
   },
   components: {
     helpButtonPop
-  },
-  computed: {
-    GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
-    }
   }
 }
 

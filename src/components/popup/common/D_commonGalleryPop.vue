@@ -4,10 +4,13 @@
 </template>
 
 <script>
+// import { onMessage } from '../../../assets/js/webviewInterface'
+// import PhotoSwipeLightbox from 'photoswipe/src/js/lightbox'
+// import 'photoswipe/src/photoswipe.css'
 import PhotoSwipeLightbox from 'photoswipe/dist/photoswipe-lightbox.esm.js'
 import { onMessage } from '../../../assets/js/webviewInterface'
-
 import 'photoswipe/dist/photoswipe.css'
+
 export default {
   name: 'SimpleGallery',
   props: {

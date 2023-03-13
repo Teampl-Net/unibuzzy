@@ -8,7 +8,7 @@
         </transition>
         <popHeader  ref="gPopupHeader" :checkOfficialChanYn="propData" :helpYn="helpYn" :class="(targetType === 'chanDetail' || targetType === 'boardMain')? 'chanDetailPopHeader': ''" :chanName="propParams.chanName" :headerTitle="headerTitle" :chanAlimListTeamKey="propParams.targetKey" @closeXPop="closeXPop" :thisPopN="thisPopN" class="commonPopHeader"
         v-if="targetType !=='writeContents' && targetType !== 'stickerPop' && targetType !== 'stickerDetail'" :followYn="headerFollowYn" :style="'top:' + 0 + 'px'"
-        @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :propBookDetailPopYn='mBookDetailPopYn' @closeBookDetail='mBookDetailPopYn = false' :targetType='targetType' @openPop="openPop"/>
+        @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :propBookDetailPopYn='mBookDetailPopYn' @closeBookDetail='mBookDetailPopYn = false' :targetType='targetType' />
 
         <div class="w-100P h-100P" style=" position: relative;" v-if=" popId &&  targetType === 'chanDetail'">
             <chanAlimList @openImgPop="openImgPop" :pPopId="popId" :propData="propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="loadingYn = false" :chanDetail="propParams" v-if=" popId && targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
@@ -107,13 +107,13 @@ import autoAnswerList from '../chanMenu/D_autoAnswerList.vue'
 import memberForm from '../memberQuestion/D_editMemberForm.vue'
 import memberFormList from '../memberQuestion/D_memberFormList.vue'
 import memberFormPreView from '../memberQuestion/D_memberFormPreView.vue'
-import errorPage from '../../popup/common/Tal_errorPage.vue'
+import errorPage from './Tal_errorPage.vue'
 import creAddressBook from '../receiver/D_creAddressBook.vue'
 import editMemberTypePop from '../memberInfo/D_editMemberTypePop.vue'
 import memInfoCreEditPop from '../memberInfo/D_memInfoCreEditPop.vue'
 import notiHitstory from '../../pageComponents/main/D_notiHistoryList.vue'
 import savePhone from '../../../pages/routerPages/Tal_savePhone.vue'
-import totalFileList from '../../popup/file/D_totalFileList.vue'
+import totalFileList from '../file/D_totalFileList.vue'
 export default {
   created () {
     console.log(this.propParams)
