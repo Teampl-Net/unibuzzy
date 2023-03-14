@@ -1,5 +1,7 @@
 <template>
   <div class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden"  > <!-- v-if="notiDetailShowYn" -->
+    <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
+    <unknownLoginPop :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
     <commonConfirmPop v-if="mAppUpdatePopShwoYn" @no="goAppStore" confirmType="one" confirmText="버전 업데이트가 필요합니다.<br>앱스토어로 이동합니다." />
     <gImgPop @closeXPop="closeXPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" />
     <!-- <pushPop @closePushPop="closePushPop" @goDetail="goDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  /> -->
@@ -16,7 +18,7 @@
     <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }"  class="" :style="'height: calc(100% - ' + (this.$STATUS_HEIGHT + 20)+ 'px)'" style="overflow: hidden; width:100%;">
         <router-view @openImgPop="openImgPop" ref="routerViewCompo"  :initData="sendInitData" @goSearchDirect="goSearchDirect" @scrollEvnt="this.scrollEvnt" :popYn="false" class="" style="margin-bottom: 100px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
     </div>
-    <TalFooter v-if="$route.name!== 'contDetail'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
+    <TalFooter v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
     <!-- <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div> -->
   </div>
 </template>
@@ -25,9 +27,12 @@
 /* import pushPop from '../components/popup/push/Tal_pushDetailPopup.vue' */
 import TalMenu from '../components/popup/common/Tal_menu.vue'
 import commonConfirmPop from '../components/popup/confirmPop/Tal_commonConfirmPop.vue'
+import unknownLoginPop from '../components/pageComponents/channel/D_unknownLoginPop.vue'
+
 export default {
   data () {
     return {
+      mUnknownLoginPopYn: false,
       mGPopShowYn: false,
       mMenuShowYn: false,
       mPopParams: null,
@@ -53,6 +58,7 @@ export default {
   props: {},
   name: 'mainRouter',
   components: {
+    unknownLoginPop,
     TalMenu,
     commonConfirmPop
     /* pushPop */
@@ -187,6 +193,13 @@ export default {
     }
   },
   methods: {
+    closeUnknownLoginPop () {
+      this.mUnknownLoginPopYn = false
+    },
+    openUnknownLoginPop () {
+      this.mUnknownLoginPopYn = true
+      // this.mUnknownContDetail = contDetail
+    },
     goAppStore () {
       this.mAppUpdatePopShwoYn = false
       if (this.systemName === 'android' || this.systemName === 'Android') {

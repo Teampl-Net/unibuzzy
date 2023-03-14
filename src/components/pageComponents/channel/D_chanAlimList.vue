@@ -71,7 +71,7 @@
           <!-- <div id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" class="fr" style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.followYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
             <p @click="changeFollowYn" class="fl font14 fontBold" :style="CHANNEL_DETAIL.D_CHAN_AUTH.followYn ? 'color:white' : '' " >구독취소</p>
           </div> -->
-          <div id="chanInfoSummary" :style="{backgroundImage: 'url('+require('@/assets/메인배너.png')+')'}" style=" width:100%; height:370px; position: relative; background-size: 100% 100%; ">
+          <div id="chanInfoSummary" style=" width:100%; height:370px; position: relative; background-size: 100% 100%; ">
             <div style="width:100%; height:100%; background-size: 100% 100%; background: linear-gradient(to bottom, rgba(20, 20, 20, 0) 20%,rgba(20, 20, 20, 0.25) 50%,rgba(20, 20, 20, 0.5) 70%,rgba(20, 20, 20, 0.75) 90%,rgba(20, 20, 20, 1) 100%)" ></div>
             <div style=" position:absolute; bottom:-37%; left: 5%; ">
               <div style="float: left; width:140px">

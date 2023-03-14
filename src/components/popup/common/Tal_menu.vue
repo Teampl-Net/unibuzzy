@@ -1,5 +1,7 @@
 <template>
   <div class="pagePaddingWrap" style="padding-top: 0 !important;" >
+    <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 9998; background: #00000050;"></div>
+    <unknownLoginPop :pClosePop="closeUnknownLoginPop" v-if="mUnknownLoginPopYn" style="position: fixed; z-index: 9999;" />
     <div class="menuHeader" :style="'top:' + (this.$STATUS_HEIGHT)+ 'px'"  >
       <!-- <img v-on:click="this.$emit('hideMenu')" class="mtop-05 cursorP mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/> -->
       <img v-on:click="this.$emit('hideMenu')" class="mtop-05 cursorP mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/grayXIcon.svg"/>
@@ -22,11 +24,13 @@
 </template>
 
 <script>
+import unknownLoginPop from '../../pageComponents/channel/D_unknownLoginPop.vue'
 export default {
   mounted () {
   },
   data () {
     return {
+      mUnknownLoginPopYn: false,
       menuList: [
         { iconUrl: 'resource/menu/icon_home_color.svg', menuText: '홈', link: 'main', type: 'page' },
         { iconUrl: 'resource/menu/icon_user_group_color.svg', menuText: '채널', link: 'chanList', type: 'page' },
@@ -42,11 +46,16 @@ export default {
     }
   },
   components: {
+    unknownLoginPop
   },
   emits: ['openPop', 'goPage'],
   methods: {
     goPage (link) {
-      this.$emit('goPage', link)
+      if (this.GE_USER.unknownYn && link === 'myPage') {
+        this.mUnknownLoginPopYn = true
+      } else {
+        this.$emit('goPage', link)
+      }
     },
     openPop (menuData) {
       // eslint-disable-next-line no-new-object
@@ -55,9 +64,16 @@ export default {
       params.popHeaderText = menuData.menuText
       params.jobKind = menuData.jobKind
       this.$emit('openPop', params)
+    },
+    closeUnknownLoginPop () {
+      this.mUnknownLoginPopYn = false
+    }
+  },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
     }
   }
-
 }
 </script>
 

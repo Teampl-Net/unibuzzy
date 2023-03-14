@@ -72,6 +72,7 @@
 
 <script>
 import attachFileList from '../../../components/unit/formEditor/Tal_attachFile.vue'
+// import unknownLoginPop from '../../pageComponents/channel/D_unknownLoginPop.vue'
 export default {
   props: {
     mememo: {},
@@ -80,9 +81,11 @@ export default {
   },
   components: {
     attachFileList
+    // unknownLoginPop
   },
   data () {
     return {
+      mUnknownLoginPopYn: false,
       memoText: '',
       meMemoData: null,
       okResetYn: false,
@@ -101,6 +104,9 @@ export default {
     this.settingPop()
   },
   computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
     attatchTrueFileList () {
       var resultList = this.mUploadFileList.filter(item => {
         console.log(item.attachYn)
@@ -424,6 +430,10 @@ export default {
       this.$emit('clearMemoObj')
     },
     async saveMemo () {
+      if (this.GE_USER.unknownYn) {
+        this.mUnknownLoginPopYn = true
+        return
+      }
       this.$refs.memoTextTag.blur()
       var inputMemoArea = window.document.getElementById('memoTextTag')
 

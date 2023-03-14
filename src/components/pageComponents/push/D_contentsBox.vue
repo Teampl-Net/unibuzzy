@@ -96,35 +96,36 @@
             <div v-if="!pNoAuthYn" class="contentsCardUserDoArea" style="position: relative; width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">
               <stickerListSetting @mContStickerList="saveStickerList" @openStickerPop="openStickerPop"  v-if="this.openStickerListYn" :openStickerListYn="this.openStickerListYn" :contDetail="this.CONT_DETAIL" :propStickerList="this.mStickerList" @openPop="openSettingStickerPop" />
               <div style="float: left; width: calc(100% - 100px); height: 100%;" v-if="this.CONT_DETAIL.D_CONT_USER_DO">
-                      <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <div style="width: 100%; height: 20px; float: left;">
-                          <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="" src="../../../assets/images/contents/cont_like_no.svg" alt="">
-                          <img v-else src="../../../assets/images/contents/cont_like.svg" alt="" class="">
-                        </div>
-                        <p class="font12 fl fontBold w-100P mtop-01  userDoColor">{{CONT_DETAIL.likeCount}}</p>
-                      </div>
-                      <div  @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <div style="width: 100%; height: 20px; float: left;">
-                          <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" class="" src="../../../assets/images/contents/cont_star_no.svg" alt="">
-                          <img v-else src="../../../assets/images/contents/cont_star.svg" alt="" class="">
-                        </div>
-                        <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{CONT_DETAIL.starCount}}</p>
-                      </div>
-                      <div @click="this.goContentsDetail(undefined, true)" style="width: 30px; height: 35px; display: flex; cursor: pointer;  float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <div style="width: 100%; height: 20px; float: left;">
-                          <img v-if="mWriteMemoYn" src="../../../assets/images/contents/cont_memo.svg" class="" alt="">
-                          <img v-else src="../../../assets/images/contents/cont_memo_no.svg" class="" alt="">
-                        </div>
-                        <p class="font12 fontBold mtop-01 fl w-100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
-                      </div>
-                      <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <div style="width: 100%; height: 20px; float: left;">
-                          <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
-                            <img v-else src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
-                        </div>
-                        <p class="font12 fontBold mtop-01 fl w-100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
-                      </div>
+                <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                  <div style="width: 100%; height: 20px; float: left;">
+                    <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="" src="../../../assets/images/contents/cont_like_no.svg" alt="">
+                    <img v-else src="../../../assets/images/contents/cont_like.svg" alt="" class="">
                   </div>
+                  <p class="font12 fl fontBold w-100P mtop-01  userDoColor">{{CONT_DETAIL.likeCount}}</p>
+                </div>
+
+                <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                  <div style="width: 100%; height: 20px; float: left;">
+                    <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" class="" src="../../../assets/images/contents/cont_star_no.svg" alt="">
+                    <img v-else src="../../../assets/images/contents/cont_star.svg" alt="" class="">
+                  </div>
+                  <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{CONT_DETAIL.starCount}}</p>
+                </div>
+                <div @click="this.goContentsDetail(undefined, true)" style="width: 30px; height: 35px; display: flex; cursor: pointer;  float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                  <div style="width: 100%; height: 20px; float: left;">
+                    <img v-if="mWriteMemoYn" src="../../../assets/images/contents/cont_memo.svg" class="" alt="">
+                    <img v-else src="../../../assets/images/contents/cont_memo_no.svg" class="" alt="">
+                  </div>
+                  <p class="font12 fontBold mtop-01 fl w-100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
+                </div>
+                <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                  <div style="width: 100%; height: 20px; float: left;">
+                    <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
+                      <img v-else src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
+                  </div>
+                  <p class="font12 fontBold mtop-01 fl w-100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
+                </div>
+            </div>
                   <div style="float: right; width: 140px; height: 100%; float: left;">
                       <div style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; cursor: pointer;justify-content: center; align-items: center;">
                           <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
@@ -134,7 +135,7 @@
                           </div>
                           <p class="font12 fl fontBold w-100P mtop-01 userDoColor">공유</p>
                       </div>
-                      <div @click="openStickerPop" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                      <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : openStickerPop" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
                           <img src="../../../assets/images/push/stickerIcon.svg" class="img-w20" alt="">
                         </div>
@@ -146,7 +147,7 @@
                           <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                           <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                       </div> -->
-                      <div @click="subScribeContents" style="width: 30px; height: 35px; display: flex; float: right;cursor: pointer;  margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                      <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : subScribeContents" style="width: 30px; height: 35px; display: flex; float: right;cursor: pointer;  margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                           <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center;">
                               <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/push/contentsBellIcon_on.svg" class=" " alt="">
                               <img v-else src="../../../assets/images/push/contentsBellIcon.svg" class="" alt="">
@@ -220,6 +221,7 @@ export default {
     recvListPop
   },
   props: {
+    pOpenUnknownLoginPop: Function,
     propTargetType: {},
     contentsEle: {},
     propDetailYn: {},
@@ -243,6 +245,8 @@ export default {
         this.mContStickerList = this.replaceArr(stickerList)
       }
     }
+    console.log('this.CONT_DETAIL')
+    console.log(this.CONT_DETAIL)
   },
   data () {
     return {

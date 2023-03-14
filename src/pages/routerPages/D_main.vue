@@ -2,13 +2,14 @@
   <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" id="mainAllWrap" class="" ref="mainScrollWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'" style="height: 100%; overflow: hidden scroll;">
     <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
     <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
-
+    <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
+    <unknownLoginPop :pContDetail="mUnknownContDetail" :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
     <div style="width: 100%; float: left;">
         <div class="userProfileWrap" style=" float: left;width: 100%; border-radius: 0.8rem; padding: 0 1.5rem;" >
             <div style="width: calc(100% - 80px); float: left; height: 100%;">
                 <!-- <a href="web+test://pwa">Americano</a> -->
                 <p @click="test" class="commonLightColor font16 textLeft" style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
-                <p v-if="GE_USER.unknownYn === true" class="commonLightColor font16 textLeft" style="font-weight: 600;">로그인을 하고 인기있는 채널을 구독해보세요</p>
+                <p v-if="GE_USER.unknownYn" class="commonLightColor font16 textLeft" style="font-weight: 600;">로그인을 하고 인기있는 채널을 구독해보세요</p>
                 <!-- @click="this.$router.push({path: '/certiPhone'})"  -->
                 <div v-else >
                     <div style="float: left; height: calc(100% - 20px); width: 100%;">
@@ -106,7 +107,7 @@
             <div v-if="mMainAlimList.length === 0 && mContentsEmptyYn === true" style="width: 100%; min-height: 300px; background: #FFFFFF; float: left;">
                 <gEmpty contentName="전체" tabName="최신" class="mtop-2"/>
             </div>
-            <mainContsList @goSearchDirect="goSearchDirect"   @openImgPop="oepnImgPop" ref="mainContsList" v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
+            <mainContsList :pOpenUnknownLoginPop="openUnknownLoginPop" @goSearchDirect="goSearchDirect"  @openImgPop="oepnImgPop" ref="mainContsList" v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
           </div>
         </div>
     </div>
@@ -129,9 +130,14 @@ import searchChanIcon from '../../components/pageComponents/main/unit/D_searchCh
 import circleSkeleton from '../../components/pageComponents/main/D_mainChanCircleSkeleton.vue'
 import squareSkeleton from '../../components/pageComponents/main/D_mainChansquareSkeleton.vue'
 import SkeletonBox from '../../components/pageComponents/push/D_contentsSkeleton'
+import unknownLoginPop from '../../components/pageComponents/channel/D_unknownLoginPop.vue'
+
 export default {
   data () {
     return {
+      tableYn: false,
+      mUnknownContDetail: {},
+      mUnknownLoginPopYn: false,
       mAppCloseYn: false,
       mLoadingYn: false,
       mMainAlimList: [],
@@ -157,7 +163,8 @@ export default {
     mainContsList,
     circleSkeleton,
     squareSkeleton,
-    SkeletonBox
+    SkeletonBox,
+    unknownLoginPop
   },
   created () {
     // navigator.registerProtocolHandler('web+test', 'test?type=%s')
@@ -218,6 +225,13 @@ export default {
     this.mLoadingYn = false
   },
   methods: {
+    closeUnknownLoginPop () {
+      this.mUnknownLoginPopYn = false
+    },
+    openUnknownLoginPop (contDetail) { // 이 컨텐츠의 정보
+      this.mUnknownLoginPopYn = true
+      // this.mUnknownContDetail = contDetail
+    },
     callbackFunc (e) {
       console.log(e)
     },

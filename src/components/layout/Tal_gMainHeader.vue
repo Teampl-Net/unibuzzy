@@ -10,9 +10,7 @@
         </div> -->
     </div>
 </template>
-
 <script>
-
 export default {
   name: 'talHeader',
   methods: {

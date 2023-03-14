@@ -47,6 +47,9 @@ export default {
       activeFooter: 'main'
     }
   },
+  props: {
+    pOpenUnknownLoginPop: Function
+  },
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
@@ -61,7 +64,8 @@ export default {
         return
       } */
       if (page === 'myPage' && this.GE_USER.unknownYn) {
-        this.$showToastPop('로그인 후 이용해주세요')
+        // this.$showToastPop('로그인 후 이용해주세요')
+        this.pOpenUnknownLoginPop()
         return/*
         this.activeFooter = 'unknownMypage'
         // await this.$router.push(page)
