@@ -80,10 +80,10 @@ self.addEventListener('push', event => {
       targetKey = userDo.iSub
     }
 
-    push_url = 'https://mo.d-alim.com/#/?source=pwa&targetType=contentsDetail&targetKey=' + targetKey + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
+    push_url = 'https://mo.d-alim.com?source=pwa&targetType=contentsDetail&targetKey=' + targetKey + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
   } else if (userDo.targetKind === 'R') {
     targetKey = userDo.targetKey
-    push_url = 'https://mo.d-alim.com/#/?source=pwa&targetType=contentsDetail&targetKey=' + targetKey + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
+    push_url = 'https://mo.d-alim.com?source=pwa&targetType=contentsDetail&targetKey=' + targetKey + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
   } /* else if (userDo.targetKind === 'B') {
     targetKey = userDo.targetKey
     push_url = 'https://mo.d-alim.com?targetType=contentsDetail&targetKey=' + userDo.ISub + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
