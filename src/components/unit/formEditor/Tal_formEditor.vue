@@ -516,9 +516,9 @@ export default {
           this.tools.underLineYn = true
         }
       } else if (type === 'font') {
-        spanWrap.innerHTML = spanWrap.outerHTML.replaceAll('font-size: 16px;', '')
-        spanWrap.innerHTML = spanWrap.outerHTML.replaceAll('font-size: 12px;', '')
-        spanWrap.innerHTML = spanWrap.outerHTML.replaceAll('font-size: 20px;', '')
+        spanWrap.innerHTML = spanWrap.innerHTML.replaceAll('font-size: 16px !important;', '')
+        spanWrap.innerHTML = spanWrap.innerHTML.replaceAll('font-size: 12px !important;', '')
+        spanWrap.innerHTML = spanWrap.innerHTML.replaceAll('font-size: 20px !important;', '')
 
         spanWrap.setAttribute('style', 'font-size: ' + this.tools.ftSize + 'px !important;')
 

@@ -1,5 +1,4 @@
 <template>
-    <metainfo />
     <div ref="contScrollWrap" id="contsScrollWrap" class="boardDetailWrap" v-if="cDetail">
       <popHeader :pNoAuthYn="true" ref="gPopupHeader" class="commonPopHeaderWrap headerShadow commonPopHeader"
             :style="'top:' + 0 + 'px'" :headerTitle="cDetail.cabinetNameMtext? cDetail.cabinetNameMtext:cDetail.nameMtext" targetType="contentsDetail"
