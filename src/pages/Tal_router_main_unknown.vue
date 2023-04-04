@@ -581,6 +581,11 @@ export default {
           console.log('!!! USER LOGIN CHECK !!!')
           if (result.userMap) {
             try {
+              if (localStorage.getItem('user')) {
+                var localUser = JSON.parse(localStorage.getItem('user'))
+                result.data.userMap.uAccessToken = localUser.uAccessToken
+                result.data.userMap.partnerToken = localUser.partnerToken
+              }
               localStorage.setItem('user', JSON.stringify(result.userMap))
               this_.$store.dispatch('D_USER/AC_USER', result.userMap)
               localStorage.setItem('sessionUser', JSON.stringify(result.userMap))

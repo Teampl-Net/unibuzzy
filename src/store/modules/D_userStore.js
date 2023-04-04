@@ -109,7 +109,15 @@ const D_USER = {
       state.deviceId = payload.deviceId
     }, */
     MU_USER (state, payload) {
+      const uAccessToken = state.uAccessToken
+      const partnerToken = state.partnerToken
       state.userInfo = payload
+      if (uAccessToken) {
+        state.uAccessToken = uAccessToken
+      }
+      if (partnerToken) {
+        state.partnerToken = partnerToken
+      }
       /* state.userInfo = payload
       state.userDispMtext = payload.userDispMtext
       state.userNameMtext = payload.userNameMtext
@@ -121,6 +129,22 @@ const D_USER = {
       state.picMfilekey = payload.picMfilekey
       state.fcmKey = payload.fcmKey
       state.deviceId = payload.deviceId */
+    },
+    MU_USER_ACCESS (state, payload) {
+      var user = {}
+      if (!state.userInfo) state.userInfo = {}
+      if (localStorage.getItem('user')) {
+        user = JSON.parse(localStorage.getItem('user'))
+      }
+      if (payload.uAccessToken) {
+        user.uAccessToken = payload.uAccessToken
+        state.userInfo.uAccessToken = payload.uAccessToken
+      }
+      if (payload.partnerToken) {
+        user.partnerToken = payload.partnerToken
+        state.userInfo.partnerToken = payload.partnerToken
+      }
+      localStorage.setItem('user', JSON.stringify(user))
     },
     MU_CLEAN_USER (state, payload) {
       state.userInfo = {}

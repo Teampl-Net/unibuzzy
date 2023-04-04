@@ -1,6 +1,19 @@
 <template>
         <transition name="showModal">
-            <loginCompo @closeXPop="closeXPop" :pPartnerLoginYn="true" :pPartnerLoginText="mRecvParams.loginText" :pSetUserItem="saveUserAndAccess" :pCorePartnerYn="true" v-if="mRecvParams && mRecvParams.loginText && mShowTarget === 'login'" @openPop="openPop"/>
+            <div v-if="mRecvParams && mRecvParams.loginText && mShowTarget === 'loading'" style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #FFFFFF;">
+                <img src="../assets/images/common/message_logo.png" class="mbottom-1" style="width: 80px;" alt="">
+                <div id="wave" class="mbottom-05 ">
+                    <span class="dot">L</span>
+                    <span class="dot">O</span>
+                    <span class="dot">A</span>
+                    <span class="dot">D</span>
+                    <span class="dot">I</span>
+                    <span class="dot">N</span>
+                    <span class="dot">G</span>
+                </div>
+                <p v-html="mRecvParams.loginText" class="font18 mbottom-5 commonColor fontBold fontBold"></p>
+            </div>
+            <loginCompo @closeXPop="closeXPop" :pPartnerLoginYn="true" :pPartnerLoginText="mRecvParams.loginText" :pSetUserItem="saveUserAndAccess" :pCorePartnerYn="true" v-else-if="mRecvParams && mRecvParams.loginText && mShowTarget === 'login'" @openPop="openPop"/>
             <boardMain @openImgPop="openImgPop" :pOnlyMineYn="true"  ref="boardMainPop" :propData="mPropParams" :chanAlimListTeamKey="mPropParams.targetKey" v-else-if="mPropParams &&  mShowTarget === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"/>
         </transition>
     <div></div>
@@ -27,10 +40,11 @@ export default {
     return {
       paramString: '',
       gPOpener: null,
-      mShowTarget: null,
+      mShowTarget: 'loading',
       mPropParams: null,
       mRecvParams: {},
-      mRecvRequest: null
+      mRecvRequest: null,
+      mAxiosYn: false
     }
   },
   methods: {
@@ -40,14 +54,21 @@ export default {
       }
     },
     async openDirectBoard () {
-      const paramMap = new Map(Object.entries(this.mRecvParams))
-      const result = await this.$axios.post('service/tp.getDirectBoardInfo', Object.fromEntries(paramMap))
+      if (this.mAxiosYn) return
+      this.mAxiosYn = true
+      console.log(this.mRecvParams)
+      const result = await this.$axios.post('service/tp.getDirectBoardInfo', this.mRecvParams)
+      console.log(result)
+      this.mAxiosYn = false
       /* var result = await commonAxiosFunction({
           url: 'service/tp.goDirectBoard',
           param: Object.fromEntries(paramMap)
         }) */
       const resultMainData = result.data.cabinet
       console.log(result)
+      if (result.data.team && result.data.team.content && result.data.team.content.length > 0) {
+        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', result.data.team.content)
+      }
       if (resultMainData.contentsListPage) {
         var contentList = resultMainData.contentsListPage.content
         for (let i = 0; i < contentList.length; i++) {
@@ -70,19 +91,24 @@ export default {
     },
     async saveUserAccess () {
       var setParam = {}
+      if (this.mAxiosYn) return
+      this.mAxiosYn = true
       var user = this.$store.getters['D_USER/GE_USER']
       this.mRecvParams.userKey = user.userKey
       this.mRecvParams.deviceKey = user.deviceKey
+      // this.mRecvParams.memberParamListStr = this.mRecvParams.memberParamListStr
+      this.mRecvParams.keepInfo = JSON.stringify(this.mRecvParams.keepInfo)
       setParam.partner = this.mRecvParams
-      setParam.partner.memberParamListStr = JSON.stringify(setParam.partner.memberParamListStr)
-      setParam.partner.keepInfo = JSON.stringify(setParam.partner.keepInfo)
       console.log(this.mRecvParams)
       var result = await this.$axios.post('service/tp.saveUserAccess', setParam)
+      this.mAxiosYn = false
       if (result.data.result) {
         return 'OK'
       }
     },
     async saveUserAndAccess (userProfile) {
+      if (this.mAxiosYn) return
+      this.mAxiosYn = true
       var param = {}
       param.soType = userProfile.soType
       if (userProfile.email !== undefined && userProfile.email !== null && userProfile.email !== '') { param.soEmail = userProfile.email }
@@ -115,17 +141,20 @@ export default {
       var setParam = {}
       setParam.user = param
       setParam.partner = this.mRecvParams
-      setParam.partner.memberParamListStr = JSON.stringify(setParam.partner.memberParamListStr)
-      setParam.partner.keepInfo = JSON.stringify(setParam.partner.keepInfo)
       var result = await this.$axios.post('service/tp.saveUserAndAccess', setParam)
+      this.mAxiosYn = false
       console.log(result)
       if (result.data.result) {
         var returnData = {}
         // debugger
         returnData.partnerToken = result.data.accessUser.partnerToken
         returnData.uAccessToken = result.data.accessUser.uaccessToken
+        this.$store.commit('D_USER/MU_USER_ACCESS', returnData)
         console.log(document.referrer)
-        g_pOpener.postMessage(JSON.stringify({ resultMsg: 'saveUserInfo', result: true, userInfo: returnData }), document.referrer)
+        if (g_pOpener) {
+          g_pOpener.postMessage(JSON.stringify({ resultMsg: 'saveUserInfo', result: true, userInfo: returnData }), document.referrer)
+        }
+
         var loginYn = await this.coreLoginCheck(returnData.uAccessToken, returnData.partnerToken)
         if (loginYn) this.okRequest()
       }
@@ -135,25 +164,43 @@ export default {
       let resultData = null
       // Do we trust the sender of this message?
       if (event.origin.indexOf('officeon') !== -1 || event.origin.indexOf('localhost') !== -1 || event.origin.indexOf('josa1') !== -1) {
+        var returnData = {}
         if (event.data) {
-          // eslint-disable-next-line no-debugger
-          debugger
           if (event.data.type === 'webpackWarnings') return
           resultData = event.data
           if (this.isJsonString(event.data)) {
             resultData = JSON.parse(event.data)
           }
+          g_pOpener = event.source
           this.mRecvParams = resultData.param
           this.mRecvRequest = resultData.request
           if (this.mRecvParams.uAccessToken && this.mRecvParams.partnerToken) {
+            // debugger
+            returnData.partnerToken = this.mRecvParams.partnerToken
+            returnData.uAccessToken = this.mRecvParams.uAccessToken
+            await this.$store.commit('D_USER/MU_USER_ACCESS', returnData)
+            callback(event.source, JSON.stringify({ resultMsg: 'saveUserInfo', result: true, userInfo: returnData }))
+            console.log(this.$store.getters['D_USER/GE_USER'])
             var loginYn = await this.coreLoginCheck(this.mRecvParams.uAccessToken, this.mRecvParams.partnerToken)
             if (loginYn) {
-              this.saveUserAccess()
+              await this.saveUserAccess()
               this.okRequest()
-            } else this.mShowTarget = 'login'
+            } else {
+              if (this.mRecvParams.userName && this.mRecvParams.encPhone && (event.origin.indexOf('localhost') !== -1 || event.origin.indexOf('josa1') !== -1)) {
+                await this.saveUserAndUserAccess()
+                this.okRequest()
+              } else {
+                this.mShowTarget = 'login'
+              }
+            }
           } else {
+            if (this.mRecvParams.userName && this.mRecvParams.encPhone && (event.origin.indexOf('localhost') !== -1 || event.origin.indexOf('josa1') !== -1)) {
+              await this.saveUserAndUserAccess()
+              this.okRequest()
+            } else {
+              this.mShowTarget = 'login'
+            }
             // this.popParams.targetType = 'login'
-            this.mShowTarget = 'login'
           }
         }
         // event.source.postMessage('test', event.origin)
@@ -163,17 +210,75 @@ export default {
 
       }
     },
+    async saveUserAndUserAccess () {
+      var setParam = {}
+      if (this.mAxiosYn) return
+      this.mAxiosYn = true
+      if (this.mRecvParams.userName === null || this.mRecvParams.encPhone === null) return
+      setParam.partner = this.mRecvParams
+      console.log(this.mRecvParams)
+      var result = await this.$axios.post('service/tp.saveUserAccess', setParam)
+      this.mAxiosYn = false
+      if (result.data.result) {
+        console.log(result.data)
+        if (result.data.resultMsg === 'OK') {
+          if (result.data.accessUser) {
+            var returnData = {}
+            // debugger
+            returnData.partnerToken = result.data.accessUser.partnerToken
+            returnData.uAccessToken = result.data.accessUser.uaccessToken
+            this.$store.commit('D_USER/MU_USER_ACCESS', returnData)
+            console.log(document.referrer)
+            if (g_pOpener) {
+              g_pOpener.postMessage(JSON.stringify({ resultMsg: 'saveUserInfo', result: true, userInfo: returnData }), document.referrer)
+            }
+          }
+
+          if (result.data.userMap) {
+            try {
+              if (localStorage.getItem('user')) {
+                var localUser = JSON.parse(localStorage.getItem('user'))
+                result.data.userMap.uAccessToken = localUser.uAccessToken
+                result.data.userMap.partnerToken = localUser.partnerToken
+              }
+              localStorage.setItem('user', JSON.stringify(result.data.userMap))
+              await this.$store.dispatch('D_USER/AC_USER', result.data.userMap)
+              localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
+            } catch (error) {
+              console.log(error)
+            }
+          }
+        } else {
+          if (this.$store !== undefined && this.$store !== null) {
+            this.$store.commit('D_USER/MU_CLEAN_USER')
+          }
+          localStorage.setItem('sessionUser', '')
+          localStorage.setItem('user', '')
+        }
+        /* var loginYn = await this.coreLoginCheck(returnData.uAccessToken, returnData.partnerToken)
+        if (loginYn) this.okRequest() */
+        return 'OK'
+      }
+    },
     async coreLoginCheck (uAccessToken, partnerToken) {
+      if (this.mAxiosYn) return
+      this.mAxiosYn = true
       var paramMap = new Map()
       paramMap.set('uAccessToken', uAccessToken)
       paramMap.set('partnerToken', partnerToken)
       var loginResult = await this.$coreLoginCheck(paramMap)
+      this.mAxiosYn = false
       // eslint-disable-next-line no-debugger
       debugger
       console.log(loginResult)
       if (loginResult.data.resultMsg === 'OK') {
         if (loginResult.data.userMap) {
           try {
+            if (localStorage.getItem('user')) {
+              var localUser = JSON.parse(localStorage.getItem('user'))
+              loginResult.data.userMap.uAccessToken = localUser.uAccessToken
+              loginResult.data.userMap.partnerToken = localUser.partnerToken
+            }
             localStorage.setItem('user', JSON.stringify(loginResult.data.userMap))
             await this.$store.dispatch('D_USER/AC_USER', loginResult.data.userMap)
             localStorage.setItem('sessionUser', JSON.stringify(loginResult.data.userMap))
@@ -213,6 +318,54 @@ export default {
   }
 }
 </script>
-<style scoped>
 
+<style lang="scss" scoped>
+div#wave {
+    position:relative;
+    text-align:center;
+    width:200px;
+    height:50px;
+    margin-left: auto;
+    margin-right: auto;
+.dot {
+    display:inline-block;
+    width:12px;
+    height:12px;
+    font-weight: bold;
+    border-radius:50%;
+    margin-right:10px;
+    color:#5F61BD;
+    animation: wave 2.1s linear infinite;
+
+        &:nth-child(2) {
+            animation-delay: -1.9s;
+        }
+
+        &:nth-child(3) {
+            animation-delay: -1.7s;
+        }
+        &:nth-child(4) {
+            animation-delay: -1.5s;
+        }
+        &:nth-child(5) {
+            animation-delay: -1.3s;
+        }
+        &:nth-child(6) {
+            animation-delay: -1.1s;
+        }
+        &:nth-child(7) {
+            animation-delay: -0.9s;
+        }
+    }
+}
+
+@keyframes wave {
+0%, 60%, 100% {
+transform: initial;
+}
+
+30% {
+transform: translateY(-15px);
+}
+}
 </style>

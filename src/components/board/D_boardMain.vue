@@ -9,7 +9,7 @@
       <div id="summaryHeader" class="summaryHeader">
         <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :style="propData.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="../../assets/images/channel/icon_official.svg" v-if="propData.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propData.nameMtext)}}</p> -->
         <div id="boardInfoSummary" class="mt-header boardWhiteBox">
-          <div id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 10px;">{{value}}
+          <div v-if="CHANNEL_DETAIL" id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 10px;">{{value}}
             <div class="chanImgRound" :style="'background-image: url('+  (CHANNEL_DETAIL.logoDomainPath? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');' " style="background-size: cover; background-position: center; background-repeat: no-repeat;" > <!-- 채널 로고 부분 -->
             </div>
             <div class="chanTextBox fl mleft-05;" style=" width:100%; margin-left: 0.5rem;">
@@ -43,7 +43,7 @@
             <p class="cBlack fl font15" style="width: 100%; border-left: 1px solid white">게시글 {{this.totalElements? this.totalElements:0}}개</p>
           </div>
 
-          <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
+          <div v-if="GE_USER" class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
             <div style="display:flex; align-items: center;">
               <div @click="goProfile" :style="'background-image: url(' +  (GE_USER.domainPath? GE_USER.domainPath + GE_USER.userProfileImg : GE_USER.userProfileImg)  + ')'" style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
               <!--  <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/> -->
@@ -112,7 +112,6 @@
       @click="refreshAll" >
         <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;" />
       </div>
-
     <img id='writeBtn' src="../../assets/images/button/Icon_WriteBoardBtn.svg" v-if="CAB_DETAIL.shareAuth && this.CAB_DETAIL.shareAuth.W === true" @click="openWriteBoard" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
@@ -122,6 +121,13 @@
   <div v-if="boardWriteYn" style="position: absolute; top:0; left:0; z-index:10; background:#00000050; width: 100vw; height: 100vh;"></div>
   <writeContents v-if="boardWriteYn"  ref="chanAlimListWritePushRefs" @successWrite="successWriteBoard" @successSave="getContentsList" :contentType="currentPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWriteBoardPop' :params="boardWriteData" style="position: absolute; width:100%; height:100%; min-height:100vh; top:0; left:0;"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="boardWriteData" />
   <!-- </div> -->
+  <!-- <div style="width: 100vw; height: 100vh; dispaly: flex; flex-direction: column; align-items:center; position: absolute; bottom: 0; right: 0;background: #00000026; z-index: 999999;" v-if="mGuidePopShowYn">
+  </div>
+  <div style="dispaly: flex; flex-direction: column; align-items:center; position: absolute; bottom: 5rem; right: 20px;;background: #00000026; z-index: 999999; width: calc(100% - 40px); height: 250px; background: #FFFFFF; border-radius: 0.8rem;">
+    <img src="../../assets/images/main/main_logo.png" alt="">
+    <p class="commonColor font20 fontBold">아직 작성중인 글이 없어요<br>가장먼저 게시글을 작성해보세요!</p>
+  </div> -->
+
   <div v-if="memoShowYn === true" class="boardMainMemoBoxBackground" @click="memoPopNo()"></div>
   <transition name="showMemoPop">
     <gMemoPop ref="gMemoRef" transition="showMemoPop"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="z-index:999999; height: fit-content;" :writeMemoTempData='tempMemoData'/>
@@ -218,6 +224,9 @@ export default {
       } else {
         this.mCabContentsList = []
       }
+      if (this.mCabContentsList.length === 0) {
+        this.mGuidePopShowYn = true
+      }
     }
   },
   mounted () {
@@ -229,6 +238,7 @@ export default {
   },
   data () {
     return {
+      mGuidePopShowYn: false,
       paddingTop: 0,
       activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 쓴', name: 'M' }],
       listBox: null,
@@ -303,28 +313,25 @@ export default {
     },
     async readyFunction () {
       var this_ = this
-      if (this.CAB_DETAIL) {
-        // this.boardListWrap = this.$refs.boardListWrap
-        this.$nextTick(() => {
-          var blockBox = document.getElementById('summaryHeader')
-          // this_.boardListWrap.addEventListener('scroll', this_.saveScroll)
-          // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
-          this_.listBox = this_.$refs.commonBoardListWrapCompo
-          this_.listBox.addEventListener('scroll', this_.handleScroll)
+      this.$nextTick(() => {
+        var blockBox = document.getElementById('summaryHeader')
+        // this_.boardListWrap.addEventListener('scroll', this_.saveScroll)
+        // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
+        this_.listBox = this_.$refs.commonBoardListWrapCompo
+        this_.listBox.addEventListener('scroll', this_.handleScroll)
 
-          this_.box = this_.$refs.boardListWrap // 이 dom scroll 이벤트를 모니터링합니다
-          if (this_.box) {
-            if (this_.mOnlyMineYn) {
-              blockBox.style.height = '50px'
-              this_.box.scrollTop = 250
-            }
-            this_.box.addEventListener('scroll', this_.updateScroll)
-            this_.box.addEventListener('mousewheel', e => {
-              this_.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
-            })
+        this_.box = this_.$refs.boardListWrap // 이 dom scroll 이벤트를 모니터링합니다
+        if (this_.box) {
+          if (this_.mOnlyMineYn) {
+            blockBox.style.height = '50px'
+            this_.box.scrollTop = 250
           }
-        })
-      }
+          this_.box.addEventListener('scroll', this_.updateScroll)
+          this_.box.addEventListener('mousewheel', e => {
+            this_.scrollDirection = e.deltaY > 0 ? 'down' : 'up'
+          })
+        }
+      })
       this.$emit('closeLoading')
     },
     memoPopNo () {
@@ -1397,6 +1404,8 @@ export default {
   },
   computed: {
     CHANNEL_DETAIL () {
+      console.log(this.mPropData)
+      console.log('this.mPropData')
       if (!this.mPropData) return null
       var team = this.$getDetail('TEAM', this.mPropData.teamKey)
       if (team) {
@@ -1406,7 +1415,10 @@ export default {
       }
     },
     CAB_DETAIL () {
-      return this.cabinetDetail
+      if (this.cabinetDetail) {
+        return this.cabinetDetail
+      }
+      return null
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']

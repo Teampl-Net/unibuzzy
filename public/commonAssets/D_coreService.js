@@ -8,7 +8,7 @@ import axios from 'axios'
 axios.defaults.headers.get.Pragma = 'no-cache' */
 var g_axiosQueue = []
 
-const methods = {
+export const coreMethods = {
   async coreLoginCheck (paramMap) {
     var result = await axios.post('service/tp.coreLoginCheck', Object.fromEntries(paramMap))
     return result
@@ -17,7 +17,7 @@ const methods = {
     console.log('####-------------------------------coommonCoreAxios.' + setItem.url + '----------------------------------------####')
     console.log('####parameter is: ')
     console.log(setItem.param)
-    await methods.coreLoginCheck()
+    await coreMethods.coreLoginCheck()
     var result = false
     if (nonLoadingYn === true) {
     } else {
@@ -49,7 +49,7 @@ const methods = {
 
 export default {
   install (Vue) {
-    Vue.config.globalProperties.$commonCoreAxios = methods.commonCoreAxios
-    Vue.config.globalProperties.$coreLoginCheck = methods.coreLoginCheck
+    Vue.config.globalProperties.$commonCoreAxios = coreMethods.commonCoreAxios
+    Vue.config.globalProperties.$coreLoginCheck = coreMethods.coreLoginCheck
   }
 }

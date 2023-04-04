@@ -4,6 +4,7 @@ import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
 import router from '../../src/router'
 import { params } from 'vue-router'
+import { coreMethods } from './D_coreService'
 import { commonMethods } from '../../src/assets/js/Tal_common'
 import store from '../../src/store'
 import { mapGetters, mapActions } from 'vuex'
@@ -142,9 +143,12 @@ export async function saveUser (userProfile, loginYn) {
     param: setParam,
     firstYn: true
   })
-  // eslint-disable-next-line no-debugger
-  debugger
   if (result.data.message === 'OK') {
+    if (localStorage.getItem('user')) {
+      var localUser = JSON.parse(localStorage.getItem('user'))
+      result.data.userMap.uAccessToken = localUser.uAccessToken
+      result.data.userMap.partnerToken = localUser.partnerToken
+    }
     localStorage.setItem('user', JSON.stringify(result.data.userMap))
     await store.dispatch('D_USER/AC_USER', result.data.userMap)
     localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
@@ -177,8 +181,6 @@ export const methods = {
     return mobileYn
   },
   async userLoginCheck (maingoYn) {
-    // eslint-disable-next-line no-debugger
-    debugger
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
     if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
@@ -197,12 +199,21 @@ export const methods = {
           user = JSON.parse(localStorage.getItem('vuex')).D_USER.userInfo
         }
       }
-      if (user === undefined || user === null || user === '' || !user.fcmKey) {
+      if (user === undefined || user === null || user === '') {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
         router.replace({ name: 'unknown' })
         // router.replace({ name: 'policies' })
         return
+      }
+      console.log(user.uAccessToken + '//' + user.partnerToken)
+      if (user.uAccessToken && user.partnerToken) {
+        console.log(user.uAccessToken + '//' + user.partnerToken)
+        var coreParamMap = new Map()
+        coreParamMap.set('uAccessToken', user.uAccessToken)
+        coreParamMap.set('partnerToken', user.partnerToken)
+        var result1 = await coreMethods.coreLoginCheck(coreParamMap)
+        return result1
       }
       paramMap.set('userKey', user.userKey)
       if (user.soAccessToken !== undefined && user.soAccessToken !== null && user.soAccessToken !== '') { paramMap.set('soAccessToken', user.soAccessToken) }
@@ -216,7 +227,8 @@ export const methods = {
     checkParam.userKey = Number(user.userKey)
     checkParam.fcmKey = user.fcmKey
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
-
+    console.log(result)
+    console.log('여길 보시오!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     if (result.data && result.data.resultCode === 'OK') {
       if (result.data.userMap) {
         try {
@@ -548,8 +560,6 @@ export const methods = {
       param: paramSet
     })
     result = response.data
-    // eslint-disable-next-line no-debugger
-    debugger
     return result
   },
   async saveMCabContents (paramSet) {
@@ -646,5 +656,6 @@ export default {
     Vue.config.globalProperties.$saveFcmToken = methods.saveFcmToken
     Vue.config.globalProperties.$d_AlimLogout = methods.d_AlimLogout
     Vue.config.globalProperties.$getFollowerList = methods.getFollowerList
+    Vue.config.globalProperties.$coreLoginCheck = methods.coreLoginCheck
   }
 }
