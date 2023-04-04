@@ -78,7 +78,7 @@
         <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
           <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">파일</p>
           <div style="width: calc(100% - 3.5rem); min-height: 30px; " class="fl mleft-05">
-            <attachFileList @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+            <attachFileList :attachTrueAddFalseList="pAttachFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
           </div>
         </div>
 
@@ -154,6 +154,7 @@ export default {
     }
   },
   props: {
+    pAttachFileList: {},
     propData: {},
     params: {},
     contentType: { type: String, default: 'ALIM' }
@@ -186,6 +187,8 @@ export default {
     }
   },
   created () {
+    // eslint-disable-next-line no-debugger
+    debugger
     if (this.contentType === 'BOAR') this.titleShowYn = true
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth

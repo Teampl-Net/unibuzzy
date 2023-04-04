@@ -34,7 +34,7 @@
       <createChannel :pPopId="popId" v-if=" popId &&  targetType === 'createChannel'" :chanDetail="propParams"  @closeXPop="closeXPop(true)" @closePop="closePop" @openLoading="loadingYn = true" @closeLoading="loadingYn = false" @successCreChan='successCreChan' @openPop='openPop' />
 
       <div v-if="popId &&  targetType === 'writeContents'" style="position: absolute; top:0; left:0; z-index:10; background:#00000050; width: 100vw; height: 100vh;"></div>
-      <writeContents :pPopId="popId" ref="writeContentsCompo" v-if="popId &&  targetType === 'writeContents'" :contentType="propParams.contentsJobkindId" :params="propParams" :propData="propParams" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' @addNewAlim="addNewContents" @toAlimFromBoard="toAlimFromBoard" />
+      <writeContents :pAttachFileList="mAttachFileList" :pPopId="popId" ref="writeContentsCompo" v-if="popId && targetType === 'writeContents'" :contentType="propParams.contentsJobkindId" :params="propParams" :propData="propParams" @closeXPop="closeXPop" @openPop='openPop' @changePop='changePop' @addNewAlim="addNewContents" @toAlimFromBoard="toAlimFromBoard" />
 
       <div v-if="popId && targetType === 'stickerPop'" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 8; background: #00000026;"></div>
       <gSelectStickerPop v-if="popId && targetType === 'stickerPop'" @closeXPop="closeXPop" style="" :propStickerList="this.propParams.mStickerList" :pContentsEle="this.propParams.contDetail"/>
@@ -131,6 +131,7 @@ export default {
   },
   data () {
     return {
+      mAttachFileList: [],
       mUnknownLoginPopYn: false,
       mobileYn: this.$getMobileYn(),
       helpYn: false,
@@ -377,11 +378,11 @@ export default {
     },
     async settingPop (successChanYn) {
       var target = this.propParams
+      console.log('target')
       console.log(target)
       if (successChanYn === true) {
         target = this.successChanParam
       }
-      // alert(JSON.stringify(target))
       this.headerTitle = this.$changeText(target.popHeaderText)
       this.targetType = target.targetType
       if (this.targetType === 'contentsDetail' || this.targetType === 'chanDetail') {
@@ -407,6 +408,20 @@ export default {
         this.helpYn = true
       } else if (this.targetType === 'selectBookList') {
         this.selectPlist = this.propParams.pSelectedList
+      } else if (this.targetType === 'writeContents') {
+        // eslint-disable-next-line no-debugger
+        debugger
+        var paramMap = new Map()
+        console.log(this.GE_USER.userKey)
+        paramMap.set('contentsKey', target.targetKey)
+        paramMap.set('jobkindId', target.contentsJobkindId)
+        paramMap.set('ownUserKey', this.GE_USER.userKey)
+        paramMap.set('subsUserKey', this.GE_USER.userKey)
+        paramMap.set('userKey', this.GE_USER.userKey)
+        const response = await this.$axios.post('service/tp.getMyContentsList', Object.fromEntries(paramMap))
+        this.mAttachFileList = response.data.content[0].attachFileList
+        // this.CONT_DETAIL.attachFileList = response.data.content[0].attachFileList
+        // console.log(response)
       }
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
         this.thisPopN = Number(this.parentPopN) + 1

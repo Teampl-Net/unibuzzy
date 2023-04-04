@@ -768,14 +768,14 @@ export default {
         this.textCopy()
       }
     },
-    editBoard () {
+    async editBoard () {
       var param = {}
       param.targetKey = this.CONT_DETAIL.contentsKey
       param.targetType = 'writeContents'
       param.contentsJobkindId = 'BOAR'
       param.creTeamKey = this.CONT_DETAIL.creTeamKey
       if (this.CONT_DETAIL.attachMfilekey) param.attachMfilekey = this.CONT_DETAIL.attachMfilekey
-      if (this.CONT_DETAIL.D_ATTACH_FILE_LIST) param.attachFileList = this.CONT_DETAIL.D_ATTACH_FILE_LIST
+      if (this.CONT_DETAIL.attachFileList) param.attachFileList = this.CONT_DETAIL.attachFileList
       param.bodyFullStr = this.CONT_DETAIL.bodyFullStr
       param.modiContentsKey = this.CONT_DETAIL.contentsKey
       param.titleStr = this.CONT_DETAIL.title
