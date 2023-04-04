@@ -1100,6 +1100,8 @@ export default {
       this.$emit('openPop', openPopParam)
     },
     goContentsDetail (moreCheckYn, memoScrollYn) {
+      // eslint-disable-next-line no-debugger
+      debugger
       if (this.propDetailYn) return
       // 권한이 없는 컨텐츠는 이동하지 못하게 리턴
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return

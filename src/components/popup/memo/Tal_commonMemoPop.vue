@@ -1,5 +1,6 @@
 <template>
-  <div class="fl w-100P" ref='memoPopCompo' style="min-height: 50px; background: #fff; padding: 0.5rem 20px; padding-top: 10px; box-shadow: 0px -2px 3px 0px #eee;">
+  <unknownLoginPop v-if="mUnknownLoginPopYn" />
+  <div class="fl w-100P" ref='memoPopCompo' style="position: absolute; bottom: 0; min-height: 50px; background: #fff; padding: 0.5rem 20px; padding-top: 10px; box-shadow: 0px -2px 3px 0px #eee;">
     <div v-if="meMemoData"  class="fl" style="width: calc(100% - 20px);min-height: 30px; margin: 0 10px 10px 10px; border-radius: 5px; background-color: #dddddd90; padding: 0.5rem 1rem; position: relative;" >
         <p class="fl commonBlack font14" >{{this.$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
         <div class="fl mleft-05 mright-05 font14 commonBlack textOverdot w-100P" style="text-align: left;" v-html="meMemoData.memo.bodyFullStr"></div>
@@ -72,7 +73,7 @@
 
 <script>
 import attachFileList from '../../../components/unit/formEditor/Tal_attachFile.vue'
-// import unknownLoginPop from '../../pageComponents/channel/D_unknownLoginPop.vue'
+import unknownLoginPop from '../../pageComponents/channel/D_unknownLoginPop.vue'
 export default {
   props: {
     mememo: {},
@@ -80,8 +81,8 @@ export default {
     writeMemoTempData: {}
   },
   components: {
-    attachFileList
-    // unknownLoginPop
+    attachFileList,
+    unknownLoginPop
   },
   data () {
     return {
