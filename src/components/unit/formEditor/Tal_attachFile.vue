@@ -43,6 +43,8 @@ export default {
     targetType: {}
   },
   created () {
+    // eslint-disable-next-line no-debugger
+    debugger
     if (this.attachTrueAddFalseList && this.attachTrueAddFalseList.length > 0) {
       this.sFileList = this.attachTrueAddFalseList
       for (var i = 0; i < this.sFileList.length; i++) {

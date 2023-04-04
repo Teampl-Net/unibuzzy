@@ -740,7 +740,7 @@ export default {
       param.targetKey = this.tempData.contentsKey
       param.targetType = 'writeContents'
       param.creTeamKey = this.tempData.creTeamKey
-      if (this.tempData.attachMfilekey) { param.attachMfilekey = this.tempData.attachMfilekey }
+      if (this.tempData.attachMfilekey) param.attachMfilekey = this.tempData.attachMfilekey
       param.bodyFullStr = this.tempData.bodyFullStr
       param.modiContentsKey = this.tempData.contentsKey
       param.titleStr = this.tempData.title

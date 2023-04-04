@@ -36,7 +36,7 @@
                     <div style="width: 100%; min-height: 30px;">
                       <!-- <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width: 23px; margin-top: 6px; float: left;" alt=""> -->
                       <p class="boardWriteTitleText fontBold font15 fl commonColor" style="margin-top: 4px;">첨부파일</p>
-                      <attachFileList style="min-width:80px;" :attachTrueAddFalseList="this.attachTrueFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+                      <attachFileList style="min-width:80px;" :attachTrueAddFalseList="attachTrueFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
                     </div>
                   </div>
                 </div>

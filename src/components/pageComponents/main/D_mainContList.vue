@@ -19,7 +19,7 @@
 </template>
 
 <script>
-// import attachFileListPop from './unit/D_commonAttatchFileListPop.vue'
+// import attachFileListPop from './unit/D_commonAttachFileListPop.vue'
 import writeBottSheet from './unit/D_contentsWriteBottSheet.vue'
 import findContentsList from '@/components/popup/common/D_findContentsList.vue'
 export default {

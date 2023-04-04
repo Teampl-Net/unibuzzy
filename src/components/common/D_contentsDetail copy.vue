@@ -42,12 +42,12 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="this.CONT_DETAIL.D_ATTATCH_FILE_LIST && this.CONT_DETAIL.D_ATTATCH_FILE_LIST.length > 0" style="position: relative;width: 100%; height: 30px; float: left; ">
+                <div v-if="this.CONT_DETAIL.D_ATTACH_FILE_LIST && this.CONT_DETAIL.D_ATTACH_FILE_LIST.length > 0" style="position: relative;width: 100%; height: 30px; float: left; ">
                     <span @click="filePopShowYn = !filePopShowYn" class="commonBlack font14 fr">파일 다운로드 <!-- <span class="font14 fontBold">({{this.attachTrueFileList.length}})</span> --></span>
                     <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width: 20px; float: right;" alt="">
                     <div v-if="filePopShowYn" style="width: 70%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 0px 6px 6px; max-width: 300px; min-width: 100px; min-height: 200px; max-height: 30%; right: 0; top: 25px; background: #fff; z-index: 1; overflow: hidden auto; position: absolute">
                         <div style=" margin: 15px; float: left; width: calc(100% - 30px);">
-                            <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
+                            <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTACH_FILE_LIST" :key="index">
                                 <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
                                     <!-- <p class="font12 commonBlack mtop-05" style="margin-left: 2px; margin-right: 5px; float: left" >- </p> -->
                                     <img :src="settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
@@ -381,14 +381,14 @@ export default {
         if (this.propParams.jobkindId === 'BOAR') {
           this.getCabinetDetail(this.propParams.creTeamKey)
         }
-        if ((!this.CONT_DETAIL || (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST))) {
+        if ((!this.CONT_DETAIL || (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTACH_FILE_LIST))) {
           await this.getContentsDetail()
         }
         if (!this.CONT_DETAIL.D_MEMO_LIST) {
           this.CONT_DETAIL.D_MEMO_LIST = []
           await this.getMemoList()
         }
-        if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST) {
+        if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTACH_FILE_LIST) {
           this.settingFileList()
         }
       } catch (e) {
@@ -815,7 +815,7 @@ export default {
       param.bodyFullStr = this.CONT_DETAIL.bodyFullStr
       param.modiContentsKey = this.CONT_DETAIL.contentsKey
       param.titleStr = this.CONT_DETAIL.title
-      param.parentAttachTrueFileList = this.CONT_DETAIL.D_ATTATCH_FILE_LIST
+      param.parentAttachTrueFileList = this.CONT_DETAIL.D_ATTACH_FILE_LIST
       this.$emit('openPop', param)
     },
     boardFuncClick (type) {
@@ -1192,7 +1192,7 @@ export default {
           }
         }
         var cont = this.CONT_DETAIL
-        cont.D_ATTATCH_FILE_LIST = attachFileList
+        cont.D_ATTACH_FILE_LIST = attachFileList
         cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }

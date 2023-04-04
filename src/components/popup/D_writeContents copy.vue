@@ -1179,8 +1179,8 @@ export default {
 .orgaIcon{position: absolute; top: 0.3rem; right: 0.5rem; cursor: pointer;}
 
 .pushBodyInput{resize: none; border-radius: 5px; border: 1px solid #BFBFDA; width: 100%; height: calc(100% - 7rem); padding: 1rem; box-sizing: border-box; color: #010101; font-size: 16px;}
-.attatchFileBtn{cursor: pointer; width: 80px; height: 80px;margin-top: 0.5rem;border-radius: 5px; background: #A9AACD; display: flex; flex-direction: column; justify-content: center; align-items: center;}
-.attatchFileBtn p{color: #FFFFFF; font-size: 10px; margin-top: 0.5rem;}
+.attachFileBtn{cursor: pointer; width: 80px; height: 80px;margin-top: 0.5rem;border-radius: 5px; background: #A9AACD; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+.attachFileBtn p{color: #FFFFFF; font-size: 10px; margin-top: 0.5rem;}
 
 .toolBtnArea{justify-content: flex-end; position: absolute; right: 0; top: 0rem}
 .toolLeftTab{color: #6768A7; font-weight: bold; font-size: 16px;margin-bottom: 1rem;}

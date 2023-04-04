@@ -81,7 +81,7 @@ import findContentsList from '../../components/popup/common/D_findContentsList.v
 /* import cancelPop from '../../components/popup/common/Tal_commonCancelReasonPop.vue' */
 import { onMessage } from '../../assets/js/webviewInterface'
 import statCodeComponent from '../../components/board/D_manageStateCodePop.vue'
-// import attachFileListPop from '../../components/pageComponents/main/unit/D_commonAttatchFileListPop.vue'
+// import attachFileListPop from '../../components/pageComponents/main/unit/D_commonAttachFileListPop.vue'
 import unknownLoginPop from '@/components/pageComponents/channel/D_unknownLoginPop.vue'
 export default {
   name: 'pushList',

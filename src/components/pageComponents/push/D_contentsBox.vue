@@ -207,7 +207,7 @@ import { onMessage } from '../../../assets/js/webviewInterface'
 import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import statCodeComponent from '@/components/board/D_manageStateCode.vue'
 import statCodePop from '@/components/board/D_manageStateCodePop.vue'
-import attachFileListPop from '../main/unit/D_commonAttatchFileListPop.vue'
+import attachFileListPop from '../main/unit/D_commonAttachFileListPop.vue'
 import recvListPop from './D_contentsRecvListPop.vue'
 
 export default {
@@ -234,7 +234,6 @@ export default {
   },
   created () {
     // this.saveStickerList()
-
     if (this.CONT_DETAIL) {
       if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST) {
         var stickerList = []
@@ -245,8 +244,6 @@ export default {
         this.mContStickerList = this.replaceArr(stickerList)
       }
     }
-    console.log('this.CONT_DETAIL')
-    console.log(this.CONT_DETAIL)
   },
   data () {
     return {
@@ -298,7 +295,7 @@ export default {
     if (scrollWrap) {
       scrollWrap.addEventListener('scroll', this.handleScroll)
     }
-    // if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST) {
+    // if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTACH_FILE_LIST) {
     //   this.settingFileList()
     // }
     var this_ = this
@@ -530,9 +527,9 @@ export default {
           }
 
           var cont = this.contentsEle
-          cont.D_ATTATCH_FILE_LIST = attachFileList
+          cont.D_ATTACH_FILE_LIST = attachFileList
           cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.mFileDownData.D_ATTATCH_FILE_LIST = attachFileList
+          this.mFileDownData.D_ATTACH_FILE_LIST = attachFileList
           this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
           this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
           return bodyImgFileList
@@ -542,6 +539,8 @@ export default {
       }
     },
     async settingFileList_old () {
+      // eslint-disable-next-line no-debugger
+      debugger
       try {
         if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
           var attachFileList = []
@@ -555,9 +554,9 @@ export default {
           }
 
           var cont = this.contentsEle
-          cont.D_ATTATCH_FILE_LIST = attachFileList
+          cont.D_ATTACH_FILE_LIST = attachFileList
           cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.mFileDownData.D_ATTATCH_FILE_LIST = attachFileList
+          this.mFileDownData.D_ATTACH_FILE_LIST = attachFileList
           this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
           this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
           return bodyImgFileList
@@ -576,9 +575,9 @@ export default {
         }
 
         /*  var cont = this.contentsEle
-          cont.D_ATTATCH_FILE_LIST = attachFileList
+          cont.D_ATTACH_FILE_LIST = attachFileList
           cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.mFileDownData.D_ATTATCH_FILE_LIST = attachFileList
+          this.mFileDownData.D_ATTACH_FILE_LIST = attachFileList
           this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
           this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
         return bodyImgFileList
@@ -775,7 +774,8 @@ export default {
       param.targetType = 'writeContents'
       param.contentsJobkindId = 'BOAR'
       param.creTeamKey = this.CONT_DETAIL.creTeamKey
-      if (this.CONT_DETAIL.attachMfilekey) { param.attachMfilekey = this.CONT_DETAIL.attachMfilekey }
+      if (this.CONT_DETAIL.attachMfilekey) param.attachMfilekey = this.CONT_DETAIL.attachMfilekey
+      if (this.CONT_DETAIL.D_ATTACH_FILE_LIST) param.attachFileList = this.CONT_DETAIL.D_ATTACH_FILE_LIST
       param.bodyFullStr = this.CONT_DETAIL.bodyFullStr
       param.modiContentsKey = this.CONT_DETAIL.contentsKey
       param.titleStr = this.CONT_DETAIL.title
@@ -832,6 +832,8 @@ export default {
       this.mSelectBoardPopShowYn = false
     },
     async makeNewContents (type) {
+      // eslint-disable-next-line no-debugger
+      debugger
       if (this.contentsEle.creTeamKey && type !== 'writeBoard' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
         this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
         // this.$checkDeleteHistory('bottomWriteSheets')
@@ -843,6 +845,8 @@ export default {
       writeParam.targetKey = this.contentsEle.creTeamKey
       writeParam.teamKey = this.contentsEle.creTeamKey
       writeParam.currentTeamKey = this.contentsEle.creTeamKey
+      writeParam.attachMfilekey = this.contentsEle.attachMfilekey
+      if (this.contentsEle.attachFileList) writeParam.attachFileList = this.contentsEle.attachFileList
       writeParam.targetType = 'writeContents'
       if (writeParam.contentsJobkindId === 'ALIM') {
         writeParam.UseAnOtherYn = true

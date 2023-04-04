@@ -98,7 +98,7 @@
 import { onMessage } from '../../../assets/js/webviewInterface'
 import modiMemoPop from './D_modiMemoPop.vue'
 import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
-import attachFileListPop from '../main/unit/D_commonAttatchFileListPop.vue'
+import attachFileListPop from '../main/unit/D_commonAttachFileListPop.vue'
 export default {
   props: {
     propMemoLength: {},
@@ -136,7 +136,7 @@ export default {
       attachTrueFileList: [],
       attachFalseFileList: [],
       mFilePopShowYn: false,
-      mAttachFileList: { D_ATTATCH_FILE_LIST: [], D_BODY_IMG_FILE_LIST: [] },
+      mAttachFileList: { D_ATTACH_FILE_LIST: [], D_BODY_IMG_FILE_LIST: [] },
       selectedImgPopObj: null,
       startIndex: 0,
       mResultParam: {},
@@ -292,12 +292,12 @@ export default {
       }
     },
     showFileDownloadPop (fileObj) {
-      this.mAttachFileList.D_ATTATCH_FILE_LIST = []
+      this.mAttachFileList.D_ATTACH_FILE_LIST = []
       this.mAttachFileList.D_BODY_IMG_FILE_LIST = []
       if (fileObj.attachMfilekey && fileObj.attachFileList && fileObj.attachFileList.length > 0) {
         for (var i = 0; i < fileObj.attachFileList.length; i++) {
           if (fileObj.attachFileList[i].attachYn) {
-            this.mAttachFileList.D_ATTATCH_FILE_LIST.push(fileObj.attachFileList[i])
+            this.mAttachFileList.D_ATTACH_FILE_LIST.push(fileObj.attachFileList[i])
           } else if (!fileObj.attachFileList[i].attachYn) {
             this.mAttachFileList.D_BODY_IMG_FILE_LIST.push(fileObj.attachFileList[i])
           }
@@ -306,7 +306,7 @@ export default {
       var resultObj = {}
       resultObj.contentsKey = this.propMemoEle.targetKey
       resultObj.creUserKey = this.propMemoEle.creUserKey
-      resultObj = { D_ATTATCH_FILE_LIST: this.mAttachFileList.D_ATTATCH_FILE_LIST, ...resultObj }
+      resultObj = { D_ATTACH_FILE_LIST: this.mAttachFileList.D_ATTACH_FILE_LIST, ...resultObj }
 
       this.mResultParam = resultObj
       this.mFilePopShowYn = true

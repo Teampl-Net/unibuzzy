@@ -9,7 +9,7 @@
             <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; ">
                 <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
                 <img @click="filePopShowYn =false"  src="../../assets/images/common/grayXIcon.svg" style="position: absolute; right: 5px; top: 0px;" alt="">
-                <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTATCH_FILE_LIST" :key="index">
+                <templete v-for="(value, index) in this.CONT_DETAIL.D_ATTACH_FILE_LIST" :key="index">
                     <div  v-if="value.attachYn"  style="width: 100%; word-break: break-all;min-height: 30px; float: left;" >
                         <img :src="settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
                         <a style="width: calc(100% - 20px); text-align: left;" :fileKey="value.fileKey" @click="download1(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot"  >
@@ -32,7 +32,7 @@
     </div>
 </template>
 <script>
-// import attachFileListPop from '../pageComponents/main/unit/D_commonAttatchFileListPop.vue'
+// import attachFileListPop from '../pageComponents/main/unit/D_commonAttachFileListPop.vue'
 // import html2pdf from 'html2pdf.js'
 import { onMessage } from '../../assets/js/webviewInterface'
 
@@ -377,7 +377,7 @@ export default {
           if (this.propParams.jobkindId === 'BOAR') {
             this.getCabinetDetail(this.propParams.creTeamKey)
           }
-          if ((!this.CONT_DETAIL || (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST))) {
+          if ((!this.CONT_DETAIL || (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTACH_FILE_LIST))) {
             await this.getContentsDetail()
           }
         } else {
@@ -391,7 +391,7 @@ export default {
           this.CONT_DETAIL.D_MEMO_LIST = []
           await this.getMemoList()
         } */
-        if (this.CONT_DETAIL && this.CONT_DETAIL.attachMfilekey && (!this.CONT_DETAIL.D_ATTATCH_FILE_LIST || this.CONT_DETAIL.D_ATTATCH_FILE_LIST.length === 0)) {
+        if (this.CONT_DETAIL && this.CONT_DETAIL.attachMfilekey && (!this.CONT_DETAIL.D_ATTACH_FILE_LIST || this.CONT_DETAIL.D_ATTACH_FILE_LIST.length === 0)) {
           this.settingFileList()
         }
       } catch (e) {
@@ -813,7 +813,7 @@ export default {
       param.bodyFullStr = this.CONT_DETAIL.bodyFullStr
       param.modiContentsKey = this.CONT_DETAIL.contentsKey
       param.titleStr = this.CONT_DETAIL.title
-      param.parentAttachTrueFileList = this.CONT_DETAIL.D_ATTATCH_FILE_LIST
+      param.parentAttachTrueFileList = this.CONT_DETAIL.D_ATTACH_FILE_LIST
       this.$emit('openPop', param)
     },
     boardFuncClick (type) {
@@ -1193,7 +1193,7 @@ export default {
         //   }
         // }
         var cont = this.CONT_DETAIL
-        cont.D_ATTATCH_FILE_LIST = attachFileList
+        cont.D_ATTACH_FILE_LIST = attachFileList
         cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
         this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }

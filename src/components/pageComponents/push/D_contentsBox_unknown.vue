@@ -206,7 +206,7 @@ import { onMessage } from '../../../assets/js/webviewInterface'
 import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import statCodeComponent from '@/components/board/D_manageStateCode.vue'
 import statCodePop from '@/components/board/D_manageStateCodePop.vue'
-import attachFileListPop from '../main/unit/D_commonAttatchFileListPop.vue'
+import attachFileListPop from '../main/unit/D_commonAttachFileListPop.vue'
 import recvListPop from './D_contentsRecvListPop.vue'
 
 export default {
@@ -295,7 +295,7 @@ export default {
     if (scrollWrap) {
       scrollWrap.addEventListener('scroll', this.handleScroll)
     }
-    // if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTATCH_FILE_LIST) {
+    // if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTACH_FILE_LIST) {
     //   this.settingFileList()
     // }
     var this_ = this
@@ -523,9 +523,9 @@ export default {
           }
 
           var cont = this.contentsEle
-          cont.D_ATTATCH_FILE_LIST = attachFileList
+          cont.D_ATTACH_FILE_LIST = attachFileList
           cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.mFileDownData.D_ATTATCH_FILE_LIST = attachFileList
+          this.mFileDownData.D_ATTACH_FILE_LIST = attachFileList
           this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
           this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
           return bodyImgFileList
@@ -548,9 +548,9 @@ export default {
           }
 
           var cont = this.contentsEle
-          cont.D_ATTATCH_FILE_LIST = attachFileList
+          cont.D_ATTACH_FILE_LIST = attachFileList
           cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.mFileDownData.D_ATTATCH_FILE_LIST = attachFileList
+          this.mFileDownData.D_ATTACH_FILE_LIST = attachFileList
           this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
           this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
           return bodyImgFileList
@@ -569,9 +569,9 @@ export default {
         }
 
         /*  var cont = this.contentsEle
-          cont.D_ATTATCH_FILE_LIST = attachFileList
+          cont.D_ATTACH_FILE_LIST = attachFileList
           cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.mFileDownData.D_ATTATCH_FILE_LIST = attachFileList
+          this.mFileDownData.D_ATTACH_FILE_LIST = attachFileList
           this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
           this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
         return bodyImgFileList

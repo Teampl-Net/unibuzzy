@@ -74,7 +74,7 @@ import gToolBox from './components/popup/writeContentUnit/D_commonToolBox.vue'
 // import Vue3SimpleHtml2pdf from 'vue3-simple-html2pdf'
 
 import webViewBridge from './assets/js/webViewBridge'
-// import attatchFileListPop from './components/pageComponents/main/unit/D_commonAttatchFileListPop.vue'
+// import attachFileListPop from './components/pageComponents/main/unit/D_commonAttachFileListPop.vue'
 import './registerServiceWorker'
 import gFileBox from './components/unit/D_fileBox.vue'
 import gSticker from './components/common/D_commonSticker.vue'
@@ -138,7 +138,7 @@ app.component('gImgPop', gImgPop)
 app.component('gFileBox', gFileBox)
 app.component('gSelectStickerPop', gSelectStickerPop)
 
-// app.component('attatchFileListPop', attatchFileListPop)
+// app.component('attachFileListPop', attachFileListPop)
 
 app.use(webViewBridge)
 app.use(axiosFunction)
