@@ -419,7 +419,11 @@ export default {
         paramMap.set('subsUserKey', this.GE_USER.userKey)
         paramMap.set('userKey', this.GE_USER.userKey)
         const response = await this.$axios.post('service/tp.getMyContentsList', Object.fromEntries(paramMap))
-        this.mAttachFileList = response.data.content[0].attachFileList
+        if (response.data.content) {
+          if (response.data.content[0].attachFileList) {
+            this.mAttachFileList = response.data.content[0].attachFileList
+          }
+        }
         // this.CONT_DETAIL.attachFileList = response.data.content[0].attachFileList
         // console.log(response)
       }

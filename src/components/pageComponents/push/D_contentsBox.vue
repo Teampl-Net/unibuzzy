@@ -1327,6 +1327,8 @@ export default {
       return this.$store.getters['D_CHANNEL/GE_STICKER_LIST']
     },
     CHANNEL_DETAIL () {
+      // eslint-disable-next-line no-debugger
+      debugger
       var detail = this.$getDetail('TEAM', this.contentsEle.creTeamKey)
       if (detail && detail.length > 0) {
         // eslint-disable-next-line no-debugger

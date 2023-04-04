@@ -196,7 +196,11 @@ export default {
 
     var varUA = localStorage.getItem('systemName')
     var nativeYn = localStorage.getItem('nativeYn')
-    if ((varUA !== undefined && varUA !== null && varUA !== '') || nativeYn !== undefined) {
+    alert(true)
+    // eslint-disable-next-line no-debugger
+    debugger
+    // if ((varUA !== undefined && varUA !== null && varUA !== '') || nativeYn !== undefined) {
+    if ((varUA !== undefined && varUA !== null && varUA !== '') || (nativeYn !== false && nativeYn !== 'false')) {
       if ((nativeYn === true || nativeYn === 'true') || varUA === 'android' || varUA === '"Android"' || varUA === 'ios' || varUA === '"iOS"') {
         this.$STATUS_HEIGHT = 35 // 35
       } else {
