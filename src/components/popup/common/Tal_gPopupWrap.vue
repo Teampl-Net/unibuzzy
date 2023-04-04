@@ -8,16 +8,17 @@
           <fullModal @openImgPop="openImgPop" @goScrollTarget="goScrollTarget" @successWrite="successWriteBoard" @parentClose="parentClose" @addDirectAddMemList="addDirectAddMemList" @reloadPop="reloadPop" :style="getWindowSize" transition="showModal" :id="popId" ref="commonGPopWrap" @selectedReceiverBookNMemberList='selectedReceiverBookNMemberList'
                 @closePop="closePop" v-if="popShowYn" :parentPopN="thisPopN" :propParams="popParams" :propData="propParams" @toAlimFromBoard='toAlimThisPageClose' @saveCabinet='refreshCabinet' @channelMenuReload='channelMenuReload' @closeNewPop='closeNewPop'                                        />
       </transition>
-      <popHeader  ref="gPopupHeader" :checkOfficialChanYn="propData" :helpYn="helpYn" :class="(targetType === 'chanDetail' || targetType === 'boardMain')? 'chanDetailPopHeader': ''" :chanName="propParams.chanName" :headerTitle="headerTitle" :chanAlimListTeamKey="propParams.targetKey" @closeXPop="closeXPop" :thisPopN="thisPopN" class="commonPopHeader"
-      v-if="targetType !== 'openUnknownLoginPop' && targetType !=='writeContents' && targetType !== 'stickerPop' && targetType !== 'stickerDetail'" :followYn="headerFollowYn" :style="'top:' + 0 + 'px'"
-      @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :propBookDetailPopYn='mBookDetailPopYn' @closeBookDetail='mBookDetailPopYn = false' :targetType='targetType' />
+      <popHeader  ref="gPopupHeader" :homepageYn="homepageYn" :checkOfficialChanYn="propData" :helpYn="helpYn" :class="(targetType === 'chanDetail' || targetType === 'boardMain')? 'chanDetailPopHeader': ''" :chanName="propParams.chanName" :headerTitle="headerTitle" :chanAlimListTeamKey="propParams.targetKey" @closeXPop="closeXPop" :thisPopN="thisPopN" class="commonPopHeader"
+        v-if="targetType !=='writeContents' && targetType !== 'stickerPop' && targetType !== 'stickerDetail'" :followYn="headerFollowYn" :style="'top:' + 0 + 'px'"
+        @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :propBookDetailPopYn='mBookDetailPopYn' @closeBookDetail='mBookDetailPopYn = false' :targetType='targetType' @openPop="openPop"/>
 
-      <div class="w-100P h-100P" style=" position: relative;" v-if=" popId &&  targetType === 'chanDetail'">
-          <chanAlimList @openImgPop="openImgPop" :pPopId="popId" :propData="propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="loadingYn = false" :chanDetail="propParams" v-if=" popId && targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
-      </div>
-      <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  targetType === 'pushList'">
-          <pushList :pPopId="popId" style="" :initData='propParams.initData' :propParams="propParams" :ref="'gPopPush'" :popYn="true" :readySearchList="readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
-      </div>
+        <div class="w-100P h-100P" style=" position: relative;" v-if=" popId &&  targetType === 'chanDetail'">
+            <chanHomeAlimList v-if="homepageYn" @openImgPop="openImgPop" :pPopId="popId" :propData="propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="loadingYn = false" :chanDetail="propParams"  @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
+            <chanAlimList v-else @openImgPop="openImgPop" :pPopId="popId" :propData="propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="loadingYn = false" :chanDetail="propParams" @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
+        </div>
+        <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  targetType === 'pushList'">
+            <pushList :pPopId="popId" style="" :initData='propParams.initData' :propParams="propParams" :ref="'gPopPush'" :popYn="true" :readySearchList="readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
+        </div>
 
       <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  targetType === 'chanList'">
           <chanList :pPopId="popId" :initData='propParams.initData' :propData="propParams" ref="gPopChan" :popYn="true" @closeLoading="loadingYn = false" @openPop = "openPop"/>
@@ -81,6 +82,7 @@ import pushList from '../../../pages/routerPages/Tal_pushList.vue'
 import chanList from '../../../pages/routerPages/D_chanList.vue'
 import searchPage from '../../../pages/routerPages/D_searchPage.vue'
 import chanAlimList from '../../pageComponents/channel/D_chanAlimList.vue'
+import chanHomeAlimList from '../../pageComponents/channel/D_chanAlimList_homepage.vue'
 import askTal from '../info/Tal_askTheAlim.vue'
 import talInfo from '../info/Tal_theAlimInfo.vue'
 import question from '../info/Tal_question.vue'
@@ -121,6 +123,9 @@ import unknownLoginPop from '../../pageComponents/channel/D_unknownLoginPop.vue'
 export default {
   created () {
     console.log(this.propParams)
+    if (this.propParams.targetType === 'chanDetail' && Number(this.propParams.targetKey) === 735) {
+      this.homepageYn = true
+    }
     this.settingPop()
     localStorage.setItem('notiReloadPage', 'none')
   },
@@ -151,6 +156,7 @@ export default {
       errorText: '',
       failPopYn: false,
       selectPlist: [],
+      homepageYn: false,
       mBookDetailPopYn: false
     }
   },
@@ -199,7 +205,8 @@ export default {
     errorPage,
     creAddressBook,
     notiHitstory,
-    totalFileList
+    totalFileList,
+    chanHomeAlimList
   },
   updated () {
   },
@@ -379,6 +386,10 @@ export default {
       this.targetType = target.targetType
       if (this.targetType === 'contentsDetail' || this.targetType === 'chanDetail') {
         /* if (!this.targeType || !target.targetKey) return */
+        if (this.targetType === 'chanDetail' && Number(target.targetKey) === 735) {
+          this.homepageYn = true
+        }
+        console.log(this.homepageYn)
         this.popId = this.targetType + target.targetKey
       } else if (this.targetType === 'pushList') {
         if (target.readySearchList !== undefined && target.readySearchList !== null && target.readySearchList !== '') {

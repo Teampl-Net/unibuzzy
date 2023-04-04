@@ -373,6 +373,7 @@ export default {
       this.targetType = target.targetType
       if (this.targetType === 'contentsDetail' || this.targetType === 'chanDetail') {
         /* if (!this.targeType || !target.targetKey) return */
+        alert(true)
         this.popId = this.targetType + target.targetKey
       } else if (this.targetType === 'pushList') {
         if (target.readySearchList !== undefined && target.readySearchList !== null && target.readySearchList !== '') {

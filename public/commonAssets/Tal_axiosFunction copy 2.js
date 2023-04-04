@@ -3,7 +3,6 @@
 import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
 import router from '../../src/router'
-import { params } from 'vue-router'
 import { commonMethods } from '../../src/assets/js/Tal_common'
 import store from '../../src/store'
 import { mapGetters, mapActions } from 'vuex'
@@ -26,17 +25,13 @@ axios.defaults.withCredentials = true */
 axios.defaults.headers.get.Pragma = 'no-cache' */
 var g_axiosQueue = []
 
-export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
+export async function commonAxiosFunction (setItem, nonLoadingYn) {
   console.log('####-------------------------------commonAxiosFunction.' + setItem.url + '----------------------------------------####')
   console.log('####parameter is: ')
   console.log(setItem.param)
-  if (setItem.firstYn || noAuthYn !== undefined) {
-    console.log('pass')
+  if (setItem.firstYn) {
   } else {
-    var user = store.getters['D_USER/GE_USER']
-    if (!user.unknownYn) {
-      await methods.userLoginCheck()
-    }
+    await methods.userLoginCheck()
   }
   var result = false
   if (nonLoadingYn === true) {
@@ -150,7 +145,7 @@ export async function saveUser (userProfile, loginYn) {
     localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
     if (loginYn) {
       var userInfo = result.data.userMap
-      if (!userInfo.certiDate && (!(/Mobi/i.test(window.navigator.userAgent)))) {
+      if (!userInfo.certiDate && (userInfo.userKey === 228 || !(/Mobi/i.test(window.navigator.userAgent)))) {
         // router.replace({ path: '/' })
         router.replace({ path: '/savePhone' })
         return
@@ -159,12 +154,11 @@ export async function saveUser (userProfile, loginYn) {
     router.replace({ path: '/' })
   } else if (result.data.message === 'NG') {
     if (store !== undefined && store !== null) {
-      store.commit('D_USER/MU_CLEAN_USER')
+      store.commmit('D_USER/MU_CLEAN_USER')
     }
     localStorage.setItem('user', '')
     alert('로그인에 실패하였으니, 다른방식으로 재로그인 해주세요.')
-    router.replace({ name: 'unknown' })
-    // router.replace({ name: 'policies' })
+    router.replace({ path: '/policies' })
   }
 }
 export const methods = {
@@ -189,7 +183,19 @@ export const methods = {
       paramMap.set('fcmKey', '22222222')
       paramMap.set('soAccessToken', 'djWQ33dQRz-mzUVjQmggEz:APA91bHLvbLuEmuvBnh9o8TAC2SgI6zSP836eC8g3zq5HqkfhZenv6zC_hcWK14MI5ZE5PoYAeV5U7FYCH-EGYMTaoXTWC-UleipjRydqG7z0r-wu0gT4TT9b6e89P4FR5l353DFK0C-')
       paramMap.set('userKey', 255)
+
+      // paramMap.set('fcmKey', 'fp75GU331khRuUTTka5UYW:APA91bG1ZFejkmPfjMtjUuxvsUxE4zW8Ei2Vi9IgjkM7i9Bl_atL6A7P4lNafjQ6uLvF9IcbPLnOSiAuWI3muSR9UuPKkbCFdHAUd9Q0w5vA4bTmn64h0bjSEYGiMxsO83RSnC2uAuce')
+      // paramMap.set('soAccessToken', 'AAAAOLhYTcTPrzQ8DVqU31n04kh-VWmdXvnqXXGATAevs4Re1eAUnJ81mhrvLexek-FWOPf90Dp3yWCdKsRiRunztm0')
+      // paramMap.set('userKey', 123)
+
+      // // 최유민테스트
+      // paramMap.set('fcmKey', '11111111')
+      // paramMap.set('soAccessToken', 'ABAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
+      // paramMap.set('fcmKey', '33333333')
+      // paramMap.set('soAccessToken', 'CCAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
     } else {
+      // eslint-disable-next-line no-debugger
+      debugger
       localStorage.setItem('testYn', false)
       var user = store.getters['D_USER/GE_USER']
       if (!user) {
@@ -200,8 +206,7 @@ export const methods = {
       if (user === undefined || user === null || user === '' || !user.fcmKey) {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
-        router.replace({ name: 'unknown' })
-        // router.replace({ name: 'policies' })
+        router.replace('/policies')
         return
       }
       paramMap.set('userKey', user.userKey)
@@ -215,17 +220,25 @@ export const methods = {
     var checkParam = {}
     checkParam.userKey = Number(user.userKey)
     checkParam.fcmKey = user.fcmKey
-    var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
-
-    if (result.data && result.data.resultCode === 'OK') {
-      if (result.data.userMap) {
-        try {
-          localStorage.setItem('user', JSON.stringify(result.data.userMap))
-          await store.dispatch('D_USER/AC_USER', result.data.userMap)
-          localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
-        } catch (error) {
-          console.log(error)
+    // eslint-disable-next-line no-undef
+    /* await sso.loginCheck2(checkParam, this.callbackFunc).then(result => {
+      // if (result.result !== true) return
+      // eslint-disable-next-line no-debugger
+      debugger
+      var store = require('../../src/store')
+      if (result.result === true) {
+        console.log(result.userMap)
+        console.log('!!! USER LOGIN CHECK !!!')
+        if (result.userMap) {
+          try {
+            localStorage.setItem('user', JSON.stringify(result.userMap))
+            store.dispatch('D_USER/AC_USER', result.userMap)
+            localStorage.setItem('sessionUser', JSON.stringify(result.userMap))
+          } catch (error) {
+            console.log(error)
+          }
         }
+
         if (maingoYn) {
           if (typeof (history.pushState) !== 'undefined') {
             history.pushState(null, null, '')
@@ -234,24 +247,26 @@ export const methods = {
           }
           router.replace({ name: 'main', params: { testYn: true } })
         }
+      } else {
+        commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
+        router.replace('/policies')
+        if (store !== undefined && store !== null) {
+          store.commmit('D_USER/MU_CLEAN_USER')
+        }
+        localStorage.setItem('sessionUser', '')
+        localStorage.setItem('user', '')
+        if (user === undefined || user === null || user === '') {
+          if (store !== undefined && store !== null) {
+            store.commmit('D_USER/MU_CLEAN_USER')
+          }
+          localStorage.setItem('sessionUser', '')
+          localStorage.setItem('user', '')
+          router.replace('/policies')
+        }
+        window.localStorage.removeItem('testYn')
+        localStorage.setItem('loginYn', false)
       }
-    } else {
-      commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
-      // router.replace({ name: 'policies' })
-      router.replace({ name: 'unknown' })
-      if (store !== undefined && store !== null) {
-        store.commit('D_USER/MU_CLEAN_USER')
-      }
-      localStorage.setItem('sessionUser', '')
-      localStorage.setItem('user', '')
-    }
-    if (user === undefined || user === null || user === '') {
-      if (store !== undefined && store !== null) {
-        store.commit('D_USER/MU_CLEAN_USER')
-      }
-      window.localStorage.removeItem('testYn')
-      localStorage.setItem('loginYn', false)
-    }
+    }) */
     // var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
   },
   async d_AlimLogout () {
@@ -261,11 +276,10 @@ export const methods = {
     })
     console.log(result)
     if (result) {
-      await router.replace({ name: 'login' })
+      await router.replace('/login')
       store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
-      await store.dispatch('D_USER/AC_USER', '')
       if (store !== undefined && store !== null) {
-        store.commit('D_USER/MU_CLEAN_USER')
+        store.commmit('D_USER/MU_CLEAN_USER')
       }
 
       window.localStorage.setItem('loginYn', false)
@@ -284,19 +298,17 @@ export const methods = {
     resultList = result
     return resultList
   },
-  async getContentsList (inputParam, nonLoadingYn, noAuthYn) {
+  async getContentsList (inputParam, nonLoadingYn) {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
-      if (!noAuthYn && store.getters['D_USER/GE_USER']) {
-        paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
-      }
+      paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
     }
     var resultList = null
     var result = await commonAxiosFunction({
       url: 'service/tp.getMyContentsList',
       param: paramSet
-    }, nonLoadingYn, noAuthYn)
+    }, nonLoadingYn)
     resultList = result.data
     return resultList
   },
@@ -356,7 +368,6 @@ export const methods = {
     return result
   },
   async getStickerList (inputParam) {
-    if (store.getters['D_USER/GE_USER'].unknownYn) return
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {

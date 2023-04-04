@@ -190,7 +190,7 @@ axios.interceptors.response.use(function (response) {
   //   return axios.request(originalRequest)
   // }
 })
-
+localStorage.setItem('nativeYn', false)
 var varUA = localStorage.getItem('systemName')
 if (varUA !== undefined && varUA !== null && varUA !== '') {
   if (varUA === 'android' || varUA === '"Android"' || varUA === 'ios' || varUA === '"iOS"') {

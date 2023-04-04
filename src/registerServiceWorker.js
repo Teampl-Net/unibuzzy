@@ -59,16 +59,25 @@ if (!isMobile) {
   })
 
   if (navigator.serviceWorker) {
-    navigator.serviceWorker.addEventListener('controllerchange', function () {
-      console.log(true)
-    })
-    navigator.registerProtocolHandler(
-      'web+test', // protocal
-      '/?source=%s', // url
-      { type: 'service-worker', navigation: 'none' } // new option object
-    )
-    document.addEventListener('swUpdated', function (e) {
-      console.log(e)
-    })
+    const agent = window.navigator.userAgent.toLowerCase()
+    let safariYn = false
+    switch (true) {
+      case agent.indexOf('safari') > -1:
+        safariYn = true
+        break
+    }
+    if (!safariYn) {
+      navigator.serviceWorker.addEventListener('controllerchange', function () {
+        console.log(true)
+      })
+      navigator.registerProtocolHandler(
+        'web+test', // protocal
+        '/?source=%s', // url
+        { type: 'service-worker', navigation: 'none' } // new option object
+      )
+      document.addEventListener('swUpdated', function (e) {
+        console.log(e)
+      })
+    }
   }
 }

@@ -19,7 +19,7 @@ import search from '../pages/routerPages/D_searchPage.vue'
 import savePhone from '../pages/routerPages/Tal_savePhone.vue'
 import saveName from '../pages/routerPages/Tal_saveName.vue'
 import nonMemInquiryBoard from '../pages/intro/Tal_nonMemberInquiryBoard.vue'
-import suminTest from '../pages/suminTest.vue'
+import suminTest from '../pages/intro/suminTest.vue'
 // import myChanList from '../components/popup/del_Tal_managerChanList.vue'
 // import store from '../store/index'
 /* import admRouterMain from '../pages/routerPages/admPages/TalAdm_main.vue'
@@ -40,6 +40,7 @@ import myPage from '../pages/routerPages/D_myPage.vue'
 // import suminTest from '../components/unit/formEditor/Tal_attachFile.vue'
 import admLogin from '../pages/intro/Tal_Adm_login.vue'
 import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue'
+import naverCallbackTest from '../pages/intro/Tal_naverLoginCallback copy.vue'
 import certiPhone from '../components/pageComponents/intro/D_certi_phone.vue'
 import certiPhoneReturn from '../components/pageComponents/intro/D_certi_phone_return.vue'
 import ssoLogin from '../pages/backuplogin.vue'
@@ -148,6 +149,12 @@ const routes = [
     name: 'naverCallback',
     props: true,
     component: naverCallback
+  },
+  {
+    path: '/naverCallbackTest',
+    name: 'naverCallbackTest',
+    props: true,
+    component: naverCallbackTest
   }, /*
 
   {

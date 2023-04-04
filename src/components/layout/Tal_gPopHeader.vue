@@ -1,7 +1,9 @@
 <template>
-  <div class="commonPopHeaderWrap " style="border:1px solid black" :class="{ 'newHeaderLine' : !chanAlimListTeamKey && targetType !== 'createChannel' && targetType !== 'contentsDetail' && targetType !== 'boardMain' , 'headerShadow' : chanAlimListTeamKey}" :style="targetType === 'chanInfo' ? 'background:transparent !important;' : ';' + 'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;' + 'padding-bottom: 1.7rem'">
+  <div class="commonPopHeaderWrap " style="" :class="{ 'newHeaderLine' : !chanAlimListTeamKey && targetType !== 'createChannel' && targetType !== 'contentsDetail' && targetType !== 'boardMain' , 'headerShadow' : chanAlimListTeamKey}" :style="targetType === 'chanInfo' ? 'background:transparent !important;' : ';' + 'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;' + 'padding-bottom: 1.7rem'">
     <!-- <img src="../../../assets/images/common/icon_back_white.png" v-on:click="goBack" class="fl" style=" width: 0.8rem;" > -->
-    <div v-on:click="closeXPop" class="fl cursorP " style="width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
+    <div v-on:click="closeXPop" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
+      <!-- <img v-if="homepageYn" src="../../assets/images/intro/tal_permission_header_logo.png" style="width: 28px;margin-top: 5px;" alt=""> -->
+      <!-- <img v-if="homepageYn" src="../../assets/images/main/main_logo.png" style="width: 80px;" alt=""> -->
       <img v-if="bgblack === true " src="../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" >
       <img v-else-if="pNoAuthYn === true " src="../../assets/images/footer/icon_home_fillin.svg"  v-on:click="goMain">
       <img v-else src="../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
@@ -35,8 +37,8 @@
     <!-- <gBtnSmall v-if="this.headerTitle === '알림 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="발송하기" style="position: absolute; right: 1rem" /> -->
     <!-- <gBtnSmall v-else-if="this.headerTitle === '게시글 작성'" :btnThema="'light'" v-on:click="sendBtnClick" btnTitle="작성하기" style="position: absolute; right: 1rem" /> -->
     <div v-if="targetType === 'chanDetail' && (chanAlimListTeamKey !== undefined && chanAlimListTeamKey !== null && chanAlimListTeamKey !== '')" class="chanMenubar cursorP" @click="openMenu">
-      <!-- <img v-if="bgblack === true " src="../../assets/images/common/icon_menu_white.png" style="width:1.8rem;"/> -->
-      <img src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
+      <img v-if="bgblack === true " src="../../assets/images/common/icon_menu_white.png" style="width:1.8rem;"/>
+      <img v-else src="../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
     </div>
     <!-- <gBtnSmall v-if="managerBtn===true"  v-on:click="sendBtnClick" btnTitle="관리" style="position: absolute; right: 1rem" /> -->
   </div>
@@ -47,6 +49,7 @@ import helpButtonPop from '../popup/info/Tal_helpButtonPop.vue'
 export default {
   name: 'talHeader',
   props: {
+    homepageYn: {},
     chanName: {},
     headerTitle: {},
     chanAlimListTeamKey: {},

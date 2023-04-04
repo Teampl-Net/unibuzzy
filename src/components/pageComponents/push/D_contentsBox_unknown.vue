@@ -1,19 +1,19 @@
 <template>
-    <div v-if="mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
+    <div v-if="this.GE_USER != null && mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
       <!-- <button @click="downloadPdf">다운로드</button> -->
       <!-- <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;"> -->
         <div :class="animationYn? 'newContentsAni':''" key="animationYn" v-if="this.CONT_DETAIL" :style="`padding-bottom: ${this.$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`" style="width: 100%; background: #FFF; overflow: hidden; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative; padding-top: 5px;  border-radius: 8px;">
           <div v-if="propJustShowYn" :style="propPreStickerList && propPreStickerList.length > 0? 'height: calc(100% - 50px);' : 'height: calc(100%); '" style="width: 100%; position: absolute;left: 0; top: 0; z-index: 99;"></div>
           <!-- :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" -->
           <div class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 10px 20px;">
-              <div @click="goChannelMain()" :style="this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
+              <div @click="goChannelMain()" :style="this.GE_USER && this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
                   <div :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext : CONT_DETAIL.logoPathMtext) + ');'" style="width: calc(100% - 2px); height:  calc(100% - 2px); border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;">
 
                   </div>
               </div>
               <div style="width: calc(100% - 55px); margin-left: 10px; height: 100%; float: left; display: flex; flex-direction: column;" >
                   <div style="width: 100%; paosition: relative; height: 50%; min-height: 26px;  position: relative;">
-                      <template v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn">
+                      <template v-if="!pUnknownYn && !pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && this.GE_USER && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn">
                           <p class=" textLeft textOverdot commonBlack fontBold font16" style="width: calc(100% - 35px);">
                               열람 권한이 없습니다.
                           </p>
@@ -59,10 +59,10 @@
                           </template>
                       </div>
                   </div>
-                  <div v-if="!GE_USER.unknownYn" style="width: 100%; float: left;">
+                  <div style="width: 100%; float: left;">
                       <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && !pNoAuthYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
                       <!-- <p class="fr font12 lightGray mright-03" @click="CONT_DETAIL.rUserCount !== -1? this.openRecvListPop(): ''" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" > -->
-                      <p class="fl commonColor font12 fl textLeft fontBold cursorP" v-if="!pNoAuthYn && CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" style="margin-top: 2px;" @click="sendReply">답장하기</p>
+                      <p class="fl commonColor font12 fl textLeft fontBold cursorP" v-if="!pUnknownYn && !pNoAuthYn && CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" style="margin-top: 2px;" @click="sendReply">답장하기</p>
                       <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
                           <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
                       </div>
@@ -74,9 +74,9 @@
               <gSticker @click="mStickerPopShowYn = true" :pSticker="{nameMtext: 'test', picBgPath: '#CCC'}"/>
           </div> -->
           <div v-if="!propJustShowYn" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px;">
-              <div v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
-              <div v-else-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
-              <div v-else class="h-400max overHidden fl w-100P" :style="pNoAuthYn? 'height:':''" ref="contentsBoxRef"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
+              <div v-if="!pUnknownYn && !pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && this.GE_USER && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
+              <div v-else-if="!pUnknownYn && !pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && this.GE_USER && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
+              <div v-else class="h-400max overHidden fl w-100P" :style="!pUnknownYn && pNoAuthYn? 'height:':''" ref="contentsBoxRef"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
                 <pre @loadeddata="testLoad"  :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
               </div>
               <div v-if="!propJustShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" style="width: 100%; padding: 5px 10px; padding-left: 20px; padding-bottom: 0; float: left; min-height: 20px;margin-top: 10px;">
@@ -92,40 +92,39 @@
                   <gStickerLine v-if="value" :pSelecteModeYn="true" :pSmallYn="true" @click="this.$emit('selectSticker', value)" style="cursor: pointer; float: left; margin-right: 5px; min-width: 30px;" :pSticker="value" />
               </template>
           </div>
-          <template :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  v-if="!propJustShowYn && (pNoAuthYn || (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)">
-            <div v-if="!pNoAuthYn" class="contentsCardUserDoArea" style="position: relative; width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">
+          <template :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  v-if="pUnknownYn || propJustShowYn && (pNoAuthYn || (CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)">
+            <div v-if="pUnknownYn || !pNoAuthYn" class="contentsCardUserDoArea" style="position: relative; width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">
               <stickerListSetting @mContStickerList="saveStickerList" @openStickerPop="openStickerPop"  v-if="this.openStickerListYn" :openStickerListYn="this.openStickerListYn" :contDetail="this.CONT_DETAIL" :propStickerList="this.mStickerList" @openPop="openSettingStickerPop" />
-              <div style="float: left; width: calc(100% - 100px); height: 100%;" v-if="this.CONT_DETAIL.D_CONT_USER_DO">
-                <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                  <div style="width: 100%; height: 20px; float: left;">
-                    <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="" src="../../../assets/images/contents/cont_like_no.svg" alt="">
-                    <img v-else src="../../../assets/images/contents/cont_like.svg" alt="" class="">
+              <div style="float: left; width: calc(100% - 100px); height: 100%;" v-if="this.CONT_DETAIL.D_CONT_USER_DO !== null || pUnknownYn === true">
+                      <div @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                        <div style="width: 100%; height: 20px; float: left;">
+                          <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="" src="../../../assets/images/contents/cont_like_no.svg" alt="">
+                          <img v-else src="../../../assets/images/contents/cont_like.svg" alt="" class="">
+                        </div>
+                        <p class="font12 fl fontBold w-100P mtop-01  userDoColor">{{CONT_DETAIL.likeCount}}</p>
+                      </div>
+                      <div  @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                        <div style="width: 100%; height: 20px; float: left;">
+                          <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" class="" src="../../../assets/images/contents/cont_star_no.svg" alt="">
+                          <img v-else src="../../../assets/images/contents/cont_star.svg" alt="" class="">
+                        </div>
+                        <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{CONT_DETAIL.starCount}}</p>
+                      </div>
+                      <div @click="this.goContentsDetail(undefined, true)" style="width: 30px; height: 35px; display: flex; cursor: pointer;  float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                        <div style="width: 100%; height: 20px; float: left;">
+                          <img v-if="mWriteMemoYn" src="../../../assets/images/contents/cont_memo.svg" class="" alt="">
+                          <img v-else src="../../../assets/images/contents/cont_memo_no.svg" class="" alt="">
+                        </div>
+                        <p class="font12 fontBold mtop-01 fl w-100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
+                      </div>
+                      <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                        <div style="width: 100%; height: 20px; float: left;">
+                          <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
+                            <img v-else src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
+                        </div>
+                        <p class="font12 fontBold mtop-01 fl w-100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
+                      </div>
                   </div>
-                  <p class="font12 fl fontBold w-100P mtop-01  userDoColor">{{CONT_DETAIL.likeCount}}</p>
-                </div>
-
-                <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                  <div style="width: 100%; height: 20px; float: left;">
-                    <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" class="" src="../../../assets/images/contents/cont_star_no.svg" alt="">
-                    <img v-else src="../../../assets/images/contents/cont_star.svg" alt="" class="">
-                  </div>
-                  <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{CONT_DETAIL.starCount}}</p>
-                </div>
-                <div @click="this.goContentsDetail(undefined, true)" style="width: 30px; height: 35px; display: flex; cursor: pointer;  float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                  <div style="width: 100%; height: 20px; float: left;">
-                    <img v-if="mWriteMemoYn" src="../../../assets/images/contents/cont_memo.svg" class="" alt="">
-                    <img v-else src="../../../assets/images/contents/cont_memo_no.svg" class="" alt="">
-                  </div>
-                  <p class="font12 fontBold mtop-01 fl w-100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
-                </div>
-                <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                  <div style="width: 100%; height: 20px; float: left;">
-                    <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
-                      <img v-else src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
-                  </div>
-                  <p class="font12 fontBold mtop-01 fl w-100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
-                </div>
-            </div>
                   <div style="float: right; width: 140px; height: 100%; float: left;">
                       <div style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; cursor: pointer;justify-content: center; align-items: center;">
                           <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
@@ -135,7 +134,7 @@
                           </div>
                           <p class="font12 fl fontBold w-100P mtop-01 userDoColor">공유</p>
                       </div>
-                      <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : openStickerPop()" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                      <div @click="openStickerPop" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
                           <img src="../../../assets/images/push/stickerIcon.svg" class="img-w20" alt="">
                         </div>
@@ -147,7 +146,7 @@
                           <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                           <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                       </div> -->
-                      <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : subScribeContents()" style="width: 30px; height: 35px; display: flex; float: right;cursor: pointer;  margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                      <div @click="subScribeContents" style="width: 30px; height: 35px; display: flex; float: right;cursor: pointer;  margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                           <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center;">
                               <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/push/contentsBellIcon_on.svg" class=" " alt="">
                               <img v-else src="../../../assets/images/push/contentsBellIcon.svg" class="" alt="">
@@ -179,7 +178,7 @@
       </div>
     <!-- </vue3-simple-html2pdf> -->
     <!-- 밑에는 댓글 작성 창 -->
-    <gMemoPop style="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="!pNoAuthYn && this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
+    <gMemoPop style="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="!pUnknownYn && !pNoAuthYn && this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
 
   <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
   <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
@@ -221,7 +220,7 @@ export default {
     recvListPop
   },
   props: {
-    pOpenUnknownLoginPop: Function,
+    pUnknownYn: {},
     propTargetType: {},
     contentsEle: {},
     propDetailYn: {},
@@ -245,8 +244,6 @@ export default {
         this.mContStickerList = this.replaceArr(stickerList)
       }
     }
-    console.log('this.CONT_DETAIL')
-    console.log(this.CONT_DETAIL)
   },
   data () {
     return {
@@ -316,10 +313,6 @@ export default {
       this.mContStickerList = params.mContStickerList
     },
     async openStickerPop () {
-      if (this.GE_USER.unknownYn) {
-        this.pOpenUnknownLoginPop(this.CONT_DETAIL)
-        return
-      }
       if (!this.openStickerListYn) {
         var param = {}
         if (this.GE_USER.unknownYn) return
@@ -381,7 +374,7 @@ export default {
       } */
       var leng = memoList.length
       for (var i = 0; i < memoList.length; i++) {
-        if (memoList[i].creUserKey === this.GE_USER.userKey) this.mWriteMemoYn = true
+        if (this.GE_USER && (memoList[i].creUserKey === this.GE_USER.userKey)) this.mWriteMemoYn = true
         for (var c = 0; c < memoList[i].cmemoList.length; c++) {
           if (memoList[i].cmemoList[c].creUserKey === this.GE_USER.userKey) this.mWriteMemoYn = true
         }
@@ -1102,15 +1095,10 @@ export default {
     goContentsDetail (moreCheckYn, memoScrollYn) {
       if (this.propDetailYn) return
       // 권한이 없는 컨텐츠는 이동하지 못하게 리턴
-      if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
+      if (!this.pUnknownYn && this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
       // if (window.getSelection() !== null || window.getSelection() !== '') return
       if (moreCheckYn) {
         this.alimBigView()
-        return
-      }
-      if (this.GE_USER.unknownYn) {
-        this.pOpenUnknownLoginPop(this.CONT_DETAIL)
-        // this.$showToastPop('로그인 후 이용가능합니다.')
         return
       }
       var openPopParam = {}
@@ -1134,9 +1122,8 @@ export default {
       this.$emit('openPop', openPopParam)
     },
     async changeAct (act, key) {
-      if (this.GE_USER.unknownYn) {
-        this.pOpenUnknownLoginPop(this.CONT_DETAIL)
-        // this.$showToastPop('로그인 후 이용가능합니다.')
+      if (this.pUnknownYn) {
+        alert('로그인을 해주세요!')
         return
       }
       // eslint-disable-next-line no-unused-vars
@@ -1212,11 +1199,6 @@ export default {
       }
     },
     async subScribeContents () {
-      if (this.GE_USER.unknownYn) {
-        this.pOpenUnknownLoginPop(this.CONT_DETAIL)
-        // this.$showToastPop('로그인 후 이용가능합니다.')
-        return
-      }
       // eslint-disable-next-line no-unused-vars
       var result = null
       var subsYn = this.CONT_DETAIL.subsYn
@@ -1347,33 +1329,13 @@ export default {
       }
       // console.log(cont)
       if (cont && cont.length > 0) {
-        const viewAuth = this.$checkUserAuth(cont[0].shareItem).V
-        /* if (cont[0].shareList) {
-          const shareList = cont[0].shareList
-          const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
-          if (index !== -1) {
-            viewAuth = true
-          }
-        } */
-        cont[0].VIEW_YN = viewAuth
         return cont[0]
       } else {
-        var content = this.contentsEle
-        const viewAuth = this.$checkUserAuth(this.contentsEle.shareItem).V
-        /* if (this.contentsEle.shareList) {
-          const shareList = this.contentsEle.shareList
-          const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
-          if (index !== -1) {
-            viewAuth = true
-          }
-        } */
-        content.VIEW_YN = viewAuth
-        return content
+        return this.contentsEle
       }
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
-      // return this.$store.getters['D_USER/GE_USER']
     },
     GE_NEW_MEMO_LIST (state) {
       return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']

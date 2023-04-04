@@ -2,8 +2,8 @@
 import router from '../../router'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 import store from '../../store'
-import { onMessage } from '../../assets/js/webviewInterface'
-import { functions } from '../../assets/js/D_vuexFunction'
+import { onMessage } from './webviewInterface'
+import { functions } from './D_vuexFunction'
 import routerMain from '../../pages/Tal_router_main.vue'
 const isJsonString = (str) => {
   try {
@@ -99,8 +99,8 @@ const isJsonString = (str) => {
             await saveUser(userProfile, true) // 서버에 save요청
             router.replace({ path: '/' })
           } else {
+            router.replace({ path: '/unknown' })
             // router.replace({ path: 'policies' })
-            router.replace({ name: 'unknown' })
           }
         } else if (message.type === 'CheckUserPermission') {
           router.replace({ name: 'permissions' })
@@ -111,10 +111,8 @@ const isJsonString = (str) => {
         } else if (message.type === 'requestUserPermission') {
           router.replace({ path: '/' })
         } else if (message.type === 'deviceSystemName') {
-          localStorage.setItem('nativeYn', true)
           localStorage.setItem('systemName', message.systemNameData)
         } else if (message.type === 'deepLinkUrl') {
-          localStorage.setItem('nativeYn', true)
           store.commit('D_HISTORY/changeDeepLinkQueue', message.url)
           var urlString = message.url.toString()
           const params = new URLSearchParams(

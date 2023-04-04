@@ -523,7 +523,8 @@ export default {
     },
     openWritePushPop () {
       if (this.GE_USER.unknownYn) {
-        this.$showToastPop('로그인 후 이용해주세요')
+        this.pOpenUnknownLoginPop(this.CONT_DETAIL)
+        // this.$showToastPop('로그인 후 이용해주세요')
         return
       }
       this.writeBottSheetYn = true

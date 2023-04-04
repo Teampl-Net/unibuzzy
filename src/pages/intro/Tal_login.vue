@@ -64,6 +64,7 @@ export default {
     return {
       systemName: 'iOS',
       appCloseYn: false,
+      appYn: false,
       mobileYn: this.$getMobileYn()
     }
   },
@@ -82,7 +83,13 @@ export default {
   created () {
     localStorage.setItem('sessionUser', '')
     localStorage.setItem('user', '')
-    if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
+    if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
+      this.systemName = localStorage.getItem('systemName')
+      localStorage.setItem('appYn', true)
+      this.mobileYn = true
+    } else {
+      this.mobileYn = false
+    }
     // 애플로 로그인 성공 시.
     document.addEventListener('AppleIDSignInOnSuccess', (data) => {
       // handle successful response

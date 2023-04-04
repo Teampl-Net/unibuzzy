@@ -1,7 +1,7 @@
 <template>
         <transition name="showModal">
-            <loginCompo @closeXPop="closeXPop" :pPartnerLoginYn="true" :pPartnerLoginText="mPropParams.loginText" :pSetUserItem="saveUserAndAccess" :pCorePartnerYn="true" v-if="mShowTarget === 'login'" @openPop="openPop"/>
-            <boardMain @openImgPop="openImgPop" :pOnlyMineYn="true"  ref="boardMainPop" :propData="mPropParams" :chanAlimListTeamKey="mPropParams.targetKey" v-else-if=" mShowTarget === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"/>
+            <loginCompo @closeXPop="closeXPop" :pPartnerLoginYn="true" :pPartnerLoginText="mRecvParams.loginText" :pSetUserItem="saveUserAndAccess" :pCorePartnerYn="true" v-if="mRecvParams && mRecvParams.loginText && mShowTarget === 'login'" @openPop="openPop"/>
+            <boardMain @openImgPop="openImgPop" :pOnlyMineYn="true"  ref="boardMainPop" :propData="mPropParams" :chanAlimListTeamKey="mPropParams.targetKey" v-else-if="mPropParams &&  mShowTarget === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"/>
         </transition>
     <div></div>
 </template>
@@ -17,7 +17,7 @@ export default {
     boardMain
   },
   created () {
-    if (document.referrer.indexOf('officeon') === -1 && document.referrer.indexOf('localhost') === -1) {
+    if (document.referrer.indexOf('officeon') === -1 && document.referrer.indexOf('localhost') === -1 && document.referrer.indexOf('192.168') === -1) {
       this.$router.push({ name: 'errorPage' })
     }
     // alert('test')
@@ -134,15 +134,17 @@ export default {
       console.log(event)
       let resultData = null
       // Do we trust the sender of this message?
-      if (event.origin.indexOf('officeon') !== -1) {
+      if (event.origin.indexOf('officeon') !== -1 || event.origin.indexOf('localhost') !== -1 || event.origin.indexOf('josa1') !== -1) {
         if (event.data) {
+          // eslint-disable-next-line no-debugger
+          debugger
+          if (event.data.type === 'webpackWarnings') return
           resultData = event.data
           if (this.isJsonString(event.data)) {
             resultData = JSON.parse(event.data)
           }
           this.mRecvParams = resultData.param
           this.mRecvRequest = resultData.request
-          console.log(resultData)
           if (this.mRecvParams.uAccessToken && this.mRecvParams.partnerToken) {
             var loginYn = await this.coreLoginCheck(this.mRecvParams.uAccessToken, this.mRecvParams.partnerToken)
             if (loginYn) {

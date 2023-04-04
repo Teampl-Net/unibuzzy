@@ -24,7 +24,7 @@
             <div v-if="selectFileList.length === 0" style="cursor: pointer; background: #FFF; width: calc(100%); min-height: 70px; height: 100%;display: flex; font-size: 14px;color: rgb(103, 104, 167);justify-content: center;align-items: center;">
                 <img  class="fl" src="../../../assets/images/formEditor/gallery_gray.svg" style="width: 20px;"  alt="">
             </div>
-            <input class="formImageFile" multiple type="file" title ="선택" accept="image/*"  ref="selectFile" id="input-file" @change="handleImageUpload(event)"/>
+            <input class="formImageFile" multiple type="file" title ="선택" accept="image/jpeg, image/png, image/jpg"  ref="selectFile" id="input-file" @change="handleImageUpload(event)"/>
             <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100%)">
                 <div  class="fl mright-05" :style="settingImgSize" style="width:100%;" >
                     <img  class="editorImg" style="width:100%;" :class="{addTrue :  firstFile.addYn}" :src="firstFile.previewImgUrl" />

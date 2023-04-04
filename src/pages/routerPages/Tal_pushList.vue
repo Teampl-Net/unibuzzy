@@ -1,6 +1,8 @@
 <template>
 <div style="width: 100%; height: 100%;">
-  <statCodeComponent @closeXPop="this.workStateCodePopShowYn = false" :currentWorker="{workUserKey: workStateCodePopProps.workUserKey, workUserName: workStateCodePopProps.workUserName}" :teamKey="workStateCodePopProps.creTeamKey" :alimDetail="workStateCodePopProps" :contentsKey="workStateCodePopProps.contentsKey" v-if="workStateCodePopShowYn" :codeList="workStateCodePopProps.workStatCodeList" :currentCodeKey="workStateCodePopProps.workStatCodeKey" class="fr "></statCodeComponent>
+    <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: fixed;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
+    <unknownLoginPop :pClosePop="closeUnknownLoginPop" style="position: fixed;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
+    <statCodeComponent @closeXPop="this.workStateCodePopShowYn = false" :currentWorker="{workUserKey: workStateCodePopProps.workUserKey, workUserName: workStateCodePopProps.workUserName}" :teamKey="workStateCodePopProps.creTeamKey" :alimDetail="workStateCodePopProps" :contentsKey="workStateCodePopProps.contentsKey" v-if="workStateCodePopShowYn" :codeList="workStateCodePopProps.workStatCodeList" :currentCodeKey="workStateCodePopProps.workStatCodeKey" class="fr "></statCodeComponent>
   <!-- <div id="pushListWrap" style="height: 100vh; width: 100%; overflow: scroll; background-color: white; background-size: cover;"> -->
     <!-- <div class="pageHeader pushListCover"> -->
     <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:999999"><div class="spinner"></div></div>
@@ -9,11 +11,11 @@
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <div :style="!popYn ? ' padding-top: 20px;' : ''" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; "> -->
-        <div v-if="pUnknownYn" style=" width: 100%; min-height: 40px; float: left; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ; padding-right: 50px; overflow: auto hidden;">
-            <div @click="changeMainTab('A')" :class="viewMainTab === 'A'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">전체</div>
-            <div @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">알림</div>
-            <div @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">게시글</div>
-            <div v-if="this.$route.path !== '/myPage'" @click="changeMainTab('F')" :class="viewMainTab === 'F'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">파일함</div>
+        <div style=" width: 100%; min-height: 40px; float: left; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ; padding-right: 50px; overflow: auto hidden;">
+            <div @click="changeMainTab('A')" :class="viewMainTab === 'A'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">전체</div>
+            <div v-if="!pUnknownYn" @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">알림</div>
+            <div v-if="!pUnknownYn" @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">게시글</div>
+            <div v-if="!pUnknownYn && this.$route.path !== '/myPage'" @click="changeMainTab('F')" :class="viewMainTab === 'F'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">파일함</div>
         </div>
         <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " />
       </div>
@@ -37,7 +39,7 @@
           <gEmpty :tabName="currentTabName" contentName="알림" v-if="this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
-            <gContentsBox :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
+            <gContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
             <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
           </template>
           <gEmpty :tabName="currentTabName" contentName="전체" v-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
@@ -80,7 +82,7 @@ import findContentsList from '../../components/popup/common/D_findContentsList.v
 import { onMessage } from '../../assets/js/webviewInterface'
 import statCodeComponent from '../../components/board/D_manageStateCodePop.vue'
 // import attachFileListPop from '../../components/pageComponents/main/unit/D_commonAttatchFileListPop.vue'
-
+import unknownLoginPop from '@/components/pageComponents/channel/D_unknownLoginPop.vue'
 export default {
   name: 'pushList',
   components: {
@@ -90,7 +92,8 @@ export default {
     // imgPreviewPop,
     /* pushLoadingCompo, */
     // imgLongClickPop,
-    statCodeComponent
+    statCodeComponent,
+    unknownLoginPop
 
     /* cancelPop */
     // searchResult
@@ -529,6 +532,13 @@ export default {
     }
   },
   methods: {
+    closeUnknownLoginPop () {
+      this.mUnknownLoginPopYn = false
+    },
+    openUnknownLoginPop (contDetail) { // 이 컨텐츠의 정보
+      this.mUnknownLoginPopYn = true
+      // this.mUnknownContDetail = contDetail
+    },
     addAnimation () {
       this.$nextTick(() => {
         setTimeout(() => {
@@ -1209,7 +1219,7 @@ export default {
           param.offsetInt = this.offsetInt
         }
 
-        if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = 10 }
+        if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = 20 }
 
         if (this.findKeyList) {
           if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
@@ -1469,9 +1479,9 @@ export default {
       }
     },
     async refreshList () {
-      var pSize = 10
+      var pSize = 20
       if (this.offsetInt !== 0 && this.offsetInt !== '0') {
-        pSize = Number(this.offsetInt) * 10
+        pSize = Number(this.offsetInt) * 20
       }
       this.targetCKey = null
       this.loadMoreDESCYn = true
@@ -1923,7 +1933,7 @@ export default {
         this.fileList = resultFileList
         this.endListSetFunc(result.data)
       } else {
-        var resultList = await this.getPushContentsList(10, 0, true)
+        var resultList = await this.getPushContentsList(20, 0, true)
       }
       if (resultList === '') {
         if (this.viewMainTab === 'P') {
@@ -2026,7 +2036,7 @@ export default {
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
       // getPushContentsList (pageSize, offsetInput)
-      var pageSize = 10
+      var pageSize = 20
       if (this.resultSearchKeyList.length === 0) {
         this.paddingTop = 75
       }
@@ -2119,6 +2129,7 @@ export default {
   },
   data () {
     return {
+      mUnknownLoginPopYn: false,
       mEmptyReloadKey: 0,
       allContentsList: [],
       alimContentsList: [],
