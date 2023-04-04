@@ -61,8 +61,8 @@
               <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" v-if="(CHANNEL_DETAIL.userTeamInfo && CHANNEL_DETAIL.userTeamInfo.ownerYn === undefined && CHANNEL_DETAIL.userTeamInfo.memberNameMtext === undefined) || this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH) === '구독자'" >
                 <p v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.memberTypeKey && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn" class="fl font14 cursorP fontBold commonColor" @click="this.openReqMemPop()" >멤버신청</p>
               </div>
-              <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="!GE_USER.unknownYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
-              <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else-if="!GE_USER.unknownYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn" src="../../../assets/images/common/icon_bell.svg" alt="">
+              <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="!GE_USER.unknownYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
+              <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else-if="!GE_USER.unknownYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" src="../../../assets/images/common/icon_bell.svg" alt="">
               <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
                 :data-clipboard-text="CHANNEL_DETAIL.copyTextStr">
                 <img class="img-w20" src="../../../assets/images/common/icon_share_square.svg" alt="">
@@ -212,6 +212,8 @@ export default {
   created () {
     this.$emit('openLoading')
     this.readyFunction()
+    console.log('this.CHANNEL_DETAIL')
+    console.log(this.CHANNEL_DETAIL)
   },
   // updated () {
   //   this.mChanMainScrollWrap = this.$refs.chanScrollWrap
@@ -789,6 +791,8 @@ export default {
         teamKey = this.mDirectTeamKey.teamKey
       }
       var detail = this.$getDetail('TEAM', teamKey)
+      console.log('detail')
+      console.log(detail)
       if (detail && detail.length > 0) {
         if (detail[0].blackYn) this.$emit('bgcolor', detail[0].blackYn)
 
