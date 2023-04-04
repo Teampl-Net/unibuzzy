@@ -158,8 +158,6 @@ export default {
       this.$emit('postToolBox', this.tools)
     },
     test (event) {
-      // eslint-disable-next-line no-debugger
-      debugger
       console.log(event)
       console.log('fffffffff')
       // const chosen = document.querySelector('.sortable-chosen')

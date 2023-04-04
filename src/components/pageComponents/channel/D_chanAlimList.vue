@@ -37,7 +37,7 @@
           </div>
           <div id="ownerChannelEditArea" class="w-100P cursorP fl" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 && CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) ">
             <div class="fr mbottom-05" @click="editChan" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float:right !important; ">
-              <p class="font16 textLeft lightGray fr "  >편집 > </p>
+              <p class="font16 textLeft lightGray fr ">편집 > </p>
             </div>
             <div v-if="GE_USER.userKey === 192 || GE_USER.userKey === 228 || GE_USER.userKey === 382" class="fr mright-05 mbottom-05" @click="getTeamToken" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float:right !important; background-color:#DC143C; color: #FFFFFF;">
               <p class="font16 textLeft fr" style="color: #FFFFFF!important;"  >채널아이디 발급 </p>
@@ -642,6 +642,8 @@ export default {
       // this.$emit('openPop', params)
     },
     openPushDetailPop (param) {
+      // eslint-disable-next-line no-debugger
+      debugger
       if (param.targetType === 'contentsDetail' || param.targetType === 'createChannel') {
         param.openActivity = 'chanAlimList'
       }
