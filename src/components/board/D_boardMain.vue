@@ -87,17 +87,17 @@
           <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll" >
             <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"  style=" width:calc(100%);"/>
           </div>
-          <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%); padding-bottom: 40px;" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
+          <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%); padding-bottom: 40px; min-height: 500px" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
 
             <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
             <div class="w-100P fl commonBoardListContentBox" style="height:1px;" />
-            <gContentsBox @openImgPop="openImgPop" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.BOARD_CONT_LIST" :key="index"/>
+            <gContentsBox @contDelete="refreshAll" @openImgPop="openImgPop" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.BOARD_CONT_LIST" :key="index"/>
             <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
             <!-- <boardList :emptyYn="BOARD_CONT_LIST.length === 0? true: false" :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
               @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
               @writeMememo="writeMememo" @riteMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'
               @clearMemo='clearMemo'/> -->
-            <gEmpty :tabName="currentTabName" contentName="게시판" v-if="emptyYn && BOARD_CONT_LIST.length === 0 " />
+            <gListEmpty v-if="emptyYn && BOARD_CONT_LIST.length === 0" title='컨텐츠가 없어요' subTitle='버튼을 눌러 첫 컨텐츠를 작성해보세요.' option='EDIT' />
             <!-- <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents"
               @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey"
               ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;"
@@ -473,6 +473,7 @@ export default {
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
     },
     deleteConfirm (data) {
+      // alert(true)
       if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo' && data !== 'board')) {
         this.tempData = data
       }
@@ -543,6 +544,8 @@ export default {
     },
     delContents (cont) {
       var idx = null
+      alert(true)
+      console.log(cont)
       if (cont.jobkindId === 'BOAR') {
         idx = this.mCabContentsList.findIndex((item) => item.mccKey === cont.mccKey)
         if (idx !== -1) {
@@ -637,7 +640,7 @@ export default {
           url: 'service/tp.deleteContents',
           param: inParam
         })
-        this.refresh()
+        this.refreshAll()
         // this.$emit('closeXPop', true)
       } else if (this.currentConfirmType === 'BLOC') {
         this.currentConfirmType = ''
@@ -816,6 +819,7 @@ export default {
       }
     },
     async refreshAll () {
+      // alert(true)
       // 새로고침
       this.$emit('openLoading')
       this.findKeyList.searchKey = null
@@ -881,6 +885,14 @@ export default {
     //   this.newScrollPosition = this.newBox.scrollTop
     // },
     async refresh () {
+      var pSize = 10
+      if (this.offsetInt !== 0 && this.offsetInt !== '0' && Number(this.offsetInt) > 0) {
+        pSize = Number(this.offsetInt) * 10
+      }
+      this.endList = true
+      var resultList = await this.getContentsList(pSize, 0)
+      this.mCabContentsList = resultList.content
+      this.endList = false
       // 임시 삭제
       /* var pSize = 10
       if (this.offsetInt !== 0 && this.offsetInt !== '0' && Number(this.offsetInt) > 0) {

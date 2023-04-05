@@ -7,7 +7,7 @@
     <p class="w-100P fl CDeepColor font22 fontBold mtop-05">{{title}}</p>
     <p v-if="option === 'EDIT' || subTitleYn === true" class="w-100P fl commonDarkGray font14">{{subTitle}}</p>
     <div class="w-100P fl" v-if="option === 'EDIT'">
-      <img class="mtop-1" style="transform: translateX(10%)" src="../../../../assets/images/editChan/icon_arrowTurnBottom.svg" alt="">
+      <img class="mtop-05" style="transform: translateX(25%)" src="../../../../assets/images/editChan/icon_arrowTurnBottom.svg" alt="">
     </div>
   </div>
 </div>
