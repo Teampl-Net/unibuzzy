@@ -196,7 +196,6 @@ export default {
 
     var varUA = localStorage.getItem('systemName')
     var nativeYn = localStorage.getItem('nativeYn')
-    alert(true)
     // eslint-disable-next-line no-debugger
     debugger
     // if ((varUA !== undefined && varUA !== null && varUA !== '') || nativeYn !== undefined) {

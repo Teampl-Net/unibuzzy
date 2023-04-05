@@ -36,8 +36,6 @@ export default {
     },
     clickSelectBox () {
       this.mFontSelectBoxShowYn = !this.mFontSelectBoxShowYn
-
-      // 수민씨 formEditor에서 가져왔는데 이게 뭐하는 코드인가요..? -재준
       const selection = document.getSelection && document.getSelection()
       var range1 = selection.getRangeAt(selection.rangeCount - 1)
       this.lastFocus = range1

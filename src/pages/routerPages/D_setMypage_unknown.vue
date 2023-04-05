@@ -117,7 +117,6 @@ export default {
       devModeClickTimer: 0,
       devModePopShowYn: false,
       devPopId: null
-      // dummy:{data:{title:'제목',creDate:'2022-02-11 13:12',body:'안녕하세요!~~',targetKey:'01',showCreNameYn:true ,creUserName:"KO$^$정재준" }}
     }
   },
   created () {

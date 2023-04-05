@@ -338,7 +338,6 @@ export default {
       }
     },
     openReqMemPop () {
-      // 재준
       this.openChannelMsgPop()
       // this.commonChanPopShowYn = true
       // if (this.CHANNEL_DETAIL.cateKey !== 3) {

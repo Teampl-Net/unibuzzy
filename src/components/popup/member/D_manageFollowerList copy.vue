@@ -167,7 +167,6 @@ export default {
        // paramMap.set('showProfileYn', true)
       paramMap.set('teamKey', this.propData.teamKey)
       paramMap.set('pageSize', 100)
-      // #재준씨 봐주세요!!!!!!
       if (this.tab === 'M') {
         paramMap.set('memberYn', true)
       } else {

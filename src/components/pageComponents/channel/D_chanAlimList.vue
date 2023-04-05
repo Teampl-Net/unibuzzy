@@ -23,7 +23,7 @@
                   {{$changeText(CHANNEL_DETAIL.cateItemMtext)}}
                 </p>
               </div>
-              <div class="fl font15 w-100P " style="box-sizing:boborder-box; word-break:break-all; " >
+              <div class="fl font15 w-100P " style="box-sizing:border-box; word-break:break-all; " >
                 <p class="font14 textLeft fl " style="word-break:break-all" >
                   <img class="fl img-w20" style="margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘">
                   {{$changeText(CHANNEL_DETAIL.memoMtext)}}
@@ -212,8 +212,6 @@ export default {
   created () {
     this.$emit('openLoading')
     this.readyFunction()
-    console.log('this.CHANNEL_DETAIL')
-    console.log(this.CHANNEL_DETAIL)
   },
   // updated () {
   //   this.mChanMainScrollWrap = this.$refs.chanScrollWrap
@@ -341,7 +339,6 @@ export default {
       }
     },
     openReqMemPop () {
-      // 재준
       this.openChannelMsgPop()
       // this.commonChanPopShowYn = true
       // if (this.CHANNEL_DETAIL.cateKey !== 3) {
@@ -386,6 +383,8 @@ export default {
       this.$emit('openPop', param)
     },
     async readyFunction () {
+      // eslint-disable-next-line no-debugger
+      debugger
       const directUrl = localStorage.getItem('urlString')
       if (directUrl) {
         const directUrlObj = JSON.parse(directUrl)

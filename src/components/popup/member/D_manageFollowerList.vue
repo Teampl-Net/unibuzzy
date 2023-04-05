@@ -292,7 +292,6 @@ export default {
       if (this.searchFilterObj.userEmail != null && this.searchFilterObj.userEmail !== '') {
         paramMap.set('userEmail', this.searchFilterObj.userEmail)
       }
-      // #재준씨 봐주세요!!!!!!
       /* if (this.tab === 'M') {
         paramMap.set('memberYn', true)
       } else {
