@@ -46,7 +46,6 @@ import certiPhoneReturn from '../components/pageComponents/intro/D_certi_phone_r
 import ssoLogin from '../pages/backuplogin.vue'
 
 import contDetail from '../pages/routerPages/D_contentsDetail.vue'
-import forSearchContList from '../pages/routerPages/D_forSearchContList.vue'
 import store from '@/store'
 
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
@@ -221,12 +220,6 @@ const routes = [
     name: 'contDetail',
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_contentsDetail.vue')
-  },
-  {
-    path: '/contList',
-    name: 'contList',
-    props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_forSearchContList.vue')
   },
   {
     path: '/errorPage',

@@ -505,7 +505,7 @@ export default {
         }
       } else if (type === 'underLine') {
         spanWrap.innerHTML = spanWrap.innerHTML.replace('text-decoration: underline;', '')
-        spanWrap.innerHTML = spanWrap.innerHTML.replace('text-decoration: normal;', '')
+        spanWrap.innerHTML = spanWrap.innerHTML.replace('text-decoration: none;', '')
         if (this.tools.underLineYn === true) {
           spanWrap.setAttribute('style', 'text-decoration: none;')
           this.tools.underLineYn = false
