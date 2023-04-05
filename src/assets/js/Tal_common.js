@@ -458,6 +458,8 @@ export const commonMethods = {
     return D_CHAN_AUTH
   },
   getFollowerType (data) {
+    // eslint-disable-next-line no-debugger
+    debugger
     var followerText = ''
     if (data.followerKey) {
       data.followYn = true

@@ -148,7 +148,6 @@ const D_CHANNEL = {
           state.addMemoList.unshift(payload)
         }
       }
-      /* } */
       return true
     },
     MU_MAIN_CHAN_LIST: (state, payload) => {
@@ -225,9 +224,18 @@ const D_CHANNEL = {
             D_CHAN_AUTH.mngTeamYn = team.userTeamInfo.mngTeamYn
             D_CHAN_AUTH.mngMemberYn = team.userTeamInfo.mngMemberYn
           }
-        } else {
+        } else { // 확인 더 필요
           D_CHAN_AUTH.settingYn = true
-          D_CHAN_AUTH.followYn = false
+          if (team.memberNameMtext && team.memberNameMtext !== '') {
+            D_CHAN_AUTH.memberNameMtext = team.memberNameMtext
+            if (team.ownerYn) D_CHAN_AUTH.ownerYn = team.ownerYn
+            if (team.managerKey) {
+              if (team.mngAlimYn) D_CHAN_AUTH.mngAlimYn = team.mngAlimYn
+              if (team.mngTeamYn) D_CHAN_AUTH.mngTeamYn = team.mngTeamYn
+              if (team.mngMemberYn) D_CHAN_AUTH.mngMemberYn = team.mngMemberYn
+            }
+          }
+          // D_CHAN_AUTH.followYn = false
         }
         if (index === -1) {
           if (team.ELEMENTS) {
