@@ -1,120 +1,101 @@
 <template>
-  <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" id="mainAllWrap" class="" ref="mainScrollWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'" style="height: 100%; overflow: hidden scroll;">
-    <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
-    <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
-    <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
-    <unknownLoginPop :pContDetail="mUnknownContDetail" :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
-    <div style="width: 100%; float: left;">
-        <div class="userProfileWrap" style=" float: left;width: 100%; border-radius: 0.8rem; padding: 0 1.5rem;" >
-            <div style="width: calc(100% - 80px); float: left; height: 100%;">
-                <!-- <a href="web+test://pwa">Americano</a> -->
-                <p class="commonLightColor font16 textLeft" style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
-                <p v-if="GE_USER.unknownYn" class="commonLightColor font16 textLeft" style="font-weight: 600;">로그인을 하고 인기있는 채널을 구독해보세요</p>
-                <!-- @click="this.$router.push({path: '/certiPhone'})"  -->
-                <div v-else >
-                    <div style="float: left; height: calc(100% - 20px); width: 100%;">
-                        <div style="float: left; height: 100%; position: relative;">
-                            <p class="fl fontBold font18 CDeepColor" style="position: absolute; z-index: 1;">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
-                            <p class="fl fontBold font18" style="color: transparent!important">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
-                            <div class="highLightYellow w-100P" style="position: absolute; bottom: 5px; left: 0;"></div>
+    <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" id="mainAllWrap" class="" ref="mainScrollWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'" style="height: 100%; overflow: hidden scroll;">
+        <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
+        <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
+        <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
+        <unknownLoginPop :pContDetail="mUnknownContDetail" :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
+        <div class="w-100P fl">
+            <div class="userProfileWrap">
+                <div class="userProfileWelcomeWrap">
+                    <p class="commonLightColor font16 textLeft" style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
+                    <p v-if="GE_USER.unknownYn" class="commonLightColor font16 textLeft" style="font-weight: 600;">로그인을 하고 인기있는 채널을 구독해보세요</p>
+                    <div v-else >
+                        <div class="loginTrueUserWrap">
+                            <div class="loginTrueUserTextArea">
+                                <p class="fl fontBold font18 CDeepColor" style="position: absolute; z-index: 1;">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
+                                <p class="fl fontBold font18" style="color: transparent!important">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
+                                <div class="highLightYellow w-100P" style="position: absolute; bottom: 5px; left: 0;"></div>
+                            </div>
+                            <p style="font-weight: 600;" class="font16 fl commonLightColor">님!</p>
                         </div>
-                        <p style="font-weight: 600;" class="font16 fl commonLightColor">님!</p>
+                    </div>
+                </div>
+                <img v-if="!GE_USER.unknownYn" src="../../assets/images/contents/icon_bell.png" class=" img-w22 mright-1" alt="" @click="openNotiHistoryPop">
+                <gProfileImg v-if="!GE_USER.unknownYn" :selfYn="true" class="fr" @click="goUserProfile" />
+                <gBtnSmall v-else @click="goLoginPage" btnTitle="로그인" class="fr"/>
+            </div>
+            <div v-if="!GE_USER.unknownYn && (this.mMainMChanList || this.mMainChanList)" style="background: #FFFFFF; margin-top: 15px; padding: 20px; padding-right: 0; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
+                <div v-if="this.mMainMChanList"  style="width: 100%; height: 30px; float: left;">
+                    <img src="../../assets/images/main/main_settingIcon2.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
+                    <p @click="goChannelPop('mychannel')" class="font20 fontBold deepBorderColor textLeft CDeepColor cursorP" style="line-height: 26px;">내 관리 채널 ></p>
+                </div>
+                <div v-if="this.mMainMChanList" id="channelWrap" style="width: 100%; height: 100px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
+                    <div style="height: 100%; min-width: 100%; display:flex;">
+                        <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" @openPop="openPop"/>
+                        <createChanIcon @openPop="openPop" />
+                        <template v-if="this.mMainMChanList.length === 0 && this.mMainChanList.length === 0">
+                            <circleSkeleton v-for="(value) in 10" :key="value"/>
+                        </template>
+                    </div>
+                </div>
+                <div v-if="this.mMainChanList" class="mtop-1 " style="width: 100%; height: 30px; float: left; ">
+                    <img src="../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
+                    <p @click="goChannelPop('user')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">구독중인 채널 ></p>
+                </div>
+                <div v-if="this.mMainChanList" :class="!isMobile? 'thinScrollBar':''" id="subChannelWrap" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
+                    <div style="height: 100%; min-width: 100%; display:flex; gap: 10px;">
+                        <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index" @openPop="openPop"/>
+                        <searchChanIcon @openPop="openPop" />
+                        <template v-if="this.mMainChanList.length === 0">
+                            <squareSkeleton v-for="(value) in 10" :key="value"/>
+                        </template>
                     </div>
                 </div>
             </div>
-            <img v-if="!GE_USER.unknownYn" src="../../assets/images/contents/icon_bell.png" class=" img-w22 mright-1" alt="" @click="openNotiHistoryPop">
-            <gProfileImg v-if="!GE_USER.unknownYn" :selfYn="true" class="fr" @click="goUserProfile" />
-            <gBtnSmall v-else @click="goLoginPage" btnTitle="로그인" class="fr"/>
-        </div>
-        <div v-if="!GE_USER.unknownYn && (this.mMainMChanList || this.mMainChanList)" style="background: #FFFFFF; margin-top: 15px; padding: 20px; padding-right: 0; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
-            <div v-if="this.mMainMChanList"  style="width: 100%; height: 30px; float: left;">
-                <img src="../../assets/images/main/main_settingIcon2.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
-                <p @click="goChannelPop('mychannel')" class="font20 fontBold deepBorderColor textLeft CDeepColor cursorP" style="line-height: 26px;">내 관리 채널 ></p>
+            <div v-if="GE_USER.unknownYn && this.mMainChanList" class="loginFalseChanList">
+                <div v-if="this.mMainChanList" class="w-100P fl" style="height: 30px;">
+                    <img src="../../assets/images/main/main_followIcon2.png" style="margin-right: 8px;" class="fl img-w23 cursorP" alt="">
+                    <p @click="goChannelPop('user')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">인기있는 채널 ></p>
+                </div>
+                <div v-if="this.mMainChanList" :class="!isMobile? 'thinScrollBar':''" class="chanListWrap" id="subChannelWrap" style="" @wheel="horizontalScroll">
+                    <div class="chanListScrollWrap">
+                        <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index" @openPop="openPop"/>
+                        <searchChanIcon @openPop="openPop" />
+                        <template v-if="this.mMainChanList.length === 0">
+                            <squareSkeleton v-for="(value) in 10" :key="value"/>
+                        </template>
+                    </div>
+                </div>
             </div>
-            <div v-if="this.mMainMChanList" id="channelWrap" style="width: 100%; height: 100px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
-                <div style="height: 100%; min-width: 100%; display:flex;">
-                    <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" @openPop="openPop"/>
-                    <createChanIcon @openPop="openPop" />
-                    <template v-if="this.mMainMChanList.length === 0 && this.mMainChanList.length === 0">
-                        <circleSkeleton v-for="(value) in 10" :key="value"/>
+            <div class="mainContentsWrap">
+            <div class="w-100P fl" style=" background-color: #E7EDFF; ">
+                <div class="mainContHeaderWrap">
+                <img src="../../assets/images/main/main_contentsBellIcon2.png" style="margin-right: 8px;" class="fl img-w24" alt="">
+                <p @click="!GE_USER.unknownYn? goContentListPop() : ''" class="font20 fontBold deepBorderColor fl textLeft cursorP CDeepColor" style="line-height: 26px;">{{!GE_USER.unknownYn? "받은 알림, 게시글" : '최신 게시글'}} ></p>
+                <img class="fr cursorP" @click="openFindPop"  style="width: 25px; position: absolute;right: 65px;" src="../../assets/images/common/iocn_search.png" alt="">
+                    <div class="mainContReload" @click="refreshMainList">
+                        <img src="../../assets/images/common/reload_button.svg" class="cursorP img-w20" />
+                    </div>
+                </div>
+                <div v-if="!GE_USER.unknownYn" style="width: 100%; min-height: 30px; background: #FFFFFF; padding: 0 10px; float: left; overflow: auto hidden;">
+                    <div @click="getContentsListForSticker({stickerKey: 0})" :class="mSelectedStickerKey === 0 ? 'CDeepBgColor whiteColor' : 'CDeepColor CDeepBorderColor'" class="font14 fontBold " style="float: left; margin-right: 5px;min-width: 30px; height: 25px; padding: 0 10px; display: flex; align-items: center; text-align: center; border-radius: 30px; border position: relative;">전체</div>
+                    <template v-for="(sticker, index) in mStickerList" :key="index">
+                        <gStickerLine @click="getContentsListForSticker(sticker)" :pSelectedYn="mSelectedStickerKey === sticker.stickerKey? true: false" class="cursorP fl cursorHover" style="margin-right: 5px;" :pSticker="sticker"/>
                     </template>
                 </div>
             </div>
-            <div v-if="this.mMainChanList" class="mtop-1 " style="width: 100%; height: 30px; float: left; ">
-                <img src="../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
-                <p @click="goChannelPop('user')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">구독중인 채널 ></p>
-            </div>
-            <div v-if="this.mMainChanList" :class="!isMobile? 'thinScrollBar':''" id="subChannelWrap" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
-                <div style="height: 100%; min-width: 100%; display:flex; gap: 10px;">
-                    <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index" @openPop="openPop"/>
-                    <searchChanIcon @openPop="openPop" />
-                    <template v-if="this.mMainChanList.length === 0">
-                        <squareSkeleton v-for="(value) in 10" :key="value"/>
-                    </template>
-                </div>
-            </div>
-        </div>
-        <div v-if="GE_USER.unknownYn && this.mMainChanList" style="background: #FFFFFF; padding: 20px; margin-top: 15px; padding-right: 0; padding-top: 20px; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
-            <div v-if="this.mMainChanList" class="" style="width: 100%; height: 30px; float: left;">
-                <img src="../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
-                <p @click="goChannelPop('user')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">인기있는 채널 ></p>
-            </div>
-            <div v-if="this.mMainChanList" :class="!isMobile? 'thinScrollBar':''" id="subChannelWrap" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
-                <div style="height: 100%; min-width: 100%; display:flex; gap: 10px;">
-                    <chanSquareIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :key="index" @openPop="openPop"/>
-                    <searchChanIcon @openPop="openPop" />
-                    <template v-if="this.mMainChanList.length === 0">
-                        <squareSkeleton v-for="(value) in 10" :key="value"/>
-                    </template>
-                </div>
-            </div>
-        </div>
-        <!-- <div style="margin-top: 15px; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
-            <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; border-bottom: 2px; solid #F4F7FF!important">
-                <img src="../../assets/images/main/main_contentsBellIcon2.png" style="float: left; margin-right: 8px;" class="img-w24" alt="">
-                <p @click="goContentListPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글</p>
-            </div>
-            <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px;" >
-                <mainContsList :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
-            </div>
-        </div> -->
-        <div style="border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
-          <div  style="width:100%; background-color: #E7EDFF; float:left;">
-            <div style="width: 100%; display: flex; align-items: center; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; position: relative; border-bottom: 2px; solid #F4F7FF!important; margin-top: 15px;">
-              <img src="../../assets/images/main/main_contentsBellIcon2.png" style="float: left; margin-right: 8px;" class="img-w24" alt="">
-              <p @click="!GE_USER.unknownYn? goContentListPop() : ''" class="font20 fontBold deepBorderColor fl textLeft cursorP CDeepColor" style="line-height: 26px;">{{!GE_USER.unknownYn? "받은 알림, 게시글" : '최신 게시글'}} ></p>
-              <img class="fr cursorP" @click="openFindPop"  style="width: 25px; position: absolute;right: 65px;" src="../../assets/images/common/iocn_search.png" alt="">
-                <!-- <div class="fl" style="position: relative; width: 80px; margin-left: 10px; min-height: 50px;">
-                    <img @click="findData()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
-                    <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="findData()" v-model="mInputText" placeholder="검색키워드를 입력해주세요" />
-                    <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
-                </div> -->
-                <div style="position: absolute; top:15px; right:25px; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshMainList">
-                    <img src="../../assets/images/common/reload_button.svg" class="cursorP img-w20" />
-                </div>
-            </div>
-            <div v-if="!GE_USER.unknownYn" style="width: 100%; min-height: 30px; background: #FFFFFF; padding: 0 10px; float: left; overflow: auto hidden;">
-                <div @click="getContentsListForSticker({stickerKey: 0})" :class="mSelectedStickerKey === 0 ? 'CDeepBgColor whiteColor' : 'CDeepColor CDeepBorderColor'" class="font14 fontBold " style="float: left; margin-right: 5px;min-width: 30px; height: 25px; padding: 0 10px; display: flex; align-items: center; text-align: center; border-radius: 30px; border position: relative;">전체</div>
-                <template v-for="(sticker, index) in mStickerList" :key="index">
-                    <gStickerLine @click="getContentsListForSticker(sticker)" :pSelectedYn="mSelectedStickerKey === sticker.stickerKey? true: false" class="cursorP fl cursorHover" style="margin-right: 5px;" :pSticker="sticker"/>
+            <div v-if="mMainAlimList && mMainAlimList.length" style="float: left; width: 100%; margin-top: 2px; min-height: 10px; background: #F4F4F4; padding: 8px;" >
+                <template v-if="mMainAlimList.length === 0 && mContentsEmptyYn === false">
+                    <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
+                <div v-if="mMainAlimList.length === 0 && mContentsEmptyYn === true" style="width: 100%; min-height: 300px; background: #FFFFFF; float: left;">
+                    <gEmpty contentName="전체" tabName="최신" class="mtop-2"/>
+                </div>
+                <mainContsList :pOpenUnknownLoginPop="openUnknownLoginPop" @goSearchDirect="goSearchDirect"  @openImgPop="oepnImgPop" ref="mainContsList" v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
             </div>
-          </div>
-          <div v-if="mMainAlimList && mMainAlimList.length" style="float: left; width: 100%; margin-top: 2px; min-height: 10px; background: #F4F4F4; padding: 8px;" >
-            <template v-if="mMainAlimList.length === 0 && mContentsEmptyYn === false">
-                <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
-            </template>
-            <div v-if="mMainAlimList.length === 0 && mContentsEmptyYn === true" style="width: 100%; min-height: 300px; background: #FFFFFF; float: left;">
-                <gEmpty contentName="전체" tabName="최신" class="mtop-2"/>
             </div>
-            <mainContsList :pOpenUnknownLoginPop="openUnknownLoginPop" @goSearchDirect="goSearchDirect"  @openImgPop="oepnImgPop" ref="mainContsList" v-if="mMainAlimList.length > 0" :pMainAlimList="mMainAlimList" :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
-          </div>
         </div>
     </div>
-    <!-- <div style="width: 100%; box-shadow: rgb(183 180 180 / 25%) 0px 0px 7px 3px; height: calc(100% + 10px); float: left; margin-top: 10px; padding-top: 10px; background: #FFF;">
-        <pushList @openPop="openPop "/>
-    </div> -->
-  </div>
 </template>
 <script>
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
@@ -167,18 +148,12 @@ export default {
     unknownLoginPop
   },
   created () {
-    // navigator.registerProtocolHandler('web+test', 'test?type=%s')
-    var urlString = location.search
-    var param = this.getParamMap(urlString)
-    if (param.targetType) {
-      this.goPage(param)
-    }
-    if (param.contentsDetail || param.chanDetail) {
-      if (param.contentsDetail) {
-        this.openPagePop('contentsDetail', param.contentsDetail)
-      } else if (param.chanDetail) {
-        this.openPagePop('chanDetail', param.chanDetail)
-      }
+    this.resetHistory()
+    this.setNativeHeight()
+
+    var urlParam = this.getParamMap(location.search)
+    if (urlParam) {
+      this.goPageForUrl(urlParam)
     }
     if (!this.GE_USER) {
       this.$router.replace({ name: 'unknown' })
@@ -188,58 +163,39 @@ export default {
     this.getMainBoard().then(res => {
       this.mLoadingYn = false
     })
-
-    this.$store.commit('D_HISTORY/setRemovePage', '')
-    this.$store.commit('D_HISTORY/updateStack', [])
-    this.$store.dispatch('D_HISTORY/AC_CLEAR_GPOP_STACK')
-    this.$emit('changePageHeader', '더알림')
-
-    var varUA = localStorage.getItem('systemName')
-    var nativeYn = localStorage.getItem('nativeYn')
-    // eslint-disable-next-line no-debugger
-    debugger
-    // if ((varUA !== undefined && varUA !== null && varUA !== '') || nativeYn !== undefined) {
-    if ((varUA !== undefined && varUA !== null && varUA !== '') || (nativeYn !== false && nativeYn !== 'false')) {
-      if ((nativeYn === true || nativeYn === 'true') || varUA === 'android' || varUA === '"Android"' || varUA === 'ios' || varUA === '"iOS"') {
-        this.$STATUS_HEIGHT = 35 // 35
-      } else {
-        this.$STATUS_HEIGHT = 35
-      }
-    } else {
-      this.$STATUS_HEIGHT = 0
-    }
-  },
-  /* updated () {
-    this.getMainBoard()
-  }, */
-  mounted () {
-    // window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
-    // window.webkitStorageInfo.requestQuota(
-    //   window.PERSISTENT,
-    //   fsize,
-    //   function (bytes) {
-    //     alert('Quota is available: ' + bytes)
-    //   },
-    //   function (e) {
-    //     alert('Error allocating quota: ' + e)
-    //   }
-    // )
-    // this.mLoadingYn = false
-    /* this.$userLoginCheck()
-    var this_ = this
-    setTimeout(() => {
-      this_.mLoadingYn = false
-    }, 3000)
-    if (!this.GE_USER) return
-    this.getMainBoard() */
-    // var this_ = this
-    /* this.$nextTick(() => {
-      this_.mLoadingYn = false
-    }) */
-    // this.$refs.mainScrollWrap.addEventListener('scroll', this.handleScroll)
-    this.mLoadingYn = false
   },
   methods: {
+    setNativeHeight () {
+      var varUA = localStorage.getItem('systemName')
+      var nativeYn = localStorage.getItem('nativeYn')
+      if ((varUA !== undefined && varUA !== null && varUA !== '') || (nativeYn !== false && nativeYn !== 'false')) {
+        if ((nativeYn === true || nativeYn === 'true') || varUA === 'android' || varUA === '"Android"' || varUA === 'ios' || varUA === '"iOS"') {
+          this.$STATUS_HEIGHT = 35 // 35
+        } else {
+          this.$STATUS_HEIGHT = 35
+        }
+      } else {
+        this.$STATUS_HEIGHT = 0
+      }
+    },
+    goPageForUrl (urlParam) {
+      if (urlParam.targetType) {
+        this.goPage(urlParam)
+      }
+      if (urlParam.contentsDetail || urlParam.chanDetail) {
+        if (urlParam.contentsDetail) {
+          this.openPagePop('contentsDetail', urlParam.contentsDetail)
+        } else if (urlParam.chanDetail) {
+          this.openPagePop('chanDetail', urlParam.chanDetail)
+        }
+      }
+    },
+    resetHistory () {
+      this.$store.commit('D_HISTORY/setRemovePage', '')
+      this.$store.commit('D_HISTORY/updateStack', [])
+      this.$store.dispatch('D_HISTORY/AC_CLEAR_GPOP_STACK')
+      this.$emit('changePageHeader', '더알림')
+    },
     goLoginPage () {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       if (isMobile && (localStorage.getItem('nativeYn') === false || localStorage.getItem('nativeYn') === 'false')) {
@@ -254,9 +210,6 @@ export default {
     openUnknownLoginPop (contDetail) { // 이 컨텐츠의 정보
       this.mUnknownLoginPopYn = true
       // this.mUnknownContDetail = contDetail
-    },
-    callbackFunc (e) {
-      console.log(e)
     },
     async getContentsListForSticker (sticker) {
       if (!sticker) return
@@ -387,23 +340,15 @@ export default {
       param.targetKey = Number(targetKey)
       this.openPop(param)
     },
-    async goPage (test) {
-      /* if (test && test.targetType === 'chanDetail') {
-        detailParam.targetKey =
-      } */
-      /* if (test.targetType === 'chanDetail') {
-        detailParam.cabinetKey = detailValue.cabinetKey
-        detailParam.cabinetNameMtext = detailValue.cabinetNameMtext
-        detailParam.popHeaderText = detailValue.cabinetNameMtext
-      } */
-      if (test && test.targetType && test.targetKey && test.creTeamKey) {
-        var detailValue = await this.$addContents(Number(test.targetKey), test.jobkindId)
+    async goPage (data) {
+      if (data && data.targetType && data.targetKey && data.creTeamKey) {
+        var detailValue = await this.$addContents(Number(data.targetKey), data.jobkindId)
         if (detailValue !== false) {
-          test.targetKey = Number(test.targetKey)
-          test.creTeamKey = Number(test.creTeamKey)
-          test.teamKey = Number(test.creTeamKey)
-          var detailParam = test
-          detailParam.targetType = test.targetType
+          data.targetKey = Number(data.targetKey)
+          data.creTeamKey = Number(data.creTeamKey)
+          data.teamKey = Number(data.creTeamKey)
+          var detailParam = data
+          detailParam.targetType = data.targetType
           if (detailValue.jobkindId === 'BOAR') {
             detailParam.cabinetKey = detailValue.cabinetKey
             detailParam.cabinetNameMtext = detailValue.cabinetNameMtext
@@ -414,14 +359,12 @@ export default {
             detailParam.popHeaderText = detailValue.nameMtext
           }
         }
-        detailParam.value = test
+        detailParam.value = data
         detailParam.notiYn = true
         this.openPop(detailParam)
       }
     },
     getParamMap (urlString) {
-      // eslint-disable-next-line no-debugger
-      debugger
       const splited = urlString.replace('?', '').split(/[=?&]/)
       const param = {}
       console.log(splited)
@@ -578,7 +521,7 @@ export default {
 <style scoped>
 
 /* main */
-.userProfileWrap{ display:flex; align-items: center; justify-content: space-between; margin-top: 0; height: 50px;}
+.userProfileWrap{ display:flex; align-items: center; justify-content: space-between; margin-top: 0; height: 50px;float: left;width: 100%; border-radius: 0.8rem; padding: 0 1.5rem;}
   .userProfileTextWrap{width: calc(100% - 85px); text-align: left; position: relative;}
   .userProfileTextWrap >p{margin-bottom: 0.2rem;}
   .userProfileTextWrap img{ width:1rem; margin-right: 0.2rem;}
@@ -594,6 +537,9 @@ export default {
   .mainIcon {width: 0.7rem!important;}
   .mainRefreshBtn {width: 20px!important}
 }
+.userProfileWelcomeWrap {
+    width: calc(100% - 80px); float: left; height: 100%;
+}
 .quickSearchInput {
     background: #e4e4e463;
     width: 100%;
@@ -606,4 +552,27 @@ export default {
     float: left;
     border: 1px solid #cccccc;
 }
+.loginTrueUserWrap {
+    float: left; height: calc(100% - 20px); width: 100%;
+}
+.loginTrueUserTextArea {
+    float: left; height: 100%; position: relative;
+}
+.loginFalseChanList {
+    background: #FFFFFF; padding: 20px; margin-top: 15px; padding-right: 0; padding-top: 20px; border-radius: 30px 30px 0px 0px; width: 100%; float: left;
+}
+.chanListWrap{
+    width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;
+}
+.chanListScrollWrap {
+    height: 100%; min-width: 100%; display:flex; gap: 10px;
+}
+.mainContentsWrap{
+    border-radius: 30px 30px 0px 0px; width: 100%; float: left;
+}
+.mainContReload {
+    position: absolute; top:15px; right:25px; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center;
+}
+.mainContHeaderWrap {width: 100%; display: flex; align-items: center; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; position: relative; border-bottom: 2px solid #F4F7FF!important; margin-top: 15px;}
+
 </style>
