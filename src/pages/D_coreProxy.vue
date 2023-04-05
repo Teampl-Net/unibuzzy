@@ -30,7 +30,7 @@ export default {
     boardMain
   },
   created () {
-    if (document.referrer.indexOf('officeon') === -1 && document.referrer.indexOf('localhost') === -1 && document.referrer.indexOf('192.168') === -1) {
+    if (document.referrer.indexOf('officeon') === -1 && document.referrer.indexOf('localhost') === -1 && document.referrer.indexOf('josa1') === -1) {
       this.$router.push({ name: 'errorPage' })
     }
     // alert('test')

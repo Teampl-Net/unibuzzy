@@ -103,7 +103,7 @@ const routes = [
         path: '/myPage',
         name: 'myPage',
         props: true,
-        component: myPage,
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_myPage.vue'),
         meta: {
           page: 4
         }
@@ -121,7 +121,7 @@ const routes = [
         path: '/chanList',
         name: 'chanList',
         props: true,
-        component: chanList,
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_chanList.vue'),
         meta: {
           page: 3
         }
@@ -130,7 +130,7 @@ const routes = [
         path: '/logList',
         name: 'logList',
         props: true,
-        component: logList,
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/Tal_logList.vue'),
         beforeEnter: (to, from, next) => {
           // 만약 로그인 상태라면
           if (localStorage.getItem('loginYn') !== true) { return next() } else next({ name: 'policies' })
@@ -139,153 +139,94 @@ const routes = [
     ]
   },
   {
-    path: '/admLogin',
-    name: 'admLogin',
-    props: true,
-    component: admLogin
-  },
-  {
     path: '/naverCallback',
     name: 'naverCallback',
     props: true,
-    component: naverCallback
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback.vue')
   },
   {
     path: '/naverCallbackTest',
     name: 'naverCallbackTest',
     props: true,
-    component: naverCallbackTest
-  }, /*
-
-  {
-    path: '/admRouterMain',
-    name: 'admRouterMain',
-    props: true,
-    component: admRouterMain,
-    children: [
-      {
-        path: '/admChanMain',
-        name: 'admChanMain',
-        props: true,
-        component: admChanMain
-      },
-      {
-        path: '/admSendPushList',
-        name: 'admSendPushList',
-        props: true,
-        component: admSendPushList
-      },
-      {
-        path: '/admManageRecvList',
-        name: 'admManageRecvList',
-        props: true,
-        component: admManageRecvList
-      },
-      {
-        path: '/admWritePush',
-        name: 'admWritePush',
-        props: true,
-        component: admWritePush
-      },
-      {
-        path: '/admManageChannel',
-        name: 'admManageChannel',
-        props: true,
-        component: admManageChannel
-      }
-    ]
-  }, */
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback copy.vue')
+  },
   {
     path: '/testLoginPage',
     name: 'testLoginPage',
     props: true,
-    component: testLoginPage
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/testLoginPage.vue')
   },
   {
     path: '/nonMemInquiryBoard',
     name: 'nonMemInquiryBoard',
     props: true,
-    component: nonMemInquiryBoard
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_nonMemberInquiryBoard.vue')
   },
   {
     path: '/login',
     name: 'login',
     props: true,
-    component: login
-    /* children: [
-      {
-        path: '/login',
-        name: 'login',
-        props: true,
-        component: login
-      },
-      {
-        path: '/login/naver/callback',
-        name: 'login',
-        props: true,
-        component: naverCallback
-      }
-    ] */
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_login.vue')
   },
   {
     path: '/permissions',
     name: 'permissions',
     props: true,
-    component: permissions
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_permissions.vue')
   },
   {
     path: '/policies',
     name: 'policies',
     props: true,
-    component: policies
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_policies.vue')
   },
   {
     path: '/savePhone',
     name: 'savePhone',
     props: true,
-    component: savePhone
+    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/Tal_savePhone.vue')
   },
   {
     path: '/saveName',
     name: 'saveName',
     props: true,
-    component: saveName
+    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/Tal_saveName.vue')
   },
   {
     path: '/certiPhone',
     name: 'certiPhone',
     props: true,
-    component: certiPhone
+    component: () => import(/* webpackChunkName: "about" */ '../components/pageComponents/intro/D_certi_phone.vue')
   },
   {
     path: '/certiPhoneReturn',
     name: 'certiPhoneReturn',
     props: true,
-    component: certiPhoneReturn
+    component: () => import(/* webpackChunkName: "about" */ '../components/pageComponents/intro/D_certi_phone_return.vue')
   },
   {
     path: '/test',
     name: 'test',
     props: true,
-    component: suminTest
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/suminTest.vue')
   },
   {
     path: '/ssoLogin',
     name: 'ssoLogin',
     props: true,
-    component: ssoLogin
+    component: () => import(/* webpackChunkName: "about" */ '../pages/backuplogin.vue')
   },
   {
     path: '/contDetail',
     name: 'contDetail',
     props: true,
-    component: contDetail
+    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_contentsDetail.vue')
   },
   {
     path: '/contList',
     name: 'contList',
     props: true,
-    component: forSearchContList
+    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_forSearchContList.vue')
   },
   {
     path: '/errorPage',
@@ -299,43 +240,6 @@ const routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../components/board/D_boardMain.vue')
   }
-  /* {
-    path: '/writePushTest',
-    name: 'admWritePush',
-    component: admWritePush
-  }, */
-  // {
-  //  path: '/about',
-  // name: 'About',
-  // route level code-splitting
-  // this generates a separate chunk (about.[hash].js) for this route
-  // which is lazy-loaded when the route is visited.
-  //  component: () => import(/* webpackChunkName: "about" */ '../pages/About.vue')
-  // }
-  // {
-  //   path: '/howToUse',
-  //   component: howToUse
-  // },
-  /* {
-    path: '/helpMemberPop',
-    component: helpMemberPop
-  },
-  {
-    path: '/helpMemberPop',
-    component: helpMemberPop
-  },
-  {
-    path: '/helpBookPop',
-    component: helpBookPop
-  },
-  {
-    path: '/helpBoardPop',
-    component: helpBoardPop
-  },
-  {
-    path: '/myActList',
-    component: myActList
-  } */
 ]
 
 const router = createRouter({

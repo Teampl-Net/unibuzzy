@@ -248,7 +248,7 @@ export const methods = {
         }
       }
     } else {
-      commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
+      // commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
       // router.replace({ name: 'policies' })
       router.replace({ name: 'unknown' })
       if (store !== undefined && store !== null) {
