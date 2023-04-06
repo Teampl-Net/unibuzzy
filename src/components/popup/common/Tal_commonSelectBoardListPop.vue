@@ -1,7 +1,7 @@
 <template>
-    <div style="width: calc(100% - 20px); position: absolute; left: 10px; background:rgb(220, 221, 235); min-height: 500px;top: 15%; padding: 20px; padding-top: 0;border-radius: 0.8rem; overflow: hidden; box-shadow: 0 0 9px 4px #ccc;  z-index: 999999;">
+    <div style="width: calc(100% - 100px); position: absolute; left: 50px; background:rgb(220, 221, 235); min-height: 500px;top: 15%; padding: 20px; padding-top: 0;border-radius: 0.8rem; overflow: hidden; box-shadow: 0 0 9px 4px #ccc;  z-index: 999999;">
         <div class="selectPopHeader" >
-            <p class="font24 fontBold fl textLeft mbottom-05">게시글 {{mainText}}</p>
+            <p class="font24 commonBlack fontBold fl textLeft mbottom-05">게시글 {{mainText}}</p>
             <img @click="closeXPop" class="fr" style="width: 25px; margin-top: 5px;" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
         <p class="font16 textLeft commonBlack fontBold mtop-05 fl mbottom-05">게시글을 {{mainText}}할 게시판을 선택해주세요</p>

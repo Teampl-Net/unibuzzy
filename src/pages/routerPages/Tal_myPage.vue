@@ -25,7 +25,7 @@
       <div class="h-100P fl font20 grayBlack" style="width: 20px; line-height: 50px;">></div>
     </div>
     <!-- <div class="font16 profileSetting" @click="goSetMyPage">프로필 설정 ></div> -->
-    <div class="commonBlack " style="width: 100%; flaot: left; height: 100%;">
+    <div class="commonBlack " style="width: 100%; float: left; height: 100%;">
       <myActList @closeLoading="this.loadingYn = false" ref="commonActList" :viewTab="this.myPageTabType" @goDetail="goDetail" @openPop="openPop" style="border-radius: 0.8rem;" @goMyChanList="goMyChanList" />
       <logList v-if="this.myPageTabType === 'ml'" />
     </div>

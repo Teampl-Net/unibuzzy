@@ -378,8 +378,6 @@ export default {
     },
     async settingPop (successChanYn) {
       var target = this.propParams
-      console.log('target')
-      console.log(target)
       if (successChanYn === true) {
         target = this.successChanParam
       }
@@ -407,10 +405,11 @@ export default {
       } else if (this.targetType === 'editBookList' || this.targetType === 'memberManagement') {
         this.helpYn = true
       } else if (this.targetType === 'selectBookList') {
-        this.selectPlist = this.propParams.pSelectedList
+        this.selectPlist = target.pSelectedList
       } else if (this.targetType === 'writeContents') {
-        // eslint-disable-next-line no-debugger
-        debugger
+        if (target.attachFileList) {
+          this.mAttachFileList = target.attachFileList
+        }
         var paramMap = new Map()
         console.log(this.GE_USER.userKey)
         paramMap.set('contentsKey', target.targetKey)
@@ -419,13 +418,7 @@ export default {
         paramMap.set('subsUserKey', this.GE_USER.userKey)
         paramMap.set('userKey', this.GE_USER.userKey)
         const response = await this.$axios.post('service/tp.getMyContentsList', Object.fromEntries(paramMap))
-        if (response.data.content) {
-          if (response.data.content[0].attachFileList) {
-            this.mAttachFileList = response.data.content[0].attachFileList
-          }
-        }
-        // this.CONT_DETAIL.attachFileList = response.data.content[0].attachFileList
-        // console.log(response)
+        if (response.data && response.data.content) this.mAttachFileList = response.data.content[0].attachFileList
       }
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
         this.thisPopN = Number(this.parentPopN) + 1
@@ -448,6 +441,8 @@ export default {
     },
 
     openPop (params) {
+      // eslint-disable-next-line no-debugger
+      debugger
       if (params.targetType === 'chanDetail') {
         this.goChanDetail(params)
         return
@@ -632,6 +627,8 @@ export default {
       }
     },
     async goDetail (detailValue) {
+      // eslint-disable-next-line no-debugger
+      debugger
       // eslint-disable-next-line no-new-object
       var param = new Object()
       var currentPage = this.$store.getters['D_HISTORY/hCPage']
@@ -714,17 +711,6 @@ export default {
       }, true)
       var memos = result.data.memoList[0]
       return memos
-    },
-    async getContentsDetail (contentsKey, jobkindId) {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.contentsKey = contentsKey
-      param.jobkindId = jobkindId
-      var resultList = await this.$getContentsList(param)
-      var detailData = resultList.content[0]
-      detailData.D_CONT_USER_DO = await this.settingUserDo(detailData.userDoList)
-
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
     async getFollowerList (teamKey, userKey, showProfileYn, managerYn) {
       var paramMap = new Map()

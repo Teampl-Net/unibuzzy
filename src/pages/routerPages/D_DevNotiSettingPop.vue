@@ -21,7 +21,7 @@
                 <gBtnSmall @click="mParamObj.notiType = 'BOAR', getContentsList()" :btnThema="mParamObj.notiType != 'BOAR'? 'light': ''" btnTitle="게시글 작성" style="margin-right: 10px;"/>
             </div> -->
             <p class="font18 fontBold textLeft mright-1 mbottom-05">컨텐츠 선택</p>
-            <select v-model="mParamObj.targetObj" style="width: 100%; flaot: left; height: 30px;" name="" id="">
+            <select v-model="mParamObj.targetObj" style="width: 100%; float: left; height: 30px;" name="" id="">
                 <option v-for="(value, index) in targetList" :key="index" :value="value">{{value.jobkindId === 'ALIM'? '[알림] ': '[게시] '}}{{value.title}}</option>
                 <!-- <option value="1">1초뒤</option>
                 <option value="2">2초뒤</option>

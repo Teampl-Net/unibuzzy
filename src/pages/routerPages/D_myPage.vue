@@ -24,7 +24,7 @@
     <top5Alim class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPop" ref="topAlim" />
     <top5Channel class="mainContentsBoxArea" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" style="margin-bottom: 1rem;" />
 
-    <div v-if="false" class="commonBlack " style="width: 100%; flaot: left; height: 100%;">
+    <div v-if="false" class="commonBlack " style="width: 100%; float: left; height: 100%;">
       <myActList @closeLoading="mLoadingYn = false" ref="commonActList" :viewTab="myPageTabType" @openContentsDetailPop="openContentsDetailPop" @openPop="openPop" style="border-radius: 0.8rem;" @goMyChanList="goMyChanList" />
       <logList v-if="myPageTabType === 'ml'" />
     </div>

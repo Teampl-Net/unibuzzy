@@ -773,12 +773,14 @@ export default {
       param.targetKey = this.CONT_DETAIL.contentsKey
       param.targetType = 'writeContents'
       param.contentsJobkindId = 'BOAR'
+      param.jobkindId = 'BOAR'
       param.creTeamKey = this.CONT_DETAIL.creTeamKey
       if (this.CONT_DETAIL.attachMfilekey) param.attachMfilekey = this.CONT_DETAIL.attachMfilekey
       if (this.CONT_DETAIL.attachFileList) param.attachFileList = this.CONT_DETAIL.attachFileList
       param.bodyFullStr = this.CONT_DETAIL.bodyFullStr
       param.modiContentsKey = this.CONT_DETAIL.contentsKey
       param.titleStr = this.CONT_DETAIL.title
+      param.value = this.CONT_DETAIL
       this.$emit('openPop', param)
     },
     deleteConfirm () {
@@ -831,10 +833,10 @@ export default {
     closeSelectBoardPop () {
       this.mSelectBoardPopShowYn = false
     },
-    async makeNewContents (type) {
+    async makeNewContents (type) { // writeBoard -> 알림을 게시글로 작성, writeAlim -> 게시글을 알림으로 작성
       // eslint-disable-next-line no-debugger
       debugger
-      if (this.contentsEle.creTeamKey && type !== 'writeBoard' && !this.CHANNEL_DETAIL.ownerYn && !this.CHANNEL_DETAIL.memberYn && this.CHANNEL_DETAIL.memberYn === 0 && !this.CHANNEL_DETAIL.managerKey) {
+      if (this.contentsEle.creTeamKey && type !== 'writeBoard' && (!this.CHANNEL_DETAIL.ownerYn || !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) && (!this.CHANNEL_DETAIL.memberYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn) && (this.CHANNEL_DETAIL.memberYn === 0 || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 0) && (!this.CHANNEL_DETAIL.managerKey || !this.CHANNEL_DETAIL.D_CHAN_AUTH.managerKey)) {
         this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
         // this.$checkDeleteHistory('bottomWriteSheets')
         // this.$emit('openMember')

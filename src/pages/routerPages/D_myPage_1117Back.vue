@@ -18,7 +18,7 @@
       </div>
       <div class="h-100P fl font20 grayBlack" style="width: 20px; line-height: 50px;">></div>
     </div>
-    <div class="commonBlack " style="width: 100%; flaot: left; height: 100%;">
+    <div class="commonBlack " style="width: 100%; float: left; height: 100%;">
       <myActList @closeLoading="loadingYn = false" ref="commonActList" :viewTab="myPageTabType" @openContentsDetailPop="openContentsDetailPop" @openPop="openPop" style="border-radius: 0.8rem;" @goMyChanList="goMyChanList" />
       <logList v-if="myPageTabType === 'ml'" />
     </div>

@@ -4,8 +4,8 @@
             :style="'background-image: url(' + (chanElement.bgDomainPath !== undefind ? chanElement.bgDomainPath + chanElement.bgPathMtext : chanElement.bgPathMtext) + ');'" >
             <div style="width: 32px; height: 32px; float: left; border: 2px solid #FFF; border-radius: 100%; position: absolute; top: 5px; left: 8px; z-index: 1; background-repeat: no-repeat; background-size: cover; background-position: center;" :style="'background-image: url(' + (chanElement.logoDomainPath !== undefind ? chanElement.logoDomainPath + chanElement.logoPathMtext : chanElement.logoPathMtext) + ');'"></div>
             <!-- <div class="CWhiteBgColor" style="position: absolute; right: 0; display: flex; justify-content: center; algin-items: center; padding: 2px; bottom: 0; width: 18px; height: 18px; border-radius: 100%;">
-                <img src="../../../assets/images/channel/ownerChannel_crown.svg" style="width: 100%; flaot: left;" v-if="chanElement.ownerYn" alt="">
-                <img src="../../../assets/images/common/icon_setting_gear.svg" style="width: 100%; flaot: left;" v-else alt="">
+                <img src="../../../assets/images/channel/ownerChannel_crown.svg" style="width: 100%; float: left;" v-if="chanElement.ownerYn" alt="">
+                <img src="../../../assets/images/common/icon_setting_gear.svg" style="width: 100%; float: left;" v-else alt="">
             </div> -->
             <!-- 따로 컴포넌트는 없고 그냥 태그 명칭만 이렇게 해두었습니다. -->
             <redDot v-if="false" style="width: 10px; height: 10px; border-radius: 100%; border: 1px solid #FFFFFF; background: #ED4956; position: absolute; right: 8px; top: 5px; z-index:1"></redDot>

@@ -1,5 +1,5 @@
 <template>
-<div style="width: 100%; flaot: left;">
+<div style="width: 100%; float: left;">
       <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
       <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
@@ -13,7 +13,6 @@
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext"> -->
                 </div>
                 <div class="pushDetailHeaderTextArea ">
-<!-- :class="{commonBlue: alim.readYn === 0}"  -->
                   <p @click="clickCard(alim)" :class="alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46? 'completeWork': ''"  style="width: calc(100% - 30px); word-wrap:break-word;" class="font16 fl fontBold commonBlack cursorDragText">
                     <pp v-if="alim.jobkindId === 'ALIM'" class="font14 mtop-03 fl contentTypeTextArea fontNomal" style="background:#6768A7; margin-top: 3px; color: #FFF;">{{'알림'}}</pp>
                     <pp v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl mtop-03 contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
@@ -262,8 +261,12 @@ export default {
       var userKey = param.userKey
       var currentContentsKey = param.contentsKey
       var indexOf = this.commonListData.findIndex(i => i.contentsKey === currentContentsKey) // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
+      var userShowYn = param.memberYn
+      // 멤버가 아니면 네임카드 안 보이도록
+      if ((param.ownerYn === 0 || param.ownerYn === false) && (param.memberYn === false || param.memberYn === 0)) userShowYn = false
       if (indexOf !== -1) {
-        this.userNameClick(true, userKey, this.commonListData[indexOf].creTeamKey, false)
+        // this.userNameClick(true, userKey, this.commonListData[indexOf].creTeamKey, false)
+        this.userNameClick(userShowYn, userKey, this.commonListData[indexOf].creTeamKey, false)
       }
     },
     userNameClick (userShowYn, userKey, teamKey, blindYn) {
@@ -282,7 +285,8 @@ export default {
         }
         this.$emit('openPop',param)
       } else {
-        this.$showToastPop('익명의 게시글로 유저 정보를 볼 수 없습니다.')
+        this.$showToastPop('유저 정보를 볼 수 없습니다.')
+        // this.$showToastPop('익명의 게시글로 유저 정보를 볼 수 없습니다.')
       }
     },
     settingAtag () {
