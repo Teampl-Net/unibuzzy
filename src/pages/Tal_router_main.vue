@@ -478,7 +478,7 @@ export default {
       paramMap.set('fUserKey', this.GE_USER.userKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       try {
-        var result = await this.$getViewData({ url: 'service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+        var result = await this.$getViewData({ url: 'https://mo.d-alim.com:9443/service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.$showToastPop('채널을 찾을 수 없습니다!')
           return

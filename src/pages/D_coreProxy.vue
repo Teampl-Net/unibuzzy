@@ -57,11 +57,11 @@ export default {
       if (this.mAxiosYn) return
       this.mAxiosYn = true
       console.log(this.mRecvParams)
-      const result = await this.$axios.post('service/tp.getDirectBoardInfo', this.mRecvParams)
+      const result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.getDirectBoardInfo', this.mRecvParams)
       console.log(result)
       this.mAxiosYn = false
       /* var result = await commonAxiosFunction({
-          url: 'service/tp.goDirectBoard',
+          url: 'https://mo.d-alim.com:9443/service/tp.goDirectBoard',
           param: Object.fromEntries(paramMap)
         }) */
       const resultMainData = result.data.cabinet
@@ -100,7 +100,7 @@ export default {
       this.mRecvParams.keepInfo = JSON.stringify(this.mRecvParams.keepInfo)
       setParam.partner = this.mRecvParams
       console.log(this.mRecvParams)
-      var result = await this.$axios.post('service/tp.saveUserAccess', setParam)
+      var result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.saveUserAccess', setParam)
       this.mAxiosYn = false
       if (result.data.result) {
         return 'OK'
@@ -141,7 +141,7 @@ export default {
       var setParam = {}
       setParam.user = param
       setParam.partner = this.mRecvParams
-      var result = await this.$axios.post('service/tp.saveUserAndAccess', setParam)
+      var result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.saveUserAndAccess', setParam)
       this.mAxiosYn = false
       console.log(result)
       if (result.data.result) {
@@ -217,7 +217,7 @@ export default {
       if (this.mRecvParams.userName === null || this.mRecvParams.encPhone === null) return
       setParam.partner = this.mRecvParams
       console.log(this.mRecvParams)
-      var result = await this.$axios.post('service/tp.saveUserAccess', setParam)
+      var result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.saveUserAccess', setParam)
       this.mAxiosYn = false
       if (result.data.result) {
         console.log(result.data)

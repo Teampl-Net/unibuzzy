@@ -376,7 +376,7 @@ export const commonMethods = {
     }
 
     var result = await commonAxiosFunction({
-      url: 'service/tp.getShortDynamicLink',
+      url: 'https://mo.d-alim.com:9443/service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     }, true)
     var response = JSON.parse(result.data.shortLink).shortLink
@@ -514,20 +514,20 @@ export const commonMethods = {
     })
     return resultlist
   },
-  checkUserAuth (data) {
-    var authList = { R: false, W: false, V: false }
-    if (!data) return authList
-    for (var i = 0; i < data.length; i++) {
-      if (data[i].shareType === 'W' && authList.W === false) {
-        authList.W = true
-      } else if (data[i].shareType === 'R' && authList.R === false) {
-        authList.R = true
-      } else if (data[i].shareType === 'V' && authList.V === false) {
-        authList.V = true
-      }
-    }
-    return authList
-  },
+  // checkUserAuth (data) {
+  //   var authList = { R: false, W: false, V: false }
+  //   if (!data) return authList
+  //   for (var i = 0; i < data.length; i++) {
+  //     if (data[i].shareType === 'W' && authList.W === false) {
+  //       authList.W = true
+  //     } else if (data[i].shareType === 'R' && authList.R === false) {
+  //       authList.R = true
+  //     } else if (data[i].shareType === 'V' && authList.V === false) {
+  //       authList.V = true
+  //     }
+  //   }
+  //   return authList
+  // },
   checkSameName (checkList, checkText) {
     var changedBoardName = checkText
     var addBoardNum = 0
@@ -1205,7 +1205,7 @@ export default {
 
     Vue.config.globalProperties.$openRouterModalPop = commonMethods.openRouterModalPop
     // Vue.config.globalProperties.$fullToDestory = commonMethods.PullToRefreshDestroy
-    Vue.config.globalProperties.$checkUserAuth = commonMethods.checkUserAuth
+    // Vue.config.globalProperties.$checkUserAuth = commonMethods.checkUserAuth
     Vue.config.globalProperties.$checkSameName = commonMethods.checkSameName
     Vue.config.globalProperties.$titleToBody = commonMethods.titleToBody
     Vue.config.globalProperties.$diffInt = commonMethods.diffInt

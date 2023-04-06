@@ -115,7 +115,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.propMemberTypeObj.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemberTypeItemList',
+        url: 'https://mo.d-alim.com:9443/service/tp.getMemberTypeItemList',
         param: param
       })
       console.log(memberTypeItemList)
@@ -155,7 +155,7 @@ export default {
         var deleteParam = {}
         deleteParam.itemKey = parseInt(deleteData.data.itemKey)
         await this.$commonAxiosFunction({
-          url: 'service/tp.deteteMemberTypeItem',
+          url: 'https://mo.d-alim.com:9443/service/tp.deteteMemberTypeItem',
           param: deleteParam
         })
         this.getMemberTypeItemList()

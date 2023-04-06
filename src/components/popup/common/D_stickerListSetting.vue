@@ -85,7 +85,7 @@ export default {
     // var param = {}
     // param.creUserKey = this.GE_USER.userKey
     // var result = await this.$commonAxiosFunction({
-    //   url: 'service/tp.getStickerList',
+    //   url: 'https://mo.d-alim.com:9443/service/tp.getStickerList',
     //   param: param
     // })
     // this.mStickerList = result.data
@@ -129,7 +129,7 @@ export default {
       if (this.GE_USER.unknownYn) return
       param.creUserKey = this.GE_USER.userKey
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.getStickerList',
+        url: 'https://mo.d-alim.com:9443/service/tp.getStickerList',
         param: param
       })
       this.mStickerList = result.data
@@ -187,7 +187,7 @@ export default {
       param.targetKey = this.contDetail.contentsKey
       param.creUserKey = this.GE_USER.userKey
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveUserDoList',
+        url: 'https://mo.d-alim.com:9443/service/tp.saveUserDoList',
         param: param
       })
       if (result.data.result) {

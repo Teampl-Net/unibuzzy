@@ -108,7 +108,7 @@ export default {
       saveParam.memberTypeItemList = saveList
       console.log(saveParam)
       await this.$commonAxiosFunction({
-        url: 'service/tp.saveMemberType',
+        url: 'https://mo.d-alim.com:9443/service/tp.saveMemberType',
         param: { member: saveParam }
       })
       this.$emit('reloadPage')

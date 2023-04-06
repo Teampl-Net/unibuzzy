@@ -59,7 +59,7 @@ export default {
         }
         typeParam.memberTypeKey = this.propMemberData.memberTypeKey
         this.$commonAxiosFunction({
-          url: 'service/tp.saveFollower',
+          url: 'https://mo.d-alim.com:9443/service/tp.saveFollower',
           param: { follower: typeParam }
         }).then(() => {
           this_.closeXPop(true)
@@ -88,7 +88,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.propMemberData.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemberTypeItemList',
+        url: 'https://mo.d-alim.com:9443/service/tp.getMemberTypeItemList',
         param: param
       })
       if (memberTypeItemList.data.result) {
@@ -101,7 +101,7 @@ export default {
           }
           typeParam.memberTypeKey = this.propMemberData.memberTypeKey
           await this.$commonAxiosFunction({
-            url: 'service/tp.saveFollower',
+            url: 'https://mo.d-alim.com:9443/service/tp.saveFollower',
             param: { follower: typeParam }
           })
           this.closeXPop(true)
@@ -143,7 +143,7 @@ export default {
       }
       param.memberInfoList = ansList
       var memberResult = await this.$commonAxiosFunction({
-        url: 'service/tp.saveFollowerMemberInfo',
+        url: 'https://mo.d-alim.com:9443/service/tp.saveFollowerMemberInfo',
         param: param
       })
       if (memberResult.data.result) {

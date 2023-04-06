@@ -391,8 +391,8 @@ export default {
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', this.GE_USER.userKey)
       var response = await this.$commonAxiosFunction({
-        // url: 'service/tp.getCabinetDetail',
-        url: 'service/tp.getCabinetListForMyShareType',
+        // url: 'https://mo.d-alim.com:9443/service/tp.getCabinetDetail',
+        url: 'https://mo.d-alim.com:9443/service/tp.getCabinetListForMyShareType',
         param: Object.fromEntries(paramMap)
       }, true)
       var mCabinet = response.data.mCabinet
@@ -1268,7 +1268,7 @@ export default {
         'background-color': this.colorList[this.selectedC]
       }
     },
-    setBoxHegiht () {
+    setBoxHeight () {
       var h = window.innerHeight
       var cal = h * 0.15
       return 'min-height: ' + cal + 'px'

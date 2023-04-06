@@ -146,7 +146,7 @@ export default {
       pushParam.allRecvYn = false
       setTimeout(() => {
         this_.$commonAxiosFunction({
-          url: 'service/tp.sendDevPush',
+          url: 'https://mo.d-alim.com:9443/service/tp.sendDevPush',
           param: pushParam
         }, true)
       }, this.mParamObj.time * 1000)

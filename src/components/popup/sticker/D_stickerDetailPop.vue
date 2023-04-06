@@ -6,7 +6,7 @@
         </div>
         <div class="okScrollBar thinScrollBar" style="width: 100%; overflow: hidden scroll ;padding: 10px; height: calc(100% - 100px); float: left; display: flex; flex-direction: column; align-items: center;">
             <p class="textLeft font16 fontBold w-100P commonColor mleft-1 ">라벨이름</p>
-            <div style="width: 100%; float: left; min-hegiht: 30px; display: flex; align-items: center; padding: 0 10px;">
+            <div style="width: 100%; float: left; min-height: 30px; display: flex; align-items: center; padding: 0 10px;">
                 <input v-model="mStickerObj.nameMtext" type="text" name="" placeholder="라벨 이름을 입력해주세요" style="float: left; width: calc(100% - 40px);  margin-top: 0.5rem;height: 30px;" id="">
                 <div style="width: 30px; height: 30px; border-radius: 100%; float: right; margin-left: 10px; margin-top: 8px;" :style="'background: ' + mStickerObj.picBgPath + ';'" ></div>
             </div>
@@ -101,7 +101,7 @@ export default {
       param.picBgPath = this.mStickerObj.picBgPath
       param.creUserKey = this.GE_USER.userKey
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveSticker',
+        url: 'https://mo.d-alim.com:9443/service/tp.saveSticker',
         param: param
       })
       if (result.data.result) {
@@ -146,7 +146,7 @@ export default {
       param.stickerKey = this.mStickerObj.stickerKey
       param.deleteYn = true
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveSticker',
+        url: 'https://mo.d-alim.com:9443/service/tp.saveSticker',
         param: param
       })
       if (result.data.result) {

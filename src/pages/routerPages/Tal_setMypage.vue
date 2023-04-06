@@ -331,7 +331,7 @@ export default {
     async closeLogoutPop (request) {
       this.logOutShowYn = false
       var result = await this.$commonAxiosFunction({
-       url: 'service/tp.logout'
+       url: 'https://mo.d-alim.com:9443/service/tp.logout'
       })
       if (result) {
         if (request !== undefined && request !== null && request !== '') {
