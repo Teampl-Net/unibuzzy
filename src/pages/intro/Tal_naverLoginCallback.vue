@@ -88,8 +88,8 @@ export default {
       } else {
         await saveUser(userProfile) // 서버에 save요청
       }
-      /* localStorage.setItem('loginYn', true)
-      location.href = '/' */
+      localStorage.setItem('loginYn', true)
+      location.href = '/'
       // window.close()
     }
 
