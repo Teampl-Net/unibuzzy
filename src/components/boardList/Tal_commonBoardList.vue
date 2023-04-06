@@ -22,8 +22,8 @@
             <p @click="goDetail(board)" class="fl cursorP font15 fontBold commonBlack" style="width:calc(100% - (0.3rem + 0.3rem + 4.5px + 48px)); float: left;">
               <!-- <img src="../../assets/images/board/readFalse.png" v-if="board.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
               <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
-              <pp v-if="board.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
-              <pp v-else-if="board.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
+              <p v-if="board.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</p>
+              <p v-else-if="board.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</p>
               {{resizeText(board.title)}}
             </p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->

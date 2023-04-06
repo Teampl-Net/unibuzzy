@@ -39,7 +39,7 @@
           <div class="textLeft fl w-100P " style="" >
             <p class="fl font16 commonDarkGray fontBold w-100P"><img v-if="propData.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../../assets/images/editChan/icon_self.svg">{{this.$changeText(propData.userDispMtext)}}</p>
             <p class="fl font14 commonDarkGray " style="" >{{propData.userEmail ? changeDot('email', propData.userEmail) : '등록된 이메일이 없습니다.'}}</p>
-            <pp class="fl font14 commonDarkGray" style="margin: 0 0.3rem">|</pp>
+            <p class="fl font14 commonDarkGray" style="margin: 0 0.3rem">|</p>
             <p class="fl font14 commonDarkGray " style="" >{{propData.phoneEnc ? changeDot('phone', propData.phoneEnc) : '등록된 번호가 없습니다.'}}</p>
           </div>
         </div>

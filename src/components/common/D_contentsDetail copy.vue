@@ -9,21 +9,21 @@
                     <div @click="goChanDetail(CHANNEL_DETAIL.teamKey)" class="boardDetailChanLogoImgWrap fl" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath !== undefind ? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
                     <div class="pushDetailHeaderTextArea">
                         <p :class="CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" class=" font18 fontBold commonBlack cursorDragText" style="word-break: break-word;">
-                            <pp v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</pp>
-                            <pp v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea commonColor" style="background:#FFF; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
+                            <p v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{'알림'}}</p>
+                            <p v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea commonColor" style="background:#FFF; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</p>
                             <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type: CONT_DETAIL.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: GE_USER.userKey === CONT_DETAIL.creUserKey || (!propParams.nonMemYn && CONT_DETAIL.creUserKey === 0), tempData: CONT_DETAIL})" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                             {{CONT_DETAIL.title}}
                         </p>
                         <div class="w-100P fl" style=" margin-bottom: 5px;">
                             <p style="width:100%; " class="font14 fl grayBlack">
                                 <img src="../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                                <pp class="font12 fl grayBlack "  @click="userNameClick(CONT_DETAIL.creUserKey, CONT_DETAIL.creTeamKey, CONT_DETAIL.showCreNameYn === 0)">{{CONT_DETAIL.showCreNameYn === 1 ? this.$changeText(CONT_DETAIL.creUserName) : '익명'}}</pp>
-                                <pp v-if="CONT_DETAIL.jobkindId === 'BOAR'">/{{this.$changeText(CONT_DETAIL.cabinetNameMtext)}}</pp>
+                                <p class="font12 fl grayBlack "  @click="userNameClick(CONT_DETAIL.creUserKey, CONT_DETAIL.creTeamKey, CONT_DETAIL.showCreNameYn === 0)">{{CONT_DETAIL.showCreNameYn === 1 ? this.$changeText(CONT_DETAIL.creUserName) : '익명'}}</p>
+                                <p v-if="CONT_DETAIL.jobkindId === 'BOAR'">/{{this.$changeText(CONT_DETAIL.cabinetNameMtext)}}</p>
                             </p>
                         </div>
                         <div class="w-100P fl" style="padding: 5px 0; ">
                             <div class="fr" style="display: flex; align-items: center;">
-                                <pp class="font14 fl lightGray">{{this.$changeDateFormat(CONT_DETAIL.creDate, true)}}</pp>
+                                <p class="font14 fl lightGray">{{this.$changeDateFormat(CONT_DETAIL.creDate, true)}}</p>
                             </div>
                             <div v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
                             <div div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">

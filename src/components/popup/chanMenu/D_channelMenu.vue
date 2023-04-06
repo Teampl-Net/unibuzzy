@@ -12,35 +12,35 @@
 
     <div class="fl w-100P h-100P" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'"  style="overflow: hidden scroll;">
       <div class="fl w-100P mtop-2" style="margin-top:50px; border-bottom: 2px solid #6768a730" >
-        <p class="fl font14 cursorP commonColor fontBold textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730" @click="boardDropDown">
-          <pp class="mleft-1">게시판</pp>
+        <div class="fl font14 cursorP commonColor fontBold textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730" @click="boardDropDown">
+          <p class="mleft-1">게시판</p>
           ({{this.BOARD_CONTENT_LIST.length}})
           <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn" style=" margin-top : 0.5rem;" >
           <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
-        </p>
+        </div>
         <div class="boardBox boardBoxDown mleft-2" style="overflow: hidden scroll; width: 100%; clear:left;" ref="boardRef" :class="{boardBoxUp : mBoardDropEvenYn === false, boardBoxDown: mBoardDropEvenYn === true}" >
           <menuBoardList :propBoardList="this.BOARD_CONTENT_LIST" @boardContentsClick="boardContentsClick" />
         </div>
       </div>
 
       <div v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1)" class="fl w-100P" style="border-bottom: 2px solid #6768a730" :style="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
-        <p class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="bookDropDown">
-          <pp class="mleft-1">주소록</pp>
+        <div class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="bookDropDown">
+          <p class="mleft-1">주소록</p>
           ({{this.CABINET_LIST.length}})
           <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn" style=" margin-top : 0.5rem;" >
           <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
-        </p>
+        </div>
         <div class="boardBox boardBoxDown mleft-2" style="overflow: hidden scroll; width: 100%; clear:left " ref="addressBookGroupRef" :class="{boardBoxUp : mAddressDropEvenYn === false, boardBoxDown: mAddressDropEvenYn === true}" >
           <addressBookList :propAddressBookList="CABINET_LIST" @openBookDetail='openBookDetailPop' />
         </div>
       </div>
 
       <div v-if="!GE_USER.unknownYn" class="fl w-100P" style="">
-        <p class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="convenienceFuncDropdown">
-          <pp class="mleft-1">편리기능</pp>
+        <div class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="convenienceFuncDropdown">
+          <p class="mleft-1">편리기능</p>
           <img v-show="mConvDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn " style=" margin-top : 0.5rem;" >
           <img v-show="mConvDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
-        </p>
+        </div>
         <div class="boardBox boardBoxDown mleft-2" style="overflow: hidden scroll; width: calc(100% - 100px); clear:left " ref="convenienceFunction" :class="{boardBoxUp : mConvDropEvenYn === false, boardBoxDown:mConvDropEvenYn === true}" >
           <div v-for="(data, index) in mConvenienceFuncList" :key="index" @click="convenienceFunc(data.targetType)" class=" fl cursorP mleft-05" style="width:100%; padding: 10px 0;">
             <div class="fl mleft-05 textLeft font16 textOverdot" style="width: calc(100% - 30px - 3rem); margin: 0 0 0 0; width:100% !important;" v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1)) " >

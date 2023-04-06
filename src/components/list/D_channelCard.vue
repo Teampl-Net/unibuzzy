@@ -8,13 +8,13 @@
       </div>
     </div>
     <div class="fl mleft-1" style="width: calc(100% - 65px - 1rem);">
-      <p class="w-100P fl font16 fontBold textLeft grayBlack "><img class="fl img-w14 mtop-02 mright-02" v-if="chanElement.officialYn" src="../../assets/images/main/main_officialMark.svg" alt="">{{$changeText(chanElement.nameMtext)}}
-        <pp class="fr font13 lightGray" style="font-weight: normal;">{{'최근활동 ' + $changeDateFormat(chanElement.updDate)}}</pp>
-      </p>
+      <div class="w-100P fl font16 fontBold textLeft grayBlack "><img class="fl img-w14 mtop-02 mright-02" v-if="chanElement.officialYn" src="../../assets/images/main/main_officialMark.svg" alt="">{{$changeText(chanElement.nameMtext)}}
+        <p class="fr font13 lightGray" style="font-weight: normal;">{{'최근활동 ' + $changeDateFormat(chanElement.updDate)}}</p>
+      </div>
 
       <p class="w-100P fl font14 textLeft grayBlack">{{$changeText(chanElement.memoMtext)}}</p>
 
-      <p class="w-100P fl font14 textLeft lightGray">{{$changeText(chanElement.cateItemMtext)}} <pp class="mleft-05"><img src="../../assets/images/editChan/icon_user_Gray.svg" class="img-w15 mright-01" alt="">{{chanElement.followerCount}}</pp></p>
+      <div class="w-100P fl font14 textLeft lightGray">{{$changeText(chanElement.cateItemMtext)}} <p class="mleft-05"><img src="../../assets/images/editChan/icon_user_Gray.svg" class="img-w15 mright-01" alt="">{{chanElement.followerCount}}</p></div>
     </div>
   </div>
 </template>

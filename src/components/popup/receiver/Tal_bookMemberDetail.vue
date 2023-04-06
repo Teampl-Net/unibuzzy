@@ -246,16 +246,16 @@ export default {
                 url: 'service/tp.getFollowerList',
                 param: Object.fromEntries(paramMap)
             })
-            this.mUserInfo = result.data.content[0]
+            if (result.data.content) this.mUserInfo = result.data.content[0]
         },
         async setUserGrade (anotherAuth) {
-          if (anotherAuth) {
+        if (anotherAuth) {
             console.log(anotherAuth)
             var grade = this.$getFollowerType(anotherAuth)
             console.log('##########################################')
             console.log(grade)
             this.userGrade = grade
-          }
+        }
         },
         sendPushAlim () {
             var param = {}

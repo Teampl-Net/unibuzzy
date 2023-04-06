@@ -11,7 +11,7 @@
           <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
         </div>
         <div class="fr" style="height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
-          <img class="fl cursorP img-w20" style="line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+          <img class="fl cursorP img-w20" style="line-height:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
         </div>
       </div>
       <div v-if="searchYn && resultSearchKeyList && resultSearchKeyList.length > 0" class="" style="padding-top: 0; box-shadow: 0 4px 4px -4px #ccc; width: 100%; float: left; background: #fff;">
@@ -27,7 +27,7 @@
         <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
         <div style="float: left; width: 100%; min-height: 6px;" v-if="searchYn && !channelYn">
           <div class="fr" style="position: absolute; height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
-          <img class="fl cursorP img-w20" style="line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+          <img class="fl cursorP img-w20" style="line-height:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
             <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
           </div>
           <div class="fr" style="height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
-            <img class="fl cursorP img-w20" style="line-heigth:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+            <img class="fl cursorP img-w20" style="line-height:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
           </div>
         </div>
       </div>

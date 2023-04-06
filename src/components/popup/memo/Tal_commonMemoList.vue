@@ -20,11 +20,11 @@
               <img :src="(memo.domainPath? memo.domainPath + memo.userProfileImg : memo.userProfileImg)" />
             </div>
             <img @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })" v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
-            <p class="grayBlack fl fontBold font15 " style=" width: calc(100% - 40px); min-height: 30px; line-height: 30px; ">
+            <div class="grayBlack fl fontBold font15 " style=" width: calc(100% - 40px); min-height: 30px; line-height: 30px; ">
               <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', memo.creUserKey == this.GE_USER.userKey, memo, index)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
-              <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;     font-weight: normal;">{{this.$changeDateMemoFormat(memo.creDate)}}</pp>
-              <ppp @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</ppp>
-            </p>
+              <p class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;     font-weight: normal;">{{this.$changeDateMemoFormat(memo.creDate)}}</p>
+              <p  @click="memoUserNameClick({userKey :memo.creUserKey, contentsKey : memo.targetKey })">{{ this.$changeText(memo.userDispMtext || memo.userNameMtext) }}</p>
+            </div>
           </div>
           <!-- <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; "> -->
           <div class="commentMiddle fl" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="width:100%; ">
@@ -52,7 +52,7 @@
                       <div style="width: 100%; min-height: 25px; margin-bottom: 10px; line-height: 25px;">
                           <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', cMemo.creUserKey == this.GE_USER.userKey, cMemo, index, cIndex)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                           <p @click="memoUserNameClick({userKey :cMemo.creUserKey, contentsKey : cMemo.targetKey })" class="font14 grayBlack mtop-01 fl fontBold">{{this.$changeText(cMemo.userDispMtext || cMemo.userNameMtext)}}</p>
-                          <pp class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</pp>
+                          <p class="font13 mleft-05 fr" style="margin-right: 10px; color: darkgray;">{{this.$changeDateMemoFormat(cMemo.creDate)}}</p>
                       </div>
                       <pre id="cMemoEditBoxId" ref="cMemoEditBoxId" class="editableContent cMemoEditBoxClass font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc;" v-if="editIndex === index && editCIndex === cIndex" v-html="inputText"></pre>
                       <pre v-else class="font14 commonBlack" v-html="cMemo.bodyFullStr" :id="'memoFullStr' + cMemo.memoKey" ></pre>
@@ -344,13 +344,13 @@ float: right; width: 40px; height: 100%; text-align: center;
 .memoPicImgWrap img {width: 100%;}
 
 .MemoBorder{
-    margin-top: 5px;
+  margin-top: 5px;
   width: calc(100%); height: 1px; padding-bottom: 2px;
   float: left;
   background-image: linear-gradient(to
-    right, #ccc 33%, rgba(255,255,255,0) 0%);
-    background-position: bottom;
-    background-size: 17px 2px;
-    background-repeat: repeat-x;
+  right, #ccc 33%, rgba(255,255,255,0) 0%);
+  background-position: bottom;
+  background-size: 17px 2px;
+  background-repeat: repeat-x;
 }
 </style>

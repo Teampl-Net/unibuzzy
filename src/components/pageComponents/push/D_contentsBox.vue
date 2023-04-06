@@ -8,7 +8,6 @@
           <div class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 10px 20px;">
               <div @click="goChannelMain()" :style="this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
                   <div :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext : CONT_DETAIL.logoPathMtext) + ');'" style="width: calc(100% - 2px); height:  calc(100% - 2px); border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;">
-
                   </div>
               </div>
               <div style="width: calc(100% - 55px); margin-left: 10px; height: 100%; float: left; display: flex; flex-direction: column;" >
@@ -1093,6 +1092,8 @@ export default {
       this.$emit('openPop', openPopParam)
     },
     goUserProfile (targetUserKey) {
+      console.log('this.CONT_DETAILthis.CONT_DETAILthis.CONT_DETAIL')
+      console.log(this.CONT_DETAIL)
       var openPopParam = {}
       openPopParam.targetKey = this.CONT_DETAIL.creTeamKey
       openPopParam.teamKey = this.CONT_DETAIL.creTeamKey

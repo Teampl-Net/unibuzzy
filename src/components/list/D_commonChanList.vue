@@ -22,10 +22,10 @@
                         <span class="commonColo font12" >{{value.followerCount}}</span>
                     </div>
                     <!-- <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 23px;" >
-                      <pp style="line-height: 0.05rem; float: right; margin-top: 0px; margin-left: 5px; margin-top: 3.5px;">
+                      <p style="line-height: 0.05rem; float: right; margin-top: 0px; margin-left: 5px; margin-top: 3.5px;">
                         <img class="img-w13" style="margin-right: 0.2rem;" src="../../assets/images/main/main_subscriber.png"/>
                         <span class="commonColo font12" >{{value.followerCount}}</span>
-                      </pp>
+                      </p>
                       {{this.resizeText(this.$changeText(value.nameMtext))}}
                     </p> -->
                     <p class="lightGray font14 fr mNone " style="line-height: 0.9rem; height: 100%; line-height: 20px; min-width: 40px" >{{'최근활동 ' + this.$changeDateFormat(value.updDate)}}</p>

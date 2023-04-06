@@ -13,23 +13,23 @@
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext"> -->
                 </div>
                 <div class="pushDetailHeaderTextArea ">
-                  <p @click="clickCard(alim)" :class="alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46? 'completeWork': ''"  style="width: calc(100% - 30px); word-wrap:break-word;" class="font16 fl fontBold commonBlack cursorDragText">
-                    <pp v-if="alim.jobkindId === 'ALIM'" class="font14 mtop-03 fl contentTypeTextArea fontNomal" style="background:#6768A7; margin-top: 3px; color: #FFF;">{{'알림'}}</pp>
-                    <pp v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl mtop-03 contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</pp>
+                  <div @click="clickCard(alim)" :class="alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46? 'completeWork': ''"  style="width: calc(100% - 30px); word-wrap:break-word;" class="font16 fl fontBold commonBlack cursorDragText">
+                    <p v-if="alim.jobkindId === 'ALIM'" class="font14 mtop-03 fl contentTypeTextArea fontNomal" style="background:#6768A7; margin-top: 3px; color: #FFF;">{{'알림'}}</p>
+                    <p v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl mtop-03 contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</p>
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
                     {{(alim.jobkindId === 'BOAR' && (this.$checkUserAuth(alim.shareItem).V === false && alim.titleBlindYn) && alim.creUserKey !== this.GE_USER.userKey)? '열람 권한이 없습니다.' : resizeText(alim.title, alim.nameMtext)}}
-                  </p>
+                  </div>
                   <img class="fr mright-03" style="width:4.5px; margin-left: 8px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.GE_USER.userKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                   <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
                   <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt=""> -->
                   <div class="w-100P fl" style=" margin-bottom: 5px;">
-                      <p style="width:100%; " class="font14 fl grayBlack">
+                      <div class="w-100P font14 fl grayBlack">
                           <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
                           {{this.$changeText(alim.nameMtext)}}
-                          <pp v-if="alim.jobkindId === 'BOAR'">/{{this.$changeText(alim.cabinetNameMtext)}}</pp>
-                          <pp @click="userNameClick(alim.showCreNameYn === 1, alim.creUserKey, alim.creTeamKey)">{{(alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': '(익명)')}}</pp>
-                      </p>
+                          <p v-if="alim.jobkindId === 'BOAR'">/{{this.$changeText(alim.cabinetNameMtext)}}</p>
+                          <p @click="userNameClick(alim.showCreNameYn === 1, alim.creUserKey, alim.creTeamKey)">{{(alim.showCreNameYn === 1? '(' + this.$changeText(alim.creUserName) + ')': '(익명)')}}</p>
+                      </div>
                   </div>
                 </div>
                 <div class="fl w-100P" style="padding: 5px 0; ">
@@ -258,6 +258,7 @@ export default {
       // }
     },
     memoUserNameClick (param) {
+      debugger
       var userKey = param.userKey
       var currentContentsKey = param.contentsKey
       var indexOf = this.commonListData.findIndex(i => i.contentsKey === currentContentsKey) // ** map 에서 index찾기 ** (#맵 #map #Map #멥 #indexOf #인덱스 #index #Index)
