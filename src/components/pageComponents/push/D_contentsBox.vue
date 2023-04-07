@@ -1091,13 +1091,16 @@ export default {
       // openPopParam.targetContentsKey = this.CONT_DETAIL.contentsKey
       this.$emit('openPop', openPopParam)
     },
-    goUserProfile (targetUserKey) {
+    async goUserProfile (targetUserKey) {
       if (this.GE_USER.unknownYn) {
         this.$showToastPop('멤버가 아니므로 유저 정보를 볼 수 없습니다.')
         return
       }
       // eslint-disable-next-line no-debugger
       debugger
+      // const result = await this.$getAxiosContentsDetail(this.CONT_DETAIL.contentsKey, this.CONT_DETAIL.jobkindId)
+      console.log('this.CONT_DETAILCONT_DETAILCONT_DETAIL')
+      console.log(this.CONT_DETAIL)
       var openPopParam = {}
       openPopParam.targetKey = this.CONT_DETAIL.creTeamKey
       openPopParam.teamKey = this.CONT_DETAIL.creTeamKey

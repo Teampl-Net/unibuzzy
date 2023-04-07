@@ -14,7 +14,7 @@
 
       <p class="w-100P fl font14 textLeft grayBlack">{{$changeText(chanElement.memoMtext)}}</p>
 
-      <div class="w-100P fl font14 textLeft lightGray">{{$changeText(chanElement.cateItemMtext)}} <p class="mleft-05"><img src="../../assets/images/editChan/icon_user_Gray.svg" class="img-w15 mright-01" alt="">{{chanElement.followerCount}}</p></div>
+      <div class="w-100P fl font14 textLeft lightGray">{{$changeText(chanElement.cateItemMtext)}} <p class="mleft-05 font14"><img src="../../assets/images/editChan/icon_user_Gray.svg" class="img-w15 mright-01" alt="">{{chanElement.followerCount}}</p></div>
     </div>
   </div>
 </template>
