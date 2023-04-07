@@ -47,7 +47,7 @@
         <editManagerList :pPopId="popId" ref="editManagerListComp" :propData="propParams" @openPop="openPop" :managerOpenYn='true'   v-if="targetType=== 'editManagerList'" />
         <bookMemberDetail :pPopId="popId" @openPop="openPop" @addDirectAddMemList="addDirectAddMemList" @closeXPop="closeXPop" @deleteManager='closeXPop' :propData="propParams" v-if="targetType=== 'bookMemberDetail'" @openLoading="loadingYn = true" @closeLoading="loadingYn = false" />
         <onlyMemberSelectPop :pPopId="popId"  @openPop="openPop" ref="selectManagerCompo" :pSelectedList="propParams.pSelectedList" :propData="propParams" v-if="targetType=== 'selectMemberPop'" @closeXPop='closeXPop' @saveCabinet='saveCabinet' />
-        <memberManagement :pPopId="popId" :propData="propParams" ref="mamberManagementCompo" v-if=" popId &&  targetType === 'memberManagement'" @openPop='openPop'/>
+        <memberManagement :pPopId="popId" :propData="propParams" ref="memberManagementCompo" v-if=" popId &&  targetType === 'memberManagement'" @openPop='openPop'/>
         <selectAddressBookList :pPopId="popId" :propData="propParams" v-if=" popId &&  targetType === 'selectAddressBookList'" @closeXPop='closeXPop' />
         <div class="pagePaddingWrap" style="padding-top: 50px; position: relative;" v-if=" popId &&  targetType === 'setMypage'">
             <setMypage :pPopId="popId" v-if=" popId &&  targetType === 'setMypage'" @closeXPop="closeXPop" @openPop="openPop" />
@@ -328,7 +328,7 @@ export default {
         this.closePop()
       } else {
         if (param.cabinetKey === undefined || param.cabinetKey === null || param.cabinetKey === '') {
-          await this.$refs.mamberManagementCompo.addDirectly(param)
+          await this.$refs.memberManagementCompo.addDirectly(param)
         } else {
           await this.$refs.selectManagerCompo.changeDirectMemList(param)
         }

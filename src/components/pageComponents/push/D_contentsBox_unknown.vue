@@ -12,7 +12,7 @@
                   </div>
               </div>
               <div style="width: calc(100% - 55px); margin-left: 10px; height: 100%; float: left; display: flex; flex-direction: column;" >
-                  <div style="width: 100%; paosition: relative; height: 50%; min-height: 26px;  position: relative;">
+                  <div style="width: 100%; position: relative; height: 50%; min-height: 26px;  position: relative;">
                       <template v-if="!pUnknownYn && !pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && this.GE_USER && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn">
                           <p class=" textLeft textOverdot commonBlack fontBold font16" style="width: calc(100% - 35px);">
                               열람 권한이 없습니다.
