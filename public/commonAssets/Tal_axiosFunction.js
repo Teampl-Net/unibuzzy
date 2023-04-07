@@ -189,7 +189,6 @@ export const methods = {
     // 수망고
     //   paramMap.set('fcmKey', '123456789')
     //   paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
-      // 정재준테스트
       paramMap.set('fcmKey', '22222222')
       paramMap.set('soAccessToken', 'djWQ33dQRz-mzUVjQmggEz:APA91bHLvbLuEmuvBnh9o8TAC2SgI6zSP836eC8g3zq5HqkfhZenv6zC_hcWK14MI5ZE5PoYAeV5U7FYCH-EGYMTaoXTWC-UleipjRydqG7z0r-wu0gT4TT9b6e89P4FR5l353DFK0C-')
       paramMap.set('userKey', 255)
@@ -295,6 +294,21 @@ export const methods = {
     }, noneLoadingYn)
     resultList = result
     return resultList
+  },
+  async getAxiosContentsDetail (contentsKey, jobkindId) {
+    // eslint-disable-next-line no-debugger
+    debugger
+    var param = {}
+    // param.contentsKey = this.contentsEle.contentsKey
+    param.contentsKey = contentsKey
+    param.targetKey = contentsKey
+    // param.jobkindId = this.contentsEle.jobkindId
+    param.jobkindId = jobkindId
+    param.userKey = store.getters['D_USER/GE_USER'].userKey
+    param.ownUserKey = store.getters['D_USER/GE_USER'].userKey
+    var resultList = await this.$getContentsList(param)
+    if (resultList.content) var detailData = resultList.content[0]
+    this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
   },
   async getContentsList (inputParam, nonLoadingYn, noAuthYn) {
     var paramSet = {}
@@ -632,6 +646,7 @@ export default {
   install (Vue) {
     Vue.config.globalProperties.$saveUserDo = methods.saveUserDo
     Vue.config.globalProperties.$getContentsList = methods.getContentsList
+    Vue.config.globalProperties.$getAxiosContentsDetail = methods.getAxiosContentsDetail
     Vue.config.globalProperties.$getTeamList = methods.getTeamList
     Vue.config.globalProperties.$userLoginCheck = methods.userLoginCheck
     Vue.config.globalProperties.$saveSticker = methods.saveSticker
