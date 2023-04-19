@@ -242,7 +242,7 @@ export default {
         console.log(this.CHANNEL_DETAIL.teamId)
       } else {
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.getAndSaveTeamAESToken',
+          url: 'service/tp.getAndSaveTeamAESToken',
           param: { teamKey: this.CHANNEL_DETAIL.teamKey }
         })
         console.log(result.data)
@@ -332,7 +332,7 @@ export default {
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
 
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) document.getElementById('followerCancelArea').classList.add('displayNIm')
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
+        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && document.getElementById('ownerChannelEditArea')) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
         document.getElementById('channelCardWrap').classList.add('displayNIm')
         document.getElementById('userCardWrap').classList.add('displayNIm')
         document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
@@ -707,7 +707,7 @@ export default {
         // 더알림 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) document.getElementById('followerCancelArea').classList.add('displayNIm')
 
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
+        if (document.getElementById('ownerChannelEditArea')) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
 
         document.getElementById('channelCardWrap').classList.add('displayNIm')
         document.getElementById('userCardWrap').classList.add('displayNIm')
@@ -760,7 +760,7 @@ export default {
 
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.saveFollower',
+        url: 'service/tp.saveFollower',
         param: params
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')

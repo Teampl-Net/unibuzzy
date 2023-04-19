@@ -39,6 +39,7 @@
   <body><!--
     <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script> -->
     <script src="./commonAssets/kakaoLink/kakao.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
     <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-base64@3.6.1/base64.min.js"></script>
@@ -113,6 +114,36 @@
          if (!("Notification" in window)) {
             console.log("데스크톱 알림을 지원하지 않는 브라우저입니다.");
         }
+        var urlString = location.search
+        if (location.search && location.search.trim() !== '') {
+            const params = new URLSearchParams(urlString)
+            console.log(params)
+            var queList = []
+            var chanYn = false
+            for (const param of params) {
+                if (param[0] === 'chanDetail') {
+                    console.log('targetKind: ' + param[0])
+                    console.log('targetKey: ' + param[1])
+                    queList.push({ targetType: param[0], targetKey: param[1] })
+                    localStorage.setItem('deepLinkQueue', JSON.stringify(queList[0]) )
+                    chanYn = true
+                    break
+                }
+            }
+            if (!chanYn) {
+                const splited = urlString.replace('?', '').split(/[=?&]/)
+                const param = {}
+                console.log(splited)
+                for (let i = 0; i < splited.length; i++) {
+                    param[splited[i]] = splited[++i]
+                }
+                localStorage.setItem('deepLinkQueue', JSON.stringify(param) )
+                
+            }
+            
+            
+            
+        }
         // 데스크탑 알림 권한 요청
         Notification.requestPermission(function (result) {
             // 권한 거절
@@ -123,6 +154,7 @@
             }
             else if (result == 'granted'){
                 console.log('알림을 허용하셨습니다.');
+                
             }
         });
       }

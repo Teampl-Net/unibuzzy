@@ -200,9 +200,6 @@ export default {
       this.mModiMemoObj = memo
       this.mModiMemoPopShowYn = true
     },
-    testFunction () {
-      alert(true)
-    },
     updateMemo (param) {
       this.$emit('updateMemo', [param, this.targetMemo.memoKey, this.targetMemo.parentMemoKey])
     },
@@ -405,7 +402,7 @@ export default {
     async saveActAxiosFunc (param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.saveClaimLog',
+          url: 'service/tp.saveClaimLog',
           param: param
         })
         console.log(result)
@@ -458,7 +455,7 @@ export default {
       memo.memoKey = this.mTempData.memoKey
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.deleteMemo',
+          url: 'service/tp.deleteMemo',
           param: memo
         })
         if (result.data.result === true) {

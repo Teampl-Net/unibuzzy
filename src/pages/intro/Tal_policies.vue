@@ -42,7 +42,11 @@ export default {
   created () {
     onMessage('REQ', 'CheckUserPermission')
     if (localStorage.getItem('policiesOk') === true || localStorage.getItem('policiesOk') === 'true') {
-      this.$router.replace({ name: 'login' })
+      if (this.pPartnerLoginYn && this.pGoLoginPage) {
+        // this.pGoLoginPage()
+      } else {
+        this.$router.replace({ name: 'login' })
+      }
     }
     /* window.ReactNativeWebView.postMessage(
       JSON.stringify({
@@ -64,6 +68,10 @@ export default {
       ],
       allSelected: false
     }
+  },
+  props: {
+    pGoLoginPage: Function,
+    pPartnerLoginYn: {}
   },
   methods: {
     checkedAll (checked) {
@@ -91,7 +99,11 @@ export default {
         return
       }
       localStorage.setItem('policiesOk', true)
-      this.$router.replace({ name: 'login' })
+      if (this.pPartnerLoginYn && this.pGoLoginPage) {
+        this.pGoLoginPage()
+      } else {
+        this.$router.replace({ name: 'login' })
+      }
     }
   }
 }

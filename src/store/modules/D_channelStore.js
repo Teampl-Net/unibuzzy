@@ -181,9 +181,9 @@ const D_CHANNEL = {
         if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {
           D_CHAN_AUTH.settingYn = true
           D_CHAN_AUTH.followYn = true
-          if (team.userTeamInfo.memberYn === true || team.userTeamInfo.memberYn === 1) {
+          /* if (team.userTeamInfo.memberYn === true || team.userTeamInfo.memberYn === 1) {
             D_CHAN_AUTH.memberYn = true
-          }
+          } */
           if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
             D_CHAN_AUTH.mngAlimYn = team.userTeamInfo.mngAlimYn
             D_CHAN_AUTH.mngTeamYn = team.userTeamInfo.mngTeamYn
@@ -198,6 +198,9 @@ const D_CHANNEL = {
             D_CHAN_AUTH.adminYn = true
           }
         }
+        if (D_CHAN_AUTH.memberNameMtext) {
+          D_CHAN_AUTH.memberYn = true
+        }
 
         team.D_CHAN_AUTH = D_CHAN_AUTH
         payload[i] = team
@@ -206,7 +209,6 @@ const D_CHANNEL = {
       return true
     },
     MU_ADD_CHANNEL: (state, payload) => {
-      debugger
       var index
       if (!payload || payload.length === 0) return
       for (var i = 0; i < payload.length; i++) {
@@ -236,6 +238,9 @@ const D_CHANNEL = {
             }
           }
           // D_CHAN_AUTH.followYn = false
+        }
+        if (D_CHAN_AUTH.memberNameMtext) {
+          D_CHAN_AUTH.memberYn = true
         }
         if (index === -1) {
           if (team.ELEMENTS) {

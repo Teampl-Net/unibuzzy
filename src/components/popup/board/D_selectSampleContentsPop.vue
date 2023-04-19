@@ -151,7 +151,7 @@ export default {
       param.sample = sample
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.saveSample',
+        url: 'service/tp.saveSample',
         param: param
       })
       this.$showToastPop('샘플이 삭제되었습니다.')
@@ -187,7 +187,7 @@ export default {
       // paramMap.set('followerType', 'M')
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getSampleList',
+        url: 'service/tp.getSampleList',
         param: { sample: param }
       })
       // eslint-disable-next-line no-debugger

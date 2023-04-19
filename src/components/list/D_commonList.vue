@@ -323,7 +323,7 @@ export default {
         inParam.mccKey = this.tempData.mccKey
         inParam.jobkindId = 'ALIM'
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.deleteMCabContents',
+          url: 'service/tp.deleteMCabContents',
           param: inParam
         })
 
@@ -336,7 +336,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.deleteContents',
+          url: 'service/tp.deleteContents',
           param: inParam
         })
       }
@@ -447,7 +447,7 @@ export default {
       }
       var this_ = this
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.saveSubscribe',
+        url: 'service/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
@@ -549,7 +549,7 @@ export default {
       // console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.saveActLog',
+        url: 'service/tp.saveActLog',
         param: param
       })
       // console.log(result.data.result)
@@ -653,7 +653,7 @@ export default {
     //   var memo = {}
     //   memo.memoKey = param.memoKey
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'https://mo.d-alim.com:9443/service/tp.deleteMemo',
+    //     url: 'service/tp.deleteMemo',
     //     param: memo
     //   })
     //   if (result.data.result === true) {
@@ -743,7 +743,7 @@ export default {
           param = this.tempData
           // console.log(param)
           await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com:9443/service/tp.deleteContents',
+            url: 'service/tp.deleteContents',
             param: param
           })
           this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', this.tempData)
@@ -776,7 +776,7 @@ export default {
 
     //   try{
     //     var result = await this.$commonAxiosFunction({
-    //       url: 'https://mo.d-alim.com:9443/service/tp.saveMemo',
+    //       url: 'service/tp.saveMemo',
     //       param: { memo: memo }
     //     })
 
@@ -979,7 +979,7 @@ export default {
     //   // }
 
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'https://mo.d-alim.com:9443/service/tp.getMemoList',
+    //     url: 'service/tp.getMemoList',
     //     param: memo
     //   })
 

@@ -74,7 +74,8 @@ export default {
     },
     pPartnerLoginText: {
       default: ''
-    }
+    },
+    pSetUserItem: Function
   },
   components: {
     commonConfirmPop,
@@ -122,9 +123,16 @@ export default {
                 // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
                 router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
               } else */
-      await saveUser(userProfile, true) // 서버에 save요청
+      // await saveUser(userProfile, true) // 서버에 save요청
+      if (this.pPartnerLoginYn) {
+        if (this.pSetUserItem) {
+          await this.pSetUserItem(userProfile)
+        }
+      } else {
+        await saveUser(userProfile, true)
+      }
       localStorage.setItem('loginYn', true)
-      this.$router.replace({ path: '/' })
+      // this.$router.replace({ path: '/' })
 
       /* if (this.$route.params.boardData && this.$route.params.boardData !== 'social') {
         this.$router.replace({ name: 'boardDetail', query: { boardData: this.$route.params.boardData } })
@@ -176,7 +184,7 @@ export default {
       )
     },
     onLogin () {
-      // var thisthis = this
+      var thisthis = this
       localStorage.setItem('loginType', 'google')
       authService.login('Google').then(async function (result) {
         // console.log(result)
@@ -190,8 +198,14 @@ export default {
           user.rToken = ''
         }
         var userProfile = await setUserInfo(user)
-
-        await saveUser(userProfile, true) //
+        if (thisthis.pPartnerLoginYn) {
+          if (thisthis.pSetUserItem) {
+            await thisthis.pSetUserItem(userProfile)
+          }
+        } else {
+          await saveUser(userProfile, true)
+        }
+        //
 
         /* if (this_.$route.params.boardData && this_.$route.params.boardData !== 'social') {
           this_.$router.replace({ name: 'boardDetail', query: { boardData: this.$route.params.boardData } })

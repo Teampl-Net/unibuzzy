@@ -13,7 +13,8 @@
                 </div>
                 <p v-html="mRecvParams.loginText" class="font18 mbottom-5 commonColor fontBold fontBold"></p>
             </div>
-            <loginCompo @closeXPop="closeXPop" :pPartnerLoginYn="true" :pPartnerLoginText="mRecvParams.loginText" :pSetUserItem="saveUserAndAccess" :pCorePartnerYn="true" v-else-if="mRecvParams && mRecvParams.loginText && mShowTarget === 'login'" @openPop="openPop"/>
+            <polCompo @closeXPop="closeXPop" :pGoLoginPage="goLoginPage" :pPartnerLoginYn="true" v-else-if="mRecvParams && mRecvParams.loginText && mShowTarget === 'policies'" />
+            <loginCompo @closeXPop="closeXPop" :pPartnerLoginYn="true" :pPartnerLoginText="mRecvParams.loginText" :pSetUserItem="saveUserAndAccess"  v-else-if="mRecvParams && mRecvParams.loginText && mShowTarget === 'login'" @openPop="openPop"/>
             <boardMain @openImgPop="openImgPop" :pOnlyMineYn="true"  ref="boardMainPop" :propData="mPropParams" :chanAlimListTeamKey="mPropParams.targetKey" v-else-if="mPropParams &&  mShowTarget === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"/>
         </transition>
     <div></div>
@@ -21,20 +22,28 @@
 <script>
 import boardMain from '@/components/board/D_boardMain.vue'
 import loginCompo from '../pages/intro/Tal_login.vue'
+import polCompo from '../pages/intro/Tal_policies.vue'
+import { coreMethods } from '../../public/commonAssets/D_coreService'
 /* eslint-disable camelcase */
 // eslint-disable-next-line no-unused-vars
 let g_pOpener = null
 export default {
   components: {
     loginCompo,
+    polCompo,
     boardMain
   },
   created () {
-    if (document.referrer.indexOf('officeon') === -1 && document.referrer.indexOf('localhost') === -1 && document.referrer.indexOf('josa1') === -1) {
-      this.$router.push({ name: 'errorPage' })
+    var callbackPageYn = localStorage.getItem('callbackPageYn')
+    if (callbackPageYn && callbackPageYn === 'true') {
+      if (localStorage.getItem('coreParam')) this.mRecvParams = JSON.parse(localStorage.getItem('coreParam'))
+      this.openDirectBoard()
+    } else {
+      if (document.referrer.indexOf('officeon') === -1 && document.referrer.indexOf('localhost') === -1 && document.referrer.indexOf('josa1') === -1 && document.referrer.indexOf('alim') === -1) {
+        this.$router.push({ name: 'errorPage' })
+      }
+      window.addEventListener('message', (e) => this.receiveMessage(e, this.setPostMessageToParent), false)
     }
-    // alert('test')
-    window.addEventListener('message', (e) => this.receiveMessage(e, this.setPostMessageToParent), false)
   },
   data () {
     return {
@@ -48,6 +57,9 @@ export default {
     }
   },
   methods: {
+    goLoginPage () {
+      this.mShowTarget = 'login'
+    },
     okRequest () {
       if (this.mRecvRequest === 'openBoardMain') {
         this.openDirectBoard()
@@ -57,11 +69,11 @@ export default {
       if (this.mAxiosYn) return
       this.mAxiosYn = true
       console.log(this.mRecvParams)
-      const result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.getDirectBoardInfo', this.mRecvParams)
+      const result = await this.$axios.post('service/tp.getDirectBoardInfo', this.mRecvParams)
       console.log(result)
       this.mAxiosYn = false
       /* var result = await commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.goDirectBoard',
+          url: 'service/tp.goDirectBoard',
           param: Object.fromEntries(paramMap)
         }) */
       const resultMainData = result.data.cabinet
@@ -89,6 +101,24 @@ export default {
         this.mShowTarget = 'boardMain'
       }
     },
+    async successSaveUserAccess (data) {
+      console.log(data)
+      this.mAxiosYn = false
+      if (data.data.result) {
+        var returnData = {}
+        // debugger
+        returnData.partnerToken = data.data.accessUser.partnerToken
+        returnData.uAccessToken = data.data.accessUser.uaccessToken
+        this.$store.commit('D_USER/MU_USER_ACCESS', returnData)
+        console.log(document.referrer)
+        if (g_pOpener) {
+          g_pOpener.postMessage(JSON.stringify({ resultMsg: 'saveUserInfo', result: true, userInfo: returnData }), document.referrer)
+        }
+
+        var loginYn = await this.coreLoginCheck(returnData.uAccessToken, returnData.partnerToken)
+        if (loginYn) this.okRequest()
+      }
+    },
     async saveUserAccess () {
       var setParam = {}
       if (this.mAxiosYn) return
@@ -100,16 +130,32 @@ export default {
       this.mRecvParams.keepInfo = JSON.stringify(this.mRecvParams.keepInfo)
       setParam.partner = this.mRecvParams
       console.log(this.mRecvParams)
-      var result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.saveUserAccess', setParam)
+      var result = await this.$axios.post('service/tp.saveUserAccess', setParam)
       this.mAxiosYn = false
       if (result.data.result) {
         return 'OK'
       }
     },
+    /* async saveUserAccess2() {
+      var setParam = {}
+      if (this.mAxiosYn) return
+      this.mAxiosYn = true
+      var user = this.$store.getters['D_USER/GE_USER']
+      this.mRecvParams.userKey = user.userKey
+      this.mRecvParams.deviceKey = user.deviceKey
+      // this.mRecvParams.memberParamListStr = this.mRecvParams.memberParamListStr
+      this.mRecvParams.keepInfo = JSON.stringify(this.mRecvParams.keepInfo)
+      setParam.partner = this.mRecvParams
+      console.log(this.mRecvParams)
+
+      dService.saveUserAndAccess(setParam, this.mRecvParams, this.successSaveUserAccess)
+
+      // var result = await this.$axios.post('service/tp.saveUserAccess', setParam)
+    }, */
     async saveUserAndAccess (userProfile) {
       if (this.mAxiosYn) return
       this.mAxiosYn = true
-      var param = {}
+      /* var param = {}
       param.soType = userProfile.soType
       if (userProfile.email !== undefined && userProfile.email !== null && userProfile.email !== '') { param.soEmail = userProfile.email }
       if (userProfile.name !== undefined && userProfile.name !== null && userProfile.name !== '') {
@@ -137,27 +183,11 @@ export default {
         if (!isMobile && localStorage.getItem('fcmKey') != null) {
           param.fcmKey = localStorage.getItem('fcmKey')
         }
-      }
-      var setParam = {}
-      setParam.user = param
-      setParam.partner = this.mRecvParams
-      var result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.saveUserAndAccess', setParam)
-      this.mAxiosYn = false
-      console.log(result)
-      if (result.data.result) {
-        var returnData = {}
-        // debugger
-        returnData.partnerToken = result.data.accessUser.partnerToken
-        returnData.uAccessToken = result.data.accessUser.uaccessToken
-        this.$store.commit('D_USER/MU_USER_ACCESS', returnData)
-        console.log(document.referrer)
-        if (g_pOpener) {
-          g_pOpener.postMessage(JSON.stringify({ resultMsg: 'saveUserInfo', result: true, userInfo: returnData }), document.referrer)
-        }
+      } */
+      coreMethods.saveUserAndAccess(userProfile, this.mRecvParams, this.successSaveUserAccess)
 
-        var loginYn = await this.coreLoginCheck(returnData.uAccessToken, returnData.partnerToken)
-        if (loginYn) this.okRequest()
-      }
+      // var result = await this.$axios.post('service/tp.saveUserAndAccess', setParam)
+      // this.mAxiosYn = false
     },
     async receiveMessage (event, callback) {
       console.log(event)
@@ -190,7 +220,9 @@ export default {
                 await this.saveUserAndUserAccess()
                 this.okRequest()
               } else {
-                this.mShowTarget = 'login'
+                await localStorage.setItem('coreProxyYn', 'true')
+                await localStorage.setItem('coreParam', JSON.stringify(this.mRecvParams))
+                this.mShowTarget = 'policies'
               }
             }
           } else {
@@ -198,7 +230,9 @@ export default {
               await this.saveUserAndUserAccess()
               this.okRequest()
             } else {
-              this.mShowTarget = 'login'
+              await localStorage.setItem('coreProxyYn', 'true')
+              await localStorage.setItem('coreParam', JSON.stringify(this.mRecvParams))
+              this.mShowTarget = 'policies'
             }
             // this.popParams.targetType = 'login'
           }
@@ -217,7 +251,7 @@ export default {
       if (this.mRecvParams.userName === null || this.mRecvParams.encPhone === null) return
       setParam.partner = this.mRecvParams
       console.log(this.mRecvParams)
-      var result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.saveUserAccess', setParam)
+      var result = await this.$axios.post('service/tp.saveUserAccess', setParam)
       this.mAxiosYn = false
       if (result.data.result) {
         console.log(result.data)

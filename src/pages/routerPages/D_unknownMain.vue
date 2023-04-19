@@ -8,7 +8,7 @@
             <div style="width: calc(100% - 80px); float: left; height: 100%;">
                 <!-- <a href="web+test://pwa">Americano</a> -->
                 <p class="commonLightColor font16 textLeft " style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
-                <p class="commonLightColor font16 textLeft fl" style="font-weight: 600;">로그인을 하고 인기있는 채널을 구독해보세요</p>
+                <p class="commonLightColor font16 textLeft fl" style="font-weight: 600;">로그인을 하고 채널을 구독해보세요</p>
             </div>
             <gBtnSmall btnTitle="로그인" class="fr"/>
             <!-- <div @click="goUserProfile" style="position: relative; width: 60px; height: 60px; justify-content: center; align-items: center; padding: 1px; border-radius: 100%; border:2.5px solid #5B1CFC; float: left; display: flex; padding: 2px; flex-grow: 0; flex-shrink: 0;">
@@ -180,7 +180,7 @@ export default {
       var paramMap = new Map()
       paramMap.set('jobkindId', 'BOAR')
       paramMap.set('allYn', true)
-      var response = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.getMyContentsList', Object.fromEntries(paramMap))
+      var response = await this.$axios.post('service/tp.getMyContentsList', Object.fromEntries(paramMap))
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {

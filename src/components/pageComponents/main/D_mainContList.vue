@@ -261,6 +261,8 @@ export default {
           console.log(e)
         } finally {
           this.mCanLoadYn = true
+          var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList')
+          if (queueIndex !== -1) this.mAxiosQueue.splice(queueIndex, 1)
         }
       } else {
       }

@@ -188,7 +188,7 @@ export default {
       param.creUserKey = this.GE_USER.userKey
       if (this.GE_USER.unknownYn) return
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getStickerList',
+        url: 'service/tp.getStickerList',
         param: param
       })
       this.mStickerList = result.data
@@ -225,7 +225,7 @@ export default {
       // var param = {}
       // param.teamKey = this.teamKey
       // await this.$commonAxiosFunction({
-      //   url: 'https://mo.d-alim.com:9443/service/tp.getMemberInfo',
+      //   url: 'service/tp.getMemberInfo',
       //   param: param
       // }).then((result)=>{
       //   console.log(result)

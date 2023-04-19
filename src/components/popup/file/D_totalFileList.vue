@@ -263,7 +263,7 @@ export default {
       paramMap.set('pageSize', 10)
       paramMap.set('offsetInt', this.offsetInt)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getMyFileList',
+        url: 'service/tp.getMyFileList',
         param: Object.fromEntries(paramMap)
       }, nonLoadingYn)
       console.log(result)

@@ -109,12 +109,12 @@ export default {
       // const wl = window.location
       // 인증 후 callback URL/service/tp.checkplus_success
       // 패치해라
-      const returnSuccessUrl = 'https://mo.d-alim.com:9443/service/tp.successUserCertification'
-      const returnErrorUrl = 'https://mo.d-alim.com:9443/service/tp.successUserCertification'
+      const returnSuccessUrl = 'service/tp.successUserCertification'
+      const returnErrorUrl = 'service/tp.successUserCertification'
       // callback 후 WAS에서 최종적으로 redirect 시킬 URL(결과 화면)
       // const redirectUrl = 'https://222.233.118.96:8080'
       var res = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getNiceToken',
+        url: 'service/tp.getNiceToken',
         param: { returnSuccessUrl: returnSuccessUrl, returnErrorUrl: returnErrorUrl }
       })
       this.winPopShowYn = true

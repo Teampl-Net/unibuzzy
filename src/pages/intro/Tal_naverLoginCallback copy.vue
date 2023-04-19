@@ -29,7 +29,6 @@ export default {
   },
   methods: {
     async initF () {
-      alert(true)
       var self = this
       // console.log(self)
       var hashData = this.$route.hash

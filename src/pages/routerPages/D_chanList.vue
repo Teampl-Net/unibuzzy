@@ -157,9 +157,6 @@ export default {
     this.findPaddingTopChan()
   },
   methods: {
-    myMethod () {
-      alert(true)
-    },
     goSavePhonePop () {
       // eslint-disable-next-line no-new-object
       var param = new Object()

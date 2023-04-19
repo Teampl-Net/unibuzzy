@@ -8,7 +8,7 @@
             <div class="userProfileWrap">
                 <div class="userProfileWelcomeWrap">
                     <p class="commonLightColor font16 textLeft" style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
-                    <p v-if="GE_USER.unknownYn" class="commonLightColor font16 textLeft" style="font-weight: 600;">로그인을 하고 인기있는 채널을 구독해보세요</p>
+                    <p v-if="GE_USER.unknownYn" class="commonLightColor font16 textLeft" style="font-weight: 600;">로그인을 하고 채널을 구독해보세요</p>
                     <div v-else >
                         <div class="loginTrueUserWrap">
                             <div class="loginTrueUserTextArea">
@@ -84,7 +84,7 @@
                     </template>
                 </div>
             </div>
-            <div v-if="mMainAlimList && mMainAlimList.length" style="float: left; width: 100%; margin-top: 2px; min-height: 10px; background: #F4F4F4; padding: 8px;" >
+            <div v-if="mMainAlimList" style="float: left; width: 100%; margin-top: 2px; min-height: 10px; background: #F4F4F4; padding: 8px;" >
                 <template v-if="mMainAlimList.length === 0 && mContentsEmptyYn === false">
                     <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
@@ -151,9 +151,19 @@ export default {
     this.resetHistory()
     this.setNativeHeight()
 
-    var urlParam = this.getParamMap(location.search)
-    if (urlParam) {
-      this.goPageForUrl(urlParam)
+    var urlParam = localStorage.getItem('deepLinkQueue')
+    if (urlParam && urlParam.trim() !== '') {
+      urlParam = JSON.parse(urlParam)
+      urlParam.targetKey = urlParam.targetKey.split('/')[0]
+      console.log(urlParam)
+      if (urlParam.targetType) {
+        if (urlParam.targetType === 'chanDetail') {
+          this.openPagePop(urlParam.targetType, urlParam.targetKey)
+        } else {
+          this.goPage(urlParam)
+        }
+        localStorage.removeItem('deepLinkQueue')
+      }
     }
     if (!this.GE_USER) {
       this.$router.replace({ name: 'unknown' })
@@ -303,7 +313,7 @@ export default {
       paramMap.set('soEmail', this.GE_USER.soEmail)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('service/tp.firstLoginCheck', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
@@ -321,7 +331,7 @@ export default {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')
       var paramMap = new Map()
-      var response = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('service/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
@@ -573,6 +583,6 @@ export default {
 .mainContReload {
     position: absolute; top:15px; right:25px; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center;
 }
-.mainContHeaderWrap {width: 100%; display: flex; align-items: center; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; position: relative; border-bottom: 2px solid #F4F7FF!important; margin-top: 15px;}
+.mainContHeaderWrap {width: 100%; display: flex; align-items: center; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; position: relative; /* border-bottom: 2px solid #F4F7FF!important;  */margin-top: 15px;}
 
 </style>

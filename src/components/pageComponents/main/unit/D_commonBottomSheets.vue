@@ -104,7 +104,7 @@ export default {
     async getCateItemList () {
       if (!this.propBusinessItemList) {
         var cateItemList = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.getCateItemList',
+          url: 'service/tp.getCateItemList',
           param: { cateGroupKey: 2 }
         })
         this.mBusinessItemList = cateItemList.data.cateItemList

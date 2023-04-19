@@ -15,8 +15,5 @@ const dService = {
     windowRef.location.href = uri + btoa(paramStr)
 
     return windowRef
-  },
-  testAlert () {
-    alert(true)
   }
 }

@@ -101,7 +101,7 @@ export default {
       param.picBgPath = this.mStickerObj.picBgPath
       param.creUserKey = this.GE_USER.userKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.saveSticker',
+        url: 'service/tp.saveSticker',
         param: param
       })
       if (result.data.result) {
@@ -146,7 +146,7 @@ export default {
       param.stickerKey = this.mStickerObj.stickerKey
       param.deleteYn = true
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.saveSticker',
+        url: 'service/tp.saveSticker',
         param: param
       })
       if (result.data.result) {

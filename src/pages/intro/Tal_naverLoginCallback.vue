@@ -8,6 +8,8 @@
 <script>
 import { setUserInfo } from '../../assets/js/login/Tal_userSetting'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
+import { coreMethods } from '../../../public/commonAssets/D_coreService'
+import router from '../../router'
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
@@ -61,7 +63,7 @@ export default {
       var email_val = this.naverIdLogin.getProfileData('email')
       var mobile_val = this.naverIdLogin.getProfileData('mobile')
       var age_val = this.naverIdLogin.getProfileData('age')
-      // console.log(acc_token_val + id_val + name_val + nickname_val + email_val + mobile_val + age_val)
+      console.log(acc_token_val + id_val + name_val + nickname_val + email_val + mobile_val + age_val)
       if (this.naverIdLogin.getProfileData('name') !== undefined) {
         user.email = email_val
         user.mobile = mobile_val
@@ -83,13 +85,27 @@ export default {
               // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
               router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
             } else */
-      if (this.$route.params.boardDetail && this.$route.params.boardDetail !== 'social') {
-        await saveUser(userProfile, true, this.$route.params.boardDetail) // 서버에 save요청
+      var coreProxyYn = localStorage.getItem('coreProxyYn')
+      var coreParam = localStorage.getItem('coreParam')
+      if (coreParam && coreParam.trim() !== '') {
+        coreParam = JSON.parse(coreParam)
+      }
+      var this_ = this
+      if (coreProxyYn && coreProxyYn === 'true') {
+        coreMethods.saveUserAndAccess(userProfile, coreParam, function callback (data) {
+          if (data.data.result) {
+            localStorage.setItem('user', JSON.stringify(data.data.userMap))
+            this_.$store.dispatch('D_USER/AC_USER', data.data.userMap)
+            localStorage.setItem('sessionUser', JSON.stringify(data.data.userMap))
+            localStorage.setItem('callbackPageYn', 'true')
+            router.push({ path: '/PARTNER' })
+          }
+        })
       } else {
         await saveUser(userProfile) // 서버에 save요청
       }
       localStorage.setItem('loginYn', true)
-      location.href = '/'
+      // location.href = '/'
       // window.close()
     }
 

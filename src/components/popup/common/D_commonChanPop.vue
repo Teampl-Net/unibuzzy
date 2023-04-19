@@ -86,7 +86,7 @@ export default {
       param.teamKey = this.propTeamKey
       // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getMemberTypeList',
+        url: 'service/tp.getMemberTypeList',
         param: param
       })
       console.log(memberTypeList)
@@ -110,7 +110,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.selectMemberObj.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getMemberTypeItemList',
+        url: 'service/tp.getMemberTypeItemList',
         param: param
       })
       console.log('--------------------------')
@@ -125,7 +125,7 @@ export default {
           }
           typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
           this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com:9443/service/tp.saveFollower',
+            url: 'service/tp.saveFollower',
             param: { follower: typeParam }
           }).then(() => {
             this_.resultReqData.memberYn = true

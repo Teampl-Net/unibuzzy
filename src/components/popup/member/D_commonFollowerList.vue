@@ -186,7 +186,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.deleteManager',
+        url: 'service/tp.deleteManager',
         param: param
       })
       return result

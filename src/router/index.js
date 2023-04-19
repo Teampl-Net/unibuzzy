@@ -6,20 +6,7 @@ import axios from 'axios'
 // import jisuTest from '../jisuTest.vue'
 import { methods, commonAxiosFunction } from '../../public/commonAssets/Tal_axiosFunction'
 import routerMain from '../pages/Tal_router_main.vue'
-
-import testLoginPage from '../pages/intro/testLoginPage.vue'
-import login from '../pages/intro/Tal_login.vue'
-import permissions from '../pages/intro/Tal_permissions.vue'
-import policies from '../pages/intro/Tal_policies.vue'
-import pushList from '../pages/routerPages/Tal_pushList.vue'
-import chanList from '../pages/routerPages/D_chanList.vue'
-import logList from '../pages/routerPages/Tal_logList.vue'
 import search from '../pages/routerPages/D_searchPage.vue'
-// import { loginCheck } from '../assets/js/Tal_common'
-import savePhone from '../pages/routerPages/Tal_savePhone.vue'
-import saveName from '../pages/routerPages/Tal_saveName.vue'
-import nonMemInquiryBoard from '../pages/intro/Tal_nonMemberInquiryBoard.vue'
-import suminTest from '../pages/intro/suminTest.vue'
 // import myChanList from '../components/popup/del_Tal_managerChanList.vue'
 // import store from '../store/index'
 /* import admRouterMain from '../pages/routerPages/admPages/TalAdm_main.vue'
@@ -27,26 +14,6 @@ import admChanMain from '../pages/routerPages/admPages/TalAdm_chanMain.vue'
 import admSendPushList from '../pages/routerPages/admPages/TalAdm_SendPushList.vue'
 import admManageRecvList from '../pages/routerPages/admPages/TalAdm_ManageRecvList.vue'
 import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue' */
-
-// import howToUse from '../components/popup/info/Tal_howToUse.vue'
-
-import admWritePush from '../components/popup/D_writeContents.vue'
-import helpMemberPop from '../components/popup/info/Tal_helpMemberPop.vue'
-import helpBookPop from '../components/popup/info/Tal_helpBookPop.vue'
-import helpBoardPop from '../components/popup/info/Tal_helpBoardPop.vue'
-
-import myActList from '../components/pageComponents/myPage/D_myActList.vue'
-import myPage from '../pages/routerPages/D_myPage.vue'
-// import suminTest from '../components/unit/formEditor/Tal_attachFile.vue'
-import admLogin from '../pages/intro/Tal_Adm_login.vue'
-import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue'
-import naverCallbackTest from '../pages/intro/Tal_naverLoginCallback copy.vue'
-import certiPhone from '../components/pageComponents/intro/D_certi_phone.vue'
-import certiPhoneReturn from '../components/pageComponents/intro/D_certi_phone_return.vue'
-import ssoLogin from '../pages/backuplogin.vue'
-
-import contDetail from '../pages/routerPages/D_contentsDetail.vue'
-import store from '@/store'
 
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
 

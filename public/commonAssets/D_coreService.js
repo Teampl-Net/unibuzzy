@@ -10,7 +10,7 @@ var g_axiosQueue = []
 
 export const coreMethods = {
   async coreLoginCheck (paramMap) {
-    var result = await axios.post('https://mo.d-alim.com:9443/service/tp.coreLoginCheck', Object.fromEntries(paramMap))
+    var result = await axios.post('service/tp.coreLoginCheck', Object.fromEntries(paramMap))
     return result
   },
   async commonCoreAxios (setItem, nonLoadingYn, noAuthYn) {
@@ -44,6 +44,47 @@ export const coreMethods = {
 
     console.log('####-----------------------------------------------------------END----------------------------------------------------------------####')
     return result
+  },
+  async saveUserAndAccess (userProfile, coreParam, callbackF) {
+    var param = {}
+    param.soType = userProfile.soType
+    if (userProfile.email !== undefined && userProfile.email !== null && userProfile.email !== '') { param.soEmail = userProfile.email }
+    if (userProfile.name !== undefined && userProfile.name !== null && userProfile.name !== '') {
+      param.soName = userProfile.name
+    }
+    if (userProfile.userImg !== undefined && userProfile.userImg !== null && userProfile.userImg !== '') {
+      param.soPicUrl = userProfile.userImg
+      param.picMfilekey = userProfile.userImg
+    }
+    param.mobileYn = userProfile.mobileYn
+    param.soAccessToken = userProfile.aToken
+    var deviceInfo = userProfile.deviceInfo
+    if (deviceInfo) {
+      param.fcmKey = deviceInfo.fcmKey
+      param.osName = deviceInfo.systemName
+      param.osVersion = deviceInfo.systemVersion
+      param.deviceId = deviceInfo.uniqueId + ''
+      param.deviceModel = deviceInfo.model
+      param.deviceBrand = deviceInfo.brand
+      param.isTablet = deviceInfo.isTablet
+      param.countryCode = deviceInfo.contry
+      param.areaName = deviceInfo.timeZome
+    } else {
+      var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      if (!isMobile && localStorage.getItem('fcmKey') != null) {
+        param.fcmKey = localStorage.getItem('fcmKey')
+      }
+    }
+    var setParam = {}
+    setParam.user = param
+    setParam.partner = coreParam
+    var result = await axios.post('service/tp.saveUserAndAccess', setParam)
+    console.log(result)
+    if (result.data.result) {
+      if (callbackF) {
+        callbackF(result)
+      }
+    }
   }
 }
 
