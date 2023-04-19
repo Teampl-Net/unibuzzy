@@ -31,7 +31,6 @@ import { register } from 'register-service-worker'
 var isMobile = /Mobi/i.test(window.navigator.userAgent)
 
 if (!isMobile) {
-  alert('pc임당')
   register(`${process.env.BASE_URL}firebase-messaging-sw.js`, {
     ready () {
       console.log(

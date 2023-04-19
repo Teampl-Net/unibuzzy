@@ -23,7 +23,7 @@ const firebaseConfig = {
 export const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
 console.log(firebaseApp)
 var isMobile = /Mobi/i.test(window.navigator.userAgent)
-var appYn = localStorage.getItem('appYn')
+var appYn = localStorage.getItem('nativeYn')
 // isMobile = /Mobi/i.test(window.navigator.userAgent)
 if (!isMobile && (appYn === 'false' || appYn === false)) {
   const messaging = firebase.messaging()

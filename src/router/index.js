@@ -7,6 +7,7 @@ import axios from 'axios'
 import { methods, commonAxiosFunction } from '../../public/commonAssets/Tal_axiosFunction'
 import routerMain from '../pages/Tal_router_main.vue'
 import search from '../pages/routerPages/D_searchPage.vue'
+import login from '../pages/intro/Tal_login.vue'
 // import myChanList from '../components/popup/del_Tal_managerChanList.vue'
 // import store from '../store/index'
 /* import admRouterMain from '../pages/routerPages/admPages/TalAdm_main.vue'
@@ -132,7 +133,7 @@ const routes = [
     path: '/login',
     name: 'login',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_login.vue')
+    component: login
   },
   {
     path: '/permissions',
