@@ -107,7 +107,7 @@ export default {
     },
     async checkIdentity () {
       // const wl = window.location
-      // 인증 후 callback URL/service/tp.checkplus_success
+      // 인증 후 callback URLservice/tp.checkplus_success
       // 패치해라
       const returnSuccessUrl = 'service/tp.successUserCertification'
       const returnErrorUrl = 'service/tp.successUserCertification'

@@ -16,7 +16,7 @@
         <img @click="goDAlimMain"  src="../../../assets/images/common/thealim_header_logo.png" style="width: 25px; " class="cursorP fl mainHeaderLogo" >
         <p @click="goDAlimMain" v-if="!scrolledYn" class="font25 cursorP headerFont commonColor fl" v-html="'더알림'" style="width: calc(100% - 25px); "></p>
       </div> -->
-      <div id="summaryWrap" v-if="!this.mChanInfoPopShowYn" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
+      <div id="summaryWrap" v-if="!this.mChanInfoPopShowYn" class="summaryWrap mtop-05" >
           <!-- <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
             <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (this.CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;" ></div>
             <div class="chanTextBox fl mleft-05;" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; width:100%; margin-left: 0.5rem;">
@@ -76,7 +76,7 @@
           </div> -->
           <!-- {backgroundImage: 'url('+require('@/assets/메인배너.png')+')'} -->
           <div id="chanInfoSummary" :style="'background-image: url(' + (this.CHANNEL_DETAIL.bgDomainPath ? this.CHANNEL_DETAIL.bgDomainPath + this.CHANNEL_DETAIL.bgPathMtext : this.CHANNEL_DETAIL.bgPathMtext) + ');'" style="     background-position: center; width:100%; height:370px; position: relative; background-size: contain;background-position-y: 40px;background-repeat: no-repeat;">
-            <div v-if="!GE_USER.unknownYn"  @click="goProfile" class="cursorP" style=" float: right;margin-right: 40px; display: flex; align-items: center;" >
+            <div v-if="!GE_USER.unknownYn"  @click="goProfile" class="cursorP" style=" float: right;margin-right: 50px; display: flex; align-items: center;" >
                 <gProfileImg :smallYn="true" :selfYn="true" style="width: 30px; margin-right: 10px; height: 30px;" />
                 <p class="font16 commonBlack fl fontBold">{{$changeText(GE_USER.userDispMtext)}}</p>
             </div>
@@ -128,7 +128,7 @@
             </div>
           </div>
       </div>
-      <div class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 510px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden; border-top:2px solid #DADCE3;">
+      <div class="channelItemBox" ref="channelItemBoxPushListDivCompo" id="channelItemBox"  style="margin-top: 530px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden; border-top:2px solid #DADCE3;">
         <pushList :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" @goScroll="this.mChanMainScrollWrap.style.overflow = 'scroll'" :initData="this.chanDetail.initData.contentsList" @cMemoEditYn="changeMemoEditYn" :targetContents="{targetContentsKey : chanDetail.targetContentsKey, jobkindId : chanDetail.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.chanDetail.targetType" ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" style="" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements' @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit'/>
       </div>
       <div v-if="this.mChanInfoPopShowYn" >
@@ -726,7 +726,7 @@ export default {
         // document.getElementById('channelCardWrap').classList.remove('displayNIm')
         // document.getElementById('userCardWrap').classList.remove('displayNIm')
 
-        blockBox.style.height = '510px'
+        blockBox.style.height = '530px'
         this.mChanMainScrollWrap.style.height = ''
         // document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
         document.getElementById('channelItemBox').classList.remove('channelItemBoxHeight')
@@ -941,7 +941,7 @@ export default {
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}
 
-.summaryWrap{height: 510px; width: 100%; float: left; position: absolute;}
+.summaryWrap{height: 530px; width: 100%; float: left; position: absolute;}
 .summaryWrap2 {height: 50px;  width: 100%; float: left;}
 
 .displayNIm{display: none!important;}

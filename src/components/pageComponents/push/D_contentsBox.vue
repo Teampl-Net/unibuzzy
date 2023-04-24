@@ -72,20 +72,23 @@
 
               <gSticker @click="mStickerPopShowYn = true" :pSticker="{nameMtext: 'test', picBgPath: '#CCC'}"/>
           </div> -->
-          <div v-if="!propJustShowYn" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px;">
+          <div v-if="!propJustShowYn" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px; position: relative;">
               <div v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
               <div v-else-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
-              <div v-else class="h-400max overHidden fl w-100P" :style="pNoAuthYn? 'height:':''" ref="contentsBoxRef"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
-                <pre @loadeddata="testLoad"  :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
+              <div v-else class="fl w-100P" ref="contentsBoxRef"  style="word-break: break-all; overflow: hidden; max-height: 300px; " :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
+                <pre ref="mainContRef" @loadeddata="testLoad"  :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
               </div>
+              <!-- {{ this.mFadeNotShowYn }} -->
+              <div v-if="!mFadeNotShowYn && mContentMoreShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST[0]" class="w-100P" style="position: absolute; bottom: 35px; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div>
               <div v-if="!propJustShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" style="width: 100%; padding: 5px 10px; padding-left: 20px; padding-bottom: 0; float: left; min-height: 20px;margin-top: 10px;">
                   <template v-for="(value, index) in CONT_DETAIL.D_CONT_USER_STICKER_LIST" :key="index" >
                   <!-- <template v-for="(value, index) in this.mContStickerList" :key="index" > -->
-                      <gStickerLine @click="goStickerContentsList(value)" v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" />
+                    <gStickerLine @click="goStickerContentsList(value)" v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" />
                   </template>
               </div>
-              <p :id="'bodyMore'+CONT_DETAIL.contentsKey" class="fr font14 commonColor fontBold mtop-05  mright-1" style="display:none">더보기 > </p>
-          </div>
+              <div v-if="!mFadeNotShowYn && ((mContentMoreShowYn && !CONT_DETAIL.D_CONT_USER_STICKER_LIST) || (mContentMoreShowYn && !CONT_DETAIL.D_CONT_USER_STICKER_LIST[0]))" class="w-100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div>
+              <p :id="'bodyMore'+CONT_DETAIL.contentsKey" class="w-100P textRight fr font14 commonColor fontBold mtop-05  mright-1" style="display:none; position: absolute; bottom: 0; right: 10px;">더보기 > </p>
+            </div>
           <div v-if="propJustShowYn" style="width: 100%; padding: 5px 10px; padding-bottom: 0; float: left; min-height: 35px;">
               <template v-for="(value, index) in propPreStickerList" :key="index" >
                   <gStickerLine v-if="value" :pSelecteModeYn="true" :pSmallYn="true" @click="this.$emit('selectSticker', value)" style="cursor: pointer; float: left; margin-right: 5px; min-width: 30px;" :pSticker="value" />
@@ -163,7 +166,7 @@
                       <memoCompo @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.D_MEMO_LIST.length" @memoEmitFunc='memoEmitFunc' />
                   </template>
                   <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
-                  <p v-if="propDetailYn === false && this.mMoreMemoBtnShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기 ></p>
+                  <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기 ></p>
                   <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
               </div>
               <div class="contentsCardMemoArea" v-else-if="pNoAuthYn && this.CONT_DETAIL.memoList && this.CONT_DETAIL.memoList.length > 0" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
@@ -171,7 +174,7 @@
                       <memoCompo :pNoAuthYn="pNoAuthYn" @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.memoList.length" @memoEmitFunc='memoEmitFunc' />
                   </template>
                   <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
-                  <p v-if="propDetailYn === false && this.mMoreMemoBtnShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기 ></p>
+                  <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기 ></p>
                   <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
               </div>
           </template>
@@ -220,6 +223,7 @@ export default {
     recvListPop
   },
   props: {
+    pFadeNotShowYn: {},
     pOpenUnknownLoginPop: Function,
     propTargetType: {},
     contentsEle: {},
@@ -233,6 +237,10 @@ export default {
   },
   created () {
     // this.saveStickerList()
+    // eslint-disable-next-line no-debugger
+    debugger
+    if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
+    else this.mFadeNotShowYn = false
     if (this.CONT_DETAIL) {
       if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST) {
         var stickerList = []
@@ -246,6 +254,8 @@ export default {
   },
   data () {
     return {
+      mFadeNotShowYn: false,
+      mContentMoreShowYn: false,
       mStickerList: [],
       mContStickerList: [],
       openStickerListYn: false,
@@ -280,7 +290,7 @@ export default {
       mContRecvPopShowYn: false,
       mActorListInitDataList: [],
       mWriteMemoYn: false,
-      mMoreMemoBtnShowYn: false,
+      mMemoMoreShowYn: false,
       mStickerPopShowYn: false,
       animationYn: false
     }
@@ -306,8 +316,17 @@ export default {
     if (this.pNoAuthYn) {
       this.alimBigView()
     }
+    this.showContentShowMore()
   },
   methods: {
+    showContentShowMore () {
+      const contentHeight = this.$refs.mainContRef.offsetHeight
+      if (contentHeight > 300) {
+        this.mContentMoreShowYn = true
+      } else {
+        this.mContentMoreShowYn = false
+      }
+    },
     saveStickerList (params) {
       this.mContStickerList = params.mContStickerList
     },
@@ -383,7 +402,7 @@ export default {
         }
         leng += memoList[i].cmemoList.length
       }
-      if (leng > 3) this.mMoreMemoBtnShowYn = true
+      if (leng > 3) this.mMemoMoreShowYn = true
     },
     closeRecvListPop (openPopParam) {
       this.mContRecvPopShowYn = false
@@ -841,6 +860,13 @@ export default {
         // this.$emit('openMember')
         return
       }
+      // const param = {}
+      // param.contentsKey = this.contentsEle.contentsKey
+      // param.targetKey = this.contentsEle.contentsKey
+      // param.jobkindId = this.contentsEle.jobkindId
+      // param.userKey = this.GE_USER.userKey
+      // param.ownUserKey = this.GE_USER.userKey
+      // var resultList = await this.$getContentsList(param)
       var writeParam = {}
       writeParam.contentsJobkindId = type === 'writeBoard' ? 'BOAR' : 'ALIM'
       writeParam.targetKey = this.contentsEle.creTeamKey
@@ -1030,7 +1056,7 @@ export default {
 
         var contents = await window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey).offsetHeight
 
-        // 이미지를 불러오는 이유는 마운트 시점에 이미지의 크기를 못받오기에 추가함
+        // 이미지를 불러오는 이유는 마운트 시점에 이미지의 크기를 못받아오기에 추가함
         var imgList = await window.document.querySelectorAll('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
         if (imgList && imgList.length > 0) {
           for (let i = 0; i < imgList.length; i++) {
@@ -1041,9 +1067,10 @@ export default {
                 // imgsHeight += event.path[0].clientHeight
                 var contentHeight = contents + imgsHeight
                 var bodyMoreText = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
-                if (contentHeight > 399) {
+                if (contentHeight > 299) {
                   this.mMoreYn = true
                   bodyMoreText.style.display = 'block'
+                  this.mContentMoreShowYn = true
                 }
               } catch (error) {
                 // alert(error)
@@ -1053,8 +1080,9 @@ export default {
         } else {
           var contentHeight = contents
           var bodyMoreText = await window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
-          if (contentHeight > 399) {
+          if (contentHeight > 299) {
             bodyMoreText.style.display = 'block'
+            this.mContentMoreShowYn = true
           }
         }
         // })
@@ -1067,6 +1095,7 @@ export default {
       var bodyMoreArea = window.document.getElementById('bodyMore' + this.CONT_DETAIL.contentsKey)
       contentsBodyBoxArea.style.maxHeight = '100%'
       bodyMoreArea.style.display = 'none'
+      this.mContentMoreShowYn = false
       this.mMoreYn = false
     },
     async contentsSharePop () {
@@ -1467,9 +1496,6 @@ export default {
 
 .contentsCardLogoArea{
     width: 45px; height: 45px; overflow: hidden; float: left; border-radius: 100%; border: 2px solid #5B1CFC; display: flex; justify-content: center; align-items: center;
-}
-.h-400max{
-  max-height: 400px;
 }
 .overHidden{
   overflow: hidden;

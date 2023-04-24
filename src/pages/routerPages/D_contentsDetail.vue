@@ -1,9 +1,7 @@
 <template>
     <div ref="contScrollWrap" id="contsScrollWrap" class="boardDetailWrap" v-if="cDetail">
-      <popHeader :pNoAuthYn="true" ref="gPopupHeader" class="commonPopHeaderWrap headerShadow commonPopHeader"
-            :style="'top:' + 0 + 'px'" :headerTitle="cDetail.cabinetNameMtext? cDetail.cabinetNameMtext:cDetail.nameMtext" targetType="contentsDetail"
-            @openMenu='openChanMenuYn = true'/>
-          <gContentsBox style="" :pNoAuthYn="true" @openImgPop="openImgPop" @scrollToMemoTop="scrollToMemoTop" @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.cDetail" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
+      <popHeader :pNoAuthYn="true" ref="gPopupHeader" class="commonPopHeaderWrap headerShadow commonPopHeader" :style="'top:' + 0 + 'px'" :headerTitle="cDetail.cabinetNameMtext? cDetail.cabinetNameMtext:cDetail.nameMtext" targetType="contentsDetail" @openMenu="openChanMenuYn = true" />
+          <gContentsBox :pFadeNotShowYn="true" :pNoAuthYn="true" @openImgPop="openImgPop" @scrollToMemoTop="scrollToMemoTop" @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.cDetail" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
         <!-- <attachFileListPop :propFileData="this.CONT_DETAIL" v-if="filePopShowYn === true" @closePop="filePopShowYn = false"/> -->
 
         <!-- <div @click="filePopShowYn =false"  v-if="filePopShowYn"  style="width: 100%; height: 100%;     position: absolute;; background: #00000020; z-index: 2; top: 0;"></div>
