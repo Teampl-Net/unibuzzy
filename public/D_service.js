@@ -72,7 +72,7 @@ const dService = {
             }
           }
         })
-      /* const result = await axios.post('https://mo.d-alim.com:7443/service/tp.savePartnerContents', this.mRecvParams)
+      /* const result = await axios.post('https://mo.d-alim.com:9443/service/tp.savePartnerContents', this.mRecvParams)
       console.log(result)
       if (result.result === true) {
         console.log(result)

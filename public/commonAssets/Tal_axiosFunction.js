@@ -230,7 +230,7 @@ export const methods = {
     checkParam.userKey = Number(user.userKey)
     checkParam.fcmKey = user.fcmKey
     var result = await axios.post('service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
-    if (result.data && (result.data.resultCode === 'OK' || result.data.userMap.userKey)) {
+    if (result.data && (result.data.resultCode === 'OK' || (result.data.userMap && result.data.userMap.userKey))) {
       if (result.data.userMap) {
         try {
           store.dispatch('D_USER/AC_USER', result.data.userMap)
