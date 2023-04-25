@@ -761,7 +761,7 @@ export default {
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
 <<<<<<< .mine
-        url: 'https://mo.d-alim.com:9443/service/tp.saveFollower',
+        url: 'service/tp.saveFollower',
 =======
         url: 'service/tp.saveFollower',
 >>>>>>> .r1564

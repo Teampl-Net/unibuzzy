@@ -7,9 +7,11 @@
         </div>
         <img v-if="propMemoEle.attachMfilekey" src="../../../assets/images/contents/icon_clip.png" class="" style="width: 14px; height: 16px; margin-top: 1px; margin-right: 5px;" alt="">
         <!-- <div class="contBoxMemoArea" :style="propMemoEle.attachMfilekey? 'width: calc(100% - 170px);' : 'width: calc(100% - 150px);'" style=" min-height: 20px; overflow: hidden; position: relative; max-height: 80px; padding-bottom: 30px;" @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })"> -->
-        <div class="contBoxMemoArea" :style="propMemoEle.attachMfilekey? 'width: calc(100% - 170px);' : 'width: calc(100% - 150px);'" style=" min-height: 20px; overflow: hidden;" @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
+        <div class="contBoxMemoArea mbottom-05" :style="propMemoEle.attachMfilekey? 'width: calc(100% - 170px);' : 'width: calc(100% - 150px);'" style="position: relative; min-height: 20px; max-height: 40px; overflow: hidden; " @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
             <!-- <p class="commonBlack textLeft font14" v-html="$cutText($decodeHTML(propMemoEle.bodyFullStr), 80)"></p> -->
-            <pre class="commonBlack textLeft font14" v-html="$decodeHTML(propMemoEle.bodyFullStr)"></pre>
+            <pre ref="mainMemoRef" class="commonBlack textLeft font14" v-html="$decodeHTML(propMemoEle.bodyFullStr)"></pre>
+            <!-- <div v-if="mMemoFadeShowYn" class="w-100P fl textRight" style="position: absolute; bottom: 0px; height: 20px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7));"></div> -->
+            <!-- <div v-if="mMemoFadeShowYn" style="position: absolute; bottom: 0; height: 15px; line-height: 15px;" class="fl w-100P textRight font12 commonGray fontBold" >더보기</div> -->
         </div>
         <p class="fl commonGray textLeft mleft-05 font12"  style="font-weight:normal;">{{this.$changeSimpleDateFormat(propMemoEle.creDate)}}</p>
     </div>
@@ -122,6 +124,7 @@ export default {
   },
   data () {
     return {
+      mMemoFadeShowYn: false,
       mImgDetailAlertShowYn: false,
       mPreviewPopShowYn: false,
       mChildrenPreviewPopShowYn: false,
@@ -149,6 +152,7 @@ export default {
   },
   mounted () {
     // this.addImgEvnt()
+    this.showMemoMore()
   },
   created () {
     if (this.propMemoEle.bodyFullStr) {
@@ -182,6 +186,17 @@ export default {
     } */
   },
   methods: {
+    showMemoMore () {
+      const a = this.$refs.mainMemoRef
+      if (a) {
+        const memoHeight = a.offsetHeight
+        if (memoHeight > 45) {
+          this.mMemoFadeShowYn = true
+        } else {
+          this.mMemoFadeShowYn = false
+        }
+      }
+    },
     getFileName (fileFullName) {
       var fileName = fileFullName.substring(
         0, fileFullName.lastIndexOf('.')

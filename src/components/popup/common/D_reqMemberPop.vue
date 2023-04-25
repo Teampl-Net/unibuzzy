@@ -60,7 +60,7 @@ export default {
         typeParam.memberTypeKey = this.propMemberData.memberTypeKey
         this.$commonAxiosFunction({
 <<<<<<< .mine
-          url: 'https://mo.d-alim.com:9443/service/tp.saveFollower',
+          url: 'service/tp.saveFollower',
 =======
           url: 'service/tp.saveFollower',
 >>>>>>> .r1564

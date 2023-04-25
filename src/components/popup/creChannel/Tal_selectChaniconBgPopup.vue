@@ -14,7 +14,7 @@
                 <div @click="imgClickToInput" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 250px; max-height: 250px;" ref="selectImgPopRef" class="cropperImgArea">
                   <img v-if="changeImgYn = true" id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
                 </div>
-                <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
+                <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left; position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
                     <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/jpeg, image/png, image/jpg" ref="selectFileChangeIconNBG" id="input-file" @change="handleImageUpload"/>
                 </form>
                 <div class="fl textLeft w-100P">

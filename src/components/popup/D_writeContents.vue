@@ -402,6 +402,8 @@ export default {
       return mCabinet
     },
     async selectBoard (data, index) {
+      // eslint-disable-next-line no-debugger
+      debugger
       this.selectBoardIndex = index
       this.mCanWriteYn = true
       var mCabinet
