@@ -23,7 +23,8 @@
             <!-- <div v-if="mSelectedImgList.length === 0" style="cursor: pointer; background: #FFF; width: calc(100%); min-height: 70px; height: 100%;display: flex; font-size: 14px;color: rgb(103, 104, 167);justify-content: center;align-items: center;">
                 <img  class="fl" src="../../../assets/images/formEditor/gallery_gray.svg" style="width: 20px;"  alt="">
             </div> -->
-            <input hidden class="formImageFile" multiple type="file" title ="선택" accept="image/jpeg, image/png, image/jpg"  ref="selectFile" id="input-file" @change="handleImageUpload(event)"/>
+            <!-- <input hidden class="formImageFile" multiple type="file" title ="선택" accept="image/jpeg, image/png, image/jpg, image/heic"  ref="selectFile" id="input-file" @change="handleImageUpload(event)"/> -->
+            <input hidden class="formImageFile" multiple type="file" title ="선택" accept="image/*, image/heic"  ref="selectFile" id="input-file" @change="handleImageUpload(event)"/>
             <!-- <button  class="whiteBtn mright-1" type="submit" :disabled="isUploading">업로드</button> -->
     </form>
     <div v-if="mSelectedImgList && mSelectedImgList.length > 0" style="overflow: hidden; border: 1px solid rgb(167, 167, 167); border-radius: 10px; padding: 8px; margin-bottom: 10px;  width: 100%; cursor: pointer; max-height: 300px; position: relative; " >
