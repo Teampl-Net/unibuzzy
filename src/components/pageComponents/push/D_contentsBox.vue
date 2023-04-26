@@ -160,15 +160,15 @@
               <div v-else class="contentsCardUserDoArea" style="position: relative; width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">
               </div>
               <!-- <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1;  width: calc(100% - 40px); margin: 10px 20px; margin-bottom: 10px;float: left;"></div> -->
-              <div class="contentsCardMemoArea" v-if="!pNoAuthYn && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
-                  <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
-                      <memoCompo @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.D_MEMO_LIST.length" @memoEmitFunc='memoEmitFunc' />
-                  </template>
-                  <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
-                  <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fr font14 commonColor fontBold mtop-05 mright-05" @click="this.goContentsDetail(undefined, true)" >댓글 {{ mMemoLeng }}개 보기</p>
-                  <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
+              <div class="contentsCardMemoArea" v-if="!pNoAuthYn && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 10px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
+                <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fl w-100P textLeft font12 commonColor fontBold mbottom-05 mright-05" @click="this.goContentsDetail(undefined, true)" >댓글 {{ mMemoLeng }}개 모두 보기</p>
+                <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
+                    <memoCompo @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.D_MEMO_LIST.length" @memoEmitFunc='memoEmitFunc' />
+                </template>
+                <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
+                <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
               </div>
-              <div class="contentsCardMemoArea" v-else-if="pNoAuthYn && this.CONT_DETAIL.memoList && this.CONT_DETAIL.memoList.length > 0" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
+              <div class="contentsCardMemoArea" v-else-if="pNoAuthYn && this.CONT_DETAIL.memoList && this.CONT_DETAIL.memoList.length > 0" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 10px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
                   <template v-for="(memo, mIndex) in this.CONT_DETAIL.memoList" :key="mIndex">
                       <memoCompo :pNoAuthYn="pNoAuthYn" @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.memoList.length" @memoEmitFunc='memoEmitFunc' />
                   </template>
@@ -404,7 +404,7 @@ export default {
       }
       if (leng > 3) {
         this.mMemoMoreShowYn = true
-        this.mMemoLeng = leng
+        if (this.CONT_DETAIL && this.CONT_DETAIL.memoCount) this.mMemoLeng = this.CONT_DETAIL.memoCount
       }
     },
     closeRecvListPop (openPopParam) {
@@ -1074,6 +1074,10 @@ export default {
                   this.mMoreYn = true
                   bodyMoreText.style.display = 'block'
                   this.mContentMoreShowYn = true
+                } else {
+                  this.mMoreYn = false
+                  bodyMoreText.style.display = 'none'
+                  this.mContentMoreShowYn = false
                 }
               } catch (error) {
                 // alert(error)
@@ -1086,6 +1090,10 @@ export default {
           if (contentHeight > 299) {
             bodyMoreText.style.display = 'block'
             this.mContentMoreShowYn = true
+          } else {
+            this.mMoreYn = false
+            bodyMoreText.style.display = 'none'
+            this.mContentMoreShowYn = false
           }
         }
         // })

@@ -2,13 +2,14 @@
     <div v-if="mModiMemoPopShowYn" @click="this.$refs.modiMemoPop.backClick()" style="width: 100%; height: 100%; position: fixed; background: #00000026; z-index: 10; top: 0; left: 0;"></div>
     <modiMemoPop :propContDetail="propContDetail" @closeXPop="this.mModiMemoPopShowYn = false" ref="modiMemoPop" :pMemoEle="mModiMemoObj" v-if="mModiMemoPopShowYn" />
     <div v-if="!childShowYn" style="width: 100%; min-height: 20px; display: flex; margin-bottom: 5px; overflow: hidden;">
-        <div style="width: 90px; margin-right: 10px; min-height: 20px;" @click="clickMemoEvnt({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
+        <div style="width: 95px; margin-right: 10px; min-height: 20px;" @click="clickMemoEvnt({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
             <p class="commonBlack textLeft font14 fontBold">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
         </div>
         <img v-if="propMemoEle.attachMfilekey" src="../../../assets/images/contents/icon_clip.png" class="" style="width: 14px; height: 16px; margin-top: 1px; margin-right: 5px;" alt="">
         <!-- <div class="contBoxMemoArea" :style="propMemoEle.attachMfilekey? 'width: calc(100% - 170px);' : 'width: calc(100% - 150px);'" style=" min-height: 20px; overflow: hidden; position: relative; max-height: 80px; padding-bottom: 30px;" @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })"> -->
-        <div class="contBoxMemoArea mbottom-05" :style="propMemoEle.attachMfilekey? 'width: calc(100% - 170px);' : 'width: calc(100% - 150px);'" style="position: relative; min-height: 20px; max-height: 40px; overflow: hidden; " @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
+        <div class="contBoxMemoArea mbottom-05" :style="propMemoEle.attachMfilekey? 'width: calc(100% - 180px);' : 'width: calc(100% - 160px);'" style="position: relative; min-height: 20px; max-height: 45px; overflow: hidden; " @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
             <!-- <p class="commonBlack textLeft font14" v-html="$cutText($decodeHTML(propMemoEle.bodyFullStr), 80)"></p> -->
+            <div v-if="mMemoFadeShowYn" class="w-100P fl textLeft" style="position: absolute; bottom: -6px;">...</div>
             <pre ref="mainMemoRef" class="commonBlack textLeft font14" v-html="$decodeHTML(propMemoEle.bodyFullStr)"></pre>
             <!-- <div v-if="mMemoFadeShowYn" class="w-100P fl textRight" style="position: absolute; bottom: 0px; height: 20px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7));"></div> -->
             <!-- <div v-if="mMemoFadeShowYn" style="position: absolute; bottom: 0; height: 15px; line-height: 15px;" class="fl w-100P textRight font12 commonGray fontBold" >더보기</div> -->
