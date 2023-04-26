@@ -78,7 +78,6 @@
               <div v-else class="fl w-100P" ref="contentsBoxRef"  style="word-break: break-all; overflow: hidden; max-height: 300px; " :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
                 <pre ref="mainContRef" @loadeddata="testLoad"  :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
               </div>
-              <!-- {{ this.mFadeNotShowYn }} -->
               <div v-if="!mFadeNotShowYn && mContentMoreShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST[0]" class="w-100P" style="position: absolute; bottom: 35px; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div>
               <div v-if="!propJustShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" style="width: 100%; padding: 5px 10px; padding-left: 20px; padding-bottom: 0; float: left; min-height: 20px;margin-top: 10px;">
                   <template v-for="(value, index) in CONT_DETAIL.D_CONT_USER_STICKER_LIST" :key="index" >
