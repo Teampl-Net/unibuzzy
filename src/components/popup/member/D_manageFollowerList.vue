@@ -136,7 +136,7 @@ export default {
       paramMap.set('adminYn', true)
       paramMap.set('pageSize', 1000)
       result = await this.$commonAxiosFunction({
-          url: 'service/tp.getFollowerList',
+          url: '/service/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
       })
       this.managerList = result.data.content
@@ -153,7 +153,7 @@ export default {
       param.teamKey = this.propData.teamKey
       var resultList = null
       var memberTypeList = await this.$commonAxiosFunction({
-        url: 'service/tp.getMemberTypeList',
+        url: '/service/tp.getMemberTypeList',
         param: param
       }, true)
       if (memberTypeList.data.result) {
@@ -164,7 +164,7 @@ export default {
             var itemParam = new Object()
             itemParam.memberTypeKey = resultList[0].memberTypeKey
             var memberTypeItemList = await this.$commonAxiosFunction({
-                url: 'service/tp.getMemberTypeItemList',
+                url: '/service/tp.getMemberTypeItemList',
                 param: itemParam
             }, true)
             itemList = memberTypeItemList.data.memberTypeItemList
@@ -250,7 +250,7 @@ export default {
       param.reqMemberStatus = '99'
       params = { follower: param, doType: 'AP' }
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveFollower',
+        url: '/service/tp.saveFollower',
         param: params
       })
       console.log('params')
@@ -299,7 +299,7 @@ export default {
       } */
 
       result = await this.$commonAxiosFunction({
-          url: 'service/tp.getFollowerList',
+          url: '/service/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
         debugger
@@ -316,7 +316,7 @@ export default {
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-          url: 'service/tp.getFollowerList',
+          url: '/service/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
         debugger
@@ -341,7 +341,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.deleteManager',
+        url: '/service/tp.deleteManager',
         param: param
       })
 
@@ -351,7 +351,7 @@ export default {
       debugger
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveManager',
+        url: '/service/tp.saveManager',
         param: param
       })
       console.log(result)

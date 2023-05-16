@@ -211,7 +211,7 @@ export default {
     //   var param = {}
     //   param.creUserKey = this.GE_USER.userKey
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'service/tp.getStickerList',
+    //     url: '/service/tp.getStickerList',
     //     param: param
     //   })
     //   this.mStickerList = result.data
@@ -235,7 +235,7 @@ export default {
       param.targetKey = this.pContentsEle.contentsKey
       param.creUserKey = this.GE_USER.userKey
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveUserDoList',
+        url: '/service/tp.saveUserDoList',
         param: param
       })
       /* this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.cDetail]) */

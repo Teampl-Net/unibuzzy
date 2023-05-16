@@ -376,7 +376,7 @@ export const commonMethods = {
     }
 
     var result = await commonAxiosFunction({
-      url: 'service/tp.getShortDynamicLink',
+      url: '/service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     }, true)
     var response = JSON.parse(result.data.shortLink).shortLink
@@ -486,7 +486,7 @@ export const commonMethods = {
       if (data.ownerYn) {
         followerText = '소유자'
       } else {
-        if (data.memberNameMtext && data.managerKey && data.managerKey > 0) {
+        if (data.memberNameMtext || (data.managerKey && data.managerKey > 0)) {
           followerText = '관리자('
           if (data.mngTeamYn === true || data.mngTeamYn === 1) {
             followerText = followerText + '채널'

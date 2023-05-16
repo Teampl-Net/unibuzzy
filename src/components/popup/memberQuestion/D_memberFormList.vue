@@ -48,7 +48,7 @@ export default {
       // console.log(param)
       // 서비스가 나오면 여기서 axios로 데이터 받아 set해주기!!!!
       // var result = await this.$commonAxiosFunction({
-      //   url : 'service/tp.getChanFormList',
+      //   url : '/service/tp.getChanFormList',
       //   param: param
       // })
       // if (result) {
@@ -63,7 +63,7 @@ export default {
       // param.key = formData.key
       // param.activeYn = true
       // var result = await this.$commonAxiosFunction({
-      //   url : 'service/tp.changeMQuestion',
+      //   url : '/service/tp.changeMQuestion',
       //   param: param
       // })
       formData.activeYn = !formData.activeYn

@@ -73,27 +73,29 @@
               <gSticker @click="mStickerPopShowYn = true" :pSticker="{nameMtext: 'test', picBgPath: '#CCC'}"/>
           </div> -->
           <div v-if="!propJustShowYn" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px; position: relative;">
-              <div v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
-              <div v-else-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
-              <div v-else class="fl w-100P" ref="contentsBoxRef"  style="word-break: break-all; overflow: hidden; max-height: 300px; " :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
-                <pre ref="mainContRef" @loadeddata="testLoad"  :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
-              </div>
-              <div v-if="!mFadeNotShowYn && mContentMoreShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST[0]" class="w-100P" style="position: absolute; bottom: 35px; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div>
-              <div v-if="!propJustShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" style="width: 100%; padding: 5px 10px; padding-left: 20px; padding-bottom: 0; float: left; min-height: 20px;margin-top: 10px;">
-                  <template v-for="(value, index) in CONT_DETAIL.D_CONT_USER_STICKER_LIST" :key="index" >
-                  <!-- <template v-for="(value, index) in this.mContStickerList" :key="index" > -->
-                    <gStickerLine @click="goStickerContentsList(value)" v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" />
-                  </template>
-              </div>
-              <div v-if="!mFadeNotShowYn && ((mContentMoreShowYn && !CONT_DETAIL.D_CONT_USER_STICKER_LIST) || (mContentMoreShowYn && !CONT_DETAIL.D_CONT_USER_STICKER_LIST[0]))" class="w-100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div>
-              <p :id="'bodyMore'+CONT_DETAIL.contentsKey" class="w-100P textRight fr font14 commonColor fontBold mtop-05  mright-1" style="display:none; position: absolute; bottom: 0; right: 10px;">더보기 > </p>
+            <div v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
+            <div v-else-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
+            <div v-else class="fl w-100P" ref="contentsBoxRef"  style="word-break: break-all; overflow: hidden; max-height: 300px; " :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
+              <pre :ref="'mainContRef' + CONT_DETAIL.contentsKey" @loadeddata="testLoad"  :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
             </div>
-          <div v-if="propJustShowYn" style="width: 100%; padding: 5px 10px; padding-bottom: 0; float: left; min-height: 35px;">
-              <template v-for="(value, index) in propPreStickerList" :key="index" >
-                  <gStickerLine v-if="value" :pSelecteModeYn="true" :pSmallYn="true" @click="this.$emit('selectSticker', value)" style="cursor: pointer; float: left; margin-right: 5px; min-width: 30px;" :pSticker="value" />
-              </template>
+            <!-- <div v-if="!mFadeNotShowYn && $refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" class="w-100P fl" style="position: absolute; bottom: 35px; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div> -->
+            <div v-if="!propJustShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" style="width: 100%; padding: 5px 10px; padding-left: 20px; padding-bottom: 0; float: left; min-height: 20px;margin-top: 10px;">
+                <template v-for="(value, index) in CONT_DETAIL.D_CONT_USER_STICKER_LIST" :key="index" >
+                <!-- <template v-for="(value, index) in this.mContStickerList" :key="index" > -->
+                  <gStickerLine @click="goStickerContentsList(value)" v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" />
+                </template>
+            </div>
+            <div v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w-100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div>
+            <!-- <div v-if="!mFadeNotShowYn && (($refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && !CONT_DETAIL.D_CONT_USER_STICKER_LIST) || ($refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && !CONT_DETAIL.D_CONT_USER_STICKER_LIST[0]))" class="w-100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div> -->
+            <!-- <p v-if="!mFadeNotShowYn && mContentMoreShowYn" :id="'bodyMore'+CONT_DETAIL.contentsKey" class="w-100P textRight fr font14 commonColor fontBold mtop-05  mright-1" style="display:none; position: absolute; bottom: 0; right: 10px;">더보기 > </p> -->
+            <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w-100P textRight fr font14 commonColor fontBold mtop-05 mright-1" style=" position: absolute; bottom: 0; right: 10px;">더보기 > </p>
           </div>
-          <template :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  v-if="!propJustShowYn && (pNoAuthYn || (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)">
+          <div v-else style="width: 100%; padding: 5px 10px; padding-bottom: 0; float: left; min-height: 35px;">
+            <template v-for="(value, index) in propPreStickerList" :key="index" >
+              <gStickerLine v-if="value" :pSelecteModeYn="true" :pSmallYn="true" @click="this.$emit('selectSticker', value)" style="cursor: pointer; float: left; margin-right: 5px; min-width: 30px;" :pSticker="value" />
+            </template>
+          </div>
+          <template v-if="!propJustShowYn && (pNoAuthYn || (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" >
             <div v-if="!pNoAuthYn" class="contentsCardUserDoArea" style="position: relative; width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">
               <stickerListSetting @mContStickerList="saveStickerList" @openStickerPop="openStickerPop"  v-if="this.openStickerListYn" :openStickerListYn="this.openStickerListYn" :contDetail="this.CONT_DETAIL" :propStickerList="this.mStickerList" @openPop="openSettingStickerPop" />
               <div style="float: left; width: calc(100% - 100px); height: 100%;" v-if="this.CONT_DETAIL.D_CONT_USER_DO">
@@ -255,7 +257,7 @@ export default {
     return {
       mMemoLeng: 0,
       mFadeNotShowYn: false,
-      mContentMoreShowYn: false,
+      mContentMoreShowYn: true,
       mStickerList: [],
       mContStickerList: [],
       openStickerListYn: false,
@@ -300,6 +302,8 @@ export default {
   },
   async mounted () {
     // this.addImgEvnt()
+    // eslint-disable-next-line no-debugger
+    debugger
     var scrollWrap = document.getElementById('mainAllWrap')
     if (scrollWrap) {
       scrollWrap.addEventListener('scroll', this.handleScroll)
@@ -310,22 +314,46 @@ export default {
     var this_ = this
     this.$nextTick(async () => {
       this_.addImgEvnt()
+      // this_.showContentMore()
     })
     await this.setContentsMoreText()
+    // this.showContentMore()
     await this.setPreTagInFirstTextLine()
     if (this.pNoAuthYn) {
       this.alimBigView()
     }
-    this.showContentMore()
   },
   methods: {
-    showContentMore () {
-      const contentHeight = this.$refs.mainContRef.offsetHeight
-      if (contentHeight > 300) {
-        this.mContentMoreShowYn = true
-      } else {
-        this.mContentMoreShowYn = false
-      }
+    // showContentMore () {
+    //   if (this.propDetailYn) this.alimBigView()
+    //   let contentHeight = 0
+    //   if (this.$refs.mainContRef) {
+    //     contentHeight = this.$refs.mainContRef.offsetHeight
+    //   }
+    //   // var bodyMoreText = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
+    //   if (contentHeight < 300) {
+    //     this.mContentMoreShowYn = false
+    //     // bodyMoreText.style.display = 'block'
+    //   } else {
+    //     this.mContentMoreShowYn = true
+    //     // bodyMoreText.style.display = 'none'
+    //   }
+    // },
+    alimBigView () {
+      var contentsBodyBoxArea = window.document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
+      // var bodyMoreArea = window.document.getElementById('bodyMore' + this.CONT_DETAIL.contentsKey)
+      contentsBodyBoxArea.style.maxHeight = '100%'
+      // eslint-disable-next-line no-debugger
+      // debugger
+      // let contentRef = {}
+      // if (this.$refs.mainContRef) {
+      //   this.mContentMoreShowYn = false
+      //   contentRef = this.$refs.mainContRef
+      //   contentRef.style.maxHeight = '100%'
+      // }
+      this.mContentMoreShowYn = false
+      // this.mMoreYn = false
+      // bodyMoreArea.style.display = 'none'
     },
     saveStickerList (params) {
       this.mContStickerList = params.mContStickerList
@@ -340,7 +368,7 @@ export default {
         if (this.GE_USER.unknownYn) return
         param.creUserKey = this.GE_USER.userKey
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.getStickerList',
+          url: '/service/tp.getStickerList',
           param: param
         })
         this.mStickerList = result.data
@@ -444,7 +472,7 @@ export default {
       paramMap.set('teamKey', this.contentsEle.creTeamKey)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.getContentsActorList',
+          url: '/service/tp.getContentsActorList',
           param: Object.fromEntries(paramMap)
         })
         if (result && result.data && result.data.length > 0) {
@@ -467,7 +495,7 @@ export default {
       }
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveMemo',
+          url: '/service/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -523,6 +551,8 @@ export default {
       this.mFilePopYn = true
     },
     async getContentsDetail () {
+      // eslint-disable-next-line no-debugger
+      debugger
       var param = {}
       param.contentsKey = this.contentsEle.contentsKey
       param.targetKey = this.contentsEle.contentsKey
@@ -606,10 +636,13 @@ export default {
     },
     async setPreTagInFirstTextLine () {
       // 본문 영역에 첫번째 줄이 사진이 아닐 경우 라인을 그어주기 위한 함수
-      if (!window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)) return
+      // if (!window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)) return
+      // if (!this.$refs.mainContRef) return
+      if (!this.$refs[['mainContRef' + this.contentsEle.contentsKey]]) return
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
 
-      var contents = await window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)
+      // var contents = await window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)
+      if (this.$refs['mainContRef' + this.contentsEle.contentsKey]) var contents = this.$refs['mainContRef' + this.contentsEle.contentsKey]
       if (!contents || !contents.childNodes || contents.childNodes.length === 0) return
       if (contents.childNodes.length > 0) {
         var i = 0
@@ -747,7 +780,7 @@ export default {
           var param = {}
           param = this.contentsEle
           var result = await this.$commonAxiosFunction({
-            url: 'service/tp.deleteContents',
+            url: '/service/tp.deleteContents',
             param: param
           })
           if (result) {
@@ -823,7 +856,7 @@ export default {
         inParam.mccKey = this.contentsEle.mccKey
         inParam.jobkindId = 'ALIM'
         result = await this.$commonAxiosFunction({
-          url: 'service/tp.deleteMCabContents',
+          url: '/service/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.contentsEle.jobkindId === 'BOAR') {
@@ -834,7 +867,7 @@ export default {
         inParam.teamKey = this.contentsEle.creTeamKey
         inParam.deleteYn = true
         result = await this.$commonAxiosFunction({
-          url: 'service/tp.deleteContents',
+          url: '/service/tp.deleteContents',
           param: inParam
         })
       }
@@ -956,7 +989,7 @@ export default {
     async saveActAxiosFunc (param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveClaimLog',
+          url: '/service/tp.saveClaimLog',
           param: param
         })
         if (result) {
@@ -980,7 +1013,8 @@ export default {
       try {
         if (this.contentsEle.jobkindId) {
           contKey = this.contentsEle.contentsKey
-          content = document.getElementById('bodyFullStr' + contKey).innerText
+          // content = document.getElementById('bodyFullStr' + contKey).innerText
+          content = this.$refs[['mainContRef' + contKey]].innerText
         }
 
         textarea.value = content
@@ -1017,7 +1051,7 @@ export default {
       memo.ownUserKey = this.GE_USER.userkey
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveMemo',
+          url: '/service/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -1052,14 +1086,18 @@ export default {
     /** 컨텐츠의 크기를 비교해서 더보기> 버튼 보여주는 함수 */
     async setContentsMoreText () {
       // 컨텐츠가 게시글이면서 권한이 없으면 리턴
-      if (!window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)) return
+      // if (!window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)) return
+      if (!this.$refs['mainContRef' + this.contentsEle.contentsKey]) return
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
       try {
         if (this.propDetailYn === true) { this.alimBigView(); return }
 
-        var contents = await window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey).offsetHeight
+        // var contents = await window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey).offsetHeight
+        if (this.$refs['mainContRef' + this.contentsEle.contentsKey]) {
+          var contents = this.$refs['mainContRef' + this.contentsEle.contentsKey].offsetHeight
+        }
 
-        // 이미지를 불러오는 이유는 마운트 시점에 이미지의 크기를 못받아오기에 추가함
+        // 이미지를 불러오는 이유는 마운트 시점에 이미지의 크기를 못받오기에 추가함
         var imgList = await window.document.querySelectorAll('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
         if (imgList && imgList.length > 0) {
           for (let i = 0; i < imgList.length; i++) {
@@ -1069,14 +1107,12 @@ export default {
                 imgsHeight += imgList[i].clientHeight
                 // imgsHeight += event.path[0].clientHeight
                 var contentHeight = contents + imgsHeight
-                var bodyMoreText = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
-                if (contentHeight > 299) {
-                  this.mMoreYn = true
-                  bodyMoreText.style.display = 'block'
+                // var bodyMoreText = this.$refs['bodyMoreRef' + this.contentsEle.contentsKey]
+                // var bodyMoreText = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
+                if (contentHeight > 399) {
+                  // this.mMoreYn = true
                   this.mContentMoreShowYn = true
                 } else {
-                  this.mMoreYn = false
-                  bodyMoreText.style.display = 'none'
                   this.mContentMoreShowYn = false
                 }
               } catch (error) {
@@ -1086,13 +1122,11 @@ export default {
           }
         } else {
           var contentHeight = contents
-          var bodyMoreText = await window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
-          if (contentHeight > 299) {
-            bodyMoreText.style.display = 'block'
+          // var bodyMoreText = await window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
+          if (contentHeight > 399) {
+            // bodyMoreText.style.display = 'block'
             this.mContentMoreShowYn = true
           } else {
-            this.mMoreYn = false
-            bodyMoreText.style.display = 'none'
             this.mContentMoreShowYn = false
           }
         }
@@ -1100,14 +1134,6 @@ export default {
       } catch (e) {
         console.log(e)
       }
-    },
-    alimBigView () {
-      var contentsBodyBoxArea = window.document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
-      var bodyMoreArea = window.document.getElementById('bodyMore' + this.CONT_DETAIL.contentsKey)
-      contentsBodyBoxArea.style.maxHeight = '100%'
-      bodyMoreArea.style.display = 'none'
-      this.mContentMoreShowYn = false
-      this.mMoreYn = false
     },
     async contentsSharePop () {
       var link = await this.$makeShareLink(this.CONT_DETAIL.contentsKey, 'contentsDetail', this.CONT_DETAIL.bodyFullStr, this.CONT_DETAIL.title)
@@ -1295,7 +1321,7 @@ export default {
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveSubscribe',
+        url: '/service/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
@@ -1331,7 +1357,7 @@ export default {
       for (let m = 0; m < this.mClickImgList.length; m++) {
         var this_ = this
         this_.mClickImgList[m].addEventListener('click', () => {
-          if (!this_.mMoreYn) {
+          if (!this_.mContentMoreShowYn) {
             this_.$emit('openImgPop', [this_.mClickImgList, m])
           }
         })

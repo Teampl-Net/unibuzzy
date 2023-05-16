@@ -86,7 +86,7 @@ export default {
         memo.bodyFullStr = inputMemoArea.innerHTML
         memo.bodyMinStr = inputMemoArea.innerHTML
         var result = await this.$commonAxiosFunction({
-          url: 'service/tp.saveMemo',
+          url: '/service/tp.saveMemo',
           param: { memo: memo }
         })
         if (result.data.result) {

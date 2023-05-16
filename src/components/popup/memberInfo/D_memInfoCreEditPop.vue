@@ -220,9 +220,9 @@ export default {
       this.$emit('changeMemberItem', param)
       /* var saveItem = await this.$commonAxiosFunction({
 <<<<<<< .mine
-        url: 'service/tp.saveMemberTypeItem',
+        url: '/service/tp.saveMemberTypeItem',
 =======
-        url: 'service/tp.saveMemberTypeItem',
+        url: '/service/tp.saveMemberTypeItem',
 >>>>>>> .r1564
         param: { member: param }
       }) */
