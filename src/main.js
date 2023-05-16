@@ -145,11 +145,11 @@ app.use(axiosFunction)
 app.use(coreService)
 app.use(uploadFile)
 
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+/* axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
 axios.defaults.headers.common['Access-Control-Allow-Credentials'] = true
-axios.defaults.headers.common['Content-Type'] = 'application/json;'
+axios.defaults.headers.common['Content-Type'] = 'application/json;' */
 axios.defaults.timeout = 20000
 axios.defaults.withCredentials = true
 axios.interceptors.request.use(function (config) {
