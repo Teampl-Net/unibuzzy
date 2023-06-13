@@ -98,6 +98,8 @@ export default {
       }
     },
     async openReqPop () {
+      // eslint-disable-next-line no-debugger
+      debugger
       if (!this.selectMemberObj) {
         alert('멤버 유형을 선택해주세요!')
         return
@@ -106,6 +108,8 @@ export default {
       if (result === true) this.reqPopShowYn = true
     },
     async getMemberTypeItemList () {
+      // eslint-disable-next-line no-debugger
+      debugger
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.memberTypeKey = this.selectMemberObj.memberTypeKey
@@ -124,10 +128,14 @@ export default {
             typeParam.followerKey = this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
           }
           typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
+          // eslint-disable-next-line no-debugger
+          debugger
           this.$commonAxiosFunction({
             url: '/service/tp.saveFollower',
             param: { follower: typeParam }
           }).then(() => {
+            // eslint-disable-next-line no-debugger
+            debugger
             this_.resultReqData.memberYn = true
             this_.resultReqData.memberType = this_.selectMemberObj
             // this.resultReqData.memberTypeItem = data

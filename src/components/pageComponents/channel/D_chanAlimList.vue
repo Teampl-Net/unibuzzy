@@ -58,8 +58,8 @@
               </div>
             </div>
             <div class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
-              <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" v-if="(CHANNEL_DETAIL.userTeamInfo && CHANNEL_DETAIL.userTeamInfo.ownerYn === undefined && CHANNEL_DETAIL.userTeamInfo.memberNameMtext === undefined) || this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH) === '구독자'" >
-                <p v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.memberTypeKey && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn" class="fl font14 cursorP fontBold commonColor" @click="this.openReqMemPop()" >멤버신청</p>
+              <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" v-if="((CHANNEL_DETAIL.userTeamInfo && CHANNEL_DETAIL.userTeamInfo.ownerYn === undefined && CHANNEL_DETAIL.userTeamInfo.memberNameMtext === undefined) || this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH) === '구독자')" >
+                <p v-if="(CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.memberTypeKey && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)" class="fl font14 cursorP fontBold commonColor" @click="this.openReqMemPop()" >멤버신청</p>
               </div>
               <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="!GE_USER.unknownYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
               <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else-if="!GE_USER.unknownYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" src="../../../assets/images/common/icon_bell.svg" alt="">

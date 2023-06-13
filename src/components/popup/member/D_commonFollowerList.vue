@@ -111,7 +111,9 @@ export default {
       this.setManager(manType, member, index)
       this.confirmManagerPopShowYn = false
     },
-    async setManager (manType, member, index) {
+    async setManager (manType, member, index) { // index 1: 관리자 제외 / 0: 관리자로 지정
+      // eslint-disable-next-line no-debugger
+      debugger
       var param = {}
       if (member.managerKey) {
         param.managerKey = member.managerKey

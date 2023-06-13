@@ -150,7 +150,7 @@ export default {
     async clickEditChanBtn () {
       // eslint-disable-next-line no-debugger
       debugger
-      if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext && !this.CHANNEL_DETAIL.D_CHAN_AUTH.managerKey) {
+      if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
         this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
         // this.$checkDeleteHistory('bottomWriteSheets')
         var history = this.$store.getters['D_HISTORY/hStack']
