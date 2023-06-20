@@ -142,7 +142,6 @@ const sso = {
     }
   },
   async loginCheck (param, callbackF, addLogF) {
-    debugger
     if (addLogF) {
       var logText = '<span class="font16 fontBold commonBlack textLeft">tpp.sso.js: loginCheck함수 호출 </span>'
       logText += '<br>param: '
@@ -160,8 +159,6 @@ const sso = {
     this.openPop(LOGIN_PROXY_URL.get('url'), 'LiLoginFrame', callbackF, addLogF)/* .then((res) => {
       return res
     }) */
-    // eslint-disable-next-line no-debugger
-    debugger
     document.LiLoginForm.target = 'LiLoginFrame'
     document.LiLoginForm.action = LOGIN_PROXY_URL.get('url')
     document.LiLoginForm.submit()
@@ -173,7 +170,6 @@ const sso = {
   },
   createLiForm: function (formName, targetFrame, goUrl, paramObj) {
     const devForm = document.getElementById(formName)
-    debugger
     if (devForm) {
       devForm.remove()
     }
