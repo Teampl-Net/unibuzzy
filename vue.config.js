@@ -3,14 +3,20 @@ module.exports = {
   chainWebpack: (config) => {
     config.plugins.delete('prefetch')
   },
+  pwa: {
+    workboxOptions: {
+      exclude: [
+        /\.html$/
+      ]
+    }
+  },
   devServer: {
     // 프록시 설정
     proxy: {
       // 프록시 요청을 보낼 api의 시작 부분
       '^/service': {
-        /* target: 'https://mo.d-alim.com', */
-        target: 'http://localhost:19090',
-        // target: 'http://192.168.219.103:19090',
+        target: 'https://mo.d-alim.com/service',
+        // target: 'http://192.168.219.103:9090',
         // https://mo.d-alim.com:10443
         changeOrigin: true,
         secure: false,
@@ -18,9 +24,7 @@ module.exports = {
         logLevel: 'debug'
       },
       '^/boardMain/service': {
-        /* target: 'https://mo.d-alim.com', */
-        target: 'http://localhost:19090',
-        // target: 'http://192.168.219.103:19090',
+        target: 'https://mo.d-alim.com/service',
         // https://mo.d-alim.com:10443
         changeOrigin: true,
         secure: false,
@@ -28,9 +32,8 @@ module.exports = {
         logLevel: 'debug'
       },
       '^/login/service': {
-        /* target: 'https://mo.d-alim.com', */
-        target: 'http://localhost:19090',
-        // target: 'http://192.168.219.103:19090',
+        target: 'https://mo.d-alim.com/service',
+        // target: 'http://192.168.219.103:9090',
         // https://mo.d-alim.com:10443
         changeOrigin: true,
         secure: false,
@@ -39,8 +42,8 @@ module.exports = {
       },
       '^/eduPl': {
         /* target: 'https://mo.d-alim.com', */
-        target: 'http://222.233.118.96:19090',
-        // target: 'http://192.168.219.103:19090',
+        target: 'http://222.233.118.96:9090',
+        // target: 'http://192.168.219.103:9090',
         // https://mo.d-alim.com:10443
         changeOrigin: true,
         secure: false,
@@ -49,8 +52,8 @@ module.exports = {
       },
       '^/apt123': {
         /* target: 'https://mo.d-alim.com', */
-        target: 'http://localhost:8083',
-        // target: 'http://192.168.219.103:19090',
+        target: 'http://192.168.0.10:8083',
+        // target: 'http://192.168.219.103:9090',
         // https://mo.d-alim.com:10443
         changeOrigin: true,
         secure: false,
