@@ -88,7 +88,7 @@
             <div v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w-100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div>
             <!-- <div v-if="!mFadeNotShowYn && (($refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && !CONT_DETAIL.D_CONT_USER_STICKER_LIST) || ($refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && !CONT_DETAIL.D_CONT_USER_STICKER_LIST[0]))" class="w-100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div> -->
             <!-- <p v-if="!mFadeNotShowYn && mContentMoreShowYn" :id="'bodyMore'+CONT_DETAIL.contentsKey" class="w-100P textRight fr font14 commonColor fontBold mtop-05  mright-1" style="display:none; position: absolute; bottom: 0; right: 10px;">더보기 > </p> -->
-            <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w-100P textRight fr font14 commonColor fontBold mtop-05 mright-1" style=" position: absolute; bottom: 0; right: 10px;">더보기 > </p>
+            <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w-100P textRight fr font14 commonColor fontBold mtop-05 mright-1" style=" position: absolute; bottom: 0; right: 10px;">{{$t('COMMON_NAME_MORE')}} > </p>
           </div>
           <div v-else style="width: 100%; padding: 5px 10px; padding-bottom: 0; float: left; min-height: 35px;">
             <template v-for="(value, index) in propPreStickerList" :key="index" >
@@ -136,13 +136,13 @@
                                   data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
                                       :data-clipboard-text="CONT_DETAIL.copyTextStr">
                           </div>
-                          <p class="font12 fl fontBold w-100P mtop-01 userDoColor">공유</p>
+                          <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{$t('COMMON_NAME_SHARE')}}</p>
                       </div>
                       <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : openStickerPop()" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
                           <img src="../../../assets/images/push/stickerIcon.svg" class="img-w20" alt="">
                         </div>
-                        <p class="font12 fl fontBold w-100P mtop-01 userDoColor">라벨</p>
+                        <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{$t('COMMON_NAME_LABEL')}}</p>
                       </div>
 
                       <!-- this.$emit('fileDownload') -->
@@ -155,7 +155,7 @@
                               <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/push/contentsBellIcon_on.svg" class=" " alt="">
                               <img v-else src="../../../assets/images/push/contentsBellIcon.svg" class="" alt="">
                           </div>
-                          <p class="font12 fontBold fl mtop-01  w-100P userDoColor">관심</p>
+                          <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{$t('COMMON_NAME_INTEREST')}}</p>
                       </div>
                   </div>
               </div>

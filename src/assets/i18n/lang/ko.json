@@ -1,0 +1,25 @@
+{
+    "COMMON_NAME_APP": "더알림",
+    "COMMON_BTN_SIGN_IN": "로그인" ,
+    "COMMON_MESSAGE_USER_TITLE": "님!",
+
+    "COMMON_NAME_HOME": "홈",
+    "COMMON_NAME_CHANNEL": "채널",
+    "COMMON_NAME_SEARCH": "검색",
+    "COMMON_NAME_MY_INFO": "내정보",
+    "COMMON_NAME_INTEREST": "관심",
+    "COMMON_NAME_LABEL": "라벨",
+    "COMMON_NAME_SHARE": "공유",
+    "COMMON_NAME_MORE": "더보기",
+
+    "COMMON_TAB_ALL": "전체",
+    "COMMON_TAB_NOTI": "알림",
+    "COMMON_TAB_POST": "게시글",
+    "COMMON_TAB_RECENT": "최신",
+    "COMMON_TAB_LIKED": "좋아요",
+    "COMMON_TAB_SAVED": "스크랩",
+    "COMMON_TAB_MY": "내가 만든",
+    "COMMON_TAB_FILE_DRIVE": "파일함",
+    "COMMON_TAB_FOLLOWING": "구독중",
+    "COMMON_TAB_MANAGING": "관리중인"
+  }

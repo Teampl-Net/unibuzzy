@@ -303,7 +303,7 @@ export const commonMethods = {
     return returnMap.get(leng)
   },
 
-  changeText (text) {
+  changeText (text) { // KO$^$'테스트$#$'EN$^$'
     if (text) {
       var changeTxt = ''
       var indexOf = text.indexOf('KO$^$')

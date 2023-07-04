@@ -82,7 +82,7 @@
         <!-- <div style="margin-top: 15px; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
             <div style="width: 100%; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; border-bottom: 2px; solid #F4F7FF!important">
                 <img src="../../assets/images/main/main_contentsBellIcon2.png" style="float: left; margin-right: 8px;" class="img-w24" alt="">
-                <p @click="goContentListPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">도착한 알림, 게시글</p>
+                <p @click="goContentListPop()" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">받은 알림, 게시글</p>
             </div>
             <div style="float: left; width: 100%; margin-top: 2px; min-height: 10px;" >
                 <mainContsList :propUserKey="this.GE_USER.userKey" @openPop='openPop' />
@@ -301,7 +301,7 @@ export default {
       /* this.$emit('goSearchDirect') */
       var openPopParam = {}
       openPopParam.targetType = 'pushList'
-      openPopParam.popHeaderText = '도착한 알림, 게시글'
+      openPopParam.popHeaderText = '받은 알림, 게시글'
       this.openPop(openPopParam)
     },
     async getMainBoard () {

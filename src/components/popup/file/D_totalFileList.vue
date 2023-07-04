@@ -57,7 +57,7 @@
         <myObserver v-if="index === this.dateList.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
       </template>
     </div>
-    <gEmpty contentName="파일함" v-else class="mtop-2"/>
+    <gEmpty :contentName="$t('COMMON_TAB_FILE_DRIVE')" v-else class="mtop-2"/>
   </div>
   <transition name="showModal">
     <findContentsList contentsListTargetType="fileBox" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>

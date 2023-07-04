@@ -17,7 +17,7 @@
     <div @click="goTotalFileList" class="w-100P fl" style=" padding: 10px; background-color: #fff; border-radius: 0.6rem; margin-top: 10px; height: 50px; display: flex; align-items: center; cursor: pointer;">
       <div style="display: flex; align-items: center; width: calc(100% - 30px);">
         <img class="mright-03" src="../../assets/images/common/icon_fileBox.svg" style="width: 19.2px; height: auto;" alt="">
-        <p class="commonColor fontBold font18" style="margin-top: 2px;">파일함</p>
+        <p class="commonColor fontBold font18" style="margin-top: 2px;">{{$t('COMMON_TAB_FILE_DRIVE')}}</p>
       </div>
       <div class="h-100P font20 grayBlack" style="width: 20px;">></div>
     </div>

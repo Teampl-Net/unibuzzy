@@ -18,7 +18,7 @@
     <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }"  class="" :style="'height: calc(100% - ' + (this.$STATUS_HEIGHT + 20)+ 'px)'" style="overflow: hidden; width:100%;">
         <router-view @openImgPop="openImgPop" ref="routerViewCompo"  :initData="sendInitData" @goSearchDirect="goSearchDirect" @scrollEvnt="this.scrollEvnt" :popYn="false" style="margin-bottom: 100px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
     </div>
-    <TalFooter v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
+    <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
     <!-- <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div> -->
   </div>
 </template>
@@ -268,6 +268,15 @@ export default {
       var pageData = await this.$getRouterViewData(page)
       console.log(page)
       this.sendInitData = pageData
+      /* if (page === 'main') {
+        this.mRouterHeaderText = '더알림'
+      } else if (page === 'chanList') {
+        this.mRouterHeaderText = '채널'
+      } else if (page === 'search') {
+        this.mRouterHeaderText = '검색'
+      } else if (page === 'myPage') {
+        this.mRouterHeaderText = '마이페이지'
+      } */
       if (this.$router.currentRoute._rawValue.path === '/' && page === 'main') {
         const unit = this.$refs.routerViewCompo
         if (unit.$el) {

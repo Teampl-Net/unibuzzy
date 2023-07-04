@@ -1,3 +1,25 @@
+<i18n>
+{
+  "ko": {
+    "MAIN_MESSAGE_WELCOME": "더알림에 오신 것을 환영해요!",
+    "MAIN_TITLE_MANAGING_CHANNEL": "내 관리 채널",
+    "MAIN_TITLE_FOLLOWING_CHANNEL": "구독중인 채널",
+    "MAIN_TITLE_POPULAR_CHANNEL": "인기있는 채널",
+    "MAIN_TITLE_RECV_CONTENTS": "받은 알림, 게시글",
+    "MAIN_TITLE_RECENT_POSTS": "최근 게시글",
+    "MAIN_MESSAGE_LOGIN": "로그인을 하고 채널을 구독해보세요",
+  },
+  "en": {
+    "MAIN_MESSAGE_WELCOME": "Welcome to uniBuzzy!",
+    "MAIN_TITLE_MANAGING_CHANNEL": "Managing",
+    "MAIN_TITLE_FOLLOWING_CHANNEL": "Following",
+    "MAIN_TITLE_POPULAR_CHANNEL": "Popular",
+    "MAIN_TITLE_RECV_CONTENTS": "Noti & Posts",
+    "MAIN_TITLE_RECENT_POSTS": "Posts",
+    "MAIN_MESSAGE_LOGIN": "Sign in and follow channels to see interesting contents!"
+  }
+}
+</i18n>
 <template>
     <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" id="mainAllWrap" class="" ref="mainScrollWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'" style="height: 100%; overflow: hidden scroll;">
         <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
@@ -7,8 +29,8 @@
         <div class="w-100P fl">
             <div class="userProfileWrap">
                 <div class="userProfileWelcomeWrap">
-                    <p class="commonLightColor font16 textLeft" style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
-                    <p v-if="GE_USER.unknownYn" class="commonLightColor font16 textLeft" style="font-weight: 600;">로그인을 하고 채널을 구독해보세요</p>
+                    <p class="commonLightColor font16 textLeft" style="font-weight: 600;">{{ $t('MAIN_MESSAGE_WELCOME') }}</p>
+                    <p v-if="GE_USER.unknownYn" class="commonLightColor font16 textLeft" style="font-weight: 600;">{{ $t('MAIN_MESSAGE_LOGIN') }}</p>
                     <div v-else >
                         <div class="loginTrueUserWrap">
                             <div class="loginTrueUserTextArea">
@@ -16,18 +38,18 @@
                                 <p class="fl fontBold font18" style="color: transparent!important">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
                                 <div class="highLightYellow w-100P" style="position: absolute; bottom: 5px; left: 0;"></div>
                             </div>
-                            <p style="font-weight: 600;" class="font16 fl commonLightColor">님!</p>
+                            <p style="font-weight: 600;" class="font16 fl commonLightColor">{{$t("COMMON_MESSAGE_USER_TITLE")}}</p>
                         </div>
                     </div>
                 </div>
                 <img v-if="!GE_USER.unknownYn" src="../../assets/images/contents/icon_bell.png" class=" img-w22 mright-1" alt="" @click="openNotiHistoryPop">
                 <gProfileImg v-if="!GE_USER.unknownYn" :selfYn="true" class="fr" @click="goUserProfile" />
-                <gBtnSmall v-else @click="goLoginPage" btnTitle="로그인" class="fr"/>
+                <gBtnSmall v-else @click="goLoginPage" :btnTitle="$t('COMMON_BTN_SIGN_IN')" class="fr"/>
             </div>
             <div v-if="!GE_USER.unknownYn && (this.mMainMChanList || this.mMainChanList)" style="background: #FFFFFF; margin-top: 15px; padding: 20px; padding-right: 0; border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
                 <div v-if="this.mMainMChanList"  style="width: 100%; height: 30px; float: left;">
                     <img src="../../assets/images/main/main_settingIcon2.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
-                    <p @click="goChannelPop('mychannel')" class="font20 fontBold deepBorderColor textLeft CDeepColor cursorP" style="line-height: 26px;">내 관리 채널 ></p>
+                    <p @click="goChannelPop('mychannel')" class="font20 fontBold deepBorderColor textLeft CDeepColor cursorP" style="line-height: 26px;">{{ $t('MAIN_TITLE_MANAGING_CHANNEL') }} ></p>
                 </div>
                 <div v-if="this.mMainMChanList" id="channelWrap" style="width: 100%; height: 100px; margin-top: 5px; margin-bottom: 15px; float: left; overflow: scroll hidden;" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
                     <div style="height: 100%; min-width: 100%; display:flex;">
@@ -40,7 +62,7 @@
                 </div>
                 <div v-if="this.mMainChanList" class="mtop-1 " style="width: 100%; height: 30px; float: left; ">
                     <img src="../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
-                    <p @click="goChannelPop('user')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">구독중인 채널 ></p>
+                    <p @click="goChannelPop('user')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">{{ $t('MAIN_TITLE_FOLLOWING_CHANNEL') }} ></p>
                 </div>
                 <div v-if="this.mMainChanList" :class="!isMobile? 'thinScrollBar':''" id="subChannelWrap" style="width: 100%; height: 110px; margin-top: 5px;float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
                     <div style="height: 100%; min-width: 100%; display:flex; gap: 10px;">
@@ -55,7 +77,7 @@
             <div v-if="GE_USER.unknownYn && this.mMainChanList" class="loginFalseChanList">
                 <div v-if="this.mMainChanList" class="w-100P fl" style="height: 30px;">
                     <img src="../../assets/images/main/main_followIcon2.png" style="margin-right: 8px;" class="fl img-w23 cursorP" alt="">
-                    <p @click="goChannelPop('user')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">인기있는 채널 ></p>
+                    <p @click="goChannelPop('user')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">{{$t('MAIN_TITLE_POPULAR_CHANNEL')}} ></p>
                 </div>
                 <div v-if="this.mMainChanList" :class="!isMobile? 'thinScrollBar':''" class="chanListWrap" id="subChannelWrap" style="" @wheel="horizontalScroll">
                     <div class="chanListScrollWrap">
@@ -71,7 +93,7 @@
               <div class="w-100P fl" style=" background-color: #E7EDFF; ">
                 <div class="mainContHeaderWrap">
                 <img src="../../assets/images/main/main_contentsBellIcon2.png" style="margin-right: 8px;" class="fl img-w24" alt="">
-                <p @click="!GE_USER.unknownYn? goContentListPop() : ''" class="font20 fontBold deepBorderColor fl textLeft cursorP CDeepColor" style="line-height: 26px;">{{!GE_USER.unknownYn? "받은 알림, 게시글" : '최신 게시글'}} ></p>
+                <p @click="!GE_USER.unknownYn? goContentListPop() : ''" class="font20 fontBold deepBorderColor fl textLeft cursorP CDeepColor" style="line-height: 26px;">{{!GE_USER.unknownYn? $t('MAIN_TITLE_RECV_CONTENTS') : $t('MAIN_TITLE_RECENT_POSTS')}} ></p>
                 <img class="fr cursorP" @click="openFindPop"  style="width: 25px; position: absolute;right: 65px;" src="../../assets/images/common/iocn_search.png" alt="">
                     <div class="mainContReload" @click="refreshMainList">
                         <img src="../../assets/images/common/reload_button.svg" class="cursorP img-w20" />
@@ -115,6 +137,7 @@ import unknownLoginPop from '../../components/pageComponents/channel/D_unknownLo
 
 export default {
   data () {
+    // this.$i18n.locale = 'en'
     return {
       tableYn: false,
       mUnknownContDetail: {},
@@ -289,7 +312,7 @@ export default {
       /* this.$emit('goSearchDirect') */
       var openPopParam = {}
       openPopParam.targetType = 'pushList'
-      openPopParam.popHeaderText = '도착한 알림, 게시글'
+      openPopParam.popHeaderText = '받은 알림, 게시글'
       this.openPop(openPopParam)
     },
     async getMainBoard () {
@@ -446,6 +469,9 @@ export default {
   },
 
   watch: {
+    locale (val) {
+      this.$i18n.locale = val
+    },
     GE_STICKER_LIST: {
       handler (value, old) {
         this.mStickerList = this.GE_STICKER_LIST
@@ -548,7 +574,7 @@ export default {
   .mainRefreshBtn {width: 20px!important}
 }
 .userProfileWelcomeWrap {
-    width: calc(100% - 80px); float: left; height: 100%;
+    width: calc(100% - 85px); float: left; height: 100%;
 }
 .quickSearchInput {
     background: #e4e4e463;

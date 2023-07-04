@@ -578,9 +578,9 @@ export default {
       immediate: true,
       handler (val, old) {
         if (val.unknownYn) {
-          this.mActiveTabList = [{ display: '전체', name: 'all' }]
+          this.mActiveTabList = [{ display: this.$t('COMMON_TAB_ALL'), name: 'all' }]
         } else {
-          this.mActiveTabList = [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '관리채널', name: 'mychannel' }]
+          this.mActiveTabList = [{ display: this.$t('COMMON_TAB_FOLLOWING'), name: 'user' }, { display: this.$t('COMMON_TAB_ALL'), name: 'all' }, { display: this.$t('COMMON_TAB_MANAGING'), name: 'mychannel' }]
         }
       }
     },

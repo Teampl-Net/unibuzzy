@@ -12,10 +12,10 @@
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <div :style="!popYn ? ' padding-top: 20px;' : ''" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; "> -->
         <div style=" width: 100%; min-height: 40px; float: left; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ; padding-right: 50px; overflow: auto hidden;">
-            <div @click="changeMainTab('A')" :class="viewMainTab === 'A'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">전체</div>
-            <div v-if="!pUnknownYn" @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">알림</div>
-            <div v-if="!pUnknownYn" @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">게시글</div>
-            <div v-if="!pUnknownYn && this.$route.path !== '/myPage'" @click="changeMainTab('F')" :class="viewMainTab === 'F'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">파일함</div>
+            <div @click="changeMainTab('A')" :class="viewMainTab === 'A'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">{{this.$t('COMMON_TAB_ALL')}}</div>
+            <div v-if="!pUnknownYn" @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">{{$t('COMMON_TAB_NOTI')}}</div>
+            <div v-if="!pUnknownYn" @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">{{$t('COMMON_TAB_POST')}}</div>
+            <div v-if="!pUnknownYn && this.$route.path !== '/myPage'" @click="changeMainTab('F')" :class="viewMainTab === 'F'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">{{$t('COMMON_TAB_FILE_DRIVE')}}</div>
         </div>
         <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " />
       </div>
@@ -48,7 +48,7 @@
               <gFileBox @openImgPop="openImgPop" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'F'"/>
               <myObserver v-if="index === this.GE_FILE_LIST.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
           </template>
-          <gEmpty :tabName="currentTabName" contentName="파일함" v-if="this.viewMainTab === 'F' && GE_FILE_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
+          <gEmpty :tabName="currentTabName" :contentName="$t('COMMON_TAB_FILE_DRIVE')" v-if="this.viewMainTab === 'F' && GE_FILE_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
         </div>
 
         <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
@@ -178,9 +178,9 @@ export default {
       immediate: true,
       handler (value, old) {
         if (value === true) {
-          this.activeTabList = [{ display: '최신', name: 'N' }]
+          this.activeTabList = [{ display: this.$t('COMMON_TAB_RECENT'), name: 'N' }]
         } else {
-          this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 만든', name: 'M' }]
+          this.activeTabList = [{ display: this.$t('COMMON_TAB_RECENT'), name: 'N' }, { display: this.$t('COMMON_TAB_LIKED'), name: 'L' }, { display: this.$t('COMMON_TAB_SAVED'), name: 'S' }, { display: this.$t('COMMON_TAB_MY'), name: 'M' }]
         }
       }
     },

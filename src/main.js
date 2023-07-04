@@ -80,7 +80,24 @@ import gFileBox from './components/unit/D_fileBox.vue'
 import gSticker from './components/common/D_commonSticker.vue'
 import gSelectStickerPop from './components/popup/sticker/D_myStickerListPop.vue'
 import gStickerLine from './components/common/D_commonStickerLine.vue'
-const app = createApp(moTheAlim).use(router).use(store)
+import { createI18n } from 'vue-i18n'
+// eslint-disable-next-line camelcase
+import messages from '@/assets/i18n/index'
+
+const i18n = createI18n({
+  leagacy: false,
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages: messages
+})
+
+const app = createApp(moTheAlim).use(router).use(store).use(i18n)/* .use(VueI18n) */
+/* export const i18n = new VueI18n({
+  locale: 'en', // set locale
+  fallbackLocale: 'en'
+  // messages // set locale messages
+}) */
+
 app.use(commonjs)
 app.use(openView)
 app.use(getjs)

@@ -3,7 +3,7 @@
         <div @click="routePage('main')" class="footerRouter" style="flex: 1 !important">
           <div class="commonColor fontBold text-center font12" >
             <img v-if="this.$route.path === '/'" :src="footerIcon[0].fullIcon"/> <img v-else :src="footerIcon[0].icon"/>
-            <p :class="this.$route.path === '/'? 'activeFooterMenu' : 'font12'">홈</p>
+            <p :class="this.$route.path === '/'? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_HOME') }}</p>
           </div>
         </div>
         <!-- <div @click="routePage('/pushList')" class="footerRouter col-3">
@@ -15,19 +15,19 @@
         <div @click="routePage('chanList')" class="footerRouter" style="flex: 1 !important">
           <div class="commonColor fontBold text-center font12">
             <img v-if="this.$route.path === '/chanList'" :src="footerIcon[2].fullIcon" /> <img v-else :src="footerIcon[2].icon"/>
-            <p :class="this.$route.path === '/chanList'? 'activeFooterMenu' : 'font12'">채널</p>
+            <p :class="this.$route.path === '/chanList'? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_CHANNEL') }}</p>
           </div>
         </div>
         <div @click="routePage('search')" class="footerRouter" style="flex: 1 !important">
           <div class="commonColor fontBold text-center font12">
             <img v-if="this.$route.path === '/search'" :src="footerIcon[1].fullIcon" /> <img v-else :src="footerIcon[1].icon"/>
-            <p :class="this.$route.path === '/search'? 'activeFooterMenu' : 'font12'">검색</p>
+            <p :class="this.$route.path === '/search'? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_SEARCH') }}</p>
           </div>
         </div>
         <div @click="routePage('myPage')" class="footerRouter" style="flex: 1 !important">
           <div class="commonColor fontBold text-center font12">
             <img v-if="this.$route.path === '/myPage'" :src="footerIcon[3].fullIcon"/> <img v-else :src="footerIcon[3].icon"/>
-            <p :class="this.$route.path === '/myPage'? 'activeFooterMenu' : 'font12'">내정보</p>
+            <p :class="this.$route.path === '/myPage'? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_MY_INFO') }}</p>
           </div>
         </div>
     </div>
@@ -48,7 +48,8 @@ export default {
     }
   },
   props: {
-    pOpenUnknownLoginPop: Function
+    pOpenUnknownLoginPop: Function,
+    pChangePageHeader: Function
   },
   computed: {
     GE_USER () {
@@ -73,6 +74,17 @@ export default {
         return */
       }
       this.activeFooter = page
+      if (this.pChangePageHeader) {
+        let page = '메인'
+        if (page === 'chanList') {
+          page = '채널'
+        } else if (page === 'search') {
+          page = '검색'
+        } else if (page === 'myPage') {
+          page = '마이페이지'
+        }
+        this.pChangePageHeader(page)
+      }
       // await this.$router.push(page)
       this.$emit('changeRouterPath', page)
 

@@ -1,0 +1,26 @@
+{
+    "COMMON_NAME_APP": "uniBuzzy",
+    "COMMON_BTN_SIGN_IN": "Sign in",
+    "COMMON_MESSAGE_USER_TITLE": "!",
+
+    "COMMON_NAME_HOME": "Home",
+    "COMMON_NAME_CHANNEL": "Channel",
+    "COMMON_NAME_SEARCH": "Search",
+    "COMMON_NAME_MY_INFO": "My Info",
+    "COMMON_NAME_MY_PAGE": "My Page",    
+    "COMMON_NAME_INTEREST": "Noti",
+    "COMMON_NAME_LABEL": "Label",
+    "COMMON_NAME_SHARE": "Share",
+    "COMMON_NAME_MORE": "More",
+
+    "COMMON_TAB_ALL": "All",
+    "COMMON_TAB_NOTI": "Noti",
+    "COMMON_TAB_POST": "Post",
+    "COMMON_TAB_RECENT": "Recent",
+    "COMMON_TAB_LIKED": "Liked",
+    "COMMON_TAB_SAVED": "Saved",
+    "COMMON_TAB_MY": "My",
+    "COMMON_TAB_FILE_DRIVE": "File Drive",
+    "COMMON_TAB_FOLLOWING": "Following",
+    "COMMON_TAB_MANAGING": "Managing"
+  }

@@ -170,7 +170,7 @@ export default {
       /* this.$emit('goSearchDirect') */
       var openPopParam = {}
       openPopParam.targetType = 'pushList'
-      openPopParam.popHeaderText = '도착한 알림, 게시글'
+      openPopParam.popHeaderText = '받은 알림, 게시글'
       this.openPop(openPopParam)
     },
     async getMainBoard () {

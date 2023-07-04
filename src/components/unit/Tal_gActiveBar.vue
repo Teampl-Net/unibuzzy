@@ -182,7 +182,6 @@ export default {
 
   /* justify-content: flex-start; */
   cursor: pointer;
-  text-transform: uppercase;
   width: var(--tabwidth);
 }
 
