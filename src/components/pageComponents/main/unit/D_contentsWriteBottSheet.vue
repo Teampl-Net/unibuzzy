@@ -6,7 +6,6 @@
     "BOTTOM_MSG_CHAN": "채널을 선택해주세요",
     "BOTTOM_BTN_WRITE": "작성하기",
     "BOTTOM_MSG_NOCHAN": "컨텐츠를 작성할 수 있는 채널이 없어요",
-    "BOTTOM_MSG_NOFOLLOW": "해당 채널의 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.",
     "BOTTOM_MSG_CHECK": "채널을 다시 선택 후 확인 버튼을 눌러주세요!"
   },
   "en": {
@@ -15,7 +14,6 @@
     "BOTTOM_MSG_CHAN": "Please select a channel",
     "BOTTOM_BTN_WRITE": "Write",
     "BOTTOM_MSG_NOCHAN": "There's no channel to create content.",
-    "BOTTOM_MSG_NOFOLLOW": "You are not a follower of that channel. Please apply for followers.",
     "BOTTOM_MSG_CHECK": "Please select the channel again and press the OK button!"
   }
 }
@@ -137,7 +135,7 @@ export default {
     },
     async openWritePushPop () {
       if (this.propTeamKey && this.mSelectedWriteType === 'ALIM' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
-        this.$showToastPop(this.$t('BOTTOM_MSG_NOFOLLOW'))
+        this.$showToastPop(this.$t('COMM_MSG_MEMB_NEED'))
         this.$checkDeleteHistory('bottomWriteSheets')
         this.$emit('openMember')
         return

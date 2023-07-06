@@ -48,6 +48,7 @@
     "COMMON_TITLE_PROFILE": "프로필",
     "COMMON_BTN_DELETE": "삭제",
     "COMMON_BTN_SAVE": "저장",
+    "COMM_VOCA_THIS": "해당",
     "COMMON_BTN_CONVERT_NOTI_TO_POST": "알림을 게시글로 작성",
     "COMMON_BTN_CONVERT_POST_TO_NOTI": "게시글을 알림으로 작성",
     "COMMON_BTN_DELTE_ALIM_FOR_ME": "나에게서만 알림 삭제",
@@ -65,11 +66,15 @@
     "COMMON_STATUS_PROCEEDING": "진행중", 
     "COMMON_STATUS_COMPLETED": "완료", 
     "COMMON_STATUS_UNRESOLVED": "미해결",
+    "COMM_MSG_ASK_BLOCK": "차단하시겠습니까",
 
+    "COMM_PLS_LOGIN": "로그인을 해주세요.",
+    "COMM_MSG_AFTER_SAVE": "저장되었습니다.",
     "COMMON_MSG_FAILED": "실패했습니다. 관리자에게 문의해주세요.",
     "COMMON_MSG_NOTFOUND": "해당 컨텐츠를 찾을 수 없습니다.\n나중에 다시 시도해주세요.",
     "COMMON_MSG_NOFILE": "파일을 선택해 주세요.",
     "COMMON_MSG_DELETE_COMMENT": "댓글을 삭제하시겠습니까?",
+    "COMMON_MSG_DELETED_COMMENT": "댓글을 삭제하였습니다.",
     "COMMON_MSG_DELETE_REPLY": "대댓글을 삭제하시겠습니까?",
     "COMMON_MSG_DELETE_NOTI": "알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.",
     "COMMON_MSG_DELETE_POST": "게시글을 삭제 하시겠습니까?",
@@ -87,9 +92,14 @@
     "COMMON_MSG_DELETED_POST": "게시글을 삭제하였습니다.",
     "COMMON_MSG_COMM_NOPERM": "댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.",
     "COMMON_MSG_CANCEL_NOTI": "알림 발송을 취소 하시겠습니까?",
+    "COMM_MSG_CANCELED_NOTI": "알림 발송을 취소하였습니다.",
     "COMMON_MSG_NOANONY": "익명의 게시글로 유저 정보를 볼 수 없습니다.",
+
     "COMMON_MSG_BLOCK": "해당 유저를 차단하시겠습니까?",
     "COMMON_MSG_BEFORE_REPORT": "해당 유저를 신고하시겠습니까?",
-    "COMMON_MSG_DELETED_COMMENT": "댓글을 삭제하였습니다.",
-    "COMMON_MSG_NO_LOGIN": "로그인 후 이용해주세요."
+    "COMMON_MSG_NO_LOGIN": "로그인 후 이용해주세요.",
+    "COMM_MSG_CANCEL_FAIL": "취고하지 못했습니다. 앱을 다시 실행 후 시도해주세요.",
+    "COMM_MSG_CANCLE_TIMEOUT": "3분이 지나 취소가 불가능합니다.",
+    "COMM_MSG_MEMB_NEED": "해당 채널에 멤버가 아닙니다. 멤버로 신청 후 시도해주세요!",
+    "COMM_MSG_CHAN_NONE": "채널이 확인되지 않습니다. 나중에 다시 시도해주세요!"
   }

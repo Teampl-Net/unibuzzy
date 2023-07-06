@@ -8,7 +8,6 @@
     "MANA_NAME_CAHN": "채널 관리",
     "MANA_NAME_ADDRBOOK": "주소록 관리",
     "MANA_NAME_BOARD": "게시판 관리",
-    "CHAN_MSG_NOFOLLOW": "해당 채널의 멤버가 아닙니다. 멤버로 신청 후 이용해주세요."
   },
   "en": {
     "CHAN_MENU_TITLE_MENU": "Channel Menu",
@@ -18,7 +17,6 @@
     "MANA_NAME_CAHN": "Manage Channel",
     "MANA_NAME_ADDRBOOK": "Manage Address Book",
     "MANA_NAME_BOARD": "Manage Board",
-    "CHAN_MSG_NOFOLLOW": "You are not a follower of that channel. Please apply for followers."
   }
 }
 </i18n>
@@ -137,7 +135,7 @@ export default {
       param.targetType = targetType
       if (targetType === 'writeContents') {
         if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
-          this.$showToastPop(this.$t('CHAN_MSG_NOFOLLOW'))
+          this.$showToastPop(this.$t('COMM_MSG_MEMB_NEED'))
           // this.$checkDeleteHistory('bottomWriteSheets')
           var history = this.$store.getters['D_HISTORY/hStack']
           var removePage = history[history.length - 1]

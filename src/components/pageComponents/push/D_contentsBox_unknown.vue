@@ -1,3 +1,19 @@
+<i18n>
+  {
+    "ko": {
+      "MAIN_MSG_NOPERM": "열람 권한이 없습니다.",
+      "CONTENT_MSG_READ_ALL": "채널 전체 대상 알림입니다!",
+      "CONF_MSG_CHECK_RECIP": "내가 보낸 알림만 수신자 확인이 가능합니다!",
+      "CONTENT_MSG_DELETE_ONLYME": "알림 삭제는 나에게만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.",
+    },
+    "en": {
+      "MAIN_MSG_NOPERM": "You do not have permission to view.",
+      "CONTENT_MSG_READ_ALL": "This is a notification for all memebers of the channel!",
+      "CONF_MSG_CHECK_RECIP": "Confirmation of recipients is available only for the notification 'I' sent!",
+      "CONTENT_MSG_DELETE_ONLYME": "Deleting the notification will only apply to me, and the users who received the notification will not be affected.",
+    }
+  }
+  </i18n>
 <template>
     <div v-if="this.GE_USER != null && mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
       <!-- <button @click="downloadPdf">다운로드</button> -->
@@ -15,7 +31,7 @@
                   <div style="width: 100%; position: relative; height: 50%; min-height: 26px;  position: relative;">
                       <template v-if="!pUnknownYn && !pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && this.GE_USER && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn">
                           <p class=" textLeft textOverdot commonBlack fontBold font16" style="width: calc(100% - 35px);">
-                              열람 권한이 없습니다.
+                              {{ this.$t('MAIN_MSG_NOPERM') }}
                           </p>
                       </template>
                       <template v-else>
@@ -64,7 +80,7 @@
                       <!-- <p class="fr font12 lightGray mright-03" @click="CONT_DETAIL.rUserCount !== -1? this.openRecvListPop(): ''" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" > -->
                       <p class="fl commonColor font12 fl textLeft fontBold cursorP" v-if="!pUnknownYn && !pNoAuthYn && CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" style="margin-top: 2px;" @click="sendReply">답장하기</p>
                       <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
-                          <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
+                          <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
                       </div>
                   </div>
               </div>
@@ -76,8 +92,8 @@
           <div v-if="!propJustShowYn" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px;">
               <div v-if="!pUnknownYn && !pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && this.GE_USER && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
               <div v-else-if="!pUnknownYn && !pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && this.GE_USER && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
-              <div v-else class="h-400max overHidden fl w100P" :style="!pUnknownYn && pNoAuthYn? 'height:':''" ref="contentsBoxRef"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
-                <pre @loadeddata="testLoad"  :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h100P w100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
+              <div v-else class="h-400max overHidden fl w-100P" :style="!pUnknownYn && pNoAuthYn? 'height:':''" ref="contentsBoxRef"  style="word-break: break-all;" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
+                <pre @loadeddata="testLoad"  :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h-100P w-100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
               </div>
               <div v-if="!propJustShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" style="width: 100%; padding: 5px 10px; padding-left: 20px; padding-bottom: 0; float: left; min-height: 20px;margin-top: 10px;">
                   <template v-for="(value, index) in CONT_DETAIL.D_CONT_USER_STICKER_LIST" :key="index" >
@@ -101,28 +117,28 @@
                           <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" class="" src="../../../assets/images/contents/cont_like_no.svg" alt="">
                           <img v-else src="../../../assets/images/contents/cont_like.svg" alt="" class="">
                         </div>
-                        <p class="font12 fl fontBold w100P mtop-01  userDoColor">{{CONT_DETAIL.likeCount}}</p>
+                        <p class="font12 fl fontBold w-100P mtop-01  userDoColor">{{CONT_DETAIL.likeCount}}</p>
                       </div>
                       <div  @click="changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left;">
                           <img v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" class="" src="../../../assets/images/contents/cont_star_no.svg" alt="">
                           <img v-else src="../../../assets/images/contents/cont_star.svg" alt="" class="">
                         </div>
-                        <p class="font12 fontBold fl mtop-01  w100P userDoColor">{{CONT_DETAIL.starCount}}</p>
+                        <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{CONT_DETAIL.starCount}}</p>
                       </div>
                       <div @click="this.goContentsDetail(undefined, true)" style="width: 30px; height: 35px; display: flex; cursor: pointer;  float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left;">
                           <img v-if="mWriteMemoYn" src="../../../assets/images/contents/cont_memo.svg" class="" alt="">
                           <img v-else src="../../../assets/images/contents/cont_memo_no.svg" class="" alt="">
                         </div>
-                        <p class="font12 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
+                        <p class="font12 fontBold mtop-01 fl w-100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
                       </div>
                       <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left;">
                           <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
                             <img v-else src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
                         </div>
-                        <p class="font12 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
+                        <p class="font12 fontBold mtop-01 fl w-100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
                       </div>
                   </div>
                   <div style="float: right; width: 140px; height: 100%; float: left;">
@@ -132,13 +148,13 @@
                                   data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
                                       :data-clipboard-text="CONT_DETAIL.copyTextStr">
                           </div>
-                          <p class="font12 fl fontBold w100P mtop-01 userDoColor">공유</p>
+                          <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{this.$t('COMMON_NAME_SHARE')}}</p>
                       </div>
                       <div @click="openStickerPop" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
                           <img src="../../../assets/images/push/stickerIcon.svg" class="img-w20" alt="">
                         </div>
-                        <p class="font12 fl fontBold w100P mtop-01 userDoColor">라벨</p>
+                        <p class="font12 fl fontBold w-100P mtop-01 userDoColor">라벨</p>
                       </div>
 
                       <!-- this.$emit('fileDownload') -->
@@ -151,7 +167,7 @@
                               <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/push/contentsBellIcon_on.svg" class=" " alt="">
                               <img v-else src="../../../assets/images/push/contentsBellIcon.svg" class="" alt="">
                           </div>
-                          <p class="font12 fontBold fl mtop-01  w100P userDoColor">관심</p>
+                          <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{this.$t('COMMON_NAME_INTEREST')}}</p>
                       </div>
                   </div>
               </div>
@@ -163,8 +179,8 @@
                       <memoCompo @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.D_MEMO_LIST.length" @memoEmitFunc='memoEmitFunc' />
                   </template>
                   <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
-                  <p v-if="propDetailYn === false && this.mMoreMemoBtnShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기 ></p>
-                  <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
+                  <p v-if="propDetailYn === false && this.mMoreMemoBtnShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >{{ this.$t('COMMON_NAME_MORE') }} ></p>
+                  <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
               </div>
               <div class="contentsCardMemoArea" v-else-if="pNoAuthYn && this.CONT_DETAIL.memoList && this.CONT_DETAIL.memoList.length > 0" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 20px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
                   <template v-for="(memo, mIndex) in this.CONT_DETAIL.memoList" :key="mIndex">
@@ -172,7 +188,7 @@
                   </template>
                   <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
                   <p v-if="propDetailYn === false && this.mMoreMemoBtnShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >더보기 ></p>
-                  <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
+                  <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
               </div>
           </template>
       </div>
@@ -407,7 +423,7 @@ export default {
     },
     async openRecvActorListPop (allYn) {
       if (allYn === true) {
-        this.$showToastPop('채널 전체 대상 알림입니다!')
+        this.$showToastPop(this.$t('CONTENT_MSG_READ_ALL'))
         return
       }
       if (this.contentsEle.creUserKey !== this.GE_USER.userKey) {
@@ -617,7 +633,7 @@ export default {
       })
     },
     cancelConfirm () {
-      this.mConfirmText = '알림 발송을 취소 하시겠습니까?'
+      this.mConfirmText = this.$t('COMMON_MSG_CANCEL_NOTI')
       this.mCurrentConfirmType = 'alimCancel'
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true
@@ -698,12 +714,12 @@ export default {
           param.targetKey = this.CONT_DETAIL.contentsKey
         } else return false
         param.creUserKey = this.GE_USER.userKey
-        toastText = '해당 유저를 차단했습니다.'
+        toastText = this.$t('COMMON_MSG_BLOCKED')
         this.saveActAxiosFunc(param, toastText)
       } else if (this.mCurrentConfirmType === 'alimDEL') {
-        this.deleteContents('알림을 나에게서 삭제하였습니다.')
+        this.deleteContents(this.$t('COMMON_MSG_DELETED_NOTI'))
       } else if (this.mCurrentConfirmType === 'boardDEL') {
-        this.deleteContents('게시글을 삭제하였습니다.')
+        this.deleteContents(this.$t('COMMON_MSG_DELETED_POST'))
       } else if (this.mCurrentConfirmType === 'alimCancel') {
         this.alimCancle()
       }
@@ -726,16 +742,16 @@ export default {
           if (result) {
             this.$emit('contDelete', this.propContIndex)
             // this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', [this.contentsEle])
-            this.$showToastPop('알림 발송을 취소하였습니다.')
+            this.$showToastPop(this.$t('COMM_MSG_CANCELED_NOTI'))
           }
         } catch (e) {
-          this.$showToastPop('취소하지 못했습니다. 앱을 다시 실행 후 시도해주세요.')
+          this.$showToastPop(this.$t('COMM_MSG_CANCEL_FAIL'))
           console.log(e)
         } finally {
           this.mLoadingShowYn = false
         }
       } else {
-        this.$showToastPop('3분이 지나 취소가 불가능합니다.')
+        this.$showToastPop(this.$t('COMM_MSG_CANCLE_TIMEOUT'))
       }
     },
     editable (type, allYn) {
@@ -779,7 +795,7 @@ export default {
         this.mConfirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
         this.mCurrentConfirmType = 'alimDEL'
       } else if (this.contentsEle.jobkindId === 'BOAR') {
-        this.mConfirmText = '게시글을 삭제 하시겠습니까?'
+        this.mConfirmText = this.$t('COMMON_MSG_DELETE_POST')
         this.mCurrentConfirmType = 'boardDEL'
       }
       this.mConfirmType = 'two'
@@ -826,7 +842,7 @@ export default {
     },
     async makeNewContents (type) {
       if (this.contentsEle.creTeamKey && type !== 'writeBoard' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
-        this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
+        this.$showToastPop(this.$t('COMM_MSG_MEMB_NEED'))
         // this.$checkDeleteHistory('bottomWriteSheets')
         // this.$emit('openMember')
         return
@@ -843,7 +859,7 @@ export default {
       } else if (writeParam.contentsJobkindId === 'BOAR') {
         var teamList = await this.$getWriteBoardData(this.contentsEle.creTeamKey)
         if (teamList === false) {
-          this.$showToastPop('채널이 확인되지 않습니다 나중에 다시시도해주세요!')
+          this.$showToastPop(this.$t('COMM_MSG_CHAN_NONE'))
           return
         }
         writeParam.selectBoardYn = true
@@ -1059,7 +1075,7 @@ export default {
     },
     async contentsSharePop () {
       var link = await this.$makeShareLink(this.CONT_DETAIL.contentsKey, 'contentsDetail', this.CONT_DETAIL.bodyFullStr, this.CONT_DETAIL.title)
-      var shareItem = { title: '더알림', text: this.CONT_DETAIL.title, url: link }
+      var shareItem = { title: this.$t('COMMON_NAME_APP'), text: this.CONT_DETAIL.title, url: link }
       if (navigator.share) {
         navigator.share(shareItem)
       } else {
@@ -1088,7 +1104,7 @@ export default {
 
       // 댓글의 유저를 클릭 시 댓글의 유저키를 넣어준다.
       if (targetUserKey) openPopParam.userKey = targetUserKey
-      openPopParam.popHeaderText = '프로필'
+      openPopParam.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
       openPopParam.readOnlyYn = true
       this.$emit('openPop', openPopParam)
     },
@@ -1123,7 +1139,7 @@ export default {
     },
     async changeAct (act, key) {
       if (this.pUnknownYn) {
-        alert('로그인을 해주세요!')
+        alert(this.$t('COMM_PLS_LOGIN'))
         return
       }
       // eslint-disable-next-line no-unused-vars
@@ -1214,19 +1230,28 @@ export default {
       }
       param.userKey = this.GE_USER.userKey
       // var req = 'save'
-      var reqText = ' 되었습니다.'
+      var reqText = ''
+      if (this.GE_LOCALE === 'ko') {
+        reqText = '해당 컨텐츠의 알림설정이 되었습니다.'
+      } else {
+        reqText = 'The noti for that content has been turned on.'
+      }
       if (!param.subsYn) {
-        // req = 'delete'
-        reqText = ' 해제되었습니다.'
+        if (this.GE_LOCALE === 'ko') {
+          reqText = '해당 컨텐츠의 알림설정이 해제되었습니다.'
+        } else {
+          reqText = 'The noti for that content has been turned off.'
+        }
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
         url: '/service/tp.saveSubscribe',
         param: { subscribe: param }
       })
-      this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
+      this.$showToastPop(reqText)
+      this.cDetail.subsYn = param.subsYn
       var contentsDetail = this.CONT_DETAIL
-      contentsDetail.subsYn = param.subsYn
+      // contentsDetail.subsYn = param.subsYn
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [contentsDetail])
     },
     replaceArr (arr) {
@@ -1291,7 +1316,7 @@ export default {
           // eslint-disable-next-line no-unused-vars
           var result = await this.$downloadFile(this.mSelectImgObject.fileKey, this.mSelectImgObject.path)
         }
-        this.$showToastPop('저장되었습니다.')
+        this.$showToastPop(this.$t('COMM_MSG_AFTER_SAVE'))
         this.mImgDetailAlertShowYn = false
       } catch (error) {
         console.log(error)

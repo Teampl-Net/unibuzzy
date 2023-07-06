@@ -5,7 +5,6 @@
     "ASK_TITLE_CONTENTS": "내용",
     "ASK_BTN_SEND": "완료",
     "ASK_MSG_BEFORE_SAVE": "문의글을 저장하시겠습니까?",
-    "ASK_MSG_AFTER_SAVE": "저장되었습니다.",
     "ASK_MSG_NOTITLE": "제목을 입력해주세요.",
     "ASK_MSG_NOCONT": "게시글의 내용을 입력해주세요.",
     "ASK_MSG_SUCCESS": "정상적으로 접수되었습니다.",
@@ -16,7 +15,6 @@
     "ASK_TITLE_CONTENTS": "Contents",
     "ASK_BTN_SEND": "Send",
     "ASK_MSG_BEFORE_SAVE": "Do you want to save your inquiry?",
-    "ASK_MSG_AFTER_SAVE": "Saved",
     "ASK_MSG_NOTITLE": "Please enter a title.",
     "ASK_MSG_NOCONT": "Please enter a contents.",
     "ASK_MSG_SUCCESS": "Your inquiry has been successfully received.",
@@ -26,7 +24,7 @@
 </i18n>
 <template>
 <gConfirmPop :confirmText="$t('ASK_MSG_BEFORE_SAVE')" @no='checkPopYn=false, complexOkYn = false' v-if="checkPopYn" @ok='sendMsg(), checkPopYn=false' />
-<gConfirmPop @click="this.$emit('closeXPop', true)" :confirmText="$t('ASK_MSG_AFTER_SAVE')" confirmType='timeout' v-if="okPopYn" />
+<gConfirmPop @click="this.$emit('closeXPop', true)" :confirmText="$t('COMM_MSG_AFTER_SAVE')" confirmType='timeout' v-if="okPopYn" />
 <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
 <div class="pagePaddingWrap" style="display: flex; flex-direction: column; text-align: left; height: 100%; position: relative;">
   <div style="width: 100%; overflow: hidden auto; height: calc(100% - 4rem); ">

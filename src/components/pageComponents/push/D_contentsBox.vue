@@ -1,10 +1,12 @@
 <i18n>
 {
   "ko": {
-    "MAIN_MSG_NOPERM": "열람 권한이 없습니다."
+    "MAIN_MSG_NOPERM": "열람 권한이 없습니다.",
+    "CONF_MSG_CHECK_UNABLE": "멤버가 아니므로 유저 정보를 볼 수 없습니다."
   },
   "en": {
-    "MAIN_MSG_NOPERM": "You do not have permission to view."
+    "MAIN_MSG_NOPERM": "You do not have permission to view.",
+    "CONF_MSG_CHECK_UNABLE": "Sorry, you are not a member, so you cannot access user information."
   }
 }
 </i18n>
@@ -60,7 +62,7 @@
                           <!-- <p  class="font12 fl lightGray">수신</p>
                           <span class="font12 mSide-02">{{'|'}}</span> -->
                           <template   v-if="CONT_DETAIL.rUserCount === -1">
-                              전체
+                              {{ this.$t('COMMON_TAB_ALL') }}
                           </template>
                           <template v-else-if="CONT_DETAIL.rUserCount !== -1">
                               <img src="../../../assets/images/push/userIcon.svg" class="img-w13 mright-01 fl" alt="">
@@ -146,13 +148,13 @@
                                   data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
                                       :data-clipboard-text="CONT_DETAIL.copyTextStr">
                           </div>
-                          <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{$t('COMMON_NAME_SHARE')}}</p>
+                          <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{this.$t('COMMON_NAME_SHARE')}}</p>
                       </div>
                       <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : openStickerPop()" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
                           <img src="../../../assets/images/push/stickerIcon.svg" class="img-w20" alt="">
                         </div>
-                        <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{$t('COMMON_NAME_LABEL')}}</p>
+                        <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{this.$t('COMMON_NAME_LABEL')}}</p>
                       </div>
 
                       <!-- this.$emit('fileDownload') -->
@@ -165,7 +167,7 @@
                               <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/push/contentsBellIcon_on.svg" class=" " alt="">
                               <img v-else src="../../../assets/images/push/contentsBellIcon.svg" class="" alt="">
                           </div>
-                          <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{$t('COMMON_NAME_INTEREST')}}</p>
+                          <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{this.$t('COMMON_NAME_INTEREST')}}</p>
                       </div>
                   </div>
               </div>
@@ -694,7 +696,7 @@ export default {
       })
     },
     cancelConfirm () {
-      this.mConfirmText = '알림 발송을 취소 하시겠습니까?'
+      this.mConfirmText = this.$t('COMMON_MSG_CANCEL_NOTI')
       this.mCurrentConfirmType = 'alimCancel'
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true
@@ -775,12 +777,12 @@ export default {
           param.targetKey = this.CONT_DETAIL.contentsKey
         } else return false
         param.creUserKey = this.GE_USER.userKey
-        toastText = '해당 유저를 차단했습니다.'
+        toastText = this.$t('COMMON_MSG_REPORT_USER')
         this.saveActAxiosFunc(param, toastText)
       } else if (this.mCurrentConfirmType === 'alimDEL') {
-        this.deleteContents('알림을 나에게서 삭제하였습니다.')
+        this.deleteContents(this.$t('COMMON_MSG_DELETED_NOTI'))
       } else if (this.mCurrentConfirmType === 'boardDEL') {
-        this.deleteContents('게시글을 삭제하였습니다.')
+        this.deleteContents(this.$t('COMMON_MSG_DELETED_POST'))
       } else if (this.mCurrentConfirmType === 'alimCancel') {
         this.alimCancle()
       }
@@ -803,16 +805,16 @@ export default {
           if (result) {
             this.$emit('contDelete', this.propContIndex)
             // this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', [this.contentsEle])
-            this.$showToastPop('알림 발송을 취소하였습니다.')
+            this.$showToastPop(this.$t('COMM_MSG_CANCELED_NOTI'))
           }
         } catch (e) {
-          this.$showToastPop('취소하지 못했습니다. 앱을 다시 실행 후 시도해주세요.')
+          this.$showToastPop(this.$t('COMM_MSG_CANCEL_FAIL'))
           console.log(e)
         } finally {
           this.mLoadingShowYn = false
         }
       } else {
-        this.$showToastPop('3분이 지나 취소가 불가능합니다.')
+        this.$showToastPop(this.$t('COMM_MSG_CANCLE_TIMEOUT'))
       }
     },
     editable (type, allYn) {
@@ -859,7 +861,7 @@ export default {
         this.mConfirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
         this.mCurrentConfirmType = 'alimDEL'
       } else if (this.contentsEle.jobkindId === 'BOAR') {
-        this.mConfirmText = '게시글을 삭제 하시겠습니까?'
+        this.mConfirmText = this.$t('COMMON_MSG_DELETE_POST')
         this.mCurrentConfirmType = 'boardDEL'
       }
       this.mConfirmType = 'two'
@@ -934,7 +936,7 @@ export default {
       } else if (writeParam.contentsJobkindId === 'BOAR') {
         var teamList = await this.$getWriteBoardData(this.contentsEle.creTeamKey)
         if (teamList === false) {
-          this.$showToastPop('채널이 확인되지 않습니다 나중에 다시시도해주세요!')
+          this.$showToastPop(this.$t('COMM_MSG_CHAN_NONE'))
           return
         }
         writeParam.selectBoardYn = true
@@ -964,11 +966,23 @@ export default {
       this.$emit('openPop', tempData)
     }, */
     bloc (type) {
-      var typeText = type === 'USER' ? '유저를' : '게시글을'
-      this.mConfirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
+      var typeText = type === 'USER' ? this.$t('COMMON_TITLE_USER') : this.$t('COMMON_TAB_POST')
+      // this.mConfirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
+      if (this.GE_LOCALE === 'ko') {
+        this.mConfirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
+      } else {
+        return 'Block this' + typeText + '?'
+      }
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true
       this.mCurrentConfirmType = 'BLOC'
+    },
+    returnConfirmText () {
+      if (this.GE_LOCALE === 'ko') {
+        return '[' + this.$changeText(this.chanDetail.nameMtext) + '] 채널에 <br>멤버신청서를 제출하시겠습니까?'
+      } else {
+        return `Do you want to apply for membership on the [${this.$changeText(this.chanDetail.nameMtext)}] channel?`
+      }
     },
     report (type) {
       var targetKind
@@ -1176,7 +1190,7 @@ export default {
     },
     async goUserProfile (targetUserKey) {
       if (this.GE_USER.unknownYn) {
-        this.$showToastPop('멤버가 아니므로 유저 정보를 볼 수 없습니다.')
+        this.$showToastPop(this.$t('CONF_MSG_CHECK_UNABLE'))
         return
       }
       // eslint-disable-next-line no-debugger
@@ -1192,7 +1206,7 @@ export default {
 
       // 댓글의 유저를 클릭 시 댓글의 유저키를 넣어준다.
       if (targetUserKey) openPopParam.userKey = targetUserKey
-      openPopParam.popHeaderText = '프로필'
+      openPopParam.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
       openPopParam.readOnlyYn = true
       this.$emit('openPop', openPopParam)
     },
@@ -1331,19 +1345,28 @@ export default {
       }
       param.userKey = this.GE_USER.userKey
       // var req = 'save'
-      var reqText = ' 되었습니다.'
+      var reqText = ''
+      if (this.GE_LOCALE === 'ko') {
+        reqText = '해당 컨텐츠의 알림설정이 되었습니다.'
+      } else {
+        reqText = 'The noti for that content has been turned on.'
+      }
       if (!param.subsYn) {
-        // req = 'delete'
-        reqText = ' 해제되었습니다.'
+        if (this.GE_LOCALE === 'ko') {
+          reqText = '해당 컨텐츠의 알림설정이 해제되었습니다.'
+        } else {
+          reqText = 'The noti for that content has been turned off.'
+        }
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
         url: '/service/tp.saveSubscribe',
         param: { subscribe: param }
       })
-      this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
+      this.$showToastPop(reqText)
+      this.cDetail.subsYn = param.subsYn
       var contentsDetail = this.CONT_DETAIL
-      contentsDetail.subsYn = param.subsYn
+      // contentsDetail.subsYn = param.subsYn
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [contentsDetail])
     },
     replaceArr (arr) {
@@ -1408,7 +1431,7 @@ export default {
           // eslint-disable-next-line no-unused-vars
           var result = await this.$downloadFile(this.mSelectImgObject.fileKey, this.mSelectImgObject.path)
         }
-        this.$showToastPop('저장되었습니다.')
+        this.$showToastPop(this.$t('COMM_MSG_AFTER_SAVE'))
         this.mImgDetailAlertShowYn = false
       } catch (error) {
         console.log(error)

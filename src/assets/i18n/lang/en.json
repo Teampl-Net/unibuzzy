@@ -29,6 +29,7 @@
     "COMMON_TAB_RECENT": "Recent",
     "COMMON_TAB_LIKED": "Liked",
     "COMMON_TAB_SAVED": "Saved",
+    "COMM_VOCA_THIS": "this",
     "COMMON_TAB_MY": "My",
     "COMMON_TAB_FILE_DRIVE": "File Drive",
     "COMMON_TAB_FOLLOWING": "Following",
@@ -65,12 +66,15 @@
     "COMMON_STATUS_PROCEEDING": "Proceeding", 
     "COMMON_STATUS_COMPLETED": "Completed", 
     "COMMON_STATUS_UNRESOLVED": "Unresolved",
+    "COMM_MSG_ASK_BLOCK": "Block",
 
-
+    "COMM_PLS_LOGIN": "Please log in.",
+    "COMM_MSG_AFTER_SAVE": "Saved successfully.",
     "COMMON_MSG_FAILED": "Failed. Please contact manager.",
     "COMMON_MSG_NOTFOUND": "The content could not be found.\nPlease try again later.",
     "COMMON_MSG_NOFILE": "Select Files.",
     "COMMON_MSG_DELETE_COMMENT": "Are you sure you want to delete a comment?",
+    "COMMON_MSG_DELETED_COMMENT": "A comment have been deleted.",
     "COMMON_MSG_DELETE_REPLY": "Are you sure you want to delete the reply?",
     "COMMON_MSG_DELETE_NOTI": "Delete noti only applies to me, and users who receive noti are not deleted.",
     "COMMON_MSG_DELETE_POST": "Are you sure you want to delete the post?",
@@ -88,9 +92,13 @@
     "COMMON_MSG_DELETED_POST": "The post has been deleted.",
     "COMMON_MSG_COMM_NOPERM": "You do not have permission to write comments. \n Contact manager.",
     "COMMON_MSG_CANCEL_NOTI": "Are you sure you want to cancel sending noti?",
+    "COMM_MSG_CANCELED_NOTI": "The notification has been canceled.",
     "COMMON_MSG_NOANONY": "Unable to view user information with anonymous posts.",
     "COMMON_MSG_BLOCK": "Are you sure you want to block this user?",
     "COMMON_MSG_BEFORE_REPORT": "Are you sure you want to report this user?",
-    "COMMON_MSG_DELETED_COMMENT": "A comment have been deleted.",
-    "COMMON_MSG_NO_LOGIN": "Please log in and use it."
+    "COMMON_MSG_NO_LOGIN": "Please log in and use it.",
+    "COMM_MSG_CANCEL_FAIL": "The message cancellation was unsuccessful.\nPlease attempt again after restarting the app.",
+    "COMM_MSG_CANCLE_TIMEOUT": "Cancellation is not possible after 3 minutes.",
+    "COMM_MSG_MEMB_NEED": "You are not a follower of that channel. Please apply for followers.",
+    "COMM_MSG_CHAN_NONE": "The channel cannot be found. Please try again later."
   }

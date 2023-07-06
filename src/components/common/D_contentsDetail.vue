@@ -2,11 +2,9 @@
 {
   "ko": {
     "DETAIL_MSG_FEATURE": "해당 모드에서는 지원하지 않는 기능입니다.",
-    "DETAIL_MSG_SAVED": "저장되었습니다!"
   },
   "en": {
     "DETAIL_MSG_FEATURE": "This feature is not supported in this mode.",
-    "DETAIL_MSG_SVAED": "Saved!"
   }
 }
 </i18n>
@@ -519,7 +517,7 @@ export default {
           // eslint-disable-next-line no-unused-vars
           var result = await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
         }
-        this.confirmText = this.$t('DETAIL_MSG_SAVED')
+        this.confirmText = this.$t('COMM_MSG_AFTER_SAVE')
         this.confirmType = false
         this.backClick()
         this.confirmPopShowYn = true
