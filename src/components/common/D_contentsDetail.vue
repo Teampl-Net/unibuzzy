@@ -990,17 +990,25 @@ export default {
       }
       param.userKey = this.GE_USER.userKey
       // var req = 'save'
-      var reqText = ' 되었습니다.'
+      var reqText = ''
+      if (this.GE_LOCALE === 'ko') {
+        reqText = '해당 컨텐츠의 알림설정이 되었습니다.'
+      } else {
+        reqText = 'The noti for that content has been turned on.'
+      }
       if (!param.subsYn) {
-        // req = 'delete'
-        reqText = ' 해제되었습니다.'
+        if (this.GE_LOCALE === 'ko') {
+          reqText = '해당 컨텐츠의 알림설정이 해제되었습니다.'
+        } else {
+          reqText = 'The noti for that content has been turned off.'
+        }
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
         url: '/service/tp.saveSubscribe',
         param: { subscribe: param }
       })
-      this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
+      this.$showToastPop(reqText)
       this.cDetail.subsYn = param.subsYn
       /* if (result === true) {
         await this.$emit('refresh')
