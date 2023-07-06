@@ -487,7 +487,7 @@ export default {
       this.confirmPopShowYn = true
     },
     textCopy () {
-      this.$showToastPop('로그인 후 이용해주세요')
+      this.$showToastPop(this.$t('COMMON_MSG_NO_LOGIN'))
     },
     editBoard () {
       // console.log();
@@ -521,8 +521,8 @@ export default {
     },
     openSelectSharePop () {
       if (navigator.share) {
-        navigator.share({ title: '더알림', text: this.CONT_DETAIL.title, url: this.CONT_DETAIL.copyTextStr })
-      } else this.$showToastPop('지원하지 않는 브라우저입니다.')
+        navigator.share({ title: this.$t('COMMON_NAME_APP'), text: this.CONT_DETAIL.title, url: this.CONT_DETAIL.copyTextStr })
+      } else this.$showToastPop(this.$t('COMMON_MSG_UNSURPORT'))
     },
     addImgEvnt () {
       // console.log(this.CONT_DETAIL)
@@ -647,7 +647,7 @@ export default {
         this.mememoValue = null
         this.memoShowYn = true
       } else {
-        this.$showToastPop('댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.')
+        this.$showToastPop(this.$t('COMMON_MSG_COMM_NOPERM'))
         // this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
         // this.confirmPopShowYn = true
       }
@@ -681,7 +681,7 @@ export default {
         this.mememoValue = data
         this.memoShowYn = true
       } else {
-        this.confirmText = '댓글 쓰기 권한이 없습니다. \n 관리자에게 문의하세요.'
+        this.confirmText = this.$t('COMMON_MSG_COMM_NOPERM')
         this.confirmPopShowYn = true
       }
     },
