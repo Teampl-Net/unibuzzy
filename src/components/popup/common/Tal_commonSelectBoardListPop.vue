@@ -1,19 +1,37 @@
+<i18n>
+{
+  "ko": {
+    "BOAR_SELECT_MSG_COPY": "게시글을 복사할 게시판을 선택해주세요",
+    "BOAR_SELECT_MSG_MOVE": "게시글을 이동할 게시판을 선택해주세요",
+    "BOAR_SELECT_MSG_NOBOARD": "게시판을 선택해주세요.",
+    "BOAR_SELECT_BTN_MOVE": "이동",
+    "BOAR_SELECT_BTN_COPY": "복사"
+  },
+  "en": {
+    "BOAR_SELECT_MSG_COPY": "Please select the board to which you want to copy the post",
+    "BOAR_SELECT_MSG_MOVE": "Please select the board to move the post to",
+    "BOAR_SELECT_MSG_NOBOARD": "Please select a board.",
+    "BOAR_SELECT_BTN_MOVE": "Move",
+    "BOAR_SELECT_BTN_COPY": "Copy"
+  }
+}
+</i18n>
 <template>
     <div style="width: calc(100% - 100px); position: absolute; left: 50px; background:rgb(220, 221, 235); min-height: 500px;top: 15%; padding: 20px; padding-top: 0;border-radius: 0.8rem; overflow: hidden; box-shadow: 0 0 9px 4px #ccc;  z-index: 999999;">
         <div class="selectPopHeader" >
-            <p class="font24 commonBlack fontBold fl textLeft mbottom-05">게시글 {{mainText}}</p>
+            <p class="font24 commonBlack fontBold fl textLeft mbottom-05">{{ mainText === '이동'? $t('COMMON_BTN_MOVE_POST'):$t('COMMON_BTN_COPY_POST') }}</p>
             <img @click="closeXPop" class="fr" style="width: 25px; margin-top: 5px;" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
-        <p class="font16 textLeft commonBlack fontBold mtop-05 fl mbottom-05">게시글을 {{mainText}}할 게시판을 선택해주세요</p>
+        <p class="font16 textLeft commonBlack fontBold mtop-05 fl mbottom-05">{{ mainText === '이동'? $t('BOAR_SELECT_MSG_MOVE'):$t('BOAR_SELECT_MSG_COPY') }}</p>
         <div :style="boardDetail.cabinetKey === value.cabinetKey? 'background: rgb(234 233 233) !important; color: #FFF;': 'background: #FFF;'" @click="selectCabinet(value)" :class="selectedCabinet && selectedCabinet.cabinetKey === value.cabinetKey? 'activeCabinet': ''" :id="'selectBoard' + value.cabinetKey" style="width: 100%; box-shadow: 0 0 7px 3px #b7b4b440; padding: 10px; border: 1px solid #ccc; margin-bottom: 10px;border-radius: 8px;float:left; min-height: 30px;" :fileYn="value.fileYn" :cabinetKey="value.cabinetKey"  v-for="(value, index) in boardList" :key="index">
             <div style="width: 25px; margin-right: 10px; height: 25px; border-radius: 100%; float: left;" :style="'background: ' + value.picBgPath"></div>
             <p :style="boardDetail.cabinetKey === value.cabinetKey? 'color: #9d9d9d;': 'color: #303030;'" class="font16 commonBlack fontBold fl">{{this.$changeText(value.cabinetNameMtext)}}</p>
         </div>
         <div style="width: 100%; min-height: 30px; float: left;">
-            <gBtnSmall @click="closeXPop" style="" btnThema="light" btnTitle="취소" />
-            <gBtnSmall @click="openConfirmPop" style="margin-right: 0.5rem;" :btnTitle="mainText" />
+            <gBtnSmall @click="closeXPop" style="" btnThema="light" :btnTitle="$t('COMMON_BTN_CANCEL')" />
+            <gBtnSmall @click="openConfirmPop" style="margin-right: 0.5rem;" :btnTitle="mainText === '이동'? $t('BOAR_SELECT_BTN_MOVE'):$t('BOAR_SELECT_BTN_COPY')" />
         </div>
-        <gConfirmPop :confirmText="' 해당 게시글을 ' + '[' + this.$changeText(selectedCabinet.cabinetNameMtext) + '](으)로<br>' + mainText +'하시겠습니까?'" :confirmType="'two'" @no="confirmPopShowYn = false" @ok="confirmOk" v-if="confirmPopShowYn"/>
+        <gConfirmPop :confirmText="returnConfirmText()" :confirmType="'two'" @no="confirmPopShowYn = false" @ok="confirmOk" v-if="confirmPopShowYn"/>
         <gConfirmPop :confirmText="confirmText" :confirmType="'timeout'" @no="errorPopShowYn = false"  @ok="errorPopShowYn = false" v-if="errorPopShowYn"/>
     </div>
 </template>
@@ -34,6 +52,9 @@ export default {
     },
     history () {
       return this.$store.getters['D_HISTORY/hStack']
+    },
+    GE_LOCALE () {
+      return this.$i18n.locale
     }
   },
   watch: {
@@ -70,9 +91,20 @@ export default {
     this.getTeamMenuList()
   },
   methods: {
+    returnConfirmText () {
+      if (this.GE_LOCALE === 'ko') {
+        return `해당 게시글을 [${this.$changeText(this.selectedCabinet.cabinetNameMtext)}](으)로<br>${this.mainText} 하시겠습니까?`
+      } else {
+        if (this.mainText === '이동') {
+          return `Are you sure you want to move this post to the [${this.$changeText(this.selectedCabinet.cabinetNameMtext)}]?`
+        } else {
+          return `Are you sure you want to copy this post to the [${this.$changeText(this.selectedCabinet.cabinetNameMtext)}]?`
+        }
+      }
+    },
     openConfirmPop () {
       if (this.selectedCabinet == null) {
-        this.confirmText = '게시판을 선택해주세요'
+        this.confirmText = this.$t('BOAR_SELECT_MSG_NOBOARD')
         this.errorPopShowYn = true
         return
       }
@@ -118,7 +150,15 @@ export default {
       // console.log(result)
       if (result.data.result) {
         this.confirmPopShowYn = false
-        this.confirmText = this.mainText + '되었습니다!'
+        if (this.GE_LOCALE === 'ko') {
+          this.confirmText = this.mainText + '되었습니다!'
+        } else {
+          if (this.mainText === '이동') {
+            this.confirmText = 'Post moved successfully.'
+          } else {
+            this.confirmText = 'Post copied successfully.'
+          }
+        }
         this.errorPopShowYn = true
         var _this = this
         setTimeout(() => {

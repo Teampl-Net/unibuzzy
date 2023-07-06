@@ -1,3 +1,31 @@
+<i18n>
+{
+  "ko": {
+    "CHAN_LIST_NAME_TYPE": "유형",
+    "CHAN_LIST_NAME_SORT": "정렬",
+    "CHAN_BOTTOM_TITLE_CATE": "산업군을 선택해주세요.",
+    "CHAN_BOTTOM_BTN_SELECT": "선택완료",
+    "CHAN_BOTTOM_TAB_POPULAR": "인기",
+    "CHAN_BOTTOM_TAB_RECENT": "최근활동순",
+    "CHAN_BOTTOM_TITLE_SORT": "어떻게 정렬할까요?",
+    "CHAN_BOTTOM_TITLE_TYPE": "유형을 선택해주세요.",
+    "CHAN_BOTTOM_TAB_MANAGER": "관리자",
+    "CHAN_BOTTOM_TAB_FOUNDER": "개설자"
+  },
+  "en": {
+    "CHAN_LIST_NAME_TYPE": "Type",
+    "CHAN_LIST_NAME_SORT": "Sort",
+    "CHAN_BOTTOM_TITLE_CATE": "Please select a category.",
+    "CHAN_BOTTOM_BTN_SELECT": "Select",
+    "CHAN_BOTTOM_TAB_POPULAR": "Popular",
+    "CHAN_BOTTOM_TAB_RECENT": "Recent",
+    "CHAN_BOTTOM_TITLE_SORT": "How should we sort it?",
+    "CHAN_BOTTOM_TITLE_TYPE": "Please select a type.",
+    "CHAN_BOTTOM_TAB_MANAGER": "Manager",
+    "CHAN_BOTTOM_TAB_FOUNDER": "Founder"
+  }
+}
+</i18n>
 <template>
     <div style="width: 100%; min-height: 250px; left:0; background: #FFF; border-radius: 25px 25px 0px 0px; display: flex; flex-direction: column;padding: 20px 20px; position: absolute; bottom: 0; z-index: 11;">
       <div style="position: relative; width: 100%; min-height: 40px; margin-bottom: 10px; float: left;">
@@ -5,7 +33,7 @@
         <img src="../../../../assets/images/common/grayXIcon.svg" @click="$emit('closePop')" style="width: 20px; position: absolute; right: 8px;top: 5px;" alt="">
       </div>
 
-      <template v-if="propSelectSearchObj.searchType === '정렬' || propSelectSearchObj.searchType === '유형'">
+      <template v-if="propSelectSearchObj.searchType === $t('CHAN_LIST_NAME_SORT') || propSelectSearchObj.searchType === $t('CHAN_LIST_NAME_TYPE')">
         <div class="lightGray cursorP font16 fontBold mtop-05" style="width: 100%; height: 30px; padding: 0 5px; float: left;">
           <div v-for="(orderBy, index) in mOrderByList" @click="orderByClick(orderBy.dispName)" style="position: relative; float: left; width: 100%; min-height: 100%; padding: 10px 0;" :key="index" >
             <p class="font16 textLeft h-100P " :class="this.mSelectedData === orderBy.dispName? 'commonLightColor' : 'commonGray'" >{{this.$changeText(orderBy.dispName)}}</p>
@@ -14,7 +42,7 @@
         </div>
       </template>
 
-      <template v-if="propSelectSearchObj.searchType === '산업군' && mBusinessItemList.length > 0">
+      <template v-if="propSelectSearchObj.searchType === $t('COMMON_NAME_CATEGORY') && mBusinessItemList.length > 0">
         <div class="fl w-100P" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
           <div v-for="(business, index) in mBusinessItemList" :key="index" @click="businessClick($changeText(business.itemNameMtext))" :class="{'businessSelected' :this.mSelectedData === $changeText(business.itemNameMtext)}"  style="width:47%; border: 1px solid #ccc; padding: 10px 20px; border-radius: 8px; margin: 5px 0; position: relative; min-width:92px;">
             <img v-if="this.mSelectedData === $changeText(business.itemNameMtext)" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
@@ -33,8 +61,8 @@
               {{$changeText(business.itemNameMtext)}}
             </p>
           </div>
-          <gBtnLarge v-if="mSelectedData !== ''" class="mtop-2 fontBold" @click="changeBusiness()" btnTitle="선택완료" />
-          <gBtnLarge  v-else style="background: #F4F4F4!important; color: #AAAAAA!important;" class="mtop-2 fontBold" btnTitle="산업군을 선택해주세요." />
+          <gBtnLarge v-if="mSelectedData !== ''" class="mtop-2 fontBold" @click="changeBusiness()" :btnTitle="$t('CHAN_BOTTOM_BTN_SELECT')" />
+          <gBtnLarge  v-else style="background: #F4F4F4!important; color: #AAAAAA!important;" class="mtop-2 fontBold" :btnTitle="$t('CHAN_BOTTOM_TITLE_CATE')" />
         </div>
       </template>
 
@@ -51,7 +79,7 @@ export default {
     return {
       mBottSheetTitle: '',
 
-      mOrderByList: [{ dispName: '전체' }, { dispName: '인기' }, { dispName: '최근활동순' }],
+      mOrderByList: [{ dispName: this.$t('COMMON_TAB_ALL') }, { dispName: this.$t('CHAN_BOTTOM_TAB_POPULAR') }, { dispName: this.$t('CHAN_BOTTOM_TAB_RECENT') }],
       mSelectedData: '',
 
       mBusinessItemList: []
@@ -68,7 +96,7 @@ export default {
       this.mSelectedData = dispName
       var pramData = {}
       pramData.targetType = 'changeOrderBy'
-      if (this.propSelectSearchObj.searchType === '유형') {
+      if (this.propSelectSearchObj.searchType === this.$t('CHAN_LIST_NAME_TYPE')) {
         pramData.targetType = 'changeAdmin'
       }
       pramData.dispName = dispName
@@ -86,18 +114,18 @@ export default {
       this.emit(pramData)
     },
     async readyFunc () {
-      if (this.propSelectSearchObj.searchType === '정렬') {
-        this.mBottSheetTitle = '어떻게 정렬할까요?'
+      if (this.propSelectSearchObj.searchType === this.$t('CHAN_LIST_NAME_SORT')) {
+        this.mBottSheetTitle = this.$t('CHAN_BOTTOM_TITLE_SORT')
         this.mSelectedData = this.propSelectSearchObj.dispName
         //
-      } else if (this.propSelectSearchObj.searchType === '산업군') {
-        this.mBottSheetTitle = '산업군을 선택해주세요.'
+      } else if (this.propSelectSearchObj.searchType === this.$t('COMMON_NAME_CATEGORY')) {
+        this.mBottSheetTitle = this.$t('CHAN_BOTTOM_TITLE_CATE')
         await this.getCateItemList()
         this.mSelectedData = this.propSelectSearchObj.dispName
         //
-      } else if (this.propSelectSearchObj.searchType === '유형') {
-        this.mBottSheetTitle = '유형을 선택해주세요.'
-        this.mOrderByList = [{ dispName: '전체' }, { dispName: '개설자' }, { dispName: '관리자' }]
+      } else if (this.propSelectSearchObj.searchType === this.$t('COMMON_NAME_TYPE')) {
+        this.mBottSheetTitle = this.$t('CHAN_BOTTOM_TITLE_TYPE')
+        this.mOrderByList = [{ dispName: this.$t('COMMON_TAB_ALL') }, { dispName: this.$t('CHAN_BOTTOM_TAB_FOUNDER') }, { dispName: this.$t('CHAN_BOTTOM_TAB_MANAGER') }]
         this.mSelectedData = this.propSelectSearchObj.dispName
       }
     },
@@ -111,7 +139,7 @@ export default {
       } else {
         this.mBusinessItemList = JSON.parse(JSON.stringify(this.propBusinessItemList))
       }
-      this.mBusinessItemList.unshift({ cateKey: 0, itemNameMtext: 'KO$^$전체' })
+      this.mBusinessItemList.unshift({ cateKey: 0, itemNameMtext: `KO$^$${this.$t('COMMON_TAB_ALL')}` })
     }
   }
 }

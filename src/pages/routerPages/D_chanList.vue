@@ -1,10 +1,16 @@
 <i18n>
 {
   "ko": {
-    "LIST_TITLE_CRE_CHAN": "채널 생성"
+    "LIST_TITLE_CRE_CHAN": "채널 생성",
+    "CHAN_LIST_MSG_ID": "실명인증을 하면 채널을 생성할 수 있어요",
+    "CHAN_LIST_NAME_TYPE": "유형",
+    "CHAN_LIST_NAME_SORT": "정렬"
   },
   "en": {
-    "LIST_TITLE_CRE_CHAN": "Create a Channel"
+    "LIST_TITLE_CRE_CHAN": "Create a Channel",
+    "CHAN_LIST_MSG_ID": "You can create a channel if you authenticate your real name",
+    "CHAN_LIST_NAME_TYPE": "Type",
+    "CHAN_LIST_NAME_SORT": "Sort"
   }
 }
 </i18n>
@@ -34,7 +40,7 @@
                 <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
             </div>
         </div>
-        <gCertiPop :pPopText="'실명인증을 하면 채널을 생성할 수 있어요'" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  />
+        <gCertiPop :pPopText="$t('CHAN_LIST_MSG_ID')" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  />
         <div v-if="mBottomSheetOpenYn"  @click="mBottomSheetOpenYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
         <transition name="showUp" >
             <bottomSheets v-if="mBottomSheetOpenYn" :propSelectSearchObj='mSelectSearchObj' @closePop='mBottomSheetOpenYn = false' @bottSheetEmit='bottSheetEmit' />
@@ -61,7 +67,7 @@ export default {
   data () {
     return {
       // mSearchList: [{ searchType: '정렬', dispName: '전체' }, { searchType: '산업군', dispName: '전체' }, { searchType: '유형', dispName: '전체' }],
-      mSearchList: [{ searchType: '산업군', dispName: '전체' }],
+      mSearchList: [{ searchType: this.$t('COMMON_NAME_CATEGORY'), dispName: this.$t('COMMON_TAB_ALL') }],
       mSelectSearchObj: {},
       mBottomSheetOpenYn: false,
       mChannelList: [],
@@ -75,13 +81,13 @@ export default {
       mOffsetInt: 0,
       mEndListYn: false,
       mViewTab: 'user',
-      mActiveTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '관리채널', name: 'mychannel' }],
+      mActiveTabList: [{ display: this.$t('COMMON_TAB_FOLLOWING'), name: 'user' }, { display: this.$t('COMMON_TAB_ALL'), name: 'all' }, { display: this.$t('COMMON_TAB_MANAGING'), name: 'mychannel' }],
       mChanFindPopShowYn: false,
       mResultSearchKeyList: '',
       myChanListPopYn: false,
       mScrollCheckSec: 0,
       mListShowYn: true,
-      mCurrentTabName: '구독중',
+      mCurrentTabName: this.$t('COMMON_TAB_FOLLOWING'),
       mEmptyYn: true,
       mLoadingYn: false,
       mAxiosQueue: [],
@@ -126,7 +132,7 @@ export default {
     this.mLoadingYn = false
   },
   async created () {
-    this.$emit('changePageHeader', '채널')
+    this.$emit('changePageHeader', this.$t('COMMON_NAME_CHANNEL'))
     if (this.propData) {
       if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
         this.mViewTab = this.propData.channelTabType
@@ -183,13 +189,13 @@ export default {
       var dispName = pramData.dispName
       var idx
       if (targetType === 'changeOrderBy') {
-        idx = this.mSearchList.findIndex(item => item.searchType === '정렬')
+        idx = this.mSearchList.findIndex(item => item.searchType === this.$t('CHAN_LIST_NAME_SORT'))
       } else if (targetType === 'changeBusiness') {
-        idx = this.mSearchList.findIndex(item => item.searchType === '산업군')
+        idx = this.mSearchList.findIndex(item => item.searchType === this.$t('COMMON_NAME_CATEGORY'))
         this.mSearchCateKey = pramData.cateKey
         this.changeTab(this.mViewTab)
       } else if (targetType === 'changeAdmin') {
-        idx = this.mSearchList.findIndex(item => item.searchType === '유형')
+        idx = this.mSearchList.findIndex(item => item.searchType === this.$t('CHAN_LIST_NAME_TYPE'))
       }
       if (idx !== -1) this.mSearchList[idx].dispName = dispName
       this.mBottomSheetOpenYn = false
@@ -231,11 +237,11 @@ export default {
     },
     introChanPageTab () {
       if (this.mViewTab === 'user') {
-        this.mCurrentTabName = '구독중'
+        this.mCurrentTabName = this.$t('COMMON_TAB_FOLLOWING')
       } else if (this.mViewTab === 'all') {
-        this.mCurrentTabName = '전체'
+        this.mCurrentTabName = this.$t('COMMON_TAB_ALL')
       } else if (this.mViewTab === 'mychannel') {
-        this.mCurrentTabName = '내 채널'
+        this.mCurrentTabName = this.$t('COMMON_TAB_MANAGING')
       }
     },
     getAbsoluteTop (element) {
@@ -489,7 +495,7 @@ export default {
       var searchObj = {}
       var resultArray = []
       if (sMap.get('nameMtext') !== undefined && sMap.get('nameMtext') !== null && sMap.get('nameMtext') !== '') {
-        searchObj.typeName = '채널'
+        searchObj.typeName = this.$t('COMMON_NAME_CHANNEL')
         searchObj.keyword = sMap.get('nameMtext')
         resultArray.push(searchObj)
       }
