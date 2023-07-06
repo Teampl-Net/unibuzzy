@@ -45,7 +45,7 @@
     <gConfirmPop :confirmText='mConfirmText' :confirmType="mConfirmType" v-if="mConfirmPopShowYn" @no='mConfirmPopShowYn=false' @ok='confirmOk' />
     <div class="pagePaddingWrap longHeight"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'"  style="height:calc(100% - 300px); overflow: hidden; " >
 
-      <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin:5px 0; overflow: hidden; " v-if="mCabinetName !== ''" >
+      <div class="w100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin:5px 0; overflow: hidden; " v-if="mCabinetName !== ''" >
 
         <div style="width: calc(100%); min-height: 30px; float: right; margin-bottom: 5px;" v-if="this.mSearchFilterList.length > 0">
           <p class="font14 commonBlack fontBold fl" style="line-height: 30px;">{{ $t('EDIT_BOOK_TITLE_FILTER') }}</p>
@@ -59,7 +59,7 @@
           </div>
         </div>
 
-        <div class="w-100P fl" style="min-width: 120px;">
+        <div class="w100P fl" style="min-width: 120px;">
           <div class="fl" style="position: relative; width: calc(100% - 120px)">
             <img @click="mCabinetName !== ''? getBookMemberList():getBookList()" class="cursorP" style="float: right; position: absolute; left: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
             <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="mCabinetName !== ''? getBookMemberList():getBookList()" :placeholder="mCabinetName !== ''? $t('EDIT_BOOK_MSG_NAME'):$t('EDIT_BOOK_MSG_BOOK')">

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden"  > <!-- v-if="notiDetailShowYn" -->
+  <div class="w100P h100P mainBackgroundColor listRefresh" style="overflow:hidden"  > <!-- v-if="notiDetailShowYn" -->
     <commonConfirmPop v-if="mAppUpdatePopShwoYn" @no="goAppStore" confirmType="one" confirmText="버전 업데이트가 필요합니다.<br>앱스토어로 이동합니다." />
     <gImgPop @closeXPop="closeXPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" />
     <!-- <pushPop @closePushPop="closePushPop" @goDetail="goDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  /> -->
@@ -106,7 +106,7 @@ export default {
     },
     GE_WINDOW_SIZE () {
       return {
-        '--widndowWidth': window.innerWidth + 'px'
+        '--windowWidth': window.innerWidth + 'px'
       }
     },
     GE_GPOP_STACK () {

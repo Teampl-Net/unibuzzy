@@ -33,7 +33,7 @@
             <div class="fr" style="width: calc(100% - 20px); margin-top: 10px;">
                 <gColorPicker :deepYn="true" :inLineYn="isMobile? true : false" :colorPick="mStickerObj.picBgPath" @closePop="closeColorPickerPop" @choiceColor='choiceColor' ref="colorPicker" />
             </div>
-            <div class="textLeft mtop-1 fontBold w-100P fl" style="padding: 0 1rem;">
+            <div class="textLeft mtop-1 fontBold w100P fl" style="padding: 0 1rem;">
               <p class="font16 commonColor fl textLeft" style="width: calc(50% - 0.5rem);">{{ $t('STICK_TITLE_PREVIEW') }}</p>
               <!-- <p class="fr font14 cursorP textCenter contrastBtn" @click="contrastColor">반전</p> -->
             </div>

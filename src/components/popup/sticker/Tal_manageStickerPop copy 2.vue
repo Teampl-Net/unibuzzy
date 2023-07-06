@@ -12,7 +12,7 @@
             </div>
             <p class="font15 fl textLeft fontBold mbottom-05">내 스티커</p>
             <gBtnSmall btnTitle="관리" style="height: 20px; line-height: 14px;" class="fr" />
-            <gSearchBox class="fl w-100P" />
+            <gSearchBox class="fl w100P" />
             <div style="width: 100%; float: left; height: calc(100vh - 350px); margin-top: 10px; overflow-y: auto;">
                 <div v-for="(value, index) in myStickerList " :key="index" style="width: 100%; height: 40px;">
                     <div :style="'background-color:' + value.stickerColor"  style="width: 30px; height: 30px; padding: 0 3px; border-radius: 15px; float: left; margin-top: 5px;">

@@ -20,34 +20,34 @@
           <!-- <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
             <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (this.CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;" ></div>
             <div class="chanTextBox fl mleft-05;" :class="chanBgBlackYn === true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; width:100%; margin-left: 0.5rem;">
-              <div class="fl font16  w-100P">
+              <div class="fl font16  w100P">
                 <p class="font15 textLeft fl" >
                   <img class="fl img-w20" style="margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_4.png" alt="구독자 아이콘">
                   {{this.$changeText(this.CHANNEL_DETAIL.cateItemMtext)}}
                 </p>
               </div>
-              <div class="fl font15 w-100P " style="box-sizing:boborder-box; word-break:break-all; " >
+              <div class="fl font15 w100P " style="box-sizing:boborder-box; word-break:break-all; " >
                 <p class="font14 textLeft fl " style="word-break:break-all" >
                   <img class="fl img-w20" style="margin-top:2px; margin-right:1rem" src="../../../assets/images/channel/channer_3.png" alt="채널 메세지 아이콘">
                   {{this.$changeText(CHANNEL_DETAIL.memoMtext)}}
                 </p>
               </div>
-              <div class="fl font15  w-100P " style="box-sizing:boborder-box; word-break:break-all; " >
+              <div class="fl font15  w100P " style="box-sizing:boborder-box; word-break:break-all; " >
                 <p class="font13 commonColor textLeft fl fontBold " style="color:#6768a7; white-space: nowrap;"> 개설일</p>
                 <p class="font14 textLeft fl mleft-1" style="word-break:break-all" >{{this.$dayjs(CHANNEL_DETAIL.creDate).format('YYYY-MM-DD')}}</p>
               </div>
             </div>
           </div> -->
-          <!-- <div id="ownerChannelEditArea" class="w-100P cursorP fl" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn">
+          <!-- <div id="ownerChannelEditArea" class="w100P cursorP fl" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn">
             <div class="fr mbottom-05" @click="editChan" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float:right !important; ">
               <p class="font16 textLeft lightGray fr "  >편집 > </p>
             </div>
           </div> -->
-          <!-- <div id="channelCardWrap" class="fl w-100P " :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content:space-around">
-            <p class="font16 fl w-100P">구독자 {{CHANNEL_DETAIL.followerCount}}명</p>
-            <p class="font16 fl w-100P" style="border-left: 2px solid #00000050">누적 알림 {{CHANNEL_DETAIL.totalContentsCount}}건</p>
+          <!-- <div id="channelCardWrap" class="fl w100P " :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content:space-around">
+            <p class="font16 fl w100P">구독자 {{CHANNEL_DETAIL.followerCount}}명</p>
+            <p class="font16 fl w100P" style="border-left: 2px solid #00000050">누적 알림 {{CHANNEL_DETAIL.totalContentsCount}}건</p>
           </div> -->
-          <!-- <div id="userCardWrap" class="fl w-100P" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content: space-between;">
+          <!-- <div id="userCardWrap" class="fl w100P" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content: space-between;">
             <div class="fl" style="display: flex; align-items: center;">
               <gProfileImg :smallYn="true" :selfYn="true" style="width: 35px; margin-right: 10px; height: 35px;" />
               <div class="mleft-05" style="display:flex; flex-direction: column;">
@@ -67,11 +67,11 @@
                 :data-clipboard-text="CHANNEL_DETAIL.copyTextStr">
                 <img class="img-w20" src="../../../assets/images/common/icon_share_square.svg" alt="">
               </div>
-              <gBtnSmall @click="changeFollowYn" v-if="mUnknownYn" class="fl w-100P fontBold font14" btnTitle="구독하기" />
+              <gBtnSmall @click="changeFollowYn" v-if="mUnknownYn" class="fl w100P fontBold font14" btnTitle="구독하기" />
             </div>
-            <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn == false" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
-              <p class="fl w-100P font16 fontBold textLeft"> [ {{changeText(CHANNEL_DETAIL.nameMtext)}} ] 채널을 구독하고 알림을 받아보세요!</p>
-              <gBtnSmall @click="changeFollowYn" class="fl w-100P mtop-1 fontBold font14" btnTitle="구독하기" />
+            <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn == false" class="w100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
+              <p class="fl w100P font16 fontBold textLeft"> [ {{changeText(CHANNEL_DETAIL.nameMtext)}} ] 채널을 구독하고 알림을 받아보세요!</p>
+              <gBtnSmall @click="changeFollowYn" class="fl w100P mtop-1 fontBold font14" btnTitle="구독하기" />
             </div>
           </div> -->
           <!-- {backgroundImage: 'url('+require('@/assets/메인배너.png')+')'} -->

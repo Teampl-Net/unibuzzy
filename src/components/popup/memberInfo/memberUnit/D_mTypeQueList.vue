@@ -13,7 +13,7 @@
 }
 </i18n>
 <template>
-    <div v-if="propMemberTypeObj" style="" class="fl w-100P" >
+    <div v-if="propMemberTypeObj" style="" class="fl w100P" >
         <p class="textLeft font15 fontBold commonColor">{{ $t('MEM_DETAIL_TITLE_ADDINFO') }}</p>
         <div v-if="memberTypeItemList && memberTypeItemList.length === 0">
             <p class="font15 fontBold grayBlack textCenter mtop-1">{{ $t('MEM_DETAIL_MGS_NOSET') }}</p>
@@ -24,14 +24,14 @@
         <template v-else>
             <draggable class="ghostClass" :v-model="memberTypeItemList" ghost-class="ghost" :dragging="dragging" @end="end" delay="200" handle=".itemMovePoint">
                 <transition-group>
-                    <div v-for="(list, index) in memberTypeItemList" :reloadKey="mReloadListKey" :key="list.itemKey" :listIndex="index" class="fl w-100P" style="padding: 0.3rem 0; padding-left: 10px;">
+                    <div v-for="(list, index) in memberTypeItemList" :reloadKey="mReloadListKey" :key="list.itemKey" :listIndex="index" class="fl w100P" style="padding: 0.3rem 0; padding-left: 10px;">
                         <queCard v-if="!list.deleteYn" :propData="list" @cardEmit='cardEmit' :compoIdx='index' :listIndex="index"  class="memTypeItemListRow mbottom-05"/>
                     </div>
                 </transition-group>
             </draggable>
         </template>
 
-        <!-- <div class="w-100P cursorP fl" style="display:flex; margin: 0 auto; align-items: center; justify-content: center; margin-top: 30px;">
+        <!-- <div class="w100P cursorP fl" style="display:flex; margin: 0 auto; align-items: center; justify-content: center; margin-top: 30px;">
             <div @click="addQuestion"  class="commonColor font30" style="width: 40px; height: 40px;line-height: 39px; border-radius: 100%; border: 2px solid #5F61BD;"> + </div>
         </div> -->
         <memInfoCreEditPop @changeMemberItem="changeMemberItem" v-if="mEditMemInfoPopShowYn"  :propData="this.mMemInfoData" @openPop="openPop" @closeXPop="closeMemInfoPop" />

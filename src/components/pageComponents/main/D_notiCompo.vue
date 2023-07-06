@@ -1,5 +1,5 @@
 <template>
-  <!-- <p class="fl w-100P font12 commonBlack">{{mNotiEle.largeIcon}}</p> -->
+  <!-- <p class="fl w100P font12 commonBlack">{{mNotiEle.largeIcon}}</p> -->
   <div @click="this.$emit('clickNoti', mNotiEle)" v-if="mNotiEle.title" style="width: 100%; min-height: 50px; float: left; padding: 10px 0;  margin-bottom: 5px; border-bottom: 1px solid #ccc;  display: flex;">
       <div style="width: 45px; height: 45px; margin-right: 10px; border-radius: 100%; overflow: hidden;" >
           <img v-if="mNotiEle.largeIcon" :src="mNotiEle.largeIcon" style="width: 100%; float: left;  height: 100%;" alt="">
@@ -12,7 +12,7 @@
           <p class="font14 commonBlack textLeft">{{mNotiEle.body}}</p>
       </div>
   </div>
-  <!-- <div class="fl w-100P" style="overflow:auto">
+  <!-- <div class="fl w100P" style="overflow:auto">
     {{this.mNotiEle.creDate}}
     {{parseCreDate}}
   </div> -->

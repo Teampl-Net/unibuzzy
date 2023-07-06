@@ -3,13 +3,13 @@
         <gConfirmPop :confirmText='confirmText' :confirmType="confirmType" v-if="confirmPopShowYn" @no='confirmPopShowYn=false' @ok='confirmOk' />
         <popHeader @closeXPop="backClick()" class="headerShadow" :headerTitle="receiverTitle"  :managerBtn='true' :chanName="this.chanName" @sendOk='editPop' />
         <div class="pagePaddingWrap longHeight" style="height:calc(100% - 300px); overflow: hidden; padding-top: 60px !important;" >
-            <!-- <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin-top:10px; overflow: hidden; "> -->
-                <!-- <span @click="goCabinetList" class="fl mright-05 font18 h-100P colorBlack">{{this.chanName}}</span><span v-if="cabinetName !== ''" class="fl mright-05 font18 h-100P colorBlack">{{' > ' + this.cabinetName}}</span> -->
+            <!-- <div class="w100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin-top:10px; overflow: hidden; "> -->
+                <!-- <span @click="goCabinetList" class="fl mright-05 font18 h100P colorBlack">{{this.chanName}}</span><span v-if="cabinetName !== ''" class="fl mright-05 font18 h100P colorBlack">{{' > ' + this.cabinetName}}</span> -->
                 <!-- <img src="../../../assets/images/channel/channer_addressBook.svg" style="width: 23px; margin-right: 10px; margin-left: 5px; float: left;" /> -->
-                <!-- <p class="fl mright-05 font18 h-100P colorBlack">{{this.propData.cabinetNameMtext}}</p> -->
+                <!-- <p class="fl mright-05 font18 h100P colorBlack">{{this.propData.cabinetNameMtext}}</p> -->
             <!-- </div> -->
-            <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin:5px 0; overflow: hidden; " v-if="cabinetName !== ''" >
-                <!-- <span @click="goCabinetList" style="width: calc(100%); max-width: calc(100% - 350px);" class="fl mright-05 font18 h-100P colorBlack">
+            <div class="w100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin:5px 0; overflow: hidden; " v-if="cabinetName !== ''" >
+                <!-- <span @click="goCabinetList" style="width: calc(100%); max-width: calc(100% - 350px);" class="fl mright-05 font18 h100P colorBlack">
                     <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl" style="width:25px; " alt="">
                     <p class="fl mleft-05 font18 textLeft colorBlack" style="width: calc(100% - 50px)" >{{this.cabinetName}}</p>
                 </span> -->

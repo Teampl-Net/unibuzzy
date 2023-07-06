@@ -1,12 +1,12 @@
 <template>
-  <div class="w-100P h-100P" style="overflow: hidden; position: relative; border-radius: 0.8rem 0.8rem 0 0;">
+  <div class="w100P h100P" style="overflow: hidden; position: relative; border-radius: 0.8rem 0.8rem 0 0;">
     <div class="mMyPageTabList">
       <div class="myPageTab font14" :class="{activeMyPageTabList: this.mMyPageTabType === tab.mMyPageTabType}" @click="myPageTabClick(tab, index)" v-for="(tab, index) in mMyPageTabList" :key="index">{{tab.name}}</div>
       <div class="font14 fontBold commonBigBtn" @click="goMyChanList" style="">내 채널 ></div>
     </div>
     <div class="myPageContentsWrap">
       <div id="myActHeader" class="myActHeader" >
-        <div class="w-100P fl" style="height: 40px; line-height: 40px;">
+        <div class="w100P fl" style="height: 40px; line-height: 40px;">
           <roundTab @tabChange="changeTab" :tabType="this.mMyActTabType" :tabList="this.mMyActTabList" id="myActTabId"  />
         </div>
       </div>

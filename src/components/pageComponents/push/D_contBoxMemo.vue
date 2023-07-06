@@ -9,10 +9,10 @@
         <!-- <div class="contBoxMemoArea" :style="propMemoEle.attachMfilekey? 'width: calc(100% - 170px);' : 'width: calc(100% - 150px);'" style=" min-height: 20px; overflow: hidden; position: relative; max-height: 80px; padding-bottom: 30px;" @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })"> -->
         <div class="contBoxMemoArea mbottom-05" :style="propMemoEle.attachMfilekey? 'width: calc(100% - 180px);' : 'width: calc(100% - 160px);'" style="position: relative; min-height: 20px; max-height: 45px; overflow: hidden; " @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
             <!-- <p class="commonBlack textLeft font14" v-html="$cutText($decodeHTML(propMemoEle.bodyFullStr), 80)"></p> -->
-            <div v-if="mMemoFadeShowYn" class="w-100P fl textLeft" style="position: absolute; bottom: -6px;">...</div>
+            <div v-if="mMemoFadeShowYn" class="w100P fl textLeft" style="position: absolute; bottom: -6px;">...</div>
             <pre ref="mainMemoRef" class="commonBlack textLeft font14" v-html="$decodeHTML(propMemoEle.bodyFullStr)"></pre>
-            <!-- <div v-if="mMemoFadeShowYn" class="w-100P fl textRight" style="position: absolute; bottom: 0px; height: 20px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7));"></div> -->
-            <!-- <div v-if="mMemoFadeShowYn" style="position: absolute; bottom: 0; height: 15px; line-height: 15px;" class="fl w-100P textRight font12 commonGray fontBold" >더보기</div> -->
+            <!-- <div v-if="mMemoFadeShowYn" class="w100P fl textRight" style="position: absolute; bottom: 0px; height: 20px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7));"></div> -->
+            <!-- <div v-if="mMemoFadeShowYn" style="position: absolute; bottom: 0; height: 15px; line-height: 15px;" class="fl w100P textRight font12 commonGray fontBold" >더보기</div> -->
         </div>
         <p class="fl commonGray textLeft mleft-05 font12"  style="font-weight:normal;">{{this.$changeSimpleDateFormat(propMemoEle.creDate)}}</p>
     </div>
@@ -36,8 +36,8 @@
                             <img @click="this.openImgPop(getAttachFalseFile(propMemoEle.attachFileList), index)" :style="'max-height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'" style="border-right: 0px solid #aaa; border-left: 1px solid #aaa; margin-right: 10px; float: left; min-width: 70px" :fileKey="img.fileKey" v-for="(img, index) in getAttachFalseFile(propMemoEle.attachFileList)" :key="index" :src="img.domainPath + img.pathMtext" alt="">
                         </div>
                     </div>
-                    <pre v-if="!this.mChangeMemoYn" class="commonBlack w-100P textLeft fl font14 cursorDragText" style="cursor: text;" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></pre>
-                    <pre v-else ref="modiMemoInput" :id="'memoFullStr'+propMemoEle.memoKey" class="editableContent  w-100P textLeft font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-html="mModiMemoInput"></pre>
+                    <pre v-if="!this.mChangeMemoYn" class="commonBlack w100P textLeft fl font14 cursorDragText" style="cursor: text;" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></pre>
+                    <pre v-else ref="modiMemoInput" :id="'memoFullStr'+propMemoEle.memoKey" class="editableContent  w100P textLeft font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-html="mModiMemoInput"></pre>
                 </div>
                 <div style="min-height: 20px; margin-top: 10px;  width: 100%; padding-right: 10px; min-height: 20px;">
                     <!-- <p @click="deleteConfirm(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">삭제</p> -->

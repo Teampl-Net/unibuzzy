@@ -1,12 +1,12 @@
 <template>
-    <div v-if="testYn === true" class="fl w-100P" style="margin-top: 0;background: #FFF;">
-      <div ref="tabbar" class="w-100P fl" style="padding-top: 10px; background: #FFF; border-bottom: 3px solid #ccc; height: 41px; position: relative; display:flex;" >
+    <div v-if="testYn === true" class="fl w100P" style="margin-top: 0;background: #FFF;">
+      <div ref="tabbar" class="w100P fl" style="padding-top: 10px; background: #FFF; border-bottom: 3px solid #ccc; height: 41px; position: relative; display:flex;" >
         <div class="fl tabTitleBox textLeft " v-for="(tab, index) in tabList" @click="switchtab(index, tab)" :key="index === activetab" ref="tab" style="white-space: nowrap; flex:1">
           <p :style="activebarWidth" class="tabItem font16 fontBold" :class="{commonColor: index === activetab, lightGray: index !== activetab}" style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
         </div>
         <div class="activeBar fl "  ref="activeBar" :style="activebarWidth" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px; left:0"></div>
       </div>
-      <div class="fl w-100P" style="min-height: 6px;" v-if="searchYn">
+      <div class="fl w100P" style="min-height: 6px;" v-if="searchYn">
         <div class="fl mtop-03" v-if="propSearchList">
           <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
         </div>
@@ -32,7 +32,7 @@
         </div>
       </div>
       <div style="width: 100%" v-if="channelYn">
-        <div class="fl w-100P" style="min-height: 6px; background-color: #fff;" v-if="searchYn">
+        <div class="fl w100P" style="min-height: 6px; background-color: #fff;" v-if="searchYn">
           <div class="fl mtop-03" v-if="propSearchList">
             <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
           </div>

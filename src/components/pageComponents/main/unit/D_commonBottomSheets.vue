@@ -36,17 +36,17 @@
       <template v-if="propSelectSearchObj.searchType === $t('CHAN_LIST_NAME_SORT') || propSelectSearchObj.searchType === $t('CHAN_LIST_NAME_TYPE')">
         <div class="lightGray cursorP font16 fontBold mtop-05" style="width: 100%; height: 30px; padding: 0 5px; float: left;">
           <div v-for="(orderBy, index) in mOrderByList" @click="orderByClick(orderBy.dispName)" style="position: relative; float: left; width: 100%; min-height: 100%; padding: 10px 0;" :key="index" >
-            <p class="font16 textLeft h-100P " :class="this.mSelectedData === orderBy.dispName? 'commonLightColor' : 'commonGray'" >{{this.$changeText(orderBy.dispName)}}</p>
+            <p class="font16 textLeft h100P " :class="this.mSelectedData === orderBy.dispName? 'commonLightColor' : 'commonGray'" >{{this.$changeText(orderBy.dispName)}}</p>
             <img src="../../../../assets/images/common/listSelectCheck.svg" style="position: absolute; right: 10px; top: 5px; " v-if="this.mSelectedData === orderBy.dispName" alt="">
           </div>
         </div>
       </template>
 
       <template v-if="propSelectSearchObj.searchType === $t('COMMON_NAME_CATEGORY') && mBusinessItemList.length > 0">
-        <div class="fl w-100P" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+        <div class="fl w100P" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
           <div v-for="(business, index) in mBusinessItemList" :key="index" @click="businessClick($changeText(business.itemNameMtext))" :class="{'businessSelected' :this.mSelectedData === $changeText(business.itemNameMtext)}"  style="width:47%; border: 1px solid #ccc; padding: 10px 20px; border-radius: 8px; margin: 5px 0; position: relative; min-width:92px;">
             <img v-if="this.mSelectedData === $changeText(business.itemNameMtext)" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
-            <p class="fl font16 w-100P textCenter fontBold" :class="this.mSelectedData === $changeText(business.itemNameMtext) ? 'commonLightColor' : 'commonGray'" >
+            <p class="fl font16 w100P textCenter fontBold" :class="this.mSelectedData === $changeText(business.itemNameMtext) ? 'commonLightColor' : 'commonGray'" >
               <img class="img-w20 mright-05" src="../../../../assets/images/bottom/icon_briefcase.svg" alt="" v-if="business.cateKey === 1">
               <img class="img-w20 mright-05" src="../../../../assets/images/bottom/icon_government.svg" alt="" v-if="business.cateKey === 2">
               <img class="img-w20 mright-05" src="../../../../assets/images/bottom/icon_pencil.svg" alt="" v-if="business.cateKey === 3">

@@ -26,8 +26,8 @@
         </div>
       </div>
       <div class="" style="text-align: left; ">
-        <userItem class="w-100P font16 mbottom-1" uItem="이메일" style="border-bottom: 0.5px solid #E4E4E4; " @openPop="openPop('changeEmail', '이메일 변경')" />
-        <userItem @click="goDevMode" class="w-100P font16" @openPop="openPop" uItem="휴대폰 번호" />
+        <userItem class="w100P font16 mbottom-1" uItem="이메일" style="border-bottom: 0.5px solid #E4E4E4; " @openPop="openPop('changeEmail', '이메일 변경')" />
+        <userItem @click="goDevMode" class="w100P font16" @openPop="openPop" uItem="휴대폰 번호" />
       </div>
       <div class="grayLine"></div>
     </div>

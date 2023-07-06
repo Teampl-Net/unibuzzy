@@ -9,8 +9,8 @@
         <span class="myActSmallInfo font14 textOverdot">> {{this.$changeText(value.cabinetNameMtext)}}</span>
         </div>
     </div>
-    <myObserver @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver>
-    <div v-if="!this.endListYn" class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
+    <myObserver @triggerIntersected="loadMore" class="fl w100P" style=""></myObserver>
+    <div v-if="!this.endListYn" class="w100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
         <gLoadingS ref="myActsLoadingPush" class="fl"/>
     </div>
   </div>

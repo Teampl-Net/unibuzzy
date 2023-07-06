@@ -54,7 +54,7 @@
             <gFileBox @openImgPop="openImgPop" @openPop="openPop" listType="T" :contentsEle="cont" :key="index" v-if="$changeDateFormat(cont.creDate) === date"/>
           </template>
         </div>
-        <myObserver v-if="index === this.dateList.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
+        <myObserver v-if="index === this.dateList.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
       </template>
     </div>
     <gEmpty :contentName="$t('COMMON_TAB_FILE_DRIVE')" v-else class="mtop-2"/>

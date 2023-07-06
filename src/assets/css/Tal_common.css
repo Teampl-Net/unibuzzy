@@ -297,7 +297,9 @@ input, select {
 #moTheAlimWrap {
   font-family: KoPubDotumMedium;
   /* font-family: NotoSans; */
-
+}
+#uniBuzzyWrap {
+  font-family: KoPubDotumMedium;
 }
 
 .headerBottom {box-shadow: 0px 7px 9px -9px #00000036;}
@@ -538,7 +540,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .ptop-50 {
   padding-top: 50px;
 }
-.wh-100P {
+.wh100P {
   width: 100%;
   height: 100%;
 }
@@ -553,7 +555,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .w-70P{width: 70%;}
 .w-80P{width: 80%;}
 .w-90P{width: 90%;}
-.w-100P{width: 100%;}
+.w100P{width: 100%;}
 
 .w-2rem{width: 2rem;}
 .w-3rem{width: 3rem;}
@@ -562,7 +564,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .w-7rem{width: 7rem;}
 
 .h3rem{height: 3rem;}
-.h-100P{height: 100%;}
+.h100P{height: 100%;}
 
 .mNone{margin: none;}
 .mr-04{margin-right: 0.4rem}
@@ -762,12 +764,12 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   animation: showModal-dialog-fade-in 0.2s ease;
 }
 @keyframes showDropUpAni {
-  0% {transform: translateY(var(--widndowWidth));}
+  0% {transform: translateY(var(--windowWidth));}
   100% {transform: translateY(0);}
 }
 @keyframes showDropdownAniTo100 {
   0% {transform: translateY(0);}
-  100% { transform: translateY(var(--widndowWidth));}
+  100% { transform: translateY(var(--windowWidth));}
 }
 
 @-webkit-keyframes slide-left-in {
@@ -814,12 +816,12 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .showModal-enter-active {animation: showModal-dialog-fade-in 0.2s ease;}
 .showModal-leave-active {animation: showModal-dialog-fade-out 0.2s ease forwards;}
 @keyframes showModal-dialog-fade-in {
-    0% {transform: translateX(var(--widndowWidth));}
+    0% {transform: translateX(var(--windowWidth));}
     100% {transform: translateX(0);}
 }
 @keyframes showModal-dialog-fade-out {
     0% {transform: translateX(0);}
-    100% { transform: translateX(var(--widndowWidth));}
+    100% { transform: translateX(var(--windowWidth));}
 }
 
 .showUp-enter {animation: showUp-dialog-fade-in 0.2s ease;}
@@ -841,12 +843,12 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .showGroup-enter-active {animation: showGroup-dialog-fade-in 0.2s ease;}
 .showGroup-leave-active {animation: showGroup-dialog-fade-out 0.2s ease forwards;}
 @keyframes showGroup-dialog-fade-in {
-    0% {transform: translateX(var(--widndowWidth));}
+    0% {transform: translateX(var(--windowWidth));}
     100% {transform: translateX(0);}
 }
 @keyframes showGroup-dialog-fade-out {
     0% {transform: translateX(0);}
-    100% { transform: translateX(var(--widndowWidth));}
+    100% { transform: translateX(var(--windowWidth));}
 }
 
 
@@ -1076,3 +1078,58 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
   padding: 0 20px !important;
   text-align: left !important;
 } */
+
+
+/* NEW uniBuzzy */
+.flexCenter {display: flex; justify-content: center; align-items: center;}
+
+/* animation */
+.show_left-enter {
+  position: absolute;
+  animation: show_left-dialog-fade-in 0.5s ease;
+}
+.show_left-leave {
+  position: absolute;
+  animation: show_left-dialog-fade-out 0.5s ease forwards;
+}
+.show_left-enter-active {
+  position: absolute;
+  animation: show_left-dialog-fade-in 0.5s ease;
+}
+.show_left-leave-active {
+  position: absolute;
+  animation: show_left-dialog-fade-out 0.5s ease forwards;
+}
+@keyframes show_left-dialog-fade-in {
+  0% {
+    left: -100%;
+    /* transform: translateX(500px); */
+  }
+  100% {
+    left: 0;
+    /* transform: translateX(0); */
+  }
+}
+@keyframes show_left-dialog-fade-out {
+  0% {
+    left: 0;
+    /* transform: translateX(0); */
+  }
+  100% {
+    left: -100%;
+    /* transform: translateX(500px); */
+  }
+}
+
+.showUp-enter {animation: showUp-dialog-fade-in 0.2s ease;}
+.showUp-leave {animation: showUp-dialog-fade-out 0.2s ease forwards;}
+.showUp-enter-active {animation: showUp-dialog-fade-in 0.2s ease;}
+.showUp-leave-active {animation: showUp-dialog-fade-out 0.2s ease forwards;}
+@keyframes showUp-dialog-fade-in {
+    0% {transform: translateY(100%);}
+    100% {transform: translateY(0);}
+}
+@keyframes showUp-dialog-fade-out {
+    0% {transform: translateY(0);}
+    100% { transform: translateY(100%);}
+}

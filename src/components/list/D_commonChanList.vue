@@ -1,11 +1,11 @@
 <template>
     <div style="width: 100%; height: 100%; padding: 0 10px; padding-top: 15px;">
-      <div v-if="this.chanList.length === 0" class="w-100P h-100P">
+      <div v-if="this.chanList.length === 0" class="w100P h100P">
         <!-- chanList.vue 에서 introChanPageTab() 수정 -->
         <img :src="this.imgUrl" style="float: left;" />
       </div>
-      <!-- <div v-else class="chanRow w-100P fl channelRow " :class="{ownerChannelRowColor : value.ownerYn}" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" > -->
-      <div v-else class="chanRow w-100P fl channelRow cursorP" style="border: none; border-radius: 8px; background: #FFF; padding: 10px 10px; padding-bottom: 5px;" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" >
+      <!-- <div v-else class="chanRow w100P fl channelRow " :class="{ownerChannelRowColor : value.ownerYn}" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" > -->
+      <div v-else class="chanRow w100P fl channelRow cursorP" style="border: none; border-radius: 8px; background: #FFF; padding: 10px 10px; padding-bottom: 5px;" v-for="(value, index) in chanList" :key="index" v-on:click="goDetail(value)" >
         <div style="width: 100%; display: flex; min-height: 40px; float: left; ">
 <!-- url("fileServer/image/2022/09/15�33-edb1-4f1f-b530-9c5d32b3369a_aaaaaaaaaaaaa.png") -->
           <!-- <div class="gChanPageChanLogoImgWrap" :class="{ownerChannelRow : value.ownerYn}" :style="'background-image: url(' + (value.logoDomainPath ? value.logoDomainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"> -->
@@ -14,7 +14,7 @@
                 <img src="../../assets/images/common/icon_setting_gear.svg" v-if="!value.ownerYn && value.managerKey" style="width: 20px; position: absolute; top: -10px;" /> -->
             </div>
             <div style=" margin-left: 10px; width: calc(100% - 40px); min-height: 40px; display:flex;flex-direction: column;">
-                <div class=" text-start mr-04 w-100P" style="height: 23px; line-height:20px;">
+                <div class=" text-start mr-04 w100P" style="height: 23px; line-height:20px;">
                     <img src="../../assets/images/channel/icon_official.svg" v-if="value.officialYn" style="width: 25px; float: left;" alt="" />
                     <p class="font16 commonBlack fl fontBold mNone textOverdot" style="line-height: 23px;" :style="value.officialYn ? 'max-width: calc(100% - 140px);' : 'max-width: calc(100% - 120px);' " v-html="this.resizeText(this.$changeText(value.nameMtext))"></p>
                     <div style="line-height: 0.05rem; float: left; margin-top: 0px; margin-left: 5px; margin-top: 3.5px;">
@@ -64,7 +64,7 @@
         </div>
       </div>
       <myObserver @triggerIntersected="loadMore" class="fl wich" />
-      <div class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
+      <div class="w100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
         <gLoadingS ref="sLoadingChan" class="fl"/>
       </div>
     </div>

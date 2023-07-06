@@ -57,7 +57,7 @@
 
           <div @click="mIconBgSelectPopYn='iconPop'" class="channelLogoArea cursorP" :style="'background-image: url(' + mSelectedIcon.selectPath + ')'" style="background-size: cover; background-position: center; background-repeat: no-repeat;">
           </div>
-          <div class="w-100P fl" style="height: calc(100% - 80px); overflow: auto; margin-top: 1rem;">
+          <div class="w100P fl" style="height: calc(100% - 80px); overflow: auto; margin-top: 1rem;">
 
           <div style="width:100%;" class="mtop-1 fl">
             <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('COMMON_TITLE_CHANNAME') }}</p>
@@ -72,12 +72,12 @@
           <div style="width:100%;" class="mtop-1 fl ">
             <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('CRE_TITLE_HEADER') }}</p>
 
-            <div class="fl w-100P mbottom-05 mtop-05" style="text-align: center; display: flex; justify-content: space-around; align-items: center; ">
+            <div class="fl w100P mbottom-05 mtop-05" style="text-align: center; display: flex; justify-content: space-around; align-items: center; ">
               <label class="fl font14 mright-05" style="display: flex;" for="commonColor"><input v-model="mBtnColor" class="fl mright-05" type="radio" name="btnColorRadio" :value="false" id="commonColor"> {{ $t('CRE_BTN_HEAD_DEFAULT') }}</label>
               <label class="fl font14 mleft-05" style="display: flex;" for="whiteColor"><input v-model="mBtnColor" class="fl mright-05" type="radio" name="btnColorRadio" :value="true" id="whiteColor"> {{ $t('CRE_BTN_HEAD_WHITE') }}</label>
               <p class="fr backgroundLabel fontBold commonColor" @click="mTopColorPreviewYn = !mTopColorPreviewYn" style="border: 1px solid #ccc;"><img src="../../../assets/images/board/icon_eyes.svg" class="img-w18 mright-05" alt="미리보기 아이콘">{{ $t('CRE_BTN_PREVIEW') }}</p>
             </div>
-            <div v-if="mTopColorPreviewYn === true" class="fl w-100P" :style="'background: url(' + mSelectedBg.selectPath + ');'" style=" height: 50px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; overflow: hidden; background-repeat: no-repeat;background-size: cover;">
+            <div v-if="mTopColorPreviewYn === true" class="fl w100P" :style="'background: url(' + mSelectedBg.selectPath + ');'" style=" height: 50px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; overflow: hidden; background-repeat: no-repeat;background-size: cover;">
               <img v-if="mBtnColor === false" src="../../../assets/images/common/icon_back.png" class="img-w15 fl mleft-05" alt=""> <img v-else-if="mBtnColor === true" src="../../../assets/images/common/icon_back_white.png" class="img-w15 fl mleft-05" alt="">
               <p :style="mBtnColor === false ? 'color: #6768a7;' : 'color:white;' " class="fl font20 fontBold">{{mInputChannelName}}</p>
               <img v-if="mBtnColor === false"  src="../../../assets/images/common/icon_menu.png" class="img-w25 fr mright-05" alt=""> <img v-else-if="mBtnColor === true" src="../../../assets/images/common/icon_menu_white.png" class="img-w25 fr mright-05" alt="">

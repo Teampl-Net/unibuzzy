@@ -38,7 +38,7 @@
         <p class="fontLeft fl fontBold font18 commonColor">{{ $t('MEM_DETAIL_NAME_EDIT') }}</p>
         <img class="cursorP" src="../../../assets/images/common/popup_close.png" @click="backClick" style="position: absolute; top: 15px; right: 20px; width: 20px;" alt="">
     </div>
-    <div class="pSide-15 fl w-100P">
+    <div class="pSide-15 fl w100P">
         <div class="queInfoRow fl ">
             <p class="fontBold  textLeft font16 fr" style="width: 80px; line-height: 30px;">{{ $t('MEM_DETAIL_TITLE_INFONAME') }}</p>
             <div style="display: flex; float: left; width: calc(100% - 80px); height: 100%; min-height: 30px;">
@@ -59,18 +59,18 @@
             <!-- <div class="queInfoRow fl ">
             <p class="fontBold  textLeft font16 fr" style="width: 100px;">유형</p>
             <select class="fr commonBlack" v-model="mSelectedItemType" @change="changeOption" style="border: 1px solid #ccc; width: calc(100%); min-height:30px;" >
-                <option v-for="(answer, index) in options" :key="index" @click="selectOption = answer.InfoQueType" :value="answer.InfoQueType" class="fl w-100P" style="display: flex; align-items: center; padding-bottom:0.5rem"> {{ answer.title }} </option>
+                <option v-for="(answer, index) in options" :key="index" @click="selectOption = answer.InfoQueType" :value="answer.InfoQueType" class="fl w100P" style="display: flex; align-items: center; padding-bottom:0.5rem"> {{ answer.title }} </option>
             </select>
             </div> -->
 
         <tempDotline class="fl" style="border: 1px dashed #cccccc90; width:100%; height:1px;" />
 
-        <div class="fl w-100P mtop-1" style="">
+        <div class="fl w100P mtop-1" style="">
 
         <template v-if="mSelectedItemType === 'T'">
-            <div class="fl wh-100P" style="display: flex;">
-            <!-- <p class="fl font16 commonColr textLeft fontBold h-100P" style="flex:2">제시글</p> -->
-            <div class="fl h-100P" style="flex:3">
+            <div class="fl wh100P" style="display: flex;">
+            <!-- <p class="fl font16 commonColr textLeft fontBold h100P" style="flex:2">제시글</p> -->
+            <div class="fl h100P" style="flex:3">
                 <gCheckBtn class="fl mtop-05" :title="$t('MEM_DETAIL_BNT_NUMONLY')" :selectedYn='onlyNumYn === true' @click="onlyNumYn = !onlyNumYn" />
                 <!-- <input class="fr" style="min-height:30px; background: #CCCCCC50 !important; width:100%; max-width:300px; " type="text" disabled :placeholder="InfoQueTitle"> -->
                 <div class="fl w-50P mtop-05 mleft-05 " style="width: calc(100% - 125px);">
@@ -85,10 +85,10 @@
             <div class="fl wh-100P h-100P" style="">
             <p class="fl font16 w-100P commonColr textLeft fontBold mbottom-05  h-100P" style="">{{ $t('MEM_DETAIL_TITLE_OPTION') }}</p>
 
-            <div class="fl w-100P" style="height: 260px; padding-right: 8px; overflow: hidden scroll; ">
+            <div class="fl w100P" style="height: 260px; padding-right: 8px; overflow: hidden scroll; ">
                 <draggable class="ghostClass" :v-model="answerList" ghost-class="ghost" :dragging="dragging" @end="endDragList" delay="200" handle=".movePoint">
                     <transition-group>
-                        <div class="memberInfoListRow fr w-100P  mbottom-05" :listIndex="index" v-for="(list, index) in answerList" :key='index' >
+                        <div class="memberInfoListRow fr w100P  mbottom-05" :listIndex="index" v-for="(list, index) in answerList" :key='index' >
                             <input class="fl" type="text" style="min-height:30px; width: calc(100% - 90px); max-width:300px; " v-model="list.answerName">
 
                             <div class="fl mleft-05" style="width:60px; height: 30px; align-items: center; display:flex; ">
@@ -105,7 +105,7 @@
                         </div>
                     </transition-group>
                 </draggable>
-                <!-- <div class="fl w-100P mtop-1">
+                <!-- <div class="fl w100P mtop-1">
                 <gBtnSmall :btnTitle="'추가'" @click="addInfo" class="mright-05" style="float:right !important;"/>
                 </div> -->
             </div>
@@ -114,7 +114,7 @@
         </template>
 
         </div>
-        <div class="w-100P" style="position: absolute; left:0; bottom:0; min-height:50px; display: flex; align-items: center; justify-content: center; border-top: 1px solid #ccc;">
+        <div class="w100P" style="position: absolute; left:0; bottom:0; min-height:50px; display: flex; align-items: center; justify-content: center; border-top: 1px solid #ccc;">
             <gBtnSmall :btnTitle="$t('COMMON_BTN_SAVE')" @click="saveMemberTypeItem" class="mright-05" style=""/>
             <gBtnSmall :btnTitle="$t('COMMON_BTN_DELETE')" btnThema="light" @click="closeXPop" class="mleft-05" style=""/>
         </div>

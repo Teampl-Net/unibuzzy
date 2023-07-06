@@ -1,6 +1,6 @@
 <template>
-  <div class="fl w-100P" style="border-bottom: 1px solid; border-color: #BDBDBD50" :class="{ CWhiteGrayBgColor: (option === 'SELE' && propData.selectedYn === true) }" >
-    <div class="fl w-100P rowBaseCss"  style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" >
+  <div class="fl w100P" style="border-bottom: 1px solid; border-color: #BDBDBD50" :class="{ CWhiteGrayBgColor: (option === 'SELE' && propData.selectedYn === true) }" >
+    <div class="fl w100P rowBaseCss"  style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" >
       <img v-if="searchYn === true" class="img-w15 fl" src="../../../../assets/images/common/icon_searchGray.svg" alt="">
       <!-- 주소록 영역 -->
       <template v-if="propData.jobkindId === 'BOOK' && !propData.memberYn">
@@ -8,8 +8,8 @@
           <img src="../../../../assets/images/board/icon_book.svg" class="content img-w25"/>
         </div>
         <div class="fl" style="display: flex; align-items: center;" :style="option === 'EDIT' ? 'width: calc(100% - 150px);' : 'width: calc(100% - 100px);' " @click="clickEvntToParents('open')">
-          <div class="textLeft fl textOverdot w-100P" style="" >
-            <p class="fl font16 commonDarkGray fontBold textOverdot w-100P">{{this.$changeText(propData.cabinetNameMtext)}}</p>
+          <div class="textLeft fl textOverdot w100P" style="" >
+            <p class="fl font16 commonDarkGray fontBold textOverdot w100P">{{this.$changeText(propData.cabinetNameMtext)}}</p>
             <p class="fl font14 commonDarkGray textOverdot" style="width: calc(100%)" >{{cabinetNames}}</p>
           </div>
         </div>
@@ -20,8 +20,8 @@
           <img src="../../../../assets/images/common/memberIcon.svg" class="content img-w30"/>
         </div>
         <div class="fl" style="display: flex; align-items: center; width: calc(100% - 100px);" @click="clickEvntToParents('open')">
-          <div class="textLeft fl textOverdot w-100P" style="" >
-            <p class="fl font16 commonDarkGray fontBold textOverdot w-100P">{{this.$changeText(propData.nameMtext)}}</p>
+          <div class="textLeft fl textOverdot w100P" style="" >
+            <p class="fl font16 commonDarkGray fontBold textOverdot w100P">{{this.$changeText(propData.nameMtext)}}</p>
             <p class="fl font14 commonDarkGray textOverdot" style="width: calc(100%)" >{{cabinetNames}}</p>
           </div>
         </div>
@@ -35,9 +35,9 @@
           <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
           </div>
         </div>
-        <div class="fl w-100P" style="display: flex; align-items: center; " @click="clickEvntToParents('open')">
-          <div class="textLeft fl w-100P " style="" >
-            <p class="fl font16 commonDarkGray fontBold w-100P"><img v-if="propData.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../../assets/images/editChan/icon_self.svg">{{this.$changeText(propData.userDispMtext)}}</p>
+        <div class="fl w100P" style="display: flex; align-items: center; " @click="clickEvntToParents('open')">
+          <div class="textLeft fl w100P " style="" >
+            <p class="fl font16 commonDarkGray fontBold w100P"><img v-if="propData.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../../assets/images/editChan/icon_self.svg">{{this.$changeText(propData.userDispMtext)}}</p>
             <p class="fl font14 commonDarkGray " style="" >{{propData.userEmail ? changeDot('email', propData.userEmail) : '등록된 이메일이 없습니다.'}}</p>
             <p class="fl font14 commonDarkGray" style="margin: 0 0.3rem">|</p>
             <p class="fl font14 commonDarkGray " style="" >{{propData.phoneEnc ? changeDot('phone', propData.phoneEnc) : '등록된 번호가 없습니다.'}}</p>

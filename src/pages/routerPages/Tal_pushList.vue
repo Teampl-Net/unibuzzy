@@ -20,14 +20,14 @@
         <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " />
       </div>
       <transition name="showModal">
-        <findContentsList :tpGroupCode="this.viewMainTab === 'B' || this.viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop" :teamKey='this.pChannelDetail?.teamKey'/>
+        <findContentsList :tpGroupCode="this.viewMainTab === 'B' || this.viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop" :teamKey='this.pChannelDetail.teamKey'/>
       </transition>
 
       <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); "> -->
         <!-- <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="!popYn ? 'padding: 0 1rem ; padding-top:' + this.paddingTop + 'px;' : 'padding-top:' + (this.paddingTop) + 'px;' " style="position: relative; margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); "> -->
         <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top:' + this.paddingTop + 'px;'" style="position: relative; margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); padding-bottom: 40px; ">
           <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
-          <div class="w-100P fl commonListContentBox" style="height:1px;" />
+          <div class="w100P fl commonListContentBox" style="height:1px;" />
           <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
             <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'" @fileDownload="fileDownload"/>
           </template>
@@ -40,13 +40,13 @@
 
           <template v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
             <gContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
-            <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
+            <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
           <gEmpty :tabName="currentTabName" contentName="전체" v-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template  v-for="(cont, index) in this.GE_FILE_LIST" :key="index">
               <gFileBox @openImgPop="openImgPop" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'F'"/>
-              <myObserver v-if="index === this.GE_FILE_LIST.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
+              <myObserver v-if="index === this.GE_FILE_LIST.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
           <gEmpty :tabName="currentTabName" :contentName="$t('COMMON_TAB_FILE_DRIVE')" v-if="this.viewMainTab === 'F' && GE_FILE_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
         </div>
@@ -1787,7 +1787,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
-            var test = contentDetail?.D_MEMO_LIST
+            var test = contentDetail.D_MEMO_LIST
             if (!test) {
               if (!contentDetail) {
                 test = []
@@ -1827,7 +1827,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
-            var test = contentDetail?.D_MEMO_LIST
+            var test = contentDetail.D_MEMO_LIST
             if (!test) {
               if (!contentDetail) {
                 test = []
@@ -1867,7 +1867,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
-            var test = contentDetail?.D_MEMO_LIST
+            var test = contentDetail.D_MEMO_LIST
             if (!test) {
               if (!contentDetail) {
                 test = []

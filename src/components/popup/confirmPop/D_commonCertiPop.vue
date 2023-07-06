@@ -12,7 +12,7 @@
             <img src="../../../assets/images/common/certiUserIcon.svg" alt="">
         </div>
 
-        <div class="w-100P fl" style="display: flex; justify-content: center;">
+        <div class="w100P fl" style="display: flex; justify-content: center;">
             <p class="font18 fl commonColor fontBold" >{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
             <p class="font18 fl grayBlack fontBold" style="margin-right: 7px;" >님의 </p>
             <p class="font18 fl commonColor fontBold" >이름</p>

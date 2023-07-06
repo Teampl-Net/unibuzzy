@@ -31,7 +31,7 @@
             </div>
             <p class="font15 fl textLeft fontBold mbottom-05">내 스티커</p>
             <gBtnSmall btnTitle="생성" style="height: 20px; line-height: 14px; background: #FFFFFF; color: #6768A7; padding-right: 0; <!-- border: 1px solid #6768A7; -->" class="fr" />
-            <gSearchBox class="fl w-100P" />
+            <gSearchBox class="fl w100P" />
             <div style="width: 100%; float: left; height: calc(100vh - 350px); margin-top: 10px; overflow-y: auto;">
                 <div class="stickerDiv" :style="'background-color:' + value.stickerColor" v-for="(value, index) in myStickerList " :key="index" style=" margin-bottom: 5px; min-width: 60px; margin-right: 5px; height: 25px; border-radius: 20px; float: left; padding: 0 10px;">
                     <span class="font15">{{value.stickerName}} <span @click="removeStickerList(index)" class="float: right; margin-left: 1rem;">+</span></span>

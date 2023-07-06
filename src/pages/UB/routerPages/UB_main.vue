@@ -1,0 +1,932 @@
+<template>
+  <div class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
+    <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: cover; overflow: hidden;">
+      <!-- <UBBgEffect /> -->
+      <!-- my profile -->
+      <div v-if="!GE_USER.unknownYn" class="w100P " style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
+        <gProfileImg style="width: 40px; height: 40px; margin-right: 10px; " :selfYn="true" class="fl" />
+        <div class="fl font20 fontBold" style="color: white; text-shadow: 1px 2px 2px black;">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
+      </div>
+      <div v-else class="w100P" style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
+        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr" />
+      </div>
+    <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+      <transition name="showUp">
+        <UBInfoBox v-if="mInfoBoxShowYn" :pType="'BD'" @openPage="openPage" :pChan="clickedBd" />
+        <!-- <UBInfoBox v-else-if="clickedArea.clickedYn" :pType="'AR'" :pMoveToDetail="moveToChan" :pClickedInfo="clickedArea" :pVillageInfo="village.villageInfo" :innerHeight="innerHeight" :innerWidth="innerWidth" /> -->
+      </transition>
+      <div v-if="mShowAreaBdList" @click="mShowAreaBdList = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+      <transition name="showUp">
+        <UBAreaBdList v-if="mShowAreaBdList" style="top: 100px; height: calc(100% - 100px); width: 80%;" />
+      </transition>
+      <!-- area -->
+      <!-- <img src="../../../assets/images/main/banner2.png" style="position: absolute; top: -30px;" width="180"  /> -->
+      <template v-for="(area) in village.areaList" :key="area.key">
+        <!-- <div v-if="area.type === 'CO'" style="position: absolute;" class="flexCenter areaDiv" :style="[{ width: area.w + 'px', height: area.h + 'px', top: area.top + 'px', left: area.left + 'px' }]">
+          <p style="position: absolute; top: -20px; padding-top: 0px;" class="fontBold textCenter w100P ">{{ area.name }}</p>
+          <img :ref="area.name + area.key" style="position: absolute; z-index: 99;" :src="area.maskedImageUrl" :style="area.maskedImageStyle" />
+        </div> -->
+        <div style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: area.clickedYn}" :style="{ width: area.w + 'px', height: area.h + 'px', top: area.top + 'px', left: area.left + 'px' }">
+          <img :ref="area.name + area.key" style="position: absolute;" :src="area.maskedImageUrl" :style="area.maskedImageStyle" />
+          <!-- <video autoplay loop muted v-if="area.type === 'PL'" style="z-index: 9; width: 60px; position: absolute;" :style="{top: area.h/2 - 15+ 'px', left: area.w/2 - 20 + 'px'}">
+            <source src="../../../assets/images/main/fountain.mp4" type="video/mp4" />
+          </video> -->
+          <div v-if="area.name" class="fontBold" style="background: rgba(256, 256, 256, 0.5); padding: 0 2px; height: 20px; line-height: 20px; border-radius: 5px; z-index: 99;">
+            <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.name }}</p>
+          </div>
+        </div>
+        <!-- :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" -->
+        <div v-for="(bd) in area.buildingList" :key="bd.key" class="bdDiv" :class="{clicked: bd.clickedYn}" style="position: absolute; z-index: 9;" :style="[bd.maskedImageStyle, { top: bd.top+ 'px', left: bd.left + 'px' }]">
+        <!-- <div @click="openPage" :chanElement="chan" v-for="(chan, index) in mMainChanList" :key="index" class="bdDiv" :class="{clicked: bd.clickedYn}" style="position: absolute; z-index: 9;" :style="[bd.maskedImageStyle, { top: bd.top+ 'px', left: bd.left + 'px' }]"> -->
+          <img :src="bd.maskedImageUrl" />
+          <span style="position: absolute;font-weight: bold; background: rgba(256,256,256,0.7); border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.nameMtext }}</span>
+        </div>
+      </template>
+    </div>
+  </div>
+</template>
+<script>
+// import { defineComponent } from 'vue'
+import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
+import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
+// import UBBgEffect from '../../components/pageComponents/main/UB_bgEffect.vue'
+export default {
+  props: {
+    pCampusTownInfo: {}
+  },
+  data () {
+    return {
+      mShowAreaBdList: false,
+      mInfoBoxShowYn: false,
+      showCloudTransYn: false,
+      areaName: [],
+      bgImg: {
+        imgLink: ''
+      },
+      village: {
+        // Clubs & Startups: 12
+        // Majors: 13
+        // Classes: 14
+        // Facilities & Amenties: 15
+        // Nearby: 16
+        villageInfo: {
+          key: 1,
+          name: 'Georgia Tech',
+          followerList: [],
+          level: 1,
+          urlLink: 'https://www.gatech.edu/',
+          logoImg: '/resource/new/logo/gtLogo.png'
+        },
+        areaList: [
+          {
+            key: 0,
+            name: 'Georgia Tech',
+            ctx: {},
+            maskingRef: null,
+            areaYn: true,
+            // parentKey: null,
+            // description: 'This is Georgia Tech Village!',
+            // type: 'CO', // CA: Campus, CL: club, PL: plaza, ST: startup, AC: academic ,CO: college,  FA: Facilities, MA: Nearby
+            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
+            rank: null,
+            imgLink: '/resource/main/UB_collegeArea.png',
+            maskedImageUrl: '',
+            maskedImageStyle: {},
+            clickedYn: false,
+            left: 110,
+            top: 280,
+            w: 0,
+            h: 0,
+            buildingList: [
+              {
+                teamKey: 824,
+                nameMtext: '',
+                ctx: {},
+                areaYn: false,
+                parentKey: 0,
+                type: 'CB', // campus building
+                status: 1,
+                rank: 1,
+                followerList: [],
+                managerList: [],
+                description: 'This is Georgia Tech Campus town!',
+                logoImg: '/resource/new/logo/GWCLogo.png',
+                imgLink: '/resource/bd/new_college.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
+            ]
+          },
+          {
+            // key: 1,
+            key: 1,
+            cateKey: 3,
+            name: 'Plaza',
+            ctx: {},
+            maskingRef: null,
+            areaYn: true,
+            parentKey: null,
+            description: 'This area is GT Plaza. Take a look around!',
+            type: 'PL', // CL: club, PL: plaza, ST: startup, AC: academic
+            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
+            rank: null,
+            imgLink: '/resource/main/UB_plaza.png',
+            maskedImageUrl: '',
+            maskedImageStyle: {},
+            clickedYn: false,
+            left: 110,
+            top: 280,
+            w: 0,
+            h: 0,
+            buildingList: []
+          },
+          {
+            key: 2,
+            name: 'Academic',
+            ctx: {},
+            areaYn: true,
+            parentKey: null,
+            description: 'This area is for GT Academic. Take a look around!',
+            type: 'AC', // CL: club, PL: plaza, ST: startup, AC: academic
+            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
+            rank: 0,
+            imgLink: '/resource/main/UB_area1.png',
+            maskedImageUrl: '',
+            maskedImageStyle: {},
+            onImgYn: false,
+            clickedYn: false,
+            left: -18,
+            top: 370,
+            w: 0,
+            h: 0,
+            buildingList: [
+              {
+                teamKey: 821,
+                nameMtext: 'CS',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                description: 'This is for GT CS Students',
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                status: 1,
+                rank: 1,
+                imgLink: '/resource/bd/new_house2.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                key: 2.2,
+                teamKey: 825,
+                nameMtext: 'IE',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is IE channel!',
+                status: 1,
+                rank: 2,
+                imgLink: '/resource/bd/new_bd1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
+            ]
+            // points: '9,355,358,544'
+          },
+          {
+            key: 3,
+            name: 'Club',
+            ctx: {},
+            areaYn: true,
+            parentKey: null,
+            description: 'This area is for GT Clubs. Take a look around!',
+            type: 'CL', // CL: club, PL: plaza, ST: startup, AC: academic
+            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
+            rank: 1,
+            imgLink: '/resource/main/UB_area2.png',
+            maskedImageUrl: '',
+            maskedImageStyle: {},
+            clickedYn: false,
+            left: 235,
+            top: 370,
+            w: 0,
+            h: 0,
+            buildingList: [
+              {
+                teamKey: 822,
+                nameMtext: 'GWC',
+                ctx: {},
+                areaYn: false,
+                parentKey: 3,
+                type: 'BU', // building
+                status: 1,
+                rank: 1,
+                followerList: [],
+                managerList: [],
+                description: 'This is GT GWC channel!',
+                logoImg: '/resource/new/logo/GWCLogo.png',
+                imgLink: '/resource/bd/new_bd3.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
+            ]
+          },
+          {
+            key: 4,
+            name: 'Startup',
+            ctx: {},
+            areaYn: true,
+            parentKey: null,
+            description: 'This area is for GT Startups. Take a look around!',
+            type: 'CL', // CL: club, PL: plaza, ST: startup, AC: academic
+            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
+            rank: 1,
+            imgLink: '/resource/main/UB_area3.png',
+            maskedImageUrl: '',
+            maskedImageStyle: {},
+            clickedYn: false,
+            left: 110,
+            top: 460,
+            w: 0,
+            h: 0,
+            buildingList: [
+              {
+                teamKey: 823,
+                nameMtext: 'uniBuzzy',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is uniBuzzy.',
+                status: 1,
+                rank: 1,
+                imgLink: '/resource/bd/new_bd6.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                teamKey: 826,
+                nameMtext: 'interOcci',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is interOcci.',
+                status: 1,
+                rank: 2,
+                imgLink: '/resource/bd/new_bd4.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
+            ]
+          },
+          {
+            key: 5,
+            name: 'Amenties & Facilities',
+            ctx: {},
+            areaYn: true,
+            parentKey: null,
+            description: 'This area is for GT Facilities. Take a look around!',
+            type: 'FA', // CL: club, PL: plaza, ST: startup, AC: academic, FA: Facilities
+            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
+            rank: 1,
+            imgLink: '/resource/main/UB_area4.png',
+            maskedImageUrl: '',
+            maskedImageStyle: {},
+            clickedYn: false,
+            left: 0,
+            top: 0,
+            w: 0,
+            h: 0,
+            buildingList: [
+              {
+                teamKey: 826,
+                nameMtext: 'CRC',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                description: 'Students, work out!',
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                status: 1,
+                rank: 1,
+                imgLink: '/resource/bd/new_bd1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
+            ]
+          },
+          {
+            key: 6,
+            name: 'Nearby',
+            ctx: {},
+            areaYn: true,
+            parentKey: null,
+            description: 'This area is for GT Clubs. Take a look around!',
+            type: 'NB', // CL: club, PL: plaza, ST: startup, AC: academic, FA: Facilities, NB: Nearby
+            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
+            rank: 1,
+            imgLink: '/resource/main/UB_area5.png',
+            maskedImageUrl: '',
+            maskedImageStyle: {},
+            clickedYn: false,
+            left: 110,
+            top: 460,
+            w: 0,
+            h: 0,
+            buildingList: [
+              {
+                nameMtext: 'B&N',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                description: "GT's B&N",
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                status: 1,
+                rank: 1,
+                linkUrl: 'https://gatech.bncollege.com/',
+                imgLink: '/resource/bd/new_house2.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                nameMtext: 'Panda Express',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                description: 'Panda Express!',
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                status: 1,
+                rank: 2,
+                linkUrl: 'https://dining.gatech.edu/node/137',
+                imgLink: '/resource/bd/new_house2.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
+            ]
+          }
+        ]
+      },
+      innerWidth: 0,
+      innerHeight: 0,
+      blankHeight: 0,
+      blankWidth: 0,
+      clickedArea: {},
+      clickedBd: {},
+      clickedRank: 0,
+      mMainChanList: [],
+      mMainMChanList: [],
+      mMainAlimList: [],
+      mAxiosQueue: []
+    }
+  },
+  created () {
+    this.resetHistory()
+    this.setNativeHeight()
+
+    var urlParam = localStorage.getItem('deepLinkQueue')
+    if (urlParam && urlParam.trim() !== '') {
+      urlParam = JSON.parse(urlParam)
+      urlParam.targetKey = urlParam.targetKey.split('/')[0]
+      console.log(urlParam)
+      if (urlParam.targetType) {
+        if (urlParam.targetType === 'chanDetail') {
+          const param = { targetType: urlParam.targetType, targetKey: urlParam.targetKey }
+          this.openPage(param)
+        } else {
+          this.goPage(urlParam)
+        }
+        localStorage.removeItem('deepLinkQueue')
+      }
+    }
+    // this.getMainBoard().then(res => {
+    //   this.mLoadingYn = false
+    // })
+    if (this.pCampusTownInfo) {
+      // this.village = this.pCampusTownInfo
+      console.log('this.pCampusTownInfo')
+      console.log(this.pCampusTownInfo)
+    }
+    const vilInfo = this.village.villageInfo
+    // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
+    this.$emit('changePageHeader', vilInfo.name)
+    this.createMaskingAreaImg()
+    this.innerWidth = window.innerWidth
+    this.innerHeight = window.innerHeight
+  },
+  methods: {
+    openAreaBdList () {
+      this.mShowAreaBdList = true
+    },
+    goLoginPage () {
+      var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      if (isMobile && (localStorage.getItem('nativeYn') === false || localStorage.getItem('nativeYn') === 'false')) {
+        window.location.href = 'https://thealim.page.link/LOGIN'
+      } else {
+        this.$router.push({ path: '/policies' })
+      }
+    },
+    openPage (param) {
+      this.$emit('openPage', param)
+    },
+    openPop (openParam) {
+      this.$emit('openPop', openParam)
+    },
+    async getMainBoard () {
+      // eslint-disable-next-line no-debugger
+      debugger
+      if (this.GE_USER.unknownYn) {
+        this.GE_USER.userKey = 225
+      }
+      console.log('getMainBoard')
+      if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
+      this.mAxiosQueue.push('getMainBoard')
+      var paramMap = new Map()
+      if (this.GE_USER.userKey) {
+        paramMap.set('userKey', this.GE_USER.userKey)
+      } else {
+        paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      }
+      if (this.GE_USER.soAccessToken && this.GE_USER.soAccessToken !== '') { paramMap.set('soAccessToken', this.GE_USER.soAccessToken) }
+      if (this.GE_USER.fcmKey !== undefined && this.GE_USER.fcmKey !== null && this.GE_USER.fcmKey !== '') { paramMap.set('fcmKey', this.GE_USER.fcmKey) }
+      paramMap.set('userEmail', this.GE_USER.userEmail)
+      paramMap.set('soEmail', this.GE_USER.soEmail)
+      var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      paramMap.set('mobileYn', isMobile)
+      var response = await this.$axios.post('/service/tp.firstLoginCheck', Object.fromEntries(paramMap)
+      )
+      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
+      this.mAxiosQueue.splice(queueIndex, 1)
+      if (response.status === 200 || response.status === '200') {
+        this.mMainChanList = response.data.teamList
+        this.mMainMChanList = response.data.mTeamList
+        this.mMainAlimList = response.data.alimList.content
+        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
+        await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
+      }
+      console.log(this.mMainChanList)
+      console.log(this.mMainMChanList)
+      console.log(this.mMainAlimList)
+    },
+    setNativeHeight () {
+      var varUA = localStorage.getItem('systemName')
+      var nativeYn = localStorage.getItem('nativeYn')
+      if ((varUA !== undefined && varUA !== null && varUA !== '') || (nativeYn !== false && nativeYn !== 'false')) {
+        if ((nativeYn === true || nativeYn === 'true') || varUA === 'android' || varUA === '"Android"' || varUA === 'ios' || varUA === '"iOS"') {
+          this.$STATUS_HEIGHT = 35 // 35
+        } else {
+          this.$STATUS_HEIGHT = 35
+        }
+      } else {
+        this.$STATUS_HEIGHT = 0
+      }
+    },
+    resetHistory () {
+      this.$store.commit('D_HISTORY/setRemovePage', '')
+      this.$store.commit('D_HISTORY/updateStack', [])
+      this.$store.dispatch('D_HISTORY/AC_CLEAR_GPOP_STACK')
+      this.$emit('changePageHeader', 'uniBuzzy')
+    },
+    closeInfoBox () {
+      if (this.clickedArea && this.clickedArea.clickedYn) {
+        this.clickedArea.clickedYn = false
+      } else if (this.clickedBd && this.clickedBd.clickedYn) {
+        this.clickedBd.clickedYn = false
+      }
+      return false
+    },
+    moveToChan (clickedInfo) {
+      // const errorRoute = { name: 'errorPage', query: { errorStatus: error.response.status } }
+      // this.showCloudTransYn = true
+      console.log('clickedInfo', clickedInfo)
+      this.closeInfoBox()
+      this.$emit('chanInfo', clickedInfo)
+      // const chanRoute = { name: 'chanMain', query: {chanInfo: JSON.stringify(clickedInfo)} }
+      // this.$router.push(chanRoute)
+    },
+    createMaskingAreaImg () {
+      const areaList = this.village.areaList
+      let h = window.innerHeight
+      let w = window.innerWidth
+      const scaleFactor = w / 1500
+      h = scaleFactor * 3167
+      if (h > window.innerHeight) {
+        this.blankHeight = (window.innerHeight - h) / 2
+      } else {
+        h = window.innerHeight
+        const scaleFactor = h / 3167
+        w = scaleFactor * 1500
+        this.blankWidth = (window.innerWidth - w) / 2
+      }
+
+      if (areaList && areaList.length !== 0) {
+        for (let i = 0; i < areaList.length; i++) {
+          const area = areaList[i]
+          if (area.key === 0) { // campus
+            area.w = 1 / 3 * w
+            area.h = 1 / 7 * h
+            area.left = w / 2 - area.w / 2 - area.w / 8 + this.blankWidth
+            area.top = (h / 3 - area.h / 8) + this.blankHeight
+          } else if (area.key === 1) { // plaza
+            area.w = 2 / 5 * w
+            area.h = 1 / 6 * h
+            area.left = w / 2 - 1 / 2 * area.w + this.blankWidth
+            area.top = 1 / 2 * h - area.h / 4 + this.blankHeight
+          } else {
+            if (area.key === 2) { // academic
+              area.h = 1 / 7 * h
+              area.w = 7 / 16 * w
+              area.left = w / 2 - area.w - area.w / 5 + this.blankWidth
+              area.top = 2 / 5 * h + area.h / 12 + this.blankHeight
+            } else if (area.key === 3) { // club
+              area.h = 1 / 7 * h
+              area.w = 7 / 16 * w
+              area.left = 5 / 8 * w + 1 / 12 * area.w + this.blankWidth
+              area.top = 2 / 5 * h + area.h / 12 + this.blankHeight
+            } else if (area.key === 4) { // start-up
+              area.h = 1 / 5 * h
+              area.w = 1 / 2 * w
+              area.left = w / 2 + this.blankWidth
+              area.top = 3 / 8 * h + 18 / 20 * area.h + this.blankHeight
+            } else if (area.key === 5) { // facilities
+              area.h = 1 / 5 * h
+              area.w = 1 / 2 * w
+              area.left = w / 2 - area.w + area.w / 8 + this.blankWidth
+              area.top = 3 / 8 * h + 18 / 20 * area.h + this.blankHeight
+            } else if (area.key === 6) { // Mall
+              area.h = 1 / 6 * h
+              area.w = 1 / 2 * w
+              area.left = w / 2 - area.w / 2 + this.blankWidth
+              area.top = 5 / 8 * h + area.h * 5 / 12 + this.blankHeight
+            }
+          }
+          const _this = this
+          const targetImage = new Image()
+          targetImage.src = area.imgLink
+          targetImage.onload = function () {
+            const scaleFactor = area.h / this.height
+            const canvas = document.createElement('canvas')
+            const newWidth = Math.floor(this.width * scaleFactor)
+            const newHeight = Math.floor(this.height * scaleFactor)
+            canvas.width = newWidth
+            canvas.height = newHeight
+            area.w = newWidth
+            area.h = newHeight
+            const context = canvas.getContext('2d', { willReadFrequently: true })
+            // 마스킹 이미지 그리기
+            context.drawImage(this, 0, 0, newWidth, newHeight)
+            area.ctx = context
+            // 마스킹 이미지를 base64로 변환하여 출력
+            area.maskedImageUrl = canvas.toDataURL()
+            _this.createMaskingBuildingImg(area)
+          }
+          targetImage.src = area.imgLink
+        }
+      }
+    },
+    createMaskingBuildingImg (area) {
+      const bdList = area.buildingList
+      if (bdList && bdList.length !== 0) {
+        for (let j = 0; j < bdList.length; j++) {
+          const bd = bdList[j]
+          bd.w = 1 / 3 * area.w
+          bd.h = 1 / 3 * area.h
+          if (bd.rank === 1) {
+            bd.left = 1 / 3 * area.w + area.left
+            bd.top = area.top - bd.h / 2
+          } else if (bd.rank === 2) {
+            bd.left = 1 / 6 * area.w + area.left
+            bd.top = 1 / 6 * area.h + area.top
+          } else if (bd.rank === 3) {
+            bd.left = 1 / 2 * area.w + area.left + 5
+            bd.top = 1 / 6 * area.h + area.top
+          } else if (bd.rank === 4) {
+            bd.left = area.left
+            bd.top = 1 / 3 * area.h + area.top
+          }
+          // else if (bd.rank === 5) {
+          //   bd.left = 2 / 3 * area.w + area.left
+          //   bd.top = 1 / 3 * area.h + area.top - bd.h / 2
+          // }
+          const targetImage = new Image()
+          targetImage.src = bd.imgLink
+          targetImage.onload = function () {
+            const scaleFactor = bd.w / this.width
+            const canvas = document.createElement('canvas')
+            const newWidth = Math.floor(this.width * scaleFactor)
+            const newHeight = Math.floor(this.height * scaleFactor)
+            canvas.width = newWidth
+            canvas.height = newHeight
+            bd.w = newWidth
+            bd.h = newHeight
+            const context = canvas.getContext('2d', { willReadFrequently: true })
+            // 마스킹 이미지 그리기
+            context.drawImage(this, 0, 0, newWidth, newHeight)
+            bd.ctx = context
+            // 마스킹 이미지를 base64로 변환하여 출력
+            bd.maskedImageUrl = canvas.toDataURL()
+          }
+          targetImage.src = bd.imgLink
+        }
+      }
+    },
+    addNewBuilding () {
+      // eslint-disable-next-line no-debugger
+      debugger
+      const bd = {}
+      if (this.clickedArea.type === 'CO' || this.clickedArea.type === 'PL') return
+      const area = this.clickedArea
+      const rank = this.clickedRank
+      bd.w = 1 / 4 * area.w
+      bd.h = 1 / 3 * area.h
+      if (rank === 1) {
+        bd.left = 1 / 3 * area.w + area.left
+        bd.top = area.top - bd.h / 2
+        bd.imgLink = '/resource/bd/new_bd1.png'
+      } else if (rank === 2) {
+        bd.left = 1 / 6 * area.w + area.left
+        bd.top = 1 / 6 * area.h + area.top - bd.h / 2
+        bd.imgLink = '/resource/bd/new_bd2.png'
+      } else if (rank === 3) {
+        bd.left = 1 / 2 * area.w + area.left
+        bd.top = 1 / 6 * area.h + area.top - bd.h / 2
+        bd.imgLink = '/resource/bd/new_bd3.png'
+      } else if (rank === 4) {
+        bd.left = area.w / 2 - bd.w / 2 + area.left
+        bd.top = 1 / 3 * area.h + area.top
+        bd.imgLink = '/resource/bd/new_house2.png'
+      }
+      // else if (rank === 4) {
+      //   bd.left = area.left
+      //   bd.top = 1 / 3 * area.h + area.top
+      //   bd.imgLink = '/resource/bd/new_bd4.png'
+      // }
+      // else if (rank === 5) {
+      //   bd.left = 2 / 3 * area.w + area.left
+      //   bd.top = 1 / 3 * area.h + area.top
+      //   bd.imgLink = '/resource/bd/new_bd5.png'
+      // }
+
+      bd.key = String(area.key) + '.' + String(rank)
+      bd.ctx = {}
+      bd.areaYn = false
+      bd.parentKey = area.key
+      bd.type = 'BU'
+      bd.status = 1
+      bd.rank = rank
+      bd.maskedImageUrl = ''
+      bd.maskedImageStyle = {}
+      bd.clickedYn = false
+      const targetImage = new Image()
+      targetImage.src = bd.imgLink
+      targetImage.onload = function () {
+        const scaleFactor = bd.w / this.width
+        const canvas = document.createElement('canvas')
+        const newWidth = Math.floor(this.width * scaleFactor)
+        const newHeight = Math.floor(this.height * scaleFactor)
+        canvas.width = newWidth
+        canvas.height = newHeight
+        bd.w = newWidth
+        bd.h = newHeight
+        const context = canvas.getContext('2d', { willReadFrequently: true })
+        // 마스킹 이미지 그리기
+        context.drawImage(this, 0, 0, newWidth, newHeight)
+        bd.ctx = context
+        // 마스킹 이미지를 base64로 변환하여 출력
+        bd.maskedImageUrl = canvas.toDataURL()
+      }
+      targetImage.src = bd.imgLink
+      if (area.buildingList && area.buildingList.length < 4) area.buildingList.push(bd)
+    },
+    getInRectImgList (event) {
+      // 빌딩부터 역순으로 뒤짐
+      // 빌딩이 발견됨, 스타일클리어 시키고, 효과를 주고 return해버리기
+      // 빌딩 클릭이 없음, areaclick을 찾음
+      if ((this.clickedBd && this.clickedBd.clickedYn)) return
+      this.clickedArea = {}
+      this.clickedBd = {}
+      this.clickedRank = 0
+      this.allClearFocus()
+      let findYn = false
+      const areaList = this.village.areaList
+      for (let i = areaList.length - 1; i >= 0; i--) {
+        const area = areaList[i]
+        if (area.buildingList && area.buildingList.length !== 0) {
+          for (let j = 0; j < area.buildingList.length; j++) {
+            const bd = area.buildingList[j]
+            if (bd.ctx === null) continue
+            findYn = false
+            if (event.clientX >= bd.left && event.clientX <= (bd.left + bd.w) && event.clientY >= bd.top && event.clientY <= (bd.top + bd.h)) {
+              findYn = true
+              bd.onImgYn = true
+              break
+            }
+            bd.onImgYn = false
+          }
+          this.allClearFocus()
+          if (findYn === false) continue
+
+          for (let j = area.buildingList.length - 1; j >= 0; j--) {
+            const bd = area.buildingList[j]
+            if (bd.onImgYn === false) continue
+
+            const _x = event.clientX - bd.left
+            const _y = event.clientY - bd.top
+            const pixelData = bd.ctx.getImageData(_x, _y, 1, 1).data
+            if (pixelData[3] !== 0) {
+              this.clickedBd = bd
+              bd.clickedYn = true
+              bd.maskedImageStyle = { filter: 'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)' }
+              console.log('yayay!')
+              return
+            }
+          }
+        }
+      }
+      // 빌딩 발견 안 되었을 때
+      findYn = false
+      for (let i = 0; i < this.village.areaList.length; i++) {
+        const area = this.village.areaList[i]
+        if (area.ctx === null) { continue }
+        findYn = false
+        if (event.clientX >= area.left && event.clientX <= (area.left + area.w) && event.clientY >= area.top && event.clientY <= (area.top + area.h)) {
+          findYn = true
+          area.onImgYn = true
+          break
+        }
+        area.onImgYn = false
+      }
+      this.allClearFocus()
+      if (findYn === false) {
+        return
+      }
+      // 마우스 위치가 마스킹 영역 내부에 있는지 확인
+      for (let i = this.village.areaList.length - 1; i >= 0; i--) {
+        const area = this.village.areaList[i]
+        if (area.onImgYn === false) { continue }
+        const _x = event.clientX - area.left
+        const _y = event.clientY - area.top
+        const pixelData = area.ctx.getImageData(_x, _y, 1, 1).data
+        if (pixelData[3] !== 0) {
+          this.clickedArea = area
+          this.clickedRank = area.buildingList.length + 1
+          area.clickedYn = true
+          area.maskedImageStyle = { filter: 'drop-shadow(0 0 5px yellow) drop-shadow(0 0 40px white)' }
+          break
+        }
+      }
+    },
+    allClearFocus () {
+      for (let i = 0; i < this.village.areaList.length; i++) {
+        const area = this.village.areaList[i]
+        area.clickedYn = false
+        area.maskedImageStyle = {}
+        for (let j = 0; j < area.buildingList.length; j++) {
+          const bd = area.buildingList[j]
+          bd.clickedYn = false
+          bd.maskedImageStyle = {}
+        }
+      }
+    },
+    setWindowSize () {
+      this.innerWidth = window.innerWidth
+      const nowHeight = window.innerHeight
+
+      if (this.innerHeight < nowHeight) this.innerHeight = nowHeight
+    }
+  },
+  watch: {
+    clickedBd () {
+      if (this.clickedBd.clickedYn) {
+        this.mInfoBoxShowYn = true
+      } else {
+        this.mInfoBoxShowYn = false
+      }
+    }
+  },
+  mounted () {
+    this.setWindowSize()
+    window.addEventListener('resize', this.createMaskingAreaImg)
+  },
+  computed: {
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hStack']
+    },
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
+    GE_CREATE_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_CREATE_CHAN_LIST']
+    },
+    GE_REMOVE_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_REMOVE_CHAN_LIST']
+    },
+    GE_UPDATE_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_UPDATE_CHAN_LIST']
+    }
+  },
+  components: {
+    UBInfoBox,
+    UBAreaBdList
+    // UBBgEffect
+  }
+}
+</script>
+<style scoped>
+@keyframes area-zoom {
+  from {
+    transform: scale(1)
+  } to {
+    transform: scale(1.05)
+  }
+}
+.areaDiv.clicked {
+  animation: area-zoom 0.4s alternate;
+}
+.bdDiv.clicked {
+  z-index: 9999 !important;
+  transform: scale(1.1)
+}
+.mainBG {
+  width: 100vw;
+  height: 100vh;
+  /* position: relative; */
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  /* overflow: hidden; */
+}
+.areaCard {
+  position: fixed;
+  top: 0;
+  height: 100px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 5px;
+  z-index: 99;
+}
+</style>

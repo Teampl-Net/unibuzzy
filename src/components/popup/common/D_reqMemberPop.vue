@@ -5,8 +5,8 @@
     </div>
     <div class="dReqMemberPopBody">
         <div v-if="propMemberData.certiYn === true" class="dReqMemberCertiTrueArea">
-            <p class="font16 w-100P grayBlack fontBold fl textLeft" style="line-height: 30px;" >{{propMemberData.certiYn === true? '실명 인증이 필요한 유형': '실명인증이 필요하지 않은 유형입니다.'}}</p>
-            <p class="font14 fontBold commonColor fl textLeft w-100P" v-if="propMemberData.certiYn === true && GE_USER.certiDate">{{this.$changeText(GE_USER.userDispMtext)}}님은 실명인증완료된 회원입니다.</p>
+            <p class="font16 w100P grayBlack fontBold fl textLeft" style="line-height: 30px;" >{{propMemberData.certiYn === true? '실명 인증이 필요한 유형': '실명인증이 필요하지 않은 유형입니다.'}}</p>
+            <p class="font14 fontBold commonColor fl textLeft w100P" v-if="propMemberData.certiYn === true && GE_USER.certiDate">{{this.$changeText(GE_USER.userDispMtext)}}님은 실명인증완료된 회원입니다.</p>
             <p class="font16 fontBold fl textLeft" style="line-height: 30px;" v-else-if="propMemberData.certiYn === true">실명 인증이 필요합니다.</p>
             <gBtnSmall v-if="propMemberData.certiYn === true && !GE_USER.certiDate" @click="gCertiPopShowYn = true " btnTitle="인증하기"/>
         </div>

@@ -9,7 +9,7 @@
             </div>
             <p class="fl font14 " style="margin: 0.5rem" v-else >삭제된 댓글입니다.</p>
         </div> -->
-        <div class="fl w-100P" style="position: relative;"  :class="{mememoMTop : memo.parentMemoKey}" >
+        <div class="fl w100P" style="position: relative;"  :class="{mememoMTop : memo.parentMemoKey}" >
           <!-- <div v-if="memo.parentMemoKey" style="width:20px;position: absolute; left: 0; top: 50%; transform: translateY(-50%);" class="fl"> -->
           <!-- <div v-if="memo.parentMemoKey" style="max-width:20px;" class="fl">
             <img  src="../../../assets/images/common/icon-turn-right.svg" style="max-width:20px;" class=" " alt="">
@@ -29,7 +29,7 @@
           <!-- <div class="commentMiddle" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="display: flex; min-height: 30px; float: left; width: 100%; "> -->
           <div class="commentMiddle fl" :class="{mememoLeftIconArea : memo.parentMemoKey}"  style="width:100%; ">
             <pre ref="editCommentBox"  @focus="focusOn" @blur="focusOut" id="memoEditBoxId" class="editableContent font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-if="editIndex === index && cMemoEditYn === false" v-html="inputText"></pre>
-            <pre v-else :id="'memoFullStr'+memo.memoKey" style="margin-left: 5px; float: left; height: 100%; word-break: break-word; padding-right:10px;" class="commonBlack font14 cursorDragText w-100P" v-html="memo.bodyFullStr" ></pre>
+            <pre v-else :id="'memoFullStr'+memo.memoKey" style="margin-left: 5px; float: left; height: 100%; word-break: break-word; padding-right:10px;" class="commonBlack font14 cursorDragText w100P" v-html="memo.bodyFullStr" ></pre>
           </div>
           <div class="commentBottom" :class="{mememoLeftIconArea : memo.parentMemoKey}" style="height: 20px; line-height: 20px;  width: 100%; float: left; color: #666;" >
             <div v-if="editIndex === index && editCIndex === ''">
@@ -75,9 +75,9 @@
         </div>
         <div class="MemoBorder" v-if="memoList.length - 1 !== index"></div>
       </div>
-      <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
+      <myObserver @triggerIntersected="loadMore" class="fl w100P"></myObserver>
     </div>
-    <!-- <div class="w-100P fl mtop-1" style="position: relative; width:100%; height:30px;">
+    <!-- <div class="w100P fl mtop-1" style="position: relative; width:100%; height:30px;">
       <gLoadingS ref="sLoadingMemoList" class="fl"/>
     </div> -->
 </template>
@@ -297,7 +297,7 @@ export default {
       this.$emit('mememoMemo', mememo)
     },
     scrollMove (key) {
-      var location = document.getElementById(key)?.offsetTop
+      var location = document.getElementById(key).offsetTop
       if (location !== undefined && location !== null && location !== '') {
         this.$emit('scrollMove', location)
         this.anima(key)

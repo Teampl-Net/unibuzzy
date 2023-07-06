@@ -6,8 +6,8 @@
       <p class="font20 fontBold " style="line-height:50px" >공개신청서 저장 완료</p>
     </div>
     <div style="padding:1rem; width:100%; height: calc(100% - 3rem - 1px); position: relative;" class="fl">
-      <p class="w-100P fl commonColor font16">공개신청서가 성공적으로 저장되었습니다.</p>
-      <div class="fl w-100P" style="display: flex; flex-direction: row; justify-content: center; align-items: center; position: absolute; bottom:10px; left:0; gap: 1rem;">
+      <p class="w100P fl commonColor font16">공개신청서가 성공적으로 저장되었습니다.</p>
+      <div class="fl w100P" style="display: flex; flex-direction: row; justify-content: center; align-items: center; position: absolute; bottom:10px; left:0; gap: 1rem;">
         <gBtnSmall class="fl" @click="emit('preview')" btnTitle="미리보기"/>
         <gBtnSmall class="fl" @click="emit('editClick')" btnTitle="수정"/>
         <gBtnSmall class="fl" @click="emit('closePop')" btnTitle="닫기"/>

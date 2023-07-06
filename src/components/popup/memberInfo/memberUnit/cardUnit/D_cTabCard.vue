@@ -1,6 +1,6 @@
 <template>
 
-<div class="fl w-100P" @click="emit('click')" style="min-height:30px; display: flex;">
+<div class="fl w100P" @click="emit('click')" style="min-height:30px; display: flex;">
   <div @click="emit('add')" :class="{ 'CLightBgColor' : propData.selectedYn === true }" class="fl"  style="width: calc(100%);">
     <div class="fl " style="border-radius:100%; padding:3px; display: flex; justify-content: center; align-items: center; width: 25px; height: 25px; margin-right: 1px; margin-top: 1px; ">
       <img class="w-80P" src="../../../../../assets/images/editChan/icon_user_Gray.svg" alt="">

@@ -56,14 +56,14 @@
       </div>
 
       <div class="fl mtop-05" @click="closePop()" style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center;">
-        <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; " >
+        <p class="fl font16 w100P commonColor " style="min-height:50px; line-height:50px; " >
           취소
         </p>
       </div>
     </div>
 
     <div class="reportCompoArea" style="margin: 0rem; " v-if="reportPopStep === 1">
-      <div class="fl w-100P reportHeader" >
+      <div class="fl w100P reportHeader" >
         <img class="cursorP mleft-05" style="width: 10px; position: absolute; left:0.1rem; top:1rem;" @click="revReport()" src="../../assets/images/common/icon_back.png"/>
         <img class="fr cursorP mright-05" style="width: 1rem; position: absolute; right:0.5rem; top:1rem" @click="closePop()" src="../../assets/images/common/popup_close.png"/>
         <p class="fl font16 fontBold textLeft w-100P mtop-1">{{ $t('REPO_TITLE_REPORT') }}</p>
@@ -77,7 +77,7 @@
     </div>
 
     <div class="reportCompoArea" style="margin: 0rem; " v-if="reportPopStep === 2">
-      <div class="fl w-100P reportHeader">
+      <div class="fl w100P reportHeader">
         <img class="cursorP mleft-05" style="width: 10px; position: absolute; left:0.1rem; top:1rem;" @click="revReport()" src="../../assets/images/common/icon_back.png"/>
         <img class="cursorP mright-05" style="width: 1rem; position: absolute; right:0.1rem; top:1rem" @click="closePop()" src="../../assets/images/common/popup_close.png"/>
         <p class="fl font16 fontBold textLeft w-100P mtop-1">{{ $t('REPO_TITLE_REASON') }} {{reportDetailTitle}}</p>

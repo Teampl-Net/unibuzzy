@@ -1,8 +1,8 @@
 <template>
 <div style="width: 100%; float: left;">
       <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
-      <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
-      <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
+      <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w100P" style=""></myObserver>
+      <div class="fl w100P" ref="commonListCompo" style="margin-top: 10px;">
         <!-- eslint-disable-next-line vue/no-useless-template-attributes -->
         <template v-for="(alim, index0) in this.commonListData" :key="index0" >
           <div :id="'memoCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
@@ -23,8 +23,8 @@
                   <img class="fr mright-03" style="width:4.5px; margin-left: 8px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.GE_USER.userKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                   <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">
                   <img v-else src="../../assets/images/push/readTrue.png" style="float: right; margin-left: 5px; width: 20px;" alt=""> -->
-                  <div class="w-100P fl" style=" margin-bottom: 5px;">
-                      <div class="w-100P font14 fl grayBlack">
+                  <div class="w100P fl" style=" margin-bottom: 5px;">
+                      <div class="w100P font14 fl grayBlack">
                           <img src="../../assets/images/channel/icon_official2.svg" v-if="alim.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
                           {{this.$changeText(alim.nameMtext)}}
                           <p v-if="alim.jobkindId === 'BOAR'">/{{this.$changeText(alim.cabinetNameMtext)}}</p>
@@ -32,14 +32,14 @@
                       </div>
                   </div>
                 </div>
-                <div class="fl w-100P" style="padding: 5px 0; ">
+                <div class="fl w100P" style="padding: 5px 0; ">
                   <div @click="clickCard(alim)"  class="fr" style="display: flex; align-items: center;">
                       <p class="font14 fl lightGray">{{this.$changeDateFormat(alim.creDate)}}</p>
                   </div>
                   <div @click="clickCard(alim)" v-if="alim.jobkindId === 'ALIM'" style="width: 1px; height: 10px; background: #ccc; float: right; margin: 0 8px; margin-top: 4px;"> </div>
-                    <!-- <div v-if="alim.jobkindId === 'ALIM' && alim.creUserKey === commonListCreUserKey && (this.$cancelTimer(alim.creDate) !== false)" class="w-100P fl" :id="'timerArea'+alim.contentsKey"> -->
+                    <!-- <div v-if="alim.jobkindId === 'ALIM' && alim.creUserKey === commonListCreUserKey && (this.$cancelTimer(alim.creDate) !== false)" class="w100P fl" :id="'timerArea'+alim.contentsKey"> -->
                   <div div v-if="cancelTimerShowCheck(alim)" class="fl" :id="'timerArea'+alim.contentsKey" @click="cancelConfirm(alim)">
-                    <p :id="'timerText'+alim.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(alim.creDate, alim.contentsKey)}}</p>
+                    <p :id="'timerText'+alim.contentsKey" class="font12 fl textRight w100P" >{{setIntervalTimer(alim.creDate, alim.contentsKey)}}</p>
                   </div>
 
                   <div @click="clickCard(alim)" v-if="alim.jobkindId === 'ALIM'" class="fr" style="padding: 0 5px;">
@@ -66,10 +66,10 @@
 
               <!-- <pre v-else @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 bodyFullStr cursorDragText" :style="setCutYn(alim.bodyFullStr)? 'border-bottom: 1px solid #ccc;':''" v-html="setBodyLength(alim.bodyFullStr)"></pre>
               <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p> -->
-              <div v-else class="h-400max overHidden fl w-100P"  style="word-break: break-all;" :id="'contentsListBodyArea'+alim.contentsKey">
-                <pre :class="alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46? 'completeWork': ''" @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 cursorDragText h-100P w-100P fl" style="word-break: break-all;" v-html="setBodyLength(alim.bodyFullStr, alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46)"></pre>
+              <div v-else class="h-400max overHidden fl w100P"  style="word-break: break-all;" :id="'contentsListBodyArea'+alim.contentsKey">
+                <pre :class="alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46? 'completeWork': ''" @click="clickCard(alim)" :id="'bodyFullStr'+alim.contentsKey" class="font14 mbottom-05 cursorDragText h100P w100P fl" style="word-break: break-all;" v-html="setBodyLength(alim.bodyFullStr, alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46)"></pre>
               </div>
-              <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" class="font16 cursorP textRight mbottom-1 w-100P" style="">{{contentsMoreYn(alim)}}</p>
+              <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" class="font16 cursorP textRight mbottom-1 w100P" style="">{{contentsMoreYn(alim)}}</p>
               <!-- <p @click="alimBigView(alim)" :id="'bodyMore'+alim.contentsKey" v-show="setCutYn(alim.bodyFullStr) && !(this.shareAuth &&alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== userKey)" class="font16 cursorP textRight mbottom-1" style="">더보기></p> -->
 
               <div id="alimCheckArea">
@@ -91,7 +91,7 @@
                     <img class="img-w20 fl" src="../../assets/images/common/icon_share_square.svg" alt="">
                   </div>
                   <p class="fr font14 mleft-03">좋아요 {{alim.likeCount}}개</p>
-                  <div class="fr w-100P mtop-05" v-show="(alim.canReplyYn === 1 || alim.canReplyYn === '1' || alim.jobkindId === 'BOAR') && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)">
+                  <div class="fr w100P mtop-05" v-show="(alim.canReplyYn === 1 || alim.canReplyYn === '1' || alim.jobkindId === 'BOAR') && !(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey)">
                     <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick({key : alim.contentsKey, teamKey : alim.creTeamKey}):''">
                     <!-- <p class="fl font14" :id="'memoCountArea'+alim.contentsKey" style="line-height: 30px;" :style="alim.memoCount > 0? 'text-decoration-line: underline;':''" @click="alim.memoCount > 0? memoOpenClick({key : alim.contentsKey, teamKey : alim.creTeamKey}):''"> -->
                       <!-- <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt=""> -->
@@ -103,17 +103,17 @@
                 </div>
               </div>
               <div class="alimListMemoBorder" v-show="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" :id="'borderLine'+alim.contentsKey" ></div>
-              <div class="w-100P fl" style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1">
+              <div class="w100P fl" style="border-radius:10px; margin-top:0.5rem; padding: 0.5rem 0.5rem;" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1">
                   <gMemoList @cMemoEditYn="cMemoEditYn" v-if="alim.D_MEMO_LIST && alim.D_MEMO_LIST.length > 0 && findMemoOpend(alim.contentsKey) !== -1" ref="commonPushListMemoRefs" :replyYn="alim.canReplyYn === 1 || alim.canReplyYn === '1' ? true : false " :id="'memoList'+alim.contentsKey" :memoList="[...alim.D_MEMO_LIST]" @mememo='writeMememo' @deleteMemo='deleteMemo' @scrollMove='scrollMove'  @memoUserNameClick="memoUserNameClick" @mememoMemo="writeMememo"  @contentMenuClick="contentMenuClick" @memoEdit='memoEdit' />
                 <div v-if="this.$countingTotalMemo(alim.D_MEMO_LIST) < alim.memoCount " style=" height: 20px; float: left; text-align: left;min-height: 20px; width: 100%; font-weight: bold;" class="font14 commonColor" @click="yesLoadMore(alim.contentsKey)">{{moreMemoText}}</div>
               </div>
-            <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w-100P" style=""></myObserver> -->
+            <!-- <myObserver  v-if="index === (contentsList.length-6)" @triggerIntersected="loadMore" class="fl w100P" style=""></myObserver> -->
             </div>
         </template>
 
       </div>
-      <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
-      <div class="w-100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
+      <myObserver @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
+      <div class="w100P fl mbottom-1 mtop-05" style="position: relative; width:100%; height: 40px;">
         <gLoadingS ref="sLoadingPush" class="fl"/>
       </div>
       <!-- <div v-if="memoShowYn" class="alimListMemoBoxBackground" @click="this.memoShowYn = false"></div> -->
@@ -244,7 +244,7 @@ export default {
       this.$emit('cMemoEditYn', editYn)
     },
     notPerText(){
-      var html = '<div class="w-100P fl textCenter commonColor font14">'
+      var html = '<div class="w100P fl textCenter commonColor font14">'
       html += '열람 권한이 없습니다.'
       html += '</div>'
       return html

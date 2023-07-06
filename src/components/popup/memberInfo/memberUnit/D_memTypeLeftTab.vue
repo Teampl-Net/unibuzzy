@@ -12,7 +12,7 @@
 </i18n>
 <template>
   <div class="leftTabBase fl " style='background: #eeeeee50;' >
-    <div class="w-100P pSide-1" style="position: relative;border-bottom:1px solid #ccc; min-height: 30px; padding: 0 10px; height: 40px; padding-right: 0; padding-top: 0.5rem;">
+    <div class="w100P pSide-1" style="position: relative;border-bottom:1px solid #ccc; min-height: 30px; padding: 0 10px; height: 40px; padding-right: 0; padding-top: 0.5rem;">
       <div style="width: 2.5px; height: 15px; background: #5F61BD; margin-top: 3px; margin-right: 4px;" class="fl" > </div>
       <p class="fl textLeft font16 commonColor fontBold">{{ $t('MEM_DETAIL_TITLE_LIST') }}</p>
       <gBtnSmall :btnTitle="$t('COMMON_BTN_ADD')" @click="addInputPopYn = true" style="position: absolute; top: 7px; padding: 0 5px; right: 5px; height: 25px; line-height: 25px;"/>
@@ -20,8 +20,8 @@
       <!-- <div class="fr textLeft font12 commonBlack tempLeftTabBtn fontBold" style="margin-top: 3px; margin-right: 10px;" @click="closePop">{{tempBackImg}}</div> -->
     </div>
 
-    <div class="fl w-100P  " style="padding: 0 10px; padding-right: 0;">
-      <div v-for="(list, index) in mMemberTypeList" :key="index" class="fl w-100P" style="padding: 10px 0;">
+    <div class="fl w100P  " style="padding: 0 10px; padding-right: 0;">
+      <div v-for="(list, index) in mMemberTypeList" :key="index" class="fl w100P" style="padding: 10px 0;">
         <cLeftTab :propData="list" @cardEmit='cardEmit' :compoIdx='index' />
       </div>
       <div v-if="addInputPopYn === true" @click='addInputPopYn = false' style="width: 100%; height: 100%; position: absolute;z-index: 8; background: #00000030; left: 0; top: 0"></div>

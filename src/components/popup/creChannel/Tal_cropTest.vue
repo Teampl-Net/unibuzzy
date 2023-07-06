@@ -5,11 +5,11 @@
   <div class="fl cropperImgArea" style="width:300px; ">
     <img ref="image" :src="src" class="hidden" alt="image-edit">
   </div>
-  <div class="fl w-100P" style="display: flex; justify-content: center; align-items: center; ">
+  <div class="fl w100P" style="display: flex; justify-content: center; align-items: center; ">
     <gBtnSmall btnTitle="적용" @click="crop"/>
     <gBtnSmall btnTitle="취소" @click="cancel" btnThema='light'/>
-    <!-- <p class="fl commonColor font16 w-100P">PreView</p>
-    <div class="fl w-100P">
+    <!-- <p class="fl commonColor font16 w100P">PreView</p>
+    <div class="fl w100P">
         <div class="cropperPreviewImg fl" style="width:100px; height:100px; overflow: hidden; ">
         </div>
     </div> -->

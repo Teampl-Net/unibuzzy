@@ -1,5 +1,5 @@
 <template>
-  <div class="pSide-15 ptop-50 wh-100P" style="overflow-x: scroll; white-space:nowrap;" :style="leftShowYn === true ? 'padding: 50px 0 0 0; display: flex;' : ''">
+  <div class="pSide-15 ptop-50 wh100P" style="overflow-x: scroll; white-space:nowrap;" :style="leftShowYn === true ? 'padding: 50px 0 0 0; display: flex;' : ''">
     <leftTab :selectedKey="mSelectedMemberTypeObj? mSelectedMemberTypeObj.memberTypeKey : undefined" ref="editMemPopRef" :propMemberTypeList='mMemberTypeList' @changeTab='changeTab' @addMemberType='saveMemberType' @closePop='leftBack()' />
 
     <memberTypeDetail style="width: calc(100% - 130px);" @reloadPage="getMemberTypeList" ref="memberTypeDetail" @addQuestion="addQuestion" @editQue="editQue" :propMemberTypeDetail="mSelectedMemberTypeObj" :key="reloadKey" :propLeftYn='leftShowYn' @showLeftBar='showLeftBar' @deleteType='deleteMemberType' />

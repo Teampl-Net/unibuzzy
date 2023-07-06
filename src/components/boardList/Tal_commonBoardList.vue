@@ -65,8 +65,8 @@
           </div>
         </div>
       </template>
-      <myObserver @triggerIntersected="loadMore" class="fl w-100P"></myObserver>
-      <div class="w-100P fl mtop-1" style="position: relative; width:100%; height:30px;">
+      <myObserver @triggerIntersected="loadMore" class="fl w100P"></myObserver>
+      <div class="w100P fl mtop-1" style="position: relative; width:100%; height:30px;">
         <gLoadingS ref="sLoadingBoard" class="fl"/>
       </div>
       <!-- <gLoadingS ref="sLoadingBoard" class="fl"/> -->
@@ -146,7 +146,7 @@ export default {
   /* emits: ['goDetail'], */
   methods: {
     notPerText(){
-      var html = '<div class="w-100P fl textCenter commonColor font14">'
+      var html = '<div class="w100P fl textCenter commonColor font14">'
       html += '열람 권한이 없는 컨텐츠 입니다.'
       html += '</div>'
       return html

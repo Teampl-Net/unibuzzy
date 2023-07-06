@@ -5,8 +5,8 @@
       <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
       <img @click="closePop()" src="../../../../assets/images/common/grayXIcon.svg" class="cursorP" style="position: absolute; right: 5px; top: 0px;" alt="">
 
-      <div class="fl w-100P thinScrollBar" style="padding-left:0.5rem; min-height: 150px; max-height: 250px; height: 35%; overflow: hidden auto;">
-        <p class="fl font14 fontBold w-100P textLeft" v-if="mAttatchFileList.D_ATTATCH_FILE_LIST && mAttatchFileList.D_ATTATCH_FILE_LIST.length > 0">첨부파일</p>
+      <div class="fl w100P thinScrollBar" style="padding-left:0.5rem; min-height: 150px; max-height: 250px; height: 35%; overflow: hidden auto;">
+        <p class="fl font14 fontBold w100P textLeft" v-if="mAttatchFileList.D_ATTATCH_FILE_LIST && mAttatchFileList.D_ATTATCH_FILE_LIST.length > 0">첨부파일</p>
         <templete v-for="(value, index) in mAttatchFileList.D_ATTATCH_FILE_LIST" :key="index">
           <div style="display: flex; align-items: center; width: 100%; word-break: break-all; min-height: 30px; padding-left:0.3rem" >
             <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">
@@ -16,7 +16,7 @@
             <img @click="selectAttachedFile(value.myFilekey, value, index, 'F')" style="cursor: pointer; width: 20px; height: 19px; margin-left: 5px;" :src="value.myFilekey? require('../../../../assets/images/common/colorStarIcon.svg'):require('../../../../assets/images/common/starIcon.svg')" alt="">
           </div>
         </templete>
-        <p class="fl font14 fontBold w-100P textLeft mtop-05" v-if="mAttatchFileList.D_BODY_IMG_FILE_LIST && mAttatchFileList.D_BODY_IMG_FILE_LIST.length > 0">본문 이미지</p>
+        <p class="fl font14 fontBold w100P textLeft mtop-05" v-if="mAttatchFileList.D_BODY_IMG_FILE_LIST && mAttatchFileList.D_BODY_IMG_FILE_LIST.length > 0">본문 이미지</p>
         <templete v-for="(value, index) in mAttatchFileList.D_BODY_IMG_FILE_LIST" :key="index">
           <div style="display: flex; align-items: center; width: 100%; word-break: break-all;min-height: 30px; padding-left:0.3rem" >
             <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">

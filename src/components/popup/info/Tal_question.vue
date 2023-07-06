@@ -2,8 +2,8 @@
 <div class="pagePaddingWrap" style="overflow: hidden scroll !important;" >
   <div class="qPageWrap">
     <div class="qPageHeaderTextWrap ">
-      <p class="font18 fontBold commonColor fl w-100P" style="height: 30px; line-height: 30px;">도움이 필요하신가요?</p>
-      <p class="font16 fontBold grayBlack fl w-100P commonBlack" style="height: 30px; line-height: 30px;">더알림 채널으로 이동하여 편하게 질문하고 소통해보세요!</p>
+      <p class="font18 fontBold commonColor fl w100P" style="height: 30px; line-height: 30px;">도움이 필요하신가요?</p>
+      <p class="font16 fontBold grayBlack fl w100P commonBlack" style="height: 30px; line-height: 30px;">더알림 채널으로 이동하여 편하게 질문하고 소통해보세요!</p>
     </div>
     <gBtnSmall v-on:click="openAskPop" class="askBtn" :btnTitle="this.btnTitle" />
   </div>

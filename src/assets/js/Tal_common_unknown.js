@@ -1100,7 +1100,7 @@ export const commonMethods = {
     store.commit('D_HISTORY/updatePage', current + 1)
   },
   notPerText () {
-    var html = '<div class="w-100P fl textCenter commonColor font14">'
+    var html = '<div class="w100P fl textCenter commonColor font14">'
     html += '열람 권한이 없습니다.'
     html += '</div>'
     return html

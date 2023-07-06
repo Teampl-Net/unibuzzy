@@ -28,7 +28,7 @@
         <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
         <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
         <unknownLoginPop :pContDetail="mUnknownContDetail" :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
-        <div class="w-100P fl">
+        <div class="w100P fl">
             <div class="userProfileWrap">
                 <div class="userProfileWelcomeWrap">
                     <p class="commonLightColor font16 textLeft" style="font-weight: 600;">{{ $t('MAIN_MESSAGE_WELCOME') }}</p>
@@ -38,7 +38,7 @@
                             <div class="loginTrueUserTextArea">
                                 <p class="fl fontBold font18 CDeepColor" style="position: absolute; z-index: 1;">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
                                 <p class="fl fontBold font18" style="color: transparent!important">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
-                                <div class="highLightYellow w-100P" style="position: absolute; bottom: 5px; left: 0;"></div>
+                                <div class="highLightYellow w100P" style="position: absolute; bottom: 5px; left: 0;"></div>
                             </div>
                             <p style="font-weight: 600;" class="font16 fl commonLightColor">{{$t("COMMON_MESSAGE_USER_TITLE")}}</p>
                         </div>
@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div v-if="GE_USER.unknownYn && this.mMainChanList" class="loginFalseChanList">
-                <div v-if="this.mMainChanList" class="w-100P fl" style="height: 30px;">
+                <div v-if="this.mMainChanList" class="w100P fl" style="height: 30px;">
                     <img src="../../assets/images/main/main_followIcon2.png" style="margin-right: 8px;" class="fl img-w23 cursorP" alt="">
                     <p @click="goChannelPop('user')" class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">{{$t('MAIN_TITLE_POPULAR_CHANNEL')}} ></p>
                 </div>
@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div class="mainContentsWrap">
-              <div class="w-100P fl" style=" background-color: #E7EDFF; ">
+              <div class="w100P fl" style=" background-color: #E7EDFF; ">
                 <div class="mainContHeaderWrap">
                 <img src="../../assets/images/main/main_contentsBellIcon2.png" style="margin-right: 8px;" class="fl img-w24" alt="">
                 <p @click="!GE_USER.unknownYn? goContentListPop() : ''" class="font20 fontBold deepBorderColor fl textLeft cursorP CDeepColor" style="line-height: 26px;">{{!GE_USER.unknownYn? $t('MAIN_TITLE_RECV_CONTENTS') : $t('MAIN_TITLE_RECENT_POSTS')}} ></p>

@@ -5,12 +5,12 @@
             <input style="border: none !important;" class="searchInput font15" ref="channelSearchKey" v-model="nameMtext" placeholder="채널 검색하기" />
         </div>
         <div class="newestSearchWrap">
-            <div lass="w-100P" style="height: 2rem">
+            <div lass="w100P" style="height: 2rem">
                 <span class="font18 fontBold commonColor fl">최근ss 검색</span>
                 <span class="font15 commonColor fr">| 자동저장 켜기</span>
                 <span class="font15 commonColor fr" style="color: #6768A782">전체삭제</span>
             </div>
-            <div  class="w-100P">
+            <div  class="w100P">
                 <div v-if="newestSearchYn">
                 </div>
                 <div v-else class="font15 commonColor ">

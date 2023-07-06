@@ -27,7 +27,7 @@
 }
 </i18n>
 <template>
-<div class="w-100P h-100P"  style="position: absolute; top: 0; padding: 60px 1rem 0 1rem; " :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
+<div class="w100P h100P"  style="position: absolute; top: 0; padding: 60px 1rem 0 1rem; " :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
     <!-- <div style="width: 100%; float: left; height: 40px;">
         <p class="font16 fontBold fl mright-05 grayBlack">필터: </p>
         <div class="font16 filterBlock" style="">관리자<img class="cursorP" style="" src="../../../assets/images/common/searchXIcon.svg" alt=""></div>
@@ -45,7 +45,7 @@
             <p class="font14  fontBold fl" style="width: 125px;">권한</p>
         </div> -->
     </div>
-    <div class="w-100P fl" style="min-width: 120px;">
+    <div class="w100P fl" style="min-width: 120px;">
       <div class="fl" style="position: relative; margin-top: 10px; width: calc(100% - 120px)">
         <img @click="searchMember()" class="cursorP" style="float: right; position: absolute; left: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
         <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="searchMember()" :placeholder="$t('FOLLOW_MSG_USERINFO')">
@@ -55,7 +55,7 @@
         <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">{{ $t('FOLLOW_BTN_ORDER_NAME') }}</p>
       </div>
     </div>
-    <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
+    <div class="w100P h100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
       <commonMemberList :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
     </div>
 

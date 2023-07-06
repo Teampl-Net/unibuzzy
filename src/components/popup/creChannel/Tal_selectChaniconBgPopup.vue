@@ -17,7 +17,7 @@
                 <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left; position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
                     <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/jpeg, image/png, image/jpg" ref="selectFileChangeIconNBG" id="input-file" @change="handleImageUpload"/>
                 </form>
-                <div class="fl textLeft w-100P">
+                <div class="fl textLeft w100P">
                   <p class="fl fontBold font14 mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
                   <gBtnSmall v-if="cropperYn" class="fl mright-4" btnTitle="다시 선택" @click="changeBtnClick"/>
                 </div>

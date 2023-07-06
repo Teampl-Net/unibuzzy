@@ -8,7 +8,7 @@
             <!-- <img src="../assets/images/icon_folder.png" style="" alt=""> -->
             <!-- <img src="../../assets/images/allGroupIcon.svg" class="groupIcon" style="width: 0.9rem; margin-right: 0.3rem" alt=""> -->
             <span class="allSelected" @click="selectMenuTab('all')" :class="this.selectedTab === 'all' ? 'selectedMenu': ''">전체</span>
-            <div v-if="pageType === 'recvUserList'" class="w-100P">
+            <div v-if="pageType === 'recvUserList'" class="w100P">
               <div v-if="this.listMode === 'show'" class="fr">
                 <gWhiteButton @click="changeListMode('edit')" btnName="관리" class="mleft-1 mright-03 customBtn" style=""/>
               </div>
@@ -31,7 +31,7 @@
           <p style="color:#3A3A3A; text-align: left; font-size: 15px; font-weight: bold; margin-top: 2rem; margin-bottom: 0.5rem; color: rgb(103, 104, 167); cursor:pointer;">임시저장함</p>
           <p style="color:#3A3A3A; text-align: left; font-size: 15px; font-weight: bold; margin-bottom: 1.5rem; color: rgb(103, 104, 167); cursor:pointer;">휴지통</p>
         </div>
-        <div v-if="pageType === 'recvUserList' && this.listMode === 'edit'" style="" class="w-100P">
+        <div v-if="pageType === 'recvUserList' && this.listMode === 'edit'" style="" class="w100P">
           <gButton btnName="적용" class="mright-05" style="    min-height: 25px;" @click="changeListMode('show')"/>
         </div>
     </div>

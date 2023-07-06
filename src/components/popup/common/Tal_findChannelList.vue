@@ -30,7 +30,7 @@
       <template v-if="mFindKeyWord === ''">
         <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">{{ $t('SEAR_MSG_RECE_KEYWORD') }}</p>
         <template v-if="mSearchHistoryList.length > 0">
-          <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style=" padding: 10px 0; border-bottom:1px solid #CCCCCC90; ">
+          <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w100P" style=" padding: 10px 0; border-bottom:1px solid #CCCCCC90; ">
             <p class="fl font14 grayBlack textLeft" style="width: calc(100% - 20px)" @click="nameMtext = data, findChannel()">{{data}}</p>
             <img src="../../../assets/images/common/grayXIcon.svg" @click="searchHistoryDelete(index)" class="fr img-w10 mtop-03" alt="">
           </div>
@@ -44,7 +44,7 @@
     </div>
 
     <template v-if="mFindKeyWord !== '' && this.GE_DISP_TEAM_LIST.length > 0">
-      <div class="w-100P fl" style="overflow: auto; height: calc(100% - 90px);">
+      <div class="w100P fl" style="overflow: auto; height: calc(100% - 90px);">
         <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
           <channelCard class="moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
           <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="loadMore" class="fl wich" />
@@ -52,7 +52,7 @@
       </div>
     </template>
     <template v-if="mFindKeyWord !== '' && this.GE_DISP_TEAM_LIST.length === 0">
-      <div class="w-100P fl" style="overflow: auto; height: calc(100% - 200px); position: relative;">
+      <div class="w100P fl" style="overflow: auto; height: calc(100% - 200px); position: relative;">
         <gListEmpty title='검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' />
       </div>
     </template>

@@ -6,7 +6,7 @@
 
   <!-- 헤더를 제외한 나머지 부분 // 스크롤을 위해 넣었으나, overflow가 되면서 밑 권한 설정 화면에서 쉐도우 처리 양 끝이 hidden 됨-->
 
-  <div class="w-100P h-100P fl ptop-1" style="overflow: auto; height: calc(100% - 70px);" >
+  <div class="w100P h100P fl ptop-1" style="overflow: auto; height: calc(100% - 70px);" >
     <div class="itemWrite fl ">
       <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시판 이름</p>
       <input class="fl" style="width: calc(100% - 140px);" v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" id="channelName">
@@ -54,12 +54,12 @@
     </div>
 
     <!-- 권한 설정 -->
-    <div class="fl w-100P mtop-1 " style="position: relative; padding: 0 1rem;" :class="{'mtop-2' : shareGroup.type === 'S'}">
+    <div class="fl w100P mtop-1 " style="position: relative; padding: 0 1rem;" :class="{'mtop-2' : shareGroup.type === 'S'}">
       <triangleTag :style="this.shareGroup.type === 'A' ? 'left: calc(1.5rem + 100px)' : 'left: calc(1.5rem + 100px + 80px)' " style="position: absolute; top: -22px; border-right: 22px solid transparent; border-bottom: 23px solid #ffffff; border-left: 22px solid transparent; filter: drop-shadow(0px -10px 16px #ccc); z-index: 1;"/>
-      <div class="fl w-100P" style="box-shadow: 1px 0px 17px 2px #eee; position: absolute; width:98%; max-width:1000px; transform: translateX(-1.5rem);  padding: 0.5rem 1rem;  background:#ffffff; border-radius: 20px; left: 50%; transform: translateX(-50%);">
+      <div class="fl w100P" style="box-shadow: 1px 0px 17px 2px #eee; position: absolute; width:98%; max-width:1000px; transform: translateX(-1.5rem);  padding: 0.5rem 1rem;  background:#ffffff; border-radius: 20px; left: 50%; transform: translateX(-50%);">
 
         <!-- 열람 권한 -->
-        <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
+        <div class="fl w100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시글 열람</p>
             <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A'">
@@ -76,7 +76,7 @@
         </div>
 
         <!-- 게시글 작성 권한 -->
-        <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
+        <div class="fl w100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시글 작성</p>
             <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A'">
@@ -93,7 +93,7 @@
         </div>
 
         <!-- 댓글 권한 -->
-        <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}" style="position: relative;">
+        <div class="fl w100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}" style="position: relative;">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl" style="width: 100px;">댓글 작성</p>
             <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A'">

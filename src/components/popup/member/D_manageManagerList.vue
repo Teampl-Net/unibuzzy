@@ -1,7 +1,7 @@
 <template>
     <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" />
     <div class="memberCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :style="currentTab === 'Mem' ? !member.memberNameMtext ? 'display: none !important;' : '' : ''" :key="index" >
-      <div class="fl mleft-01 w-100P" style="position: relative; width: calc(100% - 125px)" @click="memberInfo(member)">
+      <div class="fl mleft-01 w100P" style="position: relative; width: calc(100% - 125px)" @click="memberInfo(member)">
         <div v-if="member.userProfileImg"  class="managerPicImgWrap">
           <img :src="(member.domainPath? member.domainPath + member.userProfileImg : member.userProfileImg)" />
         </div>

@@ -48,7 +48,7 @@
                 </select>
             </div>
             <gBtnLarge style="float: left;" @click="sendDevPush" btnTitle="이벤트 발생"/>
-            <p class="font18 fontBold textLeft mright-1 fl w-100P mbottom-05 mtop-2">webview url 변경</p>
+            <p class="font18 fontBold textLeft mright-1 fl w100P mbottom-05 mtop-2">webview url 변경</p>
             <input ref="urlInput" v-model="changeUrl" type="text" name="" style="width: 100%; float: left; height: 30px;" id="">
             <gBtnLarge style="float: left; margin-top: 10px;" @click="changeWebviewUrl" btnTitle="url 변경"/>
             <p class="font18 fontBold textLeft mright-1 fl  mbottom-05 mtop-3">백버튼 활성화</p>

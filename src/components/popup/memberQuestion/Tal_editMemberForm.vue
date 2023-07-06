@@ -1,21 +1,21 @@
 <template>
 <div class="pagePaddingWrap editMemberFormWrap" >
-  <div class="w-100P fl" style="background:white; border-radius:10px; padding:1rem; box-shadow:0 4px 9px 0 #00000040;">
-    <div class="w-100P fl">
+  <div class="w100P fl" style="background:white; border-radius:10px; padding:1rem; box-shadow:0 4px 9px 0 #00000040;">
+    <div class="w100P fl">
       <label for="mFormTitle" class="fl font18 commonBlack" >제목</label><input class="fr " style="width:calc(100% - 50px);" type="text" id="mFormTitle" v-model="inputmFormTitle">
     </div>
-    <div class="w-100P fl mtop-05">
+    <div class="w100P fl mtop-05">
       <label for="mFormMemo" class="fl font18 commonBlack" >설명</label>
       <!-- <input class="fr" style="width:calc(100% - 50px)" type="text" id="mFormMemo" v-model="inputmFormMemo"> -->
       <textarea name="" id="mFormMemo" v-model="inputmFormMemo" class="fr font14" style="width:calc(100% - 50px); resize:none; border:1px solid #ccc; border-radius:5px " rows="2" ></textarea>
     </div>
-    <div class="w-100P fl mtop-05" >
+    <div class="w100P fl mtop-05" >
       <gToggle class="fr" toggleId="memberFormActiveYn" @changeToggle="changeActiveForm" :isChecked="activeToggle" /><label for="memberFormActiveYn" class="commonColor fr font14 mright-05">멤버 신청서 활성화</label>
     </div>
     <!-- <p>{{memberFormData.mFormTitle}}</p>
     <h2>dkssu</h2> -->
   </div>
-  <!-- <div class="w-100P fl" style=""> -->
+  <!-- <div class="w100P fl" style=""> -->
   <commonQuestionList :list="questionList" @mQCopy="mQcopy" @mQDelete="mQDelete" @addAnswerClick="addAnswerClick" />
   <!-- </div> -->
   <commonMQusetBtns style="width:80%;" @addQuestion="addQuestion" @saveQuestion="saveQuestion" />

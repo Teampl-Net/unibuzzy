@@ -7,7 +7,7 @@
         {{this.$changeText(data.cabinetNameMtext)}}
     </p>
     </div>
-    <p v-if="propBoardList.length === 0" class="fl w-100P textLeft font14 mtop-07 mbottom-07">공유된 게시판이 없습니다.</p>
+    <p v-if="propBoardList.length === 0" class="fl w100P textLeft font14 mtop-07 mbottom-07">공유된 게시판이 없습니다.</p>
 </div>
 </template>
 

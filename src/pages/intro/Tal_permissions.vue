@@ -4,8 +4,8 @@
             <div class="text-start px-4 permissionHeaderWrap">
                 <img src="../../assets/images/intro/tal_permission_header_logo.png" class="fl mtop-03" style="height: 70%;">
                 <div class="ms-2 fl permissionHeaderTextWrap">
-                    <p class="fl headerFont h-100P">더 알림</p>
-                    <div class="fl ms-1 h-100P headerLogoDiv" >
+                    <p class="fl headerFont h100P">더 알림</p>
+                    <div class="fl ms-1 h100P headerLogoDiv" >
                         <p class="headerFont">가장 편리한</p>
                         <p class="headerFont">구독-알림</p>
                     </div>

@@ -5,7 +5,7 @@
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
-    <div class="w-100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
+    <div class="w100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
 
         <div style=" display: flex; align-items: center; justify-content: center;" :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
             <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center; position: relative;" class="userProfileImgWrap">
@@ -18,9 +18,9 @@
     </div>
     <div class="addMemberTextArea fl">
 
-      <div class="fl w-100P" style='display: contents;'>
-        <p class="fl commonBlack creChanInput w-100P font16 fontBold" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
-        <p class="fl commonGray creChanInput w-100P font14 " v-if="readOnlyYn && !changeYn && this.GE_USER.certiDate" >{{this.$changeText(this.mUserInfo.userDispMtext)}}</p>
+      <div class="fl w100P" style='display: contents;'>
+        <p class="fl commonBlack creChanInput w100P font16 fontBold" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
+        <p class="fl commonGray creChanInput w100P font14 " v-if="readOnlyYn && !changeYn && this.GE_USER.certiDate" >{{this.$changeText(this.mUserInfo.userDispMtext)}}</p>
         <img v-if="readOnlyYn && !changeYn && selfYn" src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
         <div v-show="changeYn" class="fl creChanInput" style="">
             <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
@@ -31,25 +31,25 @@
         </div>
         <p class="fl whiteColor CMiddleBgColor font12" style="padding: 2px 6px; border-radius:10px; " v-if="userGrade !== ''" >{{userGrade}}</p>
       </div>
-      <div class="mtop-1 fl w-100P"  style="display: flex;padding-left:15%; " v-if="!readOnlyYn && !selfYn">
+      <div class="mtop-1 fl w100P"  style="display: flex;padding-left:15%; " v-if="!readOnlyYn && !selfYn">
         <img src="/resource/footer/icon_people.svg"  class="img-w20 fl mright-05" alt="">
 
         <input  type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
       </div>
 
-      <div class="mtop-1 fl w-100P"  style="display: flex;padding-left:15%; ">
+      <div class="mtop-1 fl w100P"  style="display: flex;padding-left:15%; ">
         <img src="../../../assets/images/editChan/icon_letter.svg"  class="img-w20 fl mright-05" alt="">
         <p class="fl font16 commonDarkGray creChanInput " style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memEmail ? memEmail : '등록된 이메일이 없습니다.'}}</p>
         <input v-else type="text" placeholder="이메일을 입력하세요" class="creChanInput fr"  v-model="memEmail" >
       </div>
-      <div class="mtop-1 fl w-100P"  style="display: flex; padding-left:15%;">
+      <div class="mtop-1 fl w100P"  style="display: flex; padding-left:15%;">
         <img src="../../../assets/images/editChan/icon_phoneSolid.svg" class="img-w20 fl mright-05" alt="">
         <p class="fl font16 commonDarkGray creChanInput"  style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memPhone ? memPhone : '등록된 번호가 없습니다.'}}</p>
         <input v-else type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
       </div>
 
       <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
-      <div v-if="readOnlyYn" class="fl w-100P mtop-3" style=" min-height: 70px; display: flex; flex-direction: row; justify-content: space-around;">
+      <div v-if="readOnlyYn" class="fl w100P mtop-3" style=" min-height: 70px; display: flex; flex-direction: row; justify-content: space-around;">
         <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="fl" style="display: flex; flex-direction: row; align-items: center; justify-content: center">
           <div style="display: flex; flex-direction: column; align-items: center;">
             <div class="nativeServiceBtnWrap">

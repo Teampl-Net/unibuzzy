@@ -3,20 +3,20 @@
   <commonConfirmPop v-if="failPopYn" @no="closeXPop" confirmType="one" :confirmText="errorText" />
     <div class="introWhiteCard" style=" min-height: 500px;     margin-top: 30px;">
       <div class="pagePaddingWrap" style="padding-top: 20px;">
-        <div class="fl mbottom-1 w-100P mtop-05">
+        <div class="fl mbottom-1 w100P mtop-05">
             <img class="mbottom-05" src="../../assets/images/main/message_logo.png" style="width: 4rem" alt="">
         </div>
-        <div class="fl w-100P introText">
+        <div class="fl w100P introText">
             <p v-if="this.GE_USER" class="fl textLeft font18 grayBlack fontBold"> {{this.$changeText(this.GE_USER.userDispMtext)}}</p><p class="fl textLeft font16 commonColor fontBold" style="line-height: 30px;">님</p>
-            <p class="fl textLeft w-100P font16 commonColor fontBold" v-html="mCertiMessage"></p>
+            <p class="fl textLeft w100P font16 commonColor fontBold" v-html="mCertiMessage"></p>
         </div>
         <div style="width: 100%; height: 40px; float: left;">
             <input v-model="inName" style="width: 30%; float: left; height: 35px; padding: 0 10px;" placeholder="이름을 입력해주세요" class="font16 textLeft" type="text">
             <input v-model="inPhone" style="width: calc(70% - 5px); float: left; height: 35px; padding: 0 10px; margin-left: 5px;" placeholder="휴대폰번호를 입력해주세요" class="font16 textLeft" type="number">
         </div>
         <div style="width: 100%; height: 2px; background: #CCC; float: left;" class="mbottom-2 mtop-1"></div>
-        <div class="fl w-100P  introText mbottom-2">
-            <p class="fl textLeft font14 fontBold w-100P commonColor">실명인증을 하면</p>
+        <div class="fl w100P  introText mbottom-2">
+            <p class="fl textLeft font14 fontBold w100P commonColor">실명인증을 하면</p>
             <p class="fl mleft-05 textLeft fontNormal font14 commonColor">
                 - 내 채널을 만들고 관리할 수 있어요!<br>
                 - 실명멤버에 참여할 수 있어요!<br>
@@ -28,10 +28,10 @@
             <option>대한민국(+82)</option>
           </select>
         </div> -->
-        <div class="inputWrap fl w-100P  mtop-1">
+        <div class="inputWrap fl w100P  mtop-1">
           <!-- <input type="tel" v-model="phoneNum" placeholder="휴대전화 번호입력" name="" id="" > -->
           <gBtnLarge @click="onClickCertification" btnTitle="인증하기" btnThema=""/>
-          <a href="" @click="closeXPop" class="commonGray font14 mtop-05 textCenter w-100P fl">나중에하기</a>
+          <a href="" @click="closeXPop" class="commonGray font14 mtop-05 textCenter w100P fl">나중에하기</a>
           <!-- <gBtnSmall @click="savePhone" btnTitle="등록" class="inputBtn" /> -->
           <!-- <p :class="{noSavePhone: regPhoneNumber(phoneNum) == false}"  class="fr mright-05">{{regPhoneText}}</p> -->
         </div>

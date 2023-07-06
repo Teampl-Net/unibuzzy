@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100P h-100P pagePaddingWrap" style="padding-top: 0;">
+  <div class="w100P h100P pagePaddingWrap" style="padding-top: 0;">
     <loadingCompo v-if="loadingYn === true"/>
     <div class="myProfileWrap" @click="goSetMyPage">
       <div class="myProfileLeft">
@@ -10,13 +10,13 @@
       </div>
       <div class="myProfileRight">
         <div class="myProfileRightContents">
-          <div class="font18 fontBold fl textLeft w-100P h-100P" >{{$changeText(GE_USER.userDispMtext)}}</div>
+          <div class="font18 fontBold fl textLeft w100P h100P" >{{$changeText(GE_USER.userDispMtext)}}</div>
         </div>
         <div class="myProfileRightContents">
           <span class="font14 myProfileRightInfo commonBlack textOverdot">{{GE_USER.userEmail}}</span>
         </div>
       </div>
-      <div class="h-100P fl font20 grayBlack" style="width: 20px; line-height: 50px;">></div>
+      <div class="h100P fl font20 grayBlack" style="width: 20px; line-height: 50px;">></div>
     </div>
     <div class="commonBlack " style="width: 100%; float: left; height: 100%;">
       <myActList @closeLoading="loadingYn = false" ref="commonActList" :viewTab="myPageTabType" @openContentsDetailPop="openContentsDetailPop" @openPop="openPop" style="border-radius: 0.8rem;" @goMyChanList="goMyChanList" />

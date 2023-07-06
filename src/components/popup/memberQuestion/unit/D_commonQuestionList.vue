@@ -1,33 +1,33 @@
 <template>
-  <div class="w-100P fl mbottom-3" style="">
+  <div class="w100P fl mbottom-3" style="">
     <draggable @end="changePosTeamMenu" handle=".draggablePointer" class="ghostClass" v-model="mQuestionList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
       <transition-group>
-        <div v-for="(data, index) in mQuestionList" :key="index" class="fl w-100P mtop-05 mbottom-05 mQuestionCard" :class="{'mbottom-3': index === mQuestionList.length-1}">
+        <div v-for="(data, index) in mQuestionList" :key="index" class="fl w100P mtop-05 mbottom-05 mQuestionCard" :class="{'mbottom-3': index === mQuestionList.length-1}">
           <div class="draggablePointer fl" style="position: absolute; left:0; top:0; width:25px; height:100%; background-color:#eeeeee; border-radius:10px 0 0 10px; display:flex; " >
             <img style="width:100%;" src="../../../../assets/images/formEditor/scroll.svg" alt="">
           </div>
           <div style="width:calc(100% - 30px);" class="fr">
-            <div class="questionTopArea fl w-100P" style="line-height:20px">
+            <div class="questionTopArea fl w100P" style="line-height:20px">
               <input class="fl" type="text" v-model="data.questionTitle" style="width:calc(100% - 90px);">
               <select class="fr commonBlack" v-model="data.questionType" style="border: 1px solid #ccc; padding:0 5px" > <option v-for="(option, index) in mQuestionOptions" :key="index" class="commonBlack" v-bind:value="option.value"> {{ option.text }} </option> </select>
             </div>
             <div class="questionMiddleArea">
 
-              <div v-if="data.questionType === 'su' || data.questionType === 'at'" class="w-100P fl mtop-05" style="width:100%; background:white; border: 1px dashed #ccc; padding-left:0.5rem;" :style="data.questionType === 'at' ? 'padding: 1rem 0;' : 'background-color:#eeeeeeee'">
+              <div v-if="data.questionType === 'su' || data.questionType === 'at'" class="w100P fl mtop-05" style="width:100%; background:white; border: 1px dashed #ccc; padding-left:0.5rem;" :style="data.questionType === 'at' ? 'padding: 1rem 0;' : 'background-color:#eeeeeeee'">
                 <p v-if="data.questionType === 'su'" class="lightGray fl textLeft font16">텍스트 </p>
                 <img v-if="data.questionType === 'at'" style="width:20px;" src="../../../../assets/images/channel/Image_icon.svg" >
               </div>
 
-              <div v-if="data.questionType === 'si' || data.questionType === 'mu'" class="w-100P fl mtop-05 textLeft">
+              <div v-if="data.questionType === 'si' || data.questionType === 'mu'" class="w100P fl mtop-05 textLeft">
 
                 <dragOption @end="ss" handle=".questionDragPointer" class="ghostClass" v-model="data.answerList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
                   <transition-group>
-                    <div v-for="(answer, answerindex) in data.answerList" :key="answerindex" class="fl w-100P" style="display: flex; align-items: center; padding-bottom:0.5rem; position: relative">
+                    <div v-for="(answer, answerindex) in data.answerList" :key="answerindex" class="fl w100P" style="display: flex; align-items: center; padding-bottom:0.5rem; position: relative">
                       <div class="questionDragPointer fl" style="position: absolute; left:0; top:0; width:20px; height:80%; background-color:#eeeeee; border-radius:5px; display:flex; " >
                         <img style="width:100%;" src="../../../../assets/images/formEditor/scroll.svg" alt="">
                       </div>
                       <div class="fl mleft-2" style="width:15px; height:15px; border:1px solid #ccc; flex-grow: 0; flex-shrink: 0;" :style="data.questionType === 'si' ? 'border-radius:100%;' : '' " />
-                      <div class="w-100P" style="position: relative;">
+                      <div class="w100P" style="position: relative;">
                         <input class="fl mleft-05 questionAnswerInput" type="text" style="" :value="answer.answerName">
                         <div class="fl mleft-05 under-bar" />
                       </div>
@@ -39,7 +39,7 @@
               </div>
 
             </div>
-            <div class="questionBottomArea fl w-100P mtop-1" >
+            <div class="questionBottomArea fl w100P mtop-1" >
               <img style="width:15px;" @click="emit(data, index, 'mQCopy')" class="fl" src="../../../../assets/images/channel/Copy_icon.svg" alt="">
               <img style="width:20px;" @click="emit(data, index, 'mQDelete')" class="fr" src="../../../../assets/images/channel/Trash_icon.svg" alt="">
               <div class="fl mleft-1">

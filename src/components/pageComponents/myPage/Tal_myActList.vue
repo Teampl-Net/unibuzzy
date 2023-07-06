@@ -1,6 +1,6 @@
 <template>
   <!-- 내가 쓴 / 내가 댓글 단 / 내 like / 내 star -->
-  <div class="w-100P h-100P" style="overflow: hidden; position: relative; border-radius: 0.8rem 0.8rem 0 0;">
+  <div class="w100P h100P" style="overflow: hidden; position: relative; border-radius: 0.8rem 0.8rem 0 0;">
     <div class="myPageTabList">
       <div class="myPageTab font14" :class="{activeMyPageTabList: this.myPageTabType === tab.myPageTabType}" @click="myPageTabClick(tab, index)" v-for="(tab, index) in myPageTabList" :key="index">{{tab.name}}</div>
       <div class="font14 fontBold commonBigBtn" @click="goMyChanList" style="">내 채널 ></div>
@@ -9,7 +9,7 @@
         <div id="myActHeader" class="myActHeader" >
             <!-- <div id="myActHeader" class="myActHeader"> -->
             <!-- <div class="font16 textLeft commonBlack fontBold" style="padding-left: 5px;height: 30px; line-height: 30px; width: 100%; float: left; ">내가 </div> -->
-            <div class="w-100P fl" style="height: 40px; line-height: 40px;">
+            <div class="w100P fl" style="height: 40px; line-height: 40px;">
                 <roundTab @tabChange="changeTab" :tabType="this.myActTabType" :tabList="this.myActTabList" id="myActTabId"  />
             </div>
         </div>

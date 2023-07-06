@@ -18,8 +18,8 @@
             <img :src="src">
         </div> -->
         <!-- {{indexRef}} -->
-        <vue-easy-lightbox :zoomScale="0.6" :swipeTolerance="5" :visible="visible" :imgs="imgList" :index="goIndex" @hide="handleHide" :maskClosable="true">
-        </vue-easy-lightbox>
+        <!-- <vue-easy-lightbox :zoomScale="0.6" :swipeTolerance="5" :visible="visible" :imgs="imgList" :index="goIndex" @hide="handleHide" :maskClosable="true">
+        </vue-easy-lightbox> -->
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div  class="w-100P h-100P pagePaddingWrap"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 50)+ 'px'" style=" overflow:auto; padding-bottom: 40px; position: relative;">
+  <div  class="w100P h100P pagePaddingWrap"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 50)+ 'px'" style=" overflow:auto; padding-bottom: 40px; position: relative;">
     <loadingCompo v-if="mLoadingYn === true" />
     <div class="myProfileWrap" @click="goSetMyPage">
       <div class="myProfileLeft">
@@ -7,19 +7,19 @@
       </div>
       <div class="myProfileRight">
         <div class="myProfileRightContents">
-          <p class="font18 fontBold fl textLeft w-100P h-100P commonBlack" >{{$changeText(GE_USER.userDispMtext)}}</p>
+          <p class="font18 fontBold fl textLeft w100P h100P commonBlack" >{{$changeText(GE_USER.userDispMtext)}}</p>
           <span class="font14 myProfileRightInfo commonBlack textOverdot">{{GE_USER.userEmail}}</span>
         </div>
       </div>
-      <div class="h-100P fl font20 grayBlack" style="width: 20px; line-height: 50px;">></div>
+      <div class="h100P fl font20 grayBlack" style="width: 20px; line-height: 50px;">></div>
     </div>
 
-    <div @click="goTotalFileList" class="w-100P fl" style=" padding: 10px; background-color: #fff; border-radius: 0.6rem; margin-top: 10px; height: 50px; display: flex; align-items: center; cursor: pointer;">
+    <div @click="goTotalFileList" class="w100P fl" style=" padding: 10px; background-color: #fff; border-radius: 0.6rem; margin-top: 10px; height: 50px; display: flex; align-items: center; cursor: pointer;">
       <div style="display: flex; align-items: center; width: calc(100% - 30px);">
         <img class="mright-03" src="../../assets/images/common/icon_fileBox.svg" style="width: 19.2px; height: auto;" alt="">
         <p class="commonColor fontBold font18" style="margin-top: 2px;">{{$t('COMMON_TAB_FILE_DRIVE')}}</p>
       </div>
-      <div class="h-100P font20 grayBlack" style="width: 20px;">></div>
+      <div class="h100P font20 grayBlack" style="width: 20px;">></div>
     </div>
     <top5Alim class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPop" ref="topAlim" />
     <top5Channel class="mainContentsBoxArea" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" style="margin-bottom: 1rem;" />

@@ -2,7 +2,7 @@
     <div @click="closeXPop" class="backModal">
     </div>
     <div ref="popBody" class="stickerPopWrap">
-      <p class="font15 textLeft w-100P fontBold mbottom-05 fl">선택 스티커</p>
+      <p class="font15 textLeft w100P fontBold mbottom-05 fl">선택 스티커</p>
       <!-- <img style="width: 15px; float: right" src="../../assets/images/common/popup_close.png" @closeXPop="closeXPop" alt=""> -->
       <div class="selectedStickerWrap">
           <div :style="selectedStickerWidth" style="width: var(--selectedStickerWidth); height: 100%;" class="">
@@ -13,7 +13,7 @@
               </div>
           </div>
       </div>
-      <p class="font15 w-100P textLeft fontBold">전체 스티커</p>
+      <p class="font15 w100P textLeft fontBold">전체 스티커</p>
       <div class="totalStickerWrap">
           <div @click="this.createStickerPopShowYn = true" class="createStickerBtn" >
           <!-- <div @click="this.createStickerPopShowYn = true" style="display: flex; background: rgb(0 0 0 / 10%); margin-bottom: 5px position: relative; flex-direction: column; align-items: center; justify-content: center; width: calc(33.3% - 10px); min-height: 70px; border-radius: 10px; float: left; margin-right: 10px;" > -->
@@ -35,7 +35,7 @@
   </div> <!--@closeXPop="closeXPop" -->
   <div v-if="this.createStickerPopShowYn" class="createStickerPopWrap ">
       <div class="createStickerPop">
-          <p class="font15 w-100p textLeft fontBold mbottom-05">스티커 생성</p> <img @click="this.createStickerPopShowYn = false" src="../../../assets/images/common/popup_close.png" style="position: absolute; top:20px; right: 20px; width: 15px;" alt="">
+          <p class="font15 w100P textLeft fontBold mbottom-05">스티커 생성</p> <img @click="this.createStickerPopShowYn = false" src="../../../assets/images/common/popup_close.png" style="position: absolute; top:20px; right: 20px; width: 15px;" alt="">
           <div style="width: 100%; height: 25px; display: flex; justify-content: center; align-items: center;">
               <gBtnSmall @click="this.colorPickerShowYn = true" style="float: left; color: #A9AACD; border: 1px solid #A9AACD; line-height: 20px; height: 25px; background: #FFFFFF;" btnTitle="색상"/>
               <gBtnSmall @click="this.stickerPickerShowYn = true" style="float: left; color: #A9AACD; border: 1px solid #A9AACD; line-height: 20px; height: 25px; background: #FFFFFF; margin-left: 10px" btnTitle="아이콘"/>

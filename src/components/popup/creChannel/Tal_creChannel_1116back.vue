@@ -25,32 +25,32 @@
           <div @click="iconBgPopupYn='iconPop'" class="channelLogoArea cursorP" :style="'background-image: url(' + selectIcon.selectPath + ')'" style="background-size: cover; background-position: center; background-repeat: no-repeat;">
             <!-- <img @click="iconBgPopupYn='iconPop'" :src="selectIcon.selectPath" style="width:100%"/> -->
           </div>
-          <div class="w-100P fl" style="height: calc(100% - 80px); overflow: auto; margin-top: 1rem;">
+          <div class="w100P fl" style="height: calc(100% - 80px); overflow: auto; margin-top: 1rem;">
 
             <div style="width:100%;" class="mtop-1 fl">
-              <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">채널명</p>
+              <p class="textLeft font20 fl fontBold w100P" style="line-height: 30px;">채널명</p>
               <input v-model="inputChannelName" type="text" placeholder="채널명을 20자 이내로 입력해주세요" class="creChanInput"  id="channelName" >
             </div>
             <!-- <input style="text-align:center ;font-size: 20px !important; color: #6768a7 !important; font-weight: bold; border: none !important; background: none !important; border-bottom: 1px solid #cccccc !important; border-radius: 0 !important;" v-model="inputChannelName" type="text" placeholder="채널이름" class="creChanInput"  id="channelName" >
             <img class="cursorP" src="../../../assets/images/push/noticebox_edit.png" style="" alt=""> -->
 
             <div style="width:100%;" class="mtop-1 fl ">
-              <div class="fr w-100P" style="display: flex; justify-content: flex-end; display: none;"> <input type="checkbox" class="fr" id="chanMemoYn" v-model="chanMemoYn"> <label for="chanMemoYn" class="fr mleft-05">채널 소개글 {{pageType === '수정'? pageType : '작성'}}하기</label></div>
-              <p v-show="chanMemoYn" class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">소개글</p>
+              <div class="fr w100P" style="display: flex; justify-content: flex-end; display: none;"> <input type="checkbox" class="fr" id="chanMemoYn" v-model="chanMemoYn"> <label for="chanMemoYn" class="fr mleft-05">채널 소개글 {{pageType === '수정'? pageType : '작성'}}하기</label></div>
+              <p v-show="chanMemoYn" class="textLeft font20 fl fontBold w100P" style="line-height: 30px;">소개글</p>
               <!-- <textarea v-show="chanMemoYn" style="background: ghostwhite;" v-model="inputChannelMemo" class="channelMemo" placeholder="채널에 대한 설명을 40글자 이내로 입력해주세요."/> -->
               <textarea v-show="chanMemoYn" style="background: #fff; border: 1px solid #cccccc; padding: 10px;" v-model="inputChannelMemo" class="channelMemo" placeholder="채널에 대한 설명을 40글자 이내로 입력해주세요."/>
             </div>
 
             <div style="width:100%;" class="mtop-1 fl ">
-              <div class="fr w-100P" style="display: flex; justify-content: flex-end; display: none;"> <input type="checkbox" class="fr" id="chanMemoYn" v-model="chanMemoYn"> <label for="chanMemoYn" class="fr mleft-05">채널 소개글 {{pageType === '수정'? pageType : '작성'}}하기</label></div>
-              <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">채널 상단 글자색</p>
+              <div class="fr w100P" style="display: flex; justify-content: flex-end; display: none;"> <input type="checkbox" class="fr" id="chanMemoYn" v-model="chanMemoYn"> <label for="chanMemoYn" class="fr mleft-05">채널 소개글 {{pageType === '수정'? pageType : '작성'}}하기</label></div>
+              <p class="textLeft font20 fl fontBold w100P" style="line-height: 30px;">채널 상단 글자색</p>
 
-              <div class="fl w-100P mbottom-05 mtop-05" style="text-align: center; display: flex; justify-content: space-around; align-items: center; ">
+              <div class="fl w100P mbottom-05 mtop-05" style="text-align: center; display: flex; justify-content: space-around; align-items: center; ">
                 <label class="fl font14 mright-05" style="display: flex;" for="commonColor"><input v-model="btnColor" class="fl mright-05" type="radio" name="btnColorRadio" :value="false" id="commonColor"> 기본</label>
                 <label class="fl font14 mleft-05" style="display: flex;" for="whiteColor"><input v-model="btnColor" class="fl mright-05" type="radio" name="btnColorRadio" :value="true" id="whiteColor"> 흰색</label>
                 <p class="fr backgroundLabel fontBold commonColor" @click="preViewYn = !preViewYn" style="border: 1px solid #ccc;"><img src="../../../assets/images/board/icon_eyes.svg" class="img-w18 mright-05" alt="미리보기 아이콘">미리보기</p>
               </div>
-              <div v-if="preViewYn === true" class="fl w-100P" :style="'background: url(' + selectBg.selectPath + ');'" style=" height: 50px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; overflow: hidden; background-repeat: no-repeat;background-size: cover;">
+              <div v-if="preViewYn === true" class="fl w100P" :style="'background: url(' + selectBg.selectPath + ');'" style=" height: 50px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; overflow: hidden; background-repeat: no-repeat;background-size: cover;">
                 <img v-if="btnColor === false" src="../../../assets/images/common/icon_back.png" class="img-w15 fl mleft-05" alt=""> <img v-else-if="btnColor === true" src="../../../assets/images/common/icon_back_white.png" class="img-w15 fl mleft-05" alt="">
                 <p :style="btnColor === false ? 'color: #6768a7;' : 'color:white;' " class="fl font20 fontBold">{{inputChannelName}}</p>
                 <img v-if="btnColor === false"  src="../../../assets/images/common/icon_menu.png" class="img-w25 fr mright-05" alt=""> <img v-else-if="btnColor === true" src="../../../assets/images/common/icon_menu_white.png" class="img-w25 fr mright-05" alt="">
@@ -60,7 +60,7 @@
             </div>
 
             <div style="width:100%; height: 30px" class="mtop-1 fl" >
-              <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">산업군</p>
+              <p class="textLeft font20 fl fontBold w100P" style="line-height: 30px;">산업군</p>
               <!-- <div class="changeChanTypeBtnWrap" style="background: ghostwhite;" @click="channelTypeClick">
                 <p class="textLeft font14 fl mleft-05 commonBlack" style="line-height:30px;" >{{selectTypeText}}</p>
               </div> -->

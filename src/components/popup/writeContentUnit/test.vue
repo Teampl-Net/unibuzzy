@@ -1,7 +1,7 @@
 <template>
 
-  <div class="fl w-100P rowBaseCss" :class="selectedYn === true ? 'lightPurpleBgColor ' : 'whiteBGColor'">
-    <div v-if="propData[0].jobkindId === 'USER'" class="fl w-100P" style="display: flex;
+  <div class="fl w100P rowBaseCss" :class="selectedYn === true ? 'lightPurpleBgColor ' : 'whiteBGColor'">
+    <div v-if="propData[0].jobkindId === 'USER'" class="fl w100P" style="display: flex;
     flex-direction: row; align-items: center; justify-content: space-between">
 
       <div class="imgCircle middleBgColor fl" style="min-width:50px; min-height:50px">
@@ -9,11 +9,11 @@
       </div>
 
       <div class="fl " style="width:80%;">
-        <div class="fl w-100P" >
+        <div class="fl w100P" >
           <p v-if="propData[0].self === 'Y'" class="fl font12 whiteColor" style="background:#ccc; padding:3px; border-radius:100%;width: 20px;height: 20px; display: flex; justify-content: center; align-items: center;">나</p>
           <p class="fl mleft-1">{{this.propData[0].name}}</p>
         </div>
-        <div class="fl w-100P" >
+        <div class="fl w100P" >
           <span class="fl">{{this.propData[0].email}}</span>
           <span class="fl mleft-05">{{this.propData[0].phone}}</span>
         </div>
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div v-else-if="propData[0].jobkindId === 'BOOK'" class="fl w-100P" style="display: flex;
+    <div v-else-if="propData[0].jobkindId === 'BOOK'" class="fl w100P" style="display: flex;
     flex-direction: row; align-items: center; justify-content: space-between;" >
 
       <div class="fl " style="display: flex; align-items: center;">

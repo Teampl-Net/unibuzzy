@@ -1,6 +1,6 @@
 <template>
-<div class="w-100P fl mainTabArea" style="min-height:36px">
-  <div class="fl w-100P" style="position: absolute; ">
+<div class="w100P fl mainTabArea" style="min-height:36px">
+  <div class="fl w100P" style="position: absolute; ">
     <div v-for="(data, index) in activeTabList" :key="index" @click="emit('click', data)" class="fl mainTabBox mright-03" :style="activeTab === data.name ? 'border: 1px solid #6768a7; ;border-bottom: 2px solid #ffffff; background:#fff !important;' : 'border: 1px solid #6768a7;'">
       <p class="font16 fontBold fl">{{data.display}}</p>
     </div>

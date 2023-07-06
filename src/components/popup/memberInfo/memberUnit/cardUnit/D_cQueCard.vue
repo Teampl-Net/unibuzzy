@@ -18,30 +18,30 @@
 }
 </i18n>
 <template>
-<div class="fl w-100P" style="display: flex; align-items: center;" :style="this.propData.itemType === 'siList' ? 'align-items: flex-start;' : ''">
+<div class="fl w100P" style="display: flex; align-items: center;" :style="this.propData.itemType === 'siList' ? 'align-items: flex-start;' : ''">
   <!-- <div style="width: 30px; display: flex; align-items: center;" >
     <p class="textLeft fontBold font16 commonDarkGray" style="line-height: 30px;">{{(compoIdx + 1) + '.'}}</p>
   </div> -->
   <div  style="width: calc(100% - 90px); margin-right: 10px;" class="movePoint">
-    <div @click="modiItemDetail('editQue')" class=" w-100P cursorP" style="border-bottom: 1px solid #ccc; height: 30px; padding: 0 5px;" >
+    <div @click="modiItemDetail('editQue')" class=" w100P cursorP" style="border-bottom: 1px solid #ccc; height: 30px; padding: 0 5px;" >
     <!-- <p class="lightGray fl textLeft font16">텍스트</p> -->
         <p class=" textLeft font14 lightGray textOverdot" style="line-height: 30px;">{{this.mTypeItemDetailMessage}}</p>
     </div>
 
     <!-- <template v-if="propData.InfoQueType === 'F' && options">
-      <div class="fr textLeft w-100P">
+      <div class="fr textLeft w100P">
         <p class="fl textLeft fontBold font16 lightGray" style="">{{this.$changeText(propData.itemNameMtext)}}</p>
         <select class="fr commonDarkGray" v-model="selectOption" style="border: 1px solid #ccc; width:100%; min-height:30px" >
             <option hidden selected>선택하세요</option>
-            <option class="fl w-100P" style="display: flex; align-items: center; padding-bottom:0.5rem" :value="sub" v-for="(sub, subIndex) in convertSelectListStr(typeItem.optListStr)" :key="subIndex">{{sub}}</option>{{ answer.answerName }}
+            <option class="fl w100P" style="display: flex; align-items: center; padding-bottom:0.5rem" :value="sub" v-for="(sub, subIndex) in convertSelectListStr(typeItem.optListStr)" :key="subIndex">{{sub}}</option>{{ answer.answerName }}
         </select>
       </div>
     </template>
 
     <template v-if="propData.InfoQueType === 'L' && options">
-      <div class="fr textLeft w-100P" >
+      <div class="fr textLeft w100P" >
         <p class="fl textLeft fontBold font16 lightGray" style="">{{this.$changeText(propData.itemNameMtext)}}</p>
-        <div class="fr w-100P mbottom-05 commonDarkGray" v-for="(value, aIndex) in convertSelectListStr(typeItem.optListStr)" :key="aIndex">
+        <div class="fr w100P mbottom-05 commonDarkGray" v-for="(value, aIndex) in convertSelectListStr(typeItem.optListStr)" :key="aIndex">
           <gCheckBtn class="fr commonDarkGray" :title="value" :selectedYn="selectOption === value" @click="selectOption = value"/>
         </div>
       </div>

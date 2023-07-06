@@ -3,7 +3,7 @@
   <div @click="closePop" style="background:#00000050; z-index:999; position:absolute; top:0; left:0; width:100%; height:100%;" ></div>
 
   <div class="formMenuList" style="">
-    <div @click="menuEvent(data.menuEvent)" v-for="(data, index) in menuList" :key="index" class="fl w-100P" style="min-height: 40px; padding: 0.5rem 1rem;" :style="index !== (menuList.length-1) ? 'border-bottom: 1px solid #ccc;' : '' " >
+    <div @click="menuEvent(data.menuEvent)" v-for="(data, index) in menuList" :key="index" class="fl w100P" style="min-height: 40px; padding: 0.5rem 1rem;" :style="index !== (menuList.length-1) ? 'border-bottom: 1px solid #ccc;' : '' " >
       <p class="commonBlack fl textLeft font18 fontBold" v-if="index !== (menuList.length-1)">-</p>
       <p class="commonBlack fr textRight font18 fontBold" style=""> {{data.menuTitle}}</p>
     </div>

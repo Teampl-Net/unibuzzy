@@ -1,6 +1,6 @@
 <template>
-  <div v-if="mAddressBookList.length > 0" class="fl w-100P" style="overflow: hidden scroll;">
-    <draggable  ref="editableArea" class="ghostClass fl w-100P" v-model="mAddressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"    >
+  <div v-if="mAddressBookList.length > 0" class="fl w100P" style="overflow: hidden scroll;">
+    <draggable  ref="editableArea" class="ghostClass fl w100P" v-model="mAddressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"    >
       <transition-group>
         <template  v-for="(data, index) in mAddressBookList" :key='index'>
           <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>

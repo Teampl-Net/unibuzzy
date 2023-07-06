@@ -9,16 +9,16 @@
 }
 </i18n>
 <template>
-  <div ref="layerPopUp" v-if="this.openStickerPopYn" @click="saveUserDoStickerList" @wheel="saveUserDoStickerList" class="w-100P h-100P layerPopUp"></div>
+  <div ref="layerPopUp" v-if="this.openStickerPopYn" @click="saveUserDoStickerList" @wheel="saveUserDoStickerList" class="w100P h100P layerPopUp"></div>
     <div v-if="this.openStickerPopYn" style="width: 70%; max-height: 140px; right: 0; right: 10px; bottom: 20px; background: #fff; border: 2px solid #5F61BD; border-radius: 25px; padding: 10px 20px; position: absolute; z-index: 8;">
-      <div class="fl w-100P mbottom-05" style="height: 35px; display: flex; align-items: center;overflow: scroll hidden; border-bottom: 2px solid #ccc;" @wheel="horizontalScroll" id="stickerContList">
+      <div class="fl w100P mbottom-05" style="height: 35px; display: flex; align-items: center;overflow: scroll hidden; border-bottom: 2px solid #ccc;" @wheel="horizontalScroll" id="stickerContList">
         <!-- <template style="" v-for="(value, index) in this.contDetail.D_CONT_USER_STICKER_LIST" :key="index"> -->
         <p v-if="this.mContStickerList.length === 0" class="font14 textLeft fontBold">{{ $t('STICK_MSG_ADD_LABEL') }}</p>
         <template style="" v-for="(value, index) in this.mContStickerList" :key="index">
           <gStickerLine @click="selectStickerFromBox(value)" :pSelecteModeYn="true" :mContStickerList="this.mContStickerList" v-if="value" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value" />
         </template>
       </div>
-      <div class="fl w-100P mbottom-05" :class="!isMobile? 'thinScrollBar':''" style="height: 35px; display: flex; align-items: center;overflow: auto hidden;" @wheel="horizontalScroll" id="stickerMList">
+      <div class="fl w100P mbottom-05" :class="!isMobile? 'thinScrollBar':''" style="height: 35px; display: flex; align-items: center;overflow: auto hidden;" @wheel="horizontalScroll" id="stickerMList">
         <div @click="openStickerDetailPop(mAddStickerObj)" class="cursorP mright-05 fontBold" style="width: 25px; height: 25px; flex-shrink: 0; line-height: 25px; background: #5F61BD; color: #fff; border-radius: 5px;">+</div>
         <template style="float: left; height: 35px; width: calc(100% - 20px);" v-for="(value, index) in this.GE_NON_SELECTED_STICKER_LIST" :key="index" >
           <!-- <gStickerLine v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" /> -->
@@ -29,7 +29,7 @@
           <!-- <stickerDetail transition="showModal" @addMSticker="addMSticker" @closeXPop="mAddStickerPopShowYn = false" ref="stickerDetail" v-if="mAddStickerPopShowYn" :pStickerObj="mAddStickerObj" /> -->
         <stickerDetail transition="showModal" @deleteSticker="deleteSticker" @addMSticker="addMSticker" @closeXPop="mAddStickerPopShowYn = false" ref="stickerDetail" v-if="mAddStickerPopShowYn" :pStickerObj="mAddStickerObj" />
       </transition>
-      <div @click="openStickerPopSetting" class="fl w-100P commonColor textRight font14 fontBold" style="">MORE ></div>
+      <div @click="openStickerPopSetting" class="fl w100P commonColor textRight font14 fontBold" style="">MORE ></div>
       <!-- <template style="height: 50px; width: 100%; background: red;" v-for="(value, index) in this.contDetail.D_CONT_USER_STICKER_LIST" :key="index" >
         <gStickerLine v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" />
       </template> -->

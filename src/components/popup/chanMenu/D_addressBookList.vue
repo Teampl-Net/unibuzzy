@@ -1,12 +1,12 @@
 <template>
 <div style="width: 100%; float: left;">
   <div v-for="(data, index) in propAddressBookList" :id="'book'+ index" :key='index' class="cabinetListCard cursorP fl mleft-05" @click="clickList(data)" >
-    <span class="grayBlack fontBold mleft-05 w-100P textOverdot textLeft fl" >
+    <span class="grayBlack fontBold mleft-05 w100P textOverdot textLeft fl" >
       <img class="fl cursorP img-w18 mright-05" alt="주소록 이미지"  src="../../../assets/images/board/icon_book.svg">
       {{this.$changeText(data.cabinetNameMtext)}}
     </span>
   </div>
-  <p v-if="propAddressBookList.length === 0" class="fl w-100P textLeft font14 mtop-07 mbottom-07">생성된 그룹이 없습니다.</p>
+  <p v-if="propAddressBookList.length === 0" class="fl w100P textLeft font14 mtop-07 mbottom-07">생성된 그룹이 없습니다.</p>
 </div>
 </template>
 

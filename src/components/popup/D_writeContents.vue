@@ -78,8 +78,8 @@
 <!-- <div style="width: 100%; float: left;"> -->
   <div class="whitePaper">
       <!-- 컨텐츠 작성 헤더 영역 -->
-      <div class="w-100P fl" style="padding: 1rem 1.5rem 0 1.5rem; display: flex; flex-direction: column; align-items: flex-start;">
-        <div class="fl w-100P" style="display: flex; align-items: center; justify-content: space-between;">
+      <div class="w100P fl" style="padding: 1rem 1.5rem 0 1.5rem; display: flex; flex-direction: column; align-items: flex-start;">
+        <div class="fl w100P" style="display: flex; align-items: center; justify-content: space-between;">
           <p v-if="contentType === 'ALIM'" class="fontBold commonColor font20 fl">{{ $t('COMMON_TAB_NOTI' ) }} {{requestPushYn === false ? $t('FORM_BTN_WRITE') : $('FORM_BTN_APPLY') }}</p>
           <p v-if="contentType === 'BOAR'" class="fontBold commonColor font20 fl">{{$t('COMMON_TAB_POST')}} {{modiYn? $t('COMMON_BTN_EDIT2') : $t('FORM_BTN_WRITE')}}</p>
           <div class="fr" style="display: flex; flex-direction: row; align-items: center;">
@@ -90,17 +90,17 @@
         </div>
         <div class="fl mtop-05" style="width:100%; border-bottom: 2px solid #5F61BD;"></div>
       </div>
-      <div class="fl w-100P h-100P" id="scrollFormArea" ref="scrollFormArea" style="overflow: hidden auto">
+      <div class="fl w100P h100P" id="scrollFormArea" ref="scrollFormArea" style="overflow: hidden auto">
         <!-- 알림 영역 -->
         <template v-if="contentType === 'ALIM'">
-          <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
+          <div class="fl w100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
             <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_TITLE_RECEIVE') }}</p>
             <div class="fl" style="min-height: 2rem; float: left; width: calc(100% - 3.5rem);" v-if="!params.userKey">
               <checkBtnArea class="mleft-05" :title="$t('COMMON_TAB_ALL')" :selectedYn='allRecvYn' @click="allRecvYn = true" />
               <checkBtnArea class="mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn='!allRecvYn' @click="allRecvYn = false" />
               <p class="fr commonDarkGray font14" style="line-height: 30px;">{{allRecvYn === false ? receiverText : $t('COMMON_TAB_ALL') }}</p>
-              <div v-if="!allRecvYn" class="fl w-100P textLeft mleft-05 mtop-05" @click="openPushReceiverSelect" style="border:1px solid #ccc; border-radius:8px; min-height: 30px; background: white; padding-left: 5px; display: flex; justify-content: space-between; align-items: center;">
-                <div v-if="this.receiverList.list && this.receiverList.list.length > 0" class="fl w-100P">
+              <div v-if="!allRecvYn" class="fl w100P textLeft mleft-05 mtop-05" @click="openPushReceiverSelect" style="border:1px solid #ccc; border-radius:8px; min-height: 30px; background: white; padding-left: 5px; display: flex; justify-content: space-between; align-items: center;">
+                <div v-if="this.receiverList.list && this.receiverList.list.length > 0" class="fl w100P">
                   <div v-for="(value, index) in this.receiverList.list" :key="index" class="fl mright-1" style="display: flex;">
                     <img v-if="value.type === 'BOOK' && !value.memberYn" class="img-w15 fl" src="../../assets/images/channel/channer_addressBook.svg" alt="">
                     <img v-if="value.type === 'BOOK' && value.memberYn" class="img-w15 fl" src="../../assets/images/common/memberIcon.svg" alt="">
@@ -114,13 +114,13 @@
                 <img class="fr img-w17 mright-05"  src="../../assets/images/formEditor/icon_formEditPlus.svg" />
               </div>
             </div>
-            <p v-else class="fl w-100P font16 textLeft commomBlack">
+            <p v-else class="fl w100P font16 textLeft commomBlack">
               <img src="../../assets/images/footer/icon_people.svg" class="fl img-w15 mtop-02 mleft-05 mright-03" alt="">
               {{params.userName}}
               </p>
           </div>
 
-          <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
+          <div class="fl w100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
             <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_TITLE_OPTION') }}</p>
             <div style="min-height: 2rem; float: left;">
               <checkBtnArea class="mleft-05" :title="$t('FORM_BTN_ID')" :selectedYn='showCreNameYn' @click="showCreNameYn = !showCreNameYn" />
@@ -132,7 +132,7 @@
 
         <!-- 게시판 영역 -->
         <template v-if="contentType === 'BOAR'">
-          <div v-if="selectBoardYn === true" class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
+          <div v-if="selectBoardYn === true" class="fl w100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
             <p class="fontBold commonColor CDeepColor font16 fl mright-05" style="word-break: keep-all; position: relative;">{{ $t('FORM_TITLE_BOARD') }}<pss class="font12 fl" style="position: absolute; left: 0; bottom: -1rem;" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</pss></p>
             <!-- <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p> -->
             <div class="fl" :class="!isMobile? 'thinScrollBar':''" id="boardListWrap" style=" width: calc(100% - 3.5rem); height: 2.2rem; overflow: auto hidden; white-space: nowrap; display: flex; align-items: center" @wheel="horizontalScroll" >
@@ -145,13 +145,13 @@
         </template>
 
         <!-- 공통 영역 -->
-        <div v-if="titleShowYn" class="fl w-100P mtop-1" style="display: flex; align-items: center; padding: 0 1.5rem;">
+        <div v-if="titleShowYn" class="fl w100P mtop-1" style="display: flex; align-items: center; padding: 0 1.5rem;">
           <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_BTN_TITLE') }}</p>
           <input class="fl mleft-05 titlePlaceholder" style="width: calc(100% - 3.5rem); min-height:30px; background-color:white !important;" type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="$t('FORM_MSG_TITLE')" v-model="writePushTitle" >
 
         </div>
 
-        <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
+        <div class="fl w100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
           <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_BTN_FILE') }}</p>
           <div style="width: calc(100% - 3.5rem); min-height: 30px; " class="fl mleft-05">
             <attachFileList :attachTrueAddFalseList="pAttachFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
@@ -159,7 +159,7 @@
         </div>
 
       <!-- 작성 창 영역 -->
-      <div id="pageMsgAreaWrap" class="pageMsgArea mtop-1 w-100P fl" style=" padding: 0px 1.5rem 0rem 1.5rem; ">
+      <div id="pageMsgAreaWrap" class="pageMsgArea mtop-1 w100P fl" style=" padding: 0px 1.5rem 0rem 1.5rem; ">
         <formEditor style="margin-top:1rem; margin-bottom: 1rem;" class="fl" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText" @postToolBox='postToolBox'/>
         <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
       </div>

@@ -18,7 +18,7 @@
 </i18n>
 <template>
   <!-- <div style="width: 100%; ; background: white; padding: 10px; box-shadow:-3px -2px 14px 0px #ccc" class=""> -->
-  <div class="w-100P fl" style="">
+  <div class="w100P fl" style="">
     <div class="CWhiteGrayBgColor" style="width: 100%; min-height: 50px; display: flex; justify-content: space-between; align-items: center; padding: 0 1.5rem;">
       <p class="textLeft fontBold font14 fl commonDarkGray" style="">{{(teamList.bookList.length > 0 ? $t('COMMON_NAME_ADDRBOOK') + teamList.bookList.length : '') + ((teamList.bookList.length > 0 && teamList.memberList.length > 0) ? ', ' : '') +  (teamList.memberList.length > 0 ? $t('EDIT_BOOK_TITLE_PEOPLE') + teamList.memberList.length : '')}}</p>
       <gBtnSmall class="fr CDeepBgColor" style="border-radius: 10px" :btnTitle="$t('EDIT_BOOK_BTN_ADD')" @click="sendReceivers" v-if="btnVisible !== false" />
@@ -43,14 +43,14 @@
             <div class="middleBgColor fl imgCircle"  >
                 <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl img-w20" alt="">
             </div>
-            <p class="fl font15 commonBlack textOverdot w-100P">{{this.$changeText(team.cabinetNameMtext)}}</p>
+            <p class="fl font15 commonBlack textOverdot w100P">{{this.$changeText(team.cabinetNameMtext)}}</p>
             <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('book', index, team.cabinetKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
         </div>
         <div style="width: 100%; float: left;" v-else-if="team.memberYn">
             <div class="middleBgColor fl imgCircle"  >
                 <img src="../../../assets/images/common/memberIcon.svg" class="fl img-w20" alt="">
             </div>
-            <p class="fl font15 commonBlack textOverdot w-100P">{{this.$changeText(team.nameMtext)}}</p>
+            <p class="fl font15 commonBlack textOverdot w100P">{{this.$changeText(team.nameMtext)}}</p>
             <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('book', index, team.memberTypeKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
         </div>
       </div>
@@ -58,7 +58,7 @@
       <div v-for="(member, index) in teamList.memberList" :key='index'  class=" fl mright-1"  style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; max-width:60px">
         <div class="middleBgColor fl" >
           <div v-if="member.domainPath || member.userProfileImg" :style="'background-image: url(' + (member.domainPath? member.domainPath + (member.userProfileImg ? member.userProfileImg : member.pathMtext) : member.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
-          <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg'');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
+          <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
         </div>
         <p class="fl font15 commonBlack textOverdot w-100P">{{this.GE_USER.userKey === member.userKey ? $t('EDIT_BOOK_NAME_ME') : this.$changeText(member.userDispMtext)}}</p>
         <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('member', index, member.accessKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -5px; top:-5px; text-align: center;">x</span>

@@ -39,7 +39,6 @@ export default {
     GE_USER_INFO: {
       immediate: true,
       handler (value, old) {
-        console.log(value)
       },
       deep: true
     }

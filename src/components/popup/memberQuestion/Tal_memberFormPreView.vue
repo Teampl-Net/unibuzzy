@@ -1,11 +1,11 @@
 <template>
 <div class="pagePaddingWrap  " style="position: relative; overflow:auto">
-  <div class="fl w-100P">
-    <p class="fl w-100P commonBlack font18 fontBold textLeft">{{mQuestList.mFormTitle}}</p>
-    <p class="fl w-100P lightGray font16 textLeft">{{mQuestList.mFormMemo}}</p>
+  <div class="fl w100P">
+    <p class="fl w100P commonBlack font18 fontBold textLeft">{{mQuestList.mFormTitle}}</p>
+    <p class="fl w100P lightGray font16 textLeft">{{mQuestList.mFormMemo}}</p>
   </div>
-  <div v-for="(data, index) in mQuestList.questionList" :key="index" class="fl w-100P textLeft mtop-1" style="padding-top:1rem">
-    <div class="w-100P fl" style="">
+  <div v-for="(data, index) in mQuestList.questionList" :key="index" class="fl w100P textLeft mtop-1" style="padding-top:1rem">
+    <div class="w100P fl" style="">
       <p class="commonBlack font16 fl">{{(index+1)+'. ' + data.questionTitle}}</p>
       <p class="commonBlack font16 fl">{{data.questionType}}</p>
     </div>
@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <div class="w-100P fl mtop-2 mbottom-1" style="display: flex; flex-direction: row; justify-content: center; ">
+  <div class="w100P fl mtop-2 mbottom-1" style="display: flex; flex-direction: row; justify-content: center; ">
     <gBtnSmall class="fl mleft-1" @click="emit('editClick')" btnTitle="수정"/>
     <gBtnSmall class="fl mleft-1" @click="emit('closePop')" btnTitle="닫기"/>
   </div>

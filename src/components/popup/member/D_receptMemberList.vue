@@ -39,7 +39,7 @@
     <div class="reqCard"  v-for="(member, index) in managingList" :id="'reqCard'+member.userKey" :key="index" >
         <input @click="checkBoxValue(false)" type="checkbox" class="reqCheck" style="float: left; width: 18px;height: 18px; margin: 5px 0; margin-right: 10px;" :id="'check' + member.userKey">
         <div style="width: calc(100% - 30px); float: left;">
-            <div class="fl mleft-01 w-100P" style="position: relative;">
+            <div class="fl mleft-01 w100P" style="position: relative;">
                 <div v-if="member.userProfileImg"  class="reqPicImgWrap">
                 <img :src="(member.domainPath? member.domainPath + member.userProfileImg : member.userProfileImg)" />
                 </div>

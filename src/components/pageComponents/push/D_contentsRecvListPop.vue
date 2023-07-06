@@ -11,8 +11,8 @@
                         <img src="../../../assets/images/board/icon_book.svg" class="fl content img-w25"/>
                     </div>
                     <div class="fl mleft-05" style="display: flex; align-items: center; width: calc(100% - 100px); ">
-                        <div class="textLeft fl textOverdot w-100P" style="" >
-                            <p class="fl font16 commonDarkGray fontBold textOverdot w-100P">{{this.$changeText(actor.cabinetNameMtext)}}</p>
+                        <div class="textLeft fl textOverdot w100P" style="" >
+                            <p class="fl font16 commonDarkGray fontBold textOverdot w100P">{{this.$changeText(actor.cabinetNameMtext)}}</p>
                             <p class="fl font14 commonDarkGray textOverdot" v-if="actor.mUserList" style="width: calc(100%)" >{{makeSummaryText(actor.mUserList)}}</p>
                         </div>
                     </div>
@@ -23,8 +23,8 @@
                         <img src="../../../assets/images/common/memberIcon.svg" class="content img-w30"/>
                     </div>
                     <div class="fl mleft-05" style="display: flex; align-items: center; width: calc(100% - 100px);" @click="clickEvntToParents('open')">
-                        <div class="textLeft fl textOverdot w-100P" style="" >
-                            <p class="fl font16 commonDarkGray fontBold textOverdot w-100P">{{this.$changeText(actor.memberTypeNameMtext)}}</p>
+                        <div class="textLeft fl textOverdot w100P" style="" >
+                            <p class="fl font16 commonDarkGray fontBold textOverdot w100P">{{this.$changeText(actor.memberTypeNameMtext)}}</p>
                             <!-- <p class="fl font14 commonDarkGray textOverdot" style="width: calc(100%)" >{{cabinetNames}}</p> -->
                         </div>
                     </div>
@@ -38,9 +38,9 @@
                         <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
                         </div>
                     </div>
-                    <div class="fl w-100P mleft-05" style="display: flex; align-items: center; " @click="clickEvntToParents('open')">
-                        <div class="textLeft fl w-100P " style="" >
-                            <p class="fl font16 commonDarkGray fontBold w-100P"><img v-if="actor.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../assets/images/editChan/icon_self.svg">{{this.$changeText(actor.userDispMtext)}}</p>
+                    <div class="fl w100P mleft-05" style="display: flex; align-items: center; " @click="clickEvntToParents('open')">
+                        <div class="textLeft fl w100P " style="" >
+                            <p class="fl font16 commonDarkGray fontBold w100P"><img v-if="actor.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../assets/images/editChan/icon_self.svg">{{this.$changeText(actor.userDispMtext)}}</p>
                             <p class="fl font14 commonDarkGray " style="" >{{actor.userEmail ? changeDot('email', actor.userEmail) : '등록된 이메일이 없습니다.'}}</p>
                             <p class="fl font14 commonDarkGray" style="margin: 0 0.3rem">|</p>
                             <p class="fl font14 commonDarkGray " style="" >{{actor.phoneEnc ? changeDot('phone', actor.phoneEnc) : '등록된 번호가 없습니다.'}}</p>

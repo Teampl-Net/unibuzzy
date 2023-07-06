@@ -2,7 +2,7 @@
 <div class="mQuestionBottomWrap fl" >
   <div style="flex:1; width:100%;" v-for="(data, index) in btnList" :key="index" :style="index !== 0 ? 'border-left:1px solid #ccc;' : '' " @click="btnsEvent(data.btnEvent)" >
 
-    <p class="font16 w-100P" style="">{{data.btnTitle}}</p>
+    <p class="font16 w100P" style="">{{data.btnTitle}}</p>
   </div>
 </div>
 </template>

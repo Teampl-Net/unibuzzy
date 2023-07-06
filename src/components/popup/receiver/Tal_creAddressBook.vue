@@ -6,7 +6,7 @@
       <p class="fontBold textLeft font16 fl" style="width: 100px;">주소록명</p>
       <input v-model="inputAddressBookName" type="text" placeholder="주소록명을 입력해주세요." class="addressBookInputType"  id="addressBookName" style="">
     </div>
-    <div class="w-100P fl " style=" position:absolute; bottom:2rem; left:0">
+    <div class="w100P fl " style=" position:absolute; bottom:2rem; left:0">
       <gBtnSmall class="fr mleft-05 mright-2" btnThema='light' btnTitle='취소' @click="closePop" />
       <gBtnSmall class="fr mright-05" :btnTitle='type' @click="saveCabinet" />
     </div>

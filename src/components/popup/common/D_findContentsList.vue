@@ -75,30 +75,30 @@
         </div>
 
         <div class="fl findPopMainSearchArea mtop-05" style="min-height:50px;" v-if="teamKey && false">
-          <div class="fl w-100P " style="border-bottom: 2px solid #6768a7; padding-bottom: 5px; ">
+          <div class="fl w100P " style="border-bottom: 2px solid #6768a7; padding-bottom: 5px; ">
             <div class="fl font16 fontBold textLeft " style="line-height:30px;" @click="receiveSearchClick">수신대상 검색 <p class="font14">▼</p></div>
             <select class="fr commonDarkGray mleft-1" v-model="selectOption" @change="changeReceiveSearch" v-if="receivSearchYn" style="border: 1px solid #ccc; min-height:30px; width:calc(100% - 130px); min-width:50px; max-width:200px" >
-              <option v-for="(value, index) in receivList" :value="index" :key="index" class="fl w-100P" style="display: flex; align-items: center; padding-bottom:0.5rem">
+              <option v-for="(value, index) in receivList" :value="index" :key="index" class="fl w100P" style="display: flex; align-items: center; padding-bottom:0.5rem">
                 {{ value.mFormTitle }}
               </option>
             </select>
           </div>
           <gLoadingS ref="searchLoading" class="fl height" style=""/>
 
-          <div class="fl w-100P pSide-15" v-if="receivSearchYn" :key="receiveListReloadKey" >
-            <div class="fl mtop-05 w-100P" style="display: flex; align-items: center;" v-for="(value, qIndex) in receivList[this.selectOption].InfoQueList" :key="qIndex" :style="value.InfoQueType === 'siList' ? 'align-items: flex-start' : ''">
+          <div class="fl w100P pSide-15" v-if="receivSearchYn" :key="receiveListReloadKey" >
+            <div class="fl mtop-05 w100P" style="display: flex; align-items: center;" v-for="(value, qIndex) in receivList[this.selectOption].InfoQueList" :key="qIndex" :style="value.InfoQueType === 'siList' ? 'align-items: flex-start' : ''">
               <p class="fl font14 commonDarkGray fontBold textLeft" style="flex:2">{{value.InfoQueTitle}}</p>
 
               <template v-if="value.InfoQueType === 'su'">
-                <div class="fl h-100P" style="flex:3">
+                <div class="fl h100P" style="flex:3">
                   <input class="fr" style="min-height:30px;  width:100%; max-width:300px; " type="text" :placeholder="value.InfoQueTitle">
                 </div>
               </template>
 
               <template v-if="value.InfoQueType === 'si'">
-                <div class="fr textLeft w-100P" style="flex:3">
+                <div class="fr textLeft w100P" style="flex:3">
                   <select class="fr commonDarkGray" v-model="selectAnswer" style="border: 1px solid #ccc; width:100%; min-height:30px" >
-                    <option v-for="(answer, aIndex) in value.answerList" :value="answer.answerName" :key="aIndex" class="fl w-100P" style="display: flex; align-items: center; padding-bottom:0.5rem">
+                    <option v-for="(answer, aIndex) in value.answerList" :value="answer.answerName" :key="aIndex" class="fl w100P" style="display: flex; align-items: center; padding-bottom:0.5rem">
                       {{ answer.answerName }}
                     </option>
                   </select>
@@ -106,8 +106,8 @@
               </template>
 
               <template v-if="value.InfoQueType === 'siList'" >
-                <div class="fl textLeft w-100P" style="flex:3">
-                  <div class="fl w-100P mbottom-05" v-for="(value, aIndex) in value.answerList" :key="aIndex">
+                <div class="fl textLeft w100P" style="flex:3">
+                  <div class="fl w100P mbottom-05" v-for="(value, aIndex) in value.answerList" :key="aIndex">
                     <gCheckBtn class="fr" :title="value.answerName" :selectedYn="siListSelect === value.answerName" @click="siListSelect = value.answerName"/>
                   </div>
                   <!-- <gCheckBtn class="fl" v-for="(value, index) in answerList" :key="index" :title="value.answerName" :selectedYn="siListSelect === value.answerName" @click="siListSelect = value.answerName"/> -->

@@ -1,6 +1,6 @@
 <template>
   <!-- <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' /> -->
-  <div class="w-100P" style=" height: 100vh; overflow: auto " id="testArea">
+  <div class="w100P" style=" height: 100vh; overflow: auto " id="testArea">
     <div style="min-height:600px; height: 100%;">
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <!-- <pushDetailPop v-if="this.pushDetailPopShowYn" @closeDetailPop="closeDetailPop"/> -->
@@ -12,25 +12,25 @@
         <div class="paperBackground"></div>
           <div class="whitePaper" :style="viewTab === 'complex' ? 'height: 80%' : ''">
             <div class="overFlowYScroll pushInputArea">
-              <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom:0.5rem;">
+              <div class="w100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom:0.5rem;">
                 <p class="fontBold commonColor font20 fl">알림 {{requestPushYn === false ? '작성' : '신청' }}</p>
                 <img style="width: 1rem;" @click="closeXPop" class="mleft-1 fr cursorP"  src="../../assets/images/common/popup_close.png"/>
               </div>
               <div style="width: 100%; height: calc(100% - 30px); padding: 1.5rem 0 !important; float: left; overflow: hidden auto;" :style="viewTab === 'complex' ? 'height: calc(100% - 50px)' : ''">
-                <div v-if="requestPushYn === true" class="fl w-100P">
+                <div v-if="requestPushYn === true" class="fl w100P">
                   <p class="fontBold commonColor font16">사유</p>
-                  <textarea ref="textAreaRequestTitle" type="text" style="min-height: 50px; background-color:white !important; resize: none; border: 1px solid #ccc; border-radius: 5px; outline: none;" v-model="requestTitle" class="w-100P mtop-03 commmonBlack"/>
+                  <textarea ref="textAreaRequestTitle" type="text" style="min-height: 50px; background-color:white !important; resize: none; border: 1px solid #ccc; border-radius: 5px; outline: none;" v-model="requestTitle" class="w100P mtop-03 commmonBlack"/>
                 </div>
-                <div v-if="requestPushYn === true && answerRequsetYn === true" class="fl w-100P ">
-                  <p class="fontBold commonColor font16 fl w-100P">응답메시지</p>
-                  <div v-if="requestAgreeYn === false" class="fl w-100P mtop-03" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-bottom: 0.5rem;">
+                <div v-if="requestPushYn === true && answerRequsetYn === true" class="fl w100P ">
+                  <p class="fontBold commonColor font16 fl w100P">응답메시지</p>
+                  <div v-if="requestAgreeYn === false" class="fl w100P mtop-03" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-bottom: 0.5rem;">
                     <textarea  type="text" v-model="answerRequestMsg" class="fl commmonBlack" style="width:calc(100% - 70px); min-height: 70px; background-color:white !important; resize: none; border: 1px solid #ccc; border-radius: 5px; outline: none;"/>
                     <div class="fr" style="width: 70px; height: 70px; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
                       <gBtnSmall btnTitle="승인" class="fl" @click="requestPushAgreeClick" />
                       <gBtnSmall btnTitle="거절" class="fl" style="background-color: #f9f9f9 !important; border: 1px solid #ccc;" @click="requestPushDisagreeClick" btnThema="light" />
                     </div>
                   </div>
-                <div v-else class="w-100P fl mtop-05 mbottom-05" style="padding: 10px 0; border:1px solid #ccc; border-radius: 5px; display: flex; align-items: center; justify-content: space-evenly; ">
+                <div v-else class="w100P fl mtop-05 mbottom-05" style="padding: 10px 0; border:1px solid #ccc; border-radius: 5px; display: flex; align-items: center; justify-content: space-evenly; ">
                   <p class="fl commonColor font14 textCenter fontBold" style=""> 승인되었습니다. </p>
                   <gBtnSmall btnTitle="거절" class="fl" @click="requestPushDisagreeClick" />
                 </div>
@@ -98,7 +98,7 @@
                   <input type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="replyPopYn? '답장 제목을 입력해주세요':'알림 제목을 입력해주세요'" class="recvUserArea mbottom-05 inputArea fl" v-model="writePushTitle" style="padding: 0 10px; background-color:white; width: 100%;" name="" >
                 </div>
                 <div style="float: left; width: 100%; padding: 10px 0; padding-top: 0; min-height: 50px;">
-                    <div style="width: 100%; min-height: 30px;" class="fl w-100P">
+                    <div style="width: 100%; min-height: 30px;" class="fl w100P">
                         <!-- <img src="../../assets/images/formEditor/attachFIleIcon.svg" style="width: 23px; margin-top: 6px; float: left;" alt=""> -->
                         <p class="boardWriteTitleText fontBold font15 fl commonColor" style="margin-top: 4px;">첨부파일</p>
                         <attachFileList  @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>

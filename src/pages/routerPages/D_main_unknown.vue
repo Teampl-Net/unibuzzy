@@ -17,7 +17,7 @@
                     <div style="float: left; height: 100%; position: relative;">
                         <p class="fl fontBold font18 CDeepColor" style="position: absolute; z-index: 1;">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
                         <p class="fl fontBold font18" style="color: transparent!important">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
-                        <div class="highLightYellow w-100P" style="position: absolute; bottom: 5px; left: 0;"></div>
+                        <div class="highLightYellow w100P" style="position: absolute; bottom: 5px; left: 0;"></div>
                     </div>
                     <p style="font-weight: 600;" class="font16 fl commonLightColor">님!</p>
                 </div>

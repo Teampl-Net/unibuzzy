@@ -1,7 +1,7 @@
 <template>
   <!-- <pushPop v-if='testpopYn' @no='testpopYn = false' :detailVal='"1000001"' /> -->
-  <!-- <div class="w-100P" style=" height:100vh;top: 50px; position: absolute; overflow:auto"> -->
-    <div class="w-100P" style=" height:100vh;top: 0; position: absolute; overflow:auto">
+  <!-- <div class="w100P" style=" height:100vh;top: 50px; position: absolute; overflow:auto"> -->
+    <div class="w100P" style=" height:100vh;top: 0; position: absolute; overflow:auto">
     <div style="min-height: 400px; height: 100%;">
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <gConfirmPop :confirmText="modiYn? '게시글을 수정 하시겠습니까?' : '게시글을 저장하시겠습니까?'" @no='confirmNo(), checkPopYn=false' v-if="checkPopYn" @ok='sendMsg(), checkPopYn=false' />
@@ -12,15 +12,15 @@
         <div class="boardWritePaperBack" ></div>
           <div class="whitePaperBoard" :style="viewTab === 'complex' ? 'height: 80%' : ''">
             <div class="overFlowYScroll boardInputArea">
-              <div class="w-100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom:0.5rem;">
+              <div class="w100P fl" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom:0.5rem;">
                 <p class="fontBold commonColor font20 fl">{{this.modiYn?'게시글 수정' : '게시글 작성'}}</p>
                 <img style="width: 1rem;" @click="this.$emit('closeXPop')" class="mleft-1 fr cursorP"  src="../../assets/images/common/popup_close.png"/>
               </div>
               <div style="width: 100%; height: calc(100% - 39px); float: left; padding-top:1.5rem; overflow: hidden auto; ">
-                <div v-if="selectBoardYn === true" class="w-100P fl " >
+                <div v-if="selectBoardYn === true" class="w100P fl " >
                   <p class="fontBold font15 fl ">게시판을 선택 해주세요</p>
                   <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p>
-                  <div class="w-100P fl" style="margin:0.5rem 0; overflow: auto; white-space: nowrap;">
+                  <div class="w100P fl" style="margin:0.5rem 0; overflow: auto; white-space: nowrap;">
                     <div v-for="(data, index) in selectBoardList" :key="index" class=" mleft-05 font12 fontBold" @click="selectBoard(data, index)" style="padding:5px; border-radius:10px; display: inline-flex;" :style="'background:'+data.picBgPath" :class="{selectBoard : selectBoardIndex === index}">
                       <!-- <img class="img-w20" v-if="selectBoardIndex === index" src="../../assets/images/common/icon_check_commonColor.svg" alt=""> -->
                       <input type="radio" :id="'selectBoardCheckBox'+index" name="selectBoardCheckBox" style="line-height:18px">

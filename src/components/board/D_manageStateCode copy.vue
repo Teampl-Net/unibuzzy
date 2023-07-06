@@ -7,7 +7,7 @@
                 <img @click="closeSelectPop" style="position: absolute; right: 20px; top: 10px;" src="../../assets/images/common/smallPopXIcon.svg" alt="">
             </div>
             <div style="width: 100%; float: left; padding: 0 20px; margin-top: 10px;">
-                <p class="font15 textLeft fl fontBold w-100P mtop-05">계획</p>
+                <p class="font15 textLeft fl fontBold w100P mtop-05">계획</p>
                 <Datepicker
                     style="font-size: 14px; float: left; width: calc(50% - 20px); margin-right: 10px;"
                     inline
@@ -27,14 +27,14 @@
                     placeholder="해결예정일"
                     titleFormat="YYYY-MM-DD"
                 ></Datepicker>
-                <p class="font15 textLeft fl fontBold w-100P mtop-1">상태설정</p>
+                <p class="font15 textLeft fl fontBold w100P mtop-1">상태설정</p>
                 <div style="width: 100%; float: left;">
                     <div @click="selectCode(value)" :class="value.codeKey === selectedCodeObj.codeKey? 'selectedCode' : ''" v-for="(value, index) in this.codeList" :key="index" style="width: calc(50% - 10px); text-align: center; float: left; position: relative; margin: 7px 5px; border-radius: 8px; border min-height: 30px; padding: 5px 0;" :style="statBackColor(value.codeKey, true)" >
                         <p :style="statBackColor(value.codeKey)" class="commonBlack mleft-05 font16 fontBold">{{this.$changeText(value.codeNameMtext)}}</p>
                         <img :src="value.domainPath + value.pathMtext" style="width: 15px;position: absolute; left: 8px; top: 10px;" alt="">
                     </div>
                 </div>
-                <p class="font15 textLeft fl fontBold w-100P mtop-05">댓글 추가</p>
+                <p class="font15 textLeft fl fontBold w100P mtop-05">댓글 추가</p>
                 <!-- <p class="font14 commonBlack textLeft">빈칸으로 작성시{{'"상태를 "' + this.$changeText(this.selectedCodeObj.codeNameMtext) + '"(으)로 변경합니다." 댓글이 추가됩니다.'}}</p> -->
                 <div @click="changeInputText"  ref="memoBodyStr" class="commonBlack font15 textLeft" v-if="selectedCodeObj.codeKey !== 0" style="width: 100%; height: 100px; border-radius: 8px; margin-top: 5px;  cursor: text;     border: 1px solid #EEEEEE; float: left; padding: 5px, 10px, 10px, 10px; overflow: hidden scroll; "  :contenteditable="true"></div>
                 <div ref="memoBodyStr" v-else style="width: 100%; height: 100px; border-radius: 8px; margin-top: 5px; border: 1px solid #ccc; float: left; padding: 10px 15px; overflow: hidden scroll;" class="commonBlack font15 textLeft activeInput" >

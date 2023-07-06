@@ -29,7 +29,7 @@
   <div style="width: 100%; min-height: 100px;">
       <div style="width: 100%; min-height: 100px; display: flex;  float: left; justify-content: space-between;">
           <div @click="selectWriteType('ALIM')"  class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'ALIM' ? 'border: 3px solid #7678E2!important; ' : ''">
-            <div v-if="mAlimClickYn === false" class="noneClickCSS fl wh-100P"></div>
+            <div v-if="mAlimClickYn === false" class="noneClickCSS fl wh100P"></div>
               <img style="width: 36px;" src="../../../../assets/images/main/main_contentsBellIcon2.png" alt="">
               <img v-if="this.mSelectedWriteType === 'ALIM'" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
               <p :class="{lightGray: this.mSelectedWriteType !== 'ALIM' }" class="font14 fontBold mtop-05 commonColor">{{mAlimClickYn === true ? $t('COMMON_TAB_NOTI') : $t('BOTTOM_MSG_NOPERM')}}</p>
@@ -46,7 +46,7 @@
       <div class="lightGray cursorP font16 fontBold okScrollBar" style="border: 3px solid #F4F4F4!important; width: 100%; height: 160px!important; border-radius: 8px; overflow: hidden scroll; padding :15px 20px;" name="" id="">
           <div style="width: 100%; height: 30px; padding: 0 5px; float: left;">
               <div v-for="(chan, index) in mSelectChanList" style="position: relative; float: left; width: 100%; min-height: 100%;" :key="index">
-                  <p @click="this.mSelectedChan = chan.teamKey"  class="font16 textLeft h-100P " :class="this.mSelectedChan === chan.teamKey? 'commonLightColor' : 'commonGray'" >{{this.$changeText(chan.nameMtext)}}</p>
+                  <p @click="this.mSelectedChan = chan.teamKey"  class="font16 textLeft h100P " :class="this.mSelectedChan === chan.teamKey? 'commonLightColor' : 'commonGray'" >{{this.$changeText(chan.nameMtext)}}</p>
                   <img src="../../../../assets/images/common/listSelectCheck.svg" style="position: absolute; right: 10px; top: 5px; " v-if="this.mSelectedChan === chan.teamKey" alt="">
               </div>
           </div>

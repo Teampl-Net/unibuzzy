@@ -13,21 +13,21 @@
             <div class="chanImgRound" :style="'background-image: url('+  (CHANNEL_DETAIL.logoDomainPath? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');' " style="background-size: cover; background-position: center; background-repeat: no-repeat;" > <!-- 채널 로고 부분 -->
             </div>
             <div class="chanTextBox fl mleft-05;" style=" width:100%; margin-left: 0.5rem;">
-              <div class="fl font16  w-100P">
+              <div class="fl font16  w100P">
                 <div style="width:50px;" >
                   <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 채널명 </p>
                 </div>
                 <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeText(CHANNEL_DETAIL.nameMtext) }}</p>
               </div>
-              <div class="fl font16  w-100P">
+              <div class="fl font16  w100P">
                 <div style="width:50px;" >
                   <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 만든일 </p>
                 </div>
                 <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(CAB_DETAIL.creDate)}}</p>
               </div>
 
-              <div class="fl font15  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
-                <div class="fl font15  w-100P">
+              <div class="fl font15  w100P mtop-05 " style="box-sizing:border-box; word-break:break-all; " >
+                <div class="fl font15  w100P">
                   <div style="width:100%" class="fl" >
                     <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7;  white-space: nowrap;"> 게시판기능 </p>
                   </div>
@@ -38,12 +38,12 @@
               </div>
             </div>
           </div>
-          <div class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
+          <div class="fl w100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
             <p class="cBlack fl font15" style="width: 100%; ">공유 {{CAB_DETAIL.mShareItemCnt}}명</p>
             <p class="cBlack fl font15" style="width: 100%; border-left: 1px solid white">게시글 {{this.totalElements? this.totalElements:0}}개</p>
           </div>
 
-          <div v-if="GE_USER" class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
+          <div v-if="GE_USER" class="fl w100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
             <div style="display:flex; align-items: center;">
               <div @click="goProfile" :style="'background-image: url(' +  (GE_USER.domainPath? GE_USER.domainPath + GE_USER.userProfileImg : GE_USER.userProfileImg)  + ')'" style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
               <!--  <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/> -->
@@ -90,9 +90,9 @@
           <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%); padding-bottom: 40px; min-height: 500px" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
 
             <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
-            <div class="w-100P fl commonBoardListContentBox" style="height:1px;" />
+            <div class="w100P fl commonBoardListContentBox" style="height:1px;" />
             <gContentsBox @contDelete="refreshAll" @openImgPop="openImgPop" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.BOARD_CONT_LIST" :key="index"/>
-            <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
+            <myObserver @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
             <!-- <boardList :emptyYn="BOARD_CONT_LIST.length === 0? true: false" :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
               @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
               @writeMememo="writeMememo" @riteMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'

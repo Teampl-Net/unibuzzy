@@ -2,7 +2,7 @@
 <div style="height: 100vh; background-color:white; width:100%; z-index:9999; position:absolute; top:0; left:0">
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  />
     <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
-    <div class="longHeight w-100P" style="position:absolute; top:50px; h overflow: auto;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
+    <div class="longHeight w100P" style="position:absolute; top:50px; h overflow: auto;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
       <div style="width: 100%; position: relative; float: left;">
         <selectBookNMemberList ref="selectBookNMemberListCompo" :itemType="itemType" @addSelectList="addSelectList" :propData='propData' :selectBookNList='parentList' :selectList='selectList' />
       </div>

@@ -10,17 +10,17 @@
         v-if="targetType !=='writeContents' && targetType !== 'stickerPop' && targetType !== 'stickerDetail'" :followYn="headerFollowYn" :style="'top:' + 0 + 'px'"
         @openMenu='openChanMenuYn = true' :bgblack='bgblackYn' :propBookDetailPopYn='mBookDetailPopYn' @closeBookDetail='mBookDetailPopYn = false' :targetType='targetType' />
 
-        <div class="w-100P h-100P" style=" position: relative;" v-if=" popId &&  targetType === 'chanDetail'">
+        <div class="w100P h100P" style=" position: relative;" v-if=" popId &&  targetType === 'chanDetail'">
             <chanAlimList @openImgPop="openImgPop" :pPopId="popId" :propData="propParams" :notiScrollTarget="notiScrollTarget" ref="gPopChanAlimList"  @pageReload="reloadPop" @openLoading="loadingYn = true"  @closeLoading="loadingYn = false" :chanDetail="propParams" v-if=" popId && targetType === 'chanDetail' && popId " @openPop="openPop" @bgcolor='setBgColor' @followYn="headerFollowYn = true" @showToastPop="showToastPop" />
         </div>
-        <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  targetType === 'pushList'">
+        <div class="w100P h100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  targetType === 'pushList'">
             <pushList :pPopId="popId" style="" :initData='propParams.initData' :propParams="propParams" :ref="'gPopPush'" :popYn="true" :readySearchList="readySearchList" @openPop="openPop" @showToastPop="showToastPop" @openUserProfile="openPop" />
         </div>
 
-        <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  targetType === 'chanList'">
+        <div class="w100P h100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if=" popId &&  targetType === 'chanList'">
             <chanList :pPopId="popId" :initData='propParams.initData' :propData="propParams" ref="gPopChan" :popYn="true" @closeLoading="loadingYn = false" @openPop = "openPop"/>
         </div>
-        <div class="w-100P h-100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if="popId &&  targetType === 'searchPop'">
+        <div class="w100P h100P" style="padding-top: 50px; background: rgb(220, 221, 235); position: relative;" v-if="popId &&  targetType === 'searchPop'">
             <searchPage :pPopId="popId" :propData="propParams" :popYn="true" @openPop="openPop" @openImgPop="openImgPop" />
         </div>
         <changeInfo :pPopId="popId" @closeLoading="loadingYn = false"  @successUpdate="closeXPop(true)" :kind="changInfoType" v-if=" popId &&  targetType === 'changeInfo'" />
@@ -212,7 +212,7 @@ export default {
     },
     getWindowSize () {
       return {
-        '--widndowWidth': window.innerWidth + 'px'
+        '--windowWidth': window.innerWidth + 'px'
       }
     }
   },

@@ -4,7 +4,7 @@
     <img src="/resource/common/placeholder_white.png" style="height: 150px; width: 150px;" />
   </div> -->
   <div style="width: 100%; height: 100%; float: left">
-    <table class="w-100P">
+    <table class="w100P">
         <colgroup>
             <col class="listHeader" style="width: 50px; float: left;">
             <col style="width: calc(100% - 50px); margin-left: 10px; float: left;">

@@ -15,8 +15,8 @@
 }
 </i18n>
 <template>
-  <div class="fl w-100P" style="border-bottom: 1px solid; border-color: #BDBDBD50" :class="{ CWhiteGrayBgColor: (option === 'SELE' && propData.selectedYn === true) }" >
-    <div class="fl w-100P rowBaseCss"  style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" >
+  <div class="fl w100P" style="border-bottom: 1px solid; border-color: #BDBDBD50" :class="{ CWhiteGrayBgColor: (option === 'SELE' && propData.selectedYn === true) }" >
+    <div class="fl w100P rowBaseCss"  style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" >
       <img v-if="searchYn === true" class="img-w15 fl" src="../../../../assets/images/common/icon_searchGray.svg" alt="">
 
       <!-- -->
@@ -24,14 +24,14 @@
         <img v-if="!propData.picBgPath" class="img-w20 mright-05" src="../../../../assets/images/board/icon_lock_gray.svg" alt="">
         <div v-else style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; float: left; flex-shrink: 0; flex-grow: 0;"  :style="{ background: propData.picBgPath || '#ffffff' }"></div>
       </div>
-      <div class="fl w-100P textOverdot" style="display: flex; align-items: center; width: calc(100% - 100px);" @click="emit('open')">
-        <div class="textLeft fl w-100P textOverdot" style="">
-          <p class="fl font16 commonDarkGray fontBold w-100P">{{this.$changeText(propData.cabinetNameMtext)}}</p>
-          <!-- <div class="fl w-100P textLeft" style="overflow: hidden; white-space: nowrap; display: flex; align-items: center">
+      <div class="fl w100P textOverdot" style="display: flex; align-items: center; width: calc(100% - 100px);" @click="emit('open')">
+        <div class="textLeft fl w100P textOverdot" style="">
+          <p class="fl font16 commonDarkGray fontBold w100P">{{this.$changeText(propData.cabinetNameMtext)}}</p>
+          <!-- <div class="fl w100P textLeft" style="overflow: hidden; white-space: nowrap; display: flex; align-items: center">
             <p class="fl font14 commonDarkGray mleft-05" :class="index === 0 ? 'mleft-0' : '' " v-for="(value, index) in propData.mUserList" :key="index">{{this.$changeText(value.userDispMtext)}}</p>
           </div> -->
           <!-- white-space: nowrap; text-overflow: ellipsis; overflow: hidden; -->
-          <p class="fl font14 commonDarkGray w-100P textOverdot" style="" >{{subTitle}}</p>
+          <p class="fl font14 commonDarkGray w100P textOverdot" style="" >{{subTitle}}</p>
           <!-- <p class="fl font14 commonDarkGray mleft-05" >{{this.propData.mUserList.length}}</p> -->
         </div>
       </div>

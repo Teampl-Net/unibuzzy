@@ -43,7 +43,7 @@
                             <label  for="sampleTitleMtext" class="font15 fontBold grayBlack textLeft fl" style="width: 70px; line-height: 30px;">{{ $t('SAMP_TITLE_NAME') }}</label>
                         <input id="sampleTitleMtext" type="text" class="font15 textLeft" style="width: calc(100%);  margin-bottom: 1rem;height: 30px;" :placeholder="$t('SAMP_MSG_NONAME')" name="" v-model="sampleTitleMtext" >
                         </div>
-                        <p class="font15 fontBold grayBlack w-100P mbottom-05 textLeft fl">
+                        <p class="font15 fontBold grayBlack w100P mbottom-05 textLeft fl">
                           {{ $t('SAMP_TITLE_ICON') }}
                         </p>
                         <div style="width: 100%; float: left; display: flex; align-items: center;">

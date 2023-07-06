@@ -1,5 +1,5 @@
 <template>
-  <!-- wh-100P 삭제함-->
+  <!-- wh100P 삭제함-->
   <div class="fl" :ref="'stateCodePop' + this.contentsKey" style=" padding: 0 10px; border-radius: 8px; background: #bfbfda;  color: #fff; text-align: left;">
     <div @click="closeSelectPop" style="width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; background: #00000025; z-index: 10"></div>
     <div style="display: flex; padding: 10px 0; flex-direction: column; width: 80%; min-height: 300px; height: 80%; position: fixed; box-shadow: rgb(0 0 0 / 12%) 4px 4px 12px 1px; top: 10%; left: 10%; border-radius:0.8rem; background: #FFF; z-index: 11">
@@ -9,11 +9,11 @@
       </div>
 
       <div style="width: 100%; float: left; padding: 0 20px; margin-top: 10px; overflow: hidden scroll;" class="thinScrollBar" >
-        <p class="font15 textLeft fl fontBold w-100P mtop-05">발견일</p>
+        <p class="font15 textLeft fl fontBold w100P mtop-05">발견일</p>
         <div class="commonListContentBox cursorP font14" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{settingDate(alimDetail.creDate)}}</div>
-        <p class="font15  textLeft fl fontBold w-100P mtop-05">담당자</p>
+        <p class="font15  textLeft fl fontBold w100P mtop-05">담당자</p>
         <div class="commonListContentBox cursorP font14" @click="openSelectMemberPop" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{selectedList.memberList.length> 0 ? this.$changeText(selectedList.memberList[0].userDispMtext) : '선택된 담당자가 없습니다.'}}</div>
-        <p class="font15 textLeft fl fontBold w-100P mtop-05">목표일</p>
+        <p class="font15 textLeft fl fontBold w100P mtop-05">목표일</p>
         <Datepicker
           style="font-size: 14px; float: left; width: calc(100%);"
           inline
@@ -23,14 +23,14 @@
           :placeholder="dateHolder"
           titleFormat="YYYY-MM-DD"
         ></Datepicker>
-        <p class="font15 textLeft fl fontBold w-100P mtop-1">상태설정</p>
+        <p class="font15 textLeft fl fontBold w100P mtop-1">상태설정</p>
         <div style="width: 100%; float: left;">
           <div @click="selectCode(value)" class="cursorP" :class="value.codeKey === selectedCodeObj.codeKey? 'selectedCode' : ''" v-for="(value, index) in this.codeList" :key="index" style="width: calc(50% - 10px); text-align: center; float: left; position: relative; margin: 7px 5px; border-radius: 8px; border min-height: 30px; padding: 5px 0;" :style="statBackColor(value.codeKey, true)" >
             <p :style="statBackColor(value.codeKey)" class="commonBlack mleft-05 font16 fontBold">{{this.$changeText(value.codeNameMtext)}}</p>
             <img :src="value.domainPath + value.pathMtext" style="width: 15px;position: absolute; left: 8px; top: 10px;" alt="">
           </div>
         </div>
-        <p class="font15 textLeft fl fontBold w-100P mtop-05">댓글 추가</p>
+        <p class="font15 textLeft fl fontBold w100P mtop-05">댓글 추가</p>
         <!-- <p class="font14 commonBlack textLeft">빈칸으로 작성시{{'"상태를 "' + this.$changeText(this.selectedCodeObj.codeNameMtext) + '"(으)로 변경합니다." 댓글이 추가됩니다.'}}</p> -->
         <div @click="changeInputText"  ref="memoBodyStr" class="commonBlack font15 textLeft" v-if="selectedCodeObj.codeKey !== 0" style="width: 100%; height: 100px; border-radius: 8px; margin-top: 5px;  cursor: text;     border: 1px solid #EEEEEE; float: left; padding: 5px, 10px, 10px, 10px; overflow: hidden scroll; "  :contenteditable="true"></div>
         <div ref="memoBodyStr" v-else style="width: 100%; height: 100px; border-radius: 8px; margin-top: 5px; border: 1px solid #ccc; float: left; padding: 10px 15px; overflow: hidden scroll;" class="commonBlack font15 textLeft activeInput" >

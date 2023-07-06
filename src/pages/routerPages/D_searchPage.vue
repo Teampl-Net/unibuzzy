@@ -31,14 +31,14 @@
 <template>
 <!--  -->
   <template v-if="mSearchModeYn === false">
-    <div class="w-100P h-100P" :style="$route.path === '/search'? `padding-top: ${(this.$STATUS_HEIGHT + 50)}px;`:''" style=" overflow:auto; padding-bottom: 40px;">
+    <div class="w100P h100P" :style="$route.path === '/search'? `padding-top: ${(this.$STATUS_HEIGHT + 50)}px;`:''" style=" overflow:auto; padding-bottom: 40px;">
       <div class="searchBodyTop pSide-1" style="background: white">
-        <div class="fl w-100P" style="height: 30px; float: left;">
+        <div class="fl w100P" style="height: 30px; float: left;">
           <img src="../../assets/images/main/icon_3d_search.png" style="float: left; margin: 0 8px 8px 8px;" class="img-w23" alt="">
           <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">{{ $t("SEAR_MSG_LOOK") }}</p>
         </div>
         <!-- input Box -->
-        <div class="fl w-100P" style="position: relative; margin-top: 1rem; min-height: 50px;">
+        <div class="fl w100P" style="position: relative; margin-top: 1rem; min-height: 50px;">
           <img @click="setSearchList()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
           <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" />
           <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
@@ -76,15 +76,15 @@
       </div>
 
       <!-- 채널 추천 영역 -->
-      <div class="wh-100P fl mtop-1 ptop-1" style="background: white; ">
-        <div class="fl w-100P pSide-1" style="height: 30px; float: left;">
+      <div class="wh100P fl mtop-1 ptop-1" style="background: white; ">
+        <div class="fl w100P pSide-1" style="height: 30px; float: left;">
           <img src="../../assets/images/main/icon_3d_star.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
           <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">{{ $t("SEAR_MSG_CHAN_RECOMMEND") }}</p>
         </div>
-        <div class="w-100P fl pSide-1" >
+        <div class="w100P fl pSide-1" >
           <gActiveBar :testYn='true' ref="activeBar" :tabList="this.mActiveTabRecommendList" class="fl" @changeTab="changeRecommendTab" />
         </div>
-        <div class="w-100P fl" style="overflow: auto; height: calc(100% - 90px);">
+        <div class="w100P fl" style="overflow: auto; height: calc(100% - 90px);">
           <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
             <channelCard class=" moveBox" :chanElement="chanEle" @openPop="openPop" />
             <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="recommendLoadMore" class="fl wich" />
@@ -96,10 +96,10 @@
 
     <!-- 검색 키워드가 있다면 -->
     <template v-if="mSearchModeYn === true">
-      <div v-if="mSearchModeYn === true" class="w-100P h-100P"  style="position: absolute; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10; overflow:hidden;">
-        <div class="fl w-100P" :style="`height: ${this.mobileYn? (this.$STATUS_HEIGHT + 60):60}px;`" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: flex-start; position: fixed; z-index: 3; background: white;">
+      <div v-if="mSearchModeYn === true" class="w100P h100P"  style="position: absolute; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10; overflow:hidden;">
+        <div class="fl w100P" :style="`height: ${this.mobileYn? (this.$STATUS_HEIGHT + 60):60}px;`" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: flex-start; position: fixed; z-index: 3; background: white;">
           <img @click="searchClear()" src="../../assets/images/common/icon_back.png" class="fl img-w12 cursorP mright-1 mleft-05" alt="">
-          <div class="fl w-100P mright-1" style="width:calc(100% - 90px); position: relative;">
+          <div class="fl w100P mright-1" style="width:calc(100% - 90px); position: relative;">
             <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" />
             <img  @click="setSearchList()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
             <!-- <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt=""> -->
@@ -108,12 +108,12 @@
         </div>
         <!-- 공통 검색 탭 영역 -->
         // 60
-        <div  class="w-100P fl pSide-1 chanListHeader " :style="`margin-top: ${this.mobileYn? (this.$STATUS_HEIGHT + 60):60}px;`" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
+        <div  class="w100P fl pSide-1 chanListHeader " :style="`margin-top: ${this.mobileYn? (this.$STATUS_HEIGHT + 60):60}px;`" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
           <gActiveBar :testYn='true' ref="mainActiveBar" :tabList="this.mActiveSearchTabList" class="fl" @changeTab="changeSearchTab" />
             <template v-if="mActiveSearch === 'CHAN'">
               <cSearchBox class="mright-03 mtop-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" @searchBoxClick='searchBoxClick' />
             </template>
-            <div v-if="mActiveSearch === 'CONT'" class="fl w-100P mtop-05" style="display: flex;">
+            <div v-if="mActiveSearch === 'CONT'" class="fl w100P mtop-05" style="display: flex;">
                 <p v-for="(tab, index) in mSearchContentTabList" :key="index" @click="changeContentsTab(tab.name)" class="fl font16 " :class=" this.mSearchContentTab === tab.name ? 'commonLightColorBorder2 fontBold commonLightColor' : 'commonGrayBorderColor lightGray'" style="line-height: 30px; width: calc(100% / 3); height: 30px;"> {{tab.display}}</p>
             </div>
             <template v-if="mActiveSearch === 'CONT'">
@@ -121,21 +121,21 @@
             </template>
         </div>
 
-        <div class="fl wh-100P chanListWrap"  id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style=" overflow:auto;padding: 0 10px; padding-top: calc(var(--paddingTopLength));  "  >
+        <div class="fl wh100P chanListWrap"  id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style=" overflow:auto;padding: 0 10px; padding-top: calc(var(--paddingTopLength));  "  >
           <!-- 채널 리스트 -->
-          <div v-if="mActiveSearch === 'CHAN'" class="w-100P fl" style="overflow: auto; ">
+          <div v-if="mActiveSearch === 'CHAN'" class="w100P fl" style="overflow: auto; ">
             <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
               <channelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
               <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="recommendLoadMore" class="fl wich" />
             </template>
-            <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true && this.GE_DISP_TEAM_LIST.length === 0" class="w-100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
+            <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true && this.GE_DISP_TEAM_LIST.length === 0" class="w100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
               <gListEmpty title='검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' />
             </div>
           </div>
 
           <!-- 컨텐츠 리스트 -->
           <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" style="margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 40px;">
-            <div class="w-100P fl chanRow" style="height:1px;" />
+            <div class="w100P fl chanRow" style="height:1px;" />
             <template v-if="this.mSearchContentTab === 'ALL'" >
               <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index" />
               <template v-if="mGetAxiosYn && GE_DISP_ALL_LIST.length === 0">
@@ -157,7 +157,7 @@
               </template>
               <gListEmpty v-else-if="this.GE_DISP_BOAR_LIST.length === 0 && mEmptyYn === true" title='게시판 콘텐츠 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
             </template>
-            <myObserver @triggerIntersected="contentsLoadMore" id="observer" class="fl w-100P" style=""></myObserver>
+            <myObserver @triggerIntersected="contentsLoadMore" id="observer" class="fl w100P" style=""></myObserver>
           </div>
         </div>
       </div>
@@ -506,7 +506,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
-            var test = contentDetail?.D_MEMO_LIST
+            var test = contentDetail.D_MEMO_LIST
             if (!test) {
               if (!contentDetail) {
                 test = []
@@ -545,7 +545,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
-            var test = contentDetail?.D_MEMO_LIST
+            var test = contentDetail.D_MEMO_LIST
             if (!test) {
               if (!contentDetail) {
                 test = []
@@ -584,7 +584,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
-            var test = contentDetail?.D_MEMO_LIST
+            var test = contentDetail.D_MEMO_LIST
             if (!test) {
               if (!contentDetail) {
                 test = []
