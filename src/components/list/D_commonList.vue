@@ -274,19 +274,19 @@ export default {
       if(userShowYn === true){
         var param = {}
         param.targetType = 'bookMemberDetail'
-        param.popHeaderText = '프로필'
+        param.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
         param.readOnlyYn = true
         param.userKey = userKey
         param.teamKey = teamKey
         if (userKey === this.GE_USER.userKey) {
           param.selfYn = true
-          param.popHeaderText = '내 정보'
+          param.popHeaderText = this.$t('COMMON_NAME_MY_INFO')
         } else {
           param.contentOpenYn = true
         }
         this.$emit('openPop',param)
       } else {
-        this.$showToastPop('유저 정보를 볼 수 없습니다.')
+        this.$showToastPop(this.$t('COMMON_MSG_NOANONY'))
         // this.$showToastPop('익명의 게시글로 유저 정보를 볼 수 없습니다.')
       }
     },
@@ -439,18 +439,24 @@ export default {
       }
       debugger
       param.userKey = this.GE_USER.userKey
-      var req = 'save'
-      var reqText = ' 되었습니다.'
+      if (this.GE_LOCALE === 'ko') {
+        reqText = '해당 컨텐츠의 알림설정이 되었습니다.'
+      } else {
+        reqText = 'The noti for that content has been turned on.'
+      }
       if (!param.subsYn) {
-        req = 'delete'
-        reqText = ' 해제되었습니다.'
+        if (this.GE_LOCALE === 'ko') {
+          reqText = '해당 컨텐츠의 알림설정이 해제되었습니다.'
+        } else {
+          reqText = 'The noti for that content has been turned off.'
+        }
       }
       var this_ = this
       var result = await this.$commonAxiosFunction({
         url: '/service/tp.saveSubscribe',
         param: { subscribe: param }
       })
-      this.$showToastPop('해당 컨텐츠의 알림설정이 ' + reqText)
+      this.$showToastPop(reqText)
       var index = this.commonListData.findIndex((item) => item.contentsKey === param.targetKey)
       if (index !== -1) {
         this.commonListData[index].subsYn = param.subsYn
@@ -478,9 +484,9 @@ export default {
         // 복사 후 textarea 지우기
         document.execCommand('copy')
         document.body.removeChild(textarea)
-        this.$showToastPop('복사되었습니다.')
+        this.$showToastPop(this.$t('COMMON_MSG_COPY_SUCCESS'))
       } catch (error) {
-        this.$showToastPop('복사하지 못했습니다.')
+        this.$showToastPop('COMMON_MSG_COPY_FAIL')
       }
     },
     makeNewContents (type) {
@@ -502,10 +508,10 @@ export default {
         // this.currentConfirmType = 'memoDEL'
       // } else
       if (data === 'alim' || this.tempData.jobkindId === 'ALIM') {
-        this.confirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
+        this.confirmText = this.$t('COMMON_MSG_DELETE_NOTI')
         this.currentConfirmType = 'alimDEL'
       } else if (data === 'board' || this.tempData.jobkindId === 'BOAR') {
-        this.confirmText = '게시글을 삭제 하시겠습니까?'
+        this.confirmText = this.$t('COMMON_MSG_DELETE_NOTI')
         this.currentConfirmType = 'boardDEL'
       }
       // console.log(this.tempData);
@@ -518,23 +524,23 @@ export default {
       if (type === 'alim') {
         targetKind = 'C'
         targetKey = this.tempData.contentsKey
-        this.confirmText = '해당 알림이 신고되었습니다.'
+        this.confirmText = this.$t('COMMON_MSG_REPORT_NOTI')
       } else if (type === 'board') {
         targetKind = 'C'
         targetKey = this.tempData.contentsKey
-        this.confirmText = '해당 게시글이 신고되었습니다.'
+        this.confirmText = this.$t('COMMON_MSG_REPORT_POST')
       } else if (type === 'memo') {
         targetKind = 'C'
         targetKey = this.tempData.memoKey
-        this.confirmText = '해당 댓글이 신고되었습니다.'
+        this.confirmText = this.$t('COMMON_MSG_REPORT_COMMENT')
       } else if (type === 'channel') {
         targetKind = 'T'
         targetKey = this.tempData.creTeamKey
-        this.confirmText = '해당 채널이 신고되었습니다.'
+        this.confirmText = this.$t('COMMON_MSG_REPORT_CHAN')
       } else if (type === 'user') {
         targetKind = 'U'
         targetKey =  this.tempData.creUserKey
-        this.confirmText = '해당 유저가 신고되었습니다.'
+        this.confirmText = this.$t('COMMON_MSG_REPORT_USER')
       }
 
       var param = {}
@@ -561,8 +567,9 @@ export default {
       }
     },
     bloc (type) {
-      var typeText = type === 'user' ? '유저를' : '게시글을'
-      this.confirmText = '해당 ' + typeText +' 차단하시겠습니까?'
+      // var typeText = type === 'user' ? '유저를' : '게시글을'
+      // this.confirmText = '해당 ' + typeText +' 차단하시겠습니까?'
+      this.confirmText = this.$t('COMMON_MSG_BLOCK')
       this.confirmType = 'two'
       this.confirmPopShowYn = true
       this.currentConfirmType = 'BLOC'
@@ -581,19 +588,19 @@ export default {
           param.targetKind = 'C'
           param.targetKey = this.tempData.contentsKey
         } else {
-          this.confirmText = '알수 없는 오류입니다.'
+          this.confirmText = this.$t('COMMON_MSG_UNKWON')
         }
         param.creUserKey = this.GE_USER.userKey
-        this.confirmText = '해당 유저를 차단했습니다.'
+        this.confirmText = this.$t('COMMON_MSG_BLOCKED')
         this.saveActAxiosFunc(param)
       // } else if (this.currentConfirmType === 'memoDEL') {
       //   this.deleteMemo({ memoKey: this.tempData.memoKey })
       //   this.$emit('showToastPop', '댓글을 삭제하였습니다.')
       } else if (this.currentConfirmType === 'alimDEL') {
-        this.$emit('showToastPop', '알림을 나에게서 삭제하였습니다.')
+        this.$emit('showToastPop', this.$t('COMMON_MSG_DELETED_NOTI'))
         this.deleteAlim()
       } else if (this.currentConfirmType === 'boardDEL') {
-        this.$emit('showToastPop', '게시글을 삭제하였습니다.')
+        this.$emit('showToastPop', this.$t('COMMON_MSG_DELETED_POST'))
         this.deleteAlim()
       } else if (this.currentConfirmType === 'alimCancel'){
         // this.$emit('showToastPop', '게시글을 삭제하였습니다.')
@@ -727,7 +734,7 @@ export default {
     },
     cancelConfirm (alim) {
       this.tempData = alim
-      this.confirmText = '알림 발송을 취소 하시겠습니까?'
+      this.confirmText = this.$t('COMMON_MSG_CANCEL_NOTI')
       this.currentConfirmType = 'alimCancel'
       this.confirmType = 'two'
       this.confirmPopShowYn = true
