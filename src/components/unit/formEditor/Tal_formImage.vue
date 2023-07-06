@@ -376,7 +376,7 @@ export default {
             })
         }
       } else {
-        alert('파일을 선택해 주세요.')
+        alert(this.$t('COMMON_MSG_NOFILE'))
       }
       return true
     }

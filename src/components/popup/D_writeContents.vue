@@ -34,8 +34,7 @@
     "FORM_MSG_SUCCESS_EDIT": "수정되었습니다.",
     "FORM_MSG_FAIL_EDIT": "게시되지 못했습니다.",
     "FORM_MSG_SUCCESS_POST": "발송되었습니다.",
-    "FORM_MSG_FAIL_POST": "발송하지 못했습니다.",
-    "FORM_MSG_NOFILE": "파일을 선택해 주세요."
+    "FORM_MSG_FAIL_POST": "발송하지 못했습니다."
   },
   "en": {
     "FORM_BTN_WRITE": "Write",
@@ -71,8 +70,7 @@
     "FORM_MSG_SUCCESS_EDIT": "Edited.",
     "FORM_MSG_FAIL_EDIT": "Failed to publish.",
     "FORM_MSG_SUCCESS_POST": "Sent.",
-    "FORM_MSG_FAIL_POST": "Failed to send.",
-    "FORM_MSG_NOFILE": "Select Files."
+    "FORM_MSG_FAIL_POST": "Failed to send."
   }
 }
 </i18n>
@@ -662,7 +660,7 @@ export default {
         msgData = msgData.trim()
         if ((msgData !== undefined && msgData !== null && msgData !== '') || (this.uploadFileList.length > 0)) {
         } else {
-          this.errorText = this.$T('FORM_MSG_NOTI_NOCONT')
+          this.errorText = this.$t('FORM_MSG_NOTI_NOCONT')
           this.failPopYn = true
           this.complexOkYn = false
           return
@@ -1310,7 +1308,7 @@ export default {
           }
         }
       } else {
-        alert(this.$t('FORM_MSG_NOFILE'))
+        alert(this.$t('COMMON_MSG_NOFILE'))
       }
       return true
     },

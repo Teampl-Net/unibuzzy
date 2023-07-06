@@ -31,6 +31,11 @@ export default {
       this.$emit('showMenu')
     }
   },
+  computed: {
+    GE_LOCALE () {
+      return this.$i18n.locale
+    }
+  },
   watch: {
     mRouterHeaderText: {
       immediate: true,
@@ -43,6 +48,20 @@ export default {
         } else if (val === '마이페이지') {
           this.mDispTitle = this.$t('COMMON_NAME_MY_PAGE')
         } else if (val === '검색') {
+          this.mDispTitle = this.$t('COMMON_NAME_SEARCH')
+        }
+      }
+    },
+    GE_LOCALE: {
+      immediate: true,
+      handler (val) {
+        if (this.mRouterHeaderText === '더알림') {
+          this.mDispTitle = this.$t('COMMON_NAME_APP')
+        } else if (this.mRouterHeaderText === '채널') {
+          this.mDispTitle = this.$t('COMMON_NAME_CHANNEL')
+        } else if (this.mRouterHeaderText === '마이페이지') {
+          this.mDispTitle = this.$t('COMMON_NAME_MY_PAGE')
+        } else if (this.mRouterHeaderText === '검색') {
           this.mDispTitle = this.$t('COMMON_NAME_SEARCH')
         }
       }

@@ -1,3 +1,13 @@
+<i18n>
+{
+  "ko": {
+    "LIST_TITLE_CRE_CHAN": "채널 생성"
+  },
+  "en": {
+    "LIST_TITLE_CRE_CHAN": "Create a Channel"
+  }
+}
+</i18n>
 <template>
     <div style="float: left; width: 100%; height: 100%; overflow: hidden;" :style="this.$route.path === '/chanList'? 'margin-top:' + (this.$STATUS_HEIGHT + 50)+ 'px; padding-bottom: 80px;':''">
         <div style="width: 100%; height: 100%;  float: left; background: #fff; position: relative;">
@@ -333,7 +343,7 @@ export default {
       if (this.GE_USER.certiDate) {
         var tempParam = {}
         tempParam.targetType = 'createChannel'
-        tempParam.popHeaderText = '채널 생성'
+        tempParam.popHeaderText = this.$t('LIST_TITLE_CRE_CHAN')
         this.$emit('openPop', tempParam)
       } else {
         this.gCertiPopShowYn = true

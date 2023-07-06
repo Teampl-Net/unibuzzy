@@ -1,3 +1,13 @@
+<i18n>
+{
+  "ko": {
+    "MAIN_MSG_NOPERM": "열람 권한이 없습니다."
+  },
+  "en": {
+    "MAIN_MSG_NOPERM": "You do not have permission to view."
+  }
+}
+</i18n>
 <template>
     <div v-if="mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
       <!-- <button @click="downloadPdf">다운로드</button> -->
@@ -14,7 +24,7 @@
                   <div style="width: 100%; position: relative; height: 50%; min-height: 26px;  position: relative;">
                       <template v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn">
                           <p class=" textLeft textOverdot commonBlack fontBold font16" style="width: calc(100% - 35px);">
-                              열람 권한이 없습니다.
+                            {{ $t('MAIN_MSG_NOPERM') }}
                           </p>
                       </template>
                       <template v-else>
@@ -163,7 +173,7 @@
               </div>
               <!-- <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1;  width: calc(100% - 40px); margin: 10px 20px; margin-bottom: 10px;float: left;"></div> -->
               <div class="contentsCardMemoArea" v-if="!pNoAuthYn && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 10px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
-                <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fl w-100P textLeft font12 commonColor fontBold mbottom-05 mright-05" @click="this.goContentsDetail(undefined, true)" >댓글 {{ mMemoLeng }}개 모두 보기</p>
+                <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fl w-100P textLeft font12 commonColor fontBold mbottom-05 mright-05" @click="this.goContentsDetail(undefined, true)" >{{ returnCommentText() }}</p>
                 <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
                     <memoCompo @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.D_MEMO_LIST.length" @memoEmitFunc='memoEmitFunc' />
                 </template>
@@ -175,7 +185,7 @@
                       <memoCompo :pNoAuthYn="pNoAuthYn" @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.memoList.length" @memoEmitFunc='memoEmitFunc' />
                   </template>
                   <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
-                  <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >댓글 {{ mMemoLeng }}개 보기</p>
+                  <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >{{ returnCommentText() }}</p>
                   <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
               </div>
           </template>
@@ -324,6 +334,13 @@ export default {
     }
   },
   methods: {
+    returnCommentText () {
+      if (this.GE_LOCALE === 'ko') {
+        return `댓글 ${this.mMemoLeng}개 모두 보기`
+      } else {
+        return `See all ${this.mMemoLeng} comments`
+      }
+    },
     // showContentMore () {
     //   if (this.propDetailYn) this.alimBigView()
     //   let contentHeight = 0
@@ -1399,6 +1416,9 @@ export default {
     }
   },
   computed: {
+    GE_LOCALE () {
+      return this.$i18n.locale
+    },
     GE_STICKER_LIST () {
       return this.$store.getters['D_CHANNEL/GE_STICKER_LIST']
     },
@@ -1466,6 +1486,13 @@ export default {
     }
   },
   watch: {
+    GE_LOCALE: {
+      immediate: true,
+      handler (value) {
+        this.mActiveTabList = [{ display: this.$t('COMMON_TAB_FOLLOWING'), name: 'user' }, { display: this.$t('COMMON_TAB_ALL'), name: 'all' }, { display: this.$t('COMMON_TAB_MANAGING'), name: 'mychannel' }]
+      },
+      deep: true
+    },
     GE_STICKER_LIST: {
       handler (value, old) {
         if (this.GE_STICKER_LIST.length === 0) {

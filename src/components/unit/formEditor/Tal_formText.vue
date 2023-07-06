@@ -1,5 +1,15 @@
+<i18n>
+{
+  "ko": {
+    "FORM_MSG_CONTENTS": "내용을 입력해주세요."
+  },
+  "en": {
+    "FORM_MSG_CONTENTS": "Please enter the contents."
+  }
+}
+</i18n>
 <template>
-  <pre @focus="test" @keyup="changeFont" placeholder="내용을 입력해주세요." contenteditable style="display:inline-block; width: calc(100% - 30px); border-right: #ccc; word-break: break-all;" autofocus :formIdx="targetKey"  ref="formTextArea" :id="'formTextArea'+targetKey" class="formCard formText editableContent formCardTextid formEditorTextPadding" @input="inputResize('formTextArea'+targetKey)"></pre>
+  <pre @focus="test" @keyup="changeFont" :placeholder="$t('FORM_MSG_CONTENTS')" contenteditable style="display:inline-block; width: calc(100% - 30px); border-right: #ccc; word-break: break-all;" autofocus :formIdx="targetKey"  ref="formTextArea" :id="'formTextArea'+targetKey" class="formCard formText editableContent formCardTextid formEditorTextPadding" @input="inputResize('formTextArea'+targetKey)"></pre>
   <!-- <div class="" style="width: 30px; background: #BFBFDA; float: right border-radius: 3px; box-shadow: rgb(191 191 218) 0px 0px 2px 0px; height: 100%; margin-right: 5px; display: flex; justify-content: center; align-items: center;"><img class="fl" src="../../../assets/images/formEditor/scroll.svg" alt=""></div> -->
 </template>
 

@@ -9,8 +9,7 @@
     "ASK_MSG_NOTITLE": "제목을 입력해주세요.",
     "ASK_MSG_NOCONT": "게시글의 내용을 입력해주세요.",
     "ASK_MSG_SUCCESS": "정상적으로 접수되었습니다.",
-    "ASK_MSG_FAILED": "예기치 못한 이유로 접수되지 못했습니다.",
-    "ASK_MSG_NOFILE": "파일을 선택해주세요."
+    "ASK_MSG_FAILED": "예기치 못한 이유로 접수되지 못했습니다."
   },
   "en": {
     "ASK_TITLE_TITLE": "Title",
@@ -21,8 +20,7 @@
     "ASK_MSG_NOTITLE": "Please enter a title.",
     "ASK_MSG_NOCONT": "Please enter a contents.",
     "ASK_MSG_SUCCESS": "Your inquiry has been successfully received.",
-    "ASK_MSG_FAILED": "Failed to receive due to unexpected reason.",
-    "ASK_MSG_NOFILE": "Please select a file."
+    "ASK_MSG_FAILED": "Failed to receive due to unexpected reason."
   }
 }
 </i18n>
@@ -507,7 +505,7 @@ export default {
           }
         }
       } else {
-        this.$showToastPop(this.$t('ASK_MSG_NOFILE'))
+        this.$showToastPop(this.$t('COMMON_MSG_NOFILE'))
       }
       return true
     }

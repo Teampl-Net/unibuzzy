@@ -1,26 +1,34 @@
 <i18n>
 {
   "ko": {
+    "FORM_BTN_ATTACH": "첨부",
+    "FORM_MSG_MAX": "파일은 최대 10MB까지 첨부할 수 있습니다.",
+    "FORM_BTN_SELECT": "파일 선택",
+    "FORM_MSG_SELECT_FILE": "파일을 선택해 주세요."
   },
   "en": {
+    "FORM_BTN_ATTACH": "Attach",
+    "FORM_MSG_MAX": "Files can be attached up to 10MB.",
+    "FORM_BTN_SELECT": "Select Files",
+    "FORM_MSG_SELECT_FILE": "Please select a file."
   }
 }
 </i18n>
 <template>
     <div style="width: 100%; float: left;">
-      <gConfirmPop @no="this.errorShowYn = false" confirmText='파일은 최대 10MB까지 첨부할 수 있습니다.' confirmType='timeout' v-if="errorShowYn" />
+      <gConfirmPop @no="this.errorShowYn = false" :confirmText="$t('FORM_MSG_MAX')" confirmType='timeout' v-if="errorShowYn" />
       <div @click="this.$refs.selectFileAttach.click()" class="font16 commonColor" style="display: flex; align-items: center; justify-content: center; font-weight:500; overflow: hidden; cursor: pointer; text-align: center; margin-top: 2px; position: relative; " v-if="this.targetType === 'memo'">
           <img src="../../../assets/images/common/fileIcon.svg" alt="" style="margin-right: 8px; width: 12px;">
-          첨부
+          {{ $t('FORM_BTN_ATTACH') }}
       </div>
       <div v-else @click="this.$refs.selectFileAttach.click()" class="font14 whiteColor attachFileBg fl" style="font-weight:500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; ">
-        +첨부
+        +{{ $t('FORM_BTN_ATTACH') }}
       </div>
       <form v-if="this.targetType === 'memo'" @submit.prevent="formSubmit" class="font16 commonColor" style="position: relative; overflow: hidden; display: none; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 150px;" method="post">
-          <input class="attachFile" hidden type="file" title ="파일 선택"  ref="selectFileAttach" multiple accept="*" style="width: 100%; height: 25px;" id="selectFileAttach" @change="handleImageUpload"/>
+          <input class="attachFile" hidden type="file" :title ="$t('FORM_BTN_SELECT')"  ref="selectFileAttach" multiple accept="*" style="width: 100%; height: 25px;" id="selectFileAttach" @change="handleImageUpload"/>
       </form>
       <form v-else @submit.prevent="formSubmit" hidden class="font14 whiteColor attachFileBg fl " style="font-weight:500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " method="post">
-          <input class="attachFile" hidden  type="file" title ="파일 선택"  ref="selectFileAttach" multiple accept="*" style="width: 100%;" id="selectFileAttach" @change="handleImageUpload"/>
+          <input class="attachFile" hidden  type="file" :title ="$t('FORM_BTN_SELECT')"  ref="selectFileAttach" multiple accept="*" style="width: 100%;" id="selectFileAttach" @change="handleImageUpload"/>
       </form>
       <div v-if="this.targetType !== 'memo' && this.sFileList.length > 0" :class="pOneLineYn? '' : 'mtop-05'" class="fl" style="width: 100%; overflow: auto;" :style="pOneLineYn? 'width: calc(100% - 55px); margin-top: 2px;': ''">
           <div :style="attachFileWidth" style="min-width: 100%; float: left; overflow: auto; white-space: nowrap;">
@@ -251,7 +259,7 @@ export default {
             })
         }
       } else {
-        alert('파일을 선택해 주세요.')
+        alert(this.$t('FORM_MSG_SELECT_FILE'))
       }
       return true
     },

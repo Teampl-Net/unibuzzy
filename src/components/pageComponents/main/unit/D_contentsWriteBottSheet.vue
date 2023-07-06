@@ -1,7 +1,29 @@
+<i18n>
+{
+  "ko": {
+    "BOTTOM_MSG_WHERE": "어디에 작성하실건가요?",
+    "BOTTOM_MSG_NOPERM": "권한이 없습니다.",
+    "BOTTOM_MSG_CHAN": "채널을 선택해주세요",
+    "BOTTOM_BTN_WRITE": "작성하기",
+    "BOTTOM_MSG_NOCHAN": "컨텐츠를 작성할 수 있는 채널이 없어요",
+    "BOTTOM_MSG_NOFOLLOW": "해당 채널의 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.",
+    "BOTTOM_MSG_CHECK": "채널을 다시 선택 후 확인 버튼을 눌러주세요!"
+  },
+  "en": {
+    "BOTTOM_MSG_WHERE": "Where are you going to write contents?",
+    "BOTTOM_MSG_NOPERM": "You do not have permission.",
+    "BOTTOM_MSG_CHAN": "Please select a channel",
+    "BOTTOM_BTN_WRITE": "Write",
+    "BOTTOM_MSG_NOCHAN": "There's no channel to create content.",
+    "BOTTOM_MSG_NOFOLLOW": "You are not a follower of that channel. Please apply for followers.",
+    "BOTTOM_MSG_CHECK": "Please select the channel again and press the OK button!"
+  }
+}
+</i18n>
 <template>
 <div style="width: 100%; min-height: 320px; left:0; background: #FFF; border-radius: 25px 25px 0px 0px; display: flex; flex-direction: column;padding: 20px 20px; position: absolute; bottom: 0; z-index: 11;">
   <div style="position: relative; width: 100%; min-height: 40px; margin-bottom: 10px; float: left;">
-      <p class="font20 fontBold textLeft">어디에 작성하실건가요?</p>
+      <p class="font20 fontBold textLeft">{{ $t('BOTTOM_MSG_WHERE') }}</p>
       <img src="../../../../assets/images/common/grayXIcon.svg" @click="closePop()" style="width: 20px; position: absolute; right: 8px;top: 5px;" alt="">
   </div>
   <div style="width: 100%; min-height: 100px;">
@@ -10,17 +32,17 @@
             <div v-if="mAlimClickYn === false" class="noneClickCSS fl wh-100P"></div>
               <img style="width: 36px;" src="../../../../assets/images/main/main_contentsBellIcon2.png" alt="">
               <img v-if="this.mSelectedWriteType === 'ALIM'" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
-              <p :class="{lightGray: this.mSelectedWriteType !== 'ALIM' }" class="font14 fontBold mtop-05 commonColor">{{mAlimClickYn === true ? '알림' : '권한이 없습니다.'}}</p>
+              <p :class="{lightGray: this.mSelectedWriteType !== 'ALIM' }" class="font14 fontBold mtop-05 commonColor">{{mAlimClickYn === true ? $t('COMMON_TAB_NOTI') : $t('BOTTOM_MSG_NOPERM')}}</p>
           </div>
           <div @click="selectWriteType('BOAR')" class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'BOAR' ? 'border: 3px solid #7678E2!important; ' : ''">
               <img class="img-w30" src="../../../../assets/images/main/baordIcon.svg" alt="">
               <img v-if="this.mSelectedWriteType === 'BOAR'" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
-              <p :class="{lightGray: this.mSelectedWriteType !== 'BOAR'}" class="font14 fontBold mtop-03 commonColor">게시글</p>
+              <p :class="{lightGray: this.mSelectedWriteType !== 'BOAR'}" class="font14 fontBold mtop-03 commonColor">{{ $t('COMMON_TAB_POST') }}</p>
           </div>
       </div>
   </div>
   <div style="width: 100%; margin-top: 20px; min-height: 30px;" v-if="!propTeamKey">
-      <p class="font20 fontBold textLeft">채널을 선택해주세요</p>
+      <p class="font20 fontBold textLeft">{{ $t('BOTTOM_MSG_CHAN') }}</p>
       <div class="lightGray cursorP font16 fontBold okScrollBar" style="border: 3px solid #F4F4F4!important; width: 100%; height: 160px!important; border-radius: 8px; overflow: hidden scroll; padding :15px 20px;" name="" id="">
           <div style="width: 100%; height: 30px; padding: 0 5px; float: left;">
               <div v-for="(chan, index) in mSelectChanList" style="position: relative; float: left; width: 100%; min-height: 100%;" :key="index">
@@ -31,7 +53,7 @@
       </div>
   </div>
   <gBtnLarge v-if="mSelectChanList.length > 0" :style="this.mSelectedChan === 0? 'background: #F4F4F4!important; color: #AAAAAA!important;': ''" class="mtop-2 fontBold" @click="this.mSelectedChan === 0? '' : openWritePushPop()" btnTitle="작성하기" />
-  <gBtnLarge  v-else style="background: #F4F4F4!important; color: #AAAAAA!important;" class="mtop-2 fontBold" btnTitle="컨텐츠를 작성할 수 있는 채널이 없어요" />
+  <gBtnLarge  v-else style="background: #F4F4F4!important; color: #AAAAAA!important;" class="mtop-2 fontBold" :btnTitle="$t('BOTTOM_MSG_NOCHAN')" />
 </div>
 </template>
 
@@ -115,7 +137,7 @@ export default {
     },
     async openWritePushPop () {
       if (this.propTeamKey && this.mSelectedWriteType === 'ALIM' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
-        this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
+        this.$showToastPop(this.$t('BOTTOM_MSG_NOFOLLOW'))
         this.$checkDeleteHistory('bottomWriteSheets')
         this.$emit('openMember')
         return
@@ -134,7 +156,7 @@ export default {
       } else if (this.mSelectedWriteType === 'BOAR') {
         var teamList = await this.$getWriteBoardData(this.mSelectedChan)
         if (teamList === false) {
-          this.$showToastPop('채널을 다시 선택 후 확인 버튼을 눌러주세요!')
+          this.$showToastPop(this.$t('BOTTOM_MSG_CHECK'))
           return
         }
         writeParam.selectBoardYn = true
