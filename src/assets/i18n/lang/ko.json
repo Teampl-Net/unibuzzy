@@ -90,5 +90,6 @@
     "COMMON_MSG_NOANONY": "익명의 게시글로 유저 정보를 볼 수 없습니다.",
     "COMMON_MSG_BLOCK": "해당 유저를 차단하시겠습니까?",
     "COMMON_MSG_BEFORE_REPORT": "해당 유저를 신고하시겠습니까?",
-    "COMMON_MSG_DELETED_COMMENT": "댓글을 삭제하였습니다."
+    "COMMON_MSG_DELETED_COMMENT": "댓글을 삭제하였습니다.",
+    "COMMON_MSG_NO_LOGIN": "로그인 후 이용해주세요."
   }

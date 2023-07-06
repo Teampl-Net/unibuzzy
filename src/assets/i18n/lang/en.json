@@ -91,5 +91,6 @@
     "COMMON_MSG_NOANONY": "Unable to view user information with anonymous posts.",
     "COMMON_MSG_BLOCK": "Are you sure you want to block this user?",
     "COMMON_MSG_BEFORE_REPORT": "Are you sure you want to report this user?",
-    "COMMON_MSG_DELETED_COMMENT": "A comment have been deleted."
+    "COMMON_MSG_DELETED_COMMENT": "A comment have been deleted.",
+    "COMMON_MSG_NO_LOGIN": "Please log in and use it."
   }

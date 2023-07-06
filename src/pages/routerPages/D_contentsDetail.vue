@@ -1,3 +1,15 @@
+<i18n>
+{
+  "ko": {
+    "DETAIL_MSG_FEATURE": "해당 모드에서는 지원하지 않는 기능입니다.",
+    "DETAIL_MSG_SAVED": "저장되었습니다!"
+  },
+  "en": {
+    "DETAIL_MSG_FEATURE": "This feature is not supported in this mode.",
+    "DETAIL_MSG_SVAED": "Saved!"
+  }
+}
+</i18n>
 <template>
     <div ref="contScrollWrap" id="contsScrollWrap" class="boardDetailWrap" v-if="cDetail">
       <popHeader :pNoAuthYn="true" ref="gPopupHeader" class="commonPopHeaderWrap headerShadow commonPopHeader" :style="'top:' + 0 + 'px'" :headerTitle="cDetail.cabinetNameMtext? cDetail.cabinetNameMtext:cDetail.nameMtext" targetType="contentsDetail" @openMenu="openChanMenuYn = true" />
@@ -398,7 +410,7 @@ export default {
           // eslint-disable-next-line no-unused-vars
           var result = await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
         }
-        this.confirmText = '저장되었습니다!'
+        this.confirmText = this.$t('DETAIL_MSG_SAVED')
         this.confirmType = false
         this.backClick()
         this.confirmPopShowYn = true
@@ -458,16 +470,16 @@ export default {
       }
 
       if (data === 'memo' || (this.tempData && this.tempData.memoKey)) {
-        this.confirmText = '댓글을 삭제하시겠습니까?'
+        this.confirmText = this.$t('COMMON_MSG_DELETE_COMMENT')
         if (this.tempData.parentMemoKey) {
-          this.confirmText = '대댓글을 삭제하시겠습니까?'
+          this.confirmText = this.$t('COMMON_MSG_DELETE_REPLY')
         }
         this.currentConfirmType = 'memoDEL'
       } else if (data === 'alim' || this.CONT_DETAIL.jobkindId === 'ALIM') {
-        this.confirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
+        this.confirmText = this.$t('COMMON_MSG_DELETE_NOTI')
         this.currentConfirmType = 'alimDEL'
       } else if (data === 'board' || this.CONT_DETAIL.jobkindId === 'BOAR') {
-        this.confirmText = '게시글을 삭제 하시겠습니까?'
+        this.confirmText = this.$t('COMMON_MSG_DELETE_POST')
         this.currentConfirmType = 'boardDEL'
       }
       // console.log(this.tempData);
