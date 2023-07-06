@@ -62,6 +62,9 @@
     "COMMON_BTN_EDIT_POST": "Edit a post",
     "COMMON_BTN_REPORT_CHAN": "Report a channel",
     "COMMON_BTN_REPORT_NOTI": "Report a noti",
+    "COMMON_STATUS_PROCEEDING": "Proceeding", 
+    "COMMON_STATUS_COMPLETED": "Completed", 
+    "COMMON_STATUS_UNRESOLVED": "Unresolved",
 
 
     "COMMON_MSG_FAILED": "Failed. Please contact manager.",

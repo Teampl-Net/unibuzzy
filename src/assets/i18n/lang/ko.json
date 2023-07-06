@@ -62,6 +62,9 @@
     "COMMON_BTN_EDIT_POST": "게시글 수정",
     "COMMON_BTN_REPORT_CHAN": "채널 신고",
     "COMMON_BTN_REPORT_NOTI": "해당 알림 신고",
+    "COMMON_STATUS_PROCEEDING": "진행중", 
+    "COMMON_STATUS_COMPLETED": "완료", 
+    "COMMON_STATUS_UNRESOLVED": "미해결",
 
     "COMMON_MSG_FAILED": "실패했습니다. 관리자에게 문의해주세요.",
     "COMMON_MSG_NOTFOUND": "해당 컨텐츠를 찾을 수 없습니다.\n나중에 다시 시도해주세요.",

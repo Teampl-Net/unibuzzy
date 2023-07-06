@@ -1,3 +1,19 @@
+<i18n>
+  {
+  "ko": {
+    "SELECT_GROUP_DROP_NAME": "그룹 선택",
+    "SELECT_MEMBER_TYPE": "멤버유형",
+    "SELECT_MANA_MEMBER": "구성원 관리",
+    "SELECT_TARGET_SELECTION": "대상 선택"
+  },
+  "en": {
+    "SELECT_GROUP_DROP_NAME": "Group Selection",
+    "SELECT_MEMBER_TYPE": "Member Type",
+    "SELECT_MANA_MEMBER": "Member Management",
+    "SELECT_TARGET_SELECTION": "Target Selection"
+  }
+}
+</i18n>
 <template>
 <div class="selectBookListWrap">
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' />
@@ -37,8 +53,8 @@ export default {
       selectedYn: false,
       setSelectedList: [],
       detailOpenYn: false,
-      titleText: '팀플',
-      receiverTitle: '그룹 선택',
+      // titleText: '팀플',
+      receiverTitle: this.$t('SELECT_GROUP_DROP_NAME'),
       selectReceivers: [],
       selectedTeamList: [],
       selectedMemberList: [],
@@ -47,7 +63,7 @@ export default {
       oriList: {},
       pSelectedBookList: {},
       pSelectedMemberList: {},
-      activeTabList: [{ display: '주소록', name: 'B' }, { display: '멤버유형', name: 'M' }],
+      activeTabList: [{ display: this.$t('COMMON_NAME_ADDRBOOK'), name: 'B' }, { display: this.$t('SELECT_MEMBER_TYPE'), name: 'M' }],
       activeTab: 'B'
     }
   },
@@ -276,7 +292,7 @@ export default {
           this.$removeHistoryStack()
         }
         this.memberEditYn = false
-        this.receiverTitle = '그룹 선택'
+        this.receiverTitle = this.$t('SELECT_GROUP_DROP_NAME')
         this.detailOpenYn = false
       } else {
         this.$checkDeleteHistory('modiPopReceiverSelecPop')
@@ -314,9 +330,9 @@ export default {
         // this.$store.commit('D_HISTORY/updateStack', history)
         this.$addHistoryStack('commonBookMemberList')
 
-        this.receiverTitle = '구성원 관리'
+        this.receiverTitle = this.$t('SELECT_MANA_MEMBER')
         if (this.selectPopYn) {
-          this.receiverTitle = '대상 선택'
+          this.receiverTitle = this.$t('SELECT_TARGET_SELECTION')
         }
       }
     }
@@ -338,15 +354,21 @@ export default {
 </script>
 
 <style >
-.selectBookListWrap{height: 100vh; background-color:white; width:100%; z-index:9999; position:absolute; top:0; left:0;}
-.bookListStyle{ width: 100%; position: relative; float: left; height: calc(100% - 150px) ; overflow: hidden auto; padding-bottom: 60px;}
-.memberListStyle{position: absolute; top: 0; overFlow: hidden scroll; background: #fff; padding-bottom: 60px;}
-
-.selectBookListContents{position:absolute; overflow: auto;}
-
-.selectedListStyle{float: left; width:100%; position: absolute; bottom:0px; left:0px;
-min-height: 150px;
-height: 150px;
-max-height: 150px;
-}
+  .selectBookListWrap{
+    height: 100vh; background-color:white; width:100%; z-index:9999; position:absolute; top:0; left:0;
+  }
+  .bookListStyle{
+    width: 100%; position: relative; float: left; height: calc(100% - 150px) ; overflow: hidden auto; padding-bottom: 60px;
+  }
+  .memberListStyle{
+    position: absolute; top: 0; overFlow: hidden scroll; background: #fff; padding-bottom: 60px;
+  }
+  .selectBookListContents{
+    position:absolute; overflow: auto;
+  }
+  .selectedListStyle{float: left; width:100%; position: absolute; bottom:0px; left:0px;
+    min-height: 150px;
+    height: 150px;
+    max-height: 150px;
+  }
 </style>
