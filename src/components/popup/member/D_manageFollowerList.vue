@@ -1,3 +1,31 @@
+<i18n>
+{
+  "ko": {
+    "FOLLOW_MSG_USERINFO": "이름 또는 전화번호를 입력해주세요",
+    "FOLLOW_BTN_ORDER_CRE": "등록순",
+    "FOLLOW_BTN_ORDER_NAME": "이름순",
+    "FOLLOW_BTN_MANA_MEM": "멤버관리",
+    "FOLLOW_BTN_MANA_TYPE": "유형관리",
+    "FOLLOW_MSG_SUCCESS": "승인되었습니다!",
+    "FOLLOW_TITLE_MANA_MEMTYPE": "멤버유형관리",
+    "FOLLOW_MSG_WAIT": "상대방이 구독하기를 기다리는 중 입니다.",
+    "FOLLOW_MSG_AUTO": "구독 시 자동으로 매니저로 등록됩니다.",
+    "FOLLOW_TITLE_ADD_USER": "유저 추가"
+  },
+  "en": {
+    "FOLLOW_MSG_USERINFO": "Write down name or phone number",
+    "FOLLOW_BTN_ORDER_CRE": "Created",
+    "FOLLOW_BTN_ORDER_NAME": "Name",
+    "FOLLOW_BTN_MANA_MEM": "Manage Members",
+    "FOLLOW_BTN_MANA_TYPE": "Manage Types",
+    "FOLLOW_MSG_SUCCESS": "Approved!",
+    "FOLLOW_TITLE_MANA_MEMTYPE": "Manage Member Types",
+    "FOLLOW_MSG_WAIT": "Waiting for the other person to subscribe.",
+    "FOLLOW_MSG_AUTO": "Users are automatically registered as managers upon subscription.",
+    "FOLLOW_TITLE_ADD_USER": "Add a User"
+  }
+}
+</i18n>
 <template>
 <div class="w-100P h-100P"  style="position: absolute; top: 0; padding: 60px 1rem 0 1rem; " :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
     <!-- <div style="width: 100%; float: left; height: 40px;">
@@ -6,25 +34,25 @@
     </div> -->
     <!-- <input type="text" name="" placeholder="이름을 입력해주세요." class="fl" id=""> -->
     <div class="pageTopAreaStyle">
-        <gMainTab :activeTabList='activeTabList' style="position:absolute; left:0; bottom:-2px;" :activeTab='activeTab' @changeTab='changeTab' />
+        <div class="receptListBtnStyle fr" style="margin-bottom: 10px;">
+          <gBtnSmall @click="openMemberTypePop" :btnTitle="$t('FOLLOW_BTN_MANA_TYPE')" style="padding: 0 10px !important;" class="cursorP fl"/>
+          <gBtnSmall @click="openReceptListPop" :btnTitle="$t('COMMON_BTN_REQLIST')" style="padding: 0 10px !important;" class="cursorP fl mright-05"/>
+        </div>
+        <gMainTab :activeTabList='activeTabList' style="position:static;" :activeTab='activeTab' @changeTab='changeTab' />
         <!-- <div class="tableTopArea">
             <p class="font14  fontBold fl" style="margin-left: 40px; width: calc((100% - 165px)*0.4);">기본정보</p>
             <p class="font14  fontBold fl" style="width: calc((100% - 165px)*0.6);"></p>
             <p class="font14  fontBold fl" style="width: 125px;">권한</p>
         </div> -->
-        <div class="receptListBtnStyle fr">
-          <gBtnSmall @click="openMemberTypePop" btnTitle="유형관리" style="padding: 0 10px !important;" class="cursorP fl"/>
-          <gBtnSmall @click="openReceptListPop" btnTitle="신청목록" style="padding: 0 10px !important;" class="cursorP fl mright-05"/>
-        </div>
     </div>
     <div class="w-100P fl" style="min-width: 120px;">
       <div class="fl" style="position: relative; margin-top: 10px; width: calc(100% - 120px)">
         <img @click="searchMember()" class="cursorP" style="float: right; position: absolute; left: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
-        <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="searchMember()" placeholder="이름 또는 전화번호를 입력해주세요">
+        <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="searchMember()" :placeholder="$t('FOLLOW_MSG_USERINFO')">
       </div>
       <div class="CDeepBorderColor fr" style="border-radius: 20px; width:100px; min-height: 30px; margin-top: 10px; display: flex; justify-content: center; align-items: center; ">
-        <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'creDate'}">등록순</p>
-        <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">이름순</p>
+        <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'creDate'}">{{ $t('FOLLOW_BTN_ORDER_CRE') }}</p>
+        <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">{{ $t('FOLLOW_BTN_ORDER_NAME') }}</p>
       </div>
     </div>
     <div class="w-100P h-100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
@@ -37,7 +65,7 @@
     <transition name="showUp">
         <div v-if="receptListPopShowYn" style="width: calc(100% - 40px); height: 90%; position: absolute; left: 20px; bottom: 0px; background: #fff; border-radius: 0.8rem 0.8rem 0 0; z-index: 99999999;">
             <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
-                <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">멤버관리</p>
+                <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">{{ $t('FOLLOW_BTN_MANA_MEM') }}</p>
                 <img @click="closeRecMemberPop" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
             </div>
             <div style="width: 100%; height: calc(100% - 60px); float: left; padding: 10px 20px;">
@@ -45,7 +73,7 @@
             </div>
         </div>
     </transition>
-    <gConfirmPop @no="timerPopShowYn = false" confirmText='승인되었습니다!' confirmType='timeout' v-if="timerPopShowYn" />
+    <gConfirmPop @no="timerPopShowYn = false" :confirmText="$t('FOLLOW_MSG_SUCCESS')" confirmType='timeout' v-if="timerPopShowYn" />
 </div>
 
 </template>
@@ -149,7 +177,7 @@ export default {
     async openMemberTypePop () {
       var param = {}
       param.targetType = 'editMemberTypePop'
-      param.popHeaderText = '멤버유형관리'
+      param.popHeaderText = this.$t('FOLLOW_TITLE_MANA_MEMTYPE')
       param.teamKey = this.propData.teamKey
       var resultList = null
       var memberTypeList = await this.$commonAxiosFunction({
@@ -198,8 +226,8 @@ export default {
     },
     matchInfo(){
       this.smallPopYn = true
-      this.confirmMsg = '상대방이 구독하기를 기다리는 중 입니다. '
-      this.addSmallMsg = '구독 시 자동으로 매니저로 등록됩니다.'
+      this.confirmMsg = this.$t('FOLLOW_MSG_WAIT')
+      this.addSmallMsg = this.$t('FOLLOW_MSG_AUTO')
     },
     memberInfo(member){
       // if(this.tab === 'Show' && member.showProfileYn){
@@ -208,7 +236,7 @@ export default {
         // console.log(member)
         param = member
         param.targetType = 'bookMemberDetail'
-        param.popHeaderText = '프로필'
+        param.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
         param.userKey = member.userKey
         param.readOnlyYn = true
         this.$emit('openPop',param)
@@ -259,7 +287,7 @@ export default {
         // eslint-disable-next-line no-debugger
         debugger
         /* this.okPopShowYn = true */
-        this.$showToastPop('승인되었습니다!')
+        this.$showToastPop(this.$t('FOLLOW_MSG_SUCCESS'))
         this.getFollowerList()
       }
     },
@@ -365,7 +393,7 @@ export default {
       param.targetType = 'bookMemberDetail'
       // param.currentCabinetKey = this.propData.cabinetKey
       param.currentTeamKey = this.propData.teamKey
-      param.popHeaderText = '유저 추가'
+      param.popHeaderText = this.$t('FOLLOW_TITLE_ADD_USER')
       param.newMemYn = true
       this.$emit('openPop', param)
     },
@@ -425,9 +453,19 @@ export default {
     },
     history () {
       return this.$store.getters['D_HISTORY/hStack']
+    },
+    GE_LOCALE () {
+      return this.$i18n.locale
     }
   },
   watch: {
+    GE_LOCALE: {
+      immediate: true,
+      handler (value) {
+        this.activeTabList = [{ display: this.$t('COMMON_TAB_ALL'), name: 'A' }, { display: this.$t('COMMON_NAME_MEMBER'), name: 'M' }, { display: this.$t('COMMON_NAME_MANAGER'), name: 'AD' } ]
+      },
+      deep: true
+    },
     pageUpdate () {
       if (this.history[this.history.length - 1] === 'receptListPop') {
         this.closeRecMemberPop()
@@ -475,5 +513,5 @@ export default {
 .modalBackStyle{width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000050; z-index: 999999;}
 .pageTopAreaStyle {width: 100%; float: left; position: relative; min-height: 30px; border-bottom: 1px solid #6768a7;}
 /* .receptListBtnStyle {position: absolute; right: 20px; top: 0px; height: 25px; z-index: 999999; line-height: 25px;} */
-.receptListBtnStyle {position: absolute;  right: 10px; top: -5px; z-index: 9;}
+.receptListBtnStyle {right: 10px; top: -5px; z-index: 9;}
 </style>

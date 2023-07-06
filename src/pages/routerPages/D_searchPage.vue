@@ -1,3 +1,33 @@
+<i18n>
+{
+  "ko": {
+    "SEAR_MSG_LOOK": "무엇을 찾고 계신가요?",
+    "SEAR_MSG_KEYWORD": "검색키워드를 입력해주세요",
+    "SEAR_TITLE_FIND_CATEGORY": "산업군별 채널 찾기",
+    "SEAR_TITLE_FIND_LABEL": "분류별 채널 찾기",
+    "SEAR_MSG_CHAN_RECOMMEND": "채널을 추천해드릴게요!",
+    "SEAR_TAB_RECE_CHANNEL": "최신",
+    "SEAR_TAB_ACT_CAHNNEL": "최근활동",
+    "SEAR_MSG_RECE_KEYWORD": "최근 검색어",
+    "SEAR_MSG_NOT_SEARCH": "최근 검색한 결과가 없어요",
+    "SEAR_BTN_CLEAR": "전체삭제",
+    "SEAR_TAB_POP_CHAN": "인기"
+  },
+  "en": {
+    "SEAR_MSG_LOOK": "What are you looking for?",
+    "SEAR_MSG_KEYWORD": "Search…",
+    "SEAR_TITLE_FIND_CATEGORY": "Channels by Categories",
+    "SEAR_TITLE_FIND_LABEL": "Channels by Labels",
+    "SEAR_MSG_CHAN_RECOMMEND": "Recommended channels for you",
+    "SEAR_TAB_RECE_CHANNEL": "Recent",
+    "SEAR_TAB_ACT_CAHNNEL": "Recent Activity",
+    "SEAR_MSG_RECE_KEYWORD": "Recent Keywords",
+    "SEAR_MSG_NOT_SEARCH": "Oops! You haven't searched anything yet.",
+    "SEAR_BTN_CLEAR": "Clear",
+    "SEAR_TAB_POP_CHAN": "Popular"
+  }
+}
+</i18n>
 <template>
 <!--  -->
   <template v-if="mSearchModeYn === false">
@@ -5,37 +35,37 @@
       <div class="searchBodyTop pSide-1" style="background: white">
         <div class="fl w-100P" style="height: 30px; float: left;">
           <img src="../../assets/images/main/icon_3d_search.png" style="float: left; margin: 0 8px 8px 8px;" class="img-w23" alt="">
-          <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">무엇을 찾고 계신가요?</p>
+          <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">{{ $t("SEAR_MSG_LOOK") }}</p>
         </div>
         <!-- input Box -->
         <div class="fl w-100P" style="position: relative; margin-top: 1rem; min-height: 50px;">
           <img @click="setSearchList()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
-          <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" placeholder="검색키워드를 입력해주세요" />
+          <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" />
           <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
         </div>
 
         <!-- input 박스에 포커스가 되면 최근 검색이 등장 -->
         <template v-if="mInputFocusYn === true">
-          <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft mtop-05">최근 검색어</p>
+          <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft mtop-05">{{ $t("SEAR_MSG_RECE_KEYWORD") }}</p>
           <div class="fl w-100P pSide-05 thinScrollBar" style="max-height:200px; overflow: auto">
             <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style=" padding: 10px 0; border-bottom:1px solid #CCCCCC90; ">
               <p class="fl font14 grayBlack textLeft" style="width: calc(100% - 20px)" @click="mInputText = data, findData()">{{data}}</p>
               <img src="../../assets/images/common/grayXIcon.svg" @click="searchHistoryDelete(index)" class="fr img-w10 mtop-03" alt="">
             </div>
           </div>
-          <p v-if="mSearchHistoryList.length === 0" class="w-100P fl mtop-2 mbottom-2 font16 lightGray textCenter">최근 검색한 결과가 없어요</p>
-          <p v-if="mSearchHistoryList.length > 0" class="fr font12 lightGray mtop-05 pSide-05" @click="searchHistoryClear()">전체삭제</p>
+          <p v-if="mSearchHistoryList.length === 0" class="w-100P fl mtop-2 mbottom-2 font16 lightGray textCenter">{{ $t("SEAR_MSG_NOT_SEARCH") }}</p>
+          <p v-if="mSearchHistoryList.length > 0" class="fr font12 lightGray mtop-05 pSide-05" @click="searchHistoryClear()">{{ $t("SEAR_BTN_CLEAR") }}</p>
         </template>
 
         <!-- 산업군 -->
         <div v-if="mBusinessItemList.length > 0" class="fl w-100P" style="min-height: 50px; float: left; display: flex; flex-wrap: wrap; gap: 10px;">
-          <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">산업군별 채널 찾기</p>
+          <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">{{ $t("SEAR_TITLE_FIND_CATEGORY") }}</p>
           <div v-for="(business, index) in mBusinessItemList" @click="setCataItem(business)" :key="index" class="fl font14 cursorP fontBold" style="padding: 0 8px; border-radius:30px; line-height: 24px;  min-width:30px;" :class=" this.mCateItem === business.cateKey ? 'commonLightBGColor fontBold CWhiteColor' : 'commonGrayBorderColor lightGray'">
             {{$changeText(business.itemNameMtext)}}
           </div>
         </div>
         <div v-if="!GE_USER.unknownYn && mMyStickerList.length > 0" class="fl w-100P mtop-1" style="min-height: 50px;  float: left; display: flex; flex-wrap: wrap; gap: 10px;">
-          <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">분류별 컨텐츠 찾기</p>
+          <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">{{ $t("SEAR_TITLE_FIND_LABEL") }}</p>
           <template v-for="(sticker, index) in mMyStickerList" :key="index" >
             <gStickerLine @click="searchSticker(sticker)"  v-if="sticker" style="float: left; min-width: 30px;" :pSticker="sticker" />
           </template><!--
@@ -49,7 +79,7 @@
       <div class="wh-100P fl mtop-1 ptop-1" style="background: white; ">
         <div class="fl w-100P pSide-1" style="height: 30px; float: left;">
           <img src="../../assets/images/main/icon_3d_star.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
-          <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">채널을 추천해드릴게요!</p>
+          <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">{{ $t("SEAR_MSG_CHAN_RECOMMEND") }}</p>
         </div>
         <div class="w-100P fl pSide-1" >
           <gActiveBar :testYn='true' ref="activeBar" :tabList="this.mActiveTabRecommendList" class="fl" @changeTab="changeRecommendTab" />
@@ -70,7 +100,7 @@
         <div class="fl w-100P" :style="`height: ${this.mobileYn? (this.$STATUS_HEIGHT + 60):60}px;`" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: flex-start; position: fixed; z-index: 3; background: white;">
           <img @click="searchClear()" src="../../assets/images/common/icon_back.png" class="fl img-w12 cursorP mright-1 mleft-05" alt="">
           <div class="fl w-100P mright-1" style="width:calc(100% - 90px); position: relative;">
-            <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" placeholder="키워드를 검색해주세요" />
+            <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" />
             <img  @click="setSearchList()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
             <!-- <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt=""> -->
           </div>
@@ -163,7 +193,7 @@ export default {
       mFindText: '',
       mStikcerKey: '',
       // mActiveTabRecommendList: [{ display: '인기', name: 'P' }, { display: '맞춤', name: 'CUST' }],
-      mActiveTabRecommendList: [{ display: '인기', name: 'P' }, { display: '최신', name: 'N' }],
+      mActiveTabRecommendList: [{ display: this.$t('SEAR_TAB_POP_CHAN'), name: 'P' }, { display: this.$t('COMMON_TAB_RECENT'), name: 'N' }],
       mActiveRecommend: 'P',
       mCateItem: '',
       mTempCateItem: '',
@@ -206,7 +236,9 @@ export default {
       mBottomSheetOpenYn: false,
       mFindPopShowYn: false,
       mChanFindPopShowYn: false,
-      mGetAxiosYn: false
+      mGetAxiosYn: false,
+
+      mChanPlaceHolder: this.$t('SEAR_MSG_KEYWORD')
     }
   },
   props: {
@@ -215,6 +247,10 @@ export default {
   mounted () {
   },
   updated () {
+    this.mChanPlaceHolder = this.$t('SEAR_MSG_KEYWORD')
+    this.mActiveTabRecommendList = [{ display: this.$t('SEAR_TAB_POP_CHAN'), name: 'P' }, { display: this.$t('COMMON_TAB_RECENT'), name: 'N' }]
+    this.mActiveSearchTabList = [{ display: this.$t('COMMON_NAME_CHANNEL'), name: 'CHAN' }, { display: this.$t('COMMON_TAB_CONTENTS'), name: 'CONT' }]
+    this.mSearchContentTabList = [{ display: this.$t('COMMON_TAB_ALL'), name: 'ALL' }, { display: this.$t('COMMON_TAB_NOTI'), name: 'ALIM' }, { display: this.$t('COMMON_TAB_POST'), name: 'BOAR' }]
     if (this.mSearchModeYn === true) {
       this.mChanListScrollBox = window.document.getElementById('chanListWrap')
       this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)

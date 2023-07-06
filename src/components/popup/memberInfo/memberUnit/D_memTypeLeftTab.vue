@@ -1,9 +1,21 @@
+<i18n>
+{
+  "ko": {
+    "MEM_DETAIL_TITLE_LIST": "목록",
+    "MEM_DETAIL_TITLE_ADDMEM": "멤버추가"
+  },
+  "en": {
+    "MEM_DETAIL_TITLE_LIST": "List",
+    "MEM_DETAIL_TITLE_ADDMEM": "Add a Member"
+  }
+}
+</i18n>
 <template>
   <div class="leftTabBase fl " style='background: #eeeeee50;' >
     <div class="w-100P pSide-1" style="position: relative;border-bottom:1px solid #ccc; min-height: 30px; padding: 0 10px; height: 40px; padding-right: 0; padding-top: 0.5rem;">
       <div style="width: 2.5px; height: 15px; background: #5F61BD; margin-top: 3px; margin-right: 4px;" class="fl" > </div>
-      <p class="fl textLeft font16 commonColor fontBold">목록</p>
-      <gBtnSmall :btnTitle="'추가'" @click="addInputPopYn = true" style="position: absolute; top: 7px; padding: 0 5px; right: 5px; height: 25px; line-height: 25px;"/>
+      <p class="fl textLeft font16 commonColor fontBold">{{ $t('MEM_DETAIL_TITLE_LIST') }}</p>
+      <gBtnSmall :btnTitle="$t('COMMON_BTN_ADD')" @click="addInputPopYn = true" style="position: absolute; top: 7px; padding: 0 5px; right: 5px; height: 25px; line-height: 25px;"/>
       <!-- <p class=' fr font16 commonBlack textRight' style="" @click='closePop' >{{tempBackImg}}</p> -->
       <!-- <div class="fr textLeft font12 commonBlack tempLeftTabBtn fontBold" style="margin-top: 3px; margin-right: 10px;" @click="closePop">{{tempBackImg}}</div> -->
     </div>
@@ -13,7 +25,7 @@
         <cLeftTab :propData="list" @cardEmit='cardEmit' :compoIdx='index' />
       </div>
       <div v-if="addInputPopYn === true" @click='addInputPopYn = false' style="width: 100%; height: 100%; position: absolute;z-index: 8; background: #00000030; left: 0; top: 0"></div>
-      <gInputPop v-if="addInputPopYn === true" class="" style="left: 60px; top: 25%; width: calc(100% - 120px); max-width: none; z-index: 9; height:" title='멤버추가' type='one' @save='addMemberType' @goNo='addInputPopYn = false' />
+      <gInputPop v-if="addInputPopYn === true" class="" style="left: 60px; top: 25%; width: calc(100% - 120px); max-width: none; z-index: 9; height:" :title="$t('MEM_DETAIL_TITLE_ADDMEM')" type='one' @save='addMemberType' @goNo='addInputPopYn = false' />
     </div>
   </div>
 </template>

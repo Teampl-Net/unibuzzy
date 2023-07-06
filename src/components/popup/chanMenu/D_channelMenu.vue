@@ -1,3 +1,27 @@
+<i18n>
+{
+  "ko": {
+    "CHAN_MENU_TITLE_MENU": "채널 메뉴",
+    "CHAN_MENU_QUICK": "편리기능",
+    "CHAN_MENU_SEND_NOTI": "알림작성",
+    "CHAN_MENU_WRITE_POST": "게시글 작성",
+    "MANA_NAME_CAHN": "채널 관리",
+    "MANA_NAME_ADDRBOOK": "주소록 관리",
+    "MANA_NAME_BOARD": "게시판 관리",
+    "CHAN_MSG_NOFOLLOW": "해당 채널의 멤버가 아닙니다. 멤버로 신청 후 이용해주세요."
+  },
+  "en": {
+    "CHAN_MENU_TITLE_MENU": "Channel Menu",
+    "CHAN_MENU_QUICK": "Quick Menu",
+    "CHAN_MENU_SEND_NOTI": "Send Noti",
+    "CHAN_MENU_WRITE_POST": "Write a Post",
+    "MANA_NAME_CAHN": "Manage Channel",
+    "MANA_NAME_ADDRBOOK": "Manage Address Book",
+    "MANA_NAME_BOARD": "Manage Board",
+    "CHAN_MSG_NOFOLLOW": "You are not a follower of that channel. Please apply for followers."
+  }
+}
+</i18n>
 <template>
 <div v-if="mLoadYn">
   <div class="popUpBackgroundGray" @click="goNo"></div>
@@ -5,7 +29,7 @@
 
     <div class="menuHeader newHeaderLine" :style="'height:' + (this.$STATUS_HEIGHT + 50)+ 'px; top: 0; padding-top: ' + (this.$STATUS_HEIGHT) + 'px'" >
       <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
-      <p class="fontBold font20 fl editColor" style="white-space: nowrap;" >{{mMenuHeaderTitle}}</p>
+      <p class="fontBold font20 fl editColor" style="white-space: nowrap;" >{{ $t('CHAN_MENU_TITLE_MENU') }}</p>
       <img v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)" class="fr cursorP img-w23" style="margin-right:10px;" src="../../../assets/images/editChan/icon_setting.svg" @click="clickEditChanBtn"  />
       <div v-else />
     </div>
@@ -13,7 +37,7 @@
     <div class="fl w-100P h-100P" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'"  style="overflow: hidden scroll;">
       <div class="fl w-100P mtop-2" style="margin-top:50px; border-bottom: 2px solid #6768a730" >
         <div class="fl font14 cursorP commonColor fontBold textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730" @click="boardDropDown">
-          <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">게시판</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.BOARD_CONTENT_LIST.length}})</span></p>
+          <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">{{ $t('COMMON_NAME_BOARD') }}</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.BOARD_CONTENT_LIST.length}})</span></p>
           <!-- <span class="fl mLeft-1"></span> -->
           <!-- ({{this.BOARD_CONTENT_LIST.length}}) -->
           <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn" style=" margin-top : 0.5rem;" >
@@ -25,7 +49,7 @@
       </div>
       <div v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ((this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))" class="fl w-100P" style="border-bottom: 2px solid #6768a730" :style="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
         <div class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="bookDropDown">
-          <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">주소록</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.CABINET_LIST.length}})</span></p>
+          <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">{{ $t('COMMON_NAME_ADDRBOOK') }}</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.CABINET_LIST.length}})</span></p>
           <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn" style=" margin-top : 0.5rem;" >
           <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
         </div>
@@ -36,7 +60,7 @@
 
       <div v-if="!GE_USER.unknownYn" class="fl w-100P" style="">
         <div class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="convenienceFuncDropdown">
-          <p class="mleft-1 fl font18 commonColor" >편리기능</p>
+          <p class="mleft-1 fl font18 commonColor" >{{ $t('CHAN_MENU_QUICK') }}</p>
           <img v-show="mConvDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn " style=" margin-top : 0.5rem;" >
           <img v-show="mConvDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
         </div>
@@ -75,7 +99,6 @@ export default {
       mScreenHeight: 0,
       mOwnerYn: false,
       mAdminYn: false,
-      mMenuHeaderTitle: '채널 메뉴',
       mAddressBookList: [],
       mBoardContentsList: [],
       mBoardDropEvenYn: true,
@@ -105,7 +128,7 @@ export default {
       console.log(this.CHANNEL_DETAIL)
 
       if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn) {
-        this.mConvenienceFuncList = [{ title: '게시글작성', targetType: 'writeBoard' }]
+        this.mConvenienceFuncList = [{ title: this.$t('CHAN_MENU_WRITE_POST'), targetType: 'writeBoard' }]
       }
     },
     /** 편리기능에 있는 버튼 클릭 함수 입니다.  */
@@ -114,7 +137,7 @@ export default {
       param.targetType = targetType
       if (targetType === 'writeContents') {
         if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
-          this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
+          this.$showToastPop(this.$t('CHAN_MSG_NOFOLLOW'))
           // this.$checkDeleteHistory('bottomWriteSheets')
           var history = this.$store.getters['D_HISTORY/hStack']
           var removePage = history[history.length - 1]
@@ -151,7 +174,7 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
-        this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
+        this.$showToastPop(this.$t('CHAN_MSG_NOFOLLOW'))
         // this.$checkDeleteHistory('bottomWriteSheets')
         var history = this.$store.getters['D_HISTORY/hStack']
         var removePage = history[history.length - 1]
@@ -164,7 +187,7 @@ export default {
       }
       var param = {}
       param.targetType = 'myChanMenuEdit'
-      param.popHeaderText = '채널 관리'
+      param.popHeaderText = this.$t('MANA_NAME_CAHN')
       param.teamKey = this.propData.teamKey || this.propData.targetKey
       param.currentTeamKey = this.mChanAlimListTeamKey
       param.teamNameMtext = this.teamName()
@@ -179,7 +202,7 @@ export default {
       var params = {}
       params.targetType = 'editBookList'
       params.chanName = this.propData.nameMtext
-      params.popHeaderText = '주소록 관리'
+      params.popHeaderText = this.$t('MANA_NAME_ADDRBOOK')
       params.currentTeamKey = this.mChanAlimListTeamKey
       params.teamKey = this.mChanAlimListTeamKey
       params.value = this.propData
@@ -308,7 +331,7 @@ export default {
     editChanMenu () {
       var param = {}
       param.targetType = 'editBoard'
-      param.popHeaderText = '게시판 관리'
+      param.popHeaderText = this.$t('MANA_NAME_BOARD')
       param.currentTeamKey = this.mChanAlimListTeamKey
       param.teamKey = this.mChanAlimListTeamKey
 
@@ -391,10 +414,20 @@ export default {
         return this.mBoardContentsList
       }
       return this.mBoardContentsList
+    },
+    GE_LOCALE () {
+      return this.$i18n.locale
     }
 
   },
   watch: {
+    GE_LOCALE: {
+      immediate: true,
+      handler (value) {
+        this.mConvenienceFuncList = [{ title: this.$t('CHAN_MENU_SEND_NOTI'), targetType: 'writeContents' }, { title: this.$t('CHAN_MENU_WRITE_POST'), targetType: 'writeBoard' }]
+      },
+      deep: true
+    },
     pageUpdate (value, old) {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       if (this.$setParentsId(this.pPopId, 'chanMenu' + this.mChanAlimListTeamKey) === hStack[hStack.length - 1]) {

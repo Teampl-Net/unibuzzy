@@ -1,3 +1,45 @@
+<i18n>
+{
+  "ko": {
+    "EDIT_BOOK_TITLE_FILTER": "세부필터",
+    "EDIT_BOOK_MSG_NAME": "이름을 입력해주세요",
+    "EDIT_BOOK_MSG_BOOK": "주소록명을 입력해주세요",
+    "EDIT_BOOK_BTN_CRE": "등록순",
+    "EDIT_BOOK_BTN_NAME": "이름순",
+    "EDIT_BOOK_BTN_EXCEL": "엑셀<br>업로드",
+    "EDIT_BOOK_BTN_ME": "나를<br>추가",
+    "EDIT_BOOK_BTN_DIRECT": "직접<br>추가",
+    "EDIT_BOOK_BTN_USER": "유저<br>선택",
+    "EDIT_BOOK_BTN_CREATE": "주소록 생성",
+    "EDIT_BOOK_NAME_ID": "학번",
+    "EDIT_BOOK_NAME_MAJOR": "학과",
+    "EDIT_BOOK_NAME_DUTY": "직책",
+    "EDIT_BOOK_NAME_JOB": "직무",
+    "EDIT_BOOK_NAME_POSITION": "직급",
+    "EDIT_BOOK_NAME_ADDUSER": "유저 추가",
+    "EDIT_BOOK_MSG_EXCEL": "엑셀업로드 기능은<br>더알림 PC버전에서만 가능합니다."
+  },
+  "en": {
+    "EDIT_BOOK_TITLE_FILTER": "More Filters",
+    "EDIT_BOOK_MSG_NAME": "Write down a name",
+    "EDIT_BOOK_MSG_BOOK": "Write down a name of the Address Book",
+    "EDIT_BOOK_BTN_CRE": "Created",
+    "EDIT_BOOK_BTN_NAME": "Name",
+    "EDIT_BOOK_BTN_EXCEL": "Upload<br>Excel File",
+    "EDIT_BOOK_BTN_ME": "Add<br>Me",
+    "EDIT_BOOK_BTN_DIRECT": "Add<br>Manually",
+    "EDIT_BOOK_BTN_USER": "Select<br>User",
+    "EDIT_BOOK_BTN_CREATE": "Create Address Book",
+    "EDIT_BOOK_NAME_ID": "ID #",
+    "EDIT_BOOK_NAME_MAJOR": "Major",
+    "EDIT_BOOK_NAME_DUTY": "Duty",
+    "EDIT_BOOK_NAME_JOB": "Job",
+    "EDIT_BOOK_NAME_POSITION": "Position",
+    "EDIT_BOOK_NAME_ADDUSER": "Add User",
+    "EDIT_BOOK_MSG_EXCEL": "The Excel upload function is<br>only available in the PC version."
+  }
+}
+</i18n>
 <template>
   <div v-if="CHANNEL_DETAIL"  class="editBookListWrap">
     <gConfirmPop :confirmText='mConfirmText' :confirmType="mConfirmType" v-if="mConfirmPopShowYn" @no='mConfirmPopShowYn=false' @ok='confirmOk' />
@@ -6,11 +48,11 @@
       <div class="w-100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin:5px 0; overflow: hidden; " v-if="mCabinetName !== ''" >
 
         <div style="width: calc(100%); min-height: 30px; float: right; margin-bottom: 5px;" v-if="this.mSearchFilterList.length > 0">
-          <p class="font14 commonBlack fontBold fl" style="line-height: 30px;">세부필터</p>
+          <p class="font14 commonBlack fontBold fl" style="line-height: 30px;">{{ $t('EDIT_BOOK_TITLE_FILTER') }}</p>
           <div style="height: 100%; float: right; width: calc(100% - 60px); max-width: calc(100% - 60px);">
             <div  v-for="(value, index) in this.mSearchFilterList" style="width: 20%; min-width: 90px; padding: 0 3px; height: 30px; float: right; " :key="index">
               <select :style="''"  v-model="value.selectGroup" @change="searchFilter()"  name="" class="font14" style="    background: #fff !important; border: none!important;border-right: #6768a745!important; width: calc(100% ); height: 30px; float: left; text-align:center;" id="">
-                <option value="all" @click="changeValue('all')">{{value.text + '전체'}}</option>
+                <option value="all" @click="changeValue('all')">{{value.text + $t('COMMON_TAB_ALL')}}</option>
                 <option :value="option" @click="changeValue(option)" v-for="(option, oIdx) in value.groupList" :key="oIdx">{{option}}</option>
               </select>
             </div>
@@ -20,11 +62,11 @@
         <div class="w-100P fl" style="min-width: 120px;">
           <div class="fl" style="position: relative; width: calc(100% - 120px)">
             <img @click="mCabinetName !== ''? getBookMemberList():getBookList()" class="cursorP" style="float: right; position: absolute; left: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
-            <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="mCabinetName !== ''? getBookMemberList():getBookList()" :placeholder="mCabinetName !== ''? '이름을 입력해주세요' : '주소록명을 입력해주세요'">
+            <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="mCabinetName !== ''? getBookMemberList():getBookList()" :placeholder="mCabinetName !== ''? $t('EDIT_BOOK_MSG_NAME'):$t('EDIT_BOOK_MSG_BOOK')">
           </div>
           <div class="CDeepBorderColor fr" style="border-radius: 20px; width:100px; min-height: 30px; display: flex; justify-content: center; align-items: center; ">
-            <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'creDate'}">등록순</p>
-            <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">이름순</p>
+            <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'creDate'}">{{ $t('EDIT_BOOK_BTN_CRE') }}</p>
+            <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">{{ $t('EDIT_BOOK_BTN_NAME') }}</p>
           </div>
         </div>
 
@@ -35,10 +77,10 @@
         <transition name="showGroup">
           <memberList  class="editBookContentListCompo" ref="memberListRef" v-if="mDetailOpenYn" :propMemberList="memberList" :propData="selectBookDetail"  :pSearchFilterList="this.mSearchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="this.CHANNEL_DETAIL" transition="showGroup" @openPop="openPop" @delAddress="delAddress" />
         </transition>
-        <div class="btnPlus" style="bottom: 10.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="openExcelUploadPop" v-if="mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:14px;" v-html="'엑셀<br>업로드'"></p></div>
-        <div class="btnPlus" style="bottom: 18.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="addMe" v-if="!mImInYn && mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:14px;" v-html="'나를<br>추가'"></p></div>
-        <div class="btnPlus" style="bottom: 14.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="newAddMember" v-if=" mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:14px;" v-html="'직접<br>추가'"></p></div>
-        <div class="btnPlus" style="bottom: 6.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="this.openSelectMemberPop()" v-if="mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:14px;" v-html="'유저<br>선택'"></p></div>
+        <div class="btnPlus" style="bottom: 10.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="openExcelUploadPop" v-if="mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:12px;" v-html="$t('EDIT_BOOK_BTN_EXCEL')"></p></div>
+        <div class="btnPlus" style="bottom: 18.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="addMe" v-if="!mImInYn && mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:12px;" v-html="$t('EDIT_BOOK_BTN_ME')"></p></div>
+        <div class="btnPlus" style="bottom: 14.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="newAddMember" v-if=" mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:12px;" v-html="$t('EDIT_BOOK_BTN_DIRECT')"></p></div>
+        <div class="btnPlus" style="bottom: 6.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="this.openSelectMemberPop()" v-if="mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:12px;" v-html="$t('EDIT_BOOK_BTN_USER')"></p></div>
 
         <img src="../../../assets/images/button/Icon_AddressBookBtn.png" @click="creAddressPop()" v-if="!mPlusMenuShowYn && !mDetailOpenYn" alt="주소록 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
         <img src="../../../assets/images/button/Icon_AddMemberBtn.png" @click="mPlusMenuShowYn = !mPlusMenuShowYn" v-if="!mPlusMenuShowYn && mDetailOpenYn" alt="주소 추가 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
@@ -112,9 +154,9 @@ export default {
       var cabinet = {}
       var param = {}
       param.targetType = 'creAddressBook'
-      param.popHeaderText = '주소록 생성'
+      param.popHeaderText = this.$t('EDIT_BOOK_BTN_CREATE')
       param.newAddressYn = true
-      cabinet.cabinetNameMtext = await this.$checkSameName(this.mEditBookList, '주소록')
+      cabinet.cabinetNameMtext = await this.$checkSameName(this.mEditBookList, this.$t('COMMON_NAME_ADDRBOOK'))
       cabinet.currentTeamKey = this.propData.teamKey
       cabinet.sysCabinetCode = 'USER'
       cabinet.creTeamKey = this.propData.teamKey
@@ -134,17 +176,21 @@ export default {
     delAddress (params) {
       this.mCurrentConfirmType = params.targetType
       this.mTempData = params
-      this.mConfirmText = (params.targetType === 'cabinet' ? '주소록을' : '주소를') + ' 삭제하시겠습니까?'
+      if (this.GE_LOCALE === 'ko') {
+        this.mConfirmText = (params.targetType === 'cabinet' ? '주소록을' : '주소를') + ' 삭제하시겠습니까?'
+      } else {
+        this.mConfirmText = `Are you sure you want to delete the ${(params.targetType === 'cabinet' ? 'address book' : 'address')}?`
+      }
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true
     },
     setBookSearchFilter () {
       if (this.selectBookDetail.sSub) {
         if (this.selectBookDetail.sSub === 'STUD') {
-          this.mSearchFilterList = [{ text: '학번', groupList: [], selectGroup: 'all' }, { text: '학과', groupList: [], selectGroup: 'all' }, { text: '직책', groupList: [], selectGroup: 'all' }]
+          this.mSearchFilterList = [{ text: this.$t('EDIT_BOOK_NAME_ID'), groupList: [], selectGroup: 'all' }, { text: this.$t('EDIT_BOOK_NAME_MAJOR'), groupList: [], selectGroup: 'all' }, { text: this.$t('EDIT_BOOK_NAME_DUTY'), groupList: [], selectGroup: 'all' }]
           this.mSearchFilterList = this.mSearchFilterList.reverse()
         } else if (this.selectBookDetail.sSub === 'EMPL') {
-          this.mSearchFilterList = [{ text: '직무', groupList: [], selectGroup: 'all' }, { text: '직책', groupList: [], selectGroup: 'all' }, { text: '직급', groupList: [], selectGroup: 'all' }]
+          this.mSearchFilterList = [{ text: this.$t('EDIT_BOOK_NAME_JOB'), groupList: [], selectGroup: 'all' }, { text: this.$t('EDIT_BOOK_NAME_POSITION'), groupList: [], selectGroup: 'all' }, { text: this.$t('EDIT_BOOK_NAME_ADDUSER'), groupList: [], selectGroup: 'all' }]
           this.mSearchFilterList = this.mSearchFilterList.reverse()
         }
         this.getMCabGroupList(0)
@@ -199,7 +245,7 @@ export default {
       // this.newYn = false
       var data = {}
       data.targetType = 'bookMemberDetail'
-      data.popHeaderText = '유저 추가'
+      data.popHeaderText = this.$t('EDIT_BOOK_NAME_ADDUSER')
       data.currentCabinetKey = this.selectBookDetail.cabinetKey
       data.currentTeamKey = this.CHANNEL_DETAIL.teamKey
       this.$emit('openPop', data)
@@ -371,7 +417,7 @@ export default {
 
         this.mExcelUploadShowYn = true
       } else {
-        this.mConfirmText = '엑셀업로드 기능은<br>더알림 PC버전에서만 가능합니다'
+        this.mConfirmText = this.$t('EDIT_BOOK_MSG_EXCEL')
         this.mConfirmType = 'timeout'
         this.mConfirmPopShowYn = true
       }
@@ -382,7 +428,11 @@ export default {
       var param = {}
       param.targetType = 'selectMemberPop'
       param.cabinetNameMtext = this.selectBookDetail.cabinetNameMtext
-      param.popHeaderText = this.selectBookDetail.cabinetNameMtext + '에 추가할 유저'
+      if (this.GE_LOCALE === 'ko') {
+        param.popHeaderText = this.selectBookDetail.cabinetNameMtext + '에 추가할 유저'
+      } else {
+        param.popHeaderText = `Who to add to ${this.selectBookDetail.cabinetNameMtext}`
+      }
       param.pSelectedList = this.memberList
       param.cabinetKey = this.propData.currentCabinetKey
       param.selectMemberType = 'member'
@@ -397,6 +447,9 @@ export default {
     }
   },
   computed: {
+    GE_LOCALE () {
+      return this.$i18n.locale
+    },
     historyStack () {
       return this.$store.getters['D_HISTORY/hRPage']
     },

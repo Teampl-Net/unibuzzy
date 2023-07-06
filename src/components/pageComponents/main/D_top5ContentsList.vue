@@ -5,7 +5,7 @@
     <div style=" float: left; width: 100%; ">
       <div style="width: 100%; min-height: 40px; float: left; padding: 0px 0; position: relative;">
         <gActiveBar ref="activeBarPushListTop5" :tabList="this.mActiveTabList" @changeTab="changeTab" />
-        <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/>
+        <!-- <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/> -->
       </div>
       <div class="pushListWrap fl">
       <contentsList :propContentsList="GE_DISP_CONT_LIST" @goChanDetail="openPop" />
@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       mMoreLink: 'push',
-      mActiveTabList: [{ display: '전체', name: 'A' }, { display: '알림', name: 'P' }, { display: '게시글', name: 'B' }],
+      mActiveTabList: [{ display: this.$t('COMMON_TAB_ALL'), name: 'A' }, { display: this.$t('COMMON_TAB_NOTI'), name: 'P' }, { display: this.$t('COMMON_TAB_POST'), name: 'B' }],
       mViewTab: 'A',
       mCurrentTabName: '알림',
       mContentsList: []
@@ -116,9 +116,19 @@ export default {
     },
     GE_NEW_CONT_LIST () {
       return this.$store.getters['D_CHANNEL/GE_NEW_CONT_LIST']
+    },
+    GE_LOCALE () {
+      return this.$i18n.locale
     }
   },
   watch: {
+    GE_LOCALE: {
+      immediate: true,
+      handler (value) {
+        this.mActiveTabList = [{ display: this.$t('COMMON_TAB_ALL'), name: 'A' }, { display: this.$t('COMMON_TAB_NOTI'), name: 'P' }, { display: this.$t('COMMON_TAB_POST'), name: 'B' }]
+      },
+      deep: true
+    },
     propAlimList: {
       immediate: true,
       handler (value, old) {

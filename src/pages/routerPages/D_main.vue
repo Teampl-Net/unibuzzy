@@ -8,6 +8,7 @@
     "MAIN_TITLE_RECV_CONTENTS": "받은 알림, 게시글",
     "MAIN_TITLE_RECENT_POSTS": "최근 게시글",
     "MAIN_MESSAGE_LOGIN": "로그인을 하고 채널을 구독해보세요",
+    "PROF_NAME_SETTING": "프로필 설정"
   },
   "en": {
     "MAIN_MESSAGE_WELCOME": "Welcome to uniBuzzy!",
@@ -16,7 +17,8 @@
     "MAIN_TITLE_POPULAR_CHANNEL": "Popular",
     "MAIN_TITLE_RECV_CONTENTS": "Noti & Posts",
     "MAIN_TITLE_RECENT_POSTS": "Posts",
-    "MAIN_MESSAGE_LOGIN": "Sign in and follow channels to see interesting contents!"
+    "MAIN_MESSAGE_LOGIN": "Sign in and follow channels to see interesting contents!",
+    "PROF_NAME_SETTING": "Profile Setting"
   }
 }
 </i18n>
@@ -301,7 +303,7 @@ export default {
     goChannelPop (type) {
       var openPopParam = {}
       openPopParam.targetType = 'chanList'
-      openPopParam.popHeaderText = '채널'
+      openPopParam.popHeaderText = this.$t('COMMON_NAME_CHANNEL')
       openPopParam.channelTabType = type
       this.openPop(openPopParam)
     },
@@ -312,7 +314,7 @@ export default {
       /* this.$emit('goSearchDirect') */
       var openPopParam = {}
       openPopParam.targetType = 'pushList'
-      openPopParam.popHeaderText = '받은 알림, 게시글'
+      openPopParam.popHeaderText = this.$t('MAIN_TITLE_RECV_CONTENTS')
       this.openPop(openPopParam)
     },
     async getMainBoard () {
@@ -417,7 +419,7 @@ export default {
       var param = {}
       // this.mLoadingYn = true
       param.targetType = 'setMypage'
-      param.popHeaderText = '프로필 설정'
+      param.popHeaderText = this.$t('PROF_NAME_SETTING')
       param.readOnlyYn = true
       param.selfYn = true
       this.$emit('openPop', param)

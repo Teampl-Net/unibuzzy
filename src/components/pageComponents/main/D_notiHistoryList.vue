@@ -1,10 +1,26 @@
+<i18n>
+{
+  "ko": {
+    "RECE_TITLE_NOTI": "최근 받은 알림",
+    "RECE_MSG_NOTIDESC": "최근 이력은 앱 설치 후 받은 알림 이력이며, 앱 삭제 혹은 데이터 삭제 시 사라지게 됩니다.",
+    "RECE_BTN_DELETE": "전체 삭제",
+    "RECE_MSG_DELETE": "받은 이력을 전부 삭제하시겠습니까?"
+  },
+  "en": {
+    "RECE_TITLE_NOTI": "Recent Notifications",
+    "RECE_MSG_NOTIDESC": "Recent Activities shows notifications you received after you install uniBuzzy app, so if you delete an app or data, it disappears.",
+    "RECE_BTN_DELETE": "Delete All",
+    "RECE_MSG_DELETE": "Are you sure you want to delete all received history?"
+  }
+}
+</i18n>
 <template>
     <div style="width: 100%; height: 100%; padding: 60px 1.5rem; padding-bottom: 0;float: left; background: #fff; overflow: hidden scroll;">
-        <p class="notiTitle font18 fontBold commonColor textLeft">최근 받은 알림</p>
-        <p class="font10 lightGray textLeft fl">최근 이력은 앱 설치 후 받은 알림 이력이며, 앱 삭제 혹은 데이터 삭제 시 사라지게 됩니다.</p>
-        <p class="font10 lightGray mbottom-05 textLeft fr" @click="mConfirmPopShowYn = true">전체 삭제 </p>
+        <p class="notiTitle font18 fontBold commonColor textLeft">{{ $t('RECE_TITLE_NOTI') }}</p>
+        <p class="font10 lightGray textLeft fl">{{ $t('RECE_MSG_NOTIDESC') }}</p>
+        <p class="font10 lightGray mbottom-05 textLeft fr" @click="mConfirmPopShowYn = true">{{ $t('RECE_BTN_DELETE') }}</p>
         <notiCompo @clickNoti="goNotiDetail" v-for="(noti, index) in GE_RECENT_NOTI_LIST" :mNotiEle="noti" :key="index" />
-        <gConfirmPop confirmText='받은 이력을 전부 삭제하시겠습니까?' confirmType='two' @no='mConfirmPopShowYn = false' v-if="mConfirmPopShowYn" @ok="notiClear"/>
+        <gConfirmPop :confirmText="$t('RECE_MSG_DELETE')" confirmType='two' @no='mConfirmPopShowYn = false' v-if="mConfirmPopShowYn" @ok="notiClear"/>
     </div>
 </template>
 
@@ -35,7 +51,7 @@ export default {
       // var isMobile = /Mobi/i.test(window.navigator.userAgent)
       var addVueResult = await this.$recvNotiFromBridge(message, false)
       if (addVueResult === false) {
-        alert('해당 컨텐츠를 찾을 수 없습니다.\n나중에 다시 시도해주세요')
+        alert(this.$t('COMMON_MSG_NOTFOUND'))
         return
       }
       var popHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']

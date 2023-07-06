@@ -1,3 +1,41 @@
+<i18n>
+{
+  "ko": {
+    "CRE_BTN_EDITBG": "배경편집",
+    "CRE_BTN_DELETE_CHAN": "채널삭제",
+    "CRE_MSG_CHANNAME": "채널명을 20자 이내로 입력해주세요",
+    "CRE_TITLE_DESC": "소개글",
+    "CRE_MSG_DESC": "채널에 대한 설명을 40글자 이내로 입력해주세요.",
+    "CRE_TITLE_HEADER": "채널 상단 글자색",
+    "CRE_BTN_HEAD_DEFAULT": "기본",
+    "CRE_BTN_HEAD_WHITE": "흰색",
+    "CRE_BTN_PREVIEW": "미리보기",
+    "CRE_BTN_CREATE": "채널 생성",
+    "EDIT_NAME_CHAN": "채널 수정",
+    "CRE_MSG_NONAME": "채널명을 입력해주세요.",
+    "CRE_MSG_NODESC": "채널 소개를 입력해주세요.",
+    "CRE_MSG_NOCATE": "채널의 산업군을 선택해주세요.",
+    "CRE_MSG_DELETE": "채널을 삭제하시겠습니까?"
+  },
+  "en": {
+    "CRE_BTN_EDITBG": "Edit Background",
+    "CRE_BTN_DELETE_CHAN": "Delete the Channel",
+    "CRE_MSG_CHANNAME": "Please enter up to 20 characters in the channel name",
+    "CRE_TITLE_DESC": "Channel Description",
+    "CRE_MSG_DESC": "Please enter up to 40 characters in the channel description",
+    "CRE_TITLE_HEADER": "Color of the Channel Header",
+    "CRE_BTN_HEAD_DEFAULT": "Default",
+    "CRE_BTN_HEAD_WHITE": "White",
+    "CRE_BTN_PREVIEW": "Preview",
+    "CRE_BTN_CREATE": "Create",
+    "EDIT_NAME_CHAN": "Edit",
+    "CRE_MSG_NONAME": "Please enter the channel name.",
+    "CRE_MSG_NODESC": "Please enter the channel description.",
+    "CRE_MSG_NOCATE": "Please select the channel category.",
+    "CRE_MSG_DELETE": "Are you sure you want to delete the channel?"
+  }
+}
+</i18n>
 <template>
 <div style="width: 100%; height: 100%; float: left;">
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
@@ -5,11 +43,11 @@
       <div class="createChanContentsWrap">
         <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" >
           <label @click="mIconBgSelectPopYn='bgPop'"  class='backgroundLabel commonColor' for="input-Backimgfile">
-            <img src="../../../assets/images/channel/icon_camera.svg" class="cursorP" style="width:20px;" alt=""> 배경편집 </label>
+            <img src="../../../assets/images/channel/icon_camera.svg" class="cursorP" style="width:20px;" alt="">{{ $t('CRE_BTN_EDITBG') }}</label>
         </form>
 
         <div v-if="chanDetail.modiYn === true && this.chanDetail.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; top:0.3rem; padding-left:0.25rem">
-          <p class="font14" style="color:#aaa;"> <img src="../../../assets/images/formEditor/trashIcon_gray2.svg" style="width:18px;" alt=""> 채널삭제 </p>
+          <p class="font14" style="color:#aaa;"> <img src="../../../assets/images/formEditor/trashIcon_gray2.svg" style="width:18px;" alt=""> {{ $t('CRE_BTN_DELETE_CHAN') }} </p>
         </div>
 
         <div id='chboxtest' >
@@ -22,22 +60,22 @@
           <div class="w-100P fl" style="height: calc(100% - 80px); overflow: auto; margin-top: 1rem;">
 
           <div style="width:100%;" class="mtop-1 fl">
-            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">채널명</p>
-            <input v-model="mInputChannelName" type="text" placeholder="채널명을 20자 이내로 입력해주세요" class="creChanInput"  id="channelName" >
+            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('COMMON_TITLE_CHANNAME') }}</p>
+            <input v-model="mInputChannelName" type="text" :placeholder="$t('CRE_MSG_CHANNAME')" class="creChanInput"  id="channelName" >
           </div>
 
           <div style="width:100%;" class="mtop-1 fl ">
-            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">소개글</p>
-            <textarea style="background: #fff; border: 1px solid #cccccc; padding: 10px;" v-model="mInputChannelMemo" class="channelMemo" placeholder="채널에 대한 설명을 40글자 이내로 입력해주세요."/>
+            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('CRE_TITLE_DESC') }}</p>
+            <textarea style="background: #fff; border: 1px solid #cccccc; padding: 10px;" v-model="mInputChannelMemo" class="channelMemo" :placeholder="$t('CRE_MSG_DESC')"/>
           </div>
 
           <div style="width:100%;" class="mtop-1 fl ">
-            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">채널 상단 글자색</p>
+            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('CRE_TITLE_HEADER') }}</p>
 
             <div class="fl w-100P mbottom-05 mtop-05" style="text-align: center; display: flex; justify-content: space-around; align-items: center; ">
-              <label class="fl font14 mright-05" style="display: flex;" for="commonColor"><input v-model="mBtnColor" class="fl mright-05" type="radio" name="btnColorRadio" :value="false" id="commonColor"> 기본</label>
-              <label class="fl font14 mleft-05" style="display: flex;" for="whiteColor"><input v-model="mBtnColor" class="fl mright-05" type="radio" name="btnColorRadio" :value="true" id="whiteColor"> 흰색</label>
-              <p class="fr backgroundLabel fontBold commonColor" @click="mTopColorPreviewYn = !mTopColorPreviewYn" style="border: 1px solid #ccc;"><img src="../../../assets/images/board/icon_eyes.svg" class="img-w18 mright-05" alt="미리보기 아이콘">미리보기</p>
+              <label class="fl font14 mright-05" style="display: flex;" for="commonColor"><input v-model="mBtnColor" class="fl mright-05" type="radio" name="btnColorRadio" :value="false" id="commonColor"> {{ $t('CRE_BTN_HEAD_DEFAULT') }}</label>
+              <label class="fl font14 mleft-05" style="display: flex;" for="whiteColor"><input v-model="mBtnColor" class="fl mright-05" type="radio" name="btnColorRadio" :value="true" id="whiteColor"> {{ $t('CRE_BTN_HEAD_WHITE') }}</label>
+              <p class="fr backgroundLabel fontBold commonColor" @click="mTopColorPreviewYn = !mTopColorPreviewYn" style="border: 1px solid #ccc;"><img src="../../../assets/images/board/icon_eyes.svg" class="img-w18 mright-05" alt="미리보기 아이콘">{{ $t('CRE_BTN_PREVIEW') }}</p>
             </div>
             <div v-if="mTopColorPreviewYn === true" class="fl w-100P" :style="'background: url(' + mSelectedBg.selectPath + ');'" style=" height: 50px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; overflow: hidden; background-repeat: no-repeat;background-size: cover;">
               <img v-if="mBtnColor === false" src="../../../assets/images/common/icon_back.png" class="img-w15 fl mleft-05" alt=""> <img v-else-if="mBtnColor === true" src="../../../assets/images/common/icon_back_white.png" class="img-w15 fl mleft-05" alt="">
@@ -47,7 +85,7 @@
           </div>
 
           <div style="width:100%; height: 30px" class="mtop-1 fl" >
-            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">산업군</p>
+            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('COMMON_NAME_CATEGORY') }}</p>
             <div class="fl mtop-05" style="width: 100%;" :key="mReloadKey">
               <div :class="{activeTypeBox: mSelectedTeamTypeKey ===value.cateKey}" @click="selectChanType(value)" v-for="(value, index) in mBusinessItemList" :key="index" :style="getChanBoxSize" class="fl cursorP" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; padding: 0 10px; justify-content: space-around; align-items: center; ">
                 <img class="img-w14 fl mright-05" v-if="value.cateKey === 1 && mSelectedTeamTypeKey !== 1" src="../../../assets/images/channel/icon_office.svg"/>
@@ -79,12 +117,12 @@
 
           </div>
 
-          <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 20px;">채널 {{mPageType}}</div>
+          <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 20px;">{{mPageType === '생성'? $t('CRE_BTN_CREATE'):$t('EDIT_NAME_CHAN')}}</div>
         </div>
       </div>
     </div>
-    <gConfirmPop :confirmText="mCreCheckPopText === null ? ('[' + mInputChannelName + '] 채널을 ' + mPageType + '하겠습니다') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='setParam' />
-    <gConfirmPop :confirmText="'채널이 ' + mPageType + '되었습니다.'" @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="mCreatedSuccessPopYn" />
+    <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='setParam' />
+    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="mCreatedSuccessPopYn" />
     <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn === true" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
 </div>
 </template>
@@ -154,6 +192,45 @@ export default {
     }
   },
   methods: {
+    returnConfirmText (type) {
+      if (this.GE_LOCALE === 'ko') {
+        if (type === 'B') {
+          if (this.mPageType === '생성') {
+            return '[' + this.mInputChannelName + '] 채널을 생성하겠습니다.'
+          } else if (this.mPageType === '삭제') {
+            return '[' + this.mInputChannelName + '] 채널을 삭제하겠습니다.'
+          } else if (this.mPageType === '수정') {
+            return '[' + this.mInputChannelName + '] 채널을  수정하겠습니다.'
+          }
+        } else {
+          if (this.mPageType === '생성') {
+            return '[' + this.mInputChannelName + '] 채널이 생성되었습니다.'
+          } else if (this.mPageType === '삭제') {
+            return '[' + this.mInputChannelName + '] 채널이 삭제되었습니다.'
+          } else if (this.mPageType === '수정') {
+            return '[' + this.mInputChannelName + '] 채널이 수정되었습니다.'
+          }
+        }
+      } else {
+        if (type === 'B') {
+          if (this.mPageType === '생성') {
+            return `Create [${this.mInputChannelName}] channel.`
+          } else if (this.mPageType === '삭제') {
+            return `Delete [${this.mInputChannelName}] channel.`
+          } else if (this.mPageType === '수정') {
+            return `Edit [${this.mInputChannelName}] channel.`
+          }
+        } else {
+          if (this.mPageType === '생성') {
+            return `[${this.mInputChannelName}] channel was created.`
+          } else if (this.mPageType === '삭제') {
+            return `Delete [${this.mInputChannelName}] channel was Deleted`
+          } else if (this.mPageType === '수정') {
+            return `Edit [${this.mInputChannelName}] channel was edited`
+          }
+        }
+      }
+    },
     async getCateItemList () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -172,7 +249,7 @@ export default {
     },
     chanDelete () {
       this.mDeleteYn = true
-      this.mCreCheckPopText = '채널을 삭제하시겠습니까?'
+      this.mCreCheckPopText = this.$t('CRE_MSG_DELETE')
       this.mCreCheckPopYn = true
     },
     async getTeamList () {
@@ -216,25 +293,25 @@ export default {
     },
     checkValue () {
       if (this.mInputChannelName.length > 20 || this.mInputChannelName.length === 1) {
-        this.mErrorPopMsg = '채널명은 2~20글자 이내로 입력해주세요'
+        this.mErrorPopMsg = this.$t('CRE_MSG_CHANNAME')
         this.mErrorPopYn = true
         return
       } else if (this.mInputChannelName === '' || this.mInputChannelName === '채널이름') {
-        this.mErrorPopMsg = '채널명을 입력해주세요'
+        this.mErrorPopMsg = this.$t('CRE_MSG_NONAME')
         this.mErrorPopYn = true
         return
       }
       if (this.mInputChannelMemo.length > 40) {
-        this.mErrorPopMsg = '채널의 소개는 40글자 이내로 입력해주세요'
+        this.mErrorPopMsg = this.$t('CRE_MSG_DESC')
         this.mErrorPopYn = true
         return
       } else if (this.mInputChannelMemo === '') {
-        this.mErrorPopMsg = '채널 소개를 입력해주세요'
+        this.mErrorPopMsg = this.$t('CRE_MSG_NODESC')
         this.mErrorPopYn = true
         return
       }
       if (this.mSelectedTeamTypeKey === undefined || this.mSelectedTeamTypeKey === null || this.mSelectedTeamTypeKey === '') {
-        this.mErrorPopMsg = '채널의 산업군을 선택해주세요'
+        this.mErrorPopMsg = this.$t('CRE_MSG_NOCATE')
         this.mErrorPopYn = true
         return
       }
@@ -357,6 +434,9 @@ export default {
     }
   },
   computed: {
+    GE_LOCALE () {
+      return this.$i18n.locale
+    },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     },

@@ -1,3 +1,17 @@
+<i18n>
+{
+  "ko": {
+    "EDIT_BOARD_MSG_NOBOARD": "게시판이 없어요.",
+    "EDIT_BOARD_MSG_CREBOARD": "버튼을 눌러 게시판을 생성해보세요.",
+    "EDIT_BOARD_MSG_DELETE": "게시판을 삭제하시겠습니까?"
+  },
+  "en": {
+    "EDIT_BOARD_MSG_NOBOARD": "There's no board",
+    "EDIT_BOARD_MSG_CREBOARD": "Press the button to create a board.",
+    "EDIT_BOARD_MSG_DELETE": "Are you sure you want to delete the board?"
+  }
+}
+</i18n>
 <template>
 <!-- <div style="width: 100%; height: 100vh; position: absolute; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
   <div v-if="CHANNEL_DETAIL" class="channelMenuEditWrap pagePaddingWrap" style="overflow: hidden auto;">
@@ -9,7 +23,7 @@
         </transition-group>
       </draggable>
       <img src="../../../assets/images/button/Icon_CreBoardBtn.png" @click="addBoardRow" alt="게시판 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
-      <gListEmpty v-if="cabinetList.length === 0" title='게시판이 없어요' subTitle='버튼을 눌러 게시판을 생성해보세요.' option='EDIT' />
+      <gListEmpty v-if="cabinetList.length === 0" :title="$t('EDIT_BOARD_MSG_NOBOARD')" :subTitle="$t('EDIT_BOARD_MSG_CREBOARD')" option='EDIT' />
   </div>
   <gConfirmPop :confirmText='errorBoxText' confirmType='two' @no='errorBoxYn = false' @ok='confirmfunc' v-if="errorBoxYn"/>
   <modiBoardPop :chanInfo="this.chanInfo" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' @openPop='openPop'/>
@@ -30,6 +44,9 @@ export default {
 
   },
   computed: {
+    GE_LOCALE () {
+      return this.$i18n.locale
+    },
     CAB_DETAIL () {
       if (this.cabinetList.length === 0) {
         return []
@@ -134,9 +151,13 @@ export default {
       this.tempDeleteData = temp
       this.currentConfirmType = 'delete'
       if (totalElements === undefined) {
-        this.errorBoxText = '게시판을 삭제하시겠습니까?'
+        this.errorBoxText = this.$t('EDIT_BOARD_MSG_DELETE')
       } else {
-        this.errorBoxText = totalElements + '개의 게시글이 있는 게시판입니다. \n 정말 삭제하시겠습니까?'
+        if (this.GE_LOCALE === 'ko') {
+          this.errorBoxText = totalElements + '개의 게시글이 있는 게시판입니다. \n 정말 삭제하시겠습니까?'
+        } else {
+          this.errorBoxText = `A board with ${totalElements} posts. Are you sure you want to delete it?`
+        }
       }
 
       this.errorBoxYn = true

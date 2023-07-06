@@ -1,15 +1,29 @@
+<i18n>
+{
+  "ko": {
+    "SAMP_NAME_SET": "예시글 설정",
+    "SAMP_BTN_IMPORT": "샘플 가져오기",
+    "SAMP_TITLE_WRITE": "작성하기"
+  },
+  "en": {
+    "SAMP_NAME_SET": "Set a Sample",
+    "SAMP_BTN_IMPORT": "Import a Sample",
+    "SAMP_TITLE_WRITE": "Write a Sample"
+  }
+}
+</i18n>
 <template>
     <div style="float: left">
         <div @closeXPop="closeXPop" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000026; z-index: 99999;"></div>
         <div style="width: 80%; min-height: 500px; max-height: 700px; border-radius: 0.8rem; height: 60%; position: fixed; background: #FFF; z-index: 999999; top: 18%; left: 10%;">
             <div style="width: 100%; padding: 8px 20px; height: 40px; float: left;" class="headerShadow">
-                <p class="font18 fontBold textLeft">예시글 설정</p>
+                <p class="font18 fontBold textLeft">{{ $t('SAMP_NAME_SET') }}</p>
             </div>
             <div style="width: 100%; padding: 10px 20px; height: calc(100% - 80px); float: left">
                 <div style="width: 100%; height: calc(100% - 40px); float: left;">
                     <div style="width: 100%; height: 35px; float: left; position: relative;">
-                        <p class="font16 fontBold commonColor textLeft" style="margin-top: 7px;">작성하기</p>
-                        <gBtnSmall @click="openSampleListPop" btnTitle="샘플 가져오기" style="position: absolute; right: 5px; top: 0px; "/>
+                        <p class="font16 fontBold commonColor textLeft" style="margin-top: 7px;">{{ $t('SAMP_TITLE_WRITE') }}</p>
+                        <gBtnSmall @click="openSampleListPop" :btnTitle="$t('SAMP_BTN_IMPORT')" style="position: absolute; right: 5px; top: 0px; "/>
                     </div>
                     <div style="width: 100%; height: calc(100% - 50px); padding: 5px 10px; float: left; border: 1px solid #ccc;">
                         <pre id="guideInputArea" ref="guideInputArea" class="fl editableContent" style="width: 100%; overflow: hidden scroll; height: 100%; text-align:left; float: left; resize: none;"  contenteditable=true ></pre>
@@ -19,8 +33,8 @@
             </div>
             <div style="width: 100%; padding: 0 20px; height: 40px; float: left;">
                 <!-- <gBtnSmall v-if="this.$store.getters['D_USER/GE_USER'].userKey === 1" @click="addSample" btnTitle="샘플로 저장" class="fl" style="float: left;" /> -->
-                <gBtnSmall @click="closeXPop" btnThema="light" btnTitle="취소" />
-                <gBtnSmall @click="saveGuide" btnTitle="적용" class="mright-05" />
+                <gBtnSmall @click="closeXPop" btnThema="light" :btnTitle="$t('COMMON_BTN_CANCEL')" />
+                <gBtnSmall @click="saveGuide" :btnTitle="$t('COMMON_BTN_OK')" class="mright-05" />
             </div>
         </div>
         <selectSamplePop :cabinetDetail="cabinetDetail" @okSelectSample="okSelectSample" @closeXPop="closeSamplePop" v-if="samplePopShowYn"/>

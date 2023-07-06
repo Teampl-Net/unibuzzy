@@ -1,10 +1,36 @@
+<i18n>
+{
+  "ko": {
+    "SAMP_NAME_ADD_SAMPLE": "샘플 추가",
+    "SAMP_NAME_EDIT_SAMPLE": "샘플 수정",
+    "SAMP_TITLE_NAME": "샘플명",
+    "SAMP_TITLE_ICON": "아이콘",
+    "SAMP_TITLE_CONTENTS": "샘플내용",
+    "SAMP_MSG_NONAME": "샘플명을 입력해주세요.",
+    "SAMP_MSG_NOICON": "샘플 아이콘을 선택해주세요.",
+    "SAMP_MSG_EDITED": "샘플이 수정되었습니다.",
+    "SAMP_MSG_ADDED": "샘플이 추가되었습니다."
+  },
+  "en": {
+    "SAMP_NAME_ADD_SAMPLE": "Add a Sample",
+    "SAMP_NAME_EDIT_SAMPLE": "Edit a Sample",
+    "SAMP_TITLE_ICON": "Icon",
+    "SAMP_TITLE_CONTENTS": "Sample Contents",
+    "SAMP_MSG_NONAME": "Please enter a sample name.",
+    "SAMP_MSG_NOICON": "Please select a sample icon.",
+    "SAMP_MSG_EDITED": "The sample has been edited.",
+    "SAMP_MSG_ADDED": "The sample have been added.",
+    "SAMP_TITLE_NAME": "Sample Name"
+  }
+}
+</i18n>
 <template>
     <div style="float: left">
         <div  @click="closeXPop" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000026; z-index: 9999999;"></div>
         <transition name="showUp">
             <div style="width: 80%; min-height: 500px; max-height: 700px; border-radius: 0.8rem 0.8rem 0.8rem 0.8rem; height: 80%; position: fixed; background: #FFF; z-index: 99999999; top: 10%; left: 10%;">
                 <div style="width: 100%; padding: 12px 20px; height: 50px; float: left; position: relative;" class="headerShadow">
-                    <p class="font18 fontBold textLeft">샘플 {{makeType === 'modi'? '수정' : '추가'}}</p>
+                    <p class="font18 fontBold textLeft">{{makeType === 'modi'? $t('SAMP_NAME_EDIT_SAMPLE') : $t('SAMP_NAME_ADD_SAMPLE')}}</p>
                     <img @click="closeXPop" src="../../../assets/images/common/popup_close.png" style="position: absolute; right: 20px; top: 12px; width: 25px;" alt="">
                 </div>
                 <div style="width: 100%; padding: 10px 20px; height: calc(100% - 120px); float: left">
@@ -14,11 +40,11 @@
                     </div> -->
                     <div style="float: left; width: 100%; height: calc(100%); display: flex; flex-direction: column; align-items: center;">
                         <div style="width: 100%; float: left; ">
-                            <label  for="sampleTitleMtext" class="font15 fontBold grayBlack textLeft fl" style="width: 70px; line-height: 30px;">샘플명</label>
-                        <input id="sampleTitleMtext" type="text" class="font15 textLeft" style="width: calc(100%);  margin-bottom: 1rem;height: 30px;" placeholder="샘플명을 입력하세요" name="" v-model="sampleTitleMtext" >
+                            <label  for="sampleTitleMtext" class="font15 fontBold grayBlack textLeft fl" style="width: 70px; line-height: 30px;">{{ $t('SAMP_TITLE_NAME') }}</label>
+                        <input id="sampleTitleMtext" type="text" class="font15 textLeft" style="width: calc(100%);  margin-bottom: 1rem;height: 30px;" :placeholder="$t('SAMP_MSG_NONAME')" name="" v-model="sampleTitleMtext" >
                         </div>
                         <p class="font15 fontBold grayBlack w-100P mbottom-05 textLeft fl">
-                            아이콘
+                          {{ $t('SAMP_TITLE_ICON') }}
                         </p>
                         <div style="width: 100%; float: left; display: flex; align-items: center;">
                             <div @click="goScroll('back')" style="float: left; margin-right: 5px; cursor: pointer ;width: 15px; height: 70px; display: flex; align-items: center;">
@@ -38,7 +64,7 @@
                         <!-- <div style="width: 80px; height: 80px; border-radius: 8px; border: 1px solid #ccc;">
                             아이콘을 선택하세요!
                         </div> -->
-                        <p class="font15 fontBold grayBlack textLeft fl w-100P mbottom-05" >샘플내용</p>
+                        <p class="font15 fontBold grayBlack textLeft fl w-100P mbottom-05" >{{ $t('SAMP_TITLE_CONTENTS') }}</p>
                         <div style="width: 100%; height: calc(100% - 170px); padding: 5px 10px; border-radius: 8px; float: left; border: 1px solid #ccc;">
                             <pre id="sampleInputArea" ref="sampleInputArea" class="fl editableContent" style="width: 100%; overflow: hidden scroll; height: 100%; text-align:left; float: left; resize: none;"  contenteditable=true ></pre>
                             <!-- <div ref="sampleInputArea" id="sampleInputArea" class="font15" style="width: 100%; overflow: hidden scroll; height: 100%; text-align: left;" :contenteditable="true"></div> -->
@@ -47,7 +73,7 @@
                 </div>
                 <div style="width: 100%; height: 40px; float: left; padding: 0 20px;">
                     <gBtnSmall @click="closeXPop" btnTitle="취소" btnThema="light"/>
-                    <gBtnSmall @click="createSample" :btnTitle="makeType === 'modi' ? '수정' : '추가'" class="mright-05"/>
+                    <gBtnSmall @click="createSample" :btnTitle="makeType === 'modi' ? $t('COMMON_BTN_EDIT2') : $t('COMMON_BTN_ADD')" class="mright-05"/>
                 </div>
                 <!-- <div v-if="titleMtextShowYn" style="height: 100%; width: 100%; background: #00000026; position: fixed;left: 0%; top: 0%;z-index: 999999;">
                 </div>
@@ -215,11 +241,11 @@ export default {
       }
       sample.creTeamKey = this.cabinetDetail.creTeamKey
       if (this.sampleTitleMtext.trim() === '') {
-        alert('샘플명을 입력해주세요')
+        alert(this.$t('SAMP_MSG_NONAME'))
         return
       }
       if (!this.makeSampleIconFilekey) {
-        alert('샘플 아이콘을 선택해주세요')
+        alert(this.$t('SAMP_MSG_NOICON'))
         return
       }
       sample.imageFilekey = this.makeSampleIconFilekey
@@ -234,9 +260,9 @@ export default {
       this.sampleTitleMtext = ''
       this.makeSampleIconFilekey = null
       if (this.makeType === 'modi') {
-        this.$showToastPop('샘플이  수정되었습니다.')
+        this.$showToastPop(this.$t('SAMP_MSG_EDITED'))
       } else {
-        this.$showToastPop('샘플이 추가되었습니다.')
+        this.$showToastPop(this.$t('SAMP_MSG_ADDED'))
       }
       this.closeXPop(true)
     }

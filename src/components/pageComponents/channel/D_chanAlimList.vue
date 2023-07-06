@@ -1,4 +1,42 @@
 
+<i18n>
+{
+  "ko": {
+    "CHAN_TITLE_CREDATE": "개설일",
+    "CHAN_TITLE_FOLLOW": "구독자",
+    "CHAN_TITLE_CONTNUM": "누적 알림",
+    "CHAN_BTN_UNFOLLOW": "구독취소",
+    "CHAN_BTN_MEMREQ": "멤버신청",
+    "CHAN_BTN_FOLLOW": "구독하기",
+    "CHAN_NAME_GUEST": "손님",
+    "CHAN_BTN_EDIT": "편집",
+    "CHAN_MSG_AGAIN_MEMBER": "회원님은 현재 구독자상태이며,<br>언제든지 다시 멤버신청을 할 수 있습니다!",
+    "EDIT_NAME_CHAN": "채널 수정",
+    "CHAN_MSG_NOCANCEL": "관리자는 구독취소가 불가능합니다.<br>소유자에게 문의해주세요.",
+    "CHAN_MSG_UNFOLLOW": "구독 취소가 완료되었습니다.",
+    "CHAN_MSG_ASK_UNFOLLOW": "구독을 취소하시겠습니까?",
+    "CHAN_MSG_OFF_NOTI": "채널 알림이 비활성화 되었습니다.",
+    "CHAN_MSG_ON_NOTI": "채널 알림이 활성화 되었습니다."
+  },
+  "en": {
+    "CHAN_TITLE_CREDATE": "Created",
+    "CHAN_TITLE_FOLLOW": "Followers",
+    "CHAN_TITLE_CONTNUM": "Total Contents",
+    "CHAN_BTN_UNFOLLOW": "Unfollow",
+    "CHAN_BTN_MEMREQ": "Member Request",
+    "CHAN_BTN_FOLLOW": "Follow",
+    "CHAN_NAME_GUEST": "Guest",
+    "CHAN_BTN_EDIT": "Edit",
+    "CHAN_MSG_AGAIN_MEMBER": "You are currently a follower,<br>and you can apply again at any time!",
+    "EDIT_NAME_CHAN": "Edit a Channel",
+    "CHAN_MSG_NOCANCEL": "Manager cannot unfollow<br>Contact the owner.",
+    "CHAN_MSG_UNFOLLOW": "This channel is unfollowed.",
+    "CHAN_MSG_ASK_UNFOLLOW": "Do you want to unfollow this channel?",
+    "CHAN_MSG_OFF_NOTI": "Channel notification  is disabled.",
+    "CHAN_MSG_ON_NOTI": "Channel notification is enabled."
+  }
+}
+</i18n>
 <template>
 <!-- getWindowWidth, getWindowHeight -->
 <!-- -->
@@ -30,28 +68,28 @@
                 </p>
               </div>
               <div class="fl font15  w-100P " style="box-sizing:boborder-box; word-break:break-all; " >
-                <p class="font13 commonColor textLeft fl fontBold " style="color:#6768a7; white-space: nowrap;"> 개설일</p>
+                <p class="font13 commonColor textLeft fl fontBold " style="color:#6768a7; white-space: nowrap;">{{ $t('CHAN_TITLE_CREDATE') }}</p>
                 <p class="font14 textLeft fl mleft-1" style="word-break:break-all" >{{$dayjs(CHANNEL_DETAIL.creDate).format('YYYY-MM-DD')}}</p>
               </div>
             </div>
           </div>
           <div id="ownerChannelEditArea" class="w-100P cursorP fl" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 && CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) ">
             <div class="fr mbottom-05" @click="editChan" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float:right !important; ">
-              <p class="font16 textLeft lightGray fr ">편집 > </p>
+              <p class="font16 textLeft lightGray fr ">{{ $t('CHAN_BTN_EDIT') }} > </p>
             </div>
             <div v-if="GE_USER.userKey === 192 || GE_USER.userKey === 228 || GE_USER.userKey === 382" class="fr mright-05 mbottom-05" @click="getTeamToken" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="float:right !important; background-color:#DC143C; color: #FFFFFF;">
               <p class="font16 textLeft fr" style="color: #FFFFFF!important;"  >채널아이디 발급 </p>
             </div>
           </div>
           <div id="channelCardWrap" class="fl w-100P " :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content:space-around">
-            <p class="font16 fl w-100P">구독자 {{CHANNEL_DETAIL.followerCount}}명</p>
-            <p class="font16 fl w-100P" style="border-left: 2px solid #00000050">누적 알림 {{CHANNEL_DETAIL.totalContentsCount}}건</p>
+            <p class="font16 fl w-100P">{{ GE_LOCALE === 'ko'? `구독자 ${CHANNEL_DETAIL.followerCount}명`:`${CHANNEL_DETAIL.followerCount} Followers` }}</p>
+            <p class="font16 fl w-100P" style="border-left: 2px solid #00000050">{{GE_LOCALE === 'ko'? `누적 알림 ${CHANNEL_DETAIL.totalContentsCount}건`:`${CHANNEL_DETAIL.totalContentsCount} Total Contents` }}</p>
           </div>
           <div id="userCardWrap" class="fl w-100P" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content: space-between;">
             <div class="fl" style="display: flex; align-items: center;">
               <gProfileImg :smallYn="true" :selfYn="true" style="width: 35px; margin-right: 10px; height: 35px;" />
               <div class="mleft-05" style="display:flex; flex-direction: column;">
-                <p @click="goProfile" class="font16 textLeft">{{GE_USER.userDispMtext? $changeText(GE_USER.userDispMtext) : '손님'}}</p>
+                <p @click="goProfile" class="font16 textLeft">{{GE_USER.userDispMtext? $changeText(GE_USER.userDispMtext) : $t('CHAN_NAME_GUEST')}}</p>
                 <div>
                   <p class="fl font14 textLeft commonBlack">{{$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)}}</p>
                 </div>
@@ -59,7 +97,7 @@
             </div>
             <div class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
               <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" v-if="((CHANNEL_DETAIL.userTeamInfo && CHANNEL_DETAIL.userTeamInfo.ownerYn === undefined && CHANNEL_DETAIL.userTeamInfo.memberNameMtext === undefined) || this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH) === '구독자')" >
-                <p v-if="(CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.memberTypeKey && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)" class="fl font14 cursorP fontBold commonColor" @click="this.openReqMemPop()" >멤버신청</p>
+                <p v-if="(CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.memberTypeKey && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)" class="fl font14 cursorP fontBold commonColor" @click="this.openReqMemPop()" >{{ $t('CHAN_BTN_MEMREQ') }}</p>
               </div>
               <img class="cursorP img-w20" @click="changeRecvAlimYn" v-if="!GE_USER.unknownYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" src="../../../assets/images/common/icon_bell_fillin.svg" alt="">
               <img class="cursorP img-w20" @click="changeRecvAlimYn" v-else-if="!GE_USER.unknownYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" src="../../../assets/images/common/icon_bell.svg" alt="">
@@ -67,7 +105,7 @@
                 :data-clipboard-text="CHANNEL_DETAIL.copyTextStr">
                 <img class="img-w20" src="../../../assets/images/common/icon_share_square.svg" alt="">
               </div>
-              <gBtnSmall @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" btnTitle="구독하기" />
+              <gBtnSmall @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" :btnTitle="$t('CHAN_BTN_FOLLOW')" />
             </div>
             <!-- <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn == false" class="w-100P fl" style="min-height:100px;display: flex; flex-direction: column; align-items: center; justify-content: center;">
               <p class="fl w-100P font16 fontBold textLeft"> [ {{changeText(CHANNEL_DETAIL.nameMtext)}} ] 채널을 구독하고 알림을 받아보세요!</p>
@@ -76,7 +114,7 @@
           </div>
 
           <div @click="changeFollowYn" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" class="fr" style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.followYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
-            <p  class="fl font14 fontBold" :style="CHANNEL_DETAIL.D_CHAN_AUTH.followYn ? 'color:white' : '' " >구독취소</p>
+            <p  class="fl font14 fontBold" :style="CHANNEL_DETAIL.D_CHAN_AUTH.followYn ? 'color:white' : '' " >{{ $t('CHAN_BTN_UNFOLLOW') }}</p>
           </div>
           <!-- <div id="chanInfoSummary" style=" width:100%; height:370px; position: relative; background-size: 100% 100%; ">
             <div style="width:100%; height:100%; background-size: 100% 100%; " ></div>
@@ -291,9 +329,15 @@ export default {
       if (resultReqData) {
         var memberInfoText = ''
         if (resultReqData.memberYn && resultReqData.memberType) {
-          memberInfoText += '환영합니다!<br>"'
-          memberInfoText += this.$changeText(resultReqData.memberType.nameMtext)
-          memberInfoText += '" 멤버가 되었습니다<br>'
+          if (this.GE_LOCALE === 'ko') {
+            memberInfoText += '환영합니다!<br> "'
+            memberInfoText += this.$changeText(resultReqData.memberType.nameMtext)
+            memberInfoText += '" 멤버가 되었습니다<br>'
+          } else {
+            memberInfoText += 'Welcome!<br>You become a "'
+            memberInfoText += this.$changeText(resultReqData.memberType.nameMtext)
+            memberInfoText += '" member.<br>'
+          }
           if (resultReqData.memberType.initData && resultReqData.memberType.initData.length > 0) {
           /* this.mReqResultMsg += '<br><p class="textLeft commonColor font16 fontBold">부가정보</p>' */
             memberInfoText += '('
@@ -306,7 +350,7 @@ export default {
           // memberInfoText += '"'
           // memberInfoText += '<br>정상적으로 신청되었습니다!'
         } else {
-          memberInfoText += '회원님은 현재 구독자상태이며,<br>언제든지 다시 멤버신청을 할 수 있습니다!'
+          memberInfoText += this.$t('CHAN_MSG_AGAIN_MEMBER')
         }
 
         this.mErrorPopBodyStr = memberInfoText
@@ -348,7 +392,7 @@ export default {
       // }
     },
     async closeReqMemPop (yn) {
-      // 그냥 닫기 눌렀을 때 환영합니다. 팝업이 등장하기 위해 그냥 닫으면 false가 오고 신청을 누르면 아무것도 안오기에 undefind가 뜰 것 입니다.
+      // 그냥 닫기 눌렀을 때 환영합니다. 팝업이 등장하기 위해 그냥 닫으면 false가 오고 신청을 누르면 아무것도  오기에 undefind가 뜰 것 입니다.
       if (yn === false) {
       } else {
         await this.readyFunction()
@@ -379,7 +423,7 @@ export default {
       param.targetType = 'bookMemberDetail'
       param.readOnlyYn = true
       param.selfYn = true
-      param.popHeaderText = '내 정보'
+      param.popHeaderText = this.$t('COMMON_NAME_MY_INFO')
       this.$emit('openPop', param)
     },
     async readyFunction () {
@@ -403,7 +447,7 @@ export default {
             console.log(this.chanDetail.initData.team.copyTextStr === undefined)
             if ((this.chanDetail.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
               this.mMakeDeepLinkIng = true
-              var title = '[더알림]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+              var title = `[${this.$t('COMMON_APP_NAME')}] ` + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
               var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
               var this_ = this
               this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
@@ -429,7 +473,7 @@ export default {
     editChan () {
       var param = {}
       param.targetType = 'createChannel'
-      param.popHeaderText = '채널 수정'
+      param.popHeaderText = this.$t('EDIT_NAME_CHAN')
       param.targetKey = this.CHANNEL_DETAIL.teamKey
       param.modiYn = true
       param.ownerYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn
@@ -456,7 +500,7 @@ export default {
           this.errorPopYn = true
         }
       } else {
-        this.errorMsg = '실패했습니다. 관리자에게 문의해주세요'
+        this.errorMsg = this.$t('COMMON_MSG_FAILED')
         this.errorPopYn = true
       }
 
@@ -469,7 +513,7 @@ export default {
       this.mErrorPopShowYn = false
       if (this.mSaveFollowerType === 'follow') {
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
-          this.mErrorPopBodyStr = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
+          this.mErrorPopBodyStr = this.$t('CHAN_MSG_NOCANCEL')
           this.mErrorPopShowYn = true
           this.mErrorPopBtnType = 'two'
         } else {
@@ -499,18 +543,22 @@ export default {
             // this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true)
             // console.log(result)
 
-            this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
+            this.$emit('showToastPop', this.$t('CHAN_MSG_UNFOLLOW'))
 
             if (result.result || result) {
               this.$emit('pageReload')
             } else {
-              this.mErrorPopBodyStr = '실패했습니다. 관리자에게 문의해주세요'
+              this.mErrorPopBodyStr = this.$t('COMMON_MSG_FAILED')
               this.mErrorPopBtnType = 'timeover'
               this.mErrorPopShowYn = true
             }
           } else {
             await this.okMember()
-            this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>우리채널에 알림을 보낼 수 있어요!<br>멤버들끼리 자유롭게 소통할 수 있어요!'
+            if (this.GE_LOCALE === 'ko') {
+              this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>우리채널에 알림을 보낼 수 있어요!<br>멤버들끼리 자유롭게 소통할 수 있어요!'
+            } else {
+              this.mChanPopMessage = `You have become a follower to the [${this.$changeText(this.CHANNEL_DETAIL.nameMtext)}] channel.<br>If you become a member, you can send notifications to our channel!<br>Members can communicate freely!`
+            }
             this.openChannelMsgPop()
           }
         }
@@ -519,7 +567,7 @@ export default {
     changeFollowYn () {
       this.mSaveFollowerType = 'follow'
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn === true) {
-        this.mErrorPopBodyStr = '구독을 취소하시겠습니까?'
+        this.mErrorPopBodyStr = this.$t('CHAN_MSG_ASK_UNFOLLOW')
         this.mErrorPopBtnType = 'two'
         this.mErrorPopShowYn = true
       } else {
@@ -530,7 +578,7 @@ export default {
       if ((this.chanDetail.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.mMakeDeepLinkIng = true
-        var title = '[더알림]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+        var title = `[${this.$t('COMMON_APP_NAME')}] ` + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
         var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
         var this_ = this
         this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
@@ -539,9 +587,9 @@ export default {
           this_.mMakeDeepLinkIng = false
         })
       }
-      var shareItem = { title: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: this.CHANNEL_DETAIL.copyTextStr, url: this.CHANNEL_DETAIL.copyTextStr }
+      var shareItem = { title: `[${this.$t('COMMON_APP_NAME')}] ` + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: this.CHANNEL_DETAIL.copyTextStr, url: this.CHANNEL_DETAIL.copyTextStr }
       if (this.$checkMobile() === 'IOS') {
-        shareItem = { title: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), url: this.CHANNEL_DETAIL.copyTextStr }
+        shareItem = { title: `[${this.$t('COMMON_APP_NAME')}]` + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: `[${this.$t('COMMON_APP_NAME')}] ` + this.$changeText(this.CHANNEL_DETAIL.nameMtext), url: this.CHANNEL_DETAIL.copyTextStr }
       }
       if (navigator.share) {
         navigator.share(shareItem)
@@ -559,11 +607,11 @@ export default {
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn === 1) {
         this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn = false
         param.notiYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn
-        toastText = '채널 알림이 비활성화 되었습니다'
+        toastText = this.$t('CHAN_MSG_OFF_NOTI')
       } else {
         this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn = true
         param.notiYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn
-        toastText = '채널 알림이 활성화 되었습니다'
+        toastText = this.$t('CHAN_MSG_ON_NOTI')
       }
       this.axiosQueue.push('changeRecvAlimYn')
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
@@ -647,7 +695,7 @@ export default {
         param.openActivity = 'chanAlimList'
       }
       if (param.targetType === 'createChannel') {
-        param.popHeaderText = '채널 수정'
+        param.popHeaderText = this.$t('EDIT_NAME_CHAN')
       } else if (param.targetType === 'chanDetail') {
         if (param.targetKey === this.CHANNEL_DETAIL.teamKey) {
           return
@@ -760,11 +808,7 @@ export default {
 
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
-<<<<<<< .mine
         url: '/service/tp.saveFollower',
-=======
-        url: '/service/tp.saveFollower',
->>>>>>> .r1564
         param: params
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')
@@ -787,6 +831,9 @@ export default {
     } */
   },
   computed: {
+    GE_LOCALE () {
+      return this.$i18n.locale
+    },
     CHANNEL_DETAIL () {
       if (!this.chanDetail && !this.mDirectTeamKey) return {}
       let teamKey
@@ -867,6 +914,13 @@ export default {
     }
   },
   watch: {
+    GE_LOCALE: {
+      immediate: true,
+      handler (value) {
+        this.mActiveTabList = [{ display: this.$t('COMMON_TAB_FOLLOWING'), name: 'user' }, { display: this.$t('COMMON_TAB_ALL'), name: 'all' }, { display: this.$t('COMMON_TAB_MANAGING'), name: 'mychannel' }]
+      },
+      deep: true
+    },
     CHANNEL_DETAIL: {
       immediate: true,
       handler (value, old) {

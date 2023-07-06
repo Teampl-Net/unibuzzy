@@ -1,3 +1,19 @@
+<i18n>
+{
+  "ko": {
+    "BCARD_NAME_COMMENTO": "댓글 지원O",
+    "BCARD_NAME_FILEO": "파일 업로드O",
+    "BCARD_NAME_ANONY": "익명",
+    "BCARD_NAME_ID": "실명"
+  },
+  "en": {
+    "BCARD_NAME_COMMENTO": "Comments O",
+    "BCARD_NAME_FILEO": "Files O",
+    "BCARD_NAME_ANONY": "Identified",
+    "BCARD_NAME_ID": "Anonymous"
+  }
+}
+</i18n>
 <template>
   <div class="fl w-100P" style="border-bottom: 1px solid; border-color: #BDBDBD50" :class="{ CWhiteGrayBgColor: (option === 'SELE' && propData.selectedYn === true) }" >
     <div class="fl w-100P rowBaseCss"  style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" >
@@ -59,11 +75,11 @@ export default {
       this.$emit('cardEmit', param)
     },
     setSubTitle () {
-      if (this.propData.replyYn === 1) { this.subTitle += '댓글 지원O' } else { this.subTitle += '' }
+      if (this.propData.replyYn === 1) { this.subTitle += this.$t('BCARD_NAME_COMMENTO') } else { this.subTitle += '' }
       if (this.propData.replyYn === 1) this.subTitle += ', '
-      if (this.propData.fileYn === 1) { this.subTitle += '파일업로드O' } else { this.subTitle += '' }
+      if (this.propData.fileYn === 1) { this.subTitle += this.$t('BCARD_NAME_FILEO') } else { this.subTitle += '' }
       if (this.propData.fileYn === 1) this.subTitle += ', '
-      if (this.propData.blindYn === 1) { this.subTitle += '익명' } else { this.subTitle += '실명' }
+      if (this.propData.blindYn === 1) { this.subTitle += this.$t('BCARD_NAME_ANONY') } else { this.subTitle += this.$t('BCARD_NAME_ID') }
     }
   },
   created () {

@@ -1,18 +1,51 @@
+<i18n>
+{
+  "ko": {
+    "MEM_DETAIL_NAME_SHORT": "주관식",
+    "MEM_DETAIL_NAME_CHOICE": "객관식",
+    "MEM_DETAIL_BNT_NUMONLY": "숫자만 허용",
+    "MEM_DETAIL_BTN_MAX": "글자수 최대",
+    "MEM_DETAIL_NAME_DROP": "드롭다운",
+    "MEM_DETAIL_NAME_LIST": "리스트",
+    "MEM_DETAIL_TITLE_INFONAME": "정보명",
+    "MEM_DETAIL_NAME_EDIT": "멤버정보 수정",
+    "MEM_DETAIL_MSG_INFONAME": "멤버 정보 명을 입력해주세요.",
+    "MEM_DETAIL_MSG_QUESTION": "질문을 입력해주세요.",
+    "MEM_DETAIL_MSG_QTYPE": "질문의 유형을 선택해주세요.",
+    "MEM_DETAIL_TITLE_OPTION": "선택항"
+  },
+  "en": {
+    "MEM_DETAIL_TITLE_ADDINFO": "Additional information",
+    "MEM_DETAIL_NAME_SHORT": "Short<br>Answer",
+    "MEM_DETAIL_NAME_CHOICE": "Multiple<br>choice",
+    "MEM_DETAIL_BNT_NUMONLY": "Number Only",
+    "MEM_DETAIL_BTN_MAX": "Maximum",
+    "MEM_DETAIL_NAME_DROP": "Drop Down",
+    "MEM_DETAIL_NAME_LIST": "List",
+    "MEM_DETAIL_TITLE_INFONAME": "Info Name",
+    "MEM_DETAIL_NAME_EDIT": "Edit a Member Info",
+    "MEM_DETAIL_MSG_INFONAME": "Please enter the member information name.",
+    "MEM_DETAIL_MSG_QUESTION": "Please enter a question.",
+    "MEM_DETAIL_MSG_QTYPE": "Please select the type of question.",
+    "MEM_DETAIL_TITLE_OPTION": "Options"
+  }
+}
+</i18n>
 <template>
   <div @click="backClick" style="width: 100%; height: 100%; background: #00000026;top: 0; left: 0; z-index: 99; position: fixed;"></div>
   <div class=" fl" style="width: calc(100% - 40px); height: 500px; position: fixed; left: 20px; box-shadow: 0 0 4px 4px rgb(0 0 0 / 5%) 0px 0px 4px 4px; border-radius: 0.8rem; top: 20%; z-index: 99; background: #FFF;">
     <div style="width: 100%; height: 50px; position: relative; padding: 10px 20px; float: left; border-bottom: 2px solid #6768a7;">
-        <p class="fontLeft fl fontBold font18 commonColor">멤버정보 수정</p>
+        <p class="fontLeft fl fontBold font18 commonColor">{{ $t('MEM_DETAIL_NAME_EDIT') }}</p>
         <img class="cursorP" src="../../../assets/images/common/popup_close.png" @click="backClick" style="position: absolute; top: 15px; right: 20px; width: 20px;" alt="">
     </div>
     <div class="pSide-15 fl w-100P">
         <div class="queInfoRow fl ">
-            <p class="fontBold  textLeft font16 fr" style="width: 60px; line-height: 30px;">정보명</p>
-            <div style="display: flex; float: left; width: calc(100% - 60px); height: 100%; min-height: 30px;">
-                <input class="fl" style="width: calc(100% - 150px);" v-model="InfoQueTitle" type="text" placeholder="멤버 정보 명을 입력해주세요." id="channelName">
-                <div style="width: calc(150px); height: 100%; min-height: 30px;">
-                    <gCheckBtn style="width: calc(50% - 10px); min-width: 65px;" class="mleft-05 fl" title='주관식' :selectedYn='mSelectedItemType === "T"' @click="mSelectedItemType = 'T'" />
-                    <gCheckBtn style="width: calc(50% - 10px); min-width: 65px;" class="mleft-05 fl" title='객관식' :selectedYn='mSelectedItemType === "F"' @click="mSelectedItemType = 'F'" />
+            <p class="fontBold  textLeft font16 fr" style="width: 80px; line-height: 30px;">{{ $t('MEM_DETAIL_TITLE_INFONAME') }}</p>
+            <div style="display: flex; float: left; width: calc(100% - 80px); height: 100%; min-height: 30px;">
+                <input class="fl" style="width: calc(100% - 160px);" v-model="InfoQueTitle" type="text" :placeholder="$t('MEM_DETAIL_MSG_INFONAME')" id="channelName">
+                <div style="width: calc(160px); min-height: 30px;">
+                    <gCheckBtn style="width: calc(50% - 10px); min-width: 65px;" class="mleft-05 fl" :title="$t('MEM_DETAIL_NAME_SHORT')" :selectedYn='mSelectedItemType === "T"' @click="mSelectedItemType = 'T'" />
+                    <gCheckBtn style="width: calc(50% - 10px); min-width: 65px;" class="mleft-05 fl" :title="$t('MEM_DETAIL_NAME_CHOICE')" :selectedYn='mSelectedItemType === "F"' @click="mSelectedItemType = 'F'" />
                 </div>
             </div>
         </div>
@@ -38,10 +71,10 @@
             <div class="fl wh-100P" style="display: flex;">
             <!-- <p class="fl font16 commonColr textLeft fontBold h-100P" style="flex:2">제시글</p> -->
             <div class="fl h-100P" style="flex:3">
-                <gCheckBtn class="fl mtop-05" title='숫자만 허용' :selectedYn='onlyNumYn === true' @click="onlyNumYn = !onlyNumYn" />
+                <gCheckBtn class="fl mtop-05" :title="$t('MEM_DETAIL_BNT_NUMONLY')" :selectedYn='onlyNumYn === true' @click="onlyNumYn = !onlyNumYn" />
                 <!-- <input class="fr" style="min-height:30px; background: #CCCCCC50 !important; width:100%; max-width:300px; " type="text" disabled :placeholder="InfoQueTitle"> -->
-                <div class="fl w-50P mtop-05 mleft-05 " style="width: calc(100% - 110px);">
-                <gCheckBtn class="fl" title='글자수 최대' :selectedYn='maxLengthYn === true' @click="maxLengthYn = !maxLengthYn" />
+                <div class="fl w-50P mtop-05 mleft-05 " style="width: calc(100% - 125px);">
+                <gCheckBtn class="fl" :title="$t('MEM_DETAIL_BTN_MAX')" :selectedYn='maxLengthYn === true' @click="maxLengthYn = !maxLengthYn" />
                 <input type="number" max="255" class="fl" v-show="maxLengthYn === true" style="width: calc(100% - 120px); min-height:30px; min-width:30px; margin-left: 10px;" v-model="maxLength">
                 </div>
             </div>
@@ -50,7 +83,7 @@
 
         <template v-if="mSelectedItemType === 'F' || mSelectedItemType === 'L'">
             <div class="fl wh-100P h-100P" style="">
-            <p class="fl font16 w-100P commonColr textLeft fontBold mbottom-05  h-100P" style="">선택항</p>
+            <p class="fl font16 w-100P commonColr textLeft fontBold mbottom-05  h-100P" style="">{{ $t('MEM_DETAIL_TITLE_OPTION') }}</p>
 
             <div class="fl w-100P" style="height: 260px; padding-right: 8px; overflow: hidden scroll; ">
                 <draggable class="ghostClass" :v-model="answerList" ghost-class="ghost" :dragging="dragging" @end="endDragList" delay="200" handle=".movePoint">
@@ -82,8 +115,8 @@
 
         </div>
         <div class="w-100P" style="position: absolute; left:0; bottom:0; min-height:50px; display: flex; align-items: center; justify-content: center; border-top: 1px solid #ccc;">
-            <gBtnSmall :btnTitle="'저장'" @click="saveMemberTypeItem" class="mright-05" style=""/>
-            <gBtnSmall :btnTitle="'닫기'" btnThema="light" @click="closeXPop" class="mleft-05" style=""/>
+            <gBtnSmall :btnTitle="$t('COMMON_BTN_SAVE')" @click="saveMemberTypeItem" class="mright-05" style=""/>
+            <gBtnSmall :btnTitle="$t('COMMON_BTN_DELETE')" btnThema="light" @click="closeXPop" class="mleft-05" style=""/>
         </div>
     </div>
   </div>
@@ -175,11 +208,11 @@ export default {
     checkData () {
       var passYn = true
       if (this.InfoQueTitle === undefined || this.InfoQueTitle === null || this.InfoQueTitle === '') {
-        this.$showToastPop('질문을 입력해주세요')
+        this.$showToastPop(this.$t('MEM_DETAIL_MSG_QUESTION'))
         passYn = false
       }
       if (this.mSelectedItemType === undefined || this.mSelectedItemType === null || this.mSelectedItemType === '') {
-        this.$showToastPop('질문의 유형을 선택해주세요.')
+        this.$showToastPop(this.$t('MEM_DETAIL_MSG_QTYPE'))
         passYn = false
       }
       return passYn
@@ -219,11 +252,7 @@ export default {
       }
       this.$emit('changeMemberItem', param)
       /* var saveItem = await this.$commonAxiosFunction({
-<<<<<<< .mine
         url: '/service/tp.saveMemberTypeItem',
-=======
-        url: '/service/tp.saveMemberTypeItem',
->>>>>>> .r1564
         param: { member: param }
       }) */
       // console.log(saveItem)

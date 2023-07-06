@@ -1,9 +1,33 @@
+<i18n>
+{
+  "ko": {
+    "SAMP_NAME_SAMPLE": "샘플 선택",
+    "SAMP_TITLE_LIST": "샘플 목록",
+    "SAMP_MSG_NOSMAPLE": "선택가능한 샘플이 없습니다.",
+    "SAMP_TITLE_PREVIEW": "미리보기",
+    "SAMP_BTN_DELETE": "삭제",
+    "SAMP_BTN_EDIT": "수정",
+    "SAMP_MSG_BEFORE_DELETE": "샘플을 삭제하시겠습니까?",
+    "SAMP_MSG_AFTER_DELETE": "샘플이 삭제되었습니다."
+  },
+  "en": {
+    "SAMP_NAME_SAMPLE": "Select sample",
+    "SAMP_TITLE_LIST": "Sample List",
+    "SAMP_MSG_NOSMAPLE": "There is no selectable sample.",
+    "SAMP_TITLE_PREVIEW": "Preview",
+    "SAMP_BTN_DELETE": "Delete",
+    "SAMP_BTN_EDIT": "Edit",
+    "SAMP_MSG_BEFORE_DELETE": "Are you sure you want to delete the sample?",
+    "SAMP_MSG_AFTER_DELETE": "The sample has been deleted.The sample has been deleted."
+  }
+}
+</i18n>
 <template>
     <div style="float: left">
         <div @click="closeXPop" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000040; z-index: 9999999;"></div>
         <div style="width: 80%; min-height: 500px; max-height: 700px; border-radius: 0.8rem; height: 40%; position: fixed; background: #FFF; z-index: 99999999; top: 20%; left: 10%;">
             <div style="width: 100%; padding: 8px 20px; height: 40px; float: left;" class="headerShadow">
-                <p class="font18 fontBold textLeft">샘플 선택</p>
+                <p class="font18 fontBold textLeft">{{ $t('SAMP_NAME_SAMPLE') }}</p>
             </div>
             <div style="width: 100%; padding: 10px 20px; height: calc(100% - 80px); float: left">
                 <!-- <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"  style=" width:calc(100%); padding-top: 0!important"/> -->
@@ -15,8 +39,8 @@
                 </select> -->
                 <div style="width: 100%; height: calc(100% - 40px); float: left;">
                     <div style="width: 100%; height: 35px; position: relative; margin-bottom: 0.2rem; float: left; position: relative;">
-                        <p class="font16 fontBold commonColor textLeft " style="margin-top: 3px;">[{{this.$changeText(this.cabinetDetail.teamNameMtext)}}] 샘플 목록</p>
-                        <gBtnSmall @click="openMakeSamplePop('new')" btnTitle="추가" style="position: absolute; right: 5px; top: 0px; "/>
+                        <p class="font16 fontBold commonColor textLeft " style="margin-top: 3px;">[{{this.$changeText(this.cabinetDetail.teamNameMtext)}}] {{ $t('SAMP_TITLE_LIST') }}</p>
+                        <gBtnSmall @click="openMakeSamplePop('new')" :btnTitle="$t('COMMON_BTN_ADD')" style="position: absolute; right: 5px; top: 0px; "/>
                     </div>
                     <div @click="goScroll('back')" style="float: left; margin-right: 5px;cursor: pointer ; width: 15px; height: 100px; display: flex; align-items: center;">
                         <img src="../../../assets/images/common/arrowBackIcon.svg" alt="">
@@ -24,7 +48,7 @@
                     <div ref="sampleScrollWrap" class=" sampleScrollWrap" style="width: calc(100% - 40px); box-shadow: rgb(140 140 140 / 10%) 0px 0px 10px 4px inset; border-radius: 10px; padding: 5px;overflow: scroll hidden; height: 100px; float: left;">
                     <!-- <div ref="sampleScrollWrap" style="width: calc(100% - 40px); overflow: scroll hidden; height: 100px; float: left;"> -->
                         <div style="min-width: 100%; height: 100%; padding: 5px 0; float: left;" :style="'width: ' + this.sampleList.length * 100 + 'px;'">
-                            <p class="font15 mleft-05 grayBlack textLeft" v-if="sampleList.length === 0">선택가능한 샘플이 없습니다.</p>
+                            <p class="font15 mleft-05 grayBlack textLeft" v-if="sampleList.length === 0">{{ $t('SAMP_MSG_NOSMAPLE') }}</p>
                             <div v-for="(value, index) in sampleList" @click="selectSample(value)" :key="index" style="float: left; width: 90px; height: 100px; cursor: pointer; display: flex; flex-direction: column; align-items: center;" >
                                 <div :class="value.sampleKey === this.selectedSampleObj.sampleKey? 'selectedSample': ''" style="width: 80px; padding: 10px;height: 80px; box-shadow: rgb(140 140 140 / 26%) 0px 0px 3px 1px; float: left; border-radius: 5px;">
                                     <img src="../../../assets/images/common/errorIcon.svg" v-if="value.sampleKey === 9" style="width: 35px;" alt="">
@@ -40,21 +64,21 @@
                         <img src="../../../assets/images/common/arrowNextIcon.svg" alt="">
                     </div>
                     <div style="width: 100%; height: calc(100% - 200px); margin-top:10px; float: left ">
-                        <p class="font16 fontBold commonColor mbottom-05 textLeft" style="margin-top: 7px;">미리보기</p>
+                        <p class="font16 fontBold commonColor mbottom-05 textLeft" style="margin-top: 7px;">{{ $t('SAMP_TITLE_PREVIEW') }}</p>
                         <div class="font14" v-html="this.selectedSampleObj.bodyFullStr" style="width: 100%; overflow: hidden scroll; text-align: left; height: 100%; float: left; border-radius: 0.8rem; box-shadow: rgb(140 140 140 / 10%) 0px 0px 10px 4px inset; padding: 10px 20px; ">
                         </div>
                         <div v-if="this.selectedSampleObj.sampleKey > 0" class="font14 mtop-05" @click="askDelSample" style=" cursor: pointer; background: #D9D9D9; color: #FFF; line-height: 30px; border-radius: 5px; min-width: 3rem; float: right; height: 30px; padding: 0 20px; text-align: center;">
-                            삭제
+                          {{ $t('SAMP_BTN_DELETE') }}
                         </div>
                         <div v-if="this.selectedSampleObj.sampleKey > 0" class="font14 mtop-05" @click="this.openMakeSamplePop('modi')" style=" cursor: pointer; margin-right: 5px; background: #D9D9D9; color: #FFF; line-height: 30px; border-radius: 5px; min-width: 3rem; float: right; height: 30px; padding: 0 20px; text-align: center;">
-                            수정
+                          {{ $t('SAMP_BTN_EDIT') }}
                         </div>
                     </div>
                 </div>
             </div>
             <div style="width: 100%; padding: 0 20px; height: 40px; float: left;">
-                <gBtnSmall @click="closeXPop" btnThema="light" btnTitle="닫기" />
-                <gBtnSmall @click="okSelectSample" btnTitle="선택" class="mright-05" />
+                <gBtnSmall @click="closeXPop" btnThema="light" :btnTitle="$t('COMMON_BTN_CLOSE')" />
+                <gBtnSmall @click="okSelectSample" :btnTitle="$t('COMMON_BTN_SELECT')" class="mright-05" />
             </div>
             <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false'  />
         </div>
@@ -133,7 +157,7 @@ export default {
       }
     },
     askDelSample () {
-      this.confirmText = '샘플을 삭제하시겠습니까?'
+      this.confirmText = this.$t('SAMP_MSG_BEFORE_DELETE')
       this.confirmPopShowYn = true
     },
     async confirmOk () {
@@ -154,7 +178,7 @@ export default {
         url: '/service/tp.saveSample',
         param: param
       })
-      this.$showToastPop('샘플이 삭제되었습니다.')
+      this.$showToastPop(this.$t('SAMP_MSG_AFTER_DELETE'))
       this.getGuideList()
     },
     async okSelectSample () {

@@ -1,3 +1,27 @@
+<i18n>
+{
+  "ko": {
+    "FOLLOW_NAME_OWNER": "소유자",
+    "FOLLOW_NAME_MEMBER": "멤버",
+    "FOLLOW_NAME_FOLLOWER": "구독자",
+    "FOLLOW_MSG_NOEMAIL": "이메일 정보 없음",
+    "FOLLOW_MSG_NONUMBER": "휴대폰 정보 없음",
+    "FOLLOW_BTN_SENDNOTI": "알림 보내기",
+    "FOLLOW_NAME_MANAGE": "관리자",
+    "FOLLOW_MSG_NOAUTH": "구독자는 세부정보 확인이 불가합니다."
+  },
+  "en": {
+    "FOLLOW_NAME_OWNER": "Owner",
+    "FOLLOW_NAME_MEMBER": "Member",
+    "FOLLOW_NAME_FOLLOWER": "Follower",
+    "FOLLOW_MSG_NOEMAIL": "No Email Info",
+    "FOLLOW_MSG_NONUMBER": "No Phone Number Info",
+    "FOLLOW_BTN_SENDNOTI": "Send Noti",
+    "FOLLOW_NAME_MANAGE": "Manager",
+    "FOLLOW_MSG_NOAUTH": "Subscriber cannot check details."
+  }
+}
+</i18n>
 <template>
     <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" />
     <gConfirmPop :confirmText='confirmManagerText' :confirmType="two" @no="confirmManagerPopShowYn = false, reportYn = false" @ok="okSaveManager" v-if="confirmManagerPopShowYn"/>
@@ -15,20 +39,20 @@
                         <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'소유자'}}</p>
                     </div> -->
                     <div v-if="member.ownerYn" style="padding: 3px 8px;float: left; margin-top: 4px;  border-radius: 8px; line-height: 18px; height: 23px; background-color:rgb(254 224 224);"  >
-                        <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'소유자'}}</p>
+                        <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{ $t('Owner') }}</p>
                     </div>
                     <div v-else-if="member.memberTypeKey" style="padding: 3px 8px;float: left; margin-top: 4px;  border-radius: 8px; line-height: 18px; height: 23px; background-color:rgb(254 224 224);"  >
-                        <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'멤버'}}</p>
+                        <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{ $t('Member') }}</p>
                     </div>
                     <div v-else style="padding: 3px 8px;float: left; margin-top: 4px; border-radius: 8px; line-height: 18px; height: 23px; background-color:#F5F5F9;"  >
-                        <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'구독자'}}</p>
+                        <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{ $t('Follower') }}</p>
                     </div>
                 </div>
                 <div style="width: calc(100% - 50px); min-height: 20px; float: left; display: flex; flex-direction: column;">
                     <p class="fl font16 grayBlack" style="text-align:left; width:calc(100%); line-height:23px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-weight: bold;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
-                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold  textLeft textOverdot w-100P">{{member.userEmail? member.userEmail: '이메일 정보 없음'}}</p>
+                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold  textLeft textOverdot w-100P">{{member.userEmail? member.userEmail: this.$t('No Email Info')}}</p>
                     <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{this.$changeFollowerInfo('email', member.userEmail)}}</p>
-                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold textLeft textOverdot">{{member.phoneEnc? member.phoneEnc: '휴대폰 정보 없음'}}</p>
+                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold textLeft textOverdot">{{member.phoneEnc? member.phoneEnc: this.$t('No Phone Number Info')}}</p>
                     <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{this.$changeFollowerInfo('phone', member.phoneEnc)}}</p>
                     <div class="w-100P fl">
                         <p class="textLeft fl fontBold grayBlack font12 " >{{this.$changeText(member.memberNameMtext)}}</p>
@@ -39,9 +63,9 @@
                 </div>
             </div>
             <div class="fr  memberItemBox" >
-                <div @click="clickManagerBox('ALIM', member, index, member.mngAlimYn)" :class="{activeMAlim: member.mngAlimYn === 1}" class="font14 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center; width: 35px; height: 35px; border-radius: 5px;     box-shadow: inset 0 0 4px 1px #00000010;">알림</div>
-                <div @click="clickManagerBox('MEMBER', member, index, member.mngMemberYn)" :class="{activeMMember: member.mngMemberYn === 1}" class="font14 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center;  width: 35px; height: 35px; border-radius: 5px;    box-shadow: inset 0 0 4px 1px #00000010;">멤버</div>
-                <div @click="clickManagerBox('CHAN', member, index, member.mngTeamYn)" :class="{activeMChan: member.mngTeamYn === 1}" class="font14 cursorP" style=" display: flex; justify-content: center; align-items: center; width: 35px; height: 35px; border-radius: 5px; ;    box-shadow: inset 0 0 4px 1px #00000010;">채널</div>
+                <div @click="clickManagerBox('ALIM', member, index, member.mngAlimYn)" :class="{activeMAlim: member.mngAlimYn === 1}" class="font12 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center; height: 35px; border-radius: 5px;     box-shadow: inset 0 0 4px 1px #00000010; padding: 5px;">{{ $t('COMMON_TAB_NOTI') }}</div>
+                <div @click="clickManagerBox('MEMBER', member, index, member.mngMemberYn)" :class="{activeMMember: member.mngMemberYn === 1}" class="font12 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center; height: 35px; border-radius: 5px;    box-shadow: inset 0 0 4px 1px #00000010; padding: 5px;">{{ $t('FOLLOW_NAME_MEMBER') }}</div>
+                <div @click="clickManagerBox('CHAN', member, index, member.mngTeamYn)" :class="{activeMChan: member.mngTeamYn === 1}" class="font12 cursorP" style=" display: flex; justify-content: center; align-items: center; height: 35px; border-radius: 5px; ;    box-shadow: inset 0 0 4px 1px #00000010; padding: 5px;">{{ this.$t('COMMON_NAME_CHANNEL') }}</div>
 
                 <!-- <div v-if="member.ownerYn" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
                     <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'소유자'}}</p>
@@ -66,6 +90,9 @@ export default {
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_LOCALE () {
+      return this.$i18n.locale
     }
     /* CHANNEL_DETAIL () {
       return this.$getDetail('TEAM', this.propData.teamKey)[0]
@@ -74,7 +101,7 @@ export default {
   data () {
     return {
       systemName: localStorage.getItem('systemName'),
-      interfaceBtnList: [{ text: '알림 보내기', event: 'sendPush' }],
+      interfaceBtnList: [{ text: this.$t('FOLLOW_BTN_SENDNOTI'), event: 'sendPush' }],
       openCommonAlertPopShowYn: false,
       selectedMember: null,
       confirmManagerText: '',
@@ -92,16 +119,20 @@ export default {
     clickManagerBox (manType, member, index, status) {
       this.selectedUserParamObj = { manType: manType, member: member, index: index }
       var typeText = null
-      if (manType === 'CHAN') typeText = '채널관리자'
-      if (manType === 'MEMBER') typeText = '멤버관리자'
-      if (manType === 'ALIM') typeText = '알림관리자'
+      if (manType === 'CHAN') typeText = this.$t('COMMON_NAME_CHANNEL') + ' ' + this.$t('FOLLOW_NAME_MANAGE')
+      if (manType === 'MEMBER') typeText = this.$t('FOLLOW_NAME_MEMBER') + ' ' + this.$t('FOLLOW_NAME_MANAGE')
+      if (manType === 'ALIM') typeText = this.$t('COMMON_TAB_NOTI') + ' ' + this.$t('FOLLOW_NAME_MANAGE')
       var actText = null
       if (status || status === 1) {
         actText = '에서 제외시키겠습니까?'
       } else {
         actText = '로 지정하시겠습니까?'
       }
-      this.confirmManagerText = this.$changeText(member.userDispMtext) + '을(를)<br>' + typeText + actText
+      if (this.GE_LOCALE === 'ko') {
+        this.confirmManagerText = this.$changeText(member.userDispMtext) + '을(를)<br>' + typeText + actText
+      } else {
+        this.confirmManagerText = `Are you sure you want to revoke ${this.$changeText(member.userDispMtext)}'s ${typeText} authority?`
+      }
       this.confirmManagerPopShowYn = true
     },
     okSaveManager () {
@@ -230,7 +261,7 @@ export default {
       if (member.memberYn || member.ownerYn || member.managerKey > 0) {
         this.$emit('memberInfo', member)
       } else {
-        this.$showToastPop('구독자는 세부정보 확인이 불가합니다.')
+        this.$showToastPop(this.$t('FOLLOW_MSG_NOAUTH'))
       }
     }
   }
@@ -239,7 +270,6 @@ export default {
 
 <style scoped>
 .memberItemBox{
-  width: 125px;
   display: flex; flex-direction: row; align-items: center; justify-content: flex-end; align-content: center; height: 30px;
 }
 .followerCard{

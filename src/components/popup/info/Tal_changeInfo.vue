@@ -1,3 +1,33 @@
+<i18n>
+{
+  "ko": {
+    "INFO_TITLE_EMAIL": "변경할 이메일 주소 인증",
+    "INFO_MSG_EMAIL": "이메일 주소 입력",
+    "INFO_MSG_VERINUM": "인증번호 입력",
+    "INFO_BTN_SEND": "인증번호 발송",
+    "INFO_BTN_NOWEMAIL": "현재 등록된 이메일",
+    "INFO_MSG_SAME": "현재 이메일과 변경 이메일이 동일합니다.",
+    "INFO_MSG_FORMAT": "이메일 형식이 올바르지 않습니다.",
+    "INFO_MSG_AFTER_SEND": "인증번호가 발송되었습니다.",
+    "INFO_MSG_NOEMAIL": "현재 등록되어 있는 이메일이 없습니다.",
+    "INFO_MSG_NONUM": "인증번호를 입력해주세요.",
+    "INFO_BTN_VERI": "인증하기"
+  },
+  "en": {
+    "INFO_TITLE_EMAIL": "Email Verification to change",
+    "INFO_MSG_EMAIL": "Enter your email address",
+    "INFO_MSG_VERINUM": "Enter verification number",
+    "INFO_BTN_SEND": "Send",
+    "INFO_BTN_NOWEMAIL": "Email currently registered",
+    "INFO_MSG_SAME": "The current email and the email you want to change are the same.",
+    "INFO_MSG_FORMAT": "Email format is not valid.",
+    "INFO_MSG_AFTER_SEND": "The verification number has been sent.",
+    "INFO_MSG_NOEMAIL": "No emails are currently registered.",
+    "INFO_MSG_NONUM": "Please enter the verification number.",
+    "INFO_BTN_VERI": "Verification"
+  }
+}
+</i18n>
 <template>
 <div class="pagePaddingWrap" style="background: rgb(220, 221, 235);">
   <div style="border-radius: 0.8rem; background: #FFF; box-shadow: 0 0 7px 3px hsl(0deg 2% 71% / 25%); width: 100%; float: left; margin-top: 15px; padding: 10px 10px; padding-top: 5px;">
@@ -10,16 +40,16 @@
         </select>
     </div>
     <div class="inputWrap ">
-        <p class="font18 textLeft fontBold">변경할 {{kindText}} 인증</p>
+        <p class="font18 textLeft fontBold">{{ $t('INFO_TITLE_EMAIL') }}</p>
         <div style="width: 100%; min-height: 30px; position: relative; float:left;">
-            <input v-model="infoValue" type="" ref="valueBox" :placeholder="this.kindText + ' 입력'" name="" id=""  :style="sendOk === true ? 'background : #CCCCCC50 !important' : ''">
-            <gBtnSmall @click="sendMsg" :btnTitle="this.sendNumberBtn" class="inputBtn mright-03" />
+            <input v-model="infoValue" type="" ref="valueBox" :placeholder="$t('INFO_MSG_EMAIL')" name="" id=""  :style="sendOk === true ? 'background : #CCCCCC50 !important' : ''">
+            <gBtnSmall @click="sendMsg" :btnTitle="$t('INFO_BTN_SEND')" class="inputBtn mright-03" />
         </div>
     </div>
     <div class="inputWrap">
         <div style="width: 100%; min-height: 30px; position: relative; float:left;">
             <input type="" v-model="token" ref="numberInputCompo" :readonly='true' :placeholder="TimerStr" name="" id="" :style="!sendOk === true ? 'background : #CCCCCC50 !important' : ''">
-            <gBtnSmall @click="checkValidation" v-if="sendOk" :btnTitle="'인증하기'" class="inputBtn"  />
+            <gBtnSmall @click="checkValidation" v-if="sendOk" :btnTitle="$t('INFO_BTN_VERI')" class="inputBtn"  />
         </div>
     </div>
   </div>
@@ -46,7 +76,7 @@ export default {
       holdingEmail: '',
       Timer: null,
       TimeCounter: 300,
-      TimerStr: "인증번호 입력",
+      TimerStr: this.$t('Enter verification number'),
       errorBoxText: '',
       errorBoxYn: false
     }
@@ -86,13 +116,13 @@ export default {
     sendMsg () {
         if (this.regEmail(this.infoValue.trim())) {
             if (this.GE_USER.userEmail === this.infoValue) {
-                this.errorBoxText = '현재이메일과 변경이메일이 동일합니다'
+                this.errorBoxText = this.$t('INFO_MSG_SAME')
                 this.errorBoxYn = true
                 return
             }
             this.sendEmail()
         }else {
-            this.errorBoxText = '이메일 형식이 올바르지 않습니다'
+            this.errorBoxText = this.$t('INFO_MSG_FORMAT')
             this.errorBoxYn = true
         }
     },
@@ -108,7 +138,7 @@ export default {
       })
       debugger
       if (result.data.result) {
-        this.$showToastPop('인증 번호가 발송되었습니다.')
+        this.$showToastPop(this.$t('INFO_MSG_AFTER_SEND'))
         // console.log(result.data.result)
         if(this.Timer != null){
             this.timerStop(this.Timer)
@@ -130,7 +160,7 @@ export default {
             this.infoValue = ''
             this.timerStop(this.Timer)
             this.Timer = null
-            this.TimerStr= '인증번호 입력'
+            this.TimerStr= this.$t('INFO_MSG_VERINUM')
 
       }
     },
@@ -176,10 +206,10 @@ export default {
         var userEmail = this.GE_USER.userEmail
         if (userEmail !== undefined && userEmail !== 'undefined' && userEmail !== null && userEmail !== 'null' && userEmail !== '') {
           this.targetKind = 'change'
-          this.introText = '현재 등록된 이메일<br> <span class="commonBlack font16 mleft-05" style="font-weight: normal;"> ' + userEmail + '</span>'
+          this.introText = this.$t('INFO_BTN_NOWEMAIL') + '<br> <span class="commonBlack font16 mleft-05" style="font-weight: normal;"> ' + userEmail + '</span>'
         } else {
           this.targetKind = 'new'
-          this.introText = '현재 등록되어 있는 이메일이 없습니다.'
+          this.introText = this.$t('INFO_MSG_NOEMAIL')
         }
       }
     },
@@ -187,7 +217,7 @@ export default {
         var param = new Object()
         param.userKey = this.GE_USER.userKey
         if (this.token === undefined || this.token === null || this.token === '') {
-            this.errorBoxText = '인증번호를 입력해 주세요'
+            this.errorBoxText = this.$t('INFO_MSG_NONUM')
             this.errorBoxYn = true
             return
         }
@@ -211,7 +241,7 @@ export default {
             this.infoValue = ''
             this.timerStop(this.Timer)
             this.Timer = null
-            TimerStr= '인증번호 입력'
+            TimerStr= this.$t('INFO_MSG_VERINUM')
         }
     }
   }

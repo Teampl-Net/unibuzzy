@@ -12,6 +12,16 @@
     "COMMON_NAME_LABEL": "Label",
     "COMMON_NAME_SHARE": "Share",
     "COMMON_NAME_MORE": "More",
+    "COMMON_NAME_MENU": "Menu",
+    "COMMON_NAME_BOARD": "Board",
+    "COMMON_NAME_ADDRBOOK": "Address Book",
+    "COMMON_NAME_EMAIL": "Email",
+    "COMMON_NAME_PHONE": "Phone",
+    "COMMON_TITLE_CHANNAME": "Channel Name",
+    "COMMON_NAME_CATEGORY": "Category",
+    "COMMON_TITLE_SHARE": "Sharing to",
+    "COMMON_NAME_MEMBER": "Member",
+    "COMMON_NAME_MANAGER": "Manager",
 
     "COMMON_TAB_ALL": "All",
     "COMMON_TAB_NOTI": "Noti",
@@ -22,5 +32,23 @@
     "COMMON_TAB_MY": "My",
     "COMMON_TAB_FILE_DRIVE": "File Drive",
     "COMMON_TAB_FOLLOWING": "Following",
-    "COMMON_TAB_MANAGING": "Managing"
+    "COMMON_TAB_MANAGING": "Managing",
+    "COMMON_TAB_CONTENTS": "Contents",
+    "COMMON_TITLE_USER": "User",
+
+    "COMMON_BTN_EDIT": "Edit",
+    "COMMON_BTN_OK": "OK",
+    "COMMON_BTN_CANCEL": "Cancel",
+    "COMMON_BTN_SELECTED": "Selected",
+    "COMMON_BTN_ADD": "Add",
+    "COMMON_BTN_EDIT2": "Edit",
+    "COMMON_BTN_CLOSE": "Close",
+    "COMMON_BTN_SELECT": "Select",
+    "COMMON_BTN_REQLIST": "Request List",
+    "COMMON_TITLE_PROFILE": "Profile",
+    "COMMON_BTN_DELETE": "Delete",
+    "COMMON_BTN_SAVE": "Save",
+
+    "COMMON_MSG_FAILED": "Failed. Please contact manager.",
+    "COMMON_MSG_NOTFOUND": "The content could not be found.\nPlease try again later."
   }

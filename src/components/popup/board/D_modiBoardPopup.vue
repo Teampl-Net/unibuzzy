@@ -1,15 +1,89 @@
+<i18n>
+{
+  "ko": {
+    "EDIT_BOARD_NAME_BOARD": "게시판 수정",
+    "EDIT_BOARD_TITLE_NAME": "게시판 이름",
+    "EDIT_BOARD_MSG_NAME": "게시판 이름을 입력하세요.",
+    "EDIT_BOARD_TITLE_FUNCTION": "게시판 기능",
+    "EDIT_BOARD_BTN_COMMENT": "댓글",
+    "EDIT_BOARD_BTN_FILE": "파일첨부",
+    "EDIT_BOARD_BTN_ANONY": "익명",
+    "EDIT_BOARD_BTN_ID": "실명",
+    "EDIT_BOARD_BTN_STATUS": "상태설정",
+    "EDIT_BOARD_BTN_HIDE": "제목 비공개(미권한자)",
+    "EDIT_BOARD_TITLE_SAMPLE": "예시글 작성",
+    "EDIT_BOARD_MSG_SAMPLE": "예시글을 추가해주세요",
+    "EDIT_BOARD_MSG_ISSAMPLE": "예시글 있음",
+    "EDIT_BOARD_BTN_ALLMEM": "구독자전체",
+    "EDIT_BOARD_TITLE_READ": "게시글 열람",
+    "EDIT_BOARD_BTN_NONE": "안함",
+    "EDIT_BOARD_MSG_STATUS": "권한을 설정해주세요.",
+    "EDIT_BOARD_TITLE_COMMENT": "댓글 작성",
+    "EDIT_BOARD_MSG_STATUSO": "상태O",
+    "EDIT_BOARD_MSG_STATUSX": "상태X",
+    "EDIT_BOARD_MSG_COMMENTO": "/댓글O",
+    "EDIT_BOARD_MSG_COMMENTX": "/댓글X",
+    "EDIT_BOARD_MSG_FILEO": "/파일O",
+    "EDIT_BOARD_MSG_FILEX": "/파일X",
+    "EDIT_BOARD_MSG_ANONY": "/익명",
+    "EDIT_BOARD_MSG_ID": "실명",
+    "EDIT_BOARD_MSG_HIDETITLEO": "제목 비공개(미권한자)",
+    "EDIT_BOARD_MSG_HIDETITLEX": "제목 공개(미권한자)",
+    "EDIT_BOARD_MSG_SHARE": "게시판을 공유할 대상을 선택해주세요.",
+    "EDIT_BOARD_TITLE_WRITE": "게시글 작성",
+    "EDIT_BOARD_BTN_EDIT": "수정하기",
+    "EDIT_BOARD_MSG_EDITSUCC": "성공적으로 수정되었습니다.",
+    "EDIT_BOARD_MSG_SELECTMEM": "먼저 공유대상을 선택해주세요."
+  },
+  "en": {
+    "EDIT_BOARD_NAME_BOARD": "Edit Board",
+    "EDIT_BOARD_TITLE_NAME": "Board Name",
+    "EDIT_BOARD_MSG_NAME": "Write a name of the board",
+    "EDIT_BOARD_TITLE_FUNCTION": "Board Functions",
+    "EDIT_BOARD_BTN_COMMENT": "Comments",
+    "EDIT_BOARD_BTN_FILE": "Attach File",
+    "EDIT_BOARD_BTN_ANONY": "Anonymous",
+    "EDIT_BOARD_BTN_ID": "Identified",
+    "EDIT_BOARD_BTN_STATUS": "Work Status",
+    "EDIT_BOARD_BTN_HIDE": "Hide Title to Non-Member",
+    "EDIT_BOARD_TITLE_SAMPLE": "Default Sample Text",
+    "EDIT_BOARD_MSG_SAMPLE": "Please add default sample text",
+    "EDIT_BOARD_MSG_ISSAMPLE": "Default Sample Text 0",
+    "EDIT_BOARD_BTN_ALLMEM": "All members",
+    "EDIT_BOARD_TITLE_READ": "Read Contents",
+    "EDIT_BOARD_BTN_NONE": "None",
+    "EDIT_BOARD_MSG_STATUS": "Set an access status",
+    "EDIT_BOARD_TITLE_COMMENT": "Comments",
+    "EDIT_BOARD_MSG_STATUSO": "Work Status O",
+    "EDIT_BOARD_MSG_STATUSX": "Work Status X",
+    "EDIT_BOARD_MSG_COMMENTO": "/Comments O",
+    "EDIT_BOARD_MSG_COMMENTX": "/Comments X",
+    "EDIT_BOARD_MSG_FILEO": "/File O",
+    "EDIT_BOARD_MSG_FILEX": "/File X",
+    "EDIT_BOARD_MSG_ANONY": "/Anonymous",
+    "EDIT_BOARD_MSG_ID": "/Identified",
+    "EDIT_BOARD_MSG_HIDETITLEO": "/HIde Title to non-member",
+    "EDIT_BOARD_MSG_HIDETITLEX": "/Show Title to non-member",
+    "EDIT_BOARD_MSG_SHARE": "Please select a target to share the board with.",
+    "EDIT_BOARD_TITLE_WRITE": "Write Contents",
+    "EDIT_BOARD_BTN_EDIT": "Edit",
+    "EDIT_BOARD_MSG_EDITSUCC": "Edited successfully.",
+    "EDIT_BOARD_MSG_SELECTMEM": "First, please select a target to share."
+  }
+}
+</i18n>
 <template>
 <!-- 이 페이지는 gPop에서 열어주지 않고 있고, editBoard 파일에서 가지고 있다. -->
 <div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'"  style="padding-top: 0;">
-  <popHeader @closeXPop="closePop()" headerTitle="게시판 수정" />
+  <popHeader @closeXPop="closePop()" :headerTitle="$t('EDIT_BOARD_NAME_BOARD')" />
   <loadingCompo v-if="loadingYn" />
 
   <!-- 헤더를 제외한 나머지 부분 // 스크롤을 위해 넣었으나, overflow가 되면서 밑 권한 설정 화면에서 쉐도우 처리 양 끝이 hidden 됨-->
 
   <div class="w-100P h-100P fl ptop-1" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'"  style="overflow: auto; height: calc(100% - 70px);" >
     <div class="itemWrite fl ">
-      <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시판 이름</p>
-      <input class="fl" style="width: calc(100% - 140px);" v-model="boardName" type="text" placeholder="게시판 이름을 입력하세요" id="channelName">
+      <p class="fontBold  textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOARD_TITLE_NAME') }}</p>
+      <input class="fl" style="width: calc(100% - 140px);" v-model="boardName" type="text" :placeholder="$t('EDIT_BOARD_MSG_NAME')" id="channelName">
 
       <div class="fl mleft-1" @click="this.colorPickerShowYn = !this.colorPickerShowYn" style=" border: none; min-width: 30px; max-width: 30px; width:30px; height: 30px; border-radius:100%;" :style="'background:' + this.selectedColor + ';'" ></div>
     </div>
@@ -19,38 +93,37 @@
     </div>
 
     <div class="itemWrite fl">
-      <p class="fontBold textLeft font16 fl mtop-02" style="width: 100px;">게시판 기능</p>
+      <p class="fontBold textLeft font16 fl mtop-02" style="width: 100px;">{{ $t('EDIT_BOARD_TITLE_FUNCTION') }}</p>
       <div class="fl" style="width: calc(100% - 100px);">
-        <gCheckBtn class="fl gCheck-W mtop-03 mright-03"  title='댓글' :selectedYn='replyYnInput' @click="replyYnInput = !replyYnInput" />
-        <gCheckBtn class="fl gCheck-W mtop-03 mright-03" title='파일첨부' :selectedYn='fileYnInput' @click="fileYnInput = !fileYnInput" />
-        <gCheckBtn class="fl gCheck-W mtop-03 mright-03" :title="blindYn === true ? '익명' : '실명'" :selectedYn='blindYn' @click="blindYn = !blindYn" />
-        <gCheckBtn class="fl gCheck-W mtop-03 mright-03"  title='상태설정' :selectedYn='workStatYn' @click="workStatYn = !workStatYn" />
-        <gCheckBtn class="fl gCheck-W mtop-03 mright-03" title='제목 비공개(미권한자)' v-show="permissionVGroup.type !== 'A'" :selectedYn='titleBlindYn' @click="titleBlindYn = !titleBlindYn" />
-
+        <gCheckBtn class="fl gCheck-W mtop-03 mright-03"  :title="$t('EDIT_BOARD_BTN_COMMENT')" :selectedYn='replyYnInput' @click="replyYnInput = !replyYnInput" />
+        <gCheckBtn class="fl gCheck-W mtop-03 mright-03" :title="$t('EDIT_BOARD_BTN_FILE')" :selectedYn='fileYnInput' @click="fileYnInput = !fileYnInput" />
+        <gCheckBtn class="fl gCheck-W mtop-03 mright-03" :title="blindYn === true ? $t('EDIT_BOARD_BTN_ANONY') : $t('EDIT_BOARD_BTN_ID')" :selectedYn='blindYn' @click="blindYn = !blindYn" />
+        <gCheckBtn class="fl gCheck-W mtop-03 mright-03"  :title="$t('EDIT_BOARD_BTN_STATUS')" :selectedYn='workStatYn' @click="workStatYn = !workStatYn" />
+        <gCheckBtn class="fl gCheck-W mtop-03 mright-03" :title="$t('EDIT_BOARD_BTN_HIDE')" v-show="permissionVGroup.type !== 'A'" :selectedYn='titleBlindYn' @click="titleBlindYn = !titleBlindYn" />
       </div>
 
     </div>
 
     <div class="itemWrite fl ">
-      <p class="fontBold  textLeft font16 fl" style="width: 100px;">예시글 작성</p>
+      <p class="fontBold  textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOARD_TITLE_SAMPLE') }}</p>
       <div class="fr textLeft receivBox" style="width: calc(100% - 100px); padding:5px;" @click="this.samplePopShowYn = true" >
-        <p class="fl textLeft commonDarkGray font14 textOverdot pholder" style="width: calc(100% - 74px);" placeholder="예시글을 추가해주세요.">{{this.guideSampleInnerHtml? '예시글 있음': ''}}</p>
+        <p class="fl textLeft commonDarkGray font14 textOverdot pholder" style="width: calc(100% - 74px);" :placeholder="$t('EDIT_BOARD_MSG_SAMPLE')">{{this.guideSampleInnerHtml? $t('EDIT_BOARD_MSG_ISSAMPLE'): ''}}</p>
       </div>
     </div>
 
     <div class="itemWrite fl ">
-      <p class="fontBold  textLeft font16 fl" style="width: 100px;">공유 대상</p>
+      <p class="fontBold  textLeft font16 fl" style="width: 100px;">{{ $t('COMMON_TITLE_SHARE') }}</p>
       <div class="fl" style="width: calc(100% - 100px);">
-        <gCheckBtn id="all" ref="all" class="fl gCheck-W"  title='전체' :selectedYn="this.shareGroup.type === 'A'" @click="changeSelectType('A')" />
-        <gCheckBtn id="fol" ref="fol" class="fl gCheck-W mleft-05"  title='구독자전체' :selectedYn="this.shareGroup.type === 'F'" @click="changeSelectType('F')" />
-        <gCheckBtn id="sel" ref="sel" class="fl gCheck-W mleft-05"  title='선택' :selectedYn="this.shareGroup.type === 'S'" @click="changeSelectType('S')" />
+        <gCheckBtn id="all" ref="all" class="fl gCheck-W"  :title="$t('COMMON_TAB_ALL')" :selectedYn="this.shareGroup.type === 'A'" @click="changeSelectType('A')" />
+        <gCheckBtn id="fol" ref="fol" class="fl gCheck-W mleft-05"  :title="$t('EDIT_BOARD_BTN_ALLMEM')" :selectedYn="this.shareGroup.type === 'F'" @click="changeSelectType('F')" />
+        <gCheckBtn id="sel" ref="sel" class="fl gCheck-W mleft-05"  :title="$t('COMMON_BTN_SELECTED')" :selectedYn="this.shareGroup.type === 'S'" @click="changeSelectType('S')" />
         <!-- <p class="fr font12 commonDarkGray " style="padding-top:12px">{{this.shareGroup.type === 'S' ? setSelectReceiveCount(this.shareGroup.selectedList) : '전체'}}</p> -->
-        <p class="fr font12 commonDarkGray " style="padding-top:12px" v-if="this.shareGroup.type === 'A'">전체</p>
+        <p class="fr font12 commonDarkGray " style="padding-top:12px" v-if="this.shareGroup.type === 'A'">{{ $t('COMMON_TAB_ALL') }}</p>
         <seletedIconText v-else :propData='setSelectReceiveCount(this.shareGroup.selectedList)' style="padding-top:12px" />
 
       </div>
     </div>
-    <div class="fr textLeft receivBox pholder" style="width: calc(100% - 100px); padding:5px;" v-if="this.shareGroup.type === 'S'" @click="showSelectBookPop('select')" placeholder="게시판을 공유할 대상을 선택해주세요">
+    <div class="fr textLeft receivBox pholder" style="width: calc(100% - 100px); padding:5px;" v-if="this.shareGroup.type === 'S'" @click="showSelectBookPop('select')" :placeholder="$t('EDIT_BOARD_MSG_SHARE')">
       {{setReceiveName(this.shareGroup.selectedList)}}
     </div>
 
@@ -62,15 +135,15 @@
         <!-- 열람 권한 -->
         <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
-            <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시글 열람</p>
+            <p class="fontBold  textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOARD_TITLE_READ') }}</p>
             <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
-              <gCheckBtn class="fl gCheck-W"  title='전체' :selectedYn="permissionVGroup.type === 'A'" @click="this.permissionVGroup.type = 'A'" />
-              <gCheckBtn class="fl gCheck-W mleft-05"  title='선택' :selectedYn="permissionVGroup.type === 'S'" @click="this.permissionVGroup.type = 'S'" />
-              <gCheckBtn class="fl gCheck-W mleft-05"  title='안함' :selectedYn="permissionVGroup.type === 'N'" @click="this.permissionVGroup.type = 'N'" />
+              <gCheckBtn class="fl gCheck-W"  :title="$t('COMMON_TAB_ALL')" :selectedYn="permissionVGroup.type === 'A'" @click="this.permissionVGroup.type = 'A'" />
+              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn="permissionVGroup.type === 'S'" @click="this.permissionVGroup.type = 'S'" />
+              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('EDIT_BOARD_BTN_NONE')" :selectedYn="permissionVGroup.type === 'N'" @click="this.permissionVGroup.type = 'N'" />
             </div>
           </div>
           <div class="fr textLeft receivBox" style="width: calc(100% - 40px); padding:5px;" v-if="permissionVGroup.type === 'S'" @click="showSelectBookPop('V')" >
-            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" placeholder="권한을 설정해주세요">{{setReceiveName(this.permissionVGroup.selectedList)}}</p>
+            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" :placeholder="$t('EDIT_BOARD_MSG_STATUS')">{{setReceiveName(this.permissionVGroup.selectedList)}}</p>
             <!-- <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionVGroup.selectedList)}}</p> -->
             <seletedIconText :propData='setSelectReceiveCount(this.permissionVGroup.selectedList)' />
           </div>
@@ -79,15 +152,15 @@
         <!-- 게시글 작성 권한 -->
         <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
-            <p class="fontBold  textLeft font16 fl" style="width: 100px;">게시글 작성</p>
+            <p class="fontBold  textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOARD_TITLE_WRITE') }}</p>
             <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
-              <gCheckBtn class="fl gCheck-W"  title='전체' :selectedYn="permissionWGroup.type === 'A'" @click="this.permissionWGroup.type = 'A'" />
-              <gCheckBtn class="fl gCheck-W mleft-05"  title='선택' :selectedYn="permissionWGroup.type === 'S'" @click="this.permissionWGroup.type = 'S'" />
-              <gCheckBtn class="fl gCheck-W mleft-05"  title='안함' :selectedYn="permissionWGroup.type === 'N'" @click="this.permissionWGroup.type = 'N'" />
+              <gCheckBtn class="fl gCheck-W"  :title="$t('COMMON_TAB_ALL')" :selectedYn="permissionWGroup.type === 'A'" @click="this.permissionWGroup.type = 'A'" />
+              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn="permissionWGroup.type === 'S'" @click="this.permissionWGroup.type = 'S'" />
+              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('EDIT_BOARD_BTN_NONE')"  :selectedYn="permissionWGroup.type === 'N'" @click="this.permissionWGroup.type = 'N'" />
             </div>
           </div>
           <div class="fr textLeft receivBox" style="width: calc(100% - 40px); padding:5px;" v-if="permissionWGroup.type === 'S'" @click="showSelectBookPop('W')">
-            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" placeholder="권한을 설정해주세요" >{{setReceiveName(this.permissionWGroup.selectedList)}}</p>
+            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" :placeholder="$t('EDIT_BOARD_MSG_STATUS')">{{setReceiveName(this.permissionWGroup.selectedList)}}</p>
             <!-- <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionWGroup.selectedList)}}</p> -->
             <seletedIconText :propData='setSelectReceiveCount(this.permissionWGroup.selectedList)' />
           </div>
@@ -96,15 +169,15 @@
         <!-- 댓글 권한 -->
         <div class="fl w-100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}" style="position: relative;">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
-            <p class="fontBold  textLeft font16 fl" style="width: 100px;">댓글 작성</p>
+            <p class="fontBold  textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOARD_TITLE_COMMENT') }}</p>
             <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
-              <gCheckBtn class="fl gCheck-W"  title='전체' :selectedYn="permissionRGroup.type === 'A'" @click="this.permissionRGroup.type = 'A'" />
-              <gCheckBtn class="fl gCheck-W mleft-05"  title='선택' :selectedYn="permissionRGroup.type === 'S'" @click="this.permissionRGroup.type = 'S'" />
-              <gCheckBtn class="fl gCheck-W mleft-05"  title='안함' :selectedYn="permissionRGroup.type === 'N'" @click="this.permissionRGroup.type = 'N'" />
+              <gCheckBtn class="fl gCheck-W" :title="$t('COMMON_TAB_ALL')" :selectedYn="permissionRGroup.type === 'A'" @click="this.permissionRGroup.type = 'A'" />
+              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn="permissionRGroup.type === 'S'" @click="this.permissionRGroup.type = 'S'" />
+              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('EDIT_BOARD_BTN_NONE')" :selectedYn="permissionRGroup.type === 'N'" @click="this.permissionRGroup.type = 'N'" />
             </div>
           </div>
           <div class="fr textLeft receivBox" style="width: calc(100% - 40px); padding:5px;" v-if="permissionRGroup.type === 'S'" @click="showSelectBookPop('R')" >
-            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" placeholder="권한을 설정해주세요">{{setReceiveName(this.permissionRGroup.selectedList)}}</p>
+            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" :placeholder="$t('EDIT_BOARD_MSG_STATUS')">{{setReceiveName(this.permissionRGroup.selectedList)}}</p>
             <!-- <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionRGroup.selectedList)}}</p> -->
             <seletedIconText v-if="permissionRGroup.type === 'S'" :propData='setSelectReceiveCount(this.permissionRGroup.selectedList)' />
           </div>
@@ -113,12 +186,12 @@
       </div>
     </div>
   </div>
-  <gBtnSmall @click="updateCabinet" btnTitle="수정하기" class="font16 CDeepBgColor" style="width: 70%; min-height:40px; line-height:40px; border-radius:8px; position: absolute; bottom:1.5rem; left:15%;" />
+  <gBtnSmall @click="updateCabinet" :btnTitle="$t('EDIT_BOARD_BTN_EDIT')" class="font16 CDeepBgColor" style="width: 70%; min-height:40px; line-height:40px; border-radius:8px; position: absolute; bottom:1.5rem; left:15%;" />
 </div>
 <selectType :chanInfo="this.CHANNEL_DETAIL" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
 <selectBookList :chanInfo="this.CHANNEL_DETAIL" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList" @openPop='openPop' />
 <receiverAccessList :chanInfo="this.CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='selectedList.data' :selectList='permissionSelectedList'  @sendReceivers='receiverPoolInSetting'/>
-<gConfirmPop  confirmText='성공적으로 수정되었습니다.' confirmType='timeout' v-if="okPopYn" @no='closePop' />
+<gConfirmPop  :confirmText="$t('EDIT_BOARD_MSG_EDITSUCC')" confirmType='timeout' v-if="okPopYn" @no='closePop' />
 <selectSampleListPop :cabinetDetail="this.modiBoardDetailProps" @setSampleGuide="setSampleGuide" :propsInnerHtml="guideSampleInnerHtml" v-if="samplePopShowYn" @closeXPop="closeSampleListPop" />
 </template>
 <script>
@@ -183,29 +256,29 @@ export default {
     CAB_FUNCTION_TEXT () {
       var text = ''
       if (this.workStatYn === true) {
-        text += '상태O'
+        text += this.$t('EDIT_BOARD_MSG_STATUSO')
       } else {
-        text += '상태X'
+        text += this.$t('EDIT_BOARD_MSG_STATUSX')
       }
       if (this.replyYnInput === true) {
-        text += '/댓글O'
+        text += this.$t('EDIT_BOARD_MSG_COMMENTO')
       } else {
-        text += '/댓글X'
+        text += this.$t('EDIT_BOARD_MSG_COMMENTX')
       }
       if (this.fileYnInput === true) {
-        text += '/파일O'
+        text += this.$t('EDIT_BOARD_MSG_FILEO')
       } else {
-        text += '/파일X'
+        text += this.$t('EDIT_BOARD_MSG_FILEX')
       }
       if (this.blindYn === true) {
-        text += '/익명'
+        text += this.$t('EDIT_BOARD_MSG_ANONY')
       } else {
-        text += '/실명'
+        text += this.$t('EDIT_BOARD_MSG_ID')
       }
       if (this.titleBlindYn === true) {
-        text += '/제목 비공개(미권한자)'
+        text += this.$t('EDIT_BOARD_MSG_HIDETITLEO')
       } else {
-        text += '/제목 공개(미권한자)'
+        text += this.$t('EDIT_BOARD_MSG_HIDETITLEX')
       }
 
       return text
@@ -742,7 +815,7 @@ export default {
           this.receiverAccessListYn = true
           this.$addHistoryStack('modiPopReceiverSelecPop')
         } else {
-          this.$showToastPop('먼저 공유대상을 선택해주세요.')
+          this.$showToastPop(this.$t('EDIT_BOARD_MSG_SELECTMEM'))
         }
       }
       // if (this.selectedList.data) {

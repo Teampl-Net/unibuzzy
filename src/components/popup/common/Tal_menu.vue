@@ -1,3 +1,19 @@
+<i18n>
+{
+  "ko": {
+    "MENU_BTN_INTRO": "더알림 소개",
+    "MENU_BTN_FAQ": "자주 찾는 질문",
+    "MENU_BTN_REQ": "문의하기",
+    "MENU_BTN_REPO_ERROR": "오류접수"
+  },
+  "en": {
+    "MENU_BTN_INTRO": "Introducing uniBuzzy",
+    "MENU_BTN_FAQ": "FAQ",
+    "MENU_BTN_REQ": "Request",
+    "MENU_BTN_REPO_ERROR": "Report Errors"
+  }
+}
+</i18n>
 <template>
   <div class="pagePaddingWrap" style="padding-top: 0 !important;" >
     <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 9998; background: #00000050;"></div>
@@ -6,7 +22,7 @@
       <!-- <img v-on:click="this.$emit('hideMenu')" class="mtop-05 cursorP mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/main/icon_back_white.png"/> -->
       <img v-on:click="this.$emit('hideMenu')" class="mtop-05 cursorP mleft-1 fl" style="width: 0.8rem; " src="../../../assets/images/common/grayXIcon.svg"/>
       <!-- <img src="../../../../assets/images/common/grayXIcon.svg" @click="closePop()" style="width: 20px; position: absolute; right: 8px;top: 5px;" alt=""> -->
-      <p class="font20 " style="line-height:35px;" >메뉴</p>
+      <p class="font20 " style="line-height:35px;" >{{ $t('COMMON_NAME_MENU') }}</p>
     </div>
     <div  :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'" style=" margin-top: 50px">
       <div class="menuRow fontBold"  v-for="(value, index) in menuList" :key="index" :style="(index + 1) % 4 === 0 ? 'border-bottom: 3px solid #F5F5F9; ': '' ">
@@ -32,16 +48,14 @@ export default {
     return {
       mUnknownLoginPopYn: false,
       menuList: [
-        { iconUrl: 'resource/menu/icon_home_color.svg', menuText: '홈', link: 'main', type: 'page' },
-        { iconUrl: 'resource/menu/icon_user_group_color.svg', menuText: '채널', link: 'chanList', type: 'page' },
-        { iconUrl: 'resource/menu/icon_search_color.svg', menuText: '검색', link: 'search', type: 'page' },
-        { iconUrl: 'resource/menu/icon_user_color.svg', menuText: '마이페이지', link: 'myPage', type: 'page' },
-        { iconUrl: 'resource/menu/icon_D-alim_color.svg', menuText: '더알림 소개', link: 'theAlimInfo', type: 'pop' },
-        { iconUrl: 'resource/menu/icon_text_color.svg', menuText: '자주 찾는 질문', link: 'question', type: 'pop' },
-        { iconUrl: 'resource/menu/icon_board_color.svg', menuText: '문의하기', link: 'askTal', type: 'pop', jobKind: 'QUES' },
-        { iconUrl: 'resource/menu/icon_report_color.svg', menuText: '오류접수', link: 'askTal', type: 'pop', jobKind: 'ERRO' }
-        /* { iconUrl: 'http://placehold.it/25', menuText: '문의하기', link: 'askTal', type: 'pop' } */
-        // { iconUrl: '', menuText: 'Q&A', link: 'qna' }
+        { iconUrl: 'resource/menu/icon_home_color.svg', menuText: this.$t('COMMON_NAME_HOME'), link: 'main', type: 'page' },
+        { iconUrl: 'resource/menu/icon_user_group_color.svg', menuText: this.$t('COMMON_NAME_CHANNEL'), link: 'chanList', type: 'page' },
+        { iconUrl: 'resource/menu/icon_search_color.svg', menuText: this.$t('COMMON_NAME_SEARCH'), link: 'search', type: 'page' },
+        { iconUrl: 'resource/menu/icon_user_color.svg', menuText: this.$t('COMMON_NAME_MY_PAGE'), link: 'myPage', type: 'page' },
+        { iconUrl: 'resource/menu/icon_D-alim_color.svg', menuText: this.$t('MENU_BTN_INTRO'), link: 'theAlimInfo', type: 'pop' },
+        { iconUrl: 'resource/menu/icon_text_color.svg', menuText: this.$t('MENU_BTN_FAQ'), link: 'question', type: 'pop' },
+        { iconUrl: 'resource/menu/icon_board_color.svg', menuText: this.$t('MENU_BTN_REQ'), link: 'askTal', type: 'pop', jobKind: 'QUES' },
+        { iconUrl: 'resource/menu/icon_report_color.svg', menuText: this.$t('MENU_BTN_REPO_ERROR'), link: 'askTal', type: 'pop', jobKind: 'ERRO' }
       ]
     }
   },
@@ -67,6 +81,27 @@ export default {
     },
     closeUnknownLoginPop () {
       this.mUnknownLoginPopYn = false
+    },
+    GE_LOCALE () {
+      return this.$i18n.locale
+    }
+  },
+  watch: {
+    GE_LOCALE: {
+      immediate: true,
+      handler (value) {
+        this.menuList = [
+          { iconUrl: 'resource/menu/icon_home_color.svg', menuText: this.$t('COMMON_NAME_HOME'), link: 'main', type: 'page' },
+          { iconUrl: 'resource/menu/icon_user_group_color.svg', menuText: this.$t('COMMON_NAME_CHANNEL'), link: 'chanList', type: 'page' },
+          { iconUrl: 'resource/menu/icon_search_color.svg', menuText: this.$t('COMMON_NAME_SEARCH'), link: 'search', type: 'page' },
+          { iconUrl: 'resource/menu/icon_user_color.svg', menuText: this.$t('COMMON_NAME_MY_PAGE'), link: 'myPage', type: 'page' },
+          { iconUrl: 'resource/menu/icon_D-alim_color.svg', menuText: this.$t('MENU_BTN_INTRO'), link: 'theAlimInfo', type: 'pop' },
+          { iconUrl: 'resource/menu/icon_text_color.svg', menuText: this.$t('MENU_BTN_FAQ'), link: 'question', type: 'pop' },
+          { iconUrl: 'resource/menu/icon_board_color.svg', menuText: this.$t('MENU_BTN_REQ'), link: 'askTal', type: 'pop', jobKind: 'QUES' },
+          { iconUrl: 'resource/menu/icon_report_color.svg', menuText: this.$t('MENU_BTN_REPO_ERROR'), link: 'askTal', type: 'pop', jobKind: 'ERRO' }
+        ]
+      },
+      deep: true
     }
   },
   computed: {

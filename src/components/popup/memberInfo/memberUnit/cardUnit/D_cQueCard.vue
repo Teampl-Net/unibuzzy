@@ -1,3 +1,22 @@
+<i18n>
+{
+  "ko": {
+    "MEM_DETAIL_NAME_SHORT": "주관식",
+    "MEM_DETAIL_NAME_CHOICE": "객관식",
+    "MEM_DETAIL_BNT_NUMONLY": "숫자만",
+    "MEM_DETAIL_NAME_DROP": "드롭다운",
+    "MEM_DETAIL_NAME_LIST": "리스트"
+  },
+  "en": {
+    "MEM_DETAIL_TITLE_ADDINFO": "Additional information",
+    "MEM_DETAIL_NAME_SHORT": "Short Answer",
+    "MEM_DETAIL_NAME_CHOICE": "Multiple choice",
+    "MEM_DETAIL_BNT_NUMONLY": "Number Only",
+    "MEM_DETAIL_NAME_DROP": "Drop Down",
+    "MEM_DETAIL_NAME_LIST": "List"
+  }
+}
+</i18n>
 <template>
 <div class="fl w-100P" style="display: flex; align-items: center;" :style="this.propData.itemType === 'siList' ? 'align-items: flex-start;' : ''">
   <!-- <div style="width: 30px; display: flex; align-items: center;" >
@@ -73,6 +92,11 @@ export default {
       this.selectOption = this.propData.answerList[0].answerName
     }
   },
+  computed: {
+    GE_LOCALE () {
+      return this.$i18n.locale
+    }
+  },
   watch: {
     propData: {
       handler (value, index) {
@@ -87,17 +111,21 @@ export default {
       this.mTypeItemDetailMessage = this.$changeText(this.propData.itemNameMtext) + '('
       console.log(this.propData)
       if (this.propData.itemType === 'T') {
-        this.mTypeItemDetailMessage += '주관식'
+        this.mTypeItemDetailMessage += this.$t('MEM_DETAIL_NAME_SHORT')
         if (this.propData.maxLen) {
-          this.mTypeItemDetailMessage += '/최대' + this.propData.maxLen + '글자'
+          if (this.GE_LOCALE === 'ko') {
+            this.mTypeItemDetailMessage += '/최대' + this.propData.maxLen + '글자'
+          } else {
+            this.mTypeItemDetailMessage += '/Max' + this.propData.maxLen
+          }
         }
         if (this.propData.numberYn) {
-          this.mTypeItemDetailMessage += '/숫자만'
+          this.mTypeItemDetailMessage += `/${this.$f('MEM_DETAIL_BNT_NUMONLY')}`
         }
       } else if (this.propData.itemType === 'L') {
-        this.mTypeItemDetailMessage += '객관식/리스트'
+        this.mTypeItemDetailMessage += `${this.$t('MEM_DETAIL_NAME_CHOICE')}/${this.$t('MEM_DETAIL_NAME_LIST')}`
       } else if (this.propData.itemType === 'F') {
-        this.mTypeItemDetailMessage += '객관식/드롭다운'
+        this.mTypeItemDetailMessage += `${this.$t('MEM_DETAIL_NAME_CHOICE')}/${this.$t('MEM_DETAIL_NAME_DROP')}`
       }
       this.mTypeItemDetailMessage += ')'
     },

@@ -1,9 +1,27 @@
+<i18n>
+{
+  "ko": {
+    "EDIT_BOOK_TITLE_PEOPLE": "인원",
+    "EDIT_BOOK_BTN_ADD": "+ 추가하기",
+    "EDIT_BOOK_NAME_ME": "나",
+    "EDIT_BOOK_MSG_SELECTED": "이미 선택되었습니다.",
+    "EDIT_BOOK_MSG_ONEPEOPLE": "담당자는 한 명만 부여 가능합니다!"
+  },
+  "en": {
+    "EDIT_BOOK_TITLE_PEOPLE": "People",
+    "EDIT_BOOK_BTN_ADD": "+ Add",
+    "EDIT_BOOK_NAME_ME": "Me",
+    "EDIT_BOOK_MSG_SELECTED": "User already selected",
+    "EDIT_BOOK_MSG_ONEPEOPLE": "Only one person in charge can be assigned!"
+  }
+}
+</i18n>
 <template>
   <!-- <div style="width: 100%; ; background: white; padding: 10px; box-shadow:-3px -2px 14px 0px #ccc" class=""> -->
   <div class="w-100P fl" style="">
     <div class="CWhiteGrayBgColor" style="width: 100%; min-height: 50px; display: flex; justify-content: space-between; align-items: center; padding: 0 1.5rem;">
-      <p class="textLeft fontBold font14 fl commonDarkGray" style="">{{(teamList.bookList.length > 0 ? '주소록' + teamList.bookList.length : '') + ((teamList.bookList.length > 0 && teamList.memberList.length > 0) ? ', ' : '') +  (teamList.memberList.length > 0 ? '인원' + teamList.memberList.length : '')}}</p>
-      <gBtnSmall class="fr CDeepBgColor" style="border-radius: 10px" btnTitle='+ 추가하기' @click="sendReceivers" v-if="btnVisible !== false" />
+      <p class="textLeft fontBold font14 fl commonDarkGray" style="">{{(teamList.bookList.length > 0 ? $t('COMMON_NAME_ADDRBOOK') + teamList.bookList.length : '') + ((teamList.bookList.length > 0 && teamList.memberList.length > 0) ? ', ' : '') +  (teamList.memberList.length > 0 ? $t('EDIT_BOOK_TITLE_PEOPLE') + teamList.memberList.length : '')}}</p>
+      <gBtnSmall class="fr CDeepBgColor" style="border-radius: 10px" :btnTitle="$t('EDIT_BOOK_BTN_ADD')" @click="sendReceivers" v-if="btnVisible !== false" />
     </div>
     <div class="selecteItemdArea" :class="!isMobile? 'thinScrollBar':''" id="selectedItemWrap" @wheel="horizontalScroll">
       <!-- <div v-for="(data, index) in receiverList" :key="index" class=" fl mright-1"  style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -42,7 +60,7 @@
           <div v-if="member.domainPath || member.userProfileImg" :style="'background-image: url(' + (member.domainPath? member.domainPath + (member.userProfileImg ? member.userProfileImg : member.pathMtext) : member.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
           <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg'');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
         </div>
-        <p class="fl font15 commonBlack textOverdot w-100P">{{this.GE_USER.userKey === member.userKey ? '나' : this.$changeText(member.userDispMtext)}}</p>
+        <p class="fl font15 commonBlack textOverdot w-100P">{{this.GE_USER.userKey === member.userKey ? $t('EDIT_BOOK_NAME_ME') : this.$changeText(member.userDispMtext)}}</p>
         <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('member', index, member.accessKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -5px; top:-5px; text-align: center;">x</span>
       </div>
       <!-- <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem" >
@@ -58,7 +76,7 @@
       </div> -->
 
     </div>
-    <gConfirmPop  confirmText='이미 선택되었습니다' confirmType='timeout' v-if="showErrorPopYn" @no='this.showErrorPopYn = false' />
+    <gConfirmPop  :confirmText="$t('EDIT_BOOK_MSG_SELECTED')" confirmType='timeout' v-if="showErrorPopYn" @no='this.showErrorPopYn = false' />
   </div>
 </template>
 
@@ -187,7 +205,7 @@ export default {
       // this.teamList.itemType = this.itemType
       if (this.oneMemberCanAddYn) {
         if (this.teamList.memberList.length > 1) {
-          alert('담당자는 한명만 부여가능합니다!')
+          alert(this.$t('EDIT_BOOK_MSG_ONEPEOPLE'))
           return
         }
       }

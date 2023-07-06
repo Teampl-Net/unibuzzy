@@ -37,7 +37,7 @@ import coreService from '../public/commonAssets/D_coreService'
 import uploadFile from './assets/js/Tal_uploadFile'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
-import VueEasyLightbox from 'vue-easy-lightbox'
+// import VueEasyLightbox from 'vue-easy-lightbox'
 import gChannelPop from './components/popup/common/D_commonChanPop.vue'
 /* import { onMessage } from './assets/js/webviewInterface' */
 import gPreLoader from './components/unit/Tal_preloader.vue'
@@ -104,7 +104,7 @@ app.use(getjs)
 app.use(Vuex)
 app.use(commonSharejs)
 app.use(BootstrapVue3)
-app.use(VueEasyLightbox)
+// app.use(VueEasyLightbox)
 // app.use(Vue3SimpleHtml2pdf)
 
 app.component('gProfileImg', gProfileImg)

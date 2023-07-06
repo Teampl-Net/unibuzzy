@@ -3,7 +3,7 @@
   <!-- <div class="fl img-w15"> -->
   <img class="img-w15" v-if="selectedYn === true" src="../../../assets/images/common/icon_check_commonColor.svg" />
   <!-- </div> -->
-  {{title}}
+  <span v-html="title"></span>
 </div>
 </template>
 <script>
@@ -31,6 +31,7 @@ export default {
     border-width: 2px !important;
   }
   .btnBaseCss{
+    word-wrap: break-word;
     align-items: center;
     border: 1px solid #ccc;
     box-sizing: border-box;

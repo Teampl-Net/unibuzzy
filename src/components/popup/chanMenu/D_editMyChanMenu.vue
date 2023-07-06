@@ -1,3 +1,33 @@
+<i18n>
+{
+  "ko": {
+    "MANA_NAME_CAHN": "채널 관리",
+    "MANA_MSG_CAHN": "채널정보를 수정할 수 있어요.",
+    "MANA_NAME_FOLLOW": "구독자 관리",
+    "MANA_MSG_FOLLOW": "구독자에게 권한을 부여할 수 있어요.",
+    "MANA_NAME_ADDRBOOK": "주소록 관리",
+    "MANA_MSG_ADDRBOOK": "주소록을 생성, 수정할 수 있어요.",
+    "MANA_NAME_BOARD": "게시판 관리",
+    "MANA_MSG_BOARD": "게시판을 생성, 수정할 수 있어요.",
+    "MANA_MSG_FAILED": "죄송합니다. 잠시 후 다시 시도해주세요.",
+    "MANA_TITLE_CHANDETAIL": "채널 상세",
+    "MANA_TITLE_EDITCHAN": "채널 수정"
+  },
+  "en": {
+    "MANA_NAME_CAHN": "Manage Channel",
+    "MANA_MSG_CAHN": "Modify channel information.",
+    "MANA_NAME_FOLLOW": "Manage Followers",
+    "MANA_MSG_FOLLOW": "Grant permissions to followers.",
+    "MANA_NAME_ADDRBOOK": "Manage Address Book",
+    "MANA_MSG_ADDRBOOK": "Create and Edit address book.",
+    "MANA_NAME_BOARD": "Manage Board",
+    "MANA_MSG_BOARD": "Create and Edit Board.",
+    "MANA_MSG_FAILED": "Sorry. Please try again in a moment.",
+    "MANA_TITLE_CHANDETAIL": "Channel Detail",
+    "MANA_TITLE_EDITCHAN": "Edit a Channel"
+  }
+}
+</i18n>
 <template>
 <div style="padding: 60px 1.5rem 0 1rem ;box-sizing: border-box; width: 100%; height: 100%;" >
 
@@ -11,8 +41,8 @@
             <!-- <img style="width:20px;" class="fl" src="../../../assets/images/main/icon_channel.png"> -->
           </div>
           <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
-          <p class="font16 commonDarkGray fontBold">채널 관리</p>
-          <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);" >채널정보를 수정할 수 있어요.</p>
+          <p class="font16 commonDarkGray fontBold">{{ $t('MANA_NAME_CAHN') }}</p>
+          <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);" >{{ $t('MANA_MSG_CAHN') }}</p>
           </div>
           <div class="myChanMenuImgAreaRight editMychanRow">
             <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
@@ -26,8 +56,8 @@
             <img class="img-w25 chanImg " src="../../../assets/images/editChan/icon_userEdit.svg">
           </div>
           <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
-            <p class="font16 commonDarkGray fontBold">구독자 관리</p>
-            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);"> 구독자에게 권한을 부여할 수 있어요</p>
+            <p class="font16 commonDarkGray fontBold">{{ $t('MANA_NAME_FOLLOW') }}</p>
+            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">{{ $t('MANA_MSG_FOLLOW') }}</p>
           </div>
           <div class="myChanMenuImgAreaRight editMychanRow">
             <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
@@ -41,8 +71,8 @@
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_addressBook.svg">
           </div>
           <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
-            <p class="font16 commonDarkGray fontBold">주소록 관리</p>
-            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">주소록을 생성, 수정할 수 있어요.</p>
+            <p class="font16 commonDarkGray fontBold">{{ $t('MANA_NAME_ADDRBOOK') }}</p>
+            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">{{ $t('MANA_MSG_ADDRBOOK') }}</p>
           </div>
           <div class="myChanMenuImgAreaRight editMychanRow">
             <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
@@ -56,8 +86,8 @@
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">
           </div>
           <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
-            <p class="font16 commonDarkGray fontBold">게시판 관리</p>
-            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">게시판을 생성, 수정할 수 있어요.</p>
+            <p class="font16 commonDarkGray fontBold">{{ $t('MANA_NAME_BOARD') }}</p>
+            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">{{ $t('MANA_MSG_BOARD') }}</p>
           </div>
           <div class="myChanMenuImgAreaRight editMychanRow">
             <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
@@ -138,13 +168,13 @@ export default {
       this.mCommonParam.param = paramMap
       var initData = await this.$getManagingPageData(this.mCommonParam)
       if (!initData) {
-        this.$showToastPop('죄송합니다. 잠시 후 다시 시도해 주세요')
+        this.$showToastPop(this.$t('MANA_MSG_FAILED'))
         return
       }
       this.mCommonParam.initData = initData
 
       this.mCommonParam.chanName = this.propData.teamNameMtext
-      this.mCommonParam.popHeaderText = '주소록 관리'
+      this.mCommonParam.popHeaderText = this.$t('MANA_NAME_ADDRBOOK')
       this.openPop()
     },
     async openEditBoardPop () {
@@ -157,24 +187,24 @@ export default {
       this.mCommonParam.param = paramMap
       var initData = await this.$getManagingPageData(this.mCommonParam)
       if (!initData) {
-        this.$showToastPop('죄송합니다. 잠시 후 다시 시도해 주세요')
+        this.$showToastPop(this.$t('MANA_MSG_FAILED'))
         return
       }
       this.mCommonParam.initData = initData
 
-      this.mCommonParam.popHeaderText = '게시판 관리'
+      this.mCommonParam.popHeaderText = this.$t('MANA_NAME_BOARD')
       this.mCommonParam.targetKey = this.propData.teamKey
       this.openPop()
     },
     chanDetailClick () {
       this.mCommonParam.targetType = 'chanInfo'
-      this.mCommonParam.popHeaderText = '채널 상세'
+      this.mCommonParam.popHeaderText = this.$t('MANA_TITLE_CHANDETAIL')
       this.openPop()
     },
     openEditChanPop () {
       this.mCommonParam.targetType = 'createChannel'
       this.mCommonParam.targetKey = this.propData.teamKey
-      this.mCommonParam.popHeaderText = '채널 수정'
+      this.mCommonParam.popHeaderText = this.$t('MANA_TITLE_EDITCHAN')
       this.mCommonParam.modiYn = true
       this.openPop()
     },
@@ -187,7 +217,7 @@ export default {
       paramMap.set('pageSize', 1000)
       this.mCommonParam.param = paramMap
       var initData = await this.$getManagingPageData(this.mCommonParam)
-      this.mCommonParam.popHeaderText = '구독자 관리'
+      this.mCommonParam.popHeaderText = this.$t('MANA_NAME_FOLLOW')
       this.mCommonParam.initData = initData
       this.openPop()
     },

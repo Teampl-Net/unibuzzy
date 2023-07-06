@@ -1,3 +1,29 @@
+<i18n>
+{
+  "ko": {
+    "PROF_TITLE_DOWNLOAD": "가입일",
+    "PROF_BTN_POLICY": "개인정보 처리방침",
+    "PROF_BTN_TERMS": "이용약관",
+    "PROF_BTN_CASH": "캐시정보 삭제",
+    "PROF_TITLE_VERSION": "버전정보",
+    "PROF_BTN_LOGOUT": "더알림 로그아웃",
+    "PROF_BTN_DELETE": "더알림을 탈퇴하려면 여기를 눌러주세요",
+    "PROF_BTN_EDIT_EMAIL": "이메일 변경",
+    "PROF_TITLE_LATE_VERSION": "최신버전"
+  },
+  "en": {
+    "PROF_TITLE_DOWNLOAD": "Downloaded",
+    "PROF_BTN_POLICY": "Privacy Policy",
+    "PROF_BTN_TERMS": "Terms of Use",
+    "PROF_BTN_CASH": "Delete cash",
+    "PROF_TITLE_VERSION": "Version",
+    "PROF_BTN_LOGOUT": "Logout uniBuzzy",
+    "PROF_BTN_DELETE": "Click here to delete your account from uniBuzzy",
+    "PROF_BTN_EDIT_EMAIL": "Edit Email",
+    "PROF_TITLE_LATE_VERSION": "Latest"
+  }
+}
+</i18n>
 <template>
   <div style="padding-bottom: 30px; overflow: hidden scroll; height: 100%;">
     <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
@@ -8,7 +34,7 @@
       <div class="profileWrap ">
         <div @click="changeUserImg()" class="cursorP imgSize">
           <div class="roundDiv picImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-          <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 9; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
+          <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 9; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">{{ $t('COMMON_BTN_EDIT') }}</div>
         </div>
         <div class="font20 fontBold mtop-1" style="width:100%; display: flex; justify-content: center; float:left; transform: translate(10px);" v-show="!changeYn" >
           <span class="fl">{{this.$changeText(this.GE_USER.userDispMtext)}}</span>
@@ -19,14 +45,14 @@
           <div class="" style="position: absolute; left:50%; transform: translate(-50%); width:80%; max-width:250px; min-width:50px; margin-top: 10px;">
             <input class="fl font16" type="text" v-model="tempUserDispName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
             <div class="fl" style="width: 100px">
-              <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >확인</p>
-              <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">취소</p>
+              <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >{{ $t('COMMON_BTN_OK') }}</p>
+              <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">{{ $t('COMMON_BTN_CANCEL') }}</p>
             </div>
           </div>
         </div>
       </div>
       <div class="" style="text-align: left; ">
-        <userItem class="w-100P font16 mbottom-1" uItem="이메일" style="border-bottom: 0.5px solid #E4E4E4; " @openPop="openPop('changeEmail', '이메일 변경')" />
+        <userItem class="w-100P font16 mbottom-1" uItem="이메일" style="border-bottom: 0.5px solid #E4E4E4; " @openPop="openPop('changeEmail', $t('PROF_BTN_EDIT_EMAIL'))" />
         <userItem @click="goDevMode" class="w-100P font16" @openPop="openPop" uItem="휴대폰 번호" />
       </div>
       <div class="grayLine"></div>
@@ -34,18 +60,18 @@
     <div class="subPaddingWrap">
       <table>
         <!-- <tr @click="settingAlimPopYn = true"><th colspan="2">알림 설정</th></tr> -->
-        <tr><th>가입일</th><td class="textRight">{{this.$dayjs(GE_USER.creDate).format('YYYY/MM/DD')}}</td></tr>
+        <tr><th>{{ $t('PROF_TITLE_DOWNLOAD') }}</th><td class="textRight">{{this.$dayjs(GE_USER.creDate).format('YYYY/MM/DD')}}</td></tr>
         <!-- <tr><th class="font16">가입일</th><td class="textRight font16">{{this.$changeDateFormat(GE_USER.creDate, true)}}</td></tr> -->
-        <tr @click="openPolicyPop('personalInfo')"><th class="font16" colspan="2">개인정보 처리방침</th></tr>
-        <tr @click="openPolicyPop('useTheAlim')"><th class="font16 cursorP" colspan="2">이용약관</th></tr>
+        <tr @click="openPolicyPop('personalInfo')"><th class="font16" colspan="2">{{ $t('PROF_BTN_POLICY') }}</th></tr>
+        <tr @click="openPolicyPop('useTheAlim')"><th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_TERMS') }}</th></tr>
         <tr @click="checkAppVersion" v-if="isMobile">
           <th class="font16">
-            버전정보
-            <p class="font10">최신버전: {{lastVersion}}</p>
+            {{ $t('PROF_TITLE_VERSION') }}
+            <p class="font10">{{ $t('PROF_TITLE_LATE_VERSION') }}: {{lastVersion}}</p>
           </th>
           <td class="textRight font16">{{appVersion}}</td></tr>
-          <tr @click="cleanApp"><th class="font16 cursorP" colspan="2">캐시정보 삭제</th></tr>
-          <tr v-if="isMobile && this.systemName === 'android' || this.systemName === 'Android'" @click="reloadApp"><th class="font16 cursorP" colspan="2">캐시삭제 및 다시시작</th></tr>
+          <tr @click="cleanApp"><th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_CASH') }}</th></tr>
+          <tr v-if="isMobile && this.systemName === 'android' || this.systemName === 'Android'" @click="reloadApp"><th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_CASH') }}</th></tr>
           <!-- <tr @click="this.myChanListPopYn = true">
             <th>
               내 채널 -->
@@ -56,9 +82,10 @@
 
       </table>
       <div v-on:click="openLogoutPop" class="font14 cursorP" style="background-color: #F5F5F9; width: 100%; color:#6768A7; font-weight: bold; height: 45px; margin-bottom: 2rem;border-radius: 5px; padding: 0.6rem;">
-        더알림 로그아웃
+        {{ $t('PROF_BTN_LOGOUT') }}
       </div>
-      <p class="leaveText font14">더알림을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">여기</span>를 눌러주세요.</p>
+      <p v-if="GE_LOCALE === 'ko'" class="leaveText font14">더알림을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">여기</span>를 눌러주세요.</p>
+      <p v-else class="leaveText font14">Click <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">here</span> to delete your account from uniBuzzy.</p>
     </div>
 
     <gConfirmPop :confirmText='checkVersionText' class="" confirmType='two' @ok="goPlayStore" @no='checkVersionPopShowYn = false' v-if="checkVersionPopShowYn"/>
@@ -139,6 +166,9 @@ export default {
     this.pageHistoryName = 'page' + (history.length - 1) */
   },
   computed: {
+    GE_LOCALE () {
+      return this.$i18n.locale
+    },
     historyStack () {
       return this.$store.getters['D_HISTORY/hRPage']
     },

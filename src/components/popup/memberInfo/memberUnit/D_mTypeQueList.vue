@@ -1,8 +1,22 @@
+<i18n>
+{
+  "ko": {
+    "MEM_DETAIL_TITLE_ADDINFO": "부가정보",
+    "MEM_DETAIL_MGS_NOSET": "설정된 값이 없습니다. 지금 바로 추가해보세요!",
+    "MEM_DETAIL_NAME_NEW": "새로운 정보"
+  },
+  "en": {
+    "MEM_DETAIL_TITLE_ADDINFO": "Additional information",
+    "MEM_DETAIL_MGS_NOSET": "No value set. Add it now!",
+    "MEM_DETAIL_NAME_NEW": "New info"
+  }
+}
+</i18n>
 <template>
     <div v-if="propMemberTypeObj" style="" class="fl w-100P" >
-        <p class="textLeft font15 fontBold commonColor">부가정보</p>
+        <p class="textLeft font15 fontBold commonColor">{{ $t('MEM_DETAIL_TITLE_ADDINFO') }}</p>
         <div v-if="memberTypeItemList && memberTypeItemList.length === 0">
-            <p class="font15 fontBold grayBlack textCenter mtop-1">설정된 값이 없습니다. 지금바로 추가해보세요!</p>
+            <p class="font15 fontBold grayBlack textCenter mtop-1">{{ $t('MEM_DETAIL_MGS_NOSET') }}</p>
             <div @click="addQuestion(0)" style="width: 100%; float: left; display: flex; align-items: center; justify-content: center;" class="mtop-1 cursorP">
                 <div style="width: 40px; height: 40px; border-radius: 100%; border: 1px solid #5F61BD; font-size: 25px" class="commonColor"> + </div>
             </div>
@@ -103,7 +117,7 @@ export default {
       this.memberTypeItemList.splice(index, 1)
     },
     addQuestion (index) {
-      var newObj = { itemNameMtext: '새로운 정보', itemType: 'T', newYn: true }
+      var newObj = { itemNameMtext: this.$t('MEM_DETAIL_NAME_NEW'), itemType: 'T', newYn: true }
       newObj.newDate = new Date()
       newObj.memberTypeKey = this.propMemberTypeObj.memberTypeKey
       this.memberTypeItemList.splice(index + 1, 0, newObj)

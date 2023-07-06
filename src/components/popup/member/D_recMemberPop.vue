@@ -1,19 +1,37 @@
+<i18n>
+{
+  "ko": {
+    "REQ_MEM_NAME_REQ": "멤버신청",
+    "REQ_MEM_TITLE_CONT": "신청내용",
+    "REQ_MEM_BTN_REQ": "신청",
+    "REQ_MEM_MSG_SUBMIT": "신청되었습니다!",
+    "REQ_MEM_MSG_NOCONT": "신청 내용을 입력해주세요."
+  },
+  "en": {
+    "REQ_MEM_NAME_REQ": "Request Member Access",
+    "REQ_MEM_TITLE_CONT": "Request Content",
+    "REQ_MEM_BTN_REQ": "Request",
+    "REQ_MEM_MSG_SUBMIT": "Applied!",
+    "REQ_MEM_MSG_NOCONT": "Please enter the application details."
+  }
+}
+</i18n>
 <template>
     <div style="width: calc(100% - 40px);min-height: 500px; height: 90%; z-index: 99999999999999999999999; position: fixed; left: 20px; bottom: 0; background: #fff; border-radius: 0.8rem 0.8rem 0 0;">
         <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
-            <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">멤버신청</p>
+            <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">{{ $t('REQ_MEM_NAME_REQ') }}</p>
             <img @click="successSendForm(false)" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
         <div style="width: 100%; height: calc(100% - 120px); float: left; padding: 10px 20px;">
-            <p class="font18 fontBold textLeft" style="color: #6768A7!important; margin: 10px 0;">신청내용</p>
+            <p class="font18 fontBold textLeft" style="color: #6768A7!important; margin: 10px 0;">{{ $t('REQ_MEM_TITLE_CONT') }}</p>
             <div id="receptStrArea" :contenteditable='true' class="font16 editableContent" style="width: 100%; min-height: 100px; padding: 10px; text-align: left; height: 80%; border: 1px solid #ccc;"></div>
         </div>
         <div style="width: 100%; height: 50px; margin-bottom: 10px; display: flex; justify-content: center; align-items: center;">
-            <gBtnSmall @click="openReceptPop" class="mright-05" btnThema=""  btnTitle="신청" :class="{'CWDeepGrayBgColor' : sendOkYn === false}" />
-            <gBtnSmall @click="successSendForm(false)" btnThema="light" btnTitle="취소" />
+            <gBtnSmall @click="openReceptPop" class="mright-05" btnThema=""  :btnTitle="$t('REQ_MEM_BTN_REQ')" :class="{'CWDeepGrayBgColor' : sendOkYn === false}" />
+            <gBtnSmall @click="successSendForm(false)" btnThema="light" :btnTitle="$t('COMMON_BTN_CANCEL')" />
         </div>
-        <gConfirmPop @no="receptPopShowYn = false" :confirmText="'[' + this.$changeText(this.chanDetail.nameMtext) + '] 채널에 <br>멤버신청서를 제출하시겠습니까?'" @ok="sendForm" confirmType='two' v-if="receptPopShowYn" />
-        <gConfirmPop @no="successSendForm" confirmText='신청되었습니다!' confirmType='timeout' v-if="okPopShowYn" />
+        <gConfirmPop @no="receptPopShowYn = false" :confirmText="returnConfirmText()" @ok="sendForm" confirmType='two' v-if="receptPopShowYn" />
+        <gConfirmPop @no="successSendForm" :confirmText="$t('REQ_MEM_MSG_SUBMIT')" confirmType='timeout' v-if="okPopShowYn" />
     </div>
 </template>
 
@@ -53,12 +71,22 @@ export default {
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_LOCALE () {
+      return this.$i18n.locale
     }
   },
   methods: {
+    returnConfirmText () {
+      if (this.GE_LOCALE === 'ko') {
+        return '[' + this.$changeText(this.chanDetail.nameMtext) + '] 채널에 <br>멤버신청서를 제출하시겠습니까?'
+      } else {
+        return `Do you want to apply for membership on the [${this.$changeText(this.chanDetail.nameMtext)}] channel?`
+      }
+    },
     openReceptPop () {
       if (this.sendOkYn === false) {
-        this.$showToastPop('신청 내용을 입력해주세요.')
+        this.$showToastPop(this.$t('REQ_MEM_MSG_NOCONT'))
         return
       }
       this.receptPopShowYn = true

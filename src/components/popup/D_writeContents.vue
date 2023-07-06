@@ -1,14 +1,92 @@
+<i18n>
+{
+  "ko": {
+    "FORM_BTN_WRITE": "작성",
+    "FORM_BTN_APPLY": "신청",
+    "FORM_BTN_SEND": "발송하기",
+    "FORM_BTN_LONG_APPLY": "신청하기",
+    "FORM_BTN_EDIT": "수정하기",
+    "FORM_BTN_POST": "게시하기",
+    "FORM_TITLE_RECEIVE": "수신",
+    "FORM_MSG_TARGET": "알림을 보낼 대상을 선택해주세요.",
+    "FORM_TITLE_OPTION": "옵션",
+    "FORM_BTN_ID": "실명",
+    "FORM_BTN_COMMENT": "댓글",
+    "FORM_BTN_TITLE": "제목",
+    "FORM_TITLE_BOARD": "게시판",
+    "FORM_MSG_TITLE": "제목을 입력해주세요",
+    "FORM_BTN_FILE": "파일",
+    "FORM_MSG_ID": "실명인증을 하면 익명게시판에 글을 작성할 수 있어요",
+    "FORM_MSG_SEND_NOTI": "알림을 발송하시겠습니까?",
+    "FORM_MSG_APPLY_NOTI": "알림을 신청하시겠습니까?",
+    "FORM_MSG_EDIT": "게시글을 수정하시겠습니까?",
+    "FORM_MSG_SAVE": "게시글을 저장하시겠습니까?",
+    "FORM_MSG_SUCCESS_APPLY": "신청되었습니다.",
+    "FORM_MSG_SUCCESS_SAVE": "저장 되었습니다.",
+    "FORM_MSG_NOPERM": "권한없음",
+    "FORM_MSG_REASON": "알림을 신청하는 사유를 입력해주세요",
+    "FORM_MSG_SU_TARGET": "수신자를 선택해주세요",
+    "FORM_MSG_NOTI_NOCONT": "알림 내용을 입력해주세요",
+    "FORM_MSG_POST_NOCONT": "게시글의 내용을 입력해주세요",
+    "FORM_MSG_DIFFBOARD": "해당 게시판에 작성 권한이 없습니다. 다른 게시판을 선택해주세요.",
+    "FORM_MSG_NOBOARD": "게시글을 작성할 게시판을 선택해주세요.",
+    "FORM_MSG_SUCCESS_POST": "게시되었습니다.",
+    "FORM_MSG_SUCCESS_EDIT": "수정되었습니다.",
+    "FORM_MSG_FAIL_EDIT": "게시되지 못했습니다.",
+    "FORM_MSG_SUCCESS_POST": "발송되었습니다.",
+    "FORM_MSG_FAIL_POST": "발송하지 못했습니다.",
+    "FORM_MSG_NOFILE": "파일을 선택해 주세요."
+  },
+  "en": {
+    "FORM_BTN_WRITE": "Write",
+    "FORM_BTN_APPLY": "Apply",
+    "FORM_BTN_SEND": "Send",
+    "FORM_BTN_LONG_APPLY": "Apply",
+    "FORM_BTN_EDIT": "Edit",
+    "FORM_BTN_POST": "Post",
+    "FORM_TITLE_RECEIVE": "Receive",
+    "FORM_MSG_TARGET": "Please select the destination to send the noti to.",
+    "FORM_TITLE_OPTION": "Options",
+    "FORM_BTN_ID": "Identified",
+    "FORM_BTN_COMMENT": "Comments",
+    "FORM_BTN_TITLE": "Title",
+    "FORM_TITLE_BOARD": "Board",
+    "FORM_MSG_TITLE": "Please enter the title",
+    "FORM_BTN_FILE": "Files",
+    "FORM_MSG_SEND_NOTI": "Do you want to send noti?",
+    "FORM_MSG_APPLY_NOTI": "Do you want to apply for noti?",
+    "FORM_MSG_ID": "If you authenticate your real name, you can write on the anonymous board.",
+    "FORM_MSG_EDIT": "Do you want to edit the post?",
+    "FORM_MSG_SAVE": "Do you want to save the post?",
+    "FORM_MSG_SUCCESS_APPLY": "Applied.",
+    "FORM_MSG_SUCCESS_SAVE": "Saved.",
+    "FORM_MSG_NOPERM": "No permissions",
+    "FORM_MSG_REASON": "Please enter a reason for requesting notification",
+    "FORM_MSG_SU_TARGET": "Please select a recipient",
+    "FORM_MSG_NOTI_NOCONT": "Please enter the noti content.",
+    "FORM_MSG_POST_NOCONT": "Please enter the contents of the post",
+    "FORM_MSG_DIFFBOARD": "You do not have permission to create on this board. Please select a different board.",
+    "FORM_MSG_NOBOARD": "Please select the board on which you want to create a post.",
+    "FORM_MSG_SUCCESS_POST": "Posted.",
+    "FORM_MSG_SUCCESS_EDIT": "Edited.",
+    "FORM_MSG_FAIL_EDIT": "Failed to publish.",
+    "FORM_MSG_SUCCESS_POST": "Sent.",
+    "FORM_MSG_FAIL_POST": "Failed to send.",
+    "FORM_MSG_NOFILE": "Select Files."
+  }
+}
+</i18n>
 <template>
 <!-- <div style="width: 100%; float: left;"> -->
   <div class="whitePaper">
       <!-- 컨텐츠 작성 헤더 영역 -->
       <div class="w-100P fl" style="padding: 1rem 1.5rem 0 1.5rem; display: flex; flex-direction: column; align-items: flex-start;">
         <div class="fl w-100P" style="display: flex; align-items: center; justify-content: space-between;">
-          <p v-if="contentType === 'ALIM'" class="fontBold commonColor font20 fl">알림{{requestPushYn === false ? '작성' : '신청' }}</p>
-          <p v-if="contentType === 'BOAR'" class="fontBold commonColor font20 fl">게시글{{modiYn?'수정' : '작성'}}</p>
+          <p v-if="contentType === 'ALIM'" class="fontBold commonColor font20 fl">{{ $t('COMMON_TAB_NOTI' ) }} {{requestPushYn === false ? $t('FORM_BTN_WRITE') : $('FORM_BTN_APPLY') }}</p>
+          <p v-if="contentType === 'BOAR'" class="fontBold commonColor font20 fl">{{$t('COMMON_TAB_POST')}} {{modiYn? $t('COMMON_BTN_EDIT2') : $t('FORM_BTN_WRITE')}}</p>
           <div class="fr" style="display: flex; flex-direction: row; align-items: center;">
-            <gBtnSmall class="writeContenBtn" v-if="contentType === 'ALIM'"   :btnTitle="contentType === 'ALIM' && requestPushYn === false ? '발송하기' : '신청하기'" @click="clickPageTopBtn()"  />
-            <gBtnSmall :btnThema="mCanWriteYn? '' : 'light'" :style="!mCanWriteYn? 'background: #FFF; cursor: default;' : ''" class="writeContenBtn" v-if="contentType === 'BOAR'"   :btnTitle="contentType === 'BOAR' && modiYn === true ? '수정하기' : '게시하기'" @click="mCanWriteYn? boardDataCheck(): ''"   />
+            <gBtnSmall class="writeContenBtn" v-if="contentType === 'ALIM'"   :btnTitle="contentType === 'ALIM' && requestPushYn === false ? $t('FORM_BTN_SEND') : $t('FORM_BTN_LONG_APPLY')" @click="clickPageTopBtn()"  />
+            <gBtnSmall :btnThema="mCanWriteYn? '' : 'light'" :style="!mCanWriteYn? 'background: #FFF; cursor: default;' : ''" class="writeContenBtn" v-if="contentType === 'BOAR'"   :btnTitle="contentType === 'BOAR' && modiYn === true ? $t('FORM_BTN_EDIT') : $t('FORM_BTN_POST')" @click="mCanWriteYn? boardDataCheck(): ''"   />
             <img style="width: 1rem;" @click="closeXPop" class="mleft-2 fr cursorP"  src="../../assets/images/common/popup_close.png"/>
           </div>
         </div>
@@ -18,11 +96,11 @@
         <!-- 알림 영역 -->
         <template v-if="contentType === 'ALIM'">
           <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-            <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">수신</p>
+            <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_TITLE_RECEIVE') }}</p>
             <div class="fl" style="min-height: 2rem; float: left; width: calc(100% - 3.5rem);" v-if="!params.userKey">
-              <checkBtnArea class="mleft-05" title='전체' :selectedYn='allRecvYn' @click="allRecvYn = true" />
-              <checkBtnArea class="mleft-05" title='선택' :selectedYn='!allRecvYn' @click="allRecvYn = false" />
-              <p class="fr commonDarkGray font14" style="line-height: 30px;">{{allRecvYn === false ? receiverText : '전체' }}</p>
+              <checkBtnArea class="mleft-05" :title="$t('COMMON_TAB_ALL')" :selectedYn='allRecvYn' @click="allRecvYn = true" />
+              <checkBtnArea class="mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn='!allRecvYn' @click="allRecvYn = false" />
+              <p class="fr commonDarkGray font14" style="line-height: 30px;">{{allRecvYn === false ? receiverText : $t('COMMON_TAB_ALL') }}</p>
               <div v-if="!allRecvYn" class="fl w-100P textLeft mleft-05 mtop-05" @click="openPushReceiverSelect" style="border:1px solid #ccc; border-radius:8px; min-height: 30px; background: white; padding-left: 5px; display: flex; justify-content: space-between; align-items: center;">
                 <div v-if="this.receiverList.list && this.receiverList.list.length > 0" class="fl w-100P">
                   <div v-for="(value, index) in this.receiverList.list" :key="index" class="fl mright-1" style="display: flex;">
@@ -32,7 +110,7 @@
                     <p class="fl font14 mleft-01 commonDarkGray">{{value.name}}</p>
                   </div>
                 </div>
-                <p class='font12 fl' style="color:#aaa; " v-else >알림을 보낼 대상을 선택해주세요.</p>
+                <p class='font12 fl' style="color:#aaa; " v-else >{{ $t('FORM_MSG_TARGET') }}</p>
                 <!-- 이미지 임시!!! -->
                 <!-- <img class="fr img-w17 mright-05"  src="../../assets/images/push/plusIcon.svg" /> -->
                 <img class="fr img-w17 mright-05"  src="../../assets/images/formEditor/icon_formEditPlus.svg" />
@@ -45,11 +123,11 @@
           </div>
 
           <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-            <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">옵션</p>
+            <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_TITLE_OPTION') }}</p>
             <div style="min-height: 2rem; float: left;">
-              <checkBtnArea class="mleft-05" title='실명' :selectedYn='showCreNameYn' @click="showCreNameYn = !showCreNameYn" />
-              <checkBtnArea class="mleft-05" title='댓글' :selectedYn='canReplyYn' @click="canReplyYn = !canReplyYn" />
-              <checkBtnArea class="mleft-05" title='제목' :selectedYn='titleShowYn' @click="titleShowYn = !titleShowYn" />
+              <checkBtnArea class="mleft-05" :title="$t('FORM_BTN_ID')" :selectedYn='showCreNameYn' @click="showCreNameYn = !showCreNameYn" />
+              <checkBtnArea class="mleft-05" :title="$t('FORM_BTN_COMMENT')" :selectedYn='canReplyYn' @click="canReplyYn = !canReplyYn" />
+              <checkBtnArea class="mleft-05" :title="$t('FORM_BTN_TITLE')" :selectedYn='titleShowYn' @click="titleShowYn = !titleShowYn" />
             </div>
           </div>
         </template>
@@ -57,7 +135,7 @@
         <!-- 게시판 영역 -->
         <template v-if="contentType === 'BOAR'">
           <div v-if="selectBoardYn === true" class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-            <p class="fontBold commonColor CDeepColor font16 fl mright-05" style="word-break: keep-all; position: relative;">게시판<pss class="font12 fl" style="position: absolute; left: 0; bottom: -1rem;" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</pss></p>
+            <p class="fontBold commonColor CDeepColor font16 fl mright-05" style="word-break: keep-all; position: relative;">{{ $t('FORM_TITLE_BOARD') }}<pss class="font12 fl" style="position: absolute; left: 0; bottom: -1rem;" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</pss></p>
             <!-- <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p> -->
             <div class="fl" :class="!isMobile? 'thinScrollBar':''" id="boardListWrap" style=" width: calc(100% - 3.5rem); height: 2.2rem; overflow: auto hidden; white-space: nowrap; display: flex; align-items: center" @wheel="horizontalScroll" >
               <div v-for="(data, index) in selectBoardList" :key="index" class="fl mleft-05 font12 fontBold" @click="selectBoard(data, index)" style=" border-radius:10px; display: inline-flex;" :style="{background: data.picBgPath}" :class="{'CDeepBorderColor selectPadding' : selectBoardIndex === index, 'noneSelectPadding' : selectBoardIndex !== index, 'mleft-0': index === 0}">
@@ -70,13 +148,13 @@
 
         <!-- 공통 영역 -->
         <div v-if="titleShowYn" class="fl w-100P mtop-1" style="display: flex; align-items: center; padding: 0 1.5rem;">
-          <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">제목</p>
-          <input class="fl mleft-05 titlePlaceholder" style="width: calc(100% - 3.5rem); min-height:30px; background-color:white !important;" type="text" v-if="titleShowYn" id="pushTitleInput" placeholder="제목을 입력해주세요" v-model="writePushTitle" >
+          <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_BTN_TITLE') }}</p>
+          <input class="fl mleft-05 titlePlaceholder" style="width: calc(100% - 3.5rem); min-height:30px; background-color:white !important;" type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="$t('FORM_MSG_TITLE')" v-model="writePushTitle" >
 
         </div>
 
         <div class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-          <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">파일</p>
+          <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_BTN_FILE') }}</p>
           <div style="width: calc(100% - 3.5rem); min-height: 30px; " class="fl mleft-05">
             <attachFileList :attachTrueAddFalseList="pAttachFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
           </div>
@@ -91,12 +169,12 @@
 
   </div>
   <gToolBox :propTools='mToolBoxOptions' @changeTextStyle='changeFormEditorStyle' />
-  <gCertiPop :pPopText="'실명인증을 하면 익명게시판에 글을 작성할 수 있어요'" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  />
+  <gCertiPop :pPopText="$t('FORM_MSG_ID')" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  />
 
   <commonConfirmPop v-if="failPopYn" @no="failPopYn = false" confirmType="timeout" :confirmText="errorText" />
-  <gConfirmPop v-if="contentType === 'ALIM' && checkPopYn" :confirmText="'알림을 ' + (requestPushYn === false ? '발송' : '신청') + ' 하시겠습니까?'" @ok='sendMsg(), checkPopYn=false' @no='confirmNo()' />
-  <gConfirmPop v-if="contentType === 'BOAR' && checkPopYn" :confirmText="modiYn? '게시글을 수정 하시겠습니까?' : '게시글을 저장하시겠습니까?'" @ok='sendBoard(), checkPopYn=false' @no='confirmNo()'   />
-  <gConfirmPop @no="closeXPop()" :confirmText="contentType === 'ALIM' ? '신청되었습니다.' : '저장 되었습니다.' " confirmType='timeout' v-if="okPopYn" />
+  <gConfirmPop v-if="contentType === 'ALIM' && checkPopYn" :confirmText="requestPushYn === false? $t('FORM_MSG_SEND_NOTI'):$t('FORM_MSG_APPLY_NOTI')" @ok='sendMsg(), checkPopYn=false' @no='confirmNo()' />
+  <gConfirmPop v-if="contentType === 'BOAR' && checkPopYn" :confirmText="modiYn? $t('FORM_MSG_EDIT') : $t('FORM_MSG_SAVE')" @ok='sendBoard(), checkPopYn=false' @no='confirmNo()'   />
+  <gConfirmPop @no="closeXPop()" :confirmText="contentType === 'ALIM' ? $t('FORM_MSG_SUCCESS_APPLY') : $t('FORM_MSG_SUCCESS_SAVE') " confirmType='timeout' v-if="okPopYn" />
   <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
   <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
 <!-- </div> -->
@@ -417,12 +495,12 @@ export default {
             this.writeBoardPlaceHolder = ''
           } else {
             this.selectBoardCabinetKey = null
-            this.writeBoardPlaceHolder = '권한없음'
+            this.writeBoardPlaceHolder = this.$t('FORM_MSG_NOPERM')
             return
           }
         } else {
           this.selectBoardCabinetKey = null
-          this.writeBoardPlaceHolder = '권한없음'
+          this.writeBoardPlaceHolder = this.$t('FORM_MSG_NOPERM')
           return
         }
       } else {
@@ -518,9 +596,9 @@ export default {
         if (list[i].type === 'USER') uCount += 1
         if (list[i].type === 'BOOK') bCount += 1
       }
-      var a = (bCount > 0) ? '주소록' + bCount : ''
+      var a = (bCount > 0) ? this.$t('COMMON_NAME_ADDRBOOK') + bCount : ''
       var b = (bCount > 0 && uCount > 0) ? ', ' : ''
-      var c = (uCount > 0) ? '유저' + uCount : ''
+      var c = (uCount > 0) ? this.$t('COMMON_TITLE_USER') + uCount : ''
       this.receiverText = a + b + c
     },
     setParamInnerHtml (formCard) {
@@ -551,7 +629,7 @@ export default {
         if (this.titleShowYn) {
           if (title !== undefined && title !== null && title !== '') {
           } else {
-            this.errorText = '제목을 입력해주세요'
+            this.errorText = this.$t('FORM_MSG_TITLE')
             this.failPopYn = true
             this.complexOkYn = false
             return
@@ -560,7 +638,7 @@ export default {
 
         if (this.requestPushYn === true) {
           if (this.requestTitle.replace(' ', '') === '') {
-            this.errorText = '알림을 신청하는 사유를 입력해주세요'
+            this.errorText = this.$t('FORM_MSG_REASON')
             this.failPopYn = true
             this.complexOkYn = false
             return
@@ -571,7 +649,7 @@ export default {
           if (this.selectedReceiverList.length > 0) {
           } else {
             if (!this.params.userKey) {
-              this.errorText = '수신자를 선택해주세요'
+              this.errorText = this.$t('FORM_MSG_SU_TARGET')
               this.failPopYn = true
               this.complexOkYn = false
               return
@@ -584,7 +662,7 @@ export default {
         msgData = msgData.trim()
         if ((msgData !== undefined && msgData !== null && msgData !== '') || (this.uploadFileList.length > 0)) {
         } else {
-          this.errorText = '알림 내용을 입력해주세요'
+          this.errorText = this.$T('FORM_MSG_NOTI_NOCONT')
           this.failPopYn = true
           this.complexOkYn = false
           return
@@ -601,7 +679,7 @@ export default {
         title = title.trim()
         if (title !== undefined && title !== null && title !== '') {
         } else {
-          this.errorText = '제목을 입력해주세요'
+          this.errorText = this.$t('FORM_MSG_TITLE')
           this.failPopYn = true
           this.complexOkYn = false
           return
@@ -611,7 +689,7 @@ export default {
         msgData = msgData.trim()
         if ((msgData !== undefined && msgData !== null && msgData !== '') || this.uploadFileList.length > 0) {
         } else {
-          this.errorText = '게시글의 내용을 입력해주세요'
+          this.errorText = this.$t('FORM_MSG_POST_NOCONT')
           this.failPopYn = true
           this.complexOkYn = false
           return
@@ -619,13 +697,13 @@ export default {
         if (this.selectBoardYn === true) {
           if (this.selectBoardIndex !== undefined && this.selectBoardIndex !== null && this.selectBoardIndex !== '') {
             if (this.selectBoardCabinetKey === null) {
-              this.errorText = '해당 게시판에 작성 권한이 없습니다. 다른 게시판을 선택해주세요.'
+              this.errorText = this.$t('FORM_MSG_DIFFBOARD')
               this.failPopYn = true
               this.complexOkYn = false
               return
             }
           } else if (this.selectBoardIndex === undefined || this.selectBoardIndex === null || this.selectBoardIndex === '') {
-            this.errorText = '게시글을 작성할 게시판을 선택해주세요.'
+            this.errorText = this.$t('FORM_MSG_NOBOARD')
             this.failPopYn = true
             this.complexOkYn = false
             return
@@ -669,7 +747,6 @@ export default {
       return encodeURI(str)
     },
     openPop (param) {
-      console.log('얍~~')
       this.$emit('openPop', param)
     },
     confirmNo () {
@@ -866,12 +943,12 @@ export default {
         }
         // this.$showToastPop('게시되었습니다.')
         if (!this.modiYn) {
-          this.$showToastPop('게시되었습니다.')
+          this.$showToastPop(this.$t('FORM_MSG_SUCCESS_POST'))
         } else {
-          this.$showToastPop('수정되었습니다.')
+          this.$showToastPop(this.$t('FORM_MSG_SUCCESS_EDIT'))
         }
       } catch (error) {
-        this.$showToastPop('게시되지 못했습니다.')
+        this.$showToastPop(this.$t('FORM_MSG_FAIL_EDIT'))
         console.error(error)
       } finally {
         this.closeXPop(true)
@@ -948,7 +1025,7 @@ export default {
             if (this.selectedReceiverList.length > 0) {
               param.actorList = this.selectedReceiverList
             } else {
-              this.errorText = '수신자를 선택해주세요'
+              this.errorText = this.$t('FORM_MSG_SU_TARGET')
               this.failPopYn = true
               return
             }
@@ -989,9 +1066,9 @@ export default {
         var resultList = await this.$getContentsList(param)
         var detailData = resultList.content[0]
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
-        this.$showToastPop('발송되었습니다.')
+        this.$showToastPop(this.$t('FORM_MSG_SUCCESS_POST'))
       } catch (error) {
-        this.$showToastPop('발송하지 못했습니다.')
+        this.$showToastPop(this.$t('FORM_MSG_FAIL_POST'))
         console.error(error)
       } finally {
         this.sendLoadingYn = false
@@ -1233,7 +1310,7 @@ export default {
           }
         }
       } else {
-        alert('파일을 선택해 주세요.')
+        alert(this.$t('FORM_MSG_NOFILE'))
       }
       return true
     },

@@ -1,21 +1,51 @@
+<i18n>
+{
+  "ko": {
+    "SEAR_TITLE_CONTENTS": "알림 검색",
+    "SEAR_MSG_ENTER_TITLE": "제목을 입력해주세요",
+    "SEAR_MSG_ENTER_NAME": "작성자명을 입력해주세요",
+    "SEAR_MSG_SELE_DATE": "날짜를 선택해주세요",
+    "SEAR_MSG_SELE_LABEL": "라벨 선택",
+    "SEAR_MSG_SELE_STATUS": "업무 상태를 선택해주세요",
+    "SEAR_BTN_SEARCH": "검색하기",
+    "SEAR_MSG_ENTER_CHANNAME": "채널명을 입력해주세요",
+    "SEAR_TITLE_FILE": "파일 검색",
+    "SEAR_MSG_ENTER_FILENAME": "파일명을 입력해주세요",
+    "SEAR_TITLE_POST": "게시글 검색"
+  },
+  "en": {
+    "SEAR_TITLE_CONTENTS": "Search Contents",
+    "SEAR_MSG_ENTER_TITLE": "Please enter a title.",
+    "SEAR_MSG_ENTER_NAME": "Please enter a creator’s name.",
+    "SEAR_MSG_SELE_DATE": "Select Date",
+    "SEAR_MSG_SELE_LABEL": "Select Label",
+    "SEAR_MSG_SELE_STATUS": "Select Work Status",
+    "SEAR_BTN_SEARCH": "Search",
+    "SEAR_MSG_ENTER_CHANNAME": "Please enter a channel's name.",
+    "SEAR_TITLE_FILE": "Search Files",
+    "SEAR_MSG_ENTER_FILENAME": "Please enter a file's name.",
+    "SEAR_TITLE_POST": "Search Posts"
+  }
+}
+</i18n>
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <div class="pagePaddingWrap findPopupWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 50 )+ 'px'" >
-    <popHeader v-if="(contentsListTargetType === 'boardMain')" headerTitle="게시글 검색" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <popHeader v-if="(contentsListTargetType === 'boardMain')" :headerTitle="$t('SEAR_TITLE_POST')" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
     <popHeader v-else-if="(contentsListTargetType === 'myActList')" headerTitle="나의 활동 검색" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
-    <popHeader v-else-if="(contentsListTargetType === 'fileBox')" headerTitle="파일 검색" @closeXPop="closeXPop"  style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
-    <popHeader v-else headerTitle="알림 검색" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <popHeader v-else-if="(contentsListTargetType === 'fileBox')" :headerTitle="$t('SEAR_TITLE_FILE')" @closeXPop="closeXPop"  style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <popHeader v-else :headerTitle="$t('SEAR_TITLE_CONTENTS')" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody  mtop-05">
         <div v-if="pTitleShowYn !== false" class="findPopMainSearchArea">
             <input v-if="contentsListTargetType === 'myActList'" class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="게시글 제목을 입력해주세요" />
-            <input v-if="contentsListTargetType === 'fileBox'" class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="파일명을 입력해주세요" />
-            <input v-else class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="제목을 입력해주세요" />
+            <input v-if="contentsListTargetType === 'fileBox'" class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" :placeholder="$t('SEAR_MSG_ENTER_FILENAME')" />
+            <input v-else class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" :placeholder="$t('SEAR_MSG_ENTER_TITLE')" />
             <!-- <img class="searchIcon mtop-03 cursorP" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼"> -->
         </div>
         <div v-if="pOnlyMineYn !== true" class="findPopMainSearchArea">
-            <input class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="creUserName" placeholder="작성자명을 입력해주세요" />
+            <input class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="creUserName" :placeholder="$t('SEAR_MSG_ENTER_NAME')" />
         </div>
-        <input v-if="(contentsListTargetType !== 'chanDetail' && contentsListTargetType !== 'boardMain' && contentsListTargetType !== 'fileBox')" class="searchInput font14" type="text" name="" v-model="creTeam"  placeholder="채널명을 입력해주세요" id="">
+        <input v-if="(contentsListTargetType !== 'chanDetail' && contentsListTargetType !== 'boardMain' && contentsListTargetType !== 'fileBox')" class="searchInput font14" type="text" name="" v-model="creTeam"  :placeholder="$t('SEAR_MSG_ENTER_CHANNAME')" id="">
         <!-- <input class="searchInput" type="text" name=""  v-model="fileName" placeholder="파일이름을 입력해주세요" id=""> -->
         <Datepicker
           class="mtop-05"
@@ -25,18 +55,18 @@
           v-model:value="creDate"
           type="date"
           range
-          placeholder="날짜를 선택해주세요"
+          :placeholder="$t('SEAR_MSG_SELE_DATE')"
           titleFormat="YYYY-MM-DD"
         ></Datepicker>
         <div v-if="mStickerList && mStickerList.length > 0" style="width: 100%; margin-top: 10px; float: left; min-height: 30px;">
-            <p class="fontBold font16 commonColor textLeft mtop-1 fl w-100P mbottom-05">라벨 선택</p>
+            <p class="fontBold font16 commonColor textLeft mtop-1 fl w-100P mbottom-05">{{ $t('SEAR_MSG_SELE_LABEL') }}</p>
             <template v-for="(value, index) in mStickerList" :key="index" >
                 <gStickerLine v-if="value && contentsListTargetType !== 'fileBox'" @click="selectSticker(value)" :pSelectedYn="selectedSticker && value.stickerKey === selectedSticker.stickerKey" style="float: left; margin-right: 10px; min-width: 30px;" :pSticker="value" />
             </template>
         </div>
         <div v-if="tpGroupCode && tpGroupCode.length > 5" class="findPopMainSearchArea mtop-05">
             <select v-model="stateCode" class="searchInput selectInput font14 mtop-05" name="" id="statCodeKeyInput">
-                <option hidden value="0">업무 상태를 선택해주세요</option>
+                <option hidden value="0">{{ $t('SEAR_MSG_SELE_STATUS') }}</option>
                 <option v-for="(value, index) in this.stateCodeList" :key="index" :value="value.codeKey">{{this.$changeText(value.codeNameMtext)}}</option>
             </select>
             <!-- <input v-if="contentsListTargetType === 'myActList'" class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder= -->
@@ -89,7 +119,7 @@
         </div>
 
         <div style="width: 100%; float: left; margin-top: 20px; displa: flex;">
-          <gBtnLarge @click="requestSearchPushList" btnTitle="검색하기" class="w-100P" />
+          <gBtnLarge @click="requestSearchPushList" :btnTitle="$t('SEAR_BTN_SEARCH')" class="w-100P" />
         </div>
         <!-- <div style="width: 100%; min-height: 200px; float: left;">
             <div style="width: 100%; height: 20px; border-bottom: 1px solid #ccc;" v-for="(value, index) in this.stateCodeList" :key="index">{{this.$changeText(value.codeNameMtext)}}</div>

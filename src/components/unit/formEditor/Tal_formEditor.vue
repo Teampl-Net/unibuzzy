@@ -1,3 +1,13 @@
+<i18n>
+{
+  "ko": {
+    "FORM_MSG_UPDATE": "업데이트를 기다려주세요!"
+  },
+  "en": {
+    "FORM_MSG_UPDATE": "Please wait for the update!"
+  }
+}
+</i18n>
 <template>
     <!-- <div style="width: 100%; height: 100%; position: absolute; left: 0; top: 0; z-index: 2;">
         <div style="width: 500px; height: 100px; background: #FFFFFF;  border-radius: 10px; position: absolute; top: 16%; left: 40%; box-shadow: rgb(191 191 218) 0px 0px 2px 0px;">
@@ -5,11 +15,11 @@
     </div> -->
     <div v-if="false" ref="toolBoxRef" style="position: absolute !important; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 40px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px; padding: 5px 10px;z-index: 999999; background: #FFFFFF;">
       <div class="fl h-100P " style="width: 25%;">
-        <p style=" color: #6768A7; float: left; line-height: 35px; margin-right: 5px; font-size: 18px; width: 100%; " @mousedown="toolBoxShowYn? clickSelectBox():''">폰트 {{this.tools.ftSize}}</p>
+        <p style=" color: #6768A7; float: left; line-height: 35px; margin-right: 5px; font-size: 18px; width: 100%; " @mousedown="toolBoxShowYn? clickSelectBox():''">{{ $t('FORM_TITLE_FONT') }} {{this.tools.ftSize}}</p>
         <div v-if="fontSelectBoxShowYn && toolBoxShowYn" style="width: 25%; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
-          <div @mousedown="changeFontSize(20)" style="font-size: 20px; height: 30px;  color: #6768A7;" value="20">큰사이즈</div>
-          <div @mousedown="changeFontSize(16)" style="font-size: 16px; height: 30px; color: #6768A7;" value="16">중간사이즈</div>
-          <div @mousedown="changeFontSize(12)" style="font-size: 12px; height: 30px; color: #6768A7;" value="12">작은사이즈</div>
+          <div @mousedown="changeFontSize(20)" style="font-size: 20px; height: 30px;  color: #6768A7;" value="20">{{ $t('FORM_BTN_BIG') }}</div>
+          <div @mousedown="changeFontSize(16)" style="font-size: 16px; height: 30px; color: #6768A7;" value="16">{{ $t('FORM_BTN_MID') }}</div>
+          <div @mousedown="changeFontSize(12)" style="font-size: 12px; height: 30px; color: #6768A7;" value="12">{{ $t('FORM_BTN_SMALL') }}</div>
         </div>
       </div>
       <div   class="fl" style="display: flex; width: 45%;height: 100%; align-ite ms: center; justify-content: space-around; around; align-items: center;">
@@ -323,7 +333,7 @@ export default {
       } else if (type === 'video') {
         this.toolBoxShowYn = false
         formElement.src = src
-        this.confirmText = '업데이트를 기다려주세요!'
+        this.confirmText = this.$t('FORM_MSG_UPDATE')
         this.confirmPopShowYn = true
         return false
       } else if (type === 'text') {

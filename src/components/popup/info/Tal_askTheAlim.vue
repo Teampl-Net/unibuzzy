@@ -1,15 +1,43 @@
+<i18n>
+{
+  "ko": {
+    "ASK_TITLE_TITLE": "제목",
+    "ASK_TITLE_CONTENTS": "내용",
+    "ASK_BTN_SEND": "완료",
+    "ASK_MSG_BEFORE_SAVE": "문의글을 저장하시겠습니까?",
+    "ASK_MSG_AFTER_SAVE": "저장되었습니다.",
+    "ASK_MSG_NOTITLE": "제목을 입력해주세요.",
+    "ASK_MSG_NOCONT": "게시글의 내용을 입력해주세요.",
+    "ASK_MSG_SUCCESS": "정상적으로 접수되었습니다.",
+    "ASK_MSG_FAILED": "예기치 못한 이유로 접수되지 못했습니다.",
+    "ASK_MSG_NOFILE": "파일을 선택해주세요."
+  },
+  "en": {
+    "ASK_TITLE_TITLE": "Title",
+    "ASK_TITLE_CONTENTS": "Contents",
+    "ASK_BTN_SEND": "Send",
+    "ASK_MSG_BEFORE_SAVE": "Do you want to save your inquiry?",
+    "ASK_MSG_AFTER_SAVE": "Saved",
+    "ASK_MSG_NOTITLE": "Please enter a title.",
+    "ASK_MSG_NOCONT": "Please enter a contents.",
+    "ASK_MSG_SUCCESS": "Your inquiry has been successfully received.",
+    "ASK_MSG_FAILED": "Failed to receive due to unexpected reason.",
+    "ASK_MSG_NOFILE": "Please select a file."
+  }
+}
+</i18n>
 <template>
-<gConfirmPop confirmText='문의글을 저장하시겠습니까?' @no='checkPopYn=false, complexOkYn = false' v-if="checkPopYn" @ok='sendMsg(), checkPopYn=false' />
-<gConfirmPop @click="this.$emit('closeXPop', true)" confirmText='저장 되었습니다.' confirmType='timeout' v-if="okPopYn" />
+<gConfirmPop :confirmText="$t('ASK_MSG_BEFORE_SAVE')" @no='checkPopYn=false, complexOkYn = false' v-if="checkPopYn" @ok='sendMsg(), checkPopYn=false' />
+<gConfirmPop @click="this.$emit('closeXPop', true)" :confirmText="$t('ASK_MSG_AFTER_SAVE')" confirmType='timeout' v-if="okPopYn" />
 <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
 <div class="pagePaddingWrap" style="display: flex; flex-direction: column; text-align: left; height: 100%; position: relative;">
   <div style="width: 100%; overflow: hidden auto; height: calc(100% - 4rem); ">
     <!-- <select class="askBoxWrap">
       <option class="askCommonFont">문의 유형</option>
     </select> -->
-    <p class="fontBold commonColor font16 mtop-1 mbottom-05">제목</p>
-    <input type="text" class="askBoxWrap askCommonFont " v-model="askTitle" placeholder="제목"/>
-    <p class="fontBold commonColor font16 mtop-1 mbottom-05">내용</p>
+    <p class="fontBold commonColor font16 mtop-1 mbottom-05">{{ $t('ASK_TITLE_TITLE') }}</p>
+    <input type="text" class="askBoxWrap askCommonFont " v-model="askTitle" :placeholder="$t('ASK_TITLE_TITLE')"/>
+    <p class="fontBold commonColor font16 mtop-1 mbottom-05">{{ $t('ASK_TITLE_CONTENTS') }}</p>
     <!-- <gActiveBar :tabList="this.activeTabList" style="" ref="activeBar" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" /> -->
     <div id="textMsgAskBox" class="pageMsgArea" style="">
       <!-- <pre id="textMsgBox" class="editableContent"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></pre> -->
@@ -25,7 +53,7 @@
       <p style="color: #FFFFFF; font-size: 15px; margin-top: 0.5rem">첨부하기</p>
     </div> -->
   </div>
-  <gBtnLarge v-on:click="clickPageTopBtn"  :btnTitle="this.completeBtnTitle" style="width:90%; position: absolute; bottom:50px; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" />
+  <gBtnLarge v-on:click="clickPageTopBtn"  :btnTitle="$t('ASK_BTN_SEND')" style="width:90%; position: absolute; bottom:50px; left:50%; transform: translateX(-50%);" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" />
   <gToolBox :propTools='mToolBoxOptions' @changeTextStyle='changeFormEditorStyle' />
 </div>
 
@@ -62,7 +90,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.propData)
     document.querySelector('#textMsgAskBox').addEventListener('paste', (e) => {
       var items = (e.clipboardData || e.originalEvent.clipboardData).items
       for (const i of items) {
@@ -245,7 +272,7 @@ export default {
         title = title.trim()
         if (title !== undefined && title !== null && title !== '') {
         } else {
-          this.errorText = '제목을 입력해주세요'
+          this.errorText = this.$t('ASK_MSG_NOTITLE')
           this.failPopYn = true
           this.complexOkYn = false
           return
@@ -256,7 +283,7 @@ export default {
         // if ((msgData !== undefined && msgData !== null && msgData !== '') || this.uploadFileList.length > 0) {
         if (msgData !== undefined && msgData !== null && msgData !== '') {
         } else {
-          this.errorText = '게시글의 내용을 입력해주세요'
+          this.errorText = this.$t('ASK_MSG_NOCONT')
           this.failPopYn = true
           this.complexOkYn = false
           return
@@ -398,12 +425,12 @@ export default {
         param.showCreNameYn = true
         this.checkPopYn = false
         await this.$saveContents(param).then((result) => {
-          this.$showToastPop('정상적으로 접수 되었습니다.')
+          this.$showToastPop(this.$t('ASK_MSG_SUCCESS'))
         })
       } catch (error) {
         console.log('----- 문의접수, 오류접수 에러 -----')
         console.log(error)
-        this.$showToastPop('예기치 못한 이유로 접수되지 못했습니다.')
+        this.$showToastPop(this.$t('ASK_MSG_FAILED'))
       } finally {
         this.$emit('closeXPop', true)
         this.sendLoadingYn = false
@@ -480,7 +507,7 @@ export default {
           }
         }
       } else {
-        this.$showToastPop('파일을 선택해주세요.')
+        this.$showToastPop(this.$t('ASK_MSG_NOFILE'))
       }
       return true
     }

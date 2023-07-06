@@ -41,7 +41,7 @@ export default {
     return {
       mMainChanList: [],
       mMoreLink: 'subs',
-      mActiveTabList: [{ display: '구독중', name: 'user' }, { display: '전체', name: 'all' }, { display: '내 채널', name: 'mychannel' }],
+      mActiveTabList: [{ display: this.$t('COMMON_TAB_FOLLOWING'), name: 'user' }, { display: this.$t('COMMON_TAB_ALL'), name: 'all' }, { display: this.$t('COMMON_TAB_MANAGING'), name: 'mychannel' }],
       mViewTab: 'user',
       mAxiosQueueList: []
     }
@@ -95,7 +95,7 @@ export default {
           value.followYn = true
         }
       } else if (value.targetType === 'chanList') {
-        params.popHeaderText = '채널'
+        params.popHeaderText = this.$t('COMMON_NAME_CHANNEL')
       }
       params.value = value
       params.channelTabType = this.mViewTab
@@ -132,9 +132,19 @@ export default {
     },
     GE_RECENT_CHANGE_TEAM () {
       return this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM']
+    },
+    GE_LOCALE () {
+      return this.$i18n.locale
     }
   },
   watch: {
+    GE_LOCALE: {
+      immediate: true,
+      handler (value) {
+        this.mActiveTabList = [{ display: this.$t('COMMON_TAB_FOLLOWING'), name: 'user' }, { display: this.$t('COMMON_TAB_ALL'), name: 'all' }, { display: this.$t('COMMON_TAB_MANAGING'), name: 'mychannel' }]
+      },
+      deep: true
+    },
     propChanList: {
       immediate: true,
       handler (value, old) {

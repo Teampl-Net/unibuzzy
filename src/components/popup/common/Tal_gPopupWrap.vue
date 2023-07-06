@@ -1,3 +1,19 @@
+<i18n>
+{
+  "ko": {
+    "CRE_MSG_AFTER_DELETE": "채널이 삭제되었습니다.",
+    "CRE_MSG_AFTER_CREATE": "채널이 생성되었습니다.",
+    "CRE_MSG_AFTER_EDIT": "채널정보가 수정되었습니다.",
+    "MENU_BTN_REQ": "문의하기"
+  },
+  "en": {
+    "CRE_MSG_AFTER_DELETE": "Channel was deleted.",
+    "CRE_MSG_AFTER_CREATE": "Channel was created.",
+    "CRE_MSG_AFTER_EDIT": "Channel was Edited.",
+    "MENU_BTN_REQ": "Request"
+  }
+}
+</i18n>
 <template>
     <div id="gPopup" v-if="reloadYn === false && popId" :style="targetType === 'writeContents' || targetType === 'stickerPop' || targetType === 'stickerDetail' || targetType === 'openUnknownLoginPop' ? 'background: transparent' : '' + mobileYn && (targetType !== 'chanDetail' && targetType !== 'boardMain')? 'padding-top: ' + $STATUS_HEIGHT + 'px':''" class="commonPopWrap">
       <div v-if="GE_USER.unknownYn && popId && targetType === 'openUnknownLoginPop'" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 8; background: #00000050;"></div>
@@ -395,7 +411,7 @@ export default {
           this.readySearchList = target.readySearchList
         }
       } else if (this.targetType === 'askTal') {
-        if (target.jobKind === 'QUES') this.headerTitle = '문의하기'
+        if (target.jobKind === 'QUES') this.headerTitle = this.$t('MENU_BTN_REQ')
         if (target.jobKind === 'ERRO') this.headerTitle = '오류접수'
       } else if (this.targetType === 'changeEmail') {
         this.changInfoType = this.targetType
@@ -507,19 +523,27 @@ export default {
     async successCreChan (params) {
       console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
       console.log(params)
+      let msg = ''
+      if (params.deleteYn !== undefined && params.deleteYn !== null && params.deleteYn === true) {
+        msg = this.$t('CRE_MSG_AFTER_DELETE')
+      } else if (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true) {
+        msg = this.$t('CRE_MSG_AFTER_EDIT')
+      } else {
+        msg = this.$t('CRE_MSG_AFTER_CREATE')
+      }
       if (params.deleteYn !== undefined && params.deleteYn !== null && params.deleteYn === true) {
         this.$emit('parentClose', true)
         setTimeout(() => {
-          this.$showToastPop('채널이 삭제되었습니다.')
+          this.$showToastPop(msg)
         }, 500)
       } else if (params.modiYn !== undefined && params.modiYn !== null && params.modiYn === true) {
         this.closeXPop()
         setTimeout(() => {
-          this.$showToastPop('채널정보가 수정되었습니다.')
+          this.$showToastPop(msg)
         }, 500)
       } else {
         setTimeout(() => {
-          this.$showToastPop('채널이 생성되었습니다.')
+          this.$showToastPop(msg)
         }, 500)
         this.$emit('closeNewPop', params)
       }

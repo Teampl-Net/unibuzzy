@@ -1,3 +1,13 @@
+<i18n>
+{
+  "ko": {
+    "SEAR_TAB_ACT_CAHNNEL": "최근활동"
+  },
+  "en": {
+    "SEAR_TAB_ACT_CAHNNEL": "Recent Activity"
+  }
+}
+</i18n>
 <template>
     <div class="fl w-100P pSide-1" style="min-height:80px; border-bottom:1px solid #cccccc70; display: flex; flex-direction: row; align-items: center; padding-top: 15px; padding-bottom: 15px;" @click="goChannelMain(chanElement)">
         <div v-if="chanElement" style="position: relative; border: 0.5px solid rgba(0, 0, 0, 0.1); width: 60px; height: 60px; float: left; border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;"
@@ -9,7 +19,7 @@
         </div>
         <div class="fl mleft-1" style="width: calc(100% - 65px - 1rem);">
             <div class="w-100P fl font16 fontBold textLeft grayBlack "><img class="fl img-w14 mtop-02 mright-02" v-if="chanElement.officialYn" src="../../assets/images/main/main_officialMark.svg" alt="">{{$changeText(chanElement.nameMtext)}}
-                <p class="fr font13 lightGray" style="font-weight: normal;">{{'최근활동 ' + $changeDateFormat(chanElement.updDate)}}</p>
+                <p class="fr font13 lightGray" style="font-weight: normal;">{{$t("SEAR_TAB_ACT_CAHNNEL") + " " + $changeDateFormat(chanElement.updDate)}}</p>
             </div>
 
             <p class="w-100P fl font14 textLeft grayBlack">{{$changeText(chanElement.memoMtext)}}</p>

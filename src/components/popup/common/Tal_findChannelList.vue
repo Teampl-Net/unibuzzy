@@ -1,26 +1,44 @@
+<i18n>
+{
+  "ko": {
+    "SEAR_TITLE_CHAN": "채널 검색",
+    "SEAR_MSG_RECE_KEYWORD": "최근 검색어",
+    "SEAR_BTN_CLEAR": "전체삭제",
+    "SEAR_MSG_ENTER_CHANNAME": "채널명을 입력해주세요",
+    "SEAR_MSG_NOT_SEARCH": "최근 검색한 결과가 없어요"
+  },
+  "en": {
+    "SEAR_TITLE_CHAN": "Search Channels",
+    "SEAR_MSG_RECE_KEYWORD": "Recent Keywords",
+    "SEAR_BTN_CLEAR": "Clear",
+    "SEAR_MSG_ENTER_CHANNAME": "Please enter a channel's name.",
+    "SEAR_MSG_NOT_SEARCH": "Oops! You haven't searched anything yet."
+  }
+}
+</i18n>
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <div class="findPopupWrap " :style="'padding-top:' + (this.$STATUS_HEIGHT + 50 )+ 'px'" >
-    <popHeader headerTitle="채널 검색" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <popHeader :headerTitle="$t('SEAR_TITLE_CHAN')" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody mtop-05" style=" padding: 0 1.5rem">
       <div style="position: relative; margin: 1rem 0; min-height: 50px;">
         <img @click="findChannel" class="searchIcon cursorP img-w20" src="../../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
-        <input class="searchInput font14 fontBold" id="chanSearchInput"  @click="searchPopClear()" ref="channelSearchKey" @keyup.enter="findChannel" v-model="nameMtext" placeholder="채널명을 검색해주세요" />
+        <input class="searchInput font14 fontBold" id="chanSearchInput"  @click="searchPopClear()" ref="channelSearchKey" @keyup.enter="findChannel" v-model="nameMtext" :placeholder="$t('SEAR_MSG_ENTER_CHANNAME')" />
         <img src="../../../assets/images/common/grayXIcon.svg" v-if="mFindKeyWord !== ''" @click="searchPopClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
       </div>
 
       <template v-if="mFindKeyWord === ''">
-        <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">최근 검색어</p>
+        <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">{{ $t('SEAR_MSG_RECE_KEYWORD') }}</p>
         <template v-if="mSearchHistoryList.length > 0">
           <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style=" padding: 10px 0; border-bottom:1px solid #CCCCCC90; ">
             <p class="fl font14 grayBlack textLeft" style="width: calc(100% - 20px)" @click="nameMtext = data, findChannel()">{{data}}</p>
             <img src="../../../assets/images/common/grayXIcon.svg" @click="searchHistoryDelete(index)" class="fr img-w10 mtop-03" alt="">
           </div>
 
-          <p v-if="mSearchHistoryList.length > 0" class="fr font12 lightGray mtop-05" @click="searchHistoryClear()">전체삭제</p>
+          <p v-if="mSearchHistoryList.length > 0" class="fr font12 lightGray mtop-05" @click="searchHistoryClear()">{{ $t('SEAR_BTN_CLEAR') }}</p>
         </template>
         <div v-else>
-          <p class="fl w-100P font16 lightGray textCenter mtop-1">최근 검색한 결과가 없어요</p>
+          <p class="fl w-100P font16 lightGray textCenter mtop-1">{{ $t('SEAR_MSG_NOT_SEARCH') }}</p>
         </div>
       </template>
     </div>

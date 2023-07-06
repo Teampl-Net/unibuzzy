@@ -1,3 +1,11 @@
+<i18n>
+{
+  "ko": {
+  },
+  "en": {
+  }
+}
+</i18n>
 <template>
     <div style="width: 100%; float: left;">
       <gConfirmPop @no="this.errorShowYn = false" confirmText='파일은 최대 10MB까지 첨부할 수 있습니다.' confirmType='timeout' v-if="errorShowYn" />

@@ -1,5 +1,16 @@
+<i18n>
+{
+  "ko": {
+    "INPUT_MSG_INPUT": "입력해주세요.",
+    "MEM_DETAIL_MSG_MEMTYPE": "멤버 유형을 입력해주세요."
+  },
+  "en": {
+    "INPUT_MSG_INPUT": "Please Enter Text.",
+    "MEM_DETAIL_MSG_MEMTYPE": "Please enter a member type."
+  }
+}
+</i18n>
 <template>
-
 <div class="zoomInOutPop smallInput" style="background: rgb(250 250 250);">
   <div class="inputPopHeader newHeaderLine w-100P fl" style="min-height:30px;" >
     <p class="font16 fontBold commonColor fl" style="position: absolute; left:50%; transform: translateX(-50%); line-height: 30px;">{{title}}</p>
@@ -7,15 +18,15 @@
   </div>
 
   <div class="fl wh-100P" style="display: flex; flex-direction: column; align-items: center;">
-    <input type="text" placeholder="입력해주세요." v-model="inputText" style="width:90%; background:#ffffff !important" class="mtop-05">
+    <input type="text" :placeholder="$t('INPUT_MSG_INPUT')" v-model="inputText" style="width:90%; background:#ffffff !important" class="mtop-05">
     <div class="mbottom-05" style="position: absolute; bottom:0;">
       <template  v-if="btnType === 'two'">
-        <gBtnSmall  @click="closeXPop" btnTitle="확인"/>
-        <gBtnSmall  @click="closeXPop" btnTitle="닫기"/>
+        <gBtnSmall  @click="closeXPop" :btnTitle="$('COMMON_BTN_OK')"/>
+        <gBtnSmall  @click="closeXPop" :btnTitle="$('COMMON_BTN_CLOSE')"/>
       </template>
 
       <template v-if="btnType === 'one'">
-        <gBtnSmall  @click="saveClick()" btnTitle="저장"  />
+        <gBtnSmall  @click="saveClick()" :btnTitle="$t('COMMON_BTN_SAVE')"  />
       </template>
     </div>
   </div>
@@ -44,7 +55,7 @@ export default {
       if (this.inputText.trim() !== '') {
         this.emit('save')
       } else {
-        this.$showToastPop('멤버 유형을 입력해주세요.')
+        this.$showToastPop(this.$t('MEM_DETAIL_MSG_MEMTYPE'))
       }
     },
     emit (type) {
