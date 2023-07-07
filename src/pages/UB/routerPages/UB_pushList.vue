@@ -8,17 +8,6 @@
     <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left;" >
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
-        <!-- <div style=" width: 100%; min-height: 40px; float: left; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ; padding-right: 50px; overflow: auto hidden;">
-            <div @click="changeMainTab('A')" :class="viewMainTab === 'A'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">전체</div>
-            <div v-if="!pUnknownYn" @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">알림</div>
-            <div v-if="!pUnknownYn" @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">게시글</div>
-            <div v-if="!pUnknownYn && this.$route.path !== '/myPage'" @click="changeMainTab('F')" :class="viewMainTab === 'F'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">파일함</div>
-        </div> -->
-        <!-- <div style="width: 100%; min-height: 40px; float: left; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ; padding-right: 50px; overflow: auto hidden;">
-          <select style="width:90px!important; height:30px;" class="fl mRight-10">
-           <option v-for="(filter, idx) in mCommonFilterList" :key="idx" :value="filter.value" @click="changeMainTab(filter)">{{ filter.title }}</option>
-          </select>
-        </div> -->
         <!-- <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " /> -->
         <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
       </div>
@@ -2199,8 +2188,9 @@ export default {
 .mainTabStyle {border-radius: 10px; min-width: 80px; float: left; border-bottom: none; background: #FFF;; padding: 5px 10px; margin-left: 10px;}
 .mainTabActive { border-bottom: none; background: #F1F1FF !important;}
 .pushListHeader {
+    display: flex;
+    align-items: center;
     width: 100%;
-    padding-bottom: 10px;
     min-height: 50px;
     position: absolute;
     background-color: #FFF;

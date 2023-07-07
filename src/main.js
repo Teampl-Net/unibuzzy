@@ -109,16 +109,18 @@ if (type === 'D') {
     import('./pages/UB/routerPages/UB_favList.vue'),
     import('./components/UB/layout/UB_gPopHeader.vue'),
     import('./components/UB/popup/common/UB_gPopupWrap.vue'),
-    import('./components/UB/unit/UB_commonSelectFilter.vue')
+    import('./components/UB/unit/UB_commonSelectFilter.vue'),
+    import('./pages/routerPages/Tal_logList.vue')
 
   ])
   app = createApp(uniBuzzy).use(router).use(router).use(store)
-  importsUB.then(([gUBHeader, gFavList, popHeader, gPopupWrap, gSelectFilter]) => {
+  importsUB.then(([gUBHeader, gFavList, popHeader, gPopupWrap, gSelectFilter, gLogList]) => {
     app.component('gUBHeader', gUBHeader.default)
     app.component('gFavList', gFavList.default)
     app.component('popHeader', popHeader.default)
     app.component('gPopupWrap', gPopupWrap.default)
     app.component('gSelectFilter', gSelectFilter.default)
+    app.component('gLogList', gLogList.default)
   })
 
   // const gNProfileImg = require('./components/common/N_commonProfile.vue')

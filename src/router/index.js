@@ -45,6 +45,15 @@ if (type === 'UB') {
             }
           } */
         },
+        // {
+        //   path: '/unibuzzy',
+        //   name: 'uniBmain',
+        //   props: true,
+        //   meta: {
+        //     page: 1
+        //   },
+        //   component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_uniB_main.vue')
+        // },
         {
           // path: '/chan/:key',
           // path: '/chan/:pTeamKey',
@@ -54,6 +63,12 @@ if (type === 'UB') {
           component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_chanMain.vue')
           // alias: ['/:pTeamKey', '']
         },
+        // {
+        //   path: '/mylog',
+        //   name: 'logList',
+        //   props: true,
+        //   component: () => import(/* webpackChunkName: "about" */ '../components/pageComponents/main/D_notiHistoryList.vue')
+        // },
         {
           path: '/unknown',
           name: 'unknown',

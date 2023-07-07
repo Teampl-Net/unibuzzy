@@ -34,7 +34,7 @@ export default {
     }
   },
   created () {
-
+    alert(true)
   },
   computed: {
     GE_RECENT_NOTI_LIST () {

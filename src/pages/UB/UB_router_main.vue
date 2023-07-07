@@ -57,7 +57,10 @@ export default {
     }
   },
   created () {
-    if (this.GE_USER.unknownYn) this.GE_USER.userKey = 225
+    if (this.GE_USER.unknownYn) {
+      this.goUniBTown()
+      return
+    }
     if (localStorage.getItem('backBtnShowYn') !== undefined && localStorage.getItem('backBtnShowYn') !== 'undefined') {
       localStorage.setItem('backBtnShowYn', 'false')
     }
@@ -76,6 +79,9 @@ export default {
     this.getCTeamList()
   },
   methods: {
+    async goUniBTown () {
+      this.$router.push('/unibuzzy')
+    },
     async getCTeamList () {
       const param = {}
       param.teamKey = 824
@@ -340,19 +346,14 @@ export default {
       this.mGPopShowYn = true
       this.hideMenu()
     },
-    async openPage (params) {
-      if (params.targetType === 'chanDetail') {
-        this.goChanDetail(params)
-        return
-      } else if (params.targetType === 'favList') {
-        this.goFavList(params)
-        return
-      }
-      this.hideMenu()
-    },
     goFavList () {
 
     },
+    // goLogList (param) {
+    //   // this.openPage(param)
+    //   this.mRouterHeaderInfo = param.popHeaderText
+    //   this.$router.push('/mylog')
+    // },
     changePageHeader (title) {
       this.mRouterHeaderInfo = title
     },
@@ -374,6 +375,19 @@ export default {
       this.$store.commit('D_HISTORY/updateStack', history)
       this.$store.dispatch('D_HISTORY/AC_REMOVE_POP_HISTORY_STACK')
       this.mGPopShowYn = false
+    },
+    async openPage (params) {
+      if (params.targetType === 'chanDetail') {
+        this.goChanDetail(params)
+        return
+      } else if (params.targetType === 'favList') {
+        this.goFavList(params)
+        return
+      }
+      // else if (params.targetType === 'logList') {
+      //   this.goLogList(params)
+      // }
+      this.hideMenu()
     },
     async changeRouterPath (page) {
       this.mMenuShowYn = false
