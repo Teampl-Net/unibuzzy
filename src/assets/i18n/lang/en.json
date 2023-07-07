@@ -1,6 +1,7 @@
 {
     "COMMON_NAME_APP": "uniBuzzy",
     "COMMON_BTN_SIGN_IN": "Sign in",
+    "COMMON_BTN_LOG_OUT": "Log out",
     "COMMON_MESSAGE_USER_TITLE": "!",
 
     "COMMON_NAME_HOME": "Home",

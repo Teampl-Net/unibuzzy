@@ -1,6 +1,7 @@
 {
     "COMMON_NAME_APP": "더알림",
     "COMMON_BTN_SIGN_IN": "로그인" ,
+    "COMMON_BTN_LOG_OUT": "로그아웃",
     "COMMON_MESSAGE_USER_TITLE": "님!",
 
     "COMMON_NAME_HOME": "홈",
