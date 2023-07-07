@@ -287,6 +287,28 @@ export const methods = {
       window.localStorage.removeItem('testYn')
     }
   },
+  async UBLogOut () {
+    var result = await commonAxiosFunction({
+      url: 'service/tp.logout',
+      firstYn: true
+    })
+    console.log(result)
+    if (result) {
+      await router.replace({ name: 'login' })
+      store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+      await store.dispatch('D_USER/AC_USER', '')
+      if (store !== undefined && store !== null) {
+        store.commit('D_USER/MU_CLEAN_USER')
+      }
+
+      window.localStorage.setItem('loginYn', false)
+      window.localStorage.removeItem('vuex')
+      window.localStorage.removeItem('loginType')
+      window.localStorage.removeItem('testYn')
+
+      router.push('/')
+    }
+  },
   async getTeamList (paramMap, noneLoadingYn) {
     var resultList = null
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
@@ -672,6 +694,7 @@ export default {
     Vue.config.globalProperties.$getMemoCount = methods.getMemoCount
     Vue.config.globalProperties.$saveFcmToken = methods.saveFcmToken
     Vue.config.globalProperties.$d_AlimLogout = methods.d_AlimLogout
+    Vue.config.globalProperties.$UBLogOut = methods.UBLogOut
     Vue.config.globalProperties.$getFollowerList = methods.getFollowerList
     Vue.config.globalProperties.$coreLoginCheck = methods.coreLoginCheck
   }
