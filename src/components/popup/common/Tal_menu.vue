@@ -35,6 +35,7 @@
           <div class="fl">{{value.menuText}}</div>
         </div>
       </div>
+      <div>로그아웃</div>
     </div>
   </div>
 </template>

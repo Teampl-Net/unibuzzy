@@ -1021,9 +1021,6 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .appleWebLoginBtn svg {
   display: none!important
 }
-.appleWebLoginBtn {
-  position: relative;
-}
 .appleWebLoginBtn div {
   width: 100%!important;
   height: 100%!important;
@@ -1031,8 +1028,10 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   margin: 0!important;
   max-width: none!important;
 }
-.appleWebLoginBtn .loginAppleWeb{
+.loginAppleWeb {
   position: absolute;
+}
+.appleWebLoginBtn .loginAppleWeb{
   top: 10px;
   left: 3px;
 }

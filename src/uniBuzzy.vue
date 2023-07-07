@@ -181,11 +181,9 @@ max-width: 1000px ;
   background: black;
 }
 .loginBtn {
-  position: absolute;
+  position: relative;
   width: 80%;
   border-radius: 10px;
-  bottom: 15%;
-  left: 10%;
   padding: 10px 20px;
   font-size: 18px;
   background: white;

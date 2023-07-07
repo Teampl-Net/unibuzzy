@@ -1,9 +1,9 @@
 <template>
   <!-- <div class="w100P " style="position: fixed; top: 0; left: 0; height: 60px; background: none; z-index: 9; display: flex; align-items: center; justify-content: center;"> -->
-  <div class="mainHeaderWrap" v-if=pRouterHeaderInfo>
-    <img class="mainMenuIcon" height="20" style="position: absolute; left: 20px;" @click="showMenu()" src="../../../assets/images/common/icon_menu_white.png"/>
+  <div class="mainHeaderWrap" v-if="pRouterHeaderInfo">
+    <img class="mainMenuIcon" height="20" style="position: absolute; left: 20px;" @click="showMenu()" src="../../../assets/images/common/icon_menu.png"/>
     <!-- <img v-if="pRouterHeaderInfo.logoImg" :src="pRouterHeaderInfo.logoImg" height="30" style="margin-right: 5px; border: 2px solid white; background: white; border-radius: 100%; -webkit-user-drag: none;" /> -->
-    <p v-if="pRouterHeaderInfo" class="headerFont fontBold fl" style="color: white;" v-html="pRouterHeaderInfo"></p>
+    <p v-if="pRouterHeaderInfo" class="headerFont fontBold fl" style="color: #062bb5;" v-html="pRouterHeaderInfo"></p>
     <img height=20 style="right: 55px; position: absolute;" src="../../../assets/images/common/icon_bell.svg"/>
     <img height="20" style="position: absolute; right: 20px;" src="../../../assets/images/common/likeIcon.svg" />
   </div>

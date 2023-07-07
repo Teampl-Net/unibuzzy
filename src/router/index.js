@@ -89,10 +89,15 @@ if (type === 'UB') {
           path: '/chanList',
           name: 'chanList',
           props: true,
-          component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_chanList.vue'),
+          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_chanList.vue'),
           meta: {
             page: 3
           }
+        },
+        {
+          path: '/findChan',
+          name: 'findChan',
+          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_findChanList.vue')
         },
         {
           path: '/logList',

@@ -13,25 +13,27 @@
         <img src="../../assets/images/intro/login/login_kakao.png">
         카카오 로그인
       </div> -->
-      <naver :callbackFunction='naverCallbackFunction' v-if="!mobileYn" buttonColor="#3E3F6A" :isPopup='false' />
-      <div v-else class="loginBtn font20" v-on:click="NaverLoginBtn">
-        <img src="../../assets/images/intro/login/login_naver.png">
-        네이버 로그인
-      </div>
-      <div class="loginBtn font20" @click="GoogleLoginBtn">
-        <img src="../../assets/images/intro/login/login_google.png">
-        Google 로그인
-      </div>
-      <div v-if="(this.systemName !== 'Android' && this.systemName !== 'android') && mobileYn" class="loginBtn font20" v-on:click="AppleLoginBtn">
-        <img src="../../assets/images/intro/login/login_apple.png">
-        Apple 로그인
-      </div>
-      <div v-else-if="!mobileYn" style="position: relative;" class="loginBtn appleWebLoginBtn">
-        <div id="appleid-signin"  class="signin-button appleWebLoginBtn" data-color="black" data-border="true" data-type="sign in">
+      <div class="w100P" style="display: flex; flex-direction: column; height: 500px;">
+        <naver :callbackFunction='naverCallbackFunction' v-if="!mobileYn" buttonColor="#3E3F6A" :isPopup='false' />
+        <div v-else class="loginBtn font20" v-on:click="NaverLoginBtn">
+          <img src="../../assets/images/intro/login/login_naver.png">
+          네이버 로그인
         </div>
-        <div @click="clickAppleLoginInWeb" class="font20 loginAppleWeb">
+        <div class="loginBtn font20" @click="GoogleLoginBtn">
+          <img src="../../assets/images/intro/login/login_google.png">
+          Google 로그인
+        </div>
+        <div v-if="(this.systemName !== 'Android' && this.systemName !== 'android') && mobileYn" class="loginBtn font20" v-on:click="AppleLoginBtn">
           <img src="../../assets/images/intro/login/login_apple.png">
           Apple 로그인
+        </div>
+        <div v-else-if="!mobileYn" class="loginBtn appleWebLoginBtn">
+          <div id="appleid-signin"  class="signin-button appleWebLoginBtn" data-color="black" data-border="true" data-type="sign in">
+          </div>
+          <div @click="clickAppleLoginInWeb" class="font20 loginAppleWeb">
+            <img src="../../assets/images/intro/login/login_apple.png">
+            Apple 로그인
+          </div>
         </div>
       </div>
       <div v-if="pPartnerLoginYn" class="fl" style="width: 100%; height: 80px; display: flex; margin-top: 50px;align-items: center; justify-content: center;">
@@ -234,7 +236,7 @@ export default {
 
 <style scoped>
 p{margin-bottom: 0;}
-.loginBtn{width: 100%; cursor: pointer; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px; }
+.loginBtn{width: 100%; cursor: pointer; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px;}
 .loginBtn img {width: 1.5rem; margin-bottom: 5px; margin-right: 20px}
 .loginContentsWrap{height: 100vh;background-color: #6768A7; display: flex; flex-direction: column; padding-top: 10%; }
 
