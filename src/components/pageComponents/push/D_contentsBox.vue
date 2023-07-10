@@ -197,10 +197,10 @@
   <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
   <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
   <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
-  <div v-if="mSelectBoardPopShowYn === true" style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 9; top: 0; left: 0" />
+  <!-- <div v-if="mSelectBoardPopShowYn === true" style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 9; top: 0; left: 0" />
   <div v-if="mSelectBoardPopShowYn === true" style="width: 100%; height: 100vh; position: fixed;  z-index: 9; top: 0; left: 0 ">
     <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" :boardDetail="mMoveContentsDetailValue" />
-  </div>
+  </div> -->
 
   <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
 
@@ -1464,6 +1464,8 @@ export default {
       }
     },
     CONT_DETAIL () {
+      console.log('2193048120394912804this.contentsEle')
+      console.log(this.contentsEle)
       // eslint-disable-next-line no-debugger
       debugger
       if (!this.contentsEle) return

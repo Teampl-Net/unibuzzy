@@ -79,6 +79,7 @@ export default {
     }
   },
   created () {
+    alert(true)
     this.$addHistoryStack('selectBoardList')
 
     if (this.type === 'move') {

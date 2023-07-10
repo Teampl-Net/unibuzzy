@@ -1386,6 +1386,7 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
+      z-index: 9999;
       /* overflow: hidden; */
       /* clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%); */
   }

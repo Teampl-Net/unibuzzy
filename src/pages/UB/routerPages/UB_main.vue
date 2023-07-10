@@ -709,6 +709,7 @@ export default {
     }
   },
   created () {
+    this.$emit('clearInfo', { detail: {}, targetType: 'main' })
     this.resetHistory()
     this.setNativeHeight()
 

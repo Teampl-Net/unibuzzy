@@ -58,8 +58,8 @@
     <div class="channelItemBox" ref="channelItemBox" style="margin-top: 220px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
       <pushList :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" @goScroll="mChanMainScrollWrap.style.overflow = 'scroll'" :initData="this.mChanInfo.initData.contentsList" @cMemoEditYn="changeMemoEditYn"
         :targetContents="{ targetContentsKey: mChanInfo.targetContentsKey, jobkindId: mChanInfo.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.mChanInfo.targetType"
-        ref="ChanAlimListPushListCompo" :alimListYn="true" @openPop="openPushDetailPop" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements'
-        @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit' />
+        ref="ChanAlimListPushListCompo" :alimListYn="true" @openPage="openPage" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements'
+        @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @openPop="openWriteContentsPop" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit' />
     </div>
 
     <div v-if="this.mChanInfoPopShowYn">
@@ -131,7 +131,8 @@ export default {
     }
   },
   props: {
-    propParams: {}
+    propParams: {},
+    pClearInfo: Function
     // notiScrollTarget: {},
     // pPopId: {},
     // popYn: { type: Boolean, default: false }
@@ -149,7 +150,7 @@ export default {
     debugger
     this.$emit('openLoading')
     this.$showAxiosLoading(true)
-    if (this.propParams && this.propParams.initData) {
+    if (this.propParams && this.propParams.targetType === 'chanDetail' && this.propParams.initData) {
       this.mChanInfo = this.propParams
       if (this.mChanInfo.initData.team.D_CHAN_AUTH && this.mChanInfo.initData.team.D_CHAN_AUTH.followYn) {
         this.$emit('followYn')
@@ -168,7 +169,7 @@ export default {
           })
         }
       }
-    } else if ((!this.propParams) && (Object.keys(this.mChanInfo).length === 0)) {
+    } else {
       this.getChanMain()
     }
   },
@@ -184,6 +185,11 @@ export default {
     window.addEventListener('resize', this.handleResize)
   },
   methods: {
+    openPage (value) {
+      console.log('value')
+      console.log(value)
+      this.$emit('openPage', value)
+    },
     async getChanMain () {
       // eslint-disable-next-line no-debugger
       debugger
@@ -223,6 +229,7 @@ export default {
       }
       chanMainParam.initData = initData
       this.mChanInfo = chanMainParam
+      this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
       console.log('this.mChanInfothis.mChanInfothis.mChanInfo', this.mChanInfo)
     },
     async getTeamToken () {
@@ -613,8 +620,9 @@ export default {
         teamKey = this.mDirectTeamKey.teamKey
       }
       var detail = this.$getDetail('TEAM', teamKey)
-      console.log('detail')
-      console.log(detail)
+      if (detail.length < 1) {
+        return
+      }
       if (detail && detail.length > 0) {
         if (detail[0].blackYn) this.$emit('bgcolor', detail[0].blackYn)
 

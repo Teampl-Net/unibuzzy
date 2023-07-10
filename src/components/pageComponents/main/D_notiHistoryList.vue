@@ -33,9 +33,6 @@ export default {
       mConfirmPopShowYn: false
     }
   },
-  created () {
-
-  },
   computed: {
     GE_RECENT_NOTI_LIST () {
       return this.$store.getters['D_NOTI/GE_RECENT_NOTI_LIST']

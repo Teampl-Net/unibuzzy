@@ -1664,7 +1664,24 @@ export default {
       this.findPopShowYn = false
     },
     openPop (value) {
-      this.$emit('openPop', value)
+      if (value.targetType === 'contentsDetail') {
+        const param = {}
+        param.targetKey = value.targetKey
+        param.contentsKey = value.targetKey
+        param.memoScrollYn = true
+        param.teamKey = value.creTeamKey
+        param.creTeamKey = value.creTeamKey
+        param.jobkinId = value.jobkindId
+        if (param.jobkindId === 'BOAR') {
+          param.cabinetKey = value.cabinetKey
+        }
+        param.targetType = 'contDetail'
+        this.$emit('openPage', param)
+      } else if (value.targetType === 'chanDetail') {
+        alert(true)
+      } else if (value.targetType === 'writeContents') {
+        this.$emit('openPop', value)
+      }
     },
     replaceArr (arr) {
       // var this_ = this

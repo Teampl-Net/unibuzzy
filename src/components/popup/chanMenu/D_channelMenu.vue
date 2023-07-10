@@ -88,6 +88,8 @@ export default {
     pPopId: {}
   },
   created () {
+    console.log('this.propChanAlimListTeamKey')
+    console.log(this.propChanAlimListTeamKey)
     if (this.propChanAlimListTeamKey) this.mChanAlimListTeamKey = JSON.parse(JSON.stringify(this.propChanAlimListTeamKey))
     this.readyFunction()
   },
