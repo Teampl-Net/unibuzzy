@@ -391,8 +391,9 @@ export default {
     },
     async changeRouterPath (page) {
       this.mMenuShowYn = false
-      var pageData = await this.$getRouterViewData(page)
-      console.log(page)
+      if (page !== 'chanList') {
+        var pageData = await this.$getRouterViewData(page)
+      }
       this.sendInitData = pageData
       if (this.$router.currentRoute._rawValue.path === '/' && page === 'main') {
         const unit = this.$refs.routerViewCompo

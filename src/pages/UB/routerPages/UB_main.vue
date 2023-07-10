@@ -1,5 +1,9 @@
 <template>
   <div class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
+    <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
+      <transition name="showUp">
+        <areaInfoPop @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaInfo="mSelectedAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
+      </transition>
     <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: cover; overflow: hidden;">
       <!-- <UBBgEffect /> -->
       <!-- my profile -->
@@ -10,11 +14,11 @@
       <div v-else class="w100P" style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
         <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr" />
       </div>
-    <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+    <!-- <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
       <transition name="showUp">
         <UBInfoBox v-if="mInfoBoxShowYn" :pType="'BD'" @openPage="openPage" :pChan="clickedBd" />
-        <!-- <UBInfoBox v-else-if="clickedArea.clickedYn" :pType="'AR'" :pMoveToDetail="moveToChan" :pClickedInfo="clickedArea" :pVillageInfo="village.villageInfo" :innerHeight="innerHeight" :innerWidth="innerWidth" /> -->
-      </transition>
+        <UBInfoBox v-else-if="clickedArea.clickedYn" :pType="'AR'" :pMoveToDetail="moveToChan" :pClickedInfo="clickedArea" :pVillageInfo="village.villageInfo" :innerHeight="innerHeight" :innerWidth="innerWidth" />
+      </transition> -->
       <div v-if="mShowAreaBdList" @click="mShowAreaBdList = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
       <transition name="showUp">
         <UBAreaBdList v-if="mShowAreaBdList" style="top: 100px; height: calc(100% - 100px); width: 80%;" />
@@ -47,7 +51,8 @@
 </template>
 <script>
 // import { defineComponent } from 'vue'
-import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
+import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
+// import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
 import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
 // import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
@@ -710,7 +715,8 @@ export default {
       mMainChanList: [],
       mMainMChanList: [],
       mMainAlimList: [],
-      mAxiosQueue: []
+      mAxiosQueue: [],
+      mSelectedAreaInfo: {}
     }
   },
   created () {
@@ -748,6 +754,12 @@ export default {
     this.innerHeight = window.innerHeight
   },
   methods: {
+    closePop () {
+      this.mInfoBoxShowYn = false
+    },
+    openInfoPop (value) {
+      this.mSelectedAreaInfo = value
+    },
     goUserProfile () {
       alert(true)
       this.$router.push('/myPage')
@@ -836,6 +848,7 @@ export default {
       } else if (this.clickedBd && this.clickedBd.clickedYn) {
         this.clickedBd.clickedYn = false
       }
+      this.mInfoBoxShowYn = false
       return false
     },
     moveToChan (clickedInfo) {
@@ -1086,6 +1099,8 @@ export default {
               this.clickedBd = bd
               bd.clickedYn = true
               bd.maskedImageStyle = { filter: 'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)' }
+              this.mSelectedAreaInfo = area
+              this.mInfoBoxShowYn = true
               console.log('yayay!')
               return
             }
@@ -1120,6 +1135,8 @@ export default {
           this.clickedArea = area
           this.clickedRank = area.buildingList.length + 1
           area.clickedYn = true
+          this.mSelectedAreaInfo = area
+          this.mInfoBoxShowYn = true
           area.maskedImageStyle = { filter: 'drop-shadow(0 0 5px yellow) drop-shadow(0 0 40px white)' }
           break
         }
@@ -1147,14 +1164,10 @@ export default {
   watch: {
     locale (val) {
       this.$i18n.locale = val
-    },
-    clickedBd () {
-      if (this.clickedBd.clickedYn) {
-        this.mInfoBoxShowYn = true
-      } else {
-        this.mInfoBoxShowYn = false
-      }
     }
+    // clickedBd () {
+    //   this.mInfoBoxShowYn = true
+    // }
   },
   mounted () {
     this.setWindowSize()
@@ -1181,8 +1194,9 @@ export default {
     }
   },
   components: {
-    UBInfoBox,
-    UBAreaBdList
+    // UBInfoBox,
+    UBAreaBdList,
+    areaInfoPop
     // UBBgEffect
   }
 }

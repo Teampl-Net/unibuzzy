@@ -14,11 +14,11 @@
         카카오 로그인
       </div> -->
       <div class="w100P" style="display: flex; flex-direction: column; height: 500px;">
-        <naver :callbackFunction='naverCallbackFunction' v-if="!mobileYn" buttonColor="#3E3F6A" :isPopup='false' />
+        <!-- <naver :callbackFunction='naverCallbackFunction' v-if="!mobileYn" buttonColor="#3E3F6A" :isPopup='false' />
         <div v-else class="loginBtn font20" v-on:click="NaverLoginBtn">
           <img src="../../assets/images/intro/login/login_naver.png">
           네이버 로그인
-        </div>
+        </div> -->
         <div class="loginBtn font20" @click="GoogleLoginBtn">
           <img src="../../assets/images/intro/login/login_google.png">
           Google 로그인
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import naver from '../Tal_naverCompo.vue'
+// import naver from '../Tal_naverCompo.vue'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import AuthService from '../../assets/js/login/Tal.authService'
 import { firebaseInitialize } from '../../assets/js/login/Tal.firebase'
@@ -80,8 +80,8 @@ export default {
     pSetUserItem: Function
   },
   components: {
-    commonConfirmPop,
-    naver
+    commonConfirmPop
+    // naver
   },
   created () {
     localStorage.setItem('sessionUser', '')

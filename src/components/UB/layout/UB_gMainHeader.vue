@@ -4,7 +4,7 @@
     <img class="mainMenuIcon" height="20" style="position: absolute; left: 20px;" @click="showMenu()" src="../../../assets/images/common/icon_menu.png"/>
     <!-- <img v-if="pRouterHeaderInfo.logoImg" :src="pRouterHeaderInfo.logoImg" height="30" style="margin-right: 5px; border: 2px solid white; background: white; border-radius: 100%; -webkit-user-drag: none;" /> -->
     <p v-if="pRouterHeaderInfo" class="headerFont fontBold fl" style="color: #062bb5;" v-html="pRouterHeaderInfo"></p>
-    <img @click="goLogList" height=20 style="right: 55px; position: absolute;" src="../../../assets/images/common/icon_bell.svg"/>
+    <img height=20 style="right: 55px; position: absolute;" src="../../../assets/images/common/icon_bell.svg"/>
     <img height="20" style="position: absolute; right: 20px;" src="../../../assets/images/common/likeIcon.svg" />
   </div>
 </template>
@@ -13,14 +13,7 @@ export default {
   props: {
     pRouterHeaderInfo: String
   },
-  created () {
-    console.log(this.pRouterHeaderInfo, 'this.pRouterHeaderInfo')
-    if (this.pRouterHeaderInfo) console.log(this.pRouterHeaderInfo)
-  },
   methods: {
-    goLogList () {
-
-    },
     // goLogList () {
     //   const param = {}
     //   param.targetType = 'logList'

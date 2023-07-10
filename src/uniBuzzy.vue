@@ -142,7 +142,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  overflow-x: hidden;
+  overflow: hidden;
   box-sizing: border-box;
   height: 100%;
   width: 100%;
