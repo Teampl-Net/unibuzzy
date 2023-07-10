@@ -17,7 +17,7 @@
       <p class="textLeft font20" style="margin-left: 30px; width: calc(100% - 30px);">{{ pAreaInfo.description }}</p>
       <div class="w100P" style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; display: flex; margin-top: 10px;">
         <p style="width: 50%; border-right: 2px solid #000;">
-          <span class="fontBold">{{ pAreaInfo.buildingList.length }}</span> channels
+          <span class="fontBold">{{ pAreaInfo.buildingList&& pAreaInfo.buildingList.length? pAreaInfo.buildingList.length:'0' }}</span> channels
         </p>
         <p style="width: 50%;">
           <span class="fontBold">0</span> followers
@@ -28,23 +28,21 @@
           <img style="width: 25px; margin-right: 5px;" src="@/assets/images/contents/icon_heart_on.png" alt="">
           <p class="fontBold font20">Favorites</p>
         </div>
-        <div style=" margin-left: 30px; margin-top: 10px; width: calc(100% - 30px);">
-          <div class="w100P" v-if="pAreaInfo.buildingList.length > 0" id="fileChannelWrap" style="height: 85px; overflow: auto;" @wheel="horizontalScroll">
+        <div v-if="pAreaInfo.buildingList.length > 0" style=" margin-left: 30px; margin-top: 10px; width: calc(100% - 30px);">
+          <div class="w100P" id="fileChannelWrap" style="height: 85px; overflow: auto;" @wheel="horizontalScroll">
             <div class="w100P" style="height: 100%; min-width: 100%; display:flex;">
               <chanRoundIcon :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="chan" v-for="chan in pAreaInfo.buildingList" :key="chan.teamKey" />
-              <template v-if="pAreaInfo.buildingList.length === 0">
-                  <circleSkeleton v-for="(value) in 10" :key="value"/>
-              </template>
             </div>
           </div>
         </div>
+        <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" />
       </div>
       <div class="w100P" style="margin-top: 35px;">
         <div class="w100P" style="display: flex; align-items: center;">
           <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_popular.svg" alt="">
           <p class="fontBold font20">Popular</p>
         </div>
-        <div class="w100P" style="height: 200px; display: flex;">
+        <div v-if="pAreaInfo.buildingList.length > 0" class="w100P" style="height: 200px; display: flex;">
           <div class="h100P" style="width: 33%;">
             <div style="height: 70%; display: flex; justify-content: center; align-items: flex-end;">
               <chanRoundIcon :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaInfo.buildingList[0]" />
@@ -64,15 +62,16 @@
             <div class="fontBold font20" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-right-radius: 10px;">3</div>
           </div>
         </div>
+        <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" />
         <div class="w100P" style="margin-top: 35px;">
           <div class="w100P" style="display: flex; align-items: center;">
             <img style="width: 25px; margin-right: 5px;" src="@/assets/images/bottom/icon_search.svg" alt="">
             <p class="fontBold font20">All List</p>
           </div>
           <div class="w100P" style="padding-bottom: 30px;">
-            <gEmpty :tabName="mCurrentTabName" contentName="채널" v-if="pAreaInfo.buildingList.length === 0" style="margin-top:50px;" />
+            <gEmpty tabName="전체" contentName="채널" v-if="pAreaInfo.buildingList.length === 0" style="margin-top:50px;" />
             <template v-for="(chanEle, index) in pAreaInfo.buildingList" :key="index">
-              <channelCard class="moveBox chanRow" :chanElement="chanEle" @openPop="openPop" @scrollMove="scrollMove" />
+              <channelCard class="moveBox chanRow" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             </template>
           </div>
         </div>
