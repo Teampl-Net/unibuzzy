@@ -24,33 +24,22 @@
         <UBAreaBdList v-if="mShowAreaBdList" style="top: 100px; height: calc(100% - 100px); width: 80%;" />
       </transition>
       <!-- area -->
-      <!-- <img src="../../../assets/images/main/banner2.png" style="position: absolute; top: -30px;" width="180"  /> -->
       <template v-for="(area) in village.areaList" :key="area.key">
-        <!-- <div v-if="area.type === 'CO'" style="position: absolute;" class="flexCenter areaDiv" :style="[{ width: area.w + 'px', height: area.h + 'px', top: area.top + 'px', left: area.left + 'px' }]">
-          <p style="position: absolute; top: -20px; padding-top: 0px;" class="fontBold textCenter w100P ">{{ area.name }}</p>
-          <img :ref="area.name + area.key" style="position: absolute; z-index: 99;" :src="area.maskedImageUrl" :style="area.maskedImageStyle" />
-        </div> -->
         <div style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: area.clickedYn}" :style="{ width: area.w + 'px', height: area.h + 'px', top: area.top + 'px', left: area.left + 'px' }">
           <img :ref="area.name + area.key" style="position: absolute;" :src="area.maskedImageUrl" :style="area.maskedImageStyle" />
-          <!-- <video autoplay loop muted v-if="area.type === 'PL'" style="z-index: 9; width: 60px; position: absolute;" :style="{top: area.h/2 - 15+ 'px', left: area.w/2 - 20 + 'px'}">
-            <source src="../../../assets/images/main/fountain.mp4" type="video/mp4" />
-          </video> -->
-          <div v-if="area.name" class="fontBold" style="background: rgba(256, 256, 256, 0.5); padding: 0 2px; height: 20px; line-height: 20px; border-radius: 5px; z-index: 99;">
+          <div v-if="area.name" class="fontBold" style="background-color: rgba(245, 245, 220, 0.5) !important; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
             <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.name }}</p>
           </div>
         </div>
-        <!-- :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" -->
         <div v-for="(bd) in area.buildingList" :key="bd.key" class="bdDiv" :class="{clicked: bd.clickedYn}" style="position: absolute; z-index: 9;" :style="[bd.maskedImageStyle, { top: bd.top+ 'px', left: bd.left + 'px' }]">
-        <!-- <div @click="openPage" :chanElement="chan" v-for="(chan, index) in mMainChanList" :key="index" class="bdDiv" :class="{clicked: bd.clickedYn}" style="position: absolute; z-index: 9;" :style="[bd.maskedImageStyle, { top: bd.top+ 'px', left: bd.left + 'px' }]"> -->
           <img :src="bd.maskedImageUrl" />
-          <span style="position: absolute;font-weight: bold; background: rgba(256,256,256,0.7); border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.rank }}</span>
+          <span class="fontBold" style="position: absolute; background: rgba(256,256,256,0.7); border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.nameMtext }}</span>
         </div>
       </template>
     </div>
   </div>
 </template>
 <script>
-// import { defineComponent } from 'vue'
 import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
 // import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
 import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
@@ -91,7 +80,7 @@ export default {
             areaYn: true,
             // parentKey: null,
             // description: 'This is Georgia Tech Village!',
-            // type: 'CO', // CA: Campus, CL: club, PL: plaza, ST: startup, AC: academic ,CO: college,  FA: Facilities, MA: Nearby
+            type: 'CO', // CA: Campus, CL: club, PL: plaza, ST: startup, AC: academic ,CO: college,  FA: Facilities, MA: Nearby
             status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
             rank: null,
             imgLink: '/resource/main/UB_collegeArea.png',
@@ -191,7 +180,7 @@ export default {
                 top: 0,
                 w: 0,
                 h: 0
-              }
+              },
               // {
               //   nameMtext: 'B&N',
               //   ctx: {},
@@ -234,27 +223,27 @@ export default {
               //   w: 0,
               //   h: 0
               // },
-              // {
-              //   nameMtext: 'B&N',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 4,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
+              {
+                nameMtext: 'B&N',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                description: "GT's B&N",
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                status: 1,
+                rank: 4,
+                linkUrl: 'https://gatech.bncollege.com/',
+                imgLink: '/resource/bd/new_house1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
               // {
               //   nameMtext: 'B&N',
               //   ctx: {},
@@ -298,27 +287,27 @@ export default {
             w: 0,
             h: 0,
             buildingList: [
-              // {
-              //   teamKey: 821,
-              //   nameMtext: 'CS',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: 'This is for GT CS Students',
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 1,
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
+              {
+                teamKey: 821,
+                nameMtext: 'CS',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                description: 'This is for GT CS Students',
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                status: 1,
+                rank: 1,
+                imgLink: '/resource/bd/new_house1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
               // {
               //   key: 2.2,
               //   teamKey: 825,
@@ -363,28 +352,28 @@ export default {
               //   w: 0,
               //   h: 0
               // },
-              // {
-              //   key: 2.2,
-              //   teamKey: 825,
-              //   nameMtext: 'IE',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is IE channel!',
-              //   status: 1,
-              //   rank: 4,
-              //   imgLink: '/resource/bd/new_mall1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
+              {
+                key: 2.2,
+                teamKey: 825,
+                nameMtext: 'IE',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is IE channel!',
+                status: 1,
+                rank: 4,
+                imgLink: '/resource/bd/new_mall1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
               // {
               //   key: 2.2,
               //   teamKey: 825,
@@ -428,111 +417,111 @@ export default {
             w: 0,
             h: 0,
             buildingList: [
-              // {
-              //   teamKey: 823,
-              //   nameMtext: 'uniBuzzy',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is uniBuzzy.',
-              //   status: 1,
-              //   rank: 1,
-              //   imgLink: '/resource/bd/new_bd6.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   teamKey: 826,
-              //   nameMtext: 'interOcci',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is interOcci.',
-              //   status: 1,
-              //   rank: 2,
-              //   imgLink: '/resource/bd/new_bd4.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   teamKey: 823,
-              //   nameMtext: 'uniBuzzy',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is uniBuzzy.',
-              //   status: 1,
-              //   rank: 3,
-              //   imgLink: '/resource/bd/new_bd6.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   teamKey: 823,
-              //   nameMtext: 'uniBuzzy',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is uniBuzzy.',
-              //   status: 1,
-              //   rank: 4,
-              //   imgLink: '/resource/bd/new_bd6.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   teamKey: 823,
-              //   nameMtext: 'uniBuzzy',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is uniBuzzy.',
-              //   status: 1,
-              //   rank: 5,
-              //   imgLink: '/resource/bd/new_bd6.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // }
+              {
+                teamKey: 823,
+                nameMtext: 'uniBuzzy',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is uniBuzzy.',
+                status: 1,
+                rank: 1,
+                imgLink: '/resource/bd/new_bd6.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                teamKey: 826,
+                nameMtext: 'interOcci',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is interOcci.',
+                status: 1,
+                rank: 2,
+                imgLink: '/resource/bd/new_bd3.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                teamKey: 823,
+                nameMtext: 'uniBuzzy',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is uniBuzzy.',
+                status: 1,
+                rank: 3,
+                imgLink: '/resource/bd/new_bd2.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                teamKey: 823,
+                nameMtext: 'uniBuzzy',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is uniBuzzy.',
+                status: 1,
+                rank: 4,
+                imgLink: '/resource/bd/new_bd5.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                teamKey: 823,
+                nameMtext: 'uniBuzzy',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is uniBuzzy.',
+                status: 1,
+                rank: 5,
+                imgLink: '/resource/bd/new_bd1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
             ]
           },
           {
@@ -617,48 +606,48 @@ export default {
                 w: 0,
                 h: 0
               },
-              // {
-              //   nameMtext: 'Panda Express',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: 'Panda Express!',
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 2,
-              //   linkUrl: 'https://dining.gatech.edu/node/137',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   nameMtext: '3',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 3,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
+              {
+                nameMtext: 'Panda Express',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                description: 'Panda Express!',
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                status: 1,
+                rank: 2,
+                linkUrl: 'https://dining.gatech.edu/node/137',
+                imgLink: '/resource/bd/new_house1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                nameMtext: '3',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                description: "GT's B&N",
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                status: 1,
+                rank: 3,
+                linkUrl: 'https://gatech.bncollege.com/',
+                imgLink: '/resource/bd/new_house1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
               {
                 nameMtext: '4',
                 ctx: {},
@@ -671,7 +660,7 @@ export default {
                 status: 1,
                 rank: 4,
                 linkUrl: 'https://gatech.bncollege.com/',
-                imgLink: '/resource/bd/new_house1.png',
+                imgLink: '/resource/bd/new_mall1.png',
                 maskedImageUrl: '',
                 maskedImageStyle: {},
                 clickedYn: false,
@@ -943,66 +932,74 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       const bdList = area.buildingList
-      if (bdList && bdList.length !== 0) {
-        for (let j = 0; j < bdList.length; j++) {
-          const bd = bdList[j]
-          bd.w = 1 / 5 * area.w
-          bd.h = 1 / 4 * area.h
-          if (bd.rank === 1) {
-            if (bd.type === 'CB') {
-              bd.w = 1 / 2 * area.w
-              bd.h = 1 / 2 * area.h
-              bd.left = area.left + bd.w / 2
-              bd.top = area.top - bd.h * 2 / 3
-            } else {
-              bd.left = area.left + area.w * (2 / 5)
-              bd.top = area.top - bd.h / 8
-            }
-          } else if (bd.rank === 2) {
-            bd.left = 1 / 5 * area.w + area.left
-            bd.top = 1 / 32 * area.h + area.top
-          } else if (bd.rank === 3) {
-            bd.left = 3 / 5 * area.w + area.left
-            bd.top = 1 / 32 * area.h + area.top
-          } else if (bd.rank === 4) {
-            bd.left = area.left + 10
-            bd.top = 1 / 6 * area.h + area.top
-          } else if (bd.rank === 5) {
-            bd.left = 4 / 5 * area.w + area.left - 10
-            bd.top = 1 / 6 * area.h + area.top
-          }
-          const targetImage = new Image()
-          targetImage.src = bd.imgLink
-          targetImage.onload = function () {
-            const scaleFactor = bd.w / this.width
-            const canvas = document.createElement('canvas')
-            const newWidth = Math.floor(this.width * scaleFactor)
-            const newHeight = Math.floor(this.height * scaleFactor)
-            canvas.width = newWidth
-            canvas.height = newHeight
-            bd.w = newWidth
-            bd.h = newHeight
-            const context = canvas.getContext('2d', { willReadFrequently: true })
-            bd.ctx = context
-            for (let i = area.top; i < area.top + area.h; i++) {
-              const pixelData = bd.ctx.getImageData(0, i, 1, 1).data
-              if (pixelData[3] !== 0) {
-                bd.top = (i + 20) - bd.h
-                console.log('foundfoundfound', bd.top)
-                alert(bd.top)
-                break
-              }
-              // eslint-disable-next-line no-debugger
-              debugger
-            }
-            // 마스킹 이미지 그리기
-            context.drawImage(this, 0, 0, newWidth, newHeight)
+      if (bdList === null || bdList.length === 0) return
 
-            // 마스킹 이미지를 base64로 변환하여 출력
-            bd.maskedImageUrl = canvas.toDataURL()
+      for (let j = 0; j < bdList.length; j++) {
+        const bd = bdList[j]
+        bd.w = 1 / 5 * area.w
+        if (bd.rank === 1) {
+          if (bd.type === 'CB') {
+            bd.w = 1 / 2 * area.w
+            bd.h = 1 / 2 * area.h
+            bd.left = area.left + bd.w / 2
+            bd.top = area.top - bd.h * 2 / 3
+          } else {
+            bd.left = area.left + area.w * (2 / 5)
           }
-          targetImage.src = bd.imgLink
+        } else if (bd.rank === 2) {
+          bd.left = 1 / 5 * area.w + area.left
+        } else if (bd.rank === 3) {
+          bd.left = 3 / 5 * area.w + area.left
+        } else if (bd.rank === 4) {
+          bd.left = area.left + 10
+        } else if (bd.rank === 5) {
+          bd.left = 4 / 5 * area.w + area.left - 10
         }
+        const targetImage = new Image()
+        targetImage.src = bd.imgLink
+        targetImage.onload = function () {
+          const scaleFactor = bd.w / this.width
+          const canvas = document.createElement('canvas')
+          const newWidth = Math.floor(this.width * scaleFactor)
+          const newHeight = Math.floor(this.height * scaleFactor)
+          canvas.width = newWidth
+          canvas.height = newHeight
+          bd.w = newWidth
+          bd.h = newHeight
+          const context = canvas.getContext('2d', { willReadFrequently: true })
+          bd.ctx = context
+
+          if (bd.type !== 'CB') {
+            for (let i = 0; i < area.h; i++) {
+              let pixelData = {}
+              if (bd.rank === 1) {
+                pixelData = area.ctx.getImageData(2 / 5 * area.w, i, 1, 1).data
+              } else if (bd.rank === 2) {
+                pixelData = area.ctx.getImageData(1 / 5 * area.w, i, 1, 1).data
+              } else if (bd.rank === 3) {
+                pixelData = area.ctx.getImageData(3 / 5 * area.w, i, 1, 1).data
+              } else if (bd.rank === 4) {
+                pixelData = area.ctx.getImageData(10, i, 1, 1).data
+              } else if (bd.rank === 5) {
+                pixelData = area.ctx.getImageData(4 / 5 * area.w - 10, i, 1, 1).data
+              }
+              if (pixelData[3] !== 0) {
+                console.log(area.name, i)
+                bd.top = i - 10 + area.top
+                break
+                // console.log('foundfoundfound', bd.top)
+                // break
+              }
+            }
+          }
+          // 마스킹 이미지 그리기
+          // if (bd.type !== 'CB') bd.top = 200
+          // context.drawImage(this, newWidth + bd.left, newHeight + bd.top, bd.w, bd.h)
+          context.drawImage(this, 0, 0, bd.w, bd.h)
+          // 마스킹 이미지를 base64로 변환하여 출력
+          bd.maskedImageUrl = canvas.toDataURL()
+        }
+        targetImage.src = bd.imgLink
       }
     },
     createMaskingBuildingImg1 (area) {
