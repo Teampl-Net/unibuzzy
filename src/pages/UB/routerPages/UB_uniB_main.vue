@@ -1,60 +1,43 @@
 <template>
   <div class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
-    <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
-      <transition name="showUp">
-        <areaInfoPop @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaInfo="mSelectedAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
-      </transition>
     <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: cover; overflow: hidden;">
       <!-- <UBBgEffect /> -->
-      <!-- my profile -->
       <div v-if="!GE_USER.unknownYn" class="w100P " style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
-        <gProfileImg @click="goUserProfile" style="width: 40px; height: 40px; margin-right: 10px; " :selfYn="true" class="fl" />
+        <gProfileImg style="width: 40px; height: 40px; margin-right: 10px; " :selfYn="true" class="fl" />
         <div class="fl font20 fontBold" style="color: white; text-shadow: 1px 2px 2px black;">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
       </div>
       <div v-else class="w100P" style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
         <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr" />
       </div>
-    <!-- <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+    <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
       <transition name="showUp">
         <UBInfoBox v-if="mInfoBoxShowYn" :pType="'BD'" @openPage="openPage" :pChan="clickedBd" />
-        <UBInfoBox v-else-if="clickedArea.clickedYn" :pType="'AR'" :pMoveToDetail="moveToChan" :pClickedInfo="clickedArea" :pVillageInfo="village.villageInfo" :innerHeight="innerHeight" :innerWidth="innerWidth" />
-      </transition> -->
+        <!-- <UBInfoBox v-else-if="clickedArea.clickedYn" :pType="'AR'" :pMoveToDetail="moveToChan" :pClickedInfo="clickedArea" :pVillageInfo="village.villageInfo" :innerHeight="innerHeight" :innerWidth="innerWidth" /> -->
+      </transition>
       <div v-if="mShowAreaBdList" @click="mShowAreaBdList = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
       <transition name="showUp">
         <UBAreaBdList v-if="mShowAreaBdList" style="top: 100px; height: calc(100% - 100px); width: 80%;" />
       </transition>
-      <!-- area -->
-      <!-- <img src="../../../assets/images/main/banner2.png" style="position: absolute; top: -30px;" width="180"  /> -->
       <template v-for="(area) in village.areaList" :key="area.key">
-        <!-- <div v-if="area.type === 'CO'" style="position: absolute;" class="flexCenter areaDiv" :style="[{ width: area.w + 'px', height: area.h + 'px', top: area.top + 'px', left: area.left + 'px' }]">
-          <p style="position: absolute; top: -20px; padding-top: 0px;" class="fontBold textCenter w100P ">{{ area.name }}</p>
-          <img :ref="area.name + area.key" style="position: absolute; z-index: 99;" :src="area.maskedImageUrl" :style="area.maskedImageStyle" />
-        </div> -->
         <div style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: area.clickedYn}" :style="{ width: area.w + 'px', height: area.h + 'px', top: area.top + 'px', left: area.left + 'px' }">
           <img :ref="area.name + area.key" style="position: absolute;" :src="area.maskedImageUrl" :style="area.maskedImageStyle" />
-          <!-- <video autoplay loop muted v-if="area.type === 'PL'" style="z-index: 9; width: 60px; position: absolute;" :style="{top: area.h/2 - 15+ 'px', left: area.w/2 - 20 + 'px'}">
-            <source src="../../../assets/images/main/fountain.mp4" type="video/mp4" />
-          </video> -->
           <div v-if="area.name" class="fontBold" style="background: rgba(256, 256, 256, 0.5); padding: 0 2px; height: 20px; line-height: 20px; border-radius: 5px; z-index: 99;">
             <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.name }}</p>
           </div>
         </div>
         <!-- :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" -->
         <div v-for="(bd) in area.buildingList" :key="bd.key" class="bdDiv" :class="{clicked: bd.clickedYn}" style="position: absolute; z-index: 9;" :style="[bd.maskedImageStyle, { top: bd.top+ 'px', left: bd.left + 'px' }]">
-        <!-- <div @click="openPage" :chanElement="chan" v-for="(chan, index) in mMainChanList" :key="index" class="bdDiv" :class="{clicked: bd.clickedYn}" style="position: absolute; z-index: 9;" :style="[bd.maskedImageStyle, { top: bd.top+ 'px', left: bd.left + 'px' }]"> -->
           <img :src="bd.maskedImageUrl" />
-          <span style="position: absolute;font-weight: bold; background: rgba(256,256,256,0.7); border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.rank }}</span>
+          <span style="position: absolute;font-weight: bold; background: rgba(256,256,256,0.7); border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.nameMtext }}</span>
         </div>
       </template>
     </div>
   </div>
 </template>
 <script>
-// import { defineComponent } from 'vue'
-import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
-// import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
+import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
 import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
-// import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
+// import UBBgEffect from '../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
   props: {
     pCampusTownInfo: {}
@@ -76,7 +59,7 @@ export default {
         // Nearby: 16
         villageInfo: {
           key: 1,
-          name: 'Georgia Tech',
+          name: 'uniBuzzy',
           followerList: [],
           level: 1,
           urlLink: 'https://www.gatech.edu/',
@@ -85,12 +68,12 @@ export default {
         areaList: [
           {
             key: 0,
-            name: 'Georgia Tech',
+            name: 'uniBuzzy',
             ctx: {},
             maskingRef: null,
             areaYn: true,
             // parentKey: null,
-            // description: 'This is Georgia Tech Village!',
+            // description: 'This is uniBuzzy Village!',
             // type: 'CO', // CA: Campus, CL: club, PL: plaza, ST: startup, AC: academic ,CO: college,  FA: Facilities, MA: Nearby
             status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
             rank: null,
@@ -114,7 +97,7 @@ export default {
                 rank: 1,
                 followerList: [],
                 managerList: [],
-                description: 'This is Georgia Tech Campus town!',
+                description: 'This is uniBuzzy Campus town!',
                 logoImg: '/resource/new/logo/GWCLogo.png',
                 imgLink: '/resource/bd/new_college.png',
                 maskedImageUrl: '',
@@ -152,7 +135,7 @@ export default {
           },
           {
             key: 2,
-            name: 'Club & Startup',
+            name: 'Academic',
             ctx: {},
             areaYn: true,
             parentKey: null,
@@ -166,6 +149,71 @@ export default {
             onImgYn: false,
             clickedYn: false,
             left: -18,
+            top: 370,
+            w: 0,
+            h: 0,
+            buildingList: [
+              {
+                teamKey: 821,
+                nameMtext: 'CS',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                description: 'This is for GT CS Students',
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                status: 1,
+                rank: 1,
+                imgLink: '/resource/bd/new_house2.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                key: 2.2,
+                teamKey: 825,
+                nameMtext: 'IE',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is IE channel!',
+                status: 1,
+                rank: 2,
+                imgLink: '/resource/bd/new_bd1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
+            ]
+            // points: '9,355,358,544'
+          },
+          {
+            key: 3,
+            name: 'Club',
+            ctx: {},
+            areaYn: true,
+            parentKey: null,
+            description: 'This area is for GT Clubs. Take a look around!',
+            type: 'CL', // CL: club, PL: plaza, ST: startup, AC: academic
+            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
+            rank: 1,
+            imgLink: '/resource/main/UB_area2.png',
+            maskedImageUrl: '',
+            maskedImageStyle: {},
+            clickedYn: false,
+            left: 235,
             top: 370,
             w: 0,
             h: 0,
@@ -192,226 +240,11 @@ export default {
                 w: 0,
                 h: 0
               }
-              // {
-              //   nameMtext: 'B&N',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 2,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   nameMtext: 'B&N',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 3,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   nameMtext: 'B&N',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 4,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   nameMtext: 'B&N',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 5,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // }
-            ]
-            // points: '9,355,358,544'
-          },
-          {
-            key: 3,
-            name: 'Major',
-            ctx: {},
-            areaYn: true,
-            parentKey: null,
-            description: 'This area is for GT Clubs. Take a look around!',
-            type: 'CL', // CL: club, PL: plaza, ST: startup, AC: academic
-            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
-            rank: 1,
-            imgLink: '/resource/main/UB_area2.png',
-            maskedImageUrl: '',
-            maskedImageStyle: {},
-            clickedYn: false,
-            left: 235,
-            top: 370,
-            w: 0,
-            h: 0,
-            buildingList: [
-              // {
-              //   teamKey: 821,
-              //   nameMtext: 'CS',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: 'This is for GT CS Students',
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 1,
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   key: 2.2,
-              //   teamKey: 825,
-              //   nameMtext: 'IE',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is IE channel!',
-              //   status: 1,
-              //   rank: 2,
-              //   imgLink: '/resource/bd/new_bd1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   key: 2.2,
-              //   teamKey: 825,
-              //   nameMtext: 'IE',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is IE channel!',
-              //   status: 1,
-              //   rank: 3,
-              //   imgLink: '/resource/bd/new_mall1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   key: 2.2,
-              //   teamKey: 825,
-              //   nameMtext: 'IE',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is IE channel!',
-              //   status: 1,
-              //   rank: 4,
-              //   imgLink: '/resource/bd/new_mall1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   key: 2.2,
-              //   teamKey: 825,
-              //   nameMtext: 'IE',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is IE channel!',
-              //   status: 1,
-              //   rank: 5,
-              //   imgLink: '/resource/bd/new_bd1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // }
             ]
           },
           {
             key: 4,
-            name: 'Class',
+            name: 'Startup',
             ctx: {},
             areaYn: true,
             parentKey: null,
@@ -428,111 +261,48 @@ export default {
             w: 0,
             h: 0,
             buildingList: [
-              // {
-              //   teamKey: 823,
-              //   nameMtext: 'uniBuzzy',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is uniBuzzy.',
-              //   status: 1,
-              //   rank: 1,
-              //   imgLink: '/resource/bd/new_bd6.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   teamKey: 826,
-              //   nameMtext: 'interOcci',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is interOcci.',
-              //   status: 1,
-              //   rank: 2,
-              //   imgLink: '/resource/bd/new_bd4.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   teamKey: 823,
-              //   nameMtext: 'uniBuzzy',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is uniBuzzy.',
-              //   status: 1,
-              //   rank: 3,
-              //   imgLink: '/resource/bd/new_bd6.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   teamKey: 823,
-              //   nameMtext: 'uniBuzzy',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is uniBuzzy.',
-              //   status: 1,
-              //   rank: 4,
-              //   imgLink: '/resource/bd/new_bd6.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   teamKey: 823,
-              //   nameMtext: 'uniBuzzy',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is uniBuzzy.',
-              //   status: 1,
-              //   rank: 5,
-              //   imgLink: '/resource/bd/new_bd6.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // }
+              {
+                teamKey: 823,
+                nameMtext: 'uniBuzzy',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is uniBuzzy.',
+                status: 1,
+                rank: 1,
+                imgLink: '/resource/bd/new_bd6.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                teamKey: 826,
+                nameMtext: 'interOcci',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is interOcci.',
+                status: 1,
+                rank: 2,
+                imgLink: '/resource/bd/new_bd4.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
             ]
           },
           {
@@ -608,7 +378,7 @@ export default {
                 status: 1,
                 rank: 1,
                 linkUrl: 'https://gatech.bncollege.com/',
-                imgLink: '/resource/bd/new_house1.png',
+                imgLink: '/resource/bd/new_house2.png',
                 maskedImageUrl: '',
                 maskedImageStyle: {},
                 clickedYn: false,
@@ -617,61 +387,19 @@ export default {
                 w: 0,
                 h: 0
               },
-              // {
-              //   nameMtext: 'Panda Express',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: 'Panda Express!',
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 2,
-              //   linkUrl: 'https://dining.gatech.edu/node/137',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   nameMtext: '3',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 3,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
               {
-                nameMtext: '4',
+                nameMtext: 'Panda Express',
                 ctx: {},
                 areaYn: false,
                 parentKey: 2,
-                description: "GT's B&N",
+                description: 'Panda Express!',
                 type: 'BU', // building
                 followerList: [],
                 managerList: [],
                 status: 1,
-                rank: 4,
-                linkUrl: 'https://gatech.bncollege.com/',
-                imgLink: '/resource/bd/new_house1.png',
+                rank: 2,
+                linkUrl: 'https://dining.gatech.edu/node/137',
+                imgLink: '/resource/bd/new_house2.png',
                 maskedImageUrl: '',
                 maskedImageStyle: {},
                 clickedYn: false,
@@ -680,27 +408,6 @@ export default {
                 w: 0,
                 h: 0
               }
-              // {
-              //   nameMtext: '5',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 5,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_mall1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // }
             ]
           }
         ]
@@ -715,8 +422,7 @@ export default {
       mMainChanList: [],
       mMainMChanList: [],
       mMainAlimList: [],
-      mAxiosQueue: [],
-      mSelectedAreaInfo: {}
+      mAxiosQueue: []
     }
   },
   created () {
@@ -746,29 +452,14 @@ export default {
       console.log('this.pCampusTownInfo')
       console.log(this.pCampusTownInfo)
     }
-    const vilInfo = this.village.villageInfo
+    // const vilInfo = this.village.villageInfo
     // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
-    this.$emit('changePageHeader', vilInfo.name)
+    this.$emit('changePageHeader', 'uniBuzzy')
     this.createMaskingAreaImg()
     this.innerWidth = window.innerWidth
     this.innerHeight = window.innerHeight
   },
   methods: {
-    closePop () {
-      this.mInfoBoxShowYn = false
-    },
-    openInfoPop (value) {
-      this.mSelectedAreaInfo = value
-    },
-    goUserProfile () {
-      this.$router.push('/myPage')
-      // const param = {}
-      // param.targetType = 'setMypage'
-      // param.popHeaderText = this.$t('PROF_NAME_SETTING')
-      // param.readOnlyYn = true
-      // param.selfYn = true
-      // this.$emit('openPop', param)
-    },
     openAreaBdList () {
       this.mShowAreaBdList = true
     },
@@ -847,7 +538,6 @@ export default {
       } else if (this.clickedBd && this.clickedBd.clickedYn) {
         this.clickedBd.clickedYn = false
       }
-      this.mInfoBoxShowYn = false
       return false
     },
     moveToChan (clickedInfo) {
@@ -940,101 +630,29 @@ export default {
       }
     },
     createMaskingBuildingImg (area) {
-      // eslint-disable-next-line no-debugger
-      debugger
       const bdList = area.buildingList
       if (bdList && bdList.length !== 0) {
         for (let j = 0; j < bdList.length; j++) {
           const bd = bdList[j]
-          bd.w = 1 / 5 * area.w
-          bd.h = 1 / 4 * area.h
+          bd.w = 1 / 3 * area.w
+          bd.h = 1 / 3 * area.h
           if (bd.rank === 1) {
-            if (bd.type === 'CB') {
-              bd.w = 1 / 2 * area.w
-              bd.h = 1 / 2 * area.h
-              bd.left = area.left + bd.w / 2
-              bd.top = area.top - bd.h * 2 / 3
-            } else {
-              bd.left = area.left + area.w * (2 / 5)
-              bd.top = area.top - bd.h / 8
-            }
+            bd.left = 1 / 3 * area.w + area.left
+            bd.top = area.top - bd.h / 2
           } else if (bd.rank === 2) {
-            bd.left = 1 / 5 * area.w + area.left
-            bd.top = 1 / 32 * area.h + area.top
+            bd.left = 1 / 6 * area.w + area.left
+            bd.top = 1 / 6 * area.h + area.top
           } else if (bd.rank === 3) {
-            bd.left = 3 / 5 * area.w + area.left
-            bd.top = 1 / 32 * area.h + area.top
+            bd.left = 1 / 2 * area.w + area.left + 5
+            bd.top = 1 / 6 * area.h + area.top
           } else if (bd.rank === 4) {
-            bd.left = area.left + 10
-            bd.top = 1 / 6 * area.h + area.top
-          } else if (bd.rank === 5) {
-            bd.left = 4 / 5 * area.w + area.left - 10
-            bd.top = 1 / 6 * area.h + area.top
+            bd.left = area.left
+            bd.top = 1 / 3 * area.h + area.top
           }
-          const targetImage = new Image()
-          targetImage.src = bd.imgLink
-          targetImage.onload = function () {
-            const scaleFactor = bd.w / this.width
-            const canvas = document.createElement('canvas')
-            const newWidth = Math.floor(this.width * scaleFactor)
-            const newHeight = Math.floor(this.height * scaleFactor)
-            canvas.width = newWidth
-            canvas.height = newHeight
-            bd.w = newWidth
-            bd.h = newHeight
-            const context = canvas.getContext('2d', { willReadFrequently: true })
-            bd.ctx = context
-            for (let i = area.top; i < area.top + area.h; i++) {
-              const pixelData = bd.ctx.getImageData(0, i, 1, 1).data
-              if (pixelData[3] !== 0) {
-                bd.top = (i + 20) - bd.h
-                console.log('foundfoundfound', bd.top)
-                alert(bd.top)
-                break
-              }
-              // eslint-disable-next-line no-debugger
-              debugger
-            }
-            // 마스킹 이미지 그리기
-            context.drawImage(this, 0, 0, newWidth, newHeight)
-
-            // 마스킹 이미지를 base64로 변환하여 출력
-            bd.maskedImageUrl = canvas.toDataURL()
-          }
-          targetImage.src = bd.imgLink
-        }
-      }
-    },
-    createMaskingBuildingImg1 (area) {
-      const bdList = area.buildingList
-      if (bdList && bdList.length !== 0) {
-        for (let j = 0; j < bdList.length; j++) {
-          const bd = bdList[j]
-          bd.w = 1 / 5 * area.w
-          bd.h = 1 / 4 * area.h
-          if (bd.rank === 1) {
-            if (bd.type === 'CB') {
-              bd.w = 1 / 2 * area.w
-              bd.h = 1 / 2 * area.h
-              bd.left = area.left + bd.w / 2
-              bd.top = area.top - bd.h * 2 / 3
-            } else {
-              bd.left = 1 / 2 * area.w + area.left - bd.w / 2
-              bd.top = area.top - bd.h / 8
-            }
-          } else if (bd.rank === 2) {
-            bd.left = 1 / 4 * area.w + area.left
-            bd.top = 1 / 32 * area.h + area.top
-          } else if (bd.rank === 3) {
-            bd.left = 9 / 16 * area.w + area.left
-            bd.top = 1 / 32 * area.h + area.top
-          } else if (bd.rank === 4) {
-            bd.left = 1 / 16 * area.w + area.left
-            bd.top = 1 / 6 * area.h + area.top
-          } else if (bd.rank === 5) {
-            bd.left = 12 / 16 * area.w + area.left
-            bd.top = 1 / 6 * area.h + area.top
-          }
+          // else if (bd.rank === 5) {
+          //   bd.left = 2 / 3 * area.w + area.left
+          //   bd.top = 1 / 3 * area.h + area.top - bd.h / 2
+          // }
           const targetImage = new Image()
           targetImage.src = bd.imgLink
           targetImage.onload = function () {
@@ -1081,7 +699,7 @@ export default {
       } else if (rank === 4) {
         bd.left = area.w / 2 - bd.w / 2 + area.left
         bd.top = 1 / 3 * area.h + area.top
-        bd.imgLink = '/resource/bd/new_house1.png'
+        bd.imgLink = '/resource/bd/new_house2.png'
       }
       // else if (rank === 4) {
       //   bd.left = area.left
@@ -1129,8 +747,6 @@ export default {
       // 빌딩부터 역순으로 뒤짐
       // 빌딩이 발견됨, 스타일클리어 시키고, 효과를 주고 return해버리기
       // 빌딩 클릭이 없음, areaclick을 찾음
-      // eslint-disable-next-line no-debugger
-      debugger
       if ((this.clickedBd && this.clickedBd.clickedYn)) return
       this.clickedArea = {}
       this.clickedBd = {}
@@ -1166,8 +782,6 @@ export default {
               this.clickedBd = bd
               bd.clickedYn = true
               bd.maskedImageStyle = { filter: 'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)' }
-              this.mSelectedAreaInfo = area
-              this.mInfoBoxShowYn = true
               console.log('yayay!')
               return
             }
@@ -1202,8 +816,6 @@ export default {
           this.clickedArea = area
           this.clickedRank = area.buildingList.length + 1
           area.clickedYn = true
-          this.mSelectedAreaInfo = area
-          this.mInfoBoxShowYn = true
           area.maskedImageStyle = { filter: 'drop-shadow(0 0 5px yellow) drop-shadow(0 0 40px white)' }
           break
         }
@@ -1229,12 +841,13 @@ export default {
     }
   },
   watch: {
-    locale (val) {
-      this.$i18n.locale = val
+    clickedBd () {
+      if (this.clickedBd.clickedYn) {
+        this.mInfoBoxShowYn = true
+      } else {
+        this.mInfoBoxShowYn = false
+      }
     }
-    // clickedBd () {
-    //   this.mInfoBoxShowYn = true
-    // }
   },
   mounted () {
     this.setWindowSize()
@@ -1261,9 +874,8 @@ export default {
     }
   },
   components: {
-    // UBInfoBox,
-    UBAreaBdList,
-    areaInfoPop
+    UBInfoBox,
+    UBAreaBdList
     // UBBgEffect
   }
 }

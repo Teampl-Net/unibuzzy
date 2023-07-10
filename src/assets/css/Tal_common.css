@@ -1081,6 +1081,17 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
 
 /* NEW uniBuzzy */
 .flexCenter {display: flex; justify-content: center; align-items: center;}
+.transWhite {
+  background: rgba(232, 240, 250, 0.65);
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 9px );
+  -webkit-backdrop-filter: blur( 9px );
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+
+
 
 /* animation */
 .show_left-enter {

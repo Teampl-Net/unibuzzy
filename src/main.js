@@ -110,7 +110,7 @@ if (type === 'D') {
     import('./components/UB/layout/UB_gPopHeader.vue'),
     import('./components/UB/popup/common/UB_gPopupWrap.vue'),
     import('./components/UB/unit/UB_commonSelectFilter.vue'),
-    import('./pages/routerPages/Tal_logList.vue')
+    import('./components/pageComponents/main/D_notiHistoryList.vue')
 
   ])
   app = createApp(uniBuzzy).use(router).use(router).use(store)
