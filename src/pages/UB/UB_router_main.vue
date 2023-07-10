@@ -6,7 +6,7 @@
     <gConfirmPop :confirmText="mErrorPopBodyStr" confirmType='one' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" style="z-index: 9999999999999999999999;"/>
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
     <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
-    <gUBHeader @goLogList="openPop" v-if="mTargetType !== 'chanDetail'" @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9" />
+    <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" @goLogList="openPop" v-if="mTargetType !== 'chanDetail'" @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9" />
     <chanHeader v-if="mTargetType === 'chanDetail'" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo.targetKey" @closeXPop="closeXPop" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" @openPop="openPop" class="chanDetailPopHeader" />
     <!-- <gPopupWrap v-if="mGPopShowYn" @openPop="openPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" parentPopN="0" :propParams="mChanInfo" @parentClose='parentClose' /> -->
     <!-- <popHeader v-if="mGPopShowYn" @closeXPop="closeXPop" /> -->
@@ -17,11 +17,12 @@
       <D_MENU transition="show_left" @hideMenu="hideMenu" @openPop="openPop" @goPage="changeRouterPath" class="D_menuStyle " v-if="mMenuShowYn" />
     </transition>
     <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPop' @openChanMsgPop="closeNopenChanMsg" />
-    <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }"  class="" :style="'height: calc(100%)'" style="overflow: hidden; height: 100%; width:100%;">
+    <div :class="{ myPageBgColor : mMyPageBgColorYn }"  class="" :style="'height: calc(100% - 60px);'" style="overflow: hidden; width:100%;">
       <!-- <gCloudLoading v-if="cloudTransShowYn" style="position: absolute; top: 0; left: 0" /> -->
       <router-view :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="openPage" @goDetail="goDetail" @openUserProfile="openPop" @chanInfo="showCloudLoading" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
-    <!-- <gFooter @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" /> -->
+    <gFooter @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
+    <!-- <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" /> -->
   </div>
 </template>
 <script>
@@ -36,6 +37,7 @@ export default {
   data () {
     return {
       // mUnknownLoginPopYn: false,
+      mMyPageBgColorYn: false,
       mGPopShowYn: false,
       mPopN: {},
       mPopId: null,
@@ -386,11 +388,18 @@ export default {
         return
       } else if (params.targetType === 'logList') {
         this.goLogList(params)
+      } else if (params.targetType === 'myPage') {
+        this.goMyPage(params)
       }
       this.hideMenu()
     },
     async changeRouterPath (page) {
       this.mMenuShowYn = false
+      if (page === 'myPage') {
+        this.mMyPageBgColorYn = true
+      } else {
+        this.mMyPageBgColorYn = false
+      }
       if (page !== 'chanList') {
         var pageData = await this.$getRouterViewData(page)
       }
@@ -562,4 +571,6 @@ export default {
   z-index: 1000;
   left: 0;
 }
+.myPageBgColor {background-color: #9FDDEE;}
+
 </style>

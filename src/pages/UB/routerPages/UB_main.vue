@@ -7,8 +7,8 @@
     <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: cover; overflow: hidden;">
       <!-- <UBBgEffect /> -->
       <!-- my profile -->
-      <div v-if="!GE_USER.unknownYn" class="w100P " style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
-        <gProfileImg @click="goUserProfile" style="width: 40px; height: 40px; margin-right: 10px; " :selfYn="true" class="fl" />
+      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" class="w100P " style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
+        <gProfileImg style="width: 40px; height: 40px; margin-right: 10px; " :selfYn="true" class="fl" />
         <div class="fl font20 fontBold" style="color: white; text-shadow: 1px 2px 2px black;">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
       </div>
       <div v-else class="w100P" style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
@@ -33,7 +33,7 @@
         </div>
         <div v-for="(bd) in area.buildingList" :key="bd.key" class="bdDiv" :class="{clicked: bd.clickedYn}" style="position: absolute; z-index: 9;" :style="[bd.maskedImageStyle, { top: bd.top+ 'px', left: bd.left + 'px' }]">
           <img :src="bd.maskedImageUrl" />
-          <span class="fontBold" style="position: absolute; background: rgba(256,256,256,0.7); border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.nameMtext }}</span>
+          <!-- <span class="fontBold" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.nameMtext }}</span> -->
         </div>
       </template>
     </div>
@@ -727,9 +727,9 @@ export default {
         localStorage.removeItem('deepLinkQueue')
       }
     }
-    // this.getMainBoard().then(res => {
-    //   this.mLoadingYn = false
-    // })
+    this.getMainBoard().then(res => {
+      this.mLoadingYn = false
+    })
     if (this.pCampusTownInfo) {
       // this.village = this.pCampusTownInfo
       console.log('this.pCampusTownInfo')
@@ -751,6 +751,7 @@ export default {
     },
     goUserProfile () {
       this.$router.push('/myPage')
+      this.$emit('changeRouterPath', 'myPage')
       // const param = {}
       // param.targetType = 'setMypage'
       // param.popHeaderText = this.$t('PROF_NAME_SETTING')
@@ -794,9 +795,10 @@ export default {
       if (this.GE_USER.fcmKey !== undefined && this.GE_USER.fcmKey !== null && this.GE_USER.fcmKey !== '') { paramMap.set('fcmKey', this.GE_USER.fcmKey) }
       paramMap.set('userEmail', this.GE_USER.userEmail)
       paramMap.set('soEmail', this.GE_USER.soEmail)
+      paramMap.set('myTeamKey', this.GE_USER.myTeamKey)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('/service/tp.firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('/service/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)

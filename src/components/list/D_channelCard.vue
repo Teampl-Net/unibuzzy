@@ -4,7 +4,7 @@
     "SEAR_TAB_ACT_CAHNNEL": "최근활동"
   },
   "en": {
-    "SEAR_TAB_ACT_CAHNNEL": "Recent Activity"
+    "SEAR_TAB_ACT_CAHNNEL": "Recent"
   }
 }
 </i18n>

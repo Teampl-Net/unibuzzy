@@ -287,7 +287,7 @@ export const commonMethods = {
   },
 
   // 방어루틴
-  makeMtextMap (str, leng) {
+  makeMtextMap (str, lang) {
     // string if
     var returnMap = new Map()
     if (str) {
@@ -300,10 +300,36 @@ export const commonMethods = {
       }
     } else {
     }
-    return returnMap.get(leng)
+    return returnMap.get(lang)
   },
-
   changeText (text) { // KO$^$'테스트$#$'EN$^$'
+    // 현재 상태가 ko en인지 확인하는 루트가 필요함
+    if (text) {
+      if (this.$i18n.locale === 'ko') {
+        var changeTxt = ''
+        var indexOf = text.indexOf('KO$^$')
+        if (indexOf === -1) {
+          return text
+        } else {
+          changeTxt = commonMethods.makeMtextMap(text, 'KO')
+          if (changeTxt) { return changeTxt }
+        }
+      } else if (this.$i18n.locale === 'en') {
+        var indexOfE = text.indexOf('EN$^$')
+        if (indexOfE !== -1) {
+          changeTxt = commonMethods.makeMtextMap(text, 'EN')
+          if (changeTxt) { return changeTxt }
+        } else {
+          changeTxt = commonMethods.makeMtextMap(text, 'KO')
+          if (changeTxt) return changeTxt
+          else return text
+        }
+      }
+    }
+    // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
+    // if (changeTxt !== undefined) { return changeTxt }
+  },
+  changeText1 (text) { // KO$^$'테스트$#$'EN$^$'
     if (text) {
       var changeTxt = ''
       var indexOf = text.indexOf('KO$^$')
@@ -314,7 +340,6 @@ export const commonMethods = {
         if (changeTxt) { return changeTxt }
       }
     }
-
     // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
     // if (changeTxt !== undefined) { return changeTxt }
   },
