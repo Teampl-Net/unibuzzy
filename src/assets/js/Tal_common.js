@@ -465,7 +465,7 @@ export const commonMethods = {
       data.followYn = true
     }
     if (data.followYn) {
-      followerText = '구독자'
+      followerText = this.$t('COMM_SUBMEM')
       // eslint-disable-next-line no-debugger
       debugger
       if (data.memberNameMtext) {
@@ -484,7 +484,7 @@ export const commonMethods = {
         followerText += ' )'
       }
       if (data.ownerYn) {
-        followerText = '소유자'
+        followerText = this.$t('COMM_CHANN_OWNER')
       } else {
         if (data.memberNameMtext || (data.managerKey && data.managerKey > 0)) {
           followerText = '관리자('
@@ -874,7 +874,7 @@ export const commonMethods = {
     var text = ''
     teamType = teamType + ''
     if (teamType === '1') {
-      text = '기업'
+      text = this.$t('COMM_CATE_BUSINESS')
     } else if (teamType === '2') {
       text = '정부'
     } else if (teamType === '3') {
@@ -1016,7 +1016,7 @@ export const commonMethods = {
       } else if (varUA === 'android' || varUA === '"android"') {
         return 'AOS'
       } else {
-        return '그외'
+        return '그 외'
       }
     }
   },
@@ -1103,7 +1103,7 @@ export const commonMethods = {
   },
   notPerText () {
     var html = '<div class="w100P fl textCenter commonColor font14">'
-    html += '열람 권한이 없습니다.'
+    html += this.$t('COMM_MSG_NOPERM')
     html += '</div>'
     return html
   },

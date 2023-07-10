@@ -18,7 +18,7 @@
                     <p v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl mtop-03 contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</p>
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
-                    {{(alim.jobkindId === 'BOAR' && (this.$checkUserAuth(alim.shareItem).V === false && alim.titleBlindYn) && alim.creUserKey !== this.GE_USER.userKey)? '열람 권한이 없습니다.' : resizeText(alim.title, alim.nameMtext)}}
+                    {{(alim.jobkindId === 'BOAR' && (this.$checkUserAuth(alim.shareItem).V === false && alim.titleBlindYn) && alim.creUserKey !== this.GE_USER.userKey)? this.$t('COMM_MSG_NOPERM') : resizeText(alim.title, alim.nameMtext)}}
                   </div>
                   <img class="fr mright-03" style="width:4.5px; margin-left: 8px;" @click="contentMenuClick({ type: alim.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: this.GE_USER.userKey === alim.creUserKey, tempData: alim })" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                   <!-- <img v-if="alim.readYn === 1" src="../../assets/images/push/readFalse.png" style="float: right; margin-left: 5px; width: 20px;" alt="">

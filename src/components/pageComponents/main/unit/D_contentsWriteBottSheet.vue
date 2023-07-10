@@ -2,17 +2,13 @@
 {
   "ko": {
     "BOTTOM_MSG_WHERE": "어디에 작성하실건가요?",
-    "BOTTOM_MSG_NOPERM": "권한이 없습니다.",
     "BOTTOM_MSG_CHAN": "채널을 선택해주세요",
-    "BOTTOM_BTN_WRITE": "작성하기",
     "BOTTOM_MSG_NOCHAN": "컨텐츠를 작성할 수 있는 채널이 없어요",
     "BOTTOM_MSG_CHECK": "채널을 다시 선택 후 확인 버튼을 눌러주세요!"
   },
   "en": {
     "BOTTOM_MSG_WHERE": "Where are you going to write contents?",
-    "BOTTOM_MSG_NOPERM": "You do not have permission.",
     "BOTTOM_MSG_CHAN": "Please select a channel",
-    "BOTTOM_BTN_WRITE": "Write",
     "BOTTOM_MSG_NOCHAN": "There's no channel to create content.",
     "BOTTOM_MSG_CHECK": "Please select the channel again and press the OK button!"
   }
@@ -30,7 +26,7 @@
             <div v-if="mAlimClickYn === false" class="noneClickCSS fl wh100P"></div>
               <img style="width: 36px;" src="../../../../assets/images/main/main_contentsBellIcon2.png" alt="">
               <img v-if="this.mSelectedWriteType === 'ALIM'" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
-              <p :class="{lightGray: this.mSelectedWriteType !== 'ALIM' }" class="font14 fontBold mtop-05 commonColor">{{mAlimClickYn === true ? $t('COMMON_TAB_NOTI') : $t('BOTTOM_MSG_NOPERM')}}</p>
+              <p :class="{lightGray: this.mSelectedWriteType !== 'ALIM' }" class="font14 fontBold mtop-05 commonColor">{{mAlimClickYn === true ? $t('COMMON_TAB_NOTI') : $t('COMM_MSG_NOPERM')}}</p>
           </div>
           <div @click="selectWriteType('BOAR')" class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'BOAR' ? 'border: 3px solid #7678E2!important; ' : ''">
               <img class="img-w30" src="../../../../assets/images/main/baordIcon.svg" alt="">
@@ -50,7 +46,7 @@
           </div>
       </div>
   </div>
-  <gBtnLarge v-if="mSelectChanList.length > 0" :style="this.mSelectedChan === 0? 'background: #F4F4F4!important; color: #AAAAAA!important;': ''" class="mtop-2 fontBold" @click="this.mSelectedChan === 0? '' : openWritePushPop()" btnTitle="작성하기" />
+  <gBtnLarge v-if="mSelectChanList.length > 0" :style="this.mSelectedChan === 0? 'background: #F4F4F4!important; color: #AAAAAA!important;': ''" class="mtop-2 fontBold" @click="this.mSelectedChan === 0? '' : openWritePushPop()" :btnTitle="$t('COMM_BTN_WRITE')" />
   <gBtnLarge  v-else style="background: #F4F4F4!important; color: #AAAAAA!important;" class="mtop-2 fontBold" :btnTitle="$t('BOTTOM_MSG_NOCHAN')" />
 </div>
 </template>

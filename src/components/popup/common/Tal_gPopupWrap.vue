@@ -7,9 +7,9 @@
     "MENU_BTN_REQ": "문의하기"
   },
   "en": {
-    "CRE_MSG_AFTER_DELETE": "Channel was deleted.",
-    "CRE_MSG_AFTER_CREATE": "Channel was created.",
-    "CRE_MSG_AFTER_EDIT": "Channel was Edited.",
+    "CRE_MSG_AFTER_DELETE": "Channel has been deleted.",
+    "CRE_MSG_AFTER_CREATE": "Channel created successfully!",
+    "CRE_MSG_AFTER_EDIT": "Channel has been updated.",
     "MENU_BTN_REQ": "Request"
   }
 }

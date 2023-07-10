@@ -8,7 +8,7 @@
         <div class="" style="height: 40%;" >
             <span v-if="this.uItem === '이메일'" class="fl">{{this.GE_USER.userEmail}}</span>
             <span v-else-if="this.uItem === '휴대폰 번호'" class="fl">{{this.$setPhone(this.GE_USER.phoneEnc)}}</span>
-            <gBtnSmall v-if="this.uItem === '이메일'" btnThema="light" style="float: right;" :btnTitle="$t('COMMON_BTN_EDIT')" v-on:click="openChangePop(uItem)" />
+            <gBtnSmall v-if="this.uItem === '이메일'" btnThema="light" style="float: right;" :btnTitle="$t('COMM_BTN_EDIT')" v-on:click="openChangePop(uItem)" />
             <gBtnSmall v-if="this.uItem === '휴대폰 번호'" btnThema="light" style="float: right;" btnTitle="실명인증" v-on:click="openChangePop(uItem)" />
         </div>
     </div>

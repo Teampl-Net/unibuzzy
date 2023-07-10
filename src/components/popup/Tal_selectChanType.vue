@@ -20,7 +20,7 @@ export default {
     return {
       selectedType: '',
       businessTypeList: [
-        { teamNameMtext: '기업', teamType: 'C' },
+        { teamNameMtext: this.$t('COMM_CATE_BUSINESS'), teamType: 'C' },
         { teamNameMtext: '정부', teamType: 'G' },
         { teamNameMtext: '학교', teamType: 'S' },
         { teamNameMtext: '종교 단체', teamType: 'H' },

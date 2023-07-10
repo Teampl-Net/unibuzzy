@@ -169,7 +169,7 @@ export default {
       mErrorPopMsg: '',
       mErrorPopYn: false,
       mBusinessTypeList: [
-        { teamNameMtext: '기업', teamType: 'C' },
+        { teamNameMtext: this.$t('COMM_CATE_BUSINESS'), teamType: 'C' },
         { teamNameMtext: '정부', teamType: 'G' },
         { teamNameMtext: '학교', teamType: 'S' },
         { teamNameMtext: '종교', teamType: 'H' },
@@ -222,11 +222,11 @@ export default {
           }
         } else {
           if (this.mPageType === '생성') {
-            return `[${this.mInputChannelName}] channel was created.`
+            return `[${this.mInputChannelName}] channel created successfully!`
           } else if (this.mPageType === '삭제') {
-            return `Delete [${this.mInputChannelName}] channel was Deleted`
+            return `Delete [${this.mInputChannelName}] channel has been deleted.`
           } else if (this.mPageType === '수정') {
-            return `Edit [${this.mInputChannelName}] channel was edited`
+            return `Edit [${this.mInputChannelName}] channel has been updated`
           }
         }
       }

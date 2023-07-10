@@ -73,7 +73,7 @@
                 </div>
                 <div style="width: 100%; height: 40px; float: left; padding: 0 20px;">
                     <gBtnSmall @click="closeXPop" btnTitle="취소" btnThema="light"/>
-                    <gBtnSmall @click="createSample" :btnTitle="makeType === 'modi' ? $t('COMMON_BTN_EDIT2') : $t('COMMON_BTN_ADD')" class="mright-05"/>
+                    <gBtnSmall @click="createSample" :btnTitle="makeType === 'modi' ? $t('COMM_BTN_EDIT2') : $t('COMMON_BTN_ADD')" class="mright-05"/>
                 </div>
                 <!-- <div v-if="titleMtextShowYn" style="height: 100%; width: 100%; background: #00000026; position: fixed;left: 0%; top: 0%;z-index: 999999;">
                 </div>

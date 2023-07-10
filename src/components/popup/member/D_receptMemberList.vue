@@ -1,24 +1,17 @@
 <i18n>
 {
   "ko": {
-    "RECEPT_BTN_REJECT": "거절",
-    "RECEPT_BTN_ACCEPT": "승인",
     "RECEPT_BTN_ALL": "전체선택",
     "RECEPT_MSG_NOAPPLI": "신청 가능한 요청 목록이 없습니다.",
     "RECEPT_MSG_NOSELECT": "선택한 목록이 없습니다.",
     "RECEPT_MSG_ACCEPT": "멤버신청을 승인하시겠습니까?",
     "RECEPT_MSG_REJECT": "멤버신청을 거절하시겠습니까?",
-    "RECEPT_BTN_SEND": "알림 보내기"
   },
   "en": {
-    "RECEPT_BTN_REJECT": "Reject",
-    "RECEPT_BTN_ACCEPT": "Accept",
     "RECEPT_BTN_ALL": "Select All",
     "RECEPT_MSG_NOAPPLI": "There is no list of applicable requests.",
     "RECEPT_MSG_NOSELECT": "No list selected.",
     "RECEPT_MSG_ACCEPT": "Do you want to accept the membership application?",
-    "RECEPT_MSG_REJECT": "Do you want to reject the membership application?",
-    "RECEPT_BTN_SEND": "Send Noti"
   }
 }
 </i18n>
@@ -28,8 +21,8 @@
     <gConfirmPop @no="rejectPopShowYn = false" :confirmText="$t('RECEPT_MSG_REJECT')" confirmType='two' @ok="rejectMember" v-if="rejectPopShowYn" />
     <!-- <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" /> -->
     <p class="textLeft fl font16 fontBold" style="line-height: 30px;">{{ $t('COMMON_BTN_REQLIST') + '(' + this.managingList.length + ')'}}</p>
-    <gBtnSmall @click="rejectClick" :btnTitle="$t('RECEPT_BTN_REJECT')" :class="{'CWDeepGrayBgColor' : managingList.length === 0}" style="margin-left: 5px;"/>
-    <gBtnSmall @click="accessClick" :btnTitle="$t('RECEPT_BTN_ACCEPT')" :class="{'CWDeepGrayBgColor' : managingList.length === 0}" />
+    <gBtnSmall @click="rejectClick" :btnTitle="$t('COMM_BTN_REJECT')" :class="{'CWDeepGrayBgColor' : managingList.length === 0}" style="margin-left: 5px;"/>
+    <gBtnSmall @click="accessClick" :btnTitle="$t('COMM_BTN_APPROVE')" :class="{'CWDeepGrayBgColor' : managingList.length === 0}" />
     <!-- <gBtnSmall @click="okPopShowYn = true" btnTitle="삭제" /> -->
     <div style="float: right; margin-top: 2px;margin-right: 5px; padding: 2px">
         <input v-model="allClickYn" @click="checkBoxValue(true)" type="checkbox" name="" id="allCheck" style="width: 15px; margin: 3px 0px;margin-top: 2px; margin-right: 5px; float: left; height:18px;">
@@ -76,7 +69,7 @@ export default {
   data () {
     return {
       systemName: localStorage.getItem('systemName'),
-      interfaceBtnList: [{ text: this.$t('RECEPT_BTN_SEND'), event: 'sendPush' }],
+      interfaceBtnList: [{ text: this.$t('COMM_BTN_SEND_NOTI'), event: 'sendPush' }],
       openCommonAlertPopShowYn: false,
       selectedMember: null,
       allClickYn: false,

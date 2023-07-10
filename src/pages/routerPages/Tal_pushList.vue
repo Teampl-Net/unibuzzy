@@ -180,7 +180,7 @@ export default {
         if (value === true) {
           this.activeTabList = [{ display: this.$t('COMMON_TAB_RECENT'), name: 'N' }]
         } else {
-          this.activeTabList = [{ display: this.$t('COMMON_TAB_RECENT'), name: 'N' }, { display: this.$t('COMMON_TAB_LIKED'), name: 'L' }, { display: this.$t('COMMON_TAB_SAVED'), name: 'S' }, { display: this.$t('COMMON_TAB_MY'), name: 'M' }]
+          this.activeTabList = [{ display: this.$t('COMMON_TAB_RECENT'), name: 'N' }, { display: this.$t('COMMON_TAB_LIKED'), name: 'L' }, { display: this.$t('COMMON_TAB_SAVED'), name: 'S' }, { display: this.$t('COMM_TAB_MY_MADE'), name: 'M' }]
         }
       }
     },

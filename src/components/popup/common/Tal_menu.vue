@@ -35,7 +35,7 @@
           <div class="fl">{{value.menuText}}</div>
         </div>
       </div>
-      <div>로그아웃</div>
+      <div>{{ $t('COMMON_BTN_LOG_OUT') }}</div>
     </div>
   </div>
 </template>

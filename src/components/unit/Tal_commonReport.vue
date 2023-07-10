@@ -39,7 +39,7 @@
       <!--  <p class="fl font16 w-100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('sendPush')" v-if="contentOwner && contentType !== 'ALIM'" >알림으로 공유</p> -->
         <p class="fl font16 w-100P commonColor rowText" style="min-height:50px; line-height:50px; " @click="emit('move')" v-if="contentOwner && contentType === 'BOAR'" >{{ $t('COMMON_BTN_MOVE_POST') }}</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('copy')" v-if="contentOwner && contentType === 'BOAR' " >{{ $t('COMMON_BTN_COPY_POST') }}</p>
-        <p class="fl font16 w-100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType === 'BOAR'">{{ $t('COMMON_BTN_EDIT_POST') }}</p>
+        <p class="fl font16 w-100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType === 'BOAR'">{{ $t('COMM_BTN_EDIT_POST') }}</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('writeBoard')" v-if="contentType === 'ALIM' " :style="contentType === 'ALIM' ? 'border-top:none;' : '' " >{{ $t('COMMON_BTN_CONVERT_NOTI_TO_POST') }}</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('writeAlim')" v-if="!GE_USER.unknownYn && contentType === 'BOAR'" >{{ $t('COMMON_BTN_CONVERT_POST_TO_NOTI') }}</p>
         <p class="fl font16 w-100P commonColor rowText" @click="emit('delete')" v-if="contentOwner || contentType === 'ALIM'" >{{contentType === 'ALIM' ? $t('COMMON_BTN_DELTE_ALIM_FOR_ME'): $t('COMMON_BTN_DELETE_POST')}}</p>
@@ -57,7 +57,7 @@
 
       <div class="fl mtop-05" @click="closePop()" style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center;">
         <p class="fl font16 w100P commonColor " style="min-height:50px; line-height:50px; " >
-          취소
+          {{ $t('COMM_BTN_CLOSE') }}
         </p>
       </div>
     </div>

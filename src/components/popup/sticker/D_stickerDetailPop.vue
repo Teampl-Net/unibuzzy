@@ -42,9 +42,9 @@
             </div>
         </div>
         <div style="width: 100%; float: left; background:#FFF; height: 30px; display: flex; justify-content: center; align-items: center;">
-            <gBtnSmall :btnTitle="mStickerObj.modiYn? $t('COMMON_BTN_EDIT2') : $t('COMMON_BTN_ADD')" @click="checkInput" class="mright-05" />
+            <gBtnSmall :btnTitle="mStickerObj.modiYn? $t('COMM_BTN_EDIT2') : $t('COMMON_BTN_ADD')" @click="checkInput" class="mright-05" />
             <gBtnSmall v-if="mStickerObj.modiYn" :btnTitle="$t('COMMON_BTN_DELETE')" @click="askDelete"  btnThema="light" class="mright-05"/>
-            <gBtnSmall v-else :btnTitle="$t('COMMON_BTN_CANCEL')" @click="backClick"  btnThema="light"/>
+            <gBtnSmall v-else :btnTitle="$t('COMM_BTN_CANCEL')" @click="backClick"  btnThema="light"/>
         </div>
         <gConfirmPop ref="confirmPop"  :confirmText='mConfirmText' :confirmType='mConfirmType' @ok="saveSticker" v-if="mConfirmPopShowYn" @no='mConfirmPopShowYn = false' />
         <gConfirmPop ref="confirmPop"  :confirmText='mConfirmText' :confirmType='mConfirmType' @ok="deleteSticker" v-if="mConfirmDeletePopShowYn" @no='mConfirmDeletePopShowYn = false' />

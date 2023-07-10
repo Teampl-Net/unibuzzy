@@ -1,3 +1,17 @@
+<i18n>
+  {
+    "ko": {
+      "LOGIN_MSG_INTO_POP": "더알림의 알림을 받아보고",
+      "LOGIN_MSG_INTO_POP2": "중요한 알림을 쉽게 다시찾아보려면?",
+      "LOGIN_MSG_BTN": "소셜 로그인 하러가기"
+    },
+    "en": {
+      "LOGIN_MSG_INTO_POP": "Stay informed,",
+      "LOGIN_MSG_INTO_POP2": "effortlessly find vital notis with uniBuzzy!",
+      "LOGIN_MSG_BTN": "Continue with Social Account"
+    }
+  }
+  </i18n>
 <template>
   <div class="fl headerBottom" style="z-index: 101; position: relative; height: 250px; width: 350px; left: calc(50% - 175px); top: calc(50% - 125px); background: white; box-shadow: 0px 7px 9px 9px #00000036; border-radius: 5px;">
     <div class="fl fontBold font14" style="color: white; height: 30px; top: -30px; position: absolute; width: 100%; display: flex; align-items: center; justify-content: center;">
@@ -9,16 +23,16 @@
     </div>
     <div class="popDAlim fl w100P" style="height: 30px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
       <img class="fl mainHeaderLogo" src="../../../assets/images/common/thealim_header_logo.png" />
-      <div class="font25 headerFont commonColor fl mright-05">더알림</div>
+      <div class="font25 headerFont commonColor fl mright-05">{{ $t('COMMON_NAME_APP') }}</div>
     </div>
     <div class="fl w100P" style="height: calc(100% - 100px);">
       <!-- <div class="fl textLeft font16" style="width: 80%;"> -->
         <!-- <span class="fontBold fl w100P">{{ this.$changeText(pContDetail.nameMtext) }}채널뿐 아니라,</span> -->
       <!-- </div> -->
       <!-- <div class="fl textLeft font16" style="width: 80%; margin-bottom: 20px;">나에게 필요할 채널과 게시판 더 보고 싶다면?</div> -->
-      <div class="fl textLeft font16 textCenter fontBold" style="width: 100%; margin-bottom: 35px; height: 30px; line-height: 30px;">더알림의 알림을 받아보고<br>중요한 알림을 쉽게 다시찾아보려면? </div>
+      <div class="fl textLeft font16 textCenter fontBold" style="width: 100%; margin-bottom: 35px; height: 30px; line-height: 30px;">{{ $t('LOGIN_MSG_INTO_POP') }}<br>{{ $t('LOGIN_MSG_INTO_POP2') }}</div>
       <div class="fl w100P" style="height: calc(100% - 50px); display: flex; align-items: center; justify-content: center;">
-        <div class="fl font20 cursorP CDeepBgColor CDeepColorBorder textCenter fontBold" style="color: white; height: 50px; border-radius: 5px; line-height: 50px; width: 90%;" @click="goLoginPage">소셜 로그인 하러가기</div>
+        <div class="fl font20 cursorP CDeepBgColor CDeepColorBorder textCenter fontBold" style="color: white; height: 50px; border-radius: 5px; line-height: 50px; width: 90%;" @click="goLoginPage">{{ $t('LOGIN_MSG_BTN') }}</div>
         <!-- <div class="fl font22 cursorP CDeepBgColor CDeepColorBorder textCenter fontBold" style="color: white; height: 50px; border-radius: 5px; line-height: 50px; width: 90%;" @click="tableYn = true">소셜 로그인 하러가기</div> -->
       </div>
     </div>

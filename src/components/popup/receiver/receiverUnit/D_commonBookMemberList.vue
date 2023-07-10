@@ -1,9 +1,23 @@
+<i18n>
+  {
+    "ko": {
+      "SELECT_MSG_MEMBERS_NONE": "멤버가 없어요.",
+      "SELECT_MSG_MEMBERS_ADD": "버튼을 눌러 멤버를 추가해보세요.",
+      "SELECT_MSG_ADDRESS_DELETED": "주소가 삭제되었습니다.",
+    },
+    "en": {
+      "SELECT_MSG_MEMBERS_NONE": "There are no members.",
+      "SELECT_MSG_MEMBERS_ADD": "Press the button to add the members.",
+      "SELECT_MSG_ADDRESS_DELETED": "The address has been deleted."
+    }
+  }
+</i18n>
 <template>
   <div class="receiverTeamMemberArea" >
     <template v-for="(data, index) in mCommonMemberList" :key='data'>
       <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
     </template>
-    <gListEmpty v-if="mCommonMemberList.length === 0" title="멤버가 없어요." subTitle="버튼을 눌러 멤버를 추가해보세요." :option="selectPopYn === true ? 'SELE' : 'EDIT'" />
+    <gListEmpty v-if="mCommonMemberList.length === 0" :title="$t('SELECT_MSG_MEMBERS_NONE')" :subTitle="$t('SELECT_MSG_MEMBERS_ADD')" :option="selectPopYn === true ? 'SELE' : 'EDIT'" />
   </div>
 </template>
 
@@ -126,7 +140,7 @@ export default {
         if (result.data === 'true' || result.data === true) {
           this.mCommonMemberList = []
           this.$emit('refreshList')
-          this.$showToastPop('주소가 삭제되었습니다.')
+          this.$showToastPop(this.$t('SELECT_MSG_ADDRESS_DELETED'))
         }
       }
     },
@@ -136,7 +150,7 @@ export default {
       data.currentTeamKey = this.teamInfo.teamKey
       data.teamKey = this.teamInfo.teamKey
       data.readOnlyYn = true
-      data.popHeaderText = '프로필'
+      data.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
       this.$emit('openPop', data)
     },
     addSelectedList (data, index) {

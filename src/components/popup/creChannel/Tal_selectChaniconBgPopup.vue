@@ -1,3 +1,27 @@
+<i18n>
+  {
+    "ko": {
+      "USER_MSG_TOUCH_IMG": "터치해서 이미지를 변경할 수 있습니다.",
+      "USER_PROFILE_ICON": "아이콘",
+      "USER_PROFILE_MY_IMG": "직접추가",
+      "INFO_SELECT_FIN": "선택완료",
+      "ICON_MSG_SELECT_PLS": "채널을 대표할 아이콘을 선택해주세요.",
+      "ICON_MSG_SELECT_PLS2": "대표 아이콘을 선택해주세요!",
+      "IMG_MSG_SELECT_PLS": "채널의 배경 사진을 선택해주세요.",
+      "IMG_MSG_SELECT_PLS2": "배경 사진을 선택해주세요!",
+    },
+    "en": {
+      "USER_MSG_TOUCH_IMG": "Touch to change the image.",
+      "USER_PROFILE_ICON": "Icon",
+      "USER_PROFILE_MY_IMG": "Upload Image",
+      "INFO_SELECT_FIN": "Select",
+      "ICON_MSG_SELECT_PLS": "Please select an icon to represent the channel.",
+      "ICON_MSG_SELECT_PLS2": "Please select a representative icon!",
+      "IMG_MSG_SELECT_PLS": "Please select a channel background image.",
+      "IMG_MSG_SELECT_PLS2": "Please select a background image!"
+    }
+  }
+</i18n>
 <template>
   <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
   <div style="width: 100%; float: left;">
@@ -7,7 +31,7 @@
         <div class="creChanIntroTextWrap" style="width: 100%; min-height: 50px; text-align: left;">
             <p class="fontBold font18">{{msgTitle}}</p>
         </div>
-        <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
+        <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
         <div id="creChanContentsArea" style="width: 100%; min-height: 300px; margin-top: 20px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
             <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
               <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
@@ -15,11 +39,11 @@
                   <img v-if="changeImgYn = true" id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
                 </div>
                 <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left; position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
-                    <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/jpeg, image/png, image/jpg" ref="selectFileChangeIconNBG" id="input-file" @change="handleImageUpload"/>
+                    <input class="formImageFile" style="width: 100%; float: left;" type="file" :title ="$t('COMMON_BTN_SELECTED')" accept="image/jpeg, image/png, image/jpg" ref="selectFileChangeIconNBG" id="input-file" @change="handleImageUpload"/>
                 </form>
                 <div class="fl textLeft w100P">
-                  <p class="fl fontBold font14 mleft-4">터치해서 이미지를 변경할 수 있습니다.</p>
-                  <gBtnSmall v-if="cropperYn" class="fl mright-4" btnTitle="다시 선택" @click="changeBtnClick"/>
+                  <p class="fl fontBold font14 mleft-4">{{ $t('USER_MSG_TOUCH_IMG') }}</p>
+                  <gBtnSmall v-if="cropperYn" class="fl mright-4" :btnTitle="$t('COMM_BTN_SELEC_AGAIN')" @click="changeBtnClick"/>
                 </div>
               </div>
             </div>
@@ -34,7 +58,7 @@
             </div>
         </div>
 
-        <div @click="setParam" class="creChanBigBtn font18 fl mtop-2 mbottom-05">선택완료</div>
+        <div @click="setParam" class="creChanBigBtn font18 fl mtop-2 mbottom-05">{{ $t('IMG_SELECT_FIN') }}</div>
 
     </div>
   </div>
@@ -109,7 +133,10 @@ export default {
       viewTab: 'icon',
       selectedImgPath: '',
       selectedImgFilekey: '',
-      activeTabList: [{ display: '아이콘', name: 'icon' }, { display: '직접추가', name: 'img' }],
+      activeTabList: [
+        { display: this.$t('USER_PROFILE_ICON'), name: 'icon' },
+        { display: this.$t('USER_PROFILE_MY_IMG'), name: 'img' }
+      ],
       cropper: {},
       refImg: {},
       cropYn: false,
@@ -190,11 +217,11 @@ export default {
     },
     setDefaultData () {
       if (this.opentype === 'iconPop') {
-        this.msgTitle = '채널을 대표할 아이콘을 선택해주세요.'
-        this.msgError = '대표 아이콘을 선택해주세요!'
+        this.msgTitle = this.$t('ICON_MSG_SELECT_PLS')
+        this.msgError = this.$t('ICON_MSG_SELECT_PLS2')
       } else if (this.opentype === 'bgPop') {
-        this.msgTitle = '채널의 배경 사진을 선택해주세요.'
-        this.msgError = '배경 사진을 선택해주세요!'
+        this.msgTitle = this.$t('IMG_MSG_SELECT_PLS')
+        this.msgError = this.$t('IMG_MSG_SELECT_PLS2')
       }
     },
     async setParam () {
@@ -486,7 +513,7 @@ export default {
           // var selFile = this.selectFileList[i].file
         }
       } else {
-        this.$showToastPop('파일을 선택해주세요.')
+        this.$showToastPop(this.$t('COMM_MSG_SELECT_FILE'))
       }
       return true
     },

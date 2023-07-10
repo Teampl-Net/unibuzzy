@@ -872,7 +872,7 @@ export const commonMethods = {
     var text = ''
     teamType = teamType + ''
     if (teamType === '1') {
-      text = '기업'
+      text = this.$t('COMM_CATE_BUSINESS')
     } else if (teamType === '2') {
       text = '정부'
     } else if (teamType === '3') {
@@ -1101,7 +1101,7 @@ export const commonMethods = {
   },
   notPerText () {
     var html = '<div class="w100P fl textCenter commonColor font14">'
-    html += '열람 권한이 없습니다.'
+    html += this.$t('COMM_MSG_NOPERM')
     html += '</div>'
     return html
   },

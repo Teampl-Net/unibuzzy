@@ -1,13 +1,11 @@
 <i18n>
   {
     "ko": {
-      "MAIN_MSG_NOPERM": "열람 권한이 없습니다.",
       "CONTENT_MSG_READ_ALL": "채널 전체 대상 알림입니다!",
       "CONF_MSG_CHECK_RECIP": "내가 보낸 알림만 수신자 확인이 가능합니다!",
       "CONTENT_MSG_DELETE_ONLYME": "알림 삭제는 나에게만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.",
     },
     "en": {
-      "MAIN_MSG_NOPERM": "You do not have permission to view.",
       "CONTENT_MSG_READ_ALL": "This is a notification for all memebers of the channel!",
       "CONF_MSG_CHECK_RECIP": "Confirmation of recipients is available only for the notification 'I' sent!",
       "CONTENT_MSG_DELETE_ONLYME": "Deleting the notification will only apply to me, and the users who received the notification will not be affected.",
@@ -31,7 +29,7 @@
                   <div style="width: 100%; position: relative; height: 50%; min-height: 26px;  position: relative;">
                       <template v-if="!pUnknownYn && !pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && this.$checkUserAuth(CONT_DETAIL.shareItem).V === false && this.GE_USER && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn">
                           <p class=" textLeft textOverdot commonBlack fontBold font16" style="width: calc(100% - 35px);">
-                              {{ this.$t('MAIN_MSG_NOPERM') }}
+                              {{ this.$t('COMM_MSG_NOPERM') }}
                           </p>
                       </template>
                       <template v-else>
@@ -67,7 +65,7 @@
                           <!-- <p  class="font12 fl lightGray">수신</p>
                           <span class="font12 mSide-02">{{'|'}}</span> -->
                           <template   v-if="CONT_DETAIL.rUserCount === -1">
-                              전체
+                              {{ this.$t('COMMON_TAB_ALL') }}
                           </template>
                           <template v-else-if="CONT_DETAIL.rUserCount !== -1">
                               <img src="../../../assets/images/push/userIcon.svg" class="img-w13 mright-01 fl" alt="">
@@ -78,7 +76,7 @@
                   <div style="width: 100%; float: left;">
                       <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && !pNoAuthYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
                       <!-- <p class="fr font12 lightGray mright-03" @click="CONT_DETAIL.rUserCount !== -1? this.openRecvListPop(): ''" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" > -->
-                      <p class="fl commonColor font12 fl textLeft fontBold cursorP" v-if="!pUnknownYn && !pNoAuthYn && CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" style="margin-top: 2px;" @click="sendReply">답장하기</p>
+                      <p class="fl commonColor font12 fl textLeft fontBold cursorP" v-if="!pUnknownYn && !pNoAuthYn && CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" style="margin-top: 2px;" @click="sendReply">{{ this.$t('COMM_BTN_REPLY') }}</p>
                       <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
                           <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w-100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
                       </div>

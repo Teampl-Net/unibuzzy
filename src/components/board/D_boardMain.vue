@@ -705,7 +705,7 @@ export default {
         // this.currentMemoObj = cont
         // this.memoSetCount(response.totalElements)
       }
-      this.$showToastPop('댓글을 삭제하였습니다.')
+      this.$showToastPop(this.$t('COMMON_MSG_DELETED_COMMENT'))
     },
     report (type) {
       var targetKind

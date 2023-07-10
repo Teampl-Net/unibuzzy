@@ -1,3 +1,19 @@
+<i18n>
+  {
+    "ko": {
+      "EMPT_MSG_NONE_ADDR": "비어있는 주소록",
+      "EMPT_MSG_NONE_MEMB": "비어있는 멤버",
+      "NONE_MSG_REGIST_EMAIL": "등록된 이메일이 없습니다.",
+      "NONE_MSG_REGIST_NUM": "등록된 번호가 없습니다.",
+    },
+    "en": {
+      "EMPT_MSG_NONE_ADDR": "Empty address book",
+      "EMPT_MSG_NONE_MEMB": "Empty member list",
+      "NONE_MSG_REGIST_EMAIL": "No registered email found.",
+      "NONE_MSG_REGIST_NUM": "No registered phone number found."
+    }
+  }
+</i18n>
 <template>
   <div class="fl w100P" style="border-bottom: 1px solid; border-color: #BDBDBD50" :class="{ CWhiteGrayBgColor: (option === 'SELE' && propData.selectedYn === true) }" >
     <div class="fl w100P rowBaseCss"  style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;" >
@@ -38,9 +54,9 @@
         <div class="fl w100P" style="display: flex; align-items: center; " @click="clickEvntToParents('open')">
           <div class="textLeft fl w100P " style="" >
             <p class="fl font16 commonDarkGray fontBold w100P"><img v-if="propData.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../../assets/images/editChan/icon_self.svg">{{this.$changeText(propData.userDispMtext)}}</p>
-            <p class="fl font14 commonDarkGray " style="" >{{propData.userEmail ? changeDot('email', propData.userEmail) : '등록된 이메일이 없습니다.'}}</p>
+            <p class="fl font14 commonDarkGray " style="" >{{propData.userEmail ? changeDot('email', propData.userEmail) : this.$t('NONE_MSG_REGIST_EMAIL')}}</p>
             <p class="fl font14 commonDarkGray" style="margin: 0 0.3rem">|</p>
-            <p class="fl font14 commonDarkGray " style="" >{{propData.phoneEnc ? changeDot('phone', propData.phoneEnc) : '등록된 번호가 없습니다.'}}</p>
+            <p class="fl font14 commonDarkGray " style="" >{{propData.phoneEnc ? changeDot('phone', propData.phoneEnc) : this.$t('NONE_MSG_REGIST_NUM')}}</p>
           </div>
         </div>
       </template>
@@ -101,7 +117,7 @@ export default {
         }
         this.cabinetNames = name.substring(0, name.length - 1)
       } else {
-        this.cabinetNames = '비어있는 주소록'
+        this.cabinetNames = this.$t('EMPT_MSG_NONE_ADDR')
       }
     },
     setMemberNames () {
@@ -113,7 +129,7 @@ export default {
         }
         this.cabinetNames = name.substring(0, name.length - 1)
       } else {
-        this.cabinetNames = '비어있는 멤버'
+        this.cabinetNames = this.$t('EMPT_MSG_NONE_MEMB')
       }
     },
     changeDot (type, data) {

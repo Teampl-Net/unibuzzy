@@ -1,8 +1,24 @@
+<i18n>
+  {
+    "ko": {
+      "": "팀플 (주)",
+      "": "대표 : 최병진 | 사업자 등록번호 : 850-86-02601",
+      "": "경기도 안양시 만안구 안양천서로 93, 새움빌딩 3층",
+      "": "고객센터 : 031-429-4216"
+    },
+    "en": {
+      "": "",
+      "": "",
+      "": "Seaum Building, 93, Anyangcheonseo-ro, Manan-gu, Anyang-si, Gyeonggi-do, Republic of Korea",
+      "": "Customer Service Center: 031-429-4216"
+    }
+  }
+</i18n>
 <template>
 <div class="pagePaddingWrap" style="overflow: hidden scroll !important;">
   <div class="alimInfoPage-1 mtop-1">
     <div class="goHomePageWrap fl w100P h100P ">
-      <p class="font14 fontBold commonBlack fl " style="width: 100%; height: 30px; line-height: 30px;" >더알림 홈페이지</p>
+      <p class="font14 fontBold commonBlack fl " style="width: 100%; height: 30px; line-height: 30px;" >{{ $t('COMMON_NAME_APP') }} {{ $t('COMM_NAME_HOME_PAGE') }}</p>
       <p class="font14 commonBlack fl" style="width: 100%; height: 20px; line-height: 20px;">www.pushmsg.net</p>
     </div>
   </div>
@@ -28,7 +44,7 @@
 export default {
   data () {
     return {
-      btnTitle: '홈페이지 바로가기',
+      btnTitle: this.$t('COMM_BTN_VIEW_WEBSITE'),
       boxList: [
         { boxName: '책', tagColor: 'D1ECFF', boxKey: '0' },
         { boxName: '영화&드라마', tagColor: 'E5FFD1', boxKey: '0' },

@@ -6,7 +6,6 @@
     "FOLLOW_NAME_FOLLOWER": "구독자",
     "FOLLOW_MSG_NOEMAIL": "이메일 정보 없음",
     "FOLLOW_MSG_NONUMBER": "휴대폰 정보 없음",
-    "FOLLOW_BTN_SENDNOTI": "알림 보내기",
     "FOLLOW_NAME_MANAGE": "관리자",
     "FOLLOW_MSG_NOAUTH": "구독자는 세부정보 확인이 불가합니다."
   },
@@ -16,7 +15,6 @@
     "FOLLOW_NAME_FOLLOWER": "Follower",
     "FOLLOW_MSG_NOEMAIL": "No Email Info",
     "FOLLOW_MSG_NONUMBER": "No Phone Number Info",
-    "FOLLOW_BTN_SENDNOTI": "Send Noti",
     "FOLLOW_NAME_MANAGE": "Manager",
     "FOLLOW_MSG_NOAUTH": "Subscriber cannot check details."
   }
@@ -101,7 +99,7 @@ export default {
   data () {
     return {
       systemName: localStorage.getItem('systemName'),
-      interfaceBtnList: [{ text: this.$t('FOLLOW_BTN_SENDNOTI'), event: 'sendPush' }],
+      interfaceBtnList: [{ text: this.$t('COMM_BTN_SEND_NOTI'), event: 'sendPush' }],
       openCommonAlertPopShowYn: false,
       selectedMember: null,
       confirmManagerText: '',

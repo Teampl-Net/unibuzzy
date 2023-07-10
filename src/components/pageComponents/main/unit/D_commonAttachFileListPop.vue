@@ -2,7 +2,7 @@
   <div @click="closePop()" style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 20; top: 0; left: 0 " />
   <div class="" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px; left: 10%; top: 20%; background: #fff; z-index: 21; position: fixed;">
     <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; " >
-      <p class="textLeft font16 fontBold mbottom-1">파일 다운로드</p>
+      <p class="textLeft font16 fontBold mbottom-1">{{ this.$t('COMM_TITLE_FILE_DOWNL') }}</p>
       <img @click="closePop()" src="../../../../assets/images/common/grayXIcon.svg" class="cursorP" style="position: absolute; right: 5px; top: 0px;" alt="">
 
       <div class="fl w100P thinScrollBar" style="padding-left:0.5rem; min-height: 150px; max-height: 250px; height: 35%; overflow: hidden auto;">
@@ -16,7 +16,7 @@
             <img @click="selectAttachedFile(value.myFilekey, value, index, 'F')" style="cursor: pointer; width: 20px; height: 19px; margin-left: 5px;" :src="value.myFilekey? require('../../../../assets/images/common/colorStarIcon.svg'):require('../../../../assets/images/common/starIcon.svg')" alt="">
           </div>
         </templete>
-        <p class="fl font14 fontBold w100P textLeft mtop-05" v-if="mAttachFileList.D_BODY_IMG_FILE_LIST && mAttachFileList.D_BODY_IMG_FILE_LIST.length > 0">본문 이미지</p>
+        <p class="fl font14 fontBold w100P textLeft mtop-05" v-if="mAttachFileList.D_BODY_IMG_FILE_LIST && mAttachFileList.D_BODY_IMG_FILE_LIST.length > 0">{{ this.$t('COMM_SUBTITLE_BODY_IMG') }}</p>
         <templete v-for="(value, index) in mAttachFileList.D_BODY_IMG_FILE_LIST" :key="index">
           <div style="display: flex; align-items: center; width: 100%; word-break: break-all;min-height: 30px; padding-left:0.3rem" >
             <img :src="$settingFileIcon(value.fileName)" style="float: left; margin-right: 5px; margin-top: 1px;" alt="">

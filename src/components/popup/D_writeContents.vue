@@ -81,7 +81,7 @@
       <div class="w100P fl" style="padding: 1rem 1.5rem 0 1.5rem; display: flex; flex-direction: column; align-items: flex-start;">
         <div class="fl w100P" style="display: flex; align-items: center; justify-content: space-between;">
           <p v-if="contentType === 'ALIM'" class="fontBold commonColor font20 fl">{{ $t('COMMON_TAB_NOTI' ) }} {{requestPushYn === false ? $t('FORM_BTN_WRITE') : $('FORM_BTN_APPLY') }}</p>
-          <p v-if="contentType === 'BOAR'" class="fontBold commonColor font20 fl">{{$t('COMMON_TAB_POST')}} {{modiYn? $t('COMMON_BTN_EDIT2') : $t('FORM_BTN_WRITE')}}</p>
+          <p v-if="contentType === 'BOAR'" class="fontBold commonColor font20 fl">{{$t('COMMON_TAB_POST')}} {{modiYn? $t('COMM_BTN_EDIT2') : $t('FORM_BTN_WRITE')}}</p>
           <div class="fr" style="display: flex; flex-direction: row; align-items: center;">
             <gBtnSmall class="writeContenBtn" v-if="contentType === 'ALIM'"   :btnTitle="contentType === 'ALIM' && requestPushYn === false ? $t('FORM_BTN_SEND') : $t('FORM_BTN_LONG_APPLY')" @click="clickPageTopBtn()"  />
             <gBtnSmall :btnThema="mCanWriteYn? '' : 'light'" :style="!mCanWriteYn? 'background: #FFF; cursor: default;' : ''" class="writeContenBtn" v-if="contentType === 'BOAR'"   :btnTitle="contentType === 'BOAR' && modiYn === true ? $t('FORM_BTN_EDIT') : $t('FORM_BTN_POST')" @click="mCanWriteYn? boardDataCheck(): ''"   />

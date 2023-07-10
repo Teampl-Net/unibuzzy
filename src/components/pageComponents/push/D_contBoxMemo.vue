@@ -41,9 +41,9 @@
                 </div>
                 <div style="min-height: 20px; margin-top: 10px;  width: 100%; padding-right: 10px; min-height: 20px;">
                     <!-- <p @click="deleteConfirm(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">삭제</p> -->
-                    <p @click="this.mChangeMemoYn = false" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">닫기</p>
-                    <p class="commonGray textLeft font12 fr" v-if="!this.mChangeMemoYn && !pNoAuthYn" @click="writeMeMemo(propMemoEle)">답글달기</p>
-                    <p class="commonGray textLeft font12 mright-05 cursorP fr " @blur="testFunction" @click="openModiMemoPop(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn">수정</p>
+                    <p @click="this.mChangeMemoYn = false" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">{{ $t('COMM_BTN_CLOSE') }}</p>
+                    <p class="commonGray textLeft font12 fr" v-if="!this.mChangeMemoYn && !pNoAuthYn" @click="writeMeMemo(propMemoEle)">{{ this.$t('COMM_BTN_REPLY_COMM') }}</p>
+                    <p class="commonGray textLeft font12 mright-05 cursorP fr " @blur="testFunction" @click="openModiMemoPop(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn">{{ this.$t('COMM_BTN_EDIT2') }}</p>
                     <!-- <p class="commonGray textLeft font12 cursorP fr " @click="saveModiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn">저장</p> -->
                 </div>
                 <div class="cursorP" style="width: 100%; display: flex; justify-content: flex-end; margin-top: 3px;" v-if="getAttachTrueFile(propMemoEle.attachFileList).length > 0">
@@ -84,8 +84,8 @@
                     </div>
                     <div style="min-height: 20px; width: 100%; margin-top: 5px; padding-right: 10px; min-height: 20px;">
                         <!-- <p @click="deleteConfirm(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey" class="commonGray mleft-1 textLeft font12 fr">삭제</p> -->
-                        <p class="commonGray textLeft font12 fr"  @click="writeMeMemo(cmemo)">답글달기</p>
-                        <p class="commonGray textLeft font12 fr cursorP mright-1" @click="openModiMemoPop(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey">수정</p>
+                        <p class="commonGray textLeft font12 fr"  @click="writeMeMemo(cmemo)">{{ this.$t('COMM_BTN_REPLY_COMM') }}</p>
+                        <p class="commonGray textLeft font12 fr cursorP mright-1" @click="openModiMemoPop(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey">{{ this.$t('COMM_BTN_EDIT2') }}</p>
                     </div>
                 </div>
             </div>
@@ -461,9 +461,9 @@ export default {
         // 복사 후 textarea 지우기
         document.execCommand('copy')
         document.body.removeChild(textarea)
-        this.$showToastPop('복사되었습니다.')
+        this.$showToastPop(this.$t('COMMON_MSG_COPY_SUCCESS'))
       } catch (error) {
-        this.$showToastPop('복사하지 못했습니다.')
+        this.$showToastPop(this.$t('COMMON_MSG_COPY_FAIL'))
       }
     },
     async deleteMemo () {
@@ -496,7 +496,7 @@ export default {
           this.$store.dispatch('D_CHANNEL/AC_DEL_MEMO_REPLACE_CONTENT', [cont])
           // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
         }
-        this.$showToastPop('댓글을 삭제하였습니다.')
+        this.$showToastPop(this.$t('COMMON_MSG_DELETED_COMMENT'))
         this.mConfirmPopShowYn = false
       } catch (error) {
         this.$showToastPop('정상적으로 완료하지 못했습니다.')

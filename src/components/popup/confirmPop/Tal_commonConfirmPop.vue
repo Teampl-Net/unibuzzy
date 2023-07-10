@@ -5,8 +5,8 @@
     <!-- <div class="zoomInOutPop confirmPopWrap" style="left: 5%;"> -->
       <div class="confirmPopHeader" >
         <img src="../../../assets/images/common/thealim_header_logo.png" class="fl" >
-        <p class="font24 headerFont commonColor fl" style="line-height: 2.2rem;" >더알림</p>
-        <p class="font15 headerFont commonColor fl" style="line-height: 2.6rem; margin-left: 0.3rem" >가장 편리한 구독-알림</p>
+        <p class="font24 headerFont commonColor fl" style="line-height: 2.2rem;" >{{ $t('COMMON_NAME_APP') }}</p>
+        <p class="font15 headerFont commonColor fl" style="line-height: 2.6rem; margin-left: 0.3rem" >{{ $t('COMM_INTRO_COMMT') }}</p>
       </div>
 
       <div class="confirmPopBody" >
@@ -14,17 +14,17 @@
       </div>
       <div style="width: 100%; height: 50px; float:left;">
         <div class="confirmBtnArea" v-if="confirmType==='timeout'">
-          <gBtnSmall class="btnBig" v-on:click="goNo" btnTitle="닫기"/>
+          <gBtnSmall class="btnBig" v-on:click="goNo" :btnTitle="$t('COMM_BTN_CLOSE')"/>
         </div>
 
         <div class="confirmBtnArea" v-if="confirmType==='one'">
-          <gBtnSmall class=" btnBig" v-on:click="goNo" btnTitle="확인"/>
+          <gBtnSmall class=" btnBig" v-on:click="goNo" :btnTitle="$t('COMMON_BTN_OK')"/>
         </div>
 
         <div class="confirmBtnArea" v-if="confirmType==='two'||confirmType== null">
 
-          <gBtnSmall btnThema='deep' class="mright-05 btnBig" v-on:click="goOk" btnTitle="확인"/>
-          <gBtnSmall  :btnThema="'light'" v-on:click="goNo" btnTitle="취소" class="mleft-05 btnBig"/>
+          <gBtnSmall btnThema='deep' class="mright-05 btnBig" v-on:click="goOk" :btnTitle="$t('COMMON_BTN_OK')"/>
+          <gBtnSmall  :btnThema="'light'" v-on:click="goNo" :btnTitle="$t('COMM_BTN_CANCEL')" class="textCenter btnBig"/>
         </div>
       </div>
     </div>

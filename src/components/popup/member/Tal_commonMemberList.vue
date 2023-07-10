@@ -72,7 +72,7 @@ export default {
       mobileYn: this.$getMobileYn(),
       openCommonAlertPopShowYn: false,
       systemName: localStorage.getItem('systemName'),
-      interfaceBtnList: [{ text: '알림 보내기', event: 'sendPush' }, { text: '이메일 보내기', event: 'sendEmail' }, { text: '전화 걸기', event: 'callPhone' }, { text: '메세지 보내기', event: 'sendSms' }]
+      interfaceBtnList: [{ text: this.$t('COMM_BTN_SEND_NOTI'), event: 'sendPush' }, { text: '이메일 보내기', event: 'sendEmail' }, { text: '전화 걸기', event: 'callPhone' }, { text: '메세지 보내기', event: 'sendSms' }]
     }
   },
   mounted () {

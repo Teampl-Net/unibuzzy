@@ -28,7 +28,7 @@
             <p :style="boardDetail.cabinetKey === value.cabinetKey? 'color: #9d9d9d;': 'color: #303030;'" class="font16 commonBlack fontBold fl">{{this.$changeText(value.cabinetNameMtext)}}</p>
         </div>
         <div style="width: 100%; min-height: 30px; float: left;">
-            <gBtnSmall @click="closeXPop" style="" btnThema="light" :btnTitle="$t('COMMON_BTN_CANCEL')" />
+            <gBtnSmall @click="closeXPop" style="" btnThema="light" :btnTitle="$t('COMM_BTN_CANCEL')" />
             <gBtnSmall @click="openConfirmPop" style="margin-right: 0.5rem;" :btnTitle="mainText === '이동'? $t('BOAR_SELECT_BTN_MOVE'):$t('BOAR_SELECT_BTN_COPY')" />
         </div>
         <gConfirmPop :confirmText="returnConfirmText()" :confirmType="'two'" @no="confirmPopShowYn = false" @ok="confirmOk" v-if="confirmPopShowYn"/>

@@ -1,3 +1,23 @@
+<i18n>
+  {
+    "ko": {
+      "SELECT_MSG_MEMBER_TYPE": "멤버 유형을 선택해주세요!",
+      "ERROR_MSG_INQUIRY_MANAG": "죄송합니다! 관리자에게 문의해주세요",
+      "INTRO_MSG_HI": "안녕하세요!",
+      "CHAN_MEM_TYPE": "활동할 멤버유형",
+      "NEED_MEM_APPLI": "멤버신청 필요",
+      "SUBMIT_BTN_APPLY": "신청"
+    },
+    "en": {
+      "SELECT_MSG_MEMBER_TYPE": "Please select Member Type!",
+      "ERROR_MSG_INQUIRY_MANAG": "Sorry! Please contact the administrator for assistance.",
+      "INTRO_MSG_HI": "Hi!",
+      "CHAN_MEM_TYPE": "Active memberships types",
+      "NEED_MEM_APPLI": "Membership application needed.",
+      "SUBMIT_BTN_APPLY": "Apply"
+    }
+  }
+</i18n>
 <template>
     <div @click="noMemberClose" style="position: absolute; width: 100%; height: 100%; background: #00000050; z-index: 9"></div>
     <div v-if="reqPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100%; z-index: 10; background: #00000040;"></div>
@@ -14,13 +34,13 @@
             </div>
         </div>
         <div style="width: 100%; height: calc(100% - 160px); float: left;padding-top: 0"  class="commonChanPopPadding" ><!-- box-shadow: inset 0 0 4px 4px #00000010;padding: 10px 20px; -->
-            <div v-html="'\'' + this.$changeText(GE_USER.userDispMtext) + '\' 님 안녕하세요!<br>' + propPopMessage" style=" box-shadow: inset 0 0 4px 4px #00000010;padding: 10px 20px; border-radius: 10px; float: left; width: 100%;" class="font14 textLeft fontBold commonBlack">
+            <div v-html="'\'' + this.$changeText(GE_USER.userDispMtext) + this.$t('INTRO_MSG_HI') + propPopMessage" style=" box-shadow: inset 0 0 4px 4px #00000010;padding: 10px 20px; border-radius: 10px; float: left; width: 100%;" class="font14 textLeft fontBold commonBlack">
             </div>
             <div style="width: 100%; display: flex;   align-items: center; padding-top: 20px;">
                 <div style="width: calc(100%); float: left;  display: flex; flex-direction: column;">
                     <div class="font16 fontBold commonColor" style="width: 100%; margin-bottom: 10px; align-items: center; justify-content: space-between; padding-right: 10px; display: flex;">
-                        활동할 멤버유형
-                        <gBtnSmall  @click="openReqPop" class="fr" btnTitle="신청"/>
+                        {{ $t('CHAN_MEM_TYPE') }}
+                        <gBtnSmall  @click="openReqPop" class="fr" :btnTitle="$t('SUBMIT_BTN_APPLY')"/>
                     </div>
                     <div style="width: 100%; min-height: 30px; padding-left: 10px;" v-for="(member, index) in mMemberTypeList" :key="index">
                         <input @click="selectMemberObj = member" :checked="index === 0? true:false" class="fl" type="radio" name="memberSelectRadio" style="margin-top: 8px; margin-right: 5px;" :id="'member'+member.memberTypeKey">
@@ -31,7 +51,7 @@
         </div>
 
         <div v-if="memberPopYn" style="width: 100%; height: 60px; float: left; display: flex; justify-content: center;" class="commonChanPopPadding">
-            <gBtnSmall @click="noMemberClose" :btnTitle="'다음에 하기'" btnThema="light" />
+            <gBtnSmall @click="noMemberClose" :btnTitle="$t('COMM_BTN_DO_LATER')" btnThema="light" />
         </div>
         <div v-else style="width: 100%; height: 60px; float: left; display: flex; justify-content: center;" class="commonChanPopPadding">
             <gBtnSmall v-for="(value, index) in btnList" :style="index !== 0? 'margin-left: 0.5rem;': ''" :key="index"  :btnTitle="value.title" :btnThema="value.thema" @click="this.$emit(value.emitText)"/>
@@ -101,7 +121,7 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       if (!this.selectMemberObj) {
-        alert('멤버 유형을 선택해주세요!')
+        alert(this.$t('SELECT_MSG_MEMBER_TYPE'))
         return
       }
       var result = await this.getMemberTypeItemList()
@@ -148,7 +168,7 @@ export default {
         }
         // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
       } else {
-        this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
+        this.$showToastPop(this.$t('ERROR_MSG_INQUIRY_MANAG'))
         return false
       }
     },
@@ -211,8 +231,8 @@ export default {
     return {
       popSize: 'L',
       memberPopYn: true,
-      popTitle: '멤버신청 필요',
-      btnList: [{ title: '승인', thema: 'deep', emitText: 'ok' }, { title: '거절', thema: 'light', emitText: 'no' }],
+      popTitle: this.$t('NEED_MEM_APPLI'),
+      btnList: [{ title: this.$t('COMM_BTN_APPROVE'), thema: 'deep', emitText: 'ok' }, { title: this.$t('COMM_BTN_REJECT'), thema: 'light', emitText: 'no' }],
       popupStyle: 'height: 40%; max-height: 300px; margin-top: 50%;',
       selectMemberObj: null,
       reqPopShowYn: false,

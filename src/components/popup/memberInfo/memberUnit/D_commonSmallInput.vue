@@ -22,7 +22,7 @@
     <div class="mbottom-05" style="position: absolute; bottom:0;">
       <template  v-if="btnType === 'two'">
         <gBtnSmall  @click="closeXPop" :btnTitle="$('COMMON_BTN_OK')"/>
-        <gBtnSmall  @click="closeXPop" :btnTitle="$('COMMON_BTN_CLOSE')"/>
+        <gBtnSmall  @click="closeXPop" :btnTitle="$('COMM_BTN_CLOSE')"/>
       </template>
 
       <template v-if="btnType === 'one'">

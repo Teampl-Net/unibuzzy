@@ -34,7 +34,7 @@
       <div class="profileWrap ">
         <div @click="changeUserImg()" class="cursorP imgSize">
           <div class="roundDiv picImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-          <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 9; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">{{ $t('COMMON_BTN_EDIT') }}</div>
+          <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 9; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">{{ $t('COMM_BTN_EDIT') }}</div>
         </div>
         <div class="font20 fontBold mtop-1" style="width:100%; display: flex; justify-content: center; float:left; transform: translate(10px);" v-show="!changeYn" >
           <span class="fl">{{this.$changeText(this.GE_USER.userDispMtext)}}</span>
@@ -46,7 +46,7 @@
             <input class="fl font16" type="text" v-model="tempUserDispName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
             <div class="fl" style="width: 100px">
               <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >{{ $t('COMMON_BTN_OK') }}</p>
-              <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">{{ $t('COMMON_BTN_CANCEL') }}</p>
+              <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">{{ $t('COMM_BTN_CANCEL') }}</p>
             </div>
           </div>
         </div>

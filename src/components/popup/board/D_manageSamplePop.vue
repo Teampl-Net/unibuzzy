@@ -33,7 +33,7 @@
             </div>
             <div style="width: 100%; padding: 0 20px; height: 40px; float: left;">
                 <!-- <gBtnSmall v-if="this.$store.getters['D_USER/GE_USER'].userKey === 1" @click="addSample" btnTitle="샘플로 저장" class="fl" style="float: left;" /> -->
-                <gBtnSmall @click="closeXPop" btnThema="light" :btnTitle="$t('COMMON_BTN_CANCEL')" />
+                <gBtnSmall @click="closeXPop" btnThema="light" :btnTitle="$t('COMM_BTN_CANCEL')" />
                 <gBtnSmall @click="saveGuide" :btnTitle="$t('COMMON_BTN_OK')" class="mright-05" />
             </div>
         </div>

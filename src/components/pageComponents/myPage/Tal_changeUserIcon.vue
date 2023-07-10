@@ -1,8 +1,24 @@
+<i18n>
+  {
+    "ko": {
+      "USER_CHANGE_PROFILE_IMG": "프로필 이미지 변경",
+      "USER_PROFILE_ICON": "아이콘",
+      "USER_PROFILE_MY_IMG": "직접추가",
+      "USER_MSG_TOUCH_IMG": "터치해서 이미지를 변경할 수 있습니다.",
+    },
+    "en": {
+      "USER_CHANGE_PROFILE_IMG": "Update profile image",
+      "USER_PROFILE_ICON": "Icon",
+      "USER_PROFILE_MY_IMG": "Upload Image",
+      "USER_MSG_TOUCH_IMG": "Touch to change the image."
+    }
+  }
+</i18n>
 <template>
     <div style="width: 100%; float: left;">
       <div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; z-index: 9999;" @click="this.$emit('no')"></div>
       <div style="width: calc(100% - 30px);  position: absolute;top: 15%; left: 15px; z-index: 999999; background: #FFF; border-radius: 20px; padding: 10px; border: 0.51px solid #ccc; box-shadow: 9px 9px 9px -9px rgb(0 0 0 / 19%); height: 430px; float: left;">
-          <p class="fl textLeft commonColor font18 fontBold mleft-05 mbottom-05">프로필 이미지 변경</p>
+          <p class="fl textLeft commonColor font18 fontBold mleft-05 mbottom-05">{{ $t('USER_CHANGE_PROFILE_IMG') }}</p>
           <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
           <div v-if="viewTab === 'icon'" style="width: 100%;height: calc(100% - 120px); float: left; overflow: hidden auto;">
             <div @click="selectIcon(value.imageFilekey)" :class="selectedIconFileKey === value.imageFilekey ? 'selectedColor' : ''" style="float: left; overflow: hidden; background: #6768a745; border-radius: 100%; width: 100px; height: 100px; margin: 10px 5px; padding: 10px; padding-top: 20px; padding-bottom: 0; " v-for="(value, index) in teamImgList" :key="index">
@@ -19,13 +35,13 @@
                 <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/jpeg, image/png, image/jpg"  ref="selectFile" id="input-file" @change="handleImageUpload"/>
             </form>
             <div class="fl textLeft w100P" style="display: flex; justify-content: space-around; border-top: 0.5px solid rgba(103, 104, 167, 0.54);">
-              <p class="fl fontBold font14 mtop-05">터치해서 이미지를 변경할 수 있습니다.</p>
-              <gBtnSmall v-if="cropperYn" class="fl mtop-05" style="word-break: break-word; white-space: nowrap;" btnTitle="다시 선택" @click="changeBtnClick"/>
+              <p class="fl fontBold font14 mtop-05">{{ $t('USER_MSG_TOUCH_IMG') }}</p>
+              <gBtnSmall v-if="cropperYn" class="fl mtop-05" style="word-break: break-word; white-space: nowrap;" :btnTitle="$t('COMM_BTN_SELEC_AGAIN')" @click="changeBtnClick"/>
             </div>
           </div>
           <div style="width: 100%; min-height: 40px; margin-top: 1rem; float: left;">
-            <gBtnSmall @click="this.$emit('no')" btnTitle="닫기" btnThema="light"/>
-            <gBtnSmall @click="updateUserIcon" btnTitle="선택" class="mright-05" />
+            <gBtnSmall @click="this.$emit('no')" :btnTitle="$t('COMM_BTN_CLOSE')" btnThema="light"/>
+            <gBtnSmall @click="updateUserIcon" :btnTitle="$t('COMMON_BTN_SELECTED')" class="mright-05" />
           </div>
         </div>
     </div>
@@ -44,7 +60,10 @@ export default {
       uploadFileList: [],
       selectedImgPath: '',
       selectedImgFilekey: '',
-      activeTabList: [{ display: '아이콘', name: 'icon' }, { display: '직접추가', name: 'img' }],
+      activeTabList: [
+        { display: this.$t('USER_PROFILE_ICON'), name: 'icon' },
+        { display: this.$t('USER_PROFILE_MY_IMG'), name: 'img' }
+      ],
       cropper: {},
       refImg: {},
       cropperYn: false

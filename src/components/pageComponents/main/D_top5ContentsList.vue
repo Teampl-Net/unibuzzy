@@ -24,7 +24,7 @@ export default {
       mMoreLink: 'push',
       mActiveTabList: [{ display: this.$t('COMMON_TAB_ALL'), name: 'A' }, { display: this.$t('COMMON_TAB_NOTI'), name: 'P' }, { display: this.$t('COMMON_TAB_POST'), name: 'B' }],
       mViewTab: 'A',
-      mCurrentTabName: '알림',
+      mCurrentTabName: this.$t('COMMON_TAB_NOTI'),
       mContentsList: []
     }
   },

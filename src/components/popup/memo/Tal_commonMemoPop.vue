@@ -1,3 +1,19 @@
+<i18n>
+  {
+    "ko": {
+      "EMPT_MSG_WRITE_COMM": "댓글을 작성해주세요.",
+      "EMPT_MSG_WRITE_COMM2": "댓글을 작성해주세요.",
+      "": "",
+      "": "",
+      "": "",
+      "": "",
+    },
+    "en": {
+      "EMPT_MSG_WRITE_COMM": "Please add a comment.",
+      "EMPT_MSG_WRITE_COMM2": "Please fill in a comment.",
+    }
+  }
+</i18n>
 <template>
   <unknownLoginPop v-if="mUnknownLoginPopYn" />
   <div class="fl w100P" ref='memoPopCompo' style="position: absolute; bottom: 0; min-height: 50px; background: #fff; padding: 0.5rem 20px; padding-top: 10px; box-shadow: 0px -2px 3px 0px #eee;">
@@ -45,10 +61,10 @@
     <!-- <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;"> -->
       <div style="width: 100%; display: flex; align-items: center; float: left; flex-wrap: wrap;">
         <div @click="toggleAttachMenu" style="position: relative; width: 40px; height: 40px; margin-right: 8px; border-radius: 5px; background: #dcddeb; float: left; font-size: 30px;color: #FFF; font-weight: bold">+</div>
-        <pre placeholder="댓글을 작성해주세요." @focus="test" @keydown="inputEnterKey" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding " :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}" style="width:calc(100% - 81px); min-height:2.5rem; text-align:left; float: left; resize: none; border-radius: 10px; border: 1px solid #a7a7a7"  contenteditable=true  @input="inputTextCheck"/>
+        <pre :placeholder="$t('EMPT_MSG_WRITE_COMM')" @focus="test" @keydown="inputEnterKey" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding " :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}" style="width:calc(100% - 81px); min-height:2.5rem; text-align:left; float: left; resize: none; border-radius: 10px; border: 1px solid #a7a7a7"  contenteditable=true  @input="inputTextCheck"/>
         <!-- <div style="width: 30px; height: 100%;"> -->
         <img v-if="mWatchInputData.trim() !== ''" @click="saveMemo()" src="../../../assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mleft-05">
-        <img v-else @click="$showToastPop('댓글을 작성해주세요.')" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mleft-05">
+        <img v-else @click="$showToastPop(this.$t('EMPT_MSG_WRITE_COMM2'))" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mleft-05">
         <div v-show="attachMenuShowYn" style="width: 100%; height: 50px; display: flex; align-items: center;">
           <div class="font16 commonColor" @click.stop="addImgFile" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 33%; border-right: 1px solid #eee;">
             <img src="../../../assets/images/common/fileType_img.svg" alt="" style="margin-right: 8px; width: 12px;">

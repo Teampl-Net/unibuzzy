@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div style="width: 100%; padding: 0 20px; height: 40px; float: left;">
-                <gBtnSmall @click="closeXPop" btnThema="light" :btnTitle="$t('COMMON_BTN_CLOSE')" />
+                <gBtnSmall @click="closeXPop" btnThema="light" :btnTitle="$t('COMM_BTN_CLOSE')" />
                 <gBtnSmall @click="okSelectSample" :btnTitle="$t('COMMON_BTN_SELECT')" class="mright-05" />
             </div>
             <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false'  />

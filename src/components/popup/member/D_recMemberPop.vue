@@ -28,7 +28,7 @@
         </div>
         <div style="width: 100%; height: 50px; margin-bottom: 10px; display: flex; justify-content: center; align-items: center;">
             <gBtnSmall @click="openReceptPop" class="mright-05" btnThema=""  :btnTitle="$t('REQ_MEM_BTN_REQ')" :class="{'CWDeepGrayBgColor' : sendOkYn === false}" />
-            <gBtnSmall @click="successSendForm(false)" btnThema="light" :btnTitle="$t('COMMON_BTN_CANCEL')" />
+            <gBtnSmall @click="successSendForm(false)" btnThema="light" :btnTitle="$t('COMM_BTN_CANCEL')" />
         </div>
         <gConfirmPop @no="receptPopShowYn = false" :confirmText="returnConfirmText()" @ok="sendForm" confirmType='two' v-if="receptPopShowYn" />
         <gConfirmPop @no="successSendForm" :confirmText="$t('REQ_MEM_MSG_SUBMIT')" confirmType='timeout' v-if="okPopShowYn" />

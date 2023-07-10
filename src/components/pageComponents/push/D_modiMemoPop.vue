@@ -1,15 +1,15 @@
 <template>
     <div style="border-radius: 0.8rem; box-shadow: 0 0 4px 4px #00000026; width: calc(100% - 40px); height: 350px; position: fixed; background: #FFF; z-index: 100; top: 10%; left: 20px;">
         <div class="newHeaderLine" style="width: 100%; height: 50px; float: left; position: relative; padding: 0 20px; display: flex; align-items: center;">
-            <p class="textLeft fl font20 fontBold commonColor">댓글 수정</p>
+            <p class="textLeft fl font20 fontBold commonColor">{{ $t('COMM_TITLE_COMMENT_EDIT2') }}</p>
             <img @click="backClick" src="../../../assets/images/common/popup_close.png" style="position: absolute; right: 20px; top: 15px; width: 20px;" alt="">
         </div>
         <div style="width: 100%; height: calc(100% - 100px);float: left; padding: 10px 20px;">
             <pre contenteditable style="display:inline-block; outline: none; width: calc(100%); border-radius: 5px; height: 100%; border: 1px solid #ccc; word-break: break-all; " autofocus ref="formTextArea" id="memoModiInput" class="" ></pre>
         </div>
         <div style="width: 100%; height: 50px; float: left; display: flex; justify-content: center; align-items: center">
-            <gBtnSmall btnTitle="수정" @click="updateMemo" class="mright-05"/>
-            <gBtnSmall btnThema="light" @click="backClick" btnTitle="닫기"/>
+            <gBtnSmall :btnTitle="$t('COMM_BTN_EDIT2')" @click="updateMemo" class="mright-05"/>
+            <gBtnSmall btnThema="light" @click="backClick" :btnTitle="$t('COMM_BTN_CLOSE')"/>
         </div>
     </div>
 </template>

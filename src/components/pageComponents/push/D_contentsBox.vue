@@ -1,11 +1,9 @@
 <i18n>
 {
   "ko": {
-    "MAIN_MSG_NOPERM": "열람 권한이 없습니다.",
     "CONF_MSG_CHECK_UNABLE": "멤버가 아니므로 유저 정보를 볼 수 없습니다."
   },
   "en": {
-    "MAIN_MSG_NOPERM": "You do not have permission to view.",
     "CONF_MSG_CHECK_UNABLE": "Sorry, you are not a member, so you cannot access user information."
   }
 }
@@ -26,7 +24,7 @@
                   <div style="width: 100%; position: relative; height: 50%; min-height: 26px;  position: relative;">
                       <template v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn">
                           <p class=" textLeft textOverdot commonBlack fontBold font16" style="width: calc(100% - 35px);">
-                            {{ $t('MAIN_MSG_NOPERM') }}
+                            {{ $t('COMM_MSG_NOPERM') }}
                           </p>
                       </template>
                       <template v-else>
@@ -73,7 +71,7 @@
                   <div v-if="!GE_USER.unknownYn" style="width: 100%; float: left;">
                       <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && !pNoAuthYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
                       <!-- <p class="fr font12 lightGray mright-03" @click="CONT_DETAIL.rUserCount !== -1? this.openRecvListPop(): ''" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" > -->
-                      <p class="fl commonColor font12 fl textLeft fontBold cursorP" v-if="!pNoAuthYn && CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" style="margin-top: 2px;" @click="sendReply">답장하기</p>
+                      <p class="fl commonColor font12 fl textLeft fontBold cursorP" v-if="!pNoAuthYn && CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" style="margin-top: 2px;" @click="sendReply">{{ this.$t('COMM_BTN_REPLY') }}</p>
                       <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
                           <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
                       </div>
@@ -858,7 +856,7 @@ export default {
     },
     deleteConfirm () {
       if (this.contentsEle.jobkindId === 'ALIM') {
-        this.mConfirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
+        this.mConfirmText = this.$t('COMMON_MSG_DELETE_NOTI')
         this.mCurrentConfirmType = 'alimDEL'
       } else if (this.contentsEle.jobkindId === 'BOAR') {
         this.mConfirmText = this.$t('COMMON_MSG_DELETE_POST')
@@ -1053,9 +1051,9 @@ export default {
         // 복사 후 textarea 지우기
         document.execCommand('copy')
         document.body.removeChild(textarea)
-        this.$showToastPop('복사되었습니다.')
+        this.$showToastPop(this.$t('COMMON_MSG_COPY_SUCCESS'))
       } catch (error) {
-        this.$showToastPop('복사하지 못했습니다.')
+        this.$showToastPop(this.$t('COMMON_MSG_COPY_FAIL'))
       }
     },
     async saveMemo (inSaveMemoObj) {
@@ -1168,7 +1166,7 @@ export default {
     },
     async contentsSharePop () {
       var link = await this.$makeShareLink(this.CONT_DETAIL.contentsKey, 'contentsDetail', this.CONT_DETAIL.bodyFullStr, this.CONT_DETAIL.title)
-      var shareItem = { title: '더알림', text: this.CONT_DETAIL.title, url: link }
+      var shareItem = { title: this.$t('COMMON_NAME_APP'), text: this.CONT_DETAIL.title, url: link }
       if (navigator.share) {
         navigator.share(shareItem)
       } else {
