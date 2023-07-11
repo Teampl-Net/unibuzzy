@@ -73,6 +73,15 @@ if (type === 'UB') {
           // alias: ['/:pTeamKey', '']
         },
         {
+          // path: '/chan/:key',
+          // path: '/chan/:pTeamKey',
+          path: '/board/:teamKey/:targetKey',
+          name: 'board',
+          props: true,
+          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_boardMain.vue')
+          // alias: ['/:pTeamKey', '']
+        },
+        {
           path: '/mylog',
           name: 'logList',
           props: true,

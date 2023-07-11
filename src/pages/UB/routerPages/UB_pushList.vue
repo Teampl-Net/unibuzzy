@@ -1678,7 +1678,7 @@ export default {
         param.targetType = 'contDetail'
         this.$emit('openPage', param)
       } else if (value.targetType === 'chanDetail') {
-        console.log('hi')
+        this.$emit('openPage', value)
       } else if (value.targetType === 'writeContents') {
         this.$emit('openPop', value)
       }

@@ -10,6 +10,8 @@
 </i18n>
 <template>
     <div v-if="mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
+      <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mProfilePopShowYn" @click="closeProfilePop"></div>
+      <userDetailPop v-if="mProfilePopShowYn" :propData="mPopParam" :pClosePop="closeProfilePop" />
       <!-- <button @click="downloadPdf">다운로드</button> -->
       <!-- <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;"> -->
         <div :class="animationYn? 'newContentsAni':''" key="animationYn" v-if="this.CONT_DETAIL" :style="`padding-bottom: ${this.$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`" style="width: 100%; background: #FFF; overflow: hidden; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative; padding-top: 5px;  border-radius: 8px;">
@@ -222,6 +224,7 @@ import statCodeComponent from '@/components/board/D_manageStateCode.vue'
 import statCodePop from '@/components/board/D_manageStateCodePop.vue'
 import attachFileListPop from '../main/unit/D_commonAttachFileListPop.vue'
 import recvListPop from './D_contentsRecvListPop.vue'
+import userDetailPop from '../../UB/popup/UB_userDetailPop.vue'
 
 export default {
   components: {
@@ -231,7 +234,8 @@ export default {
     statCodeComponent,
     statCodePop,
     imgPreviewPop,
-    recvListPop
+    recvListPop,
+    userDetailPop
   },
   props: {
     pFadeNotShowYn: {},
@@ -304,7 +308,9 @@ export default {
       mWriteMemoYn: false,
       mMemoMoreShowYn: false,
       mStickerPopShowYn: false,
-      animationYn: false
+      animationYn: false,
+      mProfilePopShowYn: false,
+      mPopParam: {}
     }
   },
   updated () {
@@ -334,6 +340,9 @@ export default {
     }
   },
   methods: {
+    closeProfilePop () {
+      this.mProfilePopShowYn = false
+    },
     returnCommentText () {
       if (this.GE_LOCALE === 'ko') {
         return `댓글 ${this.mMemoLeng}개 모두 보기`
@@ -1206,7 +1215,8 @@ export default {
       if (targetUserKey) openPopParam.userKey = targetUserKey
       openPopParam.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
       openPopParam.readOnlyYn = true
-      this.$emit('openPop', openPopParam)
+      this.mPopParam = openPopParam
+      this.mProfilePopShowYn = true
     },
     goContentsDetail (moreCheckYn, memoScrollYn) {
       // eslint-disable-next-line no-debugger
