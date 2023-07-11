@@ -368,6 +368,9 @@ export default {
       this.mPopParams = params
       this.mGPopShowYn = true
       this.hideMenu()
+      if (params.targetType === 'setMypage') {
+        this.openPage(params)
+      }
     },
     goFavList () {
 
@@ -422,6 +425,10 @@ export default {
         this.openPop(params)
       } else if (params.targetType === 'myChanMenuEdit') {
         this.openPop(params)
+      } else if (params.targetType === 'setMypage') {
+        this.mChanInfo = params
+        this.mTargetType = 'setMypage'
+        this.$router.push('/settings')
       }
       this.hideMenu()
     },

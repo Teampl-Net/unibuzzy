@@ -109,6 +109,15 @@ if (type === 'UB') {
             page: 4
           }
         },
+        {
+          path: '/settings',
+          name: 'settings',
+          props: true,
+          component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_setMypage.vue'),
+          meta: {
+            page: 4
+          }
+        },
         /* {
           path: '/',
           name: 'pushList',

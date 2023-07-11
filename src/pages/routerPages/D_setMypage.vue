@@ -25,7 +25,7 @@
 }
 </i18n>
 <template>
-  <div style="padding-bottom: 30px; overflow: hidden scroll; height: 100%;">
+  <div style="padding: 60px 10px 30px 10px; overflow: hidden scroll; height: 100%; width: 100%;">
     <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
     <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" />
     <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
