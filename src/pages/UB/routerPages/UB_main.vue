@@ -58,11 +58,6 @@ export default {
         imgLink: ''
       },
       village: {
-        // Clubs & Startups: 12
-        // Majors: 13
-        // Classes: 14
-        // Facilities & Amenties: 15
-        // Nearby: 16
         villageInfo: {
           key: 1,
           name: 'Georgia Tech',
@@ -160,6 +155,27 @@ export default {
             h: 0,
             buildingList: [
               {
+                teamKey: 823,
+                nameMtext: 'uniBuzzy',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is uniBuzzy.',
+                status: 1,
+                rank: 1,
+                imgLink: '/resource/bd/new_bd6.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
                 teamKey: 822,
                 nameMtext: 'GWC',
                 ctx: {},
@@ -167,7 +183,7 @@ export default {
                 parentKey: 3,
                 type: 'BU', // building
                 status: 1,
-                rank: 1,
+                rank: 2,
                 followerList: [],
                 managerList: [],
                 description: 'This is GT GWC channel!',
@@ -181,6 +197,27 @@ export default {
                 w: 0,
                 h: 0
               },
+              {
+                teamKey: 826,
+                nameMtext: 'interOcci',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is interOcci.',
+                status: 1,
+                rank: 3,
+                imgLink: '/resource/bd/new_bd3.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
               // {
               //   nameMtext: 'B&N',
               //   ctx: {},
@@ -223,27 +260,27 @@ export default {
               //   w: 0,
               //   h: 0
               // },
-              {
-                nameMtext: 'B&N',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                description: "GT's B&N",
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                status: 1,
-                rank: 4,
-                linkUrl: 'https://gatech.bncollege.com/',
-                imgLink: '/resource/bd/new_house1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              }
+              // {
+              //   nameMtext: 'B&N',
+              //   ctx: {},
+              //   areaYn: false,
+              //   parentKey: 2,
+              //   description: "GT's B&N",
+              //   type: 'BU', // building
+              //   followerList: [],
+              //   managerList: [],
+              //   status: 1,
+              //   rank: 4,
+              //   linkUrl: 'https://gatech.bncollege.com/',
+              //   imgLink: '/resource/bd/new_house1.png',
+              //   maskedImageUrl: '',
+              //   maskedImageStyle: {},
+              //   clickedYn: false,
+              //   left: 0,
+              //   top: 0,
+              //   w: 0,
+              //   h: 0
+              // }
               // {
               //   nameMtext: 'B&N',
               //   ctx: {},
@@ -308,50 +345,6 @@ export default {
                 w: 0,
                 h: 0
               },
-              // {
-              //   key: 2.2,
-              //   teamKey: 825,
-              //   nameMtext: 'IE',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is IE channel!',
-              //   status: 1,
-              //   rank: 2,
-              //   imgLink: '/resource/bd/new_bd1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   key: 2.2,
-              //   teamKey: 825,
-              //   nameMtext: 'IE',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is IE channel!',
-              //   status: 1,
-              //   rank: 3,
-              //   imgLink: '/resource/bd/new_mall1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
               {
                 key: 2.2,
                 teamKey: 825,
@@ -364,7 +357,7 @@ export default {
                 managerList: [],
                 description: 'This is IE channel!',
                 status: 1,
-                rank: 4,
+                rank: 2,
                 imgLink: '/resource/bd/new_mall1.png',
                 maskedImageUrl: '',
                 maskedImageStyle: {},
@@ -374,28 +367,6 @@ export default {
                 w: 0,
                 h: 0
               }
-              // {
-              //   key: 2.2,
-              //   teamKey: 825,
-              //   nameMtext: 'IE',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is IE channel!',
-              //   status: 1,
-              //   rank: 5,
-              //   imgLink: '/resource/bd/new_bd1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // }
             ]
           },
           {
@@ -417,111 +388,6 @@ export default {
             w: 0,
             h: 0,
             buildingList: [
-              {
-                teamKey: 823,
-                nameMtext: 'uniBuzzy',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is uniBuzzy.',
-                status: 1,
-                rank: 1,
-                imgLink: '/resource/bd/new_bd6.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                teamKey: 826,
-                nameMtext: 'interOcci',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is interOcci.',
-                status: 1,
-                rank: 2,
-                imgLink: '/resource/bd/new_bd3.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                teamKey: 823,
-                nameMtext: 'uniBuzzy',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is uniBuzzy.',
-                status: 1,
-                rank: 3,
-                imgLink: '/resource/bd/new_bd2.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                teamKey: 823,
-                nameMtext: 'uniBuzzy',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is uniBuzzy.',
-                status: 1,
-                rank: 4,
-                imgLink: '/resource/bd/new_bd5.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                teamKey: 823,
-                nameMtext: 'uniBuzzy',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is uniBuzzy.',
-                status: 1,
-                rank: 5,
-                imgLink: '/resource/bd/new_bd1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              }
             ]
           },
           {
@@ -619,48 +485,6 @@ export default {
                 rank: 2,
                 linkUrl: 'https://dining.gatech.edu/node/137',
                 imgLink: '/resource/bd/new_house1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                nameMtext: '3',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                description: "GT's B&N",
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                status: 1,
-                rank: 3,
-                linkUrl: 'https://gatech.bncollege.com/',
-                imgLink: '/resource/bd/new_house1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                nameMtext: '4',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                description: "GT's B&N",
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                status: 1,
-                rank: 4,
-                linkUrl: 'https://gatech.bncollege.com/',
-                imgLink: '/resource/bd/new_mall1.png',
                 maskedImageUrl: '',
                 maskedImageStyle: {},
                 clickedYn: false,
@@ -804,15 +628,15 @@ export default {
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {
-        this.mMainChanList = response.data.teamList
-        this.mMainMChanList = response.data.mTeamList
-        this.mMainAlimList = response.data.alimList.content
-        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
-        await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
+        // this.mMainChanList = response.data.teamList
+        // this.mMainMChanList = response.data.mTeamList
+        // this.mMainAlimList = response.data.alimList.content
+        // await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
+        // await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
       }
-      console.log(this.mMainChanList)
-      console.log(this.mMainMChanList)
-      console.log(this.mMainAlimList)
+      // console.log(this.mMainChanList)
+      // console.log(this.mMainMChanList)
+      // console.log(this.mMainAlimList)
     },
     setNativeHeight () {
       var varUA = localStorage.getItem('systemName')

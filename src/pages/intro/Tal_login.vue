@@ -1,3 +1,15 @@
+<i18n>
+  {
+    "ko": {
+      "LOG_BTN_GOOGLE": "구글 로그인",
+      "LOG_BTN_APPLE": "애플 로그인"
+    },
+    "en": {
+      "LOG_BTN_GOOGLE": "Google Login",
+      "LOG_BTN_APPLE": "Apple Login"
+    }
+  }
+  </i18n>
 <template>
   <div class="pagePaddingWrap loginContentsWrap">
     <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
@@ -21,18 +33,18 @@
         </div> -->
         <div class="loginBtn font20" @click="GoogleLoginBtn">
           <img src="../../assets/images/intro/login/login_google.png">
-          Google 로그인
+          {{ $t('LOG_BTN_GOOGLE') }}
         </div>
         <div v-if="(this.systemName !== 'Android' && this.systemName !== 'android') && mobileYn" class="loginBtn font20" v-on:click="AppleLoginBtn">
           <img src="../../assets/images/intro/login/login_apple.png">
-          Apple 로그인
+          {{ $t('LOG_BTN_APPLE') }}
         </div>
         <div v-else-if="!mobileYn" class="loginBtn appleWebLoginBtn">
           <div id="appleid-signin"  class="signin-button appleWebLoginBtn" data-color="black" data-border="true" data-type="sign in">
           </div>
           <div @click="clickAppleLoginInWeb" class="font20 loginAppleWeb">
             <img src="../../assets/images/intro/login/login_apple.png">
-            Apple 로그인
+            {{ $t('LOG_BTN_APPLE') }}
           </div>
         </div>
       </div>
