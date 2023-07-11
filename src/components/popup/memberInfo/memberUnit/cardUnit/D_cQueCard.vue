@@ -120,7 +120,7 @@ export default {
           }
         }
         if (this.propData.numberYn) {
-          this.mTypeItemDetailMessage += `/${this.$f('MEM_DETAIL_BNT_NUMONLY')}`
+          this.mTypeItemDetailMessage += `/${this.$t('MEM_DETAIL_BNT_NUMONLY')}`
         }
       } else if (this.propData.itemType === 'L') {
         this.mTypeItemDetailMessage += `${this.$t('MEM_DETAIL_NAME_CHOICE')}/${this.$t('MEM_DETAIL_NAME_LIST')}`

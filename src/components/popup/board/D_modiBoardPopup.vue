@@ -83,7 +83,7 @@
 <template>
 <!-- 이 페이지는 gPop에서 열어주지 않고 있고, editBoard 파일에서 가지고 있다. -->
 <div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'"  style="padding-top: 0;">
-  <popHeader @closeXPop="closePop()" :headerTitle="$t('EDIT_BOARD_NAME_BOARD')" />
+  <popHeader @closeXPop="closePop()" :pClosePop="pClosePop" :headerTitle="$t('EDIT_BOARD_NAME_BOARD')" />
   <loadingCompo v-if="loadingYn" />
 
   <!-- 헤더를 제외한 나머지 부분 // 스크롤을 위해 넣었으나, overflow가 되면서 밑 권한 설정 화면에서 쉐도우 처리 양 끝이 hidden 됨-->
@@ -197,7 +197,7 @@
   <gBtnSmall @click="updateCabinet" :btnTitle="$t('EDIT_BOARD_BTN_EDIT')" class="font16 CDeepBgColor" style="width: 70%; min-height:40px; line-height:40px; border-radius:8px; position: absolute; bottom:1.5rem; left:15%;" />
 </div>
 <selectType :chanInfo="this.CHANNEL_DETAIL" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
-<selectBookList :chanInfo="this.CHANNEL_DETAIL" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList" @openPop='openPop' />
+<selectBookList :chanInfo="this.CHANNEL_DETAIL" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" :pClosePop="closeSelectPop" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList" @openPop='openPop' />
 <receiverAccessList :chanInfo="this.CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='selectedList.data' :selectList='permissionSelectedList'  @sendReceivers='receiverPoolInSetting'/>
 <gConfirmPop  :confirmText="$t('EDIT_BOARD_MSG_EDITSUCC')" confirmType='timeout' v-if="okPopYn" @no='closePop' />
 <selectSampleListPop :cabinetDetail="this.modiBoardDetailProps" @setSampleGuide="setSampleGuide" :propsInnerHtml="guideSampleInnerHtml" v-if="samplePopShowYn" @closeXPop="closeSampleListPop" />
@@ -215,7 +215,8 @@ export default {
   props: {
     modiBoardDetailProps: {},
     chanInfo: {},
-    chanName: {}
+    chanName: {},
+    pClosePop: Function
   },
   created () {
     // 로딩 닫기는 디테일을 가져오고 난 뒤
@@ -391,6 +392,9 @@ export default {
   },
   // emits: ['openPop', 'goPage'],
   methods: {
+    closeSelectPop () {
+      this.selectBookListShowYn = false
+    },
     setSampleGuide (iHtml) {
       this.guideSampleInnerHtml = iHtml
     },
@@ -1583,7 +1587,7 @@ export default {
 .addNewBoardWrap {
   width:100% ;
   height: 100vh;
-  position: absolute; z-index: 999;
+  position: absolute; z-index: 999999;
   top: 0;
   right: 0;
   background-color: white;

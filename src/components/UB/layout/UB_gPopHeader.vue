@@ -28,13 +28,14 @@ export default {
   props: {
     // homepageYn: {},
     // chanName: {},
-    // headerTitle: {},
+    headerTitle: {},
     chanAlimListTeamKey: {},
     // subTitlebtnList: {},
     // thisPopN: {},
     bgblack: { type: Boolean, default: false },
     // managerBtn: {},
-    targetType: {}
+    targetType: {},
+    pClosePop: Function
     // helpYn: {},
     // followYn: {},
     // pNoAuthYn: {},
@@ -76,7 +77,7 @@ export default {
       this.$emit('openMenu')
     },
     closeXPop () {
-      this.$emit('closeXPop', 'main')
+      this.pClosePop()
     },
     sendBtnClick () {
       // if (this.headerTitle === '알림 작성') {

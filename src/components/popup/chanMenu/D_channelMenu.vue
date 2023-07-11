@@ -173,8 +173,6 @@ export default {
       this.$emit('closePop')
     },
     async clickEditChanBtn () {
-      console.log('123412341234214this.CHANNEL_DETAIL.D_CHAN_AUTH')
-      console.log(this.CHANNEL_DETAIL)
       // eslint-disable-next-line no-debugger
       debugger
       if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {

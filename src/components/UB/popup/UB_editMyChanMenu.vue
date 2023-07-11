@@ -29,10 +29,18 @@
 }
 </i18n>
 <template>
-<div style="padding: 60px 1.5rem 0 1rem ;box-sizing: border-box; width: 100%; height: 100%;" >
+<div style="padding: 0 1.5rem 0 1rem ;box-sizing: border-box; width: 100%; height: 100%; background: #fff;" >
+  <transition name="show_left">
+    <manageFollowerList v-if="mPopType === 'memberManagement'" :propData="mCommonParam" style="padding-top: 0;" :pClosePop="closePop" />
+  </transition>
+  <transition name="show_left">
+    <editBookListPop v-if="mPopType === 'editBookList'" :propData="mCommonParam" :pClosePop="closePop" />
+  </transition>
+  <createChannel v-if="mPopType === 'createChannel'" :chanDetail="mCommonParam" :pClosePop="closePop" />
+  <editBoardListPop v-if="mPopType === 'editBoard'" :propData="mCommonParam" :pClosePop="closePop" />
+  <gPopHeader :headerTitle="$t('MANA_TITLE_CHANDETAIL')" :pClosePop="pClosePop" />
   <div class="editMyChanMenuWrap">
     <table class="myChanMenuTable w100P fl" >
-
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditChanPop">
         <th class="font16 w100P">
           <div class="myChanMenuImgArea editMychanRow mright-05">
@@ -130,13 +138,27 @@
 
 </template>
 <script>
+import gPopHeader from '../layout/UB_gPopHeader.vue'
+import manageFollowerList from './UB_manageFollowerList.vue'
+import editBookListPop from './UB_editBookListPop.vue'
+import createChannel from './UB_createChannel.vue'
+import editBoardListPop from './UB_editBoardListPop.vue'
 export default {
+  components: {
+    gPopHeader,
+    manageFollowerList,
+    editBookListPop,
+    createChannel,
+    editBoardListPop
+  },
   props: {
-    propData: {}
+    propData: {},
+    pClosePop: Function
   },
   data () {
     return {
-      mCommonParam: {}
+      mCommonParam: {},
+      mPopType: ''
     }
   },
   async created () {
@@ -156,6 +178,9 @@ export default {
     }
   },
   methods: {
+    closePop () {
+      this.mPopType = ''
+    },
     async openEditCabinetPop () {
       this.mCommonParam.targetType = 'editBookList'
       delete this.mCommonParam.param
@@ -174,7 +199,8 @@ export default {
 
       this.mCommonParam.chanName = this.propData.teamNameMtext
       this.mCommonParam.popHeaderText = this.$t('MANA_NAME_ADDRBOOK')
-      this.openPop()
+      this.mPopType = 'editBookList'
+      // this.openPop()
     },
     async openEditBoardPop () {
       this.mCommonParam.targetType = 'editBoard'
@@ -193,7 +219,8 @@ export default {
 
       this.mCommonParam.popHeaderText = this.$t('MANA_NAME_BOARD')
       this.mCommonParam.targetKey = this.propData.teamKey
-      this.openPop()
+      this.mPopType = 'editBoard'
+      // this.openPop()
     },
     chanDetailClick () {
       this.mCommonParam.targetType = 'chanInfo'
@@ -205,7 +232,8 @@ export default {
       this.mCommonParam.targetKey = this.propData.teamKey
       this.mCommonParam.popHeaderText = this.$t('MANA_TITLE_EDITCHAN')
       this.mCommonParam.modiYn = true
-      this.openPop()
+      this.mPopType = 'createChannel'
+      // this.openPop()
     },
     async openEditManagerPop () {
       this.mCommonParam.targetType = 'memberManagement'
@@ -218,7 +246,7 @@ export default {
       var initData = await this.$getManagingPageData(this.mCommonParam)
       this.mCommonParam.popHeaderText = this.$t('MANA_NAME_FOLLOW')
       this.mCommonParam.initData = initData
-      this.openPop()
+      this.mPopType = 'memberManagement'
     },
     autoAnswerClick () {
       this.mCommonParam.targetType = 'autoAnswer'
@@ -241,6 +269,7 @@ export default {
 
 <style >
 .editMyChanMenuWrap{
+  padding-top: 60px;
   /* padding: 0.7rem 0 ; */
   box-sizing: border-box; width: 100%; }
 .editMyChanMenuWrap table{text-align: left; width: 100%; padding: 0 10px}

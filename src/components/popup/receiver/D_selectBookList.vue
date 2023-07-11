@@ -16,7 +16,7 @@
 </i18n>
 <template>
 <div class="selectBookListWrap">
-    <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' />
+    <popHeader @closeXPop="backClick" :pClosePop="pClosePop" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' />
     <div class="pagePaddingWrap selectBookListContents" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
       <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
       <div class="bookListStyle">
@@ -42,7 +42,8 @@ export default {
     detailSelectedYn: {},
     selectedListYn: {},
     propData: {},
-    pSelectedList: {}
+    pSelectedList: {},
+    pClosePop: Function
   },
   data () {
     return {
@@ -355,7 +356,7 @@ export default {
 
 <style >
   .selectBookListWrap{
-    height: 100vh; background-color:white; width:100%; z-index:9999; position:absolute; top:0; left:0;
+    height: 100vh; background-color:white; width:100%; z-index:99999999; position:absolute; top:0; left:0;
   }
   .bookListStyle{
     width: 100%; position: relative; float: left; height: calc(100% - 150px) ; overflow: hidden auto; padding-bottom: 60px;
