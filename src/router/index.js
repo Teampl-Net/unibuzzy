@@ -12,6 +12,7 @@ import login from '../pages/intro/Tal_login.vue'
 let routes = []
 let type = ''
 type = 'UB'
+// type = 'D'
 if (type === 'UB') {
   const routerMain = () => import('../pages/UB/UB_router_main.vue')
   routes = [
@@ -151,6 +152,12 @@ if (type === 'UB') {
             if (localStorage.getItem('loginYn') !== true) { return next() } else next({ name: 'policies' })
           }
         }
+        // {
+        //   path: '/favList',
+        //   name: 'favList',
+        //   props: true,
+        //   component: () => import(/* webpackChunkName: "about" */ '../components/UB/popup/UB_favListPop.vue')
+        // }
       ]
     },
     {

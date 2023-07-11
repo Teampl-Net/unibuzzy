@@ -74,6 +74,7 @@ const i18n = createI18n({
 let app = {}
 let type = ''
 type = 'UB'
+// type = 'D'
 if (type === 'D') {
   const importsD = Promise.all([
     import('./components/popup/common/Tal_gPopupWrap.vue'),
@@ -106,7 +107,7 @@ if (type === 'D') {
 } else if (type === 'UB') {
   const importsUB = Promise.all([
     import('./components/UB/layout/UB_gMainHeader.vue'),
-    import('./pages/UB/routerPages/UB_favList.vue'),
+    import('./components/UB/popup/UB_favListPop.vue'),
     import('./components/UB/layout/UB_gPopHeader.vue'),
     import('./components/UB/popup/common/UB_gPopupWrap.vue'),
     import('./components/UB/unit/UB_commonSelectFilter.vue'),

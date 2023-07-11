@@ -2,7 +2,7 @@
   <div class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
     <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
       <transition name="showUp">
-        <areaInfoPop @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaInfo="mSelectedAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
+        <areaInfoPop @openPage="openPage" v-if="mInfoBoxShowYn"  :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
       </transition>
     <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: cover; overflow: hidden;">
       <!-- <UBBgEffect /> -->
@@ -24,7 +24,7 @@
         <UBAreaBdList v-if="mShowAreaBdList" style="top: 100px; height: calc(100% - 100px); width: 80%;" />
       </transition>
       <!-- area -->
-      <template v-for="(area) in village.areaList" :key="area.key">
+      <!-- <template v-for="(area) in village.areaList" :key="area.key">
         <div style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: area.clickedYn}" :style="{ width: area.w + 'px', height: area.h + 'px', top: area.top + 'px', left: area.left + 'px' }">
           <img :ref="area.name + area.key" style="position: absolute;" :src="area.maskedImageUrl" :style="area.maskedImageStyle" />
           <div v-if="area.name" class="fontBold" style="background-color: rgba(245, 245, 220, 0.5) !important; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
@@ -33,7 +33,19 @@
         </div>
         <div v-for="(bd) in area.buildingList" :key="bd.key" class="bdDiv" :class="{clicked: bd.clickedYn}" style="position: absolute; z-index: 9;" :style="[bd.maskedImageStyle, { top: bd.top+ 'px', left: bd.left + 'px' }]">
           <img :src="bd.maskedImageUrl" />
-          <!-- <span class="fontBold" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.nameMtext }}</span> -->
+          <span class="fontBold" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.nameMtext }}</span>
+        </div>
+      </template> -->
+      <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
+        <div style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: area.clickedYn}" :style="{ width: area.w + 'px', height: area.h + 'px', top: area.top + 'px', left: area.left + 'px' }">
+          <img style="position: absolute;" :src="area.maskedImageUrl" :style="area.maskedImageStyle" />
+          <div v-if="area.bdAreaNameMtext && area.bdAreaKey === 3" class="fontBold" style="background-color: rgba(245, 245, 220, 0.5) !important; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
+            <p @click="openAreaInfoPop(area)" class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.bdAreaNameMtext }}</p>
+          </div>
+        </div>
+        <div v-for="(bd) in area.bdList" :key="bd.targetKey" class="bdDiv" :class="{clicked: bd.clickedYn}" style="position: absolute; z-index: 9;" :style="[bd.maskedImageStyle, { top: bd.top+ 'px', left: bd.left + 'px' }]">
+          <img :src="bd.maskedImageUrl" />
+          <span class="fontBold" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.nameMtext }}</span>
         </div>
       </template>
     </div>
@@ -58,6 +70,11 @@ export default {
         imgLink: ''
       },
       village: {
+        // Clubs & Startups: 12
+        // Majors: 13
+        // Classes: 14
+        // Facilities & Amenties: 15
+        // Nearby: 16
         villageInfo: {
           key: 1,
           name: 'Georgia Tech',
@@ -75,8 +92,8 @@ export default {
             areaYn: true,
             // parentKey: null,
             // description: 'This is Georgia Tech Village!',
-            type: 'CO', // CA: Campus, CL: club, PL: plaza, ST: startup, AC: academic ,CO: college,  FA: Facilities, MA: Nearby
-            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
+            // type: 'CO', // CA: Campus, CL: club, PL: plaza, ST: startup, AC: academic ,CO: college,  FA: Facilities, MA: Nearby
+            // status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
             rank: null,
             imgLink: '/resource/main/UB_collegeArea.png',
             maskedImageUrl: '',
@@ -89,22 +106,16 @@ export default {
             buildingList: [
               {
                 teamKey: 824,
-                nameMtext: 'Georgia Tech',
-                creDate: '2023-06-30T04:33:54',
-                updDate: '2023-07-11T03:04:28',
+                nameMtext: '',
                 ctx: {},
                 areaYn: false,
                 parentKey: 0,
-                type: 'CB', // campus building
-                status: 1,
+                // type: 'CB', // campus building
+                // status: 1,
                 rank: 1,
                 followerList: [],
                 managerList: [],
                 description: 'This is Georgia Tech Campus town!',
-                logoDomainPath: 'https://m.passtory.net:7443/fileServer',
-                logoPathMtext: '/image/2023/06/30/b8736f0c-a250-4ff3-aebc-2b704e6ecd8d_true',
-                memoMtext: 'This is Georgia Tech!',
-                followerCount: 3,
                 logoImg: '/resource/new/logo/GWCLogo.png',
                 imgLink: '/resource/bd/new_college.png',
                 maskedImageUrl: '',
@@ -127,8 +138,8 @@ export default {
             areaYn: true,
             parentKey: null,
             description: 'This area is GT Plaza. Take a look around!',
-            type: 'PL', // CL: club, PL: plaza, ST: startup, AC: academic
-            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
+            // type: 'PL', // CL: club, PL: plaza, ST: startup, AC: academic
+            // status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
             rank: null,
             imgLink: '/resource/main/UB_plaza.png',
             maskedImageUrl: '',
@@ -147,8 +158,8 @@ export default {
             areaYn: true,
             parentKey: null,
             description: 'This area is for GT Academic. Take a look around!',
-            type: 'AC', // CL: club, PL: plaza, ST: startup, AC: academic
-            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
+            // type: 'AC', // CL: club, PL: plaza, ST: startup, AC: academic
+            // status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
             rank: 0,
             imgLink: '/resource/main/UB_area1.png',
             maskedImageUrl: '',
@@ -161,43 +172,14 @@ export default {
             h: 0,
             buildingList: [
               {
-                teamKey: 823,
-                nameMtext: 'uniBuzzy',
-                logoPathMtext: '/resource/channeliconbg/CHAR01.png',
-                memoMtext: 'This is uniBuzzy.',
-                updDate: '2023-06-29T06:08:08',
-                followerCount: 1,
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is uniBuzzy.',
-                status: 1,
-                rank: 1,
-                imgLink: '/resource/bd/new_bd6.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
                 teamKey: 822,
                 nameMtext: 'GWC',
-                logoPathMtext: '/resource/channeliconbg/CHAR01.png',
-                memoMtext: 'This is GWC club from Georgia Tech!',
-                updDate: '2023-07-10T09:18:18',
-                followerCount: 1,
                 ctx: {},
                 areaYn: false,
                 parentKey: 3,
-                type: 'BU', // building
-                status: 1,
-                rank: 2,
+                // type: 'BU', // building
+                // status: 1,
+                rank: 1,
                 followerList: [],
                 managerList: [],
                 description: 'This is GT GWC channel!',
@@ -211,31 +193,6 @@ export default {
                 w: 0,
                 h: 0
               },
-              {
-                teamKey: 826,
-                nameMtext: 'interOcci',
-                logoPathMtext: '/resource/channeliconbg/CHAR06.png',
-                memoMtext: 'Hi. This is interOcci.',
-                updDate: '2023-06-30T05:59:22',
-                followerCount: 1,
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is interOcci.',
-                status: 1,
-                rank: 3,
-                imgLink: '/resource/bd/new_bd3.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              }
               // {
               //   nameMtext: 'B&N',
               //   ctx: {},
@@ -278,27 +235,27 @@ export default {
               //   w: 0,
               //   h: 0
               // },
-              // {
-              //   nameMtext: 'B&N',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 4,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // }
+              {
+                nameMtext: 'B&N',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                description: "GT's B&N",
+                // type: 'BU', // building
+                // followerList: [],
+                // managerList: [],
+                // status: 1,
+                rank: 4,
+                linkUrl: 'https://gatech.bncollege.com/',
+                imgLink: '/resource/bd/new_house1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
               // {
               //   nameMtext: 'B&N',
               //   ctx: {},
@@ -330,8 +287,8 @@ export default {
             areaYn: true,
             parentKey: null,
             description: 'This area is for GT Clubs. Take a look around!',
-            type: 'CL', // CL: club, PL: plaza, ST: startup, AC: academic
-            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
+            // type: 'CL', // CL: club, PL: plaza, ST: startup, AC: academic
+            // status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
             rank: 1,
             imgLink: '/resource/main/UB_area2.png',
             maskedImageUrl: '',
@@ -345,10 +302,6 @@ export default {
               {
                 teamKey: 821,
                 nameMtext: 'CS',
-                logoPathMtext: '/resource/channeliconbg/CHAR04.png',
-                memoMtext: 'Hi! This is Georgia Tech CS Channel :)',
-                updDate: '2023-06-09T07:19:49',
-                followerCount: 1,
                 ctx: {},
                 areaYn: false,
                 parentKey: 2,
@@ -367,15 +320,54 @@ export default {
                 w: 0,
                 h: 0
               },
+              // {
+              //   key: 2.2,
+              //   teamKey: 825,
+              //   nameMtext: 'IE',
+              //   ctx: {},
+              //   areaYn: false,
+              //   parentKey: 2,
+              //   type: 'BU', // building
+              //   followerList: [],
+              //   managerList: [],
+              //   description: 'This is IE channel!',
+              //   status: 1,
+              //   rank: 2,
+              //   imgLink: '/resource/bd/new_bd1.png',
+              //   maskedImageUrl: '',
+              //   maskedImageStyle: {},
+              //   clickedYn: false,
+              //   left: 0,
+              //   top: 0,
+              //   w: 0,
+              //   h: 0
+              // },
+              // {
+              //   key: 2.2,
+              //   teamKey: 825,
+              //   nameMtext: 'IE',
+              //   ctx: {},
+              //   areaYn: false,
+              //   parentKey: 2,
+              //   type: 'BU', // building
+              //   followerList: [],
+              //   managerList: [],
+              //   description: 'This is IE channel!',
+              //   status: 1,
+              //   rank: 3,
+              //   imgLink: '/resource/bd/new_mall1.png',
+              //   maskedImageUrl: '',
+              //   maskedImageStyle: {},
+              //   clickedYn: false,
+              //   left: 0,
+              //   top: 0,
+              //   w: 0,
+              //   h: 0
+              // },
               {
                 key: 2.2,
                 teamKey: 825,
                 nameMtext: 'IE',
-                logoDomainPath: 'https://m.passtory.net:7443/fileServer',
-                logoPathMtext: '/image/2023/06/30/86c53295-9247-49e1-aef4-41ccc5c0d399_true',
-                memoMtext: 'This is GT Industrial Engineering Major!',
-                updDate: '2023-06-30T05:38:44',
-                followerCount: 1,
                 ctx: {},
                 areaYn: false,
                 parentKey: 2,
@@ -384,7 +376,7 @@ export default {
                 managerList: [],
                 description: 'This is IE channel!',
                 status: 1,
-                rank: 2,
+                rank: 4,
                 imgLink: '/resource/bd/new_mall1.png',
                 maskedImageUrl: '',
                 maskedImageStyle: {},
@@ -394,6 +386,28 @@ export default {
                 w: 0,
                 h: 0
               }
+              // {
+              //   key: 2.2,
+              //   teamKey: 825,
+              //   nameMtext: 'IE',
+              //   ctx: {},
+              //   areaYn: false,
+              //   parentKey: 2,
+              //   type: 'BU', // building
+              //   followerList: [],
+              //   managerList: [],
+              //   description: 'This is IE channel!',
+              //   status: 1,
+              //   rank: 5,
+              //   imgLink: '/resource/bd/new_bd1.png',
+              //   maskedImageUrl: '',
+              //   maskedImageStyle: {},
+              //   clickedYn: false,
+              //   left: 0,
+              //   top: 0,
+              //   w: 0,
+              //   h: 0
+              // }
             ]
           },
           {
@@ -415,6 +429,111 @@ export default {
             w: 0,
             h: 0,
             buildingList: [
+              {
+                teamKey: 823,
+                nameMtext: 'uniBuzzy',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is uniBuzzy.',
+                status: 1,
+                rank: 1,
+                imgLink: '/resource/bd/new_bd6.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                teamKey: 826,
+                nameMtext: 'interOcci',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is interOcci.',
+                status: 1,
+                rank: 2,
+                imgLink: '/resource/bd/new_bd3.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                teamKey: 823,
+                nameMtext: 'uniBuzzy',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is uniBuzzy.',
+                status: 1,
+                rank: 3,
+                imgLink: '/resource/bd/new_bd2.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                teamKey: 823,
+                nameMtext: 'uniBuzzy',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is uniBuzzy.',
+                status: 1,
+                rank: 4,
+                imgLink: '/resource/bd/new_bd5.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                teamKey: 823,
+                nameMtext: 'uniBuzzy',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                description: 'This is uniBuzzy.',
+                status: 1,
+                rank: 5,
+                imgLink: '/resource/bd/new_bd1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              }
             ]
           },
           {
@@ -439,10 +558,6 @@ export default {
               {
                 teamKey: 826,
                 nameMtext: 'CRC',
-                logoPathMtext: '/resource/channeliconbg/CHAR06.png',
-                memoMtext: 'Hi. This is interOcci.',
-                updDate: '2023-06-30T05:59:22',
-                followerCount: 1,
                 ctx: {},
                 areaYn: false,
                 parentKey: 2,
@@ -484,10 +599,6 @@ export default {
             buildingList: [
               {
                 nameMtext: 'B&N',
-                logoPathMtext: '/resource/bd/new_house1.png',
-                memoMtext: 'GT\'s B&N',
-                updDate: '2023-06-30T05:59:22',
-                followerCount: 1,
                 ctx: {},
                 areaYn: false,
                 parentKey: 2,
@@ -509,10 +620,6 @@ export default {
               },
               {
                 nameMtext: 'Panda Express',
-                logoPathMtext: '/resource/bd/new_house1.png',
-                memoMtext: 'Panda Express!',
-                updDate: '2023-06-30T05:59:22',
-                followerCount: 1,
                 ctx: {},
                 areaYn: false,
                 parentKey: 2,
@@ -524,6 +631,48 @@ export default {
                 rank: 2,
                 linkUrl: 'https://dining.gatech.edu/node/137',
                 imgLink: '/resource/bd/new_house1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                nameMtext: '3',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                description: "GT's B&N",
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                status: 1,
+                rank: 3,
+                linkUrl: 'https://gatech.bncollege.com/',
+                imgLink: '/resource/bd/new_house1.png',
+                maskedImageUrl: '',
+                maskedImageStyle: {},
+                clickedYn: false,
+                left: 0,
+                top: 0,
+                w: 0,
+                h: 0
+              },
+              {
+                nameMtext: '4',
+                ctx: {},
+                areaYn: false,
+                parentKey: 2,
+                description: "GT's B&N",
+                type: 'BU', // building
+                followerList: [],
+                managerList: [],
+                status: 1,
+                rank: 4,
+                linkUrl: 'https://gatech.bncollege.com/',
+                imgLink: '/resource/bd/new_mall1.png',
                 maskedImageUrl: '',
                 maskedImageStyle: {},
                 clickedYn: false,
@@ -564,15 +713,14 @@ export default {
       clickedArea: {},
       clickedBd: {},
       clickedRank: 0,
-      mMainChanList: [],
-      mMainMChanList: [],
-      mMainAlimList: [],
+      mBdAreaList: [],
+      mFTeamList: [],
+      mAlimCount: [],
       mAxiosQueue: [],
       mSelectedAreaInfo: {}
     }
   },
   created () {
-    this.$emit('clearInfo', { detail: {}, targetType: 'main' })
     this.resetHistory()
     this.setNativeHeight()
 
@@ -607,6 +755,25 @@ export default {
     this.innerHeight = window.innerHeight
   },
   methods: {
+    async openAreaInfoPop (area) {
+      const param = {
+        bdArea: {
+          bdAreaKey: area.bdAreaKey
+          // bdAreaKey: 3
+        }
+      }
+      var result = await this.$commonAxiosFunction({
+        url: '/service/tp.getBdAreaDetail',
+        param: param
+      })
+      if (result.data) {
+        this.mAreaDetail = result.data
+        this.mAreaInfo = area
+        console.log('여기지롱~~~~~~~~~~~~')
+        console.log(result)
+        this.mInfoBoxShowYn = true
+      }
+    },
     closePop () {
       this.mInfoBoxShowYn = false
     },
@@ -664,18 +831,23 @@ export default {
       paramMap.set('mobileYn', isMobile)
       var response = await this.$axios.post('/service/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
       )
+      console.log('responsed')
+      console.log(response)
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {
-        // this.mMainChanList = response.data.teamList
-        // this.mMainMChanList = response.data.mTeamList
-        // this.mMainAlimList = response.data.alimList.content
-        // await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
-        // await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
+        this.mBdAreaList = response.data.bdAreaList
+        this.mFTeamList = response.data.fTeamList
+        this.mAlimCount = response.data.alimCount
+        // await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mBdAreaList, ...this.mMainMChanList])
+        // await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimListmMainAlimList)
       }
-      // console.log(this.mMainChanList)
-      // console.log(this.mMainMChanList)
-      // console.log(this.mMainAlimList)
+      console.log('this.mBdAreaList1111111111111111')
+      console.log(this.mBdAreaList)
+      console.log('this.mFTeamList')
+      console.log(this.mFTeamList)
+      console.log('this.mAlimCount')
+      console.log(this.mAlimCount)
     },
     setNativeHeight () {
       var varUA = localStorage.getItem('systemName')
@@ -1000,12 +1172,12 @@ export default {
       this.clickedRank = 0
       this.allClearFocus()
       let findYn = false
-      const areaList = this.village.areaList
-      for (let i = areaList.length - 1; i >= 0; i--) {
-        const area = areaList[i]
-        if (area.buildingList && area.buildingList.length !== 0) {
-          for (let j = 0; j < area.buildingList.length; j++) {
-            const bd = area.buildingList[j]
+      const mBdAreaList = this.mBdAreaList
+      for (let i = mBdAreaList.length - 1; i >= 0; i--) {
+        const area = mBdAreaList[i]
+        if (area.bdList && area.bdList.length !== 0) {
+          for (let j = 0; j < area.bdList.length; j++) {
+            const bd = area.bdList[j]
             if (bd.ctx === null) continue
             findYn = false
             if (event.clientX >= bd.left && event.clientX <= (bd.left + bd.w) && event.clientY >= bd.top && event.clientY <= (bd.top + bd.h)) {
@@ -1018,8 +1190,8 @@ export default {
           this.allClearFocus()
           if (findYn === false) continue
 
-          for (let j = area.buildingList.length - 1; j >= 0; j--) {
-            const bd = area.buildingList[j]
+          for (let j = area.bdList.length - 1; j >= 0; j--) {
+            const bd = area.bdList[j]
             if (bd.onImgYn === false) continue
 
             const _x = event.clientX - bd.left

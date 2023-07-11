@@ -6,26 +6,22 @@
     <gConfirmPop :confirmText="mErrorPopBodyStr" confirmType='one' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" style="z-index: 9999999999999999999999;"/>
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
     <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
-    <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" @goLogList="openPop" v-if="mTargetType !== 'chanDetail' && mTargetType !== 'boardMain' && mPopType === ''" @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9" />
-    <chanHeader v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === ''" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo.targetKey" @closeXPop="closeXPop" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" @openPop="openPop" class="chanDetailPopHeader" />
-    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mPopType === 'writeContents'" @click="mPopType = ''"></div>
-    <writeContents v-if="mPopType === 'writeContents'" @closeXPop="closeWritePop" :params="mPopParams" :propData="mPopParams" :contentType="mPopParams.contentsJobkindId" />
-    <div v-if="mPopType === 'logList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: transparent;"></div>
-    <transition name="showUp">
-      <notiHistoryList @closeXPop="closeWritePop" @openPage="openPage" v-if="mPopType === 'logList'" />
-    </transition>
-    <!-- <gFavList /> -->
+    <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" @goLogList="openPop" v-if="mTargetType !== 'chanDetail' && mTargetType !== 'boardMain'" @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9" />
+    <chanHeader v-if="mTargetType === 'chanDetail' || mTargetType === 'boardMain'" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo.targetKey" @closeXPop="closeXPop" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" @openPop="openPop" class="chanDetailPopHeader" />
+    <!-- <gPopupWrap v-if="mGPopShowYn" @openPop="openPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" parentPopN="0" :propParams="mChanInfo" @parentClose='parentClose' /> -->
+    <!-- <popHeader v-if="mGPopShowYn" @closeXPop="closeXPop" /> -->
+    <gFavList v-if="mGPopShowYn && mTargetType === 'favList'" />
+    <gLogList v-if="mGPopShowYn && mTargetType === 'logList'" />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:999;" v-if="mMenuShowYn" @click="hideMenu"></div>
     <transition name="show_left">
       <D_MENU transition="show_left" @hideMenu="hideMenu" @openPop="openPop" @goPage="changeRouterPath" class="D_menuStyle " v-if="mMenuShowYn" />
     </transition>
-    <editMyChanMenu style="z-index: 999999;" v-if="mPopType === 'myChanMenuEdit'" :pClosePop="closeWritePop" :propData="mPopParams" />
     <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
     <div :class="{ myPageBgColor : mMyPageBgColorYn }"  class="" :style="'height: calc(100% - 60px);'" style="overflow: hidden; width:100%;">
       <!-- <gCloudLoading v-if="cloudTransShowYn" style="position: absolute; top: 0; left: 0" /> -->
-      <router-view :key="$route.fullPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="openPage" @goDetail="goDetail" @openUserProfile="openPop" @chanInfo="showCloudLoading" :popYn="false" @changePageHeader="changePageHeader" />
+      <router-view :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="openPage" @goDetail="goDetail" @openUserProfile="openPop" @chanInfo="showCloudLoading" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
-    <gFooter v-if="!$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
+    <gFooter @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
     <!-- <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" /> -->
   </div>
 </template>
@@ -36,9 +32,6 @@ import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfir
 import D_MENU from '../../components/UB/popup/common/UB_common_menu.vue'
 import chanHeader from '../../components/UB/layout/UB_gChanMainHeader.vue'
 import chanMenu from '../../components/popup/chanMenu/D_channelMenu.vue'
-import notiHistoryList from '@/components/UB/popup/UB_notiHistoryList.vue'
-import writeContents from '../../components/popup/D_writeContents.vue'
-import editMyChanMenu from '../../components/UB/popup/UB_editMyChanMenu.vue'
 // import unknownLoginPop from '../../components/pageComponents/channel/D_unknownLoginPop.vue'
 export default {
   data () {
@@ -62,16 +55,14 @@ export default {
       mErrorPopBodyStr: '',
       mErrorPopShowYn: false,
       mNetReturnPopShowYn: false,
-      mCampusTownInfo: {},
-      mPopType: '',
-      mBottomYn: Boolean
+      mCampusTownInfo: {}
     }
   },
   created () {
-    // if (this.GE_USER.unknownYn) {
-    //   this.goUniBTown()
-    //   return
-    // }
+    if (this.GE_USER.unknownYn) {
+      this.goUniBTown()
+      return
+    }
     if (localStorage.getItem('backBtnShowYn') !== undefined && localStorage.getItem('backBtnShowYn') !== 'undefined') {
       localStorage.setItem('backBtnShowYn', 'false')
     }
@@ -90,13 +81,6 @@ export default {
     this.getCTeamList()
   },
   methods: {
-    closeWritePop () {
-      this.mPopType = ''
-    },
-    clearInfo (value) {
-      this.mChanInfo = value.detail
-      this.mTargetType = value.targetType
-    },
     async goUniBTown () {
       this.$router.push('/unibuzzy')
     },
@@ -243,7 +227,7 @@ export default {
         console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         console.log(detailValue)
         var detailParam = {}
-        detailParam.targetType = 'contDetail'
+        detailParam.targetType = 'contentsDetail'
         detailParam.targetKey = detailValue.targetKey
         if (!detailParam.targetKey) detailParam.targetKey = detailValue.contentsKey
         detailParam.memoScrollYn = detailValue.memoScrollYn
@@ -270,19 +254,17 @@ export default {
           if (detailParam.jobkindId === 'BOAR') {
             detailParam.cabinetKey = result.content.cabinetKey
             detailParam.cabinetNameMtext = this.$changeText(result.content.cabinetNameMtext)
-            if (result.content.cabinetNameMtext) this.changePageHeader(result.content.cabinetNameMtext)
+            if (result.content.cabinetNameMtext) detailParam.popHeaderText = result.content.cabinetNameMtext
           } else {
-            detailParam.nameMtext = this.$changeText(result.content.nameMtext)
-            detailParam.teamName = this.$changeText(result.content.nameMtext)
-            if (result.content.nameMtext) this.changePageHeader(detailParam.teamName)
+            detailParam.nameMtext = this.$changeText(detailValue.nameMtext)
+            detailParam.teamName = this.$changeText(detailValue.nameMtext)
+            if (result.content.nameMtext) detailParam.popHeaderText = result.content.nameMtext
           }
         }
         detailParam.initData = result
         detailParam.notiYn = true
-        this.mChanInfo = detailParam
-        this.mTargetType = 'contDetail'
 
-        this.$router.push(`/contents/${axiosParam.contentsKey}/${detailParam.jobkindId}`)
+        // this.mPopParams = detailParam
       }
     },
     getParamMap (urlString) {
@@ -362,22 +344,19 @@ export default {
     },
     async openPop (params) {
       console.log('paramsparamsparamsparamsparamsparams', params)
-      this.mPopType = params.targetType
+      this.mTargetType = params.targetType
       this.mPopParams = params
       this.mGPopShowYn = true
       this.hideMenu()
-      if (params.targetType === 'setMypage') {
-        this.openPage(params)
-      }
     },
-    goFavList () {
-
-    },
-    // goLogList (param) {
-    //   this.openPage(param)
-    //   this.mRouterHeaderInfo = param.popHeaderText
-    //   this.$router.push({ name: 'logList' })
+    // goFavList () {
+    //   this.$router.push({ name: 'favList' })
     // },
+    goLogList () {
+    //   // this.openPage(param)
+    //   this.mRouterHeaderInfo = param.popHeaderText
+      this.$router.push({ name: 'logList' })
+    },
     changePageHeader (title) {
       this.mRouterHeaderInfo = title
     },
@@ -399,7 +378,6 @@ export default {
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
       this.$store.commit('D_HISTORY/updateStack', history)
       this.$store.dispatch('D_HISTORY/AC_REMOVE_POP_HISTORY_STACK')
-      this.mTargetType = ''
       this.mGPopShowYn = false
     },
     async openPage (params) {
@@ -411,8 +389,6 @@ export default {
         return
       } else if (params.targetType === 'logList') {
         this.goLogList(params)
-      } else if (params.targetType === 'contDetail') {
-        this.goDetail(params)
       } else if (params.targetType === 'myPage') {
         this.goMyPage(params)
       } else if (params.targetType === 'boardMain') {
@@ -421,12 +397,6 @@ export default {
         this.$router.push(`/board/${params.teamKey}/${params.targetKey}`)
       } else if (params.targetType === 'writeContents') {
         this.openPop(params)
-      } else if (params.targetType === 'myChanMenuEdit') {
-        this.openPop(params)
-      } else if (params.targetType === 'setMypage') {
-        this.mChanInfo = params
-        this.mTargetType = 'setMypage'
-        this.$router.push('/settings')
       }
       this.hideMenu()
     },
@@ -536,12 +506,6 @@ export default {
     }
   },
   watch: {
-    $route: {
-      handler () {
-        this.mPopType = ''
-      },
-      deep: true
-    },
     pageUpdate (value, old) {
       var history = this.historyStack
       history = history[history.length - 1]
@@ -586,9 +550,6 @@ export default {
     this.$checkDeleteHistory(this.mPopId)
   },
   components: {
-    editMyChanMenu,
-    writeContents,
-    notiHistoryList,
     // unknownLoginPop,
     gUBHeader,
     commonConfirmPop,
