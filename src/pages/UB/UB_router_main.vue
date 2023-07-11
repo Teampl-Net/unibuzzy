@@ -26,7 +26,7 @@
       <!-- <gCloudLoading v-if="cloudTransShowYn" style="position: absolute; top: 0; left: 0" /> -->
       <router-view :key="$route.fullPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="openPage" @goDetail="goDetail" @openUserProfile="openPop" @chanInfo="showCloudLoading" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
-    <gFooter @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
+    <gFooter v-if="!$route.path.includes('contents')" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
     <!-- <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" /> -->
   </div>
 </template>
@@ -63,7 +63,8 @@ export default {
       mErrorPopShowYn: false,
       mNetReturnPopShowYn: false,
       mCampusTownInfo: {},
-      mPopType: ''
+      mPopType: '',
+      mBottomYn: Boolean
     }
   },
   created () {

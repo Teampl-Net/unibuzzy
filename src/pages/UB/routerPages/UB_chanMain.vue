@@ -17,9 +17,11 @@
         <div class="w100P h100P" style="">
           <!-- <img src="../../../assets/images/channel/chanBgImg.jpeg" style="width:100%; height: calc(100% + 50px); position: absolute; left: 0; top: -50px;" /> -->
           <div class="w100P" style="height: calc(100% + 50px); position: absolute; left: 0; top: -50px; background: linear-gradient(to bottom, rgba(20, 20, 20, 0) 40%,rgba(20, 20, 20, 0.25) 50%,rgba(20, 20, 20, 0.5) 70%,rgba(20, 20, 20, 0.6) 90%,rgba(20, 20, 20, 0.8) 100%);"></div>
-          <div class="font16 fontBold textLeft" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ changeText(CHANNEL_DETAIL.nameMtext) }} > {{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
-          <div class="font22 fontBold textLeft" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
+          <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ changeText(CHANNEL_DETAIL.nameMtext) }} > {{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
+          <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
           <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
+          <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" :btnTitle="$t('COMM_BTN_SUB')" />
+          <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;"  @click="changeFollowYn" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="$t('COMM_BTN_UNSUB')" />
         </div>
 
         <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; height:118px; padding: 15px; box-sizing:border-box; word-break:break-all">
@@ -31,7 +33,7 @@
               <img src='../../../assets/images/contents/icon_share.png' width="20" height="20"/>
             </div>
           </div>
-          <div class="h100P fl mleft-1" style="display: flex; align-items: center; flex-direction: column; border-radius: 5px; padding: 10px; border: 2px solid #ccc; width: calc(100% - 100px - 1rem);">
+          <div class="h100P fl mleft-1" style="position: relative; display: flex; align-items: center; flex-direction: column; border-radius: 5px; padding: 10px; border: 2px solid #ccc; width: calc(100% - 100px - 1rem);">
             <div class="fontBold fl w100P font14 textLeft" style="word-break:break-all;">{{ $changeText(CHANNEL_DETAIL.memoMtext) }}</div>
             <div class="w100P fl" style="display: flex; align-items: space-between;">
               <div class="font14" style="float: left; margin-right:20px">Follower <span style="color:black; text-decoration: underline;" class="fontBold">{{ CHANNEL_DETAIL.followerCount }}</span></div>
@@ -50,9 +52,6 @@
           </div>
         </div>
       </div>
-      <div @click="changeFollowYn" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" class="fr" style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.followYn ? 'background-color:#DC143C' : 'background-color:#eee'">
-        <p class="fl font14 fontBold" :style="CHANNEL_DETAIL.D_CHAN_AUTH.followYn ? 'color:white' : ''">구독취소</p>
-      </div>
     </div>
 
     <div class="channelItemBox" ref="channelItemBox" style="margin-top: 220px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
@@ -68,7 +67,7 @@
         @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.CHANNEL_DETAIL" style="background-color: #fff;">
       </chanDetailComp>
     </div>
-    <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%; z-index:9; cursor: pointer;" class="img-78 img-w66">
+    <img id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 70px; right: 10%; z-index:9; cursor: pointer;" class="img-78 img-w66">
     <gConfirmPop :confirmText='mErrorPopBodyStr' :confirmType='mErrorPopBtnType' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" @ok="confirmOk" />
     <div v-if="writeBottSheetYn" @click="writeBottSheetYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
     <transition name="showUp">
@@ -829,4 +828,21 @@ export default {
 }
 span {
   color: white;
-}</style>
+}
+@media screen and (max-width: 768px) {
+  .chanImgRound {
+    width: 70px;
+    height: 70px;
+    bottom: -25px;
+  }
+  .nameTitleSmall, .nameTitleBig {
+    left: 100px !important;
+  }
+  .nameTitleSmall {
+    font-size: 15px !important;
+  }
+  .nameTitleBig {
+    font-size: 18px !important;
+  }
+}
+</style>

@@ -75,11 +75,14 @@ export default {
       mainText: null,
       confirmPopShowYn: false,
       errorPopShowYn: false,
-      confirmText: ''
+      confirmText: '',
+      mSaveFollowerType: '',
+      mErrorPopBodyStr: '',
+      mErrorPopBtnType: '',
+      mErrorPopShowYn: false
     }
   },
   created () {
-    alert(true)
     this.$addHistoryStack('selectBoardList')
 
     if (this.type === 'move') {
@@ -87,8 +90,6 @@ export default {
     } else if (this.type === 'copy') {
       this.mainText = '복사'
     }
-    // console.log(this.boardDetail)
-    // console.log(this.boardValue)
     this.getTeamMenuList()
   },
   methods: {
