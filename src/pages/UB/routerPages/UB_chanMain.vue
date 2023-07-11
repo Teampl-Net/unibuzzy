@@ -145,6 +145,8 @@ export default {
   //   unknownLoginPop
   },
   created () {
+    console.log('120384912093408123094908213094')
+    console.log(this.propParams)
     // eslint-disable-next-line no-debugger
     debugger
     this.$emit('openLoading')

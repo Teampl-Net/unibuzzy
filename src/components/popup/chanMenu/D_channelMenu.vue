@@ -8,6 +8,7 @@
     "MANA_NAME_CAHN": "채널 관리",
     "MANA_NAME_ADDRBOOK": "주소록 관리",
     "MANA_NAME_BOARD": "게시판 관리",
+    "CHAN_MSG_NOFOLLOW": "권한이 없습니다"
   },
   "en": {
     "CHAN_MENU_TITLE_MENU": "Channel Menu",
@@ -17,6 +18,7 @@
     "MANA_NAME_CAHN": "Manage Channel",
     "MANA_NAME_ADDRBOOK": "Manage Address Book",
     "MANA_NAME_BOARD": "Manage Board",
+    "CHAN_MSG_NOFOLLOW": "No Permission"
   }
 }
 </i18n>
@@ -171,6 +173,8 @@ export default {
       this.$emit('closePop')
     },
     async clickEditChanBtn () {
+      console.log('123412341234214this.CHANNEL_DETAIL.D_CHAN_AUTH')
+      console.log(this.CHANNEL_DETAIL)
       // eslint-disable-next-line no-debugger
       debugger
       if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
