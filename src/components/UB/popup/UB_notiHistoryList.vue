@@ -65,26 +65,6 @@ export default {
       this.$store.commit('D_HISTORY/updateStack', history)
       this.$emit('closeXPop')
     },
-    // openPop (noti) {
-    //   if (noti['content-available'] === 'true') {
-    //     const value = JSON.parse(noti.userDo)
-    //     console.log(2190341208934)
-    //     console.log(noti)
-    //     const param = {}
-    //     param.targetKey = value.targetKey
-    //     param.contentsKey = value.targetKey
-    //     param.memoScrollYn = true
-    //     param.teamKey = Number(noti.creTeamKey)
-    //     param.creTeamKey = Number(noti.creTeamKey)
-    //     param.jobkinId = noti.jobkindId
-    //     if (param.jobkindId === 'BOAR') {
-    //       param.cabinetKey = value.cabinetKey
-    //     }
-    //     param.targetType = 'contDetail'
-    //     this.$emit('openPage', param)
-    //     this.closeXPop()
-    //   }
-    // },
     goContentsDetail (noti) {
       if (noti['content-available'] === 'true') {
         const notiObj = JSON.parse(noti.userDo)
