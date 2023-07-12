@@ -120,10 +120,16 @@ if (type === 'UB') {
           path: '/settings',
           name: 'settings',
           props: true,
-          component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_setMypage.vue'),
+          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_setMyPage.vue'),
           meta: {
             page: 4
           }
+        },
+        {
+          path: '/fileBox',
+          name: 'fileBox',
+          props: true,
+          component: () => import(/* webpackChunkName: "about" */ '../components/popup/file/D_totalFileList.vue')
         },
         /* {
           path: '/',

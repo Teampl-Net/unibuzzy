@@ -1,6 +1,6 @@
 <template>
   <div id="commonWrap" class="policyPageWrap" ref="commonWrap">
-      <popHeader :headerTitle="headerTitle" @closeXPop="closeXPop" class="policyHeader"/>
+      <popHeader :headerTitle="headerTitle" :pClosePop="closeXPop" class="policyHeader"/>
       <div id="Uarea" v-if="pPolicyType === 'termsOfUse'" class="policy-01">
           <p class="font16 titleText mbottom-05">Effective Date: 2023-07-11</p>
           <p class="mbottom-1 font15 mleft-1">
@@ -95,7 +95,8 @@ export default {
     }
   },
   props: {
-    pPolicyType: {}
+    pPolicyType: {},
+    pClosePolicyPop: Function
   },
   mounted () {
     this.settingPop()
@@ -124,7 +125,7 @@ export default {
       if (this.pPolicyType === 'termsOfUse') { this.headerTitle = 'Terms of Use' } else if (this.pPolicyType === 'privacy') { this.headerTitle = 'Privacy Policy' }
     },
     closeXPop (pThisPopN) { // 내 팝업 닫기
-      this.$emit('closePolicyPop')
+      this.pClosePolicyPop()
     }
   }
 }

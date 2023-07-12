@@ -19,7 +19,7 @@
     <transition name="show_left">
       <D_MENU transition="show_left" @hideMenu="hideMenu" @openPop="openPop" @goPage="changeRouterPath" class="D_menuStyle " v-if="mMenuShowYn" />
     </transition>
-    <policies :pPolicyType="mPolicyType" v-if="mPolicyType === 'termsOfUse' || mPolicyType === 'privacy'" />
+    <policies :pPolicyType="mPolicyType" v-if="mPolicyType === 'termsOfUse' || mPolicyType === 'privacy'" :pClosePolicyPop="closePolicyPop" />
     <editMyChanMenu style="z-index: 999999;" v-if="mPopType === 'myChanMenuEdit'" :pClosePop="closeWritePop" :propData="mPopParams" />
     <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
     <div :class="{ myPageBgColor : mMyPageBgColorYn }"  class="" :style="'height: calc(100% - 60px);'" style="overflow: hidden; width:100%;">
@@ -93,6 +93,9 @@ export default {
     this.getCTeamList()
   },
   methods: {
+    closePolicyPop () {
+      this.mPolicyType = ''
+    },
     closeWritePop () {
       this.mPopType = ''
     },
@@ -372,6 +375,9 @@ export default {
       this.hideMenu()
       if (params.targetType === 'setMypage') {
         this.openPage(params)
+      } else if (params.targetType === 'totalFileList') {
+        this.changePageHeader('File Box')
+        this.$router.push('/fileBox')
       }
     },
     goFavList () {
@@ -542,6 +548,7 @@ export default {
     $route: {
       handler () {
         this.mPopType = ''
+        this.mPolicyType = ''
         if (this.$route.path === '/myPage') {
           this.mMyPageBgColorYn = true
         } else {

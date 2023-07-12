@@ -1,6 +1,6 @@
 <template>
   <div v-if="pAreaInfo" ref="gPopUp" class="commonPopWrap" style="padding: 10px 20px ;">
-    <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
+    <div class="font16 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
       <div style="display: flex; align-items: center; width: calc(100% - 25px);">
         <img style="width: 40px; margin-right: 5px;" src="/resource/logo/gtLogo.png" alt="">
         <p class="textOverdot textLeft" style="width: calc(100% - 40px);">{{ pAreaInfo.bdAreaNameMtext }}</p>
@@ -13,9 +13,9 @@
     <div class="w100P" style="height: calc(100% - 50px); overflow: auto; padding-top: 35px;">
       <div class="w100P" style="display: flex; align-items: center;">
         <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_pencil.svg" alt="">
-        <p class="fontBold font20">Description</p>
+        <p class="fontBold font16">Description</p>
       </div>
-      <p class="textLeft font20" style="margin-left: 30px; width: calc(100% - 30px);">{{ pAreaInfo.bdAreaDesc }}</p>
+      <p class="textLeft font16" style="margin-left: 30px; width: calc(100% - 30px);">{{ pAreaInfo.bdAreaDesc }}</p>
       <div class="w100P" style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; display: flex; margin-top: 10px;">
         <p style="width: 50%; border-right: 2px solid #000;">
           <span class="fontBold">{{ pAreaInfo.bdList&& pAreaInfo.bdList.length? pAreaInfo.bdList.length:'0' }}</span> channels
@@ -27,7 +27,7 @@
       <div class="w100P" style="margin-top: 35px;">
         <div class="w100P textLeft" style="display: flex; align-items: center;">
           <img style="width: 25px; margin-right: 5px;" src="@/assets/images/contents/icon_heart_on.png" alt="">
-          <p class="fontBold font20">Favorites</p>
+          <p class="fontBold font16">Favorites</p>
         </div>
         <div v-if="pAreaDetail.fList&& pAreaDetail.fList.length > 0" style=" margin-left: 30px; margin-top: 10px; width: calc(100% - 30px);">
           <div class="w100P" id="fileChannelWrap" style="height: 85px; overflow: auto;" @wheel="horizontalScroll">
@@ -41,33 +41,33 @@
       <div class="w100P" style="margin-top: 35px;">
         <div class="w100P" style="display: flex; align-items: center;">
           <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_popular.svg" alt="">
-          <p class="fontBold font20">Popular</p>
+          <p class="fontBold font16">Popular</p>
         </div>
         <div v-if="pAreaDetail.popTeamList && pAreaDetail.popTeamList.length > 0" class="w100P" style="height: 200px; display: flex;">
           <div class="h100P" style="width: 33%;">
             <div style="height: 70%; display: flex; justify-content: center; align-items: flex-end;">
               <chanRoundIcon v-if="pAreaDetail.popTeamList[1]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[1]" />
             </div>
-            <div class="fontBold font20" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-left-radius: 10px;">2</div>
+            <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-left-radius: 10px;">2</div>
           </div>
           <div style="width: 33%;">
             <div style="height: 50%; display: flex; justify-content: center; align-items: flex-end;">
               <chanRoundIcon v-if="pAreaDetail.popTeamList[0]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[0]" :pBestYn="true" />
             </div>
-            <div class="fontBold font20" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 50%; background-color:slateblue; border-top-left-radius: 10px; border-top-right-radius: 10px;">1</div>
+            <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 50%; background-color:slateblue; border-top-left-radius: 10px; border-top-right-radius: 10px;">1</div>
           </div>
           <div style="width: 33%;">
             <div style="height: 70%; display: flex; justify-content: center; align-items: flex-end;">
               <chanRoundIcon v-if="pAreaDetail.popTeamList[2]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[2]"/>
             </div>
-            <div class="fontBold font20" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-right-radius: 10px;">3</div>
+            <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-right-radius: 10px;">3</div>
           </div>
         </div>
         <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" />
         <div class="w100P" style="margin-top: 35px;">
           <div class="w100P" style="display: flex; align-items: center;">
             <img style="width: 25px; margin-right: 5px;" src="@/assets/images/bottom/icon_search.svg" alt="">
-            <p class="fontBold font20">All List</p>
+            <p class="fontBold font16">All List</p>
           </div>
           <div class="w100P" style="padding-bottom: 30px;">
             <gEmpty tabName="전체" contentName="채널" v-if="pAreaInfo.bdList.length === 0" style="margin-top:50px;" />
@@ -169,15 +169,14 @@ export default {
 </script>
 <style scoped>
 .commonPopWrap{
-  position: absolute;width: 90%;height: 90%; ;z-index: 9999999; background: #FFFFFF; overflow: hidden;
-  bottom: 0;
-  left: 5%;
+  position: absolute;width: 70%;height: 80%; ;z-index: 9999999; background: #FFFFFF; overflow: hidden;
+  bottom: 10%;
+  left: 15%;
   background: rgba(232, 240, 250, 0.65);
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
   backdrop-filter: blur( 9px );
   -webkit-backdrop-filter: blur( 9px );
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  border-radius: 10px;
   border: 1px solid rgba( 255, 255, 255, 0.18 );
 }
 .chanDetailPopHeader{background: transparent!important; box-shadow: none!important;}

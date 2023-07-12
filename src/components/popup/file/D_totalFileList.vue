@@ -78,6 +78,7 @@ export default {
     serachResult
   },
   async created () {
+    this.$emit('changePageHeader', 'File Box')
     this.getContentsList()
     var result = await this.getFileList(0)
     this.returnResultList(result)
