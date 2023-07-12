@@ -332,14 +332,20 @@ export default {
         this.mAlimCount = response.data.alimCount
 
         for (let i = 0; this.mBdAreaList.length > i; i++) {
-          for (let j = 0; j < 5; j++) {
+          let count = 0
+          if (this.mBdAreaList[i].bdList.length > 5) {
+            count = 5
+          } else {
+            count = this.mBdAreaList[i].bdList.length
+          }
+          for (let j = 0; j < count; j++) {
             const buildingObj = {
               index: j,
               ctx: {},
               areaYn: false,
               rank: j + 1,
               type: 'BU',
-              imgLink: `/resource/bd/new_bd${j + 1}.png`,
+              imgLink: `/resource/bd/new_bd${this.mBdAreaList[i].bdList[j].priority + 1}.png`,
               maskedImageUrl: '',
               maskedImageStyle: {},
               clickedYn: false,
