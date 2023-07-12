@@ -38,13 +38,13 @@
       </template> -->
       <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
         <div style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
-          <img @click="openAreaInfoPop(area)" style="position: absolute;" :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
+          <img style="position: absolute;" :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
           <div v-if="area.bdAreaNameMtext" class="fontBold" style="background-color: rgba(245, 245, 220, 0.5) !important; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
             <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.bdAreaNameMtext }}</p>
           </div>
         </div>
         <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
-          <div v-if="village.areaList[area.priority].buildingList[index]" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; z-index: 9;" :style="[village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top+ 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
+          <div v-if="village.areaList[area.priority].buildingList[index]" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; z-index: 999;" :style="[village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top+ 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
             <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl" />
             <span class="fontBold font12" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
           </div>
@@ -334,6 +334,7 @@ export default {
         for (let i = 0; this.mBdAreaList.length > i; i++) {
           for (let j = 0; j < 5; j++) {
             const buildingObj = {
+              index: j,
               ctx: {},
               areaYn: false,
               rank: j + 1,
@@ -683,12 +684,12 @@ export default {
       this.clickedRank = 0
       this.allClearFocus()
       let findYn = false
-      const mBdAreaList = this.mBdAreaList
+      const mBdAreaList = this.village.areaList
       for (let i = mBdAreaList.length - 1; i >= 0; i--) {
         const area = mBdAreaList[i]
-        if (area.bdList && area.bdList.length !== 0) {
-          for (let j = 0; j < area.bdList.length; j++) {
-            const bd = area.bdList[j]
+        if (area.buildingList && area.buildingList.length !== 0) {
+          for (let j = 0; j < area.buildingList.length; j++) {
+            const bd = area.buildingList[j]
             if (bd.ctx === null) continue
             findYn = false
             if (event.clientX >= bd.left && event.clientX <= (bd.left + bd.w) && event.clientY >= bd.top && event.clientY <= (bd.top + bd.h)) {
@@ -701,8 +702,8 @@ export default {
           this.allClearFocus()
           if (findYn === false) continue
 
-          for (let j = area.bdList.length - 1; j >= 0; j--) {
-            const bd = area.bdList[j]
+          for (let j = area.buildingList.length - 1; j >= 0; j--) {
+            const bd = area.buildingList[j]
             if (bd.onImgYn === false) continue
 
             const _x = event.clientX - bd.left
@@ -712,9 +713,7 @@ export default {
               this.clickedBd = bd
               bd.clickedYn = true
               bd.maskedImageStyle = { filter: 'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)' }
-              this.mSelectedAreaInfo = area
-              this.mInfoBoxShowYn = true
-              console.log('yayay!')
+              this.openAreaInfoPop(this.mBdAreaList[area.key])
               return
             }
           }
@@ -748,9 +747,8 @@ export default {
           this.clickedArea = area
           this.clickedRank = area.buildingList.length + 1
           area.clickedYn = true
-          this.mSelectedAreaInfo = area
-          this.mInfoBoxShowYn = true
           area.maskedImageStyle = { filter: 'drop-shadow(0 0 5px yellow) drop-shadow(0 0 40px white)' }
+          this.openAreaInfoPop(this.mBdAreaList[area.key])
           break
         }
       }

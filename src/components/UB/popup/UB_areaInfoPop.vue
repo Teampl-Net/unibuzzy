@@ -10,10 +10,10 @@
         <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
       </div>
     </div>
-    <div class="w100P" style="height: calc(100% - 50px); overflow: auto; padding-top: 15px;">
+    <div class="w100P" style="height: calc(100% - 50px); overflow: auto; padding-top: 35px;">
       <div class="w100P" style="display: flex; align-items: center;">
         <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_pencil.svg" alt="">
-        <p class="fontBold font18">Description</p>
+        <p class="fontBold font20">Description</p>
       </div>
       <p class="textLeft font20" style="margin-left: 30px; width: calc(100% - 30px);">{{ pAreaInfo.bdAreaDesc }}</p>
       <div class="w100P" style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; display: flex; margin-top: 10px;">
@@ -24,10 +24,10 @@
           <span class="fontBold">{{ pAreaDetail.followerCount? pAreaDetail.followerCount:0 }}</span> followers
         </p>
       </div>
-      <!-- <div class="w100P" style="margin-top: 35px;">
+      <div class="w100P" style="margin-top: 35px;">
         <div class="w100P textLeft" style="display: flex; align-items: center;">
           <img style="width: 25px; margin-right: 5px;" src="@/assets/images/contents/icon_heart_on.png" alt="">
-          <p class="fontBold font18">Favorites</p>
+          <p class="fontBold font20">Favorites</p>
         </div>
         <div v-if="pAreaDetail.fList&& pAreaDetail.fList.length > 0" style=" margin-left: 30px; margin-top: 10px; width: calc(100% - 30px);">
           <div class="w100P" id="fileChannelWrap" style="height: 85px; overflow: auto;" @wheel="horizontalScroll">
@@ -37,37 +37,37 @@
           </div>
         </div>
         <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" />
-      </div> -->
+      </div>
       <div class="w100P" style="margin-top: 35px;">
-        <!-- <div class="w100P" style="display: flex; align-items: center;">
+        <div class="w100P" style="display: flex; align-items: center;">
           <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_popular.svg" alt="">
-          <p class="fontBold font18">Popular</p>
+          <p class="fontBold font20">Popular</p>
         </div>
         <div v-if="pAreaDetail.popTeamList && pAreaDetail.popTeamList.length > 0" class="w100P" style="height: 200px; display: flex;">
           <div class="h100P" style="width: 33%;">
             <div style="height: 70%; display: flex; justify-content: center; align-items: flex-end;">
               <chanRoundIcon v-if="pAreaDetail.popTeamList[1]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[1]" />
             </div>
-            <div class="fontBold font18" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-left-radius: 10px;">2</div>
+            <div class="fontBold font20" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-left-radius: 10px;">2</div>
           </div>
           <div style="width: 33%;">
             <div style="height: 50%; display: flex; justify-content: center; align-items: flex-end;">
               <chanRoundIcon v-if="pAreaDetail.popTeamList[0]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[0]" :pBestYn="true" />
             </div>
-            <div class="fontBold font18" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 50%; background-color:slateblue; border-top-left-radius: 10px; border-top-right-radius: 10px;">1</div>
+            <div class="fontBold font20" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 50%; background-color:slateblue; border-top-left-radius: 10px; border-top-right-radius: 10px;">1</div>
           </div>
           <div style="width: 33%;">
             <div style="height: 70%; display: flex; justify-content: center; align-items: flex-end;">
               <chanRoundIcon v-if="pAreaDetail.popTeamList[2]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[2]"/>
             </div>
-            <div class="fontBold font18" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-right-radius: 10px;">3</div>
+            <div class="fontBold font20" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-right-radius: 10px;">3</div>
           </div>
-        </div> -->
-        <!-- <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" /> -->
+        </div>
+        <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" />
         <div class="w100P" style="margin-top: 35px;">
           <div class="w100P" style="display: flex; align-items: center;">
             <img style="width: 25px; margin-right: 5px;" src="@/assets/images/bottom/icon_search.svg" alt="">
-            <p class="fontBold font18">All List</p>
+            <p class="fontBold font20">All List</p>
           </div>
           <div class="w100P" style="padding-bottom: 30px;">
             <gEmpty tabName="전체" contentName="채널" v-if="pAreaInfo.bdList.length === 0" style="margin-top:50px;" />
@@ -81,10 +81,10 @@
   </div>
 </template>
 <script>
-// import chanRoundIcon from '../infoBox/UB_chanRoundIcon.vue'
+import chanRoundIcon from '../infoBox/UB_chanRoundIcon.vue'
 export default {
   components: {
-    // chanRoundIcon
+    chanRoundIcon
   },
   props: {
     propParams: {},
