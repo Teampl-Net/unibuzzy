@@ -21,8 +21,8 @@
       </div>
       <div class="h100P font20 grayBlack" style="width: 20px;">></div>
     </div>
-    <top5Alim class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPop" ref="topAlim" />
-    <top5Channel class="mainContentsBoxArea" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" style="margin-bottom: 1rem;" />
+    <top5Alim v-if="$appType !== 'UB'" class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPop" ref="topAlim" />
+    <top5Channel v-if="$appType !== 'UB'" class="mainContentsBoxArea" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" style="margin-bottom: 1rem;" />
 
     <div v-if="false" class="commonBlack " style="width: 100%; float: left; height: 100%;">
       <myActList @closeLoading="mLoadingYn = false" ref="commonActList" :viewTab="myPageTabType" @openContentsDetailPop="openContentsDetailPop" @openPop="openPop" style="border-radius: 0.8rem;" @goMyChanList="goMyChanList" />
