@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pAreaInfo" ref="gPopUp" class="commonPopWrap" style="padding: 10px 20px;">
+  <div v-if="pAreaInfo" ref="gPopUp" class="commonPopWrap" style="padding: 10px 20px ;">
     <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
       <div style="display: flex; align-items: center; width: calc(100% - 25px);">
         <img style="width: 40px; margin-right: 5px;" src="/resource/logo/gtLogo.png" alt="">
