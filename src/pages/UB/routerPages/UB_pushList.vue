@@ -1671,7 +1671,7 @@ export default {
         param.memoScrollYn = true
         param.teamKey = value.creTeamKey
         param.creTeamKey = value.creTeamKey
-        param.jobkinId = value.jobkindId
+        param.jobkindId = value.jobkindId
         if (param.jobkindId === 'BOAR') {
           param.cabinetKey = value.cabinetKey
         }

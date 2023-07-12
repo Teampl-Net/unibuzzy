@@ -464,7 +464,7 @@ export default {
       openPageParam.memoScrollYn = true
       openPageParam.teamKey = detailData.creTeamKey
       openPageParam.creTeamKey = detailData.creTeamKey
-      openPageParam.jobkinId = detailData.jobkindId
+      openPageParam.jobkindId = detailData.jobkindId
       if (openPageParam.jobkindId === 'BOAR') {
         openPageParam.cabinetKey = detailData.cabinetKey
       }

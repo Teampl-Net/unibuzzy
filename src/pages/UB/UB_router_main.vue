@@ -23,7 +23,7 @@
     <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
     <div :class="{ myPageBgColor : mMyPageBgColorYn }"  class="" :style="'height: calc(100% - 60px);'" style="overflow: hidden; width:100%;">
       <!-- <gCloudLoading v-if="cloudTransShowYn" style="position: absolute; top: 0; left: 0" /> -->
-      <router-view :key="$route.fullPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="openPage" @goDetail="goDetail" @openUserProfile="openPop" @chanInfo="showCloudLoading" :popYn="false" @changePageHeader="changePageHeader" />
+      <router-view :key="$route.fullPath" @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="openPage" @goDetail="goDetail" @openUserProfile="openPop" @chanInfo="showCloudLoading" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
     <gFooter v-if="!$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
     <!-- <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" /> -->
@@ -252,7 +252,7 @@ export default {
         axiosParam.targetKey = detailValue.targetKey
         axiosParam.contentsKey = detailValue.targetKey
         axiosParam.teamKey = detailValue.teamKey || detailValue.creTeamKey
-        axiosParam.jobkindId = detailParam.jobkindId
+        axiosParam.jobkindId = detailValue.jobkindId
         if (axiosParam.jobkindId) {
           axiosParam.userKey = this.GE_USER.userKey
           axiosParam.ownUserKey = this.GE_USER.userKey
@@ -432,11 +432,6 @@ export default {
     },
     async changeRouterPath (page) {
       this.mMenuShowYn = false
-      if (page === 'myPage') {
-        this.mMyPageBgColorYn = true
-      } else {
-        this.mMyPageBgColorYn = false
-      }
       if (page !== 'chanList') {
         var pageData = await this.$getRouterViewData(page)
       }
@@ -539,6 +534,11 @@ export default {
     $route: {
       handler () {
         this.mPopType = ''
+        if (this.$route.path === '/myPage') {
+          this.mMyPageBgColorYn = true
+        } else {
+          this.mMyPageBgColorYn = false
+        }
       },
       deep: true
     },

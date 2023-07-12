@@ -37,16 +37,18 @@
         </div>
       </template> -->
       <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
-        <div style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: area.clickedYn}" :style="{ width: area.w + 'px', height: area.h + 'px', top: area.top + 'px', left: area.left + 'px' }">
-          <img style="position: absolute;" :src="area.maskedImageUrl" :style="area.maskedImageStyle" />
-          <div v-if="area.bdAreaNameMtext && area.bdAreaKey === 3" class="fontBold" style="background-color: rgba(245, 245, 220, 0.5) !important; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
-            <p @click="openAreaInfoPop(area)" class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.bdAreaNameMtext }}</p>
+        <div style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
+          <img @click="openAreaInfoPop(area)" style="position: absolute;" :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
+          <div v-if="area.bdAreaNameMtext" class="fontBold" style="background-color: rgba(245, 245, 220, 0.5) !important; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
+            <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.bdAreaNameMtext }}</p>
           </div>
         </div>
-        <div v-for="(bd) in area.bdList" :key="bd.targetKey" class="bdDiv" :class="{clicked: bd.clickedYn}" style="position: absolute; z-index: 9;" :style="[bd.maskedImageStyle, { top: bd.top+ 'px', left: bd.left + 'px' }]">
-          <img :src="bd.maskedImageUrl" />
-          <span class="fontBold" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.nameMtext }}</span>
-        </div>
+        <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
+          <div v-if="village.areaList[area.priority].buildingList[index]" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; z-index: 9;" :style="[village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top+ 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
+            <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl" />
+            <span class="fontBold" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ $changeText(bd.nameMtext) }}</span>
+          </div>
+        </template>
       </template>
     </div>
   </div>
@@ -90,11 +92,6 @@ export default {
             ctx: {},
             maskingRef: null,
             areaYn: true,
-            // parentKey: null,
-            // description: 'This is Georgia Tech Village!',
-            // type: 'CO', // CA: Campus, CL: club, PL: plaza, ST: startup, AC: academic ,CO: college,  FA: Facilities, MA: Nearby
-            // status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
-            rank: null,
             imgLink: '/resource/main/UB_collegeArea.png',
             maskedImageUrl: '',
             maskedImageStyle: {},
@@ -104,43 +101,14 @@ export default {
             w: 0,
             h: 0,
             buildingList: [
-              {
-                teamKey: 824,
-                nameMtext: '',
-                ctx: {},
-                areaYn: false,
-                parentKey: 0,
-                // type: 'CB', // campus building
-                // status: 1,
-                rank: 1,
-                followerList: [],
-                managerList: [],
-                description: 'This is Georgia Tech Campus town!',
-                logoImg: '/resource/new/logo/GWCLogo.png',
-                imgLink: '/resource/bd/new_college.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              }
             ]
           },
           {
             // key: 1,
             key: 1,
-            cateKey: 3,
-            name: 'Plaza',
             ctx: {},
             maskingRef: null,
             areaYn: true,
-            parentKey: null,
-            description: 'This area is GT Plaza. Take a look around!',
-            // type: 'PL', // CL: club, PL: plaza, ST: startup, AC: academic
-            // status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
-            rank: null,
             imgLink: '/resource/main/UB_plaza.png',
             maskedImageUrl: '',
             maskedImageStyle: {},
@@ -153,14 +121,8 @@ export default {
           },
           {
             key: 2,
-            name: 'Club & Startup',
             ctx: {},
             areaYn: true,
-            parentKey: null,
-            description: 'This area is for GT Academic. Take a look around!',
-            // type: 'AC', // CL: club, PL: plaza, ST: startup, AC: academic
-            // status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
-            rank: 0,
             imgLink: '/resource/main/UB_area1.png',
             maskedImageUrl: '',
             maskedImageStyle: {},
@@ -171,125 +133,13 @@ export default {
             w: 0,
             h: 0,
             buildingList: [
-              {
-                teamKey: 822,
-                nameMtext: 'GWC',
-                ctx: {},
-                areaYn: false,
-                parentKey: 3,
-                // type: 'BU', // building
-                // status: 1,
-                rank: 1,
-                followerList: [],
-                managerList: [],
-                description: 'This is GT GWC channel!',
-                logoImg: '/resource/new/logo/GWCLogo.png',
-                imgLink: '/resource/bd/new_bd3.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              // {
-              //   nameMtext: 'B&N',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 2,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   nameMtext: 'B&N',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 3,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              {
-                nameMtext: 'B&N',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                description: "GT's B&N",
-                // type: 'BU', // building
-                // followerList: [],
-                // managerList: [],
-                // status: 1,
-                rank: 4,
-                linkUrl: 'https://gatech.bncollege.com/',
-                imgLink: '/resource/bd/new_house1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              }
-              // {
-              //   nameMtext: 'B&N',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 5,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_house1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // }
             ]
             // points: '9,355,358,544'
           },
           {
             key: 3,
-            name: 'Major',
             ctx: {},
             areaYn: true,
-            parentKey: null,
-            description: 'This area is for GT Clubs. Take a look around!',
-            // type: 'CL', // CL: club, PL: plaza, ST: startup, AC: academic
-            // status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
-            rank: 1,
             imgLink: '/resource/main/UB_area2.png',
             maskedImageUrl: '',
             maskedImageStyle: {},
@@ -299,127 +149,13 @@ export default {
             w: 0,
             h: 0,
             buildingList: [
-              {
-                teamKey: 821,
-                nameMtext: 'CS',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                description: 'This is for GT CS Students',
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                status: 1,
-                rank: 1,
-                imgLink: '/resource/bd/new_house1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              // {
-              //   key: 2.2,
-              //   teamKey: 825,
-              //   nameMtext: 'IE',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is IE channel!',
-              //   status: 1,
-              //   rank: 2,
-              //   imgLink: '/resource/bd/new_bd1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              // {
-              //   key: 2.2,
-              //   teamKey: 825,
-              //   nameMtext: 'IE',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is IE channel!',
-              //   status: 1,
-              //   rank: 3,
-              //   imgLink: '/resource/bd/new_mall1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // },
-              {
-                key: 2.2,
-                teamKey: 825,
-                nameMtext: 'IE',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is IE channel!',
-                status: 1,
-                rank: 4,
-                imgLink: '/resource/bd/new_mall1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              }
-              // {
-              //   key: 2.2,
-              //   teamKey: 825,
-              //   nameMtext: 'IE',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   description: 'This is IE channel!',
-              //   status: 1,
-              //   rank: 5,
-              //   imgLink: '/resource/bd/new_bd1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // }
             ]
           },
           {
             key: 4,
-            name: 'Class',
             ctx: {},
             areaYn: true,
-            parentKey: null,
-            description: 'This area is for GT Startups. Take a look around!',
             type: 'CL', // CL: club, PL: plaza, ST: startup, AC: academic
-            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
-            rank: 1,
             imgLink: '/resource/main/UB_area3.png',
             maskedImageUrl: '',
             maskedImageStyle: {},
@@ -429,123 +165,13 @@ export default {
             w: 0,
             h: 0,
             buildingList: [
-              {
-                teamKey: 823,
-                nameMtext: 'uniBuzzy',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is uniBuzzy.',
-                status: 1,
-                rank: 1,
-                imgLink: '/resource/bd/new_bd6.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                teamKey: 826,
-                nameMtext: 'interOcci',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is interOcci.',
-                status: 1,
-                rank: 2,
-                imgLink: '/resource/bd/new_bd3.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                teamKey: 823,
-                nameMtext: 'uniBuzzy',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is uniBuzzy.',
-                status: 1,
-                rank: 3,
-                imgLink: '/resource/bd/new_bd2.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                teamKey: 823,
-                nameMtext: 'uniBuzzy',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is uniBuzzy.',
-                status: 1,
-                rank: 4,
-                imgLink: '/resource/bd/new_bd5.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                teamKey: 823,
-                nameMtext: 'uniBuzzy',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                description: 'This is uniBuzzy.',
-                status: 1,
-                rank: 5,
-                imgLink: '/resource/bd/new_bd1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              }
             ]
           },
           {
             key: 5,
-            name: 'Amenties & Facilities',
             ctx: {},
             areaYn: true,
-            parentKey: null,
-            description: 'This area is for GT Facilities. Take a look around!',
             type: 'FA', // CL: club, PL: plaza, ST: startup, AC: academic, FA: Facilities
-            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
-            rank: 1,
             imgLink: '/resource/main/UB_area4.png',
             maskedImageUrl: '',
             maskedImageStyle: {},
@@ -555,153 +181,22 @@ export default {
             w: 0,
             h: 0,
             buildingList: [
-              {
-                teamKey: 826,
-                nameMtext: 'CRC',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                description: 'Students, work out!',
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                status: 1,
-                rank: 1,
-                imgLink: '/resource/bd/new_bd1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              }
             ]
           },
           {
             key: 6,
-            name: 'Nearby',
             ctx: {},
             areaYn: true,
-            parentKey: null,
-            description: 'This area is for GT Clubs. Take a look around!',
-            type: 'NB', // CL: club, PL: plaza, ST: startup, AC: academic, FA: Facilities, NB: Nearby
-            status: 1, // 0: before open, 1: opened, 2: temporarily closed (rest)
-            rank: 1,
+            type: 'FA', // CL: club, PL: plaza, ST: startup, AC: academic, FA: Facilities
             imgLink: '/resource/main/UB_area5.png',
             maskedImageUrl: '',
             maskedImageStyle: {},
             clickedYn: false,
-            left: 110,
-            top: 460,
+            left: 0,
+            top: 0,
             w: 0,
             h: 0,
             buildingList: [
-              {
-                nameMtext: 'B&N',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                description: "GT's B&N",
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                status: 1,
-                rank: 1,
-                linkUrl: 'https://gatech.bncollege.com/',
-                imgLink: '/resource/bd/new_house1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                nameMtext: 'Panda Express',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                description: 'Panda Express!',
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                status: 1,
-                rank: 2,
-                linkUrl: 'https://dining.gatech.edu/node/137',
-                imgLink: '/resource/bd/new_house1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                nameMtext: '3',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                description: "GT's B&N",
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                status: 1,
-                rank: 3,
-                linkUrl: 'https://gatech.bncollege.com/',
-                imgLink: '/resource/bd/new_house1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              },
-              {
-                nameMtext: '4',
-                ctx: {},
-                areaYn: false,
-                parentKey: 2,
-                description: "GT's B&N",
-                type: 'BU', // building
-                followerList: [],
-                managerList: [],
-                status: 1,
-                rank: 4,
-                linkUrl: 'https://gatech.bncollege.com/',
-                imgLink: '/resource/bd/new_mall1.png',
-                maskedImageUrl: '',
-                maskedImageStyle: {},
-                clickedYn: false,
-                left: 0,
-                top: 0,
-                w: 0,
-                h: 0
-              }
-              // {
-              //   nameMtext: '5',
-              //   ctx: {},
-              //   areaYn: false,
-              //   parentKey: 2,
-              //   description: "GT's B&N",
-              //   type: 'BU', // building
-              //   followerList: [],
-              //   managerList: [],
-              //   status: 1,
-              //   rank: 5,
-              //   linkUrl: 'https://gatech.bncollege.com/',
-              //   imgLink: '/resource/bd/new_mall1.png',
-              //   maskedImageUrl: '',
-              //   maskedImageStyle: {},
-              //   clickedYn: false,
-              //   left: 0,
-              //   top: 0,
-              //   w: 0,
-              //   h: 0
-              // }
             ]
           }
         ]
@@ -720,7 +215,7 @@ export default {
       mSelectedAreaInfo: {}
     }
   },
-  created () {
+  async created () {
     this.resetHistory()
     this.setNativeHeight()
 
@@ -740,6 +235,9 @@ export default {
       }
     }
     this.getMainBoard().then(res => {
+      this.createMaskingAreaImg()
+      this.innerWidth = window.innerWidth
+      this.innerHeight = window.innerHeight
       this.mLoadingYn = false
     })
     if (this.pCampusTownInfo) {
@@ -750,9 +248,6 @@ export default {
     const vilInfo = this.village.villageInfo
     // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
     this.$emit('changePageHeader', vilInfo.name)
-    this.createMaskingAreaImg()
-    this.innerWidth = window.innerWidth
-    this.innerHeight = window.innerHeight
   },
   methods: {
     async openAreaInfoPop (area) {
@@ -767,21 +262,20 @@ export default {
         param: param
       })
       if (result.data) {
-        this.mAreaDetail = result.data
-        this.mAreaInfo = area
-        console.log('여기지롱~~~~~~~~~~~~')
-        console.log(result)
+        this.mAreaDetail = await result.data
+        this.mAreaInfo = await area
         this.mInfoBoxShowYn = true
       }
     },
     closePop () {
       this.mInfoBoxShowYn = false
+      this.allClearFocus()
     },
     openInfoPop (value) {
       this.mSelectedAreaInfo = value
     },
     goUserProfile () {
-      this.$router.push('/myPage')
+      // this.$router.push('/myPage')
       this.$emit('changeRouterPath', 'myPage')
       // const param = {}
       // param.targetType = 'setMypage'
@@ -839,6 +333,26 @@ export default {
         this.mBdAreaList = response.data.bdAreaList
         this.mFTeamList = response.data.fTeamList
         this.mAlimCount = response.data.alimCount
+
+        for (let i = 0; this.mBdAreaList.length > i; i++) {
+          for (let j = 0; j < 5; j++) {
+            const buildingObj = {
+              ctx: {},
+              areaYn: false,
+              rank: j + 1,
+              type: 'BU',
+              imgLink: `/resource/bd/new_bd${j + 1}.png`,
+              maskedImageUrl: '',
+              maskedImageStyle: {},
+              clickedYn: false,
+              left: 0,
+              top: 0,
+              w: 0,
+              h: 0
+            }
+            this.village.areaList[this.mBdAreaList[i].priority].buildingList.push(buildingObj)
+          }
+        }
         // await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mBdAreaList, ...this.mMainMChanList])
         // await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimListmMainAlimList)
       }

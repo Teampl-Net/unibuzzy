@@ -70,8 +70,13 @@ export default {
       this.mMainChanList = this.initData.chanList
       this.mMainMChanList = this.initData.mChanList
       // this.mContsList = this.initData.alimList.content
+    } else {
+      this.$getRouterViewData('myPage').then((data) => {
+        this.mContsList = this.replaceArr(data.alimList.content)
+        this.mMainChanList = data.chanList
+        this.mMainMChanList = data.mChanList
+      })
     }
-    console.log(this.initData)
     // var this_ = this
     /* this.getMainBoard().then(res => {
       this_.mLoadingYn = false
