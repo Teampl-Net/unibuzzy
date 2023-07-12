@@ -1,5 +1,9 @@
 <template>
   <div id="alimWrap" v-if="CHANNEL_DETAIL && CHANNEL_DETAIL.D_CHAN_AUTH" ref="chanScrollWrap" style="overflow: scroll;" :style="settingBackground" class="chanDetailWrap">
+    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mFollowerListPopShowYn" @click="closeFollowerList"></div>
+    <followerList v-if="mFollowerListPopShowYn" :pManagerList="mManagerList" :pClosePop="closeFollowerList"  :pOpenProfilePop="openProfilePop"  />
+    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mUserDetailPopShowYn" @click="closeFollowerList"></div>
+    <userDetailPop v-if="mUserDetailPopShowYn" :propData="mPopParam" :pClosePop="closeUserDetailPop" />
     <div id="gChannelPopup" v-if="commonChanPopShowYn" style="display: absolute; top: 0; left: 0; z-index: 999;">
       <gChannelPop :propCateItemKey="CHANNEL_DETAIL.cateKey" @openPop="openCertiPop" :propTeamKey="CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop' />
     </div>
@@ -36,7 +40,7 @@
           <div class="h100P fl mleft-1" style="position: relative; display: flex; align-items: center; flex-direction: column; border-radius: 5px; padding: 10px; border: 2px solid #ccc; width: calc(100% - 100px - 1rem);">
             <div class="fontBold fl w100P font14 textLeft" style="word-break:break-all;">{{ $changeText(CHANNEL_DETAIL.memoMtext) }}</div>
             <div class="w100P fl" style="display: flex; align-items: space-between;">
-              <div class="font14" style="float: left; margin-right:20px">Follower <span style="color:black; text-decoration: underline;" class="fontBold">{{ CHANNEL_DETAIL.followerCount }}</span></div>
+              <div @click="openFollowerPop" class="font14" style="float: left; margin-right:20px">Follower <span style="color:black; text-decoration: underline;" class="fontBold">{{ CHANNEL_DETAIL.followerCount }}</span></div>
               <div class="font14">Total Contents <span class="fontBold" style="color:black;">{{ CHANNEL_DETAIL.totalContentsCount }}</span></div>
               <!-- <div v-if="mChanInfo.managerList" class="fontBold font14" style="float: left;">Manager: <span style="color:black; font-weight: 1000;">{{ mChanInfo.managerList.length }}</span></div> -->
             </div>
@@ -88,6 +92,8 @@ import { onMessage } from '../../../assets/js/webviewInterface'
 import recMemberPop from '../../../components/popup/member/D_recMemberPop.vue'
 // import boardWrite from '../../board/Tal_boardWrite.vue'
 import writeBottSheet from '../../../components/pageComponents/main/unit/D_contentsWriteBottSheet.vue'
+import followerList from '../../../components/UB/popup/UB_followerList.vue'
+import userDetailPop from '../../../components/UB/popup/UB_userDetailPop.vue'
 // import unknownLoginPop from '@/components/pageComponents/channel/D_unknownLoginPop.vue'
 // import { AES, enc } from 'crypto-js'
 export default {
@@ -125,7 +131,11 @@ export default {
       mwHeight: 0,
       prevVisualViewport: 0,
       mDirectTeamKey: null,
-      mChanInfo: {}
+      mChanInfo: {},
+      mFollowerListPopShowYn: false,
+      mManagerList: [],
+      mUserDetailPopShowYn: false,
+      mPopParam: {}
       // errorPopYn: false
     }
   },
@@ -141,12 +151,12 @@ export default {
     writeBottSheet,
     chanDetailComp,
     writeContents,
-    recMemberPop
+    recMemberPop,
+    followerList,
+    userDetailPop
   //   unknownLoginPop
   },
   created () {
-    console.log('120384912093408123094908213094')
-    console.log(this.propParams)
     // eslint-disable-next-line no-debugger
     debugger
     this.$emit('openLoading')
@@ -186,6 +196,42 @@ export default {
     window.addEventListener('resize', this.handleResize)
   },
   methods: {
+    openProfilePop (userInfo) {
+      var openPopParam = {}
+      openPopParam.targetKey = userInfo.teamKey
+      openPopParam.teamKey = userInfo.teamKey
+      openPopParam.targetType = 'bookMemberDetail'
+      openPopParam.userKey = userInfo.userKey
+
+      openPopParam.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
+      openPopParam.readOnlyYn = true
+      this.mPopParam = openPopParam
+      this.mFollowerListPopShowYn = false
+      this.mUserDetailPopShowYn = true
+    },
+    closeUserDetailPop () {
+      this.mUserDetailPopShowYn = false
+    },
+    closeFollowerList () {
+      this.mFollowerListPopShowYn = false
+    },
+    async openFollowerPop () {
+      await this.getFollowerList()
+      this.mFollowerListPopShowYn = true
+    },
+    async getFollowerList () {
+      var result = {}
+      var paramMap = new Map()
+      // paramMap.set('showProfileYn', true)
+      paramMap.set('teamKey', this.CHANNEL_DETAIL.teamKey)
+      paramMap.set('pageSize', 100)
+
+      result = await this.$commonAxiosFunction({
+        url: '/service/tp.getFollowerList',
+        param: Object.fromEntries(paramMap)
+      })
+      this.mManagerList = result.data.content
+    },
     openPage (value) {
       console.log('value')
       console.log(value)

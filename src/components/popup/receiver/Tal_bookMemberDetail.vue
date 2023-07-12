@@ -448,7 +448,7 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
 table {
     table-layout: fixed;
     word-break: break-all;

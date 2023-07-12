@@ -111,6 +111,12 @@ if (type === 'UB') {
           }
         },
         {
+          path: '/policy',
+          name: 'policy',
+          props: true,
+          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/intro/UB_policies.vue')
+        },
+        {
           path: '/settings',
           name: 'settings',
           props: true,

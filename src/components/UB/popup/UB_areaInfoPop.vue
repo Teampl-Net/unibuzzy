@@ -72,7 +72,8 @@
           <div class="w100P" style="padding-bottom: 30px;">
             <gEmpty tabName="전체" contentName="채널" v-if="pAreaInfo.bdList.length === 0" style="margin-top:50px;" />
             <template v-for="(chanEle, index) in pAreaInfo.bdList" :key="index">
-              <channelCard class="moveBox chanRow" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
+              <channelCard v-if="chanEle.targetKind === 'T'" class="moveBox chanRow" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
+              <boardCard v-else class="moveBox chanRow" :boardElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             </template>
           </div>
         </div>
@@ -82,9 +83,11 @@
 </template>
 <script>
 import chanRoundIcon from '../infoBox/UB_chanRoundIcon.vue'
+import boardCard from '../infoBox/UB_boardCard.vue'
 export default {
   components: {
-    chanRoundIcon
+    chanRoundIcon,
+    boardCard
   },
   props: {
     propParams: {},
