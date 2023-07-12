@@ -454,7 +454,7 @@ export default {
       this.mCreTeamKey = this.cDetail.creTeamKey
       this.mCabinetKey = this.cDetail.cabinetKey
       if (this.mJobkindId === 'BOAR') {
-        this.$emit('changePageHeader', this.cDetail.cabinetNameMtext)
+        this.$emit('changePageHeader', this.$changeText(this.cDetail.cabinetNameMtext))
       } else {
         this.$emit('changePageHeader', this.$changeText(this.cDetail.nameMtext))
       }

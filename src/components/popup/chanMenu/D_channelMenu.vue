@@ -58,7 +58,7 @@
         </div>
       </div>
 
-      <div v-if="!GE_USER.unknownYn" class="fl w100P" style="">
+      <div v-if="!GE_USER.unknownYn && $appType !== 'UB'" class="fl w100P" style="">
         <div class="fl font14 cursorP commonColor fontBold  textLeft w100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="convenienceFuncDropdown">
           <p class="mleft-1 fl font18 commonColor" >{{ $t('CHAN_MENU_QUICK') }}</p>
           <img v-show="mConvDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn " style=" margin-top : 0.5rem;" >

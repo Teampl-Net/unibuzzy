@@ -251,6 +251,7 @@ app.config.globalProperties.$Vuex = Vuex
 app.config.globalProperties.$imageCompression = imageCompression
 app.config.globalProperties.$commonAxiosFunction = commonAxiosFunction
 app.config.globalProperties.$store = store
+app.config.globalProperties.$appType = 'UB'
 
 app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', 'false')
