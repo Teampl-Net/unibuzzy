@@ -835,7 +835,7 @@ export default {
 }
 .mainBG {
   width: 100vw;
-  height: 100vh;
+  height: 100% ;
   /* position: relative; */
   /* display: flex;
   justify-content: center;
