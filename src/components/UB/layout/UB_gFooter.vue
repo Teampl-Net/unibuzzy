@@ -105,5 +105,5 @@ export default {
 .activeFooterMenu {
   font-weight: bold;
   font-size: 13px;
-  color: #2792B9 !important;
+  color: #2234A8 !important;
 }</style>

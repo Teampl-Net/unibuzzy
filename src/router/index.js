@@ -197,6 +197,12 @@ if (type === 'UB') {
       component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_permissions.vue')
     },
     {
+      path: '/policy',
+      name: 'policy',
+      props: true,
+      component: () => import(/* webpackChunkName: "about" */ '../pages/UB/intro/UB_policies.vue')
+    },
+    {
       path: '/policies',
       name: 'policies',
       props: true,

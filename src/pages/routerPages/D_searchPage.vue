@@ -64,19 +64,16 @@
             {{$changeText(business.itemNameMtext)}}
           </div>
         </div>
-        <div v-if="!GE_USER.unknownYn && mMyStickerList.length > 0" class="fl w-100P mtop-1" style="min-height: 50px;  float: left; display: flex; flex-wrap: wrap; gap: 10px;">
+        <!-- <div v-if="!GE_USER.unknownYn && mMyStickerList.length > 0" class="fl w-100P mtop-1" style="min-height: 50px;  float: left; display: flex; flex-wrap: wrap; gap: 10px;">
           <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">{{ $t("SEAR_TITLE_FIND_LABEL") }}</p>
           <template v-for="(sticker, index) in mMyStickerList" :key="index" >
             <gStickerLine @click="searchSticker(sticker)"  v-if="sticker" style="float: left; min-width: 30px;" :pSticker="sticker" />
-          </template><!--
-          <div v-for="(sticker, index) in mMyStickerList" :key="index" class="fl font12" :style="'background: ' + sticker.picBgPath + ';'" style="padding:5px; border-radius:8px; min-width:32px; border: 100%;" >
-            {{$changeText(sticker.nameMtext)}}
-          </div> -->
-        </div>
+          </template>
+        </div> -->
       </div>
 
       <!-- 채널 추천 영역 -->
-      <div class="wh100P fl mtop-1 ptop-1" style="background: white; ">
+      <div class="wh100P fl " style="background: white; ">
         <div class="fl w100P pSide-1" style="height: 30px; float: left;">
           <img src="../../assets/images/main/icon_3d_star.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
           <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">{{ $t("SEAR_MSG_CHAN_RECOMMEND") }}</p>
@@ -258,7 +255,7 @@ export default {
   },
   created () {
     // gMainHearder에서 changePageHeader === '검색' ? 'white' 를 하고 있음
-    this.$emit('changePageHeader', '검색')
+    this.$emit('changePageHeader', this.$t('COMMON_NAME_SEARCH'))
     this.readyFunc()
   },
   methods: {

@@ -447,7 +447,7 @@ export default {
 
 <style scoped>
 .menuHeader {
-  padding: 0.5rem 0;
+  /* padding: 0.5rem 0; */
   width: 100%;
   border-bottom: 1px solid #fff;
   border-top-left-radius: 10px;

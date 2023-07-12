@@ -46,7 +46,7 @@
         <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
           <div v-if="village.areaList[area.priority].buildingList[index]" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; z-index: 9;" :style="[village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top+ 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
             <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl" />
-            <span class="fontBold" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ $changeText(bd.nameMtext) }}</span>
+            <span class="fontBold font12" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
           </div>
         </template>
       </template>
@@ -72,11 +72,6 @@ export default {
         imgLink: ''
       },
       village: {
-        // Clubs & Startups: 12
-        // Majors: 13
-        // Classes: 14
-        // Facilities & Amenties: 15
-        // Nearby: 16
         villageInfo: {
           key: 1,
           name: 'Georgia Tech',
@@ -251,6 +246,8 @@ export default {
   },
   methods: {
     async openAreaInfoPop (area) {
+      // eslint-disable-next-line no-debugger
+      debugger
       const param = {
         bdArea: {
           bdAreaKey: area.bdAreaKey
@@ -442,12 +439,12 @@ export default {
             } else if (area.key === 4) { // start-up
               area.h = 1 / 5 * h
               area.w = 1 / 2 * w
-              area.left = w / 2 + this.blankWidth
+              area.left = w / 2 + area.w / 12 + this.blankWidth
               area.top = 3 / 8 * h + 18 / 20 * area.h + this.blankHeight
             } else if (area.key === 5) { // facilities
               area.h = 1 / 5 * h
               area.w = 1 / 2 * w
-              area.left = w / 2 - area.w + area.w / 8 + this.blankWidth
+              area.left = w / 2 - area.w + area.w / 20 + this.blankWidth
               area.top = 3 / 8 * h + 18 / 20 * area.h + this.blankHeight
             } else if (area.key === 6) { // Mall
               area.h = 1 / 6 * h

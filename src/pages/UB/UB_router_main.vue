@@ -19,6 +19,7 @@
     <transition name="show_left">
       <D_MENU transition="show_left" @hideMenu="hideMenu" @openPop="openPop" @goPage="changeRouterPath" class="D_menuStyle " v-if="mMenuShowYn" />
     </transition>
+    <policies :pPolicyType="mPolicyType" v-if="mPolicyType === 'termsOfUse' || mPolicyType === 'privacy'" />
     <editMyChanMenu style="z-index: 999999;" v-if="mPopType === 'myChanMenuEdit'" :pClosePop="closeWritePop" :propData="mPopParams" />
     <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
     <div :class="{ myPageBgColor : mMyPageBgColorYn }"  class="" :style="'height: calc(100% - 60px);'" style="overflow: hidden; width:100%;">
@@ -34,6 +35,7 @@
 import gUBHeader from '../../components/UB/layout/UB_gMainHeader'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import D_MENU from '../../components/UB/popup/common/UB_common_menu.vue'
+import policies from './intro/UB_policies.vue'
 import chanHeader from '../../components/UB/layout/UB_gChanMainHeader.vue'
 import chanMenu from '../../components/popup/chanMenu/D_channelMenu.vue'
 import notiHistoryList from '@/components/UB/popup/UB_notiHistoryList.vue'
@@ -44,6 +46,7 @@ export default {
   data () {
     return {
       // mUnknownLoginPopYn: false,
+      mPolicyType: '',
       mMyPageBgColorYn: false,
       mGPopShowYn: false,
       mPopN: {},
@@ -146,6 +149,7 @@ export default {
         const response = await this.$axios.post('/service/tp.getMyContentsList', Object.fromEntries(paramMap))
         if (response.data && response.data.content) this.mAttachFileList = response.data.content[0].attachFileList
       }
+
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
         this.mPopN = Number(this.parentPopN) + 1
       } else {
@@ -432,6 +436,10 @@ export default {
     },
     async changeRouterPath (page) {
       this.mMenuShowYn = false
+      if (page === 'termsOfUse' || page === 'privacy') {
+        this.mPolicyType = page
+        return
+      }
       if (page !== 'chanList') {
         var pageData = await this.$getRouterViewData(page)
       }
@@ -593,6 +601,7 @@ export default {
     gUBHeader,
     commonConfirmPop,
     D_MENU,
+    policies,
     chanHeader,
     chanMenu
   }

@@ -446,7 +446,7 @@ export default {
             }
           } else {
             await this.okMember()
-            this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>우리채널에 알림을 보낼 수 있어요!<br>멤버들끼리 자유롭게 소통할 수 있어요!'
+            // this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>우리채널에 알림을 보낼 수 있어요!<br>멤버들끼리 자유롭게 소통할 수 있어요!'
             this.openChannelMsgPop()
           }
         }
@@ -455,7 +455,7 @@ export default {
     changeFollowYn () {
       this.mSaveFollowerType = 'follow'
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn === true) {
-        this.mErrorPopBodyStr = '구독을 취소하시겠습니까?'
+        this.mErrorPopBodyStr = 'Do you want to unfollow this channel?'
         this.mErrorPopBtnType = 'two'
         this.mErrorPopShowYn = true
       } else {

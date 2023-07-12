@@ -483,6 +483,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .commonLightColorBorder2 {border: 2px solid #7678E2!important;}
 /* .commonColor{color:#6768A7 !important;} */
 .commonColor{color:#5F61BD !important;}
+/* .commonColor{color:#2234a8 !important;} */
 
 .commonColorBorder{border:1px solid #6768A7 !important;}
 .userDoColor {color: #B9B9B9;}
@@ -1082,7 +1083,7 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
 /* NEW uniBuzzy */
 .flexCenter {display: flex; justify-content: center; align-items: center;}
 .transWhite {
-  background: rgba(232, 240, 250, 0.65);
+  background: rgba(256, 256, 256, 0.65);
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
   backdrop-filter: blur( 9px );
   -webkit-backdrop-filter: blur( 9px );

@@ -34,7 +34,7 @@
             </div>
         </div>
         <div style="width: 100%; height: calc(100% - 160px); float: left;padding-top: 0"  class="commonChanPopPadding" ><!-- box-shadow: inset 0 0 4px 4px #00000010;padding: 10px 20px; -->
-            <div v-html="'\'' + this.$changeText(GE_USER.userDispMtext) + this.$t('INTRO_MSG_HI') + propPopMessage" style=" box-shadow: inset 0 0 4px 4px #00000010;padding: 10px 20px; border-radius: 10px; float: left; width: 100%;" class="font14 textLeft fontBold commonBlack">
+            <div v-html="this.$t('INTRO_MSG_HI') + ' ' + this.$changeText(GE_USER.userDispMtext) + propPopMessage" style=" box-shadow: inset 0 0 4px 4px #00000010;padding: 10px 20px; border-radius: 10px; float: left; width: 100%;" class="font14 textLeft fontBold commonBlack">
             </div>
             <div style="width: 100%; display: flex;   align-items: center; padding-top: 20px;">
                 <div style="width: calc(100%); float: left;  display: flex; flex-direction: column;">
