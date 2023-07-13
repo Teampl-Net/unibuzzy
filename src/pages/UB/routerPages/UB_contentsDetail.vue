@@ -164,8 +164,6 @@ export default {
       let chan = {}
       if (this.propParams) {
         chan = this.$getDetail('TEAM', this.propParams.teamKey)
-        console.log(12341234)
-        console.log(chan)
       } else {
         if (this.mCreTeamKey !== -1) {
           chan = this.$getDetail('TEAM', this.mCreTeamKey)
@@ -400,9 +398,11 @@ export default {
       try {
         this.$showAxiosLoading(true)
         this.loadingYn = true
-        await this.getCabinetDetail(this.mCreTeamKey)
-        await this.$addChanList(this.mCreTeamKey)
+        // await this.getCabinetDetail(this.mCreTeamKey)
+        // await this.$addChanList(this.mCreTeamKey)
         if (!this.propParams || Object.keys(this.propParams).length < 1) {
+          await this.getCabinetDetail(this.mCreTeamKey)
+          await this.$addChanList(this.mCreTeamKey)
           // if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
           //   await this.$addChanList(this.propParams.teamKey)
           // }
@@ -411,6 +411,10 @@ export default {
           // }
           await this.getContentsDetail()
         } else {
+          if (!this.propParams.channelYn) {
+            await this.getCabinetDetail(this.mCreTeamKey)
+            await this.$addChanList(this.mCreTeamKey)
+          }
           var pInitData = JSON.parse(JSON.stringify(this.propParams.initData))
           this.cDetail = pInitData.content
           this.cabinetDetail = pInitData.contentCabinet

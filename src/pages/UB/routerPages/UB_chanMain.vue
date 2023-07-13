@@ -236,9 +236,9 @@ export default {
       this.mManagerList = result.data.content
     },
     openPage (value) {
-      console.log('value')
-      console.log(value)
-      this.$emit('openPage', value)
+      const obj = value
+      obj.channelYn = true
+      this.$emit('openPage', obj)
     },
     async getChanMain () {
       // eslint-disable-next-line no-debugger

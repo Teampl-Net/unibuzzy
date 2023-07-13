@@ -9,7 +9,7 @@
         <div transition="showUp" class="loginBtn" v-show="showLoginBtnYn" @click="login">Login</div>
       </transition>
     </div> -->
-    <!-- <gAxiosLoading /> -->
+    <gAxiosLoading />
     <!-- <gCloudLoading v-if="mCloudLoadingShowYn" style="position: absolute; top: 0; left: 0;" /> -->
     <!-- <transition name="showModal">
       <gPopupWrap transition="showModal"  @successWrite="successWriteBoard" :propParams="modalParam" ref="commonWrap" :headerTitle="headerTitle" @closePop="closePop" v-if="popShowYn" :parentPopN="parentPopN" />

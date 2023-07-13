@@ -287,6 +287,9 @@ export default {
         }
         detailParam.initData = result
         detailParam.notiYn = true
+
+        detailParam.channelYn = detailValue.channelYn
+
         this.mChanInfo = detailParam
         this.mTargetType = 'contDetail'
 
