@@ -162,8 +162,8 @@ export default {
   created () {
     // eslint-disable-next-line no-debugger
     debugger
-    this.$emit('openLoading')
-    this.$showAxiosLoading(true)
+    // this.$emit('openLoading')
+    // this.$showAxiosLoading(true)
     if (this.propParams && this.propParams.targetType === 'chanDetail' && this.propParams.initData) {
       this.mChanInfo = this.propParams
       if (this.mChanInfo.initData.team.D_CHAN_AUTH && this.mChanInfo.initData.team.D_CHAN_AUTH.followYn) {

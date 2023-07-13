@@ -113,10 +113,11 @@ if (type === 'D') {
     import('./components/UB/unit/UB_commonSelectFilter.vue'),
     import('./components/pageComponents/main/D_notiHistoryList.vue'),
     import('./components/UB/layout/UB_gFooter.vue'),
-    import('./components/popup/common/Tal_commonSelectBoardListPop.vue')
+    import('./components/popup/common/Tal_commonSelectBoardListPop.vue'),
+    import('./components/UB/layout/UB_gCloudLoading.vue')
   ])
   app = createApp(uniBuzzy).use(router).use(router).use(store)
-  importsUB.then(([gUBHeader, gFavList, popHeader, gPopupWrap, gSelectFilter, gLogList, gFooter, gSelectBoardPop]) => {
+  importsUB.then(([gUBHeader, gFavList, popHeader, gPopupWrap, gSelectFilter, gLogList, gFooter, gSelectBoardPop, gCloudLoading]) => {
     app.component('gUBHeader', gUBHeader.default)
     app.component('gFavList', gFavList.default)
     app.component('popHeader', popHeader.default)
@@ -125,6 +126,7 @@ if (type === 'D') {
     app.component('gSelectBoardPop', gSelectBoardPop.default)
     app.component('gLogList', gLogList.default)
     app.component('gFooter', gFooter.default)
+    app.component('gCloudLoading', gCloudLoading.default)
   })
 
   // const gNProfileImg = require('./components/common/N_commonProfile.vue')

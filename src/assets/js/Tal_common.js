@@ -1090,6 +1090,22 @@ export const commonMethods = {
       gChanPop.style.display = 'block'
     } else gChanPop.style.display = 'none'
   },
+  // showCloudLoading (showYn) {
+  //   var loadingCompo = document.getElementById('cloudLoading')
+  //   var gLoadingPop = document.querySelectorAll('.gCloudLoadingPop')
+  //   if (gLoadingPop.length > 0) {
+  //     loadingCompo.style.display = 'none'
+  //     return
+  //   }
+  //   if (!loadingCompo || loadingCompo.length === 0) return
+  //   if (showYn) {
+  //     /*  if (loadingCompo.style.display === 'flex') */
+  //     loadingCompo.style.display = 'flex'
+  //     setTimeout(() => {
+  //       loadingCompo.style.display = 'none'
+  //     }, 3000)
+  //   } else loadingCompo.style.display = 'none'
+  // },
   showAxiosLoading (showYn) {
     var loadingCompo = document.getElementById('axiosShadow')
     var gLoadingPop = document.querySelectorAll('.gLoadingPop')

@@ -10,7 +10,7 @@
         <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
       </div>
     </div>
-    <div class="w100P" style="height: calc(100% - 50px); overflow: auto; padding-top: 35px;">
+    <div class="w100P" style="height: calc(100% - 50px); overflow: auto; padding-top: 15px;">
       <div class="w100P" style="display: flex; align-items: center;">
         <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_pencil.svg" alt="">
         <!-- Description -->
@@ -181,9 +181,9 @@ export default {
 </script>
 <style scoped>
 .commonPopWrap{
-  position: absolute;width: 70%;height: 80%; ;z-index: 9999999; background: #FFFFFF; overflow: hidden;
+  position: absolute;width: 80%;height: 80%; ;z-index: 9999999; background: #FFFFFF; overflow: hidden;
   bottom: 10%;
-  left: 15%;
+  left: 10%;
   background: rgba(232, 240, 250, 0.65);
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
   backdrop-filter: blur( 9px );

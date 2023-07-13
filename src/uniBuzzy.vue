@@ -9,8 +9,8 @@
         <div transition="showUp" class="loginBtn" v-show="showLoginBtnYn" @click="login">Login</div>
       </transition>
     </div> -->
-    <gAxiosLoading />
-    <!-- <gCloudLoading v-if="cloudLoadingShowYn" style="position: absolute; top: 0; left: 0" /> -->
+    <!-- <gAxiosLoading /> -->
+    <!-- <gCloudLoading v-if="mCloudLoadingShowYn" style="position: absolute; top: 0; left: 0;" /> -->
     <!-- <transition name="showModal">
       <gPopupWrap transition="showModal"  @successWrite="successWriteBoard" :propParams="modalParam" ref="commonWrap" :headerTitle="headerTitle" @closePop="closePop" v-if="popShowYn" :parentPopN="parentPopN" />
     </transition> -->
@@ -47,7 +47,7 @@ export default {
   data () {
     return {
       mobileYn: this.$getMobileYn(),
-      cloudLoadingShowYn: false,
+      mCloudLoadingShowYn: false,
       loginYn: true,
       showLoginBtnYn: false,
       introVideo: '/resource/new/introVideo.mp4',

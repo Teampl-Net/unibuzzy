@@ -19,9 +19,9 @@
         <UBInfoBox v-if="mInfoBoxShowYn" :pType="'BD'" @openPage="openPage" :pChan="clickedBd" />
         <UBInfoBox v-else-if="clickedArea.clickedYn" :pType="'AR'" :pMoveToDetail="moveToChan" :pClickedInfo="clickedArea" :pVillageInfo="village.villageInfo" :innerHeight="innerHeight" :innerWidth="innerWidth" />
       </transition> -->
-      <div v-if="mShowAreaBdList" @click="mShowAreaBdList = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+      <div v-if="mShowAreaBdListYn" @click="mShowAreaBdListYn = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
       <transition name="showUp">
-        <UBAreaBdList v-if="mShowAreaBdList" style="top: 100px; height: calc(100% - 100px); width: 80%;" />
+        <UBAreaBdList v-if="mShowAreaBdListYn" style="top: 100px; height: calc(100% - 100px); width: 80%;" />
       </transition>
       <!-- area -->
       <!-- <template v-for="(area) in village.areaList" :key="area.key">
@@ -64,10 +64,8 @@ export default {
   },
   data () {
     return {
-      mShowAreaBdList: false,
+      mShowAreaBdListYn: false,
       mInfoBoxShowYn: false,
-      showCloudTransYn: false,
-      areaName: [],
       bgImg: {
         imgLink: ''
       },
@@ -282,7 +280,7 @@ export default {
       // this.$emit('openPop', param)
     },
     openAreaBdList () {
-      this.mShowAreaBdList = true
+      this.mShowAreaBdListYn = true
     },
     goLoginPage () {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
@@ -293,6 +291,7 @@ export default {
       }
     },
     openPage (param) {
+      this.mInfoBoxShowYn = false
       this.$emit('openPage', param)
     },
     openPop (openParam) {
@@ -397,7 +396,6 @@ export default {
     },
     moveToChan (clickedInfo) {
       // const errorRoute = { name: 'errorPage', query: { errorStatus: error.response.status } }
-      // this.showCloudTransYn = true
       console.log('clickedInfo', clickedInfo)
       this.closeInfoBox()
       this.$emit('chanInfo', clickedInfo)
@@ -540,7 +538,6 @@ export default {
                 pixelData = area.ctx.getImageData(4 / 5 * area.w - 10, i, 1, 1).data
               }
               if (pixelData[3] !== 0) {
-                console.log(area.name, i)
                 bd.top = i - 10 + area.top
                 break
                 // console.log('foundfoundfound', bd.top)
@@ -682,8 +679,6 @@ export default {
       // 빌딩부터 역순으로 뒤짐
       // 빌딩이 발견됨, 스타일클리어 시키고, 효과를 주고 return해버리기
       // 빌딩 클릭이 없음, areaclick을 찾음
-      // eslint-disable-next-line no-debugger
-      debugger
       if ((this.clickedBd && this.clickedBd.clickedYn)) return
       this.clickedArea = {}
       this.clickedBd = {}
