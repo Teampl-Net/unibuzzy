@@ -46,7 +46,7 @@
         <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
           <div v-if="village.areaList[area.priority].buildingList[index]" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; z-index: 999;" :style="[village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top+ 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
             <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl" />
-            <span class="fontBold font12" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
+            <span class="fontBold font12" :style="'top: ' + village.areaList[area.priority].buildingList[index].h + 'px;'" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; left: 0;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
           </div>
         </template>
       </template>
