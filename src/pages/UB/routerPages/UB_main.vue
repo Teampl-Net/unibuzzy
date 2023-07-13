@@ -2,7 +2,7 @@
   <div class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
     <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
       <transition name="showUp">
-        <areaInfoPop @openPage="openPage" v-if="mInfoBoxShowYn"  :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
+        <areaInfoPop @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
       </transition>
     <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: cover; overflow: hidden;">
       <!-- <UBBgEffect /> -->
@@ -209,6 +209,7 @@ export default {
     }
   },
   async created () {
+    console.log(this.pAreaDetail)
     this.resetHistory()
     this.setNativeHeight()
 

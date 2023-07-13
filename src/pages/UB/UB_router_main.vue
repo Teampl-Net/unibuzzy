@@ -364,6 +364,9 @@ export default {
       }
       chanMainParam.initData = initData
       this.mChanInfo = chanMainParam
+      if (detailValue.areaInfo) {
+        this.mChanInfo.areaInfo = detailValue.areaInfo
+      }
       this.mChanMainTeamKey = detailValue.teamKey
       this.mTargetType = 'chanDetail'
       // this.$router.push({ name: 'chanMain', params: { pTeamKey: this.mChanMainTeamKey } })

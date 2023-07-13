@@ -4,14 +4,14 @@
     <followerList v-if="mFollowerListPopShowYn" :pManagerList="mManagerList" :pClosePop="closeFollowerList"  :pOpenProfilePop="openProfilePop"  />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mUserDetailPopShowYn" @click="closeFollowerList"></div>
     <userDetailPop v-if="mUserDetailPopShowYn" :propData="mPopParam" :pClosePop="closeUserDetailPop" />
-    <div id="gChannelPopup" v-if="commonChanPopShowYn" style="display: absolute; top: 0; left: 0; z-index: 999;">
+    <!-- <div id="gChannelPopup" v-if="commonChanPopShowYn" style="display: absolute; top: 0; left: 0; z-index: 999;">
       <gChannelPop :propCateItemKey="CHANNEL_DETAIL.cateKey" @openPop="openCertiPop" :propTeamKey="CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop' />
-    </div>
+    </div> -->
     <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
     <div v-if="mReceptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999">
     </div>
-    <recMemberPop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" />
-    <!-- <WelcomePop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" /> -->
+    <!-- <recMemberPop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" /> -->
+    <WelcomePop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" />
     <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;' : ''" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{ officialTitle: CHANNEL_DETAIL.officialYn }"> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" />
       <p class="font20 fontBold textOverdot" :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: #6768a7'">
         {{ changeText(CHANNEL_DETAIL.nameMtext) }}</p>
@@ -22,7 +22,7 @@
         <div class="w100P h100P" style="">
           <!-- <img src="../../../assets/images/channel/chanBgImg.jpeg" style="width:100%; height: calc(100% + 50px); position: absolute; left: 0; top: -50px;" /> -->
           <div class="w100P" style="height: calc(100% + 50px); position: absolute; left: 0; top: -50px; background: linear-gradient(to bottom, rgba(20, 20, 20, 0) 40%,rgba(20, 20, 20, 0.25) 50%,rgba(20, 20, 20, 0.5) 70%,rgba(20, 20, 20, 0.6) 90%,rgba(20, 20, 20, 0.8) 100%);"></div>
-          <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ changeText(CHANNEL_DETAIL.nameMtext) }} > {{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
+          <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ propParams.areaInfo.bdAreaDesc }} > {{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
           <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
           <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
           <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" :btnTitle="$t('COMM_BTN_SUB')" />
@@ -90,8 +90,8 @@ import chanDetailComp from '../../../components/pageComponents/channel/Tal_chanD
 import pushList from './UB_pushList'
 import writeContents from '../../../components/popup/D_writeContents.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
-import recMemberPop from '../../../components/popup/member/D_recMemberPop.vue'
-// import WelcomePop from '../../../components/UB/popup/UB_WelcomePop.vue'
+// import recMemberPop from '../../../components/popup/member/D_recMemberPop.vue'
+import WelcomePop from '../../../components/UB/popup/UB_WelcomePop.vue'
 // import boardWrite from '../../board/Tal_boardWrite.vue'
 import writeBottSheet from '../../../components/pageComponents/main/unit/D_contentsWriteBottSheet.vue'
 import followerList from '../../../components/UB/popup/UB_followerList.vue'
@@ -143,7 +143,9 @@ export default {
   },
   props: {
     propParams: {},
-    pClearInfo: Function
+    pClearInfo: Function,
+    pAreaInfo: {},
+    pGoChannelMain: Function
     // notiScrollTarget: {},
     // pPopId: {},
     // popYn: { type: Boolean, default: false }
@@ -153,13 +155,15 @@ export default {
     writeBottSheet,
     chanDetailComp,
     writeContents,
-    recMemberPop,
-    // WelcomePop,
+    // recMemberPop,
+    WelcomePop,
     followerList,
     userDetailPop
   //   unknownLoginPop
   },
   created () {
+    console.log('this.pAreaInfo')
+    console.log(this.pAreaInfo)
     // eslint-disable-next-line no-debugger
     debugger
     // this.$emit('openLoading')

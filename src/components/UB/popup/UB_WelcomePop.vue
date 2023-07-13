@@ -20,7 +20,6 @@
       <div style="width: calc(100% - 40px);min-height: 500px; height: 90%; z-index: 99999999999999999999999; position: fixed; left: 20px; bottom: 0; background: #fff; border-radius: 0.8rem 0.8rem 0 0;">
           <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
               <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">{{ $t('REQ_MEM_NAME_REQ') }}</p>
-              <img @click="successSendForm(false)" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
           </div>
           <div style="width: 100%; height: calc(100% - 120px); float: left; padding: 10px 20px;">
               <p class="font18 fontBold textLeft" style="color: #6768A7!important; margin: 10px 0;">{{ $t('REQ_MEM_TITLE_CONT') }}</p>
@@ -30,8 +29,8 @@
               <gBtnSmall @click="openReceptPop" class="mright-05" btnThema=""  :btnTitle="$t('REQ_MEM_BTN_REQ')" :class="{'CWDeepGrayBgColor' : sendOkYn === false}" />
               <gBtnSmall @click="successSendForm(false)" btnThema="light" :btnTitle="$t('COMM_BTN_CANCEL')" />
           </div>
-          <gConfirmPop @no="receptPopShowYn = false" :confirmText="returnConfirmText()" @ok="sendForm" confirmType='two' v-if="receptPopShowYn" />
-          <gConfirmPop @no="successSendForm" :confirmText="$t('REQ_MEM_MSG_SUBMIT')" confirmType='timeout' v-if="okPopShowYn" />
+          <!-- <gConfirmPop @no="receptPopShowYn = false" :confirmText="returnConfirmText()" @ok="sendForm" confirmType='two' v-if="receptPopShowYn" />
+          <gConfirmPop @no="successSendForm" :confirmText="$t('REQ_MEM_MSG_SUBMIT')" confirmType='timeout' v-if="okPopShowYn" /> -->
       </div>
   </template>
 <script>

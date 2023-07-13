@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pAreaInfo" ref="gPopUp" class="commonPopWrap" style="padding: 10px 20px ;">
+  <div v-if="pAreaInfo && pAreaDetail" ref="gPopUp" class="commonPopWrap" style="padding: 10px 20px ;">
     <div class="font16 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
       <div style="display: flex; align-items: center; width: calc(100% - 25px);">
         <img style="width: 40px; margin-right: 5px;" src="/resource/logo/gtLogo.png" alt="">
@@ -34,7 +34,7 @@
         <div v-if="pAreaDetail.fList&& pAreaDetail.fList.length > 0" style=" margin-left: 30px; margin-top: 10px; width: calc(100% - 30px);">
           <div class="w100P" id="fileChannelWrap" style="height: 85px; overflow: auto;" @wheel="horizontalScroll">
             <div class="w100P" style="height: 100%; min-width: 100%; display:flex;">
-              <chanRoundIcon :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="chan" v-for="chan in pAreaDetail.fList" :key="chan.teamKey" />
+              <chanRoundIcon :pAreaInfo="pAreaInfo" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="chan" v-for="chan in pAreaDetail.fList" :key="chan.teamKey" />
             </div>
           </div>
         </div>
@@ -49,19 +49,19 @@
         <div v-if="pAreaDetail.popTeamList && pAreaDetail.popTeamList.length > 0" class="w100P" style="height: 200px; display: flex;">
           <div class="h100P" style="width: 33%;">
             <div style="height: 70%; display: flex; justify-content: center; align-items: flex-end;">
-              <chanRoundIcon v-if="pAreaDetail.popTeamList[1]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[1]" />
+              <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[1]"  :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[1]" />
             </div>
             <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-left-radius: 10px;">2</div>
           </div>
           <div style="width: 33%;">
             <div style="height: 50%; display: flex; justify-content: center; align-items: flex-end;">
-              <chanRoundIcon v-if="pAreaDetail.popTeamList[0]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[0]" :pBestYn="true" />
+              <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[0]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[0]" :pBestYn="true" />
             </div>
             <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 50%; background-color:slateblue; border-top-left-radius: 10px; border-top-right-radius: 10px;">1</div>
           </div>
           <div style="width: 33%;">
             <div style="height: 70%; display: flex; justify-content: center; align-items: flex-end;">
-              <chanRoundIcon v-if="pAreaDetail.popTeamList[2]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[2]"/>
+              <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[2]"  :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[2]"/>
             </div>
             <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-right-radius: 10px;">3</div>
           </div>
@@ -81,7 +81,7 @@
             </template>
           </div>
           <div class="w100P" style="padding-bottom: 30px;">
-            <gEmpty tabName="전체" contentName="채널" v-if="pAreaDetail.popTeamList.length === 0" style="margin-top:50px;" />
+            <gEmpty tabName="전체" contentName="채널" v-if="pAreaDetail.popTeamList && pAreaDetail.popTeamList.length === 0" style="margin-top:50px;" />
             <template v-for="(chanEle, index) in pAreaDetail.popTeamList" :key="index">
               <channelCard :pAreaDetail="pAreaDetail" class="moveBox chanRow" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             </template>
@@ -126,13 +126,12 @@ export default {
   },
   methods: {
     goChannelMain (param) {
-      console.log('1234123412341234')
+      console.log('!!!!!!!!!!!!')
       console.log(param)
+      console.log(this.pAreaInfo)
       const pageParam = {}
       pageParam.targetKey = param.teamKey
-      if (!pageParam.targetKey) {
-        pageParam.targetKey = param.targetKey
-      }
+      pageParam.areaInfo = this.pAreaInfo
       pageParam.targetType = 'chanDetail'
       pageParam.nameMtext = param.nameMtext
       this.$emit('openPage', pageParam)
