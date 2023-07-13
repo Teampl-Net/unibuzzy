@@ -11,6 +11,7 @@
     <div v-if="mReceptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999">
     </div>
     <recMemberPop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" />
+    <!-- <WelcomePop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" /> -->
     <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;' : ''" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{ officialTitle: CHANNEL_DETAIL.officialYn }"> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" />
       <p class="font20 fontBold textOverdot" :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: #6768a7'">
         {{ changeText(CHANNEL_DETAIL.nameMtext) }}</p>
@@ -90,6 +91,7 @@ import pushList from './UB_pushList'
 import writeContents from '../../../components/popup/D_writeContents.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
 import recMemberPop from '../../../components/popup/member/D_recMemberPop.vue'
+// import WelcomePop from '../../../components/UB/popup/UB_WelcomePop.vue'
 // import boardWrite from '../../board/Tal_boardWrite.vue'
 import writeBottSheet from '../../../components/pageComponents/main/unit/D_contentsWriteBottSheet.vue'
 import followerList from '../../../components/UB/popup/UB_followerList.vue'
@@ -152,6 +154,7 @@ export default {
     chanDetailComp,
     writeContents,
     recMemberPop,
+    // WelcomePop,
     followerList,
     userDetailPop
   //   unknownLoginPop

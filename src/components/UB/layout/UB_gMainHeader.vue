@@ -6,19 +6,14 @@
     <p v-if="pRouterHeaderInfo" class="headerFont fontBold fl" style="color: #062bb5;" v-html="pRouterHeaderInfo"></p>
     <img class="cursorP" @click="goLogList" height=20 style="right: 55px; position: absolute;" src="../../../assets/images/common/icon_bell.svg"/>
     <img class="cursorP" @click="goFavList" height="20" style="position: absolute; right: 20px;" src="../../../assets/images/common/likeIcon.svg" />
-    <transition name="showUp">
-      <favListPop @openPage="openPage" v-if="mInfoBoxShowYn" :pClosePop="closeListBox" />
-    </transition>
   </div>
 </template>
 <script>
-import favListPop from '../../../components/UB/popup/UB_favListPop.vue'
 export default {
   props: {
     pRouterHeaderInfo: String
   },
   components: {
-    favListPop
   },
   data () {
     return {
@@ -41,12 +36,12 @@ export default {
     openPage (param) {
       this.$emit('openPage', param)
     },
-    // goFavList () {
-    //   const param = {}
-    //   param.targetType = 'favList'
-    //   param.popHeaderText = '즐겨찾기'
-    //   this.$emit('goFavList', param)
-    // },
+    goFavList () {
+      const param = {}
+      param.targetType = 'favList'
+      param.popHeaderText = '채널 즐겨찾기'
+      this.$emit('goFavList', param)
+    },
     showMenu () {
       this.$emit('showMenu')
     }

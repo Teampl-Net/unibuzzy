@@ -28,7 +28,7 @@
         <!-- :chanElement="chan" v-for="(chan, index) in this.mMainMChanList" :key="index" -->
         <div v-for="(bd) in area.buildingList" :key="bd.key" class="bdDiv" :class="{clicked: bd.clickedYn}" style="position: absolute; z-index: 9;" :style="[bd.maskedImageStyle, { top: bd.top+ 'px', left: bd.left + 'px' }]">
           <img :src="bd.maskedImageUrl" />
-          <span style="position: absolute;font-weight: bold; background: rgba(256,256,256,0.7); border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.nameMtext }}</span>
+          <span style="position: absolute;font-weight: bold; background: rgba(256,256,256,0.7); border-radius: 5px; padding: 0 5px; top: -15px; left: 0;">{{ bd.nameMtext }}</span>
         </div>
       </template>
     </div>

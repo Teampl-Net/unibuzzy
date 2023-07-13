@@ -13,6 +13,7 @@
     <div class="w100P" style="height: calc(100% - 50px); overflow: auto; padding-top: 35px;">
       <div class="w100P" style="display: flex; align-items: center;">
         <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_pencil.svg" alt="">
+        <!-- Description -->
         <p class="fontBold font16">Description</p>
       </div>
       <p class="textLeft font16" style="margin-left: 30px; width: calc(100% - 30px);">{{ pAreaInfo.bdAreaDesc }}</p>
@@ -27,6 +28,7 @@
       <div class="w100P" style="margin-top: 35px;">
         <div class="w100P textLeft" style="display: flex; align-items: center;">
           <img style="width: 25px; margin-right: 5px;" src="@/assets/images/contents/icon_heart_on.png" alt="">
+          <!--Favorites -->
           <p class="fontBold font16">Favorites</p>
         </div>
         <div v-if="pAreaDetail.fList&& pAreaDetail.fList.length > 0" style=" margin-left: 30px; margin-top: 10px; width: calc(100% - 30px);">
@@ -41,6 +43,7 @@
       <div class="w100P" style="margin-top: 35px;">
         <div class="w100P" style="display: flex; align-items: center;">
           <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_popular.svg" alt="">
+          <!--Popular -->
           <p class="fontBold font16">Popular</p>
         </div>
         <div v-if="pAreaDetail.popTeamList && pAreaDetail.popTeamList.length > 0" class="w100P" style="height: 200px; display: flex;">
@@ -67,6 +70,7 @@
         <div class="w100P" style="margin-top: 35px;">
           <div class="w100P" style="display: flex; align-items: center;">
             <img style="width: 25px; margin-right: 5px;" src="@/assets/images/bottom/icon_search.svg" alt="">
+            <!--All List -->
             <p class="fontBold font16">All List</p>
           </div>
           <div class="w100P" style="padding-bottom: 30px;">
@@ -74,6 +78,12 @@
             <template v-for="(chanEle, index) in pAreaInfo.bdList" :key="index">
               <channelCard v-if="chanEle.targetKind === 'T'" class="moveBox chanRow" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
               <boardCard v-else class="moveBox chanRow" :boardElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
+            </template>
+          </div>
+          <div class="w100P" style="padding-bottom: 30px;">
+            <gEmpty tabName="전체" contentName="채널" v-if="pAreaDetail.popTeamList.length === 0" style="margin-top:50px;" />
+            <template v-for="(chanEle, index) in pAreaDetail.popTeamList" :key="index">
+              <channelCard :pAreaDetail="pAreaDetail" class="moveBox chanRow" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             </template>
           </div>
         </div>
@@ -100,6 +110,8 @@ export default {
   created () {
     console.log('pAreaInfo')
     console.log(this.pAreaInfo)
+    console.log('pAreaDetail')
+    console.log(this.pAreaDetail)
     this.settingPop()
     localStorage.setItem('notiReloadPage', 'none')
   },
