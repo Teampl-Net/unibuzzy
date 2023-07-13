@@ -109,6 +109,8 @@
     "COMM_BTN_GET_SAMP": "샘플 가져오기",
     "COMM_BTN_SUBMIT": "제출하기",
     "COMM_BTN_SAVE_DRAFT": "임시저장",
+    "POST_TITLE_DEFAULT_TITLE1": "공지 게시판",
+    "POST_TITLE_DEFAULT_TITLE2": "일반 게시판",
 
     "COMM_CATE_BUSINESS": "기업",
     "COMM_CATE_GPOVER": "정부",

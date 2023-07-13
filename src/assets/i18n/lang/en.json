@@ -108,6 +108,8 @@
     "COMM_BTN_GET_SAMP": "Get a sample",
     "COMM_BTN_SUBMIT": "Submit",
     "COMM_BTN_SAVE_DRAFT": "Save Draft",
+    "POST_TITLE_DEFAULT_TITLE1": "Announcement",
+    "POST_TITLE_DEFAULT_TITLE2": "General",
 
     "COMM_CATE_BUSINESS": "Business",
     "COMM_CATE_GPOVER": "Government",
