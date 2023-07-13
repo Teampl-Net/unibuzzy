@@ -116,6 +116,8 @@ export default {
         }
       }
     }
+    console.log('--------------------------------')
+    console.log(this.tabList)
     if (this.modeType === 'write') {
       this.tabwidth = 4.8
     }

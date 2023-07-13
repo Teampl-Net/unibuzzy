@@ -23,7 +23,7 @@
     </div>
     <top5Alim v-if="$appType !== 'UB'" class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPop" ref="topAlim" />
     <top5Channel v-if="$appType !== 'UB'" class="mainContentsBoxArea" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" style="margin-bottom: 1rem;" />
-    <myContents class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPage" v-else />
+    <myContents class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPop" v-else />
 
     <div v-if="false" class="commonBlack " style="width: 100%; float: left; height: 100%;">
       <myActList @closeLoading="mLoadingYn = false" ref="commonActList" :viewTab="myPageTabType" @openContentsDetailPop="openContentsDetailPop" @openPop="openPop" style="border-radius: 0.8rem;" @goMyChanList="goMyChanList" />
@@ -55,8 +55,7 @@ export default {
       type: Object,
       // eslint-disable-next-line no-new-object
       default: new Object()
-    },
-    propParams: {}
+    }
   },
   components: {
     top5Channel,
@@ -68,26 +67,18 @@ export default {
   },
   async created () {
     this.mLoadingYn = true
-    if (this.propParams || this.initData) {
+    if (this.initData) {
       // this.mInitData = this.initData
-      if (this.propParams) {
-        this.mContsList = this.replaceArr(this.propParams.mContentsList.content)
-      } else {
-        this.mContsList = this.replaceArr(this.initData.alimList.content)
-        this.mMainChanList = this.initData.chanList
-        this.mMainMChanList = this.initData.mChanList
-      }
+      this.mContsList = this.replaceArr(this.initData.alimList.content)
+      this.mMainChanList = this.initData.chanList
+      this.mMainMChanList = this.initData.mChanList
       // this.mContsList = this.initData.alimList.content
     } else {
-      if (this.$appType === 'UB') {
-        this.$emit('changeRouterPath', 'myPage')
-      } else {
-        this.$getRouterViewData('myPage').then((data) => {
-          this.mContsList = this.replaceArr(data.alimList.content)
-          this.mMainChanList = data.chanList
-          this.mMainMChanList = data.mChanList
-        })
-      }
+      this.$getRouterViewData('myPage').then((data) => {
+        this.mContsList = this.replaceArr(data.alimList.content)
+        this.mMainChanList = data.chanList
+        this.mMainMChanList = data.mChanList
+      })
     }
     // var this_ = this
     /* this.getMainBoard().then(res => {
@@ -152,19 +143,7 @@ export default {
       return returnList
     }
   },
-  watch: {
-    propParams: {
-      handler (val) {
-        if (!val || !val.mContentsList) return
-        this.mContsList = this.replaceArr(this.propParams.mContentsList.content)
-      },
-      deep: true
-    }
-  },
   methods: {
-    openPage (value) {
-      this.$emit('openPage', value)
-    },
     /* async getMyContentsList (pageSize, offsetInput, loadingYn) {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
       this.mAxiosQueue.push('getPushContentsList')

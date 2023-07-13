@@ -244,13 +244,15 @@ export default {
       }
     },
     async goDetail (detailValue) {
+      console.log(123412345)
+      console.log(detailValue)
       if (detailValue.chanYn) {
         this.goChanDetail(detailValue)
       } else {
         console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         console.log(detailValue)
         var detailParam = {}
-        detailParam.targetType = 'contDetail'
+        detailParam.targetType = 'contentsDetail'
         detailParam.targetKey = detailValue.targetKey
         if (!detailParam.targetKey) detailParam.targetKey = detailValue.contentsKey
         detailParam.memoScrollYn = detailValue.memoScrollYn
@@ -263,12 +265,11 @@ export default {
         if (axiosParam.jobkindId) {
           axiosParam.userKey = this.GE_USER.userKey
           axiosParam.ownUserKey = this.GE_USER.userKey
-          axiosParam.creTeamKey = detailParam.teamKey
-          axiosParam.cabinetKey = detailParam.cabinetKey
+          axiosParam.creTeamKey = axiosParam.teamKey
+          // axiosParam.cabinetKey = detailParam.cabinetKey
         }
 
         var result = await this.$getContentDetailData(axiosParam, false)
-        console.log(result)
         if (!result) return
         if (!detailParam.jobkindId) {
           detailParam.jobkindId = result.content.jobkindId
@@ -277,7 +278,7 @@ export default {
           if (detailParam.jobkindId === 'BOAR') {
             detailParam.cabinetKey = result.content.cabinetKey
             detailParam.cabinetNameMtext = this.$changeText(result.content.cabinetNameMtext)
-            if (result.content.cabinetNameMtext) this.changePageHeader(result.content.cabinetNameMtext)
+            if (result.content.cabinetNameMtext) this.changePageHeader(this.$changeText(result.content.cabinetNameMtext))
           } else {
             detailParam.nameMtext = this.$changeText(result.content.nameMtext)
             detailParam.teamName = this.$changeText(result.content.nameMtext)
@@ -289,7 +290,7 @@ export default {
         this.mChanInfo = detailParam
         this.mTargetType = 'contDetail'
 
-        this.$router.push(`/contents/${axiosParam.contentsKey}/${detailParam.jobkindId}`)
+        this.$router.push(`/contents/${axiosParam.contentsKey}/${detailParam.teamKey}/${detailParam.cabinetKey}`)
       }
     },
     getParamMap (urlString) {
@@ -424,13 +425,14 @@ export default {
         return
       } else if (params.targetType === 'logList') {
         this.goLogList(params)
-      } else if (params.targetType === 'contDetail') {
+      } else if (params.targetType === 'contDetail' || params.targetType === 'contentsDetail') {
         this.goDetail(params)
       } else if (params.targetType === 'myPage') {
         this.goMyPage(params)
       } else if (params.targetType === 'boardMain') {
         this.mChanInfo = params
         this.mTargetType = 'boardMain'
+        // this.changePageHeader(this.$changeText(params.nameMtext))
         this.$router.push(`/board/${params.teamKey}/${params.targetKey}`)
       } else if (params.targetType === 'writeContents') {
         this.openPop(params)
@@ -449,8 +451,29 @@ export default {
         this.mPolicyType = page
         return
       }
-      if (page !== 'chanList') {
+      if (page !== 'chanList' && page !== 'myPage') {
         var pageData = await this.$getRouterViewData(page)
+      } else if (page === 'myPage') {
+        // eslint-disable-next-line no-debugger
+        debugger
+        // @point
+        // eslint-disable-next-line no-new-object
+        var param = new Object()
+
+        param.pageSize = 5
+
+        param.creUserKey = this.GE_USER.userKey
+        param.jobkindId = 'BOAR'
+        // param.allYn = true
+
+        var nonLoading = true
+        var result = await this.$getContentsList(param, nonLoading)
+
+        var resultList = result
+
+        this.mChanInfo = {
+          mContentsList: resultList
+        }
       }
       this.sendInitData = pageData
       if (this.$router.currentRoute._rawValue.path === '/' && page === 'main') {

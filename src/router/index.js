@@ -56,7 +56,7 @@ if (type === 'UB') {
           component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_uniB_main.vue')
         },
         {
-          path: '/contents/:contentsKey/:jobkindId',
+          path: '/contents/:contentsKey/:creTeamKey/:cabinetKey',
           name: 'contents',
           props: true,
           meta: {

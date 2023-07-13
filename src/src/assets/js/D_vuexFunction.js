@@ -111,6 +111,7 @@ export const functions = {
     }
   },
   getDetail (type, targetKey) {
+    alert(true)
     var dataList
     var result
     if (type === 'TEAM') {
@@ -179,7 +180,7 @@ export const functions = {
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
     console.log('############# addChanList ############')
     console.log(paramMap)
-    var resultList = await methods.getTeamList(paramMap, true)
+    var resultList = await methods.getTeamList(paramMap, false)
 
     console.log(resultList)
     // if (resultList.data === undefined || resultList.data === null || resultList.data === '') return

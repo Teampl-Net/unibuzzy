@@ -52,8 +52,19 @@ export default {
   },
   created () {
   },
+  watch: {
+    propContentsList: {
+      handler (val) {
+        console.log('제발나와라요~~~~')
+        console.log(val)
+      },
+      deep: true
+    }
+  },
   methods: {
     goChanDetail (data) {
+      console.log('data')
+      console.log(data)
       var param = {}
       param.targetType = 'contentsDetail'
       param.targetKey = data.contentsKey

@@ -41,8 +41,13 @@ export default {
   },
   methods: {
     goChannelMain (chanElement) {
+      console.log('12341234chanElement')
+      console.log(chanElement)
       var openPopParam = {}
-      openPopParam.targetKey = this.chanElement.teamKey
+      openPopParam.targetKey = chanElement.teamKey
+      if (!openPopParam.targetKey) {
+        openPopParam.targetKey = chanElement.targetKey
+      }
       openPopParam.targetType = 'chanDetail'
       this.$emit('openPop', openPopParam)
     }

@@ -9,7 +9,7 @@
 }
 </i18n>
 <template>
-    <div ref="contScrollWrap" id="contsScrollWrap" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" >
+    <div ref="contScrollWrap" id="contsScrollWrap" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL)" class="boardDetailWrap" >
         <gContentsBox :pFadeNotShowYn="true" @openImgPop="openImgPop" @scrollToMemoTop="scrollToMemoTop" @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.cDetail" :childShowYn="true" @openPop="openPop" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
 
         <!-- <attachFileListPop :propFileData="this.CONT_DETAIL" v-if="filePopShowYn === true" @closePop="filePopShowYn = false"/> -->
@@ -90,7 +90,8 @@ export default {
       currentMemoKey: 0,
       tempMemoData: {},
       mContentsKey: -1,
-      mCabinetKey: -1
+      mCabinetKey: -1,
+      mCreTeamKey: -1
     }
   },
   props: {
@@ -102,7 +103,8 @@ export default {
   },
   created () {
     this.mContentsKey = this.$route.params.contentsKey
-    this.mJobkindId = this.$route.params.jobkindId
+    this.mCreTeamKey = this.$route.params.creTeamKey
+    this.mCabinetKey = this.$route.params.cabinetKey
     this.readyFunction()
   },
   updated () {
@@ -162,6 +164,8 @@ export default {
       let chan = {}
       if (this.propParams) {
         chan = this.$getDetail('TEAM', this.propParams.teamKey)
+        console.log(12341234)
+        console.log(chan)
       } else {
         if (this.mCreTeamKey !== -1) {
           chan = this.$getDetail('TEAM', this.mCreTeamKey)
@@ -169,11 +173,10 @@ export default {
           return
         }
       }
-      console.log('12093412089349801290834chan')
-      console.log(chan)
       if (chan) {
         return chan[0]
       } else {
+        this.$addChanList(this.mCreTeamKey)
         return null
       }
     },
@@ -181,11 +184,10 @@ export default {
       if (this.CONT_DETAIL.jobkindId === 'BOAR') {
         if (!this.cabinetDetail) return null
         if (!this.cabinetDetail.mCabinet) return this.cabinetDetail
-        console.log('this.cabinetDetail')
-        console.log(this.cabinetDetail)
 
         return this.cabinetDetail.mCabinet
       } else {
+        this.getCabinetDetail(this.mCreTeamKey)
         return null
       }
     },
@@ -398,6 +400,8 @@ export default {
       try {
         this.$showAxiosLoading(true)
         this.loadingYn = true
+        await this.getCabinetDetail(this.mCreTeamKey)
+        await this.$addChanList(this.mCreTeamKey)
         if (!this.propParams || Object.keys(this.propParams).length < 1) {
           // if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
           //   await this.$addChanList(this.propParams.teamKey)
@@ -442,7 +446,7 @@ export default {
       var param = new Object()
       param.contentsKey = Number(this.mContentsKey)
       param.targetKey = Number(this.mContentsKey)
-      param.jobkindId = this.mJobkindId
+      param.jobkindId = 'BOAR'
       param.userKey = this.GE_USER.userKey
       // param.ownUserKey = this.GE_USER.userKey
       const resultList = await this.$getContentsList(param)
@@ -468,8 +472,6 @@ export default {
       if (openPageParam.jobkindId === 'BOAR') {
         openPageParam.cabinetKey = detailData.cabinetKey
       }
-      await this.$addChanList(this.mCreTeamKey)
-      await this.getCabinetDetail(this.mCreTeamKey)
       this.$emit('clearInfo', { detail: openPageParam, targetType: 'coontDetail' })
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
