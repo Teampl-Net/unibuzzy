@@ -219,7 +219,6 @@ export default {
     }
   },
   async created () {
-    console.log(this.pAreaDetail)
     this.resetHistory()
     this.setNativeHeight()
     this.$emit('clearInfo', { detail: null, targetType: 'main' })
@@ -353,8 +352,8 @@ export default {
     },
     goLoginPage () {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
-      if (isMobile && (localStorage.getItem('nativeYn') === false || localStorage.getItem('nativeYn') === 'false')) {
-        window.location.href = 'https://thealim.page.link/LOGIN'
+      if (isMobile && (localStorage.getItem('nativeYn') === true || localStorage.getItem('nativeYn') === 'false')) {
+        this.$router.push({ path: '/login' })
       } else {
         this.$router.push({ path: '/policies' })
       }

@@ -128,7 +128,6 @@ if (type === 'D') {
     app.component('gFooter', gFooter.default)
     app.component('gCloudLoading', gCloudLoading.default)
   })
-
   // const gNProfileImg = require('./components/common/N_commonProfile.vue')
   // const gNCloudLoading = require('./components/layout/N_cloudLoading.vue')
   // app.component('gNProfileImg', gNProfileImg)
@@ -253,7 +252,13 @@ app.config.globalProperties.$Vuex = Vuex
 app.config.globalProperties.$imageCompression = imageCompression
 app.config.globalProperties.$commonAxiosFunction = commonAxiosFunction
 app.config.globalProperties.$store = store
-app.config.globalProperties.$appType = 'UB'
+if (localStorage.getItem('appType')) {
+  app.config.globalProperties.$appType = localStorage.getItem('appType')
+  app.config.globalProperties.$mobileYn = true
+} else {
+  app.config.globalProperties.$appType = 'D'
+  app.config.globalProperties.$mobileYn = null
+}
 
 app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', 'false')

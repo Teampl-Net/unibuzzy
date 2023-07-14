@@ -765,7 +765,7 @@ export default {
     goLoginPage () {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       if (isMobile && (localStorage.getItem('nativeYn') === false || localStorage.getItem('nativeYn') === 'false')) {
-        window.location.href = 'https://thealim.page.link/LOGIN'
+        window.location.href = 'http://192.168.0.10:8080/#/login'
       } else {
         this.$router.push({ path: '/policies' })
       }

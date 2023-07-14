@@ -86,8 +86,13 @@
 </template>
 
 <script>
+import { onMessage } from '@/assets/js/webviewInterface'
 export default {
   created () {
+    onMessage('REQ', 'CheckUserPermission')
+    if (localStorage.getItem('policiesOk') === true || localStorage.getItem('policiesOk') === 'true') {
+      this.$router.replace({ name: 'login' })
+    }
   },
   data () {
     return {

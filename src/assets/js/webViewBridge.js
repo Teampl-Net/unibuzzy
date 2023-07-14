@@ -93,10 +93,18 @@ const isJsonString = (str) => {
         if (message.type === 'userInfo' || message.type === 'successLogin') {
           //  alert(message.type)
           if (message.loginYn === true) {
-            var userProfile = JSON.parse(message.userInfo)
-
+            if (message.userInfo) {
+              const userProfile = JSON.parse(message.userInfo)
+              localStorage.setItem('loginYn', true)
+              await saveUser(userProfile, true) // 서버에 save요청
+              router.replace({ path: '/' })
+            }
+          } else if (message.data) {
+            alert(true)
+            const userProfile = JSON.parse(message.data)
             localStorage.setItem('loginYn', true)
             await saveUser(userProfile, true) // 서버에 save요청
+            alert(JSON.stringify(userProfile))
             router.replace({ path: '/' })
           } else {
             // router.replace({ path: 'policies' })
@@ -104,6 +112,9 @@ const isJsonString = (str) => {
           }
         } else if (message.type === 'CheckUserPermission') {
           router.replace({ name: 'permissions' })
+        } else if (message.type === 'appType') {
+          localStorage.setItem('mobileYn', 'true')
+          localStorage.setItem('appType', 'UB')
         } else if (message.type === 'returnImpData') {
           store.dispatch('D_USER/AC_SET_CERTI', message.certi)
         } else if (message.type === 'certiInfo') {
@@ -112,7 +123,11 @@ const isJsonString = (str) => {
           router.replace({ path: '/' })
         } else if (message.type === 'deviceSystemName') {
           localStorage.setItem('nativeYn', true)
-          localStorage.setItem('systemName', message.systemNameData)
+          if (message.systemNameData) {
+            localStorage.setItem('systemName', message.systemNameData)
+          } else if (message.data) {
+            localStorage.setItem('systemName', message.data)
+          }
         } else if (message.type === 'deepLinkUrl') {
           localStorage.setItem('nativeYn', true)
           store.commit('D_HISTORY/changeDeepLinkQueue', message.url)
