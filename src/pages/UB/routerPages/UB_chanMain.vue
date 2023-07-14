@@ -4,9 +4,9 @@
     <followerList v-if="mFollowerListPopShowYn" :pManagerList="mManagerList" :pClosePop="closeFollowerList"  :pOpenProfilePop="openProfilePop"  />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mUserDetailPopShowYn" @click="closeFollowerList"></div>
     <userDetailPop v-if="mUserDetailPopShowYn" :propData="mPopParam" :pClosePop="closeUserDetailPop" />
-    <!-- <div id="gChannelPopup" v-if="commonChanPopShowYn" style="display: absolute; top: 0; left: 0; z-index: 999;">
+    <div id="gChannelPopup" v-if="commonChanPopShowYn" style="display: absolute; top: 0; left: 0; z-index: 999;">
       <gChannelPop :propCateItemKey="CHANNEL_DETAIL.cateKey" @openPop="openCertiPop" :propTeamKey="CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop' />
-    </div> -->
+    </div>
     <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
     <div v-if="mReceptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999">
     </div>
@@ -26,8 +26,10 @@
           <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">Gerogia Tech > {{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
           <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
           <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
+          <!--follow-->
           <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" :btnTitle="$t('COMM_BTN_SUB')" />
-          <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;"  @click="changeFollowYn" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="$t('COMM_BTN_UNSUB')" />
+          <!--following-->
+          <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="$t('COMM_BTN_UNSUB')" />
         </div>
 
         <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; height:118px; padding: 15px; box-sizing:border-box; word-break:break-all">
@@ -46,7 +48,7 @@
               <div class="font14">Total Contents <span class="fontBold" style="color:black;">{{ CHANNEL_DETAIL.totalContentsCount }}</span></div>
               <!-- <div v-if="mChanInfo.managerList" class="fontBold font14" style="float: left;">Manager: <span style="color:black; font-weight: 1000;">{{ mChanInfo.managerList.length }}</span></div> -->
             </div>
-            <div class="w100P fl font14 textLeft">My Status <span class="fontBold" style="color:black;">{{ this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH) }}</span></div>
+            <div class="w100P fl font14 textLeft">My Status <span class="fontBold" style="color:black;">{{ this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)? this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH): '-' }}</span></div>
             <!-- <div class="fr mbottom-05" @click="editChan" :class="chanBgBlackYn === true ? 'blackTextBox' : 'whiteTextBox'" style="float:right !important; ">
               <p class="font16 textLeft lightGray fr ">편집 > </p>
             </div> -->
@@ -155,7 +157,7 @@ export default {
     writeBottSheet,
     chanDetailComp,
     writeContents,
-    // recMemberPop
+    // recMemberPop,
     followerList,
     userDetailPop
   //   unknownLoginPop
@@ -202,6 +204,69 @@ export default {
     window.addEventListener('resize', this.handleResize)
   },
   methods: {
+    async getMemberTypeList () {
+      var param = {}
+      param.teamKey = this.propTeamKey
+      // param.cateItemKey = this.propCateItemKey
+      var memberTypeList = await this.$commonAxiosFunction({
+        url: '/service/tp.getMemberTypeList',
+        param: param
+      })
+      console.log(memberTypeList)
+      if (memberTypeList.data.result) {
+        this.mMemberTypeList = memberTypeList.data.memberTypeList
+        if (this.mMemberTypeList.length > 0) {
+          this.selectMemberObj = this.mMemberTypeList[0]
+        }
+      }
+    },
+    async openReqPop () {
+      this.resultReqData.memberYn = true
+      // if (!this.selectMemberObj) {
+      //   return
+      // }
+      var result = await this.getMemberTypeItemList()
+      if (result === true) this.reqPopShowYn = false // 생략해도 됨(학생 멤버가 되었습니다! 컨펌팝이라)
+    },
+    async getMemberTypeItemList () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.memberTypeKey = this.selectMemberObj.memberTypeKey
+      var memberTypeItemList = await this.$commonAxiosFunction({
+        url: '/service/tp.getMemberTypeItemList',
+        param: param
+      })
+      console.log('--------------------------')
+      console.log(memberTypeItemList)
+      if (memberTypeItemList.data.result) {
+        var this_ = this
+        if (memberTypeItemList.data.memberTypeItemList.length === 0) {
+        // eslint-disable-next-line no-new-object
+          var typeParam = new Object()
+          if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
+            typeParam.followerKey = this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
+          }
+          typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
+          // eslint-disable-next-line no-debugger
+          debugger
+          this.$commonAxiosFunction({
+            url: '/service/tp.saveFollower',
+            param: { follower: typeParam }
+          }).then(() => {
+            this_.resultReqData.memberYn = true
+            this_.resultReqData.memberType = this_.selectMemberObj
+            this_.closeXPop()
+            return false
+          })
+        } else {
+          this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
+          return true
+        }
+      } else {
+        this.$showToastPop(this.$t('ERROR_MSG_INQUIRY_MANAG'))
+        return false
+      }
+    },
     openProfilePop (userInfo) {
       var openPopParam = {}
       openPopParam.targetKey = userInfo.teamKey
@@ -511,11 +576,7 @@ export default {
         this.mErrorPopBtnType = 'two'
         this.mErrorPopShowYn = true
       } else {
-        this.mErrorPopBodyStr = 'You followed' + 'Channel name'
-        this.mErrorPopBtnType = 'one'
-        this.mErrorPopShowYn = true
-        // this.confirmOk()
-        // this.$router.go(0)
+        this.confirmOk()
       }
     },
     async copyText () {
