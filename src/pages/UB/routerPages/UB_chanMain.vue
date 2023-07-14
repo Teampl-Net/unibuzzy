@@ -139,7 +139,9 @@ export default {
       mFollowerListPopShowYn: false,
       mManagerList: [],
       mUserDetailPopShowYn: false,
-      mPopParam: {}
+      mPopParam: {},
+      selectMemberObj: {},
+      mMemberTypeList: []
       // errorPopYn: false
     }
   },
@@ -163,8 +165,7 @@ export default {
   //   unknownLoginPop
   },
   created () {
-    console.log('this.pAreaInfo')
-    console.log(this.pAreaInfo)
+    this.getMemberTypeList()
     // eslint-disable-next-line no-debugger
     debugger
     // this.$emit('openLoading')
@@ -204,22 +205,6 @@ export default {
     window.addEventListener('resize', this.handleResize)
   },
   methods: {
-    async getMemberTypeList () {
-      var param = {}
-      param.teamKey = this.propTeamKey
-      // param.cateItemKey = this.propCateItemKey
-      var memberTypeList = await this.$commonAxiosFunction({
-        url: '/service/tp.getMemberTypeList',
-        param: param
-      })
-      console.log(memberTypeList)
-      if (memberTypeList.data.result) {
-        this.mMemberTypeList = memberTypeList.data.memberTypeList
-        if (this.mMemberTypeList.length > 0) {
-          this.selectMemberObj = this.mMemberTypeList[0]
-        }
-      }
-    },
     async openReqPop () {
       this.resultReqData.memberYn = true
       // if (!this.selectMemberObj) {
@@ -509,7 +494,7 @@ export default {
       result = await this.$changeFollower({ follower: this.mSaveFollowerParam, doType: 'CR' }, 'save')
       if (result.result || result) {
         if (result.message === 'OK') {
-          this.mOpenWelcomePopShowYn = false
+          // this.mOpenWelcomePopShowYn = false
         } else {
           this.errorMsg = result.message
           this.errorPopYn = true
@@ -521,6 +506,42 @@ export default {
 
       this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+      await this.$addChanList(this.mChanInfo.teamKey)
+
+      // eslint-disable-next-line no-debugger
+      debugger
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.memberTypeKey = this.selectMemberObj.memberTypeKey
+      var memberTypeItemList = await this.$commonAxiosFunction({
+        url: '/service/tp.getMemberTypeItemList',
+        param: param
+      })
+      console.log('--------------------------')
+      console.log(memberTypeItemList)
+      if (memberTypeItemList.data.result) {
+        if (memberTypeItemList.data.memberTypeItemList.length === 0) {
+        // eslint-disable-next-line no-new-object
+          var typeParam = new Object()
+          if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
+            typeParam.followerKey = this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
+          }
+          typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
+          // eslint-disable-next-line no-debugger
+          debugger
+          await this.$commonAxiosFunction({
+            url: '/service/tp.saveFollower',
+            param: { follower: typeParam }
+          })
+        } else {
+          this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
+          return true
+        }
+        // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
+      } else {
+        this.$showToastPop(this.$t('ERROR_MSG_INQUIRY_MANAG'))
+        return false
+      }
       this.$emit('closeLoading')
     },
     async confirmOk () {
@@ -564,20 +585,40 @@ export default {
           } else {
             await this.okMember()
             // this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>우리채널에 알림을 보낼 수 있어요!<br>멤버들끼리 자유롭게 소통할 수 있어요!'
-            this.openChannelMsgPop()
+            // this.openChannelMsgPop()
           }
         }
       }
     },
-    changeFollowYn () {
+    async getMemberTypeList () {
+      var param = {}
+      param.teamKey = Number(this.$route.params.encodedTeamKey)
+      // param.cateItemKey = this.propCateItemKey
+      var memberTypeList = await this.$commonAxiosFunction({
+        url: '/service/tp.getMemberTypeList',
+        param: param
+      })
+      if (memberTypeList.data.result) {
+        this.mMemberTypeList = memberTypeList.data.memberTypeList
+        if (this.mMemberTypeList.length > 0) {
+          this.selectMemberObj = this.mMemberTypeList[0]
+        }
+      }
+    },
+    async changeFollowYn () {
       this.mSaveFollowerType = 'follow'
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn === true) {
         this.mErrorPopBodyStr = 'Do you want to unfollow this channel?'
         this.mErrorPopBtnType = 'two'
         this.mErrorPopShowYn = true
       } else {
+        // this.mErrorPopBodyStr = 'You followed' + 'Channel name'
+        // this.mErrorPopBtnType = 'one'
+        // this.mErrorPopShowYn = true
         this.confirmOk()
+        // this.$router.go(0)
       }
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
     },
     async copyText () {
       if ((this.mChanInfo.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {

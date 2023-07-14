@@ -109,6 +109,7 @@ export default {
         url: '/service/tp.getMemberTypeList',
         param: param
       })
+      console.log('memberTypeList')
       console.log(memberTypeList)
       if (memberTypeList.data.result) {
         this.mMemberTypeList = memberTypeList.data.memberTypeList
