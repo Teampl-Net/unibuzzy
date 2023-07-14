@@ -545,20 +545,20 @@ export default {
       }
     }
   },
-  beforeCreate () {
-    if (!this.isMobile) {
-      if ('serviceWorker' in navigator && 'SyncManager' in window) {
-        const channel = new BroadcastChannel('new-server-post')
-        // service worker가 보낸 message 수신
-        channel.addEventListener('message', event => {
-          const response = event.data
-          var message = response.noti.data
-          console.log('onMessage: ', message)
-          this.$recvNotiFromBridge(null, null, message)
-        })
-      }
-    }
-  },
+  // beforeCreate () {
+  //   if (!this.isMobile) {
+  //     if ('serviceWorker' in navigator && 'SyncManager' in window) {
+  //       const channel = new BroadcastChannel('new-server-post')
+  //       // service worker가 보낸 message 수신
+  //       channel.addEventListener('message', event => {
+  //         const response = event.data
+  //         var message = response.noti.data
+  //         console.log('onMessage: ', message)
+  //         this.$recvNotiFromBridge(null, null, message)
+  //       })
+  //     }
+  //   }
+  // },
   mounted () {
     this.$showChanCommonPop(false)
     if (

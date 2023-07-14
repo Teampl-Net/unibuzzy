@@ -747,7 +747,7 @@ export default {
       // 빌딩부터 역순으로 뒤짐
       // 빌딩이 발견됨, 스타일클리어 시키고, 효과를 주고 return해버리기
       // 빌딩 클릭이 없음, areaclick을 찾음
-      if ((this.clickedBd && this.clickedBd.clickedYn)) return
+      if ((this.clickedBd && this.clickedBd.clickedYn && this.infoBoxShowYn)) return
       this.clickedArea = {}
       this.clickedBd = {}
       this.clickedRank = 0

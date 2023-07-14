@@ -15,61 +15,21 @@
             <div class="chanTextBox fl mleft-05;" style=" width:100%; margin-left: 0.5rem;">
               <div class="fl font16  w100P">
                 <div style="width:50px;" >
-                  <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 채널명 </p>
+                  <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;">Channel</p>
                 </div>
                 <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeText(CHANNEL_DETAIL.nameMtext) }}</p>
               </div>
               <div class="fl font16  w100P">
                 <div style="width:50px;" >
-                  <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> 만든일 </p>
+                  <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;">Created</p>
                 </div>
                 <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(CAB_DETAIL.creDate)}}</p>
-              </div>
-
-              <div class="fl font15  w100P mtop-05 " style="box-sizing:border-box; word-break:break-all; " >
-                <div class="fl font15  w100P">
-                  <div style="width:100%" class="fl" >
-                    <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7;  white-space: nowrap;"> 게시판기능 </p>
-                  </div>
-                  <p class="mleft-05 fl font12 commonBlack" >{{CAB_DETAIL.replyYn === 1? '댓글O': '댓글X'}}</p>
-                  <p class="fl font12 commonBlack" >/{{CAB_DETAIL.fileYn === 1? '파일업로드O':'파일업로드X'}}</p>
-                  <p class="fl font12 commonBlack" >/{{CAB_DETAIL.blindYn === 1? '익명':'실명'}}</p>
-                </div>
               </div>
             </div>
           </div>
           <div class="fl w100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
-            <p class="cBlack fl font15" style="width: 100%; ">공유 {{CAB_DETAIL.mShareItemCnt}}명</p>
-            <p class="cBlack fl font15" style="width: 100%; border-left: 1px solid white">게시글 {{this.totalElements? this.totalElements:0}}개</p>
-          </div>
-
-          <div v-if="GE_USER" class="fl w100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
-            <div style="display:flex; align-items: center;">
-              <div @click="goProfile" :style="'background-image: url(' +  (GE_USER.domainPath? GE_USER.domainPath + GE_USER.userProfileImg : GE_USER.userProfileImg)  + ')'" style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
-              <!--  <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/> -->
-              </div>
-              <div class="mleft-05" style="display:flex; flex-direction: column;">
-                <p @click="goProfile" class="font16 commonBlack">{{GE_USER.userDispMtext? this.$changeText(GE_USER.userDispMtext): '손님'}}</p>
-                <!-- <div>
-                  <p class="fl font14 commonBlack">{{CHANNEL_DETAIL.D_CHAN_AUTH.followTypeText}}</p>
-                  <p class="fl commonBlack font14 " v-if="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn">(내정보공개)</p>
-                </div> -->
-              </div>
-            </div>
-            <div style="display:flex; align-items: center; justify-content: space-around; max-width:150px; width:55%;">
-
-              <img v-if="CAB_DETAIL.workStatYn === 1 || CAB_DETAIL.workStatYn === true" class="fr img-w20 mleft-05" style="width: 25px; margin-top: 3px;" src="@/assets/images/board/workStatYnIcon.svg" alt="">
-
-              <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.W === true" class="fr img-w20 mleft-05" src="@/assets/images/board/icon_square_pen.svg" alt="">
-              <img v-else class="fr img-w20 mleft-05" src="@/assets/images/board/icon_square_pen_solid.svg" alt="">
-
-              <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.V === true" class="fr img-w20 mleft-05" src="@/assets/images/board/icon_eyes.svg" alt="">
-              <img v-else class="fr img-w20 mleft-05" src="@/assets/images/board/icon_eyes_solid.svg" alt="">
-
-              <img v-if="CAB_DETAIL.shareAuth && CAB_DETAIL.shareAuth.R === true" class="fr img-w20 mleft-05" src="@/assets/images/common/icon_comment.svg" alt="">
-              <img v-else class="fr img-w20 mleft-05" src="@/assets/images/common/icon_comment_solid.svg" alt="">
-              <!-- <img v-else class="fr img-w20" src="@/assets/images/common/icon_comment_solid.svg" alt=""> -->
-            </div>
+            <p class="cBlack fl font15" style="width: 100%; ">Shared members: {{CAB_DETAIL.mShareItemCnt}}</p>
+            <p class="cBlack fl font15" style="width: 100%; border-left: 1px solid white">Total Post: {{this.totalElements? this.totalElements:0}}</p>
           </div>
 
         </div>
@@ -194,6 +154,7 @@ export default {
       this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }]
     }
     this.mPropParams = this.propParams
+    console.log('CHANNEL_DETAIL', this.CHANNEL_DETAIL)
     console.log(this.board)
     this.$emit('openLoading')
     if (!this.mPropParams) {
@@ -325,7 +286,7 @@ export default {
         if (this_.box) {
           if (this_.mOnlyMineYn) {
             blockBox.style.height = '50px'
-            this_.box.scrollTop = 250
+            this_.box.scrollTop = 200
           }
           this_.box.addEventListener('scroll', this_.updateScroll)
           this_.box.addEventListener('mousewheel', e => {
@@ -1031,8 +992,8 @@ export default {
         // document.getElementById('boardInfoSummary2').classList.add('displayBIm')
         document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
         this.reloadShowYn = true
-      } else if (this.scrollDirection === 'up' && this.scrollPosition < 250) {
-        blockBox.style.height = '300px'
+      } else if (this.scrollDirection === 'up' && this.scrollPosition < 200) {
+        blockBox.style.height = '250px'
         this.box.style.height = ''
         document.getElementById('boardInfoSummary').classList.remove('displayNIm')
         // document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
@@ -1623,7 +1584,7 @@ export default {
   background-size: cover;
 }
 .boardWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%; height: 300px; }
-.boardItemBox{overflow: hidden; position: relative; min-height: calc(100% - 50px); width: 100%;  margin-top: 300px; float: left; background: #fff; box-sizing: border-box;}
+.boardItemBox{overflow: hidden; position: relative; min-height: calc(100% - 50px); width: 100%;  margin-top: 250px; float: left; background: #fff; box-sizing: border-box;}
 .boardItemBoxHeight{height: calc(100% - 50px)!important;}
 .displayNIm{display: none!important;}
 .displayBIm{display: flex!important;}

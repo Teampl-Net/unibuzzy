@@ -29,7 +29,7 @@ import { register } from 'register-service-worker'
   })
 } */
 var isMobile = /Mobi/i.test(window.navigator.userAgent)
-
+isMobile = true
 if (!isMobile) {
   register(`${process.env.BASE_URL}firebase-messaging-sw.js`, {
     ready () {

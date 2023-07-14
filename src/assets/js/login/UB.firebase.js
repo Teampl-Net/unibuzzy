@@ -9,13 +9,12 @@ import store from '../../../store'
 import { functions } from '../D_vuexFunction'
 // eslint-disable-next-line camelcase
 const firebaseConfig = {
-  apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
-  authDomain: 'thealim-2602c.firebaseapp.com',
-  projectId: 'thealim-2602c',
-  storageBucket: 'thealim-2602c.appspot.com',
-  messagingSenderId: '777053173385',
-  appId: '1:777053173385:web:0de7347501346c761d3858',
-  measurementId: 'G-0BYBFKL8TS'
+  apiKey: 'AIzaSyBXkAC70q-Y226eQICl5h9Txu55moSSAwQ',
+  authDomain: 'unibuzzy.firebaseapp.com',
+  projectId: 'unibuzzy',
+  storageBucket: 'unibuzzy.appspot.com',
+  messagingSenderId: '947851330767',
+  appId: '1:947851330767:web:de8bc42cf920be3ae563ba'
 }
 
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()

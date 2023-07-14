@@ -10,7 +10,7 @@
       </transition>
     </div> -->
     <gAxiosLoading />
-    <!-- <gCloudLoading v-if="mCloudLoadingShowYn" style="position: absolute; top: 0; left: 0;" /> -->
+    <gCloudLoading v-if="mCloudLoadingShowYn" style="position: absolute; top: 0; left: 0;" />
     <!-- <transition name="showModal">
       <gPopupWrap transition="showModal"  @successWrite="successWriteBoard" :propParams="modalParam" ref="commonWrap" :headerTitle="headerTitle" @closePop="closePop" v-if="popShowYn" :parentPopN="parentPopN" />
     </transition> -->
@@ -70,9 +70,9 @@ export default {
     async login () {
       console.log('yay!')
       this.loginYn = true
-      this.cloudLoadingShowYn = true
+      this.mCloudLoadingShowYn = true
       await new Promise((resolve) => setTimeout(resolve, 4000))
-      this.cloudLoadingShowYn = false
+      // this.cloudLoadingShowYn = false
     },
     openPop (params) {
       this.popShowYn = true

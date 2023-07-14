@@ -5,7 +5,6 @@ import axios from 'axios'
 import { methods, commonAxiosFunction } from '../../public/commonAssets/Tal_axiosFunction'
 // import routerMain from '../pages/Tal_router_main.vue'
 import search from '../pages/routerPages/D_searchPage.vue'
-import login from '../pages/intro/Tal_login.vue'
 // import myChanList from '../components/popup/del_Tal_managerChanList.vue'
 /* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
 
@@ -15,6 +14,7 @@ type = 'UB'
 // type = 'D'
 if (type === 'UB') {
   const routerMain = () => import('../pages/UB/UB_router_main.vue')
+  const login = () => import('../pages/UB/intro/UB_login.vue')
   routes = [
     {
       path: '/PARTNER',
@@ -277,6 +277,8 @@ if (type === 'UB') {
   ]
 } else if (type === 'D') {
   const routerMain = () => import('../pages/Tal_router_main.vue')
+  const login = () => import('../pages/intro/Tal_login.vue')
+
   routes = [
     {
       path: '/PARTNER',
