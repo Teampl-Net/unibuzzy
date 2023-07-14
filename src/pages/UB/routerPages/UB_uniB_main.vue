@@ -21,7 +21,7 @@
       <template v-for="(area) in village.areaList" :key="area.key">
         <div style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: area.clickedYn}" :style="{ width: area.w + 'px', height: area.h + 'px', top: area.top + 'px', left: area.left + 'px' }">
           <img :ref="area.name + area.key" style="position: absolute;" :src="area.maskedImageUrl" :style="area.maskedImageStyle" />
-          <div v-if="area.name" class="fontBold" style="background: rgba(256, 256, 256, 0.5); padding: 0 2px; height: 20px; line-height: 20px; border-radius: 5px; z-index: 99;">
+          <div v-if="area.name" class="fontBold" style="background: rgba(256, 256, 256, 0.5); padding: 0 2px; height: 20px; line-height: 20px; border-radius: 5px; z-index: 99; position: relative; bottom: 70px">
             <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.name }}</p>
           </div>
         </div>

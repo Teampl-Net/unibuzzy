@@ -2,8 +2,8 @@
   <div v-if="pAreaInfo && pAreaDetail" ref="gPopUp" class="commonPopWrap" style="padding: 10px 20px ;">
     <div class="font16 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
       <div style="display: flex; align-items: center; width: calc(100% - 25px);">
-        <img style="width: 40px; margin-right: 5px;" src="/resource/logo/gtLogo.png" alt="">
-        <p class="textOverdot textLeft" style="width: calc(100% - 40px);">{{ pAreaInfo.bdAreaNameMtext }}</p>
+        <img style="width: 45px; margin-right: 5px;" src="/resource/logo/gtLogo.png" alt="">
+        <p class="textOverdot textLeft font25" style="width: calc(100% - 40px);">{{ pAreaInfo.bdAreaNameMtext }}</p>
         <!-- <p class="textOverdot textLeft" style="width: calc(100% - 40px);">{{ bdAreaNameMtext }}</p> -->
       </div>
       <div class="cursorP" @click="pClosePop" style="width: 25px;">
@@ -77,7 +77,7 @@
             <gEmpty tabName="전체" contentName="채널" v-if="pAreaInfo.bdList && pAreaInfo.bdList.length === 0" style="margin-top:50px;" />
             <template v-for="(chanEle, index) in pAreaInfo.bdList" :key="index">
               <channelCard v-if="chanEle.targetKind === 'T'" class="moveBox chanRow" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
-              <boardCard v-else class="moveBox chanRow" :boardElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
+              <boardCard v-else-if="chanEle.targetKind === 'C'" class="moveBox chanRow" :boardElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             </template>
           </div>
           <!-- <div class="w100P" style="padding-bottom: 30px;">

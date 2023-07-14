@@ -14,10 +14,19 @@
       <div class="h100P fl font20 grayBlack" style="width: 20px; line-height: 50px;">></div>
     </div>
 
+    <!--파일함-->
     <div @click="goTotalFileList" class="w100P fl" style=" padding: 10px; background-color: #fff; border-radius: 0.6rem; margin-top: 10px; height: 50px; display: flex; align-items: center; cursor: pointer;">
       <div style="display: flex; align-items: center; width: calc(100% - 30px);">
         <img class="mright-03" src="../../assets/images/common/icon_fileBox.svg" style="width: 19.2px; height: auto;" alt="">
         <p class="commonColor fontBold font18" style="margin-top: 2px;">{{$t('COMMON_TAB_FILE_DRIVE')}}</p>
+      </div>
+      <div class="h100P font20 grayBlack" style="width: 20px;">></div>
+    </div>
+    <!--스크랩-->
+    <div @click="goTotalSaveList" class="w100P fl" style=" padding: 10px; background-color: #fff; border-radius: 0.6rem; margin-top: 10px; height: 50px; display: flex; align-items: center; cursor: pointer;">
+      <div style="display: flex; align-items: center; width: calc(100% - 30px);">
+        <img class="mright-03" src="../../assets/images/contents/cont_star_no.svg" style="width: 19.2px; height: auto;" alt="">
+        <p class="commonColor fontBold font18" style="margin-top: 2px;">{{$t('COMMON_TAB_SAVED')}}</p>
       </div>
       <div class="h100P font20 grayBlack" style="width: 20px;">></div>
     </div>
@@ -237,6 +246,9 @@ export default {
       param.targetType = 'totalFileList'
       param.popHeaderText = '파일함'
       this.$emit('openPop', param)
+    },
+    goTotalSaveList () {
+
     },
     openContentsDetailPop (detailValue) {
       console.log(' == Open Contents Detail == ')
