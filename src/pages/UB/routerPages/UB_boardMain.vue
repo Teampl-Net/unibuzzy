@@ -33,7 +33,7 @@
           </div>
 
         </div>
-        <div id="boardInfoSummary2" class="summaryHeader2">
+        <div v-if="CHANNEL_DETAIL" id="boardInfoSummary2" class="summaryHeader2">
           <span class="font20 fontBold">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</span>
           <span class="font13 mbottom-05 fl">{{ this.$changeText(CHANNEL_DETAIL.nameMtext) }}</span>
         </div>
@@ -72,7 +72,7 @@
       @click="refreshAll" >
         <img src="@/assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;" />
       </div>
-    <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" v-if="CAB_DETAIL.shareAuth && this.CAB_DETAIL.shareAuth.W === true && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" @click="openWriteBoard" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
+    <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" v-if="CHANNEL_DETAIL && CAB_DETAIL.shareAuth && this.CAB_DETAIL.shareAuth.W === true && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" @click="openWriteBoard" alt="게시글 작성 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78">
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
   <!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propParams="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
@@ -149,29 +149,34 @@ export default {
     }
   },
   created () {
+    this.mCreTeamKey = this.$route.params.teamKey
     if (this.pOnlyMineYn) {
       this.mOnlyMineYn = true
       this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }]
     }
     this.mPropParams = this.propParams
-    console.log('CHANNEL_DETAIL', this.CHANNEL_DETAIL)
-    console.log(this.board)
+    // this.$emit('clearInfo', { detail: this.mPropParams, targetType: 'boardMain' })
     this.$emit('openLoading')
     if (!this.mPropParams) {
-      this.$router.go(-1)
-      // var this_ = this
-      // this.getCabinetDetail().then(() => {
-      //   this_.getContentsList().then(response => {
-      //     if (!response.content) return
-      //     this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', '*')
-      //     var newArr = [
-      //       ...this_.BOARD_CONT_LIST,
-      //       ...response.content
-      //     ]
-      //     this_.mCabContentsList = this.replaceArr(newArr)
-      //   })
-      // })
+      // this.$router.go(-1)
+      var this_ = this
+      this.getCabinetDetail().then(() => {
+        this.$addChanList(this.mCreTeamKey)
+        this_.getContentsList().then(response => {
+          if (!response.content) return
+          // this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', '*')
+          var newArr = [
+            ...this_.BOARD_CONT_LIST,
+            ...response.content
+          ]
+          this_.mCabContentsList = this.replaceArr(newArr)
+          this_.readyFunction()
+        })
+      })
     } else {
+      if (!this.mPropParams.chanYn) {
+        this.$addChanList(this.mCreTeamKey)
+      }
       var propBoardInitData = JSON.parse(JSON.stringify(this.mPropParams.initData))
       this.cabinetDetail = propBoardInitData.cabinet
       this.cabinetDetail.shareAuth = this.$checkUserAuth(propBoardInitData.cabinet.mShareItemList)
@@ -257,7 +262,8 @@ export default {
       tempMemoData: {},
       gCertiPopShowYn: false,
       mPropParams: null,
-      mOnlyMineYn: false
+      mOnlyMineYn: false,
+      mCreTeamKey: -1
     }
   },
 
@@ -280,6 +286,9 @@ export default {
         // this_.boardListWrap.addEventListener('scroll', this_.saveScroll)
         // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
         this_.listBox = this_.$refs.commonBoardListWrapCompo
+        if (!this_.listBox) {
+          return
+        }
         this_.listBox.addEventListener('scroll', this_.handleScroll)
 
         this_.box = this_.$refs.boardListWrap // 이 dom scroll 이벤트를 모니터링합니다
@@ -1008,6 +1017,8 @@ export default {
       param.currentTeamKey = this.$route.params.teamKey
       param.cabinetKey = this.$route.params.targetKey
       var resultList = await this.$getCabinetDetail(param)
+      console.log('resultlist')
+      console.log(resultList)
       // mShareItemList가 잘 들어오면 save잘 된것
       //   this.shareAuth.R = true
       //   this.shareAuth.W = true
@@ -1134,6 +1145,7 @@ export default {
       console.log(value)
       if (value && value.targetType === 'chanDetail') return
       value.onlyMineYn = true
+      console.log(value)
       this.$emit('openPop', value)
     },
     async changeTab (tabName) {
@@ -1384,10 +1396,8 @@ export default {
   },
   computed: {
     CHANNEL_DETAIL () {
-      console.log(this.mPropParams)
-      console.log('this.mPropParams')
-      if (!this.mPropParams) return null
-      var team = this.$getDetail('TEAM', this.mPropParams.teamKey)
+      if (!this.mCreTeamKey || this.mCreTeamKey === -1) return null
+      var team = this.$getDetail('TEAM', Number(this.mCreTeamKey))
       if (team) {
         return team[0]
       } else {

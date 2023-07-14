@@ -382,8 +382,6 @@ export default {
       this.$emit('openPop', param)
     },
     async boardContentsClick (boardListData) {
-      console.log(boardListData)
-      console.log(this.propData)
       var resultMainData = await this.$getBoardMainData(boardListData)
 
       if (resultMainData.contentsListPage) {
@@ -400,6 +398,8 @@ export default {
       goBoardMainParam.teamKey = boardListData.teamKey
       goBoardMainParam.targetKey = boardListData.cabinetKey
       goBoardMainParam.cabinetNameMtext = boardListData.cabinetNameMtext
+      // 채널에서 들어왔는지, 링크나 메인에서 바로 들어왔는지 구분
+      goBoardMainParam.chanYn = true
 
       this.$emit('openItem', goBoardMainParam)
       // var boardDetail = result

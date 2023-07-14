@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="textOverdot textLeft" style="width: calc(100% - 60px);">
-      <p class="fontBold" style="margin-left: 10px;">{{ pUserData.userNameMtext }}</p>
+      <p class="fontBold" style="margin-left: 10px;">{{ $changeText(pUserData.userNameMtext) }}</p>
     </div>
   </div>
 </template>

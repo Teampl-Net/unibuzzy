@@ -222,6 +222,7 @@ export default {
     console.log(this.pAreaDetail)
     this.resetHistory()
     this.setNativeHeight()
+    this.$emit('clearInfo', { detail: null, targetType: 'main' })
 
     var urlParam = localStorage.getItem('deepLinkQueue')
     if (urlParam && urlParam.trim() !== '') {

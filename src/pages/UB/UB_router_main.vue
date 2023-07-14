@@ -388,6 +388,8 @@ export default {
       } else if (params.targetType === 'totalFileList') {
         this.changePageHeader('File Box')
         this.$router.push('/fileBox')
+      } else if (params.targetType === 'contentsDetail') {
+        this.openPage(params)
       }
     },
     goFavList () {
@@ -437,6 +439,7 @@ export default {
         this.goMyPage(params)
       } else if (params.targetType === 'boardMain') {
         this.mChanInfo = params
+        this.mChanInfo.chanYn = params.chanYn
         this.mTargetType = 'boardMain'
         // this.changePageHeader(this.$changeText(params.nameMtext))
         this.$router.push(`/board/${params.teamKey}/${params.targetKey}`)

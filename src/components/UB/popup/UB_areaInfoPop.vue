@@ -77,7 +77,7 @@
             <gEmpty tabName="전체" contentName="채널" v-if="pAreaInfo.bdList && pAreaInfo.bdList.length === 0" style="margin-top:50px;" />
             <template v-for="(chanEle, index) in pAreaInfo.bdList" :key="index">
               <channelCard v-if="chanEle.targetKind === 'T'" class="moveBox chanRow" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
-              <boardCard v-else-if="chanEle.targetKind === 'C'" class="moveBox chanRow" :boardElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
+              <boardCard v-else class="moveBox chanRow" :boardElement="chanEle" @click="goBoardMain(chanEle)" @scrollMove="scrollMove" />
             </template>
           </div>
           <!-- <div class="w100P" style="padding-bottom: 30px;">
@@ -135,6 +135,33 @@ export default {
       pageParam.targetType = 'chanDetail'
       pageParam.nameMtext = param.nameMtext
       this.$emit('openPage', pageParam)
+    },
+    async goBoardMain (boardListData) {
+      const paramObj = {
+        cabinetKey: boardListData.targetKey,
+        cabinetNameMtext: boardListData.cabinetNameMtext,
+        creDate: boardListData.cabCreDate,
+        creTeamKey: this.pAreaInfo.teamKey,
+        sysCabinetCode: 'BOAR',
+        teamKey: this.pAreaInfo.teamKey
+      }
+      var resultMainData = await this.$getBoardMainData(paramObj)
+
+      if (resultMainData.contentsListPage) {
+        var contentList = resultMainData.contentsListPage.content
+        for (let i = 0; i < contentList.length; i++) {
+          contentList[i].shareItem = resultMainData.cabinet.mShareItemList
+        }
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
+        console.log('!!!!!!!!!!!!!!!!!')
+      }
+      var goBoardMainParam = {}
+      goBoardMainParam.initData = resultMainData
+      goBoardMainParam.targetType = 'boardMain'
+      goBoardMainParam.teamKey = paramObj.teamKey
+      goBoardMainParam.targetKey = paramObj.cabinetKey
+      goBoardMainParam.cabinetNameMtext = paramObj.cabinetNameMtext
+      this.$emit('openPage', goBoardMainParam)
     },
     openChanMenu () {
       this.openChanMenuYn = true
