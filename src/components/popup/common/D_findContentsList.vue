@@ -31,10 +31,10 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <div class="pagePaddingWrap findPopupWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 50 )+ 'px'" >
-    <popHeader v-if="(contentsListTargetType === 'boardMain')" :headerTitle="$t('SEAR_TITLE_POST')" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
-    <popHeader v-else-if="(contentsListTargetType === 'myActList')" headerTitle="나의 활동 검색" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
-    <popHeader v-else-if="(contentsListTargetType === 'fileBox')" :headerTitle="$t('SEAR_TITLE_FILE')" @closeXPop="closeXPop"  style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
-    <popHeader v-else :headerTitle="$t('SEAR_TITLE_CONTENTS')" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <popHeader v-if="(contentsListTargetType === 'boardMain')" :headerTitle="$t('SEAR_TITLE_POST')" :pClosePop="pClosePop" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <popHeader v-else-if="(contentsListTargetType === 'myActList')" headerTitle="나의 활동 검색" :pClosePop="pClosePop" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <popHeader v-else-if="(contentsListTargetType === 'fileBox')" :headerTitle="$t('SEAR_TITLE_FILE')" :pClosePop="pClosePop" @closeXPop="closeXPop"  style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <popHeader v-else :headerTitle="$t('SEAR_TITLE_CONTENTS')" @closeXPop="closeXPop" :pClosePop="pClosePop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
     <div class="findPopBody  mtop-05">
         <div v-if="pTitleShowYn !== false" class="findPopMainSearchArea">
             <input v-if="contentsListTargetType === 'myActList'" class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="게시글 제목을 입력해주세요" />
@@ -135,7 +135,8 @@ export default {
     tpGroupCode: {},
     teamKey: {},
     pTitleShowYn: {},
-    pOnlyMineYn: {}
+    pOnlyMineYn: {},
+    pClosePop: Function
   },
   data () {
     return {

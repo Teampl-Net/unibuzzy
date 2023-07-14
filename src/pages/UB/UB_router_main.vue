@@ -318,6 +318,8 @@ export default {
       this.mCloudLoadingShowYn = false
     },
     async goChanDetail (detailValue) {
+      console.log('1234detailValue')
+      console.log(detailValue)
       // eslint-disable-next-line no-debugger
       debugger
       const chanMainParam = {}
@@ -339,13 +341,15 @@ export default {
         chanMainParam.ownerYn = true
       }
       const paramMap = new Map()
-      paramMap.set('teamKey', detailValue.targetKey)
+      paramMap.set('teamKey', teamKey)
       paramMap.set('fUserKey', this.GE_USER.userKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       // eslint-disable-next-line no-debugger
       debugger
       try {
         const result = await this.$getViewData({ url: '/service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+        console.log('1234detailValue')
+        console.log(result)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.$showToastPop('채널을 찾을 수 없습니다!')
           return
@@ -372,8 +376,11 @@ export default {
       // this.$router.push({ name: 'chanMain', params: { pTeamKey: this.mChanMainTeamKey } })
       // const encryptedTeamKey = AES.encrypt(teamKey, 'encryptionSecret').toString()
       // const encodedTeamKey = encodeURIComponent(encryptedTeamKey)
-      const encodedTeamKey = teamKey
-      this.$router.push(`/chan/${encodedTeamKey}`)
+      // let encodedTeamKey = detailValue.targetKey
+      // if (!teamKey && detailValue.creTeamKey) {
+      //   encodedTeamKey = detailValue.creTeamKey
+      // }
+      this.$router.push(`/chan/${chanMainParam.teamKey}`)
       await new Promise((resolve) => setTimeout(resolve, 1200))
       this.mCloudLoadingShowYn = false
     },

@@ -12,7 +12,7 @@
         <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
       </div>
       <transition name="showModal">
-        <findContentsList :tpGroupCode="this.viewMainTab === 'B' || this.viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop" :teamKey='this.pChannelDetail.teamKey'/>
+        <findContentsList :tpGroupCode="this.viewMainTab === 'B' || this.viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" :pClosePop="closeSearchPop" :teamKey='this.pChannelDetail.teamKey'/>
       </transition>
 
         <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'" style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); padding-bottom: 40px; ">

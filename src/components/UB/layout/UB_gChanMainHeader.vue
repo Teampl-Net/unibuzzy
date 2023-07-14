@@ -1,6 +1,6 @@
 <template>
   <div class="commonPopHeaderWrap headerShadow" style="background:transparent !important; padding-bottom: 1.7rem;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'">
-    <div v-on:click="closeXPop" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
+    <div v-on:click="goMain" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <img v-if="bgblack === true " src="../../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" >
       <img v-else-if="pNoAuthYn === true " src="../../../assets/images/footer/icon_home_fillin.svg"  v-on:click="goMain">
       <img v-else src="../../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
@@ -24,8 +24,15 @@ export default {
     targetType: {}
   },
   methods: {
+    hasHistory () {
+      return window.history.length > 2
+    },
     goMain () {
-      this.$router.replace({ path: '/' })
+      if (this.hasHistory()) {
+        this.$router.go(-1)
+      }
+      // this.$router.go(-1)
+      // this.$router.replace({ path: '/' })
     },
     openMenu () {
       this.$emit('openMenu')

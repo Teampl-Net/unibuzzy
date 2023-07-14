@@ -130,7 +130,11 @@ export default {
       console.log(param)
       console.log(this.pAreaInfo)
       const pageParam = {}
-      pageParam.targetKey = param.teamKey
+      if (param.teamKey) {
+        pageParam.targetKey = param.teamKey
+      } else {
+        pageParam.targetKey = param.targetKey
+      }
       pageParam.areaInfo = this.pAreaInfo
       pageParam.targetType = 'chanDetail'
       pageParam.nameMtext = param.nameMtext
