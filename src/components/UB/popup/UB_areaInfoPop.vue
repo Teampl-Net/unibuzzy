@@ -74,18 +74,18 @@
             <p class="fontBold font16">All List</p>
           </div>
           <div class="w100P" style="padding-bottom: 30px;">
-            <gEmpty tabName="전체" contentName="채널" v-if="pAreaInfo.bdList.length === 0" style="margin-top:50px;" />
+            <gEmpty tabName="전체" contentName="채널" v-if="pAreaInfo.bdList && pAreaInfo.bdList.length === 0" style="margin-top:50px;" />
             <template v-for="(chanEle, index) in pAreaInfo.bdList" :key="index">
               <channelCard v-if="chanEle.targetKind === 'T'" class="moveBox chanRow" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
               <boardCard v-else class="moveBox chanRow" :boardElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             </template>
           </div>
-          <div class="w100P" style="padding-bottom: 30px;">
+          <!-- <div class="w100P" style="padding-bottom: 30px;">
             <gEmpty tabName="전체" contentName="채널" v-if="pAreaDetail.popTeamList && pAreaDetail.popTeamList.length === 0" style="margin-top:50px;" />
             <template v-for="(chanEle, index) in pAreaDetail.popTeamList" :key="index">
               <channelCard :pAreaDetail="pAreaDetail" class="moveBox chanRow" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             </template>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

@@ -451,14 +451,44 @@ export default {
       }
       this.hideMenu()
     },
+    async getChannelList (pageSize, offsetInput, mLoadingYn) {
+      // alert(offsetInput)
+      var paramMap = new Map()
+      var userKey = this.GE_USER.userKey
+      paramMap.set('cateItemKey', 3)
+      if (this.mViewTab === 'user') {
+        paramMap.set('userKey', userKey)
+      } else if (this.mViewTab === 'all') {
+        paramMap.set('fUserKey', userKey)
+      } else if (this.mViewTab === 'mychannel') {
+        paramMap.set('userKey', userKey)
+        paramMap.set('managerYn', true)
+      }
+      if (offsetInput !== undefined) {
+        paramMap.set('offsetInt', offsetInput)
+      } else {
+        if (this.mOffsetInt === 0 && this.mChannelList.length === 10) this.mOffsetInt = 1
+        paramMap.set('offsetInt', this.mOffsetInt)
+      }
+      if (pageSize) {
+        paramMap.set('pageSize', pageSize)
+      } else {
+        paramMap.set('pageSize', 10)
+      }
+
+      var result = await this.$getTeamList(paramMap, false)
+      var resultList = result.data
+      return resultList
+    },
     async changeRouterPath (page) {
+      var pageData = {}
       this.mMenuShowYn = false
       if (page === 'termsOfUse' || page === 'privacy') {
         this.mPolicyType = page
         return
       }
       if (page !== 'chanList' && page !== 'myPage') {
-        var pageData = await this.$getRouterViewData(page)
+        pageData = await this.$getRouterViewData(page)
       } else if (page === 'myPage') {
         // eslint-disable-next-line no-debugger
         debugger
@@ -480,6 +510,8 @@ export default {
         this.mChanInfo = {
           mContentsList: resultList
         }
+      } else if (page === 'chanList') {
+        pageData = await this.getChannelList(10, 0, false)
       }
       this.sendInitData = pageData
       if (this.$router.currentRoute._rawValue.path === '/' && page === 'main') {

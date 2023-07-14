@@ -1,23 +1,25 @@
 <template>
-  <div class="w100P h100P" style="padding-top: 50px;">
-    <div style="width: 100%; height: 100%;  float: left; background: #fff; position: relative;">
+  <div style="width: 70%; height: 80%; border-radius: 10px; z-index: 99999; position: absolute; left: 15%; top: 10%;">
+    <div class="transWhite" style="width: 100%; height: 100%;  float: left; position: relative; border-radius: 10px; padding: 10px 20px; overflow: hidden;">
 
       <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
-      <div v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false" style="margin-top: 80px; width: 100%; min-height: 100%;">
+      <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; width: calc(100% - 25px);">
+          <p class="textOverdot textLeft" style="width: calc(100% - 40px);">Town List</p>
+        </div>
+        <div class="cursorP" @click="pClosePop" style="width: 25px;">
+          <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
+        </div>
+      </div>
+      <div v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false" style="margin-top: 80px; width: 100%; min-height: calc(100% - 50px);">
           <chanSkeleton  v-for="(value) in 10" :key="value"/>
       </div>
-      <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
+      <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll;height: calc(100% - 50px); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
           <gEmpty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
           <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
-            <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
+            <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" />
             <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
           </template>
-      </div>
-      <div @click="$router.push('/findChan')" class="cursorP" style="position: absolute; cursor: pointer; right: 10%; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid #8B8AD1; width: 50px; height: 50px; background-color: #fff;" :style="'bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
-        <img style="width: 50%;" src="@/assets/images/button/icon_search_color.svg" alt="채널 만들기 버튼">
-      </div>
-      <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px;  right: 10%;" :style="'bottom:' + (this.$STATUS_HEIGHT + 150)+ 'px'"  @click="refreshList">
-          <img src="@/assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
       </div>
     </div>
   </div>
@@ -71,7 +73,9 @@ export default {
     params: {},
     popYn: Boolean,
     propData: {},
-    initData: {}
+    initData: {},
+    pClosePop: Function,
+    pGoTown: Function
   },
   updated () {
     this.mChanListScrollBox = document.getElementById('chanListWrap')
@@ -90,9 +94,6 @@ export default {
     this.mLoadingYn = false
   },
   async created () {
-    console.log(123412341234)
-    console.log(this.initData)
-    this.$emit('changePageHeader', this.$t('COMMON_NAME_CHANNEL'))
     if (this.propData) {
       if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
         this.mViewTab = this.propData.channelTabType
@@ -133,12 +134,8 @@ export default {
     this.findPaddingTopChan()
   },
   methods: {
-    goChannelMain (param) {
-      const pageParam = {}
-      pageParam.targetKey = param.teamKey
-      pageParam.targetType = 'chanDetail'
-      pageParam.nameMtext = param.nameMtext
-      this.$emit('openPage', pageParam)
+    goTown (chanEle) {
+      this.pGoTown(chanEle)
     },
     searchCloseNopenPop (openPopParam) {
       this.mChanFindPopShowYn = false

@@ -1,10 +1,14 @@
 <template>
   <div class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
+    <div v-if="mSelectSchoolPopShowYn" @click="mSelectSchoolPopShowYn = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
+    <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
     <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
       <transition name="showUp">
         <areaInfoPop @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
       </transition>
     <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: cover; overflow: hidden;">
+      <div class="ballon">Click to move!</div>
+      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
       <!-- <UBBgEffect /> -->
       <!-- my profile -->
       <div @click="goUserProfile" v-if="!GE_USER.unknownYn" class="w100P " style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
@@ -57,6 +61,7 @@
 import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
 // import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
 import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
+import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue'
 // import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
   props: {
@@ -205,7 +210,9 @@ export default {
       mFTeamList: [],
       mAlimCount: [],
       mAxiosQueue: [],
-      mSelectedAreaInfo: {}
+      mSelectedAreaInfo: {},
+      mSelectSchoolPopShowYn: false,
+      mSchoolList: []
     }
   },
   async created () {
@@ -232,6 +239,11 @@ export default {
       this.createMaskingAreaImg()
       this.innerWidth = window.innerWidth
       this.innerHeight = window.innerHeight
+      if (this.mBdAreaList && this.mBdAreaList[0]) {
+        this.$emit('changePageHeader', this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext))
+      } else {
+        this.$emit('changePageHeader', 'Campus')
+      }
       this.mLoadingYn = false
     })
     if (this.pCampusTownInfo) {
@@ -239,11 +251,63 @@ export default {
       console.log('this.pCampusTownInfo')
       console.log(this.pCampusTownInfo)
     }
-    const vilInfo = this.village.villageInfo
+    // const vilInfo = this.village.villageInfo
     // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
-    this.$emit('changePageHeader', vilInfo.name)
   },
   methods: {
+    async getChannelList (pageSize, offsetInput, mLoadingYn) {
+      // alert(offsetInput)
+      var paramMap = new Map()
+      var userKey = this.GE_USER.userKey
+      paramMap.set('cateItemKey', 3)
+      if (this.mViewTab === 'user') {
+        paramMap.set('userKey', userKey)
+      } else if (this.mViewTab === 'all') {
+        paramMap.set('fUserKey', userKey)
+      } else if (this.mViewTab === 'mychannel') {
+        paramMap.set('userKey', userKey)
+        paramMap.set('managerYn', true)
+      }
+      if (offsetInput !== undefined) {
+        paramMap.set('offsetInt', offsetInput)
+      } else {
+        if (this.mOffsetInt === 0 && this.mChannelList.length === 10) this.mOffsetInt = 1
+        paramMap.set('offsetInt', this.mOffsetInt)
+      }
+      if (pageSize) {
+        paramMap.set('pageSize', pageSize)
+      } else {
+        paramMap.set('pageSize', 10)
+      }
+
+      var result = await this.$getTeamList(paramMap, false)
+      var resultList = result.data
+      return resultList
+    },
+    async openSelectSchoolPop () {
+      this.mSchoolList = await this.getChannelList(10, 0, false)
+      this.mSelectSchoolPopShowYn = true
+    },
+    closeSelectSchoolPop () {
+      this.mSelectSchoolPopShowYn = false
+    },
+    async goTown (chanEle) {
+      var param = {
+        user: {
+          userKey: this.GE_USER.userKey,
+          myTeamKey: chanEle.teamKey
+        },
+        updateYn: true
+      }
+      var result = await this.$commonAxiosFunction({
+        url: 'service/tp.saveUser',
+        param: param
+      })
+      this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
+      this.$router.go(0)
+      console.log('------------------------------')
+      console.log(result)
+    },
     async openAreaInfoPop (area) {
       // eslint-disable-next-line no-debugger
       debugger
@@ -317,7 +381,8 @@ export default {
       if (this.GE_USER.fcmKey !== undefined && this.GE_USER.fcmKey !== null && this.GE_USER.fcmKey !== '') { paramMap.set('fcmKey', this.GE_USER.fcmKey) }
       paramMap.set('userEmail', this.GE_USER.userEmail)
       paramMap.set('soEmail', this.GE_USER.soEmail)
-      paramMap.set('myTeamKey', this.GE_USER.myTeamKey)
+      // paramMap.set('myTeamKey', this.GE_USER.myTeamKey)
+      // paramMap.set('myTeamKey', 836)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
       var response = await this.$axios.post('/service/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
@@ -808,6 +873,7 @@ export default {
   },
   components: {
     // UBInfoBox,
+    selectSchoolPop,
     UBAreaBdList,
     areaInfoPop
     // UBBgEffect
@@ -850,5 +916,37 @@ export default {
   background: white;
   border-radius: 5px;
   z-index: 99;
+}
+.planeImg:hover {
+  transform: scale(1.2);
+  transform-origin: 50% 50%;
+  transition: 0.2s;
+}
+.planeImg {
+  transition: 0.2s;
+}
+.ballon {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    right: 30px;
+    top: 80px;
+    background: #fce169;
+    border-radius: 5px;
+    padding: 8px 12.8px;
+    font-size: 14px;
+}
+
+.ballon:after {
+    border-top: 7px solid #fce169;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: "";
+    position: absolute;
+    top: 30px;
+    left: 80px;
 }
 </style>

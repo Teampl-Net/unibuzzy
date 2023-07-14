@@ -67,8 +67,6 @@ export default {
     myContents
   },
   async created () {
-    console.log('this.propParams')
-    console.log(this.propParams)
     this.mLoadingYn = true
     if ((this.initData && Object.keys(this.initData).length > 0) || (this.propParams && this.propParams.targetType === 'myPage')) {
       // this.mInitData = this.initData
