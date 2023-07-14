@@ -621,6 +621,9 @@ export default {
         } else {
           this.mMyPageBgColorYn = false
         }
+        if (this.$route.path === '/login') {
+          this.mTargetType = ''
+        }
       },
       deep: true
     },
