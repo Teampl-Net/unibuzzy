@@ -32,7 +32,7 @@
           <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="$t('COMM_BTN_UNSUB')" />
         </div>
 
-        <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; height:118px; padding: 15px; box-sizing:border-box; word-break:break-all">
+        <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; min-height:118px; padding: 15px; box-sizing:border-box; word-break:break-all">
           <div class="h100P fl flexCenter" style="width: 100px; padding-top: 50px;">
             <div class="cursorP" style="width: 40px; height: 40px; margin-right: 10px; background: #f1f1f1; border-radius: 30px; float:left; display: flex; justify-content: center; align-items: center;" @click="addToFavlist">
               <!-- <img class="cursorP" width="20" height="20" src="../../../assets/images/common/memberIcon.svg" alt=""> -->
@@ -63,7 +63,7 @@
       </div>
     </div>
 
-    <div class="channelItemBox" ref="channelItemBox" style="margin-top: 220px; background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
+    <div class="channelItemBox" ref="channelItemBox" style="background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
       <pushList :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" @goScroll="mChanMainScrollWrap.style.overflow = 'scroll'" :initData="this.mChanInfo.initData.contentsList" @cMemoEditYn="changeMemoEditYn"
         :targetContents="{ targetContentsKey: mChanInfo.targetContentsKey, jobkindId: mChanInfo.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.mChanInfo.targetType"
         ref="ChanAlimListPushListCompo" :alimListYn="true" @openPage="openPage" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements'
@@ -195,6 +195,9 @@ export default {
     }
   },
   mounted () {
+    this.$nextTick(() => {
+      this.calcSummaryWrapH()
+    })
     this.mChanMainScrollWrap = this.$refs.chanScrollWrap
     if (this.mChanMainScrollWrap) {
       this.mChanMainScrollWrap.addEventListener('scroll', this.updateScroll)
@@ -205,7 +208,18 @@ export default {
     this.setWindowSize()
     window.addEventListener('resize', this.handleResize)
   },
+  updated () {
+    this.$nextTick(() => {
+      this.calcSummaryWrapH()
+    })
+  },
   methods: {
+    calcSummaryWrapH () {
+      if (this.$refs.summaryWrap) {
+        const height = this.$refs.summaryWrap.offsetHeight + 'px'
+        this.$refs.channelItemBox.style.marginTop = height
+      }
+    },
     async openReqPop () {
       this.resultReqData.memberYn = true
       // if (!this.selectMemberObj) {
@@ -771,6 +785,14 @@ export default {
     }
   },
   computed: {
+    mSummaryWrapH () {
+      if (this.$refs.summaryWrap) {
+        return {
+          'margin-top': this.$refs.summaryWrap.offsetHeight + 'px'
+        }
+      }
+      return {}
+    },
     CHANNEL_DETAIL () {
       if (!this.mChanInfo && !this.mDirectTeamKey) return {}
       let teamKey
@@ -949,7 +971,7 @@ export default {
   align-items: flex-start;
   padding-top: 1.2rem !important;
 }
-.summaryWrap{height: 220px; width: 100%; float: left; position: absolute;}
+.summaryWrap{min-height: 220px; width: 100%; float: left; position: absolute;}
 .summaryWrap2 {
   height: 50px;
   width: 100%;
