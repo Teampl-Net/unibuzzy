@@ -36,7 +36,7 @@
                 <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(CAB_DETAIL.creDate)}}</p>
               </div>
             </div>
-            <gBtnSmall style="font-size: 12px; position: absolute; bottom:5px; right: 10px;" btnTitle="Pin a Post" @click="openPinPostPop" />
+            <gBtnSmall  v-if="CHANNEL_DETAIL && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)" style="font-size: 12px; position: absolute; bottom:5px; right: 10px;" btnTitle="Pin a Post" @click="openPinPostPop" />
           </div>
           <div class="fl w100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
             <p class="cBlack fl font15" style="width: 100%; ">Shared members: {{CAB_DETAIL.mShareItemCnt}}</p>
@@ -319,7 +319,7 @@ export default {
     updateTopview (type, board) {
       if (type === 'add') {
         if (!this.cabinetDetail.topviewList) {
-          this.cabinetDetail.topviewList = { content: [] }
+          this.cabinetDetail.topviewList = { contents: [] }
         }
         this.cabinetDetail.topviewList.content.unshift(board)
       } else if (type === 'delete') {
