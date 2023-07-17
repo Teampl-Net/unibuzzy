@@ -805,6 +805,8 @@ export default {
       if (detail.length < 1) {
         return
       }
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!detail')
+      console.log(detail)
       if (detail && detail.length > 0) {
         if (detail[0].blackYn) this.$emit('bgcolor', detail[0].blackYn)
 

@@ -1,25 +1,13 @@
-<i18n>
-{
-  "ko": {
-    "CHAN_POST_NONE_CONT": "버튼을 눌러 첫 컨텐츠를 작성해보세요."
-  },
-  "en": {
-    "CHAN_POST_NONE_CONT": "Create the first content for your channel's bulletin board."
-  }
-}
-</i18n>
 <template>
 <div>
   <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
-    <div v-if="mPinPostPopShowYn" @click="closePinPostPop = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99; background: #00000050;"></div>
-    <pinPostPop v-if="mPinPostPopShowYn" :pUpdateTopview="updateTopview" :pTVList="this.CAB_DETAIL.topviewList.content" :pChanDetail="CHANNEL_DETAIL" :pClosePop="closePinPostPop" :pBoardDetail="CAB_DETAIL" />
     <div id="boardWrap" v-if="CAB_DETAIL" :style="CAB_DETAIL.picBgPath? 'background: ' + CAB_DETAIL.picBgPath + ';' + 'padding-top: ' + this.$STATUS_HEIGHT + 'px' : 'background: #ece6cc;' + 'padding-top: ' + this.$STATUS_HEIGHT + 'px'" style="overflow: auto;" ref="boardListWrap" class="boardListWrap">
       <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
       <p class="font20 fontBold textOverdot" :style="CAB_DETAIL.cabinetNameMtext.length > 15 ? 'font-size:14px !important;' :'' " style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); max-width: calc(100% - 120px);">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</p>
       <div id="summaryHeader" class="summaryHeader">
         <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :style="propParams.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="@/assets/images/channel/icon_official.svg" v-if="propParams.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propParams.nameMtext)}}</p> -->
         <div id="boardInfoSummary" class="mt-header boardWhiteBox">
-          <div v-if="CHANNEL_DETAIL" id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="min-height: 110px; display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 10px; position: relative;">{{value}}
+          <div v-if="CHANNEL_DETAIL" id="chanInfoSummary" ref="chanImg"  class=" boardCard" style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; padding: 10px;">{{value}}
             <div class="chanImgRound" :style="'background-image: url('+  (CHANNEL_DETAIL.logoDomainPath? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');' " style="background-size: cover; background-position: center; background-repeat: no-repeat;" > <!-- 채널 로고 부분 -->
             </div>
             <div class="chanTextBox fl mleft-05;" style=" width:100%; margin-left: 0.5rem;">
@@ -36,7 +24,6 @@
                 <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(CAB_DETAIL.creDate)}}</p>
               </div>
             </div>
-            <gBtnSmall style="font-size: 12px; position: absolute; bottom:5px; right: 10px;" btnTitle="Pin a Post" @click="openPinPostPop" />
           </div>
           <div class="fl w100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
             <p class="cBlack fl font15" style="width: 100%; ">Shared members: {{CAB_DETAIL.mShareItemCnt}}</p>
@@ -48,14 +35,8 @@
           <span class="font20 fontBold">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</span>
           <span class="font13 mbottom-05 fl">{{ this.$changeText(CHANNEL_DETAIL.nameMtext) }}</span>
         </div>
-        <div  v-if="this.CAB_DETAIL && this.CAB_DETAIL.topviewList" class="w100P" style="display: flex; align-items: center; flex-direction: column;">
-          <div class="textLeft fontBold" style="width: 90%; margin-bottom: 5px;">
-            <img src="@/assets/images/board/icon_paperPin.svg" alt="" style="width: 20px;">
-            Pin
-          </div>
-          <div id="topView" @wheel="horizontalScroll" style="width: 90%; display: flex; overflow: auto; gap: 10px;">
-            <commonTopViewItem @contDelete="refreshAll" @openImgPop="openImgPop" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.CAB_DETAIL.topviewList.content" :key="index"/>
-          </div>
+        <div v-if="CAB_DETAIL">
+              <commonTopViewItem @contDelete="refreshAll" @openImgPop="openImgPop" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.CAB_DETAIL.topviewList" :key="index"/>
         </div>
       </div>
 
@@ -77,7 +58,7 @@
               @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
               @writeMememo="writeMememo" @riteMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'
               @clearMemo='clearMemo'/> -->
-            <gListEmpty v-if="emptyYn && BOARD_CONT_LIST.length === 0" :title="$t('COMM_CONT_NO_FOUND')" :subTitle="$t('CHAN_POST_NONE_CONT')" option='EDIT' />
+            <gListEmpty v-if="emptyYn && BOARD_CONT_LIST.length === 0" title='컨텐츠가 없어요' subTitle='버튼을 눌러 첫 컨텐츠를 작성해보세요.' option='EDIT' />
             <!-- <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents"
               @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey"
               ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;"
@@ -132,8 +113,6 @@ import imgLongClickPop from '@/components/popup/Tal_imgLongClickPop.vue'
 import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import { onMessage } from '@/assets/js/webviewInterface'
 
-import pinPostPop from '../../../components/UB/popup/UB_pinPostPop.vue'
-
 import commonTopViewItem from '../../../components/UB/unit/UB_commonTopViewItem.vue'
 
 export default {
@@ -144,8 +123,7 @@ export default {
     writeContents,
     imgLongClickPop,
     imgPreviewPop,
-    commonTopViewItem,
-    pinPostPop
+    commonTopViewItem
   },
   props: {
     propParams: {},
@@ -153,13 +131,6 @@ export default {
     pOnlyMineYn: {}
   },
   updated () {
-    this.$nextTick(() => {
-      if (document.getElementById('boardItemBox')) {
-        if (this.CAB_DETAIL && this.CAB_DETAIL.topviewList) {
-          document.getElementById('boardItemBox').style.marginTop = '420px'
-        }
-      }
-    })
     if (this.CAB_DETAIL) {
       // this.boardListWrap.scrolTop = this.currentScroll
       // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
@@ -198,7 +169,7 @@ export default {
         this.$addChanList(this.mCreTeamKey)
         this_.getContentsList().then(response => {
           if (!response.content) return
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
+          // this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', '*')
           var newArr = [
             ...this_.BOARD_CONT_LIST,
             ...response.content
@@ -232,11 +203,6 @@ export default {
   },
   mounted () {
     this.readyFunction()
-    this.$nextTick(() => {
-      if (document.getElementById('boardItemBox')) {
-        document.getElementById('boardItemBox').style.marginTop = '420px'
-      }
-    })
   },
   beforeUnmount () {
     document.removeEventListener('message', e => this.recvNoti(e))
@@ -244,7 +210,6 @@ export default {
   },
   data () {
     return {
-      mPinPostPopShowYn: false,
       mGuidePopShowYn: false,
       paddingTop: 0,
       activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 쓴', name: 'M' }],
@@ -308,32 +273,6 @@ export default {
   },
 
   methods: {
-    horizontalScroll (e) {
-      if (e.deltaY === 0) return
-      e.preventDefault()
-      var channelWrap = document.querySelector(`#${e.currentTarget.id}`)
-      channelWrap.scrollTo({
-        left: channelWrap.scrollLeft + e.deltaY / 10
-      })
-    },
-    updateTopview (type, board) {
-      if (type === 'add') {
-        this.cabinetDetail.topviewList.content.unshift(board)
-      } else if (type === 'delete') {
-        const index = this.cabinetDetail.topviewList.content.findIndex(item => {
-          return item.contentsKey === board.contentsKey
-        })
-        if (index !== -1) {
-          this.cabinetDetail.topviewList.content.splice(index, 1)
-        }
-      }
-    },
-    openPinPostPop () {
-      this.mPinPostPopShowYn = true
-    },
-    closePinPostPop () {
-      this.mPinPostPopShowYn = false
-    },
     goSavePhonePop () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -1016,15 +955,13 @@ export default {
       }
       // eslint-disable-next-line no-new-object
       var params = new Object()
-      console.log(1234)
-      console.log(this.CAB_DETAIL)
-      console.log(this.CHANNEL_DETAIL)
       params.targetType = 'writeContents'
       params.actorList = this.actorList
-      params.targetNameMtext = this.CHANNEL_DETAIL.nameMtext
-      params.teamKey = this.CHANNEL_DETAIL.teamKey
-      // params.currentTeamKey = this.mPropParams.currentTeamKey
-      params.currentTeamKey = this.CHANNEL_DETAIL.teamKey
+      params.targetNameMtext = this.mPropParams.nameMtext
+      params.teamKey = this.mPropParams.currentTeamKey
+      if (!params.teamKey) params.teamKey = this.mPropParams.teamKey
+      params.currentTeamKey = this.mPropParams.currentTeamKey
+      if (!params.currentTeamKey) params.currentTeamKey = this.mPropParams.teamKey
 
       params.bodyFullStr = ''
       params.cabinetNameMtext = this.$changeText(this.CAB_DETAIL.cabinetNameMtext)
@@ -1043,8 +980,6 @@ export default {
       this.writePopId = this.$setParentsId(this.pPopId, this.writePopId)
       history.push(this.writePopId)
       this.$store.commit('D_HISTORY/updateStack', history)
-      console.log(12345)
-      console.log(params)
 
       this.boardWriteYn = true
 
@@ -1059,15 +994,11 @@ export default {
       }
 
       this.scrollPosition = this.box.scrollTop
-      let offset = 200
-      if (this.CAB_DETAIL && this.CAB_DETAIL.topviewList) {
-        offset = 370
-      }
 
-      if (this.scrollDirection === 'down' && this.scrollPosition > offset) {
+      if (this.scrollDirection === 'down' && this.scrollPosition > 400) {
         blockBox.style.height = '50px'
         // blockBox.scrollHeight = 100
-        if (this.scrollPosition > (offset + 50 - 1)) {
+        if (this.scrollPosition > 249) {
           this.box.style.overflow = 'hidden'
         }
 
@@ -1075,8 +1006,8 @@ export default {
         // document.getElementById('boardInfoSummary2').classList.add('displayBIm')
         document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
         this.reloadShowYn = true
-      } else if (this.scrollDirection === 'up' && this.scrollPosition < offset) {
-        blockBox.style.height = `${offset + 50}px`
+      } else if (this.scrollDirection === 'up' && this.scrollPosition < 400) {
+        blockBox.style.height = '400px'
         this.box.style.height = ''
         document.getElementById('boardInfoSummary').classList.remove('displayNIm')
         // document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
@@ -1667,8 +1598,8 @@ export default {
   height: 100vh;
   background-size: cover;
 }
-.boardWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%; height: 170px; padding-bottom: 40px;}
-.boardItemBox{overflow: hidden; position: relative; min-height: calc(100% - 50px); width: 100%;  margin-top: 250px; float: left; background: #fff; box-sizing: border-box;}
+.boardWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%; height: 200px; padding-bottom: 40px;}
+.boardItemBox{overflow: hidden; position: relative; min-height: calc(100% - 50px); width: 100%;  margin-top: 400px; float: left; background: #fff; box-sizing: border-box;}
 .boardItemBoxHeight{height: calc(100% - 50px)!important;}
 .displayNIm{display: none!important;}
 .displayBIm{display: flex!important;}
@@ -1729,11 +1660,5 @@ padding: 10px; width: 90%; background-color: rgba(255, 255, 255, 0.4); font-weig
 .chanImgRound{ width: 90px; height: 90px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; flex-shrink: 0; flex-grow: 0;  }
 .boardMainMemoBoxBackground{
 width: 100% !important; height: 100% !important; background: #00000036 !important; position: fixed !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;
-}
-@media screen and (max-width: 768px) {
-  .chanImgRound {
-    width: 70px;
-    height: 70px;
-  }
 }
 </style>

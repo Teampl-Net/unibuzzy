@@ -317,11 +317,24 @@ export default {
     hideCloudLoading () {
       this.mCloudLoadingShowYn = false
     },
+    // async getCabinetDetail (params) {
+    //   var paramMap = new Map()
+    //   paramMap.set('teamKey', params.teamKey)
+    //   paramMap.set('currentTeamKey', params.teamKey)
+    //   paramMap.set('cabinetKey', params.targetKey)
+    //   paramMap.set('sysCabinetCode', 'BOAR')
+    //   paramMap.set('userKey', this.GE_USER.userKey)
+    //   // console.log(paramMap)
+    //   var response = await this.$commonAxiosFunction({
+    //     url: '/service/tp.getCabinetDetail',
+    //     param: Object.fromEntries(paramMap)
+    //   })
+    //   var mCabinet = response.data.mCabinet
+    //   console.log('mCabinet')
+    //   console.log(mCabinet)
+    //   return mCabinet
+    // },
     async goChanDetail (detailValue) {
-      console.log('1234detailValue')
-      console.log(detailValue)
-      // eslint-disable-next-line no-debugger
-      debugger
       const chanMainParam = {}
       chanMainParam.targetType = 'chanDetail'
       let teamKey = detailValue.targetKey
@@ -385,7 +398,6 @@ export default {
       this.mCloudLoadingShowYn = false
     },
     async openPop (params) {
-      console.log('paramsparamsparamsparamsparamsparams', params)
       this.mPopType = params.targetType
       this.mPopParams = params
       this.mGPopShowYn = true
@@ -448,7 +460,8 @@ export default {
         this.mChanInfo = params
         this.mChanInfo.chanYn = params.chanYn
         this.mTargetType = 'boardMain'
-        // this.changePageHeader(this.$changeText(params.nameMtext))
+
+        // await this.getCabinetDetail(params)
         this.$router.push(`/board/${params.teamKey}/${params.targetKey}`)
       } else if (params.targetType === 'writeContents') {
         this.openPop(params)

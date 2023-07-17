@@ -129,9 +129,6 @@ export default {
   },
   methods: {
     goChannelMain (param) {
-      console.log('!!!!!!!!!!!!')
-      console.log(param)
-      console.log(this.pAreaInfo)
       const pageParam = {}
       if (param.teamKey) {
         pageParam.targetKey = param.teamKey
