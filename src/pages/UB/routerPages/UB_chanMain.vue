@@ -35,7 +35,8 @@
         <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; height:118px; padding: 15px; box-sizing:border-box; word-break:break-all">
           <div class="h100P fl flexCenter" style="width: 100px; padding-top: 50px;">
             <div class="cursorP" style="width: 40px; height: 40px; margin-right: 10px; background: #f1f1f1; border-radius: 30px; float:left; display: flex; justify-content: center; align-items: center;" @click="addToFavlist">
-              <img class="cursorP" width="20" height="20" src="../../../assets/images/common/memberIcon.svg" alt="">
+              <!-- <img class="cursorP" width="20" height="20" src="../../../assets/images/common/memberIcon.svg" alt=""> -->
+              <img class="cursorP" width="20" height="20" src="../../../assets/images/common/memberIcon_Full.svg" alt="">
             </div>
             <div class="cursorP" style="width: 40px; height: 40px; background: #f1f1f1; border-radius: 30px; float:left; display: flex; justify-content: center; align-items: center;" data-clipboard-action="copy" id="copyTextBody" @click="copyText" :data-clipboard-text="CHANNEL_DETAIL.copyTextStr">
               <img src='../../../assets/images/contents/icon_share.png' width="20" height="20"/>

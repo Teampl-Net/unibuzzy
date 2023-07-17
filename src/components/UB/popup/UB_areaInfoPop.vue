@@ -1,5 +1,8 @@
 <template>
-  <div v-if="pAreaInfo && pAreaDetail" ref="gPopUp" class="commonPopWrap" style="padding: 10px 20px ;">
+  <div v-if="pAreaInfo && pAreaDetail" ref="gPopUp" class="commonPopWrap" style="padding: 10px 20px; min-width: 300px; position: absolute;" @click.stop>
+    <div style="position: absolute; top: -45px; right: 10px; width: 40px; height: 45px; background-color: rgba(255, 255, 255, 0.5); border-radius: 10px 10px 0 0;">
+      <img src="../../../assets/images/common/imgBuildingPop.png" class="w100P h100P" />
+    </div>
     <div class="font16 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
       <div style="display: flex; align-items: center; width: calc(100% - 25px);">
         <img style="width: 45px; margin-right: 5px;" src="/resource/logo/gtLogo.png" alt="">
@@ -34,7 +37,7 @@
         <div v-if="pAreaDetail.fList&& pAreaDetail.fList.length > 0" style=" margin-left: 30px; margin-top: 10px; width: calc(100% - 30px);">
           <div class="w100P" id="fileChannelWrap" style="height: 85px; overflow: auto;" @wheel="horizontalScroll">
             <div class="w100P" style="height: 100%; min-width: 100%; display:flex;">
-              <chanRoundIcon :pAreaInfo="pAreaInfo" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="chan" v-for="chan in pAreaDetail.fList" :key="chan.teamKey" />
+              <chanRoundIcon @click="goChannelMain(chan)" :pAreaInfo="pAreaInfo" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="chan" v-for="chan in pAreaDetail.fList" :key="chan.teamKey" />
             </div>
           </div>
         </div>
@@ -216,7 +219,7 @@ export default {
 </script>
 <style scoped>
 .commonPopWrap{
-  position: absolute;width: 80%;height: 80%; ;z-index: 9999999; background: #FFFFFF; overflow: hidden;
+  position: absolute; width: 80%; height: 80%; z-index: 9999999; background: #FFFFFF;
   bottom: 10%;
   left: 10%;
   background: rgba(232, 240, 250, 0.65);

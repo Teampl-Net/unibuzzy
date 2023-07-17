@@ -1,3 +1,13 @@
+<i18n>
+{
+  "ko": {
+    "CHAN_POST_NONE_CONT": "버튼을 눌러 첫 컨텐츠를 작성해보세요."
+  },
+  "en": {
+    "CHAN_POST_NONE_CONT": "Create the first content for your channel's bulletin board."
+  }
+}
+</i18n>
 <template>
 <div>
   <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
@@ -57,7 +67,7 @@
               @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
               @writeMememo="writeMememo" @riteMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'
               @clearMemo='clearMemo'/> -->
-            <gListEmpty v-if="emptyYn && BOARD_CONT_LIST.length === 0" title='컨텐츠가 없어요' subTitle='버튼을 눌러 첫 컨텐츠를 작성해보세요.' option='EDIT' />
+            <gListEmpty v-if="emptyYn && BOARD_CONT_LIST.length === 0" :title="$t('COMM_CONT_NO_FOUND')" :subTitle="$t('CHAN_POST_NONE_CONT')" option='EDIT' />
             <!-- <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents"
               @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey"
               ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;"

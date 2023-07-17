@@ -346,7 +346,8 @@ export default {
               viewMode: '1',
               dragMode: 'move',
               preview: '.cropperPreviewImg',
-              aspectRatio: (this.opentype === 'bgPop' ? 2 / 3 : 1 / 1),
+              // aspectRatio: (this.opentype === 'bgPop' ? 2 / 3 : 1 / 1),
+              aspectRatio: 16 / 9,
               cropBoxResizable: true,
               wheelZoomRatio: 0.1,
               movable: false

@@ -6,14 +6,14 @@
     </transition>
     <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
       <transition name="showUp">
-        <areaInfoPop @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
+        <areaInfoPop @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" style="max-height: 450px;" />
       </transition>
     <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: cover; overflow: hidden;">
       <div class="ballon">Click to move!</div>
       <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
       <!-- <UBBgEffect /> -->
       <!-- my profile -->
-      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" class="w100P " style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
+      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
         <gProfileImg style="width: 40px; height: 40px; margin-right: 10px; " :selfYn="true" class="fl" />
         <div class="fl font20 fontBold" style="color: white; text-shadow: 1px 2px 2px black;">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
       </div>
