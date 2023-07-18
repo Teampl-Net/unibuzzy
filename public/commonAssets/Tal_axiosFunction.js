@@ -95,8 +95,6 @@ export function isMobile () {
 }
 
 export async function saveUser (userProfile, loginYn) {
-  console.log(userProfile)
-  alert(JSON.stringify(userProfile))
   var user = {}
   // var testYn = localStorage.getItem('testYn')
   // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
@@ -171,7 +169,7 @@ export async function saveUser (userProfile, loginYn) {
       store.commit('D_USER/MU_CLEAN_USER')
     }
     localStorage.setItem('user', '')
-    alert('로그인에 실패하였으니, 다른방식으로 재로그인 해주세요.')
+    alert('Login failed. Please try it again later.')
     router.replace({ name: 'unknown' })
     // router.replace({ name: 'policies' })
   }
@@ -180,9 +178,9 @@ export const methods = {
   getMobileYn () {
     var user = navigator.userAgent
     var mobileYn = false
-    if (user.indexOf('iPhone') > -1 || user.indexOf('Android') > -1) {
-      mobileYn = true
-    }
+    // if (user.indexOf('iPhone') > -1 || user.indexOf('Android') > -1) {
+    //   mobileYn = true
+    // }
     if (this.$appType === 'UB' && this.$mobileYn) {
       mobileYn = true
     }
