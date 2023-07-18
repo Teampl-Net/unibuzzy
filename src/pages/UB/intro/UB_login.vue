@@ -17,7 +17,7 @@
       <img src="../../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
     </div>
     <div v-else class="py-3 px-4" style="box-sizing: border-box; width: 100%; min-height: 50px; margin-top: 125px; ">
-      <!-- <img  src="../../../assets/images/main/login_Wlogo.png" style="width: 50px;" class="fl" > -->
+      <!--<img  src="../../../assets/images/main/login_Wlogo.png" style="width: 50px;" class="fl" > -->
       <img src="../../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
       <p class="textCenter fl fontBold font16 " v-html="pPartnerLoginText" style="width: calc(100%); margin-top: 10px; margin-bottom: 10px; color: #D6D6E7;"></p>
     </div>
