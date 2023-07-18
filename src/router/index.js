@@ -34,7 +34,7 @@ if (type === 'UB') {
           meta: {
             page: 1
           },
-          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_main.vue')
+          component: () => import(/* webpackChunkName: "about" */ '@/pages/UB/routerPages/UB_main.vue')
           /* ,
           beforeEnter: (to, from, next) => {
             // 만약 로그인 상태라면

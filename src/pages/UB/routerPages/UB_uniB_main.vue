@@ -502,7 +502,7 @@ export default {
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
-      if (response.status === 200 || response.status === '200') {
+      if (response && (response.status === 200 || response.status === '200')) {
         this.mMainChanList = response.data.teamList
         this.mMainMChanList = response.data.mTeamList
         this.mMainAlimList = response.data.alimList.content

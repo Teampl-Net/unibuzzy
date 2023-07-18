@@ -96,6 +96,7 @@ export function isMobile () {
 
 export async function saveUser (userProfile, loginYn) {
   console.log(userProfile)
+  alert(JSON.stringify(userProfile))
   var user = {}
   // var testYn = localStorage.getItem('testYn')
   // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {

@@ -6,6 +6,8 @@ export const onMessage = (inputT, inputP, inputD) => {
     data: inputD
   }
   if (window.ReactNativeWebView) {
+    // alert(JSON.stringify(sendMessageCont))
     window.ReactNativeWebView.postMessage(JSON.stringify(sendMessageCont))
+    document.ReactNativeWebView.postMessage(JSON.stringify(sendMessageCont))
   }
 }

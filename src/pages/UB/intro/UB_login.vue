@@ -98,12 +98,10 @@ export default {
   created () {
     localStorage.setItem('sessionUser', '')
     localStorage.setItem('user', '')
-    if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
+    if (this.mobileYn === false && (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null)) {
       this.systemName = localStorage.getItem('systemName')
       localStorage.setItem('appYn', true)
       this.mobileYn = true
-    } else {
-      this.mobileYn = false
     }
     // 애플로 로그인 성공 시.
     document.addEventListener('AppleIDSignInOnSuccess', (data) => {
@@ -163,6 +161,7 @@ export default {
     },
     GoogleLoginBtn () {
       if (this.mobileYn) {
+        // onMessage('REQ', 'loginGoogle', {})
         window.ReactNativeWebView.postMessage(
           JSON.stringify({
             type: 'REQ',

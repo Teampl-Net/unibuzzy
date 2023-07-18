@@ -13,12 +13,12 @@
       <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
       <!-- <UBBgEffect /> -->
       <!-- my profile -->
-      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
+      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" class="w100P " style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
         <gProfileImg style="width: 40px; height: 40px; margin-right: 10px; " :selfYn="true" class="fl" />
         <div class="fl font20 fontBold" style="color: white; text-shadow: 1px 2px 2px black;">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
       </div>
       <div v-else class="w100P" style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
-        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr" />
+        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr" style="margin-top: 60px;" />
       </div>
     <!-- <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
       <transition name="showUp">
@@ -65,6 +65,7 @@ import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
 // import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
 import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
 import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue'
+// import { onMessage } from '../../../assets/js/webviewInterface'
 // import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
   props: {
@@ -219,6 +220,9 @@ export default {
     }
   },
   async created () {
+    // localStorage.clear()
+    // alert(JSON.stringify(this.GE_USER))
+    // onMessage('REQ', 'test', null)
     this.resetHistory()
     this.setNativeHeight()
     this.$emit('clearInfo', { detail: null, targetType: 'main' })
@@ -351,6 +355,7 @@ export default {
       this.mShowAreaBdListYn = true
     },
     goLoginPage () {
+      this.$router.push({ path: '/login' })
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       if (isMobile && (localStorage.getItem('nativeYn') === true || localStorage.getItem('nativeYn') === 'false')) {
         // window.location.href = 'http://192.168.0.10:8080/#/login'
@@ -395,7 +400,7 @@ export default {
       console.log(response)
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
-      if (response.status === 200 || response.status === '200') {
+      if (response && (response.status === 200 || response.status === '200')) {
         this.mBdAreaList = response.data.bdAreaList
         this.mFTeamList = response.data.fTeamList
         this.mAlimCount = response.data.alimCount

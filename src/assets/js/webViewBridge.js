@@ -100,12 +100,11 @@ const isJsonString = (str) => {
               router.replace({ path: '/' })
             }
           } else if (message.data) {
-            alert(true)
-            const userProfile = JSON.parse(message.data)
+            // alert(message.data)
+            const userProfile = message.data
             localStorage.setItem('loginYn', true)
             await saveUser(userProfile, true) // 서버에 save요청
-            alert(JSON.stringify(userProfile))
-            router.replace({ path: '/' })
+            router.replace({ name: 'main' })
           } else {
             // router.replace({ path: 'policies' })
             router.replace({ name: 'unknown' })
@@ -114,6 +113,8 @@ const isJsonString = (str) => {
           router.replace({ name: 'permissions' })
         } else if (message.type === 'appType') {
           localStorage.setItem('mobileYn', 'true')
+          localStorage.setItem('nativeYn', 'true')
+
           localStorage.setItem('appType', 'UB')
         } else if (message.type === 'returnImpData') {
           store.dispatch('D_USER/AC_SET_CERTI', message.certi)
