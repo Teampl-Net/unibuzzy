@@ -521,7 +521,8 @@ export default {
       var pageData = {}
       this.mMenuShowYn = false
       if (page === 'termsOfUse' || page === 'privacy') {
-        this.mPolicyType = page
+        // this.$route.push('/policy')
+        this.$router.push(`/policy/${page}`)
         return
       }
       if (page !== 'chanList' && page !== 'myPage') {

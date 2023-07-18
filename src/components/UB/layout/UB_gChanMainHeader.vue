@@ -30,6 +30,8 @@ export default {
     goMain () {
       if (this.hasHistory()) {
         this.$router.go(-1)
+      } else {
+        this.$router.push('/')
       }
       // this.$router.go(-1)
       // this.$router.replace({ path: '/' })

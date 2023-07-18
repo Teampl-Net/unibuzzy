@@ -1,7 +1,7 @@
 <template>
   <div id="commonWrap" class="policyPageWrap" ref="commonWrap">
       <popHeader :headerTitle="headerTitle" :pClosePop="closeXPop" class="policyHeader"/>
-      <div id="Uarea" v-if="pPolicyType === 'termsOfUse'" class="policy-01">
+      <div id="Uarea" v-if="this.mPolicyType === 'privacy'" class="policy-01">
           <p class="font16 titleText mbottom-05">Effective Date: 2023-07-11</p>
           <p class="mbottom-1 font15 mleft-1">
             Welcome to uniBuzzy! By using uniBuzzy, you agree to be bound by these Terms of Use ("Terms"). Please read them carefully.<br><br>
@@ -49,7 +49,7 @@
             Thank you for using uniBuzzy!
           </p>
     </div>
-    <div id="Parea" v-if="pPolicyType === 'privacy'" class="policy-02">
+    <div id="Parea" v-else-if="mPolicyType === 'termsOfUse'" class="policy-02">
       <p class="font16 titleText mbottom-05">Privacy Policy Statement for uniBuzzy</p>
       <p class="mbottom-1 font16">At uniBuzzy, we prioritize the privacy and security of our users' personal information. This Privacy Policy explains how we collect, use, and protect the individual data provided through our app. By using uniBuzzy, you agree to the terms outlined in this policy.<br><br></p>
 
@@ -86,17 +86,19 @@
 </template>
 
 <script>
-import { onMessage } from '@/assets/js/webviewInterface'
 export default {
   created () {
-    onMessage('REQ', 'CheckUserPermission')
-    if (localStorage.getItem('policiesOk') === true || localStorage.getItem('policiesOk') === 'true') {
-      this.$router.replace({ name: 'login' })
+    this.mPolicyType = this.$route.params.type
+    if (this.mPolicyType === 'termsOfUse') {
+      this.headerTitle = 'Terms Of Use'
+    } else if (this.mPolicyType === 'privacy') {
+      this.headerTitle = 'Privacy'
     }
   },
   data () {
     return {
-      headerTitle: ''
+      headerTitle: '',
+      mPolicyType: ''
     }
   },
   props: {
@@ -125,12 +127,20 @@ export default {
     this.$checkDeleteHistory('PolicyPop')
   },
   methods: {
+    hasHistory () {
+      return window.history.length > 1
+    },
     settingPop () {
       this.$addHistoryStack('PolicyPop')
       if (this.pPolicyType === 'termsOfUse') { this.headerTitle = 'Terms of Use' } else if (this.pPolicyType === 'privacy') { this.headerTitle = 'Privacy Policy' }
     },
     closeXPop (pThisPopN) { // 내 팝업 닫기
-      this.pClosePolicyPop()
+      if (this.hasHistory()) {
+        this.$router.go(-1)
+      } else {
+        this.$router.push('/')
+      }
+      // th
     }
   }
 }

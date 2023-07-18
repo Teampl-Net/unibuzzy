@@ -111,12 +111,6 @@ if (type === 'UB') {
           }
         },
         {
-          path: '/policies',
-          name: 'policy',
-          props: true,
-          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/intro/UB_policies.vue')
-        },
-        {
           path: '/settings',
           name: 'settings',
           props: true,
@@ -215,7 +209,7 @@ if (type === 'UB') {
       component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_permissions.vue')
     },
     {
-      path: '/policy',
+      path: '/policy/:type',
       name: 'policy',
       props: true,
       component: () => import(/* webpackChunkName: "about" */ '../pages/UB/intro/UB_policies.vue')
