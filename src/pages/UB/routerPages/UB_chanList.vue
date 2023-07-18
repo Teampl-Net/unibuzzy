@@ -75,14 +75,12 @@ export default {
   },
   updated () {
     this.mChanListScrollBox = document.getElementById('chanListWrap')
-    if (document.getElementsByClassName('chanRow')) this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
     if (this.mChanFindPopShowYn) {
       this.findPaddingTopChan()
     }
   },
   mounted () {
     this.mChanListScrollBox = document.getElementById('chanListWrap')
-    // this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
 
     if (!this.initData) this.changeTab(this.mViewTab)
 
@@ -186,35 +184,6 @@ export default {
         this.mCurrentTabName = this.$t('COMMON_TAB_ALL')
       } else if (this.mViewTab === 'mychannel') {
         this.mCurrentTabName = this.$t('COMMON_TAB_MANAGING')
-      }
-    },
-    handleScroll () {
-      var currentTime = new Date()
-      var time = currentTime - this.mScrollCheckSec
-      var element = document.getElementsByClassName('chanRow')[0]
-      if (!element) return
-      var parentElement = element.parentElement
-      // this.mFirstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
-      this.mFirstContOffsetY = this.getAbsoluteTop(element)
-      if (this.mFirstContOffsetY > 0) {
-        this.mScrollDirection = 'up'
-        this.mScrolledYn = false
-      }
-      if (time / 1000 > 1 && this.$diffInt(this.mChanListScrollBox.scrollTop, this.mScrollPosition) > 150) {
-        var test = document.getElementById('chanListPageHeader')
-        this.mHeaderTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
-        this.mScrollCheckSec = currentTime
-
-        if (this.mFirstContOffsetY < 0) {
-          if (this.mChanListScrollBox.scrollTop > this.mScrollPosition) {
-            this.mScrollDirection = 'down'
-            this.mScrolledYn = true
-          } else if (this.mChanListScrollBox.scrollTop <= this.mScrollPosition) {
-            this.mScrollDirection = 'up'
-            this.mScrolledYn = false
-          }
-        }
-        this.mScrollPosition = this.mChanListScrollBox.scrollTop
       }
     },
     async refreshList () {
