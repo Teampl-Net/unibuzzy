@@ -35,8 +35,7 @@
         <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; min-height:118px; padding: 15px; box-sizing:border-box; word-break:break-all">
           <div class="h100P fl flexCenter" style="width: 100px; padding-top: 50px;">
             <div class="cursorP" style="width: 40px; height: 40px; margin-right: 10px; background: #f1f1f1; border-radius: 30px; float:left; display: flex; justify-content: center; align-items: center;" @click="addToFavlist">
-              <!-- <img class="cursorP" width="20" height="20" src="../../../assets/images/common/memberIcon.svg" alt=""> -->
-              <img class="cursorP" width="20" height="20" src="../../../assets/images/common/memberIcon.svg" alt="">
+              <img @click="ImgClick" class="cursorP" width="20" height="20" :src="imgSource" alt="">
             </div>
             <div class="cursorP" style="width: 40px; height: 40px; background: #f1f1f1; border-radius: 30px; float:left; display: flex; justify-content: center; align-items: center;" data-clipboard-action="copy" id="copyTextBody" @click="copyText" :data-clipboard-text="CHANNEL_DETAIL.copyTextStr">
               <img src='../../../assets/images/contents/icon_share.png' width="20" height="20"/>
@@ -104,6 +103,8 @@ import userDetailPop from '../../../components/UB/popup/UB_userDetailPop.vue'
 export default {
   data () {
     return {
+      imgSource: '/resource/common/memIconPublic.svg',
+      isImgChanged: false,
       mUnknownLoginPopYn: false,
       mUnknownYn: false,
       smallPopYn: false,
@@ -214,6 +215,32 @@ export default {
     })
   },
   methods: {
+    async ImgClick () {
+      const param = {
+        targetKind: 'T',
+        doType: 'LI',
+        userKey: this.GE_USER.userKey,
+        actYn: true,
+        targetKey: this.CHANNEL_DETAIL.teamKey,
+        userName: this.$changeText(this.GE_USER.userDispMtext)
+      }
+
+      try {
+        const response = await this.$commonAxiosFunction({
+          url: '/service/tp.saveUserDo',
+          param: param
+        })
+
+        console.log('나오라~!~~~')
+        console.log(response)
+      } catch (error) {
+        console.error(error)
+      }
+
+      // this.imgSource = '/resource/common/memIconPublic_Full.svg'
+      this.isImgChanged = !this.isImgChanged
+      this.imgSource = this.isImgChanged ? '/resource/common/memIconPublic_Full.svg' : '/resource/common/memIconPublic.svg'
+    },
     async openWritePushPop () {
       if (this.propTeamKey && this.mSelectedWriteType === 'ALIM' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
         this.$showToastPop(this.$t('COMM_MSG_MEMB_NEED'))
