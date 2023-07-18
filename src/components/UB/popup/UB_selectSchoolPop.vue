@@ -17,7 +17,7 @@
       <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll;height: calc(100% - 50px); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
           <gEmpty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
           <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
-            <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" />
+            <channelCard class="moveBox chanRow cursorP" style="margin-top: 10px;" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" />
             <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
           </template>
       </div>

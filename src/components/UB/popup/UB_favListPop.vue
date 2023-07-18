@@ -23,7 +23,7 @@
           <gEmpty tabName="전체" contentName="채널" v-if="pFTeamList && pFTeamList.length === 0" style="margin-top:50px;" />
           <template v-else>
             <div class="textLeft fontBold" style="width: 100%; padding: 5px 10px; border-radius: 10px; background: rgba(186, 187, 215, 0.5);">Georgia Tech</div>
-            <channelCard v-for="(chanEle, index) in pFTeamList" :key="index" class="moveBox chanRow" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
+            <channelCard v-for="(chanEle, index) in pFTeamList" :key="index" class="moveBox chanRow" style="margin-top: 10px;" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
           </template>
         </div>
       </div>
