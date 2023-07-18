@@ -25,7 +25,7 @@
           <!-- <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ propParams.areaInfo.bdAreaDesc }} > {{ changeText(CHANNEL_DETAIL.nameMtext) }}</div> -->
           <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">Gerogia Tech > {{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
           <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
-          <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
+          <div @click="test" id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
           <!--follow-->
           <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" :btnTitle="$t('COMM_BTN_SUB')" />
           <!--following-->
@@ -35,7 +35,7 @@
         <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; min-height:118px; padding: 15px; box-sizing:border-box; word-break:break-all">
           <div class="h100P fl flexCenter" style="width: 100px; padding-top: 50px;">
             <div class="cursorP" style="width: 40px; height: 40px; margin-right: 10px; background: #f1f1f1; border-radius: 30px; float:left; display: flex; justify-content: center; align-items: center;" @click="addToFavlist">
-              <img @click="ImgClick" class="cursorP" width="20" height="20" :src="imgSource" alt="">
+              <img @click="ImgClick" class="cursorP" width="20" height="20" :src="CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey? require('@/assets/images/channel/icon_star_fill.svg'):require('@/assets/images/channel/icon_star.svg')" alt="">
             </div>
             <div class="cursorP" style="width: 40px; height: 40px; background: #f1f1f1; border-radius: 30px; float:left; display: flex; justify-content: center; align-items: center;" data-clipboard-action="copy" id="copyTextBody" @click="copyText" :data-clipboard-text="CHANNEL_DETAIL.copyTextStr">
               <img src='../../../assets/images/contents/icon_share.png' width="20" height="20"/>
@@ -215,31 +215,50 @@ export default {
     })
   },
   methods: {
+    test () {
+      console.log(this.CHANNEL_DETAIL)
+    },
     async ImgClick () {
-      const param = {
-        targetKind: 'T',
-        doType: 'LI',
-        userKey: this.GE_USER.userKey,
-        actYn: true,
-        targetKey: this.CHANNEL_DETAIL.teamKey,
-        userName: this.$changeText(this.GE_USER.userDispMtext)
-      }
-
       try {
-        const response = await this.$commonAxiosFunction({
-          url: '/service/tp.saveUserDo',
-          param: param
-        })
-
-        console.log('나오라~!~~~')
-        console.log(response)
+        if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey) {
+          const param = {
+            targetKind: 'T',
+            doType: 'LI',
+            userKey: this.GE_USER.userKey,
+            actYn: true,
+            targetKey: this.CHANNEL_DETAIL.teamKey,
+            userName: this.$changeText(this.GE_USER.userDispMtext)
+          }
+          const response = await this.$commonAxiosFunction({
+            url: '/service/tp.saveUserDo',
+            param: param
+          })
+          this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = response.data.doKey
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+        } else {
+          const param = {
+            doKey: this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey,
+            targetKind: 'T',
+            doType: 'LI',
+            userKey: this.GE_USER.userKey,
+            actYn: true,
+            targetKey: this.CHANNEL_DETAIL.teamKey,
+            userName: this.$changeText(this.GE_USER.userDispMtext)
+          }
+          const response = await this.$commonAxiosFunction({
+            url: '/service/tp.deleteUserDo',
+            param: param
+          })
+          console.log(12341234)
+          console.log(response)
+          this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = null
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+        }
       } catch (error) {
         console.error(error)
       }
 
-      // this.imgSource = '/resource/common/memIconPublic_Full.svg'
       this.isImgChanged = !this.isImgChanged
-      this.imgSource = this.isImgChanged ? '/resource/common/memIconPublic_Full.svg' : '/resource/common/memIconPublic.svg'
     },
     async openWritePushPop () {
       if (this.propTeamKey && this.mSelectedWriteType === 'ALIM' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
