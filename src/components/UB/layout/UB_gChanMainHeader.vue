@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     hasHistory () {
-      return window.history.length > 2
+      return window.history.length > 1
     },
     goMain () {
       if (this.hasHistory()) {
