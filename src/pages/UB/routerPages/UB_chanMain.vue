@@ -214,6 +214,30 @@ export default {
     })
   },
   methods: {
+    async openWritePushPop () {
+      if (this.propTeamKey && this.mSelectedWriteType === 'ALIM' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
+        this.$showToastPop(this.$t('COMM_MSG_MEMB_NEED'))
+        this.$checkDeleteHistory('bottomWriteSheets')
+        this.$emit('openMember')
+        return
+      }
+      var writeParam = {}
+      writeParam.contentsJobkindId = 'BOAR'
+      writeParam.targetKey = this.CHANNEL_DETAIL.teamKey
+      writeParam.teamKey = this.CHANNEL_DETAIL.teamKey
+      writeParam.currentTeamKey = this.CHANNEL_DETAIL.teamKey
+      writeParam.targetType = 'writeContents'
+
+      var teamList = await this.$getWriteBoardData(this.CHANNEL_DETAIL.teamKey)
+      if (teamList === false) {
+        this.$showToastPop(this.$t('BOTTOM_MSG_CHECK'))
+        return
+      }
+      writeParam.selectBoardYn = true
+      writeParam.initData = teamList
+      this.$emit('openPop', writeParam)
+      // this.mSeleteWriteTypePopShowYn = false
+    },
     calcSummaryWrapH () {
       if (this.$refs.summaryWrap) {
         const height = this.$refs.summaryWrap.offsetHeight + 'px'
@@ -698,14 +722,14 @@ export default {
       this.$store.commit('D_HISTORY/updateStack', history)
       this.mChanInfoPopShowYn = false
     },
-    openWritePushPop () {
-      if (this.GE_USER.unknownYn) {
-        this.openUnknownLoginPop()
-        // this.$showToastPop('로그인 후 이용해주세요')
-        return
-      }
-      this.writeBottSheetYn = true
-    },
+    // openWritePushPop () {
+    //   if (this.GE_USER.unknownYn) {
+    //     this.openUnknownLoginPop()
+    //     // this.$showToastPop('로그인 후 이용해주세요')
+    //     return
+    //   }
+    //   this.writeBottSheetYn = true
+    // },
     openPushDetailPop (param) {
       // eslint-disable-next-line no-debugger
       debugger

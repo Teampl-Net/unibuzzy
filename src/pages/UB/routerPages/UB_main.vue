@@ -73,6 +73,7 @@ export default {
   },
   data () {
     return {
+      mFavListPopShowYn: false,
       mShowAreaBdListYn: false,
       mInfoBoxShowYn: false,
       bgImg: {
@@ -404,6 +405,8 @@ export default {
         this.mBdAreaList = response.data.bdAreaList
         this.mFTeamList = response.data.fTeamList
         this.mAlimCount = response.data.alimCount
+
+        this.$emit('setMainInfo', { fTeamList: this.mFTeamList, alimCount: this.mAlimCount })
 
         for (let i = 0; this.mBdAreaList.length > i; i++) {
           let count = 0

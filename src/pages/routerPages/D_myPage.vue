@@ -106,7 +106,7 @@ export default {
       this_.setContsList(result)
     }) */
 
-    this.$emit('changePageHeader', '마이페이지')
+    this.$emit('changePageHeader', this.$t('COMMON_NAME_MY_PAGE'))
     this.mLoadingYn = false
   },
   computed: {

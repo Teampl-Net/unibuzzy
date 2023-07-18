@@ -37,7 +37,7 @@
         </div>
       </div>
     </div>
-    <div class="fontBold menuRow " @click="openLogoutPop" style="padding-bottom: 30px; display: flex; align-items: center;">
+    <div class="fontBold menuRow " @click="openLogoutPop" style="padding-bottom: 90px; display: flex; align-items: center;">
       <img class="mright-1" style="width: 15px;" src="@/assets/images/menu/icon_logout.svg" alt="">
         {{ $t('COMMON_BTN_LOG_OUT') }}
     </div>
