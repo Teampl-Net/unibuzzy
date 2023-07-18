@@ -29,7 +29,7 @@
           <!--follow-->
           <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" :btnTitle="$t('COMM_BTN_SUB')" />
           <!--following-->
-          <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="$t('COMM_BTN_UNSUB')" />
+          <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" class="fl w-100P fontBold font14" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="$t('COMM_BTN_UNSUB')" />
         </div>
 
         <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; min-height:118px; padding: 15px; box-sizing:border-box; word-break:break-all">
@@ -245,12 +245,10 @@ export default {
             targetKey: this.CHANNEL_DETAIL.teamKey,
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
-          const response = await this.$commonAxiosFunction({
+          await this.$commonAxiosFunction({
             url: '/service/tp.deleteUserDo',
             param: param
           })
-          console.log(12341234)
-          console.log(response)
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = null
           this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
         }
