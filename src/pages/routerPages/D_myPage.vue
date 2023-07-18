@@ -248,7 +248,10 @@ export default {
       this.$emit('openPop', param)
     },
     goTotalSaveList () {
-
+      var param = {}
+      param.targetType = 'totalSaveList'
+      param.popHeaderText = '저장 목록'
+      this.$emit('openPop', param)
     },
     openContentsDetailPop (detailValue) {
       console.log(' == Open Contents Detail == ')

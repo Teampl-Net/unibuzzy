@@ -131,6 +131,12 @@ if (type === 'UB') {
           props: true,
           component: () => import(/* webpackChunkName: "about" */ '../components/popup/file/D_totalFileList.vue')
         },
+        {
+          path: '/saveBox',
+          name: 'saveBox',
+          props: true,
+          component: () => import(/* webpackChunkName: "about" */ '../components/popup/file/UB_saveFileList.vue')
+        },
         /* {
           path: '/',
           name: 'pushList',

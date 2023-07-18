@@ -2115,6 +2115,14 @@ export default {
         valiBase: [{ type: this.$JOConst.VALI_CHECK_TYPE_NOT_NULL, baseVal: null }],
         selectValueList: [{ title: 'Popular', value: 'P', onclickCallBack: this.changeTab }, { title: 'Recent', value: 'R', onclickCallBack: this.changeTab }, { title: 'Saved', value: 'S', onclickCallBack: this.changeTab }, { title: 'My', value: 'M', onclickCallBack: this.changeTab }]
       },
+      // mBoardFilterList: { // 채널 > 게시판이 바뀜에 따라 매번 달라지는 필터
+      //   valiyn: true,
+      //   inputType: this.$JOConst.VALUE_TAG_TYPE_SELECT,
+      //   targetName: 'boardFilter',
+      //   val: 'S',
+      //   valiBase: [{ type: this.$JOConst.VALI_CHECK_TYPE_NOT_NULL, baseVal: null }],
+      //   selectValueList: [{ title: 'Saved', value: 'S', onclickCallBack: this.changeTab }]
+      // },
       // mCommonFilterList: [
       //   // valiYn: true,
       //   // inputType: this.$JOConst.VALUE_TAG_TYPE_SELECT,
