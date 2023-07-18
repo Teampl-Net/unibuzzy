@@ -34,17 +34,16 @@ if (type === 'UB') {
           meta: {
             page: 1
           },
-          component: () => import(/* webpackChunkName: "about" */ '@/pages/UB/routerPages/UB_main.vue')
-          /* ,
+          component: () => import(/* webpackChunkName: "about" */ '@/pages/UB/routerPages/UB_main.vue'),
           beforeEnter: (to, from, next) => {
             // 만약 로그인 상태라면
             var loginYn = localStorage.getItem('loginYn')
-            if (loginYn !== false) {
+            if (loginYn !== 'false' || loginYn !== false) {
               return next()
-            } else if (loginYn === false) {
+            } else if (loginYn === false || loginYn === 'false') {
               next('/policies')
             }
-          } */
+          }
         },
         {
           path: '/unibuzzy',

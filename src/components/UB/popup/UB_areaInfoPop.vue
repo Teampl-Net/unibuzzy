@@ -34,7 +34,7 @@
           <!--Favorites -->
           <p class="fontBold font16">Favorites</p>
         </div>
-        <div v-if="pAreaDetail.fList&& pAreaDetail.fList.length > 0" style=" margin-left: 30px; margin-top: 10px; width: calc(100% - 30px);">
+        <div v-if="pAreaDetail.fList&& pAreaDetail.fList.length > 0" style=" margin-top: 10px; width: calc(100% - 30px);">
           <div class="w100P" id="fileChannelWrap" style="height: 85px; overflow: auto;" @wheel="horizontalScroll">
             <div class="w100P" style="height: 100%; min-width: 100%; display:flex;">
               <chanRoundIcon @click="goChannelMain(chan)" :pAreaInfo="pAreaInfo" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="chan" v-for="chan in pAreaDetail.fList" :key="chan.teamKey" />
@@ -219,7 +219,7 @@ export default {
   position: absolute; width: 80%; height: 80%; z-index: 9999999; background: #FFFFFF;
   bottom: 10%;
   left: 10%;
-  background: rgba(232, 240, 250, 0.65);
+  background: rgba(256, 256, 256, 0.65);
   box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
   backdrop-filter: blur( 9px );
   -webkit-backdrop-filter: blur( 9px );

@@ -9,19 +9,15 @@
 }
 </i18n>
 <template>
-    <div class="w100P pSide-1" style="min-height:80px; border-bottom:1px solid #cccccc70; display: flex; flex-direction: row; align-items: center; padding-top: 15px; padding-bottom: 15px;" @click="goBaordMain(boardElement)">
-        <div class="fl mleft-1" style="width: calc(100% - 65px - 1rem);">
-            <div class="w100P fl font16 fontBold textLeft grayBlack ">
-                <p class="fl">
-                  <img src="../../../assets//images/board/icon_edit.svg" alt="">
-                  {{$changeText(boardElement.cabinetNameMtext)}}
-                </p>
-                <p class="fr font13 lightGray" style="font-weight: normal;">{{$t("SEAR_TAB_ACT_CAHNNEL") + " " + $changeDateFormat(boardElement.cabCreDate)}}</p>
-            </div>
-
-            <p class="w100P fl font14 textLeft grayBlack">{{$changeText(boardElement.memoMtext)}}</p>
-        </div>
+  <div class="w100P" style="min-height:80px; border-bottom:1px solid #cccccc70; display: flex; flex-direction: row; align-items: center; padding-top: 15px; padding-bottom: 15px;" @click="goBaordMain(boardElement)">
+    <div class="fl mleft-1" style="width: calc(100% - 65px - 1rem);">
+      <div class="w100P fl font16 fontBold textLeft grayBlack ">
+        <p class="fl">
+          <img src="../../../assets//images/board/icon_edit.svg" alt="">{{ $changeText(boardElement.cabinetNameMtext) }}</p>
+        <p class="fr font13 lightGray" style="font-weight: normal;">{{ $t("SEAR_TAB_ACT_CAHNNEL") + " " +$changeDateFormat(boardElement.cabCreDate) }}</p></div>
+      <p class="w100P fl font14 textLeft grayBlack">{{ $changeText(boardElement.memoMtext) }}</p>
     </div>
+  </div>
 </template>
 
 <script>
@@ -42,6 +38,15 @@ export default {
 }
 </script>
 
-<style>
-.chanLogoImgWrap {width: 40px; height:40px; padding: 5px; border-radius: 100%; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative; flex-shrink: 0}
-</style>
+<style>.chanLogoImgWrap {
+  width: 40px;
+  height: 40px;
+  padding: 5px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ccc;
+  position: relative;
+  flex-shrink: 0
+}</style>

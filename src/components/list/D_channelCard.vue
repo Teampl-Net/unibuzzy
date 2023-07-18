@@ -10,7 +10,7 @@
   </i18n>
   <template>
       <div class="w100P pSide-1" style="min-height:80px; border-bottom:1px solid #cccccc70; display: flex; flex-direction: row; align-items: center; padding-top: 15px; padding-bottom: 15px;" @click="goChannelMain(chanElement)">
-          <div v-if="chanElement" style="position: relative; border: 0.5px solid rgba(0, 0, 0, 0.1); width: 60px; height: 60px; float: left; border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;"
+          <div v-if="chanElement" style="background-color: white; position: relative; border: 0.5px solid rgba(0, 0, 0, 0.1); width: 60px; height: 60px; float: left; border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;"
           :style="'background-image: url(' + (chanElement.logoDomainPath !== undefind ? chanElement.logoDomainPath + chanElement.logoPathMtext : chanElement.logoPathMtext) + ');'" >
               <div v-if="chanElement.ownerYn || chanElement.managerKey" class="CWhiteBgColor" style="position: absolute; right: 0; display: flex; justify-content: center; algin-items: center; padding: 2px; bottom: 0; width: 20px; height: 20px; border-radius: 100%;">
                   <img src="../../assets/images/channel/ownerChannel_crown.svg" style="width: 90%; float: left;" v-if="chanElement.ownerYn" alt="">

@@ -8,17 +8,17 @@
       <gChannelPop :propCateItemKey="CHANNEL_DETAIL.cateKey" @openPop="openCertiPop" :propTeamKey="CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop' />
     </div>
     <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
-    <div v-if="mReceptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999">
-    </div>
+    <!-- <div v-if="mReceptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999">
+    </div> -->
     <!-- <recMemberPop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" /> -->
     <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;' : ''" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{ officialTitle: CHANNEL_DETAIL.officialYn }"> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" />
       <p class="font20 fontBold textOverdot" :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: #6768a7'">
         {{ changeText(CHANNEL_DETAIL.nameMtext) }}
       </p>
     </div>
-    <div ref="summaryWrap" v-if="!mChanInfoPopShowYn" class="summaryWrap mtop-05">
+    <div id="summaryWrap" ref="summaryWrap" v-if="!mChanInfoPopShowYn" class="summaryWrap mtop-05">
 
-      <div ref="chanInfoSummary" style="background-position: center; width:100%; height:100px; position: relative; background-size: contain;background-position-y: 40px;background-repeat: no-repeat;">
+      <div id="chanInfoSummary" ref="chanInfoSummary" style="background-position: center; width:100%; height:100px; position: relative; background-size: contain;background-position-y: 40px;background-repeat: no-repeat;">
         <div class="w100P h100P" style="">
           <!-- <img src="../../../assets/images/channel/chanBgImg.jpeg" style="width:100%; height: calc(100% + 50px); position: absolute; left: 0; top: -50px;" /> -->
           <div class="w100P" style="height: calc(100% + 50px); position: absolute; left: 0; top: -50px; background: linear-gradient(to bottom, rgba(20, 20, 20, 0) 40%,rgba(20, 20, 20, 0.25) 50%,rgba(20, 20, 20, 0.5) 70%,rgba(20, 20, 20, 0.6) 90%,rgba(20, 20, 20, 0.8) 100%);"></div>
@@ -29,7 +29,7 @@
           <!--follow-->
           <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" :btnTitle="$t('COMM_BTN_SUB')" />
           <!--following-->
-          <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="$t('COMM_BTN_UNSUB')" />
+          <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="$t('COMM_BTN_UNSUB')" />
         </div>
 
         <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; min-height:118px; padding: 15px; box-sizing:border-box; word-break:break-all">
@@ -505,15 +505,15 @@ export default {
       if (wich || this.mChanInfo.targetContentsKey) {
         const unit = this.$refs.chanScrollWrap
         unit.scrollTo({ top: 500, behavior: 'smooth' })
-        var blockBox = this.$refs.summaryWrap
+        var blockBox = document.getElementById('summaryWrap')
         blockBox.style.height = 50 + 'px'
         const chanInfoSummaryRef = this.$refs.chanInfoSummary
-        const ownerChannelEditArea = this.$refs.ownerChannelEditArea
+        // const ownerChannelEditArea = this.$refs.ownerChannelEditArea
         const channelItemBoxRef = this.$refs.channelItemBox
 
         if (chanInfoSummaryRef) chanInfoSummaryRef.classList.add('displayNIm')
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) document.getElementById('followerCancelArea').classList.add('displayNIm')
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && ownerChannelEditArea) ownerChannelEditArea.classList.add('displayNIm')
+        // if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) document.getElementById('followerCancelArea').classList.add('displayNIm')
+        // if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && ownerChannelEditArea) ownerChannelEditArea.classList.add('displayNIm')
         if (channelItemBoxRef) channelItemBoxRef.classList.add('channelItemBoxHeight')
       }
     },
@@ -822,6 +822,47 @@ export default {
       this.alimListToDetail = true
       // thiopenPop.mChanInfoPopShowYn = true
     },
+    // updateScroll () {
+    //   var blockBox = document.getElementById('summaryWrap')
+    //   if (this.mChanMainScrollWrap.scrollTop > this.mChanMainScrollPosition) {
+    //     this.mChanMainScrollDirection = 'down'
+    //   } else if (this.mChanMainScrollWrap.scrollTop < this.mChanMainScrollPosition) {
+    //     this.mChanMainScrollDirection = 'up'
+    //   }
+
+    //   this.mChanMainScrollPosition = this.mChanMainScrollWrap.scrollTop
+    //   if (this.mChanMainScrollDirection === 'down' && this.mChanMainScrollPosition > 120) {
+    //     blockBox.style.height = 50 + 'px'
+    //     if (this.mChanMainScrollPosition > 160) this.mChanMainScrollWrap.style.overflow = 'hidden'
+
+    //     document.getElementById('chanInfoSummary').classList.add('displayNIm')
+
+    //     // 더알림 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
+    //     if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) document.getElementById('followerCancelArea').classList.add('displayNIm')
+
+    //     // if (document.getElementById('ownerChannelEditArea')) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')
+
+    //     document.getElementById('channelCardWrap').classList.add('displayNIm')
+    //     document.getElementById('userCardWrap').classList.add('displayNIm')
+
+    //     document.getElementById('channelItemBox').classList.add('channelItemBoxHeight')
+    //   } else if (this.mChanMainScrollDirection === 'up' && this.mChanMainScrollPosition < 170) {
+    //     document.getElementById('chanInfoSummary').classList.remove('displayNIm')
+    //     // document.getElementById('chanInfoArea').classList.remove('displayNIm')
+    //     // document.getElementById('memberInfoArea').classList.remove('displayNIm')
+    //     if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) document.getElementById('followerCancelArea').classList.remove('displayNIm')
+
+    //     // if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) document.getElementById('ownerChannelEditArea').classList.remove('displayNIm')
+
+    //     document.getElementById('channelCardWrap').classList.remove('displayNIm')
+    //     document.getElementById('userCardWrap').classList.remove('displayNIm')
+
+    //     blockBox.style.height = '220px'
+    //     this.mChanMainScrollWrap.style.height = ''
+    //     // document.getElementById('chanInfoSummary2').classList.remove('displayBIm')
+    //     document.getElementById('channelItemBox').classList.remove('channelItemBoxHeight')
+    //   }
+    // }
     updateScroll () {
       var blockBox = this.$refs.summaryWrap
       if (this.mChanMainScrollWrap.scrollTop > this.mChanMainScrollPosition) {
@@ -833,20 +874,19 @@ export default {
       this.mChanMainScrollPosition = this.mChanMainScrollWrap.scrollTop
       const chanInfoSummaryRef = this.$refs.chanInfoSummary
       const followerCancelAreaRef = this.$refs.followerCancelArea
-      const ownerChannelEditAreaRef = this.$refs.ownerChannelEditArea
       const channelItemBoxRef = this.$refs.channelItemBox
       if (this.mChanMainScrollDirection === 'down' && this.mChanMainScrollPosition > 120) {
         blockBox.style.height = 50 + 'px'
         if (this.mChanMainScrollPosition > 160) this.mChanMainScrollWrap.style.overflow = 'hidden'
         chanInfoSummaryRef.classList.add('displayNIm')
         // 더알림 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY && followerCancelAreaRef) followerCancelAreaRef.classList.add('displayNIm')
-        if (ownerChannelEditAreaRef) ownerChannelEditAreaRef.classList.add('displayNIm')
+        if (followerCancelAreaRef && this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) followerCancelAreaRef.classList.add('displayNIm')
+        // if (ownerChannelEditAreaRef) ownerChannelEditAreaRef.classList.add('displayNIm')
         if (channelItemBoxRef) channelItemBoxRef.classList.add('channelItemBoxHeight')
-      } else if (this.mChanMainScrollDirection === 'up' && this.mChanMainScrollPosition < 200) {
+      } else if (this.mChanMainScrollDirection === 'up' && this.mChanMainScrollPosition < 170) {
         chanInfoSummaryRef.classList.remove('displayNIm')
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY && followerCancelAreaRef) followerCancelAreaRef.classList.remove('displayNIm')
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && ownerChannelEditAreaRef) ownerChannelEditAreaRef.classList.remove('displayNIm')
+        if (followerCancelAreaRef && this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) followerCancelAreaRef.classList.remove('displayNIm')
+        // if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && ownerChannelEditAreaRef) ownerChannelEditAreaRef.classList.remove('displayNIm')
 
         blockBox.style.height = '220px'
         this.mChanMainScrollWrap.style.height = ''
@@ -983,11 +1023,7 @@ export default {
 }
 </script>
 
-<style scoped>.gBtnSmall {
-  float: left !important;
-  margin-top: 0.7rem
-}
-
+<style scoped>
 .gBtnSmall {
   float: left !important;
   margin-top: 0.7rem
@@ -1028,7 +1064,7 @@ export default {
   float: left;
   box-sizing: border-box;
 }
-
+.channelItemBoxHeight{height: calc(100% - 50px)!important; position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; }
 .chanDetailWrap table {
   width: 85vw;
   max-width: 400px;

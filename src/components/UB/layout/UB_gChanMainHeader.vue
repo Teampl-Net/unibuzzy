@@ -1,5 +1,5 @@
 <template>
-  <div class="commonPopHeaderWrap headerShadow" style="background:transparent !important; padding-bottom: 1.7rem;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'">
+  <div class="commonPopHeaderWrap" style="background:transparent !important;">
     <div v-on:click="goMain" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <img v-if="bgblack === true " src="../../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" >
       <img v-else-if="pNoAuthYn === true " src="../../../assets/images/footer/icon_home_fillin.svg"  v-on:click="goMain">
@@ -27,7 +27,9 @@ export default {
     hasHistory () {
       return window.history.length > 1
     },
-    goMain () {
+    async goMain () {
+      this.$emit('showCloudLoading', true)
+      await new Promise((resolve) => setTimeout(resolve, 2500))
       if (this.hasHistory()) {
         this.$router.go(-1)
       } else {

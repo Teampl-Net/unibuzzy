@@ -6,8 +6,8 @@
     <gConfirmPop :confirmText="mErrorPopBodyStr" confirmType='one' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" style="z-index: 9999999999999999999999;"/>
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
     <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
-    <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" @goFavList="openPop" @goLogList="openPop" v-if="mTargetType !== 'chanDetail' && mTargetType !== 'boardMain'" @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9; background: rgb(245, 247, 254);" />
-    <chanHeader v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === ''" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo.targetKey" @closeXPop="closeXPop" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" @openPop="openPop" class="chanDetailPopHeader" />
+    <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" @goFavList="openPop" @goLogList="openPop" v-if="mAfterCloudYn && mTargetType !== 'chanDetail' && mTargetType !== 'boardMain' " @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9;" />
+    <chanHeader v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === ''" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo.targetKey" @closeXPop="closeXPop" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" @openPop="openPop" class="chanDetailPopHeader" />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mPopType === 'writeContents'" @click="mPopType = ''"></div>
     <writeContents v-if="mPopType === 'writeContents'" @closeXPop="closeWritePop" :params="mPopParams" :propData="mPopParams" :contentType="mPopParams.contentsJobkindId" />
     <div v-if="mPopType === 'logList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: transparent;"></div>
@@ -28,9 +28,9 @@
     <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
     <gCloudLoading v-if="mCloudLoadingShowYn" style="position: absolute; top: 0; left: 0" />
     <div :class="{ myPageBgColor : mMyPageBgColorYn }"  class="" :style="'height: calc(100%);'" style="overflow: hidden; width:100%; float: left;">
-      <router-view :key="$route.fullPath" @setMainInfo="setMainInfo" @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="showCloudLoading" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
+      <router-view v-if="mAfterCloudYn" :key="$route.fullPath" @setMainInfo="setMainInfo" @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
-    <gFooter v-if="!$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9999" />
+    <gFooter v-if="mAfterCloudYn && !$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999;" />
     <!-- <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" /> -->
   </div>
 </template>
@@ -51,6 +51,7 @@ export default {
   data () {
     return {
       // mUnknownLoginPopYn: false,
+      mAfterCloudYn: false,
       mPolicyType: '',
       mMyPageBgColorYn: false,
       mGPopShowYn: false,
@@ -78,10 +79,15 @@ export default {
     }
   },
   created () {
-    // if (this.GE_USER.unknownYn) {
-    //   this.goUniBTown()
-    //   return
-    // }
+    if (this.GE_USER.unknownYn) {
+      this.$router.push({ name: 'login' })
+    } else {
+      // this.showCloudLoading(true)
+      this.showCloudLoading()
+    }
+    // setTimeout(() => {
+    //   this.$emit('closeCloudLoading')
+    // }, 2500)
     if (localStorage.getItem('backBtnShowYn') !== undefined && localStorage.getItem('backBtnShowYn') !== 'undefined') {
       localStorage.setItem('backBtnShowYn', 'false')
     }
@@ -97,7 +103,8 @@ export default {
       checkParam.fcmKey = param.fcmKey
       console.log('checkParam', checkParam)
     }
-    this.getCTeamList()
+    // this.getCTeamList()
+    // this.showCloudLoading(false, 5000)
   },
   methods: {
     setMainInfo (params) {
@@ -318,9 +325,27 @@ export default {
       }
       return param
     },
-    async showCloudLoading (param) {
+    async showCloudLoading (showYn, time) {
+      // if (showYn) {
+      //   this.mCloudLoadingShowYn = true
+      //   // await new Promise((resolve) => setTimeout(resolve, 1750))
+      // } else {
+      //   setTimeout(() => {
+      //     this.mCloudLoadingShowYn = false
+      //   }, time)
+      // }
       this.mCloudLoadingShowYn = true
-      await new Promise((resolve) => setTimeout(resolve, 3000))
+      setTimeout(() => {
+        this.mCloudLoadingShowYn = false
+      }, 5000)
+    },
+    async goOpenPage (param) {
+      if (param.targetType === 'chanDetail' || param.targetType === 'boardMain') {
+        // this.mCloudLoadingShowYn = true
+        // this.showCloudLoading(true)
+        this.showCloudLoading()
+        await new Promise((resolve) => setTimeout(resolve, 1750))
+      }
       if (param) {
         await this.openPage(param)
       }
@@ -375,6 +400,7 @@ export default {
         console.log('1234detailValue')
         console.log(result)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
+          this.mCloudLoadingShowYn = false
           this.$showToastPop('채널을 찾을 수 없습니다!')
           return
         }
@@ -387,6 +413,7 @@ export default {
         }
         initData.contentsList = result.data.contentsListPage
       } catch (error) {
+        this.mCloudLoadingShowYn = false
         this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
         console.error(error)
       }
@@ -405,8 +432,7 @@ export default {
       //   encodedTeamKey = detailValue.creTeamKey
       // }
       this.$router.push(`/chan/${chanMainParam.teamKey}`)
-      await new Promise((resolve) => setTimeout(resolve, 1200))
-      this.mCloudLoadingShowYn = false
+      // this.showCloudLoading(false, 1750)
     },
     async openPop (params) {
       this.mPopType = params.targetType
@@ -474,9 +500,10 @@ export default {
         this.mChanInfo = params
         this.mChanInfo.chanYn = params.chanYn
         this.mTargetType = 'boardMain'
-
         // await this.getCabinetDetail(params)
         this.$router.push(`/board/${params.teamKey}/${params.targetKey}`)
+        await new Promise((resolve) => setTimeout(resolve, 2000))
+        this.mCloudLoadingShowYn = false
       } else if (params.targetType === 'writeContents') {
         this.openPop(params)
       } else if (params.targetType === 'myChanMenuEdit') {
@@ -487,9 +514,9 @@ export default {
         this.$router.push('/settings')
       }
       this.hideMenu()
+      this.mCloudLoadingShowYn = false
     },
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
-      // alert(offsetInput)
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
       paramMap.set('cateItemKey', 3)
@@ -524,8 +551,7 @@ export default {
         // this.$route.push('/policy')
         this.$router.push(`/policy/${page}`)
         return
-      }
-      if (page !== 'chanList' && page !== 'myPage') {
+      } else if (page !== 'chanList' && page !== 'myPage') {
         pageData = await this.$getRouterViewData(page)
       } else if (page === 'myPage') {
         // eslint-disable-next-line no-debugger
@@ -551,12 +577,18 @@ export default {
       } else if (page === 'chanList') {
         pageData = await this.getChannelList(10, 0, false)
       }
+      // eslint-disable-next-line no-debugger
+      debugger
       this.sendInitData = pageData
       if (this.$router.currentRoute._rawValue.path === '/' && page === 'main') {
+        this.mCloudLoadingShowYn = true
         const unit = this.$refs.routerViewCompo
         if (unit.$el) {
           unit.$el.scrollTo({ top: 0, behavior: 'smooth' })
         }
+        setTimeout(() => {
+          this.mCloudLoadingShowYn = false
+        }, 2500)
       }
       // this.$router.push({ path: page, params: { initData: pageData } })
       this.$router.replace({
@@ -598,6 +630,9 @@ export default {
   //   }
   // },
   mounted () {
+    setTimeout(() => {
+      this.mAfterCloudYn = true
+    }, 1000)
     this.$showChanCommonPop(false)
     if (
       localStorage.getItem('systemName') !== undefined &&

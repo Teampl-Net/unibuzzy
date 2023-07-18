@@ -1090,22 +1090,6 @@ export const commonMethods = {
       gChanPop.style.display = 'block'
     } else gChanPop.style.display = 'none'
   },
-  // showCloudLoading (showYn) {
-  //   var loadingCompo = document.getElementById('cloudLoading')
-  //   var gLoadingPop = document.querySelectorAll('.gCloudLoadingPop')
-  //   if (gLoadingPop.length > 0) {
-  //     loadingCompo.style.display = 'none'
-  //     return
-  //   }
-  //   if (!loadingCompo || loadingCompo.length === 0) return
-  //   if (showYn) {
-  //     /*  if (loadingCompo.style.display === 'flex') */
-  //     loadingCompo.style.display = 'flex'
-  //     setTimeout(() => {
-  //       loadingCompo.style.display = 'none'
-  //     }, 3000)
-  //   } else loadingCompo.style.display = 'none'
-  // },
   showAxiosLoading (showYn) {
     var loadingCompo = document.getElementById('axiosShadow')
     var gLoadingPop = document.querySelectorAll('.gLoadingPop')
@@ -1117,9 +1101,9 @@ export const commonMethods = {
     if (showYn) {
       /*  if (loadingCompo.style.display === 'flex') */
       loadingCompo.style.display = 'flex'
-      setTimeout(() => {
-        loadingCompo.style.display = 'none'
-      }, 3000)
+      // setTimeout(() => {
+      //   loadingCompo.style.display = 'none'
+      // }, 3000)
     } else loadingCompo.style.display = 'none'
   },
   dAlertLog (String) {
@@ -1278,6 +1262,7 @@ export default {
     Vue.config.globalProperties.$addConsole = commonMethods.addConsole
     Vue.config.globalProperties.$setParentsId = commonMethods.setParentsId
     Vue.config.globalProperties.$showAxiosLoading = commonMethods.showAxiosLoading
+    Vue.config.globalProperties.$showCloudLoading = commonMethods.showCloudLoading
     Vue.config.globalProperties.$getFollowerType = commonMethods.getFollowerType
     Vue.config.globalProperties.$changeFollowerInfo = commonMethods.changeFollowerInfo
     Vue.config.globalProperties.$checkEmptyInnerHtml = commonMethods.checkEmptyInnerHtml

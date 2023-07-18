@@ -15,7 +15,7 @@
     <pinPostPop v-if="mPinPostPopShowYn" :pUpdateTopview="updateTopview" :pTVList="this.CAB_DETAIL.topviewList? this.CAB_DETAIL.topviewList.content:[]" :pChanDetail="CHANNEL_DETAIL" :pClosePop="closePinPostPop" :pBoardDetail="CAB_DETAIL" />
     <div id="boardWrap" v-if="CAB_DETAIL" :style="CAB_DETAIL.picBgPath? 'background: ' + CAB_DETAIL.picBgPath + ';' + 'padding-top: ' + this.$STATUS_HEIGHT + 'px' : 'background: #ece6cc;' + 'padding-top: ' + this.$STATUS_HEIGHT + 'px'" style="overflow: auto;" ref="boardListWrap" class="boardListWrap">
       <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
-      <p class="font20 fontBold textOverdot" :style="CAB_DETAIL.cabinetNameMtext.length > 15 ? 'font-size:14px !important;' :'' " style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); max-width: calc(100% - 120px);">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</p>
+      <p class="font20 fontBold textOverdot" :style="CAB_DETAIL.cabinetNameMtext.length > 15 ? 'font-size:18px !important;' :'' " style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); max-width: calc(100% - 120px);">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</p>
       <div id="summaryHeader" class="summaryHeader">
         <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :style="propParams.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="@/assets/images/channel/icon_official.svg" v-if="propParams.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propParams.nameMtext)}}</p> -->
         <div id="boardInfoSummary" class="mt-header boardWhiteBox">
@@ -65,7 +65,8 @@
             <findContentsList :pOnlyMineYn="mOnlyMineYn" :tpGroupCode="(CAB_DETAIL.workStatYn === 1 || CAB_DETAIL.workStatYn === true) ? 'C_STAT' : null" :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
           </transition>
           <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll" >
-            <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"  style=" width:calc(100%);"/>
+            <!-- <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"  style=" width:calc(100%);"/> -->
+            <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
           </div>
           <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%); padding-bottom: 40px; min-height: 500px" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
 
@@ -188,7 +189,8 @@ export default {
     this.mCreTeamKey = this.$route.params.teamKey
     if (this.pOnlyMineYn) {
       this.mOnlyMineYn = true
-      this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }]
+      // this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }]
+      this.mCommonFilterList = [{ display: 'Recent', name: 'N' }, { display: 'Popular', name: 'P' }, { display: 'Saved', name: 'S' }]
     }
     this.mPropParams = this.propParams
     // this.$emit('clearInfo', { detail: this.mPropParams, targetType: 'boardMain' })
@@ -253,7 +255,8 @@ export default {
       mPinPostPopShowYn: false,
       mGuidePopShowYn: false,
       paddingTop: 0,
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 쓴', name: 'M' }],
+      // activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 쓴', name: 'M' }],
+      mCommonFilterList: [{ display: 'Recent', name: 'N' }, { display: 'Popular', name: 'P' }, { display: 'Saved', name: 'S' }, { display: 'My', name: 'M' }],
       listBox: null,
       firstContOffsetY: null,
       scrolledYn: false,
@@ -1516,7 +1519,7 @@ export default {
       for (let i = 0; i < this.mCabContentsList.length; i++) {
         vPoolChanIdx = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mCabContentsList[i].creTeamKey)
         vPoolChanInfo = this.GE_MAIN_CHAN_LIST[vPoolChanIdx]
-        vPoolContList = vPoolChanInfo.ELEMENTS.boardList
+        if (vPoolChanInfo && vPoolChanInfo.ELEMENTS) vPoolContList = vPoolChanInfo.ELEMENTS.boardList
         vPoolContentIdx = vPoolContList.findIndex((item) => item.mccKey === this.mCabContentsList[i].mccKey)
 
         if (vPoolContentIdx !== -1) {
@@ -1573,9 +1576,11 @@ export default {
         if (!val) return
         // alert(JSON.stringify(val))
         if (val.unknownYn) {
-          this.activeTabList = [{ display: '최신', name: 'N' }]
+          // this.activeTabList = [{ display: '최신', name: 'N' }]
+          this.mCommonFilterList = [{ display: 'Recent', name: 'N' }]
         } else {
-          this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 쓴', name: 'M' }]
+          // this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 쓴', name: 'M' }]
+          this.mCommonFilterList = [{ display: 'Recent', name: 'N' }, { display: 'Popular', name: 'P' }, { display: 'Saved', name: 'S' }, { display: 'My', name: 'M' }]
         }
       }
     },

@@ -256,7 +256,7 @@ if (localStorage.getItem('appType')) {
   app.config.globalProperties.$appType = localStorage.getItem('appType')
   app.config.globalProperties.$mobileYn = true
 } else {
-  app.config.globalProperties.$appType = 'D'
+  app.config.globalProperties.$appType = 'UB'
   app.config.globalProperties.$mobileYn = null
 }
 

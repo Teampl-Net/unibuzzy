@@ -11,26 +11,23 @@
   }
   </i18n>
 <template>
-  <div class="pagePaddingWrap loginContentsWrap">
-    <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
-    <div v-if="!pPartnerLoginYn" class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; margin-top: 125px; margin-bottom: 80px;">
-      <img src="../../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
+  <div class="loginContentsWrap">
+    <div v-if="GE_USER.unknownYn" class="videoArea" style="position: fixed; width: 100%; height: 100%; overflow:hidden;">
+      <video autoplay muted loop :style="showStartBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
+        <source :src="introVideo" type="video/mp4" >
+      </video>
+      <div v-show="showStartBtnYn" class="fade-in font20 fontBold textLeft" style="position: absolute; text-shadow: 2px 2px 3px black; color: white; top: 25%; left: 5%;">Hi! Welcome to uniBuzzy!<br>Wanna enjoy campus life 200% better?</div>
     </div>
-    <div v-else class="py-3 px-4" style="box-sizing: border-box; width: 100%; min-height: 50px; margin-top: 125px; ">
-      <!--<img  src="../../../assets/images/main/login_Wlogo.png" style="width: 50px;" class="fl" > -->
-      <img src="../../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
-      <p class="textCenter fl fontBold font16 " v-html="pPartnerLoginText" style="width: calc(100%); margin-top: 10px; margin-bottom: 10px; color: #D6D6E7;"></p>
-    </div>
-      <!-- <div class="loginBtn font20" v-on:click="KakaoLoginBtn">
-        <img src="../../../assets/images/intro/login/login_kakao.png">
-        카카오 로그인
-      </div> -->
-      <div class="w100P" style="display: flex; flex-direction: column; height: 500px;">
-        <!-- <naver :callbackFunction='naverCallbackFunction' v-if="!mobileYn" buttonColor="#3E3F6A" :isPopup='false' />
-        <div v-else class="loginBtn font20" v-on:click="NaverLoginBtn">
-          <img src="../../../assets/images/intro/login/login_naver.png">
-          네이버 로그인
-        </div> -->
+    <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="Are you sure to quit uniBuzzy??" />
+      <div v-if="!pPartnerLoginYn" class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; position: absolute; top: calc(35%); margin-bottom: 80px;">
+        <img src="../../../assets/images/intro/login/uniB_logo.png" style="width: 40%;" class="" >
+      </div>
+      <div v-else class="py-3 px-4" style="box-sizing: border-box; width: 100%; min-height: 50px; position: absolute; top: calc(50% - 30px); ">
+        <img src="../../../assets/images/intro/login/uniB_logo.png" style="width: 40%;" class="" >
+        <p class="textCenter fl fontBold font16 " v-html="pPartnerLoginText" style="width: calc(100%); margin-top: 10px; margin-bottom: 10px; color: #D6D6E7;"></p>
+      </div>
+    <transition name="showUp" style="animation-duration: 2s;">
+      <div class="" style="width: 80%; position: absolute; left: 10%; bottom: 10%; display: flex; flex-direction: column; height: fit-content;" v-show="showStartBtnYn">
         <div class="loginBtn font20" @click="GoogleLoginBtn">
           <img src="../../../assets/images/intro/login/login_google.png">
           {{ $t('LOG_BTN_GOOGLE') }}
@@ -48,6 +45,7 @@
           </div>
         </div>
       </div>
+    </transition>
       <div v-if="pPartnerLoginYn" class="fl" style="width: 100%; height: 80px; display: flex; margin-top: 50px;align-items: center; justify-content: center;">
         <img style="width: 70px; border-radius: 3px; float: left;" src="../../../assets/images/common//DAlimMainQrCode.jpg">
         <p class="font16 fontBold textLeft mleft-1 fl" style="color: #D6D6E7;">더알림 앱을 휴대폰에 설치하면<br>편하게 실시간으로 알림을 받을 수 있습니다!</p>
@@ -79,8 +77,15 @@ export default {
       systemName: 'iOS',
       appCloseYn: false,
       appYn: false,
-      mobileYn: this.$getMobileYn()
+      mobileYn: this.$getMobileYn(),
+      introVideo: '/resource/video/introVideo.mp4',
+      showStartBtnYn: false
     }
+  },
+  mounted () {
+    setTimeout(() => {
+      this.showStartBtnYn = true
+    }, 1000)
   },
   props: {
     pPartnerLoginYn: {
@@ -95,7 +100,14 @@ export default {
     commonConfirmPop
     // naver
   },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
+  },
   created () {
+    // eslint-disable-next-line no-debugger
+    debugger
     localStorage.setItem('sessionUser', '')
     localStorage.setItem('user', '')
     if (this.mobileYn === false && (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null)) {
@@ -172,24 +184,7 @@ export default {
         this.onLogin()
       }
     },
-    KakaoLoginBtn () {
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({
-          type: 'REQ',
-          callFunc: 'loginKakao'
-        })
-      )
-    },
-    NaverLoginBtn () {
-      window.ReactNativeWebView.postMessage(
-        JSON.stringify({
-          type: 'REQ',
-          callFunc: 'loginNaver'
-        })
-      )
-    },
     AppleLoginBtn () {
-      alert(true)
       window.ReactNativeWebView.postMessage(
         JSON.stringify({
           type: 'REQ',
@@ -248,9 +243,9 @@ export default {
 
 <style scoped>
 p{margin-bottom: 0;}
-.loginBtn{width: 100%; cursor: pointer; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px;}
+.loginBtn{width: 100%; position: relative; cursor: pointer; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px;}
 .loginBtn img {width: 1.5rem; margin-bottom: 5px; margin-right: 20px}
-.loginContentsWrap{height: 100vh;background-color: #030170; display: flex; flex-direction: column; padding-top: 10%; }
+.loginContentsWrap{height: 100vh; display: flex; flex-direction: column; justify-content: space-around; }
 
 .inquiryBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; background-color: #acade0; margin-top: 20px; padding: 10px; box-sizing: border-box; border-radius: 10px; }
 @media screen and (max-width: 300px) {

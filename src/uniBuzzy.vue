@@ -1,12 +1,12 @@
 <template>
   <div id="uniBuzzyWrap" class="w100P h100P">
-    <!-- <div v-if="!loginYn" class="videoArea" style="position: relative; width: 100%; height: 100vh; overflow:hidden;;">
-      <video autoplay muted loop :style="showLoginBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
+    <!-- <div v-if="!mStartYn" class="videoArea" style="position: relative; width: 100%; height: 100vh; overflow:hidden;;">
+      <video autoplay muted loop :style="showStartBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
         <source :src="introVideo" type="video/mp4" >
       </video>
-      <div v-show="showLoginBtnYn" class="fade-in fontBold textLeft" style="position: absolute; text-shadow: 2px 2px 3px black; color: white; top: 25%; left: 5%;">Hi! Welcome to D-ALIM!<br>Wanna join your college community?</div>
+      <div v-show="showStartBtnYn" class="fade-in fontBold textLeft" style="position: absolute; text-shadow: 2px 2px 3px black; color: white; top: 25%; left: 5%;">Hi! Welcome to uniBuzzy!<br>Wanna enjoy campus life 200% better?</div>
       <transition name="showUp" style="animation-duration: 2s;">
-        <div transition="showUp" class="loginBtn" v-show="showLoginBtnYn" @click="login">Login</div>
+        <div transition="showUp" class="startBtn" v-show="showStartBtnYn" @click="startUniB">Let's Get Started!</div>
       </transition>
     </div> -->
     <gAxiosLoading />
@@ -14,7 +14,7 @@
     <!-- <transition name="showModal">
       <gPopupWrap transition="showModal"  @successWrite="successWriteBoard" :propParams="modalParam" ref="commonWrap" :headerTitle="headerTitle" @closePop="closePop" v-if="popShowYn" :parentPopN="parentPopN" />
     </transition> -->
-    <router-view v-if="loginYn" ref="routerMainWrap" @openPop="openPop" />
+    <router-view ref="routerMainWrap" @closeCloudLoading="mCloudLoadingShowYn = false" @openPop="openPop" />
   </div>
 </template>
 <script>
@@ -27,9 +27,9 @@ export default {
     ]
   },
   mounted () {
-    // setTimeout(() => {
-    //   this.showLoginBtnYn = true
-    // }, 1000)
+    setTimeout(() => {
+      this.showStartBtnYn = true
+    }, 1000)
     window.document.addEventListener('touchstart', (e) => {
       this.startPoint = e.touches[0].pageX // 터치가 시작되는 위치 저장
     })
@@ -48,9 +48,9 @@ export default {
     return {
       mobileYn: this.$getMobileYn(),
       mCloudLoadingShowYn: false,
-      loginYn: true,
-      showLoginBtnYn: false,
-      introVideo: '/resource/new/introVideo.mp4',
+      mStartYn: true,
+      showStartBtnYn: false,
+      introVideo: '/resource/video/introVideo.mp4',
       startPoint: 0,
       endPoint: 0,
       headerTitle: 'uniBuzzy',
@@ -67,11 +67,12 @@ export default {
     }
   },
   methods: {
-    async login () {
+    startUniB () {
       console.log('yay!')
-      this.loginYn = true
       this.mCloudLoadingShowYn = true
-      await new Promise((resolve) => setTimeout(resolve, 4000))
+      setTimeout(() => {
+        this.mStartYn = true
+      }, 1750)
       // this.cloudLoadingShowYn = false
     },
     openPop (params) {
@@ -180,7 +181,7 @@ max-width: 1000px ;
   object-fit: cover;
   background: black;
 }
-.loginBtn {
+.startBtn {
   position: relative;
   width: 80%;
   border-radius: 10px;

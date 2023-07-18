@@ -5,7 +5,7 @@
     <statCodeComponent @closeXPop="this.workStateCodePopShowYn = false" :currentWorker="{workUserKey: workStateCodePopProps.workUserKey, workUserName: workStateCodePopProps.workUserName}" :teamKey="workStateCodePopProps.creTeamKey" :alimDetail="workStateCodePopProps" :contentsKey="workStateCodePopProps.contentsKey" v-if="workStateCodePopShowYn" :codeList="workStateCodePopProps.workStatCodeList" :currentCodeKey="workStateCodePopProps.workStatCodeKey" class="fr "></statCodeComponent>
     <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:999999"><div class="spinner"></div></div>
 
-    <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left;" >
+    <div style="width: 100%; height: calc(100vh - 50px); padding-top: 0; position: relative; overflow: hidden; float: left;" >
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " /> -->
@@ -15,7 +15,7 @@
         <findContentsList :tpGroupCode="this.viewMainTab === 'B' || this.viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" :pClosePop="closeSearchPop" :teamKey='this.pChannelDetail.teamKey'/>
       </transition>
 
-        <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'" style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); padding-bottom: 40px; ">
+        <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'" style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); padding-bottom: 60px; ">
           <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
           <div class="w100P fl commonListContentBox" style="height:1px;" />
           <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
@@ -1410,9 +1410,13 @@ export default {
       this.mEmptyReloadKey += 1
     },
     getAbsoluteTop (element) {
+      console.log('hey')
+      // return element.getBoundingClientRect().top
       return window.pageYOffset + element.getBoundingClientRect().top
     },
     handleScroll () {
+      // eslint-disable-next-line no-debugger
+      debugger
       this.imgDetailAlertShowYn = false
       this.scrollIngYn = true
       var currentTime = new Date()
@@ -1423,7 +1427,9 @@ export default {
       }
       if (element) {
         this.firstContOffsetY = this.getAbsoluteTop(element)
+        console.log('this.firstContOffsetY', this.firstContOffsetY)
         if (this.firstContOffsetY > 0) {
+          console.log('going up')
           this.scrollDirection = 'up'
           this.scrolledYn = false
         }
@@ -1432,9 +1438,11 @@ export default {
 
           if (this.firstContOffsetY < 0) {
             if (this.box.scrollTop > this.scrollPosition) {
+              console.log('going down')
               this.scrollDirection = 'down'
               this.scrolledYn = true
             } else if (this.box.scrollTop <= this.scrollPosition) {
+              console.log('going up')
               this.scrollDirection = 'up'
               this.scrolledYn = false
             }

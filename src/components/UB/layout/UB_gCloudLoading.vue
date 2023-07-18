@@ -1,10 +1,8 @@
 <template>
-  <transition name="cloud-transition">
-    <div id="cloudLoading" v-if="showCloudsYn" class="cloud-container">
-      <div class="cloud cloud-left" style="background-image: url('/resource/common/trans_cloudLeft.png')!important; background-size: cover; background-repeat: no-repeat;"></div>
-      <div class="cloud cloud-right" style="background-image: url('/resource/common/trans_cloudRight.png')!important; background-size: cover; background-repeat: no-repeat;"></div>
-    </div>
-  </transition>
+  <div id="cloudLoading" v-if="showCloudsYn" class="cloud-container">
+    <div class="cloud cloud-left" style="background-image: url('/resource/common/trans_cloudLeft.png')!important; background-size: cover; background-repeat: no-repeat;"></div>
+    <div class="cloud cloud-right" style="background-image: url('/resource/common/trans_cloudRight.png')!important; background-size: cover; background-repeat: no-repeat;"></div>
+  </div>
 </template>
 <script>
 export default {
@@ -21,7 +19,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 99999;
+  z-index: 99999999999999999999999;
   width: 100%;
   height: 100%;
 }
@@ -29,23 +27,23 @@ export default {
 .cloud {
   position: absolute;
   transform: translateY(-50%);
-  width: 100%;
-  height: 100%;
+  width: 130%;
+  height: 130%;
   background-size: cover;
   animation-fill-mode: both;
 }
 
 .cloud-left {
-  top: 0;
-  left: -200px;
-  animation: cloud-left-enter 3s alternate infinite;
+  /* top: 0;
+  left: -200px; */
+  animation: cloud-left-enter 2.5s cubic-bezier(0.8, 0, 0.2, 1) alternate infinite;
   animation-iteration-count: 2;
 }
 
 .cloud-right {
-  top: 50%;
-  right: -200px;
-  animation: cloud-right-enter 3s alternate infinite;
+  /* top: 50%;
+  right: -200px; */
+  animation: cloud-right-enter 2.5s cubic-bezier(0.8, 0, 0.2, 1) alternate infinite;
   animation-iteration-count:2;
 }
 
@@ -55,7 +53,7 @@ export default {
     top: 0;
   }
   100% {
-    left: 0;
+    left: 0px;
     top: 50%;
   }
 }
@@ -66,7 +64,7 @@ export default {
     top: 80%;
   }
   100% {
-    right: 0;
+    right: 0px;
     top: 50%;
   }
 }

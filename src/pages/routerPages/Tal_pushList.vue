@@ -1447,7 +1447,10 @@ export default {
       this.mEmptyReloadKey += 1
     },
     getAbsoluteTop (element) {
-      return window.pageYOffset + element.getBoundingClientRect().top
+      // return window.pageYOffset + element.getBoundingClientRect().top
+      console.log('element.getBoundingClientRect().top')
+      console.log(element.getBoundingClientRect().top)
+      return element.getBoundingClientRect().top
     },
     handleScroll () {
       this.imgDetailAlertShowYn = false

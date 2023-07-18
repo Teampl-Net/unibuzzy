@@ -4,7 +4,7 @@
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
     </transition>
-    <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
+    <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
       <transition name="showUp">
         <areaInfoPop @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
       </transition>
@@ -51,6 +51,10 @@
         </div>
         <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
           <div v-if="village.areaList[area.priority].buildingList[index]" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; z-index: 999;" :style="[village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top+ 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
+            <div v-if="area.priority === 0" class="flexCenter" style="width: 250px; height: 80px; position: absolute; top: -50px; left: 0;" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
+              <img src="../../../assets/images/main/banner2.png" class="w100P" style="position: absolute;" />
+              <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold" style="position: absolute; margin-bottom: 25px;"></div>
+            </div>
             <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl" />
             <!-- <span class="fontBold font12" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
             <span class="fontBold font12" :style="'top: ' + village.areaList[area.priority].buildingList[index].h + 'px;'" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; left: 0;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
@@ -69,7 +73,7 @@ import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue
 // import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
   props: {
-    pCampusTownInfo: {}
+    // pCampusTownInfo: {}
   },
   data () {
     return {
@@ -254,11 +258,11 @@ export default {
       }
       this.mLoadingYn = false
     })
-    if (this.pCampusTownInfo) {
-      // this.village = this.pCampusTownInfo
-      console.log('this.pCampusTownInfo')
-      console.log(this.pCampusTownInfo)
-    }
+    // if (this.pCampusTownInfo) {
+    //   // this.village = this.pCampusTownInfo
+    //   console.log('this.pCampusTownInfo')
+    //   console.log(this.pCampusTownInfo)
+    // }
     // const vilInfo = this.village.villageInfo
     // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
   },
@@ -319,6 +323,7 @@ export default {
     async openAreaInfoPop (area) {
       // eslint-disable-next-line no-debugger
       debugger
+      if (this.mBgNotClickYn) return
       const param = {
         bdArea: {
           bdAreaKey: area.bdAreaKey
@@ -338,6 +343,7 @@ export default {
     closePop () {
       this.mInfoBoxShowYn = false
       this.allClearFocus()
+      this.mBgNotClickYn = true
     },
     openInfoPop (value) {
       this.mSelectedAreaInfo = value
@@ -757,7 +763,7 @@ export default {
       // 빌딩부터 역순으로 뒤짐
       // 빌딩이 발견됨, 스타일클리어 시키고, 효과를 주고 return해버리기
       // 빌딩 클릭이 없음, areaclick을 찾음
-      if ((this.clickedBd && this.clickedBd.clickedYn && this.infoBoxShowYn)) return
+      if ((this.clickedBd && this.clickedBd.clickedYn && this.mInfoBoxShowYn)) return
       this.clickedArea = {}
       this.clickedBd = {}
       this.clickedRank = 0

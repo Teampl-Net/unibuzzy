@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 70%; height: 80%; border-radius: 10px; z-index: 99999; position: absolute; left: 15%; top: 10%;">
+  <div style="width: 80%; height: 80%; border-radius: 10px; z-index: 99999; position: absolute; left: 10%; top: 10%;">
     <div class="transWhite" style="width: 100%; height: 100%;  float: left; position: relative; border-radius: 10px; padding: 10px 20px; overflow: hidden;">
 
       <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
