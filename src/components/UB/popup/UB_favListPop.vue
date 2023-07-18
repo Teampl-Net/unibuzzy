@@ -9,7 +9,7 @@
   }
   </i18n>
   <template>
-      <div class="transWhite" style="border-radius: 10px; width: 70%; height: 80%; position: absolute; top: 10%; left:15%; z-index: 9999; padding: 10px 20px; padding-bottom: 0;float: left;">
+      <div class="transWhite" style="border-radius: 10px; width: 80%; height: 80%; position: absolute; top: 10%; left:10%; z-index: 9999; padding: 10px 20px; padding-bottom: 0;float: left;">
         <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
           <div style="display: flex; align-items: center; width: calc(100% - 25px);">
             <img style="width: 20px; margin-right: 5px;" src="@/assets/images/common/likeIcon.svg" alt="">

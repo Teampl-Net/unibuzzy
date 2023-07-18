@@ -1,5 +1,5 @@
 <template>
-  <div class="w100P h100P" style="padding-top: 50px;">
+  <div class="w100P h100P" style="padding-top: 50px; padding-bottom: 60px;">
     <div style="width: 100%; height: 100%;  float: left; background: #fff; position: relative;">
 
       <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
