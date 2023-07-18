@@ -381,9 +381,6 @@ export default {
     async getMainBoard () {
       // eslint-disable-next-line no-debugger
       debugger
-      if (this.GE_USER.unknownYn) {
-        this.GE_USER.userKey = 225
-      }
       console.log('getMainBoard')
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')

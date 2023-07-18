@@ -217,7 +217,7 @@ if (type === 'UB') {
       path: '/policies',
       name: 'policies',
       props: true,
-      component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_policies.vue')
+      component: () => import(/* webpackChunkName: "about" */ '../pages/UB/intro/UB_agreePolicies.vue')
     },
     {
       path: '/savePhone',

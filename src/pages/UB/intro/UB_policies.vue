@@ -1,7 +1,7 @@
 <template>
   <div id="commonWrap" class="policyPageWrap" ref="commonWrap">
       <popHeader :headerTitle="headerTitle" :pClosePop="closeXPop" class="policyHeader"/>
-      <div id="Uarea" v-if="this.mPolicyType === 'privacy'" class="policy-01">
+      <div id="Uarea" v-if="this.mPolicyType === 'termsOfUse'" class="policy-01">
           <p class="font16 titleText mbottom-05">Effective Date: 2023-07-11</p>
           <p class="mbottom-1 font15 mleft-1">
             Welcome to uniBuzzy! By using uniBuzzy, you agree to be bound by these Terms of Use ("Terms"). Please read them carefully.<br><br>
@@ -49,7 +49,7 @@
             Thank you for using uniBuzzy!
           </p>
     </div>
-    <div id="Parea" v-else-if="mPolicyType === 'termsOfUse'" class="policy-02">
+    <div id="Parea" v-else-if="mPolicyType === 'privacy'" class="policy-02">
       <p class="font16 titleText mbottom-05">Privacy Policy Statement for uniBuzzy</p>
       <p class="mbottom-1 font16">At uniBuzzy, we prioritize the privacy and security of our users' personal information. This Privacy Policy explains how we collect, use, and protect the individual data provided through our app. By using uniBuzzy, you agree to the terms outlined in this policy.<br><br></p>
 

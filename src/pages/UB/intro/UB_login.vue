@@ -2,11 +2,13 @@
   {
     "ko": {
       "LOG_BTN_GOOGLE": "구글 로그인",
-      "LOG_BTN_APPLE": "애플 로그인"
+      "LOG_BTN_APPLE": "애플 로그인",
+      "LOG_BTN_NO_LOGIN": "그냥 둘러보기"
     },
     "en": {
       "LOG_BTN_GOOGLE": "Google Login",
-      "LOG_BTN_APPLE": "Apple Login"
+      "LOG_BTN_APPLE": "Apple Login",
+      "LOG_BTN_NO_LOGIN": "Just Look Around"
     }
   }
   </i18n>
@@ -16,16 +18,14 @@
       <video autoplay muted loop :style="showStartBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
         <source :src="introVideo" type="video/mp4" >
       </video>
-      <div v-show="showStartBtnYn" class="fade-in font20 fontBold textLeft" style="position: absolute; text-shadow: 2px 2px 3px black; color: white; top: 25%; left: 5%;">Hi! Welcome to uniBuzzy!<br>Wanna enjoy campus life 200% better?</div>
+      <div v-show="showStartBtnYn" class="fade-in font18 fontBold textLeft" style="position: absolute; text-shadow: 2px 2px 3px black; color: white; top: 25%; left: 5%;">Everything for campus life, uniBuzzy.<br>Wanna enjoy campus life 200% better?</div>
     </div>
     <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="Are you sure to quit uniBuzzy??" />
-      <div v-if="!pPartnerLoginYn" class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; position: absolute; top: calc(35%); margin-bottom: 80px;">
+    <transition name="showUp" style="animation-duration: 2s;">
+      <div class="py-3 px-4" v-show="showStartBtnYn" style="box-sizing: border-box; width: 100%; height: 60px; position: absolute; top: calc(35%); margin-bottom: 80px;">
         <img src="../../../assets/images/intro/login/uniB_logo.png" style="width: 40%;" class="" >
       </div>
-      <div v-else class="py-3 px-4" style="box-sizing: border-box; width: 100%; min-height: 50px; position: absolute; top: calc(50% - 30px); ">
-        <img src="../../../assets/images/intro/login/uniB_logo.png" style="width: 40%;" class="" >
-        <p class="textCenter fl fontBold font16 " v-html="pPartnerLoginText" style="width: calc(100%); margin-top: 10px; margin-bottom: 10px; color: #D6D6E7;"></p>
-      </div>
+    </transition>
     <transition name="showUp" style="animation-duration: 2s;">
       <div class="" style="width: 80%; position: absolute; left: 10%; bottom: 10%; display: flex; flex-direction: column; height: fit-content;" v-show="showStartBtnYn">
         <div class="loginBtn font20" @click="GoogleLoginBtn">
@@ -44,6 +44,10 @@
             {{ $t('LOG_BTN_APPLE') }}
           </div>
         </div>
+        <!-- <div class="loginBtn font18" style="background: #aaa!important;" @click="justLookAround">
+          <img src="../../../assets/images/footer/icon_search_fillin.svg">
+          {{ $t('LOG_BTN_NO_LOGIN') }}
+        </div> -->
       </div>
     </transition>
       <div v-if="pPartnerLoginYn" class="fl" style="width: 100%; height: 80px; display: flex; margin-top: 50px;align-items: center; justify-content: center;">
@@ -85,7 +89,7 @@ export default {
   mounted () {
     setTimeout(() => {
       this.showStartBtnYn = true
-    }, 1000)
+    }, 500)
   },
   props: {
     pPartnerLoginYn: {
@@ -243,11 +247,9 @@ export default {
 
 <style scoped>
 p{margin-bottom: 0;}
-.loginBtn{width: 100%; position: relative; cursor: pointer; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px;}
-.loginBtn img {width: 1.5rem; margin-bottom: 5px; margin-right: 20px}
-.loginContentsWrap{height: 100vh; display: flex; flex-direction: column; justify-content: space-around; }
-
-.inquiryBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; background-color: #acade0; margin-top: 20px; padding: 10px; box-sizing: border-box; border-radius: 10px; }
+.loginBtn{width: 100%; font-weight: bold; position: relative; cursor: pointer; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px;}
+.loginBtn img {width: 1.5rem; margin-bottom: 5px; margin-right: 10px}
+.loginContentsWrap{height: 100vh; background: #f1f1f1; display: flex; flex-direction: column; justify-content: space-around; }
 @media screen and (max-width: 300px) {
   .loginBtn, .inquiryBtn {
     height: 40px;

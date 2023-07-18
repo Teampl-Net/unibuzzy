@@ -414,7 +414,9 @@ export default {
       var teamList = this.GE_MAIN_CHAN_LIST
       for (var i = 0; i < this.mChannelList.length; i++) {
         index = teamList.findIndex((item) => item.teamKey === this.mChannelList[i].teamKey)
-        if (index !== -1) {
+        let showChanYn = true
+        if (this.mChannelList[i].teamKey === 774 || this.mChannelList[i].teamKey === 773) showChanYn = false
+        if (showChanYn && index !== -1) {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.mChannelList[i] = teamList[index]
         }

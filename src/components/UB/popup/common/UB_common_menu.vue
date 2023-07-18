@@ -46,8 +46,7 @@
 
 <script>
 import unknownLoginPop from '../../../pageComponents/channel/D_unknownLoginPop.vue'
-// import logoutPop from '../../Tal_logoutPop.vue'
-import logoutPop from '../../../pageComponents/myPage/Tal_logoutPop.vue'
+import logoutPop from '../UB_logoutPop.vue'
 export default {
   data () {
     return {
