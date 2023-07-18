@@ -149,7 +149,7 @@ export default {
   created () {
 
     localStorage.setItem('notiReloadPage', 'none')
-    this.$emit('changePageHeader', '설정')
+    this.$emit('changePageHeader', 'Settings')
     // .stringify(localStorage.getItem('appInfo')))
     if (this.isMobile) {
         this.appInfo = JSON.parse(localStorage.getItem('appInfo'))

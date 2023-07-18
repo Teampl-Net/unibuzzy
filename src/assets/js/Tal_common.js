@@ -512,19 +512,19 @@ export const commonMethods = {
         followerText = this.$t('COMM_CHANN_OWNER')
       } else {
         if (data.memberNameMtext || (data.managerKey && data.managerKey > 0)) {
-          followerText = '관리자('
+          followerText = `${this.$t('COMM_CHAN_MANAGER')}(`
           if (data.mngTeamYn === true || data.mngTeamYn === 1) {
-            followerText = followerText + '채널'
+            followerText = followerText + this.$t('COMMON_NAME_CHANNEL')
             if ((data.mngMemberYn === true || data.mngMemberYn === 1) || (data.mngAlimYn === true || data.mngAlimYn === 1)) {
               followerText += '/'
             }
           } if (data.mngMemberYn === true || data.mngMemberYn === 1) {
-            followerText = followerText + '멤버'
+            followerText = followerText + this.$t('COMMON_NAME_MEMBER')
             if ((data.mngAlimYn === true || data.mngAlimYn === 1)) {
               followerText += '/'
             }
           } if (data.mngAlimYn === true || data.mngAlimYn === 1) {
-            followerText = followerText + '알림'
+            followerText = followerText + this.$t('COMMON_TAB_NOTI')
           }
           followerText += ')'
         }
