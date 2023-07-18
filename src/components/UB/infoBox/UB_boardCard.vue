@@ -13,7 +13,7 @@
     <div class="fl mleft-1" style="width: calc(100% - 65px - 1rem);">
       <div class="w100P fl font16 fontBold textLeft grayBlack ">
         <p class="fl">
-          <img src="../../../assets//images/board/icon_edit.svg" alt="">{{ $changeText(boardElement.cabinetNameMtext) }}</p>
+          <img src="../../../assets//images/board/icon_edit.svg" alt="" style="margin-right: 5px;">{{ $changeText(boardElement.cabinetNameMtext) }}</p>
         <p class="fr font13 lightGray" style="font-weight: normal;">{{ $t("SEAR_TAB_ACT_CAHNNEL") + " " +$changeDateFormat(boardElement.cabCreDate) }}</p></div>
       <p class="w100P fl font14 textLeft grayBlack">{{ $changeText(boardElement.memoMtext) }}</p>
     </div>
@@ -26,6 +26,8 @@ export default {
     boardElement: {}
   },
   created () {
+    console.log(12341234)
+    console.log(this.boardElement)
   },
   methods: {
     goBaordMain (boardElement) {
