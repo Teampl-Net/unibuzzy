@@ -1,15 +1,15 @@
 <template>
   <div class="commonPopHeaderWrap" style="background:transparent !important;">
     <div v-on:click="goMain" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
-      <img v-if="bgblack === true " src="../../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" >
+      <img v-if="mBlackYn === true && targetType !== 'boardMain'" src="../../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" >
       <img v-else-if="pNoAuthYn === true " src="../../../assets/images/footer/icon_home_fillin.svg"  v-on:click="goMain">
       <img v-else src="../../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
     </div>
-    <span class="popHeaderTitleSpan font20" :style="bgblack === true ? 'color:white;':'' ">
+    <span @click="test" class="popHeaderTitleSpan font20" :style="bgblack === true ? 'color:white;':'' ">
       {{this.$changeText(headerTitle)}}
     </span>
     <div v-if="targetType === 'chanDetail' && chanAlimListTeamKey" class="chanMenubar cursorP" @click="openMenu">
-      <img v-if="bgblack === true " src="../../../assets/images/common/icon_menu_white.png" style="width:1.8rem;"/>
+      <img v-if="mBlackYn === true " src="../../../assets/images/common/icon_menu_white.png" style="width:1.8rem;"/>
       <img v-else src="../../../assets/images/common/icon_menu.png" style="width:1.8rem;"/>
     </div>
   </div>
@@ -21,7 +21,29 @@ export default {
   props: {
     chanAlimListTeamKey: {},
     bgblack: { type: Boolean, default: false },
-    targetType: {}
+    targetType: {},
+    pChanInfo: Object
+  },
+  data () {
+    return {
+      mBlackYn: false
+    }
+  },
+  watch: {
+    pChanInfo: {
+      immediate: true,
+      handler (val) {
+        if (!val) return
+        if (val.initData && val.initData.team) {
+          if (val.initData.team.blackYn === 1) {
+            this.mBlackYn = true
+          } else {
+            this.mBlackYn = false
+          }
+        }
+      },
+      deep: true
+    }
   },
   methods: {
     hasHistory () {
