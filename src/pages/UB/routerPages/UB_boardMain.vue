@@ -382,6 +382,10 @@ export default {
         }
       })
       this.$emit('closeLoading')
+      this.$emit('enterCloudLoading', false)
+      setTimeout(() => {
+        this.$emit('showCloudLoading', false)
+      }, 1500)
     },
     memoPopNo () {
       this.memoShowYn = false

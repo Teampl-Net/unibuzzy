@@ -87,8 +87,6 @@ export default {
     this.mLoadingYn = false
   },
   async created () {
-    console.log(123412341234)
-    console.log(this.initData)
     this.$emit('changePageHeader', this.$t('COMMON_NAME_CHANNEL'))
     if (this.propData) {
       if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
@@ -128,6 +126,11 @@ export default {
     this.introChanPageTab()
     this.mScrolledYn = false
     this.findPaddingTopChan()
+
+    this.$emit('enterCloudLoading', false)
+    setTimeout(() => {
+      this.$emit('showCloudLoading', false)
+    }, 1500)
   },
   methods: {
     goChannelMain (param) {

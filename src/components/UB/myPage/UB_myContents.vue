@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       mMoreLink: 'push',
-      mActiveTabList: [{ display: 'My', name: 'M' }, { display: 'Like', name: 'L' }],
+      mActiveTabList: [{ display: 'My', name: 'M' }, { display: 'Liked', name: 'L' }],
       mViewTab: 'M',
       mCurrentTabName: this.$t('COMMON_TAB_ALL'),
       mContentsList: []

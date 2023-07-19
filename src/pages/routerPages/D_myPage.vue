@@ -108,6 +108,10 @@ export default {
 
     this.$emit('changePageHeader', this.$t('COMMON_NAME_MY_PAGE'))
     this.mLoadingYn = false
+    this.$emit('enterCloudLoading', false)
+    setTimeout(() => {
+      this.$emit('showCloudLoading', false)
+    }, 1500)
   },
   computed: {
     GE_USER () {

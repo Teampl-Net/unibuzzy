@@ -10,11 +10,11 @@
     <chanHeader v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === ''" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo.targetKey" @closeXPop="closeXPop" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" @openPop="openPop" class="chanDetailPopHeader" />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mPopType === 'writeContents'" @click="mPopType = ''"></div>
     <writeContents v-if="mPopType === 'writeContents'" @closeXPop="closeWritePop" :params="mPopParams" :propData="mPopParams" :contentType="mPopParams.contentsJobkindId" />
-    <div v-if="mPopType === 'logList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: transparent;"></div>
+    <div v-if="mPopType === 'logList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 10000; background: transparent;"></div>
     <transition name="showUp">
       <notiHistoryList @closeXPop="closeWritePop" @openPage="openPage" v-if="mPopType === 'logList'" />
     </transition>
-    <div v-if="mPopType === 'favList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: transparent;"></div>
+    <div v-if="mPopType === 'favList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 10000; background: transparent;"></div>
     <transition name="showUp">
       <favListPop v-if="mPopType === 'favList'" @openPage="openPage" :pFTeamList="mFTeamList" @closeXPop="closeWritePop" />
     </transition>
@@ -501,6 +501,13 @@ export default {
       this.mTargetType = ''
       this.mGPopShowYn = false
     },
+    async goBoardDetail (params) {
+      this.mChanInfo = params
+      this.mChanInfo.chanYn = params.chanYn
+      this.mTargetType = 'boardMain'
+      // await this.getCabinetDetail(params)
+      this.$router.push(`/board/${params.teamKey}/${params.targetKey}`)
+    },
     async openPage (params) {
       if (params.targetType === 'chanDetail') {
         await this.goChanDetail(params)
@@ -515,13 +522,9 @@ export default {
       } else if (params.targetType === 'myPage') {
         this.goMyPage(params)
       } else if (params.targetType === 'boardMain') {
-        this.mChanInfo = params
-        this.mChanInfo.chanYn = params.chanYn
-        this.mTargetType = 'boardMain'
-        // await this.getCabinetDetail(params)
-        this.$router.push(`/board/${params.teamKey}/${params.targetKey}`)
-        await new Promise((resolve) => setTimeout(resolve, 2000))
-        this.mCloudLoadingShowYn = false
+        await new Promise((resolve) => setTimeout(resolve, 1500))
+        this.goBoardDetail(params)
+        return
       } else if (params.targetType === 'writeContents') {
         this.openPop(params)
       } else if (params.targetType === 'myChanMenuEdit') {
@@ -563,15 +566,17 @@ export default {
       return resultList
     },
     async changeRouterPath (page) {
+      if (page !== 'termsOfUse' && page !== 'privacy' && this.$route.path === '/') {
+        this.showCloudLoading(true, true)
+        this.enterCloudLoading(true)
+      }
       var pageData = {}
       this.mMenuShowYn = false
       if (page === 'termsOfUse' || page === 'privacy') {
         // this.$route.push('/policy')
         this.$router.push(`/policy/${page}`)
         return
-      } else if (page === 'main') {
-        this.showCloudLoading()
-      } else if (page !== 'chanList' && page !== 'myPage') {
+      } else if (page !== 'chanList' && page !== 'myPage' && page !== 'main') {
         pageData = await this.$getRouterViewData(page)
       } else if (page === 'myPage') {
         // eslint-disable-next-line no-debugger
@@ -586,32 +591,26 @@ export default {
         param.jobkindId = 'BOAR'
         // param.allYn = true
 
-        var nonLoading = true
-        var result = await this.$getContentsList(param, nonLoading)
+        var result = await this.$getContentsList(param, false)
 
         var resultList = result
 
         this.mChanInfo = {
+          targetType: 'myPage',
           mContentsList: resultList
         }
       } else if (page === 'chanList') {
         pageData = await this.getChannelList(10, 0, false)
       }
+      if (page !== 'main' && page !== 'termsOfUse' && page !== 'privacy') {
+        await new Promise((resolve) => setTimeout(resolve, 1500))
+      }
       // eslint-disable-next-line no-debugger
       debugger
-      if (page === 'main') {
-        setTimeout(() => {
-          this.sendInitData = pageData
-          this.$router.replace({
-            name: page
-          })
-        }, 2000)
-      } else {
-        this.sendInitData = pageData
-        this.$router.replace({
-          name: page
-        })
-      }
+      this.sendInitData = pageData
+      this.$router.replace({
+        name: page
+      })
     },
     changeNetStatePop () {
       if (this.mNetReturnPopShowYn === true) return

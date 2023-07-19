@@ -74,7 +74,7 @@
         </div>
 
         <!-- 채널 추천 영역 -->
-        <div v-if="$appType !== 'UB'" class="w100P fl" style="height: calc(100% - 280px); background: white; ">
+        <div class="w100P fl" style="height: calc(100% - 280px); background: white; ">
           <div class="fl w100P pSide-1" style="height: 30px; float: left;">
             <img src="../../assets/images/main/icon_3d_star.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
             <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">{{ $t("SEAR_MSG_CHAN_RECOMMEND") }}</p>
@@ -654,6 +654,10 @@ export default {
       // this.getCateItemList()
       // this.changeRecommendTab(this.mActiveRecommend)
       this.getSearchHistory()
+      this.$emit('enterCloudLoading', false)
+      setTimeout(() => {
+        this.$emit('showCloudLoading', false)
+      }, 1500)
     },
     getSearchHistory () {
       var localKeyWordOBJ = JSON.parse(localStorage.getItem('searchKeyWordHistoryList'))
