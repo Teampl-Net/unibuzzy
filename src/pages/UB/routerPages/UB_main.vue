@@ -277,17 +277,15 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       this.$emit('showCloudLoading', true)
-      const intervalHanlder = setInterval(() => {
+      const intervalHandler = setInterval(() => {
         if (this.$refs.bdRef) {
-          console.log(12341234)
-          console.log(this.$refs.bdRef)
           this.$emit('enterCloudLoading', false)
           setTimeout(() => {
             this.$emit('showCloudLoading', false)
-          }, 2500)
-          clearInterval(intervalHanlder)
+          }, 1500)
+          clearInterval(intervalHandler)
         }
-      }, 300)
+      }, 100)
     },
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
       // alert(offsetInput)

@@ -26,7 +26,7 @@
     <policies :pPolicyType="mPolicyType" v-if="mPolicyType === 'termsOfUse' || mPolicyType === 'privacy'" :pClosePolicyPop="closePolicyPop" />
     <editMyChanMenu style="z-index: 999999;" v-if="mPopType === 'myChanMenuEdit'" :pClosePop="closeWritePop" :propData="mPopParams" />
     <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
-    <gCloudLoading v-if="mCloudLoadingShowYn" :pEnterCloudsYn="mEnterCloudsYn" style="position: absolute; top: 0; left: 0" />
+    <gCloudLoading v-if="mCloudLoadingShowYn" :pEnterCloudsYn="mEnterCloudsYn" style="position: absolute; top: 0; left: 0" :pCloudLeftClass="mLeftCloudClass" :pCloudRightClass="mRightCloudClass"  />
     <div :class="{ myPageBgColor : mMyPageBgColorYn}"  class="" style="height: 100%; overflow: hidden; width:100%; float: left;">
       <router-view :key="$route.fullPath" @setMainInfo="setMainInfo" @enterCloudLoading="enterCloudLoading" @showCloudLoading=showCloudLoading @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
@@ -76,7 +76,9 @@ export default {
       mPopType: '',
       mBottomYn: Boolean,
       mFTeamList: [],
-      mAlimCount: 0
+      mAlimCount: 0,
+      mLeftCloudClass: '',
+      mRightCloudClass: ''
     }
   },
   created () {
@@ -331,7 +333,13 @@ export default {
       this.mCloudLoadingShowYn = showYn
     },
     enterCloudLoading (enterYn) {
-      this.mEnterCloudsYn = enterYn
+      if (enterYn) {
+        this.mLeftCloudClass = 'cloud-left-enter'
+        this.mRightCloudClass = 'cloud-right-enter'
+      } else {
+        this.mLeftCloudClass = 'cloud-left-leave'
+        this.mRightCloudClass = 'cloud-right-leave'
+      }
     },
     async goOpenPage (param) {
       if (param.targetType === 'chanDetail' || param.targetType === 'boardMain') {
@@ -402,6 +410,7 @@ export default {
         if (result.data.contentsListPage && result.data.contentsListPage.content && result.data.contentsListPage.content.length > 0) {
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
         }
+
         initData.contentsList = result.data.contentsListPage
       } catch (error) {
         this.mCloudLoadingShowYn = false
@@ -410,6 +419,16 @@ export default {
       }
       chanMainParam.initData = initData
       this.mChanInfo = chanMainParam
+
+      var paramMap2 = new Map()
+      paramMap2.set('teamKey', teamKey)
+      paramMap2.set('currentTeamKey', teamKey)
+      paramMap2.set('sysCabinetCode', 'BOAR')
+      paramMap2.set('userKey', this.GE_USER.userKey)
+
+      const result2 = await this.$getTeamMenuList(paramMap, true)
+      this.mChanInfo.boardList = result2
+
       if (detailValue.areaInfo) {
         this.mChanInfo.areaInfo = detailValue.areaInfo
       }
@@ -423,6 +442,7 @@ export default {
       //   encodedTeamKey = detailValue.creTeamKey
       // }
       this.$router.push(`/chan/${chanMainParam.teamKey}`)
+      this.enterCloudLoading(false)
       // this.showCloudLoading(false, 1750)
     },
     async openPop (params) {
