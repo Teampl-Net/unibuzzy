@@ -31,7 +31,8 @@
 <template>
 <!--  -->
   <template v-if="mSearchModeYn === false">
-    <div class="w100P h100P" :style="$route.path === '/search'? `padding-top: ${(this.$STATUS_HEIGHT + 50)}px;`:''" style=" overflow:auto; padding-bottom: 40px;">
+    <div class="w100P h100P" :style="$route.path === '/search' && $appType !== 'UB' ? `padding-top: ${(this.$STATUS_HEIGHT + 50)}px;`:'padding-top: 50px;'" style=" overflow:auto; padding-bottom: 60px;">
+    <!-- <div class="w100P h100P" style=" overflow:auto; padding-bottom: 60px; padding-top: 50px;"> -->
       <div class="searchBodyTop pSide-1" style="background: white">
         <div class="fl w100P" style="height: 30px; float: left;">
           <img src="../../assets/images/main/icon_3d_search.png" style="float: left; margin: 0 8px 8px 8px;" class="img-w23" alt="">
@@ -73,15 +74,15 @@
       </div>
 
       <!-- 채널 추천 영역 -->
-      <div class="wh100P fl " style="background: white; ">
+      <div class="w100P fl" style="height: calc(100% - 280px); background: white; ">
         <div class="fl w100P pSide-1" style="height: 30px; float: left;">
           <img src="../../assets/images/main/icon_3d_star.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
           <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">{{ $t("SEAR_MSG_CHAN_RECOMMEND") }}</p>
         </div>
-        <div class="w100P fl pSide-1" >
+        <div class="w100P fl pSide-1" style="height: 40px;">
           <gActiveBar :testYn='true' ref="activeBar" :tabList="this.mActiveTabRecommendList" class="fl" @changeTab="changeRecommendTab" />
         </div>
-        <div class="w100P fl" style="overflow: auto; height: calc(100% - 90px);">
+        <div class="w100P fl" style="overflow: auto; height: calc(100% - 70px);">
           <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
             <channelCard class=" moveBox" :chanElement="chanEle" @openPop="openPop" />
             <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="recommendLoadMore" class="fl wich" />
@@ -1131,9 +1132,9 @@ export default {
 <style>
 .searchBodyTop {
   padding-top: 1.5rem;
-  padding-bottom: 2rem;
   float: left;
   width:100%;
+  height: 280px;
 }
 .searchPageInputAera{
   background: #e4e4e463;

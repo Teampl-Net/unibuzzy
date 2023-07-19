@@ -27,7 +27,7 @@
     <editMyChanMenu style="z-index: 999999;" v-if="mPopType === 'myChanMenuEdit'" :pClosePop="closeWritePop" :propData="mPopParams" />
     <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
     <gCloudLoading v-if="mCloudLoadingShowYn" style="position: absolute; top: 0; left: 0" />
-    <div :class="{ myPageBgColor : mMyPageBgColorYn }"  class="" :style="'height: calc(100%);'" style="overflow: hidden; width:100%; float: left;">
+    <div :class="{ myPageBgColor : mMyPageBgColorYn}"  class="" style="height: 100%; overflow: hidden; width:100%; float: left;">
       <router-view :key="$route.fullPath" @setMainInfo="setMainInfo" @showCloudLoading=showCloudLoading @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
     <gFooter v-if="!$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999;" />
@@ -772,5 +772,5 @@ export default {
   left: 0;
 }
 .myPageBgColor {background-color: #9FDDEE;}
-
+.myPagePadding {padding-bottom: 0!important; padding-top: 0!important}
 </style>
