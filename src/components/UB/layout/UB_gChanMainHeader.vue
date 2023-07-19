@@ -28,8 +28,8 @@ export default {
       return window.history.length > 1
     },
     async goMain () {
-      this.$emit('showCloudLoading', true)
-      await new Promise((resolve) => setTimeout(resolve, 2500))
+      this.$emit('enterCloudLoading', true)
+      this.$emit('showCloudLoading', true, true)
       if (this.hasHistory()) {
         this.$router.go(-1)
       } else {

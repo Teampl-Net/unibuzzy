@@ -276,7 +276,7 @@ export default {
     findAllDrawn () {
       // eslint-disable-next-line no-debugger
       debugger
-      this.$emit('showCloudLoading', true)
+      this.$emit('showCloudLoading', true, false)
       const intervalHandler = setInterval(() => {
         if (this.$refs.bdRef) {
           console.log(12341234)

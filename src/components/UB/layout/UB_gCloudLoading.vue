@@ -1,7 +1,7 @@
 <template>
   <div id="cloudLoading" class="cloud-container">
-    <div :class="pCloudLeftClass" class="cloud cloud-left" style="background-image: url('/resource/common/trans_cloudLeft.png')!important; background-size: cover; background-repeat: no-repeat; left: 0px; top: 50%;"></div>
-    <div :class="pCloudRightClass" class="cloud cloud-right" style="background-image: url('/resource/common/trans_cloudRight.png')!important; background-size: cover; background-repeat: no-repeat; right: 0px; top: 50%;"></div>
+    <div :class="pCloudLeftClass" :style="pEnterCloudsYn? 'left: -500px; top: 0;':'left: 0; top: 50%;'" class="cloud cloud-left" style="background-image: url('/resource/common/trans_cloudLeft.png')!important; background-size: cover; background-repeat: no-repeat;"></div>
+    <div :class="pCloudRightClass" :style="pEnterCloudsYn? 'right: -500px; top: 80%;':'right: 0; top: 50%;'" class="cloud cloud-right" style="background-image: url('/resource/common/trans_cloudRight.png')!important; background-size: cover; background-repeat: no-repeat;"></div>
   </div>
 </template>
 <script>

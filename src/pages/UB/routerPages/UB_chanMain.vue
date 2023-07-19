@@ -63,7 +63,7 @@
     </div>
 
     <div class="channelItemBox" ref="channelItemBox" style="background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
-      <pushList :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" @goScroll="mChanMainScrollWrap.style.overflow = 'scroll'" :initData="this.mChanInfo.initData.contentsList" @cMemoEditYn="changeMemoEditYn"
+      <pushList :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" @goScroll="mChanMainScrollWrap.style.overflow = 'scroll'" :pBoardList="mChanInfo.boardList" :initData="this.mChanInfo.initData.contentsList" @cMemoEditYn="changeMemoEditYn"
         :targetContents="{ targetContentsKey: mChanInfo.targetContentsKey, jobkindId: mChanInfo.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.mChanInfo.targetType"
         ref="ChanAlimListPushListCompo" :alimListYn="true" @openPage="openPage" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements'
         @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @openPop="openWriteContentsPop" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit' />
@@ -143,7 +143,8 @@ export default {
       mUserDetailPopShowYn: false,
       mPopParam: {},
       selectMemberObj: {},
-      mMemberTypeList: []
+      mMemberTypeList: [],
+      mBoardContentsList: []
       // errorPopYn: false
     }
   },
@@ -168,10 +169,6 @@ export default {
   },
   created () {
     this.getMemberTypeList()
-    // eslint-disable-next-line no-debugger
-    debugger
-    // this.$emit('openLoading')
-    // this.$showAxiosLoading(true)
     if (this.propParams && this.propParams.targetType === 'chanDetail' && this.propParams.initData) {
       this.mChanInfo = this.propParams
       if (this.mChanInfo.initData.team.D_CHAN_AUTH && this.mChanInfo.initData.team.D_CHAN_AUTH.followYn) {
@@ -216,7 +213,7 @@ export default {
   },
   methods: {
     test () {
-      console.log(this.CHANNEL_DETAIL)
+      console.log(this.mChanInfo)
     },
     async ImgClick () {
       try {
@@ -376,6 +373,16 @@ export default {
       obj.channelYn = true
       this.$emit('openPage', obj)
     },
+    async getTeamMenuList (teamKey) {
+      var paramMap = new Map()
+      paramMap.set('teamKey', teamKey)
+      paramMap.set('currentTeamKey', teamKey)
+      paramMap.set('sysCabinetCode', 'BOAR')
+      paramMap.set('userKey', this.GE_USER.userKey)
+
+      var result = await this.$getTeamMenuList(paramMap, true)
+      this.mChanInfo.boardList = result
+    },
     async getChanMain () {
       // eslint-disable-next-line no-debugger
       debugger
@@ -415,6 +422,7 @@ export default {
       }
       chanMainParam.initData = initData
       this.mChanInfo = chanMainParam
+      await this.getTeamMenuList(encodedKey)
       this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
       console.log('this.mChanInfothis.mChanInfothis.mChanInfo', this.mChanInfo)
     },
@@ -687,6 +695,10 @@ export default {
           this.selectMemberObj = this.mMemberTypeList[0]
         }
       }
+      this.$emit('enterCloudLoading', false)
+      setTimeout(() => {
+        this.$emit('showCloudLoading', false)
+      }, 1500)
     },
     async changeFollowYn () {
       this.mSaveFollowerType = 'follow'
