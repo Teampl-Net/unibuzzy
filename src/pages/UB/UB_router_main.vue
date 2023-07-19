@@ -28,7 +28,7 @@
     <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
     <gCloudLoading v-if="mCloudLoadingShowYn" style="position: absolute; top: 0; left: 0" />
     <div :class="{ myPageBgColor : mMyPageBgColorYn }"  class="" :style="'height: calc(100%);'" style="overflow: hidden; width:100%; float: left;">
-      <router-view :key="$route.fullPath" @setMainInfo="setMainInfo" @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
+      <router-view :key="$route.fullPath" @setMainInfo="setMainInfo" @showCloudLoading=showCloudLoading @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
     <gFooter v-if="!$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999;" />
     <!-- <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" /> -->
@@ -82,10 +82,9 @@ export default {
     if (this.GE_USER.unknownYn) {
       this.$router.push({ name: 'policies' })
     } else {
-      // this.showCloudLoading(true)
-      if (this.$router.currentRoute._rawValue.path === '/') {
-        this.showCloudLoading()
-      }
+      // if (this.$router.currentRoute._rawValue.path === '/') {
+      this.showCloudLoading()
+      // }
     }
     // setTimeout(() => {
     //   this.$emit('closeCloudLoading')

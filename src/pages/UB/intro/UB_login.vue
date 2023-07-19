@@ -18,7 +18,10 @@
       <video autoplay muted loop :style="showStartBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
         <source :src="introVideo" type="video/mp4" >
       </video>
-      <div v-show="showStartBtnYn" class="fade-in font18 fontBold textLeft" style="position: absolute; text-shadow: 2px 2px 3px black; color: white; top: 25%; left: 5%;">Everything for campus life, uniBuzzy.<br>Wanna enjoy campus life 200% better?</div>
+      <div v-show="showStartBtnYn" class="fade-in fontBold textLeft" style="width: 90%; position: absolute; text-shadow: 2px 2px 3px black; color: white; top: 20%; left: 5%;">
+        <p class="w100P fl textCenter font18">Everything for campus life, </p>
+        <p class="w100P fl fontBold textCenter" style="font-size: 50px;">uniBuzzy</p>
+      </div>
     </div>
     <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="Are you sure to quit uniBuzzy??" />
     <transition name="showUp" style="animation-duration: 2s;">
@@ -27,7 +30,7 @@
       </div>
     </transition>
     <transition name="showUp" style="animation-duration: 2s;">
-      <div class="" style="width: 80%; position: absolute; left: 10%; bottom: 10%; display: flex; flex-direction: column; height: fit-content;" v-show="showStartBtnYn">
+      <div class="" style="width: 80%; position: absolute; left: 10%; bottom: 20%; display: flex; flex-direction: column; height: fit-content;" v-show="showStartBtnYn">
         <div class="loginBtn font20" @click="GoogleLoginBtn">
           <img src="../../../assets/images/intro/login/login_google.png">
           {{ $t('LOG_BTN_GOOGLE') }}
@@ -67,7 +70,6 @@ import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonCon
 import AuthService from '../../../assets/js/login/Tal.authService'
 import { firebaseInitialize } from '../../../assets/js/login/UB.firebase'
 import { onMessage } from '../../../assets/js/webviewInterface'
-
 import { saveUser } from '../../../../public/commonAssets/Tal_axiosFunction.js'
 import { setUserInfo } from '../../../assets/js/login/Tal_userSetting'
 
@@ -247,8 +249,8 @@ export default {
 
 <style scoped>
 p{margin-bottom: 0;}
-.loginBtn{width: 100%; font-weight: bold; position: relative; cursor: pointer; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px;}
-.loginBtn img {width: 1.5rem; margin-bottom: 5px; margin-right: 10px}
+.loginBtn{width: 100%; font-weight: bold; position: relative; cursor: pointer; height: 50px; margin-bottom: 15px; background-color: #f1f1f1; padding: 10px; box-sizing: border-box; border-radius: 10px;}
+.loginBtn img {width: 1.5rem; margin-bottom: 5px; margin-right: 10px; filter: brightness(0%);}
 .loginContentsWrap{height: 100vh; background: #f1f1f1; display: flex; flex-direction: column; justify-content: space-around; }
 @media screen and (max-width: 300px) {
   .loginBtn, .inquiryBtn {

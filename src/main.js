@@ -26,7 +26,6 @@ import commonSharejs from './assets/js/Tal_commonShare'
 import gMainTab from './components/popup/memberInfo/memberUnit/D_commonMainTabCompo.vue'
 import webViewBridge from './assets/js/webViewBridge'
 import gFileBox from './components/unit/D_fileBox.vue'
-
 import commonList from './components/list/D_commonList.vue'
 import gChannelList from './components/list/D_commonChanList.vue'
 import gInput from './components/common/UB_commonInput.vue'
@@ -56,7 +55,6 @@ import gToolBox from './components/popup/writeContentUnit/D_commonToolBox.vue'
 import gLoadingS from './components/Tal_smallLoading.vue'
 import gAlertPop from './components/popup/Tal_commonAlertPop.vue'
 import channelCard from './components/list/D_channelCard.vue'
-import gCertiPop from './components/popup/confirmPop/D_commonCertiPop.vue'
 import gProfileImg from './components/common/D_commonProfile.vue'
 import UBConst from '@/assets/js/UB_Const'
 // const VueEasyLightbox = require('vue-easy-lightbox')
@@ -87,11 +85,12 @@ if (type === 'D') {
     import('./components/common/D_commonStickerLine.vue'),
     import('./components/popup/confirmPop/Tal_smallCommonConfirmPop.vue'),
     import('./components/popup/common/Tal_commonSelectBoardListPop.vue'),
-    import('./components/popup/memberInfo/memberUnit/D_commonSmallInput.vue')
+    import('./components/popup/memberInfo/memberUnit/D_commonSmallInput.vue'),
+    import('./components/popup/confirmPop/D_commonCertiPop.vue')
   ])
 
   app = createApp(moTheAlim).use(router).use(router).use(store)
-  importsD.then(([fullModal, TalHeader, popHeader, TalFooter, gStepProgress, gSticker, gSelectStickerPop, gStickerLine, smallPop, gSelectBoardPop, gInputSmallPop]) => {
+  importsD.then(([fullModal, TalHeader, popHeader, TalFooter, gStepProgress, gSticker, gSelectStickerPop, gStickerLine, smallPop, gSelectBoardPop, gInputSmallPop, gCertiPop]) => {
     app.component('fullModal', fullModal.default)
     app.component('TalHeader', TalHeader.default)
     app.component('popHeader', popHeader.default)
@@ -103,6 +102,7 @@ if (type === 'D') {
     app.component('smallPop', smallPop.default)
     app.component('gSelectBoardPop', gSelectBoardPop.default)
     app.component('gInputPop', gInputSmallPop.default)
+    app.component('gCertiPop', gCertiPop.default)
   })
 } else if (type === 'UB') {
   const importsUB = Promise.all([
@@ -159,7 +159,6 @@ app.component('gMemoList', gMemoList)
 app.component('myObserver', myObserver)
 app.component('gLoadingS', gLoadingS)
 app.component('gMemoPop', gMemoPop)
-app.component('gCertiPop', gCertiPop)
 app.component('gToggle', gToggle)
 app.component('iconWink', Iconwink)
 app.component('channelCard', channelCard)

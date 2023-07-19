@@ -62,8 +62,7 @@ export default {
       mEmptyYn: true,
       mLoadingYn: false,
       mAxiosQueue: [],
-      mSearchCateKey: 3,
-      gCertiPopShowYn: false
+      mSearchCateKey: 3
     }
   },
   props: {

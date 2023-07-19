@@ -64,8 +64,7 @@ export default {
       mEmptyYn: true,
       mLoadingYn: false,
       mAxiosQueue: [],
-      mSearchCateKey: 3,
-      gCertiPopShowYn: false
+      mSearchCateKey: 3
     }
   },
   props: {
@@ -79,6 +78,7 @@ export default {
   },
   updated () {
     this.mChanListScrollBox = document.getElementById('chanListWrap')
+    if (document.getElementsByClassName('chanRow')) this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
     if (this.mChanFindPopShowYn) {
       this.findPaddingTopChan()
     }
@@ -182,6 +182,35 @@ export default {
         this.mCurrentTabName = this.$t('COMMON_TAB_ALL')
       } else if (this.mViewTab === 'mychannel') {
         this.mCurrentTabName = this.$t('COMMON_TAB_MANAGING')
+      }
+    },
+    handleScroll () {
+      var currentTime = new Date()
+      var time = currentTime - this.mScrollCheckSec
+      var element = document.getElementsByClassName('chanRow')[0]
+      if (!element) return
+      var parentElement = element.parentElement
+      // this.mFirstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
+      this.mFirstContOffsetY = this.getAbsoluteTop(element)
+      if (this.mFirstContOffsetY > 0) {
+        this.mScrollDirection = 'up'
+        this.mScrolledYn = false
+      }
+      if (time / 1000 > 1 && this.$diffInt(this.mChanListScrollBox.scrollTop, this.mScrollPosition) > 150) {
+        var test = document.getElementById('chanListPageHeader')
+        this.mHeaderTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
+        this.mScrollCheckSec = currentTime
+
+        if (this.mFirstContOffsetY < 0) {
+          if (this.mChanListScrollBox.scrollTop > this.mScrollPosition) {
+            this.mScrollDirection = 'down'
+            this.mScrolledYn = true
+          } else if (this.mChanListScrollBox.scrollTop <= this.mScrollPosition) {
+            this.mScrollDirection = 'up'
+            this.mScrolledYn = false
+          }
+        }
+        this.mScrollPosition = this.mChanListScrollBox.scrollTop
       }
     },
     async refreshList () {
@@ -414,9 +443,7 @@ export default {
       var teamList = this.GE_MAIN_CHAN_LIST
       for (var i = 0; i < this.mChannelList.length; i++) {
         index = teamList.findIndex((item) => item.teamKey === this.mChannelList[i].teamKey)
-        let showChanYn = true
-        if (this.mChannelList[i].teamKey === 774 || this.mChannelList[i].teamKey === 773) showChanYn = false
-        if (showChanYn && index !== -1) {
+        if (index !== -1) {
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           this.mChannelList[i] = teamList[index]
         }
