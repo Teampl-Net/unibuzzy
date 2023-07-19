@@ -14,6 +14,10 @@ export default {
   data () {
     return {
     }
+  },
+  methods: {
+    showAnimation () {
+    }
   }
 }
 </script>

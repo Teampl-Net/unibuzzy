@@ -45,7 +45,7 @@
       <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
         <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
           <img style="position: absolute;" :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
-          <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-bottom': area.priority !== 0 && area.priority !== 1 ? 15 + village.areaList[area.priority].h + 'px' : ''}" style="background-color: rgba(245, 245, 220, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 9999;">
+          <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-bottom': area.priority !== 0 && area.priority !== 1 ? 15 + village.areaList[area.priority].h + 'px' : ''}" style="background-color: rgba(245, 245, 220, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 1000;">
             <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.bdAreaNameMtext }}</p>
           </div>
         </div>
@@ -410,7 +410,8 @@ export default {
       if (this.GE_USER.userKey) {
         paramMap.set('userKey', this.GE_USER.userKey)
       } else {
-        paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+        // paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+        if ((localStorage.getItem('sessionUser'))) paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       }
       if (this.GE_USER.soAccessToken && this.GE_USER.soAccessToken !== '') { paramMap.set('soAccessToken', this.GE_USER.soAccessToken) }
       if (this.GE_USER.fcmKey !== undefined && this.GE_USER.fcmKey !== null && this.GE_USER.fcmKey !== '') { paramMap.set('fcmKey', this.GE_USER.fcmKey) }

@@ -84,6 +84,7 @@ export default {
   created () {
     if (this.GE_USER.unknownYn) {
       this.$router.push({ name: 'policies' })
+      return
     } else {
       // if (this.$router.currentRoute._rawValue.path === '/') {
       // this.findAllDrawn()
