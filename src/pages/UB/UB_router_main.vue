@@ -19,7 +19,7 @@
       <favListPop v-if="mPopType === 'favList'" @openPage="openPage" :pFTeamList="mFTeamList" @closeXPop="closeWritePop" />
     </transition>
     <!-- <gFavList /> -->
-    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:1000;" v-if="mMenuShowYn" @click="hideMenu"></div>
+    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:10000;" v-if="mMenuShowYn" @click="hideMenu"></div>
     <transition name="show_left">
       <D_MENU transition="show_left" @hideMenu="hideMenu" @openPop="openPop" @goPage="changeRouterPath" class="D_menuStyle " v-if="mMenuShowYn" />
     </transition>
@@ -768,7 +768,7 @@ export default {
   /* background-color: #6768a7; */
   background-color: white;
   color: #5F61BD;
-  z-index: 1000;
+  z-index: 10000;
   left: 0;
 }
 .myPageBgColor {background-color: #9FDDEE;}
