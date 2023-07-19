@@ -50,7 +50,7 @@
           </div>
         </div>
         <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
-          <div v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; "
+          <div ref="bdRef" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; "
           :style="[{ 'z-index': index === 0 ? '999' : (index === 1 || index === 2) ? '998' : (index === 3 || index === 4) ? '997' : '' }, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top+ 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
             <div v-if="area.priority === 0" class="flexCenter" style="width: 250px; height: 80px; position: absolute; top: -50px; left: 0;" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
               <img src="../../../assets/images/main/banner2.png" class="w100P" style="position: absolute;" />
@@ -76,6 +76,7 @@ import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue
 // import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
   props: {
+    // pFindAllDrawn: Function
     // pCampusTownInfo: {}
   },
   data () {
@@ -232,6 +233,7 @@ export default {
     // localStorage.clear()
     // alert(JSON.stringify(this.GE_USER))
     // onMessage('REQ', 'test', null)
+    this.findAllDrawn()
     this.resetHistory()
     this.setNativeHeight()
     this.$emit('clearInfo', { detail: null, targetType: 'main' })
@@ -271,6 +273,22 @@ export default {
     // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
   },
   methods: {
+    findAllDrawn () {
+      // eslint-disable-next-line no-debugger
+      debugger
+      this.$emit('showCloudLoading', true)
+      const intervalHanlder = setInterval(() => {
+        if (this.$refs.bdRef) {
+          console.log(12341234)
+          console.log(this.$refs.bdRef)
+          this.$emit('enterCloudLoading', false)
+          setTimeout(() => {
+            this.$emit('showCloudLoading', false)
+          }, 2500)
+          clearInterval(intervalHanlder)
+        }
+      }, 300)
+    },
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
       // alert(offsetInput)
       var paramMap = new Map()

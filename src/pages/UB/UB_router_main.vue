@@ -26,9 +26,9 @@
     <policies :pPolicyType="mPolicyType" v-if="mPolicyType === 'termsOfUse' || mPolicyType === 'privacy'" :pClosePolicyPop="closePolicyPop" />
     <editMyChanMenu style="z-index: 999999;" v-if="mPopType === 'myChanMenuEdit'" :pClosePop="closeWritePop" :propData="mPopParams" />
     <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
-    <gCloudLoading v-if="mCloudLoadingShowYn" style="position: absolute; top: 0; left: 0" />
+    <gCloudLoading v-if="mCloudLoadingShowYn" :pEnterCloudsYn="mEnterCloudsYn" style="position: absolute; top: 0; left: 0" />
     <div :class="{ myPageBgColor : mMyPageBgColorYn}"  class="" style="height: 100%; overflow: hidden; width:100%; float: left;">
-      <router-view :key="$route.fullPath" @setMainInfo="setMainInfo" @showCloudLoading=showCloudLoading @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
+      <router-view :key="$route.fullPath" @setMainInfo="setMainInfo" @enterCloudLoading="enterCloudLoading" @showCloudLoading=showCloudLoading @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
     <gFooter v-if="!$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999;" />
     <!-- <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" /> -->
@@ -51,6 +51,7 @@ export default {
   data () {
     return {
       // mUnknownLoginPopYn: false,
+      mEnterCloudsYn: false,
       mAfterCloudYn: false,
       mPolicyType: '',
       mMyPageBgColorYn: false,
@@ -83,7 +84,7 @@ export default {
       this.$router.push({ name: 'policies' })
     } else {
       // if (this.$router.currentRoute._rawValue.path === '/') {
-      this.showCloudLoading()
+      // this.findAllDrawn()
       // }
     }
     // setTimeout(() => {
@@ -326,25 +327,18 @@ export default {
       }
       return param
     },
-    async showCloudLoading () {
-      // if (showYn) {
-      //   this.mCloudLoadingShowYn = true
-      //   // await new Promise((resolve) => setTimeout(resolve, 1750))
-      // } else {
-      //   setTimeout(() => {
-      //     this.mCloudLoadingShowYn = false
-      //   }, time)
-      // }
-      this.mCloudLoadingShowYn = true
-      setTimeout(() => {
-        this.mCloudLoadingShowYn = false
-      }, 5000)
+    showCloudLoading (showYn) {
+      this.mCloudLoadingShowYn = showYn
+    },
+    enterCloudLoading (enterYn) {
+      this.mEnterCloudsYn = enterYn
     },
     async goOpenPage (param) {
       if (param.targetType === 'chanDetail' || param.targetType === 'boardMain') {
         // this.mCloudLoadingShowYn = true
         // this.showCloudLoading(true)
-        this.showCloudLoading()
+        this.showCloudLoading(true)
+        this.enterCloudLoading(true)
       }
       if (param) {
         await this.openPage(param)

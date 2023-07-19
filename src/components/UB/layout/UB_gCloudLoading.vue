@@ -1,11 +1,14 @@
 <template>
-  <div id="cloudLoading" v-if="showCloudsYn" class="cloud-container">
-    <div class="cloud cloud-left" style="background-image: url('/resource/common/trans_cloudLeft.png')!important; background-size: cover; background-repeat: no-repeat;"></div>
-    <div class="cloud cloud-right" style="background-image: url('/resource/common/trans_cloudRight.png')!important; background-size: cover; background-repeat: no-repeat;"></div>
+  <div id="cloudLoading" class="cloud-container">
+    <div :class="pEnterCloudsYn ? 'cloud-left-enter' : 'cloud-left-leave'" class="cloud cloud-left" style="background-image: url('/resource/common/trans_cloudLeft.png')!important; background-size: cover; background-repeat: no-repeat;"></div>
+    <div :class="pEnterCloudsYn ? 'cloud-right-enter' : 'cloud-right-leave'" class="cloud cloud-right" style="background-image: url('/resource/common/trans_cloudRight.png')!important; background-size: cover; background-repeat: no-repeat;"></div>
   </div>
 </template>
 <script>
 export default {
+  props: {
+    pEnterCloudsYn: Boolean
+  },
   data () {
     return {
       showCloudsYn: true
@@ -33,18 +36,26 @@ export default {
   animation-fill-mode: both;
 }
 
-.cloud-left {
-  /* top: 0;
-  left: -200px; */
-  animation: cloud-left-enter 2.5s cubic-bezier(0.8, 0, 0.2, 1) alternate infinite;
-  animation-iteration-count: 2;
+.cloud-left-enter {
+  left: -500px;
+  top: 0;
+  animation: cloud-left-enter 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+}
+.cloud-left-leave {
+  left: 0px;
+  top: 50%;
+  animation: cloud-left-leave 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
-.cloud-right {
-  /* top: 50%;
-  right: -200px; */
-  animation: cloud-right-enter 2.5s cubic-bezier(0.8, 0, 0.2, 1) alternate infinite;
-  animation-iteration-count:2;
+.cloud-right-enter {
+  right: -500px;
+  top: 80%;
+  animation: cloud-right-enter 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+}
+.cloud-right-leave {
+  right: 0px;
+  top: 50%;
+  animation: cloud-right-leave 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
 @keyframes cloud-left-enter {
@@ -57,6 +68,16 @@ export default {
     top: 50%;
   }
 }
+@keyframes cloud-left-leave {
+  0% {
+    left: 0px;
+    top: 50%;
+  }
+  100% {
+    left: -500px;
+    top: 0;
+  }
+}
 
 @keyframes cloud-right-enter {
   0% {
@@ -66,6 +87,16 @@ export default {
   100% {
     right: 0px;
     top: 50%;
+  }
+}
+@keyframes cloud-right-leave {
+  0% {
+    right: 0px;
+    top: 50%;
+  }
+  100% {
+    right: -500px;
+    top: 80%;
   }
 }
 </style>
