@@ -53,7 +53,7 @@ export default {
       introVideo: '/resource/video/introVideo.mp4',
       startPoint: 0,
       endPoint: 0,
-      headerTitle: 'uniBuzzy',
+      headerTitle: 'uniBuzzy University',
       popShowYn: false,
       pushPopShowYn: false,
       parentPopN: 0,

@@ -233,7 +233,7 @@ export default {
     // localStorage.clear()
     // alert(JSON.stringify(this.GE_USER))
     // onMessage('REQ', 'test', null)
-    this.findAllDrawn()
+    // this.findAllDrawn()
     this.resetHistory()
     this.setNativeHeight()
     this.$emit('clearInfo', { detail: null, targetType: 'main' })
@@ -486,7 +486,7 @@ export default {
       this.$store.commit('D_HISTORY/setRemovePage', '')
       this.$store.commit('D_HISTORY/updateStack', [])
       this.$store.dispatch('D_HISTORY/AC_CLEAR_GPOP_STACK')
-      this.$emit('changePageHeader', 'uniBuzzy')
+      // this.$emit('changePageHeader', 'uniBuzzy')
     },
     closeInfoBox () {
       if (this.clickedArea && this.clickedArea.clickedYn) {
@@ -888,6 +888,7 @@ export default {
     // }
   },
   mounted () {
+    this.findAllDrawn()
     this.setWindowSize()
     window.addEventListener('resize', this.createMaskingAreaImg)
   },
