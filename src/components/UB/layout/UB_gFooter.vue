@@ -81,7 +81,7 @@ export default {
 .TalFooterWrap {
   display: flex;
   box-sizing: border-box;
-  background: #E9F1F6 !important;
+  background: #E9F1F64D !important;
   justify-content: flex-start;
   text-align: left;
   width: 100%;

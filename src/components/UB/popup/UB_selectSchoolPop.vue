@@ -189,16 +189,11 @@ export default {
       var time = currentTime - this.mScrollCheckSec
       var element = document.getElementsByClassName('chanRow')[0]
       if (!element) return
-      var parentElement = element.parentElement
-      // this.mFirstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
-      this.mFirstContOffsetY = this.getAbsoluteTop(element)
       if (this.mFirstContOffsetY > 0) {
         this.mScrollDirection = 'up'
         this.mScrolledYn = false
       }
       if (time / 1000 > 1 && this.$diffInt(this.mChanListScrollBox.scrollTop, this.mScrollPosition) > 150) {
-        var test = document.getElementById('chanListPageHeader')
-        this.mHeaderTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
         this.mScrollCheckSec = currentTime
 
         if (this.mFirstContOffsetY < 0) {
