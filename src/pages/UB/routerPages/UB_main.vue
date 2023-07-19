@@ -43,14 +43,14 @@
         </div>
       </template> -->
       <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
-        <div style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
+        <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
           <img style="position: absolute;" :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
           <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-bottom': area.priority !== 0 && area.priority !== 1 ? 15 + village.areaList[area.priority].h + 'px' : ''}" style="background-color: rgba(245, 245, 220, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 9999;">
             <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.bdAreaNameMtext }}</p>
           </div>
         </div>
         <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
-          <div v-if="village.areaList[area.priority].buildingList[index]" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; "
+          <div v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; "
           :style="[{ 'z-index': index === 0 ? '999' : (index === 1 || index === 2) ? '998' : (index === 3 || index === 4) ? '997' : '' }, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top+ 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
             <div v-if="area.priority === 0" class="flexCenter" style="width: 250px; height: 80px; position: absolute; top: -50px; left: 0;" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
               <img src="../../../assets/images/main/banner2.png" class="w100P" style="position: absolute;" />
@@ -86,6 +86,7 @@ export default {
       bgImg: {
         imgLink: ''
       },
+      mAreaShowYn: false,
       village: {
         villageInfo: {
           key: 1,
@@ -414,12 +415,12 @@ export default {
 
         this.$emit('setMainInfo', { fTeamList: this.mFTeamList, alimCount: this.mAlimCount })
 
-        for (let i = 0; this.mBdAreaList.length > i; i++) {
+        for (const area of this.mBdAreaList) {
           let count = 0
-          if (this.mBdAreaList[i].bdList.length > 5) {
+          if (area.bdList.length > 5) {
             count = 5
           } else {
-            count = this.mBdAreaList[i].bdList.length
+            count = area.bdList.length
           }
           for (let j = 0; j < count; j++) {
             const buildingObj = {
@@ -427,8 +428,8 @@ export default {
               ctx: {},
               areaYn: false,
               rank: j + 1,
-              type: this.mBdAreaList[i].priority === 0 ? 'CB' : '',
-              imgLink: this.mBdAreaList[i].priority === 0 ? '/resource/bd/new_college.png' : `/resource/bd/new_bd${this.mBdAreaList[i].bdList[j].priority + 1}.png`,
+              type: area.priority === 0 ? 'CB' : '',
+              imgLink: area.priority === 0 ? '/resource/bd/new_college.png' : `/resource/bd/new_bd${area.bdList[j].priority + 1}.png`,
               maskedImageUrl: '',
               maskedImageStyle: {},
               clickedYn: false,
@@ -437,7 +438,7 @@ export default {
               w: 0,
               h: 0
             }
-            this.village.areaList[this.mBdAreaList[i].priority].buildingList.push(buildingObj)
+            this.village.areaList[area.priority].buildingList.push(buildingObj)
           }
         }
         // await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mBdAreaList, ...this.mMainMChanList])
@@ -570,6 +571,9 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       const bdList = area.buildingList
+      if (area.key === 6) {
+        area.loadYn = true
+      }
       if (bdList === null || bdList.length === 0) return
 
       for (let j = 0; j < bdList.length; j++) {

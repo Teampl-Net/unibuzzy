@@ -88,7 +88,7 @@
       <div />
     </div>
 
-    <div class="fl w100P" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'"  style="height: calc(100% - 50px); overflow: hidden scroll;">
+    <div class="fl w100P" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'"  style="height: calc(100% - 110px); overflow: hidden scroll;">
       <div class="fl w100P mtop-2" style="margin-top:50px; border-bottom: 2px solid #6768a730" >
         <div class="fl font14 cursorP commonColor fontBold textLeft w100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730" @click="boardDropDown">
           <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">{{ $t('COMMON_NAME_BOARD') }}</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.BOARD_CONTENT_LIST.length}})</span></p>
@@ -112,7 +112,7 @@
         </div>
       </div>
     </div>
-    <div class="w100P textRight fontBold cursorP" style="height: 50px; padding: 10px;" v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)" @click="clickEditChanBtn">
+    <div class="w100P textRight fontBold cursorP" style="height: 50px; padding: 10px; padding-bottom: 60px;" v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)" @click="clickEditChanBtn">
       <img src="../../../assets/images/editChan/icon_setting.svg" style="width: 23px; margin-right: 10px;" alt="">
       Manager Settings
     </div>
