@@ -1,5 +1,5 @@
 <template>
-  <div class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
+  <div v-if="mBdAreaList.length > 0" class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
     <div v-if="mSelectSchoolPopShowYn" @click="mSelectSchoolPopShowYn = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
@@ -279,6 +279,8 @@ export default {
       this.$emit('showCloudLoading', true)
       const intervalHandler = setInterval(() => {
         if (this.$refs.bdRef) {
+          console.log(12341234)
+          console.log(this.$refs.bdRef)
           this.$emit('enterCloudLoading', false)
           setTimeout(() => {
             this.$emit('showCloudLoading', false)

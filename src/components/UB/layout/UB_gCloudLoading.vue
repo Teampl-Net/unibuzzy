@@ -1,17 +1,18 @@
 <template>
   <div id="cloudLoading" class="cloud-container">
-    <div :class="pEnterCloudsYn ? 'cloud-left-enter' : 'cloud-left-leave'" class="cloud cloud-left" style="background-image: url('/resource/common/trans_cloudLeft.png')!important; background-size: cover; background-repeat: no-repeat;"></div>
-    <div :class="pEnterCloudsYn ? 'cloud-right-enter' : 'cloud-right-leave'" class="cloud cloud-right" style="background-image: url('/resource/common/trans_cloudRight.png')!important; background-size: cover; background-repeat: no-repeat;"></div>
+    <div :class="pCloudLeftClass" class="cloud cloud-left" style="background-image: url('/resource/common/trans_cloudLeft.png')!important; background-size: cover; background-repeat: no-repeat; left: 0px; top: 50%;"></div>
+    <div :class="pCloudRightClass" class="cloud cloud-right" style="background-image: url('/resource/common/trans_cloudRight.png')!important; background-size: cover; background-repeat: no-repeat; right: 0px; top: 50%;"></div>
   </div>
 </template>
 <script>
 export default {
   props: {
-    pEnterCloudsYn: Boolean
+    pEnterCloudsYn: Boolean,
+    pCloudLeftClass: String,
+    pCloudRightClass: String
   },
   data () {
     return {
-      showCloudsYn: true
     }
   }
 }
@@ -37,25 +38,17 @@ export default {
 }
 
 .cloud-left-enter {
-  left: -500px;
-  top: 0;
-  animation: cloud-left-enter 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  animation: cloud-left-enter 1.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 .cloud-left-leave {
-  left: 0px;
-  top: 50%;
-  animation: cloud-left-leave 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  animation: cloud-left-leave 1.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
 .cloud-right-enter {
-  right: -500px;
-  top: 80%;
-  animation: cloud-right-enter 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  animation: cloud-right-enter 1.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 .cloud-right-leave {
-  right: 0px;
-  top: 50%;
-  animation: cloud-right-leave 2.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+  animation: cloud-right-leave 1.5s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
 @keyframes cloud-left-enter {
