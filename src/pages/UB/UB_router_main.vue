@@ -16,7 +16,7 @@
     </transition>
     <div v-if="mPopType === 'favList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 10000; background: transparent;"></div>
     <transition name="showUp">
-      <favListPop v-if="mPopType === 'favList'" @openPage="openPage" :pFTeamList="mFTeamList" @closeXPop="closeWritePop" />
+      <favListPop v-if="mPopType === 'favList'" @openPage="goOpenPage" :pFTeamList="mFTeamList" @closeXPop="closeWritePop" />
     </transition>
     <!-- <gFavList /> -->
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:10000;" v-if="mMenuShowYn" @click="hideMenu"></div>
