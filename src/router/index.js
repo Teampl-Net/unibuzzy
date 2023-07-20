@@ -41,7 +41,7 @@ if (type === 'UB') {
             if (loginYn !== 'false' || loginYn !== false) {
               return next()
             } else if (loginYn === false || loginYn === 'false') {
-              next('/policies')
+              return next('/policies')
             }
           }
         },
@@ -388,7 +388,11 @@ if (type === 'UB') {
       path: '/login',
       name: 'login',
       props: true,
-      component: login
+      component: login,
+      beforeEnter: (to, from, next) => {
+        // 만약 로그인 상태라면
+        next()
+      }
     },
     {
       path: '/permissions',

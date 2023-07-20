@@ -111,7 +111,6 @@ export const functions = {
     }
   },
   getDetail (type, targetKey) {
-    alert(true)
     var dataList
     var result
     if (type === 'TEAM') {

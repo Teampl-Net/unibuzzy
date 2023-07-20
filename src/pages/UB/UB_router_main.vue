@@ -664,7 +664,7 @@ export default {
     }
 
     if (this.systemName && (this.systemName === 'android' || this.systemName === 'Android' || this.systemName === 'ios' || this.systemName === 'iOS')) {
-      if (appInfo.current !== appInfo.last) {
+      if (appInfo && (appInfo.current !== appInfo.last)) {
         this.mAppUpdatePopShwoYn = true
       }
     }
