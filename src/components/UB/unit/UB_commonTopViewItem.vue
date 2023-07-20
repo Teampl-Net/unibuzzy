@@ -14,7 +14,7 @@
       <userDetailPop v-if="mProfilePopShowYn" :propData="mPopParam" :pClosePop="closeProfilePop" />
       <!-- <button @click="downloadPdf">다운로드</button> -->
       <!-- <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;"> -->
-        <div :class="animationYn? 'newContentsAni':''" key="animationYn" v-if="this.CONT_DETAIL" :style="`padding-bottom: ${this.$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`" style="width: 60%; background: #FFF; overflow: hidden; flex-shrink: 0; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative; padding-top: 5px;  border-radius: 8px;">
+        <div :class="animationYn? 'newContentsAni':''" key="animationYn" v-if="this.CONT_DETAIL" :style="`padding-bottom: ${this.$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`" style="width: 60%; background: #FFF; overflow: hidden; flex-shrink: 0; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative; border-radius: 8px;">
           <div v-if="propJustShowYn" :style="propPreStickerList && propPreStickerList.length > 0? 'height: calc(100% - 50px);' : 'height: calc(100%); '" style="width: 100%; position: absolute;left: 0; top: 0; z-index: 99;"></div>
           <!-- :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" -->
           <div class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 10px 20px;">
@@ -137,7 +137,7 @@
                   <p class="font10 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
                 </div>
             </div>
-                  <div style="float: right; width: 40px; height: 100%; float: left;">
+                  <!-- <div style="float: right; width: 40px; height: 100%; float: left;">
                       <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : subScribeContents()" style="width: 15px; height: 25px; display: flex; float: right;cursor: pointer;  margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                           <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center;">
                               <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="@/assets/images/push/contentsBellIcon_on.svg" class="w100P" alt="">
@@ -145,6 +145,14 @@
                           </div>
                           <p class="font10 fontBold fl mtop-01  w-100P userDoColor">{{this.$t('COMMON_NAME_INTEREST')}}</p>
                       </div>
+                  </div> -->
+                  <div style="width: 30px; height: 25px; display: flex; float: right; margin-right: 10px;flex-direction: column; cursor: pointer;justify-content: center; align-items: center;">
+                      <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
+                          <img style="height: 15px;" src="../../../assets/images/push/contentsShareIcon.svg" class=" fl" alt="공유 아이콘"
+                              data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
+                                  :data-clipboard-text="CONT_DETAIL.copyTextStr">
+                      </div>
+                      <p class="font10 fl fontBold w-100P mtop-01 userDoColor">{{this.$t('COMMON_NAME_SHARE')}}</p>
                   </div>
               </div>
               <div v-else class="contentsCardUserDoArea" style="position: relative; width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">

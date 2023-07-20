@@ -10,10 +10,13 @@
 </i18n>
 <template>
   <div class="w100P" style="min-height:80px; border-bottom:1px solid #cccccc70; display: flex; flex-direction: row; align-items: center; padding-top: 15px; padding-bottom: 15px;" @click="goBaordMain(boardElement)">
+    <div style="width: 65px; height: 65px; border-radius: 50%; border: 2px solid #bbb;" :style="`background-color: ${boardElement.picBgPath}`">
+    </div>
     <div class="fl mleft-1" style="width: calc(100% - 65px - 1rem);">
       <div class="w100P fl font16 fontBold textLeft grayBlack ">
         <p class="fl">
-          <img src="../../../assets//images/board/icon_edit.svg" alt="" style="margin-right: 5px;">{{ $changeText(boardElement.cabinetNameMtext) }}</p>
+          {{ $changeText(boardElement.cabinetNameMtext) }}
+        </p>
         <p class="fr font13 lightGray" style="font-weight: normal;">{{ $t("SEAR_TAB_ACT_CAHNNEL") + " " +$changeDateFormat(boardElement.cabCreDate) }}</p></div>
       <p class="w100P fl font14 textLeft grayBlack">{{ $changeText(boardElement.memoMtext) }}</p>
     </div>

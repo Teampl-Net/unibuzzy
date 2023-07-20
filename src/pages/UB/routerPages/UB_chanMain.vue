@@ -883,19 +883,16 @@ export default {
 
       this.mChanMainScrollPosition = this.mChanMainScrollWrap.scrollTop
       const chanInfoSummaryRef = this.$refs.chanInfoSummary
-      const followerCancelAreaRef = this.$refs.followerCancelArea
       const channelItemBoxRef = this.$refs.channelItemBox
       if (this.mChanMainScrollDirection === 'down' && this.mChanMainScrollPosition > 120) {
         blockBox.style.height = 50 + 'px'
         if (this.mChanMainScrollPosition > 160) this.mChanMainScrollWrap.style.overflow = 'hidden'
         chanInfoSummaryRef.classList.add('displayNIm')
         // 더알림 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
-        if (followerCancelAreaRef && this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) followerCancelAreaRef.classList.add('displayNIm')
         // if (ownerChannelEditAreaRef) ownerChannelEditAreaRef.classList.add('displayNIm')
         if (channelItemBoxRef) channelItemBoxRef.classList.add('channelItemBoxHeight')
       } else if (this.mChanMainScrollDirection === 'up' && this.mChanMainScrollPosition < 170) {
         chanInfoSummaryRef.classList.remove('displayNIm')
-        if (followerCancelAreaRef && this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) followerCancelAreaRef.classList.remove('displayNIm')
         // if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && ownerChannelEditAreaRef) ownerChannelEditAreaRef.classList.remove('displayNIm')
 
         blockBox.style.height = '220px'

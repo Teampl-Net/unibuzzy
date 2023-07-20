@@ -476,7 +476,7 @@ export default {
       if (openPageParam.jobkindId === 'BOAR') {
         openPageParam.cabinetKey = detailData.cabinetKey
       }
-      this.$emit('clearInfo', { detail: openPageParam, targetType: 'coontDetail' })
+      this.$emit('clearInfo', { detail: openPageParam, targetType: 'contDetail' })
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
     onLoadFunction () {

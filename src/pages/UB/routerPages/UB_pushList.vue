@@ -9,7 +9,8 @@
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " /> -->
-        <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
+        <!-- <gSelectFilter :searchYn="false" :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab="changeTab" @changeTab= "changeBoard" style="width: 100%; padding-top: 0; margin-top: 0;" /> -->
+        <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" :subTabList="mBoardFilterList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab="changeTab" @changeBoardTab="changeBoard" style="width: 100%; padding-top: 0; margin-top: 0;" />
       </div>
       <transition name="showModal">
         <findContentsList :tpGroupCode="this.viewMainTab === 'B' || this.viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" :pClosePop="closeSearchPop" :teamKey='this.pChannelDetail.teamKey'/>
@@ -84,7 +85,8 @@ export default {
     notiScrollTarget: {},
     pUnknownYn: {
       default: false
-    }
+    },
+    pBoardList: Array
     // reloadKey: 0
   },
   created () {
@@ -130,6 +132,20 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
+    pBoardList: {
+      immediate: true,
+      handler (val) {
+        if (!val) return
+        if (this.pBoardList && this.pBoardList.length > 0) {
+          this.mBoardFilterList = []
+          this.mBoardFilterList.push({ display: 'All', name: -1 })
+          this.pBoardList.forEach(item => {
+            this.mBoardFilterList.push({ display: this.$changeText(item.cabinetNameMtext), name: item.cabinetKey })
+          })
+        }
+      },
+      deep: true
+    },
     // mCommonFilterList: {
     //   immediate: true,
     //   handler (val) {
@@ -634,6 +650,7 @@ export default {
             }
           }
         }
+
         await this.initGetContentsList()
         this.findPopShowYn = false
         if (this.readySearchList) {
@@ -1241,6 +1258,12 @@ export default {
           param.allYn = true
           param.ownUserKey = this.GE_USER.userKey
         }
+
+        if (this.mSelectedCabinetKey !== -1) {
+          param.joskindId = 'BOAR'
+          param.cabinetKey = this.mSelectedCabinetKey
+        }
+
         var nonLoading = true
         if (loadingYn) {
           nonLoading = false
@@ -1734,6 +1757,10 @@ export default {
       } */
       this.viewTab = tabName
     },
+    changeBoard (cabinetKey) {
+      this.mSelectedCabinetKey = cabinetKey
+      this.changeTab(this.viewTab)
+    },
     async changeTab (tabName) {
       this.emptyYn = false
       this.targetCKey = null
@@ -2207,6 +2234,7 @@ export default {
       mFilePopData: {},
       mScrollStartPoint: 0,
       mScrollEndPoint: 0,
+      mSelectedCabinetKey: -1,
       // scrollIngYn: false
       fileList: []
     }

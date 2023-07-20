@@ -8,6 +8,9 @@
         <select style="width:90px!important; height:30px;" class="fl" ref="tab" @change="handleTabChange"  >
             <option v-for="(filter, idx) in tabList" :key="idx" :value="JSON.stringify(filter)">{{ filter.display }}</option>
         </select>
+        <select  v-if="subTabList" style="width:90px!important; height:30px; margin-left: 10px;" class="fl" ref="tab" @change="handleBoardTabChange"  >
+            <option v-for="(filter, idx) in subTabList" :key="idx" :value="JSON.stringify(filter)">{{ filter.display }}</option>
+        </select>
         <!-- <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div> -->
 
         <div class="fr" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: flex-end;" v-if="searchYn && !channelYn">
@@ -46,7 +49,8 @@ export default {
     searchYn: { type: Boolean, default: false },
     resultSearchKeyList: {},
     testYn: { type: Boolean, default: false },
-    channelYn: { type: Boolean, default: false }
+    channelYn: { type: Boolean, default: false },
+    subTabList: Object
   },
   data () {
     return {
@@ -89,11 +93,22 @@ export default {
       console.log('selected', selected)
       this.selectTab(selected.name, selected.display)
     },
+    handleBoardTabChange (event) {
+      const selected = JSON.parse(event.target.value)
+      console.log('selected', selected)
+      this.selectBoardTab(selected.name, selected.display)
+    },
     selectTab (tab, displayName) {
       if (displayName !== undefined && displayName !== null && displayName !== '') {
         this.selectedTabName = displayName.replaceAll(' ', '')
       }
       this.$emit('changeTab', tab)
+    },
+    selectBoardTab (tab, displayName) {
+      if (displayName !== undefined && displayName !== null && displayName !== '') {
+        this.selectedTabName = displayName.replaceAll(' ', '')
+      }
+      this.$emit('changeBoardTab', tab)
     }
   },
   created () {

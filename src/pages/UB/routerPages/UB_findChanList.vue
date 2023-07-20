@@ -52,7 +52,7 @@
     </template>
     <template v-if="mFindKeyWord !== '' && this.GE_DISP_TEAM_LIST.length === 0">
       <div class="w100P fl" style="overflow: auto; height: calc(100% - 200px); position: relative;">
-        <gListEmpty title='검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' />
+        <gListEmpty title="There's no search result." subTitle='Would you like to search again?' option='SELE' :subTitleYn='true' />
       </div>
     </template>
   </div>

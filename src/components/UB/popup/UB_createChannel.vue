@@ -60,6 +60,10 @@
           </div>
           <div class="w100P fl" style="height: calc(100% - 80px); overflow: auto; margin-top: 1rem;">
 
+          <div v-if="chanDetail.modiYn === false" class="w100P" style="border-bottom: 2px solid #aaa; padding: 10px 0;">
+            <p class="textLeft font20 fontBold w-100P">{{ pBdAreaList && pBdAreaList.length > 0 && pBdAreaList[0].bdList? $changeText(pBdAreaList[0].bdList[0].nameMtext):'Campus' }} > {{ pSelectedAreaInfo? pSelectedAreaInfo.bdAreaNameMtext:'Area' }}</p>
+          </div>
+
           <div style="width:100%;" class="mtop-1 fl">
             <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('COMMON_TITLE_CHANNAME') }}</p>
             <input v-model="mInputChannelName" type="text" :placeholder="$t('CRE_MSG_CHANNAME')" class="creChanInput"  id="channelName" >
@@ -85,36 +89,13 @@
             </div>
           </div>
 
-          <div style="width:100%; height: 30px" class="mtop-1 fl" >
+          <!-- <div style="width:100%; height: 30px" class="mtop-1 fl" >
             <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('COMMON_NAME_CATEGORY') }}</p>
             <div class="fl mtop-05" style="width: 100%;" :key="mReloadKey">
-              <div :class="{activeTypeBox: mSelectedTeamTypeKey ===value.cateKey}" @click="selectChanType(value)" v-for="(value, index) in mBusinessItemList" :key="index" :style="getChanBoxSize" class="fl cursorP" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; padding: 0 10px; justify-content: space-around; align-items: center; ">
-                <img class="img-w14 fl mright-05" v-if="value.cateKey === 1 && mSelectedTeamTypeKey !== 1" src="@/assets/images/channel/icon_office.svg"/>
-                <img class="img-w14 fl mright-05" v-if="value.cateKey === 1 && mSelectedTeamTypeKey === 1" src="@/assets/images/channel/icon_office_white.svg" >
-                <img class="img-w18 fl mright-05" v-if="value.cateKey === 2 && mSelectedTeamTypeKey !== 2" src="@/assets/images/channel/icon_Government.svg"/>
-                <img class="img-w18 fl mright-05" v-if="value.cateKey === 2 && mSelectedTeamTypeKey === 2" src="@/assets/images/channel/icon_Government_white.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.cateKey === 3 && mSelectedTeamTypeKey !== 3" src="@/assets/images/channel/icon_school.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.cateKey === 3 && mSelectedTeamTypeKey === 3" src="@/assets/images/channel/icon_school_white.svg"/>
-                <img class="img-w20 fl" v-if="value.cateKey === 4 && mSelectedTeamTypeKey !== 4" src="@/assets/images/channel/icon_church.svg"/>
-                <img class="img-w20 fl" v-if="value.cateKey === 4 && mSelectedTeamTypeKey === 4" src="@/assets/images/channel/icon_church_white.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.cateKey === 5 && mSelectedTeamTypeKey !== 5" src="@/assets/images/channel/icon_society.jpg"/>
-                <img class="img-w20 fl mright-05" v-if="value.cateKey === 5 && mSelectedTeamTypeKey === 5" src="@/assets/images/channel/icon_society_white.jpg"/>
-                <img class="img-w20 fl mright-05" v-if="value.cateKey === 6 && mSelectedTeamTypeKey !== 6" src="@/assets/images/channel/icon_hospital.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.cateKey === 6 && mSelectedTeamTypeKey === 6" src="@/assets/images/channel/icon_hospital_white.svg"/>
-                <img class="img-w14 fl mright-05" v-if="value.cateKey === 7 && mSelectedTeamTypeKey !== 7" src="@/assets/images/channel/icon_pharmacy.svg"/>
-                <img class="img-w14 fl mright-05" v-if="value.cateKey === 7 && mSelectedTeamTypeKey === 7" src="@/assets/images/channel/icon_pharmacy_white.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.cateKey === 8 && mSelectedTeamTypeKey !== 8" src="@/assets/images/channel/icon_store.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.cateKey === 8 && mSelectedTeamTypeKey === 8" src="@/assets/images/channel/icon_store_white.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.cateKey === 9 && mSelectedTeamTypeKey !== 9" src="@/assets/images/channel/icon_familly.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.cateKey === 9 && mSelectedTeamTypeKey === 9" src="@/assets/images/channel/icon_familly_white.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.cateKey === 10 && mSelectedTeamTypeKey !==10" src="@/assets/images/channel/icon_team.svg"/>
-                <img class="img-w20 fl mright-05" v-if="value.cateKey === 10 && mSelectedTeamTypeKey ===10" src="@/assets/images/channel/icon_team_white.svg"/>
-                <p class="font15 commonBlack fl" style="word-break: keep-all;" >
-                {{$changeText(value.itemNameMtext)}}
-                </p>
+              <div :class="{activeTypeBox: mSelectedTeamTypeKey ===value.cateKey}" @click="selectChanType(value)" v-for="(value, index) in pBdAreaList" :key="index" :style="getChanBoxSize" class="fl cursorP" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; padding: 0 10px; justify-content: space-around; align-items: center; ">
               </div>
             </div>
-          </div>
+          </div> -->
 
           </div>
 
@@ -133,6 +114,9 @@ import seleciconBgPopup from '@/components/popup/creChannel/Tal_selectChaniconBg
 import gPopHeader from '../layout/UB_gPopHeader.vue'
 export default {
   created () {
+    console.log('지나갑니당')
+    console.log(this.pBdAreaList)
+    console.log(this.pSelectedAreaInfo)
     this.$emit('openLoading')
     if (this.chanDetail !== undefined && this.chanDetail !== null && this.chanDetail !== {}) {
       if (this.chanDetail.modiYn === true) {
@@ -145,13 +129,17 @@ export default {
     setTimeout(() => {
       this.$emit('closeLoading')
     }, 500)
+    console.log(12341234)
+    console.log(this.pBdAreaList)
   },
   mounted () {
     console.log(this.CHANNEL_DETAIL)
   },
   props: {
     chanDetail: {},
-    pClosePop: Function
+    pClosePop: Function,
+    pBdAreaList: Array,
+    pSelectedAreaInfo: Object
   },
   data () {
     return {

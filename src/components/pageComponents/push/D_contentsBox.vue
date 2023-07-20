@@ -150,7 +150,7 @@
                           </div>
                           <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{this.$t('COMMON_NAME_SHARE')}}</p>
                       </div>
-                      <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : openStickerPop()" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                      <div v-if="$appType === 'D'" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : openStickerPop()" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
                           <img src="../../../assets/images/push/stickerIcon.svg" class="img-w20" alt="">
                         </div>
@@ -162,7 +162,7 @@
                           <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                           <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
                       </div> -->
-                      <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : subScribeContents()" style="width: 30px; height: 35px; display: flex; float: right;cursor: pointer;  margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+                      <div v-if="$appType === 'D'" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : subScribeContents()" style="width: 30px; height: 35px; display: flex; float: right;cursor: pointer;  margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                           <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center;">
                               <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/push/contentsBellIcon_on.svg" class=" " alt="">
                               <img v-else src="../../../assets/images/push/contentsBellIcon.svg" class="" alt="">

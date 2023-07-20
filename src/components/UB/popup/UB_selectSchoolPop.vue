@@ -11,7 +11,7 @@
           <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
       </div>
-      <div v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false" style="margin-top: 80px; width: 100%; min-height: calc(100% - 50px);">
+      <div v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false" style="width: 100%; min-height: calc(100% - 50px);">
           <chanSkeleton  v-for="(value) in 10" :key="value"/>
       </div>
       <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll;height: calc(100% - 50px); width: 100%; " @mousedown="testTwo" @mouseup="testTr">

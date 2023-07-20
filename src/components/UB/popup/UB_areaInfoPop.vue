@@ -1,7 +1,9 @@
 <template>
   <div v-if="pAreaInfo && pAreaDetail" ref="gPopUp" class="commonPopWrap" style="padding: 10px 20px; min-width: 300px; position: absolute;" @click.stop>
-    <div style="position: absolute; top: -45px; right: 10px; width: 40px; height: 45px; background-color: rgba(255, 255, 255, 0.5); border-radius: 10px 10px 0 0;">
-      <img src="../../../assets/images/common/imgBuildingPop.png" class="w100P h100P" />
+    <img src="@/assets/images/button/Icon_CreChanBtn.png" @click="pOpenCreChanPop" alt="채널 만들기 버튼" style="position: absolute; cursor: pointer; right: 10%; bottom: 20px; width: 50px; height: 50px;" >
+    <div style="position: absolute; top: -45px; right: 10px; width: 40px; height: 45px; background-color: rgba(255, 255, 255, 0.5); border-radius: 10px 10px 0 0; padding: 5px;">
+      <img v-if="pBdClickedYn" src="../../../assets/images/main/icon_bd.png" class="h100P" />
+      <img v-else src="../../../assets/images/main/icon_area.png" class="h100P" />
     </div>
     <div class="font16 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
       <div style="display: flex; align-items: center; width: calc(100% - 25px);">
@@ -22,7 +24,7 @@
       <p class="textLeft font16" style="margin-left: 30px; width: calc(100% - 30px);">{{ pAreaInfo.bdAreaDesc }}</p>
       <div class="w100P" style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; display: flex; margin-top: 10px;">
         <p style="width: 50%; border-right: 2px solid #000;">
-          <span class="fontBold">{{ pAreaInfo.bdList&& pAreaInfo.bdList.length? pAreaInfo.bdList.length:'0' }}</span> channels
+          <span class="fontBold">{{ pAreaInfo.bdList && pAreaInfo.bdList.length? pAreaInfo.bdList.length:'0' }}</span> channels
         </p>
         <p style="width: 50%;">
           <span class="fontBold">{{ pAreaDetail.followerCount? pAreaDetail.followerCount:0 }}</span> followers
@@ -108,7 +110,9 @@ export default {
     pAreaInfo: {},
     pClosePop: {},
     pMoveToChan: Function,
-    pAreaDetail: {}
+    pAreaDetail: {},
+    pBdClickedYn: Boolean,
+    pOpenCreChanPop: Function
   },
   created () {
     console.log('pAreaInfo')

@@ -1132,6 +1132,44 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
   }
 }
 
+.show_right-enter {
+  position: absolute;
+  animation: show_right-dialog-fade-in 0.5s ease;
+}
+.show_right-leave {
+  position: absolute;
+  animation: show_right-dialog-fade-out 0.5s ease forwards;
+}
+.show_right-enter-active {
+  position: absolute;
+  animation: show_right-dialog-fade-in 0.5s ease;
+}
+.show_right-leave-active {
+  position: absolute;
+  animation: show_right-dialog-fade-out 0.5s ease forwards;
+}
+@keyframes show_right-dialog-fade-in {
+  0% {
+    right: -100%;
+    /* transform: translateX(500px); */
+  }
+  100% {
+    right: 0;
+    /* transform: translateX(0); */
+  }
+}
+@keyframes show_right-dialog-fade-out {
+  0% {
+    right: 0;
+    /* transform: translateX(0); */
+  }
+  100% {
+    right: -100%;
+    /* transform: translateX(500px); */
+  }
+}
+
+
 .showUp-enter {animation: showUp-dialog-fade-in 0.2s ease;}
 .showUp-leave {animation: showUp-dialog-fade-out 0.2s ease forwards;}
 .showUp-enter-active {animation: showUp-dialog-fade-in 0.2s ease;}

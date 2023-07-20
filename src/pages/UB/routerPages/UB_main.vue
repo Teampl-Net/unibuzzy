@@ -1,12 +1,13 @@
 <template>
   <div class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
+    <createChannel v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
     <div v-if="mSelectSchoolPopShowYn" @click="mSelectSchoolPopShowYn = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
     </transition>
     <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
       <transition name="showUp">
-        <areaInfoPop @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
+        <areaInfoPop :pBdClickedYn="mBdClickedYn" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
       </transition>
     <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: cover; overflow: hidden;">
       <div class="ballon">other college towns?</div>
@@ -72,6 +73,7 @@ import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
 // import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
 import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
 import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue'
+import createChannel from '../../../components/UB/popup/UB_createChannel.vue'
 // import { onMessage } from '../../../assets/js/webviewInterface'
 // import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
@@ -81,6 +83,7 @@ export default {
   },
   data () {
     return {
+      mCreChannelShowYn: false,
       mFavListPopShowYn: false,
       mShowAreaBdListYn: false,
       mInfoBoxShowYn: false,
@@ -226,7 +229,8 @@ export default {
       mAxiosQueue: [],
       mSelectedAreaInfo: {},
       mSelectSchoolPopShowYn: false,
-      mSchoolList: []
+      mSchoolList: [],
+      mBdClickedYn: false
     }
   },
   async created () {
@@ -242,7 +246,6 @@ export default {
     if (urlParam && urlParam.trim() !== '') {
       urlParam = JSON.parse(urlParam)
       urlParam.targetKey = urlParam.targetKey.split('/')[0]
-      console.log(urlParam)
       if (urlParam.targetType) {
         if (urlParam.targetType === 'chanDetail') {
           const param = { targetType: urlParam.targetType, targetKey: urlParam.targetKey }
@@ -273,14 +276,19 @@ export default {
     // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
   },
   methods: {
+    openCreChanPop () {
+      this.mInfoBoxShowYn = false
+      this.mCreChannelShowYn = true
+    },
+    closeCreChanPop () {
+      this.mCreChannelShowYn = false
+    },
     findAllDrawn () {
       // eslint-disable-next-line no-debugger
       debugger
       this.$emit('showCloudLoading', true, false)
       const intervalHandler = setInterval(() => {
         if (this.$refs.bdRef) {
-          console.log(12341234)
-          console.log(this.$refs.bdRef)
           this.$emit('enterCloudLoading', false)
           setTimeout(() => {
             this.$emit('showCloudLoading', false)
@@ -818,6 +826,7 @@ export default {
             const pixelData = bd.ctx.getImageData(_x, _y, 1, 1).data
             if (pixelData[3] !== 0) {
               this.clickedBd = bd
+              this.mBdClickedYn = true
               bd.clickedYn = true
               bd.maskedImageStyle = { filter: 'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)' }
               this.openAreaInfoPop(this.mBdAreaList[area.key])
@@ -852,6 +861,7 @@ export default {
         const pixelData = area.ctx.getImageData(_x, _y, 1, 1).data
         if (pixelData[3] !== 0) {
           this.clickedArea = area
+          this.mBdClickedYn = false
           this.clickedRank = area.buildingList.length + 1
           area.clickedYn = true
           area.maskedImageStyle = { filter: 'drop-shadow(0 0 5px yellow) drop-shadow(0 0 40px white)' }
@@ -913,6 +923,7 @@ export default {
     }
   },
   components: {
+    createChannel,
     // UBInfoBox,
     selectSchoolPop,
     UBAreaBdList,

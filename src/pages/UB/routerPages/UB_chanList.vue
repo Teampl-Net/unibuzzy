@@ -3,7 +3,7 @@
     <div style="width: 100%; height: 100%;  float: left; background: #fff; position: relative;">
 
       <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
-      <div v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false" style="margin-top: 80px; width: 100%; min-height: 100%;">
+      <div v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false" style="width: 100%; min-height: 100%;">
           <chanSkeleton  v-for="(value) in 10" :key="value"/>
       </div>
       <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
