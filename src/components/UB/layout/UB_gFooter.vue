@@ -1,5 +1,5 @@
 <template>
-  <div class="py-3 px-4 TalFooterWrap">
+  <div class="py-3 px-4 TalFooterWrap" :style="$route.path === '/'? 'background: #E9F1F64D':'background: #fff;'">
     <div @click="routePage('main')" class="footerRouter" style="flex: 1 !important">
       <div class="commonColor fontBold text-center font12">
         <img width="25" height="25" v-if="this.$route.path === '/'" :src="footerIcon[0].fullIcon" /> <img width="25" height="25" v-else :src="footerIcon[0].icon" />
@@ -81,7 +81,6 @@ export default {
 .TalFooterWrap {
   display: flex;
   box-sizing: border-box;
-  background: #E9F1F64D !important;
   justify-content: flex-start;
   text-align: left;
   width: 100%;
