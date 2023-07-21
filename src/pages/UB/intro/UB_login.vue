@@ -14,10 +14,10 @@
   </i18n>
 <template>
   <div class="loginContentsWrap">
-    <div v-if="GE_USER.unknownYn" class="videoArea" style="position: fixed; width: 100%; height: 100%; overflow:hidden;">
-      <video autoplay muted loop playsinline :style="showStartBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
+    <div v-if="GE_USER.unknownYn" class="videoArea" style="position: fixed; width: 100%; height: 100%; overflow:hidden; background: #8999d3;">
+      <!-- <video autoplay muted loop playsinline :style="showStartBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
         <source :src="introVideo" type="video/mp4" >
-      </video>
+      </video> -->
       <div v-show="showStartBtnYn" class="fade-in fontBold textLeft" style="width: 90%; position: absolute; text-shadow: 2px 2px 3px black; color: white; top: 20%; left: 5%;">
         <p class="w100P fl textCenter font18">Everything for campus life, </p>
         <p class="w100P fl fontBold textCenter" style="font-size: 50px;">uniBuzzy</p>
