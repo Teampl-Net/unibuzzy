@@ -1,7 +1,6 @@
 <template>
   <div style="width: 80%; height: 80%; border-radius: 10px; z-index: 99999; position: absolute; left: 10%; top: 10%;">
     <div class="transWhite" style="width: 100%; height: 100%;  float: left; position: relative; border-radius: 10px; padding: 10px 20px; overflow: hidden;">
-
       <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
       <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
         <div style="display: flex; align-items: center; width: calc(100% - 25px);">
@@ -15,11 +14,15 @@
           <chanSkeleton  v-for="(value) in 10" :key="value"/>
       </div>
       <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll;height: calc(100% - 50px); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
-          <gEmpty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
-          <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
-            <channelCard class="moveBox chanRow cursorP" style="margin-top: 10px;" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" />
-            <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
-          </template>
+        <div class="w100P" style="margin-bottom: 10px;">
+          <gInput @enterEvent="searchChannel" style="width: calc(100% - 35px);" :pInputObj="mInputObj" pInputType="I" pPlaceHolder="Please enter your school" />
+          <img class="cursorP" style="width: 25px; margin-left: 10px;" src="@/assets/images/button/icon_search_color.svg" >
+        </div>
+        <gEmpty tabName="전체" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
+        <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
+          <channelCard class="moveBox chanRow cursorP" style="margin-top: 10px;" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" />
+          <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
+        </template>
       </div>
     </div>
   </div>
@@ -64,7 +67,8 @@ export default {
       mEmptyYn: true,
       mLoadingYn: false,
       mAxiosQueue: [],
-      mSearchCateKey: 3
+      mSearchCateKey: 3,
+      mInputObj: { val: null }
     }
   },
   props: {
@@ -133,6 +137,14 @@ export default {
     this.findPaddingTopChan()
   },
   methods: {
+    async searchChannel () {
+      this.mOffsetInt = 0
+      const result = await this.getChannelList(10, 0, false)
+      this.mChannelList = result.content
+      if (this.mChannelList.length === 0) {
+        this.mEmptyYn = true
+      }
+    },
     goTown (chanEle) {
       this.pGoTown(chanEle)
     },
@@ -326,17 +338,10 @@ export default {
       this.mAxiosQueue.push('getChannelList')
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
-      if (this.mViewTab === 'user') {
-        paramMap.set('userKey', userKey)
-      } else if (this.mViewTab === 'all') {
-        paramMap.set('fUserKey', userKey)
-      } else if (this.mViewTab === 'mychannel') {
-        paramMap.set('userKey', userKey)
-        paramMap.set('managerYn', true)
-      }
+      paramMap.set('fUserKey', userKey)
       paramMap.set('cateItemKey', 3)
-      if (this.mResultSearchKeyList.length > 0) {
-        paramMap.set('nameMtext', this.mResultSearchKeyList[0].keyword)
+      if (this.mInputObj.val !== '' && this.mInputObj.val !== undefined && this.mInputObj.val !== null) {
+        paramMap.set('nameMtext', this.mInputObj.val)
       }
       if (offsetInput !== undefined) {
         paramMap.set('offsetInt', offsetInput)
@@ -448,40 +453,9 @@ export default {
     },
     historyStack () {
       return this.$store.state.historyStack
-    },
-    GE_CREATE_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_CREATE_CHAN_LIST']
-    },
-    GE_REMOVE_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_REMOVE_CHAN_LIST']
-    },
-    GE_UPDATE_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_UPDATE_CHAN_LIST']
     }
   },
   watch: {
-    GE_CREATE_CHAN_LIST: {
-      handler (value, old) {
-        if (!value || value.length === 0) return
-        this.mChannelList.unshift(value[0])
-
-        this.$store.dispatch('D_CHANNEL/AC_CREATE_CHANNEL_DEL', value[0])
-      },
-      deep: true
-    },
-    GE_REMOVE_CHAN_LIST: {
-      handler (value, old) {
-        if (!value || value.length === 0) return
-        var findDelIdx = this.mChannelList.findIndex(item => item.teamKey === value[0].teamKey)
-        if (findDelIdx !== -1) {
-          this.mChannelList.splice(findDelIdx, 1)
-          this.$store.dispatch('D_CHANNEL/AC_REMOVE_CHANNEL_DEL', value[0])
-        } else {
-          return false
-        }
-      },
-      deep: true
-    },
     GE_USER: {
       immediate: true,
       handler (val, old) {
@@ -491,14 +465,6 @@ export default {
           this.mActiveTabList = [{ display: this.$t('COMMON_TAB_FOLLOWING'), name: 'user' }, { display: this.$t('COMMON_TAB_ALL'), name: 'all' }, { display: this.$t('COMMON_TAB_MANAGING'), name: 'mychannel' }]
         }
       }
-    },
-    GE_UPDATE_CHAN_LIST: {
-      handler (value, old) {
-        if (!value || value.length === 0) return
-        this.$addChanList(value[0].teamKey)
-        this.$store.dispatch('D_CHANNEL/AC_DEL_UPDATE_CHAN_LIST', value[0])
-      },
-      deep: true
     }
   }
 }

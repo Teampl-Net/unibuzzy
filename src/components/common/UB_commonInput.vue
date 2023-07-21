@@ -1,11 +1,11 @@
 <template>
-  <input :disabled="pDisabledYn" class="UBCommonInputStyle" v-if="pInputType === 'N'" v-model="mInputObj.val" type="number" name="" id="">
-  <input :disabled="pDisabledYn" :readonly="pReadonly" :placeholder="pPlaceHolder" class="UBCommonInputStyle" v-else-if="pInputType === 'I'" v-model="mInputObj.val" type="text" name="" id="">
-  <input :disabled="pDisabledYn" class="UBCommonInputStyle" v-else-if="pInputType === 'P'" v-model="mInputObj.val" type="password" name="" id="">
+  <input @keyup.enter="enterEvent" :disabled="pDisabledYn" class="UBCommonInputStyle" v-if="pInputType === 'N'" v-model="mInputObj.val" type="number" name="" id="">
+  <input @keyup.enter="enterEvent" :disabled="pDisabledYn" :readonly="pReadonly" :placeholder="pPlaceHolder" class="UBCommonInputStyle" v-else-if="pInputType === 'I'" v-model="mInputObj.val" type="text" name="" id="">
+  <input @keyup.enter="enterEvent" :disabled="pDisabledYn" class="UBCommonInputStyle" v-else-if="pInputType === 'P'" v-model="mInputObj.val" type="password" name="" id="">
   <select :disabled="pDisabledYn" class="UBCommonInputStyle" v-else-if="pInputType === 'S'" v-model="mInputObj.val" name="" id="">
     <option v-for="(opt, index) in pInputObj.selectValueList" :key="index" :value="opt.value">{{ opt.title }}</option>
   </select>
-  <textarea @input="resize" ref="commonTextArea" :placeholder="pPlaceHolder" class="UBCommonInputStyle textarea" v-else-if="pInputType === 'T'" v-model="mInputObj.val" name="" id="" cols="30" rows="10"></textarea>
+  <textarea @keyup.enter="enterEvent" @input="resize" ref="commonTextArea" :placeholder="pPlaceHolder" class="UBCommonInputStyle textarea" v-else-if="pInputType === 'T'" v-model="mInputObj.val" name="" id="" cols="30" rows="10"></textarea>
 </template>
 <script>
 export default {
@@ -36,6 +36,9 @@ export default {
         textref.style.height = '1px'
         textref.style.height = textref.scrollHeight + 'px'
       }
+    },
+    enterEvent () {
+      this.$emit('enterEvent')
     }
   },
   watch: {
