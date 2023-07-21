@@ -16,7 +16,7 @@
       <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll;height: calc(100% - 50px); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
         <div class="w100P" style="margin-bottom: 10px;">
           <gInput @enterEvent="searchChannel" style="width: calc(100% - 35px);" :pInputObj="mInputObj" pInputType="I" pPlaceHolder="Please enter your school" />
-          <img class="cursorP" style="width: 25px; margin-left: 10px;" src="@/assets/images/button/icon_search_color.svg" >
+          <img @click="searchChannel" class="cursorP" style="width: 25px; margin-left: 10px;" src="@/assets/images/button/icon_search_color.svg" >
         </div>
         <gEmpty tabName="전체" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
         <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
