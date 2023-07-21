@@ -1433,9 +1433,8 @@ export default {
       this.mEmptyReloadKey += 1
     },
     getAbsoluteTop (element) {
-      console.log('hey')
       // return element.getBoundingClientRect().top
-      return window.pageYOffset + element.getBoundingClientRect().top
+      return window.scrollY + element.getBoundingClientRect().top
     },
     handleScroll () {
       // eslint-disable-next-line no-debugger
@@ -1450,7 +1449,6 @@ export default {
       }
       if (element) {
         this.firstContOffsetY = this.getAbsoluteTop(element)
-        console.log('this.firstContOffsetY', this.firstContOffsetY)
         if (this.firstContOffsetY > 0) {
           console.log('going up')
           this.scrollDirection = 'up'

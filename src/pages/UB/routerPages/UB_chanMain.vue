@@ -63,7 +63,7 @@
     </div>
 
     <div class="channelItemBox" ref="channelItemBox" style="background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
-      <pushList :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" @goScroll="mChanMainScrollWrap.style.overflow = 'scroll'" :pBoardList="mChanInfo.boardList" :initData="this.mChanInfo.initData.contentsList" @cMemoEditYn="changeMemoEditYn"
+      <pushList :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" :pBoardList="mChanInfo.boardList" :initData="this.mChanInfo.initData.contentsList" @cMemoEditYn="changeMemoEditYn"
         :targetContents="{ targetContentsKey: mChanInfo.targetContentsKey, jobkindId: mChanInfo.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.mChanInfo.targetType"
         ref="ChanAlimListPushListCompo" :alimListYn="true" @openPage="openPage" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements'
         @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @openPop="openWriteContentsPop" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit' />
