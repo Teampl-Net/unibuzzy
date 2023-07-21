@@ -305,7 +305,7 @@ export const commonMethods = {
   changeText (text) { // KO$^$'테스트$#$'EN$^$'
     // 현재 상태가 ko en인지 확인하는 루트가 필요함
     if (text) {
-      if (this.$i18n.locale === 'ko') {
+      if (this.$i18n && this.$i18n.locale === 'ko') {
         var changeTxt = ''
         var indexOf = text.indexOf('KO$^$')
         if (indexOf === -1) {
@@ -314,8 +314,18 @@ export const commonMethods = {
           changeTxt = commonMethods.makeMtextMap(text, 'KO')
           if (changeTxt) { return changeTxt }
         }
-      } else if (this.$i18n.locale === 'en') {
+      } else if (this.$i18n && this.$i18n.locale === 'en') {
         var indexOfE = text.indexOf('EN$^$')
+        if (indexOfE !== -1) {
+          changeTxt = commonMethods.makeMtextMap(text, 'EN')
+          if (changeTxt) { return changeTxt }
+        } else {
+          changeTxt = commonMethods.makeMtextMap(text, 'KO')
+          if (changeTxt) return changeTxt
+          else return text
+        }
+      } else {
+        const indexOfE = text.indexOf('EN$^$')
         if (indexOfE !== -1) {
           changeTxt = commonMethods.makeMtextMap(text, 'EN')
           if (changeTxt) { return changeTxt }
