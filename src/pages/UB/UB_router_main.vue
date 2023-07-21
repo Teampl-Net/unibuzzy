@@ -84,6 +84,8 @@ export default {
     }
   },
   created () {
+    // console.log(this.$route.params.testYn)
+    console.log('testYntestYntestYntestYn', localStorage.getItem('testYn'))
     if (this.GE_USER.unknownYn) {
       this.$router.push({ name: 'policies' })
       return

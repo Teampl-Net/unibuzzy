@@ -1,17 +1,19 @@
 <i18n>
-  {
-    "ko": {
-      "LOG_BTN_GOOGLE": "구글 로그인",
-      "LOG_BTN_APPLE": "애플 로그인",
-      "LOG_BTN_NO_LOGIN": "그냥 둘러보기"
-    },
-    "en": {
-      "LOG_BTN_GOOGLE": "Google Login",
-      "LOG_BTN_APPLE": "Apple Login",
-      "LOG_BTN_NO_LOGIN": "Just Look Around"
-    }
+{
+  "ko": {
+    "LOG_BTN_GOOGLE": "구글 로그인",
+    "LOG_BTN_APPLE": "애플 로그인",
+    "LOG_BTN_UNIB": "uniBuzzy 로그인",
+    "LOG_BTN_NO_LOGIN": "그냥 둘러보기"
+  },
+  "en": {
+    "LOG_BTN_GOOGLE": "Google Login",
+    "LOG_BTN_APPLE": "Apple Login",
+    "LOG_BTN_UNIB": "uniBuzzy Login",
+    "LOG_BTN_NO_LOGIN": "Just Look Around"
   }
-  </i18n>
+}
+</i18n>
 <template>
   <div class="loginContentsWrap">
     <div v-if="GE_USER.unknownYn" class="videoArea" style="position: fixed; width: 100%; height: 100%; overflow:hidden; background: #8999d3;">
@@ -47,6 +49,9 @@
             {{ $t('LOG_BTN_APPLE') }}
           </div>
         </div>
+        <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
+          {{ $t('LOG_BTN_UNIB') }}
+        </div>
         <!-- <div class="loginBtn font18" style="background: #aaa!important;" @click="justLookAround">
           <img src="../../../assets/images/footer/icon_search_fillin.svg">
           {{ $t('LOG_BTN_NO_LOGIN') }}
@@ -55,12 +60,8 @@
     </transition>
       <div v-if="pPartnerLoginYn" class="fl" style="width: 100%; height: 80px; display: flex; margin-top: 50px;align-items: center; justify-content: center;">
         <img style="width: 70px; border-radius: 3px; float: left;" src="../../../assets/images/common//DAlimMainQrCode.jpg">
-        <p class="font16 fontBold textLeft mleft-1 fl" style="color: #D6D6E7;">더알림 앱을 휴대폰에 설치하면<br>편하게 실시간으로 알림을 받을 수 있습니다!</p>
+        <p class="font16 fontBold textLeft mleft-1 fl" style="color: #D6D6E7;">If you install the app<br>you can get real-time notifications.</p>
       </div>
-      <!-- <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
-      <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
-        더알림계정으로 로그인
-      </div> -->
   </div>
 </template>
 
