@@ -36,7 +36,7 @@
           <!--Favorites -->
           <p class="fontBold font16">Favorites</p>
         </div>
-        <div v-if="pAreaDetail.fList&& pAreaDetail.fList.length > 0" style=" margin-top: 10px; width: calc(100% - 30px);">
+        <div v-if="pAreaDetail.fList&& pAreaDetail.fList.length > 0" style=" margin-top: 10px; width: 100%;">
           <div class="w100P" id="fileChannelWrap" style="height: 85px; overflow: auto;" @wheel="horizontalScroll">
             <div class="w100P" style="height: 100%; min-width: 100%; display:flex;">
               <chanRoundIcon @click="goChannelMain(chan)" :pAreaInfo="pAreaInfo" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="chan" v-for="chan in pAreaDetail.fList" :key="chan.teamKey" />

@@ -1,5 +1,5 @@
 <template>
-  <div ref="mainRef" class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
+  <div ref="mainRef" class="w100P h100P" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
     <createChannel v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
     <div v-if="mSelectSchoolPopShowYn" @click="mSelectSchoolPopShowYn = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
     <transition name="showUp">
@@ -9,12 +9,12 @@
       <transition name="showUp">
         <areaInfoPop :pBdClickedYn="mBdClickedYn" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
       </transition>
-    <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
+    <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
       <div class="ballon">other college towns?</div>
       <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
       <!-- <UBBgEffect /> -->
       <!-- my profile -->
-      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
+      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}" style="height: 50px; position: absolute; left: 15px; display: flex; align-items: center;">
         <gProfileImg style="width: 40px; height: 40px; margin-right: 10px; " :selfYn="true" class="fl" />
         <div class="fl font20 fontBold" style="color: white; text-shadow: 1px 2px 2px black;">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
       </div>
@@ -515,17 +515,28 @@ export default {
     },
     createMaskingAreaImg () {
       const areaList = this.village.areaList
-      let h = this.$refs.mainRef.offsetHeight
-      let w = this.$refs.mainRef.offsetHeight
-      const scaleFactor = w / 1500
-      h = scaleFactor * 3167
-      if (h > window.innerHeight) {
-        this.blankHeight = (window.innerHeight - h) / 2
+      let w = 0
+      let h = 0
+      if (this.$refs.mainRef) {
+        w = this.$refs.mainRef.offsetWidth
+        h = this.$refs.mainRef.offsetHeight
+        // const scaleFactor = h / 3167
+        // w = scaleFactor * 1500
+        // // const scaleFactor = w / 1500
+        // // h = scaleFactor * 3167
       } else {
+        w = window.innerWidth
         h = window.innerHeight
         const scaleFactor = h / 3167
         w = scaleFactor * 1500
-        this.blankWidth = (window.innerWidth - w) / 2
+        if (h > window.innerHeight) {
+          this.blankHeight = (window.innerHeight - h) / 2
+        } else {
+          h = window.innerHeight
+          const scaleFactor = h / 3167
+          w = scaleFactor * 1500
+          this.blankWidth = (window.innerWidth - w) / 2
+        }
       }
 
       if (areaList && areaList.length !== 0) {
@@ -946,15 +957,6 @@ export default {
 .bdDiv.clicked {
   z-index: 9999 !important;
   transform: scale(1.1)
-}
-.mainBG {
-  width: 100%;
-  height: 100% ;
-  /* position: relative; */
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
-  /* overflow: hidden; */
 }
 .areaCard {
   position: fixed;

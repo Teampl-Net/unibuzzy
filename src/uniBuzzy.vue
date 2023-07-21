@@ -10,7 +10,6 @@
       </transition>
     </div> -->
     <gAxiosLoading />
-    <gCloudLoading v-if="mCloudLoadingShowYn" style="position: absolute; top: 0; left: 0;" />
     <!-- <transition name="showModal">
       <gPopupWrap transition="showModal"  @successWrite="successWriteBoard" :propParams="modalParam" ref="commonWrap" :headerTitle="headerTitle" @closePop="closePop" v-if="popShowYn" :parentPopN="parentPopN" />
     </transition> -->
@@ -50,7 +49,6 @@ export default {
       mCloudLoadingShowYn: false,
       mStartYn: true,
       showStartBtnYn: false,
-      introVideo: '/resource/video/introVideo.mp4',
       startPoint: 0,
       endPoint: 0,
       headerTitle: 'uniBuzzy University',
@@ -67,14 +65,6 @@ export default {
     }
   },
   methods: {
-    startUniB () {
-      console.log('yay!')
-      this.mCloudLoadingShowYn = true
-      setTimeout(() => {
-        this.mStartYn = true
-      }, 1750)
-      // this.cloudLoadingShowYn = false
-    },
     openPop (params) {
       this.popShowYn = true
       this.modalParam = params

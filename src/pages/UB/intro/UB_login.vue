@@ -119,7 +119,6 @@ export default {
     if (this.mobileYn === false && (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null)) {
       this.systemName = localStorage.getItem('systemName')
       localStorage.setItem('appYn', true)
-      this.mobileYn = true
     }
     // 애플로 로그인 성공 시.
     document.addEventListener('AppleIDSignInOnSuccess', (data) => {

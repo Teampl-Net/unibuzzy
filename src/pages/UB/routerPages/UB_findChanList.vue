@@ -7,7 +7,7 @@
     "SEAR_MSG_NOT_SEARCH": "최근 검색한 결과가 없어요"
   },
   "en": {
-    "FIND_TITLE_CHANNEL": "Search a Channel",
+    "FIND_TITLE_CHANNEL": "Search Channel",
     "SEAR_MSG_RECE_KEYWORD": "Recent Keywords",
     "SEAR_BTN_CLEAR": "Clear",
     "SEAR_MSG_ENTER_CHANNAME": "Please enter a channel's name.",

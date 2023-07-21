@@ -61,9 +61,9 @@ export default {
     openMenu () {
       this.$emit('openMenu')
     },
-    closeXPop () {
-      this.$emit('closeXPop', 'main')
-    },
+    // closeXPop () {
+    //   this.$emit('closeXPop', 'main')
+    // },
     sendBtnClick () {
       this.$emit('sendOk')
     }
