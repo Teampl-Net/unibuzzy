@@ -25,7 +25,7 @@
           <!-- <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ propParams.areaInfo.bdAreaDesc }} > {{ changeText(CHANNEL_DETAIL.nameMtext) }}</div> -->
           <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">Gerogia Tech > {{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
           <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
-          <div @click="test" id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
+          <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
           <!--follow-->
           <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" :btnTitle="$t('COMM_BTN_SUB')" />
           <!--following-->
@@ -586,27 +586,6 @@ export default {
       this.readyFunction()
     },
     async okMember () {
-      var result = null
-      this.$emit('openLoading')
-      result = await this.$changeFollower({ follower: this.mSaveFollowerParam, doType: 'CR' }, 'save')
-      if (result.result || result) {
-        if (result.message === 'OK') {
-          // this.mOpenWelcomePopShowYn = false
-        } else {
-          this.errorMsg = result.message
-          this.errorPopYn = true
-        }
-      } else {
-        this.errorMsg = '실패했습니다. 관리자에게 문의해주세요'
-        this.errorPopYn = true
-      }
-
-      this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
-      await this.$addChanList(this.mChanInfo.teamKey)
-
-      // eslint-disable-next-line no-debugger
-      debugger
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.memberTypeKey = this.selectMemberObj.memberTypeKey
@@ -617,24 +596,32 @@ export default {
       console.log('--------------------------')
       console.log(memberTypeItemList)
       if (memberTypeItemList.data.result) {
-        if (memberTypeItemList.data.memberTypeItemList.length === 0) {
+        // if (memberTypeItemList.data.memberTypeItemList.length === 0) {
         // eslint-disable-next-line no-new-object
-          var typeParam = new Object()
-          if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
-            typeParam.followerKey = this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
-          }
-          typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
-          // eslint-disable-next-line no-debugger
-          debugger
-          await this.$commonAxiosFunction({
-            url: '/service/tp.saveFollower',
-            param: { follower: typeParam }
-          })
-        } else {
-          this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
-          return true
+        var typeParam = new Object()
+        if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
+          typeParam.followerKey = this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
         }
+        if (this.selectMemberObj.memberTypeItemKey) {
+          typeParam.memberTypeItemKey = this.selectMemberObj.memberTypeItemKey
+        }
+        typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
+        typeParam.userKey = this.GE_USER.userKey
+        typeParam.teamKey = this.CHANNEL_DETAIL.teamKey
+        // eslint-disable-next-line no-debugger
+        debugger
+        await this.$commonAxiosFunction({
+          url: '/service/tp.saveFollower',
+          param: { follower: typeParam, appType: 'UB' }
+        })
+        // } else {
+        //   this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
+        //   return true
+        // }
         // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
+        this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+        await this.$addChanList(this.mChanInfo.teamKey)
       } else {
         this.$showToastPop(this.$t('ERROR_MSG_INQUIRY_MANAG'))
         return false
@@ -701,6 +688,8 @@ export default {
           this.selectMemberObj = this.mMemberTypeList[0]
         }
       }
+      console.log('1234')
+      console.log(this.selectMemberObj)
       this.$emit('enterCloudLoading', false)
       setTimeout(() => {
         this.$emit('showCloudLoading', false)
@@ -719,7 +708,6 @@ export default {
         this.confirmOk()
         // this.$router.go(0)
       }
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
     },
     async copyText () {
       if ((this.mChanInfo.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {

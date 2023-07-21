@@ -3,14 +3,12 @@
     "ko": {
       "EMPT_MSG_WRITE_COMM": "댓글을 작성해주세요.",
       "EMPT_MSG_WRITE_COMM2": "댓글을 작성해주세요.",
-      "": "",
-      "": "",
-      "": "",
-      "": "",
+      "EMPT_BTN_PIC": "사진",
     },
     "en": {
       "EMPT_MSG_WRITE_COMM": "Please add a comment.",
       "EMPT_MSG_WRITE_COMM2": "Please fill in a comment.",
+      "EMPT_BTN_PIC": "Picture"
     }
   }
 </i18n>
@@ -68,12 +66,12 @@
         <div v-show="attachMenuShowYn" style="width: 100%; height: 50px; display: flex; align-items: center;">
           <div class="font16 commonColor" @click.stop="addImgFile" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 33%; border-right: 1px solid #eee;">
             <img src="../../../assets/images/common/fileType_img.svg" alt="" style="margin-right: 8px; width: 12px;">
-            사진
+            {{ $t('EMPT_BTN_PIC') }}
           </div>
           <attachFileList @click.stop="attachMenuShowYn = false" targetType="memo" ref="attCompo" style="width: calc(33%);" :pOneLineYn="true" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
           <div @click.stop="toggleAttachMenu" class="font16 commonColor" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 33%;">
             <img src="../../../assets/images/common/searchXIcon.svg" alt="" style="margin-right: 8px; width: 12px;">
-            닫기
+            {{ $t('COMM_BTN_CLOSE') }}
           </div>
         </div>
       </div>

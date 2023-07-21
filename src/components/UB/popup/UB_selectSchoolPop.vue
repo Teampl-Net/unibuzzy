@@ -18,6 +18,9 @@
           <gInput @enterEvent="searchChannel" style="width: calc(100% - 35px);" :pInputObj="mInputObj" pInputType="I" pPlaceHolder="Please enter your school" />
           <img @click="searchChannel" class="cursorP" style="width: 25px; margin-left: 10px;" src="@/assets/images/button/icon_search_color.svg" >
         </div>
+        <div class="textRight cursorP" @click="resetSearch" v-if="mSearchYn">
+          Reset
+        </div>
         <gEmpty tabName="전체" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
         <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
           <channelCard class="moveBox chanRow cursorP" style="margin-top: 10px;" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" />
@@ -68,7 +71,8 @@ export default {
       mLoadingYn: false,
       mAxiosQueue: [],
       mSearchCateKey: 3,
-      mInputObj: { val: null }
+      mInputObj: { val: null },
+      mSearchYn: false
     }
   },
   props: {
@@ -139,8 +143,19 @@ export default {
   methods: {
     async searchChannel () {
       this.mOffsetInt = 0
-      const result = await this.getChannelList(10, 0, false)
+      const result = await this.getChannelList(10, 0, true)
       this.mChannelList = result.content
+      this.mSearchYn = true
+      if (this.mChannelList.length === 0) {
+        this.mEmptyYn = true
+      }
+    },
+    async resetSearch () {
+      this.mInputObj.val = null
+      this.mOffsetInt = 0
+      const result = await this.getChannelList(10, 0, true)
+      this.mChannelList = result.content
+      this.mSearchYn = false
       if (this.mChannelList.length === 0) {
         this.mEmptyYn = true
       }
