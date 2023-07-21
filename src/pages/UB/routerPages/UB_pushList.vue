@@ -1453,6 +1453,8 @@ export default {
           console.log('going up')
           this.scrollDirection = 'up'
           this.scrolledYn = false
+          console.log('offset')
+          console.log(this.firstContOffsetY)
         }
         if (time / 1000 > 1 && this.box.scrollTop !== undefined && this.$diffInt(this.box.scrollTop, this.scrollPosition) > 150) {
           this.scrollCheckSec = currentTime

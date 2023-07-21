@@ -15,7 +15,7 @@
 <template>
   <div class="loginContentsWrap">
     <div v-if="GE_USER.unknownYn" class="videoArea" style="position: fixed; width: 100%; height: 100%; overflow:hidden;">
-      <video autoplay muted loop :style="showStartBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
+      <video autoplay muted loop playsinline :style="showStartBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
         <source :src="introVideo" type="video/mp4" >
       </video>
       <div v-show="showStartBtnYn" class="fade-in fontBold textLeft" style="width: 90%; position: absolute; text-shadow: 2px 2px 3px black; color: white; top: 20%; left: 5%;">

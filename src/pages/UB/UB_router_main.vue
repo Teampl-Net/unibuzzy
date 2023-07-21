@@ -632,8 +632,11 @@ export default {
         pageData = await this.getChannelList(10, 0, false)
       }
       if (page !== 'main' && page !== 'termsOfUse' && page !== 'privacy') {
-        await new Promise((resolve) => setTimeout(resolve, 1500))
+        if (this.$route.path === '/') {
+          await new Promise((resolve) => setTimeout(resolve, 1500))
+        }
       }
+      this.mTargetType = page
       // eslint-disable-next-line no-debugger
       debugger
       this.sendInitData = pageData

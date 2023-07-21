@@ -20,10 +20,10 @@
           </div>
         </div>
         <div class="w100P" style="padding-bottom: 30px; overflow: auto; height: calc(100% - 50px);">
-          <gEmpty tabName="전체" contentName="채널" v-if="pFTeamList && pFTeamList.length === 0" style="margin-top:50px;" />
+          <gEmpty tabName="전체" contentName="채널" v-if="mFTeamList && mFTeamList.length === 0" style="margin-top:50px;" />
           <template v-else>
             <div class="textLeft fontBold" style="width: 100%; padding: 5px 10px; border-radius: 10px; background: rgba(186, 187, 215, 0.5);">Georgia Tech</div>
-            <channelCard v-for="(chanEle, index) in pFTeamList" :key="index" class="moveBox chanRow" style="margin-top: 10px;" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
+            <channelCard v-for="(chanEle, index) in mFTeamList" :key="index" class="moveBox chanRow" style="margin-top: 10px;" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
           </template>
         </div>
       </div>
@@ -31,8 +31,11 @@
 <script>
 export default {
   created () {
-    console.log('------------------------')
-    console.log(this.pFTeamList)
+    if (!this.pFTeamList || this.pFTeamList.length < 1) {
+      this.loginCheck()
+    } else {
+      this.mFTeamList = this.pFTeamList
+    }
   },
   components: {
   },
@@ -42,9 +45,31 @@ export default {
   },
   data () {
     return {
+      mFTeamList: []
     }
   },
   methods: {
+    async loginCheck () {
+      var paramMap = new Map()
+      if (this.GE_USER.userKey) {
+        paramMap.set('userKey', this.GE_USER.userKey)
+      } else {
+        // paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+        if ((localStorage.getItem('sessionUser'))) paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+      }
+      if (this.GE_USER.soAccessToken && this.GE_USER.soAccessToken !== '') { paramMap.set('soAccessToken', this.GE_USER.soAccessToken) }
+      if (this.GE_USER.fcmKey !== undefined && this.GE_USER.fcmKey !== null && this.GE_USER.fcmKey !== '') { paramMap.set('fcmKey', this.GE_USER.fcmKey) }
+      paramMap.set('userEmail', this.GE_USER.userEmail)
+      paramMap.set('soEmail', this.GE_USER.soEmail)
+      // paramMap.set('myTeamKey', this.GE_USER.myTeamKey)
+      // paramMap.set('myTeamKey', 836)
+      var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      paramMap.set('mobileYn', isMobile)
+      var response = await this.$axios.post('/service/tp.UB_firstLoginCheck', Object.fromEntries(paramMap))
+      if (response && (response.status === 200 || response.status === '200')) {
+        this.mFTeamList = response.data.fTeamList
+      }
+    },
     goChannelMain (param) {
       const pageParam = {}
       if (param.teamKey) {
@@ -64,6 +89,11 @@ export default {
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
       this.$store.commit('D_HISTORY/updateStack', history)
       this.$emit('closeXPop')
+    }
+  },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
     }
   }
 }

@@ -63,7 +63,7 @@
     </div>
 
     <div class="channelItemBox" ref="channelItemBox" style="background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
-      <pushList :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" :pBoardList="mChanInfo.boardList" :initData="this.mChanInfo.initData.contentsList" @cMemoEditYn="changeMemoEditYn"
+      <pushList :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" @goScroll="scrollOn" :pBoardList="mChanInfo.boardList" :initData="this.mChanInfo.initData.contentsList" @cMemoEditYn="changeMemoEditYn"
         :targetContents="{ targetContentsKey: mChanInfo.targetContentsKey, jobkindId: mChanInfo.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.mChanInfo.targetType"
         ref="ChanAlimListPushListCompo" :alimListYn="true" @openPage="openPage" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements'
         @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @openPop="openWriteContentsPop" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit' />
@@ -195,16 +195,16 @@ export default {
   mounted () {
     this.$nextTick(() => {
       this.calcSummaryWrapH()
+      this.mChanMainScrollWrap = this.$refs.chanScrollWrap
+      if (this.mChanMainScrollWrap) {
+        this.mChanMainScrollWrap.addEventListener('scroll', this.updateScroll)
+        this.mChanMainScrollWrap.addEventListener('mousewheel', e => {
+          this.mChanMainScrollDirection = e.deltaY > 0 ? 'down' : 'up'
+        })
+      }
+      this.setWindowSize()
+      window.addEventListener('resize', this.handleResize)
     })
-    this.mChanMainScrollWrap = this.$refs.chanScrollWrap
-    if (this.mChanMainScrollWrap) {
-      this.mChanMainScrollWrap.addEventListener('scroll', this.updateScroll)
-      this.mChanMainScrollWrap.addEventListener('mousewheel', e => {
-        this.mChanMainScrollDirection = e.deltaY > 0 ? 'down' : 'up'
-      })
-    }
-    this.setWindowSize()
-    window.addEventListener('resize', this.handleResize)
   },
   updated () {
     this.$nextTick(() => {
@@ -212,6 +212,12 @@ export default {
     })
   },
   methods: {
+    scrollOn () {
+      this.mChanMainScrollWrap = this.$refs.chanScrollWrap
+      if (this.mChanMainScrollWrap) {
+        this.mChanMainScrollWrap.style.overflow = 'scroll'
+      }
+    },
     test () {
       console.log(this.mChanInfo)
     },
