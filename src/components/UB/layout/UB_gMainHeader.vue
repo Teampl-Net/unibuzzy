@@ -1,11 +1,11 @@
 <template>
   <!-- <div class="w100P " style="position: fixed; top: 0; left: 0; height: 60px; background: none; z-index: 9; display: flex; align-items: center; justify-content: center;"> -->
   <div class="mainHeaderWrap" v-if="pRouterHeaderInfo">
-    <div v-if="pContentsYn" v-on:click="goBack" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
+    <div v-if="pContentsYn" v-on:click="goBack" class="fl cursorP" style="min-width: 25px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <img src="../../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
     </div>
-    <div v-else v-on:click="showMenu" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
-      <img class="mainMenuIcon" height="20" style="position: absolute; left: 20px;" @click="showMenu()" src="../../../assets/images/common/icon_menu.png"/>
+    <div v-else v-on:click="showMenu" class="fl cursorP " style="min-width: 25px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
+      <img class="mainMenuIcon" height="20" @click="showMenu()" src="../../../assets/images/common/icon_menu.png"/>
     </div>
     <!-- <img v-if="pRouterHeaderInfo.logoImg" :src="pRouterHeaderInfo.logoImg" height="30" style="margin-right: 5px; border: 2px solid white; background: white; border-radius: 100%; -webkit-user-drag: none;" /> -->
     <p class="headerFont fontBold fl" style="color: #062bb5;" v-html="pRouterHeaderInfo"></p>

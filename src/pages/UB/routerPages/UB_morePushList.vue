@@ -1,8 +1,9 @@
 <template>
   <div class="w100P h100P" style="padding-top: 50px; padding-bottom: 60px;">
     <transition name="showModal">
-      <findContentsList :tpGroupCode="false" contentsListTargetType="BOAR" transition="showModal" @searchList="requestSearchList" :pClosePop="closeSearchPop" />
+      <findContentsList v-if="findPopShowYn" :tpGroupCode="false" contentsListTargetType="BOAR" transition="showModal" @searchList="requestSearchList" :pClosePop="closeSearch" />
     </transition>
+    <searchResult style="padding: 10px;" v-if="resultSearchKeyList.length > 0" :searchList="resultSearchKeyList" @changeSearchList="changeSearchList" />
     <div style="width: 100%; height: 100%;  float: left; background: rgb(220, 221, 235); position: relative; padding-top: 30px;">
       <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'" style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); padding-bottom: 60px; ">
         <template  v-for="(cont, index) in GE_DISP_CONT_LIST" :key="index">
@@ -12,14 +13,19 @@
         <gEmpty :tabName="currentTabName" contentName="게시판" v-if="GE_DISP_CONT_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
       </div>
     </div>
+    <div @click="openSearch" class="cursorP" style="position: absolute; cursor: pointer; right: 10%; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid #8B8AD1; width: 50px; height: 50px; background-color: #fff;" :style="'bottom:' + (this.$STATUS_HEIGHT + 80)+ 'px'">
+      <img style="width: 50%;" src="@/assets/images/button/icon_search_color.svg" alt="채널 만들기 버튼">
+    </div>
   </div>
 </template>
 
 <script>
 import findContentsList from '@/components/popup/common/D_findContentsList.vue'
+import searchResult from '@/components/unit/Tal_searchResult.vue'
 export default {
   components: {
-    findContentsList
+    findContentsList,
+    searchResult
   },
   props: {
     propParams: Object
@@ -37,10 +43,49 @@ export default {
     return {
       mContentsList: [],
       endListYn: false,
-      offsetInt: 1
+      offsetInt: 0,
+      findKeyList: {},
+      findPopShowYn: false,
+      resultSearchKeyList: []
     }
   },
   methods: {
+    async changeSearchList (value) {
+      this.resultSearchKeyList = this.resultSearchKeyList.filter(item => {
+        return item.type !== value
+      })
+      if (value === 'searchKey') {
+        this.findKeyList.searchKey = ''
+      }
+      if (value === 'creUserName') {
+        this.findKeyList.creUserName = ''
+      }
+      if (value === 'creTeamNameMtext') {
+        this.findKeyList.creTeamNameMtext = ''
+      }
+      if (value === 'creDate') {
+        this.findKeyList.toCreDateStr = ''
+        this.findKeyList.fromCreDateStr = ''
+      }
+      this.mOffsetInt = 0
+      var resultList = await this.getContentsList()
+      var newArr = []
+      if (newArr.length > 0) {
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newArr)
+      }
+      this.mContentsList = resultList.content
+      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+        this.endListYn = true
+      } else {
+        this.endListYn = false
+      }
+    },
+    openSearch () {
+      this.findPopShowYn = true
+    },
+    closeSearch () {
+      this.findPopShowYn = false
+    },
     async castingSearchMap (param) {
       // eslint-disable-next-line no-new-object
       var searchObj = new Object()
@@ -73,20 +118,6 @@ export default {
         searchObj.keyword = param.fromCreDateStr + '~' + param.toCreDateStr
         resultArray.push(searchObj)
       }
-      searchObj = {}
-      if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
-        searchObj.typeName = '필터'
-        searchObj.type = 'workStatCodeKey'
-        searchObj.keyword = param.codeNameMtext
-        resultArray.push(searchObj)
-      }
-      searchObj = {}
-      if (param.selectedSticker !== undefined && param.selectedSticker !== null && param.selectedSticker !== '') {
-        searchObj.typeName = '분류'
-        searchObj.type = 'stickerKey'
-        searchObj.keyword = this.$changeText(param.selectedSticker.nameMtext)
-        resultArray.push(searchObj)
-      }
       this.findPopShowYn = false
       return resultArray
     },
@@ -104,62 +135,25 @@ export default {
           this.findKeyList.toCreDateStr = param.toCreDateStr
         } if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '') {
           this.findKeyList.fromCreDateStr = param.fromCreDateStr
-        } if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
-          this.findKeyList.workStatCodeKey = param.workStatCodeKey
-          this.findKeyList.codeNameMtext = param.codeNameMtext
-        } if (param.selectedSticker !== undefined && param.selectedSticker !== null && param.selectedSticker !== '') {
-          this.findKeyList.selectedSticker = param.selectedSticker
         }
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      this.findPaddingTopPush()
-      if (this.viewMainTab === 'F') {
-        var result = await this.getFileList(null, null)
-        var resultFileList = result.data.content.filter((item) => {
-          return item.contents
-        })
-        resultFileList = resultFileList.sort(function (a, b) { // num으로 오름차순 정렬
-          return b.creDate - a.creDate
-          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
-        })
-        this.fileList = resultFileList
-        this.endListSetFunc(result.data)
-      } else {
-        var resultList = await this.getPushContentsList(20, 0, true)
-      }
+      console.log('this.resultSearchKeyList')
+      console.log(this.resultSearchKeyList)
+      // this.findPaddingTopPush()
+      var resultList = await this.getContentsList()
       if (resultList === '') {
-        if (this.viewMainTab === 'P') {
-          this.alimContentsList = []
-        } else if (this.viewMainTab === 'B') {
-          this.boardContentsList = []
-        } else if (this.viewMainTab === 'A') {
-          this.allContentsList = []
-        }
+        this.mContentsList = []
       } else {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         var newArr = []
-        if (this.viewMainTab === 'P') {
-          newArr = [
-          // ...this.alimContentsList,
-            ...resultList.content
-          ]
-          this.alimContentsList = this.replaceArr(newArr)
-        } else if (this.viewMainTab === 'B') {
-          newArr = [
-            // ...this.boardContentsList,
-            ...resultList.content
-          ]
-          this.boardContentsList = this.replaceArr(newArr)
-        } else if (this.viewMainTab === 'A') {
-          newArr = [
-            // ...this.boardContentsList,
-            ...resultList.content
-          ]
-          this.allContentsList = this.replaceArr(newArr)
-        }
+        newArr = [
+          ...resultList.content
+        ]
+        this.mContentsList = this.replaceArr(newArr)
         this.endListSetFunc(resultList)
       }
-      this.scrollMove()
+      // this.scrollMove()
       this.findPopShowYn = false
     },
     replaceArr (arr) {
@@ -200,8 +194,23 @@ export default {
       param.jobkindId = 'BOAR'
       param.offsetInt = this.offsetInt
       param.ownUserKey = this.GE_USER.userKey
-      param.pageSize = 5
+      param.pageSize = 20
       param.subsUserKey = this.GE_USER.userKey
+      if (this.findKeyList.searchKey) {
+        param.title = this.findKeyList.searchKey
+      }
+      if (this.findKeyList.creUserName) {
+        param.creUserName = this.findKeyList.creUserName
+      }
+      if (this.findKeyList.creTeamNameMtext) {
+        param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
+      }
+      if (this.findKeyList.toCreDateStr) {
+        param.toCreDateStr = this.findKeyList.toCreDateStr
+      }
+      if (this.findKeyList.fromCreDateStr) {
+        param.fromCreDateStr = this.findKeyList.fromCreDateStr
+      }
 
       var result = await this.$getContentsList(param, false)
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)

@@ -13,8 +13,6 @@ export default {
   props: {
     searchList: {}
   },
-  updated () {
-  },
   data () {
     return {
       tempSearchList: {}

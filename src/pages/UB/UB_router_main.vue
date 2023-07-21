@@ -487,7 +487,7 @@ export default {
         param.jobkindId = 'BOAR'
         param.offsetInt = 0
         param.ownUserKey = this.GE_USER.userKey
-        param.pageSize = 5
+        param.pageSize = 20
         param.subsUserKey = this.GE_USER.userKey
 
         var result = await this.$getContentsList(param, false)

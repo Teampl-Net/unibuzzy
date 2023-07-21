@@ -44,13 +44,17 @@ export default {
       var param = new Object()
 
       param.pageSize = 5
+      param.offsetInt = 0
 
       param.jobkindId = 'BOAR'
       // param.allYn = true
       if (this.mViewTab === 'L') {
-        param.findActLikeYn = true
-        param.findActStarYn = false
+        param.DESCYn = true
+        param.findActLikeYn = false
+        param.findActStarYn = true
         param.findActYn = true
+        param.findLogReadYn = null
+        param.subsUserKey = this.GE_USER.userKey
       } else {
         param.creUserKey = this.GE_USER.userKey
       }
@@ -58,6 +62,7 @@ export default {
       param.ownUserKey = this.GE_USER.userKey
 
       var result = await this.$getContentsList(param, false)
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
 
       var resultList = result.content
 
