@@ -1,5 +1,5 @@
 <template>
-  <div class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
+  <div ref="mainRef" class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
     <createChannel v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
     <div v-if="mSelectSchoolPopShowYn" @click="mSelectSchoolPopShowYn = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
     <transition name="showUp">
@@ -9,7 +9,7 @@
       <transition name="showUp">
         <areaInfoPop :pBdClickedYn="mBdClickedYn" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
       </transition>
-    <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: cover; overflow: hidden;">
+    <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
       <div class="ballon">other college towns?</div>
       <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
       <!-- <UBBgEffect /> -->
@@ -342,7 +342,7 @@ export default {
         updateYn: true
       }
       var result = await this.$commonAxiosFunction({
-        url: 'service/tp.saveUser',
+        url: '/service/tp.saveUser',
         param: param
       })
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
@@ -515,8 +515,8 @@ export default {
     },
     createMaskingAreaImg () {
       const areaList = this.village.areaList
-      let h = window.innerHeight
-      let w = window.innerWidth
+      let h = this.$refs.mainRef.offsetHeight
+      let w = this.$refs.mainRef.offsetHeight
       const scaleFactor = w / 1500
       h = scaleFactor * 3167
       if (h > window.innerHeight) {
@@ -948,7 +948,7 @@ export default {
   transform: scale(1.1)
 }
 .mainBG {
-  width: 100vw;
+  width: 100%;
   height: 100% ;
   /* position: relative; */
   /* display: flex;

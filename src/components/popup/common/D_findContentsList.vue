@@ -58,7 +58,7 @@
           :placeholder="$t('SEAR_MSG_SELE_DATE')"
           titleFormat="YYYY-MM-DD"
         ></Datepicker>
-        <div v-if="mStickerList && mStickerList.length > 0" style="width: 100%; margin-top: 10px; float: left; min-height: 30px;">
+        <div v-if="mStickerList && mStickerList.length > 0 && $appType === 'D'" style="width: 100%; margin-top: 10px; float: left; min-height: 30px;">
             <p class="fontBold font16 commonColor textLeft mtop-1 fl w-100P mbottom-05">{{ $t('SEAR_MSG_SELE_LABEL') }}</p>
             <template v-for="(value, index) in mStickerList" :key="index" >
                 <gStickerLine v-if="value && contentsListTargetType !== 'fileBox'" @click="selectSticker(value)" :pSelectedYn="selectedSticker && value.stickerKey === selectedSticker.stickerKey" style="float: left; margin-right: 10px; min-width: 30px;" :pSticker="value" />

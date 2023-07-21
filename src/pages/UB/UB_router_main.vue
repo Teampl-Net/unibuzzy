@@ -470,7 +470,6 @@ export default {
       } else if (params.targetType === 'contentsDetail') {
         this.openPage(params)
       } else if (params.targetType === 'totalSaveList') {
-        this.changePageHeader('Saved')
         await this.goMoreList('saved')
         this.$router.push('/saveBox')
       }
@@ -488,7 +487,7 @@ export default {
         param.jobkindId = 'BOAR'
         param.offsetInt = 0
         param.ownUserKey = this.GE_USER.userKey
-        param.pageSize = 20
+        param.pageSize = 5
         param.subsUserKey = this.GE_USER.userKey
 
         var result = await this.$getContentsList(param, false)

@@ -128,7 +128,7 @@ if (type === 'UB') {
           path: '/saveBox',
           name: 'saveBox',
           props: true,
-          component: () => import(/* webpackChunkName: "about" */ '../components/popup/file/UB_saveFileList.vue')
+          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_morePushList.vue')
         },
         /* {
           path: '/',
