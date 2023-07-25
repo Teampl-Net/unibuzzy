@@ -394,8 +394,8 @@ export default {
     async goLoginPage () {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       if (isMobile && (localStorage.getItem('nativeYn') === true || localStorage.getItem('nativeYn') === 'false')) {
-        // window.location.href = 'http://192.168.0.10:8080/#/login'
-        this.$router.push({ path: '/login' })
+        window.location.href = 'http://192.168.0.10:8080/#/login'
+        // this.$router.push({ path: '/login' })
       } else {
         this.$router.push({ path: '/policies' })
       }
