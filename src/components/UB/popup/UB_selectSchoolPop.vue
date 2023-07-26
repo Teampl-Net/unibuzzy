@@ -160,6 +160,10 @@ export default {
       }
     },
     goTown (chanEle) {
+      // if (chanEle.teamKey === 836) {
+      //   this.$router.push({ name: 'uniBmain' })
+      //   return
+      // }
       this.pGoTown(chanEle)
     },
     searchCloseNopenPop (openPopParam) {

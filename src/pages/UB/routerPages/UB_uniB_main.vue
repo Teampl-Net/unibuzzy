@@ -1,33 +1,45 @@
 <template>
-  <div class="mainBG" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
-    <div class="w100P h100P" style="position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_centerBG.png'); background-position: center; background-size: cover; overflow: hidden;">
+  <div ref="uniBMainRef" @click="getInRectImgList" class="w100P h100P" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'" style="display: flex; align-items: center; overflow: hidden; z-index: -1;">
+    <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+    <transition name="showUp">
+      <areaInfoPop v-if="mInfoBoxShowYn" :pUniBInfo="clickedUniB" />
+    </transition>
+    <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_centerBG.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
+      <div class="ballon">other college towns?</div>
       <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
-      <div v-if="!GE_USER.unknownYn" class="w100P " style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
+      <!-- my profile -->
+      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}" style="height: 50px; position: absolute; left: 15px; display: flex; align-items: center;">
         <gProfileImg style="width: 40px; height: 40px; margin-right: 10px; " :selfYn="true" class="fl" />
         <div class="fl font20 fontBold" style="color: white; text-shadow: 1px 2px 2px black;">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
       </div>
       <div v-else class="w100P" style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
-        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr" />
+        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr" style="margin-top: 60px;" />
       </div>
       <template v-for="(uniB) in mUniBList" :key="uniB.key">
-        <div ref="uniBRef" class="nfcDiv" :class="{clicked: uniB.clickedYn}" style="position: absolute; " :style="[uniB.maskedImageStyle, { top: uniB.top+ 'px', left: uniB.left + 'px' }]">
-          <img :src="uniB.maskedImageUrl" />
+        <div ref="uniBRef" class="uniBDiv" :class="{clicked: uniB.clickedYn}" style="position: absolute; " :style="[uniB.maskedImageStyle, {width: uniB.w + 'px', height: uniB.h + 'px', top: uniB.top+ 'px', left: uniB.left + 'px' }]">
+          <img :src="uniB.maskedImageUrl" style="filter: drop-shadow(-10px -10px 5px #00000050)" />
+          <div v-if="uniB.description" class="fontBold" :style="{top: -20 + 'px'}" style="position: absolute; width: 100px; background-color: rgba(256, 256, 256, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 1000;">
+            <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ uniB.description }}</p>
+          </div>
         </div>
       </template>
     </div>
   </div>
 </template>
 <script>
-// import UBAreaBdList from '../../../components/popup/info/UB_uniBBdList.vue'
-// import UBBgEffect from '../../components/pageComponents/main/UB_bgEffect.vue'
+import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
 export default {
   data () {
     return {
+      mInfoBoxShowYn: false,
+      mSelectSchoolPopShowYn: false,
       mUniBList: [
         {
+          // 눌렀을 때 youtube link가 보이는 infoBox
           key: 1,
+          description: 'Youtube',
           ctx: {},
-          imgLink: '/resource/logo/uniBLogo.png',
+          imgLink: '/resource/logo/UB_uniBLogo.png',
           maskedImageUrl: '',
           maskedImageStyle: {},
           clickedYn: false,
@@ -38,9 +50,11 @@ export default {
           h: 0
         },
         {
+          // 눌렀을 때 'uniBuzzy University' > 'Inquiries' 게시판으로 가는 버튼아 았눈 infoBox
           key: 2,
           ctx: {},
-          imgLink: '/resource/logo/uniBLogo.png',
+          description: 'Inquiries',
+          imgLink: '/resource/logo/UB_uniBLogo.png',
           maskedImageUrl: '',
           maskedImageStyle: {},
           clickedYn: false,
@@ -51,9 +65,11 @@ export default {
           h: 0
         },
         {
+          // 눌렀을 때 'uniBuzzy University' > 'FAQ' 게시판으로 가는 버튼아 았눈 infoBox
           key: 3,
           ctx: {},
-          imgLink: '/resource/logo/uniBLogo.png',
+          description: 'FAQ',
+          imgLink: '/resource/logo/UB_uniBLogo.png',
           maskedImageUrl: '',
           maskedImageStyle: {},
           clickedYn: false,
@@ -64,9 +80,26 @@ export default {
           h: 0
         },
         {
+          // 눌렀을 때 @unibuzzy instgram link가 보이는 infoBox
           key: 4,
           ctx: {},
-          imgLink: '/resource/logo/uniBLogo.png',
+          description: 'Instagram',
+          imgLink: '/resource/logo/UB_uniBLogo.png',
+          maskedImageUrl: '',
+          maskedImageStyle: {},
+          clickedYn: false,
+          onImgYn: false,
+          left: 0,
+          top: 0,
+          w: 0,
+          h: 0
+        },
+        {
+          // 눌렀을 때 uniBuzzy란? 설명 + 홈페이지로 이동하는 버튼
+          key: 5,
+          ctx: {},
+          description: 'Download',
+          imgLink: '/resource/logo/UB_uniBLogo.png',
           maskedImageUrl: '',
           maskedImageStyle: {},
           clickedYn: false,
@@ -78,7 +111,6 @@ export default {
         }
       ],
       mShowAreaBdList: false,
-      mInfoBoxShowYn: false,
       innerWidth: 0,
       innerHeight: 0,
       blankHeight: 0,
@@ -115,14 +147,110 @@ export default {
     this.innerHeight = window.innerHeight
   },
   methods: {
+    closeInfoBox () {
+      this.resetHistory()
+      if (this.clickedArea && this.clickedArea.clickedYn) {
+        this.clickedArea.clickedYn = false
+      } else if (this.clickedBd && this.clickeduniB.clickedYn) {
+        this.clickeduniB.clickedYn = false
+      }
+      this.mInfoBoxShowYn = false
+      return false
+    },
+    createMaskingUniBImg () {
+      // eslint-disable-next-line no-debugger
+      debugger
+      const uniBList = this.mUniBList
+      const h = window.innerHeight
+      const w = window.innerWidth
+      if (uniBList && uniBList.length !== 0) {
+        for (let i = 0; i < uniBList.length; i++) {
+          const uniB = uniBList[i]
+          uniB.w = 1 / 10 * w
+          uniB.h = 1 / 10 * h
+          let blankWidth = 0
+          if (window.innerWidth > 1000) {
+            blankWidth = (window.innerWidth - 1000) / 2
+          }
+          if (uniB.key === 1) { // youtube
+            uniB.w = 1 / 8 * w
+            uniB.left = 120 / 564 * w - blankWidth
+            uniB.top = 11 / 20 * h
+          } else if (uniB.key === 2) { // inquiries
+            uniB.h = h / 9
+            uniB.left = 400 / 564 * w - blankWidth
+            uniB.top = 63 / 100 * h - uniB.h
+          } else if (uniB.key === 3) { // faq
+            uniB.h = 1 / 12 * h
+            uniB.left = 360 / 564 * w - blankWidth
+            uniB.top = 310 / 1000 * h - uniB.h
+          } else if (uniB.key === 4) { // instagram
+            uniB.h = 1 / 5 * h
+            uniB.left = 370 / 564 * w - blankWidth
+            uniB.top = 9 / 10 * h - uniB.h - 60
+          } else if (uniB.key === 5) { // download
+            uniB.h = 1 / 4 * h
+            uniB.left = 120 / 564 * w - blankWidth
+            uniB.top = 19 / 20 * h - uniB.h - 20
+          }
+          const targetImage = new Image()
+          targetImage.src = uniB.imgLink
+          targetImage.onload = function () {
+            const canvas = document.createElement('canvas')
+            const scaleFactor = uniB.h / this.height
+            const newWidth = Math.floor(this.width * scaleFactor)
+            const newHeight = Math.floor(this.height * scaleFactor)
+            canvas.width = newWidth
+            canvas.height = newHeight
+            uniB.w = newWidth
+            uniB.h = newHeight
+            const context = canvas.getContext('2d', { willReadFrequently: true })
+            // 마스킹 이미지 그리기
+            context.drawImage(this, 0, 0, uniB.w, uniB.h)
+            uniB.ctx = context
+            // 마스킹 이미지를 base64로 변환하여 출력
+            uniB.maskedImageUrl = canvas.toDataURL()
+          }
+          targetImage.src = uniB.imgLink
+        }
+      }
+    },
     async openSelectSchoolPop () {
       this.mSchoolList = await this.getChannelList(10, 0, false)
       this.mSelectSchoolPopShowYn = true
     },
+    async getChannelList (pageSize, offsetInput, mLoadingYn) {
+      // alert(offsetInput)
+      var paramMap = new Map()
+      var userKey = this.GE_USER.userKey
+      paramMap.set('cateItemKey', 3)
+      if (this.mViewTab === 'user') {
+        paramMap.set('userKey', userKey)
+      } else if (this.mViewTab === 'all') {
+        paramMap.set('fUserKey', userKey)
+      } else if (this.mViewTab === 'mychannel') {
+        paramMap.set('userKey', userKey)
+        paramMap.set('managerYn', true)
+      }
+      if (offsetInput !== undefined) {
+        paramMap.set('offsetInt', offsetInput)
+      } else {
+        if (this.mOffsetInt === 0 && this.mChannelList.length === 10) this.mOffsetInt = 1
+        paramMap.set('offsetInt', this.mOffsetInt)
+      }
+      if (pageSize) {
+        paramMap.set('pageSize', pageSize)
+      } else {
+        paramMap.set('pageSize', 10)
+      }
+
+      var result = await this.$getTeamList(paramMap, false)
+      var resultList = result.data
+      return resultList
+    },
     async goLoginPage () {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       if (isMobile && (localStorage.getItem('nativeYn') === true || localStorage.getItem('nativeYn') === 'false')) {
-        // window.location.href = 'http://192.168.0.10:8080/#/login'
         this.$router.push({ path: '/login' })
       } else {
         this.$router.push({ path: '/policies' })
@@ -189,84 +317,14 @@ export default {
       this.$store.dispatch('D_HISTORY/AC_CLEAR_GPOP_STACK')
       this.$emit('changePageHeader', 'uniBuzzy')
     },
-    closeInfoBox () {
-      if (this.clickedArea && this.clickedArea.clickedYn) {
-        this.clickedArea.clickedYn = false
-      } else if (this.clickedBd && this.clickedBd.clickedYn) {
-        this.clickedBd.clickedYn = false
-      }
-      return false
-    },
-    createMaskingUniBImg () {
-      const uniBList = this.mUniBList
-      let h = window.innerHeight
-      let w = window.innerWidth
-      const scaleFactor = w / 564
-      h = scaleFactor * 1002
-      if (h > window.innerHeight) {
-        this.blankHeight = (window.innerHeight - h) / 2
-      } else {
-        h = window.innerHeight
-        const scaleFactor = h / 1002
-        w = scaleFactor * 564
-        this.blankWidth = (window.innerWidth - w) / 2
-      }
-
-      if (uniBList && uniBList.length !== 0) {
-        for (let i = 0; i < uniBList.length; i++) {
-          const uniB = uniBList[i]
-          if (uniB.key === 1) {
-            uniB.w = 2 / 5 * w
-            uniB.h = 1 / 6 * h
-            uniB.left = w / 2 - 1 / 2 * uniB.w + this.blankWidth
-            uniB.top = 1 / 2 * h - uniB.h / 4 + this.blankHeight
-          } else if (uniB.key === 2) {
-            uniB.h = 1 / 7 * h
-            uniB.w = 7 / 16 * w
-            uniB.left = w / 2 - uniB.w - uniB.w / 5 + this.blankWidth
-            uniB.top = 2 / 5 * h + uniB.h / 12 + this.blankHeight
-          } else if (uniB.key === 3) {
-            uniB.h = 1 / 7 * h
-            uniB.w = 7 / 16 * w
-            uniB.left = 5 / 8 * w + 1 / 12 * uniB.w + this.blankWidth
-            uniB.top = 2 / 5 * h + uniB.h / 12 + this.blankHeight
-          } else if (uniB.key === 4) {
-            uniB.h = 1 / 5 * h
-            uniB.w = 1 / 2 * w
-            uniB.left = w / 2 + this.blankWidth
-            uniB.top = 3 / 8 * h + 18 / 20 * uniB.h + this.blankHeight
-          } else if (uniB.key === 5) {
-            uniB.h = 1 / 5 * h
-            uniB.w = 1 / 2 * w
-            uniB.left = w / 2 - uniB.w + uniB.w / 8 + this.blankWidth
-            uniB.top = 3 / 8 * h + 18 / 20 * uniB.h + this.blankHeight
-          }
-          const targetImage = new Image()
-          targetImage.src = uniB.imgLink
-          targetImage.onload = function () {
-            const scaleFactor = uniB.h / this.height
-            const canvas = document.createElement('canvas')
-            const newWidth = Math.floor(this.width * scaleFactor)
-            const newHeight = Math.floor(this.height * scaleFactor)
-            canvas.width = newWidth
-            canvas.height = newHeight
-            uniB.w = newWidth
-            uniB.h = newHeight
-            const context = canvas.getContext('2d', { willReadFrequently: true })
-            // 마스킹 이미지 그리기
-            context.drawImage(this, 0, 0, newWidth, newHeight)
-            uniB.ctx = context
-            // 마스킹 이미지를 base64로 변환하여 출력
-            uniB.maskedImageUrl = canvas.toDataURL()
-          }
-          targetImage.src = uniB.imgLink
-        }
-      }
-    },
     getInRectImgList (event) {
       // 빌딩부터 역순으로 뒤짐
       // 빌딩이 발견됨, 스타일클리어 시키고, 효과를 주고 return해버리기
       // 빌딩 클릭이 없음, uniBclick을 찾음
+      let blankWidth = 0
+      if (window.innerWidth > 1000) {
+        blankWidth = (window.innerWidth - 1000) / 2
+      }
       this.clickedUniB = {}
       this.allClearFocus()
       let findYn = false
@@ -275,7 +333,7 @@ export default {
         const uniB = uniBList[i]
         if (uniB.ctx === null) { continue }
         findYn = false
-        if (event.clientX >= uniB.left && event.clientX <= (uniB.left + uniB.w) && event.clientY >= uniB.top && event.clientY <= (uniB.top + uniB.h)) {
+        if (event.clientX >= uniB.left + blankWidth && event.clientX <= (uniB.left + uniB.w + blankWidth) && event.clientY >= uniB.top && event.clientY <= (uniB.top + uniB.h)) {
           findYn = true
           uniB.onImgYn = true
           break
@@ -290,7 +348,7 @@ export default {
       for (let i = uniBList.length - 1; i >= 0; i--) {
         const uniB = uniBList[i]
         if (uniB.onImgYn === false) { continue }
-        const _x = event.clientX - uniB.left
+        const _x = event.clientX - uniB.left - blankWidth
         const _y = event.clientY - uniB.top
         const pixelData = uniB.ctx.getImageData(_x, _y, 1, 1).data
         if (pixelData[3] !== 0) {
@@ -302,15 +360,10 @@ export default {
       }
     },
     allClearFocus () {
-      for (let i = 0; i < this.uniBList.length; i++) {
-        const uniB = this.uniBList[i]
+      for (let i = 0; i < this.mUniBList.length; i++) {
+        const uniB = this.mUniBList[i]
         uniB.clickedYn = false
         uniB.maskedImageStyle = {}
-        for (let j = 0; j < uniB.buildingList.length; j++) {
-          const bd = uniB.buildingList[j]
-          bd.clickedYn = false
-          bd.maskedImageStyle = {}
-        }
       }
     },
     setWindowSize () {
@@ -360,6 +413,7 @@ export default {
     }
   },
   components: {
+    areaInfoPop
     // UBAreaBdList
     // UBBgEffect
   }
@@ -376,18 +430,47 @@ export default {
 .uniBDiv.clicked {
   animation: uniB-zoom 0.4s alternate;
 }
-.nfcDiv.clicked {
-  z-index: 9999 !important;
-  transform: scale(1.1)
-}
 .mainBG {
   width: 100vw;
   height: 100vh;
-  /* position: relative; */
+  display: flex; align-items: center; overflow: hidden;
+  position: relative;
   /* display: flex;
   justify-content: center;
   align-items: center; */
   /* overflow: hidden; */
+}
+.planeImg {
+  transition: 0.2s;
+}
+.planeImg:hover {
+  transform: scale(1.2);
+  transform-origin: 50% 50%;
+  transition: 0.2s;
+}
+.ballon {
+  font-weight: bold;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  right: 10px;
+  top: 80px;
+  background: #fce169;
+  border-radius: 5px;
+  padding: 8px 12.8px;
+  font-size: 14px;
+}
+.ballon:after {
+    border-top: 7px solid #fce169;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 0px solid transparent;
+    content: "";
+    position: absolute;
+    top: 30px;
+    left: 80px;
 }
 .uniBCard {
   position: fixed;

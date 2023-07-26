@@ -95,6 +95,18 @@
       </div>
     </div>
   </div>
+  <div v-else-if="pUniBInfo" class="commonPopWrap" style="padding: 10px 20px; min-width: 300px; position: absolute;" @click.stop>
+    <div class="font16 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
+      <div style="display: flex; align-items: center; width: calc(100% - 25px);" class="">
+        <img style="width: 45px; margin-right: 10px;" src="/resource/logo/UB_uniBLogo.png" alt="">
+        <p class="textOverdot textLeft font25" style="width: calc(100% - 40px);">{{ pUniBInfo.description }}</p>
+        <!-- <p class="textOverdot textLeft" style="width: calc(100% - 40px);">{{ bdAreaNameMtext }}</p> -->
+      </div>
+      <div class="cursorP" @click="closeXPop" style="width: 25px;">
+        <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
+      </div>
+    </div>
+  </div>
 </template>
 <script>
 import chanRoundIcon from '../infoBox/UB_chanRoundIcon.vue'
@@ -105,6 +117,7 @@ export default {
     boardCard
   },
   props: {
+    pUniBInfo: {},
     propParams: {},
     parentPopN: {},
     pAreaInfo: {},

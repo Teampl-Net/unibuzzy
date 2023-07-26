@@ -230,7 +230,8 @@ export default {
       mSelectedAreaInfo: {},
       mSelectSchoolPopShowYn: false,
       mSchoolList: [],
-      mBdClickedYn: false
+      mBdClickedYn: false,
+      mOffsetInt: 0
     }
   },
   async created () {
@@ -933,7 +934,7 @@ export default {
     // }
   },
   mounted () {
-    // this.findAllDrawn()
+    this.findAllDrawn()
     this.setWindowSize()
     window.addEventListener('resize', this.createMaskingAreaImg)
   },
