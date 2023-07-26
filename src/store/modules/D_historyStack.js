@@ -77,7 +77,6 @@ const D_historyStack = {
       commit('MU_REMOVE_ALL_HISTORY_STACK', payload)
     },
     AC_ADD_POP_HISTORY_STACK ({ commit, state }, payload) {
-      console.log(payload)
       debugger
       commit('MU_ADD_POP_HISTORY_STACK', payload)
     },

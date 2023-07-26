@@ -74,7 +74,7 @@
         </div>
 
         <!-- 채널 추천 영역 -->
-        <div class="w100P fl" style="height: calc(100% - 280px); background: white; ">
+        <div v-if="$appType !== 'UB'" class="w100P fl" style="height: calc(100% - 280px); background: white; ">
           <div class="fl w100P pSide-1" style="height: 30px; float: left;">
             <img src="../../assets/images/main/icon_3d_star.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
             <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">{{ $t("SEAR_MSG_CHAN_RECOMMEND") }}</p>
@@ -105,7 +105,6 @@
             <img class="fr cursorP" v-if="mActiveSearch === 'CONT'" @click="mActiveSearch === 'CHAN' ? this.mChanFindPopShowYn = true : this.mFindPopShowYn = true"  style="width: 30px;" src="../../assets/images/common/common_filter.svg" alt="">
           </div>
           <!-- 공통 검색 탭 영역 -->
-          // 60
           <div  class="w100P fl pSide-1 chanListHeader " :style="`margin-top: ${this.mobileYn? (this.$STATUS_HEIGHT + 60):60}px;`" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
             <gActiveBar :testYn='true' ref="mainActiveBar" :tabList="this.mActiveSearchTabList" class="fl" @changeTab="changeSearchTab" />
               <template v-if="mActiveSearch === 'CHAN'">

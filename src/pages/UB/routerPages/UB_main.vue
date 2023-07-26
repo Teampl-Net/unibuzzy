@@ -1,14 +1,14 @@
 <template>
   <div ref="mainRef" class="w100P h100P" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
     <createChannel v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
-    <div v-if="mSelectSchoolPopShowYn" @click="mSelectSchoolPopShowYn = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99999; background: transparent;"></div>
+    <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
     </transition>
     <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
-      <transition name="showUp">
-        <areaInfoPop :pBdClickedYn="mBdClickedYn" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
-      </transition>
+    <transition name="showUp">
+      <areaInfoPop :pBdClickedYn="mBdClickedYn" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
+    </transition>
     <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
       <div class="ballon">other college towns?</div>
       <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
@@ -61,7 +61,7 @@
             <!-- <span class="fontBold font12" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
             <!-- <span class="fontBold font12" :style="[{left: -(village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority) + 1) / 2 * 20) + 'px'}]" style="position: absolute; background: rgba(100,100,100,0.7); color: white; width: 100px; border-radius: 5px; padding: 0 5px;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
             <span v-if="!(area.priority === 0 && index === 0)" class="fontBold font12" style="position: absolute; line-height: 15px; color: #333333; border: 1px solid #ccc; width: 80px; border-radius: 5px; padding: 0 5px;"
-            :style="[{ 'background-color': index === 0 ? '#f1f1f1CC' : (index === 1 || index === 2) ? '#f1f1f199' : (index === 3 || index === 4) ? '#f1f1f180' : '' }, {left: -40 + (village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority)) / 2 * 15) + 'px'}]" >{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
+            :style="[{ 'background-color': index === 0 ? '#f1f1f1CC' : (index === 1 || index === 2) ? '#f1f1f199' : (index === 3 || index === 4) ? '#f1f1f180' : '' }, {left: -40 + (village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority)) / 2 * 10) + 'px'}]" >{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
           </div>
         </template>
       </template>
@@ -276,6 +276,20 @@ export default {
     // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
   },
   methods: {
+    closeInfoBox () {
+      this.resetHistory()
+      if (this.clickedArea && this.clickedArea.clickedYn) {
+        this.clickedArea.clickedYn = false
+      } else if (this.clickedBd && this.clickedBd.clickedYn) {
+        this.clickedBd.clickedYn = false
+      }
+      this.mInfoBoxShowYn = false
+      return false
+    },
+    closeSchoolPop () {
+      this.resetHistory()
+      this.mSelectSchoolPopShowYn = false
+    },
     openCreChanPop () {
       this.mInfoBoxShowYn = false
       this.mCreChannelShowYn = true
@@ -331,9 +345,11 @@ export default {
       this.mSelectSchoolPopShowYn = true
     },
     closeSelectSchoolPop () {
+      this.resetHistory()
       this.mSelectSchoolPopShowYn = false
     },
     async goTown (chanEle) {
+      console.log('chanEle', chanEle)
       var param = {
         user: {
           userKey: this.GE_USER.userKey,
@@ -394,8 +410,8 @@ export default {
     async goLoginPage () {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       if (isMobile && (localStorage.getItem('nativeYn') === true || localStorage.getItem('nativeYn') === 'false')) {
-        window.location.href = 'http://192.168.0.10:8080/#/login'
-        // this.$router.push({ path: '/login' })
+        // window.location.href = 'http://192.168.0.10:8080/#/login'
+        this.$router.push({ path: '/login' })
       } else {
         this.$router.push({ path: '/policies' })
       }
@@ -410,7 +426,6 @@ export default {
     async getMainBoard () {
       // eslint-disable-next-line no-debugger
       debugger
-      console.log('getMainBoard')
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')
       var paramMap = new Map()
@@ -470,12 +485,6 @@ export default {
         // await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mBdAreaList, ...this.mMainMChanList])
         // await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimListmMainAlimList)
       }
-      console.log('this.mBdAreaList1111111111111111')
-      console.log(this.mBdAreaList)
-      console.log('this.mFTeamList')
-      console.log(this.mFTeamList)
-      console.log('this.mAlimCount')
-      console.log(this.mAlimCount)
     },
     setNativeHeight () {
       var varUA = localStorage.getItem('systemName')
@@ -496,18 +505,8 @@ export default {
       this.$store.dispatch('D_HISTORY/AC_CLEAR_GPOP_STACK')
       // this.$emit('changePageHeader', 'uniBuzzy')
     },
-    closeInfoBox () {
-      if (this.clickedArea && this.clickedArea.clickedYn) {
-        this.clickedArea.clickedYn = false
-      } else if (this.clickedBd && this.clickedBd.clickedYn) {
-        this.clickedBd.clickedYn = false
-      }
-      this.mInfoBoxShowYn = false
-      return false
-    },
     moveToChan (clickedInfo) {
       // const errorRoute = { name: 'errorPage', query: { errorStatus: error.response.status } }
-      console.log('clickedInfo', clickedInfo)
       this.closeInfoBox()
       this.$emit('chanInfo', clickedInfo)
       // const chanRoute = { name: 'chanMain', query: {chanInfo: JSON.stringify(clickedInfo)} }
@@ -520,10 +519,6 @@ export default {
       if (this.$refs.mainRef) {
         w = this.$refs.mainRef.offsetWidth
         h = this.$refs.mainRef.offsetHeight
-        // const scaleFactor = h / 3167
-        // w = scaleFactor * 1500
-        // // const scaleFactor = w / 1500
-        // // h = scaleFactor * 3167
       } else {
         w = window.innerWidth
         h = window.innerHeight
@@ -531,49 +526,50 @@ export default {
         w = scaleFactor * 1500
         if (h > window.innerHeight) {
           this.blankHeight = (window.innerHeight - h) / 2
+          this.blankWidth = (window.innerWidth - w) / 2
         } else {
           h = window.innerHeight
           const scaleFactor = h / 3167
           w = scaleFactor * 1500
+          this.blankHeight = (window.innerHeight - h) / 2
           this.blankWidth = (window.innerWidth - w) / 2
         }
       }
-
       if (areaList && areaList.length !== 0) {
         for (let i = 0; i < areaList.length; i++) {
           const area = areaList[i]
           if (area.key === 0) { // campus
-            area.w = 1 / 3 * w
+            area.w = 2 / 5 * w
             area.h = 1 / 7 * h
-            area.left = w / 2 - area.w / 2 - area.w / 8 + this.blankWidth
-            area.top = (h / 3 - area.h / 8) + this.blankHeight
+            area.left = w / 2 - area.w / 2 + this.blankWidth
+            area.top = (h / 3 - area.h / 6) + this.blankHeight
           } else if (area.key === 1) { // plaza
             area.w = 2 / 5 * w
             area.h = 1 / 6 * h
             area.left = w / 2 - 1 / 2 * area.w + this.blankWidth
             area.top = 1 / 2 * h - area.h / 4 + this.blankHeight
           } else {
-            if (area.key === 2) { // academic
+            if (area.key === 2) { // club & Startup
               area.h = 1 / 7 * h
-              area.w = 7 / 16 * w
-              area.left = w / 2 - area.w - area.w / 5 + this.blankWidth
+              area.w = 6 / 16 * w
+              area.left = w / 2 - area.w - area.w * 3 / 8 + this.blankWidth
               area.top = 2 / 5 * h + area.h / 12 + this.blankHeight
-            } else if (area.key === 3) { // club
+            } else if (area.key === 3) { // Major
               area.h = 1 / 7 * h
-              area.w = 7 / 16 * w
+              area.w = 6 / 16 * w
               area.left = 5 / 8 * w + 1 / 12 * area.w + this.blankWidth
               area.top = 2 / 5 * h + area.h / 12 + this.blankHeight
-            } else if (area.key === 4) { // start-up
-              area.h = 1 / 5 * h
-              area.w = 1 / 2 * w
+            } else if (area.key === 4) { // Class
+              area.h = 1 / 6 * h
+              area.w = 2 / 5 * w
               area.left = w / 2 + area.w / 12 + this.blankWidth
-              area.top = 3 / 8 * h + 18 / 20 * area.h + this.blankHeight
-            } else if (area.key === 5) { // facilities
-              area.h = 1 / 5 * h
-              area.w = 1 / 2 * w
-              area.left = w / 2 - area.w + area.w / 20 + this.blankWidth
-              area.top = 3 / 8 * h + 18 / 20 * area.h + this.blankHeight
-            } else if (area.key === 6) { // Mall
+              area.top = 13 / 32 * h + area.h + this.blankHeight
+            } else if (area.key === 5) { // Living
+              area.h = 1 / 6 * h
+              area.w = 2 / 5 * w
+              area.left = w / 2 - area.w - area.w / 12 + this.blankWidth
+              area.top = 13 / 32 * h + area.h + this.blankHeight
+            } else if (area.key === 6) { // Nearby
               area.h = 1 / 6 * h
               area.w = 1 / 2 * w
               area.left = w / 2 - area.w / 2 + this.blankWidth
@@ -584,9 +580,10 @@ export default {
           const targetImage = new Image()
           targetImage.src = area.imgLink
           targetImage.onload = function () {
-            const scaleFactor = area.h / this.height
+            let scaleFactor = area.w / this.width
             const canvas = document.createElement('canvas')
             const newWidth = Math.floor(this.width * scaleFactor)
+            scaleFactor = area.h / this.height
             const newHeight = Math.floor(this.height * scaleFactor)
             canvas.width = newWidth
             canvas.height = newHeight
@@ -616,14 +613,14 @@ export default {
       for (let j = 0; j < bdList.length; j++) {
         const bd = bdList[j]
         bd.w = 1 / 5 * area.w
+        bd.h = 1 / 3 * area.h
         if (bd.rank === 1) {
           if (bd.type === 'CB') {
             bd.w = 1 / 2 * area.w
-            bd.h = 1 / 2 * area.h
             bd.left = area.left + bd.w / 2
             bd.top = area.top - bd.h * 2 / 3
           } else {
-            bd.left = area.left + area.w * (2 / 5)
+            bd.left = area.left + area.w * (2 / 5) + 5
           }
         } else if (bd.rank === 2) {
           bd.left = 1 / 5 * area.w + area.left
@@ -632,15 +629,17 @@ export default {
         } else if (bd.rank === 4) {
           bd.left = area.left + 10
         } else if (bd.rank === 5) {
-          bd.left = 4 / 5 * area.w + area.left - 10
+          bd.left = 4 / 5 * area.w + area.left - 5
         }
         const targetImage = new Image()
         targetImage.src = bd.imgLink
         targetImage.onload = function () {
+          let newWidth = bd.w
+          let newHeight = bd.h
           const scaleFactor = bd.w / this.width
+          newWidth = Math.floor(this.width * scaleFactor)
+          newHeight = Math.floor(this.height * scaleFactor)
           const canvas = document.createElement('canvas')
-          const newWidth = Math.floor(this.width * scaleFactor)
-          const newHeight = Math.floor(this.height * scaleFactor)
           canvas.width = newWidth
           canvas.height = newHeight
           bd.w = newWidth
@@ -680,58 +679,58 @@ export default {
         targetImage.src = bd.imgLink
       }
     },
-    createMaskingBuildingImg1 (area) {
-      const bdList = area.buildingList
-      if (bdList && bdList.length !== 0) {
-        for (let j = 0; j < bdList.length; j++) {
-          const bd = bdList[j]
-          bd.w = 1 / 5 * area.w
-          bd.h = 1 / 4 * area.h
-          if (bd.rank === 1) {
-            if (bd.type === 'CB') {
-              bd.w = 1 / 2 * area.w
-              bd.h = 1 / 2 * area.h
-              bd.left = area.left + bd.w / 2
-              bd.top = area.top - bd.h * 2 / 3
-            } else {
-              bd.left = 1 / 2 * area.w + area.left - bd.w / 2
-              bd.top = area.top - bd.h / 8
-            }
-          } else if (bd.rank === 2) {
-            bd.left = 1 / 4 * area.w + area.left
-            bd.top = 1 / 32 * area.h + area.top
-          } else if (bd.rank === 3) {
-            bd.left = 9 / 16 * area.w + area.left
-            bd.top = 1 / 32 * area.h + area.top
-          } else if (bd.rank === 4) {
-            bd.left = 1 / 16 * area.w + area.left
-            bd.top = 1 / 6 * area.h + area.top
-          } else if (bd.rank === 5) {
-            bd.left = 12 / 16 * area.w + area.left
-            bd.top = 1 / 6 * area.h + area.top
-          }
-          const targetImage = new Image()
-          targetImage.src = bd.imgLink
-          targetImage.onload = function () {
-            const scaleFactor = bd.w / this.width
-            const canvas = document.createElement('canvas')
-            const newWidth = Math.floor(this.width * scaleFactor)
-            const newHeight = Math.floor(this.height * scaleFactor)
-            canvas.width = newWidth
-            canvas.height = newHeight
-            bd.w = newWidth
-            bd.h = newHeight
-            const context = canvas.getContext('2d', { willReadFrequently: true })
-            // 마스킹 이미지 그리기
-            context.drawImage(this, 0, 0, newWidth, newHeight)
-            bd.ctx = context
-            // 마스킹 이미지를 base64로 변환하여 출력
-            bd.maskedImageUrl = canvas.toDataURL()
-          }
-          targetImage.src = bd.imgLink
-        }
-      }
-    },
+    // createMaskingBuildingImg1 (area) {
+    //   const bdList = area.buildingList
+    //   if (bdList && bdList.length !== 0) {
+    //     for (let j = 0; j < bdList.length; j++) {
+    //       const bd = bdList[j]
+    //       bd.w = 1 / 5 * area.w
+    //       bd.h = 1 / 4 * area.h
+    //       if (bd.rank === 1) {
+    //         if (bd.type === 'CB') {
+    //           bd.w = 1 / 2 * area.w
+    //           bd.h = 1 / 2 * area.h
+    //           bd.left = area.left + bd.w / 2
+    //           bd.top = area.top - bd.h * 2 / 3
+    //         } else {
+    //           bd.left = 1 / 2 * area.w + area.left - bd.w / 2
+    //           bd.top = area.top - bd.h / 8
+    //         }
+    //       } else if (bd.rank === 2) {
+    //         bd.left = 1 / 4 * area.w + area.left
+    //         bd.top = 1 / 32 * area.h + area.top
+    //       } else if (bd.rank === 3) {
+    //         bd.left = 9 / 16 * area.w + area.left
+    //         bd.top = 1 / 32 * area.h + area.top
+    //       } else if (bd.rank === 4) {
+    //         bd.left = 1 / 16 * area.w + area.left
+    //         bd.top = 1 / 6 * area.h + area.top
+    //       } else if (bd.rank === 5) {
+    //         bd.left = 12 / 16 * area.w + area.left
+    //         bd.top = 1 / 6 * area.h + area.top
+    //       }
+    //       const targetImage = new Image()
+    //       targetImage.src = bd.imgLink
+    //       targetImage.onload = function () {
+    //         const scaleFactor = bd.w / this.width
+    //         const canvas = document.createElement('canvas')
+    //         const newWidth = Math.floor(this.width * scaleFactor)
+    //         const newHeight = Math.floor(this.height * scaleFactor)
+    //         canvas.width = newWidth
+    //         canvas.height = newHeight
+    //         bd.w = newWidth
+    //         bd.h = newHeight
+    //         const context = canvas.getContext('2d', { willReadFrequently: true })
+    //         // 마스킹 이미지 그리기
+    //         context.drawImage(this, 0, 0, newWidth, newHeight)
+    //         bd.ctx = context
+    //         // 마스킹 이미지를 base64로 변환하여 출력
+    //         bd.maskedImageUrl = canvas.toDataURL()
+    //       }
+    //       targetImage.src = bd.imgLink
+    //     }
+    //   }
+    // },
     addNewBuilding () {
       // eslint-disable-next-line no-debugger
       debugger
@@ -804,6 +803,12 @@ export default {
       // 빌딩부터 역순으로 뒤짐
       // 빌딩이 발견됨, 스타일클리어 시키고, 효과를 주고 return해버리기
       // 빌딩 클릭이 없음, areaclick을 찾음
+      console.log(window.innerWidth)
+      let blankWidth = 0
+      if (window.innerWidth > 1000) {
+        // area width = 1000 (원래는 1500)
+        blankWidth = (window.innerWidth - 1000) / 2
+      }
       if ((this.clickedBd && this.clickedBd.clickedYn && this.mInfoBoxShowYn)) return
       this.clickedArea = {}
       this.clickedBd = {}
@@ -818,7 +823,7 @@ export default {
             const bd = area.buildingList[j]
             if (bd.ctx === null) continue
             findYn = false
-            if (event.clientX >= bd.left && event.clientX <= (bd.left + bd.w) && event.clientY >= bd.top && event.clientY <= (bd.top + bd.h)) {
+            if (event.clientX >= bd.left + blankWidth && event.clientX <= (bd.left + bd.w + blankWidth) && event.clientY >= bd.top && event.clientY <= (bd.top + bd.h)) {
               findYn = true
               bd.onImgYn = true
               break
@@ -832,7 +837,7 @@ export default {
             const bd = area.buildingList[j]
             if (bd.onImgYn === false) continue
 
-            const _x = event.clientX - bd.left
+            const _x = event.clientX - bd.left - blankWidth
             const _y = event.clientY - bd.top
             const pixelData = bd.ctx.getImageData(_x, _y, 1, 1).data
             if (pixelData[3] !== 0) {
@@ -852,7 +857,7 @@ export default {
         const area = this.village.areaList[i]
         if (area.ctx === null) { continue }
         findYn = false
-        if (event.clientX >= area.left && event.clientX <= (area.left + area.w) && event.clientY >= area.top && event.clientY <= (area.top + area.h)) {
+        if (event.clientX >= area.left + blankWidth && event.clientX <= (area.left + area.w + blankWidth) && event.clientY >= area.top && event.clientY <= (area.top + area.h)) {
           findYn = true
           area.onImgYn = true
           break
@@ -867,7 +872,7 @@ export default {
       for (let i = this.village.areaList.length - 1; i >= 0; i--) {
         const area = this.village.areaList[i]
         if (area.onImgYn === false) { continue }
-        const _x = event.clientX - area.left
+        const _x = event.clientX - area.left - blankWidth
         const _y = event.clientY - area.top
         const pixelData = area.ctx.getImageData(_x, _y, 1, 1).data
         if (pixelData[3] !== 0) {

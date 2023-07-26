@@ -3,22 +3,24 @@
     "ko": {
       "LOG_BTN_GOOGLE": "구글 로그인",
       "LOG_BTN_APPLE": "애플 로그인",
-      "LOG_BTN_NO_LOGIN": "그냥 둘러보기"
+      "LOG_BTN_NO_LOGIN": "그냥 둘러보기",
+      "LOG_BTN_UNIB": "uniBuzzy 로그인"
     },
     "en": {
-      "LOG_BTN_GOOGLE": "Google Login",
-      "LOG_BTN_APPLE": "Apple Login",
-      "LOG_BTN_NO_LOGIN": "Just Look Around"
+      "LOG_BTN_GOOGLE": "Google Sign In",
+      "LOG_BTN_APPLE": "Apple Sign In",
+      "LOG_BTN_NO_LOGIN": "Just Look Around",
+      "LOG_BTN_UNIB": "uniBuzzy Sign In"
     }
   }
   </i18n>
 <template>
   <div class="loginContentsWrap">
-    <div v-if="GE_USER.unknownYn" class="videoArea" style="position: fixed; width: 100%; height: 100%; overflow:hidden;">
-      <video autoplay muted loop playsinline :style="showStartBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
+    <div v-if="GE_USER.unknownYn" class="videoArea" style="position: fixed; width: 100%; height: 100%; overflow:hidden; background: #D6D6E7;">
+      <!-- <video autoplay muted loop playsinline :style="showStartBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
         <source :src="introVideo" type="video/mp4" >
-      </video>
-      <div v-show="showStartBtnYn" class="fade-in fontBold textLeft" style="width: 90%; position: absolute; text-shadow: 2px 2px 3px black; color: white; top: 20%; left: 5%;">
+      </video> -->
+      <div v-show="showStartBtnYn" class="fade-in fontBold textLeft" style="width: 90%; position: absolute; text-shadow: 2px 2px 3px white;top: 20%; left: 5%;">
         <p class="w100P fl textCenter font18">Everything for campus life, </p>
         <p class="w100P fl fontBold textCenter" style="font-size: 50px;">uniBuzzy</p>
       </div>
@@ -46,6 +48,9 @@
             <img src="../../../assets/images/intro/login/login_apple.png">
             {{ $t('LOG_BTN_APPLE') }}
           </div>
+        </div>
+        <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
+          {{ $t('LOG_BTN_UNIB') }}
         </div>
         <!-- <div class="loginBtn font18" style="background: #aaa!important;" @click="justLookAround">
           <img src="../../../assets/images/footer/icon_search_fillin.svg">
@@ -116,6 +121,13 @@ export default {
     debugger
     localStorage.setItem('sessionUser', '')
     localStorage.setItem('user', '')
+    if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
+      this.systemName = localStorage.getItem('systemName')
+      localStorage.setItem('appYn', true)
+      this.mobileYn = true
+    } else {
+      this.mobileYn = false
+    }
     if (this.mobileYn === false && (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null)) {
       this.systemName = localStorage.getItem('systemName')
       localStorage.setItem('appYn', true)

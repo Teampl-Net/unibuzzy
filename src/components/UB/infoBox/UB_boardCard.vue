@@ -28,10 +28,6 @@ export default {
   props: {
     boardElement: {}
   },
-  created () {
-    console.log(12341234)
-    console.log(this.boardElement)
-  },
   methods: {
     goBaordMain (boardElement) {
       var openPopParam = {}

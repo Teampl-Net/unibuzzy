@@ -1,6 +1,6 @@
 <template>
   <div class="commonPopHeaderWrap" style="background:transparent !important;">
-    <div v-on:click="goMain" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
+    <div @click="goMain" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <img v-if="mBlackYn === true && targetType !== 'boardMain'" src="../../../assets/images/common/icon_back_white.png" class=" commonPopBackBtn" >
       <img v-else-if="pNoAuthYn === true " src="../../../assets/images/footer/icon_home_fillin.svg">
       <img v-else src="../../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
@@ -29,7 +29,29 @@ export default {
       mBlackYn: false
     }
   },
+  mounted () {
+    this.$addHistoryStack('chanMain')
+  },
+  beforeUnmount () {
+    this.$checkDeleteHistory('chanMain')
+  },
+  computed: {
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    history () {
+      return this.$store.getters['D_HISTORY/hStack']
+    },
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
+  },
   watch: {
+    pageUpdate () {
+      if (this.history[this.history.length - 1] === 'chanMain') {
+        this.goMain()
+      }
+    },
     pChanInfo: {
       immediate: true,
       handler (val) {
@@ -50,6 +72,11 @@ export default {
       return window.history.length > 1
     },
     async goMain () {
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
       if (this.hasHistory()) {
         this.$router.go(-1)
       } else {
@@ -66,11 +93,6 @@ export default {
     // },
     sendBtnClick () {
       this.$emit('sendOk')
-    }
-  },
-  computed: {
-    GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
     }
   }
 }

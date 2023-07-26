@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pAreaInfo && pAreaDetail" ref="gPopUp" class="commonPopWrap" style="padding: 10px 20px; min-width: 300px; position: absolute;" @click.stop>
+  <div v-if="pAreaInfo && pAreaDetail" class="commonPopWrap" style="padding: 10px 20px; min-width: 300px; position: absolute;" @click.stop>
     <img src="@/assets/images/button/Icon_CreChanBtn.png" @click="pOpenCreChanPop" alt="채널 만들기 버튼" style="position: absolute; cursor: pointer; right: 10%; bottom: 20px; width: 50px; height: 50px;" >
     <div style="position: absolute; top: -45px; right: 10px; width: 40px; height: 45px; background-color: rgba(255, 255, 255, 0.5); border-radius: 10px 10px 0 0; padding: 5px;">
       <img v-if="pBdClickedYn" src="../../../assets/images/main/icon_bd.png" class="h100P" />
@@ -11,7 +11,7 @@
         <p class="textOverdot textLeft font25" style="width: calc(100% - 40px);">{{ pAreaInfo.bdAreaNameMtext }}</p>
         <!-- <p class="textOverdot textLeft" style="width: calc(100% - 40px);">{{ bdAreaNameMtext }}</p> -->
       </div>
-      <div class="cursorP" @click="pClosePop" style="width: 25px;">
+      <div class="cursorP" @click="closeXPop" style="width: 25px;">
         <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
       </div>
     </div>
@@ -114,12 +114,25 @@ export default {
     pBdClickedYn: Boolean,
     pOpenCreChanPop: Function
   },
+  computed: {
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    history () {
+      return this.$store.getters['D_HISTORY/hStack']
+    }
+  },
+  watch: {
+    pageUpdate () {
+      if (this.history[this.history.length - 1] === 'areaInfoPop') {
+        this.closeXPop()
+      }
+    }
+  },
+  mounted () {
+    this.$addHistoryStack('areaInfoPop')
+  },
   created () {
-    console.log('pAreaInfo')
-    console.log(this.pAreaInfo)
-    console.log('pAreaDetail')
-    console.log(this.pAreaDetail)
-    this.settingPop()
     localStorage.setItem('notiReloadPage', 'none')
   },
   data () {
@@ -132,6 +145,14 @@ export default {
     }
   },
   methods: {
+    closeXPop () {
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
+      if (this.pClosePop) this.pClosePop()
+    },
     goChannelMain (param) {
       const pageParam = {}
       if (param.teamKey) {
@@ -178,42 +199,6 @@ export default {
       console.log(params)
       this.mPopParams = params
       this.mPopShowYn = true
-    },
-    async settingPop () {
-      if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
-        this.mPopN = Number(this.parentPopN) + 1
-      } else {
-        this.mPopN = 100
-      }
-      if (!this.mPopId) {
-        this.mPopId = 'gPopup' + this.mPopN
-      }
-      try {
-        this.$store.dispatch('D_HISTORY/AC_ADD_POP_HISTORY_STACK', this.mPopId)
-      } catch (error) {
-        console.log(error)
-      }
-      try {
-        this.$store.dispatch('D_HISTORY/AC_ADD_ALL_HISTORY_STACK', this.mPopId)
-      } catch (error) {
-        console.log(error)
-      }
-    },
-    async closePop () {
-      console.log('**** closePop ****')
-      console.log(this.mTargetType)
-      if (this.mTargetType === 'editMemberTypePop') {
-        this.$refs.editMemberTypePop.refreshList()
-      }
-      this.mPopShowYn = false
-      var gPopHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
-      gPopHistory = gPopHistory.filter((element, index) => index < gPopHistory.length - 1)
-      this.$store.dispatch('D_HISTORY/AC_UPDATE_GPOP_STACK', gPopHistory)
-      var history = this.$store.getters['D_HISTORY/hStack']
-      var removePage = history[history.length - 1]
-      history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
     }
   }
 }

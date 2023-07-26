@@ -10,11 +10,11 @@
     <chanHeader v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === ''" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo.targetKey" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" :pChanInfo="mChanInfo" @openPop="openPop" class="chanDetailPopHeader" />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mPopType === 'writeContents'" @click="mPopType = ''"></div>
     <writeContents v-if="mPopType === 'writeContents'" @closeXPop="closeWritePop" :params="mPopParams" :propData="mPopParams" :contentType="mPopParams.contentsJobkindId" />
-    <div v-if="mPopType === 'logList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 10000; background: transparent;"></div>
+    <div v-if="mPopType === 'logList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 10000;background: #00000050;"></div>
     <transition name="showUp">
       <notiHistoryList @closeXPop="closeWritePop" @openPage="openPage" v-if="mPopType === 'logList'" />
     </transition>
-    <div v-if="mPopType === 'favList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 10000; background: transparent;"></div>
+    <div v-if="mPopType === 'favList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 10000; background: #00000050;"></div>
     <transition name="showUp">
       <favListPop v-if="mPopType === 'favList'" @openPage="goOpenPage" :pFTeamList="mFTeamList" @closeXPop="closeWritePop" />
     </transition>
@@ -84,19 +84,16 @@ export default {
     }
   },
   created () {
-    // console.log(this.$route.params.testYn)
     console.log('testYntestYntestYntestYn', localStorage.getItem('testYn'))
     if (this.GE_USER.unknownYn) {
       this.$router.push({ name: 'policies' })
       return
     } else {
-      // if (this.$router.currentRoute._rawValue.path === '/') {
-      // this.findAllDrawn()
+      // if (this.GE_USER.myTeamKey === 836) {
+      //   this.$router.push({ name: 'uniBmain' })
+      //   return
       // }
     }
-    // setTimeout(() => {
-    //   this.$emit('closeCloudLoading')
-    // }, 2500)
     if (localStorage.getItem('backBtnShowYn') !== undefined && localStorage.getItem('backBtnShowYn') !== 'undefined') {
       localStorage.setItem('backBtnShowYn', 'false')
     }
@@ -116,14 +113,23 @@ export default {
     // this.showCloudLoading(false, 5000)
   },
   methods: {
+    deleteHistory () {
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
+    },
     setMainInfo (params) {
       this.mFTeamList = params.fTeamList
       this.mAlimCount = params.alimCount
     },
     closePolicyPop () {
+      this.deleteHistory()
       this.mPolicyType = ''
     },
     closeWritePop () {
+      this.deleteHistory()
       this.mPopType = ''
     },
     clearInfo (value) {
@@ -461,7 +467,6 @@ export default {
       this.mPopType = params.targetType
       this.mPopParams = params
       this.mGPopShowYn = true
-
       this.openChanMenuYn = false
       this.hideMenu()
       if (params.targetType === 'setMypage') {
@@ -787,9 +792,6 @@ export default {
       },
       deep: true
     }
-  },
-  beforeUnmount () {
-    this.$checkDeleteHistory(this.mPopId)
   },
   components: {
     editMyChanMenu,

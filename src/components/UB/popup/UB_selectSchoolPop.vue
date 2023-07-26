@@ -22,8 +22,8 @@
           Reset
         </div>
         <gEmpty tabName="전체" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
-        <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
-          <channelCard class="moveBox chanRow cursorP" style="margin-top: 10px;" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" />
+        <template v-for="(chanEle, index) in GE_DISP_TEAM_LIST" :key="index">
+          <channelCard v-if="chanEle.teamKey === 836 || chanEle.teamKey === 824" class="moveBox chanRow cursorP" style="margin-top: 10px;" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" />
           <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
         </template>
       </div>
@@ -92,11 +92,10 @@ export default {
     }
   },
   mounted () {
+    this.$addHistoryStack('selectSchoolPop')
     this.mChanListScrollBox = document.getElementById('chanListWrap')
     // this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
-
     if (!this.initData) this.changeTab(this.mViewTab)
-
     this.$emit('closeLoading')
     this.mLoadingYn = false
   },
@@ -439,6 +438,12 @@ export default {
     }
   },
   computed: {
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    history () {
+      return this.$store.getters['D_HISTORY/hStack']
+    },
     calcPaddingTop () {
       return {
         '--paddingTopLength': this.mPaddingTop + 'px'
@@ -465,12 +470,14 @@ export default {
       }
       var returnData = this.mChannelList
       return returnData
-    },
-    historyStack () {
-      return this.$store.state.historyStack
     }
   },
   watch: {
+    pageUpdate () {
+      if (this.pClosePop && this.history[this.history.length - 1] === 'selectSchoolPop') {
+        this.pClosePop()
+      }
+    },
     GE_USER: {
       immediate: true,
       handler (val, old) {

@@ -147,7 +147,6 @@ export default {
     }
   },
   created () {
-
     localStorage.setItem('notiReloadPage', 'none')
     this.$emit('changePageHeader', 'Settings')
     // .stringify(localStorage.getItem('appInfo')))
@@ -175,6 +174,9 @@ export default {
     pageUpdate () {
       return this.$store.getters['D_HISTORY/hUpdate']
     },
+    history () {
+      return this.$store.getters['D_HISTORY/hStack']
+    },
     GE_USER () {
        return this.$store.getters['D_USER/GE_USER']
     }
@@ -189,6 +191,7 @@ export default {
   },
   mounted () {
     this.$emit('closeLoading')
+    this.$addHistoryStack('setMyPage')
   },
   methods: {
     openDevPop () {
@@ -367,20 +370,15 @@ export default {
       this.showPolicyPopYn = false
     },
     backClick () {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
-      var removePage = hStack[hStack.length - 1]
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
       if (this.changeUserIconPop === hStack[hStack.length - 1]) {
-        hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
         this.changeUserIconShowYn = false
       } else if (this.devPopId === hStack[hStack.length - 1]) {
-        hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
         this.devModePopShowYn = false
-      } else {
-
       }
     },
     callPhone (num) {

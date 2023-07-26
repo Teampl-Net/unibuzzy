@@ -19,14 +19,14 @@
         <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
           <div style="display: flex; align-items: center; width: calc(100% - 25px);">
             <img style="width: 20px; margin-right: 5px;" src="@/assets/images/footer/icon_alim_fillin.svg" alt="">
-            <p class="textOverdot textLeft" style="width: calc(100% - 40px);">{{ $t('RECE_TITLE_NOTI')  }}</p>
+            <p class="textOverdot textLeft mleft-05" style="width: calc(100% - 40px); padding: none!important;">{{ $t('RECE_TITLE_NOTI')  }}</p>
           </div>
           <div class="cursorP" @click="closeXPop" style="width: 25px;">
             <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
           </div>
         </div>
-        <div class="w100P" style="height: calc(100% - 80px); overflow: auto; padding: 10px;">
-          <p class="font14 lightGray textLeft fl">{{ $t('RECE_MSG_NOTIDESC') }}</p>
+        <div class="w100P flexCenter" style="flex-direction: column; height: calc(100% - 80px); overflow: auto; padding: 10px;">
+          <p class="font14 lightGray textLeft fl" style="margin-botom: 30px !important;">{{ $t('RECE_MSG_NOTIDESC') }}</p>
           <template v-if="GE_RECENT_NOTI_LIST.length">
             <notiCompo @click="goContentsDetail(noti)" v-for="(noti, index) in GE_RECENT_NOTI_LIST" :mNotiEle="noti" :key="index" />
           </template>
@@ -54,15 +54,34 @@ export default {
   computed: {
     GE_RECENT_NOTI_LIST () {
       return this.$store.getters['D_NOTI/GE_RECENT_NOTI_LIST']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    history () {
+      return this.$store.getters['D_HISTORY/hStack']
     }
+  },
+  watch: {
+    pageUpdate () {
+      if (this.history[this.history.length - 1] === 'notiHistoryPop') {
+        this.closeXPop()
+      }
+    }
+  },
+  mounted () {
+    this.$addHistoryStack('notiHistoryPop')
+  },
+  beforeUnmount () {
+    this.$checkDeleteHistory('notiHistoryPop')
   },
   methods: {
     closeXPop (reloadYn) {
-      var history = this.$store.getters['D_HISTORY/hStack']
-      var removePage = history[history.length - 1]
-      history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      // var history = this.$store.getters['D_HISTORY/hStack']
+      // var removePage = history[history.length - 1]
+      // history = history.filter((element, index) => index < history.length - 1)
+      // this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      // this.$store.commit('D_HISTORY/updateStack', history)
       this.$emit('closeXPop')
     },
     goContentsDetail (noti) {

@@ -218,7 +218,7 @@ export default {
     },
     replaceArr (arr) {
       // var this_ = this
-      if (!arr && arr.length === 0) return []
+      if (!arr || (arr && arr.length === 0)) return []
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
         /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */

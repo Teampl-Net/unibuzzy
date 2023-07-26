@@ -9,20 +9,20 @@
 }
 </i18n>
 <template>
-  <div style="width: 100%; height: 100%; float: left">
+  <div class="w100P h100P fl">
     <table class="w100P">
       <colgroup>
-        <col class="listHeader" style="width: 50px; float: left;">
-        <col style="width: calc(100% - 50px); margin-left: 10px; float: left;">
+        <col class="listHeader" style="width: 55px; float: left;">
+        <col style="width: calc(100% - 55px); float: left;">
       </colgroup>
       <template v-for="(value, index) in propContentsList" :key="index">
         <tr v-if="index < 5" class="commonListTr textLeft " :style="index === propContentsList.length - 1 ? 'border: none!important;' : ''" >
             <td style="padding: 5px 5px; width: 50px;" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey}">
-            <div class="top5PushChanLogoImgWrap fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
+              <div class="top5PushChanLogoImgWrap w100P fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
             </div>
             </td>
             <td v-on:click="goChanDetail(value)" :class="{top5MyPushColor:  this.GE_USER.userKey === value.creUserKey}">
-            <div style="width:100%; float: left; padding: 2px 0 ; min-height: 25px;">
+            <div style="width:calc(100% - 55px); float: left; padding: 2px 0 ; min-height: 25px;">
                 <div v-if="value.jobkindId === 'ALIM'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{$t('COMMON_TAB_NOTI')}}</div>
                 <div v-else-if="value.jobkindId === 'BOAR'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMMON_TAB_POST')}}</div>
 

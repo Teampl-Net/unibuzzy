@@ -220,12 +220,6 @@ if (type === 'UB') {
       component: () => import(/* webpackChunkName: "about" */ '../pages/UB/intro/UB_agreePolicies.vue')
     },
     {
-      path: '/savePhone',
-      name: 'savePhone',
-      props: true,
-      component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/Tal_savePhone.vue')
-    },
-    {
       path: '/saveName',
       name: 'saveName',
       props: true,

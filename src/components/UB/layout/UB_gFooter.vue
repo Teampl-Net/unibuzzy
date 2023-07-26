@@ -1,5 +1,5 @@
 <template>
-  <div class="py-3 px-4 TalFooterWrap" :style="$route.path === '/'? 'background: #E9F1F64D':'background: #fff;'">
+  <div class="py-3 px-4 TalFooterWrap" :style="$route.path === '/' || $route.path === '/unibuzzy'? 'background: #E9F1F6B3':'background: #fff;'">
     <div @click="routePage('main')" class="footerRouter" style="flex: 1 !important">
       <div class="commonColor fontBold text-center font12">
         <img width="25" height="25" v-if="this.$route.path === '/'" :src="footerIcon[0].fullIcon" /> <img width="25" height="25" v-else :src="footerIcon[0].icon" />

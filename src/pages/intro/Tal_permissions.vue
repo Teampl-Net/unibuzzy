@@ -12,6 +12,8 @@
     "APP_NAME": "uniBuzzy",
     "APP_DESC1": "Everything for Campus Life",
     "APP_DESC2": "구독-알림",
+    "APP_PERMI1": "You need to give permissions",
+    "APP_PERMI2": "to use uniBuzzy app.",
     "PERMI_INTRO": "Access is used to provide better service. Notification/device and app recording is required for use.",
   }
 }

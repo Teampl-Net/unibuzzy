@@ -23,7 +23,7 @@
           <!-- <img src="../../../assets/images/channel/chanBgImg.jpeg" style="width:100%; height: calc(100% + 50px); position: absolute; left: 0; top: -50px;" /> -->
           <div class="w100P" style="height: calc(100% + 50px); position: absolute; left: 0; top: -50px; background: linear-gradient(to bottom, rgba(20, 20, 20, 0) 40%,rgba(20, 20, 20, 0.25) 50%,rgba(20, 20, 20, 0.5) 70%,rgba(20, 20, 20, 0.6) 90%,rgba(20, 20, 20, 0.8) 100%);"></div>
           <!-- <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ propParams.areaInfo.bdAreaDesc }} > {{ changeText(CHANNEL_DETAIL.nameMtext) }}</div> -->
-          <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">Gerogia Tech > {{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
+          <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">Georgia Tech > {{ $changeText(mChanInfo.initData.team.cateItemMtext) }}</div>
           <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
           <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
           <!--follow-->
@@ -191,6 +191,7 @@ export default {
     } else {
       this.getChanMain()
     }
+    console.log('mChanInfomChanInfomChanInfomChanInfomChanInfo', this.mChanInfo)
   },
   mounted () {
     this.$nextTick(() => {
@@ -1043,7 +1044,7 @@ export default {
   width: var(--wWidth);
   height: var(--wHeight);
   background-image: var(--backImg);
-  padding-top: var(--paddingTop);
+  /* padding-top: var(--paddingTop); */
 }
 
 .officialTitle {

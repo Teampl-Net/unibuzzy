@@ -41,7 +41,7 @@
 <template>
 <div class="w100P fl">
   <img src="../../assets/images/common/icon_box_empty.svg" style="width:50px;" alt="">
-  <p class="mtop-05 font18 fontBold commonColor">{{midleText}}</p>
+  <p class="mtop-05 font14 fontBold commonColor">{{midleText}}</p>
 </div>
 
 </template>

@@ -37,6 +37,27 @@ export default {
       this.mFTeamList = this.pFTeamList
     }
   },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    history () {
+      return this.$store.getters['D_HISTORY/hStack']
+    }
+  },
+  watch: {
+    pageUpdate () {
+      if (this.history[this.history.length - 1] === 'favListPop') {
+        this.closeXPop()
+      }
+    }
+  },
+  mounted () {
+    this.$addHistoryStack('favListPop')
+  },
   components: {
   },
   props: {
@@ -88,12 +109,8 @@ export default {
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
       this.$store.commit('D_HISTORY/updateStack', history)
+      this.$checkDeleteHistory('favListPop')
       this.$emit('closeXPop')
-    }
-  },
-  computed: {
-    GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
     }
   }
 }
