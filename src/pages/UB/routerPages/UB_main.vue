@@ -52,7 +52,7 @@
         </div>
         <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
           <div ref="bdRef" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; "
-          :style="[{ 'z-index': index === 0 ? '999' : (index === 1 || index === 2) ? '998' : (index === 3 || index === 4) ? '997' : '' }, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top+ 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
+          :style="[{ 'z-index': index === 0 ? '999' : (index === 1 || index === 2) ? '998' : (index === 3 || index === 4) ? '997' : '' }, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top + 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
             <div v-if="area.priority === 0" class="flexCenter" style="width: 250px; height: 80px; position: absolute; top: -50px; left: 0;" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
               <img src="../../../assets/images/main/banner2.png" class="w100P" style="position: absolute;" />
               <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold" style="position: absolute; margin-bottom: 30px;"></div>
@@ -617,8 +617,16 @@ export default {
         if (bd.rank === 1) {
           if (bd.type === 'CB') {
             bd.w = 1 / 2 * area.w
-            bd.left = area.left + bd.w / 2
-            bd.top = area.top - bd.h * 2 / 3
+            bd.h = 1 / 2 * area.h
+            if (window.innerWidth > 1000) {
+              bd.w = 1 / 3 * area.w
+              bd.left = area.left + area.w / 2 - bd.w / 2
+              bd.top = area.top - this.village.areaList[0].h / 2 - bd.h / 2
+            } else {
+              bd.left = area.left + area.w / 2 - bd.w / 2
+              bd.top = area.top - this.village.areaList[0].h / 2 + bd.h / 2
+            }
+            // i + area.top - bd.h / 2
           } else {
             bd.left = area.left + area.w * (2 / 5) + 5
           }
@@ -629,14 +637,19 @@ export default {
         } else if (bd.rank === 4) {
           bd.left = area.left + 10
         } else if (bd.rank === 5) {
-          bd.left = 4 / 5 * area.w + area.left - 5
+          bd.left = 4 / 5 * area.w + area.left - 10
         }
         const targetImage = new Image()
         targetImage.src = bd.imgLink
         targetImage.onload = function () {
           let newWidth = bd.w
           let newHeight = bd.h
-          const scaleFactor = bd.w / this.width
+          let scaleFactor = 1
+          if (bd.type !== 'CB' && window.innerWidth > 1000) {
+            scaleFactor = bd.w / this.width * 4 / 5
+          } else {
+            scaleFactor = bd.w / this.width
+          }
           newWidth = Math.floor(this.width * scaleFactor)
           newHeight = Math.floor(this.height * scaleFactor)
           const canvas = document.createElement('canvas')
@@ -646,7 +659,8 @@ export default {
           bd.h = newHeight
           const context = canvas.getContext('2d', { willReadFrequently: true })
           bd.ctx = context
-
+          // eslint-disable-next-line no-debugger
+          debugger
           if (bd.type !== 'CB') {
             for (let i = 0; i < area.h; i++) {
               let pixelData = {}
@@ -662,7 +676,12 @@ export default {
                 pixelData = area.ctx.getImageData(4 / 5 * area.w - 10, i, 1, 1).data
               }
               if (pixelData[3] !== 0) {
-                bd.top = i - 10 + area.top
+                if (window.innerWidth > 1000) {
+                  bd.top = i + area.top - bd.h / 2
+                } else {
+                  bd.top = i + area.top - bd.h / 3
+                }
+                console.log('bd.top', bd.top)
                 break
                 // console.log('foundfoundfound', bd.top)
                 // break
@@ -914,7 +933,7 @@ export default {
     // }
   },
   mounted () {
-    this.findAllDrawn()
+    // this.findAllDrawn()
     this.setWindowSize()
     window.addEventListener('resize', this.createMaskingAreaImg)
   },
