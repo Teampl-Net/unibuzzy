@@ -146,7 +146,7 @@ export default {
         param.targetKey = this.boardDetail.contentsKey
       }
       var result = await this.$commonAxiosFunction({
-        url: '/service/tp.saveMCabContents',
+        url: '/sUniB/tp.saveMCabContents',
         param: { mCabContents: param }
       })
       // console.log(result)

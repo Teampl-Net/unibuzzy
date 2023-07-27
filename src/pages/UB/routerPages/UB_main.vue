@@ -359,7 +359,7 @@ export default {
         updateYn: true
       }
       var result = await this.$commonAxiosFunction({
-        url: '/service/tp.saveUser',
+        url: '/sUniB/tp.saveUser',
         param: param
       })
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
@@ -378,7 +378,7 @@ export default {
         }
       }
       var result = await this.$commonAxiosFunction({
-        url: '/service/tp.getBdAreaDetail',
+        url: '/sUniB/tp.getBdAreaDetail',
         param: param
       })
       if (result.data) {
@@ -444,7 +444,7 @@ export default {
       // paramMap.set('myTeamKey', 836)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('/service/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
       )
       console.log('responsed')
       console.log(response)

@@ -81,7 +81,7 @@ export default {
           }
         }
         var result = await this.$commonAxiosFunction({
-          url: '/service/tp.saveTopview',
+          url: '/sUniB/tp.saveTopview',
           param: param
         })
         if (result.data.result) {

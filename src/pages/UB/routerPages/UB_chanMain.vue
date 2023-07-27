@@ -234,7 +234,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           const response = await this.$commonAxiosFunction({
-            url: '/service/tp.saveUserDo',
+            url: '/sUniB/tp.saveUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = response.data.doKey
@@ -250,7 +250,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           await this.$commonAxiosFunction({
-            url: '/service/tp.deleteUserDo',
+            url: '/sUniB/tp.deleteUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = null
@@ -305,7 +305,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.selectMemberObj.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: '/service/tp.getMemberTypeItemList',
+        url: '/sUniB/tp.getMemberTypeItemList',
         param: param
       })
       console.log('--------------------------')
@@ -322,7 +322,7 @@ export default {
           // eslint-disable-next-line no-debugger
           debugger
           this.$commonAxiosFunction({
-            url: '/service/tp.saveFollower',
+            url: '/sUniB/tp.saveFollower',
             param: { follower: typeParam }
           }).then(() => {
             this_.resultReqData.memberYn = true
@@ -370,7 +370,7 @@ export default {
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-        url: '/service/tp.getFollowerList',
+        url: '/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.mManagerList = result.data.content
@@ -406,7 +406,7 @@ export default {
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
       try {
-        const result = await this.$getViewData({ url: '/service/tp.getChanMainBoard', param: param }, false)
+        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: param }, false)
         // eslint-disable-next-line no-debugger
         debugger
         if (!result || !result.data || result.data.result !== 'OK') {
@@ -438,7 +438,7 @@ export default {
         console.log(this.CHANNEL_DETAIL.teamId)
       } else {
         var result = await this.$commonAxiosFunction({
-          url: '/service/tp.getAndSaveTeamAESToken',
+          url: '/sUniB/tp.getAndSaveTeamAESToken',
           param: { teamKey: this.CHANNEL_DETAIL.teamKey }
         })
         console.log(result.data)
@@ -591,7 +591,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.selectMemberObj.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: '/service/tp.getMemberTypeItemList',
+        url: '/sUniB/tp.getMemberTypeItemList',
         param: param
       })
       console.log('--------------------------')
@@ -612,7 +612,7 @@ export default {
         // eslint-disable-next-line no-debugger
         debugger
         await this.$commonAxiosFunction({
-          url: '/service/tp.saveFollower',
+          url: '/sUniB/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB' }
         })
         // } else {
@@ -681,7 +681,7 @@ export default {
       param.teamKey = Number(this.$route.params.encodedTeamKey)
       // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction({
-        url: '/service/tp.getMemberTypeList',
+        url: '/sUniB/tp.getMemberTypeList',
         param: param
       })
       if (memberTypeList.data.result) {

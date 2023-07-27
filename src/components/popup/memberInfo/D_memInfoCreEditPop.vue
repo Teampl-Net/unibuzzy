@@ -252,7 +252,7 @@ export default {
       }
       this.$emit('changeMemberItem', param)
       /* var saveItem = await this.$commonAxiosFunction({
-        url: '/service/tp.saveMemberTypeItem',
+        url: '/sUniB/tp.saveMemberTypeItem',
         param: { member: param }
       }) */
       // console.log(saveItem)

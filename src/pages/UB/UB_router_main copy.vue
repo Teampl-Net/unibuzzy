@@ -89,7 +89,7 @@ export default {
       param.teamKey = 824
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
-      const result = await this.$getViewData({ url: '/service/tp.getChanMainBoard', param: param }, false)
+      const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: param }, false)
       if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
         this.$showToastPop('Cannot find your campus!')
       } else {
@@ -127,7 +127,7 @@ export default {
         paramMap.set('ownUserKey', this.GE_USER.userKey)
         paramMap.set('subsUserKey', this.GE_USER.userKey)
         paramMap.set('userKey', this.GE_USER.userKey)
-        const response = await this.$axios.post('/service/tp.getMyContentsList', Object.fromEntries(paramMap))
+        const response = await this.$axios.post('/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap))
         if (response.data && response.data.content) this.mAttachFileList = response.data.content[0].attachFileList
       }
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
@@ -315,7 +315,7 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       try {
-        const result = await this.$getViewData({ url: '/service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.$showToastPop('채널을 찾을 수 없습니다!')
           return

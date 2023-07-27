@@ -89,10 +89,10 @@ export default {
       this.$router.push({ name: 'policies' })
       return
     } else {
-      // if (this.GE_USER.myTeamKey === 836) {
-      //   this.$router.push({ name: 'uniBmain' })
-      //   return
-      // }
+      if (this.GE_USER.myTeamKey === 836) {
+        this.$router.push({ name: 'uniBmain' })
+        return
+      }
     }
     if (localStorage.getItem('backBtnShowYn') !== undefined && localStorage.getItem('backBtnShowYn') !== 'undefined') {
       localStorage.setItem('backBtnShowYn', 'false')
@@ -144,7 +144,7 @@ export default {
       param.teamKey = 824
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
-      const result = await this.$getViewData({ url: '/service/tp.getChanMainBoard', param: param }, false)
+      const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: param }, false)
       if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
         this.$showToastPop('Cannot find your campus!')
       } else {
@@ -182,7 +182,7 @@ export default {
         paramMap.set('ownUserKey', this.GE_USER.userKey)
         paramMap.set('subsUserKey', this.GE_USER.userKey)
         paramMap.set('userKey', this.GE_USER.userKey)
-        const response = await this.$axios.post('/service/tp.getMyContentsList', Object.fromEntries(paramMap))
+        const response = await this.$axios.post('/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap))
         if (response.data && response.data.content) this.mAttachFileList = response.data.content[0].attachFileList
       }
 
@@ -380,7 +380,7 @@ export default {
     //   paramMap.set('userKey', this.GE_USER.userKey)
     //   // console.log(paramMap)
     //   var response = await this.$commonAxiosFunction({
-    //     url: '/service/tp.getCabinetDetail',
+    //     url: '/sUniB/tp.getCabinetDetail',
     //     param: Object.fromEntries(paramMap)
     //   })
     //   var mCabinet = response.data.mCabinet
@@ -414,7 +414,7 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       try {
-        const result = await this.$getViewData({ url: '/service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
         console.log('1234detailValue')
         console.log(result)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {

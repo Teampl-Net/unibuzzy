@@ -227,7 +227,7 @@ export default {
       var param = new Object()
       param.cateGroupKey = 2
       var cateItemList = await this.$commonAxiosFunction({
-        url: '/service/tp.getCateItemList',
+        url: '/sUniB/tp.getCateItemList',
         param: param
       })
       console.log('#################')
