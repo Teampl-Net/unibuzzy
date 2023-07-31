@@ -19,7 +19,12 @@ module.exports = {
         exclude: /node_modules/,
         options: { plugins: ['transform-runtime'], presets: ['es2015'] }
       },
-      { test: /\.hbs$/, loader: 'handlebars-loader' }
+      { test: /\.hbs$/, loader: 'handlebars-loader' },
+      {
+        resourceQuery: /blockType=i18n/,
+        type: 'javascript/auto',
+        loader: '@intlify/vue-i18n-loader'
+      }
     ]
   },
   resolve: {
