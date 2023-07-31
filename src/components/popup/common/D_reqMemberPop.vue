@@ -59,11 +59,7 @@ export default {
         }
         typeParam.memberTypeKey = this.propMemberData.memberTypeKey
         this.$commonAxiosFunction({
-<<<<<<< .mine
           url: '/sUniB/tp.saveFollower',
-=======
-          url: '/sUniB/tp.saveFollower',
->>>>>>> .r1564
           param: { follower: typeParam }
         }).then(() => {
           this_.closeXPop(true)

@@ -38,7 +38,7 @@
 </i18n>
 <template>
 <div style="width: 100%; height: 100%; float: left; position: absolute; z-index: 99999; left: 0; top: 0;">
-  <gPopHeader :headerTitle="modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" />
+  <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" />
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
     <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
       <div class="createChanContentsWrap">
@@ -47,7 +47,7 @@
             <img src="@/assets/images/channel/icon_camera.svg" class="cursorP" style="width:20px;" alt="">{{ $t('CRE_BTN_EDITBG') }}</label>
         </form>
 
-        <div v-if="chanDetail.modiYn === true && this.chanDetail.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; top:0.3rem; padding-left:0.25rem">
+        <div v-if="chanDetail.modiYn === true && this.chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; top:0.3rem; padding-left:0.25rem">
           <p class="font14" style="color:#aaa;"> <img src="@/assets/images/formEditor/trashIcon_gray2.svg" style="width:18px;" alt=""> {{ $t('CRE_BTN_DELETE_CHAN') }} </p>
         </div>
 
@@ -114,9 +114,30 @@ import seleciconBgPopup from '@/components/popup/creChannel/Tal_selectChaniconBg
 import gPopHeader from '../layout/UB_gPopHeader.vue'
 export default {
   created () {
-    console.log('지나갑니당')
-    console.log(this.pBdAreaList)
-    console.log(this.pSelectedAreaInfo)
+    if (this.pSelectedAreaInfo) {
+      switch (this.pSelectedAreaInfo.bdAreaNameMtext) {
+        case 'Club & Startup':
+          this.mSelectedTeamTypeKey = '12'
+          break
+        case 'Major':
+          this.mSelectedTeamTypeKey = '13'
+          break
+        case 'Class':
+          this.mSelectedTeamTypeKey = '14'
+          break
+        case 'Facilities & Amenities':
+          this.mSelectedTeamTypeKey = '15'
+          break
+        case 'Nearby':
+          this.mSelectedTeamTypeKey = '16'
+          break
+        default:
+          this.mSelectedTeamTypeKey = '3'
+          break
+      }
+      console.log('check!!!!')
+      console.log(this.mSelectedTeamTypeKey)
+    }
     this.$emit('openLoading')
     if (this.chanDetail !== undefined && this.chanDetail !== null && this.chanDetail !== {}) {
       if (this.chanDetail.modiYn === true) {
@@ -129,8 +150,6 @@ export default {
     setTimeout(() => {
       this.$emit('closeLoading')
     }, 500)
-    console.log(12341234)
-    console.log(this.pBdAreaList)
   },
   mounted () {
     console.log(this.CHANNEL_DETAIL)
@@ -170,7 +189,11 @@ export default {
         { teamNameMtext: '매장', teamType: 'A' },
         { teamNameMtext: '가족', teamType: 'F' },
         { teamNameMtext: '팀', teamType: 'T' },
-        { teamNameMtext: '기타', teamType: 'E' }],
+        { teamNameMtext: 'Club & Startup', teamType: 'C' },
+        { teamNameMtext: 'Major', teamType: 'M' },
+        { teamNameMtext: 'Facilities & Amenities', teamType: 'FA' },
+        { teamNameMtext: 'Nearby', teamType: 'N' }
+      ],
 
       mSelectedTeamTypeKey: '',
       mSelectedTeamType: '',
@@ -351,11 +374,20 @@ export default {
           gParam.deleteYn = true || 1
           this.mPageType = '삭제'
         }
+        if (this.pSelectedAreaInfo) {
+          gParam.parentTeamKey = this.pSelectedAreaInfo.teamKey
+          gParam.bdAreaKey = this.pSelectedAreaInfo.bdAreaKey
+        }
 
         console.log(' ------ console.log(gParam) ----- ')
         console.log(gParam)
 
-        var result = await this.$requestCreChan(gParam)
+        var response = await this.$commonAxiosFunction({
+          url: '/sUniB/tp.UB_createTeamAndBuilding',
+          param: { teamRequest: gParam }
+        })
+
+        var result = response.data
         console.log(result)
         if (result.result === true || result.result === 'true') {
           this.mCreCheckPopYn = false

@@ -2,6 +2,9 @@
   <div ref="uniBMainRef" @click="getInRectImgList" class="w100P h100P" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'" style="display: flex; align-items: center; overflow: hidden; z-index: -1;">
     <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
+      <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
+    </transition>
+    <transition name="showUp">
       <areaInfoPop v-if="mInfoBoxShowYn" :pUniBInfo="clickedUniB" />
     </transition>
     <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_centerBG.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
@@ -28,9 +31,11 @@
 </template>
 <script>
 import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
+import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue'
 export default {
   data () {
     return {
+      mSchoolList: [],
       mInfoBoxShowYn: false,
       mSelectSchoolPopShowYn: false,
       mUniBList: [
@@ -147,6 +152,27 @@ export default {
     this.innerHeight = window.innerHeight
   },
   methods: {
+    closeSelectSchoolPop () {
+      this.mSelectSchoolPopShowYn = false
+    },
+    async goTown (chanEle) {
+      console.log('chanEle', chanEle)
+      var param = {
+        user: {
+          userKey: this.GE_USER.userKey,
+          myTeamKey: chanEle.teamKey
+        },
+        updateYn: true
+      }
+      var result = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.saveUser',
+        param: param
+      })
+      this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
+      this.$router.go(0)
+      console.log('------------------------------')
+      console.log(result)
+    },
     closeInfoBox () {
       this.resetHistory()
       if (this.clickedArea && this.clickedArea.clickedYn) {
@@ -413,7 +439,8 @@ export default {
     }
   },
   components: {
-    areaInfoPop
+    areaInfoPop,
+    selectSchoolPop
     // UBAreaBdList
     // UBBgEffect
   }

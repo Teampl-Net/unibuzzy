@@ -261,7 +261,7 @@ export default {
       this.createMaskingAreaImg()
       this.innerWidth = window.innerWidth
       this.innerHeight = window.innerHeight
-      if (this.mBdAreaList && this.mBdAreaList[0]) {
+      if (this.mBdAreaList && this.mBdAreaList[0] && this.mBdAreaList[0].bdList && this.mBdAreaList[0].bdList[0]) {
         this.$emit('changePageHeader', this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext))
       } else {
         this.$emit('changePageHeader', 'Campus')

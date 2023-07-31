@@ -1,4 +1,4 @@
-<i18n>
+  <i18n>
 {
   "ko": {
     "CHAN_LIST_NAME_TYPE": "유형",
