@@ -63,11 +63,11 @@ export default {
 <style scoped>
     p{color: #062BB5; font-weight: bold;}
   .test{ display:flex; justify-content: center; align-items: center; height:100vh; }
-  /* .permissionHeaderTextWrap {border-bottom: 2px solid #062BB5;} */
+  .permissionHeaderTextWrap {width: calc(100% - 55px)}
   .permissionHeaderWrap{width: 100%; padding-top: 0.7rem; border-bottom: 2px solid #062BB5; min-height: 50px; height: 20%;  box-sizing: border-box}
   .permissionHeaderTextWrap {height: 100%;}
-  .permissionHeaderTextWrap p{font-size: 12px; color: #062BB5; line-height: 13px; font-weight: bold;}
-  .permissionHeaderTextWrap> p{line-height: 52px; font-size: 24px}
+  .permissionHeaderTextWrap p{font-size: 10px; color: #062BB5; line-height: 13px; font-weight: bold;}
+  .permissionHeaderTextWrap> p{line-height: 52px; font-size: 20px}
   .permissionTitleText {height: 80%; width: 100%;  box-sizing: border-box}
   .headerFont {font-size: 19px;}
   .headerLogoDiv{line-height: 10px; display: flex; flex-direction: column; justify-content : center;}
