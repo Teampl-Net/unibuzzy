@@ -44,6 +44,8 @@ const D_USER = {
       // if (!state.userInfo) {
       //   state.userInfo.userKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
       // }
+      // eslint-disable-next-line no-debugger
+      debugger
       if (state.userInfo && state.userInfo.userKey) {
         return state.userInfo
       } else {

@@ -300,7 +300,7 @@ export default {
           form.append('files[0]', (this.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://m.passtory.net:7443/fileServer/tp.uploadFile', form,
+            .post('https://unibuzzy.com/file/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data; charset: UTF-8;'
