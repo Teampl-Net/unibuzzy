@@ -37,9 +37,9 @@
 }
 </i18n>
 <template>
-<div style="width: 100%; height: 100%; float: left; position: absolute; z-index: 99999; left: 0; top: 0;">
+<div style="width: 100%; height: 100%; float: left; position: absolute; z-index: 99999; left: 0; top: 0;" @click.stop="preventDefault">
   <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" />
-  <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
+  <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
     <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
       <div class="createChanContentsWrap">
         <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" >
@@ -206,6 +206,12 @@ export default {
     }
   },
   methods: {
+    preventDefault () {
+      return false
+    },
+    closeBgPop () {
+      this.mIconBgSelectPopYn = false
+    },
     returnConfirmText (type) {
       if (this.GE_LOCALE === 'ko') {
         if (type === 'B') {

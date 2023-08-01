@@ -28,8 +28,9 @@
     <div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="closePop()"></div>
     <div class="confirmPopWrap" :style="'padding-bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
     <!-- <div style="width: 50%; height: 50%; padding: 0 20px; overflow: auto;" > -->
-        <div class="creChanIntroTextWrap" style="width: 100%; min-height: 50px; text-align: left;">
+        <div class="creChanIntroTextWrap" style="display:flex; align-items:center; justify-content:space-between; width: 100%; min-height: 50px; text-align: left;">
             <p class="fontBold font18">{{msgTitle}}</p>
+              <img src="../../../assets/images/common/popup_close.png" style="width:20px;" @click="pClosePop"/>
         </div>
         <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
         <div id="creChanContentsArea" style="width: 100%; min-height: 300px; margin-top: 20px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
@@ -50,7 +51,7 @@
             <div v-show="viewTab === 'icon'" id="chanIconBox"  style="width: 100%; float: left;">
               <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
                 <img v-if="opentype =='iconPop'" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext) "  style="width: calc(var(--chanBoxSize) - 20px)"/>
-                <p class="font15"  v-if="opentype =='iconPop'" >{{this.$changeText(value.codeNameMtext)}}</p>
+                <p class="font15"  v-if="opentype =='iconPop'" style="" >{{this.$changeText(value.codeNameMtext)}}</p>
 
                 <img v-if="opentype =='bgPop'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' style="width: 100%; height: 100%;" >
 
@@ -77,7 +78,8 @@ export default {
   props: {
     opentype: {},
     selectIcon: {},
-    selectBg: {}
+    selectBg: {},
+    pClosePop: Function
   },
   mounted () {
     if (document.getElementById('chanIconBox').scrollHeight > 0) {
@@ -137,6 +139,7 @@ export default {
         { display: this.$t('USER_PROFILE_ICON'), name: 'icon' },
         { display: this.$t('USER_PROFILE_MY_IMG'), name: 'img' }
       ],
+      close_black: require('@/assets/images/common/close_black.svg'),
       cropper: {},
       refImg: {},
       cropYn: false,

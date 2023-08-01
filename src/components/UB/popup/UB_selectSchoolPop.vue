@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 80%; height: 80%; border-radius: 10px; z-index: 99999; position: absolute; left: 10%; top: 10%;">
+  <div style="width: 80%; height: 80%; border-radius: 10px; z-index: 99999; position: absolute; left: 10%; top: 10%;" @click.stop="preventDefault">
     <div class="transWhite" style="width: 100%; height: 100%;  float: left; position: relative; border-radius: 10px; padding: 10px 20px; overflow: hidden;">
       <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
       <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
@@ -140,6 +140,9 @@ export default {
     this.findPaddingTopChan()
   },
   methods: {
+    preventDefault () {
+      return false
+    },
     async searchChannel () {
       this.mOffsetInt = 0
       const result = await this.getChannelList(10, 0, true)

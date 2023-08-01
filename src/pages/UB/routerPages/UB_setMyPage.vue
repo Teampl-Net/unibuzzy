@@ -29,7 +29,7 @@
     <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
     <!-- <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" /> -->
     <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
-    <userImgSelectCompo @closeXPop="this.$emit('closeXPop')" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
+    <userImgSelectCompo @closeXPop="this.$emit('closeXPop')" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
     <div class="" >
       <div class="profileWrap ">
         <div @click="changeUserImg()" class="cursorP imgSize">
@@ -334,7 +334,7 @@ export default {
       if (result.data) {
         this.changeYn = false
         this.$store.commit('D_USER/MU_USER', result.data.userInfo)
-        this.$router.push('/')
+        // this.$router.push('/')
         this.$emit('closeXPop')
         // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)
       } else {
@@ -375,9 +375,9 @@ export default {
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
       this.$store.commit('D_HISTORY/updateStack', history)
-      if (this.changeUserIconPop === hStack[hStack.length - 1]) {
+      if (this.changeUserIconPop === removePage) {
         this.changeUserIconShowYn = false
-      } else if (this.devPopId === hStack[hStack.length - 1]) {
+      } else if (this.devPopId === removePage) {
         this.devModePopShowYn = false
       }
     },

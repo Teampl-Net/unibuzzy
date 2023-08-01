@@ -35,7 +35,7 @@ export default {
     bgblack: { type: Boolean, default: false },
     // managerBtn: {},
     targetType: {},
-    pClosePop: Function
+    pClosePop: { type: Function, required: true }
     // helpYn: {},
     // followYn: {},
     // pNoAuthYn: {},
@@ -77,7 +77,11 @@ export default {
       this.$emit('openMenu')
     },
     closeXPop () {
-      this.pClosePop()
+      if (this.pClosePop) {
+        this.pClosePop()
+      } else {
+        console.log('오류발생')
+      }
     },
     sendBtnClick () {
       // if (this.headerTitle === '알림 작성') {

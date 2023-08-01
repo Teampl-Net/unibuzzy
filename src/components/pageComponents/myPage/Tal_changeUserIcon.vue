@@ -40,7 +40,7 @@
             </div>
           </div>
           <div style="width: 100%; min-height: 40px; margin-top: 1rem; float: left;">
-            <gBtnSmall @click="this.$emit('no')" :btnTitle="$t('COMM_BTN_CLOSE')" btnThema="light"/>
+            <gBtnSmall @click="this.$emit('noChange')" :btnTitle="$t('COMM_BTN_CLOSE')" btnThema="light"/>
             <gBtnSmall @click="updateUserIcon" :btnTitle="$t('COMMON_BTN_SELECTED')" class="mright-05" />
           </div>
         </div>
@@ -360,7 +360,7 @@ export default {
         this.$store.commit('D_USER/MU_USER', result.data.userInfo)
         localStorage.setItem('sessionUser', JSON.stringify(result.data))
         localStorage.setItem('sessionUser', JSON.stringify(result.data))
-        this.$router.replace({ path: '/' })
+        // this.$router.replace({ path: '/' })
         this.$emit('closeXPop')
         // this.userInfo.userDispMtext =  this.$changeText(param.user.userDispMtext)
         // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
