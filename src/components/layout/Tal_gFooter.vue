@@ -60,7 +60,6 @@ export default {
     async routePage (page) {
       // eslint-disable-next-line no-debugger
       debugger
-      // alert(page)
       /* if ('/' + page === this.$router.currentRoute._rawValue.path) {
         return
       } */

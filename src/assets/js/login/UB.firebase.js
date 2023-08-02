@@ -107,6 +107,5 @@ if (!isMobile && (appYn === 'false' || appYn === false)) {
       console.log(registration)
     }) */
 
-    // alert(payload.data.title + '\n' + payload.data.body)
   })
 }

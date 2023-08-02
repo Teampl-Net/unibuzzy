@@ -114,7 +114,6 @@ export default {
     NaverLoginBtn () {
     },
     AppleLoginBtn () {
-      // alert('apple')
     },
     /* async GoogleLoginBtn () {
       // console.log('login')

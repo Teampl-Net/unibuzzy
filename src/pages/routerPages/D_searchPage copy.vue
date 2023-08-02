@@ -370,7 +370,6 @@ export default {
       this.mStikcerKey = ''
       this.$nextTick(() => {
         this.$refs.mainActiveBar.switchtab(1)
-        // alert(true)
       })
       // 20230109수민삭제
       // this.changeRecommendTab(this.mActiveRecommend)

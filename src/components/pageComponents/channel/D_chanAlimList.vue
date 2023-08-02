@@ -313,7 +313,6 @@ export default {
       } else {
         this.setWindowSize()
       }
-      // alert(eventName)
       // emitEvent.call(event, eventName)
     },
     openChannelMsgPop () {

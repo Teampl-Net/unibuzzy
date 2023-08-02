@@ -174,7 +174,6 @@ export default {
       }
     },
     closeReqMemPop (pCloseYn) {
-      // alert(pCloseYn)
       this.reqPopShowYn = false
       if (pCloseYn === true) {
         this.closeXPop(true)

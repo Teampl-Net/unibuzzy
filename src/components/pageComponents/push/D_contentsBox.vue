@@ -765,7 +765,6 @@ export default {
           this.goContentsDetail(undefined, true)
         }
         //
-        // alert(data.creUserKey)
       } else if (type === 'goContentsDetail') {
         // 댓글로 스크롤하기 위해 2번째 파라미터를 true로 보내줌 (1번째는 컨텐츠 더보기 유무)
         this.goContentsDetail(undefined, true)
@@ -1154,7 +1153,6 @@ export default {
                   this.mContentMoreShowYn = false
                 }
               } catch (error) {
-                // alert(error)
               }
             })
           }

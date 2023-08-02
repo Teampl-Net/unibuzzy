@@ -246,7 +246,6 @@ export default {
       this.mSelectSchoolPopShowYn = true
     },
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
-      // alert(offsetInput)
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
       paramMap.set('cateItemKey', 3)

@@ -156,7 +156,6 @@ export default {
       } else if (type === 'delete') {
         // this.tempDelQue(data, idx)
         this.deleteQueList(param.index)
-        // alert(JSON.stringify(this.memberTypeItemList[param.index]))
         // this.$emit('deleteQue', param)
       } else if (type === 'add') {
         this.addQuestion(param.index)

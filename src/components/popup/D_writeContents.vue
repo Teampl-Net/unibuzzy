@@ -305,8 +305,6 @@ export default {
         this.getCabinetDetail(this.propData.cabinetKey)
       }
     }
-    // alert(JSON.stringify(this.params))
-    // alert(JSON.stringify(this.propData))
     if (this.params && this.params.userKey) {
       this.allRecvYn = false
     }
@@ -505,7 +503,6 @@ export default {
         }
       } else {
         mCabinet = data
-        // alert(this.contentType)
         if (this.contentType === 'BOAR' && (!this.GE_USER.certiDate) && (mCabinet.blindYn === 1 || mCabinet.blindYn === true)) {
         // 익명게시판일 떄
           this.mCanWriteYn = false

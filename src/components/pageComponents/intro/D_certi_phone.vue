@@ -40,7 +40,6 @@ export default {
   },
   methods: {
     getReturnValue (returnValue) {
-      // alert(returnValue)
       console.log(returnValue)
     },
     onClickCertification () {

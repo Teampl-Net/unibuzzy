@@ -85,7 +85,6 @@ export default {
     // 5. 팝업창으로 부터 수신된 이벤트
     recvEvtFromChild (evt) {
       if (evt.data.type && evt.data.type === 'webpackInvalid') return
-      // alert(true)
       console.log('recvEvtFromChild......')
       // console.log(JSON.parse(evt.data).message)
       console.log(evt.data)

@@ -131,7 +131,6 @@ export default {
   watch: {
     GE_CERTI: {
       handler (value, old) {
-        // alert(JSON.stringify(value))
         this.imp_uid = value.certi.imp_uid
         this.success = value.certiYn
         this.request_id = value.certi.request_id
@@ -162,7 +161,6 @@ export default {
         // eslint-disable-next-line camelcase
 
         // console.log(JSON.parse(access_token))
-        // alert(certificationsInfo.name)
         if (getToken.data.result) {
           this.certiInfo = JSON.parse(getToken.data.certiInfo) // 인증 토큰
           await this.savePhone()

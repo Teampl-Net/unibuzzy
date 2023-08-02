@@ -72,7 +72,6 @@ export default {
       sso.login(window.location.protocol + '//' + window.location.host, this.addLogList)
     },
     async successLogin () {
-      // alert(true)
       var param = {}
       var user = this.$store.getters['D_USER/GE_USER']
       param.userKey = user.userKey

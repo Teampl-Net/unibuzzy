@@ -415,7 +415,6 @@ export const commonMethods = {
       param: Object.fromEntries(paramMap)
     }, true)
     var response = JSON.parse(result.data.shortLink).shortLink
-    // alert(response)
     return response
   },
   addHistoryStack (openPageId) {
@@ -1119,7 +1118,6 @@ export const commonMethods = {
   dAlertLog (String) {
     var userKey = store.getters['D_USER/GE_USER'].userKey
     if (userKey === 123 || userKey === 255 || userKey === 104) {
-      // alert(String)
     }
   },
   openRouterModalPop (param) {
@@ -1127,7 +1125,6 @@ export const commonMethods = {
   },
   gobackDev () {
     // Tal_moTheAlim.vue 파일에서 touch Event로 뒤로가기 쓰고 있어요!! (ios 뒤로가기 기능!!)
-    // alert(JSON.stringify(this.$route.path))
     if (store.getters['D_USER/GE_NET_STATE'] === false || store.getters['D_USER/GE_NET_STATE'] === 'false') return
     var history = store.getters['D_HISTORY/hStack']
     if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {

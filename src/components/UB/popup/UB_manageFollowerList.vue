@@ -500,7 +500,6 @@ export default {
     },
     GE_NEW_MAN_LIST: {
         handler (value, old) {
-            // alert(this.CHANNEL_DETAIL.teamKey)
             if (!value || value[0].teamKey !== this.CHANNEL_DETAIL.teamKey) {
                 return
             }

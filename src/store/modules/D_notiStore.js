@@ -41,7 +41,6 @@ const D_NOTI = {
         try {
           // var notiSetList = state.allNotiList
           // var findIndex = notiSetList.indexOf((item) => item.tag === payload.tag)
-          // alert(payload.tag)
           // if (notiSetList.length > 0) {
           //   for (let i = 0; i < notiSetList.length; i++) {
           //     if (notiSetList[i].tag.trim() !== payload.tag.trim()) {
@@ -51,7 +50,6 @@ const D_NOTI = {
           // } else {
           //   state.allNotiList.push(payload)
           // }
-          // alert(findIndex)
           // if (findIndex === -1) {
 
           // }
@@ -65,9 +63,7 @@ const D_NOTI = {
           }, [])
           state.allNotiList = uniqueArr
         } catch (error) {
-          // alert(error)
         }
-        // alert(findIndex)
         // if (findIndex === -1) {
         //   state.allNotiList.unshift(payload)
         // }

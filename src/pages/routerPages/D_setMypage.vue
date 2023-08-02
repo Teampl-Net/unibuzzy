@@ -255,7 +255,6 @@ export default {
     checkAppVersion () {
         if (this.systemName === 'android' || this.systemName === 'Android') {
             if (this.appInfo.current !== this.appInfo.last) {
-            // alert('최신버전으로 업데이트 해주세요')
             this.checkVersionText = '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
             this.checkVersionPopShowYn = true
             // window.open(appInfo.playStoreUrl, '_blank')
@@ -278,7 +277,6 @@ export default {
       }
       if (systemName === 'android' || systemName === 'Android') {
         if (appInfo.current !== appInfo.last) {
-          // alert('버전업데이트 필요')
           window.open('https://play.google.com/store/apps/details?id=com.tal_project', '_blank')
         /* onMessage('closeApp', 'requestUserPermission').then(res => {
         aTag.click()

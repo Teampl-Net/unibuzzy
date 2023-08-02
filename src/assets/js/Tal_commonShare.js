@@ -14,7 +14,6 @@ const methods = {
         onMessage('REQ', 'callphone', num)
       }
     } else {
-      // alert('전화번호 정보가 없습니다')
     }
   }
 }

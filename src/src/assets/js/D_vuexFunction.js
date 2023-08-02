@@ -209,14 +209,12 @@ export const functions = {
             memo.creTeamKey = notiDetail.creTeamKey
             await store.commit('D_CHANNEL/MU_ADD_MEMO', memo)
             addVueResult = await functions.addContents(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
-            // alert('addVueResult: ' + addVueResult)
           } else {
             addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
           }
         } else if (JSON.parse(notiDetail.userDo).targetKind === 'CABI') {
           addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
         } else if (JSON.parse(notiDetail.userDo).targetKind === 'TEAM') {
-          // alert(true)
           addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
         } /* else if (JSON.parse(notiDetail.userDo).targetKind === 'MEMO') {
           functions.settingMemoNoti(message)

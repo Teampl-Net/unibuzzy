@@ -314,7 +314,6 @@ const D_CHANNEL = {
           chanDetail.ELEMENTS.showProfileUserList[idx2] = payload[i]
         } else {
           chanDetail.ELEMENTS.showProfileUserList.push(payload[i])
-          // alert('yes' + payload[i].userKey)
           if (state.addShowProfileUserList.length > 50) {
             state.addShowProfileUserList.splice(0, 50)
           }
@@ -341,7 +340,6 @@ const D_CHANNEL = {
           } else {
             idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
           }
-          // alert(idx2)
           if (idx2 === -1) {
             if (payload[i].jobkindId === 'BOAR') {
               chanList[idx1].ELEMENTS.boardList.push(payload[i])
@@ -469,7 +467,6 @@ const D_CHANNEL = {
           } else {
             idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
           }
-          // alert(idx2)
           if (idx2 === -1) {
             if (addContList[i].jobkindId === 'BOAR') {
               chanList[idx1].ELEMENTS.boardList.push(addContList[i])
@@ -526,7 +523,6 @@ const D_CHANNEL = {
           if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
         }
       } catch (error) {
-        // alert('MU ERROR ' + error)
       }
     },
     MU_ADD_MAIN_CHAN_LIST: (state, payload) => {

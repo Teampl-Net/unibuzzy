@@ -147,7 +147,6 @@ export default {
     searchBoxClick (searchData) {
       this.mSelectSearchObj = searchData
       this.mBottomSheetOpenYn = true
-      // alert(JSON.stringify(searchData))
     },
     replaceArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
@@ -301,7 +300,6 @@ export default {
       this.$emit('openPop', openPopParam)
     },
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
-      // alert(offsetInput)
       if (this.mAxiosQueue.findIndex((item) => item === 'getChannelList') !== -1) return
       this.mAxiosQueue.push('getChannelList')
       var paramMap = new Map()

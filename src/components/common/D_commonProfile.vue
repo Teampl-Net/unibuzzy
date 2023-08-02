@@ -16,8 +16,6 @@ export default {
     smallYn: {}
   },
   mounted () {
-    // alert(this.smallYn)
-    // alert(this.GE_USER.usrKey === this.GE_USER_INFO.userKey)
   },
   computed: {
     GE_USER_INFO () {

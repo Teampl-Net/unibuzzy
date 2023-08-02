@@ -529,7 +529,6 @@ export default {
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
     },
     deleteConfirm (data) {
-      // alert(true)
       if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo' && data !== 'board')) {
         this.tempData = data
       }
@@ -874,7 +873,6 @@ export default {
       }
     },
     async refreshAll () {
-      // alert(true)
       // 새로고침
       this.$emit('openLoading')
       this.findKeyList.searchKey = null
@@ -1561,7 +1559,6 @@ export default {
   },
   watch: {
     CHANNEL_DETAIL (value, old) {
-      // alert('채널 변화 생김요!')
     },
     GE_DEL_CONT_LIST: {
       handler (value, old) {
@@ -1581,7 +1578,6 @@ export default {
       immediate: true,
       handler (val, old) {
         if (!val) return
-        // alert(JSON.stringify(val))
         if (val.unknownYn) {
           // this.activeTabList = [{ display: '최신', name: 'N' }]
           this.mCommonFilterList = [{ display: 'Recent', name: 'N' }]

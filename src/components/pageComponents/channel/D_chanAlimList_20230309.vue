@@ -210,8 +210,6 @@ export default {
       } else {
         this.setWindowSize()
       }
-      // alert(eventName)
-      // emitEvent.call(event, eventName)
     },
     openChannelMsgPop () {
       this.writeBottSheetYn = false

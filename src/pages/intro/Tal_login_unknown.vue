@@ -144,7 +144,6 @@ export default {
                 // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
                 router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
               } else */
-      // alert(this.$route.params.boardData)
       await saveUser(userProfile, true, this.$route.params.boardData) // 서버에 save요청
       localStorage.setItem('loginYn', true)
 

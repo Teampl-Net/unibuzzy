@@ -368,7 +368,6 @@ export default {
       if (successChanYn === true) {
         target = this.successChanParam
       }
-      // alert(JSON.stringify(target))
       this.headerTitle = this.$changeText(target.popHeaderText)
       this.targetType = target.targetType
       if (this.targetType === 'contentsDetail' || this.targetType === 'chanDetail') {

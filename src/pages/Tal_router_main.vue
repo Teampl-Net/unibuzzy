@@ -95,10 +95,8 @@ export default {
     }
 
     if (this.systemName && (this.systemName === 'android' || this.systemName === 'Android' || this.systemName === 'ios' || this.systemName === 'iOS')) {
-      // alert(appInfo.current !== appInfo.last)
       if (appInfo.current !== appInfo.last) {
         this.mAppUpdatePopShwoYn = true
-        // alert(appInfo.current !== appInfo.last)
       }
     }
   },
@@ -639,7 +637,6 @@ export default {
     } else {
       // this.$userLoginCheck(true)
     }
-    // alert(urlString)
     /* if (!this.GE_USER) {
       // this.$router.push({ name: 'policies' })
       this.$router.replace({ name: 'unknown' })

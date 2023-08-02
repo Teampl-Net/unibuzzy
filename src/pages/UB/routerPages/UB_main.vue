@@ -236,7 +236,6 @@ export default {
   },
   async created () {
     // localStorage.clear()
-    // alert(JSON.stringify(this.GE_USER))
     // onMessage('REQ', 'test', null)
     // this.findAllDrawn()
     this.resetHistory()
@@ -313,7 +312,6 @@ export default {
       }, 100)
     },
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
-      // alert(offsetInput)
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
       paramMap.set('cateItemKey', 3)

@@ -65,7 +65,6 @@ export default {
         // eslint-disable-next-line camelcase
 
         // console.log(JSON.parse(access_token))
-        // alert(certificationsInfo.name)
         if (getToken.data.result) {
           this.certiInfo = JSON.parse(getToken.data.certiInfo) // 인증 토큰
           this.savePhone()

@@ -173,7 +173,6 @@ export const functions = {
     await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', data)
   },
   async addChanList (teamKey) {
-    // alert(teamKey)
     var result = null
     debugger
     console.log('과연????')
@@ -229,7 +228,6 @@ export const functions = {
       }
 
       store.dispatch('D_NOTI/AC_ADD_NOTI_LIST', notiDetail)
-      // alert(JSON.stringify(notiDetail))
       if (JSON.parse(notiDetail.userDo).targetKind === 'C') {
         if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {
           addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, 'BOAR')
@@ -243,7 +241,6 @@ export const functions = {
         await store.commit('D_CHANNEL/MU_ADD_MEMO', memo)
         addVueResult = await functions.addContents(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
       } else if (JSON.parse(notiDetail.userDo).targetKind === 'T') {
-        // alert(true)
         addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
       }
     } catch (err) {

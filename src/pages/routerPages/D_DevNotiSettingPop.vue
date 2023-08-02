@@ -152,7 +152,6 @@ export default {
       }, this.mParamObj.time * 1000)
     },
     changeWebviewUrl () {
-      // alert(true)
       // this.$refs.urlInput.blur()
       location.href = this.changeUrl + '/#/'
     }

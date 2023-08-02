@@ -254,7 +254,6 @@ export default {
       handler (value, old) {
         if (value) {
           this.selectedCodeObj = value
-          // alert(value)
         }
       },
       deep: true

@@ -185,7 +185,6 @@ export default {
         this.openPagePop('chanDetail', param.chanDetail)
       }
     }
-    // alert(urlString)
     if (!this.GE_USER || !this.GE_USER.userKey) {
       this.$router.replace({ path: '/unknown' })
       // this.$router.push({ name: 'policies', params: { boardData: 'social' } })
