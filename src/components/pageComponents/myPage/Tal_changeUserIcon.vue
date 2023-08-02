@@ -336,6 +336,7 @@ export default {
         }
       } else {
         this.confirmPopShowYn = true
+        return false
       }
       return true
     },
@@ -349,7 +350,8 @@ export default {
         // // console.log(this.selectedImgPath)
         // localStorage.setItem('sessionUser').userProfileImg = this.selectedImgPath
         if (this.selectedImgFilekey === '' || this.selectedImgFilekey === undefined) {
-          await this.formSubmit()
+          const res = await this.formSubmit()
+          if (!res) return
         }
         user.picMfilekey = this.selectedImgFilekey
       } else {

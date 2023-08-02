@@ -266,7 +266,7 @@ localStorage.setItem('setItem', '')
 
 app.mount('#app')
 window.app = app
-document.title = '더알림'
+document.title = 'uniBuzzy'
 localStorage.setItem('loginYn', 'false')
 /* if (navigator.serviceWorker) {
   navigator.serviceWorker.register('./firebase-messaging-sw.js')

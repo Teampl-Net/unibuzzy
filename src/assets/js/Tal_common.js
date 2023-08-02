@@ -407,7 +407,7 @@ export const commonMethods = {
     if (title) {
       paramMap.set('title', title)
     } else {
-      paramMap.set('title', '더알림')
+      paramMap.set('title', 'uniBuzzy')
     }
 
     var result = await commonAxiosFunction({
