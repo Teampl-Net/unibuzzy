@@ -902,7 +902,7 @@ export const commonMethods = {
   },
   /** 문자열로 되어있는 전화번호 11자리를 입력해주면 -(하이픈)을 넣어서 반환해주는 함수 */
   setPhone (string) {
-    if (string !== undefined && string !== null && string !== '') { return string.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, '$1-$2-$3') } else { return 'There is no registered phone number.' }
+    if (string !== undefined && string !== null && string !== '') { return string.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, '$1-$2-$3') } else { return this.$t('COMMON_MSG_NO_PHONE') }
   },
   teamTypeString (teamType) {
     var text = ''
@@ -910,27 +910,27 @@ export const commonMethods = {
     if (teamType === '1') {
       text = this.$t('COMM_CATE_BUSINESS')
     } else if (teamType === '2') {
-      text = '정부'
+      text = this.$t('COMM_CATE_GPOVER')
     } else if (teamType === '3') {
-      text = '학교'
+      text = this.$t('COMM_CATE_SCHOOL')
     } else if (teamType === '4') {
-      text = '종교'
+      text = this.$t('COMM_CATE_RELIGIOUS')
     } else if (teamType === '5') {
-      text = '동호회'
+      text = this.$t('COMM_CATE_CLUB')
     } else if (teamType === '6') {
-      text = '병원'
+      text = this.$t('COMM_CATE_HOSP')
     } else if (teamType === '7') {
-      text = '약국'
+      text = this.$t('COMM_CATE_PHAR')
     } else if (teamType === '8') {
-      text = '매장'
+      text = this.$t('COMM_CATE_MALL')
     } else if (teamType === '9') {
-      text = '가족'
+      text = this.$t('COMM_CATE_FAM')
     // } else if (teamType === '10') {
     //   text = '식당'
     } else if (teamType === '10') {
-      text = '팀'
+      text = this.$t('COMM_CATE_TEAM')
     } else if (teamType === '11') {
-      text = '기타'
+      text = this.$t('COMM_CATE_ETC')
     } else if (teamType === '12') {
       text = 'Club & Startup'
     } else if (teamType === '13') {
