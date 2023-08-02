@@ -84,15 +84,15 @@ export default {
     }
   },
   created () {
-    console.log('testYntestYntestYntestYn', localStorage.getItem('testYn'))
+    // console.log('testYntestYntestYntestYn', localStorage.getItem('testYn'))
     if (this.GE_USER.unknownYn) {
       this.$router.push({ name: 'policies' })
       return
     } else {
-      if (this.GE_USER.myTeamKey === 836) {
+      /* if (this.GE_USER.myTeamKey === 836) {
         this.$router.push({ name: 'uniBmain' })
         return
-      }
+      } */
     }
     if (localStorage.getItem('backBtnShowYn') !== undefined && localStorage.getItem('backBtnShowYn') !== 'undefined') {
       localStorage.setItem('backBtnShowYn', 'false')
