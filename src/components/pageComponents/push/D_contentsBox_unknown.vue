@@ -425,7 +425,7 @@ export default {
         return
       }
       if (this.contentsEle.creUserKey !== this.GE_USER.userKey) {
-        this.$showToastPop('내가 보낸 알림만 수신자 확인이 가능합니다!')
+        this.$showToastPop(this.$t('CONF_MSG_CHECK_RECIP'))
         return
       }
       var paramMap = new Map()
@@ -789,7 +789,7 @@ export default {
     },
     deleteConfirm () {
       if (this.contentsEle.jobkindId === 'ALIM') {
-        this.mConfirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
+        this.mConfirmText = this.$t('COMMON_MSG_DELETE_NOTI')
         this.mCurrentConfirmType = 'alimDEL'
       } else if (this.contentsEle.jobkindId === 'BOAR') {
         this.mConfirmText = this.$t('COMMON_MSG_DELETE_POST')
@@ -886,8 +886,12 @@ export default {
       this.$emit('openPop', tempData)
     }, */
     bloc (type) {
-      var typeText = type === 'USER' ? '유저를' : '게시글을'
-      this.mConfirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
+      var typeText = type === 'USER' ? this.$t('COMMON_TITLE_USER') : this.$t('COMMON_TAB_POST')
+      if (this.GE_LOCALE === 'ko') {
+        this.mConfirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
+      } else {
+        return 'Block this' + typeText + '?'
+      }
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true
       this.mCurrentConfirmType = 'BLOC'
@@ -899,23 +903,23 @@ export default {
       if (type === 'ALIM') {
         targetKind = 'C'
         targetKey = this.CONT_DETAIL.contentsKey
-        toastText = '해당 알림이 신고되었습니다.'
+        toastText = this.$t('COMMON_MSG_REPORT_NOTI')
       } else if (type === 'BOAR') {
         targetKind = 'C'
         targetKey = this.CONT_DETAIL.contentsKey
-        toastText = '해당 게시글이 신고되었습니다.'
+        toastText = this.$t('COMMON_MSG_REPORT_POST')
       } else if (type === 'MEMO') {
         targetKind = 'C'
         targetKey = this.CONT_DETAIL.memoKey
-        toastText = '해당 댓글이 신고되었습니다.'
+        toastText = this.$t('COMMON_MSG_REPORT_COMMENT')
       } else if (type === 'CHANNEL') {
         targetKind = 'T'
         targetKey = this.CONT_DETAIL.creTeamKey
-        toastText = '해당 채널이 신고되었습니다.'
+        toastText = this.$t('COMMON_MSG_REPORT_CHAN')
       } else if (type === 'USER') {
         targetKind = 'U'
         targetKey = this.CONT_DETAIL.creUserKey
-        toastText = '해당 유저가 신고되었습니다.'
+        toastText = this.$t('COMMON_MSG_REPORT_USER')
       }
       var param = {}
       param.claimType = 'REPO'
@@ -960,9 +964,9 @@ export default {
         // 복사 후 textarea 지우기
         document.execCommand('copy')
         document.body.removeChild(textarea)
-        this.$showToastPop('복사되었습니다.')
+        this.$showToastPop(this.$t('COMMON_MSG_COPY_SUCCESS'))
       } catch (error) {
-        this.$showToastPop('복사하지 못했습니다.')
+        this.$showToastPop(this.$t('COMMON_MSG_COPY_FAIL'))
       }
     },
     async saveMemo (inSaveMemoObj) {

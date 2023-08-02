@@ -874,7 +874,7 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       if (this.contentsEle.creTeamKey && type !== 'writeBoard' && (!this.CHANNEL_DETAIL.ownerYn || !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) && (!this.CHANNEL_DETAIL.memberYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn) && (this.CHANNEL_DETAIL.memberYn === 0 || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 0) && (!this.CHANNEL_DETAIL.managerKey || !this.CHANNEL_DETAIL.D_CHAN_AUTH.managerKey)) {
-        this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
+        this.$showToastPop(this.$t('COMM_MSG_MEMB_NEED'))
         // this.$checkDeleteHistory('bottomWriteSheets')
         // this.$emit('openMember')
         return
@@ -955,23 +955,23 @@ export default {
       if (type === 'ALIM') {
         targetKind = 'C'
         targetKey = this.CONT_DETAIL.contentsKey
-        toastText = '해당 알림이 신고되었습니다.'
+        toastText = this.$t('COMMON_MSG_REPORT_NOTI')
       } else if (type === 'BOAR') {
         targetKind = 'C'
         targetKey = this.CONT_DETAIL.contentsKey
-        toastText = '해당 게시글이 신고되었습니다.'
+        toastText = this.$t('COMMON_MSG_REPORT_POST')
       } else if (type === 'MEMO') {
         targetKind = 'C'
         targetKey = this.CONT_DETAIL.memoKey
-        toastText = '해당 댓글이 신고되었습니다.'
+        toastText = this.$t('COMMON_MSG_REPORT_COMMENT')
       } else if (type === 'CHANNEL') {
         targetKind = 'T'
         targetKey = this.CONT_DETAIL.creTeamKey
-        toastText = '해당 채널이 신고되었습니다.'
+        toastText = this.$t('COMMON_MSG_REPORT_CHAN')
       } else if (type === 'USER') {
         targetKind = 'U'
         targetKey = this.CONT_DETAIL.creUserKey
-        toastText = '해당 유저가 신고되었습니다.'
+        toastText = this.$t('COMMON_MSG_REPORT_USER')
       }
       var param = {}
       param.claimType = 'REPO'

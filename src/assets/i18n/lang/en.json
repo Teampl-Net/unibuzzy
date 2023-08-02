@@ -152,6 +152,7 @@
     "COMM_CONT_NO_FOUND": "No contents found.",
 
     "COMMON_MSG_BLOCK": "Are you sure you want to block this user?",
+    "COMMON_MSG_BLOCK_BOAR": "Are you sure you want to block this post?",
     "COMMON_MSG_BEFORE_REPORT": "Are you sure you want to report this user?",
     "COMMON_MSG_NO_LOGIN": "Please log in and use it.",
     "COMM_MSG_CANCEL_FAIL": "The message cancellation was unsuccessful.\nPlease attempt again after restarting the app.",

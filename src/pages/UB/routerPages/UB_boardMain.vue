@@ -1,10 +1,26 @@
 <i18n>
 {
   "ko": {
-    "CHAN_POST_NONE_CONT": "버튼을 눌러 첫 컨텐츠를 작성해보세요."
+    "CHAN_POST_NONE_CONT": "버튼을 눌러 첫 컨텐츠를 작성해보세요.",
+    "CHAN_POST_MSG_SET_ERROR": "작성 setting 중 오류",
+    "CHAN_POST_NO_PERMI": "권한이 없습니다.",
+    "CHAN_POST_TITLE": "제목",
+    "CHAN_POST_CRE_USER": "작성자",
+    "CHAN_POST_SENT": "보낸",
+    "CHAN_POST_DATE": "날짜",
+    "CHAN_POST_FILTER": "필터",
+    "CHAN_POST_STAT": "분류"
   },
   "en": {
-    "CHAN_POST_NONE_CONT": "Create the first content for your channel's bulletin board."
+    "CHAN_POST_NONE_CONT": "Create the first content for your channel's bulletin board.",
+    "CHAN_POST_MSG_SET_ERROR": "Error during creation setting",
+    "CHAN_POST_NO_PERMI": "You don't have permission.",
+    "CHAN_POST_TITLE": "Title",
+    "CHAN_POST_CRE_USER": "Writer",
+    "CHAN_POST_SENT": "Sent",
+    "CHAN_POST_DATE": "Date",
+    "CHAN_POST_FILTER": "Filter",
+    "CHAN_POST_STAT": "Status"
   }
 }
 </i18n>
@@ -534,16 +550,16 @@ export default {
       }
 
       if (data === 'memo' || this.tempData.memoKey) {
-        this.errorBoxText = '댓글을 삭제하시겠습니까?'
+        this.errorBoxText = this.$t('COMMON_MSG_DELETE_COMMENT')
         if (this.tempData.parentMemoKey) {
-          this.errorBoxText = '대댓글을 삭제하시겠습니까?'
+          this.errorBoxText = this.$t('COMMON_MSG_DELETE_REPLY')
         }
         this.currentConfirmType = 'memoDEL'
       } else if (data === 'alim' || this.tempData.jobkindId === 'ALIM') {
-        this.errorBoxText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
+        this.errorBoxText = this.$t('COMMON_MSG_DELETE_NOTI')
         this.currentConfirmType = 'alimDEL'
       } else if (data === 'board' || this.tempData.jobkindId === 'BOAR') {
-        this.errorBoxText = '게시글을 삭제 하시겠습니까?'
+        this.errorBoxText = this.$t('COMMON_MSG_DELETE_POST')
         this.currentConfirmType = 'boardDEL'
       }
       this.confirmType = 'two'
@@ -558,7 +574,7 @@ export default {
         this.currentContentsKey = this.BOARD_CONT_LIST[idx].contentsKey
       } else {
         this.memoShowYn = false
-        this.$showToastPop('작성 setting 중 오류')
+        this.$showToastPop(this.$t('CHAN_POST_MSG_SET_ERROR'))
         return
       }
       this.writeMemoTempTeamKey = param.teamKey
@@ -643,8 +659,11 @@ export default {
       }
     },
     bloc (type) {
-      var typeText = type === 'user' ? '유저를' : '게시글을'
-      this.errorBoxText = '해당 ' + typeText + ' 차단하시겠습니까?'
+      if (type === 'user') {
+        this.errorBoxText = this.$t('COMMON_MSG_BLOCK')
+      } else {
+        this.errorBoxText = this.$t('COMMON_MSG_BLOCK_BOAR')
+      }
       this.confirmType = 'two'
       this.errorBoxYn = true
       this.currentConfirmType = 'BLOC'
@@ -675,7 +694,7 @@ export default {
     },
     boardFuncClick () {
       this.confirmType = true
-      this.errorBoxText = '게시글을 삭제 하시겠습니까?'
+      this.errorBoxText = this.$t('COMMON_MSG_DELETE_POST')
       this.errorBoxYn = true
       this.currentConfirmType = 'deleteBoar'
     },
@@ -708,10 +727,10 @@ export default {
           param.targetKind = 'C'
           param.targetKey = this.tempData.contentsKey
         } else {
-          this.errorBoxText = '알수 없는 오류입니다.'
+          this.errorBoxText = this.$t('COMMON_MSG_UNKWON')
         }
         param.creUserKey = this.GE_USER.userKey
-        this.errorBoxText = '해당 유저를 차단했습니다.'
+        this.errorBoxText = this.$t('COMMON_MSG_BLOCKED')
         this.saveActAxiosFunc(param)
       } else if (this.currentConfirmType === 'memoDEL') {
         this.deleteMemo({ memoKey: this.tempData.memoKey, contentsKey: this.tempData.targetKey, parentMemoKey: this.tempData.parentMemoKey })
@@ -768,23 +787,23 @@ export default {
       if (type === 'alim') {
         targetKind = 'C'
         targetKey = this.tempData.contentsKey
-        this.errorBoxText = '해당 알림이 신고되었습니다.'
+        this.errorBoxText = this.$t('COMMON_MSG_REPORT_NOTI')
       } else if (type === 'board') {
         targetKind = 'C'
         targetKey = this.tempData.contentsKey
-        this.errorBoxText = '해당 게시글이 신고되었습니다.'
+        this.errorBoxText = this.$t('COMMON_MSG_REPORT_POST')
       } else if (type === 'memo') {
         targetKind = 'C'
         targetKey = this.tempData.memoKey
-        this.errorBoxText = '해당 댓글이 신고되었습니다.'
+        this.errorBoxText = this.$t('COMMON_MSG_REPORT_COMMENT')
       } else if (type === 'channel') {
         targetKind = 'T'
         targetKey = this.tempData.creTeamKey
-        this.errorBoxText = '해당 채널이 신고되었습니다.'
+        this.errorBoxText = this.$t('COMMON_MSG_REPORT_CHAN')
       } else if (type === 'user') {
         targetKind = 'U'
         targetKey = this.tempData.creUserKey
-        this.errorBoxText = '해당 유저가 신고되었습니다.'
+        this.errorBoxText = this.$t('COMMON_MSG_REPORT_USER')
       }
       var param = {}
       param.claimType = 'REPO'
@@ -1022,7 +1041,7 @@ export default {
     },
     openWriteBoard () {
       if (this.GE_USER.unknownYn) {
-        this.$showToastPop('로그인 후 이용해주세요')
+        this.$showToastPop(this.$t('COMMON_MSG_NO_LOGIN'))
         return
       }
       // console.log(this.propParams)
@@ -1053,8 +1072,6 @@ export default {
       }
       this.boardWriteData = {}
       this.boardWriteData = params
-      console.log('123412342134214params')
-      console.log(params)
       var history = this.$store.getters['D_HISTORY/hStack']
       this.writePopId = 'writeContents' + history.length
       this.writePopId = this.$setParentsId(this.pPopId, this.writePopId)
@@ -1108,8 +1125,6 @@ export default {
       param.currentTeamKey = this.$route.params.teamKey
       param.cabinetKey = this.$route.params.targetKey
       var resultList = await this.$getCabinetDetail(param)
-      console.log('resultlist')
-      console.log(resultList)
       // mShareItemList가 잘 들어오면 save잘 된것
       //   this.shareAuth.R = true
       //   this.shareAuth.W = true
@@ -1219,7 +1234,7 @@ export default {
     },
     goDetail (value) {
       if (this.CAB_DETAIL.shareAuth.V === false && value.creUserKey !== this.GE_USER.userKey) {
-        this.errorBoxText = '권한이 없습니다.'
+        this.errorBoxText = this.$t('CHAN_POST_NO_PERMI')
         this.errorBoxYn = true
       } else {
         // value.functions = [{replyYn:this.propParams.value.replyYn},{fileYn:this.propParams.value.fileYn},{blindYn:this.propParams.value.blindYn}]
@@ -1330,21 +1345,21 @@ export default {
       var resultArray = []
       // if (this.resultSearchKeyList.length > 0) resultArray = this.resultSearchKeyList
       if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
-        searchObj.typeName = '제목'
+        searchObj.typeName = this.$t('CHAN_POST_TITLE')
         searchObj.type = 'searchKey'
         searchObj.keyword = param.searchKey
         resultArray.push(searchObj)
       }
       searchObj = {}
       if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
-        searchObj.typeName = '작성자'
+        searchObj.typeName = this.$t('CHAN_POST_CRE_USER')
         searchObj.type = 'creUserName'
         searchObj.keyword = param.creUserName
         resultArray.push(searchObj)
       }
       searchObj = {}
       if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
-        searchObj.typeName = '보낸'
+        searchObj.typeName = this.$t('CHAN_POST_SENT')
         searchObj.type = 'creTeamNameMtext'
         searchObj.keyword = param.creTeamNameMtext
         resultArray.push(searchObj)
@@ -1352,19 +1367,19 @@ export default {
       searchObj = {}
       if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '' &&
         param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
-        searchObj.typeName = '날짜'
+        searchObj.typeName = this.$t('CHAN_POST_DATE')
         searchObj.type = 'creDate'
         searchObj.keyword = param.fromCreDateStr + '~' + param.toCreDateStr
         resultArray.push(searchObj)
       }
       if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
-        searchObj.typeName = '필터'
+        searchObj.typeName = this.$t('CHAN_POST_FILTER')
         searchObj.type = 'workStatCodeKey'
         searchObj.keyword = param.codeNameMtext
         resultArray.push(searchObj)
       }
       if (param.selectedSticker !== undefined && param.selectedSticker !== null && param.selectedSticker !== '') {
-        searchObj.typeName = '분류'
+        searchObj.typeName = this.$t('CHAN_POST_STAT')
         searchObj.type = 'stickerKey'
         searchObj.keyword = this.$changeText(param.selectedSticker.nameMtext)
         resultArray.push(searchObj)

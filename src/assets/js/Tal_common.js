@@ -931,6 +931,16 @@ export const commonMethods = {
       text = '팀'
     } else if (teamType === '11') {
       text = '기타'
+    } else if (teamType === '12') {
+      text = 'Club & Startup'
+    } else if (teamType === '13') {
+      text = 'Major'
+    } else if (teamType === '14') {
+      text = 'Class'
+    } else if (teamType === '15') {
+      text = 'Facilities & Amenities'
+    } else if (teamType === '16') {
+      text = 'Nearby'
     }
     return text
   },
