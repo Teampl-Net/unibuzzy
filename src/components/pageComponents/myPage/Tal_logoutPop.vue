@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     goLogout () {
-      this.$emit('closePop', 'goMain')
+      this.$emit('goLogOut', 'goMain')
     },
     closePop () {
       this.$emit('closePop')

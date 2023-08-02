@@ -5,12 +5,14 @@
       "USER_PROFILE_ICON": "아이콘",
       "USER_PROFILE_MY_IMG": "직접추가",
       "USER_MSG_TOUCH_IMG": "터치해서 이미지를 변경할 수 있습니다.",
+      "USER_MSG_NO_IMG": "파일을 선택해주세요."
     },
     "en": {
       "USER_CHANGE_PROFILE_IMG": "Update profile image",
       "USER_PROFILE_ICON": "Icon",
       "USER_PROFILE_MY_IMG": "Upload Image",
-      "USER_MSG_TOUCH_IMG": "Touch to change the image."
+      "USER_MSG_TOUCH_IMG": "Touch to change the image.",
+      "USER_MSG_NO_IMG": "Please select a file."
     }
   }
 </i18n>
@@ -44,6 +46,7 @@
             <gBtnSmall @click="updateUserIcon" :btnTitle="$t('COMMON_BTN_SELECTED')" class="mright-05" />
           </div>
         </div>
+        <gConfirmPop :confirmText="$t('USER_MSG_NO_IMG')" class="" confirmType='one' @no='confirmPopShowYn = false' v-if="confirmPopShowYn"/>
     </div>
 </template>
 <script>
@@ -66,7 +69,8 @@ export default {
       ],
       cropper: {},
       refImg: {},
-      cropperYn: false
+      cropperYn: false,
+      confirmPopShowYn: false
     }
   },
   props: {
@@ -331,7 +335,7 @@ export default {
           // var selFile = this.selectFileList[i].file
         }
       } else {
-        alert('파일을 선택해 주세요.')
+        this.confirmPopShowYn = true
       }
       return true
     },

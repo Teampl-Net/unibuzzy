@@ -9,7 +9,10 @@
     "PROF_BTN_LOGOUT": "더알림 로그아웃",
     "PROF_BTN_DELETE": "더알림을 탈퇴하려면 여기를 눌러주세요",
     "PROF_BTN_EDIT_EMAIL": "이메일 변경",
-    "PROF_TITLE_LATE_VERSION": "최신버전"
+    "PROF_TITLE_LATE_VERSION": "최신버전",
+    "PROF_MSG_RESTART": "앱을 재시작하시겠습니까?",
+    "PROF_MSG_NAME_ERROR": "이름 변경 중 서버에 오류",
+    "PROF_MSG_NO_PHONE": "전화번호가 없습니다."
   },
   "en": {
     "PROF_TITLE_DOWNLOAD": "Downloaded",
@@ -20,16 +23,19 @@
     "PROF_BTN_LOGOUT": "Logout uniBuzzy",
     "PROF_BTN_DELETE": "Click here to delete your account from uniBuzzy",
     "PROF_BTN_EDIT_EMAIL": "Edit Email",
-    "PROF_TITLE_LATE_VERSION": "Latest"
+    "PROF_TITLE_LATE_VERSION": "Latest",
+    "PROF_MSG_RESTART": "Do you want to restart the app?",
+    "PROF_MSG_NAME_ERROR": "Error on server while changing name change",
+    "PROF_MSG_NO_PHONE": "There is no phone number."
   }
 }
 </i18n>
 <template>
   <div style="padding: 60px 10px 30px 10px; overflow: hidden scroll; height: 100%; width: 100%;">
-    <logoutPop v-if="logOutShowYn" @closePop="closeLogoutPop"/>
+    <logoutPop v-if="logOutShowYn" @goLogOut="closeLogoutPop" @closePop="closeOnlyLogoutPop"/>
     <!-- <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" /> -->
     <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
-    <userImgSelectCompo @closeXPop="this.$emit('closeXPop')" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
+    <userImgSelectCompo @closeXPop="closeImgPop" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
     <div class="" >
       <div class="profileWrap ">
         <div @click="changeUserImg()" class="cursorP imgSize">
@@ -257,8 +263,12 @@ export default {
     },
     checkAppVersion () {
         if (this.systemName === 'android' || this.systemName === 'Android') {
-            if (this.appInfo.current !== this.appInfo.last) {
-            this.checkVersionText = '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
+          if (this.appInfo.current !== this.appInfo.last) {
+            if (this.GE_LOCALE === 'ko') {
+              this.checkVersionText = '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
+            } else {
+              this.checkVersionText = 'An app version update is required. <br>Go to the Play Store?'
+            }
             this.checkVersionPopShowYn = true
             // window.open(appInfo.playStoreUrl, '_blank')
           }
@@ -289,7 +299,7 @@ export default {
             // document.body.removeChild(aTag)
     },
     reloadApp () {
-        this.reloadShowText ='앱을 재시작하시겠습니까?'
+        this.reloadShowText = this.$t('PROF_MSG_RESTART')
         this.reloadShowYn = true
     },
     reloadOk () {
@@ -312,6 +322,9 @@ export default {
         this.$store.commit('D_HISTORY/updateStack', history)
         // console.log(this.$store.getters['D_HISTORY/hStack'])
       }
+    },
+    closeImgPop () {
+      this.changeUserIconShowYn = false
     },
     async setDispName () {
       // KO$^$수망고$#$EN$^$sumango
@@ -336,7 +349,7 @@ export default {
         this.$emit('closeXPop')
         // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)
       } else {
-        this.errorBoxText = '이름 변경 중 서버에 오류'
+        this.errorBoxText = this.$t('PROF_MSG_NAME_ERROR')
         this.errorBoxYn = true
       }
     },
@@ -358,6 +371,9 @@ export default {
       this.logOutShowYn = false
 
       this.$d_AlimLogout()
+    },
+    async closeOnlyLogoutPop () {
+      this.logOutShowYn = false
     },
     openPolicyPop (type) {
       this.$emit('changeRouterPath', type)
@@ -386,7 +402,8 @@ export default {
                 else
                     onMessage('REQ', 'callphone', num)
             } else {
-                alert('전화번호 정보가 없습니다')
+              this.errorBoxText = this.$t('PROF_MSG_NO_PHONE')
+              this.errorBoxYn = true
             }
         },
     openManagerChanDetail (param) {
