@@ -31,7 +31,7 @@
 }
 </i18n>
 <template>
-  <div style="padding: 60px 10px 30px 10px; overflow: hidden scroll; height: 100%; width: 100%;">
+  <div style="padding: 60px 10px 60px 10px; overflow: hidden scroll; height: 100%; width: 100%;">
     <logoutPop v-if="logOutShowYn" @goLogOut="closeLogoutPop" @closePop="closeOnlyLogoutPop"/>
     <!-- <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" /> -->
     <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
@@ -87,7 +87,7 @@
           </tr> -->
 
       </table>
-      <div v-on:click="openLogoutPop" class="font14 cursorP" style="background-color: #F5F5F9; width: 100%; color:#6768A7; font-weight: bold; height: 45px; margin-bottom: 2rem;border-radius: 5px; padding: 0.6rem;">
+      <div v-on:click="openLogoutPop" class="font14 cursorP" style="background-color: #F5F5F9; width: 100%; color:#6768A7; font-weight: bold; height: 45px; margin-bottom: 0;border-radius: 5px; padding: 0.6rem;">
         {{ $t('PROF_BTN_LOGOUT') }}
       </div>
       <p v-if="GE_LOCALE === 'ko'" class="leaveText font14">더알림을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">여기</span>를 눌러주세요.</p>

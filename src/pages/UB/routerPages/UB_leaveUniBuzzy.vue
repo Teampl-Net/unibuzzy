@@ -1,291 +1,301 @@
+<i18n>
+{
+  "ko": {
+    "MSG_ASK_LEAVE": "더알림을 탈퇴하시겠습니까?",
+    "MSG_ASK_AGREE": "아래 내용을 읽고 동의해주세요.",
+    "TITLE_UNIBUZZY_LEAVE": "더알림 회원 탈퇴 안내",
+    "TITLE_UNIBUZZY_POLICY": "더알림 개인정보 이용약관",
+    "MSG_AGREE": "동의합니다"
+  },
+  "en": {
+    "MSG_ASK_LEAVE": "Are you sure to withdraw from uniBuzzy?",
+    "MSG_ASK_AGREE": "Read and agree terms below",
+    "TITLE_UNIBUZZY_LEAVE": "uniBuzzy Membership Withdrawal Information",
+    "TITLE_UNIBUZZY_POLICY": "uniBuzzy Terms and Conditions of Use of Personal Information",
+    "MSG_AGREE": "I agree"
+  }
+}
+</i18n>
 <template>
-<div class="pagePaddingWrap leavePageWrap" >
+<div class="pagePaddingWrap leavePageWrap" style="padding-top: 0!important; height: calc(100% - 80px);">
   <popHeader :pClosePop="backClick" class="headerShadow" headerTitle="Withdrawal from an account"  />
   <leaveResultPop v-if="this.resultPopShowYn" @closeXPop="closeXPop"/>
   <div class="leaveContentsWrap">
-    <p class="pointTitle">더알림을 탈퇴하시겠습니까?</p>
-    <p class="title">아래 내용을 읽고 동의해주세요.</p>
+    <p class="pointTitle">{{ $t('MSG_ASK_LEAVE') }}</p>
+    <p class="title">{{ $t('MSG_ASK_AGREE') }}</p>
     <div class="guideBox">
-      <!-- <p class= "mtop-1" > 회원 탈퇴 시 관련 정보가 파기되므로, 신중한 탈퇴를 부탁드립니다.
-관련하여 문의 사항이 있으시다면 상담을 요청해주세요.</p> -->
 
-      <p class= "mtop-2" >더알림 회원 탈퇴 안내</p>
-      <!-- <div class="guideTextWrap guideText ptop-1"> -->
-        <textarea class="guideTextWrap">
-[회원탈퇴 약관]
+      <p class= "mtop-2" >{{ $t('TITLE_UNIBUZZY_LEAVE') }}</p>
+          <textarea class="guideTextWrap">[Terms and conditions]
 
-회원탈퇴 신청 전 안내 사항을 확인 해 주세요.
-탈퇴 완료 후 현재 로그인 된 아이디로 재가입은 가능하지만 사용 기록은 남아있지 않습니다.
-회원탈퇴를 하더라도, 서비스 약관 및 개인정보 취급방침 동의하에 따라 일정 기간동안 회원 개인정보를 보관합니다.
+Please check the information before applying for withdrawal.
+After completing the withdrawal, you can re-enroll with the currently logged-in ID, but there is no record of use.
+Even if a member withdraws, the member's personal information is kept for a certain period of time in accordance with the terms of service and the personal information handling policy.
 
-- 알림 내역
-- 알림, 게시판, 게시글에 관한 기록
-- 게시판 작성 및 사용후기에 관한 기록
+- Notifications History
+- Records of notifications, bulletin boards, and posts
+- Records on the preparation and use of bulletin boards
 
-※ 상세한 내용은 사이트 내 개인정보 취급방침을 참고 해 주세요.
-        </textarea>
-
-      <!-- </div> -->
+※ For more information, please refer to the personal information handling policy on the site.
+</textarea>
     </div>
     <div class="guideBox">
-      <!-- <p class= "mtop-1" >더알림 개인정보 삭제 방침 안내</p> -->
-      <p class= "mtop-1" >더알림 개인정보 이용약관</p>
-      <!-- <div class="guideTextWrap guideText ptop-1"></div> -->
+      <p class= "mtop-1" >{{$t('TITLE_UNIBUZZY_POLICY')}}</p>
       <textarea class="guideTextWrap">
-제 1 조 (목적)
+Article 1 (Purpose)
 
-이 이용약관(이하 '약관'이라 합니다)은 팀플㈜(이하 '회사'라 합니다)와 이용 고객(이하 '회원'이라 합니다)간에 회사가 제공하는 더알림 서비스(http://www.pushmsg.net 이하 '더알림' 또는 '서비스'라 합니다)의 가입조건 및 이용에 관한 제반 사항과 기타 필요한 사항을 구체적으로 규정함을 목적으로 합니다.
+The purpose of this Terms and Conditions of Use (hereinafter referred to as "Company") is to specify the terms and conditions of subscription and use of the uniBuzzy service (http://www.pushmsg.net or "Service") provided by the company between TeamPl Co., Ltd. (hereinafter referred to as "Company") and customers (hereinafter referred to as "Members").
 
-제 2 조 (용어의 정의)
+Article 2 (Definition of Terms)
 
-① 이 약관에서 사용하는 용어의 정의는 다음과 같습니다.
+① The terms used in these Terms and Conditions are defined as follows.
 
-- '회원'이라 함은 이 약관에 동의하고 서비스를 이용하는 이용자를 말합니다.
+- A 'member' refers to a user who agrees to these terms and conditions and uses the service.
 
-- '이용계약'이라 함은 이 약관을 포함하여 서비스 이용과 관련하여 회사와 회원 간에 체결하는 모든 계약을 말합니다.
+- The term "use contract" refers to all contracts concluded between the company and its members in connection with the use of the service, including these terms and conditions.
 
-- ‘소셜로그인’이라 함은 회원의 식별 및 서비스 이용을 위하여 회원의 신청에 따라 회사가 식별하는 고유한 문자와 숫자의 조합을 말합니다.
+- The term "social login" refers to a unique combination of letters and numbers identified by the company at the request of the member for the identification and service use of the member's use of the service.
 
-- '단말기'라 함은 서비스에 접속하기 위해 회원이 이용하는 개인용 컴퓨터, PDA, 휴대전화 등의 전산장치를 말합니다.
+- The term "terminal" refers to computer devices such as personal computers, PDAs, and mobile phones used by members to access services.
 
-- '해지'라 함은 회사 또는 회원이 이용계약을 해약하는 것을 말합니다.
+- The term "cancellation" refers to the cancellation of a contract for use by a company or member.
 
-② 이 약관에서 사용하는 용어 중 제1항에서 정하지 아니한 것은 관계 법령 및 서비스별 안내에서 정하는 바에 따르며, 그 외에는 일반 관례에 따릅니다.
+② Among the terms used in these terms and conditions, those not prescribed in paragraph (1) shall be in accordance with the relevant statutes and the guidance for each service, and otherwise shall be in accordance with general customs.
 
-제 3 조 (이용약관의 효력 및 변경)
+Article 3 (Effect of Terms and Conditions and Changes)
 
-① 이 약관은 더알림을 통해 온라인으로 공시하고 회원의 동의와 회사의 승낙으로 효력을 발생하며, 합리적인 사유가 발생할 경우 회사는 관련 법령에 위배되지 않는 범위 안에서 개정할 수 있습니다.
-개정된 약관은 정당한 절차에 따라 더알림을 통해 공지함으로써 효력을 발휘합니다.
+① These terms and conditions are disclosed online through uniBuzzy and take effect with the consent of the member and the consent of the company, and in the event of a reasonable reason, the company may amend them to the extent that it does not violate the relevant laws.
+The revised terms and conditions shall take effect by making a notice through uniBuzzy in due course.
 
-② 회원은 정기적으로 더알림을 방문하여 약관의 변경사항을 확인하여야 합니다.
-변경된 약관에 대한 정보를 알지 못해 발생하는 회원의 피해는 회사에서 책임지지 않습니다.
+② Members should visit the uniBuzzy regularly to confirm any changes to the terms and conditions.
+The company is not responsible for any damage to the member caused by not knowing the information on the changed terms and conditions.
 
-③ 회원은 변경된 약관에 동의하지 않을 경우 회원 탈퇴(해지)를 요청할 수 있습니다.
+③ Members may request membership withdrawal if they do not agree to the changed terms and conditions.
 
-제 4 조 (약관외 준칙)
+Article 4 (Criteria other than terms and conditions)
 
-회사는 필요한 경우 서비스 내의 개별항목에 대하여 개별약관 또는 운영원칙(이하 '서비스별 안내'라 합니다)를 정할 수 있으며, 이 약관과 서비스별 안내의 내용이 상충되는 경우에는 서비스별 안내의 내용을 우선하여 적용합니다.
+If necessary, the company may determine individual terms and conditions or operating principles for individual items in the service (hereinafter referred to as "service-specific guidance"), and if these terms and conditions conflict with the service-specific guidance, the service-specific guidance shall be applied first.
 
-제 5 조 (이용 계약의 성립)
+Article 5 (Establishment of a Use Contract)
 
-① 이용계약은 이용자의 이용계약 내용에 대한 동의와 이용신청에 대하여 회사의 이용승낙으로 성립합니다.
-② 이용계약에 대한 동의는 이용신청 당시 신청서 상의 '동의함' 버튼을 누름으로써 의사표시를 합니다.
+① The use contract is established with the consent of the company for the user's consent to the user's use contract and the application for use.
+② Consent to the use contract is expressed by pressing the "I agree" button on the application form at the time of application for use.
 
-제 6 조 (서비스 이용 신청)
+Article 6 (Application for Service Use)
 
-① 회원으로 가입하여 서비스를 이용하고자 하는 이용자는 회사에서 요청하는 제반 정보(소셜 로그인, 이름, 이메일 주소, 연락처 등)를 제공하여야 합니다.
+① Users who wish to use the service by signing up as a member must provide all the information requested by the company (social login, name, email address, contact information, etc.).
 
-②모든 회원은 반드시 회원 본인의 정보를 제공하여야만 서비스를 이용할 수 있으며, 타인의 정보를 도용하거나 허위의 정보를 등록하는 등 본인의 진정한 정보를 등록하지 않은 회원은 서비스 이용과 관련하여 아무런 권리를 주장할 수 없으며, 관계 법령에 따라 처벌 받을 수 있습니다.
+②All members must provide their own information to use the service. Members who do not register their true information, such as stealing other people's information or registering false information, cannot claim any rights in relation to the use of the service and can be punished according to relevant laws.
 
-③ 회원가입은 반드시 본인의 진정한 정보를 통하여만 가입할 수 있으며 회사는 회원이 등록한 정보에 대하여 확인조치를 할 수 있습니다.
+③ Membership registration can only be signed up through their true information, and the company can check the information registered by the member.
 
-회원은 회사의 확인조치에 대하여 적극 협력하여야 하며, 만일 이를 준수하지 아니할 경우 회사는 회원이 등록한 정보가 부정한 것으로 처리할 수 있습니다.
+Members shall actively cooperate with the company's confirmation measures, and if they fail to comply, the company may treat the information registered by the member as illegal.
 
-④ 회사는 회원에 대하여 등급별로 구분하여 이용시간, 이용회수, 서비스 메뉴 등을 세분하여 이용에 차등을 둘 수 있습니다.
+④ The company can differentiate the use of members by dividing them by grade and dividing the usage time, number of use, service menu, etc.
 
-제 7 조 (개인정보의 보호 및 사용)
+Article 7 (Protection and Use of Personal Information)
 
-① 회사는 관계 법령이 정하는 바에 따라 회원의 개인정보를 보호하기 위해 노력합니다. 개인정보의 보호 및 사용에 대해서는 관련 법령 및 회사의 개인정보 보호정책이 적용됩니다.
+① The company strives to protect the personal information of its members as prescribed by relevant laws and regulations. Regarding the protection and use of personal information, the relevant laws and company's personal information protection policy apply.
 
-단, 회사의 공식 사이트 이외의 링크된 사이트에서는 회사의 개인정보 보호정책이 적용되지 않습니다. 또한, 회원은 비밀번호 등이 타인에게 노출되지 않도록 철저히 관리해야 하며 회사는 회원의 귀책사유로 인해 노출된 정보에 대해서 책임을 지지 않습니다.
+However, the company's privacy policy does not apply to linked sites other than the company's official site. In addition, members should thoroughly manage their passwords so that they are not exposed to others, and the company is not responsible for information exposed due to reasons attributable to members.
 
-② 회사는 다음과 같은 경우에 법이 허용하는 범위 내에서 회원의 개인정보를 제3자에게 제공할 수 있습니다.
+② The Company may provide the Member's personal information to third parties to the extent permitted by law in the following cases.
 
--수사기관이나 기타 정부기관으로부터 정보제공을 요청 받은 경우
--회원의 법령 또는 약관의 위반을 포함하여 부정행위 확인 등의 정보보호 업무를 위해 필요한 경우
--기타 법률에 의해 요구되는 경우
+- When requested to provide information from an investigative agency or other government agency
+- When necessary for information protection work, such as confirmation of fraud, including violation of laws or terms and conditions of a member
+- If required by other laws
 
-제 8 조 (이용 신청의 승낙과 제한)
+Article 8 (Acceptance and restriction of application for use)
 
-① 회사는 제5조, 제6조의 규정에 의한 이용신청에 대하여 업무 수행상 또는 기술상 지장이 없는 경우에 원칙적으로 접수순서에 따라 서비스 이용을 승낙합니다.
+① In principle, the company accepts the use of the service in accordance with the order of application for use under Articles 5 and 6, if there is no technical obstacle to the performance of the business.
 
-② 회사는 아래사항에 해당하는 경우에 대해서 승낙을 보류할 수 있습니다.
+② The company may withhold its consent in the following cases.
 
--본인의 진정한 정보를 제공하지 아니한 이용신청의 경우
+- In the case of an application for use without providing the person's true information
 
--법령 위반 또는 사회의 안녕과 질서, 미풍양속을 저해할 목적으로 신청한 경우
+- Where an application is filed for the purpose of violating the law or hindering the well-being and order of society and good customs
 
--부정한 용도로 본 서비스를 이용하고자 하는 경우
+- If you wish to use this service for improper use
 
--서비스와 경쟁관계에 있는 이용자가 신청하는 경우
+- When a user who is in a competitive relationship with the service applies
 
--법령 또는 약관을 위반하여 이용계약이 해지된 적이 있는 이용자가 신청하는 경우
+- Where an application is made by a user whose contract of use has been terminated in violation of laws or terms and conditions
 
--기타 규정한 제반 사항을 위반하며 신청하는 경우
+- If you apply in violation of all other regulations
 
-③ 회사는 서비스 이용신청이 다음 각 호에 해당하는 경우에는 그 신청에 대하여 승낙 제한사유가 해소될 때까지 승낙을 유보할 수 있습니다.
+③ If the application for the use of the service falls under any of the following subparagraphs, the company may withhold its consent until the grounds for restriction on consent are resolved.
 
--회사가 설비의 여유가 없는 경우
+- When the company does not have enough facilities
 
--회사의 기술상 지장이 있는 경우
+- In case of technical difficulties in the company
 
--기타 회사의 귀책사유로 이용승낙이 곤란한 경우
+- If it is difficult to accept the use due to reasons attributable to other companies
 
-④ 회사는 이용신청고객이 관계 법령에서 규정하는 미성년자일 경우에 서비스별 안내에서 정하는 바에 따라 승낙을 보류할 수 있습니다.
+④ If the customer applying for use is a minor prescribed by the relevant laws and regulations, the company may withhold consent as prescribed by the service-specific guidance.
 
-⑤ 회사는 회원 가입 절차 완료 이후 제2항 각 호에 따른 사유가 발견된 경우 이용 승낙을 철회할 수 있습니다.
+⑤ The company may withdraw its consent to use if a reason under each subparagraph of paragraph (2) is found after the completion of the membership process.
 
-제 9 조 (회사의 의무)
+Article 9 (Company Obligations)
 
-① 회사는 회원이 희망한 서비스 제공 개시일에 특별한 사정이 없는 한 서비스를 이용할 수 있도록 하여야 합니다.
+① The company shall make the service available to the member on the desired service start date unless there are special circumstances.
 
-② 회사는 계속적이고 안정적인 서비스의 제공을 위하여 설비에 장애가 생기거나 멸실된 때에는 부득이한 사유가 없는 한 지체 없이 이를 수리 또는 복구합니다.
+② In order to provide continuous and stable service, the company shall repair or repair any failure or loss of facilities without delay unless there is an unavoidable reason.
 
-③ 회사는 개인정보 보호를 위해 보안시스템을 구축하며 개인정보 보호정책을 공시하고 준수합니다.
+③ The company establishes a security system to protect personal information and discloses and complies with the privacy policy.
 
-④ 회사는 회원으로부터 제기되는 의견이나 불만이 정당하다고 객관적으로 인정될 경우에는 적절한 절차를 거쳐 즉시 처리하여야 합니다. 다만, 즉시 처리가 곤란한 경우는 회원에게 그 사유와 처리일정을 통보하여야 합니다.
+④ If the company objectively recognizes that an opinion or complaint filed by a member is justified, it shall immediately process it through appropriate procedures. However, if it is difficult to process immediately, the reason and processing schedule must be notified to the member.
 
-제 10 조 (회원의 의무)
+Article 10 (Duty of Members)
 
-① 회원은 회원가입 신청 또는 회원정보 변경 시 모든 사항을 사실에 근거하여 본인의 진정한 정보로 작성하여야 하며, 허위 또는 타인의 정보를 등록할 경우 이와 관련된 모든 권리를 주장할 수 없습니다.
+① When applying for membership or changing member information, a member shall fill out all matters with his/her true information based on facts, and shall not claim all rights related thereto if he/she registers false or other person's information.
 
-② 회원은 약관에서 규정하는 사항과 기타 회사가 정한 제반 규정, 공지사항 등 회사가 공지하는 사항 및 관계 법령을 준수하여야 하며, 기타 회사의 업무에 방해가 되는 행위, 회사의 명예를 손상시키는 행위, 타인에게 피해를 주는 행위를 해서는 안됩니다.
+② Members shall comply with the company's announcements, such as the terms and conditions, all regulations, notices, and other related laws and regulations, and shall not interfere with the company's business, damage the company's reputation, or damage others.
 
-③ 회원은 주소, 연락처, 전자우편 주소 등 이용계약사항이 변경된 경우에 해당 절차를 거쳐 이를 회사에 즉시 알려야 합니다.
+③ The member shall immediately notify the company of any changes in the terms of the contract, such as the address, contact number, or e-mail address.
 
-④ 회원은 회사의 사전 승낙 없이 서비스를 이용하여 영업활동을 할 수 없으며, 그 영업활동의 결과에 대해 회사는 책임을 지지 않습니다. 또한 회원은 이와 같은 영업활동으로 회사가 손해를 입은 경우, 회원은 회사에 대해 손해배상의무를 지며, 회사는 해당 회원에 대해 서비스 이용제한 및 적법한 절차를 거쳐 손해배상 등을 청구할 수 있습니다.
+④ A member may not engage in business activities using the service without prior consent from the company, and the company shall not be responsible for the results of such business activities. In addition, if a member damages the company due to such business activities, the member is obligated to compensate the company, and the company can claim damages from the member through restrictions on service use and due process.
 
-⑤ 회원은 회사의 명시적 동의가 없는 한 서비스의 이용권한, 기타 이용계약상의 지위를 타인에게 양도, 증여할 수 없으며 이를 담보로 제공할 수 없습니다.
+⑤ A member shall not transfer or donate the right to use the service or other status under the contract of use to another person unless explicitly agreed by the company and shall not provide it as collateral.
 
-⑥ 회원은 회사 및 제 3자의 지적 재산권을 포함한 제반 권리를 침해하거나 제18조 각 호에 해당하는 행위를 해서는 안됩니다.
+⑥ A member shall not infringe on all rights, including the intellectual property rights of the company and third parties, or engage in any act falling under each item of Article 18.
 
-제 11 조 (서비스 이용 시간)
+Article 11 (Service hours)
 
-①서비스 이용은 회사의 업무상 또는 기술상 특별한 지장이 없는 한 연중무휴, 1일 24시간 운영을 원칙으로 합니다. 단, 회사는 시스템 정기점검, 증설 및 교체를 위해 회사가 정한 날이나 시간에 서비스를 일시 중단할 수 있으며, 예정되어 있는 작업으로 인한 서비스 일시 중단은 더알림 앱을 통해 사전에 공지합니다.
+①In principle, the use of the service shall be operated 24 hours a day, 24/7, unless there is any special problem with the company's work or technology. However, the company may suspend the service on the day or time specified by the company for regular system inspection, expansion and replacement, and the suspension of the service due to scheduled work is notified in advance through the uniBuzzy app.
 
-②회사는 긴급한 시스템 점검, 증설 및 교체, 설비의 장애, 서비스 이용의 폭주, 국가비상사태, 정전 등 부득이한 사유가 발생한 경우 사전 예고 없이 일시적으로 서비스의 전부 또는 일부를 중단할 수 있습니다.
+②The Company may temporarily suspend all or part of the Services without prior notice in the event of unavoidable reasons such as urgent system checks, expansion and replacement, facility failures, congestion of service use, national emergencies, or power outages.
 
-③회사는 서비스 개편 등 서비스 운영 상 필요한 경우 회원에게 사전 예고 후 서비스의 전부 또는 일부의 제공을 중단할 수 있습니다.
+③The company may discontinue the provision of all or part of the service after prior notice to the member, if necessary for the operation of the service, such as service reorganization.
 
-제 12 조 (회원의 알림 등)
+Article 12 (Notification of Members, etc.)
 
-① 알림이라 함은 회원이 서비스를 이용하면서 발송한 글, 사진, 각종 파일과 링크 등을 말합니다.
+① Notification refers to articles, photos, various files and links sent by a member while using the service.
 
-② 회원이 서비스에 등록하는 알림 등으로 인하여 본인 또는 타인에게 손해나 기타 문제가 발생하는 경우 회원은 이에 대한 책임을 지게되며, 회사는 특별한 사정이 없는 한 이에 대하여 책임을 지지 않습니다.
+② In the event of damage or other problems to yourself or another person due to notification of a member registering for the service, the member shall be responsible for it, and the company shall not be responsible for it unless there are special circumstances.
 
-③ 회사는 다음 각 호에 해당하는 알림 등을 회원의 사전 동의 없이 임시게시 중단, 수정, 삭제,이동 또는 등록 거부 등의 관련 조치를 취할 수 있습니다.
+③ The Company may take relevant measures such as temporary suspension of posting, modification, deletion, movement, or refusal of registration of notifications, etc. that fall under any of the following subparagraphs without the prior consent of the Member.
 
--다른 회원 또는 제3자에게 심한 모욕을 주거나 명예를 손상시키는 내용인 경우
+- If the content is to seriously insult other members or third parties or to damage their reputation
 
--공공질서 및 미풍양속에 위반되는 내용을 유포하거나 링크시키는 경우
+- When disseminating or linking information that violates public order and customs
 
--불법복제 또는 해킹을 조장하는 내용인 경우
+- If the content encourages illegal copying or hacking
 
--범죄와 결부된다고 객관적으로 인정되는 내용일 경우
+- If the content is objectively recognized as being related to a crime
 
--다른 이용자 또는 제 3자의 저작권 등 기타 권리를 침해하는 내용인 경우
+- In the case of infringement of other rights, such as copyrights of other users or third parties
 
--사적인 정치적 판단이나 종교적 견해의 내용으로 회사가 서비스 성격에 부합하지 않는다고 판단하는 경우
+- Where the company determines that it does not conform to the nature of the service based on personal political judgment or religious views
 
--회사에서 규정한 알림 원칙에 어긋나거나, 더알림 성격에 부합하지 않는 경우
+- If it violates the company's notification principles or does not conform to the uniBuzzy nature
 
--기타 관계법령에 위배된다고 판단되는 경우
+- Where it is deemed to be in violation of other relevant laws and regulations
 
-제 10 조 (회원의 의무)
+Article 10 (Duty of Members)
 
-④ 회사는 알림 등에 대하여 제3자로부터 명예훼손, 지적재산권 등의 권리 침해를 이유로 발송중단 요청을 받은 경우 이를 임시로 발송중단(전송중단)할 수 있으며, 발송중단 요청자와 알림 등록자 간에 소송, 합의 기타 이에 준하는 관련기관의 결정 등이 이루어져 회사에 접수된 경우 이에 따릅니다.
+④ The Company shall be honored by a third party for notification, etcIf a request for suspension of shipment is received due to damage or infringement of intellectual property rights, it may be temporarily suspended (transmitted), and if a lawsuit, agreement, or other decision of a related agency is made between the requestor and the notification registrant.
 
-⑤ 해당 알림 등에 대해 임시발송 중단이 된 경우, 알림을 등록한 회원은 재발송(전송재개)를 회사에 요청할 수 있으며, 발송 중단일로부터 3개월 내에 재발송을 요청하지 아니한 경우 회사는 이를 삭제할 수 있습니다.
+⑤ If the notification is temporarily suspended, the member who registered the notification can request the company to resend (resume transmission), and if the notification is not requested within three months from the date of suspension, the company can delete it.
 
-제 13 조 (알림에 대한 저작권)
+Article 13 (Copyright to Notifications)
 
-① 회사가 작성한 알림 또는 저작물에 대한 저작권 기타 지적재산권은 회사에 귀속합니다.
+① Any notification or copyright or other intellectual property rights to a work created by the Company shall be vested in the Company.
 
-② 회원이 서비스 내에 게시한 알림의 저작권은 게시한 회원에게 귀속됩니다.
+② The copyright of notifications posted by the member within the service belongs to the member who posted them.
 
-단, 회사는 서비스의 운영, 전시, 전송, 배포, 홍보의 목적으로 회원의 별도의 허락 없이 무상으로 저작권법에 규정하는 공정한 관행에 합치되게 합리적인 범위 내에서 다음과 같이 회원이 등록한 알림을 사용할 수 있습니다.
+However, the Company may use the following notifications, to the extent reasonable, in accordance with the fair practices prescribed in the Copyright Act, free of charge, for the purpose of operating, exhibiting, transmitting, distributing, and promoting the Services.
 
--서비스 내에서 회원 알림의 복제, 수정, 개조, 전시, 전송, 배포 및 저작물성을 해치지 않는 범위 내에서의 편집 저작물 작성
+- reproduction, modification, alteration, exhibition, transmission, distribution, and creation of edited works within the service to the extent that it does not impair the copyrightability of member notifications
 
--미디어, 통신사 등 서비스 제휴 파트너에게 회원의 알림 내용을 제공, 전시 혹은 홍보하게 하는 것.
+- To provide, display, or promote members' notifications to service partners such as media and telecommunications companies.
 
-단, 이 경우 회사는 별도의 동의 없이 회원의 이용자ID 외에 회원의 개인정보를 제공하지 않습니다.
+However, in this case, the company does not provide the member's personal information other than the member's user ID without separate consent.
 
-③ 회사는 전항 이외의 방법으로 회원의 알림을 이용하고자 하는 경우, 전화, 팩스, 전자우편 등의 방법을 통해 사전에 회원의 동의를 얻어야 합니다.
+③ If the company intends to use a member's notification by means other than the preceding paragraph, it shall obtain prior consent from the member through telephone, fax, e-mail, etc.
 
-④ 회원이 이용계약 해지를 한 경우 본인 계정에 기록된 알림 일체는 삭제됩니다.
+④ If a member cancels the use contract, all notifications recorded in his or her account will be deleted.
 
-단, 타인에 의해 보관, 담기 등으로 재게시 되거나 복제된 알림과 타인의 알림과 결합되어 제공되는 알림 등은 그러하지 않습니다.
+However, this shall not apply to notifications that have been republished or reproduced by others, such as storage or inclusion, and notifications provided in combination with notifications of others.
 
-제 14 조 (정보의 제공)
+Article 14 (Provision of Information)
 
-① 회사는 회원에게 서비스 이용에 필요가 있다고 인정되는 각종 정보에 대해서 전자우편이나 서신, 우편, SMS, 전화 등의 방법으로 회원에게 제공할 수 있습니다.
+① The company may provide various information to the member by e-mail, correspondence, mail, SMS, telephone, etc. that the member deems necessary to use the service.
 
-② 회사는 서비스 개선 및 회원 대상의 서비스 소개 등의 목적으로 회원의 동의 하에 관련 법령에 따라 추가적인 개인 정보를 수집할 수 있습니다.
+② The company may collect additional personal information in accordance with relevant laws and regulations with the consent of the members for the purpose of improving services and introducing services to members.
 
-제 15 조 (광고게재 및 광고주와의 거래)
+Article 15 (Advertising and transactions with advertisers)
 
-① 회사가 회원에게 서비스를 제공할 수 있는 서비스 투자기반의 일부는 광고게재를 통한 수익으로부터 나옵니다. 회원은 서비스 이용시 노출되는 광고게재에 대해 동의합니다.
+① Part of the service investment base that a company can provide services to its members comes from revenue from advertising. The member agrees with the advertisement that is exposed when using the service.
 
-② 회사는 서비스상에 게재되어 있거나 서비스를 통한 광고주의 판촉활동에 회원이 참여하거나 교신 또는 거래를 함으로써 발생하는 손실과 손해에 대해 책임을 지지 않습니다.
+② The Company shall not be liable for losses and damages arising from the participation, communication, or transaction of members in the advertiser's promotional activities on or through the Service.
 
-제 16 조 (계약 변경 및 해지)
+Article 16 (Change and Termination of Contract)
 
-①회원이 이용계약을 해지하고자 하는 때에는 회원 본인이 서비스 내의 [마이페이지] 메뉴를 이용해 가입해지를 해야 합니다.
+①When a member intends to terminate a user contract, the member himself/herself must cancel the subscription using the My Page menu in the service.
 
-②회사는 이용계약을 해지하는 경우 더알림 개인정보보호정책에 따라 회원 등록을 말소합니다. 이 경우 회원에게 이를 통지하며, 회사가 직권으로 이용계약을 해지하고자 하는 경우에는 말소 전에 회원에게 소명의 기회를 부여합니다.
+②When the company cancels the use contract, it cancels the membership registration in accordance with the uniBuzzy privacy policy. In this case, the member shall be notified, and if the company intends to terminate the use contract ex officio, the member shall be given an opportunity to explain before cancellation.
 
-제 17 조 (서비스 이용제한)
+Article 17 (Restriction on Service Use)
 
-회사는 회원이 서비스 이용내용에 있어서 본 약관 제 11조 내용을 위반하거나, 다음 각 호에 해당하는 경우 서비스 이용 제한, 초기화, 이용계약 해지 및 기타 해당 조치를 할 수 있습니다.
+The Company may restrict the use of the Service, initialize, terminate the Service Contract, or take other applicable measures if the Member violates the contents of Article 11 of this Agreement in terms of the use of the Service or falls under any of the following.
 
--회원정보에 부정한 내용을 등록하거나 타인의 이용자ID, 비밀번호 기타 개인정보를 도용하는 행위 또는 이용자ID를 타인과 거래하거나 제공하는 행위
+- Registering fraudulent information in member information, stealing other people's user IDs, passwords, and other personal information, or trading or providing user IDs with others
 
--공공질서 및 미풍양속에 위반되는 저속, 음란한 내용 또는 타인의 명예나 프라이버시를 침해할 수 있는 내용의 정보, 문장, 도형, 음향, 동영상을 전송, 게시, 전자우편 또는 기타의 방법으로 타인에게 유포하는 행위
+- Transfer, publish, e-mail, or otherwise disseminate information, sentences, figures, sounds, and videos that violate public order and customs, obscene content, or that may infringe on the honor or privacy of others
 
--다른 이용자를 희롱 또는 위협하거나, 특정 이용자에게 지속적으로 고통 또는 불편을 주는 행위
+- Teasing or threatening other users, or causing continuous pain or inconvenience to specific users
 
--회사로부터 특별한 권리를 부여 받지 않고 회사의 클라이언트 프로그램을 변경하거나, 회사의 서버를 해킹하거나, 웹사이트 또는 게시된 정보의 일부분 또는 전체를 임의로 변경하는 행위
+- Change the company's client program, hack into the company's server, or arbitrarily select any or all of the website or published information without any special rights from the company the act of changing
 
--서비스를 통해 얻은 정보를 회사의 사전 승낙 없이 서비스 이용 외의 목적으로 복제하거나, 이를 출판 및 방송 등에 사용하거나, 제 3자에게 제공하는 행위
+- reproducing information obtained through the service for purposes other than the use of the service without prior consent of the company, using it for publication, broadcasting, etc., or providing it to a third party
 
--회사의 운영진, 직원 또는 관계자를 사칭하거나 고의로 서비스를 방해하는 등 정상적인 서비스 운영에 방해가 될 경우
+- the management of the company, If it interferes with the normal operation of the service, such as impersonating an employee or related person or intentionally interfering with the service
 
--정보통신 윤리위원회 등 관련 공공기관의 시정 요구가 있는 경우
+- Where there is a request for correction from related public institutions, such as the Information and Communication Ethics Committee
 
--3개월 이상 서비스를 이용한 적이 없는 경우
+-If you have not used the service for more than 3 months
 
--약관을 포함하여 회사가 정한 제반 규정을 위반하거나 범죄와 결부된다고 객관적으로 판단되는 등 제반 법령을 위반하는 행위
+- Violation of all laws and regulations, such as violation of all regulations set by the company, including the terms and conditions, or objectively determined to be associated with a crime
 
-제 18 조 (손해배상)
+Article 18 (Compensation for damages)
 
-① 회사와 이용자는 서비스 이용과 관련하여 고의 또는 과실로 상대방에게 손해를 끼친 경우에는 이를 배상하여야 한다. 단,
+① The company and the user shall compensate the other party if they intentionally or negligently cause damage to the other party in connection with the use of the service. Only,
 
-② 회사는 무료로 제공하는 서비스의 이용과 관련하여 개인정보보호정책에서 정하는 내용에 위반하지 않는 한 어떠한 손해도 책임을 지지 않는다.
+② The Company shall not be liable for any damages in connection with the use of free services unless it violates the provisions of the Privacy Policy.
 
-제 19 조 (면책조항)
+Article 19 (Exemption Clause)
 
-① 회사는 천재지변, 전쟁, 기간통신사업자의 서비스 중지 및 기타 이에 준하는 불가항력으로 인하여 서비스를 제공할 수 없는 경우에는 서비스 제공에 대한 책임이 면제됩니다.
+① The Company is exempted from responsibility for providing the Services if it is unable to provide the Services due to natural disasters, wars, termination of the Services of the Terminals or other equivalent force majeure.
 
-② 회사는 서비스용 설비의 보수, 교체, 정기점검, 공사 등 부득이한 사유로 발생한 손해에 대한 책임이 면제됩니다.
+② The company is exempted from liability for damages caused by unavoidable reasons such as repair, replacement, regular inspection, and construction of service facilities.
 
-③ 회사는 회원의 컴퓨터 오류에 의해 손해가 발생한 경우, 또는 회원이 신상정보 및 전자우편 주소를 부실하게 기재하여 손해가 발생한 경우 책임을 지지 않습니다.
+③ The company shall not be liable for damages caused by a computer error of a member, or if the member causes damages due to poor personal information and e-mail address.
 
-④ 회사는 회원이 서비스를 이용하여 기대하는 수익을 얻지 못하거나 상실한 것에 대하여 책임을 지지 않으며, 서비스를 이용하면서 얻은 자료로 인한 손해에 대하여 책임을 지지 않습니다.
+④ The Company shall not be liable for any loss or loss of revenue expected by the Member from the use of the Service and shall not be liable for any damages caused by the data obtained from the use of the Service.
 
-⑤ 회사는 회원이 서비스에 게재한 각종 정보, 자료, 사실의 신뢰도, 정확성 등 내용에 대하여 책임을 지지 않으며, 회원 상호간 및 회원과 제 3자 상호 간에 서비스를 매개로 발생한 분쟁에 대해 개입할 의무가 없고, 이로 인한 손해를 배상할 책임도 없습니다.
+⑤ The company shall not be responsible for the information, data, reliability, accuracy, etc. posted by the member in the service, nor shall it be liable to intervene in disputes arising through the service between the member and the third party.
 
-⑥ 회사는 회원의 알림을 등록 전에 사전심사 하거나 상시적으로 알림의 내용을 확인 또는 검토하여야 할 의무가 없으며, 그 결과에 대한 책임을 지지 아니합니다.
+⑥ The company is not obligated to review the members' notifications before registration or to check or review the contents of the notifications on a regular basis, and is not responsible for the results.
 
-제 20 조 (통지)
+Article 20 (Notice)
 
-① 회사가 회원에 대하여 통지를 하는 경우 회원이 회사에 등록한 전자우편 주소로 할 수 있습니다.
+① If the company notifies the member, the member can use the e-mail address registered with the company.
 
-② 회사는 불특정다수 회원에게 통지를 해야 할 경우 공지 게시판을 통해 7일 이상 게시함으로써 개별 통지에 갈음할 수 있습니다.
+② If the company needs to notify a large number of unspecified members, it can replace the individual notification by posting it on the notice board for at least 7 days.
 
-제 21 조 (재판권 및 준거법)
+Article 21 (Trial Rights and Applicable Acts)
 
-① 이 약관에 명시되지 않은 사항은 전기통신사업법 등 대한민국의 관계법령과 상관습에 따릅니다.
+① Matters not specified in these terms and conditions shall be governed by relevant laws and regulations of the Republic of Korea, such as the Telecommunications Business Act.
 
-② 회사의 정액 서비스 회원 및 기타 유료 서비스 이용 회원의 경우 당해 서비스와 관련하여서는 회사가 별도로 정한 약관 및 정책에 따릅니다.
+② In the case of members of the company's flat-rate service and other paid service users, the company shall comply with the terms and conditions and policies separately set by the company regarding the service.
 
-부칙
+Supplementary Provisions
 
-① 본 약관은 2022년 2월 10일부터 적용됩니다.
+① These Terms and Conditions shall apply from February 10, 2022.
       </textarea>
     </div>
-    <div style="text-align: center; margin-top: 1rem;"><input type="checkbox" name="agreeOut" v-model="agreeOut" id="agreeOut"><label  for="agreeOut">동의합니다</label></div>
-    <gBtnSmall v-on:click="requestLeave()" :btnTitle="this.completeBtnTitle" style="width:100%; height:3rem; line-height:3rem; font-size:20px;" class="mtop-2" />
+    <div style="text-align: center; margin-top: 1rem;"><input type="checkbox" name="agreeOut" v-model="agreeOut" id="agreeOut"><label  for="agreeOut">{{ $t('MSG_AGREE') }}</label></div>
+    <gBtnSmall v-on:click="requestLeave()" :btnTitle="this.completeBtnTitle" style="width:100%; height:3rem; line-height:3rem; font-size:20px;" class="mtop-1" />
   </div>
 <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn=false"/>
 </div>
@@ -293,12 +303,11 @@
 </template>
 
 <script>
-
-import leaveResultPop from '@/components/popup/info/Tal_leaveTheAlimResultPop.vue'
+import leaveResultPop from '../../../components/popup/info/Tal_leaveTheAlimResultPop.vue'
 export default {
   data () {
     return {
-      completeBtnTitle: '완료',
+      completeBtnTitle: 'Completed',
       resultPopShowYn: false,
       agreeOut: false,
       smallPopYn: false,
@@ -313,6 +322,9 @@ export default {
   computed: {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_LOCALE () {
+      return this.$i18n.locale
     }
   },
   methods: {
