@@ -1,10 +1,24 @@
+<i18n>
+{
+  "ko": {
+    "MSG_LEAVE_UNIB": "회원 탈퇴가 완료되었습니다.",
+    "MSG_ENDING_UNIB1": "더알림을 이용해주시고 사랑해주셔서 감사합니다.<br>더욱 더 노력하고 발전하는 더알림이 되겠습니다."
+    "MSG_ENDING_UNIB2": "더욱 더 노력하고 발전하는 더알림이 되겠습니다."
+  },
+  "en": {
+    "MSG_LEAVE_UNIB": "Your uniBuzzzy membership has been withdrawn.",
+    "MSG_ENDING_UNIB1": "Thank you for enjoying uniBuzzy."
+    "MSG_ENDING_UNIB2": "We will make more efforts and improvements."
+  }
+}
+</i18n>
 <template>
 <div class="modalBack">
     <div class="leaveContainer">
       <div class="leaveContentsArea">
-        <img src="../../../assets/images/common/message_logo.png" alt="종모양 아이콘">
-        <p class="leaveComplete-1">회원 탈퇴가 완료되었습니다.</p>
-        <p class="leaveComplete-2">더알림을 이용해주시고 사랑해주셔서 감사합니다.<br>더욱 더 노력하고 발전하는 더알림이 되겠습니다.</p>
+        <img src="../../../assets/images/common/message_logo.png" alt="bell icon">
+        <p class="leaveComplete-1">{{ $t('MSG_LEAVE_UNIB') }}</p>
+        <p class="leaveComplete-2">{{ $t('MSG_ENDING_UNIB1') }}<br>{{ $t('MSG_ENDING_UNIB1') }}.</p>
       </div>
       <gBtnLarge v-on:click="closePop" :btnTitle="'확인'" />
     </div>
@@ -14,6 +28,11 @@
 export default {
   data () {
     return {
+    }
+  },
+  computed: {
+    GE_LOCALE () {
+      return this.$i18n.locale
     }
   },
   methods: {
