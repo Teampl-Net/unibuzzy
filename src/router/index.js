@@ -130,6 +130,12 @@ if (type === 'UB') {
           props: true,
           component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_morePushList.vue')
         },
+        {
+          path: '/cancel',
+          name: 'cancel',
+          props: true,
+          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_leaveUniBuzzy.vue')
+        },
         /* {
           path: '/',
           name: 'pushList',

@@ -91,7 +91,7 @@
         {{ $t('PROF_BTN_LOGOUT') }}
       </div>
       <p v-if="GE_LOCALE === 'ko'" class="leaveText font14">더알림을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">여기</span>를 눌러주세요.</p>
-      <p v-else style="margin-bottom: 20px!important;" class="leaveText font14 pBottom-20">Click <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">here</span> to delete your account from uniBuzzy.</p>
+      <p v-else style="margin-bottom: 20px!important;" class="leaveText font14 pBottom-20">Click <span class="cursorP" v-on:click="goLeaveUnibuzzy">here</span> to delete your account from uniBuzzy.</p>
     </div>
 
     <gConfirmPop :confirmText='checkVersionText' class="" confirmType='two' @ok="goPlayStore" @no='checkVersionPopShowYn = false' v-if="checkVersionPopShowYn"/>
@@ -200,6 +200,9 @@ export default {
     this.$addHistoryStack('setMyPage')
   },
   methods: {
+    goLeaveUnibuzzy () {
+      this.$router.push('/cancel')
+    },
     openDevPop () {
         var history = this.$store.getters['D_HISTORY/hStack']
         this.devPopId = 'devModPop' + history.length
