@@ -298,7 +298,6 @@ import leaveResultPop from '@/components/popup/info/Tal_leaveTheAlimResultPop.vu
 export default {
   data () {
     return {
-      creUser: JSON.parse(localStorage.getItem('sessionUser')).userKey,
       completeBtnTitle: '완료',
       resultPopShowYn: false,
       agreeOut: false,
@@ -322,12 +321,6 @@ export default {
     },
     requestLeave () {
       if (this.agreeOut === true) {
-        this.resultPopShowYn = true
-        var param = {}
-        param.claimType = 'DEL'
-        param.targetType = 'A'
-        param.targetKey = this.creUser
-        param.creUserKey = this.creUser
         this.saveActAxiosFunc()
       } else {
         this.confirmMsg = '위 내용을 읽고 동의합니다 에 체크해주세요.'
@@ -341,9 +334,11 @@ export default {
           userKey: this.GE_USER.userKey
         }
       })
-      if (result.data.result === true) {
-        this.resultPopShowYn = true
-      }
+      console.log(result)
+      this.resultPopShowYn = true
+      // if (result.data.result === true) {
+      //   this.resultPopShowYn = true
+      // }
     },
     closeXPop () {
       this.resultPopShowYn = false
