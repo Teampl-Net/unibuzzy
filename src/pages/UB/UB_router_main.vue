@@ -233,6 +233,7 @@ export default {
           // eslint-disable-next-line no-new-object
           var goDetailParam = new Object()
           goDetailParam.notiYn = true
+          alert('goDetailParam', goDetailParam)
           goDetailParam.creTeamKey = Number(notiDetail.creTeamKey)
           if (notiUserDo.targetKind === 'C') {
             goDetailParam.contentsKey = notiUserDo.targetKey
@@ -396,7 +397,7 @@ export default {
       chanMainParam.teamKey = teamKey
       chanMainParam.targetKey = teamKey
       if (detailValue && detailValue.nameMtext) chanMainParam.nameMtext = detailValue.nameMtext
-      chanMainParam.chanName = detailValue.nameMtext
+      // chanMainParam.chanName = detailValue.nameMtext
       if (detailValue.contentsKey) {
         chanMainParam.jobkindId = detailValue.jobkindId
         chanMainParam.targetContentsKey = detailValue.contentsKey

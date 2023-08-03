@@ -192,13 +192,13 @@ export const functions = {
     var addVueResult = false
     try {
       if (message.type === 'pushmsg') {
-        if (JSON.parse(message.pushMessage).backgroundYn) {
-          notiDetail = JSON.parse(message.pushMessage)
+        if (JSON.parse(message.data)) {
+          notiDetail = JSON.parse(message.data)
         } else {
-          if (JSON.parse(message.pushMessage).noti.data.item !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== undefined && JSON.parse(message.pushMessage).noti.data.item.data !== null && JSON.parse(message.pushMessage).noti.data.item.data !== '') {
-            notiDetail = JSON.parse(message.pushMessage).noti.data.item.data
+          if (JSON.parse(message.data).noti.data !== undefined) {
+            notiDetail = JSON.parse(message.data).noti.data
           } else {
-            notiDetail = JSON.parse(message.pushMessage).noti.data
+            notiDetail = JSON.parse(message.data).noti.data
           }
         }
         if (JSON.parse(notiDetail.userDo).targetKind === 'CONT') {
@@ -231,7 +231,7 @@ export const functions = {
       return
     } */
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
-      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+      if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
         ;
       }
     }
@@ -256,12 +256,12 @@ export const functions = {
     /* var noti = await functions.getContentsDetail(null, JSON.parse(notiDetail.userDo).targetKey, JSON.parse(notiDetail.userDo))
     store.dispatch('D_UPDATE/AC_ADD_NEW_NOTI', noti) */
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
-      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+      if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
         ;
       } else {
       }
     } else {
-      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+      if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
         if (notiDetail.jobkindId !== 'BOAR') {
         }
       } else {
@@ -293,7 +293,7 @@ export const functions = {
     memo_.creTeamKey = Number(JSON.parse(notiDetail.userDo))
     await this.addContents(memo_.targetKey, notiDetail.jobkindId)
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
-      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+      if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
 
       } else {
         if (notiDetail.jobkindId === 'ALIM') {

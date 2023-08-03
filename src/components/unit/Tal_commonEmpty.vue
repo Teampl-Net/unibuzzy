@@ -35,6 +35,7 @@
       "ERROR_MSG_SERVICE_PROB": "Apologies! We're currently facing some technical difficulties. Please try again later.",
       "EMPT_MSG_NO_POST": "You have not written any content.",
       "EMPT_MSG_NO_FILE": "No uploaded files found.",
+      "EMPT_MSG_NO_SAVED": "No saved contents found.",
     }
   }
 </i18n>

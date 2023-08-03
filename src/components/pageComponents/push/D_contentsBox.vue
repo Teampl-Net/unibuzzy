@@ -789,6 +789,7 @@ export default {
         this.deleteContents(this.$t('COMMON_MSG_DELETED_NOTI'))
       } else if (this.mCurrentConfirmType === 'boardDEL') {
         this.deleteContents(this.$t('COMMON_MSG_DELETED_POST'))
+        // 여기
       } else if (this.mCurrentConfirmType === 'alimCancel') {
         this.alimCancle()
       }
@@ -874,6 +875,7 @@ export default {
       this.mConfirmPopShowYn = true
     },
     async deleteContents (toastText) {
+      console.log('이거맞다')
       var result
       var inParam = {}
       if (this.contentsEle.jobkindId === 'ALIM') {

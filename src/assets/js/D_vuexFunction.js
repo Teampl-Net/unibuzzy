@@ -212,17 +212,16 @@ export const functions = {
           notiDetail = message
         } else {
           if (
-            JSON.parse(message.pushMessage).noti.data !== undefined &&
-                    JSON.parse(message.pushMessage).noti.data !== undefined &&
-                    JSON.parse(message.pushMessage).noti.data !== null &&
-                    JSON.parse(message.pushMessage).noti.data !== ''
+            JSON.parse(message.data).noti.data !== undefined &&
+            JSON.parse(message.data).noti.data !== null &&
+            JSON.parse(message.data).noti.data !== ''
           ) {
-            notiDetail = JSON.parse(message.pushMessage).noti.data
-            if (JSON.parse(message.pushMessage).noti.data.item) {
-              notiDetail = JSON.parse(message.pushMessage).noti.data.item
+            notiDetail = JSON.parse(message.data).noti.data
+            if (JSON.parse(message.data).noti.data) {
+              notiDetail = JSON.parse(message.data).noti.data
             }
           } else {
-            notiDetail = JSON.parse(message.pushMessage).noti
+            notiDetail = JSON.parse(message.data).noti.data
           }
         }
       }
@@ -254,7 +253,7 @@ export const functions = {
       return
     } */
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
-      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+      if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
         ;
       }
     }
@@ -279,12 +278,12 @@ export const functions = {
     /* var noti = await functions.getContentsDetail(null, JSON.parse(notiDetail.userDo).targetKey, JSON.parse(notiDetail.userDo))
     store.dispatch('D_UPDATE/AC_ADD_NEW_NOTI', noti) */
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
-      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+      if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
         ;
       } else {
       }
     } else {
-      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+      if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
         if (notiDetail.jobkindId !== 'BOAR') {
         }
       } else {
@@ -335,7 +334,7 @@ export const functions = {
         }
       }
     }
-    if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+    if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
     } else {
       // this.$router.replace({ path: '/' })
       if (notiDetail.actType === 'FL') {
@@ -353,7 +352,7 @@ export const functions = {
     memo_.creTeamKey = Number(JSON.parse(notiDetail.userDo))
     await this.addContents(memo_.targetKey, notiDetail.jobkindId)
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
-      if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
+      if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
 
       } else {
         if (notiDetail.jobkindId === 'ALIM') {

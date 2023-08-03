@@ -40,7 +40,10 @@ export default {
   props: {
     confirmText: {},
     confirmType: {},
-    nonHeaderYn: { type: Boolean, default: false }
+    nonHeaderYn: { type: Boolean, default: false },
+    pCloseCreateConfirmPop: Function,
+    pNewChanTeam: Array,
+    pGoChannelMain: Function
   },
   methods: {
     goOk () {
@@ -48,6 +51,22 @@ export default {
     },
     goNo () {
       this.$emit('no')
+      if (this.pCloseCreateConfirmPop) {
+        this.pCloseCreateConfirmPop()
+      }
+      if (this.pGoChannelMain) {
+        this.pGoChannelMain()
+        console.log('pNewChanTeam', this.pNewChanTeam)
+      }
+    },
+    goChannelMain () {
+      var openPopParam = {}
+      openPopParam.targetKey = this.pNewChanTeam.teamKey
+      if (!openPopParam.targetKey) {
+        openPopParam.targetKey = this.pNewChanTeam.targetKey
+      }
+      openPopParam.targetType = 'chanDetail'
+      this.$emit('openPop', openPopParam)
     }
   },
   computed: {
@@ -73,13 +92,14 @@ export default {
   },
   created () {
     this.$addHistoryStack('gConfirmPop')
+    console.log('===this.pNewChanTeam====', this.pNewChanTeam)
   },
   mounted () {
-    if (this.confirmType === 'timeout') {
-      this.$delayAfterFunc(2000, this.goNo)
+    // if (this.confirmType === 'timeout') {
+    //   this.$delayAfterFunc(2000, this.goNo)
 
-      // this.tiemOut()
-    }
+    //   // this.tiemOut()
+    // }
   }
 }
 </script>

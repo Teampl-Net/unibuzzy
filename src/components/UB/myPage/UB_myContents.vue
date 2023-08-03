@@ -122,6 +122,7 @@ export default {
     GE_DISP_CONT_LIST () {
       var idx1, idx2
       var contList = this.mContentsList
+      console.log('contList', contList)
       var test = this.GE_MAIN_CHAN_LIST
       for (var i = 0; i < contList.length; i++) {
         idx1 = test.findIndex((item) => item.teamKey === contList[i].creTeamKey)

@@ -1,6 +1,6 @@
 <template>
   <div ref="mainRef" class="w100P h100P" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
-    <createChannel v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
+    <createChannel v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
     <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
@@ -417,6 +417,9 @@ export default {
     },
     openPage (param) {
       this.mInfoBoxShowYn = false
+      this.mCreChannelShowYn = false
+      console.log('12341234')
+      console.log(param)
       this.$emit('openPage', param)
     },
     openPop (openParam) {

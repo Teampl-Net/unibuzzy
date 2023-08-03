@@ -38,9 +38,9 @@
 </i18n>
 <template>
 <div style="width: 100%; height: 100%; float: left; position: absolute; z-index: 99999; left: 0; top: 0;" @click.stop="preventDefault">
-  <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" />
+  <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pGoMain="goMain" :pClosePop="pClosePop" />
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
-    <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
+  <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
       <div class="createChanContentsWrap">
         <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" >
           <label @click="mIconBgSelectPopYn='bgPop'"  class='backgroundLabel commonColor' for="input-Backimgfile">
@@ -73,7 +73,6 @@
             <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('CRE_TITLE_DESC') }}</p>
             <textarea style="background: #fff; border: 1px solid #cccccc; padding: 10px;" v-model="mInputChannelMemo" class="channelMemo" :placeholder="$t('CRE_MSG_DESC')"/>
           </div>
-
           <div style="width:100%;" class="mtop-1 fl ">
             <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('CRE_TITLE_HEADER') }}</p>
 
@@ -103,8 +102,8 @@
         </div>
       </div>
     </div>
-    <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='setParam' />
-    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="mCreatedSuccessPopYn" />
+    <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn = false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='setParam' :pNewChanTeam="mNewChanTeam" />
+    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="mCreatedSuccessPopYn" :pClosePop="pClosePop" :pCloseCreateConfirmPop="closeCreateConfirmPop" :pNewChanTeam="mNewChanTeam" :pGoChannelMain="goChannelMain"/>
     <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn === true" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
 </div>
 </template>
@@ -202,15 +201,31 @@ export default {
       mBtnColor: false,
       mTopColorPreviewYn: false,
       mBusinessItemList: [],
-      mReloadKey: 0
+      mReloadKey: 0,
+      mNewChanTeam: ''
     }
   },
   methods: {
+    closeCreateConfirmPop () {
+      this.mCreatedSuccessPopYn = false
+    },
     preventDefault () {
       return false
     },
     closeBgPop () {
       this.mIconBgSelectPopYn = false
+    },
+    closeXPop () {
+      console.log('hi')
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
+      // this.$emit('closePop')
+    },
+    goMain () {
+      this.$router.replace({ path: '/' })
     },
     returnConfirmText (type) {
       if (this.GE_LOCALE === 'ko') {
@@ -394,6 +409,7 @@ export default {
         })
 
         var result = response.data
+        this.mNewChanTeam = result
         console.log(result)
         if (result.result === true || result.result === 'true') {
           this.mCreCheckPopYn = false
@@ -426,7 +442,8 @@ export default {
           console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
           console.log(params)
 
-          this.mCreatedSuccessPopYn = false
+          // this.mCreatedSuccessPopYn = false
+          this.mCreCheckPopYn = false
           this.$emit('successCreChan', params)
         }
       } catch (error) {
@@ -458,9 +475,29 @@ export default {
       console.log(' == resultList == ')
       console.log(resultList)
       var response = resultList.data.content[0]
+      this.mNewChanTeam = response
       response.detailPageYn = true
       // await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
       await this.$store.dispatch('D_CHANNEL/AC_CREATE_CHANNEL', response)
+    },
+    goChannelMain () {
+      const pageParam = {}
+      pageParam.targetType = 'chanDetail'
+      if (this.mNewChanTeam.teamKey) {
+        pageParam.targetKey = this.mNewChanTeam.teamKey
+      } else {
+        pageParam.targetKey = this.mNewChanTeam.targetKey
+      }
+      console.log('==this.mNewChanTeam', this.mNewChanTeam)
+      this.$emit('openPage', pageParam)
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      var hStack = this.$store.getters['D_HISTORY/hStack']
+      if (this.popId === hStack[hStack.length - 1]) {
+        this.closeXPop()
+      }
     }
   },
   computed: {
@@ -482,6 +519,12 @@ export default {
       } else {
         return null
       }
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hStack']
     }
   },
   components: {

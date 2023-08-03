@@ -77,10 +77,9 @@ export default {
       this.$emit('openMenu')
     },
     closeXPop () {
+      this.$emit('closeXPop')
       if (this.pClosePop) {
         this.pClosePop()
-      } else {
-        console.log('오류발생')
       }
     },
     sendBtnClick () {

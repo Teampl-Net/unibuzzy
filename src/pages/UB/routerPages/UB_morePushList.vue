@@ -10,7 +10,7 @@
           <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" @fileDownload="fileDownload"/>
           <myObserver v-if="index === GE_DISP_CONT_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
         </template>
-        <gEmpty :tabName="currentTabName" contentName="게시판" v-if="GE_DISP_CONT_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
+        <gEmpty :tabName="`스크랩`" contentName="게시판" v-if="GE_DISP_CONT_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
       </div>
     </div>
     <div @click="openSearch" class="cursorP" style="position: absolute; cursor: pointer; right: 10%; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid #8B8AD1; width: 50px; height: 50px; background-color: #fff;" :style="'bottom:' + (this.$STATUS_HEIGHT + 80)+ 'px'">

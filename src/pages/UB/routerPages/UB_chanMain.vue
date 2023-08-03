@@ -478,6 +478,7 @@ export default {
       this.$emit('openPop', openPopParam)
     },
     async closeChannelPop (resultReqData) {
+      console.log('hi')
       this.commonChanPopShowYn = false
       if (resultReqData) {
         var memberInfoText = ''

@@ -91,6 +91,7 @@ const isJsonString = (str) => {
           message = e.data
         }
         if (message.type === 'userInfo' || message.type === 'successLogin') {
+          //  alert(message.type)
           if (message.loginYn === true) {
             if (message.userInfo) {
               const userProfile = JSON.parse(message.userInfo)
@@ -99,6 +100,7 @@ const isJsonString = (str) => {
               router.replace({ path: '/' })
             }
           } else if (message.data) {
+            // alert(message.data)
             const userProfile = message.data
             localStorage.setItem('loginYn', true)
             await saveUser(userProfile, true) // 서버에 save요청
@@ -158,25 +160,26 @@ const isJsonString = (str) => {
           var current = store.getters['D_HISTORY/hUpdate']
           store.commit('D_HISTORY/updatePage', current + 1)
         } else if (message.type === 'pushmsg') {
+          // alert(JSON.stringify(message.data))
           var isMobile = /Mobi/i.test(window.navigator.userAgent)
           var notiDetailObj = null
-          var appActiveYn = JSON.parse(message.pushMessage).arrivedYn
+          var appActiveYn = JSON.parse(message.data).arrivedYn
 
           if (!isMobile) {
             notiDetailObj = message
           } else {
             if (
-              JSON.parse(message.pushMessage).noti.data !== undefined &&
-                JSON.parse(message.pushMessage).noti.data !== undefined &&
-                JSON.parse(message.pushMessage).noti.data !== null &&
-                JSON.parse(message.pushMessage).noti.data !== ''
+              JSON.parse(message.data).noti.data !== undefined &&
+              JSON.parse(message.data).noti.data !== null &&
+              JSON.parse(message.data).noti.data !== ''
             ) {
-              notiDetailObj = JSON.parse(message.pushMessage).noti.data
-              if (JSON.parse(message.pushMessage).noti.data.item) {
-                notiDetailObj = JSON.parse(message.pushMessage).noti.data.item
+              notiDetailObj = JSON.parse(message.data).noti.data
+              // alert(JSON.stringify(JSON.parse(message.data).noti.data))
+              if (JSON.parse(message.data).noti.data) {
+                notiDetailObj = JSON.parse(message.data).noti.data
               }
             } else {
-              notiDetailObj = JSON.parse(message.pushMessage).noti
+              notiDetailObj = JSON.parse(message.data).noti.data
             }
           }
 
@@ -214,6 +217,7 @@ const isJsonString = (str) => {
           var appInfo = JSON.parse(message.appInfo)
           localStorage.setItem('appInfo', message.appInfo)
           /* if (appInfo.current !== appInfo.last) {
+            // alert('최신버전으로 업데이트 해주세요')
             var aTag
             aTag = document.getElementById('updateAppPage')
             if (aTag == null) {
@@ -233,8 +237,10 @@ const isJsonString = (str) => {
           store.dispatch('D_USER/AC_NET_STATE', message.netStateYn)
           // localStorage.setItem('netStateYn', message.netStateYn)
           // var appInfo = JSON.parse(message.appInfo)
+          // alert(localStorage.getItem('netStateYn') + '!!!!')
           // localStorage.setItem('appInfo', message.appInfo)
           /* if (appInfo.current !== appInfo.last) {
+              // alert('최신버전으로 업데이트 해주세요')
               var aTag
               aTag = document.getElementById('updateAppPage')
               if (aTag == null) {
