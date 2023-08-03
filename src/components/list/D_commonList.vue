@@ -245,7 +245,7 @@ export default {
     },
     notPerText(){
       var html = '<div class="w100P fl textCenter commonColor font14">'
-      html += '열람 권한이 없습니다.'
+      html += this.$t('COMM_MSG_NOPERM')
       html += '</div>'
       return html
     },

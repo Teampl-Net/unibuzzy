@@ -9,8 +9,12 @@
     </div>
     <!-- <img v-if="pRouterHeaderInfo.logoImg" :src="pRouterHeaderInfo.logoImg" height="30" style="margin-right: 5px; border: 2px solid white; background: white; border-radius: 100%; -webkit-user-drag: none;" /> -->
     <p class="headerFont fontBold fl" style="color: #062bb5;" v-html="pRouterHeaderInfo"></p>
-    <img class="cursorP" @click="goLogList" height=20 style="right: 55px; position: absolute;" src="../../../assets/images/common/icon_bell.svg"/>
-    <img class="cursorP" @click="goFavList" height="20" style="position: absolute; right: 20px;" src="../../../assets/images/common/likeIcon.svg" />
+    <div @click="goLogList" class="cursorP" style="width: 44px; height: 44px; right: 70px; position: absolute; display: flex; align-items: center; justify-content: center;">
+      <img height=20 src="../../../assets/images/common/icon_bell.svg"/>
+    </div>
+    <div class="cursorP" @click="goFavList" style="width: 44px; height: 44px; position: absolute; right: 20px; display: flex; align-items: center; justify-content: center;">
+      <img src="../../../assets/images/common/likeIcon.svg" />
+    </div>
   </div>
 </template>
 <script>

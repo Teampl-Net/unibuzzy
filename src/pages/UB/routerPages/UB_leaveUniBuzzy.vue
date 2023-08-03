@@ -335,7 +335,7 @@ export default {
       if (this.agreeOut === true) {
         this.saveActAxiosFunc()
       } else {
-        this.confirmMsg = '위 내용을 읽고 동의합니다 에 체크해주세요.'
+        this.confirmMsg = 'Read and agree terms above'
         this.smallPopYn = true
       }
     },

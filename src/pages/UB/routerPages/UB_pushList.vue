@@ -1,3 +1,29 @@
+<i18n>
+{
+  "ko": {
+    "CHAN_POST_NONE_CONT": "버튼을 눌러 첫 컨텐츠를 작성해보세요.",
+    "CHAN_POST_MSG_SET_ERROR": "작성 setting 중 오류",
+    "CHAN_POST_NO_PERMI": "권한이 없습니다.",
+    "CHAN_POST_TITLE": "제목",
+    "CHAN_POST_CRE_USER": "작성자",
+    "CHAN_POST_SENT": "보낸",
+    "CHAN_POST_DATE": "날짜",
+    "CHAN_POST_FILTER": "필터",
+    "CHAN_POST_STAT": "분류"
+  },
+  "en": {
+    "CHAN_POST_NONE_CONT": "Create the first content for your channel's bulletin board.",
+    "CHAN_POST_MSG_SET_ERROR": "Error during creation setting",
+    "CHAN_POST_NO_PERMI": "You don't have permission.",
+    "CHAN_POST_TITLE": "Title",
+    "CHAN_POST_CRE_USER": "Writer",
+    "CHAN_POST_SENT": "Sent",
+    "CHAN_POST_DATE": "Date",
+    "CHAN_POST_FILTER": "Filter",
+    "CHAN_POST_STAT": "Status"
+  }
+}
+</i18n>
 <template>
 <div class="w100P h100P">
     <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: fixed;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
@@ -645,7 +671,8 @@ export default {
           if (this.targetCKey) {
             var contentsAlreadyYn = await this.$addContents(this.targetCKey, this.targetContents.jobkindId)
             if (contentsAlreadyYn === false) {
-              alert('해당컨텐츠는 삭제되었거나,\n열람 권한이 없습니다\n나중에 다시시도해주세요.')
+              this.errorText = 'This content has been deleted or you do not have permission to\nread it\nPlease try again later.'
+              this.failPopYn = true
               return
             }
           }
@@ -694,7 +721,7 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       if (detail.contentsList.length === 0) {
-        this.errorText = '해당 컨텐츠가 삭제되었거나 열람권한이 없습니다'
+        this.errorText = 'This content has been deleted or you do not have permission to\nread it\nPlease try again later.'
         this.targetCKey = null
         this.failPopYn = true
         this.canLoadYn = true
@@ -932,9 +959,9 @@ export default {
           this.$store.dispatch('D_CHANNEL/AC_DEL_MEMO_REPLACE_CONTENT', [cont])
           // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
         }
-        this.$showToastPop('댓글을 삭제하였습니다.')
+        this.$showToastPop(this.$t('COMMON_MSG_DELETED_COMMENT'))
       } catch (error) {
-        this.$showToastPop('정상적으로 완료하지 못했습니다.')
+        this.$showToastPop(this.$t('COMMON_MSG_FAILED'))
       }
     },
     confirmOk () {
@@ -951,16 +978,16 @@ export default {
       }
 
       if (data === 'memo' || this.tempData.memoKey) {
-        this.confirmText = '댓글을 삭제하시겠습니까?'
+        this.confirmText = this.$t('COMMON_MSG_DELETE_COMMENT')
         if (this.tempData.parentMemoKey) {
-          this.confirmText = '대댓글을 삭제하시겠습니까?'
+          this.confirmText = this.$t('COMMON_MSG_DELETE_REPLY')
         }
         this.currentConfirmType = 'memoDEL'
       } else if (data === 'alim' || this.tempData.jobkindId === 'ALIM') {
-        this.confirmText = '알림 삭제는 나에게서만 적용되며 알림을 받은 사용자는 삭제되지 않습니다.'
+        this.confirmText = this.$t('COMMON_MSG_DELETE_NOTI')
         this.currentConfirmType = 'alimDEL'
       } else if (data === 'board' || this.tempData.jobkindId === 'BOAR') {
-        this.confirmText = '게시글을 삭제 하시겠습니까?'
+        this.confirmText = this.$t('COMMON_MSG_DELETE_POST')
         this.currentConfirmType = 'boardDEL'
       }
       this.confirmType = 'two'
@@ -994,7 +1021,7 @@ export default {
           this.currentContentsKey = this.alimContentsList[idx].contentsKey
         } else {
           this.memoShowYn = false
-          this.$showToastPop('작성 setting 중 오류')
+          this.$showToastPop(this.$t('CHAN_POST_MSG_SET_ERROR'))
           return
         }
       } else if (this.viewMainTab === 'B') {
@@ -1003,7 +1030,7 @@ export default {
           this.currentContentsKey = this.boardContentsList[idx].contentsKey
         } else {
           this.memoShowYn = false
-          this.$showToastPop('작성 setting 중 오류')
+          this.$showToastPop(this.$t('CHAN_POST_MSG_SET_ERROR'))
           return
         }
       } else if (this.viewMainTab === 'A') {
@@ -1012,7 +1039,7 @@ export default {
           this.currentContentsKey = this.allContentsList[idx].contentsKey
         } else {
           this.memoShowYn = false
-          this.$showToastPop('작성 setting 중 오류')
+          this.$showToastPop(this.$t('CHAN_POST_MSG_SET_ERROR'))
           return
         }
       }
@@ -1984,21 +2011,21 @@ export default {
       var searchObj = new Object()
       var resultArray = []
       if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
-        searchObj.typeName = '제목'
+        searchObj.typeName = this.$t('CHAN_POST_TITLE')
         searchObj.type = 'searchKey'
         searchObj.keyword = param.searchKey
         resultArray.push(searchObj)
       }
       searchObj = {}
       if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
-        searchObj.typeName = '작성자'
+        searchObj.typeName = this.$t('CHAN_POST_CRE_USER')
         searchObj.type = 'creUserName'
         searchObj.keyword = param.creUserName
         resultArray.push(searchObj)
       }
       searchObj = {}
       if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
-        searchObj.typeName = '보낸'
+        searchObj.typeName = this.$t('CHAN_POST_SENT')
         searchObj.type = 'creTeamNameMtext'
         searchObj.keyword = param.creTeamNameMtext
         resultArray.push(searchObj)
@@ -2006,21 +2033,21 @@ export default {
       searchObj = {}
       if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '' &&
         param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
-        searchObj.typeName = '날짜'
+        searchObj.typeName = this.$t('CHAN_POST_DATE')
         searchObj.type = 'creDate'
         searchObj.keyword = param.fromCreDateStr + '~' + param.toCreDateStr
         resultArray.push(searchObj)
       }
       searchObj = {}
       if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
-        searchObj.typeName = '필터'
+        searchObj.typeName = this.$t('CHAN_POST_FILTER')
         searchObj.type = 'workStatCodeKey'
         searchObj.keyword = param.codeNameMtext
         resultArray.push(searchObj)
       }
       searchObj = {}
       if (param.selectedSticker !== undefined && param.selectedSticker !== null && param.selectedSticker !== '') {
-        searchObj.typeName = '분류'
+        searchObj.typeName = this.$t('CHAN_POST_STAT')
         searchObj.type = 'stickerKey'
         searchObj.keyword = this.$changeText(param.selectedSticker.nameMtext)
         resultArray.push(searchObj)
