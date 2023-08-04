@@ -171,6 +171,8 @@ export default {
     this.getMemberTypeList()
     if (this.propParams && this.propParams.targetType === 'chanDetail' && this.propParams.initData) {
       this.mChanInfo = this.propParams
+      console.log(12341234)
+      console.log(this.mChanInfo)
       if (this.mChanInfo.initData.team.D_CHAN_AUTH && this.mChanInfo.initData.team.D_CHAN_AUTH.followYn) {
         this.$emit('followYn')
       }

@@ -875,7 +875,6 @@ export default {
       this.mConfirmPopShowYn = true
     },
     async deleteContents (toastText) {
-      console.log('이거맞다')
       var result
       var inParam = {}
       if (this.contentsEle.jobkindId === 'ALIM') {

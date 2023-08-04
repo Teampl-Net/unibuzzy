@@ -209,6 +209,8 @@ export default {
       this.mCommonFilterList = [{ display: 'Recent', name: 'N' }, { display: 'Popular', name: 'P' }, { display: 'Saved', name: 'S' }]
     }
     this.mPropParams = this.propParams
+    console.log(12341234)
+    console.log(this.mPropParams)
     // this.$emit('clearInfo', { detail: this.mPropParams, targetType: 'boardMain' })
     this.$emit('openLoading')
     if (!this.mPropParams) {
@@ -235,13 +237,15 @@ export default {
       this.cabinetDetail = propBoardInitData.cabinet
       this.cabinetDetail.shareAuth = this.$checkUserAuth(propBoardInitData.cabinet.mShareItemList)
 
-      console.log(this.cabinetDetail)
+      console.log(123412345)
+      console.log(propBoardInitData)
 
       if (propBoardInitData.contentsListPage) {
         this.mCabContentsList = propBoardInitData.contentsListPage.content
         this.totalElements = propBoardInitData.contentsListPage.totalElements
-
-        console.log(this.mCabContentsList)
+        if (propBoardInitData.contentsListPage.totalElements < (propBoardInitData.contentsListPage.pageable.offset + propBoardInitData.contentsListPage.pageable.pageSize)) {
+          this.endListYn = true
+        }
       } else {
         this.mCabContentsList = []
       }
@@ -902,7 +906,7 @@ export default {
       this.offsetInt = 0
       var ScrollWrap = this.$refs.commonBoardListWrapCompo
       ScrollWrap.scrollTo({ top: 0 })
-      this.$refs.activeBar.switchtab(0)
+      // this.$refs.activeBar.switchtab(0)
     },
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
@@ -1224,6 +1228,9 @@ export default {
       for (var i = 0; i < resultList.length; i++) {
         // resultList.
       }
+      if (!resultList || (resultList && resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize))) {
+        this.endListYn = true
+      }
       // this.$emit('changePageHeader', resultList.cabinetNameMtext)
 
       return resultList
@@ -1469,11 +1476,13 @@ export default {
         if (this.viewTab === 'N') {
           tempCabData.totalContentsCount = resultList.totalElements
         }
+        console.log('testtest')
         console.log(resultList)
         if (!resultList || resultList === '') {
           this.endListYn = false
         } else {
           if (resultList.pageable) {
+            this.totalElements = resultList.totalElements
             if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
               this.endListYn = true
             } else {

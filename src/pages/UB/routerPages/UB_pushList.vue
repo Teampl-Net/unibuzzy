@@ -56,7 +56,7 @@
           <gEmpty :tabName="currentTabName" contentName="알림" v-if="this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
-            <gContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
+            <gContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" @contDelete="refreshAll" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
             <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
           <gEmpty :tabName="currentTabName" contentName="전체" v-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
@@ -1396,11 +1396,12 @@ export default {
       this.findKeyList.toCreDateStr = null
       this.findKeyList.fromCreDateStr = null
       this.resultSearchKeyList = []
-      this.changeMainTab('A')
-      this.changeTab('N')
+      // this.changeMainTab('A')
+      // this.changeTab('N')
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
       ScrollWrap.scrollTo({ top: 0 })
-      this.$refs.activeBar.switchtab(0)
+      this.changeTab('A')
+      // this.$refs.activeBar.switchtab(0)
     },
     async changeMainTab (tab) {
       this.paddingTop = 45
