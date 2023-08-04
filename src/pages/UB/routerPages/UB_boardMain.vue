@@ -64,7 +64,7 @@
           <span class="font20 fontBold">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</span>
           <span class="font13 mbottom-05 fl">{{ this.$changeText(CHANNEL_DETAIL.nameMtext) }}</span>
         </div>
-        <div  v-if="this.CAB_DETAIL && this.CAB_DETAIL.topviewList" class="w100P" style="display: flex; align-items: center; flex-direction: column;">
+        <div  v-if="this.CAB_DETAIL && this.CAB_DETAIL.topviewList && this.CAB_DETAIL.topviewList.content && this.CAB_DETAIL.topviewList.content.length > 0" class="w100P" style="display: flex; align-items: center; flex-direction: column;">
           <div class="textLeft fontBold" style="width: 90%; margin-bottom: 5px;">
             <img src="@/assets/images/board/icon_paperPin.svg" alt="" style="width: 20px;">
             Pin
@@ -94,7 +94,7 @@
               @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
               @writeMememo="writeMememo" @riteMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'
               @clearMemo='clearMemo'/> -->
-            <gListEmpty v-if="emptyYn && BOARD_CONT_LIST.length === 0" :title="$t('COMM_CONT_NO_FOUND')" :subTitle="$t('CHAN_POST_NONE_CONT')" option='EDIT' />
+          <gEmpty v-if="emptyYn && BOARD_CONT_LIST.length === 0" :tabName="currentTabName" contentName="전체" :key="mEmptyReloadKey" class="mtop-2"/>
             <!-- <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents"
               @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey"
               ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;"
@@ -172,7 +172,7 @@ export default {
   updated () {
     this.$nextTick(() => {
       if (document.getElementById('boardItemBox')) {
-        if (this.CAB_DETAIL && this.CAB_DETAIL.topviewList) {
+        if (this.CAB_DETAIL && this.CAB_DETAIL.topviewList && this.CAB_DETAIL.topviewList.content && this.CAB_DETAIL.topviewList.content.length > 0) {
           document.getElementById('boardItemBox').style.marginTop = '420px'
         } else {
           document.getElementById('boardItemBox').style.marginTop = '250px'
@@ -347,7 +347,7 @@ export default {
     updateTopview (type, board) {
       if (type === 'add') {
         if (!this.cabinetDetail.topviewList) {
-          this.cabinetDetail.topviewList = { contents: [] }
+          this.cabinetDetail.topviewList = { content: [] }
         }
         this.cabinetDetail.topviewList.content.unshift(board)
       } else if (type === 'delete') {

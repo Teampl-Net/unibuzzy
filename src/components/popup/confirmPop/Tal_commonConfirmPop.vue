@@ -4,7 +4,8 @@
     <div :style="popLeft" class="zoomInOutPop confirmPopWrap">
     <!-- <div class="zoomInOutPop confirmPopWrap" style="left: 5%;"> -->
       <div class="confirmPopHeader" >
-        <img src="../../../assets/images/common/thealim_header_logo.png" class="fl" >
+        <img v-if="$appType === 'D'" src="../../../assets/images/common/thealim_header_logo.png" class="fl" >
+        <img v-else src="/resource/logo/UB_uniBLogo.png" class="fl" >
         <p class="font24 headerFont commonColor fl" style="line-height: 2.2rem;" >{{ $t('COMMON_NAME_APP') }}</p>
         <p class="font15 headerFont commonColor fl" style="line-height: 2.6rem; margin-left: 0.3rem" >{{ $t('COMM_INTRO_COMMT') }}</p>
       </div>

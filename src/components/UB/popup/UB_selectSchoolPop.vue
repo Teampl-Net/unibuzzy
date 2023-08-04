@@ -1,5 +1,6 @@
 <template>
   <div style="width: 80%; height: 80%; border-radius: 10px; z-index: 99999; position: absolute; left: 10%; top: 10%;" @click.stop="preventDefault">
+    <gConfirmPop :confirmText="mConfirmPopText" confirmType="one" @no="mConfirmPopShowYn = false" v-if="mConfirmPopShowYn"/>
     <div class="transWhite" style="width: 100%; height: 100%;  float: left; position: relative; border-radius: 10px; padding: 10px 20px; overflow: hidden;">
       <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
       <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
@@ -13,7 +14,7 @@
       <div v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false" style="width: 100%; min-height: calc(100% - 50px);">
           <chanSkeleton  v-for="(value) in 10" :key="value"/>
       </div>
-      <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll;height: calc(100% - 50px); width: 100%; " @mousedown="testTwo" @mouseup="testTr">
+      <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll;height: calc(100% - 50px); width: 100%;" @mousedown="testTwo" @mouseup="testTr">
         <div class="w100P" style="margin-bottom: 10px;">
           <gInput @enterEvent="searchChannel" style="width: calc(100% - 35px);" :pInputObj="mInputObj" pInputType="I" pPlaceHolder="Please enter your school" />
           <img @click="searchChannel" class="cursorP" style="width: 25px; margin-left: 10px;" src="@/assets/images/button/icon_search_color.svg" >
@@ -23,7 +24,7 @@
         </div>
         <gEmpty tabName="전체" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
         <template v-for="(chanEle, index) in GE_DISP_TEAM_LIST" :key="index">
-          <channelCard v-if="chanEle.teamKey === 836 || chanEle.teamKey === 824" class="moveBox chanRow cursorP" style="margin-top: 10px;" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" />
+          <channelCard v-if="chanEle.teamKey === 836 || chanEle.teamKey === 824" :style="chanEle.teamKey === GE_USER.myTeamKey? 'border: 2px solid #7978BD;':''" class="moveBox chanRow cursorP" style="margin-top: 15px;" :pSelectedYn="chanEle.teamKey === GE_USER.myTeamKey" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" />
           <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
         </template>
       </div>
@@ -72,7 +73,9 @@ export default {
       mAxiosQueue: [],
       mSearchCateKey: 3,
       mInputObj: { val: null },
-      mSearchYn: false
+      mSearchYn: false,
+      mConfirmPopShowYn: false,
+      mConfirmPopText: ''
     }
   },
   props: {
@@ -167,6 +170,11 @@ export default {
       //   this.$router.push({ name: 'uniBmain' })
       //   return
       // }
+      if (this.GE_USER.myTeamKey === chanEle.teamKey) {
+        this.mConfirmPopText = 'Currently selected town.'
+        this.mConfirmPopShowYn = true
+        return
+      }
       this.pGoTown(chanEle)
     },
     searchCloseNopenPop (openPopParam) {

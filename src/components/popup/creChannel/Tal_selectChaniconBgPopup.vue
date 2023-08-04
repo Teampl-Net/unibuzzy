@@ -9,6 +9,7 @@
       "ICON_MSG_SELECT_PLS2": "대표 아이콘을 선택해주세요!",
       "IMG_MSG_SELECT_PLS": "채널의 배경 사진을 선택해주세요.",
       "IMG_MSG_SELECT_PLS2": "배경 사진을 선택해주세요!",
+      "IMG_MSG_SELECT_FIN": "이미지 선택"
     },
     "en": {
       "USER_MSG_TOUCH_IMG": "Touch to change the image.",
@@ -18,7 +19,8 @@
       "ICON_MSG_SELECT_PLS": "Please select an icon to represent the channel.",
       "ICON_MSG_SELECT_PLS2": "Please select a representative icon!",
       "IMG_MSG_SELECT_PLS": "Please select a channel background image.",
-      "IMG_MSG_SELECT_PLS2": "Please select a background image!"
+      "IMG_MSG_SELECT_PLS2": "Please select a background image!",
+      "IMG_MSG_SELECT_FIN": "Select an icon"
     }
   }
 </i18n>
@@ -59,7 +61,7 @@
             </div>
         </div>
 
-        <div @click="setParam" class="creChanBigBtn font18 fl mtop-2 mbottom-05">{{ $t('IMG_SELECT_FIN') }}</div>
+        <div @click="setParam" class="creChanBigBtn font18 fl mtop-2 mbottom-05">{{ $t('IMG_MSG_SELECT_FIN') }}</div>
 
     </div>
   </div>

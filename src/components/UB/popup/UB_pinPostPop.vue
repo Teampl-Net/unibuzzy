@@ -9,7 +9,7 @@
         You can pin down important posts and show them at the top.
       </div>
       <div class="w100P fl commonBoardListContentBox" style="height:1px;" />
-      <template  v-if="mCabContentsList.length > 0">
+      <template  v-if="mCabContentsList && mCabContentsList.length > 0">
         <div class="w100P" style="height: 45px; margin-bottom: 10px;" v-for="(cont) in mCabContentsList" :key="cont.contentsKey">
           <div class="w100P" style="display: flex; align-items: center;">
             <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (cont.domainPath? cont.domainPath + cont.logoPathMtext : cont.logoPathMtext) + ');'" style="margin-right: 10px; width: 30px; height: 30px; background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
@@ -39,11 +39,11 @@
 <script>
 export default {
   created () {
+    console.log('12341234')
+    console.log(this.pTVList)
     this.getContentsList().then((result) => {
       this.mCabContentsList = result.content
     })
-    console.log('this.pTVList')
-    console.log(this.pTVList)
   },
   components: {
   },
@@ -68,8 +68,18 @@ export default {
   },
   methods: {
     async setPinBoard (pinYn, board) {
+      let result = {}
       if (pinYn) {
-        this.pUpdateTopview('delete', board)
+        result = await this.$commonAxiosFunction({
+          url: '/sUniB/tp.deleteTopview ',
+          param: {
+            tvKey: board.tvKey
+          }
+        })
+        if (result.data.result) {
+          board.tvKey = result.data.tvKey
+          this.pUpdateTopview('delete', board)
+        }
       } else {
         const param = {
           topview: {
@@ -80,16 +90,20 @@ export default {
             creUserKey: this.GE_USER.userKey
           }
         }
-        var result = await this.$commonAxiosFunction({
+        result = await this.$commonAxiosFunction({
           url: '/sUniB/tp.saveTopview',
           param: param
         })
         if (result.data.result) {
+          board.tvKey = result.data.tvKey
           this.pUpdateTopview('add', board)
         }
       }
     },
     getPinYn (board) {
+      if (!this.pTVList) {
+        return false
+      }
       const index = this.pTVList.findIndex(item => {
         return item.contentsKey === board.contentsKey
       })

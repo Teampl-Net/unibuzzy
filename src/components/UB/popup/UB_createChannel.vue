@@ -387,6 +387,7 @@ export default {
         gParam.picMfilekey = this.mSelectedBg.selectedId
         // gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
         gParam.creUserName = this.$changeText(this.GE_USER.userDispMtext)
+        gParam.creUserKey = this.GE_USER.userKey
         gParam.blackYn = this.mBtnColor
 
         var params = {}

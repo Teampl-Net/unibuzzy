@@ -9,7 +9,8 @@
   }
   </i18n>
   <template>
-      <div class="w100P pSide-1" :style="$appType === 'UB'? 'background-color: rgba(255, 255, 255 ,0.5); border-radius: 10px;':''" style="min-height:80px; border-bottom:1px solid #cccccc70; display: flex; flex-direction: row; align-items: center; padding-top: 15px; padding-bottom: 15px;" @click="goChannelMain(chanElement)">
+      <div class="w100P pSide-1" :style="$appType === 'UB'? 'background-color: rgba(255, 255, 255 ,0.5); border-radius: 10px;':''" style="position: relative; min-height:80px; border-bottom:1px solid #cccccc70; display: flex; flex-direction: row; align-items: center; padding-top: 15px; padding-bottom: 15px;" @click="goChannelMain(chanElement)">
+          <div v-if="$appType === 'UB' && pSelectedYn === true" class="font11" style="background-color: #fff; position: absolute; top: -10px; left: 10px; border: 2px solid #7978BD; border-radius: 10px; padding: 0 5px;">Now</div>
           <div v-if="chanElement" style="background-color: white; position: relative; border: 0.5px solid rgba(0, 0, 0, 0.1); width: 60px; height: 60px; float: left; border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;"
           :style="'background-image: url(' + (chanElement.logoDomainPath !== undefind ? chanElement.logoDomainPath + chanElement.logoPathMtext : chanElement.logoPathMtext) + ');'" >
               <div v-if="chanElement.ownerYn || chanElement.managerKey" class="CWhiteBgColor" style="position: absolute; right: 0; display: flex; justify-content: center; algin-items: center; padding: 2px; bottom: 0; width: 20px; height: 20px; border-radius: 100%;">
@@ -35,7 +36,8 @@
 <script>
 export default {
   props: {
-    chanElement: {}
+    chanElement: {},
+    pSelectedYn: Boolean
   },
   created () {
   },
