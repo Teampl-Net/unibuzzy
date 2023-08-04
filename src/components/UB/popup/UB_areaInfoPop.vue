@@ -1,6 +1,6 @@
 <template>
   <div v-if="pAreaInfo && pAreaDetail" class="commonPopWrap" style="padding: 10px 20px; min-width: 300px; position: absolute;" @click.stop>
-    <img src="@/assets/images/button/Icon_CreChanBtn.png" @click="pOpenCreChanPop" alt="채널 만들기 버튼" style="position: absolute; cursor: pointer; right: 10%; bottom: 20px; width: 50px; height: 50px;" >
+    <img src="@/assets/images/button/Icon_CreChanBtn.png" @click="pOpenCreChanPop" alt="채널 만들기 버튼" style="position: absolute; cursor: pointer; right: 10%; bottom: 20px; width: 50px; height: 50px; z-index: 100;" >
     <div style="position: absolute; top: -45px; right: 10px; width: 40px; height: 45px; background-color: rgba(255, 255, 255, 0.5); border-radius: 10px 10px 0 0; padding: 5px;">
       <img v-if="pBdClickedYn" src="../../../assets/images/main/icon_bd.png" class="h100P" />
       <img v-else src="../../../assets/images/main/icon_area.png" class="h100P" />
