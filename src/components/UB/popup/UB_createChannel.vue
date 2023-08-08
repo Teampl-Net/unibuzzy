@@ -179,21 +179,20 @@ export default {
       mErrorPopYn: false,
       mBusinessTypeList: [
         { teamNameMtext: this.$t('COMM_CATE_BUSINESS'), teamType: 'C' },
-        { teamNameMtext: '정부', teamType: 'G' },
-        { teamNameMtext: '학교', teamType: 'S' },
-        { teamNameMtext: '종교', teamType: 'H' },
-        { teamNameMtext: '동호회', teamType: 'D' },
-        { teamNameMtext: '병원', teamType: 'Q' },
-        { teamNameMtext: '약국', teamType: 'V' },
-        { teamNameMtext: '매장', teamType: 'A' },
-        { teamNameMtext: '가족', teamType: 'F' },
-        { teamNameMtext: '팀', teamType: 'T' },
-        { teamNameMtext: 'Club & Startup', teamType: 'C' },
-        { teamNameMtext: 'Major', teamType: 'M' },
-        { teamNameMtext: 'Facilities & Amenities', teamType: 'FA' },
-        { teamNameMtext: 'Nearby', teamType: 'N' }
+        { teamNameMtext: 'KO$^$정부$#$EN$^$Government', teamType: 'G' },
+        { teamNameMtext: 'KO$^$학교$#$EN$^$School', teamType: 'S' },
+        { teamNameMtext: 'KO$^$종교$#$EN$^$Religious', teamType: 'H' },
+        { teamNameMtext: 'KO$^$동호회$#$EN$^$Club', teamType: 'D' },
+        { teamNameMtext: 'KO$^$병원$#$EN$^$Hospital', teamType: 'Q' },
+        { teamNameMtext: 'KO$^$약국$#$EN$^$Pharmace', teamType: 'V' },
+        { teamNameMtext: 'KO$^$매장$#$EN$^$Mall', teamType: 'A' },
+        { teamNameMtext: 'KO$^$가족$#$EN$^$Family', teamType: 'F' },
+        { teamNameMtext: 'KO$^$팀$#$EN$^$Team', teamType: 'T' },
+        { teamNameMtext: 'EN$^$Club & Startup', teamType: 'C' },
+        { teamNameMtext: 'EN$^$Major', teamType: 'M' },
+        { teamNameMtext: 'EN$^$Facilities & Amenities', teamType: 'FA' },
+        { teamNameMtext: 'EN$^$Nearby', teamType: 'N' }
       ],
-
       mSelectedTeamTypeKey: '',
       mSelectedTeamType: '',
 
@@ -375,10 +374,10 @@ export default {
 
         // 임시
         if (this.mDeleteYn === false) {
-          var idx = this.mBusinessTypeList.findIndex((item) => item.teamNameMtext === teamType)
+          var idx = this.mBusinessTypeList.findIndex((item) => this.$changeText(item.teamNameMtext) === teamType)
           console.log(idx)
           if (idx !== -1) {
-            this.mSelectedTeamType = this.mBusinessTypeList[idx].teamType
+            this.mSelectedTeamType = this.$changeText(this.mBusinessTypeList[idx].teamType)
           } else return
           gParam.teamType = this.mSelectedTeamType
         }
@@ -395,6 +394,14 @@ export default {
           params.deleteYn = true
           gParam.deleteYn = true || 1
           this.mPageType = '삭제'
+          if (gParam.teamKey) {
+            var res = await this.$commonAxiosFunction({
+              url: '/sUniB/tp.deleteTeam',
+              param: { teamKey: gParam.teamKey }
+            })
+            console.log(res)
+          }
+          return
         }
         if (this.pSelectedAreaInfo) {
           gParam.parentTeamKey = this.pSelectedAreaInfo.teamKey
