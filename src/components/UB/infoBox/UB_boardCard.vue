@@ -15,7 +15,7 @@
     <div class="fl mleft-1" style="width: calc(100% - 65px - 1rem);">
       <div class="w100P fl font16 fontBold textLeft grayBlack ">
         <p class="fl">
-          {{ $changeText(boardElement.cabinetNameMtext) }}
+          {{ $changeText(boardElement.cabinetNameMtext) }} Board
         </p>
         <p class="fr font13 lightGray" style="font-weight: normal;">{{ $t("SEAR_TAB_ACT_CAHNNEL") + " " +$changeDateFormat(boardElement.cabCreDate) }}</p></div>
       <p class="w100P fl font14 textLeft grayBlack">{{ $changeText(boardElement.memoMtext) }}</p>
