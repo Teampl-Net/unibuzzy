@@ -24,8 +24,7 @@
                   <p class="fr font13 lightGray" style="font-weight: normal;">{{$t("SEAR_TAB_ACT_CAHNNEL") + " " + $changeDateFormat(chanElement.updDate !== undefind? chanElement.updDate:chanElement.teamUpdDate)}}</p>
               </div>
               <p v-if="$route.path === '/'" class="w100P fl font14 textLeft grayBlack">{{$changeText(chanElement.memoMtext) ? $changeText(chanElement.memoMtext) : 'channel description'}}</p>
-              <p v-if="$route.path === 'search'" class="w100P fl font14 textLeft grayBlack">{{$changeText(chanElement.memoMtext) ? $changeText(chanElement.memoMtext) : ''}}</p>
-              <p v-if="$route.path === '/search'" class="w100P fl font14 textLeft grayBlack">{{chanElement.cateItemMtext ? $changeText(chanElement.cateItemMtext) : 'in Area'}}</p>
+              <p v-if="$route.path === '/search'" class="w100P fl font14 textLeft grayBlack">{{$changeText(chanElement.memoMtext) ? $changeText(chanElement.memoMtext) : ''}}</p>
               <div class="w100P fl font14 textLeft lightGray">
                   <p class="fl font14">{{$changeText(chanElement.cateItemMtext)}}</p>
                   <img src="../../assets/images/editChan/icon_user_Gray.svg" class="img-w15 mright-01 fl mleft-03 mtop-01" alt="">

@@ -6,7 +6,7 @@
                 <img src="../../../assets/images/channel/ownerChannel_crown.svg" style="width: 100%; float: left;" alt="">
             </div>
         </div>
-        <p class="commonGray font14 w100P textOverdot">{{this.$changeText(chanElement.nameMtext)}}</p>
+        <p class="commonGray font14 w100P textOverdot" style="padding-top:5px;">{{this.$changeText(chanElement.nameMtext)}}</p>
     </div>
 </template>
 <script>
