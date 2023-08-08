@@ -51,7 +51,7 @@ export default {
       showStartBtnYn: false,
       startPoint: 0,
       endPoint: 0,
-      headerTitle: 'uniBuzzy University',
+      headerTitle: 'uniBuzzy Center',
       popShowYn: false,
       pushPopShowYn: false,
       parentPopN: 0,

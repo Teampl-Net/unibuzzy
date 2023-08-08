@@ -10,8 +10,8 @@
       <areaInfoPop :pBdClickedYn="mBdClickedYn" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
     </transition>
     <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
-      <div class="ballon">other college towns?</div>
-      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
+      <div class="ballon">go to other town?</div>
+      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width:20%; max-width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
       <!-- <UBBgEffect /> -->
       <!-- my profile -->
       <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}" style="height: 50px; position: absolute; left: 15px; display: flex; align-items: center;">
@@ -53,8 +53,8 @@
         <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
           <div ref="bdRef" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; "
           :style="[{ 'z-index': index === 0 ? '999' : (index === 1 || index === 2) ? '998' : (index === 3 || index === 4) ? '997' : '' }, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top + 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
-            <div v-if="area.priority === 0" class="flexCenter" style="width: 250px; height: 80px; position: absolute; top: -50px; left: 0;" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
-              <img src="../../../assets/images/main/banner2.png" class="w100P" style="position: absolute;" />
+            <div v-if="area.priority === 0" class="banner flexCenter" style="width: 250px; height: 80px; position: absolute; top: -50px; left: 0;" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
+              <img src="../../../assets/images/main/banner2.png" class="w100P" style="position: absolute;" /> <!-- 여기 -->
               <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold" style="position: absolute; margin-bottom: 30px;"></div>
             </div>
             <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl" />

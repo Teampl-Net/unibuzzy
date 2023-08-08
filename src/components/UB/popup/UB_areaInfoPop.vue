@@ -8,7 +8,7 @@
     <div class="font16 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
       <div style="display: flex; align-items: center; width: calc(100% - 25px);">
         <img style="width: 45px; margin-right: 5px;" src="/resource/logo/gtLogo.png" alt="">
-        <p class="textOverdot textLeft font25" style="width: calc(100% - 40px);">{{ pAreaInfo.bdAreaNameMtext }}</p>
+        <p class="textOverdot textLeft font25" style="width: calc(100% - 40px);">{{ pAreaInfo.bdAreaNameMtext }} Area</p>
         <!-- <p class="textOverdot textLeft" style="width: calc(100% - 40px);">{{ bdAreaNameMtext }}</p> -->
       </div>
       <div class="cursorP" @click="closeXPop" style="width: 25px;">
@@ -53,22 +53,22 @@
         </div>
         <div v-if="pAreaDetail.popTeamList && pAreaDetail.popTeamList.length > 0" class="w100P" style="height: 200px; display: flex;">
           <div class="h100P" style="width: 33%;">
-            <div style="height: 70%; display: flex; justify-content: center; align-items: flex-end;">
+            <div style="height: 67%; display: flex; justify-content: center; align-items: flex-end;">
               <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[1]"  :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[1]" />
             </div>
-            <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-left-radius: 10px;">2</div>
+            <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 23%; background-color:slateblue; border-top-left-radius: 10px;"><p style="margin-top:-5px;">2</p></div>
           </div>
           <div style="width: 33%;">
             <div style="height: 50%; display: flex; justify-content: center; align-items: flex-end;">
               <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[0]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[0]" :pBestYn="true" />
             </div>
-            <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 50%; background-color:slateblue; border-top-left-radius: 10px; border-top-right-radius: 10px;">1</div>
+            <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 40%; background-color:slateblue; border-top-left-radius: 10px; border-top-right-radius: 10px;"><p style="margin-top:-5px;">1</p></div>
           </div>
           <div style="width: 33%;">
             <div style="height: 70%; display: flex; justify-content: center; align-items: flex-end;">
               <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[2]"  :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[2]"/>
             </div>
-            <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 30%; background-color:slateblue; border-top-right-radius: 10px;">3</div>
+            <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 20%; background-color:slateblue; border-top-right-radius: 10px;"><p style="margin-top:-5px;">3</p></div>
           </div>
         </div>
         <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" />

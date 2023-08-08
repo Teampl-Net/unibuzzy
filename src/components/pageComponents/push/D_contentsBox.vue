@@ -998,23 +998,23 @@ export default {
       if (type === 'ALIM') {
         targetKind = 'C'
         targetKey = this.CONT_DETAIL.contentsKey
-        toastText = this.$t('COMMON_MSG_REPORT_NOTI')
+        toastText = '해당 알림이 신고되었습니다.'
       } else if (type === 'BOAR') {
         targetKind = 'C'
         targetKey = this.CONT_DETAIL.contentsKey
-        toastText = this.$t('COMMON_MSG_REPORT_POST')
+        toastText = '해당 게시글이 신고되었습니다.'
       } else if (type === 'MEMO') {
         targetKind = 'C'
         targetKey = this.CONT_DETAIL.memoKey
-        toastText = this.$t('COMMON_MSG_REPORT_COMMENT')
+        toastText = '해당 댓글이 신고되었습니다.'
       } else if (type === 'CHANNEL') {
         targetKind = 'T'
         targetKey = this.CONT_DETAIL.creTeamKey
-        toastText = this.$t('COMMON_MSG_REPORT_CHAN')
+        toastText = '해당 채널이 신고되었습니다.'
       } else if (type === 'USER') {
         targetKind = 'U'
         targetKey = this.CONT_DETAIL.creUserKey
-        toastText = this.$t('COMMON_MSG_REPORT_USER')
+        toastText = '해당 유저가 신고되었습니다.'
       }
       var param = {}
       param.claimType = 'REPO'

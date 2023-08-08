@@ -88,7 +88,7 @@
       <div />
     </div>
 
-    <div class="fl w100P" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'"  style="height: calc(100% - 110px); overflow: hidden scroll;">
+    <div class="fl w100P" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'" style="height: calc(100% - 110px); overflow: hidden scroll;">
       <div class="fl w100P mtop-2" style="margin-top:50px; border-bottom: 2px solid #6768a730" >
         <div class="fl font14 cursorP commonColor fontBold textLeft w100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730" @click="boardDropDown">
           <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">{{ $t('COMMON_NAME_BOARD') }}</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.BOARD_CONTENT_LIST.length}})</span></p>
@@ -509,7 +509,7 @@ export default {
   background-color: white ;
   width:80% ;
   max-width: 500px;
-  position: absolute; z-index: 10;
+  position: absolute; z-index: 1001;
   height: 100vh;
   top: 0;
   right: 0;
@@ -525,7 +525,7 @@ export default {
 .boardBoxDown{ animation: dropdown 300ms ease ; animation-fill-mode: both; }
 .boardBoxUp{ animation: dropup 300ms ease; animation-fill-mode: both; }
 
-.popUpBackgroundGray{ width: 100%; height: 100vh; position: absolute;z-index:10; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; }
+.popUpBackgroundGray{ width: 100%; height: 100vh; position: absolute; z-index:1000; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; }
 
 @keyframes dropdown { 0% {height: 0px;} 100% {height: var(--menuHeight) } }
 @keyframes dropup { 0% {height: var(--menuHeight);} 100% {height: 0px;} }

@@ -31,6 +31,7 @@
 }
 </i18n>
 <template>
+  <popHeader :headerTitle="`Settings`" @closeXPop="closeXPop"/>
   <div style="padding: 60px 10px 60px 10px; overflow: hidden scroll; height: 100%; width: 100%;">
     <logoutPop v-if="logOutShowYn" @goLogOut="closeLogoutPop" @closePop="closeOnlyLogoutPop"/>
     <!-- <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" /> -->
@@ -43,7 +44,8 @@
           <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 9; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">{{ $t('COMM_BTN_EDIT') }}</div>
         </div>
         <div class="font20 fontBold mtop-1" style="width:100%; display: flex; justify-content: center; float:left; transform: translate(10px);" v-show="!changeYn" >
-          <span class="fl">{{this.$changeText(this.GE_USER.userDispMtext)}}</span>
+          <!-- <span class="fl">{{this.$changeText(this.GE_USER.userDispMtext)}}</span> -->
+          <span class="fl">dddddddddddd</span>
           <img src="@/assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
         </div>
 
@@ -154,7 +156,7 @@ export default {
   },
   created () {
     localStorage.setItem('notiReloadPage', 'none')
-    this.$emit('changePageHeader', 'Settings')
+    // this.$emit('changePageHeader', 'Settings')
     // .stringify(localStorage.getItem('appInfo')))
     if (this.isMobile) {
         this.appInfo = JSON.parse(localStorage.getItem('appInfo'))
@@ -189,10 +191,12 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      this.backClick()
-      /* if (this.popId === hStack[hStack.length - 1]) {
-                this.closeSubPop()
-            } */
+      var hStack = this.$store.getters['D_HISTORY/hStack']
+      if (this.popId === hStack[hStack.length - 1]) {
+        this.closeXPop()
+      }
+    },
+    historyStack (value, old) {
     }
   },
   mounted () {
@@ -200,6 +204,21 @@ export default {
     this.$addHistoryStack('setMyPage')
   },
   methods: {
+		closeXPop() {
+			this.$router.push('/mypage')
+		},
+		backClick () {
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
+      if (this.changeUserIconPop === removePage) {
+        this.changeUserIconShowYn = false
+      } else if (this.devPopId === removePage) {
+        this.devModePopShowYn = false
+      }
+    },
     goLeaveUnibuzzy () {
       this.$router.push('/cancel')
     },
@@ -386,18 +405,7 @@ export default {
     closePolicyPop () {
       this.showPolicyPopYn = false
     },
-    backClick () {
-      var history = this.$store.getters['D_HISTORY/hStack']
-      var removePage = history[history.length - 1]
-      history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
-      if (this.changeUserIconPop === removePage) {
-        this.changeUserIconShowYn = false
-      } else if (this.devPopId === removePage) {
-        this.devModePopShowYn = false
-      }
-    },
+
     callPhone (num) {
             if (num != undefined && num != null && num != '') {
                 if(this.systemName !== 'Android' && this.systemName !== 'android')
