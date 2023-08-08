@@ -19,9 +19,9 @@
       <div class="w100P" style="display: flex; align-items: center;">
         <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_pencil.svg" alt="">
         <!-- Description -->
-        <p class="fontBold font16">Description</p>
+        <!-- <p class="fontBold font16">Description</p> -->
+        <p class="textLeft font16" style="width: calc(100% - 30px);">{{ pAreaInfo.bdAreaDesc }}</p>
       </div>
-      <p class="textLeft font16" style="margin-left: 30px; width: calc(100% - 30px);">{{ pAreaInfo.bdAreaDesc }}</p>
       <div class="w100P" style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; display: flex; margin-top: 10px;">
         <p style="width: 50%; border-right: 2px solid #000;">
           <span class="fontBold">{{ pAreaInfo.bdList && pAreaInfo.bdList.length? pAreaInfo.bdList.length:'0' }}</span> channels
@@ -81,7 +81,7 @@
           <div class="w100P" style="padding-bottom: 30px; height:auto; max-height:325px; overflow-y:auto;">
             <gEmpty tabName="전체" contentName="채널" v-if="pAreaInfo.bdList && pAreaInfo.bdList.length === 0" style="margin-top:50px;" />
             <template v-for="(chanEle, index) in pAreaInfo.bdList" :key="index">
-              <channelCard v-if="chanEle.targetKind === 'T'" style="margin-top: 10px;" :pAreaDetail="pAreaDetail.popTeamList" class="moveBox chanRow" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
+              <channelCard v-if="chanEle.targetKind === 'T'" style="margin-top: 10px;" class="moveBox chanRow" :pTeamList="GE_DISP_TEAM_LIST" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
               <boardCard v-else class="moveBox chanRow" :boardElement="chanEle" @click="goBoardMain(chanEle)" @scrollMove="scrollMove" />
             </template>
           </div>

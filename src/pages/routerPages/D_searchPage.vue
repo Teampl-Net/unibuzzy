@@ -1112,6 +1112,7 @@ export default {
     GE_DISP_TEAM_LIST () {
       var index = null
       var teamList = this.GE_MAIN_CHAN_LIST
+      console.log('teamList', teamList)
       if (this.mChannelList.length > 0) {
         for (var i = 0; i < this.mChannelList.length; i++) {
           index = teamList.findIndex((item) => item.teamKey === this.mChannelList[i].teamKey)
