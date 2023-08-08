@@ -1,4 +1,5 @@
 <template>
+  <popHeader :headerTitle="`Saved`" @closeXPop="closeXPop"/>
   <div class="w100P h100P" style="padding-top: 50px; padding-bottom: 60px;">
     <transition name="showModal">
       <findContentsList v-if="findPopShowYn" :tpGroupCode="false" contentsListTargetType="BOAR" transition="showModal" @searchList="requestSearchList" :pClosePop="closeSearch" />
@@ -31,7 +32,7 @@ export default {
     propParams: Object
   },
   created () {
-    this.$emit('changePageHeader', 'Saved')
+    // this.$emit('changePageHeader', 'Saved')
     if (this.propParams) {
       this.mContentsList = this.propParams
     } else {
@@ -50,6 +51,9 @@ export default {
     }
   },
   methods: {
+    closeXPop () {
+      this.$router.push('/mypage')
+    },
     async changeSearchList (value) {
       this.resultSearchKeyList = this.resultSearchKeyList.filter(item => {
         return item.type !== value

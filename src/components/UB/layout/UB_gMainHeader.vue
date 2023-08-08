@@ -8,7 +8,8 @@
       <img class="mainMenuIcon" height="20" @click="showMenu()" src="../../../assets/images/common/icon_menu.png"/>
     </div>
     <!-- <img v-if="pRouterHeaderInfo.logoImg" :src="pRouterHeaderInfo.logoImg" height="30" style="margin-right: 5px; border: 2px solid white; background: white; border-radius: 100%; -webkit-user-drag: none;" /> -->
-    <p class="headerFont fontBold fl" style="color: #062bb5;" v-html="`${pRouterHeaderInfo} Town`"></p>
+    <p v-if="$route.path === '/'" class="headerFont fontBold fl" style="color: #062bb5;" v-html="`${pRouterHeaderInfo} Town`"></p>
+    <p v-else class="headerFont fontBold fl" style="color: #062bb5;" v-html="pRouterHeaderInfo"></p>
     <div @click="goLogList" class="cursorP" style="width: 44px; height: 44px; right: 70px; position: absolute; display: flex; align-items: center; justify-content: center;">
       <img height=20 src="../../../assets/images/common/icon_bell.svg"/>
     </div>

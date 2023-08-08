@@ -382,6 +382,8 @@ export default {
       if (result.data) {
         this.mAreaDetail = await result.data
         this.mAreaInfo = await area
+        console.log('====mAreaDetail===', result)
+        console.log('====mAreaInfo===', this.mAreaInfo)
         this.mInfoBoxShowYn = true
       }
     },
