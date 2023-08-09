@@ -211,17 +211,19 @@ export const functions = {
         if (!mobileYn) {
           notiDetail = message
         } else {
+          if (isJsonString(message.data)) {
+            message.data = JSON.parse(message.data)
+          }
           if (
-            JSON.parse(message.data).noti.data !== undefined &&
-            JSON.parse(message.data).noti.data !== null &&
-            JSON.parse(message.data).noti.data !== ''
+            message.data.noti.data
           ) {
-            notiDetail = JSON.parse(message.data).noti.data
-            if (JSON.parse(message.data).noti.data) {
-              notiDetail = JSON.parse(message.data).noti.data
+            if (message.data.noti.data.item) {
+              notiDetail = message.data.noti.data.item
+            } else {
+              notiDetail = message.data.noti.data
             }
           } else {
-            notiDetail = JSON.parse(message.data).noti.data
+            notiDetail = message.data.noti
           }
         }
       }
@@ -253,7 +255,7 @@ export const functions = {
       return
     } */
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
-      if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
+      if (message.data.arrivedYn === true || message.data.arrivedYn === 'true') {
         ;
       }
     }
@@ -278,12 +280,12 @@ export const functions = {
     /* var noti = await functions.getContentsDetail(null, JSON.parse(notiDetail.userDo).targetKey, JSON.parse(notiDetail.userDo))
     store.dispatch('D_UPDATE/AC_ADD_NEW_NOTI', noti) */
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
-      if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
+      if (message.data.arrivedYn === true || message.data.arrivedYn === 'true') {
         ;
       } else {
       }
     } else {
-      if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
+      if (message.data.arrivedYn === true || message.data.arrivedYn === 'true') {
         if (notiDetail.jobkindId !== 'BOAR') {
         }
       } else {
@@ -334,7 +336,7 @@ export const functions = {
         }
       }
     }
-    if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
+    if (message.data.arrivedYn === true || message.data.arrivedYn === 'true') {
     } else {
       // this.$router.replace({ path: '/' })
       if (notiDetail.actType === 'FL') {
@@ -352,7 +354,7 @@ export const functions = {
     memo_.creTeamKey = Number(JSON.parse(notiDetail.userDo))
     await this.addContents(memo_.targetKey, notiDetail.jobkindId)
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
-      if (JSON.parse(message.data).arrivedYn === true || JSON.parse(message.data).arrivedYn === 'true') {
+      if (message.data.arrivedYn === true || message.data.arrivedYn === 'true') {
 
       } else {
         if (notiDetail.jobkindId === 'ALIM') {

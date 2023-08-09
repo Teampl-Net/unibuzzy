@@ -27,15 +27,15 @@ const D_NOTI = {
     MU_ADD_NOTI_LIST: (state, payload) => {
       if (!payload) return
 
-      var notiDate = JSON.parse(payload.creDate)
+      /* var notiDate = JSON.parse(payload.creDate)
       var date = new Date()
       date.setFullYear(parseInt(notiDate.year))
       date.setMonth(parseInt(notiDate.monthValue) - 1)
       date.setDate(parseInt(notiDate.dayOfMonth))
       date.setHours(parseInt(notiDate.hour))
       date.setMinutes(parseInt(notiDate.minute))
-      date.setSeconds(parseInt(notiDate.second))
-      payload.D_CRE_DATE = date
+      date.setSeconds(parseInt(notiDate.second)) */
+      payload.D_CRE_DATE = payload.creDate
 
       if (!payload.clickListYn) {
         try {

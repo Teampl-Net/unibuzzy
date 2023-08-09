@@ -13,7 +13,7 @@
     <!-- <recMemberPop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" /> -->
     <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;' : ''" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{ officialTitle: CHANNEL_DETAIL.officialYn }"> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" />
       <p class="font20 fontBold textOverdot" :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: #6768a7'">
-        {{ changeText(CHANNEL_DETAIL.nameMtext) }}
+        {{$changeText(CHANNEL_DETAIL.nameMtext)}} > {{ $changeText(mChanInfo.initData.team.cateItemMtext) }}
       </p>
     </div>
     <div id="summaryWrap" ref="summaryWrap" v-if="!mChanInfoPopShowYn" class="summaryWrap mtop-05">
@@ -22,9 +22,8 @@
         <div class="w100P h100P" style="">
           <!-- <img src="../../../assets/images/channel/chanBgImg.jpeg" style="width:100%; height: calc(100% + 50px); position: absolute; left: 0; top: -50px;" /> -->
           <div class="w100P" style="height: calc(100% + 50px); position: absolute; left: 0; top: -50px; background: linear-gradient(to bottom, rgba(20, 20, 20, 0) 40%,rgba(20, 20, 20, 0.25) 50%,rgba(20, 20, 20, 0.5) 70%,rgba(20, 20, 20, 0.6) 90%,rgba(20, 20, 20, 0.8) 100%);"></div>
-          <!-- <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ propParams.areaInfo.bdAreaDesc }} > {{ changeText(CHANNEL_DETAIL.nameMtext) }}</div> -->
-          <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">Georgia Tech > {{ $changeText(mChanInfo.initData.team.cateItemMtext) }}</div>
-          <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{ changeText(CHANNEL_DETAIL.nameMtext) }}</div>
+          <!-- <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ propParams.areaInfo.bdAreaDesc }} > {{ $changeText(CHANNEL_DETAIL.nameMtext) }}</div> -->
+          <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{ $changeText(CHANNEL_DETAIL.nameMtext) }}</div>
           <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
           <!--follow-->
           <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" :btnTitle="$t('COMM_BTN_SUB')" />
@@ -144,7 +143,8 @@ export default {
       mPopParam: {},
       selectMemberObj: {},
       mMemberTypeList: [],
-      mBoardContentsList: []
+      mBoardContentsList: [],
+      pushListWrap: null
       // errorPopYn: false
     }
   },
@@ -189,6 +189,19 @@ export default {
             this_.mMakeDeepLinkIng = false
           })
         }
+        const pushList = document.getElementById('pushListWrap')
+        if (pushList) {
+          this.pushListWrap = pushList
+          this.pushListWrap.style.overflow = 'hidden'
+        } else {
+          setTimeout(() => {
+            const pushList = document.getElementById('pushListWrap')
+            if (pushList) {
+              this.pushListWrap = pushList
+              this.pushListWrap.style.overflow = 'hidden'
+            }
+          }, 1000)
+        }
       }
     } else {
       this.getChanMain()
@@ -199,6 +212,22 @@ export default {
     this.$nextTick(() => {
       this.calcSummaryWrapH()
       this.mChanMainScrollWrap = this.$refs.chanScrollWrap
+
+      // eslint-disable-next-line no-debugger
+      debugger
+      const pushList = document.getElementById('pushListWrap')
+      if (pushList) {
+        this.pushListWrap = pushList
+        this.pushListWrap.style.overflow = 'hidden'
+      } else {
+        setTimeout(() => {
+          const pushList = document.getElementById('pushListWrap')
+          if (pushList) {
+            this.pushListWrap = pushList
+            this.pushListWrap.style.overflow = 'hidden'
+          }
+        }, 1000)
+      }
       if (this.mChanMainScrollWrap) {
         this.mChanMainScrollWrap.addEventListener('scroll', this.updateScroll)
         this.mChanMainScrollWrap.addEventListener('mousewheel', e => {
@@ -528,7 +557,8 @@ export default {
         const unit = this.$refs.chanScrollWrap
         unit.scrollTo({ top: 500, behavior: 'smooth' })
         var blockBox = document.getElementById('summaryWrap')
-        blockBox.style.height = 50 + 'px'
+        blockBox.style.height = Number(this.$STATUS_HEIGHT) + 50 + 'px'
+        this.pushListWrap.style.overflow = 'hidden auto'
         const chanInfoSummaryRef = this.$refs.chanInfoSummary
         // const ownerChannelEditArea = this.$refs.ownerChannelEditArea
         const channelItemBoxRef = this.$refs.channelItemBox
@@ -622,7 +652,7 @@ export default {
         debugger
         await this.$commonAxiosFunction({
           url: '/sUniB/tp.saveFollower',
-          param: { follower: typeParam, appType: 'UB' }
+          param: { follower: typeParam, appType: 'UB', doType: 'CR' }
         })
         // } else {
         //   this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
@@ -806,14 +836,6 @@ export default {
       }
       this.$emit('openPop', param)
     },
-    changeText (text) {
-      var changeTxt = ''
-      changeTxt = this.$makeMtextMap(text, 'KO')
-      if (changeTxt) {
-        if (changeTxt.length > 12) { this.mChanNameLongYn = true }
-        return changeTxt
-      }
-    },
     backClick () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var history = this.$store.getters['D_HISTORY/hStack']
@@ -890,8 +912,9 @@ export default {
       const chanInfoSummaryRef = this.$refs.chanInfoSummary
       const channelItemBoxRef = this.$refs.channelItemBox
       if (this.mChanMainScrollDirection === 'down' && this.mChanMainScrollPosition > 120) {
-        blockBox.style.height = 50 + 'px'
+        blockBox.style.height = Number(this.$STATUS_HEIGHT) + 50 + 'px'
         if (this.mChanMainScrollPosition > 160) this.mChanMainScrollWrap.style.overflow = 'hidden'
+        this.pushListWrap.style.overflow = 'hidden auto'
         chanInfoSummaryRef.classList.add('displayNIm')
         // 더알림 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
         // if (ownerChannelEditAreaRef) ownerChannelEditAreaRef.classList.add('displayNIm')
@@ -900,8 +923,9 @@ export default {
         chanInfoSummaryRef.classList.remove('displayNIm')
         // if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && ownerChannelEditAreaRef) ownerChannelEditAreaRef.classList.remove('displayNIm')
 
-        blockBox.style.height = '220px'
+        blockBox.style.height = Number(this.$STATUS_HEIGHT) + '220px'
         this.mChanMainScrollWrap.style.height = ''
+        this.pushListWrap.style.overflow = 'hidden'
         channelItemBoxRef.classList.remove('channelItemBoxHeight')
       }
     }
@@ -969,7 +993,8 @@ export default {
         // '--wWidth': this.$getMobileYn() === true ? window.innerWidth + 'px ' : '100% ',
         // '--wHeight': this.$getMobileYn() === true ? window.innerHeight + 'px ' : '100% ',
         '--backImg': imgPath,
-        '--paddingTop': this.$STATUS_HEIGHT + 'px'
+        '--paddingTop': this.$STATUS_HEIGHT + 'px',
+        'padding-top': Number(this.$STATUS_HEIGHT) + 'px'
       }
     },
     // getWindowHeight () {

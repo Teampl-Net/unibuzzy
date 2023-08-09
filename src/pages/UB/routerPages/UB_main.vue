@@ -1,5 +1,6 @@
 <template>
   <div ref="mainRef" class="w100P h100P" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
+    <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
     <createChannel v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
     <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
@@ -69,12 +70,13 @@
   </div>
 </template>
 <script>
+import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
 // import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
 import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
 import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue'
 import createChannel from '../../../components/UB/popup/UB_createChannel.vue'
-// import { onMessage } from '../../../assets/js/webviewInterface'
+import { onMessage } from '../../../assets/js/webviewInterface'
 // import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
   props: {
@@ -83,6 +85,7 @@ export default {
   },
   data () {
     return {
+      mAppCloseYn: false,
       mCreChannelShowYn: false,
       mFavListPopShowYn: false,
       mShowAreaBdListYn: false,
@@ -240,6 +243,7 @@ export default {
     // this.findAllDrawn()
     this.resetHistory()
     this.setNativeHeight()
+    this.$store.commit('D_HISTORY/updateStack', [0])
     this.$emit('clearInfo', { detail: null, targetType: 'main' })
 
     var urlParam = localStorage.getItem('deepLinkQueue')
@@ -276,6 +280,10 @@ export default {
     // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
   },
   methods: {
+    closeApp () {
+      onMessage('closeApp', 'requestUserPermission')
+      this.mAppCloseYn = false
+    },
     closeInfoBox () {
       this.resetHistory()
       if (this.clickedArea && this.clickedArea.clickedYn) {
@@ -931,6 +939,18 @@ export default {
   watch: {
     locale (val) {
       this.$i18n.locale = val
+    },
+    pageUpdate (value, old) {
+      var history = this.historyStack
+      console.log(history)
+      if (history.length < 2 && (history[0] === 0 || history[0] === undefined || history[0] === 'router$#$main')) {
+        if (this.$route.path === '/') {
+          console.log(this.$checkMobile())
+          if (this.$checkMobile() !== 'IOS') this.mAppCloseYn = true
+        }
+      } else if (history[0] === 'mainPage') {
+        this.$removeHistoryStack()
+      }
     }
     // clickedBd () {
     //   this.mInfoBoxShowYn = true
@@ -944,6 +964,9 @@ export default {
   computed: {
     historyStack () {
       return this.$store.getters['D_HISTORY/hStack']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
@@ -963,6 +986,7 @@ export default {
   },
   components: {
     createChannel,
+    commonConfirmPop,
     // UBInfoBox,
     selectSchoolPop,
     UBAreaBdList,

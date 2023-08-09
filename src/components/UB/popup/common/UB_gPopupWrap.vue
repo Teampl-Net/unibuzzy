@@ -1,5 +1,5 @@
 <template>
-  <div ref="gPopUp" class="commonPopWrap">
+  <div ref="gPopUp" class="commonPopWrap" :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 50)  + 'px'">
     <popHeader @closeXPop="closeXPop" :class="(mTargetType === 'chanDetail' || mTargetType === 'boardMain')? 'chanDetailPopHeader': ''" :chanAlimListTeamKey="propParams.targetKey" ref="gPopupHeader" :checkOfficialChanYn="propData" :headerTitle="mHeaderTitle" class="commonPopHeader" style="top: 0px;"
       @openMenu='openChanMenu' :thisPopN="mPopN" :targetType="mTargetType" @openPop="openPop"/>
         <!-- <chanMenu :pPopId="popId" ref="chanMenuCompo" :propData="propParams" @openPop="openPop" :propChanAlimListTeamKey="propParams.targetKey" v-if='openChanMenuYn === true && popId' @closePop='openChanMenuYn = false' @openItem='openPop' @openChanMsgPop="closeNopenChanMsg()"/> -->

@@ -291,12 +291,16 @@ export const commonMethods = {
     // string if
     var returnMap = new Map()
     if (str) {
-      var splitMtext = str.split('$#$')
-      // split if ~> $$가 없다면?
-      for (var i = 0; i < splitMtext.length; i++) {
-        var splitMtextDetail = splitMtext[i].split('$^$')
+      try {
+        var splitMtext = str.split('$#$')
         // split if ~> $$가 없다면?
-        returnMap.set(splitMtextDetail[0], splitMtextDetail[1])
+        for (var i = 0; i < splitMtext.length; i++) {
+          var splitMtextDetail = splitMtext[i].split('$^$')
+          // split if ~> $$가 없다면?
+          returnMap.set(splitMtextDetail[0], splitMtextDetail[1])
+        }
+      } catch (error) {
+
       }
     } else {
     }
@@ -492,8 +496,6 @@ export const commonMethods = {
     return D_CHAN_AUTH
   },
   getFollowerType (data) {
-    // eslint-disable-next-line no-debugger
-    debugger
     var followerText = ''
     if (data.followerKey) {
       data.followYn = true

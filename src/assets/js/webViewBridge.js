@@ -149,8 +149,15 @@ const isJsonString = (str) => {
             store.getters['D_USER/GE_NET_STATE'] === false ||
             store.getters['D_USER/GE_NET_STATE'] === 'false'
           ) { return }
-          var history = store.getters['D_HISTORY/hStack']
-          var removePage = history[history.length - 1]
+          var hStack = store.getters['D_HISTORY/hStack']
+          var removePage = hStack[hStack.length - 1]
+          if (removePage && removePage.includes('router$#$')) {
+            hStack = hStack.filter((element, index) => index < hStack.length - 1)
+            store.commit('D_HISTORY/setRemovePage', removePage)
+            store.commit('D_HISTORY/updateStack', hStack)
+            router.go(-1)
+            return
+          }
           if (
             history.length < 2 &&
             (history[0] === 0 || history[0] === undefined)
@@ -160,26 +167,28 @@ const isJsonString = (str) => {
           var current = store.getters['D_HISTORY/hUpdate']
           store.commit('D_HISTORY/updatePage', current + 1)
         } else if (message.type === 'pushmsg') {
+          console.log(message)
           // alert(JSON.stringify(message.data))
           var isMobile = /Mobi/i.test(window.navigator.userAgent)
           var notiDetailObj = null
-          var appActiveYn = JSON.parse(message.data).arrivedYn
+          if (isJsonString(message.data)) {
+            message.data = JSON.parse(message.data)
+          }
+          var appActiveYn = message.data.arrivedYn
 
           if (!isMobile) {
             notiDetailObj = message
           } else {
-            if (
-              JSON.parse(message.data).noti.data !== undefined &&
-              JSON.parse(message.data).noti.data !== null &&
-              JSON.parse(message.data).noti.data !== ''
-            ) {
-              notiDetailObj = JSON.parse(message.data).noti.data
+            if (message.data) {
+              notiDetailObj = message.data.noti.data
               // alert(JSON.stringify(JSON.parse(message.data).noti.data))
-              if (JSON.parse(message.data).noti.data) {
-                notiDetailObj = JSON.parse(message.data).noti.data
+              if (message.data.noti.data.item) {
+                notiDetailObj = message.data.noti.data.item
+              } else if (message.data.noti.data) {
+                notiDetailObj = message.data.noti.data
               }
             } else {
-              notiDetailObj = JSON.parse(message.data).noti.data
+              notiDetailObj = message.data.noti
             }
           }
 

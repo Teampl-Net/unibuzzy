@@ -2,6 +2,7 @@
 import { createRouter, createWebHistory, createWebHashHistory, createMemoryHistory } from 'vue-router'
 import { functions } from '../assets/js/D_vuexFunction'
 import axios from 'axios'
+import store from '../store'
 import { methods, commonAxiosFunction } from '../../public/commonAssets/Tal_axiosFunction'
 // import routerMain from '../pages/Tal_router_main.vue'
 import search from '../pages/routerPages/D_searchPage.vue'
@@ -468,5 +469,11 @@ const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
   routes
 })
-
+router.afterEach((to, from) => {
+  console.log(to)
+  var history = store.getters['D_HISTORY/hStack']
+  console.log(history)
+  history.push('router$#$' + to.name)
+  store.commit('D_HISTORY/updateStack', history)
+})
 export default router

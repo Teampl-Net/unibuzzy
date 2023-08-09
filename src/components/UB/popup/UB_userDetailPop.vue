@@ -283,7 +283,7 @@ export default {
             var param = {}
             var user = {}
             user.userKey = this.GE_USER.userKey
-            user.userDispMtext = 'KO$^$' + this.memName
+            user.userDispMtext = 'EN$^$' + this.memName
             param.user = user
             param.updateYn = true
             var result = await this.$changeDispName(param)

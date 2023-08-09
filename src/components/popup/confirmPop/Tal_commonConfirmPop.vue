@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%; float: left;">
+  <div style="width: 100%; float: left; position: absolute;">
     <div style="width: 100%; height: 100vh; position: fixed; z-index: 99999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
     <div :style="popLeft" class="zoomInOutPop confirmPopWrap">
     <!-- <div class="zoomInOutPop confirmPopWrap" style="left: 5%;"> -->
@@ -51,13 +51,21 @@ export default {
       this.$emit('ok')
     },
     goNo () {
-      this.$emit('no')
-      if (this.pCloseCreateConfirmPop) {
-        this.pCloseCreateConfirmPop()
-      }
-      if (this.pGoChannelMain) {
-        this.pGoChannelMain()
-        console.log('pNewChanTeam', this.pNewChanTeam)
+      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var removePage = hStack[hStack.length - 1]
+      // eslint-disable-next-line
+      if ('gConfirmPop' === (hStack[hStack.length- 1])) {
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$emit('no')
+        if (this.pCloseCreateConfirmPop) {
+          this.pCloseCreateConfirmPop()
+        }
+        if (this.pGoChannelMain) {
+          this.pGoChannelMain()
+          console.log('pNewChanTeam', this.pNewChanTeam)
+        }
       }
     },
     goChannelMain () {
@@ -77,9 +85,6 @@ export default {
     history () {
       return this.$store.getters['D_HISTORY/hStack']
     }
-  },
-  beforeUnmount () {
-    this.$checkDeleteHistory('gConfirmPop')
   },
   watch: {
     pageUpdate () {

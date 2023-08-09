@@ -69,7 +69,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var saveParam = new Object()
       saveParam.teamKey = this.propData.teamKey
-      saveParam.nameMtext = 'KO$^$' + data
+      saveParam.nameMtext = 'EN$^$' + data
       saveParam.certiYn = false
       saveParam.sampleYn = false
       saveParam.creUserKey = this.GE_USER.userKey
