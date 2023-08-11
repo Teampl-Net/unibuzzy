@@ -36,6 +36,9 @@
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " /> -->
         <!-- <gSelectFilter :searchYn="false" :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab="changeTab" @changeTab= "changeBoard" style="width: 100%; padding-top: 0; margin-top: 0;" /> -->
+        <div v-if="pUnknownYn"  v-on="handleScroll" style="position: absolute; right: 50px;width: 30px; height: 30px; border-radius: 100%; display: flex; align-items: center; justify-content: center; " @click="refreshAll">
+            <img src="../../../assets/images/common/commonReload.png" class="cursorP" width="30" height="30" @click="refreshAll"/>
+        </div>
         <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" :subTabList="mBoardFilterList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab="changeTab" @changeBoardTab="changeBoard" style="width: 100%; padding-top: 0; margin-top: 0;" />
       </div>
       <transition name="showModal">
@@ -66,10 +69,6 @@
               <myObserver v-if="index === this.GE_FILE_LIST.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
           <gEmpty :tabName="currentTabName" contentName="파일함" v-if="this.viewMainTab === 'F' && GE_FILE_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
-        </div>
-
-        <div v-if="pUnknownYn"  v-on="handleScroll" style="position: absolute; top:10px; right:3rem; z-index:8; width: 30px; height: 30px; border-radius: 100%; display: flex; align-items: center; justify-content: center; " @click="refreshAll">
-          <img src="../../../assets/images/common/commonReload.png" class="cursorP" width="30" height="30" @click="refreshAll"/>
         </div>
         <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" />
         <div v-if="memoShowYn === true" class="pushListMemoBoxBackground" @click="memoPopNo()"></div>

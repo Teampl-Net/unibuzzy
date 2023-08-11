@@ -1,5 +1,5 @@
 <template>
-  <div class="w100P h100P" style="padding-top: 50px; padding-bottom: 60px;">
+  <div class="w100P h100P" style="padding-bottom: 60px;" :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 50 )+ 'px'">
     <div style="width: 100%; height: 100%;  float: left; background: #fff; position: relative;">
 
       <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
@@ -9,7 +9,7 @@
       <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
           <gEmpty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
           <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
-            <channelCard v-if="chanEle.teamKey === 836 || chanEle.teamKey === 824" class="moveBox chanRow cursorP" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
+            <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
           </template>
       </div>
@@ -312,7 +312,7 @@ export default {
         paramMap.set('userKey', userKey)
         paramMap.set('managerYn', true)
       }
-      paramMap.set('cateItemKey', 3)
+      // paramMap.set('cateItemKey', 3)
       if (this.mResultSearchKeyList.length > 0) {
         paramMap.set('nameMtext', this.mResultSearchKeyList[0].keyword)
       }

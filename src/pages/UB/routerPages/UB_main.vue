@@ -1,7 +1,7 @@
 <template>
   <div ref="mainRef" class="w100P h100P" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
     <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
-    <createChannel v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
+    <createChannel @successCreChan="successCreChan" v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
     <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
@@ -284,6 +284,14 @@ export default {
       onMessage('closeApp', 'requestUserPermission')
       this.mAppCloseYn = false
     },
+    successCreChan (param) {
+      this.closeCreChanPop()
+      if (param.deleteYn) {
+        return
+      }
+      param.targetType = 'chanDetail'
+      this.openPage(param)
+    },
     closeInfoBox () {
       this.resetHistory()
       if (this.clickedArea && this.clickedArea.clickedYn) {
@@ -322,7 +330,7 @@ export default {
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
-      paramMap.set('cateItemKey', 3)
+      // paramMap.set('cateItemKey', 3)
       if (this.mViewTab === 'user') {
         paramMap.set('userKey', userKey)
       } else if (this.mViewTab === 'all') {
@@ -475,6 +483,8 @@ export default {
           } else {
             count = area.bdList.length
           }
+          // eslint-disable-next-line no-debugger
+          debugger
           for (let j = 0; j < count; j++) {
             const buildingObj = {
               index: j,
@@ -482,7 +492,7 @@ export default {
               areaYn: false,
               rank: j + 1,
               type: area.priority === 0 ? 'CB' : '',
-              imgLink: area.priority === 0 ? '/resource/bd/new_college.png' : `/resource/bd/new_bd${area.bdList[j].priority + 1}.png`,
+              imgLink: area.bdList[j].bdIconPath,
               maskedImageUrl: '',
               maskedImageStyle: {},
               clickedYn: false,
@@ -943,7 +953,7 @@ export default {
     pageUpdate (value, old) {
       var history = this.historyStack
       console.log(history)
-      if (history.length < 2 && (history[0] === 0 || history[0] === undefined || history[0] === 'router$#$main')) {
+      if (history.length < 2 && (history[0] === 0 || history[0] === undefined || history[0] === 'router$#$routerMain')) {
         if (this.$route.path === '/') {
           console.log(this.$checkMobile())
           if (this.$checkMobile() !== 'IOS') this.mAppCloseYn = true

@@ -29,17 +29,17 @@
 }
 </i18n>
 <template>
-<div style="padding: 0 1.5rem 0 1rem ;box-sizing: border-box; width: 100%; height: 100%; background: #fff;" >
+<div style="padding: 0 1.5rem 0 1rem ;box-sizing: border-box; width: 100%; height: 100%; background: #fff;"  >
   <transition name="show_left">
     <manageFollowerList v-if="mPopType === 'memberManagement'" :propData="mCommonParam" style="padding-top: 0;" :pClosePop="closePop" />
   </transition>
   <transition name="show_left">
     <editBookListPop v-if="mPopType === 'editBookList'" :propData="mCommonParam" :pClosePop="closePop" />
   </transition>
-  <createChannel v-if="mPopType === 'createChannel'" :chanDetail="mCommonParam" :pClosePop="closePop" />
+  <createChannel @successCreChan="successCreChan" v-if="mPopType === 'createChannel'" :chanDetail="mCommonParam" :pClosePop="closePop" />
   <editBoardListPop v-if="mPopType === 'editBoard'" :propData="mCommonParam" :pClosePop="closePop" />
   <gPopHeader :headerTitle="$t('MANA_TITLE_CHANDETAIL')" :pClosePop="pClosePop" />
-  <div class="editMyChanMenuWrap">
+  <div class="editMyChanMenuWrap" :style="`padding-top: ${Number(this.$STATUS_HEIGHT + 60)}px`">
     <table class="myChanMenuTable w100P fl" >
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditChanPop">
         <th class="font16 w100P">
@@ -180,6 +180,11 @@ export default {
   methods: {
     closePop () {
       this.mPopType = ''
+    },
+    successCreChan (param) {
+      if (param.deleteYn) {
+        this.$router.push({ name: 'main' })
+      }
     },
     async openEditCabinetPop () {
       this.mCommonParam.targetType = 'editBookList'

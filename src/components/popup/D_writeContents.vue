@@ -879,6 +879,7 @@ export default {
         param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
         // param.bodyFullStr = innerHtml.replaceAll('formEditorTextPadding', '')
         param.jobkindId = 'BOAR'
+        param.creCabinetKey = this.selectBoardCabinetKey
         if (this.selectBoardYn === true) {
           param.cabinetKey = this.selectBoardCabinetKey
           param.actorList = []

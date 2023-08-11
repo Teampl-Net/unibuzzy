@@ -248,7 +248,7 @@ export default {
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
-      paramMap.set('cateItemKey', 3)
+      // paramMap.set('cateItemKey', 3)
       if (this.mViewTab === 'user') {
         paramMap.set('userKey', userKey)
       } else if (this.mViewTab === 'all') {

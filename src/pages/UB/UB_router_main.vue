@@ -574,7 +574,7 @@ export default {
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
-      paramMap.set('cateItemKey', 3)
+      // paramMap.set('cateItemKey', 3)
       if (this.mViewTab === 'user') {
         paramMap.set('userKey', userKey)
       } else if (this.mViewTab === 'all') {
@@ -746,15 +746,16 @@ export default {
   },
   watch: {
     $route: {
-      handler () {
+      immediate: true,
+      handler (val) {
         this.mPopType = ''
         this.mPolicyType = ''
-        if (this.$route.path === '/myPage') {
+        if (val.path === '/myPage') {
           this.mMyPageBgColorYn = true
         } else {
           this.mMyPageBgColorYn = false
         }
-        if (this.$route.path === '/login') {
+        if (val.path === '/login') {
           this.mTargetType = ''
         }
       },

@@ -1,6 +1,6 @@
 <template>
   <!-- <div class="w100P " style="position: fixed; top: 0; left: 0; height: 60px; background: none; z-index: 9; display: flex; align-items: center; justify-content: center;"> -->
-  <div class="mainHeaderWrap" v-if="pRouterHeaderInfo" :style="(ROUTER_PATH && ROUTER_PATH === '/'? 'background: none!important;' : '') ">
+  <div class="mainHeaderWrap headerBottom" v-if="pRouterHeaderInfo" :style="(ROUTER_PATH && ROUTER_PATH === '/'? 'background: none!important; box-shadow: none!important;' : '') ">
     <div v-if="pContentsYn" v-on:click="goBack" class="fl cursorP" style="min-width: 25px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <img src="../../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
     </div>
@@ -8,7 +8,7 @@
       <img class="mainMenuIcon" height="20" @click="showMenu()" src="../../../assets/images/common/icon_menu.png"/>
     </div>
     <!-- <img v-if="pRouterHeaderInfo.logoImg" :src="pRouterHeaderInfo.logoImg" height="30" style="margin-right: 5px; border: 2px solid white; background: white; border-radius: 100%; -webkit-user-drag: none;" /> -->
-    <p v-if="$route.path === '/'" class="headerFont fontBold fl" style="color: #062bb5;" v-html="`${pRouterHeaderInfo} Town`"></p>
+    <p v-if="$route.path === '/'" class="headerFont fontBold fl" style="color: #062bb5;" v-html="`${pRouterHeaderInfo}`"></p>
     <p v-else class="headerFont fontBold fl" style="color: #062bb5;" v-html="pRouterHeaderInfo"></p>
     <div @click="goLogList" class="cursorP" style="width: 44px; height: 44px; right: 70px; position: absolute; display: flex; align-items: center; justify-content: center;">
       <img height=20 src="../../../assets/images/common/icon_bell.svg"/>

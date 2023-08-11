@@ -146,7 +146,7 @@ export default {
       var paramMap = new Map()
 
       paramMap.set('fUserKey', this.GE_USER.userKey)
-      paramMap.set('cateItemKey', 3)
+      // paramMap.set('cateItemKey', 3)
       paramMap.set('nameMtext', this.nameMtext)
       paramMap.set('offsetInt', this.mOffsetInt)
       paramMap.set('pageSize', 10)
@@ -210,6 +210,7 @@ export default {
       this.$emit('closePop')
     },
     async findChannel () {
+      this.mChannelList = []
       var find = this.mSearchHistoryList.findIndex(item => item === this.nameMtext)
       if (find !== -1) { this.mSearchHistoryList.splice(find, 1) }
       this.mSearchHistoryList.unshift(this.nameMtext)

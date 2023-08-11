@@ -74,7 +74,7 @@
         </div>
 
         <!-- 채널 추천 영역 -->
-        <div v-if="$appType !== 'UB'" class="w100P fl" style="height: calc(100% - 280px); background: white; ">
+        <!-- <div v-if="$appType !== 'UB'" class="w100P fl" style="height: calc(100% - 280px); background: white; ">
           <div class="fl w100P pSide-1" style="height: 30px; float: left;">
             <img src="../../assets/images/main/icon_3d_star.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
             <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">{{ $t("SEAR_MSG_CHAN_RECOMMEND") }}</p>
@@ -88,14 +88,14 @@
               <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="recommendLoadMore" class="fl wich" />
             </template>
           </div>
-        </div>
+        </div> -->
       </div>
       </template>
 
       <!-- 검색 키워드가 있다면 -->
       <template v-if="mSearchModeYn === true">
-        <div v-if="mSearchModeYn === true" class="w100P h100P"  style="position: absolute; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10; overflow:hidden;">
-          <div class="fl w100P" :style="`height: ${this.mobileYn? (this.$STATUS_HEIGHT + 60):60}px;`" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: flex-start; position: fixed; z-index: 3; background: white;">
+        <div v-if="mSearchModeYn === true" class="w100P h100P"  style="position: absolute; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10; overflow:hidden;" :style="`top:${this.$STATUS_HEIGHT}px`">
+          <div class="fl w100P" :style="`height: ${60}px;`" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: flex-start; position: fixed; z-index: 3; background: white;" >
             <img @click="searchClear()" src="../../assets/images/common/icon_back.png" class="fl img-w12 cursorP mright-1 mleft-05" alt="">
             <div class="fl w100P mright-1" style="width:calc(100% - 90px); position: relative;">
               <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" />
@@ -105,7 +105,7 @@
             <img class="fr cursorP" v-if="mActiveSearch === 'CONT'" @click="mActiveSearch === 'CHAN' ? this.mChanFindPopShowYn = true : this.mFindPopShowYn = true"  style="width: 30px;" src="../../assets/images/common/common_filter.svg" alt="">
           </div>
           <!-- 공통 검색 탭 영역 -->
-          <div  class="w100P fl pSide-1 chanListHeader " :style="`margin-top: ${this.mobileYn? (this.$STATUS_HEIGHT + 60):60}px;`" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
+          <div  class="w100P fl pSide-1 chanListHeader " :style="`margin-top: ${60}px;`" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
             <gActiveBar :testYn='true' ref="mainActiveBar" :tabList="this.mActiveSearchTabList" class="fl" @changeTab="changeSearchTab" />
               <template v-if="mActiveSearch === 'CHAN'">
                 <cSearchBox class="mright-03 mtop-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" @searchBoxClick='searchBoxClick' />
@@ -121,13 +121,15 @@
           <div class="fl wh100P chanListWrap"  id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style=" overflow:auto;padding: 0 10px; padding-top: calc(var(--paddingTopLength));  "  >
             <!-- 채널 리스트 -->
             <div v-if="mActiveSearch === 'CHAN'" class="w100P fl" style="overflow: auto; ">
-              <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
-                <channelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
-                <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="recommendLoadMore" class="fl wich" />
-              </template>
               <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true && this.GE_DISP_TEAM_LIST.length === 0" class="w100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
                 <gListEmpty title='검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' />
               </div>
+              <template v-else>
+                <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
+                    <channelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
+                    <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="recommendLoadMore" class="fl wich" />
+                </template>
+              </template>
             </div>
 
             <!-- 컨텐츠 리스트 -->
@@ -646,8 +648,8 @@ export default {
         this.mMyStickerList = this.initData.stickerList
         this.mEmptyYn = false
         this.mOffsetInt = 0
-        this.mChannelList = this.initData.teamList.content
-        this.endListSetFunc(this.initData.teamList)
+        // this.mChannelList = this.initData.teamList.content
+        // this.endListSetFunc(this.initData.teamList)
       }
       // this.getCateItemList()
       // this.changeRecommendTab(this.mActiveRecommend)
@@ -706,10 +708,12 @@ export default {
         this.mChannelList = []
         var resultList = await this.getChannelList()
         console.log(' ==== find Content or Channel ==== ')
-        console.log(resultList)
         if (resultList === undefined || resultList.content === undefined) { this.mEmptyYn = true; return }
-        if (resultList.content.length === 0) this.mEmptyYn = true
-        this.mChannelList = resultList.content
+        if (resultList.content.length === 0) {
+          this.mEmptyYn = true
+        } else {
+          this.mChannelList = resultList.content
+        }
       }
     },
     searchClear () {
@@ -719,7 +723,7 @@ export default {
       this.mActiveSearch = 'CHAN'
 
       if (this.mTempCateItem) this.mCateItem = this.mTempCateItem
-      if (this.mTempRecommendList.length > 0) this.mChannelList = this.mTempRecommendList
+      // if (this.mTempRecommendList.length > 0) this.mChannelList = this.mTempRecommendList
     },
     replaceContentListArr (arr) {
       if (!arr && arr.length === 0) return []
@@ -938,7 +942,7 @@ export default {
     },
     calcPaddingTop () {
       return {
-        '--paddingTopLength': (this.mActiveSearch === 'CHAN' ? 100 : 120) + (this.mSearchList.length > 0 ? 50 : 0) + 'px'
+        '--paddingTopLength': (this.mActiveSearch === 'CHAN' ? 100 : 120) + (this.mSearchList.length > 0 ? 50 : 0) + Number(this.$STATUS_HEIGHT) + 'px'
       }
     },
     GE_DISP_ALIM_LIST () {
@@ -1111,7 +1115,7 @@ export default {
     },
     GE_DISP_TEAM_LIST () {
       var index = null
-      var teamList = this.GE_MAIN_CHAN_LIST
+      var teamList = []
       console.log('teamList', teamList)
       if (this.mChannelList.length > 0) {
         for (var i = 0; i < this.mChannelList.length; i++) {

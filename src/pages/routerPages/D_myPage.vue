@@ -79,10 +79,14 @@ export default {
     this.mLoadingYn = true
     if ((this.initData && Object.keys(this.initData).length > 0) || (this.propParams && this.propParams.targetType === 'myPage')) {
       // this.mInitData = this.initData
-      if (this.propParams) {
+      if (this.propParams && this.propParams.mContentsList && this.propParams.mContentsList.content) {
         this.mContsList = this.replaceArr(this.propParams.mContentsList.content)
       } else {
-        this.mContsList = this.replaceArr(this.initData.alimList.content)
+        if (this.initData.alimList && this.initData.alimList.content) {
+          this.mContsList = this.replaceArr(this.initData.alimList.content)
+        } else {
+          this.mContsList = []
+        }
         this.mMainChanList = this.initData.chanList
         this.mMainMChanList = this.initData.mChanList
       }

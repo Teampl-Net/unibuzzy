@@ -1,10 +1,10 @@
 <i18n>
 {
   "ko": {
-    "SEAR_TAB_ACT_CAHNNEL": "생성일"
+    "SEAR_TAB_ACT_CAHNNEL": "최근 수정일"
   },
   "en": {
-    "SEAR_TAB_ACT_CAHNNEL": "Created"
+    "SEAR_TAB_ACT_CAHNNEL": "Recent"
   }
 }
 </i18n>
@@ -17,7 +17,7 @@
         <p class="fl">
           {{ $changeText(boardElement.cabinetNameMtext) }} Board
         </p>
-        <p class="fr font13 lightGray" style="font-weight: normal;">{{ $t("SEAR_TAB_ACT_CAHNNEL") + " " +$changeDateFormat(boardElement.cabCreDate) }}</p></div>
+        <p class="fr font13 lightGray" style="font-weight: normal;">{{ $t("SEAR_TAB_ACT_CAHNNEL") + " " +$changeDateFormat(boardElement.cabUpdDate) }}</p></div>
       <p class="w100P fl font14 textLeft grayBlack">{{ $changeText(boardElement.memoMtext) }}</p>
     </div>
   </div>

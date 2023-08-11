@@ -1,6 +1,6 @@
 <template>
     <div class="py-3 px-4 TalFooterWrap">
-        <div @click="routePage('main')" class="footerRouter" style="flex: 1 !important">
+        <div @click="routePage('routemainrMain')" class="footerRouter" style="flex: 1 !important">
           <div class="commonColor fontBold text-center font12" >
             <img v-if="this.$route.path === '/'" :src="footerIcon[0].fullIcon"/> <img v-else :src="footerIcon[0].icon"/>
             <p :class="this.$route.path === '/'? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_HOME') }}</p>

@@ -16,21 +16,20 @@
       </div>
     </div>
     <div class="w100P" style="height: calc(100% - 50px); overflow: auto; padding-top: 15px;">
-      <div class="w100P" style="display: flex; align-items: center;">
+      <!-- <div class="w100P" style="display: flex; align-items: center;">
         <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_pencil.svg" alt="">
-        <!-- Description -->
-        <!-- <p class="fontBold font16">Description</p> -->
+        <p class="fontBold font16">Description</p>
         <p class="textLeft font16" style="width: calc(100% - 30px);">{{ pAreaInfo.bdAreaDesc }}</p>
-      </div>
-      <div class="w100P" style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; display: flex; margin-top: 10px;">
+      </div> -->
+      <div class="w100P" style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; display: flex; margin-top: 0px;">
         <p style="width: 50%; border-right: 2px solid #000;">
-          <span class="fontBold">{{ pAreaInfo.bdList && pAreaInfo.bdList.length? pAreaInfo.bdList.length:'0' }}</span> channels
+          <span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> channels
         </p>
         <p style="width: 50%;">
           <span class="fontBold">{{ pAreaDetail.followerCount? pAreaDetail.followerCount:0 }}</span> followers
         </p>
       </div>
-      <div class="w100P" style="margin-top: 35px;">
+      <div v-if="pAreaDetail.fList&& pAreaDetail.fList.length > 0" class="w100P" style="margin-top: 20px;">
         <div class="w100P textLeft" style="display: flex; align-items: center;">
           <img style="width: 25px; margin-right: 5px;" src="@/assets/images/contents/icon_heart_on.png" alt="">
           <!--Favorites -->
@@ -45,8 +44,8 @@
         </div>
         <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" />
       </div>
-      <div class="w100P" style="margin-top: 35px;">
-        <div class="w100P" style="display: flex; align-items: center;">
+      <div  class="w100P" style="margin-top: 20px;">
+        <div v-if="pAreaDetail.popTeamList && pAreaDetail.popTeamList.length > 0" class="w100P" style="display: flex; align-items: center;">
           <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_popular.svg" alt="">
           <!--Popular -->
           <p class="fontBold font16">Popular</p>
@@ -74,16 +73,16 @@
           <p style="padding-top:5px;" v-if="pAreaDetail.popTeamList[2]">{{ pAreaDetail.popTeamList[2].fCount ? pAreaDetail.popTeamList[2].fCount : '0' }} followers</p>
           </div>
         </div>
-        <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" />
+        <!-- <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" /> -->
         <div class="w100P" style="margin-top: 35px;">
           <div class="w100P" style="display: flex; align-items: center;">
             <img style="width: 25px; margin-right: 5px;" src="@/assets/images/bottom/icon_search.svg" alt="">
             <!--All List -->
             <p class="fontBold font16">All List</p>
           </div>
-          <div class="w100P" style="padding-bottom: 30px; height:auto; max-height:325px; overflow-y:auto;">
-            <gEmpty tabName="전체" contentName="채널" v-if="pAreaInfo.bdList && pAreaInfo.bdList.length === 0" style="margin-top:50px;" />
-            <template v-for="(chanEle, index) in pAreaInfo.bdList" :key="index">
+          <div class="w100P" style="padding-bottom: 30px; height:auto; max-height:325px; ">
+            <gEmpty tabName="전체" contentName="채널" v-if="pAreaDetail.bdList && pAreaDetail.bdList.length === 0" style="margin-top:50px;" />
+            <template v-for="(chanEle, index) in pAreaDetail.bdList" :key="index">
               <channelCard v-if="chanEle.targetKind === 'T'" style="margin-top: 10px;" class="moveBox chanRow" :pTeamList="GE_DISP_TEAM_LIST" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
               <boardCard v-else class="moveBox chanRow" :boardElement="chanEle" @click="goBoardMain(chanEle)" @scrollMove="scrollMove" />
             </template>

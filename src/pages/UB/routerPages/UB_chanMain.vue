@@ -11,19 +11,19 @@
     <!-- <div v-if="mReceptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999">
     </div> -->
     <!-- <recMemberPop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" /> -->
-    <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;' : ''" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{ officialTitle: CHANNEL_DETAIL.officialYn }"> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" />
-      <p class="font20 fontBold textOverdot" :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: #6768a7'">
+    <div class="font20 fontBold displayNIm" ref="UBChanMainNameDiv" :style="mChanNameLongYn ? 'font-size: 15px !important;' : ''" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{ officialTitle: CHANNEL_DETAIL.officialYn }"> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" />
+      <p class="font20 fontBold textOverdot" :style="(CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white;' : 'color: #6768a7;') + 'top: ' + (Number(this.$STATUS_HEIGHT) - 5) + 'px'">
         {{$changeText(CHANNEL_DETAIL.nameMtext)}} > {{ $changeText(mChanInfo.initData.team.cateItemMtext) }}
       </p>
     </div>
     <div id="summaryWrap" ref="summaryWrap" v-if="!mChanInfoPopShowYn" class="summaryWrap mtop-05">
 
-      <div id="chanInfoSummary" ref="chanInfoSummary" style="background-position: center; width:100%; height:100px; position: relative; background-size: contain;background-position-y: 40px;background-repeat: no-repeat;">
+      <div id="chanInfoSummary" ref="chanInfoSummary" style="background-position: center; width:100%; height:80px; position: relative; background-size: contain;background-position-y: 40px;background-repeat: no-repeat;">
         <div class="w100P h100P" style="">
           <!-- <img src="../../../assets/images/channel/chanBgImg.jpeg" style="width:100%; height: calc(100% + 50px); position: absolute; left: 0; top: -50px;" /> -->
           <div class="w100P" style="height: calc(100% + 50px); position: absolute; left: 0; top: -50px; background: linear-gradient(to bottom, rgba(20, 20, 20, 0) 40%,rgba(20, 20, 20, 0.25) 50%,rgba(20, 20, 20, 0.5) 70%,rgba(20, 20, 20, 0.6) 90%,rgba(20, 20, 20, 0.8) 100%);"></div>
           <!-- <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ propParams.areaInfo.bdAreaDesc }} > {{ $changeText(CHANNEL_DETAIL.nameMtext) }}</div> -->
-          <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{ $changeText(CHANNEL_DETAIL.nameMtext) }}</div>
+          <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{$changeText(CHANNEL_DETAIL.nameMtext)}} > {{ $changeText(mChanInfo.initData.team.cateItemMtext) }}</div>
           <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
           <!--follow-->
           <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" :btnTitle="$t('COMM_BTN_SUB')" />
@@ -31,7 +31,7 @@
           <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" class="fl w-100P fontBold font14" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="$t('COMM_BTN_UNSUB')" />
         </div>
 
-        <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; min-height:118px; padding: 15px; box-sizing:border-box; word-break:break-all">
+        <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; min-height:130px; padding: 15px; box-sizing:border-box; word-break:break-all">
           <div class="h100P fl flexCenter" style="width: 100px; padding-top: 50px;">
             <div class="cursorP" style="width: 40px; height: 40px; margin-right: 10px; background: #f1f1f1; border-radius: 30px; float:left; display: flex; justify-content: center; align-items: center;" @click="ImgClick">
               <img @class="cursorP" width="20" height="20" :src="CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey? require('@/assets/images/channel/icon_star_fill.svg'):require('@/assets/images/channel/icon_star.svg')" alt="">
@@ -245,6 +245,11 @@ export default {
   },
   methods: {
     scrollOn () {
+      const pushList = document.getElementById('pushListWrap')
+      if (this.$refs.summaryWrap.offsetHeight > 210 && pushList) {
+        this.pushListWrap = pushList
+        this.pushListWrap.style.overflow = 'hidden'
+      }
       this.mChanMainScrollWrap = this.$refs.chanScrollWrap
       if (this.mChanMainScrollWrap) {
         this.mChanMainScrollWrap.style.overflow = 'scroll'
@@ -325,7 +330,8 @@ export default {
     },
     calcSummaryWrapH () {
       if (this.$refs.summaryWrap) {
-        const height = this.$refs.summaryWrap.offsetHeight + 'px'
+        let height = this.$refs.summaryWrap.offsetHeight + 'px'
+        if (this.$refs.summaryWrap.offsetHeight < 300) height = 210 + 'px'
         this.$refs.channelItemBox.style.marginTop = height
       }
     },
@@ -561,6 +567,8 @@ export default {
         this.pushListWrap.style.overflow = 'hidden auto'
         const chanInfoSummaryRef = this.$refs.chanInfoSummary
         // const ownerChannelEditArea = this.$refs.ownerChannelEditArea
+        const UBChanMainNameDivRef = this.$refs.UBChanMainNameDiv
+        UBChanMainNameDivRef.classList.remove('displayNIm')
         const channelItemBoxRef = this.$refs.channelItemBox
 
         if (chanInfoSummaryRef) chanInfoSummaryRef.classList.add('displayNIm')
@@ -911,19 +919,22 @@ export default {
       this.mChanMainScrollPosition = this.mChanMainScrollWrap.scrollTop
       const chanInfoSummaryRef = this.$refs.chanInfoSummary
       const channelItemBoxRef = this.$refs.channelItemBox
+      const UBChanMainNameDivRef = this.$refs.UBChanMainNameDiv
       if (this.mChanMainScrollDirection === 'down' && this.mChanMainScrollPosition > 120) {
         blockBox.style.height = Number(this.$STATUS_HEIGHT) + 50 + 'px'
         if (this.mChanMainScrollPosition > 160) this.mChanMainScrollWrap.style.overflow = 'hidden'
         this.pushListWrap.style.overflow = 'hidden auto'
         chanInfoSummaryRef.classList.add('displayNIm')
+        UBChanMainNameDivRef.classList.remove('displayNIm')
         // 더알림 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
         // if (ownerChannelEditAreaRef) ownerChannelEditAreaRef.classList.add('displayNIm')
         if (channelItemBoxRef) channelItemBoxRef.classList.add('channelItemBoxHeight')
       } else if (this.mChanMainScrollDirection === 'up' && this.mChanMainScrollPosition < 170) {
         chanInfoSummaryRef.classList.remove('displayNIm')
+        UBChanMainNameDivRef.classList.add('displayNIm')
         // if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && ownerChannelEditAreaRef) ownerChannelEditAreaRef.classList.remove('displayNIm')
 
-        blockBox.style.height = Number(this.$STATUS_HEIGHT) + '220px'
+        blockBox.style.height = Number(this.$STATUS_HEIGHT) + '210px'
         this.mChanMainScrollWrap.style.height = ''
         this.pushListWrap.style.overflow = 'hidden'
         channelItemBoxRef.classList.remove('channelItemBoxHeight')
@@ -1116,7 +1127,7 @@ export default {
   align-items: flex-start;
   padding-top: 1.2rem !important;
 }
-.summaryWrap{min-height: 220px; width: 100%; float: left; position: absolute;}
+.summaryWrap{min-height: 210px; width: 100%; float: left; position: absolute;}
 .summaryWrap2 {
   height: 50px;
   width: 100%;
@@ -1136,7 +1147,7 @@ export default {
   bottom: -50px; left: 15px; position: absolute;
   display: flex; align-items: center; justify-content: center;
   border-radius: 100%;
-  border-top: 4px solid #ccc; flex-shrink: 0; flex-grow: 0;
+  /* border-top: 4px solid #ccc; */ flex-shrink: 0; flex-grow: 0;
   background-repeat: no-repeat; background-size: cover; background-position: center; background-color:white;
 }
 #chanInfoSummary2 {

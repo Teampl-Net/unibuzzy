@@ -37,11 +37,11 @@
 }
 </i18n>
 <template>
-<div style="width: 100%; height: 100%; float: left; position: absolute; z-index: 99999; left: 0; top: 0;" @click.stop="preventDefault">
+<div  style="width: 100%; height: 100%; float: left; position: absolute; z-index: 9999; left: 0; top: 0;" @click.stop="preventDefault">
   <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" />
-  <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
+  <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop' || mIconBgSelectPopYn=='bdPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
     <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
-      <div class="createChanContentsWrap">
+      <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 60}px;`">
         <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" >
           <label @click="mIconBgSelectPopYn='bgPop'"  class='backgroundLabel commonColor' for="input-Backimgfile">
             <img src="@/assets/images/channel/icon_camera.svg" class="cursorP" style="width:20px;" alt="">{{ $t('CRE_BTN_EDITBG') }}</label>
@@ -307,6 +307,8 @@ export default {
         this.mSelectedIcon = param
       } else if (this.mIconBgSelectPopYn === 'bgPop') {
         this.mSelectedBg = param
+      } else if (this.mIconBgSelectPopYn === 'bdPop') {
+        this.mSelectedBd = param
       }
       this.mIconBgSelectPopYn = false
     },
@@ -385,7 +387,7 @@ export default {
             })
             console.log(res)
             if (res.data && res.data.result) {
-
+              this.$emit('successCreChan', params)
             }
           }
           return
