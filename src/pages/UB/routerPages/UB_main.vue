@@ -1,14 +1,15 @@
 <template>
   <div ref="mainRef" class="w100P h100P" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
     <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
-    <createChannel @successCreChan="successCreChan" v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
+    <!-- <createBoardChannel :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" /> -->
+    <!-- <createChannel @successCreChan="successCreChan" v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" /> -->
     <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
     </transition>
     <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
-      <areaInfoPop :pBdClickedYn="mBdClickedYn" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
+      <areaInfoPop :pBdClickedYn="mBdClickedYn" :chanDetail="{ modiYn: false }" :pBdAreaList="mBdAreaList" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
     </transition>
     <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
       <div class="ballon">go to other town?</div>
@@ -75,8 +76,9 @@ import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
 // import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
 import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
 import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue'
-import createChannel from '../../../components/UB/popup/UB_createChannel.vue'
+// import createChannel from '../../../components/UB/popup/UB_createChannel.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
+// import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel.vue'
 // import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
   props: {
@@ -995,12 +997,13 @@ export default {
     }
   },
   components: {
-    createChannel,
+    // createChannel,
     commonConfirmPop,
     // UBInfoBox,
     selectSchoolPop,
     UBAreaBdList,
     areaInfoPop
+    // createBoardChannel
     // UBBgEffect
   }
 }

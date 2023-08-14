@@ -27,7 +27,7 @@
 <template>
   <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
   <div style="width: 100%; float: left;">
-    <div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="closePop()"></div>
+    <div style="width: 100%; height: 120vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="closePop()"></div>
     <div class="confirmPopWrap" :style="'padding-bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
     <!-- <div style="width: 50%; height: 50%; padding: 0 20px; overflow: auto;" > -->
         <div class="creChanIntroTextWrap" style="display:flex; align-items:center; justify-content:space-between; width: 100%; min-height: 50px; text-align: left;">

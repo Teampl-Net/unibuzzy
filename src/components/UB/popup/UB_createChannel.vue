@@ -37,14 +37,17 @@
 }
 </i18n>
 <template>
-<div  style="width: 100%; height: 100%; float: left; position: absolute; z-index: 9999; left: 0; top: 0;" @click.stop="preventDefault">
-  <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" />
+<!-- <div style="width: 100%; height: 100%; float: left; position: absolute; z-index: 9999; left: 0; top:230px; " @click.stop="preventDefault"> -->
+<div style="width: 100%; height: 100%; " @click.stop="preventDefault">
+  <!-- <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" /> -->
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop' || mIconBgSelectPopYn=='bdPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
     <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
-      <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 60}px;`">
-        <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" >
+      <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 100}px;`">
+        <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" style="margin-top:-90px;" >
           <label @click="mIconBgSelectPopYn='bgPop'"  class='backgroundLabel commonColor' for="input-Backimgfile">
-            <img src="@/assets/images/channel/icon_camera.svg" class="cursorP" style="width:20px;" alt="">{{ $t('CRE_BTN_EDITBG') }}</label>
+            <img :src="require(`@/assets/images/channel/icon_camera.svg`)" class="cursorP" style="width:20px;" alt="">
+            Edit Background
+          </label>
         </form>
 
         <div v-if="chanDetail.modiYn === true && this.chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; top:0.3rem; padding-left:0.25rem">
@@ -58,7 +61,7 @@
 
           <div @click="mIconBgSelectPopYn='iconPop'" class="channelLogoArea cursorP" :style="'background-image: url(' + mSelectedIcon.selectPath + ')'" style="background-size: cover; background-position: center; background-repeat: no-repeat;">
           </div>
-          <div class="w100P fl" style="height: calc(100% - 80px); overflow: auto; margin-top: 1rem;">
+          <div class="w100P fl" style="height: calc(100% - 80px); overflow-y:scroll: auto; margin-top: 1rem;">
 
           <div v-if="chanDetail.modiYn === false" class="w100P" style="border-bottom: 2px solid #aaa; padding: 10px 0;">
             <p class="textLeft font20 fontBold w-100P">{{ pBdAreaList && pBdAreaList.length > 0 && pBdAreaList[0].bdList? $changeText(pBdAreaList[0].bdList[0].nameMtext):'Campus' }} > {{ pSelectedAreaInfo? pSelectedAreaInfo.bdAreaNameMtext:'Area' }}</p>
@@ -111,7 +114,7 @@
 
 <script>
 import seleciconBgPopup from '@/components/popup/creChannel/Tal_selectChaniconBgPopup.vue'
-import gPopHeader from '../layout/UB_gPopHeader.vue'
+// import gPopHeader from '../layout/UB_gPopHeader.vue'
 export default {
   created () {
     if (this.pSelectedAreaInfo) {
@@ -497,8 +500,8 @@ export default {
     }
   },
   components: {
-    seleciconBgPopup,
-    gPopHeader
+    seleciconBgPopup
+    // gPopHeader
   }
 
 }
@@ -527,7 +530,7 @@ border:1px solid #ccc; width: 120px; overflow: hidden; height: 120px; border-rad
   color: black;
 } */
 #chboxtest{
-  font-size:14px; width: 100%; position:relative; min-height: 400px; background: #FFF; top:0; padding-bottom:50px; padding: 0 1rem; height: calc(100% - 15rem);
+  font-size:14px; width: 100%; position:relative; min-height: 500px; background: #FFF; top:0; padding-bottom:50px; padding: 0 1rem; height: calc(100% - 15rem);
 }
 
 #channelName{
