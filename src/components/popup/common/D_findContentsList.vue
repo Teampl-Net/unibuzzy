@@ -30,7 +30,7 @@
 </i18n>
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-  <div class="pagePaddingWrap findPopupWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 50 )+ 'px'" >
+  <div id="findContPop" class="pagePaddingWrap findPopupWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 50 )+ 'px'" >
     <popHeader v-if="(contentsListTargetType === 'boardMain')" :headerTitle="$t('SEAR_TITLE_POST')" :pClosePop="pClosePop" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
     <popHeader v-else-if="(contentsListTargetType === 'myActList')" headerTitle="나의 활동 검색" :pClosePop="pClosePop" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
     <popHeader v-else-if="(contentsListTargetType === 'fileBox')" :headerTitle="$t('SEAR_TITLE_FILE')" :pClosePop="pClosePop" @closeXPop="closeXPop"  style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>

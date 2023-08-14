@@ -32,29 +32,16 @@
       <transition name="showUp">
         <UBAreaBdList v-if="mShowAreaBdListYn" style="top: 100px; height: calc(100% - 100px); width: 80%;" />
       </transition>
-      <!-- area -->
-      <!-- <template v-for="(area) in village.areaList" :key="area.key">
-        <div style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: area.clickedYn}" :style="{ width: area.w + 'px', height: area.h + 'px', top: area.top + 'px', left: area.left + 'px' }">
-          <img :ref="area.name + area.key" style="position: absolute;" :src="area.maskedImageUrl" :style="area.maskedImageStyle" />
-          <div v-if="area.name" class="fontBold" style="background-color: rgba(245, 245, 220, 0.5) !important; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
-            <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.name }}</p>
-          </div>
-        </div>
-        <div v-for="(bd) in area.buildingList" :key="bd.key" class="bdDiv" :class="{clicked: bd.clickedYn}" style="position: absolute; z-index: 9;" :style="[bd.maskedImageStyle, { top: bd.top+ 'px', left: bd.left + 'px' }]">
-          <img :src="bd.maskedImageUrl" />
-          <span class="fontBold" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ bd.nameMtext }}</span>
-        </div>
-      </template> -->
       <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
-        <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" style="position: absolute;" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
-          <img style="position: absolute;" :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
-          <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-bottom': area.priority !== 0 && area.priority !== 1 ? 15 + village.areaList[area.priority].h + 'px' : ''}" style="background-color: rgba(245, 245, 220, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 1000;">
+        <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" style="cursor: pointer;position: absolute; z-index: 99;" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
+          <img style="position: absolute; z-index: 99" :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
+          <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-bottom': area.priority !== 0 && area.priority !== 1 ? 15 + village.areaList[area.priority].h + 'px' : ''}" style="background-color: rgba(245, 245, 220, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
             <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.bdAreaNameMtext }}</p>
           </div>
         </div>
         <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
-          <div ref="bdRef" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; "
-          :style="[{ 'z-index': index === 0 ? '999' : (index === 1 || index === 2) ? '998' : (index === 3 || index === 4) ? '997' : '' }, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top + 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
+          <div ref="bdRef" :id="`area${area.bdAreaKey}bd${bd.bdKey}pri${bd.priority}`" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; "
+          :style="[`z-index: ${1000 - bd.priority};`, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top + 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
             <div v-if="area.priority === 0" class="banner flexCenter" style="width: 250px; height: 80px; position: absolute; top: -50px; left: 0;" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
               <img src="../../../assets/images/main/banner2.png" class="w100P" style="position: absolute;" /> <!-- 여기 -->
               <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold" style="position: absolute; margin-bottom: 30px;"></div>
@@ -68,6 +55,14 @@
         </template>
       </template>
     </div>
+    <div class="PostsBallon">view Town's Posts</div>
+    <div @click="openBoardPop" class="cursorP testBox" style="width: 70px; position: fixed; bottom: 100px; right: 15px; ">
+        <!-- <img style="width: 100%;" src="../../../assets/images/main/UBTownFeed.svg" alt=""> -->
+    </div>
+    <transition name="showUp">
+        <mainBoardList @openPop="openPop" :pTownTeamKey="mTownTeamKey" v-if="mBoardPopShowYn" ref="mainBoardRef" :pClosePop="closeBoardPop"/>
+    </transition>
+    <div v-if="mBoardPopShowYn" @click="$refs.mainBoardRef.closeXPop" style="width: 100%; height: 100%; background: #00000040; position: absolute; z-index: 9998; top: 0; left: 0;"></div>
   </div>
 </template>
 <script>
@@ -78,7 +73,7 @@ import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
 import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue'
 // import createChannel from '../../../components/UB/popup/UB_createChannel.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
-// import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel.vue'
+import mainBoardList from '../../../components/UB/popup/UB_boardListPop.vue'
 // import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
   props: {
@@ -87,6 +82,8 @@ export default {
   },
   data () {
     return {
+      mTownTeamKey: null,
+      mBoardPopShowYn: false,
       mAppCloseYn: false,
       mCreChannelShowYn: false,
       mFavListPopShowYn: false,
@@ -105,121 +102,7 @@ export default {
           urlLink: 'https://www.gatech.edu/',
           logoImg: '/resource/new/logo/gtLogo.png'
         },
-        areaList: [
-          {
-            key: 0,
-            name: 'Georgia Tech',
-            ctx: {},
-            maskingRef: null,
-            areaYn: true,
-            imgLink: '/resource/main/UB_collegeArea.png',
-            maskedImageUrl: '',
-            maskedImageStyle: {},
-            clickedYn: false,
-            left: 110,
-            top: 280,
-            w: 0,
-            h: 0,
-            buildingList: [
-            ]
-          },
-          {
-            // key: 1,
-            key: 1,
-            ctx: {},
-            maskingRef: null,
-            areaYn: true,
-            imgLink: '/resource/main/UB_plaza.png',
-            maskedImageUrl: '',
-            maskedImageStyle: {},
-            clickedYn: false,
-            left: 110,
-            top: 280,
-            w: 0,
-            h: 0,
-            buildingList: []
-          },
-          {
-            key: 2,
-            ctx: {},
-            areaYn: true,
-            imgLink: '/resource/main/UB_area1.png',
-            maskedImageUrl: '',
-            maskedImageStyle: {},
-            onImgYn: false,
-            clickedYn: false,
-            left: -18,
-            top: 370,
-            w: 0,
-            h: 0,
-            buildingList: [
-            ]
-            // points: '9,355,358,544'
-          },
-          {
-            key: 3,
-            ctx: {},
-            areaYn: true,
-            imgLink: '/resource/main/UB_area2.png',
-            maskedImageUrl: '',
-            maskedImageStyle: {},
-            clickedYn: false,
-            left: 235,
-            top: 370,
-            w: 0,
-            h: 0,
-            buildingList: [
-            ]
-          },
-          {
-            key: 4,
-            ctx: {},
-            areaYn: true,
-            type: 'CL', // CL: club, PL: plaza, ST: startup, AC: academic
-            imgLink: '/resource/main/UB_area3.png',
-            maskedImageUrl: '',
-            maskedImageStyle: {},
-            clickedYn: false,
-            left: 110,
-            top: 460,
-            w: 0,
-            h: 0,
-            buildingList: [
-            ]
-          },
-          {
-            key: 5,
-            ctx: {},
-            areaYn: true,
-            type: 'FA', // CL: club, PL: plaza, ST: startup, AC: academic, FA: Facilities
-            imgLink: '/resource/main/UB_area4.png',
-            maskedImageUrl: '',
-            maskedImageStyle: {},
-            clickedYn: false,
-            left: 0,
-            top: 0,
-            w: 0,
-            h: 0,
-            buildingList: [
-            ]
-          },
-          {
-            key: 6,
-            ctx: {},
-            areaYn: true,
-            type: 'FA', // CL: club, PL: plaza, ST: startup, AC: academic, FA: Facilities
-            imgLink: '/resource/main/UB_area5.png',
-            maskedImageUrl: '',
-            maskedImageStyle: {},
-            clickedYn: false,
-            left: 0,
-            top: 0,
-            w: 0,
-            h: 0,
-            buildingList: [
-            ]
-          }
-        ]
+        areaList: []
       },
       innerWidth: 0,
       innerHeight: 0,
@@ -312,12 +195,20 @@ export default {
       this.mInfoBoxShowYn = false
       this.mCreChannelShowYn = true
     },
+    closeBoardPop (shadowClickYn) {
+    /*     if (shadowClickYn) {
+            this.$refs.mainBoardRef
+            refs.mainBoardRef.closeXPop
+        } */
+      this.mBoardPopShowYn = false
+    },
+    openBoardPop () {
+      this.mBoardPopShowYn = true
+    },
     closeCreChanPop () {
       this.mCreChannelShowYn = false
     },
     findAllDrawn () {
-      // eslint-disable-next-line no-debugger
-      debugger
       this.$emit('showCloudLoading', true, false)
       const intervalHandler = setInterval(() => {
         if (this.$refs.bdRef) {
@@ -384,8 +275,6 @@ export default {
       console.log(result)
     },
     async openAreaInfoPop (area) {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.mBgNotClickYn) return
       const param = {
         bdArea: {
@@ -446,8 +335,6 @@ export default {
       this.$emit('openPop', openParam)
     },
     async getMainBoard () {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')
       var paramMap = new Map()
@@ -475,18 +362,40 @@ export default {
         this.mBdAreaList = response.data.bdAreaList
         this.mFTeamList = response.data.fTeamList
         this.mAlimCount = response.data.alimCount
-
+        if (this.mBdAreaList && this.mBdAreaList.length > 0) {
+          this.mTownTeamKey = this.mBdAreaList[0].teamKey
+        }
         this.$emit('setMainInfo', { fTeamList: this.mFTeamList, alimCount: this.mAlimCount })
+        this.village.areaList = []
+        const leftList = [110, 110, -18, 235, 110, 0, 0]
+        const topList = [280, 280, 370, 370, 460, 0, 0]
+        for (var i = 0; i < this.mBdAreaList.length; i++) {
+          const area = this.mBdAreaList[i]
+          const areaObj = {
+            key: area.priority,
+            name: area.bdAreaNameMtext,
+            ctx: {},
+            maskingRef: null,
+            areaYn: true,
+            imgLink: area.bdAreaImgPath,
+            maskedImageUrl: '',
+            maskedImageStyle: {},
+            clickedYn: false,
+            left: leftList[i],
+            top: topList[i],
+            w: 0,
+            h: 0,
+            buildingList: [
+            ]
+          }
+          this.village.areaList.push(areaObj)
 
-        for (const area of this.mBdAreaList) {
           let count = 0
           if (area.bdList.length > 5) {
             count = 5
           } else {
             count = area.bdList.length
           }
-          // eslint-disable-next-line no-debugger
-          debugger
           for (let j = 0; j < count; j++) {
             const buildingObj = {
               index: j,
@@ -537,6 +446,8 @@ export default {
       // this.$router.push(chanRoute)
     },
     createMaskingAreaImg () {
+      // eslint-disable-next-line no-debugger
+      debugger
       const areaList = this.village.areaList
       let w = 0
       let h = 0
@@ -626,8 +537,6 @@ export default {
       }
     },
     createMaskingBuildingImg (area) {
-      // eslint-disable-next-line no-debugger
-      debugger
       const bdList = area.buildingList
       if (area.key === 6) {
         area.loadYn = true
@@ -683,8 +592,6 @@ export default {
           bd.h = newHeight
           const context = canvas.getContext('2d', { willReadFrequently: true })
           bd.ctx = context
-          // eslint-disable-next-line no-debugger
-          debugger
           if (bd.type !== 'CB') {
             for (let i = 0; i < area.h; i++) {
               let pixelData = {}
@@ -722,127 +629,8 @@ export default {
         targetImage.src = bd.imgLink
       }
     },
-    // createMaskingBuildingImg1 (area) {
-    //   const bdList = area.buildingList
-    //   if (bdList && bdList.length !== 0) {
-    //     for (let j = 0; j < bdList.length; j++) {
-    //       const bd = bdList[j]
-    //       bd.w = 1 / 5 * area.w
-    //       bd.h = 1 / 4 * area.h
-    //       if (bd.rank === 1) {
-    //         if (bd.type === 'CB') {
-    //           bd.w = 1 / 2 * area.w
-    //           bd.h = 1 / 2 * area.h
-    //           bd.left = area.left + bd.w / 2
-    //           bd.top = area.top - bd.h * 2 / 3
-    //         } else {
-    //           bd.left = 1 / 2 * area.w + area.left - bd.w / 2
-    //           bd.top = area.top - bd.h / 8
-    //         }
-    //       } else if (bd.rank === 2) {
-    //         bd.left = 1 / 4 * area.w + area.left
-    //         bd.top = 1 / 32 * area.h + area.top
-    //       } else if (bd.rank === 3) {
-    //         bd.left = 9 / 16 * area.w + area.left
-    //         bd.top = 1 / 32 * area.h + area.top
-    //       } else if (bd.rank === 4) {
-    //         bd.left = 1 / 16 * area.w + area.left
-    //         bd.top = 1 / 6 * area.h + area.top
-    //       } else if (bd.rank === 5) {
-    //         bd.left = 12 / 16 * area.w + area.left
-    //         bd.top = 1 / 6 * area.h + area.top
-    //       }
-    //       const targetImage = new Image()
-    //       targetImage.src = bd.imgLink
-    //       targetImage.onload = function () {
-    //         const scaleFactor = bd.w / this.width
-    //         const canvas = document.createElement('canvas')
-    //         const newWidth = Math.floor(this.width * scaleFactor)
-    //         const newHeight = Math.floor(this.height * scaleFactor)
-    //         canvas.width = newWidth
-    //         canvas.height = newHeight
-    //         bd.w = newWidth
-    //         bd.h = newHeight
-    //         const context = canvas.getContext('2d', { willReadFrequently: true })
-    //         // 마스킹 이미지 그리기
-    //         context.drawImage(this, 0, 0, newWidth, newHeight)
-    //         bd.ctx = context
-    //         // 마스킹 이미지를 base64로 변환하여 출력
-    //         bd.maskedImageUrl = canvas.toDataURL()
-    //       }
-    //       targetImage.src = bd.imgLink
-    //     }
-    //   }
-    // },
-    addNewBuilding () {
-      // eslint-disable-next-line no-debugger
-      debugger
-      const bd = {}
-      if (this.clickedArea.type === 'CO' || this.clickedArea.type === 'PL') return
-      const area = this.clickedArea
-      const rank = this.clickedRank
-      bd.w = 1 / 4 * area.w
-      bd.h = 1 / 3 * area.h
-      if (rank === 1) {
-        bd.left = 1 / 3 * area.w + area.left
-        bd.top = area.top - bd.h / 2
-        bd.imgLink = '/resource/bd/new_bd1.png'
-      } else if (rank === 2) {
-        bd.left = 1 / 6 * area.w + area.left
-        bd.top = 1 / 6 * area.h + area.top - bd.h / 2
-        bd.imgLink = '/resource/bd/new_bd2.png'
-      } else if (rank === 3) {
-        bd.left = 1 / 2 * area.w + area.left
-        bd.top = 1 / 6 * area.h + area.top - bd.h / 2
-        bd.imgLink = '/resource/bd/new_bd3.png'
-      } else if (rank === 4) {
-        bd.left = area.w / 2 - bd.w / 2 + area.left
-        bd.top = 1 / 3 * area.h + area.top
-        bd.imgLink = '/resource/bd/new_house1.png'
-      }
-      // else if (rank === 4) {
-      //   bd.left = area.left
-      //   bd.top = 1 / 3 * area.h + area.top
-      //   bd.imgLink = '/resource/bd/new_bd4.png'
-      // }
-      // else if (rank === 5) {
-      //   bd.left = 2 / 3 * area.w + area.left
-      //   bd.top = 1 / 3 * area.h + area.top
-      //   bd.imgLink = '/resource/bd/new_bd5.png'
-      // }
-
-      bd.key = String(area.key) + '.' + String(rank)
-      bd.ctx = {}
-      bd.areaYn = false
-      bd.parentKey = area.key
-      bd.type = 'BU'
-      bd.status = 1
-      bd.rank = rank
-      bd.maskedImageUrl = ''
-      bd.maskedImageStyle = {}
-      bd.clickedYn = false
-      const targetImage = new Image()
-      targetImage.src = bd.imgLink
-      targetImage.onload = function () {
-        const scaleFactor = bd.w / this.width
-        const canvas = document.createElement('canvas')
-        const newWidth = Math.floor(this.width * scaleFactor)
-        const newHeight = Math.floor(this.height * scaleFactor)
-        canvas.width = newWidth
-        canvas.height = newHeight
-        bd.w = newWidth
-        bd.h = newHeight
-        const context = canvas.getContext('2d', { willReadFrequently: true })
-        // 마스킹 이미지 그리기
-        context.drawImage(this, 0, 0, newWidth, newHeight)
-        bd.ctx = context
-        // 마스킹 이미지를 base64로 변환하여 출력
-        bd.maskedImageUrl = canvas.toDataURL()
-      }
-      targetImage.src = bd.imgLink
-      if (area.buildingList && area.buildingList.length < 4) area.buildingList.push(bd)
-    },
     getInRectImgList (event) {
+      if (this.mainShowPopYn) return
       // 빌딩부터 역순으로 뒤짐
       // 빌딩이 발견됨, 스타일클리어 시키고, 효과를 주고 return해버리기
       // 빌딩 클릭이 없음, areaclick을 찾음
@@ -974,6 +762,11 @@ export default {
     window.addEventListener('resize', this.createMaskingAreaImg)
   },
   computed: {
+    mainShowPopYn () {
+      let showYn = false
+      if (this.mBoardPopShowYn || this.mInfoBoxShowYn || this.mShowAreaBdListYn || this.mFavListPopShowYn || this.mCreChannelShowYn) showYn = true
+      return showYn
+    },
     historyStack () {
       return this.$store.getters['D_HISTORY/hStack']
     },
@@ -997,6 +790,7 @@ export default {
     }
   },
   components: {
+    mainBoardList,
     // createChannel,
     commonConfirmPop,
     // UBInfoBox,
@@ -1069,4 +863,50 @@ export default {
     top: 30px;
     left: 80px;
 }
+
+.PostsBallon {
+  font-weight: bold;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  right: 10px;
+  bottom: 65px;
+  background: #fce169;
+  border-radius: 5px;
+  padding: 8px 12.8px;
+  font-size: 14px;
+}
+
+.PostsBallon:after {
+    border-bottom: 7px solid #fce169;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 0px solid transparent;
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: 100px;
+}
+/* .st0 .slick-next::after {
+  content : url('../../../assets/images/main/UBTownFeed.svg');
+} */
+.testBox {
+ content : url('../../../assets/images/main/UBTownFeed.svg')
+}
+.bdDiv:hover {
+  cursor: pointer;
+  transform: scale(1.2);
+  transform-origin: 50% 50%;
+  transition: 0.2s;
+}
+.testBox:hover {
+  transform: scale(1.2);
+  transform-origin: 50% 50%;
+  transition: 0.2s;
+}
+/* .st0 .slick-next:hover::after {
+  content : url('../../..assets/images/main/UBTownFeed.svg#hover');
+} */
 </style>
