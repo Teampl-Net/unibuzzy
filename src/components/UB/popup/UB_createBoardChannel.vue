@@ -3,24 +3,60 @@
   <div style="overflow-y:scroll; background-color:#fff; width: 100%; height: 100vh; float: left; position: absolute; z-index: 9998; left: 0; top: 0;" @click.stop="preventDefault">
     <gPopHeader :headerTitle="`Create New...`" :pClosePop="pClosePop" />
     <div style="height:120%; overflow-y:scroll; background-color:#fff; display:flex; flex-direction:column;" class="createChanWrap" >
-      <div class="createChanContentsWrap">
+      <div class="createChanContentsWrap" style="">
       <!-- 빌딩 선택-->
-        <div @click="openSelectBuildingPop" class="channelBuildingArea cursorP" :style="'background-image: url(' + mSelectedBuilding.selectPath + ')'" style="background-size: cover; background-position: center; background-repeat: no-repeat;">
+      <p style="font-size:20px; font-weight:bold; padding-bottom:20px; ">Select Building.</p>
+      <div style="display:flex; align-items:end;">
+        <div style="width:140px; height:140px; border-radius:50%; border:1px solid #ccc; display:flex; align-items:center; justify-content:center;">
+          <div @click="openSelectBuildingPop" class="channelBuildingArea cursorP" :style="'background-image: url(' + mSelectedBuilding.selectPath + ')'" style=" background-size: cover; background-position: center; background-repeat: no-repeat;">
+          </div>
         </div>
+        <div style="background-color:#fff; margin-left:-30px; border-radius:50%; border:1px solid #ccc; width:35px; height:35px; display:flex; align-items:center; justify-content:center;">
+          <img :src="require(`@/assets/images/channel/icon_camera.svg`)" class="cursorP" style="width:20px;" alt="">
+        </div>
+      </div>
 
-        <ul class="flexAllCenter" style="gap:30px; padding-left:0; background-color:#fff;">
-          <li @click="selectTab(index)" v-for="(btn, index) in mTabs" :key="index" style="">
-            <p :class="{selectedTab: mSelectedTab === index }" class="cursorP" style="padding:20px;">{{ btn.title }}</p>
-          </li>
-        </ul>
       </div>
       <!-- 게시판 생성일 때.-->
-      <template v-if="mSelectedTab===0">
+      <template v-if="mShowBdOrChan==='C'">
         <div>
+          <p style="font-size:30px; padding-bottom:20px;">My Channel</p>
+            <div style="width:100%; overflow-x:scroll;">
+              <ul style="width:auto; overflow-x:scroll; display:flex; align-items:start; gap:20px;">
+                <teamplate v-for="(team, index) in mMyTeamNameList" :key="index">
+                  <li v-if="pAreaInfo.bdAreaNameMtext === team.bdAreaNameMtext" class="cursorP" style="">
+                    <div @click="getSelectedChanIndex(index)" :class="{selectedChannel : mSelectedChanIndex===index}" style="width:100px; height:100px; border-radius:50%; border:3px solid #ccc;">
+                      <img :src="team.logoPathMtext" class="w100P" />
+                    </div>
+                    <p style="padding-top:5px;">{{ team ? $changeText(team.nameMtext) : '' }}</p>
+                  </li>
+                </teamplate>
+              </ul>
+          </div>
+
+          <div style="display:flex; flex-direction:column; justify-content:start; gap:30px;">
+            <div style="">
+              <p style="font-size:20px; font-weight:bold;width:130px;">Board Name</p>
+              <div style="display:flex; align-items:center;">
+                <input type="text" v-model="mNewBoardName" style="width:100%; height:30px;" placeholder="Please enter up to 20 characters in the board name."/>
+                <div class="mleft-1" @click="this.colorPickerShowYn = !this.colorPickerShowYn" style=" border: none; min-width: 30px; max-width: 30px; width:30px; height: 30px; border-radius:100%;" :style="'background:' + this.selectedColor + ';'" ></div>
+              </div>
+              <div v-if="colorPickerShowYn" class="fr" style="width:100%;">
+                <gColorPicker :colorPick="selectedColor" @closePop="closeColorPickerPop" v-if="colorPickerShowYn" @choiceColor='choiceColor' ref="colorPicker" />
+              </div>
+            </div>
+
+            <div style="">
+              <p style="font-size:20px; font-weight:bold; width:130px;">Board Memo</p>
+              <textarea v-model="mNewBoardMemo" class="boardMemo" placeholder="Please enter up to 40 characters in the board description."/>
+            </div>
+          </div>
+          <div @click="newBoard" class="creBoardBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 20px;">Create New Board</div>
+
         </div>
       </template>
       <!-- 채널 생성일 때. select한 건물에 대해서도 prop으로 보내주기-->
-      <createChannel v-if="mSelectedTab===1" :chanDetail="chanDetail" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
+      <createChannel style="margin-top:260px;" v-if="mShowBdOrChan==='T'" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
     </div>
   </div>
 </template>
@@ -40,25 +76,39 @@ export default {
     pClosePop: Function,
     chanDetail: {},
     pBdAreaList: Array,
-    pSelectedAreaInfo: Object
+    pSelectedAreaInfo: Object,
+    pAreaInfo: Array,
+    pMyTeamList: Array
   },
   data () {
     return {
-      mTabs: [
-        { title: 'Board' },
-        { title: 'Channel' }
-      ],
+      // mTabs: [
+      //   { title: 'Board' },
+      //   { title: 'Channel' }
+      // ],
+      mCreateNew: true,
       mSelectedBuilding: { selectedId: '11', selectPath: '/resource/bd/new_bd1.png' },
       mSelectedTab: 0,
       mSelectBuildingPop: false,
-      mSelectBuilding: 'building'
+      mSelectBuilding: 'building',
+      mSelectedChanIndex: 0,
+      mNewBoardName: '',
+      mNewBoardMemo: '',
+      mNewResult: [],
+      mMyTeamNameList: [],
+      colorPickerShowYn: false,
+      selectedColor: '#FFCDD2',
+      mShowBdOrChan: ''
     }
   },
   methods: {
-    selectTab (index) {
-      this.mSelectedTab = Number(index)
-      console.log('mSelectedTab', this.mSelectedTab)
-    },
+    // selectTab (index) {
+    //   this.mSelectedTab = Number(index)
+    //   console.log('mSelectedTab', this.mSelectedTab)
+    //   if (this.mSelectedTab === 0) {
+    //     this.getMatchName()
+    //   }
+    // },
     openSelectBuildingPop () {
       this.mSelectBuildingPop = true
       this.mSelectBuilding = 'building'
@@ -69,15 +119,123 @@ export default {
     preventDefault () {
       return false
     },
+    showColorPicker () {
+      this.colorPickerShowYn = true
+    },
+    closeColorPicker () {
+      this.colorPickerShowYn = true
+    },
     setIconOrBGData (param) {
       if (this.mSelectBuilding === 'building') {
         this.mSelectedBuilding = param
       }
       this.mSelectBuildingPop = false
+    },
+    getSelectedChanIndex (index) {
+      this.mSelectedChanIndex = index
+      console.log('selected mMyTeamNameList', this.mMyTeamNameList[this.mSelectedChanIndex])
+    },
+    async newBoard () {
+      var param = {
+        creMenuYn: true,
+        cabinet: {
+          bdAreaKey: this.pAreaInfo.bdAreaKey,
+          creUserKey: this.GE_USER.userKey,
+          bdIconPath: this.mSelectedBuilding.selectPath,
+          cabinetNameMtext: 'EN$^$' + this.mNewBoardName,
+          currentTeamKey: this.mMyTeamNameList[this.mSelectedChanIndex].teamKey,
+          creTeamKey: this.mMyTeamNameList[this.mSelectedChanIndex].teamKey,
+          sysCabinetCode: 'BOAR',
+          menuType: 'C',
+          blindYn: false,
+          fileYn: true,
+          replyYn: true, // 기본설정 익명x, 파일o, 댓글o
+          picBgPath: this.selectedColor,
+          itemList: [{ shareSeq: 0, shareType: 'V' }, { shareSeq: 0, shareType: 'W' }, { shareSeq: 0, shareType: 'R' }],
+          shareList: [{ shareSeq: 0, accessKind: 'F', accessKey: this.mMyTeamNameList[this.mSelectedChanIndex].teamKey }]
+        }
+      }
+      var response = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.UB_createBuildingAndCabinet',
+        param: param
+      })
+      console.log('newBoard param', param)
+      if (response) {
+        this.getTeamMenuList()
+        console.log('newBoard response', response)
+      }
+    },
+    async getTeamMenuList () {
+      var paramMap = new Map()
+      paramMap.set('teamKey', this.mMyTeamNameList[this.mSelectedChanIndex].teamKey)
+      paramMap.set('sysCabinetCode', 'BOAR')
+      paramMap.set('userKey', this.GE_USER.userKey)
+      paramMap.set('adminYn', true)
+      var result = await this.$getTeamMenuList(paramMap, true)
+
+      this.cabinetList = result
+      console.log('===== cabinetList ====')
+      console.log(this.cabinetList)
+    },
+    /* 해당 area에 속한 channel들만 보이게 함 */
+    getMatchName () {
+      if (this.pMyTeamList) {
+        for (let i = 0; i < this.pMyTeamList.content.length; i++) {
+          if (this.pAreaInfo) {
+            if (this.pMyTeamList.content[i].bdAreaNameMtext === this.pAreaInfo.bdAreaNameMtext) {
+              this.mMyTeamNameList.push(this.pMyTeamList.content[i])
+            }
+          }
+        }
+        console.log('mMyTeamNameList', this.mMyTeamNameList)
+      }
+    },
+    choiceColor (color) {
+      this.selectedColor = color
+      this.$refs.colorPicker.setColor(color)
+      // console.log(color)
+      this.colorPickerShowYn = false
+    },
+    closeColorPickerPop (value) {
+      if (value === '0') {
+      } else {
+        this.selectedColor = value
+      }
+      this.colorPickerShowYn = false
+    },
+    showBoardOrChannel () {
+      const bdCLength = []
+      const bdTLength = []
+
+      if (this.pAreaInfo) {
+        for (let i = 0; i < this.pAreaInfo.bdList.length; i++) {
+          if (this.pAreaInfo.bdList[i].targetKind === 'C') {
+            bdCLength.push(this.pAreaInfo.bdList[i])
+          } else if (this.pAreaInfo.bdList[i].targetKind === 'T') {
+            bdTLength.push(this.pAreaInfo.bdList[i])
+          }
+        }
+        console.log('results... ', bdCLength, bdTLength)
+        if (bdCLength > bdTLength) {
+          this.mShowBdOrChan = 'C'
+        } else if (bdTLength > bdCLength) {
+          this.mShowBdOrChan = 'T'
+        }
+      }
+      console.log('===========mShowBdOrChan', this.mShowBdOrChan)
+      return this.mShowBdOrChan
     }
   },
-  created () {
-    this.mSelectedTab = -1
+  async created () {
+    // this.mSelectedTab = -1
+    console.log('pMyTeamList', this.pMyTeamList)
+    console.log('=====pAreaInfo', this.pAreaInfo)
+    this.showBoardOrChannel()
+  },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
   }
 }
 
@@ -115,17 +273,30 @@ export default {
 }
 .channelBuildingArea{
   /* border:1px solid #ccc; */
-  width: 100px;
+  width: 80px;
   overflow: hidden;
-  height: 150px;
+  height: 120px;
   margin: 0 auto;
-  margin-bottom:10px;
   background: #ffffff66;
   position: relative;
   display:flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.selectedChannel{
+  border:3px solid #000 !important;
+}
+.selectedChannel + p{
+  font-weight:bold !important;
+}
+.boardMemo{
+  width: 100%; min-height: 100px; float: left; border-radius: 5px;  border: none; border: 1px solid #ccc;resize:none; padding-left: 5px;
+  outline: none;
+}
+.creBoardBigBtn{
+  height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
+  width: calc(100% - 30px);
 }
 
 </style>

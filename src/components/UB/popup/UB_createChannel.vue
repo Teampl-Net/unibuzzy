@@ -37,9 +37,9 @@
 }
 </i18n>
 <template>
-<!-- <div style="width: 100%; height: 100%; float: left; position: absolute; z-index: 9999; left: 0; top:230px; " @click.stop="preventDefault"> -->
-<div style="width: 100%; height: 100%; " @click.stop="preventDefault">
+<div style="width: 100%; height: 100%; float: left; position: absolute; z-index: 9999; left: 0; top:50px; " @click.stop="preventDefault">
   <!-- <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" /> -->
+  <gPopHeader :headerTitle="`Edit a Channel`" :pClosePop="pClosePop"/>
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
     <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
       <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 100}px;`">
@@ -163,7 +163,8 @@ export default {
     pClosePop: Function,
     pBdAreaList: Array,
     pSelectedAreaInfo: Object,
-    pSelectedBuilding: Object
+    pSelectedBuilding: Object,
+    pCreateNew: Boolean
   },
   data () {
     return {
