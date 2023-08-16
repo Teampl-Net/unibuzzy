@@ -52,7 +52,7 @@
               </div>
             </div>
             <div v-show="viewTab === 'icon'" id="chanIconBox"  style="width: 100%; float: left;">
-              <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="border:1px solid red;">
+              <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
                 <img v-if="opentype =='iconPop'" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext) "  style="width: calc(var(--chanBoxSize) - 20px)"/>
                 <p class="font15"  v-if="opentype =='iconPop'" style="" >{{this.$changeText(value.codeNameMtext)}}</p>
 
@@ -106,6 +106,7 @@ export default {
     this.$addHistoryStack('channelImgChangePop')
   },
   created () {
+    this.getOpenType()
     console.log('pSelectedBuilding', this.pSelectedBuilding)
     // console.log(this.selectIcon)
     // // console.log(this.opentype)
@@ -154,6 +155,13 @@ export default {
     }
   },
   methods: {
+    getOpenType () {
+      if (this.opentype === 'building') {
+        return this.activeTabList.splice(1)
+      } else {
+        return this.activeTabList
+      }
+    },
     imgClickToInput () {
       if (this.cropperYn === false) this.$refs.selectFileChangeIconNBG.click()
     },
