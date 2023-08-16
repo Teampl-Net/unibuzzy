@@ -26,7 +26,7 @@
 </i18n>
 <template>
   <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
-  <div style="width: 100%; float: left;">
+  <div style="width: 100%; float: left;" @click.stop="preventDefault">
     <div style="width: 100%; height: 120vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="closePop()"></div>
     <div class="confirmPopWrap" :style="'padding-bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
     <!-- <div style="width: 50%; height: 50%; padding: 0 20px; overflow: auto;" > -->
@@ -34,6 +34,7 @@
             <p class="fontBold font18">{{msgTitle}}</p>
               <img src="../../../assets/images/common/popup_close.png" style="width:20px;" @click="pClosePop"/>
         </div>
+        <!-- <gActiveBar v-if="opentype==='building'" ref="activeBar" :tabList="`icon`" class="fl" style="width: 100%;" /> -->
         <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
         <div id="creChanContentsArea" style="width: 100%; min-height: 300px; margin-top: 20px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
             <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
@@ -51,11 +52,12 @@
               </div>
             </div>
             <div v-show="viewTab === 'icon'" id="chanIconBox"  style="width: 100%; float: left;">
-              <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
+              <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="border:1px solid red;">
                 <img v-if="opentype =='iconPop'" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext) "  style="width: calc(var(--chanBoxSize) - 20px)"/>
                 <p class="font15"  v-if="opentype =='iconPop'" style="" >{{this.$changeText(value.codeNameMtext)}}</p>
 
                 <img v-if="opentype =='bgPop'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' style="width: 100%; height: 100%;" >
+                <img v-if="opentype =='building'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' style="width: 100%; height: 100%;" >
 
               </div>
             </div>
@@ -81,7 +83,8 @@ export default {
     opentype: {},
     selectIcon: {},
     selectBg: {},
-    pClosePop: Function
+    pClosePop: Function,
+    pSelectedBuilding: Object
   },
   mounted () {
     if (document.getElementById('chanIconBox').scrollHeight > 0) {
@@ -103,6 +106,7 @@ export default {
     this.$addHistoryStack('channelImgChangePop')
   },
   created () {
+    console.log('pSelectedBuilding', this.pSelectedBuilding)
     // console.log(this.selectIcon)
     // // console.log(this.opentype)
     this.getCodeList()
@@ -186,6 +190,21 @@ export default {
           this.selectedImgPath = this.selectIcon.selectPath
           this.selectedImgFilekey = this.selectIcon.selectedId
         }
+      } else if (this.opentype === 'building') {
+        // .stringify(this.selectIcon))
+        console.log('building')
+        if (this.selectIcon) {
+          if (this.selectIcon.iconType === 'icon' || this.selectIcon.selectedId < 16) {
+            this.viewTab = 'icon'
+            this.selectedId = this.selectIcon.selectedId
+            this.selectPath = this.selectIcon.selectPath
+          } else if (this.selectIcon.iconType === 'img') {
+            this.viewTab = 'img'
+            this.previewImgUrl = this.selectIcon.selectPath
+            this.selectedImgPath = this.selectIcon.selectPath
+            this.selectedImgFilekey = this.selectIcon.selectedId
+          }
+        }
       }
     },
     async changeTab (data) {
@@ -214,8 +233,11 @@ export default {
         param.groupCode = 'T_BG__'
       } else if (this.opentype === 'iconPop') {
         param.groupCode = 'T_LOGO'
+      } else if (this.opentype === 'building') {
+        param.groupCode = 'T_BD__'
       }
       resultList = await this.$getCodeList(param)
+      console.log('===resultList', resultList)
       this.teamImgList = resultList
       // this.contentsHeight = document.getElementById('chanIconBox').scrollHeight
       // var a = this.teamImgList
@@ -225,6 +247,9 @@ export default {
         this.msgTitle = this.$t('ICON_MSG_SELECT_PLS')
         this.msgError = this.$t('ICON_MSG_SELECT_PLS2')
       } else if (this.opentype === 'bgPop') {
+        this.msgTitle = this.$t('IMG_MSG_SELECT_PLS')
+        this.msgError = this.$t('IMG_MSG_SELECT_PLS2')
+      } else if (this.opentype === 'building') {
         this.msgTitle = this.$t('IMG_MSG_SELECT_PLS')
         this.msgError = this.$t('IMG_MSG_SELECT_PLS2')
       }
@@ -240,6 +265,7 @@ export default {
           param.selectPath = this.selectPath
           param.iconType = this.viewTab
           this.$emit('makeParam', param)
+          console.log('==============param', param)
         } else {
         }
       } else if (this.viewTab === 'img') {
@@ -526,6 +552,9 @@ export default {
     closePop () {
       this.$removeHistoryStack()
       this.$emit('no')
+    },
+    preventDefault () {
+      return false
     }
   },
   computed: {

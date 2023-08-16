@@ -40,7 +40,7 @@
 <!-- <div style="width: 100%; height: 100%; float: left; position: absolute; z-index: 9999; left: 0; top:230px; " @click.stop="preventDefault"> -->
 <div style="width: 100%; height: 100%; " @click.stop="preventDefault">
   <!-- <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" /> -->
-  <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop' || mIconBgSelectPopYn=='bdPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
+  <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
     <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
       <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 100}px;`">
         <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" style="margin-top:-90px;" >
@@ -140,6 +140,7 @@ export default {
       }
       console.log('check!!!!')
       console.log(this.mSelectedTeamTypeKey)
+      console.log(this.chanDetail)
     }
     this.$emit('openLoading')
     if (this.chanDetail !== undefined && this.chanDetail !== null && this.chanDetail !== {}) {
@@ -161,7 +162,8 @@ export default {
     chanDetail: {},
     pClosePop: Function,
     pBdAreaList: Array,
-    pSelectedAreaInfo: Object
+    pSelectedAreaInfo: Object,
+    pSelectedBuilding: Object
   },
   data () {
     return {
@@ -313,6 +315,7 @@ export default {
       } else if (this.mIconBgSelectPopYn === 'bdPop') {
         this.mSelectedBd = param
       }
+      console.log('paramparam', param)
       this.mIconBgSelectPopYn = false
     },
     checkValue () {
@@ -354,6 +357,7 @@ export default {
 
         gParam.nameMtext = 'EN$^$' + this.mInputChannelName
         gParam.memoMtext = this.mInputChannelMemo
+        gParam.bdIconPath = this.pSelectedBuilding.selectPath
         var teamType = this.$teamTypeString(this.mSelectedTeamTypeKey)
         if (this.mInputChannelMemo === undefined || this.mInputChannelMemo === null || this.mInputChannelMemo.replace(' ', '') === '') {
           gParam.memoMtext = teamType + '의 산업군을 가진 채널입니다.'
@@ -398,6 +402,7 @@ export default {
         if (this.pSelectedAreaInfo) {
           gParam.parentTeamKey = this.pSelectedAreaInfo.teamKey
           gParam.bdAreaKey = this.pSelectedAreaInfo.bdAreaKey
+          gParam.bdIconPath = this.pSelectedBuilding.selectPath
         }
 
         console.log(' ------ console.log(gParam) ----- ')
@@ -469,6 +474,7 @@ export default {
       var paramMap = new Map()
       paramMap.set('teamKey', newCreTeamKey)
       paramMap.set('fUserKey', this.GE_USER.userKey)
+      // paramMap.set('bdIconPath',)
       var resultList = await this.$getTeamList(paramMap)
       console.log(' == resultList == ')
       console.log(resultList)

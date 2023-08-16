@@ -1,7 +1,7 @@
 <template>
   <div ref="mainRef" class="w100P h100P" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
     <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
-    <!-- <createBoardChannel :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" /> -->
+    <createBoardChannel v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
     <!-- <createChannel @successCreChan="successCreChan" v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" /> -->
     <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
@@ -73,6 +73,7 @@ import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
 import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue'
 // import createChannel from '../../../components/UB/popup/UB_createChannel.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
+import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel.vue'
 import mainBoardList from '../../../components/UB/popup/UB_boardListPop.vue'
 // import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
@@ -130,6 +131,7 @@ export default {
     this.setNativeHeight()
     this.$store.commit('D_HISTORY/updateStack', [0])
     this.$emit('clearInfo', { detail: null, targetType: 'main' })
+    this.getUserTeamList()
 
     var urlParam = localStorage.getItem('deepLinkQueue')
     if (urlParam && urlParam.trim() !== '') {
@@ -734,6 +736,18 @@ export default {
       const nowHeight = window.innerHeight
 
       if (this.innerHeight < nowHeight) this.innerHeight = nowHeight
+    },
+    async getUserTeamList () {
+      var param = {}
+      param.userKey = this.GE_USER.userKey
+      param.managerYn = true
+
+      var resultList = await this.$getTeamList(param)
+      if (resultList) {
+        console.log('resultList', resultList)
+      } else {
+        console.log('result없음')
+      }
     }
   },
   watch: {
@@ -796,8 +810,8 @@ export default {
     // UBInfoBox,
     selectSchoolPop,
     UBAreaBdList,
-    areaInfoPop
-    // createBoardChannel
+    areaInfoPop,
+    createBoardChannel
     // UBBgEffect
   }
 }

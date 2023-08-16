@@ -1,7 +1,7 @@
 <template>
-  <createBoardChannel v-if="createNewPage" :pClosePop="closeNewPage"  :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pBdAreaList="mBdAreaList" />
+  <!-- <createBoardChannel v-if="createNewPage" :pClosePop="closeNewPage"  :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pBdAreaList="mBdAreaList" /> -->
   <div v-if="pAreaInfo && pAreaDetail" class="commonPopWrap" style="padding: 10px 20px; min-width: 300px; position: absolute;" @click.stop>
-    <img src="@/assets/images/button/Icon_CreChanBtn.png" @click="openNewPage" alt="채널 만들기 버튼" style="position: absolute; cursor: pointer; right: 10%; bottom: 20px; width: 50px; height: 50px; z-index: 100;" >
+    <img src="@/assets/images/button/Icon_CreChanBtn.png" @click="pOpenCreChanPop" alt="채널 만들기 버튼" style="position: absolute; cursor: pointer; right: 10%; bottom: 20px; width: 50px; height: 50px; z-index: 100;" >
     <div style="position: absolute; top: -45px; right: 10px; width: 40px; height: 45px; background-color: rgba(255, 255, 255, 0.5); border-radius: 10px 10px 0 0; padding: 5px;">
       <img v-if="pBdClickedYn" src="../../../assets/images/main/icon_bd.png" class="h100P" />
       <img v-else src="../../../assets/images/main/icon_area.png" class="h100P" />
@@ -114,12 +114,12 @@
 <script>
 import chanRoundIcon from '../infoBox/UB_chanRoundIcon.vue'
 import boardCard from '../infoBox/UB_boardCard.vue'
-import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel.vue'
+// import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel.vue'
 export default {
   components: {
     chanRoundIcon,
-    boardCard,
-    createBoardChannel
+    boardCard
+    // createBoardChannel
   },
   props: {
     pUniBInfo: {},

@@ -44,8 +44,7 @@
           <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 9; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">{{ $t('COMM_BTN_EDIT') }}</div>
         </div>
         <div class="font20 fontBold mtop-1" style="width:100%; display: flex; justify-content: center; float:left; transform: translate(10px);" v-show="!changeYn" >
-          <!-- <span class="fl">{{this.$changeText(this.GE_USER.userDispMtext)}}</span> -->
-          <span class="fl">dddddddddddd</span>
+          <span class="fl">{{this.$changeText(this.GE_USER.userDispMtext)}}</span>
           <img src="@/assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
         </div>
 
