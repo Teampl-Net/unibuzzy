@@ -62,7 +62,7 @@
         </div>
       </template>
       <!-- 채널 생성일 때. select한 건물에 대해서도 prop으로 보내주기-->
-      <createChannel style="margin-top:310px;" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1)" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
+      <createChannel style="margin-top:310px;" :class="{margin260 : mShowBdOrChan==='T'}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1)" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
     </div>
   </div>
 </template>
@@ -293,6 +293,9 @@ export default {
 .creBoardBigBtn{
   height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
   width: calc(100% - 30px);
+}
+.margin260{
+  margin-top:260px !important;
 }
 
 </style>

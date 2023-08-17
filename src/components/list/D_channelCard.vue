@@ -156,8 +156,8 @@
             }}
             </p>
             <div v-if="$route.path === '/chanList'" class="fr">
-              <p class="fontBold" style="border-radius:5px; padding:5px 10px; background-color:#fff; color:#062BB5;"> + Follow </p>
-              <p class="fontBold" style="border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;"> + Follow </p>
+              <p v-if="chanElement.followerKey" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
+              <p v-else @click="changeFollowYn" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;"> + Follow </p>
             </div>
         </div>
       </div>
@@ -192,6 +192,14 @@ export default {
   },
   created () {
     console.log('chanElement', this.chanElement)
+    this.getMemberTypeList()
+  },
+  data () {
+    return {
+      mSaveFollowerType: '',
+      selectMemberObj: {},
+      mDirectTeamKey: null
+    }
   },
   methods: {
     goChannelMain (chanElement) {
@@ -202,6 +210,169 @@ export default {
       }
       openPopParam.targetType = 'chanDetail'
       this.$emit('openPop', openPopParam)
+    },
+    async getMemberTypeList () {
+      var param = {}
+      param.teamKey = Number(this.$route.params.encodedTeamKey)
+      // param.cateItemKey = this.propCateItemKey
+      var memberTypeList = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.getMemberTypeList',
+        param: param
+      }, true)
+      if (memberTypeList.data.result) {
+        this.mMemberTypeList = memberTypeList.data.memberTypeList
+        if (this.mMemberTypeList.length > 0) {
+          this.selectMemberObj = this.mMemberTypeList[0]
+          console.log('selectMemberObj', this.selectMemberObj)
+        }
+      }
+      // this.$emit('enterCloudLoading', false)
+      // setTimeout(() => {
+      //   this.$emit('showCloudLoading', false)
+      // }, 1500)
+    },
+    async changeFollowYn () {
+      this.mSaveFollowerType = 'follow'
+      if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn) {
+        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn === true) {
+          console.log('언팔로우 하시겠습니까?')
+          // this.mErrorPopBodyStr = 'Do you want to unfollow this channel?'
+          // this.mErrorPopBtnType = 'two'
+          // this.mErrorPopShowYn = true
+        }
+      } else {
+        this.confirmOk()
+      }
+    },
+    async okMember () {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.memberTypeKey = this.selectMemberObj.memberTypeKey
+      var memberTypeItemList = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.getMemberTypeItemList',
+        param: param
+      })
+      console.log('--------------------------')
+      console.log(memberTypeItemList)
+      if (memberTypeItemList.data.result) {
+        // if (memberTypeItemList.data.memberTypeItemList.length === 0) {
+        // eslint-disable-next-line no-new-object
+        var typeParam = new Object()
+        if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
+          typeParam.followerKey = this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
+        }
+        if (this.selectMemberObj.memberTypeItemKey) {
+          typeParam.memberTypeItemKey = this.selectMemberObj.memberTypeItemKey
+        }
+        typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
+        typeParam.userKey = this.GE_USER.userKey
+        typeParam.teamKey = this.CHANNEL_DETAIL.teamKey
+        // eslint-disable-next-line no-debugger
+        debugger
+        await this.$commonAxiosFunction({
+          url: '/sUniB/tp.saveFollower',
+          param: { follower: typeParam, appType: 'UB', doType: 'CR' }
+        })
+        // } else {
+        //   this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
+        //   return true
+        // }
+        // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
+        this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
+        this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+        await this.$addChanList(this.mChanInfo.teamKey)
+      } else {
+        this.$showToastPop(this.$t('ERROR_MSG_INQUIRY_MANAG'))
+        return false
+      }
+      this.$emit('closeLoading')
+    },
+    async confirmOk () {
+      if (this.mSaveFollowerType === 'follow') {
+        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
+          console.log('관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요')
+        } else {
+          var fStatus = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
+          // eslint-disable-next-line no-new-object
+          this.mSaveFollowerParam = new Object()
+          this.mSaveFollowerParam.teamKey = this.CHANNEL_DETAIL.teamKey
+          this.mSaveFollowerParam.teamName = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+          this.mSaveFollowerParam.userKey = this.$store.getters['D_USER/GE_USER'].userKey
+          this.mSaveFollowerParam.userName = this.$changeText(this.GE_USER.userDispMtext)
+          var result = false
+          if (fStatus) {
+            if (this.axiosQueue.findIndex((item) => item === 'changeFollower') !== -1) return
+            this.axiosQueue.push('changeFollower')
+            result = await this.$changeFollower({ follower: this.mSaveFollowerParam, doType: 'CR' }, 'del')
+            var queueIndex = this.axiosQueue.findIndex((item) => item === 'changeFollower')
+            // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
+            this.axiosQueue.splice(queueIndex, 1)
+            this.CHANNEL_DETAIL.D_CHAN_AUTH = null
+            this.CHANNEL_DETAIL.followerKey = null
+            this.CHANNEL_DETAIL.userTeamInfo = null
+            this.CHANNEL_DETAIL.followerCount -= 1
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+
+            this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
+
+            if (result.result || result) {
+              this.$emit('pageReload')
+            } else {
+              this.mErrorPopBodyStr = '실패했습니다. 관리자에게 문의해주세요'
+              this.mErrorPopBtnType = 'timeover'
+              this.mErrorPopShowYn = true
+            }
+          } else {
+            await this.okMember()
+          }
+        }
+      }
+    }
+  },
+  computed: {
+    CHANNEL_DETAIL () {
+      if (!this.chanElement && !this.mDirectTeamKey) return {}
+      let teamKey
+      if (this.chanElement) {
+        teamKey = this.chanElement.targetKey || this.chanElement.teamKey
+      } else if (this.mDirectTeamKey) {
+        teamKey = this.mDirectTeamKey.teamKey
+      }
+      var detail = this.$getDetail('TEAM', teamKey)
+      if (detail.length < 1) {
+        return
+      }
+      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!detail')
+      console.log(detail)
+      if (detail && detail.length > 0) {
+        if (detail[0].blackYn) this.$emit('bgcolor', detail[0].blackYn)
+
+        if (detail[0] && (detail[0].blackYn !== undefined && detail[0].blackYn !== null && detail[0].blackYn !== '')) {
+          this.$emit('bgcolor', detail[0].blackYn)
+        } else {
+          this.$emit('bgcolor', false)
+        }
+
+        // eslint-disable-next-line no-debugger
+        debugger
+        if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {
+          return this.CHANNEL_DETAIL
+        } else {
+          return detail[0]
+        }
+      } else {
+        if (this.CHANNEL_DETAIL) {
+          if (this.CHANNEL_DETAIL && (this.CHANNEL_DETAIL.blackYn !== undefined && this.CHANNEL_DETAIL.blackYn !== null && this.CHANNEL_DETAIL.blackYn !== '')) {
+            this.$emit('bgcolor', this.CHANNEL_DETAIL.blackYn)
+          } else {
+            this.$emit('bgcolor', false)
+          }
+          return this.CHANNEL_DETAIL
+        } else {
+          return null
+        }
+      }
     }
   }
 }

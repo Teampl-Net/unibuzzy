@@ -126,7 +126,7 @@
             <!-- 채널 리스트 -->
             <div v-if="mActiveSearch === 'CHAN'" class="w100P fl" style="overflow: auto; ">
               <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true && this.GE_DISP_TEAM_LIST.length === 0" class="w100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
-                <gListEmpty title='검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' />
+                <gListEmpty title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' />
               </div>
               <template v-else>
                 <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
