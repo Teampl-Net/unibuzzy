@@ -29,7 +29,7 @@
       <template v-if="mFindKeyWord === ''">
         <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">{{ $t('SEAR_MSG_RECE_KEYWORD') }}</p>
         <template v-if="mSearchHistoryList.length > 0">
-          <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w100P" style=" padding: 10px 0; border-bottom:1px solid #CCCCCC90; ">
+          <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w100P" style="padding: 10px 0; border-bottom:1px solid #CCCCCC90; ">
             <p class="fl font14 grayBlack textLeft" style="width: calc(100% - 20px)" @click="nameMtext = data, findChannel()">{{data}}</p>
             <img src="../../../assets/images/common/grayXIcon.svg" @click="searchHistoryDelete(index)" class="fr img-w10 mtop-03" alt="">
           </div>

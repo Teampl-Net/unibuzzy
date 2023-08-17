@@ -54,14 +54,9 @@
                     <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{this.$changeFollowerInfo('phone', member.phoneEnc)}}</p>
                     <div class="w100P fl">
                         <p class="textLeft fl fontBold grayBlack font12 " >{{this.$changeText(member.memberNameMtext)}}</p>
-                        <!-- 한국어-->
                         <!-- <p class="textLeft fl fontBold grayBlack font12" v-for="(info, index) in member.memberInfoList" :key="index">
                             {{index !== 0 ? ' | ' : '('}}{{'' + this.$changeText(info.memberTypeItemNameMtext)}}: {{info.itemVal}}{{index === member.memberInfoList.length - 1? ')' : ''}}
                         </p> -->
-                        <!-- 영어-->
-                        <p class="textLeft fl fontBold grayBlack font12" v-for="(info, index) in member.memberInfoList" :key="index">
-                            {{index !== 0 ? ' | ' : '('}} auto Accept: {{info.itemVal==='예' ? 'Yes' : 'No' }}{{index === member.memberInfoList.length - 1? ' )' : ''}}
-                        </p>
                     </div>
                 </div>
             </div>

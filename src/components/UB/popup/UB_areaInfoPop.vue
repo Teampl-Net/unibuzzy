@@ -25,9 +25,11 @@
       <div class="w100P" style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; display: flex; margin-top: 0px;">
         <div :class="{width100 :  mShowBdOrChan==='C'}" style="width: 50%; border-right: 2px solid #000;">
           <p v-if="mShowBdOrChan==='T'"><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> channels</p>
-          <p v-else><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> boards</p>
+          <p v-else-if="mShowBdOrChan==='C'"><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> boards</p>
+          <!-- default는 channels로-->
+          <p v-else><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> channels</p>
         </div>
-        <p v-if="mShowBdOrChan === 'T'" style="width: 50%;">
+        <p v-if="mShowBdOrChan !== 'C' " style="width: 50%;"> <!-- T거나 값이 없을 때 (Channel, Board가 모두 0일때)-->
           <span class="fontBold">{{ pAreaDetail.followerCount? pAreaDetail.followerCount:0 }}</span> followers
         </p>
       </div>

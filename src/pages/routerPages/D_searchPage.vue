@@ -33,7 +33,7 @@
     <template v-if="mSearchModeYn === false">
       <div class="w100P h100P" :style="$route.path === '/search' && $appType !== 'UB' ? `padding-top: ${(this.$STATUS_HEIGHT + 50)}px;`:'padding-top: 50px;'" style=" overflow:auto; padding-bottom: 60px;">
       <!-- <div class="w100P h100P" style=" overflow:auto; padding-bottom: 60px; padding-top: 50px;"> -->
-        <div class="searchBodyTop pSide-1" style="background: white">
+        <div class="searchBodyTop pSide-1" style="overflow-x:hidden; background: white">
           <div class="fl w100P" style="height: 30px; float: left;">
             <img src="../../assets/images/main/icon_3d_search.png" style="float: left; margin: 0 8px 8px 8px;" class="img-w23" alt="">
             <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">{{ $t("SEAR_MSG_LOOK") }}</p>
@@ -41,21 +41,25 @@
           <!-- input Box -->
           <div class="fl w100P" style="position: relative; margin-top: 1rem; min-height: 50px;">
             <img @click="setSearchList()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
-            <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" />
+            <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" style=""/>
             <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
           </div>
 
           <!-- input 박스에 포커스가 되면 최근 검색이 등장 -->
           <template v-if="mInputFocusYn === true">
-            <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft mtop-05">{{ $t("SEAR_MSG_RECE_KEYWORD") }}</p>
-            <div class="fl w-100P pSide-05 thinScrollBar" style="max-height:200px; overflow: auto">
-              <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style=" padding: 10px 0; border-bottom:1px solid #CCCCCC90; ">
-                <p class="fl font14 grayBlack textLeft" style="width: calc(100% - 20px)" @click="mInputText = data, findData()">{{data}}</p>
-                <img src="../../assets/images/common/grayXIcon.svg" @click="searchHistoryDelete(index)" class="fr img-w10 mtop-03" alt="">
+            <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft mtop-05" style="padding-bottom:5px;">{{ $t("SEAR_MSG_RECE_KEYWORD") }}</p>
+            <p v-if="mSearchHistoryList.length > 0" class="fr font13 lightGray mtop-05 pSide-05" @click="searchHistoryClear()">{{ $t("SEAR_BTN_CLEAR") }}</p>
+            <div class="fl pSide-05 thinScrollBar" style="padding-bottom:5px; width:100%; max-height:200px; overflow: auto">
+              <div style="width:100%; overflow-x:visible;">
+                <div style="display:flex; align-items:center; width:auto;">
+                  <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style="display:flex; align-items:center; white-space:nowrap; overflow:hidden; margin-right:10px; width:auto; min-width:80px; max-width:100px; padding: 10px; border:1px solid #CCCCCC90; border-radius:45px;">
+                    <p class="fl font14 grayBlack textLeft" style="white-space:nowrap; width:calc(100% - 15px); overflow:hidden; text-overflow:ellipsis; padding-right:3px;" @click="mInputText = data, findData()">{{data}}</p>
+                    <img src="../../assets/images/common/grayXIcon.svg" @click="searchHistoryDelete(index)" class="fr img-w10" alt="">
+                  </div>
+                </div>
               </div>
             </div>
-            <p v-if="mSearchHistoryList.length === 0" class="w-100P fl mtop-2 mbottom-2 font16 lightGray textCenter">{{ $t("SEAR_MSG_NOT_SEARCH") }}</p>
-            <p v-if="mSearchHistoryList.length > 0" class="fr font12 lightGray mtop-05 pSide-05" @click="searchHistoryClear()">{{ $t("SEAR_BTN_CLEAR") }}</p>
+            <p v-if="mSearchHistoryList.length === 0" class="w-100P fl mbottom-2 font16 lightGray textCenter">{{ $t("SEAR_MSG_NOT_SEARCH") }}</p>
           </template>
 
           <!-- 산업군 -->
