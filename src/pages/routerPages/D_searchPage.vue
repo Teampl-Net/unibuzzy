@@ -52,7 +52,7 @@
             <div class="fl pSide-05 thinScrollBar" style="padding-bottom:5px; width:100%; max-height:200px; overflow: auto">
               <div style="width:100%; overflow-x:visible;">
                 <div style="display:flex; align-items:center; width:auto;">
-                  <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style="display:flex; align-items:center; white-space:nowrap; overflow:hidden; margin-right:10px; width:auto; min-width:80px; max-width:100px; padding: 10px; border:1px solid #CCCCCC90; border-radius:45px;">
+                  <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style="display:flex; align-items:center; justify-content:space-between; white-space:nowrap; overflow:hidden; margin-right:10px; width:auto; min-width:100px; max-width:100px; padding: 10px 7px 10px 10px; border:2px solid #CCCCCC90; border-radius:45px;">
                     <p class="fl font14 grayBlack textLeft" style="white-space:nowrap; width:calc(100% - 15px); overflow:hidden; text-overflow:ellipsis; padding-right:3px;" @click="mInputText = data, findData()">{{data}}</p>
                     <img src="../../assets/images/common/grayXIcon.svg" @click="searchHistoryDelete(index)" class="fr img-w10" alt="">
                   </div>
