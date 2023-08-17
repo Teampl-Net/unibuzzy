@@ -39,9 +39,9 @@
     <userImgSelectCompo @closeXPop="closeImgPop" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
     <div class="" >
       <!-- <p class="font16 fl mright-05">언어</p>
-      <select class="fl mright-2" v-model="$i18n.locale" name="selectLang" id="selectLang"><option value="en">English</option><option value="ko">한국어</option></select>
-      <p class="font16 fl mright-05">위치</p>
-      <select class="fl" v-model="selectedLocale" @change="$locale = selectedLocale" name="selectLocale" id="selectLocale"><option value="US">United States</option><option value="KR">South Korea</option></select> -->
+      <select class="fl mright-2" @change="change18n(selectedI18nLocale)" v-model="selectedI18nLocale" name="selectLang" id="selectLang"><option value="en">English</option><option value="ko">한국어</option></select> -->
+      <!-- <p class="font16 fl mright-05">위치</p>
+      <select class="fl" @change="setLocale(selectedLocale)" v-model="selectedLocale" name="selectLocale" id="selectLocale"><option value="US">United States</option><option value="KR">South Korea</option></select> -->
       <div class="profileWrap ">
         <div @click="changeUserImg()" class="cursorP imgSize">
           <div class="roundDiv picImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
@@ -116,8 +116,27 @@ import userImgSelectCompo from '@/components/pageComponents/myPage/Tal_changeUse
 /* import pushPop from '@/components/popup/Tal_pushDetailPopup.vue' */
 import { onMessage } from '@/assets/js/webviewInterface'
 import DevNotiSettingPop from '@/pages/routerPages/D_DevNotiSettingPop.vue'
+import {getCurrentInstance, reactive} from "vue";
+import { useI18n } from "vue-i18n";
 export default {
   name: 'myPage',
+  setup() {
+    const thisApp= getCurrentInstance()
+    const setLocale = function (val) {
+        
+        thisApp.appContext.config.globalProperties.$locale = val
+    }
+    const chaneI18nLocal = function (val) {
+        const t = useI18n();
+        t.locale.value = val;
+    }
+
+    return {
+      setLocale,
+      chaneI18nLocal
+    }
+
+  },
   components: {
     userItem,
     logoutPop,
