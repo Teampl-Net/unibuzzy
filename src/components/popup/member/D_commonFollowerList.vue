@@ -25,9 +25,9 @@
     <gConfirmPop :confirmText='confirmManagerText' :confirmType="two" @no="confirmManagerPopShowYn = false, reportYn = false" @ok="okSaveManager" v-if="confirmManagerPopShowYn"/>
     <!-- <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" /> -->
     <div class="followerCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :key="index" >
-        <div style="width: 100%; min-height: 40px; height: 100%; float: left; display: flex;     align-items: center;">
+        <div style="width: 100%; min-height: 40px; height: 100%; float: left; display: flex; align-items: center; justify-content:space-between;">
             <div class="fl mleft-01 w100P" style="position: relative; display: flex;min-height: 40px; height: 100%; width: calc(100% - 130px)"  @click="goMemberInfo(member)">
-                <div style="float: left; display: flex; flex-direction: column; width: 35px; margin-right: 15px; justify-content: center; align-items: center;">
+                <div style="float: left; display: flex; flex-direction: column; width: 35px; margin-right: 25px; justify-content: center; align-items: center;">
                     <gProfileImg :smallYn="true" :userInfo="member" style="width: 35px; height: 35px;" />
                     <!-- <div class="fl adminTag" :class="{nonTag: (!member.managerKey > 0 && currentTab === 'Show') || (!member.managerKey > 0 && currentTab === 'Admin') }">
                     <p v-if="member.ownerYn" class="font8 commonBlack fontBold" style="">관리자</p>
@@ -54,8 +54,13 @@
                     <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{this.$changeFollowerInfo('phone', member.phoneEnc)}}</p>
                     <div class="w100P fl">
                         <p class="textLeft fl fontBold grayBlack font12 " >{{this.$changeText(member.memberNameMtext)}}</p>
-                        <p class="textLeft fl fontBold grayBlack font12" v-for="(info, index) in member.memberInfoList" :key="index">
+                        <!-- 한국어-->
+                        <!-- <p class="textLeft fl fontBold grayBlack font12" v-for="(info, index) in member.memberInfoList" :key="index">
                             {{index !== 0 ? ' | ' : '('}}{{'' + this.$changeText(info.memberTypeItemNameMtext)}}: {{info.itemVal}}{{index === member.memberInfoList.length - 1? ')' : ''}}
+                        </p> -->
+                        <!-- 영어-->
+                        <p class="textLeft fl fontBold grayBlack font12" v-for="(info, index) in member.memberInfoList" :key="index">
+                            {{index !== 0 ? ' | ' : '('}} auto Accept: {{info.itemVal==='예' ? 'Yes' : 'No' }}{{index === member.memberInfoList.length - 1? ' )' : ''}}
                         </p>
                     </div>
                 </div>
@@ -111,7 +116,7 @@ export default {
     if (this.managingList) {
       this.disp_list = this.managingList
     }
-    console.log(this.managingList)
+    console.log('=====this.managingList', this.managingList)
   },
   methods: {
     clickManagerBox (manType, member, index, status) {
@@ -273,7 +278,7 @@ export default {
 .followerCard{
 
   float: left;
-  width: 100%; min-height: 50px; padding: 0.5rem; border-bottom: 0.8px solid #ccc; float: left;
+  width: 100%; min-height: 50px; padding: 0.5rem 1rem; border-bottom: 0.8px solid #ccc; float: left;
   background-color: white;
   transition : background-color 0.5s ease-in;
   animation-name: fadein; animation-duration: 0.3s;

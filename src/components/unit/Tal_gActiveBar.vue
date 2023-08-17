@@ -24,7 +24,7 @@
         <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;" :style="channelYn? 'flex: 1 1 0%':''">
           <p :style="!channelYn? activebarWidth:''" :class="{mWidth : tabTrimLength(tab.display) > 3, commonColor: index === activetab && channelYn, lightGray: index !== activetab && channelYn}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
         </div>
-        <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
+        <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, secondTab: mSelectedTab===1}" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
         <div style="float: left; width: 100%; min-height: 6px;" v-if="searchYn && !channelYn">
           <div class="fr" style="position: absolute; height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
           <img class="fl cursorP img-w20" style="line-height:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
@@ -69,7 +69,8 @@ export default {
       activetab: 0,
       tabwidth: 3,
       touch: { sx: null, sy: null, st: null, ex: null, ey: null, et: null },
-      selectedTabName: ''
+      selectedTabName: '',
+      mSelectedTab: 0
     }
   },
   methods: {
@@ -86,6 +87,7 @@ export default {
       this.$emit('changeSearchList', type)
     },
     switchtab (n, tab) {
+      this.mSelectedTab = n
       if (tab) {
         if (tab.display !== undefined && tab.display !== null && tab.display !== '') {
           this.selectedTabName = tab.display.replaceAll(' ', '')
@@ -205,6 +207,10 @@ export default {
   min-height: 100%;
   width: 100%;
   touch-action: pan-y;
+}
+
+.secondTab{
+  width:8.8rem;
 }
 
 .tabpane {

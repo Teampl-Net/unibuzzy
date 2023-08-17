@@ -41,7 +41,7 @@
         </div>
         <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
           <div ref="bdRef" :id="`area${area.bdAreaKey}bd${bd.bdKey}pri${bd.priority}`" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; "
-          :style="[`z-index: ${1000 - bd.priority};`, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top + 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
+          :style="[`z-index: ${1000 + bd.priority};`, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top + 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
             <div v-if="area.priority === 0" class="banner flexCenter" style="width: 250px; height: 80px; position: absolute; top: -50px; left: 0;" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
               <img src="../../../assets/images/main/banner2.png" class="w100P" style="position: absolute;" /> <!-- 여기 -->
               <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold" style="position: absolute; margin-bottom: 30px;"></div>

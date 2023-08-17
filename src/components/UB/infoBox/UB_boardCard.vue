@@ -10,7 +10,8 @@
 </i18n>
 <template>
   <div class="w100P" style="min-height:80px; border-bottom:1px solid #cccccc70; display: flex; flex-direction: row; align-items: center; padding-top: 15px; padding-bottom: 15px;" @click="goBaordMain(boardElement)">
-    <div style="width: 65px; height: 65px; border-radius: 50%; border: 2px solid #bbb;" :style="`background-color: ${boardElement.picBgPath}`">
+    <div style="width: 65px; height: 65px; border-radius: 50%; border: 2px solid #bbb; display:flex; justify-content:center; align-items:center;" :style="`background-color: ${boardElement.picBgPath}`">
+      <img :src="require(`@/assets/images/editChan/icon_board.svg`)" alt="board" style="width:20px;"/>
     </div>
     <div class="fl mleft-1" style="width: calc(100% - 65px - 1rem);">
       <div class="w100P fl font16 fontBold textLeft grayBlack ">

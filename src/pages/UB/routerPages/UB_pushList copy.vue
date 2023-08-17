@@ -16,7 +16,7 @@
         </div>
         <div style="width: 100%; min-height: 40px; float: left; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ; padding-right: 50px; overflow: auto hidden;">
           <select style="width:90px!important; height:30px;" class="fl mRight-10">
-           <option v-for="(filter, idx) in mCommonFilterList" :key="idx" :value="filter.value" @click="changeMainTab(filter)">{{ filter.title }}</option>
+            <option v-for="(filter, idx) in mCommonFilterList" :key="idx" :value="filter.value" @click="changeMainTab(filter)">{{ filter.title }}</option>
           </select>
         </div>
         <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " />

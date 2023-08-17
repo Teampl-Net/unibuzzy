@@ -21,6 +21,7 @@
             align-items: center;
             padding-top: 15px;
             padding-bottom: 15px;
+            margin-top:5px;
         "
   >
     <div
@@ -109,13 +110,8 @@
             src="../../assets/images/main/main_officialMark.svg"
             alt=""
             />
-            {{
-            $route.path === "/"
-                ? $changeText(chanElement.nameMtext) + " Channel "
-                : `${$changeText(chanElement.bdAreaNameMtext)} > ${$changeText(
-                    chanElement.nameMtext
-                )}`
-            }}
+            <!-- {{$route.path === "/" ? $changeText(chanElement.nameMtext) + " Channel " : `${$changeText(chanElement.bdAreaNameMtext)} > ${$changeText(chanElement.nameMtext )}`}} -->
+            {{$route.path === "/" ? $changeText(chanElement.nameMtext) + " Channel " : `${$changeText(chanElement.nameMtext )}`}}
             <p class="fr font13 lightGray" style="font-weight: normal">
             {{
                 $t("SEAR_TAB_ACT_CAHNNEL") +
@@ -146,7 +142,7 @@
             }}
         </p>
         <div class="w100P fl font14 textLeft lightGray">
-            <p class="fl font14">{{ $changeText(chanElement.cateItemMtext) }}</p>
+            <p class="fl font14">{{ $changeText(chanElement.bdAreaNameMtext) }}</p>
             <img
             src="../../assets/images/editChan/icon_user_Gray.svg"
             class="img-w15 mright-01 fl mleft-03 mtop-01"
@@ -159,8 +155,12 @@
                 : chanElement.fCount
             }}
             </p>
+            <div v-if="$route.path === '/chanList'" class="fr">
+              <p class="fontBold" style="border-radius:5px; padding:5px 10px; background-color:#fff; color:#062BB5;"> + Follow </p>
+              <p class="fontBold" style="border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;"> + Follow </p>
+            </div>
         </div>
-        </div>
+      </div>
     </div>
     <div
         v-if="
@@ -180,7 +180,7 @@
                 <pre class="fl font14 textLeft textOverdot" style="width: calc(100% - 10px); word-break: break-all;" v-html="$setBodyLength(chanElement.popCList[0].bodyFullStr, chanElement.popCList[0].jobkindId === 'BOAR' && chanElement.popCList[0].workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
             </div>
         </div>
-    </div>
+      </div>
   </div>
 </template>
 

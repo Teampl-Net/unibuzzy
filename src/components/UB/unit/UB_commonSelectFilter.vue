@@ -5,10 +5,10 @@
           <p :style="!channelYn? activebarWidth:''" :class="{mWidth : tabTrimLength(tab.display) > 3, commonColor: index === activetab && channelYn, lightGray: index !== activetab && channelYn}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
         </div> -->
         <!-- @change="selectTab(filter.name, filter.display)" -->
-        <select style="width:90px!important; height:30px;" class="fl" ref="tab" @change="handleTabChange"  >
+        <select style="width:160px!important; height:30px;" class="fl" ref="tab" @change="handleTabChange"  >
             <option v-for="(filter, idx) in tabList" :key="idx" :value="JSON.stringify(filter)">{{ filter.display }}</option>
         </select>
-        <select  v-if="subTabList" style="width:90px!important; height:30px; margin-left: 10px;" class="fl" ref="tab" @change="handleBoardTabChange"  >
+        <select  v-if="subTabList" style="width:160px!important; height:30px; margin-left: 10px;" class="fl" ref="tab" @change="handleBoardTabChange"  >
             <option v-for="(filter, idx) in subTabList" :key="idx" :value="JSON.stringify(filter)">{{ filter.display }}</option>
         </select>
         <!-- <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div> -->

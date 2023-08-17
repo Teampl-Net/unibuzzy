@@ -8,8 +8,7 @@
       <p style="font-size:20px; font-weight:bold; padding-bottom:20px; ">Select Building.</p>
       <div style="display:flex; align-items:end;">
         <div style="width:140px; height:140px; border-radius:50%; border:1px solid #ccc; display:flex; align-items:center; justify-content:center;">
-          <div @click="openSelectBuildingPop" class="channelBuildingArea cursorP" :style="'background-image: url(' + mSelectedBuilding.selectPath + ')'" style=" background-size: cover; background-position: center; background-repeat: no-repeat;">
-          </div>
+          <img @click="openSelectBuildingPop" :src="mSelectedBuilding.selectPath" class="cursorP" style='width:60%; height:auto;'/>
         </div>
         <div style="background-color:#fff; margin-left:-30px; border-radius:50%; border:1px solid #ccc; width:35px; height:35px; display:flex; align-items:center; justify-content:center;">
           <img :src="require(`@/assets/images/channel/icon_camera.svg`)" class="cursorP" style="width:20px;" alt="">
@@ -19,10 +18,11 @@
       </div>
       <!-- 게시판 생성일 때.-->
       <template v-if="mShowBdOrChan==='C'">
-        <div>
+        <div style="padding:2rem 1rem;">
           <p style="font-size:30px; padding-bottom:20px;">My Channel</p>
             <div style="width:100%; overflow-x:scroll;">
-              <ul style="width:auto; overflow-x:scroll; display:flex; align-items:start; gap:20px;">
+              <p v-if="mMyTeamNameList.length===0" style="padding:0 0 2rem;">It's empty.</p>
+              <ul v-else style="width:auto; overflow-x:scroll; display:flex; align-items:start; gap:20px;">
                 <teamplate v-for="(team, index) in mMyTeamNameList" :key="index">
                   <li v-if="pAreaInfo.bdAreaNameMtext === team.bdAreaNameMtext" class="cursorP" style="">
                     <div @click="getSelectedChanIndex(index)" :class="{selectedChannel : mSelectedChanIndex===index}" style="width:100px; height:100px; border-radius:50%; border:3px solid #ccc;">
@@ -270,19 +270,6 @@ export default {
   justify-content:start;
   flex-direction:column;
   margin-bottom: 0;
-}
-.channelBuildingArea{
-  /* border:1px solid #ccc; */
-  width: 80px;
-  overflow: hidden;
-  height: 120px;
-  margin: 0 auto;
-  background: #ffffff66;
-  position: relative;
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 .selectedChannel{
   border:3px solid #000 !important;

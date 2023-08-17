@@ -54,7 +54,7 @@
         <img @click="searchMember()" class="cursorP" style="float: right; position: absolute; left: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
         <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="searchMember()" :placeholder="$t('FOLLOW_MSG_USERINFO')">
       </div>
-      <div class="CDeepBorderColor fr" style="border-radius: 20px; width:100px; min-height: 30px; margin-top: 10px; display: flex; justify-content: center; align-items: center; ">
+      <div class="CDeepBorderColor fr" style="border-radius: 20px; width:110px; min-height: 30px; margin-top: 10px; display: flex; justify-content: center; align-items: center; ">
         <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'creDate'}">{{ $t('FOLLOW_BTN_ORDER_CRE') }}</p>
         <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">{{ $t('FOLLOW_BTN_ORDER_NAME') }}</p>
       </div>

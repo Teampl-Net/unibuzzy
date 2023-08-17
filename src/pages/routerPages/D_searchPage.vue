@@ -59,12 +59,12 @@
           </template>
 
           <!-- 산업군 -->
-          <div v-if="mBusinessItemList.length > 0" class="fl w-100P" style="min-height: 50px; float: left; display: flex; flex-wrap: wrap; gap: 10px;">
+          <!-- <div v-if="mBusinessItemList.length > 0" class="fl w-100P" style="min-height: 50px; float: left; display: flex; flex-wrap: wrap; gap: 10px;">
             <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">{{ $t("SEAR_TITLE_FIND_CATEGORY") }}</p>
             <div v-for="(business, index) in mBusinessItemList" @click="setCataItem(business)" :key="index" class="fl font14 cursorP fontBold" style="padding: 0 8px; border-radius:30px; line-height: 24px;  min-width:30px;" :class=" this.mCateItem === business.cateKey ? 'commonLightBGColor fontBold CWhiteColor' : 'commonGrayBorderColor lightGray'">
               {{$changeText(business.itemNameMtext)}}
             </div>
-          </div>
+          </div> -->
           <!-- <div v-if="!GE_USER.unknownYn && mMyStickerList.length > 0" class="fl w-100P mtop-1" style="min-height: 50px;  float: left; display: flex; flex-wrap: wrap; gap: 10px;">
             <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">{{ $t("SEAR_TITLE_FIND_LABEL") }}</p>
             <template v-for="(sticker, index) in mMyStickerList" :key="index" >
@@ -107,9 +107,9 @@
           <!-- 공통 검색 탭 영역 -->
           <div  class="w100P fl pSide-1 chanListHeader " :style="`margin-top: ${60}px;`" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
             <gActiveBar :testYn='true' ref="mainActiveBar" :tabList="this.mActiveSearchTabList" class="fl" @changeTab="changeSearchTab" />
-              <template v-if="mActiveSearch === 'CHAN'">
+              <!-- <template v-if="mActiveSearch === 'CHAN'">
                 <cSearchBox class="mright-03 mtop-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" @searchBoxClick='searchBoxClick' />
-              </template>
+              </template> -->
               <div v-if="mActiveSearch === 'CONT'" class="fl w100P mtop-05" style="display: flex;">
                   <p v-for="(tab, index) in mSearchContentTabList" :key="index" @click="changeContentsTab(tab.name)" class="fl font16 " :class=" this.mSearchContentTab === tab.name ? 'commonLightColorBorder2 fontBold commonLightColor' : 'commonGrayBorderColor lightGray'" style="line-height: 30px; width: calc(100% / 3); height: 30px;"> {{tab.display}}</p>
               </div>
@@ -175,13 +175,13 @@
 
 <script>
 import bottomSheets from '../../components/pageComponents/main/unit/D_commonBottomSheets.vue'
-import cSearchBox from '../../components/unit/D_cSearchBox.vue'
+// import cSearchBox from '../../components/unit/D_cSearchBox.vue'
 import findContentsList from '@/components/popup/common/D_findContentsList.vue'
 import findChannelList from '@/components/popup/common/Tal_findChannelList.vue'
 import SkeletonBox from '@/components/pageComponents/push/D_contentsSkeleton'
 import searchBox from '../../components/unit/D_SearchBox.vue'
 export default {
-  components: { cSearchBox, bottomSheets, searchBox, findContentsList, findChannelList, SkeletonBox },
+  components: { bottomSheets, searchBox, findContentsList, findChannelList, SkeletonBox },
   data () {
     return {
       mobileYn: this.$getMobileYn(),

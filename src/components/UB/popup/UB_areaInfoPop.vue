@@ -17,16 +17,17 @@
       </div>
     </div>
     <div class="w100P" style="height: calc(100% - 50px); overflow: auto; padding-top: 15px;">
-      <!-- <div class="w100P" style="display: flex; align-items: center;">
+      <div class="w100P" style="padding-bottom:10px; display: flex; align-items: center;">
         <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_pencil.svg" alt="">
-        <p class="fontBold font16">Description</p>
+        <!-- <p class="fontBold font16">Description</p> -->
         <p class="textLeft font16" style="width: calc(100% - 30px);">{{ pAreaInfo.bdAreaDesc }}</p>
-      </div> -->
+      </div>
       <div class="w100P" style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; display: flex; margin-top: 0px;">
-        <p style="width: 50%; border-right: 2px solid #000;">
-          <span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> channels
-        </p>
-        <p style="width: 50%;">
+        <div :class="{width100 :  mShowBdOrChan==='C'}" style="width: 50%; border-right: 2px solid #000;">
+          <p v-if="mShowBdOrChan==='T'"><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> channels</p>
+          <p v-else><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> boards</p>
+        </div>
+        <p v-if="mShowBdOrChan === 'T'" style="width: 50%;">
           <span class="fontBold">{{ pAreaDetail.followerCount? pAreaDetail.followerCount:0 }}</span> followers
         </p>
       </div>
@@ -46,34 +47,38 @@
         <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" />
       </div>
       <div  class="w100P" style="margin-top: 20px;">
+      <template v-if="pAreaInfo.bdAreaNameMtext!=='Campus'">
         <div v-if="pAreaDetail.popTeamList && pAreaDetail.popTeamList.length > 0" class="w100P" style="display: flex; align-items: center;">
           <img style="width: 25px; margin-right: 5px;" src="@/assets/images/common/icon_popular.svg" alt="">
           <!--Popular -->
           <p class="fontBold font16">Popular</p>
         </div>
-        <div v-if="pAreaDetail.popTeamList && pAreaDetail.popTeamList.length > 0" class="w100P" style="height: 200px; display: flex;">
-          <div class="h100P" style="width: 33%;">
-            <div style="height: 65%; display: flex; justify-content: center; align-items: flex-end;">
-              <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[1]"  :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[1]" />
+      </template>
+        <template v-if="pAreaInfo.bdAreaNameMtext!=='Campus'">
+          <div v-if="pAreaDetail.popTeamList && pAreaDetail.popTeamList.length > 0" class="w100P" style="height: 200px; display: flex;">
+            <div class="h100P" style="width: 33%;">
+              <div style="height: 65%; display: flex; justify-content: center; align-items: flex-end;">
+                <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[1]"  :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[1]" />
+              </div>
+              <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 25%; background-color:slateblue; border-top-left-radius: 10px;"><p style="margin-top:-5px;">2</p></div>
+              <p style="padding-top:5px;" v-if="pAreaDetail.popTeamList[1]">{{ pAreaDetail.popTeamList[1].fCount ? pAreaDetail.popTeamList[1].fCount : '0' }} followers</p>
             </div>
-            <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 25%; background-color:slateblue; border-top-left-radius: 10px;"><p style="margin-top:-5px;">2</p></div>
-            <p style="padding-top:5px;" v-if="pAreaDetail.popTeamList[1]">{{ pAreaDetail.popTeamList[1].fCount ? pAreaDetail.popTeamList[1].fCount : '0' }} followers</p>
-          </div>
-          <div style="width: 33%;">
-            <div style="height: 55%; display: flex; justify-content: center; align-items: flex-end;">
-              <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[0]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[0]" :pBestYn="true" />
+            <div style="width: 33%;">
+              <div style="height: 55%; display: flex; justify-content: center; align-items: flex-end;">
+                <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[0]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[0]" :pBestYn="true" />
+              </div>
+              <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 35%; background-color:slateblue; border-top-left-radius: 10px; border-top-right-radius: 10px;"><p style="margin-top:-5px;">1</p></div>
+              <p style="padding-top:5px;" v-if="pAreaDetail.popTeamList[0]">{{ pAreaDetail.popTeamList[0].fCount ? pAreaDetail.popTeamList[0].fCount : '0' }} followers</p>
             </div>
-            <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 35%; background-color:slateblue; border-top-left-radius: 10px; border-top-right-radius: 10px;"><p style="margin-top:-5px;">1</p></div>
-            <p style="padding-top:5px;" v-if="pAreaDetail.popTeamList[0]">{{ pAreaDetail.popTeamList[0].fCount ? pAreaDetail.popTeamList[0].fCount : '0' }} followers</p>
-          </div>
-          <div style="width: 33%;">
-            <div style="height: 70%; display: flex; justify-content: center; align-items: flex-end;">
-              <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[2]"  :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[2]"/>
+            <div style="width: 33%;">
+              <div style="height: 70%; display: flex; justify-content: center; align-items: flex-end;">
+                <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[2]"  :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[2]"/>
+              </div>
+              <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 20%; background-color:slateblue; border-top-right-radius: 10px;"><p style="margin-top:-5px;">3</p></div>
+            <p style="padding-top:5px;" v-if="pAreaDetail.popTeamList[2]">{{ pAreaDetail.popTeamList[2].fCount ? pAreaDetail.popTeamList[2].fCount : '0' }} followers</p>
             </div>
-            <div class="fontBold font16" style="padding-top: 10px; color: #fff; border-top: 10px solid rgb(65, 58, 109); height: 20%; background-color:slateblue; border-top-right-radius: 10px;"><p style="margin-top:-5px;">3</p></div>
-          <p style="padding-top:5px;" v-if="pAreaDetail.popTeamList[2]">{{ pAreaDetail.popTeamList[2].fCount ? pAreaDetail.popTeamList[2].fCount : '0' }} followers</p>
           </div>
-        </div>
+        </template>
         <!-- <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" /> -->
         <div class="w100P" style="margin-top: 35px;">
           <div class="w100P" style="display: flex; align-items: center;">
@@ -156,6 +161,7 @@ export default {
   created () {
     localStorage.setItem('notiReloadPage', 'none')
     console.log('chanDetail', this.chanDetail)
+    this.showBoardOrChannel()
   },
   data () {
     return {
@@ -164,7 +170,8 @@ export default {
       mOpenChanMenuYn: false,
       mPopParams: '',
       mPopShowYn: false,
-      createNewPage: false
+      createNewPage: false,
+      mShowBdOrChan: ''
     }
   },
   methods: {
@@ -181,6 +188,29 @@ export default {
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
       this.$store.commit('D_HISTORY/updateStack', history)
       if (this.pClosePop) this.pClosePop()
+    },
+    showBoardOrChannel () {
+      const bdCLength = []
+      const bdTLength = []
+
+      if (this.pAreaInfo) {
+        for (let i = 0; i < this.pAreaInfo.bdList.length; i++) {
+          // T가 채널, C가 Board
+          if (this.pAreaInfo.bdList[i].targetKind === 'C') {
+            bdCLength.push(this.pAreaInfo.bdList[i])
+          } else if (this.pAreaInfo.bdList[i].targetKind === 'T') {
+            bdTLength.push(this.pAreaInfo.bdList[i])
+          }
+        }
+        console.log('results... ', bdCLength, bdTLength)
+        if (bdCLength > bdTLength) {
+          this.mShowBdOrChan = 'C'
+        } else if (bdTLength > bdCLength) {
+          this.mShowBdOrChan = 'T'
+        }
+      }
+      console.log('===========mShowBdOrChan', this.mShowBdOrChan)
+      return this.mShowBdOrChan
     },
     goChannelMain (param) {
       const pageParam = {}
@@ -243,6 +273,10 @@ export default {
   -webkit-backdrop-filter: blur( 9px );
   border-radius: 10px;
   border: 1px solid rgba( 255, 255, 255, 0.18 );
+}
+.width100{
+  width:100% !important;
+  border-right:none !important;
 }
 .chanDetailPopHeader{background: transparent!important; box-shadow: none!important;}
 </style>
