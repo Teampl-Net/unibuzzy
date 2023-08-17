@@ -14,7 +14,7 @@
     "en": {
       "USER_MSG_TOUCH_IMG": "Touch to change the image.",
       "USER_PROFILE_ICON": "Icon",
-      "USER_PROFILE_MY_IMG": "Upload Image",
+      "USER_PROFILE_MY_IMG": "Upload",
       "INFO_SELECT_FIN": "Select",
       "ICON_MSG_SELECT_PLS": "Please select an icon to represent the channel.",
       "ICON_MSG_SELECT_PLS2": "Please select a representative icon!",

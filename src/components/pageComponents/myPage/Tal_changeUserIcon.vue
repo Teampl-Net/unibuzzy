@@ -10,7 +10,7 @@
     "en": {
       "USER_CHANGE_PROFILE_IMG": "Update profile image",
       "USER_PROFILE_ICON": "Icon",
-      "USER_PROFILE_MY_IMG": "Upload Image",
+      "USER_PROFILE_MY_IMG": "Upload",
       "USER_MSG_TOUCH_IMG": "Touch to change the image.",
       "USER_MSG_NO_IMG": "Please select a file."
     }

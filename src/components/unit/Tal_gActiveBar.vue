@@ -21,7 +21,7 @@
 
     <div v-else style="float: left; width: 100%;margin-top: 0;" :style="(this.modeType === 'write' || this.channelYn) ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
       <div ref="tabbar" :class="!channelYn? 'pagePaddingWrap':''" style="padding-top: 10px; background: #FFF; border-bottom: 0.5px solid #6768A78A; height: 40px; float: left; position: relative; width: 100%;" :style="{color: this.modeType === 'write' ? 'background: transparent' : '', display: channelYn? 'flex':''}" >
-        <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style=" padding-right:30px;white-space: nowrap;" :style="channelYn? 'flex: 1 1 0%':''">
+        <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;" :style="channelYn? 'flex: 1 1 0%':''">
           <p :style="!channelYn? activebarWidth:''" :class="{mWidth : tabTrimLength(tab.display) > 3, commonColor: index === activetab && channelYn, lightGray: index !== activetab && channelYn}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
         </div>
         <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
