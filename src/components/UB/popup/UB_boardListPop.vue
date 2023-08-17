@@ -118,10 +118,11 @@ export default {
   },
   methods: {
     async confirmOk (cont) {
+      console.log('cont', cont)
       this.mErrorPopShowYn = false
       // eslint-disable-next-line no-new-object
       this.mSaveFollowerParam = new Object()
-      this.mSaveFollowerParam.teamKey = cont.teamKey
+      this.mSaveFollowerParam.teamKey = cont.creTeamKey
       this.mSaveFollowerParam.userKey = this.GE_USER.userKey
       this.mSaveFollowerParam.userName = this.$changeText(this.GE_USER.userDispMtext)
       var result = false
