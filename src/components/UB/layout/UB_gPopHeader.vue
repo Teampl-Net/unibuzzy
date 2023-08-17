@@ -1,15 +1,15 @@
 <template>
   <div class="commonPopHeaderWrap " style="" :class="{ 'newHeaderLine' : !chanAlimListTeamKey && targetType !== 'createChannel' && targetType !== 'contentsDetail' && targetType !== 'boardMain' , 'headerShadow' : chanAlimListTeamKey}" :style="targetType === 'chanInfo' ? 'background:transparent !important;' : ';' + 'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;' + 'padding-bottom: 1.7rem'">
     <!-- <img src="../../../../assets/images/common/icon_back_white.png" v-on:click="goBack" class="fl" style=" width: 0.8rem;" > -->
-    <div v-on:click="closeXPop" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
-      <img v-if="bgblack === true " src="../../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" >
+    <div v-on:click="closeXPop" class="fl cursorP " style="margin-top:5px; min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
+      <img v-if="bgblack === true " src="../../../assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" style="" >
       <img v-else-if="pNoAuthYn === true " src="../../../assets/images/footer/icon_home_fillin.svg"  v-on:click="goMain">
       <img v-else src="../../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
     </div>
     <div v-for="(value, index) in subTitlebtnList"  :key="index" class="fr ml-04">
       <img :src="value.icon" />
     </div>
-    <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'contentsDetail'}" :style="bgblack === true ? 'color:white;':'' ">
+    <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'contentsDetail'}" :style="bgblack === true ? 'color:white;':'' " style="line-height:57px; height:100%;">
       {{this.$changeText(headerTitle)}}
     </span>
     <helpButtonPop style="overflow: hidden scroll;" v-if="clickHelpYn" :helpButtonType="this.helpButtonType" @closePop="clickHelpYn=false" />
@@ -121,7 +121,7 @@ export default {
   right: 1rem;
 }
 .headerTitleWrap{height: 25px; line-height: 25px; max-width:30% ; text-align: right; right: 1rem; position: absolute; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;}
-.chanDetailPopHeader .popHeaderTitleSpan {color: white; }
+.chanDetailPopHeader .popHeaderTitleSpan {color: white;}
 .colorBlack{
   color: black !important;
 }

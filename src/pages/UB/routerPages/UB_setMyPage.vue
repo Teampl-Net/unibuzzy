@@ -437,7 +437,7 @@ tr, td, th {
 td {
   border-bottom: none !important
 }
-tr{border-bottom: 1px solid #F3F3F3}
+tr{border-bottom: 1px solid #F3F3F3; line-height:4rem;}
 th {color: #6768A7}
 .imgSize {width: 6rem; height: 6rem; position: relative;}
 .subPaddingWrap{padding: 0.7rem 0 ; box-sizing: border-box; width: 100%; }
