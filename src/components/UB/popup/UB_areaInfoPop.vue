@@ -83,10 +83,13 @@
         </template>
         <!-- <gEmpty v-else tabName="전체" contentName="채널" style="margin-top: 10px; float:none;" /> -->
         <div class="w100P" style="margin-top: 35px;">
-          <div class="w100P" style="display: flex; align-items: center;">
-            <img style="width: 25px; margin-right: 5px;" src="@/assets/images/bottom/icon_search.svg" alt="">
+          <div class="w100P" style="display: flex; align-items: center; justify-content:space-between;">
+            <div style="display:flex; align-items:center;">
+              <img style="width: 25px; margin-right: 5px;" src="@/assets/images/bottom/icon_search.svg" alt="">
             <!--All List -->
-            <p class="fontBold font16">All List</p>
+              <p class="fontBold font16" style="">All List</p>
+            </div>
+            <img :src="`/resource/footer/icon_search_fillin.svg`" @click="gotoSearchPage" style="width:25px;" class="cursorP" />
           </div>
           <div class="w100P" style="padding-bottom: 30px; height:auto; max-height:325px; ">
             <gEmpty tabName="전체" contentName="채널" v-if="pAreaDetail.bdList && pAreaDetail.bdList.length === 0" style="margin-top:50px;" />
@@ -190,6 +193,9 @@ export default {
       this.$store.commit('D_HISTORY/setRemovePage', removePage)
       this.$store.commit('D_HISTORY/updateStack', history)
       if (this.pClosePop) this.pClosePop()
+    },
+    gotoSearchPage () {
+      this.$router.replace('/search')
     },
     showBoardOrChannel () {
       const bdCLength = []
