@@ -36,6 +36,10 @@ export default {
     listTitle,
     contentsList
   },
+  created () {
+    console.log('확인합니당')
+    console.log(this.propAlimList)
+  },
   methods: {
     async getPushContentsList () {
       // eslint-disable-next-line no-debugger
@@ -125,7 +129,9 @@ export default {
       var contList = this.mContentsList
       console.log('contList', contList)
       var test = this.GE_MAIN_CHAN_LIST
-      if (!this.contList) return []
+      // if (this.contList.length < 1) {
+      //   return []
+      // }
       for (var i = 0; i < contList.length; i++) {
         idx1 = test.findIndex((item) => item.teamKey === contList[i].creTeamKey)
         if (idx1 === -1) {
@@ -165,10 +171,13 @@ export default {
     propAlimList: {
       immediate: true,
       handler (value, old) {
-        console.log(value)
         // eslint-disable-next-line no-debugger
         debugger
-        this.mContentsList = value
+        if (!value) {
+          this.mContentsList = []
+        } else {
+          this.mContentsList = value
+        }
       },
       deep: true
     },

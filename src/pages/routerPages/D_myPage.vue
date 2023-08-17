@@ -165,7 +165,7 @@ export default {
         }
       }
       var returnList = this.replaceArr(returnContsList)
-      console.log(returnList)
+      console.log('헐랭', returnList)
       return returnList
     }
   },

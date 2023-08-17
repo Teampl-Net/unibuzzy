@@ -159,6 +159,8 @@ export default {
             console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
             this.previewImgUrl = src
             this.uploadFileList.push({ previewImgUrl: src, addYn: true, file: newFile })
+            console.log('---------여기입니다---------')
+            console.log(src)
 
             // editorImgResize1(canvas.toDataURL('image/png', 0.8))
             // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))

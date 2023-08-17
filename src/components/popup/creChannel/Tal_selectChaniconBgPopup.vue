@@ -505,7 +505,7 @@ export default {
       // console.log(encodeURIComponent(newSelectFileName))
       console.log(this.convertFilename(newSelectFileName))
       const files = new File([Bfile], this.convertFilename(newSelectFileName))
-      console.log('============= crop img ================')
+      console.log('============= 압축된 이미지 ================')
       console.log(files)
 
       return files

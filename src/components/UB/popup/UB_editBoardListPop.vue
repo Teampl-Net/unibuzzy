@@ -24,7 +24,7 @@
             </template>
           </transition-group>
         </draggable>
-        <img src="@/assets/images/button/Icon_CreBoardBtn.png" @click="addBoardRow" alt="게시판 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
+        <img src="@/assets/images/button/Icon_CreBoardBtn.png" @click="addBoardRow" alt="게시판 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%; z-index: 100;" class="img-78 img-w66">
         <gListEmpty v-if="cabinetList.length === 0" :title="$t('EDIT_BOARD_MSG_NOBOARD')" :subTitle="$t('EDIT_BOARD_MSG_CREBOARD')" option='EDIT' />
     </div>
   </div>
@@ -253,7 +253,7 @@ export default {
       param.creMenuYn = true
       // eslint-disable-next-line no-new-object
       var cabinet = new Object()
-      var defaultAddBoardName = this.$checkSameName(this.CAB_DETAIL, '게시판')
+      var defaultAddBoardName = this.$checkSameName(this.CAB_DETAIL, 'board')
       cabinet.cabinetNameMtext = 'EN$^$' + defaultAddBoardName
       cabinet.currentTeamKey = this.CHANNEL_DETAIL.teamKey
       cabinet.creTeamKey = this.CHANNEL_DETAIL.teamKey
