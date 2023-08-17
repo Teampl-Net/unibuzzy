@@ -730,15 +730,13 @@ export default {
       var memberTypeList = await this.$commonAxiosFunction({
         url: '/sUniB/tp.getMemberTypeList',
         param: param
-      })
+      }, true)
       if (memberTypeList.data.result) {
         this.mMemberTypeList = memberTypeList.data.memberTypeList
         if (this.mMemberTypeList.length > 0) {
           this.selectMemberObj = this.mMemberTypeList[0]
         }
       }
-      console.log('1234')
-      console.log(this.selectMemberObj)
       this.$emit('enterCloudLoading', false)
       setTimeout(() => {
         this.$emit('showCloudLoading', false)

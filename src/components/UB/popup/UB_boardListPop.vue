@@ -25,10 +25,21 @@
 }
 </i18n>
 <template>
-    <div style="background: rgb(255 255 255 / 89%);  width: calc(100% - 40px); position: absolute; z-index: 9999; bottom: 60px; box-shadow: rgb(0 0 0 / 26%) 0px -6px 13px 4px; left: 20px; height: calc(100% - 90px); border-radius: 0.8rem 0.8rem 0.8rem 0.8rem; ">
-        <div style="padding: 0 20px; margin-top: 20px; width: 100%; height: 40px; position: relative; float: left;">
-            <p style="" class="font24 fontBold textLeft commonColor">Posts in Town</p>
+    <div style="padding: 10px 20px; background: rgb(255 255 255 / 89%); position: absolute; z-index: 9999; bottom: 10%; box-shadow: rgb(0 0 0 / 26%) 0px -6px 13px 4px; left: 10%; height: 80%; width: 80%; border-radius: 0.8rem 0.8rem 0.8rem 0.8rem; ">
+        <!-- <div style="display: flex; align-items: center; padding: 0 20px; margin-top: 20px; width: 100%; height: 40px; position: relative; float: left;">
+            <img style="width: 45px; margin-right: 5px;" src="/resource/logo/gtLogo.png" alt="">
+            <p class="textOverdot textLeft font25" style="width: calc(100% - 40px);">{{ pAreaInfo.bdAreaNameMtext }} Area</p>
             <img class="cursorP" @click="closeXPop" style="position: absolute; right: 25px; top: 0px;" src="../../../assets/images/common/smallPopXIcon.svg" alt="">
+        </div> -->
+        <div class="font16 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; width: calc(100% - 25px);">
+            <img style="width: 45px; margin-right: 5px;" src="/resource/logo/gtLogo.png" alt="">
+            <p class="textOverdot textLeft font25" style="width: calc(100% - 40px);">{{ pAreaInfo.bdAreaNameMtext }} Area</p>
+            <!-- <p class="textOverdot textLeft" style="width: calc(100% - 40px);">{{ bdAreaNameMtext }}</p> -->
+          </div>
+          <div class="cursorP" @click="closeXPop" style="width: 25px;">
+            <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
+          </div>
         </div>
         <!-- <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader" >
             <div style="position: absolute; right: 50px;width: 30px; height: 30px; border-radius: 100%; display: flex; align-items: center; justify-content: center; " @click="refreshAll">
@@ -36,7 +47,7 @@
             </div>
             <gSelectFilter :searchYn='true' @changeSearchList="requestSearchList"  @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" class="fl" style="width: 100%; padding-top: 0; margin-top: 0;" />
         </div> -->
-        <div style="float: left; width: 100%; padding: 0 20px;">
+        <div style="float: left; width: 100%; padding: 20px 0px;">
             <select class="fl" style="height: 35px; width: 95px; margin-right: 5px" name="contListFilter" v-model="viewTab" id="contListFilter" @change="changeTab()">
                 <option v-for="(opt, index) in mCommonFilterList" :key="index" :value="opt.name">{{opt.display}}</option>
             </select>
@@ -45,11 +56,15 @@
                 <searchResult @changeSearchList="requestSearchList" :searchList="resultSearchKeyList" />
             </div>
         </div>
-        <div ref="pushListWrapWrapCompo" style="width: 100%; height: calc(100% - 150px); padding: 0 20px; overflow: hidden auto;">
+        <div ref="pushListWrapWrapCompo" style="width: 100%; height: calc(100% - 190px); overflow: hidden auto;">
             <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" >
+                <gBtnSmall style="margin-bottom: 10px;" @click="confirmOk(cont)" :btnTitle="cont.followerKey? 'Followed':'Follow'" :btnThema="cont.followerKey? '':'light'" class="fr" />
                 <gContentsBox  :pUnknownYn="false" ref="myContentsBox"  @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
                 <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 13 ?  index === this.GE_DISP_CONTS_LIST.length - 13 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
             </template>
+        </div>
+        <div style="height: 50px; padding: 10px 0; display: flex; justify-content: flex-end;">
+          <gBtnSmall @click="goChannelMain(this.pAreaInfo)" btnTitle="Go Channel" class="fr" />
         </div>
         <transition name="showModal">
             <findContentsList ref="findContentRef" transition="showModal" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="this.mFindPopShowYn = false" />
@@ -67,7 +82,8 @@ export default {
   },
   props: {
     pClosePop: Function,
-    pTownTeamKey: Number
+    pTownTeamKey: Number,
+    pAreaInfo: Object
   },
   data () {
     return {
@@ -83,7 +99,10 @@ export default {
       mContsList: [],
       mPageSize: 20,
       mOffsetInt: 0,
-      mFindPopShowYn: false
+      mFindPopShowYn: false,
+      mMemberTypeList: [],
+      selectMemberObj: {},
+      mSaveFollowerParam: {}
     }
   },
   created () {
@@ -98,6 +117,111 @@ export default {
     })
   },
   methods: {
+    async confirmOk (cont) {
+      this.mErrorPopShowYn = false
+      // eslint-disable-next-line no-new-object
+      this.mSaveFollowerParam = new Object()
+      this.mSaveFollowerParam.teamKey = cont.teamKey
+      this.mSaveFollowerParam.userKey = this.GE_USER.userKey
+      this.mSaveFollowerParam.userName = this.$changeText(this.GE_USER.userDispMtext)
+      var result = false
+      if (cont.followerKey) {
+        result = await this.$changeFollower({ follower: this.mSaveFollowerParam, doType: 'CR' }, 'del')
+        // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
+        // this.CHANNEL_DETAIL.D_CHAN_AUTH = null
+        // this.CHANNEL_DETAIL.followerKey = null
+        // this.CHANNEL_DETAIL.userTeamInfo = null
+        // this.CHANNEL_DETAIL.followerCount -= 1
+        // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+
+        this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
+
+        if (result.result || result) {
+          cont.followerKey = null
+        } else {
+          this.mErrorPopBodyStr = '실패했습니다. 관리자에게 문의해주세요'
+          this.mErrorPopBtnType = 'timeover'
+          this.mErrorPopShowYn = true
+        }
+      } else {
+        await this.okMember(cont)
+        // this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>우리채널에 알림을 보낼 수 있어요!<br>멤버들끼리 자유롭게 소통할 수 있어요!'
+        // this.openChannelMsgPop()
+      }
+    },
+    async getMemberTypeList (teamKey) {
+      var param = {}
+      param.teamKey = teamKey
+      // param.cateItemKey = this.propCateItemKey
+      var memberTypeList = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.getMemberTypeList',
+        param: param
+      })
+      if (memberTypeList.data.result) {
+        this.mMemberTypeList = memberTypeList.data.memberTypeList
+        if (this.mMemberTypeList.length > 0) {
+          this.selectMemberObj = this.mMemberTypeList[0]
+        }
+      }
+    },
+    async okMember (cont) {
+      await this.getMemberTypeList(cont.creTeamKey)
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.memberTypeKey = this.selectMemberObj.memberTypeKey
+      var memberTypeItemList = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.getMemberTypeItemList',
+        param: param
+      })
+      console.log('--------------------------')
+      console.log(memberTypeItemList)
+      if (memberTypeItemList.data.result) {
+        // if (memberTypeItemList.data.memberTypeItemList.length === 0) {
+        // eslint-disable-next-line no-new-object
+        var typeParam = new Object()
+        if (cont.followerKey) {
+          typeParam.followerKey = cont.followerKey
+        }
+        if (this.selectMemberObj.memberTypeItemKey) {
+          typeParam.memberTypeItemKey = this.selectMemberObj.memberTypeItemKey
+        }
+        typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
+        typeParam.userKey = this.GE_USER.userKey
+        typeParam.teamKey = cont.creTeamKey
+        // eslint-disable-next-line no-debugger
+        debugger
+        await this.$commonAxiosFunction({
+          url: '/sUniB/tp.saveFollower',
+          param: { follower: typeParam, appType: 'UB', doType: 'CR' }
+        })
+        // } else {
+        //   this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
+        //   return true
+        // }
+        // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
+        // this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
+        // this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
+        // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+        // await this.$addChanList(this.mChanInfo.teamKey)
+        cont.followerKey = true
+      } else {
+        this.$showToastPop(this.$t('ERROR_MSG_INQUIRY_MANAG'))
+        return false
+      }
+      this.$emit('closeLoading')
+    },
+    goChannelMain (param) {
+      const pageParam = {}
+      if (param.teamKey) {
+        pageParam.targetKey = param.teamKey
+      } else {
+        pageParam.targetKey = param.targetKey
+      }
+      pageParam.areaInfo = this.pAreaInfo
+      pageParam.targetType = 'chanDetail'
+      pageParam.nameMtext = param.nameMtext
+      this.$emit('openPage', pageParam)
+    },
     async changeTab () {
       this.requestSearchList()
     },
@@ -349,6 +473,7 @@ export default {
       } else if (this.viewTab === 'N') {
         param.orderbyStr = 'a.creDate DESC'
       }
+      param.myUserKey = this.GE_USER.userKey
       param.cabinetKeyListStr = this.mCabKeyListStr
       if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.mOffsetInt }
 
@@ -420,7 +545,6 @@ export default {
           this.pClosePop()
         }
       } else {
-
       }
     }
   },
@@ -430,6 +554,9 @@ export default {
     },
     pageUpdate () {
       return this.$store.getters['D_HISTORY/hUpdate']
+    },
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
     },
     GE_MAIN_CHAN_LIST () {
       return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']

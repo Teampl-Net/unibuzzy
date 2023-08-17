@@ -281,8 +281,6 @@ export default {
       if (detailValue.chanYn) {
         this.goChanDetail(detailValue)
       } else {
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-        console.log(detailValue)
         var detailParam = {}
         detailParam.targetType = 'contentsDetail'
         detailParam.targetKey = detailValue.targetKey
@@ -294,6 +292,9 @@ export default {
         axiosParam.contentsKey = detailValue.targetKey
         axiosParam.teamKey = detailValue.teamKey || detailValue.creTeamKey
         axiosParam.jobkindId = detailValue.jobkindId
+        if (detailValue.cabinetKey) {
+          axiosParam.cabinetKey = detailValue.cabinetKey
+        }
         if (axiosParam.jobkindId) {
           axiosParam.userKey = this.GE_USER.userKey
           axiosParam.ownUserKey = this.GE_USER.userKey
@@ -309,6 +310,9 @@ export default {
           detailParam.popHeaderText = result.content.nameMtext
           if (detailParam.jobkindId === 'BOAR') {
             detailParam.cabinetKey = result.content.cabinetKey
+            if (!detailParam.cabinetKey) {
+              detailParam.cabinetKey = detailValue.cabinetKey
+            }
             detailParam.cabinetNameMtext = this.$changeText(result.content.cabinetNameMtext)
             if (result.content.cabinetNameMtext) this.changePageHeader(this.$changeText(result.content.cabinetNameMtext))
           } else {
@@ -413,7 +417,7 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       try {
-        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, true)
         console.log('1234detailValue')
         console.log(result)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
@@ -542,6 +546,9 @@ export default {
     },
     async openPage (params) {
       if (params.targetType === 'chanDetail') {
+        if (this.$route.path === '/') {
+          await new Promise((resolve) => setTimeout(resolve, 1500))
+        }
         await this.goChanDetail(params)
         return
       } else if (params.targetType === 'favList') {
@@ -596,11 +603,12 @@ export default {
         paramMap.set('pageSize', 10)
       }
 
-      var result = await this.$getTeamList(paramMap, false)
+      var result = await this.$getTeamList(paramMap, mLoadingYn)
       var resultList = result.data
       return resultList
     },
     async changeRouterPath (page) {
+      const mainYn = this.$route.path === '/'
       if (page !== 'termsOfUse' && page !== 'privacy' && this.$route.path === '/') {
         this.showCloudLoading(true, true)
         this.enterCloudLoading(true)
@@ -612,7 +620,7 @@ export default {
         this.$router.push(`/policy/${page}`)
         return
       } else if (page !== 'chanList' && page !== 'myPage' && page !== 'main') {
-        pageData = await this.$getRouterViewData(page)
+        pageData = await this.$getRouterViewData(page, mainYn)
       } else if (page === 'myPage') {
         // eslint-disable-next-line no-debugger
         debugger
@@ -626,7 +634,7 @@ export default {
         param.jobkindId = 'BOAR'
         // param.allYn = true
 
-        var result = await this.$getContentsList(param, false)
+        var result = await this.$getContentsList(param, mainYn)
 
         var resultList = result
 
@@ -635,7 +643,7 @@ export default {
           mContentsList: resultList
         }
       } else if (page === 'chanList') {
-        pageData = await this.getChannelList(10, 0, false)
+        pageData = await this.getChannelList(10, 0, mainYn)
       }
       if (page !== 'main' && page !== 'termsOfUse' && page !== 'privacy') {
         if (this.$route.path === '/') {

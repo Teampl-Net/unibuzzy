@@ -68,14 +68,14 @@ export const openView = {
     }
     return result
   },
-  async getRouterViewData (page) {
+  async getRouterViewData (page, nonLoadingYn) {
     var resultData = null
     if (page === 'main') {
       return await openView.getMainBoard()
     } if (page === 'myPage') {
       return await openView.getMainBoard()
     } else if (page === 'search') {
-      return await openView.getSearchMainBoard()
+      return await openView.getSearchMainBoard(nonLoadingYn)
     } else if (page === 'chanList') {
       return await openView.getMainChanList()
     }
@@ -159,12 +159,12 @@ export const openView = {
       await store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultObject.alimList)
     }
   },
-  async getSearchMainBoard () {
+  async getSearchMainBoard (nonLoadingYn) {
     var paramMap = new Map()
     paramMap.set('cateGroupKey', 2)
     paramMap.set('orderbyStr', 'followerCount DESC')
     paramMap.set('creUserKey', store.getters['D_USER/GE_USER'].userKey)
-    var response = await commonAxiosFunction({ url: '/sUniB/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, false)
+    var response = await commonAxiosFunction({ url: '/sUniB/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
     // eslint-disable-next-line no-debugger
     debugger
     if (response.data.result === 'OK') {

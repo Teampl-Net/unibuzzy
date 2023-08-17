@@ -1048,7 +1048,7 @@ export default {
         this.$showToastPop(this.$t('COMMON_MSG_NO_LOGIN'))
         return
       }
-      // console.log(this.propParams)
+      console.log(this.propParams)
       if ((!this.GE_USER.certiDate) && (this.CAB_DETAIL.blindYn === 1 || this.CAB_DETAIL.blindYn === true)) {
         // 익명게시판일 떄
         this.gCertiPopShowYn = true

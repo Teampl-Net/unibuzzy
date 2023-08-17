@@ -203,7 +203,7 @@ export default {
         sysCabinetCode: 'BOAR',
         teamKey: this.pAreaInfo.teamKey
       }
-      var resultMainData = await this.$getBoardMainData(paramObj)
+      var resultMainData = await this.$getBoardMainData(paramObj, true)
 
       if (resultMainData.contentsListPage) {
         var contentList = resultMainData.contentsListPage.content

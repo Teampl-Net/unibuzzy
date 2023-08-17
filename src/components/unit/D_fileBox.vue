@@ -1,3 +1,13 @@
+<i18n>
+{
+  "ko": {
+    "FILE_TITLE_RELA_CON": "관련 콘텐츠"
+  },
+  "en": {
+    "FILE_TITLE_RELA_CON": "Related Content"
+  }
+}
+</i18n>
 <template>
   <div v-if="GE_FILE_LIST" :style="this.contentsEle.ownUserKey === this.contentsEle.accessCreUserKey? 'background-color: #f8f8ff;':'background-color: #fff;'" style="background-color: #fff; margin-bottom: 10px; width: 100%; box-shadow: rgb(103 104 167 / 40%) 0px 1px 3px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
       <div class="attachedFileTitle" style="width: 100%; padding: 12px 20px;">
@@ -19,7 +29,7 @@
         </div>
       </div>
       <img v-if="contentsEle.fileType === 'I'" @click="openImgPop" style="width: 100%; height: auto; margin-bottom: 20px;" :src="this.contentsEle.domainPath ? this.contentsEle.domainPath + this.contentsEle.pathMtext : this.contentsEle.pathMtext" alt="">
-      <div class="textLeft font12 fontBold ml-04">관련 컨텐츠</div>
+      <div class="textLeft font12 fontBold ml-04">{{ $t('FILE_TITLE_RELA_CON') }}</div>
       <smallContentsBox style="padding: 12px 20px;" @click="goDetail" :accessKind="contentsEle.accessKind" class="cursorP" :contentsEle="GE_FILE_LIST"></smallContentsBox>
       <!-- <p class="font14 textRight" style="width: 100%;">다운 {{ contentsEle.dnCount }}</p> -->
     </div>
@@ -103,11 +113,14 @@ export default {
       return fileExt
     },
     goDetail () {
+      console.log('여기 보세요~~')
+      console.log(this.GE_FILE_LIST)
       var param = {}
       param.targetType = 'contentsDetail'
       param.targetKey = this.GE_FILE_LIST.contentsKey
       param.jobkindId = this.GE_FILE_LIST.jobkindId
       param.teamKey = this.GE_FILE_LIST.creTeamKey
+      param.cabinetKey = this.GE_FILE_LIST.cabinetKey
       param.popHeaderText = this.GE_FILE_LIST.nameMtext
       if (param.jobkindId === 'BOAR') {
         param.cabinetKey = this.GE_FILE_LIST.cabinetKey

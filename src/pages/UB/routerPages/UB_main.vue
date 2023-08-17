@@ -55,12 +55,12 @@
         </template>
       </template>
     </div>
-    <div class="PostsBallon">view Town's Posts</div>
+    <!-- <div class="PostsBallon">view Town's Posts</div>
     <div @click="openBoardPop" class="cursorP testBox" style="width: 70px; position: fixed; bottom: 100px; right: 15px; ">
-        <!-- <img style="width: 100%;" src="../../../assets/images/main/UBTownFeed.svg" alt=""> -->
-    </div>
+        <img style="width: 100%;" src="../../../assets/images/main/UBTownFeed.svg" alt="">
+    </div> -->
     <transition name="showUp">
-        <mainBoardList @openPop="openPop" :pTownTeamKey="mTownTeamKey" v-if="mBoardPopShowYn" ref="mainBoardRef" :pClosePop="closeBoardPop"/>
+        <mainBoardList @openPage="openPage" @openPop="openPop" :pAreaInfo="mAreaInfo" :pTownTeamKey="mTownTeamKey" v-if="mBoardPopShowYn" ref="mainBoardRef" :pClosePop="closeBoardPop"/>
     </transition>
     <div v-if="mBoardPopShowYn" @click="$refs.mainBoardRef.closeXPop" style="width: 100%; height: 100%; background: #00000040; position: absolute; z-index: 9998; top: 0; left: 0;"></div>
   </div>
@@ -285,16 +285,21 @@ export default {
           // bdAreaKey: 3
         }
       }
-      var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getBdAreaDetail',
-        param: param
-      })
-      if (result.data) {
-        this.mAreaDetail = await result.data
-        this.mAreaInfo = await area
-        console.log('====mAreaDetail===', result)
-        console.log('====mAreaInfo===', this.mAreaInfo)
-        this.mInfoBoxShowYn = true
+      if (area.priority === 0) {
+        this.mAreaInfo = area
+        this.openBoardPop()
+      } else {
+        var result = await this.$commonAxiosFunction({
+          url: '/sUniB/tp.getBdAreaDetail',
+          param: param
+        })
+        if (result.data) {
+          this.mAreaDetail = await result.data
+          this.mAreaInfo = await area
+          console.log('====mAreaDetail===', result)
+          console.log('====mAreaInfo===', this.mAreaInfo)
+          this.mInfoBoxShowYn = true
+        }
       }
     },
     closePop () {
@@ -330,8 +335,6 @@ export default {
     openPage (param) {
       this.mInfoBoxShowYn = false
       this.mCreChannelShowYn = false
-      console.log('12341234')
-      console.log(param)
       this.$emit('openPage', param)
     },
     openPop (openParam) {

@@ -4,12 +4,12 @@
     <div style="width: 100%; background-color: #fff; height: 140px; padding: 10px 0 10px 10px; border-radius: 0.8rem; display: flex; flex-direction: column; justify-content: space-between;">
       <div v-if="this.mMainChanList" style="width: 100%; height: 30px; float: left;">
         <img src="../../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
-        <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">채널</p>
+        <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">{{ $t('COMMON_NAME_CHANNEL') }}</p>
       </div>
       <div v-if="this.mMainChanList.length > 0" id="fileChannelWrap" :class="!isMobile? 'thinScrollBar':''" style="width: 100%; height: 85px; float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
         <div style="height: 100%; min-width: 100%; display:flex;">
           <div class="cursorP" :style="selectedChannelIdx === 0? 'border: 2px solid #5F61BD;':'border: 0.5px solid rgba(0, 0, 0, 0.1);'" style="flex-shrink: 0; box-sizing: border-box; width: 65px; height: 65px; border-radius: 100%; float: left; margin-right: 10px; text-align: center; line-height: 65px; background-color: #fff;" @click="selectTeam(null, 0)">
-            전체
+            {{ $t('COMMON_TAB_ALL') }}
           </div>
           <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :selectedYn="selectedChannelIdx === index + 1? true:false" :key="index" @click="selectTeam(chan.teamKey, index+1)"/>
           <template v-if="this.mMainChanList.length === 0">
