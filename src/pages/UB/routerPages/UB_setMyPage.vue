@@ -38,6 +38,10 @@
     <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
     <userImgSelectCompo @closeXPop="closeImgPop" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
     <div class="" >
+      <!-- <p class="font16 fl mright-05">언어</p>
+      <select class="fl mright-2" v-model="$i18n.locale" name="selectLang" id="selectLang"><option value="en">English</option><option value="ko">한국어</option></select>
+      <p class="font16 fl mright-05">위치</p>
+      <select class="fl" v-model="selectedLocale" @change="$locale = selectedLocale" name="selectLocale" id="selectLocale"><option value="US">United States</option><option value="KR">South Korea</option></select> -->
       <div class="profileWrap ">
         <div @click="changeUserImg()" class="cursorP imgSize">
           <div class="roundDiv picImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
@@ -125,6 +129,8 @@ export default {
   data () {
     return {
       pageHistoryName: '',
+      selectedI18nLocale: this.$i18n.locale,
+      selectedLocale: this.$locale,
       changeUserIconShowYn:false,
       myChanListPopYn: false,
       userEmail: { click: 'changeEmail', icon: '/resource/common/main_email.png', title: '이메일', value: localStorage.getItem('userEmail'), btnText: '변경', link: 'http://naver.com' },

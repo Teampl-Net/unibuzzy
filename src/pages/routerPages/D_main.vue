@@ -471,9 +471,9 @@ export default {
   },
 
   watch: {
-    locale (val) {
+    /* locale (val) {
       this.$i18n.locale = val
-    },
+    }, */
     GE_STICKER_LIST: {
       handler (value, old) {
         this.mStickerList = this.GE_STICKER_LIST

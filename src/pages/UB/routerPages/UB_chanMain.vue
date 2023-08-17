@@ -62,7 +62,7 @@
     </div>
 
     <div class="channelItemBox" ref="channelItemBox" style="background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
-      <pushList :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" @goScroll="scrollOn" :pBoardList="mChanInfo.boardList" :initData="this.mChanInfo.initData.contentsList" @cMemoEditYn="changeMemoEditYn"
+      <pushList :pCabinetKeyListStr="mCabKeyListStr" :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" @goScroll="scrollOn" :pBoardList="mChanInfo.boardList" :initData="this.mChanInfo.initData.contentsList" @cMemoEditYn="changeMemoEditYn"
         :targetContents="{ targetContentsKey: mChanInfo.targetContentsKey, jobkindId: mChanInfo.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.mChanInfo.targetType"
         ref="ChanAlimListPushListCompo" :alimListYn="true" @openPage="openPage" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements'
         @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @openPop="openWriteContentsPop" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit' />
@@ -102,6 +102,7 @@ import userDetailPop from '../../../components/UB/popup/UB_userDetailPop.vue'
 export default {
   data () {
     return {
+      mCabKeyListStr: null,
       imgSource: '/resource/common/memIconPublic.svg',
       isImgChanged: false,
       mUnknownLoginPopYn: false,
@@ -141,7 +142,7 @@ export default {
       mManagerList: [],
       mUserDetailPopShowYn: false,
       mPopParam: {},
-      selectMemberObj: {},
+      selectMemberObj: null,
       mMemberTypeList: [],
       mBoardContentsList: [],
       pushListWrap: null
@@ -168,27 +169,44 @@ export default {
   //   unknownLoginPop
   },
   created () {
-    this.getMemberTypeList()
+    //
     if (this.propParams && this.propParams.targetType === 'chanDetail' && this.propParams.initData) {
       this.mChanInfo = this.propParams
-      console.log(12341234)
-      console.log(this.mChanInfo)
+      const initData = this.propParams.initData
+      if (initData.cabinetKeyListStr) {
+        this.mCabKeyListStr = initData.cabinetKeyListStr
+      }
+      if (initData.memberTypeList) {
+        this.mMemberTypeList = initData.memberTypeList
+        if (this.mMemberTypeList.length > 0) {
+          this.selectMemberObj = this.mMemberTypeList[0]
+        }
+      }
+      if (initData.teamMenuList) {
+        this.mChanInfo.boardList = initData.teamMenuList
+      }
       if (this.mChanInfo.initData.team.D_CHAN_AUTH && this.mChanInfo.initData.team.D_CHAN_AUTH.followYn) {
         this.$emit('followYn')
       }
       if (this.CHANNEL_DETAIL) {
-        console.log(this.mChanInfo.initData.team.copyTextStr === undefined)
-        if ((this.mChanInfo.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
-          this.mMakeDeepLinkIng = true
-          const title = '[uniBuzzy]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
-          const message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
-          const this_ = this
-          this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
-            this.CHANNEL_DETAIL.copyTextStr = res
-            this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
-            this_.mMakeDeepLinkIng = false
-          })
+        if (initData.shortLink) {
+          this.CHANNEL_DETAIL.copyTextStr = initData.shortLink.shortLink
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+          this.mMakeDeepLinkIng = false
+        } else {
+          if ((this.mChanInfo.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
+            this.mMakeDeepLinkIng = true
+            const title = '[uniBuzzy]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+            const message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
+            const this_ = this
+            this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
+              this.CHANNEL_DETAIL.copyTextStr = res
+              this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+              this_.mMakeDeepLinkIng = false
+            })
+          }
         }
+
         const pushList = document.getElementById('pushListWrap')
         if (pushList) {
           this.pushListWrap = pushList
@@ -206,7 +224,10 @@ export default {
     } else {
       this.getChanMain()
     }
-    console.log('mChanInfomChanInfomChanInfomChanInfomChanInfo', this.mChanInfo)
+
+    if (!this.selectMemberObj) {
+      this.getMemberTypeList()
+    }
   },
   mounted () {
     this.$nextTick(() => {
@@ -236,6 +257,11 @@ export default {
       }
       this.setWindowSize()
       window.addEventListener('resize', this.handleResize)
+
+      this.$emit('enterCloudLoading', false)
+      setTimeout(() => {
+        this.$emit('showCloudLoading', false)
+      }, 1000)
     })
   },
   updated () {
@@ -457,6 +483,7 @@ export default {
           return
         }
         const teamDetail = result.data.team.content[0]
+        this.mCabKeyListStr = result.data.cabinetKeyListStr
         await this.$addChanVuex([teamDetail])
         chanMainParam.nameMtext = teamDetail.nameMtext
         chanMainParam.chanName = teamDetail.nameMtext
@@ -465,14 +492,20 @@ export default {
         if (result.data.contentsListPage && result.data.contentsListPage.content && result.data.contentsListPage.content.length > 0) {
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
         }
+        initData = result.data
         initData.contentsList = result.data.contentsListPage
+        initData.cabinetKeyListStr = result.data.cabinetKeyListStr
       } catch (error) {
         this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
         console.error(error)
       }
       chanMainParam.initData = initData
       this.mChanInfo = chanMainParam
-      await this.getTeamMenuList(encodedKey)
+      if (this.mChanInfo.initData.teamMenuList) {
+        this.mChanInfo.boardList = this.mChanInfo.initData.teamMenuList
+      } else {
+        await this.getTeamMenuList(encodedKey)
+      }
       this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
       console.log('this.mChanInfothis.mChanInfothis.mChanInfo', this.mChanInfo)
     },
@@ -656,8 +689,6 @@ export default {
         typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
         typeParam.userKey = this.GE_USER.userKey
         typeParam.teamKey = this.CHANNEL_DETAIL.teamKey
-        // eslint-disable-next-line no-debugger
-        debugger
         await this.$commonAxiosFunction({
           url: '/sUniB/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }
@@ -737,10 +768,6 @@ export default {
           this.selectMemberObj = this.mMemberTypeList[0]
         }
       }
-      this.$emit('enterCloudLoading', false)
-      setTimeout(() => {
-        this.$emit('showCloudLoading', false)
-      }, 1500)
     },
     async changeFollowYn () {
       this.mSaveFollowerType = 'follow'
@@ -960,8 +987,6 @@ export default {
       if (detail.length < 1) {
         return
       }
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!detail')
-      console.log(detail)
       if (detail && detail.length > 0) {
         if (detail[0].blackYn) this.$emit('bgcolor', detail[0].blackYn)
 

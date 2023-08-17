@@ -124,12 +124,10 @@
 <script>
 import chanRoundIcon from '../infoBox/UB_chanRoundIcon.vue'
 import boardCard from '../infoBox/UB_boardCard.vue'
-// import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel.vue'
 export default {
   components: {
     chanRoundIcon,
     boardCard
-    // createBoardChannel
   },
   props: {
     pUniBInfo: {},
@@ -140,10 +138,7 @@ export default {
     pMoveToChan: Function,
     pAreaDetail: {},
     pBdClickedYn: Boolean,
-    pOpenCreChanPop: Function,
-    chanDetail: {},
-    pBdAreaList: Array,
-    pSelectedAreaInfo: Object
+    pOpenCreChanPop: Function
   },
   computed: {
     pageUpdate () {
@@ -165,7 +160,6 @@ export default {
   },
   created () {
     localStorage.setItem('notiReloadPage', 'none')
-    console.log('chanDetail', this.chanDetail)
     this.showBoardOrChannel()
   },
   data () {
@@ -180,12 +174,6 @@ export default {
     }
   },
   methods: {
-    openNewPage () {
-      this.createNewPage = true
-    },
-    closeNewPage () {
-      this.createNewPage = false
-    },
     closeXPop () {
       var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]

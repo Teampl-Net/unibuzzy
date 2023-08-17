@@ -111,7 +111,7 @@ export default {
     this.$store.commit('D_HISTORY/updateStack', history)
     var this_ = this
     this.getTownCabinetList().then((res) => {
-      this.getMyContentsList().then((result) => {
+      this.getMyContentsList(null, null, true).then((result) => {
         this_.setContsList(result)
       })
     })
@@ -311,7 +311,7 @@ export default {
       return resultArray
     },
     async requestSearchList (param) {
-      this.offsetInt = 0
+      this.mOffsetInt = 0
       this.mContsList = []
       this.findKeyList.searchKey = null
       this.findKeyList.creTeamNameMtext = null
@@ -470,7 +470,7 @@ export default {
         param = searchParam
       }
       if (this.viewTab === 'P') {
-        param.orderbyStr = 'a.popPoint DESC'
+        param.orderbyStr = 'a.popPoint DESC, a.creDate DESC'
       } else if (this.viewTab === 'N') {
         param.orderbyStr = 'a.creDate DESC'
       }
@@ -527,10 +527,10 @@ export default {
         /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
         }
-        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+        /* data = data.sort(function (a, b) { // num으로 오름차순 정렬
           return b.contentsKey - a.contentsKey
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
-        })
+        }) */
         return data
       }, [])
       return uniqueArr

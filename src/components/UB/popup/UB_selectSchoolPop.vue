@@ -59,7 +59,7 @@ export default {
       mScrolledYn: false,
       mHeaderTop: 0,
       mOffsetInt: 0,
-      mEndListYn: false,
+      mEndListYn: true,
       mViewTab: 'all',
       mActiveTabList: [{ display: this.$t('COMMON_TAB_FOLLOWING'), name: 'user' }, { display: this.$t('COMMON_TAB_ALL'), name: 'all' }, { display: this.$t('COMMON_TAB_MANAGING'), name: 'mychannel' }],
       mChanFindPopShowYn: false,
@@ -98,11 +98,10 @@ export default {
     this.$addHistoryStack('selectSchoolPop')
     this.mChanListScrollBox = document.getElementById('chanListWrap')
     // this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
-    if (!this.initData) this.changeTab(this.mViewTab)
     this.$emit('closeLoading')
     this.mLoadingYn = false
   },
-  async created () {
+  created () {
     if (this.propData) {
       if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
         this.mViewTab = this.propData.channelTabType
@@ -118,29 +117,13 @@ export default {
       } else {
         this.mEndListYn = false
       }
-    }
-    /* if (!this.GE_DISP_TEAM_LIST || this.GE_DISP_TEAM_LIST.length === 0) {
-      var resultList = await this.getChannelList(null, null, false)
-      var newArr = []
-      for (var i = 0; i < resultList.content.length; i++) {
-        if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
-          newArr.push(resultList.content[i])
-        }
-      }
-      if (newArr.length > 0) {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
-      }
-      this.mChannelList = resultList.content
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.mEndListYn = true
-      } else {
-        this.mEndListYn = false
-      }
-    } */
 
-    this.introChanPageTab()
-    this.mScrolledYn = false
-    this.findPaddingTopChan()
+      this.introChanPageTab()
+      this.mScrolledYn = false
+      this.findPaddingTopChan()
+    } else {
+      this.changeTab(this.mViewTab)
+    }
   },
   methods: {
     preventDefault () {
@@ -285,6 +268,8 @@ export default {
       }
     },
     async loadMore (pageSize) {
+      if (this.mAxiosQueue.findIndex((item) => item === 'loadMore') !== -1) return
+      this.mAxiosQueue.push('loadMore')
       if (this.mEndListYn === false) {
         var resultList = await this.getChannelList()
         if (resultList === undefined) return
@@ -303,6 +288,8 @@ export default {
         ]
         this.mChannelList = newArr
       }
+      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'loadMore')
+      this.mAxiosQueue.splice(queueIndex, 1)
     },
     openManagerChanDetail (openParam) {
       this.$emit('openPop', openParam)

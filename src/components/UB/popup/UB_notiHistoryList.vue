@@ -25,7 +25,7 @@
             <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
           </div>
         </div>
-        <div class="w100P flexCenter" style="flex-direction: column; height: calc(100% - 80px); overflow: auto; padding: 10px;">
+        <div class="w100P flexCenter" style="flex-direction: column; justify-content: flex-start; height: calc(100% - 80px); overflow: auto; padding: 10px;">
           <p class="font14 lightGray textLeft fl" style="margin-botom: 30px !important;">{{ $t('RECE_MSG_NOTIDESC') }}</p>
           <template v-if="GE_RECENT_NOTI_LIST.length">
             <notiCompo @click="goContentsDetail(noti)" v-for="(noti, index) in GE_RECENT_NOTI_LIST" :mNotiEle="noti" :key="index" />

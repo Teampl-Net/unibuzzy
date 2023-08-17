@@ -418,8 +418,6 @@ export default {
       debugger
       try {
         const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, true)
-        console.log('1234detailValue')
-        console.log(result)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.mCloudLoadingShowYn = false
           this.$showToastPop('채널을 찾을 수 없습니다!')
@@ -432,7 +430,7 @@ export default {
         if (result.data.contentsListPage && result.data.contentsListPage.content && result.data.contentsListPage.content.length > 0) {
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
         }
-
+        initData = result.data
         initData.contentsList = result.data.contentsListPage
       } catch (error) {
         this.mCloudLoadingShowYn = false
@@ -441,15 +439,18 @@ export default {
       }
       chanMainParam.initData = initData
       this.mChanInfo = chanMainParam
+      if (initData.teamMenuList) {
+        this.mChanInfo.boardList = initData.teamMenuList
+      } else {
+        var paramMap2 = new Map()
+        paramMap2.set('teamKey', teamKey)
+        paramMap2.set('currentTeamKey', teamKey)
+        paramMap2.set('sysCabinetCode', 'BOAR')
+        paramMap2.set('userKey', this.GE_USER.userKey)
 
-      var paramMap2 = new Map()
-      paramMap2.set('teamKey', teamKey)
-      paramMap2.set('currentTeamKey', teamKey)
-      paramMap2.set('sysCabinetCode', 'BOAR')
-      paramMap2.set('userKey', this.GE_USER.userKey)
-
-      const result2 = await this.$getTeamMenuList(paramMap, true)
-      this.mChanInfo.boardList = result2
+        const result2 = await this.$getTeamMenuList(paramMap, true)
+        this.mChanInfo.boardList = result2
+      }
 
       if (detailValue.areaInfo) {
         this.mChanInfo.areaInfo = detailValue.areaInfo
@@ -754,6 +755,13 @@ export default {
     }
   },
   watch: {
+    $i18n: {
+      immediate: true,
+      handler (val) {
+        console.log(val)
+      },
+      deep: true
+    },
     $route: {
       immediate: true,
       handler (val) {

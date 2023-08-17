@@ -150,7 +150,11 @@ export const commonMethods = {
     if (format !== 'HH:mm') {
       format += ' HH:mm'
     }
-    return this.$dayjs(compareDate).add(9, 'hour').format(format)
+    if (this.$locale && this.$locale === 'KR') {
+      return this.$dayjs(compareDate).add(9, 'hour').format(format)
+    } else if (this.$locale && this.$locale === 'US') {
+      return this.$dayjs(compareDate).add(0, 'hour').format(format)
+    }
   },
   changeSimpleDateFormat (date) {
     var compareDate = new Date(date)
@@ -212,7 +216,14 @@ export const commonMethods = {
       // }
     }
     if (mustTimeShowYn && format !== 'HH:mm') format += ' HH:mm'
-    return this.$dayjs(compareDate).add(9, 'hour').format(format)
+
+    if (this.$locale && this.$locale === 'KR') {
+      return this.$dayjs(compareDate).add(9, 'hour').format(format)
+    } else if (this.$locale && this.$locale === 'US') {
+      return this.$dayjs(compareDate).add(-4, 'hour').format(format)
+    }
+
+    // return this.$dayjs(compareDate).add(9, 'hour').format(format)
     //   if (compareDate === toDate) {
     //     return changeDateHM(compareDate)
     //   } else {

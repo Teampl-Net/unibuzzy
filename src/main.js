@@ -261,6 +261,8 @@ if (localStorage.getItem('appType')) {
   app.config.globalProperties.$mobileYn = null
 }
 
+app.config.globalProperties.$locale = 'US'
+
 app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', 'false')
 localStorage.setItem('testYn', 'false')

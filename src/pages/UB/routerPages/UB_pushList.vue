@@ -95,6 +95,7 @@ export default {
     unknownLoginPop
   },
   props: {
+    pCabinetKeyListStr: {},
     initData: {},
     chanAlimTargetType: {},
     popYn: Boolean,
@@ -1264,6 +1265,8 @@ export default {
           }
         }
         if (this.viewTab === 'N') {
+        } else if (this.viewTab === 'P') {
+          param.orderbyStr = 'a.popPoint DESC, a.creDate DESC'
         } else if (this.viewTab === 'S') {
           param.findActYn = true
           param.findActStarYn = true
@@ -1278,7 +1281,7 @@ export default {
           if (this.viewTab === 'N') {
             param.boardYn = true
           } else {
-            param.ownUserKey = this.GE_USER.userKey
+            //  param.ownUserKey = this.GE_USER.userKey
           }
         } else if (this.viewMainTab === 'A') {
           param.allYn = true
@@ -1294,10 +1297,23 @@ export default {
         if (loadingYn) {
           nonLoading = false
         }
-        var result = await this.$getContentsList(param, nonLoading)
+        var resultList = null
+        console.log(this.pCabinetKeyListStr)
+        if (this.pCabinetKeyListStr) {
+          param.cabinetKeyListStr = this.pCabinetKeyListStr
+          // var result1 = await this.$commonAxiosFunction('/sUniB/tp.getContentsListPage', param)
+          var response = await this.$commonAxiosFunction({
+            url: '/sUniB/tp.getContentsList',
+            param: param
+          }, nonLoading)
+          console.log(response)
+          resultList = response.data
+        } else {
+          var result = await this.$getContentsList(param, nonLoading)
+          resultList = result
+        }
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'getPushContentsList')
         this.axiosQueue.splice(queueIndex, 1)
-        var resultList = result
         this.loadingYn = false
         return resultList
       }
@@ -1463,8 +1479,6 @@ export default {
       return window.scrollY + element.getBoundingClientRect().top
     },
     handleScroll () {
-      // eslint-disable-next-line no-debugger
-      debugger
       this.imgDetailAlertShowYn = false
       this.scrollIngYn = true
       var currentTime = new Date()
@@ -1746,10 +1760,10 @@ export default {
         /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
         }
-        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+        /* data = data.sort(function (a, b) { // num으로 오름차순 정렬
           return b.contentsKey - a.contentsKey
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
-        })
+        }) */
         return data
       }, [])
       return uniqueArr
@@ -1790,7 +1804,6 @@ export default {
       this.targetCKey = null
       this.offsetInt = 0
       this.viewTab = tabName
-
       var resultList = await this.getPushContentsList(null, 0, true)
       var contentList = []
       if (resultList && resultList.content) {

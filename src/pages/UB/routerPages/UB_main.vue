@@ -252,7 +252,7 @@ export default {
       return resultList
     },
     async openSelectSchoolPop () {
-      this.mSchoolList = await this.getChannelList(10, 0, false)
+      this.mSchoolList = null/* await this.getChannelList(10, 0, false) */
       this.mSelectSchoolPopShowYn = true
     },
     closeSelectSchoolPop () {
@@ -753,9 +753,9 @@ export default {
     }
   },
   watch: {
-    locale (val) {
+    /* locale (val) {
       this.$i18n.locale = val
-    },
+    }, */
     pageUpdate (value, old) {
       var history = this.historyStack
       console.log(history)

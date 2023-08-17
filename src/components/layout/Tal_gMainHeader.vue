@@ -24,9 +24,9 @@ export default {
     }
   },
   methods: {
-    changeLang () {
+    /* changeLang () {
       this.$i18n.locale = this.mAppLocale
-    },
+    }, */
     showMenu () {
       this.$emit('showMenu')
     }
