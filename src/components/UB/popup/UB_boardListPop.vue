@@ -58,7 +58,7 @@
         </div>
         <div ref="pushListWrapWrapCompo" style="width: 100%; height: calc(100% - 190px); overflow: hidden auto;">
             <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" >
-                <gBtnSmall style="margin-bottom: 10px;" @click="confirmOk(cont)" :btnTitle="cont.followerKey? 'Followed':'Follow'" :btnThema="cont.followerKey? '':'light'" class="fr" />
+                <!-- <gBtnSmall style="margin-bottom: 10px;" @click="confirmOk(cont)" :btnTitle="cont.followerKey? 'Followed':'Follow'" :btnThema="cont.followerKey? '':'light'" class="fr" /> -->
                 <gContentsBox  :pUnknownYn="false" ref="myContentsBox"  @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
                 <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 13 ?  index === this.GE_DISP_CONTS_LIST.length - 13 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
             </template>
