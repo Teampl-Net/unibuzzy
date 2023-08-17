@@ -33,7 +33,6 @@
         flex-direction: row;
         align-items: center;
         "
-        @click="goChannelMain(chanElement)"
     >
         <div
         v-if="$appType === 'UB' && pSelectedYn === true"
