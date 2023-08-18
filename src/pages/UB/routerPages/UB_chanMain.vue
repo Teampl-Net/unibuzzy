@@ -302,7 +302,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           const response = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.saveUserDo',
+            url: 'https://www.unibuzzy.com/sUniB/tp.saveUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = response.data.doKey
@@ -318,7 +318,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           await this.$commonAxiosFunction({
-            url: '/sUniB/tp.deleteUserDo',
+            url: 'https://www.unibuzzy.com/sUniB/tp.deleteUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = null
@@ -374,7 +374,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.selectMemberObj.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeItemList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getMemberTypeItemList',
         param: param
       })
       console.log('--------------------------')
@@ -391,7 +391,7 @@ export default {
           // eslint-disable-next-line no-debugger
           debugger
           this.$commonAxiosFunction({
-            url: '/sUniB/tp.saveFollower',
+            url: 'https://www.unibuzzy.com/sUniB/tp.saveFollower',
             param: { follower: typeParam }
           }).then(() => {
             this_.resultReqData.memberYn = true
@@ -407,6 +407,7 @@ export default {
         this.$showToastPop(this.$t('ERROR_MSG_INQUIRY_MANAG'))
         return false
       }
+      console.log('this.selectMemberObj', this.selectMemberObj)
     },
     openProfilePop (userInfo) {
       var openPopParam = {}
@@ -439,7 +440,7 @@ export default {
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getFollowerList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.mManagerList = result.data.content
@@ -475,7 +476,7 @@ export default {
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
       try {
-        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: param }, false)
+        const result = await this.$getViewData({ url: 'https://www.unibuzzy.com/sUniB/tp.getChanMainBoard', param: param }, false)
         // eslint-disable-next-line no-debugger
         debugger
         if (!result || !result.data || result.data.result !== 'OK') {
@@ -514,7 +515,7 @@ export default {
         console.log(this.CHANNEL_DETAIL.teamId)
       } else {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getAndSaveTeamAESToken',
+          url: 'https://www.unibuzzy.com/sUniB/tp.getAndSaveTeamAESToken',
           param: { teamKey: this.CHANNEL_DETAIL.teamKey }
         })
         console.log(result.data)
@@ -671,7 +672,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.selectMemberObj.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeItemList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getMemberTypeItemList',
         param: param
       })
       console.log('--------------------------')
@@ -690,7 +691,7 @@ export default {
         typeParam.userKey = this.GE_USER.userKey
         typeParam.teamKey = this.CHANNEL_DETAIL.teamKey
         await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveFollower',
+          url: 'https://www.unibuzzy.com/sUniB/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }
         })
         // } else {
@@ -759,7 +760,7 @@ export default {
       param.teamKey = Number(this.$route.params.encodedTeamKey)
       // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getMemberTypeList',
         param: param
       }, true)
       if (memberTypeList.data.result) {
@@ -995,7 +996,6 @@ export default {
         } else {
           this.$emit('bgcolor', false)
         }
-
         // eslint-disable-next-line no-debugger
         debugger
         if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {

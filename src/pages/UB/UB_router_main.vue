@@ -146,7 +146,7 @@ export default {
       param.teamKey = 824
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
-      const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: param }, false)
+      const result = await this.$getViewData({ url: 'https://www.unibuzzy.com/sUniB/tp.getChanMainBoard', param: param }, false)
       if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
         this.$showToastPop('Cannot find your campus!')
       } else {
@@ -184,7 +184,7 @@ export default {
         paramMap.set('ownUserKey', this.GE_USER.userKey)
         paramMap.set('subsUserKey', this.GE_USER.userKey)
         paramMap.set('userKey', this.GE_USER.userKey)
-        const response = await this.$axios.post('/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap))
+        const response = await this.$axios.post('https://www.unibuzzy.com/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap))
         if (response.data && response.data.content) this.mAttachFileList = response.data.content[0].attachFileList
       }
 
@@ -384,7 +384,7 @@ export default {
     //   paramMap.set('userKey', this.GE_USER.userKey)
     //   // console.log(paramMap)
     //   var response = await this.$commonAxiosFunction({
-    //     url: '/sUniB/tp.getCabinetDetail',
+    //     url: 'https://www.unibuzzy.com/sUniB/tp.getCabinetDetail',
     //     param: Object.fromEntries(paramMap)
     //   })
     //   var mCabinet = response.data.mCabinet
@@ -421,7 +421,7 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       try {
-        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, true)
+        const result = await this.$getViewData({ url: 'https://www.unibuzzy.com/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, true)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.mCloudLoadingShowYn = false
           this.$showToastPop('채널을 찾을 수 없습니다!')

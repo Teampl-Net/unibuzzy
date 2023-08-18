@@ -169,7 +169,7 @@ export default {
         }
       }
       var response = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.UB_createBuildingAndCabinet',
+        url: 'https://www.unibuzzy.com/sUniB/tp.UB_createBuildingAndCabinet',
         param: param
       })
       console.log('newBoard param', param)

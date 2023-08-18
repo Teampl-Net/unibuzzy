@@ -106,7 +106,7 @@ export default {
       param.teamKey = this.propTeamKey
       // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getMemberTypeList',
         param: param
       })
       console.log('memberTypeList')
@@ -135,7 +135,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.selectMemberObj.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeItemList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getMemberTypeItemList',
         param: param
       })
       console.log('--------------------------')
@@ -152,7 +152,7 @@ export default {
           // eslint-disable-next-line no-debugger
           debugger
           this.$commonAxiosFunction({
-            url: '/sUniB/tp.saveFollower',
+            url: 'https://www.unibuzzy.com/sUniB/tp.saveFollower',
             param: { follower: typeParam }
           }).then(() => {
             // eslint-disable-next-line no-debugger

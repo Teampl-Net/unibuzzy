@@ -35,7 +35,7 @@
       <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
         <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" style="cursor: pointer;position: absolute; z-index: 99;" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
           <img style="position: absolute; z-index: 99" :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
-          <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-bottom': area.priority !== 0 && area.priority !== 1 ? 15 + village.areaList[area.priority].h + 'px' : ''}" style="background-color: rgba(245, 245, 220, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
+          <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-top': area.priority !== 0 && area.priority !== 1 ? 15 + (village.areaList[area.priority].h)/1.5 + 'px' : ''}" style="background-color: rgba(245, 245, 220, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
             <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.bdAreaNameMtext }}</p>
           </div>
         </div>
@@ -269,7 +269,7 @@ export default {
         updateYn: true
       }
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveUser',
+        url: 'https://www.unibuzzy.com/sUniB/tp.saveUser',
         param: param
       })
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
@@ -290,7 +290,7 @@ export default {
         this.openBoardPop()
       } else {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getBdAreaDetail',
+          url: 'https://www.unibuzzy.com/sUniB/tp.getBdAreaDetail',
           param: param
         })
         if (result.data) {
@@ -358,7 +358,7 @@ export default {
       // paramMap.set('myTeamKey', 836)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('https://www.unibuzzy.com/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
       )
       console.log('responsed')
       console.log(response)

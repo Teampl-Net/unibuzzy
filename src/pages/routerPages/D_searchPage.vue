@@ -144,21 +144,21 @@
                 <template v-if="mGetAxiosYn && GE_DISP_ALL_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
-                <gListEmpty v-else-if="this.GE_DISP_ALL_LIST.length === 0 && mEmptyYn === true" title='콘텐츠 전체 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+                <gListEmpty v-else-if="this.GE_DISP_ALL_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
               </template>
               <template v-if="this.mSearchContentTab === 'ALIM'" >
                 <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index" />
                 <template v-if="mGetAxiosYn && GE_DISP_ALIM_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
-                <gListEmpty v-else-if="this.GE_DISP_ALIM_LIST.length === 0 && mEmptyYn === true" title='알림 콘텐츠 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+                <gListEmpty v-else-if="this.GE_DISP_ALIM_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
               </template>
               <template v-if="this.mSearchContentTab === 'BOAR'" >
                 <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index" />
                 <template v-if="mGetAxiosYn &&  this.GE_DISP_BOAR_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
-                <gListEmpty v-else-if="this.GE_DISP_BOAR_LIST.length === 0 && mEmptyYn === true" title='게시판 콘텐츠 검색결과가 없어요' subTitle='다시 한번 검색해볼까요?' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+                <gListEmpty v-else-if="this.GE_DISP_BOAR_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
               </template>
               <myObserver @triggerIntersected="contentsLoadMore" id="observer" class="fl w100P" style=""></myObserver>
             </div>
@@ -682,7 +682,7 @@ export default {
     },
     async getCateItemList () {
       var cateItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getCateItemList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getCateItemList',
         param: { cateGroupKey: 2 }
       })
       this.mBusinessItemList = cateItemList.data.cateItemList

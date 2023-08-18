@@ -215,7 +215,7 @@ export default {
                     // var param = {}
                     // param.userKey
                     // var response = await this.$commonAxiosFunction({
-                    // url: '/sUniB/tp.getUserList',
+                    // url: 'https://www.unibuzzy.com/sUniB/tp.getUserList',
                     // param: param
                     // })
                     // // console.log(response)
@@ -248,7 +248,7 @@ export default {
             paramMap.set('userKey', this.propData.userKey)
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: '/sUniB/tp.getFollowerList',
+                url: 'https://www.unibuzzy.com/sUniB/tp.getFollowerList',
                 param: Object.fromEntries(paramMap)
             })
             if (result.data.content) this.mUserInfo = result.data.content[0]
@@ -362,7 +362,7 @@ export default {
         async deleteManager () {
 
             var result = await this.$commonAxiosFunction({
-                url: '/sUniB/tp.deleteManager',
+                url: 'https://www.unibuzzy.com/sUniB/tp.deleteManager',
                 param: this.propData
             })
             if(result.data === true){this.$emit('deleteManager')}

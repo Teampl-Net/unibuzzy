@@ -122,7 +122,7 @@ export default {
       params = { follower: param, doType: 'RQ' }
       console.log(params)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveFollower',
+        url: 'https://www.unibuzzy.com/sUniB/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {

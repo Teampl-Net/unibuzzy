@@ -86,7 +86,7 @@ export default {
         memo.bodyFullStr = inputMemoArea.innerHTML
         memo.bodyMinStr = inputMemoArea.innerHTML
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: 'https://www.unibuzzy.com/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         if (result.data.result) {

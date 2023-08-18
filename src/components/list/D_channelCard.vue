@@ -24,16 +24,8 @@
             margin-top:5px;
         "
   >
-    <div
-        class="w100P "
-        style="
-        position: relative;
-        min-height: 80px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        "
-    >
+    <div @click="goChannelMain(chanElement)" class="w100P" style="position: relative;min-height: 80px;display: flex;flex-direction: row;align-items: center;">
+    <!-- <div class="w100P" style="position: relative;min-height: 80px;display: flex;flex-direction: row;align-items: center;"> -->
         <div
         v-if="$appType === 'UB' && pSelectedYn === true"
         class="font11"
@@ -79,7 +71,7 @@
             right: 0;
             display: flex;
             justify-content: center;
-            algin-items: center;
+            align-items: center;
             padding: 2px;
             bottom: 0;
             width: 20px;
@@ -155,8 +147,8 @@
             }}
             </p>
             <div v-if="$route.path === '/chanList'" class="fr">
-              <p v-if="chanElement.followerKey" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
-              <p v-else @click="changeFollowYn" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;"> + Follow </p>
+              <p @click.stop="stopFollowing" v-if="mFollowYn" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
+              <p v-else @click.stop="saveFollower" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;"> + Follow </p>
             </div>
         </div>
       </div>
@@ -199,11 +191,19 @@ export default {
   data () {
     return {
       mSaveFollowerType: '',
+      mDirectTeamKey: null,
       selectMemberObj: {},
-      mDirectTeamKey: null
+      mFollowYn: false
     }
   },
   methods: {
+    showFollowYn () {
+      if (this.chanElement.followerKey) {
+        this.mFollowYn = true
+      } else {
+        this.mFollowYn = false
+      }
+    },
     goChannelMain (chanElement) {
       var openPopParam = {}
       openPopParam.targetKey = chanElement.teamKey
@@ -213,127 +213,58 @@ export default {
       openPopParam.targetType = 'chanDetail'
       this.$emit('openPop', openPopParam)
     },
+    async saveFollower () {
+      this.mFollowYn = true
+      // eslint-disable-next-line no-new-object
+      var typeParam = new Object()
+      console.log('this.CHANNEL_DETAIL', this.chanElement)
+      if (this.chanElement && this.chanElement.D_CHAN_AUTH.followerKey) {
+        typeParam.followerKey = this.chanElement.D_CHAN_AUTH.followerKey
+        console.log('typeParam.followerKey', typeParam.followerKey)
+      }
+      if (this.selectMemberObj.memberTypeItemKey) {
+        typeParam.memberTypeItemKey = this.selectMemberObj.memberTypeItemKey
+      }
+      typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
+      typeParam.userKey = this.GE_USER.userKey
+      typeParam.teamKey = this.chanElement.teamKey
+      // eslint-disable-next-line no-debugger
+      debugger
+      var result = await this.$commonAxiosFunction({
+        url: 'https://www.unibuzzy.com/sUniB/tp.saveFollower',
+        param: { follower: typeParam, appType: 'UB', doType: 'CR' }
+      })
+      console.log('result', result)
+      this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+      await this.$addChanList(this.chanElement.teamKey)
+    },
+    stopFollowing () {
+      this.mFollowYn = false
+    },
     async getMemberTypeList () {
       var param = {}
       param.teamKey = Number(this.$route.params.encodedTeamKey)
       // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getMemberTypeList',
         param: param
       }, true)
       if (memberTypeList.data.result) {
         this.mMemberTypeList = memberTypeList.data.memberTypeList
         if (this.mMemberTypeList.length > 0) {
           this.selectMemberObj = this.mMemberTypeList[0]
-          console.log('selectMemberObj', this.selectMemberObj)
         }
       }
-      // this.$emit('enterCloudLoading', false)
-      // setTimeout(() => {
-      //   this.$emit('showCloudLoading', false)
-      // }, 1500)
-    },
-    async changeFollowYn () {
-      this.mSaveFollowerType = 'follow'
-      if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn) {
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn === true) {
-          console.log('언팔로우 하시겠습니까?')
-          // this.mErrorPopBodyStr = 'Do you want to unfollow this channel?'
-          // this.mErrorPopBtnType = 'two'
-          // this.mErrorPopShowYn = true
-        }
-      } else {
-        this.confirmOk()
-      }
-    },
-    async okMember () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.memberTypeKey = this.selectMemberObj.memberTypeKey
-      var memberTypeItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeItemList',
-        param: param
-      })
-      console.log('--------------------------')
-      console.log(memberTypeItemList)
-      if (memberTypeItemList.data.result) {
-        // if (memberTypeItemList.data.memberTypeItemList.length === 0) {
-        // eslint-disable-next-line no-new-object
-        var typeParam = new Object()
-        if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
-          typeParam.followerKey = this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
-        }
-        if (this.selectMemberObj.memberTypeItemKey) {
-          typeParam.memberTypeItemKey = this.selectMemberObj.memberTypeItemKey
-        }
-        typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
-        typeParam.userKey = this.GE_USER.userKey
-        typeParam.teamKey = this.CHANNEL_DETAIL.teamKey
-        // eslint-disable-next-line no-debugger
-        debugger
-        await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveFollower',
-          param: { follower: typeParam, appType: 'UB', doType: 'CR' }
-        })
-        // } else {
-        //   this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
-        //   return true
-        // }
-        // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
-        this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
-        this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
-        await this.$addChanList(this.mChanInfo.teamKey)
-      } else {
-        this.$showToastPop(this.$t('ERROR_MSG_INQUIRY_MANAG'))
-        return false
-      }
-      this.$emit('closeLoading')
-    },
-    async confirmOk () {
-      if (this.mSaveFollowerType === 'follow') {
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
-          console.log('관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요')
-        } else {
-          var fStatus = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
-          // eslint-disable-next-line no-new-object
-          this.mSaveFollowerParam = new Object()
-          this.mSaveFollowerParam.teamKey = this.CHANNEL_DETAIL.teamKey
-          this.mSaveFollowerParam.teamName = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
-          this.mSaveFollowerParam.userKey = this.$store.getters['D_USER/GE_USER'].userKey
-          this.mSaveFollowerParam.userName = this.$changeText(this.GE_USER.userDispMtext)
-          var result = false
-          if (fStatus) {
-            if (this.axiosQueue.findIndex((item) => item === 'changeFollower') !== -1) return
-            this.axiosQueue.push('changeFollower')
-            result = await this.$changeFollower({ follower: this.mSaveFollowerParam, doType: 'CR' }, 'del')
-            var queueIndex = this.axiosQueue.findIndex((item) => item === 'changeFollower')
-            // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
-            this.axiosQueue.splice(queueIndex, 1)
-            this.CHANNEL_DETAIL.D_CHAN_AUTH = null
-            this.CHANNEL_DETAIL.followerKey = null
-            this.CHANNEL_DETAIL.userTeamInfo = null
-            this.CHANNEL_DETAIL.followerCount -= 1
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
-
-            this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
-
-            if (result.result || result) {
-              this.$emit('pageReload')
-            } else {
-              this.mErrorPopBodyStr = '실패했습니다. 관리자에게 문의해주세요'
-              this.mErrorPopBtnType = 'timeover'
-              this.mErrorPopShowYn = true
-            }
-          } else {
-            await this.okMember()
-          }
-        }
-      }
+      // console.log('selectMemberObj', this.selectMemberObj)
     }
   },
   computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
     CHANNEL_DETAIL () {
+      console.log('hi?')
       if (!this.chanElement && !this.mDirectTeamKey) return {}
       let teamKey
       if (this.chanElement) {

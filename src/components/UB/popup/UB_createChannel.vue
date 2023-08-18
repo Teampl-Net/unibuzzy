@@ -262,7 +262,7 @@ export default {
       var param = new Object()
       param.cateGroupKey = 2
       var cateItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getCateItemList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getCateItemList',
         param: param
       })
       console.log('#################')
@@ -391,7 +391,7 @@ export default {
           this.mPageType = '삭제'
           if (gParam.teamKey) {
             var res = await this.$commonAxiosFunction({
-              url: '/sUniB/tp.deleteTeam',
+              url: 'https://www.unibuzzy.com/sUniB/tp.deleteTeam',
               param: { teamKey: gParam.teamKey }
             })
             console.log(res)
@@ -411,7 +411,7 @@ export default {
         console.log(gParam)
 
         var response = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.UB_createTeamAndBuilding',
+          url: 'https://www.unibuzzy.com/sUniB/tp.UB_createTeamAndBuilding',
           param: { teamRequest: gParam }
         })
 

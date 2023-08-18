@@ -327,7 +327,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getFollowerList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       }, true)
       // console.log(result)
@@ -433,7 +433,7 @@ export default {
         paramMap.set('ownUserKey', this.GE_USER.userKey)
         paramMap.set('subsUserKey', this.GE_USER.userKey)
         paramMap.set('userKey', this.GE_USER.userKey)
-        const response = await this.$axios.post('/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap))
+        const response = await this.$axios.post('https://www.unibuzzy.com/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap))
         if (response.data && response.data.content) this.mAttachFileList = response.data.content[0].attachFileList
       }
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {
@@ -622,7 +622,7 @@ export default {
       var paramMap = new Map()
       paramMap.set('teamKey', detailValue.targetKey)
       paramMap.set('fUserKey', this.GE_USER.userKey)
-      var result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+      var result = await this.$getViewData({ url: 'https://www.unibuzzy.com/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
       if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
         alert('채널을 찾을 수 없습니다!')
         return
@@ -730,7 +730,7 @@ export default {
       memo.allMemoYn = true
       memo.memoKey = memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemoList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getMemoList',
         param: memo
       }, true)
       var memos = result.data.memoList[0]
@@ -751,7 +751,7 @@ export default {
       }
       // paramMap.set('followerType', 'M')
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getFollowerList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       }, true)
       var index = this.axiosQueue.findIndex((item) => item === 'getFollowerList')

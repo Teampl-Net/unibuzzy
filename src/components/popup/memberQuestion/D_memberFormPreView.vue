@@ -75,7 +75,7 @@ export default {
       // param.formKey = this.propData.formKey
       // param.teamKey = this.propData.teamKey
       // var result = await this.$commonAxiosFunction({
-      //   url : '/sUniB/tp.getMQuestion',
+      //   url : 'https://www.unibuzzy.com/sUniB/tp.getMQuestion',
       //   param: param
       // })
       // this.mQuestList = result

@@ -673,7 +673,7 @@ export default {
     },
     async getCateItemList () {
       var cateItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getCateItemList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getCateItemList',
         param: { cateGroupKey: 2 }
       })
       this.mBusinessItemList = cateItemList.data.cateItemList

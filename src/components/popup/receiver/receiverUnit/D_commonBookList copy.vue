@@ -136,7 +136,7 @@ export default {
       param.menuType = data.menuType
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteCabinet',
+          url: 'https://www.unibuzzy.com/sUniB/tp.deleteCabinet',
           param: param
         })
         if (result.data === 'true' || result.data === true) {
@@ -181,7 +181,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getTeamMenuList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getTeamMenuList',
         param: Object.fromEntries(paramMap)
       })
       this.cabinetList = result.data
@@ -244,7 +244,7 @@ export default {
       paramSet.teamMenuList = [...tempList]
       var result = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.changePosTeamMenu',
+          url: 'https://www.unibuzzy.com/sUniB/tp.changePosTeamMenu',
           param: paramSet
         }
       )

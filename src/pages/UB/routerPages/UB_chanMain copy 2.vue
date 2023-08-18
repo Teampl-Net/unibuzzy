@@ -200,7 +200,7 @@ export default {
         console.log(this.CHANNEL_DETAIL.teamId)
       } else {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getAndSaveTeamAESToken',
+          url: 'https://www.unibuzzy.com/sUniB/tp.getAndSaveTeamAESToken',
           param: { teamKey: this.CHANNEL_DETAIL.teamKey }
         })
         console.log(result.data)

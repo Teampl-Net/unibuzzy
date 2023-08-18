@@ -67,7 +67,7 @@ export default {
       paramMap.set('showProfileYn', true)
       // paramMap.set('followerType', 'M')
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getFollowerList',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.memberList = result.data.content
@@ -147,7 +147,7 @@ export default {
         if (userKeyList && userKeyList.length > 0) {
           param.userKeyList = userKeyList
           result = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.saveManager',
+            url: 'https://www.unibuzzy.com/sUniB/tp.saveManager',
             param: param
           })
         }
@@ -167,7 +167,7 @@ export default {
             follower.userName = this.$changeText(this.directAddMemList[u].userDispMtext || this.directAddMemList[u].userNameMtext)
             param.follower = follower
             result = await this.$commonAxiosFunction({
-              url: '/sUniB/tp.saveManager',
+              url: 'https://www.unibuzzy.com/sUniB/tp.saveManager',
               param: param
             })
           }

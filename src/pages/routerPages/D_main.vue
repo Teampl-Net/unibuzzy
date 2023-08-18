@@ -338,7 +338,7 @@ export default {
       paramMap.set('soEmail', this.GE_USER.soEmail)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('/sUniB/tp.firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('https://www.unibuzzy.com/sUniB/tp.firstLoginCheck', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
@@ -356,7 +356,7 @@ export default {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')
       var paramMap = new Map()
-      var response = await this.$axios.post('/sUniB/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('https://www.unibuzzy.com/sUniB/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
