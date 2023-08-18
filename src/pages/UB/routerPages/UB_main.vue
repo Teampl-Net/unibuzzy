@@ -132,7 +132,7 @@ export default {
     this.setNativeHeight()
     this.$store.commit('D_HISTORY/updateStack', [0])
     this.$emit('clearInfo', { detail: null, targetType: 'main' })
-    this.getUserTeamList()
+    // this.getUserTeamList()
 
     var urlParam = localStorage.getItem('deepLinkQueue')
     if (urlParam && urlParam.trim() !== '') {
@@ -194,8 +194,9 @@ export default {
       this.resetHistory()
       this.mSelectSchoolPopShowYn = false
     },
-    openCreChanPop () {
+    async openCreChanPop () {
       this.mInfoBoxShowYn = false
+      await this.getUserTeamList()
       this.mCreChannelShowYn = true
     },
     closeBoardPop (shadowClickYn) {
