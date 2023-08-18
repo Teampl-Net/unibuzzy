@@ -138,7 +138,7 @@ import unknownLoginPop from '../../pageComponents/channel/D_unknownLoginPop.vue'
 
 export default {
   created () {
-    console.log(this.propParams)
+    console.log('this.propParams있음', this.propParams)
     if (this.propParams.targetType === 'chanDetail' && Number(this.propParams.targetKey) === 735) {
       this.homepageYn = true
     }

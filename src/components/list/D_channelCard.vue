@@ -187,6 +187,7 @@ export default {
     if (this.pPopTitle !== 'townList') {
       this.getMemberTypeList()
     }
+    this.showFollowYn()
   },
   data () {
     return {
@@ -235,6 +236,7 @@ export default {
         param: { follower: typeParam, appType: 'UB', doType: 'CR' }
       })
       console.log('result', result)
+      console.log('this.CHANNEL_DETAIL.', this.CHANNEL_DETAIL)
       this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
       await this.$addChanList(this.chanElement.teamKey)
