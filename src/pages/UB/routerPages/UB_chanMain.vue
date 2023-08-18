@@ -231,6 +231,7 @@ export default {
     }
   },
   mounted () {
+    console.log('22222 CHANNEL_DETAIL', this.CHANNEL_DETAIL)
     this.$nextTick(() => {
       this.calcSummaryWrapH()
       this.mChanMainScrollWrap = this.$refs.chanScrollWrap

@@ -268,7 +268,7 @@ export default {
       }
     },
     async loadMore (pageSize) {
-      alert('c')
+      // alert('c')
       if (this.mAxiosQueue.findIndex((item) => item === 'loadMore') !== -1) return
       this.mAxiosQueue.push('loadMore')
       if (this.mEndListYn === false) {

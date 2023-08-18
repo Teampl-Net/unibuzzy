@@ -58,7 +58,7 @@
         <myObserver v-if="index === this.dateList.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
       </template>
     </div>
-    <gEmpty :contentName="$t('COMMON_TAB_FILE_DRIVE')" v-else class="mtop-2"/>
+    <gEmpty :contentName="contentName" v-else class="mtop-2"/>
   </div>
   <transition name="showModal">
     <findContentsList contentsListTargetType="fileBox" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
@@ -99,7 +99,8 @@ export default {
       resultSearchKeyList: [],
       offsetInt: 0,
       endListYn: false,
-      isMobile: /Mobi/i.test(window.navigator.userAgent)
+      isMobile: /Mobi/i.test(window.navigator.userAgent),
+      contentName: '파일함'
     }
   },
   watch: {

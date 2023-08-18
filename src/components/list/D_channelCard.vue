@@ -235,11 +235,11 @@ export default {
         url: '/sUniB/tp.saveFollower',
         param: { follower: typeParam, appType: 'UB', doType: 'CR' }
       })
-      console.log('result', result)
-      console.log('this.CHANNEL_DETAIL.', this.CHANNEL_DETAIL)
-      this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
+      console.log('44444 result', result)
+      this.CHANNEL_DETAIL.D_CHAN_AUTH.push({ followYn: true })
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
       await this.$addChanList(this.chanElement.teamKey)
+      console.log('44444 this.CHANNEL_DETAIL.', this.CHANNEL_DETAIL)
     },
     stopFollowing () {
       this.mFollowYn = false
@@ -266,7 +266,6 @@ export default {
       return this.$store.getters['D_USER/GE_USER']
     },
     CHANNEL_DETAIL () {
-      console.log('hi?')
       if (!this.chanElement && !this.mDirectTeamKey) return {}
       let teamKey
       if (this.chanElement) {

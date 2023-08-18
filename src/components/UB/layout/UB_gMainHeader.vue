@@ -87,6 +87,7 @@ export default {
   padding-right: 1rem;
   text-align: left;
   width: calc(100% + 1px);
+  background-color:#fff;
 }
 /* .mainMenuIcon{width: 1.8rem; margin-top: 5px; -webkit-user-drag: none;} */
 .mainHeaderLogo{width: 1.7rem; margin: 0 0.4rem; -webkit-user-drag: none;}
