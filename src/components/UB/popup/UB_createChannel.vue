@@ -379,7 +379,7 @@ export default {
           } else return
           gParam.teamType = this.mSelectedTeamType
         }
-
+        gParam.creUserKey = this.GE_USER.userKey
         gParam.logoFilekey = this.mSelectedIcon.selectedId
         gParam.picMfilekey = this.mSelectedBg.selectedId
         // gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
