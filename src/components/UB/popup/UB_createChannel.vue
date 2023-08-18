@@ -359,7 +359,9 @@ export default {
 
         gParam.nameMtext = 'EN$^$' + this.mInputChannelName
         gParam.memoMtext = this.mInputChannelMemo
-        gParam.bdIconPath = this.pSelectedBuilding.selectPath
+        if (this.pSelectedBuilding) {
+          gParam.bdIconPath = this.pSelectedBuilding.selectPath
+        }
         var teamType = this.$teamTypeString(this.mSelectedTeamTypeKey)
         if (this.mInputChannelMemo === undefined || this.mInputChannelMemo === null || this.mInputChannelMemo.replace(' ', '') === '') {
           gParam.memoMtext = teamType + '의 산업군을 가진 채널입니다.'
