@@ -767,7 +767,6 @@ export default {
     },
     async confirmOk () {
       this.mErrorPopShowYn = false
-      alert(this.mSaveFollowerType)
       if (this.mSaveFollowerType === 'follow') {
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
           this.mErrorPopBodyStr = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
@@ -828,7 +827,6 @@ export default {
       }
     },
     async changeFollowYn () {
-      alert(this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn)
       this.mSaveFollowerType = 'follow'
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn === true) {
         this.mErrorPopBodyStr = 'Do you want to unfollow this channel?'
