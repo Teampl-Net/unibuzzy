@@ -1,7 +1,7 @@
 <template>
   <div style="width: 100%; float: left; margin-top: 10px;">
     <listTitle :propViewTab="mViewTab" :propMoreLink="mMoreLink" propListTitle="내 컨텐츠" :activeTabList="mActiveTabList" style=" float: left;" class="w100P" @openPop="openPop"/>
-    <div style="width: calc(100% + 20px); height:1.5px; background: rgb(220, 221, 235, 0); margin-left: -10px; float: left; margin-top:0px;"></div>
+    <div style="width: calc(100% + 20px); height:1.5px; background: rgb(220, 221, 235); margin-left: -10px; float: left; margin-top:0px;"></div>
     <div style=" float: left; width: 100%; ">
       <div style="width: 100%; min-height: 40px; float: left; padding: 0px 0; position: relative;">
         <gActiveBar ref="activeBarPushListTop5" :tabList="this.mActiveTabList" @changeTab="changeTab" />
