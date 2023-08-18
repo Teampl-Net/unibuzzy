@@ -187,11 +187,14 @@
 export default {
   props: {
     chanElement: {},
+    pPopTitle: {},
     pSelectedYn: Boolean
   },
   created () {
     console.log('chanElement', this.chanElement)
-    this.getMemberTypeList()
+    if (this.pPopTitle !== 'townList') {
+      this.getMemberTypeList()
+    }
   },
   data () {
     return {

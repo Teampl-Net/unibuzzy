@@ -456,12 +456,13 @@ const D_CHANNEL = {
         var chanList = state.chanList
         if (addContList.length === 0) return
         if (!addContList[0]) return
-
+        console.log('state.chanList')
+        console.log(addContList)
+        console.log(state.chanList)
         for (var i = 0; i < addContList.length; i++) {
           idx1 = chanList.findIndex((item) => item.teamKey === addContList[i].creTeamKey)
           if (idx1 === -1) continue
           var chanDetail = chanList[idx1]
-
           if (addContList[i].jobkindId === 'BOAR') {
             idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
           } else {
@@ -519,6 +520,7 @@ const D_CHANNEL = {
           }
         }
         state.chanList = chanList
+        console.log(state.chanList)
         if (chanDetail) {
           if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
         }
@@ -729,6 +731,7 @@ const D_CHANNEL = {
     },
     AC_ADD_CONTENTS: ({ commit, state }, payload) => { // 채널의 컨텐츠 부분 추가 (ALIM/BOARD)
       if (!payload) return
+      console.log(payload)
       for (var i = 0; i < payload.length; i++) {
         var userDo = payload[i].userDoList
         var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
