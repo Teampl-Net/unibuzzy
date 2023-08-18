@@ -67,7 +67,7 @@ if (type === 'UB') {
         {
           // path: '/chan/:key',
           // path: '/chan/:pTeamKey',
-          path: '/chan/:encodedTeamKey',
+          path: '/chan/:encodedTeamKey/:priority',
           name: 'chanMain',
           props: true,
           component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_chanMain.vue')

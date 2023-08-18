@@ -52,7 +52,7 @@ export default {
       // console.log(param)
       // 서비스가 나오면 여기서 axios로 데이터 받아 set해주기!!!!
       // var result = await this.$commonAxiosFunction({
-      //   url : 'https://www.unibuzzy.com/sUniB/tp.getChanMemberForm',
+      //   url : '/sUniB/tp.getChanMemberForm',
       //   param: param
       // })
       this.memberFormList = this.dummyData
@@ -63,7 +63,7 @@ export default {
       // param.key = key
       // param.activeYn = true
       // var result = await this.$commonAxiosFunction({
-      //   url : 'https://www.unibuzzy.com/sUniB/tp.changeMQuestion',
+      //   url : '/sUniB/tp.changeMQuestion',
       //   param: param
       // })
       data.activeYn = !data.activeYn

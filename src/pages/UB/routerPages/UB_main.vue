@@ -269,7 +269,7 @@ export default {
         updateYn: true
       }
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.saveUser',
+        url: '/sUniB/tp.saveUser',
         param: param
       })
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
@@ -290,7 +290,7 @@ export default {
         this.openBoardPop()
       } else {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.getBdAreaDetail',
+          url: '/sUniB/tp.getBdAreaDetail',
           param: param
         })
         if (result.data) {
@@ -358,7 +358,7 @@ export default {
       // paramMap.set('myTeamKey', 836)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('https://www.unibuzzy.com/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
       )
       console.log('responsed')
       console.log(response)

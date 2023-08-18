@@ -570,7 +570,7 @@ export default {
       }
       paramMap.set('pageSize', 10)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getMyFileList',
+        url: '/sUniB/tp.getMyFileList',
         param: Object.fromEntries(paramMap)
       }, nonLoadingYn)
 
@@ -894,7 +894,7 @@ export default {
 
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.deleteMemo',
+          url: '/sUniB/tp.deleteMemo',
           param: memo
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -1066,7 +1066,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -1197,7 +1197,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getMemoList',
+        url: '/sUniB/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -1342,7 +1342,7 @@ export default {
         paramMap.set('ownUserKey', this.GE_USER.userKey)
         paramMap.set('jobkindId', 'ALIM')
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.getMCabContentsList',
+          url: '/sUniB/tp.getMCabContentsList',
           param: Object.fromEntries(paramMap)
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')

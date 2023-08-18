@@ -254,7 +254,7 @@ export default {
       param.sample = sample
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.saveSample',
+        url: '/sUniB/tp.saveSample',
         param: param
       })
       this.sampleTitleMtext = ''

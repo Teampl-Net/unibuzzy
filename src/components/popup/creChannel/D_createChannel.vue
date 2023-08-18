@@ -122,7 +122,7 @@
       </div>
     </div>
     <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='setParam' />
-    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', true)" confirmType='timeout' v-if="mCreatedSuccessPopYn" />
+    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', true)" v-if="mCreatedSuccessPopYn" />
     <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn === true" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
 </div>
 </template>
@@ -236,7 +236,7 @@ export default {
       var param = new Object()
       param.cateGroupKey = 2
       var cateItemList = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getCateItemList',
+        url: '/sUniB/tp.getCateItemList',
         param: param
       })
       console.log('#################')
@@ -397,8 +397,8 @@ export default {
           console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
           console.log(params)
 
-          this.mCreatedSuccessPopYn = false
-          this.$emit('successCreChan', params)
+          // this.mCreatedSuccessPopYn = false
+          // this.$emit('successCreChan', params)
         }
       } catch (error) {
         console.log(error)

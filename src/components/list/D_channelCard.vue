@@ -232,7 +232,7 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.saveFollower',
+        url: '/sUniB/tp.saveFollower',
         param: { follower: typeParam, appType: 'UB', doType: 'CR' }
       })
       console.log('result', result)
@@ -249,7 +249,7 @@ export default {
       param.teamKey = Number(this.$route.params.encodedTeamKey)
       // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getMemberTypeList',
+        url: '/sUniB/tp.getMemberTypeList',
         param: param
       }, true)
       if (memberTypeList.data.result) {

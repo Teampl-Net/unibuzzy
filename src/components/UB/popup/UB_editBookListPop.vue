@@ -224,7 +224,7 @@ export default {
       paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
       paramMap.set('searchKeyStr', 'sSub' + (index + 1))
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getMCabUserGroupList',
+        url: '/sUniB/tp.getMCabUserGroupList',
         param: Object.fromEntries(paramMap)
       })
       if (result.data.length > 0) {
@@ -248,7 +248,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getTeamMenuList',
+        url: '/sUniB/tp.getTeamMenuList',
         param: Object.fromEntries(paramMap)
       })
       this.mEditBookList = result.data
@@ -331,7 +331,7 @@ export default {
       paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
       paramMap.set('jobkindId', 'USER')
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getMCabContentsList',
+        url: '/sUniB/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       this.memberList = result.data

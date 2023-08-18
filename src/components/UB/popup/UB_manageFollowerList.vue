@@ -176,7 +176,7 @@ export default {
       paramMap.set('adminYn', true)
       paramMap.set('pageSize', 1000)
       result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.getFollowerList',
+          url: '/sUniB/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
       })
       this.managerList = result.data.content
@@ -193,7 +193,7 @@ export default {
       param.teamKey = this.propData.teamKey
       var resultList = null
       var memberTypeList = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getMemberTypeList',
+        url: '/sUniB/tp.getMemberTypeList',
         param: param
       }, true)
       if (memberTypeList.data.result) {
@@ -204,7 +204,7 @@ export default {
             var itemParam = new Object()
             itemParam.memberTypeKey = resultList[0].memberTypeKey
             var memberTypeItemList = await this.$commonAxiosFunction({
-                url: 'https://www.unibuzzy.com/sUniB/tp.getMemberTypeItemList',
+                url: '/sUniB/tp.getMemberTypeItemList',
                 param: itemParam
             }, true)
             itemList = memberTypeItemList.data.memberTypeItemList
@@ -292,7 +292,7 @@ export default {
       param.reqMemberStatus = '99'
       params = { follower: param, doType: 'AP' }
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.saveFollower',
+        url: '/sUniB/tp.saveFollower',
         param: params
       })
       console.log('params')
@@ -341,7 +341,7 @@ export default {
       } */
 
       result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.getFollowerList',
+          url: '/sUniB/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
         debugger
@@ -358,7 +358,7 @@ export default {
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.getFollowerList',
+          url: '/sUniB/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
         debugger
@@ -383,7 +383,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.deleteManager',
+        url: '/sUniB/tp.deleteManager',
         param: param
       })
 
@@ -393,7 +393,7 @@ export default {
       debugger
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.saveManager',
+        url: '/sUniB/tp.saveManager',
         param: param
       })
       console.log(result)

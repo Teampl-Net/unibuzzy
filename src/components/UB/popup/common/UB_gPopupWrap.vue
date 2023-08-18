@@ -61,7 +61,7 @@ export default {
         paramMap.set('ownUserKey', this.GE_USER.userKey)
         paramMap.set('subsUserKey', this.GE_USER.userKey)
         paramMap.set('userKey', this.GE_USER.userKey)
-        const response = await this.$axios.post('https://www.unibuzzy.com/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap))
+        const response = await this.$axios.post('/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap))
         if (response.data && response.data.content) this.mAttachFileList = response.data.content[0].attachFileList
       }
       if (this.parentPopN !== undefined && this.parentPopN !== null && this.parentPopN !== '') {

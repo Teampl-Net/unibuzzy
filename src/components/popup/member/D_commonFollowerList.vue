@@ -217,7 +217,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.deleteManager',
+        url: '/sUniB/tp.deleteManager',
         param: param
       })
       return result

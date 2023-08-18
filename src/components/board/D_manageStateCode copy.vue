@@ -174,7 +174,7 @@ export default {
           param.contentsKey = this.contentsKey
           param.creTeamKey = this.teamKey
           var result = await this.$commonAxiosFunction({
-            url: 'https://www.unibuzzy.com/sUniB/tp.updateWorkStat',
+            url: '/sUniB/tp.updateWorkStat',
             param: param
           })
           // eslint-disable-next-line no-debugger

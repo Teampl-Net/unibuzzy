@@ -108,12 +108,12 @@ export default {
       // const wl = window.location
       // 인증 후 callback URLservice/tp.checkplus_success
       // 패치해라
-      const returnSuccessUrl = 'https://www.unibuzzy.com/sUniB/tp.successUserCertification'
-      const returnErrorUrl = 'https://www.unibuzzy.com/sUniB/tp.successUserCertification'
+      const returnSuccessUrl = '/sUniB/tp.successUserCertification'
+      const returnErrorUrl = '/sUniB/tp.successUserCertification'
       // callback 후 WAS에서 최종적으로 redirect 시킬 URL(결과 화면)
       // const redirectUrl = 'https://222.233.118.96:8080'
       var res = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getNiceToken',
+        url: '/sUniB/tp.getNiceToken',
         param: { returnSuccessUrl: returnSuccessUrl, returnErrorUrl: returnErrorUrl }
       })
       this.winPopShowYn = true

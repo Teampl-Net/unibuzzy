@@ -146,7 +146,7 @@ export default {
       param.teamKey = 824
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
-      const result = await this.$getViewData({ url: 'https://www.unibuzzy.com/sUniB/tp.getChanMainBoard', param: param }, false)
+      const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: param }, false)
       if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
         this.$showToastPop('Cannot find your campus!')
       } else {
@@ -184,7 +184,7 @@ export default {
         paramMap.set('ownUserKey', this.GE_USER.userKey)
         paramMap.set('subsUserKey', this.GE_USER.userKey)
         paramMap.set('userKey', this.GE_USER.userKey)
-        const response = await this.$axios.post('https://www.unibuzzy.com/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap))
+        const response = await this.$axios.post('/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap))
         if (response.data && response.data.content) this.mAttachFileList = response.data.content[0].attachFileList
       }
 
@@ -384,7 +384,7 @@ export default {
     //   paramMap.set('userKey', this.GE_USER.userKey)
     //   // console.log(paramMap)
     //   var response = await this.$commonAxiosFunction({
-    //     url: 'https://www.unibuzzy.com/sUniB/tp.getCabinetDetail',
+    //     url: '/sUniB/tp.getCabinetDetail',
     //     param: Object.fromEntries(paramMap)
     //   })
     //   var mCabinet = response.data.mCabinet
@@ -415,13 +415,10 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('fUserKey', this.GE_USER.userKey)
       paramMap.set('userKey', this.GE_USER.userKey)
-      if (detailValue.cabinetKeyListStr) {
-        paramMap.set('cabinetKeyListStr', detailValue.cabinetKeyListStr)
-      }
       // eslint-disable-next-line no-debugger
       debugger
       try {
-        const result = await this.$getViewData({ url: 'https://www.unibuzzy.com/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, true)
+        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, true)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.mCloudLoadingShowYn = false
           this.$showToastPop('채널을 찾을 수 없습니다!')
@@ -440,10 +437,14 @@ export default {
         //     initData.contentsList = res.content
         //   })
         // })
-        console.log('야아아아아아압')
-        console.log(result)
-        initData.contentsList = result.data.contentsListPage
-        console.log('모그렛다')
+        if (detailValue.cabinetKeyListStr) {
+          this.mCabKeyListStr = detailValue.cabinetKeyListStr
+          initData.cabinetKeyListStr = detailValue.cabinetKeyListStr
+          initData.contentsList = await this.getMyContentsList(20, null, false)
+        } else {
+          initData.contentsList = result.data.contentsListPage
+        }
+        console.log('얍')
         console.log(initData)
       } catch (error) {
         this.mCloudLoadingShowYn = false
@@ -477,20 +478,8 @@ export default {
       // if (!teamKey && detailValue.creTeamKey) {
       //   encodedTeamKey = detailValue.creTeamKey
       // }
-      this.$router.push(`/chan/${chanMainParam.teamKey}`)
+      this.$router.push(`/chan/${chanMainParam.teamKey}/${detailValue.areaInfo.priority}`)
       // this.showCloudLoading(false, 1750)
-    },
-    async getTownCabinetList () {
-      var param = {}
-      param.parentTeamKey = 824
-      var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getTownCabinetList',
-        param: param
-      })
-      if (result.data.result) {
-        this.mCabKeyListStr = result.data.cabinetKeyListStr
-      }
-      console.log(result)
     },
     async getMyContentsList (pageSize, offsetInput, loadingYn, searchParam) {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return

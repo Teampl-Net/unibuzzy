@@ -145,7 +145,8 @@ export default {
       selectMemberObj: null,
       mMemberTypeList: [],
       mBoardContentsList: [],
-      pushListWrap: null
+      pushListWrap: null,
+      mAxiosQueue: []
       // errorPopYn: false
     }
   },
@@ -302,7 +303,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           const response = await this.$commonAxiosFunction({
-            url: 'https://www.unibuzzy.com/sUniB/tp.saveUserDo',
+            url: '/sUniB/tp.saveUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = response.data.doKey
@@ -318,7 +319,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           await this.$commonAxiosFunction({
-            url: 'https://www.unibuzzy.com/sUniB/tp.deleteUserDo',
+            url: '/sUniB/tp.deleteUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = null
@@ -374,7 +375,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.selectMemberObj.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getMemberTypeItemList',
+        url: '/sUniB/tp.getMemberTypeItemList',
         param: param
       })
       console.log('--------------------------')
@@ -391,7 +392,7 @@ export default {
           // eslint-disable-next-line no-debugger
           debugger
           this.$commonAxiosFunction({
-            url: 'https://www.unibuzzy.com/sUniB/tp.saveFollower',
+            url: '/sUniB/tp.saveFollower',
             param: { follower: typeParam }
           }).then(() => {
             this_.resultReqData.memberYn = true
@@ -440,7 +441,7 @@ export default {
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getFollowerList',
+        url: '/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.mManagerList = result.data.content
@@ -460,6 +461,64 @@ export default {
       var result = await this.$getTeamMenuList(paramMap, true)
       this.mChanInfo.boardList = result
     },
+    async getTownCabinetList () {
+      var param = {}
+      param.parentTeamKey = Number(this.$route.params.encodedTeamKey)
+      var result = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.getTownCabinetList',
+        param: param
+      })
+      if (result.data.result) {
+        this.mCabKeyListStr = result.data.cabinetKeyListStr
+      }
+    },
+    async getMyContentsList (pageSize, offsetInput, loadingYn, searchParam) {
+      if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
+      this.mAxiosQueue.push('getPushContentsList')
+      var param = {}
+      if (searchParam) {
+        param = searchParam
+      }
+      if (this.viewTab === 'P') {
+        param.orderbyStr = 'a.popPoint DESC, a.creDate DESC'
+      } else if (this.viewTab === 'N') {
+        param.orderbyStr = 'a.creDate DESC'
+      }
+      param.myUserKey = this.GE_USER.userKey
+      param.cabinetKeyListStr = this.mCabKeyListStr
+      if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.mOffsetInt }
+
+      if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = this.mPageSize }
+
+      if (this.findKeyList) {
+        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
+          param.title = this.findKeyList.searchKey
+        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
+          param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
+        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
+          param.toCreDateStr = this.findKeyList.toCreDateStr
+        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
+          param.fromCreDateStr = this.findKeyList.fromCreDateStr
+        } if (this.findKeyList.workStatCodeKey !== undefined && this.findKeyList.workStatCodeKey !== null && this.findKeyList.workStatCodeKey !== '') {
+          param.workStatCodeKey = this.findKeyList.workStatCodeKey
+        } if (this.findKeyList.creUserName !== undefined && this.findKeyList.creUserName !== null && this.findKeyList.creUserName !== '') {
+          param.creUserName = this.findKeyList.creUserName
+        } if (this.findKeyList.selectedSticker) {
+          param.findActStickerYn = true
+          param.findActYn = true
+          param.stickerKey = this.findKeyList.selectedSticker.stickerKey
+        }
+      }
+      var nonLoading = true
+      if (loadingYn) {
+        nonLoading = false
+      }
+      var result = await this.$getContentsList(param, nonLoading)
+      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList')
+      this.mAxiosQueue.splice(queueIndex, 1)
+      var resultList = result
+      return resultList
+    },
     async getChanMain () {
       // eslint-disable-next-line no-debugger
       debugger
@@ -475,8 +534,11 @@ export default {
       param.teamKey = teamKey
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
+      if (this.$route.params.priority === '0') {
+        this.getTownCabinetList()
+      }
       try {
-        const result = await this.$getViewData({ url: 'https://www.unibuzzy.com/sUniB/tp.getChanMainBoard', param: param }, false)
+        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: param }, false)
         // eslint-disable-next-line no-debugger
         debugger
         if (!result || !result.data || result.data.result !== 'OK') {
@@ -484,7 +546,7 @@ export default {
           return
         }
         const teamDetail = result.data.team.content[0]
-        this.mCabKeyListStr = result.data.cabinetKeyListStr
+        // this.mCabKeyListStr = result.data.cabinetKeyListStr
         await this.$addChanVuex([teamDetail])
         chanMainParam.nameMtext = teamDetail.nameMtext
         chanMainParam.chanName = teamDetail.nameMtext
@@ -494,8 +556,14 @@ export default {
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
         }
         initData = result.data
-        initData.contentsList = result.data.contentsListPage
-        initData.cabinetKeyListStr = result.data.cabinetKeyListStr
+        if (this.$route.params.priority === '0') {
+          await this.getTownCabinetList()
+          initData.contentsList = await this.getMyContentsList(20, null, true)
+          initData.cabinetKeyListStr = this.mCabKeyListStr
+        } else {
+          initData.contentsList = result.data.contentsListPage
+          initData.cabinetKeyListStr = result.data.cabinetKeyListStr
+        }
       } catch (error) {
         this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
         console.error(error)
@@ -515,7 +583,7 @@ export default {
         console.log(this.CHANNEL_DETAIL.teamId)
       } else {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.getAndSaveTeamAESToken',
+          url: '/sUniB/tp.getAndSaveTeamAESToken',
           param: { teamKey: this.CHANNEL_DETAIL.teamKey }
         })
         console.log(result.data)
@@ -672,7 +740,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.selectMemberObj.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getMemberTypeItemList',
+        url: '/sUniB/tp.getMemberTypeItemList',
         param: param
       })
       console.log('--------------------------')
@@ -691,7 +759,7 @@ export default {
         typeParam.userKey = this.GE_USER.userKey
         typeParam.teamKey = this.CHANNEL_DETAIL.teamKey
         await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.saveFollower',
+          url: '/sUniB/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }
         })
         // } else {
@@ -760,7 +828,7 @@ export default {
       param.teamKey = Number(this.$route.params.encodedTeamKey)
       // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getMemberTypeList',
+        url: '/sUniB/tp.getMemberTypeList',
         param: param
       }, true)
       if (memberTypeList.data.result) {

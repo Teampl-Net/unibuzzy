@@ -124,6 +124,11 @@ export default {
     if (this.propParams && this.propParams.alimTabType) {
       this.viewMainTab = this.propParams.alimTabType
     }
+    if (this.pCabinetKeyListStr) {
+      this.mCabinetKeyListStr = this.pCabinetKeyListStr
+    }
+    console.log('확인필요합니다')
+    console.log(this.initData)
 
     this.readyFunction()
     /*  } */
@@ -464,6 +469,9 @@ export default {
       return this.replaceArr(returnBoardList)
     },
     GE_DISP_ALL_LIST () {
+      if (this.$route.params.priority === '0') {
+        return this.replaceArr(this.allContentsList)
+      }
       var idx1, idx2
       var returnAllList = []
       var chanDetail = null
@@ -576,7 +584,7 @@ export default {
       }
       paramMap.set('pageSize', 10)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getMyFileList',
+        url: '/sUniB/tp.getMyFileList',
         param: Object.fromEntries(paramMap)
       }, nonLoadingYn)
 
@@ -902,7 +910,7 @@ export default {
 
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.deleteMemo',
+          url: '/sUniB/tp.deleteMemo',
           param: memo
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -1074,7 +1082,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -1205,7 +1213,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getMemoList',
+        url: '/sUniB/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -1284,8 +1292,8 @@ export default {
             //  param.ownUserKey = this.GE_USER.userKey
           }
         } else if (this.viewMainTab === 'A') {
-          param.allYn = true
-          param.ownUserKey = this.GE_USER.userKey
+          // param.allYn = true
+          // param.ownUserKey = this.GE_USER.userKey
         }
 
         if (this.mSelectedCabinetKey !== -1) {
@@ -1297,17 +1305,21 @@ export default {
         if (loadingYn) {
           nonLoading = false
         }
+        if (this.$route.params.priority === '0') {
+          param.creTeamKey = null
+        }
         var resultList = null
-        console.log(this.pCabinetKeyListStr)
-        if (this.pCabinetKeyListStr) {
-          param.cabinetKeyListStr = this.pCabinetKeyListStr
-          // var result1 = await this.$commonAxiosFunction('https://www.unibuzzy.com/sUniB/tp.getContentsListPage', param)
-          var response = await this.$commonAxiosFunction({
-            url: 'https://www.unibuzzy.com/sUniB/tp.getContentsList',
-            param: param
-          }, nonLoading)
-          console.log(response)
-          resultList = response.data
+        if (this.mCabinetKeyListStr) {
+          param.cabinetKeyListStr = this.mCabinetKeyListStr
+          // var result1 = await this.$commonAxiosFunction('/sUniB/tp.getContentsListPage', param)
+          var response = this.$getContentsList(param, nonLoading)
+          // var response = await this.$commonAxiosFunction({
+          //   url: '/sUniB/tp.getContentsList',
+          //   param: param
+          // }, nonLoading)
+          // console.log('야야야야야')
+          // console.log(response)
+          resultList = response
         } else {
           var result = await this.$getContentsList(param, nonLoading)
           resultList = result
@@ -1370,7 +1382,7 @@ export default {
         paramMap.set('ownUserKey', this.GE_USER.userKey)
         paramMap.set('jobkindId', 'ALIM')
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.getMCabContentsList',
+          url: '/sUniB/tp.getMCabContentsList',
           param: Object.fromEntries(paramMap)
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')
@@ -1760,10 +1772,10 @@ export default {
         /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
         }
-        /* data = data.sort(function (a, b) { // num으로 오름차순 정렬
+        data = data.sort(function (a, b) { // num으로 오름차순 정렬
           return b.contentsKey - a.contentsKey
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
-        }) */
+        })
         return data
       }, [])
       return uniqueArr
@@ -2273,7 +2285,8 @@ export default {
       mScrollEndPoint: 0,
       mSelectedCabinetKey: -1,
       // scrollIngYn: false
-      fileList: []
+      fileList: [],
+      mCabinetKeyListStr: ''
     }
   }
 }

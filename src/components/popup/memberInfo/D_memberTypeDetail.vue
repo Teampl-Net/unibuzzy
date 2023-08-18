@@ -120,7 +120,7 @@ export default {
       saveParam.memberTypeItemList = saveList
       console.log(saveParam)
       await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.saveMemberType',
+        url: '/sUniB/tp.saveMemberType',
         param: { member: saveParam }
       })
       this.$emit('reloadPage')
