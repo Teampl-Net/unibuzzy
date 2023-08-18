@@ -184,9 +184,9 @@ export default {
   },
   created () {
     console.log('chanElement', this.chanElement)
-    if (this.pPopTitle !== 'townList') {
+    /* if (this.pPopTitle !== 'townList') {
       this.getMemberTypeList()
-    }
+    } */
     this.showFollowYn()
   },
   data () {

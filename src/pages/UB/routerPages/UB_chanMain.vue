@@ -737,17 +737,7 @@ export default {
       this.readyFunction()
     },
     async okMember () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.memberTypeKey = this.selectMemberObj.memberTypeKey
-      var memberTypeItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeItemList',
-        param: param
-      })
-      console.log('--------------------------')
-      console.log(memberTypeItemList)
-      if (memberTypeItemList.data.result) {
-        // if (memberTypeItemList.data.memberTypeItemList.length === 0) {
+      if (this.mMemberTypeList && this.selectMemberObj) {
         // eslint-disable-next-line no-new-object
         var typeParam = new Object()
         if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
@@ -769,17 +759,15 @@ export default {
         // }
         // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
         this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
-        this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
+        // this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
         await this.$addChanList(this.mChanInfo.teamKey)
-      } else {
-        this.$showToastPop(this.$t('ERROR_MSG_INQUIRY_MANAG'))
-        return false
       }
       this.$emit('closeLoading')
     },
     async confirmOk () {
       this.mErrorPopShowYn = false
+      alert(this.mSaveFollowerType)
       if (this.mSaveFollowerType === 'follow') {
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
           this.mErrorPopBodyStr = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
@@ -840,6 +828,7 @@ export default {
       }
     },
     async changeFollowYn () {
+      alert(this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn)
       this.mSaveFollowerType = 'follow'
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn === true) {
         this.mErrorPopBodyStr = 'Do you want to unfollow this channel?'
