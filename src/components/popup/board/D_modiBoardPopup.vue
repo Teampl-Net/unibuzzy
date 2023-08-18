@@ -880,6 +880,7 @@ export default {
         share.accessKey = this.modiBoardDetailProps.teamKey
         share.cabinetKey = this.modiBoardDetailProps.cabinetKey
         share.shareSeq = 0
+        share.creTeamKey = this.CHANNEL_DETAIL.teamKey
         shareList.push(share)
       } else if (this.shareGroup.type === 'F') {
         share = {}
@@ -887,6 +888,7 @@ export default {
         share.accessKey = this.modiBoardDetailProps.teamKey
         share.cabinetKey = this.modiBoardDetailProps.cabinetKey
         share.shareSeq = 0
+        share.creTeamKey = this.CHANNEL_DETAIL.teamKey
         shareList.push(share)
       } else if (this.shareGroup.type === 'S') {
         console.log('this.shareGroup.selectedList')
@@ -895,6 +897,7 @@ export default {
         shareSeqList = this.shareGroup.selectedList.bookList
         for (var i = 0; i < shareSeqList.length; i++) {
           share = {}
+          share.creTeamKey = this.CHANNEL_DETAIL.teamKey
           // eslint-disable-next-line no-debugger
           debugger
           if (shareSeqList[i].memberYn) {
@@ -923,6 +926,7 @@ export default {
         debugger
         for (i = 0; i < this.shareGroup.selectedList.length; i++) {
           share = {}
+          share.creTeamKey = this.CHANNEL_DETAIL.teamKey
           share.accessKind = 'U'
           share.cabinetKey = this.modiBoardDetailProps.cabinetKey
           if (this.shareGroup.selectedList[i].userDispMtext) share.userDispMtext = this.$changeText(this.shareGroup.selectedList[i].userDispMtext)
@@ -1002,6 +1006,7 @@ export default {
               share.accessKey = this.permissionWGroup.selectedList.memberList[i].accessKey
               share.cabinetKey = this.modiBoardDetailProps.cabinetKey
               share.shareSeq = this.permissionWGroup.selectedList.memberList[i].accessKey
+              share.creTeamKey = this.CHANNEL_DETAIL.teamKey
               if (this.permissionWGroup.selectedList.memberList[i].userDispMtext) share.userDispMtext = this.$changeText(this.permissionWGroup.selectedList.memberList[i].userDispMtext)
               if (this.permissionWGroup.selectedList.memberList[i].userNameMtext) share.userNameMtext = this.$changeText(this.permissionWGroup.selectedList.memberList[i].userNameMtext)
               console.log('shareList.push')
@@ -1073,6 +1078,7 @@ export default {
               share.accessKind = 'U'
               share.accessKey = this.permissionVGroup.selectedList.memberList[i].accessKey
               share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+              share.creTeamKey = this.CHANNEL_DETAIL.teamKey
               share.shareSeq = this.permissionVGroup.selectedList.memberList[i].accessKey
               if (this.permissionVGroup.selectedList.memberList[i].userDispMtext) share.userDispMtext = this.$changeText(this.permissionVGroup.selectedList.memberList[i].userDispMtext)
               if (this.permissionVGroup.selectedList.memberList[i].userNameMtext) share.userNameMtext = this.$changeText(this.permissionVGroup.selectedList.memberList[i].userNameMtext)
@@ -1146,6 +1152,7 @@ export default {
               share.accessKind = 'U'
               share.accessKey = this.permissionRGroup.selectedList.memberList[i].accessKey
               share.cabinetKey = this.modiBoardDetailProps.cabinetKey
+              share.creTeamKey = this.CHANNEL_DETAIL.teamKey
               share.shareSeq = this.permissionRGroup.selectedList.memberList[i].accessKey
               if (this.permissionRGroup.selectedList.memberList[i].userDispMtext) share.userDispMtext = this.$changeText(this.permissionRGroup.selectedList.memberList[i].userDispMtext)
               if (this.permissionRGroup.selectedList.memberList[i].userNameMtext) share.userNameMtext = this.$changeText(this.permissionRGroup.selectedList.memberList[i].userNameMtext)
@@ -1162,7 +1169,7 @@ export default {
           }
         }
       }
-      cabinet.creteamkey = this.CHANNEL_DETAIL.teamKey
+      cabinet.creTeamKey = this.CHANNEL_DETAIL.teamKey
       cabinet.picBgPath = this.selectedColor
       cabinet.shareList = shareList
       cabinet.itemList = itemList

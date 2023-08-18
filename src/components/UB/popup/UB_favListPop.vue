@@ -20,9 +20,10 @@
           </div>
         </div>
         <div class="w100P" style="padding-bottom: 30px; overflow: auto; height: calc(100% - 50px);">
-          <gEmpty tabName="전체" contentName="채널" v-if="mFTeamList && mFTeamList.length === 0" style="margin-top:50px;" />
+          <div v-if="!mFTeamList || (mFTeamList && mFTeamList.length === 0)" class="w100P h100P" style="display: flex; align-items: center; justify-content: center;">
+            <gEmpty tabName="즐겨찾기" contentName="채널" style="margin-top:50px;" />
+          </div>
           <template v-else>
-            <div class="textLeft fontBold" style="width: 100%; padding: 5px 10px; border-radius: 10px; background: rgba(186, 187, 215, 0.5);">Georgia Tech</div>
             <channelCard v-for="(chanEle, index) in mFTeamList" :key="index" class="moveBox chanRow" style="margin-top: 10px;" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
           </template>
         </div>
@@ -31,6 +32,8 @@
 <script>
 export default {
   created () {
+    console.log('여기확인이요')
+    console.log(this.pFTeamList)
     if (!this.pFTeamList || this.pFTeamList.length < 1) {
       this.loginCheck()
     } else {

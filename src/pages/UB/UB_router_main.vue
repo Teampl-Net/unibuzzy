@@ -31,7 +31,7 @@
     <gCloudLoading v-if="mCloudLoadingShowYn" :pEnterCloudsYn="mEnterCloudsYn" style="position: absolute; top: 0; left: 0" :pCloudLeftClass="mLeftCloudClass" :pCloudRightClass="mRightCloudClass"  />
     <div :class="{ myPageBgColor : mMyPageBgColorYn}"  style="height: 100%;overflow: hidden; width:100%;" >
       <!-- 여기 -->
-      <router-view :key="$route.fullPath" ref="routerView" @setMainInfo="setMainInfo" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
+      <router-view :key="$route.fullPath" ref="routerView" @setMainInfo="setMainInfo" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pCabKeyListStr="mCabKeyListStr" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
     <gFooter v-if="!$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999;" />
     <!-- <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" /> -->
@@ -81,7 +81,8 @@ export default {
       mFTeamList: [],
       mAlimCount: 0,
       mLeftCloudClass: '',
-      mRightCloudClass: ''
+      mRightCloudClass: '',
+      mAxiosQueue: []
     }
   },
   created () {
@@ -414,6 +415,9 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('fUserKey', this.GE_USER.userKey)
       paramMap.set('userKey', this.GE_USER.userKey)
+      if (detailValue.cabinetKeyListStr) {
+        paramMap.set('cabinetKeyListStr', detailValue.cabinetKeyListStr)
+      }
       // eslint-disable-next-line no-debugger
       debugger
       try {
@@ -431,7 +435,16 @@ export default {
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
         }
         initData = result.data
+        // await this.getTownCabinetList().then((res) => {
+        //   this.getMyContentsList(null, null, true).then((res) => {
+        //     initData.contentsList = res.content
+        //   })
+        // })
+        console.log('야아아아아아압')
+        console.log(result)
         initData.contentsList = result.data.contentsListPage
+        console.log('모그렛다')
+        console.log(initData)
       } catch (error) {
         this.mCloudLoadingShowYn = false
         this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
@@ -466,6 +479,65 @@ export default {
       // }
       this.$router.push(`/chan/${chanMainParam.teamKey}`)
       // this.showCloudLoading(false, 1750)
+    },
+    async getTownCabinetList () {
+      var param = {}
+      param.parentTeamKey = 824
+      var result = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.getTownCabinetList',
+        param: param
+      })
+      if (result.data.result) {
+        this.mCabKeyListStr = result.data.cabinetKeyListStr
+      }
+      console.log(result)
+    },
+    async getMyContentsList (pageSize, offsetInput, loadingYn, searchParam) {
+      if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
+      this.mAxiosQueue.push('getPushContentsList')
+      var param = {}
+      if (searchParam) {
+        param = searchParam
+      }
+      if (this.viewTab === 'P') {
+        param.orderbyStr = 'a.popPoint DESC, a.creDate DESC'
+      } else if (this.viewTab === 'N') {
+        param.orderbyStr = 'a.creDate DESC'
+      }
+      param.myUserKey = this.GE_USER.userKey
+      param.cabinetKeyListStr = this.mCabKeyListStr
+      if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.mOffsetInt }
+
+      if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = this.mPageSize }
+
+      if (this.findKeyList) {
+        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
+          param.title = this.findKeyList.searchKey
+        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
+          param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
+        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
+          param.toCreDateStr = this.findKeyList.toCreDateStr
+        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
+          param.fromCreDateStr = this.findKeyList.fromCreDateStr
+        } if (this.findKeyList.workStatCodeKey !== undefined && this.findKeyList.workStatCodeKey !== null && this.findKeyList.workStatCodeKey !== '') {
+          param.workStatCodeKey = this.findKeyList.workStatCodeKey
+        } if (this.findKeyList.creUserName !== undefined && this.findKeyList.creUserName !== null && this.findKeyList.creUserName !== '') {
+          param.creUserName = this.findKeyList.creUserName
+        } if (this.findKeyList.selectedSticker) {
+          param.findActStickerYn = true
+          param.findActYn = true
+          param.stickerKey = this.findKeyList.selectedSticker.stickerKey
+        }
+      }
+      var nonLoading = true
+      if (loadingYn) {
+        nonLoading = false
+      }
+      var result = await this.$getContentsList(param, nonLoading)
+      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList')
+      this.mAxiosQueue.splice(queueIndex, 1)
+      var resultList = result
+      return resultList
     },
     async openPop (params) {
       this.mPopType = params.targetType

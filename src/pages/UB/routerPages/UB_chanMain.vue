@@ -150,6 +150,7 @@ export default {
     }
   },
   props: {
+    pCabKeyListStr: {},
     propParams: {},
     pClearInfo: Function,
     pAreaInfo: {},
@@ -169,7 +170,6 @@ export default {
   //   unknownLoginPop
   },
   created () {
-    //
     if (this.propParams && this.propParams.targetType === 'chanDetail' && this.propParams.initData) {
       this.mChanInfo = this.propParams
       const initData = this.propParams.initData

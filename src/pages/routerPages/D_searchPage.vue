@@ -114,9 +114,9 @@
               <!-- <template v-if="mActiveSearch === 'CHAN'">
                 <cSearchBox class="mright-03 mtop-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" @searchBoxClick='searchBoxClick' />
               </template> -->
-              <div v-if="mActiveSearch === 'CONT'" class="fl w100P mtop-05" style="display: flex;">
+              <!-- <div v-if="mActiveSearch === 'CONT'" class="fl w100P mtop-05" style="display: flex;">
                   <p v-for="(tab, index) in mSearchContentTabList" :key="index" @click="changeContentsTab(tab.name)" class="fl font16 " :class=" this.mSearchContentTab === tab.name ? 'commonLightColorBorder2 fontBold commonLightColor' : 'commonGrayBorderColor lightGray'" style="line-height: 30px; width: calc(100% / 3); height: 30px;"> {{tab.display}}</p>
-              </div>
+              </div> -->
               <template v-if="mActiveSearch === 'CONT'">
                 <searchBox class="mright-03 mtop-03 mbottom-1" :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" @delSearchBox="deleteSearchKey(value)" />
               </template>
@@ -137,7 +137,7 @@
             </div>
 
             <!-- 컨텐츠 리스트 -->
-            <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" style="margin-top: 1rem; float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 40px;">
+            <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" style="float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 40px;">
               <div class="w100P fl chanRow" style="height:1px;" />
               <template v-if="this.mSearchContentTab === 'ALL'" >
                 <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index" />
@@ -289,7 +289,6 @@ export default {
       this.mBottomSheetOpenYn = false
     },
     requestSearchList (data) {
-      console.log(data)
       var searchObj = {}
       var index = null
       if (data.searchKey) {

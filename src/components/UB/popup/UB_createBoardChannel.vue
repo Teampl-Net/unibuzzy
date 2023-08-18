@@ -62,7 +62,7 @@
         </div>
       </template>
       <!-- 채널 생성일 때. select한 건물에 대해서도 prop으로 보내주기-->
-      <createChannel style="margin-top:310px;" :class="{margin260 : mShowBdOrChan==='T'}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1)" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
+      <createChannel style="margin-top:310px;" :class="{margin260 : mShowBdOrChan==='T'}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1)" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
     </div>
   </div>
 </template>
@@ -108,6 +108,13 @@ export default {
     }
   },
   methods: {
+    openPage (params) {
+      if (params.deleteYn === true) {
+        this.$router.push('/')
+      } else {
+        this.$emit('successCreChan', params)
+      }
+    },
     selectTab (index) {
       this.mSelectedTab = Number(index)
       console.log('mSelectedTab', this.mSelectedTab)

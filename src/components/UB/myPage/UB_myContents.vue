@@ -8,7 +8,7 @@
         <!-- <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/> -->
       </div>
       <div class="pushListWrap fl">
-      <contentsList v-if="GE_DISP_CONT_LIST && GE_DISP_CONT_LIST.length > 0" :propContentsList="GE_DISP_CONT_LIST" @goChanDetail="openPop" />
+      <contentsList v-if="mContentsList && mContentsList.length > 0" :propContentsList="mContentsList" @goChanDetail="openPop" />
       <gEmpty v-else :tabName="currentTabName" contentName="전체" class="mtop-2"/>
       </div>
     </div>
@@ -129,9 +129,9 @@ export default {
       var contList = this.mContentsList
       console.log('contList', contList)
       var test = this.GE_MAIN_CHAN_LIST
-      // if (this.contList.length < 1) {
-      //   return []
-      // }
+      if (!this.contList) {
+        return []
+      }
       for (var i = 0; i < contList.length; i++) {
         idx1 = test.findIndex((item) => item.teamKey === contList[i].creTeamKey)
         if (idx1 === -1) {

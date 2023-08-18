@@ -221,6 +221,7 @@ export default {
       pageParam.areaInfo = this.pAreaInfo
       pageParam.targetType = 'chanDetail'
       pageParam.nameMtext = param.nameMtext
+      pageParam.cabinetKeyListStr = this.mCabKeyListStr
       this.$emit('openPage', pageParam)
     },
     async changeTab () {

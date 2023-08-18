@@ -17,6 +17,7 @@
       "ERROR_MSG_SERVICE_PROB": "현재 서비스에 문제가 있습니다. 잠시후 다시 시도해보세요.",
       "EMPT_MSG_NO_POST": "작성된 게시글이 없습니다.",
       "EMPT_MSG_NO_FILE": "업로드한 파일이 없습니다.",
+      "EMPT_MSG_NO_FAV": "즐겨찾기한 채널이 없습니다"
     },
     "en": {
       "EMPT_MSG_NORECENT_NOTI": "No new notifications",
@@ -36,6 +37,7 @@
       "EMPT_MSG_NO_POST": "You have not written any content.",
       "EMPT_MSG_NO_FILE": "No uploaded files found.",
       "EMPT_MSG_NO_SAVED": "No saved contents found.",
+      "EMPT_MSG_NO_FAV": "There is no channel"
     }
   }
 </i18n>
@@ -89,6 +91,8 @@ export default {
         this.midleText = this.$t('EMPT_MSG_NONE_MYCHANN')
       } else if (this.tabName === '전체') {
         this.midleText = this.$t('EMPT_MSG_LOOK_CHANN')
+      } else if (this.tabName === '즐겨찾기') {
+        this.midleText = this.$t('EMPT_MSG_NO_FAV')
       } else {
         this.midleText = this.$t('ERROR_MSG_SERVICE_PROB')
       }

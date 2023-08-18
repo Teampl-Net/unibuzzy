@@ -1520,6 +1520,8 @@ export default {
       }
     },
     CAB_DETAIL () {
+      console.log('확인필요')
+      console.log(this.cabinetDetail)
       if (this.cabinetDetail) {
         return this.cabinetDetail
       }
