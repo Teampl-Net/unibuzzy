@@ -215,6 +215,7 @@ export default {
       return this.mShowBdOrChan
     },
     goChannelMain (param) {
+      alert(true)
       const pageParam = {}
       if (param.teamKey) {
         pageParam.targetKey = param.teamKey

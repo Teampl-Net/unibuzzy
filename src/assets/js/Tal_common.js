@@ -4,6 +4,7 @@ import { commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunct
 import store from '../../store'
 // eslint-disable-next-line no-unused-vars
 import router from '../../router'
+import i18n from '../i18n'
 axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
 axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
 axiosCommonFunction.defaults.headers.post['Content-Type'] = 'application/json;'
@@ -320,16 +321,18 @@ export const commonMethods = {
   changeText (text) { // KO$^$'테스트$#$'EN$^$'
     // 현재 상태가 ko en인지 확인하는 루트가 필요함
     if (text) {
-      if (this.$i18n && this.$i18n.locale === 'ko') {
+      if (i18n && i18n.global.locale === 'ko') {
         var changeTxt = ''
         var indexOf = text.indexOf('KO$^$')
         if (indexOf === -1) {
-          return text
+          changeTxt = commonMethods.makeMtextMap(text, 'EN')
+          if (changeTxt) { return changeTxt }
+          return changeTxt
         } else {
           changeTxt = commonMethods.makeMtextMap(text, 'KO')
           if (changeTxt) { return changeTxt }
         }
-      } else if (this.$i18n && this.$i18n.locale === 'en') {
+      } else if (i18n && i18n.global.locale === 'en') {
         var indexOfE = text.indexOf('EN$^$')
         if (indexOfE !== -1) {
           changeTxt = commonMethods.makeMtextMap(text, 'EN')

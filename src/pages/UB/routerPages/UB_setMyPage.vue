@@ -38,11 +38,13 @@
     <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
     <userImgSelectCompo @closeXPop="closeImgPop" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
     <div class="" >
-      <!-- <p class="font16 fl mright-05">언어</p>
-      <select class="fl mright-2" @change="change18n(selectedI18nLocale)" v-model="selectedI18nLocale" name="selectLang" id="selectLang"><option value="en">English</option><option value="ko">한국어</option></select> -->
-      <!-- <p class="font16 fl mright-05">위치</p>
-      <select class="fl" @change="setLocale(selectedLocale)" v-model="selectedLocale" name="selectLocale" id="selectLocale"><option value="US">United States</option><option value="KR">South Korea</option></select> -->
-      <div class="profileWrap ">
+       <div style="width: 100%; display: flex; justify-content: flex-end; padding-right: 20px;">
+         <p class="font14 fl mright-05">언어</p>
+        <select class="fl mright-2" @change="change18n('userLang', selectedI18nLocale)" v-model="selectedI18nLocale" name="selectLang" id="selectLang"><option value="en">English</option><option value="ko">한국어</option></select>
+        <p class="font14 fl mright-05">시간</p>
+        <select class="fl " @change="change18n('areaKey', GE_TIME_LOCALE)" v-model="selectedLocale" name="selectLocale" id="selectLocale"><option value="US">United States</option><option value="KR">South Korea</option></select>
+       </div>
+       <div class="profileWrap ">
         <div @click="changeUserImg()" class="cursorP imgSize">
           <div class="roundDiv picImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
           <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 9; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">{{ $t('COMM_BTN_EDIT') }}</div>
@@ -107,7 +109,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import userItem from '@/components/unit/Tal_userItem.vue'
 import logoutPop from '@/components/pageComponents/myPage/Tal_logoutPop.vue'
 // import policyPop from '@/components/pageComponents/myPage/Tal_policyPop.vue'
@@ -116,27 +117,10 @@ import userImgSelectCompo from '@/components/pageComponents/myPage/Tal_changeUse
 /* import pushPop from '@/components/popup/Tal_pushDetailPopup.vue' */
 import { onMessage } from '@/assets/js/webviewInterface'
 import DevNotiSettingPop from '@/pages/routerPages/D_DevNotiSettingPop.vue'
-import {getCurrentInstance, reactive} from "vue";
-import { useI18n } from "vue-i18n";
+import { getCurrentInstance } from 'vue'
+import i18n from '../../../assets/i18n'
 export default {
   name: 'myPage',
-  setup() {
-    const thisApp= getCurrentInstance()
-    const setLocale = function (val) {
-        
-        thisApp.appContext.config.globalProperties.$locale = val
-    }
-    const chaneI18nLocal = function (val) {
-        const t = useI18n();
-        t.locale.value = val;
-    }
-
-    return {
-      setLocale,
-      chaneI18nLocal
-    }
-
-  },
   components: {
     userItem,
     logoutPop,
@@ -148,9 +132,9 @@ export default {
   data () {
     return {
       pageHistoryName: '',
-      selectedI18nLocale: this.$i18n.locale,
+      selectedI18nLocale: i18n.global.locale,
       selectedLocale: this.$locale,
-      changeUserIconShowYn:false,
+      changeUserIconShowYn: false,
       myChanListPopYn: false,
       userEmail: { click: 'changeEmail', icon: '/resource/common/main_email.png', title: '이메일', value: localStorage.getItem('userEmail'), btnText: '변경', link: 'http://naver.com' },
       userPhone: { click: 'changeMobile', icon: '/resource/common/main_phone.png', title: '휴대폰 번호', value: localStorage.getItem('userMobile'), btnText: '변경', link: 'http://naver.com' },
@@ -161,8 +145,8 @@ export default {
       settingAlimPopYn: false,
       tempUserDispName: '',
       changeYn: false,
-      errorBoxYn:false,
-      errorBoxText : '관리자에게 문의하세요.',
+      errorBoxYn: false,
+      errorBoxText: '관리자에게 문의하세요.',
       changeUserIconPop: null,
       reloadShowText: '',
       reloadShowYn: false,
@@ -179,17 +163,18 @@ export default {
     }
   },
   created () {
+    console.log(this.$locale)
     localStorage.setItem('notiReloadPage', 'none')
     // this.$emit('changePageHeader', 'Settings')
     // .stringify(localStorage.getItem('appInfo')))
     if (this.isMobile) {
-        this.appInfo = JSON.parse(localStorage.getItem('appInfo'))
-        console.log(this.appInfo)
-        console.log('this.appInfo')
-        if (this.appInfo) {
-            this.appVersion = this.appInfo.current
-            this.lastVersion = this.appInfo.last
-        }
+      this.appInfo = JSON.parse(localStorage.getItem('appInfo'))
+      console.log(this.appInfo)
+      console.log('this.appInfo')
+      if (this.appInfo) {
+        this.appVersion = this.appInfo.current
+        this.lastVersion = this.appInfo.last
+      }
     }
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
 
@@ -197,6 +182,15 @@ export default {
     this.pageHistoryName = 'page' + (history.length - 1) */
   },
   computed: {
+    GE_TIME_LOCALE () {
+      if (this.selectedLocale === 'US') {
+        return 2
+      } else if (this.selectedLocale === 'KR') {
+        return 1
+      } else {
+        return 2
+      }
+    },
     GE_LOCALE () {
       return this.$i18n.locale
     },
@@ -210,7 +204,7 @@ export default {
       return this.$store.getters['D_HISTORY/hStack']
     },
     GE_USER () {
-       return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['D_USER/GE_USER']
     }
   },
   watch: {
@@ -227,11 +221,63 @@ export default {
     this.$emit('closeLoading')
     this.$addHistoryStack('setMyPage')
   },
+  setup () {
+    const instance = getCurrentInstance()
+    const setGlobalValue = function (val) {
+      if (instance) {
+        instance.appContext.config.globalProperties.$locale = val
+      }
+    }
+    return { setGlobalValue }
+  },
   methods: {
-		closeXPop() {
-			this.$router.push('/mypage')
-		},
-		backClick () {
+    async change18n (target, type) {
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      // eslint-disable-next-line no-new-object
+      var user = new Object()
+      // param.user = this.userInfo
+      var localUser = this.$store.getters['D_USER/GE_USER']
+      if (localUser.userEmail !== undefined && localUser.userEmail !== null && localUser.userEmail !== '') { user.soEmail = localUser.userEmail }
+      if (localUser.userKey !== undefined && localUser.userKey !== null && localUser.userKey !== '') { user.userKey = localUser.userKey }
+      if (localUser.soAccessToken !== undefined && localUser.soAccessToken !== null && localUser.soAccessToken !== '') { user.soAccessToken = localUser.soAccessToken }
+      if (localUser.fcmKey !== undefined && localUser.fcmKey !== null && localUser.fcmKey !== '') { user.fcmKey = localUser.fcmKey }
+      if (localUser.deviceKey !== undefined && localUser.deviceKey !== null && localUser.deviceKey !== '') { user.deviceKey = localUser.deviceKey }
+      user[target] = type
+      param.user = user
+
+      // param.updateYn = true
+      var result = null
+      var response = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.saveUser',
+        param: param
+      })
+      result = response
+      if (result.data.userMap) {
+        user = result.data.userMap
+        try {
+          localStorage.setItem('user', JSON.stringify(result.data.userMap))
+          await this.$store.dispatch('D_USER/AC_USER', result.data.userMap)
+          localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
+
+          // 다른 JS 파일에서 전역 변수 수정하기
+          if (result.data.userMap.countryCode) {
+            this.setGlobalValue(result.data.userMap.countryCode)
+          }
+          if (result.data.userMap.userLang) {
+            i18n.global.locale = result.data.userMap.userLang
+            console.log(i18n)
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      return result
+    },
+    closeXPop () {
+      this.$router.push('/mypage')
+    },
+    backClick () {
       var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -247,79 +293,76 @@ export default {
       this.$router.push('/cancel')
     },
     openDevPop () {
-        var history = this.$store.getters['D_HISTORY/hStack']
-        this.devPopId = 'devModPop' + history.length
-        // console.log(history)
-        history.push(this.devPopId)
-        this.$store.commit('D_HISTORY/updateStack', history)
-        this.devModePopShowYn = true
+      var history = this.$store.getters['D_HISTORY/hStack']
+      this.devPopId = 'devModPop' + history.length
+      // console.log(history)
+      history.push(this.devPopId)
+      this.$store.commit('D_HISTORY/updateStack', history)
+      this.devModePopShowYn = true
     },
     closeDevPop () {
-        var hStack = this.$store.getters['D_HISTORY/hStack']
-        var removePage = hStack[hStack.length - 1]
-        if (this.popId === hStack[hStack.length - 1]) {
-            hStack = hStack.filter((element, index) => index < hStack.length - 1)
-            this.$store.commit('D_HISTORY/setRemovePage', removePage)
-            this.$store.commit('D_HISTORY/updateStack', hStack)
-            this.$emit('closePop')
-        } else {
+      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var removePage = hStack[hStack.length - 1]
+      if (this.popId === hStack[hStack.length - 1]) {
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$emit('closePop')
+      } else {
 
-        }
+      }
     },
     goDevMode () {
-        if (this.devModeClickCnt === 0) {
-            this.setTimer(true)
-        }
-        this.devModeClickCnt += 1
-        console.log(this.devModeClickCnt)
-        if (this.devModeClickCnt > 4) {
-            this.openDevPop()
-            this.setTimer(false)
-        }
-        var this_ = this
-
+      if (this.devModeClickCnt === 0) {
+        this.setTimer(true)
+      }
+      this.devModeClickCnt += 1
+      console.log(this.devModeClickCnt)
+      if (this.devModeClickCnt > 4) {
+        this.openDevPop()
+        this.setTimer(false)
+      }
     },
     devSendPush () {
-        // 1. 알림을 수신할래? 클릭할래?
-        // 2. 어떤 컨텐츠를 수신할래? 없으면 가장최신
-        // 3. 몇초뒤에 수신할래?
+      // 1. 알림을 수신할래? 클릭할래?
+      // 2. 어떤 컨텐츠를 수신할래? 없으면 가장최신
+      // 3. 몇초뒤에 수신할래?
 
     },
     setTimer (startYn) {
-        var intervalId = null
-        if (startYn) {
-            var this_ = this
-            intervalId = setInterval(() => this_.devModeClickTimer += 1, 1000);
-        } else {
-            if (intervalId) {
-                clearInterval(intervalId)
-            }
-            this.devModeClickTimer = 0
-            this.devModeClickCnt = 0
-            console.log(this.devModeClickCnt)
+      var intervalId = null
+      if (startYn) {
+        var this_ = this
+        intervalId = setInterval(() => { this_.devModeClickTimer = this_.devModeClickTimer + 1 }, 1000)
+      } else {
+        if (intervalId) {
+          clearInterval(intervalId)
         }
-        setTimeout(() => {
-            if (intervalId) {
-                clearInterval(intervalId)
-            }
-            this.devModeClickTimer = 0
-            this.devModeClickCnt = 0
-            console.log(this.devModeClickCnt)
-      }, 2000);
+        this.devModeClickTimer = 0
+        this.devModeClickCnt = 0
+        console.log(this.devModeClickCnt)
+      }
+      setTimeout(() => {
+        if (intervalId) {
+          clearInterval(intervalId)
+        }
+        this.devModeClickTimer = 0
+        this.devModeClickCnt = 0
+        console.log(this.devModeClickCnt)
+      }, 2000)
     },
     checkAppVersion () {
-        if (this.systemName === 'android' || this.systemName === 'Android') {
-          if (this.appInfo.current !== this.appInfo.last) {
-            if (this.GE_LOCALE === 'ko') {
-              this.checkVersionText = '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
-            } else {
-              this.checkVersionText = 'An app version update is required. <br>Go to the Play Store?'
-            }
-            this.checkVersionPopShowYn = true
-            // window.open(appInfo.playStoreUrl, '_blank')
+      if (this.systemName === 'android' || this.systemName === 'Android') {
+        if (this.appInfo.current !== this.appInfo.last) {
+          if (this.GE_LOCALE === 'ko') {
+            this.checkVersionText = '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
+          } else {
+            this.checkVersionText = 'An app version update is required. <br>Go to the Play Store?'
           }
+          this.checkVersionPopShowYn = true
+          // window.open(appInfo.playStoreUrl, '_blank')
         }
-
+      }
     },
     goPlayStore () {
       this.checkVersionPopShowYn = false
@@ -342,22 +385,22 @@ export default {
       }) */
         }
       }
-            // document.body.removeChild(aTag)
+      // document.body.removeChild(aTag)
     },
     reloadApp () {
-        this.reloadShowText = this.$t('PROF_MSG_RESTART')
-        this.reloadShowYn = true
+      this.reloadShowText = this.$t('PROF_MSG_RESTART')
+      this.reloadShowYn = true
     },
     reloadOk () {
-        onMessage('REQ', 'reloadApp')
+      onMessage('REQ', 'reloadApp')
     },
     cleanApp () {
-        this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
-        this.$router.push('/')
-        this.$emit('closeXPop')
+      this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+      this.$router.push('/')
+      this.$emit('closeXPop')
     },
     changeUserImg () {
-      if(this.changeUserIconShowYn) {
+      if (this.changeUserIconShowYn) {
         ;
       } else {
         this.changeUserIconShowYn = true
@@ -431,16 +474,13 @@ export default {
     },
 
     callPhone (num) {
-            if (num != undefined && num != null && num != '') {
-                if(this.systemName !== 'Android' && this.systemName !== 'android')
-                    document.location.href='tel:' + num
-                else
-                    onMessage('REQ', 'callphone', num)
-            } else {
-              this.errorBoxText = this.$t('PROF_MSG_NO_PHONE')
-              this.errorBoxYn = true
-            }
-        },
+      if (num !== undefined && num != null && num !== '') {
+        if (this.systemName !== 'Android' && this.systemName !== 'android') { document.location.href = 'tel:' + num } else { onMessage('REQ', 'callphone', num) }
+      } else {
+        this.errorBoxText = this.$t('PROF_MSG_NO_PHONE')
+        this.errorBoxYn = true
+      }
+    },
     openManagerChanDetail (param) {
       this.$emit('openPop', param)
     }

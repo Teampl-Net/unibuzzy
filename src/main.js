@@ -57,17 +57,12 @@ import gAlertPop from './components/popup/Tal_commonAlertPop.vue'
 import channelCard from './components/list/D_channelCard.vue'
 import gProfileImg from './components/common/D_commonProfile.vue'
 import UBConst from '@/assets/js/UB_Const'
-// const VueEasyLightbox = require('vue-easy-lightbox')
-import { createI18n } from 'vue-i18n'
+import i18n from './assets/i18n'
 // eslint-disable-next-line camelcase
-import messages from '@/assets/i18n/index'
 
-const i18n = createI18n({
-  leagacy: false,
-  locale: 'en',
-  fallbackLocale: 'en',
-  messages: messages
-})
+import { firebaseInitialize } from '@/assets/js/login/UB.firebase'
+
+console.log(firebaseInitialize)
 
 let app = {}
 let type = ''
@@ -260,8 +255,12 @@ if (localStorage.getItem('appType')) {
   app.config.globalProperties.$appType = 'UB'
   app.config.globalProperties.$mobileYn = null
 }
-
-app.config.globalProperties.$locale = 'US'
+const user = store.getters['D_USER/GE_USER']
+if (user.countryCode) {
+  app.config.globalProperties.$locale = user.countryCode
+} else {
+  app.config.globalProperties.$locale = 'US'
+}
 
 app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', 'false')

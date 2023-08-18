@@ -21,13 +21,12 @@ const firebaseConfig = {
 
 export const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
 console.log(firebaseApp)
-var isMobile = /Mobi/i.test(window.navigator.userAgent)
+var isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent)
 var appYn = localStorage.getItem('nativeYn')
 // isMobile = /Mobi/i.test(window.navigator.userAgent)
-isMobile = true
 if (!isMobile && (appYn === 'false' || appYn === false)) {
   const messaging = firebase.messaging()
-  messaging.usePublicVapidKey('BKz1oF6HiJg6kscmJ2I0hil9fAsP68N0OrkQN7Vgo_DBQYPmnswNcIK7P71CFvKrdvwLRlemD-DfAppHIZfQ46g')
+  // messaging.usePublicVapidKey('BD3_tmx3J9zVyU3-Bfbxe5sJ0HZVgECvcs1i4A9gnCbv_ZHRn_nX41BCT4uGY9EVwewwzG6XblQrTLa49dRYNYg')
   // token값 알아내기
   messaging.requestPermission()
     .then(function () {
