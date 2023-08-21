@@ -64,7 +64,6 @@
                 <div v-if="$appType !== 'UB'" @click="clickManagerBox('ALIM', member, index, member.mngAlimYn)" :class="{activeMAlim: member.mngAlimYn === 1}" class="font12 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center; height: 35px; border-radius: 5px;     box-shadow: inset 0 0 4px 1px #00000010; padding: 5px;">{{ $t('COMMON_TAB_NOTI') }}</div>
                 <div @click="clickManagerBox('MEMBER', member, index, member.mngMemberYn)" :class="{activeMMember: member.mngMemberYn === 1}" class="font12 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center; height: 35px; border-radius: 5px;    box-shadow: inset 0 0 4px 1px #00000010; padding: 5px;">{{ $t('FOLLOW_NAME_MEMBER') }}</div>
                 <div @click="clickManagerBox('CHAN', member, index, member.mngTeamYn)" :class="{activeMChan: member.mngTeamYn === 1}" class="font12 cursorP" style=" display: flex; justify-content: center; align-items: center; height: 35px; border-radius: 5px; ;    box-shadow: inset 0 0 4px 1px #00000010; padding: 5px;">{{ this.$t('COMMON_NAME_CHANNEL') }}</div>
-
                 <!-- <div v-if="member.ownerYn" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
                     <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'소유자'}}</p>
                 </div>

@@ -543,6 +543,7 @@ export default {
       }
       try {
         const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: param }, false)
+        console.log(result.data.memberTypeList.muserList)
         // eslint-disable-next-line no-debugger
         debugger
         if (!result || !result.data || result.data.result !== 'OK') {
@@ -550,7 +551,15 @@ export default {
           return
         }
         const teamDetail = result.data.team.content[0]
+        console.log(result.data.memberTypeList[0])
+        if (teamDetail.userTeamInfo === undefined || teamDetail.userTeamInfo === null || teamDetail.userTeamInfo === '') {
+          const index = result.data.memberTypeList[0].muserList.findIndex((item) => item.userKey === this.GE_USER.userKey)
+          if (index !== -1) {
+            teamDetail.userTeamInfo = result.data.memberTypeList[0].muserList[index]
+          }
+        }
         // this.mCabKeyListStr = result.data.cabinetKeyListStr
+        console.log(teamDetail)
         await this.$addChanVuex([teamDetail])
         chanMainParam.nameMtext = teamDetail.nameMtext
         chanMainParam.chanName = teamDetail.nameMtext

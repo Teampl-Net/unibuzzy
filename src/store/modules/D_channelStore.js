@@ -216,10 +216,13 @@ const D_CHANNEL = {
         if (!team) return
         index = state.chanList.findIndex((item) => item.teamKey === team.teamKey)
         var D_CHAN_AUTH = {}
+        console.log(team)
         if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {
           D_CHAN_AUTH = team.userTeamInfo
           D_CHAN_AUTH.settingYn = true
           D_CHAN_AUTH.followYn = true
+          console.log('D_CHAN_AUTH')
+          console.log(D_CHAN_AUTH)
 
           if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
             D_CHAN_AUTH.mngAlimYn = team.userTeamInfo.mngAlimYn
@@ -237,6 +240,7 @@ const D_CHANNEL = {
               if (team.mngMemberYn) D_CHAN_AUTH.mngMemberYn = team.mngMemberYn
             }
           }
+          console.log(D_CHAN_AUTH)
           // D_CHAN_AUTH.followYn = false
         }
         if (D_CHAN_AUTH.memberNameMtext) {

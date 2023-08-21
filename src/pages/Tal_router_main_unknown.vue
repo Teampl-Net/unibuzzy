@@ -471,7 +471,14 @@ export default {
           this.$showToastPop('채널을 찾을 수 없습니다!')
           return
         }
-        var teamDetail = result.data.team.content[0]
+        const teamDetail = result.data.team.content[0]
+        console.log(result.data.memberTypeList[0])
+        if (teamDetail.userTeamInfo === undefined || teamDetail.userTeamInfo === null || teamDetail.userTeamInfo === '') {
+          const index = result.data.memberTypeList[0].muserList.findIndex((item) => item.userKey === this.GE_USER.userKey)
+          if (index !== -1) {
+            teamDetail.userTeamInfo = result.data.memberTypeList[0].muserList[index]
+          }
+        }
         // var contentsList = result.data.contentsListPage.content
         await this.$addChanVuex([teamDetail])
         // eslint-disable-next-line no-new-object
