@@ -20,22 +20,22 @@
           <div class="top5PushChanLogoImgWrap w100P fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
           </div>
         </td>
-        <td @click="goChanDetail(value)" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}" style="padding-left:10px; display:flex; align-items:center; width:calc(100% - 70px);">
+        <td @click="goChanDetail(value)" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}" style="padding-left:10px; display:flex; align-items:center; width:calc(100% - 100px);">
           <div style="display:flex; flex-direction:column; align-items:start; text-align:left; width:80%; padding: 2px 0 ; min-height: 25px;">
-            <div class="" style="width:80%; overflow-x:hidden;">
+            <div class="" style="width:100%; overflow-x:hidden;">
               <span v-if="value.jobkindId === 'ALIM'" class="font14 fl textCenter" style="margin-top: 0.5px; width: 50px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{$t('COMMON_TAB_NOTI')}}</span>
               <span v-else-if="value.jobkindId === 'BOAR'" class="font14 fl textCenter" style="margin-top: 0.5px; width: 50px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMMON_TAB_POST')}}</span>
               <span style="line-height:25px; " v-html="setSendNameStr(value)" class="textOverdot fl commonBlack font12"></span>
             </div>
             <div>
               <p v-if="value.jobkindId === 'BOAR' && !(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey ) && (value.titleBlindYn === true || value.titleBlindYn === 1)" :v-html="$t('LIST_MSG_ACCESS')" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 75px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;"></p>
-              <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold" style="width:150px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
+              <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold widths" style="width:150px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
             </div>
 
           </div>
-        </td>
+        </td >
           <!-- <img src="../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style=" height:16px; padding: 1px; margin-right: 3px; float: left;" /> -->
-          <td style="display:flex; flex-direction:column; align-items:end; width:20%;">
+          <td style="display:flex; flex-direction:column; align-items:end; width:35px;">
             <span class="commonBlack mtop-01 font12 fr">{{this.$changeDateFormat(value.creDate)}}</span>
           </td>
         <!-- </td> -->
