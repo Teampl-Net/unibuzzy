@@ -1,3 +1,27 @@
+<i18n>
+{
+  "ko": {
+    "MEM_DETAIL_MSG_NAME": "이름을 입력하세요",
+    "MEM_DETAIL_MSG_EMAIL": "이메일을 입력하세요",
+    "MEM_DETAIL_MSG_PHONE": "전화번호를 입력하세요",
+    "MEM_DETAIL_MSG_NOMAIL": "등록된 이메일이 없습니다",
+    "MEM_DETAIL_MSG_NOPHONE": "등록된 번호가 없습니다",
+    "MEM_DETAIL_MSG_ADDMEM": "추가된 구성원",
+    "MEM_DETAIL_MSG_VALI_EMAIL": "이메일 형식이 올바르지 않습니다.",
+    "MEM_DETAIL_MSG_VALI_PHONE": "전화번호 형식이 올바르지 않습니다."
+  },
+  "en": {
+    "MEM_DETAIL_MSG_NAME": "Please enter the name",
+    "MEM_DETAIL_MSG_EMAIL": "Please enter the e-mail",
+    "MEM_DETAIL_MSG_PHONE": "Please enter the phone number",
+    "MEM_DETAIL_MSG_NOMAIL": "There are no registered e-mail",
+    "MEM_DETAIL_MSG_NOPHONE": "There are no registered phone number",
+    "MEM_DETAIL_MSG_ADDMEM": "Added members",
+    "MEM_DETAIL_MSG_VALI_EMAIL": "E-mail format is not valid.",
+    "MEM_DETAIL_MSG_VALI_PHONE": "Phone number format is not valid.",
+  }
+}
+</i18n>
 <template>
 <div id="addTeamMemberArea" class="addTeamMemberArea">
     <gPopHeader headerTitle="Add Manually" :pClosePop="pClosePop" />
@@ -27,30 +51,30 @@
         <div v-show="changeYn" class="fl creChanInput" style="">
             <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
             <div class="fl" style="width: 100px">
-                <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >확인</p>
-                <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">취소</p>
+                <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >{{ $t('COMMON_BTN_OK') }}</p>
+                <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">{{ $t('COMM_BTN_CANCEL') }}</p>
             </div>
         </div>
-        <p class="fl whiteColor CMiddleBgColor font12" style="padding: 2px 6px; border-radius:10px; " v-if="userGrade !== ''" >{{userGrade}}</p>
+        <!-- <p class="fl whiteColor CMiddleBgColor font12" style="padding: 2px 6px; border-radius:10px; " v-if="userGrade !== ''" >{{userGrade}}</p> -->
       </div>
-      <div class="mtop-1 fl w100P"  style="display: flex;padding-left:15%; " v-if="!readOnlyYn && !selfYn">
+      <div class="mtop-1 fl w100P"  style="display: flex; justify-content: center; " v-if="!readOnlyYn && !selfYn">
         <img src="/resource/footer/icon_people.svg"  class="img-w20 fl mright-05" alt="">
 
-        <input  type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
+        <input  type="text" :placeholder="$t('MEM_DETAIL_MSG_NAME')" class="creChanInput fr"  v-model="memName" >
       </div>
 
-      <div class="mtop-1 fl w100P"  style="display: flex;padding-left:15%; ">
+      <div class="mtop-1 fl w100P"  style="display: flex; justify-content: center;">
         <img src="@/assets/images/editChan/icon_letter.svg"  class="img-w20 fl mright-05" alt="">
-        <p class="fl font16 commonDarkGray creChanInput " style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memEmail ? memEmail : '등록된 이메일이 없습니다.'}}</p>
-        <input v-else type="text" placeholder="이메일을 입력하세요" class="creChanInput fr"  v-model="memEmail" >
+        <p class="fl font16 commonDarkGray creChanInput " style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memEmail ? memEmail : $t('MEM_DETAIL_MSG_NOMAIL') }}</p>
+        <input v-else type="text" :placeholder="$t('MEM_DETAIL_MSG_EMAIL')" class="creChanInput fr"  v-model="memEmail" >
       </div>
-      <div class="mtop-1 fl w100P"  style="display: flex; padding-left:15%;">
+      <div class="mtop-1 fl w100P"  style="display: flex; justify-content: center;">
         <img src="@/assets/images/editChan/icon_phoneSolid.svg" class="img-w20 fl mright-05" alt="">
-        <p class="fl font16 commonDarkGray creChanInput"  style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memPhone ? memPhone : '등록된 번호가 없습니다.'}}</p>
-        <input v-else type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
+        <p class="fl font16 commonDarkGray creChanInput"  style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memPhone ? memPhone : $t('MEM_DETAIL_MSG_NOPHONE') }}</p>
+        <input v-else type="text" :placeholder="$t('MEM_DETAIL_MSG_PHONE')" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
       </div>
 
-      <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
+      <gBtnSmall v-if="excelPopYn" :btnTitle="$t('COMMON_BTN_ADD')" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
       <div v-if="readOnlyYn" class="fl w100P mtop-3" style=" min-height: 70px; display: flex; flex-direction: row; justify-content: space-around;">
         <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="fl" style="display: flex; flex-direction: row; align-items: center; justify-content: center">
           <div style="display: flex; flex-direction: column; align-items: center;">
@@ -68,7 +92,7 @@
     </div>
 
     <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
-        <p class="font20 fontBold" style="width: 100%; height: 40px; margin-bottom: 25px; text-align: left; color: black; border-bottom: 1px solid #ccc;">추가된 구성원</p>
+        <p class="font20 fontBold" style="width: 100%; height: 40px; margin-bottom: 25px; text-align: left; color: black; border-bottom: 1px solid #ccc;">{{ $t('MEM_DETAIL_MSG_ADDMEM') }}</p>
         <div style="width:100%; max-height: 200px; overflow-y: scroll; overflow-x: hidden; ">
             <table class="memberTable" style="width:100% ; border-collapse: collapse;">
                 <colgroup>
@@ -78,9 +102,9 @@
                     <col width="10px">
                 </colgroup>
                 <tr style = "background-color:#ccc;">
-                    <th class="font15" style="height: 100%; text-align: center;">이름</th>
-                    <th class="font15" style="height: 100%; text-align: center;">이메일</th>
-                    <th class="font15" style="height: 100%; text-align: center;">전화번호</th>
+                    <th class="font15" style="height: 100%; text-align: center;">{{ $t('COMMON_NAME_NAME') }}</th>
+                    <th class="font15" style="height: 100%; text-align: center;">{{ $t('COMMON_NAME_EMAIL') }}</th>
+                    <th class="font15" style="height: 100%; text-align: center;">{{ $t('COMMON_NAME_PHONE') }}</th>
                     <th class="font15" style="height: 100%; text-align: center;"></th>
                 </tr>
                 <tr v-for="(data, index) in memberList" :key='index' style="height:50px;">
@@ -93,7 +117,7 @@
         </div>
 
     </div>
-    <gBtnSmall v-if="!readOnlyYn" btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="addDirectAddMemList" />
+    <gBtnSmall v-if="!readOnlyYn" :btnTitle="$t('COMM_BTN_APPLY')" style="position:absolute; bottom:2rem; right: 3rem;" @click="addDirectAddMemList" />
     <!-- <gBtnSmall v-if="propData.managerKey" btnTitle="삭제" class="fl" style="position:absolute; bottom:2rem; right: 3rem; background-color:#ff0000; font-weight:bold;" @click="deleteManager" /> -->
 </div>
 </template>
@@ -157,7 +181,6 @@ export default {
         }
     },
     async created(){
-        console.log(this.propData)
         this.$emit('openLoading')
         if(this.propData.readOnlyYn){this.readOnlyYn = true}
 
@@ -168,15 +191,15 @@ export default {
             } else {
                 await this.getMemberListGetUserInfo()
             }
-            if (this.mUserInfo.userEmail)
-                this.memEmail = this.mUserInfo.userEmail
-            else{ this.memEmail= '등록된 이메일이 없습니다.'}
-            if (this.mUserInfo.userDispMtext)
-                this.memName = this.$changeText(this.mUserInfo.userDispMtext)
-            if (this.mUserInfo.phoneEnc)
-                this.memPhone = this.mUserInfo.phoneEnc
-            else{ this.memPhone= '등록된 번호가 없습니다.' }
-            this.setUserGrade(this.mUserInfo)
+            // if (this.mUserInfo.userEmail)
+            //     this.memEmail = this.mUserInfo.userEmail
+            // else{ this.memEmail= this.$t('MEM_DETAIL_MSG_NOMAIL')}
+            // if (this.mUserInfo.userDispMtext)
+            //     this.memName = this.$changeText(this.mUserInfo.userDispMtext)
+            // if (this.mUserInfo.phoneEnc)
+            //     this.memPhone = this.mUserInfo.phoneEnc
+            // else{ this.memPhone= this.$t('MEM_DETAIL_MSG_NOPHONE') }
+            // this.setUserGrade(this.mUserInfo)
             /*
             // debugger
             if(this.propData.userProfileImg){
@@ -336,7 +359,7 @@ export default {
                 else
                     onMessage('REQ', 'callphone', num)
             } else {
-                alert('전화번호 정보가 없습니다')
+                alert(this.$t('MEM_DETAIL_MSG_NOPHONE'))
             }
         },
         sendMail (email) {
@@ -346,7 +369,7 @@ export default {
                 else
                     onMessage('REQ', 'sendMail', email)
             } else {
-                alert('이메일 정보가 없습니다')
+                alert(this.$t('MEM_DETAIL_MSG_NOMAIL'))
             }
         },
         sendSms (num) {
@@ -356,7 +379,7 @@ export default {
                 else
                     onMessage('REQ', 'sendSms', num)
             } else {
-                alert('전화번호 정보가 없습니다')
+                alert(this.$t('MEM_DETAIL_MSG_NOPHONE'))
             }
         },
         async deleteManager () {
@@ -423,23 +446,23 @@ export default {
         checkParam(){
             var result = false
             if (this.memName === '' || this.memName === null || this.memName === undefined) {
-                this.confirmText = '이름을 입력하세요.'
+                this.confirmText = this.$t('MEM_DETAIL_MSG_NAME')
                 this.confirmPopShowYn = true
             } else if (this.memName !== '' && this.memPhone !== '' && this.memEmail !== '') {
                 if(!this.regEmail(this.memEmail.trim())) {
-                    this.confirmText = '이메일 형식이 유효하지 않습니다.'
+                    this.confirmText = this.$t('MEM_DETAIL_MSG_VALI_EMAIL')
                     this.confirmPopShowYn = true
                 } else if(!this.regPhoneNumber(this.memPhone.trim())) {
-                    this.confirmText = '전화번호 형식이 유효하지 않습니다.'
+                    this.confirmText = this.$t('MEM_DETAIL_MSG_VALI_PHONE')
                     this.confirmPopShowYn = true
                 } else {
                     result = true
                 }
             }  else if (this.memEmail === '') {
-                this.confirmText = '이메일을 입력하세요.'
+                this.confirmText = this.$t('MEM_DETAIL_MSG_EMAIL')
                 this.confirmPopShowYn = true
             } else {
-                this.confirmText = '전화번호를 입력하세요.'
+                this.confirmText = this.$t('MEM_DETAIL_MSG_PHONE')
                 this.confirmPopShowYn = true
             }
             return result
@@ -507,6 +530,7 @@ margin-bottom: 2rem;
   top: 0;
   left: 0;
   width: 100%;
+  z-index: 99999;
   height: calc(100% - 50px);
   background-color: white;
 }

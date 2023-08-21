@@ -12,8 +12,8 @@
       <areaInfoPop :pBdClickedYn="mBdClickedYn" :chanDetail="{ modiYn: false }" :pBdAreaList="mBdAreaList" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
     </transition>
     <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
-      <div class="ballon">go to other town?</div>
-      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width:20%; max-width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
+      <div class="ballon">Go to other town?</div>
+      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="filter: drop-shadow(5px 5px 5px #00000036); width:20%; max-width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
       <!-- <UBBgEffect /> -->
       <!-- my profile -->
       <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}" style="height: 50px; position: absolute; left: 15px; display: flex; align-items: center;">
@@ -193,7 +193,7 @@ export default {
       this.resetHistory()
       this.mSelectSchoolPopShowYn = false
     },
-    async openCreChanPop () {
+    openCreChanPop () {
       this.mInfoBoxShowYn = false
       this.mCreChannelShowYn = true
     },
@@ -267,14 +267,13 @@ export default {
         },
         updateYn: true
       }
-      var result = await this.$commonAxiosFunction({
+      await this.$commonAxiosFunction({
         url: '/sUniB/tp.saveUser',
         param: param
       })
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
-      this.$router.go(0)
-      console.log('------------------------------')
-      console.log(result)
+      window.location.reload()
+      // this.$router.go(0)
     },
     async openAreaInfoPop (area) {
       if (this.mBgNotClickYn) return

@@ -8,7 +8,7 @@
       <areaInfoPop v-if="mInfoBoxShowYn" :pUniBInfo="clickedUniB" />
     </transition>
     <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_centerBG.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
-      <div class="ballon">go to other town?</div>
+      <div class="ballon">Go to other town?</div>
       <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
       <!-- my profile -->
       <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}" style="height: 50px; position: absolute; left: 15px; display: flex; align-items: center;">
@@ -164,14 +164,13 @@ export default {
         },
         updateYn: true
       }
-      var result = await this.$commonAxiosFunction({
+      await this.$commonAxiosFunction({
         url: '/sUniB/tp.saveUser',
         param: param
       })
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
-      this.$router.go(0)
-      console.log('------------------------------')
-      console.log(result)
+      window.location.reload()
+      // this.$router.go(0)
     },
     closeInfoBox () {
       this.resetHistory()

@@ -272,6 +272,9 @@ export default {
     })
   },
   methods: {
+    testAuth () {
+      console.log(this.CHANNEL_DETAIL.D_CHAN_AUTH)
+    },
     scrollOn () {
       const pushList = document.getElementById('pushListWrap')
       if (this.$refs.summaryWrap.offsetHeight > 210 && pushList) {
@@ -535,7 +538,7 @@ export default {
       param.teamKey = teamKey
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
-      if (this.$route.params.priority === '0') {
+      if (this.$route.params.priority === '1') {
         this.getTownCabinetList()
       }
       try {
@@ -557,7 +560,7 @@ export default {
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
         }
         initData = result.data
-        if (this.$route.params.priority === '0') {
+        if (this.$route.params.priority === '1') {
           await this.getTownCabinetList()
           initData.contentsList = await this.getMyContentsList(20, null, true)
           initData.cabinetKeyListStr = this.mCabKeyListStr

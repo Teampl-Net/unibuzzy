@@ -46,7 +46,7 @@ export default {
       if (this.propData) {
         var cabinet = this.propData.cabinet
         this.mCreAdressOpenType = this.propData.newAddressYn === true ? this.$t('EDIT_BOOK_BTN_CREATE') : this.$t('EDIT_BOOK_BTN_EDIT')
-        this.inputAddressBookName = cabinet.cabinetNameMtext
+        this.inputAddressBookName = this.$changeText(cabinet.cabinetNameMtext)
       }
     },
     async saveCabinet () {

@@ -375,23 +375,35 @@ export default {
         await this.openPage(param)
       }
     },
-    // async getCabinetDetail (params) {
-    //   var paramMap = new Map()
-    //   paramMap.set('teamKey', params.teamKey)
-    //   paramMap.set('currentTeamKey', params.teamKey)
-    //   paramMap.set('cabinetKey', params.targetKey)
-    //   paramMap.set('sysCabinetCode', 'BOAR')
-    //   paramMap.set('userKey', this.GE_USER.userKey)
-    //   // console.log(paramMap)
-    //   var response = await this.$commonAxiosFunction({
-    //     url: '/sUniB/tp.getCabinetDetail',
-    //     param: Object.fromEntries(paramMap)
-    //   })
-    //   var mCabinet = response.data.mCabinet
-    //   console.log('mCabinet')
-    //   console.log(mCabinet)
-    //   return mCabinet
-    // },
+    async getCabinetDetail (params) {
+      var paramMap = new Map()
+      paramMap.set('teamKey', params.teamKey)
+      paramMap.set('currentTeamKey', params.teamKey)
+      paramMap.set('cabinetKey', params.targetKey)
+      paramMap.set('sysCabinetCode', 'BOAR')
+      paramMap.set('userKey', this.GE_USER.userKey)
+      // console.log(paramMap)
+      var response = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.getCabinetDetail',
+        param: Object.fromEntries(paramMap)
+      })
+      var mCabinet = response.data.mCabinet
+      console.log('mCabinet')
+      console.log(mCabinet)
+      return mCabinet
+    },
+    async getTownCabinetList (teamKey) {
+      var param = {}
+      param.parentTeamKey = teamKey
+      var result = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.getTownCabinetList',
+        param: param
+      })
+      if (result.data.result) {
+        this.mCabKeyListStr = result.data.cabinetKeyListStr
+      }
+      console.log(result)
+    },
     async goChanDetail (detailValue) {
       const chanMainParam = {}
       chanMainParam.targetType = 'chanDetail'
@@ -399,6 +411,7 @@ export default {
       if (!teamKey && detailValue.creTeamKey) {
         teamKey = detailValue.creTeamKey
       }
+      const parentYn = this.GE_USER.myTeamKey === teamKey ? 1 : 0
       chanMainParam.teamKey = teamKey
       chanMainParam.targetKey = teamKey
       if (detailValue && detailValue.nameMtext) chanMainParam.nameMtext = detailValue.nameMtext
@@ -418,7 +431,12 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       try {
-        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, true)
+        // 메인일 경우에만 로딩화면이 안 보이도록 처리(다른 화면에서는 로딩이 보여야 함)
+        let nonLoadingYn = true
+        if (this.$route.fullPath === '/chanList') {
+          nonLoadingYn = false
+        }
+        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.mCloudLoadingShowYn = false
           this.$showToastPop('채널을 찾을 수 없습니다!')
@@ -437,15 +455,17 @@ export default {
         //     initData.contentsList = res.content
         //   })
         // })
-        if (detailValue.cabinetKeyListStr) {
-          this.mCabKeyListStr = detailValue.cabinetKeyListStr
-          initData.cabinetKeyListStr = detailValue.cabinetKeyListStr
-          initData.contentsList = await this.getMyContentsList(20, null, false)
+        if (parentYn) {
+          if (detailValue.cabinetKeyListSt) {
+            this.mCabKeyListStr = detailValue.cabinetKeyListStr
+          } else {
+            await this.getTownCabinetList(teamKey)
+          }
+          initData.cabinetKeyListStr = this.mCabKeyListStr
+          initData.contentsList = await this.getMyContentsList(20, null, !nonLoadingYn)
         } else {
           initData.contentsList = result.data.contentsListPage
         }
-        console.log('얍')
-        console.log(initData)
       } catch (error) {
         this.mCloudLoadingShowYn = false
         this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
@@ -478,8 +498,7 @@ export default {
       // if (!teamKey && detailValue.creTeamKey) {
       //   encodedTeamKey = detailValue.creTeamKey
       // }
-      console.log('여기를 보세용', chanMainParam, detailValue)
-      this.$router.push(`/chan/${chanMainParam.teamKey}/${detailValue.areaInfo.priority}`)
+      this.$router.push(`/chan/${chanMainParam.teamKey}/${parentYn}`)
       // this.showCloudLoading(false, 1750)
     },
     async getMyContentsList (pageSize, offsetInput, loadingYn, searchParam) {

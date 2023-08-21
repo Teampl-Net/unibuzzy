@@ -162,7 +162,7 @@
         class="w100P fl"
         style="hight: 50px; display: flex; flex-direction: column; padding: 10px;"
     >
-        <p class="font15 fontBold textLeft">ㆍPopular Post</p>
+        <p class="font15 fontBold textLeft">Popular Post</p>
         <div style="width: 100%; min-height: 40px; border-radius: 5px; padding: 5px; background: #FFFFFF98;">
             <p class="font12 fl commonColor fontBold textLeft">{{ `${$changeText(chanElement.popCList[0].cabinetNameMtext)} Board > ${chanElement.popCList[0].showCreNameYn? $changeText(chanElement.popCList[0].creUserName) : 'Anonymous'}` }}</p>
             <p class="font12 fr lightGray textLeft">{{ `${$changeDateFormat(chanElement.popCList[0].creDate)}` }}</p>

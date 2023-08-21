@@ -36,7 +36,7 @@
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <!-- <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " /> -->
         <!-- <gSelectFilter :searchYn="false" :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab="changeTab" @changeTab= "changeBoard" style="width: 100%; padding-top: 0; margin-top: 0;" /> -->
-        <div v-if="pUnknownYn"  v-on="handleScroll" style="position: absolute; right: 50px;width: 30px; height: 30px; border-radius: 100%; display: flex; align-items: center; justify-content: center; " @click="refreshAll">
+        <div v-on="handleScroll" style="position: absolute; right: 50px;width: 30px; height: 30px; border-radius: 100%; display: flex; align-items: center; justify-content: center; " @click="refreshAll">
             <img src="../../../assets/images/common/commonReload.png" class="cursorP" width="30" height="30" @click="refreshAll"/>
         </div>
         <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" :subTabList="mBoardFilterList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab="changeTab" @changeBoardTab="changeBoard" style="width: 100%; padding-top: 0; margin-top: 0;" />
@@ -469,7 +469,7 @@ export default {
       return this.replaceArr(returnBoardList)
     },
     GE_DISP_ALL_LIST () {
-      if (this.$route.params.priority === '0') {
+      if (this.$route.params.priority === '1') {
         return this.replaceArr(this.allContentsList)
       }
       var idx1, idx2
@@ -1305,7 +1305,7 @@ export default {
         if (loadingYn) {
           nonLoading = false
         }
-        if (this.$route.params.priority === '0') {
+        if (this.$route.params.priority === '1') {
           param.creTeamKey = null
         }
         var resultList = null

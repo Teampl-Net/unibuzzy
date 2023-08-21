@@ -12,7 +12,9 @@
     "PROF_TITLE_LATE_VERSION": "최신버전",
     "PROF_MSG_RESTART": "앱을 재시작하시겠습니까?",
     "PROF_MSG_NAME_ERROR": "이름 변경 중 서버에 오류",
-    "PROF_MSG_NO_PHONE": "전화번호가 없습니다."
+    "PROF_MSG_NO_PHONE": "전화번호가 없습니다.",
+    "PROF_TITLE_LANGUAGE": "언어",
+    "PROF_TITLE_TIME": "시간"
   },
   "en": {
     "PROF_TITLE_DOWNLOAD": "Downloaded",
@@ -26,7 +28,9 @@
     "PROF_TITLE_LATE_VERSION": "Latest",
     "PROF_MSG_RESTART": "Do you want to restart the app?",
     "PROF_MSG_NAME_ERROR": "Error on server while changing name change",
-    "PROF_MSG_NO_PHONE": "There is no phone number."
+    "PROF_MSG_NO_PHONE": "There is no phone number.",
+    "PROF_TITLE_LANGUAGE": "Language",
+    "ROPF_TITLE_TIME": "Time zone"
   }
 }
 </i18n>
@@ -38,11 +42,11 @@
     <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
     <userImgSelectCompo @closeXPop="closeImgPop" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
     <div class="" >
-       <div style="width: 100%; display: flex; justify-content: flex-end; padding-right: 20px;">
-         <p class="font14 fl mright-05">언어</p>
-        <select class="fl mright-2" @change="change18n('userLang', selectedI18nLocale)" v-model="selectedI18nLocale" name="selectLang" id="selectLang"><option value="en">English</option><option value="ko">한국어</option></select>
-        <p class="font14 fl mright-05">시간</p>
-        <select class="fl " @change="change18n('areaKey', GE_TIME_LOCALE)" v-model="selectedLocale" name="selectLocale" id="selectLocale"><option value="US">United States</option><option value="KR">South Korea</option></select>
+       <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center; padding-right: 20px;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'">
+         <p class="font12 fl mright-05">{{ $t('PROF_TITLE_LANGUAGE') }}</p>
+        <select class="fl" style="margin-right: 10px; font-size: 12px !important;" @change="change18n('userLang', selectedI18nLocale)" v-model="selectedI18nLocale" name="selectLang" id="selectLang"><option value="en">English</option><option value="ko">한국어</option></select>
+        <p class="font12 fl mright-05">{{ $t('ROPF_TITLE_TIME') }}</p>
+        <select class="fl" style="font-size: 12px !important;" @change="change18n('areaKey', GE_TIME_LOCALE)" v-model="selectedLocale" name="selectLocale" id="selectLocale"><option value="US">United States</option><option value="KR">South Korea</option></select>
        </div>
        <div class="profileWrap ">
         <div @click="changeUserImg()" class="cursorP imgSize">

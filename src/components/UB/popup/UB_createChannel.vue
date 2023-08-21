@@ -452,6 +452,12 @@ export default {
           console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
           console.log(params)
           this.mParams = params
+          if (this.pSelectedAreaInfo) {
+            this.mParams.areaInfo = this.pSelectedAreaInfo
+          }
+
+          // this.mCreatedSuccessPopYn = false
+          // this.$emit('successCreChan', params)
         }
       } catch (error) {
         console.log(error)

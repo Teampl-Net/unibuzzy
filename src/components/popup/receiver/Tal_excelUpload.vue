@@ -1,8 +1,38 @@
+<i18n>
+{
+  "ko": {
+    "EXCEL_TITLE_EXCEL": "엑셀 업로드",
+    "EXCEL_MSG_DOWN": "구성원 유형을 선택하면 템플릿이 다운로드 됩니다.",
+    "EXCEL_MSG_CHECK": "작성한 템플릿 파일을 업로드하여 정합성 테스트를 합니다.",
+    "EXCEL_BTN_STAFF": "일반 직원용",
+    "EXCEL_BTN_STUDENT": "학생용",
+    "EXCEL_TITLE_RESULT": "테스트 결과",
+    "EXCEL_TITLE_FIT": "적합 데이터",
+    "EXCEL_TITLE_NO_FIT": "부적합 데이터",
+    "EXCEL_BTN_TEST": "정합성 테스트",
+    "EXCEL_MSG_FAIL": "파일 확인 실패: 업로드 파일 확인 후 재 업로드 해주세요",
+    "EXCEL_MSG_NO_DATA": "추가된 데이터가 없습니다. 업로드한 파일을 확인해주세요"
+  },
+  "en": {
+    "EXCEL_TITLE_EXCEL": "Upload Excel",
+    "EXCEL_MSG_DOWN": "Select a member type to download the template.",
+    "EXCEL_BTN_STAFF": "For staff",
+    "EXCEL_BTN_STUDENT": "For students",
+    "EXCEL_MSG_CHECK": "Upload the template file you created to test for consistency.",
+    "EXCEL_TITLE_RESULT": "Result",
+    "EXCEL_TITLE_FIT": "Fit Data",
+    "EXCEL_TITLE_NO_FIT": "Invalid Data",
+    "EXCEL_BTN_TEST": "Consistency Test",
+    "EXCEL_MSG_FAIL": "File verification failed: Please check the upload file and re-upload it",
+    "EXCEL_MSG_NO_DATA": "No data added. Please check the uploaded file."
+  }
+}
+</i18n>
 <template>
-    <div id="exelUploadPop" style="width: 80%; max-width: 500px; z-index: 99999999; height: 500px; border-radius: 10px; position: absolute; top: 15%; left: 10%; background: #fff; border: 1px solid #ccc;">
+    <div id="exelUploadPop" style="width: 80%; max-width: 500px; z-index: 99999999; height: 500px; border-radius: 10px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #fff; border: 1px solid #ccc;">
         <commonConfirmPop v-if="confirmYn" @ok="saveList" @no="this.confirmYn = false" confirmType="two" :confirmText="confirmMsg" />
         <div style="width: 100%; height: 50px; position: relative; padding: 13px 10px; border-bottom: 2px solid #6768A7; float: left; text-align: left;">
-            <p class="fontBold font18">엑셀업로드</p>
+            <p class="fontBold font18">{{ $t('EXCEL_TITLE_EXCEL') }}</p>
             <img @click="this.$emit('closePop')" class="cursorP" src="../../../assets/images/common/popup_close.png" style="position: absolute; right: 10px; top: 15px; width: 20px;" alt="">
         </div>
 
@@ -10,11 +40,11 @@
             <!-- <div style="width: 100%; min-height: 50px; float: left;">
               <gStepProgress :activeStep="activeStep" :progressStep="progressStep" />
             </div> --> <!-- <span class="font14 lightGray">{{activeStep === 0 ? '[닫기]' : '[펼치기]'}}</span> -->
-            <p class="commonColor font16 fontBold textLeft">STEP.0 구성원 유형을 선택하면 템플릿이 다운로드 됩니다. </p>
+            <p class="commonColor font16 fontBold textLeft">STEP.0 {{ $t('EXCEL_MSG_DOWN') }}</p>
             <div style="margin-left: 10px;width: calc(100% - 10px); margin-top: 5px; min-height: 35px; border-radius: 5px; margin-bottom: 10px;float: left;">
               <!-- <p class="font15 fontBold textLeft commonBlack">구성원 유형</p> -->
               <div v-for="(value, index) in uploadTypeList" :key="index" style="background:#fff; float: right; min-height: 30px; line-height: 30px; text-align: center; margin-left: 10px; border-radius: 5px; height: 100%; ">
-                  <gBtnSmall @click="downLoadTemplete(value.filePath)" :btnTitle="value.text"  style="min-width: 120px;"/>
+                  <gBtnSmall @click="downLoadTemplete(value.filePath)" :btnTitle="value.text"  style="min-width: 100px; padding: 0 10px;"/>
               </div>
             </div>
             <!-- <gBtnSmall class="fl mleft-05" style="float: right;" @click="activeStep === 1 ? this.$refs.downBtn.click() : ''" :style="activeStep !== 1 ? 'background-color:#ccc; cursor: default;' : ''" btnTitle="다운로드" />
@@ -24,19 +54,19 @@
               <gBtnSmall class="fl mleft-05" style="float: left;" @click="activeStep === 1 ? this.$refs.downBtn.click() : ''" :style="activeStep !== 1 ? 'background-color:#ccc; cursor: default;' : ''" btnTitle="다운로드" />
             </div> -->
             <div v-if="activeStep >= 0" style="width: 100%; min-height: 50px; float: left;">
-              <p class="commonColor font16 fontBold textLeft">STEP.1 작성한 템플릿 파일을 업로드하여 정합성 테스트를 합니다.</p> <!-- 하고 정합성 테스트를 합니다. -->
+              <p class="commonColor font16 fontBold textLeft">STEP.1 {{ $t('EXCEL_MSG_CHECK') }}</p> <!-- 하고 정합성 테스트를 합니다. -->
               <div class="commonBoxStyle" style="padding-left: 20px;">
                   <!-- <gBtnSmall style="float: left;" btnTitle="파일선택"/> -->
                   <form  @submit.prevent="formSubmit" style="overflow: hidden; float: left; width: calc(100% - 130px); min-width: 60%; margin-right: 10px; cursor: pointer; min-height: 45px;position: relative;" method="post">
                       <input class="formImageFile" type="file" title ="선택" accept=".xls,.xlsx"  style="background-color: #A9AACD; width: 100%; float: left; color: #FFFFFF;" ref="selectFile" id="input-file" @change="changeFile"/>
                   </form>
-                  <gBtnSmall class="fl" style="float: left;" @click="checkUploadYn" :style="checkUserYn ? 'background-color:#ccc;' : ''" btnTitle="정합성 테스트" />
+                  <gBtnSmall class="fl" style="float: left;" @click="checkUploadYn" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_TEST')" />
               </div>
               <!-- <p class="commonBlack font16 textLeft">STEP.3 업로드한 데이터의 정보를 확인합니다.</p> -->
             </div>
             <div v-if="this.checkUserYn" style="width: 100%; min-height: 50px; float: left;">
-              <p class="font14 fontBold font fl commonColor" style="margin-bottom: 2px; margin-left: 20px;">{{'테스트 결과'}}</p>
-              <p class="font13 fr lightGray">{{'적합 데이터: ' + this.excelFileList.length + ', 부적합 데이터: ' + this.failList.length}}</p>
+              <p class="font14 fontBold font fl commonColor" style="margin-bottom: 2px; margin-left: 20px;">{{$t('EXCEL_TITLE_RESULT')}}</p>
+              <p class="font13 fr lightGray">{{$t('EXCEL_TITLE_FIT') + ' ' + this.excelFileList.length + ', ' + $t('EXCEL_TITLE_NO_FIT') + this.failList.length}}</p>
               <div class="commonBoxStyle" style="width: calc(100% - 20px); margin-left: 20px; height: calc(100% - 300px); margin-top: 0px; min-height: 200px; margin-bottom: 10px; border: 1px solid #ccc;">
                   <table style="width: 100%; ">
                       <colgroup><col style="width: 10%"><col style="width: 20%"><col style="width: 15%;"><col style="width: 15%"><col style="width: 15%"><col style="width: 15%;"></colgroup>
@@ -50,7 +80,7 @@
                     <table v-if="this.excelFileList.length > 0 " id="contentsTable" style="width: 100%; ">
                         <colgroup><col style="width: 10%"><col style="width: 20%"><col style="width: 15%;"><col style="width: 15%"><col style="width: 15%"><col style="width: 15%;"></colgroup>
                         <tbody>
-                            <tr v-if="this.uploadErrorYn"><td colspan="3">파일 확인 실패: 업로드 파일 확인 후 재 업로드 해주세요</td></tr>
+                            <tr v-if="this.uploadErrorYn"><td colspan="3">{{ $t('EXCEL_MSG_FAIL') }}</td></tr>
                             <tr v-for="(value, index) in failList" :key="index">
                                 <td v-for="(fData, fDIndex) in value" :key="fDIndex" class="font14">
                                   <span>{{fData}}</span>
@@ -102,7 +132,7 @@ export default {
       excelTitleRowList: [],
       activeStep: 0,
       bookType: 'EMPL',
-      uploadTypeList: [{ text: '일반 직원용', type: 'employee', key: 0, filePath: '/commonFile/thealim_member_upload_list_employee.xlsx' }, { text: '학생용', type: 'student', key: 1, filePath: '/commonFile/thealim_member_upload_list_student.xlsx' }]
+      uploadTypeList: [{ text: this.$t('EXCEL_BTN_STAFF'), type: 'employee', key: 0, filePath: '/commonFile/thealim_member_upload_list_employee.xlsx' }, { text: this.$t('EXCEL_BTN_STUDENT'), type: 'student', key: 1, filePath: '/commonFile/thealim_member_upload_list_student.xlsx' }]
     }
   },
   components: {
