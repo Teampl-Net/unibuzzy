@@ -5,25 +5,24 @@
     <div style="height:100%; overflow-y:scroll; background-color:#fff; display:flex; flex-direction:column;" class="createChanWrap" >
       <div class="createChanContentsWrap" style="">
       <!-- 빌딩 선택-->
-      <p style="font-size:20px; font-weight:bold; padding-bottom:20px; ">Select Building.</p>
-      <div style="display:flex; align-items:end;">
+        <p style="font-size:20px; font-weight:bold; padding-bottom:20px; ">Select Building.</p>
+        <div style="display:flex; align-items:end;">
         <div style="width:140px; height:140px; border-radius:50%; border:1px solid #ccc; display:flex; align-items:center; justify-content:center;">
-          <img @click="openSelectBuildingPop" :src="mSelectedBuilding.selectPath" class="cursorP" style='width:60%; height:auto;'/>
+          <img @click="openSelectBuildingPop" v-if="mChannelModi" :src="mSelectedBuilding.selectPath" class="cursorP" style='width:60%; height:auto;'/>
+          <img @click="openSelectBuildingPop" v-else :src="mSelectedBuilding.selectPath" class="cursorP" style='width:60%; height:auto;'/>
         </div>
         <div style="background-color:#fff; margin-left:-30px; border-radius:50%; border:1px solid #ccc; width:35px; height:35px; display:flex; align-items:center; justify-content:center;">
           <img :src="require(`@/assets/images/channel/icon_camera.svg`)" class="cursorP" style="width:20px;" alt="">
         </div>
-      </div>
-
-      <ul v-if="!mShowBdOrChan" style="padding-left:0; padding-top:30px; display:flex; align-items:center; gap:10px;">
-        <li v-for="(tab, index) in mTabs" :key="index" style="border-radius:10px; background-color:#fff; color:#6768A7; font-weight:normal; width:100px; padding:8px 0; border:2px solid #6768A7;" @click="selectTab(index)" :class="{selectedTab : mSelectedTab===index}" class="cursorP">
+        </div>
+        <ul v-if="!mShowBdOrChan && !mChannelModi" style="padding-left:0; padding-top:30px; display:flex; align-items:center; gap:10px;">
+          <li v-for="(tab, index) in mTabs" :key="index" style="border-radius:10px; background-color:#fff; color:#6768A7; font-weight:normal; width:100px; padding:8px 0; border:2px solid #6768A7;" @click="selectTab(index)" :class="{selectedTab : mSelectedTab===index}" class="cursorP">
           <p>{{ tab.title }}</p>
-        </li>
-      </ul>
-
+          </li>
+        </ul>
       </div>
       <!-- 게시판 생성일 때.-->
-      <template v-if="mShowBdOrChan==='C' || (!mShowBdOrChan && mSelectedTab === 0)">
+      <template v-if="(mShowBdOrChan==='C' || (!mShowBdOrChan && mSelectedTab === 0)) && !mChannelModi">
         <div style="padding:2rem 1rem;">
           <p style="font-size:30px; padding-bottom:20px;">My Channel</p>
             <div style="width:100%; overflow-x:scroll;">
@@ -62,7 +61,7 @@
         </div>
       </template>
       <!-- 채널 생성일 때. select한 건물에 대해서도 prop으로 보내주기-->
-      <createChannel style="margin-top:310px;" :class="{margin260 : mShowBdOrChan==='T'}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1)" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
+      <createChannel style="margin-top:310px;" :class="{margin260 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
     </div>
   </div>
 </template>
@@ -83,7 +82,8 @@ export default {
     chanDetail: {},
     pBdAreaList: Array,
     pSelectedAreaInfo: Object,
-    pAreaInfo: Array
+    pAreaInfo: Array,
+    channelModiYn: Boolean
   },
   data () {
     return {
@@ -104,7 +104,8 @@ export default {
       colorPickerShowYn: false,
       selectedColor: '#FFCDD2',
       mShowBdOrChan: '',
-      mMyTeamList: []
+      mMyTeamList: [],
+      mChannelModi: false
     }
   },
   methods: {
@@ -252,10 +253,14 @@ export default {
   },
   async created () {
     // this.mSelectedTab = -1
-    console.log('mMyTeamList', this.mMyTeamList)
+    // console.log('mMyTeamList', this.mMyTeamList)
+    console.log('=====chanDetail', this.chanDetail)
     console.log('=====pAreaInfo', this.pAreaInfo)
     this.showBoardOrChannel()
     this.getUserTeamList()
+    if (this.channelModiYn) {
+      this.mChannelModi = true
+    }
   },
   computed: {
     GE_USER () {
@@ -289,8 +294,6 @@ export default {
   width: 100%;
   left:0;
   height: auto;
-  /* position: relative ; */
-  /* min-height: 600px; */
   margin: 80px 0;
   float: left;
   display: flex;

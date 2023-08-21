@@ -29,6 +29,8 @@
 }
 </i18n>
 <template>
+<seleciconBgPopup v-if="mSelectBuildingPop" :pSelectedBuilding="mSelectedBuilding" :selectBd="this.mSelectedBuilding" @no='mSelectBuildingPop=false' @makeParam='setIconOrBGData' :opentype="mSelectBuilding" :pClosePop="closeSelectBuildingPop"/>
+
 <div style="padding: 0 1.5rem 0 1rem ;box-sizing: border-box; width: 100%; height: 100%; background: #fff;"  >
   <transition name="show_left">
     <manageFollowerList v-if="mPopType === 'memberManagement'" :propData="mCommonParam" style="padding-top: 0;" :pClosePop="closePop" />
@@ -36,7 +38,8 @@
   <transition name="show_left">
     <editBookListPop v-if="mPopType === 'editBookList'" :propData="mCommonParam" :pClosePop="closePop" />
   </transition>
-  <createChannel @successCreChan="successCreChan" v-if="mPopType === 'createChannel'" :chanDetail="mCommonParam" :pClosePop="closePop" />
+  <!-- <createChannel @successCreChan="successCreChan" v-if="mPopType === 'createChannel'" :chanDetail="mCommonParam" :pClosePop="closePop" /> -->
+  <createBoardChannel @successCreChan="successCreChan" v-if="mPopType === 'createChannel'" :channelModiYn="channelModiYn=true" :chanDetail="mCommonParam" :pClosePop="closePop" />
   <editBoardListPop v-if="mPopType === 'editBoard'" :propData="mCommonParam" :pClosePop="closePop" />
   <gPopHeader :headerTitle="$t('MANA_TITLE_CHANDETAIL')" :pClosePop="pClosePop" />
   <div class="editMyChanMenuWrap" :style="`padding-top: ${Number(this.$STATUS_HEIGHT + 60)}px`">
@@ -141,15 +144,20 @@
 import gPopHeader from '../layout/UB_gPopHeader.vue'
 import manageFollowerList from './UB_manageFollowerList.vue'
 import editBookListPop from './UB_editBookListPop.vue'
-import createChannel from './UB_createChannel.vue'
+// import createChannel from './UB_createChannel.vue'
 import editBoardListPop from './UB_editBoardListPop.vue'
+import seleciconBgPopup from '@/components/popup/creChannel/Tal_selectChaniconBgPopup.vue'
+import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel'
+
 export default {
   components: {
     gPopHeader,
     manageFollowerList,
     editBookListPop,
-    createChannel,
-    editBoardListPop
+    // createChannel,
+    editBoardListPop,
+    seleciconBgPopup,
+    createBoardChannel
   },
   props: {
     propData: {},
@@ -158,11 +166,15 @@ export default {
   data () {
     return {
       mCommonParam: {},
-      mPopType: ''
+      mPopType: '',
+      mSelectBuildingPop: false,
+      mSelectBuilding: 'building',
+      channelModiYn: true
     }
   },
   async created () {
     this.mCommonParam = this.CHANNEL_DETAIL
+    console.log('mCommonParam', this.mCommonParam)
   },
   computed: {
     GE_USER () {
@@ -266,6 +278,10 @@ export default {
     openPop () {
       // this.$emit('openPop', this.CHANNEL_DETAIL)
       this.$emit('openPop', this.mCommonParam)
+    },
+    openSelectBuildingPop () {
+      this.mSelectBuildingPop = true
+      this.mSelectBuilding = 'building'
     }
   }
 
@@ -273,6 +289,18 @@ export default {
 </script>
 
 <style >
+.createChanContentsWrap{
+  width: 100%;
+  left:0;
+  height: auto;
+  margin: 80px 0;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content:start;
+  flex-direction:column;
+  margin-bottom: 0;
+}
 .editMyChanMenuWrap{
   padding-top: 60px;
   /* padding: 0.7rem 0 ; */

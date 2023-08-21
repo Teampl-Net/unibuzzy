@@ -54,7 +54,7 @@
     "EDIT_BOARD_TITLE_SAMPLE": "Default Sample Text",
     "EDIT_BOARD_MSG_SAMPLE": "Please add default sample text",
     "EDIT_BOARD_MSG_ISSAMPLE": "Default Sample Text 0",
-    "EDIT_BOARD_BTN_ALLMEM": "All members",
+    "EDIT_BOARD_BTN_ALLMEM": "Follower",
     "EDIT_BOARD_TITLE_READ": "Read Contents",
     "EDIT_BOARD_BTN_NONE": "None",
     "EDIT_BOARD_MSG_STATUS": "Set an access status",

@@ -37,13 +37,13 @@
 }
 </i18n>
 <template>
-<div style="width: 100%; height: 100%; float: left; position: absolute; z-index: 9999; left: 0; top:50px; " @click.stop="preventDefault">
+<div style="width: 100%; float: left; position: absolute; z-index: 9999; left: 0; top:50px; " @click.stop="preventDefault">
   <!-- <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" /> -->
   <gPopHeader :headerTitle="`Edit a Channel`" :pClosePop="pClosePop"/>
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
     <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
-      <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 100}px;`">
-        <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" style="margin-top:-90px;" >
+      <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 150}px;`">
+        <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" style="margin-top:-140px;" >
           <label @click="mIconBgSelectPopYn='bgPop'"  class='backgroundLabel commonColor' for="input-Backimgfile">
             <img :src="require(`@/assets/images/channel/icon_camera.svg`)" class="cursorP" style="width:20px;" alt="">
             Edit Background
@@ -352,6 +352,7 @@ export default {
         if (this.chanDetail !== {}) {
           gParam.teamKey = this.chanDetail.targetKey
           gParam.targetKey = this.chanDetail.targetKey
+          gParam.bdIconPath = this.pSelectedBuilding.selectPath
           if (this.CHANNEL_DETAIL) {
             gParam.reqKey = this.CHANNEL_DETAIL.reqKey
           }
@@ -359,6 +360,7 @@ export default {
 
         gParam.nameMtext = 'EN$^$' + this.mInputChannelName
         gParam.memoMtext = this.mInputChannelMemo
+        gParam.bdIconPath = this.pSelectedBuilding.selectPath
         if (this.pSelectedBuilding) {
           gParam.bdIconPath = this.pSelectedBuilding.selectPath
         }
@@ -450,9 +452,6 @@ export default {
           console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
           console.log(params)
           this.mParams = params
-
-          // this.mCreatedSuccessPopYn = false
-          // this.$emit('successCreChan', params)
         }
       } catch (error) {
         console.log(error)
@@ -570,7 +569,7 @@ border:1px solid #ccc; width: 120px; overflow: hidden; height: 120px; border-rad
 .changeChanTypeBtnWrap{width: 80%; height: 100%; float: right; border: none;border: 1px solid #ccc; border-radius: 5px;}
 .changeLogoBtnWrap{position: absolute; right: 50%; transform: translateX(180%); top: -50px; z-index: 9;}
 .changeBgBtnWrap{position: absolute; left: 1rem; top: 0.3rem;}
-.createChanWrap{width: 100%;display: flex; flex-direction: column; height: 100%; top:50px;}
-.createChanContentsWrap{width: 100%; left:0; height: 100%;  position: relative ; min-height: 600px; margin: 60px 0; float: left; display: flex;  align-items: flex-end; float: left; margin-bottom: 0;}
+.createChanWrap{width: 100%;display: flex; flex-direction: column; top:50px;}
+.createChanContentsWrap{width: 100%; left:0; height: 100%;  position: relative ; min-height: 450px; margin: 60px 0; float: left; display: flex;  align-items: flex-end; float: left; margin-bottom: 0;}
 
 </style>

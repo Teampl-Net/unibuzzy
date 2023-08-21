@@ -213,8 +213,6 @@ export default {
       }
       openPopParam.targetType = 'chanDetail'
       openPopParam.areaInfo = this.pAreaInfo
-      console.log('요기이이이이이잇', openPopParam)
-      console.log('요기이이이이이잇 chanElement', chanElement)
       this.$emit('openPop', openPopParam)
     },
     async saveFollower () {
