@@ -10,32 +10,33 @@
 </i18n>
 <template>
   <div class="w100P h100P fl">
-    <table class="w100P">
-      <colgroup>
-        <col class="listHeader" style="width: 55px; float: left;">
-        <col style="width: calc(100% - 55px); float: left;">
-      </colgroup>
-      <template v-for="(value, index) in propContentsList" :key="index">
-        <tr v-if="index < 5" class="commonListTr textLeft " :style="index === propContentsList.length - 1 ? 'border: none!important;' : ''" >
-            <td style="padding: 5px 5px; width: 50px;" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}">
-              <div class="top5PushChanLogoImgWrap w100P fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
+    <table class="w100P" style="">
+      <!-- <colgroup>
+        <col class="listHeader" style="width: 55px;">
+        <col style="width: calc(100% - 70px);">
+      </colgroup> -->
+      <tr v-for="(value, index) in propContentsList" :key="index" style="padding:5px 0;width:100%; display:flex; align-items:start; justify-content:space-between; " :style="index === propContentsList.length - 1 ? 'border: none!important;' : ''" >
+        <td style="padding: 5px 5px; width: 50px;" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}">
+          <div class="top5PushChanLogoImgWrap w100P fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
+          </div>
+        </td>
+        <td @click="goChanDetail(value)" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}" style="padding-left:10px; display:flex; align-items:center; width:calc(100% - 70px);">
+          <div style="display:flex; flex-direction:column; align-items:start; text-align:left; width:80%; padding: 2px 0 ; min-height: 25px;">
+            <div class="w100P">
+              <span v-if="value.jobkindId === 'ALIM'" class="font14 fl textCenter" style="margin-top: 0.5px; width: 50px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{$t('COMMON_TAB_NOTI')}}</span>
+              <span v-else-if="value.jobkindId === 'BOAR'" class="font14 fl textCenter" style="margin-top: 0.5px; width: 50px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMMON_TAB_POST')}}</span>
+              <span style="line-height:25px; " v-html="setSendNameStr(value)" class="textOverdot fl commonBlack font12"></span>
+              <p v-if="value.jobkindId === 'BOAR' && !(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey ) && (value.titleBlindYn === true || value.titleBlindYn === 1)" :v-html="$t('LIST_MSG_ACCESS')" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 75px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
+              <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold" style="width:100%; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
             </div>
-            </td>
-            <td v-on:click="goChanDetail(value)" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}">
-            <div style="width:calc(100% - 55px); float: left; padding: 2px 0 ; min-height: 25px;">
-                <div v-if="value.jobkindId === 'ALIM'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{$t('COMMON_TAB_NOTI')}}</div>
-                <div v-else-if="value.jobkindId === 'BOAR'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMMON_TAB_POST')}}</div>
-
-                <p v-if="value.jobkindId === 'BOAR' && !(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey ) && (value.titleBlindYn === true || value.titleBlindYn === 1)" :v-html="$t('LIST_MSG_ACCESS')" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 75px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
-                <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 50px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
-            </div>
-            <img src="../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style=" height:16px; padding: 1px; margin-right: 3px; float: left;" />
-            <span style="max-width: 75%;" v-html="setSendNameStr(value)" class="textOverdot fl commonBlack font12"></span>
-            <span v-if="value.showCreNameYn" v-html="')'" class="fl commonBlack font12"></span>
+          </div>
+        </td>
+          <!-- <img src="../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style=" height:16px; padding: 1px; margin-right: 3px; float: left;" /> -->
+          <td style="display:flex; flex-direction:column; align-items:end; width:20%;">
             <span class="commonBlack mtop-01 font12 fr">{{this.$changeDateFormat(value.creDate)}}</span>
-            </td>
-        </tr>
-      </template>
+          </td>
+        <!-- </td> -->
+      </tr>
     </table>
   </div>
 </template>
@@ -51,6 +52,7 @@ export default {
   updated () {
   },
   created () {
+    console.log('propContentsList', this.propContentsList)
   },
   watch: {
     propContentsList: {
@@ -111,6 +113,6 @@ export default {
 }
 .commonListTr, .commonListTr td, .commonListTr th {height: 4rem; padding: 5px 10px;}
 .listHeader {text-align: center;}
-.listBodyRow{width: calc(100% - 60px);}
+.listBodyRow{width: calc(100% - 60px) !important;}
 
 </style>

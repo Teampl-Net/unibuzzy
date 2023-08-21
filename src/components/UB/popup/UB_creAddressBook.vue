@@ -104,7 +104,7 @@ export default {
   display: flex;
   align-items: center;
   min-height: 65px;
-  padding-top: 60px;
+  padding-top: 80px !important;
   /* border-bottom: 1px solid #ccc; */
 }
 </style>
