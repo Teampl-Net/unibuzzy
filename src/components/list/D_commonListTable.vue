@@ -22,13 +22,16 @@
         </td>
         <td @click="goChanDetail(value)" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}" style="padding-left:10px; display:flex; align-items:center; width:calc(100% - 70px);">
           <div style="display:flex; flex-direction:column; align-items:start; text-align:left; width:80%; padding: 2px 0 ; min-height: 25px;">
-            <div class="w100P">
+            <div class="" style="width:80%; overflow-x:hidden;">
               <span v-if="value.jobkindId === 'ALIM'" class="font14 fl textCenter" style="margin-top: 0.5px; width: 50px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{$t('COMMON_TAB_NOTI')}}</span>
               <span v-else-if="value.jobkindId === 'BOAR'" class="font14 fl textCenter" style="margin-top: 0.5px; width: 50px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMMON_TAB_POST')}}</span>
               <span style="line-height:25px; " v-html="setSendNameStr(value)" class="textOverdot fl commonBlack font12"></span>
-              <p v-if="value.jobkindId === 'BOAR' && !(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey ) && (value.titleBlindYn === true || value.titleBlindYn === 1)" :v-html="$t('LIST_MSG_ACCESS')" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 75px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
-              <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold" style="width:100%; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
             </div>
+            <div>
+              <p v-if="value.jobkindId === 'BOAR' && !(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey ) && (value.titleBlindYn === true || value.titleBlindYn === 1)" :v-html="$t('LIST_MSG_ACCESS')" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 75px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;"></p>
+              <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold" style="width:150px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
+            </div>
+
           </div>
         </td>
           <!-- <img src="../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style=" height:16px; padding: 1px; margin-right: 3px; float: left;" /> -->
