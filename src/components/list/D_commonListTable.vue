@@ -9,7 +9,7 @@
 }
 </i18n>
 <template>
-  <div class="w100P h100P fl">
+  <div class="w100P h100P fl" style="">
     <table class="w100P" style="">
       <!-- <colgroup>
         <col class="listHeader" style="width: 55px;">
@@ -21,7 +21,7 @@
           </div>
         </td>
         <td @click="goChanDetail(value)" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}" style="padding-left:10px; display:flex; align-items:center; width:calc(100% - 100px);">
-          <div style="display:flex; flex-direction:column; align-items:start; text-align:left; width:80%; padding: 2px 0 ; min-height: 25px;">
+          <div style="display:flex; flex-direction:column; align-items:start; text-align:left; width:100%; padding: 2px 0 ; min-height: 25px;">
             <div class="" style="width:100%; overflow-x:hidden;">
               <span v-if="value.jobkindId === 'ALIM'" class="font14 fl textCenter" style="margin-top: 0.5px; width: 50px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{$t('COMMON_TAB_NOTI')}}</span>
               <span v-else-if="value.jobkindId === 'BOAR'" class="font14 fl textCenter" style="margin-top: 0.5px; width: 50px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMMON_TAB_POST')}}</span>
