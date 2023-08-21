@@ -13,7 +13,7 @@
     <!-- <recMemberPop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" /> -->
     <div class="font20 fontBold displayNIm" ref="UBChanMainNameDiv" :style="mChanNameLongYn ? 'font-size: 15px !important;' : ''" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{ officialTitle: CHANNEL_DETAIL.officialYn }"> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" />
       <p class="font20 fontBold textOverdot" :style="(CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white;' : 'color: #6768a7;') + 'top: ' + (Number(this.$STATUS_HEIGHT) - 5) + 'px'">
-        {{$changeText(CHANNEL_DETAIL.nameMtext)}} > {{ $changeText(mChanInfo.initData.team.cateItemMtext) }}
+        {{mChanInfo.initData.team.cateItemMtext ? $changeText(CHANNEL_DETAIL.nameMtext) > $changeText(mChanInfo.initData.team.cateItemMtext) : $changeText(CHANNEL_DETAIL.nameMtext)}}
       </p>
     </div>
     <div id="summaryWrap" ref="summaryWrap" v-if="!mChanInfoPopShowYn" class="summaryWrap mtop-05">
@@ -23,7 +23,7 @@
           <!-- <img src="../../../assets/images/channel/chanBgImg.jpeg" style="width:100%; height: calc(100% + 50px); position: absolute; left: 0; top: -50px;" /> -->
           <div class="w100P" style="height: calc(100% + 50px); position: absolute; left: 0; top: -50px; background: linear-gradient(to bottom, rgba(20, 20, 20, 0) 40%,rgba(20, 20, 20, 0.25) 50%,rgba(20, 20, 20, 0.5) 70%,rgba(20, 20, 20, 0.6) 90%,rgba(20, 20, 20, 0.8) 100%);"></div>
           <!-- <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ propParams.areaInfo.bdAreaDesc }} > {{ $changeText(CHANNEL_DETAIL.nameMtext) }}</div> -->
-          <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{$changeText(CHANNEL_DETAIL.nameMtext)}} > {{ $changeText(mChanInfo.initData.team.cateItemMtext) }}</div>
+          <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{mChanInfo.initData.team.cateItemMtext ? $changeText(CHANNEL_DETAIL.nameMtext) > $changeText(mChanInfo.initData.team.cateItemMtext) : $changeText(CHANNEL_DETAIL.nameMtext)}}</div>
           <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
           <!--follow-->
           <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" :btnTitle="$t('COMM_BTN_SUB')" />
