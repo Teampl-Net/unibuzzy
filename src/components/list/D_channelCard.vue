@@ -147,7 +147,7 @@
             }}
             </p>
             <div v-if="$route.path === '/chanList'" class="fr">
-              <p @click.stop="stopFollowing" v-if="mFollowYn" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
+              <p v-if="mFollowYn" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
               <p v-else @click.stop="saveFollower" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;"> + Follow </p>
             </div>
         </div>
@@ -212,6 +212,9 @@ export default {
         openPopParam.targetKey = chanElement.targetKey
       }
       openPopParam.targetType = 'chanDetail'
+      openPopParam.areaInfo = this.pAreaInfo
+      console.log('요기이이이이이잇', openPopParam)
+      console.log('요기이이이이이잇 chanElement', chanElement)
       this.$emit('openPop', openPopParam)
     },
     async saveFollower () {

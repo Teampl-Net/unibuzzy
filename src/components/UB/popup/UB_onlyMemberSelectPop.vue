@@ -6,7 +6,7 @@
     <!-- <selectedListCompo class="fl" style="height:calc(50% - 50px);" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' /> -->
     <selectedListCompo class="fl" style="height:20%; max-height:200px; min-height:150px; position:absolute; bottom:0; left:0;" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey" @changeSelectMemberList="changeSelectMemberList"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
     <!-- </div> this.propData.selectMemberType==='member'? true:false -->
-    <gConfirmPop :confirmText="this.propData.selectMemberType === 'member'? '구성원을 추가하시겠습니까?': '매니저를 추가하시겠습니까?'" confirmType='two' @no='confirmPopShowYn = false' @ok="saveMember" v-if="confirmPopShowYn"/>
+    <gConfirmPop :confirmText="this.propData.selectMemberType === 'member'? 'Do you want to add as a member?': 'Do you want to add as a manager?'" confirmType='two' @no='confirmPopShowYn = false' @ok="saveMember" v-if="confirmPopShowYn"/>
 
 </div>
 </template>

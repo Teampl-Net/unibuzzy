@@ -1,7 +1,7 @@
 <template>
   <div ref="mainRef" class="w100P h100P" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
     <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
-    <createBoardChannel v-if="mCreChannelShowYn" @successCreChan="successCreChan" :pAreaInfo="mAreaInfo" :pMyTeamList="mMyTeamList" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
+    <createBoardChannel v-if="mCreChannelShowYn" @successCreChan="successCreChan" :pAreaInfo="mAreaInfo" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
     <!-- <createChannel @successCreChan="successCreChan" v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" /> -->
     <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
@@ -120,8 +120,7 @@ export default {
       mSelectSchoolPopShowYn: false,
       mSchoolList: [],
       mBdClickedYn: false,
-      mOffsetInt: 0,
-      mMyTeamList: []
+      mOffsetInt: 0
     }
   },
   async created () {
@@ -741,16 +740,6 @@ export default {
       const nowHeight = window.innerHeight
 
       if (this.innerHeight < nowHeight) this.innerHeight = nowHeight
-    },
-    async getUserTeamList () {
-      var paramMap = new Map()
-      paramMap.userKey = this.GE_USER.userKey
-      paramMap.managerYn = true
-      var resultList = await this.$getTeamList(paramMap, true)
-      this.mMyTeamList = resultList.data
-      if (this.mMyTeamList) {
-        console.log('mMyTeamList', this.mMyTeamList)
-      }
     }
   },
   watch: {

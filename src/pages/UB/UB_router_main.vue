@@ -478,6 +478,7 @@ export default {
       // if (!teamKey && detailValue.creTeamKey) {
       //   encodedTeamKey = detailValue.creTeamKey
       // }
+      console.log('여기를 보세용', chanMainParam, detailValue)
       this.$router.push(`/chan/${chanMainParam.teamKey}/${detailValue.areaInfo.priority}`)
       // this.showCloudLoading(false, 1750)
     },

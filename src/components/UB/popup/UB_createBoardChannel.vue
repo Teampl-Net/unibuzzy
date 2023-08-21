@@ -83,8 +83,7 @@ export default {
     chanDetail: {},
     pBdAreaList: Array,
     pSelectedAreaInfo: Object,
-    pAreaInfo: Array,
-    pMyTeamList: Array
+    pAreaInfo: Array
   },
   data () {
     return {
@@ -104,7 +103,8 @@ export default {
       mMyTeamNameList: [],
       colorPickerShowYn: false,
       selectedColor: '#FFCDD2',
-      mShowBdOrChan: ''
+      mShowBdOrChan: '',
+      mMyTeamList: []
     }
   },
   methods: {
@@ -192,14 +192,15 @@ export default {
     },
     /* 해당 area에 속한 channel들만 보이게 함 */
     getMatchName () {
-      if (this.pMyTeamList) {
-        for (let i = 0; i < this.pMyTeamList.content.length; i++) {
+      if (this.mMyTeamList) {
+        for (let i = 0; i < this.mMyTeamList.content.length; i++) {
           if (this.pAreaInfo) {
-            if (this.pMyTeamList.content[i].bdAreaNameMtext === this.pAreaInfo.bdAreaNameMtext) {
-              this.mMyTeamNameList.push(this.pMyTeamList.content[i])
+            if (this.mMyTeamList.content[i].bdAreaNameMtext === this.pAreaInfo.bdAreaNameMtext) {
+              this.mMyTeamNameList.push(this.mMyTeamList.content[i])
             }
           }
         }
+        // 내가 관리하고 있는 channel들 중에서 내가 클릭한 area와 이름이 같은 것들만 추출함
         console.log('mMyTeamNameList', this.mMyTeamNameList)
       }
     },
@@ -237,13 +238,24 @@ export default {
       }
       console.log('===========mShowBdOrChan', this.mShowBdOrChan)
       return this.mShowBdOrChan
+    },
+    async getUserTeamList () {
+      var paramMap = new Map()
+      paramMap.userKey = this.GE_USER.userKey
+      paramMap.managerYn = true
+      var resultList = await this.$getTeamList(paramMap, true)
+      this.mMyTeamList = resultList.data
+      if (this.mMyTeamList) {
+        console.log('mMyTeamList', this.mMyTeamList)
+      }
     }
   },
   async created () {
     // this.mSelectedTab = -1
-    console.log('pMyTeamList', this.pMyTeamList)
+    console.log('mMyTeamList', this.mMyTeamList)
     console.log('=====pAreaInfo', this.pAreaInfo)
     this.showBoardOrChannel()
+    this.getUserTeamList()
   },
   computed: {
     GE_USER () {
