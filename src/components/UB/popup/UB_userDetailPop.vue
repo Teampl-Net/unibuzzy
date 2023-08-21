@@ -9,7 +9,7 @@
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="@/assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
-    <div class="w100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
+    <div class="profileImgWrap w100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
 
         <div style=" display: flex; align-items: center; justify-content: center;" :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
             <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center; position: relative;" class="userProfileImgWrap">
@@ -35,18 +35,19 @@
         </div>
         <p class="fl whiteColor CMiddleBgColor font12" style="padding: 2px 6px; border-radius:10px; " v-if="userGrade !== ''" >{{userGrade}}</p>
       </div>
-      <div class="mtop-1 fl w100P"  style="display: flex;padding-left:15%; " v-if="!readOnlyYn && !selfYn">
-        <img src="/resource/footer/icon_people.svg"  class="img-w20 fl mright-05" alt="">
 
+      <div class="mtop-1 fl w100P"  style="display: flex; padding-left:5%; " v-if="!readOnlyYn && !selfYn">
+        <img src="/resource/footer/icon_people.svg"  class="img-w20 fl mright-05" alt="">
         <input  type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
       </div>
 
-      <div class="mtop-1 fl w100P"  style="display: flex;padding-left:15%; ">
+      <div class="mtop-1 fl w100P"  style="display: flex; padding-left:5%; ">
         <img src="@/assets/images/editChan/icon_letter.svg"  class="img-w20 fl mright-05" alt="">
         <p class="fl font16 commonDarkGray creChanInput " style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memEmail ? memEmail : '등록된 이메일이 없습니다.'}}</p>
         <input v-else type="text" placeholder="이메일을 입력하세요" class="creChanInput fr"  v-model="memEmail" >
       </div>
-      <div class="mtop-1 fl w100P"  style="display: flex; padding-left:15%;">
+
+      <div class="mtop-1 fl w100P"  style="display: flex; padding-left:5%;">
         <img src="@/assets/images/editChan/icon_phoneSolid.svg" class="img-w20 fl mright-05" alt="">
         <p class="fl font16 commonDarkGray creChanInput"  style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memPhone ? memPhone : '등록된 번호가 없습니다.'}}</p>
         <input v-else type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
@@ -54,7 +55,7 @@
 
       <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
       <div v-if="readOnlyYn" class="fl w100P mtop-3" style=" min-height: 70px; display: flex; flex-direction: row; justify-content: space-around;">
-        <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="fl" style="display: flex; flex-direction: row; align-items: center; justify-content: center">
+        <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="funcIconWrap fl" style="display: flex; flex-direction: row; align-items: center; justify-content: center">
           <div style="display: flex; flex-direction: column; align-items: center;">
             <div class="nativeServiceBtnWrap">
               <img v-if="value.type === 'ALIM'" src="@/assets/images/editChan/icon_bellSolid.svg" class="img-w20" alt="">
@@ -80,9 +81,9 @@
                     <col width="10px">
                 </colgroup>
                 <tr style = "background-color:#ccc;">
-                    <th class="font15" style="height: 100%; text-align: center;">이름</th>
-                    <th class="font15" style="height: 100%; text-align: center;">이메일</th>
-                    <th class="font15" style="height: 100%; text-align: center;">전화번호</th>
+                    <th class="font15" style="height: 100%; text-align: center;">Name</th>
+                    <th class="font15" style="height: 100%; text-align: center;">Email</th>
+                    <th class="font15" style="height: 100%; text-align: center;">Phone</th>
                     <th class="font15" style="height: 100%; text-align: center;"></th>
                 </tr>
                 <tr v-for="(data, index) in memberList" :key='index' style="height:50px;">
@@ -130,7 +131,7 @@ export default {
             changeYn: false,
             tempUserDispName: '',
             thisUserKey: null,
-            profileFunc: [{ funcTitle: '알림작성', type: 'ALIM' }, { funcTitle: '메일쓰기', type: 'MAIL' }, { funcTitle: '전화걸기', type: 'PHON' }, { funcTitle: '문자쓰기', type: 'TEXT' }],
+            profileFunc: [{ funcTitle: 'Alert', type: 'ALIM' }, { funcTitle: 'Email', type: 'MAIL' }, { funcTitle: 'Call', type: 'PHON' }, { funcTitle: 'Message', type: 'TEXT' }],
             userGrade: '',
             mUserInfo: {}
         }
@@ -475,13 +476,17 @@ table {
     align-items: center;
     justify-content: flex-start
 }
+
+.profileImgWrap {
+    margin-bottom: 2rem;
+  }
+
 .memberItemRow{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 
 }
-
 
 .memberLogoArea{
 border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin: 0 auto;  background: #ffffff66; position: relative;display:flex; flex-direction: column; justify-content: center; align-items: center;
@@ -499,7 +504,7 @@ margin-bottom: 2rem;
     border : none;
     /* border-bottom: 1px solid #ccc; */
     white-space: nowrap;
-    overflow: scroll hidden;
+    /* overflow: scroll hidden; */
 }
 
 .addTeamMemberArea{
@@ -547,6 +552,11 @@ margin-bottom: 2rem;
   }
   .creChanInput {
     width: calc(100% - 60px);
+  }
+}
+@media (max-width: 350px) {
+  .funcIconWrap div:nth-child(2) {
+    margin: 0 2px !important;
   }
 }
 </style>
