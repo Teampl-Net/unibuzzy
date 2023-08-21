@@ -11,7 +11,10 @@
     "EXCEL_TITLE_NO_FIT": "부적합 데이터",
     "EXCEL_BTN_TEST": "정합성 테스트",
     "EXCEL_MSG_FAIL": "파일 확인 실패: 업로드 파일 확인 후 재 업로드 해주세요",
-    "EXCEL_MSG_NO_DATA": "추가된 데이터가 없습니다. 업로드한 파일을 확인해주세요"
+    "EXCEL_MSG_NO_DATA": "추가된 데이터가 없습니다. 업로드한 파일을 확인해주세요",
+    "EXCEL_MSG_ADD": "위 구성원을 주소록에 추가합니다.",
+    "EXCEL_BTN_UPLOAD": "업로드",
+    "EXCEL_BTN_SELECT": "파일 선택"
   },
   "en": {
     "EXCEL_TITLE_EXCEL": "Upload Excel",
@@ -24,7 +27,10 @@
     "EXCEL_TITLE_NO_FIT": "Invalid Data",
     "EXCEL_BTN_TEST": "Consistency Test",
     "EXCEL_MSG_FAIL": "File verification failed: Please check the upload file and re-upload it",
-    "EXCEL_MSG_NO_DATA": "No data added. Please check the uploaded file."
+    "EXCEL_MSG_NO_DATA": "No data added. Please check the uploaded file.",
+    "EXCEL_MSG_ADD": "Add the above members to your address book.",
+    "EXCEL_BTN_UPLOAD": "Upload",
+    "EXCEL_BTN_SELECT": "Select a File"
   }
 }
 </i18n>
@@ -57,10 +63,16 @@
               <p class="commonColor font16 fontBold textLeft">STEP.1 {{ $t('EXCEL_MSG_CHECK') }}</p> <!-- 하고 정합성 테스트를 합니다. -->
               <div class="commonBoxStyle" style="padding-left: 20px;">
                   <!-- <gBtnSmall style="float: left;" btnTitle="파일선택"/> -->
-                  <form  @submit.prevent="formSubmit" style="overflow: hidden; float: left; width: calc(100% - 130px); min-width: 60%; margin-right: 10px; cursor: pointer; min-height: 45px;position: relative;" method="post">
-                      <input class="formImageFile" type="file" title ="선택" accept=".xls,.xlsx"  style="background-color: #A9AACD; width: 100%; float: left; color: #FFFFFF;" ref="selectFile" id="input-file" @change="changeFile"/>
-                  </form>
-                  <gBtnSmall class="fl" style="float: left;" @click="checkUploadYn" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_TEST')" />
+                  <div class="w100P" style="display: flex; flex-direction: column; gap: 20px; align-items: flex-end;">
+                    <label for="input-file">
+                    {{ selectFile? selectFile.name:$t('COMMON_MSG_NOFILE') }}
+                      <gBtnSmall style="margin-left: 10px;" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_SELECT')" />
+                    </label>
+                    <form  @submit.prevent="formSubmit" style="overflow: hidden; float: left; width: calc(100% - 130px); min-width: 60%; margin-right: 10px; cursor: pointer; min-height: 45px;position: relative; display: none;" method="post">
+                        <input class="formImageFile" type="file" title ="선택" accept=".xls,.xlsx"  style="background-color: #A9AACD; width: 100%; float: left; color: #FFFFFF;" ref="selectFile" id="input-file" @change="changeFile"/>
+                    </form>
+                    <gBtnSmall @click="checkUploadYn" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_TEST')" />
+                  </div>
               </div>
               <!-- <p class="commonBlack font16 textLeft">STEP.3 업로드한 데이터의 정보를 확인합니다.</p> -->
             </div>
@@ -105,12 +117,12 @@
                             </tr>
                         </tbody>
                     </table>
-                    <p v-else class="font14 commonBlack textLeft mleft-05 mtop-05 ">추가된 데이터가 없습니다. 업로드한 파일을 확인해주세요</p>
+                    <p v-else class="font14 commonBlack textLeft mleft-05 mtop-05 ">{{ $t('EXCEL_MSG_NO_DATA') }}</p>
                   </div>
               </div>
             </div>
-            <p v-show="activeStep === 2" class="commonColor font16 fontBold fl textLeft mtop-05">STEP.3 위 구성원을 주소록에 추가합니다.</p>
-            <gBtnSmall v-show="activeStep === 2" @click="confirmSavePop" style="margin-top: 5px; " :style="!checkUserYn? 'background-color:#ccc;' : ''" btnTitle="업로드" />
+            <p v-show="activeStep === 2" class="commonColor font16 fontBold fl textLeft mtop-05">STEP.3 {{ $t('EXCEL_MSG_ADD') }}</p>
+            <gBtnSmall v-show="activeStep === 2" @click="confirmSavePop" style="margin-top: 5px; " :style="!checkUserYn? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_UPLOAD')" />
         </div>
     </div>
 </template>
@@ -142,6 +154,11 @@ export default {
     cabinetKey: {},
     targetKey: {}
   },
+  computed: {
+    GE_LOCALE () {
+      return this.$i18n.locale
+    }
+  },
   methods: {
     downLoadTemplete (path) {
       // console.log(path)
@@ -172,6 +189,9 @@ export default {
       this.activeStep = 1
       this.checkUserYn = false
       this.uploadErrorYn = false
+      if (this.$refs.selectFile.files.length > 0) {
+        this.selectFile = this.$refs.selectFile.files[0]
+      }
     },
     checkUploadYn () {
       // if (!this.checkUserYn) {
@@ -241,16 +261,24 @@ export default {
             })
         }
       } else {
-        this.$showToastPop('파일을 선택해주세요.')
+        this.$showToastPop(this.$t('COMMON_MSG_NOFILE'))
       }
       // }
     },
     confirmSavePop () {
       if (this.checkUserYn) {
         this.confirmMsg = ''
-        this.confirmMsg += '총 ' + this.excelFileList.length + '명을 주소록에 추가하시겠습니까?'
+        if (this.GE_LOCALE === 'ko') {
+          this.confirmMsg += '총 ' + this.excelFileList.length + '명을 주소록에 추가하시겠습니까?'
+        } else {
+          this.confirmMsg += `Do you want to add a total of ${this.excelFileList.length} people to your address book?`
+        }
         if (this.failCnt > 0) {
-          this.confirmMsg += '(부적합 데이터' + this.failCnt + '명 제외)'
+          if (this.GE_LOCALE === 'ko') {
+            this.confirmMsg += '(부적합 데이터' + this.failCnt + '명 제외)'
+          } else {
+            this.confirmMsg += `Excluding ${this.failCnt} non-conforming data`
+          }
         }
         this.confirmYn = true
       }
