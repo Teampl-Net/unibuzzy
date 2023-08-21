@@ -102,7 +102,13 @@
             alt=""
             />
             <!-- {{$route.path === "/" ? $changeText(chanElement.nameMtext) + " Channel " : `${$changeText(chanElement.bdAreaNameMtext)} > ${$changeText(chanElement.nameMtext )}`}} -->
-            {{$route.path === "/" ? $changeText(chanElement.nameMtext) + " Channel " : `${$changeText(chanElement.nameMtext )}`}}
+            <div v-if="$route.path === '/'" class="w100P" style="display: flex; align-items: center;">
+              <p style="max-width: calc(100% - 36px);">{{ $changeText(chanElement.nameMtext) }}</p>
+              <img style="margin-left: 10px;" src="../../assets/images/footer/icon_channel_fillin.svg" alt="">
+            </div>
+            <div v-else class="w100P">
+              {{ $changeText(chanElement.nameMtext) }}
+            </div>
             <p class="fr font13 lightGray" style="font-weight: normal">
             {{
                 $t("SEAR_TAB_ACT_CAHNNEL") +

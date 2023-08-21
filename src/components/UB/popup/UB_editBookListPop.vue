@@ -70,7 +70,7 @@
             <img @click="mCabinetName !== ''? getBookMemberList():getBookList()" class="cursorP" style="float: right; position: absolute; left: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="@/assets/images/common/iocn_search.png" alt="검색버튼">
             <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="mCabinetName !== ''? getBookMemberList():getBookList()" :placeholder="mCabinetName !== ''? $t('EDIT_BOOK_MSG_NAME'):$t('EDIT_BOOK_MSG_BOOK')">
           </div>
-          <div class="CDeepBorderColor fr" style="border-radius: 20px; width:110px; min-height: 30px; display: flex; justify-content: center; align-items: center; ">
+          <div class="CDeepBorderColor fr" style="border-radius: 20px; width:100px; min-height: 30px; display: flex; justify-content: center; align-items: center; ">
             <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'creDate'}">{{ $t('EDIT_BOOK_BTN_CRE') }}</p>
             <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">{{ $t('EDIT_BOOK_BTN_NAME') }}</p>
           </div>
