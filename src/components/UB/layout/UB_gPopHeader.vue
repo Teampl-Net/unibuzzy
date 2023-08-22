@@ -113,7 +113,7 @@ export default {
   padding: 0.7rem 0.5rem;
   width: 100%; height: 50px; list-style: none; text-align: center; z-index: 10; background: #FFF; }
 
-.popHeaderTitleSpan{position: absolute; color: #6768A7; font-weight: bold; width:70%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
+.popHeaderTitleSpan{position: absolute; top:50%; transform: translateY(-50%); color: #6768A7; font-weight: bold; width:70%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
 .commonPopBackBtn{width: 0.8rem;}
 
 .chanMenubar{
