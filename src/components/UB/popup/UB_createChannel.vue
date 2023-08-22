@@ -43,14 +43,14 @@
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
     <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
       <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 150}px;`">
-        <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" style="margin-top:-140px;" >
+        <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" style="margin-top:-160px;" >
           <label @click="mIconBgSelectPopYn='bgPop'"  class='backgroundLabel commonColor' for="input-Backimgfile">
             <img :src="require(`@/assets/images/channel/icon_camera.svg`)" class="cursorP" style="width:20px;" alt="">
             Edit Background
           </label>
         </form>
 
-        <div v-if="(pChannelModi || chanDetail.modiYn === true) && this.chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; padding-left:0.25rem; margin-top:-140px;">
+        <div v-if="(pChannelModi || chanDetail.modiYn === true) && this.chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; padding-left:0.25rem; margin-top:-160px;">
           <p class="font14" style="color:#aaa;"> <img src="@/assets/images/formEditor/trashIcon_gray2.svg" style="width:18px;" alt=""> {{ $t('CRE_BTN_DELETE_CHAN') }} </p>
         </div>
 
@@ -107,7 +107,7 @@
       </div>
     </div>
     <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='setParam' />
-    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', mParams)" confirmType="one" v-if="mCreatedSuccessPopYn" :pClosePop="pClosePop"/>
+    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', mParams)" confirmType="one" v-if="mCreatedSuccessPopYn"/>
     <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn === true" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
 </div>
 </template>
@@ -482,7 +482,7 @@ export default {
       temp.creUserName = data.creUserName
       temp.deleteYn = data.deleteYn
       this.$store.dispatch('D_CHANNEL/AC_ADD_UPDATE_CHAN_LIST', temp)
-      // this.pClosePop()
+      this.pClosePop()
     },
     async newChannelInPool (newCreTeamKey) {
       var paramMap = new Map()

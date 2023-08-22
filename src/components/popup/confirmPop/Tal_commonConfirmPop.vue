@@ -44,15 +44,11 @@ export default {
     nonHeaderYn: { type: Boolean, default: false },
     pCloseCreateConfirmPop: Function,
     pNewChanTeam: Array,
-    pGoChannelMain: Function,
-    pClosePop: Function
+    pGoChannelMain: Function
   },
   methods: {
     goOk () {
       this.$emit('ok')
-      if (this.pClosePop) {
-        this.pClosePop()
-      }
     },
     goNo () {
       var hStack = this.$store.getters['D_HISTORY/hStack']

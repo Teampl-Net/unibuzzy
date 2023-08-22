@@ -27,14 +27,14 @@
               <span v-else-if="value.jobkindId === 'BOAR'" class="font14 fl textCenter" style="margin-top: 0.5px; width: 50px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMMON_TAB_POST')}}</span>
               <span style="line-height:25px; " v-html="setSendNameStr(value)" class="textOverdot fl commonBlack font12"></span>
             </div>
-            <div>
+            <div style="width:50vw; overflow:hidden;">
               <p v-if="value.jobkindId === 'BOAR' && !(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey ) && (value.titleBlindYn === true || value.titleBlindYn === 1)" :v-html="$t('LIST_MSG_ACCESS')" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 75px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;"></p>
-              <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold widths" style="width:150px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
+              <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold widths" style="width:100%; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
             </div>
 
           </div>
         </td >
-          <!-- <img src="../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style=" height:16px; padding: 1px; margin-right: 3px; float: left;" /> -->
+          <img src="../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style=" height:16px; padding: 1px; margin-right: 3px; float: left;" />
           <td style="display:flex; flex-direction:column; align-items:end; width:35px;">
             <span class="commonBlack mtop-01 font12 fr">{{this.$changeDateFormat(value.creDate)}}</span>
           </td>

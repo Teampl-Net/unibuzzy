@@ -5,7 +5,7 @@
     <div style="height:100%; overflow-y:scroll; background-color:#fff; display:flex; flex-direction:column;" class="createChanWrap" >
       <div class="createChanContentsWrap" style="">
       <!-- 빌딩 선택-->
-        <p style="font-size:20px; font-weight:bold; padding-bottom:20px; ">Select Building.</p>
+        <p style="font-size:20px; font-weight:bold; padding-top:10px; padding-bottom:20px; ">Select Building.</p>
         <div style="display:flex; align-items:end;">
         <div style="width:120px; height:120px; border-radius:50%; border:1px solid #ccc; display:flex; align-items:center; justify-content:center;">
           <img @click="openSelectBuildingPop" v-if="mChannelModi" :src="mSelectedBuilding.selectPath" class="cursorP" style='width:60%; height:auto;'/>
@@ -26,11 +26,11 @@
         <div style="padding:2rem 1rem;">
           <p style="font-size:30px; padding-bottom:20px;">My Channel</p>
             <div style="width:100%; overflow-x:scroll;">
-              <p v-if="mMyTeamNameList.length===0" style="padding:0 0 2rem;">It's empty.</p>
+              <p v-if="mMyTeamList.length===0" style="padding:0 0 2rem;">It's empty.</p>
               <ul v-else style="width:auto; overflow-x:scroll; display:flex; align-items:start; gap:30px;">
-                <teamplate v-for="(team, index) in mMyTeamNameList" :key="index">
-                  <li v-if="pAreaInfo.bdAreaNameMtext === team.bdAreaNameMtext" class="cursorP" style="">
-                    <div @click="getSelectedChanIndex(index)" :class="{selectedChannel : mSelectedChanIndex===index}" style="width:100px; height:100px; border-radius:50%; border:3px solid #ccc;">
+                <teamplate v-for="(team, index) in mMyTeamList.content" :key="index">
+                  <li @click="getSelectedChanIndex(index)" class="cursorP" style="">
+                    <div :class="{selectedChannel : mSelectedChanIndex===index}" style="width:100px; height:100px; border-radius:50%; border:3px solid #ccc;">
                       <img :src="team.logoPathMtext" class="w100P" />
                     </div>
                     <p style="padding-top:5px;">{{ team ? $changeText(team.nameMtext) : '' }}</p>
@@ -61,7 +61,7 @@
         </div>
       </template>
       <!-- 채널 생성일 때. select한 건물에 대해서도 prop으로 보내주기-->
-      <createChannel style="margin-top:310px; padding-bottom:80px;" :class="{margin220 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pChannelModi="mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
+      <createChannel style="margin-top:310px; padding-bottom:80px;" :class="{margin220 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pClosePop="pClosePop" :pChannelModi="mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
     </div>
   </div>
 </template>
@@ -147,7 +147,7 @@ export default {
     },
     getSelectedChanIndex (index) {
       this.mSelectedChanIndex = index
-      console.log('selected mMyTeamNameList', this.mMyTeamNameList[this.mSelectedChanIndex])
+      console.log('selected mMyTeamList', this.mMyTeamList.content[this.mSelectedChanIndex])
     },
     async newBoard () {
       var param = {
@@ -157,8 +157,8 @@ export default {
           creUserKey: this.GE_USER.userKey,
           bdIconPath: this.mSelectedBuilding.selectPath,
           cabinetNameMtext: 'EN$^$' + this.mNewBoardName,
-          currentTeamKey: this.mMyTeamNameList[this.mSelectedChanIndex].teamKey,
-          creTeamKey: this.mMyTeamNameList[this.mSelectedChanIndex].teamKey,
+          currentTeamKey: this.mMyTeamList.content[this.mSelectedChanIndex].teamKey,
+          creTeamKey: this.mMyTeamList.content[this.mSelectedChanIndex].teamKey,
           sysCabinetCode: 'BOAR',
           menuType: 'C',
           blindYn: false,
@@ -175,36 +175,36 @@ export default {
       })
       console.log('newBoard param', param)
       if (response) {
-        this.getTeamMenuList()
+        // this.getTeamMenuList()
         console.log('newBoard response', response)
       }
     },
-    async getTeamMenuList () {
-      var paramMap = new Map()
-      paramMap.set('teamKey', this.mMyTeamNameList[this.mSelectedChanIndex].teamKey)
-      paramMap.set('sysCabinetCode', 'BOAR')
-      paramMap.set('userKey', this.GE_USER.userKey)
-      paramMap.set('adminYn', true)
-      var result = await this.$getTeamMenuList(paramMap, true)
+    // async getTeamMenuList () {
+    //   var paramMap = new Map()
+    //   paramMap.set('teamKey', this.mMyTeamNameList[this.mSelectedChanIndex].teamKey)
+    //   paramMap.set('sysCabinetCode', 'BOAR')
+    //   paramMap.set('userKey', this.GE_USER.userKey)
+    //   paramMap.set('managerYn', true)
+    //   var result = await this.$getTeamMenuList(paramMap, true)
 
-      this.cabinetList = result
-      console.log('===== cabinetList ====')
-      console.log(this.cabinetList)
-    },
+    //   this.cabinetList = result
+    //   console.log('===== cabinetList ====')
+    //   console.log(this.cabinetList)
+    // },
     /* 해당 area에 속한 channel들만 보이게 함 */
-    getMatchName () {
-      if (this.mMyTeamList) {
-        for (let i = 0; i < this.mMyTeamList.content.length; i++) {
-          if (this.pAreaInfo) {
-            if (this.mMyTeamList.content[i].bdAreaNameMtext === this.pAreaInfo.bdAreaNameMtext) {
-              this.mMyTeamNameList.push(this.mMyTeamList.content[i])
-            }
-          }
-        }
-        // 내가 관리하고 있는 channel들 중에서 내가 클릭한 area와 이름이 같은 것들만 추출함
-        console.log('mMyTeamNameList', this.mMyTeamNameList)
-      }
-    },
+    // 내가 관리하고 있는 channel들 중에서 내가 클릭한 area와 이름이 같은 것들만 추출함
+    // getMatchName () {
+    //   if (this.mMyTeamList) {
+    //     for (let i = 0; i < this.mMyTeamList.content.length; i++) {
+    //       if (this.pAreaInfo) {
+    //         if (this.mMyTeamList.content[i].bdAreaNameMtext === this.pAreaInfo.bdAreaNameMtext) {
+    //           this.mMyTeamNameList.push(this.mMyTeamList.content[i])
+    //         }
+    //       }
+    //     }
+    //     console.log('mMyTeamNameList', this.mMyTeamNameList)
+    //   }
+    // },
     choiceColor (color) {
       this.selectedColor = color
       this.$refs.colorPicker.setColor(color)
@@ -242,9 +242,9 @@ export default {
     },
     async getUserTeamList () {
       var paramMap = new Map()
-      paramMap.userKey = this.GE_USER.userKey
-      paramMap.managerYn = true
-      var resultList = await this.$getTeamList(paramMap, true)
+      paramMap.set('userKey', this.GE_USER.userKey)
+      paramMap.set('managerYn', true)
+      var resultList = await this.$getTeamList(paramMap)
       this.mMyTeamList = resultList.data
       if (this.mMyTeamList) {
         console.log('mMyTeamList', this.mMyTeamList)
