@@ -103,8 +103,8 @@
             />
             <!-- {{$route.path === "/" ? $changeText(chanElement.nameMtext) + " Channel " : `${$changeText(chanElement.bdAreaNameMtext)} > ${$changeText(chanElement.nameMtext )}`}} -->
             <div v-if="$route.path === '/'" class="w100P" style="display: flex; align-items: center;">
-              <p style="max-width: calc(100% - 36px);">{{ $changeText(chanElement.nameMtext) }}</p>
-              <img style="margin-left: 10px;" src="../../assets/images/footer/icon_channel_fillin.svg" alt="">
+              <p style="max-width: calc(100% - 30px);">{{ $changeText(chanElement.nameMtext) }}</p>
+              <img style="margin-left: 10px; width: 20px;" src="../../assets/images/footer/icon_channel_fillin.svg" alt="">
             </div>
             <div v-else class="" style="display:inline-block;">
               {{ $changeText(chanElement.nameMtext) }}
@@ -195,7 +195,9 @@ export default {
       this.getMemberTypeList()
     } */
     if (this.$route.path === '/chanList') {
-      this.showFollowYn()
+      this.$nextTick(() => {
+        this.showFollowYn()
+      })
     }
   },
   data () {
