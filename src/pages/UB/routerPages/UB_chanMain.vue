@@ -60,8 +60,7 @@
         </div>
       </div>
     </div>
-
-    <div class="channelItemBox" ref="channelItemBox" style="background: rgb(220, 221, 235); padding-top: 0; overflow: hidden;">
+    <div class="channelItemBox" ref="channelItemBox" style="background: rgb(220, 221, 235); padding-top: 0;">
       <pushList :pCabinetKeyListStr="mCabKeyListStr" :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" @goScroll="scrollOn" :pBoardList="mChanInfo.boardList" :initData="this.mChanInfo.initData.contentsList" @cMemoEditYn="changeMemoEditYn"
         :targetContents="{ targetContentsKey: mChanInfo.targetContentsKey, jobkindId: mChanInfo.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.mChanInfo.targetType"
         ref="ChanAlimListPushListCompo" :alimListYn="true" @openPage="openPage" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements'
@@ -211,7 +210,7 @@ export default {
         const pushList = document.getElementById('pushListWrap')
         if (pushList) {
           this.pushListWrap = pushList
-          this.pushListWrap.style.overflow = 'hidden'
+          this.pushListWrap.style.overflow = 'hidden '
         } else {
           setTimeout(() => {
             const pushList = document.getElementById('pushListWrap')
@@ -1026,7 +1025,8 @@ export default {
 
         blockBox.style.height = Number(this.$STATUS_HEIGHT) + '210px'
         this.mChanMainScrollWrap.style.height = ''
-        this.pushListWrap.style.overflow = 'hidden'
+        // ios scroll 해결 왜?
+        this.pushListWrap.style.overflow = 'hidden auto'
         channelItemBoxRef.classList.remove('channelItemBoxHeight')
       }
     }
