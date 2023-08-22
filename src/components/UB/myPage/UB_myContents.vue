@@ -55,8 +55,8 @@ export default {
       // param.allYn = true
       if (this.mViewTab === 'L') {
         param.DESCYn = true
-        param.findActLikeYn = false
-        param.findActStarYn = true
+        param.findActLikeYn = true
+        param.findActStarYn = false
         param.findActYn = true
         param.findLogReadYn = null
         param.subsUserKey = this.GE_USER.userKey

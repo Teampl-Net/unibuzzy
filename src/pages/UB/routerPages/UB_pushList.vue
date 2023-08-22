@@ -45,7 +45,7 @@
         <findContentsList :tpGroupCode="this.viewMainTab === 'B' || this.viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" :pClosePop="closeSearchPop" :teamKey='this.pChannelDetail.teamKey'/>
       </transition>
 
-        <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'" style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); padding-bottom: 60px; ">
+        <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'" style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); padding-bottom: 60px;  -webkit-overflow-scrolling: touch">
           <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
           <div class="w100P fl commonListContentBox" style="height:1px;" />
           <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
@@ -2296,6 +2296,7 @@ export default {
   margin-top: 150px;
   height: calc(100% - 150px);
 }
+
 .mainTabStyle {border-radius: 10px; min-width: 80px; float: left; border-bottom: none; background: #FFF;; padding: 5px 10px; margin-left: 10px;}
 .mainTabActive { border-bottom: none; background: #F1F1FF !important;}
 .pushListHeader {
