@@ -188,7 +188,7 @@ export default {
     pPopTitle: {},
     pSelectedYn: Boolean
   },
-  created () {
+  async created () {
     console.log('chanElement', this.chanElement)
     console.log('CHANNEL_DETAIL', this.CHANNEL_DETAIL)
     /* if (this.pPopTitle !== 'townList') {
