@@ -27,7 +27,7 @@
 }
 </i18n>
 <template>
-<div class="w100P h100P"  style="position: absolute; top: 0; left: 0; padding: 0 1rem; background: #fff; z-index: 999;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 90)+ 'px'">
+<div class="w100P h100P"  style="position: absolute; top: 0; left: 0; max-height: 100vh; padding: 0 1rem; background: #fff; z-index: 999;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 90)+ 'px'">
     <transition name="show_left">
       <editMemberTypePop v-if="mPopType === 'editMemberTypePop'" :propData="mPropData" style="padding-top: 0;" :pClosePop="closePop" />
     </transition>
@@ -38,7 +38,7 @@
     </div> -->
     <!-- <input type="text" name="" placeholder="이름을 입력해주세요." class="fl" id=""> -->
     <div class="pageTopAreaStyle">
-        <div class="receptListBtnStyle fr" style="margin-bottom: 10px;">
+        <div class="receptListBtnStyle fr" style="margin-bottom: 10px;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'">
           <gBtnSmall @click="openMemberTypePop" :btnTitle="$t('FOLLOW_BTN_MANA_TYPE')" style="padding: 0 10px !important;" class="cursorP fl"/>
           <gBtnSmall @click="openReceptListPop" :btnTitle="$t('COMMON_BTN_REQLIST')" style="padding: 0 10px !important;" class="cursorP fl mright-05"/>
         </div>
@@ -59,7 +59,7 @@
         <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">{{ $t('FOLLOW_BTN_ORDER_NAME') }}</p>
       </div>
     </div>
-    <div class="w100P h100P" style="overflow:hidden auto; height: calc(100% - 5.5rem);">
+    <div class="w100P" style="overflow: auto; max-height: calc(100vh - 197px);">
       <commonMemberList :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
     </div>
 
