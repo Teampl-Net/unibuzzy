@@ -52,8 +52,8 @@
             <div class="fl pSide-05 thinScrollBar" style="padding-bottom:5px; width:100%; max-height:200px; overflow: auto">
               <div style="width:100%; overflow-x:visible;">
                 <div style="display:flex; align-items:center; width:auto;">
-                  <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style="display:flex; align-items:center; justify-content:space-between; white-space:nowrap; overflow:hidden; margin-right:10px; width:auto; min-width:100px; max-width:100px; padding: 10px 7px 10px 10px; border:2px solid #CCCCCC90; border-radius:45px;">
-                    <p class="fl font14 grayBlack textLeft" style="white-space:nowrap; width:calc(100% - 15px); overflow:hidden; text-overflow:ellipsis; padding-right:3px;" @click="mInputText = data, findData()">{{data}}</p>
+                  <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style="display:flex; align-items:center; justify-content:space-between; white-space:nowrap; overflow:hidden; margin-right:10px; width:auto; min-width:100px; max-width:100px; padding: 5px 7px 5px 10px; border:2px solid #CCCCCC90; border-radius:45px;">
+                    <p class="fl font14 grayBlack textLeft" style="height: 20px; line-height: 20px; white-space:nowrap; width:calc(100% - 15px); overflow:hidden; text-overflow:ellipsis; padding-right:3px;" @click="mInputText = data, findData()">{{data}}</p>
                     <img src="../../assets/images/common/grayXIcon.svg" @click="searchHistoryDelete(index)" class="fr img-w10" alt="">
                   </div>
                 </div>
@@ -207,7 +207,7 @@ export default {
       mAxiosQueue: [],
       mInputFocusYn: false,
       mSearchHistoryList: [],
-      mActiveSearchTabList: [{ display: '채널', name: 'CHAN' }, { display: '콘텐츠', name: 'CONT' }],
+      mActiveSearchTabList: [{ display: this.$t('COMMON_NAME_CHANNEL'), name: 'CHAN' }, { display: this.$t('COMMON_TAB_CONTENTS'), name: 'CONT' }],
       mActiveSearch: 'CHAN',
 
       mTempRecommendList: [],
@@ -250,10 +250,10 @@ export default {
   mounted () {
   },
   updated () {
-    this.mChanPlaceHolder = this.$t('SEAR_MSG_KEYWORD')
+    /* this.mChanPlaceHolder = this.$t('SEAR_MSG_KEYWORD')
     this.mActiveTabRecommendList = [{ display: this.$t('SEAR_TAB_POP_CHAN'), name: 'P' }, { display: this.$t('COMMON_TAB_RECENT'), name: 'N' }]
     this.mActiveSearchTabList = [{ display: this.$t('COMMON_NAME_CHANNEL'), name: 'CHAN' }, { display: this.$t('COMMON_TAB_CONTENTS'), name: 'CONT' }]
-    this.mSearchContentTabList = [{ display: this.$t('COMMON_TAB_ALL'), name: 'ALL' }, { display: this.$t('COMMON_TAB_NOTI'), name: 'ALIM' }, { display: this.$t('COMMON_TAB_POST'), name: 'BOAR' }]
+    this.mSearchContentTabList = [{ display: this.$t('COMMON_TAB_ALL'), name: 'ALL' }, { display: this.$t('COMMON_TAB_NOTI'), name: 'ALIM' }, { display: this.$t('COMMON_TAB_POST'), name: 'BOAR' }] */
     if (this.mSearchModeYn === true) {
       this.mChanListScrollBox = window.document.getElementById('chanListWrap')
       this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
@@ -316,7 +316,7 @@ export default {
         this.mSearchList.push(searchObj)
       }
       if (data.fromCreDateStr && data.toCreDateStr) {
-        searchObj = { accessKind: 'creUserName', accessKey: data.fromCreDateStr + '~' + data.toCreDateStr, dispName: data.fromCreDateStr + '~' + data.toCreDateStr, searchType: '날짜' }
+        searchObj = { accessKind: 'fromCreDateStr', accessKey: data.fromCreDateStr + '~' + data.toCreDateStr, dispName: data.fromCreDateStr + '~' + data.toCreDateStr, searchType: '날짜' }
         index = this.mSearchList.findIndex(item => item.searchType === '날짜')
         if (index !== -1) {
           this.mSearchList.splice(index, 1)
@@ -829,17 +829,18 @@ export default {
         param.offsetInt = this.mOffsetInt
 
         if (this.mSearchList) {
+          console.log('hohohoho')
           console.log(this.mSearchList)
           for (var i = 0; i < this.mSearchList.length; i++) {
             if (this.mSearchList[i].accessKind && this.mSearchList[i].accessKey) {
               if (this.mSearchList[i].accessKind === 'title') {
                 param.title = this.mSearchList[i].accessKey
               } else if (this.mSearchList[i].accessKind === 'nameMtext') {
-                param.nameMtext = this.mSearchList[i].accessKey
+                param.creTeamNameMtext = this.mSearchList[i].accessKey
               } else if (this.mSearchList[i].accessKind === 'fromCreDateStr') {
                 var fromToDateList = (this.mSearchList[i].accessKey).split('~')
                 param.fromCreDateStr = fromToDateList[0]
-                param.toCreDateStr = fromToDateList[0]
+                param.toCreDateStr = fromToDateList[1]
               } else if (this.mSearchList[i].accessKind === 'workStatCodeKey') {
                 param.workStatCodeKey = this.mSearchList[i].accessKey
               } else if (this.mSearchList[i].accessKind === 'creUserName') {
