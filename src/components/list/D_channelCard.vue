@@ -205,7 +205,7 @@ export default {
   },
   methods: {
     showFollowYn () {
-      if (this.chanElement.followerKey) {
+      if (this.chanElement.followerKey || this.chanElement.D_CHAN_AUTH) {
         this.mFollowYn = true
       } else {
         this.mFollowYn = false

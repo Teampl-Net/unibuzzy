@@ -97,7 +97,7 @@
                   <gStickerLine @click="goStickerContentsList(value)" v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" />
                 </template>
             </div>
-            <div v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w-100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div>
+            <div v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9));"></div>
             <!-- <div v-if="!mFadeNotShowYn && (($refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && !CONT_DETAIL.D_CONT_USER_STICKER_LIST) || ($refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && !CONT_DETAIL.D_CONT_USER_STICKER_LIST[0]))" class="w-100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div> -->
             <!-- <p v-if="!mFadeNotShowYn && mContentMoreShowYn" :id="'bodyMore'+CONT_DETAIL.contentsKey" class="w-100P textRight fr font14 commonColor fontBold mtop-05  mright-1" style="display:none; position: absolute; bottom: 0; right: 10px;">더보기 > </p> -->
             <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w-100P textRight fr font14 commonColor fontBold mtop-05 mright-1" style=" position: absolute; bottom: 0; right: 10px;">{{$t('COMMON_NAME_MORE')}} > </p>

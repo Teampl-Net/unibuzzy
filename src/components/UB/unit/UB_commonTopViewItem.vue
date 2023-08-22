@@ -96,8 +96,8 @@
             <div v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w-100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div>
             <!-- <div v-if="!mFadeNotShowYn && (($refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && !CONT_DETAIL.D_CONT_USER_STICKER_LIST) || ($refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && !CONT_DETAIL.D_CONT_USER_STICKER_LIST[0]))" class="w-100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div> -->
             <!-- <p v-if="!mFadeNotShowYn && mContentMoreShowYn" :id="'bodyMore'+CONT_DETAIL.contentsKey" class="w-100P textRight fr font10 commonColor fontBold mtop-05  mright-1" style="display:none; position: absolute; bottom: 0; right: 10px;">더보기 > </p> -->
-            <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w-100P textRight fr font10 commonColor fontBold mtop-05 mright-1" style=" position: absolute; bottom: 0; right: 10px;">{{$t('COMMON_NAME_MORE')}} > </p>
-          </div>
+              <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w-100P textRight fr font10 commonColor fontBold mtop-05 mright-1" style=" position: absolute; bottom: 0; right: 10px;">{{$t('COMMON_NAME_MORE')}} > </p>
+              </div>
           <div v-else style="width: 100%; padding: 5px 10px; padding-bottom: 0; float: left; min-height: 35px;">
             <template v-for="(value, index) in propPreStickerList" :key="index" >
               <gStickerLine v-if="value" :pSelecteModeYn="true" :pSmallYn="true" @click="this.$emit('selectSticker', value)" style="cursor: pointer; float: left; margin-right: 5px; min-width: 30px;" :pSticker="value" />

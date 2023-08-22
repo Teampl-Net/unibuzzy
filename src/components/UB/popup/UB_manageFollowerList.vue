@@ -27,7 +27,7 @@
 }
 </i18n>
 <template>
-<div class="w100P h100P"  style="position: absolute; top: 0; left: 0; padding: 0 1rem; background: #fff; z-index: 999;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
+<div class="w100P h100P"  style="position: absolute; top: 0; left: 0; padding: 0 1rem; background: #fff; z-index: 999;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 90)+ 'px'">
     <transition name="show_left">
       <editMemberTypePop v-if="mPopType === 'editMemberTypePop'" :propData="mPropData" style="padding-top: 0;" :pClosePop="closePop" />
     </transition>
