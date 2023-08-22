@@ -140,8 +140,6 @@ export default {
       pageParam.targetType = 'chanDetail'
       pageParam.nameMtext = param.nameMtext
       pageParam.areaInfo = this.pAreaInfo
-      console.log('요기이잉 pageParam', pageParam)
-      console.log('요기이잉 param', param)
       this.$emit('openPage', pageParam)
     },
     searchCloseNopenPop (openPopParam) {

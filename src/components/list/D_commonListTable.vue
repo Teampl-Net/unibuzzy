@@ -20,7 +20,7 @@
           <div class="top5PushChanLogoImgWrap w100P fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
           </div>
         </td>
-        <td @click="goChanDetail(value)" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}" style="padding-left:10px; display:flex; align-items:center; width:calc(100% - 100px);">
+        <td @click="goChanDetail(value)" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}" style="display:flex; align-items:center; width:calc(100% - 100px);">
           <div style="display:flex; flex-direction:column; align-items:start; text-align:left; width:100%; padding: 2px 0 ; min-height: 25px;">
             <div class="" style="width:100%; overflow-x:hidden;">
               <span v-if="value.jobkindId === 'ALIM'" class="font14 fl textCenter" style="margin-top: 0.5px; width: 50px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{$t('COMMON_TAB_NOTI')}}</span>

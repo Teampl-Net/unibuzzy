@@ -766,7 +766,7 @@ export default {
         // }
         // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
         this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
-        // this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
+        this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
         await this.$addChanList(this.mChanInfo.teamKey)
       }

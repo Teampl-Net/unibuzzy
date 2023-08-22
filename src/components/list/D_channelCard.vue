@@ -190,10 +190,13 @@ export default {
   },
   created () {
     console.log('chanElement', this.chanElement)
+    console.log('CHANNEL_DETAIL', this.CHANNEL_DETAIL)
     /* if (this.pPopTitle !== 'townList') {
       this.getMemberTypeList()
     } */
-    this.showFollowYn()
+    if (this.$route.path === '/chanList') {
+      this.showFollowYn()
+    }
   },
   data () {
     return {
@@ -205,7 +208,7 @@ export default {
   },
   methods: {
     showFollowYn () {
-      if (this.chanElement.followerKey || this.chanElement.D_CHAN_AUTH) {
+      if (this.CHANNEL_DETAIL.followerKey || this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
         this.mFollowYn = true
       } else {
         this.mFollowYn = false
@@ -225,7 +228,6 @@ export default {
       this.mFollowYn = true
       // eslint-disable-next-line no-new-object
       var typeParam = new Object()
-      console.log('this.CHANNEL_DETAIL', this.chanElement)
       if (this.chanElement && this.chanElement.D_CHAN_AUTH.followerKey) {
         typeParam.followerKey = this.chanElement.D_CHAN_AUTH.followerKey
         console.log('typeParam.followerKey', typeParam.followerKey)
@@ -243,7 +245,6 @@ export default {
         param: { follower: typeParam, appType: 'UB', doType: 'CR' }
       })
       console.log('44444 result', result)
-      this.CHANNEL_DETAIL.D_CHAN_AUTH.push({ followYn: true })
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
       await this.$addChanList(this.chanElement.teamKey)
       console.log('44444 this.CHANNEL_DETAIL.', this.CHANNEL_DETAIL)
