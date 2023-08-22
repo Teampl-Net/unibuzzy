@@ -60,7 +60,7 @@
         <img style="width: 100%;" src="../../../assets/images/main/UBTownFeed.svg" alt="">
     </div> -->
     <transition name="showUp">
-        <mainBoardList @openPage="openPage" @openPop="openPop" :pAreaInfo="mAreaInfo" :pTownTeamKey="mTownTeamKey" v-if="mBoardPopShowYn" ref="mainBoardRef" :pClosePop="closeBoardPop"/>
+        <mainBoardList @openImgPop="openImgPop" @openPage="openPage" @openPop="openPop" :pAreaInfo="mAreaInfo" :pTownTeamKey="mTownTeamKey" v-if="mBoardPopShowYn" ref="mainBoardRef" :pClosePop="closeBoardPop"/>
     </transition>
     <div v-if="mBoardPopShowYn" @click="$refs.mainBoardRef.closeXPop" style="width: 100%; height: 100%; background: #00000040; position: absolute; z-index: 9998; top: 0; left: 0;"></div>
   </div>
@@ -167,6 +167,9 @@ export default {
     // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
   },
   methods: {
+    openImgPop (param) {
+      this.$emit('openImgPop', param)
+    },
     closeApp () {
       onMessage('closeApp', 'requestUserPermission')
       this.mAppCloseYn = false

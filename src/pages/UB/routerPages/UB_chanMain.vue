@@ -548,9 +548,11 @@ export default {
         const teamDetail = result.data.team.content[0]
         console.log(result.data.memberTypeList[0])
         if (teamDetail.userTeamInfo === undefined || teamDetail.userTeamInfo === null || teamDetail.userTeamInfo === '') {
-          const index = result.data.memberTypeList[0].muserList.findIndex((item) => item.userKey === this.GE_USER.userKey)
-          if (index !== -1) {
-            teamDetail.userTeamInfo = result.data.memberTypeList[0].muserList[index]
+          if (result.data.memberTypeList && result.data.memberTypeList.length !== 0 && result.data.memberTypeList[0].muserList) {
+            const index = result.data.memberTypeList[0].muserList.findIndex((item) => item.userKey === this.GE_USER.userKey)
+            if (index !== -1) {
+              teamDetail.userTeamInfo = result.data.memberTypeList[0].muserList[index]
+            }
           }
         }
         // this.mCabKeyListStr = result.data.cabinetKeyListStr

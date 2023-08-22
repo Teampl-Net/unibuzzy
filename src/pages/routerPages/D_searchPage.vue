@@ -137,7 +137,7 @@
             </div>
 
             <!-- 컨텐츠 리스트 -->
-            <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" style="float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 40px;">
+            <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" style="float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 60px;">
               <div class="w100P fl chanRow" style="height:1px;" />
               <template v-if="this.mSearchContentTab === 'ALL'" >
                 <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index" />
@@ -1120,6 +1120,8 @@ export default {
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       if (returnAllList.length === 0) this.mEmptyYn = true
+      console.log('여김다')
+      console.log(this.replaceContentListArr(returnAllList))
 
       return this.replaceContentListArr(returnAllList)
     },

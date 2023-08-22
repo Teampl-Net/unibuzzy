@@ -45,7 +45,7 @@
     <template v-if="mFindKeyWord !== '' && this.GE_DISP_TEAM_LIST.length > 0">
       <div class="w100P fl" style="overflow: auto; height: calc(100% - 90px);">
         <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
-          <channelCard class="moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
+          <channelCard class="moveBox chanRow" :chanElement="chanEle" @openPop="goChannelMain" />
           <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="loadMore" class="fl wich" />
         </template>
       </div>
@@ -137,6 +137,18 @@ export default {
     console.log(this.mSearchHistoryList)
   },
   methods: {
+    goChannelMain (param) {
+      const pageParam = {}
+      if (param.teamKey) {
+        pageParam.targetKey = param.teamKey
+      } else {
+        pageParam.targetKey = param.targetKey
+      }
+      pageParam.areaInfo = this.pAreaInfo
+      pageParam.targetType = 'chanDetail'
+      pageParam.nameMtext = param.nameMtext
+      this.$emit('openPage', pageParam)
+    },
     openPop (openPopParam) {
       this.$emit('goChannelMain', openPopParam)
     },

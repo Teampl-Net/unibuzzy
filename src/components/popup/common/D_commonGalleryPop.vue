@@ -160,8 +160,8 @@ export default {
   unmounted () {
     if (this.lightbox) {
       this.$emit('closeXPop')
-      // this.lightbox.destroy()
-      // this.lightbox = null
+      this.lightbox.destroy()
+      this.lightbox = null
     }
   }
 }

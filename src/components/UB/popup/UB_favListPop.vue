@@ -92,8 +92,6 @@ export default {
         }
       }
       this.mSortList = tempList
-      console.log('완료되었습니다')
-      console.log(this.mSortList)
     },
     async loginCheck () {
       var paramMap = new Map()
