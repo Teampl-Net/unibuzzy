@@ -521,7 +521,7 @@ export const commonMethods = {
       if (data.memberNameMtext) {
         followerText = commonMethods.changeText(data.memberNameMtext)
       }
-      if (data.memberInfoList && data.memberInfoList.length > 0 && data.memberInfoList[0].memberTypeKey) {
+      /* if (data.memberInfoList && data.memberInfoList.length > 0 && data.memberInfoList[0].memberTypeKey) {
         followerText += '( '
         for (var i = 0; i < data.memberInfoList.length; i++) {
           if (i !== 0) {
@@ -532,11 +532,11 @@ export const commonMethods = {
           followerText += data.memberInfoList[i].itemVal + commonMethods.changeText(data.memberInfoList[i].memberTypeItemNameMtext)
         }
         followerText += ' )'
-      }
+      } */
       if (data.ownerYn) {
         followerText = this.$t('COMM_CHANN_OWNER')
       } else {
-        if (data.memberNameMtext || (data.managerKey && data.managerKey > 0)) {
+        if (data.memberNameMtext && (data.managerKey && data.managerKey > 0)) {
           followerText = `${this.$t('COMM_CHAN_MANAGER')}(`
           if (data.mngTeamYn === true || data.mngTeamYn === 1) {
             followerText = followerText + this.$t('COMMON_NAME_CHANNEL')
