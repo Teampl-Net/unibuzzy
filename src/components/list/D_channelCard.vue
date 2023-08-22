@@ -106,7 +106,7 @@
               <p style="max-width: calc(100% - 36px);">{{ $changeText(chanElement.nameMtext) }}</p>
               <img style="margin-left: 10px;" src="../../assets/images/footer/icon_channel_fillin.svg" alt="">
             </div>
-            <div v-else class="w100P">
+            <div v-else class="" style="display:inline-block;">
               {{ $changeText(chanElement.nameMtext) }}
             </div>
             <p class="fr font13 lightGray" style="font-weight: normal">
