@@ -7,7 +7,7 @@
       <!-- 빌딩 선택-->
         <p style="font-size:20px; font-weight:bold; padding-bottom:20px; ">Select Building.</p>
         <div style="display:flex; align-items:end;">
-        <div style="width:140px; height:140px; border-radius:50%; border:1px solid #ccc; display:flex; align-items:center; justify-content:center;">
+        <div style="width:120px; height:120px; border-radius:50%; border:1px solid #ccc; display:flex; align-items:center; justify-content:center;">
           <img @click="openSelectBuildingPop" v-if="mChannelModi" :src="mSelectedBuilding.selectPath" class="cursorP" style='width:60%; height:auto;'/>
           <img @click="openSelectBuildingPop" v-else :src="mSelectedBuilding.selectPath" class="cursorP" style='width:60%; height:auto;'/>
         </div>
@@ -56,12 +56,12 @@
               <textarea v-model="mNewBoardMemo" class="boardMemo" placeholder="Please enter up to 40 characters in the board description."/>
             </div>
           </div>
-          <div @click="newBoard" class="creBoardBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 20px;">Create New Board</div>
+          <div @click="newBoard" class="creBoardBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 80px;">Create New Board</div>
 
         </div>
       </template>
       <!-- 채널 생성일 때. select한 건물에 대해서도 prop으로 보내주기-->
-      <createChannel style="margin-top:310px;" :class="{margin260 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
+      <createChannel style="margin-top:310px; padding-bottom:80px;" :class="{margin220 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pChannelModi="mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
     </div>
   </div>
 </template>
@@ -316,8 +316,8 @@ export default {
   height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
   width: calc(100% - 30px);
 }
-.margin260{
-  margin-top:260px !important;
+.margin220{
+  margin-top:220px !important;
 }
 
 </style>

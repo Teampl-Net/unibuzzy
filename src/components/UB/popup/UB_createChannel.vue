@@ -50,7 +50,7 @@
           </label>
         </form>
 
-        <div v-if="chanDetail.modiYn === true && this.chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; top:0.3rem; padding-left:0.25rem">
+        <div v-if="(pChannelModi || chanDetail.modiYn === true) && this.chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; padding-left:0.25rem; margin-top:-140px;">
           <p class="font14" style="color:#aaa;"> <img src="@/assets/images/formEditor/trashIcon_gray2.svg" style="width:18px;" alt=""> {{ $t('CRE_BTN_DELETE_CHAN') }} </p>
         </div>
 
@@ -63,7 +63,7 @@
           </div>
           <div class="w100P fl" style="height: calc(100% - 80px); overflow-y:scroll: auto; margin-top: 1rem;">
 
-          <div v-if="chanDetail.modiYn === false" class="w100P" style="border-bottom: 2px solid #aaa; padding: 10px 0;">
+          <div v-if="!pChannelModi || chanDetail.modiYn === false" class="w100P" style="border-bottom: 2px solid #aaa; padding: 10px 0;">
             <p class="textLeft font20 fontBold w-100P">{{ pBdAreaList && pBdAreaList.length > 0 && pBdAreaList[0].bdList? $changeText(pBdAreaList[0].bdList[0].nameMtext):'Campus' }} > {{ pSelectedAreaInfo? pSelectedAreaInfo.bdAreaNameMtext:'Area' }}</p>
           </div>
 
@@ -107,7 +107,7 @@
       </div>
     </div>
     <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='setParam' />
-    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', mParams)" confirmType="one" v-if="mCreatedSuccessPopYn" />
+    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', mParams)" confirmType="one" v-if="mCreatedSuccessPopYn" :pClosePop="pClosePop"/>
     <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn === true" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
 </div>
 </template>
@@ -117,6 +117,9 @@ import seleciconBgPopup from '@/components/popup/creChannel/Tal_selectChaniconBg
 // import gPopHeader from '../layout/UB_gPopHeader.vue'
 export default {
   created () {
+    if (this.pChannelModi) {
+      console.log('pChannelModi가 있고 chanDetail', this.chanDetail)
+    }
     if (this.pSelectedAreaInfo) {
       switch (this.pSelectedAreaInfo.bdAreaNameMtext) {
         case 'Club & Startup':
@@ -164,7 +167,8 @@ export default {
     pBdAreaList: Array,
     pSelectedAreaInfo: Object,
     pSelectedBuilding: Object,
-    pCreateNew: Boolean
+    pCreateNew: Boolean,
+    pChannelModi: Boolean
   },
   data () {
     return {
@@ -478,7 +482,7 @@ export default {
       temp.creUserName = data.creUserName
       temp.deleteYn = data.deleteYn
       this.$store.dispatch('D_CHANNEL/AC_ADD_UPDATE_CHAN_LIST', temp)
-      this.pClosePop()
+      // this.pClosePop()
     },
     async newChannelInPool (newCreTeamKey) {
       var paramMap = new Map()
