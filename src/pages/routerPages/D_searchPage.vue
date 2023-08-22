@@ -130,7 +130,7 @@
               </div>
               <template v-else>
                 <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
-                    <channelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="openPop" />
+                    <channelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="goChannelMain" />
                     <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="recommendLoadMore" class="fl wich" />
                 </template>
               </template>
@@ -265,6 +265,18 @@ export default {
     this.readyFunc()
   },
   methods: {
+    goChannelMain (param) {
+      const pageParam = {}
+      if (param.teamKey) {
+        pageParam.targetKey = param.teamKey
+      } else {
+        pageParam.targetKey = param.targetKey
+      }
+      pageParam.areaInfo = this.pAreaInfo
+      pageParam.targetType = 'chanDetail'
+      pageParam.nameMtext = param.nameMtext
+      this.$emit('openPage', pageParam)
+    },
     openImgPop (param) {
       this.$emit('openImgPop', param)
     },

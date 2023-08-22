@@ -433,7 +433,7 @@ export default {
       try {
         // 메인일 경우에만 로딩화면이 안 보이도록 처리(다른 화면에서는 로딩이 보여야 함)
         let nonLoadingYn = true
-        if (this.$route.fullPath === '/chanList') {
+        if (this.$route.fullPath !== '/') {
           nonLoadingYn = false
         }
         const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
@@ -465,7 +465,7 @@ export default {
         //   })
         // })
         if (parentYn) {
-          if (detailValue.cabinetKeyListSt) {
+          if (detailValue.cabinetKeyListStr) {
             this.mCabKeyListStr = detailValue.cabinetKeyListStr
           } else {
             await this.getTownCabinetList(teamKey)

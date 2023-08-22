@@ -538,12 +538,8 @@ export default {
       param.teamKey = teamKey
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
-      if (this.$route.params.priority === '1') {
-        this.getTownCabinetList()
-      }
       try {
         const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: param }, false)
-        console.log(result.data.memberTypeList.muserList)
         // eslint-disable-next-line no-debugger
         debugger
         if (!result || !result.data || result.data.result !== 'OK') {
