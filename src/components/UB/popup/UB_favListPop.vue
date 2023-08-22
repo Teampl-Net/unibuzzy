@@ -24,7 +24,10 @@
             <gEmpty tabName="즐겨찾기" contentName="채널" style="margin-top:50px;" />
           </div>
           <template v-else>
-            <channelCard v-for="(chanEle, index) in mFTeamList" :key="index" class="moveBox chanRow" style="margin-top: 10px;" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
+            <div class="mbottom-1" v-for="town in mSortList" :key="town.townTeamKey">
+              <div class="textLeft fontBold" style="width: 100%; padding: 5px 10px; border-radius: 10px; background: rgba(186, 187, 215, 0.5);">{{ $changeText(town.townNameMtext) }}</div>
+              <channelCard v-for="(chanEle, index) in town.favList" :key="index" class="moveBox chanRow" style="margin-top: 10px;" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
+            </div>
           </template>
         </div>
       </div>
@@ -38,6 +41,7 @@ export default {
       this.loginCheck()
     } else {
       this.mFTeamList = this.pFTeamList
+      this.sortList()
     }
   },
   computed: {
@@ -69,10 +73,28 @@ export default {
   },
   data () {
     return {
-      mFTeamList: []
+      mFTeamList: [],
+      mSortList: []
     }
   },
   methods: {
+    sortList () {
+      const tempList = []
+      for (let i = 0; i < this.mFTeamList.length; i++) {
+        const index = tempList.findIndex(item => item.townTeamKey === this.mFTeamList[i].townTeamKey)
+        console.log('인덱스요')
+        console.log(index)
+        if (index === -1) {
+          const tempObj = { townTeamKey: this.mFTeamList[i].townTeamKey, townNameMtext: this.mFTeamList[i].townNameMtext, favList: [this.mFTeamList[i]] }
+          tempList.push(tempObj)
+        } else {
+          tempList[index].favList.push(this.mFTeamList[i])
+        }
+      }
+      this.mSortList = tempList
+      console.log('완료되었습니다')
+      console.log(this.mSortList)
+    },
     async loginCheck () {
       var paramMap = new Map()
       if (this.GE_USER.userKey) {
@@ -92,6 +114,7 @@ export default {
       var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap))
       if (response && (response.status === 200 || response.status === '200')) {
         this.mFTeamList = response.data.fTeamList
+        this.sortList()
       }
     },
     goChannelMain (param) {
