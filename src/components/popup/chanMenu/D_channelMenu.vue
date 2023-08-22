@@ -112,9 +112,8 @@
         </div>
       </div>
     </div>
-    <div class="w100P textRight fontBold cursorP" style="height: 50px; padding: 10px; padding-bottom: 60px;" v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)" @click="clickEditChanBtn">
-      <img src="../../../assets/images/editChan/icon_setting.svg" style="width: 23px; margin-right: 10px;" alt="">
-      Manager Settings
+    <div class="w100P textRight fontBold cursorP" style="height: 50px; padding: 10px; padding-bottom: 60px;" v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)">
+      <gBtnSmall btnTitle=" Manager Settings" class="fl" @click="clickEditChanBtn" />
     </div>
   </div>
 </div>
