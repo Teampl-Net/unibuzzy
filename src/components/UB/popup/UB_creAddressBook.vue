@@ -19,7 +19,7 @@
 <template>
   <div id='dlTskdy' style="width:100%; height:100%; padding: 0rem 1rem 0rem 1rem; background: #fff;">
     <gPopHeader :headerTitle="propData.targetType === 'creAddressBook'? 'Create Address Book':'Edit Address Book'" :pClosePop="pClosePop" />
-    <div class="addressItemWrite" style="'margin-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'">
+    <div class="addressItemWrite" style="'margin-top:' + (this.$STATUS_HEIGHT + 40)+ 'px;'">
       <p class="fontBold textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOOK_TITLE_NAME') }}</p>
       <input v-model="inputAddressBookName" mCreAdressOpenType="text" :placeholder="$t('EDIT_BOOK_MSG_NONAME')" class="addressBookInputType"  id="addressBookName" style="">
     </div>
@@ -104,7 +104,7 @@ export default {
   display: flex;
   align-items: center;
   min-height: 65px;
-  padding-top: 80px !important;
+  padding-top: 100px !important;
   /* border-bottom: 1px solid #ccc; */
 }
 </style>
