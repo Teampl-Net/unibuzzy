@@ -46,7 +46,7 @@
               <img src="../../../assets/images/main/banner2.png" class="w100P" style="position: absolute;" /> <!-- 여기 -->
               <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold" style="position: absolute; margin-bottom: 30px;"></div>
             </div>
-            <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl" />
+            <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl"/>
             <!-- <span class="fontBold font12" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
             <!-- <span class="fontBold font12" :style="[{left: -(village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority) + 1) / 2 * 20) + 'px'}]" style="position: absolute; background: rgba(100,100,100,0.7); color: white; width: 100px; border-radius: 5px; padding: 0 5px;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
             <span v-if="!(area.priority === 0 && index === 0)" class="fontBold font12" style="position: absolute; line-height: 15px; color: #333333; border: 1px solid #ccc; width: 80px; border-radius: 5px; padding: 0 5px;"
@@ -411,12 +411,12 @@ export default {
               rank: j + 1,
               type: area.priority === 0 ? 'CB' : '',
               imgLink: area.bdList[j].bdIconPath,
-              maskedImageUrl: '',
+              maskedImageUrl: area.bdList[j].bdIconPath,
               maskedImageStyle: {},
               clickedYn: false,
               left: 0,
               top: 0,
-              w: 0,
+              w: 50,
               h: 0
             }
             this.village.areaList[area.priority].buildingList.push(buildingObj)
@@ -629,6 +629,7 @@ export default {
           // 마스킹 이미지 그리기
           // if (bd.type !== 'CB') bd.top = 200
           // context.drawImage(this, newWidth + bd.left, newHeight + bd.top, bd.w, bd.h)
+          console.log(bd.nameMtext, bd.cabinetNameMtext, bd.w, bd.h, '-----------')
           context.drawImage(this, 0, 0, bd.w, bd.h)
           // 마스킹 이미지를 base64로 변환하여 출력
           bd.maskedImageUrl = canvas.toDataURL()
@@ -819,6 +820,9 @@ export default {
 }
 .areaDiv.clicked {
   animation: area-zoom 0.4s alternate;
+}
+.bdDiv > img {
+  /* width: 80px; */
 }
 .bdDiv.clicked {
   z-index: 9999 !important;
