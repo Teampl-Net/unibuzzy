@@ -190,7 +190,6 @@ export default {
   },
   async created () {
     console.log('chanElement', this.chanElement)
-    console.log('CHANNEL_DETAIL', this.CHANNEL_DETAIL)
     /* if (this.pPopTitle !== 'townList') {
       this.getMemberTypeList()
     } */
@@ -210,10 +209,12 @@ export default {
   },
   methods: {
     showFollowYn () {
-      if (this.CHANNEL_DETAIL.followerKey || this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
-        this.mFollowYn = true
-      } else {
-        this.mFollowYn = false
+      if (this.CHANNEL_DETAIL) {
+        if (this.CHANNEL_DETAIL.followerKey || this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey || this.chanElement.followerKey > 0) {
+          this.mFollowYn = true
+        } else {
+          this.mFollowYn = false
+        }
       }
     },
     goChannelMain (chanElement) {
