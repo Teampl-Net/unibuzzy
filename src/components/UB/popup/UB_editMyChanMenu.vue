@@ -45,7 +45,7 @@
   <div class="editMyChanMenuWrap" :style="`padding-top: ${Number(this.$STATUS_HEIGHT + 60)}px`">
     <table class="myChanMenuTable w100P fl" >
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditChanPop">
-        <th class="font16 w100P" style="padding-top:10px;">
+        <th class="font16 w100P" style="padding-top:10px; padding-bottom:10px;">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/main/icon_channer.png"/>
             <!-- <img style="width:20px;" class="fl" src="../../../assets/images/main/icon_channel.png"> -->
