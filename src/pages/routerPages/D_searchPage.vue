@@ -41,7 +41,7 @@
           <!-- input Box -->
           <div class="fl w100P" style="position: relative; margin-top: 1rem; min-height: 50px;">
             <img @click="setSearchList()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
-            <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" style=""/>
+            <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" style="margin-top:10px;"/>
             <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
           </div>
 
@@ -1172,7 +1172,7 @@ export default {
     float: left;
     border: 1px solid #cccccc;
   }
-  .searchPageIconWich{ position: absolute; top:0.4rem; left: 8px;}
+  .searchPageIconWich{ position: absolute; top:1rem; left: 8px;}
   .chanListHeader {
     width: 100%;
     will-change: transform;
