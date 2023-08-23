@@ -65,7 +65,7 @@
             </div>
             <p class="font14 fl textLeft commonBlack" style="line-height: 30px;">{{value.funcTitle}}</p>
           </div>
-          <div class="mleft-05 mright-05" style="color: #BDBDBD" v-if="index !== (profileFunc.length - 1)">|</div>
+          <!-- <div class="mleft-05 mright-05" style="color: #BDBDBD" v-if="index !== (profileFunc.length - 1)">|</div> -->
         </div>
       </div>
     </div>
