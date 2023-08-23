@@ -5,7 +5,7 @@
     <div style="height:100%; overflow-y:scroll; background-color:#fff; display:flex; flex-direction:column;" class="createChanWrap" >
       <div class="createChanContentsWrap" style="">
       <!-- 빌딩 선택-->
-        <p style="font-size:20px; font-weight:bold; padding-top:10px; padding-bottom:20px; ">Select Building.</p>
+        <p style="font-size:20px; padding-top:10px; padding-bottom:10px; color:#6768a7; ">Select Building.</p>
         <div style="display:flex; align-items:end;">
         <div style="width:120px; height:120px; border-radius:50%; border:1px solid #ccc; display:flex; align-items:center; justify-content:center;">
           <img @click="openSelectBuildingPop" v-if="mChannelModi" :src="mSelectedBuilding.selectPath" class="cursorP" style='width:60%; height:auto;'/>

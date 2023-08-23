@@ -42,7 +42,7 @@
     <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
     <userImgSelectCompo @closeXPop="closeImgPop" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
     <div class="" >
-       <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center; padding-right: 20px;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'">
+       <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center; padding-right: 20px;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 5)+ 'px;'">
          <p class="font12 fl mright-05">{{ $t('PROF_TITLE_LANGUAGE') }}</p>
         <select class="fl" style="margin-right: 10px; font-size: 12px !important;" @change="change18n('userLang', selectedI18nLocale)" v-model="selectedI18nLocale" name="selectLang" id="selectLang"><option value="en">English</option><option value="ko">한국어</option></select>
         <p class="font12 fl mright-05">{{ $t('ROPF_TITLE_TIME') }}</p>

@@ -9,7 +9,7 @@
     <div v-for="(value, index) in subTitlebtnList"  :key="index" class="fr ml-04">
       <img :src="value.icon" />
     </div>
-    <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'contentsDetail'}" :style="bgblack === true ? 'color:white;':'' " style="line-height:57px; height:100%;">
+    <span class="popHeaderTitleSpan font20" :class="{colorBlack : (this.headerTitle === '게시판 작성')|| this.targetType === 'contentsDetail'}" :style="bgblack === true ? 'color:white;':'' " style="line-height:120px; height:100%;">
       {{this.$changeText(headerTitle)}}
     </span>
     <helpButtonPop style="overflow: hidden scroll;" v-if="clickHelpYn" :helpButtonType="this.helpButtonType" @closePop="clickHelpYn=false" />

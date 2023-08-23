@@ -43,14 +43,14 @@
   <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
     <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
       <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 150}px;`">
-        <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" style="margin-top:-160px;" >
+        <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" style="margin-top:-180px;" >
           <label @click="mIconBgSelectPopYn='bgPop'"  class='backgroundLabel commonColor' for="input-Backimgfile">
             <img :src="require(`@/assets/images/channel/icon_camera.svg`)" class="cursorP" style="width:20px;" alt="">
             Edit Background
           </label>
         </form>
 
-        <div v-if="(pChannelModi || chanDetail.modiYn === true) && this.chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; padding-left:0.25rem; margin-top:-160px;">
+        <div v-if="(pChannelModi || chanDetail.modiYn === true) && this.chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; padding-left:0.25rem; margin-top:-175px;">
           <p class="font14" style="color:#aaa;"> <img src="@/assets/images/formEditor/trashIcon_gray2.svg" style="width:18px;" alt=""> {{ $t('CRE_BTN_DELETE_CHAN') }} </p>
         </div>
 

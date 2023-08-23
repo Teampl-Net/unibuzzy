@@ -26,15 +26,14 @@
 </i18n>
 <template>
   <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
-  <div style="width: 100%; float: left;" @click.stop="preventDefault">
-    <div style="width: 100%; height: 100vh; position: absolute; top:-30vh; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="closePop()"></div>
-    <div class="confirmPopWrap" :style="'padding-bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
+  <div style="background-color:red; width: 100%; float: left;" @click.stop="preventDefault">
+    <div style="width: 100%; height: 120vh; position: absolute; top:-30vh; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="closePop()"></div>
+    <div :class="{popupTop: pSelectedBuilding}" class="confirmPopWrap" style="top:21%;" :style="'padding-bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
     <!-- <div style="width: 50%; height: 50%; padding: 0 20px; overflow: auto;" > -->
         <div class="creChanIntroTextWrap" style="display:flex; align-items:center; justify-content:space-between; width: 100%; min-height: 50px; text-align: left;">
             <p class="fontBold font18">{{msgTitle}}</p>
               <img src="../../../assets/images/common/popup_close.png" style="width:20px;" @click="pClosePop"/>
         </div>
-        <!-- <gActiveBar v-if="opentype==='building'" ref="activeBar" :tabList="`icon`" class="fl" style="width: 100%;" /> -->
         <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
         <div id="creChanContentsArea" style="width: 100%; min-height: 300px; margin-top: 20px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
             <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
@@ -84,7 +83,8 @@ export default {
     selectIcon: {},
     selectBg: {},
     pClosePop: Function,
-    pSelectedBuilding: Object
+    pSelectedBuilding: Object,
+    selectBd: Object
   },
   mounted () {
     if (document.getElementById('chanIconBox').scrollHeight > 0) {
@@ -588,7 +588,7 @@ export default {
 </script>
 <style scoped>
 
-.confirmPopWrap{width: 90%; position: absolute; z-index: 9999; top: 23%; border-radius: 10px; background: #FFFFFF;
+.confirmPopWrap{width: 90%; position: absolute; z-index: 9999; border-radius: 10px; background: #FFFFFF;
   padding: 1rem 2rem;
   overflow: auto;
   left: 5%;
@@ -631,6 +631,10 @@ export default {
   display: block;
   /* This rule is very important, please don't ignore this */
   max-width: 100%
+}
+
+.popupTop{
+  top:44% !important;
 }
 
 </style>
