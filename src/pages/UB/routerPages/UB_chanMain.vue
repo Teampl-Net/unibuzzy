@@ -233,6 +233,10 @@ export default {
   },
   mounted () {
     console.log('Channel Main - Channel Detail', this.CHANNEL_DETAIL)
+    this.$emit('enterCloudLoading', false)
+    setTimeout(() => {
+      this.$emit('showCloudLoading', false)
+    }, 1000)
     this.$nextTick(() => {
       this.calcSummaryWrapH()
       this.mChanMainScrollWrap = this.$refs.chanScrollWrap
@@ -260,11 +264,6 @@ export default {
       }
       this.setWindowSize()
       window.addEventListener('resize', this.handleResize)
-
-      this.$emit('enterCloudLoading', false)
-      setTimeout(() => {
-        this.$emit('showCloudLoading', false)
-      }, 1000)
     })
   },
   updated () {
