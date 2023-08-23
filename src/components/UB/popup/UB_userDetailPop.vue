@@ -58,10 +58,9 @@
         <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="funcIconWrap fl" style="display: flex; flex-direction: row; align-items: center; justify-content: center">
           <div style="display: flex; flex-direction: column; align-items: center;">
             <div class="nativeServiceBtnWrap">
-              <img v-if="value.type === 'ALIM'" src="@/assets/images/editChan/icon_bellSolid.svg" class="img-w20" alt="">
-              <img v-if="value.type === 'MAIL'" src="@/assets/images/editChan/icon_letter.svg"  class="img-w20" alt="">
-              <img v-if="value.type === 'PHON'" src="@/assets/images/editChan/icon_phoneSolid.svg" class="img-w20" alt="">
-              <img v-if="value.type === 'TEXT'" src="@/assets/images/editChan/icon_textSolid.svg"  class="img-w20" alt="">
+              <img v-if="value.type === 'MAIL'" :class="{noData: memEamil === '등록된 이메일이 없습니다.'}" src="@/assets/images/editChan/icon_letter.svg"  class="img-w20" alt="">
+              <img v-if="value.type === 'PHON'" :class="{noData: memPhone === '등록된 번호가 없습니다.'}" src="@/assets/images/editChan/icon_phoneSolid.svg" class="img-w20" alt="">
+              <img v-if="value.type === 'TEXT'" :class="{noData: memPhone === '등록된 번호가 없습니다.'}" src="@/assets/images/editChan/icon_textSolid.svg"  class="img-w20" alt="">
             </div>
             <p class="font14 fl textLeft commonBlack" style="line-height: 30px;">{{value.funcTitle}}</p>
           </div>
@@ -131,7 +130,10 @@ export default {
             changeYn: false,
             tempUserDispName: '',
             thisUserKey: null,
-            profileFunc: [{ funcTitle: 'Alert', type: 'ALIM' }, { funcTitle: 'Email', type: 'MAIL' }, { funcTitle: 'Call', type: 'PHON' }, { funcTitle: 'Message', type: 'TEXT' }],
+            profileFunc: [
+						{ funcTitle: 'Email', type: 'MAIL'},
+						{ funcTitle: 'Call', type: 'PHON'},
+						{ funcTitle: 'Message', type: 'TEXT'}],
             userGrade: '',
             mUserInfo: {}
         }
@@ -158,6 +160,7 @@ export default {
         }
     },
     async created(){
+			console.log('profileFunc', this.profileFunc)
         console.log(this.propData)
         this.$emit('openLoading')
         if(this.propData.readOnlyYn){this.readOnlyYn = true}
@@ -231,16 +234,37 @@ export default {
         // this.getAnotherUserTeamInfo()
         this.$emit('closeLoading')
     },
-    methods:{
+	methods: {
+		getUserInfoEmail() {
+			if (this.memEmail) {
+				if (this.memEmail === '등록된 이메일이 없습니다.') {
+						return false
+				} else {
+						return true
+					}
+				}
+			},
         profileFuncEvent (type) {
             if (type === 'ALIM') {
                 this.sendPushAlim()
-            } else if (type === 'MAIL') {
-                this.sendMail(this.memEmail)
-            } else if (type === 'PHON') {
-                this.callPhone(this.memPhone)
-            } else if (type === 'TEXT') {
-                this.sendSms(this.memPhone)
+						} else if (type === 'MAIL') {
+							if (this.memEmail === '등록된 이메일이 없습니다.') {
+								return
+							} else {
+								this.sendMail(this.memEmail)
+							}                
+						} else if (type === 'PHON') {
+							if (this.memPhone === '등록된 번호가 없습니다.') {
+								return false
+							} else {
+								this.callPhone(this.memPhone)
+							}                
+						} else if (type === 'TEXT') {
+							if (this.memPhone === '등록된 번호가 없습니다.') {
+								return
+							} else {
+								this.sendSms(this.memPhone)
+							}
             }
         },
         async getMemberListGetUserInfo () {
@@ -253,6 +277,7 @@ export default {
                 param: Object.fromEntries(paramMap)
             })
             if (result.data.content) this.mUserInfo = result.data.content[0]
+						console.log('this.mUserInfo', this.mUserInfo)
         },
         async setUserGrade (anotherAuth) {
         if (anotherAuth) {
@@ -455,6 +480,10 @@ export default {
 </script>
 
 <style scoped>
+
+.noData{
+	opacity:0.3;
+}
 table {
     table-layout: fixed;
     word-break: break-all;

@@ -80,7 +80,7 @@
     </div>
   </div>
 </div>
-<div v-else-if="mLoadYn && $appType === 'UB'">
+<div v-else-if="mLoadYn && $appType === 'UB' && $route.path === `/chan/${CHANNEL_DETAIL.teamKey}/${parentYn}`">
   <div class="popUpBackgroundGray" @click="goNo"></div>
   <div class="channelMenuWrap showModal-enter " :class="{'showModal-leave': mCloseEventYn === true  }" >
 
@@ -135,6 +135,7 @@ export default {
     console.log(this.propChanAlimListTeamKey)
     if (this.propChanAlimListTeamKey) this.mChanAlimListTeamKey = JSON.parse(JSON.stringify(this.propChanAlimListTeamKey))
     this.readyFunction()
+    this.getParentYn()
   },
   data () {
     return {
@@ -149,11 +150,16 @@ export default {
       mConvDropEvenYn: true,
       mCloseEventYn: false,
       mConvenienceFuncList: [{ title: '알림작성', targetType: 'writeContents' }, { title: '게시글작성', targetType: 'writeBoard' }],
-      mLoadYn: false
+      mLoadYn: false,
+      parentYn: ''
     }
   },
   components: { addressBookList, menuBoardList },
   methods: {
+    getParentYn () {
+      var teamKey = this.CHANNEL_DETAIL.targetKey
+      this.parentYn = this.GE_USER.myTeamKey === teamKey ? 1 : 0
+    },
     readyFunction () {
       var history = this.$store.getters['D_HISTORY/hStack']
       this.writePopId = this.$setParentsId(this.pPopId, 'chanMenu' + this.mChanAlimListTeamKey)
