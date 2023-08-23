@@ -235,8 +235,8 @@ export default {
       this.mFollowYn = true
       // eslint-disable-next-line no-new-object
       var typeParam = new Object()
-      if (this.chanElement && this.chanElement.D_CHAN_AUTH.followerKey) {
-        typeParam.followerKey = this.chanElement.D_CHAN_AUTH.followerKey
+      if (this.chanElement && this.chanElement.followerKey) {
+        typeParam.followerKey = this.chanElement.followerKey
         console.log('typeParam.followerKey', typeParam.followerKey)
       }
       if (this.selectMemberObj.memberTypeItemKey) {
