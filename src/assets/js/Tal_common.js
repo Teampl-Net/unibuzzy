@@ -478,7 +478,7 @@ export const commonMethods = {
     if (message) {
       paramMap.set('message', message)
     } else {
-      paramMap.set('message', '더알림, 구독형 알림')
+      paramMap.set('message', 'uniBuzzy, The easiest way to stay updated-NOTI')
     }
     if (title) {
       paramMap.set('title', title)
@@ -936,6 +936,7 @@ export const commonMethods = {
     console.log('path')
     console.log(path)
     var api = path.split('/image')[0]
+    api = api.replace('/fileServer', '/file')
     var aTag
     aTag = document.getElementById('updateAppPage')
     if (aTag == null) {
