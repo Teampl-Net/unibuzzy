@@ -150,7 +150,7 @@ export default {
         param: { mCabContents: param }
       })
       // console.log(result)
-      if (result.data.result) {
+      if (result && result.data && result.data.result) {
         this.confirmPopShowYn = false
         if (this.GE_LOCALE === 'ko') {
           this.confirmText = this.mainText + '되었습니다!'

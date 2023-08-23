@@ -415,7 +415,7 @@ export default {
         url: '/sUniB/tp.getTownCabinetList',
         param: param
       })
-      if (result.data.result) {
+      if (result && result.data && result.data.result) {
         this.mCabKeyListStr = result.data.cabinetKeyListStr
       }
       console.log(result)
@@ -462,9 +462,11 @@ export default {
         console.log(teamDetail)
         if (teamDetail.userTeamInfo === undefined || teamDetail.userTeamInfo === null || teamDetail.userTeamInfo === '') {
           if (result.data.memberTypeList && result.data.memberTypeList.length !== 0 && result.data.memberTypeList[0].muserList) {
-            const index = result.data.memberTypeList[0].muserList.findIndex((item) => item.userKey === this.GE_USER.userKey)
-            if (index !== -1) {
-              teamDetail.userTeamInfo = result.data.memberTypeList[0].muserList[index]
+            if (result.data.memberTypeList[0].muserList) {
+              const index = result.data.memberTypeList[0].muserList.findIndex((item) => item.userKey === this.GE_USER.userKey)
+              if (index !== -1) {
+                teamDetail.userTeamInfo = result.data.memberTypeList[0].muserList[index]
+              }
             }
           }
         }

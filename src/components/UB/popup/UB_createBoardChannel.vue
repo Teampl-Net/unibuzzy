@@ -61,7 +61,7 @@
         </div>
       </template>
       <!-- 채널 생성일 때. select한 건물에 대해서도 prop으로 보내주기-->
-      <createChannel style="margin-top:310px; padding-bottom:80px;" :class="{margin220 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pClosePop="pClosePop" :pChannelModi="mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
+      <createChannel style="margin-top:310px; padding-bottom:80px;" :pBdKey="mBuildingKey" :class="{margin220 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pClosePop="pClosePop" :pChannelModi="mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
     </div>
   </div>
 </template>
@@ -92,6 +92,7 @@ export default {
         { title: 'Channel' }
       ],
       mCreateNew: true,
+      mBuildingKey: null,
       mSelectedBuilding: { selectedId: '11', selectPath: '/resource/bd/new_bd1.png' },
       mSelectedTab: 0,
       mSelectBuildingPop: false,
@@ -156,6 +157,7 @@ export default {
           bdAreaKey: this.pAreaInfo.bdAreaKey,
           creUserKey: this.GE_USER.userKey,
           bdIconPath: this.mSelectedBuilding.selectPath,
+          bdKey: this.mBuildingKey,
           cabinetNameMtext: 'EN$^$' + this.mNewBoardName,
           currentTeamKey: this.mMyTeamList.content[this.mSelectedChanIndex].teamKey,
           creTeamKey: this.mMyTeamList.content[this.mSelectedChanIndex].teamKey,
@@ -255,6 +257,10 @@ export default {
     // this.mSelectedTab = -1
     // console.log('mMyTeamList', this.mMyTeamList)
     console.log('=====chanDetail', this.chanDetail)
+    if (this.chanDetail && this.chanDetail.bdKey) {
+      this.mBuildingKey = this.chanDetail.bdKey
+      this.mSelectedBuilding.selectPath = this.chanDetail.bdIconPath
+    }
     console.log('=====pAreaInfo', this.pAreaInfo)
     this.showBoardOrChannel()
     this.getUserTeamList()

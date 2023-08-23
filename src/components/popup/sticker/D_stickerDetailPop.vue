@@ -136,7 +136,7 @@ export default {
         url: '/sUniB/tp.saveSticker',
         param: param
       })
-      if (result.data.result) {
+      if (result && result.data && result.data.result) {
         if (result.data.stickerKey) {
           param.stickerKey = result.data.stickerKey
 
@@ -181,7 +181,7 @@ export default {
         url: '/sUniB/tp.saveSticker',
         param: param
       })
-      if (result.data.result) {
+      if (result && result.data && result.data.result) {
         this.mConfirmDeletePopShowYn = false
         var hStack = this.$store.getters['D_HISTORY/hStack']
         var removePage = hStack[hStack.length - 1]

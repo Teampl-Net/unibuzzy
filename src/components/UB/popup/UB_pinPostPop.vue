@@ -76,7 +76,7 @@ export default {
             tvKey: board.tvKey
           }
         })
-        if (result.data.result) {
+        if (result && result.data && result.data.result) {
           board.tvKey = result.data.tvKey
           this.pUpdateTopview('delete', board)
         }
@@ -94,7 +94,7 @@ export default {
           url: '/sUniB/tp.saveTopview',
           param: param
         })
-        if (result.data.result) {
+        if (result && result.data && result.data.result) {
           board.tvKey = result.data.tvKey
           this.pUpdateTopview('add', board)
         }

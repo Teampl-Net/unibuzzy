@@ -89,7 +89,7 @@ export default {
           url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
-        if (result.data.result) {
+        if (result && result.data && result.data.result) {
           var contDetail = this.propContDetail
           var newArr = [
             ...result.data.resultList.memoList,

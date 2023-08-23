@@ -200,7 +200,7 @@ export default {
         url: '/sUniB/tp.saveUserDoList',
         param: param
       })
-      if (result.data.result) {
+      if (result && result.data && result.data.result) {
         var userDoList = result.data.userDoList
         var contents = this.contDetail
         if (contents.D_CONT_USER_DO) {

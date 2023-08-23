@@ -256,7 +256,7 @@ export default {
       })
       /* this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.cDetail]) */
       /* this.mConfirmPopShowYn = false */
-      if (result.data.result) {
+      if (result && result.data && result.data.result) {
         // eslint-disable-next-line no-debugger
         debugger
         var userDoList = result.data.userDoList

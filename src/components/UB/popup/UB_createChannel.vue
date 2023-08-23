@@ -50,7 +50,7 @@
           </label>
         </form>
 
-        <div v-if="(pChannelModi || chanDetail.modiYn === true) && this.chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; padding-left:0.25rem; margin-top:-175px;">
+        <div v-if="(pChannelModi || chanDetail.modiYn === true) && this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; padding-left:0.25rem; margin-top:-175px;">
           <p class="font14" style="color:#aaa;"> <img src="@/assets/images/formEditor/trashIcon_gray2.svg" style="width:18px;" alt=""> {{ $t('CRE_BTN_DELETE_CHAN') }} </p>
         </div>
 
@@ -63,7 +63,7 @@
           </div>
           <div class="w100P fl" style="height: calc(100% - 80px); overflow-y:scroll: auto; margin-top: 1rem;">
 
-          <div v-if="!pChannelModi || chanDetail.modiYn === false" class="w100P" style="border-bottom: 2px solid #aaa; padding: 10px 0;">
+          <div v-if="!pChannelModi || CHANNEL_DETAIL.modiYn === false" class="w100P" style="border-bottom: 2px solid #aaa; padding: 10px 0;">
             <p class="textLeft font20 fontBold w-100P">{{ pBdAreaList && pBdAreaList.length > 0 && pBdAreaList[0].bdList? $changeText(pBdAreaList[0].bdList[0].nameMtext):'Campus' }} > {{ pSelectedAreaInfo? pSelectedAreaInfo.bdAreaNameMtext:'Area' }}</p>
           </div>
 
@@ -143,11 +143,11 @@ export default {
       }
       console.log('check!!!!')
       console.log(this.mSelectedTeamTypeKey)
-      console.log(this.chanDetail)
+      console.log(this.CHANNEL_DETAIL)
     }
     this.$emit('openLoading')
-    if (this.chanDetail !== undefined && this.chanDetail !== null && this.chanDetail !== {}) {
-      if (this.chanDetail.modiYn === true) {
+    if (this.CHANNEL_DETAIL !== undefined && this.CHANNEL_DETAIL !== null && this.CHANNEL_DETAIL !== {}) {
+      if (this.CHANNEL_DETAIL.modiYn === true) {
         this.mPageType = '수정'
         this.mTopColorPreviewYn = true
         this.getTeamList()
@@ -162,6 +162,7 @@ export default {
     console.log(this.CHANNEL_DETAIL)
   },
   props: {
+    pBdKey: {},
     chanDetail: {},
     pClosePop: Function,
     pBdAreaList: Array,
@@ -354,8 +355,9 @@ export default {
       var gParam = {}
       try {
         if (this.chanDetail !== {}) {
+          gParam.bdKey = this.pBdKey
           gParam.teamKey = this.chanDetail.targetKey
-          gParam.targetKey = this.chanDetail.targetKey
+          gParam.targetKey = this.CHANNEL_DETAIL.targetKey
           gParam.bdIconPath = this.pSelectedBuilding.selectPath
           if (this.CHANNEL_DETAIL) {
             gParam.reqKey = this.CHANNEL_DETAIL.reqKey
@@ -430,11 +432,11 @@ export default {
           this.mCreatedSuccessPopYn = true
           params.targetType = 'chanDetail'
           params.popHeaderText = 'EN$^$' + this.mInputChannelName
-          if (this.chanDetail.modiYn !== undefined && this.chanDetail.modiYn !== null && this.chanDetail.modiYn !== '' && this.chanDetail.modiYn === true) {
+          if (this.CHANNEL_DETAIL.modiYn !== undefined && this.CHANNEL_DETAIL.modiYn !== null && this.CHANNEL_DETAIL.modiYn !== '' && this.CHANNEL_DETAIL.modiYn === true) {
             this.changeTeamInfo(gParam)
-            params.targetKey = this.chanDetail.targetKey
+            params.targetKey = this.CHANNEL_DETAIL.targetKey
             params.modiYn = true
-            params.teamKey = this.chanDetail.targetKey
+            params.teamKey = this.CHANNEL_DETAIL.targetKey
           } else {
             params.targetKey = result.teamKey
             params.teamKey = result.teamKey
@@ -442,10 +444,10 @@ export default {
             this.newChannelInPool(result.teamKey)
           }
           var teamKey = null
-          if (this.chanDetail.targetKey === undefined || this.chanDetail.targetKey === null || this.chanDetail.targetKey === '') {
+          if (this.CHANNEL_DETAIL.targetKey === undefined || this.CHANNEL_DETAIL.targetKey === null || this.CHANNEL_DETAIL.targetKey === '') {
             teamKey = result.teamKey
           } else {
-            teamKey = this.chanDetail.targetKey
+            teamKey = this.CHANNEL_DETAIL.targetKey
           }
 
           if (this.mDeleteYn !== true) await this.$addChanList(teamKey)

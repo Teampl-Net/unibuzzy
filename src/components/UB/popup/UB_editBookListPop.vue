@@ -303,7 +303,7 @@ export default {
         mCabContents.inUserName = this.$changeText(selectMem.userDispMtext || selectMem.userNameMtext)
         param.mCabContents = mCabContents
         result = await this.$saveMCabContents(param)
-        if (result.data.result) {
+        if (result && result.data && result.data.result) {
           this.closePop()
           await this.getBookMemberList()
         }

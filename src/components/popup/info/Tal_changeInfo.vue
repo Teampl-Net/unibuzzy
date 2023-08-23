@@ -137,7 +137,7 @@ export default {
         param: param
       })
       debugger
-      if (result.data.result) {
+      if (result && result.data && result.data.result) {
         this.$showToastPop(this.$t('INFO_MSG_AFTER_SEND'))
         // console.log(result.data.result)
         if(this.Timer != null){

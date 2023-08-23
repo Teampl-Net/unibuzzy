@@ -421,7 +421,7 @@ export default {
           url: '/sUniB/tp.getTownCabinetList',
           param: param
         })
-        if (result.data.result) {
+        if (result && result.data && result.data.result) {
           this.mCabKeyListStr = result.data.cabinetKeyListStr
         }
         console.log(result)

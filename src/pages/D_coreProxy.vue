@@ -96,7 +96,7 @@ export default {
       goBoardMainParam.targetKey = result.data.cabinet.cabinet.cabinetKey
       goBoardMainParam.cabinetNameMtext = result.data.cabinet.cabinet.cabinetNameMtext
       /* localStorage.setItem('BOAR_DIRECT_DATA', JSON.stringify('')) */
-      if (result.data.result) {
+      if (result && result.data && result.data.result) {
         this.mPropParams = goBoardMainParam
         this.mShowTarget = 'boardMain'
       }
@@ -132,7 +132,7 @@ export default {
       console.log(this.mRecvParams)
       var result = await this.$axios.post('/sUniB/tp.saveUserAccess', setParam)
       this.mAxiosYn = false
-      if (result.data.result) {
+      if (result && result.data && result.data.result) {
         return 'OK'
       }
     },
@@ -253,7 +253,7 @@ export default {
       console.log(this.mRecvParams)
       var result = await this.$axios.post('/sUniB/tp.saveUserAccess', setParam)
       this.mAxiosYn = false
-      if (result.data.result) {
+      if (result && result.data && result.data.result) {
         console.log(result.data)
         if (result.data.resultMsg === 'OK') {
           if (result.data.accessUser) {
