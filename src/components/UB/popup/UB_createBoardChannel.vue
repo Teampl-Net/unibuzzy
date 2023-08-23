@@ -119,9 +119,9 @@ export default {
     selectTab (index) {
       this.mSelectedTab = Number(index)
       console.log('mSelectedTab', this.mSelectedTab)
-      if (this.mSelectedTab === 0) {
-        this.getMatchName()
-      }
+      // if (this.mSelectedTab === 0) {
+      //   this.getMatchName()
+      // }
     },
     openSelectBuildingPop () {
       this.mSelectBuildingPop = true
@@ -166,7 +166,7 @@ export default {
           replyYn: true, // 기본설정 익명x, 파일o, 댓글o
           picBgPath: this.selectedColor,
           itemList: [{ shareSeq: 0, shareType: 'V' }, { shareSeq: 0, shareType: 'W' }, { shareSeq: 0, shareType: 'R' }],
-          shareList: [{ shareSeq: 0, accessKind: 'F', accessKey: this.mMyTeamNameList[this.mSelectedChanIndex].teamKey }]
+          shareList: [{ shareSeq: 0, accessKind: 'F', accessKey: this.mMyTeamList[this.mSelectedChanIndex].teamKey }]
         }
       }
       var response = await this.$commonAxiosFunction({

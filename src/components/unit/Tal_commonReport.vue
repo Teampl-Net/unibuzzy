@@ -68,8 +68,8 @@
         <img class="fr cursorP mright-05" style="width: 1rem; position: absolute; right:0.5rem; top:1rem" @click="closePop()" src="../../assets/images/common/popup_close.png"/>
         <p class="fl font16 fontBold textLeft w-100P mtop-1">{{ $t('REPO_TITLE_REPORT') }}</p>
         <p class="fl lightGray font12 textLeft w-100P mtop-05 mbottom-1">{{ $t('REPO_MSG_DESC') }}</p>
-        <div class="fl w-100P" style="height: 300px; overflow: hidden scroll;">
-          <div v-for="(data, index) in reportList" :key="index" @click="reportClick(data)" class="fl w-100P textLeft font14 commonColor reportCard" :style="index === 0 ? 'border-top:1px solid #eeeeee;': ''" >
+        <div class="fl w100P" style="height: 390px; overflow: hidden scroll; display:flex; flex-direction:column;">
+          <div v-for="(data, index) in reportList" :key="index" @click="reportClick(data)" class="fl w100P textLeft font14 commonColor reportCard" :style="index === 0 ? 'border-top:1px solid #eeeeee;': ''" >
             <p class="fl font14 mleft-1">{{data.reportTitle}}</p> <p class="fr font16">></p>
           </div>
         </div>
@@ -190,7 +190,7 @@ export default {
   padding:2rem 10px; background:#ffffff; border-radius:10px 10px 0 0; min-height:100px; display: flex; justify-content: center; align-items: center; flex-direction: column;
 }
 .reportCompoArea {
-  width:95%; position: fixed; bottom:0; left:2.5%; z-index:9999;
+  width:95%; position: fixed; bottom:60px; left:2.5%; z-index:9999;
 }
 .menuListBase {
   min-height:50px; line-height:50px; color:red;

@@ -12,7 +12,7 @@
     </div> -->
     <!-- <recMemberPop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" /> -->
     <div class="font20 fontBold displayNIm" ref="UBChanMainNameDiv" :style="mChanNameLongYn ? 'font-size: 15px !important;' : ''" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{ officialTitle: CHANNEL_DETAIL.officialYn }"> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" />
-      <p class="font20 fontBold textOverdot" :style="(CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white;' : 'color: #6768a7;') + 'top: ' + (Number(this.$STATUS_HEIGHT) - 5) + 'px'">
+      <p class="font20 fontBold textOverdot" :style="(CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;') + 'top: ' + (Number(this.$STATUS_HEIGHT) - 5) + 'px'">
         {{mChanInfo.initData.team.cateItemMtext ? $changeText(CHANNEL_DETAIL.nameMtext) > $changeText(mChanInfo.initData.team.cateItemMtext) : $changeText(CHANNEL_DETAIL.nameMtext)}}
       </p>
     </div>
@@ -230,7 +230,7 @@ export default {
     }
   },
   mounted () {
-    console.log('22222 CHANNEL_DETAIL', this.CHANNEL_DETAIL)
+    console.log('Channel Main - Channel Detail', this.CHANNEL_DETAIL)
     this.$nextTick(() => {
       this.calcSummaryWrapH()
       this.mChanMainScrollWrap = this.$refs.chanScrollWrap

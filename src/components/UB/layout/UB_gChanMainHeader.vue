@@ -26,7 +26,8 @@ export default {
   },
   data () {
     return {
-      mBlackYn: false
+      mBlackYn: false,
+      blackYn: this.pChanInfo.initData.team.content['0'].blackYn
     }
   },
   mounted () {
@@ -57,7 +58,8 @@ export default {
       handler (val) {
         if (!val) return
         if (val.initData && val.initData.team) {
-          if (val.initData.team.blackYn === 1) {
+          console.log('val.initData', val.initData)
+          if (val.initData.team.content['0'].blackYn === 1) {
             this.mBlackYn = true
           } else {
             this.mBlackYn = false
