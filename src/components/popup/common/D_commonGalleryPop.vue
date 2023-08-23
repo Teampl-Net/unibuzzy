@@ -111,7 +111,8 @@ export default {
           var result = await this.$downloadFile(fKey, imgPath)
           console.log(result)
         }
-        this.$showToastPop('정상적으로 저장되었습니다!')
+        // this.$showToastPop('정상적으로 저장되었습니다!')
+        this.$showToastPop('Successfully saved!')
         // this.saveOkPopShowYn = true
       } catch (error) {
         // console.log(error)

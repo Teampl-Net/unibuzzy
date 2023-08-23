@@ -7,7 +7,7 @@
     <gConfirmPop :confirmText="mErrorPopBodyStr" confirmType='one' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" style="z-index: 9999999999999999999999;"/>
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
     <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
-    <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" :pContentsYn="mTargetType === 'contentsDetail' || mTargetType === 'contDetail'" @goFavList="openPop" @goLogList="openPop" v-if="mRouterHeaderInfo !== 'leave' && mTargetType !== 'chanDetail' && mTargetType !== 'boardMain' " @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9;" />
+    <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" :pContentsYn="mTargetType === 'contentsDetail' || mTargetType === 'contDetail'" @goFavList="openPop" @goLogList="openPop" v-if="(mRouterHeaderInfo !== 'leave' && mTargetType !== 'chanDetail' && mTargetType !== 'boardMain') || $route.path === '/chanList' " @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9;" />
     <chanHeader :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 20)  + 'px'" v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === '' && mRouterHeaderInfo !== 'leave'" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo.targetKey" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" :pChanInfo="mChanInfo" @openPop="openPop" class="chanDetailPopHeader" />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mPopType === 'writeContents'" @click="mPopType = ''"></div>
     <writeContents v-if="mPopType === 'writeContents'" @closeXPop="closeWritePop" :params="mPopParams" :propData="mPopParams" :contentType="mPopParams.contentsJobkindId" />
@@ -26,6 +26,7 @@
     </transition>
     <policies :pPolicyType="mPolicyType" v-if="mPolicyType === 'termsOfUse' || mPolicyType === 'privacy'" :pClosePolicyPop="closePolicyPop" />
     <editMyChanMenu style="z-index: 999999;" v-if="mPopType === 'myChanMenuEdit'" :pClosePop="closeWritePop" :propData="mPopParams" />
+    <editBookListPop v-if="mPopType === 'editBookList'" :propData="mPopParams" @closeXPop="closeBookListPop" />
     <transition name="show_right">
       <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
     </transition>
@@ -50,6 +51,7 @@ import notiHistoryList from '@/components/UB/popup/UB_notiHistoryList.vue'
 import writeContents from '../../components/popup/D_writeContents.vue'
 import editMyChanMenu from '../../components/UB/popup/UB_editMyChanMenu.vue'
 import favListPop from '../../components/UB/popup/UB_favListPop.vue'
+import editBookListPop from '@/components/UB/popup/UB_editBookListPop.vue'
 // import unknownLoginPop from '../../components/pageComponents/channel/D_unknownLoginPop.vue'
 export default {
   data () {
@@ -119,6 +121,10 @@ export default {
     // this.showCloudLoading(false, 5000)
   },
   methods: {
+    closeBookListPop () {
+      this.deleteHistory()
+      this.mPopType = ''
+    },
     openImgPop (param) {
       if (param) {
         this.mPropFirstIndex = param[1]
@@ -415,7 +421,7 @@ export default {
         url: '/sUniB/tp.getTownCabinetList',
         param: param
       })
-      if (result.data.result) {
+      if (result && result.data && result.data.result) {
         this.mCabKeyListStr = result.data.cabinetKeyListStr
       }
       console.log(result)
@@ -462,9 +468,11 @@ export default {
         console.log(teamDetail)
         if (teamDetail.userTeamInfo === undefined || teamDetail.userTeamInfo === null || teamDetail.userTeamInfo === '') {
           if (result.data.memberTypeList && result.data.memberTypeList.length !== 0 && result.data.memberTypeList[0].muserList) {
-            const index = result.data.memberTypeList[0].muserList.findIndex((item) => item.userKey === this.GE_USER.userKey)
-            if (index !== -1) {
-              teamDetail.userTeamInfo = result.data.memberTypeList[0].muserList[index]
+            if (result.data.memberTypeList[0].muserList) {
+              const index = result.data.memberTypeList[0].muserList.findIndex((item) => item.userKey === this.GE_USER.userKey)
+              if (index !== -1) {
+                teamDetail.userTeamInfo = result.data.memberTypeList[0].muserList[index]
+              }
             }
           }
         }
@@ -674,9 +682,7 @@ export default {
         this.goBoardDetail(params)
         this.hideMenu()
         return
-      } else if (params.targetType === 'writeContents') {
-        this.openPop(params)
-      } else if (params.targetType === 'myChanMenuEdit') {
+      } else if (params.targetType === 'myChanMenuEdit' || params.targetType === 'editBookList' || params.targetType === 'writeContents') {
         this.openPop(params)
       } else if (params.targetType === 'setMypage') {
         this.mChanInfo = params
@@ -935,7 +941,8 @@ export default {
     policies,
     chanHeader,
     chanMenu,
-    favListPop
+    favListPop,
+    editBookListPop
   }
 }
 </script>
