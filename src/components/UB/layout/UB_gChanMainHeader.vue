@@ -1,5 +1,5 @@
 <template>
-  <div class="commonPopHeaderWrap" style="background:transparent !important;">
+  <div v-if="$route.path !== '/chanList'" class="commonPopHeaderWrap" style="background:transparent !important;">
     <div @click="goMain" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <img v-if="mBlackYn === true && targetType !== 'boardMain'" src="../../../assets/images/common/icon_back_white.png" class=" commonPopBackBtn" >
       <img v-else-if="pNoAuthYn === true " src="../../../assets/images/footer/icon_home_fillin.svg">
@@ -100,10 +100,19 @@ export default {
 }
 </script>
 <style scoped>
-.commonPopHeaderWrap{ position: fixed; justify-content: center; align-items: center;  left: 0;
+.commonPopHeaderWrap{
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  left: 0;
   box-sizing: border-box; display: flex;
   padding: 0.7rem 0.5rem;
-  width: 100%; height: 50px; list-style: none; text-align: center; z-index: 10; background: #FFF; }
+  width: 100%; height: 50px;
+  list-style: none;
+  text-align: center;
+  z-index: 10;
+  background: #FFF;
+}
 
 .popHeaderTitleSpan{position: absolute; color: #6768A7; font-weight: bold; width:70%; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
 .commonPopBackBtn{width: 0.8rem;}

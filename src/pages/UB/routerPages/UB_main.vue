@@ -629,7 +629,6 @@ export default {
           // 마스킹 이미지 그리기
           // if (bd.type !== 'CB') bd.top = 200
           // context.drawImage(this, newWidth + bd.left, newHeight + bd.top, bd.w, bd.h)
-          console.log(bd.nameMtext, bd.cabinetNameMtext, bd.w, bd.h, '-----------')
           context.drawImage(this, 0, 0, bd.w, bd.h)
           // 마스킹 이미지를 base64로 변환하여 출력
           bd.maskedImageUrl = canvas.toDataURL()
@@ -820,9 +819,6 @@ export default {
 }
 .areaDiv.clicked {
   animation: area-zoom 0.4s alternate;
-}
-.bdDiv > img {
-  /* width: 80px; */
 }
 .bdDiv.clicked {
   z-index: 9999 !important;

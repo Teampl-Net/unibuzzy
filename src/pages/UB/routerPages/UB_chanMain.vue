@@ -145,7 +145,8 @@ export default {
       mMemberTypeList: [],
       mBoardContentsList: [],
       pushListWrap: null,
-      mAxiosQueue: []
+      mAxiosQueue: [],
+      mProfilePopShowYn: true
       // errorPopYn: false
     }
   },
@@ -271,6 +272,9 @@ export default {
     })
   },
   methods: {
+    closeProfilePop () {
+      this.mProfilePopShowYn = false
+    },
     testAuth () {
       console.log(this.CHANNEL_DETAIL.D_CHAN_AUTH)
     },
@@ -360,9 +364,9 @@ export default {
     },
     calcSummaryWrapH () {
       if (this.$refs.summaryWrap) {
-        let height = this.$refs.summaryWrap.offsetHeight + 'px'
-        if (this.$refs.summaryWrap.offsetHeight < 300) height = 210 + 'px'
-        this.$refs.channelItemBox.style.marginTop = height
+        // let height = this.$refs.summaryWrap.offsetHeight + 'px'
+        // if (this.$refs.summaryWrap.offsetHeight < 300) height = 210 + 'px'
+        // this.$refs.channelItemBox.style.marginTop = height
       }
     },
     async openReqPop () {
@@ -1216,7 +1220,13 @@ export default {
   align-items: flex-start;
   padding-top: 1.2rem !important;
 }
-.summaryWrap{min-height: 210px; width: 100%; float: left; position: absolute;}
+.summaryWrap{
+  min-height: 210px;
+  width: 100%;
+  float: left;
+  /* position: absolute; */
+  z-index: 1;
+}
 .summaryWrap2 {
   height: 50px;
   width: 100%;

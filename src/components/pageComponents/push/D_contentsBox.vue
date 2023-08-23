@@ -10,7 +10,7 @@
 </i18n>
 <template>
     <div v-if="mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
-      <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mProfilePopShowYn" @click="closeProfilePop"></div>
+      <div style="background-color:#00000050; width:100vw; height:100vh; position: fixed; top:0; left:0; z-index: 10000000;" v-if="mProfilePopShowYn" @click="closeProfilePop"></div>
       <userDetailPop v-if="mProfilePopShowYn" :propData="mPopParam" :pClosePop="closeProfilePop" />
       <!-- <button @click="downloadPdf">다운로드</button> -->
       <!-- <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;"> -->

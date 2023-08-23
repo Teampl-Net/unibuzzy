@@ -508,10 +508,11 @@ margin-bottom: 2rem;
 }
 
 .addTeamMemberArea{
-  position: absolute;
-  top: 10%;
-  left: 10%;
-  z-index: 9999;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000001;
   width: 80%;
   height: 80%;
   background-color: white;

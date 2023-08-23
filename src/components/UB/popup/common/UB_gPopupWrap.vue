@@ -8,6 +8,7 @@
 </template>
 <script>
 import chanMenu from '../../../popup/chanMenu/D_channelMenu.vue'
+
 export default {
   created () {
     console.log(this.propParams)
