@@ -209,9 +209,13 @@ export default {
   },
   methods: {
     showFollowYn () {
-      if (this.CHANNEL_DETAIL) {
-        if (this.CHANNEL_DETAIL.followerKey || this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey || this.chanElement.followerKey > 0) {
+      if (this.chanElement) {
+        if (this.chanElement.followerKey && this.chanElement.followerKey !== null) {
           this.mFollowYn = true
+        } else if (this.chanElement.D_CHAN_AUTH) {
+          if (this.chanElement.D_CHAN_AUTH.followerKey > 0) {
+            this.mFollowYn = true
+          }
         } else {
           this.mFollowYn = false
         }
