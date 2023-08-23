@@ -146,6 +146,7 @@ export default {
       mBoardContentsList: [],
       pushListWrap: null,
       mAxiosQueue: [],
+      mBookListPopShowYn: false,
       mProfilePopShowYn: true
       // errorPopYn: false
     }
@@ -272,6 +273,9 @@ export default {
     })
   },
   methods: {
+    openMemberTypePop () {
+      this.mBookListPopShowYn = true
+    },
     closeProfilePop () {
       this.mProfilePopShowYn = false
     },

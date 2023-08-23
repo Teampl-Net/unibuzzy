@@ -262,7 +262,7 @@ export default {
       this.mSelectSchoolPopShowYn = false
     },
     async goTown (chanEle) {
-      console.log('chanEle', chanEle)
+      this.$emit('showCloudLoading', true, false)
       var param = {
         user: {
           userKey: this.GE_USER.userKey,
@@ -273,7 +273,7 @@ export default {
       await this.$commonAxiosFunction({
         url: '/sUniB/tp.saveUser',
         param: param
-      })
+      }, true)
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
       window.location.reload()
       // this.$router.go(0)
@@ -300,6 +300,7 @@ export default {
           console.log('====mAreaDetail===', result)
           console.log('====mAreaInfo===', this.mAreaInfo)
           this.mInfoBoxShowYn = true
+          this.allClearFocus()
         }
       }
     },

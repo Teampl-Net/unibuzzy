@@ -35,8 +35,6 @@
 <script>
 export default {
   created () {
-    console.log('여기확인이요')
-    console.log(this.pFTeamList)
     if (!this.pFTeamList || this.pFTeamList.length < 1) {
       this.loginCheck()
     } else {

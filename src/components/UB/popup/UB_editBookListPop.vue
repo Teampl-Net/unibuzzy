@@ -22,14 +22,14 @@
   "en": {
     "EDIT_BOOK_TITLE_FILTER": "More Filters",
     "EDIT_BOOK_MSG_NAME": "Write down a name",
-    "EDIT_BOOK_MSG_BOOK": "Write down a name of the Address Book",
+    "EDIT_BOOK_MSG_BOOK": "Write down a name of the member type",
     "EDIT_BOOK_BTN_CRE": "Created",
     "EDIT_BOOK_BTN_NAME": "Name",
     "EDIT_BOOK_BTN_EXCEL": "Upload<br>Excel File",
     "EDIT_BOOK_BTN_ME": "Add<br>Me",
     "EDIT_BOOK_BTN_DIRECT": "Add<br>Manually",
     "EDIT_BOOK_BTN_USER": "Select<br>User",
-    "EDIT_BOOK_BTN_CREATE": "Create Address Book",
+    "EDIT_BOOK_BTN_CREATE": "Create member type",
     "EDIT_BOOK_NAME_ID": "ID #",
     "EDIT_BOOK_NAME_MAJOR": "Major",
     "EDIT_BOOK_NAME_DUTY": "Duty",
@@ -45,9 +45,9 @@
     <transition name="show_left">
       <creAddressBook v-if="mPopType === 'creAddressBook' || mPopType === 'editAddressBook'" :propData="mPropData" :pClosePop="closePop" />
     </transition>
-    <onlyMemberSelectPop v-if="mPopType === 'selectMemberPop'" :propData="mPropData" :pClosePop="closePop" />
+    <onlyMemberSelectPop v-if="mPopType === 'selectMemberPop'" :propData="mPropData" :pClosePop="backClick" />
     <bookMemberDetail v-if="mPopType === 'bookMemberDetail'" @addDirectAddMemList="saveMemberDirectly" :propData="mPropData" :pClosePop="closePop" />
-    <gPopHeader headerTitle="Manage Address Book" :pClosePop="pClosePop" />
+    <gPopHeader headerTitle="Manage Member Type" :pClosePop="closeXPop" />
     <gConfirmPop :confirmText='mConfirmText' :confirmType="mConfirmType" v-if="mConfirmPopShowYn" @no='mConfirmPopShowYn=false' @ok='confirmOk' />
     <div class="pagePaddingWrap longHeight"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'"  style="height:calc(100% - 300px); overflow: hidden; " >
 
@@ -162,6 +162,13 @@ export default {
     }
   },
   methods: {
+    closeXPop () {
+      if (this.pClosePop) {
+        this.pClosePop()
+      } else {
+        this.$emit('closeXPop')
+      }
+    },
     async closePop () {
       if (this.mPopType === 'creAddressBook') {
         await this.getBookList()
@@ -200,7 +207,7 @@ export default {
       if (this.GE_LOCALE === 'ko') {
         this.mConfirmText = (params.targetType === 'cabinet' ? '주소록을' : '주소를') + ' 삭제하시겠습니까?'
       } else {
-        this.mConfirmText = `Are you sure you want to delete the ${(params.targetType === 'cabinet' ? 'address book' : 'address')}?`
+        this.mConfirmText = `Are you sure you want to delete the ${(params.targetType === 'cabinet' ? 'member type' : 'address')}?`
       }
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true

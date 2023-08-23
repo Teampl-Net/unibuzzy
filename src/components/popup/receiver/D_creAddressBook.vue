@@ -11,7 +11,7 @@
     "EDIT_BOOK_TITLE_NAME": "Book Name",
     "EDIT_BOOK_BTN_CREATE": "Create",
     "EDIT_BOOK_BTN_EDIT": "Edit",
-    "EDIT_BOOK_MSG_NONAME": "Please enter a name for address book.",
+    "EDIT_BOOK_MSG_NONAME": "Please enter a name for member type.",
     "EDIT_BOOK_MSG_SAVE": "There was a problem saving. Please try again."
   }
 }

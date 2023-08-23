@@ -8,7 +8,8 @@
     "MANA_NAME_CAHN": "채널 관리",
     "MANA_NAME_ADDRBOOK": "주소록 관리",
     "MANA_NAME_BOARD": "게시판 관리",
-    "CHAN_MSG_NOFOLLOW": "권한이 없습니다"
+    "CHAN_MSG_NOFOLLOW": "권한이 없습니다",
+    "CHAN_MENU_TITLE_ADDR": "주소록"
   },
   "en": {
     "CHAN_MENU_TITLE_MENU": "Channel Menu",
@@ -16,9 +17,10 @@
     "CHAN_MENU_SEND_NOTI": "Send Noti",
     "CHAN_MENU_WRITE_POST": "Write a Post",
     "MANA_NAME_CAHN": "Manage Channel",
-    "MANA_NAME_ADDRBOOK": "Manage Address Book",
+    "MANA_NAME_ADDRBOOK": "Manage Member Types",
     "MANA_NAME_BOARD": "Manage Board",
-    "CHAN_MSG_NOFOLLOW": "No Permission"
+    "CHAN_MSG_NOFOLLOW": "No Permission",
+    "CHAN_MENU_TITLE_ADDR": "Member Type"
   }
 }
 </i18n>
@@ -103,7 +105,7 @@
       </div>
       <div v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ((this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))" class="fl w100P" style="border-bottom: 2px solid #6768a730" :style="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
         <div class="fl font14 cursorP commonColor fontBold  textLeft w100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="bookDropDown">
-          <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">{{ $t('COMMON_NAME_ADDRBOOK') }}</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.CABINET_LIST.length}})</span></p>
+          <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">{{ $t('CHAN_MENU_TITLE_ADDR') }}</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.CABINET_LIST.length}})</span></p>
           <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn" style=" margin-top : 0.5rem;" >
           <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
         </div>

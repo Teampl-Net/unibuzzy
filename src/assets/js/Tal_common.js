@@ -187,11 +187,57 @@ export const commonMethods = {
     }
     return this.$dayjs(compareDate).add(9, 'hour').format(format)
   },
+  //   changeDateFormat (date, mustTimeShowYn) {
+  //   // var compareDate = new Date(Number(date))
+  //   var compareDate = new Date(date)
+  //   var toDate = new Date()
+  //   var format = ''
+  //   if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(toDate).format('YYYY')) {
+  //     if (this.$dayjs(compareDate).format('MM') === this.$dayjs(toDate).format('MM')) {
+  //       if (this.$dayjs(compareDate).format('DD') === this.$dayjs(toDate).format('DD')) {
+  //         // 년도 월 일 이 같으면 만든 시간, 분
+  //         format = 'HH:mm'
+  //         // format = 'HH시 mm분'
+  //       } else {
+  //         // 같은 년도, 월이 같으면
+  //         format = 'MM/DD HH:mm'
+  //         // format = 'MM월 DD일'
+  //       }
+  //     } else {
+  //       // 년도만 같으면
+  //       format = 'MM/DD'
+  //       // format = 'MM월 DD일'
+  //     }
+  //   } else {
+  //     format = 'YYYY/MM/DD'
+  //     // if (viewType === 'detail') {
+  //     //   return this.$dayjs(compareDate).format('yyyyMMDDHHmmss')
+  //     // } else if (viewType === 'list') {
+  //     //   return this.$dayjs(compareDate).format('yyyyMMDD')
+  //     // }
+  //   }
+  //   if (mustTimeShowYn && format !== 'HH:mm') format += ' HH:mm'
+
+  //   if (this.$locale && this.$locale === 'KR') {
+  //     return this.$dayjs(compareDate).add(9, 'hour').format(format)
+  //   } else if (this.$locale && this.$locale === 'US') {
+  //     return this.$dayjs(compareDate).add(-4, 'hour').format(format)
+  //   }
+
+  //   // return this.$dayjs(compareDate).add(9, 'hour').format(format)
+  //   //   if (compareDate === toDate) {
+  //   //     return changeDateHM(compareDate)
+  //   //   } else {
+  //   //   }
+  // //   this.$convertDate(toDate, 'yyyyMMDD') + ' :yyyyMMDD\n' + this.$convertDate(toDate, 'MMDD') + ' :MMDD\n' + this.$convertDate(toDate, 'HHmmss') + ' :HHmmss\n' +
+  // //   this.$convertDate(toDate, 'yyyyMMDDHHmmss') + ' :yyyyMMDDHHmmss\n' + this.$convertDate(toDate, 'MMDDHHmmss') + ' :MMDDHHmmss\n' + this.$convertDate(toDate, 'DDHHmmss') + ' :DDHHmmss')
+  // },
   changeDateFormat (date, mustTimeShowYn) {
     // var compareDate = new Date(Number(date))
     var compareDate = new Date(date)
     var toDate = new Date()
     var format = ''
+    const diffDate = this.$dayjs(toDate).diff(compareDate, 'd')
     if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(toDate).format('YYYY')) {
       if (this.$dayjs(compareDate).format('MM') === this.$dayjs(toDate).format('MM')) {
         if (this.$dayjs(compareDate).format('DD') === this.$dayjs(toDate).format('DD')) {
@@ -199,17 +245,21 @@ export const commonMethods = {
           format = 'HH:mm'
           // format = 'HH시 mm분'
         } else {
-          // 같은 년도, 월이 같으면
-          format = 'MM/DD HH:mm'
-          // format = 'MM월 DD일'
+          if (diffDate === 1) {
+            // 어제면
+            format = 'HH:mm'
+          } else {
+            // 같은 년도, 월이 같으면
+            format = 'MM/DD HH:mm'
+          }
         }
       } else {
         // 년도만 같으면
-        format = 'MM/DD'
+        format = 'MM/DD HH:mm'
         // format = 'MM월 DD일'
       }
     } else {
-      format = 'YYYY/MM/DD'
+      format = 'YYYY/MM/DD HH:mm'
       // if (viewType === 'detail') {
       //   return this.$dayjs(compareDate).format('yyyyMMDDHHmmss')
       // } else if (viewType === 'list') {
@@ -219,9 +269,17 @@ export const commonMethods = {
     if (mustTimeShowYn && format !== 'HH:mm') format += ' HH:mm'
 
     if (this.$locale && this.$locale === 'KR') {
-      return this.$dayjs(compareDate).add(9, 'hour').format(format)
+      if (diffDate === 1) {
+        return 'yesterday' + this.$dayjs(compareDate).add(9, 'hour').format(format)
+      } else {
+        return this.$dayjs(compareDate).add(9, 'hour').format(format)
+      }
     } else if (this.$locale && this.$locale === 'US') {
-      return this.$dayjs(compareDate).add(-4, 'hour').format(format)
+      if (diffDate === 1) {
+        return 'yesterday ' + this.$dayjs(compareDate).add(-4, 'hour').format(format)
+      } else {
+        return this.$dayjs(compareDate).add(-4, 'hour').format(format)
+      }
     }
 
     // return this.$dayjs(compareDate).add(9, 'hour').format(format)

@@ -26,6 +26,7 @@
     </transition>
     <policies :pPolicyType="mPolicyType" v-if="mPolicyType === 'termsOfUse' || mPolicyType === 'privacy'" :pClosePolicyPop="closePolicyPop" />
     <editMyChanMenu style="z-index: 999999;" v-if="mPopType === 'myChanMenuEdit'" :pClosePop="closeWritePop" :propData="mPopParams" />
+    <editBookListPop v-if="mPopType === 'editBookList'" :propData="mPopParams" @closeXPop="closeBookListPop" />
     <transition name="show_right">
       <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
     </transition>
@@ -50,6 +51,7 @@ import notiHistoryList from '@/components/UB/popup/UB_notiHistoryList.vue'
 import writeContents from '../../components/popup/D_writeContents.vue'
 import editMyChanMenu from '../../components/UB/popup/UB_editMyChanMenu.vue'
 import favListPop from '../../components/UB/popup/UB_favListPop.vue'
+import editBookListPop from '@/components/UB/popup/UB_editBookListPop.vue'
 // import unknownLoginPop from '../../components/pageComponents/channel/D_unknownLoginPop.vue'
 export default {
   data () {
@@ -119,6 +121,10 @@ export default {
     // this.showCloudLoading(false, 5000)
   },
   methods: {
+    closeBookListPop () {
+      this.deleteHistory()
+      this.mPopType = ''
+    },
     openImgPop (param) {
       if (param) {
         this.mPropFirstIndex = param[1]
@@ -676,9 +682,7 @@ export default {
         this.goBoardDetail(params)
         this.hideMenu()
         return
-      } else if (params.targetType === 'writeContents') {
-        this.openPop(params)
-      } else if (params.targetType === 'myChanMenuEdit') {
+      } else if (params.targetType === 'myChanMenuEdit' || params.targetType === 'editBookList' || params.targetType === 'writeContents') {
         this.openPop(params)
       } else if (params.targetType === 'setMypage') {
         this.mChanInfo = params
@@ -937,7 +941,8 @@ export default {
     policies,
     chanHeader,
     chanMenu,
-    favListPop
+    favListPop,
+    editBookListPop
   }
 }
 </script>
