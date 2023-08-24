@@ -216,13 +216,10 @@ const D_CHANNEL = {
         if (!team) return
         index = state.chanList.findIndex((item) => item.teamKey === team.teamKey)
         var D_CHAN_AUTH = {}
-        console.log(team)
         if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {
           D_CHAN_AUTH = team.userTeamInfo
           D_CHAN_AUTH.settingYn = true
           D_CHAN_AUTH.followYn = true
-          console.log('D_CHAN_AUTH')
-          console.log(D_CHAN_AUTH)
 
           if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
             D_CHAN_AUTH.mngAlimYn = team.userTeamInfo.mngAlimYn
@@ -240,8 +237,6 @@ const D_CHANNEL = {
               if (team.mngMemberYn) D_CHAN_AUTH.mngMemberYn = team.mngMemberYn
             }
           }
-          console.log(D_CHAN_AUTH)
-          // D_CHAN_AUTH.followYn = false
         }
         if (D_CHAN_AUTH.memberNameMtext) {
           D_CHAN_AUTH.memberYn = true
@@ -460,9 +455,6 @@ const D_CHANNEL = {
         var chanList = state.chanList
         if (addContList.length === 0) return
         if (!addContList[0]) return
-        console.log('state.chanList')
-        console.log(addContList)
-        console.log(state.chanList)
         for (var i = 0; i < addContList.length; i++) {
           idx1 = chanList.findIndex((item) => item.teamKey === addContList[i].creTeamKey)
           if (idx1 === -1) continue
@@ -524,7 +516,6 @@ const D_CHANNEL = {
           }
         }
         state.chanList = chanList
-        console.log(state.chanList)
         if (chanDetail) {
           if (state.recentChangeTeamKey) state.recentChangeTeamKey = chanDetail.teamKey
         }
@@ -696,7 +687,6 @@ const D_CHANNEL = {
       if (payload.length > 0) {
         for (var i = 0; i < payload.length; i++) {
           var userDo = payload[i].userDoList
-          console.log(userDo)
           var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
           var D_CONT_USER_STICKER_LIST = []
           if (userDo) {
@@ -735,7 +725,6 @@ const D_CHANNEL = {
     },
     AC_ADD_CONTENTS: ({ commit, state }, payload) => { // 채널의 컨텐츠 부분 추가 (ALIM/BOARD)
       if (!payload) return
-      console.log(payload)
       for (var i = 0; i < payload.length; i++) {
         var userDo = payload[i].userDoList
         var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]

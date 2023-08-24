@@ -51,18 +51,27 @@
           <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
             <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'" @fileDownload="fileDownload"/>
           </template>
-          <gEmpty :tabName="currentTabName" contentName="게시판" v-if="this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
+          <template v-if="viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0 && !this.emptyYn">
+            <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
+          </template>
+          <gEmpty :tabName="currentTabName" contentName="게시판" v-else-if="this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0 && this.emptyYn" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template  v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index">
             <gContentsBox @openImgPop="openImgPop" :here="here" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'" @fileDownload="fileDownload"/>
           </template>
-          <gEmpty :tabName="currentTabName" contentName="알림" v-if="this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
+          <template v-if="viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0 && !this.emptyYn">
+            <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
+          </template>
+          <gEmpty :tabName="currentTabName" contentName="알림" v-else-if="this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0 && this.emptyYn" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
             <gContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" @contDelete="refreshAll" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
             <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
-          <gEmpty :tabName="currentTabName" contentName="전체" v-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
+          <template v-if="viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0 && !this.emptyYn">
+            <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
+          </template>
+          <gEmpty :tabName="currentTabName" contentName="전체" v-else-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0 && this.emptyYn" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template  v-for="(cont, index) in this.GE_FILE_LIST" :key="index">
               <gFileBox @openImgPop="openImgPop" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'F'"/>
@@ -81,6 +90,7 @@
 </div>
 </template>
 <script>
+import SkeletonBox from '../../../components/pageComponents/push/D_contentsSkeleton'
 import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../../../components/popup/common/D_findContentsList.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
@@ -89,6 +99,7 @@ import unknownLoginPop from '@/components/pageComponents/channel/D_unknownLoginP
 export default {
   name: 'pushList',
   components: {
+    SkeletonBox,
     findContentsList,
     commonConfirmPop,
     statCodeComponent,
@@ -417,7 +428,7 @@ export default {
         }
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      if (returnAlimList.length === 0) this.emptyYn = true
+      if (this.alimContentsList.length === 0) this.emptyYn = true
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.computedYn = true
       return this.replaceArr(returnAlimList)
@@ -464,7 +475,7 @@ export default {
         }
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      if (returnBoardList.length === 0) this.emptyYn = true
+      if (this.boardContentsList.length === 0) this.emptyYn = true
 
       return this.replaceArr(returnBoardList)
     },
@@ -525,7 +536,7 @@ export default {
         }
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      if (returnAllList.length === 0) this.emptyYn = true
+      if (this.allContentsList.length === 0) this.emptyYn = true
 
       return this.replaceArr(returnAllList)
     },
@@ -664,6 +675,7 @@ export default {
     },
     async readyFunction () {
       this.scrolledYn = false
+      console.log(this.initData)
       // this.$showAxiosLoading(true)
       if (this.initData) {
         this.allContentsList = this.initData.content
@@ -2272,7 +2284,7 @@ export default {
       confirmPopShowYn: false,
       confirmType: 'timeout',
       axiosQueue: [],
-      canUpLoadYn: true,
+      canUpLoadYn: false,
       upOffSetInt: 0,
       computedYn: true,
       resetMemoYn: false,

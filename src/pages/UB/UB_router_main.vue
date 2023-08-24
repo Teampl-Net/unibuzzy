@@ -495,7 +495,7 @@ export default {
             await this.getTownCabinetList(teamKey)
           }
           initData.cabinetKeyListStr = this.mCabKeyListStr
-          initData.contentsList = await this.getMyContentsList(20, null, !nonLoadingYn)
+          // initData.contentsList = await this.getMyContentsList(20, null, !nonLoadingYn)
         } else {
           initData.contentsList = result.data.contentsListPage
         }
@@ -506,6 +506,7 @@ export default {
       }
       chanMainParam.initData = initData
       this.mChanInfo = chanMainParam
+      this.mChanInfo.initData = initData
       if (initData.teamMenuList) {
         this.mChanInfo.boardList = initData.teamMenuList
       } else {
@@ -662,7 +663,7 @@ export default {
     async openPage (params) {
       if (params.targetType === 'chanDetail') {
         if (this.$route.path === '/') {
-          await new Promise((resolve) => setTimeout(resolve, 1500))
+          /* await new Promise((resolve) => setTimeout(resolve, 1500)) */
         }
         await this.goChanDetail(params)
         return
@@ -677,7 +678,7 @@ export default {
         this.goMyPage(params)
       } else if (params.targetType === 'boardMain') {
         if (this.$route.path === '/') {
-          await new Promise((resolve) => setTimeout(resolve, 1500))
+          /* await new Promise((resolve) => setTimeout(resolve, 1500)) */
         }
         this.goBoardDetail(params)
         this.hideMenu()

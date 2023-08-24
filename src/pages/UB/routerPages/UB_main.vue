@@ -158,10 +158,10 @@ export default {
       } else {
         this.$emit('changePageHeader', 'Campus')
       }
-      this.$emit('enterCloudLoading', false)
+      /* this.$emit('enterCloudLoading', false)
       setTimeout(() => {
         this.$emit('showCloudLoading', false)
-      }, 1000)
+      }, 500) */
     })
 
     // if (this.pCampusTownInfo) {
@@ -268,7 +268,8 @@ export default {
       this.mSelectSchoolPopShowYn = false
     },
     async goTown (chanEle) {
-      this.$emit('showCloudLoading', true, false)
+      this.$emit('showCloudLoading', true, true)
+      this.$emit('enterCloudLoading', true)
       var param = {
         user: {
           userKey: this.GE_USER.userKey,
@@ -280,8 +281,22 @@ export default {
         url: '/sUniB/tp.saveUser',
         param: param
       }, true)
-      this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
-      window.location.reload()
+      // this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
+      this.getMainBoard().then(res => {
+        this.createMaskingAreaImg()
+        this.innerWidth = window.innerWidth
+        this.innerHeight = window.innerHeight
+        if (this.mBdAreaList && this.mBdAreaList[0] && this.mBdAreaList[0].bdList && this.mBdAreaList[0].bdList[0]) {
+          this.$emit('changePageHeader', this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext))
+        } else {
+          this.$emit('changePageHeader', 'Campus')
+        }
+        this.$emit('enterCloudLoading', false)
+        setTimeout(() => {
+          this.$emit('showCloudLoading', false)
+        }, 800)
+      })
+      this.mSelectSchoolPopShowYn = false
       // this.$router.go(0)
     },
     async openAreaInfoPop (area) {
@@ -553,7 +568,7 @@ export default {
           targetImage.src = area.imgLink
         }
       }
-      this.mLoadingYn = false
+      // this.mLoadingYn = false
     },
     createMaskingBuildingImg (area) {
       const bdList = area.buildingList
@@ -593,6 +608,8 @@ export default {
         }
         const targetImage = new Image()
         targetImage.src = bd.imgLink
+        // eslint-disable-next-line no-unused-vars
+        const this_ = this
         targetImage.onload = function () {
           let newWidth = bd.w
           let newHeight = bd.h
@@ -631,10 +648,12 @@ export default {
                 } else {
                   bd.top = i + area.top - bd.h / 3
                 }
-                console.log('bd.top', bd.top)
                 break
                 // console.log('foundfoundfound', bd.top)
                 // break
+              }
+              if (i === area.h - 1) {
+                this_.mLoadingYn = false
               }
             }
           }
@@ -759,6 +778,14 @@ export default {
     /* locale (val) {
       this.$i18n.locale = val
     }, */
+    mLoadingYn (val) {
+      if (!val) {
+        this.$emit('enterCloudLoading', false)
+        setTimeout(() => {
+          this.$emit('showCloudLoading', false)
+        }, 800)
+      }
+    },
     pageUpdate (value, old) {
       var history = this.historyStack
       console.log(history)

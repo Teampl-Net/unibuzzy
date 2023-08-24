@@ -255,6 +255,7 @@ export default {
       if (this.mCanLoadYn && this.mEndListYn === false) {
         this.mCanLoadYn = false
         try {
+          // alert(true)
           var resultList = await this.getMyContentsList(null, null, false)
           this.setContsList(resultList)
         } catch (e) {

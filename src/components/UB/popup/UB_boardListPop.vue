@@ -62,6 +62,9 @@
                 <gContentsBox  :pUnknownYn="false" ref="myContentsBox"  @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
                 <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 13 ?  index === this.GE_DISP_CONTS_LIST.length - 13 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
             </template>
+            <template v-if="!GE_DISP_CONTS_LIST">
+                <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
+            </template>
         </div>
         <div style="height: 50px; padding: 10px 0; display: flex; justify-content: flex-end;">
           <gBtnSmall @click="goChannelMain(this.pAreaInfo)" btnTitle="Go Channel" class="fr" />
@@ -75,10 +78,12 @@
 <script>
 import searchResult from '@/components/unit/Tal_searchResult.vue'
 import findContentsList from '@/components/popup/common/D_findContentsList.vue'
+import SkeletonBox from '@/components/pageComponents/push/D_contentsSkeleton'
 export default {
   components: {
     findContentsList,
-    searchResult
+    searchResult,
+    SkeletonBox
   },
   props: {
     pClosePop: Function,
@@ -96,13 +101,14 @@ export default {
       resultSearchKeyList: [],
       mCanLoadYn: true,
       mEndListYn: false,
-      mContsList: [],
+      mContsList: null,
       mPageSize: 20,
       mOffsetInt: 0,
       mFindPopShowYn: false,
       mMemberTypeList: [],
       selectMemberObj: {},
-      mSaveFollowerParam: {}
+      mSaveFollowerParam: {},
+      emptyYn: false
     }
   },
   created () {
@@ -436,6 +442,7 @@ export default {
       var contentDetail */
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       // this.endListSetFunc(resultList)
+      if (!this.mContsList) this.mContsList = []
       if (this.mContsList.length > 0) {
         newArr = [
           ...this.mContsList,
@@ -570,6 +577,7 @@ export default {
         var chanDetail = null
         var dataList = null
         var i = 0
+        if (!this.mContsList) return null
         if (!this.mContsList.length === 0) return []
         for (i = 0; i < this.mContsList.length; i++) {
           idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mContsList[i].creTeamKey)
@@ -591,7 +599,11 @@ export default {
         console.log(error)
       }
       console.log(returnContsList)
-      return this.replaceArr(returnContsList)
+      if (this.returnContsList) {
+        return this.replaceArr(returnContsList)
+      } else {
+        return returnContsList
+      }
     }
   },
   watch: {

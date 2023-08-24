@@ -298,7 +298,7 @@
         @openImgPop="openImgPop"
         @goScroll="scrollOn"
         :pBoardList="mChanInfo.boardList"
-        :initData="this.mChanInfo.initData.contentsList"
+        :initData="this.mChanInfo.initData.contentsListPage"
         @cMemoEditYn="changeMemoEditYn"
         :targetContents="{
           targetContentsKey: mChanInfo.targetContentsKey,
@@ -500,6 +500,10 @@ export default {
     //   unknownLoginPop
   },
   created () {
+    this.$emit('enterCloudLoading', false)
+    setTimeout(() => {
+      this.$emit('showCloudLoading', false)
+    }, 800)
     if (
       this.propParams &&
       this.propParams.targetType === 'chanDetail' &&
@@ -577,11 +581,6 @@ export default {
     } else {
       this.getChanMain()
     }
-
-    this.$emit('enterCloudLoading', false)
-    setTimeout(() => {
-      this.$emit('showCloudLoading', false)
-    }, 1000)
 
     if (!this.selectMemberObj) {
       this.getMemberTypeList()
