@@ -80,7 +80,7 @@
     </div>
   </div>
 </div>
-<div v-else-if="mLoadYn && $appType === 'UB' && $route.path === `/chan/${CHANNEL_DETAIL.teamKey}/${parentYn}`">
+<div v-else-if="mLoadYn && $appType === 'UB' && $route.path === `/chan/${CHANNEL_DETAIL.teamKey}`">
   <div class="popUpBackgroundGray" @click="goNo"></div>
   <div class="channelMenuWrap showModal-enter " :class="{'showModal-leave': mCloseEventYn === true  }" >
 
@@ -127,19 +127,13 @@ import menuBoardList from './D_boardContentsList.vue'
 export default {
   props: {
     propData: {},
-    propChanAlimListTeamKey: {},
     pPopId: {}
   },
   created () {
-    console.log('this.propChanAlimListTeamKey')
-    console.log(this.propChanAlimListTeamKey)
-    // if (this.propChanAlimListTeamKey) {
-    //   if (this.propChanAlimListTeamKey.targetKey) {
-    //     this.mChanAlimListTeamKey = JSON.parse(JSON.stringify(this.propChanAlimListTeamKey))
-    //   }
-    // }
-    if (this.propChanAlimListTeamKey) {
-      this.mChanAlimListTeamKey = JSON.parse(JSON.stringify(this.propChanAlimListTeamKey))
+    if (this.propData) {
+      if (this.propData.targetKey) {
+        this.mChanAlimListTeamKey = JSON.parse(JSON.stringify(this.propData.targetKey))
+      }
     }
     this.readyFunction()
     this.getParentYn()
@@ -163,10 +157,6 @@ export default {
   },
   components: { addressBookList, menuBoardList },
   methods: {
-    getParentYn () {
-      var teamKey = this.CHANNEL_DETAIL.targetKey
-      this.parentYn = this.GE_USER.myTeamKey === teamKey ? 1 : 0
-    },
     readyFunction () {
       var history = this.$store.getters['D_HISTORY/hStack']
       this.writePopId = this.$setParentsId(this.pPopId, 'chanMenu' + this.mChanAlimListTeamKey)
@@ -190,10 +180,6 @@ export default {
           }
         }
       }
-
-      // if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn) {
-      //   this.mConvenienceFuncList = [{ title: this.$t('CHAN_MENU_WRITE_POST'), targetType: 'writeBoard' }]
-      // }
     },
     /** 편리기능에 있는 버튼 클릭 함수 입니다.  */
     async convenienceFunc (targetType) {

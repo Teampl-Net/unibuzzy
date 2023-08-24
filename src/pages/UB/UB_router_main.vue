@@ -28,7 +28,7 @@
     <editMyChanMenu style="z-index: 999999;" v-if="mPopType === 'myChanMenuEdit'" :pClosePop="closeWritePop" :propData="mPopParams" />
     <editBookListPop v-if="mPopType === 'editBookList'" :propData="mPopParams" @closeXPop="closeBookListPop" />
     <transition name="show_right">
-      <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propChanAlimListTeamKey="mChanInfo.targetKey" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
+      <chanMenu :pPopId="mPopId" ref="chanMenuCompo" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
     </transition>
     <gCloudLoading v-if="mCloudLoadingShowYn" :pEnterCloudsYn="mEnterCloudsYn" style="position: absolute; top: 0; left: 0" :pCloudLeftClass="mLeftCloudClass" :pCloudRightClass="mRightCloudClass"  />
     <div :class="{ myPageBgColor : mMyPageBgColorYn}"  style="height: 100%;overflow: hidden; width:100%;" >
