@@ -32,7 +32,6 @@ export default {
   },
   mounted () {
     this.$addHistoryStack('chanMain')
-    console.log('pChanInfo', this.pChanInfo)
   },
   beforeUnmount () {
     this.$checkDeleteHistory('chanMain')
@@ -56,18 +55,14 @@ export default {
     },
     pChanInfo: {
       immediate: true,
-      handler (newVal, oldVal) {
-        if (!newVal) return
-        if (newVal.initData && newVal.initData.team) {
-          console.log('val.initData', newVal.initData)
-          if (newVal.initData.team.content['0'].blackYn === 1) {
+      handler (val) {
+        if (!val) return
+        if (val.initData && val.initData.team) {
+          console.log('val.initData', val.initData)
+          if (val.initData.team.content['0'].blackYn === 1) {
             this.mBlackYn = true
           } else {
             this.mBlackYn = false
-          }
-          if (newVal !== oldVal) {
-            // location.reload()
-            this.refreshContent()
           }
         }
       },
@@ -77,9 +72,6 @@ export default {
   methods: {
     hasHistory () {
       return window.history.length > 1
-    },
-    refreshContent () {
-      this.$forceUpdate()
     },
     async goMain () {
       var history = this.$store.getters['D_HISTORY/hStack']
