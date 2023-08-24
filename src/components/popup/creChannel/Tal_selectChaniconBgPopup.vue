@@ -39,7 +39,7 @@
             <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
               <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
                 <div @click="imgClickToInput" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 250px; max-height: 250px;" ref="selectImgPopRef" class="cropperImgArea">
-                  <img v-if="changeImgYn = true" id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
+                  <img v-if="changeImgYn = true" id="profileImg" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
                 </div>
                 <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left; position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
                     <input class="formImageFile" style="width: 100%; float: left;" type="file" :title ="$t('COMMON_BTN_SELECTED')" accept="image/jpeg, image/png, image/jpg" ref="selectFileChangeIconNBG" id="input-file" @change="handleImageUpload"/>
@@ -385,13 +385,29 @@ export default {
               viewMode: '1',
               dragMode: 'move',
               preview: '.cropperPreviewImg',
-              aspectRatio: (this.opentype === 'bgPop' ? 16 / 9 : 1 / 1),
+              aspectRatio: (this.opentype === 'bgPop' ? 2 / 3 : 1 / 1),
               // aspectRatio: 16 / 9,
               cropBoxResizable: true,
               wheelZoomRatio: 0.1,
               movable: false
             })
-
+            if (this.opentype === 'bgPop') {
+              this.cropper.replace(this.previewImgUrl)
+              const intervalHandler = setInterval(() => {
+                const imgBox = document.querySelector('.cropper-face')
+                if (imgBox) {
+                  const div = document.createElement('div')
+                  div.style.height = '80%'
+                  div.style.marginTop = '30%'
+                  div.style.background = 'rgba(50, 50, 80, 0.7)'
+                  div.style.pointerEvents = 'none'
+                  imgBox.style.opacity = '1'
+                  imgBox.style.background = 'rgba(255, 255, 255, 0.1)'
+                  imgBox.appendChild(div)
+                  clearInterval(intervalHandler)
+                }
+              }, 100)
+            }
             this.cropper.replace(this.previewImgUrl)
           } catch (error) {
             console.log(error)
@@ -490,8 +506,8 @@ export default {
       }
     },
     async crop () {
-      var cropImg = this.cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096, imageSmoothingEnabled: false, imageSmoothingQuality: 'high' })
-      var dataURL = cropImg.toDataURL('image/png', 0.8)
+      var cropImg = this.cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096, imageSmoothingEnabled: false })
+      var dataURL = cropImg.toDataURL('image/jpeg', 0.8)
       // const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
       const decodImg = atob(dataURL.split(',')[1])
       const array = []
@@ -629,8 +645,8 @@ export default {
 }
 .cropperImgArea img{
   display: block;
+  object-fit: contain; width: 100%; height: 100%;
   /* This rule is very important, please don't ignore this */
-  max-width: 100%
 }
 
 .popupTop{

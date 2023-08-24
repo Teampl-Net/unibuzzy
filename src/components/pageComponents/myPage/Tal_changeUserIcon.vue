@@ -274,7 +274,7 @@ export default {
     },
     async crop () {
       var cropImg = this.cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096, imageSmoothingEnabled: false, imageSmoothingQuality: 'high' })
-      var dataURL = cropImg.toDataURL('image/png', 0.8)
+      var dataURL = cropImg.toDataURL('image/jpeg', 0.8)
       // const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
       const decodImg = atob(dataURL.split(',')[1])
       const array = []
