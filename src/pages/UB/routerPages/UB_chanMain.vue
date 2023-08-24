@@ -192,7 +192,8 @@ export default {
       }
       if (this.CHANNEL_DETAIL) {
         if (initData.shortLink) {
-          this.CHANNEL_DETAIL.copyTextStr = initData.shortLink.shortLink
+          const initLink = JSON.parse(initData.shortLink.shortLink)
+          this.CHANNEL_DETAIL.copyTextStr = initLink.shortLink
           this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
           this.mMakeDeepLinkIng = false
         } else {
@@ -201,7 +202,13 @@ export default {
             const title = '[uniBuzzy]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
             const message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
             const this_ = this
-            this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
+            // 각 타운의 부모채널인지 아닌지 확인
+            const parent = this.CHANNEL_DETAIL.teamKey === this.GE_USER.myTeamKey ? 1 : 0
+            const ketSet = {
+              teamKey: this.CHANNEL_DETAIL.teamKey,
+              parentYn: parent
+            }
+            this.$makeShareLink(ketSet, 'chanDetail', message, title).then(res => {
               this.CHANNEL_DETAIL.copyTextStr = res
               this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
               this_.mMakeDeepLinkIng = false
@@ -232,7 +239,6 @@ export default {
     }
   },
   mounted () {
-    console.log('Channel Main - Channel Detail', this.CHANNEL_DETAIL)
     this.$nextTick(() => {
       this.calcSummaryWrapH()
       this.mChanMainScrollWrap = this.$refs.chanScrollWrap
@@ -574,7 +580,8 @@ export default {
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
         }
         initData = result.data
-        if (this.$route.params.priority === '1') {
+        const parentYn = this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey) ? 1 : 0
+        if (parentYn === 1) {
           await this.getTownCabinetList()
           initData.contentsList = await this.getMyContentsList(20, null, true)
           initData.cabinetKeyListStr = this.mCabKeyListStr
@@ -592,6 +599,12 @@ export default {
         this.mChanInfo.boardList = this.mChanInfo.initData.teamMenuList
       } else {
         await this.getTeamMenuList(encodedKey)
+      }
+      if (initData.shortLink) {
+        const initLink = JSON.parse(initData.shortLink.shortLink)
+        this.CHANNEL_DETAIL.copyTextStr = initLink.shortLink
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+        this.mMakeDeepLinkIng = false
       }
       this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
       console.log('this.mChanInfothis.mChanInfothis.mChanInfo', this.mChanInfo)

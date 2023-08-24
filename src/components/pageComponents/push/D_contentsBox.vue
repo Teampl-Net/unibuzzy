@@ -1173,7 +1173,16 @@ export default {
       }
     },
     async contentsSharePop () {
-      var link = await this.$makeShareLink(this.CONT_DETAIL.contentsKey, 'contentsDetail', this.CONT_DETAIL.bodyFullStr, this.CONT_DETAIL.title)
+      const keySet = {
+        contentsKey: this.CONT_DETAIL.contentsKey,
+        teamKey: this.CONT_DETAIL.creTeamKey,
+        cabinetKey: this.CONT_DETAIL.cabinetKey
+      }
+      if (!keySet.contentsKey || !keySet.teamKey || !keySet.cabinetKey) {
+        this.$showToastPop(this.$t('COMMON_MSG_UNKWON'))
+        return
+      }
+      var link = await this.$makeShareLink(keySet, 'contentsDetail', this.CONT_DETAIL.bodyFullStr, this.CONT_DETAIL.title)
       var shareItem = { title: this.$t('COMMON_NAME_APP'), text: this.CONT_DETAIL.title, url: link }
       if (navigator.share) {
         navigator.share(shareItem)

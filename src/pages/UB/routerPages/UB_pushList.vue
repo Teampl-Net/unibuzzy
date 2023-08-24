@@ -469,7 +469,8 @@ export default {
       return this.replaceArr(returnBoardList)
     },
     GE_DISP_ALL_LIST () {
-      if (this.$route.params.priority === '1') {
+      const parentYn = this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey) ? 1 : 0
+      if (parentYn === 1) {
         return this.replaceArr(this.allContentsList)
       }
       var idx1, idx2
@@ -1295,7 +1296,6 @@ export default {
           // param.allYn = true
           // param.ownUserKey = this.GE_USER.userKey
         }
-
         if (this.mSelectedCabinetKey !== -1) {
           param.joskindId = 'BOAR'
           param.cabinetKey = this.mSelectedCabinetKey
@@ -1305,7 +1305,8 @@ export default {
         if (loadingYn) {
           nonLoading = false
         }
-        if (this.$route.params.priority === '1') {
+        const parentYn = this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey) ? 1 : 0
+        if (parentYn === 1) {
           param.creTeamKey = null
         }
         var resultList = null

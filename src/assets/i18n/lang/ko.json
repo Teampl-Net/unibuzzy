@@ -159,7 +159,7 @@
     "COMMON_MSG_BLOCK_BOAR": "해당 게시글을 차단하시겠습니까?",
     "COMMON_MSG_BEFORE_REPORT": "해당 유저를 신고하시겠습니까?",
     "COMMON_MSG_NO_LOGIN": "로그인 후 이용해주세요.",
-    "COMM_MSG_CANCEL_FAIL": "취고하지 못했습니다. 앱을 다시 실행 후 시도해주세요.",
+    "COMM_MSG_CANCEL_FAIL": "취소하지 못했습니다. 앱을 다시 실행 후 시도해주세요.",
     "COMM_MSG_CANCLE_TIMEOUT": "3분이 지나 취소가 불가능합니다.",
     "COMM_MSG_MEMB_NEED": "해당 채널에 멤버가 아닙니다. 멤버로 신청 후 시도해주세요!",
     "COMM_MSG_CHAN_NONE": "채널이 확인되지 않습니다. 나중에 다시 시도해주세요!",

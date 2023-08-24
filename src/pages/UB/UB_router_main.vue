@@ -531,7 +531,7 @@ export default {
       // if (!teamKey && detailValue.creTeamKey) {
       //   encodedTeamKey = detailValue.creTeamKey
       // }
-      this.$router.push(`/chan/${chanMainParam.teamKey}/${parentYn}`)
+      this.$router.push(`/chan/${chanMainParam.teamKey}`)
       // this.showCloudLoading(false, 1750)
     },
     async getMyContentsList (pageSize, offsetInput, loadingYn, searchParam) {

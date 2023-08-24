@@ -474,9 +474,27 @@ export const commonMethods = {
     debugger
     var paramMap = new Map()
     paramMap.set('pageType', type)
-    paramMap.set('targetKey', key)
+    if (key.contentsKey) {
+      paramMap.set('contentsKey', key.contentsKey)
+    }
+    if (key.teamKey) {
+      paramMap.set('teamKey', key.teamKey)
+    }
+    if (key.cabinetKey) {
+      paramMap.set('cabinetKey', key.cabinetKey)
+    }
+    if (key.parentYn) {
+      paramMap.set('parentYn', key.parentYn)
+    }
     if (message) {
-      paramMap.set('message', message)
+      let extractMessage = commonMethods.setBodyLength(message)
+      extractMessage = extractMessage.replace(/(<([^>]+)>)/ig, '')
+      extractMessage = extractMessage.replace('x -->', '')
+      if (extractMessage === '') {
+        paramMap.set('message', 'uniBuzzy, The easiest way to stay updated-NOTI')
+      } else {
+        paramMap.set('message', extractMessage)
+      }
     } else {
       paramMap.set('message', 'uniBuzzy, The easiest way to stay updated-NOTI')
     }

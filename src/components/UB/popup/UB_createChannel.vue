@@ -354,13 +354,15 @@ export default {
     async setParam () {
       var gParam = {}
       try {
-        if (this.chanDetail !== {}) {
+        if (this.chanDetail.modiYn !== false) {
           gParam.bdKey = this.pBdKey
           gParam.teamKey = this.chanDetail.targetKey
-          gParam.targetKey = this.CHANNEL_DETAIL.targetKey
           gParam.bdIconPath = this.pSelectedBuilding.selectPath
           if (this.CHANNEL_DETAIL) {
             gParam.reqKey = this.CHANNEL_DETAIL.reqKey
+            gParam.targetKey = this.CHANNEL_DETAIL.targetKey
+          } else {
+            gParam.targetKey = this.chanDetail.targetKey
           }
         }
 
@@ -432,7 +434,7 @@ export default {
           this.mCreatedSuccessPopYn = true
           params.targetType = 'chanDetail'
           params.popHeaderText = 'EN$^$' + this.mInputChannelName
-          if (this.CHANNEL_DETAIL.modiYn !== undefined && this.CHANNEL_DETAIL.modiYn !== null && this.CHANNEL_DETAIL.modiYn !== '' && this.CHANNEL_DETAIL.modiYn === true) {
+          if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.modiYn !== undefined && this.CHANNEL_DETAIL.modiYn !== null && this.CHANNEL_DETAIL.modiYn !== '' && this.CHANNEL_DETAIL.modiYn === true) {
             this.changeTeamInfo(gParam)
             params.targetKey = this.CHANNEL_DETAIL.targetKey
             params.modiYn = true
@@ -444,7 +446,7 @@ export default {
             this.newChannelInPool(result.teamKey)
           }
           var teamKey = null
-          if (this.CHANNEL_DETAIL.targetKey === undefined || this.CHANNEL_DETAIL.targetKey === null || this.CHANNEL_DETAIL.targetKey === '') {
+          if (!this.CHANNEL_DETAIL || this.CHANNEL_DETAIL.targetKey === undefined || this.CHANNEL_DETAIL.targetKey === null || this.CHANNEL_DETAIL.targetKey === '') {
             teamKey = result.teamKey
           } else {
             teamKey = this.CHANNEL_DETAIL.targetKey

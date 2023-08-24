@@ -252,13 +252,13 @@ export default {
 								return
 							} else {
 								this.sendMail(this.memEmail)
-							}                
+							}
 						} else if (type === 'PHON') {
 							if (this.memPhone === '등록된 번호가 없습니다.') {
 								return false
 							} else {
 								this.callPhone(this.memPhone)
-							}                
+							}
 						} else if (type === 'TEXT') {
 							if (this.memPhone === '등록된 번호가 없습니다.') {
 								return
