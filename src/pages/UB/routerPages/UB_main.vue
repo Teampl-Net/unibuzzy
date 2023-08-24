@@ -124,7 +124,6 @@ export default {
     }
   },
   async created () {
-
     // localStorage.clear()
     // onMessage('REQ', 'test', null)
     // this.findAllDrawn()
@@ -158,7 +157,6 @@ export default {
         this.$emit('changePageHeader', 'Campus')
       }
       this.mLoadingYn = false
-			console.log('this.mBdAreaList', this.mBdAreaList)
     })
     // if (this.pCampusTownInfo) {
     //   // this.village = this.pCampusTownInfo
