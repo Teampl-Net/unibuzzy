@@ -154,7 +154,7 @@
             </p>
             <div v-if="$route.path === '/chanList'" class="fr">
               <!-- <p v-if="mFollowYn" @click.stop="preventDefault" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p> -->
-              <p v-if="(chanElement.followerKey && chanElement.followerKey !== null) || chanElement.D_CHAN_AUTH.followerKey" @click.stop="preventDefault" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
+              <p v-if="(chanElement && chanElement.followerKey && chanElement.followerKey !== null) || (chanElement && chanElement.D_CHAN_AUTH && chanElement.D_CHAN_AUTH.followerKey)" @click.stop="preventDefault" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
               <p v-else @click.stop="saveFollower" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;"> + Follow </p>
             </div>
         </div>
