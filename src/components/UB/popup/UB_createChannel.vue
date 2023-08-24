@@ -359,7 +359,7 @@ export default {
           gParam.teamKey = this.chanDetail.targetKey
           gParam.bdIconPath = this.pSelectedBuilding.selectPath
           if (this.CHANNEL_DETAIL) {
-            gParam.reqKey = this.CHANNEL_DETAIL.reqKey
+            gParam.reqKey = this.chanDetail.reqKey
             gParam.targetKey = this.CHANNEL_DETAIL.targetKey
           } else {
             gParam.targetKey = this.chanDetail.targetKey

@@ -189,7 +189,7 @@ export default {
     pSelectedYn: Boolean
   },
   created () {
-    // console.log('chanElement', this.chanElement)
+    console.log('chanElement', this.chanElement)
     /* if (this.pPopTitle !== 'townList') {
       this.getMemberTypeList()
     } */
@@ -245,6 +245,8 @@ export default {
         } else if (this.chanElement.D_CHAN_AUTH) {
           if (this.chanElement.D_CHAN_AUTH.followerKey > 0) {
             this.mFollowYn = true
+          } else {
+            this.mFollowYn = false
           }
         } else {
           this.mFollowYn = false

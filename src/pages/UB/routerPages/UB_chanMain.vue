@@ -23,7 +23,9 @@
           <!-- <img src="../../../assets/images/channel/chanBgImg.jpeg" style="width:100%; height: calc(100% + 50px); position: absolute; left: 0; top: -50px;" /> -->
           <div class="w100P" style="height: calc(100% + 50px); position: absolute; left: 0; top: -50px; background: linear-gradient(to bottom, rgba(20, 20, 20, 0) 40%,rgba(20, 20, 20, 0.25) 50%,rgba(20, 20, 20, 0.5) 70%,rgba(20, 20, 20, 0.6) 90%,rgba(20, 20, 20, 0.8) 100%);"></div>
           <!-- <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ propParams.areaInfo.bdAreaDesc }} > {{ $changeText(CHANNEL_DETAIL.nameMtext) }}</div> -->
-          <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{mChanInfo.initData.team.cateItemMtext ? $changeText(CHANNEL_DETAIL.nameMtext) > $changeText(mChanInfo.initData.team.cateItemMtext) : $changeText(CHANNEL_DETAIL.nameMtext)}}</div>
+          <div class="font22 fontBold textLeft nameTitleBig" style="width:58%; position: absolute; left: 125px;bottom: 5px; color: white;">
+            <p style="width:90%;">{{mChanInfo.initData.team.cateItemMtext ? $changeText(CHANNEL_DETAIL.nameMtext) > $changeText(mChanInfo.initData.team.cateItemMtext) : $changeText(CHANNEL_DETAIL.nameMtext)}}</p>
+          </div>
           <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
           <!--follow-->
           <gBtnSmall style="line-height:20px; position: absolute; right: 5px; bottom: 5px; border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="cursorP fl w-100P fontBold font14" :btnTitle="`+ Follow `" />

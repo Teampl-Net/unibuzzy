@@ -9,7 +9,7 @@
     </transition>
     <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
-      <areaInfoPop :pBdClickedYn="mBdClickedYn" @openImgPop="openImgPop" :chanDetail="{ modiYn: false }" :pBdAreaList="mBdAreaList" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
+      <areaInfoPop :pBdClickedYn="mBdClickedYn" :chanDetail="{ modiYn: false }" :pBdAreaList="mBdAreaList" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
     </transition>
     <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
       <div class="ballon">Go to other town?</div>
@@ -124,6 +124,7 @@ export default {
     }
   },
   async created () {
+
     // localStorage.clear()
     // onMessage('REQ', 'test', null)
     // this.findAllDrawn()
@@ -157,6 +158,7 @@ export default {
         this.$emit('changePageHeader', 'Campus')
       }
       this.mLoadingYn = false
+			console.log('this.mBdAreaList', this.mBdAreaList)
     })
     // if (this.pCampusTownInfo) {
     //   // this.village = this.pCampusTownInfo
