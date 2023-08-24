@@ -103,7 +103,7 @@
             <img @click="searchClear()" src="../../assets/images/common/icon_back.png" class="fl img-w12 cursorP mright-1 mleft-05" alt="">
             <div class="fl w100P mright-1" style="width:calc(100% - 90px); position: relative;">
               <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" />
-              <img  @click="setSearchList()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
+              <img  @click="setSearchList()" class="searchPageIconWich cursorP img-w20" style="top: 0.5rem;" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
               <!-- <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt=""> -->
             </div>
             <img class="fr cursorP" v-if="mActiveSearch === 'CONT'" @click="mActiveSearch === 'CHAN' ? this.mChanFindPopShowYn = true : this.mFindPopShowYn = true"  style="width: 30px;" src="../../assets/images/common/common_filter.svg" alt="">
@@ -825,6 +825,9 @@ export default {
     },
     async deleteSearchKey (search) {
       var index = this.mSearchList.findIndex((item) => item.searchType === search.searchType)
+      if (search.searchType === '제목') {
+        this.mInputText = ''
+      }
       if (index !== -1) {
         this.mSearchList.splice(index, 1)
       }
@@ -1172,7 +1175,7 @@ export default {
     float: left;
     border: 1px solid #cccccc;
   }
-  .searchPageIconWich{ position: absolute; top:1rem; left: 8px;}
+  .searchPageIconWich{ position: absolute; top: 1rem; left: 8px;}
   .chanListHeader {
     width: 100%;
     will-change: transform;
