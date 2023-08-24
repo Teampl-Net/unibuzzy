@@ -42,7 +42,7 @@
         <p class="fl font16 w100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType === 'BOAR'">{{ $t('COMM_BTN_EDIT_POST') }}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('writeBoard')" v-if="contentType === 'ALIM' " :style="contentType === 'ALIM' ? 'border-top:none;' : '' " >{{ $t('COMMON_BTN_CONVERT_NOTI_TO_POST') }}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('writeAlim')" v-if="!GE_USER.unknownYn && contentType === 'BOAR'" >{{ $t('COMMON_BTN_CONVERT_POST_TO_NOTI') }}</p>
-        <p class="fl font16 w100P commonColor rowText" @click="emit('delete')" v-if="contentOwner || contentType === 'ALIM'" >{{contentType === 'ALIM' ? $t('COMMON_BTN_DELTE_ALIM_FOR_ME'): $t('COMMON_BTN_DELETE_POST')}}</p>
+        <p class="fl font16 w100P commonColor rowText" @click="emit('delete')" v-if="contentOwner || contentType === 'ALIM'">{{ this.contentType === 'MEMO' ? $t('COMMON_BTN_DELETE_COMMENT') : $t('COMMON_BTN_DELETE_POST')}}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('textCopy')" >{{ $t('COMMON_BTN_COPY_CLIPBOARD') }}</p>
         <!-- <p class="fl font16 w100P commonColor rowText" @click="emit('subScribe')" >이 {{contentText}}에 대한 푸쉬알림 {{contentsInfo.subsYn? '끄기' : '켜기'}}</p> -->
         <!-- <p class="fl font16 w100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" @click="emit('alimBloc')" v-if="contentOwner && contentType === 'ALIM'" >{{contentText}} 삭제</p> -->
@@ -107,7 +107,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.contentsInfo)
+    console.log('콘텐츠인포', this.contentsInfo)
     if (this.contentType === 'ALIM') {
       this.contentText = '알림'
     } else if (this.contentType === 'BOAR') {

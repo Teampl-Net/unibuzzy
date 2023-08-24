@@ -1,6 +1,6 @@
 <template>
   <div @click="closePop()" style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 20; top: 0; left: 0 " />
-  <div class="" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px; left: 10%; top: 20%; background: #fff; z-index: 21; position: fixed;">
+  <div class="" style="width: 80%; word-break: break-all; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); border-radius: 6px 6px 6px 6px; left: 10%; top: 50%; transform:translateY(-50%); background: #fff; z-index: 21; position: fixed;">
     <div style=" margin: 15px; float: left; width: calc(100% - 30px); position: relative; " >
       <p class="textLeft font16 fontBold mbottom-1">{{ this.$t('COMM_TITLE_FILE_DOWNL') }}</p>
       <img @click="closePop()" src="../../../../assets/images/common/grayXIcon.svg" class="cursorP" style="position: absolute; right: 5px; top: 0px;" alt="">

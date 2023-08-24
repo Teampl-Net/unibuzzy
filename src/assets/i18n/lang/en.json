@@ -75,6 +75,7 @@
     "COMM_BTN_REPLY_COMM": "reply",
     "COMMON_BTN_REPORT_COMMENT": "Report a comment",
     "COMMON_BTN_DELETE_POST": "Delete a post",
+    "COMMON_BTN_DELETE_COMMENT": "Delete a comment",
     "COMMON_BTN_MOVE_POST": "Move a post",
     "COMMON_BTN_COPY_POST": "Copy a post",
     "COMM_BTN_EDIT_POST": "Edit a post",

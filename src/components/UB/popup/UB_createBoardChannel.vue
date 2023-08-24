@@ -1,7 +1,10 @@
 <template>
   <seleciconBgPopup v-if="mSelectBuildingPop" :pSelectedBuilding="mSelectedBuilding" :selectBd="this.mSelectedBuilding" @no='mSelectBuildingPop=false' @makeParam='setIconOrBGData' :opentype="mSelectBuilding" :pClosePop="closeSelectBuildingPop"/>
   <div style="overflow-y:scroll; background-color:#fff; width: 100%; height: 100vh; float: left; position: absolute; z-index: 9998; left: 0; top: 0;" @click.stop="preventDefault">
-    <gPopHeader :headerTitle="`Create New...`" :pClosePop="pClosePop" />
+    <gPopHeader v-if="mShowBdOrChan==='C'" :headerTitle="`Create New Board`" :pClosePop="pClosePop" />
+    <gPopHeader v-else-if="mShowBdOrChan==='T'" :headerTitle="`Create New Channel`" :pClosePop="pClosePop" />
+    <gPopHeader v-else-if="!mShowBdOrChan && !mChannelModi" :headerTitle="`Create New...`" :pClosePop="pClosePop" />
+    <gPopHeader v-else-if="!mShowBdOrChan && mChannelModi === true" :headerTitle="`Modify Channel`" :pClosePop="pClosePop" />
     <div style="height:100%; overflow-y:scroll; background-color:#fff; display:flex; flex-direction:column;" class="createChanWrap" >
       <div class="createChanContentsWrap" style="">
       <!-- 빌딩 선택-->
@@ -24,16 +27,18 @@
       <!-- 게시판 생성일 때.-->
       <template v-if="(mShowBdOrChan==='C' || (!mShowBdOrChan && mSelectedTab === 0)) && !mChannelModi">
         <div style="padding:2rem 1rem;">
-          <p style="font-size:30px; padding-bottom:20px;">My Channel</p>
+          <p style="font-size:20px; padding-bottom:20px; color:#6768A7;">My Channel</p>
             <div style="width:100%; overflow-x:scroll;">
               <p v-if="mMyTeamList.length===0" style="padding:0 0 2rem;">It's empty.</p>
-              <ul v-else style="width:auto; overflow-x:scroll; display:flex; align-items:start; gap:30px;">
+              <ul v-else style="width:auto; overflow-x:scroll; display:flex; align-items:start; gap:20px; padding-left:0;">
                 <teamplate v-for="(team, index) in mMyTeamList.content" :key="index">
-                  <li @click="getSelectedChanIndex(index)" class="cursorP" style="">
-                    <div :class="{selectedChannel : mSelectedChanIndex===index}" style="width:100px; height:100px; border-radius:50%; border:3px solid #ccc;">
+                  <li @click="getSelectedChanIndex(index)" class="cursorP" style="width:80px; display:flex; align-items:center; flex-direction:column;">
+                    <div :class="{selectedChannel : mSelectedChanIndex===index}" style="width:80px; height:80px; border-radius:50%; border:3px solid #ccc;">
                       <img :src="team.logoPathMtext" class="w100P" />
                     </div>
-                    <p style="padding-top:5px;">{{ team ? $changeText(team.nameMtext) : '' }}</p>
+                    <div style="width:100%; overflow:hidden;">
+                      <p style="width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding-top:5px;">{{ team ? $changeText(team.nameMtext) : '' }}</p>
+                    </div>
                   </li>
                 </teamplate>
               </ul>
@@ -168,7 +173,7 @@ export default {
           replyYn: true, // 기본설정 익명x, 파일o, 댓글o
           picBgPath: this.selectedColor,
           itemList: [{ shareSeq: 0, shareType: 'V' }, { shareSeq: 0, shareType: 'W' }, { shareSeq: 0, shareType: 'R' }],
-          shareList: [{ shareSeq: 0, accessKind: 'F', accessKey: this.mMyTeamList[this.mSelectedChanIndex].teamKey }]
+          shareList: [{ shareSeq: 0, accessKind: 'F', accessKey: this.mMyTeamList.content[this.mSelectedChanIndex].teamKey }]
         }
       }
       var response = await this.$commonAxiosFunction({

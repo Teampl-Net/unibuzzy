@@ -26,9 +26,9 @@
           <div class="font22 fontBold textLeft nameTitleBig" style=" position: absolute; left: 125px;bottom: 5px; color: white;">{{mChanInfo.initData.team.cateItemMtext ? $changeText(CHANNEL_DETAIL.nameMtext) > $changeText(mChanInfo.initData.team.cateItemMtext) : $changeText(CHANNEL_DETAIL.nameMtext)}}</div>
           <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
           <!--follow-->
-          <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="fl w-100P fontBold font14" :btnTitle="$t('COMM_BTN_SUB')" />
+          <gBtnSmall style="line-height:20px; position: absolute; right: 5px; bottom: 5px; border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="cursorP fl w-100P fontBold font14" :btnTitle="`+ Follow `" />
           <!--following-->
-          <gBtnSmall style="position: absolute; right: 5px; bottom: 5px;" @click="changeFollowYn" class="fl w-100P fontBold font14" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="$t('COMM_BTN_UNSUB')" />
+          <gBtnSmall style="line-height:20px; position: absolute; right: 5px; bottom: 5px; cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl w-100P fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="`Following`" />
         </div>
 
         <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; min-height:130px; padding: 15px; box-sizing:border-box; word-break:break-all">
@@ -233,10 +233,6 @@ export default {
   },
   mounted () {
     console.log('Channel Main - Channel Detail', this.CHANNEL_DETAIL)
-    this.$emit('enterCloudLoading', false)
-    setTimeout(() => {
-      this.$emit('showCloudLoading', false)
-    }, 1000)
     this.$nextTick(() => {
       this.calcSummaryWrapH()
       this.mChanMainScrollWrap = this.$refs.chanScrollWrap
@@ -264,6 +260,11 @@ export default {
       }
       this.setWindowSize()
       window.addEventListener('resize', this.handleResize)
+
+      this.$emit('enterCloudLoading', false)
+      setTimeout(() => {
+        this.$emit('showCloudLoading', false)
+      }, 1000)
     })
   },
   updated () {

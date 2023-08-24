@@ -1,5 +1,12 @@
 <template>
-  <div class="w100P h100P" style="padding-bottom: 60px;" :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 50 )+ 'px'">
+  <div class="w100P h100P" style="padding-bottom: 120px;" :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 50 )+ 'px'">
+    <div class="w100P" style="padding-top:20px; padding-right:16px; padding-bottom:10px; text-align:right;">
+      <select v-model="showArray">
+        <option :value="undefined" hidden selected>Choose</option>
+        <option style="whith: 100%; height: 30px;" value="recent" class="font16">Recent</option>
+        <option style="whith: 100%; height: 30px;" value="popular" class="font16">Popular</option>
+      </select>
+    </div>
     <div style="width: 100%; height: 100%;  float: left; background: #fff; position: relative;">
 
       <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
@@ -8,7 +15,7 @@
       </div>
       <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
           <gEmpty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
-          <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
+          <template v-for="(chanEle, index) in getFilteredChannel()" :key="index">
             <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             <!-- <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @scrollMove="scrollMove" /> -->
             <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
@@ -63,7 +70,9 @@ export default {
       mEmptyYn: true,
       mLoadingYn: false,
       mAxiosQueue: [],
-      mSearchCateKey: 3
+      mSearchCateKey: 3,
+      showArray: 'popular',
+      mFilteredChannel: []
     }
   },
   props: {
@@ -396,6 +405,16 @@ export default {
       } else {
         this.mEndListYn = false
       }
+    },
+    getFilteredChannel () {
+      if (this.mChannelList) {
+        this.mFilteredChannel = this.mChannelList
+        if (this.showArray === 'popular') {
+          return this.mFilteredChannel.slice().sort((a, b) => b.followerCount - a.followerCount)
+        } else if (this.showArray === 'recent') {
+          return this.mFilteredChannel
+        }
+      }
     }
   },
   computed: {
@@ -424,6 +443,7 @@ export default {
         }
       }
       var returnData = this.mChannelList
+      console.log('filter ------ GE_DISP_TEAM_LIST', this.mChannelList)
       return returnData
     },
     historyStack () {

@@ -153,7 +153,7 @@
             }}
             </p>
             <div v-if="$route.path === '/chanList'" class="fr">
-              <p v-if="mFollowYn" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
+              <p v-if="mFollowYn" @click.stop="preventDefault" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
               <p v-else @click.stop="saveFollower" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;"> + Follow </p>
             </div>
         </div>
@@ -189,7 +189,7 @@ export default {
     pSelectedYn: Boolean
   },
   async created () {
-    console.log('chanElement', this.chanElement)
+    // console.log('chanElement', this.chanElement)
     /* if (this.pPopTitle !== 'townList') {
       this.getMemberTypeList()
     } */
@@ -208,6 +208,9 @@ export default {
     }
   },
   methods: {
+    preventDefault () {
+      return false
+    },
     showFollowYn () {
       if (this.chanElement) {
         if (this.chanElement.followerKey && this.chanElement.followerKey !== null) {

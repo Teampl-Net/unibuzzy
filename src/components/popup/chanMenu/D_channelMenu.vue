@@ -133,7 +133,14 @@ export default {
   created () {
     console.log('this.propChanAlimListTeamKey')
     console.log(this.propChanAlimListTeamKey)
-    if (this.propChanAlimListTeamKey) this.mChanAlimListTeamKey = JSON.parse(JSON.stringify(this.propChanAlimListTeamKey))
+    // if (this.propChanAlimListTeamKey) {
+    //   if (this.propChanAlimListTeamKey.targetKey) {
+    //     this.mChanAlimListTeamKey = JSON.parse(JSON.stringify(this.propChanAlimListTeamKey))
+    //   }
+    // }
+    if (this.propChanAlimListTeamKey) {
+      this.mChanAlimListTeamKey = JSON.parse(JSON.stringify(this.propChanAlimListTeamKey))
+    }
     this.readyFunction()
     this.getParentYn()
   },
@@ -176,9 +183,17 @@ export default {
       })
       console.log(this.CHANNEL_DETAIL)
 
-      if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn) {
-        this.mConvenienceFuncList = [{ title: this.$t('CHAN_MENU_WRITE_POST'), targetType: 'writeBoard' }]
+      if (this.CHANNEL_DETAIL) {
+        if (this.CHANNEL_DETAIL.D_CHAN_AUTH) {
+          if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn) {
+            this.mConvenienceFuncList = [{ title: this.$t('CHAN_MENU_WRITE_POST'), targetType: 'writeBoard' }]
+          }
+        }
       }
+
+      // if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn) {
+      //   this.mConvenienceFuncList = [{ title: this.$t('CHAN_MENU_WRITE_POST'), targetType: 'writeBoard' }]
+      // }
     },
     /** 편리기능에 있는 버튼 클릭 함수 입니다.  */
     async convenienceFunc (targetType) {

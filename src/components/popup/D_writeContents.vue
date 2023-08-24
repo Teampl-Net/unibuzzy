@@ -70,6 +70,7 @@
     "FORM_MSG_SUCCESS_EDIT": "Edited.",
     "FORM_MSG_FAIL_EDIT": "Failed to publish.",
     "FORM_MSG_SUCCESS_POST": "Sent.",
+    "FORM_MSG_SUCCESS_WRITE_POST": "Saved.",
     "FORM_MSG_FAIL_POST": "Failed to send."
   }
 }
@@ -941,7 +942,7 @@ export default {
         }
         // this.$showToastPop('게시되었습니다.')
         if (!this.modiYn) {
-          this.$showToastPop(this.$t('FORM_MSG_SUCCESS_POST'))
+          this.$showToastPop(this.$t('FORM_MSG_SUCCESS_WRITE_POST'))
         } else {
           this.$showToastPop(this.$t('FORM_MSG_SUCCESS_EDIT'))
         }
@@ -1064,7 +1065,7 @@ export default {
         var resultList = await this.$getContentsList(param)
         var detailData = resultList.content[0]
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
-        this.$showToastPop(this.$t('FORM_MSG_SUCCESS_POST'))
+        this.$showToastPop(this.$t('FORM_MSG_SUCCESS_WRITE_POST'))
       } catch (error) {
         this.$showToastPop(this.$t('FORM_MSG_FAIL_POST'))
         console.error(error)
