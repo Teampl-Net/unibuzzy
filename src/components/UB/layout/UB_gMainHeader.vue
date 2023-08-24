@@ -11,7 +11,7 @@
     <p v-if="$route.path === '/'" class="headerFont fontBold fl" style="color: #062bb5;" v-html="`${pRouterHeaderInfo}`"></p>
     <!-- <p v-else-if="$route.path === '/chanList'" class="headerFont fontBold fl" style="color: #062bb5;" >Channel</p> -->
     <p v-else class="headerFont fontBold fl" style="color: #062bb5;" v-html="pRouterHeaderInfo"></p>
-    <div @click="goLogList" class="cursorP" style="height: 44px; right: 50px; position: absolute; display: flex; align-items: center; justify-content: center;">
+    <div @click="goLogList" class="cursorP" style="height: 44px; right: 55px; position: absolute; display: flex; align-items: center; justify-content: center;">
       <img height=20 src="../../../assets/images/common/icon_bell.svg"/>
     </div>
     <div class="cursorP" @click="goFavList" style="height: 44px; position: absolute; right: 15px; display: flex; align-items: center; justify-content: center;">
