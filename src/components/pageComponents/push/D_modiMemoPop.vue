@@ -1,5 +1,5 @@
 <template>
-    <div style="border-radius: 0.8rem; box-shadow: 0 0 4px 4px #00000026; width: calc(100% - 40px); height: 350px; position: fixed; background: #FFF; z-index: 100; top: 10%; left: 20px;">
+    <div style="border-radius: 0.8rem; box-shadow: 0 0 4px 4px #00000026; width: calc(100% - 40px); height: 350px; position: fixed; background: #FFF; z-index: 100; top: 50%; left: 20px; transform: translateY(-50%);">
         <div class="newHeaderLine" style="width: 100%; height: 50px; float: left; position: relative; padding: 0 20px; display: flex; align-items: center;">
             <p class="textLeft fl font20 fontBold commonColor">{{ $t('COMM_TITLE_COMMENT_EDIT2') }}</p>
             <img @click="backClick" src="../../../assets/images/common/popup_close.png" style="position: absolute; right: 20px; top: 15px; width: 20px;" alt="">
@@ -18,7 +18,8 @@
 export default {
   props: {
     pMemoEle: {},
-    propContDetail: {}
+    propContDetail: {},
+    pClosePop: Function
   },
   data () {
     return {
@@ -51,7 +52,7 @@ export default {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
         this.$store.commit('D_HISTORY/updateStack', hStack)
-        this.$emit('closeXPop')
+        this.pClosePop()
       }
     },
     replaceArr (arr) {

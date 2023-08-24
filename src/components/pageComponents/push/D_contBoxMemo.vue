@@ -1,6 +1,6 @@
 <template>
-    <div v-if="mModiMemoPopShowYn" @click="this.$refs.modiMemoPop.backClick()" style="width: 100%; height: 100%; position: fixed; background: #00000026; z-index: 10; top: 0; left: 0;"></div>
-    <modiMemoPop :propContDetail="propContDetail" @closeXPop="this.mModiMemoPopShowYn = false" ref="modiMemoPop" :pMemoEle="mModiMemoObj" v-if="mModiMemoPopShowYn" />
+    <div v-if="mModiMemoPopShowYn" @click="closeModiMemoPop" style="width: 100%; height: 100%; position: fixed; background: #00000026; z-index: 10; top: 0; left: 0;"></div>
+    <modiMemoPop :propContDetail="propContDetail" ref="modiMemoPop" :pClosePop="closeModiMemoPop" :pMemoEle="mModiMemoObj" v-if="mModiMemoPopShowYn" />
     <div v-if="!childShowYn" style="width: 100%; min-height: 20px; display: flex; margin-bottom: 5px; overflow: hidden;">
         <div style="width: 95px; margin-right: 10px; min-height: 20px;" @click="clickMemoEvnt({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
             <p class="commonBlack textLeft font14 fontBold">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
@@ -216,6 +216,9 @@ export default {
     openModiMemoPop (memo) {
       this.mModiMemoObj = memo
       this.mModiMemoPopShowYn = true
+    },
+    closeModiMemoPop () {
+      this.mModiMemoPopShowYn = false
     },
     updateMemo (param) {
       this.$emit('updateMemo', [param, this.targetMemo.memoKey, this.targetMemo.parentMemoKey])
