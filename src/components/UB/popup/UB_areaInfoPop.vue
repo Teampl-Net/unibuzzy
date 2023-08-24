@@ -100,8 +100,8 @@
           <div class="w100P" style="padding-bottom: 30px; height:auto; max-height:325px; ">
             <gEmpty tabName="전체" contentName="채널" v-if="pAreaDetail.bdList && pAreaDetail.bdList.length === 0" style="margin-top:50px;" />
             <template v-for="(chanEle, index) in pAreaDetail.bdList" :key="index">
-              <channelCard v-if="chanEle.targetKind === 'T'" style="margin-top: 10px;" class="moveBox chanRow" :pTeamList="GE_DISP_TEAM_LIST" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
-              <boardCard v-else class="moveBox chanRow" :boardElement="chanEle" @click="goBoardMain(chanEle)" @scrollMove="scrollMove" />
+              <channelCard v-if="chanEle.targetKind === 'T'" style="margin-top: 10px;" class="moveBox cursorP chanRow" :pTeamList="GE_DISP_TEAM_LIST" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
+              <boardCard v-else class="moveBox chanRow cursorP" :boardElement="chanEle" @click="goBoardMain(chanEle)" @scrollMove="scrollMove" />
             </template>
           </div>
           <!-- <div class="w100P" style="padding-bottom: 30px;">
@@ -196,12 +196,15 @@ export default {
       const bdTLength = []
 
       if (this.pAreaInfo) {
+        // eslint-disable-next-line no-debugger
+        debugger
         for (let i = 0; i < this.pAreaInfo.bdList.length; i++) {
           // T가 채널, C가 Board
           if (this.pAreaInfo.bdList[i].targetKind === 'C') {
             bdCLength.push(this.pAreaInfo.bdList[i])
           } else if (this.pAreaInfo.bdList[i].targetKind === 'T') {
             bdTLength.push(this.pAreaInfo.bdList[i])
+            this.$addChanVuex([this.pAreaInfo.bdList[i]])
           }
         }
         console.log('results... ', bdCLength, bdTLength)
@@ -266,7 +269,7 @@ export default {
 </script>
 <style scoped>
 .commonPopWrap{
-  position: absolute; width: 80%; height: 80%; z-index: 9999999; background: #FFFFFF;
+  position: absolute; width: 80%; height: 80%; z-index: 99999; background: #FFFFFF;
   bottom: 10%;
   left: 10%;
   background: rgba(256, 256, 256, 0.65);

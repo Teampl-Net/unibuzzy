@@ -252,8 +252,6 @@ export default {
   },
   created () {
     // this.saveStickerList()
-    // eslint-disable-next-line no-debugger
-    debugger
     if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
     else this.mFadeNotShowYn = false
     if (this.CONT_DETAIL) {
@@ -318,8 +316,6 @@ export default {
   },
   async mounted () {
     // this.addImgEvnt()
-    // eslint-disable-next-line no-debugger
-    debugger
     var scrollWrap = document.getElementById('mainAllWrap')
     if (scrollWrap) {
       scrollWrap.addEventListener('scroll', this.handleScroll)
@@ -577,8 +573,6 @@ export default {
       this.mFilePopYn = true
     },
     async getContentsDetail () {
-      // eslint-disable-next-line no-debugger
-      debugger
       var param = {}
       param.contentsKey = this.contentsEle.contentsKey
       param.targetKey = this.contentsEle.contentsKey
@@ -616,8 +610,6 @@ export default {
       }
     },
     async settingFileList_old () {
-      // eslint-disable-next-line no-debugger
-      debugger
       try {
         if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
           var attachFileList = []
@@ -914,8 +906,6 @@ export default {
       this.mSelectBoardPopShowYn = false
     },
     async makeNewContents (type) { // writeBoard -> 알림을 게시글로 작성, writeAlim -> 게시글을 알림으로 작성
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.contentsEle.creTeamKey && type !== 'writeBoard' && (!this.CHANNEL_DETAIL.ownerYn || !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) && (!this.CHANNEL_DETAIL.memberYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn) && (this.CHANNEL_DETAIL.memberYn === 0 || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 0) && (!this.CHANNEL_DETAIL.managerKey || !this.CHANNEL_DETAIL.D_CHAN_AUTH.managerKey)) {
         this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
         // this.$checkDeleteHistory('bottomWriteSheets')
@@ -1208,8 +1198,6 @@ export default {
         this.$showToastPop(this.$t('CONF_MSG_CHECK_UNABLE'))
         return
       }
-      // eslint-disable-next-line no-debugger
-      debugger
       // const result = await this.$getAxiosContentsDetail(this.CONT_DETAIL.contentsKey, this.CONT_DETAIL.jobkindId)
       console.log('this.CONT_DETAILCONT_DETAILCONT_DETAIL')
       console.log(this.CONT_DETAIL)
@@ -1227,8 +1215,6 @@ export default {
       this.mProfilePopShowYn = true
     },
     goContentsDetail (moreCheckYn, memoScrollYn) {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.propDetailYn) return
       // 권한이 없는 컨텐츠는 이동하지 못하게 리턴
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
@@ -1309,8 +1295,6 @@ export default {
         param.targetKind = 'C'
         var this_ = this
         this.$saveUserDo(param, 'save').then(result => {
-          // eslint-disable-next-line no-debugger
-          debugger
           for (var d = changeUserDoList.length - 1; d >= 0; d--) {
             if (changeUserDoList[d].doType === act.doType) {
               changeUserDoList[d].doKey = result.doKey
@@ -1462,12 +1446,8 @@ export default {
       return this.$store.getters['D_CHANNEL/GE_STICKER_LIST']
     },
     CHANNEL_DETAIL () {
-      // eslint-disable-next-line no-debugger
-      debugger
       var detail = this.$getDetail('TEAM', this.contentsEle.creTeamKey)
       if (detail && detail.length > 0) {
-        // eslint-disable-next-line no-debugger
-        debugger
         if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {
           return this.CHANNEL_DETAIL
         } else {
@@ -1482,8 +1462,6 @@ export default {
       }
     },
     CONT_DETAIL () {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (!this.contentsEle) return
       var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKey)
       if (!cont) {

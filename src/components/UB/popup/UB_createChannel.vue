@@ -50,7 +50,7 @@
           </label>
         </form>
 
-        <div v-if="(pChannelModi || chanDetail.modiYn === true) && this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; padding-left:0.25rem; margin-top:-175px;">
+        <div v-if="(pChannelModi || CHANNEL_DETAIL.modiYn === true) && this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; padding-left:0.25rem; margin-top:-175px;">
           <p class="font14" style="color:#aaa;"> <img src="@/assets/images/formEditor/trashIcon_gray2.svg" style="width:18px;" alt=""> {{ $t('CRE_BTN_DELETE_CHAN') }} </p>
         </div>
 

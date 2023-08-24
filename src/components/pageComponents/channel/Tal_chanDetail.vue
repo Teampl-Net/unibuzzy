@@ -126,7 +126,7 @@ export default {
     historyStack (value, old) {
     }
   },
-  async created () {
+  created () {
     this.$emit('openLoading')
     if (this.parentshowProfileYn) {
       this.showProfileYn = this.parentshowProfileYn

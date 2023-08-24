@@ -258,7 +258,7 @@ export default {
       }
     }
   },
-  async created () {
+  created () {
     // this.mSelectedTab = -1
     // console.log('mMyTeamList', this.mMyTeamList)
     console.log('=====chanDetail', this.chanDetail)

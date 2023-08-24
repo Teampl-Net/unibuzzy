@@ -27,10 +27,13 @@ export default {
   data () {
     return {
       mBlackYn: false,
-      blackYn: this.pChanInfo.initData.team.content['0'].blackYn
+      blackYn: false
     }
   },
   mounted () {
+    if (this.pChanInfo && this.pChanInfo.initData && this.pChanInfo.initData.content && this.pChanInfo.initData.team.content[0].blackYn) {
+      this.blackYn = this.pChanInfo.initData.team.content[0].blackYn
+    }
     this.$addHistoryStack('chanMain')
   },
   beforeUnmount () {

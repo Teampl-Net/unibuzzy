@@ -144,7 +144,6 @@ export const functions = {
     // g_axiosQueue.push('getContentsDetail')
     var detailData
     var dataList
-    debugger
     if (!targetKey) return null
     if (!teamDetail) {
       if (teamKey) {
@@ -174,7 +173,6 @@ export const functions = {
   },
   async addChanList (teamKey) {
     var result = null
-    debugger
     console.log('과연????')
     console.log(g_axiosQueue.findIndex((item) => item === 'addChanList'))
     if (g_axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
@@ -201,7 +199,6 @@ export const functions = {
     // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   },
   async recvNotiFromBridge (message, mobileYn, inNotiDetail) {
-    debugger
     var addVueResult = false
     try {
       // 협의필요

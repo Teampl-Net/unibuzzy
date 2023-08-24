@@ -1,27 +1,150 @@
 <template>
-  <div id="alimWrap" v-if="CHANNEL_DETAIL && CHANNEL_DETAIL.D_CHAN_AUTH" ref="chanScrollWrap" style="overflow: scroll;" :style="settingBackground" class="chanDetailWrap">
-    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mFollowerListPopShowYn" @click="closeFollowerList"></div>
-    <followerList v-if="mFollowerListPopShowYn" :pManagerList="mManagerList" :pClosePop="closeFollowerList"  :pOpenProfilePop="openProfilePop"  />
-    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mUserDetailPopShowYn" @click="closeFollowerList"></div>
-    <userDetailPop v-if="mUserDetailPopShowYn" :propData="mPopParam" :pClosePop="closeUserDetailPop" />
-    <div id="gChannelPopup" v-if="commonChanPopShowYn" style="display: absolute; top: 0; left: 0; z-index: 999;">
-      <gChannelPop :propCateItemKey="CHANNEL_DETAIL.cateKey" @openPop="openCertiPop" :propTeamKey="CHANNEL_DETAIL.teamKey" :propPopMessage="mChanPopMessage" v-if="this.GE_USER" @closeXPop='closeChannelPop' />
+  <div
+    id="alimWrap"
+    v-if="CHANNEL_DETAIL && CHANNEL_DETAIL.D_CHAN_AUTH"
+    ref="chanScrollWrap"
+    style="overflow: scroll"
+    :style="settingBackground"
+    class="chanDetailWrap"
+  >
+    <div
+      style="
+        background-color: #00000050;
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+      "
+      v-if="mFollowerListPopShowYn"
+      @click="closeFollowerList"
+    ></div>
+    <followerList
+      v-if="mFollowerListPopShowYn"
+      :pManagerList="mManagerList"
+      :pClosePop="closeFollowerList"
+      :pOpenProfilePop="openProfilePop"
+    />
+    <div
+      style="
+        background-color: #00000050;
+        width: 100%;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+      "
+      v-if="mUserDetailPopShowYn"
+      @click="closeFollowerList"
+    ></div>
+    <userDetailPop
+      v-if="mUserDetailPopShowYn"
+      :propData="mPopParam"
+      :pClosePop="closeUserDetailPop"
+    />
+    <div
+      id="gChannelPopup"
+      v-if="commonChanPopShowYn"
+      style="display: absolute; top: 0; left: 0; z-index: 999"
+    >
+      <gChannelPop
+        :propCateItemKey="CHANNEL_DETAIL.cateKey"
+        @openPop="openCertiPop"
+        :propTeamKey="CHANNEL_DETAIL.teamKey"
+        :propPopMessage="mChanPopMessage"
+        v-if="this.GE_USER"
+        @closeXPop="closeChannelPop"
+      />
     </div>
-    <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
+    <smallPop
+      v-if="smallPopYn"
+      :confirmText="confirmMsg"
+      :addSmallMsg="addSmallMsg"
+      :addSmallTextYn="true"
+      @no="smallPopYn = false"
+    />
     <!-- <div v-if="mReceptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999">
     </div> -->
     <!-- <recMemberPop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" /> -->
-    <div class="font20 fontBold displayNIm" ref="UBChanMainNameDiv" :style="mChanNameLongYn ? 'font-size: 15px !important;' : ''" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{ officialTitle: CHANNEL_DETAIL.officialYn }"> <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" />
-      <p class="font20 fontBold textOverdot" :style="(CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;') + 'top: ' + (Number(this.$STATUS_HEIGHT) - 5) + 'px'">
-        {{mChanInfo.initData.team.cateItemMtext ? $changeText(CHANNEL_DETAIL.nameMtext) > $changeText(mChanInfo.initData.team.cateItemMtext) : $changeText(CHANNEL_DETAIL.nameMtext)}}
+    <div
+      class="font20 fontBold displayNIm"
+      ref="UBChanMainNameDiv"
+      :style="mChanNameLongYn ? 'font-size: 15px !important;' : ''"
+      style="
+        color: white;
+        line-height: 50px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        max-width: calc(100% - 120px);
+      "
+      :class="{ officialTitle: CHANNEL_DETAIL.officialYn }"
+    >
+      <img
+        class="fl"
+        src="../../../assets/images/channel/icon_official.svg"
+        v-if="CHANNEL_DETAIL.officialYn"
+        style="width: 30px"
+        alt=""
+      />
+      <p
+        class="font20 fontBold textOverdot"
+        :style="
+          (CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;') +
+          'top: ' +
+          (Number(this.$STATUS_HEIGHT) - 5) +
+          'px'
+        "
+      >
+        {{
+          mChanInfo.initData.team.cateItemMtext
+            ? $changeText(CHANNEL_DETAIL.nameMtext) >
+              $changeText(mChanInfo.initData.team.cateItemMtext)
+            : $changeText(CHANNEL_DETAIL.nameMtext)
+        }}
       </p>
     </div>
-    <div id="summaryWrap" ref="summaryWrap" v-if="!mChanInfoPopShowYn" class="summaryWrap mtop-05">
-
-      <div id="chanInfoSummary" ref="chanInfoSummary" style="background-position: center; width:100%; height:80px; position: relative; background-size: contain;background-position-y: 40px;background-repeat: no-repeat;">
+    <div
+      id="summaryWrap"
+      ref="summaryWrap"
+      v-if="!mChanInfoPopShowYn"
+      class="summaryWrap mtop-05"
+    >
+      <div
+        id="chanInfoSummary"
+        ref="chanInfoSummary"
+        style="
+          background-position: center;
+          width: 100%;
+          height: 80px;
+          position: relative;
+          background-size: contain;
+          background-position-y: 40px;
+          background-repeat: no-repeat;
+        "
+      >
         <div class="w100P h100P" style="">
           <!-- <img src="../../../assets/images/channel/chanBgImg.jpeg" style="width:100%; height: calc(100% + 50px); position: absolute; left: 0; top: -50px;" /> -->
-          <div class="w100P" style="height: calc(100% + 50px); position: absolute; left: 0; top: -50px; background: linear-gradient(to bottom, rgba(20, 20, 20, 0) 40%,rgba(20, 20, 20, 0.25) 50%,rgba(20, 20, 20, 0.5) 70%,rgba(20, 20, 20, 0.6) 90%,rgba(20, 20, 20, 0.8) 100%);"></div>
+          <div
+            class="w100P"
+            style="
+              height: calc(100% + 50px);
+              position: absolute;
+              left: 0;
+              top: -50px;
+              background: linear-gradient(
+                to bottom,
+                rgba(20, 20, 20, 0) 40%,
+                rgba(20, 20, 20, 0.25) 50%,
+                rgba(20, 20, 20, 0.5) 70%,
+                rgba(20, 20, 20, 0.6) 90%,
+                rgba(20, 20, 20, 0.8) 100%
+              );
+            "
+          ></div>
           <!-- <div class="font16 fontBold textLeft nameTitleSmall" style=" position: absolute; left: 125px;bottom: 35px; color: white;">{{ propParams.areaInfo.bdAreaDesc }} > {{ $changeText(CHANNEL_DETAIL.nameMtext) }}</div> -->
           <div class="font22 fontBold textLeft nameTitleBig" style="width:58%; position: absolute; left: 125px;bottom: 5px; color: white;">
             <p style="width:90%;">{{mChanInfo.initData.team.cateItemMtext ? $changeText(CHANNEL_DETAIL.nameMtext) > $changeText(mChanInfo.initData.team.cateItemMtext) : $changeText(CHANNEL_DETAIL.nameMtext)}}</p>
@@ -33,23 +156,125 @@
           <gBtnSmall style="line-height:20px; position: absolute; right: 5px; bottom: 5px; cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl w-100P fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="`Following`" />
         </div>
 
-        <div class="chanInfoWrap" style="background: white; border-bottom: 1px solid #ccc; width: 100%; float: left; min-height:130px; padding: 15px; box-sizing:border-box; word-break:break-all">
-          <div class="h100P fl flexCenter" style="width: 100px; padding-top: 50px;">
-            <div class="cursorP" style="width: 40px; height: 40px; margin-right: 10px; background: #f1f1f1; border-radius: 30px; float:left; display: flex; justify-content: center; align-items: center;" @click="ImgClick">
-              <img @class="cursorP" width="20" height="20" :src="CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey? require('@/assets/images/channel/icon_star_fill.svg'):require('@/assets/images/channel/icon_star.svg')" alt="">
+        <div
+          class="chanInfoWrap"
+          style="
+            background: white;
+            border-bottom: 1px solid #ccc;
+            width: 100%;
+            float: left;
+            min-height: 130px;
+            padding: 15px;
+            box-sizing: border-box;
+            word-break: break-all;
+          "
+        >
+          <div
+            class="h100P fl flexCenter"
+            style="width: 100px; padding-top: 50px"
+          >
+            <div
+              class="cursorP"
+              style="
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+                background: #f1f1f1;
+                border-radius: 30px;
+                float: left;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+              @click="ImgClick"
+            >
+              <img
+                @class="cursorP"
+                width="20"
+                height="20"
+                :src="
+                  CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey
+                    ? require('@/assets/images/channel/icon_star_fill.svg')
+                    : require('@/assets/images/channel/icon_star.svg')
+                "
+                alt=""
+              />
             </div>
-            <div class="cursorP" style="width: 40px; height: 40px; background: #f1f1f1; border-radius: 30px; float:left; display: flex; justify-content: center; align-items: center;" data-clipboard-action="copy" id="copyTextBody" @click="copyText" :data-clipboard-text="CHANNEL_DETAIL.copyTextStr">
-              <img src='../../../assets/images/contents/icon_share.png' width="20" height="20"/>
+            <div
+              class="cursorP"
+              style="
+                width: 40px;
+                height: 40px;
+                background: #f1f1f1;
+                border-radius: 30px;
+                float: left;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+              data-clipboard-action="copy"
+              id="copyTextBody"
+              @click="copyText"
+              :data-clipboard-text="CHANNEL_DETAIL.copyTextStr"
+            >
+              <img
+                src="../../../assets/images/contents/icon_share.png"
+                width="20"
+                height="20"
+              />
             </div>
           </div>
-          <div class="h100P fl mleft-1" style="position: relative; display: flex; align-items: center; flex-direction: column; border-radius: 5px; padding: 10px; border: 2px solid #ccc; width: calc(100% - 100px - 1rem);">
-            <div class="fontBold fl w100P font14 textLeft" style="word-break:break-all;">{{ $changeText(CHANNEL_DETAIL.memoMtext) }}</div>
-            <div class="w100P fl" style="display: flex; align-items: space-between;">
-              <div @click="openFollowerPop" class="font14" style="float: left; margin-right:20px">Follower <span style="color:black; text-decoration: underline;" class="fontBold">{{ CHANNEL_DETAIL.followerCount }}</span></div>
-              <div class="font14">Total Contents <span class="fontBold" style="color:black;">{{ CHANNEL_DETAIL.totalContentsCount }}</span></div>
+          <div
+            class="h100P fl mleft-1"
+            style="
+              position: relative;
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              border-radius: 5px;
+              padding: 10px;
+              border: 2px solid #ccc;
+              width: calc(100% - 100px - 1rem);
+            "
+          >
+            <div
+              class="fontBold fl w100P font14 textLeft"
+              style="word-break: break-all"
+            >
+              {{ $changeText(CHANNEL_DETAIL.memoMtext) }}
+            </div>
+            <div
+              class="w100P fl"
+              style="display: flex; align-items: space-between"
+            >
+              <div
+                @click="openFollowerPop"
+                class="font14"
+                style="float: left; margin-right: 20px"
+              >
+                Follower
+                <span
+                  style="color: black; text-decoration: underline"
+                  class="fontBold"
+                  >{{ CHANNEL_DETAIL.followerCount }}</span
+                >
+              </div>
+              <div class="font14">
+                Total Contents
+                <span class="fontBold" style="color: black">{{
+                  CHANNEL_DETAIL.totalContentsCount
+                }}</span>
+              </div>
               <!-- <div v-if="mChanInfo.managerList" class="fontBold font14" style="float: left;">Manager: <span style="color:black; font-weight: 1000;">{{ mChanInfo.managerList.length }}</span></div> -->
             </div>
-            <div class="w100P fl font14 textLeft">My Status <span class="fontBold" style="color:black;">{{ this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)? this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH): '-' }}</span></div>
+            <div class="w100P fl font14 textLeft">
+              My Status
+              <span class="fontBold" style="color: black">{{
+                this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)
+                  ? this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)
+                  : "-"
+              }}</span>
+            </div>
             <!-- <div class="fr mbottom-05" @click="editChan" :class="chanBgBlackYn === true ? 'blackTextBox' : 'whiteTextBox'" style="float:right !important; ">
               <p class="font16 textLeft lightGray fr ">편집 > </p>
             </div> -->
@@ -62,29 +287,130 @@
         </div>
       </div>
     </div>
-    <div class="channelItemBox" ref="channelItemBox" style="background: rgb(220, 221, 235); padding-top: 0;">
-      <pushList :pCabinetKeyListStr="mCabKeyListStr" :pUnknownYn="mUnknownYn" @openImgPop="openImgPop" @goScroll="scrollOn" :pBoardList="mChanInfo.boardList" :initData="this.mChanInfo.initData.contentsList" @cMemoEditYn="changeMemoEditYn"
-        :targetContents="{ targetContentsKey: mChanInfo.targetContentsKey, jobkindId: mChanInfo.jobkindId }" :chanAlimYn="true" :pChannelDetail="this.CHANNEL_DETAIL" :chanAlimTargetType="this.mChanInfo.targetType"
-        ref="ChanAlimListPushListCompo" :alimListYn="true" @openPage="openPage" :chanDetailKey="this.CHANNEL_DETAIL.teamKey" @numberOfElements='numberOfElements'
-        @targetContentScrollMove='targetContentScrollMove' @openLoading="this.$emit('openLoading')" @closeLoading="this.$emit('closeLoading')" @openPop="openWriteContentsPop" @openUserProfile='openItem' @changeMainTab='changeMainTab' isOpen='chanAlim' @memoEdit='memoEdit' />
+    <div
+      class="channelItemBox"
+      ref="channelItemBox"
+      style="background: rgb(220, 221, 235); padding-top: 0"
+    >
+      <pushList
+        :pCabinetKeyListStr="mCabKeyListStr"
+        :pUnknownYn="mUnknownYn"
+        @openImgPop="openImgPop"
+        @goScroll="scrollOn"
+        :pBoardList="mChanInfo.boardList"
+        :initData="this.mChanInfo.initData.contentsList"
+        @cMemoEditYn="changeMemoEditYn"
+        :targetContents="{
+          targetContentsKey: mChanInfo.targetContentsKey,
+          jobkindId: mChanInfo.jobkindId,
+        }"
+        :chanAlimYn="true"
+        :pChannelDetail="this.CHANNEL_DETAIL"
+        :chanAlimTargetType="this.mChanInfo.targetType"
+        ref="ChanAlimListPushListCompo"
+        :alimListYn="true"
+        @openPage="openPage"
+        :chanDetailKey="this.CHANNEL_DETAIL.teamKey"
+        @numberOfElements="numberOfElements"
+        @targetContentScrollMove="targetContentScrollMove"
+        @openLoading="this.$emit('openLoading')"
+        @closeLoading="this.$emit('closeLoading')"
+        @openPop="openWriteContentsPop"
+        @openUserProfile="openItem"
+        @changeMainTab="changeMainTab"
+        isOpen="chanAlim"
+        @memoEdit="memoEdit"
+      />
     </div>
 
     <div v-if="this.mChanInfoPopShowYn">
-      <chanDetailComp ref="chanDetailRef" @openLoading="this.$emit('openLoading')"
-        @closeLoading="this.$emit('closeLoading')" @closeXPop="this.closeDetailPop" @changeshowProfileYn='changeshowProfileYn' :parentshowProfileYn="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn" :adminYn="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" :alimSubPopYn="alimListToDetail"
-        @pageReload="this.$emit('pageReload', true)" @openPop="openPushDetailPop" @closeDetailPop="this.closeDetailPop" @changeFollowYn="changeFollowYn" :chanDetail="this.CHANNEL_DETAIL" style="background-color: #fff;">
+      <chanDetailComp
+        ref="chanDetailRef"
+        @openLoading="this.$emit('openLoading')"
+        @closeLoading="this.$emit('closeLoading')"
+        @closeXPop="this.closeDetailPop"
+        @changeshowProfileYn="changeshowProfileYn"
+        :parentshowProfileYn="CHANNEL_DETAIL.D_CHAN_AUTH.showProfileYn"
+        :adminYn="CHANNEL_DETAIL.D_CHAN_AUTH.adminYn"
+        :alimSubPopYn="alimListToDetail"
+        @pageReload="this.$emit('pageReload', true)"
+        @openPop="openPushDetailPop"
+        @closeDetailPop="this.closeDetailPop"
+        @changeFollowYn="changeFollowYn"
+        :chanDetail="this.CHANNEL_DETAIL"
+        style="background-color: #fff"
+      >
       </chanDetailComp>
     </div>
-    <img v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" id='writeBtn' src="../../../assets/images/button/Icon_WriteAlimBtn.png" @click="openWritePushPop" alt="알림 작성 버튼" style="position: absolute; bottom: 70px; right: 10%; z-index:9; cursor: pointer;" class="img-78 img-w66">
-    <gConfirmPop :confirmText='mErrorPopBodyStr' :confirmType='mErrorPopBtnType' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" @ok="confirmOk" />
-    <div v-if="writeBottSheetYn" @click="writeBottSheetYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
+    <img
+      v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn"
+      id="writeBtn"
+      src="../../../assets/images/button/Icon_WriteAlimBtn.png"
+      @click="openWritePushPop"
+      alt="알림 작성 버튼"
+      style="
+        position: absolute;
+        bottom: 70px;
+        right: 10%;
+        z-index: 9;
+        cursor: pointer;
+      "
+      class="img-78 img-w66"
+    />
+    <gConfirmPop
+      :confirmText="mErrorPopBodyStr"
+      :confirmType="mErrorPopBtnType"
+      @no="mErrorPopShowYn = false"
+      v-if="mErrorPopShowYn"
+      @ok="confirmOk"
+    />
+    <div
+      v-if="writeBottSheetYn"
+      @click="writeBottSheetYn = false"
+      style="
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 10;
+        left: 0;
+        top: 0;
+        background: #00000030;
+      "
+    ></div>
     <transition name="showUp">
-      <writeBottSheet v-if="writeBottSheetYn === true" @openPop='openWriteContentsPop' @closePop='writeBottSheetYn = false' :propTeamKey='CHANNEL_DETAIL.teamKey' @openMember='openChannelMsgPop()' />
+      <writeBottSheet
+        v-if="writeBottSheetYn === true"
+        @openPop="openWriteContentsPop"
+        @closePop="writeBottSheetYn = false"
+        :propTeamKey="CHANNEL_DETAIL.teamKey"
+        @openMember="openChannelMsgPop()"
+      />
     </transition>
+    <div
+      v-if="writeContentsYn === true"
+      style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 10;
+        background: #00000050;
+        width: 100vw;
+        min-height: 100vh;
+      "
+      class=""
+    ></div>
+    <writeContents
+      v-if="writeContentsYn === true"
+      ref="chanAlimListWritePushRefs"
+      :contentType="mPushListMainTab === 'P' ? 'ALIM' : 'BOAR'"
+      @closeXPop="closeWritePushPop"
+      :params="mWriteAlimData"
+      @openPop="openItem"
+      :changeMainTab="changeMainTab"
+      @toAlimFromBoard="toAlimFromBoard"
+      :propData="mWriteBoardData"
+    />
   </div>
-  <div v-if="writeContentsYn === true" style="position: absolute; top:0; left:0; z-index:10; background:#00000050; width: 100vw; min-height: 100vh;" class=""></div>
-  <writeContents v-if="writeContentsYn === true" ref="chanAlimListWritePushRefs" :contentType="mPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWritePushPop' :params="mWriteAlimData"
-    @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propData="mWriteBoardData" />
 </template>
 
 <script>
@@ -171,10 +497,14 @@ export default {
     // recMemberPop,
     followerList,
     userDetailPop
-  //   unknownLoginPop
+    //   unknownLoginPop
   },
   created () {
-    if (this.propParams && this.propParams.targetType === 'chanDetail' && this.propParams.initData) {
+    if (
+      this.propParams &&
+      this.propParams.targetType === 'chanDetail' &&
+      this.propParams.initData
+    ) {
       this.mChanInfo = this.propParams
       const initData = this.propParams.initData
       if (initData.cabinetKeyListStr) {
@@ -189,19 +519,29 @@ export default {
       if (initData.teamMenuList) {
         this.mChanInfo.boardList = initData.teamMenuList
       }
-      if (this.mChanInfo.initData.team.D_CHAN_AUTH && this.mChanInfo.initData.team.D_CHAN_AUTH.followYn) {
+      if (
+        this.mChanInfo.initData.team.D_CHAN_AUTH &&
+        this.mChanInfo.initData.team.D_CHAN_AUTH.followYn
+      ) {
         this.$emit('followYn')
       }
       if (this.CHANNEL_DETAIL) {
         if (initData.shortLink) {
           const initLink = JSON.parse(initData.shortLink.shortLink)
           this.CHANNEL_DETAIL.copyTextStr = initLink.shortLink
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+            this.CHANNEL_DETAIL
+          ])
           this.mMakeDeepLinkIng = false
         } else {
-          if ((this.mChanInfo.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
+          if (
+            this.mChanInfo.initData.team.copyTextStr === undefined &&
+            this.CHANNEL_DETAIL.copyTextStr === undefined &&
+            !this.mMakeDeepLinkIng
+          ) {
             this.mMakeDeepLinkIng = true
-            const title = '[uniBuzzy]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+            const title =
+              '[uniBuzzy]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
             const message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
             const this_ = this
             // 각 타운의 부모채널인지 아닌지 확인
@@ -212,7 +552,9 @@ export default {
             }
             this.$makeShareLink(ketSet, 'chanDetail', message, title).then(res => {
               this.CHANNEL_DETAIL.copyTextStr = res
-              this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+              this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+                this.CHANNEL_DETAIL
+              ])
               this_.mMakeDeepLinkIng = false
             })
           }
@@ -236,11 +578,17 @@ export default {
       this.getChanMain()
     }
 
+    this.$emit('enterCloudLoading', false)
+    setTimeout(() => {
+      this.$emit('showCloudLoading', false)
+    }, 1000)
+
     if (!this.selectMemberObj) {
       this.getMemberTypeList()
     }
   },
   mounted () {
+    console.log('Channel Main - Channel Detail', this.CHANNEL_DETAIL)
     this.$nextTick(() => {
       this.calcSummaryWrapH()
       this.mChanMainScrollWrap = this.$refs.chanScrollWrap
@@ -262,7 +610,7 @@ export default {
       }
       if (this.mChanMainScrollWrap) {
         this.mChanMainScrollWrap.addEventListener('scroll', this.updateScroll)
-        this.mChanMainScrollWrap.addEventListener('mousewheel', e => {
+        this.mChanMainScrollWrap.addEventListener('mousewheel', (e) => {
           this.mChanMainScrollDirection = e.deltaY > 0 ? 'down' : 'up'
         })
       }
@@ -292,7 +640,11 @@ export default {
     },
     scrollOn () {
       const pushList = document.getElementById('pushListWrap')
-      if (this.$refs.summaryWrap.offsetHeight > 210 && pushList) {
+      if (
+        this.$refs.summaryWrap &&
+        this.$refs.summaryWrap.offsetHeight > 210 &&
+        pushList
+      ) {
         this.pushListWrap = pushList
         this.pushListWrap.style.overflow = 'hidden'
       }
@@ -326,7 +678,9 @@ export default {
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = response.data.doKey
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+            this.CHANNEL_DETAIL
+          ])
         } else {
           const param = {
             doKey: this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey,
@@ -342,7 +696,9 @@ export default {
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = null
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+            this.CHANNEL_DETAIL
+          ])
         }
       } catch (error) {
         console.error(error)
@@ -351,7 +707,12 @@ export default {
       this.isImgChanged = !this.isImgChanged
     },
     async openWritePushPop () {
-      if (this.propTeamKey && this.mSelectedWriteType === 'ALIM' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
+      if (
+        this.propTeamKey &&
+        this.mSelectedWriteType === 'ALIM' &&
+        !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn &&
+        !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext
+      ) {
         this.$showToastPop(this.$t('COMM_MSG_MEMB_NEED'))
         this.$checkDeleteHistory('bottomWriteSheets')
         this.$emit('openMember')
@@ -402,9 +763,12 @@ export default {
       if (memberTypeItemList.data.result) {
         var this_ = this
         if (memberTypeItemList.data.memberTypeItemList.length === 0) {
-        // eslint-disable-next-line no-new-object
+          // eslint-disable-next-line no-new-object
           var typeParam = new Object()
-          if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
+          if (
+            this.CHANNEL_DETAIL &&
+            this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
+          ) {
             typeParam.followerKey = this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
           }
           typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
@@ -420,7 +784,8 @@ export default {
             return false
           })
         } else {
-          this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
+          this.selectMemberObj.initData =
+            memberTypeItemList.data.memberTypeItemList
           return true
         }
       } else {
@@ -492,7 +857,11 @@ export default {
       }
     },
     async getMyContentsList (pageSize, offsetInput, loadingYn, searchParam) {
-      if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
+      if (
+        this.mAxiosQueue.length > 0 &&
+        this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !==
+          -1
+      ) { return }
       this.mAxiosQueue.push('getPushContentsList')
       var param = {}
       if (searchParam) {
@@ -505,24 +874,66 @@ export default {
       }
       param.myUserKey = this.GE_USER.userKey
       param.cabinetKeyListStr = this.mCabKeyListStr
-      if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.mOffsetInt }
+      if (
+        offsetInput !== undefined &&
+        offsetInput !== null &&
+        offsetInput !== ''
+      ) {
+        param.offsetInt = offsetInput
+      } else {
+        param.offsetInt = this.mOffsetInt
+      }
 
-      if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = this.mPageSize }
+      if (pageSize !== undefined && pageSize !== null && pageSize !== '') {
+        param.pageSize = pageSize
+      } else {
+        param.pageSize = this.mPageSize
+      }
 
       if (this.findKeyList) {
-        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
+        if (
+          this.findKeyList.searchKey !== undefined &&
+          this.findKeyList.searchKey !== null &&
+          this.findKeyList.searchKey !== ''
+        ) {
           param.title = this.findKeyList.searchKey
-        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
+        }
+        if (
+          this.findKeyList.creTeamNameMtext !== undefined &&
+          this.findKeyList.creTeamNameMtext !== null &&
+          this.findKeyList.creTeamNameMtext !== ''
+        ) {
           param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
-        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
+        }
+        if (
+          this.findKeyList.toCreDateStr !== undefined &&
+          this.findKeyList.toCreDateStr !== null &&
+          this.findKeyList.toCreDateStr !== ''
+        ) {
           param.toCreDateStr = this.findKeyList.toCreDateStr
-        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
+        }
+        if (
+          this.findKeyList.fromCreDateStr !== undefined &&
+          this.findKeyList.fromCreDateStr !== null &&
+          this.findKeyList.fromCreDateStr !== ''
+        ) {
           param.fromCreDateStr = this.findKeyList.fromCreDateStr
-        } if (this.findKeyList.workStatCodeKey !== undefined && this.findKeyList.workStatCodeKey !== null && this.findKeyList.workStatCodeKey !== '') {
+        }
+        if (
+          this.findKeyList.workStatCodeKey !== undefined &&
+          this.findKeyList.workStatCodeKey !== null &&
+          this.findKeyList.workStatCodeKey !== ''
+        ) {
           param.workStatCodeKey = this.findKeyList.workStatCodeKey
-        } if (this.findKeyList.creUserName !== undefined && this.findKeyList.creUserName !== null && this.findKeyList.creUserName !== '') {
+        }
+        if (
+          this.findKeyList.creUserName !== undefined &&
+          this.findKeyList.creUserName !== null &&
+          this.findKeyList.creUserName !== ''
+        ) {
           param.creUserName = this.findKeyList.creUserName
-        } if (this.findKeyList.selectedSticker) {
+        }
+        if (this.findKeyList.selectedSticker) {
           param.findActStickerYn = true
           param.findActYn = true
           param.stickerKey = this.findKeyList.selectedSticker.stickerKey
@@ -533,7 +944,9 @@ export default {
         nonLoading = false
       }
       var result = await this.$getContentsList(param, nonLoading)
-      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList')
+      var queueIndex = this.mAxiosQueue.findIndex(
+        (item) => item === 'getPushContentsList'
+      )
       this.mAxiosQueue.splice(queueIndex, 1)
       var resultList = result
       return resultList
@@ -554,7 +967,10 @@ export default {
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
       try {
-        const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: param }, false)
+        const result = await this.$getViewData(
+          { url: '/sUniB/tp.getChanMainBoard', param: param },
+          false
+        )
         // eslint-disable-next-line no-debugger
         debugger
         if (!result || !result.data || result.data.result !== 'OK') {
@@ -563,23 +979,44 @@ export default {
         }
         const teamDetail = result.data.team.content[0]
         console.log(result.data.memberTypeList[0])
-        if (teamDetail.userTeamInfo === undefined || teamDetail.userTeamInfo === null || teamDetail.userTeamInfo === '') {
-          if (result.data.memberTypeList && result.data.memberTypeList.length !== 0 && result.data.memberTypeList[0].muserList) {
-            const index = result.data.memberTypeList[0].muserList.findIndex((item) => item.userKey === this.GE_USER.userKey)
+        if (
+          teamDetail.userTeamInfo === undefined ||
+          teamDetail.userTeamInfo === null ||
+          teamDetail.userTeamInfo === ''
+        ) {
+          if (
+            result.data.memberTypeList &&
+            result.data.memberTypeList.length !== 0 &&
+            result.data.memberTypeList[0].muserList
+          ) {
+            const index = result.data.memberTypeList[0].muserList.findIndex(
+              (item) => item.userKey === this.GE_USER.userKey
+            )
             if (index !== -1) {
-              teamDetail.userTeamInfo = result.data.memberTypeList[0].muserList[index]
+              teamDetail.userTeamInfo =
+                result.data.memberTypeList[0].muserList[index]
             }
           }
         }
         // this.mCabKeyListStr = result.data.cabinetKeyListStr
         console.log(teamDetail)
         await this.$addChanVuex([teamDetail])
+        if (result.data.cTeamList) {
+          await this.$addChanVuex(result.data.cTeamList)
+        }
         chanMainParam.nameMtext = teamDetail.nameMtext
         chanMainParam.chanName = teamDetail.nameMtext
         var initData = {}
         initData.team = teamDetail
-        if (result.data.contentsListPage && result.data.contentsListPage.content && result.data.contentsListPage.content.length > 0) {
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
+        if (
+          result.data.contentsListPage &&
+          result.data.contentsListPage.content &&
+          result.data.contentsListPage.content.length > 0
+        ) {
+          this.$store.dispatch(
+            'D_CHANNEL/AC_ADD_CONTENTS',
+            result.data.contentsListPage.content
+          )
         }
         initData = result.data
         const parentYn = this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey) ? 1 : 0
@@ -662,21 +1099,33 @@ export default {
         var memberInfoText = ''
         if (resultReqData.memberYn && resultReqData.memberType) {
           memberInfoText += '환영합니다!<br>"'
-          memberInfoText += this.$changeText(resultReqData.memberType.nameMtext)
+          memberInfoText += this.$changeText(
+            resultReqData.memberType.nameMtext
+          )
           memberInfoText += '" 멤버가 되었습니다<br>'
-          if (resultReqData.memberType.initData && resultReqData.memberType.initData.length > 0) {
+          if (
+            resultReqData.memberType.initData &&
+            resultReqData.memberType.initData.length > 0
+          ) {
             /* this.mReqResultMsg += '<br><p class="textLeft commonColor font16 fontBold">부가정보</p>' */
             memberInfoText += '('
             for (var i = 0; i < resultReqData.memberType.initData.length; i++) {
-              memberInfoText += (i !== 0 ? ' ' : '')
-              memberInfoText += this.$changeText(resultReqData.memberType.initData[i].itemNameMtext) + '  ' + resultReqData.memberType.initData[i].value
-              memberInfoText += (i === resultReqData.memberType.initData.length - 1 ? ')' : '')
+              memberInfoText += i !== 0 ? ' ' : ''
+              memberInfoText +=
+                this.$changeText(
+                  resultReqData.memberType.initData[i].itemNameMtext
+                ) +
+                '  ' +
+                resultReqData.memberType.initData[i].value
+              memberInfoText +=
+                i === resultReqData.memberType.initData.length - 1 ? ')' : ''
             }
           }
           // memberInfoText += '"'
           // memberInfoText += '<br>정상적으로 신청되었습니다!'
         } else {
-          memberInfoText += '회원님은 현재 구독자상태이며,<br>언제든지 다시 멤버신청을 할 수 있습니다!'
+          memberInfoText +=
+            '회원님은 현재 구독자상태이며,<br>언제든지 다시 멤버신청을 할 수 있습니다!'
         }
 
         this.mErrorPopBodyStr = memberInfoText
@@ -709,7 +1158,7 @@ export default {
         if (chanInfoSummaryRef) chanInfoSummaryRef.classList.add('displayNIm')
         // if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) document.getElementById('followerCancelArea').classList.add('displayNIm')
         // if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && ownerChannelEditArea) ownerChannelEditArea.classList.add('displayNIm')
-        if (channelItemBoxRef) channelItemBoxRef.classList.add('channelItemBoxHeight')
+        if (channelItemBoxRef) { channelItemBoxRef.classList.add('channelItemBoxHeight') }
       }
     },
     openReqMemPop () {
@@ -772,7 +1221,10 @@ export default {
       if (this.mMemberTypeList && this.selectMemberObj) {
         // eslint-disable-next-line no-new-object
         var typeParam = new Object()
-        if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey) {
+        if (
+          this.CHANNEL_DETAIL &&
+          this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
+        ) {
           typeParam.followerKey = this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
         }
         if (this.selectMemberObj.memberTypeItemKey) {
@@ -801,7 +1253,8 @@ export default {
       this.mErrorPopShowYn = false
       if (this.mSaveFollowerType === 'follow') {
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
-          this.mErrorPopBodyStr = '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
+          this.mErrorPopBodyStr =
+            '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
           this.mErrorPopShowYn = true
           this.mErrorPopBtnType = 'two'
         } else {
@@ -809,22 +1262,37 @@ export default {
           // eslint-disable-next-line no-new-object
           this.mSaveFollowerParam = new Object()
           this.mSaveFollowerParam.teamKey = this.CHANNEL_DETAIL.teamKey
-          this.mSaveFollowerParam.teamName = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
-          this.mSaveFollowerParam.userKey = this.$store.getters['D_USER/GE_USER'].userKey
-          this.mSaveFollowerParam.userName = this.$changeText(this.GE_USER.userDispMtext)
+          this.mSaveFollowerParam.teamName = this.$changeText(
+            this.CHANNEL_DETAIL.nameMtext
+          )
+          this.mSaveFollowerParam.userKey =
+            this.$store.getters['D_USER/GE_USER'].userKey
+          this.mSaveFollowerParam.userName = this.$changeText(
+            this.GE_USER.userDispMtext
+          )
           var result = false
           if (fStatus) {
-            if (this.axiosQueue.findIndex((item) => item === 'changeFollower') !== -1) return
+            if (
+              this.axiosQueue.findIndex((item) => item === 'changeFollower') !==
+              -1
+            ) { return }
             this.axiosQueue.push('changeFollower')
-            result = await this.$changeFollower({ follower: this.mSaveFollowerParam, doType: 'CR' }, 'del')
-            var queueIndex = this.axiosQueue.findIndex((item) => item === 'changeFollower')
+            result = await this.$changeFollower(
+              { follower: this.mSaveFollowerParam, doType: 'CR' },
+              'del'
+            )
+            var queueIndex = this.axiosQueue.findIndex(
+              (item) => item === 'changeFollower'
+            )
             // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
             this.axiosQueue.splice(queueIndex, 1)
             this.CHANNEL_DETAIL.D_CHAN_AUTH = null
             this.CHANNEL_DETAIL.followerKey = null
             this.CHANNEL_DETAIL.userTeamInfo = null
             this.CHANNEL_DETAIL.followerCount -= 1
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+              this.CHANNEL_DETAIL
+            ])
 
             this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
 
@@ -847,10 +1315,13 @@ export default {
       var param = {}
       param.teamKey = Number(this.$route.params.encodedTeamKey)
       // param.cateItemKey = this.propCateItemKey
-      var memberTypeList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeList',
-        param: param
-      }, true)
+      var memberTypeList = await this.$commonAxiosFunction(
+        {
+          url: '/sUniB/tp.getMemberTypeList',
+          param: param
+        },
+        true
+      )
       if (memberTypeList.data.result) {
         this.mMemberTypeList = memberTypeList.data.memberTypeList
         if (this.mMemberTypeList.length > 0) {
@@ -873,21 +1344,41 @@ export default {
       }
     },
     async copyText () {
-      if ((this.mChanInfo.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
+      if (
+        this.mChanInfo.initData.team.copyTextStr === undefined &&
+        this.CHANNEL_DETAIL.copyTextStr === undefined &&
+        !this.mMakeDeepLinkIng
+      ) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.mMakeDeepLinkIng = true
-        var title = '[uniBuzzy]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+        var title =
+          '[uniBuzzy]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
         var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
         var this_ = this
-        this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
+        this.$makeShareLink(
+          this.CHANNEL_DETAIL.teamKey,
+          'chanDetail',
+          message,
+          title
+        ).then((res) => {
           this.CHANNEL_DETAIL.copyTextStr = res
-          this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+          this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+            this.CHANNEL_DETAIL
+          ])
           this_.mMakeDeepLinkIng = false
         })
       }
-      var shareItem = { title: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: this.CHANNEL_DETAIL.copyTextStr, url: this.CHANNEL_DETAIL.copyTextStr }
+      var shareItem = {
+        title: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext),
+        text: this.CHANNEL_DETAIL.copyTextStr,
+        url: this.CHANNEL_DETAIL.copyTextStr
+      }
       if (this.$checkMobile() === 'IOS') {
-        shareItem = { title: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), url: this.CHANNEL_DETAIL.copyTextStr }
+        shareItem = {
+          title: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext),
+          text: '[더알림] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext),
+          url: this.CHANNEL_DETAIL.copyTextStr
+        }
       }
       if (navigator.share) {
         navigator.share(shareItem)
@@ -896,7 +1387,9 @@ export default {
       }
     },
     async changeRecvAlimYn () {
-      if (this.axiosQueue.findIndex(item => item === 'changeRecvAlimYn') !== -1) return
+      if (
+        this.axiosQueue.findIndex((item) => item === 'changeRecvAlimYn') !== -1
+      ) { return }
       // eslint-disable-next-line no-new-object
       var param = new Object()
       param.followerKey = this.CHANNEL_DETAIL.userTeamInfo.followerKey
@@ -915,10 +1408,13 @@ export default {
 
       await this.$changeRecvAlimYn({ follower: param })
       await this.$addChanList(this.CHANNEL_DETAIL.teamKey).then(() => {
-        var queueIndex = this.axiosQueue.findIndex(item => item === 'changeRecvAlimYn')
+        var queueIndex = this.axiosQueue.findIndex(
+          (item) => item === 'changeRecvAlimYn'
+        )
         this.axiosQueue.splice(queueIndex, 1)
       })
-      this.CHANNEL_DETAIL.copyTextStr = this.mChanInfo.initData.team.copyTextStr
+      this.CHANNEL_DETAIL.copyTextStr =
+        this.mChanInfo.initData.team.copyTextStr
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
       setTimeout(() => {
         this.$showToastPop(toastText)
@@ -946,7 +1442,10 @@ export default {
     openPushDetailPop (param) {
       // eslint-disable-next-line no-debugger
       debugger
-      if (param.targetType === 'contentsDetail' || param.targetType === 'createChannel') {
+      if (
+        param.targetType === 'contentsDetail' ||
+        param.targetType === 'createChannel'
+      ) {
         param.openActivity = 'chanAlimList'
       }
       if (param.targetType === 'createChannel') {
@@ -963,12 +1462,16 @@ export default {
       var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
       if (this.writeAlimPopId === hStack[hStack.length - 1]) {
-        history = history.filter((element, index) => index < history.length - 1)
+        history = history.filter(
+          (element, index) => index < history.length - 1
+        )
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
         this.$store.commit('D_HISTORY/updateStack', history)
         this.closeWritePushPop()
       } else if (this.mWriteBoardPopId === hStack[hStack.length - 1]) {
-        history = history.filter((element, index) => index < history.length - 1)
+        history = history.filter(
+          (element, index) => index < history.length - 1
+        )
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
         this.$store.commit('D_HISTORY/updateStack', history)
         this.closeWritePushPop()
@@ -1026,7 +1529,9 @@ export default {
       var blockBox = this.$refs.summaryWrap
       if (this.mChanMainScrollWrap.scrollTop > this.mChanMainScrollPosition) {
         this.mChanMainScrollDirection = 'down'
-      } else if (this.mChanMainScrollWrap.scrollTop < this.mChanMainScrollPosition) {
+      } else if (
+        this.mChanMainScrollWrap.scrollTop < this.mChanMainScrollPosition
+      ) {
         this.mChanMainScrollDirection = 'up'
       }
 
@@ -1034,16 +1539,22 @@ export default {
       const chanInfoSummaryRef = this.$refs.chanInfoSummary
       const channelItemBoxRef = this.$refs.channelItemBox
       const UBChanMainNameDivRef = this.$refs.UBChanMainNameDiv
-      if (this.mChanMainScrollDirection === 'down' && this.mChanMainScrollPosition > 120) {
+      if (
+        this.mChanMainScrollDirection === 'down' &&
+        this.mChanMainScrollPosition > 120
+      ) {
         blockBox.style.height = Number(this.$STATUS_HEIGHT) + 50 + 'px'
-        if (this.mChanMainScrollPosition > 160) this.mChanMainScrollWrap.style.overflow = 'hidden'
+        if (this.mChanMainScrollPosition > 160) { this.mChanMainScrollWrap.style.overflow = 'hidden' }
         this.pushListWrap.style.overflow = 'hidden auto'
         chanInfoSummaryRef.classList.add('displayNIm')
         UBChanMainNameDivRef.classList.remove('displayNIm')
         // 더알림 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
         // if (ownerChannelEditAreaRef) ownerChannelEditAreaRef.classList.add('displayNIm')
-        if (channelItemBoxRef) channelItemBoxRef.classList.add('channelItemBoxHeight')
-      } else if (this.mChanMainScrollDirection === 'up' && this.mChanMainScrollPosition < 170) {
+        if (channelItemBoxRef) { channelItemBoxRef.classList.add('channelItemBoxHeight') }
+      } else if (
+        this.mChanMainScrollDirection === 'up' &&
+        this.mChanMainScrollPosition < 170
+      ) {
         chanInfoSummaryRef.classList.remove('displayNIm')
         UBChanMainNameDivRef.classList.add('displayNIm')
         // if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && ownerChannelEditAreaRef) ownerChannelEditAreaRef.classList.remove('displayNIm')
@@ -1080,21 +1591,35 @@ export default {
       if (detail && detail.length > 0) {
         if (detail[0].blackYn) this.$emit('bgcolor', detail[0].blackYn)
 
-        if (detail[0] && (detail[0].blackYn !== undefined && detail[0].blackYn !== null && detail[0].blackYn !== '')) {
+        if (
+          detail[0] &&
+          detail[0].blackYn !== undefined &&
+          detail[0].blackYn !== null &&
+          detail[0].blackYn !== ''
+        ) {
           this.$emit('bgcolor', detail[0].blackYn)
         } else {
           this.$emit('bgcolor', false)
         }
         // eslint-disable-next-line no-debugger
         debugger
-        if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {
+        if (
+          !detail[0].D_CHAN_AUTH ||
+          detail[0].D_CHAN_AUTH === true ||
+          (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)
+        ) {
           return this.CHANNEL_DETAIL
         } else {
           return detail[0]
         }
       } else {
         if (this.CHANNEL_DETAIL) {
-          if (this.CHANNEL_DETAIL && (this.CHANNEL_DETAIL.blackYn !== undefined && this.CHANNEL_DETAIL.blackYn !== null && this.CHANNEL_DETAIL.blackYn !== '')) {
+          if (
+            this.CHANNEL_DETAIL &&
+            this.CHANNEL_DETAIL.blackYn !== undefined &&
+            this.CHANNEL_DETAIL.blackYn !== null &&
+            this.CHANNEL_DETAIL.blackYn !== ''
+          ) {
             this.$emit('bgcolor', this.CHANNEL_DETAIL.blackYn)
           } else {
             this.$emit('bgcolor', false)
@@ -1109,10 +1634,17 @@ export default {
       return this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM']
     },
     settingBackground () {
-      var imgPath = 'url(' + (this.CHANNEL_DETAIL.bgDomainPath ? this.CHANNEL_DETAIL.bgDomainPath + this.CHANNEL_DETAIL.bgPathMtext : this.CHANNEL_DETAIL.bgPathMtext) + ')'
+      var imgPath =
+        'url(' +
+        (this.CHANNEL_DETAIL.bgDomainPath
+          ? this.CHANNEL_DETAIL.bgDomainPath + this.CHANNEL_DETAIL.bgPathMtext
+          : this.CHANNEL_DETAIL.bgPathMtext) +
+        ')'
       return {
-        '--wWidth': this.$getMobileYn() === true ? this.mwWidth + 'px ' : '100% ',
-        '--wHeight': this.$getMobileYn() === true ? this.mwHeight + 'px ' : '100% ',
+        '--wWidth':
+          this.$getMobileYn() === true ? this.mwWidth + 'px ' : '100% ',
+        '--wHeight':
+          this.$getMobileYn() === true ? this.mwHeight + 'px ' : '100% ',
         // '--wWidth': this.$getMobileYn() === true ? window.innerWidth + 'px ' : '100% ',
         // '--wHeight': this.$getMobileYn() === true ? window.innerHeight + 'px ' : '100% ',
         '--backImg': imgPath,
@@ -1126,8 +1658,15 @@ export default {
     //   }
     // },
     REQ_MEM_OBJ () {
-      if (this.CHANNEL_DETAIL && this.CHANNEL_DETAIL.userTeamInfo && this.CHANNEL_DETAIL.userTeamInfo.reqMemberStatus) {
-        return { reqMemberStatus: this.CHANNEL_DETAIL.userTeamInfo.reqMemberStatus, reqMemberStr: this.CHANNEL_DETAIL.userTeamInfo.reqMemberStr }
+      if (
+        this.CHANNEL_DETAIL &&
+        this.CHANNEL_DETAIL.userTeamInfo &&
+        this.CHANNEL_DETAIL.userTeamInfo.reqMemberStatus
+      ) {
+        return {
+          reqMemberStatus: this.CHANNEL_DETAIL.userTeamInfo.reqMemberStatus,
+          reqMemberStr: this.CHANNEL_DETAIL.userTeamInfo.reqMemberStr
+        }
       } else {
         return { reqMemberStatus: '00', reqMemberStr: null }
       }
@@ -1155,7 +1694,12 @@ export default {
           this.mUnknownYn = true
         }
         var blackYn = false
-        if (value && (value.blackYn !== undefined && value.blackYn !== null && value.blackYn !== '')) {
+        if (
+          value &&
+          value.blackYn !== undefined &&
+          value.blackYn !== null &&
+          value.blackYn !== ''
+        ) {
           if (value.blackYn === 1) {
             blackYn = true
           }
@@ -1169,16 +1713,14 @@ export default {
       // console.log('team [' + value + ']의 관련 정보가 변경되었음')
       // }
     },
-    GE_MAIN_CHAN_LIST (value, old) {
-    },
+    GE_MAIN_CHAN_LIST (value, old) {},
     pageUpdate (value, old) {
       this.backClick()
       /* if (this.pPopId === hStack[hStack.length - 1]) {
             this.closeSubPop()
         } */
     },
-    historyStack (value, old) {
-    }
+    historyStack (value, old) {}
   }
 }
 </script>
@@ -1186,7 +1728,7 @@ export default {
 <style scoped>
 .gBtnSmall {
   float: left !important;
-  margin-top: 0.7rem
+  margin-top: 0.7rem;
 }
 
 .chanDetailWrap {
@@ -1224,14 +1766,21 @@ export default {
   float: left;
   box-sizing: border-box;
 }
-.channelItemBoxHeight{height: calc(100% - 50px)!important; position: relative; float: left; width: 100%; padding-top: 140px; overflow: hidden scroll; }
+.channelItemBoxHeight {
+  height: calc(100% - 50px) !important;
+  position: relative;
+  float: left;
+  width: 100%;
+  padding-top: 140px;
+  overflow: hidden scroll;
+}
 .chanDetailWrap table {
   width: 85vw;
   max-width: 400px;
 }
 
 .chanDetailWrap table img {
-  width: 1.3rem
+  width: 1.3rem;
 }
 
 .iconTd {
@@ -1239,7 +1788,7 @@ export default {
   align-items: flex-start;
   padding-top: 1.2rem !important;
 }
-.summaryWrap{
+.summaryWrap {
   min-height: 210px;
   width: 100%;
   float: left;
@@ -1260,20 +1809,30 @@ export default {
   display: flex !important;
 }
 
-.chanImgRound{
-  width: 100px; height: 100px;
-  bottom: -50px; left: 15px; position: absolute;
-  display: flex; align-items: center; justify-content: center;
+.chanImgRound {
+  width: 100px;
+  height: 100px;
+  bottom: -50px;
+  left: 15px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 100%;
-  /* border-top: 4px solid #ccc; */ flex-shrink: 0; flex-grow: 0;
-  background-repeat: no-repeat; background-size: cover; background-position: center; background-color:white;
+  /* border-top: 4px solid #ccc; */
+  flex-shrink: 0;
+  flex-grow: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: white;
 }
 #chanInfoSummary2 {
   width: 100%;
   padding-top: 0;
   height: 100%;
   flex-direction: column;
-  float: left
+  float: left;
 }
 
 .blockBox {
@@ -1292,7 +1851,8 @@ span {
     height: 70px;
     bottom: -25px;
   }
-  .nameTitleSmall, .nameTitleBig {
+  .nameTitleSmall,
+  .nameTitleBig {
     left: 100px !important;
   }
   .nameTitleSmall {

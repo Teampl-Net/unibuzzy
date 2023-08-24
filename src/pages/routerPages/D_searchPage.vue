@@ -672,7 +672,7 @@ export default {
       this.$emit('enterCloudLoading', false)
       setTimeout(() => {
         this.$emit('showCloudLoading', false)
-      }, 1500)
+      }, 500)
     },
     getSearchHistory () {
       var localKeyWordOBJ = JSON.parse(localStorage.getItem('searchKeyWordHistoryList'))

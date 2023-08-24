@@ -96,7 +96,7 @@ export default {
     this.$emit('closeLoading')
     this.mLoadingYn = false
   },
-  async created () {
+  created () {
     this.$emit('changePageHeader', this.$t('COMMON_NAME_CHANNEL'))
     if (this.propData) {
       if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
@@ -133,14 +133,13 @@ export default {
       }
     } */
 
-    this.introChanPageTab()
-    this.mScrolledYn = false
-    this.findPaddingTopChan()
-
     this.$emit('enterCloudLoading', false)
     setTimeout(() => {
       this.$emit('showCloudLoading', false)
-    }, 1500)
+    }, 1000)
+    this.introChanPageTab()
+    this.mScrolledYn = false
+    this.findPaddingTopChan()
   },
   methods: {
     goChannelMain (param) {

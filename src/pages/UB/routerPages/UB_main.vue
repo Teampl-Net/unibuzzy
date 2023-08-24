@@ -32,26 +32,28 @@
       <transition name="showUp">
         <UBAreaBdList v-if="mShowAreaBdListYn" style="top: 100px; height: calc(100% - 100px); width: 80%;" />
       </transition>
-      <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
-        <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" style="cursor: pointer;position: absolute; z-index: 99;" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
-          <img style="position: absolute; z-index: 99" :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
-          <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-top': area.priority !== 0 && area.priority !== 1 ? 15 + (village.areaList[area.priority].h)/1.5 + 'px' : ''}" style="background-color: rgba(245, 245, 220, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
-            <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.bdAreaNameMtext }}</p>
-          </div>
-        </div>
-        <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
-          <div ref="bdRef" :id="`area${area.bdAreaKey}bd${bd.bdKey}pri${bd.priority}`" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; "
-          :style="[`z-index: ${1000 - bd.priority};`, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top + 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
-            <div v-if="area.priority === 0" class="banner flexCenter" style="width: 250px; height: 80px; position: absolute; top: -50px; left: 0;" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
-              <img src="../../../assets/images/main/banner2.png" class="w100P" style="position: absolute;" /> <!-- 여기 -->
-              <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold" style="position: absolute; margin-bottom: 30px;"></div>
+      <template v-if="!mLoadingYn">
+          <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
+            <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" style="cursor: pointer;position: absolute; z-index: 99;" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
+            <img style="position: absolute; z-index: 99" :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
+            <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-top': area.priority !== 0 && area.priority !== 1 ? 15 + (village.areaList[area.priority].h)/1.5 + 'px' : ''}" style="background-color: rgba(245, 245, 220, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
+                <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.bdAreaNameMtext }}</p>
             </div>
-            <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl"/>
-            <!-- <span class="fontBold font12" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
-            <!-- <span class="fontBold font12" :style="[{left: -(village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority) + 1) / 2 * 20) + 'px'}]" style="position: absolute; background: rgba(100,100,100,0.7); color: white; width: 100px; border-radius: 5px; padding: 0 5px;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
-            <span v-if="!(area.priority === 0 && index === 0)" class="fontBold font12" style="position: absolute; line-height: 15px; color: #333333; border: 1px solid #ccc; width: 80px; border-radius: 5px; padding: 0 5px;"
-            :style="[{ 'background-color': index === 0 ? '#f1f1f1CC' : (index === 1 || index === 2) ? '#f1f1f199' : (index === 3 || index === 4) ? '#f1f1f180' : '' }, {left: -40 + (village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority)) / 2 * 10) + 'px'}]" >{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
-          </div>
+            </div>
+            <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
+            <div ref="bdRef" :id="`area${area.bdAreaKey}bd${bd.bdKey}pri${bd.priority}`" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; "
+            :style="[`z-index: ${1000 - bd.priority};`, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top + 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
+                <div v-if="area.priority === 0" class="banner flexCenter" style="width: 250px; height: 80px; position: absolute; top: -50px; left: 0;" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
+                <img src="../../../assets/images/main/banner2.png" class="w100P" style="position: absolute;" /> <!-- 여기 -->
+                <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold" style="position: absolute; margin-bottom: 30px;"></div>
+                </div>
+                <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl"/>
+                <!-- <span class="fontBold font12" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
+                <!-- <span class="fontBold font12" :style="[{left: -(village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority) + 1) / 2 * 20) + 'px'}]" style="position: absolute; background: rgba(100,100,100,0.7); color: white; width: 100px; border-radius: 5px; padding: 0 5px;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
+                <span v-if="!(area.priority === 0 && index === 0)" class="fontBold font12" style="position: absolute; line-height: 15px; color: #333333; border: 1px solid #ccc; width: 80px; border-radius: 5px; padding: 0 5px;"
+                :style="[{ 'background-color': index === 0 ? '#f1f1f1CC' : (index === 1 || index === 2) ? '#f1f1f199' : (index === 3 || index === 4) ? '#f1f1f180' : '' }, {left: -40 + (village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority)) / 2 * 10) + 'px'}]" >{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
+            </div>
+            </template>
         </template>
       </template>
     </div>
@@ -123,7 +125,7 @@ export default {
       mOffsetInt: 0
     }
   },
-  async created () {
+  created () {
     // localStorage.clear()
     // onMessage('REQ', 'test', null)
     // this.findAllDrawn()
@@ -156,8 +158,12 @@ export default {
       } else {
         this.$emit('changePageHeader', 'Campus')
       }
-      this.mLoadingYn = false
+      this.$emit('enterCloudLoading', false)
+      setTimeout(() => {
+        this.$emit('showCloudLoading', false)
+      }, 1000)
     })
+
     // if (this.pCampusTownInfo) {
     //   // this.village = this.pCampusTownInfo
     //   console.log('this.pCampusTownInfo')
@@ -220,7 +226,7 @@ export default {
           this.$emit('enterCloudLoading', false)
           setTimeout(() => {
             this.$emit('showCloudLoading', false)
-          }, 1500)
+          }, 1000)
           clearInterval(intervalHandler)
         }
       }, 100)
@@ -425,6 +431,10 @@ export default {
         }
         // await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mBdAreaList, ...this.mMainMChanList])
         // await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimListmMainAlimList)
+        if (response.data.cTeamList) {
+          // area.bdList[j].teamKey = area.bdList[j].targetKey
+          await this.$addChanVuex(response.data.cTeamList)
+        }
       }
     },
     setNativeHeight () {
@@ -543,6 +553,7 @@ export default {
           targetImage.src = area.imgLink
         }
       }
+      this.mLoadingYn = false
     },
     createMaskingBuildingImg (area) {
       const bdList = area.buildingList

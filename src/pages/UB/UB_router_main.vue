@@ -721,11 +721,10 @@ export default {
       return resultList
     },
     async changeRouterPath (page) {
-      const mainYn = this.$route.path === '/'
-      if (page !== 'termsOfUse' && page !== 'privacy' && this.$route.path === '/') {
-        this.showCloudLoading(true, true)
-        this.enterCloudLoading(true)
-      }
+      this.showCloudLoading(true, true)
+      this.enterCloudLoading(true)
+      // const mainYn = this.$route.path === '/'
+      const mainYn = false
       var pageData = {}
       this.mMenuShowYn = false
       if (page === 'termsOfUse' || page === 'privacy') {
@@ -759,26 +758,23 @@ export default {
         pageData = await this.getChannelList(10, 0, mainYn)
       }
       if (page !== 'main' && page !== 'termsOfUse' && page !== 'privacy') {
-        if (this.$route.path === '/') {
+        /* if (this.$route.path === '/') {
           await new Promise((resolve) => setTimeout(resolve, 1500))
-        }
+        } */
       }
       this.mTargetType = page
       // eslint-disable-next-line no-debugger
       debugger
       this.sendInitData = pageData
-      this.$router.replace({
+      this.$router.push({
         name: page
       })
-      if (this.$route.path === '/' && page === 'main') {
-        setTimeout(() => {
-          this.enterCloudLoading(false)
-          this.showCloudLoading(true, false)
-        }, 1500)
+      /* if (this.$route.path === '/' && page === 'main') {
+        this.enterCloudLoading(false)
         setTimeout(() => {
           this.showCloudLoading(false)
-        }, 3000)
-      }
+        }, 500)
+      } */
     },
     changeNetStatePop () {
       if (this.mNetReturnPopShowYn === true) return

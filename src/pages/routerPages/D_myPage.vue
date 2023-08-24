@@ -75,8 +75,12 @@ export default {
     loadingCompo,
     myContents
   },
-  async created () {
+  created () {
     this.mLoadingYn = true
+    this.$emit('enterCloudLoading', false)
+    setTimeout(() => {
+      this.$emit('showCloudLoading', false)
+    }, 1000)
     if ((this.initData && Object.keys(this.initData).length > 0) || (this.propParams && this.propParams.targetType === 'myPage')) {
       // this.mInitData = this.initData
       if (this.propParams && this.propParams.mContentsList && this.propParams.mContentsList.content) {
@@ -112,10 +116,6 @@ export default {
 
     this.$emit('changePageHeader', this.$t('COMMON_NAME_MY_PAGE'))
     this.mLoadingYn = false
-    this.$emit('enterCloudLoading', false)
-    setTimeout(() => {
-      this.$emit('showCloudLoading', false)
-    }, 1500)
   },
   computed: {
     GE_USER () {
