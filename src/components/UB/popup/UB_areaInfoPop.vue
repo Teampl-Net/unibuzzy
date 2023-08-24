@@ -100,7 +100,7 @@
           <div class="w100P" style="padding-bottom: 30px; height:auto; max-height:325px; ">
             <gEmpty tabName="전체" contentName="채널" v-if="pAreaDetail.bdList && pAreaDetail.bdList.length === 0" style="margin-top:50px;" />
             <template v-for="(chanEle, index) in pAreaDetail.bdList" :key="index">
-              <channelCard v-if="chanEle.targetKind === 'T'" style="margin-top: 10px;" class="moveBox cursorP chanRow" :pTeamList="GE_DISP_TEAM_LIST" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
+              <channelCard v-if="chanEle.targetKind === 'T'" style="margin-top: 10px;" class="moveBox cursorP chanRow" :pTeamList="GE_DISP_TEAM_LIST" @openImgPop="openImgPop" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
               <boardCard v-else class="moveBox chanRow cursorP" :boardElement="chanEle" @click="goBoardMain(chanEle)" @scrollMove="scrollMove" />
             </template>
           </div>
@@ -180,6 +180,9 @@ export default {
     }
   },
   methods: {
+    openImgPop (param) {
+      this.$emit('openImgPop', param)
+    },
     closeXPop () {
       var history = this.$store.getters['D_HISTORY/hStack']
       var removePage = history[history.length - 1]
