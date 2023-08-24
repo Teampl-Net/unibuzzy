@@ -23,7 +23,7 @@
         <p class="textLeft font16" style="width: calc(100% - 30px);">{{ pAreaInfo.bdAreaDesc }}</p>
       </div>
       <div class="w100P" style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; display: flex; margin-top: 0px;">
-        <div :class="{width100 :  mShowBdOrChan==='C'}" style="width: 50%; border-right: 2px solid #000;">
+        <div :class="{width100 :  mShowBdOrChan==='C'}" style="width: 50%; border-right: 2px solid #aaa;">
           <p v-if="mShowBdOrChan==='T'"><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> channels</p>
           <p v-else-if="mShowBdOrChan==='C'"><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> boards</p>
           <!-- default는 channels로-->

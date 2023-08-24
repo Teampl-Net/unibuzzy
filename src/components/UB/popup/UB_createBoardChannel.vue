@@ -27,13 +27,13 @@
       <!-- 게시판 생성일 때.-->
       <template v-if="(mShowBdOrChan==='C' || (!mShowBdOrChan && mSelectedTab === 0)) && !mChannelModi">
         <div style="padding:2rem 1rem;">
-          <p style="font-size:20px; padding-bottom:20px; color:#6768A7;">My Channel</p>
+          <p style="font-size:20px; color:#6768A7;">My channel list</p>
             <div style="width:100%; overflow-x:scroll;">
               <p v-if="mMyTeamList.length===0" style="padding:0 0 2rem;">It's empty.</p>
-              <ul v-else style="width:auto; overflow-x:scroll; display:flex; align-items:start; gap:20px; padding-left:0;">
+              <ul v-else style="width:auto; overflow-x:scroll; display:flex; align-items:start; height:111px; gap:20px; padding-left:0;">
                 <teamplate v-for="(team, index) in mMyTeamList.content" :key="index">
-                  <li @click="getSelectedChanIndex(index)" class="cursorP" style="width:80px; display:flex; align-items:center; flex-direction:column;">
-                    <div :class="{selectedChannel : mSelectedChanIndex===index}" style="width:80px; height:80px; border-radius:50%; border:3px solid #ccc;">
+                  <li @click="getSelectedChanIndex(index)" class="cursorP" style="padding-top:5px;width:80px; display:flex; align-items:center; flex-direction:column;">
+                    <div :class="{selectedChannel : mSelectedChanIndex===index}" style="width:80px; height:80px; border-radius:50%; border:3px solid #fff;">
                       <img :src="team.logoPathMtext" class="w100P" />
                     </div>
                     <div style="width:100%; overflow:hidden;">
@@ -61,7 +61,7 @@
               <textarea v-model="mNewBoardMemo" class="boardMemo" placeholder="Please enter up to 40 characters in the board description."/>
             </div>
           </div>
-          <div @click="newBoard" class="creBoardBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 80px;">Create New Board</div>
+          <div @click="newBoard" class="creBoardBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 80px;">Create</div>
 
         </div>
       </template>
@@ -314,7 +314,8 @@ export default {
   margin-bottom: 0;
 }
 .selectedChannel{
-  border:3px solid #000 !important;
+  border:3px solid rgba(255,255,255) !important;
+  box-shadow:0 0 5px rgba(0,0,0,0.6) !important;
 }
 .selectedChannel + p{
   font-weight:bold !important;

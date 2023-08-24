@@ -136,7 +136,6 @@ export default {
       }
     }
     this.readyFunction()
-    this.getParentYn()
   },
   data () {
     return {

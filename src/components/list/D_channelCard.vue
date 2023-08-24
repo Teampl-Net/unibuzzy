@@ -9,7 +9,7 @@
   }
   </i18n>
   <template>
-  <div class="w100P pSide-1" :style="
+  <div class="channelCardBox w100P pSide-1" :style="
         $appType === 'UB'
             ? 'background-color: rgba(255, 255, 255 ,0.5); border-radius: 10px;'
             : ''
@@ -153,7 +153,8 @@
             }}
             </p>
             <div v-if="$route.path === '/chanList'" class="fr">
-              <p v-if="mFollowYn" @click.stop="preventDefault" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
+              <!-- <p v-if="mFollowYn" @click.stop="preventDefault" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p> -->
+              <p v-if="(chanElement.followerKey && chanElement.followerKey !== null) || chanElement.D_CHAN_AUTH.followerKey" @click.stop="preventDefault" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
               <p v-else @click.stop="saveFollower" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;"> + Follow </p>
             </div>
         </div>
@@ -360,6 +361,13 @@ export default {
 </script>
 
   <style>
+  .channelCardBox{
+    box-shadow:inset 0 0 5px rgba(0,0,0,0);
+    transition:all .3s;
+  }
+  .channelCardBox:hover{
+    box-shadow:inset 0 0 6px rgba(0,0,0,0.3), 0 0 7px rgba(255,255,255,0.5);
+  }
 .chanLogoImgWrap {
   width: 40px;
   height: 40px;
