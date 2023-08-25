@@ -24,8 +24,8 @@
       </div>
       <div class="w100P" style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; display: flex; margin-top: 0px;">
         <div :class="{width100 :  mShowBdOrChan==='C'}" style="width: 50%; border-right: 2px solid #aaa;">
-          <p v-if="mShowBdOrChan==='T'"><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> channels</p>
-          <p v-else-if="mShowBdOrChan==='C'"><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> boards</p>
+          <p v-if="mShowBdOrChan==='T'"><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length > 0? pAreaDetail.bdList.length : '0' }}</span>{{ pAreaDetail.bdList.length === 1 ? ' channel' : ' channels' }}</p>
+          <p v-else-if="mShowBdOrChan==='C'"><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length > 0? pAreaDetail.bdList.length: '0' }}</span> {{ pAreaDetail.bdList.length === 1 ? 'board' : 'boards'}}</p>
           <!-- default는 channels로-->
           <p v-else><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> channels</p>
         </div>

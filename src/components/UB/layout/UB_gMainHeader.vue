@@ -8,9 +8,10 @@
       <img class="mainMenuIcon" height="20" @click="showMenu()" src="../../../assets/images/common/icon_menu.png"/>
     </div>
     <!-- <img v-if="pRouterHeaderInfo.logoImg" :src="pRouterHeaderInfo.logoImg" height="30" style="margin-right: 5px; border: 2px solid white; background: white; border-radius: 100%; -webkit-user-drag: none;" /> -->
-    <p v-if="$route.path === '/'" class="headerFont fontBold fl" style="color: #062bb5;" v-html="`${pRouterHeaderInfo}`"></p>
-    <!-- <p v-else-if="$route.path === '/chanList'" class="headerFont fontBold fl" style="color: #062bb5;" >Channel</p> -->
-    <p v-else class="headerFont fontBold fl" style="color: #062bb5;" v-html="pRouterHeaderInfo"></p>
+    <div style="width:60%; min-width:177px;">
+      <p v-if="$route.path === '/'" class="headerFont fontBold fl w100P" style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color: #062bb5;">{{ pRouterHeaderInfo }}</p>
+      <p v-else class="headerFont fontBold fl" style="width:100%; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color: #062bb5;">{{ pRouterHeaderInfo }}</p>
+    </div>
     <div @click="goLogList" class="cursorP" style="height: 44px; right: 55px; position: absolute; display: flex; align-items: center; justify-content: center;">
       <img height=20 src="../../../assets/images/common/icon_bell.svg"/>
     </div>

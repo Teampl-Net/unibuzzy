@@ -9,7 +9,7 @@
 }
 </i18n>
 <template>
-  <div class="w100P" style="min-height:80px; border-bottom:1px solid #cccccc70; display: flex; flex-direction: row; align-items: center; padding-top: 15px; padding-bottom: 15px;" @click="goBaordMain(boardElement)">
+  <div class="w100P pSide-1" :class="{BoardCardBox: $route.path === '/'}" style="background:rgba(255,255,255,0.5); margin-top:10px; border-radius:10px; min-height:80px; border-bottom:1px solid #cccccc70; display: flex; flex-direction: row; align-items: center; padding-top: 15px; padding-bottom: 15px;" @click="goBaordMain(boardElement)">
     <div style="width: 65px; height: 65px; border-radius: 50%; border: 2px solid #bbb; display:flex; justify-content:center; align-items:center;" :style="`background-color: ${boardElement.picBgPath}`">
       <img :src="require(`@/assets/images/editChan/icon_board.svg`)" alt="board" style="width:20px;"/>
     </div>
@@ -41,7 +41,15 @@ export default {
 }
 </script>
 
-<style>.chanLogoImgWrap {
+<style>
+  .BoardCardBox{
+    box-shadow:inset 0 0 5px rgba(0,0,0,0);
+    transition:all .3s;
+  }
+  .BoardCardBox:hover{
+    box-shadow:inset 0 0 12px rgba(97, 97, 97, 0.6), 0 0 7px rgba(255,255,255,0.5);
+  }
+.chanLogoImgWrap {
   width: 40px;
   height: 40px;
   padding: 5px;

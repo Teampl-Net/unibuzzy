@@ -310,7 +310,7 @@ input, select {
     font-weight: 400;
     font-size: 24px;
     line-height: 35px;
-    display: flex;
+    /* display: flex; */
     align-items: center;
     text-align: center;
     letter-spacing: -0.04em;

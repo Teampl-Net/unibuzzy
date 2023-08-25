@@ -9,7 +9,7 @@
   }
   </i18n>
   <template>
-  <div class="channelCardBox w100P pSide-1" :style="
+  <div class=" w100P pSide-1" :style="
         $appType === 'UB'
             ? 'background-color: rgba(255, 255, 255 ,0.5); border-radius: 10px;'
             : ''
@@ -23,6 +23,7 @@
             padding-bottom: 15px;
             margin-top:5px;
         "
+        :class="{channelCardBox : $route.path === '/'}"
   >
     <div @click="goChannelMain(chanElement)" class="w100P" style="position: relative;min-height: 80px;display: flex;flex-direction: row;align-items: center;">
     <!-- <div class="w100P" style="position: relative;min-height: 80px;display: flex;flex-direction: row;align-items: center;"> -->
@@ -366,7 +367,7 @@ export default {
     transition:all .3s;
   }
   .channelCardBox:hover{
-    box-shadow:inset 0 0 6px rgba(0,0,0,0.3), 0 0 7px rgba(255,255,255,0.5);
+    box-shadow:inset 0 0 12px rgba(97, 97, 97, 0.6), 0 0 7px rgba(255,255,255,0.5);
   }
 .chanLogoImgWrap {
   width: 40px;
