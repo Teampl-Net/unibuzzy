@@ -242,13 +242,16 @@ export default {
       console.log(openPopParam)
       this.$emit('openPop', openPopParam)
     },
-    contDelete (contentIndex) {
+    async contDelete (contentIndex) {
       // console.log(contentIndex)
       // console.log(this.GE_DISP_CONTS_LIST[contentIndex])
       this.GE_DISP_CONTS_LIST.splice(contentIndex, 1)
 
       // 삭제 후 리로드가 되지 않아 상위 div에 reload키를 넣어 다시 그려주었습니다. -- 다시 그려도 스크롤 이동하지 않았음
       this.mReloadKey += 1
+
+      var resultList = await this.getMyContentsList(null, null, false)
+      this.setContsList(resultList)
     },
     openFindPop () {
       this.mFindPopShowYn = true
@@ -440,7 +443,7 @@ export default {
       }
     },
     async setContsList (resultList) {
-      if (!resultList || resultList === '') return
+      if (!resultList) return
       var newArr = []
       this.endListSetFunc(resultList)
       /* var cont
@@ -560,6 +563,7 @@ export default {
           this.pClosePop()
         }
       } else {
+        this.pClosePop()
       }
     }
   },
