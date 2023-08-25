@@ -1,6 +1,6 @@
 <template>
-    <div v-if="CHANNEL_DETAIL && mChanInfo" ref="chanMainRef" style="width: 100%; height: 100%; overflow: hidden auto" :style="`background-position: top; background-size: contain; background-repeat: no-repeat; background-image: url(${CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext})`">
-        <div v-if="!mChanCardShowYn" style="width: 100%; height: 50px; color: #FFFFFF; display: flex; position: absolute; top: 0;align-items: center; justify-content: center; background-size: cover; background-position: top;background-repeat: no-repeat;" class="font20 fl fontBold" >
+    <div v-if="CHANNEL_DETAIL && mChanInfo" ref="chanMainRef" style="width: 100%; overflow: hidden auto" :style="`background-position: top; background-size: contain; background-repeat: no-repeat;  background-image: url(${CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext});height: calc(100% + ${Number($STATUS_HEIGHT)}px);  padding-top: ${Number($STATUS_HEIGHT)}px;`">
+        <div v-if="!mChanCardShowYn" style="width: 100%; color: #FFFFFF; display: flex; position: absolute; align-items: center; justify-content: center; background-size: cover; background-position: top;background-repeat: no-repeat;" class="font20 fl fontBold" :style="`top: ${Number($STATUS_HEIGHT)}px; height:${ 50}px `" >
             <p :style="CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;'">{{$changeText(CHANNEL_DETAIL.nameMtext)}}</p>
             <img
                 class="fl"
@@ -10,7 +10,7 @@
                 alt=""
             />
         </div>
-        <div ref="chanCardTopArea"  :class="['fade-out-element', { 'hidden': !mChanCardShowYn }]" class="fl" style="  width: 100%; transition: opacity 0.2s;   position: relative; height: 160px; display: flex; flex-direction: column; margin-top: 50px;" >
+        <div ref="chanCardTopArea"  :class="['fade-out-element', { 'hidden': !mChanCardShowYn }]" class="fl" style="  width: 100%; transition: opacity 0.2s;   position: relative; height: 160px; display: flex; flex-direction: column; " :style="`margin-top: ${50}px`" >
             <div style="width: 70px; height: 70px; position: absolute; left: 10px; border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center; background-color: #FFFFFF;" class="" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'"></div>
             <div style="width: 100%; height: 35px; display: flex; ">
                 <div style="width: 90px; height: 100%;"></div>
@@ -122,7 +122,7 @@
                 </div>
             </div>
         </div>
-        <div ref="chanPushListArea" class="fl"  style="width: 100%; min-height: calc(100% - 210px); border-top: 2px solid #eeeeee; background: rgb(220, 221, 235);">
+        <div ref="chanPushListArea" :style="`$`" class="fl"  style="width: 100%; min-height: calc(100% - 210px); border-top: 2px solid #eeeeee; background: rgb(220, 221, 235);">
             <pushList
                 :pCabinetKeyListStr="mCabKeyListStr"
                 :pUnknownYn="mUnknownYn"
@@ -350,20 +350,22 @@ export default {
         if (scrollTop > this.mLastScroll) {
           // down
 
-          if (chanCardTopRef.getBoundingClientRect().top < 55) {
+          if (chanCardTopRef.getBoundingClientRect().top < (55 + Number(this.$STATUS_HEIGHT))) {
+            this.mChanCardShowYn = false
             const triggerPosition = chanCardTopRef.getBoundingClientRect().top
             const opacity = Math.max(0, 1 - (chanCardTopRef.clientHeight / triggerPosition))
             if (chanCardTopArea) {
               chanCardTopArea.style.opacity = opacity.toFixed(2)
             }
-            this.mChanCardShowYn = false
+            // chanCardTopRef.style.marginTop = Number(this.$STATUS_HEIGHT) + 'px'
           }
         } else {
           // up
           // const triggerPosition = chanCardTopRef.getBoundingClientRect().top
 
-          if (chanCardTopRef.getBoundingClientRect().top >= 49) {
+          if (chanCardTopRef.getBoundingClientRect().top >= (49 + Number(this.$STATUS_HEIGHT))) {
             this.mChanCardShowYn = true
+            // chanCardTopRef.style.marginTop = ''
             const opacity = Math.max(0, 1)
             if (chanCardTopArea) {
               chanCardTopArea.style.opacity = opacity.toFixed(2)
@@ -1206,15 +1208,18 @@ export default {
   watch: {
     mChanCardShowYn (val, old) {
       const pushList = document.getElementById('pushListWrap')
+      // const chanCardTopRef = this.$refs.chanPushListArea
       const chanMainRef = this.$refs.chanMainRef
       console.log('val: ' + val + 'old: ' + old)
       if (pushList) {
         if (val && !old) {
           pushList.style.overflow = 'hidden'
           chanMainRef.style.overflow = 'hidden auto'
+          // chanCardTopRef.style.height = 'calc(100% - 210px)'
         } else if (!val && old) {
           pushList.style.overflow = 'hidden auto'
           chanMainRef.style.overflow = 'hidden'
+          // chanCardTopRef.style.height = 'calc(100% - 200px - ' + this.$STATUS_HEIGHT + 'px'
         }
       }
       // eslint-disable-next-line no-debugger
