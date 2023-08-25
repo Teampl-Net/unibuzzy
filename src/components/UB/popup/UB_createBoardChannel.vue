@@ -61,13 +61,15 @@
               <textarea v-model="mNewBoardMemo" class="boardMemo" placeholder="Please enter up to 40 characters in the board description."/>
             </div>
           </div>
-          <div @click="newBoard" class="creBoardBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 80px;">Create</div>
+          <div @click="checkValue" class="creBoardBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 80px;">Create</div>
 
         </div>
       </template>
       <!-- 채널 생성일 때. select한 건물에 대해서도 prop으로 보내주기-->
       <createChannel style="margin-top:310px; padding-bottom:80px;" :pBdKey="mBuildingKey" :class="{margin220 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pClosePop="pClosePop" :pChannelModi="mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
     </div>
+    <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='newBoard' />
+    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', mParams)" confirmType="one" v-if="mCreatedSuccessPopYn"/>
   </div>
 </template>
 
@@ -112,7 +114,8 @@ export default {
       mShowBdOrChan: '',
       mMyTeamList: [],
       mChannelModi: false,
-      mCreCheckPopYn: false
+      mCreCheckPopYn: false,
+      mCreCheckPopText: null
     }
   },
   methods: {
@@ -155,6 +158,20 @@ export default {
     getSelectedChanIndex (index) {
       this.mSelectedChanIndex = index
       console.log('selected mMyTeamList', this.mMyTeamList.content[this.mSelectedChanIndex])
+    },
+    returnConfirmText (type) {
+      if (type === 'B') {
+        if (this.mShowBdOrChan === 'C' || this.mSelectedChanIndex === 0) {
+          return `Create [${this.mNewBoardName}] Board.`
+        }
+      } else {
+        if (this.mShowBdOrChan === 'C' || this.mSelectedChanIndex === 0) {
+          return `[${this.mNewBoardName}] channel created successfully!`
+        }
+      }
+    },
+    checkValue () {
+      this.mCreCheckPopYn = true
     },
     async newBoard () {
       var param = {

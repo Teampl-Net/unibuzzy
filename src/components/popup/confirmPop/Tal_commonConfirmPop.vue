@@ -44,11 +44,18 @@ export default {
     nonHeaderYn: { type: Boolean, default: false },
     pCloseCreateConfirmPop: Function,
     pNewChanTeam: Array,
-    pGoChannelMain: Function
+    pGoChannelMain: Function,
+    pDelete: Boolean,
+    pNewBoard: Array
   },
   methods: {
     goOk () {
       this.$emit('ok')
+      if (this.pDelete === true) {
+        setTimeout(() => {
+          this.$showToastPop('Channel has been deleted.')
+        }, 1000)
+      }
     },
     goNo () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
@@ -76,6 +83,15 @@ export default {
       }
       openPopParam.targetType = 'chanDetail'
       this.$emit('openPop', openPopParam)
+    },
+    goBoardMain () {
+      var openPopParam = {}
+      openPopParam.initData = this.pNewBoard.teamKey
+      openPopParam.targetKey = this.pNewBoard.teamKey
+      openPopParam.targetKey = this.pNewBoard.targetKey
+      openPopParam.cabinetNameMtext = this.pNewBoard.cabinetNameMtext
+      openPopParam.targetType = 'boardMain'
+      this.$emit('openPop', openPopParam)
     }
   },
   computed: {
@@ -99,6 +115,7 @@ export default {
   created () {
     this.$addHistoryStack('gConfirmPop')
     console.log('===this.pNewChanTeam====', this.pNewChanTeam)
+    console.log('pDelete', this.pDelete)
   },
   mounted () {
     // if (this.confirmType === 'timeout') {
