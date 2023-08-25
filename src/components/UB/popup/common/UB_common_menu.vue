@@ -80,6 +80,10 @@ export default {
       this.mLogOutPopShowYn = true
     },
     goPage (link) {
+      if (this.$route.path === '/' && link === 'main') {
+        this.$emit('hideMenu')
+        return false
+      }
       if (this.GE_USER.unknownYn && link === 'myPage') {
         this.mUnknownLoginPopYn = true
       } else {
