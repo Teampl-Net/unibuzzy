@@ -68,7 +68,6 @@
             <gContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" @contDelete="refreshAll" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
             <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
-          {{GE_DISP_BOAR_LIST}}
           <template v-if="!GE_DISP_ALL_LIST && viewMainTab === 'A'&& !this.emptyYn">
             <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
           </template>
@@ -296,6 +295,7 @@ export default {
       handler (value, old) {
         var newArr = []
         if (!value[0] || !value) return
+        console.log(value)
         if (this.chanAlimYn) {
           if (value[0].creTeamKey !== this.pChannelDetail.teamKey) return
         }
@@ -321,8 +321,8 @@ export default {
           // eslint-disable-next-line no-debugger
           debugger
           newArr = [
-            ...this.GE_DISP_ALL_LIST,
-            value[0]
+            value[0],
+            ...this.GE_DISP_ALL_LIST
           ]
           this.allContentsList = this.replaceArr(newArr)
         }
@@ -481,8 +481,9 @@ export default {
       return this.replaceArr(returnBoardList)
     },
     GE_DISP_ALL_LIST () {
-      if (this.propParams && this.propParams.cTeamList && this.propParams.cTeamList.length > 0) {
-        return this.allContentsList
+      const parentYn = this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey) ? 1 : 0
+      if (parentYn === 1) {
+        return this.replaceArr(this.allContentsList)
       }
       var idx1, idx2
       var returnAllList = []
@@ -1724,8 +1725,8 @@ export default {
               } else if (this.viewMainTab === 'A') {
                 if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
                 newArr = [
-                  ...this.GE_DISP_ALL_LIST,
-                  ...resultList.content
+                  ...resultList.content,
+                  ...this.GE_DISP_ALL_LIST
                 ]
                 this.allContentsList = this.replaceArr(newArr)
               }
@@ -1749,8 +1750,8 @@ export default {
               } else if (this.viewMainTab === 'A') {
                 if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
                 newArr = [
-                  ...this.GE_DISP_ALL_LIST,
-                  ...resultList.content
+                  ...resultList.content,
+                  ...this.GE_DISP_ALL_LIST
                 ]
                 this.allContentsList = this.replaceArr(newArr)
               }

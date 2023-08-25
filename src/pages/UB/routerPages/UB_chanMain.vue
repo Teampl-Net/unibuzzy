@@ -189,9 +189,12 @@
             ref="chanAlimListWritePushRefs"
             :contentType="mPushListMainTab === 'P' ? 'ALIM' : 'BOAR'"
             @closeXPop="closeWritePushPop"
+            :params="mWriteAlimData"
             @openPop="openItem"
             :changeMainTab="changeMainTab"
-        />
+            @toAlimFromBoard="toAlimFromBoard"
+            :propData="mWriteBoardData"
+            />
         <div
             v-if="writeContentsYn === true"
             style="
@@ -244,6 +247,21 @@
             v-if="mUserDetailPopShowYn"
             :propData="mPopParam"
             :pClosePop="closeUserDetailPop"
+        />
+        <img
+        v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn"
+        id="writeBtn"
+        src="../../../assets/images/button/Icon_WriteAlimBtn.png"
+        @click="openWritePushPop"
+        alt="알림 작성 버튼"
+        style="
+            position: absolute;
+            bottom: 70px;
+            right: 10%;
+            z-index: 9;
+            cursor: pointer;
+        "
+        class="img-78 img-w66"
         />
     </div>
 </template>
@@ -338,6 +356,35 @@ export default {
   methods: {
     async closeWritePushPop (reloadYn) {
       this.writeContentsYn = false
+    },
+    async openWritePushPop () {
+      if (
+        this.propTeamKey &&
+        this.mSelectedWriteType === 'ALIM' &&
+        !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn &&
+        !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext
+      ) {
+        this.$showToastPop(this.$t('COMM_MSG_MEMB_NEED'))
+        this.$checkDeleteHistory('bottomWriteSheets')
+        this.$emit('openMember')
+        return
+      }
+      var writeParam = {}
+      writeParam.contentsJobkindId = 'BOAR'
+      writeParam.targetKey = this.CHANNEL_DETAIL.teamKey
+      writeParam.teamKey = this.CHANNEL_DETAIL.teamKey
+      writeParam.currentTeamKey = this.CHANNEL_DETAIL.teamKey
+      writeParam.targetType = 'writeContents'
+
+      var teamList = await this.$getWriteBoardData(this.CHANNEL_DETAIL.teamKey)
+      if (teamList === false) {
+        this.$showToastPop(this.$t('BOTTOM_MSG_CHECK'))
+        return
+      }
+      writeParam.selectBoardYn = true
+      writeParam.initData = teamList
+      this.$emit('openPop', writeParam)
+      // this.mSeleteWriteTypePopShowYn = false
     },
     handleScroll () {
       const chanCardTopRef = this.$refs.chanPushListArea
