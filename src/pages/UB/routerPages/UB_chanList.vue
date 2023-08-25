@@ -97,6 +97,7 @@ export default {
     this.mLoadingYn = false
   },
   created () {
+    this.getFilteredChannel()
     this.$emit('changePageHeader', this.$t('COMMON_NAME_CHANNEL'))
     if (this.propData) {
       if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
