@@ -47,7 +47,7 @@
     </transition>
     <onlyMemberSelectPop v-if="mPopType === 'selectMemberPop'" :propData="mPropData" :pClosePop="backClick" />
     <bookMemberDetail v-if="mPopType === 'bookMemberDetail'" @addDirectAddMemList="saveMemberDirectly" :propData="mPropData" :pClosePop="closePop" />
-    <gPopHeader headerTitle="Manage Member Type" :pClosePop="closeXPop" />
+    <gPopHeader :headerTitle="mDetailOpenYn? `Manage ${this.$changeText(selectBookDetail.cabinetNameMtext)}`:'Manage Member Type'" :pClosePop="closeXPop" />
     <gConfirmPop :confirmText='mConfirmText' :confirmType="mConfirmType" v-if="mConfirmPopShowYn" @no='mConfirmPopShowYn=false' @ok='confirmOk' />
     <div class="pagePaddingWrap longHeight"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'"  style="height:calc(100% - 300px); overflow: hidden; " >
 

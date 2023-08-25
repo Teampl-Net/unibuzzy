@@ -320,8 +320,8 @@ export default {
           // eslint-disable-next-line no-debugger
           debugger
           newArr = [
-            value[0],
-            ...this.GE_DISP_ALL_LIST
+            ...this.GE_DISP_ALL_LIST,
+            value[0]
           ]
           this.allContentsList = this.replaceArr(newArr)
         }
@@ -480,10 +480,6 @@ export default {
       return this.replaceArr(returnBoardList)
     },
     GE_DISP_ALL_LIST () {
-      const parentYn = this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey) ? 1 : 0
-      if (parentYn === 1) {
-        return this.replaceArr(this.allContentsList)
-      }
       var idx1, idx2
       var returnAllList = []
       var chanDetail = null
@@ -1716,8 +1712,8 @@ export default {
                 this.boardContentsList = this.replaceArr(newArr)
               } else if (this.viewMainTab === 'A') {
                 newArr = [
-                  ...resultList.content,
-                  ...this.GE_DISP_ALL_LIST
+                  ...this.GE_DISP_ALL_LIST,
+                  ...resultList.content
                 ]
                 this.allContentsList = this.replaceArr(newArr)
               }

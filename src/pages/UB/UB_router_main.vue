@@ -414,18 +414,6 @@ export default {
       console.log(mCabinet)
       return mCabinet
     },
-    async getTownCabinetList (teamKey) {
-      var param = {}
-      param.parentTeamKey = teamKey
-      var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getTownCabinetList',
-        param: param
-      })
-      if (result && result.data && result.data.result) {
-        this.mCabKeyListStr = result.data.cabinetKeyListStr
-      }
-      console.log(result)
-    },
     async goChanDetail (detailValue) {
       const chanMainParam = {}
       chanMainParam.targetType = 'chanDetail'
@@ -433,7 +421,6 @@ export default {
       if (!teamKey && detailValue.creTeamKey) {
         teamKey = detailValue.creTeamKey
       }
-      const parentYn = this.GE_USER.myTeamKey === teamKey ? 1 : 0
       chanMainParam.teamKey = teamKey
       chanMainParam.targetKey = teamKey
       if (detailValue && detailValue.nameMtext) chanMainParam.nameMtext = detailValue.nameMtext
@@ -483,22 +470,7 @@ export default {
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
         }
         initData = result.data
-        // await this.getTownCabinetList().then((res) => {
-        //   this.getMyContentsList(null, null, true).then((res) => {
-        //     initData.contentsList = res.content
-        //   })
-        // })
-        if (parentYn) {
-          if (detailValue.cabinetKeyListStr) {
-            this.mCabKeyListStr = detailValue.cabinetKeyListStr
-          } else {
-            await this.getTownCabinetList(teamKey)
-          }
-          initData.cabinetKeyListStr = this.mCabKeyListStr
-          initData.contentsList = await this.getMyContentsList(20, null, !nonLoadingYn)
-        } else {
-          initData.contentsList = result.data.contentsListPage
-        }
+        initData.contentsList = result.data.contentsListPage
       } catch (error) {
         this.mCloudLoadingShowYn = false
         this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
@@ -534,49 +506,6 @@ export default {
       // }
       this.$router.push(`/chan/${teamKey}`)
       // this.showCloudLoading(false, 1750)
-    },
-    async getMyContentsList (pageSize, offsetInput, loadingYn, searchParam) {
-      if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
-      this.mAxiosQueue.push('getPushContentsList')
-      var param = {}
-      if (searchParam) {
-        param = searchParam
-      }
-      param.orderbyStr = 'a.creDate DESC'
-      param.myUserKey = this.GE_USER.userKey
-      param.cabinetKeyListStr = this.mCabKeyListStr
-      if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.mOffsetInt }
-
-      if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = this.mPageSize }
-
-      if (this.findKeyList) {
-        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
-          param.title = this.findKeyList.searchKey
-        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
-          param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
-        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
-          param.toCreDateStr = this.findKeyList.toCreDateStr
-        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
-          param.fromCreDateStr = this.findKeyList.fromCreDateStr
-        } if (this.findKeyList.workStatCodeKey !== undefined && this.findKeyList.workStatCodeKey !== null && this.findKeyList.workStatCodeKey !== '') {
-          param.workStatCodeKey = this.findKeyList.workStatCodeKey
-        } if (this.findKeyList.creUserName !== undefined && this.findKeyList.creUserName !== null && this.findKeyList.creUserName !== '') {
-          param.creUserName = this.findKeyList.creUserName
-        } if (this.findKeyList.selectedSticker) {
-          param.findActStickerYn = true
-          param.findActYn = true
-          param.stickerKey = this.findKeyList.selectedSticker.stickerKey
-        }
-      }
-      var nonLoading = true
-      if (loadingYn) {
-        nonLoading = false
-      }
-      var result = await this.$getContentsList(param, nonLoading)
-      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList')
-      this.mAxiosQueue.splice(queueIndex, 1)
-      var resultList = result
-      return resultList
     },
     async openPop (params) {
       this.mPopType = params.targetType
