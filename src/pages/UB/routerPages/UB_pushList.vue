@@ -1785,10 +1785,10 @@ export default {
         /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
         }
-        data = data.sort(function (a, b) { // num으로 오름차순 정렬
-          return b.contentsKey - a.contentsKey
-          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
-        })
+        // data = data.sort(function (a, b) { // num으로 오름차순 정렬
+        //   return b.contentsKey - a.contentsKey
+        //   // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        // })
         return data
       }, [])
       return uniqueArr

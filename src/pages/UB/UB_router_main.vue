@@ -495,7 +495,7 @@ export default {
             await this.getTownCabinetList(teamKey)
           }
           initData.cabinetKeyListStr = this.mCabKeyListStr
-          // initData.contentsList = await this.getMyContentsList(20, null, !nonLoadingYn)
+          initData.contentsList = await this.getMyContentsList(20, null, !nonLoadingYn)
         } else {
           initData.contentsList = result.data.contentsListPage
         }
@@ -542,11 +542,7 @@ export default {
       if (searchParam) {
         param = searchParam
       }
-      if (this.viewTab === 'P') {
-        param.orderbyStr = 'a.popPoint DESC, a.creDate DESC'
-      } else if (this.viewTab === 'N') {
-        param.orderbyStr = 'a.creDate DESC'
-      }
+      param.orderbyStr = 'a.creDate DESC'
       param.myUserKey = this.GE_USER.userKey
       param.cabinetKeyListStr = this.mCabKeyListStr
       if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.mOffsetInt }
