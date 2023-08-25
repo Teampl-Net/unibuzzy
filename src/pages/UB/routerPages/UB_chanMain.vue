@@ -129,6 +129,7 @@
                 @openImgPop="openImgPop"
                 @goScroll="scrollOn"
                 :pBoardList="mChanInfo.boardList"
+                :propParams="this.mChanInfo.initData"
                 :initData="this.mChanInfo.initData.contentsList"
                 @cMemoEditYn="changeMemoEditYn"
                 :targetContents="{

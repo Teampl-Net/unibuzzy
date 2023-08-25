@@ -481,6 +481,9 @@ export default {
       return this.replaceArr(returnBoardList)
     },
     GE_DISP_ALL_LIST () {
+      if (this.propParams && this.propParams.cTeamList && this.propParams.cTeamList.length > 0) {
+        return this.allContentsList
+      }
       var idx1, idx2
       var returnAllList = []
       var chanDetail = null
@@ -535,9 +538,6 @@ export default {
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       if (this.allContentsList.length === 0) this.emptyYn = true
-
-      console.log('이게 돼야 하는데???')
-      console.log(returnAllList)
 
       return this.replaceArr(returnAllList)
     },
