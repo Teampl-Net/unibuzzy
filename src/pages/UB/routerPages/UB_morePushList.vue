@@ -8,14 +8,14 @@
     <div style="width: 100%; height: 100%;  float: left; background: rgb(220, 221, 235); position: relative; padding-top: 30px;">
       <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'" style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); padding-bottom: 60px; ">
         <template  v-for="(cont, index) in GE_DISP_CONT_LIST" :key="index">
-          <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" @fileDownload="fileDownload"/>
+          <gContentsBox @openImgPop="openImgPop" @openPage="goChannelMain" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" @fileDownload="fileDownload"/>
           <myObserver v-if="index === GE_DISP_CONT_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
         </template>
         <gEmpty :tabName="`스크랩`" contentName="게시판" v-if="GE_DISP_CONT_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
       </div>
     </div>
     <div @click="openSearch" class="cursorP" style="position: absolute; cursor: pointer; right: 10%; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid #8B8AD1; width: 50px; height: 50px; background-color: #fff;" :style="'bottom:' + (this.$STATUS_HEIGHT + 80)+ 'px'">
-      <img style="width: 50%;" src="@/assets/images/button/icon_search_color.svg" alt="채널 만들기 버튼">
+      <img style="width: 50%;" src="@/assets/images/button/icon_search_color.svg" alt="search btn">
     </div>
   </div>
 </template>
@@ -51,6 +51,18 @@ export default {
     }
   },
   methods: {
+    goChannelMain (param) {
+      const pageParam = {}
+      if (param.teamKey) {
+        pageParam.targetKey = param.teamKey
+      } else {
+        pageParam.targetKey = param.targetKey
+      }
+      pageParam.targetType = 'chanDetail'
+      pageParam.nameMtext = param.nameMtext
+      pageParam.cabinetKeyListStr = this.mCabKeyListStr
+      this.$emit('openPage', pageParam)
+    },
     closeXPop () {
       this.$router.push('/mypage')
     },

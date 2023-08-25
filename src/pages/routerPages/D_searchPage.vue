@@ -140,7 +140,7 @@
             <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" style="float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 60px;">
               <div class="w100P fl chanRow" style="height:1px;" />
               <template v-if="this.mSearchContentTab === 'ALL'" >
-                <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index" />
+                <gContentsBox @openImgPop="openImgPop" @openPage="goChannelMain" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index" />
                 <template v-if="mGetAxiosYn && GE_DISP_ALL_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
@@ -272,9 +272,9 @@ export default {
       } else {
         pageParam.targetKey = param.targetKey
       }
-      pageParam.areaInfo = this.pAreaInfo
       pageParam.targetType = 'chanDetail'
       pageParam.nameMtext = param.nameMtext
+      pageParam.cabinetKeyListStr = this.mCabKeyListStr
       this.$emit('openPage', pageParam)
     },
     openImgPop (param) {
