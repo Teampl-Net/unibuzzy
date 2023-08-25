@@ -233,6 +233,7 @@ export default {
       if (!this.mPropParams.chanYn) {
         this.$addChanList(this.mCreTeamKey)
       }
+      console.log('오류는 어디??? mPropParams', this.mPropParams)
       var propBoardInitData = JSON.parse(JSON.stringify(this.mPropParams.initData))
       this.cabinetDetail = propBoardInitData.cabinet
       this.cabinetDetail.shareAuth = this.$checkUserAuth(propBoardInitData.cabinet.mShareItemList)

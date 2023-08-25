@@ -208,7 +208,9 @@ export default {
         // this.getTeamMenuList()
         this.mCreBoardCheckPopYn = false
         this.mCreatedSuccessPopYn = true
-        this.mNewBoardInfo = param.cabinet
+        this.mNewBoardInfo.initData = param
+        this.mNewBoardInfo.teamKey = param.cabinet.creTeamKey
+        this.mNewBoardInfo.targetKey = response.data.cabinetKey
         console.log('newBoard response', response)
       }
     },

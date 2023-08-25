@@ -25,7 +25,7 @@
 <template>
 <div id="addTeamMemberArea" class="addTeamMemberArea">
     <gPopHeader headerTitle="Add Manually" :pClosePop="pClosePop" />
-    <div class="w100P" style="padding-top: 60px;"></div>
+    <div class="w100P" style="padding-top: 80px;"></div>
 <userImgSelectCompo  @closeXPop="closeXPop" :pSelectedIconPath="this.mUserInfo.domainPath + mUserInfo.userProfileImg" :parentSelectedIconFileKey="mUserInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
     <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="@/assets/images/common/icon_back.png"/>

@@ -2,9 +2,8 @@
   <div class="w100P h100P" style="padding-bottom: 120px;" :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 50 )+ 'px'">
     <div class="w100P " style="padding-top:20px; padding-right:16px; display: flex; align-items: center; justify-content: flex-end; text-align:right;">
       <select v-model="showArray" class="mright-05">
-        <option :value="undefined" hidden selected>Choose</option>
-        <option style="whith: 100%; height: 30px;" value="recent" class="font16">Recent</option>
-        <option style="whith: 100%; height: 30px;" value="popular" class="font16">Popular</option>
+        <option style="width: 100%; height: 30px;" value="recent" class="font16">Recent</option>
+        <option style="width: 100%; height: 30px;" value="popular" class="font16">Popular</option>
       </select>
       <div class="mright-05" style=" width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; float: right; " :style="'bottom:' + (this.$STATUS_HEIGHT + 150)+ 'px'"  @click="refreshList">
           <img src="@/assets/images/common/commonReload.png" class="cursorP" style="width: 90%;">
@@ -97,7 +96,6 @@ export default {
     this.mLoadingYn = false
   },
   created () {
-    this.getFilteredChannel()
     this.$emit('changePageHeader', this.$t('COMMON_NAME_CHANNEL'))
     if (this.propData) {
       if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
