@@ -1,11 +1,17 @@
 <template>
   <div class="w100P h100P" style="padding-bottom: 120px;" :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 50 )+ 'px'">
-    <div class="w100P" style="padding-top:20px; padding-right:16px; padding-bottom:10px; text-align:right;">
-      <select v-model="showArray">
+    <div class="w100P " style="padding-top:20px; padding-right:16px; display: flex; align-items: center; justify-content: flex-end; text-align:right;">
+      <select v-model="showArray" class="mright-05">
         <option :value="undefined" hidden selected>Choose</option>
         <option style="whith: 100%; height: 30px;" value="recent" class="font16">Recent</option>
         <option style="whith: 100%; height: 30px;" value="popular" class="font16">Popular</option>
       </select>
+      <div class="mright-05" style=" width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; float: right; " :style="'bottom:' + (this.$STATUS_HEIGHT + 150)+ 'px'"  @click="refreshList">
+          <img src="@/assets/images/common/commonReload.png" class="cursorP" style="width: 90%;">
+      </div>
+      <div @click="$router.push('/findChan')" class="cursorP" style="cursor: pointer; float: right; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 25px; height: 25px; background-color: #fff;" :style="'bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
+        <img style="width: 90%;" src="@/assets/images/button/icon_search_color.svg" alt="채널 만들기 버튼">
+      </div>
     </div>
     <div style="width: 100%; height: 100%;  float: left; background: #fff; position: relative;">
 
@@ -20,12 +26,6 @@
             <!-- <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @scrollMove="scrollMove" /> -->
             <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
           </template>
-      </div>
-      <div @click="$router.push('/findChan')" class="cursorP" style="position: absolute; cursor: pointer; right: 10%; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid #8B8AD1; width: 50px; height: 50px; background-color: #fff;" :style="'bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
-        <img style="width: 50%;" src="@/assets/images/button/icon_search_color.svg" alt="채널 만들기 버튼">
-      </div>
-      <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px;  right: 10%;" :style="'bottom:' + (this.$STATUS_HEIGHT + 150)+ 'px'"  @click="refreshList">
-          <img src="@/assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
       </div>
     </div>
   </div>
