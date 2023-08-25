@@ -407,7 +407,6 @@ export default {
       goBoardMainParam.cabinetNameMtext = boardListData.cabinetNameMtext
       // 채널에서 들어왔는지, 링크나 메인에서 바로 들어왔는지 구분
       goBoardMainParam.chanYn = true
-
       this.$emit('openItem', goBoardMainParam)
       // var boardDetail = result
 

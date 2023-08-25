@@ -53,6 +53,9 @@ export default {
     async routePage (page) {
       // eslint-disable-next-line no-debugger
       debugger
+      if (this.$route.path === '/' && page === 'main') {
+        return false
+      }
       if (page === 'myPage' && this.GE_USER.unknownYn) {
         this.pOpenUnknownLoginPop()
         return

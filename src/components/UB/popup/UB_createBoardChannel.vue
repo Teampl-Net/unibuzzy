@@ -68,8 +68,8 @@
       <!-- 채널 생성일 때. select한 건물에 대해서도 prop으로 보내주기-->
       <createChannel style="margin-top:310px; padding-bottom:80px;" :pBdKey="mBuildingKey" :class="{margin220 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pClosePop="pClosePop" :pChannelModi="mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
     </div>
-    <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='newBoard' />
-    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', mParams)" confirmType="one" v-if="mCreatedSuccessPopYn"/>
+    <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreBoardCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreBoardCheckPopYn" :pCreBoardCheckPopYn="mCreBoardCheckPopYn" @ok='newBoard' />
+    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreBoard', mNewBoardInfo)" confirmType="one" v-if="mCreatedSuccessPopYn" :pCloseCreatedSuccessPopYn="closeCreatedSuccessPopYn" :pNewBoard="mNewBoardInfo"/>
   </div>
 </template>
 
@@ -114,8 +114,10 @@ export default {
       mShowBdOrChan: '',
       mMyTeamList: [],
       mChannelModi: false,
-      mCreCheckPopYn: false,
-      mCreCheckPopText: null
+      mCreBoardCheckPopYn: false,
+      mCreCheckPopText: null,
+      mCreatedSuccessPopYn: false,
+      mNewBoardInfo: []
     }
   },
   methods: {
@@ -166,12 +168,15 @@ export default {
         }
       } else {
         if (this.mShowBdOrChan === 'C' || this.mSelectedChanIndex === 0) {
-          return `[${this.mNewBoardName}] channel created successfully!`
+          return `[${this.mNewBoardName}] board created successfully!`
         }
       }
     },
     checkValue () {
-      this.mCreCheckPopYn = true
+      this.mCreBoardCheckPopYn = true
+    },
+    closeCreatedSuccessPopYn () {
+      this.mCreatedSuccessPopYn = false
     },
     async newBoard () {
       var param = {
@@ -201,35 +206,12 @@ export default {
       console.log('newBoard param', param)
       if (response) {
         // this.getTeamMenuList()
+        this.mCreBoardCheckPopYn = false
+        this.mCreatedSuccessPopYn = true
+        this.mNewBoardInfo = param.cabinet
         console.log('newBoard response', response)
       }
     },
-    // async getTeamMenuList () {
-    //   var paramMap = new Map()
-    //   paramMap.set('teamKey', this.mMyTeamNameList[this.mSelectedChanIndex].teamKey)
-    //   paramMap.set('sysCabinetCode', 'BOAR')
-    //   paramMap.set('userKey', this.GE_USER.userKey)
-    //   paramMap.set('managerYn', true)
-    //   var result = await this.$getTeamMenuList(paramMap, true)
-
-    //   this.cabinetList = result
-    //   console.log('===== cabinetList ====')
-    //   console.log(this.cabinetList)
-    // },
-    /* 해당 area에 속한 channel들만 보이게 함 */
-    // 내가 관리하고 있는 channel들 중에서 내가 클릭한 area와 이름이 같은 것들만 추출함
-    // getMatchName () {
-    //   if (this.mMyTeamList) {
-    //     for (let i = 0; i < this.mMyTeamList.content.length; i++) {
-    //       if (this.pAreaInfo) {
-    //         if (this.mMyTeamList.content[i].bdAreaNameMtext === this.pAreaInfo.bdAreaNameMtext) {
-    //           this.mMyTeamNameList.push(this.mMyTeamList.content[i])
-    //         }
-    //       }
-    //     }
-    //     console.log('mMyTeamNameList', this.mMyTeamNameList)
-    //   }
-    // },
     choiceColor (color) {
       this.selectedColor = color
       this.$refs.colorPicker.setColor(color)
@@ -275,6 +257,32 @@ export default {
         console.log('mMyTeamList', this.mMyTeamList)
       }
     }
+    // async getTeamMenuList () {
+    //   var paramMap = new Map()
+    //   paramMap.set('teamKey', this.mMyTeamNameList[this.mSelectedChanIndex].teamKey)
+    //   paramMap.set('sysCabinetCode', 'BOAR')
+    //   paramMap.set('userKey', this.GE_USER.userKey)
+    //   paramMap.set('managerYn', true)
+    //   var result = await this.$getTeamMenuList(paramMap, true)
+
+    //   this.cabinetList = result
+    //   console.log('===== cabinetList ====')
+    //   console.log(this.cabinetList)
+    // },
+    /* 해당 area에 속한 channel들만 보이게 함 */
+    // 내가 관리하고 있는 channel들 중에서 내가 클릭한 area와 이름이 같은 것들만 추출함
+    // getMatchName () {
+    //   if (this.mMyTeamList) {
+    //     for (let i = 0; i < this.mMyTeamList.content.length; i++) {
+    //       if (this.pAreaInfo) {
+    //         if (this.mMyTeamList.content[i].bdAreaNameMtext === this.pAreaInfo.bdAreaNameMtext) {
+    //           this.mMyTeamNameList.push(this.mMyTeamList.content[i])
+    //         }
+    //       }
+    //     }
+    //     console.log('mMyTeamNameList', this.mMyTeamNameList)
+    //   }
+    // },
   },
   created () {
     // this.mSelectedTab = -1

@@ -46,7 +46,9 @@ export default {
     pNewChanTeam: Array,
     pGoChannelMain: Function,
     pDelete: Boolean,
-    pNewBoard: Array
+    pNewBoard: Array,
+    pCreBoardCheckPopYn: Boolean,
+    pCloseCreatedSuccessPopYn: Function
   },
   methods: {
     goOk () {
@@ -66,31 +68,19 @@ export default {
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
         this.$store.commit('D_HISTORY/updateStack', hStack)
         this.$emit('no')
-        if (this.pCloseCreateConfirmPop) {
-          this.pCloseCreateConfirmPop()
-        }
-        if (this.pGoChannelMain) {
-          this.pGoChannelMain()
-          console.log('pNewChanTeam', this.pNewChanTeam)
+        if (this.pCloseCreatedSuccessPopYn) {
+          this.pCloseCreatedSuccessPopYn()
+          this.goBoardMain()
         }
       }
-    },
-    goChannelMain () {
-      var openPopParam = {}
-      openPopParam.targetKey = this.pNewChanTeam.teamKey
-      if (!openPopParam.targetKey) {
-        openPopParam.targetKey = this.pNewChanTeam.targetKey
-      }
-      openPopParam.targetType = 'chanDetail'
-      this.$emit('openPop', openPopParam)
     },
     goBoardMain () {
       var openPopParam = {}
-      openPopParam.initData = this.pNewBoard.teamKey
-      openPopParam.targetKey = this.pNewBoard.teamKey
-      openPopParam.targetKey = this.pNewBoard.targetKey
+      openPopParam.teamKey = this.pNewBoard.creTeamKey
+      openPopParam.targetKey = this.pNewBoard.cabinetKey
       openPopParam.cabinetNameMtext = this.pNewBoard.cabinetNameMtext
       openPopParam.targetType = 'boardMain'
+      console.log('openPopParam', openPopParam)
       this.$emit('openPop', openPopParam)
     }
   },
@@ -114,8 +104,7 @@ export default {
   },
   created () {
     this.$addHistoryStack('gConfirmPop')
-    console.log('===this.pNewChanTeam====', this.pNewChanTeam)
-    console.log('pDelete', this.pDelete)
+    console.log('pNewBoard', this.pNewBoard)
   },
   mounted () {
     // if (this.confirmType === 'timeout') {

@@ -650,13 +650,21 @@ export default {
       this.mGPopShowYn = false
     },
     async goBoardDetail (params) {
+      console.log('==params==', params)
       this.mChanInfo = params
-      this.mChanInfo.chanYn = params.chanYn
+      if (!this.mChanInfo.chanYn) {
+        params.chanYn = false
+      } else {
+        this.mChanInfo.chanYn = params.chanYn
+      }
       this.mTargetType = 'boardMain'
       // await this.getCabinetDetail(params)
+      console.log('==mChanInfo==', this.mChanInfo)
+
       this.$router.push(`/board/${params.teamKey}/${params.targetKey}`)
     },
     async openPage (params) {
+      console.log('================params.targetType', params.targetType)
       if (params.targetType === 'chanDetail') {
         if (this.$route.path === '/') {
           /* await new Promise((resolve) => setTimeout(resolve, 1500)) */
@@ -676,6 +684,7 @@ export default {
         if (this.$route.path === '/') {
           /* await new Promise((resolve) => setTimeout(resolve, 1500)) */
         }
+        console.log('goBoardDetail이 실행됩니다~~~')
         this.goBoardDetail(params)
         this.hideMenu()
         return
