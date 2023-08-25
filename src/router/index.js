@@ -184,12 +184,12 @@ if (type === 'UB') {
       props: true,
       component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback.vue')
     },
-    {
-      path: '/naverCallbackTest',
-      name: 'naverCallbackTest',
-      props: true,
-      component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback copy.vue')
-    },
+    // {
+    //   path: '/naverCallbackTest',
+    //   name: 'naverCallbackTest',
+    //   props: true,
+    //   component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback copy.vue')
+    // },
     {
       path: '/testLoginPage',
       name: 'testLoginPage',
@@ -244,12 +244,12 @@ if (type === 'UB') {
       props: true,
       component: () => import(/* webpackChunkName: "about" */ '../components/pageComponents/intro/D_certi_phone_return.vue')
     },
-    {
-      path: '/test',
-      name: 'test',
-      props: true,
-      component: () => import(/* webpackChunkName: "about" */ '../pages/intro/suminTest.vue')
-    },
+    // {
+    //   path: '/test',
+    //   name: 'test',
+    //   props: true,
+    //   component: () => import(/* webpackChunkName: "about" */ '../pages/intro/suminTest.vue')
+    // },
     {
       path: '/ssoLogin',
       name: 'ssoLogin',
@@ -367,12 +367,12 @@ if (type === 'UB') {
       props: true,
       component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback.vue')
     },
-    {
-      path: '/naverCallbackTest',
-      name: 'naverCallbackTest',
-      props: true,
-      component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback copy.vue')
-    },
+    // {
+    //   path: '/naverCallbackTest',
+    //   name: 'naverCallbackTest',
+    //   props: true,
+    //   component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback copy.vue')
+    // },
     {
       path: '/testLoginPage',
       name: 'testLoginPage',
@@ -431,12 +431,12 @@ if (type === 'UB') {
       props: true,
       component: () => import(/* webpackChunkName: "about" */ '../components/pageComponents/intro/D_certi_phone_return.vue')
     },
-    {
-      path: '/test',
-      name: 'test',
-      props: true,
-      component: () => import(/* webpackChunkName: "about" */ '../pages/intro/suminTest.vue')
-    },
+    // {
+    //   path: '/test',
+    //   name: 'test',
+    //   props: true,
+    //   component: () => import(/* webpackChunkName: "about" */ '../pages/intro/suminTest.vue')
+    // },
     {
       path: '/ssoLogin',
       name: 'ssoLogin',

@@ -111,12 +111,12 @@ const routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback.vue')
   },
-  {
-    path: '/naverCallbackTest',
-    name: 'naverCallbackTest',
-    props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback copy.vue')
-  },
+  // {
+  //   path: '/naverCallbackTest',
+  //   name: 'naverCallbackTest',
+  //   props: true,
+  //   component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback copy.vue')
+  // },
   {
     path: '/testLoginPage',
     name: 'testLoginPage',
