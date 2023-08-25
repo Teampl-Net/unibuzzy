@@ -320,10 +320,16 @@ export default {
     async requestSearchList (param) {
       this.mOffsetInt = 0
       this.mContsList = []
-      this.findKeyList.searchKey = null
-      this.findKeyList.creTeamNameMtext = null
-      this.findKeyList.toCreDateStr = null
-      this.findKeyList.fromCreDateStr = null
+      if (param === 'searchKey') {
+        this.findKeyList.searchKey = null
+      } else if (param === 'creUserName') {
+        this.findKeyList.creUserName = null
+      } else if (param === 'creTeamNameMtext') {
+        this.findKeyList.creTeamNameMtext = null
+      } else if (param === 'creDate') {
+        this.findKeyList.toCreDateStr = null
+        this.findKeyList.fromCreDateStr = null
+      }
       this.resultSearchKeyList = []
       this.targetCKey = null
       if (param) {
