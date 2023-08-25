@@ -51,27 +51,28 @@
           <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
             <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'" @fileDownload="fileDownload"/>
           </template>
-          <template v-if="viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0 && !this.emptyYn">
+          <template v-if="!GE_DISP_BOAR_LIST && viewMainTab === 'B'">
             <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
           </template>
-          <gEmpty :tabName="currentTabName" contentName="게시판" v-else-if="this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0 && this.emptyYn" :key="mEmptyReloadKey" class="mtop-2"/>
+          <gEmpty :tabName="currentTabName" contentName="게시판" v-else-if="GE_DISP_BOAR_LIST && this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0 && this.emptyYn" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template  v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index">
             <gContentsBox @openImgPop="openImgPop" :here="here" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'" @fileDownload="fileDownload"/>
           </template>
-          <template v-if="viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0 && !this.emptyYn">
+          <template v-if="!GE_DISP_ALIM_LIST && viewMainTab === 'P'">
             <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
           </template>
-          <gEmpty :tabName="currentTabName" contentName="알림" v-else-if="this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0 && this.emptyYn" :key="mEmptyReloadKey" class="mtop-2"/>
+          <gEmpty :tabName="currentTabName" contentName="알림" v-else-if="GE_DISP_ALIM_LIST && this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0 && this.emptyYn" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
             <gContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" @contDelete="refreshAll" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
             <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
-          <template v-if="viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0 && !this.emptyYn">
+          {{GE_DISP_BOAR_LIST}}
+          <template v-if="!GE_DISP_ALL_LIST && viewMainTab === 'A'&& !this.emptyYn">
             <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
           </template>
-          <gEmpty :tabName="currentTabName" contentName="전체" v-else-if="this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0 && this.emptyYn" :key="mEmptyReloadKey" class="mtop-2"/>
+          <gEmpty :tabName="currentTabName" contentName="전체" v-else-if="GE_DISP_ALL_LIST && this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0 && this.emptyYn" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template  v-for="(cont, index) in this.GE_FILE_LIST" :key="index">
               <gFileBox @openImgPop="openImgPop" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'F'"/>
@@ -389,6 +390,7 @@ export default {
       var chanDetail = null
       var dataList = null
       var i = 0
+      if (!this.alimContentsList) return null
       if (!this.computedYn) return
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.computedYn = false
@@ -428,8 +430,6 @@ export default {
         }
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      if (this.alimContentsList.length === 0) this.emptyYn = true
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       this.computedYn = true
       return this.replaceArr(returnAlimList)
     },
@@ -438,6 +438,7 @@ export default {
       var returnBoardList = []
       var chanDetail = null
       var dataList = null
+      if (!this.boardContentsList) return null
       var i = 0
       for (i = 0; i < this.boardContentsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.boardContentsList[i].creTeamKey)
@@ -484,6 +485,7 @@ export default {
       var returnAllList = []
       var chanDetail = null
       var dataList = null
+      if (!this.allContentsList) return null
       var i = 0
       for (i = 0; i < this.allContentsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.allContentsList[i].creTeamKey)
@@ -636,18 +638,21 @@ export default {
       if (!result || result === '' || !result.content) return
       await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
       if (this.viewMainTab === 'P') {
+        if (!this.alimContentsList) this.alimContentsList = []
         newArr = [
           ...this.alimContentsList,
           ...result.content
         ]
         this.alimContentsList = this.replaceArr(newArr)
       } else if (this.viewMainTab === 'B') {
+        if (!this.boardContentsList) this.boardContentsList = []
         newArr = [
           ...this.boardContentsList,
           ...result.content
         ]
         this.boardContentsList = this.replaceArr(newArr)
       } else if (this.viewMainTab === 'A') {
+        if (!this.allContentsList) this.allContentsList = []
         newArr = [
           ...this.allContentsList,
           ...result.content
@@ -768,6 +773,7 @@ export default {
         var contentDetail
 
         if (this_.viewMainTab === 'P') {
+          if (!this_.allContentsList) this_.allContentsList = []
           newArr = [
             ...this_.alimContentsList,
             ...response.content
@@ -796,6 +802,7 @@ export default {
             }
           }
         } else {
+          if (!this_.boardContentsList) this_.boardContentsList = []
           newArr = [
             ...this_.boardContentsList,
             ...response.content
@@ -1445,10 +1452,9 @@ export default {
       // this.targetCKey = null
       this.$emit('changeMainTab', tab)
       this.canLoadYn = true
-      this.endListYn = false
       this.viewMainTab = tab
       this.offsetInt = 0
-      this.emptyYn = false
+      this.emptyYn = null
       this.targetCKey = null
       this.loadMoreDESCYn = true
       this.findKeyList.searchKey = null
@@ -1699,18 +1705,21 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
             if (descYn) {
               if (this.viewMainTab === 'P') {
+                if (!this.GE_DISP_ALIM_LIST) this.GE_DISP_ALIM_LIST = []
                 newArr = [
                   ...resultList.content,
                   ...this.GE_DISP_ALIM_LIST
                 ]
                 this.alimContentsList = this.replaceArr(newArr)
               } else if (this.viewMainTab === 'B') {
+                if (!this.GE_DISP_BOAR_LIST) this.GE_DISP_BOAR_LIST = []
                 newArr = [
                   ...resultList.content,
                   ...this.GE_DISP_BOAR_LIST
                 ]
                 this.boardContentsList = this.replaceArr(newArr)
               } else if (this.viewMainTab === 'A') {
+                if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
                 newArr = [
                   ...this.GE_DISP_ALL_LIST,
                   ...resultList.content
@@ -1721,18 +1730,21 @@ export default {
             } else {
               if (resultList.content.length < 0) { this.canUpLoadYn = false } else { this.upOffSetInt += 1 }
               if (this.viewMainTab === 'P') {
+                if (!this.GE_DISP_ALIM_LIST) this.GE_DISP_ALIM_LIST = []
                 newArr = [
                   ...resultList.content,
                   ...this.GE_DISP_ALIM_LIST
                 ]
                 this.alimContentsList = this.replaceArr(newArr)
               } else if (this.viewMainTab === 'B') {
+                if (!this.GE_DISP_BOAR_LIST) this.GE_DISP_BOAR_LIST = []
                 newArr = [
                   ...resultList.content,
                   ...this.GE_DISP_BOAR_LIST
                 ]
                 this.boardContentsList = this.replaceArr(newArr)
               } else if (this.viewMainTab === 'A') {
+                if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
                 newArr = [
                   ...resultList.content,
                   ...this.GE_DISP_ALL_LIST
@@ -1775,7 +1787,7 @@ export default {
     },
     replaceArr (arr) {
       // var this_ = this
-      if (!arr && arr.length === 0) return []
+      if (!arr || arr.length === 0) return []
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
         /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
@@ -1791,7 +1803,7 @@ export default {
     },
     replaceFileArr (arr) {
       // var this_ = this
-      if (!arr && arr.length === 0) return []
+      if (!arr || arr.length === 0) return []
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex((item) => Number(item.fileKey) === Number(current.fileKey)) === -1) {
         /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
@@ -1821,7 +1833,7 @@ export default {
       this.changeTab(this.viewTab)
     },
     async changeTab (tabName) {
-      this.emptyYn = false
+      this.emptyYn = null
       this.targetCKey = null
       this.offsetInt = 0
       this.viewTab = tabName
@@ -2228,9 +2240,9 @@ export default {
       mCommonFilterList: [{ display: 'Recent', name: 'N' }, { display: 'Popular', name: 'P' }, { display: 'Saved', name: 'S' }, { display: 'My', name: 'M' }],
       mUnknownLoginPopYn: false,
       mEmptyReloadKey: 0,
-      allContentsList: [],
-      alimContentsList: [],
-      boardContentsList: [],
+      allContentsList: null,
+      alimContentsList: null,
+      boardContentsList: null,
       paddingTop: 45,
       pushListReloadShowYn: false,
       imgUrl: '',
@@ -2252,7 +2264,7 @@ export default {
       axiosResultTempList: [],
       /* readCheckBoxYn: false, */
       currentTabName: '최신',
-      emptyYn: false,
+      emptyYn: null,
       loadMoreDESCYn: null,
       targetCKey: null,
       failPopYn: false,
