@@ -115,7 +115,7 @@ export default {
         this.$showToastPop('Successfully saved!')
         // this.saveOkPopShowYn = true
       } catch (error) {
-        this.$showToastPop('Failed')
+        this.$showToastPop('save Failed')
         // console.log(error)
       }
     }
