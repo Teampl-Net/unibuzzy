@@ -111,7 +111,8 @@ export default {
       selectedColor: '#FFCDD2',
       mShowBdOrChan: '',
       mMyTeamList: [],
-      mChannelModi: false
+      mChannelModi: false,
+      mCreCheckPopYn: false
     }
   },
   methods: {
