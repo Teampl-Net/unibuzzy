@@ -863,16 +863,9 @@ export default {
           )
         }
         initData = result.data
-        const parentYn = this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey) ? 1 : 0
         if (!initData.cabinetKeyListStr) {
-          if (parentYn === 1) {
-            await this.getTownCabinetList()
-            initData.contentsList = await this.getMyContentsList(20, null, true)
-            initData.cabinetKeyListStr = this.mCabKeyListStr
-          } else {
-            initData.contentsList = result.data.contentsListPage
-            initData.cabinetKeyListStr = result.data.cabinetKeyListStr
-          }
+          initData.contentsList = result.data.contentsListPage
+          initData.cabinetKeyListStr = result.data.cabinetKeyListStr
         }
         this.mCabKeyListStr = initData.cabinetKeyListStr
       } catch (error) {

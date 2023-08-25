@@ -536,6 +536,9 @@ export default {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       if (this.allContentsList.length === 0) this.emptyYn = true
 
+      console.log('이게 돼야 하는데???')
+      console.log(returnAllList)
+
       return this.replaceArr(returnAllList)
     },
     GE_USER () {
@@ -1746,8 +1749,8 @@ export default {
               } else if (this.viewMainTab === 'A') {
                 if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
                 newArr = [
-                  ...resultList.content,
-                  ...this.GE_DISP_ALL_LIST
+                  ...this.GE_DISP_ALL_LIST,
+                  ...resultList.content
                 ]
                 this.allContentsList = this.replaceArr(newArr)
               }
