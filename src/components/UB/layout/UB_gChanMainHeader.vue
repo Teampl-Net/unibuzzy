@@ -5,7 +5,7 @@
       <img v-else-if="pNoAuthYn === true " src="../../../assets/images/footer/icon_home_fillin.svg">
       <img v-else src="../../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
     </div>
-    <span @click="test" class="popHeaderTitleSpan font20" :style="bgblack === true ? 'color:white;':'' ">
+    <span class="popHeaderTitleSpan font20" :style="bgblack === true ? 'color:white;':'' ">
       {{this.$changeText(headerTitle)}}
     </span>
     <div v-if="targetType === 'chanDetail' && chanAlimListTeamKey" class="chanMenubar cursorP" @click="openMenu">
@@ -30,14 +30,14 @@ export default {
       blackYn: false
     }
   },
-  mounted () {
+  created () {
     if (this.pChanInfo && this.pChanInfo.initData && this.pChanInfo.initData.content && this.pChanInfo.initData.team.content[0].blackYn) {
       this.blackYn = this.pChanInfo.initData.team.content[0].blackYn
     }
     this.$addHistoryStack('chanMain')
   },
   beforeUnmount () {
-    this.$checkDeleteHistory('chanMain')
+    // this.$checkDeleteHistory('chanMain')
   },
   computed: {
     pageUpdate () {
@@ -52,7 +52,7 @@ export default {
   },
   watch: {
     pageUpdate () {
-      if (this.history[this.history.length - 1] === 'chanMain') {
+      if (this.history[this.history.length - 1] === 'router$#$chanList') {
         this.goMain()
       }
     },

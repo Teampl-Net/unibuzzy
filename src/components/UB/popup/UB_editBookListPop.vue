@@ -43,10 +43,10 @@
 <template>
   <div v-if="CHANNEL_DETAIL"  class="editBookListWrap">
     <transition name="show_left">
-      <creAddressBook v-if="mPopType === 'creAddressBook' || mPopType === 'editAddressBook'" :propData="mPropData" :pClosePop="closePop" />
+      <creAddressBook v-if="mPopType === 'creAddressBook' || mPopType === 'editAddressBook'" :propData="mPropData" :pClosePop="backClick" />
     </transition>
     <onlyMemberSelectPop v-if="mPopType === 'selectMemberPop'" :propData="mPropData" :pClosePop="backClick" />
-    <bookMemberDetail v-if="mPopType === 'bookMemberDetail'" @addDirectAddMemList="saveMemberDirectly" :propData="mPropData" :pClosePop="closePop" />
+    <bookMemberDetail v-if="mPopType === 'bookMemberDetail'" @addDirectAddMemList="saveMemberDirectly" :propData="mPropData" :pClosePop="backClick" />
     <gPopHeader :headerTitle="mDetailOpenYn? `Manage ${this.$changeText(selectBookDetail.cabinetNameMtext)}`:'Manage Member Type'" :pClosePop="closeXPop" />
     <gConfirmPop :confirmText='mConfirmText' :confirmType="mConfirmType" v-if="mConfirmPopShowYn" @no='mConfirmPopShowYn=false' @ok='confirmOk' />
     <div class="pagePaddingWrap longHeight"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'"  style="height:calc(100% - 300px); overflow: hidden; " >
@@ -362,6 +362,8 @@ export default {
       console.log(this.memberList)
     },
     backClick (backYn) {
+      // eslint-disable-next-line no-debugger
+      debugger
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.propData.value && this.propData.value.clickData) {
@@ -386,9 +388,10 @@ export default {
           hStack = hStack.filter((element, index) => index < hStack.length - 1)
           this.$store.commit('D_HISTORY/setRemovePage', removePage)
           this.$store.commit('D_HISTORY/updateStack', hStack)
-          this.getBookList()
+          // this.getBookList()
           this.mDetailOpenYn = false
           this.mCabinetName = ''
+          this.closePop()
         // } else if (this.subPopId === hStack[hStack.length - 1]) {
         //   this.mSearchKeyword = ''
         //   hStack = hStack.filter((element, index) => index < hStack.length - 1)
@@ -416,7 +419,7 @@ export default {
       this.setBookSearchFilter()
       var history = this.$store.getters['D_HISTORY/hStack']
       this.mSelectPopId = 'selectMemeberPopup' + history.length
-      this.mSelectPopId = this.$setParentsId(this.pPopId, this.mSelectPopId)
+      // this.mSelectPopId = this.$setParentsId(this.pPopId, this.mSelectPopId)
       history.push(this.mSelectPopId)
       this.$store.commit('D_HISTORY/updateStack', history)
 

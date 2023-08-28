@@ -60,6 +60,8 @@ export default {
       }
     },
     goNo () {
+      // eslint-disable-next-line no-debugger
+      debugger
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       // eslint-disable-next-line

@@ -6,7 +6,7 @@
     <!-- <selectedListCompo class="fl" style="height:calc(50% - 50px);" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' /> -->
     <selectedListCompo class="fl" style="height:20%; max-height:200px; min-height:150px; position:absolute; bottom:0; left:0;" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey" @changeSelectMemberList="changeSelectMemberList"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
     <!-- </div> this.propData.selectMemberType==='member'? true:false -->
-    <gConfirmPop :confirmText="this.propData.selectMemberType === 'member'? 'Do you want to add as a member?': 'Do you want to add as a manager?'" confirmType='two' @no='confirmPopShowYn = false' @ok="saveMember" v-if="confirmPopShowYn"/>
+    <gConfirmPop ref="gConfirmPopRef" :confirmText="this.propData.selectMemberType === 'member'? 'Do you want to add as a member?': 'Do you want to add as a manager?'" confirmType='two' @no='closeConfirmPop' @ok="saveMember" v-if="confirmPopShowYn"/>
 
 </div>
 </template>
@@ -45,6 +45,9 @@ export default {
   },
   components: { memberListCompo, selectedListCompo, gPopHeader },
   methods: {
+    async closeConfirmPop () {
+      await this.$refs.gConfirmPopRef.goNo()
+    },
     async changeDirectMemList (data) {
       console.log('changeDirectMemList')
       console.log(data)
@@ -184,6 +187,8 @@ export default {
           param.targetKey = this.propData.currentTeamKey
           await this.$saveMCabContents(param).then(response => {
             var thisParam = {}
+            // eslint-disable-next-line no-debugger
+            debugger
             thisParam.cabinetType = 'member'
             this.$emit('saveCabinet', thisParam)
           })
@@ -210,7 +215,8 @@ export default {
         }
       }
 
-      this.confirmPopShowYn = false
+      await this.$refs.gConfirmPopRef.goNo()
+      // this.confirmPopShowYn = false
       this.pClosePop()
       // this.$emit('closeXPop', true)
 

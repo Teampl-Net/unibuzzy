@@ -31,6 +31,7 @@
 export default {
   data () {
     return {
+      historySetYn: false
 
     }
   },
@@ -71,7 +72,10 @@ export default {
     }
   },
   created () {
-    this.$addHistoryStack('gConfirmPop')
+    if (!this.historySetYn) {
+      this.$addHistoryStack('gConfirmPop')
+      this.historySetYn = true
+    }
   },
   mounted () {
     if (this.confirmType === 'timeout') {

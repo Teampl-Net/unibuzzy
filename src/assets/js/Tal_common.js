@@ -470,8 +470,6 @@ export const commonMethods = {
     return Math.abs(a - b)
   },
   async makeShareLink (key, type, message, title) {
-    // eslint-disable-next-line no-debugger
-    debugger
     var paramMap = new Map()
     paramMap.set('pageType', type)
     if (key.contentsKey) {
@@ -592,8 +590,6 @@ export const commonMethods = {
     }
     if (data.followYn) {
       followerText = this.$t('COMM_SUBMEM')
-      // eslint-disable-next-line no-debugger
-      debugger
       if (data.memberNameMtext) {
         followerText = commonMethods.changeText(data.memberNameMtext)
       }
@@ -631,8 +627,6 @@ export const commonMethods = {
         }
       }
     }
-    // eslint-disable-next-line no-debugger
-    debugger
     return followerText
   },
   sortListForupdDate (list) {
@@ -757,8 +751,6 @@ export const commonMethods = {
         titleText = titleText.length > 64 ? titleText.substring(0, 64) + '..' : titleText.substring(0, 64)
         break
       }
-      // eslint-disable-next-line no-debugger
-      debugger
       if (titleText.length > 64) {
         titleText = titleText.substring(0, 64) + '..'
         break
@@ -904,8 +896,6 @@ export const commonMethods = {
     return { path: imgBase64, file: newFile }
   },
   async handleImageUpload (file) {
-    // eslint-disable-next-line no-debugger
-    debugger
     const imageFile = file
     const options = {
       maxSizeMB: 1, // 허용하는 최대 사이즈 지정
@@ -918,8 +908,6 @@ export const commonMethods = {
       // 압축된 이미지 리턴
       // eslint-disable-next-line no-undef
       // await uploadToServer(compressedFile) // 블라블라
-      // eslint-disable-next-line no-debugger
-      debugger
       return { path: compressedFile.path, file: compressedFile }
     } catch (error) {
       console.log(error)
