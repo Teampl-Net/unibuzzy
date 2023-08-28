@@ -133,7 +133,7 @@ export default {
       param.address = this.infoValue
       this.holdingEmail = this.infoValue
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.sendMail',
+        url: '/sUniB/tpsendMail',
         param: param
       })
       debugger
@@ -224,7 +224,7 @@ export default {
         param.token = this.token
         param.address = this.holdingEmail
         var result = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.checkValidation',
+            url: '/sUniB/tpcheckValidation',
             param: param
         })
 

@@ -146,7 +146,7 @@ export default {
       pushParam.allRecvYn = false
       setTimeout(() => {
         this_.$commonAxiosFunction({
-          url: '/sUniB/tp.sendDevPush',
+          url: '/sUniB/tpsendDevPush',
           param: pushParam
         }, true)
       }, this.mParamObj.time * 1000)

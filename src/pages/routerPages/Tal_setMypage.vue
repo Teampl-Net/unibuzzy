@@ -330,7 +330,7 @@ export default {
     async closeLogoutPop (request) {
       this.logOutShowYn = false
       var result = await this.$commonAxiosFunction({
-       url: '/sUniB/tp.logout'
+       url: '/sUniB/tplogout'
       })
       if (result) {
         if (request !== undefined && request !== null && request !== '') {

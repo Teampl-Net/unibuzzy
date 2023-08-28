@@ -133,7 +133,7 @@ export default {
       param.menuType = data.menuType
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteCabinet',
+          url: '/sUniB/tpdeleteCabinet',
           param: param
         })
         if (result.data === 'true' || result.data === true) {
@@ -216,7 +216,7 @@ export default {
       paramSet.teamMenuList = [...tempList]
       var result = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.changePosTeamMenu',
+          url: '/sUniB/tpchangePosTeamMenu',
           param: paramSet
         }
       )

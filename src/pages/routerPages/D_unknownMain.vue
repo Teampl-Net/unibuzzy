@@ -180,7 +180,7 @@ export default {
       var paramMap = new Map()
       paramMap.set('jobkindId', 'BOAR')
       paramMap.set('allYn', true)
-      var response = await this.$axios.post('/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap))
+      var response = await this.$axios.post('/sUniB/tpgetMyContentsList', Object.fromEntries(paramMap))
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       if (response.status === 200 || response.status === '200') {

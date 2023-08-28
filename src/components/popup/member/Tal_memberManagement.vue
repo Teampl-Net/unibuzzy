@@ -130,7 +130,7 @@ export default {
         paramMap.set('teamKey', this.propData.teamKey)
         paramMap.set('pageSize', 100)
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getFollowerList',
+          url: '/sUniB/tpgetFollowerList',
           param: Object.fromEntries(paramMap)
         })
         this.showUserList = result.data.content
@@ -141,7 +141,7 @@ export default {
       //   paramMap.set('teamKey', this.propData.teamKey)
       //   paramMap.set('pageSize', 100)
       //   result = await this.$commonAxiosFunction({
-      //     url: '/sUniB/tp.getFollowerList',
+      //     url: '/sUniB/tpgetFollowerList',
       //     param: Object.fromEntries(paramMap)
       //   })
       //   this.managingList = result.data.content
@@ -150,7 +150,7 @@ export default {
         param.teamKey = this.propData.teamKey
         param.pageSize = 100
         result = await this.$commonAxiosFunction({
-          url : '/sUniB/tp.getManagerList',
+          url : '/sUniB/tpgetManagerList',
           param: param
         })
 
@@ -179,7 +179,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.deleteManager',
+        url: '/sUniB/tpdeleteManager',
         param: param
       })
 
@@ -188,7 +188,7 @@ export default {
       var param = {}
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveManager',
+        url: '/sUniB/tpsaveManager',
         param: param
       })
     },
@@ -209,7 +209,7 @@ export default {
 
 
       var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveManager',
+          url: '/sUniB/tpsaveManager',
           param: param
       })
 

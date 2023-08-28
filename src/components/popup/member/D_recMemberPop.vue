@@ -124,7 +124,7 @@ export default {
       params = { follower: param, doType: 'RQ' }
       console.log(params)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveFollower',
+        url: '/sUniB/tpsaveFollower',
         param: params
       })
       if (result.data.result === true) {

@@ -25,9 +25,9 @@
                     />
                 </div>
                         <!--follow-->
-                <gBtnSmall style="margin-left:-10px; line-height:20px;  border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="cursorP fl w-100P fontBold font14" :btnTitle="`+ Follow `" />
+                <gBtnSmall style="margin-left:-20px; line-height:20px;  border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="cursorP fl w-100P fontBold font14" :btnTitle="`+ Follow `" />
                 <!--following-->
-                <gBtnSmall style="margin-left:-10px; line-height:20px;  cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl w-100P fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="`Following`" />
+                <gBtnSmall style="margin-left:-20px; line-height:20px;  cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl w-100P fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="`Following`" />
 
             </div>
             <div style="width: 100%; height: calc(100% - 35px); display: flex; background: #FFFFFF;">
@@ -602,7 +602,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           const response = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.saveUserDo',
+            url: '/sUniB/tpsaveUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = response.data.doKey
@@ -620,7 +620,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           await this.$commonAxiosFunction({
-            url: '/sUniB/tp.deleteUserDo',
+            url: '/sUniB/tpdeleteUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = null
@@ -668,7 +668,7 @@ export default {
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getFollowerList',
+        url: '/sUniB/tpgetFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.mManagerList = result.data.content
@@ -721,7 +721,7 @@ export default {
         typeParam.userKey = this.GE_USER.userKey
         typeParam.teamKey = this.CHANNEL_DETAIL.teamKey
         await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveFollower',
+          url: '/sUniB/tpsaveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }
         })
         // } else {
@@ -862,7 +862,7 @@ export default {
       param.userKey = this.GE_USER.userKey
       try {
         const result = await this.$getViewData(
-          { url: '/sUniB/tp.getChanMainBoard', param: param },
+          { url: '/sUniB/tpgetChanMainBoard', param: param },
           false
         )
         // eslint-disable-next-line no-debugger
@@ -942,7 +942,7 @@ export default {
       var param = {}
       param.parentTeamKey = Number(this.$route.params.encodedTeamKey)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getTownCabinetList',
+        url: '/sUniB/tpgetTownCabinetList',
         param: param
       })
       if (result && result.data && result.data.result) {
@@ -1050,7 +1050,7 @@ export default {
       // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.getMemberTypeList',
+          url: '/sUniB/tpgetMemberTypeList',
           param: param
         },
         true

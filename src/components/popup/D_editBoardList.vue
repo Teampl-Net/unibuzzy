@@ -299,7 +299,7 @@ export default {
       paramSet.teamMenuList = [...tempList]
       var result = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.changePosTeamMenu',
+          url: '/sUniB/tpchangePosTeamMenu',
           param: paramSet
         }
       )

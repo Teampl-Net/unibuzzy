@@ -390,7 +390,7 @@ export default {
         if (this.GE_USER.unknownYn) return
         param.creUserKey = this.GE_USER.userKey
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getStickerList',
+          url: '/sUniB/tpgetStickerList',
           param: param
         })
         this.mStickerList = result.data
@@ -494,7 +494,7 @@ export default {
       paramMap.set('teamKey', this.contentsEle.creTeamKey)
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getContentsActorList',
+          url: '/sUniB/tpgetContentsActorList',
           param: Object.fromEntries(paramMap)
         })
         if (result && result.data && result.data.length > 0) {
@@ -517,7 +517,7 @@ export default {
       }
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: '/sUniB/tpsaveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -798,7 +798,7 @@ export default {
           var param = {}
           param = this.contentsEle
           var result = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.deleteContents',
+            url: '/sUniB/tpdeleteContents',
             param: param
           })
           if (result) {
@@ -874,7 +874,7 @@ export default {
         inParam.mccKey = this.contentsEle.mccKey
         inParam.jobkindId = 'ALIM'
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteMCabContents',
+          url: '/sUniB/tpdeleteMCabContents',
           param: inParam
         })
       } else if (this.contentsEle.jobkindId === 'BOAR') {
@@ -885,7 +885,7 @@ export default {
         inParam.teamKey = this.contentsEle.creTeamKey
         inParam.deleteYn = true
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteContents',
+          url: '/sUniB/tpdeleteContents',
           param: inParam
         })
       }
@@ -1017,7 +1017,7 @@ export default {
     async saveActAxiosFunc (param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveClaimLog',
+          url: '/sUniB/tpsaveClaimLog',
           param: param
         })
         if (result) {
@@ -1079,7 +1079,7 @@ export default {
       memo.ownUserKey = this.GE_USER.userkey
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: '/sUniB/tpsaveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -1360,7 +1360,7 @@ export default {
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSubscribe',
+        url: '/sUniB/tpsaveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop(reqText)

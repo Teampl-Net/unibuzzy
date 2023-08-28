@@ -82,7 +82,7 @@ export default {
       // var param = {}
       // param.formKey = this.mFormData.questionKey
       // var result = await this.$commonAxiosFunction({
-      //   url: '/sUniB/tp.saveMemberForm',
+      //   url: '/sUniB/tpsaveMemberForm',
       //   param: param
       // })
       // // console.log(result)
@@ -96,7 +96,7 @@ export default {
       // param.key = formData.key
       // param.activeYn = true
       // var result = await this.$commonAxiosFunction({
-      //   url : '/sUniB/tp.changeMQuestion',
+      //   url : '/sUniB/tpchangeMQuestion',
       //   param: param
       // })
       formData.activeYn = !formData.activeYn

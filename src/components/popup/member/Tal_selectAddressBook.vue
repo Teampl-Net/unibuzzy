@@ -29,7 +29,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getTeamMenuList',
+        url: '/sUniB/tpgetTeamMenuList',
         param: Object.fromEntries(paramMap)
       })
       this.bookList = result.data

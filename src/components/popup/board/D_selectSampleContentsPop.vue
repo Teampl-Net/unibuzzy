@@ -175,7 +175,7 @@ export default {
       param.sample = sample
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSample',
+        url: '/sUniB/tpsaveSample',
         param: param
       })
       this.$showToastPop(this.$t('SAMP_MSG_AFTER_DELETE'))
@@ -211,7 +211,7 @@ export default {
       // paramMap.set('followerType', 'M')
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getSampleList',
+        url: '/sUniB/tpgetSampleList',
         param: { sample: param }
       })
       // eslint-disable-next-line no-debugger

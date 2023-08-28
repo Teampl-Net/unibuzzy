@@ -39,7 +39,7 @@ export const functions = {
     memo.targetKey = targetKey
     memo.memoKey = memoKey
     var result = await commonAxiosFunction({
-      url: '/sUniB/tp.getMemoList',
+      url: '/sUniB/tpgetMemoList',
       param: memo
     }, true)
     var memos = result.data.memoList[0]
@@ -300,7 +300,7 @@ export const functions = {
     }
     // paramMap.set('followerType', 'M')
     var result = await commonAxiosFunction({
-      url: '/sUniB/tp.getFollowerList',
+      url: '/sUniB/tpgetFollowerList',
       param: Object.fromEntries(paramMap)
     }, true)
     var user = result.data.content

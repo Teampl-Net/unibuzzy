@@ -58,7 +58,7 @@ export default {
         paramMap.set('imp_uid', this.imp_uid)
         paramMap.set('imp_secret', 'wTNFKJQlzH6slVXAQbbUQ92zEtEojkbbeJ9yqznuSDfcz3jzSJZE2ImNO6tZeS1AqclulDxikkYNaAq9')
         const getToken = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getUserCertiInfo',
+          url: '/sUniB/tpgetUserCertiInfo',
           param: Object.fromEntries(paramMap)
         })
         console.log(getToken)

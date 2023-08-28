@@ -268,7 +268,7 @@ export default {
       var param = new Object()
       param.cateGroupKey = 2
       var cateItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getCateItemList',
+        url: '/sUniB/tpgetCateItemList',
         param: param
       })
       console.log('#################')
@@ -405,7 +405,7 @@ export default {
           this.mPageType = '삭제'
           if (gParam.teamKey) {
             var res = await this.$commonAxiosFunction({
-              url: '/sUniB/tp.deleteTeam',
+              url: '/sUniB/tpdeleteTeam',
               param: { teamKey: gParam.teamKey }
             })
             console.log(res)
@@ -425,7 +425,7 @@ export default {
         console.log(gParam)
 
         var response = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.UB_createTeamAndBuilding',
+          url: '/sUniB/tpUB_createTeamAndBuilding',
           param: { teamRequest: gParam }
         })
 

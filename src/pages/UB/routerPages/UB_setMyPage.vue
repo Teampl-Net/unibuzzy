@@ -253,7 +253,7 @@ export default {
       // param.updateYn = true
       var result = null
       var response = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveUser',
+        url: '/sUniB/tpsaveUser',
         param: param
       })
       result = response

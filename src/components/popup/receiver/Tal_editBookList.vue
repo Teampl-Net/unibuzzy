@@ -190,7 +190,7 @@ export default {
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('searchKeyStr', 'sSub' + (index + 1))
             var result = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.getMCabUserGroupList',
+            url: '/sUniB/tpgetMCabUserGroupList',
             param: Object.fromEntries(paramMap)
         })
         // console.log(result)
@@ -220,7 +220,7 @@ export default {
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: '/sUniB/tp.getTeamMenuList',
+                url: '/sUniB/tpgetTeamMenuList',
                 param: Object.fromEntries(paramMap)
             })
             this.bookList = result.data
@@ -305,7 +305,7 @@ export default {
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('jobkindId', 'USER')
             var result = await this.$commonAxiosFunction({
-                url: '/sUniB/tp.getMCabContentsList',
+                url: '/sUniB/tpgetMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
             this.memberList = result.data
@@ -450,7 +450,7 @@ export default {
             params.teamKey = this.CHANNEL_DETAIL.teamKey
             params.showProfileYn = true
             var result = await this.$commonAxiosFunction({
-                url: '/sUniB/tp.getFollowerList',
+                url: '/sUniB/tpgetFollowerList',
                 param: params
             })
 

@@ -68,7 +68,7 @@ export default {
         paramMap.set('managerYn', true)
         // paramMap.set('followerType', 'M')
         var result = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.getFollowerList',
+            url: '/sUniB/tpgetFollowerList',
             param: Object.fromEntries(paramMap)
         })
         this.managerList = result.data.content
@@ -104,7 +104,7 @@ export default {
       param.userKey = data.userKey
       param.teamKey = data.teamKey
       var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteManager',
+          url: '/sUniB/tpdeleteManager',
           param: param
       })
       this.refresh()
@@ -122,7 +122,7 @@ export default {
       params.showProfileYn = true
       // params.managerKey = null showProfileYn이 true이면서 매니저키가 없는 리스트가 필요
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getFollowerList',
+        url: '/sUniB/tpgetFollowerList',
         param: params
       })
 

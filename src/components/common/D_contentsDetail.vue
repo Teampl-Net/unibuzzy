@@ -635,7 +635,7 @@ export default {
         inParam.jobkindId = 'ALIM'
 
         await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteMCabContents',
+          url: '/sUniB/tpdeleteMCabContents',
           param: inParam
         })
       } else if (this.CONT_DETAIL.jobkindId === 'BOAR') {
@@ -645,7 +645,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteContents',
+          url: '/sUniB/tpdeleteContents',
           param: inParam
         })
       }
@@ -688,7 +688,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveActLog',
+        url: '/sUniB/tpsaveActLog',
         param: param
       })
       if (result.data.result === true) {
@@ -828,7 +828,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteContents',
+          url: '/sUniB/tpdeleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -977,7 +977,7 @@ export default {
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSubscribe',
+        url: '/sUniB/tpsaveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop(reqText)
@@ -990,7 +990,7 @@ export default {
       var memo = {}
       memo.memoKey = param.memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.deleteMemo',
+        url: '/sUniB/tpdeleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -1074,7 +1074,7 @@ export default {
         nonLoadingYn = true
       }
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemoList',
+        url: '/sUniB/tpgetMemoList',
         param: memo
       }, nonLoadingYn)
       if (result.data.memoList) {
@@ -1110,7 +1110,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getUserDoListPage',
+        url: '/sUniB/tpgetUserDoListPage',
         param: param
       })
     }, */
@@ -1133,7 +1133,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: '/sUniB/tpsaveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {

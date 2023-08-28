@@ -326,7 +326,7 @@ export default {
     },
     async saveActAxiosFunc (param) {
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveActLog',
+        url: '/sUniB/tpsaveActLog',
         param: param
       })
       if (result.data.result === true) {
