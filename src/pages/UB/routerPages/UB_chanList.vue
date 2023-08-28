@@ -20,7 +20,7 @@
       </div>
       <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
           <gEmpty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
-          <template v-for="(chanEle, index) in getFilteredChannel()" :key="index">
+          <template v-for="(chanEle, index) in filterChannelList()" :key="index">
             <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             <!-- <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @scrollMove="scrollMove" /> -->
             <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
@@ -70,7 +70,7 @@ export default {
       mLoadingYn: false,
       mAxiosQueue: [],
       mSearchCateKey: 3,
-      showArray: 'popular',
+      showArray: 'recent',
       mFilteredChannel: []
     }
   },
@@ -94,7 +94,7 @@ export default {
 
     this.$emit('closeLoading')
     this.mLoadingYn = false
-    this.showArray = 'popular'
+    this.showArray = 'recent'
   },
   created () {
     this.$emit('changePageHeader', this.$t('COMMON_NAME_CHANNEL'))
@@ -140,6 +140,7 @@ export default {
     this.introChanPageTab()
     this.mScrolledYn = false
     this.findPaddingTopChan()
+    this.filterChannelList()
   },
   methods: {
     goChannelMain (param) {
@@ -405,7 +406,7 @@ export default {
         this.mEndListYn = false
       }
     },
-    getFilteredChannel () {
+    filterChannelList () {
       if (this.mChannelList) {
         this.mFilteredChannel = this.mChannelList
         if (this.showArray === 'popular') {
@@ -414,11 +415,6 @@ export default {
           return this.mFilteredChannel
         }
       }
-      return []
-    },
-    changeFilter (filterType) {
-      this.showArray = filterType
-      this.getFilteredChannel()
     }
   },
   computed: {
