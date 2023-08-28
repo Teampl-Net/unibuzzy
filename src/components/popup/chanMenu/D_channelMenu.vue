@@ -223,9 +223,7 @@ export default {
       this.$emit('closePop')
     },
     async clickEditChanBtn () {
-      // eslint-disable-next-line no-debugger
-      debugger
-      if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
+      if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn) {
         this.$showToastPop(this.$t('CHAN_MSG_NOFOLLOW'))
         // this.$checkDeleteHistory('bottomWriteSheets')
         var history = this.$store.getters['D_HISTORY/hStack']

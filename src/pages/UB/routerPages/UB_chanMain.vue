@@ -1,5 +1,5 @@
 <template>
-    <div v-if="CHANNEL_DETAIL && mChanInfo" ref="chanMainRef" style="width: 100%; overflow: hidden auto" :style="`background-position: top; background-size: contain; background-repeat: no-repeat;  background-image: url(${CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext});height: calc(100% + ${Number($STATUS_HEIGHT)}px);  padding-top: ${Number($STATUS_HEIGHT)}px;`">
+    <div v-if="CHANNEL_DETAIL && mChanInfo" ref="chanMainRef" style="width: 100%; overflow: hidden auto" :style="`background-position: top; background-size: cover; background-repeat: no-repeat;  background-image: url(${CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext});height: calc(100% + ${Number($STATUS_HEIGHT)}px);  padding-top: ${Number($STATUS_HEIGHT)}px;`">
         <div v-if="!mChanCardShowYn" style="width: 100%; color: #FFFFFF; display: flex; position: absolute; align-items: center; justify-content: center; background-size: cover; background-position: top;background-repeat: no-repeat;" class="font20 fl fontBold" :style="`top: ${Number($STATUS_HEIGHT)}px; height:${ 50}px `" >
             <p :style="CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;'">{{$changeText(CHANNEL_DETAIL.nameMtext)}}</p>
             <img
@@ -10,7 +10,7 @@
                 alt=""
             />
         </div>
-        <div ref="chanCardTopArea"  :class="['fade-out-element', { 'hidden': !mChanCardShowYn }]" class="fl" style="  width: 100%; transition: opacity 0.2s;   position: relative; height: 160px; display: flex; flex-direction: column; " :style="`margin-top: ${50}px`" >
+        <div ref="chanCardTopArea"  :class="['fade-out-element', { 'hidden': !mChanCardShowYn }]" class="fl" style=" z-index: 1; width: 100%; transition: opacity 0.2s;   position: relative; height: 160px; display: flex; flex-direction: column; " :style="`margin-top: ${50}px`" >
             <div style="width: 70px; height: 70px; position: absolute; left: 10px; border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center; background-color: #FFFFFF;" class="" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'"></div>
             <div style="width: 100%; height: 35px; display: flex; ">
                 <div style="width: 90px; height: 100%;"></div>
