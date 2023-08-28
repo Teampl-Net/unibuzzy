@@ -273,6 +273,9 @@ export default {
         url: '/sUniB/tp.saveFollower',
         param: { follower: typeParam, appType: 'UB', doType: 'CR' }
       })
+      this.CHANNEL_DETAIL.memberTypeKey = this.selectMemberObj.memberTypeKey
+      this.CHANNEL_DETAIL.userKey = this.GE_USER.userKey
+      this.CHANNEL_DETAIL.teamKey = this.chanElement.teamKey
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
       await this.$addChanList(this.chanElement.teamKey)
     },

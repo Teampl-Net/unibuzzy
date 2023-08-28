@@ -94,6 +94,7 @@ export default {
 
     this.$emit('closeLoading')
     this.mLoadingYn = false
+    this.showArray = 'popular'
   },
   created () {
     this.$emit('changePageHeader', this.$t('COMMON_NAME_CHANNEL'))
@@ -413,9 +414,22 @@ export default {
           return this.mFilteredChannel
         }
       }
+      return []
+    },
+    changeFilter (filterType) {
+      this.showArray = filterType
+      this.getFilteredChannel()
     }
   },
   computed: {
+    filteredData () {
+      // 화면에 그려질 데이터를 계산하는 computed 속성
+      const filteredList = this.mDataList.filter(item => {
+        // 여기에 필터링 조건을 적용
+        return item.someCondition // 예시 조건, 실제 조건으로 변경해야 함
+      })
+      return filteredList
+    },
     calcPaddingTop () {
       return {
         '--paddingTopLength': this.mPaddingTop + 'px'

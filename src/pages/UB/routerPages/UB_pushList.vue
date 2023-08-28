@@ -69,12 +69,10 @@
             <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
 
-          <template v-if="GE_DISP_ALL_LIST && viewMainTab === 'A'">
-            <template v-if="skeletonShow">
+          <template v-if="!allContentsList && viewMainTab === 'A' && skeletonShow">
               <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
-            </template>
-            <gEmpty v-else :tabName="currentTabName" contentName="전체" :key="mEmptyReloadKey" class="mtop-2"/>
           </template>
+          <gEmpty v-else-if="!skeletonShow && GE_DISP_ALL_LIST && viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0" :tabName="currentTabName" contentName="전체" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template  v-for="(cont, index) in this.GE_FILE_LIST" :key="index">
               <gFileBox @openImgPop="openImgPop" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'F'"/>
@@ -147,7 +145,7 @@ export default {
 
     this.readyFunction()
     /*  } */
-    if (this.GE_DISP_ALL_LIST && !this.allContentsList) {
+    if (this.GE_DISP_ALL_LIST && this.allContentsList === null) {
       this.hideSkeleton()
     }
   },
@@ -563,8 +561,6 @@ export default {
   },
   methods: {
     hideSkeleton () {
-      // this.skeletonShow = false
-      console.log('skeletonShow는???', this.skeletonShow)
       setTimeout(() => {
         this.skeletonShow = false
       }, 2000)
