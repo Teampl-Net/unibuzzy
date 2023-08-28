@@ -225,16 +225,10 @@ export default {
       this.mCreChannelShowYn = false
     },
     findAllDrawn () {
-      this.$emit('showCloudLoading', true, false)
-      const intervalHandler = setInterval(() => {
-        if (this.$refs.bdRef) {
-          this.$emit('enterCloudLoading', false)
-          setTimeout(() => {
-            this.$emit('showCloudLoading', false)
-          }, 1000)
-          clearInterval(intervalHandler)
-        }
-      }, 100)
+      this.$emit('enterCloudLoading', false)
+      setTimeout(() => {
+        this.$emit('showCloudLoading', false)
+      }, 1000)
     },
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
       var paramMap = new Map()
@@ -568,14 +562,15 @@ export default {
             area.ctx = context
             // 마스킹 이미지를 base64로 변환하여 출력
             area.maskedImageUrl = canvas.toDataURL()
-            _this.createMaskingBuildingImg(area)
+            const lastYn = areaList.length - 1 === i
+            _this.createMaskingBuildingImg(area, lastYn)
           }
           targetImage.src = area.imgLink
         }
       }
       // this.mLoadingYn = false
     },
-    createMaskingBuildingImg (area) {
+    createMaskingBuildingImg (area, lastYn) {
       const bdList = area.buildingList
       if (area.key === 6) {
         area.loadYn = true
@@ -670,6 +665,9 @@ export default {
           bd.maskedImageUrl = canvas.toDataURL()
         }
         targetImage.src = bd.imgLink
+        if (lastYn && bdList.length - 1 === j) {
+          this.findAllDrawn()
+        }
       }
     },
     getInRectImgList (event) {
@@ -808,7 +806,8 @@ export default {
     // }
   },
   mounted () {
-    this.findAllDrawn()
+    this.$emit('showCloudLoading', true, false)
+    // this.findAllDrawn()
     this.setWindowSize()
     window.addEventListener('resize', this.createMaskingAreaImg)
   },
