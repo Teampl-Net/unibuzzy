@@ -68,10 +68,13 @@
             <gContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" @contDelete="refreshAll" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
             <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
-          <template v-if="!GE_DISP_ALL_LIST && viewMainTab === 'A'&& !this.emptyYn">
-            <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
+
+          <template v-if="GE_DISP_ALL_LIST && viewMainTab === 'A'">
+            <template v-if="skeletonShow">
+              <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
+            </template>
+            <gEmpty v-else :tabName="currentTabName" contentName="전체" :key="mEmptyReloadKey" class="mtop-2"/>
           </template>
-          <gEmpty :tabName="currentTabName" contentName="전체" v-else-if="GE_DISP_ALL_LIST && this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0 && this.emptyYn" :key="mEmptyReloadKey" class="mtop-2"/>
 
           <template  v-for="(cont, index) in this.GE_FILE_LIST" :key="index">
               <gFileBox @openImgPop="openImgPop" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'F'"/>
@@ -129,6 +132,7 @@ export default {
   created () {
     // eslint-disable-next-line no-debugger
     debugger
+    // this.hideSkeleton()
     this.loadingYn = true
     this.$emit('changePageHeader', '알림')
     console.log(this.initData)
@@ -143,6 +147,9 @@ export default {
 
     this.readyFunction()
     /*  } */
+    if (this.GE_DISP_ALL_LIST && !this.allContentsList) {
+      this.hideSkeleton()
+    }
   },
 
   updated () {
@@ -485,7 +492,7 @@ export default {
       var returnAllList = []
       var chanDetail = null
       var dataList = null
-      if (!this.allContentsList) return null
+      if (!this.allContentsList) return []
       var i = 0
       for (i = 0; i < this.allContentsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.allContentsList[i].creTeamKey)
@@ -532,6 +539,7 @@ export default {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       if (this.allContentsList.length === 0) this.emptyYn = true
 
+      console.log('this.allContentsList', this.allContentsList)
       return this.replaceArr(returnAllList)
     },
     GE_USER () {
@@ -554,6 +562,13 @@ export default {
     }
   },
   methods: {
+    hideSkeleton () {
+      // this.skeletonShow = false
+      console.log('skeletonShow는???', this.skeletonShow)
+      setTimeout(() => {
+        this.skeletonShow = false
+      }, 2000)
+    },
     closeUnknownLoginPop () {
       this.mUnknownLoginPopYn = false
     },
@@ -2303,7 +2318,8 @@ export default {
       mSelectedCabinetKey: -1,
       // scrollIngYn: false
       fileList: [],
-      mCabinetKeyListStr: ''
+      mCabinetKeyListStr: '',
+      skeletonShow: true
     }
   }
 }

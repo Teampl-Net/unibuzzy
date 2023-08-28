@@ -26,7 +26,6 @@
         :class="{channelCardBox : $route.path === '/'}"
   >
     <div @click="goChannelMain(chanElement)" class="w100P" style="position: relative;min-height: 80px;display: flex;flex-direction: row;align-items: center;">
-    <!-- <div class="w100P" style="position: relative;min-height: 80px;display: flex;flex-direction: row;align-items: center;"> -->
         <div
         v-if="$appType === 'UB' && pSelectedYn === true"
         class="font11"

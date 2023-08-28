@@ -24,7 +24,7 @@
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
     <gConfirmPop :confirmText="$t('MAIN_MSG_DIS_CONN')" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
     <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" :pContentsYn="mTargetType === 'contentsDetail' || mTargetType === 'contDetail'" @goFavList="openPop" @goLogList="openPop" v-if="(mRouterHeaderInfo !== 'leave' && mTargetType !== 'chanDetail' && mTargetType !== 'boardMain') || $route.path === '/chanList' " @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9;" />
-    <chanHeader :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 20)  + 'px'" v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === '' && mRouterHeaderInfo !== 'leave'" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo.targetKey" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" :pChanInfo="mChanInfo" @openPop="openPop" class="chanDetailPopHeader" />
+    <chanHeader :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 20)  + 'px'" v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === '' && mRouterHeaderInfo !== 'leave'" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo.targetKey" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" :pChanInfo="mChanInfo" @openPop="openPop" class="chanDetailPopHeader" @bgColor="setBgColor"/>
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mPopType === 'writeContents'" @click="mPopType = ''"></div>
     <writeContents v-if="mPopType === 'writeContents'" @closeXPop="closeWritePop" :params="mPopParams" :propData="mPopParams" :contentType="mPopParams.contentsJobkindId" />
     <div v-if="mPopType === 'logList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 10000;background: #00000050;"></div>
@@ -137,6 +137,25 @@ export default {
     // this.showCloudLoading(false, 5000)
   },
   methods: {
+    updatePChanInfo () {
+      const newValue = 1
+      // Create a new object instead of modifying the existing one
+      this.pChanInfo = {
+        ...this.pChanInfo,
+        initData: {
+          ...this.pChanInfo.initData,
+          team: {
+            ...this.pChanInfo.initData.team,
+            content: [
+              {
+                ...this.pChanInfo.initData.team.content[0],
+                blackYn: newValue
+              }
+            ]
+          }
+        }
+      }
+    },
     closeBookListPop () {
       this.deleteHistory()
       this.mPopType = ''

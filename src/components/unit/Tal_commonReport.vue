@@ -190,7 +190,7 @@ export default {
   padding:2rem 10px; background:#ffffff; border-radius:10px 10px 0 0; min-height:100px; display: flex; justify-content: center; align-items: center; flex-direction: column;
 }
 .reportCompoArea {
-  width:95%; position: fixed; bottom:60px; left:2.5%; z-index:9999;
+  width:95%; position: fixed; bottom:60px; left:2.5%; z-index:10000;
 }
 .menuListBase {
   min-height:50px; line-height:50px; color:red;

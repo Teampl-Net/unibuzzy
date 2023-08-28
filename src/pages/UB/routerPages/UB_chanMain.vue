@@ -25,9 +25,9 @@
                     />
                 </div>
                         <!--follow-->
-                <gBtnSmall style="line-height:20px;  border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="cursorP fl w-100P fontBold font14" :btnTitle="`+ Follow `" />
+                <gBtnSmall style="margin-left:-10px; line-height:20px;  border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="cursorP fl w-100P fontBold font14" :btnTitle="`+ Follow `" />
                 <!--following-->
-                <gBtnSmall style="line-height:20px;  cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl w-100P fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="`Following`" />
+                <gBtnSmall style="margin-left:-10px; line-height:20px;  cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl w-100P fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="`Following`" />
 
             </div>
             <div style="width: 100%; height: calc(100% - 35px); display: flex; background: #FFFFFF;">

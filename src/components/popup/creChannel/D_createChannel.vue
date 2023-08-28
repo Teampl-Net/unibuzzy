@@ -121,7 +121,7 @@
         </div>
       </div>
     </div>
-    <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='setParam' />
+    <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" @ok='setParam' :pChannelModi="pChannelModi"/>
     <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', true)" v-if="mCreatedSuccessPopYn" />
     <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn === true" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
 </div>
@@ -148,7 +148,8 @@ export default {
     console.log(this.CHANNEL_DETAIL)
   },
   props: {
-    chanDetail: {}
+    chanDetail: {},
+    pChannelModi: Boolean
   },
   data () {
     return {
