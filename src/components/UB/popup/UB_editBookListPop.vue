@@ -43,7 +43,7 @@
 <template>
   <div v-if="CHANNEL_DETAIL"  class="editBookListWrap">
     <transition name="show_left">
-      <creAddressBook v-if="mPopType === 'creAddressBook' || mPopType === 'editAddressBook'" :propData="mPropData" :pClosePop="backClick" />
+      <creAddressBook v-if="mPopType === 'creAddressBook' || mPopType === 'editAddressBook'" :propData="mPropData" @closeXPop="closePop" :pClosePop="backClick" />
     </transition>
     <onlyMemberSelectPop v-if="mPopType === 'selectMemberPop'" :propData="mPropData" :pClosePop="backClick" />
     <bookMemberDetail v-if="mPopType === 'bookMemberDetail'" @addDirectAddMemList="saveMemberDirectly" :propData="mPropData" :pClosePop="backClick" />
@@ -158,7 +158,8 @@ export default {
       mTempData: {},
       mCurrentConfirmType: '',
       mPopType: '',
-      mPropData: {}
+      mPropData: {},
+      mCreAddrId: ''
     }
   },
   methods: {
@@ -171,6 +172,13 @@ export default {
     },
     async closePop () {
       if (this.mPopType === 'creAddressBook') {
+        var hStack = this.$store.getters['D_HISTORY/hStack']
+        var removePage = hStack[hStack.length - 1]
+        if (this.mCreAddrId === hStack[hStack.length - 1]) {
+          hStack = hStack.filter((element, index) => index < hStack.length - 1)
+          this.$store.commit('D_HISTORY/setRemovePage', removePage)
+          this.$store.commit('D_HISTORY/updateStack', hStack)
+        }
         await this.getBookList()
       } else if (this.mPopType === 'selectMemberPop') {
         await this.getBookMemberList()
@@ -189,8 +197,11 @@ export default {
       cabinet.creTeamKey = this.propData.teamKey
       cabinet.menuType = 'G'
       param.cabinet = cabinet
-      console.log(param)
       this.mPropData = param
+      var history = this.$store.getters['D_HISTORY/hStack']
+      this.mCreAddrId = 'creAddressBook' + history.length
+      history.push(this.mCreAddrId)
+      this.$store.commit('D_HISTORY/updateStack', history)
       this.mPopType = 'creAddressBook'
     },
     confirmOk () {
@@ -408,6 +419,7 @@ export default {
           if (backYn) {
 
           } else {
+            this.mPopType = ''
             this.$emit('closeXPop')
           }
         }

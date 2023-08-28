@@ -62,8 +62,6 @@ export default {
       }
       var param = {}
       param.creMenuYn = true
-      console.log('gggggggggggggggggggg')
-      console.log(this.propData)
       param.cabinet = this.propData.cabinet
 
       delete param.cabinet.mUserList // mUserList가 있으면 서비스에서 모델 바인딩할 때 에러 납니다.
@@ -76,7 +74,7 @@ export default {
         console.log(result)
         var thisParam = {}
         thisParam.cabinetType = 'address'
-        this.pClosePop()
+        this.closePop()
         // this.$emit('saveCabinet', thisParam)
       } catch (error) {
         console.error(error)
@@ -84,11 +82,9 @@ export default {
       } finally {
 
       }
-
-      this.closePop()
     },
     closePop () {
-      this.$emit('closeXPop', true)
+      this.$emit('closeXPop', 'address')
     }
   }
 }
