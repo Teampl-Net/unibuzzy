@@ -26,11 +26,11 @@
       </div>
       <!-- 게시판 생성일 때.-->
       <template v-if="(mShowBdOrChan==='C' || (!mShowBdOrChan && mSelectedTab === 0)) && !mChannelModi">
-        <div style="padding:2rem 1rem;">
+        <div style="padding:2rem 1rem 4rem;">
           <p style="font-size:20px; color:#6768A7;">My channel list</p>
             <div style="width:100%; overflow-x:scroll;">
               <p v-if="mMyTeamList.length===0" style="padding:0 0 2rem;">It's empty.</p>
-              <ul v-else style="width:auto; overflow-x:scroll; display:flex; align-items:start; height:111px; gap:20px; padding-left:0;">
+              <ul v-else style="width:auto; overflow-x:scroll; display:flex; align-items:start; height:111px; gap:20px; padding-left:10px;">
                 <teamplate v-for="(team, index) in mMyTeamList.content" :key="index">
                   <li @click="getSelectedChanIndex(index)" class="cursorP" style="padding-top:5px;width:80px; display:flex; align-items:center; flex-direction:column;">
                     <div :class="{selectedChannel : mSelectedChanIndex===index}" style="width:80px; height:80px; border-radius:50%; border:3px solid #fff;">
@@ -61,7 +61,7 @@
               <textarea v-model="mNewBoardMemo" class="boardMemo" placeholder="Please enter up to 40 characters in the board description."/>
             </div>
           </div>
-          <div @click="checkValue" class="creBoardBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 80px;">Create</div>
+          <div @click="checkValue" class="creBoardBigBtn f" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 80px;">Create</div>
 
         </div>
       </template>
