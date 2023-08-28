@@ -133,7 +133,7 @@ export default {
       param.picBgPath = this.mStickerObj.picBgPath
       param.creUserKey = this.GE_USER.userKey
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpsaveSticker',
+        url: '/sUniB/tp.saveSticker',
         param: param
       })
       if (result && result.data && result.data.result) {
@@ -178,7 +178,7 @@ export default {
       param.stickerKey = this.mStickerObj.stickerKey
       param.deleteYn = true
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpsaveSticker',
+        url: '/sUniB/tp.saveSticker',
         param: param
       })
       if (result && result.data && result.data.result) {

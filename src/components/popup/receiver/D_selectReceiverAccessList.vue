@@ -46,7 +46,7 @@ export default {
     //   paramMap.set('sysCabinetCode', 'USER')
     //   paramMap.set('adminYn', true)
     //   var result = await this.$commonAxiosFunction({
-    //       url: '/sUniB/tpgetTeamMenuList',
+    //       url: '/sUniB/tp.getTeamMenuList',
     //       param: Object.fromEntries(paramMap)
     //   })
     //   this.bookList = result.data
@@ -114,7 +114,7 @@ export default {
       paramMap.set('cabinetKey', key)
       paramMap.set('jobkindId', 'USER')
       var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tpgetMCabContentsList',
+          url: '/sUniB/tp.getMCabContentsList',
           param: Object.fromEntries(paramMap)
       })
       this.memberList = {}

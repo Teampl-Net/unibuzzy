@@ -270,7 +270,7 @@ export default {
       typeParam.userKey = this.GE_USER.userKey
       typeParam.teamKey = this.chanElement.teamKey
       await this.$commonAxiosFunction({
-        url: '/sUniB/tpsaveFollower',
+        url: '/sUniB/tp.saveFollower',
         param: { follower: typeParam, appType: 'UB', doType: 'CR' }
       })
       this.CHANNEL_DETAIL.memberTypeKey = this.selectMemberObj.memberTypeKey
@@ -287,7 +287,7 @@ export default {
       param.teamKey = Number(this.$route.params.encodedTeamKey)
       // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction({
-        url: '/sUniB/tpgetMemberTypeList',
+        url: '/sUniB/tp.getMemberTypeList',
         param: param
       }, true)
       if (memberTypeList.data.result) {

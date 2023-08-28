@@ -107,7 +107,7 @@ export default {
       // paramMap.set('myTeamKey', 836)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('/sUniB/tpUB_firstLoginCheck', Object.fromEntries(paramMap))
+      var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap))
       if (response && (response.status === 200 || response.status === '200')) {
         this.mFTeamList = response.data.fTeamList
         this.sortList()

@@ -165,7 +165,7 @@ export default {
         updateYn: true
       }
       await this.$commonAxiosFunction({
-        url: '/sUniB/tpsaveUser',
+        url: '/sUniB/tp.saveUser',
         param: param
       })
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
@@ -307,7 +307,7 @@ export default {
       paramMap.set('soEmail', this.GE_USER.soEmail)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('/sUniB/tpUB_firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)

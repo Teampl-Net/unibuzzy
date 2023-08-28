@@ -603,7 +603,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/sUniB/tpdeleteContents',
+          url: '/sUniB/tp.deleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -689,7 +689,7 @@ export default {
       memo.memoKey = param.memoKey
       // // console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpdeleteMemo',
+        url: '/sUniB/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -773,7 +773,7 @@ export default {
         nonLoadingYn = true
       }
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpgetMemoList',
+        url: '/sUniB/tp.getMemoList',
         param: memo
       }, nonLoadingYn, true)
       if (result.data.memoList) {
@@ -809,7 +809,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpgetUserDoListPage',
+        url: '/sUniB/tp.getUserDoListPage',
         param: param
       })
     }, */

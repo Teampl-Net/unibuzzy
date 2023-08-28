@@ -602,7 +602,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           const response = await this.$commonAxiosFunction({
-            url: '/sUniB/tpsaveUserDo',
+            url: '/sUniB/tp.saveUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = response.data.doKey
@@ -620,7 +620,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           await this.$commonAxiosFunction({
-            url: '/sUniB/tpdeleteUserDo',
+            url: '/sUniB/tp.deleteUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = null
@@ -668,7 +668,7 @@ export default {
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpgetFollowerList',
+        url: '/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.mManagerList = result.data.content
@@ -721,7 +721,7 @@ export default {
         typeParam.userKey = this.GE_USER.userKey
         typeParam.teamKey = this.CHANNEL_DETAIL.teamKey
         await this.$commonAxiosFunction({
-          url: '/sUniB/tpsaveFollower',
+          url: '/sUniB/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }
         })
         // } else {
@@ -862,7 +862,7 @@ export default {
       param.userKey = this.GE_USER.userKey
       try {
         const result = await this.$getViewData(
-          { url: '/sUniB/tpgetChanMainBoard', param: param },
+          { url: '/sUniB/tp.getChanMainBoard', param: param },
           false
         )
         // eslint-disable-next-line no-debugger
@@ -942,7 +942,7 @@ export default {
       var param = {}
       param.parentTeamKey = Number(this.$route.params.encodedTeamKey)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpgetTownCabinetList',
+        url: '/sUniB/tp.getTownCabinetList',
         param: param
       })
       if (result && result.data && result.data.result) {
@@ -1050,7 +1050,7 @@ export default {
       // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tpgetMemberTypeList',
+          url: '/sUniB/tp.getMemberTypeList',
           param: param
         },
         true

@@ -71,7 +71,7 @@ export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
 
 export async function checkSession () {
   var result = false
-  await axios.post('/sUniB/tpcheckSession', { withCredentials: true }
+  await axios.post('/sUniB/tp.checkSession', { withCredentials: true }
   ).then(response => {
     result = response
   }).catch((error) => {
@@ -139,7 +139,7 @@ export async function saveUser (userProfile, loginYn) {
   }
   setParam.user = user
   var result = await commonAxiosFunction({
-    url: '/sUniB/tpsaveUser',
+    url: '/sUniB/tp.saveUser',
     param: setParam,
     firstYn: true
   })
@@ -230,7 +230,7 @@ export const methods = {
 
     paramMap.set('mobileYn', isMobile())
 
-    var result = await axios.post('/sUniB/tploginCheck', Object.fromEntries(paramMap), { withCredentials: true })
+    var result = await axios.post('/sUniB/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
     if (result && result.data && (result.data.resultCode === 'OK' || (result.data.userMap && result.data.userMap.userKey))) {
       if (result.data.userMap) {
         try {
@@ -280,11 +280,11 @@ export const methods = {
       window.localStorage.removeItem('testYn')
       localStorage.setItem('loginYn', false)
     }
-    // var result = await axios.post('/sUniB/tploginCheck', Object.fromEntries(paramMap), { withCredentials: true })
+    // var result = await axios.post('/sUniB/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
   },
   async d_AlimLogout () {
     var result = await commonAxiosFunction({
-      url: '/sUniB/tplogout',
+      url: '/sUniB/tp.logout',
       firstYn: true
     })
     console.log(result)
@@ -304,7 +304,7 @@ export const methods = {
   },
   async UBLogOut () {
     var result = await commonAxiosFunction({
-      url: '/sUniB/tplogout',
+      url: '/sUniB/tp.logout',
       firstYn: true
     })
     console.log(result)
@@ -328,7 +328,7 @@ export const methods = {
     var resultList = null
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
     var result = await commonAxiosFunction({
-      url: '/sUniB/tpgetUserTeamList',
+      url: '/sUniB/tp.getUserTeamList',
       param: Object.fromEntries(paramMap)
     }, noneLoadingYn)
     resultList = result
@@ -357,7 +357,7 @@ export const methods = {
     }
     var resultList = null
     var result = await commonAxiosFunction({
-      url: '/sUniB/tpgetMyContentsList',
+      url: '/sUniB/tp.getMyContentsList',
       param: paramSet
     }, nonLoadingYn, noAuthYn)
     resultList = result.data
@@ -370,7 +370,7 @@ export const methods = {
     }
     var resultList = null
     var result = await commonAxiosFunction({
-      url: '/sUniB/tpgetContents',
+      url: '/sUniB/tp.getContents',
       param: paramSet
     })
     resultList = result.data
@@ -378,7 +378,7 @@ export const methods = {
   },
   async getFollowerList (paramMap) {
     var result = await this.$commonAxiosFunction({
-      url: '/sUniB/tpgetFollowerList',
+      url: '/sUniB/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
     })
     return result.data.content
@@ -391,7 +391,7 @@ export const methods = {
       param = inputParam
     }
     var urlSet = null
-    if (type === 'delete') { urlSet = '/sUniB/tpdeleteUserDo' } else if (type === 'save') { urlSet = '/sUniB/tpsaveUserDo' }
+    if (type === 'delete') { urlSet = '/sUniB/tp.deleteUserDo' } else if (type === 'save') { urlSet = '/sUniB/tp.saveUserDo' }
     param.userKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
 
@@ -411,7 +411,7 @@ export const methods = {
     param.creUserKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpsaveSticker',
+      url: '/sUniB/tp.saveSticker',
       param: param
     })
     result = response.data
@@ -428,7 +428,7 @@ export const methods = {
     param.creUserKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpgetStickerList',
+      url: '/sUniB/tp.getStickerList',
       param: param
     })
     result = response.data
@@ -440,8 +440,8 @@ export const methods = {
     if (inputParam) {
       paramSet = inputParam
     }
-    var urlSet = '/sUniB/tpsaveFollower'
-    if (type === 'del') { urlSet = '/sUniB/tpdeleteFollower' } else if (type === 'save') {
+    var urlSet = '/sUniB/tp.saveFollower'
+    if (type === 'del') { urlSet = '/sUniB/tp.deleteFollower' } else if (type === 'save') {
       paramSet.followerType = 'F'
     }
     paramSet.userKey = store.getters['D_USER/GE_USER'].userKey
@@ -457,7 +457,7 @@ export const methods = {
     var teamRequest = paramVal
     var result = false
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpsaveTeamRequest',
+      url: '/sUniB/tp.saveTeamRequest',
       param: { teamRequest: teamRequest }
     })
     result = response.data
@@ -472,7 +472,7 @@ export const methods = {
     // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpcreateTeamForReq',
+      url: '/sUniB/tp.createTeamForReq',
       param: paramSet
     })
     result = response.data
@@ -486,7 +486,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpgetTeamReqList',
+      url: '/sUniB/tp.getTeamReqList',
       param: paramSet
     })
     result = response.data
@@ -508,7 +508,7 @@ export const methods = {
     // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpsaveContents',
+      url: '/sUniB/tp.saveContents',
       param: paramSet
     })
     result = response.data
@@ -522,7 +522,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpgetCodeList',
+      url: '/sUniB/tp.getCodeList',
       param: paramSet
     })
     result = response.data
@@ -551,7 +551,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpsaveFollower',
+      url: '/sUniB/tp.saveFollower',
       param: paramSet
     })
     result = response.data
@@ -565,7 +565,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpsaveCabinet',
+      url: '/sUniB/tp.saveCabinet',
       param: paramSet
     })
     result = response.data
@@ -579,7 +579,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpdeleteCabinet',
+      url: '/sUniB/tp.deleteCabinet',
       param: paramSet
     })
     result = response.data
@@ -593,7 +593,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpgetTeamMenuList',
+      url: '/sUniB/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
     }, noneLoadingYn)
     result = response.data
@@ -607,7 +607,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpgetCabinetDetail',
+      url: '/sUniB/tp.getCabinetDetail',
       param: paramSet
     })
     result = response.data
@@ -616,7 +616,7 @@ export const methods = {
   async saveMCabContents (paramSet) {
     // var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpsaveMCabContents',
+      url: '/sUniB/tp.saveMCabContents',
       param: paramSet
     })
     // result = response
@@ -628,7 +628,7 @@ export const methods = {
     g_axiosQueue.push('getMemoCount')
     if (param.targetKey === null) return false
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpgetMemoCount',
+      url: '/sUniB/tp.getMemoCount',
       param: param
     }, true)
     var queueIndex = g_axiosQueue.findIndex((item) => item === 'getMemoCount')
@@ -644,7 +644,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpsaveUser',
+      url: '/sUniB/tp.saveUser',
       param: param
     })
     result = response
@@ -670,7 +670,7 @@ export const methods = {
     // param.updateYn = true
     var result = null
     var response = await commonAxiosFunction({
-      url: '/sUniB/tpsaveUser',
+      url: '/sUniB/tp.saveUser',
       param: param
     })
     result = response

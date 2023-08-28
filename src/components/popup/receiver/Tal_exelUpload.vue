@@ -101,7 +101,7 @@ export default {
     },
     async test () {
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpuploadTpUserRequireListExcelFile',
+        url: '/sUniB/tp.uploadTpUserRequireListExcelFile',
         // eslint-disable-next-line no-new-object
         param: new Object()
       })
@@ -126,7 +126,7 @@ export default {
             this.isUploading = true
 
             this.$axios
-              .post('/sUniB/tpuploadTpUserRequireListExcelFile', form, {
+              .post('/sUniB/tp.uploadTpUserRequireListExcelFile', form, {
                 headers: {
                   'Content-Type': 'multipart/form-data'
                 }
@@ -175,7 +175,7 @@ export default {
     },
     async saveList () {
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpsaveMUserFromExcelFile',
+        url: '/sUniB/tp.saveMUserFromExcelFile',
         param: {
           excelList: this.excelFileList,
           cabinetKey: this.cabinetKey,

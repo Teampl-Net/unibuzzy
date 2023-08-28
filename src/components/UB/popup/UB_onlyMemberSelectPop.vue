@@ -73,7 +73,7 @@ export default {
       paramMap.set('pageSize', 1000)
       // paramMap.set('followerType', 'M')
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpgetFollowerList',
+        url: '/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.memberList = result.data.content
@@ -154,7 +154,7 @@ export default {
         if (userKeyList && userKeyList.length > 0) {
           param.userKeyList = userKeyList
           result = await this.$commonAxiosFunction({
-            url: '/sUniB/tpsaveManager',
+            url: '/sUniB/tp.saveManager',
             param: param
           })
         }
@@ -174,7 +174,7 @@ export default {
             follower.userName = this.$changeText(this.directAddMemList[u].userDispMtext || this.directAddMemList[u].userNameMtext)
             param.follower = follower
             result = await this.$commonAxiosFunction({
-              url: '/sUniB/tpsaveManager',
+              url: '/sUniB/tp.saveManager',
               param: param
             })
           }

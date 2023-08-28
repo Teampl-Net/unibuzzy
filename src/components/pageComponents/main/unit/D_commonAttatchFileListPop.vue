@@ -68,7 +68,7 @@ export default {
         file.addYn = false
       }
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpsaveMyFile',
+        url: '/sUniB/tp.saveMyFile',
         param: { file: file }
       })
       if (fileType === 'F') {

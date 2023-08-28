@@ -601,7 +601,7 @@ export default {
       }
       paramMap.set('pageSize', 10)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpgetMyFileList',
+        url: '/sUniB/tp.getMyFileList',
         param: Object.fromEntries(paramMap)
       }, nonLoadingYn)
 
@@ -933,7 +933,7 @@ export default {
 
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tpdeleteMemo',
+          url: '/sUniB/tp.deleteMemo',
           param: memo
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -1105,7 +1105,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tpsaveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -1236,7 +1236,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpgetMemoList',
+        url: '/sUniB/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -1334,10 +1334,10 @@ export default {
         var resultList = null
         if (this.mCabinetKeyListStr) {
           param.cabinetKeyListStr = this.mCabinetKeyListStr
-          // var result1 = await this.$commonAxiosFunction('/sUniB/tpgetContentsListPage', param)
+          // var result1 = await this.$commonAxiosFunction('/sUniB/tp.getContentsListPage', param)
           var response = this.$getContentsList(param, nonLoading)
           // var response = await this.$commonAxiosFunction({
-          //   url: '/sUniB/tpgetContentsList',
+          //   url: '/sUniB/tp.getContentsList',
           //   param: param
           // }, nonLoading)
           // console.log('야야야야야')
@@ -1405,7 +1405,7 @@ export default {
         paramMap.set('ownUserKey', this.GE_USER.userKey)
         paramMap.set('jobkindId', 'ALIM')
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tpgetMCabContentsList',
+          url: '/sUniB/tp.getMCabContentsList',
           param: Object.fromEntries(paramMap)
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')

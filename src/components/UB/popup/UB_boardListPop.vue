@@ -161,7 +161,7 @@ export default {
       param.teamKey = teamKey
       // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction({
-        url: '/sUniB/tpgetMemberTypeList',
+        url: '/sUniB/tp.getMemberTypeList',
         param: param
       })
       if (memberTypeList.data.result) {
@@ -177,7 +177,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.selectMemberObj.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tpgetMemberTypeItemList',
+        url: '/sUniB/tp.getMemberTypeItemList',
         param: param
       })
       console.log('--------------------------')
@@ -198,7 +198,7 @@ export default {
         // eslint-disable-next-line no-debugger
         debugger
         await this.$commonAxiosFunction({
-          url: '/sUniB/tpsaveFollower',
+          url: '/sUniB/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }
         })
         // } else {
@@ -432,7 +432,7 @@ export default {
         var param = {}
         param.parentTeamKey = this.pTownTeamKey
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tpgetTownCabinetList',
+          url: '/sUniB/tp.getTownCabinetList',
           param: param
         })
         if (result && result.data && result.data.result) {

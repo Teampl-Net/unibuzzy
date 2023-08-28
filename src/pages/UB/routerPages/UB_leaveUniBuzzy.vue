@@ -341,7 +341,7 @@ export default {
     },
     async saveActAxiosFunc () {
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tpdeleteUser',
+        url: '/sUniB/tp.deleteUser',
         param: {
           userKey: this.GE_USER.userKey
         }

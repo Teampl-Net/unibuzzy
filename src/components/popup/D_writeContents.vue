@@ -468,8 +468,8 @@ export default {
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', this.GE_USER.userKey)
       var response = await this.$commonAxiosFunction({
-        // url: '/sUniB/tpgetCabinetDetail',
-        url: '/sUniB/tpgetCabinetListForMyShareType',
+        // url: '/sUniB/tp.getCabinetDetail',
+        url: '/sUniB/tp.getCabinetListForMyShareType',
         param: Object.fromEntries(paramMap)
       }, true)
       var mCabinet = response.data.mCabinet

@@ -200,7 +200,7 @@ export default {
         }
       }
       var response = await this.$commonAxiosFunction({
-        url: '/sUniB/tpUB_createBuildingAndCabinet',
+        url: '/sUniB/tp.UB_createBuildingAndCabinet',
         param: param
       })
       console.log('newBoard param', param)
