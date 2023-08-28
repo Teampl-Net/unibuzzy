@@ -286,7 +286,6 @@ async changeAct (act, contentsKey, idx) {
       var result = null
       var saveYn = true
       var temp = []
-      // console.log(this.commonBoardListData)
       if (!this.commonBoardListData[idx].userDoList) {
         this.commonBoardListData[idx].userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }]
       }

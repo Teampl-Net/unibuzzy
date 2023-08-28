@@ -214,7 +214,7 @@ axios.interceptors.response.use(function (response) {
     var innerHTML = ''
     var toastDiv = document.createElement('div')
     innerHTML += '<div id="toastPop" class="font16" style="width: 80%;left: 10%;border-radius: 5px;padding: 15px 10px;text-align: left;min-height: 40px;border: 1px solid #CCC;background: #f4f4f9fa;color: #000;position: absolute;bottom: 70px;box-shadow: 0 0 16px 0px #cccccc9c;z-index: 999999999999999;">'
-    innerHTML += ' 네트워크 상태가 불안정 합니다. 잠시후 다시 시도해주세요.'
+    innerHTML += ' The network status is unstable. Please try again in a momentarily.'
     innerHTML += '</div>'
     toastDiv.innerHTML = innerHTML
     app.appendChild(toastDiv)

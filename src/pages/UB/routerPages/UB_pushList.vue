@@ -310,19 +310,15 @@ export default {
           this.alimContentsList = this.replaceArr(newArr)
         } else if (this.viewMainTab === 'B') {
           if (value[0].jobkindId !== 'BOAR') return
-          // eslint-disable-next-line no-debugger
-          debugger
           newArr = [
             value[0],
             ...this.GE_DISP_BOAR_LIST
           ]
           this.boardContentsList = this.replaceArr(newArr)
         } else if (this.viewMainTab === 'A') {
-          // eslint-disable-next-line no-debugger
-          debugger
           newArr = [
-            value[0],
-            ...this.GE_DISP_ALL_LIST
+            ...this.GE_DISP_ALL_LIST,
+            value[0]
           ]
           this.allContentsList = this.replaceArr(newArr)
         }
@@ -481,10 +477,10 @@ export default {
       return this.replaceArr(returnBoardList)
     },
     GE_DISP_ALL_LIST () {
-      const parentYn = this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey) ? 1 : 0
-      if (parentYn === 1) {
-        return this.replaceArr(this.allContentsList)
-      }
+      // const parentYn = this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey) ? 1 : 0
+      // if (parentYn === 1) {
+      //   return this.replaceArr(this.allContentsList)
+      // }
       var idx1, idx2
       var returnAllList = []
       var chanDetail = null
@@ -504,9 +500,7 @@ export default {
               returnAllList.push(this_.allContentsList[i])
             } else {
               chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
-              if (jobkindId === 'ALIM') {
-                dataList = chanDetail.ELEMENTS.alimList
-              } else if (jobkindId === 'BOAR') {
+              if (jobkindId === 'BOAR') {
                 dataList = chanDetail.ELEMENTS.boardList
               }
               idx2 = dataList.findIndex((item) => item.contentsKey === this_.allContentsList[i].contentsKey)
@@ -520,9 +514,7 @@ export default {
           })
         } else {
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          if (this.allContentsList[i].jobkindId === 'ALIM') {
-            dataList = chanDetail.ELEMENTS.alimList
-          } else if (this.allContentsList[i].jobkindId === 'BOAR') {
+          if (this.allContentsList[i].jobkindId === 'BOAR') {
             dataList = chanDetail.ELEMENTS.boardList
           }
           idx2 = dataList.findIndex((item) => item.contentsKey === this.allContentsList[i].contentsKey)
@@ -1725,8 +1717,8 @@ export default {
               } else if (this.viewMainTab === 'A') {
                 if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
                 newArr = [
-                  ...resultList.content,
-                  ...this.GE_DISP_ALL_LIST
+                  ...this.GE_DISP_ALL_LIST,
+                  ...resultList.content
                 ]
                 this.allContentsList = this.replaceArr(newArr)
               }
@@ -1750,8 +1742,8 @@ export default {
               } else if (this.viewMainTab === 'A') {
                 if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
                 newArr = [
-                  ...resultList.content,
-                  ...this.GE_DISP_ALL_LIST
+                  ...this.GE_DISP_ALL_LIST,
+                  ...resultList.content
                 ]
                 this.allContentsList = this.replaceArr(newArr)
               }

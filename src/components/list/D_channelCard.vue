@@ -191,10 +191,6 @@ export default {
     pSelectedYn: Boolean
   },
   created () {
-    console.log('chanElement', this.chanElement)
-    /* if (this.pPopTitle !== 'townList') {
-      this.getMemberTypeList()
-    } */
     if (this.$route.path === '/chanList') {
       this.$nextTick(() => {
         this.showFollowYn()
@@ -221,13 +217,9 @@ export default {
   },
   methods: {
     async addImgEvnt () {
-      // if (!this.imgClickYn) return
-      // console.log(this.CONT_DETAIL)
       var contBody = this.$refs.contentsBoxRef
       if (!contBody) return
-      // var fileList = await this.settingFileList()
       this.mClickImgList = contBody.querySelectorAll('img')
-      // console.log(fileList)
       for (let m = 0; m < this.mClickImgList.length; m++) {
         var this_ = this
         this_.mClickImgList[m].addEventListener('click', () => {
@@ -271,7 +263,6 @@ export default {
       var typeParam = new Object()
       if (this.chanElement && this.chanElement.followerKey) {
         typeParam.followerKey = this.chanElement.followerKey
-        console.log('typeParam.followerKey', typeParam.followerKey)
       }
       if (this.selectMemberObj.memberTypeItemKey) {
         typeParam.memberTypeItemKey = this.selectMemberObj.memberTypeItemKey
@@ -279,16 +270,12 @@ export default {
       typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
       typeParam.userKey = this.GE_USER.userKey
       typeParam.teamKey = this.chanElement.teamKey
-      // eslint-disable-next-line no-debugger
-      debugger
-      var result = await this.$commonAxiosFunction({
+      await this.$commonAxiosFunction({
         url: '/sUniB/tp.saveFollower',
         param: { follower: typeParam, appType: 'UB', doType: 'CR' }
       })
-      console.log('44444 result', result)
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
       await this.$addChanList(this.chanElement.teamKey)
-      console.log('44444 this.CHANNEL_DETAIL.', this.CHANNEL_DETAIL)
     },
     stopFollowing () {
       this.mFollowYn = false
@@ -307,7 +294,6 @@ export default {
           this.selectMemberObj = this.mMemberTypeList[0]
         }
       }
-      // console.log('selectMemberObj', this.selectMemberObj)
     }
   },
   computed: {
@@ -326,8 +312,6 @@ export default {
       if (detail.length < 1) {
         return
       }
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!detail')
-      console.log(detail)
       if (detail && detail.length > 0) {
         if (detail[0].blackYn) this.$emit('bgcolor', detail[0].blackYn)
 
@@ -337,8 +321,6 @@ export default {
           this.$emit('bgcolor', false)
         }
 
-        // eslint-disable-next-line no-debugger
-        debugger
         if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {
           return this.CHANNEL_DETAIL
         } else {

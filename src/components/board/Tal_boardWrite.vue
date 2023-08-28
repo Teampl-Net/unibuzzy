@@ -94,8 +94,6 @@ export default {
           /* this.editorType = 'complex' */
           var file = item.getAsFile()
           this.handleImageUpload(file)
-          // console.log(file)
-          // uploadFile(file);
         }
       }
       e.preventDefault()
@@ -151,9 +149,6 @@ export default {
       document.getElementById('msgBox').innerHTML = innerHtml
       this.viewTab = 'complex'
       this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
-      // console.log('this.propData.parentAttachTrueFileList')
-      // console.log(this.propData.parentAttachTrueFileList)
-      // this.formEditorShowYn = true
     } else {
       document.getElementById('textMsgBox').innerHTML = this.$findATagDelete(this.bodyString)
     }
@@ -163,7 +158,6 @@ export default {
         ...this.propData.parentAttachTrueFileList
       ]
     }
-    // console.log(this.addFalseList)
 
     if (this.propData.selectBoardYn === true) {
       this.selectBoardYn = true
@@ -238,7 +232,6 @@ export default {
         this.selectBoardYn = true
       } else {
         this.bodyString = this.decodeContents(this.propData.bodyFullStr)
-        // console.log('WOW!!!!' + this.decodeContents(this.bodyString))
         this.modiYn = true
       }
     }
@@ -260,34 +253,19 @@ export default {
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', this.GE_USER.userKey)
-      // console.log(paramMap)
       var response = await this.$commonAxiosFunction({
         url: '/sUniB/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
-      // console.log(mCabinet)
       this.fileYn = mCabinet.fileYn
       return mCabinet
     },
     async selectBoard (data, index) {
       this.selectBoardIndex = index
 
-      // var paramMap = new Map()
-      // paramMap.set('teamKey', this.propData.currentTeamKey)
-      // paramMap.set('currentTeamKey', this.propData.currentTeamKey)
-      // paramMap.set('cabinetKey', data.cabinetKey)
-      // paramMap.set('sysCabinetCode', 'BOAR')
-      // paramMap.set('shareType', 'W')
-      // paramMap.set('userKey', this.GE_USER.userKey)
-      // // console.log(paramMap)
-      // var response = await this.$commonAxiosFunction({
-      //   url: '/sUniB/tp.getCabinetDetail',
-      //   param: Object.fromEntries(paramMap)
-      // })
       var mCabinet = await this.getCabinetDetail(data.cabinetKey)
       var mCabinetShare = mCabinet.mShareItemList
-      // console.log(mCabinetShare)
       if (mCabinetShare[0]) {
         if (mCabinetShare[0].shareType) {
           this.selectBoardCabinetKey = mCabinetShare[0].cabinetKey
@@ -309,7 +287,6 @@ export default {
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', this.GE_USER.userKey)
-      // console.log(paramMap)
       var result = await this.$getTeamMenuList(paramMap)
       this.selectBoardList = result
       if (this.selectBoardList.length > 0) {
@@ -318,7 +295,6 @@ export default {
           this.selectBoard(this.selectBoardList[0], 0)
         })
       }
-      // console.log(result)
     },
     delAttachFile (dFile) {
       if (dFile.addYn) {
@@ -335,7 +311,6 @@ export default {
       if (sFile[0].addYn === true) {
         this.uploadFileList.push(sFile)
       }
-      // console.log(this.uploadFileList)
     },
     changeUploadList (upList) {
       if (this.uploadFileList.length > 0) {
@@ -382,10 +357,6 @@ export default {
     },
     async setAttachFileList () {
       var imgItemList = document.querySelectorAll('.msgArea .formCard .editorImg')
-      // console.log(imgItemList)
-      // console.log(this.addFalseList)
-      // console.log(this.delAddFalseFileList)
-      // eslint-disable-next-line no-undef
       var delList = []
       for (var f = this.addFalseList.length - 1; f > -1; f--) {
         if (this.addFalseList[f].attachYn) {
@@ -408,13 +379,10 @@ export default {
           }
         }
       }
-      // console.log(delList)
       // eslint-disable-next-line no-array-constructor
       var newAttachFileList = new Array()
       // eslint-disable-next-line no-new-object
       var setObj = new Object()
-      // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@')
-      // console.log(this.addFalseList)
       if (delList.length > 0) {
         for (var a = 0; a < delList.length; a++) {
           // eslint-disable-next-line no-new-object
@@ -446,13 +414,11 @@ export default {
           newAttachFileList.push(setObj)
         }
       }
-      // console.log(newAttachFileList)
       return newAttachFileList
     },
     async sendMsg () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      // console.log('업로드할 개수는!!!' + this.uploadFileList.length)
       this.sendLoadingYn = true
       this.checkPopYn = false
       try {
@@ -520,7 +486,6 @@ export default {
         }
 
         param.cabinetName = this.propData.cabinetNameMtext || this.cabinetName
-        // console.log(param)
 
         param.title = this.writePushTitle
         param.showCreNameYn = true
@@ -646,15 +611,11 @@ export default {
     },
     async uploadFile () {
       if (this.uploadFileList.length > 0) {
-        // console.log('this.uploadFileList')
-        // console.log(this.uploadFileList)
         var form = new FormData()
         var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
           this.uploadFileList[i].percentage = 0
           form = new FormData()
-          // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
-          // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
           form.append('files[0]', (this.uploadFileList[i])[0].file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
@@ -671,7 +632,6 @@ export default {
                 }
               })
             .then(res => {
-              // console.log(res)
               if (res.data.length > 0) {
                 if ((thisthis.uploadFileList[i])[0].attachYn === true) {
                   thisthis.uploadFileList[i].attachYn = true
@@ -687,20 +647,13 @@ export default {
             .catch(error => {
               console.log(error)
             })
-          /* } */
-          // var selFile = this.selectFileList[i].file
         }
-        // console.log(this.uploadFileList)
         var iList = document.querySelectorAll('.msgArea .formCard .addTrue')
         if (iList.length > 0) {
           for (var s = 0; s < this.uploadFileList.length; s++) {
             var uploadFile = this.uploadFileList[s]
             if (uploadFile.successSave) {
               for (var il = 0; il < iList.length; il++) {
-                // console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-                // console.log(uploadFile[0].previewImgUrl)
-                // console.log(iList[il].src)
-                // console.log('여기!!!!!!!!!끝!!!!!!!!!!!!!!!!!!!!!!')
                 if (!uploadFile[0].attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
                   if (iList[il].src === uploadFile[0].previewImgUrl) {
                     iList[il].src = uploadFile.filePath
@@ -740,8 +693,6 @@ export default {
       if (
         ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
       ) {
-        console.log('originalFile instanceof Blob', file instanceof Blob) // true
-        console.log(`originalFile size ${file.size / 1024 / 1024} MB`)
 
         try {
           // eslint-disable-next-line no-undef
@@ -760,8 +711,6 @@ export default {
             src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
           }
 
-          console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-          console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
           this.$refs.complexEditor.successImgPreview({ selectFileList: { previewImgUrl: src, addYn: true, file: newFile }, originalType: 'image' })
           this.$refs.complexEditor.addFormCard('image', src, true)
         } catch (error) {

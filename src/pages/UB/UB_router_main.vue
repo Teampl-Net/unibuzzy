@@ -1,12 +1,28 @@
+<i18n>
+{
+  "ko": {
+    "MAIN_MSG_UPDATE": "버전 업데이트가 필요합니다.<br>앱스토어로 이동합니다.",
+    "MAIN_MSG_DIS_CONN": "네트워크의 연결이 끊어져<br>실행 할 수 없습니다.",
+    "MAIN_MSG_RETRY": "네트워크 연결이 끊어졌습니다.<br> 잠시후 다시 시도 해주세요.",
+    "MAIN_MSG_CONN": "네트워크가 연결되었습니다!"
+  },
+  "en": {
+    "MAIN_MSG_UPDATE": "A version update is required.<br>Go to the App Store.",
+    "MAIN_MSG_DIS_CONN": "The network is disconnected and cannot execute the request.",
+    "MAIN_MSG_RETRY": "The network status is unstable. Please try again in a momentarily.",
+    "MAIN_MSG_CONN": "Network is connected!"
+  }
+}
+</i18n>
 <template>
   <div class="w100P h100P listRefresh" style="overflow:hidden;">
     <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
     <!-- <unknownLoginPop :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" /> -->
     <gImgPop @closeXPop="closeImgPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" />
-    <commonConfirmPop v-if="mAppUpdatePopShwoYn" @no="goAppStore" confirmType="one" confirmText="버전 업데이트가 필요합니다.<br>앱스토어로 이동합니다." />
+    <commonConfirmPop v-if="mAppUpdatePopShwoYn" @no="goAppStore" confirmType="one" :confirmText="$t('MAIN_MSG_UPDATE')" />
     <gConfirmPop :confirmText="mErrorPopBodyStr" confirmType='one' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" style="z-index: 9999999999999999999999;"/>
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
-    <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
+    <gConfirmPop :confirmText="$t('MAIN_MSG_DIS_CONN')" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
     <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" :pContentsYn="mTargetType === 'contentsDetail' || mTargetType === 'contDetail'" @goFavList="openPop" @goLogList="openPop" v-if="(mRouterHeaderInfo !== 'leave' && mTargetType !== 'chanDetail' && mTargetType !== 'boardMain') || $route.path === '/chanList' " @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9;" />
     <chanHeader :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 20)  + 'px'" v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === '' && mRouterHeaderInfo !== 'leave'" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo.targetKey" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" :pChanInfo="mChanInfo" @openPop="openPop" class="chanDetailPopHeader" />
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mPopType === 'writeContents'" @click="mPopType = ''"></div>
@@ -843,7 +859,7 @@ export default {
       handler (value, old) {
         var this_ = this
         if (old === false && value) {
-          this.mNetPopBodyStr = '네트워크가 연결되었습니다!<br>'
+          this.mNetPopBodyStr = this.$t('MAIN_MSG_CONN')
           this.mShadowScreenShowYn = false
           this.mNetPopShowYn = true
           setTimeout(() => {
@@ -851,7 +867,7 @@ export default {
           }, 2000)
         } else if (old && value === false) {
           this.mShadowScreenShowYn = true
-          this.mNetPopBodyStr = '네트워크 연결이 끊어졌습니다.<br> 잠시후 다시시도 해주세요'
+          this.mNetPopBodyStr = this.$t('MAIN_MSG_RETRY')
           this.mNetPopShowYn = true
           setTimeout(() => {
             this_.mNetPopShowYn = false

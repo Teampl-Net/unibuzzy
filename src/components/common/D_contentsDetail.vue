@@ -126,9 +126,6 @@ export default {
     })
     var contsScrollWrap = document.getElementById('contsScrollWrap')
     if (!contsScrollWrap) {
-      // console.log(contsScrollWrap)
-      // eslint-disable-next-line no-debugger
-      debugger
       return
     }
     contsScrollWrap.addEventListener('scroll', this.handleScroll)
@@ -136,7 +133,6 @@ export default {
     if (this.propParams.memoScrollYn) {
       var memoTop
       memoTop = await this.$refs.myContentsBox.getMemoTop()
-      console.log('contentDetail : ' + memoTop)
 
       this.scrollMove(memoTop - 100)
     }
@@ -255,10 +251,7 @@ export default {
         var test = this.$refs.contScrollWrap
         // eslint-disable-next-line no-debugger
         debugger
-        console.log(this.$refs.contScrollWrap.scrollHeight + '///' + memoTop)
         if (this.$refs.contScrollWrap.scrollTop < memoTop) {
-          console.log('contentDetail : ' + memoTop)
-
           this.scrollMove(memoTop - 100)
         }
       }
@@ -282,7 +275,6 @@ export default {
       this.$refs.myContentsBox.handleScroll()
     },
     openPop (openPopParam) {
-      console.log(openPopParam)
       if (this.propParams.onlyMineYn && this.propParams.onlyMineYn === true & openPopParam.targetType !== 'writeContents') {
         this.$showToastPop(this.$t('DETAIL_MSG_FEATURE'))
         return
@@ -380,7 +372,6 @@ export default {
     },
     async readyFunction () {
       try {
-        console.log(this.propParams)
         this.loadingYn = true
         if (!this.propParams.initData) {
           if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
@@ -396,8 +387,6 @@ export default {
           var pInitData = JSON.parse(JSON.stringify(this.propParams.initData))
           this.cDetail = pInitData.content
           this.cabinetDetail = pInitData.contentCabinet
-          console.log('!!!!!!!!!!!!!!!!!!!!!!!!')
-          console.log(this.cDetail)
         }
         /* if (!this.CONT_DETAIL.D_MEMO_LIST) {
           this.CONT_DETAIL.D_MEMO_LIST = []
@@ -410,7 +399,6 @@ export default {
         console.log(e)
       }
       this.loadingYn = false
-      // console.log(this.propParams.memoScrollYn)
     },
     async getCabinetDetail (teamKey) {
       // eslint-disable-next-line no-new-object
@@ -522,7 +510,7 @@ export default {
         this.backClick()
         this.confirmPopShowYn = true
       } catch (error) {
-        // // console.log(error)
+        console.log(error)
       }
     },
     openSelectBoardPop (type) {
@@ -580,7 +568,6 @@ export default {
     },
     deleteConfirm (data) {
       if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo' && data !== 'board')) {
-        // console.log(data)
         this.tempData = data
       }
 
@@ -597,7 +584,6 @@ export default {
         this.confirmText = this.$t('COMMON_MSG_DELETE_POST')
         this.currentConfirmType = 'boardDEL'
       }
-      // console.log(this.tempData);
       this.confirmType = 'two'
       this.confirmPopShowYn = true
     },
@@ -627,7 +613,6 @@ export default {
       }
     },
     editBoard () {
-      // console.log();
       var param = {}
       param.targetKey = this.CONT_DETAIL.contentsKey
       param.targetType = 'writeContents'
@@ -641,7 +626,6 @@ export default {
       this.$emit('openPop', param)
     },
     async deleteAlim (allYn) {
-      // console.log(this.tempData)
       var inParam = {}
       if (this.CONT_DETAIL.jobkindId === 'ALIM') {
         if (allYn) {
@@ -649,14 +633,12 @@ export default {
         }
         inParam.mccKey = this.CONT_DETAIL.mccKey
         inParam.jobkindId = 'ALIM'
-        // inParam.teamKey = this.tempData.creTeamKey
 
         await this.$commonAxiosFunction({
           url: '/sUniB/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.CONT_DETAIL.jobkindId === 'BOAR') {
-        // // console.log(this.alimDetail)
         inParam.mccKey = this.CONT_DETAIL.mccKey
         inParam.contentsKey = this.CONT_DETAIL.contentsKey
         inParam.jobkindId = 'BOAR'
@@ -709,16 +691,12 @@ export default {
         url: '/sUniB/tp.saveActLog',
         param: param
       })
-      // // console.log(result.data.result)
       if (result.data.result === true) {
         this.confirmMsg = this.confirmText
         this.smallPopYn = true
-        // this.confirmPopShowYn = true
       }
     },
     bloc (type) {
-      // var typeText = type === 'user' ? '유저를' : '게시글을'
-      // this.confirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
       this.confirmText = this.$t('COMMON_MSG_BLOCK')
       this.confirmType = 'two'
       this.confirmPopShowYn = true
@@ -731,7 +709,6 @@ export default {
       if (params.tempData) {
         params.tempData.index = params.index
         params.tempData.cIndex = params.cIndex
-        // console.log(params.tempData.index)
       }
       this.tempData = params.tempData
       this.reportYn = true
@@ -746,7 +723,6 @@ export default {
       } else this.$showToastPop(this.$t('COMMON_MSG_UNSURPORT'))
     },
     addImgEvnt () {
-      // console.log(this.CONT_DETAIL)
       this.clickImgList = document.querySelectorAll('#contentsBodyArea img')
       for (let m = 0; m < this.clickImgList.length; m++) {
         var thisthis = this
@@ -811,7 +787,6 @@ export default {
       this.alertPopId = this.$setParentsId(this.pPopId, this.alertPopId)
       history.push(this.alertPopId)
       this.$store.commit('D_HISTORY/updateStack', history)
-      // console.log(this.$store.getters['D_HISTORY/hStack'])
       this.imgDetailAlertShowYn = true
       this.clickEndYn = false
     },
@@ -883,7 +858,6 @@ export default {
       this.confirmType = 'timeout'
       if (this.currentConfirmType === 'BLOC') {
         this.currentConfirmType = ''
-        // console.log(this.tempData);
         var param = {}
         param.claimType = 'BLOC'
         if (this.tempData.memoKey) {
@@ -1013,16 +987,13 @@ export default {
       } */
     },
     async deleteMemo (param) {
-      // console.log(param)
       var memo = {}
       memo.memoKey = param.memoKey
-      // // console.log(param)
       var result = await this.$commonAxiosFunction({
         url: '/sUniB/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
-        // var cont
         var memos = this.CONT_DETAIL.D_MEMO_LIST
         var index = memos.findIndex((item) => item.memoKey === param.memoKey)
         if (this.tempData.parentMemoKey) {
@@ -1106,7 +1077,6 @@ export default {
         url: '/sUniB/tp.getMemoList',
         param: memo
       }, nonLoadingYn)
-      console.log(result)
       if (result.data.memoList) {
         var tempList = []
         // 수민_ 대댓글의 경우, 어짜피 전체 리로드를 한번 해줘야 반영되기 때문에 중복제거x
