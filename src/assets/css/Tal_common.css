@@ -192,6 +192,13 @@ input, select {
   }
 }
 
+.scrollOn {
+  overflow: hidden auto;
+}
+.scrollHidden {
+  overflow: hidden;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }

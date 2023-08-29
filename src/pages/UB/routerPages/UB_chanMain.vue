@@ -1,5 +1,5 @@
 <template>
-    <div v-if="CHANNEL_DETAIL && mChanInfo" ref="chanMainRef" style="width: 100%; overflow: hidden auto" :style="`background-position: top; background-size: cover; background-repeat: no-repeat;  background-image: url(${CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext});height: calc(100% + ${Number($STATUS_HEIGHT)}px);  padding-top: ${Number($STATUS_HEIGHT)}px;`">
+    <div v-if="CHANNEL_DETAIL && mChanInfo" class="scrollOn" ref="chanMainRef" style="width: 100%;" :style="`background-position: top; background-size: cover; background-repeat: no-repeat;  background-image: url(${CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext});height: calc(100% + ${Number($STATUS_HEIGHT)}px);  padding-top: ${Number($STATUS_HEIGHT)}px;`">
         <div v-if="!mChanCardShowYn" style="width: 100%; color: #FFFFFF; display: flex; position: absolute; align-items: center; justify-content: center; background-size: cover; background-position: top;background-repeat: no-repeat;" class="font20 fl fontBold" :style="`top: ${Number($STATUS_HEIGHT)}px; height:${ 50}px `" >
             <p :style="CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;'">{{$changeText(CHANNEL_DETAIL.nameMtext)}}</p>
             <img
@@ -348,10 +348,13 @@ export default {
     userDetailPop
   },
   mounted () {
-    const chanMainRef = this.$refs.chanMainRef
-    if (chanMainRef) {
-      chanMainRef.addEventListener('scroll', this.handleScroll)
-    }
+    const intervalHandler = setInterval(() => {
+      const chanMainRef = this.$refs.chanMainRef
+      if (chanMainRef) {
+        chanMainRef.addEventListener('scroll', this.handleScroll)
+        clearInterval(intervalHandler)
+      }
+    }, 100)
   },
   methods: {
     async closeWritePushPop (reloadYn) {
@@ -420,8 +423,8 @@ export default {
           }
         }
         this.mLastScroll = scrollTop
-        console.log(this.mLastScroll)
-        console.log(chanCardTopRef.getBoundingClientRect().top)
+        console.log('mLastScroll', this.mLastScroll)
+        console.log('chanCardTopRef', chanCardTopRef.getBoundingClientRect().top)
       }
     },
     async confirmOk () {
@@ -819,10 +822,29 @@ export default {
       if (this.mwHeight < nowHeight) this.mwHeight = nowHeight
     },
     scrollOn () {
+      const pushList = document.getElementById('pushListWrap')
       if (this.mChanCardShowYn) {
-        const pushList = document.getElementById('pushListWrap')
-        if (pushList) {
-          pushList.style.overflow = 'hidden'
+        pushList.className = 'scrollHidden'
+      } else {
+        if (pushList.scrollTop <= 0) {
+          const chanCardTopRef = this.$refs.chanPushListArea
+          const chanMainRef = this.$refs.chanMainRef
+          const chanCardTopArea = this.$refs.chanCardTopArea
+          if (!chanMainRef) return
+
+          if (chanCardTopRef) {
+            const scrollTop = chanMainRef.scrollTop
+            // up
+            // const triggerPosition = chanCardTopRef.getBoundingClientRect().top
+
+            this.mChanCardShowYn = true
+            // chanCardTopRef.style.marginTop = ''
+            const opacity = Math.max(0, 1)
+            if (chanCardTopArea) {
+              chanCardTopArea.style.opacity = opacity.toFixed(2)
+            }
+            this.mLastScroll = scrollTop
+          }
         }
       }
       /*       console.log('scrollOn')
@@ -1258,15 +1280,15 @@ export default {
       const pushList = document.getElementById('pushListWrap')
       // const chanCardTopRef = this.$refs.chanPushListArea
       const chanMainRef = this.$refs.chanMainRef
-      console.log('val: ' + val + 'old: ' + old)
+      console.log('val: ' + val + ' old: ' + old)
       if (pushList) {
         if (val && !old) {
-          pushList.style.overflow = 'hidden'
-          chanMainRef.style.overflow = 'hidden auto'
+          pushList.className = 'scrollHidden'
+          chanMainRef.className = 'scrollOn'
           // chanCardTopRef.style.height = 'calc(100% - 210px)'
         } else if (!val && old) {
-          pushList.style.overflow = 'hidden auto'
-          chanMainRef.style.overflow = 'hidden'
+          pushList.className = 'scrollOn'
+          chanMainRef.className = 'scrollHidden'
           // chanCardTopRef.style.height = 'calc(100% - 200px - ' + this.$STATUS_HEIGHT + 'px'
         }
       }

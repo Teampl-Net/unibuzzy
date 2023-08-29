@@ -670,9 +670,11 @@ export default {
           bd.maskedImageUrl = canvas.toDataURL()
         }
         targetImage.src = bd.imgLink
-        if (lastYn && bdList.length - 1 === j) {
-          this.findAllDrawn()
-        }
+        this.$nextTick(() => {
+          if (lastYn && bdList.length - 1 === j) {
+            this.findAllDrawn()
+          }
+        })
       }
     },
     getInRectImgList (event) {
