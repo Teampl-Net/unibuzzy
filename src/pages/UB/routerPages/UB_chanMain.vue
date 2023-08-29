@@ -1144,6 +1144,7 @@ export default {
     } else {
       this.getChanMain()
     }
+    console.log('222chanDetail', this.mChanInfo)
   },
   computed: {
     CHANNEL_DETAIL () {
