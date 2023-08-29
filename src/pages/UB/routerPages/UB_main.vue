@@ -16,7 +16,9 @@
       <div class="ballon">
         <img src="@/assets/images/main/ballon.png" alt="go to other town?" class="w100P"/>
       </div>
-      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="" alt="">
+      <div class="planeBox">
+        <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="" alt="">
+      </div>
       <!-- <UBBgEffect /> -->
       <!-- my profile -->
       <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}" style="height: 50px; position: absolute; left: 15px; display: flex; align-items: center;">
@@ -883,28 +885,34 @@ export default {
   border-radius: 5px;
   z-index: 99;
 }
-.planeImg{
-  filter: drop-shadow(5px 5px 5px #00000036);
-  width:10%;
+.planeBox{
+  width:20%;
   max-width: 100px;
   position: absolute;
   right: 30px;
   top: 100px;
+  opacity:1;
+}
+.planeImg{
+  width:100%;
+  filter: drop-shadow(5px 5px 5px #00000036);
   opacity:0;
-  animation: flyingPlane 1s 2s ease-in-out both;
+  transition: 0.2s;
+  animation: flyingPlane 1s 2s ease-in-out both, moving 3s 3s ease-in-out infinite;
 }
 
 @keyframes flyingPlane{
-  0%{opacity: 0.2; transform: translate(-450px, 100px);}
+  0%{opacity: 0; transform: translate(-450px, 100px);}
   80%{opacity: 1; transform: translate(0px, 0px) scale(1.2);}
   100%{opacity: 1; transform: translate(0px, 0px) scale(1);}
 }
-.planeImg:hover {
+@keyframes moving{
+  0%{transform:translateY(0px)}
+  100%{transform:translateY(-10px)}
+}
+.planeBox:hover {
   transform: scale(1.2);
   transform-origin: 50% 50%;
-  transition: 0.2s;
-}
-.planeImg {
   transition: 0.2s;
 }
 .ballon {
