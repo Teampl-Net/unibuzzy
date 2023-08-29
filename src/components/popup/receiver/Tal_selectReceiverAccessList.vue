@@ -58,7 +58,8 @@ export default {
       detailOpenYn: false,
 
       titleText: '팀플',
-      receiverTitle: '그룹 관리',
+      // receiverTitle: '그룹 관리',
+      receiverTitle: 'Group Management',
       selectReceivers: [],
       teamLength: 100,
       addPopOpenYn: null,
@@ -175,13 +176,13 @@ export default {
         this.addPopOpenYn = false
       } else if (this.detailOpenYn) {
         this.detailOpenYn = false
-        this.receiverTitle = '그룹 관리'
+        this.receiverTitle = 'Group Management'
         if (this.selectPopYn) {
-          this.receiverTitle = '대상 선택'
+          this.receiverTitle = 'Select target'
         }
 
         if (this.selectPopYn) {
-          this.titleText = '대상선택 > ' + this.$changeText(this.chanInfo.value.nameMtext)
+          this.titleText = 'Selec target > ' + this.$changeText(this.chanInfo.value.nameMtext)
         } else {
           this.titleText = '팀플'
         }
@@ -196,14 +197,14 @@ export default {
       if (!this.teamEditYn) {
         this.selectBookDetail = data
         this.detailOpenYn = true
-        this.receiverTitle = '구성원 관리'
+        this.receiverTitle = 'Member Management'
         if (this.chanInfo.value.nameMtext !== undefined && this.chanInfo.value.nameMtext !== null && this.chanInfo.value.nameMtext !== '') {
           this.titleText = this.$changeText(this.chanInfo.value.nameMtext) + ' > ' + this.selectBookDetail.cabinetNameMtext
         } else {
           this.titleText = this.propData.teamNameMtext + ' > ' + this.selectBookDetail.cabinetNameMtext
         }
         if (this.selectPopYn) {
-          this.receiverTitle = '대상 선택'
+          this.receiverTitle = 'Select target'
           // this.titleText = "대상선택 > 팀플 > " + data.reveiverTeamName
         }
       }
@@ -221,7 +222,7 @@ export default {
         const addAllMemTeamIdx = this.selectBookDetail.findIndex(i => i.reveiverTeamName === this.clickList.reveiverTeamName)
         this.selectBookDetail.splice(addAllMemTeamIdx, 1) // 전체 리스트에서 해당 인덱스 삭제
         this.detailOpenYn = false // 삭제 되었으면 디테일 끄기
-        this.titleText = '대상선택 > ' + this.$changeText(this.chanInfo.value.nameMtext)
+        this.titleText = 'Select target > ' + this.$changeText(this.chanInfo.value.nameMtext)
       } else {
         // 팀 리스트에서 전체 추가 클릭
         for (i = 0; i < this.selectBookDetail.length; i++) {

@@ -352,10 +352,10 @@ export default {
     test () {
       if (this.$checkMobile() === 'IOS') {
         this.$emit('writeMemoScrollMove')
-        // this.$nextTick(() => {
-        //   this_.$refs.memoPopCompo.style.position = 'fixed'
-        //   this_.$refs.memoPopCompo.style.bottom = 0
-        // })
+        this.$nextTick(() => {
+          this.$refs.memoPopCompo.style.position = 'fixed'
+          this.$refs.memoPopCompo.style.bottom = 0
+        })
       }
     },
     getMemoData () {

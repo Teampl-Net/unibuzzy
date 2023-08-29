@@ -614,7 +614,6 @@ export default {
       this.mGPopShowYn = false
     },
     async goBoardDetail (params) {
-      console.log('==params==', params)
       this.mChanInfo = params
       if (!this.mChanInfo.chanYn) {
         params.chanYn = false
@@ -623,8 +622,6 @@ export default {
       }
       this.mTargetType = 'boardMain'
       // await this.getCabinetDetail(params)
-      console.log('==mChanInfo==', this.mChanInfo)
-
       this.$router.push(`/board/${params.teamKey}/${params.targetKey}`)
     },
     async openPage (params) {

@@ -24,10 +24,10 @@
                         alt=""
                     />
                 </div>
-                        <!--follow-->
-                <gBtnSmall style="margin-left:-20px; line-height:20px;  border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="cursorP fl w-100P fontBold font14" :btnTitle="`+ Follow `" />
+                <!--follow-->
+                <p style="margin-left:-10px; height:30px; line-height:30px;  border-radius:5px; padding:0px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="cursorP fl fontBold font14">+ Follow</p>
                 <!--following-->
-                <gBtnSmall style="margin-left:-20px; line-height:20px;  cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl w-100P fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" :btnTitle="`Following`" />
+                <p style="margin-left:-10px; height:30px; line-height:30px; border-radius:5px; padding:0px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn">Following</p>
 
             </div>
             <div style="width: 100%; height: calc(100% - 35px); display: flex; background: #FFFFFF;">
@@ -430,12 +430,14 @@ export default {
     async confirmOk () {
       this.mErrorPopShowYn = false
       if (this.mSaveFollowerType === 'follow') {
+        console.log('====here===')
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
           this.mErrorPopBodyStr =
             '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
           this.mErrorPopShowYn = true
           this.mErrorPopBtnType = 'two'
         } else {
+          console.log('====here===')
           var fStatus = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
           // eslint-disable-next-line no-new-object
           this.mSaveFollowerParam = new Object()
@@ -482,6 +484,7 @@ export default {
               this.mErrorPopShowYn = true
             }
           } else {
+            console.log('====here===')
             await this.okMember()
             // this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>우리채널에 알림을 보낼 수 있어요!<br>멤버들끼리 자유롭게 소통할 수 있어요!'
             // this.openChannelMsgPop()
@@ -708,7 +711,10 @@ export default {
       this.$refs.chanAlimListWritePushRefs.setSelectedList(data)
     },
     async okMember () {
+      console.log('====here222===')
+      console.log('잉?', this.mMemberTypeList, this.selectMemberObj)
       if (this.mMemberTypeList && this.selectMemberObj) {
+        console.log('====here222===')
         // eslint-disable-next-line no-new-object
         var typeParam = new Object()
         if (
@@ -727,12 +733,15 @@ export default {
           url: '/sUniB/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }
         })
+        console.log('typeParam', typeParam)
         // } else {
         //   this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
         //   return true
         // }
         // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
+        this.CHANNEL_DETAIL.memberTypeKey = this.selectMemberObj.memberTypeKey
         this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
+        this.CHANNEL_DETAIL.teamKey = this.selectMemberObj.teamKey
         this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
         await this.$addChanList(this.mChanInfo.teamKey)
@@ -1100,6 +1109,7 @@ export default {
     setTimeout(() => {
       this.$emit('showCloudLoading', false)
     }, 800)
+    console.log('propParams', this.propParams)
     if (
       this.propParams &&
       this.propParams.targetType === 'chanDetail' &&

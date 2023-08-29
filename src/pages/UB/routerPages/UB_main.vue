@@ -933,7 +933,8 @@ export default {
   align-items: center;
   justify-content: center;
   height: 30px;
-  width:220px;
+  width:50%;
+  max-width:220px;
   right: -30px;
   top: 80px;
   border-radius: 5px;

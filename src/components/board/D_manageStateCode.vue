@@ -166,7 +166,7 @@ export default {
           var toDate = this.settingDate(this.workDate.toDate)
           if (toDate !== 'Invalid Date') {
             param.workToDateStr = toDate
-            param.memoHeaderStr += '목표일 ' + this.settingDate(this.workDate.toDate)
+            param.memoHeaderStr += 'Due Date ' + this.settingDate(this.workDate.toDate)
             // param.memoHeaderStr = '<p class="commonMemoWorkStatHeaderColor" style="font-weight: bold; text-align: left; font-size: 14px; width: 100%;">접수일 ' + this. + '<br></p>'
             setOkYn = true
           }
@@ -174,10 +174,11 @@ export default {
         if (this.selectedList.memberList.length > 0 && this.selectedList.memberList[0]) {
           param.workUserKey = this.selectedList.memberList[0].accessKey
           param.workUserName = this.selectedList.memberList[0].userDispMtext
-          param.memoHeaderStr += '담당자 ' + this.$changeText(this.selectedList.memberList[0].userDispMtext)
+          param.memoHeaderStr += 'Manager' + this.$changeText(this.selectedList.memberList[0].userDispMtext)
           setOkYn = true
         }
-        param.memoHeaderStr += '(으)로 변경<br></p>'
+        // param.memoHeaderStr += '(으)로 변경<br></p>'
+        param.memoHeaderStr += 'Changed<br></p>'
         /* if (this.workDate.fromDate !== '') {
           var fromDate = this.settingDate(this.workDate.fromDate)
           param.workFromDateStr = fromDate

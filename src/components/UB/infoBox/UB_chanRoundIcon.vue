@@ -1,5 +1,5 @@
 <template>
-    <div  v-if="chanElement" class="cursorP" style="width: 75px; height: 100%;float: left; display: flex; margin-right: 10px; flex-direction: column; justify-content: center; align-items: center;" @click="pGoChannelMain(chanElement)">
+    <div  v-if="chanElement" class="cursorP" style="width: 75px; height: 100%;float: left; display: flex; flex-direction: column; justify-content: center; align-items: center;" @click="pGoChannelMain(chanElement)">
         <div class="roundImg" style="background-color: white; position: relative; width: 65px; height: 65px; float: left; border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;"
             :style="'background-image: url(' + mImgPath + ');' + `border: ${selectedYn? '2px solid #5F61BD;':'0.5px solid rgba(0, 0, 0, 0.1);'}` + `${pBestYn? 'box-shadow: 0px 0px 10px 5px #f7d83c;':''}`" >
             <div v-if="pBestYn" class="CWhiteBgColor" style="position: absolute; right: 0; display: flex; justify-content: center; align-items: center; padding: 2px; top: 0; width: 18px; height: 18px; border-radius: 100%;">
