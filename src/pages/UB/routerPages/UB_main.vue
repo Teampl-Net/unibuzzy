@@ -898,7 +898,7 @@ export default {
   filter: drop-shadow(5px 5px 5px #00000036);
   opacity:0;
   transition: 0.2s;
-  animation: flyingPlane 1s 2s ease-in-out both, moving 3s 3s ease-in-out infinite;
+  animation: flyingPlane 1s 2s ease-in-out both, moving 3s 3s ease-in-out infinite alternate;
 }
 
 @keyframes flyingPlane{
