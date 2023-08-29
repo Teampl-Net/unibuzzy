@@ -865,6 +865,15 @@ export default {
     transform: scale(1.05)
   }
 }
+
+.areaDiv{
+  animation:areaMoving .3s 1s ease-in-out 3 alternate;
+}
+
+@keyframes areaMoving{
+  0%{ transform:scale(1);}
+  100%{ transform:scale(1.01);}
+}
 .areaDiv.clicked {
   animation: area-zoom 0.4s alternate;
 }
