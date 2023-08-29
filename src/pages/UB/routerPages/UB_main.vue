@@ -12,8 +12,11 @@
       <areaInfoPop :pBdClickedYn="mBdClickedYn" :chanDetail="{ modiYn: false }" @openImgPop="openImgPop" :pBdAreaList="mBdAreaList" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
     </transition>
     <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
-      <div class="ballon">Go to other town?</div>
-      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="filter: drop-shadow(5px 5px 5px #00000036); width:20%; max-width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
+      <!-- <div class="ballon">Go to other town?</div> -->
+      <div class="ballon">
+        <img src="@/assets/images/main/ballon.png" alt="go to other town?" class="w100P"/>
+      </div>
+      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="" alt="">
       <!-- <UBBgEffect /> -->
       <!-- my profile -->
       <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}" style="height: 50px; position: absolute; left: 15px; display: flex; align-items: center;">
@@ -880,6 +883,22 @@ export default {
   border-radius: 5px;
   z-index: 99;
 }
+.planeImg{
+  filter: drop-shadow(5px 5px 5px #00000036);
+  width:10%;
+  max-width: 100px;
+  position: absolute;
+  right: 30px;
+  top: 100px;
+  opacity:0;
+  animation: flyingPlane 1s 2s ease-in-out both;
+}
+
+@keyframes flyingPlane{
+  0%{opacity: 0.2; transform: translate(-450px, 100px);}
+  80%{opacity: 1; transform: translate(0px, 0px) scale(1.2);}
+  100%{opacity: 1; transform: translate(0px, 0px) scale(1);}
+}
 .planeImg:hover {
   transform: scale(1.2);
   transform-origin: 50% 50%;
@@ -895,23 +914,12 @@ export default {
   align-items: center;
   justify-content: center;
   height: 30px;
-  right: 10px;
+  width:220px;
+  right: -30px;
   top: 80px;
-  background: #fce169;
   border-radius: 5px;
   padding: 8px 12.8px;
   font-size: 14px;
-}
-
-.ballon:after {
-    border-top: 7px solid #fce169;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-bottom: 0px solid transparent;
-    content: "";
-    position: absolute;
-    top: 30px;
-    left: 80px;
 }
 
 .PostsBallon {
