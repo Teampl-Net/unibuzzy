@@ -175,7 +175,7 @@
             <p @click="goChannelMain(chanElement)" class="font12 fr lightGray textLeft">{{ `${$changeDateFormat(chanElement.popCList[0].creDate)}` }}</p>
             <div ref="contentsBoxRef" class="fl" style="width: 100%; min-height: 40px; margin-left: 3px; margin-bottom: 5px; margin-top: 5px; padding-left: 5px; border-left: 2px solid #CCC;">
                 <p class="fl font14 textLeft fontBold" style="">{{ chanElement.popCList[0].title }}</p>
-                <pre class="fl font14 textLeft textOverdot" style="width: calc(100% - 10px); word-break: break-all;" v-html="$setBodyLength(chanElement.popCList[0].bodyFullStr, chanElement.popCList[0].jobkindId === 'BOAR' && chanElement.popCList[0].workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
+                <pre class="fl font14 textLeft textOverdot" style="width: calc(100% - 10px); word-break: break-all;" v-html="$setBodyLength(chanElement.popCList[0].bodyFullStr)"></pre>
             </div>
         </div>
       </div>
