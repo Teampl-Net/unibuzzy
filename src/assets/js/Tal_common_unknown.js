@@ -320,7 +320,8 @@ export const commonMethods = {
   },
   changeFollowerInfo (type, data) {
     if (!data) {
-      return '정보가 없음'
+      // return '정보가 없음'
+      return 'No Data'
     }
     if (type === 'email') {
       var emailList = data.split('@')
