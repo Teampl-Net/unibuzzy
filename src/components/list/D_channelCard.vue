@@ -190,6 +190,7 @@ export default {
     pSelectedYn: Boolean
   },
   created () {
+    // console.log('chanElement', this.chanElement)
     if (this.$route.path === '/chanList') {
       this.$nextTick(() => {
         this.showFollowYn()
