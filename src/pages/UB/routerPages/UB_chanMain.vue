@@ -950,7 +950,8 @@ export default {
         }
         this.mCabKeyListStr = initData.cabinetKeyListStr
       } catch (error) {
-        this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
+        // this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
+        this.$showToastPop('Sorry! Please contact the administrator.')
         console.error(error)
       }
       chanMainParam.initData = initData
