@@ -15,7 +15,7 @@
 <template>
   <div class="receiverTeamMemberArea" >
     <template v-for="(data, index) in mCommonMemberList" :key='data'>
-      <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
+      <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'" :pPropMemberList="propMemberList" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
     </template>
     <gListEmpty v-if="mCommonMemberList.length === 0" :title="$t('SELECT_MSG_MEMBERS_NONE')" :subTitle="$t('SELECT_MSG_MEMBERS_ADD')" :option="selectPopYn === true ? 'SELE' : 'EDIT'" />
   </div>
@@ -47,6 +47,7 @@ export default {
     this.setMemberList()
   },
   created () {
+    console.log('this.propMemberList = 이 채널을 팔로우하는 모든 사람', this.propMemberList)
     var this_ = this
     this.$nextTick(() => {
       this_.setMemberList()

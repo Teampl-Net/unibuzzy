@@ -67,8 +67,8 @@
         <img src="../../../../assets/images/board/icon_trash.svg" class="img-w20 fl" style="width: 20px; margin: 0 10px;" @click="clickEvntToParents('delete')" >
       </div>
 
-      <div v-if="option === 'SELE'" class="fr cursorP" style="display: flex; align-items: center;" @click="clickEvntToParents('editList')">
-        <div class="fl mright-03" style="width:20px; height:20px; border-radius:100%; border:1px solid #5F61BD; display: flex; justify-content: center; align-items: center;" :class="{ 'CDeepBgColor' : propData.selectedYn === true }">
+      <div v-if="option === 'SELE'" class="fr cursorP" style="display: flex; align-items: center;" @click="clickEvntToParents('editList', compoIdx)">
+        <div class="fl mright-03" style="width:20px; height:20px; border-radius:100%; border:1px solid #5F61BD; display: flex; justify-content: center; align-items: center;" :class="{ 'CDeepBgColor' : propData.selectedYn === true}">
           <!-- <img v-if="propData.selectedYn === true" class="fl img-w13" src="../../../../assets/images/common/icon_check_white.svg" alt="선택 아이콘"> -->
           <img class="fl img-w13" src="../../../../assets/images/common/icon_check_white.svg" alt="선택 아이콘">
         </div>
@@ -82,7 +82,11 @@
 export default {
   data () {
     return {
-      cabinetNames: {}
+      cabinetNames: {},
+      mSelectedMemberIdx: 0,
+      mSelectedMembers: [],
+      mSelectedInfo: [],
+      pPropMemberList: []
     }
   },
   props: {
@@ -90,10 +94,20 @@ export default {
     option: { type: String, default: 'EDIT' },
     selectedYn: { type: Boolean, default: false },
     compoIdx: {},
-    subTitleHidden: { type: Boolean, default: false }
+    subTitleHidden: { type: Boolean, default: false },
+    pSelectedList: {}
   },
   methods: {
-    clickEvntToParents (type) {
+    clickEvntToParents (type, index) {
+      this.mSelectedMemberIdx = index
+      const existingIndex = this.mSelectedMembers.indexOf(index)
+      if (existingIndex === -1) {
+        this.mSelectedMembers.push(index)
+      } else {
+        this.mSelectedMembers.splice(existingIndex, 1)
+      }
+      // console.log('this.mSelectedMembers', this.mSelectedMembers)
+
       var param = {}
       if (type === 'editList') {
         if (this.propData.selectedYn) {
@@ -106,6 +120,9 @@ export default {
       }
       param.data = this.propData
       param.index = this.compoIdx
+      param.selectedIdx = this.mSelectedMembers
+      this.mSelectedInfo = param
+      console.log('param', param)
       this.$emit('receiveCardEmit', param)
     },
     setCabinetNames () {
@@ -141,6 +158,8 @@ export default {
     }
   },
   created () {
+    console.log('pSelectedList', this.pSelectedList)
+    console.log('propData', this.propData)
     if (this.propData.jobkindId === 'BOOK') {
       if (!this.propData.memberYn) {
         this.setCabinetNames()

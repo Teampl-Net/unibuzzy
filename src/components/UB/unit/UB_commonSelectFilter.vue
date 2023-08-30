@@ -1,6 +1,6 @@
 <template>
     <div style="float: left;  width: 100%;margin-top: 0;" :style="(modeType === 'write' || channelYn) ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
-      <div ref="tabbar" style="padding: 0 15px; display: flex; align-items: center; background: #FFF; height: 40px; float: left; width: 100%;" :style="{color: this.modeType === 'write' ? 'background: transparent' : ''}" >
+      <div ref="tabbar" style="padding: 0 15px; display: flex; align-items: center; background: #FFF; height: 50px; float: left; width: 100%;" :style="{color: this.modeType === 'write' ? 'background: transparent' : ''}" >
         <!-- <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;" :style="channelYn? 'flex: 1 1 0%':''">
           <p :style="!channelYn? activebarWidth:''" :class="{mWidth : tabTrimLength(tab.display) > 3, commonColor: index === activetab && channelYn, lightGray: index !== activetab && channelYn}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
         </div> -->
