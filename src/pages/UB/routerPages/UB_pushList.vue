@@ -67,12 +67,12 @@
             <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
 
-          <!-- <template v-if="GE_DISP_ALL_LIST && viewMainTab === 'A'"> -->
+          <template v-if="viewMainTab === 'A'">
             <template v-if="skeletonShow">
               <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
             </template>
             <gEmpty v-else-if="GE_DISP_ALL_LIST && this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0 && !skeletonShow" :tabName="currentTabName" contentName="전체" :key="mEmptyReloadKey" class="mtop-2"/>
-          <!-- </template> -->
+          </template>
 
           <template  v-for="(cont, index) in this.GE_FILE_LIST" :key="index">
               <gFileBox @openImgPop="openImgPop" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'F'"/>
@@ -128,7 +128,6 @@ export default {
     // reloadKey: 0
   },
   created () {
-    // this.hideSkeleton()
     this.loadingYn = true
     this.$emit('changePageHeader', '알림')
     if (this.propParams && this.propParams.alimTabType) {
@@ -484,7 +483,6 @@ export default {
       var chanDetail = null
       var dataList = null
       if (!this.allContentsList) return []
-      // this.hideSkeleton()
       var i = 0
       for (i = 0; i < this.allContentsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.allContentsList[i].creTeamKey)
