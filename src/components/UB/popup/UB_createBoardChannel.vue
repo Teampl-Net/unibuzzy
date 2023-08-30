@@ -1,11 +1,11 @@
 <template>
   <seleciconBgPopup v-if="mSelectBuildingPop" :pSelectedBuilding="mSelectedBuilding" :selectBd="this.mSelectedBuilding" @no='mSelectBuildingPop=false' @makeParam='setIconOrBGData' :opentype="mSelectBuilding" :pClosePop="closeSelectBuildingPop"/>
-  <div style="overflow-y:scroll; background-color:#fff; width: 100%; height: 100vh; float: left; position: absolute; z-index: 9998; left: 0; top: 0;" @click.stop="preventDefault">
+  <div :style="!mScrollHiddenYn? 'overflow-y: scroll;':''" style="background-color:#fff; width: 100%; height: 100vh; float: left; position: absolute; z-index: 9998; left: 0; top: 0;" @click.stop="preventDefault">
     <gPopHeader v-if="mShowBdOrChan==='C'" :headerTitle="`Create New Board`" :pClosePop="pClosePop" />
     <gPopHeader v-else-if="mShowBdOrChan==='T'" :headerTitle="`Create New Channel`" :pClosePop="pClosePop" />
     <gPopHeader v-else-if="!mShowBdOrChan && !mChannelModi" :headerTitle="`Create New...`" :pClosePop="pClosePop" />
     <gPopHeader v-else-if="!mShowBdOrChan && mChannelModi === true" :headerTitle="`Modify Channel`" :pClosePop="pClosePop" />
-    <div style="height:100%; overflow-y:scroll; background-color:#fff; display:flex; flex-direction:column;" class="createChanWrap" >
+    <div :style="!mScrollHiddenYn? 'overflow-y: scroll;':''" style="height:100%; background-color:#fff; display:flex; flex-direction:column;" class="createChanWrap" >
       <div class="createChanContentsWrap" style="">
       <!-- 빌딩 선택-->
         <p style="font-size:20px; padding-top:10px; padding-bottom:10px; color:#6768a7; ">Select Building.</p>
@@ -66,7 +66,7 @@
         </div>
       </template>
       <!-- 채널 생성일 때. select한 건물에 대해서도 prop으로 보내주기-->
-      <createChannel style="margin-top:310px; padding-bottom:80px;" :pBdKey="mBuildingKey" :class="{margin220 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pClosePop="pClosePop" :pChannelModi="mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
+      <createChannel style="margin-top:310px; padding-bottom:80px;" @changeBgPopShowYn="changeBgPopShowYn" :pBdKey="mBuildingKey" :class="{margin220 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pClosePop="pClosePop" :pChannelModi="mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
     </div>
     <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreBoardCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreBoardCheckPopYn" :pCreBoardCheckPopYn="mCreBoardCheckPopYn" @ok='newBoard' />
     <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreBoard', mNewBoardInfo)" confirmType="one" v-if="mCreatedSuccessPopYn" :pCloseCreatedSuccessPopYn="closeCreatedSuccessPopYn" :pNewBoard="mNewBoardInfo"/>
@@ -117,10 +117,14 @@ export default {
       mCreBoardCheckPopYn: false,
       mCreCheckPopText: null,
       mCreatedSuccessPopYn: false,
-      mNewBoardInfo: []
+      mNewBoardInfo: [],
+      mScrollHiddenYn: false
     }
   },
   methods: {
+    changeBgPopShowYn (showYn) {
+      this.mScrollHiddenYn = showYn
+    },
     openPage (params) {
       if (params.deleteYn === true) {
         this.$router.push('/')

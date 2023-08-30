@@ -832,27 +832,29 @@ export default {
     },
     scrollOn () {
       const pushList = document.getElementById('pushListWrap')
-      if (this.mChanCardShowYn) {
-        pushList.className = 'scrollHidden'
-      } else {
-        if (pushList.scrollTop <= 0) {
-          const chanCardTopRef = this.$refs.chanPushListArea
-          const chanMainRef = this.$refs.chanMainRef
-          const chanCardTopArea = this.$refs.chanCardTopArea
-          if (!chanMainRef) return
+      if (pushList) {
+        if (this.mChanCardShowYn) {
+          pushList.className = 'scrollHidden'
+        } else {
+          if (pushList.scrollTop <= 0) {
+            const chanCardTopRef = this.$refs.chanPushListArea
+            const chanMainRef = this.$refs.chanMainRef
+            const chanCardTopArea = this.$refs.chanCardTopArea
+            if (!chanMainRef) return
 
-          if (chanCardTopRef) {
-            const scrollTop = chanMainRef.scrollTop
-            // up
-            // const triggerPosition = chanCardTopRef.getBoundingClientRect().top
+            if (chanCardTopRef) {
+              const scrollTop = chanMainRef.scrollTop
+              // up
+              // const triggerPosition = chanCardTopRef.getBoundingClientRect().top
 
-            this.mChanCardShowYn = true
-            // chanCardTopRef.style.marginTop = ''
-            const opacity = Math.max(0, 1)
-            if (chanCardTopArea) {
-              chanCardTopArea.style.opacity = opacity.toFixed(2)
+              this.mChanCardShowYn = true
+              // chanCardTopRef.style.marginTop = ''
+              const opacity = Math.max(0, 1)
+              if (chanCardTopArea) {
+                chanCardTopArea.style.opacity = opacity.toFixed(2)
+              }
+              this.mLastScroll = scrollTop
             }
-            this.mLastScroll = scrollTop
           }
         }
       }

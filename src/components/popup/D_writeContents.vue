@@ -275,8 +275,6 @@ export default {
         this.setSelectedList(this.params.selectedList)
       }
     }
-    console.log(2134123412341234124123)
-    console.log(this.params)
     if (this.params && (this.params.bodyFullStr || this.propData.guideFullStr)) {
       if (this.contentType === 'ALIM') {
         if (this.params.UseAnOtherYn) {

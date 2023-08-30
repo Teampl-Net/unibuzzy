@@ -33,14 +33,16 @@
 
 <div style="padding: 0 1.5rem 0 1rem ;box-sizing: border-box; width: 100%; height: 100%; background: #fff;"  >
   <transition name="show_left">
-    <manageFollowerList v-if="mPopType === 'memberManagement'" :propData="mCommonParam" style="padding-top: 0;" :pClosePop="closePop" />
+    <manageFollowerList v-if="mPopType === 'memberManagement'" :propData="mCommonParam" style="padding-top: 0;" @memberInfo="openMemberInfo" @openPop="openPop" :pClosePop="closePop" />
   </transition>
   <transition name="show_left">
-    <editBookListPop v-if="mPopType === 'editBookList'" :propData="mCommonParam" :pClosePop="closePop" />
+    <editBookListPop v-if="mPopType === 'editBookList'" @memberInfo="openMemberInfo" :propData="mCommonParam" :pClosePop="closePop" />
   </transition>
   <!-- <createChannel @successCreChan="successCreChan" v-if="mPopType === 'createChannel'" :chanDetail="mCommonParam" :pClosePop="closePop" /> -->
   <createBoardChannel @successCreChan="successCreChan" v-if="mPopType === 'createChannel'" :channelModiYn="channelModiYn=true" :chanDetail="mCommonParam" :pClosePop="closePop" />
   <editBoardListPop v-if="mPopType === 'editBoard'" :propData="mCommonParam" :pClosePop="closePop" />
+    <div v-if="mUserDetailPopShowYn" @click="mSelectedMemberInfo" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+  <userDetailPop v-if="mUserDetailPopShowYn" :propData="mSelectedMemberInfo" :pClosePop="closeMemberInfo" />
   <gPopHeader :headerTitle="$t('MANA_TITLE_CHANDETAIL')" :pClosePop="pClosePop" />
   <div class="editMyChanMenuWrap" :style="`padding-top: ${Number(this.$STATUS_HEIGHT + 50)}px`">
     <table class="myChanMenuTable w100P fl" >
@@ -144,6 +146,7 @@
 import gPopHeader from '../layout/UB_gPopHeader.vue'
 import manageFollowerList from './UB_manageFollowerList.vue'
 import editBookListPop from './UB_editBookListPop.vue'
+import userDetailPop from './UB_userDetailPop.vue'
 // import createChannel from './UB_createChannel.vue'
 import editBoardListPop from './UB_editBoardListPop.vue'
 import seleciconBgPopup from '@/components/popup/creChannel/Tal_selectChaniconBgPopup.vue'
@@ -157,7 +160,8 @@ export default {
     // createChannel,
     editBoardListPop,
     seleciconBgPopup,
-    createBoardChannel
+    createBoardChannel,
+    userDetailPop
   },
   props: {
     propData: {},
@@ -169,12 +173,13 @@ export default {
       mPopType: '',
       mSelectBuildingPop: false,
       mSelectBuilding: 'building',
-      channelModiYn: true
+      channelModiYn: true,
+      mSelectedMemberInfo: {},
+      mUserDetailPopShowYn: false
     }
   },
   async created () {
     this.mCommonParam = this.CHANNEL_DETAIL
-    console.log('mCommonParam', this.mCommonParam)
   },
   computed: {
     GE_USER () {
@@ -190,6 +195,14 @@ export default {
     }
   },
   methods: {
+    openMemberInfo (member) {
+      this.mSelectedMemberInfo = member
+      this.mUserDetailPopShowYn = true
+    },
+    closeMemberInfo () {
+      this.mUserDetailPopShowYn = false
+      this.mSelectedMemberInfo = {}
+    },
     closePop () {
       this.mPopType = ''
     },

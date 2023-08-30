@@ -152,7 +152,7 @@ export default {
       data.teamKey = this.teamInfo.teamKey
       data.readOnlyYn = true
       data.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
-      this.$emit('openPop', data)
+      this.$emit('memberInfo', data)
     },
     addSelectedList (data, index) {
       if (!this.mSelectedMemberList) this.mSelectedMemberList = []

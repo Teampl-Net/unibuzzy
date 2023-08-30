@@ -135,7 +135,8 @@ export default {
 						{ funcTitle: 'Call', type: 'PHON'},
 						{ funcTitle: 'Message', type: 'TEXT'}],
             userGrade: '',
-            mUserInfo: {}
+            mUserInfo: {},
+            mUserDetailPopId: ''
         }
     },
     components: {
@@ -160,8 +161,6 @@ export default {
         }
     },
     async created(){
-			console.log('profileFunc', this.profileFunc)
-        console.log(this.propData)
         this.$emit('openLoading')
         if(this.propData.readOnlyYn){this.readOnlyYn = true}
 
@@ -233,8 +232,25 @@ export default {
         // this.readOnlyYn = false
         // this.getAnotherUserTeamInfo()
         this.$emit('closeLoading')
+
+        var history = this.$store.getters['D_HISTORY/hStack']
+        this.mUserDetailPopId = 'userDetailPop' + history.length
+        history.push(this.mUserDetailPopId)
+        this.$store.commit('D_HISTORY/updateStack', history)
     },
 	methods: {
+    backClick () {
+        var hStack = this.$store.getters['D_HISTORY/hStack']
+        var removePage = hStack[hStack.length - 1]
+        if (this.mUserDetailPopId === hStack[hStack.length - 1]) {
+            hStack = hStack.filter((element, index) => index < hStack.length - 1)
+            this.$store.commit('D_HISTORY/setRemovePage', removePage)
+            this.$store.commit('D_HISTORY/updateStack', hStack)
+            this.pClosePop()
+        } else {
+
+        }
+    },
 		getUserInfoEmail() {
 			if (this.memEmail) {
 				if (this.memEmail === '등록된 이메일이 없습니다.') {

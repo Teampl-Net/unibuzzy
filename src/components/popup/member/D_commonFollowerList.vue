@@ -255,11 +255,11 @@ export default {
       this.$emit('openPop', param)
     },
     goMemberInfo (member) {
-      if (member.memberYn || member.ownerYn || member.managerKey > 0) {
-        this.$emit('memberInfo', member)
-      } else {
-        this.$showToastPop(this.$t('FOLLOW_MSG_NOAUTH'))
-      }
+      // if (member.memberYn || member.ownerYn || member.managerKey > 0) {
+      this.$emit('memberInfo', member)
+      // } else {
+      //   this.$showToastPop(this.$t('FOLLOW_MSG_NOAUTH'))
+      // }
     }
   }
 }

@@ -504,6 +504,17 @@ export default {
       await this.$store.dispatch('D_CHANNEL/AC_CREATE_CHANNEL', response)
     }
   },
+  watch: {
+    mIconBgSelectPopYn: {
+      handler (val) {
+        if (val === 'iconPop' || val === 'bgPop') {
+          this.$emit('changeBgPopShowYn', true)
+        } else {
+          this.$emit('changeBgPopShowYn', false)
+        }
+      }
+    }
+  },
   computed: {
     GE_LOCALE () {
       return this.$i18n.locale

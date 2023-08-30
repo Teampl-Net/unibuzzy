@@ -81,7 +81,7 @@
       <div class="bookAndMemListWrap" :style="mDetailOpenYn ? 'height: calc(100% - 80px);' : '' ">
         <bookListCompo class="editBookContentListCompo" ref="bookListCompoRef" v-if="!mDetailOpenYn" :propBookList="mEditBookList" :propData="propData" :selectBookDetail="selectBookDetail" @getTeamCabList="this.getBookList" @refreshList="getBookList" @openMCabUserList='openMCabUserList' @openPop="openPop" @delAddress="delAddress" />
         <transition name="showGroup">
-          <memberList  class="editBookContentListCompo" ref="memberListRef" v-if="mDetailOpenYn" :propMemberList="memberList" :propData="selectBookDetail"  :pSearchFilterList="this.mSearchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="this.CHANNEL_DETAIL" transition="showGroup" @openPop="openPop" @delAddress="delAddress" />
+          <memberList  class="editBookContentListCompo" ref="memberListRef" v-if="mDetailOpenYn" @memberInfo="memberInfo" :propMemberList="memberList" :propData="selectBookDetail"  :pSearchFilterList="this.mSearchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="this.CHANNEL_DETAIL" transition="showGroup" @openPop="openPop" @delAddress="delAddress" />
         </transition>
         <div class="btnPlus" style="bottom: 10.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="openExcelUploadPop" v-if="mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:12px;" v-html="$t('EDIT_BOOK_BTN_EXCEL')"></p></div>
         <div class="btnPlus" style="bottom: 18.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="addMe" v-if="!mImInYn && mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:12px;" v-html="$t('EDIT_BOOK_BTN_ME')"></p></div>
@@ -163,6 +163,9 @@ export default {
     }
   },
   methods: {
+    memberInfo (member) {
+      this.$emit('memberInfo', member)
+    },
     closeXPop () {
       if (this.pClosePop) {
         this.pClosePop()

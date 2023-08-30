@@ -253,7 +253,7 @@ export default {
         param.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
         param.userKey = member.userKey
         param.readOnlyYn = true
-        this.$emit('openPop',param)
+        this.$emit('memberInfo',param)
       // } else {
       //   this.errorText = '멤버로 신청한 관리자가 아닙니다.'
       //   this.errorPopYn = true

@@ -26,34 +26,34 @@
 </i18n>
 <template>
   <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
-  <div style="background-color:red; width: 100%; float: left;" @click.stop="preventDefault">
+  <div style="width: 100%; float: left;" @click.stop="preventDefault">
     <div style="width: 100%; height: 120vh; position: absolute; top:-30vh; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="closePop()"></div>
-    <div :class="{popupTop: pSelectedBuilding}" class="confirmPopWrap" style="top:21%;" :style="'padding-bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
+    <div :class="{popupTop: pSelectedBuilding}" class="confirmPopWrap" style="top:21%; overflow: hidden; height: 70vh;" :style="'padding-bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
     <!-- <div style="width: 50%; height: 50%; padding: 0 20px; overflow: auto;" > -->
         <div class="creChanIntroTextWrap" style="display:flex; align-items:center; justify-content:space-between; width: 100%; min-height: 50px; text-align: left;">
             <p class="fontBold font18">{{msgTitle}}</p>
               <img src="../../../assets/images/common/popup_close.png" style="width:20px;" @click="pClosePop"/>
         </div>
         <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
-        <div id="creChanContentsArea" style="width: 100%; min-height: 300px; margin-top: 20px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
+        <div id="creChanContentsArea" style="overflow: auto; width: 100%; height: calc(100% - 150px); margin-top: 20px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
             <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
               <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
-                <div @click="imgClickToInput" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 250px; max-height: 250px;" ref="selectImgPopRef" class="cropperImgArea">
-                  <img v-if="changeImgYn = true" id="profileImg" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
+                <div  @click="imgClickToInput" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 250px; max-height: 250px;" ref="selectImgPopRef" class="cropperImgArea">
+                  <img v-if="changeImgYn = true" id="profileImg" ref="image" :src="previewImgUrl? previewImgUrl:'../../../assets/images/common/popup_close.png'" alt="" class="preview hidden">
                 </div>
                 <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left; position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
                     <input class="formImageFile" style="width: 100%; float: left;" type="file" :title ="$t('COMMON_BTN_SELECTED')" accept="image/jpeg, image/png, image/jpg" ref="selectFileChangeIconNBG" id="input-file" @change="handleImageUpload"/>
                 </form>
-                <div class="fl textLeft w100P">
-                  <p class="fl fontBold font14 mleft-4">{{ $t('USER_MSG_TOUCH_IMG') }}</p>
-                  <gBtnSmall v-if="cropperYn" class="fl mright-4" :btnTitle="$t('COMM_BTN_SELEC_AGAIN')" @click="changeBtnClick"/>
+                <div class="fl textLeft w100P" style="display: flex; justify-content: space-around; border-top: 0.5px solid rgba(103, 104, 167, 0.54);">
+                  <p v-if="!cropperYn" class="fl fontBold font14 mtop-05">{{ $t('USER_MSG_TOUCH_IMG') }}</p>
+                  <gBtnSmall v-if="cropperYn" class="fl mtop-05" style="word-break: break-word; white-space: nowrap;" :btnTitle="$t('COMM_BTN_SELEC_AGAIN')" @click="changeBtnClick"/>
                 </div>
               </div>
             </div>
-            <div v-show="viewTab === 'icon'" id="chanIconBox"  style="width: 100%; float: left;">
+            <div v-show="viewTab === 'icon'" id="chanIconBox"  style="width: 100%; float: left; display: flex; flex-wrap: wrap; justify-content: center;">
               <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
-                <img v-if="opentype =='iconPop'" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext) "  style="width: calc(var(--chanBoxSize) - 20px)"/>
-                <p class="font15"  v-if="opentype =='iconPop'" style="" >{{this.$changeText(value.codeNameMtext)}}</p>
+                <img v-if="opentype =='iconPop'" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext) "  style="width: calc(100% - 20px)"/>
+                <!-- <p class="font15"  v-if="opentype =='iconPop'" style="" >{{this.$changeText(value.codeNameMtext)}}</p> -->
 
                 <img v-if="opentype =='bgPop'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' style="width: 100%; height: 100%;" >
                 <img v-if="opentype =='building'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' style="width: 100%; height: 100%;" >
@@ -629,6 +629,8 @@ export default {
 
 .createChannelSelectBox{
   float: left;
+  max-width: 300px;
+  max-height: 300px;
   width: var(--chanBoxSize);
   height: var(--chanBoxSize);
   margin-right: 10px;

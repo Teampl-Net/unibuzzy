@@ -165,6 +165,7 @@ export default {
     }
     this.findPaddingTopPush()
     this.settingScrollUpEventListener()
+    this.hideSkeleton()
   },
   unmounted () {
     document.removeEventListener('message', e => this.recvNoti(e))
@@ -483,7 +484,7 @@ export default {
       var chanDetail = null
       var dataList = null
       if (!this.allContentsList) return []
-      this.hideSkeleton()
+      // this.hideSkeleton()
       var i = 0
       for (i = 0; i < this.allContentsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.allContentsList[i].creTeamKey)
