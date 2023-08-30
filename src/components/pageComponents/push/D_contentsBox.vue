@@ -1218,20 +1218,9 @@ export default {
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
       // if (window.getSelection() !== null || window.getSelection() !== '') return 여기넹
       if (moreCheckYn) {
-        if (this.mContentMoreShowYn === true) {
-          console.log('mContentMoreShowYn true', this.mContentMoreShowYn)
-          this.mshowMoreYn = true
-          // if (this.mshowMoreYn === true) {
-          console.log('mshowMoreYn', this.mshowMoreYn)
-          this.alimBigView()
-          // }
-        } else if (this.mContentMoreShowYn === false) {
-          this.mshowMoreYn = false
-          if (this.mshowMoreYn === false) {
-            console.log('mshowMoreYn', this.mshowMoreYn)
-            this.foldContentsDetail()
-          }
-        }
+        this.alimBigView()
+        // }
+
         return
       }
       if (this.GE_USER.unknownYn) {
