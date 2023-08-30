@@ -99,7 +99,7 @@
             </div>
             <div v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9));"></div>
             <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="cursorP w100P textRight fr font14 commonColor fontBold mtop-05 mright-1" style=" position: absolute; bottom: 0; right: 10px;">{{$t('COMMON_NAME_MORE')}} > </p>
-            <p v-else-if="mFadeNotShowYn && !mContentMoreShowYn" @click="foldContentsDetail" class="w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 cursorP" style="border:1px solid red; position: absolute; bottom: -20px; right: 10px;"> Fold &lt; </p>
+            <p v-else-if="mFadeNotShowYn && !mContentMoreShowYn" @click.stop="foldContentsDetail" class="w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 cursorP" style="position: absolute; bottom: 0px; right: 10px;"> Fold &lt; </p>
           </div>
           <div v-else style="width: 100%; padding: 5px 10px; padding-bottom: 0; float: left; min-height: 35px;">
             <template v-for="(value, index) in propPreStickerList" :key="index" >
@@ -366,13 +366,14 @@ export default {
       contentsBodyBoxArea.style.maxHeight = '100%'
       this.mFadeNotShowYn = true
       this.mContentMoreShowYn = false
-      console.log('mContentMoreShowYn', this.mContentMoreShowYn)
+      console.log('alimBigView에 들어왔음.')
     },
     foldContentsDetail () {
       this.mContentMoreShowYn = true
       this.mFadeNotShowYn = false
       var contentsBodyBoxArea = window.document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
       contentsBodyBoxArea.style.maxHeight = '300px'
+      console.log('foldContentsDetail에 들어왔음.')
     },
     saveStickerList (params) {
       this.mContStickerList = params.mContStickerList
@@ -1218,11 +1219,12 @@ export default {
       // if (window.getSelection() !== null || window.getSelection() !== '') return 여기넹
       if (moreCheckYn) {
         if (this.mContentMoreShowYn === true) {
+          console.log('mContentMoreShowYn true', this.mContentMoreShowYn)
           this.mshowMoreYn = true
-          if (this.mshowMoreYn === true) {
-            console.log('mshowMoreYn', this.mshowMoreYn)
-            this.alimBigView()
-          }
+          // if (this.mshowMoreYn === true) {
+          console.log('mshowMoreYn', this.mshowMoreYn)
+          this.alimBigView()
+          // }
         } else if (this.mContentMoreShowYn === false) {
           this.mshowMoreYn = false
           if (this.mshowMoreYn === false) {
