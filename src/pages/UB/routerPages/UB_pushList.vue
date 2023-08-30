@@ -42,10 +42,10 @@
         <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" :subTabList="mBoardFilterList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab="changeTab" @changeBoardTab="changeBoard" style="width: 100%; padding-top: 0; margin-top: 0;" />
       </div>
       <transition name="showModal">
-        <findContentsList :tpGroupCode="this.viewMainTab === 'B' || this.viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" :pClosePop="closeSearchPop" :teamKey='this.pChannelDetail.teamKey'/>
+        <findContentsList :tpGroupCode="this.viewMainTab === 'B' || this.viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainiTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" :pClosePop="closeSearchPop" :teamKey='this.pChannelDetail.teamKey'/>
       </transition>
 
-        <div id="pushListWrap" class="scrollHidden " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'" style="z-index: 4; position: relative; float: left; width: 100%; height: calc(100%); padding-bottom: 60px;  -webkit-overflow-scrolling: touch">
+        <div id="pushListWrap" class="scrollHidden " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'" style="position: relative; float: left; width: 100%; height: calc(100%); padding-bottom: 60px;  -webkit-overflow-scrolling: touch">
           <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
           <div class="w100P fl commonListContentBox" style="height:1px;" />
           <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
@@ -69,12 +69,12 @@
             <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
 
-          <template v-if="GE_DISP_ALL_LIST && viewMainTab === 'A'">
+          <!-- <template v-if="GE_DISP_ALL_LIST && viewMainTab === 'A'"> -->
             <template v-if="skeletonShow">
               <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
             </template>
-            <gEmpty v-else :tabName="currentTabName" contentName="전체" :key="mEmptyReloadKey" class="mtop-2"/>
-          </template>
+            <gEmpty v-else-if="GE_DISP_ALL_LIST && this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0 && !skeletonShow" :tabName="currentTabName" contentName="전체" :key="mEmptyReloadKey" class="mtop-2"/>
+          <!-- </template> -->
 
           <template  v-for="(cont, index) in this.GE_FILE_LIST" :key="index">
               <gFileBox @openImgPop="openImgPop" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'F'"/>
@@ -130,26 +130,18 @@ export default {
     // reloadKey: 0
   },
   created () {
-    // eslint-disable-next-line no-debugger
-    debugger
     // this.hideSkeleton()
     this.loadingYn = true
     this.$emit('changePageHeader', '알림')
-    console.log(this.initData)
     if (this.propParams && this.propParams.alimTabType) {
       this.viewMainTab = this.propParams.alimTabType
     }
     if (this.pCabinetKeyListStr) {
       this.mCabinetKeyListStr = this.pCabinetKeyListStr
     }
-    console.log('확인필요합니다')
-    console.log(this.initData)
 
     this.readyFunction()
     /*  } */
-    if (this.GE_DISP_ALL_LIST && !this.allContentsList) {
-      this.hideSkeleton()
-    }
   },
 
   updated () {
@@ -324,8 +316,8 @@ export default {
           this.boardContentsList = this.replaceArr(newArr)
         } else if (this.viewMainTab === 'A') {
           newArr = [
-            ...this.GE_DISP_ALL_LIST,
-            value[0]
+            value[0],
+            ...this.GE_DISP_ALL_LIST
           ]
           this.allContentsList = this.replaceArr(newArr)
         }
@@ -493,6 +485,7 @@ export default {
       var chanDetail = null
       var dataList = null
       if (!this.allContentsList) return []
+      this.hideSkeleton()
       var i = 0
       for (i = 0; i < this.allContentsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.allContentsList[i].creTeamKey)
@@ -563,8 +556,6 @@ export default {
   },
   methods: {
     hideSkeleton () {
-      // this.skeletonShow = false
-      console.log('skeletonShow는???', this.skeletonShow)
       setTimeout(() => {
         this.skeletonShow = false
       }, 2000)
@@ -1796,17 +1787,24 @@ export default {
       }
     },
     replaceArr (arr) {
-      // var this_ = this
+      var this_ = this
       if (!arr || arr.length === 0) return []
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
         /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
         }
-        // data = data.sort(function (a, b) { // num으로 오름차순 정렬
-        //   return b.contentsKey - a.contentsKey
-        //   // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
-        // })
+        if (this_.viewTab === 'P') {
+          data = data.sort(function (a, b) { // num으로 오름차순 정렬
+            return b.popPoint - a.popPoint
+            // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+          })
+        } else {
+          data = data.sort(function (a, b) { // num으로 오름차순 정렬
+            return b.contentsKey - a.contentsKey
+            // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+          })
+        }
         return data
       }, [])
       return uniqueArr
@@ -2340,9 +2338,9 @@ export default {
     background-color: #FFF;
     top: 0;
     left: 0;
-    z-index: 3;
     will-change: transform;
     transition: transform 0.3s linear;
+    z-index: 2;
 }
 .pushListHeader--pinned {
     transform: translateY(0%);

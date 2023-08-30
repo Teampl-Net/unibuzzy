@@ -1171,7 +1171,7 @@ export default {
         return
       }
       var link = await this.$makeShareLink(keySet, 'contentsDetail', this.CONT_DETAIL.bodyFullStr, this.CONT_DETAIL.title)
-      var shareItem = { title: this.$t('COMMON_NAME_APP'), text: this.CONT_DETAIL.title, url: link }
+      var shareItem = { title: this.$t('COMMON_NAME_APP'), url: link }
       if (navigator.share) {
         navigator.share(shareItem)
       } else {

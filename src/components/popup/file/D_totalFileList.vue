@@ -1,6 +1,6 @@
 <template>
   <popHeader :headerTitle="`File Box`" @closeXPop="closeXPop"/>
-  <div @click="click" id="fileBoxWrap" style="width: 100%; height: 100%; overflow: auto; padding: 10px; background-color: #f4f7ff;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px;'">
+  <div @click="click" id="fileBoxWrap" style="width: 100%; height: 100%; overflow: auto; padding: 60px 10px; background-color: #f4f7ff;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px;'">
     <div style="width: 100%; background-color: #fff; height: 140px; padding: 10px 0 10px 10px; border-radius: 0.8rem; display: flex; flex-direction: column; justify-content: space-between;">
       <div v-if="this.mMainChanList" style="width: 100%; height: 30px; float: left;">
         <img src="../../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
