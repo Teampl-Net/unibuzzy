@@ -25,9 +25,11 @@
                     />
                 </div>
                 <!--follow-->
-                <p style="margin-left:-10px; height:30px; line-height:30px;  border-radius:5px; padding:0px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn" class="cursorP fl fontBold font14">+ Follow</p>
+                <p style="margin-left:-10px; height:30px; line-height:30px;  border-radius:5px; padding:0px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!ChanFollowYn" class="cursorP fl fontBold font14">+ Follow</p>
+                <!-- <p style="margin-left:-10px; height:30px; line-height:30px;  border-radius:5px; padding:0px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn || !ffff" class="cursorP fl fontBold font14">+ Follow</p> -->
                 <!--following-->
-                <p style="margin-left:-10px; height:30px; line-height:30px; border-radius:5px; padding:0px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn">Following</p>
+                <p style="margin-left:-10px; height:30px; line-height:30px; border-radius:5px; padding:0px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if=" ChanFollowYn">Following</p>
+                <!-- <p style="margin-left:-10px; height:30px; line-height:30px; border-radius:5px; padding:0px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ffff">Following</p> -->
 
             </div>
             <div style="width: 100%; height: calc(100% - 35px); display: flex; background: #FFFFFF;">
@@ -281,6 +283,7 @@ import userDetailPop from '../../../components/UB/popup/UB_userDetailPop.vue'
 export default {
   data () {
     return {
+      ChanFollowYn: false,
       mChanCardShowYn: true,
       mLastScroll: null,
       mCabKeyListStr: null,
@@ -452,6 +455,7 @@ export default {
           )
           var result = false
           if (fStatus) {
+            this.ChanFollowYn = false
             if (
               this.axiosQueue.findIndex((item) => item === 'changeFollower') !==
               -1
@@ -479,6 +483,7 @@ export default {
             if (result.result || result) {
               this.$emit('pageReload')
             } else {
+              this.ChanFollowYn = true
               this.mErrorPopBodyStr = '실패했습니다. 관리자에게 문의해주세요'
               this.mErrorPopBtnType = 'timeover'
               this.mErrorPopShowYn = true
@@ -715,6 +720,7 @@ export default {
       console.log('잉?', this.mMemberTypeList, this.selectMemberObj)
       if (this.mMemberTypeList && this.selectMemberObj) {
         console.log('====here222===')
+        this.ChanFollowYn = true
         // eslint-disable-next-line no-new-object
         var typeParam = new Object()
         if (
@@ -743,6 +749,7 @@ export default {
         this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
         this.CHANNEL_DETAIL.teamKey = this.selectMemberObj.teamKey
         this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
+        this.ChanFollowYn = true
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
         await this.$addChanList(this.mChanInfo.teamKey)
       }
@@ -808,6 +815,7 @@ export default {
         // this.mErrorPopBodyStr = 'You followed' + 'Channel name'
         // this.mErrorPopBtnType = 'one'
         // this.mErrorPopShowYn = true
+        this.ChanFollowYn = true
         this.confirmOk()
         // this.$router.go(0)
       }
@@ -1147,6 +1155,7 @@ export default {
             this.CHANNEL_DETAIL
           ])
           this.mMakeDeepLinkIng = false
+          this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
         } else {
           if (
             this.mChanInfo.initData.team.copyTextStr === undefined &&
@@ -1171,6 +1180,7 @@ export default {
               ])
               this_.mMakeDeepLinkIng = false
             })
+            this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
           }
         }
       }

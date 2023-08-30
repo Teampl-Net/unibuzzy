@@ -1447,6 +1447,7 @@ export default {
     },
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', this.contentsEle.creTeamKey)
+      console.log(detail)
       if (detail && detail.length > 0) {
         if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {
           return this.CHANNEL_DETAIL
@@ -1464,11 +1465,21 @@ export default {
     CONT_DETAIL () {
       if (!this.contentsEle) return
       var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKey)
+      console.log(cont)
       if (!cont) {
         cont = [this.contentsEle]
         // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
       }
       // console.log(cont)
+      if (cont[0].shareList && cont[0].shareList[0].length !== 0) {
+        if (cont[0].shareList[0].accessKind === 'F') {
+          if (this.CHANNEL_DETAIL.D_CHAN_AUTH || this.CHANNEL_DETAIL.D_CHAN_AUTH === true || (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn)) {
+            cont[0].VIEW_YN = false
+            return cont[0]
+          }
+          // const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
+        }
+      }
       if (cont && cont.length > 0) {
         const viewAuth = this.$checkUserAuth(cont[0].shareItem).V
         /* if (cont[0].shareList) {
