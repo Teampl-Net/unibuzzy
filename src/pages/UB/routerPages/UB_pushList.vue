@@ -1345,7 +1345,6 @@ export default {
           //   param: param
           // }, nonLoading)
           // console.log('야야야야야')
-          // console.log(response)
           resultList = response
         } else {
           var result = await this.$getContentsList(param, nonLoading)
