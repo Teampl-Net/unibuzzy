@@ -899,7 +899,8 @@ export default {
         // eslint-disable-next-line no-debugger
         debugger
         if (!result || !result.data || result.data.result !== 'OK') {
-          this.$showToastPop('채널을 찾을 수 없습니다!')
+          // this.$showToastPop('채널을 찾을 수 없습니다!')
+          this.$showToastPop('Channel not found!')
           return
         }
         const teamDetail = result.data.team.content[0]

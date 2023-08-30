@@ -483,7 +483,8 @@ export default {
         const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.mCloudLoadingShowYn = false
-          this.$showToastPop('채널을 찾을 수 없습니다!')
+          // this.$showToastPop('채널을 찾을 수 없습니다!')
+          this.$showToastPop('Channel not found!')
           return
         }
         const teamDetail = result.data.team.content[0]
