@@ -12,12 +12,12 @@
         <p :class="this.$route.path === '/chanList' ? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_CHANNEL') }}</p>
       </div>
     </div>
-    <div class="footerRouter" style="flex: 1 !important">
+    <!-- <div class="footerRouter" style="flex: 1 !important">
       <div class="commonColor fontBold text-center font12">
         <img width="25" height="25" v-if="this.$route.path === undefined" :src="footerIcon[2].fullIcon" /> <img width="25" height="25" v-else :src="footerIcon[2].icon" />
         <p :class="this.$route.path === undefined ? 'activeFooterMenu' : 'font12'">HOT</p>
       </div>
-    </div>
+    </div> -->
     <div @click="routePage('search')" class="footerRouter" style="flex: 1 !important">
       <div class="commonColor fontBold text-center font12">
         <img width="25" height="25" v-if="this.$route.path === '/search'" :src="footerIcon[1].fullIcon" /> <img width="25" height="25" v-else :src="footerIcon[1].icon" />

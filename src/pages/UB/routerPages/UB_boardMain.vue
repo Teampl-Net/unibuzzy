@@ -529,7 +529,8 @@ export default {
         } else {
           await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
         }
-        this.$showToastPop('저장되었습니다!')
+        // this.$showToastPop('저장되었습니다!')
+        this.$showToastPop('Saved')
         this.backClick()
         // this.failPopYn = true
       } catch (error) {

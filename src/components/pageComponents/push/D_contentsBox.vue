@@ -98,9 +98,8 @@
                 </template>
             </div>
             <div v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9));"></div>
-            <!-- <div v-if="!mFadeNotShowYn && (($refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && !CONT_DETAIL.D_CONT_USER_STICKER_LIST) || ($refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && !CONT_DETAIL.D_CONT_USER_STICKER_LIST[0]))" class="w-100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div> -->
-            <!-- <p v-if="!mFadeNotShowYn && mContentMoreShowYn" :id="'bodyMore'+CONT_DETAIL.contentsKey" class="w-100P textRight fr font14 commonColor fontBold mtop-05  mright-1" style="display:none; position: absolute; bottom: 0; right: 10px;">더보기 > </p> -->
-            <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w-100P textRight fr font14 commonColor fontBold mtop-05 mright-1" style=" position: absolute; bottom: 0; right: 10px;">{{$t('COMMON_NAME_MORE')}} > </p>
+            <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="cursorP w100P textRight fr font14 commonColor fontBold mtop-05 mright-1" style=" position: absolute; bottom: 0; right: 10px;">{{$t('COMMON_NAME_MORE')}} > </p>
+            <p v-else-if="mFadeNotShowYn && !mContentMoreShowYn" @click="foldContentsDetail" class="w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 cursorP" style="border:1px solid red; position: absolute; bottom: -20px; right: 10px;"> Fold &lt; </p>
           </div>
           <div v-else style="width: 100%; padding: 5px 10px; padding-bottom: 0; float: left; min-height: 35px;">
             <template v-for="(value, index) in propPreStickerList" :key="index" >
@@ -308,7 +307,8 @@ export default {
       mStickerPopShowYn: false,
       animationYn: false,
       mProfilePopShowYn: false,
-      mPopParam: {}
+      mPopParam: {},
+      mshowMoreYn: false
     }
   },
   updated () {
@@ -363,19 +363,16 @@ export default {
     // },
     alimBigView () {
       var contentsBodyBoxArea = window.document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
-      // var bodyMoreArea = window.document.getElementById('bodyMore' + this.CONT_DETAIL.contentsKey)
       contentsBodyBoxArea.style.maxHeight = '100%'
-      // eslint-disable-next-line no-debugger
-      // debugger
-      // let contentRef = {}
-      // if (this.$refs.mainContRef) {
-      //   this.mContentMoreShowYn = false
-      //   contentRef = this.$refs.mainContRef
-      //   contentRef.style.maxHeight = '100%'
-      // }
+      this.mFadeNotShowYn = true
       this.mContentMoreShowYn = false
-      // this.mMoreYn = false
-      // bodyMoreArea.style.display = 'none'
+      console.log('mContentMoreShowYn', this.mContentMoreShowYn)
+    },
+    foldContentsDetail () {
+      this.mContentMoreShowYn = true
+      this.mFadeNotShowYn = false
+      var contentsBodyBoxArea = window.document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
+      contentsBodyBoxArea.style.maxHeight = '300px'
     },
     saveStickerList (params) {
       this.mContStickerList = params.mContStickerList
@@ -1218,9 +1215,21 @@ export default {
       if (this.propDetailYn) return
       // 권한이 없는 컨텐츠는 이동하지 못하게 리턴
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
-      // if (window.getSelection() !== null || window.getSelection() !== '') return
+      // if (window.getSelection() !== null || window.getSelection() !== '') return 여기넹
       if (moreCheckYn) {
-        this.alimBigView()
+        if (this.mContentMoreShowYn === true) {
+          this.mshowMoreYn = true
+          if (this.mshowMoreYn === true) {
+            console.log('mshowMoreYn', this.mshowMoreYn)
+            this.alimBigView()
+          }
+        } else if (this.mContentMoreShowYn === false) {
+          this.mshowMoreYn = false
+          if (this.mshowMoreYn === false) {
+            console.log('mshowMoreYn', this.mshowMoreYn)
+            this.foldContentsDetail()
+          }
+        }
         return
       }
       if (this.GE_USER.unknownYn) {

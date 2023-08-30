@@ -48,7 +48,8 @@ export default {
     async deleteMemberType (deleteData) {
       console.log(deleteData)
       if (this.mMemberTypeList.length === 1) {
-        this.$showToastPop('적어도 멤버 유형은 1개 이상 존재해야 합니다!')
+        // this.$showToastPop('적어도 멤버 유형은 1개 이상 존재해야 합니다!')
+        this.$showToastPop('At least one member type must exist.')
         return
       }
       var deleteParam = {}
