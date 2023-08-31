@@ -174,7 +174,7 @@ const isJsonString = (str) => {
           if (isJsonString(message.data)) {
             message.data = JSON.parse(message.data)
           }
-          var appActiveYn = message.data.arrivedYn
+          var appActiveYn = message.data.noti.arrivedYn
 
           if (!isMobile) {
             notiDetailObj = message

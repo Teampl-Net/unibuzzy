@@ -18,7 +18,7 @@
   <div class="w100P h100P listRefresh" style="overflow:hidden;">
     <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
     <!-- <unknownLoginPop :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" /> -->
-    <gImgPop @closeXPop="closeImgPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" style="z-index: 1000;"/>
+    <gImgPop @closeXPop="closeImgPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" />
     <commonConfirmPop v-if="mAppUpdatePopShwoYn" @no="goAppStore" confirmType="one" :confirmText="$t('MAIN_MSG_UPDATE')" />
     <gConfirmPop :confirmText="mErrorPopBodyStr" confirmType='one' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" style="z-index: 9999999999999999999999;"/>
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
@@ -308,9 +308,7 @@ export default {
               goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
               goDetailParam.cabinetKey = vuexResultData.cabinetKey
             }
-            if (notiDetail.arrivedYn !== 'true' && notiDetail.arrivedYn !== true) {
-              this.goDetail(goDetailParam)
-            }
+            this.goDetail(goDetailParam)
           } if (notiUserDo.targetKind === 'R') {
             goDetailParam.contentsKey = notiUserDo.targetKey
             goDetailParam.targetKey = notiUserDo.targetKey
@@ -322,16 +320,12 @@ export default {
               goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
               goDetailParam.cabinetKey = vuexResultData.cabinetKey
             }
-            if (notiDetail.arrivedYn !== 'true' && notiDetail.arrivedYn !== true) {
-              this.goDetail(goDetailParam)
-            }
+            this.goDetail(goDetailParam)
           } else if (notiUserDo.targetKind === 'T' || notiUserDo.targetKind === 'M' || notiUserDo.targetKind === 'N') {
             this.$router.replace({ path: '/' })
             goDetailParam.chanYn = true
             goDetailParam.targetKey = notiUserDo.targetKey
-            if (notiDetail.arrivedYn !== 'true' && notiDetail.arrivedYn !== true) {
-              this.goChanDetail(goDetailParam)
-            }
+            this.goChanDetail(goDetailParam)
           }
           // goDetailParam.value = vuexResultData
         } else {
@@ -488,15 +482,13 @@ export default {
         }
         const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
-          this.showCloudLoading(false)
+          this.mCloudLoadingShowYn = false
           // this.$showToastPop('채널을 찾을 수 없습니다!')
           this.$showToastPop('Channel not found!')
           return
         }
-        let teamDetail = {}
-        if (result.data.team && result.data.team.content && result.data.team.content[0]) {
-          teamDetail = result.data.team.content[0]
-        }
+        const teamDetail = result.data.team.content[0]
+        console.log(teamDetail)
         if (teamDetail.userTeamInfo === undefined || teamDetail.userTeamInfo === null || teamDetail.userTeamInfo === '') {
           if (result.data.memberTypeList && result.data.memberTypeList.length !== 0 && result.data.memberTypeList[0].muserList) {
             if (result.data.memberTypeList[0].muserList) {
@@ -516,7 +508,7 @@ export default {
         initData = result.data
         initData.contentsList = result.data.contentsListPage
       } catch (error) {
-        this.showCloudLoading(false)
+        this.mCloudLoadingShowYn = false
         // this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
         this.$showToastPop('Sorry! Please contact the administrator.')
         console.error(error)
@@ -549,9 +541,6 @@ export default {
       // if (!teamKey && detailValue.creTeamKey) {
       //   encodedTeamKey = detailValue.creTeamKey
       // }
-      var result1 = await this.$getTeamList(paramMap, false)
-      var followList = result1.data.content
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
       this.$router.push(`/chan/${teamKey}`)
       // this.showCloudLoading(false, 1750)
     },
@@ -564,15 +553,12 @@ export default {
       if (params.targetType === 'setMypage') {
         this.openPage(params)
       } else if (params.targetType === 'totalFileList') {
-        this.mPopParams.targetType = 'totalFileList'
         this.changePageHeader('File Box')
         this.$router.push('/fileBox')
       } else if (params.targetType === 'contentsDetail') {
-        this.mPopParams.targetType = 'contentsDetail'
         this.openPage(params)
       } else if (params.targetType === 'totalSaveList') {
         await this.goMoreList('saved')
-        this.mPopParams.targetType = 'totalSaveList'
         this.$router.push('/saveBox')
       }
     },
@@ -593,15 +579,11 @@ export default {
         param.subsUserKey = this.GE_USER.userKey
 
         var result = await this.$getContentsList(param, false)
-        if (result) {
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
 
-          var resultList = result.content
+        var resultList = result.content
 
-          this.mChanInfo = { targetType: 'totalSaveList', saveList: resultList }
-        } else {
-          this.mChanInfo = { targetType: 'totalSaveList', saveList: [] }
-        }
+        this.mChanInfo = resultList
       }
     },
     // goLogList (param) {
@@ -753,7 +735,6 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       this.sendInitData = pageData
-      this.sendInitData.targetType = page
       this.$router.push({
         name: page
       })
