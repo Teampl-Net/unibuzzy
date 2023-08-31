@@ -95,14 +95,14 @@ export default {
     }
   },
   watch: {
-    // pageUpdate () {
-    //   if (this.history[this.history.length - 1] === 'gConfirmPop') {
-    //     if (this.$route.path === '/') {
-    //       this.$emit('appClose')
-    //     }
-    //     this.goNo()
-    //   }
-    // }
+    pageUpdate () {
+      if (this.history[this.history.length - 1] === 'gConfirmPop') {
+        if (this.$route.path === '/') {
+          this.$emit('appClose')
+        }
+        this.goNo()
+      }
+    }
   },
   created () {
     this.$addHistoryStack('gConfirmPop')

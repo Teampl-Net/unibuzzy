@@ -107,7 +107,7 @@
       </div>
     </div>
     <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" :pDelete="mDelete" @ok='setParam' />
-    <gConfirmPop :confirmText="returnConfirmText('A')" confirmType="one" v-if="mCreatedSuccessPopYn"/>
+    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', mParams)" confirmType="one" v-if="mCreatedSuccessPopYn"/>
     <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn === true" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
 </div>
 </template>

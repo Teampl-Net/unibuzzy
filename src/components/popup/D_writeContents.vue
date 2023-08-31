@@ -77,7 +77,7 @@
 </i18n>
 <template>
 <!-- <div style="width: 100%; float: left;"> -->
-  <div class="whitePaper">
+  <div class="whitePaper hhhhhh">
       <!-- 컨텐츠 작성 헤더 영역 -->
       <div class="w100P fl" style="padding: 1rem 1.5rem 0 1.5rem; display: flex; flex-direction: column; align-items: flex-start;">
         <div class="fl w100P" style="display: flex; align-items: center; justify-content: space-between;">
@@ -1365,7 +1365,7 @@ export default {
       /* left: 5%; */
       /* bottom: 0; */
       top: 5%;
-      z-index: 11;
+      z-index: 9999;
       left: 5%;
       /* transform: translate(-50%, -50%); */
       width: 90%;

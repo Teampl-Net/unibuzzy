@@ -16,7 +16,7 @@
 <!-- <div style="width: 100%; height: 100vh; position: absolute; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
   <div class="w100P h100P channelMenuEditWrap pagePaddingWrap" style="padding-top: 0;">
     <gPopHeader :headerTitle="propData.popHeaderText" :pClosePop="pClosePop" />
-    <div v-if="CHANNEL_DETAIL" class="h100P"  style="padding-top: 60px;">
+    <div v-if="CHANNEL_DETAIL" class="h100P"  style="padding-top: 60px; padding-bottom:30px; overflow-y:auto;">
         <draggable  ref="editableArea" @end="changePosTeamMenu" class="ghostClass" :options="{ghostClass:'sortable-ghost',animation:150}" v-model="cabinetList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
           <transition-group>
             <template v-for="(data, index) in cabinetList" :key='index'>
