@@ -25,10 +25,10 @@
                     />
                 </div>
                 <!--follow-->
-                <p style="margin-left:-10px; height:30px; line-height:30px;  border-radius:5px; padding:0px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!ChanFollowYn && !mTeamDetail.D_CHAN_AUTH.ownerYn" class="cursorP fl fontBold font14">+ Follow</p>
+                <p style="margin-left:-10px; height:30px; line-height:30px;  border-radius:5px; padding:0px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!ChanFollowYn && (CHANNEL_DETAIL.D_CHAN_AUTH && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)" class="cursorP fl fontBold font14">+ Follow</p>
                 <!-- <p style="margin-left:-10px; height:30px; line-height:30px;  border-radius:5px; padding:0px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn || !ffff" class="cursorP fl fontBold font14">+ Follow</p> -->
                 <!--following-->
-                <p style="margin-left:-10px; height:30px; line-height:30px; border-radius:5px; padding:0px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="ChanFollowYn && !mTeamDetail.D_CHAN_AUTH.ownerYn">Following</p>
+                <p style="margin-left:-10px; height:30px; line-height:30px; border-radius:5px; padding:0px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="ChanFollowYn && (CHANNEL_DETAIL.D_CHAN_AUTH && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)">Following</p>
                 <!-- <p style="margin-left:-10px; height:30px; line-height:30px; border-radius:5px; padding:0px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ffff">Following</p> -->
 
             </div>
