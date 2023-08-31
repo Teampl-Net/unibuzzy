@@ -100,7 +100,7 @@ export default {
         if (this.$route.path === '/') {
           this.$emit('appClose')
         }
-        this.goNo()
+        // this.goNo()
       }
     }
   },

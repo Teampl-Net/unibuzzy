@@ -258,7 +258,7 @@ export default {
           } else if (this.mPageType === '삭제') {
             return `Delete [${this.mInputChannelName}] channel has been deleted.`
           } else if (this.mPageType === '수정') {
-            return `Edit [${this.mInputChannelName}] channel has been updated`
+            return `Edit [${this.mInputChannelName}] channel has been updated.`
           }
         }
       }

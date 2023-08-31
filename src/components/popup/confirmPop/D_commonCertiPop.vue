@@ -78,11 +78,11 @@ export default {
     }
   },
   mounted () {
-    if (this.confirmType === 'timeout') {
-      this.$delayAfterFunc(2000, this.goNo)
+    // if (this.confirmType === 'timeout') {
+    //   this.$delayAfterFunc(2000, this.goNo)
 
-      // this.tiemOut()
-    }
+    //   this.tiemOut()
+    // }
   }
 }
 </script>
