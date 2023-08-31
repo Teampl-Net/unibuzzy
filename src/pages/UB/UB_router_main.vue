@@ -482,13 +482,15 @@ export default {
         }
         const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
-          this.mCloudLoadingShowYn = false
+          this.showCloudLoading(false)
           // this.$showToastPop('채널을 찾을 수 없습니다!')
           this.$showToastPop('Channel not found!')
           return
         }
-        const teamDetail = result.data.team.content[0]
-        console.log(teamDetail)
+        let teamDetail = {}
+        if (result.data.team && result.data.team.content && result.data.team.content[0]) {
+          teamDetail = result.data.team.content[0]
+        }
         if (teamDetail.userTeamInfo === undefined || teamDetail.userTeamInfo === null || teamDetail.userTeamInfo === '') {
           if (result.data.memberTypeList && result.data.memberTypeList.length !== 0 && result.data.memberTypeList[0].muserList) {
             if (result.data.memberTypeList[0].muserList) {
@@ -508,7 +510,7 @@ export default {
         initData = result.data
         initData.contentsList = result.data.contentsListPage
       } catch (error) {
-        this.mCloudLoadingShowYn = false
+        this.showCloudLoading(false)
         // this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
         this.$showToastPop('Sorry! Please contact the administrator.')
         console.error(error)
@@ -735,6 +737,7 @@ export default {
       // eslint-disable-next-line no-debugger
       debugger
       this.sendInitData = pageData
+      this.sendInitData.targetType = page
       this.$router.push({
         name: page
       })

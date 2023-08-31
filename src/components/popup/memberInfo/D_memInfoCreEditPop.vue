@@ -223,7 +223,7 @@ export default {
       var param = null
       param = this.propData.selectedMemberType
       console.log(param)
-      param.itemNameMtext = 'KO$^$' + this.InfoQueTitle
+      param.itemNameMtext = 'EN$^$' + this.InfoQueTitle
       param.itemType = this.mSelectedItemType
       if (this.mSelectedItemType === 'T') {
         param.maxLen = this.maxLengthYn

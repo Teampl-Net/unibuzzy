@@ -693,7 +693,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var cabinet = new Object()
       cabinet.teamMenuKey = this.modiBoardDetailProps.teamMenuKey
-      cabinet.cabinetNameMtext = 'KO$^$' + this.boardName
+      cabinet.cabinetNameMtext = 'EN$^$' + this.boardName
       cabinet.cabinetKey = this.modiBoardDetailProps.cabinetKey
       cabinet.MenuType = 'C'
       cabinet.blindYn = this.blindYn

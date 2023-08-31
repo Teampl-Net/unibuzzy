@@ -415,7 +415,7 @@ export default {
       var creUserObj = {}
       creUserObj.accessKind = 'U'
       creUserObj.userKey = this.contentsEle.creUserKey
-      creUserObj.userDispMtext = 'KO$^$' + this.contentsEle.creUserName
+      creUserObj.userDispMtext = 'EN$^$' + this.contentsEle.creUserName
       selectedList.memberList.push(creUserObj)
       this.openWriteContentsPop(selectedList)
     },

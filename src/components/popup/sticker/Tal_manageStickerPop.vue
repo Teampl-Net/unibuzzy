@@ -188,7 +188,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       if (this.stickerNameMtext !== undefined && this.stickerNameMtext !== null && this.stickerNameMtext !== '') {
-        param.nameMtext = 'KO$^$' + this.stickerNameMtext
+        param.nameMtext = 'EN$^$' + this.stickerNameMtext
       } else {
         alert('스티커 이름을 지정해주세요')
         return

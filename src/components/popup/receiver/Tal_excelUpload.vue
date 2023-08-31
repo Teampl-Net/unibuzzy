@@ -28,7 +28,7 @@
     "EXCEL_BTN_TEST": "Consistency Test",
     "EXCEL_MSG_FAIL": "File verification failed: Please check the upload file and re-upload it",
     "EXCEL_MSG_NO_DATA": "No data added. Please check the uploaded file.",
-    "EXCEL_MSG_ADD": "Add the above members to your member type.",
+    "EXCEL_MSG_ADD": "Add the above members to your team.",
     "EXCEL_BTN_UPLOAD": "Upload",
     "EXCEL_BTN_SELECT": "Select a File"
   }
@@ -271,7 +271,7 @@ export default {
         if (this.GE_LOCALE === 'ko') {
           this.confirmMsg += '총 ' + this.excelFileList.length + '명을 주소록에 추가하시겠습니까?'
         } else {
-          this.confirmMsg += `Do you want to add a total of ${this.excelFileList.length} people to your member type?`
+          this.confirmMsg += `Do you want to add a total of ${this.excelFileList.length} people to your team?`
         }
         if (this.failCnt > 0) {
           if (this.GE_LOCALE === 'ko') {

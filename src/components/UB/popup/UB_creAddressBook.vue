@@ -11,14 +11,14 @@
     "EDIT_BOOK_TITLE_NAME": "Book Name",
     "EDIT_BOOK_BTN_CREATE": "Create",
     "EDIT_BOOK_BTN_EDIT": "Edit",
-    "EDIT_BOOK_MSG_NONAME": "Please enter a name for member type.",
+    "EDIT_BOOK_MSG_NONAME": "Please enter a name for team.",
     "EDIT_BOOK_MSG_SAVE": "There was a problem saving. Please try again."
   }
 }
 </i18n>
 <template>
   <div id='dlTskdy' style="width:100%; height:100%; padding: 0rem 1rem 0rem 1rem; background: #fff;">
-    <gPopHeader :headerTitle="propData.targetType === 'creAddressBook'? 'Create member type':'Edit member type'" :pClosePop="pClosePop" />
+    <gPopHeader :headerTitle="propData.targetType === 'creAddressBook'? 'Create Team':'Edit Team'" :pClosePop="pClosePop" />
     <div class="addressItemWrite" style="'margin-top:' + (this.$STATUS_HEIGHT + 40)+ 'px;'">
       <p class="fontBold textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOOK_TITLE_NAME') }}</p>
       <input v-model="inputAddressBookName" mCreAdressOpenType="text" :placeholder="$t('EDIT_BOOK_MSG_NONAME')" class="addressBookInputType"  id="addressBookName" style="">

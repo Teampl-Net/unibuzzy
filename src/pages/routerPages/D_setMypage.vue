@@ -317,7 +317,7 @@ export default {
       // param.user = this.GE_USER
       user.userKey = this.GE_USER.userKey
       user.userNameMtext = this.GE_USER.userNameMtext
-      user.userDispMtext = 'KO$^$' + this.tempUserDispName
+      user.userDispMtext = 'EN$^$' + this.tempUserDispName
       param.user = user
       param.updateYn = true
       param.firstYn = true

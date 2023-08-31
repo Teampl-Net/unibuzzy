@@ -106,13 +106,32 @@ export default {
     if (this.popYn === false) {
       localStorage.setItem('notiReloadPage', 'none')
     }
-    if (this.initData) {
+    if (this.initData && this.initData.targetType === 'chanList') {
       this.mChannelList = this.initData.content
       if (this.initData.totalElements < (this.initData.pageable.offset + this.initData.pageable.pageSize)) {
         this.mEndListYn = true
       } else {
         this.mEndListYn = false
       }
+    } else {
+      this.getChannelList(10, 0, true).then((res) => {
+        var resultList = res
+        var newArr = []
+        for (var i = 0; i < resultList.content.length; i++) {
+          if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
+            newArr.push(resultList.content[i])
+          }
+        }
+        if (newArr.length > 0) {
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
+        }
+        this.mChannelList = resultList.content
+        if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+          this.mEndListYn = true
+        } else {
+          this.mEndListYn = false
+        }
+      })
     }
     /* if (!this.GE_DISP_TEAM_LIST || this.GE_DISP_TEAM_LIST.length === 0) {
       var resultList = await this.getChannelList(null, null, false)
@@ -311,10 +330,9 @@ export default {
       this.$emit('openPop', openPopParam)
     },
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
-      if (this.mAxiosQueue.findIndex((item) => item === 'getChannelList') !== -1) return
-      this.mAxiosQueue.push('getChannelList')
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
+      // paramMap.set('cateItemKey', 3)
       if (this.mViewTab === 'user') {
         paramMap.set('userKey', userKey)
       } else if (this.mViewTab === 'all') {
@@ -322,10 +340,6 @@ export default {
       } else if (this.mViewTab === 'mychannel') {
         paramMap.set('userKey', userKey)
         paramMap.set('managerYn', true)
-      }
-      // paramMap.set('cateItemKey', 3)
-      if (this.mResultSearchKeyList.length > 0) {
-        paramMap.set('nameMtext', this.mResultSearchKeyList[0].keyword)
       }
       if (offsetInput !== undefined) {
         paramMap.set('offsetInt', offsetInput)
@@ -338,13 +352,8 @@ export default {
       } else {
         paramMap.set('pageSize', 10)
       }
-      var noneLoadingYn = true
-      if (mLoadingYn) {
-        noneLoadingYn = false
-      }
-      var result = await this.$getTeamList(paramMap, noneLoadingYn)
-      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getChannelList')
-      this.mAxiosQueue.splice(queueIndex, 1)
+
+      var result = await this.$getTeamList(paramMap, mLoadingYn)
       var resultList = result.data
       this.endListSetFunc(resultList)
       return resultList

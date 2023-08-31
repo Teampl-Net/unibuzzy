@@ -248,7 +248,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var cabinet = new Object()
       var defaultAddBoardName = this.$checkSameName(this.CAB_DETAIL, '게시판')
-      cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
+      cabinet.cabinetNameMtext = 'EN$^$' + defaultAddBoardName
       cabinet.currentTeamKey = this.CHANNEL_DETAIL.teamKey
       cabinet.creTeamKey = this.CHANNEL_DETAIL.teamKey
       cabinet.sysCabinetCode = 'BOAR'

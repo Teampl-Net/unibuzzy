@@ -449,8 +449,8 @@ export default {
 
                     param.inUserName = this.memName
                     param.userName =  this.memName
-                    param.userDispMtext = "KO$^$"+this.memName
-                    param.userNameMtext = "KO$^$"+this.memName
+                    param.userDispMtext = "EN$^$"+this.memName
+                    param.userNameMtext = "EN$^$"+this.memName
 
                     param.userEmail = this.memEmail
                     param.userPhone = this.memPhone

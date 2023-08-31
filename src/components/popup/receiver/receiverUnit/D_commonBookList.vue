@@ -8,11 +8,11 @@
     "EDIT_BOOK_TITLE_EDIT": "주소록 수정"
   },
   "en": {
-    "EDIT_BOOK_MSG_NOBOOK": "There is no member type.",
-    "EDIT_BOOK_MSG_CREBOOK": "Click the button to create an member type.",
-    "EDIT_BOOK_MSG_DELETE": "The member type has been deleted.",
-    "EDIT_BOOK_MSG_FAILED": "Failed to delete member type.",
-    "EDIT_BOOK_TITLE_EDIT": "Edit member types"
+    "EDIT_BOOK_MSG_NOBOOK": "There is no team.",
+    "EDIT_BOOK_MSG_CREBOOK": "Click the button to create an team.",
+    "EDIT_BOOK_MSG_DELETE": "The team has been deleted.",
+    "EDIT_BOOK_MSG_FAILED": "Failed to delete team.",
+    "EDIT_BOOK_TITLE_EDIT": "Edit team"
   }
 }
 </i18n>

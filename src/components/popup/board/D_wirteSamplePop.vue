@@ -249,7 +249,7 @@ export default {
         return
       }
       sample.imageFilekey = this.makeSampleIconFilekey
-      sample.titleMtext = 'KO$^$' + this.sampleTitleMtext
+      sample.titleMtext = 'EN$^$' + this.sampleTitleMtext
       sample.creUserKey = this.$store.getters['D_USER/GE_USER'].userKey
       param.sample = sample
       // eslint-disable-next-line no-unused-vars

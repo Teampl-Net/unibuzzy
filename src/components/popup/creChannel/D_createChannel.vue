@@ -329,7 +329,7 @@ export default {
           }
         }
 
-        gParam.nameMtext = 'KO$^$' + this.mInputChannelName
+        gParam.nameMtext = 'EN$^$' + this.mInputChannelName
         gParam.memoMtext = this.mInputChannelMemo
         var teamType = this.$teamTypeString(this.mSelectedTeamTypeKey)
         if (this.mInputChannelMemo === undefined || this.mInputChannelMemo === null || this.mInputChannelMemo.replace(' ', '') === '') {
@@ -371,7 +371,7 @@ export default {
           this.mCreCheckPopYn = false
           this.mCreatedSuccessPopYn = true
           params.targetType = 'chanDetail'
-          params.popHeaderText = 'KO$^$' + this.mInputChannelName
+          params.popHeaderText = 'EN$^$' + this.mInputChannelName
           if (this.chanDetail.modiYn !== undefined && this.chanDetail.modiYn !== null && this.chanDetail.modiYn !== '' && this.chanDetail.modiYn === true) {
             this.changeTeamInfo(gParam)
             params.targetKey = this.chanDetail.targetKey

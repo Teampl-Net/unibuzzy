@@ -101,7 +101,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var saveParam = new Object()
       saveParam.memberTypeKey = this.mMemberTypeDetail.memberTypeKey
-      saveParam.nameMtext = 'KO$^$' + this.mMemberTypeNameMtext
+      saveParam.nameMtext = 'EN$^$' + this.mMemberTypeNameMtext
       saveParam.certiYn = this.mMemberTypeDetail.certiYn
       console.log(saveParam)
       var dragItemList = document.getElementsByClassName('memTypeItemListRow')

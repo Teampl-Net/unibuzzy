@@ -129,7 +129,7 @@ export default {
       if (this.mStickerObj.stickerKey && this.mStickerObj.modiYn) {
         param.stickerKey = this.mStickerObj.stickerKey
       }
-      param.nameMtext = 'KO$^$' + this.mStickerObj.nameMtext
+      param.nameMtext = 'EN$^$' + this.mStickerObj.nameMtext
       param.picBgPath = this.mStickerObj.picBgPath
       param.creUserKey = this.GE_USER.userKey
       var result = await this.$commonAxiosFunction({

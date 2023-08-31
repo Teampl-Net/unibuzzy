@@ -201,7 +201,7 @@ export default {
     }
   },
   created () {
-    this.$emit('clearInfo', { detail: '', targetType: 'boardMain' })
+    // this.$emit('clearInfo', { detail: '', targetType: 'boardMain' })
     this.mCreTeamKey = this.$route.params.teamKey
     if (this.pOnlyMineYn) {
       this.mOnlyMineYn = true

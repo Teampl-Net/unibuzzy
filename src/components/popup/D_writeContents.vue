@@ -502,12 +502,12 @@ export default {
         }
       } else {
         mCabinet = data
-        if (this.contentType === 'BOAR' && (!this.GE_USER.certiDate) && (mCabinet.blindYn === 1 || mCabinet.blindYn === true)) {
-        // 익명게시판일 떄
-          this.mCanWriteYn = false
-          this.gCertiPopShowYn = true
-          return
-        }
+        // if (this.contentType === 'BOAR' && (!this.GE_USER.certiDate) && (mCabinet.blindYn === 1 || mCabinet.blindYn === true)) {
+        // // 익명게시판일 떄
+        //   this.mCanWriteYn = false
+        //   this.gCertiPopShowYn = true
+        //   return
+        // }
         this.selectBoardCabinetKey = mCabinet.cabinetKey
         this.cabinetName = mCabinet.cabinetNameMtext
       }

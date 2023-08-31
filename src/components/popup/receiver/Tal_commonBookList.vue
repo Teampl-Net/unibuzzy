@@ -300,7 +300,7 @@ export default {
       param.creMenuYn = true
       var cabinet = {}
       var defaultAddBoardName = await this.$checkSameName(this.addressBookList, '주소록')
-      cabinet.cabinetNameMtext = 'KO$^$' + defaultAddBoardName
+      cabinet.cabinetNameMtext = 'EN$^$' + defaultAddBoardName
       cabinet.currentTeamKey = this.propObject.currentTeamKey || this.propObject.teamKey || this.propObject.value.targetKey
       cabinet.sysCabinetCode = 'USER'
       // cabinet.creTeamKey = this.propObject.currentTeamKey
@@ -336,7 +336,7 @@ export default {
     },
     async updateCabinet (data, index) {
       var cabinet = {}
-      cabinet.cabinetNameMtext = 'KO$^$' + this.cabinetInputText
+      cabinet.cabinetNameMtext = 'EN$^$' + this.cabinetInputText
       cabinet.currentTeamKey = data.currentTeamKey
       cabinet.sysCabinetCode = data.sysCabinetCode
       cabinet.cabinetKey = data.cabinetKey

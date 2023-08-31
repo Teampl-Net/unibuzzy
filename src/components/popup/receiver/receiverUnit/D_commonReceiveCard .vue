@@ -7,7 +7,7 @@
       "NONE_MSG_REGIST_NUM": "등록된 번호가 없습니다.",
     },
     "en": {
-      "EMPT_MSG_NONE_ADDR": "Empty member type",
+      "EMPT_MSG_NONE_ADDR": "Empty team",
       "EMPT_MSG_NONE_MEMB": "Empty member list",
       "NONE_MSG_REGIST_EMAIL": "No registered email found.",
       "NONE_MSG_REGIST_NUM": "No registered phone number found."

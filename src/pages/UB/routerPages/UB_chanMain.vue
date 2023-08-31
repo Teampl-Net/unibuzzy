@@ -921,6 +921,8 @@ export default {
           return
         }
         const teamDetail = result.data.team.content[0]
+        console.log('teamDetail!!')
+        console.log(teamDetail)
         if (
           teamDetail.userTeamInfo === undefined ||
           teamDetail.userTeamInfo === null ||

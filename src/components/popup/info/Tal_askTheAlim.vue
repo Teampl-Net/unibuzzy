@@ -416,7 +416,7 @@ export default {
         // param.creTeamNameMtext = JSON.parse(localStorage.getItem('sessionTeam')).nameMtext
         param.creUserName = JSON.parse(localStorage.getItem('sessionUser')).userDispMtext || JSON.parse(localStorage.getItem('sessionUser')).userNameMtext
         param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
-        param.cabinetName = 'KO$^$문의하기게시판'
+        param.cabinetName = 'EN$^$문의하기게시판'
         param.title = this.askTitle
         param.showCreNameYn = true
         this.checkPopYn = false

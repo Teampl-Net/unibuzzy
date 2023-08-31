@@ -8,10 +8,10 @@
     "EDIT_BOOK_MSG_SAVE": "저장 중 문제가 발생했습니다. 다시 시도해주세요."
   },
   "en": {
-    "EDIT_BOOK_TITLE_NAME": "Book Name",
+    "EDIT_BOOK_TITLE_NAME": "Team Name",
     "EDIT_BOOK_BTN_CREATE": "Create",
     "EDIT_BOOK_BTN_EDIT": "Edit",
-    "EDIT_BOOK_MSG_NONAME": "Please enter a name for member type.",
+    "EDIT_BOOK_MSG_NONAME": "Please enter a name for Team Name.",
     "EDIT_BOOK_MSG_SAVE": "There was a problem saving. Please try again."
   }
 }

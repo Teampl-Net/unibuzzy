@@ -17,10 +17,10 @@
     "CHAN_MENU_SEND_NOTI": "Send Noti",
     "CHAN_MENU_WRITE_POST": "Write a Post",
     "MANA_NAME_CAHN": "Manage Channel",
-    "MANA_NAME_ADDRBOOK": "Manage Member Types",
+    "MANA_NAME_ADDRBOOK": "Manage Team",
     "MANA_NAME_BOARD": "Manage Board",
     "CHAN_MSG_NOFOLLOW": "No Permission",
-    "CHAN_MENU_TITLE_ADDR": "Member Type"
+    "CHAN_MENU_TITLE_ADDR": "Manage Team"
   }
 }
 </i18n>
