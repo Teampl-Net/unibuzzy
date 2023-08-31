@@ -921,7 +921,7 @@ export default {
           return
         }
         const teamDetail = result.data.team.content[0]
-        console.log('teamDetail!!')
+        console.log('teamDetail')
         console.log(teamDetail)
         if (
           teamDetail.userTeamInfo === undefined ||
@@ -961,6 +961,7 @@ export default {
             result.data.contentsListPage.content
           )
         }
+        console.log('asf')
         initData = result.data
         if (!initData.cabinetKeyListStr) {
           initData.contentsList = result.data.contentsListPage
@@ -979,6 +980,7 @@ export default {
       } else {
         await this.getTeamMenuList(encodedKey)
       }
+      console.log(initData)
       if (initData.shortLink) {
         const initLink = JSON.parse(initData.shortLink.shortLink)
         this.CHANNEL_DETAIL.copyTextStr = initLink.shortLink
@@ -988,6 +990,11 @@ export default {
       this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
       this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
       console.log('this.mChanInfothis.mChanInfothis.mChanInfo', this.mChanInfo)
+      var paramMap = new Map()
+      paramMap.set('userKey', this.GE_USER.userKey)
+      var result1 = await this.$getTeamList(paramMap, false)
+      var followList = result1.data.content
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
     },
     async getTownCabinetList () {
       var param = {}
@@ -1162,7 +1169,6 @@ export default {
             this.CHANNEL_DETAIL
           ])
           this.mMakeDeepLinkIng = false
-          console.log(this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn)
           this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
         } else {
           if (
@@ -1213,6 +1219,7 @@ export default {
         teamKey = this.mDirectTeamKey.teamKey
       }
       var detail = this.$getDetail('TEAM', teamKey)
+      console.log(detail)
       if (detail.length < 1) {
         return
       }

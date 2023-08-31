@@ -210,6 +210,8 @@ const D_CHANNEL = {
     },
     MU_ADD_CHANNEL: (state, payload) => {
       var index
+      console.log(state.chanList)
+      console.log(payload)
       if (!payload || payload.length === 0) return
       for (var i = 0; i < payload.length; i++) {
         var team = payload[i]
@@ -228,6 +230,7 @@ const D_CHANNEL = {
           }
         } else { // 확인 더 필요
           D_CHAN_AUTH.settingYn = true
+
           if (team.memberNameMtext && team.memberNameMtext !== '') {
             D_CHAN_AUTH.memberNameMtext = team.memberNameMtext
             if (team.ownerYn) D_CHAN_AUTH.ownerYn = team.ownerYn
@@ -261,9 +264,19 @@ const D_CHANNEL = {
         } else {
           var chan = state.chanList[index]
           var tempEle = chan.ELEMENTS
+          var totalCount = null
+          if (chan.totalContentsCount) {
+            totalCount = chan.totalContentsCount
+          }
+          if (Object.keys(chan.D_CHAN_AUTH).length < 5) {
+            D_CHAN_AUTH.followYn = true
+          } else {
+            D_CHAN_AUTH = state.chanList[index].D_CHAN_AUTH
+          }
           state.chanList[index] = payload[i]
-          state.chanList[index].ELEMENTS = tempEle
+          state.chanList[index].totalContentsCount = totalCount
           state.chanList[index].D_CHAN_AUTH = D_CHAN_AUTH
+          state.chanList[index].ELEMENTS = tempEle
         }
       }
       return true

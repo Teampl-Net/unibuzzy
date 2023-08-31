@@ -543,6 +543,9 @@ export default {
       // if (!teamKey && detailValue.creTeamKey) {
       //   encodedTeamKey = detailValue.creTeamKey
       // }
+      var result1 = await this.$getTeamList(paramMap, false)
+      var followList = result1.data.content
+      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
       this.$router.push(`/chan/${teamKey}`)
       // this.showCloudLoading(false, 1750)
     },
