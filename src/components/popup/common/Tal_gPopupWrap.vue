@@ -627,7 +627,6 @@ export default {
         alert('채널을 찾을 수 없습니다!')
         return
       }
-      alert('c')
       const teamDetail = result.data.team.content[0]
       console.log(result.data.memberTypeList[0])
       if (teamDetail.userTeamInfo === undefined || teamDetail.userTeamInfo === null || teamDetail.userTeamInfo === '') {
