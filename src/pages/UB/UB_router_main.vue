@@ -308,9 +308,7 @@ export default {
               goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
               goDetailParam.cabinetKey = vuexResultData.cabinetKey
             }
-            if (notiDetail.arrivedYn === 'true' || notiDetail.arrivedYn === true) {
-
-            } else if (notiDetail.arrivedYn === 'false' || notiDetail.arrivedYn === false) {
+            if (notiDetail.arrivedYn !== 'true' && notiDetail.arrivedYn !== true) {
               this.goDetail(goDetailParam)
             }
           } if (notiUserDo.targetKind === 'R') {
@@ -324,18 +322,14 @@ export default {
               goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
               goDetailParam.cabinetKey = vuexResultData.cabinetKey
             }
-            if (notiDetail.arrivedYn === 'true' || notiDetail.arrivedYn === true) {
-
-            } else if (notiDetail.arrivedYn === 'false' || notiDetail.arrivedYn === false) {
+            if (notiDetail.arrivedYn !== 'true' && notiDetail.arrivedYn !== true) {
               this.goDetail(goDetailParam)
             }
           } else if (notiUserDo.targetKind === 'T' || notiUserDo.targetKind === 'M' || notiUserDo.targetKind === 'N') {
             this.$router.replace({ path: '/' })
             goDetailParam.chanYn = true
             goDetailParam.targetKey = notiUserDo.targetKey
-            if (notiDetail.arrivedYn === 'true' || notiDetail.arrivedYn === true) {
-
-            } else if (notiDetail.arrivedYn === 'false' || notiDetail.arrivedYn === false) {
+            if (notiDetail.arrivedYn !== 'true' && notiDetail.arrivedYn !== true) {
               this.goChanDetail(goDetailParam)
             }
           }
