@@ -849,7 +849,7 @@ export default {
       const pushList = document.getElementById('pushListWrap')
       if (pushList) {
         if (this.mChanCardShowYn) {
-          pushList.className = 'scrollHidden'
+          // pushList.className = 'scrollHidden'
         } else {
           if (pushList.scrollTop <= 0) {
             const chanCardTopRef = this.$refs.chanPushListArea
@@ -921,7 +921,6 @@ export default {
           return
         }
         const teamDetail = result.data.team.content[0]
-        console.log(result.data.memberTypeList[0])
         if (
           teamDetail.userTeamInfo === undefined ||
           teamDetail.userTeamInfo === null ||
@@ -942,7 +941,6 @@ export default {
           }
         }
         // this.mCabKeyListStr = result.data.cabinetKeyListStr
-        console.log(teamDetail)
         await this.$addChanVuex([teamDetail])
         if (result.data.cTeamList) {
           await this.$addChanVuex(result.data.cTeamList)
@@ -1129,7 +1127,6 @@ export default {
     setTimeout(() => {
       this.$emit('showCloudLoading', false)
     }, 800)
-    console.log('propParams', this.propParams)
     if (
       this.propParams &&
       this.propParams.targetType === 'chanDetail' &&

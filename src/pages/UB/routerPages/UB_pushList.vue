@@ -291,7 +291,6 @@ export default {
       handler (value, old) {
         var newArr = []
         if (!value[0] || !value) return
-        console.log(value)
         if (this.chanAlimYn) {
           if (value[0].creTeamKey !== this.pChannelDetail.teamKey) return
         }
@@ -528,7 +527,6 @@ export default {
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       if (this.allContentsList.length === 0) this.emptyYn = true
 
-      console.log('this.allContentsList', this.allContentsList)
       return this.replaceArr(returnAllList)
     },
     GE_USER () {

@@ -39,7 +39,7 @@
             <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
               <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
                 <div  @click="imgClickToInput" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 250px; max-height: 250px;" ref="selectImgPopRef" class="cropperImgArea">
-                  <img v-if="changeImgYn = true" id="profileImg" ref="image" :src="previewImgUrl? previewImgUrl:'../../../assets/images/common/popup_close.png'" alt="" class="preview hidden">
+                  <img v-if="changeImgYn = true" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '"  id="profileImg" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
                 </div>
                 <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left; position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
                     <input class="formImageFile" style="width: 100%; float: left;" type="file" :title ="$t('COMMON_BTN_SELECTED')" accept="image/jpeg, image/png, image/jpg" ref="selectFileChangeIconNBG" id="input-file" @change="handleImageUpload"/>
@@ -647,7 +647,8 @@ export default {
 }
 .cropperImgArea img{
   display: block;
-  object-fit: contain; width: 100%; height: 100%;
+  max-width: 100%
+  /* object-fit: contain; width: 100%; height: 100%; */
   /* This rule is very important, please don't ignore this */
 }
 
