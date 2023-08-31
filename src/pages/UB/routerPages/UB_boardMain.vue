@@ -209,11 +209,9 @@ export default {
       this.mCommonFilterList = [{ display: 'Recent', name: 'N' }, { display: 'Popular', name: 'P' }, { display: 'Saved', name: 'S' }]
     }
     this.mPropParams = this.propParams
-    console.log(12341234)
-    console.log(this.mPropParams)
     // this.$emit('clearInfo', { detail: this.mPropParams, targetType: 'boardMain' })
     this.$emit('openLoading')
-    if (!this.mPropParams) {
+    if (!this.mPropParams || this.mPropParams.targetType !== 'boardMain') {
       // this.$router.go(-1)
       var this_ = this
       this.getCabinetDetail().then(() => {
@@ -226,6 +224,8 @@ export default {
             ...response.content
           ]
           this_.mCabContentsList = this.replaceArr(newArr)
+          this.$emit('changePageHeader', this.$changeText(this.CAB_DETAIL.cabinetNameMtext))
+          this.$emit('clearInfo', { detail: this.CAB_DETAIL, targetType: 'boardMain' })
           this_.readyFunction()
         })
       })

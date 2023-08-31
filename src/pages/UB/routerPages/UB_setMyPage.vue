@@ -167,7 +167,6 @@ export default {
     }
   },
   created () {
-    console.log(this.$locale)
     localStorage.setItem('notiReloadPage', 'none')
     // this.$emit('changePageHeader', 'Settings')
     // .stringify(localStorage.getItem('appInfo')))

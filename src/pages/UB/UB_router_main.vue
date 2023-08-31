@@ -555,12 +555,15 @@ export default {
       if (params.targetType === 'setMypage') {
         this.openPage(params)
       } else if (params.targetType === 'totalFileList') {
+        this.mPopParams.targetType = 'totalFileList'
         this.changePageHeader('File Box')
         this.$router.push('/fileBox')
       } else if (params.targetType === 'contentsDetail') {
+        this.mPopParams.targetType = 'contentsDetail'
         this.openPage(params)
       } else if (params.targetType === 'totalSaveList') {
         await this.goMoreList('saved')
+        this.mPopParams.targetType = 'totalSaveList'
         this.$router.push('/saveBox')
       }
     },
@@ -581,11 +584,15 @@ export default {
         param.subsUserKey = this.GE_USER.userKey
 
         var result = await this.$getContentsList(param, false)
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
+        if (result) {
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
 
-        var resultList = result.content
+          var resultList = result.content
 
-        this.mChanInfo = resultList
+          this.mChanInfo = { targetType: 'totalSaveList', saveList: resultList }
+        } else {
+          this.mChanInfo = { targetType: 'totalSaveList', saveList: [] }
+        }
       }
     },
     // goLogList (param) {

@@ -33,8 +33,8 @@ export default {
   },
   created () {
     // this.$emit('changePageHeader', 'Saved')
-    if (this.propParams) {
-      this.mContentsList = this.propParams
+    if (this.propParams && this.propParams.targetType === 'totalSaveList') {
+      this.mContentsList = this.propParams.saveList
     } else {
       this.offsetInt = 0
       this.loadMore()

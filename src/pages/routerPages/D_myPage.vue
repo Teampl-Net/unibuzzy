@@ -81,7 +81,7 @@ export default {
     setTimeout(() => {
       this.$emit('showCloudLoading', false)
     }, 1000)
-    if ((this.initData && Object.keys(this.initData).length > 0) || (this.propParams && this.propParams.targetType === 'myPage')) {
+    if (this.propParams && this.propParams.targetType === 'myPage') {
       // this.mInitData = this.initData
       if (this.propParams && this.propParams.mContentsList && this.propParams.mContentsList.content) {
         this.mContsList = this.replaceArr(this.propParams.mContentsList.content)

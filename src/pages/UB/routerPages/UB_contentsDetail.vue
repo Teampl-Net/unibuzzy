@@ -412,7 +412,7 @@ export default {
         this.loadingYn = true
         // await this.getCabinetDetail(this.mCreTeamKey)
         // await this.$addChanList(this.mCreTeamKey)
-        if (!this.propParams || Object.keys(this.propParams).length < 1) {
+        if (!this.propParams || Object.keys(this.propParams).length < 1 || this.propParams.targetType !== 'contentsDetail') {
           await this.getCabinetDetail(this.mCreTeamKey)
           await this.$addChanList(this.mCreTeamKey)
           // if (!this.CHANNEL_DETAIL || !this.CHANNEL_DETAIL.D_CHAN_AUTH || !this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) {
