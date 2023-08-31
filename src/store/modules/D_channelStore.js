@@ -268,6 +268,9 @@ const D_CHANNEL = {
           if (chan.totalContentsCount) {
             totalCount = chan.totalContentsCount
           }
+          if (payload[i].totalContentsCount) {
+            totalCount = payload[i].totalContentsCount
+          }
           if (Object.keys(chan.D_CHAN_AUTH).length < 5) {
             D_CHAN_AUTH.followYn = true
           } else {
