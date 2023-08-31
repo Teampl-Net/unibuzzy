@@ -292,7 +292,7 @@ const D_CHANNEL = {
           if (payload[i].changeYn) {
             D_CHAN_AUTH.followYn = true
           } else {
-            D_CHAN_AUTH = payload[i].D_CHAN_AUTH
+            // D_CHAN_AUTH = payload[i].D_CHAN_AUTH
           }
           state.chanList[index].D_CHAN_AUTH = D_CHAN_AUTH
           console.log(state.chanList[index])

@@ -483,7 +483,7 @@ export default {
             if (this.$refs.ChanAlimListPushListCompo) {
               this.$refs.ChanAlimListPushListCompo.initGetContentsList()
             }
-            this.getChanMain()
+            // this.getChanMain()
             if (result.result || result) {
               this.$emit('pageReload')
             } else {
@@ -755,7 +755,7 @@ export default {
         this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
         this.ChanFollowYn = true
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
-        this.getChanMain()
+        // this.getChanMain()
         if (this.$refs.ChanAlimListPushListCompo) {
           this.$refs.ChanAlimListPushListCompo.initGetContentsList()
         }

@@ -546,6 +546,11 @@ export default {
       // }
       var result1 = await this.$getTeamList(paramMap, false)
       var followList = result1.data.content
+      for (let i = 0; i < followList.length; i++) {
+        if (followList.teamKey !== teamKey) {
+          followList[i].changeYn = true
+        }
+      }
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
       this.$router.push(`/chan/${teamKey}`)
       // this.showCloudLoading(false, 1750)
