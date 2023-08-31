@@ -470,9 +470,10 @@ export default {
             )
             // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
             this.axiosQueue.splice(queueIndex, 1)
-            // this.CHANNEL_DETAIL.D_CHAN_AUTH = null
+            this.CHANNEL_DETAIL.D_CHAN_AUTH = null
             this.CHANNEL_DETAIL.followerKey = null
             this.CHANNEL_DETAIL.userTeamInfo = null
+            // this.CHANNEL_DETAIL.followYn = false
             this.CHANNEL_DETAIL.followerCount -= 1
             this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
               this.CHANNEL_DETAIL
@@ -961,7 +962,6 @@ export default {
             result.data.contentsListPage.content
           )
         }
-        console.log('asf')
         initData = result.data
         if (!initData.cabinetKeyListStr) {
           initData.contentsList = result.data.contentsListPage
@@ -995,6 +995,12 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       var result1 = await this.$getTeamList(paramMap, false)
       var followList = result1.data.content
+      console.log(this.propParams.teamKey)
+      for (let i = 0; i < followList.length; i++) {
+        if (followList.teamKey !== this.propParams.teamKey) {
+          followList[i].changeYn = true
+        }
+      }
       this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
     },
     async getTownCabinetList () {

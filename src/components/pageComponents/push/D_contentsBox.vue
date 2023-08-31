@@ -1470,7 +1470,7 @@ export default {
         // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
       }
       // console.log(cont)
-      if (cont[0].shareList && cont[0].shareList[0].length !== 0) {
+      if (cont[0].shareList && cont[0].shareList[0] && cont[0].shareList[0].length !== 0) {
         if (cont[0].shareList[0].accessKind === 'F') {
           if (this.CHANNEL_DETAIL.D_CHAN_AUTH === true || (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn)) {
             cont[0].VIEW_YN = true
