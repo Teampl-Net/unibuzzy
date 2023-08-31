@@ -229,13 +229,13 @@ axios.interceptors.response.use(function (response) {
   }
 })
 // 스와이프 막기
-document.addEventListener(
-  'touchmove',
-  function (event) {
-    event.preventDefault()
-  },
-  { passive: false }
-)
+// document.addEventListener(
+//   'touchmove',
+//   function (event) {
+//     event.preventDefault()
+//   },
+//   { passive: false }
+// )
 // 뒤로가기 기능 막기
 window.addEventListener('popstate', function (event) {
   history.pushState(null, null, document.URL)
