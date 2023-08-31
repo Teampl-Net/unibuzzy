@@ -265,16 +265,20 @@ const D_CHANNEL = {
           var chan = state.chanList[index]
           var tempEle = chan.ELEMENTS
           var totalCount = null
+          console.log(chan)
+          console.log(payload[i])
           if (chan.totalContentsCount) {
             totalCount = chan.totalContentsCount
           }
           if (payload[i].totalContentsCount) {
             totalCount = payload[i].totalContentsCount
           }
-          if (Object.keys(chan.D_CHAN_AUTH).length < 5) {
-            D_CHAN_AUTH.followYn = true
-          } else {
+          if (Object.keys(chan.D_CHAN_AUTH).length < 5 && payload[i].D_CHAN_AUTH && Object.keys(payload[i].D_CHAN_AUTH).length > 5) {
+            D_CHAN_AUTH = payload[i].D_CHAN_AUTH
+          } else if (Object.keys(chan.D_CHAN_AUTH).length > 5 && payload[i].D_CHAN_AUTH && Object.keys(payload[i].D_CHAN_AUTH).length < 5) {
             D_CHAN_AUTH = state.chanList[index].D_CHAN_AUTH
+          } else {
+            D_CHAN_AUTH.followYn = true
           }
           state.chanList[index] = payload[i]
           state.chanList[index].totalContentsCount = totalCount

@@ -470,7 +470,7 @@ export default {
             )
             // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
             this.axiosQueue.splice(queueIndex, 1)
-            this.CHANNEL_DETAIL.D_CHAN_AUTH = null
+            // this.CHANNEL_DETAIL.D_CHAN_AUTH = null
             this.CHANNEL_DETAIL.followerKey = null
             this.CHANNEL_DETAIL.userTeamInfo = null
             this.CHANNEL_DETAIL.followerCount -= 1
