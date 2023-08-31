@@ -273,7 +273,7 @@ export default {
 </script>
 <style scoped>
 .commonPopWrap{
-  position: absolute; width: 80%; height: 80%; z-index: 99999; background: #FFFFFF;
+  position: absolute; width: 80%; height: 80%; z-index: 99999;
   bottom: 10%;
   left: 10%;
   background: rgba(256, 256, 256, 0.65);

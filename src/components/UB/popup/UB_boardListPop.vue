@@ -25,7 +25,7 @@
 }
 </i18n>
 <template>
-    <div style="padding: 10px 20px; background: rgb(255 255 255 / 89%); position: absolute; z-index: 9999; bottom: 10%; box-shadow: rgb(0 0 0 / 26%) 0px -6px 13px 4px; left: 10%; height: 80%; width: 80%; border-radius: 0.8rem 0.8rem 0.8rem 0.8rem; ">
+    <div style="padding: 10px 20px; background: rgb(255 255 255 / 65%);backdrop-filter: blur( 9px ); position: absolute; z-index: 9999; bottom: 10%; box-shadow: rgb(0 0 0 / 26%) 0px -6px 13px 4px; left: 10%; height: 80%; width: 80%; border-radius: 0.8rem 0.8rem 0.8rem 0.8rem; ">
         <!-- <div style="display: flex; align-items: center; padding: 0 20px; margin-top: 20px; width: 100%; height: 40px; position: relative; float: left;">
             <img style="width: 45px; margin-right: 5px;" src="/resource/logo/gtLogo.png" alt="">
             <p class="textOverdot textLeft font25" style="width: calc(100% - 40px);">{{ pAreaInfo.bdAreaNameMtext }} Area</p>

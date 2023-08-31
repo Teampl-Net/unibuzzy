@@ -15,8 +15,8 @@
 }
 </i18n>
 <template>
-    <div class="transWhite" style="border-radius: 10px; width: 90%; height: 80%; position: absolute; top: 10%; left: 5%; z-index: 10000; padding: 10px 20px; padding-bottom: 0;float: left;">
-        <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
+    <div class="transWhite" style="border-radius: 10px; width: 90%; height: 80%; position: absolute; top: 10%; left: 5%; z-index: 10000; padding: 10px 10px; padding-bottom: 0;float: left;">
+        <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; margin-bottom: 15px;">
           <div style="display: flex; align-items: center; width: calc(100% - 25px);">
             <img style="width: 20px; margin-right: 5px;" src="@/assets/images/footer/icon_alim_fillin.svg" alt="">
             <p class="textOverdot textLeft mleft-05" style="width: calc(100% - 40px); padding: none!important;">{{ $t('RECE_TITLE_NOTI')  }}</p>
@@ -25,10 +25,11 @@
             <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
           </div>
         </div>
-        <div class="w100P flexCenter" style="flex-direction: column; justify-content: flex-start; height: calc(100% - 80px); overflow: auto; padding: 10px;">
-          <p class="font14 lightGray textLeft fl" style="margin-botom: 30px !important;">{{ $t('RECE_MSG_NOTIDESC') }}</p>
-          <template v-if="GE_RECENT_NOTI_LIST.length">
-            <notiCompo @click="goContentsDetail(noti)" v-for="(noti, index) in GE_RECENT_NOTI_LIST" :mNotiEle="noti" :key="index" />
+        <div class="w100P flexCenter" style="flex-direction: column; justify-content: flex-start; height: calc(100% - 80px); overflow: auto; padding: 0px;">
+          <!-- <p class="font14 lightGray textLeft fl" style="margin-botom: 30px !important;">{{ $t('RECE_MSG_NOTIDESC') }}</p> -->
+          <!-- <div style="width: 100%; height: 2px; background: #aaa; float: left; margin: 10px 0; margin-bottom: 5px;"></div> -->
+          <template v-if="mNotiList.length">
+            <notiCompo @click="goPage(noti)" v-for="(noti, index) in mNotiList" :mNotiEle="noti" :key="index" />
           </template>
           <gEmpty v-else tabName="최신" contentName="전체"/>
         </div>
@@ -40,7 +41,7 @@
 </template>
 
 <script>
-import notiCompo from '@/components/pageComponents/main/D_notiCompo.vue'
+import notiCompo from '@/components/UB/unit/UB_notiCompo.vue'
 export default {
   props: {
     pClosePop: Function
@@ -51,9 +52,12 @@ export default {
       mConfirmPopShowYn: false
     }
   },
+  created () {
+    this.getNotiHistoryList()
+  },
   computed: {
-    GE_RECENT_NOTI_LIST () {
-      return this.$store.getters['D_NOTI/GE_RECENT_NOTI_LIST']
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
     },
     pageUpdate () {
       return this.$store.getters['D_HISTORY/hUpdate']
@@ -83,6 +87,28 @@ export default {
       // this.$store.commit('D_HISTORY/setRemovePage', removePage)
       // this.$store.commit('D_HISTORY/updateStack', history)
       this.$emit('closeXPop')
+    },
+    async getNotiHistoryList (noti) {
+      var param = {}
+      param.userKey = this.GE_USER.userKey
+      const result = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.getLogList',
+        param: param
+      })
+      console.log(result)
+      this.mNotiList = result.data.log.content
+    },
+    async goPage (notiData) {
+      if (notiData.targetKind === 'C') {
+        const result = await this.$addContents(notiData.targetKeyKey, 'BOAR')
+        console.log(result)
+      } else if (notiData.targetKind === 'B') {
+
+      } else if (notiData.targetKind === 'T') {
+
+      } else if (notiData.targetKind === 'U') {
+
+      }
     },
     goContentsDetail (noti) {
       if (noti['content-available'] === 'true') {
