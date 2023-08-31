@@ -783,7 +783,7 @@ export const commonMethods = {
       innerHTML = ''
       toastDiv = document.createElement('div')
       innerHTML +=
-        '<div id="toastPop" class="font16" style="width: 60%; left: 50%; transform: translate(-50%, -50%); border-radius: 5px;padding: 15px 10px;text-align: left;min-height: 40px;border: 1px solid #CCC;background: #f4f4f9fa;color: #000;position: absolute;top: 50%;box-shadow: 0 0 16px 0px #cccccc9c;z-index: 9999999999999999999;">'
+        '<div id="toastPop" class="font16" style="width: 60%; left: 50%; transform: translate(-50%, -50%); border-radius: 5px;padding: 15px 10px;text-align: left;min-height: 40px;border: 1px solid #CCC;background: #f4f4f9fa;color: #000;position: absolute;top: 50%;box-shadow: 0 0 16px 0px #cccccc9c;z-index: 99999999999999999999999;">'
       innerHTML += html
       innerHTML += '</div>'
       toastDiv.innerHTML = innerHTML

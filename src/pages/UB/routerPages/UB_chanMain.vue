@@ -479,7 +479,10 @@ export default {
             ])
 
             this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
-
+            if (this.$refs.ChanAlimListPushListCompo) {
+              this.$refs.ChanAlimListPushListCompo.initGetContentsList()
+            }
+            this.getChanMain()
             if (result.result || result) {
               this.$emit('pageReload')
             } else {
@@ -751,6 +754,10 @@ export default {
         this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
         this.ChanFollowYn = true
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+        this.getChanMain()
+        if (this.$refs.ChanAlimListPushListCompo) {
+          this.$refs.ChanAlimListPushListCompo.initGetContentsList()
+        }
         await this.$addChanList(this.mChanInfo.teamKey)
       }
       this.$emit('closeLoading')
@@ -979,6 +986,7 @@ export default {
         this.mMakeDeepLinkIng = false
       }
       this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
+      this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
       console.log('this.mChanInfothis.mChanInfothis.mChanInfo', this.mChanInfo)
     },
     async getTownCabinetList () {
@@ -1155,6 +1163,7 @@ export default {
             this.CHANNEL_DETAIL
           ])
           this.mMakeDeepLinkIng = false
+          console.log(this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn)
           this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
         } else {
           if (
@@ -1189,6 +1198,9 @@ export default {
       }
     } else {
       this.getChanMain()
+      if (!this.selectMemberObj) {
+        this.getMemberTypeList()
+      }
     }
     console.log('222chanDetail', this.mChanInfo)
   },

@@ -18,7 +18,7 @@
   <div class="w100P h100P listRefresh" style="overflow:hidden;">
     <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
     <!-- <unknownLoginPop :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" /> -->
-    <gImgPop @closeXPop="closeImgPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" />
+    <gImgPop @closeXPop="closeImgPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" style="z-index: 1000;"/>
     <commonConfirmPop v-if="mAppUpdatePopShwoYn" @no="goAppStore" confirmType="one" :confirmText="$t('MAIN_MSG_UPDATE')" />
     <gConfirmPop :confirmText="mErrorPopBodyStr" confirmType='one' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" style="z-index: 9999999999999999999999;"/>
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>

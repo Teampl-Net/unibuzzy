@@ -117,7 +117,6 @@ export default {
     pushListAndDetailYn: {},
     propParams: {},
     targetContents: {},
-
     chanAlimYn: {},
     pChannelDetail: {},
     notiScrollTarget: {},

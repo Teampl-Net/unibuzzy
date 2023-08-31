@@ -1,5 +1,5 @@
 <template>
-  <div v-if="GE_IMG_LIST && GE_IMG_LIST.length > 0">
+  <div v-if="GE_IMG_LIST && GE_IMG_LIST.length > 0" style="position:absolute;">
   </div>
 </template>
 
