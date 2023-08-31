@@ -177,6 +177,7 @@ export default {
               url: '/sUniB/tp.saveManager',
               param: param
             })
+            console.log('savemanager result', result)
           }
         }
       } else {

@@ -78,10 +78,10 @@
 
       </div>
 
-      <div class="bookAndMemListWrap" :style="mDetailOpenYn ? 'height: calc(100% - 80px);' : '' ">
+      <div class="bookAndMemListWrap" style="" :style="mDetailOpenYn ? 'height: calc(100% - 80px);' : '' ">
         <bookListCompo class="editBookContentListCompo" ref="bookListCompoRef" v-if="!mDetailOpenYn" :propBookList="mEditBookList" :propData="propData" :selectBookDetail="selectBookDetail" @getTeamCabList="this.getBookList" @refreshList="getBookList" @openMCabUserList='openMCabUserList' @openPop="openPop" @delAddress="delAddress" />
         <transition name="showGroup">
-          <memberList  class="editBookContentListCompo" ref="memberListRef" v-if="mDetailOpenYn" @memberInfo="memberInfo" :propMemberList="memberList" :propData="selectBookDetail"  :pSearchFilterList="this.mSearchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="this.CHANNEL_DETAIL" transition="showGroup" @openPop="openPop" @delAddress="delAddress" />
+          <memberList  class="editBookContentListCompo" ref="memberListRef" v-if="mDetailOpenYn" @memberInfo="memberInfo" :pFollowerMemList="mFollowerMemList" :propMemberList="memberList" :propData="selectBookDetail"  :pSearchFilterList="this.mSearchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="this.CHANNEL_DETAIL" transition="showGroup" @openPop="openPop" @delAddress="delAddress" />
         </transition>
         <div class="btnPlus" style="bottom: 10.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="openExcelUploadPop" v-if="mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:12px;" v-html="$t('EDIT_BOOK_BTN_EXCEL')"></p></div>
         <div class="btnPlus" style="bottom: 18.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="addMe" v-if="!mImInYn && mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:12px;" v-html="$t('EDIT_BOOK_BTN_ME')"></p></div>
@@ -159,7 +159,8 @@ export default {
       mCurrentConfirmType: '',
       mPopType: '',
       mPropData: {},
-      mCreAddrId: ''
+      mCreAddrId: '',
+      mFollowerMemList: []
     }
   },
   methods: {
@@ -356,6 +357,7 @@ export default {
         param: Object.fromEntries(paramMap)
       })
       this.memberList = result.data
+      this.mFollowerMemList = result.data
       if (this.memberList) { // dispName이 없을시 userName으로 대체
         for (var i = 0; i < this.memberList.length; i++) {
           if (this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {

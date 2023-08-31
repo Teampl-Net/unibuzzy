@@ -86,7 +86,8 @@ export default {
       mSelectedMemberIdx: 0,
       mSelectedMembers: [],
       mSelectedInfo: [],
-      pPropMemberList: []
+      pPropMemberList: [],
+      pFollowerMemList: []
     }
   },
   props: {

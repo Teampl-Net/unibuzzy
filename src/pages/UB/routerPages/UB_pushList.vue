@@ -34,7 +34,7 @@
     <div style="width: 100%; height: calc(100vh - 50px); padding-top: 0; position: relative; overflow: hidden scroll; float: left; z-index: 2;" >
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="min-height:50px; display:flex; align-items:start; " class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
-        <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" :subTabList="mBoardFilterList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab="changeTab" @changeBoardTab="changeBoard" style="width: 100%; padding-top: 0; margin-top: 0;" />
+        <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" :subTabList="mBoardFilterList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab="changeTab" @changeBoardTab="changeBoard" style="width:calc(100% - 30px); padding-top: 0; margin-top: 0;" />
         <div v-on="handleScroll" style="background-color:#fff; height:50px; display:flex; align-items:center; padding-right:10px; width: 30px; display: flex; align-items: center; justify-content: center; " @click="refreshAll">
             <img src="../../../assets/images/common/commonReload.png" class="cursorP" width="30" height="30" @click="refreshAll"/>
         </div>

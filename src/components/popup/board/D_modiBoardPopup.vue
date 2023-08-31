@@ -53,7 +53,7 @@
     "EDIT_BOARD_BTN_HIDE": "Hide Title to Non-Member",
     "EDIT_BOARD_TITLE_SAMPLE": "Default Sample Text",
     "EDIT_BOARD_MSG_SAMPLE": "Please add default sample text",
-    "EDIT_BOARD_MSG_ISSAMPLE": "Click to check sample text",
+    "EDIT_BOARD_MSG_ISSAMPLE": "Click to check default sample text",
     "EDIT_BOARD_BTN_ALLMEM": "Follower",
     "EDIT_BOARD_TITLE_READ": "Read Contents",
     "EDIT_BOARD_BTN_NONE": "None",

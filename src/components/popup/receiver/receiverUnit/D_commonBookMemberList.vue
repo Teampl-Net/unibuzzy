@@ -15,7 +15,7 @@
 <template>
   <div class="receiverTeamMemberArea" >
     <template v-for="(data, index) in mCommonMemberList" :key='data'>
-      <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'" :pPropMemberList="propMemberList" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
+      <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'" :pFollowerMemList="pFollowerMemList" :pPropMemberList="propMemberList" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
     </template>
     <gListEmpty v-if="mCommonMemberList.length === 0" :title="$t('SELECT_MSG_MEMBERS_NONE')" :subTitle="$t('SELECT_MSG_MEMBERS_ADD')" :option="selectPopYn === true ? 'SELE' : 'EDIT'" />
   </div>
@@ -31,13 +31,15 @@ export default {
     propData: {},
     selectPopYn: {},
     parentSelectList: {},
-    pSearchFilterList: {}
+    pSearchFilterList: {},
+    pFollowerMemList: {}
   },
   data () {
     return {
       mCommonMemberList: [],
       mSelectedMemberList: [],
-      mSearchFilterList: []
+      mSearchFilterList: [],
+      mFollowerMemList: []
     }
   },
   updated () {
@@ -48,6 +50,8 @@ export default {
   },
   created () {
     console.log('this.propMemberList = 이 채널을 팔로우하는 모든 사람', this.propMemberList)
+    console.log('pFollowerMemList = 이 주소록에 포함된 사람', this.pFollowerMemList)
+    this.mSelectedAlready()
     var this_ = this
     this.$nextTick(() => {
       this_.setMemberList()
@@ -63,6 +67,15 @@ export default {
     })
   },
   methods: {
+    mSelectedAlready () {
+      if (this.pFollowerMemList) {
+        this.mFollowerMemList = this.pFollowerMemList
+        for (let i = 0; i < this.mFollowerMemList.length; i++) {
+          this.mFollowerMemList[i].selectedYn = true
+          console.log('this.mFollowerMemList', this.mFollowerMemList)
+        }
+      }
+    },
     deleteSelectedMember (data, onlyUpdateYn) {
       // 실제 선택한 데이터 중 멤버를 삭제하는 작업
       if (onlyUpdateYn) {
