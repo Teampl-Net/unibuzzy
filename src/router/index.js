@@ -469,6 +469,12 @@ const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
   routes
 })
+router.beforeEach((to, from, next) => {
+  // 브라우저의 뒤로가기 동작이 아닌 경우에만 허용
+  if (window.performance.navigation.type !== 2) {
+    next();
+  }
+})
 router.afterEach((to, from) => {
   console.log(to)
   var history = store.getters['D_HISTORY/hStack']
