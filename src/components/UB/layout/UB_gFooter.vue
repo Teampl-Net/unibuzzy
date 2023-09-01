@@ -59,7 +59,7 @@ export default {
     async routePage (page) {
       // eslint-disable-next-line no-debugger
       debugger
-      if (this.$route.path === '/' && page === 'main') {
+      if ((this.$route.path === '/' || this.$route.path === '/unibuzzy') && page === 'main') {
         return false
       }
       if (page === 'myPage' && this.GE_USER.unknownYn) {

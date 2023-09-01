@@ -24,7 +24,7 @@
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
     <gConfirmPop :confirmText="$t('MAIN_MSG_DIS_CONN')" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
     <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" :pContentsYn="mTargetType === 'contentsDetail' || mTargetType === 'contDetail'" @goFavList="openPop" @goLogList="openPop" v-if="(mRouterHeaderInfo !== 'leave' && mTargetType !== 'chanDetail' && mTargetType !== 'boardMain') || $route.path === '/chanList' " @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9;" />
-    <chanHeader :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 20)  + 'px'" v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === '' && mRouterHeaderInfo !== 'leave'" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo.targetKey" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" :pChanInfo="mChanInfo" @openPop="openPop" class="chanDetailPopHeader" @bgColor="setBgColor"/>
+    <chanHeader :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 20)  + 'px'" v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === '' && mRouterHeaderInfo !== 'leave'" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo && mChanInfo.targetKey? mChanInfo.targetKey:''" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" :pChanInfo="mChanInfo" @openPop="openPop" class="chanDetailPopHeader" @bgColor="setBgColor"/>
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mPopType === 'writeContents'" @click="mPopType = ''"></div>
     <writeContents v-if="mPopType === 'writeContents'" @closeXPop="closeWritePop" :params="mPopParams" :propData="mPopParams" :contentType="mPopParams.contentsJobkindId" />
     <div v-if="mPopType === 'logList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 10000;background: #00000050;"></div>
@@ -49,7 +49,7 @@
     <gCloudLoading v-if="mCloudLoadingShowYn" :pEnterCloudsYn="mEnterCloudsYn" style="position: absolute; top: 0; left: 0" :pCloudLeftClass="mLeftCloudClass" :pCloudRightClass="mRightCloudClass"  />
     <div :class="{ myPageBgColor : mMyPageBgColorYn}"  style="height: 100%;overflow: hidden; width:100%;" >
       <!-- 여기 -->
-      <router-view :key="$route.fullPath" ref="routerView" @openImgPop="openImgPop" @setMainInfo="setMainInfo" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pAreaInfo="mAreaInfo" :pCabKeyListStr="mCabKeyListStr" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
+      <router-view :key="$route.fullPath" ref="routerView" @goInquiries="goInquiries" @openImgPop="openImgPop" @setMainInfo="setMainInfo" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pAreaInfo="mAreaInfo" :pCabKeyListStr="mCabKeyListStr" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
     <gFooter v-if="!$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999;"/>
     <!-- <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" /> -->
@@ -108,15 +108,14 @@ export default {
     }
   },
   created () {
-    // console.log('testYntestYntestYntestYn', localStorage.getItem('testYn'))
     if (this.GE_USER.unknownYn) {
       this.$router.push({ name: 'policies' })
       return
     } else {
-      /* if (this.GE_USER.myTeamKey === 836) {
+      if (this.GE_USER.myTeamKey === 836) {
         this.$router.push({ name: 'uniBmain' })
         return
-      } */
+      }
     }
     if (localStorage.getItem('backBtnShowYn') !== undefined && localStorage.getItem('backBtnShowYn') !== 'undefined') {
       localStorage.setItem('backBtnShowYn', 'false')
@@ -491,7 +490,7 @@ export default {
         if (result.data.team && result.data.team.content && result.data.team.content[0]) {
           teamDetail = result.data.team.content[0]
         }
-        console.log(teamDetail)
+
         if (teamDetail.userTeamInfo === undefined || teamDetail.userTeamInfo === null || teamDetail.userTeamInfo === '') {
           if (result.data.memberTypeList && result.data.memberTypeList.length !== 0 && result.data.memberTypeList[0].muserList) {
             if (result.data.memberTypeList[0].muserList) {
@@ -544,14 +543,16 @@ export default {
       // if (!teamKey && detailValue.creTeamKey) {
       //   encodedTeamKey = detailValue.creTeamKey
       // }
-      var result1 = await this.$getTeamList(paramMap, false)
-      var followList = result1.data.content
-      for (let i = 0; i < followList.length; i++) {
-        if (followList.teamKey !== teamKey) {
-          followList[i].changeYn = true
+      if (initData.cTeamList && initData.cTeamList.length > 0) {
+        var result1 = await this.$getTeamList(paramMap, false)
+        var followList = result1.data.content
+        for (let i = 0; i < followList.length; i++) {
+          if (followList.teamKey !== teamKey) {
+            followList[i].changeYn = true
+          }
         }
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
       }
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
       this.$router.push(`/chan/${teamKey}`)
       // this.showCloudLoading(false, 1750)
     },
@@ -611,6 +612,12 @@ export default {
     // },
     changePageHeader (title) {
       this.mRouterHeaderInfo = title
+    },
+    goInquiries () {
+      this.showCloudLoading(true, true)
+      this.enterCloudLoading(true)
+      this.mRouterHeaderInfo = 'Inquiries'
+      this.mTargetType = 'boardMain'
     },
     hideMenu () {
       this.$removeHistoryStack()
@@ -754,9 +761,15 @@ export default {
       debugger
       this.sendInitData = pageData
       this.sendInitData.targetType = page
-      this.$router.push({
-        name: page
-      })
+      if (page === 'main' && this.GE_USER.myTeamKey === 836) {
+        this.$router.push({
+          name: 'uniBmain'
+        })
+      } else {
+        this.$router.push({
+          name: page
+        })
+      }
       /* if (this.$route.path === '/' && page === 'main') {
         this.enterCloudLoading(false)
         setTimeout(() => {

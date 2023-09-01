@@ -285,6 +285,7 @@ export default {
         url: '/sUniB/tp.saveUser',
         param: param
       }, true)
+      this.GE_USER.myTeamKey = chanEle.teamKey
       // this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
       this.getMainBoard().then(res => {
         this.createMaskingAreaImg()
@@ -301,6 +302,9 @@ export default {
         }, 800)
       })
       this.mSelectSchoolPopShowYn = false
+      if (this.GE_USER.myTeamKey === 836) {
+        this.$router.push({ name: 'uniBmain' })
+      }
       // this.$router.go(0)
     },
     async openAreaInfoPop (area) {

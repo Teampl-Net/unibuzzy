@@ -989,19 +989,19 @@ export default {
       }
       this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
       this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
-      console.log('this.mChanInfothis.mChanInfothis.mChanInfo', this.mChanInfo)
       this.mTeamDetail = this.mChanInfo.initData.team.content['0']
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
-      var result1 = await this.$getTeamList(paramMap, false)
-      var followList = result1.data.content
-      console.log(this.propParams.teamKey)
-      for (let i = 0; i < followList.length; i++) {
-        if (followList.teamKey !== this.propParams.teamKey) {
-          followList[i].changeYn = true
+      if (this.mChanInfo.initData.cTeamList && this.mChanInfo.initData.cTeamList.length > 0) {
+        var result1 = await this.$getTeamList(paramMap, false)
+        var followList = result1.data.content
+        for (let i = 0; i < followList.length; i++) {
+          if (followList.teamKey !== teamKey) {
+            followList[i].changeYn = true
+          }
         }
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
       }
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
     },
     async getTownCabinetList () {
       var param = {}

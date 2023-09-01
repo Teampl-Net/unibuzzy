@@ -1,6 +1,6 @@
 <template>
   <!-- <div class="w100P " style="position: fixed; top: 0; left: 0; height: 60px; background: none; z-index: 9; display: flex; align-items: center; justify-content: center;"> -->
-  <div class="mainHeaderWrap headerBottom" v-if="pRouterHeaderInfo" :style="(ROUTER_PATH && ROUTER_PATH === '/'? 'background: none !important; box-shadow: none !important;' : '') ">
+  <div class="mainHeaderWrap headerBottom" v-if="pRouterHeaderInfo" :style="(ROUTER_PATH && (ROUTER_PATH === '/' || ROUTER_PATH === '/unibuzzy')? 'background: none !important; box-shadow: none !important;' : '') ">
     <div v-if="pContentsYn" v-on:click="goBack" class="fl cursorP" style="min-width: 25px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <img src="../../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
     </div>

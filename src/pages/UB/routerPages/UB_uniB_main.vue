@@ -1,13 +1,13 @@
 <template>
-  <div ref="uniBMainRef" @click="getInRectImgList" class="w100P h100P" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'" style="display: flex; align-items: center; overflow: hidden; z-index: -1;">
-    <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+  <div ref="uniBMainRef" class="w100P h100P" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'" style="display: flex; align-items: center; overflow: hidden; z-index: -1;">
+    <div v-if="mGuidePopShowYn" @click="closeGuidePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
     </transition>
     <transition name="showUp">
-      <areaInfoPop v-if="mInfoBoxShowYn" :pUniBInfo="clickedUniB" />
+      <guidePop v-if="mGuidePopShowYn" :pClosePop="closeGuidePop" />
     </transition>
-    <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_centerBG.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
+    <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/unib_mainBG.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
       <div class="ballon">Go to other town?</div>
       <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
       <!-- my profile -->
@@ -18,101 +18,72 @@
       <div v-else class="w100P" style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
         <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr" style="margin-top: 60px;" />
       </div>
-      <template v-for="(uniB) in mUniBList" :key="uniB.key">
-        <div ref="uniBRef" class="uniBDiv" :class="{clicked: uniB.clickedYn}" style="position: absolute; " :style="[uniB.maskedImageStyle, {width: uniB.w + 'px', height: uniB.h + 'px', top: uniB.top+ 'px', left: uniB.left + 'px' }]">
-          <img :src="uniB.maskedImageUrl" style="filter: drop-shadow(-10px -10px 5px #00000050)" />
-          <div v-if="uniB.description" class="fontBold" :style="{top: -20 + 'px'}" style="position: absolute; width: 100px; background-color: rgba(256, 256, 256, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 1000;">
-            <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ uniB.description }}</p>
-          </div>
-        </div>
+      <!-- <img v-for="elem in mUniBElementList" :key="elem.key" :src="elem.maskedImageUrl" :style="`width: ${elem.w}px; height: ${elem.h}px;`" style="position: absolute; transform: translate(-50%, 0);" alt=""> -->
+      <template v-for="(uniB) in mUniBElementList" :key="uniB.key">
+        <img @click="uniB.clickFunction" class="w100P mobileNone" :class="uniB.key !== 1? 'zoom':''" :src="uniB.imgLink" :style="{ width: uniB.w, left: uniB.left, top: uniB.top }" style="position: absolute; transform: translate(-50%, -50%);" />
+        <img @click="uniB.clickFunction" class="w100P pcNone" :class="uniB.key !== 1? 'zoom':''" :src="uniB.imgLink" :style="{ width: uniB.mobileW, left: uniB.left, top: uniB.top }" style="position: absolute; transform: translate(-50%, -50%);" />
       </template>
     </div>
   </div>
 </template>
 <script>
-import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
 import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue'
+import guidePop from '../../../components/UB/popup/UB_guidePop.vue'
 export default {
   data () {
     return {
       mSchoolList: [],
       mInfoBoxShowYn: false,
       mSelectSchoolPopShowYn: false,
-      mUniBList: [
+      mUniBElementList: [
         {
-          // 눌렀을 때 youtube link가 보이는 infoBox
           key: 1,
-          description: 'Youtube',
-          ctx: {},
-          imgLink: '/resource/logo/UB_uniBLogo.png',
-          maskedImageUrl: '',
-          maskedImageStyle: {},
-          clickedYn: false,
-          onImgYn: false,
-          left: 0,
-          top: 0,
-          w: 0,
-          h: 0
+          title: 'title',
+          left: '50%',
+          top: '20%',
+          w: '30%',
+          mobileW: '50%',
+          imgLink: '/resource/main/unib_Logo.png'
         },
         {
-          // 눌렀을 때 'uniBuzzy University' > 'Inquiries' 게시판으로 가는 버튼아 았눈 infoBox
           key: 2,
-          ctx: {},
-          description: 'Inquiries',
-          imgLink: '/resource/logo/UB_uniBLogo.png',
-          maskedImageUrl: '',
-          maskedImageStyle: {},
-          clickedYn: false,
-          onImgYn: false,
-          left: 0,
-          top: 0,
-          w: 0,
-          h: 0
+          title: 'inquiries',
+          left: '35%',
+          top: '40%',
+          w: '20%',
+          mobileW: '30%',
+          imgLink: '/resource/main/uniB_inquiries.png',
+          clickFunction: this.goInquiries
         },
         {
-          // 눌렀을 때 'uniBuzzy University' > 'FAQ' 게시판으로 가는 버튼아 았눈 infoBox
           key: 3,
-          ctx: {},
-          description: 'FAQ',
-          imgLink: '/resource/logo/UB_uniBLogo.png',
-          maskedImageUrl: '',
-          maskedImageStyle: {},
-          clickedYn: false,
-          onImgYn: false,
-          left: 0,
-          top: 0,
-          w: 0,
-          h: 0
+          title: 'FAQ',
+          left: '80%',
+          top: '45%',
+          w: '25%',
+          mobileW: '35%',
+          imgLink: '/resource/main/uniB_FAQ.png',
+          clickFunction: this.goFAQ
         },
         {
-          // 눌렀을 때 @unibuzzy instgram link가 보이는 infoBox
           key: 4,
-          ctx: {},
-          description: 'Instagram',
-          imgLink: '/resource/logo/UB_uniBLogo.png',
-          maskedImageUrl: '',
-          maskedImageStyle: {},
-          clickedYn: false,
-          onImgYn: false,
-          left: 0,
-          top: 0,
-          w: 0,
-          h: 0
+          title: 'Instagram',
+          left: '75%',
+          top: '70%',
+          w: '30%',
+          mobileW: '40%',
+          imgLink: '/resource/main/uniB_instagram.png',
+          clickFunction: this.goInstagram
         },
         {
-          // 눌렀을 때 uniBuzzy란? 설명 + 홈페이지로 이동하는 버튼
           key: 5,
-          ctx: {},
-          description: 'Download',
-          imgLink: '/resource/logo/UB_uniBLogo.png',
-          maskedImageUrl: '',
-          maskedImageStyle: {},
-          clickedYn: false,
-          onImgYn: false,
-          left: 0,
-          top: 0,
-          w: 0,
-          h: 0
+          title: 'Guide',
+          left: '20%',
+          top: '80%',
+          w: '35%',
+          mobileW: '45%',
+          imgLink: '/resource/main/uniB_guide.png',
+          clickFunction: this.openGuidePop
         }
       ],
       mShowAreaBdList: false,
@@ -124,7 +95,8 @@ export default {
       mMainChanList: [],
       mMainMChanList: [],
       mMainAlimList: [],
-      mAxiosQueue: []
+      mAxiosQueue: [],
+      mGuidePopShowYn: false
     }
   },
   created () {
@@ -147,11 +119,31 @@ export default {
       }
     }
     this.$emit('changePageHeader', 'uniBuzzy')
-    this.createMaskingUniBImg()
     this.innerWidth = window.innerWidth
     this.innerHeight = window.innerHeight
   },
   methods: {
+    closeGuidePop () {
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
+      this.mGuidePopShowYn = false
+    },
+    openGuidePop () {
+      this.mGuidePopShowYn = true
+    },
+    goFAQ () {
+      this.$showToastPop('The FAQ is being prepared.')
+    },
+    goInstagram () {
+      window.open('https://www.instagram.com/unibuzzy/')
+    },
+    goInquiries () {
+      this.$router.push('/board/978/13901')
+      this.$emit('goInquiries')
+    },
     closeSelectSchoolPop () {
       this.mSelectSchoolPopShowYn = false
     },
@@ -169,7 +161,9 @@ export default {
         param: param
       })
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
-      window.location.reload()
+      this.GE_USER.myTeamKey = chanEle.teamKey
+      this.$router.push('/')
+      // window.location.reload()
       // this.$router.go(0)
     },
     closeInfoBox () {
@@ -198,9 +192,9 @@ export default {
             blankWidth = (window.innerWidth - 1000) / 2
           }
           if (uniB.key === 1) { // youtube
-            uniB.w = 1 / 8 * w
-            uniB.left = 120 / 564 * w - blankWidth
-            uniB.top = 11 / 20 * h
+            uniB.w = w
+            uniB.left = 50
+            uniB.top = 20
           } else if (uniB.key === 2) { // inquiries
             uniB.h = h / 9
             uniB.left = 400 / 564 * w - blankWidth
@@ -397,18 +391,11 @@ export default {
       if (this.innerHeight < nowHeight) this.innerHeight = nowHeight
     },
     findAllDrawn () {
-      // eslint-disable-next-line no-debugger
-      debugger
+      this.$emit('enterCloudLoading', false)
       this.$emit('showCloudLoading', true, false)
-      const intervalHandler = setInterval(() => {
-        if (this.$refs.uniBRef) {
-          this.$emit('enterCloudLoading', false)
-          setTimeout(() => {
-            this.$emit('showCloudLoading', false)
-          }, 1500)
-          clearInterval(intervalHandler)
-        }
-      }, 100)
+      setTimeout(() => {
+        this.$emit('showCloudLoading', false)
+      }, 2000)
     }
   },
   mounted () {
@@ -437,7 +424,7 @@ export default {
     }
   },
   components: {
-    areaInfoPop,
+    guidePop,
     selectSchoolPop
     // UBAreaBdList
     // UBBgEffect
@@ -446,14 +433,22 @@ export default {
 </script>
 <style scoped>
 @keyframes uniB-zoom {
-  from {
-    transform: scale(1)
-  } to {
-    transform: scale(1.05)
+  0% {
+    transform: scale(1) translate(-50%, -50%)
+  } 50% {
+    transform: scale(1.05) translate(-50%, -50%)
+  } 100% {
+    transform: scale(1) translate(-50%, -50%)
   }
 }
 .uniBDiv.clicked {
   animation: uniB-zoom 0.4s alternate;
+}
+.zoom:hover {
+  cursor: pointer;
+  filter: drop-shadow(0 0 10px #f6ff7b);
+  transform-origin: 50% 50%;
+  animation: uniB-zoom 0.8s;
 }
 .mainBG {
   width: 100vw;
@@ -467,8 +462,26 @@ export default {
 }
 .planeImg {
   transition: 0.2s;
+  filter: drop-shadow(5px 5px 5px #00000036);
+  opacity:0;
+  transition: 0.2s;
+  animation: flyingPlane 1s 2s ease-in-out both, moving 3s 3s ease-in-out infinite alternate;
 }
 .planeImg:hover {
+  transform: scale(1.2);
+  transform-origin: 50% 50%;
+  transition: 0.2s;
+}
+@keyframes flyingPlane{
+  0%{opacity: 0; transform: translate(-450px, 100px);}
+  80%{opacity: 1; transform: translate(0px, 0px) scale(1.2);}
+  100%{opacity: 1; transform: translate(0px, 0px) scale(1);}
+}
+@keyframes moving{
+  0%{transform:translateY(0px)}
+  100%{transform:translateY(-10px)}
+}
+.planeBox:hover {
   transform: scale(1.2);
   transform-origin: 50% 50%;
   transition: 0.2s;
@@ -509,5 +522,15 @@ export default {
   background: white;
   border-radius: 5px;
   z-index: 99;
+}
+
+@media screen and (max-width: 768px) {
+  .planeImg {
+    width: 80px !important;
+    top: 80px !important;
+  }
+  .ballon {
+    top: 60px !important;
+  }
 }
 </style>

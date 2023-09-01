@@ -80,7 +80,7 @@ export default {
       this.mLogOutPopShowYn = true
     },
     goPage (link) {
-      if (this.$route.path === '/' && link === 'main') {
+      if ((this.$route.path === '/' || this.$route.path === '/unibuzzy') && link === 'main') {
         this.$emit('hideMenu')
         return false
       }

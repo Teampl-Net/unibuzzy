@@ -210,10 +210,23 @@ const D_CHANNEL = {
     },
     MU_ADD_CHANNEL: (state, payload) => {
       var index
-      console.log(state.chanList)
-      console.log(payload)
       if (!payload || payload.length === 0) return
       for (var i = 0; i < payload.length; i++) {
+        if (payload[i].changeYn) {
+          index = state.chanList.findIndex((item) => item.teamKey === payload[i].teamKey)
+          if (index !== -1) {
+            state.chanList[index].D_CHAN_AUTH.followYn = true
+          } else {
+            if (payload[i].D_CHAN_AUTH) {
+              payload[i].D_CHAN_AUTH.followYn = true
+            } else {
+              payload[i].D_CHAN_AUTH = { settingYn: true }
+              payload[i].D_CHAN_AUTH.followYn = true
+            }
+            state.chanList.push(payload[i])
+          }
+          continue
+        }
         var team = payload[i]
         if (!team) return
         index = state.chanList.findIndex((item) => item.teamKey === team.teamKey)
@@ -230,7 +243,6 @@ const D_CHANNEL = {
           }
         } else { // 확인 더 필요
           D_CHAN_AUTH.settingYn = true
-
           if (team.memberNameMtext && team.memberNameMtext !== '') {
             D_CHAN_AUTH.memberNameMtext = team.memberNameMtext
             if (team.ownerYn) D_CHAN_AUTH.ownerYn = team.ownerYn
@@ -262,38 +274,10 @@ const D_CHANNEL = {
           state.chanList.push(team)
           state.recentChangeTeamKey = payload.payload
         } else {
-          // if (payload[i].D_CHAN_AUTH) {
-          //   D_CHAN_AUTH = payload[i].D_CHAN_AUTH
-          // }
-          // D_CHAN_AUTH.followYn = true
           var chan = state.chanList[index]
-          // var tempEle = chan.ELEMENTS
-          var totalCount = null
-          // console.log(chan)
-          // console.log(payload[i])
-          if (chan.totalContentsCount) {
-            totalCount = chan.totalContentsCount
-          }
-          if (payload[i].totalContentsCount) {
-            totalCount = payload[i].totalContentsCount
-          }
-          // // D_CHAN_AUTH.followYn = true
-
-          // state.chanList[index] = payload[i]
-          // state.chanList[index].D_CHAN_AUTH = D_CHAN_AUTH
-          // state.chanList[index].ELEMENTS = tempEle
-          // var chan = state.chanList[index]
           var tempEle = chan.ELEMENTS
           state.chanList[index] = payload[i]
           state.chanList[index].ELEMENTS = tempEle
-          state.chanList[index].totalContentsCount = totalCount
-
-          console.log(D_CHAN_AUTH)
-          if (payload[i].changeYn) {
-            D_CHAN_AUTH.followYn = true
-          } else if (payload[i].D_CHAN_AUTH) {
-            // D_CHAN_AUTH = payload[i].D_CHAN_AUTH
-          }
           state.chanList[index].D_CHAN_AUTH = D_CHAN_AUTH
         }
       }
