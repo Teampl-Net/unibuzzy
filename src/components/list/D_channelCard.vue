@@ -46,7 +46,6 @@
         style="
             background-color: white;
             position: relative;
-            border: 0.5px solid rgba(0, 0, 0, 0.1);
             width: 60px;
             height: 60px;
             float: left;
@@ -55,6 +54,7 @@
             background-size: cover;
             background-position: center;
         "
+        :class="chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey? 'myChan':'normalChan'"
         :style="
             'background-image: url(' +
             (chanElement.logoDomainPath !== undefind
@@ -64,7 +64,7 @@
         "
         >
         <div
-            v-if="chanElement.ownerYn || chanElement.managerKey"
+            v-if="chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey || chanElement.managerKey"
             class="CWhiteBgColor"
             style="
             position: absolute;
@@ -82,7 +82,7 @@
             <img
             src="../../assets/images/channel/ownerChannel_crown.svg"
             style="width: 90%; float: left"
-            v-if="chanElement.ownerYn"
+            v-if="chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey"
             alt=""
             />
             <img
@@ -152,7 +152,7 @@
                 : chanElement.fCount
             }}
             </p>
-            <div v-if="$route.path === '/chanList'" class="fr">
+            <div v-if="$route.path === '/chanList' && chanElement.creUserKey !== GE_USER.userKey" class="fr">
               <!-- <p v-if="mFollowYn" @click.stop="preventDefault" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p> -->
               <p v-if="(chanElement && chanElement.followerKey && chanElement.followerKey !== null) || (chanElement && chanElement.D_CHAN_AUTH && chanElement.D_CHAN_AUTH.followerKey)" @click.stop="preventDefault" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
               <p v-else @click.stop="saveFollower" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;"> + Follow </p>
@@ -365,5 +365,11 @@ export default {
   border: 2px solid #ccc;
   position: relative;
   flex-shrink: 0;
+}
+.normalChan {
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+.myChan {
+  border: 0.5px solid #6768a7;
 }
 </style>

@@ -32,7 +32,8 @@ export default {
     selectPopYn: {},
     parentSelectList: {},
     pSearchFilterList: {},
-    pFollowerMemList: {}
+    pFollowerMemList: {},
+    pSelectedList: {}
   },
   data () {
     return {
@@ -50,7 +51,7 @@ export default {
   },
   created () {
     console.log('this.propMemberList = 이 채널을 팔로우하는 모든 사람', this.propMemberList)
-    console.log('pFollowerMemList = 이 주소록에 포함된 사람', this.pFollowerMemList)
+    console.log('pFollowerMemList = 이 주소록에 포함된 사람', this.pSelectedList)
     this.mSelectedAlready()
     var this_ = this
     this.$nextTick(() => {

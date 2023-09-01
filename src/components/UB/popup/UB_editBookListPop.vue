@@ -45,7 +45,7 @@
     <transition name="show_left">
       <creAddressBook v-if="mPopType === 'creAddressBook' || mPopType === 'editAddressBook'" :propData="mPropData" @closeXPop="closePop" :pClosePop="backClick" />
     </transition>
-    <onlyMemberSelectPop v-if="mPopType === 'selectMemberPop'" :propData="mPropData" :pClosePop="backClick" />
+    <onlyMemberSelectPop v-if="mPopType === 'selectMemberPop'" :pSelectedList="memberList" :propData="mPropData" :pClosePop="backClick" />
     <bookMemberDetail v-if="mPopType === 'bookMemberDetail'" @addDirectAddMemList="saveMemberDirectly" :propData="mPropData" :pClosePop="backClick" />
     <gPopHeader :headerTitle="mDetailOpenYn? `Manage ${this.$changeText(selectBookDetail.cabinetNameMtext)}`:'Manage Team'" :pClosePop="closeXPop" />
     <gConfirmPop :confirmText='mConfirmText' :confirmType="mConfirmType" v-if="mConfirmPopShowYn" @no='mConfirmPopShowYn=false' @ok='confirmOk' />
