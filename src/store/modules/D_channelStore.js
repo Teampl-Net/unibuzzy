@@ -266,37 +266,35 @@ const D_CHANNEL = {
           //   D_CHAN_AUTH = payload[i].D_CHAN_AUTH
           // }
           // D_CHAN_AUTH.followYn = true
-          // var chan = state.chanList[index]
+          var chan = state.chanList[index]
           // var tempEle = chan.ELEMENTS
-          // var totalCount = null
+          var totalCount = null
           // console.log(chan)
           // console.log(payload[i])
-          // if (chan.totalContentsCount) {
-          //   totalCount = chan.totalContentsCount
-          // }
-          // if (payload[i].totalContentsCount) {
-          //   totalCount = payload[i].totalContentsCount
-          // }
+          if (chan.totalContentsCount) {
+            totalCount = chan.totalContentsCount
+          }
+          if (payload[i].totalContentsCount) {
+            totalCount = payload[i].totalContentsCount
+          }
           // // D_CHAN_AUTH.followYn = true
 
           // state.chanList[index] = payload[i]
-          // state.chanList[index].totalContentsCount = totalCount
           // state.chanList[index].D_CHAN_AUTH = D_CHAN_AUTH
           // state.chanList[index].ELEMENTS = tempEle
-          var chan = state.chanList[index]
+          // var chan = state.chanList[index]
           var tempEle = chan.ELEMENTS
           state.chanList[index] = payload[i]
           state.chanList[index].ELEMENTS = tempEle
+          state.chanList[index].totalContentsCount = totalCount
 
           console.log(D_CHAN_AUTH)
           if (payload[i].changeYn) {
             D_CHAN_AUTH.followYn = true
-          } else {
+          } else if (payload[i].D_CHAN_AUTH) {
             // D_CHAN_AUTH = payload[i].D_CHAN_AUTH
           }
           state.chanList[index].D_CHAN_AUTH = D_CHAN_AUTH
-          console.log(state.chanList[index])
-          console.log(payload[i])
         }
       }
       return true
