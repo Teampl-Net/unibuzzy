@@ -481,7 +481,7 @@ export default {
 
             this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
             if (this.$refs.ChanAlimListPushListCompo) {
-              this.$refs.ChanAlimListPushListCompo.initGetContentsList()
+              this.$refs.ChanAlimListPushListCompo.refreshAll()
             }
             // this.getChanMain()
             if (result.result || result) {
@@ -757,7 +757,7 @@ export default {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
         // this.getChanMain()
         if (this.$refs.ChanAlimListPushListCompo) {
-          this.$refs.ChanAlimListPushListCompo.initGetContentsList()
+          this.$refs.ChanAlimListPushListCompo.refreshAll()
         }
         await this.$addChanList(this.mChanInfo.teamKey)
       }
