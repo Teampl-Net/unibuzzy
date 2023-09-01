@@ -100,12 +100,23 @@ export default {
     },
     async goPage (notiData) {
       if (notiData.targetKind === 'C') {
-        const result = await this.$addContents(notiData.targetKeyKey, 'BOAR')
-        console.log(result)
+        const vuexResultData = await this.$addContents(notiData.targetKey, 'BOAR')
+        console.log(vuexResultData)
+        // eslint-disable-next-line no-new-object
+        var goDetailParam = new Object()
+        goDetailParam.creTeamKey = Number(vuexResultData.creTeamKey)
+        if (goDetailParam.jobkindId === 'ALIM') {
+          goDetailParam.chanName = vuexResultData.nameMtext
+          goDetailParam.nameMtext = vuexResultData.nameMtext
+        } else if (goDetailParam.jobkindId === 'BOAR') {
+          goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
+          goDetailParam.cabinetKey = vuexResultData.cabinetKey
+        }
+        this.$router.push(`/contents/${vuexResultData.contentsKey}/${vuexResultData.creTeamKey}/${vuexResultData.cabinetKey}`)
       } else if (notiData.targetKind === 'B') {
 
       } else if (notiData.targetKind === 'T') {
-
+        this.$router.push(`/chan/${notiData.targetKey}`)
       } else if (notiData.targetKind === 'U') {
 
       }
