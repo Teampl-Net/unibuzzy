@@ -51,6 +51,9 @@ export default {
     }
   },
   methods: {
+    openPop (params) {
+      this.$emit('openPop', params)
+    },
     goChannelMain (param) {
       const pageParam = {}
       if (param.teamKey) {
