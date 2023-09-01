@@ -28,9 +28,9 @@ export default {
       mImgList: [
         '/resource/main/app1.png',
         '/resource/main/app2.png',
-        '/resource/main/app3.png',
-        '/resource/main/app4.png',
-        '/resource/main/app5.png',
+        '/resource/main/app3.jpg',
+        '/resource/main/app4.jpg',
+        '/resource/main/app5.jpg',
         '/resource/main/app6.png'
       ]
     }
