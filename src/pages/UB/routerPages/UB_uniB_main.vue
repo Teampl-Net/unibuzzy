@@ -119,6 +119,7 @@ export default {
       }
     }
     this.$emit('changePageHeader', 'uniBuzzy')
+    this.$emit('clearInfo', { detail: {}, targetType: 'main' })
     this.innerWidth = window.innerWidth
     this.innerHeight = window.innerHeight
   },

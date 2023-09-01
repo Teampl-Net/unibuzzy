@@ -131,6 +131,10 @@ export default {
     }
   },
   created () {
+    if (this.GE_USER.myTeamKey === 836) {
+      this.$router.push({ name: 'uniBmain' })
+      return
+    }
     // localStorage.clear()
     // onMessage('REQ', 'test', null)
     // this.findAllDrawn()
