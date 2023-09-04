@@ -293,11 +293,19 @@ export default {
         },
         updateYn: true
       }
-      await this.$commonAxiosFunction({
+      const result = await this.$commonAxiosFunction({
         url: '/sUniB/tp.saveUser',
         param: param
       }, true)
-      this.GE_USER.myTeamKey = chanEle.teamKey
+      if (result.data) {
+        localStorage.setItem('user', JSON.stringify(result.data.userInfo))
+        await this.$store.dispatch('D_USER/AC_USER', result.data.userInfo)
+        localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
+        // this.$router.push('/')
+        // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)
+      } else {
+        this.$showToastPop(this.$t('COMMON_MSG_FAILED'))
+      }
       // this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
       this.getMainBoard().then(res => {
         this.createMaskingAreaImg()

@@ -43,13 +43,13 @@
 
       <div class="mtop-1 fl w100P"  style="display: flex; padding-left:5%; ">
         <img src="@/assets/images/editChan/icon_letter.svg"  class="img-w20 fl mright-05" alt="">
-        <p class="fl font16 commonDarkGray creChanInput " style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memEmail ? memEmail : '등록된 이메일이 없습니다.'}}</p>
+        <p class="fl font16 commonDarkGray creChanInput " style="line-height: 30px; text-align: left; width: calc(100% - 20px);" v-if="readOnlyYn" >{{memEmail ? memEmail : $t('COMMON_MSG_NO_EMAIL')}}</p>
         <input v-else type="text" placeholder="이메일을 입력하세요" class="creChanInput fr"  v-model="memEmail" >
       </div>
 
       <div class="mtop-1 fl w100P"  style="display: flex; padding-left:5%;">
         <img src="@/assets/images/editChan/icon_phoneSolid.svg" class="img-w20 fl mright-05" alt="">
-        <p class="fl font16 commonDarkGray creChanInput"  style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memPhone ? memPhone : '등록된 번호가 없습니다.'}}</p>
+        <p class="fl font16 commonDarkGray creChanInput"  style="line-height: 30px; text-align: left; width: calc(100% - 20px);" v-if="readOnlyYn" >{{memPhone ? memPhone : $t('COMMON_MSG_NO_PHONE')}}</p>
         <input v-else type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
       </div>
 
@@ -58,9 +58,9 @@
         <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="funcIconWrap fl" style="display: flex; flex-direction: row; align-items: center; justify-content: center">
           <div style="display: flex; flex-direction: column; align-items: center;">
             <div class="nativeServiceBtnWrap">
-              <img v-if="value.type === 'MAIL'" :class="{noData: memEamil === '등록된 이메일이 없습니다.'}" src="@/assets/images/editChan/icon_letter.svg"  class="img-w20" alt="">
-              <img v-if="value.type === 'PHON'" :class="{noData: memPhone === '등록된 번호가 없습니다.'}" src="@/assets/images/editChan/icon_phoneSolid.svg" class="img-w20" alt="">
-              <img v-if="value.type === 'TEXT'" :class="{noData: memPhone === '등록된 번호가 없습니다.'}" src="@/assets/images/editChan/icon_textSolid.svg"  class="img-w20" alt="">
+              <img v-if="value.type === 'MAIL'" :class="{noData: memEamil === $t('COMMON_MSG_NO_EMAIL')}" src="@/assets/images/editChan/icon_letter.svg"  class="img-w20" alt="">
+              <img v-if="value.type === 'PHON'" :class="{noData: memPhone === $t('COMMON_MSG_NO_PHONE')}" src="@/assets/images/editChan/icon_phoneSolid.svg" class="img-w20" alt="">
+              <img v-if="value.type === 'TEXT'" :class="{noData: memPhone === $t('COMMON_MSG_NO_PHONE')}" src="@/assets/images/editChan/icon_textSolid.svg"  class="img-w20" alt="">
             </div>
             <p class="font14 fl textLeft commonBlack" style="line-height: 30px;">{{value.funcTitle}}</p>
           </div>
@@ -173,12 +173,12 @@ export default {
             }
             if (this.mUserInfo.userEmail)
                 this.memEmail = this.mUserInfo.userEmail
-            else{ this.memEmail= '등록된 이메일이 없습니다.'}
+            else{ this.memEmail= this.$t('COMMON_MSG_NO_EMAIL')}
             if (this.mUserInfo.userDispMtext)
                 this.memName = this.$changeText(this.mUserInfo.userDispMtext)
             if (this.mUserInfo.phoneEnc)
                 this.memPhone = this.mUserInfo.phoneEnc
-            else{ this.memPhone= '등록된 번호가 없습니다.' }
+            else{ this.memPhone=  this.$t('COMMON_MSG_NO_PHONE') }
             this.setUserGrade(this.mUserInfo)
             /*
             // debugger
@@ -253,7 +253,7 @@ export default {
     },
 		getUserInfoEmail() {
 			if (this.memEmail) {
-				if (this.memEmail === '등록된 이메일이 없습니다.') {
+				if (this.memEmail === this.$t('COMMON_MSG_NO_EMAIL')) {
 						return false
 				} else {
 						return true
@@ -264,19 +264,19 @@ export default {
             if (type === 'ALIM') {
                 this.sendPushAlim()
 						} else if (type === 'MAIL') {
-							if (this.memEmail === '등록된 이메일이 없습니다.') {
+							if (this.memEmail === this.$t('COMMON_MSG_NO_EMAIL')) {
 								return
 							} else {
 								this.sendMail(this.memEmail)
 							}
 						} else if (type === 'PHON') {
-							if (this.memPhone === '등록된 번호가 없습니다.') {
+							if (this.memPhone === this.$t('COMMON_MSG_NO_PHONE')) {
 								return false
 							} else {
 								this.callPhone(this.memPhone)
 							}
 						} else if (type === 'TEXT') {
-							if (this.memPhone === '등록된 번호가 없습니다.') {
+							if (this.memPhone === this.$t('COMMON_MSG_NO_PHONE')) {
 								return
 							} else {
 								this.sendSms(this.memPhone)
@@ -547,8 +547,9 @@ margin-bottom: 2rem;
     /* width:calc(100% - 130px); */
     min-width: 140px;
     border : none;
+    word-break: break-all;
     /* border-bottom: 1px solid #ccc; */
-    white-space: nowrap;
+    /* white-space: nowrap; */
     /* overflow: scroll hidden; */
 }
 

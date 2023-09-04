@@ -153,6 +153,7 @@
     "COMMON_MSG_NOANONY": "Unable to view user information with anonymous posts.",
     "COMM_CONT_NO_FOUND": "No contents found.",
 
+    "COMMON_MSG_NO_EMAIL": "There is no registered phone E-mail.",
     "COMMON_MSG_NO_PHONE": "There is no registered phone number.",
 
     "COMMON_MSG_BLOCK": "Are you sure you want to block this user?",

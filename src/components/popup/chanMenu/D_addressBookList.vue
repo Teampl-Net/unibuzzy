@@ -1,3 +1,13 @@
+<i18n>
+{
+  "ko": {
+    "TEAM_MSG_NO_TEAM": "생성된 그룹이 없습니다."
+  },
+  "en": {
+    "TEAM_MSG_NO_TEAM": "There is no team"
+  }
+}
+</i18n>
 <template>
 <div style="width: 100%; float: left;">
   <div v-for="(data, index) in propAddressBookList" :id="'book'+ index" :key='index' class="cabinetListCard cursorP fl mleft-05" @click="clickList(data)" >
@@ -6,7 +16,7 @@
       {{this.$changeText(data.cabinetNameMtext)}}
     </span>
   </div>
-  <p v-if="propAddressBookList.length === 0" class="fl w100P textLeft font14 mtop-07 mbottom-07">생성된 그룹이 없습니다.</p>
+  <p v-if="propAddressBookList.length === 0" class="fl w100P textLeft font14 mtop-07 mbottom-07">{{ $t('TEAM_MSG_NO_TEAM') }}</p>
 </div>
 </template>
 

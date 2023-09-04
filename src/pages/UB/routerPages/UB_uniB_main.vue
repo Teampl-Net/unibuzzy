@@ -1,6 +1,7 @@
 <template>
   <div ref="uniBMainRef" class="w100P h100P" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'" style="display: flex; align-items: center; overflow: hidden; z-index: -1;">
     <div v-if="mGuidePopShowYn" @click="closeGuidePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+    <div v-if="mSelectSchoolPopShowYn" @click="closeSelectSchoolPop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
     </transition>
@@ -118,7 +119,7 @@ export default {
         localStorage.removeItem('deepLinkQueue')
       }
     }
-    this.$emit('changePageHeader', 'uniBuzzy')
+    this.$emit('changePageHeader', 'uniBuzzy Center')
     this.$emit('clearInfo', { detail: {}, targetType: 'main' })
     this.innerWidth = window.innerWidth
     this.innerHeight = window.innerHeight
@@ -149,7 +150,6 @@ export default {
       this.mSelectSchoolPopShowYn = false
     },
     async goTown (chanEle) {
-      console.log('chanEle', chanEle)
       var param = {
         user: {
           userKey: this.GE_USER.userKey,
@@ -157,12 +157,20 @@ export default {
         },
         updateYn: true
       }
-      await this.$commonAxiosFunction({
+      const result = await this.$commonAxiosFunction({
         url: '/sUniB/tp.saveUser',
         param: param
       })
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
-      this.GE_USER.myTeamKey = chanEle.teamKey
+      if (result.data) {
+        localStorage.setItem('user', JSON.stringify(result.data.userInfo))
+        await this.$store.dispatch('D_USER/AC_USER', result.data.userInfo)
+        localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
+        // this.$router.push('/')
+        // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)
+      } else {
+        this.$showToastPop(this.$t('COMMON_MSG_FAILED'))
+      }
       this.$router.push('/')
       // window.location.reload()
       // this.$router.go(0)

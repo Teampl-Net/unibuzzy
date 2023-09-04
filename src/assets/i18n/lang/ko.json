@@ -153,6 +153,7 @@
     "COMMON_MSG_NOANONY": "익명의 게시글로 유저 정보를 볼 수 없습니다.",
     "COMM_CONT_NO_FOUND": "컨텐츠가 없습니다.",
 
+    "COMMON_MSG_NO_EMAIL": "등록된 이메일이 없습니다.",
     "COMMON_MSG_NO_PHONE": "등록된 전화번호가 없습니다",
 
     "COMMON_MSG_BLOCK": "해당 유저를 차단하시겠습니까?",
