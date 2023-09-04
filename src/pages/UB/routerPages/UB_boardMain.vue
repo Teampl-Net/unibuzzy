@@ -217,7 +217,10 @@ export default {
       this.getCabinetDetail().then(() => {
         this.$addChanList(this.mCreTeamKey)
         this_.getContentsList().then(response => {
-          if (!response.content) return
+          if (!response.content) {
+            this_.readyFunction()
+            return
+          }
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
           var newArr = [
             ...this_.BOARD_CONT_LIST,
@@ -253,10 +256,11 @@ export default {
       if (this.mCabContentsList.length === 0) {
         this.mGuidePopShowYn = true
       }
+      this.readyFunction()
     }
   },
   mounted () {
-    this.readyFunction()
+    // this.readyFunction()
     this.$nextTick(() => {
       if (document.getElementById('boardItemBox')) {
         if (this.CAB_DETAIL && this.CAB_DETAIL.topviewList) {
@@ -1164,6 +1168,9 @@ export default {
         param.cabinetKey = this.$route.params.targetKey
       } else {
         param.cabinetKey = this.mPropParams.targetKey
+      }
+      if (!param.cabinetKey) {
+        param.cabinetKey = this.$route.params.targetKey
       }
       if (this.offsetInt === 0 && this.mCabContentsList && this.mCabContentsList.length > 0) this.offsetInt += 1
       param.offsetInt = this.offsetInt

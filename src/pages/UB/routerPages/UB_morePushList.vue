@@ -51,6 +51,9 @@ export default {
     }
   },
   methods: {
+    openImgPop (params) {
+      this.$emit('openImgPop', params)
+    },
     openPop (params) {
       this.$emit('openPop', params)
     },

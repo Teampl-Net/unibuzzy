@@ -613,10 +613,14 @@ export default {
     changePageHeader (title) {
       this.mRouterHeaderInfo = title
     },
-    goInquiries () {
+    goInquiries (type) {
       this.showCloudLoading(true, true)
       this.enterCloudLoading(true)
-      this.mRouterHeaderInfo = 'Inquiries'
+      if (type === 'inquiries') {
+        this.mRouterHeaderInfo = 'Inquiries'
+      } else if (type === 'lab') {
+        this.mRouterHeaderInfo = 'Lab'
+      }
       this.mTargetType = 'boardMain'
     },
     hideMenu () {

@@ -142,8 +142,8 @@ export default {
       window.open('https://www.instagram.com/unibuzzy/')
     },
     goInquiries () {
-      this.$router.push('/board/978/13901')
-      this.$emit('goInquiries')
+      this.$router.push('/board/988/13909')
+      this.$emit('goInquiries', 'inquiries')
     },
     closeSelectSchoolPop () {
       this.mSelectSchoolPopShowYn = false

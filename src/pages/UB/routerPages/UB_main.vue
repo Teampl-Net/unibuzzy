@@ -61,6 +61,10 @@
             </template>
         </template>
       </template>
+      <div @click="goLab" class="laboratory cursorP" style="position: absolute; bottom: 80px; left: 3%; width: 15%;">
+        <img class="w100P" src="/resource/main/ub_lab.png" alt="">
+        <span class="fontBold" style="background-color: rgba(245, 245, 220, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">Laboratory</span>
+      </div>
     </div>
     <!-- <div class="PostsBallon">view Town's Posts</div>
     <div @click="openBoardPop" class="cursorP testBox" style="width: 70px; position: fixed; bottom: 100px; right: 15px; ">
@@ -182,6 +186,10 @@ export default {
     // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
   },
   methods: {
+    goLab () {
+      this.$router.push('/board/824/13905')
+      this.$emit('goInquiries', 'lab')
+    },
     openImgPop (param) {
       this.$emit('openImgPop', param)
     },
@@ -991,6 +999,29 @@ export default {
   transform: scale(1.2);
   transform-origin: 50% 50%;
   transition: 0.2s;
+}
+.laboratory > img {
+  animation: lab 3s 3s ease-in-out infinite alternate;
+}
+.laboratory > img:hover {
+  filter: drop-shadow(0 0 10px #f6ff7b);
+}
+@keyframes lab {
+  0%{
+    transform: scale(1.0);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100%{
+    transform: scale(1.0);
+  }
+}
+@media screen and (max-width: 500px){
+  .laboratory {
+    width: 25% !important;
+    bottom: 70px !important;
+  }
 }
 /* .st0 .slick-next:hover::after {
   content : url('../../..assets/images/main/UBTownFeed.svg#hover');

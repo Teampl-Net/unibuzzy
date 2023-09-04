@@ -1,3 +1,13 @@
+<i18n>
+{
+  "ko": {
+    "CHAN_MSG_UNFOLLOW": "구독 취소하였습니다."
+  },
+  "en": {
+    "CHAN_MSG_UNFOLLOW": "You have canceled your subscription."
+  }
+}
+</i18n>
 <template>
     <div v-if="CHANNEL_DETAIL && mChanInfo" class="scrollOn" ref="chanMainRef" style="width: 100%;" :style="`background-position: top; background-size: cover; background-repeat: no-repeat;  background-image: url(${CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext});height: calc(100% + ${Number($STATUS_HEIGHT)}px);  padding-top: ${Number($STATUS_HEIGHT)}px;`">
         <div v-if="!mChanCardShowYn" style="width: 100%; color: #FFFFFF; display: flex; position: absolute; align-items: center; justify-content: center; background-size: cover; background-position: top;background-repeat: no-repeat;" class="font20 fl fontBold" :style="`top: ${Number($STATUS_HEIGHT)}px; height:${ 50}px `" >
@@ -479,16 +489,17 @@ export default {
               this.CHANNEL_DETAIL
             ])
 
-            this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
-            if (this.$refs.ChanAlimListPushListCompo) {
-              this.$refs.ChanAlimListPushListCompo.initGetContentsList()
-            }
+            this.$emit('showToastPop', this.$t('CHAN_MSG_UNFOLLOW'))
+            // if (this.$refs.ChanAlimListPushListCompo) {
+            //   this.$refs.ChanAlimListPushListCompo.initGetContentsList()
+            // }
             // this.getChanMain()
             if (result.result || result) {
-              this.$emit('pageReload')
+              this.getChanMain()
+              // this.$emit('pageReload')
             } else {
               this.ChanFollowYn = true
-              this.mErrorPopBodyStr = '실패했습니다. 관리자에게 문의해주세요'
+              this.mErrorPopBodyStr = this.$t('COMMON_MSG_FAILED')
               this.mErrorPopBtnType = 'timeover'
               this.mErrorPopShowYn = true
             }

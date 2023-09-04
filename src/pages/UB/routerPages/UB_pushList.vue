@@ -163,7 +163,6 @@ export default {
     }
     this.findPaddingTopPush()
     this.settingScrollUpEventListener()
-    this.hideSkeleton()
   },
   unmounted () {
     document.removeEventListener('message', e => this.recvNoti(e))
@@ -631,7 +630,10 @@ export default {
 
       // var this_ = this
       var result = await this.getPushContentsList(null, null, false)
-      if (!result || result === '' || !result.content) return
+      if (!result || result === '' || !result.content) {
+        this.hideSkeleton()
+        return
+      }
       await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
       if (this.viewMainTab === 'P') {
         if (!this.alimContentsList) this.alimContentsList = []
@@ -668,17 +670,20 @@ export default {
       if (result.content.length > 0) {
         this.canLoadYn = true
       }
+      this.hideSkeleton()
       // this.updateStoreData(uniqueArr)
     },
     async readyFunction () {
       this.scrolledYn = false
-      console.log(this.initData)
       // this.$showAxiosLoading(true)
+      console.log('뭐지?')
+      console.log(this.initData)
       if (this.initData) {
         this.allContentsList = this.initData.content
         this.endListYn = false
         this.offsetInt += 1
         this.canLoadYn = true
+        this.hideSkeleton()
       } else {
         if (this.targetContents !== undefined && this.targetContents !== null && this.targetContents !== '') {
           if (this.targetContents.jobkindId === 'BOAR') {
