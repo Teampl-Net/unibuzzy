@@ -837,6 +837,14 @@ export default {
         this.mAppUpdatePopShwoYn = true
       }
     }
+    if (window.ReactNativeWebView) {
+      window.ReactNativeWebView.postMessage(
+        JSON.stringify({
+          type: 'REQ',
+          callFunc: 'setOk'
+        })
+      )
+    }
   },
   computed: {
     BACK_BTN_SHOWYN () {

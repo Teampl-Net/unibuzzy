@@ -140,7 +140,7 @@ export default {
       return
     }
     // localStorage.clear()
-    // onMessage('REQ', 'test', null)
+
     // this.findAllDrawn()
     this.resetHistory()
     this.setNativeHeight()

@@ -168,7 +168,6 @@ const isJsonString = (str) => {
           store.commit('D_HISTORY/updatePage', current + 1)
         } else if (message.type === 'pushmsg') {
           console.log(message)
-          // alert(JSON.stringify(message.data))
           var isMobile = /Mobi/i.test(window.navigator.userAgent)
           var notiDetailObj = null
           if (isJsonString(message.data)) {
