@@ -225,7 +225,6 @@ export default {
         this.clickedBd.clickedYn = false
       }
       this.mChanInfoPopShowYn = false
-      this.mBgNotClickYn = false
       return false
     },
     closeInfoBox () {
@@ -346,8 +345,6 @@ export default {
       // this.$router.go(0)
     },
     async openChanInfoPop (area, teamKey) {
-      if (this.mBgNotClickYn) return
-      this.mBgNotClickYn = true
       const param = {
         bdArea: {
           bdAreaKey: area.bdAreaKey
@@ -800,7 +797,9 @@ export default {
               if (bd.targetKind === 'C') {
                 this.openAreaInfoPop(this.mBdAreaList[area.key])
               } else {
-                this.openChanInfoPop(this.mBdAreaList[area.key], bd.teamKey)
+                if (!this.mInfoBoxShowYn) {
+                  this.openChanInfoPop(this.mBdAreaList[area.key], bd.teamKey)
+                }
               }
               return
             }
@@ -837,7 +836,9 @@ export default {
           this.clickedRank = area.buildingList.length + 1
           area.clickedYn = true
           area.maskedImageStyle = { filter: 'drop-shadow(0 0 5px yellow) drop-shadow(0 0 40px white)' }
-          this.openAreaInfoPop(this.mBdAreaList[area.key])
+          if (!this.mChanInfoPopShowYn) {
+            this.openAreaInfoPop(this.mBdAreaList[area.key])
+          }
           break
         }
       }

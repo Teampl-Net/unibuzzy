@@ -1103,17 +1103,19 @@ export default {
       console.log('this.ScrollPosition')
       console.log(this.scrollPosition)
       console.log(this.box.scrollTop)
-      // if (this.box.scrollTop > this.scrollPosition) {
-      //   this.scrollDirection = 'down'
-      // } else if (this.box.scrollTop < this.scrollPosition) {
-      //   this.scrollDirection = 'up'
-      // }
+      if (this.box.scrollTop > this.scrollPosition) {
+        this.scrollDirection = 'down'
+      } else if (this.box.scrollTop < this.scrollPosition) {
+        this.scrollDirection = 'up'
+      }
 
       this.scrollPosition = this.box.scrollTop
       let offset = 200
-      if (this.CAB_DETAIL && this.CAB_DETAIL.topviewList) {
+      if (this.CAB_DETAIL && this.CAB_DETAIL.topviewList && this.CAB_DETAIL.topviewList.content && this.CAB_DETAIL.topviewList.content.length > 0) {
         offset = 370
       }
+      console.log('여기ㅕㅇㅁ')
+      console.log(this.CAB_DETAIL)
 
       if (this.scrollDirection === 'down' && this.scrollPosition > offset) {
         blockBox.style.height = '50px'
