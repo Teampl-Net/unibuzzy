@@ -53,7 +53,6 @@ export default {
         changeVal[val[0]] = val[1]
       }
       this.mDispMessage = this.replacePattern(this.mNotiEle.dispText, changeVal)
-      console.log(this.mDispMessage)
     }
     // if (this.mNotiEle.userDo) {
     //   var notiDate = JSON.parse(this.mNotiEle.creDate)
