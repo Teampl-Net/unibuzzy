@@ -14,7 +14,7 @@
           <div class="w100P" style="display: flex; align-items: center;">
             <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (cont.domainPath? cont.domainPath + cont.logoPathMtext : cont.logoPathMtext) + ');'" style="margin-right: 10px; width: 30px; height: 30px; background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
             <div style="width: calc(100% - 100px);">
-              <p class="w100P fontBold font16 textOverDot textLeft">{{ cont.title }}</p>
+              <p class="w100P fontBold font16 textOverdot textLeft">{{ cont.title }}</p>
               <div class="font12" style="display: flex; align-items: center;">
                 <p class="textOverdot" style="max-width: calc(100% - 75px);">{{ $changeText(cont.creUserName) }}</p>
                 <p class="textLeft" style="width: 65px; margin-left: 10px;">{{ $changeSimpleDateFormat(cont.creDate) }}</p>

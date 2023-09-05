@@ -3,7 +3,7 @@
     <div @click="goMain" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
       <!-- <img v-if="mBlackYn === false && targetType !== 'boardMain'" src="../../../assets/images/common/icon_back_white.png" class=" commonPopBackBtn" > -->
       <img v-if="targetType !== 'boardMain'" :src="dynamicSrc()" class=" commonPopBackBtn" >
-      <img v-else-if="pNoAuthYn === true " src="../../../assets/images/footer/icon_home_fillin.svg">
+      <img class=" commonPopBackBtn" v-else src="@/assets/images/common/icon_back.png">
       <!-- <img v-else-if="mBlackYn === true" src="../../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" > -->
     </div>
     <span class="popHeaderTitleSpan font20" :style="bgblack === true ? 'color:white;':'' ">

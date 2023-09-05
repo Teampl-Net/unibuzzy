@@ -31,9 +31,6 @@
     <pinPostPop v-if="mPinPostPopShowYn" :pUpdateTopview="updateTopview" :pTVList="this.CAB_DETAIL.topviewList? this.CAB_DETAIL.topviewList.content:[]" :pChanDetail="CHANNEL_DETAIL" :pClosePop="closePinPostPop" :pBoardDetail="CAB_DETAIL" />
     <div id="boardWrap" v-if="CAB_DETAIL" :style="CAB_DETAIL.picBgPath? 'background: ' + CAB_DETAIL.picBgPath + ';' + 'padding-top: ' + this.$STATUS_HEIGHT + 'px' : 'background: #ece6cc;' + 'padding-top: ' + this.$STATUS_HEIGHT + 'px'" style="overflow: auto;" ref="boardListWrap" class="boardListWrap">
       <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
-      <div class="cursorP" style="z-index: 10; position: absolute; left: 10px; top: 10px; width: 0.8rem;">
-        <img class="w100P" @click="goMain" src="@/assets/images/common/icon_back.png" alt="">
-      </div>
       <p class="font20 fontBold textOverdot" :style="CAB_DETAIL.cabinetNameMtext.length > 15 ? 'font-size:18px !important;' :'' " style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); max-width: calc(100% - 120px);">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</p>
       <div id="summaryHeader" class="summaryHeader">
         <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :style="propParams.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="@/assets/images/channel/icon_official.svg" v-if="propParams.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propParams.nameMtext)}}</p> -->
@@ -67,7 +64,7 @@
           <span class="font20 fontBold">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</span>
           <span class="font13 mbottom-05 fl">{{ this.$changeText(CHANNEL_DETAIL.nameMtext) }}</span>
         </div>
-        <div  v-if="this.CAB_DETAIL && this.CAB_DETAIL.topviewList && this.CAB_DETAIL.topviewList.content && this.CAB_DETAIL.topviewList.content.length > 0" class="w100P" style="display: flex; align-items: center; flex-direction: column;">
+        <div id="topViewWrap" v-if="this.CAB_DETAIL && this.CAB_DETAIL.topviewList && this.CAB_DETAIL.topviewList.content && this.CAB_DETAIL.topviewList.content.length > 0" class="w100P" style="display: flex; align-items: center; flex-direction: column;">
           <div class="textLeft fontBold" style="width: 90%; margin-bottom: 5px;">
             <img src="@/assets/images/board/icon_paperPin.svg" alt="" style="width: 20px;">
             Pin
@@ -78,7 +75,7 @@
         </div>
       </div>
 
-      <div class="boardItemBox" id="boardItemBox" style="">
+      <div class="boardItemBox" id="boardItemBox" style="padding-bottom: 20px;">
         <div style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: 100%;" id="boardListWrap" ref="boardListWrapCompo">
           <transition name="showModal">
             <findContentsList :pOnlyMineYn="mOnlyMineYn" :tpGroupCode="(CAB_DETAIL.workStatYn === 1 || CAB_DETAIL.workStatYn === true) ? 'C_STAT' : null" :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
@@ -108,7 +105,7 @@
       </div>
       <div :class="(this.scrolledYn || !this.reloadShowYn) ? 'reload--unpinned': 'reload--pinned'"
       v-on="handleScroll"
-      style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 2rem; right: calc(50% - 25px);"
+      style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 4rem; right: calc(50% - 25px);"
       @click="refreshAll" >
         <img src="@/assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;" />
       </div>
@@ -214,6 +211,8 @@ export default {
     this.mPropParams = this.propParams
     // this.$emit('clearInfo', { detail: this.mPropParams, targetType: 'boardMain' })
     this.$emit('openLoading')
+    console.log('여여영')
+    console.log(this.mPropParams)
     if (!this.mPropParams || this.mPropParams.targetType !== 'boardMain') {
       // this.$router.go(-1)
       var this_ = this
@@ -345,23 +344,6 @@ export default {
   },
 
   methods: {
-    hasHistory () {
-      return window.history.length > 1
-    },
-    async goMain () {
-      var history = this.$store.getters['D_HISTORY/hStack']
-      var removePage = history[history.length - 1]
-      history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
-      if (this.hasHistory()) {
-        this.$router.go(-1)
-      } else {
-        this.$router.push('/')
-      }
-      // this.$router.go(-1)
-      // this.$router.replace({ path: '/' })
-    },
     consoleShow () {
       console.log('clicked')
     },
@@ -957,7 +939,9 @@ export default {
             this.scrollDirection = 'down'
             this.scrolledYn = true
           } else if (this.listBox.scrollTop <= this.scrollPosition) {
+            console.log('뭐지')
             this.scrollDirection = 'up'
+            console.log(this.scrollDirection)
             this.scrolledYn = false
           }
         }
@@ -1116,11 +1100,14 @@ export default {
     },
     updateScroll () {
       var blockBox = document.getElementById('summaryHeader')
-      if (this.box.scrollTop > this.scrollPosition) {
-        this.scrollDirection = 'down'
-      } else if (this.box.scrollTop < this.scrollPosition) {
-        this.scrollDirection = 'up'
-      }
+      console.log('this.ScrollPosition')
+      console.log(this.scrollPosition)
+      console.log(this.box.scrollTop)
+      // if (this.box.scrollTop > this.scrollPosition) {
+      //   this.scrollDirection = 'down'
+      // } else if (this.box.scrollTop < this.scrollPosition) {
+      //   this.scrollDirection = 'up'
+      // }
 
       this.scrollPosition = this.box.scrollTop
       let offset = 200
@@ -1136,6 +1123,9 @@ export default {
         }
 
         document.getElementById('boardInfoSummary').classList.add('displayNIm')
+        if (document.getElementById('topViewWrap')) {
+          document.getElementById('topViewWrap').classList.add('displayNIm')
+        }
         // document.getElementById('boardInfoSummary2').classList.add('displayBIm')
         document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
         this.reloadShowYn = true
@@ -1143,6 +1133,9 @@ export default {
         blockBox.style.height = `${offset + 50}px`
         this.box.style.height = ''
         document.getElementById('boardInfoSummary').classList.remove('displayNIm')
+        if (document.getElementById('topViewWrap')) {
+          document.getElementById('topViewWrap').classList.remove('displayNIm')
+        }
         // document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
         document.getElementById('boardItemBox').classList.remove('boardItemBoxHeight')
         this.reloadShowYn = false
@@ -1184,7 +1177,7 @@ export default {
         param.creTeamKey = this.chanDetailKey
       } */
       this.$emit('closeLoading')
-      if (!this.mPropParams) {
+      if (!this.mPropParams || this.mPropParams.targetType !== 'boardMain') {
         param.cabinetKey = this.$route.params.targetKey
       } else {
         param.cabinetKey = this.mPropParams.targetKey
