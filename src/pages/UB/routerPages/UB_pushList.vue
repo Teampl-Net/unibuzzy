@@ -28,42 +28,26 @@
 <div class="w100P h100P">
     <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: fixed;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
     <unknownLoginPop :pClosePop="closeUnknownLoginPop" style="position: fixed;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
-    <statCodeComponent @closeXPop="this.workStateCodePopShowYn = false" :currentWorker="{workUserKey: workStateCodePopProps.workUserKey, workUserName: workStateCodePopProps.workUserName}" :teamKey="workStateCodePopProps.creTeamKey" :alimDetail="workStateCodePopProps" :contentsKey="workStateCodePopProps.contentsKey" v-if="workStateCodePopShowYn" :codeList="workStateCodePopProps.workStatCodeList" :currentCodeKey="workStateCodePopProps.workStatCodeKey" class="fr "></statCodeComponent>
+    <statCodeComponent @closeXPop="workStateCodePopShowYn = false" :currentWorker="{workUserKey: workStateCodePopProps.workUserKey, workUserName: workStateCodePopProps.workUserName}" :teamKey="workStateCodePopProps.creTeamKey" :alimDetail="workStateCodePopProps" :contentsKey="workStateCodePopProps.contentsKey" v-if="workStateCodePopShowYn" :codeList="workStateCodePopProps.workStatCodeList" :currentCodeKey="workStateCodePopProps.workStatCodeKey" class="fr "></statCodeComponent>
     <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:999999"><div class="spinner"></div></div>
 
     <div style="width: 100%; height: calc(100vh - 50px); padding-top: 0; position: relative; overflow: hidden scroll; float: left; z-index: 2;" >
-      <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
-      <div id="pageHeader" ref="pushListHeader" style="min-height:50px; display:flex; align-items:start; " class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
+      <commonConfirmPop v-if="failPopYn" @no="failPopYn=false" confirmType="timeout" :confirmText="errorText" />
+      <div id="pageHeader" ref="pushListHeader" style="min-height:50px; display:flex; align-items:start; " class="pushListHeader"  :class="scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" :subTabList="mBoardFilterList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab="changeTab" @changeBoardTab="changeBoard" style="width:calc(100% - 30px); padding-top: 0; margin-top: 0;" />
         <div v-on="handleScroll" style="background-color:#fff; height:50px; display:flex; align-items:center; padding-right:10px; width: 30px; display: flex; align-items: center; justify-content: center; " @click="refreshAll">
             <img src="../../../assets/images/common/commonReload.png" class="cursorP" width="30" height="30" @click="refreshAll"/>
         </div>
       </div>
       <transition name="showModal">
-        <findContentsList :tpGroupCode="this.viewMainTab === 'B' || this.viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainiTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" :pClosePop="closeSearchPop" :teamKey='this.pChannelDetail.teamKey'/>
+        <findContentsList :tpGroupCode="viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainiTab === 'F'? 'fileBox':chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" :pClosePop="closeSearchPop" :teamKey='this.pChannelDetail.teamKey'/>
       </transition>
 
         <div id="pushListWrap" class="scrollHidden " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'" style="position: relative; float: left; width: 100%; height: calc(100%); padding-bottom: 60px;  -webkit-overflow-scrolling: touch">
           <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
           <div class="w100P fl commonListContentBox" style="height:1px;" />
-          <template  v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index">
-            <gContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'B'" @fileDownload="fileDownload"/>
-          </template>
-          <template v-if="!GE_DISP_BOAR_LIST && viewMainTab === 'B'">
-            <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
-          </template>
-          <gEmpty :tabName="currentTabName" contentName="게시판" v-else-if="GE_DISP_BOAR_LIST && this.viewMainTab === 'B' && GE_DISP_BOAR_LIST.length === 0 && this.emptyYn" :key="mEmptyReloadKey" class="mtop-2"/>
-
-          <template  v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index">
-            <gContentsBox @openImgPop="openImgPop" :here="here" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'P'" @fileDownload="fileDownload"/>
-          </template>
-          <template v-if="!GE_DISP_ALIM_LIST && viewMainTab === 'P'">
-            <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
-          </template>
-          <gEmpty :tabName="currentTabName" contentName="알림" v-else-if="GE_DISP_ALIM_LIST && this.viewMainTab === 'P' && GE_DISP_ALIM_LIST.length === 0 && this.emptyYn" :key="mEmptyReloadKey" class="mtop-2"/>
-
-          <template v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index">
-            <gContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" @contDelete="refreshAll" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
+          <template v-for="(cont, index) in GE_DISP_ALL_LIST" :key="index">
+            <gUBContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" @contDelete="refreshAll" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'A'" @fileDownload="fileDownload"/>
             <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
 
@@ -71,16 +55,16 @@
             <template v-if="skeletonShow">
               <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
             </template>
-            <gEmpty v-else-if="GE_DISP_ALL_LIST && this.viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0 && !skeletonShow" :tabName="currentTabName" contentName="전체" :key="mEmptyReloadKey" class="mtop-2"/>
+            <gEmpty v-else-if="GE_DISP_ALL_LIST && viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0 && !skeletonShow" :tabName="currentTabName" contentName="전체" :key="mEmptyReloadKey" class="mtop-2"/>
           </template>
 
-          <template  v-for="(cont, index) in this.GE_FILE_LIST" :key="index">
+          <template  v-for="(cont, index) in GE_FILE_LIST" :key="index">
               <gFileBox @openImgPop="openImgPop" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="this.viewMainTab === 'F'"/>
-              <myObserver v-if="index === this.GE_FILE_LIST.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
+              <myObserver v-if="index === GE_FILE_LIST.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
-          <gEmpty :tabName="currentTabName" contentName="파일함" v-if="this.viewMainTab === 'F' && GE_FILE_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
+          <gEmpty :tabName="currentTabName" contentName="파일함" v-if="viewMainTab === 'F' && GE_FILE_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
         </div>
-        <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" />
+        <gSelectBoardPop :type="selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" />
         <div v-if="memoShowYn === true" class="pushListMemoBoxBackground" @click="memoPopNo()"></div>
         <transition name="showMemoPop">
           <gMemoPop ref="gMemoRef" :resetMemoYn="resetMemoYn" transition="showMemoPop" :style="getWindowSizeBottom" v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="z-index:999999; height: fit-content;" :writeMemoTempData='tempMemoData'/>
@@ -116,7 +100,6 @@ export default {
     readySearchList: {},
     pushListAndDetailYn: {},
     propParams: {},
-    targetContents: {},
     chanAlimYn: {},
     pChannelDetail: {},
     notiScrollTarget: {},
@@ -125,6 +108,11 @@ export default {
     },
     pBoardList: Array
     // reloadKey: 0
+  },
+  beforeUnmount () {
+    this.$store.dispatch('D_PRE_DATA/AC_PRE_DETAIL_DATA', this.GE_CHANNEL_DETAIL)
+    this.$store.dispatch('D_PRE_DATA/AC_PRE_LIST_DATA', this.GE_DISP_ALL_LIST)
+    this.$store.dispatch('D_PRE_DATA/AC_PRE_SCROLL_POSITION', { position: this.box.scrollTop, targetKind: 'chanMain', targetKey: this.GE_CHANNEL_DETAIL.teamKey })
   },
   created () {
     this.loadingYn = true
@@ -169,6 +157,24 @@ export default {
     window.removeEventListener('message', e => this.recvNoti(e))
   },
   watch: {
+    /* GE_PRE_DATA: {
+      immediate: true,
+      handler (val) {
+        if (!val) return
+        if (val.scrollPosition && val.scrollPosition.position && val.scrollPosition.targetKind && val.scrollPosition.targetKey && val.listData && val.listData.length > 0) {
+          if (val.scrollPosition.targetKind === 'chanMain' && val.scrollPosition.targetKey === this.propParams.teamKey) {
+            this.allContentsList = val.listData
+            this.scrollPosition = val.scrollPosition.position
+            this.$nextTick(() => {
+              setTimeout(() => {
+                this.scrollMove(this.scrollPosition)
+                this.$store.dispatch('D_PRE_DATA/AC_PRE_LIST_DATA', [])
+              }, 1500)
+            })
+          }
+        }
+      }
+    }, */
     pBoardList: {
       immediate: true,
       handler (val) {
@@ -225,63 +231,28 @@ export default {
         var index
         var count
         if ((this.viewMainTab === 'P' && value[0].jobkindId === 'BOAR') || (this.viewMainTab === 'B' && value[0].jobkindId === 'ALIM')) return
-        if (this.viewMainTab === 'P') {
-          index = this.GE_DISP_ALIM_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
-          if (index !== -1) {
-            content = this.GE_DISP_ALIM_LIST[index]
-            count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
-            this.GE_DISP_ALIM_LIST[index].memoCount = count
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_ALIM_LIST[index])
-          }
-        } else if (this.viewMainTab === 'B') {
-          index = this.GE_DISP_BOAR_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
-          if (index !== -1) {
-            content = this.GE_DISP_BOAR_LIST[index]
-            count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
-            this.GE_DISP_BOAR_LIST[index].memoCount = count
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_BOAR_LIST[index])
-          }
-        } else if (this.viewMainTab === 'A') {
-          index = this.GE_DISP_BOAR_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
-          if (index !== -1) {
-            content = this.GE_DISP_BOAR_LIST[index]
-            count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
-            this.GE_DISP_BOAR_LIST[index].memoCount = count
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_BOAR_LIST[index])
-          }
+        index = this.GE_DISP_ALL_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
+        if (index !== -1) {
+          content = this.GE_DISP_ALL_LIST[index]
+          count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
+          this.GE_DISP_ALL_LIST[index].memoCount = count
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_ALL_LIST[index])
         }
         if (!content) return
 
-        if (content.jobkindId === 'ALIM') {
-          var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
-          if (memoAleadyIdx !== -1) {
-            content.D_MEMO_LIST[memoAleadyIdx] = value[0]
-            newArr = content.D_MEMO_LIST
-          } else {
-            newArr = [
-              value[0],
-              ...content.D_MEMO_LIST
-            ]
-          }
-          var idx = this.alimContentsList.findIndex((item) => item.contentsKey === content.contentsKey)
-          this.alimContentsList[idx].D_MEMO_LIST = this.replaceMemoArr(newArr)
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.alimContentsList[idx]])
+        var memoAleadyIdx1 = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
+        if (memoAleadyIdx1 !== -1) {
+          content.D_MEMO_LIST[memoAleadyIdx1] = value[0]
+          newArr = content.D_MEMO_LIST
         } else {
-          var memoAleadyIdx1 = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
-          if (memoAleadyIdx1 !== -1) {
-            content.D_MEMO_LIST[memoAleadyIdx1] = value[0]
-            newArr = content.D_MEMO_LIST
-          } else {
-            newArr = [
-              value[0],
-              ...content.D_MEMO_LIST
-            ]
-          }
-          var idx1 = this.boardContentsList.findIndex((item) => item.contentsKey === content.contentsKey)
-          this.boardContentsList[idx1].D_MEMO_LIST = this.replaceMemoArr(newArr)
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.boardContentsList[idx]])
-          // this.yesLoadMore(this.boardContentsList[idx].contentsKey)
+          newArr = [
+            value[0],
+            ...content.D_MEMO_LIST
+          ]
         }
+        var idx1 = this.allContentsList.findIndex((item) => item.contentsKey === content.contentsKey)
+        this.allContentsList[idx1].D_MEMO_LIST = this.replaceMemoArr(newArr)
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.allContentsList[idx1]])
       },
       deep: true
     },
@@ -295,27 +266,11 @@ export default {
         }
         // 채널 메인이 아닌 팝업으로 띄웠을 때 pChannelDetail에 teamKey가 없습니다. 없는게 맞구요!!
         // if (value[0].creTeamKey === this.pChannelDetail.teamKey) {
-        if (this.viewMainTab === 'P') {
-          if (value[0].jobkindId !== 'ALIM') return
-          newArr = [
-            value[0],
-            ...this.GE_DISP_ALIM_LIST
-          ]
-          this.alimContentsList = this.replaceArr(newArr)
-        } else if (this.viewMainTab === 'B') {
-          if (value[0].jobkindId !== 'BOAR') return
-          newArr = [
-            value[0],
-            ...this.GE_DISP_BOAR_LIST
-          ]
-          this.boardContentsList = this.replaceArr(newArr)
-        } else if (this.viewMainTab === 'A') {
-          newArr = [
-            value[0],
-            ...this.GE_DISP_ALL_LIST
-          ]
-          this.allContentsList = this.replaceArr(newArr)
-        }
+        newArr = [
+          value[0],
+          ...this.GE_DISP_ALL_LIST
+        ]
+        this.allContentsList = this.replaceArr(newArr)
         // }
       },
       deep: true
@@ -359,6 +314,9 @@ export default {
     GE_DEL_CONT_LIST () {
       return this.$store.getters['D_CHANNEL/GE_DEL_CONT_LIST']
     },
+    GE_PRE_DATA () {
+      return this.$store.getters['D_PRE_DATA/GE_PRE_DATA']
+    },
     GE_CHANNEL_DETAIL () {
       if (this.chanAlimYn) {
         var team = this.$getDetail('TEAM', this.pChannelDetail.teamKey)
@@ -374,102 +332,6 @@ export default {
     GE_NEW_MEMO_LIST (state) {
       return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
     },
-    GE_DISP_ALIM_LIST () {
-      var idx1, idx2
-      var returnAlimList = []
-      var chanDetail = null
-      var dataList = null
-      var i = 0
-      if (!this.alimContentsList) return null
-      if (!this.computedYn) return
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.computedYn = false
-      for (i = 0; i < this.alimContentsList.length; i++) {
-        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.alimContentsList[i].creTeamKey)
-        if (idx1 === -1) {
-          var this_ = this
-          var teamKey = this.alimContentsList[i].creTeamKey
-          // eslint-disable-next-line vue/no-async-in-computed-properties
-          this.$addChanList(teamKey).then((res) => {
-            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
-            if (idx1 === -1) {
-              returnAlimList.push(this_.alimContentsList[i])
-            } else {
-              chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
-              dataList = chanDetail.ELEMENTS.alimList
-              idx2 = dataList.findIndex((item) => item.contentsKey === this_.alimContentsList[i].contentsKey)
-              if (idx2 !== -1) {
-                this.alimContentsList[i] = dataList[idx2]
-                returnAlimList.push(dataList[idx2])
-              } else {
-                returnAlimList.push(this_.alimContentsList[i])
-              }
-            }
-          })
-        } else {
-          chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          dataList = chanDetail.ELEMENTS.alimList
-          idx2 = dataList.findIndex((item) => item.contentsKey === this.alimContentsList[i].contentsKey)
-          if (idx2 !== -1) {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            this.alimContentsList[i] = dataList[idx2]
-            returnAlimList.push(dataList[idx2])
-          } else {
-            returnAlimList.push(this.alimContentsList[i])
-          }
-        }
-      }
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      this.computedYn = true
-      return this.replaceArr(returnAlimList)
-    },
-    GE_DISP_BOAR_LIST () {
-      var idx1, idx2
-      var returnBoardList = []
-      var chanDetail = null
-      var dataList = null
-      if (!this.boardContentsList) return null
-      var i = 0
-      for (i = 0; i < this.boardContentsList.length; i++) {
-        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.boardContentsList[i].creTeamKey)
-        if (idx1 === -1) {
-          var this_ = this
-          var teamKey = this.boardContentsList[i].creTeamKey
-          // eslint-disable-next-line vue/no-async-in-computed-properties
-          this.$addChanList(teamKey).then(() => {
-            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
-            if (idx1 === -1) {
-              returnBoardList.push(this_.boardContentsList[i])
-            } else {
-              chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
-              dataList = chanDetail.ELEMENTS.boardList
-              idx2 = dataList.findIndex((item) => item.contentsKey === this_.boardContentsList[i].contentsKey)
-              if (idx2 !== -1) {
-                this.boardContentsList[i] = dataList[idx2]
-                returnBoardList.push(dataList[idx2])
-              } else {
-                returnBoardList.push(this_.boardContentsList[i])
-              }
-            }
-          })
-        } else {
-          chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          dataList = chanDetail.ELEMENTS.boardList
-          idx2 = dataList.findIndex((item) => item.contentsKey === this.boardContentsList[i].contentsKey)
-          if (idx2 !== -1) {
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            this.boardContentsList[i] = dataList[idx2]
-            returnBoardList.push(dataList[idx2])
-          } else {
-            returnBoardList.push(this.boardContentsList[i])
-          }
-        }
-      }
-      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-      if (this.boardContentsList.length === 0) this.emptyYn = true
-
-      return this.replaceArr(returnBoardList)
-    },
     GE_DISP_ALL_LIST () {
       // const parentYn = this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey) ? 1 : 0
       // if (parentYn === 1) {
@@ -480,6 +342,7 @@ export default {
       var chanDetail = null
       var dataList = null
       if (!this.allContentsList) return []
+      console.log(this.allContentsList)
       var i = 0
       for (i = 0; i < this.allContentsList.length; i++) {
         idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.allContentsList[i].creTeamKey)
@@ -508,9 +371,7 @@ export default {
           })
         } else {
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          if (this.allContentsList[i].jobkindId === 'BOAR') {
-            dataList = chanDetail.ELEMENTS.boardList
-          }
+          dataList = chanDetail.ELEMENTS.boardList
           idx2 = dataList.findIndex((item) => item.contentsKey === this.allContentsList[i].contentsKey)
           // eslint-disable-next-line vue/no-side-effects-in-computed-properties
           // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
@@ -525,7 +386,7 @@ export default {
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       if (this.allContentsList.length === 0) this.emptyYn = true
-
+      console.log(returnAllList)
       return this.replaceArr(returnAllList)
     },
     GE_USER () {
@@ -639,30 +500,12 @@ export default {
         return
       }
       await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
-      if (this.viewMainTab === 'P') {
-        if (!this.alimContentsList) this.alimContentsList = []
-        newArr = [
-          ...this.alimContentsList,
-          ...result.content
-        ]
-        this.alimContentsList = this.replaceArr(newArr)
-      } else if (this.viewMainTab === 'B') {
-        if (!this.boardContentsList) this.boardContentsList = []
-        newArr = [
-          ...this.boardContentsList,
-          ...result.content
-        ]
-        this.boardContentsList = this.replaceArr(newArr)
-      } else if (this.viewMainTab === 'A') {
-        if (!this.allContentsList) this.allContentsList = []
-        newArr = [
-          ...this.allContentsList,
-          ...result.content
-        ]
-        // eslint-disable-next-line no-debugger
-        debugger
-        this.allContentsList = this.replaceArr(newArr)
-      }
+      if (!this.allContentsList) this.allContentsList = []
+      newArr = [
+        ...this.allContentsList,
+        ...result.content
+      ]
+      this.allContentsList = this.replaceArr(newArr)
       if (this.targetCKey) {
         this.canLoadYn = true
         this.loadMore(true)
@@ -679,8 +522,6 @@ export default {
     },
     async readyFunction () {
       this.scrolledYn = false
-      // this.$showAxiosLoading(true)
-      console.log('뭐지?')
       console.log(this.initData)
       if (this.initData) {
         this.allContentsList = this.initData.content
@@ -689,22 +530,6 @@ export default {
         this.canLoadYn = true
         this.hideSkeleton(true)
       } else {
-        if (this.targetContents !== undefined && this.targetContents !== null && this.targetContents !== '') {
-          if (this.targetContents.jobkindId === 'BOAR') {
-            this.viewMainTab = 'B'
-            this.$emit('changeMainTab', this.viewMainTab)
-          }
-          this.targetCKey = this.targetContents.targetContentsKey
-          if (this.targetCKey) {
-            var contentsAlreadyYn = await this.$addContents(this.targetCKey, this.targetContents.jobkindId)
-            if (contentsAlreadyYn === false) {
-              this.errorText = 'This content has been deleted or you do not have permission to\nread it\nPlease try again later.'
-              this.failPopYn = true
-              return
-            }
-          }
-        }
-
         await this.initGetContentsList()
         this.findPopShowYn = false
         if (this.readySearchList) {
@@ -743,145 +568,10 @@ export default {
         }
       }
     },
-    async targetKeyYn (targetKey, jobkindId) {
-      var detail = await this.$getContentsOnly({ contentsKey: targetKey, jobkindId: jobkindId })
-      // eslint-disable-next-line no-debugger
-      debugger
-      if (detail.contentsList.length === 0) {
-        this.errorText = 'This content has been deleted or you do not have permission to\nread it\nPlease try again later.'
-        this.targetCKey = null
-        this.failPopYn = true
-        this.canLoadYn = true
-        this.loadMore()
-        var index = null
-        if (jobkindId === 'ALIM') {
-          index = this.alimContentsList.findIndex((item) => item.contentsKey === targetKey)
-          if (index !== -1) {
-            this.alimContentsList.splice(index, 1)
-          }
-        } else {
-          index = this.boardContentsList.findIndex((item) => item.contentsKey === targetKey)
-          if (index !== -1) {
-            this.boardContentsList.splice(index, 1)
-          }
-        }
-        return false
-      }
-      var this_ = this
-      this.loadMoreDESCYn = false
-      await this_.getPushContentsList(null, null, false).then(response => {
-        if (!response || !response.content) return
-        this_.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
-        var newArr = []
-        var cont
-        var tempContentDetail
-        var contentDetail
-
-        if (this_.viewMainTab === 'P') {
-          if (!this_.allContentsList) this_.allContentsList = []
-          newArr = [
-            ...this_.alimContentsList,
-            ...response.content
-          ]
-          this_.alimContentsList = this.replaceArr(newArr)
-          for (let i = 0; i < this_.alimContentsList.length; i++) {
-            cont = this_.alimContentsList[i]
-            tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
-            if (tempContentDetail) {
-              contentDetail = tempContentDetail[0]
-            } else {
-              contentDetail = null
-            }
-            if (!cont.D_MEMO_LIST) {
-              cont.D_MEMO_LIST = cont.memoList
-              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-            } else {
-              // eslint-disable-next-line no-redeclare
-              var newArr = [
-                ...contentDetail.D_MEMO_LIST,
-                ...cont.memoList
-              ]
-              var newList = this.replaceMemoArr(newArr)
-              cont.D_MEMO_LIST = newList
-              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-            }
-          }
-        } else {
-          if (!this_.boardContentsList) this_.boardContentsList = []
-          newArr = [
-            ...this_.boardContentsList,
-            ...response.content
-          ]
-          this_.boardContentsList = this.replaceArr(newArr)
-          for (let i = 0; i < this_.boardContentsList.length; i++) {
-            cont = this_.boardContentsList[i]
-            tempContentDetail = []
-            tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
-            if (tempContentDetail) {
-              contentDetail = tempContentDetail[0]
-            } else {
-              contentDetail = null
-            }
-
-            if (!cont.D_MEMO_LIST) {
-              cont.D_MEMO_LIST = cont.memoList
-              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-            } else {
-              // eslint-disable-next-line no-redeclare
-              var newArr = [
-                ...contentDetail.D_MEMO_LIST,
-                ...cont.memoList
-              ]
-              // eslint-disable-next-line no-redeclare
-              var newList = this.replaceMemoArr(newArr)
-              cont.D_MEMO_LIST = newList
-              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-            }
-          }
-        }
-        // this.updateStoreData(uniqueArr)
-        this_.findPopShowYn = false
-        if (this_.readySearchList) {
-          this_.requestSearchList(this_.readySearchList)
-        }
-        this_.introPushPageTab()
-        if (this_.targetCKey) {
-          this_.getMCabContYn(this_.targetCKey).then(Response => { // 수정해야함꼭!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!20220908수민
-            /* if (Response !== true) {
-          this.errorText = '해당 컨텐츠를 열람할 수 있는 권한이 없습니다'
-          this.failPopYn = true
-          this.targetCKey = null
-        } */
-          })
-          this_.canLoadYn = true
-          this_.loadMore(true)
-        } else {
-          this_.endListSetFunc(response)
-        }
-        this_.scrolledYn = false
-        if (newArr.length > 0) {
-          this_.canLoadYn = true
-        }
-        this_.loadingYn = false
-
-        var queueIndex = this_.axiosQueue.findIndex((item) => item === 'saveMemberButton')
-        this_.axiosQueue = this_.axiosQueue.splice(queueIndex, 1)
-        /* this_.$refs.pushListChangeTabLoadingComp.contentsWich(targetKey) */
-      })
-      return true
-    },
     async yesLoadMore (contentKey) {
       var cont, idx
-      if (this.viewMainTab === 'P') {
-        idx = this.alimContentsList.findIndex(i => i.contentsKey === contentKey)
-        if (idx !== -1) cont = this.alimContentsList[idx]
-      } else if (this.viewMainTab === 'B') {
-        idx = this.boardContentsList.findIndex(i => i.contentsKey === contentKey)
-        if (idx !== -1) cont = this.boardContentsList[idx]
-      } else if (this.viewMainTab === 'A') {
-        idx = this.allContentsList.findIndex(i => i.contentsKey === contentKey)
-        if (idx !== -1) cont = this.allContentsList[idx]
-      }
+      idx = this.allContentsList.findIndex(i => i.contentsKey === contentKey)
+      if (idx !== -1) cont = this.allContentsList[idx]
       var response = await this.getContentsMemoList(contentKey, cont.D_MEMO_LIST.length + 5, 0)
       var newArr = [
         ...cont.D_MEMO_LIST,
@@ -907,8 +597,6 @@ export default {
       return uniqueArr
     },
     writeMememo (memo) {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (!this.mememoValue) {
         this.resetMemoYn = true
       } else {
@@ -940,16 +628,9 @@ export default {
         if (result.data.result === true) {
           // var cont = this.currentMemoObj
           var idx, cont
-          if (this.viewMainTab === 'P') {
-            idx = this.alimContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
-            if (idx !== -1) cont = this.alimContentsList[idx]
-          } else if (this.viewMainTab === 'B') {
-            idx = this.boardContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
-            if (idx !== -1) cont = this.boardContentsList[idx]
-          } else if (this.viewMainTab === 'A') {
-            idx = this.allContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
-            if (idx !== -1) cont = this.allContentsList[idx]
-          }
+
+          idx = this.allContentsList.findIndex(i => i.contentsKey === this.tempData.targetKey)
+          if (idx !== -1) cont = this.allContentsList[idx]
           index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === param.memoKey)
           var cmemoListIdx
           if (param.parentMemoKey) {
@@ -962,27 +643,13 @@ export default {
                 }
               }
             }
-            // cont.D_MEMO_LIST[cmemoListIdx].cmemoList.splice(index, 1)
-            // if (cmemoListIdx !== -1) cont.D_MEMO_LIST[cmemoListIdx].cmemoList.splice(index, 1)
-            if (this.viewMainTab === 'P') {
-              if (cmemoListIdx !== -1) this.alimContentsList[idx].D_MEMO_LIST.cmemoList.splice(index, 1)
-            } else if (this.viewMainTab === 'B') {
-              if (cmemoListIdx !== -1) this.boardContentsList[idx].D_MEMO_LIST.cmemoList.splice(index, 1)
-            } else if (this.viewMainTab === 'A') {
-              if (cmemoListIdx !== -1) this.allContentsList[idx].D_MEMO_LIST.cmemoList.splice(index, 1)
-            }
+
+            if (cmemoListIdx !== -1) this.allContentsList[idx].D_MEMO_LIST.cmemoList.splice(index, 1)
           } else {
             // cont.D_MEMO_LIST.splice(index, 1)
-            if (this.viewMainTab === 'P') {
-              this.alimContentsList[idx].D_MEMO_LIST.splice(index, 1)
-              cont.D_MEMO_LIST = this.alimContentsList[idx].D_MEMO_LIST
-            } else if (this.viewMainTab === 'B') {
-              this.boardContentsList[idx].D_MEMO_LIST.splice(index, 1)
-              cont.D_MEMO_LIST = this.boardContentsList[idx].D_MEMO_LIST
-            } else if (this.viewMainTab === 'A') {
-              this.allContentsList[idx].D_MEMO_LIST.splice(index, 1)
-              cont.D_MEMO_LIST = this.allContentsList[idx].D_MEMO_LIST
-            }
+
+            this.allContentsList[idx].D_MEMO_LIST.splice(index, 1)
+            cont.D_MEMO_LIST = this.allContentsList[idx].D_MEMO_LIST
           }
           cont.memoCount -= 1
           this.$store.dispatch('D_CHANNEL/AC_DEL_MEMO_REPLACE_CONTENT', [cont])
@@ -1028,15 +695,11 @@ export default {
       this.mememoValue = null
     },
     writeMemo (param) {
-      // eslint-disable-next-line no-debugger
-      debugger
       this.resetMemoYn = false
       if (this.mememoValue) {
         this.resetMemoYn = true
         this.mememoValue = null
       } else {
-        // eslint-disable-next-line no-debugger
-        debugger
         if (this.currentContentsKey !== param.contentsKey) {
           this.resetMemoYn = true
         }
@@ -1044,33 +707,13 @@ export default {
       this.mememoValue = null
       this.memoShowYn = true
       var idx
-      if (this.viewMainTab === 'P') {
-        idx = this.alimContentsList.findIndex(i => i.contentsKey === param.contentsKey)
-        if (idx !== -1) {
-          this.currentContentsKey = this.alimContentsList[idx].contentsKey
-        } else {
-          this.memoShowYn = false
-          this.$showToastPop(this.$t('CHAN_POST_MSG_SET_ERROR'))
-          return
-        }
-      } else if (this.viewMainTab === 'B') {
-        idx = this.boardContentsList.findIndex(i => i.contentsKey === param.contentsKey)
-        if (idx !== -1) {
-          this.currentContentsKey = this.boardContentsList[idx].contentsKey
-        } else {
-          this.memoShowYn = false
-          this.$showToastPop(this.$t('CHAN_POST_MSG_SET_ERROR'))
-          return
-        }
-      } else if (this.viewMainTab === 'A') {
-        idx = this.allContentsList.findIndex(i => i.contentsKey === param.contentsKey)
-        if (idx !== -1) {
-          this.currentContentsKey = this.allContentsList[idx].contentsKey
-        } else {
-          this.memoShowYn = false
-          this.$showToastPop(this.$t('CHAN_POST_MSG_SET_ERROR'))
-          return
-        }
+      idx = this.allContentsList.findIndex(i => i.contentsKey === param.contentsKey)
+      if (idx !== -1) {
+        this.currentContentsKey = this.allContentsList[idx].contentsKey
+      } else {
+        this.memoShowYn = false
+        this.$showToastPop(this.$t('CHAN_POST_MSG_SET_ERROR'))
+        return
       }
       // var testIdx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
       // var testCont = this.alimContentsList[testIdx]
@@ -1078,137 +721,6 @@ export default {
       // console.log(testCont)
 
       this.writeMemoTempTeamKey = param.teamKey
-    },
-    /* async saveMemo (text) {
-      // var testIdx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
-      // var testCont = this.alimContentsList[testIdx]
-      // console.log(testIdx)
-      // console.log(testCont)
-      // #책
-      if (this.axiosQueue.findIndex((item) => item === 'saveMemo') !== -1) return
-      this.axiosQueue.push('saveMemo')
-      this.saveMemoLoadingYn = true
-      // eslint-disable-next-line no-new-object
-      var memo = new Object()
-      memo.parentMemoKey = null
-      if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
-        memo.parentMemoKey = this.mememoValue.parentMemoKey
-      }
-      memo.bodyFullStr = text
-      memo.targetKind = 'C'
-      memo.targetKey = this.currentContentsKey
-      // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
-      memo.creUserKey = this.GE_USER.userKey
-      memo.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
-      memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
-      try {
-        var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
-          param: { memo: memo }
-        })
-        var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
-        this.axiosQueue.splice(queueIndex, 1)
-        console.log(' ############################### ')
-        console.log(result)
-
-        if (result.data.result === true || result.data.result === 'true') {
-          this.memoShowYn = false
-
-          var idx, memoLength
-          // var idx, memoLength, cont
-          console.log(' @#@#@#@##@##@#@#@#@#@#@#@#@@#@#@#@##@##@#@#@#@#@#@#@#@@#@#@#@##@##@#@#@#@#@#@#@#@@#@#@#@##@##@#@#@#@#@#@#@#@ ')
-          if (this.viewMainTab === 'P') {
-            idx = this.alimContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
-            if (idx !== -1) {
-              memoLength = this.alimContentsList[idx].memoList.length
-              // cont = this.alimContentsList[idx]
-            } else {
-              this.$showToastPop('에러코드 -M/S/P-A-idxErro')
-            }
-          } else if (this.viewMainTab === 'B') {
-            idx = this.boardContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
-            if (idx !== -1) {
-              memoLength = this.boardContentsList[idx].memoList.length
-              // cont = this.boardContentsList[idx]
-            } else {
-              this.$showToastPop('에러코드 -M/S/P-idxErro')
-            }
-          } else if (this.viewMainTab === 'A') {
-            idx = this.allContentsList.findIndex(i => i.contentsKey === this.currentContentsKey)
-            if (idx !== -1) {
-              memoLength = this.allContentsList[idx].memoList.length
-              // cont = this.boardContentsList[idx]
-            } else {
-              this.$showToastPop('에러코드 -M/S/P-idxErro')
-            }
-          }
-
-          if (memoLength !== undefined && memoLength !== null && memoLength !== '') {
-            // await this.getContentsMemoList(this.currentContentsKey, memoLength - 1, 0).then(response => {
-            await this.getContentsMemoList(this.currentContentsKey, 0, 0).then(response => {
-              console.log('###########################################')
-              console.log(response)
-              var newArr
-              var newList
-              if (this.viewMainTab === 'P') {
-                if (!this.alimContentsList[idx].D_MEMO_LIST) this.alimContentsList[idx].D_MEMO_LIST = []
-                newArr = [
-                  ...response,
-                  ...this.alimContentsList[idx].D_MEMO_LIST
-                ]
-                newList = this.replaceMemoArr(newArr)
-                this.alimContentsList[idx].D_MEMO_LIST = newList
-                this.alimContentsList[idx].memoCount += 1
-                // this.GE_DISP_ALIM_LIST[idx].D_MEMO_LIST = newList
-                // this.GE_DISP_ALIM_LIST[idx].memoCount += 1
-
-                // this.ALIM_LIST_RELOAD_CONT += 1
-                console.log(this.alimContentsList[idx])
-                // eslint-disable-next-line no-debugger
-                debugger
-                // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.alimContentsList[idx])
-                this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.alimContentsList[idx])
-              } else if (this.viewMainTab === 'B') {
-                if (!this.boardContentsList[idx].D_MEMO_LIST) this.boardContentsList[idx].D_MEMO_LIST = []
-                newArr = [
-                  ...response,
-                  ...this.boardContentsList[idx].D_MEMO_LIST
-                ]
-                newList = this.replaceMemoArr(newArr)
-                this.boardContentsList[idx].D_MEMO_LIST = newList
-                this.boardContentsList[idx].memoCount += 1
-                // this.ALIM_LIST_RELOAD_CONT += 1
-                // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.boardContentsList[idx])
-                this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.boardContentsList[idx])
-              } else if (this.viewMainTab === 'A') {
-                if (!this.allContentsList[idx].D_MEMO_LIST) this.allContentsList[idx].D_MEMO_LIST = []
-                newArr = [
-                  ...response,
-                  ...this.allContentsList[idx].D_MEMO_LIST
-                ]
-                newList = this.replaceMemoArr(newArr)
-                this.allContentsList[idx].D_MEMO_LIST = newList
-                this.allContentsList[idx].memoCount += 1
-                // this.ALIM_LIST_RELOAD_CONT += 1
-                // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.boardContentsList[idx])
-                this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.allContentsList[idx])
-              }
-              // this.$forceUpdate()
-              // this.$refs.pushListChangeTabLoadingComp.memoReload()
-              console.log('newList : ')
-              console.log(newList)
-              // console.log(cont)
-            })
-          }
-        }
-      } catch (e) {
-        console.error('Tal_pushList 오류')
-        console.error(e)
-      } finally {
-        this.saveMemoLoadingYn = false
-      }
-    }, */
-    memoOpenClick (params) {
     },
     async getContentsMemoList (key, pageSize, offsetInt) {
       if (this.axiosQueue.findIndex((item) => item === 'getContentsMemoList') !== -1) return
@@ -1218,16 +730,9 @@ export default {
       memo.targetKey = key
       // eslint-disable-next-line no-unused-vars
       var idx, cont
-      if (this.viewMainTab === 'P') {
-        idx = this.alimContentsList.findIndex(i => i.contentsKey === key)
-        if (idx !== -1) cont = this.alimContentsList[idx]
-      } else if (this.viewMainTab === 'B') {
-        idx = this.boardContentsList.findIndex(i => i.contentsKey === key)
-        if (idx !== -1) cont = this.boardContentsList[idx]
-      } else if (this.viewMainTab === 'A') {
-        idx = this.allContentsList.findIndex(i => i.contentsKey === key)
-        if (idx !== -1) cont = this.allContentsList[idx]
-      }
+
+      idx = this.allContentsList.findIndex(i => i.contentsKey === key)
+      if (idx !== -1) cont = this.allContentsList[idx]
       if (pageSize) memo.pageSize = pageSize
       else memo.pageSize = this.pagesize
       if (offsetInt !== undefined && offsetInt !== null && offsetInt !== '') memo.offsetInt = offsetInt
@@ -1243,8 +748,6 @@ export default {
       return result.data.memoList
     },
     async getPushContentsList (pageSize, offsetInput, loadingYn) {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.axiosQueue.findIndex((item) => item === 'getPushContentsList') === -1) {
         this.axiosQueue.push('getPushContentsList')
         // @point
@@ -1286,13 +789,6 @@ export default {
         param.findActStarYn = false
         param.DESCYn = true
 
-        if (this.targetCKey !== undefined && this.targetCKey !== null && this.targetCKey !== '') {
-          param.targetContentsKey = this.targetCKey
-          param.DESCYn = this.loadMoreDESCYn
-          if (this.loadMoreDESCYn === false) {
-            param.offsetInt = this.upOffSetInt
-          }
-        }
         if (this.viewTab === 'N') {
         } else if (this.viewTab === 'P') {
           param.orderbyStr = 'a.popPoint DESC, a.creDate DESC'
@@ -1301,20 +797,6 @@ export default {
           param.findActStarYn = true
         } else if (this.viewTab === 'M') {
           param.creUserKey = this.GE_USER.userKey
-        }
-        if (this.viewMainTab === 'P') {
-          param.jobkindId = 'ALIM'
-          param.ownUserKey = this.GE_USER.userKey
-        } else if (this.viewMainTab === 'B') {
-          param.jobkindId = 'BOAR'
-          if (this.viewTab === 'N') {
-            param.boardYn = true
-          } else {
-            //  param.ownUserKey = this.GE_USER.userKey
-          }
-        } else if (this.viewMainTab === 'A') {
-          // param.allYn = true
-          // param.ownUserKey = this.GE_USER.userKey
         }
         if (this.mSelectedCabinetKey !== -1) {
           param.joskindId = 'BOAR'
@@ -1333,13 +815,7 @@ export default {
         var resultList = null
         if (this.mCabinetKeyListStr) {
           param.cabinetKeyListStr = this.mCabinetKeyListStr
-          // var result1 = await this.$commonAxiosFunction('/sUniB/tp.getContentsListPage', param)
           var response = this.$getContentsList(param, nonLoading)
-          // var response = await this.$commonAxiosFunction({
-          //   url: '/sUniB/tp.getContentsList',
-          //   param: param
-          // }, nonLoading)
-          // console.log('야야야야야')
           resultList = response
         } else {
           var result = await this.$getContentsList(param, nonLoading)
@@ -1416,17 +892,6 @@ export default {
       } catch (error) {
       }
       //
-    },
-    targetContentScrollMove (wich) {
-      this.$emit('targetContentScrollMove', wich)
-    },
-    async chanAlimScrollMove (wich) {
-      /* await this.$nextTick(() => {
-        // this.scrollMove(wich)
-        var ScrollWrap = this.$refs.pushListWrapWrapCompo
-        if (wich === undefined || wich === null || wich === '') { wich = 0 }
-        ScrollWrap.scrollTo({ top: wich, behavior: 'smooth' })
-      }) */
     },
     findPaddingTopPush () {
       var element = document.getElementById('searchResultWrapLength')
@@ -1560,104 +1025,38 @@ export default {
       console.log(resultList.content)
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       // this.endListSetFunc(resultList)
-      if (this.viewMainTab === 'P') {
-        newArr = [
-          // 리프레쉬인데 기존 리스트를 받아 중복처리를 하는게 이상하고 실제 삭제한 데이터가 사라지지 않음
-          // ...this.alimContentsList,
-          ...resultList.content
-        ]
-        this.alimContentsList = this.replaceArr(newArr)
-        for (let i = 0; i < this.alimContentsList.length; i++) {
-          cont = this.alimContentsList[i]
+      newArr = [
+        // 리프레쉬인데 기존 리스트를 받아 중복처리를 하는게 이상하고 실제 삭제한 데이터가 사라지지 않음
+        // ...this.alimContentsList,
+        ...resultList.content
+      ]
+      this.allContentsList = this.replaceArr(newArr)
+      for (let i = 0; i < this.allContentsList.length; i++) {
+        cont = this.allContentsList[i]
 
-          tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+        tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
 
-          if (tempContentDetail) {
-            contentDetail = tempContentDetail[0]
-          } else {
-            contentDetail = null
-          }
-          if (!cont.D_MEMO_LIST) {
-            cont.D_MEMO_LIST = cont.memoList
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-          } else {
-            // eslint-disable-next-line no-redeclare
-            var newArr = [
-              ...contentDetail.D_MEMO_LIST,
-              ...cont.memoList
-            ]
-            var newList = this.replaceMemoArr(newArr)
-            cont.D_MEMO_LIST = newList
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-          }
+        if (tempContentDetail) {
+          contentDetail = tempContentDetail[0]
+        } else {
+          contentDetail = null
         }
-      } else if (this.viewMainTab === 'B') {
-        newArr = [
-          // 리프레쉬인데 기존 리스트를 받아 중복처리를 하는게 이상하고 실제 삭제한 데이터가 사라지지 않음
-          // ...this.alimContentsList,
-          ...resultList.content
-        ]
-        this.boardContentsList = this.replaceArr(newArr)
-        for (let i = 0; i < this.boardContentsList.length; i++) {
-          cont = this.boardContentsList[i]
-
-          tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
-
-          if (tempContentDetail) {
-            contentDetail = tempContentDetail[0]
-          } else {
-            contentDetail = null
-          }
-          if (!cont.D_MEMO_LIST) {
-            cont.D_MEMO_LIST = cont.memoList
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-          } else {
-            // eslint-disable-next-line no-redeclare
-            var newArr = [
-              ...contentDetail.D_MEMO_LIST,
-              ...cont.memoList
-            ]
-            var newList1 = this.replaceMemoArr(newArr)
-            cont.D_MEMO_LIST = newList1
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-          }
-        }
-      } else if (this.viewMainTab === 'A') {
-        newArr = [
-          // 리프레쉬인데 기존 리스트를 받아 중복처리를 하는게 이상하고 실제 삭제한 데이터가 사라지지 않음
-          // ...this.alimContentsList,
-          ...resultList.content
-        ]
-        this.allContentsList = this.replaceArr(newArr)
-        for (let i = 0; i < this.allContentsList.length; i++) {
-          cont = this.allContentsList[i]
-
-          tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
-
-          if (tempContentDetail) {
-            contentDetail = tempContentDetail[0]
-          } else {
-            contentDetail = null
-          }
-          if (!cont.D_MEMO_LIST) {
-            cont.D_MEMO_LIST = cont.memoList
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-          } else {
-            // eslint-disable-next-line no-redeclare
-            var newArr = [
-              ...contentDetail.D_MEMO_LIST,
-              ...cont.memoList
-            ]
-            var newList2 = this.replaceMemoArr(newArr)
-            cont.D_MEMO_LIST = newList2
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-          }
+        if (!cont.D_MEMO_LIST) {
+          cont.D_MEMO_LIST = cont.memoList
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+        } else {
+          // eslint-disable-next-line no-redeclare
+          var newArr = [
+            ...contentDetail.D_MEMO_LIST,
+            ...cont.memoList
+          ]
+          var newList2 = this.replaceMemoArr(newArr)
+          cont.D_MEMO_LIST = newList2
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
         }
       }
     },
     endListSetFunc (resultList) {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (!this.loadMoreDESCYn) {
         return
       }
@@ -1709,53 +1108,22 @@ export default {
             } */
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
             if (descYn) {
-              if (this.viewMainTab === 'P') {
-                if (!this.GE_DISP_ALIM_LIST) this.GE_DISP_ALIM_LIST = []
-                newArr = [
-                  ...resultList.content,
-                  ...this.GE_DISP_ALIM_LIST
-                ]
-                this.alimContentsList = this.replaceArr(newArr)
-              } else if (this.viewMainTab === 'B') {
-                if (!this.GE_DISP_BOAR_LIST) this.GE_DISP_BOAR_LIST = []
-                newArr = [
-                  ...resultList.content,
-                  ...this.GE_DISP_BOAR_LIST
-                ]
-                this.boardContentsList = this.replaceArr(newArr)
-              } else if (this.viewMainTab === 'A') {
-                if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
-                newArr = [
-                  ...this.GE_DISP_ALL_LIST,
-                  ...resultList.content
-                ]
-                this.allContentsList = this.replaceArr(newArr)
-              }
+              if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
+              newArr = [
+                ...this.GE_DISP_ALL_LIST,
+                ...resultList.content
+              ]
+              this.allContentsList = this.replaceArr(newArr)
               await this.endListSetFunc(resultList)
             } else {
               if (resultList.content.length < 0) { this.canUpLoadYn = false } else { this.upOffSetInt += 1 }
-              if (this.viewMainTab === 'P') {
-                if (!this.GE_DISP_ALIM_LIST) this.GE_DISP_ALIM_LIST = []
-                newArr = [
-                  ...resultList.content,
-                  ...this.GE_DISP_ALIM_LIST
-                ]
-                this.alimContentsList = this.replaceArr(newArr)
-              } else if (this.viewMainTab === 'B') {
-                if (!this.GE_DISP_BOAR_LIST) this.GE_DISP_BOAR_LIST = []
-                newArr = [
-                  ...resultList.content,
-                  ...this.GE_DISP_BOAR_LIST
-                ]
-                this.boardContentsList = this.replaceArr(newArr)
-              } else if (this.viewMainTab === 'A') {
-                if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
-                newArr = [
-                  ...this.GE_DISP_ALL_LIST,
-                  ...resultList.content
-                ]
-                this.allContentsList = this.replaceArr(newArr)
-              }
+
+              if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
+              newArr = [
+                ...this.GE_DISP_ALL_LIST,
+                ...resultList.content
+              ]
+              this.allContentsList = this.replaceArr(newArr)
             }
             this.contentsList = this.replaceArr(newArr)
             this.$emit('numberOfElements', resultList.totalElements)
@@ -1860,123 +1228,43 @@ export default {
       var tempContentDetail
       var contentDetail
 
-      if (this.viewMainTab === 'P') {
-        newArr = [
-          // ...this.alimContentsList,
-          ...contentList
-        ]
-        this.alimContentsList = this.replaceArr(newArr)
-        for (let i = 0; i < this.alimContentsList.length; i++) {
-          cont = this.alimContentsList[i]
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
-          if (tempContentDetail) {
-            contentDetail = tempContentDetail[0]
-          } else {
-            contentDetail = null
-          }
-          if (!cont.D_MEMO_LIST) {
-            cont.D_MEMO_LIST = cont.memoList
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-          } else {
-            // eslint-disable-next-line no-redeclare
-            var test = contentDetail.D_MEMO_LIST
-            if (!test) {
-              if (!contentDetail) {
-                test = []
-              } else {
-                test = contentDetail.memoList
-              }
-            }
-            // eslint-disable-next-line no-redeclare
-            var newArr = [
-              ...test,
-              ...cont.memoList
-            ]
-            // eslint-disable-next-line no-redeclare
-            var newList = this.replaceMemoArr(newArr)
-            cont.D_MEMO_LIST = newList
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-          }
+      newArr = [
+        // ...this.boardContentsList,
+        ...contentList
+      ]
+      this.allContentsList = this.replaceArr(newArr)
+      for (let i = 0; i < this.allContentsList.length; i++) {
+        cont = this.allContentsList[i]
+        tempContentDetail = []
+        tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+        if (tempContentDetail) {
+          contentDetail = tempContentDetail[0]
+        } else {
+          contentDetail = null
         }
-      } else if (this.viewMainTab === 'B') {
-        newArr = [
-          // ...this.boardContentsList,
-          ...contentList
-        ]
-        this.boardContentsList = this.replaceArr(newArr)
-        for (let i = 0; i < this.boardContentsList.length; i++) {
-          cont = this.boardContentsList[i]
-          tempContentDetail = []
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
-          if (tempContentDetail) {
-            contentDetail = tempContentDetail[0]
-          } else {
-            contentDetail = null
-          }
 
-          if (!cont.D_MEMO_LIST) {
-            cont.D_MEMO_LIST = cont.memoList
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-          } else {
-            // eslint-disable-next-line no-redeclare
-            var test = contentDetail.D_MEMO_LIST
-            if (!test) {
-              if (!contentDetail) {
-                test = []
-              } else {
-                test = contentDetail.memoList
-              }
+        if (!cont.D_MEMO_LIST) {
+          cont.D_MEMO_LIST = cont.memoList
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+        } else {
+          // eslint-disable-next-line no-redeclare
+          var test = contentDetail.D_MEMO_LIST
+          if (!test) {
+            if (!contentDetail) {
+              test = []
+            } else {
+              test = contentDetail.memoList
             }
-            // eslint-disable-next-line no-redeclare
-            var newArr = [
-              ...test,
-              ...cont.memoList
-            ]
-            // eslint-disable-next-line no-redeclare
-            var newList = this.replaceMemoArr(newArr)
-            cont.D_MEMO_LIST = newList
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           }
-        }
-      } else if (this.viewMainTab === 'A') {
-        newArr = [
-          // ...this.boardContentsList,
-          ...contentList
-        ]
-        this.allContentsList = this.replaceArr(newArr)
-        for (let i = 0; i < this.allContentsList.length; i++) {
-          cont = this.allContentsList[i]
-          tempContentDetail = []
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
-          if (tempContentDetail) {
-            contentDetail = tempContentDetail[0]
-          } else {
-            contentDetail = null
-          }
-
-          if (!cont.D_MEMO_LIST) {
-            cont.D_MEMO_LIST = cont.memoList
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-          } else {
-            // eslint-disable-next-line no-redeclare
-            var test = contentDetail.D_MEMO_LIST
-            if (!test) {
-              if (!contentDetail) {
-                test = []
-              } else {
-                test = contentDetail.memoList
-              }
-            }
-            // eslint-disable-next-line no-redeclare
-            var newArr = [
-              ...test,
-              ...cont.memoList
-            ]
-            // eslint-disable-next-line no-redeclare
-            var newList = this.replaceMemoArr(newArr)
-            cont.D_MEMO_LIST = newList
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
-          }
+          // eslint-disable-next-line no-redeclare
+          var newArr = [
+            ...test,
+            ...cont.memoList
+          ]
+          // eslint-disable-next-line no-redeclare
+          var newList = this.replaceMemoArr(newArr)
+          cont.D_MEMO_LIST = newList
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
         }
       }
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
@@ -2030,35 +1318,15 @@ export default {
         var resultList = await this.getPushContentsList(20, 0, true)
       }
       if (resultList === '') {
-        if (this.viewMainTab === 'P') {
-          this.alimContentsList = []
-        } else if (this.viewMainTab === 'B') {
-          this.boardContentsList = []
-        } else if (this.viewMainTab === 'A') {
-          this.allContentsList = []
-        }
+        this.allContentsList = []
       } else {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         var newArr = []
-        if (this.viewMainTab === 'P') {
-          newArr = [
-          // ...this.alimContentsList,
-            ...resultList.content
-          ]
-          this.alimContentsList = this.replaceArr(newArr)
-        } else if (this.viewMainTab === 'B') {
-          newArr = [
-            // ...this.boardContentsList,
-            ...resultList.content
-          ]
-          this.boardContentsList = this.replaceArr(newArr)
-        } else if (this.viewMainTab === 'A') {
-          newArr = [
-            // ...this.boardContentsList,
-            ...resultList.content
-          ]
-          this.allContentsList = this.replaceArr(newArr)
-        }
+        newArr = [
+          // ...this.boardContentsList,
+          ...resultList.content
+        ]
+        this.allContentsList = this.replaceArr(newArr)
         this.endListSetFunc(resultList)
       }
       this.scrollMove()
@@ -2150,37 +1418,16 @@ export default {
         var resultList = await this.getPushContentsList(pageSize, this.offsetInt, true)
       }
       if (resultList === '') {
-        // eslint-disable-next-line no-debugger
-        debugger
-        if (this.viewMainTab === 'P') {
-          this.alimContentsList = []
-        } else if (this.viewMainTab === 'B') {
-          this.boardContentsList = []
-        } else if (this.viewMainTab === 'A') {
-          this.allContentsList = []
-        }
+        this.allContentsList = []
       } else {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         var newArr = []
-        if (this.viewMainTab === 'P') {
-          newArr = [
-          // ...this.alimContentsList,
-            ...resultList.content
-          ]
-          this.alimContentsList = this.replaceArr(newArr)
-        } else if (this.viewMainTab === 'B') {
-          newArr = [
-            // ...this.boardContentsList,
-            ...resultList.content
-          ]
-          this.boardContentsList = this.replaceArr(newArr)
-        } else if (this.viewMainTab === 'A') {
-          newArr = [
-            // ...this.boardContentsList,
-            ...resultList.content
-          ]
-          this.allContentsList = this.replaceArr(newArr)
-        }
+
+        newArr = [
+          // ...this.boardContentsList,
+          ...resultList.content
+        ]
+        this.allContentsList = this.replaceArr(newArr)
         this.endListSetFunc(resultList)
       }
       this.scrollMove()

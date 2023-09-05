@@ -242,6 +242,14 @@ const D_CHANNEL = {
             D_CHAN_AUTH.mngMemberYn = team.userTeamInfo.mngMemberYn
           }
         } else { // 확인 더 필요
+          if (!team.userTeamInfo && team.followerKey) {
+            if (index !== -1) {
+              if (state.chanList[index].D_CHAN_AUTH) {
+                D_CHAN_AUTH = state.chanList[index].D_CHAN_AUTH
+                team.userTeamInfo = state.chanList[index].D_CHAN_AUTH
+              }
+            }
+          }
           D_CHAN_AUTH.settingYn = true
           if (team.memberNameMtext && team.memberNameMtext !== '') {
             D_CHAN_AUTH.memberNameMtext = team.memberNameMtext

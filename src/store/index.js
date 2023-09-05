@@ -6,11 +6,12 @@ import D_USER from '@/store/modules/D_userStore.js'
 import D_HISTORY from '@/store/modules/D_historyStack.js'
 import D_CHANNEL from '@/store/modules/D_channelStore.js'
 import D_NOTI from '@/store/modules/D_notiStore.js'
+import D_PRE_DATA from '@/store/modules/D_previousData.js'
 
 import createPersistedState from 'vuex-persistedstate'
 
 const storageState = createPersistedState({
-  paths: ['D_USER', 'D_HISTORY', 'D_CHANNEL', 'D_NOTI'],
+  paths: ['D_USER', 'D_HISTORY', 'D_CHANNEL', 'D_NOTI', 'D_PRE_DATA'],
   storage: window.localStorage
   /* key: 'vuexStore',
   storage: window.sessionStorage */
@@ -22,7 +23,8 @@ const store = createStore({
     D_USER: D_USER,
     D_HISTORY: D_HISTORY,
     D_CHANNEL: D_CHANNEL,
-    D_NOTI: D_NOTI
+    D_NOTI: D_NOTI,
+    D_PRE_DATA: D_PRE_DATA
   },
   plugins: [storageState]
 })

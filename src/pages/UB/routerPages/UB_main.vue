@@ -458,6 +458,7 @@ export default {
       // paramMap.set('myTeamKey', 836)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
+      paramMap.set('fUserKey', this.GE_USER.userKey)
       var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
       )
       console.log('responsed')

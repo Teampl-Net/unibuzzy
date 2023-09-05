@@ -142,12 +142,8 @@
                 @goScroll="scrollOn"
                 :pBoardList="mChanInfo.boardList"
                 :propParams="this.mChanInfo.initData"
-                :initData="this.mChanInfo.initData.contentsList"
+                :initData="this.mChanInfo.initData? this.mChanInfo.initData.contentsList : null"
                 @cMemoEditYn="changeMemoEditYn"
-                :targetContents="{
-                targetContentsKey: mChanInfo.targetContentsKey,
-                jobkindId: mChanInfo.jobkindId,
-                }"
                 :chanAlimYn="true"
                 :pChannelDetail="this.CHANNEL_DETAIL"
                 :chanAlimTargetType="this.mChanInfo.targetType"
@@ -156,7 +152,6 @@
                 @openPage="openPage"
                 :chanDetailKey="this.CHANNEL_DETAIL.teamKey"
                 @numberOfElements="numberOfElements"
-                @targetContentScrollMove="targetContentScrollMove"
                 @openLoading="this.$emit('openLoading')"
                 @closeLoading="this.$emit('closeLoading')"
                 @openPop="openWriteContentsPop"
@@ -293,6 +288,8 @@ import userDetailPop from '../../../components/UB/popup/UB_userDetailPop.vue'
 export default {
   data () {
     return {
+      scrollPosition: null,
+      preDataYn: false,
       ChanFollowYn: false,
       mChanCardShowYn: true,
       mLastScroll: null,
@@ -364,6 +361,21 @@ export default {
     const intervalHandler = setInterval(() => {
       const chanMainRef = this.$refs.chanMainRef
       if (chanMainRef) {
+        // eslint-disable-next-line no-debugger
+        debugger
+        if (this.scrollPosition && Number(this.scrollPosition) > 0) {
+          const chanCardTopRef = this.$refs.chanPushListArea
+          const chanCardTopArea = this.$refs.chanCardTopArea
+          chanMainRef.scrollTo({ top: 210 + 55 + Number(this.$STATUS_HEIGHT) })
+          this.mChanCardShowYn = false
+          const triggerPosition = chanCardTopRef.getBoundingClientRect().top
+          const opacity = Math.max(0, 1 - (chanCardTopRef.clientHeight / triggerPosition))
+          if (chanCardTopArea) {
+            chanCardTopArea.style.opacity = opacity.toFixed(2)
+          }
+          // chanCardTopRef.style.marginTop = Number(this.$STATUS_HEIGHT) + 'px'
+        }
+
         chanMainRef.addEventListener('scroll', this.handleScroll)
         clearInterval(intervalHandler)
       }
@@ -847,9 +859,6 @@ export default {
       param.ownerYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn
       this.$emit('openPop', param)
     },
-    reloadPage () {
-      this.readyFunction()
-    },
     setWindowSize () {
       this.mwWidth = window.innerWidth
       var nowHeight = window.innerHeight
@@ -890,10 +899,6 @@ export default {
         console.log(chanCardTopRef.scrollTop)
       } */
       // pushList 스크롤시 발생하는듯
-    },
-    targetContentScrollMove (wich, jobkindId) {
-      // 22
-      console.log(wich)
     },
     handleResize (event) {
       if (this.$checkMobile() === 'IOS') {
@@ -951,9 +956,6 @@ export default {
         }
         // this.mCabKeyListStr = result.data.cabinetKeyListStr
         await this.$addChanVuex([teamDetail])
-        if (result.data.cTeamList) {
-          await this.$addChanVuex(result.data.cTeamList)
-        }
         chanMainParam.nameMtext = teamDetail.nameMtext
         chanMainParam.chanName = teamDetail.nameMtext
         var initData = {}
@@ -989,16 +991,16 @@ export default {
       console.log(initData)
       if (initData.shortLink) {
         const initLink = JSON.parse(initData.shortLink.shortLink)
-        this.CHANNEL_DETAIL.copyTextStr = initLink.shortLink
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+        this.mChanInfo.copyTextStr = initLink.shortLink
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.mChanInfo])
         this.mMakeDeepLinkIng = false
       }
       this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
-      this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
+      this.ChanFollowYn = this.mChanInfo.D_CHAN_AUTH.followYn
       this.mTeamDetail = this.mChanInfo.initData.team.content['0']
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
-      if (this.mChanInfo.initData.cTeamList && this.mChanInfo.initData.cTeamList.length > 0) {
+      /* if (this.mChanInfo.initData.cTeamList && this.mChanInfo.initData.cTeamList.length > 0) {
         var result1 = await this.$getTeamList(paramMap, false)
         var followList = result1.data.content
         for (let i = 0; i < followList.length; i++) {
@@ -1007,7 +1009,7 @@ export default {
           }
         }
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
-      }
+      } */
     },
     async getTownCabinetList () {
       var param = {}
@@ -1149,75 +1151,81 @@ export default {
     setTimeout(() => {
       this.$emit('showCloudLoading', false)
     }, 800)
-    if (
-      this.propParams &&
+    const preDataYn = localStorage.getItem('preDataYn')
+    console.log(preDataYn)
+    if (preDataYn && preDataYn === 'true') {
+      localStorage.removeItem('preDataYn')
+    } else {
+      if (
+        this.propParams &&
       this.propParams.targetType === 'chanDetail' &&
       this.propParams.initData
-    ) {
-      this.mChanInfo = this.propParams
-      const initData = this.propParams.initData
-      if (initData.cabinetKeyListStr) {
-        this.mCabKeyListStr = initData.cabinetKeyListStr
-      }
-      if (initData.memberTypeList) {
-        this.mMemberTypeList = initData.memberTypeList
-        if (this.mMemberTypeList.length > 0) {
-          this.selectMemberObj = this.mMemberTypeList[0]
-        }
-      }
-      if (initData.teamMenuList) {
-        this.mChanInfo.boardList = initData.teamMenuList
-      }
-      if (
-        this.mChanInfo.initData.team.D_CHAN_AUTH &&
-        this.mChanInfo.initData.team.D_CHAN_AUTH.followYn
       ) {
-        this.$emit('followYn')
-      }
-      if (this.CHANNEL_DETAIL) {
-        if (initData.shortLink) {
-          const initLink = JSON.parse(initData.shortLink.shortLink)
-          this.CHANNEL_DETAIL.copyTextStr = initLink.shortLink
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
-            this.CHANNEL_DETAIL
-          ])
-          this.mMakeDeepLinkIng = false
-          this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
-        } else {
-          if (
-            this.mChanInfo.initData.team.copyTextStr === undefined &&
-            this.CHANNEL_DETAIL.copyTextStr === undefined &&
-            !this.mMakeDeepLinkIng
-          ) {
-            this.mMakeDeepLinkIng = true
-            const title =
-              '[uniBuzzy]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
-            const message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
-            const this_ = this
-            // 각 타운의 부모채널인지 아닌지 확인
-            const parent = this.CHANNEL_DETAIL.teamKey === this.GE_USER.myTeamKey ? 1 : 0
-            const ketSet = {
-              teamKey: this.CHANNEL_DETAIL.teamKey,
-              parentYn: parent
-            }
-            this.$makeShareLink(ketSet, 'chanDetail', message, title).then(res => {
-              this.CHANNEL_DETAIL.copyTextStr = res
-              this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
-                this.CHANNEL_DETAIL
-              ])
-              this_.mMakeDeepLinkIng = false
-            })
-            this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
+        this.mChanInfo = this.propParams
+        const initData = this.propParams.initData
+        if (initData.cabinetKeyListStr) {
+          this.mCabKeyListStr = initData.cabinetKeyListStr
+        }
+        if (initData.memberTypeList) {
+          this.mMemberTypeList = initData.memberTypeList
+          if (this.mMemberTypeList.length > 0) {
+            this.selectMemberObj = this.mMemberTypeList[0]
           }
         }
-      }
-      if (!this.selectMemberObj) {
-        this.getMemberTypeList()
-      }
-    } else {
-      this.getChanMain()
-      if (!this.selectMemberObj) {
-        this.getMemberTypeList()
+        if (initData.teamMenuList) {
+          this.mChanInfo.boardList = initData.teamMenuList
+        }
+        if (
+          this.mChanInfo.initData.team.D_CHAN_AUTH &&
+        this.mChanInfo.initData.team.D_CHAN_AUTH.followYn
+        ) {
+          this.$emit('followYn')
+        }
+        if (this.CHANNEL_DETAIL) {
+          if (initData.shortLink) {
+            const initLink = JSON.parse(initData.shortLink.shortLink)
+            this.CHANNEL_DETAIL.copyTextStr = initLink.shortLink
+            this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+              this.CHANNEL_DETAIL
+            ])
+            this.mMakeDeepLinkIng = false
+            this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
+          } else {
+            if (
+              this.mChanInfo.initData.team.copyTextStr === undefined &&
+            this.CHANNEL_DETAIL.copyTextStr === undefined &&
+            !this.mMakeDeepLinkIng
+            ) {
+              this.mMakeDeepLinkIng = true
+              const title =
+              '[uniBuzzy]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+              const message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
+              const this_ = this
+              // 각 타운의 부모채널인지 아닌지 확인
+              const parent = this.CHANNEL_DETAIL.teamKey === this.GE_USER.myTeamKey ? 1 : 0
+              const ketSet = {
+                teamKey: this.CHANNEL_DETAIL.teamKey,
+                parentYn: parent
+              }
+              this.$makeShareLink(ketSet, 'chanDetail', message, title).then(res => {
+                this.CHANNEL_DETAIL.copyTextStr = res
+                this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+                  this.CHANNEL_DETAIL
+                ])
+                this_.mMakeDeepLinkIng = false
+              })
+              this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
+            }
+          }
+        }
+        if (!this.selectMemberObj) {
+          this.getMemberTypeList()
+        }
+      } else {
+        this.getChanMain()
+        if (!this.selectMemberObj) {
+          this.getMemberTypeList()
+        }
       }
     }
   },
@@ -1327,9 +1335,35 @@ export default {
     },
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
+    },
+    GE_PRE_DATA () {
+      return this.$store.getters['D_PRE_DATA/GE_PRE_DATA']
     }
   },
   watch: {
+    GE_PRE_DATA: {
+      immediate: true,
+      handler (val) {
+        if (!val) return
+        if (val.scrollPosition && val.scrollPosition.position && val.scrollPosition.targetKind && val.scrollPosition.targetKey && val.listData && val.listData.length > 0) {
+          if (val.scrollPosition.targetKind === 'chanMain' && val.scrollPosition.targetKey === Number(this.$route.params.encodedTeamKey)) {
+            this.allContentsList = val.listData
+            this.mChanInfo = val.detailData
+            this.mChanInfo.initData = {}
+            this.mChanInfo.initData.contentsList = { content: val.listData }
+            this.scrollPosition = val.scrollPosition.position
+
+            this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
+            this.$nextTick(() => {
+              /* setTimeout(() => {
+                this.scrollMove(this.scrollPosition)
+                // this.$store.dispatch('D_PRE_DATA/AC_PRE_LIST_DATA', [])
+              }, 1500) */
+            })
+          }
+        }
+      }
+    },
     mChanCardShowYn (val, old) {
       const pushList = document.getElementById('pushListWrap')
       // const chanCardTopRef = this.$refs.chanPushListArea
@@ -1343,6 +1377,12 @@ export default {
         } else if (!val && old) {
           pushList.className = 'scrollOn'
           chanMainRef.className = 'scrollHidden'
+          // eslint-disable-next-line no-debugger
+          debugger
+          if (this.scrollPosition && Number(this.scrollPosition) > 0) {
+            pushList.scrollTo({ top: this.scrollPosition })
+            this.scrollPosition = null
+          }
           // chanCardTopRef.style.height = 'calc(100% - 200px - ' + this.$STATUS_HEIGHT + 'px'
         }
       }

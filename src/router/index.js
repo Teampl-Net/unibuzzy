@@ -62,7 +62,16 @@ if (type === 'UB') {
           meta: {
             page: 1
           },
-          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_contentsDetail.vue')
+          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_contentsDetail.vue'),
+          beforeEnter (to, from, next) {
+            if (from.name && from.name !== to.name && from.name === 'chanMain') {
+              localStorage.setItem('preListTeamKey', from.params.encodedTeamKey)
+              // eslint-disable-next-line no-debugger
+              debugger
+            }
+            next()
+            // ...
+          }
         },
         {
           // path: '/chan/:key',
@@ -70,7 +79,37 @@ if (type === 'UB') {
           path: '/chan/:encodedTeamKey',
           name: 'chanMain',
           props: true,
-          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_chanMain.vue')
+          component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_chanMain.vue'),
+          beforeEnter (to, from, next) {
+            // eslint-disable-next-line no-debugger
+            debugger
+            if (from.name && from.name !== to.name && from.name === 'contents') {
+              const fromTeamKey = localStorage.getItem('preListTeamKey')
+              if (fromTeamKey && fromTeamKey === to.params.encodedTeamKey) {
+                localStorage.setItem('preDataYn', 'true')
+              }
+            } else {
+              store.commit('D_PRE_DATA/MU_CLEAN')
+              localStorage.removeItem('preDataYn')
+              localStorage.removeItem('preListTeamKey')
+            }
+            next()
+            // ...
+          },
+          beforeRouteLeave (to, from, next) {
+            // 여기에 페이지를 떠나기 전에 수행할 작업을 추가합니다.
+            if (to.name !== 'contents') {
+              store.commit('D_PRE_DATA/MU_CLEAN')
+              localStorage.removeItem('preDataYn')
+              localStorage.removeItem('preListTeamKey')
+            }
+            // 예시: 페이지를 떠나기 전에 어떤 동작 수행
+            console.log('상세 페이지를 떠나기 전에 수행할 작업입니다.')
+
+            // 다음 페이지로 이동하려면 next()를 호출합니다.
+            next()
+          }
+
           // alias: ['/:pTeamKey', '']
         },
         {

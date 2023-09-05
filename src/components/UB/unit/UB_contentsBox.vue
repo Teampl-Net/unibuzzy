@@ -216,14 +216,14 @@
 </template>
 <script>
 import stickerListSetting from '../../popup/common/D_stickerListSetting.vue'
-import memoCompo from './D_contBoxMemo.vue'
+import memoCompo from '../../pageComponents/push/D_contBoxMemo.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
 import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import statCodeComponent from '@/components/board/D_manageStateCode.vue'
 import statCodePop from '@/components/board/D_manageStateCodePop.vue'
-import attachFileListPop from '../main/unit/D_commonAttachFileListPop.vue'
-import recvListPop from './D_contentsRecvListPop.vue'
-import userDetailPop from '../../UB/popup/UB_userDetailPop.vue'
+import attachFileListPop from '../../pageComponents/main/unit/D_commonAttachFileListPop.vue'
+import recvListPop from '../../pageComponents/push/D_contentsRecvListPop.vue'
+import userDetailPop from '../popup/UB_userDetailPop.vue'
 
 export default {
   components: {
@@ -250,20 +250,9 @@ export default {
     pNoAuthYn: {}
   },
   created () {
-    console.log(this.contentsEle)
     // this.saveStickerList()
     if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
     else this.mFadeNotShowYn = false
-    if (this.CONT_DETAIL) {
-      if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST) {
-        var stickerList = []
-        for (var s = 0; s < this.CONT_DETAIL.D_CONT_USER_STICKER_LIST.length; s++) {
-          if (!this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[s].sticker) continue
-          stickerList.push(this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[s].sticker)
-        }
-        this.mContStickerList = this.replaceArr(stickerList)
-      }
-    }
   },
   data () {
     return {
@@ -312,18 +301,11 @@ export default {
       mshowMoreYn: false
     }
   },
-  updated () {
-    this.addImgEvnt()
-  },
   async mounted () {
-    // this.addImgEvnt()
     var scrollWrap = document.getElementById('mainAllWrap')
     if (scrollWrap) {
       scrollWrap.addEventListener('scroll', this.handleScroll)
     }
-    // if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTACH_FILE_LIST) {
-    //   this.settingFileList()
-    // }
     var this_ = this
     this.$nextTick(async () => {
       this_.addImgEvnt()
@@ -679,7 +661,6 @@ export default {
             tempDiv.classList.add('firstTextLine')
             child.prepend(tempDiv)
           }
-        } else {
         }
       }
     },
@@ -1471,9 +1452,9 @@ export default {
         // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
       }
       // console.log(cont)
-      if (cont[0] && cont[0].shareList && cont[0].shareList[0] && cont[0].shareList[0].length !== 0) {
+      if (cont[0].shareList && cont[0].shareList[0] && cont[0].shareList[0].length !== 0) {
         if (cont[0].shareList[0].accessKind === 'F') {
-          if (this.CHANNEL_DETAIL && (this.CHANNEL_DETAIL.D_CHAN_AUTH === true || (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) || this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)) {
+          if (this.CHANNEL_DETAIL.D_CHAN_AUTH === true || (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) || this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) {
             cont[0].VIEW_YN = true
             return cont[0]
           } else {

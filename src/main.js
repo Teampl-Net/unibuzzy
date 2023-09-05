@@ -34,6 +34,7 @@ import gAxiosLoading from './components/D_axiosLoadingSpinner.vue'
 import coreService from '../public/commonAssets/D_coreService'
 import uploadFile from './assets/js/Tal_uploadFile'
 import gContentsBox from './components/pageComponents/push/D_contentsBox.vue'
+import gUBContentsBox from './components/UB/unit/UB_contentsBox.vue'
 import VueCropper from 'vue-cropperjs'
 import gColorPicker from './components/unit/D_colorPicker.vue'
 import gImgPop from './components/popup/common/D_commonGalleryPop.vue'
@@ -133,6 +134,7 @@ if (type === 'D') {
 
 // app.use(VueEasyLightbox)
 app.component('gContentsBox', gContentsBox)
+app.component('gUBContentsBox', gUBContentsBox)
 app.component('gSearchBox', gSearchBox)
 app.component('gBtnSmall', gButtonS)
 app.component('gInput', gInput)

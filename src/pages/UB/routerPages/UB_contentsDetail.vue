@@ -10,7 +10,7 @@
 </i18n>
 <template>
     <div ref="contScrollWrap" id="contsScrollWrap" :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 50)  + 'px'" v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL)" class="boardDetailWrap" >
-        <gContentsBox :pFadeNotShowYn="true" @openImgPop="openImgPop" @scrollToMemoTop="scrollToMemoTop" @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.cDetail" :childShowYn="true" @openPop="openPop" @openPage="goChannelMain" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
+        <gUBContentsBox :pFadeNotShowYn="true" @openImgPop="openImgPop" @scrollToMemoTop="scrollToMemoTop" @fileDownload="filePopShowYn = !filePopShowYn" :imgClickYn="true" ref="myContentsBox" :propDetailYn="true" :contentsEle="this.cDetail" :childShowYn="true" @openPop="openPop" @openPage="goChannelMain" @writeMemoScrollMove='writeMemoScrollMove' @memoLoadMore='memoLoadMore'/>
 
         <!-- <attachFileListPop :propFileData="this.CONT_DETAIL" v-if="filePopShowYn === true" @closePop="filePopShowYn = false"/> -->
 
