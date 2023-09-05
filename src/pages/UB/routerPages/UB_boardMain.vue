@@ -31,6 +31,9 @@
     <pinPostPop v-if="mPinPostPopShowYn" :pUpdateTopview="updateTopview" :pTVList="this.CAB_DETAIL.topviewList? this.CAB_DETAIL.topviewList.content:[]" :pChanDetail="CHANNEL_DETAIL" :pClosePop="closePinPostPop" :pBoardDetail="CAB_DETAIL" />
     <div id="boardWrap" v-if="CAB_DETAIL" :style="CAB_DETAIL.picBgPath? 'background: ' + CAB_DETAIL.picBgPath + ';' + 'padding-top: ' + this.$STATUS_HEIGHT + 'px' : 'background: #ece6cc;' + 'padding-top: ' + this.$STATUS_HEIGHT + 'px'" style="overflow: auto;" ref="boardListWrap" class="boardListWrap">
       <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
+      <div class="cursorP" style="z-index: 10; position: absolute; left: 10px; top: 10px; width: 0.8rem;">
+        <img class="w100P" @click="goMain" src="@/assets/images/common/icon_back.png" alt="">
+      </div>
       <p class="font20 fontBold textOverdot" :style="CAB_DETAIL.cabinetNameMtext.length > 15 ? 'font-size:18px !important;' :'' " style="color:#2c3e50; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); max-width: calc(100% - 120px);">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</p>
       <div id="summaryHeader" class="summaryHeader">
         <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :style="propParams.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="@/assets/images/channel/icon_official.svg" v-if="propParams.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propParams.nameMtext)}}</p> -->
@@ -109,7 +112,7 @@
       @click="refreshAll" >
         <img src="@/assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;" />
       </div>
-    <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" v-if="CHANNEL_DETAIL && CAB_DETAIL.shareAuth && this.CAB_DETAIL.shareAuth.W === true && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" @click="openWriteBoard" alt="게시글 작성 버튼" style="position: absolute; bottom: 4rem; right: 10%;" class="img-78">
+    <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" v-if="CAB_DETAIL.cabinetKey === 13909 || (CHANNEL_DETAIL &&  CAB_DETAIL.shareAuth && this.CAB_DETAIL.shareAuth.W === true && CHANNEL_DETAIL.D_CHAN_AUTH.followYn)" @click="openWriteBoard" alt="게시글 작성 버튼" style="position: absolute; bottom: 4rem; right: 10%;" class="img-78">
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
   <!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propParams="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
@@ -342,6 +345,23 @@ export default {
   },
 
   methods: {
+    hasHistory () {
+      return window.history.length > 1
+    },
+    async goMain () {
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
+      if (this.hasHistory()) {
+        this.$router.go(-1)
+      } else {
+        this.$router.push('/')
+      }
+      // this.$router.go(-1)
+      // this.$router.replace({ path: '/' })
+    },
     consoleShow () {
       console.log('clicked')
     },

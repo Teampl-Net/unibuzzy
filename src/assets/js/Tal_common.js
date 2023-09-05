@@ -352,7 +352,7 @@ export const commonMethods = {
       return resultMap
     } else {
       // this.$router.replace('policies')
-      router.replace({ name: 'unknown' })
+      router.replace({ name: 'login' })
     }
   },
 

@@ -490,13 +490,12 @@ export default {
             ])
 
             this.$emit('showToastPop', this.$t('CHAN_MSG_UNFOLLOW'))
-            // if (this.$refs.ChanAlimListPushListCompo) {
-            //   this.$refs.ChanAlimListPushListCompo.initGetContentsList()
-            // }
+            if (this.$refs.ChanAlimListPushListCompo) {
+              this.$refs.ChanAlimListPushListCompo.refreshAll()
+            }
             // this.getChanMain()
             if (result.result || result) {
-              this.getChanMain()
-              // this.$emit('pageReload')
+              this.$emit('pageReload')
             } else {
               this.ChanFollowYn = true
               this.mErrorPopBodyStr = this.$t('COMMON_MSG_FAILED')
@@ -768,7 +767,7 @@ export default {
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
         // this.getChanMain()
         if (this.$refs.ChanAlimListPushListCompo) {
-          this.$refs.ChanAlimListPushListCompo.initGetContentsList()
+          this.$refs.ChanAlimListPushListCompo.refreshAll()
         }
         await this.$addChanList(this.mChanInfo.teamKey)
       }
@@ -925,16 +924,12 @@ export default {
           { url: '/sUniB/tp.getChanMainBoard', param: param },
           false
         )
-        // eslint-disable-next-line no-debugger
-        debugger
         if (!result || !result.data || result.data.result !== 'OK') {
           // this.$showToastPop('채널을 찾을 수 없습니다!')
           this.$showToastPop('Channel not found!')
           return
         }
         const teamDetail = result.data.team.content[0]
-        console.log('teamDetail')
-        console.log(teamDetail)
         if (
           teamDetail.userTeamInfo === undefined ||
           teamDetail.userTeamInfo === null ||
@@ -1225,7 +1220,6 @@ export default {
         this.getMemberTypeList()
       }
     }
-    console.log('222chanDetail', this.mChanInfo)
   },
   computed: {
     CHANNEL_DETAIL () {

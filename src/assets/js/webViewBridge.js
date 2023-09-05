@@ -107,7 +107,7 @@ const isJsonString = (str) => {
             router.replace({ name: 'main' })
           } else {
             // router.replace({ path: 'policies' })
-            router.replace({ name: 'unknown' })
+            router.replace({ name: 'login' })
           }
         } else if (message.type === 'CheckUserPermission') {
           router.replace({ name: 'permissions' })
@@ -205,7 +205,7 @@ const isJsonString = (str) => {
             }
             if (addVueResult === false) {
               alert(
-                '해당 컨텐츠를 찾을 수 없습니다.\n나중에 다시 시도해주세요'
+                'The content could not be found.\nPlease try again later'
               )
               return
             }

@@ -11,6 +11,10 @@
     <transition name="showUp">
       <areaInfoPop :pBdClickedYn="mBdClickedYn" :chanDetail="{ modiYn: false }" @openImgPop="openImgPop" :pBdAreaList="mBdAreaList" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
     </transition>
+    <div v-if="mChanInfoPopShowYn" @click="closeChanInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+    <transition name="showUp">
+      <infoBox v-if="mChanInfoPopShowYn" @openPop="openPop" :pClosePop="closeChanInfoBox" @openPage="openPage" :pAreaInfo="mAreaInfo" :pAreaDetail="mAreaDetail" :pChanInfo="mSelectedChanInfo" />
+    </transition>
     <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
       <!-- <div class="ballon">Go to other town?</div> -->
       <div class="ballon">
@@ -86,6 +90,7 @@ import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue
 import { onMessage } from '../../../assets/js/webviewInterface'
 import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel.vue'
 import mainBoardList from '../../../components/UB/popup/UB_boardListPop.vue'
+import infoBox from '../../../components/popup/info/UB_infoBox.vue'
 // import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
   props: {
@@ -131,7 +136,9 @@ export default {
       mSelectSchoolPopShowYn: false,
       mSchoolList: [],
       mBdClickedYn: false,
-      mOffsetInt: 0
+      mOffsetInt: 0,
+      mChanInfoPopShowYn: false,
+      mSelectedChanInfo: {}
     }
   },
   created () {
@@ -209,6 +216,17 @@ export default {
       this.closeCreChanPop()
       param.targetType = 'boardMain'
       this.openPage(param)
+    },
+    closeChanInfoBox () {
+      this.resetHistory()
+      if (this.clickedArea && this.clickedArea.clickedYn) {
+        this.clickedArea.clickedYn = false
+      } else if (this.clickedBd && this.clickedBd.clickedYn) {
+        this.clickedBd.clickedYn = false
+      }
+      this.mChanInfoPopShowYn = false
+      this.mBgNotClickYn = false
+      return false
     },
     closeInfoBox () {
       this.resetHistory()
@@ -326,6 +344,40 @@ export default {
         this.$router.push({ name: 'uniBmain' })
       }
       // this.$router.go(0)
+    },
+    async openChanInfoPop (area, teamKey) {
+      if (this.mBgNotClickYn) return
+      this.mBgNotClickYn = true
+      const param = {
+        bdArea: {
+          bdAreaKey: area.bdAreaKey
+          // bdAreaKey: 3
+        }
+      }
+      if (area.priority === 0) {
+        this.mAreaInfo = area
+        this.openBoardPop()
+      } else {
+        var result = await this.$commonAxiosFunction({
+          url: '/sUniB/tp.getBdAreaDetail',
+          param: param
+        })
+        if (result.data) {
+          this.mAreaDetail = await result.data
+          this.mAreaInfo = await area
+          console.log('====mAreaDetail===', result)
+          console.log('====mAreaInfo===', this.mAreaInfo)
+          this.mChanInfoPopShowYn = true
+          this.allClearFocus()
+
+          const index = this.mAreaDetail.bdList.findIndex(item => item.targetKey === teamKey)
+          if (index !== -1) {
+            this.mSelectedChanInfo = this.mAreaDetail.bdList[index]
+          }
+          console.log('여기입니다아아아')
+          console.log(this.mSelectedChanInfo)
+        }
+      }
     },
     async openAreaInfoPop (area) {
       if (this.mBgNotClickYn) return
@@ -462,6 +514,8 @@ export default {
               type: area.priority === 0 ? 'CB' : '',
               imgLink: area.bdList[j].bdIconPath,
               maskedImageUrl: area.bdList[j].bdIconPath,
+              teamKey: area.bdList[j].targetKey,
+              targetKind: area.bdList[j].targetKind,
               maskedImageStyle: {},
               clickedYn: false,
               left: 0,
@@ -748,7 +802,11 @@ export default {
               this.mBdClickedYn = true
               bd.clickedYn = true
               bd.maskedImageStyle = { filter: 'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)' }
-              this.openAreaInfoPop(this.mBdAreaList[area.key])
+              if (bd.targetKind === 'C') {
+                this.openAreaInfoPop(this.mBdAreaList[area.key])
+              } else {
+                this.openChanInfoPop(this.mBdAreaList[area.key], bd.teamKey)
+              }
               return
             }
           }
@@ -878,7 +936,8 @@ export default {
     selectSchoolPop,
     UBAreaBdList,
     areaInfoPop,
-    createBoardChannel
+    createBoardChannel,
+    infoBox
     // UBBgEffect
   }
 }
