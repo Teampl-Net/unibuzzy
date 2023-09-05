@@ -4,7 +4,7 @@
       <img class="UBContentImg" :src="pFavListEach.imgChannBg" />
       <div class="UBContentBox">
         <div class="UBContentTitleBox">
-          <div class="JOUsingNumber commonBigText"><span class="JOUsingNumberLine">0</span>{{ pIndex +1 }}</div>
+          <div class="UBUsingNumber commonBigText"><span class="UBUsingNumberLine">0</span>{{ pIndex +1 }}</div>
         </div>
         <div class="UBContentTitle commonHeaderText">{{ pFavListEach.favChannName }}</div>
         <div class="UBBody commonTitleTextNoBold">{{ pFavListEach.favChannFollower }}</div>
@@ -27,10 +27,10 @@ export default ({
 .UBContentTitle{
   width: 100%; height: 40px; float: left; margin-top: 20px; color: white;
 }
-.JOUsingNumberLine {
+.UBUsingNumberLine {
   border-bottom: 3px solid white;
 }
-.JOUsingNumber {
+.UBUsingNumber {
   color: #FFD951; float: left;
 }
 .UBContentTitleBox {

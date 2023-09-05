@@ -1,6 +1,6 @@
 <template>
-  <div v-if="$route.path !== '/chanList'" class="commonPopHeaderWrap" style="background:transparent !important;">
-    <div @click="goMain" class="fl cursorP " style="min-width: 70px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
+  <div v-if="$route.path !== '/chanList'" class="commonPopHeaderWrap chanMainHeader">
+    <div @click="goMain" class="fl cursorP mainBackBtn">
       <!-- <img v-if="mBlackYn === false && targetType !== 'boardMain'" src="../../../assets/images/common/icon_back_white.png" class=" commonPopBackBtn" > -->
       <img v-if="targetType !== 'boardMain'" :src="dynamicSrc()" class=" commonPopBackBtn" >
       <img class=" commonPopBackBtn" v-else src="@/assets/images/common/icon_back.png">
@@ -203,6 +203,18 @@ export default {
 }
 </script>
 <style scoped>
+.chanMainHeader {
+  background-color: transparent !important;
+}
+.mainBackBtn {
+  min-width: 70px;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  left: 1rem;
+}
 .commonPopHeaderWrap{
   position: fixed;
   justify-content: center;

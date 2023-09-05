@@ -1,16 +1,16 @@
 <template>
   <!-- <div class="w100P " style="position: fixed; top: 0; left: 0; height: 60px; background: none; z-index: 9; display: flex; align-items: center; justify-content: center;"> -->
   <div class="mainHeaderWrap headerBottom" v-if="pRouterHeaderInfo" :style="(ROUTER_PATH && (ROUTER_PATH === '/' || ROUTER_PATH === '/unibuzzy')? 'background: none !important; box-shadow: none !important;' : '') ">
-    <div v-if="pContentsYn" v-on:click="goBack" class="fl cursorP" style="min-width: 25px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
+    <div v-if="pContentsYn" v-on:click="goBack" class="fl cursorP mainHeaderBack">
       <img src="../../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
     </div>
-    <div v-else v-on:click="showMenu" class="fl cursorP " style="min-width: 25px; height: 100%; position: absolute; display: flex; justify-content: flex-start; align-items: center; left: 1rem;">
+    <div v-else v-on:click="showMenu" class="fl cursorP mainHeaderBack">
       <img class="mainMenuIcon" height="20" @click="showMenu()" src="../../../assets/images/common/icon_menu.png"/>
     </div>
     <!-- <img v-if="pRouterHeaderInfo.logoImg" :src="pRouterHeaderInfo.logoImg" height="30" style="margin-right: 5px; border: 2px solid white; background: white; border-radius: 100%; -webkit-user-drag: none;" /> -->
     <div style="width:60%; min-width:177px;">
       <p v-if="$route.path === '/'" class="headerFont fontBold fl w100P" style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color: #062bb5;">{{ pRouterHeaderInfo }}</p>
-      <p v-else class="headerFont fontBold fl" style="width:100%; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color: #062bb5;">{{ pRouterHeaderInfo }}</p>
+      <p v-else class="headerFont fontBold fl w100P" style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color: #062bb5;">{{ pRouterHeaderInfo }}</p>
     </div>
     <div @click="goLogList" class="cursorP" style="height: 44px; right: 55px; position: absolute; display: flex; align-items: center; justify-content: center;">
       <img height=20 src="../../../assets/images/common/icon_bell.svg"/>
@@ -96,6 +96,15 @@ export default {
   text-align: left;
   width: calc(100% + 1px);
   background-color:#fff;
+}
+.mainHeaderBack {
+  min-width: 25px;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  left: 1rem;
 }
 /* .mainMenuIcon{width: 1.8rem; margin-top: 5px; -webkit-user-drag: none;} */
 .mainHeaderLogo{width: 1.7rem; margin: 0 0.4rem; -webkit-user-drag: none;}
