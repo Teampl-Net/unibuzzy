@@ -548,10 +548,14 @@ export default {
     }
   },
   methods: {
-    hideSkeleton () {
-      setTimeout(() => {
+    hideSkeleton (noWaitYn) {
+      if (noWaitYn) {
         this.skeletonShow = false
-      }, 2000)
+      } else {
+        setTimeout(() => {
+          this.skeletonShow = false
+        }, 2000)
+      }
     },
     closeUnknownLoginPop () {
       this.mUnknownLoginPopYn = false
@@ -631,7 +635,7 @@ export default {
       // var this_ = this
       var result = await this.getPushContentsList(null, null, false)
       if (!result || result === '' || !result.content) {
-        this.hideSkeleton()
+        this.hideSkeleton(true)
         return
       }
       await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
@@ -670,7 +674,7 @@ export default {
       if (result.content.length > 0) {
         this.canLoadYn = true
       }
-      this.hideSkeleton()
+      this.hideSkeleton(true)
       // this.updateStoreData(uniqueArr)
     },
     async readyFunction () {
@@ -683,7 +687,7 @@ export default {
         this.endListYn = false
         this.offsetInt += 1
         this.canLoadYn = true
-        this.hideSkeleton()
+        this.hideSkeleton(true)
       } else {
         if (this.targetContents !== undefined && this.targetContents !== null && this.targetContents !== '') {
           if (this.targetContents.jobkindId === 'BOAR') {
@@ -1325,6 +1329,7 @@ export default {
         if (parentYn === 1) {
           param.creTeamKey = null
         }
+        param.myUserKey = this.GE_USER.userKey
         var resultList = null
         if (this.mCabinetKeyListStr) {
           param.cabinetKeyListStr = this.mCabinetKeyListStr

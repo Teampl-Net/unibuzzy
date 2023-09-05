@@ -735,9 +735,6 @@ export default {
                 // console.log('foundfoundfound', bd.top)
                 // break
               }
-              if (i === area.h - 1) {
-                this_.mLoadingYn = false
-              }
             }
           }
           // 마스킹 이미지 그리기
