@@ -9,7 +9,7 @@
     </transition>
     <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
-      <areaInfoPop :pBdClickedYn="mBdClickedYn" :chanDetail="{ modiYn: false }" @openImgPop="openImgPop" :pBdAreaList="mBdAreaList" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
+      <areaInfoPop :pBdClickedYn="mBdClickedYn" :pBoardList="mBoardList" :chanDetail="{ modiYn: false }" @openImgPop="openImgPop" :pBdAreaList="mBdAreaList" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
     </transition>
     <div v-if="mChanInfoPopShowYn" @click="closeChanInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
     <transition name="showUp">
@@ -138,7 +138,8 @@ export default {
       mBdClickedYn: false,
       mOffsetInt: 0,
       mChanInfoPopShowYn: false,
-      mSelectedChanInfo: {}
+      mSelectedChanInfo: {},
+      mBoardList: []
     }
   },
   created () {
@@ -234,6 +235,7 @@ export default {
       } else if (this.clickedBd && this.clickedBd.clickedYn) {
         this.clickedBd.clickedYn = false
       }
+      this.mBoardList = []
       this.mInfoBoxShowYn = false
       return false
     },
@@ -371,8 +373,6 @@ export default {
           if (index !== -1) {
             this.mSelectedChanInfo = this.mAreaDetail.bdList[index]
           }
-          console.log('여기입니다아아아')
-          console.log(this.mSelectedChanInfo)
         }
       }
     },
@@ -387,7 +387,7 @@ export default {
       if (area.priority === 0) {
         this.mAreaInfo = area
         this.openBoardPop()
-      } else {
+      } else if (area.priority !== 1) {
         var result = await this.$commonAxiosFunction({
           url: '/sUniB/tp.getBdAreaDetail',
           param: param
@@ -400,6 +400,14 @@ export default {
           this.mInfoBoxShowYn = true
           this.allClearFocus()
         }
+      } else {
+        this.mAreaInfo = area
+        this.mAreaDetail = {
+          bdArea: this.mAreaInfo,
+          bdList: null
+        }
+        this.mInfoBoxShowYn = true
+        this.allClearFocus()
       }
     },
     closePop () {
@@ -748,7 +756,7 @@ export default {
         }
       }
     },
-    getInRectImgList (event) {
+    async getInRectImgList (event) {
       if (this.mainShowPopYn) return
       // 빌딩부터 역순으로 뒤짐
       // 빌딩이 발견됨, 스타일클리어 시키고, 효과를 주고 return해버리기
@@ -797,10 +805,8 @@ export default {
               bd.maskedImageStyle = { filter: 'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)' }
               if (bd.targetKind === 'C') {
                 this.openAreaInfoPop(this.mBdAreaList[area.key])
-              } else {
-                if (!this.mInfoBoxShowYn) {
-                  this.openChanInfoPop(this.mBdAreaList[area.key], bd.teamKey)
-                }
+              } else if (!this.mInfoBoxShowYn) {
+                this.openChanInfoPop(this.mBdAreaList[area.key], bd.teamKey)
               }
               return
             }
@@ -837,11 +843,38 @@ export default {
           this.clickedRank = area.buildingList.length + 1
           area.clickedYn = true
           area.maskedImageStyle = { filter: 'drop-shadow(0 0 5px yellow) drop-shadow(0 0 40px white)' }
+          if (this.mBdAreaList[area.key].priority === 1) {
+            await this.getBoardList(this.GE_USER.myTeamKey)
+          }
           if (!this.mChanInfoPopShowYn) {
             this.openAreaInfoPop(this.mBdAreaList[area.key])
           }
           break
         }
+      }
+    },
+    async getBoardList (teamKey) {
+      // eslint-disable-next-line no-debugger
+      debugger
+      const chanMainParam = {}
+      chanMainParam.targetType = 'chanDetail'
+      // const encryptedKey = decodeURIComponent(encodedKey)
+      // const teamKey = AES.decrypt(encryptedKey, 'encryptionSecret').toString(enc.Utf8)
+      chanMainParam.teamKey = teamKey
+      chanMainParam.targetKey = teamKey
+      const param = {}
+      param.teamKey = teamKey
+      param.fUserKey = this.GE_USER.userKey
+      param.userKey = this.GE_USER.userKey
+      const result = await this.$getViewData(
+        { url: '/sUniB/tp.getTeamMenuList', param: param },
+        false
+      )
+      if (!result || !result.data) {
+        // this.$showToastPop('채널을 찾을 수 없습니다!')
+        this.$showToastPop('Channel not found!')
+      } else {
+        this.mBoardList = result.data
       }
     },
     allClearFocus () {

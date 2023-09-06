@@ -1,7 +1,7 @@
 <template>
   <!-- <createBoardChannel v-if="createNewPage" :pClosePop="closeNewPage"  :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pBdAreaList="mBdAreaList" /> -->
   <div v-if="pAreaInfo && pAreaDetail" class="commonPopWrap" style="padding: 10px 20px; min-width: 300px; position: absolute;" @click.stop>
-    <img src="@/assets/images/button/Icon_CreChanBtn.png" @click="pOpenCreChanPop" alt="채널 만들기 버튼" style="position: absolute; cursor: pointer; right: 10%; bottom: 20px; width: 50px; height: 50px; z-index: 100;" >
+    <img v-if="pAreaInfo.priority !== 1" src="@/assets/images/button/Icon_CreChanBtn.png" @click="pOpenCreChanPop" alt="채널 만들기 버튼" style="position: absolute; cursor: pointer; right: 10%; bottom: 20px; width: 50px; height: 50px; z-index: 100;" >
     <div style="position: absolute; top: -45px; right: 10px; width: 40px; height: 45px; background-color: rgba(255, 255, 255, 0.5); border-radius: 10px 10px 0 0; padding: 5px;">
       <img v-if="pBdClickedYn" src="../../../assets/images/main/icon_bd.png" class="h100P" />
       <img v-else src="../../../assets/images/main/icon_area.png" class="h100P" />
@@ -24,7 +24,8 @@
       </div>
       <div class="w100P" style="background: rgba(255, 255, 255, 0.5); border-radius: 10px; padding: 10px; display: flex; margin-top: 0px;">
         <div :class="{width100 :  mShowBdOrChan==='C'}" style="width: 50%; border-right: 2px solid #aaa;">
-          <p v-if="mShowBdOrChan==='T'"><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length > 0? pAreaDetail.bdList.length : '0' }}</span>{{ pAreaDetail.bdList.length === 1 ? ' channel' : ' channels' }}</p>
+          <p v-if="pAreaInfo.priority === 1"><span class="fontBold">{{ pBoardList && pBoardList.length > 0? pBoardList.length : '0' }}</span>{{ pBoardList.length === 1 ? ' board' : ' boards' }}</p>
+          <p v-else-if="mShowBdOrChan==='T'"><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length > 0? pAreaDetail.bdList.length : '0' }}</span>{{ pAreaDetail.bdList.length === 1 ? ' channel' : ' channels' }}</p>
           <p v-else-if="mShowBdOrChan==='C'"><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length > 0? pAreaDetail.bdList.length: '0' }}</span> {{ pAreaDetail.bdList.length === 1 ? 'board' : 'boards'}}</p>
           <!-- default는 channels로-->
           <p v-else><span class="fontBold">{{ pAreaDetail.bdList && pAreaDetail.bdList.length? pAreaDetail.bdList.length:'0' }}</span> channels</p>
@@ -97,11 +98,17 @@
             </div>
             <img :src="`/resource/footer/icon_search_fillin.svg`" @click="gotoSearchPage" style="width:20px;" class="cursorP" />
           </div>
-          <div class="w100P" style="padding-bottom: 30px; height:auto; max-height:325px; ">
+          <div v-if="pAreaInfo.priority !== 1" class="w100P" style="padding-bottom: 30px; height:auto; max-height:325px; ">
             <gEmpty tabName="전체" contentName="채널" v-if="pAreaDetail.bdList && pAreaDetail.bdList.length === 0" style="margin-top:50px;" />
             <template v-for="(chanEle, index) in pAreaDetail.bdList" :key="index">
               <channelCard v-if="chanEle.targetKind === 'T'" style="margin-top: 10px;" class="moveBox cursorP chanRow" :pTeamList="GE_DISP_TEAM_LIST" @openImgPop="openImgPop" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
               <boardCard v-else class="moveBox chanRow cursorP" :boardElement="chanEle" @click="goBoardMain(chanEle)" @scrollMove="scrollMove" />
+            </template>
+          </div>
+          <div v-else class="w100P" style="padding-bottom: 30px; height:auto; max-height:325px; ">
+            <gEmpty tabName="전체" contentName="채널" v-if="pBoardList.length === 0" style="margin-top:50px;" />
+            <template v-for="(chanEle, index) in pBoardList" :key="index">
+              <boardCard class="moveBox chanRow cursorP" :boardElement="chanEle" @click="goBoardMain(chanEle)" @scrollMove="scrollMove" />
             </template>
           </div>
           <!-- <div class="w100P" style="padding-bottom: 30px;">
@@ -144,7 +151,8 @@ export default {
     pMoveToChan: Function,
     pAreaDetail: {},
     pBdClickedYn: Boolean,
-    pOpenCreChanPop: Function
+    pOpenCreChanPop: Function,
+    pBoardList: {}
   },
   computed: {
     pageUpdate () {
@@ -210,14 +218,12 @@ export default {
             this.$addChanVuex([this.pAreaInfo.bdList[i]])
           }
         }
-        console.log('results... ', bdCLength, bdTLength)
-        if (bdCLength > bdTLength) {
+        if (this.pAreaInfo.priority === 1 || bdCLength > bdTLength) {
           this.mShowBdOrChan = 'C'
         } else if (bdTLength > bdCLength) {
           this.mShowBdOrChan = 'T'
         }
       }
-      console.log('===========mShowBdOrChan', this.mShowBdOrChan)
       return this.mShowBdOrChan
     },
     goChannelMain (param) {
@@ -240,6 +246,9 @@ export default {
         creTeamKey: this.pAreaInfo.teamKey,
         sysCabinetCode: 'BOAR',
         teamKey: this.pAreaInfo.teamKey
+      }
+      if (!paramObj.cabinetKey && boardListData.cabinetKey) {
+        paramObj.cabinetKey = boardListData.cabinetKey
       }
       var resultMainData = await this.$getBoardMainData(paramObj, true)
 
