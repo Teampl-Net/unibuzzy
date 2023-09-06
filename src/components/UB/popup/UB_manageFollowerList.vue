@@ -37,11 +37,11 @@
         <div class="font16 filterBlock" style="">관리자<img class="cursorP" style="" src="../../../assets/images/common/searchXIcon.svg" alt=""></div>
     </div> -->
     <!-- <input type="text" name="" placeholder="이름을 입력해주세요." class="fl" id=""> -->
-    <div class="pageTopAreaStyle">
-        <div class="receptListBtnStyle fr" style="margin-bottom: 10px;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'">
+    <div class="pageTopAreaStyle" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px;'">
+        <!-- <div class="receptListBtnStyle fr" style="margin-bottom: 10px;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'">
           <gBtnSmall @click="openMemberTypePop" :btnTitle="$t('FOLLOW_BTN_MANA_TYPE')" style="padding: 0 10px !important;" class="cursorP fl"/>
           <gBtnSmall @click="openReceptListPop" :btnTitle="$t('COMMON_BTN_REQLIST')" style="padding: 0 10px !important;" class="cursorP fl mright-05"/>
-        </div>
+        </div> -->
         <gMainTab :activeTabList='activeTabList' style="position:static;" :activeTab='activeTab' @changeTab='changeTab' />
         <!-- <div class="tableTopArea">
             <p class="font14  fontBold fl" style="margin-left: 40px; width: calc((100% - 165px)*0.4);">기본정보</p>
@@ -101,8 +101,8 @@ export default {
       errorText: '',
       // activeTabList: [/* { display: '멤버', name: 'M' },  */{ display: '전체', name: 'F' }/* , { display: '매니저', name: 'Admin' } */],
       // activeTabList: [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Show' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }],
-      // activeTabList: [{ display: '전체', name: 'A' }, { display: '멤버', name: 'M' }, { display: '구독자', name: 'F' }],
-      activeTabList: [{ display: '전체', name: 'A' }, { display: '멤버', name: 'M' }, { display: '매니저', name: 'AD' } ],
+      // activeTabList: [{ display: '전체', name: 'A' }, { display: '멤버', name: 'M' }, { display: '매니저', name: 'AD' }],
+      activeTabList: [{ display: '전체', name: 'A' }, { display: '매니저', name: 'AD' } ],
       activeTab: 'A',
       tab: 'F',
       managerList: [],
@@ -476,7 +476,7 @@ export default {
     GE_LOCALE: {
       immediate: true,
       handler (value) {
-        this.activeTabList = [{ display: this.$t('COMMON_TAB_ALL'), name: 'A' }, { display: this.$t('COMMON_NAME_MEMBER'), name: 'M' }, { display: this.$t('COMMON_NAME_MANAGER'), name: 'AD' } ]
+        this.activeTabList = [{ display: this.$t('COMMON_TAB_ALL'), name: 'A' }, { display: this.$t('COMMON_NAME_MANAGER'), name: 'AD' } ]
       },
       deep: true
     },

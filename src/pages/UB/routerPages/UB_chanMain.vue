@@ -955,11 +955,11 @@ export default {
           }
         }
         // this.mCabKeyListStr = result.data.cabinetKeyListStr
-        await this.$addChanVuex([teamDetail])
+        // await this.$addChanVuex([teamDetail])
         chanMainParam.nameMtext = teamDetail.nameMtext
         chanMainParam.chanName = teamDetail.nameMtext
         var initData = {}
-        initData.team = teamDetail
+        // initData.team = teamDetail
         if (
           result.data.contentsListPage &&
           result.data.contentsListPage.content &&
@@ -971,6 +971,7 @@ export default {
           )
         }
         initData = result.data
+        initData.team = teamDetail
         if (!initData.cabinetKeyListStr) {
           initData.contentsList = result.data.contentsListPage
           initData.cabinetKeyListStr = result.data.cabinetKeyListStr
@@ -992,11 +993,10 @@ export default {
       if (initData.shortLink) {
         const initLink = JSON.parse(initData.shortLink.shortLink)
         this.mChanInfo.copyTextStr = initLink.shortLink
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.mChanInfo])
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [initData.team])
         this.mMakeDeepLinkIng = false
       }
       this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
-      this.ChanFollowYn = this.mChanInfo.D_CHAN_AUTH.followYn
       this.mTeamDetail = this.mChanInfo.initData.team.content['0']
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
@@ -1352,6 +1352,7 @@ export default {
             this.mChanInfo.initData = {}
             this.mChanInfo.initData.contentsList = { content: val.listData }
             this.scrollPosition = val.scrollPosition.position
+            this.mChanInfo.targetKey = Number(this.$route.params.encodedTeamKey)
 
             this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
             this.$nextTick(() => {
@@ -1394,6 +1395,7 @@ export default {
       handler (value, old) {
         if (value && value.D_CHAN_AUTH && value.D_CHAN_AUTH.followYn) {
           this.$emit('followYn')
+          this.ChanFollowYn = true
         } else if (value && value.D_CHAN_AUTH && !value.D_CHAN_AUTH.followYn) {
           this.mUnknownYn = true
         }
