@@ -17,13 +17,13 @@
 }
 </i18n>
 <template>
-  <div id='dlTskdy' style="width:100%; height:100%; padding: 0rem 1rem 0rem 1rem; background: #fff;">
+  <div class="createTeamWrap">
     <gPopHeader :headerTitle="propData.targetType === 'creAddressBook'? 'Create Team':'Edit Team'" :pClosePop="pClosePop" />
-    <div class="addressItemWrite" style="'margin-top:' + (this.$STATUS_HEIGHT + 40)+ 'px;'">
+    <div class="addressItemWrite">
       <p class="fontBold textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOOK_TITLE_NAME') }}</p>
       <input v-model="inputAddressBookName" mCreAdressOpenType="text" :placeholder="$t('EDIT_BOOK_MSG_NONAME')" class="addressBookInputType"  id="addressBookName" style="">
     </div>
-    <gBtnSmall class="font16 " :class="inputAddressBookName.trim() === '' ? 'CWhiteGrayBgColor CWDeepGrayColor' : 'CDeepBgColor' " style="width: 80%; height:50px; line-height:50px; left:10%; position:absolute; bottom:2rem; font-size:16px" :btnTitle='mCreAdressOpenType' @click="saveCabinet" />
+    <gBtnSmall class="font16 teamBtnStyle" :class="inputAddressBookName.trim() === '' ? 'CWhiteGrayBgColor CWDeepGrayColor' : 'CDeepBgColor'" :btnTitle='mCreAdressOpenType' @click="saveCabinet" />
   </div>
 </template>
 
@@ -38,7 +38,6 @@ export default {
     pClosePop: Function
   },
   mounted () {
-    console.log(this.propData)
     this.setting()
   },
   data () {
@@ -67,7 +66,6 @@ export default {
       delete param.cabinet.mUserList // mUserList가 있으면 서비스에서 모델 바인딩할 때 에러 납니다.
 
       param.cabinet.cabinetNameMtext = this.inputAddressBookName
-      console.log(param)
       try {
         var result
         result = await this.$saveCabinet(param)
@@ -102,5 +100,20 @@ export default {
   min-height: 65px;
   padding-top: 100px !important;
   /* border-bottom: 1px solid #ccc; */
+}
+.createTeamWrap {
+  width:100%;
+  height:100%;
+  padding: 0rem 1rem 0rem 1rem;
+  background: #fff;
+}
+.teamBtnStyle {
+  width: 80% !important;
+  height:50px !important;
+  line-height: 50px !important;
+  left: 10% !important;
+  position: absolute !important;
+  bottom: 2rem !important;
+  font-size: 16px !important;
 }
 </style>
