@@ -44,7 +44,7 @@
     <div v-if="mUserDetailPopShowYn" @click="mSelectedMemberInfo" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
   <userDetailPop v-if="mUserDetailPopShowYn" :propData="mSelectedMemberInfo" :pClosePop="closeMemberInfo" />
   <gPopHeader :headerTitle="$t('MANA_TITLE_CHANDETAIL')" :pClosePop="pClosePop" />
-  <div class="editMyChanMenuWrap" :style="`padding-top: ${Number(this.$STATUS_HEIGHT + 50)}px`">
+  <div class="editMyChanMenuWrap" :style="`padding-top: ${Number(this.$STATUS_HEIGHT + 70)}px`">
     <table class="myChanMenuTable w100P fl" >
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditChanPop" style="">
         <th class="font16 w100P" style=" padding-bottom:20px;">

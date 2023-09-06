@@ -257,7 +257,6 @@ export default {
           contentList[i].shareItem = resultMainData.cabinet.mShareItemList
         }
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
-        console.log('!!!!!!!!!!!!!!!!!')
       }
       var goBoardMainParam = {}
       goBoardMainParam.initData = resultMainData
@@ -265,7 +264,6 @@ export default {
       goBoardMainParam.teamKey = paramObj.teamKey
       goBoardMainParam.targetKey = paramObj.cabinetKey
       goBoardMainParam.cabinetNameMtext = paramObj.cabinetNameMtext
-      console.log('goBoardMainParam', goBoardMainParam)
       this.$emit('openPage', goBoardMainParam)
     },
     openChanMenu () {

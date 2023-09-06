@@ -25,40 +25,27 @@
 }
 </i18n>
 <template>
-    <div style="padding: 10px 20px; background: rgb(255 255 255 / 65%);backdrop-filter: blur( 9px ); position: absolute; z-index: 9999; bottom: 10%; box-shadow: rgb(0 0 0 / 26%) 0px -6px 13px 4px; left: 10%; height: 80%; width: 80%; border-radius: 0.8rem 0.8rem 0.8rem 0.8rem; ">
-        <!-- <div style="display: flex; align-items: center; padding: 0 20px; margin-top: 20px; width: 100%; height: 40px; position: relative; float: left;">
-            <img style="width: 45px; margin-right: 5px;" src="/resource/logo/gtLogo.png" alt="">
-            <p class="textOverdot textLeft font25" style="width: calc(100% - 40px);">{{ pAreaInfo.bdAreaNameMtext }} Area</p>
-            <img class="cursorP" @click="closeXPop" style="position: absolute; right: 25px; top: 0px;" src="../../../assets/images/common/smallPopXIcon.svg" alt="">
-        </div> -->
-        <div class="font16 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
-          <div style="display: flex; align-items: center; width: calc(100% - 25px);">
-            <img style="width: 45px; margin-right: 5px;" src="/resource/logo/gtLogo.png" alt="">
-            <p class="textOverdot textLeft font25" style="width: calc(100% - 40px);">{{ pAreaInfo.bdAreaNameMtext }} Area</p>
-            <!-- <p class="textOverdot textLeft" style="width: calc(100% - 40px);">{{ bdAreaNameMtext }}</p> -->
+    <div class="boardListWrap">
+        <div class="font16 fontBold w100P boardListTitle">
+          <div class="boardListTitleText">
+            <img src="/resource/logo/gtLogo.png" alt="">
+            <p class="textOverdot textLeft font25">{{ pAreaInfo.bdAreaNameMtext }} Area</p>
           </div>
-          <div class="cursorP" @click="closeXPop" style="width: 25px;">
-            <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
+          <div class="cursorP closeBox" @click="closeXPop">
+            <img src="../../../assets/images/common/popup_close.png" alt="">
           </div>
         </div>
-        <!-- <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader" >
-            <div style="position: absolute; right: 50px;width: 30px; height: 30px; border-radius: 100%; display: flex; align-items: center; justify-content: center; " @click="refreshAll">
-                <img src="../../../assets/images/common/commonReload.png" class="cursorP" width="30" height="30" @click="refreshAll"/>
-            </div>
-            <gSelectFilter :searchYn='true' @changeSearchList="requestSearchList"  @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" class="fl" style="width: 100%; padding-top: 0; margin-top: 0;" />
-        </div> -->
-        <div style="float: left; width: 100%; padding: 20px 0px;">
-            <select class="fl" style="height: 35px; width: 95px; margin-right: 5px" name="contListFilter" v-model="viewTab" id="contListFilter" @change="changeTab()">
+        <div class="searchBox">
+            <select class="fl" v-model="viewTab" id="contListFilter" @change="changeTab()">
                 <option v-for="(opt, index) in mCommonFilterList" :key="index" :value="opt.name">{{opt.display}}</option>
             </select>
-            <div @click="openFindPop" class="cursorP font14 lightGray" :style="resultSearchKeyList && resultSearchKeyList.length > 0? '':'margin-bottom: 10px;'" style="width: calc(100% - 100px); float: left; height: 35px; border-radius: 5px; border: 1px solid #ccc; background: #FFFFFF; text-align: left; padding: 5px 10px; ">Click to Search</div>
-            <div v-if="resultSearchKeyList && resultSearchKeyList.length > 0" class="pagePaddingWrap fl" style="padding-top: 0; padding-left: 0px; max-height: 50px; width: 100%; float: left">
+            <div @click="openFindPop" class="cursorP font14 lightGray searchBtn" :style="resultSearchKeyList && resultSearchKeyList.length > 0? '':'margin-bottom: 10px;'">Click to Search</div>
+            <div v-if="resultSearchKeyList && resultSearchKeyList.length > 0" class="pagePaddingWrap fl searchItemBox">
                 <searchResult @changeSearchList="requestSearchList" :searchList="resultSearchKeyList" />
             </div>
         </div>
-        <div ref="pushListWrapWrapCompo" style="width: 100%; height: calc(100% - 190px); overflow: hidden auto;">
+        <div ref="pushListWrapWrapCompo" class="contentsListWrap">
             <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" >
-                <!-- <gBtnSmall style="margin-bottom: 10px;" @click="confirmOk(cont)" :btnTitle="cont.followerKey? 'Followed':'Follow'" :btnThema="cont.followerKey? '':'light'" class="fr" /> -->
                 <gContentsBox  :pUnknownYn="false" ref="myContentsBox"  @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPage="goChannelMain" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
                 <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 13 ?  index === this.GE_DISP_CONTS_LIST.length - 13 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
             </template>
@@ -66,7 +53,7 @@
                 <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
             </template>
         </div>
-        <div style="height: 50px; padding: 10px 0; display: flex; justify-content: flex-end;">
+        <div class="goBtnWrap">
           <gBtnSmall @click="goChannelMain(this.pAreaInfo)" btnTitle="Go Channel" class="fr" />
         </div>
         <transition name="showModal">
@@ -124,7 +111,6 @@ export default {
   },
   methods: {
     async confirmOk (cont) {
-      console.log('cont', cont)
       this.mErrorPopShowYn = false
       // eslint-disable-next-line no-new-object
       this.mSaveFollowerParam = new Object()
@@ -180,8 +166,6 @@ export default {
         url: '/sUniB/tp.getMemberTypeItemList',
         param: param
       })
-      console.log('--------------------------')
-      console.log(memberTypeItemList)
       if (memberTypeItemList.data.result) {
         // if (memberTypeItemList.data.memberTypeItemList.length === 0) {
         // eslint-disable-next-line no-new-object
@@ -239,12 +223,9 @@ export default {
     openPop (openPopParam) {
       // 컨텐츠 작성을 누를 시 바텀시트를 닫아주는 중!
       if (this.mSeleteWriteTypePopShowYn === true) this.mSeleteWriteTypePopShowYn = false
-      console.log(openPopParam)
       this.$emit('openPop', openPopParam)
     },
     contDelete (contentIndex) {
-      // console.log(contentIndex)
-      // console.log(this.GE_DISP_CONTS_LIST[contentIndex])
       this.GE_DISP_CONTS_LIST.splice(contentIndex, 1)
 
       // 삭제 후 리로드가 되지 않아 상위 div에 reload키를 넣어 다시 그려주었습니다. -- 다시 그려도 스크롤 이동하지 않았음
@@ -438,7 +419,6 @@ export default {
         if (result && result.data && result.data.result) {
           this.mCabKeyListStr = result.data.cabinetKeyListStr
         }
-        console.log(result)
       }
     },
     async setContsList (resultList) {
@@ -462,7 +442,6 @@ export default {
       this.mContsList = this.replaceArr(newArr)
     },
     async loadMore (descYn) {
-      console.log(' Main Contents List LoadMore ')
       if (this.mCanLoadYn && this.mEndListYn === false) {
         this.mCanLoadYn = false
         try {
@@ -607,7 +586,6 @@ export default {
       } catch (error) {
         console.log(error)
       }
-      console.log(returnContsList)
       if (this.returnContsList) {
         return this.replaceArr(returnContsList)
       } else {
@@ -627,5 +605,75 @@ export default {
 </script>
 
 <style scoped>
-
+.boardListWrap {
+  padding: 10px 20px;
+  background: rgb(255 255 255 / 65%);backdrop-filter: blur( 9px );
+  position: absolute;
+  z-index: 9999;
+  bottom: 10%;
+  box-shadow: rgb(0 0 0 / 26%) 0px -6px 13px 4px;
+  left: 10%;
+  height: 80%;
+  width: 80%;
+  border-radius: 0.8rem 0.8rem 0.8rem 0.8rem;
+}
+.boardListTitle {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.boardListTitleText {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 25px);
+}
+.boardListTitleText > img {
+  width: 45px;
+  margin-right: 5px;
+}
+.boardListTitleText > p {
+  width: calc(100% - 40px);
+}
+.closeBox, .closeBox > img {
+  width: 25px;
+}
+.searchBox {
+  float: left;
+  width: 100%;
+  padding: 20px 0px;
+}
+.searchBox > select {
+  height: 35px;
+  width: 95px;
+  margin-right: 5px
+}
+.searchBtn {
+  width: calc(100% - 100px);
+  float: left;
+  height: 35px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background: #FFFFFF;
+  text-align: left;
+  padding: 5px 10px;
+}
+.searchItemBox {
+  padding-top: 0;
+  padding-left: 0px;
+  max-height: 50px;
+  width: 100%;
+  float: left
+}
+.contentsListWrap {
+  width: 100%;
+  height: calc(100% - 190px);
+  overflow: hidden auto;
+}
+.goBtnWrap {
+  height: 50px;
+  padding: 10px 0;
+  display: flex;
+  justify-content: flex-end;
+}
 </style>

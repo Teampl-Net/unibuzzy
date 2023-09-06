@@ -25,76 +25,75 @@
 <template>
 <div id="addTeamMemberArea" class="addTeamMemberArea">
     <gPopHeader headerTitle="Add Manually" :pClosePop="pClosePop" />
-    <div class="w100P" style="padding-top: 80px;"></div>
-<userImgSelectCompo  @closeXPop="closeXPop" :pSelectedIconPath="this.mUserInfo.domainPath + mUserInfo.userProfileImg" :parentSelectedIconFileKey="mUserInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
+    <div class="w100P ptop-8"></div>
+    <userImgSelectCompo  @closeXPop="closeXPop" :pSelectedIconPath="this.mUserInfo.domainPath + mUserInfo.userProfileImg" :parentSelectedIconFileKey="mUserInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
     <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="@/assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
-    <div class="w100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
+    <div class="w100P fl mbottom-1 box1">
 
-        <div style=" display: flex; align-items: center; justify-content: center;" :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
-            <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center; position: relative;" class="userProfileImgWrap">
-            <!--  <img :src="this.domainPath + userProfileImg" /> -->
-                <img v-if="this.GE_USER.certiDate" class="img-w38" style="position: absolute; bottom: 5px; right: 10px;" src="@/assets/images/common/userCertiIcon.svg" alt="">
+        <div class="flexCenter" :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
+            <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " class="userProfileImgWrap certiIconBox">
+                <img v-if="this.GE_USER.certiDate" class="img-w38" src="@/assets/images/common/userCertiIcon.svg" alt="">
             </div>
         </div>
-        <div v-if="selfYn" @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 0; left: 60%; transform: translateX(-50%); z-index: 9999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
+        <div v-if="selfYn" @click="changeUserImg()" class="font14 myIconBtn">변경</div>
         <!-- <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="  float: left; " /> -->
     </div>
     <div class="addMemberTextArea fl">
 
-      <div class="fl w100P" style='display: contents;'>
+      <div class="fl w100P dispContents">
         <p class="fl commonBlack creChanInput w100P font16 fontBold" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
         <p class="fl commonGray creChanInput w100P font14 " v-if="readOnlyYn && !changeYn && this.GE_USER.certiDate" >{{this.$changeText(this.mUserInfo.userDispMtext)}}</p>
-        <img v-if="readOnlyYn && !changeYn && selfYn" src="@/assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
+        <img v-if="readOnlyYn && !changeYn && selfYn" src="@/assets/images/push/noticebox_edit.png" class="fr cursorP noticeEditBtn" @click="changeUserDispMtext()" >
         <div v-show="changeYn" class="fl creChanInput" style="">
-            <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
-            <div class="fl" style="width: 100px">
-                <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >{{ $t('COMMON_BTN_OK') }}</p>
-                <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">{{ $t('COMM_BTN_CANCEL') }}</p>
+            <input class="fl font16 nameInput" type="text" v-model="memName" @keyup.enter="setDispName" />
+            <div class="fl w100P">
+                <p class="fl mleft-1 font13 height30" @click="setDispName" >{{ $t('COMMON_BTN_OK') }}</p>
+                <p class="fl mleft-1 font13 height30" @click="changeYn = false">{{ $t('COMM_BTN_CANCEL') }}</p>
             </div>
         </div>
         <!-- <p class="fl whiteColor CMiddleBgColor font12" style="padding: 2px 6px; border-radius:10px; " v-if="userGrade !== ''" >{{userGrade}}</p> -->
       </div>
-      <div class="mtop-1 fl w100P"  style="display: flex; justify-content: center; " v-if="!readOnlyYn && !selfYn">
-        <img src="/resource/footer/icon_people.svg"  class="img-w20 fl mright-05" alt="">
+      <div class="mtop-1 fl w100P flexJustiCenter" v-if="!readOnlyYn && !selfYn">
+        <img src="/resource/footer/icon_people.svg" class="img-w20 fl mright-05" alt="">
 
         <input  type="text" :placeholder="$t('MEM_DETAIL_MSG_NAME')" class="creChanInput fr"  v-model="memName" >
       </div>
 
-      <div class="mtop-1 fl w100P"  style="display: flex; justify-content: center;">
-        <img src="@/assets/images/editChan/icon_letter.svg"  class="img-w20 fl mright-05" alt="">
-        <p class="fl font16 commonDarkGray creChanInput " style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memEmail ? memEmail : $t('MEM_DETAIL_MSG_NOMAIL') }}</p>
+      <div class="mtop-1 fl w100P flexJustiCenter">
+        <img src="@/assets/images/editChan/icon_letter.svg" class="img-w20 fl mright-05" alt="">
+        <p class="fl font16 commonDarkGray creChanInput textLeft height30" v-if="readOnlyYn" >{{memEmail ? memEmail : $t('MEM_DETAIL_MSG_NOMAIL') }}</p>
         <input v-else type="text" :placeholder="$t('MEM_DETAIL_MSG_EMAIL')" class="creChanInput fr"  v-model="memEmail" >
       </div>
-      <div class="mtop-1 fl w100P"  style="display: flex; justify-content: center;">
+      <div class="mtop-1 fl w100P flexJustiCenter">
         <img src="@/assets/images/editChan/icon_phoneSolid.svg" class="img-w20 fl mright-05" alt="">
-        <p class="fl font16 commonDarkGray creChanInput"  style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memPhone ? memPhone : $t('MEM_DETAIL_MSG_NOPHONE') }}</p>
+        <p class="fl font16 commonDarkGray creChanInput textLeft height30" v-if="readOnlyYn" >{{memPhone ? memPhone : $t('MEM_DETAIL_MSG_NOPHONE') }}</p>
         <input v-else type="text" :placeholder="$t('MEM_DETAIL_MSG_PHONE')" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
       </div>
 
-      <gBtnSmall v-if="excelPopYn" :btnTitle="$t('COMMON_BTN_ADD')" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
-      <div v-if="readOnlyYn" class="fl w100P mtop-3" style=" min-height: 70px; display: flex; flex-direction: row; justify-content: space-around;">
-        <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="fl" style="display: flex; flex-direction: row; align-items: center; justify-content: center">
-          <div style="display: flex; flex-direction: column; align-items: center;">
+      <gBtnSmall v-if="excelPopYn" :btnTitle="$t('COMMON_BTN_ADD')" class="fl btnStyle" @click="addDirectAddMemList" />
+      <div v-if="readOnlyYn" class="fl w100P mtop-3 actBox">
+        <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="fl flexCenter">
+          <div class="flexAlignCenter flexColumn">
             <div class="nativeServiceBtnWrap">
               <img v-if="value.type === 'ALIM'" src="@/assets/images/editChan/icon_bellSolid.svg" class="img-w20" alt="">
               <img v-if="value.type === 'MAIL'" src="@/assets/images/editChan/icon_letter.svg"  class="img-w20" alt="">
               <img v-if="value.type === 'PHON'" src="@/assets/images/editChan/icon_phoneSolid.svg" class="img-w20" alt="">
               <img v-if="value.type === 'TEXT'" src="@/assets/images/editChan/icon_textSolid.svg"  class="img-w20" alt="">
             </div>
-            <p class="font14 fl textLeft commonBlack" style="line-height: 30px;">{{value.funcTitle}}</p>
+            <p class="font14 fl textLeft commonBlack height30">{{value.funcTitle}}</p>
           </div>
-          <div class="mleft-05 mright-05" style="color: #BDBDBD" v-if="index !== (profileFunc.length - 1)">|</div>
+          <div class="mleft-05 mright-05 whiteColor" v-if="index !== (profileFunc.length - 1)">|</div>
         </div>
       </div>
     </div>
 
-    <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
-        <p class="font20 fontBold" style="width: 100%; height: 40px; margin-bottom: 25px; text-align: left; color: black; border-bottom: 1px solid #ccc;">{{ $t('MEM_DETAIL_MSG_ADDMEM') }}</p>
-        <div style="width:100%; max-height: 200px; overflow-y: scroll; overflow-x: hidden; ">
-            <table class="memberTable" style="width:100% ; border-collapse: collapse;">
+    <div v-if="excelPopYn" class="excelPopBox">
+        <p class="font20 fontBold">{{ $t('MEM_DETAIL_MSG_ADDMEM') }}</p>
+        <div>
+            <table class="memberTable">
                 <colgroup>
                     <col width="20%">
                     <col width="40%">
@@ -102,10 +101,10 @@
                     <col width="10px">
                 </colgroup>
                 <tr style = "background-color:#ccc;">
-                    <th class="font15" style="height: 100%; text-align: center;">{{ $t('COMMON_NAME_NAME') }}</th>
-                    <th class="font15" style="height: 100%; text-align: center;">{{ $t('COMMON_NAME_EMAIL') }}</th>
-                    <th class="font15" style="height: 100%; text-align: center;">{{ $t('COMMON_NAME_PHONE') }}</th>
-                    <th class="font15" style="height: 100%; text-align: center;"></th>
+                    <th class="font15 infoTitleBox">{{ $t('COMMON_NAME_NAME') }}</th>
+                    <th class="font15 infoTitleBox">{{ $t('COMMON_NAME_EMAIL') }}</th>
+                    <th class="font15 infoTitleBox">{{ $t('COMMON_NAME_PHONE') }}</th>
+                    <th class="font15 infoTitleBox"></th>
                 </tr>
                 <tr v-for="(data, index) in memberList" :key='index' style="height:50px;">
                     <td class="font12 memList">{{data.name}}</td>
@@ -115,9 +114,8 @@
                 </tr>
             </table>
         </div>
-
     </div>
-    <gBtnSmall v-if="!readOnlyYn" :btnTitle="$t('COMM_BTN_APPLY')" style="position:absolute; bottom:2rem; right: 3rem;" @click="addDirectAddMemList" />
+    <gBtnSmall v-if="!readOnlyYn" :btnTitle="$t('COMM_BTN_APPLY')" class="applyBtnStyle" @click="addDirectAddMemList" />
     <!-- <gBtnSmall v-if="propData.managerKey" btnTitle="삭제" class="fl" style="position:absolute; bottom:2rem; right: 3rem; background-color:#ff0000; font-weight:bold;" @click="deleteManager" /> -->
 </div>
 </template>
@@ -278,10 +276,7 @@ export default {
         },
         async setUserGrade (anotherAuth) {
         if (anotherAuth) {
-            console.log(anotherAuth)
             var grade = this.$getFollowerType(anotherAuth)
-            console.log('##########################################')
-            console.log(grade)
             this.userGrade = grade
         }
         },
@@ -310,7 +305,6 @@ export default {
             param.user = user
             param.updateYn = true
             var result = await this.$changeDispName(param)
-            // console.log(result)
             if (result.data) {
                 this.$store.commit('D_USER/MU_USER', result.data.userInfo)
                 localStorage.setItem('sessionUser', JSON.stringify(result.data))
@@ -334,10 +328,8 @@ export default {
                 this.changeUserIconPop = 'changeUserIconPop' + history.length
 
                 var history = this.$store.getters['D_HISTORY/hStack']
-                // console.log(history)
                 history.push(this.changeUserIconPop)
                 this.$store.commit('D_HISTORY/updateStack', history)
-                // console.log(this.$store.getters['D_HISTORY/hStack'])
             }
         },
         backClick () {
@@ -477,54 +469,71 @@ export default {
 </script>
 
 <style scoped>
+.infoTitleBox {
+  height: 100%;
+  text-align: center;
+}
 table {
-    table-layout: fixed;
-    word-break: break-all;
+  table-layout: fixed;
+  word-break: break-all;
+}
+.memberTable {
+  width:100%;
+  border-collapse: collapse;
 }
 .memberTable td {
-    border-bottom: 1px solid #ccc !important;
+  border-bottom: 1px solid #ccc !important;
 }
 .memList {
-    text-align: center;
-    padding: 5px 10px;
+  text-align: center;
+  padding: 5px 10px;
 }
 .addMemberTextArea{
-    /* font-size:14px; width: 100%; min-height: 100px; background: #FFF; padding: 0 3rem; opacity:0.9; */
+  /* font-size:14px; width: 100%; min-height: 100px; background: #FFF; padding: 0 3rem; opacity:0.9; */
 
-    font-size:14px; width: 100%; background: #FFF; padding: 0 10%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start
+  font-size:14px; width: 100%; background: #FFF; padding: 0 10%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start
 }
 .memberItemRow{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
 }
-
-
 .memberLogoArea{
-border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin: 0 auto;  background: #ffffff66; position: relative;display:flex; flex-direction: column; justify-content: center; align-items: center;
-margin-top: 3rem;
-margin-bottom: 2rem;
+  border:1px solid #ccc;
+  width: 120px;
+  height: 120px;
+  border-radius: 120px;
+  margin: 0 auto;
+  background: #ffffff66;
+  position: relative;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
 }
-
 .memberLogoLabel{
-    color: white; padding: 0.25rem 0.5rem;background-color:black; opacity: 0.8; font-size:14px;white-space: nowrap;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  background-color:black;
+  opacity: 0.8;
+  font-size:14px;
+  white-space: nowrap;
 }
-
 .creChanInput{
-    /* width:calc(100% - 130px); */
-    min-width: 140px;
-    border : none;
-    /* border-bottom: 1px solid #ccc; */
-    white-space: nowrap;
-    overflow: scroll hidden;
+  /* width:calc(100% - 130px); */
+  min-width: 140px;
+  border : none;
+  /* border-bottom: 1px solid #ccc; */
+  white-space: nowrap;
+  overflow: scroll hidden;
 }
-
 .addTeamMemberArea{
   position: absolute;
   top: 0;
@@ -534,34 +543,138 @@ margin-bottom: 2rem;
   height: calc(100% - 50px);
   background-color: white;
 }
-
-
-.tB{
-    font-weight: bold;
+.tB {
+  font-weight: bold;
 }
 
-.creMemberBigBtn{
-    height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
-  /* width: 100%;  */
+.creMemberBigBtn {
+  height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
+/* width: 100%;  */
 
-  /* add Jeong */
-    width: 90%;
-    position: absolute;
-    bottom: 10px;
-    left: 5%;
+/* add Jeong */
+  width: 90%;
+  position: absolute;
+  bottom: 10px;
+  left: 5%;
 }
 
-.userProfileImgWrap { border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745;
-    max-width: 200px;
-    max-height: 200px;
-    min-width: 125px;
-    min-height: 125px;
-    }
-.userProfileImgWrap img {width: 100%;}
-.nativeServiceBtnWrap{padding: 0 10px; width: 45px; min-height: 25px; float: left; }
+.userProfileImgWrap {
+  border-radius: 100%;
+  border:1.5px solid #6768a7;
+  background: #6768a745;
+  max-width: 200px;
+  max-height: 200px;
+  min-width: 125px;
+  min-height: 125px;
+}
+.userProfileImgWrap img {
+  width: 100%;
+}
+.nativeServiceBtnWrap {
+  padding: 0 10px;
+  width: 45px;
+  min-height: 25px;
+  float: left;
+}
 
-.detailLabelText {width:10%; min-width: 130px; line-height: 30px;}
-.nativeServiceBtn { float: left; width: calc(100% / 4 - 5px); height: 100%; margin-right: 5px; align-items: center; justify-content: center; padding: 5px; display: flex; flex-direction: column;}
+.detailLabelText {
+  width:10%;
+  min-width: 130px;
+  line-height: 30px;
+}
+.nativeServiceBtn {
+  float: left;
+  width: calc(100% / 4 - 5px);
+  height: 100%;
+  margin-right: 5px;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+.box1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top:1.5rem;
+}
+.certiIconBox {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+}
+.certiIconBox > img {
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
+}
+.myIconBtn {
+  padding: 0 8px;
+  float: left;
+  position: absolute;
+  bottom: 0;
+  left: 60%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  min-height: 20px;
+  border-radius: 5px;
+  background: #00000070;
+  color: #FFF;
+}
+.noticeEditBtn {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  margin-top: 2px;
+}
+.nameInput {
+  width: calc(100% - 100px);
+  outline: none;
+  border: 1px solid #ccc;
+}
+.height30 {
+  line-height: 30px;
+}
+.btnStyle {
+  position:absolute !important;
+  bottom:0 !important;
+  right: 3rem !important;
+}
+.actBox {
+  min-height: 70px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.whiteColor {
+  color: #BDBDBD;
+}
+.excelPopBox {
+  width: 100%;
+  height: calc(65%-50px);
+  padding: 0 2rem;
+}
+.excelPopBox > p {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 25px;
+  text-align: left;
+  color: black;
+  border-bottom: 1px solid #ccc;
+}
+.excelPopBox > div {
+  width:100%;
+  max-height: 200px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.applyBtnStyle {
+  position: absolute !important;
+  bottom: 2rem !important;
+  right: 3rem !important;
+}
 @media screen and (max-width: 300px) {
   .detailLabelText {
     width:8%!important;
