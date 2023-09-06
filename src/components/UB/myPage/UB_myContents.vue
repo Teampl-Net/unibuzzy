@@ -1,15 +1,15 @@
 <template>
-  <div style="width: 100%; float: left; margin-top: 10px;">
-    <listTitle :propViewTab="mViewTab" :propMoreLink="mMoreLink" propListTitle="내 컨텐츠" :activeTabList="mActiveTabList" style=" float: left;" class="w100P" @openPop="openPop"/>
-    <div style="width: calc(100% + 20px); height:1.5px; background: rgb(220, 221, 235); margin-left: -10px; float: left; margin-top:0px;"></div>
-    <div style=" float: left; width: 100%; ">
-      <div style="width: 100%; min-height: 40px; float: left; padding: 0px 0; position: relative;">
+  <div class="myContentsWrap">
+    <listTitle :propViewTab="mViewTab" :propMoreLink="mMoreLink" propListTitle="내 컨텐츠" :activeTabList="mActiveTabList" class="w100P fl" @openPop="openPop"/>
+    <div class="boxLine"></div>
+    <div class="fl w100P">
+      <div class="tabWrap">
         <gActiveBar ref="activeBarPushListTop5" :tabList="this.mActiveTabList" @changeTab="changeTab" />
         <!-- <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/> -->
       </div>
-      <div class="pushListWrap fl" style="overflow:hidden;">
-      <contentsList v-if="mContentsList && mContentsList.length > 0" :propContentsList="mContentsList" @goChanDetail="openPop" />
-      <gEmpty v-else :tabName="currentTabName" contentName="전체" class="mtop-2"/>
+      <div class="pushListWrap fl scrollHidden">
+        <contentsList v-if="mContentsList && mContentsList.length > 0" :propContentsList="mContentsList" @goChanDetail="openPop" />
+        <gEmpty v-else :tabName="currentTabName" contentName="전체" class="mtop-2"/>
       </div>
     </div>
   </div>
@@ -35,10 +35,6 @@ export default {
   components: {
     listTitle,
     contentsList
-  },
-  created () {
-    console.log('확인합니당')
-    console.log(this.propAlimList)
   },
   methods: {
     async getPushContentsList () {
@@ -109,7 +105,6 @@ export default {
     },
     openPop (value) {
       value.alimTabType = this.mViewTab
-      // console.log(value)
       this.$emit('openPop', value)
     },
     async changeTab (tabName) {
@@ -127,7 +122,6 @@ export default {
     GE_DISP_CONT_LIST () {
       var idx1, idx2
       var contList = this.mContentsList
-      console.log('contList', contList)
       var test = this.GE_MAIN_CHAN_LIST
       if (!this.contList) {
         return []
@@ -202,7 +196,36 @@ export default {
 </script>
 
 <style scoped>
-.alimeListTr{border-bottom: 0.5px solid #6768A73D}
-.alimeListTr :last-child{border-bottom: none}
-.pushListWrap{width: 100%; padding-top: 0.5rem; padding-bottom: 0.5rem; min-height: 200px;}
+.myContentsWrap {
+  width: 100%;
+  float: left;
+  margin-top: 10px;
+}
+.boxLine {
+  width: calc(100% + 20px);
+  height:1.5px;
+  background: rgb(220, 221, 235);
+  margin-left: -10px;
+  float: left;
+  margin-top:0px;
+}
+.tabWrap {
+  width: 100%;
+  min-height: 40px;
+  float: left;
+  padding: 0px 0;
+  position: relative;
+}
+.alimeListTr {
+  border-bottom: 0.5px solid #6768A73D
+}
+.alimeListTr :last-child {
+  border-bottom: none
+}
+.pushListWrap {
+  width: 100%;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  min-height: 200px;
+}
 </style>

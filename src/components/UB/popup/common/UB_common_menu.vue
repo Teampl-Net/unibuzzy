@@ -15,30 +15,30 @@
 }
 </i18n>
 <template>
-  <div class="pagePaddingWrap" style="padding-top: 0 !important; display: flex; flex-direction: column; justify-content: space-between;">
-    <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 9998; background: #00000050;"></div>
-    <unknownLoginPop :pClosePop="closeUnknownLoginPop" v-if="mUnknownLoginPopYn" style="position: fixed; z-index: 9999;" />
+  <div class="pagePaddingWrap menuWrap">
+    <div class="menuShadow" v-if="GE_USER.unknownYn && mUnknownLoginPopYn"></div>
+    <unknownLoginPop class="loginPop" :pClosePop="closeUnknownLoginPop" v-if="mUnknownLoginPopYn"/>
     <div class="w100P">
       <logoutPop v-if="mLogOutPopShowYn" @goLogout="goLogout" @closePop="closeLogoutPop" />
       <div class="menuHeader" :style="'top:' + (this.$STATUS_HEIGHT) + 'px'">
-        <img v-on:click="this.$emit('hideMenu')" class="mtop-05 cursorP mleft-1 fl" style="width: 0.8rem; " src="../../../../assets/images/common/grayXIcon.svg"/>
-        <p class="font20 " style="line-height:35px;">Menu</p>
+        <img v-on:click="this.$emit('hideMenu')" class="mtop-05 cursorP mleft-1 fl" src="../../../../assets/images/common/grayXIcon.svg"/>
+        <p class="font20">Menu</p>
       </div>
-      <div :style="'padding-top:' + (this.$STATUS_HEIGHT) + 'px'" style=" margin-top: 50px">
+      <div class="mt-header" :style="'padding-top:' + (this.$STATUS_HEIGHT) + 'px'">
         <div class="menuRow fontBold" v-for="(value, index) in menuList" :key="index" :style="(index + 1) % 4 === 0 ? 'border-bottom: 3px solid #F5F5F9; ' : ''">
-          <div v-if="value.type === 'page'" style="width: 100%; height: 100%;" v-on:click="goPage(value.link)">
+          <div class="wh100P" v-if="value.type === 'page'" v-on:click="goPage(value.link)">
             <img class="fl mright-1 mtop-02" :src="value.iconUrl" alt="">
             <div class="fl">{{ value.menuText }}</div>
           </div>
-          <div class="fl" style="width: 100%; height: 100%;" v-else @click="openPop(value)">
+          <div class="fl wh100P" v-else @click="openPop(value)">
             <img class="fl mright-1 mtop-02" :src="value.iconUrl" alt="">
             <div class="fl">{{ value.menuText }}</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="fontBold menuRow " @click="openLogoutPop" style="padding-bottom: 90px; display: flex; align-items: center;">
-      <img class="mright-1" style="width: 15px;" src="@/assets/images/menu/icon_logout.svg" alt="">
+    <div class="fontBold menuRow logoutMenu" @click="openLogoutPop">
+      <img class="mright-1" src="@/assets/images/menu/icon_logout.svg" alt="">
         {{ $t('COMMON_BTN_LOG_OUT') }}
     </div>
   </div>
@@ -137,6 +137,25 @@ export default {
 </script>
 
 <style scoped>
+.menuWrap {
+  padding-top: 0 !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.menuShadow {
+  width:100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9998;
+  background: #00000050;
+}
+.loginPop {
+  position: fixed;
+  z-index: 9999;
+}
 .menuHeader {
   padding: 0.5rem 0;
   position: absolute;
@@ -145,12 +164,15 @@ export default {
   height: 50px;
   border-bottom: 2px solid #aaa;
 }
+.menuHeader img {
+  width: 0.8rem;
+}
 
 .menuHeader p {
   text-align: center;
   font-weight: bold;
+  line-height:35px;
 }
-
 /* .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%) } */
 .menuRow {
   padding: 1rem;
@@ -158,5 +180,13 @@ export default {
   text-align: left;
   height: 3.8rem;
   width: 100%;
+}
+.logoutMenu {
+  padding-bottom: 90px;
+  display: flex;
+  align-items: center;
+}
+.logoutMenu img {
+  width: 15px;
 }
 </style>

@@ -11,7 +11,6 @@ import chanMenu from '../../../popup/chanMenu/D_channelMenu.vue'
 
 export default {
   created () {
-    console.log(this.propParams)
     this.settingPop()
     localStorage.setItem('notiReloadPage', 'none')
   },
@@ -32,7 +31,6 @@ export default {
       this.openChanMenuYn = true
     },
     openPop (params) {
-      console.log(params)
       this.mPopParams = params
       this.mPopShowYn = true
     },
@@ -56,7 +54,6 @@ export default {
           this.mAttachFileList = target.attachFileList
         }
         var paramMap = new Map()
-        console.log(this.GE_USER.userKey)
         paramMap.set('contentsKey', target.targetKey)
         paramMap.set('jobkindId', target.contentsJobkindId)
         paramMap.set('ownUserKey', this.GE_USER.userKey)
@@ -85,8 +82,6 @@ export default {
       }
     },
     async closePop () {
-      console.log('**** closePop ****')
-      console.log(this.mTargetType)
       if (this.mTargetType === 'editMemberTypePop') {
         this.$refs.editMemberTypePop.refreshList()
       }
