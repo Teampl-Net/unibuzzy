@@ -997,7 +997,9 @@ export default {
         this.mMakeDeepLinkIng = false
       }
       this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
-      this.mTeamDetail = this.mChanInfo.initData.team.content['0']
+      if (this.mChanInfo.initData && this.mChanInfo.initData.team && this.mChanInfo.initData.team.content && this.mChanInfo.initData.team.length > 0 && this.mChanInfo.initData.team.content['0']) {
+        this.mTeamDetail = this.mChanInfo.initData.team.content['0']
+      }
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
       /* if (this.mChanInfo.initData.cTeamList && this.mChanInfo.initData.cTeamList.length > 0) {
@@ -1345,7 +1347,7 @@ export default {
       immediate: true,
       handler (val) {
         if (!val) return
-        if (val.scrollPosition && val.scrollPosition.position && val.scrollPosition.targetKind && val.scrollPosition.targetKey && val.listData && val.listData.length > 0) {
+        if (val.scrollPosition && val.scrollPosition.position !== undefined && val.scrollPosition.targetKind && val.scrollPosition.targetKey && val.listData && val.listData.length > 0) {
           if (val.scrollPosition.targetKind === 'chanMain' && val.scrollPosition.targetKey === Number(this.$route.params.encodedTeamKey)) {
             this.allContentsList = val.listData
             this.mChanInfo = val.detailData

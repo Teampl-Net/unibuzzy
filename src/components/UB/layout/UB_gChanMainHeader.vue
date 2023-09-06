@@ -137,7 +137,7 @@ export default {
         var blackYn = false
         if (!val) return
         setTimeout(() => {
-          if (val.initData && val.initData.team) {
+          if (val.initData && val.initData.team && val.initData.team.content && val.initData.team.content.length > 0) {
             if (val.initData.team.content['0']) {
               if (val.initData.team.content['0'].blackYn === 1) { // white
                 blackYn = false
