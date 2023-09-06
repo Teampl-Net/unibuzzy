@@ -1347,7 +1347,7 @@ export default {
       immediate: true,
       handler (val) {
         if (!val) return
-        if (val.scrollPosition && val.scrollPosition.position !== undefined && val.scrollPosition.targetKind && val.scrollPosition.targetKey && val.listData && val.listData.length > 0) {
+        if (val.scrollPosition && val.scrollPosition.position !== undefined && val.scrollPosition.position !== null && val.scrollPosition.targetKind && val.scrollPosition.targetKey && val.listData && val.listData.length > 0) {
           if (val.scrollPosition.targetKind === 'chanMain' && val.scrollPosition.targetKey === Number(this.$route.params.encodedTeamKey)) {
             this.allContentsList = val.listData
             this.mChanInfo = val.detailData
