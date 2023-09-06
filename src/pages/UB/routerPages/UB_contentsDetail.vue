@@ -473,7 +473,7 @@ export default {
       this.cDetail = detailData
       this.mCreTeamKey = this.cDetail.creTeamKey
       this.mCabinetKey = this.cDetail.cabinetKey
-      if (this.mJobkindId === 'BOAR') {
+      if (this.cDetail.cabinetNameMtext) {
         this.$emit('changePageHeader', this.$changeText(this.cDetail.cabinetNameMtext)) /* 여기  */
       } else {
         this.$emit('changePageHeader', this.$changeText(this.cDetail.nameMtext))

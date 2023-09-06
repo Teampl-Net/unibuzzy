@@ -2,11 +2,11 @@
     <div  v-if="chanElement" class="cursorP chanIconWrap" @click="pGoChannelMain(chanElement)">
         <div class="roundImg"
             :style="'background-image: url(' + mImgPath + ');' + `border: ${selectedYn? '2px solid #5F61BD;':'0.5px solid rgba(0, 0, 0, 0.1);'}` + `${pBestYn? 'box-shadow: 0px 0px 10px 5px #f7d83c;':''}`" >
-            <div v-if="pBestYn" class="CWhiteBgColor" style="position: absolute; right: 0; display: flex; justify-content: center; align-items: center; padding: 2px; top: 0; width: 18px; height: 18px; border-radius: 100%;">
-                <img src="../../../assets/images/channel/ownerChannel_crown.svg" style="width: 100%; float: left;" alt="">
+            <div v-if="pBestYn" class="CWhiteBgColor chanIconImgBox">
+                <img class="fl w100P" src="../../../assets/images/channel/ownerChannel_crown.svg" alt="">
             </div>
         </div>
-        <p class="commonGray font14 w100P textOverdot" style="padding-top:5px;">{{this.$changeText(chanElement.nameMtext)}}</p>
+        <p class="commonGray font14 w100P textOverdot pTop-05">{{this.$changeText(chanElement.nameMtext)}}</p>
     </div>
 </template>
 <script>
@@ -50,6 +50,18 @@ export default {
 }
 </script>
 <style scoped>
+.chanIconImgBox {
+  position: absolute;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 100%;
+}
 .chanIconWrap {
   width: 75px;
   height: 100%;

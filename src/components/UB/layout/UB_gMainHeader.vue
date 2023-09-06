@@ -9,8 +9,8 @@
     </div>
     <!-- <img v-if="pRouterHeaderInfo.logoImg" :src="pRouterHeaderInfo.logoImg" height="30" style="margin-right: 5px; border: 2px solid white; background: white; border-radius: 100%; -webkit-user-drag: none;" /> -->
     <div style="width:60%; min-width:177px;">
-      <p v-if="$route.path === '/'" class="headerFont fontBold fl w100P" style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color: #062bb5;">{{ pRouterHeaderInfo }}</p>
-      <p v-else class="headerFont fontBold fl w100P" style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color: #062bb5;">{{ pRouterHeaderInfo }}</p>
+      <!-- <p v-if="$route.path === '/'" class="headerFont fontBold fl w100P" style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color: #062bb5;">{{ pRouterHeaderInfo }}</p> -->
+      <p class="headerFont fontBold fl w100P headerTitle" style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color: #062bb5;">{{ pRouterHeaderInfo }}</p>
     </div>
     <div @click="goLogList" class="cursorP" style="height: 44px; right: 55px; position: absolute; display: flex; align-items: center; justify-content: center;">
       <img height=20 src="../../../assets/images/common/icon_bell.svg"/>
@@ -33,7 +33,8 @@ export default {
   },
   data () {
     return {
-      mInfoBoxShowYn: false
+      mInfoBoxShowYn: false,
+      mContentsYn: false
     }
   },
   methods: {
@@ -105,6 +106,9 @@ export default {
   justify-content: flex-start;
   align-items: center;
   left: 1rem;
+}
+.headerTitle {
+  overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color: #062bb5;
 }
 /* .mainMenuIcon{width: 1.8rem; margin-top: 5px; -webkit-user-drag: none;} */
 .mainHeaderLogo{width: 1.7rem; margin: 0 0.4rem; -webkit-user-drag: none;}

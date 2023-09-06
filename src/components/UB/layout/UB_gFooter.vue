@@ -1,32 +1,32 @@
 <template>
   <div class="py-3 px-4 TalFooterWrap" :style="$route.path === '/' || $route.path === '/unibuzzy'? 'background: #E9F1F6B3':'background: #fff;'">
-    <div @click="routePage('main')" class="footerRouter" style="flex: 1 !important">
+    <div @click="routePage('main')" class="footerRouter flex1">
       <div class="commonColor fontBold text-center font12">
-        <img width="25" height="25" v-if="this.$route.path === '/'" :src="footerIcon[0].fullIcon" /> <img width="25" height="25" v-else :src="footerIcon[0].icon" />
+        <img v-if="this.$route.path === '/'" :src="footerIcon[0].fullIcon" /> <img v-else :src="footerIcon[0].icon" />
         <p :class="this.$route.path === '/' ? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_HOME') }}</p>
       </div>
     </div>
-    <div @click="routePage('chanList')" class="footerRouter" style="flex: 1 !important">
+    <div @click="routePage('chanList')" class="footerRouter flex1">
       <div class="commonColor fontBold text-center font12">
-        <img width="25" height="25" v-if="this.$route.path === '/chanList'" :src="footerIcon[2].fullIcon" /> <img width="25" height="25" v-else :src="footerIcon[2].icon" />
+        <img v-if="this.$route.path === '/chanList'" :src="footerIcon[2].fullIcon" /> <img v-else :src="footerIcon[2].icon" />
         <p :class="this.$route.path === '/chanList' ? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_CHANNEL') }}</p>
       </div>
     </div>
     <!-- <div class="footerRouter" style="flex: 1 !important">
       <div class="commonColor fontBold text-center font12">
-        <img width="25" height="25" v-if="this.$route.path === undefined" :src="footerIcon[2].fullIcon" /> <img width="25" height="25" v-else :src="footerIcon[2].icon" />
+        <img v-if="this.$route.path === undefined" :src="footerIcon[2].fullIcon" /> <img v-else :src="footerIcon[2].icon" />
         <p :class="this.$route.path === undefined ? 'activeFooterMenu' : 'font12'">HOT</p>
       </div>
     </div> -->
-    <div @click="routePage('search')" class="footerRouter" style="flex: 1 !important">
+    <div @click="routePage('search')" class="footerRouter flex1">
       <div class="commonColor fontBold text-center font12">
-        <img width="25" height="25" v-if="this.$route.path === '/search'" :src="footerIcon[1].fullIcon" /> <img width="25" height="25" v-else :src="footerIcon[1].icon" />
+        <img v-if="this.$route.path === '/search'" :src="footerIcon[1].fullIcon" /> <img v-else :src="footerIcon[1].icon" />
         <p :class="this.$route.path === '/search' ? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_SEARCH') }}</p>
       </div>
     </div>
-    <div @click="routePage('myPage')" class="footerRouter" style="flex: 1 !important">
+    <div @click="routePage('myPage')" class="footerRouter flex1">
       <div class="commonColor fontBold text-center font12">
-        <img width="25" height="25" v-if="this.$route.path === '/myPage'" :src="footerIcon[3].fullIcon" /> <img width="25" height="25" v-else :src="footerIcon[3].icon" />
+        <img v-if="this.$route.path === '/myPage'" :src="footerIcon[3].fullIcon" /> <img v-else :src="footerIcon[3].icon" />
         <p :class="this.$route.path === '/myPage' ? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_MY_INFO') }}</p>
       </div>
     </div>
@@ -86,7 +86,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 .TalFooterWrap {
   display: flex;
   box-sizing: border-box;
@@ -114,4 +114,12 @@ export default {
   font-weight: bold;
   font-size: 13px;
   color: #2234A8 !important;
-}</style>
+}
+.flex1 {
+  flex: 1 !important;
+}
+img {
+  width: 25px;
+  height: 25px;
+}
+</style>

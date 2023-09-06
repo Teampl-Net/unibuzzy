@@ -10,7 +10,7 @@
       {{this.$changeText(headerTitle)}}
     </span>
     <div v-if="targetType === 'chanDetail' && chanAlimListTeamKey" class="chanMenubar cursorP" @click="openMenu">
-      <img :src="dynamicSrcMenu()" style="width:1.8rem;"/>
+      <img :src="dynamicSrcMenu()"/>
     </div>
   </div>
 </template>
@@ -146,7 +146,6 @@ export default {
               }
             }
           }
-          // console.log('val.initData', val.initData)
         }, 0)
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', blackYn)
         this.dynamicSrc()
@@ -235,5 +234,8 @@ export default {
 .chanMenubar{
   position: absolute;
   right: 1rem;
+}
+.chanMenubar img {
+  width: 1.8rem;
 }
 </style>

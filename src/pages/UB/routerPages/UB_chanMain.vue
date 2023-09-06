@@ -448,21 +448,17 @@ export default {
           }
         }
         this.mLastScroll = scrollTop
-        console.log('mLastScroll', this.mLastScroll)
-        console.log('chanCardTopRef', chanCardTopRef.getBoundingClientRect().top)
       }
     },
     async confirmOk () {
       this.mErrorPopShowYn = false
       if (this.mSaveFollowerType === 'follow') {
-        console.log('====here===')
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
           this.mErrorPopBodyStr =
             '관리자는 구독취소가 불가능합니다<br>소유자에게 문의해주세요'
           this.mErrorPopShowYn = true
           this.mErrorPopBtnType = 'two'
         } else {
-          console.log('====here===')
           var fStatus = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
           // eslint-disable-next-line no-new-object
           this.mSaveFollowerParam = new Object()
@@ -515,7 +511,6 @@ export default {
               this.mErrorPopShowYn = true
             }
           } else {
-            console.log('====here===')
             await this.okMember()
             // this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>우리채널에 알림을 보낼 수 있어요!<br>멤버들끼리 자유롭게 소통할 수 있어요!'
             // this.openChannelMsgPop()
@@ -726,7 +721,6 @@ export default {
       this.$emit('openImgPop', param)
     },
     openCertiPop (param) {
-      console.log(param)
       this.$emit('openPop', param)
     },
     goProfile () {
@@ -742,10 +736,7 @@ export default {
       this.$refs.chanAlimListWritePushRefs.setSelectedList(data)
     },
     async okMember () {
-      console.log('====here222===')
-      console.log('잉?', this.mMemberTypeList, this.selectMemberObj)
       if (this.mMemberTypeList && this.selectMemberObj) {
-        console.log('====here222===')
         this.ChanFollowYn = true
         // eslint-disable-next-line no-new-object
         var typeParam = new Object()
@@ -765,7 +756,6 @@ export default {
           url: '/sUniB/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }
         })
-        console.log('typeParam', typeParam)
         // } else {
         //   this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
         //   return true
@@ -989,7 +979,6 @@ export default {
       } else {
         await this.getTeamMenuList(encodedKey)
       }
-      console.log(initData)
       if (initData.shortLink) {
         const initLink = JSON.parse(initData.shortLink.shortLink)
         this.mChanInfo.copyTextStr = initLink.shortLink
@@ -1154,9 +1143,7 @@ export default {
       this.$emit('showCloudLoading', false)
     }, 800)
     const preDataYn = localStorage.getItem('preDataYn')
-    console.log(preDataYn)
     if (preDataYn && preDataYn === 'true') {
-      localStorage.removeItem('preDataYn')
     } else {
       if (
         this.propParams &&
@@ -1241,7 +1228,6 @@ export default {
         teamKey = this.mDirectTeamKey.teamKey
       }
       var detail = this.$getDetail('TEAM', teamKey)
-      console.log(detail)
       if (detail.length < 1) {
         return
       }
@@ -1346,6 +1332,7 @@ export default {
     GE_PRE_DATA: {
       immediate: true,
       handler (val) {
+        console.log(val)
         if (!val) return
         if (val.scrollPosition && val.scrollPosition.position !== undefined && val.scrollPosition.position !== null && val.scrollPosition.targetKind && val.scrollPosition.targetKey && val.listData && val.listData.length > 0) {
           if (val.scrollPosition.targetKind === 'chanMain' && val.scrollPosition.targetKey === Number(this.$route.params.encodedTeamKey)) {
@@ -1355,6 +1342,10 @@ export default {
             this.mChanInfo.initData.contentsList = { content: val.listData }
             this.scrollPosition = val.scrollPosition.position
             this.mChanInfo.targetKey = Number(this.$route.params.encodedTeamKey)
+
+            if (!this.CHANNEL_DETAIL) {
+              this.$addChanList(this.mChanInfo.teamKey)
+            }
 
             this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
             this.$nextTick(() => {
@@ -1371,7 +1362,6 @@ export default {
       const pushList = document.getElementById('pushListWrap')
       // const chanCardTopRef = this.$refs.chanPushListArea
       const chanMainRef = this.$refs.chanMainRef
-      console.log('val: ' + val + ' old: ' + old)
       if (pushList) {
         if (val && !old) {
           pushList.className = 'scrollHidden'

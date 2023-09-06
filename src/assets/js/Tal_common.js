@@ -592,7 +592,8 @@ export const commonMethods = {
     if (data.followYn) {
       followerText = this.$t('COMM_SUBMEM')
       if (data.memberNameMtext) {
-        followerText = commonMethods.changeText(data.memberNameMtext)
+        // followerText = commonMethods.changeText(data.memberNameMtext)
+        followerText = 'Member'
       }
       /* if (data.memberInfoList && data.memberInfoList.length > 0 && data.memberInfoList[0].memberTypeKey) {
         followerText += '( '
@@ -608,24 +609,23 @@ export const commonMethods = {
       } */
       if (data.ownerYn) {
         followerText = this.$t('COMM_CHANN_OWNER')
-      } else {
-        if (data.memberNameMtext && (data.managerKey && data.managerKey > 0)) {
-          followerText = `${this.$t('COMM_CHAN_MANAGER')}(`
-          if (data.mngTeamYn === true || data.mngTeamYn === 1) {
-            followerText = followerText + this.$t('COMMON_NAME_CHANNEL')
-            if ((data.mngMemberYn === true || data.mngMemberYn === 1) || (data.mngAlimYn === true || data.mngAlimYn === 1)) {
-              followerText += '/'
-            }
-          } if (data.mngMemberYn === true || data.mngMemberYn === 1) {
-            followerText = followerText + this.$t('COMMON_NAME_MEMBER')
-            if ((data.mngAlimYn === true || data.mngAlimYn === 1)) {
-              followerText += '/'
-            }
-          } if (data.mngAlimYn === true || data.mngAlimYn === 1) {
-            followerText = followerText + this.$t('COMMON_TAB_NOTI')
-          }
-          followerText += ')'
-        }
+      } else if (data.memberNameMtext && (data.managerKey && data.managerKey > 0)) {
+        followerText = `${this.$t('COMM_CHAN_MANAGER')}`
+        //   if (data.mngTeamYn === true || data.mngTeamYn === 1) {
+        //     followerText = followerText + this.$t('COMMON_NAME_CHANNEL')
+        //     if ((data.mngMemberYn === true || data.mngMemberYn === 1) || (data.mngAlimYn === true || data.mngAlimYn === 1)) {
+        //       followerText += '/'
+        //     }
+        //   } if (data.mngMemberYn === true || data.mngMemberYn === 1) {
+        //     followerText = followerText + this.$t('COMMON_NAME_MEMBER')
+        //     if ((data.mngAlimYn === true || data.mngAlimYn === 1)) {
+        //       followerText += '/'
+        //     }
+        //   } if (data.mngAlimYn === true || data.mngAlimYn === 1) {
+        //     followerText = followerText + this.$t('COMMON_TAB_NOTI')
+        //   }
+        //   followerText += ')'
+        // }
       }
     }
     return followerText

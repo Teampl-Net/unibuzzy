@@ -545,6 +545,9 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 }
+.pTop-05 {
+  padding-top: 5px;
+}
 .ptop-50 {
   padding-top: 50px;
 }
