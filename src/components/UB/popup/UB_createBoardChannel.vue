@@ -1,72 +1,69 @@
 <template>
   <seleciconBgPopup v-if="mSelectBuildingPop" :pSelectedBuilding="mSelectedBuilding" :selectBd="this.mSelectedBuilding" @no='mSelectBuildingPop=false' @makeParam='setIconOrBGData' :opentype="mSelectBuilding" :pClosePop="closeSelectBuildingPop"/>
-  <div :style="!mScrollHiddenYn? 'overflow-y: scroll;':''" style="background-color:#fff; width: 100%; height: 100vh; float: left; position: absolute; z-index: 9998; left: 0; top: 0;" @click.stop="preventDefault">
+  <div :style="!mScrollHiddenYn? 'overflow-y: scroll;':''" class="createChanBox" @click.stop="preventDefault">
     <gPopHeader v-if="mShowBdOrChan==='C'" :headerTitle="`Create New Board`" :pClosePop="pClosePop" />
     <gPopHeader v-else-if="mShowBdOrChan==='T'" :headerTitle="`Create New Channel`" :pClosePop="pClosePop" />
     <gPopHeader v-else-if="!mShowBdOrChan && !mChannelModi" :headerTitle="`Create New...`" :pClosePop="pClosePop" />
     <gPopHeader v-else-if="!mShowBdOrChan && mChannelModi === true" :headerTitle="`Modify Channel`" :pClosePop="pClosePop" />
-    <div :style="!mScrollHiddenYn? 'overflow-y: scroll;':''" style="height:100%; background-color:#fff; display:flex; flex-direction:column;" class="createChanWrap" >
+    <div :style="!mScrollHiddenYn? 'overflow-y: scroll;':''" class="createChanWrap" >
       <div class="createChanContentsWrap" style="">
       <!-- 빌딩 선택-->
-        <p style="font-size:20px; padding-top:10px; padding-bottom:10px; color:#6768a7; ">Select Building.</p>
-        <div style="display:flex; align-items:end;">
-        <div style="width:120px; height:120px; border-radius:50%; border:1px solid #ccc; display:flex; align-items:center; justify-content:center;">
-          <img @click="openSelectBuildingPop" v-if="mChannelModi" :src="mSelectedBuilding.selectPath" class="cursorP" style='width:60%; height:auto;'/>
-          <img @click="openSelectBuildingPop" v-else :src="mSelectedBuilding.selectPath" class="cursorP" style='width:60%; height:auto;'/>
+        <p class="selectBdMsg">Select Building.</p>
+        <div class="selectBdBox">
+          <div class="selectBdBtn">
+            <img @click="openSelectBuildingPop" v-if="mChannelModi" :src="mSelectedBuilding.selectPath" class="cursorP"/>
+            <img @click="openSelectBuildingPop" v-else :src="mSelectedBuilding.selectPath" class="cursorP"/>
+          </div>
+          <div class="cameraBtn">
+            <img :src="require(`@/assets/images/channel/icon_camera.svg`)" class="cursorP" alt="">
+          </div>
         </div>
-        <div style="background-color:#fff; margin-left:-30px; border-radius:50%; border:1px solid #ccc; width:35px; height:35px; display:flex; align-items:center; justify-content:center;">
-          <img :src="require(`@/assets/images/channel/icon_camera.svg`)" class="cursorP" style="width:20px;" alt="">
-        </div>
-        </div>
-        <ul v-if="!mShowBdOrChan && !mChannelModi" style="padding-left:0; padding-top:30px; display:flex; align-items:center; gap:10px;">
-          <li v-for="(tab, index) in mTabs" :key="index" style="border-radius:10px; background-color:#fff; color:#6768A7; font-weight:normal; width:100px; padding:8px 0; border:2px solid #6768A7;" @click="selectTab(index)" :class="{selectedTab : mSelectedTab===index}" class="cursorP">
-          <p>{{ tab.title }}</p>
+        <ul class="tabList" v-if="!mShowBdOrChan && !mChannelModi">
+          <li v-for="(tab, index) in mTabs" :key="index" @click="selectTab(index)" :class="{selectedTab : mSelectedTab===index}" class="cursorP">
+            <p>{{ tab.title }}</p>
           </li>
         </ul>
       </div>
       <!-- 게시판 생성일 때.-->
       <template v-if="(mShowBdOrChan==='C' || (!mShowBdOrChan && mSelectedTab === 0)) && !mChannelModi">
-        <div style="padding:2rem 1rem 4rem;">
-          <p style="font-size:20px; color:#6768A7;">My channel list</p>
-            <div style="width:100%; overflow-x:scroll;">
-              <p v-if="mMyTeamList.length===0" style="padding:0 0 2rem;">It's empty.</p>
-              <ul v-else style="width:auto; overflow-x:scroll; display:flex; align-items:start; height:111px; gap:20px; padding-left:10px;">
-                <teamplate v-for="(team, index) in mMyTeamList.content" :key="index">
-                  <li @click="getSelectedChanIndex(index)" class="cursorP" style="padding-top:5px;width:80px; display:flex; align-items:center; flex-direction:column;">
-                    <div :class="{selectedChannel : mSelectedChanIndex===index}" style="width:80px; height:80px; border-radius:50%; border:3px solid #fff;">
-                      <img :src="team.logoPathMtext" class="w100P" />
-                    </div>
-                    <div style="width:100%; overflow:hidden;">
-                      <p style="width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding-top:5px;">{{ team ? $changeText(team.nameMtext) : '' }}</p>
-                    </div>
-                  </li>
-                </teamplate>
-              </ul>
+        <div class="chanList">
+          <p>My channel list</p>
+          <div class="chanListBox">
+            <p v-if="mMyTeamList.length===0">It's empty.</p>
+            <ul class="chanListUl okScrollBar" @wheel="horizontalScroll" id="chanListScroll" v-else>
+              <template v-for="(team, index) in mMyTeamList.content" :key="index">
+                <li @click="getSelectedChanIndex(index)" class="cursorP chanListLi">
+                  <div :class="{selectedChannel : mSelectedChanIndex===index}" class="channelIcon">
+                    <img :src="team.logoPathMtext" class="w100P" />
+                  </div>
+                  <div class="channelTitle">
+                    <p>{{ team ? $changeText(team.nameMtext) : '' }}</p>
+                  </div>
+                </li>
+              </template>
+            </ul>
           </div>
-
-          <div style="display:flex; flex-direction:column; justify-content:start; gap:30px;">
-            <div style="">
-              <p style="font-size:20px; font-weight:bold;width:130px;">Board Name</p>
-              <div style="display:flex; align-items:center;">
-                <input type="text" v-model="mNewBoardName" style="width:100%; height:30px;" placeholder="Please enter up to 20 characters in the board name."/>
-                <div class="mleft-1" @click="this.colorPickerShowYn = !this.colorPickerShowYn" style=" border: none; min-width: 30px; max-width: 30px; width:30px; height: 30px; border-radius:100%;" :style="'background:' + this.selectedColor + ';'" ></div>
+          <div class="createBoardWrap">
+            <div>
+              <p class="createBoardTitle">Board Name</p>
+              <div class="flexAlignCenter">
+                <input class="boardNameInput" type="text" v-model="mNewBoardName" placeholder="Please enter up to 20 characters in the board name."/>
+                <div class="mleft-1" @click="this.colorPickerShowYn = !this.colorPickerShowYn" :style="'background:' + this.selectedColor + ';'" ></div>
               </div>
-              <div v-if="colorPickerShowYn" class="fr" style="width:100%;">
+              <div v-if="colorPickerShowYn" class="fr w100P">
                 <gColorPicker :colorPick="selectedColor" @closePop="closeColorPickerPop" v-if="colorPickerShowYn" @choiceColor='choiceColor' ref="colorPicker" />
               </div>
             </div>
-
-            <div style="">
-              <p style="font-size:20px; font-weight:bold; width:130px;">Board Memo</p>
+            <div>
+              <p class="boardMemoTitle">Board Memo</p>
               <textarea v-model="mNewBoardMemo" class="boardMemo" placeholder="Please enter up to 40 characters in the board description."/>
             </div>
+            <div @click="checkValue" class="creBoardBigBtn">Create</div>
           </div>
-          <div @click="checkValue" class="creBoardBigBtn f" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 80px;">Create</div>
-
         </div>
       </template>
       <!-- 채널 생성일 때. select한 건물에 대해서도 prop으로 보내주기-->
-      <createChannel style="margin-top:310px; padding-bottom:80px;" @changeBgPopShowYn="changeBgPopShowYn" :pBdKey="mBuildingKey" :class="{margin220 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pClosePop="pClosePop" :pChannelModi="mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
+      <createChannel class="creChanCompo" @changeBgPopShowYn="changeBgPopShowYn" :pBdKey="mBuildingKey" :class="{margin220 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pClosePop="pClosePop" :pChannelModi="mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
     </div>
     <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreBoardCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreBoardCheckPopYn" :pCreBoardCheckPopYn="mCreBoardCheckPopYn" @ok='newBoard' />
     <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreBoard', mNewBoardInfo)" confirmType="one" v-if="mCreatedSuccessPopYn" :pCloseCreatedSuccessPopYn="closeCreatedSuccessPopYn" :pNewBoard="mNewBoardInfo"/>
@@ -122,6 +119,14 @@ export default {
     }
   },
   methods: {
+    horizontalScroll (e) {
+      if (e.deltaY === 0) return
+      e.preventDefault()
+      var channelWrap = document.querySelector(`#${e.currentTarget.id}`)
+      channelWrap.scrollTo({
+        left: channelWrap.scrollLeft + e.deltaY / 10
+      })
+    },
     changeBgPopShowYn (showYn) {
       this.mScrollHiddenYn = showYn
     },
@@ -134,7 +139,6 @@ export default {
     },
     selectTab (index) {
       this.mSelectedTab = Number(index)
-      console.log('mSelectedTab', this.mSelectedTab)
       // if (this.mSelectedTab === 0) {
       //   this.getMatchName()
       // }
@@ -163,7 +167,6 @@ export default {
     },
     getSelectedChanIndex (index) {
       this.mSelectedChanIndex = index
-      console.log('selected mMyTeamList', this.mMyTeamList.content[this.mSelectedChanIndex])
     },
     returnConfirmText (type) {
       if (type === 'B') {
@@ -207,7 +210,6 @@ export default {
         url: '/sUniB/tp.UB_createBuildingAndCabinet',
         param: param
       })
-      console.log('newBoard param', param)
       if (response) {
         // this.getTeamMenuList()
         this.mCreBoardCheckPopYn = false
@@ -215,13 +217,11 @@ export default {
         this.mNewBoardInfo.initData = param
         this.mNewBoardInfo.teamKey = param.cabinet.creTeamKey
         this.mNewBoardInfo.targetKey = response.data.cabinetKey
-        console.log('newBoard response', response)
       }
     },
     choiceColor (color) {
       this.selectedColor = color
       this.$refs.colorPicker.setColor(color)
-      // console.log(color)
       this.colorPickerShowYn = false
     },
     closeColorPickerPop (value) {
@@ -243,14 +243,12 @@ export default {
             bdTLength.push(this.pAreaInfo.bdList[i])
           }
         }
-        console.log('results... ', bdCLength, bdTLength)
         if (bdCLength > bdTLength) {
           this.mShowBdOrChan = 'C'
         } else if (bdTLength > bdCLength) {
           this.mShowBdOrChan = 'T'
         }
       }
-      console.log('===========mShowBdOrChan', this.mShowBdOrChan)
       return this.mShowBdOrChan
     },
     async getUserTeamList () {
@@ -259,9 +257,6 @@ export default {
       paramMap.set('managerYn', true)
       var resultList = await this.$getTeamList(paramMap)
       this.mMyTeamList = resultList.data
-      if (this.mMyTeamList) {
-        console.log('mMyTeamList', this.mMyTeamList)
-      }
     }
     // async getTeamMenuList () {
     //   var paramMap = new Map()
@@ -293,12 +288,10 @@ export default {
   created () {
     // this.mSelectedTab = -1
     // console.log('mMyTeamList', this.mMyTeamList)
-    console.log('=====chanDetail', this.chanDetail)
     if (this.chanDetail && this.chanDetail.bdKey) {
       this.mBuildingKey = this.chanDetail.bdKey
       this.mSelectedBuilding.selectPath = this.chanDetail.bdIconPath
     }
-    console.log('=====pAreaInfo', this.pAreaInfo)
     this.showBoardOrChannel()
     this.getUserTeamList()
     if (this.channelModiYn) {
@@ -316,24 +309,28 @@ export default {
 
 <style scoped>
 
-.selectedTab{
-  background-color:#6768A7 !important;
-  color:#fff !important;
-  font-weight:bold !important;
-  border:2px solid #6768A7 !important;
+.selectedTab {
+  background-color: #6768A7 !important;
+  color: #fff !important;
+  font-weight: bold !important;
+  border: 2px solid #6768A7 !important;
 }
-.flexAllCenter{
-  display:flex;
-  justify-content:center;
-  align-items:center;
+.flexAllCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.createChanWrap{
+.createChanWrap {
   width: 100%;
   display: flex;
   height: 100%;
   top:50px;
-  }
-.createChanContentsWrap{
+  height:100%;
+  background-color:#fff;
+  display: flex;
+  flex-direction: column;
+}
+.createChanContentsWrap {
   width: 100%;
   left:0;
   height: auto;
@@ -341,27 +338,184 @@ export default {
   float: left;
   display: flex;
   align-items: center;
-  justify-content:start;
-  flex-direction:column;
+  justify-content: start;
+  flex-direction: column;
   margin-bottom: 0;
 }
-.selectedChannel{
-  border:3px solid rgba(255,255,255) !important;
-  box-shadow:0 0 5px rgba(0,0,0,0.6) !important;
+.selectedChannel {
+  border: 3px solid rgba(255,255,255) !important;
+  box-shadow: 0 0 5px rgba(0,0,0,0.6) !important;
 }
-.selectedChannel + p{
-  font-weight:bold !important;
+.selectedChannel + p {
+  font-weight: bold !important;
 }
-.boardMemo{
-  width: 100%; min-height: 100px; float: left; border-radius: 5px;  border: none; border: 1px solid #ccc;resize:none; padding-left: 5px;
+.boardMemo {
+  width: 100%;
+  min-height: 100px;
+  float: left;
+  border-radius: 5px;
+  border: none;
+  border: 1px solid #ccc;
+  resize:none;
+  padding-left: 5px;
   outline: none;
 }
-.creBoardBigBtn{
-  height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
+.creBoardBigBtn {
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  background: #6768a7;
+  color: #fff;
+  border-radius: 8px;
   width: calc(100% - 30px);
+  margin: 0 auto;
+  cursor: pointer;
 }
-.margin220{
+.margin220 {
   margin-top:220px !important;
 }
-
+.createChanBox {
+  background-color:#fff;
+  width: 100%;
+  height: 100vh;
+  float: left;
+  position: absolute;
+  z-index: 9998;
+  left: 0;
+  top: 0;
+}
+.selectBdMsg {
+  font-size:20px;
+  padding-top:10px;
+  padding-bottom:10px;
+  color:#6768a7;
+}
+.selectBdBox {
+  display:flex;
+  align-items:end;
+}
+.selectBdBtn {
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  border:1px solid #ccc;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.selectBdBtn > img {
+  width:60%;
+  height:auto;
+}
+.cameraBtn {
+  background-color: #fff;
+  margin-left: -30px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cameraBtn > img {
+  width: 20px;
+}
+.tabList {
+  padding-left: 0;
+  padding-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tabList > li {
+  border-radius:10px;
+  background-color:#fff;
+  color:#6768A7;
+  font-weight:normal;
+  width:100px;
+  padding:8px 0;
+  border:2px solid #6768A7;
+}
+.chanList {
+  padding: 2rem 1rem 4rem;
+}
+.chanList > p {
+  font-size:20px;
+  color:#6768A7;
+}
+.chanListBox {
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+.chanListBox > p {
+  padding:0 0 2rem;
+}
+.chanListUl {
+  width: auto;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  display: flex;
+  align-items: start;
+  height: 120px;
+  gap: 20px;
+  padding-left: 10px;
+}
+.chanListLi {
+  padding-top: 5px;
+  width: 80px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.channelIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+}
+.channelTitle {
+  width: 100%;
+  overflow: hidden;
+}
+.channelTitle > p {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding-top: 5px;
+}
+.createBoardWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 30px;
+}
+.createBoardTitle {
+  font-size: 20px;
+  font-weight: bold;
+  width: 130px;
+}
+.boardNameInput {
+  width: 100%;
+  height: 30px;
+}
+.boardNameInput + div {
+  border: none;
+  min-width: 30px;
+  max-width: 30px;
+  width:30px;
+  height: 30px;
+  border-radius:100%;
+}
+.boardMemoTitle {
+  font-size: 20px;
+  font-weight: bold;
+  width: 130px;
+}
+.creChanComp {
+  margin-top: 310px !important;
+  padding-bottom: 80px !important;
+}
 </style>

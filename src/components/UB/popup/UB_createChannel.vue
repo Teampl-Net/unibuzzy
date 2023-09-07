@@ -102,7 +102,7 @@
 
           </div>
 
-          <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 20px;">{{mPageType === '생성'? $t('CRE_BTN_CREATE'):$t('EDIT_NAME_CHAN')}}</div>
+          <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 80px;">{{mPageType === '생성'? $t('CRE_BTN_CREATE'):$t('EDIT_NAME_CHAN')}}</div>
         </div>
       </div>
     </div>
