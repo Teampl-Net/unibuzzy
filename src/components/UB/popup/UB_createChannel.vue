@@ -37,79 +37,86 @@
 }
 </i18n>
 <template>
-<div style="width: 100%; float: left; position: absolute; z-index: 9999; left: 0; top:50px; " @click.stop="preventDefault">
-  <!-- <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" /> -->
-  <gPopHeader :headerTitle="`Edit a Channel`" :pClosePop="pClosePop"/>
-  <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
-    <div :style="'background: url(' + mSelectedBg.selectPath + ');'" style="background-repeat: no-repeat;background-size: cover;" class="createChanWrap"  >
-      <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 150}px;`">
-        <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP" style="margin-top:-180px;" >
-          <label @click="mIconBgSelectPopYn='bgPop'"  class='backgroundLabel commonColor' for="input-Backimgfile">
-            <img :src="require(`@/assets/images/channel/icon_camera.svg`)" class="cursorP" style="width:20px;" alt="">
-            Edit Background
-          </label>
-        </form>
-
-        <div v-if="(pChannelModi || chanDetail.modiYn === true) && this.chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel" style="background-color:white; border-radius:5px; position: absolute; right:1em; padding-left:0.25rem; margin-top:-175px;">
-          <p class="font14" style="color:#aaa;"> <img src="@/assets/images/formEditor/trashIcon_gray2.svg" style="width:18px;" alt=""> {{ $t('CRE_BTN_DELETE_CHAN') }} </p>
-        </div>
-
-        <div id='chboxtest' >
-          <form @submit.prevent="formSubmit" method="post" class="changeLogoBtnWrap cursorP" >
-            <label @click="mIconBgSelectPopYn='iconPop'" for="input-Logoimgfile" class='channelLogoLabel cursorP' ><img src="@/assets/images/channel/icon_camera.svg" style="width:20px;" alt=""> </label>
+  <div class="createChanCompo" @click.stop="preventDefault">
+    <!-- <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" /> -->
+    <gPopHeader :headerTitle="`Edit a Channel`" :pClosePop="pClosePop"/>
+    <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
+      <div :style="'background: url(' + mSelectedBg.selectPath + ');'" class="createChanWrap"  >
+        <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 150}px;`">
+          <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP">
+            <label @click="mIconBgSelectPopYn='bgPop'"  class='backgroundLabel commonColor' for="input-Backimgfile">
+              <img :src="require(`@/assets/images/channel/icon_camera.svg`)" class="cursorP cameraIcon" alt="">
+              Edit Background
+            </label>
           </form>
-
-          <div @click="mIconBgSelectPopYn='iconPop'" class="channelLogoArea cursorP" :style="'background-image: url(' + mSelectedIcon.selectPath + ')'" style="background-size: cover; background-position: center; background-repeat: no-repeat;">
-          </div>
-          <div class="w100P fl" style="height: calc(100% - 80px); overflow-y:scroll: auto; margin-top: 1rem;">
-
-          <div v-if="!pChannelModi || chanDetail.modiYn === false" class="w100P" style="border-bottom: 2px solid #aaa; padding: 10px 0;">
-            <p class="textLeft font20 fontBold w-100P">{{ pBdAreaList && pBdAreaList.length > 0 && pBdAreaList[0].bdList? $changeText(pBdAreaList[0].bdList[0].nameMtext):'Campus' }} > {{ pSelectedAreaInfo? pSelectedAreaInfo.bdAreaNameMtext:'Area' }}</p>
+          <div v-if="(pChannelModi || chanDetail.modiYn === true) && this.chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel deleteBtn">
+            <p class="font14">
+              <img class="cameraIcon" src="@/assets/images/formEditor/trashIcon_gray2.svg" alt="">
+              {{ $t('CRE_BTN_DELETE_CHAN') }}
+            </p>
           </div>
 
-          <div style="width:100%;" class="mtop-1 fl">
-            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('COMMON_TITLE_CHANNAME') }}</p>
-            <input v-model="mInputChannelName" type="text" :placeholder="$t('CRE_MSG_CHANNAME')" class="creChanInput"  id="channelName" >
-          </div>
-
-          <div style="width:100%;" class="mtop-1 fl ">
-            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('CRE_TITLE_DESC') }}</p>
-            <textarea style="background: #fff; border: 1px solid #cccccc; padding: 10px;" v-model="mInputChannelMemo" class="channelMemo" :placeholder="$t('CRE_MSG_DESC')"/>
-          </div>
-
-          <div style="width:100%;" class="mtop-1 fl ">
-            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('CRE_TITLE_HEADER') }}</p>
-
-            <div class="fl w100P mbottom-05 mtop-05" style="text-align: center; display: flex; justify-content: space-around; align-items: center; ">
-              <label class="fl font14 mright-05" style="display: flex;" for="commonColor"><input v-model="mBtnColor" class="fl mright-05" type="radio" name="btnColorRadio" :value="false" id="commonColor"> {{ $t('CRE_BTN_HEAD_DEFAULT') }}</label>
-              <label class="fl font14 mleft-05" style="display: flex;" for="whiteColor"><input v-model="mBtnColor" class="fl mright-05" type="radio" name="btnColorRadio" :value="true" id="whiteColor"> {{ $t('CRE_BTN_HEAD_WHITE') }}</label>
-              <p class="fr backgroundLabel fontBold commonColor" @click="mTopColorPreviewYn = !mTopColorPreviewYn" style="border: 1px solid #ccc;"><img src="@/assets/images/board/icon_eyes.svg" class="img-w18 mright-05" alt="미리보기 아이콘">{{ $t('CRE_BTN_PREVIEW') }}</p>
-            </div>
-            <div v-if="mTopColorPreviewYn === true" class="fl w100P" :style="'background: url(' + mSelectedBg.selectPath + ');'" style=" height: 50px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; overflow: hidden; background-repeat: no-repeat;background-size: cover;">
-              <img v-if="mBtnColor === false" src="@/assets/images/common/icon_back.png" class="img-w15 fl mleft-05" alt=""> <img v-else-if="mBtnColor === true" src="@/assets/images/common/icon_back_white.png" class="img-w15 fl mleft-05" alt="">
-              <p :style="mBtnColor === false ? 'color: #6768a7;' : 'color:white;' " class="fl font20 fontBold">{{mInputChannelName}}</p>
-              <img v-if="mBtnColor === false"  src="@/assets/images/common/icon_menu.png" class="img-w25 fr mright-05" alt=""> <img v-else-if="mBtnColor === true" src="@/assets/images/common/icon_menu_white.png" class="img-w25 fr mright-05" alt="">
-            </div>
-          </div>
-
-          <!-- <div style="width:100%; height: 30px" class="mtop-1 fl" >
-            <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">{{ $t('COMMON_NAME_CATEGORY') }}</p>
-            <div class="fl mtop-05" style="width: 100%;" :key="mReloadKey">
-              <div :class="{activeTypeBox: mSelectedTeamTypeKey ===value.cateKey}" @click="selectChanType(value)" v-for="(value, index) in pBdAreaList" :key="index" :style="getChanBoxSize" class="fl cursorP" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; padding: 0 10px; justify-content: space-around; align-items: center; ">
+          <div id='chboxtest' >
+            <form @submit.prevent="formSubmit" method="post" class="changeLogoBtnWrap cursorP" >
+              <label @click="mIconBgSelectPopYn='iconPop'" for="input-Logoimgfile" class='channelLogoLabel cursorP' >
+                <img class="cameraIcon" src="@/assets/images/channel/icon_camera.svg" alt="">
+              </label>
+            </form>
+            <div @click="mIconBgSelectPopYn='iconPop'" class="channelLogoArea cursorP" :style="'background-image: url(' + mSelectedIcon.selectPath + ')'"></div>
+            <div class="w100P fl editChanArea">
+              <div v-if="!pChannelModi || chanDetail.modiYn === false" class="w100P typeBox">
+                <p class="textLeft font20 fontBold w100P">{{ pBdAreaList && pBdAreaList.length > 0 && pBdAreaList[0].bdList? $changeText(pBdAreaList[0].bdList[0].nameMtext):'Campus' }} > {{ pSelectedAreaInfo? pSelectedAreaInfo.bdAreaNameMtext:'Area' }}</p>
               </div>
+              <div class="mtop-1 fl w100P">
+                <p class="textLeft font20 fl fontBold w100P height30">{{ $t('COMMON_TITLE_CHANNAME') }}</p>
+                <input v-model="mInputChannelName" type="text" :placeholder="$t('CRE_MSG_CHANNAME')" class="creChanInput"  id="channelName" >
+              </div>
+
+              <div class="mtop-1 fl w100P">
+                <p class="textLeft font20 fl fontBold w100P height30">{{ $t('CRE_TITLE_DESC') }}</p>
+                <textarea v-model="mInputChannelMemo" class="channelMemo" :placeholder="$t('CRE_MSG_DESC')"/>
+              </div>
+              <div class="mtop-1 fl w100P">
+                <p class="textLeft font20 fl fontBold w100P height30">{{ $t('CRE_TITLE_HEADER') }}</p>
+
+                <div class="fl w100P mbottom-05 mtop-05 selectColor">
+                  <label class="fl font14 mright-05 dispFlex" for="commonColor">
+                    <input v-model="mBtnColor" class="fl mright-05" type="radio" name="btnColorRadio" :value="false" id="commonColor">
+                    {{ $t('CRE_BTN_HEAD_DEFAULT') }}
+                  </label>
+                  <label class="fl font14 mleft-05 dispFlex" for="whiteColor">
+                    <input v-model="mBtnColor" class="fl mright-05" type="radio" name="btnColorRadio" :value="true" id="whiteColor">
+                    {{ $t('CRE_BTN_HEAD_WHITE') }}
+                  </label>
+                  <p class="fr backgroundLabel fontBold commonColor lightBorder" @click="mTopColorPreviewYn = !mTopColorPreviewYn">
+                    <img src="@/assets/images/board/icon_eyes.svg" class="img-w18 mright-05" alt="미리보기 아이콘">
+                    {{ $t('CRE_BTN_PREVIEW') }}
+                  </p>
+                </div>
+                <div v-if="mTopColorPreviewYn === true" class="fl w100P previewWrap" :style="'background: url(' + mSelectedBg.selectPath + ');'">
+                  <img v-if="mBtnColor === false" src="@/assets/images/common/icon_back.png" class="img-w15 fl mleft-05" alt="">
+                  <img v-else-if="mBtnColor === true" src="@/assets/images/common/icon_back_white.png" class="img-w15 fl mleft-05" alt="">
+                  <p :style="mBtnColor === false ? 'color: #6768a7;' : 'color:white;' " class="fl font20 fontBold">{{mInputChannelName}}</p>
+                  <img v-if="mBtnColor === false"  src="@/assets/images/common/icon_menu.png" class="img-w25 fr mright-05" alt="">
+                  <img v-else-if="mBtnColor === true" src="@/assets/images/common/icon_menu_white.png" class="img-w25 fr mright-05" alt="">
+                </div>
+              </div>
+            <!-- <div style="width:100%; height: 30px" class="mtop-1 fl" >
+              <p class="textLeft font20 fl fontBold w100P" style="line-height: 30px;">{{ $t('COMMON_NAME_CATEGORY') }}</p>
+              <div class="fl mtop-05" style="width: 100%;" :key="mReloadKey">
+                <div :class="{activeTypeBox: mSelectedTeamTypeKey ===value.cateKey}" @click="selectChanType(value)" v-for="(value, index) in pBdAreaList" :key="index" :style="getChanBoxSize" class="fl cursorP" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; padding: 0 10px; justify-content: space-around; align-items: center; ">
+                </div>
+              </div>
+            </div> -->
             </div>
-          </div> -->
-
+            <div @click="checkValue" class="creChanBigBtn fl mtop-1;" :style="(pChannelModi || chanDetail.modiYn === true)? 'bottom: 20px;':'bottom:80px;'">{{mPageType === '생성'? $t('CRE_BTN_CREATE'):$t('EDIT_NAME_CHAN')}}</div>
           </div>
-
-          <div @click="checkValue" class="creChanBigBtn fl mtop-1;" style="margin: 0 auto; cursor: pointer; position: absolute; bottom: 80px;">{{mPageType === '생성'? $t('CRE_BTN_CREATE'):$t('EDIT_NAME_CHAN')}}</div>
         </div>
       </div>
-    </div>
-    <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" :pDelete="mDelete" @ok='setParam' />
-    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', mParams)" confirmType="one" v-if="mCreatedSuccessPopYn"/>
-    <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn === true" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
-</div>
+      <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" :pDelete="mDelete" @ok='setParam' />
+      <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', mParams)" confirmType="one" v-if="mCreatedSuccessPopYn"/>
+      <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn === true" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
+  </div>
 </template>
 
 <script>
@@ -117,9 +124,6 @@ import seleciconBgPopup from '@/components/popup/creChannel/Tal_selectChaniconBg
 // import gPopHeader from '../layout/UB_gPopHeader.vue'
 export default {
   created () {
-    if (this.pChannelModi) {
-      console.log('pChannelModi가 있고 chanDetail', this.chanDetail)
-    }
     if (this.pSelectedAreaInfo) {
       switch (this.pSelectedAreaInfo.bdAreaNameMtext) {
         case 'Club & Startup':
@@ -141,9 +145,6 @@ export default {
           this.mSelectedTeamTypeKey = '3'
           break
       }
-      console.log('check!!!!')
-      console.log(this.mSelectedTeamTypeKey)
-      console.log(this.CHANNEL_DETAIL)
     }
     this.$emit('openLoading')
     if (this.CHANNEL_DETAIL !== undefined && this.CHANNEL_DETAIL !== null && this.CHANNEL_DETAIL !== {}) {
@@ -157,9 +158,6 @@ export default {
     setTimeout(() => {
       this.$emit('closeLoading')
     }, 500)
-  },
-  mounted () {
-    console.log(this.CHANNEL_DETAIL)
   },
   props: {
     pBdKey: {},
@@ -271,8 +269,6 @@ export default {
         url: '/sUniB/tp.getCateItemList',
         param: param
       })
-      console.log('#################')
-      console.log(cateItemList)
       this.mBusinessItemList = cateItemList.data.cateItemList
     },
     selectChanType (value) {
@@ -303,15 +299,12 @@ export default {
       } else {
         this.mBtnColor = false
       }
-      console.log(this.CHANNEL_DETAIL)
       var param = {}
       param.cateKey = this.CHANNEL_DETAIL.cateKey
       param.teamType = this.CHANNEL_DETAIL.teamType
       this.setTypeData(param)
     },
     setTypeData (param) {
-      console.log(' ####  !!  ############## @@ #### ')
-      console.log(param)
       this.mSelectedTeamTypeKey = param.cateKey
       this.mSelectTypeText = this.$teamTypeString(param.cateKey)
       this.mSelectTeamTypePopYn = false
@@ -324,7 +317,6 @@ export default {
       } else if (this.mIconBgSelectPopYn === 'bdPop') {
         this.mSelectedBd = param
       }
-      console.log('paramparam', param)
       this.mIconBgSelectPopYn = false
     },
     checkValue () {
@@ -380,12 +372,10 @@ export default {
         }
 
         gParam.cateItemKey = this.mSelectedTeamTypeKey
-        console.log(teamType)
 
         // 임시
         if (this.mDeleteYn === false) {
           var idx = this.mBusinessTypeList.findIndex((item) => this.$changeText(item.teamNameMtext) === teamType)
-          console.log(idx)
           if (idx !== -1) {
             this.mSelectedTeamType = this.$changeText(this.mBusinessTypeList[idx].teamType)
           } else return
@@ -408,7 +398,6 @@ export default {
               url: '/sUniB/tp.deleteTeam',
               param: { teamKey: gParam.teamKey }
             })
-            console.log(res)
             if (res.data && res.data.result) {
               this.$emit('successCreChan', params)
             }
@@ -421,16 +410,12 @@ export default {
           gParam.bdIconPath = this.pSelectedBuilding.selectPath
         }
 
-        console.log(' ------ console.log(gParam) ----- ')
-        console.log(gParam)
-
         var response = await this.$commonAxiosFunction({
           url: '/sUniB/tp.UB_createTeamAndBuilding',
           param: { teamRequest: gParam }
         })
 
         var result = response.data
-        console.log(result)
         if (result.result === true || result.result === 'true') {
           this.mCreCheckPopYn = false
           this.mCreatedSuccessPopYn = true
@@ -459,8 +444,6 @@ export default {
             await this.$store.dispatch('D_CHANNEL/AC_REMOVE_CHANNEL', gParam)
           }
 
-          console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-          console.log(params)
           this.mParams = params
           if (this.pSelectedAreaInfo) {
             this.mParams.areaInfo = this.pSelectedAreaInfo
@@ -475,8 +458,6 @@ export default {
     },
     async changeTeamInfo (data) {
       await this.$addChanList(this.CHANNEL_DETAIL.teamKey)
-      console.log(' /// !!!! 이거 꼭!!!! /// ')
-      console.log(data)
       var temp = this.CHANNEL_DETAIL
       temp.nameMtext = data.nameMtext
       temp.memoMtext = data.memoMtext
@@ -496,8 +477,6 @@ export default {
       paramMap.set('fUserKey', this.GE_USER.userKey)
       // paramMap.set('bdIconPath',)
       var resultList = await this.$getTeamList(paramMap)
-      console.log(' == resultList == ')
-      console.log(resultList)
       var response = resultList.data.content[0]
       response.detailPageYn = true
       // await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
@@ -528,7 +507,6 @@ export default {
       }
     },
     CHANNEL_DETAIL () {
-      // console.log(this.chanDetail)
       if (this.chanDetail) {
         return this.$getDetail('TEAM', this.chanDetail.targetKey)[0]
       } else {
@@ -544,14 +522,32 @@ export default {
 }
 </script>
 <style scoped>
-.backgroundLabel{
+.backgroundLabel {
 /* color: white; padding: 0.25rem 0.5rem;background-color: black; opacity: 0.5; font-size:14px;white-space: nowrap; */
-  padding: 0.25rem 0.5rem;background-color: white; font-size:14px;white-space: nowrap;
+  padding: 0.25rem 0.5rem;
+  background-color: white;
+  font-size:14px;
+  white-space: nowrap;
   border-radius: 5px;
 }
 
 .channelLogoArea{
-border:1px solid #ccc; width: 120px; overflow: hidden; height: 120px; border-radius: 120px; margin: 0 auto; margin-top: -130px; background: #ffffff66; position: relative;display:flex; flex-direction: column; justify-content: center; align-items: center;
+  border:1px solid #ccc;
+  width: 120px;
+  overflow: hidden;
+  height: 120px;
+  border-radius: 120px;
+  margin: 0 auto;
+  margin-top: -130px;
+  background: #ffffff66;
+  position: relative;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 .channelLogoLabel{
   width: 35px;
@@ -563,40 +559,193 @@ border:1px solid #ccc; width: 120px; overflow: hidden; height: 120px; border-rad
   justify-content: center;
   border: 1px solid #eee;
 }
-/* #chboxtest p{
-  color: black;
-} */
-#chboxtest{
-  font-size:14px; width: 100%; position:relative; min-height: 500px; background: #FFF; top:0; padding-bottom:50px; padding: 0 1rem; height: calc(100% - 15rem);
+#chboxtest {
+  font-size:14px;
+  width: 100%;
+  position: relative;
+  min-height: 500px;
+  background: #FFF;
+  top: 0;
+  padding-bottom: 50px;
+  padding: 0 1rem;
+  height: calc(100% - 15rem);
 }
-
-#channelName{
-  padding-left: 10px !important; height: 30px; border: 1px solid #ccc; border-radius: 5px; cursor: text;
+#channelName {
+  padding-left: 10px !important;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: text;
   width: 100%;
   background: white !important;
   float: left;
 }
-.channelMemo{
-  width: 100%; min-height: 100px; float: left; border-radius: 5px;  border: none; border: 1px solid #ccc;resize:none; padding-left: 5px;
+.channelMemo {
+  width: 100%;
+  min-height: 100px;
+  float: left;
+  border-radius: 5px;
+  border: none;
+  border: 1px solid #ccc;
+  resize:none;
+  padding-left: 5px;
   outline: none;
+  background: #fff;
+  border: 1px solid #cccccc;
+  padding: 10px;
 }
-
-.creChanIntroTextWrap{padding: 10px 0; float: left; border-bottom: 1px solid #ccc;}
-.creChanIntroTextWrap p{font-size: 18px; }
-
-.creChanBigBtn{
-  height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
+.creChanIntroTextWrap {
+  padding: 10px 0;
+  float: left;
+  border-bottom: 1px solid #ccc;
+}
+.creChanIntroTextWrap p {
+  font-size: 18px;
+}
+.creChanBigBtn {
+  height: 50px;
+  line-height: 50px;
+  font-size: 18px;
+  background: #6768a7;
+  color: #fff;
+  border-radius: 8px;
   width: calc(100% - 30px);
+  margin: 0 auto;
+  cursor: pointer;
+  position: absolute;
 }
-.activeTypeBox{background: #6768a7 !important; color: #fff;}
-.activeTypeBox p {color: #fff;}
-.categoryBox{min-width: 40px; margin-right: 5px; height: 30px;float: left; border-radius: 5px;padding-left: 5px;}
-
-.keywordWrap{width: 80%; height: 100%; float: right; border: none; display:flex; overflow: auto;}
-.changeChanTypeBtnWrap{width: 80%; height: 100%; float: right; border: none;border: 1px solid #ccc; border-radius: 5px;}
-.changeLogoBtnWrap{position: absolute; right: 50%; transform: translateX(180%); top: -50px; z-index: 9;}
-.changeBgBtnWrap{position: absolute; left: 1rem; top: 0.3rem;}
-.createChanWrap{width: 100%;display: flex; flex-direction: column; top:50px;}
-.createChanContentsWrap{width: 100%; left:0; height: 100%;  position: relative ; min-height: 450px; margin: 60px 0; float: left; display: flex;  align-items: flex-end; float: left; margin-bottom: 0;}
-
+.activeTypeBox {
+  background: #6768a7 !important;
+  color: #fff;
+}
+.activeTypeBox p {
+  color: #fff;
+}
+.categoryBox {
+  min-width: 40px;
+  margin-right: 5px;
+  height: 30px;
+  float: left;
+  border-radius: 5px;
+  padding-left: 5px;
+}
+.keywordWrap {
+  width: 80%;
+  height: 100%;
+  float: right;
+  border: none;
+  display: flex;
+  overflow: auto;
+}
+.changeChanTypeBtnWrap {
+  width: 80%;
+  height: 100%;
+  float: right;
+  border: none;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.changeLogoBtnWrap {
+  position: absolute;
+  right: 50%;
+  transform: translateX(180%);
+  top: -50px;
+  z-index: 9;
+}
+.changeLogoBtnWrap > p {
+  width:20px;
+}
+.changeBgBtnWrap {
+  position: absolute;
+  left: 1rem;
+  top: 0.3rem;
+  margin-top: -145px;
+}
+.createChanWrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  top: 50px;
+}
+.createChanContentsWrap {
+  width: 100%;
+  left:0;
+  height: 100%;
+  position: relative;
+  min-height: 450px;
+  margin: 60px 0;
+  float: left;
+  display: flex;
+  align-items: flex-end;
+  float: left;
+  margin-bottom: 0;
+}
+.createChanCompo {
+  width: 100%;
+  float: left;
+  position: absolute;
+  z-index: 9999;
+  left: 0;
+  top: 50px;
+}
+.createChanWrap {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.cameraIcon {
+  width: 20px;
+}
+.deleteBtn {
+  background-color: white;
+  border-radius: 5px;
+  position: absolute;
+  right: 1em;
+  padding-left: 0.25rem;
+  margin-top: -140px;
+}
+.deleteBtn > p {
+  color: #aaa;
+}
+.editChanArea {
+  height: calc(100% - 80px);
+  overflow-y: scroll auto;
+  margin-top: 1rem;
+}
+.typeBox {
+  border-bottom: 2px solid #aaa;
+  padding: 10px 0;
+}
+.height30 {
+  line-height: 30px;
+}
+.selectColor {
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.dispFlex {
+  display: flex;
+}
+.lightBorder {
+  border: 1px solid #ccc;
+}
+.previewWrap {
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+@media screen and (max-width: 499px) {
+  .changeBgBtnWrap {
+    margin-top: -180px;
+  }
+  .deleteBtn {
+    margin-top: -175px;
+  }
+}
 </style>

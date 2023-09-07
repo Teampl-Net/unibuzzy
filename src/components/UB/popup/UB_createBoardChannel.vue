@@ -258,36 +258,9 @@ export default {
       var resultList = await this.$getTeamList(paramMap)
       this.mMyTeamList = resultList.data
     }
-    // async getTeamMenuList () {
-    //   var paramMap = new Map()
-    //   paramMap.set('teamKey', this.mMyTeamNameList[this.mSelectedChanIndex].teamKey)
-    //   paramMap.set('sysCabinetCode', 'BOAR')
-    //   paramMap.set('userKey', this.GE_USER.userKey)
-    //   paramMap.set('managerYn', true)
-    //   var result = await this.$getTeamMenuList(paramMap, true)
-
-    //   this.cabinetList = result
-    //   console.log('===== cabinetList ====')
-    //   console.log(this.cabinetList)
-    // },
-    /* 해당 area에 속한 channel들만 보이게 함 */
-    // 내가 관리하고 있는 channel들 중에서 내가 클릭한 area와 이름이 같은 것들만 추출함
-    // getMatchName () {
-    //   if (this.mMyTeamList) {
-    //     for (let i = 0; i < this.mMyTeamList.content.length; i++) {
-    //       if (this.pAreaInfo) {
-    //         if (this.mMyTeamList.content[i].bdAreaNameMtext === this.pAreaInfo.bdAreaNameMtext) {
-    //           this.mMyTeamNameList.push(this.mMyTeamList.content[i])
-    //         }
-    //       }
-    //     }
-    //     console.log('mMyTeamNameList', this.mMyTeamNameList)
-    //   }
-    // },
   },
   created () {
     // this.mSelectedTab = -1
-    // console.log('mMyTeamList', this.mMyTeamList)
     if (this.chanDetail && this.chanDetail.bdKey) {
       this.mBuildingKey = this.chanDetail.bdKey
       this.mSelectedBuilding.selectPath = this.chanDetail.bdIconPath

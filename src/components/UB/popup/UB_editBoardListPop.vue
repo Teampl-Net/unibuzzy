@@ -14,17 +14,17 @@
 </i18n>
 <template>
 <!-- <div style="width: 100%; height: 100vh; position: absolute; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
-  <div class="w100P h100P channelMenuEditWrap pagePaddingWrap" style="padding-top: 0;">
+  <div class="w100P h100P channelMenuEditWrap pagePaddingWrap">
     <gPopHeader :headerTitle="propData.popHeaderText" :pClosePop="pClosePop" />
-    <div v-if="CHANNEL_DETAIL" class="h100P"  style="padding-top: 60px; padding-bottom:30px; overflow-y:auto;">
-        <draggable  ref="editableArea" @end="changePosTeamMenu" class="ghostClass" :options="{ghostClass:'sortable-ghost',animation:150}" v-model="cabinetList" ghost-class="ghost" style="padding-top: 10px; --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='enabled' delay="200"  >
+    <div v-if="CHANNEL_DETAIL" class="h100P boardListWrap">
+        <draggable  ref="editableArea" @end="changePosTeamMenu" class="ghostClass dragBox" :options="{ghostClass:'sortable-ghost',animation:150}" v-model="cabinetList" ghost-class="ghost" :disabled='enabled' delay="200"  >
           <transition-group>
             <template v-for="(data, index) in cabinetList" :key='index'>
               <boardCard :propData='data' @cardEmit='cardEmit' :compoIdx='index' />
             </template>
           </transition-group>
         </draggable>
-        <img src="@/assets/images/button/Icon_CreBoardBtn.png" @click="addBoardRow" alt="게시판 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%; z-index: 100;" class="img-78 img-w66">
+        <img src="@/assets/images/button/Icon_CreBoardBtn.png" @click="addBoardRow" alt="button of create board" class="img-78 img-w66 createBoardBtn">
         <gListEmpty v-if="cabinetList.length === 0" :title="$t('EDIT_BOARD_MSG_NOBOARD')" :subTitle="$t('EDIT_BOARD_MSG_CREBOARD')" option='EDIT' />
     </div>
   </div>
@@ -90,7 +90,6 @@ export default {
   created () {
     if (this.pPopId) this.popId = JSON.parse(JSON.stringify(this.pPopId))
     this.$emit('openLoading')
-    // console.log(this.propData)
     if (!this.propData.initData) {
       this.getTeamMenuList()
     } else {
@@ -124,7 +123,6 @@ export default {
   },
   methods: {
     cardEmit (param) {
-      console.log(param)
       var type = param.targetType
       var data = param.data
       var idx = param.index
@@ -138,7 +136,6 @@ export default {
     },
     async checkDelete (data, index) {
       var param = {}
-      // console.log(data)
       param.currentTeamKey = data.creTeamKey
       param.jobkindId = 'BOAR'
       param.cabinetKey = data.cabinetKey
@@ -146,14 +143,11 @@ export default {
       param.pageSize = 1
       var totalElements
       await this.$getContentsList(param, true).then(resulte => {
-        // console.log(resulte)
         totalElements = resulte.totalElements
-        // console.log(totalElements)
       })
       var temp = {}
       temp.data = data
       temp.index = index
-      // console.log(data)
       this.tempDeleteData = temp
       this.currentConfirmType = 'delete'
       if (totalElements === undefined) {
@@ -201,8 +195,6 @@ export default {
       // }
       // this.cabinetList = uniqueArr
       this.cabinetList = result
-      console.log('===== cabinetList ====')
-      console.log(this.cabinetList)
       // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.CHANNEL_DETAIL)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
@@ -307,9 +299,6 @@ export default {
       //   }
       // }
 
-      console.log('----------')
-      console.log(this.cabinetList)
-
       var paramSet = {}
 
       var tempList = []
@@ -320,8 +309,6 @@ export default {
         tempList.push(temp)
       }
 
-      console.log(' ----- teamMenuList -----')
-      console.log([...tempList])
       paramSet.teamMenuList = [...tempList]
       var result = await this.$commonAxiosFunction(
         {
@@ -329,7 +316,6 @@ export default {
           param: paramSet
         }
       )
-      console.log(' ----- changePosTeamMenu result -----')
       console.log(result)
       // this.cabinetList = []
       // await this.getTeamMenuList()
@@ -358,56 +344,87 @@ export default {
 </script>
 
 <style scoped>
-.addNewEffect {transition : background-color 0.5s ease-in;}
+.addNewEffect {
+  transition: background-color 0.5s ease-in;
+}
 /* btnPlus common.css로 옮김 */
 
-.menuHeader {position: absolute; top: 0rem; left: 0;}
-.menuHeader p{color: #FFFFFF; font-size: 20px; text-align: center;}
-.menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%); color: #FFFFFF; }
-
-.channelMenuEditWrap{
-  width:100% ;
+.menuHeader {
+  position: absolute;
+  top: 0rem;
+  left: 0;
+}
+.menuHeader p {
+  color: #FFFFFF;
+  font-size: 20px;
+  text-align: center;
+}
+.menuRow {
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: left;
+  height: 3.8rem;
+  border-bottom: 0.5px solid rgb(255 255 255 / 26%);
+  color: #FFFFFF;
+}
+.channelMenuEditWrap {
+  width: 100% ;
   height: 100% ;
   top: 0;
   right: 0;
   position: absolute;
   z-index: 99999;
   background-color: white;
-  }
-
-.btnBig{
+  padding-top: 0 !important;
+}
+.btnBig {
   font-size: 16px;
   width: 5rem;
   height: 2rem;
 }
-
-.editWrap{
+.editWrap {
   background-color: #F9F9F9;
-
 }
-.editmenuHeader{
-border-bottom: 1.5px solid #999;
+.editmenuHeader {
+  border-bottom: 1.5px solid #999;
 }
-.editColor{
+.editColor {
   color: #6768a7 !important;
 }
-
-.editRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid #ccc; }
-/* .boardNameText{
-} */
-.boardPlusBtn{
+.editRow {
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: left;
+  height: 3.8rem;
+  border-bottom:
+  0.5px solid #ccc;
+}
+.boardPlusBtn {
   color:white;
   font-size:20px;
   font-weight:bold;
 }
-.boardListCard{
+.boardListCard {
   width: 100%;
-  height:60px;
-  border-bottom:1px solid #ddd; padding: 0.7rem 0;
+  height: 60px;
+  border-bottom: 1px solid #ddd;
+  padding: 0.7rem 0;
   position: relative;
-
    /* width: calc(100%); overflow: hidden; min-height:50px; margin-bottom:1rem; position: relative; */
-
 }
-
+.boardListWrap {
+  padding-top: 60px;
+  padding-bottom: 30px;
+  overflow-y: auto;
+}
+.dragBox {
+  padding-top: 10px !important;
+  --webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+}
+.createBoardBtn {
+  position: absolute;
+  bottom: 2rem;
+  right: 10%;
+  z-index: 100;
+}
 </style>
