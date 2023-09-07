@@ -1,10 +1,9 @@
 <template>
-  <div class="w100P h100P" style="overflow: hidden; position: absolute; left: 0; top: 0; z-index: 999999;">
+  <div class="w100P h100P editMemberTypeWrap">
     <gPopHeader headerTitle="Manage Types" :pClosePop="pClosePop" />
-    <div class="pSide-15 ptop-50 wh100P" style="overflow-x: scroll; white-space:nowrap; background: #fff;" :style="leftShowYn === true ? 'padding: 60px 0 0 0; display: flex;' : ''">
+    <div class="pSide-15 ptop-50 wh100P editMemberTypeBox" :style="leftShowYn === true ? 'padding: 60px 0 0 0; display: flex;' : ''">
       <leftTab :selectedKey="mSelectedMemberTypeObj? mSelectedMemberTypeObj.memberTypeKey : undefined" ref="editMemPopRef" :propMemberTypeList='mMemberTypeList' @changeTab='changeTab' @addMemberType='saveMemberType' @closePop='leftBack()' />
-
-      <memberTypeDetail style="width: calc(100% - 130px);" @reloadPage="getMemberTypeList" ref="memberTypeDetail" @addQuestion="addQuestion" @editQue="editQue" :propMemberTypeDetail="mSelectedMemberTypeObj" :key="reloadKey" :propLeftYn='leftShowYn' @showLeftBar='showLeftBar' @deleteType='deleteMemberType' />
+      <memberTypeDetail class="memberTypeDetail" @reloadPage="getMemberTypeList" ref="memberTypeDetail" @addQuestion="addQuestion" @editQue="editQue" :propMemberTypeDetail="mSelectedMemberTypeObj" :key="reloadKey" :propLeftYn='leftShowYn' @showLeftBar='showLeftBar' @deleteType='deleteMemberType' />
     </div>
   </div>
 </template>
@@ -23,9 +22,7 @@ export default {
     pClosePop: Function
   },
   created () {
-    console.log(this.propData)
     this.readyFunc()
-    /* this.$showToastPop('현재 테스트 화면이며, 작동되지 않습니다. 추후 업데이트를 기다려주세요!') */
   },
   data () {
     return {
@@ -46,7 +43,6 @@ export default {
       this.reloadKey += 1
     },
     async deleteMemberType (deleteData) {
-      console.log(deleteData)
       if (this.mMemberTypeList.length === 1) {
         // this.$showToastPop('적어도 멤버 유형은 1개 이상 존재해야 합니다!')
         this.$showToastPop('At least one member type must exist.')
@@ -113,7 +109,6 @@ export default {
       if (this.propData.initData) {
         this.mMemberTypeList = this.propData.initData
         this.mSelectedMemberTypeObj = this.mMemberTypeList[0]
-        console.log(this.mSelectedMemberTypeObj)
       } else {
         await this.getMemberTypeList() // 추후 제거
       }
@@ -141,11 +136,9 @@ export default {
       param.popHeaderText = '멤버정보 수정'
       param.teamKey = this.propData.teamKey
       param.selectedMemberType = params.data
-      console.log(param)
       this.$emit('openPop', param)
     },
     changeTab (selectedObj) {
-      console.log(selectedObj)
       this.mSelectedMemberTypeObj = selectedObj
       this.reloadKey += 1
     }
@@ -175,5 +168,20 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.editMemberTypeWrap {
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 999999;
+}
+.editMemberTypeBox {
+  overflow-x: scroll;
+  white-space:nowrap;
+  background: #fff;
+}
+.memberTypeDetail {
+  width: calc(100% - 130px);
 }
 </style>

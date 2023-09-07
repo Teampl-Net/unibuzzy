@@ -49,55 +49,58 @@
     <bookMemberDetail v-if="mPopType === 'bookMemberDetail'" @addDirectAddMemList="saveMemberDirectly" :propData="mPropData" :pClosePop="backClick" />
     <gPopHeader :headerTitle="mDetailOpenYn? `Manage ${this.$changeText(selectBookDetail.cabinetNameMtext)}`:'Manage Team'" :pClosePop="closeXPop" />
     <gConfirmPop :confirmText='mConfirmText' :confirmType="mConfirmType" v-if="mConfirmPopShowYn" @no='mConfirmPopShowYn=false' @ok='confirmOk' />
-    <div class="pagePaddingWrap longHeight"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'"  style="height:calc(100% - 300px); overflow: hidden; " >
-
-      <div class="w100P" style="border-bottom: 1px solid #ccc; padding: 5px 0; min-height:40px; margin:5px 0; overflow: hidden; " v-if="mCabinetName !== ''" >
-
-        <div style="width: calc(100%); min-height: 30px; float: right; margin-bottom: 5px;" v-if="this.mSearchFilterList.length > 0">
-          <p class="font14 commonBlack fontBold fl" style="line-height: 30px;">{{ $t('EDIT_BOOK_TITLE_FILTER') }}</p>
-          <div style="height: 100%; float: right; width: calc(100% - 60px); max-width: calc(100% - 60px);">
-            <div  v-for="(value, index) in this.mSearchFilterList" style="width: 20%; min-width: 90px; padding: 0 3px; height: 30px; float: right; " :key="index">
-              <select :style="''"  v-model="value.selectGroup" @change="searchFilter()"  name="" class="font14" style="    background: #fff !important; border: none!important;border-right: #6768a745!important; width: calc(100% ); height: 30px; float: left; text-align:center;" id="">
+    <div class="pagePaddingWrap longHeight bookListBox"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
+      <div class="w100P filterArea" v-if="mCabinetName !== ''" >
+        <div class="searchBox" v-if="this.mSearchFilterList.length > 0">
+          <p class="font14 commonBlack fontBold fl lineHeight30">{{ $t('EDIT_BOOK_TITLE_FILTER') }}</p>
+          <div class="selectBox">
+            <div class="selectList" v-for="(value, index) in this.mSearchFilterList" :key="index">
+              <select  v-model="value.selectGroup" @change="searchFilter()"  name="" class="font14" id="">
                 <option value="all" @click="changeValue('all')">{{value.text + $t('COMMON_TAB_ALL')}}</option>
                 <option :value="option" @click="changeValue(option)" v-for="(option, oIdx) in value.groupList" :key="oIdx">{{option}}</option>
               </select>
             </div>
           </div>
         </div>
-
-        <div class="w100P fl" style="min-width: 120px;">
-          <div class="fl" style="position: relative; width: calc(100% - 120px)">
-            <img @click="mCabinetName !== ''? getBookMemberList():getBookList()" class="cursorP" style="float: right; position: absolute; left: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="@/assets/images/common/iocn_search.png" alt="검색버튼">
-            <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="mCabinetName !== ''? getBookMemberList():getBookList()" :placeholder="mCabinetName !== ''? $t('EDIT_BOOK_MSG_NAME'):$t('EDIT_BOOK_MSG_BOOK')">
+        <div class="w100P fl searchWrap">
+          <div class="fl searchInput">
+            <img @click="mCabinetName !== ''? getBookMemberList():getBookList()" class="cursorP" src="@/assets/images/common/iocn_search.png" alt="검색버튼">
+            <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text"  @keyup.enter="mCabinetName !== ''? getBookMemberList():getBookList()" :placeholder="mCabinetName !== ''? $t('EDIT_BOOK_MSG_NAME'):$t('EDIT_BOOK_MSG_BOOK')">
           </div>
-          <div class="CDeepBorderColor fr" style="border-radius: 20px; width:110px; min-height: 30px; display: flex; justify-content: center; align-items: center; ">
-            <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'creDate'}">{{ $t('EDIT_BOOK_BTN_CRE') }}</p>
-            <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">{{ $t('EDIT_BOOK_BTN_NAME') }}</p>
+          <div class="CDeepBorderColor fr orderBox">
+            <p class="font12 fl" @click="mOrderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'creDate'}">{{ $t('EDIT_BOOK_BTN_CRE') }}</p>
+            <p class="font12 fl" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">{{ $t('EDIT_BOOK_BTN_NAME') }}</p>
           </div>
         </div>
-
       </div>
-
       <div class="bookAndMemListWrap" style="" :style="mDetailOpenYn ? 'height: calc(100% - 80px);' : '' ">
         <bookListCompo class="editBookContentListCompo" ref="bookListCompoRef" v-if="!mDetailOpenYn" :propBookList="mEditBookList" :propData="propData" :selectBookDetail="selectBookDetail" @getTeamCabList="this.getBookList" @refreshList="getBookList" @openMCabUserList='openMCabUserList' @openPop="openPop" @delAddress="delAddress" />
         <transition name="showGroup">
           <memberList  class="editBookContentListCompo" ref="memberListRef" v-if="mDetailOpenYn" @memberInfo="memberInfo" :pFollowerMemList="mFollowerMemList" :propMemberList="memberList" :propData="selectBookDetail"  :pSearchFilterList="this.mSearchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="this.CHANNEL_DETAIL" transition="showGroup" @openPop="openPop" @delAddress="delAddress" />
         </transition>
-        <div class="btnPlus" style="bottom: 10.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="openExcelUploadPop" v-if="mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:12px;" v-html="$t('EDIT_BOOK_BTN_EXCEL')"></p></div>
-        <div class="btnPlus" style="bottom: 18.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="addMe" v-if="!mImInYn && mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:12px;" v-html="$t('EDIT_BOOK_BTN_ME')"></p></div>
-        <div class="btnPlus" style="bottom: 14.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="newAddMember" v-if=" mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:12px;" v-html="$t('EDIT_BOOK_BTN_DIRECT')"></p></div>
-        <div class="btnPlus" style="bottom: 6.5rem; z-index: 999; width: 3.5rem; right: 10.5%; height: 3.5rem;" @click="this.openSelectMemberPop()" v-if="mDetailOpenYn && mPlusMenuShowYn" ><p style="font-size:12px;" v-html="$t('EDIT_BOOK_BTN_USER')"></p></div>
+        <div class="btnPlus btn1" @click="openExcelUploadPop" v-if="mDetailOpenYn && mPlusMenuShowYn" >
+          <p class="font12" v-html="$t('EDIT_BOOK_BTN_EXCEL')"></p>
+        </div>
+        <div class="btnPlus btn2" @click="addMe" v-if="!mImInYn && mDetailOpenYn && mPlusMenuShowYn" >
+          <p class="font12" v-html="$t('EDIT_BOOK_BTN_ME')"></p>
+        </div>
+        <div class="btnPlus btn3" @click="newAddMember" v-if=" mDetailOpenYn && mPlusMenuShowYn" >
+          <p class="font12" v-html="$t('EDIT_BOOK_BTN_DIRECT')"></p>
+        </div>
+        <div class="btnPlus btn4" @click="this.openSelectMemberPop()" v-if="mDetailOpenYn && mPlusMenuShowYn" >
+          <p class="font12" v-html="$t('EDIT_BOOK_BTN_USER')"></p>
+        </div>
 
-        <img src="@/assets/images/button/Icon_AddressBookBtn.png" @click="creAddressPop()" v-if="!mPlusMenuShowYn && !mDetailOpenYn" alt="주소록 만들기 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
-        <img src="@/assets/images/button/Icon_AddMemberBtn.png" @click="mPlusMenuShowYn = !mPlusMenuShowYn" v-if="!mPlusMenuShowYn && mDetailOpenYn" alt="주소 추가 버튼" style="position: absolute; bottom: 2rem; right: 10%;" class="img-78 img-w66">
+        <img src="@/assets/images/button/Icon_AddressBookBtn.png" @click="creAddressPop()" v-if="!mPlusMenuShowYn && !mDetailOpenYn" alt="button of create team" class="img-78 img-w66 createTeamBtn">
+        <img src="@/assets/images/button/Icon_AddMemberBtn.png" @click="mPlusMenuShowYn = !mPlusMenuShowYn" v-if="!mPlusMenuShowYn && mDetailOpenYn" alt="button of add member" class="img-78 img-w66 createTeamBtn">
 
-        <div class="btnPlus" style="z-index: 999; background:rgb(144 144 189);" @click="mPlusMenuShowYn = !mPlusMenuShowYn" v-if="mPlusMenuShowYn && (CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1)" >
-          <img style="width: 20px; margin-bottom: 5px;" src="@/assets/images/common/popup_close.png" alt="">
+        <div class="btnPlus closeBtn" @click="mPlusMenuShowYn = !mPlusMenuShowYn" v-if="mPlusMenuShowYn && (CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1)" >
+          <img src="@/assets/images/common/popup_close.png" alt="">
         </div>
       </div>
     </div>
     <excelUploadPop @success="successExcelUpload" :cabinetKey="this.selectBookDetail.cabinetKey" :targetKey="this.selectBookDetail.teamKey" v-if="mExcelUploadShowYn" @closePop="backClick"/>
-    <div @click="backClick()" v-if="mExcelUploadShowYn" style="position: absolute; top: 0; left: 0; width: 100%; height: 100vh; background: #00000030; z-index: 99999;"></div>
+    <div class="popShadow" @click="backClick()" v-if="mExcelUploadShowYn"></div>
   </div>
 </template>
 
@@ -374,8 +377,6 @@ export default {
         this.mDetailOpenYn = true
         this.$emit('openBookDetailPop')
       }
-      console.log('#######################')
-      console.log(this.memberList)
     },
     backClick (backYn) {
       // eslint-disable-next-line no-debugger
@@ -530,40 +531,171 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
 /* btnPlus common.css로 옮김 */
-.bookAndMemListWrap{width: 100%; height: calc(100% - 1rem); position: relative; overflow: hidden auto;}
-.editBookListWrap {height: 100vh; background-color:white; width:100%; z-index:99999; position:absolute; top:0; left:0}
-
-.longHeight{
-height:100% !important;
+.btn1, .btn2, .btn3, .btn4 {
+  z-index: 999 !important;
+  width: 3.5rem !important;
+  right: 10.5% !important;
+  height: 3.5rem !important;
 }
-.selectedReceiverBox{
-    height: calc(100% - 100px);
-    width: 100%;
-    margin-top: 5px;
-    overflow-y: scroll;
-    padding: 10px;
-    background-color:white;
-    text-align: left;
+.btn1 {
+  bottom: 10.5rem;
+}
+.btn2 {
+  bottom: 18.5rem;
+}
+.btn3 {
+  bottom: 14.5rem;
+}
+.btn4 {
+  bottom: 6.5rem;
+}
+.bookAndMemListWrap {
+  width: 100%;
+  height: calc(100% - 1rem);
+  position: relative;
+  overflow: hidden auto;
+}
+.editBookListWrap {
+  height: 100vh;
+  background-color: white;
+  width:100%;
+  z-index: 99999;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.longHeight {
+  height: 100% !important;
+}
+.selectedReceiverBox {
+  height: calc(100% - 100px);
+  width: 100%;
+  margin-top: 5px;
+  overflow-y: scroll;
+  padding: 10px;
+  background-color:white;
+  text-align: left;
 }
 [contenteditable=true] {
   outline: none;
 }
-input:focus{
+input:focus {
   outline: none;
 }
-.editBookContentListCompo{
-  width:100%; position: absolute; height: calc(100%); overFlow: hidden scroll; top: 0; background: #fff;
+.editBookContentListCompo {
+  width:100%;
+  position: absolute;
+  height: 100%;
+  overFlow: hidden scroll;
+  top: 0;
+  background: #fff;
 }
 
 .commonSelectBox {
-    border-radius: 5px !important;
-    border: 1px solid #ccc !important;
-    white-space: nowrap !important;
-    overflow: scroll hidden !important;
-    padding: 5px ;
-    color: #303030 !important;
-    background: ghostwhite !important;
+  border-radius: 5px !important;
+  border: 1px solid #ccc !important;
+  white-space: nowrap !important;
+  overflow: scroll hidden !important;
+  padding: 5px ;
+  color: #303030 !important;
+  background: ghostwhite !important;
+}
+.bookListBox {
+  height:calc(100% - 300px);
+  overflow: hidden;
+}
+.filterArea {
+  border-bottom: 1px solid #ccc;
+  padding: 5px 0;
+  min-height: 40px;
+  margin: 5px 0;
+  overflow: hidden;
+}
+.searchBox {
+  width: calc(100%);
+  min-height: 30px;
+  float: right;
+  margin-bottom: 5px;
+}
+.selectBox {
+  height: 100%;
+  float: right;
+  width: calc(100% - 60px);
+  max-width: calc(100% - 60px);
+}
+.selectList {
+  width: 20%;
+  min-width: 90px;
+  padding: 0 3px;
+  height: 30px;
+  float: right;
+}
+.selectList > select {
+  background: #fff !important;
+  border: none!important;
+  border-right: #6768a745!important;
+  width: calc(100% );
+  height: 30px;
+  float: left;
+  text-align:center;
+}
+.searchWrap {
+  min-width: 120px;
+}
+.searchInput {
+  position: relative;
+  width: calc(100% - 120px);
+}
+.searchInput > img {
+  float: right;
+  position: absolute;
+  left: 10px;
+  width: 20px;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+.searchInput > input {
+  float: right;
+  width: 100%;
+  min-height: 30px;
+  min-width: 100%;
+  padding-left: 40px!important;
+}
+.orderBox {
+  border-radius: 20px;
+  width:110px;
+  min-height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.orderBox > p {
+  padding: 2px 7px;
+  border-radius: 20px
+}
+.createTeamBtn {
+  position: absolute;
+  bottom: 2rem;
+  right: 10%;
+}
+.closeBtn {
+  z-index: 999;
+  background:rgb(144 144 189);
+}
+.closeBtn > img {
+  width: 20px;
+  margin-bottom: 5px;
+}
+.popShadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: #00000030;
+  z-index: 99999;
 }
 </style>

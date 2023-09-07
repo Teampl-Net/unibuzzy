@@ -332,6 +332,9 @@ input, select {
 p{margin-bottom: 0; font-size: 1.5rem;}
 .fl{float: left;}
 .fr{float: right;}
+.lineHeight30 {
+  line-height: 30px;
+}
 
 .font45{font-size: 45px}
 .font35{font-size: 35px}
