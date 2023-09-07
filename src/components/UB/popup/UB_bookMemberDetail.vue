@@ -31,8 +31,7 @@
         <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="@/assets/images/common/icon_back.png"/>
         <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
     </div> -->
-    <div class="w100P fl mbottom-1 box1">
-
+    <div class="w100P fl mbottom-1 box1" :style="`padding-top: ${$STATUS_HEIGHT + 50}px;`">
         <div class="flexCenter" :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
             <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " class="userProfileImgWrap certiIconBox">
                 <img v-if="this.GE_USER.certiDate" class="img-w38" src="@/assets/images/common/userCertiIcon.svg" alt="">

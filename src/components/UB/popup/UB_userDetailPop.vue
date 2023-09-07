@@ -1,103 +1,97 @@
 <template>
-<div id="addTeamMemberArea" class="addTeamMemberArea">
-  <div class="w100P" style="display: flex; align-items: center; justify-content: center; padding: 20px; position: relative;">
-    <p class="font25 fontBold">Profile</p>
-    <img @click="pClosePop" class="cursorP" style="width: 25px; position: absolute; right: 20px; top: 20px;" src="@/assets/images/common/popup_close.png" alt="">
-  </div>
-<userImgSelectCompo @closeXPop="closeXPop" :pSelectedIconPath="this.mUserInfo.domainPath + mUserInfo.userProfileImg" :parentSelectedIconFileKey="mUserInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
-    <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
-        <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="@/assets/images/common/icon_back.png"/>
-        <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
-    </div> -->
-    <div class="profileImgWrap w100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
-
-        <div style=" display: flex; align-items: center; justify-content: center;" :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
-            <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center; position: relative;" class="userProfileImgWrap">
-            <!--  <img :src="this.domainPath + userProfileImg" /> -->
-                <img v-if="this.GE_USER.certiDate" class="img-w38" style="position: absolute; bottom: 5px; right: 10px;" src="@/assets/images/common/userCertiIcon.svg" alt="">
+  <div id="addTeamMemberArea" class="addTeamMemberArea">
+    <div class="w100P userDetailHeader">
+      <p class="font25 fontBold">Profile</p>
+      <img @click="pClosePop" class="cursorP" src="@/assets/images/common/popup_close.png" alt="">
+    </div>
+    <userImgSelectCompo @closeXPop="closeXPop" :pSelectedIconPath="this.mUserInfo.domainPath + mUserInfo.userProfileImg" :parentSelectedIconFileKey="mUserInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
+      <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
+          <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="@/assets/images/common/icon_back.png"/>
+          <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
+      </div> -->
+    <div class="profileImgWrap w100P fl mbottom-1">
+        <div class="profileImgBox" :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
+            <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'" class="userProfileImgWrap">
+              <img v-if="this.GE_USER.certiDate" class="img-w38" src="@/assets/images/common/userCertiIcon.svg" alt="">
             </div>
         </div>
-        <div v-if="selfYn" @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 0; left: 60%; transform: translateX(-50%); z-index: 9999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
+        <div v-if="selfYn" @click="changeUserImg()" class="font14 selfImg">Change</div>
         <!-- <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="  float: left; " /> -->
     </div>
     <div class="addMemberTextArea fl">
-
-      <div class="fl w100P" style='display: contents;'>
+      <div class="fl w100P dispContents">
         <p class="fl commonBlack creChanInput w100P font16 fontBold" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
         <p class="fl commonGray creChanInput w100P font14 " v-if="readOnlyYn && !changeYn && this.GE_USER.certiDate" >{{this.$changeText(this.mUserInfo.userDispMtext)}}</p>
-        <img v-if="readOnlyYn && !changeYn && selfYn" src="@/assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
+        <img v-if="readOnlyYn && !changeYn && selfYn" src="@/assets/images/push/noticebox_edit.png"  class="fr cursorP myName" @click="changeUserDispMtext()" >
         <div v-show="changeYn" class="fl creChanInput" style="">
-            <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
+            <input class="fl font16 nameInput" type="text" v-model="memName" @keyup.enter="setDispName" />
             <div class="fl" style="width: 100px">
-                <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >확인</p>
-                <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">취소</p>
+                <p class="fl mleft-1 font13 lineHeight30" @click="setDispName" >Save</p>
+                <p class="fl mleft-1 font13 lineHeight30" @click="changeYn = false">Cancel</p>
             </div>
         </div>
-        <p class="fl whiteColor CMiddleBgColor font12" style="padding: 2px 6px; border-radius:10px; " v-if="userGrade !== ''" >{{userGrade}}</p>
+        <p class="fl whiteColor CMiddleBgColor font12 gradeBox" v-if="userGrade !== ''" >{{userGrade}}</p>
       </div>
 
-      <div class="mtop-1 fl w100P"  style="display: flex; padding-left:5%; " v-if="!readOnlyYn && !selfYn">
+      <div class="mtop-1 fl w100P infoBox" v-if="!readOnlyYn && !selfYn">
         <img src="/resource/footer/icon_people.svg"  class="img-w20 fl mright-05" alt="">
         <input  type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
       </div>
 
-      <div class="mtop-1 fl w100P"  style="display: flex; padding-left:5%; ">
+      <div class="mtop-1 fl w100P infoBox">
         <img src="@/assets/images/editChan/icon_letter.svg"  class="img-w20 fl mright-05" alt="">
-        <p class="fl font16 commonDarkGray creChanInput " style="line-height: 30px; text-align: left; width: calc(100% - 20px);" v-if="readOnlyYn" >{{memEmail ? memEmail : $t('COMMON_MSG_NO_EMAIL')}}</p>
+        <p class="fl font16 commonDarkGray creChanInput" v-if="readOnlyYn" >{{memEmail ? memEmail : $t('COMMON_MSG_NO_EMAIL')}}</p>
         <input v-else type="text" placeholder="이메일을 입력하세요" class="creChanInput fr"  v-model="memEmail" >
       </div>
 
-      <div class="mtop-1 fl w100P"  style="display: flex; padding-left:5%;">
+      <div class="mtop-1 fl w100P infoBox">
         <img src="@/assets/images/editChan/icon_phoneSolid.svg" class="img-w20 fl mright-05" alt="">
-        <p class="fl font16 commonDarkGray creChanInput"  style="line-height: 30px; text-align: left; width: calc(100% - 20px);" v-if="readOnlyYn" >{{memPhone ? memPhone : $t('COMMON_MSG_NO_PHONE')}}</p>
+        <p class="fl font16 commonDarkGray creChanInput" v-if="readOnlyYn" >{{memPhone ? memPhone : $t('COMMON_MSG_NO_PHONE')}}</p>
         <input v-else type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
       </div>
-
       <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
       <div v-if="readOnlyYn" class="fl w100P mtop-3" style=" min-height: 70px; display: flex; flex-direction: row; justify-content: space-around;">
         <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="funcIconWrap fl" style="display: flex; flex-direction: row; align-items: center; justify-content: center">
-          <div style="display: flex; flex-direction: column; align-items: center;">
+          <div class="flexAlignCenter flexColumn">
             <div class="nativeServiceBtnWrap">
               <img v-if="value.type === 'MAIL'" :class="{noData: memEamil === $t('COMMON_MSG_NO_EMAIL')}" src="@/assets/images/editChan/icon_letter.svg"  class="img-w20" alt="">
               <img v-if="value.type === 'PHON'" :class="{noData: memPhone === $t('COMMON_MSG_NO_PHONE')}" src="@/assets/images/editChan/icon_phoneSolid.svg" class="img-w20" alt="">
               <img v-if="value.type === 'TEXT'" :class="{noData: memPhone === $t('COMMON_MSG_NO_PHONE')}" src="@/assets/images/editChan/icon_textSolid.svg"  class="img-w20" alt="">
             </div>
-            <p class="font14 fl textLeft commonBlack" style="line-height: 30px;">{{value.funcTitle}}</p>
+            <p class="font14 fl textLeft commonBlack lineHeight30">{{value.funcTitle}}</p>
           </div>
           <!-- <div class="mleft-05 mright-05" style="color: #BDBDBD" v-if="index !== (profileFunc.length - 1)">|</div> -->
         </div>
       </div>
     </div>
-
-    <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
-        <p class="font20 fontBold" style="width: 100%; height: 40px; margin-bottom: 25px; text-align: left; color: black; border-bottom: 1px solid #ccc;">추가된 구성원</p>
-        <div style="width:100%; max-height: 200px; overflow-y: scroll; overflow-x: hidden; ">
-            <table class="memberTable" style="width:100% ; border-collapse: collapse;">
-                <colgroup>
-                    <col width="20%">
-                    <col width="40%">
-                    <col width="32%">
-                    <col width="10px">
-                </colgroup>
-                <tr style = "background-color:#ccc;">
-                    <th class="font15" style="height: 100%; text-align: center;">Name</th>
-                    <th class="font15" style="height: 100%; text-align: center;">Email</th>
-                    <th class="font15" style="height: 100%; text-align: center;">Phone</th>
-                    <th class="font15" style="height: 100%; text-align: center;"></th>
-                </tr>
-                <tr v-for="(data, index) in memberList" :key='index' style="height:50px;">
-                    <td class="font12 memList">{{data.name}}</td>
-                    <td class="font12 memList">{{data.email}}</td>
-                    <td class="font12 memList">{{data.phoneNum}}</td>
-                    <td class="font16 memList fontBold" @click="deleteMem(data,index)">X</td>
-                </tr>
-            </table>
-        </div>
-
+    <div v-if="excelPopYn" class="excelWrap">
+      <p class="font20 fontBold">Members added</p>
+      <div>
+        <table class="memberTable">
+          <colgroup>
+            <col width="20%">
+            <col width="40%">
+            <col width="32%">
+            <col width="10px">
+          </colgroup>
+          <tr class="backgroundCCC">
+            <th class="font15 w100P textCenter">Name</th>
+            <th class="font15 w100P textCenter">Email</th>
+            <th class="font15 w100P textCenter">Phone</th>
+            <th class="font15 w100P textCenter"></th>
+          </tr>
+          <tr v-for="(data, index) in memberList" :key='index'>
+            <td class="font12 memList">{{data.name}}</td>
+            <td class="font12 memList">{{data.email}}</td>
+            <td class="font12 memList">{{data.phoneNum}}</td>
+            <td class="font16 memList fontBold" @click="deleteMem(data,index)">X</td>
+          </tr>
+        </table>
+      </div>
     </div>
-    <gBtnSmall v-if="!readOnlyYn" btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="addDirectAddMemList" />
-    <!-- <gBtnSmall v-if="propData.managerKey" btnTitle="삭제" class="fl" style="position:absolute; bottom:2rem; right: 3rem; background-color:#ff0000; font-weight:bold;" @click="deleteManager" /> -->
-</div>
+    <gBtnSmall class="saveBtn" v-if="!readOnlyYn" btnTitle="Save" @click="addDirectAddMemList" />
+      <!-- <gBtnSmall v-if="propData.managerKey" btnTitle="삭제" class="fl" style="position:absolute; bottom:2rem; right: 3rem; background-color:#ff0000; font-weight:bold;" @click="deleteManager" /> -->
+  </div>
 </template>
 
 <script>
@@ -496,61 +490,53 @@ export default {
 </script>
 
 <style scoped>
-
-.noData{
+.noData {
 	opacity:0.3;
 }
 table {
-    table-layout: fixed;
-    word-break: break-all;
+  table-layout: fixed;
+  word-break: break-all;
+}
+.memberTable {
+  width:100% ;
+  border-collapse: collapse;
 }
 .memberTable td {
-    border-bottom: 1px solid #ccc !important;
+  border-bottom: 1px solid #ccc !important;
+}
+.memberTable tr:last-child {
+  height: 50px;
 }
 .memList {
-    text-align: center;
-    padding: 5px 10px;
+  text-align: center;
+  padding: 5px 10px;
 }
-.addMemberTextArea{
-    /* font-size:14px; width: 100%; min-height: 100px; background: #FFF; padding: 0 3rem; opacity:0.9; */
+.addMemberTextArea {
+  /* font-size:14px; width: 100%; min-height: 100px; background: #FFF; padding: 0 3rem; opacity:0.9; */
 
-    font-size:14px; width: 100%; background: #FFF; padding: 0 10%;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start
+  font-size:14px; width: 100%; background: #FFF; padding: 0 10%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start
 }
 
 .profileImgWrap {
-    margin-bottom: 2rem;
-  }
-
-.memberItemRow{
+  margin-bottom: 2rem;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-
+  justify-content: center;
+  margin-top: 1.5rem;
 }
-
-.memberLogoArea{
-border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin: 0 auto;  background: #ffffff66; position: relative;display:flex; flex-direction: column; justify-content: center; align-items: center;
-margin-top: 3rem;
-margin-bottom: 2rem;
-}
-
-.memberLogoLabel{
-    color: white; padding: 0.25rem 0.5rem;background-color:black; opacity: 0.8; font-size:14px;white-space: nowrap;
-}
-
 .creChanInput{
-    /* width:calc(100% - 130px); */
-    min-width: 140px;
-    border : none;
-    word-break: break-all;
-    /* border-bottom: 1px solid #ccc; */
-    /* white-space: nowrap; */
-    /* overflow: scroll hidden; */
+  /* width:calc(100% - 130px); */
+  min-width: 140px;
+  border : none;
+  word-break: break-all;
+  /* border-bottom: 1px solid #ccc; */
+  /* white-space: nowrap; */
+  /* overflow: scroll hidden; */
 }
 
 .addTeamMemberArea{
@@ -564,39 +550,114 @@ margin-bottom: 2rem;
   background-color: white;
   border-radius: 10px;
 }
-
-
-.tB{
-    font-weight: bold;
+.userProfileImgWrap {
+  border-radius: 100%;
+  border:1.5px solid #6768a7;
+  background: #6768a745;
+  max-width: 200px;
+  max-height: 200px;
+  min-width: 125px;
+  min-height: 125px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
 }
-
-.creMemberBigBtn{
-    height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
-  /* width: 100%;  */
-
-  /* add Jeong */
-    width: 90%;
-    position: absolute;
-    bottom: 10px;
-    left: 5%;
+.userProfileImgWrap img {
+  width: 100%;
+  position: absolute;
+  bottom: 5px;
+  right: 10px;
 }
-
-.userProfileImgWrap { border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745;
-    max-width: 200px;
-    max-height: 200px;
-    min-width: 125px;
-    min-height: 125px;
-    }
-.userProfileImgWrap img {width: 100%;}
-.nativeServiceBtnWrap{padding: 0 10px; width: 45px; min-height: 25px; float: left; }
-
-.detailLabelText {width:10%; min-width: 130px; line-height: 30px;}
-.nativeServiceBtn { float: left; width: calc(100% / 4 - 5px); height: 100%; margin-right: 5px; align-items: center; justify-content: center; padding: 5px; display: flex; flex-direction: column;}
+.nativeServiceBtnWrap {
+  padding: 0 10px;
+  width: 45px;
+  min-height: 25px;
+  float: left;
+}
+.userDetailHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+}
+.userDetailHeader > img {
+  width: 25px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.profileImgBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.selfImg {
+  padding: 0 8px;
+  float: left;
+  position: absolute;
+  bottom: 0;
+  left: 60%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  min-height: 20px;
+  border-radius: 5px;
+  background: #00000070;
+  color: #FFF;
+}
+.myName {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  margin-top: 2px;
+}
+.nameInput {
+  width:calc(100% - 100px);
+  outline: none;
+  border: 1px solid #ccc;
+}
+.gradeBox {
+  padding: 2px 6px;
+  border-radius:10px;
+}
+.infoBox {
+  display: flex;
+  padding-left:5%;
+}
+.infoBox > p {
+  line-height: 30px;
+  text-align: left;
+  width: calc(100% - 20px);
+}
+.excelWrap {
+  width: 100%;
+  height: calc(65%-50px);
+  padding: 0 2rem;
+}
+.excelWrap > p {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 25px;
+  text-align: left;
+  color: black;
+  border-bottom: 1px solid #ccc;
+}
+.excelWrap > div {
+  width:100%;
+  max-height: 200px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.backgroundCCC {
+  background-color: #ccc;
+}
+.saveBtn {
+  position: absolute !important;
+  bottom: 2rem !important;
+  right: 3rem !important;
+}
 @media screen and (max-width: 300px) {
-  .detailLabelText {
-    width:8%!important;
-    min-width: 60px!important;
-  }
   .creChanInput {
     width: calc(100% - 60px);
   }
