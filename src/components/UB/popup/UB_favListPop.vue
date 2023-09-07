@@ -1,37 +1,37 @@
 <i18n>
-  {
-    "ko": {
-      "FAV_TITLE_CHANN": "즐겨찾기 채널"
-    },
-    "en": {
-      "FAV_TITLE_CHANN": "Favorite Channels"
-    }
+{
+  "ko": {
+    "FAV_TITLE_CHANN": "즐겨찾기 채널"
+  },
+  "en": {
+    "FAV_TITLE_CHANN": "Favorite Channels"
   }
-  </i18n>
-  <template>
-      <div class="transWhite" style="border-radius: 10px; width: 80%; height: 80%; position: absolute; top: 10%; left:10%; z-index: 10000; padding: 10px 20px; padding-bottom: 0;float: left;">
-        <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
-          <div style="display: flex; align-items: center; width: calc(100% - 25px);">
-            <img style="width: 20px; margin-right: 5px;" src="@/assets/images/common/likeIcon.svg" alt="">
-            <p class="textOverdot textLeft" style="width: calc(100% - 40px);">{{ $t('FAV_TITLE_CHANN')  }}</p>
-          </div>
-          <div class="cursorP" @click="closeXPop" style="width: 25px;">
-            <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
-          </div>
+}
+</i18n>
+<template>
+    <div class="transWhite favListPopWrap">
+      <div class="font25 fontBold w100P favListPopHeader">
+        <div class="favListPopTitle">
+          <img src="@/assets/images/common/likeIcon.svg" alt="">
+          <p class="textOverdot textLeft">{{ $t('FAV_TITLE_CHANN')  }}</p>
         </div>
-        <div class="w100P" style="padding-bottom: 30px; overflow: auto; height: calc(100% - 50px);">
-          <div v-if="!mFTeamList || (mFTeamList && mFTeamList.length === 0)" class="w100P h100P" style="display: flex; align-items: center; justify-content: center;">
-            <gEmpty tabName="즐겨찾기" contentName="채널" style="margin-top:50px;" />
-          </div>
-          <template v-else>
-            <div class="mbottom-1" v-for="town in mSortList" :key="town.townTeamKey">
-              <div class="textLeft fontBold" style="width: 100%; padding: 5px 10px; border-radius: 10px; background: rgba(186, 187, 215, 0.5);">{{ $changeText(town.townNameMtext) }}</div>
-              <channelCard v-for="(chanEle, index) in town.favList" :key="index" class="moveBox chanRow" style="margin-top: 10px;" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
-            </div>
-          </template>
+        <div class="cursorP closeBtnBox" @click="closeXPop">
+          <img class="w100P" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
       </div>
-  </template>
+      <div class="w100P favListPopContentsWrap">
+        <div v-if="!mFTeamList || (mFTeamList && mFTeamList.length === 0)" class="w100P h100P emptyBox">
+          <gEmpty tabName="즐겨찾기" contentName="채널" class="mt-header" />
+        </div>
+        <template v-else>
+          <div class="mbottom-1" v-for="town in mSortList" :key="town.townTeamKey">
+            <div class="textLeft fontBold townTitle">{{ $changeText(town.townNameMtext) }}</div>
+            <channelCard v-for="(chanEle, index) in town.favList" :key="index" class="moveBox chanRow mTop10" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
+          </div>
+        </template>
+      </div>
+    </div>
+</template>
 <script>
 export default {
   created () {
@@ -80,8 +80,6 @@ export default {
       const tempList = []
       for (let i = 0; i < this.mFTeamList.length; i++) {
         const index = tempList.findIndex(item => item.townTeamKey === this.mFTeamList[i].townTeamKey)
-        console.log('인덱스요')
-        console.log(index)
         if (index === -1) {
           const tempObj = { townTeamKey: this.mFTeamList[i].townTeamKey, townNameMtext: this.mFTeamList[i].townNameMtext, favList: [this.mFTeamList[i]] }
           tempList.push(tempObj)
@@ -138,5 +136,53 @@ export default {
 }
 </script>
 <style scoped>
-
+.favListPopWrap {
+  border-radius: 10px;
+  width: 80%;
+  height: 80%;
+  position: absolute;
+  top: 10%;
+  left:10%;
+  z-index: 10000;
+  padding: 10px 20px;
+  padding-bottom: 0;
+  float: left;
+}
+.favListPopHeader {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.favListPopTitle {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 25px);
+}
+.favListPopTitle > img {
+  width: 20px;
+  margin-right: 5px;
+}
+.favListPopTitle > p {
+  width: calc(100% - 40px);
+}
+.closeBtnBox {
+  width: 25px;
+}
+.favListPopContentsWrap {
+  padding-bottom: 30px;
+  overflow: auto;
+  height: calc(100% - 50px);
+}
+.emptyBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.townTitle {
+  width: 100%;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background: rgba(186, 187, 215, 0.5);
+}
 </style>

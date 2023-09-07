@@ -31,7 +31,7 @@
 <template>
 <seleciconBgPopup v-if="mSelectBuildingPop" :pSelectedBuilding="mSelectedBuilding" :selectBd="this.mSelectedBuilding" @no='mSelectBuildingPop=false' @makeParam='setIconOrBGData' :opentype="mSelectBuilding" :pClosePop="closeSelectBuildingPop"/>
 
-<div style="padding: 0 1.5rem 0 1rem ;box-sizing: border-box; width: 100%; height: 100%; background: #fff;"  >
+<div class="editChanWrap">
   <transition name="show_left">
     <manageFollowerList v-if="mPopType === 'memberManagement'" :propData="mCommonParam" style="padding-top: 0;" @memberInfo="openMemberInfo" @openPop="openPop" :pClosePop="closePop" />
   </transition>
@@ -41,20 +41,20 @@
   <!-- <createChannel @successCreChan="successCreChan" v-if="mPopType === 'createChannel'" :chanDetail="mCommonParam" :pClosePop="closePop" /> -->
   <createBoardChannel @successCreChan="successCreChan" v-if="mPopType === 'createChannel'" :channelModiYn="channelModiYn=true" :chanDetail="mCommonParam" :pClosePop="closePop" />
   <editBoardListPop v-if="mPopType === 'editBoard'" :propData="mCommonParam" :pClosePop="closePop" />
-    <div v-if="mUserDetailPopShowYn" @click="mSelectedMemberInfo" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+  <div class="userDetailShadow" v-if="mUserDetailPopShowYn" @click="mSelectedMemberInfo"></div>
   <userDetailPop v-if="mUserDetailPopShowYn" :propData="mSelectedMemberInfo" :pClosePop="closeMemberInfo" />
   <gPopHeader :headerTitle="$t('MANA_TITLE_CHANDETAIL')" :pClosePop="pClosePop" />
   <div class="editMyChanMenuWrap" :style="`padding-top: ${Number(this.$STATUS_HEIGHT + 70)}px`">
     <table class="myChanMenuTable w100P fl" >
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditChanPop" style="">
-        <th class="font16 w100P" style=" padding-bottom:20px;">
+        <th class="font16 w100P pBottom20">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/main/icon_channer.png"/>
             <!-- <img style="width:20px;" class="fl" src="../../../assets/images/main/icon_channel.png"> -->
           </div>
-          <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
-          <p class="font16 commonDarkGray fontBold">{{ $t('MANA_NAME_CAHN') }}</p>
-          <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);" >{{ $t('MANA_MSG_CAHN') }}</p>
+          <div class="fl mleft-05 mngChanRow">
+            <p class="font16 commonDarkGray fontBold">{{ $t('MANA_NAME_CAHN') }}</p>
+            <p class="font14 commonDarkGray textOverdot w100P">{{ $t('MANA_MSG_CAHN') }}</p>
           </div>
           <div class="myChanMenuImgAreaRight editMychanRow">
             <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
@@ -63,13 +63,13 @@
       </tr>
 
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1" @click="openEditManagerPop('manager')">
-        <th class="font16 w100P" style=" padding-bottom:20px;">
+        <th class="font16 w100P pBottom20">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w25 chanImg " src="../../../assets/images/editChan/icon_userEdit.svg">
           </div>
-          <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
+          <div class="fl mleft-05 mngChanRow">
             <p class="font16 commonDarkGray fontBold">{{ $t('MANA_NAME_FOLLOW') }}</p>
-            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">{{ $t('MANA_MSG_FOLLOW') }}</p>
+            <p class="font14 commonDarkGray textOverdot w100P">{{ $t('MANA_MSG_FOLLOW') }}</p>
           </div>
           <div class="myChanMenuImgAreaRight editMychanRow">
             <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
@@ -78,13 +78,13 @@
       </tr>
 
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1" @click="openEditCabinetPop">
-        <th class="font16 w100P" style=" padding-bottom:20px;">
+        <th class="font16 w100P pBottom20">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_addressBook.svg">
           </div>
-          <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
+          <div class="fl mleft-05 mngChanRow">
             <p class="font16 commonDarkGray fontBold">{{ $t('MANA_NAME_ADDRBOOK') }}</p>
-            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">{{ $t('MANA_MSG_ADDRBOOK') }}</p>
+            <p class="font14 commonDarkGray textOverdot w100P">{{ $t('MANA_MSG_ADDRBOOK') }}</p>
           </div>
           <div class="myChanMenuImgAreaRight editMychanRow">
             <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
@@ -93,11 +93,11 @@
       </tr>
 
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditBoardPop">
-        <th class="font16 w100P" style=" padding-bottom:20px;">
+        <th class="font16 w100P pBottom20">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">
           </div>
-          <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
+          <div class="fl mleft-05 mngChanRow">
             <p class="font16 commonDarkGray fontBold">{{ $t('MANA_NAME_BOARD') }}</p>
             <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">{{ $t('MANA_MSG_BOARD') }}</p>
           </div>
@@ -302,6 +302,13 @@ export default {
 </script>
 
 <style >
+.editChanWrap {
+  padding: 0 1.5rem 0 1rem;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
 .createChanContentsWrap{
   width: 100%;
   left:0;
@@ -310,36 +317,71 @@ export default {
   float: left;
   display: flex;
   align-items: center;
-  justify-content:start;
-  flex-direction:column;
+  justify-content: start;
+  flex-direction: column;
   margin-bottom: 0;
 }
-.editMyChanMenuWrap{
+.editMyChanMenuWrap {
   padding-top: 60px;
-  /* padding: 0.7rem 0 ; */
-  box-sizing: border-box; width: 100%; }
-.editMyChanMenuWrap table{text-align: left; width: 100%; padding: 0 10px}
-.editMyChanMenuWrap tr, .editMyChanMenuWrap td, .editMyChanMenuWrap th { height: 4rem; margin-bottom: 1rem; }
-.editMyChanMenuWrap td { border-bottom: none !important; padding-right: 1rem; }
-.editMyChanMenuWrap tr { border-bottom: 1px solid #F3F3F3; }
-.editMyChanMenuWrap th { color: #6768A7; padding-left: 1rem; font-weight: normal; min-height: 70px;}
-.myChanMenuImgArea{
+  box-sizing: border-box; width: 100%;
+}
+.editMyChanMenuWrap table {
+  text-align: left;
+  width: 100%;
+  padding: 0 10px;
+}
+.editMyChanMenuWrap tr, .editMyChanMenuWrap td, .editMyChanMenuWrap th {
+  height: 4rem;
+  margin-bottom: 1rem;
+}
+.editMyChanMenuWrap td {
+  border-bottom: none !important;
+  padding-right: 1rem;
+}
+.editMyChanMenuWrap tr {
+  border-bottom: 1px solid #F3F3F3;
+}
+.editMyChanMenuWrap th {
+  color: #6768A7;
+  padding-left: 1rem;
+  font-weight: normal;
+  min-height: 70px;
+}
+.myChanMenuImgArea {
   width: 30px;
   float: left;
 }
-.myChanMenuImgAreaRight{
+.myChanMenuImgAreaRight {
   width: 30px;
   float: right;
 }
-.editMychanRow{
-  position:relative; height: 80%;
+.editMychanRow {
+  position:relative;
+  height: 80%;
 }
-.chanImg{
-  height: auto; position:absolute; top:50%; transform:translateY(-50%);
+.chanImg {
+  height: auto;
+  position:absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
-.chanBackImg{
-  position:absolute; top:40%;
+.chanBackImg {
+  position: absolute; top:40%;
 }
-/* .editMyChanMenuWrap .btnStyle{ transform: rotate(180deg); width:10px;} */
-
+.userDetailShadow {
+  width:100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  background: #00000050;
+}
+.pBottom20 {
+  padding-bottom: 20px;
+}
+.mngChanRow {
+  height: 80%;
+  width: calc(100% - 100px);
+}
 </style>
