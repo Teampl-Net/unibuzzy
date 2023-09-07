@@ -179,8 +179,6 @@ export default {
         typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
         typeParam.userKey = this.GE_USER.userKey
         typeParam.teamKey = cont.creTeamKey
-        // eslint-disable-next-line no-debugger
-        debugger
         await this.$commonAxiosFunction({
           url: '/sUniB/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }

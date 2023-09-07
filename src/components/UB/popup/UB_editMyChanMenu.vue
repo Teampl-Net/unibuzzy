@@ -16,8 +16,8 @@
   "en": {
     "MANA_NAME_CAHN": "Manage Channel",
     "MANA_MSG_CAHN": "Modify channel information.",
-    "MANA_NAME_FOLLOW": "Manage Followers",
-    "MANA_MSG_FOLLOW": "Grant permissions to followers.",
+    "MANA_NAME_FOLLOW": "Manage Members",
+    "MANA_MSG_FOLLOW": "Grant permissions to members.",
     "MANA_NAME_ADDRBOOK": "Manage Team",
     "MANA_MSG_ADDRBOOK": "Create and Edit Team.",
     "MANA_NAME_BOARD": "Manage Board",
@@ -47,7 +47,7 @@
   <div class="editMyChanMenuWrap" :style="`padding-top: ${Number(this.$STATUS_HEIGHT + 70)}px`">
     <table class="myChanMenuTable w100P fl" >
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditChanPop" style="">
-        <th class="font16 w100P pBottom20">
+        <th class="font16 w100P padding10">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/main/icon_channer.png"/>
             <!-- <img style="width:20px;" class="fl" src="../../../assets/images/main/icon_channel.png"> -->
@@ -63,7 +63,7 @@
       </tr>
 
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1" @click="openEditManagerPop('manager')">
-        <th class="font16 w100P pBottom20">
+        <th class="font16 w100P padding10">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w25 chanImg " src="../../../assets/images/editChan/icon_userEdit.svg">
           </div>
@@ -78,7 +78,7 @@
       </tr>
 
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1" @click="openEditCabinetPop">
-        <th class="font16 w100P pBottom20">
+        <th class="font16 w100P padding10">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_addressBook.svg">
           </div>
@@ -93,7 +93,7 @@
       </tr>
 
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditBoardPop">
-        <th class="font16 w100P pBottom20">
+        <th class="font16 w100P padding10">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">
           </div>
@@ -377,8 +377,8 @@ export default {
   z-index: 99999;
   background: #00000050;
 }
-.pBottom20 {
-  padding-bottom: 20px;
+.padding10 {
+  padding: 10px;
 }
 .mngChanRow {
   height: 80%;

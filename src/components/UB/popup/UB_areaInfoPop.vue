@@ -206,8 +206,6 @@ export default {
       const bdTLength = []
 
       if (this.pAreaInfo) {
-        // eslint-disable-next-line no-debugger
-        debugger
         for (let i = 0; i < this.pAreaInfo.bdList.length; i++) {
           // T가 채널, C가 Board
           if (this.pAreaInfo.bdList[i].targetKind === 'C') {

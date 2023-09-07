@@ -128,8 +128,6 @@ export default {
       for (var m = 0; m < this.memberList.length; m++) {
         this.memberList[m].selectedYn = false
         for (var c = 0; c < changeList.length; c++) {
-          // eslint-disable-next-line no-debugger
-          debugger
           if (changeList[c].userKey === this.memberList[m].userKey) {
             this.memberList[m].selectedYn = true
           }
@@ -190,8 +188,6 @@ export default {
           param.targetKey = this.propData.currentTeamKey
           await this.$saveMCabContents(param).then(response => {
             var thisParam = {}
-            // eslint-disable-next-line no-debugger
-            debugger
             thisParam.cabinetType = 'member'
             this.$emit('saveCabinet', thisParam)
           })

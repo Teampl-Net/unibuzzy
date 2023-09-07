@@ -57,8 +57,6 @@ export default {
   },
   methods: {
     async routePage (page) {
-      // eslint-disable-next-line no-debugger
-      debugger
       if ((this.$route.path === '/' || this.$route.path === '/unibuzzy') && page === 'main') {
         return false
       }

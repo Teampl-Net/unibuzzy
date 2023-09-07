@@ -1,18 +1,18 @@
 <template>
-  <div style="width: 80%; height: 70%; border-radius: 10px; z-index: 99999; position: absolute; left: 10%; top:15%;" @click.stop="preventDefault">
+  <div class="guidePopWrap" @click.stop="preventDefault">
     <gConfirmPop :confirmText="mConfirmPopText" confirmType="one" @no="mConfirmPopShowYn = false" v-if="mConfirmPopShowYn"/>
-    <div class="transWhite" style="width: 100%; height: 100%;  float: left; position: relative; border-radius: 10px; padding: 10px 20px; overflow: hidden;">
+    <div class="transWhite guidePopBox">
       <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
-      <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
-        <div style="display: flex; align-items: center; width: calc(100% - 25px);">
-          <p class="textOverdot textLeft" style="width: calc(100% - 40px);">Guide</p>
+      <div class="font25 fontBold w100P guidePopHeader">
+        <div class="guidePopTitle">
+          <p class="textOverdot textLeft">Guide</p>
         </div>
-        <div class="cursorP" @click="pClosePop" style="width: 25px;">
-          <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
+        <div class="cursorP closeBox" @click="pClosePop">
+          <img class="w100P" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
       </div>
-      <div @wheel="horizontalScroll" id="chanListWrap" ref="chanListWrap" class="okScrollBar" :style="calcPaddingTop" style="padding-bottom: 10px; overflow: auto; height: calc(100% - 50px); width: 100%; display: flex; gap: 10px;" @mousedown="testTwo" @mouseup="testTr">
-        <img v-for="img, index in mImgList" class="h100P" :key="index" :src="img" alt="" style="border-radius: 10px;">
+      <div @wheel="horizontalScroll" id="chanListWrap" ref="chanListWrap" class="okScrollBar contentsWrap" :style="calcPaddingTop" @mousedown="testTwo" @mouseup="testTr">
+        <img v-for="img, index in mImgList" class="h100P" :key="index" :src="img" alt="guideImg">
       </div>
     </div>
   </div>
@@ -100,4 +100,50 @@ export default {
 </script>
 
 <style scoped>
+.guidePopWrap {
+  width: 80%;
+  height: 70%;
+  border-radius: 10px;
+  z-index: 99999;
+  position: absolute;
+  left: 10%;
+  top:15%;
+}
+.guidePopBox {
+  width: 100%;
+  height: 100%;
+  float: left;
+  position: relative;
+  border-radius: 10px;
+  padding: 10px 20px;
+  overflow: hidden;
+}
+.guidePopHeader {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.guidePopTitle {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 25px);
+}
+.guidePopTitle > p {
+  width: calc(100% - 40px);
+}
+.closeBox {
+  width: 25px;
+}
+.contentsWrap {
+  padding-bottom: 10px;
+  overflow: auto;
+  height: calc(100% - 50px);
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+.contentsWrap > img {
+  border-radius: 10px;
+}
 </style>

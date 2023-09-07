@@ -27,7 +27,7 @@
 }
 </i18n>
 <template>
-<div class="w100P h100P"  style="position: absolute; top: 0; left: 0; max-height: 100vh; padding: 0 1rem; background: #fff; z-index: 999;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 90)+ 'px'">
+<div class="w100P h100P mngFollowerListWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 90)+ 'px'">
     <transition name="show_left">
       <editMemberTypePop v-if="mPopType === 'editMemberTypePop'" :propData="mPropData" style="padding-top: 0;" :pClosePop="closePop" />
     </transition>
@@ -42,37 +42,36 @@
           <gBtnSmall @click="openMemberTypePop" :btnTitle="$t('FOLLOW_BTN_MANA_TYPE')" style="padding: 0 10px !important;" class="cursorP fl"/>
           <gBtnSmall @click="openReceptListPop" :btnTitle="$t('COMMON_BTN_REQLIST')" style="padding: 0 10px !important;" class="cursorP fl mright-05"/>
         </div> -->
-        <gMainTab :activeTabList='activeTabList' style="position:static;" :activeTab='activeTab' @changeTab='changeTab' />
+        <gMainTab :activeTabList='activeTabList' class="mainTab" :activeTab='activeTab' @changeTab='changeTab' />
         <!-- <div class="tableTopArea">
             <p class="font14  fontBold fl" style="margin-left: 40px; width: calc((100% - 165px)*0.4);">기본정보</p>
             <p class="font14  fontBold fl" style="width: calc((100% - 165px)*0.6);"></p>
             <p class="font14  fontBold fl" style="width: 125px;">권한</p>
         </div> -->
     </div>
-    <div class="w100P fl" style="min-width: 120px;">
-      <div class="fl" style="position: relative; margin-top: 10px; width: calc(100% - 120px)">
-        <img @click="searchMember()" class="cursorP" style="float: right; position: absolute; left: 10px;width: 20px;margin-top: 5px; margin-right: 5px;" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
-        <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text" style="float: right; width: calc(100% ); min-height: 30px; min-width: calc(100% );padding-left:40px!important; "  @keyup.enter="searchMember()" :placeholder="$t('FOLLOW_MSG_USERINFO')">
+    <div class="w100P fl memberSearchArea">
+      <div class="fl memberSearchBox">
+        <img @click="searchMember()" class="cursorP" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+        <input @click="mSearchKeyword = ''" v-model="mSearchKeyword" type="text" @keyup.enter="searchMember()" :placeholder="$t('FOLLOW_MSG_USERINFO')">
       </div>
-      <div class="CDeepBorderColor fr" style="border-radius: 20px; width:110px; min-height: 30px; margin-top: 10px; display: flex; justify-content: center; align-items: center; ">
-        <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'creDate'}">{{ $t('FOLLOW_BTN_ORDER_CRE') }}</p>
-        <p class="font12 fl" style="padding: 2px 7px;  border-radius: 20px" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">{{ $t('FOLLOW_BTN_ORDER_NAME') }}</p>
+      <div class="CDeepBorderColor fr memberOrderBox">
+        <p class="font12 fl" @click="mOrderByText = 'creDate', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'creDate'}">{{ $t('FOLLOW_BTN_ORDER_CRE') }}</p>
+        <p class="font12 fl" @click="mOrderByText = 'userDispMtext', changeOrderBy()" :class="{'CDeepBgColor whiteColor':mOrderByText === 'userDispMtext'}">{{ $t('FOLLOW_BTN_ORDER_NAME') }}</p>
       </div>
     </div>
-    <div class="w100P" style="overflow: auto; max-height: calc(100vh - 197px);">
+    <div class="w100P memberListContentsBox">
       <commonMemberList :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
     </div>
-
-    <gConfirmPop v-if="errorPopYn" :confirmText="errorText" confirmType='timeout' @no="errorPopYn = false" style="z-index:9999999" />
+    <gConfirmPop class="confirmPop" v-if="errorPopYn" :confirmText="errorText" confirmType='timeout' @no="errorPopYn = false"/>
     <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
     <div v-if="receptListPopShowYn" class="modalBackStyle" > </div>
     <transition name="showUp">
-        <div v-if="receptListPopShowYn" style="width: calc(100% - 40px); height: 90%; position: absolute; left: 20px; bottom: 0px; background: #fff; border-radius: 0.8rem 0.8rem 0 0; z-index: 99999999;">
-            <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
+        <div class="receptList" v-if="receptListPopShowYn">
+            <div class="headerShadow receptListHeader">
                 <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">{{ $t('FOLLOW_BTN_MANA_MEM') }}</p>
-                <img @click="closeRecMemberPop" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
+                <img @click="closeRecMemberPop" src="../../../assets/images/common/popup_close.png" alt="">
             </div>
-            <div style="width: 100%; height: calc(100% - 60px); float: left; padding: 10px 20px;">
+            <div class="receptContentsBox">
                 <receptMemberList @okMember="okMember" :managingList='this.reqMemList' @openPop='openPop'  @match='matchInfo' @memberInfo='memberInfo'/>
             </div>
         </div>
@@ -110,7 +109,6 @@ export default {
       smallPopYn:false,
       confirmMsg:'',
       addSmallMsg:'',
-      // userKey : JSON.parse(localStorage.getItem('sessionUser')).userKey ,
       ownerYn : false,
       currentTeamKey: null,
       receptListPopShowYn: false,
@@ -129,12 +127,9 @@ export default {
     }
   },
   created () {
-    console.log(this.propData)
     if (this.propData.initData) {
         this.managerList = this.propData.initData.content
     }
-    // this.getFollowerList()
-
   },
   mounted () {
     this.ownerYn = true
@@ -212,15 +207,10 @@ export default {
             for (var i = 0; i < itemList.length; i ++) {
                 itemList[i].addYn = false
             }
-            // eslint-disable-next-line no-debugger
-            debugger
         }
-        console.log(resultList)
         param.initData = resultList
         this.mPropData = param
       }
-      // eslint-disable-next-line no-debugger
-      debugger
 
 
       this.mPopType = 'editMemberTypePop'
@@ -246,8 +236,6 @@ export default {
     memberInfo(member){
       // if(this.tab === 'Show' && member.showProfileYn){
         var param = {}
-        // console.log("@@########!@#!!!!!!!!!!!@@@@@@@@@@@")
-        // console.log(member)
         param = member
         param.targetType = 'bookMemberDetail'
         param.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
@@ -277,7 +265,6 @@ export default {
         for (var f = 0; f < param.length; f ++) {
             fKeyList.push(param[f].followerKey)
         }
-        debugger
         await this.updateFollower(fKeyList)
         this.$addChanList(this.propData.teamKey)
         /* this.timerPopShowYn = true */
@@ -295,11 +282,7 @@ export default {
         url: '/sUniB/tp.saveFollower',
         param: params
       })
-      console.log('params')
-      console.log(params)
       if (result.data.result === true) {
-        // eslint-disable-next-line no-debugger
-        debugger
         /* this.okPopShowYn = true */
         this.$showToastPop(this.$t('FOLLOW_MSG_SUCCESS'))
         this.getFollowerList()
@@ -344,9 +327,7 @@ export default {
           url: '/sUniB/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
-        debugger
         this.managerList = result.data.content
-      // // console.log(this.managingList)
       // paramMap.set('followerType', 'M')
     },
     async getReqMemList () {
@@ -361,9 +342,7 @@ export default {
           url: '/sUniB/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
-        debugger
         this.reqMemList = result.data.content
-      // console.log(this.reqMemList)
       // paramMap.set('followerType', 'M')
     },
 
@@ -390,19 +369,14 @@ export default {
     },
     async saveManager (follower) {
       var param = {}
-      debugger
       param.follower = follower
       var result = await this.$commonAxiosFunction({
         url: '/sUniB/tp.saveManager',
         param: param
       })
-      console.log(result)
-      debugger
     },
 
     async openAddManagerPop () {
-      // eslint-disable-next-line no-new-object
-
       var param = {}
       param.targetType = 'bookMemberDetail'
       // param.currentCabinetKey = this.propData.cabinetKey
@@ -511,20 +485,141 @@ export default {
         },
         deep: true
     }
-    // GE_CHANNEL_INFO() {
-    //   // console.log(this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST'])
-    // }
   }
 }
 </script>
 <style>
-.filterBlock {float: left; margin-right: 10px; min-height: 25px; position: relative; border-radius: 10px; padding: 0 8px; padding-right: 20px; border: 1px solid #ccc; background: rgb(245, 245, 249);}
-.filterBlock img {position: absolute; right: 5px; top: 6.5px; width: 10px;}
-
-.tableTopArea{width: calc(100% - 30px); min-height: 30px; display: flex; justify-content: center; align-items: center;}
-
-.modalBackStyle{width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000050; z-index: 999999;}
-.pageTopAreaStyle {width: 100%; float: left; position: relative; min-height: 30px; border-bottom: 1px solid #6768a7; padding-top: 40px;}
-/* .receptListBtnStyle {position: absolute; right: 20px; top: 0px; height: 25px; z-index: 999999; line-height: 25px;} */
-.receptListBtnStyle {right: 10px; top: -5px; z-index: 9;}
+.filterBlock {
+  float: left;
+  margin-right: 10px;
+  min-height: 25px;
+  position: relative;
+  border-radius: 10px;
+  padding: 0 8px;
+  padding-right: 20px;
+  border: 1px solid #ccc;
+  background: rgb(245, 245, 249);
+}
+.filterBlock img {
+  position: absolute;
+  right: 5px;
+  top: 6.5px;
+  width: 10px;
+}
+.tableTopArea {
+  width: calc(100% - 30px);
+  min-height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modalBackStyle {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #00000050;
+  z-index: 999999;
+}
+.pageTopAreaStyle {
+  width: 100%;
+  float: left;
+  position: relative;
+  min-height: 30px;
+  border-bottom: 1px solid #6768a7;
+  padding-top: 40px;
+}
+.receptListBtnStyle {
+  right: 10px;
+  top: -5px;
+  z-index: 9;
+}
+.mngFollowerListWrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-height: 100vh;
+  padding: 0 1rem;
+  background: #fff;
+  z-index: 999;
+}
+.mainTab {
+  position:static !important;
+}
+.memberSearchArea {
+  min-width: 120px;
+}
+.memberSearchBox {
+  position: relative;
+  margin-top: 10px;
+  width: calc(100% - 120px);
+}
+.memberSearchBox > img {
+  float: right;
+  position: absolute;
+  left: 10px;
+  width: 20px;
+  margin-top: 5px;
+  margin-right: 5px;
+}
+.memberSearchBox > input {
+  float: right;
+  width: 100%;
+  min-height: 30px;
+  min-width: 100%;
+  padding-left: 40px !important;
+}
+.memberOrderBox {
+  border-radius: 20px;
+  width: 110px;
+  min-height: 30px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.memberOrderBox > p {
+  padding: 2px 7px;
+  border-radius: 20px;
+}
+.memberListContentsBox {
+  overflow: auto;
+  max-height: calc(100vh - 197px);
+}
+.confirmPop {
+  z-index: 9999999 !important;
+}
+.receptList {
+  width: calc(100% - 40px);
+  height: 90%;
+  position: absolute;
+  left: 20px;
+  bottom: 0px;
+  background: #fff;
+  border-radius: 0.8rem 0.8rem 0 0;
+  z-index: 99999999;
+}
+.receptListHeader {
+  width: 100%;
+  position: relative;
+  padding: 10px 20px;
+  min-height: 50px;
+  float: left;
+}
+.receptListHeader > p {
+  color: #6768A7 !important;
+}
+.receptListHeader > img {
+  width: 25px;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+}
+.receptContentsBox {
+  width: 100%;
+  height: calc(100% - 60px);
+  float: left;
+  padding: 10px 20px;
+}
 </style>

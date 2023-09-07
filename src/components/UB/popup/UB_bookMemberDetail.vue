@@ -199,7 +199,6 @@ export default {
             // else{ this.memPhone= this.$t('MEM_DETAIL_MSG_NOPHONE') }
             // this.setUserGrade(this.mUserInfo)
             /*
-            // debugger
             if(this.propData.userProfileImg){
                 this.userProfileImg = this.propData.domainPath + this.propData.userProfileImg
             }
@@ -461,7 +460,6 @@ export default {
         },
         async getUserInform () {
             var test = await this.$getUserInform()
-            debugger
             return this.userInfo
         }
     }

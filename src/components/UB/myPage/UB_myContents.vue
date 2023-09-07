@@ -38,8 +38,6 @@ export default {
   },
   methods: {
     async getPushContentsList () {
-      // eslint-disable-next-line no-debugger
-      debugger
       // @point
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -165,8 +163,6 @@ export default {
     propAlimList: {
       immediate: true,
       handler (value, old) {
-        // eslint-disable-next-line no-debugger
-        debugger
         if (!value) {
           this.mContentsList = []
         } else {
