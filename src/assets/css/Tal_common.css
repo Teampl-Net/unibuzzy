@@ -332,8 +332,12 @@ input, select {
 p{margin-bottom: 0; font-size: 1.5rem;}
 .fl{float: left;}
 .fr{float: right;}
+
 .lineHeight30 {
   line-height: 30px;
+}
+.lineHeight40 {
+  line-height: 40px;
 }
 
 .font45{font-size: 45px}
@@ -609,6 +613,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .mtop-2{margin-top: 2rem;}
 .mtop-3{margin-top: 3rem;}
 
+.mTop0 {margin-top: 0 !important;}
 .mTop10 {margin-top: 10px !important;}
 .mTop20 {margin-top: 20px;}
 
@@ -648,6 +653,8 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .mleft-4{margin-left: 4rem;}
 .mleft-6{margin-left: 6rem;}
 .mleft-10{margin-left: 10rem;}
+
+.mLeft10{margin-left: 10px;}
 
 .ptop-1{padding-top: 1rem;}
 

@@ -1,35 +1,35 @@
 <template>
-    <div style="float: left;  width: 100%;margin-top: 0;" :style="(modeType === 'write' || channelYn) ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
-      <div ref="tabbar" style="padding: 0 15px; display: flex; align-items: center; background: #FFF; height: 50px; float: left; width: 100%;" :style="{color: this.modeType === 'write' ? 'background: transparent' : ''}" >
+    <div class="fl w100P mTop0" :style="(modeType === 'write' || channelYn) ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
+      <div class="tabWrap" ref="tabbar" :style="{color: this.modeType === 'write' ? 'background: transparent' : ''}" >
         <!-- <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;" :style="channelYn? 'flex: 1 1 0%':''">
           <p :style="!channelYn? activebarWidth:''" :class="{mWidth : tabTrimLength(tab.display) > 3, commonColor: index === activetab && channelYn, lightGray: index !== activetab && channelYn}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
         </div> -->
         <!-- @change="selectTab(filter.name, filter.display)" -->
-        <select style="width:160px!important; height:30px;" class="fl" ref="tab" @change="handleTabChange"  >
+        <select class="fl selectStyle" ref="tab" @change="handleTabChange"  >
             <option v-for="(filter, idx) in tabList" :key="idx" :value="JSON.stringify(filter)">{{ filter.display }}</option>
         </select>
-        <select  v-if="subTabList" style="width:160px!important; height:30px; margin-left: 10px;" class="fl" ref="tab" @change="handleBoardTabChange"  >
+        <select  v-if="subTabList" class="fl selectStyle mLeft10" ref="tab" @change="handleBoardTabChange"  >
             <option v-for="(filter, idx) in subTabList" :key="idx" :value="JSON.stringify(filter)">{{ filter.display }}</option>
         </select>
         <!-- <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div> -->
 
-        <div class="fr" style="width: 100%; height: 30px; display: flex; align-items: center; justify-content: flex-end;" v-if="searchYn && !channelYn">
-          <div class="fr" style="height: 40px; display: flex; flex-direction: row; align-items: center;">
-          <img class="fl cursorP img-w20" style="line-height:40px" @click="this.$emit('openFindPop')" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+        <div class="fr searchWrap" v-if="searchYn && !channelYn">
+          <div class="fr">
+            <img class="fl cursorP img-w20 lineHeight40" @click="this.$emit('openFindPop')" src="../../../assets/images/common/iocn_search.png" alt="button for search">
           </div>
         </div>
       </div>
-      <div style="width: 100%; height: 40px;" v-if="channelYn">
-        <div class="fl w100P h100P" style="background-color: #fff;" v-if="searchYn">
+      <div class="searchArea" v-if="channelYn">
+        <div class="fl w100P h100P" v-if="searchYn">
           <div class="fl mtop-03" v-if="propSearchList">
             <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
           </div>
-          <div class="fl" style="right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
-            <img class="fl cursorP img-w20" style="line-height:40px" @click="this.$emit('openFindPop')" src="../../../assets/images/common/iocn_search.png" alt="검색버튼">
+          <div class="fl searchIconBox">
+            <img class="fl cursorP img-w20 lineHeight40" @click="this.$emit('openFindPop')" src="../../../assets/images/common/iocn_search.png" alt="button for search">
           </div>
         </div>
       </div>
-      <div v-if="searchYn && resultSearchKeyList && resultSearchKeyList.length > 0" class="pagePaddingWrap" style="padding-top: 0; width: 100%; float: left">
+      <div v-if="searchYn && resultSearchKeyList && resultSearchKeyList.length > 0" class="pagePaddingWrap searchResultArea">
         <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
       </div>
     </div>
@@ -90,12 +90,10 @@ export default {
     },
     handleTabChange (event) {
       const selected = JSON.parse(event.target.value)
-      console.log('selected', selected)
       this.selectTab(selected.name, selected.display)
     },
     handleBoardTabChange (event) {
       const selected = JSON.parse(event.target.value)
-      console.log('selected', selected)
       this.selectBoardTab(selected.name, selected.display)
     },
     selectTab (tab, displayName) {
@@ -158,11 +156,21 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
 /* background: #e9e9e9 */
  /* background: #e4e4e463; */
-.activeSearchInput{border: none; background: #e9e9e9; height: 90%; float: left; width: 6%; border-radius: 12px; padding: 0.4rem; padding-right: 3rem; box-sizing: border-box}
-.activeBar{
+.activeSearchInput {
+  border: none;
+  background: #e9e9e9;
+  height: 90%;
+  float: left;
+  width: 6%;
+  border-radius: 12px;
+  padding: 0.4rem;
+  padding-right: 3rem;
+  box-sizing: border-box;
+}
+.activeBar {
   min-width: var(--tabwidth);
   top: 38px;
   transition: 0.5s ease;
@@ -184,8 +192,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* justify-content: flex-start; */
   cursor: pointer;
   text-transform: uppercase;
   width: var(--tabwidth);
@@ -196,7 +202,6 @@ export default {
   bottom: 0px;
   height: 4px;
   width: var(--tabwidth);
-  /* width: 130px; */
   background: black;
   transition: 0.5s ease;
 }
@@ -212,11 +217,54 @@ export default {
 }
 
 .tabpane {
-  /* position: absolute;
-  width: 100%; */
   font-size: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.tabWrap {
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  background: #FFF;
+  height: 50px;
+  float: left;
+  width: 100%;
+}
+.selectStyle {
+  width:160px !important;
+  height:30px;
+}
+.searchWrap {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.searchWrap > div {
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.searchArea {
+  width: 100%;
+  height: 40px;
+}
+.searchArea > div {
+  background-color: #fff;
+}
+.searchIconBox {
+  right: 1.5rem;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.searchResultArea {
+  padding-top: 0;
+  width: 100%;
+  float: left
 }
 </style>
