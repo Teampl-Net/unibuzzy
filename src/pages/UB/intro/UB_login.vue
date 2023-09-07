@@ -16,23 +16,23 @@
   </i18n>
 <template>
   <div class="loginContentsWrap">
-    <div v-if="GE_USER.unknownYn" class="videoArea" style="position: fixed; width: 100%; height: 100%; overflow:hidden; background: #D6D6E7;">
+    <div v-if="GE_USER.unknownYn" class="videoArea">
       <!-- <video autoplay muted loop playsinline :style="showStartBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
         <source :src="introVideo" type="video/mp4" >
       </video> -->
-      <div v-show="showStartBtnYn" class="fade-in fontBold textLeft" style="width: 90%; position: absolute; text-shadow: 2px 2px 3px white;top: 20%; left: 5%;">
+      <div v-show="showStartBtnYn" class="fade-in fontBold textLeft loginTitle">
         <p class="w100P fl textCenter font18">Everything for campus life, </p>
-        <p class="w100P fl fontBold textCenter" style="font-size: 50px;">uniBuzzy</p>
+        <p class="w100P fl fontBold textCenter font50">uniBuzzy</p>
       </div>
     </div>
-    <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="Are you sure to quit uniBuzzy??" />
-    <transition name="showUp" style="animation-duration: 2s;">
-      <div class="py-3 px-4" v-show="showStartBtnYn" style="box-sizing: border-box; width: 100%; height: 60px; position: absolute; top: calc(35%); margin-bottom: 80px;">
-        <img src="../../../assets/images/intro/login/uniB_logo.png" style="width: 40%;" class="" >
+    <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="Are you sure to quit uniBuzzy?" />
+    <transition name="showUp" class="duration">
+      <div class="py-3 px-4 uniBLogo" v-show="showStartBtnYn">
+        <img src="../../../assets/images/intro/login/uniB_logo.png" class="" >
       </div>
     </transition>
-    <transition name="showUp" style="animation-duration: 2s;">
-      <div class="" style="width: 80%; position: absolute; left: 10%; bottom: 20%; display: flex; flex-direction: column; height: fit-content;" v-show="showStartBtnYn">
+    <transition name="showUp" class="duration">
+      <div class="loginArea" v-show="showStartBtnYn">
         <div class="loginBtn font20" @click="GoogleLoginBtn">
           <img src="../../../assets/images/intro/login/login_google.png">
           {{ $t('LOG_BTN_GOOGLE') }}
@@ -49,7 +49,7 @@
             {{ $t('LOG_BTN_APPLE') }}
           </div>
         </div>
-        <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
+        <div class="loginBtn font20 mbottom-2" v-on:click="openTestLoginPage">
           {{ $t('LOG_BTN_UNIB') }}
         </div>
         <!-- <div class="loginBtn font18" style="background: #aaa!important;" @click="justLookAround">
@@ -58,9 +58,9 @@
         </div> -->
       </div>
     </transition>
-      <div v-if="pPartnerLoginYn" class="fl" style="width: 100%; height: 80px; display: flex; margin-top: 50px;align-items: center; justify-content: center;">
-        <img style="width: 70px; border-radius: 3px; float: left;" src="../../../assets/images/common//DAlimMainQrCode.jpg">
-        <p class="font16 fontBold textLeft mleft-1 fl" style="color: #D6D6E7;">더알림 앱을 휴대폰에 설치하면<br>편하게 실시간으로 알림을 받을 수 있습니다!</p>
+      <div v-if="pPartnerLoginYn" class="fl partnerWrap">
+        <img src="../../../assets/images/common//DAlimMainQrCode.jpg">
+        <p class="font16 fontBold textLeft mleft-1 fl">더알림 앱을 휴대폰에 설치하면<br>편하게 실시간으로 알림을 받을 수 있습니다!</p>
       </div>
       <!-- <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
       <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
@@ -78,7 +78,6 @@ import { onMessage } from '../../../assets/js/webviewInterface'
 import { saveUser } from '../../../../public/commonAssets/Tal_axiosFunction.js'
 import { setUserInfo } from '../../../assets/js/login/Tal_userSetting'
 
-console.log(firebaseInitialize)
 const authService = new AuthService(firebaseInitialize)
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -117,8 +116,6 @@ export default {
     }
   },
   created () {
-    // eslint-disable-next-line no-debugger
-    debugger
     localStorage.setItem('sessionUser', '')
     localStorage.setItem('user', '')
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) {
@@ -135,14 +132,12 @@ export default {
     // 애플로 로그인 성공 시.
     document.addEventListener('AppleIDSignInOnSuccess', (data) => {
       // handle successful response
-      // console.log('AppleIDSignInOnSuccess')
       this.successAppleLogin(data)
       // todo success logic
     })
     // 애플로 로그인 실패 시.
     // eslint-disable-next-line handle-callback-err
     document.addEventListener('AppleIDSignInOnFailure', (error) => {
-      // console.log('AppleIDSignInOnFailure')
     })
   },
   methods: {
@@ -217,7 +212,6 @@ export default {
       var thisthis = this
       localStorage.setItem('loginType', 'google')
       authService.login('Google').then(async function (result) {
-        // console.log(result)
         if (result.user) {
           // eslint-disable-next-line no-new-object
           var user = new Object()
@@ -263,16 +257,97 @@ export default {
 </script>
 
 <style scoped>
-p{margin-bottom: 0;}
-.loginBtn{width: 100%; font-weight: bold; position: relative; cursor: pointer; height: 50px; margin-bottom: 15px; background-color: #f1f1f1; padding: 10px; box-sizing: border-box; border-radius: 10px;}
-.loginBtn img {width: 1.5rem; margin-bottom: 5px; margin-right: 10px; filter: brightness(0%);}
-.loginContentsWrap{height: 100vh; background: #f1f1f1; display: flex; flex-direction: column; justify-content: space-around; }
+.videoArea {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow:hidden;
+  background: #D6D6E7;
+}
+.loginTitle {
+  width: 90%;
+  position: absolute;
+  text-shadow: 2px 2px 3px white;
+  top: 20%;
+  left: 5%;
+}
+.duration {
+  animation-duration: 2s;
+}
+p {
+  margin-bottom: 0;
+}
+.loginBtn {
+  width: 100%;
+  font-weight: bold;
+  position: relative;
+  cursor: pointer;
+  height: 50px;
+  margin-bottom: 15px;
+  background-color: #f1f1f1;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+.loginBtn img {
+  width: 1.5rem;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  filter: brightness(0%);
+}
+.loginContentsWrap {
+  height: 100vh;
+  background: #f1f1f1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.uniBLogo {
+  box-sizing: border-box;
+  width: 100%;
+  height: 60px;
+  position: absolute;
+  top: calc(35%);
+  margin-bottom: 80px;
+}
+.uniBLogo > img {
+  width: 40%;
+}
+.loginArea {
+  width: 80%;
+  position: absolute;
+  left: 10%;
+  bottom: 20%;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+.partnerWrap {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  margin-top: 50px;
+  align-items: center;
+  justify-content: center;
+}
+.partnerWrap > img {
+  width: 70px;
+  border-radius: 3px;
+  float: left;
+}
+.partnerWrap > p {
+  color: #D6D6E7;
+}
 @media screen and (max-width: 300px) {
   .loginBtn, .inquiryBtn {
     height: 40px;
     padding: 5px;
   }
-  .loginBtn img {width: 1rem; margin-bottom: 5px; margin-right: 10px}
+  .loginBtn img {
+    width: 1rem;
+    margin-bottom: 5px;
+    margin-right: 10px
+  }
 }
 
 </style>

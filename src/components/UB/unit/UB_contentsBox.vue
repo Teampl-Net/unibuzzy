@@ -9,205 +9,201 @@
 }
 </i18n>
 <template>
-    <div v-if="mLoadingShowYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
-      <div style="background-color:#00000050; width:100vw; height:100vh; position: fixed; top:0; left:0; z-index: 10000000;" v-if="mProfilePopShowYn" @click="closeProfilePop"></div>
-      <userDetailPop v-if="mProfilePopShowYn" :propData="mPopParam" :pClosePop="closeProfilePop" />
-      <!-- <button @click="downloadPdf">다운로드</button> -->
-      <!-- <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;"> -->
-        <div :class="animationYn? 'newContentsAni':''" key="animationYn" v-if="this.CONT_DETAIL" :style="`padding-bottom: ${this.$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`" style="width: 100%; background: #FFF; overflow: hidden; min-height: 20px; float: left; box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4); margin-bottom: 10px; position: relative; padding-top: 5px;  border-radius: 8px;">
-          <div v-if="propJustShowYn" :style="propPreStickerList && propPreStickerList.length > 0? 'height: calc(100% - 50px);' : 'height: calc(100%); '" style="width: 100%; position: absolute;left: 0; top: 0; z-index: 99;"></div>
-          <!-- :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" -->
-          <div class="contentsCardHeaderArea" style="width: 100%; min-height: 20px; float: left; padding: 10px 20px;">
-              <div @click="goChannelMain" :style="this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
-                  <div :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext : CONT_DETAIL.logoPathMtext) + ');'" style="width: calc(100% - 2px); height:  calc(100% - 2px); border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center;">
-                  </div>
-              </div>
-              <div style="width: calc(100% - 55px); margin-left: 10px; height: 100%; float: left; display: flex; flex-direction: column;" >
-                  <div style="width: 100%; position: relative; height: 50%; min-height: 26px;  position: relative;">
-                      <template v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn">
-                          <p class=" textLeft textOverdot commonBlack fontBold font16" style="width: calc(100% - 35px);">
-                            {{ $t('COMM_MSG_NOPERM') }}
-                          </p>
-                      </template>
-                      <template v-else>
-                          <p @click="goContentsDetail()" class="cursorDragText textLeft textOverdot commonBlack fontBold font16" :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''"  style="width: calc(100% - 35px);">
-                              <img v-if="CONT_DETAIL.jobkindId === 'ALIM'" src="../../../assets/images/push/contTitle_alim.svg" class="cursorNotDrag" style="width: 20px; margin-top: 2px; float: left; margin-right: 5px;" alt="">
-                              <img v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" src="../../../assets/images/push/contTitle_board.svg" class="cursorNotDrag" style="width: 20px; margin-top: 2px;  float: left; margin-right: 5px;" alt="">
-                              {{CONT_DETAIL.title}}
-                          </p>
-                          <img v-if="!pNoAuthYn" src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 0; top: 0;" alt="" @click="contentMenuClick">
-                      </template>
-                  </div>
-                  <div style="width: 100%; position: relative; height: 50%; min-height: 25px;">
-                      <div style="line-height: 23px;" class="CLDeepGrayColor font14 fl textLeft fontBold ">
-                          <p v-if="CONT_DETAIL.jobkindId === 'BOAR'" class="CLDeepGrayColor font14 fl textLeft fontBold " @click="goChannelMain()">
-                              <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                              <span class="fl">
-                                {{ this.$changeText(CONT_DETAIL.cabinetNameMtext) }}
-                              </span>
-                              <span class="textOverdot fl" style="display: block; max-width: 70px;">
-                                ({{this.$changeText(CONT_DETAIL.nameMtext)}})
-                              </span>
-                          </p>
-                          <p v-else class="CLDeepGrayColor font14 fl textLeft fontBold " @click="goChannelMain()">
-                              <img src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" style="height: 21px; padding: 3px;" class="fl" alt="" />
-                              <span class="fl"> {{this.$changeText(CONT_DETAIL.nameMtext)}}</span>
-                          </p>
-                          <span @click="goUserProfile()" style="font-weight: normal;" class="mleft-03">
-                              <span class="font-weight: normal;">|</span> {{this.$changeText(CONT_DETAIL.creUserName)}}
-                          </span>
-                      </div>
-                      <p class="fr CLDeepGrayColor font12" style="line-height: 23px;">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
-                      <div @click="openRecvActorListPop(CONT_DETAIL.rUserCount === -1? true : '')" class="fr cursorP font12 commonGrayBG CDeepColor fontBold mtop-02 mright-05 " v-if="CONT_DETAIL.jobkindId === 'ALIM'" :style="CONT_DETAIL.rUserCount !== -1 && CONT_DETAIL.creUserKey === GE_USER.userKey? 'background: rgb(221 229 251)!important;':''" style="padding: 0px 8px; border-radius: 8px; height: 18px; display: flex; align-items: center;" >
-                          <!-- <p  class="font12 fl lightGray">수신</p>
-                          <span class="font12 mSide-02">{{'|'}}</span> -->
-                          <template   v-if="CONT_DETAIL.rUserCount === -1">
-                              {{ this.$t('COMMON_TAB_ALL') }}
-                          </template>
-                          <template v-else-if="CONT_DETAIL.rUserCount !== -1">
-                              <img src="../../../assets/images/push/userIcon.svg" class="img-w13 mright-01 fl" alt="">
-                              <p class="font12 fl mleft-01 CDeepColor" style="line-height: 1; margin-top: 1px;">{{CONT_DETAIL.rUserCount}}</p>
-                          </template>
-                      </div>
-                  </div>
-                  <div v-if="!GE_USER.unknownYn" style="width: 100%; float: left;">
-                      <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && !pNoAuthYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
-                      <!-- <p class="fr font12 lightGray mright-03" @click="CONT_DETAIL.rUserCount !== -1? this.openRecvListPop(): ''" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" > -->
-                      <p class="fl commonColor font12 fl textLeft fontBold cursorP" v-if="!pNoAuthYn && CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" style="margin-top: 2px;" @click="sendReply">{{ this.$t('COMM_BTN_REPLY') }}</p>
-                      <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
-                          <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
-                      </div>
-                  </div>
-              </div>
+  <div v-if="mLoadingShowYn" id="loading"><div class="spinner"></div></div>
+  <div class="profilePopBg`" v-if="mProfilePopShowYn" @click="closeProfilePop"></div>
+  <userDetailPop v-if="mProfilePopShowYn" :propData="mPopParam" :pClosePop="closeProfilePop" />
+    <!-- <button @click="downloadPdf">다운로드</button> -->
+    <!-- <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;"> -->
+  <div :class="animationYn? 'newContentsAni':''" class="contentsWrap" key="animationYn" v-if="this.CONT_DETAIL" :style="`padding-bottom: ${this.$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`">
+    <div v-if="propJustShowYn" :style="propPreStickerList && propPreStickerList.length > 0? 'height: calc(100% - 50px);' : 'height: calc(100%); '" class="justSticker"></div>
+    <!-- :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" -->
+    <div class="contentsCardHeaderArea">
+      <div @click="goChannelMain" :style="this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
+        <div class="chanIcon" :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext : CONT_DETAIL.logoPathMtext) + ');'"></div>
+      </div>
+      <div class="contentsCardInfo" >
+        <div class="contentsCardInfoBox">
+          <template v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn">
+            <p class="textLeft textOverdot commonBlack fontBold font16 noPerm">
+              {{ $t('COMM_MSG_NOPERM') }}
+            </p>
+          </template>
+          <template v-else>
+            <p @click="goContentsDetail()" class="cursorDragText textLeft textOverdot commonBlack fontBold font16 noPerm" :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''">
+                <img v-if="CONT_DETAIL.jobkindId === 'ALIM'" src="../../../assets/images/push/contTitle_alim.svg" class="cursorNotDrag" alt="">
+                <img v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" src="../../../assets/images/push/contTitle_board.svg" class="cursorNotDrag" alt="">
+                {{CONT_DETAIL.title}}
+            </p>
+            <img v-if="!pNoAuthYn" class="moreMenu" src="../../../assets/images/push/contents_moreBtnIcon.svg" alt="" @click="contentMenuClick">
+          </template>
+        </div>
+        <div class="userInfoArea">
+          <div class="CLDeepGrayColor font14 fl textLeft fontBold lineHeight23">
+            <p v-if="CONT_DETAIL.jobkindId === 'BOAR'" class="CLDeepGrayColor font14 fl textLeft fontBold " @click="goChannelMain()">
+              <img class="officialImg fl" src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" alt="" />
+              <span class="fl">
+                {{ this.$changeText(CONT_DETAIL.cabinetNameMtext) }}
+              </span>
+              <span class="textOverdot fl chanName">
+                ({{this.$changeText(CONT_DETAIL.nameMtext)}})
+              </span>
+            </p>
+            <p v-else class="CLDeepGrayColor font14 fl textLeft fontBold " @click="goChannelMain()">
+              <img class="officialImg fl" src="../../../assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" alt="" />
+              <span class="fl"> {{this.$changeText(CONT_DETAIL.nameMtext)}}</span>
+            </p>
+            <span @click="goUserProfile()" class="mleft-03 fontNomal">
+              <span class="fontNomal">|</span> {{this.$changeText(CONT_DETAIL.creUserName)}}
+            </span>
           </div>
-          <!-- <div id="stickerArea" style="width: 100%; min-height: 20px; float: left;">
-
-              <gSticker @click="mStickerPopShowYn = true" :pSticker="{nameMtext: 'test', picBgPath: '#CCC'}"/>
-          </div> -->
-          <div v-if="!propJustShowYn" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px; position: relative;">
-            <div v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
-            <div v-else-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
-            <div v-else class="fl w100P" ref="contentsBoxRef"  style="word-break: break-all; overflow: hidden; max-height: 300px; " :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
-              <pre :ref="'mainContRef' + CONT_DETAIL.contentsKey" @loadeddata="testLoad"  :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h100P w100P fl" style="word-break: break-all; overflow: hidden auto;" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
-            </div>
-            <!-- <div v-if="!mFadeNotShowYn && $refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" class="w100P fl" style="position: absolute; bottom: 35px; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div> -->
-            <div v-if="!propJustShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" style="width: 100%; padding: 5px 10px; padding-left: 20px; padding-bottom: 0; float: left; min-height: 20px;margin-top: 10px;">
-                <template v-for="(value, index) in CONT_DETAIL.D_CONT_USER_STICKER_LIST" :key="index" >
-                <!-- <template v-for="(value, index) in this.mContStickerList" :key="index" > -->
-                  <gStickerLine @click="goStickerContentsList(value)" v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" />
-                </template>
-            </div>
-            <div v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w100P" style="position: absolute; bottom: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9));"></div>
-            <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="cursorP w100P textRight fr font14 commonColor fontBold mtop-05 mright-1" style=" position: absolute; bottom: 0; right: 10px;">{{$t('COMMON_NAME_MORE')}} > </p>
-            <p v-else-if="mFadeNotShowYn && !mContentMoreShowYn" @click.stop="foldContentsDetail" class="w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 cursorP" style="position: absolute; bottom: 0px; right: 10px;"> Fold &lt; </p>
-          </div>
-          <div v-else style="width: 100%; padding: 5px 10px; padding-bottom: 0; float: left; min-height: 35px;">
-            <template v-for="(value, index) in propPreStickerList" :key="index" >
-              <gStickerLine v-if="value" :pSelecteModeYn="true" :pSmallYn="true" @click="this.$emit('selectSticker', value)" style="cursor: pointer; float: left; margin-right: 5px; min-width: 30px;" :pSticker="value" />
+          <p class="fr CLDeepGrayColor font12 lineHeight23">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
+          <div @click="openRecvActorListPop(CONT_DETAIL.rUserCount === -1? true : '')" class="fr cursorP font12 commonGrayBG CDeepColor fontBold mtop-02 mright-05 recvUser" v-if="CONT_DETAIL.jobkindId === 'ALIM'" :style="CONT_DETAIL.rUserCount !== -1 && CONT_DETAIL.creUserKey === GE_USER.userKey? 'background: rgb(221 229 251)!important;':''">
+            <!-- <p  class="font12 fl lightGray">수신</p>
+            <span class="font12 mSide-02">{{'|'}}</span> -->
+            <template   v-if="CONT_DETAIL.rUserCount === -1">
+                {{ this.$t('COMMON_TAB_ALL') }}
+            </template>
+            <template v-else-if="CONT_DETAIL.rUserCount !== -1">
+                <img src="../../../assets/images/push/userIcon.svg" class="img-w13 mright-01 fl" alt="">
+                <p class="font12 fl mleft-01 CDeepColor recvUserCount">{{CONT_DETAIL.rUserCount}}</p>
             </template>
           </div>
-          <template v-if="!propJustShowYn && (pNoAuthYn || (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" >
-            <div class="contentsCardUserDoArea" style="position: relative; width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">
-              <stickerListSetting @mContStickerList="saveStickerList" @openStickerPop="openStickerPop"  v-if="this.openStickerListYn" :openStickerListYn="this.openStickerListYn" :contDetail="this.CONT_DETAIL" :propStickerList="this.mStickerList" @openPop="openSettingStickerPop" />
-              <div style="float: left; width: calc(100% - 100px); height: 100%;">
-                <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                  <div style="width: 100%; height: 20px; float: left;">
-                    <img v-if="this.CONT_DETAIL.D_CONT_USER_DO && !this.CONT_DETAIL.D_CONT_USER_DO[1].doKey" class="" src="../../../assets/images/contents/cont_like_no.svg" alt="">
-                    <img v-else src="../../../assets/images/contents/cont_like.svg" alt="" class="">
-                  </div>
-                  <p class="font12 fl fontBold w100P mtop-01  userDoColor">{{CONT_DETAIL.likeCount}}</p>
-                </div>
-
-                <div @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                  <div style="width: 100%; height: 20px; float: left;">
-                    <img v-if="this.CONT_DETAIL.D_CONT_USER_DO && !this.CONT_DETAIL.D_CONT_USER_DO[1].doKey" class="" src="../../../assets/images/contents/cont_star_no.svg" alt="">
-                    <img v-else src="../../../assets/images/contents/cont_star.svg" alt="" class="">
-                  </div>
-                  <p class="font12 fontBold fl mtop-01  w100P userDoColor">{{CONT_DETAIL.starCount}}</p>
-                </div>
-                <div @click="this.goContentsDetail(undefined, true)" style="width: 30px; height: 35px; display: flex; cursor: pointer;  float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                  <div style="width: 100%; height: 20px; float: left;">
-                    <img v-if="mWriteMemoYn" src="../../../assets/images/contents/cont_memo.svg" class="" alt="">
-                    <img v-else src="../../../assets/images/contents/cont_memo_no.svg" class="" alt="">
-                  </div>
-                  <p class="font12 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
-                </div>
-                <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                  <div style="width: 100%; height: 20px; float: left;">
-                    <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
-                    <img v-else src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
-                </div>
-                <p class="font12 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
-              </div>
+        </div>
+          <div v-if="!GE_USER.unknownYn" class="w100P fl">
+            <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && !pNoAuthYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
+            <!-- <p class="fr font12 lightGray mright-03" @click="CONT_DETAIL.rUserCount !== -1? this.openRecvListPop(): ''" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" > -->
+            <p class="fl commonColor font12 fl textLeft fontBold cursorP replyBtn" v-if="!pNoAuthYn && CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" @click="sendReply">{{ this.$t('COMM_BTN_REPLY') }}</p>
+            <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
+                <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font12 fl textRight w100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
             </div>
-                  <div style="float: right; width: 140px; height: 100%; float: left;">
-                      <div style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; cursor: pointer;justify-content: center; align-items: center;">
-                          <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
-                              <img src="../../../assets/images/push/contentsShareIcon.svg" class=" fl" alt="공유 아이콘"
-                                  data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
-                                      :data-clipboard-text="CONT_DETAIL.copyTextStr">
-                          </div>
-                          <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{this.$t('COMMON_NAME_SHARE')}}</p>
-                      </div>
-                      <div v-if="$appType === 'D'" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : openStickerPop()" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                        <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
-                          <img src="../../../assets/images/push/stickerIcon.svg" class="img-w20" alt="">
-                        </div>
-                        <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{this.$t('COMMON_NAME_LABEL')}}</p>
-                      </div>
-
-                      <!-- this.$emit('fileDownload') -->
-                      <!-- <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                          <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
-                          <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
-                      </div> -->
-                      <div v-if="$appType === 'D'" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : subScribeContents()" style="width: 30px; height: 35px; display: flex; float: right;cursor: pointer;  margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
-                          <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center;">
-                              <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/push/contentsBellIcon_on.svg" class=" " alt="">
-                              <img v-else src="../../../assets/images/push/contentsBellIcon.svg" class="" alt="">
-                          </div>
-                          <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{this.$t('COMMON_NAME_INTEREST')}}</p>
-                      </div>
-                  </div>
-              </div>
-              <!-- <div v-else class="contentsCardUserDoArea" style="position: relative; width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">
-              </div> -->
-              <!-- <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1;  width: calc(100% - 40px); margin: 10px 20px; margin-bottom: 10px;float: left;"></div> -->
-              <div class="contentsCardMemoArea" v-if="!pNoAuthYn && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 10px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
-                <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fl w-100P textLeft font12 commonColor fontBold mbottom-05 mright-05" @click="this.goContentsDetail(undefined, true)" >{{ returnCommentText() }}</p>
-                <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
-                    <memoCompo @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.D_MEMO_LIST.length" @memoEmitFunc='memoEmitFunc' />
-                </template>
-                <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
-                <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
-              </div>
-              <div class="contentsCardMemoArea" v-else-if="pNoAuthYn && this.CONT_DETAIL.memoList && this.CONT_DETAIL.memoList.length > 0" style="width: 100%; float: left; cursor: pointer;  padding: 10px 20px 0 20px; min-height: 20px; margin-bottom: 10px" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
-                  <template v-for="(memo, mIndex) in this.CONT_DETAIL.memoList" :key="mIndex">
-                      <memoCompo :pNoAuthYn="pNoAuthYn" @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.memoList.length" @memoEmitFunc='memoEmitFunc' />
-                  </template>
-                  <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
-                  <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >{{ returnCommentText() }}</p>
-                  <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
-              </div>
-          </template>
+          </div>
       </div>
-    <!-- </vue3-simple-html2pdf> -->
-    <!-- 밑에는 댓글 작성 창 -->
-    <gMemoPop style="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="!pNoAuthYn && this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
+    </div>
+    <!-- <div id="stickerArea" style="width: 100%; min-height: 20px; float: left;">
+        <gSticker @click="mStickerPopShowYn = true" :pSticker="{nameMtext: 'test', picBgPath: '#CCC'}"/>
+    </div> -->
+    <div v-if="!propJustShowYn" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px; position: relative;">
+      <div v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
+      <div v-else-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
+      <div v-else class="fl w100P contentsPreWrap" ref="contentsBoxRef" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
+        <pre :ref="'mainContRef' + CONT_DETAIL.contentsKey" @loadeddata="testLoad"  :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h100P w100P fl contentsPre" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
+      </div>
+      <!-- <div v-if="!mFadeNotShowYn && $refs.mainContRef && $refs.mainContRef.offsetHeight > 300 && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" class="w100P fl" style="position: absolute; bottom: 35px; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));"></div> -->
+      <div v-if="!propJustShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" class="stickerWrap">
+        <template v-for="(value, index) in CONT_DETAIL.D_CONT_USER_STICKER_LIST" :key="index" >
+        <!-- <template v-for="(value, index) in this.mContStickerList" :key="index" > -->
+          <gStickerLine class="stickerItem" @click="goStickerContentsList(value)" v-if="value" :pSmallYn="true" :pSticker="value.sticker" />
+        </template>
+      </div>
+      <div v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w100P fadeEffect"></div>
+      <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="cursorP w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 moreBtn">{{$t('COMMON_NAME_MORE')}} > </p>
+      <p v-else-if="mFadeNotShowYn && !mContentMoreShowYn" @click.stop="foldContentsDetail" class="w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 cursorP moreBtn"> Fold &lt; </p>
+    </div>
+    <div class="stickerFullWrap" v-else>
+      <template v-for="(value, index) in propPreStickerList" :key="index" >
+        <gStickerLine class="stickerItem" v-if="value" :pSelecteModeYn="true" :pSmallYn="true" @click="this.$emit('selectSticker', value)" :pSticker="value" />
+      </template>
+    </div>
+    <template v-if="!propJustShowYn && (pNoAuthYn || (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" >
+      <div class="contentsCardUserDoArea">
+        <stickerListSetting @mContStickerList="saveStickerList" @openStickerPop="openStickerPop"  v-if="this.openStickerListYn" :openStickerListYn="this.openStickerListYn" :contDetail="this.CONT_DETAIL" :propStickerList="this.mStickerList" @openPop="openSettingStickerPop" />
+        <div class="contentsCardUserDoWrap">
+          <div class="userDoBox" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)">
+            <div class="userDoItem">
+              <img v-if="this.CONT_DETAIL.D_CONT_USER_DO && !this.CONT_DETAIL.D_CONT_USER_DO[1].doKey" class="" src="../../../assets/images/contents/cont_like_no.svg" alt="">
+              <img v-else src="../../../assets/images/contents/cont_like.svg" alt="" class="">
+            </div>
+            <p class="font12 fl fontBold w100P mtop-01  userDoColor">{{CONT_DETAIL.likeCount}}</p>
+          </div>
+          <div class="userDoBox" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)">
+            <div class="userDoItem">
+              <img v-if="this.CONT_DETAIL.D_CONT_USER_DO && !this.CONT_DETAIL.D_CONT_USER_DO[1].doKey" class="" src="../../../assets/images/contents/cont_star_no.svg" alt="">
+              <img v-else src="../../../assets/images/contents/cont_star.svg" alt="" class="">
+            </div>
+            <p class="font12 fontBold fl mtop-01  w100P userDoColor">{{CONT_DETAIL.starCount}}</p>
+          </div>
+          <div class="userDoBox" @click="this.goContentsDetail(undefined, true)">
+            <div class="userDoItem">
+              <img v-if="mWriteMemoYn" src="../../../assets/images/contents/cont_memo.svg" class="" alt="">
+              <img v-else src="../../../assets/images/contents/cont_memo_no.svg" class="" alt="">
+            </div>
+            <p class="font12 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
+          </div>
+          <div class="userDoBox" @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0">
+            <div class="userDoItem">
+              <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
+              <img v-else src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
+          </div>
+          <p class="font12 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
+        </div>
+      </div>
+        <div class="contShare">
+          <div class="contShareBox">
+            <div>
+              <img src="../../../assets/images/push/contentsShareIcon.svg" class=" fl" alt="공유 아이콘"
+                  data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
+                      :data-clipboard-text="CONT_DETAIL.copyTextStr">
+            </div>
+            <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{this.$t('COMMON_NAME_SHARE')}}</p>
+          </div>
+          <!-- <div v-if="$appType === 'D'" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : openStickerPop()" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+            <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
+              <img src="../../../assets/images/push/stickerIcon.svg" class="img-w20" alt="">
+            </div>
+            <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{this.$t('COMMON_NAME_LABEL')}}</p>
+          </div> -->
+          <!-- this.$emit('fileDownload') -->
+          <!-- <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+              <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
+              <img v-else src="../../../assets/images/contents/icon_clip.png" class="img-w20" alt="">
+          </div> -->
+          <!-- <div v-if="$appType === 'D'" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : subScribeContents()" style="width: 30px; height: 35px; display: flex; float: right;cursor: pointer;  margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
+            <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center;">
+              <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/push/contentsBellIcon_on.svg" class=" " alt="">
+              <img v-else src="../../../assets/images/push/contentsBellIcon.svg" class="" alt="">
+            </div>
+            <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{this.$t('COMMON_NAME_INTEREST')}}</p>
+          </div> -->
+        </div>
+      </div>
+      <!-- <div v-else class="contentsCardUserDoArea" style="position: relative; width: 100%; background: #F8F8FF; min-height: 40px; float: left; justify-content: space-between;  display: flex; margin-top: 10px; padding: 10px 20px;">
+      </div> -->
+      <!-- <div v-if="this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" style="height: 2px; background: #F1F1F1;  width: calc(100% - 40px); margin: 10px 20px; margin-bottom: 10px;float: left;"></div> -->
+      <div class="contentsCardMemoArea" v-if="!pNoAuthYn && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 0" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
+        <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fl w-100P textLeft font12 commonColor fontBold mbottom-05 mright-05" @click="this.goContentsDetail(undefined, true)" >{{ returnCommentText() }}</p>
+        <template v-for="(memo, mIndex) in this.CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
+            <memoCompo @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.D_MEMO_LIST.length" @memoEmitFunc='memoEmitFunc' />
+        </template>
+        <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
+        <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w100P"></myObserver>
+      </div>
+      <div class="contentsCardMemoArea" v-else-if="pNoAuthYn && this.CONT_DETAIL.memoList && this.CONT_DETAIL.memoList.length > 0" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
+          <template v-for="(memo, mIndex) in this.CONT_DETAIL.memoList" :key="mIndex">
+              <memoCompo :pNoAuthYn="pNoAuthYn" @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.memoList.length" @memoEmitFunc='memoEmitFunc' />
+          </template>
+          <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
+          <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >{{ returnCommentText() }}</p>
+          <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w100P"></myObserver>
+      </div>
+    </template>
+  </div>
+  <!-- </vue3-simple-html2pdf> -->
+  <!-- 밑에는 댓글 작성 창 -->
+  <gMemoPop style="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="!pNoAuthYn && this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
 
   <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
   <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
   <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
-  <div v-if="mSelectBoardPopShowYn === true" style="width: 100vw; height: 100vh; position: fixed; background: #00000010; z-index: 9; top: 0; left: 0" />
-  <div v-if="mSelectBoardPopShowYn === true" style="width: 100%; height: 100vh; position: fixed;  z-index: 9; top: 0; left: 0 ">
+  <div v-if="mSelectBoardPopShowYn === true" class="selectBoardBg"/>
+  <div v-if="mSelectBoardPopShowYn === true" class="selectBoardWrap">
     <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" :boardDetail="mMoveContentsDetailValue" />
   </div>
 
   <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
 
-  <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
+  <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" class="imgPreview" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
   <template v-if="mContRecvPopShowYn">
-    <div @click="this.$refs.recvListPop.closeXPop()" style="width: calc(100% + 1rem); height: 100%; top: 0; z-index: 10; left: -1rem; position: fixed; background: #00000026"></div>
+    <div @click="this.$refs.recvListPop.closeXPop()" class="recvPopBg"></div>
     <recvListPop ref="recvListPop" @closeXPop="closeRecvListPop" :initData="mActorListInitDataList"/>
   </template>
   <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
@@ -349,14 +345,12 @@ export default {
       contentsBodyBoxArea.style.maxHeight = '100%'
       this.mFadeNotShowYn = true
       this.mContentMoreShowYn = false
-      console.log('alimBigView에 들어왔음.')
     },
     foldContentsDetail () {
       this.mContentMoreShowYn = true
       this.mFadeNotShowYn = false
       var contentsBodyBoxArea = window.document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
       contentsBodyBoxArea.style.maxHeight = '300px'
-      console.log('foldContentsDetail에 들어왔음.')
     },
     saveStickerList (params) {
       this.mContStickerList = params.mContStickerList
@@ -1179,8 +1173,6 @@ export default {
         return
       }
       // const result = await this.$getAxiosContentsDetail(this.CONT_DETAIL.contentsKey, this.CONT_DETAIL.jobkindId)
-      console.log('this.CONT_DETAILCONT_DETAILCONT_DETAIL')
-      console.log(this.CONT_DETAIL)
       var openPopParam = {}
       openPopParam.targetKey = this.CONT_DETAIL.creTeamKey
       openPopParam.teamKey = this.CONT_DETAIL.creTeamKey
@@ -1370,12 +1362,10 @@ export default {
     },
     async addImgEvnt () {
       // if (!this.imgClickYn) return
-      // console.log(this.CONT_DETAIL)
       var contBody = this.$refs.contentsBoxRef
       if (!contBody) return
       // var fileList = await this.settingFileList()
       this.mClickImgList = contBody.querySelectorAll('img')
-      // console.log(fileList)
       for (let m = 0; m < this.mClickImgList.length; m++) {
         var this_ = this
         this_.mClickImgList[m].addEventListener('click', () => {
@@ -1392,7 +1382,6 @@ export default {
       // this.alertPopId = this.$setParentsId(this.pPopId, this.alertPopId)
       // history.push(this.alertPopId)
       // this.$store.commit('D_HISTORY/updateStack', history)
-      // console.log(this.$store.getters['D_HISTORY/hStack'])
       this.mImgDetailAlertShowYn = true
       this.mClickEndYn = false
     },
@@ -1429,7 +1418,6 @@ export default {
     },
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', this.contentsEle.creTeamKey)
-      console.log(detail)
       if (detail && detail.length > 0) {
         if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {
           return this.CHANNEL_DETAIL
@@ -1451,7 +1439,6 @@ export default {
         cont = [this.contentsEle]
         // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
       }
-      // console.log(cont)
       if (cont[0] && cont[0].shareList && cont[0].shareList[0] && cont[0].shareList[0].length !== 0) {
         if (cont[0].shareList[0].accessKind === 'F') {
           if (this.CHANNEL_DETAIL.D_CHAN_AUTH === true || (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) || this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) {
@@ -1568,18 +1555,278 @@ export default {
 </script>
 
 <style scoped>
-.contentsCard{background: #FFFFFF; border-bottom: 2px solid #E1E1E1; display: flex; flex-direction: column;}
-
-.contentsCardLogoArea{
-    width: 45px; height: 45px; overflow: hidden; float: left; border-radius: 100%; border: 2px solid #5B1CFC; display: flex; justify-content: center; align-items: center;
+#loading {
+  display: block;
+  z-index:9999999
 }
-.overHidden{
+.contentsCard {
+  background: #FFFFFF;
+  border-bottom: 2px solid #E1E1E1;
+  display: flex;
+  flex-direction: column;
+}
+
+.contentsCardLogoArea {
+  width: 45px;
+  height: 45px;
+  overflow: hidden;
+  float: left;
+  border-radius: 100%;
+  border: 2px solid #5B1CFC;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.overHidden {
   overflow: hidden;
 }
 pre div[id='formEditText'] {
   border-top: 1px solid #ccc;
 }
-
+.profilePopBg {
+  background-color:#00000050;
+  width:100vw;
+  height:100vh;
+  position: fixed;
+  top:0;
+  left:0;
+  z-index: 10000000;
+}
+.contentsWrap {
+  width: 100%;
+  background: #FFF;
+  overflow: hidden;
+  min-height: 20px;
+  float: left;
+  box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);
+  margin-bottom: 10px;
+  position: relative;
+  padding-top: 5px;
+  border-radius: 8px;
+}
+.justSticker {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 99;
+}
+.contentsCardHeaderArea {
+  width: 100%;
+  min-height: 20px;
+  float: left;
+  padding: 10px 20px;
+}
+.chanIcon {
+  width: calc(100% - 2px);
+  height:  calc(100% - 2px);
+  border-radius: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.contentsCardInfo {
+  width: calc(100% - 55px);
+  margin-left: 10px;
+  height: 100%;
+  float: left;
+  display: flex;
+  flex-direction: column;
+}
+.contentsCardInfoBox {
+  width: 100%;
+  position: relative;
+  height: 50%;
+  min-height: 26px;
+  position: relative;
+}
+.noPerm {
+  width: calc(100% - 35px);
+}
+.noPerm > img {
+  width: 20px;
+  margin-top: 2px;
+  float: left;
+  margin-right: 5px;
+}
+.moreMenu {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.userInfoArea {
+  width: 100%;
+  position: relative;
+  height: 50%;
+  min-height: 25px;
+}
+.lineHeight23 {
+  line-height: 23px;
+}
+.officialImg {
+  height: 21px;
+  padding: 3px;
+}
+.chanName {
+  display: block;
+  max-width: 70px;
+}
+.recvUser {
+  padding: 0px 8px;
+  border-radius: 8px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+}
+.recvUserCount {
+  line-height: 1;
+  margin-top: 1px;
+}
+.replyBtn {
+  margin-top: 2px;
+}
+.contentsPreWrap {
+  word-break: break-all;
+  overflow: hidden;
+  max-height: 300px;
+}
+.contentsPre {
+  word-break: break-all;
+  overflow: hidden auto;
+}
+.stickerWrap {
+  width: 100%;
+  padding: 5px 10px;
+  padding-left: 20px;
+  padding-bottom: 0;
+  float: left;
+  min-height: 20px;
+  margin-top: 10px;
+}
+.stickerItem {
+  float: left;
+  margin-right: 5px;
+  min-width: 30px;
+}
+.fadeEffect {
+  position: absolute;
+  bottom: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9));
+}
+.moreBtn {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+}
+.stickerFullWrap {
+  width: 100%;
+  padding: 5px 10px;
+  padding-bottom: 0;
+  float: left;
+  min-height: 35px;
+}
+.contentsCardUserDoArea {
+  position: relative;
+  width: 100%;
+  background: #F8F8FF;
+  min-height: 40px;
+  float: left;
+  justify-content: space-between;
+  display: flex;
+  margin-top: 10px;
+  padding: 10px 20px;
+}
+.contentsCardUserDoWrap {
+  float: left;
+  width: calc(100% - 100px);
+  height: 100%;
+}
+.userDoBox {
+  cursor: pointer;
+  width: 30px;
+  height: 35px;
+  display: flex;
+  float: left;
+  margin-right: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.userDoItem {
+  width: 100%;
+  height: 20px;
+  float: left;
+}
+.contShare {
+  float: right;
+  width: 140px;
+  height: 100%;
+  float: left;
+}
+.contShareBox {
+  width: 30px;
+  height: 35px;
+  display: flex;
+  float: right;
+  margin-right: 10px;
+  flex-direction: column;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+}
+.contShareBox > div {
+  width: 100%;
+  height: 20px;
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.contentsCardMemoArea {
+  width: 100%;
+  float: left;
+  cursor: pointer;
+  padding: 10px 20px 0 20px;
+  min-height: 20px;
+  margin-bottom: 10px
+}
+.selectBoardBg {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background: #00000010;
+  z-index: 9;
+  top: 0;
+  left: 0;
+}
+.selectBoardWrap {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: 9;
+  top: 0;
+  left: 0;
+}
+.imgPreview {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0%;
+  z-index: 999999;
+  padding: 20px 0;
+  background: #000000;
+}
+.recvPopBg {
+  width: calc(100% + 1rem);
+  height: 100%;
+  top: 0;
+  z-index: 10;
+  left: -1rem;
+  position: fixed;
+  background: #00000026;
+}
 </style>
 
 <style>

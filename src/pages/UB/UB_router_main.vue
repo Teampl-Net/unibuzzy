@@ -15,8 +15,8 @@
 }
 </i18n>
 <template>
-  <div class="w100P h100P listRefresh" style="overflow:hidden;">
-    <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
+  <div class="w100P h100P listRefresh scrollHidden">
+    <div class="popBg" v-if="GE_USER.unknownYn && mUnknownLoginPopYn"></div>
     <!-- <unknownLoginPop :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" /> -->
     <gImgPop @closeXPop="closeImgPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" />
     <commonConfirmPop v-if="mAppUpdatePopShwoYn" @no="goAppStore" confirmType="one" :confirmText="$t('MAIN_MSG_UPDATE')" />
@@ -25,18 +25,18 @@
     <gConfirmPop :confirmText="$t('MAIN_MSG_DIS_CONN')" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
     <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" :pContentsYn="mTargetType === 'contentsDetail' || mTargetType === 'contDetail'" @goFavList="openPop" @goLogList="openPop" v-if="(mRouterHeaderInfo !== 'leave' && mTargetType !== 'chanDetail' && mTargetType !== 'boardMain') || $route.path === '/chanList' " @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9;" />
     <chanHeader :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 20)  + 'px'" v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === '' && mRouterHeaderInfo !== 'leave'" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo && mChanInfo.targetKey? mChanInfo.targetKey:''" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" :pChanInfo="mChanInfo" @openPop="openPop" class="chanDetailPopHeader" @bgColor="setBgColor"/>
-    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index: 100;" v-if="mPopType === 'writeContents'" @click="mPopType = ''"></div>
+    <div class="popBg" v-if="mPopType === 'writeContents'" @click="mPopType = ''"></div>
     <writeContents v-if="mPopType === 'writeContents'" @closeXPop="closeWritePop" :params="mPopParams" :propData="mPopParams" :contentType="mPopParams.contentsJobkindId" />
-    <div v-if="mPopType === 'logList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 10000;background: #00000050;"></div>
+    <div v-if="mPopType === 'logList'" class="popBg" @click="closeWritePop"></div>
     <transition name="showUp">
       <notiHistoryList @closeXPop="closeWritePop" @openPage="openPage" v-if="mPopType === 'logList'" />
     </transition>
-    <div v-if="mPopType === 'favList'" @click="closeWritePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 10000; background: #00000050;"></div>
+    <div v-if="mPopType === 'favList'" @click="closeWritePop" class="popBg"></div>
     <transition name="showUp">
       <favListPop v-if="mPopType === 'favList'" @openPage="goOpenPage" :pFTeamList="mFTeamList" @closeXPop="closeWritePop" />
     </transition>
     <!-- <gFavList /> -->
-    <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:10000;" v-if="mMenuShowYn" @click="hideMenu"></div>
+    <div class="popBg" v-if="mMenuShowYn" @click="hideMenu"></div>
     <transition name="show_left">
       <D_MENU transition="show_left" @hideMenu="hideMenu" @openPop="openPop" @goPage="changeRouterPath" class="D_menuStyle " v-if="mMenuShowYn" />
     </transition>
@@ -46,12 +46,12 @@
     <transition name="show_right">
       <chanMenu transition="show_right" :pPopId="mPopId" ref="chanMenuCompo" :propData="mChanInfo" @openPop="openPop" v-if='openChanMenuYn' :pOpenChanMenuYn="openChanMenuYn" @closePop='openChanMenuYn = false' @openItem='openPage' @openChanMsgPop="closeNopenChanMsg" />
     </transition>
-    <gCloudLoading v-if="mCloudLoadingShowYn" :pEnterCloudsYn="mEnterCloudsYn" style="position: absolute; top: 0; left: 0" :pCloudLeftClass="mLeftCloudClass" :pCloudRightClass="mRightCloudClass"  />
-    <div :class="{ myPageBgColor : mMyPageBgColorYn}"  style="height: 100%;overflow: hidden; width:100%;" >
+    <gCloudLoading v-if="mCloudLoadingShowYn" :pEnterCloudsYn="mEnterCloudsYn" class="cloudLoading" :pCloudLeftClass="mLeftCloudClass" :pCloudRightClass="mRightCloudClass"  />
+    <div :class="{ myPageBgColor : mMyPageBgColorYn}" class="viewBg">
       <!-- 여기 -->
       <router-view :key="$route.fullPath" ref="routerView" @goInquiries="goInquiries" @openImgPop="openImgPop" @setMainInfo="setMainInfo" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pAreaInfo="mAreaInfo" :pCabKeyListStr="mCabKeyListStr" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
-    <gFooter v-if="!$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 999;"/>
+    <gFooter v-if="!$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow footerStyle"/>
     <!-- <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" /> -->
   </div>
 </template>
@@ -974,6 +974,35 @@ export default {
   z-index: 10000;
   left: 0;
 }
-.myPageBgColor {background-color: #9FDDEE;}
-.myPagePadding {padding-bottom: 0!important; padding-top: 0!important}
+.myPageBgColor {
+  background-color: #9FDDEE;
+}
+.myPagePadding {
+  padding-bottom: 0 !important;
+  padding-top: 0 !important
+}
+.popBg {
+  width:100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  background: #00000050;
+}
+.cloudLoading {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+.viewBg {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+.footerStyle {
+  position: absolute;
+  bottom: 0;
+  z-index: 999;
+}
 </style>

@@ -26,24 +26,23 @@
 </i18n>
 <template>
 <div class="w100P h100P">
-    <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: fixed;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
-    <unknownLoginPop :pClosePop="closeUnknownLoginPop" style="position: fixed;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
+    <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" class="popBg" ></div>
+    <unknownLoginPop :pClosePop="closeUnknownLoginPop" class="fixed" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
     <statCodeComponent @closeXPop="workStateCodePopShowYn = false" :currentWorker="{workUserKey: workStateCodePopProps.workUserKey, workUserName: workStateCodePopProps.workUserName}" :teamKey="workStateCodePopProps.creTeamKey" :alimDetail="workStateCodePopProps" :contentsKey="workStateCodePopProps.contentsKey" v-if="workStateCodePopShowYn" :codeList="workStateCodePopProps.workStatCodeList" :currentCodeKey="workStateCodePopProps.workStatCodeKey" class="fr "></statCodeComponent>
-    <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:999999"><div class="spinner"></div></div>
-
-    <div style="width: 100%; height: calc(100vh - 50px); padding-top: 0; position: relative; overflow: hidden scroll; float: left; z-index: 2;" >
+    <div v-if="saveMemoLoadingYn" id="loading"><div class="spinner"></div></div>
+    <div class="pushListArea" >
       <commonConfirmPop v-if="failPopYn" @no="failPopYn=false" confirmType="timeout" :confirmText="errorText" />
-      <div id="pageHeader" ref="pushListHeader" style="min-height:50px; display:flex; align-items:start; " class="pushListHeader"  :class="scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
-        <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" :subTabList="mBoardFilterList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl" @changeTab="changeTab" @changeBoardTab="changeBoard" style="width:calc(100% - 30px); padding-top: 0; margin-top: 0;" />
-        <div v-on="handleScroll" style="background-color:#fff; height:50px; display:flex; align-items:center; padding-right:10px; width: 30px; display: flex; align-items: center; justify-content: center; " @click="refreshAll">
-            <img src="../../../assets/images/common/commonReload.png" class="cursorP" width="30" height="30" @click="refreshAll"/>
+      <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
+        <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" :subTabList="mBoardFilterList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl selectFilter" @changeTab="changeTab" @changeBoardTab="changeBoard"/>
+        <div v-on="handleScroll" class="reloadImgWrap" @click="refreshAll">
+            <img src="../../../assets/images/common/commonReload.png" class="cursorP" @click="refreshAll"/>
         </div>
       </div>
       <transition name="showModal">
         <findContentsList :tpGroupCode="viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainiTab === 'F'? 'fileBox':chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" :pClosePop="closeSearchPop" :teamKey='this.pChannelDetail.teamKey'/>
       </transition>
 
-        <div id="pushListWrap" class="scrollHidden " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'" style="position: relative; float: left; width: 100%; height: calc(100%); padding-bottom: 60px;  -webkit-overflow-scrolling: touch">
+        <div id="pushListWrap" class="scrollHidden" ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'">
           <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
           <div class="w100P fl commonListContentBox" style="height:1px;" />
           <template v-for="(cont, index) in GE_DISP_ALL_LIST" :key="index">
@@ -67,7 +66,7 @@
         <gSelectBoardPop :type="selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" />
         <div v-if="memoShowYn === true" class="pushListMemoBoxBackground" @click="memoPopNo()"></div>
         <transition name="showMemoPop">
-          <gMemoPop ref="gMemoRef" :resetMemoYn="resetMemoYn" transition="showMemoPop" :style="getWindowSizeBottom" v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' style="z-index:999999; height: fit-content;" :writeMemoTempData='tempMemoData'/>
+          <gMemoPop class="memoPop" ref="gMemoRef" :resetMemoYn="resetMemoYn" transition="showMemoPop" :style="getWindowSizeBottom" v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' :writeMemoTempData='tempMemoData'/>
         </transition>
     </div>
 
@@ -1573,6 +1572,28 @@ export default {
 }
 </script>
 <style scoped>
+.pushListArea {
+  width: 100%;
+  height: calc(100vh - 50px);
+  padding-top: 0;
+  position: relative;
+  overflow: hidden scroll;
+  float: left;
+  z-index: 2;
+}
+#loading {
+  display: block;
+  z-index:999999
+}
+.popBg {
+  width:100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background: #00000050;
+}
 .popHeight{
   margin-top: 150px;
   height: calc(100% - 150px);
@@ -1592,6 +1613,9 @@ export default {
     will-change: transform;
     transition: transform 0.3s linear;
     z-index: 2;
+    min-height:50px;
+    display:flex;
+    align-items:start;
 }
 .pushListHeader--pinned {
     transform: translateY(0%);
@@ -1632,6 +1656,41 @@ export default {
 }
 .newCenter{
   animation-name: none;
+}
+.fixed {
+  position: fixed !important;
+}
+.selectFilter {
+  width:calc(100% - 30px) !important;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+.reloadImgWrap {
+  background-color:#fff;
+  height:50px;
+  display:flex;
+  align-items:center;
+  padding-right:10px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.reloadImgWrap > img {
+  width: 30px;
+  height: 30px;
+}
+#pushListWrap {
+  position: relative;
+  float: left;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 60px;
+  -webkit-overflow-scrolling: touch;
+}
+.memoPop {
+  z-index:999999 !important;
+  height: fit-content !important;
 }
 @keyframes slideRight {
   0% {

@@ -211,8 +211,6 @@ export default {
     this.mPropParams = this.propParams
     // this.$emit('clearInfo', { detail: this.mPropParams, targetType: 'boardMain' })
     this.$emit('openLoading')
-    console.log('여여영')
-    console.log(this.mPropParams)
     if (!this.mPropParams || this.mPropParams.targetType !== 'boardMain') {
       // this.$router.go(-1)
       var this_ = this
@@ -238,13 +236,9 @@ export default {
       if (!this.mPropParams.chanYn) {
         this.$addChanList(this.mCreTeamKey)
       }
-      console.log('오류는 어디??? mPropParams', this.mPropParams)
       var propBoardInitData = JSON.parse(JSON.stringify(this.mPropParams.initData))
       this.cabinetDetail = propBoardInitData.cabinet
       this.cabinetDetail.shareAuth = this.$checkUserAuth(propBoardInitData.cabinet.mShareItemList)
-
-      console.log(123412345)
-      console.log(propBoardInitData)
 
       if (propBoardInitData.contentsListPage) {
         this.mCabContentsList = propBoardInitData.contentsListPage.content
@@ -344,9 +338,6 @@ export default {
   },
 
   methods: {
-    consoleShow () {
-      console.log('clicked')
-    },
     horizontalScroll (e) {
       if (e.deltaY === 0) return
       e.preventDefault()
@@ -627,7 +618,6 @@ export default {
     },
     delContents (cont) {
       var idx = null
-      console.log(cont)
       if (cont.jobkindId === 'BOAR') {
         idx = this.mCabContentsList.findIndex((item) => item.mccKey === cont.mccKey)
         if (idx !== -1) {
@@ -687,7 +677,6 @@ export default {
         url: '/sUniB/tp.saveActLog',
         param: param
       })
-      // console.log(result.data.result)
       if (result.data.result === true) {
         this.confirmMsg = this.errorBoxText
         this.smallPopYn = true
@@ -697,7 +686,6 @@ export default {
     moveOrCopyContent (type) {
       this.selectBoardType = type
       this.boardDetailValue = this.tempData
-      // console.log(this.tempData)
       this.selectBoardPopShowYn = true
     },
     closeSelectBoardPop () {
@@ -715,7 +703,6 @@ export default {
       this.confirmType = false
       if (this.currentConfirmType === 'deleteBoar') {
         var inParam = {}
-        // // console.log(this.alimDetail)
         inParam.contentsKey = this.tempData.contentsKey
         inParam.jobkindId = 'BOAR'
         inParam.teamKey = this.tempData.creTeamKey
@@ -729,7 +716,6 @@ export default {
         // this.$emit('closeXPop', true)
       } else if (this.currentConfirmType === 'BLOC') {
         this.currentConfirmType = ''
-        // console.log(this.tempData)
         var param = {}
         param.claimType = 'BLOC'
         if (this.tempData.memoKey) {
@@ -939,9 +925,7 @@ export default {
             this.scrollDirection = 'down'
             this.scrolledYn = true
           } else if (this.listBox.scrollTop <= this.scrollPosition) {
-            console.log('뭐지')
             this.scrollDirection = 'up'
-            console.log(this.scrollDirection)
             this.scrolledYn = false
           }
         }
@@ -1058,7 +1042,6 @@ export default {
         this.$showToastPop(this.$t('COMMON_MSG_NO_LOGIN'))
         return
       }
-      console.log(this.propParams)
       if ((!this.GE_USER.certiDate) && (this.CAB_DETAIL.blindYn === 1 || this.CAB_DETAIL.blindYn === true)) {
         // 익명게시판일 떄
         this.gCertiPopShowYn = true
@@ -1066,9 +1049,6 @@ export default {
       }
       // eslint-disable-next-line no-new-object
       var params = new Object()
-      console.log(1234)
-      console.log(this.CAB_DETAIL)
-      console.log(this.CHANNEL_DETAIL)
       params.targetType = 'writeContents'
       params.actorList = this.actorList
       params.targetNameMtext = this.CHANNEL_DETAIL.nameMtext
@@ -1091,8 +1071,6 @@ export default {
       this.writePopId = this.$setParentsId(this.pPopId, this.writePopId)
       history.push(this.writePopId)
       this.$store.commit('D_HISTORY/updateStack', history)
-      console.log(12345)
-      console.log(params)
 
       this.boardWriteYn = true
 
@@ -1100,9 +1078,6 @@ export default {
     },
     updateScroll () {
       var blockBox = document.getElementById('summaryHeader')
-      console.log('this.ScrollPosition')
-      console.log(this.scrollPosition)
-      console.log(this.box.scrollTop)
       if (this.box.scrollTop > this.scrollPosition) {
         this.scrollDirection = 'down'
       } else if (this.box.scrollTop < this.scrollPosition) {
@@ -1114,8 +1089,6 @@ export default {
       if (this.CAB_DETAIL && this.CAB_DETAIL.topviewList && this.CAB_DETAIL.topviewList.content && this.CAB_DETAIL.topviewList.content.length > 0) {
         offset = 370
       }
-      console.log('여기ㅕㅇㅁ')
-      console.log(this.CAB_DETAIL)
 
       if (this.scrollDirection === 'down' && this.scrollPosition > offset) {
         blockBox.style.height = '50px'
@@ -1194,7 +1167,6 @@ export default {
       // } else {
         // param.offsetInt = this.offsetInt
       }
-      console.log(param.offsetInt)
       if (pageSize) {
         param.pageSize = pageSize
       } else {
@@ -1279,10 +1251,8 @@ export default {
       }
     },
     openPop (value) {
-      console.log(value)
       if (value && value.targetType === 'chanDetail') return
       value.onlyMineYn = true
-      console.log(value)
       this.$emit('openPop', value)
     },
     async changeTab (tabName) {
@@ -1335,7 +1305,6 @@ export default {
     },
     async requestSearchList (param) {
       this.offsetInt = 0
-      console.log(param)
       if (param) {
         if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
           this.findKeyList.searchKey = param.searchKey
@@ -1500,8 +1469,6 @@ export default {
         if (this.viewTab === 'N') {
           tempCabData.totalContentsCount = resultList.totalElements
         }
-        console.log('testtest')
-        console.log(resultList)
         if (!resultList || resultList === '') {
           this.endListYn = false
         } else {
@@ -1544,8 +1511,6 @@ export default {
       }
     },
     CAB_DETAIL () {
-      console.log('확인필요')
-      console.log(this.cabinetDetail)
       if (this.cabinetDetail) {
         return this.cabinetDetail
       }
@@ -1685,10 +1650,28 @@ export default {
 </script>
 
 <style scoped>
-.boardMainAdminArea{
-  width: 100%; height: 30px; display: flex; align-items: center; justify-content: center; border-left: 1px solid white; background: rgba(255, 255, 255, 0.5); border-radius: 10px; margin-right: calc(5% - 10px)
+#loading {
+  display: block;
+  z-index:9999999
 }
-.commonBoardListWrap{width: 100%; position: relative; float: left; width: 100%; overflow: hidden scroll;}
+.boardMainAdminArea {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid white;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+  margin-right: calc(5% - 10px);
+}
+.commonBoardListWrap {
+  width: 100%;
+  position: relative;
+  float: left;
+  width: 100%;
+  overflow: hidden scroll;
+}
 .reload--pinned {
     transform: translateY(0%);
     transition: .3s;
@@ -1697,8 +1680,17 @@ export default {
     transform: translateY(10rem);
     transition: .5s;
 }
-.summaryHeader{height: 300px; width: 100%; float: left; position: absolute;}
-.summaryHeader2 {height: 50px;  width: 100%; float: left;}
+.summaryHeader {
+  height: 300px;
+  width: 100%;
+  float: left;
+  position: absolute;
+}
+.summaryHeader2 {
+  height: 50px;
+  width: 100%;
+  float: left;
+}
 .boardListHeader {
   width: 100%;
   /* min-height: 132px; */
@@ -1712,10 +1704,10 @@ export default {
   transition: transform 0.3s linear;
 }
 .boardListHeader--pinned {
-    transform: translateY(0%);
+  transform: translateY(0%);
 }
 .boardListHeader--unpinned {
-    transform: translateY(-100%);
+  transform: translateY(-100%);
 }
 
 .boardReadCheckAlimArea{
@@ -1723,33 +1715,98 @@ export default {
   transition: transform 0.3s linear;
 }
 .boardReadCheckAlimArea--pinned {
-    transform: translateY(0%);
+  transform: translateY(0%);
 }
 .boardReadCheckAlimArea--unpinned {
-    transform: translateY(-50px);
+  transform: translateY(-50px);
 }
 
-#boardInfoSummary2{width: 100%; padding-top: 0; line-height: 50px; height: 100%; display: none; flex-direction: column; float: left}
-.boardListWrap{
+#boardInfoSummary2 {
+  width: 100%;
+  padding-top: 0;
+  line-height: 50px;
+  height: 100%;
+  display: none;
+  flex-direction: column;
+  float: left
+}
+.boardListWrap {
   height: 100vh;
   background-size: cover;
 }
-.boardWhiteBox{ display: flex; flex-direction: column;align-items: center; position: relative; width: 100%; height: 170px; padding-bottom: 40px;}
-.boardItemBox{overflow: hidden; position: relative; min-height: calc(100% - 50px); width: 100%;  margin-top: 250px; float: left; background: #fff; box-sizing: border-box;}
-.boardItemBoxHeight{height: calc(100% - 50px)!important;}
-.displayNIm{display: none!important;}
-.displayBIm{display: flex!important;}
-.summaryWrap{height: calc(35vh); width: 100%; float: left; position: absolute;}
-.summaryTop{width: 100%; height: 30px; line-height: 30px; padding: 0 10px; margin-top: 30px; margin-bottom: 10px; display: flex; justify-content: space-around;}
-.centerSpace{width: 100%; height: 30%;}
-.summaryBottom{align-self: center; height: 30%; background-color: rgba(0, 0, 0, 0.26); color: #FFF;}
-.summaryBottom p {color: #fff;}
-.blockBox{width: 100%; height: 320px;float: left; height: var(--height); min-height: 50px;}
+.boardWhiteBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  height: 170px;
+  padding-bottom: 40px;
+}
+.boardItemBox {
+  overflow: hidden;
+  position: relative;
+  min-height: calc(100% - 50px);
+  width: 100%;
+  margin-top: 250px;
+  float: left;
+  background: #fff;
+  box-sizing: border-box;
+}
+.boardItemBoxHeight {
+  height: calc(100% - 50px) !important;
+}
+.displayNIm {
+  display: none !important;
+}
+.displayBIm {
+  display: flex !important;
+}
+.summaryWrap {
+  height: calc(35vh);
+  width: 100%;
+  float: left;
+  position: absolute;
+}
+.summaryTop {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+.centerSpace {
+  width: 100%;
+  height: 30%;
+}
+.summaryBottom {
+  align-self: center;
+  height: 30%;
+  background-color: rgba(0, 0, 0, 0.26);
+  color: #FFF;
+}
+.summaryBottom p {
+  color: #fff;
+}
+.blockBox {
+  width: 100%;
+  height: 320px;
+  float: left;
+  height: var(--height);
+  min-height: 50px;
+}
 
-.pushListCover{min-height: 3.6rem; margin-bottom: 1rem}
+.pushListCover {
+  min-height: 3.6rem;
+  margin-bottom: 1rem
+}
 
-.popHeight{
-  padding-right: 0; padding-left: 0;
+.popHeight {
+  padding-right: 0;
+  padding-left: 0;
   height: calc(100vh - 35px) !important;
 }
 
@@ -1790,12 +1847,38 @@ background: #fbfbfb;
   border-radius: 2px;
   transform: scale(1) translate(-50%, -50%)
 }
-.boardCard{
-padding: 10px; width: 90%; background-color: rgba(255, 255, 255, 0.4); font-weight: bold; display: flex; flex-direction: column; justify-content:center; align-items: center; border-radius: 10px;
+.boardCard {
+  padding: 10px;
+  width: 90%;
+  background-color: rgba(255, 255, 255, 0.4);
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
+  border-radius: 10px;
 }
-.chanImgRound{ width: 90px; height: 90px; background: rgb(255 255 255 / 50%); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 110px; border: 4px solid #ccc; flex-shrink: 0; flex-grow: 0;  }
-.boardMainMemoBoxBackground{
-width: 100% !important; height: 100% !important; background: #00000036 !important; position: fixed !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;
+.chanImgRound {
+  width: 90px;
+  height: 90px;
+  background: rgb(255 255 255 / 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 110px;
+  border: 4px solid #ccc;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+.boardMainMemoBoxBackground {
+  width: 100% !important;
+  height: 100% !important;
+  background: #00000036 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 999999 !important;
 }
 @media screen and (max-width: 768px) {
   .chanImgRound {

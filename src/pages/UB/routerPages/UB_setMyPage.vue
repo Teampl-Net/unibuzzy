@@ -36,40 +36,40 @@
 </i18n>
 <template>
   <popHeader :headerTitle="`Settings`" @closeXPop="closeXPop"/>
-  <div style="padding: 60px 10px 60px 10px; overflow: hidden scroll; height: 100%; width: 100%;">
+  <div class="setMyPageWrap">
     <logoutPop v-if="logOutShowYn" @goLogOut="closeLogoutPop" @closePop="closeOnlyLogoutPop"/>
     <!-- <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" /> -->
     <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
     <userImgSelectCompo @closeXPop="closeImgPop" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
-    <div class="" >
-       <div style="width: 100%; display: flex; justify-content: flex-end; align-items: center; padding-right: 20px;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 5)+ 'px;'">
+    <div>
+       <div class="languageArea" :style="'padding-top:' + (this.$STATUS_HEIGHT + 5)+ 'px;'">
          <p class="font12 fl mright-05">{{ $t('PROF_TITLE_LANGUAGE') }}</p>
-        <select class="fl" style="margin-right: 10px; font-size: 12px !important;" @change="change18n('userLang', selectedI18nLocale)" v-model="selectedI18nLocale" name="selectLang" id="selectLang"><option value="en">English</option><option value="ko">한국어</option></select>
+        <select class="fl mRight10 font12" @change="change18n('userLang', selectedI18nLocale)" v-model="selectedI18nLocale" name="selectLang" id="selectLang"><option value="en">English</option><option value="ko">한국어</option></select>
         <p class="font12 fl mright-05">{{ $t('ROPF_TITLE_TIME') }}</p>
-        <select class="fl" style="font-size: 12px !important;" @change="change18n('areaKey', GE_TIME_LOCALE)" v-model="selectedLocale" name="selectLocale" id="selectLocale"><option value="US">United States</option><option value="KR">South Korea</option></select>
+        <select class="fl mRight10 font12" @change="change18n('areaKey', GE_TIME_LOCALE)" v-model="selectedLocale" name="selectLocale" id="selectLocale"><option value="US">United States</option><option value="KR">South Korea</option></select>
        </div>
        <div class="profileWrap ">
         <div @click="changeUserImg()" class="cursorP imgSize">
-          <div class="roundDiv picImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"  style="background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-          <div @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 10px; right: -10px; z-index: 9; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">{{ $t('COMM_BTN_EDIT') }}</div>
+          <div class="roundDiv picImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"></div>
+          <div @click="changeUserImg()" class="font14 changeImgBtn">{{ $t('COMM_BTN_EDIT') }}</div>
         </div>
-        <div class="font20 fontBold mtop-1" style="width:100%; display: flex; justify-content: center; float:left; transform: translate(10px);" v-show="!changeYn" >
+        <div class="font20 fontBold mtop-1 userNameBox" v-show="!changeYn" >
           <span class="fl">{{this.$changeText(this.GE_USER.userDispMtext)}}</span>
-          <img src="@/assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
+          <img src="@/assets/images/push/noticebox_edit.png" class="fr cursorP" @click="changeUserDispMtext()" >
         </div>
 
-        <div class="fl" style=" width:100%; position: relative;" v-show="changeYn">
-          <div class="" style="position: absolute; left:50%; transform: translate(-50%); width:80%; max-width:250px; min-width:50px; margin-top: 10px;">
-            <input class="fl font16" type="text" v-model="tempUserDispName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
-            <div class="fl" style="width: 100px">
-              <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >{{ $t('COMMON_BTN_OK') }}</p>
-              <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">{{ $t('COMM_BTN_CANCEL') }}</p>
+        <div class="fl nameChangeWrap" v-show="changeYn">
+          <div class="nameChangeBox">
+            <input class="fl font16" type="text" v-model="tempUserDispName" @keyup.enter="setDispName" />
+            <div class="fl w100P">
+              <p class="fl mleft-1 font13 lineHeight30" @click="setDispName" >{{ $t('COMMON_BTN_OK') }}</p>
+              <p class="fl mleft-1 font13 lineHeight30" @click="changeYn = false">{{ $t('COMM_BTN_CANCEL') }}</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="" style="text-align: left; ">
-        <userItem class="w-100P font16 mbottom-1" uItem="이메일" style="border-bottom: 0.5px solid #E4E4E4; " @openPop="openPop('changeEmail', $t('PROF_BTN_EDIT_EMAIL'))" />
+      <div class="textLeft">
+        <userItem class="w-100P font16 mbottom-1 border05" uItem="이메일" @openPop="openPop('changeEmail', $t('PROF_BTN_EDIT_EMAIL'))" />
         <userItem @click="goDevMode" class="w-100P font16" @openPop="openPop" uItem="휴대폰 번호" />
       </div>
       <div class="grayLine"></div>
@@ -98,11 +98,11 @@
           </tr> -->
 
       </table>
-      <div v-on:click="openLogoutPop" class="font14 cursorP" style="background-color: #F5F5F9; width: 100%; color:#6768A7; font-weight: bold; height: 45px; margin-bottom: 0;border-radius: 5px; padding: 0.6rem;">
+      <div v-on:click="openLogoutPop" class="font14 cursorP logoutBtn">
         {{ $t('PROF_BTN_LOGOUT') }}
       </div>
       <p v-if="GE_LOCALE === 'ko'" class="leaveText font14">더알림을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">여기</span>를 눌러주세요.</p>
-      <p v-else style="margin-bottom: 20px!important;" class="leaveText font14 pBottom-20">Click <span class="cursorP" v-on:click="goLeaveUnibuzzy">here</span> to delete your account from uniBuzzy.</p>
+      <p v-else class="leaveText font14 pBottom-20 mBottom20">Click <span class="cursorP" v-on:click="goLeaveUnibuzzy">here</span> to delete your account from uniBuzzy.</p>
     </div>
 
     <gConfirmPop :confirmText='checkVersionText' class="" confirmType='two' @ok="goPlayStore" @no='checkVersionPopShowYn = false' v-if="checkVersionPopShowYn"/>
@@ -172,8 +172,6 @@ export default {
     // .stringify(localStorage.getItem('appInfo')))
     if (this.isMobile) {
       this.appInfo = JSON.parse(localStorage.getItem('appInfo'))
-      console.log(this.appInfo)
-      console.log('this.appInfo')
       if (this.appInfo) {
         this.appVersion = this.appInfo.current
         this.lastVersion = this.appInfo.last
@@ -269,7 +267,6 @@ export default {
           }
           if (result.data.userMap.userLang) {
             i18n.global.locale = result.data.userMap.userLang
-            console.log(i18n)
           }
         } catch (error) {
           console.log(error)
@@ -298,7 +295,6 @@ export default {
     openDevPop () {
       var history = this.$store.getters['D_HISTORY/hStack']
       this.devPopId = 'devModPop' + history.length
-      // console.log(history)
       history.push(this.devPopId)
       this.$store.commit('D_HISTORY/updateStack', history)
       this.devModePopShowYn = true
@@ -320,7 +316,6 @@ export default {
         this.setTimer(true)
       }
       this.devModeClickCnt += 1
-      console.log(this.devModeClickCnt)
       if (this.devModeClickCnt > 4) {
         this.openDevPop()
         this.setTimer(false)
@@ -343,7 +338,6 @@ export default {
         }
         this.devModeClickTimer = 0
         this.devModeClickCnt = 0
-        console.log(this.devModeClickCnt)
       }
       setTimeout(() => {
         if (intervalId) {
@@ -351,7 +345,6 @@ export default {
         }
         this.devModeClickTimer = 0
         this.devModeClickCnt = 0
-        console.log(this.devModeClickCnt)
       }, 2000)
     },
     checkAppVersion () {
@@ -409,10 +402,8 @@ export default {
         this.changeUserIconShowYn = true
         var history = this.$store.getters['D_HISTORY/hStack']
         this.changeUserIconPop = 'changeUserIconPop' + history.length
-        // console.log(history)
         history.push(this.changeUserIconPop)
         this.$store.commit('D_HISTORY/updateStack', history)
-        // console.log(this.$store.getters['D_HISTORY/hStack'])
       }
     },
     closeImgPop () {
@@ -429,11 +420,8 @@ export default {
       param.user = user
       param.updateYn = true
       param.firstYn = true
-      // console.log(param)
 
       var result = await this.$changeDispName(param)
-      console.log(result)
-      // console.log(result)
       if (result.data) {
         this.changeYn = false
         this.$store.commit('D_USER/MU_USER', result.data.userInfo)
@@ -493,6 +481,83 @@ export default {
 </script>
 
 <style scoped>
+.setMyPageWrap {
+  padding: 60px 10px 60px 10px;
+  overflow: hidden scroll;
+  height: 100%;
+  width: 100%;
+}
+.languageArea {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 20px;
+}
+.changeImgBtn {
+  padding: 0 8px;
+  float: left;
+  position: absolute;
+  bottom: 10px;
+  right: -10px;
+  z-index: 9;
+  min-height: 20px;
+  border-radius: 5px;
+  background: #00000070;
+  color: #FFF;
+}
+.userNameBox {
+  width:100%;
+  display: flex;
+  justify-content: center;
+  float: left;
+  transform: translate(10px);
+}
+.userNameBox > img {
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  margin-top: 2px;
+}
+.picImgWrap {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.nameChangeBox {
+  position: absolute;
+  left:50%;
+  transform: translate(-50%);
+  width:80%;
+  max-width:250px;
+  min-width:50px;
+  margin-top: 10px;
+}
+.nameChangeBox > input {
+  width:calc(100% - 100px);
+  outline: none;
+  border: 1px solid #ccc;
+}
+.nameChangeBox > div {
+  width: 100px;
+}
+.nameChangeWrap {
+  width:100%;
+  position: relative;
+}
+.border05 {
+  border-bottom: 0.5px solid #E4E4E4;
+}
+.logoutBtn {
+  background-color: #F5F5F9;
+  width: 100%;
+  color:#6768A7;
+  font-weight: bold;
+  height: 45px;
+  margin-bottom: 0;
+  border-radius: 5px;
+  padding: 0.6rem;
+}
 .profileWrap{display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%; height: 200px; }
 .grayLine{background-color: #F3F3F3; height: 0.8rem; width: 100%;}
 .roundDiv{position: relative; box-sizing: border-box; overflow: hidden; border-radius: 6rem; padding: 8px; border:2px solid #6768a7; background: #6768a745; padding-top: 16px; padding-bottom: 0; margin-bottom: 0.5rem; width: 6rem; height: 6rem;}

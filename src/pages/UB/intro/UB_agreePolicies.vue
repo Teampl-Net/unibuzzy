@@ -1,6 +1,6 @@
 <template>
   <div class="policiesWrap">
-    <div class="policyHeaderWrap px-4" style="padding-top: 1rem; padding-bottom: none!important;" >
+    <div class="policyHeaderWrap px-4" >
       <img src="../../../assets/images/intro/login/uniB_logo.png" class="h100P fl" >
     </div>
     <div class="policyContentsWrap" >
@@ -9,14 +9,14 @@
           <p class="font16 mt-1 fontBold commonBlack" v-html="value.title"></p>
           <div class="policyBodyBox font13 textBold mt-1 commonBlack" v-html="value.body" ></div>
           <div class="checkboxDiv">
-            <input type="checkbox" :name="'checkbox' + index" :id="'checkbox' + index"  @click="checkedOne($event.target.checked, index)" style="flex-direction:row" :value="index" v-model="agree[index]" >
-            <label :for="'checkbox' + index" class="font15" style="margin-left: 5px;">I agree to the above.</label>
+            <input type="checkbox" :name="'checkbox' + index" :id="'checkbox' + index" class="checkBox"  @click="checkedOne($event.target.checked, index)" :value="index" v-model="agree[index]" >
+            <label :for="'checkbox' + index" class="font15 mTop05">I agree to the above.</label>
           </div>
       </div>
       <div class="policyBtnArea">
         <div class="checkboxDiv">
-          <input type="checkbox" name="checkboxAll" id="checkboxAll" @click="checkedAll($event.target.checked)" style="flex-direction:row" v-model="agreeAll" >
-          <label for="checkboxAll" class="font15" style="margin-left: 5px;">I agree to all of the above.</label>
+          <input type="checkbox" name="checkboxAll" id="checkboxAll" class="checkBox" @click="checkedAll($event.target.checked)" v-model="agreeAll" >
+          <label for="checkboxAll" class="font15 mTop05">I agree to all of the above.</label>
         </div>
         <div class="startBigBtn">
           <p @click="goLoginPage" class="font20" >I Agree</p>
@@ -103,18 +103,71 @@ export default {
 }
 </script>
 <style scoped>
-  /* .policyWrap p{font-size: 35px} */
-  .policyHeaderWrap{box-sizing: border-box; width: 100%; height: 150px; display: flex; justify-content: center;}
-  .policyHeader {margin-top: 14px; line-height: 27px}
-  .policyHeader p{ color: #6768A7; font-weight: bold;}
-  .policyContentsWrap{padding: 20px; height: calc(100vh - 150px); box-sizing: border-box; text-align: left;}
-  .policyHeader .headerFont{line-height: 32px}
-  .startBigBtn{background-color: #6768A7; margin-top: 10px; color:#ffff; height: 40px; box-sizing: border-box; padding: 5px 10px; width: 100%; border-radius: 5px; text-align: center; }
-  .startBigBtn p{color:#ffff; text-decoration: none;}
-  .checkboxDiv{display: flex; align-items: center; margin-top: 5px; }
-  .policyBodyBox{height: calc(100% - 70px); overflow-y: scroll; border: 1px solid #ccc; padding: 10px 10px}
+.checkBox {
+  flex-direction: row;
+}
+.policyHeaderWrap {
+  box-sizing: border-box;
+  width: 100%;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+  padding-bottom: none !important;
+}
+.policyHeader {
+  margin-top: 14px;
+  line-height: 27px
+}
+.policyHeader p {
+  color: #6768A7;
+  font-weight: bold;
+}
+.policyContentsWrap {
+  padding: 20px;
+  height: calc(100vh - 150px);
+  box-sizing: border-box;
+  text-align: left;
+}
+.policyHeader .headerFont {
+  line-height: 32px
+}
+.startBigBtn {
+  background-color: #6768A7;
+  margin-top: 10px;
+  color:#ffff;
+  height: 40px;
+  box-sizing: border-box;
+  padding: 5px 10px;
+  width: 100%;
+  border-radius: 5px;
+  text-align: center;
+}
+.startBigBtn p {
+  color:#ffff;
+  text-decoration: none;
+}
+.checkboxDiv {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+.policyBodyBox {
+  height: calc(100% - 70px);
+  overflow-y: scroll;
+  border: 1px solid #ccc;
+  padding: 10px 10px;
+}
 
-  .policyBtnArea { width: 100%; height: 80px; margin-top: 10px; float: left;}
-
-  .policyWrap{width: 100%; height: calc((100% - 190px)/2); min-height: 100px;}
+.policyBtnArea {
+  width: 100%;
+  height: 80px;
+  margin-top: 10px;
+  float: left;
+}
+.policyWrap {
+  width: 100%;
+  height: calc((100% - 190px)/2);
+  min-height: 100px;
+}
 </style>

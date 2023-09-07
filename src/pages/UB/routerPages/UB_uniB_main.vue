@@ -1,28 +1,28 @@
 <template>
-  <div ref="uniBMainRef" class="w100P h100P" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'" style="display: flex; align-items: center; overflow: hidden; z-index: -1;">
-    <div v-if="mGuidePopShowYn" @click="closeGuidePop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
-    <div v-if="mSelectSchoolPopShowYn" @click="closeSelectSchoolPop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+  <div ref="uniBMainRef" class="w100P h100P uniBMainWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'">
+    <div v-if="mGuidePopShowYn" @click="closeGuidePop" class="popBg"></div>
+    <div v-if="mSelectSchoolPopShowYn" @click="closeSelectSchoolPop" class="popBg"></div>
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
     </transition>
     <transition name="showUp">
       <guidePop v-if="mGuidePopShowYn" :pClosePop="closeGuidePop" />
     </transition>
-    <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/unib_mainBG.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
+    <div class="w100P uniBTownBox">
       <div class="ballon">Go to other town?</div>
-      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="width: 100px; position: absolute; right: 30px; top: 100px;" alt="">
+      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" alt="">
       <!-- my profile -->
-      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}" style="height: 50px; position: absolute; left: 15px; display: flex; align-items: center;">
-        <gProfileImg style="width: 40px; height: 40px; margin-right: 10px; " :selfYn="true" class="fl" />
-        <div class="fl font20 fontBold" style="color: white; text-shadow: 1px 2px 2px black;">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
+      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}" class="profileBox">
+        <gProfileImg :selfYn="true" class="fl profileImg" />
+        <div class="fl font20 fontBold userName">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
       </div>
-      <div v-else class="w100P" style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
-        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr" style="margin-top: 60px;" />
+      <div v-else class="w100P btnWrap">
+        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr mTop60" />
       </div>
       <!-- <img v-for="elem in mUniBElementList" :key="elem.key" :src="elem.maskedImageUrl" :style="`width: ${elem.w}px; height: ${elem.h}px;`" style="position: absolute; transform: translate(-50%, 0);" alt=""> -->
       <template v-for="(uniB) in mUniBElementList" :key="uniB.key">
-        <img @click="uniB.clickFunction" class="w100P mobileNone" :class="uniB.key !== 1? 'zoom':''" :src="uniB.imgLink" :style="{ width: uniB.w, left: uniB.left, top: uniB.top }" style="position: absolute; transform: translate(-50%, -50%);" />
-        <img @click="uniB.clickFunction" class="w100P pcNone" :class="uniB.key !== 1? 'zoom':''" :src="uniB.imgLink" :style="{ width: uniB.mobileW, left: uniB.left, top: uniB.top }" style="position: absolute; transform: translate(-50%, -50%);" />
+        <img @click="uniB.clickFunction" class="w100P mobileNone uniBimg" :class="uniB.key !== 1? 'zoom':''" :src="uniB.imgLink" :style="{ width: uniB.w, left: uniB.left, top: uniB.top }"/>
+        <img @click="uniB.clickFunction" class="w100P pcNone uniBimg" :class="uniB.key !== 1? 'zoom':''" :src="uniB.imgLink" :style="{ width: uniB.mobileW, left: uniB.left, top: uniB.top }"/>
       </template>
     </div>
   </div>
@@ -475,6 +475,10 @@ export default {
   opacity:0;
   transition: 0.2s;
   animation: flyingPlane 1s 2s ease-in-out both, moving 3s 3s ease-in-out infinite alternate;
+  width: 100px;
+  position: absolute;
+  right: 30px;
+  top: 100px;
 }
 .planeImg:hover {
   transform: scale(1.2);
@@ -532,7 +536,61 @@ export default {
   border-radius: 5px;
   z-index: 99;
 }
-
+.uniBMainWrap {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  z-index: -1;
+}
+.popBg {
+  width:100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  background: #00000050;
+}
+.uniBTownBox {
+  height: 100%;
+  position: relative;
+  background-repeat: no-repeat;
+  background-image: url('/resource/main/unib_mainBG.png');
+  background-position: center;
+  background-size: 100% 100%;
+  overflow: hidden;
+}
+.profileBox {
+  height: 50px;
+  position: absolute;
+  left: 15px;
+  display: flex;
+  align-items: center;
+}
+.profileImg {
+  width: 40px !important;
+  height: 40px !important;
+  margin-right: 10px !important;
+}
+.userName {
+  color: white;
+  text-shadow: 1px 2px 2px black;
+}
+.btnWrap {
+  height: 50px;
+  position: absolute;
+  top: 60px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+}
+.mTop60 {
+  margin-top: 60px !important;
+}
+.uniBimg {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
 @media screen and (max-width: 768px) {
   .planeImg {
     width: 80px !important;
