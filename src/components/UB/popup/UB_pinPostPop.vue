@@ -1,28 +1,28 @@
 <template>
-  <div style="background: #fff; width: 80%; height: 60%; position: absolute; left: 10%; top: 20%; z-index: 9999; padding: 10px 20px 20px; border-radius: 20px;">
-    <div class="headerShadow font20 fontBold" style="height: 40px; color: #6768a7; position: relative;">
+  <div class="pinPopWrap">
+    <div class="headerShadow font20 fontBold pinPopHeader">
       Pin a Post
-      <img @click="pClosePop" style="width: 20px; position: absolute; top: 5px; right: 0;" class="cursorP" src="@/assets/images/common/popup_close.png">
+      <img @click="pClosePop" class="cursorP" src="@/assets/images/common/popup_close.png">
     </div>
-    <div style="padding-top: 10px; overflow: auto; height: calc(100% - 80px);" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
-      <div class="font12 CDeepColor textLeft" style="margin-bottom: 10px;">
+    <div class="commonBoardListWrap pinPostContentsWrap" ref="commonBoardListWrapCompo">
+      <div class="font12 CDeepColor textLeft mBottom10">
         You can pin down important posts and show them at the top.
       </div>
-      <div class="w100P fl commonBoardListContentBox" style="height:1px;" />
+      <div class="w100P fl commonBoardListContentBox contentsLine"/>
       <template  v-if="mCabContentsList && mCabContentsList.length > 0">
-        <div class="w100P" style="height: 45px; margin-bottom: 10px;" v-for="(cont) in mCabContentsList" :key="cont.contentsKey">
-          <div class="w100P" style="display: flex; align-items: center;">
-            <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (cont.domainPath? cont.domainPath + cont.logoPathMtext : cont.logoPathMtext) + ');'" style="margin-right: 10px; width: 30px; height: 30px; background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
-            <div style="width: calc(100% - 100px);">
+        <div class="w100P pinContentsBox" v-for="(cont) in mCabContentsList" :key="cont.contentsKey">
+          <div class="w100P flexAlignCenter">
+            <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound chanImgBox" :style="'background-image: url(' + (cont.domainPath? cont.domainPath + cont.logoPathMtext : cont.logoPathMtext) + ');'"></div>
+            <div class="contentsItem">
               <p class="w100P fontBold font16 textOverdot textLeft">{{ cont.title }}</p>
-              <div class="font12" style="display: flex; align-items: center;">
-                <p class="textOverdot" style="max-width: calc(100% - 75px);">{{ $changeText(cont.creUserName) }}</p>
-                <p class="textLeft" style="width: 65px; margin-left: 10px;">{{ $changeSimpleDateFormat(cont.creDate) }}</p>
+              <div class="font12 flexAlignCenter">
+                <p class="textOverdot">{{ $changeText(cont.creUserName) }}</p>
+                <p class="textLeft">{{ $changeSimpleDateFormat(cont.creDate) }}</p>
               </div>
             </div>
-            <div style="width: 60px;">
-              <gBtnSmall v-if="getPinYn(cont)" style="font-size: 12px; padding: 0 10px;" btnTitle="Pinned" @click="setPinBoard(true, cont)" />
-              <gBtnSmall v-else class="CWhiteGrayBgColor CWDeepGrayColor" style="font-size: 12px;" btnTitle="Pin" @click="setPinBoard(false, cont)" />
+            <div class="contentsBtnBox">
+              <gBtnSmall v-if="getPinYn(cont)" class="pinnedBtn font12" btnTitle="Pinned" @click="setPinBoard(true, cont)" />
+              <gBtnSmall v-else class="CWhiteGrayBgColor CWDeepGrayColor font12" btnTitle="Pin" @click="setPinBoard(false, cont)" />
             </div>
           </div>
         </div>
@@ -30,8 +30,8 @@
       </template>
       <gEmpty v-else-if="mCabContentsList.length === 0" tabName="최신" contentName="게시판" option='EDIT' />
     </div>
-    <div class="w100P" style="height: 40px; display: flex; align-items: center; gap: 10px; justify-content: center;">
-      <gBtnSmall style="font-size: 12px;" btnTitle="OK" @click="pClosePop" />
+    <div class="w100P closeBtn">
+      <gBtnSmall class="font12" btnTitle="OK" @click="pClosePop" />
     </div>
   </div>
 </template>
@@ -39,8 +39,6 @@
 <script>
 export default {
   created () {
-    console.log('12341234')
-    console.log(this.pTVList)
     this.getContentsList().then((result) => {
       this.mCabContentsList = result.content
     })
@@ -132,7 +130,6 @@ export default {
       // } else {
         // param.offsetInt = this.offsetInt
       }
-      console.log(param.offsetInt)
       if (pageSize) {
         param.pageSize = pageSize
       } else {
@@ -203,7 +200,6 @@ export default {
         if (this.viewTab === 'N') {
           tempCabData.totalContentsCount = resultList.totalElements
         }
-        console.log(resultList)
         if (!resultList || resultList === '') {
           this.endListYn = false
         } else {
@@ -222,6 +218,70 @@ export default {
   }
 }
 </script>
-
 <style scoped>
+.pinPopWrap {
+  background: #fff;
+  width: 80%;
+  height: 60%;
+  position: absolute;
+  left: 10%;
+  top: 20%;
+  z-index: 9999;
+  padding: 10px 20px 20px;
+  border-radius: 20px;
+}
+.pinPopHeader {
+  height: 40px;
+  color: #6768a7;
+  position: relative;
+}
+.pinPopHeader > img {
+  width: 20px;
+  position: absolute;
+  top: 5px;
+  right: 0;
+}
+.pinPostContentsWrap {
+  padding-top: 10px;
+  overflow: auto;
+  height: calc(100% - 80px);
+}
+.contentsLine {
+  height: 1px;
+}
+.pinContentsBox {
+  height: 45px;
+  margin-bottom: 10px;
+}
+.chanImgBox {
+  margin-right: 10px;
+  width: 30px;
+  height: 30px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.contentsItem {
+  width: calc(100% - 100px);
+}
+.contentsItem > div > p:first-child {
+  max-width: calc(100% - 75px);
+}
+.contentsItem > div > p:last-child {
+  width: 65px;
+  margin-left: 10px;
+}
+.contentsBtnBox {
+  width: 60px;
+}
+.pinnedBtn {
+  padding: 0 10px;
+}
+.closeBtn {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
 </style>

@@ -1,14 +1,13 @@
 <template>
-<div class="fl" style="height: 100%; width:100%; position: absolute; left: 0; top: 0; z-index: 999999; background: #fff;">
-    <gPopHeader headerTitle="Select Followers" :pClosePop="pClosePop" />
-    <!-- <div style="width:100%; height:calc(100%);" > -->
-    <memberListCompo class="fl" style="padding: 0 1rem; height: calc(80% - 50px); background-color:white; overflow:auto; padding-top: 60px;" :style="'margin-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'" :pSelectedList="pSelectedList" :propMemberList="memberList" ref="memberListCompo"  :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData"/>
-    <!-- <selectedListCompo class="fl" style="height:calc(50% - 50px);" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' /> -->
-    <selectedListCompo class="fl" style="height:20%; max-height:200px; min-height:150px; position:absolute; bottom:0; left:0;" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey" @changeSelectMemberList="changeSelectMemberList"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
-    <!-- </div> this.propData.selectMemberType==='member'? true:false -->
-    <gConfirmPop ref="gConfirmPopRef" :confirmText="this.propData.selectMemberType === 'member'? 'Do you want to add as a member?': 'Do you want to add as a manager?'" confirmType='two' @no='closeConfirmPop' @ok="saveMember" v-if="confirmPopShowYn"/>
-
-</div>
+  <div class="fl selectMemberPopWrap">
+      <gPopHeader headerTitle="Select Followers" :pClosePop="pClosePop" />
+      <!-- <div style="width:100%; height:calc(100%);" > -->
+      <memberListCompo class="fl memberListCompo" :style="'margin-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'" :pSelectedList="pSelectedList" :propMemberList="memberList" ref="memberListCompo"  :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData"/>
+      <!-- <selectedListCompo class="fl" style="height:calc(50% - 50px);" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' /> -->
+      <selectedListCompo class="fl selectedListCompo" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey" @changeSelectMemberList="changeSelectMemberList"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
+      <!-- </div> this.propData.selectMemberType==='member'? true:false -->
+      <gConfirmPop ref="gConfirmPopRef" :confirmText="this.propData.selectMemberType === 'member'? 'Do you want to add as a member?': 'Do you want to add as a manager?'" confirmType='two' @no='closeConfirmPop' @ok="saveMember" v-if="confirmPopShowYn"/>
+  </div>
 </template>
 
 <script>
@@ -38,8 +37,6 @@ export default {
     var a = {}
     this.getFollowerList()
     a.memberList = this.pSelectedList
-    console.log('여기영')
-    console.log(this.pSelectedList)
     // eslint-disable-next-line vue/no-mutating-props
     this.propData.memberListOpen = true
     this.pList = a
@@ -51,8 +48,6 @@ export default {
       await this.$refs.gConfirmPopRef.goNo()
     },
     async changeDirectMemList (data) {
-      console.log('changeDirectMemList')
-      console.log(data)
       this.directAddMemList.push(data)
       if (this.selectedList.memberList) {
       } else {
@@ -177,7 +172,6 @@ export default {
               url: '/sUniB/tp.saveManager',
               param: param
             })
-            console.log('savemanager result', result)
           }
         }
       } else {
@@ -239,6 +233,29 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.selectMemberPopWrap {
+  height: 100%;
+  width:100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 999999;
+  background: #fff;
+}
+.memberListCompo {
+  padding: 0 1rem !important;
+  height: calc(80% - 50px) !important;
+  background-color:white !important;
+  overflow:auto !important;
+  padding-top: 60px !important;
+}
+.selectedListCompo {
+  height: 20%;
+  max-height: 200px;
+  min-height: 150px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
 </style>

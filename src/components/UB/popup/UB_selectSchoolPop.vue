@@ -1,30 +1,30 @@
 <template>
-  <div style="width: 80%; height: 80%; border-radius: 10px; z-index: 99999; position: absolute; left: 10%; top: 10%;" @click.stop="preventDefault">
+  <div class="selectSchoolPopWrap" @click.stop="preventDefault">
     <gConfirmPop :confirmText="mConfirmPopText" confirmType="one" @no="mConfirmPopShowYn = false" v-if="mConfirmPopShowYn"/>
-    <div class="transWhite" style="width: 100%; height: 100%;  float: left; position: relative; border-radius: 10px; padding: 10px 20px; overflow: hidden;">
+    <div class="transWhite selectSchoolPopBox">
       <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
-      <div class="font25 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between;">
-        <div style="display: flex; align-items: center; width: calc(100% - 25px);">
-          <p class="textOverdot textLeft" style="width: calc(100% - 40px);">Town List</p>
+      <div class="font25 fontBold w100P selectSchoolPopHeader">
+        <div class="selectSchoolPopTitle">
+          <p class="textOverdot textLeft">Town List</p>
         </div>
-        <div class="cursorP" @click="pClosePop" style="width: 25px;">
-          <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
+        <div class="cursorP closeBox" @click="pClosePop">
+          <img class="w100P" src="assets/images/common/popup_close.png" alt="">
         </div>
       </div>
-      <div v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false" style="width: 100%; min-height: calc(100% - 50px);">
+      <div class="skeletonBox" v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false">
           <chanSkeleton  v-for="(value) in 10" :key="value"/>
       </div>
-      <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll;height: calc(100% - 50px); width: 100%;" @mousedown="testTwo" @mouseup="testTr">
-        <div class="w100P" style="margin-bottom: 10px;">
-          <gInput @enterEvent="searchChannel" style="width: calc(100% - 35px);" :pInputObj="mInputObj" pInputType="I" pPlaceHolder="Please enter your school" />
-          <img @click="searchChannel" class="cursorP" style="width: 25px; margin-left: 10px;" src="@/assets/images/button/icon_search_color.svg" >
+      <div id="chanListWrap" ref="chanListWrap"  class="schoolContentsBox" :style="calcPaddingTop" @mousedown="testTwo" @mouseup="testTr">
+        <div class="w100P mBottom10">
+          <gInput @enterEvent="searchChannel" class="searchInput" :pInputObj="mInputObj" pInputType="I" pPlaceHolder="Please enter your school" />
+          <img @click="searchChannel" class="cursorP searchImg" src="@/assets/images/button/icon_search_color.svg" >
         </div>
         <div class="textRight cursorP" @click="resetSearch" v-if="mSearchYn">
           Reset
         </div>
-        <gEmpty tabName="전체" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
+        <gEmpty tabName="전체" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" class="mt-header" />
         <template v-for="(chanEle, index) in GE_DISP_TEAM_LIST" :key="index">
-          <channelCard :style="chanEle.teamKey === GE_USER.myTeamKey? 'border: 2px solid #7978BD;':''" class="moveBox chanRow cursorP" style="margin-top: 15px;" :pSelectedYn="chanEle.teamKey === GE_USER.myTeamKey" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" :pPopTitle="'townList'"/>
+          <channelCard :style="chanEle.teamKey === GE_USER.myTeamKey? 'border: 2px solid #7978BD;':''" class="moveBox chanRow cursorP margin15" :pSelectedYn="chanEle.teamKey === GE_USER.myTeamKey" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" :pPopTitle="'townList'"/>
           <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
         </template>
       </div>
@@ -253,8 +253,6 @@ export default {
       }
       this.mChannelList = resultList.content
       var chanListWrap = await this.$refs.chanListWrap
-      // eslint-disable-next-line no-debugger
-      debugger
       await chanListWrap.scrollTo({ top: 0, behavior: 'smooth' })
     },
     endListSetFunc (resultList) {
@@ -268,7 +266,6 @@ export default {
       }
     },
     async loadMore (pageSize) {
-      // alert('c')
       if (this.mAxiosQueue.findIndex((item) => item === 'loadMore') !== -1) return
       this.mAxiosQueue.push('loadMore')
       if (this.mEndListYn === false) {
@@ -329,7 +326,6 @@ export default {
       if (this.mChannelList.length === 0) this.mEmptyYn = true
 
       this.mListShowYn = true
-      console.log(resultList)
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.mEndListYn = true
       } else {
@@ -375,7 +371,6 @@ export default {
       if (mLoadingYn) {
         noneLoadingYn = false
       }
-      console.log(paramMap)
       var result = await this.$getTeamList(paramMap, noneLoadingYn)
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getChannelList')
       this.mAxiosQueue.splice(queueIndex, 1)
@@ -497,4 +492,58 @@ export default {
 </script>
 
 <style scoped>
+.selectSchoolPopWrap {
+  width: 80%;
+  height: 80%;
+  border-radius: 10px;
+  z-index: 99999;
+  position: absolute;
+  left: 10%;
+  top: 10%;
+}
+.selectSchoolPopBox {
+  width: 100%;
+  height: 100%;
+  float: left;
+  position: relative;
+  border-radius: 10px;
+  padding: 10px 20px;
+  overflow: hidden;
+}
+.selectSchoolPopHeader {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.selectSchoolPopTitle {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 25px);
+}
+.selectSchoolPopTitle > p {
+  width: calc(100% - 40px);
+}
+.closeBox {
+  width: 25px;
+}
+.skeletonBox {
+  width: 100%;
+  min-height: calc(100% - 50px);
+}
+.schoolContentsBox {
+  overflow: hidden scroll;
+  height: calc(100% - 50px);
+  width: 100%;
+}
+.searchInput {
+  width: calc(100% - 35px) !important;
+}
+.searchImg {
+  width: 25px;
+  margin-left: 10px;
+}
+.margin15 {
+  margin-top: 15px !important;
+}
 </style>
