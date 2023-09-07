@@ -17,7 +17,7 @@
 }
 </i18n>
 <template>
-<div class="pagePaddingWrap leavePageWrap" style="padding-top: 0!important; height: calc(100% - 80px);">
+<div class="pagePaddingWrap leavePageWrap">
   <popHeader :pClosePop="backClick" class="headerShadow" headerTitle="Withdrawal from an account"  />
   <leaveResultPop v-if="this.resultPopShowYn" @closeXPop="closeXPop"/>
   <div class="leaveContentsWrap">
@@ -294,8 +294,8 @@ Supplementary Provisions
 ① These Terms and Conditions shall apply from February 10, 2022.
       </textarea>
     </div>
-    <div style="text-align: center; margin-top: 1rem;"><input type="checkbox" name="agreeOut" v-model="agreeOut" id="agreeOut"><label  for="agreeOut">{{ $t('MSG_AGREE') }}</label></div>
-    <gBtnSmall v-on:click="requestLeave()" :btnTitle="this.completeBtnTitle" style="width:100%; height:3rem; line-height:3rem; font-size:20px;" class="mtop-1" />
+    <div class="inputArea"><input type="checkbox" name="agreeOut" v-model="agreeOut" id="agreeOut"><label  for="agreeOut">{{ $t('MSG_AGREE') }}</label></div>
+    <gBtnSmall v-on:click="requestLeave()" :btnTitle="this.completeBtnTitle" class="mtop-1 smallBtnStyle" />
   </div>
 <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn=false"/>
 </div>
@@ -374,12 +374,21 @@ export default {
 .leaveContentsWrap .pointTitle{color: #6768A7; font-size: 16px; font-weight: bold; text-align: center;}
 .leaveContentsWrap .title{color: #B8B8B8; font-size: 14px; font-weight: bold; text-align: center;}
 .leaveContentsWrap{width: 100%; height: 80%; margin-bottom: 3rem; }
-.leavePageWrap{display: flex; flex-direction: column; text-align: left; height: 100vh; overflow: hidden scroll;}
+.leavePageWrap{display: flex; flex-direction: column; text-align: left; height: 100vh; overflow: hidden scroll; padding-top: 0!important; height: calc(100% - 80px);}
 .guideText{color: #303030; font-size: 15px;}
 .guideTextWrap{width: 100%; min-height: 180px; margin-top: 0.5rem; border: 1px solid #CFCFCF; padding: 0 0.7rem}
 .guideBox{width: 100%; min-height: 80px; margin-top: 2rem;}
 .guideBox p{color: #6768A7; font-size: 15px; font-weight: bold;}
 input{margin-right: 0.5rem;}
 label{color: #6768A7; font-weight: 15px;}
-
+.inputArea {
+  text-align: center;
+  margin-top: 1rem;
+}
+.smallBtnStyle {
+  width:100%;
+  height:3rem;
+  line-height:3rem;
+  font-size:20px;
+}
 </style>

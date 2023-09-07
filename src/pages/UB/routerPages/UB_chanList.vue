@@ -1,25 +1,24 @@
 <template>
-  <div class="w100P h100P" style="padding-bottom: 120px;" :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 50 )+ 'px'">
-    <div class="w100P " style="padding-top:20px; padding-right:16px; display: flex; align-items: center; justify-content: flex-end; text-align:right;">
+  <div class="w100P h100P chanListArea" :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 50 )+ 'px'">
+    <div class="w100P filterWrap">
       <select v-model="showArray" class="mright-05">
-        <option style="width: 100%; height: 30px;" value="recent" class="font16">Recent</option>
-        <option style="width: 100%; height: 30px;" value="popular" class="font16">Popular</option>
+        <option value="recent" class="font16 orderOption">Recent</option>
+        <option value="popular" class="font16 orderOption">Popular</option>
       </select>
-      <div class="mright-05" style=" width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; float: right; " :style="'bottom:' + (this.$STATUS_HEIGHT + 150)+ 'px'"  @click="refreshList">
-          <img src="@/assets/images/common/commonReload.png" class="cursorP" style="width: 90%;">
+      <div class="mright-05 reloadWrap" :style="'bottom:' + (this.$STATUS_HEIGHT + 150)+ 'px'"  @click="refreshList">
+          <img src="@/assets/images/common/commonReload.png" class="cursorP">
       </div>
-      <div @click="$router.push('/findChan')" class="cursorP" style="cursor: pointer; float: right; border-radius: 50%; display: flex; align-items: center; justify-content: center; width: 25px; height: 25px; background-color: #fff;" :style="'bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
-        <img style="width: 90%;" src="@/assets/images/button/icon_search_color.svg" alt="채널 만들기 버튼">
+      <div @click="$router.push('/findChan')" class="cursorP createChanBtnWrap" :style="'bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
+        <img src="@/assets/images/button/icon_search_color.svg" alt="채널 만들기 버튼">
       </div>
     </div>
-    <div style="width: 100%; height: 100%;  float: left; background: #fff; position: relative;">
-
+    <div class="chanListWrap">
       <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
-      <div v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false" style="width: 100%; min-height: 100%;">
+      <div class="skeletonWrap" v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false">
           <chanSkeleton  v-for="(value) in 10" :key="value"/>
       </div>
-      <div id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style="overflow: hidden scroll; height: 100%; width: 100%; " @mousedown="testTwo" @mouseup="testTr">
-          <gEmpty :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" style="margin-top:50px;" />
+      <div id="chanListWrap" ref="chanListWrap" class="chanItemBox" :style="calcPaddingTop" @mousedown="testTwo" @mouseup="testTr">
+          <gEmpty class="mTop50" :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" />
           <template v-for="(chanEle, index) in filterChannelList()" :key="index">
             <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             <!-- <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @scrollMove="scrollMove" /> -->
@@ -522,4 +521,63 @@ export default {
 </script>
 
 <style scoped>
+.chanListArea {
+  padding-bottom: 120px;
+}
+.filterWrap {
+  padding-top:20px;
+  padding-right:16px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  text-align:right;
+}
+.orderOption {
+  width: 100%;
+  height: 30px;
+}
+.reloadWrap {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: right;
+}
+.reloadWrap > img {
+  width: 90%;
+}
+.createChanBtnWrap {
+  cursor: pointer;
+  float: right;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  background-color: #fff;
+}
+.createChanBtnWrap > img {
+  width: 90%;
+}
+.chanListWrap {
+  width: 100%;
+  height: 100%;
+  float: left;
+  background: #fff;
+  position: relative;
+}
+.skeletonWrap {
+  width: 100%;
+  min-height: 100%;
+}
+.chanItemBox {
+  overflow: hidden scroll;
+  height: 100%;
+  width: 100%;
+}
+.mTop50 {
+  margin-top: 50px !important;
+}
 </style>

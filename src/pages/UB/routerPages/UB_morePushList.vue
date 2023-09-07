@@ -1,12 +1,12 @@
 <template>
   <popHeader :headerTitle="`Saved`" @closeXPop="closeXPop"/>
-  <div class="w100P h100P" style="padding-top: 50px; padding-bottom: 60px;">
+  <div class="w100P h100P moreListWrap">
     <transition name="showModal">
       <findContentsList v-if="findPopShowYn" :tpGroupCode="false" contentsListTargetType="BOAR" transition="showModal" @searchList="requestSearchList" :pClosePop="closeSearch" />
     </transition>
-    <searchResult style="padding: 10px;" v-if="resultSearchKeyList.length > 0" :searchList="resultSearchKeyList" @changeSearchList="changeSearchList" />
-    <div style="width: 100%; height: 100%;  float: left; background: rgb(220, 221, 235); position: relative; padding-top: 30px;">
-      <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'" style="position: relative; float: left; width: 100%; overflow: hidden scroll; height: calc(100%); padding-bottom: 60px; ">
+    <searchResult class="pTop10" v-if="resultSearchKeyList.length > 0" :searchList="resultSearchKeyList" @changeSearchList="changeSearchList" />
+    <div class="moreListBox">
+      <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'">
         <template  v-for="(cont, index) in GE_DISP_CONT_LIST" :key="index">
           <gUBContentsBox @openImgPop="openImgPop" @openPage="goChannelMain" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" @fileDownload="fileDownload"/>
           <myObserver v-if="index === GE_DISP_CONT_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
@@ -14,8 +14,8 @@
         <gEmpty :tabName="`스크랩`" contentName="게시판" v-if="GE_DISP_CONT_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
       </div>
     </div>
-    <div @click="openSearch" class="cursorP" style="position: absolute; cursor: pointer; right: 10%; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid #8B8AD1; width: 50px; height: 50px; background-color: #fff;" :style="'bottom:' + (this.$STATUS_HEIGHT + 80)+ 'px'">
-      <img style="width: 50%;" src="@/assets/images/button/icon_search_color.svg" alt="search btn">
+    <div @click="openSearch" class="cursorP searchBtnWrap" :style="'bottom:' + (this.$STATUS_HEIGHT + 80)+ 'px'">
+      <img src="@/assets/images/button/icon_search_color.svg" alt="search btn">
     </div>
   </div>
 </template>
@@ -306,4 +306,43 @@ export default {
 </script>
 
 <style scoped>
+.moreListWrap {
+  padding-top: 50px;
+  padding-bottom: 60px;
+}
+.pTop10 {
+  padding-top: 10px !important;
+}
+.moreListBox {
+  width: 100%;
+  height: 100%;
+  float: left;
+  background: rgb(220, 221, 235);
+  position: relative;
+  padding-top: 30px;
+}
+.pushListWrapWrap {
+  position: relative;
+  float: left;
+  width: 100%;
+  overflow: hidden scroll;
+  height: 100%;
+  padding-bottom: 60px;
+}
+.searchBtnWrap {
+  position: absolute;
+  cursor: pointer;
+  right: 10%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #8B8AD1;
+  width: 50px;
+  height: 50px;
+  background-color: #fff;
+}
+.searchBtnWrap > img {
+  width: 50%;
+}
 </style>

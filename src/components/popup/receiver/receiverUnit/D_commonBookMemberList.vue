@@ -205,7 +205,7 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
 .selectedBox{background-color:#6768A720;}
 .receiverTeamMemberArea{float: left;  width: 100%; height: 100%;}
 .cBlack{
