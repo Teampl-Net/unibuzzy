@@ -1,14 +1,14 @@
 <template>
   <popHeader :headerTitle="`File Box`" @closeXPop="closeXPop"/>
-  <div @click="click" id="fileBoxWrap" style="width: 100%; height: 100%; overflow: auto; padding: 60px 10px; background-color: #f4f7ff;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px;'">
-    <div style="width: 100%; background-color: #fff; height: 140px; padding: 10px 0 10px 10px; border-radius: 0.8rem; display: flex; flex-direction: column; justify-content: space-between;">
-      <div v-if="this.mMainChanList" style="width: 100%; height: 30px; float: left;">
-        <img src="../../../assets/images/main/main_followIcon2.png" style="float: left; margin-right: 8px;" class="img-w23 cursorP" alt="">
-        <p class="font20 fontBold deepBorderColor textLeft CDeepColor" style="line-height: 26px;">{{ $t('COMMON_NAME_CHANNEL') }}</p>
+  <div @click="click" id="fileBoxWrap" class="fileBoxWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px;'">
+    <div class="fileBoxTopArea">
+      <div class="chanTitle" v-if="this.mMainChanList">
+        <img src="../../../assets/images/main/main_followIcon2.png" class="img-w23 cursorP" alt="">
+        <p class="font20 fontBold deepBorderColor textLeft CDeepColor">{{ $t('COMMON_NAME_CHANNEL') }}</p>
       </div>
-      <div v-if="this.mMainChanList.length > 0" id="fileChannelWrap" :class="!isMobile? 'thinScrollBar':''" style="width: 100%; height: 85px; float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
-        <div style="height: 100%; min-width: 100%; display:flex;">
-          <div class="cursorP" :style="selectedChannelIdx === 0? 'border: 2px solid #5F61BD;':'border: 0.5px solid rgba(0, 0, 0, 0.1);'" style="flex-shrink: 0; box-sizing: border-box; width: 65px; height: 65px; border-radius: 100%; float: left; margin-right: 10px; text-align: center; line-height: 65px; background-color: #fff;" @click="selectTeam(null, 0)">
+      <div v-if="this.mMainChanList.length > 0" id="fileChannelWrap" class="fileChanWrap" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
+        <div class="fileChanBox">
+          <div class="cursorP chanAll" :style="selectedChannelIdx === 0? 'border: 2px solid #5F61BD;':'border: 0.5px solid rgba(0, 0, 0, 0.1);'" @click="selectTeam(null, 0)">
             {{ $t('COMMON_TAB_ALL') }}
           </div>
           <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :selectedYn="selectedChannelIdx === index + 1? true:false" :key="index" @click="selectTeam(chan.teamKey, index+1)"/>
@@ -19,38 +19,38 @@
       </div>
     </div>
 
-    <div id="fileFilterBox" style="width: 100%; display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; border-bottom: 1.8px solid #9598d8;">
-      <div style="width: calc(100% - 40px); margin-left: 10px; height: 30px; margin-top: 10px; display: flex; gap: 10px; align-items: center;">
-        <img src="../../../assets/images/common/common_filter.svg" style="width: 30px; height: auto;" alt="">
+    <div id="fileFilterBox" class="fileFilterArea">
+      <div>
+        <img src="../../../assets/images/common/common_filter.svg" alt="">
         <div class="filterIconWrap" @click="selectKind('ALIM')" :class="{'selectedIcon':(selectedKind==='ALIM')}">
-          <img src="../../../assets/images/common/icon_alim.svg" style="width: 20px; height: auto;" alt="">
+          <img src="../../../assets/images/common/icon_alim.svg" class="filterIcon" alt="">
         </div>
         <div class="filterIconWrap" @click="selectKind('BOAR')" :class="{'selectedIcon':(selectedKind==='BOAR')}">
-          <img src="../../../assets/images/common/icon_board_color.svg" style="width: 20px; height: auto;" alt="">
+          <img src="../../../assets/images/common/icon_board_color.svg" class="filterIcon" alt="">
         </div>
         <div class="filterIconWrap" @click="selectKind('MEMO')" :class="{'selectedIcon':(selectedKind==='MEMO')}">
-          <img src="../../../assets/images/common/icon_memo_filter.svg" style="width: 20px; height: auto;"  alt="">
+          <img src="../../../assets/images/common/icon_memo_filter.svg" class="filterIcon"  alt="">
         </div>
         <div style="height: 18px; border-right: 1.5px solid #AEB0FB; border-radius: 8px;"></div>
         <div class="filterIconWrap" @click="selectContType('F')" :class="{'selectedIcon':(selectedContType==='F')}">
-          <img src="../../../assets/images/common/fileIcon.svg" style="width: 20px; height: auto;" alt="">
+          <img src="../../../assets/images/common/fileIcon.svg" class="filterIcon" alt="">
         </div>
         <div class="filterIconWrap" @click="selectContType('I')" :class="{'selectedIcon':(selectedContType==='I')}">
-          <img src="../../../assets/images/common/fileType_img.svg" style="width: 20px; height: auto;" alt="">
+          <img src="../../../assets/images/common/fileType_img.svg" class="filterIcon" alt="">
         </div>
       </div>
       <div>
-        <div class="filterIconWrap" style="margin-top: 10px; margin-right: 10px;" @click="openSearchPop">
-          <img src="../../../../public/resource/menu/icon_search_color.svg" style="width: 20px; height: auto;" alt="">
+        <div class="filterIconWrap filterIconSearch" @click="openSearchPop">
+          <img src="../../../../public/resource/menu/icon_search_color.svg" class="filterIcon" alt="">
         </div>
       </div>
     </div>
     <serachResult @changeSearchList="changeSearchList" :searchList="this.resultSearchKeyList" />
 
-    <div style="width: 100%; height: auto; margin-top: 10px;" v-if="fileList.length > 0">
+    <div class="fileContentsWrap" v-if="fileList.length > 0">
       <template v-for="(date, index) in dateList" :key="index">
-        <div class="textLeft fontBold font14 attachFileBg" :style="index !== 0? 'margin-top: 30px;':'margin-top: 10px;'" style="clear: both; width: fit-content; padding: 0px 8px; border-radius: 5px; color: #fff;">{{ date }}</div>
-        <div style="width: 98%; margin-left: 2%; margin-top: 8px;">
+        <div class="textLeft fontBold font14 attachFileBg fileContentsTag" :style="index !== 0? 'margin-top: 30px;':'margin-top: 10px;'">{{ date }}</div>
+        <div class="fileContentsItem">
           <template v-for="(cont, index) in fileList" :key="index">
             <gFileBox @openImgPop="openImgPop" @openPop="openPop" listType="T" :contentsEle="cont" :key="index" v-if="$changeDateFormat(cont.creDate) === date"/>
           </template>
@@ -272,7 +272,6 @@ export default {
         url: '/sUniB/tp.getMyFileList',
         param: Object.fromEntries(paramMap)
       }, nonLoadingYn)
-      console.log(result)
       return result
     },
     async getContentsList () {
@@ -309,14 +308,14 @@ export default {
       var resultArray = []
       // if (this.resultSearchKeyList.length > 0) resultArray = this.resultSearchKeyList
       if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
-        searchObj.typeName = '파일명'
+        searchObj.typeName = 'File'
         searchObj.type = 'searchKey'
         searchObj.keyword = param.searchKey
         resultArray.push(searchObj)
       }
       searchObj = {}
       if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
-        searchObj.typeName = '작성자'
+        searchObj.typeName = 'Writer'
         searchObj.type = 'creUserName'
         searchObj.keyword = param.creUserName
         resultArray.push(searchObj)
@@ -324,7 +323,7 @@ export default {
       searchObj = {}
       if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '' &&
         param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
-        searchObj.typeName = '날짜'
+        searchObj.typeName = 'Date'
         searchObj.type = 'creDate'
         searchObj.keyword = param.fromCreDateStr + '~' + param.toCreDateStr
         resultArray.push(searchObj)
@@ -336,7 +335,6 @@ export default {
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
         if (this.offsetInt > 0) this.offsetInt -= 1
-        console.log('end')
       } else {
         this.endListYn = false
         this.offsetInt += 1
@@ -386,19 +384,117 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  .filterIconWrap {
-    width: 35px;
-    height: 35px;
-    background-color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3px;
-    box-shadow: rgba(103, 104, 167, 0.4) 0px 1px 3px;
-  }
-  .selectedIcon {
-    border: 1.5px solid #5F61BD;
-  }
+<style scoped>
+.filterIconWrap {
+  width: 35px;
+  height: 35px;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  box-shadow: rgba(103, 104, 167, 0.4) 0px 1px 3px;
+}
+.selectedIcon {
+  border: 1.5px solid #5F61BD;
+}
+.fileBoxWrap {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 60px 10px;
+  background-color: #f4f7ff;
+}
+.fileBoxTopArea {
+  width: 100%;
+  background-color: #fff;
+  height: 140px;
+  padding: 10px 0 10px 10px;
+  border-radius: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.chanTitle {
+  width: 100%;
+  height: 30px;
+  float: left;
+}
+.chanTitle > img {
+  float: left;
+  margin-right: 8px;
+}
+.chanTitle > p {
+  line-height: 26px;
+}
+.fileChanWrap {
+  width: 100%;
+  height: 85px;
+  float: left;
+  overflow: scroll hidden;
+}
+.fileChanBox {
+  height: 100%;
+  min-width: 100%;
+  display:flex;
+}
+.chanAll {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 65px;
+  height: 65px;
+  border-radius: 100%;
+  float: left;
+  margin-right: 10px;
+  text-align: center;
+  line-height: 65px;
+  background-color: #fff;
+}
+.fileFilterArea {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1.8px solid #9598d8;
+}
+.fileFilterArea > div:first-child {
+  width: calc(100% - 40px);
+  margin-left: 10px;
+  height: 30px;
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.fileFilterArea > div:first-child > img {
+  width: 30px;
+  height: auto;
+}
+.filterIconSearch {
+  margin-top: 10px;
+  margin-right: 10px;
+}
+.filterIcon {
+  width: 20px;
+  height: auto;
+}
+.fileContentsWrap {
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+.fileContentsTag {
+  clear: both;
+  width: fit-content;
+  padding: 0px 8px;
+  border-radius: 5px;
+  color: #fff;
+}
+.fileContentsItem {
+  width: 98%;
+  margin-left: 2%;
+  margin-top: 8px;
+}
 </style>

@@ -31,10 +31,10 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <div id="findContPop" class="pagePaddingWrap findPopupWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 50 )+ 'px'" >
-    <popHeader v-if="(contentsListTargetType === 'boardMain')" :headerTitle="$t('SEAR_TITLE_POST')" :pClosePop="pClosePop" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
-    <popHeader v-else-if="(contentsListTargetType === 'myActList')" headerTitle="나의 활동 검색" :pClosePop="pClosePop" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
-    <popHeader v-else-if="(contentsListTargetType === 'fileBox')" :headerTitle="$t('SEAR_TITLE_FILE')" :pClosePop="pClosePop" @closeXPop="closeXPop"  style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
-    <popHeader v-else :headerTitle="$t('SEAR_TITLE_CONTENTS')" @closeXPop="closeXPop" :pClosePop="pClosePop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/>
+    <popHeader class="popHeaderShadow" v-if="(contentsListTargetType === 'boardMain')" :headerTitle="$t('SEAR_TITLE_POST')" :pClosePop="pClosePop" @closeXPop="closeXPop"/>
+    <popHeader class="popHeaderShadow" v-else-if="(contentsListTargetType === 'myActList')" headerTitle="나의 활동 검색" :pClosePop="pClosePop" @closeXPop="closeXPop"/>
+    <popHeader class="popHeaderShadow" v-else-if="(contentsListTargetType === 'fileBox')" :headerTitle="$t('SEAR_TITLE_FILE')" :pClosePop="pClosePop" @closeXPop="closeXPop"/>
+    <popHeader class="popHeaderShadow" v-else :headerTitle="$t('SEAR_TITLE_CONTENTS')" @closeXPop="closeXPop" :pClosePop="pClosePop"/>
     <div class="findPopBody  mtop-05">
         <div v-if="pTitleShowYn !== false" class="findPopMainSearchArea">
             <input v-if="contentsListTargetType === 'myActList'" class="searchInput font14 mtop-05" ref="channelsearchKeyword" @keyup.enter="requestSearchPushList" v-model="searchKey" placeholder="게시글 제목을 입력해주세요" />
@@ -48,8 +48,7 @@
         <input v-if="(contentsListTargetType !== 'chanDetail' && contentsListTargetType !== 'boardMain' && contentsListTargetType !== 'fileBox')" class="searchInput font14" type="text" name="" v-model="creTeam"  :placeholder="$t('SEAR_MSG_ENTER_CHANNAME')" id="">
         <!-- <input class="searchInput" type="text" name=""  v-model="fileName" placeholder="파일이름을 입력해주세요" id=""> -->
         <Datepicker
-          class="mtop-05"
-          style="font-size: 14px; float: left; border: 1px solid #ccc; border-radius: 5px;"
+          class="mtop-05 datePicker"
           inline
           :editable="false"
           v-model:value="creDate"
@@ -58,10 +57,10 @@
           :placeholder="$t('SEAR_MSG_SELE_DATE')"
           titleFormat="YYYY-MM-DD"
         ></Datepicker>
-        <div v-if="mStickerList && mStickerList.length > 0 && $appType === 'D'" style="width: 100%; margin-top: 10px; float: left; min-height: 30px;">
+        <div class="stickerArea" v-if="mStickerList && mStickerList.length > 0 && $appType === 'D'">
             <p class="fontBold font16 commonColor textLeft mtop-1 fl w-100P mbottom-05">{{ $t('SEAR_MSG_SELE_LABEL') }}</p>
             <template v-for="(value, index) in mStickerList" :key="index" >
-                <gStickerLine v-if="value && contentsListTargetType !== 'fileBox'" @click="selectSticker(value)" :pSelectedYn="selectedSticker && value.stickerKey === selectedSticker.stickerKey" style="float: left; margin-right: 10px; min-width: 30px;" :pSticker="value" />
+                <gStickerLine class="stickerItem" v-if="value && contentsListTargetType !== 'fileBox'" @click="selectSticker(value)" :pSelectedYn="selectedSticker && value.stickerKey === selectedSticker.stickerKey" :pSticker="value" />
             </template>
         </div>
         <div v-if="tpGroupCode && tpGroupCode.length > 5" class="findPopMainSearchArea mtop-05">
@@ -74,11 +73,11 @@
             <!-- <img class="searchIcon mtop-03 cursorP" @click="requestSearchPushList" src="../../../assets/images/common/iocn_search.png" alt="검색버튼"> -->
         </div>
 
-        <div class="fl findPopMainSearchArea mtop-05" style="min-height:50px;" v-if="teamKey && false">
-          <div class="fl w100P " style="border-bottom: 2px solid #6768a7; padding-bottom: 5px; ">
-            <div class="fl font16 fontBold textLeft " style="line-height:30px;" @click="receiveSearchClick">수신대상 검색 <p class="font14">▼</p></div>
-            <select class="fr commonDarkGray mleft-1" v-model="selectOption" @change="changeReceiveSearch" v-if="receivSearchYn" style="border: 1px solid #ccc; min-height:30px; width:calc(100% - 130px); min-width:50px; max-width:200px" >
-              <option v-for="(value, index) in receivList" :value="index" :key="index" class="fl w100P" style="display: flex; align-items: center; padding-bottom:0.5rem">
+        <div class="fl findPopMainSearchArea mtop-05 recvUserArea" v-if="teamKey && false">
+          <div class="fl w100P recvUserTitleBox">
+            <div class="fl font16 fontBold textLeft lineHeight30" @click="receiveSearchClick">수신대상 검색 <p class="font14">▼</p></div>
+            <select class="fr commonDarkGray mleft-1 recvSelectInput" v-model="selectOption" @change="changeReceiveSearch" v-if="receivSearchYn" >
+              <option v-for="(value, index) in receivList" :value="index" :key="index" class="fl w100P">
                 {{ value.mFormTitle }}
               </option>
             </select>
@@ -86,19 +85,19 @@
           <gLoadingS ref="searchLoading" class="fl height" style=""/>
 
           <div class="fl w100P pSide-15" v-if="receivSearchYn" :key="receiveListReloadKey" >
-            <div class="fl mtop-05 w100P" style="display: flex; align-items: center;" v-for="(value, qIndex) in receivList[this.selectOption].InfoQueList" :key="qIndex" :style="value.InfoQueType === 'siList' ? 'align-items: flex-start' : ''">
-              <p class="fl font14 commonDarkGray fontBold textLeft" style="flex:2">{{value.InfoQueTitle}}</p>
+            <div class="fl mtop-05 w100P flexAlignCenter" v-for="(value, qIndex) in receivList[this.selectOption].InfoQueList" :key="qIndex" :style="value.InfoQueType === 'siList' ? 'align-items: flex-start' : ''">
+              <p class="fl font14 commonDarkGray fontBold textLeft flex2">{{value.InfoQueTitle}}</p>
 
               <template v-if="value.InfoQueType === 'su'">
                 <div class="fl h100P" style="flex:3">
-                  <input class="fr" style="min-height:30px;  width:100%; max-width:300px; " type="text" :placeholder="value.InfoQueTitle">
+                  <input class="fr suInput" type="text" :placeholder="value.InfoQueTitle">
                 </div>
               </template>
 
               <template v-if="value.InfoQueType === 'si'">
-                <div class="fr textLeft w100P" style="flex:3">
-                  <select class="fr commonDarkGray" v-model="selectAnswer" style="border: 1px solid #ccc; width:100%; min-height:30px" >
-                    <option v-for="(answer, aIndex) in value.answerList" :value="answer.answerName" :key="aIndex" class="fl w100P" style="display: flex; align-items: center; padding-bottom:0.5rem">
+                <div class="fr textLeft w100P flex3">
+                  <select class="fr commonDarkGray siSelect" v-model="selectAnswer">
+                    <option v-for="(answer, aIndex) in value.answerList" :value="answer.answerName" :key="aIndex" class="fl w100P">
                       {{ answer.answerName }}
                     </option>
                   </select>
@@ -106,7 +105,7 @@
               </template>
 
               <template v-if="value.InfoQueType === 'siList'" >
-                <div class="fl textLeft w100P" style="flex:3">
+                <div class="fl textLeft w100P flex3">
                   <div class="fl w100P mbottom-05" v-for="(value, aIndex) in value.answerList" :key="aIndex">
                     <gCheckBtn class="fr" :title="value.answerName" :selectedYn="siListSelect === value.answerName" @click="siListSelect = value.answerName"/>
                   </div>
@@ -118,8 +117,8 @@
 
         </div>
 
-        <div style="width: 100%; float: left; margin-top: 20px; displa: flex;">
-          <gBtnLarge @click="requestSearchPushList" :btnTitle="$t('SEAR_BTN_SEARCH')" class="w-100P" />
+        <div class="searchBtnWrap">
+          <gBtnLarge @click="requestSearchPushList" :btnTitle="$t('SEAR_BTN_SEARCH')" class="w100P" />
         </div>
         <!-- <div style="width: 100%; min-height: 200px; float: left;">
             <div style="width: 100%; height: 20px; border-bottom: 1px solid #ccc;" v-for="(value, index) in this.stateCodeList" :key="index">{{this.$changeText(value.codeNameMtext)}}</div>
@@ -369,16 +368,78 @@ export default {
 .findPopBody{min-height: 3.6rem; padding-top: 0; width: 100%; float: left; margin-bottom: 1rem;}
 .selectInput {color: #6c757d!important; outline: none; cursor: pointer; padding-right: 20px!important; appearance: none;}
 .selectInput option{color: #303030; font-size: 16px; min-height: 20px;}
-/* .newestFindWrap{width: 100%; min-height: 200px; float: left; margin-top: 10px; padding-top: 20px
+.popHeaderShadow {
+  position: fixed;
+  top: 0;
+  box-shadow: 0px 7px 9px -9px #00000036;
 }
-
-.newestfindContentsListWrap{width: 100%; padding: 10px; height: 35px; border-bottom : 1px solid #ccc;} */
-
+.datePicker {
+  font-size: 14px !important;
+  float: left !important;
+  border: 1px solid #ccc !important;
+  border-radius: 5px !important;
+}
+.stickerArea {
+  width: 100%;
+  margin-top: 10px;
+  float: left;
+  min-height: 30px;
+}
+.stickerItem {
+  float: left !important;
+  margin-right: 10px !important;
+  min-width: 30px !important;
+}
+.recvUserArea {
+  min-height:50px;
+}
+.recvUserTitle {
+  border-bottom: 2px solid #6768a7;
+  padding-bottom: 5px;
+}
+.recvSelectInput {
+  border: 1px solid #ccc;
+  min-height: 30px;
+  width: calc(100% - 130px);
+  min-width: 50px;
+  max-width: 200px
+}
+.recvSelectInput > option {
+  display: flex;
+  align-items: center;
+  padding-bottom:0.5rem;
+}
+.flex2 {
+  flex: 2;
+}
+.flex3 {
+  flex: 3;
+}
+.suInput {
+  min-height:30px;
+  width:100%;
+  max-width:300px;
+}
+.siSelect {
+  border: 1px solid #ccc;
+  width:100%;
+  min-height:30px;
+}
+.siSelect > input {
+  display: flex;
+  align-items: center;
+  padding-bottom:0.5rem;
+}
+.searchBtnWrap {
+  width: 100%;
+  float: left;
+  margin-top: 20px;
+  display: flex;
+}
 @media screen and (max-width: 300px) {
   .pagePaddingWrap {
     padding-top: 50px !important;
   }
   input {font-size: 12px !important;}
 }
-
 </style>

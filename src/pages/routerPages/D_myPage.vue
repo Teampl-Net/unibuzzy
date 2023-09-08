@@ -1,9 +1,9 @@
 <template>
-  <div  class="w100P h100P pagePaddingWrap"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 50)+ 'px'" style=" overflow:auto; padding-bottom: 100px; position: relative; background: #9FDDEE;">
+  <div  class="w100P h100P pagePaddingWrap myPageWrap"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 50)+ 'px'">
     <loadingCompo v-if="mLoadingYn === true" />
     <div class="myProfileWrap" @click="goSetMyPage">
       <div class="myProfileLeft">
-        <gProfileImg style="width: 50px; height: 50px;" :selfYn="true" />
+        <gProfileImg class="myProfileImg" :selfYn="true" />
       </div>
       <div class="myProfileRight">
         <div class="myProfileRightContents">
@@ -11,30 +11,30 @@
           <span class="font14 myProfileRightInfo commonBlack textOverdot">{{GE_USER.userEmail}}</span>
         </div>
       </div>
-      <div class="h100P fl font20 grayBlack" style="width: 20px; line-height: 50px;">></div>
+      <div class="h100P fl font20 grayBlack goBtn">&gt;</div>
     </div>
 
     <!--파일함-->
-    <div @click="goTotalFileList" class="w100P fl" style=" padding: 10px; background-color: #fff; border-radius: 0.6rem; margin-top: 10px; height: 50px; display: flex; align-items: center; cursor: pointer;">
-      <div style="display: flex; align-items: center; width: calc(100% - 30px);">
-        <img class="mright-03" src="../../assets/images/common/icon_fileBox.svg" style="width: 19.2px; height: auto;" alt="">
-        <p class="commonColor fontBold font18" style="margin-top: 2px;">{{$t('COMMON_TAB_FILE_DRIVE')}}</p>
+    <div @click="goTotalFileList" class="w100P fl fileBoxArea">
+      <div class="fileBoxTitle">
+        <img class="mright-03" src="../../assets/images/common/icon_fileBox.svg" alt="">
+        <p class="commonColor fontBold font18">{{$t('COMMON_TAB_FILE_DRIVE')}}</p>
       </div>
-      <div class="h100P font20 grayBlack" style="width: 20px;">></div>
+      <div class="h100P font20 grayBlack goFileBtn">></div>
     </div>
     <!--스크랩-->
-    <div @click="goTotalSaveList" class="w100P fl" style=" padding: 10px; background-color: #fff; border-radius: 0.6rem; margin-top: 10px; height: 50px; display: flex; align-items: center; cursor: pointer;">
-      <div style="display: flex; align-items: center; width: calc(100% - 30px);">
-        <img class="mright-03" src="../../assets/images/contents/cont_star_no.svg" style="width: 19.2px; height: auto;" alt="">
-        <p class="commonColor fontBold font18" style="margin-top: 2px;">{{$t('COMMON_TAB_SAVED')}}</p>
+    <div @click="goTotalSaveList" class="w100P fl scrapArea">
+      <div class="scrapTitle">
+        <img class="mright-03" src="../../assets/images/contents/cont_star_no.svg" alt="">
+        <p class="commonColor fontBold font18">{{$t('COMMON_TAB_SAVED')}}</p>
       </div>
-      <div class="h100P font20 grayBlack" style="width: 20px;">></div>
+      <div class="h100P font20 grayBlack goFileBtn">></div>
     </div>
     <top5Alim v-if="$appType !== 'UB'" class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPop" ref="topAlim" />
-    <top5Channel v-if="$appType !== 'UB'" class="mainContentsBoxArea" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" style="margin-bottom: 1rem;" />
+    <top5Channel v-if="$appType !== 'UB'" class="mainContentsBoxArea top5Chan" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" />
     <myContents class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPage" v-else />
 
-    <div v-if="false" class="commonBlack " style="width: 100%; float: left; height: 100%;">
+    <div v-if="false" class="commonBlack w100P h100P fl">
       <myActList @closeLoading="mLoadingYn = false" ref="commonActList" :viewTab="myPageTabType" @openContentsDetailPop="openContentsDetailPop" @openPop="openPop" style="border-radius: 0.8rem;" @goMyChanList="goMyChanList" />
       <logList v-if="myPageTabType === 'ml'" />
     </div>
@@ -272,22 +272,166 @@ export default {
   }
 }
 </script>
-<style>
-.myProfileWrap {width: 100%; height: 70px;float: left; cursor: pointer; margin-top: 0.5rem; background-color: #fff; border-radius: 0.8rem; padding: 10px;}
-.myProfileLeft {width: 70px; height: 100%; float: left;}
-.myPagePicImgWrap {width: 50px; height: 50px; position: relative; border-radius: 80px; border:2.5px solid #6768a7; background: #6768a745;padding: 5px; padding-top: 10px; padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem}
-.myPagePicImgWrap img {width: 100%; position: absolute; top: 0; left: 0;}
+<style scoped>
+.myPageWrap {
+  overflow:auto;
+  padding-bottom: 100px;
+  position: relative;
+  background: #9FDDEE;
+}
+.myProfileWrap {
+  width: 100%;
+  height: 70px;
+  float: left;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  background-color: #fff;
+  border-radius: 0.8rem;
+  padding: 10px;
+}
+.myProfileLeft {
+  width: 70px;
+  height: 100%;
+  float: left;
+}
+.myPagePicImgWrap {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  border-radius: 80px;
+  border:2.5px solid #6768a7;
+  background: #6768a745;
+  padding: 5px;
+  padding-top: 10px;
+  padding-bottom: 0;
+  overflow: hidden;
+  display: flex;
+  margin-right: 1rem
+}
+.myPagePicImgWrap img {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 
-.myProfileRight {width: calc(100% - 100px); height: 100%; float: left;}
-.myProfileRightContents {width: 100%; height: 30px; line-height: 30px; float: left; text-align: left;}
-.myProfileRightIcon {width: 15px;height: 15px;margin-right: 5px;float: left;margin-top: 2.5px;}
-.myProfileRightName {margin-right: 5px;width: 40px;height: 20px;line-height: 20px;float: left; font-weight: bold;}
-.myProfileRightInfo {width: calc(100% - 25px); height: 20px; cursor: pointer; line-height: 20px; float: left;}
-.profileSetting {font-weight: bold; box-shadow: 0 0 7px 3px #b7b4b440; border-radius: 15px; background-color: #6768A7; color: #fff; float: left}
-
-.commonBigBtn{cursor: pointer; width: 90px;height: 30px;line-height: 30px;margin-top: 5px;float: right;background-color: #6768A7;border-radius: 0.8rem;color: #fff;}
-
+.myProfileRight {
+  width: calc(100% - 100px);
+  height: 100%;
+  float: left;
+}
+.myProfileRightContents {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  float: left;
+  text-align: left;
+}
+.myProfileRightIcon {
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  float: left;
+  margin-top: 2.5px;
+}
+.myProfileRightName {
+  margin-right: 5px;
+  width: 40px;
+  height: 20px;
+  line-height: 20px;
+  float: left;
+  font-weight: bold;
+}
+.myProfileRightInfo {
+  width: calc(100% - 25px);
+  height: 20px;
+  cursor: pointer;
+  line-height: 20px;
+  float: left;
+}
+.profileSetting {
+  font-weight: bold;
+  box-shadow: 0 0 7px 3px #b7b4b440;
+  border-radius: 15px;
+  background-color: #6768A7;
+  color: #fff;
+  float: left;
+}
+.commonBigBtn {
+  cursor: pointer;
+  width: 90px;
+  height: 30px;
+  line-height: 30px;
+  margin-top: 5px;
+  float: right;
+  background-color: #6768A7;
+  border-radius: 0.8rem;
+  color: #fff;
+}
 .mainContentsBoxArea {
-  background: #FFF; padding: 10px; border-radius: 0.8rem; padding-top: 5px; margin-top: 15px; box-shadow: 0 0 7px 3px #b7b4b440;
+  background: #FFF;
+  padding: 10px;
+  border-radius: 0.8rem;
+  padding-top: 5px;
+  margin-top: 15px;
+  box-shadow: 0 0 7px 3px #b7b4b440;
+}
+.myProfileImg {
+  width: 50px !important;
+  height: 50px !important;
+}
+.goBtn {
+  width: 20px;
+  line-height: 50px;
+}
+.fileBoxArea {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 0.6rem;
+  margin-top: 10px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.fileBoxTitle {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 30px);
+}
+.fileBoxTitle > img {
+  width: 19.2px;
+  height: auto;
+}
+.fileBoxTitle > p {
+  margin-top: 2px;
+}
+.goFileBtn {
+  width: 20px;
+}
+.scrapArea {
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 0.6rem;
+  margin-top: 10px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.scrapTitle {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 30px);
+}
+.scrapTitle > img {
+  width: 19.2px;
+  height: auto;
+}
+.scrapTitle > p {
+  margin-top: 2px;
+}
+.top5Chan {
+  margin-bottom: 1rem !important;
 }
 </style>

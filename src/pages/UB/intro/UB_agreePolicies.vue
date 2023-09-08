@@ -10,13 +10,13 @@
           <div class="policyBodyBox font13 textBold mt-1 commonBlack" v-html="value.body" ></div>
           <div class="checkboxDiv">
             <input type="checkbox" :name="'checkbox' + index" :id="'checkbox' + index" class="checkBox"  @click="checkedOne($event.target.checked, index)" :value="index" v-model="agree[index]" >
-            <label :for="'checkbox' + index" class="font15 mTop05">I agree to the above.</label>
+            <label :for="'checkbox' + index" class="font15 mLeft-05">I agree to the above.</label>
           </div>
       </div>
       <div class="policyBtnArea">
         <div class="checkboxDiv">
           <input type="checkbox" name="checkboxAll" id="checkboxAll" class="checkBox" @click="checkedAll($event.target.checked)" v-model="agreeAll" >
-          <label for="checkboxAll" class="font15 mTop05">I agree to all of the above.</label>
+          <label for="checkboxAll" class="font15 mLeft-05">I agree to all of the above.</label>
         </div>
         <div class="startBigBtn">
           <p @click="goLoginPage" class="font20" >I Agree</p>
@@ -169,5 +169,8 @@ export default {
   width: 100%;
   height: calc((100% - 190px)/2);
   min-height: 100px;
+}
+.mLeft-05 {
+  margin-left: 5px;
 }
 </style>
