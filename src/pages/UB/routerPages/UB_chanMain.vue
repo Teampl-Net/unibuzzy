@@ -361,8 +361,6 @@ export default {
     const intervalHandler = setInterval(() => {
       const chanMainRef = this.$refs.chanMainRef
       if (chanMainRef) {
-        // eslint-disable-next-line no-debugger
-        debugger
         if (this.scrollPosition && Number(this.scrollPosition) > 0) {
           const chanCardTopRef = this.$refs.chanPushListArea
           const chanCardTopArea = this.$refs.chanCardTopArea
@@ -776,8 +774,6 @@ export default {
       this.$emit('closeLoading')
     },
     openPushDetailPop (param) {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (
         param.targetType === 'contentsDetail' ||
         param.targetType === 'createChannel'
@@ -900,8 +896,6 @@ export default {
       this.$emit('openPop', param)
     },
     async getChanMain () {
-      // eslint-disable-next-line no-debugger
-      debugger
       const chanMainParam = {}
       chanMainParam.targetType = 'chanDetail'
       const encodedKey = Number(this.$route.params.encodedTeamKey)
@@ -1332,7 +1326,6 @@ export default {
     GE_PRE_DATA: {
       immediate: true,
       handler (val) {
-        console.log(val)
         if (!val) return
         if (val.scrollPosition && val.scrollPosition.position !== undefined && val.scrollPosition.position !== null && val.scrollPosition.targetKind && val.scrollPosition.targetKey && val.listData && val.listData.length > 0) {
           if (val.scrollPosition.targetKind === 'chanMain' && val.scrollPosition.targetKey === Number(this.$route.params.encodedTeamKey)) {
@@ -1370,8 +1363,6 @@ export default {
         } else if (!val && old) {
           pushList.className = 'scrollOn'
           chanMainRef.className = 'scrollHidden'
-          // eslint-disable-next-line no-debugger
-          debugger
           if (this.scrollPosition && Number(this.scrollPosition) > 0) {
             pushList.scrollTo({ top: this.scrollPosition })
             this.scrollPosition = null
@@ -1379,8 +1370,6 @@ export default {
           // chanCardTopRef.style.height = 'calc(100% - 200px - ' + this.$STATUS_HEIGHT + 'px'
         }
       }
-      // eslint-disable-next-line no-debugger
-      debugger
     },
     CHANNEL_DETAIL: {
       immediate: true,

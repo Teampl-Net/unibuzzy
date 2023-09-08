@@ -26,6 +26,10 @@ export default {
   props: {
     propBoardList: {}
   },
+  created () {
+    console.log('123')
+    console.log(this.propBoardList)
+  },
   methods: {
     listClick (data) {
       this.$emit('boardContentsClick', data)

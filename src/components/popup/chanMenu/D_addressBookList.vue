@@ -13,6 +13,7 @@
   <div v-for="(data, index) in propAddressBookList" :id="'book'+ index" :key='index' class="cabinetListCard cursorP fl mleft-05" @click="clickList(data)" >
     <span class="grayBlack fontBold mleft-05 w100P textOverdot textLeft fl" >
       <img class="fl cursorP img-w18 mright-05" alt="주소록 이미지"  src="../../../assets/images/board/icon_book.svg">
+      {{ cabinetNameMtext }}
       {{this.$changeText(data.cabinetNameMtext)}}
     </span>
   </div>

@@ -170,7 +170,7 @@ export async function saveUser (userProfile, loginYn) {
     }
     localStorage.setItem('user', '')
     alert('Login failed. Please try it again later.')
-    router.replace({ name: 'unknown' })
+    router.replace({ name: 'login' })
     // router.replace({ name: 'policies' })
   }
 }
@@ -208,7 +208,7 @@ export const methods = {
       if (user === undefined || user === null || user === '') {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
-        router.replace({ name: 'unknown' })
+        router.replace({ name: 'login' })
         // router.replace({ name: 'policies' })
         return
       }
@@ -266,7 +266,7 @@ export const methods = {
     } else {
       // commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
       // router.replace({ name: 'policies' })
-      router.replace({ name: 'unknown' })
+      router.replace({ name: 'login' })
       if (store !== undefined && store !== null) {
         store.commit('D_USER/MU_CLEAN_USER')
       }

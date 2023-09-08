@@ -1,21 +1,21 @@
 <template>
-  <div ref="mainRef" class="w100P h100P" style="display: flex; align-items: center; overflow: hidden; z-index: -1;" @click="getInRectImgList">
+  <div ref="mainRef" class="w100P h100P mainWrap" @click="getInRectImgList">
     <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="Do you want to exit UniBuzzy?" />
     <createBoardChannel v-if="mCreChannelShowYn" @successCreBoard="successCreBoard" @successCreChan="successCreChan" :pAreaInfo="mAreaInfo" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
     <!-- <createChannel @successCreChan="successCreChan" v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" /> -->
-    <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+    <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" class="popBg"></div>
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
     </transition>
-    <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+    <div v-if="mInfoBoxShowYn" @click="closeInfoBox" class="popBg"></div>
     <transition name="showUp">
       <areaInfoPop :pBdClickedYn="mBdClickedYn" :pBoardList="mBoardList" :chanDetail="{ modiYn: false }" @openImgPop="openImgPop" :pBdAreaList="mBdAreaList" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
     </transition>
-    <div v-if="mChanInfoPopShowYn" @click="closeChanInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+    <div v-if="mChanInfoPopShowYn" @click="closeChanInfoBox" class="popBg"></div>
     <transition name="showUp">
       <infoBox v-if="mChanInfoPopShowYn" @openPop="openPop" :pClosePop="closeChanInfoBox" @openPage="openPage" :pAreaInfo="mAreaInfo" :pAreaDetail="mAreaDetail" :pChanInfo="mSelectedChanInfo" />
     </transition>
-    <div class="w100P" style="height: calc(100%); position: relative; background-repeat: no-repeat; background-image: url('/resource/main/UB_mainBg.png'); background-position: center; background-size: 100% 100%; overflow: hidden;">
+    <div class="w100P mainTownArea">
       <!-- <div class="ballon">Go to other town?</div> -->
       <div class="ballon">
         <img src="@/assets/images/main/ballon.png" alt="go to other town?" class="w100P"/>
@@ -25,59 +25,59 @@
       </div>
       <!-- <UBBgEffect /> -->
       <!-- my profile -->
-      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}" style="height: 50px; position: absolute; left: 15px; display: flex; align-items: center;">
-        <gProfileImg style="width: 40px; height: 40px; margin-right: 10px; " :selfYn="true" class="fl" />
-        <div class="fl font20 fontBold" style="color: white; text-shadow: 1px 2px 2px black;">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
+      <div @click="goUserProfile" class="profileBox" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}">
+        <gProfileImg :selfYn="true" class="fl profileImg" />
+        <div class="fl font20 fontBold userName">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
       </div>
-      <div v-else class="w100P" style="height: 50px; position: absolute; top: 60px; left: 15px; display: flex; align-items: center;">
-        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr" style="margin-top: 60px;" />
+      <div v-else class="w100P loginBtnWrap">
+        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr loginBtn"/>
       </div>
     <!-- <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
       <transition name="showUp">
         <UBInfoBox v-if="mInfoBoxShowYn" :pType="'BD'" @openPage="openPage" :pChan="clickedBd" />
         <UBInfoBox v-else-if="clickedArea.clickedYn" :pType="'AR'" :pMoveToDetail="moveToChan" :pClickedInfo="clickedArea" :pVillageInfo="village.villageInfo" :innerHeight="innerHeight" :innerWidth="innerWidth" />
       </transition> -->
-      <div v-if="mShowAreaBdListYn" @click="mShowAreaBdListYn = false" class="w100P h100P" style="position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
+      <div v-if="mShowAreaBdListYn" @click="mShowAreaBdListYn = false" class="w100P h100P popBg"></div>
       <transition name="showUp">
-        <UBAreaBdList v-if="mShowAreaBdListYn" style="top: 100px; height: calc(100% - 100px); width: 80%;" />
+        <UBAreaBdList v-if="mShowAreaBdListYn" class="bdList"/>
       </transition>
       <template v-if="!mLoadingYn">
           <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
-            <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" style="cursor: pointer;position: absolute; z-index: 99;" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
-            <img style="position: absolute; z-index: 99" :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
-            <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-top': area.priority !== 0 && area.priority !== 1 ? 15 + (village.areaList[area.priority].h)/1.5 + 'px' : ''}" style="background-color: rgba(245, 245, 220, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">
-                <p class="textCenter fontBold font16" style="height: 20px; line-height: 20px;">{{ area.bdAreaNameMtext }}</p>
-            </div>
+            <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
+              <img :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
+              <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-top': area.priority !== 0 && area.priority !== 1 ? 15 + (village.areaList[area.priority].h)/1.5 + 'px' : ''}">
+                  <p class="textCenter fontBold font16">{{ area.bdAreaNameMtext }}</p>
+              </div>
             </div>
             <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
-            <div ref="bdRef" :id="`area${area.bdAreaKey}bd${bd.bdKey}pri${bd.priority}`" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}" style="position: absolute; "
+            <div ref="bdRef" :id="`area${area.bdAreaKey}bd${bd.bdKey}pri${bd.priority}`" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}"
             :style="[`z-index: ${1000 - bd.priority};`, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top + 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
-                <div v-if="area.priority === 0" class="banner flexCenter" style="width: 250px; height: 80px; position: absolute; top: -50px; left: 0;" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
-                <img src="../../../assets/images/main/banner2.png" class="w100P" style="position: absolute;" /> <!-- 여기 -->
-                <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold" style="position: absolute; margin-bottom: 30px;"></div>
+                <div v-if="area.priority === 0" class="banner flexCenter" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
+                  <img src="../../../assets/images/main/banner2.png" class="w100P"/> <!-- 여기 -->
+                  <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold"></div>
                 </div>
                 <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl"/>
                 <!-- <span class="fontBold font12" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
                 <!-- <span class="fontBold font12" :style="[{left: -(village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority) + 1) / 2 * 20) + 'px'}]" style="position: absolute; background: rgba(100,100,100,0.7); color: white; width: 100px; border-radius: 5px; padding: 0 5px;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
-                <span v-if="!(area.priority === 0 && index === 0) && village.areaList[area.priority].buildingList[index].maskedImageUrl" class="fontBold font12" style="position: absolute; line-height: 15px; color: #333333; border: 1px solid #ccc; width: 80px; border-radius: 5px; padding: 0 5px;"
+                <span v-if="!(area.priority === 0 && index === 0) && village.areaList[area.priority].buildingList[index].maskedImageUrl" class="fontBold font12 bdName"
                 :style="[{ 'background-color': index === 0 ? '#f1f1f1CC' : (index === 1 || index === 2) ? '#f1f1f199' : (index === 3 || index === 4) ? '#f1f1f180' : '' }, {left: -40 + (village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority)) / 2 * 10) + 'px'}]" >{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
             </div>
             </template>
         </template>
       </template>
-      <div @click="goLab" class="laboratory cursorP" style="position: absolute; bottom: 80px; left: 3%; width: 15%;">
+      <div @click="goLab" class="laboratory cursorP">
         <img class="w100P" src="/resource/main/ub_lab.png" alt="">
-        <span class="fontBold" style="background-color: rgba(245, 245, 220, 0.7) !important; color: black; border-radius: 5px; padding: 5px; height: 30px; z-index: 99;">Laboratory</span>
+        <span class="fontBold">Laboratory</span>
       </div>
     </div>
     <!-- <div class="PostsBallon">view Town's Posts</div>
     <div @click="openBoardPop" class="cursorP testBox" style="width: 70px; position: fixed; bottom: 100px; right: 15px; ">
         <img style="width: 100%;" src="../../../assets/images/main/UBTownFeed.svg" alt="">
     </div> -->
+    <div v-if="mBoardPopShowYn" class="popBg" @click="$refs.mainBoardRef.closeXPop"></div>
     <transition name="showUp">
         <mainBoardList @openImgPop="openImgPop" @openPage="openPage" @openPop="openPop" :pAreaInfo="mAreaInfo" :pTownTeamKey="mTownTeamKey" v-if="mBoardPopShowYn" ref="mainBoardRef" :pClosePop="closeBoardPop"/>
     </transition>
-    <div v-if="mBoardPopShowYn" @click="$refs.mainBoardRef.closeXPop" style="width: 100%; height: 100%; background: #00000040; position: absolute; z-index: 9998; top: 0; left: 0;"></div>
   </div>
 </template>
 <script>
@@ -187,8 +187,6 @@ export default {
 
     // if (this.pCampusTownInfo) {
     //   // this.village = this.pCampusTownInfo
-    //   console.log('this.pCampusTownInfo')
-    //   console.log(this.pCampusTownInfo)
     // }
     // const vilInfo = this.village.villageInfo
     // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
@@ -364,8 +362,6 @@ export default {
         if (result.data) {
           this.mAreaDetail = await result.data
           this.mAreaInfo = await area
-          console.log('====mAreaDetail===', result)
-          console.log('====mAreaInfo===', this.mAreaInfo)
           this.mChanInfoPopShowYn = true
           this.allClearFocus()
 
@@ -395,8 +391,6 @@ export default {
         if (result.data) {
           this.mAreaDetail = await result.data
           this.mAreaInfo = await area
-          console.log('====mAreaDetail===', result)
-          console.log('====mAreaInfo===', this.mAreaInfo)
           this.mInfoBoxShowYn = true
           this.allClearFocus()
         }
@@ -469,8 +463,6 @@ export default {
       paramMap.set('fUserKey', this.GE_USER.userKey)
       var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
       )
-      console.log('responsed')
-      console.log(response)
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       if (response && (response.status === 200 || response.status === '200')) {
@@ -567,8 +559,6 @@ export default {
       // this.$router.push(chanRoute)
     },
     createMaskingAreaImg () {
-      // eslint-disable-next-line no-debugger
-      debugger
       const areaList = this.village.areaList
       let w = 0
       let h = 0
@@ -738,8 +728,6 @@ export default {
                   bd.top = i + area.top - bd.h / 3
                 }
                 break
-                // console.log('foundfoundfound', bd.top)
-                // break
               }
             }
           }
@@ -761,7 +749,6 @@ export default {
       // 빌딩부터 역순으로 뒤짐
       // 빌딩이 발견됨, 스타일클리어 시키고, 효과를 주고 return해버리기
       // 빌딩 클릭이 없음, areaclick을 찾음
-      console.log(window.innerWidth)
       let blankWidth = 0
       if (window.innerWidth > 1000) {
         // area width = 1000 (원래는 1500)
@@ -854,8 +841,6 @@ export default {
       }
     },
     async getBoardList (teamKey) {
-      // eslint-disable-next-line no-debugger
-      debugger
       const chanMainParam = {}
       chanMainParam.targetType = 'chanDetail'
       // const encryptedKey = decodeURIComponent(encodedKey)
@@ -910,10 +895,8 @@ export default {
     },
     pageUpdate (value, old) {
       var history = this.historyStack
-      console.log(history)
       if (history.length < 2 && (history[0] === 0 || history[0] === undefined || history[0] === 'router$#$routerMain')) {
         if (this.$route.path === '/') {
-          console.log(this.$checkMobile())
           if (this.$checkMobile() !== 'IOS') this.mAppCloseYn = true
         }
       } else if (history[0] === 'mainPage') {
@@ -980,17 +963,36 @@ export default {
     transform: scale(1.05)
   }
 }
-
-.areaDiv{
+.areaDiv {
   animation:areaMoving .3s 1s ease-in-out 3 alternate;
+  cursor: pointer;
+  position: absolute;
+  z-index: 99;
 }
-
+.areaDiv > img {
+  position: absolute;
+  z-index: 99;
+}
+.areaDiv > div {
+  background-color: rgba(245, 245, 220, 0.7) !important;
+  color: black; border-radius: 5px;
+  padding: 5px;
+  height: 30px;
+  z-index: 99;
+}
+.areaDiv > div > p {
+  height: 20px;
+  line-height: 20px;
+}
 @keyframes areaMoving{
   0%{ transform:scale(1);}
   100%{ transform:scale(1.01);}
 }
 .areaDiv.clicked {
   animation: area-zoom 0.4s alternate;
+}
+.bdDiv {
+  position: absolute;
 }
 .bdDiv.clicked {
   z-index: 9999 !important;
@@ -1009,6 +1011,29 @@ export default {
   border-radius: 5px;
   z-index: 99;
 }
+.banner {
+  width: 250px;
+  height: 80px;
+  position: absolute;
+  top: -50px;
+  left: 0;
+}
+.banner > img {
+  position: absolute;
+}
+.banner > div {
+  position: absolute;
+  margin-bottom: 30px;
+}
+.bdName {
+  position: absolute;
+  line-height: 15px;
+  color: #333333;
+  border: 1px solid #ccc;
+  width: 80px;
+  border-radius: 5px;
+  padding: 0 5px;
+}
 .planeBox{
   width:20%;
   max-width: 100px;
@@ -1024,7 +1049,10 @@ export default {
   transition: 0.2s;
   animation: flyingPlane 1s 2s ease-in-out both, moving 3s 3s ease-in-out infinite alternate;
 }
-
+.userName {
+  color: white;
+  text-shadow: 1px 2px 2px black;
+}
 @keyframes flyingPlane{
   0%{opacity: 0; transform: translate(-450px, 100px);}
   80%{opacity: 1; transform: translate(0px, 0px) scale(1.2);}
@@ -1097,11 +1125,77 @@ export default {
   transform-origin: 50% 50%;
   transition: 0.2s;
 }
+.laboratory {
+  position: absolute;
+  bottom: 80px;
+  left: 3%;
+  width: 15%;
+}
 .laboratory > img {
   animation: lab 3s 3s ease-in-out infinite alternate;
 }
 .laboratory > img:hover {
   filter: drop-shadow(0 0 10px #f6ff7b);
+}
+.laboratory > span {
+  background-color: rgba(245, 245, 220, 0.7) !important;
+  color: black;
+  border-radius: 5px;
+  padding: 5px;
+  height: 30px;
+  z-index: 99;
+}
+.mainWrap {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  z-index: -1;
+}
+.popBg {
+  width:100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background: #00000050;
+}
+.mainTownArea {
+  height: calc(100%);
+  position: relative;
+  background-repeat: no-repeat;
+  background-image: url('/resource/main/UB_mainBg.png');
+  background-position: center;
+  background-size: 100% 100%;
+  overflow: hidden;
+}
+.profileBox {
+  height: 50px;
+  position: absolute;
+  left: 15px;
+  display: flex;
+  align-items: center;
+}
+.profileImg {
+  width: 40px !important;
+  height: 40px !important;
+  margin-right: 10px !important;
+}
+.loginBtnWrap {
+  height: 50px;
+  position: absolute;
+  top: 60px;
+  left: 15px;
+  display: flex;
+  align-items: center;
+}
+.loginBtn {
+  margin-top: 60px !important;
+}
+.bdList {
+  top: 100px !important;
+  height: calc(100% - 100px) !important;
+  width: 80% !important;
 }
 @keyframes lab {
   0%{

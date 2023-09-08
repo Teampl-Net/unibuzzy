@@ -8,7 +8,7 @@
           <p class="textOverdot textLeft">Town List</p>
         </div>
         <div class="cursorP closeBox" @click="pClosePop">
-          <img class="w100P" src="assets/images/common/popup_close.png" alt="">
+          <img src="@/assets/images/common/popup_close.png" alt="">
         </div>
       </div>
       <div class="skeletonBox" v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false">
@@ -525,6 +525,9 @@ export default {
   width: calc(100% - 40px);
 }
 .closeBox {
+  width: 25px;
+}
+.closeBox > img {
   width: 25px;
 }
 .skeletonBox {
