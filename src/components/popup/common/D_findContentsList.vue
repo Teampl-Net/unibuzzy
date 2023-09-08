@@ -352,22 +352,70 @@ export default {
 </script>
 
 <style scoped>
-.mx-icon-clear {position: fixed; right: 8px; transform: translateY(50%); vertical-align: -8rem !important;}
-.mx-input-wrapper {width: 100%; height: 40px;}
-.findPopupWrap{position: fixed; width: 100%; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
-.searchIcon{width: 1.5rem; position: absolute; top:0.8rem; right: 8px;}
-.searchInput{
-  margin-bottom: 5px!important; height:40px; float: left; width: 100%;  padding: 0.4rem; padding-right: 3rem; box-sizing: border-box;
+.mx-icon-clear {
+  position: fixed;
+  right: 8px;
+  transform: translateY(50%);
+  vertical-align: -8rem !important;
+}
+.mx-input-wrapper {
+  width: 100%;
+  height: 40px;
+}
+.findPopupWrap {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  height: 100vh;
+  top: 0;
+  z-index: 999999;
+  background: #FFFFFF;
+}
+.searchIcon {
+  width: 1.5rem;
+  position: absolute;
+  top:0.8rem;
+  right: 8px;
+}
+.searchInput {
+  margin-bottom: 5px!important;
+  height:40px;
+  float: left;
+  width: 100%;
+  padding: 0.4rem;
+  padding-right: 3rem;
+  box-sizing: border-box;
   /* border: none !important; */
    /* background: #e4e4e463; */
    /* border-radius: 12px; */
-   border-radius: 5px;
+  border-radius: 5px;
   border: 1px solid #ccc;
 }
-.findPopMainSearchArea{position: relative; min-height: 40px; float: left; width: 100%; }
-.findPopBody{min-height: 3.6rem; padding-top: 0; width: 100%; float: left; margin-bottom: 1rem;}
-.selectInput {color: #6c757d!important; outline: none; cursor: pointer; padding-right: 20px!important; appearance: none;}
-.selectInput option{color: #303030; font-size: 16px; min-height: 20px;}
+.findPopMainSearchArea {
+  position: relative;
+  min-height: 40px;
+  float: left;
+  width: 100%;
+}
+.findPopBody {
+  min-height: 3.6rem;
+  padding-top: 0;
+  width: 100%;
+  float: left;
+  margin-bottom: 1rem;
+}
+.selectInput {
+  color: #6c757d!important;
+  outline: none;
+  cursor: pointer;
+  padding-right: 20px!important;
+  appearance: none;
+}
+.selectInput option {
+  color: #303030;
+  font-size: 16px;
+  min-height: 20px;
+}
 .popHeaderShadow {
   position: fixed;
   top: 0;
@@ -391,7 +439,7 @@ export default {
   min-width: 30px !important;
 }
 .recvUserArea {
-  min-height:50px;
+  min-height: 50px;
 }
 .recvUserTitle {
   border-bottom: 2px solid #6768a7;
@@ -407,7 +455,7 @@ export default {
 .recvSelectInput > option {
   display: flex;
   align-items: center;
-  padding-bottom:0.5rem;
+  padding-bottom: 0.5rem;
 }
 .flex2 {
   flex: 2;
@@ -416,19 +464,19 @@ export default {
   flex: 3;
 }
 .suInput {
-  min-height:30px;
-  width:100%;
-  max-width:300px;
+  min-height: 30px;
+  width: 100%;
+  max-width: 300px;
 }
 .siSelect {
   border: 1px solid #ccc;
   width:100%;
-  min-height:30px;
+  min-height: 30px;
 }
 .siSelect > input {
   display: flex;
   align-items: center;
-  padding-bottom:0.5rem;
+  padding-bottom: 0.5rem;
 }
 .searchBtnWrap {
   width: 100%;

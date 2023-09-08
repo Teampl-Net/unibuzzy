@@ -79,30 +79,30 @@
 <!-- <div style="width: 100%; float: left;"> -->
   <div class="whitePaper hhhhhh">
       <!-- 컨텐츠 작성 헤더 영역 -->
-      <div class="w100P fl" style="padding: 1rem 1.5rem 0 1.5rem; display: flex; flex-direction: column; align-items: flex-start;">
-        <div class="fl w100P" style="display: flex; align-items: center; justify-content: space-between;">
+      <div class="w100P fl writeHeader">
+        <div class="fl w100P writeHeaderBox">
           <p v-if="contentType === 'ALIM'" class="fontBold commonColor font20 fl">{{ $t('COMMON_TAB_NOTI' ) }} {{requestPushYn === false ? $t('FORM_BTN_WRITE') : $('FORM_BTN_APPLY') }}</p>
           <p v-if="contentType === 'BOAR'" class="fontBold commonColor font20 fl">{{$t('COMMON_TAB_POST')}} {{modiYn? $t('COMM_BTN_EDIT2') : $t('FORM_BTN_WRITE')}}</p>
-          <div class="fr" style="display: flex; flex-direction: row; align-items: center;">
+          <div class="fr flexAlignCenter">
             <gBtnSmall class="writeContenBtn" v-if="contentType === 'ALIM'"   :btnTitle="contentType === 'ALIM' && requestPushYn === false ? $t('FORM_BTN_SEND') : $t('FORM_BTN_LONG_APPLY')" @click="clickPageTopBtn()"  />
             <gBtnSmall :btnThema="mCanWriteYn? '' : 'light'" :style="!mCanWriteYn? 'background: #FFF; cursor: default;' : ''" class="writeContenBtn" v-if="contentType === 'BOAR'"   :btnTitle="contentType === 'BOAR' && modiYn === true ? $t('FORM_BTN_EDIT') : $t('FORM_BTN_POST')" @click="mCanWriteYn? boardDataCheck(): ''"   />
             <img style="width: 1rem;" @click="closeXPop" class="mleft-2 fr cursorP"  src="../../assets/images/common/popup_close.png"/>
           </div>
         </div>
-        <div class="fl mtop-05" style="width:100%; border-bottom: 2px solid #5F61BD;"></div>
+        <div class="fl mtop-05 headerLine"></div>
       </div>
-      <div class="fl w100P h100P" id="scrollFormArea" ref="scrollFormArea" style="overflow: hidden auto">
+      <div class="fl w100P h100P scrollOn" id="scrollFormArea" ref="scrollFormArea">
         <!-- 알림 영역 -->
         <template v-if="contentType === 'ALIM'">
-          <div class="fl w100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-            <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_TITLE_RECEIVE') }}</p>
-            <div class="fl" style="min-height: 2rem; float: left; width: calc(100% - 3.5rem);" v-if="!params.userKey">
+          <div class="fl w100P mtop-1 alimTopArea">
+            <p class="fontBold commonColor CDeepColor font16 fl mright-1 keepAll">{{ $t('FORM_TITLE_RECEIVE') }}</p>
+            <div class="fl alimOptionBox" v-if="!params.userKey">
               <checkBtnArea class="mleft-05" :title="$t('COMMON_TAB_ALL')" :selectedYn='allRecvYn' @click="allRecvYn = true" />
               <checkBtnArea class="mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn='!allRecvYn' @click="allRecvYn = false" />
               <p class="fr commonDarkGray font14" style="line-height: 30px;">{{allRecvYn === false ? receiverText : $t('COMMON_TAB_ALL') }}</p>
-              <div v-if="!allRecvYn" class="fl w100P textLeft mleft-05 mtop-05" @click="openPushReceiverSelect" style="border:1px solid #ccc; border-radius:8px; min-height: 30px; background: white; padding-left: 5px; display: flex; justify-content: space-between; align-items: center;">
+              <div v-if="!allRecvYn" class="fl w100P textLeft mleft-05 mtop-05 selectRecvUserBox" @click="openPushReceiverSelect">
                 <div v-if="this.receiverList.list && this.receiverList.list.length > 0" class="fl w100P">
-                  <div v-for="(value, index) in this.receiverList.list" :key="index" class="fl mright-1" style="display: flex;">
+                  <div v-for="(value, index) in this.receiverList.list" :key="index" class="fl mright-1 dispFlex">
                     <img v-if="value.type === 'BOOK' && !value.memberYn" class="img-w15 fl" src="../../assets/images/channel/channer_addressBook.svg" alt="">
                     <img v-if="value.type === 'BOOK' && value.memberYn" class="img-w15 fl" src="../../assets/images/common/memberIcon.svg" alt="">
                     <img v-if="value.type === 'USER'" class="img-w15 fl" src="../../assets/images/footer/icon_people.svg" alt="">
@@ -120,8 +120,7 @@
               {{params.userName}}
               </p>
           </div>
-
-          <div class="fl w100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
+          <div class="fl w100P mtop-1 checkBtnBox">
             <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_TITLE_OPTION') }}</p>
             <div style="min-height: 2rem; float: left;">
               <checkBtnArea class="mleft-05" :title="$t('FORM_BTN_ID')" :selectedYn='showCreNameYn' @click="showCreNameYn = !showCreNameYn" />
@@ -133,11 +132,14 @@
 
         <!-- 게시판 영역 -->
         <template v-if="contentType === 'BOAR'">
-          <div v-if="selectBoardYn === true" class="fl w100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-            <p class="fontBold commonColor CDeepColor font16 fl mright-05" style="word-break: keep-all; position: relative;">{{ $t('FORM_TITLE_BOARD') }}<pss class="font12 fl" style="position: absolute; left: 0; bottom: -1rem;" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</pss></p>
+          <div v-if="selectBoardYn === true" class="fl w100P mtop-1 checkBtnBox">
+            <p class="fontBold commonColor CDeepColor font16 fl mright-05 titleBoard">
+              {{ $t('FORM_TITLE_BOARD') }}
+              <pss class="font12 fl boardPlaceHolder" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</pss>
+            </p>
             <!-- <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p> -->
-            <div class="fl" :class="!isMobile? 'thinScrollBar':''" id="boardListWrap" style=" width: calc(100% - 3.5rem); height: 2.2rem; overflow: auto hidden; white-space: nowrap; display: flex; align-items: center" @wheel="horizontalScroll" >
-              <div v-for="(data, index) in selectBoardList" :key="index" class="fl mleft-05 font12 fontBold" @click="selectBoard(data, index)" style=" border-radius:10px; display: inline-flex;" :style="{background: data.picBgPath}" :class="{'CDeepBorderColor selectPadding' : selectBoardIndex === index, 'noneSelectPadding' : selectBoardIndex !== index, 'mleft-0': index === 0}">
+            <div class="fl boardListWrap" :class="!isMobile? 'thinScrollBar':''" id="boardListWrap" @wheel="horizontalScroll" >
+              <div v-for="(data, index) in selectBoardList" :key="index" class="fl mleft-05 font12 fontBold boardItem" @click="selectBoard(data, index)" :style="{background: data.picBgPath}" :class="{'CDeepBorderColor selectPadding' : selectBoardIndex === index, 'noneSelectPadding' : selectBoardIndex !== index, 'mleft-0': index === 0}">
                 <div class="fl"> <img class="img-w15" v-if="selectBoardIndex === index" src="../../assets/images/common/icon_check_commonColor.svg" /></div>
                 <label class="mleft-03 font14"  :class="{'commonColor selectBoardBorder' : selectBoardIndex === index}" :for="'selectBoardCheckBox'+index">{{this.$changeText(data.cabinetNameMtext)}}</label>
               </div>
@@ -146,22 +148,21 @@
         </template>
 
         <!-- 공통 영역 -->
-        <div v-if="titleShowYn" class="fl w100P mtop-1" style="display: flex; align-items: center; padding: 0 1.5rem;">
-          <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_BTN_TITLE') }}</p>
-          <input class="fl mleft-05 titlePlaceholder" style="width: calc(100% - 3.5rem); min-height:30px; background-color:white !important;" type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="$t('FORM_MSG_TITLE')" v-model="writePushTitle" >
-
+        <div v-if="titleShowYn" class="fl w100P mtop-1 contentsTitleBox">
+          <p class="fontBold commonColor CDeepColor font16 fl mright-1 keepAll">{{ $t('FORM_BTN_TITLE') }}</p>
+          <input class="fl mleft-05 titlePlaceholder" type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="$t('FORM_MSG_TITLE')" v-model="writePushTitle" >
         </div>
 
-        <div class="fl w100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-          <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_BTN_FILE') }}</p>
-          <div style="width: calc(100% - 3.5rem); min-height: 30px; " class="fl mleft-05">
+        <div class="fl w100P mtop-1 contentsFileBox">
+          <p class="fontBold commonColor CDeepColor font16 fl mright-1 keepAll">{{ $t('FORM_BTN_FILE') }}</p>
+          <div class="fl mleft-05 fileItemBox">
             <attachFileList :attachTrueAddFalseList="pAttachFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
           </div>
         </div>
 
       <!-- 작성 창 영역 -->
-      <div id="pageMsgAreaWrap" class="pageMsgArea mtop-1 w100P fl" style=" padding: 0px 1.5rem 0rem 1.5rem; ">
-        <formEditor style="margin-top:1rem; margin-bottom: 1rem;" class="fl" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText" @postToolBox='postToolBox'/>
+      <div id="pageMsgAreaWrap" class="pageMsgArea mtop-1 w100P fl contentsFormBox">
+        <formEditor class="fl formEditor" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText" @postToolBox='postToolBox'/>
         <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
       </div>
     </div>
@@ -175,7 +176,9 @@
   <gConfirmPop v-if="contentType === 'BOAR' && checkPopYn" :confirmText="modiYn? $t('FORM_MSG_EDIT') : $t('FORM_MSG_SAVE')" @ok='sendBoard(), checkPopYn=false' @no='confirmNo()'   />
   <gConfirmPop @no="closeXPop()" :confirmText="contentType === 'ALIM' ? $t('FORM_MSG_SUCCESS_APPLY') : $t('FORM_MSG_SUCCESS_SAVE') " confirmType='timeout' v-if="okPopYn" />
   <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
-  <div v-if="sendLoadingYn" id="loading" style="display: block;"><div class="spinner"></div></div>
+  <div v-if="sendLoadingYn" id="loading">
+    <div class="spinner"></div>
+  </div>
 <!-- </div> -->
 </template>
 
@@ -1356,42 +1359,47 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 .whitePaper {
-      /* overflow: auto; */
-      /* position: fixed; */
-      position: absolute;
-      /* left: 5%; */
-      /* bottom: 0; */
-      top: 5%;
-      z-index: 9999;
-      left: 5%;
-      /* transform: translate(-50%, -50%); */
-      width: 90%;
+  /* overflow: auto; */
+  /* position: fixed; */
+  position: absolute;
+  /* left: 5%; */
+  /* bottom: 0; */
+  top: 5%;
+  z-index: 9999;
+  left: 5%;
+  /* transform: translate(-50%, -50%); */
+  width: 90%;
 
-      /* border-radius: 0.8rem 0.8rem 0 0; */
-      border-radius: 0.8rem;
-      /* height: 90%; */
-      height: 78%;
-      min-height: 500px;
+  /* border-radius: 0.8rem 0.8rem 0 0; */
+  border-radius: 0.8rem;
+  /* height: 90%; */
+  height: 78%;
+  min-height: 500px;
 
-      /* background-color: #f9f9f9; */
-      background-color: #f5f5f5 !important;
-      color: #363c5f;
-      /* padding: 1.5rem; */
-      text-align: left;
-      /* box-shadow: 0 0 9px 0 #ccc; */
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      z-index: 9999;
-      /* overflow: hidden; */
-      /* clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%); */
-  }
-  .titlePlaceholder::placeholder {
-    color: #AFAFAF
-  }
+  /* background-color: #f9f9f9; */
+  background-color: #f5f5f5 !important;
+  color: #363c5f;
+  /* padding: 1.5rem; */
+  text-align: left;
+  /* box-shadow: 0 0 9px 0 #ccc; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  z-index: 9999;
+  /* overflow: hidden; */
+  /* clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%); */
+}
+.titlePlaceholder {
+  width: calc(100% - 3.5rem);
+  min-height: 30px;
+  background-color: white !important;
+}
+.titlePlaceholder::placeholder {
+  color: #AFAFAF
+}
 .writeContenBtn {
   /* border: 2px solid #FFFFFF; */
   /* line-height: 28px; */
@@ -1401,5 +1409,93 @@ export default {
   display: flex;
   align-items: center;
   border-radius: 8px !important;
+}
+.writeHeader {
+  padding: 1rem 1.5rem 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.writeHeaderBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.headerLine {
+  width:100%;
+  border-bottom: 2px solid #5F61BD;
+}
+.alimTopArea {
+  display: flex;
+  align-items: flex-start;
+  padding: 0 1.5rem;
+}
+.alimOptionBox {
+  min-height: 2rem;
+  float: left;
+  width: calc(100% - 3.5rem);
+}
+.selectRecvUserBox {
+  border:1px solid #ccc;
+  border-radius:8px;
+  min-height: 30px;
+  background: white;
+  padding-left: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dispFlex {
+  display: flex;
+}
+.checkBtnBox {
+  display: flex;
+  align-items: flex-start;
+  padding: 0 1.5rem;
+}
+.titleBoard {
+  word-break: keep-all;
+  position: relative;
+}
+.boardPlaceHolder {
+  position: absolute;
+  left: 0;
+  bottom: -1rem;
+}
+.boardListWrap {
+  width: calc(100% - 3.5rem);
+  height: 2.2rem;
+  overflow: auto hidden;
+  white-space: nowrap;
+  display: flex;
+  align-items: center
+}
+.boardItem {
+  border-radius:10px;
+  display: inline-flex;
+}
+.contentsTitleBox {
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+}
+.contentsFileBox {
+  display: flex;
+  align-items: flex-start;
+  padding: 0 1.5rem;
+}
+.fileItemBox {
+  width: calc(100% - 3.5rem);
+  min-height: 30px;
+}
+.contentsFormBox {
+  padding: 0px 1.5rem 0rem 1.5rem;
+}
+.formEditor {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+#loading {
+  display: block;
 }
 </style>

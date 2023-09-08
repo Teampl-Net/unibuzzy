@@ -1,19 +1,19 @@
 <template>
-  <div style="width: 100%; float: left; position: absolute;">
-    <div style="width: 100%; height: 100vh; position: fixed; z-index: 99999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div>
+  <div class="confirmPopArea">
+    <div class="confirmBg" @click="goNo"></div>
     <div :style="popLeft" class="zoomInOutPop confirmPopWrap">
     <!-- <div class="zoomInOutPop confirmPopWrap" style="left: 5%;"> -->
       <div class="confirmPopHeader" >
         <img v-if="$appType === 'D'" src="../../../assets/images/common/thealim_header_logo.png" class="fl" >
         <img v-else src="/resource/logo/UB_uniBLogo.png" class="fl" >
-        <p class="font24 headerFont commonColor fl" style="line-height: 2.2rem;" >{{ $t('COMMON_NAME_APP') }}</p>
-        <p class="font15 headerFont commonColor fl" style="line-height: 2.6rem; margin-left: 0.3rem" >{{ $t('COMM_INTRO_COMMT') }}</p>
+        <p class="font24 headerFont commonColor fl appNameP">{{ $t('COMMON_NAME_APP') }}</p>
+        <p class="font15 headerFont commonColor fl appIntroP">{{ $t('COMM_INTRO_COMMT') }}</p>
       </div>
 
       <div class="confirmPopBody" >
         <p class="confirmText" v-html="confirmText"></p>
       </div>
-      <div style="width: 100%; height: 50px; float:left;">
+      <div class="btnWrap">
         <div class="confirmBtnArea" v-if="confirmType==='timeout'">
           <gBtnSmall class="btnBig" v-on:click="goNo" :btnTitle="$t('COMM_BTN_CLOSE')"/>
         </div>
@@ -118,13 +118,75 @@ export default {
 }
 </script>
 <style scoped>
-.confirmPopWrap{width: 80%; left: 10%; position: fixed; z-index: 99999999999999; top: 30%; min-height: 280px;box-shadow: 0 0 9px 2px #b8b8b8; max-height: 500px; max-height: 250px; border-radius: 10px; background: #FFFFFF;}
-
-/* .confirmPopWrap{width: 90%; max-width: 400px; position: absolute; z-index: 999999; top: 30%; min-height: 220px;box-shadow: 0 0 9px 2px #b8b8b8; max-height: 500px; max-height: 250px; border-radius: 10px; background: #FFFFFF;} */
-.confirmPopHeader{height: 55px; width: 100%; border-bottom: 1px solid #6768A7; padding: 0.8rem 0.5rem;}
-.confirmPopHeader img{width: 1.7rem; margin: 0 0.4rem}
-.confirmText{color: #3E3F6A; font-size: 18px; font-weight: bold;}
-.confirmPopBody{width: 100%; min-height: calc(110px); padding: 0 20px; height: calc(100% - 110px); display: flex; align-items: center; justify-content: center; float: left;}
-.confirmBtnArea{display: flex; justify-content:center;}
-
+.confirmPopArea  {
+  width: 100%;
+  float: left;
+  position: absolute;
+}
+.confirmPopWrap {
+  width: 80%;
+  left: 10%;
+  position: fixed;
+  z-index: 99999999999999;
+  top: 30%;
+  min-height: 280px;
+  box-shadow: 0 0 9px 2px #b8b8b8;
+  max-height: 500px;
+  max-height: 250px;
+  border-radius: 10px;
+  background: #FFFFFF;
+}
+.confirmPopHeader {
+  height: 55px;
+  width: 100%;
+  border-bottom: 1px solid #6768A7;
+  padding: 0.8rem 0.5rem;
+}
+.confirmPopHeader img {
+  width: 1.7rem;
+  margin: 0 0.4rem
+}
+.confirmText {
+  color: #3E3F6A;
+  font-size: 18px;
+  font-weight: bold;
+}
+.confirmPopBody {
+  width: 100%;
+  min-height: 110px;
+  padding: 0 20px;
+  height: calc(100% - 110px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  float: left;
+}
+.confirmBtnArea {
+  display: flex;
+  justify-content:center;
+}
+.confirmBg {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: 99999;
+  top:0;
+  left: 0;
+  background: #00000026;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.appNameP {
+  line-height: 2.2rem;
+}
+.appIntroP {
+  line-height: 2.6rem;
+  margin-left: 0.3rem
+}
+.btnWrap {
+  width: 100%;
+  height: 50px;
+  float:left;
+}
 </style>

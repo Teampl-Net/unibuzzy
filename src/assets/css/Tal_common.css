@@ -1121,6 +1121,13 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
   filter: brightness(60%);
 }
 
+.keepAll {
+  word-break: keep-all;
+}
+.breakAll {
+  word-break: break-all;
+}
+
 
 .mainConts .formText{ padding: 0 20px !important; text-align: left !important;}
 .mainConts img {padding: 0!important}

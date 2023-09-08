@@ -128,8 +128,8 @@
     <gMemoPop class="memoPop" ref="gMemoRef" transition="showMemoPop"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' :writeMemoTempData='tempMemoData'/>
   </transition>
 
-  <imgPreviewPop class="imgPreview" :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  />
-  <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" />
+  <!-- <imgPreviewPop class="imgPreview" :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  /> -->
+  <!-- <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" /> -->
   <!-- <gCertiPop :pPopText="'실명인증을 하면 익명게시판에 글을 작성할 수 있어요'" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  /> -->
   <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @editable="editable" @report="report" @bloc="bloc" />
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
@@ -143,8 +143,8 @@ import findContentsList from '@/components/popup/common/D_findContentsList.vue'
 // import boardWrite from '@/components/board/Tal_boardWrite.vue'
 import writeContents from '@/components/popup/D_writeContents.vue'
 
-import imgLongClickPop from '@/components/popup/Tal_imgLongClickPop.vue'
-import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
+// import imgLongClickPop from '@/components/popup/Tal_imgLongClickPop.vue'
+// import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import { onMessage } from '@/assets/js/webviewInterface'
 
 import pinPostPop from '../../../components/UB/popup/UB_pinPostPop.vue'
@@ -157,8 +157,8 @@ export default {
     /* boardList, */
     // boardWrite,
     writeContents,
-    imgLongClickPop,
-    imgPreviewPop,
+    // imgLongClickPop,
+    // imgPreviewPop,
     commonTopViewItem,
     pinPostPop
   },

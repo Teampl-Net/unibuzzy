@@ -15,26 +15,26 @@
 }
 </i18n>
 <template>
-    <div style="width: 100%; float: left;">
+    <div class="w100P fl">
       <gConfirmPop @no="this.errorShowYn = false" :confirmText="$t('FORM_MSG_MAX')" confirmType='timeout' v-if="errorShowYn" />
-      <div @click="this.$refs.selectFileAttach.click()" class="font16 commonColor" style="display: flex; align-items: center; justify-content: center; font-weight:500; overflow: hidden; cursor: pointer; text-align: center; margin-top: 2px; position: relative; " v-if="this.targetType === 'memo'">
-          <img src="../../../assets/images/common/fileIcon.svg" alt="" style="margin-right: 8px; width: 12px;">
+      <div @click="this.$refs.selectFileAttach.click()" class="font16 commonColor attachBtnMemo" v-if="this.targetType === 'memo'">
+          <img src="../../../assets/images/common/fileIcon.svg" alt="">
           {{ $t('FORM_BTN_ATTACH') }}
       </div>
-      <div v-else @click="this.$refs.selectFileAttach.click()" class="font14 whiteColor attachFileBg fl" style="font-weight:500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; ">
+      <div v-else @click="this.$refs.selectFileAttach.click()" class="font14 whiteColor attachFileBg fl attachBtn">
         +{{ $t('FORM_BTN_ATTACH') }}
       </div>
-      <form v-if="this.targetType === 'memo'" @submit.prevent="formSubmit" class="font16 commonColor" style="position: relative; overflow: hidden; display: none; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 150px;" method="post">
-          <input class="attachFile" hidden type="file" :title ="$t('FORM_BTN_SELECT')"  ref="selectFileAttach" multiple accept="*" style="width: 100%; height: 25px;" id="selectFileAttach" @change="handleImageUpload"/>
+      <form v-if="this.targetType === 'memo'" @submit.prevent="formSubmit" class="font16 commonColor formWrapMemo" method="post">
+          <input class="attachFile" hidden type="file" :title ="$t('FORM_BTN_SELECT')"  ref="selectFileAttach" multiple accept="*" id="selectFileAttach" @change="handleImageUpload"/>
       </form>
-      <form v-else @submit.prevent="formSubmit" hidden class="font14 whiteColor attachFileBg fl " style="font-weight:500; overflow: hidden; cursor: pointer; text-align: center; padding: 2px 7px; background-color: #fff; margin-top: 2px;border-radius: 8px; position: relative; " method="post">
-          <input class="attachFile" hidden  type="file" :title ="$t('FORM_BTN_SELECT')"  ref="selectFileAttach" multiple accept="*" style="width: 100%;" id="selectFileAttach" @change="handleImageUpload"/>
+      <form v-else @submit.prevent="formSubmit" hidden class="font14 whiteColor attachFileBg fl formWrap" method="post">
+          <input class="attachFile w100P" hidden  type="file" :title ="$t('FORM_BTN_SELECT')"  ref="selectFileAttach" multiple accept="*" id="selectFileAttach" @change="handleImageUpload"/>
       </form>
-      <div v-if="this.targetType !== 'memo' && this.sFileList.length > 0" :class="pOneLineYn? '' : 'mtop-05'" class="fl" style="width: 100%; overflow: auto;" :style="pOneLineYn? 'width: calc(100% - 55px); margin-top: 2px;': ''">
-          <div :style="attachFileWidth" style="min-width: 100%; float: left; overflow: auto; white-space: nowrap;">
-            <div class="CMiddleBorderColor" style="padding: 3px 10px; float: left; margin-left: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7; border-radius: 8px; position: relative; " v-for="(value, index) in this.sFileList" :key="index">
+      <div v-if="this.targetType !== 'memo' && this.sFileList.length > 0" :class="pOneLineYn? '' : 'mtop-05'" class="fl w100P scrollOn" :style="pOneLineYn? 'width: calc(100% - 55px); margin-top: 2px;': ''">
+          <div :style="attachFileWidth" class="attachFileBox">
+            <div class="CMiddleBorderColor attachFileItem" v-for="(value, index) in this.sFileList" :key="index">
                 <p class="CMiddleColor font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p>
-                <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" style="position: absolute; right: 5px;top: 7px;" alt="">
+                <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" alt="">
             </div>
           </div>
       </div>
@@ -59,12 +59,9 @@ export default {
     targetType: {}
   },
   created () {
-    // eslint-disable-next-line no-debugger
-    debugger
     if (this.attachTrueAddFalseList && this.attachTrueAddFalseList.length > 0) {
       this.sFileList = this.attachTrueAddFalseList
       for (var i = 0; i < this.sFileList.length; i++) {
-        // console.log(this.sFileList)
         this.sFileList[i].addYn = false
         this.sFileList[i].attachYn = true
         this.sFileList[i].file = { name: this.sFileList[i].fileName, size: this.sFileList[i].fileSizeKb }
@@ -86,8 +83,6 @@ export default {
   },
   methods: {
     async handleImageUpload () {
-      // eslint-disable-next-line no-debugger
-      debugger
       this.selectFile = null
       const options = {
         maxSizeMB: 1,
@@ -151,11 +146,9 @@ export default {
               this.errorShowYn = true
               return true
             }
-            // console.log('#####')
             if (!this.sFileList) {
               this.sFileList = []
             }
-            // console.log(this.sFileList)
             this.sFileList.push({ fileYn: true, attachKey: this.gAttachKey, addYn: true, attachYn: true, file: this.selectFile })
             this.$emit('setSelectedAttachFileList', { attachYn: true, fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile })
           }
@@ -176,7 +169,6 @@ export default {
         for (var k = 0; k < this.$refs.selectFileAttach.files.length; k++) {
           this.selectFile = null
           this.gAttachKey += 1
-          // console.log(this.$refs.selectFileAttach.files[k])
           this.selectFile = this.$refs.selectFileAttach.files[k]
 
           // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
@@ -218,11 +210,9 @@ export default {
               this.errorShowYn = true
               return true
             }
-            // console.log('#####')
             if (!this.sFileList) {
               this.sFileList = []
             }
-            // console.log(this.sFileList)
             this.sFileList.push({ fileYn: true, attachKey: this.gAttachKey, addYn: true, attachYn: true, file: this.selectFile })
             this.$emit('setSelectedAttachFileList', [{ attachYn: true, fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile }])
           }
@@ -231,7 +221,6 @@ export default {
         this.selectFile = null
         this.preImgUrl = null
       }
-      // console.log(this.sFileList)
     },
     async formSubmit () {
       if (this.sFileList.length > 0) {
@@ -270,7 +259,6 @@ export default {
     },
     deleteFileList (value, index) {
       this.sFileList.splice(index, 1)
-      console.log(this.sFileList)
       this.$emit('delAttachFile', value)
     }
   }
@@ -297,5 +285,79 @@ export default {
     overflow: hidden !important;
     padding: 0 !important;
     background: none !important;
+}
+.attachBtnMemo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight:500;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 2px;
+  position: relative;
+}
+.attachBtnMemo > img {
+  margin-right: 8px;
+  width: 12px;
+}
+.attachBtn {
+  font-weight:500;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+  padding: 2px 7px;
+  background-color: #fff;
+  margin-top: 2px;
+  border-radius: 8px;
+  position: relative;
+}
+.formWrapMemo {
+  position: relative;
+  overflow: hidden;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 2px;
+  width: 150px;
+}
+.formWrapMemo > input {
+  width: 100%;
+  height: 25px;
+}
+.formWrap {
+  font-weight:500;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: center;
+  padding: 2px 7px;
+  background-color: #fff;
+  margin-top: 2px;
+  border-radius: 8px;
+  position: relative;
+}
+.attachFileBox {
+  min-width: 100%;
+  float: left;
+  overflow: auto;
+  white-space: nowrap;
+}
+.attachFileItem {
+  padding: 3px 10px;
+  float: left;
+  margin-left: 5px;
+  height: 30px;
+  max-width: 200px;
+  padding-right: 25px;
+  box-shadow: 1px 3px 3px 0px #e9e7e7;
+  border-radius: 8px;
+  position: relative;
+}
+.attachFileItem > img {
+  position: absolute;
+  right: 5px;
+  top: 7px;
 }
 </style>
