@@ -17,11 +17,11 @@
   }
 </i18n>
 <template>
-    <div style="width: 100%; float: left;">
-      <div style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; z-index: 9999;" @click="this.$emit('no')"></div>
-      <div style="width: calc(100% - 30px);  position: absolute;top: 15%; left: 15px; z-index: 999999; background: #FFF; border-radius: 20px; padding: 10px; border: 0.51px solid #ccc; box-shadow: 9px 9px 9px -9px rgb(0 0 0 / 19%); height: 430px; float: left;">
+    <div class="w100P fl">
+      <div class="changePopBg" @click="this.$emit('no')"></div>
+      <div class="changePopBox">
           <p class="fl textLeft commonColor font18 fontBold mleft-05 mbottom-05">{{ $t('USER_CHANGE_PROFILE_IMG') }}</p>
-          <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
+          <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl w-100P" @changeTab= "changeTab" />
           <div v-if="viewTab === 'icon'" style="width: 100%;height: calc(100% - 120px); float: left; overflow: hidden auto;">
             <div @click="selectIcon(value.imageFilekey)" :class="selectedIconFileKey === value.imageFilekey ? 'selectedColor' : ''" style="float: left; overflow: hidden; background: #6768a745; border-radius: 100%; width: 100px; height: 100px; margin: 10px 5px; padding: 10px; padding-top: 20px; padding-bottom: 0; " v-for="(value, index) in teamImgList" :key="index">
               <img style="width: 100%;" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  alt="">
@@ -381,14 +381,42 @@ export default {
 </script>
 
 <style scoped>
-.selectedColor {border: 2px solid #6768a7}
+.changePopBg {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top:0;
+  left: 0;
+  background: #00000026;
+  z-index: 9999;
+}
+.selectedColor {
+  border: 2px solid #6768a7;
+}
 
-.hidden{
+.hidden {
   display:none
 }
-.cropperImgArea img{
+.cropperImgArea img {
   display: block;
   /* This rule is very important, please don't ignore this */
   max-width: 100%;
+}
+.changePopBox {
+  width: calc(100% - 30px);
+  position: absolute;
+  top: 15%;
+  left: 15px;
+  z-index: 999999;
+  background: #FFF;
+  border-radius: 20px;
+  padding: 10px;
+  border: 0.51px solid #ccc;
+  box-shadow: 9px 9px 9px -9px rgb(0 0 0 / 19%);
+  height: 430px;
+  float: left;
+}
+.w-100P {
+  width: 100% !important;
 }
 </style>

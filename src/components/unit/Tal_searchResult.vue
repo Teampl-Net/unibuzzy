@@ -4,7 +4,7 @@
         <div v-for="(value, index) in setSearchList" :key="index" class="searchResultBox ">
           <span>{{value.typeName}}: </span>
           {{changeSearchBox(value.typeName, value.keyword)}}
-            <img v-on:click="delSearchKey(value.type)" class="cursorP searchXIcon" style="margin-top: 0.3rem; margin-right: 0.3rem;" src="../../assets/images/common/searchXIcon.svg"  alt="">
+            <img v-on:click="delSearchKey(value.type)" class="cursorP searchXIcon" src="../../assets/images/common/searchXIcon.svg"  alt="">
         </div>
     </div>
 </template>

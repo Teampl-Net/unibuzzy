@@ -15,27 +15,27 @@
         <col class="listHeader" style="width: 55px;">
         <col style="width: calc(100% - 70px);">
       </colgroup> -->
-      <tr v-for="(value, index) in propContentsList" :key="index" style="padding:5px 0;width:100%; display:flex; align-items:start; justify-content:space-between; " :style="index === propContentsList.length - 1 ? 'border: none!important;' : ''" >
-        <td style="padding: 5px 5px; width: 50px;" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}">
-          <div class="top5PushChanLogoImgWrap w100P fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;">
+      <tr v-for="(value, index) in propContentsList" class="contListTr" :key="index" :style="index === propContentsList.length - 1 ? 'border: none!important;' : ''" >
+        <td class="contListTd" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}">
+          <div class="top5PushChanLogoImgWrap w100P fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'">
           </div>
         </td>
-        <td @click="goChanDetail(value)" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage', marginLeft: value.officialYn}" style="display:flex; align-items:center; width:calc(100% - 100px);">
-          <div style="display:flex; flex-direction:column; align-items:start; text-align:left; width:100%; padding: 2px 0 ; min-height: 25px;">
-            <div class="" style="width:50vw; overflow-x:hidden;">
+        <td class="top5PushTd" @click="goChanDetail(value)" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage', marginLeft: value.officialYn}">
+          <div class="pushItemBox">
+            <div class="pushItemName">
               <!-- <span v-if="value.jobkindId === 'ALIM'" class="font14 fl textCenter" style="margin-top: 0.5px; width: 50px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{$t('COMMON_TAB_NOTI')}}</span> -->
               <!-- <span v-else-if="value.jobkindId === 'BOAR'" class="font14 fl textCenter" style="margin-top: 0.5px; width: 50px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMMON_TAB_POST')}}</span> -->
-              <span style="width:65%; line-height:25px; " v-html="setSendNameStr(value)" class="textOverdot fl commonBlack font12"></span>
+              <span v-html="setSendNameStr(value)" class="textOverdot fl commonBlack font12"></span>
             </div>
-            <div style="width:50vw; overflow:hidden;">
-              <p v-if="value.jobkindId === 'BOAR' && !(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey ) && (value.titleBlindYn === true || value.titleBlindYn === 1)" :v-html="$t('LIST_MSG_ACCESS')" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 75px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;"></p>
-              <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold widths" style="width:100%; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
+            <div class="pushItemTitle">
+              <p v-if="value.jobkindId === 'BOAR' && !(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey ) && (value.titleBlindYn === true || value.titleBlindYn === 1)" :v-html="$t('LIST_MSG_ACCESS')" class="commonBlack textOverdot font15 fontBold"></p>
+              <p v-else v-html="value.title" class="commonBlack textOverdot font15 fontBold widths" />
             </div>
 
           </div>
         </td >
-          <img src="../../assets/images/channel/icon_official2.svg" v-if="value.officialYn" style=" height:16px; padding: 1px; float: left;" />
-          <td style="display:flex; flex-direction:column; align-items:end; width:35px;">
+          <img src="../../assets/images/channel/icon_official2.svg" class="officialImg" v-if="value.officialYn" />
+          <td class="creDate">
             <span class="commonBlack mtop-01 font12 fr">{{this.$changeDateFormat(value.creDate)}}</span>
           </td>
         <!-- </td> -->
@@ -104,22 +104,108 @@ export default {
 }
 </script>
 <style scoped>
+.contListTr {
+  padding: 5px 0;
+  width: 100%;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+}
+.contListTd {
+  padding: 5px 5px;
+  width: 50px;
+}
+.top5PushTd {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 100px);
+}
+.pushItemBox {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  text-align: left;
+  width: 100%;
+  padding: 2px 0;
+  min-height: 25px;
+}
+.pushItemName {
+  width: 50vw;
+  overflow-x: hidden;
+}
+.pushItemName > span {
+  width:65%;
+  line-height:25px;
+}
+.pushItemTitle {
+  width: 50vw;
+  overflow: hidden;
+}
+.pushItemTitle > p:first-child {
+  width: calc(100% - 75px);
+  display: inline-block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.pushItemTitle > p:last-child {
+  width:100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 /* .top5PushListRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4;} */
 /* .top5MyPushColor { background-color: #6768a712;} */
-.top5MyPushColor { background-color: #fff;}
-.top5MyPushColorMyInfo { background-color: #fff !important;}
-.top5PushChanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative;}
-.top5PushChanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
-.commonListTr{
+.top5MyPushColor {
+  background-color: #fff;
+}
+.top5MyPushColorMyInfo {
+  background-color: #fff !important;
+}
+.top5PushChanLogoImgWrap {
+  width: 45px;
+  height:45px;
+  border-radius: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ccc;
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.top5PushChanLogoImgWrap img {
+  width: 1.7rem;
+  margin-right: 0.05rem;
+}
+.commonListTr {
   animation-name: fadein;
   animation-duration: 0.3s;
 }
-.commonListTr, .commonListTr td, .commonListTr th {height: 4rem; padding: 5px 10px;}
-.listHeader {text-align: center;}
-.listBodyRow{width: calc(100% - 60px) !important;}
-
-.marginLeft{
-  margin-left:6px !important;
+.commonListTr, .commonListTr td, .commonListTr th {
+  height: 4rem;
+  padding: 5px 10px;
+}
+.listHeader {
+  text-align: center;
+}
+.listBodyRow {
+  width: calc(100% - 60px) !important;
 }
 
+.marginLeft {
+  margin-left:6px !important;
+}
+.officialImg {
+  height:16px;
+  padding: 1px;
+  float: left;
+}
+.creDate {
+  display:flex;
+  flex-direction:column;
+  align-items:end;
+  width:35px;
+}
 </style>
