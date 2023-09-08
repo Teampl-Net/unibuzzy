@@ -199,8 +199,10 @@ export default {
         { teamNameMtext: 'KO$^$가족$#$EN$^$Family', teamType: 'F' },
         { teamNameMtext: 'KO$^$팀$#$EN$^$Team', teamType: 'T' },
         { teamNameMtext: 'EN$^$Club & Startup', teamType: 'C' },
+        { teamNameMtext: 'EN$^$Class', teamType: 'B' },
         { teamNameMtext: 'EN$^$Major', teamType: 'M' },
-        { teamNameMtext: 'EN$^$Facilities & Amenities', teamType: 'FA' },
+        { teamNameMtext: 'EN$^$Living', teamType: 'L' },
+        { teamNameMtext: 'EN$^$Facilities & Amenities', teamType: 'F' },
         { teamNameMtext: 'EN$^$Nearby', teamType: 'N' }
       ],
       mSelectedTeamTypeKey: '',
@@ -375,6 +377,9 @@ export default {
 
         // 임시
         if (this.mDeleteYn === false) {
+          console.log('뭐지?')
+          console.log(this.mBusinessTypeList)
+          console.log(teamType)
           var idx = this.mBusinessTypeList.findIndex((item) => this.$changeText(item.teamNameMtext) === teamType)
           if (idx !== -1) {
             this.mSelectedTeamType = this.$changeText(this.mBusinessTypeList[idx].teamType)
