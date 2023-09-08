@@ -245,10 +245,26 @@ export default {
 .findPopBody {
   padding: 0 1.5rem;
 }
-.findPopupWrap{position: fixed;width: 100%; left: 0;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF;}
-.findPopMainSearchArea{position: relative; margin-top: 0.5rem; height: 40px;}
-.searchIcon{ position: absolute; top:0.6rem; left: 8px;}
-.searchInput{
+.findPopupWrap {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  height: 100vh;
+  top: 0;
+  z-index: 999999;
+  background: #FFFFFF;
+}
+.findPopMainSearchArea {
+  position: relative;
+  margin-top: 0.5rem;
+  height: 40px;
+}
+.searchIcon {
+  position: absolute;
+  top: 0.6rem;
+  left: 8px;
+}
+.searchInput {
   background: #e4e4e463;
   width: 100%;
   height: 40px;
@@ -286,7 +302,14 @@ export default {
   height: calc(100% - 200px);
   position: relative;
 }
-.newestSearchWrap{border-radius: 10px; background-color: #F5F5F9; height: 150px; width: 100%; padding: 0.4rem 1rem; box-sizing: border-box;}
+.newestSearchWrap {
+  border-radius: 10px;
+  background-color: #F5F5F9;
+  height: 150px;
+  width: 100%;
+  padding: 0.4rem 1rem;
+  box-sizing: border-box;
+}
 
 @media screen and (max-width: 300px) {
   .pagePaddingWrap {

@@ -526,15 +526,15 @@ export default {
 }
 .nameChangeBox {
   position: absolute;
-  left:50%;
+  left: 50%;
   transform: translate(-50%);
-  width:80%;
-  max-width:250px;
-  min-width:50px;
+  width: 80%;
+  max-width: 250px;
+  min-width: 50px;
   margin-top: 10px;
 }
 .nameChangeBox > input {
-  width:calc(100% - 100px);
+  width: calc(100% - 100px);
   outline: none;
   border: 1px solid #ccc;
 }
@@ -542,7 +542,7 @@ export default {
   width: 100px;
 }
 .nameChangeWrap {
-  width:100%;
+  width: 100%;
   position: relative;
 }
 .border05 {
@@ -558,10 +558,37 @@ export default {
   border-radius: 5px;
   padding: 0.6rem;
 }
-.profileWrap{display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%; height: 200px; }
-.grayLine{background-color: #F3F3F3; height: 0.8rem; width: 100%;}
-.roundDiv{position: relative; box-sizing: border-box; overflow: hidden; border-radius: 6rem; padding: 8px; border:2px solid #6768a7; background: #6768a745; padding-top: 16px; padding-bottom: 0; margin-bottom: 0.5rem; width: 6rem; height: 6rem;}
-table{text-align: left; width: 100%;}
+.profileWrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 200px;
+}
+.grayLine {
+  background-color: #F3F3F3;
+  height: 0.8rem;
+  width: 100%;
+}
+.roundDiv {
+  position: relative;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 6rem;
+  padding: 8px;
+  border:2px solid #6768a7;
+  background: #6768a745;
+  padding-top: 16px;
+  padding-bottom: 0;
+  margin-bottom: 0.5rem;
+  width: 6rem;
+  height: 6rem;
+}
+table {
+  text-align: left;
+  width: 100%;
+}
 tr, td, th {
   height: 4rem;
   margin-bottom: 1rem
@@ -570,12 +597,30 @@ tr, td, th {
 td {
   border-bottom: none !important
 }
-tr{border-bottom: 1px solid #F3F3F3; line-height:4rem;}
-th {color: #6768A7}
-.imgSize {width: 6rem; height: 6rem; position: relative;}
-.subPaddingWrap{padding: 0.7rem 0 ; box-sizing: border-box; width: 100%; }
-.leaveText{text-align: left; color: #A1A1A1;}
-.leaveText span {text-decoration: underline;}
+tr {
+  border-bottom: 1px solid #F3F3F3;
+  line-height:4rem;
+}
+th {
+  color: #6768A7
+}
+.imgSize {
+  width: 6rem;
+  height: 6rem;
+  position: relative;
+}
+.subPaddingWrap {
+  padding: 0.7rem 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+.leaveText {
+  text-align: left;
+  color: #A1A1A1;
+}
+.leaveText span {
+  text-decoration: underline;
+}
 /* .picImgWrap {position: relative; border-radius: 80px; border:2.5px solid #6768a7; background: #6768a745;padding: 5px; padding-top: 10px; padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem;
 }
 .picImgWrap img {width: 100%; position: absolute; top: 0; left: 0;} */

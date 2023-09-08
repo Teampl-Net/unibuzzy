@@ -985,8 +985,12 @@ export default {
   line-height: 20px;
 }
 @keyframes areaMoving{
-  0%{ transform:scale(1);}
-  100%{ transform:scale(1.01);}
+  0% {
+    transform:scale(1);
+  }
+  100% {
+    transform:scale(1.01);
+  }
 }
 .areaDiv.clicked {
   animation: area-zoom 0.4s alternate;
@@ -1040,12 +1044,12 @@ export default {
   position: absolute;
   right: 30px;
   top: 100px;
-  opacity:1;
+  opacity: 1;
 }
 .planeImg{
   width:100%;
   filter: drop-shadow(5px 5px 5px #00000036);
-  opacity:0;
+  opacity: 0;
   transition: 0.2s;
   animation: flyingPlane 1s 2s ease-in-out both, moving 3s 3s ease-in-out infinite alternate;
 }
@@ -1054,13 +1058,23 @@ export default {
   text-shadow: 1px 2px 2px black;
 }
 @keyframes flyingPlane{
-  0%{opacity: 0; transform: translate(-450px, 100px);}
-  80%{opacity: 1; transform: translate(0px, 0px) scale(1.2);}
-  100%{opacity: 1; transform: translate(0px, 0px) scale(1);}
+  0% {
+    opacity: 0; transform: translate(-450px, 100px);
+  }
+  80% {
+    opacity: 1; transform: translate(0px, 0px) scale(1.2);
+  }
+  100% {
+    opacity: 1; transform: translate(0px, 0px) scale(1);
+  }
 }
 @keyframes moving{
-  0%{transform:translateY(0px)}
-  100%{transform:translateY(-10px)}
+  0% {
+    transform:translateY(0px)
+  }
+  100% {
+    transform:translateY(-10px)
+  }
 }
 .planeBox:hover {
   transform: scale(1.2);
@@ -1074,8 +1088,8 @@ export default {
   align-items: center;
   justify-content: center;
   height: 30px;
-  width:50%;
-  max-width:220px;
+  width: 50%;
+  max-width: 220px;
   right: -30px;
   top: 80px;
   border-radius: 5px;

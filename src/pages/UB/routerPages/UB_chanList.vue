@@ -525,12 +525,12 @@ export default {
   padding-bottom: 120px;
 }
 .filterWrap {
-  padding-top:20px;
-  padding-right:16px;
+  padding-top: 20px;
+  padding-right: 16px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  text-align:right;
+  text-align: right;
 }
 .orderOption {
   width: 100%;

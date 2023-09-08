@@ -486,13 +486,20 @@ export default {
   transition: 0.2s;
 }
 @keyframes flyingPlane{
-  0%{opacity: 0; transform: translate(-450px, 100px);}
-  80%{opacity: 1; transform: translate(0px, 0px) scale(1.2);}
-  100%{opacity: 1; transform: translate(0px, 0px) scale(1);}
+  0% {
+    opacity: 0; transform: translate(-450px, 100px);
+  } 80% {
+    opacity: 1; transform: translate(0px, 0px) scale(1.2);
+  } 100% {
+    opacity: 1; transform: translate(0px, 0px) scale(1);
+  }
 }
 @keyframes moving{
-  0%{transform:translateY(0px)}
-  100%{transform:translateY(-10px)}
+  0% {
+    transform:translateY(0px)
+  } 100% {
+    transform:translateY(-10px)
+  }
 }
 .planeBox:hover {
   transform: scale(1.2);

@@ -1686,12 +1686,12 @@ export default {
   overflow: hidden scroll;
 }
 .reload--pinned {
-    transform: translateY(0%);
-    transition: .3s;
+  transform: translateY(0%);
+  transition: .3s;
 }
 .reload--unpinned {
-    transform: translateY(10rem);
-    transition: .5s;
+  transform: translateY(10rem);
+  transition: .5s;
 }
 .summaryHeader {
   height: 300px;
@@ -1909,7 +1909,7 @@ background: #fbfbfb;
 .pinPostBtn {
   font-size: 12px !important;
   position: absolute !important;
-  bottom:5px !important;
+  bottom: 5px !important;
   right: 10px !important;
 }
 .width50px {
@@ -1973,23 +1973,23 @@ background: #fbfbfb;
 }
 .writePopBg {
   position: absolute;
-  top:0;
-  left:0;
-  z-index:10;
-  background:#00000050;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background: #00000050;
   width: 100vw;
   height: 100vh;
 }
 .writeContentsPop {
   position: absolute;
-  width:100%;
-  height:100%;
-  min-height:100vh;
-  top:0;
-  left:0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  top: 0;
+  left: 0;
 }
 .memoPop {
-  z-index:999999 !important;
+  z-index: 999999 !important;
   height: fit-content !important;
 }
 .imgPreview {

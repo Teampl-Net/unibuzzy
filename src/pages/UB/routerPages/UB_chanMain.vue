@@ -9,60 +9,42 @@
 }
 </i18n>
 <template>
-    <div v-if="CHANNEL_DETAIL && mChanInfo" class="scrollOn" ref="chanMainRef" style="width: 100%;" :style="`background-position: top; background-size: cover; background-repeat: no-repeat;  background-image: url(${CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext});height: calc(100% + ${Number($STATUS_HEIGHT)}px);  padding-top: ${Number($STATUS_HEIGHT)}px;`">
-        <div v-if="!mChanCardShowYn" style="width: 100%; color: #FFFFFF; display: flex; position: absolute; align-items: center; justify-content: center; background-size: cover; background-position: top;background-repeat: no-repeat;" class="font20 fl fontBold" :style="`top: ${Number($STATUS_HEIGHT)}px; height:${ 50}px `" >
+    <div v-if="CHANNEL_DETAIL && mChanInfo" class="scrollOn" id="chanMainRef" ref="chanMainRef" :style="`background-image: url(${CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext});height: calc(100% + ${Number($STATUS_HEIGHT)}px);  padding-top: ${Number($STATUS_HEIGHT)}px;`">
+        <div v-if="!mChanCardShowYn" class="font20 fl fontBold chanInfoCard" :style="`top: ${Number($STATUS_HEIGHT)}px; height:${ 50}px `" >
             <p :style="CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;'">{{$changeText(CHANNEL_DETAIL.nameMtext)}}</p>
             <img
                 class="fl"
                 src="../../../assets/images/channel/icon_official.svg"
                 v-if="CHANNEL_DETAIL.officialYn"
-                style="width: 30px"
                 alt=""
             />
         </div>
-        <div ref="chanCardTopArea"  :class="['fade-out-element', { 'hidden': !mChanCardShowYn }]" class="fl" style=" z-index: 1; width: 100%; transition: opacity 0.2s;   position: relative; height: 160px; display: flex; flex-direction: column; " :style="`margin-top: ${50}px`" >
-            <div style="width: 70px; height: 70px; position: absolute; left: 10px; border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center; background-color: #FFFFFF;" class="" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'"></div>
-            <div style="width: 100%; height: 35px; display: flex; ">
-                <div style="width: 90px; height: 100%;"></div>
-                <div style="width: calc(100% - 170px); height: 100%; display:flex; align-items: flex-end; " class="font20 fontBold">
+        <div ref="chanCardTopArea"  :class="['fade-out-element', { 'hidden': !mChanCardShowYn }]" class="fl chanCardTop" :style="`margin-top: ${50}px`" >
+            <div class="chanIcon" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'"></div>
+            <div class="chanFollowArea">
+                <div class="blankBox"></div>
+                <div class="font20 fontBold chanNameBox">
                     <p :style="CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;'">{{$changeText(CHANNEL_DETAIL.nameMtext)}}</p>
                     <img
                         class="fl"
                         src="../../../assets/images/channel/icon_official.svg"
                         v-if="CHANNEL_DETAIL.officialYn"
-                        style="width: 30px"
                         alt=""
                     />
                 </div>
                 <!--follow-->
-                <p style="margin-left:-10px; height:30px; line-height:30px;  border-radius:5px; padding:0px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!ChanFollowYn && (CHANNEL_DETAIL.D_CHAN_AUTH && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)" class="cursorP fl fontBold font14">+ Follow</p>
-                <!-- <p style="margin-left:-10px; height:30px; line-height:30px;  border-radius:5px; padding:0px 10px; background-color:#062BB5; color:#fff;" @click="changeFollowYn" v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn || !ffff" class="cursorP fl fontBold font14">+ Follow</p> -->
+                <p @click="changeFollowYn" v-if="!ChanFollowYn && (CHANNEL_DETAIL.D_CHAN_AUTH && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)" class="cursorP fl fontBold font14 followBtn">+ Follow</p>
                 <!--following-->
-                <p style="margin-left:-10px; height:30px; line-height:30px; border-radius:5px; padding:0px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="ChanFollowYn && (CHANNEL_DETAIL.D_CHAN_AUTH && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)">Following</p>
-                <!-- <p style="margin-left:-10px; height:30px; line-height:30px; border-radius:5px; padding:0px 10px; background-color:#ccc; color:#062BB5;" @click="changeFollowYn" class="fl fontBold font14 cursorP" ref="followerCancelArea" id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ffff">Following</p> -->
-
+                <p @click="changeFollowYn" class="fl fontBold font14 cursorP unfollowBtn" ref="followerCancelArea" id="followerCancelArea" v-if="ChanFollowYn && (CHANNEL_DETAIL.D_CHAN_AUTH && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)">Following</p>
             </div>
-            <div style="width: 100%; height: calc(100% - 35px); display: flex; background: #FFFFFF;">
-                <div style="width: 120px; height: 100%; display: flex; align-items: flex-end; padding: 10px 20px; ">
+            <div class="chanDescriptionArea">
+                <div class="chanFuncBox">
                     <div
-                        class="cursorP"
-                        style="
-                            width: 40px;
-                            height: 40px;
-                            margin-right: 10px;
-                            background: #f1f1f1;
-                            border-radius: 30px;
-                            float: left;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                        "
+                        class="cursorP favChanBox"
                         @click="ImgClick"
                         >
                         <img
                             @class="cursorP"
-                            width="20"
-                            height="20"
                             :src="
                             CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey
                                 ? require('@/assets/images/channel/icon_star_fill.svg')
@@ -72,17 +54,7 @@
                         />
                     </div>
                     <div
-                        class="cursorP"
-                        style="
-                            width: 40px;
-                            height: 40px;
-                            background: #f1f1f1;
-                            border-radius: 30px;
-                            float: left;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                        "
+                        class="cursorP shareChanBox"
                         data-clipboard-action="copy"
                         id="copyTextBody"
                         @click="copyText"
@@ -90,33 +62,28 @@
                         >
                         <img
                             src="../../../assets/images/contents/icon_share.png"
-                            width="20"
-                            height="20"
                         />
                     </div>
                 </div>
-                <div style="width: calc(100% - 120px); padding: 10px; height: 100%;">
-                    <div style="width: 100%; height: 100%; border: 2px solid #ccc; display: flex; flex-direction: column; border-radius: 5px; padding: 10px 20px;"  >
-                        <p class="fontBold fl w100P font14 textLeft" style="word-break: break-all; min-height: 40px;">{{ $changeText(CHANNEL_DETAIL.memoMtext) }}</p>
+                <div class="chanDescriptionBox">
+                    <div>
+                        <p class="fontBold fl w100P font14 textLeft">{{ $changeText(CHANNEL_DETAIL.memoMtext) }}</p>
                         <div
-                            class="w100P fl"
-                            style="display: flex; align-items: space-between"
+                            class="w100P fl countInfoBox"
                             >
                             <div
                                 @click="openFollowerPop"
-                                class="font14"
-                                style="float: left; margin-right: 20px"
+                                class="font14 followerCount"
                             >
                                 Follower
                                 <span
-                                style="color: black; text-decoration: underline"
                                 class="fontBold"
                                 >{{ CHANNEL_DETAIL.followerCount }}</span
                                 >
                             </div>
-                            <div class="font14">
+                            <div class="font14 contentsCount">
                                 Total Contents
-                                <span class="fontBold" style="color: black">{{
+                                <span class="fontBold contentsCount">{{
                                 CHANNEL_DETAIL.totalContentsCount
                                 }}</span>
                             </div>
@@ -124,7 +91,7 @@
                         </div>
                         <div class="w100P fl font14 textLeft">
                         My Status
-                        <span class="fontBold" style="color: black">{{
+                        <span class="fontBold contentsCount">{{
                             this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)
                             ? this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)
                             : "-"
@@ -171,15 +138,7 @@
         <div
             v-if="writeBottSheetYn"
             @click="writeBottSheetYn = false"
-            style="
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                z-index: 10;
-                left: 0;
-                top: 0;
-                background: #00000030;
-            "
+            class="popBg"
             >
         </div>
         <transition name="showUp">
@@ -204,28 +163,11 @@
             />
         <div
             v-if="writeContentsYn === true"
-            style="
-                position: absolute;
-                top: 0;
-                left: 0;
-                z-index: 10;
-                background: #00000050;
-                width: 100vw;
-                min-height: 100vh;
-            "
-            class=""
+            class="popBg"
             >
         </div>
         <div
-            style="
-                background-color: #00000050;
-                width: 100%;
-                height: 100vh;
-                position: absolute;
-                top: 0;
-                left: 0;
-                z-index: 100;
-            "
+        class="popBg"
             v-if="mFollowerListPopShowYn"
             @click="closeFollowerList"
             >
@@ -237,15 +179,7 @@
             :pOpenProfilePop="openProfilePop"
         />
         <div
-            style="
-                background-color: #00000050;
-                width: 100%;
-                height: 100vh;
-                position: absolute;
-                top: 0;
-                left: 0;
-                z-index: 100;
-            "
+          class="popBg"
             v-if="mUserDetailPopShowYn"
             @click="closeFollowerList"
             >
@@ -260,15 +194,8 @@
         id="writeBtn"
         src="../../../assets/images/button/Icon_WriteAlimBtn.png"
         @click="openWritePushPop"
-        alt="알림 작성 버튼"
-        style="
-            position: absolute;
-            bottom: 70px;
-            right: 10%;
-            z-index: 9;
-            cursor: pointer;
-        "
-        class="img-78 img-w66"
+        alt="button for write contents"
+        class="img-78 img-w66 writeContentsBtn"
         />
     </div>
 </template>
@@ -1413,8 +1340,175 @@ export default {
 </script>
 
 <style scoped>
+#chanMainRef {
+  width: 100%;
+  background-position: top;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.chanInfoCard {
+  width: 100%;
+  color: #FFFFFF;
+  display: flex;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+}
+.chanInfoCard > img {
+  width: 30px;
+}
+.chanCardTop {
+  z-index: 1;
+  width: 100%;
+  transition: opacity 0.2s;
+  position: relative;
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+}
 .hidden {
   opacity: 0 !important;
+}
+.chanIcon {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  left: 10px;
+  border-radius: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-color: #FFFFFF;
+}
+.chanFollowArea {
+  width: 100%;
+  height: 35px;
+  display: flex;
+}
+.blankBox {
+  width: 90px;
+  height: 100%;
+}
+.chanNameBox {
+  width: calc(100% - 170px);
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+}
+.chanNameBox > img {
+  width: 30px;
+}
+.followBtn {
+  margin-left: -10px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+  padding: 0px 10px;
+  background-color: #062BB5;
+  color: #fff;
+}
+.unfollowBtn {
+  margin-left: -10px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 5px;
+  padding: 0px 10px;
+  background-color: #ccc;
+  color: #062BB5;
+}
+.chanDescriptionArea {
+  width: 100%;
+  height: calc(100% - 35px);
+  display: flex;
+  background: #FFFFFF;
+}
+.chanFuncBox {
+  width: 120px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  padding: 10px 20px;
+}
+.favChanBox {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  background: #f1f1f1;
+  border-radius: 30px;
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.favChanBox > img {
+  width: 20px;
+  height: 20px;
+}
+.shareChanBox {
+  width: 40px;
+  height: 40px;
+  background: #f1f1f1;
+  border-radius: 30px;
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.shareChanBox > img {
+  width: 20px;
+  height: 20px;
+}
+.chanDescriptionBox {
+  width: calc(100% - 120px);
+  padding: 10px;
+  height: 100%;
+}
+.chanDescriptionBox > div {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+.chanDescriptionBox > div > p {
+  word-break: break-all;
+  min-height: 40px;
+}
+.countInfoBox {
+  display: flex;
+  align-items: space-between;
+}
+.followerCount {
+  float: left;
+  margin-right: 20px
+}
+.followerCount > span {
+  color: black;
+  text-decoration: underline;
+}
+.contentsCount {
+  color: black;
+}
+.popBg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  background: #00000030;
+}
+.writeContentsBtn {
+  position: absolute;
+  bottom: 70px;
+  right: 10%;
+  z-index: 9;
+  cursor: pointer;
 }
 /* .showDown-enter {animation: showDown-dialog-fade-in 0.2s ease;}
 .showDown-leave {animation: showDown-dialog-fade-out 0.2s ease forwards;}

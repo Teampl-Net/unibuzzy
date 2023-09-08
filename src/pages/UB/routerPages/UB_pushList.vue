@@ -1598,9 +1598,19 @@ export default {
   margin-top: 150px;
   height: calc(100% - 150px);
 }
-
-.mainTabStyle {border-radius: 10px; min-width: 80px; float: left; border-bottom: none; background: #FFF;; padding: 5px 10px; margin-left: 10px;}
-.mainTabActive { border-bottom: none; background: #F1F1FF !important;}
+.mainTabStyle {
+  border-radius: 10px;
+  min-width: 80px;
+  float: left;
+  border-bottom: none;
+  background: #FFF;
+  padding: 5px 10px;
+  margin-left: 10px;
+}
+.mainTabActive {
+  border-bottom: none;
+  background: #F1F1FF !important;
+}
 .pushListHeader {
     display: flex;
     align-items: center;
@@ -1613,9 +1623,9 @@ export default {
     will-change: transform;
     transition: transform 0.3s linear;
     z-index: 2;
-    min-height:50px;
-    display:flex;
-    align-items:start;
+    min-height: 50px;
+    display: flex;
+    align-items: start;
 }
 .pushListHeader--pinned {
     transform: translateY(0%);
@@ -1666,11 +1676,11 @@ export default {
   margin-top: 0 !important;
 }
 .reloadImgWrap {
-  background-color:#fff;
-  height:50px;
-  display:flex;
-  align-items:center;
-  padding-right:10px;
+  background-color: #fff;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
   width: 30px;
   display: flex;
   align-items: center;
@@ -1689,7 +1699,7 @@ export default {
   -webkit-overflow-scrolling: touch;
 }
 .memoPop {
-  z-index:999999 !important;
+  z-index: 999999 !important;
   height: fit-content !important;
 }
 @keyframes slideRight {
@@ -1742,10 +1752,15 @@ background: #fbfbfb;
   background: #dcddeb !important;
 }
 .pushListMemoBoxBackground{
-width: 100% !important; height: 100% !important; background: #00000036 !important; position: fixed !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: #00000036 !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 999999 !important;
 }
 .pushListWrapWrap {
   overflow: hidden;
 }
-
 </style>

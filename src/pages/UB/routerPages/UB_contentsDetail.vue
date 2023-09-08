@@ -1407,26 +1407,58 @@ export default {
 </script>
 <style scoped>
 .pagePaddingWrap {
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
-    padding-top: 0;
-    padding-bottom: 50px;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding-top: 0;
+  padding-bottom: 50px;
 }
-.boardBorder{width: 100%; height: 20px; padding-bottom: 10px; border-bottom: 1.5px dashed #ccc; float: left;}
-.boardDetailWrap{height: fit-content; width: 100%; height: 100%; padding-top: 50px; padding-bottom: 60px; overflow: scroll; width: 100%; background: #FFF; height: calc(100vh); }
-.pushDetailTopArea{min-height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
-.pushDetailChanLogo{width: 50px;height: 50px;}
+.boardBorder {
+  width: 100%;
+  height: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px dashed #ccc;
+  float: left;
+}
+.boardDetailWrap {
+  height: fit-content;
+  width: 100%;
+  height: 100%;
+  padding-top: 50px;
+  padding-bottom: 60px;
+  overflow: scroll;
+  width: 100%;
+  background: #FFF;
+  height: 100vh;
+}
+.pushDetailTopArea {
+  min-height: 3.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 0.5px solid #CFCFCF
+}
+.pushDetailChanLogo {
+  width: 50px;
+  height: 50px;
+}
 /* .pushDetailHeaderTextArea{width: calc(100% - 70px); cursor: pointer; float: left;margin-top: 0.2rem;} */
-.pushDetailHeaderTextArea{width: calc(100% - 48px); cursor: pointer; float: left;margin-top: 0.2rem;}
+.pushDetailHeaderTextArea {
+  width: calc(100% - 48px);
+  cursor: pointer;
+  float: left;
+  margin-top: 0.2rem;
+}
 
-#alimCheckArea{min-height: 35px;}
-.alimCheckContents{width: 100%;float: right; min-height: 30px;}
-
-.pushMbox{margin-bottom: 20px;}
-
-.pushMbox{margin-bottom: 20px;}
-
+#alimCheckArea {
+  min-height: 35px;
+}
+.alimCheckContents {
+  width: 100%;
+  float: right;
+  min-height: 30px;
+}
+.pushMbox {
+  margin-bottom: 20px;
+}
 .content {
   position: relative;
   width: 100%;
@@ -1445,12 +1477,15 @@ export default {
   margin-bottom: -10px;
 
 }
-
 .paperEffect {
-    width: 100%; float: left; min-height: 50px; background: #FFF; position: relative; border-radius: 0 0 0 0.8rem;
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
+  width: 100%;
+  float: left;
+  min-height: 50px;
+  background: #FFF;
+  position: relative;
+  border-radius: 0 0 0 0.8rem;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%  , 0 100%);
 }
-
 .showMemoPop-enter {
   bottom: 0;
   animation: showMemoPop-dialog-fade-in 0.2s ease;
@@ -1466,10 +1501,18 @@ export default {
     0% {top: 0px}
     100% { bottom: -100px}
 }*/
-.showMemoPop-enter {animation: showMemoPop-dialog-fade-in 0.2s ease;}
-.showMemoPop-leave {animation: showMemoPop-dialog-fade-out 0.2s ease forwards;}
-.showMemoPop-enter-active {animation: showMemoPop-dialog-fade-in 0.2s ease;}
-.showMemoPop-leave-active {animation: showMemoPop-dialog-fade-out 0.2s ease forwards;}
+.showMemoPop-enter {
+  animation: showMemoPop-dialog-fade-in 0.2s ease;
+}
+.showMemoPop-leave {
+  animation: showMemoPop-dialog-fade-out 0.2s ease forwards;
+}
+.showMemoPop-enter-active {
+  animation: showMemoPop-dialog-fade-in 0.2s ease;
+}
+.showMemoPop-leave-active {
+  animation: showMemoPop-dialog-fade-out 0.2s ease forwards;
+}
 @keyframes showMemoPop-dialog-fade-in {
     /* 0% {transform: translateY(var(--widndowHeight));}
     100% {transform: translateY(0);} */
@@ -1482,7 +1525,25 @@ export default {
     0% {bottom: 0;}
     100% {bottom: -100px;}
 }
-.memoBoxBackground{width: 100%; height: 100vh; background: #00000036; position: absolute; top: 0; left: 0;}
+.memoBoxBackground {
+  width: 100%;
+  height: 100vh;
+  background: #00000036;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 /* .copyTextWrap{background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;} */
-.boardDetailChanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}
+.boardDetailChanLogoImgWrap {
+  width: 40px;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border-radius: 40px;
+  margin-right: 0.5rem;
+  border: 2px solid #ccc;
+  position: relative;
+}
 </style>
