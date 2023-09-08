@@ -9,51 +9,23 @@
   }
   </i18n>
   <template>
-  <div class=" w100P pSide-1" :style="
+  <div class="w100P pSide-1 chanCardWrap" :style="
         $appType === 'UB'
             ? 'background-color: rgba(255, 255, 255 ,0.5); border-radius: 10px;'
             : ''
-        "
-        style="min-height: 80px;
-            border-bottom: 1px solid #cccccc70;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 15px;
-            padding-bottom: 15px;
-            margin-top:5px;
         "
         :class="{channelCardBox : $route.path === '/'}"
   >
     <div @click="goChannelMain(chanElement)" class="w100P" style="position: relative;min-height: 80px;display: flex;flex-direction: row;align-items: center;">
         <div
         v-if="$appType === 'UB' && pSelectedYn === true"
-        class="font11"
-        style="
-            background-color: #fff;
-            position: absolute;
-            top: -10px;
-            left: 10px;
-            border: 2px solid #7978bd;
-            border-radius: 10px;
-            padding: 0 5px;
-        "
+        class="font11 selectedChannel"
         >
         Now
         </div>
         <div
         v-if="chanElement"
-        style="
-            background-color: white;
-            position: relative;
-            width: 60px;
-            height: 60px;
-            float: left;
-            border-radius: 100%;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-        "
+        class="chanIconWrap"
         :class="chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey? 'myChan':'normalChan'"
         :style="
             'background-image: url(' +
@@ -63,38 +35,24 @@
             ');'
         "
         >
-        <div
-            v-if="chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey || chanElement.managerKey"
-            class="CWhiteBgColor"
-            style="
-            position: absolute;
-            right: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2px;
-            bottom: 0;
-            width: 20px;
-            height: 20px;
-            border-radius: 100%;
-            "
-        >
-            <img
-            src="../../assets/images/channel/ownerChannel_crown.svg"
-            style="width: 90%; float: left"
-            v-if="chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey"
-            alt=""
-            />
-            <img
-            src="../../assets/images/common/icon_setting_gear.svg"
-            style="width: 90%; float: left"
-            v-else
-            alt=""
-            />
+          <div
+              v-if="chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey || chanElement.managerKey"
+              class="CWhiteBgColor mngChanEffect"
+          >
+              <img
+              src="../../assets/images/channel/ownerChannel_crown.svg"
+              v-if="chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey"
+              alt=""
+              />
+              <img
+              src="../../assets/images/common/icon_setting_gear.svg"
+              v-else
+              alt=""
+              />
+          </div>
         </div>
-        </div>
-        <div class="fl mleft-1" style="width: calc(100% - 65px - 1rem)">
-        <div class="w100P fl font16 fontBold textLeft grayBlack">
+        <div class="fl mleft-1 chanNameWrap">
+          <div class="w100P fl font16 fontBold textLeft grayBlack">
             <img
             class="fl img-w14 mtop-02 mright-02"
             v-if="chanElement.officialYn"
@@ -102,14 +60,14 @@
             alt=""
             />
             <!-- {{$route.path === "/" ? $changeText(chanElement.nameMtext) + " Channel " : `${$changeText(chanElement.bdAreaNameMtext)} > ${$changeText(chanElement.nameMtext )}`}} -->
-            <div v-if="$route.path === '/'" class="w100P" style="display: flex; align-items: center;">
-              <p style="max-width: calc(100% - 30px);">{{ $changeText(chanElement.nameMtext) }}</p>
-              <img style="margin-left: 10px; width: 20px;" src="../../assets/images/footer/icon_channel_fillin.svg" alt="">
+            <div v-if="$route.path === '/'" class="w100P flexAlignCenter">
+              <p class="chanName">{{ $changeText(chanElement.nameMtext) }}</p>
+              <img class="chanIcon" src="../../assets/images/footer/icon_channel_fillin.svg" alt="">
             </div>
-            <div v-else class="" style="display:inline-block;">
+            <div v-else class="dispInlineBlock">
               {{ $changeText(chanElement.nameMtext) }}
             </div>
-            <p class="fr font13 lightGray" style="font-weight: normal">
+            <p class="fr font13 lightGray fontNomal">
             {{
                 $t("SEAR_TAB_ACT_CAHNNEL") +
                 " " +
@@ -145,7 +103,7 @@
             class="img-w15 mright-01 fl mleft-03 mtop-01"
             alt=""
             />
-            <p class="fl font14" style="margin-top: 1px">
+            <p class="fl font14 followCount">
             {{
                 chanElement.followerCount !== undefind
                 ? chanElement.followerCount
@@ -154,8 +112,8 @@
             </p>
             <div v-if="$route.path === '/chanList' && chanElement.creUserKey !== GE_USER.userKey" class="fr">
               <!-- <p v-if="mFollowYn" @click.stop="preventDefault" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p> -->
-              <p v-if="(chanElement && chanElement.followerKey && chanElement.followerKey !== null) || (chanElement && chanElement.D_CHAN_AUTH && chanElement.D_CHAN_AUTH.followerKey)" @click.stop="preventDefault" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p>
-              <p v-else @click.stop="saveFollower" class="fontBold cursorP" style="border-radius:5px; padding:5px 10px; background-color:#062BB5; color:#fff;"> + Follow </p>
+              <p v-if="(chanElement && chanElement.followerKey && chanElement.followerKey !== null) || (chanElement && chanElement.D_CHAN_AUTH && chanElement.D_CHAN_AUTH.followerKey)" @click.stop="preventDefault" class="fontBold unfollowBtn"> Following </p>
+              <p v-else @click.stop="saveFollower" class="fontBold cursorP followBtn"> + Follow </p>
             </div>
         </div>
       </div>
@@ -166,16 +124,15 @@
         chanElement.popCList &&
         chanElement.popCList.length > 0
         "
-        class="w100P fl"
-        style="hight: 50px; display: flex; flex-direction: column; padding: 10px;"
+        class="w100P fl popularPostWrap"
     >
         <p class="font15 fontBold textLeft">Popular Post</p>
-        <div style="width: 100%; min-height: 40px; border-radius: 5px; padding: 5px; background: #FFFFFF98;">
+        <div class="popularContentsBox">
             <p @click="goChannelMain(chanElement)" class="font12 fl commonColor fontBold textLeft">{{ `${$changeText(chanElement.popCList[0].cabinetNameMtext)} Board > ${chanElement.popCList[0].showCreNameYn? $changeText(chanElement.popCList[0].creUserName) : 'Anonymous'}` }}</p>
             <p @click="goChannelMain(chanElement)" class="font12 fr lightGray textLeft">{{ `${$changeDateFormat(chanElement.popCList[0].creDate)}` }}</p>
-            <div ref="contentsBoxRef" class="fl" style="width: 100%; min-height: 40px; margin-left: 3px; margin-bottom: 5px; margin-top: 5px; padding-left: 5px; border-left: 2px solid #CCC;">
-                <p class="font14 textLeft fontBold" style="width: 99%; overflow: hidden;" >{{ chanElement.popCList[0].title }}</p>
-                <pre class="fl font14 textLeft textOverdot" style="width: calc(100% - 10px); word-break: break-all;" v-html="$setBodyLength(chanElement.popCList[0].bodyFullStr)"></pre>
+            <div ref="contentsBoxRef" class="fl popularContentsItem">
+                <p class="font14 textLeft fontBold" >{{ chanElement.popCList[0].title }}</p>
+                <pre class="fl font14 textLeft textOverdot" v-html="$setBodyLength(chanElement.popCList[0].bodyFullStr)"></pre>
             </div>
         </div>
       </div>
@@ -346,14 +303,14 @@ export default {
 }
 </script>
 
-  <style>
-  .channelCardBox{
-    box-shadow:inset 0 0 5px rgba(0,0,0,0);
-    transition:all .3s;
-  }
-  .channelCardBox:hover{
-    box-shadow:inset 0 0 12px rgba(97, 97, 97, 0.6), 0 0 7px rgba(255,255,255,0.5);
-  }
+<style scoped>
+.channelCardBox {
+  box-shadow: inset 0 0 5px rgba(0,0,0,0);
+  transition: all .3s;
+}
+.channelCardBox:hover {
+  box-shadow: inset 0 0 12px rgba(97, 97, 97, 0.6), 0 0 7px rgba(255,255,255,0.5);
+}
 .chanLogoImgWrap {
   width: 40px;
   height: 40px;
@@ -371,5 +328,109 @@ export default {
 }
 .myChan {
   border: 0.5px solid #6768a7;
+}
+.chanCardWrap {
+  min-height: 80px;
+  border-bottom: 1px solid #cccccc70;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  margin-top: 5px;
+}
+.selectedChannel {
+  background-color: #fff;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  border: 2px solid #7978bd;
+  border-radius: 10px;
+  padding: 0 5px;
+}
+.chanIconWrap {
+  background-color: white;
+  position: relative;
+  width: 60px;
+  height: 60px;
+  float: left;
+  border-radius: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.mngChanEffect {
+  position: absolute;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  bottom: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+}
+.mngChanEffect > img {
+  float: left;
+  width: 90%;
+}
+.chanNameWrap {
+  width: calc(100% - 65px - 1rem);
+}
+.chanName {
+  max-width: calc(100% - 30px);
+}
+.chanIcon {
+  margin-left: 10px;
+  width: 20px;
+}
+.dispInlineBlock {
+  display: inline-block;
+}
+.followCount {
+  margin-top: 1px;
+}
+.unfollowBtn {
+  cursor:auto;
+  border-radius:5px;
+  padding:5px 10px;
+  background-color:#ccc;
+  color:#062BB5;
+}
+.followBtn {
+  border-radius:5px;
+  padding:5px 10px;
+  background-color: #062BB5;
+  color: #fff;
+}
+.popularPostWrap {
+  display: flex;
+  flex-direction: column;
+  padding: 10px
+}
+.popularContentsBox {
+  width: 100%;
+  min-height: 40px;
+  border-radius: 5px;
+  padding: 5px;
+  background: #FFFFFF98;
+}
+.popularContentsItem {
+  width: 100%;
+  min-height: 40px;
+  margin-left: 3px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding-left: 5px;
+  border-left: 2px solid #CCC;
+}
+.popularContentsItem > p {
+  width: 99%;
+  overflow: hidden;
+}
+.popularContentsItem > pre {
+  width: calc(100% - 10px) !important;
+  word-break: break-all !important;
 }
 </style>
