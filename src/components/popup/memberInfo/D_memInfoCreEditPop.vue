@@ -144,20 +144,16 @@ export default {
   created () {
     var history = this.$store.getters['D_HISTORY/hStack']
     this.mPopId = 'editMemberItemPop' + this.propData.selectedMemberType.memberTypeKey
-    // console.log(history)
     history.push(this.mPopId)
     this.$store.commit('D_HISTORY/updateStack', history)
 
     if (this.propData && this.propData.selectedMemberType) {
       this.settingMemberItem(this.propData.selectedMemberType)
     }
-    // this.$showToastPop('현재 테스트 화면이며, 작동되지 않습니다. 추후 업데이트를 기다려주세요!')
   },
   methods: {
     endDragList (list) {
       console.log(this.answerList)
-      // eslint-disable-next-line no-debugger
-      debugger
     },
     backClick () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
@@ -183,8 +179,6 @@ export default {
         this.onlyNumYn = true
       }
       if (data.optListStr) {
-        // eslint-disable-next-line no-debugger
-        debugger
         var objList = data.optListStr.split('$#$')
         this.answerList = []
         for (var i = 0; i < objList.length; i++) {
@@ -227,13 +221,9 @@ export default {
         if (this.maxLengthYn === true) param.maxLen = this.maxLength
         param.numberYn = this.onlyNumYn
       } else {
-        // eslint-disable-next-line no-debugger
-        debugger
         // eslint-disable-next-line no-unused-vars
         var selectListStr = ''
         var dragItemList = document.getElementsByClassName('memberInfoListRow')
-        // eslint-disable-next-line no-debugger
-        debugger
         var saveList = []
         for (var i = 0; i < dragItemList.length; i++) {
           saveList.push(this.answerList[Number(dragItemList[i].attributes.listindex.value)])
@@ -254,8 +244,6 @@ export default {
       }) */
       // console.log(saveItem)
       // eslint-disable-next-line no-debugger
-      debugger
-      // this.$emit('saveMemInfoQuestion', param)
 
       this.$emit('closeXPop', true)
     },
