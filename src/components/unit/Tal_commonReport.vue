@@ -32,11 +32,11 @@
 </i18n>
 <!-- eslint-disable no-irregular-whitespace -->
 <template>
-  <div style="width: 100%; float: left;">
-    <div v-show="reportPopStep === 0" class="reportCompoArea" style="margin: 1rem 0rem;">
-      <div class="fl " style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
+  <div class="w100P fl">
+    <div v-show="reportPopStep === 0" class="reportCompoArea">
+      <div class="fl memoFuncArea">
       <!--  <p class="fl font16 w100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('sendPush')" v-if="contentOwner && contentType !== 'ALIM'" >알림으로 공유</p> -->
-        <p class="fl font16 w100P commonColor rowText" style="min-height:50px; line-height:50px; " @click="emit('move')" v-if="contentOwner && contentType === 'BOAR'" >{{ $t('COMMON_BTN_MOVE_POST') }}</p>
+        <p class="fl font16 w100P commonColor rowText" @click="emit('move')" v-if="contentOwner && contentType === 'BOAR'" >{{ $t('COMMON_BTN_MOVE_POST') }}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('copy')" v-if="contentOwner && contentType === 'BOAR' " >{{ $t('COMMON_BTN_COPY_POST') }}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType === 'BOAR'">{{ $t('COMM_BTN_EDIT_POST') }}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('writeBoard')" v-if="contentType === 'ALIM' " :style="contentType === 'ALIM' ? 'border-top:none;' : '' " >{{ $t('COMMON_BTN_CONVERT_NOTI_TO_POST') }}</p>
@@ -47,24 +47,24 @@
         <!-- <p class="fl font16 w100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" @click="emit('alimBloc')" v-if="contentOwner && contentType === 'ALIM'" >{{contentText}} 삭제</p> -->
         <!-- <p class="fl font16 w100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" :style="contentType === 'ALIM' ? 'border: none  !important;' : '' " @click="emit('delete', true)" v-if="contentOwner || contentType === 'ALIM'" >{{contentType === 'ALIM' ? '모든 수신자에게서 ': ''}}{{contentText}} 회수</p> -->
         <p class="fl font16 w100P menuListBase rowText" :style="contentType === 'ALIM' ? 'border-top: 1px solid #eee;' : ''" @click="report(contentType)" v-if="!GE_USER.unknownYn && !contentOwner" >{{ contentText === '게시글'? $t('COMMON_BTN_REPORT_POST'):$t('COMMON_BTN_REPORT_COMMENT') }}</p>
-        <p class="fl font16 w100P menuListBase" style="border-top: 1px solid #eee;" @click="report('CHANNEL')" v-if="this.contentType === 'ALIM' && !contentOwner">{{ $t('COMMON_BTN_REPORT_CHAN') }}</p>
-        <p class="fl font16 w100P menuListBase" style="border-top: 1px solid #eee;" @click="report('USER')" v-if="!GE_USER.unknownYn && (this.contentType === 'MEMO' || this.contentType === 'BOAR') && !contentOwner">{{ $t('COMMON_BTN_REPORT_USER') }}</p>
+        <p class="fl font16 w100P menuListBase whiteBorder" @click="report('CHANNEL')" v-if="this.contentType === 'ALIM' && !contentOwner">{{ $t('COMMON_BTN_REPORT_CHAN') }}</p>
+        <p class="fl font16 w100P menuListBase whiteBorder" @click="report('USER')" v-if="!GE_USER.unknownYn && (this.contentType === 'MEMO' || this.contentType === 'BOAR') && !contentOwner">{{ $t('COMMON_BTN_REPORT_USER') }}</p>
         <!-- <p class="fl font16 w100P menuListBase" style="border-top: 1px solid #eee;" @click="bloc('channel')" v-if="this.contentType === 'ALIM' && !contentOwner">채널 차단</p> -->
-        <p class="fl font16 w100P menuListBase" style="border-top: 1px solid #eee;" @click="bloc('USER')" v-if="!GE_USER.unknownYn && (this.contentType === 'MEMO' || this.contentType === 'BOAR') && !contentOwner">{{ $t('COMMON_BTN_BLOCK_USER') }}</p>
+        <p class="fl font16 w100P menuListBase whiteBorder" @click="bloc('USER')" v-if="!GE_USER.unknownYn && (this.contentType === 'MEMO' || this.contentType === 'BOAR') && !contentOwner">{{ $t('COMMON_BTN_BLOCK_USER') }}</p>
 
       </div>
 
-      <div class="fl mtop-05" @click="closePop()" style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center;">
-        <p class="fl font16 w100P commonColor " style="min-height:50px; line-height:50px; " >
+      <div class="fl mtop-05 closeReportBtn" @click="closePop()">
+        <p class="fl font16 w100P commonColor">
           {{ $t('COMM_BTN_CLOSE') }}
         </p>
       </div>
     </div>
 
-    <div class="reportCompoArea" style="margin: 0rem; " v-if="reportPopStep === 1">
+    <div class="reportCompoArea marginTop0" v-if="reportPopStep === 1">
       <div class="fl w100P reportHeader" >
-        <img class="cursorP mleft-05" style="width: 10px; position: absolute; left:0.1rem; top:1rem;" @click="revReport()" src="../../assets/images/common/icon_back.png"/>
-        <img class="fr cursorP mright-05" style="width: 1rem; position: absolute; right:0.5rem; top:1rem" @click="closePop()" src="../../assets/images/common/popup_close.png"/>
+        <img class="cursorP mleft-05" @click="revReport()" src="../../assets/images/common/icon_back.png"/>
+        <img class="fr cursorP mright-05" @click="closePop()" src="../../assets/images/common/popup_close.png"/>
         <p class="fl font16 fontBold textLeft w100P mtop-1">{{ $t('REPO_TITLE_REPORT') }}</p>
         <p class="fl lightGray font12 textLeft w100P mtop-05 mbottom-1">{{ $t('REPO_MSG_DESC') }}</p>
         <div class="fl w100P" style="height: 390px; overflow: hidden scroll; display:flex; flex-direction:column;">
@@ -75,10 +75,10 @@
       </div>
     </div>
 
-    <div class="reportCompoArea" style="margin: 0rem; " v-if="reportPopStep === 2">
+    <div class="reportCompoArea marginTop0" v-if="reportPopStep === 2">
       <div class="fl w100P reportHeader">
-        <img class="cursorP mleft-05" style="width: 10px; position: absolute; left:0.1rem; top:1rem;" @click="revReport()" src="../../assets/images/common/icon_back.png"/>
-        <img class="cursorP mright-05" style="width: 1rem; position: absolute; right:0.1rem; top:1rem" @click="closePop()" src="../../assets/images/common/popup_close.png"/>
+        <img class="cursorP mleft-05" @click="revReport()" src="../../assets/images/common/icon_back.png"/>
+        <img class="cursorP mright-05 right01" @click="closePop()" src="../../assets/images/common/popup_close.png"/>
         <p class="fl font16 fontBold textLeft w100P mtop-1">{{ $t('REPO_TITLE_REASON') }} {{reportDetailTitle}}</p>
         <p class="fl lightGray font12 textLeft w100P mtop-05 mbottom-1">{{ $t('REPO_MSG_DESC') }}</p>
         <gBtnSmall class="mtop-1 "  v-on:click="sendBtnClick" :btnTitle="$t('REPO_BTN_SUBMIT')"  />
@@ -183,17 +183,86 @@ export default {
 
 <style>
 .reportCard {
-  padding:10px 0; border-bottom:1px solid #eeeeee; display: flex; align-items: center; justify-content: space-between;
+  padding:10px 0;
+  border-bottom:1px solid #eeeeee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .reportHeader {
-  padding:2rem 10px; background:#ffffff; border-radius:10px 10px 0 0; min-height:100px; display: flex; justify-content: center; align-items: center; flex-direction: column;
+  padding:2rem 10px;
+  background:#ffffff;
+  border-radius:10px 10px 0 0;
+  min-height:100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 .reportCompoArea {
-  width:95%; position: fixed; bottom:60px; left:2.5%; z-index:100000;
+  width:95%;
+  position: fixed;
+  bottom: 60px;
+  left: 2.5%;
+  z-index: 100000;
+  margin: 1rem 0rem;
 }
 .menuListBase {
-  min-height:50px; line-height:50px; color:red;
+  min-height:50px;
+  line-height:50px;
+  color:red;
 }
-
-.rowText {min-height:50px; line-height:50px; border-bottom: 1px solid #eee;}
+.rowText {
+  min-height:50px;
+  line-height:50px;
+  border-bottom: 1px solid #eee;
+}
+.whiteBorder {
+  border-top: 1px solid #eee;
+}
+.memoFuncArea {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 10px;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.memoFuncArea > p:first-child {
+  min-height:50px;
+  line-height:50px;
+}
+.closeReportBtn {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 10px;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.closeReportBtn > p {
+  min-height: 50px;
+  line-height: 50px;
+}
+.marginTop0 {
+  margin-top: 0 !important;
+}
+.reportHeader > :nth-child(1) {
+  width: 10px;
+  position: absolute;
+  left:0.1rem;
+  top:1rem;
+}
+.reportHeader > :nth-child(2) {
+  width: 1rem;
+  position: absolute;
+  right: 0.5rem;
+  top: 1rem;
+}
+.right01 {
+  right: 0.1rem;
+}
 </style>
