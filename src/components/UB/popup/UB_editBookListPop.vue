@@ -379,8 +379,6 @@ export default {
       }
     },
     backClick (backYn) {
-      // eslint-disable-next-line no-debugger
-      debugger
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.propData.value && this.propData.value.clickData) {

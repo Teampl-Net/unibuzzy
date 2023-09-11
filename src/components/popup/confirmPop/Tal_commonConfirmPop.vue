@@ -60,8 +60,6 @@ export default {
       }
     },
     goNo () {
-      // eslint-disable-next-line no-debugger
-      debugger
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       // eslint-disable-next-line
@@ -82,7 +80,6 @@ export default {
       openPopParam.targetKey = this.pNewBoard.cabinetKey
       openPopParam.cabinetNameMtext = this.pNewBoard.cabinetNameMtext
       openPopParam.targetType = 'boardMain'
-      console.log('openPopParam', openPopParam)
       this.$emit('openPop', openPopParam)
     }
   },
@@ -106,7 +103,6 @@ export default {
   },
   created () {
     this.$addHistoryStack('gConfirmPop')
-    console.log('pNewBoard', this.pNewBoard)
   },
   mounted () {
     // if (this.confirmType === 'timeout') {

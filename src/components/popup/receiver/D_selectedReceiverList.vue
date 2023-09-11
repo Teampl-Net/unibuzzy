@@ -56,11 +56,11 @@
       </div>
 
       <div v-for="(member, index) in teamList.memberList" :key='index'  class=" fl mright-1"  style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; max-width:60px">
-        <div class="middleBgColor fl" >
+        <div class="middleBgColor fl imgCircle" >
           <div v-if="member.domainPath || member.userProfileImg" :style="'background-image: url(' + (member.domainPath? member.domainPath + (member.userProfileImg ? member.userProfileImg : member.pathMtext) : member.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
           <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
         </div>
-        <p class="fl font15 commonBlack textOverdot w-100P">{{this.GE_USER.userKey === member.userKey ? $t('EDIT_BOOK_NAME_ME') : this.$changeText(member.userDispMtext)}}</p>
+        <p class="fl font15 commonBlack textOverdot w100P">{{this.GE_USER.userKey === member.userKey ? $t('EDIT_BOOK_NAME_ME') : this.$changeText(member.userDispMtext)}}</p>
         <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('member', index, member.accessKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -5px; top:-5px; text-align: center;">x</span>
       </div>
       <!-- <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem" >
@@ -260,13 +260,13 @@ export default {
 .fontBold{font-weight: bold;}
 .trans90{transform:rotate(270deg)}
 .selecteItemdArea{
-    display: flex;
-    width: 100%;
-    padding: 15px;
-    overflow: auto;
-    white-space: nowrap;
-    flex-direction: row;
-    background: #fff;
+  display: flex;
+  width: 100%;
+  padding: 15px;
+  overflow: auto;
+  white-space: nowrap;
+  flex-direction: row;
+  background: #fff;
 }
 /* .movePointerArea{
     transform: scaleY(1.7);
@@ -287,7 +287,13 @@ export default {
 .mobileMleft{
     margin-left: 0.5rem;
 }
-
+.imgCircle {
+  overflow: hidden;
+}
+.memberPicImgWrap {
+  width: 100%;
+  height: 100%;
+}
 @media screen and (max-width: 410px) {
     .selfAddArea{
         width: calc(100% - 15px);

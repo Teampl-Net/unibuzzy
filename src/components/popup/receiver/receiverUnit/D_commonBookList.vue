@@ -17,7 +17,7 @@
 }
 </i18n>
 <template>
-  <div v-if="mAddressBookList.length > 0" class="fl w100P" style="overflow: hidden scroll;">
+  <div v-if="mAddressBookList.length > 0" class="fl w100P scrollOn">
     <draggable  ref="editableArea" class="ghostClass fl w100P" v-model="mAddressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='mDragEnabled' delay="200"    >
       <transition-group>
         <template  v-for="(data, index) in mAddressBookList" :key='index'>
@@ -55,30 +55,20 @@ export default {
     this.mPropData = this.propData
     if (this.selectPopYn) {
       this.mDragEnabled = true
-      console.log('this.parentSelectList')
-      console.log(this.parentSelectList)
       if (this.parentSelectList && this.parentSelectList) {
         var this_ = this
         this.$nextTick(() => {
           this_.mSelectedBookList = []
           this_.mSelectedBookList = JSON.parse(JSON.stringify(this_.parentSelectList))
-          console.log('this.mSelectedBookList')
-          console.log(this_.mSelectedBookList)
           this_.settingCheck()
         })
       }
     }
-
-    console.log('===== Created CommmonBookList ====')
-    console.log(this.mAddressBookList)
   },
   watch: {
     parentSelectList () {
-      console.log('!!! reset !!!')
       this.mSelectedBookList = []
       this.mSelectedBookList = JSON.parse(JSON.stringify(this.parentSelectList))
-      console.log('!!! end !!!')
-      console.log(this.mSelectedBookList)
       this.settingCheck()
     },
     propBookList () {
@@ -200,8 +190,6 @@ export default {
       }, 800)
     },
     async changePosTeamMenu (event) {
-      console.log('----------')
-      console.log(this.mAddressBookList)
       var paramSet = {}
       var tempList = []
       for (var index = 0; index < this.mAddressBookList.length; index++) {
@@ -211,8 +199,6 @@ export default {
         delete temp.mUserList
         tempList.push(temp)
       }
-      console.log(' ----- teamMenuList -----')
-      console.log([...tempList])
       paramSet.teamMenuList = [...tempList]
       var result = await this.$commonAxiosFunction(
         {
@@ -220,7 +206,6 @@ export default {
           param: paramSet
         }
       )
-      console.log(' ----- changePosTeamMenu result -----')
       console.log(result)
 
       this.$emit('getBookList')
@@ -230,23 +215,28 @@ export default {
 }
 </script>
 
-<style >
-.receiverTeamText{ height:40px; cursor: pointer;line-height:40px;}
-.receiverTeamSubscImg{width: 12px;}
+<style scoped>
+.receiverTeamText {
+  height: 40px;
+  cursor: pointer;
+  line-height: 40px;
+}
+.receiverTeamSubscImg {
+  width: 12px;
+}
 .foo {
-    transition : background-color 0.5s ease-in;
+  transition: background-color 0.5s ease-in;
 }
 .commonBookCard {
-    width: 100%;
-    cursor: pointer;
-    height:60px;
-    border-bottom:1px solid #ddd; padding: 0.7rem 0;
-    position: relative;
-
-    overflow: auto;
+  width: 100%;
+  cursor: pointer;
+  height:60px;
+  border-bottom:1px solid #ddd; padding: 0.7rem 0;
+  position: relative;
+  overflow: auto;
 }
 
 input {
-    background: none;
+  background: none;
 }
 </style>
