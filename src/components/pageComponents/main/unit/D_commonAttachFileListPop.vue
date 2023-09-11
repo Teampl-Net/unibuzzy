@@ -1,5 +1,5 @@
 <template>
-  <div class="attachFilePopBg" @click="closePop()"/>
+  <!-- <div class="attachFilePopBg" @click="closePop()"/> -->
   <div class="attachFilePopWrap">
     <div class="attachFilePopArea">
       <p class="textLeft font16 fontBold mbottom-1">{{ this.$t('COMM_TITLE_FILE_DOWNL') }}</p>
@@ -118,7 +118,7 @@ export default {
   top: 50%;
   transform:translateY(-50%);
   background: #fff;
-  z-index: 21;
+  z-index: 100000;
   position: fixed;
 }
 .attachFilePopArea {

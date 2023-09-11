@@ -1579,7 +1579,6 @@ export default {
   position: relative;
   overflow: hidden scroll;
   float: left;
-  z-index: 2;
 }
 #loading {
   display: block;

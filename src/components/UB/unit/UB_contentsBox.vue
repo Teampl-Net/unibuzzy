@@ -10,8 +10,14 @@
 </i18n>
 <template>
   <div v-if="mLoadingShowYn" id="loading"><div class="spinner"></div></div>
-  <div class="profilePopBg`" v-if="mProfilePopShowYn" @click="closeProfilePop"></div>
+  <div class="profilePopBg" v-if="mProfilePopShowYn" @click="closeProfilePop"></div>
   <userDetailPop v-if="mProfilePopShowYn" :propData="mPopParam" :pClosePop="closeProfilePop" />
+  <div class="profilePopBg" v-if="mWorkStateCodePopShowYn" @click="mWorkStateCodePopShowYn"></div>
+  <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
+  <div class="profilePopBg" v-if="mContMenuShowYn" @click="mContMenuShowYn"></div>
+  <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
+  <div class="profilePopBg" v-if="mFilePopYn" @click="mFilePopYn = false"></div>
+  <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
     <!-- <button @click="downloadPdf">다운로드</button> -->
     <!-- <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;"> -->
   <div :class="animationYn? 'newContentsAni':''" class="contentsWrap" key="animationYn" v-if="this.CONT_DETAIL" :style="`padding-bottom: ${this.$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`">
@@ -191,8 +197,7 @@
   <!-- 밑에는 댓글 작성 창 -->
   <gMemoPop style="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="!pNoAuthYn && this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
 
-  <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
-  <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
+  <!-- <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/> -->
   <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
   <div v-if="mSelectBoardPopShowYn === true" class="selectBoardBg"/>
   <div v-if="mSelectBoardPopShowYn === true" class="selectBoardWrap">
@@ -206,7 +211,6 @@
     <div @click="this.$refs.recvListPop.closeXPop()" class="recvPopBg"></div>
     <recvListPop ref="recvListPop" @closeXPop="closeRecvListPop" :initData="mActorListInitDataList"/>
   </template>
-  <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
   <!-- <div v-if="mStickerPopShowYn" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 8; background: #00000026;"></div> -->
   <!-- <gSelectsPop v-if="mStickerPopShowYn" @closeXPop="mStickerPopShowYn=false" style="" :pContentsEle="this.CONT_DETAIL"/> -->
 </template>
@@ -1590,7 +1594,7 @@ pre div[id='formEditText'] {
   position: fixed;
   top:0;
   left:0;
-  z-index: 10000000;
+  z-index: 100000;
 }
 .contentsWrap {
   width: 100%;

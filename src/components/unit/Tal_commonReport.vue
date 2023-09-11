@@ -33,7 +33,6 @@
 <!-- eslint-disable no-irregular-whitespace -->
 <template>
   <div style="width: 100%; float: left;">
-    <div style="width:100%; height:100%; position: fixed; top:0; left:0; background:#00000050; z-index:9999; transform: translateZ(0);" @click="closePop()"></div>
     <div v-show="reportPopStep === 0" class="reportCompoArea" style="margin: 1rem 0rem;">
       <div class="fl " style="width: 100%; background:#ffffff; border-radius:10px; min-height:50px; display: flex; justify-content: center; align-items: center; flex-direction: column;">
       <!--  <p class="fl font16 w100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('sendPush')" v-if="contentOwner && contentType !== 'ALIM'" >알림으로 공유</p> -->
@@ -190,7 +189,7 @@ export default {
   padding:2rem 10px; background:#ffffff; border-radius:10px 10px 0 0; min-height:100px; display: flex; justify-content: center; align-items: center; flex-direction: column;
 }
 .reportCompoArea {
-  width:95%; position: fixed; bottom:60px; left:2.5%; z-index:10000;
+  width:95%; position: fixed; bottom:60px; left:2.5%; z-index:100000;
 }
 .menuListBase {
   min-height:50px; line-height:50px; color:red;

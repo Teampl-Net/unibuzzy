@@ -25,7 +25,7 @@
 <template>
   <!-- wh100P 삭제함-->
   <div class="fl manageCodePopWrap" :ref="'stateCodePop' + this.contentsKey">
-    <div class="manageCodePopBg" @click="closeSelectPop"></div>
+    <!-- <div class="manageCodePopBg" @click="closeSelectPop"></div> -->
     <div class="manageCodePopBox">
       <div class="font18 commonColor fontBold manageCodePopHeader">
         {{ $t('TASK_MANAGEMENT') }}
@@ -482,7 +482,7 @@ export default {
   left: 10%;
   border-radius:0.8rem;
   background: #FFF;
-  z-index: 11
+  z-index: 100000;
 }
 .manageCodePopHeader {
   width: 100%;
