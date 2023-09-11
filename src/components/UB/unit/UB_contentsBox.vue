@@ -12,10 +12,10 @@
   <div v-if="mLoadingShowYn" id="loading"><div class="spinner"></div></div>
   <div class="profilePopBg" v-if="mProfilePopShowYn" @click="closeProfilePop"></div>
   <userDetailPop v-if="mProfilePopShowYn" :propData="mPopParam" :pClosePop="closeProfilePop" />
-  <div class="profilePopBg" v-if="mWorkStateCodePopShowYn" @click="mWorkStateCodePopShowYn"></div>
+  <div class="profilePopBg" v-if="mWorkStateCodePopShowYn" @click="mWorkStateCodePopShowYn = false"></div>
   <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
-  <div class="profilePopBg" v-if="mContMenuShowYn" @click="mContMenuShowYn"></div>
-  <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
+  <div class="profilePopBg" v-if="mContMenuShowYn" @click="mContMenuShowYn = false"></div>
+  <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false" @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
   <div class="profilePopBg" v-if="mFilePopYn" @click="mFilePopYn = false"></div>
   <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
     <!-- <button @click="downloadPdf">다운로드</button> -->
