@@ -17,14 +17,14 @@
         <p class="textLeft font15 fontBold commonColor">{{ $t('MEM_DETAIL_TITLE_ADDINFO') }}</p>
         <div v-if="memberTypeItemList && memberTypeItemList.length === 0">
             <p class="font15 fontBold grayBlack textCenter mtop-1">{{ $t('MEM_DETAIL_MGS_NOSET') }}</p>
-            <div @click="addQuestion(0)" style="width: 100%; float: left; display: flex; align-items: center; justify-content: center;" class="mtop-1 cursorP">
-                <div style="width: 40px; height: 40px; border-radius: 100%; border: 1px solid #5F61BD; font-size: 25px" class="commonColor"> + </div>
+            <div @click="addQuestion(0)" class="mtop-1 cursorP addQueWrap">
+                <div class="commonColor addQueBtn"> + </div>
             </div>
         </div>
         <template v-else>
             <draggable class="ghostClass" :v-model="memberTypeItemList" ghost-class="ghost" :dragging="dragging" @end="end" delay="200" handle=".itemMovePoint">
                 <transition-group>
-                    <div v-for="(list, index) in memberTypeItemList" :reloadKey="mReloadListKey" :key="list.itemKey" :listIndex="index" class="fl w100P" style="padding: 0.3rem 0; padding-left: 10px;">
+                    <div v-for="(list, index) in memberTypeItemList" :reloadKey="mReloadListKey" :key="list.itemKey" :listIndex="index" class="fl w100P memberTypeItemWrap">
                         <queCard v-if="!list.deleteYn" :propData="list" @cardEmit='cardEmit' :compoIdx='index' :listIndex="index"  class="memTypeItemListRow mbottom-05"/>
                     </div>
                 </transition-group>
@@ -70,7 +70,6 @@ export default {
       this.mEditMemInfoPopShowYn = false
     },
     readyFunc () {
-      console.log(this.propMemberTypeObj)
       if (this.propMemberTypeObj.itemList) {
         this.memberTypeItemList = this.propMemberTypeObj.itemList
         if (this.memberTypeItemList.length === 0) {
@@ -81,10 +80,7 @@ export default {
       }
     },
     sendListToParents () {
-      console.log(this.memberTypeItemList)
       var sendList = null
-      console.log(this.memberTypeItemList)
-      console.log(this.mDelItemList)
       sendList = this.memberTypeItemList
       if (this.mDelItemList.length > 0) {
         sendList = [
@@ -132,7 +128,6 @@ export default {
         url: '/sUniB/tp.getMemberTypeItemList',
         param: param
       })
-      console.log(memberTypeItemList)
       this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
       for (var i = 0; i < this.memberTypeItemList.length; i++) {
         this.memberTypeItemList[i].addYn = false
@@ -140,11 +135,8 @@ export default {
       if (this.memberTypeItemList.length === 0) {
         // this.addQuestion(0)
       }
-      // eslint-disable-next-line no-debugger
-      debugger
     },
     cardEmit (param) {
-      console.log(param)
       param.selectedMemberType = param.data
       var type = param.targetType
       var data = param.data
@@ -163,8 +155,6 @@ export default {
     },
     async deleteQue (deleteData) {
       if (deleteData.targetType === 'deleteQue') {
-        console.log(deleteData)
-
         var deleteParam = {}
         deleteParam.itemKey = parseInt(deleteData.data.itemKey)
         await this.$commonAxiosFunction({
@@ -177,7 +167,6 @@ export default {
       // this.reloadKey += 1
     },
     // tempDelQue (data, index) {
-    //   console.log(data)
     //   this.memberTypeItemList.splice(index, 1)
     // },
     closePop () {
@@ -187,6 +176,23 @@ export default {
   }
 }
 </script>
-<style>
-
+<style scoped>
+.addQueWrap {
+  width: 100%;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.addQueBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  border: 1px solid #5F61BD;
+  font-size: 25px;
+}
+.memberTypeItemWrap {
+  padding: 0.3rem 0;
+  padding-left: 10px;
+}
 </style>

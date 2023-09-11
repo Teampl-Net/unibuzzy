@@ -64,7 +64,7 @@ export default {
       oriList: {},
       pSelectedBookList: {},
       pSelectedMemberList: {},
-      activeTabList: [{ display: this.$t('COMMON_NAME_ADDRBOOK'), name: 'B' }, { display: this.$t('SELECT_MEMBER_TYPE'), name: 'M' }],
+      activeTabList: [{ display: this.$t('COMMON_NAME_ADDRBOOK'), name: 'B' }],
       activeTab: 'B'
     }
   },

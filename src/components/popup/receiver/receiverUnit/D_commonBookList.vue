@@ -21,7 +21,7 @@
     <draggable  ref="editableArea" class="ghostClass fl w100P" v-model="mAddressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='mDragEnabled' delay="200"    >
       <transition-group>
         <template  v-for="(data, index) in mAddressBookList" :key='index'>
-          <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
+          <gReceiveCard :style="mAddressBookList.length - 1 === index && index !== 0? 'border-bottom: 0; padding-bottom: 100px;':''" :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
         </template>
       </transition-group>
     </draggable>

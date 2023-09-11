@@ -8,7 +8,7 @@
     "EDIT_BOOK_MSG_ONEPEOPLE": "담당자는 한 명만 부여 가능합니다!"
   },
   "en": {
-    "EDIT_BOOK_TITLE_PEOPLE": "People",
+    "EDIT_BOOK_TITLE_PEOPLE": "Members",
     "EDIT_BOOK_BTN_ADD": "+ Add",
     "EDIT_BOOK_NAME_ME": "Me",
     "EDIT_BOOK_MSG_SELECTED": "User already selected",
@@ -20,7 +20,7 @@
   <!-- <div style="width: 100%; ; background: white; padding: 10px; box-shadow:-3px -2px 14px 0px #ccc" class=""> -->
   <div class="w100P fl" style="">
     <div class="CWhiteGrayBgColor" style="width: 100%; min-height: 50px; display: flex; justify-content: space-between; align-items: center; padding: 0 1.5rem;">
-      <p class="textLeft fontBold font14 fl commonDarkGray" style="">{{(teamList.bookList.length > 0 ? $t('COMMON_NAME_ADDRBOOK') + teamList.bookList.length : '') + ((teamList.bookList.length > 0 && teamList.memberList.length > 0) ? ', ' : '') +  (teamList.memberList.length > 0 ? $t('EDIT_BOOK_TITLE_PEOPLE') + teamList.memberList.length : '')}}</p>
+      <p class="textLeft fontBold font13 fl commonDarkGray" style="">{{(teamList.bookList.length > 0 ? $t('COMMON_NAME_ADDRBOOK') + teamList.bookList.length : '') + ((teamList.bookList.length > 0 && teamList.memberList.length > 0) ? ', ' : '') +  (teamList.memberList.length > 0 ? teamList.memberList.length + " " + $t('EDIT_BOOK_TITLE_PEOPLE') : '')}}</p>
       <gBtnSmall class="fr CDeepBgColor" style="border-radius: 10px" :btnTitle="$t('EDIT_BOOK_BTN_ADD')" @click="sendReceivers" v-if="btnVisible !== false" />
     </div>
     <div class="selecteItemdArea" :class="!isMobile? 'thinScrollBar':''" id="selectedItemWrap" @wheel="horizontalScroll">

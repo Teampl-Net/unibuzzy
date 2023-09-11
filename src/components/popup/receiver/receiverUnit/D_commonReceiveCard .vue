@@ -103,7 +103,6 @@ export default {
       } else {
         this.mSelectedMembers.splice(existingIndex, 1)
       }
-      // console.log('this.mSelectedMembers', this.mSelectedMembers)
 
       var param = {}
       if (type === 'editList') {
@@ -119,7 +118,6 @@ export default {
       param.index = this.compoIdx
       param.selectedIdx = this.mSelectedMembers
       this.mSelectedInfo = param
-      console.log('param', param)
       this.$emit('receiveCardEmit', param)
     },
     setCabinetNames () {
@@ -155,8 +153,6 @@ export default {
     }
   },
   created () {
-    console.log('pSelectedList', this.pSelectedList)
-    console.log('propData', this.propData)
     if (this.propData.jobkindId === 'BOOK') {
       if (!this.propData.memberYn) {
         this.setCabinetNames()

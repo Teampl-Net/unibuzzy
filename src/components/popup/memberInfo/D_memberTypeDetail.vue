@@ -11,29 +11,29 @@
 }
 </i18n>
 <template>
-    <div v-if="mMemberTypeDetail" class="fl" :style="innerWidth" style="white-space:nowrap; border-bottom:1px solid #ccc; display: inline; height: 100%; padding-top:0.5rem; position: relative; ">
-      <div style="width: 100%; height: 32px; border-bottom: 1px solid #ccc; float: left; position: relative;">
+    <div v-if="mMemberTypeDetail" class="fl memberTypeDetailWrap" :style="innerWidth">
+      <div class="memberTypeTitle">
           <p class="fl font16 fontBold textLeft commonColor mleft-05 ">{{ $t('MEM_DETAIL_TITLE_DETAIL') }}</p>
-          <div style="position: absolute; right: 10px; top: -1px;">
-            <gBtnSmall :btnTitle="$t('COMMON_BTN_DELETE')" @click="deleteMemberType(mMemberTypeDetail)" btnThema="light" class="mleft-05" style=" height: 25px; padding: 0 5px; line-height: 25px;"/>
-            <gBtnSmall :btnTitle="$t('COMMON_BTN_SAVE')" @click="this.saveListForChild" btnThema="deep" class="mleft-05" style=" height: 25px; line-height: 25px; padding: 0 5px;"/>
+          <div class="memberTypeBtnWrap">
+            <gBtnSmall :btnTitle="$t('COMMON_BTN_DELETE')" @click="deleteMemberType(mMemberTypeDetail)" btnThema="light" class="mleft-05 memberTypeBtn"/>
+            <gBtnSmall :btnTitle="$t('COMMON_BTN_SAVE')" @click="this.saveListForChild" btnThema="deep" class="mleft-05"/>
             <!-- <gBtnSmall :btnTitle="'복사'" @click="this.copyMemberType" btnThema="deep" class="mleft-05" style=""/> -->
           </div>
       </div>
       <!-- <img class="fr img-w17 mright-1 " src="../../../assets/images/board/icon_trash.svg" @click="this.$emit('deleteType', this.mMemberTypeDetail)" alt=""> -->
-        <div style="float: left; width: 100%; height: calc(100% - 50px); padding: 10px 10px;">
-            <div style="width: 100%; float: left; min-height: 30px; display: flex; align-items: center;padding-left: 5px; margin-bottom: 5px; ">
-                <div class="fl " style="border-radius:100%; padding: 4px; display: flex; justify-content: center; align-items: center; width: 25px; height: 25px; background:#cccccc50">
+        <div class="memberTypeListWrap">
+            <div class="memberTypeOptionWrap">
+                <div class="fl userIconWrap">
                     <img class="w100P" src="../../../assets/images/editChan/icon_user_Gray.svg" alt="">
                 </div>
-                <input type="text" style="width: calc(100% - 170px)" class="fl font18 fontBold textLeft commonDarkGray mleft-05"  v-model="mMemberTypeNameMtext">
-                <div style="float: left; width: 120px; padding-left: 5px; padding-top: 5px; display: flex; align-items: center;">
+                <input type="text" class="fl font18 fontBold textLeft commonDarkGray mleft-05 memberTypeNameInput"  v-model="mMemberTypeNameMtext">
+                <div class="toggleWrap">
                     <label class='fl font15 commonColor fontBold' :for="certiYn">실명인증</label>
-                    <gToggle class="fl mleft-1" style="scale: 1.2; margin-top:5px;" id="certiYn" :toggleId='this.$changeText(mMemberTypeDetail.nameMtext)' @changeToggle='mMemberTypeDetail.certiYn = !mMemberTypeDetail.certiYn' :isChecked="mMemberTypeDetail.certiYn" />
+                    <gToggle class="fl mleft-1 toggleBtn" id="certiYn" :toggleId='this.$changeText(mMemberTypeDetail.nameMtext)' @changeToggle='mMemberTypeDetail.certiYn = !mMemberTypeDetail.certiYn' :isChecked="mMemberTypeDetail.certiYn" />
                 </div>
             </div>
-            <div style="width: 100%; height: 1px; background: #ccc; float: left; margin: 5px 0;margin-bottom: 15px; "></div>
-            <div class="fl mtop-05" :key="reloadKey" style="padding: 0 5px; width: 100%;" >
+            <div class="memberTypeDetailDivide"></div>
+            <div class="fl mtop-05 queListWrap" :key="reloadKey">
                 <!-- <p class="fl w100P font14 commonColor textLeft">(성명, 전화번호)</p> -->
                 <!-- propMemberTypeDetail -->
                 <mTypeQueList @sendListToParents="saveMemberType" ref="mTypeQueList" :propMemberTypeObj="mMemberTypeDetail" @addQuestion="this.$emit('addQuestion')" @editQue="editQue" class="mtop-1" />
@@ -105,8 +105,6 @@ export default {
       saveParam.certiYn = this.mMemberTypeDetail.certiYn
       console.log(saveParam)
       var dragItemList = document.getElementsByClassName('memTypeItemListRow')
-      // eslint-disable-next-line no-debugger
-      debugger
       console.log(dragItemList)
       var saveList = []
       for (var i = 0; i < dragItemList.length; i++) {
@@ -132,5 +130,81 @@ export default {
 </script>
 
 <style scoped>
-
+.memberTypeDetailWrap {
+  white-space: nowrap;
+  border-bottom: 1px solid #ccc;
+  display: inline;
+  height: 100%;
+  padding-top: 0.5rem;
+  position: relative;
+}
+.memberTypeTitle {
+  width: 100%;
+  height: 32px;
+  border-bottom: 1px solid #ccc;
+  float: left;
+  position: relative;
+}
+.memberTypeBtnWrap {
+  position: absolute;
+  right: 10px;
+  top: -1px;
+}
+.memberTypeBtn {
+  height: 25px !important;
+  padding: 0 5px !important;
+  line-height: 25px !important;
+}
+.memberTypeListWrap {
+  float: left;
+  width: 100%;
+  height: calc(100% - 50px);
+  padding: 10px 10px;
+}
+.memberTypeOptionWrap {
+  width: 100%;
+  float: left;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  padding-left: 5px;
+  margin-bottom: 5px;
+}
+.userIconWrap {
+  border-radius:100%;
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  background:#cccccc50;
+}
+.memberTypeNameInput {
+  width: calc(100% - 170px);
+}
+.toggleWrap {
+  float: left;
+  width: 120px;
+  padding-left: 5px;
+  padding-top: 5px;
+  display: flex;
+  align-items: center;
+}
+.toggleBtn {
+  scale: 1.2 !important;
+  margin-top: 5px !important;
+}
+.memberTypeDetailDivide {
+  width: 100%;
+  height: 1px;
+  background: #ccc;
+  float: left;
+  margin: 5px 0;
+  margin-bottom: 15px;
+}
+.queListWrap {
+  padding: 0 5px;
+  width: 100%;
+}
 </style>

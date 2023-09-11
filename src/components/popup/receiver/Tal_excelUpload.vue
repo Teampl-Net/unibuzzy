@@ -35,22 +35,21 @@
 }
 </i18n>
 <template>
-    <div id="exelUploadPop" style="width: 80%; max-width: 500px; z-index: 99999999; height: 500px; border-radius: 10px; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: #fff; border: 1px solid #ccc;">
+    <div id="exelUploadPop" class="excelUploadPopWrap">
         <commonConfirmPop v-if="confirmYn" @ok="saveList" @no="this.confirmYn = false" confirmType="two" :confirmText="confirmMsg" />
-        <div style="width: 100%; height: 50px; position: relative; padding: 13px 10px; border-bottom: 2px solid #6768A7; float: left; text-align: left;">
+        <div class="excelPopHeader">
             <p class="fontBold font18">{{ $t('EXCEL_TITLE_EXCEL') }}</p>
-            <img @click="this.$emit('closePop')" class="cursorP" src="../../../assets/images/common/popup_close.png" style="position: absolute; right: 10px; top: 15px; width: 20px;" alt="">
+            <img @click="this.$emit('closePop')" class="cursorP closeBtnImg" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
-
-        <div style="width: 100%; height: calc(100% - 80px); overflow: hidden auto; margin-top: 10px; float: left; padding: 10px 1.5rem;">
+        <div class="excelPopBody">
             <!-- <div style="width: 100%; min-height: 50px; float: left;">
               <gStepProgress :activeStep="activeStep" :progressStep="progressStep" />
             </div> --> <!-- <span class="font14 lightGray">{{activeStep === 0 ? '[닫기]' : '[펼치기]'}}</span> -->
             <p class="commonColor font16 fontBold textLeft">STEP.0 {{ $t('EXCEL_MSG_DOWN') }}</p>
-            <div style="margin-left: 10px;width: calc(100% - 10px); margin-top: 5px; min-height: 35px; border-radius: 5px; margin-bottom: 10px;float: left;">
+            <div class="step0Area">
               <!-- <p class="font15 fontBold textLeft commonBlack">구성원 유형</p> -->
-              <div v-for="(value, index) in uploadTypeList" :key="index" style="background:#fff; float: right; min-height: 30px; line-height: 30px; text-align: center; margin-left: 10px; border-radius: 5px; height: 100%; ">
-                  <gBtnSmall @click="downLoadTemplete(value.filePath)" :btnTitle="value.text"  style="min-width: 100px; padding: 0 10px;"/>
+              <div class="step0BtnWrap" v-for="(value, index) in uploadTypeList" :key="index">
+                  <gBtnSmall class="step0Btn" @click="downLoadTemplete(value.filePath)" :btnTitle="value.text"/>
               </div>
             </div>
             <!-- <gBtnSmall class="fl mleft-05" style="float: right;" @click="activeStep === 1 ? this.$refs.downBtn.click() : ''" :style="activeStep !== 1 ? 'background-color:#ccc; cursor: default;' : ''" btnTitle="다운로드" />
@@ -59,38 +58,52 @@
               <p class="commonColor font16 fl fontBold textLeft">STEP.1 <a class="lightGray" ref="downBtn" href="/commonFile/thealim_member_upload_list.xlsx" download>템플릿 파일을 다운로드</a> 하여 작성합니다.</p>
               <gBtnSmall class="fl mleft-05" style="float: left;" @click="activeStep === 1 ? this.$refs.downBtn.click() : ''" :style="activeStep !== 1 ? 'background-color:#ccc; cursor: default;' : ''" btnTitle="다운로드" />
             </div> -->
-            <div v-if="activeStep >= 0" style="width: 100%; min-height: 50px; float: left;">
+            <div class="step1Area" v-if="activeStep >= 0">
               <p class="commonColor font16 fontBold textLeft">STEP.1 {{ $t('EXCEL_MSG_CHECK') }}</p> <!-- 하고 정합성 테스트를 합니다. -->
-              <div class="commonBoxStyle" style="padding-left: 20px;">
-                  <!-- <gBtnSmall style="float: left;" btnTitle="파일선택"/> -->
-                  <div class="w100P" style="display: flex; flex-direction: column; gap: 20px; align-items: flex-end;">
-                    <label for="input-file">
-                    {{ selectFile? selectFile.name:$t('COMMON_MSG_NOFILE') }}
-                      <gBtnSmall style="margin-left: 10px;" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_SELECT')" />
-                    </label>
-                    <form  @submit.prevent="formSubmit" style="overflow: hidden; float: left; width: calc(100% - 130px); min-width: 60%; margin-right: 10px; cursor: pointer; min-height: 45px;position: relative; display: none;" method="post">
-                        <input class="formImageFile" type="file" title ="선택" accept=".xls,.xlsx"  style="background-color: #A9AACD; width: 100%; float: left; color: #FFFFFF;" ref="selectFile" id="input-file" @change="changeFile"/>
-                    </form>
-                    <gBtnSmall @click="checkUploadYn" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_TEST')" />
-                  </div>
+              <div class="commonBoxStyle step1BtnWrap">
+                <!-- <gBtnSmall style="float: left;" btnTitle="파일선택"/> -->
+                <div class="w100P step1BtnBox">
+                  <label for="input-file">
+                  {{ selectFile? selectFile.name:$t('COMMON_MSG_NOFILE') }}
+                    <gBtnSmall style="margin-left: 10px;" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_SELECT')" />
+                  </label>
+                  <form  @submit.prevent="formSubmit" class="excelFileForm" method="post">
+                      <input class="formImageFile excelFileInput" type="file" title ="선택" accept=".xls,.xlsx" ref="selectFile" id="input-file" @change="changeFile"/>
+                  </form>
+                  <gBtnSmall @click="checkUploadYn" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_TEST')" />
+                </div>
               </div>
               <!-- <p class="commonBlack font16 textLeft">STEP.3 업로드한 데이터의 정보를 확인합니다.</p> -->
             </div>
-            <div v-if="this.checkUserYn" style="width: 100%; min-height: 50px; float: left;">
-              <p class="font14 fontBold font fl commonColor" style="margin-bottom: 2px; margin-left: 20px;">{{$t('EXCEL_TITLE_RESULT')}}</p>
+            <div v-if="this.checkUserYn" class="checkResultArea">
+              <p class="font14 fontBold font fl commonColor resultTitle">{{$t('EXCEL_TITLE_RESULT')}}</p>
               <p class="font13 fr lightGray">{{$t('EXCEL_TITLE_FIT') + ' ' + this.excelFileList.length + ', ' + $t('EXCEL_TITLE_NO_FIT') + this.failList.length}}</p>
-              <div class="commonBoxStyle" style="width: calc(100% - 20px); margin-left: 20px; height: calc(100% - 300px); margin-top: 0px; min-height: 200px; margin-bottom: 10px; border: 1px solid #ccc;">
-                  <table style="width: 100%; ">
-                      <colgroup><col style="width: 10%"><col style="width: 20%"><col style="width: 15%;"><col style="width: 15%"><col style="width: 15%"><col style="width: 15%;"></colgroup>
+              <div class="commonBoxStyle resultBox">
+                  <table class="w100P">
+                      <colgroup>
+                        <col style="width: 10%">
+                        <col style="width: 20%">
+                        <col style="width: 15%;">
+                        <col style="width: 15%">
+                        <col style="width: 15%">
+                        <col style="width: 15%;">
+                      </colgroup>
                       <tbody>
-                          <tr>
-                              <th class="font14 whitePurpleBG" v-for="(value, index) in excelTitleRowList" :key="index">{{value}}</th>
-                          </tr>
+                        <tr>
+                          <th class="font14 whitePurpleBG" v-for="(value, index) in excelTitleRowList" :key="index">{{value}}</th>
+                        </tr>
                       </tbody>
                   </table>
-                  <div style="width: 100%; height: calc(100% - 25px); overflow: hidden auto;">
-                    <table v-if="this.excelFileList.length > 0 " id="contentsTable" style="width: 100%; ">
-                        <colgroup><col style="width: 10%"><col style="width: 20%"><col style="width: 15%;"><col style="width: 15%"><col style="width: 15%"><col style="width: 15%;"></colgroup>
+                  <div class="excelListWrap">
+                    <table v-if="this.excelFileList.length > 0 " id="contentsTable w100P">
+                        <colgroup>
+                          <col style="width: 10%">
+                          <col style="width: 20%">
+                          <col style="width: 15%;">
+                          <col style="width: 15%">
+                          <col style="width: 15%">
+                          <col style="width: 15%;">
+                        </colgroup>
                         <tbody>
                             <tr v-if="this.uploadErrorYn"><td colspan="3">{{ $t('EXCEL_MSG_FAIL') }}</td></tr>
                             <tr v-for="(value, index) in failList" :key="index">
@@ -106,7 +119,7 @@
                             </tr>
                             <tr v-for="(value, index) in excelFileList" :key="index">
                                 <td v-for="(eData, eDIndex) in value" :key="eDIndex" class="font14">
-                                  <div style="width: 100%; padding: 5px 5px; min-" class="" >{{eData}}</div>
+                                  <div class="dataItem" >{{eData}}</div>
                                 </td>
                                 <!-- <td v-if="value[1]" class="font14">{{value[1]}}</td>
                                 <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td>
@@ -161,7 +174,6 @@ export default {
   },
   methods: {
     downLoadTemplete (path) {
-      // console.log(path)
       var iframe
       iframe = document.getElementById('hiddenExcelDownloader')
       if (iframe == null) {
@@ -183,7 +195,6 @@ export default {
         param: new Object()
       })
       this.excelFileList = result.data.resultList
-      // console.log(result)
     },
     changeFile () {
       this.activeStep = 1
@@ -213,7 +224,6 @@ export default {
               }
             })
             .then(res => {
-              // console.log(res)
               if (res.data.result === true) {
                 this.excelFileList = res.data.resultMap.dataList
                 this.failCnt = res.data.resultMap.failCnt
@@ -299,12 +309,132 @@ export default {
       if (result.result) {
         this.$emit('success')
       }
-      // console.log(result)
     }
   }
 }
 </script>
 
 <style scoped>
-.commonBoxStyle{width: 100%; min-height: 45px; float: left; margin-top: 5px;}
+.commonBoxStyle {
+  width: 100%;
+  min-height: 45px;
+  float: left;
+  margin-top: 5px;
+}
+.excelUploadPopWrap {
+  width: 80%;
+  max-width: 500px;
+  z-index: 99999999;
+  height: 500px;
+  border-radius: 10px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border: 1px solid #ccc;
+}
+.excelPopHeader {
+  width: 100%;
+  height: 50px;
+  position: relative;
+  padding: 13px 10px;
+  border-bottom: 2px solid #6768A7;
+  float: left;
+  text-align: left;
+}
+.closeBtnImg {
+  position: absolute;
+  right: 10px;
+  top: 15px;width: 20px;
+}
+.excelPopBody {
+  width: 100%;
+  height: calc(100% - 80px);
+  overflow: hidden auto;
+  margin-top: 10px;
+  float: left;
+  padding: 10px 1.5rem;
+}
+.step0Area {
+  margin-left: 10px;
+  width: calc(100% - 10px);
+  margin-top: 5px;
+  min-height: 35px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  float: left;
+}
+.step0BtnWrap {
+  background:#fff;
+  float: right;
+  min-height: 30px;
+  line-height: 30px;
+  text-align: center;
+  margin-left: 10px;
+  border-radius: 5px;
+  height: 100%;
+}
+.step0Btn {
+  min-width: 100px !important;
+  padding: 0 10px !important;
+}
+.step1Area {
+  width: 100%;
+  min-height: 50px;
+  float: left;
+}
+.step1BtnWrap {
+  padding-left: 20px;
+}
+.step1BtnBox {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-end;
+}
+.excelFileForm {
+  overflow: hidden;
+  float: left;
+  width: calc(100% - 130px);
+  min-width: 60%;
+  margin-right: 10px;
+  cursor: pointer;
+  min-height: 45px;
+  position: relative;
+  display: none;
+}
+.excelFileInput {
+  background-color: #A9AACD;
+  width: 100%;
+  float: left;
+  color: #FFFFFF;
+}
+.checkResultArea {
+  width: 100%;
+  min-height: 50px;
+  float: left;
+}
+.resultTitle {
+  margin-bottom: 2px;
+  margin-left: 20px;
+}
+.resultBox {
+  width: calc(100% - 20px);
+  margin-left: 20px;
+  height: calc(100% - 300px);
+  margin-top: 0px;
+  min-height: 200px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+}
+.excelListWrap {
+  width: 100%;
+  height: calc(100% - 25px);
+  overflow: hidden auto;
+}
+.dataItem {
+  width: 100%;
+  padding: 5px 5px;
+}
 </style>
