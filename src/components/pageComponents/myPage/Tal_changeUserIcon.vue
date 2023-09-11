@@ -30,7 +30,7 @@
           <div v-show="viewTab === 'img'" class="chanImgWrap">
             <div @click="imgClickToInput" class="cropperImgArea selectedImgBox">
               <!-- <div @click="changeImgClick" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left;" ref="selectImgPopRef" class="cropperImgArea"> -->
-              <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" style="margin: 0 auto;" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
+              <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
             </div>
 
             <form hidden @submit.prevent="formSubmit" class="imgForm" method="post">
@@ -448,6 +448,9 @@ export default {
   float: left;
   max-width: 246px;
   max-height: 248px;
+}
+.selectedImgBox > img {
+  margin: 0 auto;
 }
 .imgForm {
   overflow: hidden;

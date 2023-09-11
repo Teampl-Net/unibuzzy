@@ -1,19 +1,19 @@
 <template>
-    <div style="width: calc(100% - 40px); display: flex; flex-direction: column; height: 400px; position: fixed; border-radius: 0.8rem; z-index: 11; top: 20%; left: 20px; background: #fff;">
-        <div style="width: 100%; height: 50px; float: left; padding: 5px 10px; display: flex; align-items: center; position: relative;" class="headerShadow">
+    <div class="contentsRecvPopWrap">
+        <div class="headerShadow contentsRecvPopHeader">
             <p class="font22 fontBold textLeft commonColor">수신자 목록</p>
-            <img @click="closeXPop(false)"  src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute; right: 15px; top: 13px; cursor: pointer;" alt="">
+            <img @click="closeXPop(false)"  src="../../../assets/images/common/popup_close.png" alt="">
         </div>
-        <div style="width: 100%; height: calc(100% - 100px); overflow: hidden scroll; " class="okScrollBar">
-            <div v-for="(actor, index) in this.mActorList" style="width: calc(100% - 40px); height: 100%; display: flex; border-bottom: 1px solid #ccc; height: 80px; align-items: center; margin: 10px 20px;" :key="index">
+        <div class="okScrollBar contentsRecvPopBody">
+            <div v-for="(actor, index) in this.mActorList" class="contentsRecvPopListWrap" :key="index">
                 <template v-if="actor.accessKind === 'C'">
                     <div class="imgCircle middleBgColor fl" @click="clickEvntToParents('open')" >
                         <img src="../../../assets/images/board/icon_book.svg" class="fl content img-w25"/>
                     </div>
-                    <div class="fl mleft-05" style="display: flex; align-items: center; width: calc(100% - 100px); ">
-                        <div class="textLeft fl textOverdot w100P" style="" >
+                    <div class="fl mleft-05 recvBookItem">
+                        <div class="textLeft fl textOverdot w100P">
                             <p class="fl font16 commonDarkGray fontBold textOverdot w100P">{{this.$changeText(actor.cabinetNameMtext)}}</p>
-                            <p class="fl font14 commonDarkGray textOverdot" v-if="actor.mUserList" style="width: calc(100%)" >{{makeSummaryText(actor.mUserList)}}</p>
+                            <p class="fl font14 commonDarkGray textOverdot w100P" v-if="actor.mUserList" >{{makeSummaryText(actor.mUserList)}}</p>
                         </div>
                     </div>
                 </template>
@@ -22,8 +22,8 @@
                     <div class="imgCircle middleBgColor fl" @click="clickEvntToParents('open')" >
                         <img src="../../../assets/images/common/memberIcon.svg" class="content img-w30"/>
                     </div>
-                    <div class="fl mleft-05" style="display: flex; align-items: center; width: calc(100% - 100px);" @click="clickEvntToParents('open')">
-                        <div class="textLeft fl textOverdot w100P" style="" >
+                    <div class="fl mleft-05 recvBookItem" @click="clickEvntToParents('open')">
+                        <div class="textLeft fl textOverdot w100P">
                             <p class="fl font16 commonDarkGray fontBold textOverdot w100P">{{this.$changeText(actor.memberTypeNameMtext)}}</p>
                             <!-- <p class="fl font14 commonDarkGray textOverdot" style="width: calc(100%)" >{{cabinetNames}}</p> -->
                         </div>
@@ -33,23 +33,23 @@
                 <!-- 유저 영역 -->
                 <template v-else-if="actor.accessKind === 'U'">
                     <div class="imgCircle middleBgColor fl" @click="clickEvntToParents('open')" >
-                        <div v-if="actor.domainPath || actor.userProfileImg" :style="'background-image: url(' + (actor.domainPath? actor.domainPath + (actor.userProfileImg ? actor.userProfileImg : actor.pathMtext ) : actor.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
+                        <div v-if="actor.domainPath || actor.userProfileImg" :style="'background-image: url(' + (actor.domainPath? actor.domainPath + (actor.userProfileImg ? actor.userProfileImg : actor.pathMtext ) : actor.userProfileImg ) + ');'"  class="memberPicImgWrap recvUserIcon">
                         </div>
-                        <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
+                        <div v-else  class="memberPicImgWrap recvUserIcon noIcon">
                         </div>
                     </div>
-                    <div class="fl w100P mleft-05" style="display: flex; align-items: center; " @click="clickEvntToParents('open')">
+                    <div class="fl w100P mleft-05 flexAlignCenter" @click="clickEvntToParents('open')">
                         <div class="textLeft fl w100P " style="" >
                             <p class="fl font16 commonDarkGray fontBold w100P"><img v-if="actor.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../assets/images/editChan/icon_self.svg">{{this.$changeText(actor.userDispMtext)}}</p>
                             <p class="fl font14 commonDarkGray " style="" >{{actor.userEmail ? changeDot('email', actor.userEmail) : '등록된 이메일이 없습니다.'}}</p>
-                            <p class="fl font14 commonDarkGray" style="margin: 0 0.3rem">|</p>
+                            <p class="fl font14 commonDarkGray recvInfoDivideLine">|</p>
                             <p class="fl font14 commonDarkGray " style="" >{{actor.phoneEnc ? changeDot('phone', actor.phoneEnc) : '등록된 번호가 없습니다.'}}</p>
                         </div>
                     </div>
                 </template>
             </div>
         </div>
-        <div style="display: flex; width: 100%; justify-content: center; height: 50px;">
+        <div class="contentsRecvPopFooter">
             <gBtnSmall @click="sendMsgToRecvList" class="mright-05" btnTitle="알림 또 보내기"/>
             <gBtnSmall @click="closeXPop(false)" btnThema="light" btnTitle="닫기"/>
         </div>
@@ -88,19 +88,15 @@ export default {
   },
   created () {
     if (this.initData) {
-      console.log(this.initData)
       this.mActorList = this.initData.actorList
-      console.log(this.mActorList)
     }
     var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'recvListPop' + history.length
-    // console.log(history)
     history.push(this.popId)
     this.$store.commit('D_HISTORY/updateStack', history)
   },
   methods: {
     makeSummaryText (list) {
-      console.log(list)
       if (!list || list.length === 0) return []
       var returnText = ''
       for (var i = 0; i < list.length; i++) {
@@ -111,7 +107,6 @@ export default {
         returnText += this.$changeText(list[i].userDispMtext)
       }
       if (list.length > 4) returnText += '외 ' + (list.length - 5) + '명'
-      console.log(returnText)
       return returnText
     },
     sendMsgToRecvList () {
@@ -151,6 +146,69 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.contentsRecvPopWrap {
+  width: calc(100% - 40px);
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  position: fixed;
+  border-radius: 0.8rem;
+  z-index: 11;
+  top: 20%;
+  left: 20px;
+  background: #fff;
+}
+.contentsRecvPopHeader {
+  width: 100%;
+  height: 50px;
+  float: left;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.contentsRecvPopHeader > img {
+  width: 25px;
+  position: absolute;
+  right: 15px;
+  top: 13px;
+  cursor: pointer;
+}
+.contentsRecvPopBody {
+  width: 100%;
+  height: calc(100% - 100px);
+  overflow: hidden scroll;
+}
+.contentsRecvPopListWrap {
+  width: calc(100% - 40px);
+  height: 100%;
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  height: 80px;
+  align-items: center;
+  margin: 10px 20px;
+}
+.recvBookItem {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 100px);
+}
+.recvUserIcon {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.noIcon {
+  background-image: url('/resource/userCommonIcon/userImg01.svg');
+}
+.recvInfoDivideLine {
+  margin: 0 0.3rem;
+}
+.contentsRecvPopFooter {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  height: 50px;
+}
 </style>

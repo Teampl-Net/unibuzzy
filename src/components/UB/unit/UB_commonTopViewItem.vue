@@ -137,7 +137,6 @@
     <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" :boardDetail="mMoveContentsDetailValue" />
   </div>
   <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
-  <imgPreviewPop class="imgPreviewPop" :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
   <template v-if="mContRecvPopShowYn">
     <div class="recvPopBg" @click="this.$refs.recvListPop.closeXPop()"></div>
     <recvListPop ref="recvListPop" @closeXPop="closeRecvListPop" :initData="mActorListInitDataList"/>
@@ -147,7 +146,6 @@
 <script>
 import stickerListSetting from '@/components/popup/common/D_stickerListSetting.vue'
 import { onMessage } from '@/assets/js/webviewInterface'
-import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import statCodePop from '@/components/board/D_manageStateCodePop.vue'
 import attachFileListPop from '@/components/pageComponents/main/unit/D_commonAttachFileListPop.vue'
 import recvListPop from '@/components/pageComponents/push/D_contentsRecvListPop.vue'
@@ -158,7 +156,6 @@ export default {
     stickerListSetting,
     attachFileListPop,
     statCodePop,
-    imgPreviewPop,
     recvListPop,
     userDetailPop
   },

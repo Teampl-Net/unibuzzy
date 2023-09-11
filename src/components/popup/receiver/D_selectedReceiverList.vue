@@ -108,8 +108,6 @@ export default {
   },
   watch: {
     listData () {
-      console.log('===== watch prop List =====')
-      console.log(this.listData)
       // this.upDatePage(this.listData)
     }
   },
@@ -143,7 +141,6 @@ export default {
     //     }
     //   }
     //   this.receiverList = selectedReceiverList
-    //   console.log(this.receiverList)
     // },
     horizontalScroll (e) {
       if (e.deltaY === 0) return
@@ -166,8 +163,6 @@ export default {
     upDatePage (data) {
       // var temp
       // this.setReceiverData()
-      // console.log(data)
-      // console.log(data)
 
       if (data) {
         if (data.bookList !== undefined && data.bookList !== null) {
@@ -197,8 +192,6 @@ export default {
           }
         }
       }
-      console.log('--------0---------')
-      console.log(this.teamList)
     },
     sendReceivers () {
       // this.teamList.itemType = this.itemType

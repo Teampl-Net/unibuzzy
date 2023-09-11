@@ -16,7 +16,7 @@
         "
         :class="{channelCardBox : $route.path === '/'}"
   >
-    <div @click="goChannelMain(chanElement)" class="w100P" style="position: relative;min-height: 80px;display: flex;flex-direction: row;align-items: center;">
+    <div @click="goChannelMain(chanElement)" class="w100P channelCardArea">
         <div
         v-if="$appType === 'UB' && pSelectedYn === true"
         class="font11 selectedChannel"
@@ -432,5 +432,12 @@ export default {
 .popularContentsItem > pre {
   width: calc(100% - 10px) !important;
   word-break: break-all !important;
+}
+.channelCardArea {
+  position: relative;
+  min-height: 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 </style>
