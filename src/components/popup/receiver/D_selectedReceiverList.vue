@@ -18,10 +18,10 @@
 </i18n>
 <template>
   <!-- <div style="width: 100%; ; background: white; padding: 10px; box-shadow:-3px -2px 14px 0px #ccc" class=""> -->
-  <div class="w100P fl" style="">
-    <div class="CWhiteGrayBgColor" style="width: 100%; min-height: 50px; display: flex; justify-content: space-between; align-items: center; padding: 0 1.5rem;">
-      <p class="textLeft fontBold font13 fl commonDarkGray" style="">{{(teamList.bookList.length > 0 ? $t('COMMON_NAME_ADDRBOOK') + teamList.bookList.length : '') + ((teamList.bookList.length > 0 && teamList.memberList.length > 0) ? ', ' : '') +  (teamList.memberList.length > 0 ? teamList.memberList.length + " " + $t('EDIT_BOOK_TITLE_PEOPLE') : '')}}</p>
-      <gBtnSmall class="fr CDeepBgColor" style="border-radius: 10px" :btnTitle="$t('EDIT_BOOK_BTN_ADD')" @click="sendReceivers" v-if="btnVisible !== false" />
+  <div class="w100P fl">
+    <div class="CWhiteGrayBgColor addReceiverBtnWrap">
+      <p class="textLeft fontBold font13 fl commonDarkGray">{{(teamList.bookList.length > 0 ? teamList.bookList.length + " " + $t('COMMON_NAME_ADDRBOOK') : '') + ((teamList.bookList.length > 0 && teamList.memberList.length > 0) ? ', ' : '') +  (teamList.memberList.length > 0 ? teamList.memberList.length + " " + $t('EDIT_BOOK_TITLE_PEOPLE') : '')}}</p>
+      <gBtnSmall class="fr CDeepBgColor borderRadi10" :btnTitle="$t('EDIT_BOOK_BTN_ADD')" @click="sendReceivers" v-if="btnVisible !== false" />
     </div>
     <div class="selecteItemdArea" :class="!isMobile? 'thinScrollBar':''" id="selectedItemWrap" @wheel="horizontalScroll">
       <!-- <div v-for="(data, index) in receiverList" :key="index" class=" fl mright-1"  style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;">
@@ -38,30 +38,29 @@
         </template>
         <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn((data.jobkindId === 'BOOK' ? 'book' : 'user'),index, team.cabinetKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
       </div> -->
-      <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl mright-1"  style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; max-width:60px">
-        <div style="width: 100%; float: left;" v-if="!team.memberYn">
-            <div class="middleBgColor fl imgCircle"  >
-                <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl img-w20" alt="">
-            </div>
-            <p class="fl font15 commonBlack textOverdot w100P">{{this.$changeText(team.cabinetNameMtext)}}</p>
-            <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('book', index, team.cabinetKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
+      <div v-for="(team, index) in teamList.bookList" :key='index' class="fl mright-1 selectedBookListWrap">
+        <div class="w100P fl" v-if="!team.memberYn">
+          <div class="middleBgColor fl imgCircle"  >
+              <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl img-w20" alt="">
+          </div>
+          <p class="fl font15 commonBlack textOverdot w100P">{{this.$changeText(team.cabinetNameMtext)}}</p>
+          <span class="fr whiteColor CDeepBgColor selectedItemDeleteBtn" @click="removeSelectedYn('book', index, team.cabinetKey)">x</span>
         </div>
-        <div style="width: 100%; float: left;" v-else-if="team.memberYn">
-            <div class="middleBgColor fl imgCircle"  >
-                <img src="../../../assets/images/common/memberIcon.svg" class="fl img-w20" alt="">
-            </div>
-            <p class="fl font15 commonBlack textOverdot w100P">{{this.$changeText(team.nameMtext)}}</p>
-            <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('book', index, team.memberTypeKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
+        <div class="w100P fl" v-else-if="team.memberYn">
+          <div class="middleBgColor fl imgCircle">
+              <img src="../../../assets/images/common/memberIcon.svg" class="fl img-w20" alt="">
+          </div>
+          <p class="fl font15 commonBlack textOverdot w100P">{{this.$changeText(team.nameMtext)}}</p>
+          <span class="fr whiteColor CDeepBgColor selectedItemDeleteBtn" @click="removeSelectedYn('book', index, team.memberTypeKey)">x</span>
         </div>
       </div>
-
-      <div v-for="(member, index) in teamList.memberList" :key='index'  class=" fl mright-1"  style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; max-width:60px">
+      <div v-for="(member, index) in teamList.memberList" :key='index'  class=" fl mright-1 selectedBookListWrap">
         <div class="middleBgColor fl imgCircle" >
-          <div v-if="member.domainPath || member.userProfileImg" :style="'background-image: url(' + (member.domainPath? member.domainPath + (member.userProfileImg ? member.userProfileImg : member.pathMtext) : member.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
-          <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap"></div>
+          <div v-if="member.domainPath || member.userProfileImg" :style="'background-image: url(' + (member.domainPath? member.domainPath + (member.userProfileImg ? member.userProfileImg : member.pathMtext) : member.userProfileImg ) + ');'"  class="memberPicImgWrap selectedMemImgWrap"></div>
+          <div v-else class="memberPicImgWrap selectedMemImgWrap noImg"></div>
         </div>
         <p class="fl font15 commonBlack textOverdot w100P">{{this.GE_USER.userKey === member.userKey ? $t('EDIT_BOOK_NAME_ME') : this.$changeText(member.userDispMtext)}}</p>
-        <span class="fr whiteColor CDeepBgColor" @click="removeSelectedYn('member', index, member.accessKey)" style="border-radius: 100%; width:20px; height:20px; line-height:18px; position:absolute; right: -5px; top:-5px; text-align: center;">x</span>
+        <span class="fr whiteColor CDeepBgColor selectedMemDeleteBtn" @click="removeSelectedYn('member', index, member.accessKey)">x</span>
       </div>
       <!-- <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem" >
         <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl mright-05" style="width:20px" alt="">
@@ -253,13 +252,21 @@ export default {
 
 <style >
 /* .receiverTeamListCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
-
-.receiverTeamText{ height:40px; cursor: pointer; line-height:40px;}
-.receiverTeamSubscImg{width: 12px;}
-
-.fontBold{font-weight: bold;}
-.trans90{transform:rotate(270deg)}
-.selecteItemdArea{
+.receiverTeamText {
+  height :40px;
+  cursor: pointer;
+  line-height: 40px;
+}
+.receiverTeamSubscImg {
+  width: 12px;
+}
+.fontBold {
+  font-weight: bold;
+}
+.trans90 {
+  transform: rotate(270deg)
+}
+.selecteItemdArea {
   display: flex;
   width: 100%;
   padding: 15px;
@@ -276,16 +283,16 @@ export default {
 /* .widthPop{
     width:80% !important;
 } */
-.editmLeft{
+.editmLeft {
     margin-left: 30px;
 }
-.selPopFl{
-    float:left;
-    margin-left: 1rem;
+.selPopFl {
+  float: left;
+  margin-left: 1rem;
 }
 
-.mobileMleft{
-    margin-left: 0.5rem;
+.mobileMleft {
+  margin-left: 0.5rem;
 }
 .imgCircle {
   overflow: hidden;
@@ -294,17 +301,63 @@ export default {
   width: 100%;
   height: 100%;
 }
+.addReceiverBtnWrap {
+  width: 100%;
+  min-height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+}
+.borderRadi10 {
+  border-radius: 10px !important;
+}
+.selectedBookListWrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 60px
+}
+.selectedItemDeleteBtn {
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  position: absolute;
+  right: -10px;
+  top: -10px;
+}
+.selectedMemImgWrap {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.noImg {
+  background-image: url('/resource/userCommonIcon/userImg01.svg');
+}
+.selectedMemDeleteBtn {
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+  line-height: 18px;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  text-align: center;
+}
 @media screen and (max-width: 410px) {
-    .selfAddArea{
-        width: calc(100% - 15px);
-        margin: 0.5rem 0rem !important;
-    }
-    .mobileMleft{
-        margin-left: 0.5rem;
-        white-space:nowrap
-    }
-    /* .selecteItemdArea{
-        height:calc(100% - 3rem - 30px) !important;
-    } */
+  .selfAddArea{
+      width: calc(100% - 15px);
+      margin: 0.5rem 0rem !important;
+  }
+  .mobileMleft{
+      margin-left: 0.5rem;
+      white-space:nowrap
+  }
+  /* .selecteItemdArea{
+      height:calc(100% - 3rem - 30px) !important;
+  } */
 }
 </style>
