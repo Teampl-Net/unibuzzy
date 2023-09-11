@@ -41,14 +41,14 @@ export default {
 }
 </script>
 
-<style>
-  .BoardCardBox{
-    box-shadow:inset 0 0 5px rgba(0,0,0,0);
-    transition:all .3s;
-  }
-  .BoardCardBox:hover{
-    box-shadow:inset 0 0 12px rgba(97, 97, 97, 0.6), 0 0 7px rgba(255,255,255,0.5);
-  }
+<style scoped>
+.BoardCardBox {
+  box-shadow:inset 0 0 5px rgba(0,0,0,0);
+  transition:all .3s;
+}
+.BoardCardBox:hover {
+  box-shadow:inset 0 0 12px rgba(97, 97, 97, 0.6), 0 0 7px rgba(255,255,255,0.5);
+}
 .chanLogoImgWrap {
   width: 40px;
   height: 40px;

@@ -17,20 +17,19 @@
   <div class="w100P h100P channelMenuEditWrap pagePaddingWrap">
     <gPopHeader :headerTitle="propData.popHeaderText" :pClosePop="pClosePop" />
     <div v-if="CHANNEL_DETAIL" class="h100P boardListWrap">
-        <draggable  ref="editableArea" @end="changePosTeamMenu" class="ghostClass dragBox" :options="{ghostClass:'sortable-ghost',animation:150}" v-model="cabinetList" ghost-class="ghost" :disabled='enabled' delay="200"  >
-          <transition-group>
-            <template v-for="(data, index) in cabinetList" :key='index'>
-              <boardCard :propData='data' @cardEmit='cardEmit' :compoIdx='index' />
-            </template>
-          </transition-group>
-        </draggable>
-        <img src="@/assets/images/button/Icon_CreBoardBtn.png" @click="addBoardRow" alt="button of create board" class="img-78 img-w66 createBoardBtn">
-        <gListEmpty v-if="cabinetList.length === 0" :title="$t('EDIT_BOARD_MSG_NOBOARD')" :subTitle="$t('EDIT_BOARD_MSG_CREBOARD')" option='EDIT' />
+      <draggable  ref="editableArea" @end="changePosTeamMenu" class="ghostClass dragBox" :options="{ghostClass:'sortable-ghost',animation:150}" v-model="cabinetList" ghost-class="ghost" :disabled='enabled' delay="200"  >
+        <transition-group>
+          <template v-for="(data, index) in cabinetList" :key='index'>
+            <boardCard :propData='data' @cardEmit='cardEmit' :compoIdx='index' :style="cabinetList.length - 1 === index && index !== 0? 'padding-bottom: 100px; border-bottom: 0;':''" />
+          </template>
+        </transition-group>
+      </draggable>
+      <img src="@/assets/images/button/Icon_CreBoardBtn.png" @click="addBoardRow" alt="button of create board" class="img-78 img-w66 createBoardBtn">
+      <gListEmpty v-if="cabinetList.length === 0" :title="$t('EDIT_BOARD_MSG_NOBOARD')" :subTitle="$t('EDIT_BOARD_MSG_CREBOARD')" option='EDIT' />
     </div>
   </div>
   <gConfirmPop :confirmText='errorBoxText' confirmType='two' @no='errorBoxYn = false' @ok='confirmfunc' v-if="errorBoxYn"/>
   <modiBoardPop :chanInfo="this.chanInfo" :pClosePop="closeNrefresh" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' @openPop='openPop'/>
-
 </template>
 
 <script>

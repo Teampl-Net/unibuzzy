@@ -26,37 +26,37 @@
 </i18n>
 <template>
   <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
-  <div style="width: 100%; float: left;" @click.stop="preventDefault">
-    <div style="width: 100%; height: 120vh; position: absolute; top:-30vh; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index: 9999;" @click="closePop()"></div>
-    <div :class="{popupTop: pSelectedBuilding}" class="confirmPopWrap" style="top:21%; overflow: hidden; height: 70vh;" :style="'padding-bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
+  <div class="fl w100P" @click.stop="preventDefault">
+    <div class="selectImgPopBg" @click="closePop()"></div>
+    <div :class="{popupTop: pSelectedBuilding}" class="confirmPopWrap changeBgPopWrap" :style="'padding-bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
     <!-- <div style="width: 50%; height: 50%; padding: 0 20px; overflow: auto;" > -->
-        <div class="creChanIntroTextWrap" style="display:flex; align-items:center; justify-content:space-between; width: 100%; min-height: 50px; text-align: left;">
+        <div class="creChanIntroTextWrap">
             <p class="fontBold font18">{{msgTitle}}</p>
-              <img src="../../../assets/images/common/popup_close.png" style="width:20px;" @click="pClosePop"/>
+            <img src="../../../assets/images/common/popup_close.png" @click="pClosePop"/>
         </div>
-        <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
-        <div id="creChanContentsArea" style="overflow: auto; width: 100%; height: calc(100% - 150px); margin-top: 20px; float: left; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between ">
+        <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl activeBar" @changeTab= "changeTab" />
+        <div id="creChanContentsArea" class="chanImgContentsWrap">
             <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
-              <div  :style="'height: ' + this.contentsHeight + 'px; '" style="width: calc(100%); display: flex; flex-direction: column;align-items: center; margin-right: 10px; float: left;">
-                <div  @click="imgClickToInput" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 250px; max-height: 250px;" ref="selectImgPopRef" class="cropperImgArea">
+              <div :style="'height: ' + this.contentsHeight + 'px;'" class="imgContArea">
+                <div  @click="imgClickToInput" ref="selectImgPopRef" class="cropperImgArea imgCont">
                   <img v-if="changeImgYn = true" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '"  id="profileImg" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
                 </div>
-                <form hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; float: left; position: relative;height: var(--cardHeight); width: calc(100% - 100px); min-width: 180px; " method="post">
-                    <input class="formImageFile" style="width: 100%; float: left;" type="file" :title ="$t('COMMON_BTN_SELECTED')" accept="image/jpeg, image/png, image/jpg" ref="selectFileChangeIconNBG" id="input-file" @change="handleImageUpload"/>
+                <form hidden @submit.prevent="formSubmit" class="imgForm" method="post">
+                    <input class="formImageFile w100P fl" type="file" :title ="$t('COMMON_BTN_SELECTED')" accept="image/jpeg, image/png, image/jpg" ref="selectFileChangeIconNBG" id="input-file" @change="handleImageUpload"/>
                 </form>
-                <div class="fl textLeft w100P" style="display: flex; justify-content: space-around; border-top: 0.5px solid rgba(103, 104, 167, 0.54);">
+                <div class="fl textLeft w100P selectAgainBtnWrap">
                   <p v-if="!cropperYn" class="fl fontBold font14 mtop-05">{{ $t('USER_MSG_TOUCH_IMG') }}</p>
-                  <gBtnSmall v-if="cropperYn" class="fl mtop-05" style="word-break: break-word; white-space: nowrap;" :btnTitle="$t('COMM_BTN_SELEC_AGAIN')" @click="changeBtnClick"/>
+                  <gBtnSmall v-if="cropperYn" class="fl mtop-05 selectAgainBtn" :btnTitle="$t('COMM_BTN_SELEC_AGAIN')" @click="changeBtnClick"/>
                 </div>
               </div>
             </div>
-            <div v-show="viewTab === 'icon'" id="chanIconBox"  style="width: 100%; float: left; display: flex; flex-wrap: wrap; justify-content: center;">
+            <div v-show="viewTab === 'icon'" id="chanIconBox" class="chanIconContentsWrap">
               <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
-                <img v-if="opentype =='iconPop'" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext) "  style="width: calc(100% - 20px)"/>
+                <img v-if="opentype =='iconPop'" class="iconPopImg" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)" />
                 <!-- <p class="font15"  v-if="opentype =='iconPop'" style="" >{{this.$changeText(value.codeNameMtext)}}</p> -->
 
-                <img v-if="opentype =='bgPop'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' style="width: 100%; height: 100%;" >
-                <img v-if="opentype =='building'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' style="width: 100%; height: 100%;" >
+                <img class="w100P h100P" v-if="opentype =='bgPop'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' />
+                <img class="w100P h100P" v-if="opentype =='building'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' />
 
               </div>
             </div>
@@ -107,9 +107,6 @@ export default {
   },
   created () {
     this.getOpenType()
-    console.log('pSelectedBuilding', this.pSelectedBuilding)
-    // console.log(this.selectIcon)
-    // // console.log(this.opentype)
     this.getCodeList()
     this.setDefaultData()
     this.dataSetting()
@@ -200,7 +197,6 @@ export default {
         }
       } else if (this.opentype === 'building') {
         // .stringify(this.selectIcon))
-        console.log('building')
         if (this.selectIcon) {
           if (this.selectIcon.iconType === 'icon' || this.selectIcon.selectedId < 16) {
             this.viewTab = 'icon'
@@ -245,7 +241,6 @@ export default {
         param.groupCode = 'T_BD__'
       }
       resultList = await this.$getCodeList(param)
-      console.log('===resultList', resultList)
       this.teamImgList = resultList
       // this.contentsHeight = document.getElementById('chanIconBox').scrollHeight
       // var a = this.teamImgList
@@ -263,8 +258,6 @@ export default {
       }
     },
     async setParam () {
-      // console.log(this.selectedImgPath)
-      // console.log(this.selectedImgFilekey)
       if (this.viewTab === 'icon') {
         // eslint-disable-next-line no-new-object
         var param = new Object()
@@ -273,7 +266,6 @@ export default {
           param.selectPath = this.selectPath
           param.iconType = this.viewTab
           this.$emit('makeParam', param)
-          console.log('==============param', param)
         } else {
         }
       } else if (this.viewTab === 'img') {
@@ -282,7 +274,6 @@ export default {
           }
         } else {
           // this.cropYn = true
-          // // console.log(this.previewImgUrl)
           // return
           await this.formSubmit()
         }
@@ -291,7 +282,6 @@ export default {
         param.selectedId = this.selectedImgFilekey
         param.selectPath = this.selectedImgPath
         param.iconType = this.viewTab
-        // console.log(param)
         this.$removeHistoryStack()
         this.$emit('makeParam', param)
       }
@@ -322,12 +312,8 @@ export default {
         this.selectFile = this.$refs.selectFileChangeIconNBG.files[0]
         // var selectFileName = this.selectFile.name
         // this.selectFile.name = this.selectFile.name.replaceAll(' ', '')
-        // console.log(selectFileName)
-        // console.log(' ----- selectFileName -------')
         // selectFileName = selectFileName.replaceAll(' ', '')
-        // console.log(selectFileName)
         // this.selectFile.name = selectFileName
-        // console.log(this.selectFile.name)
 
         let fileExt = this.selectFile.name.substring(
           this.selectFile.name.lastIndexOf('.') + 1
@@ -361,12 +347,9 @@ export default {
               const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
               var newFileName = compressedFile.name
               newFileName = newFileName.replaceAll(' ', '')
-              console.log('_______________________')
-              console.log(newFileName)
               var newFile = new File([Bfile], newFileName)
             } else {
               src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
-              console.log(src)
             }
             console.log(` @@ compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
             console.log(newFile)
@@ -374,12 +357,9 @@ export default {
 
             this.previewImgUrl = src
             this.uploadFileList.push({ previewImgUrl: src, addYn: true, file: newFile })
-            console.log('this.uploadFileList', this.uploadFileList)
             // editorImgResize1(canvas.toDataURL('image/png', 0.8))
             // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
             this.refImg = this.$refs.image
-
-            console.log(this.refImg)
 
             this.cropper = new Cropper(this.refImg, {
               viewMode: '1',
@@ -435,8 +415,6 @@ export default {
         // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
         // eslint-disable-next-line no-unused-vars
         var tt = this.selectFile
-        // console.log('#######################')
-        // console.log(this.selectFile.name)
         let fileExt = this.selectFile.name.substring(
           this.selectFile.name.lastIndexOf('.') + 1
         )
@@ -458,7 +436,6 @@ export default {
               // editorImgResize1(canvas.toDataURL('image/png', 0.8))
               // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
               thisthis.refImg = thisthis.$refs.image
-              // // console.log(this.cropper)
 
               thisthis.cropper = new Cropper(thisthis.refImg, {
                 viewMode: '1',
@@ -491,7 +468,6 @@ export default {
     },
     async cropImage (img) {
       if (this.uploadFileList.length > 0) {
-        // console.log(img)
         for (var i = 0; i < this.uploadFileList.length; i++) {
           this.uploadFileList[i].file = img
         }
@@ -501,7 +477,6 @@ export default {
         param.selectedId = this.selectedImgFilekey
         param.selectPath = this.selectedImgPath
         param.iconType = this.viewTab
-        // console.log(param)
         this.$emit('makeParam', param)
       }
     },
@@ -518,11 +493,7 @@ export default {
       var newSelectFileName = this.selectFile.name
       newSelectFileName = newSelectFileName.replaceAll(' ', '')
       newSelectFileName = newSelectFileName.replaceAll('-', '')
-      // console.log(encodeURIComponent(newSelectFileName))
-      console.log(this.convertFilename(newSelectFileName))
       const files = new File([Bfile], this.convertFilename(newSelectFileName))
-      console.log('============= 압축된 이미지 ================')
-      console.log(files)
 
       return files
     },
@@ -532,8 +503,6 @@ export default {
     },
     async formSubmit () {
       if (this.uploadFileList.length > 0) {
-        // console.log('this.uploadFileList')
-        // console.log(this.uploadFileList)
         var form = new FormData()
         // var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
@@ -552,13 +521,9 @@ export default {
                 }
               })
             .then(res => {
-              // console.log('res')
-              // console.log(res)
               if (res.data.length > 0) {
                 var path = res.data[0].domainPath + res.data[0].pathMtext
                 this.selectedImgPath = path
-                // // eslint-disable-next-line no-debugger
-                // debugger
                 this.selectedImgFilekey = res.data[0].fileKey
               }
             })
@@ -604,7 +569,12 @@ export default {
 </script>
 <style scoped>
 
-.confirmPopWrap{width: 90%; position: absolute; z-index: 9999; border-radius: 10px; background: #FFFFFF;
+.confirmPopWrap {
+  width: 90%;
+  position: absolute;
+  z-index: 9999;
+  border-radius: 10px;
+  background: #FFFFFF;
   padding: 1rem 2rem;
   overflow: auto;
   left: 5%;
@@ -613,21 +583,35 @@ export default {
   box-shadow: 2px 3px 6px 3px #ccc;
   transform: translateY(-50%);
 }
-.creChanIntroTextWrap{padding: 10px 0; float: left;}
-
-.creChanBigBtn{
+.creChanIntroTextWrap {
+  padding: 10px 0;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 50px;
+  text-align: left;
+}
+.creChanIntroTextWrap > img {
+  width: 20px;
+}
+.creChanBigBtn {
   height: 50px; line-height: 50px; background: #6768a7; color: #fff; border-radius: 8px;
   width: 100%;
-
   margin-top: 10px;
   /* bottom: 10px;
   left: 5%; */
 }
 /* .activeTypeBox{background: #6768a7; color: #fff; opacity: 0.5;}*/
-.activeTypeBox{ color: black; opacity: 0.4;}
-.activeTypeBox p {color: black;}
-
-.createChannelSelectBox{
+.activeTypeBox {
+  color: black;
+  opacity: 0.4;
+}
+.activeTypeBox p {
+  color: black;
+}
+.createChannelSelectBox {
   float: left;
   max-width: 300px;
   max-height: 300px;
@@ -642,18 +626,98 @@ export default {
   align-items: center;
   justify-content: space-around;
 }
-.hidden{
+.hidden {
   display:none
 }
-.cropperImgArea img{
+.cropperImgArea img {
   display: block;
   max-width: 100%
   /* object-fit: contain; width: 100%; height: 100%; */
   /* This rule is very important, please don't ignore this */
 }
 
-.popupTop{
-  top:44% !important;
+.popupTop {
+  top: 44% !important;
 }
-
+.selectImgPopBg {
+  width: 100%;
+  height: 120vh;
+  position: fixed;
+  top: 0vh;
+  left: 0;
+  background: #00000026;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.changeBgPopWrap {
+  top: 21%;
+  overflow: hidden;
+  height: 70vh;
+}
+.activeBar {
+  width: 100% !important;
+}
+.chanImgContentsWrap {
+  overflow: auto;
+  width: 100%;
+  height: calc(100% - 150px);
+  margin-top: 20px;
+  float: left;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between
+}
+.imgContArea {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10px;
+  float: left;
+}
+.imgCont {
+  width:80%;
+  height:80%;
+  min-height: 240px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  overflow: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  float: left;
+  max-width: 250px;
+  max-height: 250px;
+}
+.imgForm {
+  overflow: hidden;
+  cursor: pointer;
+  min-height: 50px;
+  float: left;
+  position: relative;
+  height: var(--cardHeight);
+  width: calc(100% - 100px);
+  min-width: 180px;
+}
+.selectAgainBtnWrap {
+  display: flex;
+  justify-content: space-around;
+  border-top: 0.5px solid rgba(103, 104, 167, 0.54);
+}
+.selectAgainBtn {
+  word-break: break-word !important;
+  white-space: nowrap !important;
+}
+.chanIconContentsWrap {
+  width: 100%;
+  float: left;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.iconPopImg {
+  width: calc(100% - 20px);
+}
 </style>

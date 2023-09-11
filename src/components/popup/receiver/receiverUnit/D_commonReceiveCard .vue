@@ -187,7 +187,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 .selectedSpan{
   width: 20px;
   height: 20px;
@@ -196,5 +196,17 @@ export default {
   background: #5F61BD;
   border: 1.5px solid #5F61BD;
   border-radius: 50%;
+}
+.rowBaseCss{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px;
+  gap: 10px;
+
+  width: 100%;
+  min-height: 70px;
+  left: 0px;
 }
 </style>

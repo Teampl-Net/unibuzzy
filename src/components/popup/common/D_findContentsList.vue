@@ -205,8 +205,6 @@ export default {
   },
   methods: {
     selectSticker (val) {
-      console.log(val)
-      console.log(this.selectedSticker)
       if (this.selectedSticker && val.stickerKey === this.selectedSticker.stickerKey) {
         this.selectedSticker = null
       } else {
@@ -222,7 +220,6 @@ export default {
         param: param
       })
       this.mStickerList = result.data
-      console.log(result)
     },
     // settingAnswerList () {
     //   var qList = this.receivList[this.selectOption].InfoQueList[].answerList
@@ -247,7 +244,6 @@ export default {
         this.loadingYn = false
         this.$refs.searchLoading.hide()
         this.receivSearchYn = true
-        console.log(this.receivList)
       }
     },
     getMemberInfo () {

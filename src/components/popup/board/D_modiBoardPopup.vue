@@ -82,119 +82,105 @@
 </i18n>
 <template>
 <!-- 이 페이지는 gPop에서 열어주지 않고 있고, editBoard 파일에서 가지고 있다. -->
-<div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'"  style="padding-top: 0;">
+<div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap modiBoardPopWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'">
   <popHeader @closeXPop="closePop()" :pClosePop="pClosePop" :headerTitle="$t('EDIT_BOARD_NAME_BOARD')" />
   <loadingCompo v-if="loadingYn" />
-
   <!-- 헤더를 제외한 나머지 부분 // 스크롤을 위해 넣었으나, overflow가 되면서 밑 권한 설정 화면에서 쉐도우 처리 양 끝이 hidden 됨-->
-
-  <div class="w100P h100P fl ptop-1" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'"  style="overflow: auto; height: calc(100% - 70px);" >
-    <div class="itemWrite fl ">
-      <p class="fontBold  textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOARD_TITLE_NAME') }}</p>
-      <input class="fl" style="width: calc(100% - 140px);" v-model="boardName" type="text" :placeholder="$t('EDIT_BOARD_MSG_NAME')" id="channelName">
-
-      <div class="fl mleft-1" @click="this.colorPickerShowYn = !this.colorPickerShowYn" style=" border: none; min-width: 30px; max-width: 30px; width:30px; height: 30px; border-radius:100%;" :style="'background:' + this.selectedColor + ';'" ></div>
+  <div class="w100P h100P fl ptop-1 modiBoardPopContWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
+    <div class="itemWrite fl w100P">
+      <p class="fontBold  textLeft font16 fl width100px">{{ $t('EDIT_BOARD_TITLE_NAME') }}</p>
+      <input class="fl boardNameInput" v-model="boardName" type="text" :placeholder="$t('EDIT_BOARD_MSG_NAME')" id="channelName">
+      <div class="fl mleft-1 boardSelectColor" @click="this.colorPickerShowYn = !this.colorPickerShowYn" :style="'background:' + this.selectedColor + ';'" ></div>
     </div>
-
-    <div v-if="colorPickerShowYn" class="fr" style="width: calc(100% - 100px);">
+    <div v-if="colorPickerShowYn" class="fr optionWrap">
       <gColorPicker :colorPick="selectedColor" @closePop="closeColorPickerPop" v-if="colorPickerShowYn" @choiceColor='choiceColor' ref="colorPicker" />
     </div>
-
     <div class="itemWrite fl">
-      <p class="fontBold textLeft font16 fl mtop-02" style="width: 100px;">{{ $t('EDIT_BOARD_TITLE_FUNCTION') }}</p>
-      <div class="fl" style="width: calc(100% - 100px);">
+      <p class="fontBold textLeft font16 fl mtop-02 width100px">{{ $t('EDIT_BOARD_TITLE_FUNCTION') }}</p>
+      <div class="fl optionWrap">
         <gCheckBtn class="fl gCheck-W mtop-03 mright-03"  :title="$t('EDIT_BOARD_BTN_COMMENT')" :selectedYn='replyYnInput' @click="replyYnInput = !replyYnInput" />
         <gCheckBtn class="fl gCheck-W mtop-03 mright-03" :title="$t('EDIT_BOARD_BTN_FILE')" :selectedYn='fileYnInput' @click="fileYnInput = !fileYnInput" />
         <gCheckBtn class="fl gCheck-W mtop-03 mright-03" :title="blindYn === true ? $t('EDIT_BOARD_BTN_ANONY') : $t('EDIT_BOARD_BTN_ID')" :selectedYn='blindYn' @click="blindYn = !blindYn" />
         <gCheckBtn class="fl gCheck-W mtop-03 mright-03"  :title="$t('EDIT_BOARD_BTN_STATUS')" :selectedYn='workStatYn' @click="workStatYn = !workStatYn" />
         <gCheckBtn class="fl gCheck-W mtop-03 mright-03" :title="$t('EDIT_BOARD_BTN_HIDE')" v-show="permissionVGroup.type !== 'A'" :selectedYn='titleBlindYn' @click="titleBlindYn = !titleBlindYn" />
       </div>
-
     </div>
-
     <div class="itemWrite fl ">
-      <p class="fontBold  textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOARD_TITLE_SAMPLE') }}</p>
-      <div class="fr textLeft receivBox" style="width: calc(100% - 100px); padding:5px;" @click="this.samplePopShowYn = true" >
-        <p class="fl textLeft commonDarkGray font14 textOverdot pholder" style="width: calc(100% - 74px);" :placeholder="$t('EDIT_BOARD_MSG_SAMPLE')">{{this.guideSampleInnerHtml? $t('EDIT_BOARD_MSG_ISSAMPLE'): ''}}</p>
+      <p class="fontBold  textLeft font16 fl width100px">{{ $t('EDIT_BOARD_TITLE_SAMPLE') }}</p>
+      <div class="fr textLeft receivBox optionWrap padding5" @click="this.samplePopShowYn = true" >
+        <p class="fl textLeft commonDarkGray font14 textOverdot pholder samplePholder" :placeholder="$t('EDIT_BOARD_MSG_SAMPLE')">{{this.guideSampleInnerHtml? $t('EDIT_BOARD_MSG_ISSAMPLE'): ''}}</p>
       </div>
     </div>
-
     <div class="itemWrite fl ">
-      <p class="fontBold  textLeft font16 fl" style="width: 100px;">{{ $t('COMMON_TITLE_SHARE') }}</p>
-      <div class="fl" style="width: calc(100% - 100px);">
+      <p class="fontBold  textLeft font16 fl width100px">{{ $t('COMMON_TITLE_SHARE') }}</p>
+      <div class="fl optionWrap">
         <gCheckBtn id="all" ref="all" class="fl gCheck-W"  :title="$t('COMMON_TAB_ALL')" :selectedYn="this.shareGroup.type === 'A'" @click="changeSelectType('A')" />
         <gCheckBtn id="fol" ref="fol" class="fl gCheck-W mleft-05"  :title="$t('EDIT_BOARD_BTN_ALLMEM')" :selectedYn="this.shareGroup.type === 'F'" @click="changeSelectType('F')" />
         <gCheckBtn id="sel" ref="sel" class="fl gCheck-W mleft-05"  :title="$t('COMMON_BTN_SELECTED')" :selectedYn="this.shareGroup.type === 'S'" @click="changeSelectType('S')" />
         <!-- <p class="fr font12 commonDarkGray " style="padding-top:12px">{{this.shareGroup.type === 'S' ? setSelectReceiveCount(this.shareGroup.selectedList) : '전체'}}</p> -->
-        <p class="fr font12 commonDarkGray " style="padding-top:12px" v-if="this.shareGroup.type === 'A'">{{ $t('COMMON_TAB_ALL') }}</p>
-        <seletedIconText v-else :propData='setSelectReceiveCount(this.shareGroup.selectedList)' style="padding-top:12px" />
-
+        <p class="fr font12 commonDarkGray pTop12" v-if="this.shareGroup.type === 'A'">{{ $t('COMMON_TAB_ALL') }}</p>
+        <seletedIconText class="pTop12" v-else :propData='setSelectReceiveCount(this.shareGroup.selectedList)' />
       </div>
     </div>
-    <div class="fr textLeft receivBox pholder" style="width: calc(100% - 100px); padding:5px;" v-if="this.shareGroup.type === 'S'" @click="showSelectBookPop('select')" :placeholder="$t('EDIT_BOARD_MSG_SHARE')">
+    <div class="fr textLeft receivBox pholder optionWrap padding5" v-if="this.shareGroup.type === 'S'" @click="showSelectBookPop('select')" :placeholder="$t('EDIT_BOARD_MSG_SHARE')">
       {{setReceiveName(this.shareGroup.selectedList)}}
     </div>
-
     <!-- 권한 설정 -->
-    <div class="fl w100P mtop-1 " style="position: relative; padding: 0 1rem;" :class="{'mtop-2' : shareGroup.type === 'S'}">
-      <triangleTag :style="this.shareGroup.type === 'A' ? 'left: calc(1.5rem + 100px)' : 'left: calc(1.5rem + 100px + 80px)' " style="position: absolute; top: -22px; border-right: 22px solid transparent; border-bottom: 23px solid #ffffff; border-left: 22px solid transparent; filter: drop-shadow(0px -10px 16px #ccc); z-index: 1;"/>
-      <div class="fl w100P" style="box-shadow: 1px 0px 17px 2px #eee; position: absolute; width:98%; max-width:1000px; transform: translateX(-1.5rem);  padding: 0.5rem 1rem;  background:#ffffff; border-radius: 20px; left: 50%; transform: translateX(-50%);">
-
+    <div class="fl w100P mtop-1 boardAuthWrap" :class="{'mtop-2' : shareGroup.type === 'S'}">
+      <triangleTag class="triangleTag" :style="this.shareGroup.type === 'A' ? 'left: calc(1.5rem + 100px)' : 'left: calc(1.5rem + 100px + 80px)'"/>
+      <div class="fl w100P boardAuthBox">
         <!-- 열람 권한 -->
         <div class="fl w100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
-            <p class="fontBold  textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOARD_TITLE_READ') }}</p>
-            <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
+            <p class="fontBold  textLeft font16 fl width100px">{{ $t('EDIT_BOARD_TITLE_READ') }}</p>
+            <div class="fl authBtnWrap" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
               <gCheckBtn class="fl gCheck-W"  :title="$t('COMMON_TAB_ALL')" :selectedYn="permissionVGroup.type === 'A'" @click="this.permissionVGroup.type = 'A'" />
               <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn="permissionVGroup.type === 'S'" @click="this.permissionVGroup.type = 'S'" />
               <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('EDIT_BOARD_BTN_NONE')" :selectedYn="permissionVGroup.type === 'N'" @click="this.permissionVGroup.type = 'N'" />
             </div>
           </div>
-          <div class="fr textLeft receivBox" style="width: calc(100% - 40px); padding:5px;" v-if="permissionVGroup.type === 'S'" @click="showSelectBookPop('V')" >
+          <div class="fr textLeft receivBox authBtnWrap padding5" v-if="permissionVGroup.type === 'S'" @click="showSelectBookPop('V')" >
             <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" :placeholder="$t('EDIT_BOARD_MSG_STATUS')">{{setReceiveName(this.permissionVGroup.selectedList)}}</p>
             <!-- <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionVGroup.selectedList)}}</p> -->
             <seletedIconText :propData='setSelectReceiveCount(this.permissionVGroup.selectedList)' />
           </div>
         </div>
-
         <!-- 게시글 작성 권한 -->
         <div class="fl w100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
-            <p class="fontBold  textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOARD_TITLE_WRITE') }}</p>
-            <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
+            <p class="fontBold  textLeft font16 fl width100px">{{ $t('EDIT_BOARD_TITLE_WRITE') }}</p>
+            <div class="fl authBtnWrap" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
               <gCheckBtn class="fl gCheck-W"  :title="$t('COMMON_TAB_ALL')" :selectedYn="permissionWGroup.type === 'A'" @click="this.permissionWGroup.type = 'A'" />
               <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn="permissionWGroup.type === 'S'" @click="this.permissionWGroup.type = 'S'" />
               <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('EDIT_BOARD_BTN_NONE')"  :selectedYn="permissionWGroup.type === 'N'" @click="this.permissionWGroup.type = 'N'" />
             </div>
           </div>
-          <div class="fr textLeft receivBox" style="width: calc(100% - 40px); padding:5px;" v-if="permissionWGroup.type === 'S'" @click="showSelectBookPop('W')">
+          <div class="fr textLeft receivBox authBtnWrap padding5" v-if="permissionWGroup.type === 'S'" @click="showSelectBookPop('W')">
             <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" :placeholder="$t('EDIT_BOARD_MSG_STATUS')">{{setReceiveName(this.permissionWGroup.selectedList)}}</p>
             <!-- <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionWGroup.selectedList)}}</p> -->
             <seletedIconText :propData='setSelectReceiveCount(this.permissionWGroup.selectedList)' />
           </div>
         </div>
-
         <!-- 댓글 권한 -->
         <div class="fl w100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}" style="position: relative;">
           <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
-            <p class="fontBold  textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOARD_TITLE_COMMENT') }}</p>
-            <div class="fl" style="width: calc(100% - 40px);" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
+            <p class="fontBold  textLeft font16 fl width100px">{{ $t('EDIT_BOARD_TITLE_COMMENT') }}</p>
+            <div class="fl authBtnWrap" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
               <gCheckBtn class="fl gCheck-W" :title="$t('COMMON_TAB_ALL')" :selectedYn="permissionRGroup.type === 'A'" @click="this.permissionRGroup.type = 'A'" />
               <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn="permissionRGroup.type === 'S'" @click="this.permissionRGroup.type = 'S'" />
               <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('EDIT_BOARD_BTN_NONE')" :selectedYn="permissionRGroup.type === 'N'" @click="this.permissionRGroup.type = 'N'" />
             </div>
           </div>
-          <div class="fr textLeft receivBox" style="width: calc(100% - 40px); padding:5px;" v-if="permissionRGroup.type === 'S'" @click="showSelectBookPop('R')" >
+          <div class="fr textLeft receivBox authBtnWrap padding5" v-if="permissionRGroup.type === 'S'" @click="showSelectBookPop('R')" >
             <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" :placeholder="$t('EDIT_BOARD_MSG_STATUS')">{{setReceiveName(this.permissionRGroup.selectedList)}}</p>
             <!-- <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionRGroup.selectedList)}}</p> -->
             <seletedIconText v-if="permissionRGroup.type === 'S'" :propData='setSelectReceiveCount(this.permissionRGroup.selectedList)' />
           </div>
         </div>
-
       </div>
     </div>
   </div>
-  <gBtnSmall @click="updateCabinet" :btnTitle="$t('EDIT_BOARD_BTN_EDIT')" class="font16 CDeepBgColor" style="width: 70%; min-height:40px; line-height:40px; border-radius:8px; position: absolute; bottom:1.5rem; left:15%;" />
+  <gBtnSmall @click="updateCabinet" :btnTitle="$t('EDIT_BOARD_BTN_EDIT')" class="font16 CDeepBgColor updateCabinetBtn" />
 </div>
 <selectType :chanInfo="this.CHANNEL_DETAIL" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
 <selectBookList :chanInfo="this.CHANNEL_DETAIL" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" :pClosePop="closeSelectPop" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList" @openPop='openPop' />
@@ -235,10 +221,6 @@ export default {
     this.chanProps = this.modiBoardDetailProps
     this.chanProps.teamNameMtext = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
 
-    // // console.log(this.boardDetail)
-    // // console.log(this.chanInfo)
-
-    //
     this.$addHistoryStack('modiBoardPop')
     this.loadingYn = false
   },
@@ -402,7 +384,6 @@ export default {
       this.samplePopShowYn = false
     },
     changeSelectType (type) {
-      // debugger
       this.shareGroup.type = type
       if (type === 'S') {
         this.permissionWGroup.type = type
@@ -435,8 +416,6 @@ export default {
           memberSize += 1
         }
       }
-      // eslint-disable-next-line no-debugger
-      debugger
       var userSize = selectGroup.memberList.length
       // var text = ''
       var text = {}
@@ -472,19 +451,15 @@ export default {
           list.push(text)
         }
         // return text
-        console.log(list)
         return list
       }
     },
     setReceiveName (selectGroup) {
       // if (!selectGroup || !selectGroup.bookList || !selectGroup.memberList) return
-      console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-      console.log(selectGroup)
       var bookSize = selectGroup.bookList
       var memberSize = selectGroup.memberList
       var temp = ''
       for (let i = 0; i < bookSize.length; i++) {
-        console.log(bookSize[i])
         if (!bookSize[i].memberYn) {
           temp += this.$changeText(bookSize[i].cabinetNameMtext) + ', '
         } else if (bookSize[i].memberYn) {
@@ -549,7 +524,6 @@ export default {
       param.cabinetKey = this.modiBoardDetailProps.cabinetKey
       param.adminYn = true
       var resultList = await this.$getCabinetDetail(param)
-      console.log(resultList)
       this.settingCabDetail(resultList)
     },
     async settingCabDetail (data) {
@@ -557,7 +531,6 @@ export default {
       if (data.mCabinet) {
         this.boardName = await this.$changeText(data.mCabinet.cabinetNameMtext)
       }
-      // console.log(data)
       // 작성자명/댓글지원O/파일업로드O
       if (data.mCabinet.workStatYn === 1) { this.workStatYn = true } else { this.workStatYn = false }
       if (data.mCabinet.replyYn === 1) { this.replyYnInput = true } else { this.replyYnInput = false }
@@ -571,15 +544,9 @@ export default {
         this.guideSampleInnerHtml = this.decodeContents(data.mCabinet.guideFullStr)
       }
       var mCabinet = data.mCabinet
-      console.log('------------------ mCabinet, ShareList, ItemList -----------------')
 
       var cabShareList = mCabinet.cabShareList
       var mShareItemList = mCabinet.mShareItemList
-      console.log(mCabinet)
-      console.log(cabShareList)
-      console.log(mShareItemList)
-      // eslint-disable-next-line no-debugger
-      debugger
       // 공유 리스트에서 공유 대상이 전체(T)인지 선택인지 구분
       var findListInT = cabShareList.findIndex(i => i.accessKind === 'T')
       if (findListInT !== -1) {
@@ -624,9 +591,6 @@ export default {
               }
             }
             // this.selectedList = {}
-            console.log('------------------ this.shareGroup.selectedList -----------------')
-            console.log(this.shareGroup.selectedList)
-            console.log(cabShareList)
           // this.selectedList.data = this.shareGroup.selectedList
           // this.selectedReceiver = this.shareGroup.selectedList  shareBookCount + '개 그룹, ' + shareMemCount + '명 에게 공유 중'
           }
@@ -651,7 +615,6 @@ export default {
       this.permissionVGroup = { type: 'A', selectedList: { bookList: [], memberList: [] } }
       this.permissionRGroup = { type: 'A', selectedList: { bookList: [], memberList: [] } }
       // 공유 아이템 중 W, V, R을 찾아 Radio버튼 setting
-      console.log(mShareItemList)
       for (let i = 0; i < mShareItemList.length; i++) {
         if (mShareItemList[i].accessKey === undefined || mShareItemList[i].accessKey === null || mShareItemList[i].accessKey === '') continue
         var cIndex = null
@@ -667,8 +630,6 @@ export default {
             mShareItemList[i].mUserList = cabShareList[cIndex].muserList
           }
 
-          // eslint-disable-next-line no-debugger
-          debugger
           if (cabShareList[cIndex].cabinetNameMtext === null) continue
           mShareItemList[i].cabinetNameMtext = this.$changeText(cabShareList[cIndex].cabinetNameMtext)
         } else if (mShareItemList[i].accessKind === 'M') {
@@ -692,16 +653,12 @@ export default {
           mShareItemList[i].phoneEnc = cabShareList[cIndex].phoneEnc
           mShareItemList[i].userEmail = cabShareList[cIndex].userEmail
         }
-        // // eslint-disable-next-line no-debugger
-        // debugger
         if (mShareItemList[i].shareType === 'W') {
           if (mShareItemList[i].accessKind === 'T' || mShareItemList[i].accessKind === 'F') {
             this.permissionWGroup.type = 'A'
           } else {
             this.permissionWGroup.type = 'S'
             if (mShareItemList[i].accessKind === 'C') {
-              // eslint-disable-next-line no-debugger
-              debugger
               // this.permissionWGroup.selectedList.bookList = []
               this.permissionWGroup.selectedList.bookList.push(mShareItemList[i])
             } else if (mShareItemList[i].accessKind === 'M') {
@@ -761,11 +718,6 @@ export default {
         this.permissionVGroup.type = 'S'
         this.permissionRGroup.type = 'S'
       }
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-      console.log(this.permissionWGroup.selectedList)
-      console.log(this.permissionVGroup.selectedList)
-      console.log(this.permissionRGroup.selectedList)
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@')
 
       // var cabinetCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'C').length
       // var userCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'U').length
@@ -780,20 +732,10 @@ export default {
       // this.commentPermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
       this.setTextPermission()
 
-      console.log(this.permissionWGroup.type)
-      console.log(this.permissionVGroup.type)
-      console.log(this.permissionRGroup.type)
-
-      console.log(this.permissionWGroup.selectedList)
-      console.log(this.permissionVGroup.selectedList)
-      console.log(this.permissionRGroup.selectedList)
-
       // this.$emit('closeLoading')
       this.loadingYn = false
     },
     selectShareActorItem (itemType) {
-      console.log('selectShareActorItem')
-      console.log(itemType)
       this.currentSelectBookType = itemType
       if (itemType === 'V') {
         this.permissionSelectedYn.V = true
@@ -804,10 +746,7 @@ export default {
       if (itemType === 'W') {
         this.permissionSelectedYn.W = true
       }
-      console.log(this.shareGroup.type)
       if (this.shareGroup.type === 'S') {
-        console.log('*************************')
-        console.log(this.shareGroup.selectedList)
         this.permissionSelectedList = []
         if (itemType === 'V') {
           this.permissionSelectedList = this.permissionVGroup.selectedList
@@ -818,8 +757,6 @@ export default {
         if (itemType === 'W') {
           this.permissionSelectedList = this.permissionWGroup.selectedList
         }
-        console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-        console.log(this.permissionSelectedList)
         this.selectedList = {}
         if (this.shareGroup.selectedList && ((this.shareGroup.selectedList.bookList && this.shareGroup.selectedList.bookList.length > 0) || (this.shareGroup.selectedList.memberList && this.shareGroup.selectedList.memberList.length > 0))) {
           this.selectedList.data = this.shareGroup.selectedList
@@ -840,13 +777,8 @@ export default {
     choiceColor (color) {
       this.selectedColor = color
       this.$refs.colorPicker.setColor(color)
-      // console.log(color)
     },
     async updateCabinet () {
-      // console.log(this.permissionWGroup.selectedList)
-      // console.log(this.permissionVGroup.selectedList)
-      // console.log(this.permissionRGroup.selectedList)
-
       // eslint-disable-next-line no-new-object
       var param = new Object()
       // eslint-disable-next-line no-new-object
@@ -871,7 +803,6 @@ export default {
       // eslint-disable-next-line no-new-object
       var item = new Object()
       share.cabinetKey = this.modiBoardDetailProps.cabinetKey
-      // // console.log(this.shareType)
       var teampItemList = {}
       var shareSeqList = null
       if (this.shareGroup.type === 'A') {
@@ -891,15 +822,11 @@ export default {
         share.creTeamKey = this.CHANNEL_DETAIL.teamKey
         shareList.push(share)
       } else if (this.shareGroup.type === 'S') {
-        console.log('this.shareGroup.selectedList')
-        console.log(this.shareGroup.selectedList)
         if (!this.shareGroup.selectedList.bookList) this.shareGroup.selectedList.bookList = []
         shareSeqList = this.shareGroup.selectedList.bookList
         for (var i = 0; i < shareSeqList.length; i++) {
           share = {}
           share.creTeamKey = this.CHANNEL_DETAIL.teamKey
-          // eslint-disable-next-line no-debugger
-          debugger
           if (shareSeqList[i].memberYn) {
             share.accessKind = 'M'
             share.accessKey = shareSeqList[i].accessKey
@@ -922,8 +849,6 @@ export default {
         // eslint-disable-next-line no-array-constructor
         /* shareSeqList = new Array()
         shareSeqList = this.shareGroup.selectedList.memberList */
-        // eslint-disable-next-line no-debugger
-        debugger
         for (i = 0; i < this.shareGroup.selectedList.length; i++) {
           share = {}
           share.creTeamKey = this.CHANNEL_DETAIL.teamKey
@@ -944,9 +869,6 @@ export default {
           }
         }
       }
-      console.log('2222this.shareGroup.selectedList')
-      console.log(shareList)
-      console.log(this.permissionWGroup)
       /* W 권한 처리 */
       if (this.permissionWGroup.type === 'A') {
         for (var sh = 0; sh < shareList.length; sh++) {
@@ -964,8 +886,6 @@ export default {
             index = shareList.findIndex(item => item.shareSeq === this.permissionWGroup.selectedList.bookList[i].accessKey)
             if (index === -1) {
               share = {}
-              // eslint-disable-next-line no-debugger
-              debugger
               if (!this.permissionWGroup.selectedList.bookList[i].memberYn) {
                 share.accessKind = 'C'
                 share.cabinetKey = this.modiBoardDetailProps.cabinetKey
@@ -978,8 +898,6 @@ export default {
               }
               share.accessKey = this.permissionWGroup.selectedList.bookList[i].accessKey
               share.shareSeq = this.permissionWGroup.selectedList.bookList[i].accessKey
-              console.log('shareList.push')
-              console.log(share)
               shareList.push(share)
             }
             teampItemList = {}
@@ -1009,8 +927,6 @@ export default {
               share.creTeamKey = this.CHANNEL_DETAIL.teamKey
               if (this.permissionWGroup.selectedList.memberList[i].userDispMtext) share.userDispMtext = this.$changeText(this.permissionWGroup.selectedList.memberList[i].userDispMtext)
               if (this.permissionWGroup.selectedList.memberList[i].userNameMtext) share.userNameMtext = this.$changeText(this.permissionWGroup.selectedList.memberList[i].userNameMtext)
-              console.log('shareList.push')
-              console.log(share)
               shareList.push(share)
             }
             teampItemList = {}
@@ -1024,7 +940,6 @@ export default {
         }
       }
 
-      console.log(this.permissionVGroup)
       /* V 권한 처리 */
       if (this.permissionVGroup.type === 'A') {
         for (sh = 0; sh < shareList.length; sh++) {
@@ -1096,9 +1011,6 @@ export default {
         }
       }
 
-      console.log(this.permissionRGroup)
-      // eslint-disable-next-line no-debugger
-      debugger
       /* R 권한 처리 */
       if (this.permissionRGroup.type === 'A') {
         for (sh = 0; sh < shareList.length; sh++) {
@@ -1177,11 +1089,8 @@ export default {
       param.cabinet = cabinet
       param.creMenuYn = false
 
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-      console.log(param)
       var result = await this.$saveCabinet(param)
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
-        // // console.log('@@성공@@')
         this.okPopYn = true
       }
       // this.$store.dispatch('D_CHANNEL/AC_ADD_UPDATE_CHAN_LIST', 'CABINET')
@@ -1192,7 +1101,6 @@ export default {
     },
     // 주소록 전체에서 고르기
     async showSelectBookPop (type) {
-      console.log(type)
       this.currentSelectBookType = type
       if (this.shareGroup.type === 'A' || this.shareGroup.type === 'F' || (this.shareGroup.type === 'S' && type === 'select')) {
         if (type === 'select') {
@@ -1206,8 +1114,6 @@ export default {
             this.selectedList = this.permissionRGroup.selectedList
           }
         }
-        console.log('prop selectedList 값')
-        console.log(this.selectedList)
         var selectListParamMap = new Map()
         selectListParamMap.set('teamKey', this.CHANNEL_DETAIL.teamKey)
         // eslint-disable-next-line no-new-object
@@ -1250,11 +1156,6 @@ export default {
       }
     },
     receiverPoolInSetting (datas) {
-      console.log(' %%%%%%%%%%%%%%% ')
-      console.log(datas)
-      // eslint-disable-next-line no-debugger
-      debugger
-      console.log(this.currentSelectBookType)
       // var bookCount, memberCount
       if (datas.bookList) {
         var settingBookList = []
@@ -1351,9 +1252,6 @@ export default {
           this.permissionRGroup.selectedList.memberList = settingMemList
         }
       }
-      // console.log('---- setTextPermission -----')
-      // console.log(bookCount + ' ' + memberCount)
-      // console.log(this.currentSelectBookType)
 
       // if (this.currentSelectBookType === 'W') {
       //   this.writePermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
@@ -1366,12 +1264,10 @@ export default {
     },
     setSelectedList (datas) {
       // 권한 선택시 실행
-      console.log('-------------------------------------')
       this.selectedShareList = []
       var data = datas
       this.selectBookListShowYn = false
       // var bookCount, memberCount
-      console.log(datas)
       if (data.bookList) {
         var settingBookList = []
         // bookCount = data.bookList.length
@@ -1484,9 +1380,6 @@ export default {
           }
         }
       }
-      // console.log('---- setTextPermission -----')
-      // console.log(bookCount + ' ' + memberCount)
-      // console.log(this.currentSelectBookType)
       // if (bookCount === undefined) bookCount = 0
       // if (memberCount === undefined) memberCount = 0
       // if (this.currentSelectBookType === 'select') {
@@ -1505,7 +1398,7 @@ export default {
     },
     // // 작성, 열람, 댓글의 텍스트를 셋팅해준다.
     setTextPermission () {
-      /* console.log('---- setTextPermission -----')
+      /*
       var sharMem, sharBook, WMem, WBook, VMem, VBook, RMem, RBook
       if (this.shareGroup.selectedList.bookList) { sharBook = this.shareGroup.selectedList.bookList.length !== 0 ? this.shareGroup.selectedList.bookList.length + '개 그룹' : '' } else { sharBook = '' }
       if (this.shareGroup.selectedList.memberList) { sharMem = this.shareGroup.selectedList.memberList.length !== 0 ? this.shareGroup.selectedList.memberList.length + '명' : '' } else { sharMem = '' }
@@ -1590,7 +1483,7 @@ export default {
 
 }
 </script>
-<style>
+<style scoped>
 .addNewBoardWrap {
   width:100% ;
   height: 100vh;
@@ -1647,6 +1540,76 @@ export default {
 }
 .permissionBox {
   width: calc(100% - 80px);
+}
+.modiBoardPopWrap {
+  padding-top: 0;
+}
+.modiBoardPopContWrap {
+  overflow: auto;
+  height: calc(100% - 70px);
+}
+.boardNameInput {
+  width: calc(100% - 140px);
+}
+.width100px {
+  width: 100px;
+}
+.padding5 {
+  padding: 5px;
+}
+.boardSelectColor {
+  border: none;
+  min-width: 30px;
+  max-width: 30px;
+  width:30px;
+  height: 30px;
+  border-radius:100%;
+}
+.optionWrap {
+  width: calc(100% - 100px);
+}
+.samplePholder {
+  width: calc(100% - 74px);
+}
+.pTop12 {
+  padding-top: 12px !important;
+}
+.boardAuthWrap {
+  position: relative;
+  padding: 0 1rem;
+}
+.triangleTag {
+  position: absolute !important;
+  top: -22px !important;
+  border-right: 22px solid transparent !important;
+  border-bottom: 23px solid #ffffff !important;
+  border-left: 22px solid transparent !important;
+  filter: drop-shadow(0px -10px 16px #ccc) !important;
+  z-index: 1 !important;
+}
+.boardAuthBox {
+  box-shadow: 1px 0px 17px 2px #eee;
+  position: absolute;
+  width: 98%;
+  max-width: 1000px;
+  transform: translateX(-1.5rem);
+  padding: 0.5rem 1rem;
+  background:#ffffff;
+  border-radius: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.authBtnWrap {
+  width: calc(100% - 40px);
+}
+.updateCabinetBtn {
+  width: 70%;
+  min-height: 40px !important;
+  line-height: 40px !important;
+  border-radius: 8px !important;
+  position: absolute !important;
+  bottom: 1.5rem !important;
+  left: 15% !important;
 }
 @media screen and (max-width:350px){
   .jjjPaddingWrap{

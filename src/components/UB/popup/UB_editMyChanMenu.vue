@@ -308,6 +308,8 @@ export default {
   width: 100%;
   height: 100%;
   background: #fff;
+  position: relative;
+  z-index: 10;
 }
 .createChanContentsWrap{
   width: 100%;
@@ -323,7 +325,8 @@ export default {
 }
 .editMyChanMenuWrap {
   padding-top: 60px;
-  box-sizing: border-box; width: 100%;
+  box-sizing: border-box;
+  width: 100%;
 }
 .editMyChanMenuWrap table {
   text-align: left;

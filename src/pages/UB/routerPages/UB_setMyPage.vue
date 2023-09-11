@@ -50,7 +50,7 @@
        </div>
        <div class="profileWrap ">
         <div @click="changeUserImg()" class="cursorP imgSize">
-          <div class="roundDiv picImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"></div>
+          <div class="roundDiv profilePicImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"></div>
           <div @click="changeUserImg()" class="font14 changeImgBtn">{{ $t('COMM_BTN_EDIT') }}</div>
         </div>
         <div class="font20 fontBold mtop-1 userNameBox" v-show="!changeYn" >
@@ -519,10 +519,10 @@ export default {
   margin-left: 10px;
   margin-top: 2px;
 }
-.picImgWrap {
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+.profilePicImgWrap {
+  background-position: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
 }
 .nameChangeBox {
   position: absolute;

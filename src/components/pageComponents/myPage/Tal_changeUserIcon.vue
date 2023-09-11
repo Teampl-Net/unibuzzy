@@ -22,26 +22,26 @@
       <div class="changePopBox">
           <p class="fl textLeft commonColor font18 fontBold mleft-05 mbottom-05">{{ $t('USER_CHANGE_PROFILE_IMG') }}</p>
           <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl w-100P" @changeTab= "changeTab" />
-          <div v-if="viewTab === 'icon'" style="width: 100%;height: calc(100% - 120px); float: left; overflow: hidden auto;">
-            <div @click="selectIcon(value.imageFilekey)" :class="selectedIconFileKey === value.imageFilekey ? 'selectedColor' : ''" style="float: left; overflow: hidden; background: #6768a745; border-radius: 100%; width: 100px; height: 100px; margin: 10px 5px; padding: 10px; padding-top: 20px; padding-bottom: 0; " v-for="(value, index) in teamImgList" :key="index">
-              <img style="width: 100%;" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  alt="">
+          <div v-if="viewTab === 'icon'" class="chanIconWrap">
+            <div class="iconItem" @click="selectIcon(value.imageFilekey)" :class="selectedIconFileKey === value.imageFilekey ? 'selectedColor' : ''" v-for="(value, index) in teamImgList" :key="index">
+              <img class="w100P" :src="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext"  alt="">
             </div>
           </div>
-          <div v-show="viewTab === 'img'" style="display: flex;flex-direction: column;align-items: center; width: 100%;height: calc(100% - 120px); padding-top: 10px; float: left; overflow: hidden auto;">
-            <div @click="imgClickToInput"  style="width: 90%; height: 90%;; margin: 0 auto; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left; max-width: 246px; max-height: 248px; " class="cropperImgArea">
+          <div v-show="viewTab === 'img'" class="chanImgWrap">
+            <div @click="imgClickToInput" class="cropperImgArea selectedImgBox">
               <!-- <div @click="changeImgClick" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left;" ref="selectImgPopRef" class="cropperImgArea"> -->
               <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" style="margin: 0 auto;" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
             </div>
 
-            <form  hidden @submit.prevent="formSubmit" style="overflow: hidden; cursor: pointer; min-height: 50px; max-width: 80%; float: left position: relative;height: var(--cardHeight); width: calc(100% ); " method="post">
-                <input class="formImageFile" style="width: 100%; float: left;" type="file" title ="선택" accept="image/jpeg, image/png, image/jpg"  ref="selectFile" id="input-file" @change="handleImageUpload"/>
+            <form hidden @submit.prevent="formSubmit" class="imgForm" method="post">
+                <input class="formImageFile w100P fl" type="file" title ="선택" accept="image/jpeg, image/png, image/jpg"  ref="selectFile" id="input-file" @change="handleImageUpload"/>
             </form>
-            <div class="fl textLeft w100P" style="display: flex; justify-content: space-around; border-top: 0.5px solid rgba(103, 104, 167, 0.54);">
+            <div class="fl textLeft w100P changeBtnArea">
               <p class="fl fontBold font14 mtop-05">{{ $t('USER_MSG_TOUCH_IMG') }}</p>
-              <gBtnSmall v-if="cropperYn" class="fl mtop-05" style="word-break: break-word; white-space: nowrap;" :btnTitle="$t('COMM_BTN_SELEC_AGAIN')" @click="changeBtnClick"/>
+              <gBtnSmall v-if="cropperYn" class="fl mtop-05 changeBtn" :btnTitle="$t('COMM_BTN_SELEC_AGAIN')" @click="changeBtnClick"/>
             </div>
           </div>
-          <div style="width: 100%; min-height: 40px; margin-top: 1rem; float: left;">
+          <div class="closeBtnArea">
             <gBtnSmall @click="this.$emit('noChange')" :btnTitle="$t('COMM_BTN_CLOSE')" btnThema="light"/>
             <gBtnSmall @click="updateUserIcon" :btnTitle="$t('COMMON_BTN_SELECTED')" class="mright-05" />
           </div>
@@ -94,8 +94,6 @@ export default {
         this.viewTab = 'img'
         this.$refs.activeBar.switchtab(1)
         this.$refs.activeBar.selectTab('img')
-        // console.log(this.pSelectedIconPath)
-        // console.log(this.parentSelectedIconFileKey)
         this.previewImgUrl = this.pSelectedIconPath
         this.selectedImgPath = this.pSelectedIconPath
         this.selectedImgFilekey = this.parentSelectedIconFileKey
@@ -159,8 +157,6 @@ export default {
             console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
             this.previewImgUrl = src
             this.uploadFileList.push({ previewImgUrl: src, addYn: true, file: newFile })
-            console.log('---------여기입니다---------')
-            console.log(src)
 
             // editorImgResize1(canvas.toDataURL('image/png', 0.8))
             // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
@@ -225,7 +221,6 @@ export default {
               // editorImgResize1(canvas.toDataURL('image/png', 0.8))
               // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
               thisthis.refImg = thisthis.$refs.image
-              // // console.log(this.cropper)
 
               thisthis.cropper = new Cropper(thisthis.refImg, {
                 viewMode: '1',
@@ -294,8 +289,6 @@ export default {
     },
     async formSubmit () {
       if (this.uploadFileList.length > 0) {
-        // console.log('this.uploadFileList')
-        // console.log(this.uploadFileList)
         var form = new FormData()
         // var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
@@ -325,8 +318,6 @@ export default {
                 // localStorage.getItem('sessionUser').picMfilekey = this.selectedImgFilekey
                 // local.userProfileImg = this.selectedImgPath
                 // local.picMfilekey = this.selectedImgFilekey
-                // // console.log('locallocallocallocallocal')
-                // // console.log(local)
                 // localStorage.setItem('sessionUser', JSON.parse(local))
               }
             })
@@ -349,7 +340,6 @@ export default {
       // param.user = this.userInfo
       user.userKey = this.GE_USER.userKey
       if (this.viewTab === 'img') {
-        // // console.log(this.selectedImgPath)
         // localStorage.setItem('sessionUser').userProfileImg = this.selectedImgPath
         if (this.selectedImgFilekey === '' || this.selectedImgFilekey === undefined) {
           const res = await this.formSubmit()
@@ -363,7 +353,6 @@ export default {
       param.updateYn = true
 
       var result = await this.$changeDispName(param)
-      // console.log(result)
       if (result.data) {
         this.$store.commit('D_USER/MU_USER', result.data.userInfo)
         localStorage.setItem('sessionUser', JSON.stringify(result.data))
@@ -418,5 +407,71 @@ export default {
 }
 .w-100P {
   width: 100% !important;
+}
+.chanIconWrap {
+  width: 100%;
+  height: calc(100% - 120px);
+  float: left;
+  overflow: hidden auto;
+}
+.iconItem {
+  float: left;
+  overflow: hidden;
+  background: #6768a745;
+  border-radius: 100%;
+  width: 100px;
+  height: 100px;
+  margin: 10px 5px;
+  padding: 10px;
+  padding-top: 20px;
+  padding-bottom: 0;
+}
+.chanImgWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: calc(100% - 120px);
+  padding-top: 10px;
+  float: left;
+  overflow: hidden auto;
+}
+.selectedImgBox {
+  width: 90%;
+  height: 90%;
+  margin: 0 auto;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  overflow: auto;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  float: left;
+  max-width: 246px;
+  max-height: 248px;
+}
+.imgForm {
+  overflow: hidden;
+  cursor: pointer;
+  min-height: 50px;
+  max-width: 80%;
+  float: left;
+  position: relative;
+  height: var(--cardHeight);
+  width: calc(100% );
+}
+.changeBtnArea {
+  display: flex;
+  justify-content: space-around;
+  border-top: 0.5px solid rgba(103, 104, 167, 0.54);
+}
+.changeBtn {
+  word-break: break-word !important;
+  white-space: nowrap !important;
+}
+.closeBtnArea {
+  width: 100%;
+  min-height: 40px;
+  margin-top: 1rem;
+  float: left;
 }
 </style>
