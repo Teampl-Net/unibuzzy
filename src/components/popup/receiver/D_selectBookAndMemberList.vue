@@ -1,5 +1,5 @@
 <template>
-<div style="width: 100%; float: left; padding-bottom: 60px;">
+<div class="receiveCardWrap">
     <div v-for="(data, index) in bookList" :key="index">
         <gReceiveCard :propData="data" option="SELE" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
     </div>
@@ -277,6 +277,10 @@ export default {
 }
 </script>
 
-<style >
-
+<style scoped>
+.receiveCardWrap {
+  width: 100%;
+  float: left;
+  padding-bottom: 60px;
+}
 </style>

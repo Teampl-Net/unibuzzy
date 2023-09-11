@@ -14,7 +14,7 @@
     "TASK_MANAGEMENT": "Task Management",
     "FOUND_DATE": "Found Date",
     "MANAGER": "Manager",
-    "DUE_DATE": "Expected Due Date",
+    "DUE_DATE": "Target Date",
     "ADD_COMMENT": "Add Comment",
     "STATUS_CHECK_POP": "Add comment after setting its status.",
     "NO_SELECTED_MANAGER": "No selected manger yet.",
@@ -24,22 +24,22 @@
 </i18n>
 <template>
   <!-- wh100P 삭제함-->
-  <div class="fl" :ref="'stateCodePop' + this.contentsKey" style=" padding: 0 10px; border-radius: 8px; background: #bfbfda;  color: #fff; text-align: left;">
-    <div @click="closeSelectPop" style="width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; background: #00000025; z-index: 10"></div>
-    <div style="display: flex; padding: 10px 0; flex-direction: column; width: 80%; min-height: 300px; height: 80%; position: fixed; box-shadow: rgb(0 0 0 / 12%) 4px 4px 12px 1px; top: 10%; left: 10%; border-radius:0.8rem; background: #FFF; z-index: 11">
-      <div style="width: 100%; position: relative; float: left; padding: 0 20px; box-shadow: 0 4px 4px -4px #ccc; height: 35px; " class="font18 commonColor fontBold">
+  <div class="fl manageCodePopWrap" :ref="'stateCodePop' + this.contentsKey">
+    <div class="manageCodePopBg" @click="closeSelectPop"></div>
+    <div class="manageCodePopBox">
+      <div class="font18 commonColor fontBold manageCodePopHeader">
         {{ $t('TASK_MANAGEMENT') }}
-        <img @click="closeSelectPop" class="cursorP" style="position: absolute; right: 20px; top: 10px;" src="../../assets/images/common/smallPopXIcon.svg" alt="">
+        <img @click="closeSelectPop" class="cursorP" src="../../assets/images/common/smallPopXIcon.svg" alt="">
       </div>
 
-      <div style="width: 100%; float: left; padding: 0 20px; margin-top: 10px; overflow: hidden scroll;" class="thinScrollBar" >
-        <p class="font15 textLeft fl fontBold w100P mtop-05">{{ $t('FOUND_DATE') }}</p>
-        <div class="commonListContentBox cursorP font14" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{settingDate(alimDetail.creDate)}}</div>
-        <p class="font15  textLeft fl fontBold w100P mtop-05">{{ $t('MANAGER') }}</p>
-        <div class="commonListContentBox cursorP font14" @click="openSelectMemberPop" style="float: left; color: #6c757d; border-radius: 5px !important; padding: 10px 6px!important;   background: ghostwhite !important; width: calc(100%); height: 40px;margin-right: 10px;">{{selectedList.memberList.length> 0 ? this.$changeText(selectedList.memberList[0].userDispMtext) : $t('NO_SELECTED_MANAGER') }}</div>
-        <p class="font15 textLeft fl fontBold w100P mtop-05">{{ $t('DUE_DATE') }}</p>
+      <div class="thinScrollBar manageCodePopBody" >
+        <p class="font15 textLeft fl fontBold w100P mtop-05 optionTitle">{{ $t('FOUND_DATE') }}</p>
+        <div class="commonListContentBox cursorP font14 optionContBox">{{settingDate(alimDetail.creDate)}}</div>
+        <p class="font15  textLeft fl fontBold w100P mtop-05 optionTitle">{{ $t('MANAGER') }}</p>
+        <div class="commonListContentBox cursorP font14 optionContBox" @click="openSelectMemberPop">{{selectedList.memberList.length> 0 ? this.$changeText(selectedList.memberList[0].userDispMtext) : $t('NO_SELECTED_MANAGER') }}</div>
+        <p class="font15 textLeft fl fontBold w100P mtop-05 optionTitle">{{ $t('DUE_DATE') }}</p>
         <Datepicker
-          style="font-size: 14px; float: left; width: calc(100%);"
+          class="datePicker"
           inline
           :editable="false"
           v-model:value="workDate.toDate"
@@ -48,16 +48,16 @@
           titleFormat="YYYY-MM-DD"
         ></Datepicker>
         <p class="font15 textLeft fl fontBold w100P mtop-1">상태설정</p>
-        <div style="width: 100%; float: left;">
-          <div @click="selectCode(value)" class="cursorP" :class="value.codeKey === selectedCodeObj.codeKey? 'selectedCode' : ''" v-for="(value, index) in this.codeList" :key="index" style="width: calc(50% - 10px); text-align: center; float: left; position: relative; margin: 7px 5px; border-radius: 8px; border min-height: 30px; padding: 5px 0;" :style="statBackColor(value.codeKey, true)" >
-            <p :style="statBackColor(value.codeKey)" class="commonBlack mleft-05 font16 fontBold">{{this.$changeText(value.codeNameMtext)}}</p>
-            <img :src="value.domainPath + value.pathMtext" style="width: 15px;position: absolute; left: 8px; top: 10px;" alt="">
+        <div class="w100P fl">
+          <div @click="selectCode(value)" class="cursorP stateCodeItem" :class="value.codeKey === selectedCodeObj.codeKey? 'selectedCode' : ''" v-for="(value, index) in this.codeList" :key="index" :style="statBackColor(value.codeKey, true)" >
+            <p :style="statBackColor(value.codeKey)" class="commonBlack mleft-05 font14 fontBold">{{this.$changeText(value.codeNameMtext)}}</p>
+            <img :src="value.domainPath + value.pathMtext" alt="">
           </div>
         </div>
         <p class="font15 textLeft fl fontBold w100P mtop-05">{{ $t('ADD_COMMENT') }}</p>
         <!-- <p class="font14 commonBlack textLeft">빈칸으로 작성시{{'"상태를 "' + this.$changeText(this.selectedCodeObj.codeNameMtext) + '"(으)로 변경합니다." 댓글이 추가됩니다.'}}</p> -->
-        <div @click="changeInputText"  ref="memoBodyStr" class="commonBlack font15 textLeft" v-if="selectedCodeObj.codeKey !== 0" style="width: 100%; height: 100px; border-radius: 8px; margin-top: 5px;  cursor: text;     border: 1px solid #EEEEEE; float: left; padding: 5px, 10px, 10px, 10px; overflow: hidden scroll; "  :contenteditable="true"></div>
-        <div ref="memoBodyStr" v-else style="width: 100%; height: 100px; border-radius: 8px; margin-top: 5px; border: 1px solid #ccc; float: left; padding: 10px 15px; overflow: hidden scroll;" class="commonBlack font15 textLeft activeInput" >
+        <div @click="changeInputText" ref="memoBodyStr" class="commonBlack font15 textLeft stateInputArea" v-if="selectedCodeObj.codeKey !== 0" :contenteditable="true"></div>
+        <div ref="memoBodyStr" v-else class="commonBlack font15 textLeft activeInput" >
             {{ $t('STATUS_CHECK_POP') }}
         </div>
         <!-- <span class="font15 commonBlack" v-show="selectedCodeObj.codeKey === 0">상태를 선택하고 댓글을 입력해주세요</span> -->
@@ -69,16 +69,14 @@
       <!-- <div style="width: 100%; height: 40px; display: flex; justify-content: center; padding: 5px 20px; margin-top: 15px;">
         <gBtnSmall @click="(currentCodeKey === this.selectedCodeObj.codeKey || (this.workDate.toDate) === '') === true ? '': changeContentsStat()" :style="(currentCodeKey === this.selectedCodeObj.codeKey || (this.workDate.toDate) === '') === true ? 'background: #F5F5F9!important; color: #A7A7A7!important; ': ''" style="width: 155px; height: 33px; padding: 0px 5px 0px 7px; "  btnTitle="적용하기" class="font16 mright-05"/>
       </div> -->
-      <div style="width: 100%; height: 40px; display: flex; justify-content: center; padding: 5px 20px; margin-top: 15px;">
-        <gBtnSmall @click="(currentCodeKey === this.selectedCodeObj.codeKey && workDate.workToDate === null && selectedList.memberList.lenth === 0)? '': changeContentsStat()" :style="(currentCodeKey === this.selectedCodeObj.codeKey && workDate.workToDate === null && selectedList.memberList.lenth === 0) ? 'background: #F5F5F9!important; color: #A7A7A7!important; ': ''" style="width: 155px; height: 33px; padding: 0px 5px 0px 7px; "  :btnTitle="$t('APPLY')" class="font16 mright-05"/>
+      <div class="applyBtnWrap">
+        <gBtnSmall @click="(currentCodeKey === this.selectedCodeObj.codeKey && workDate.workToDate === null && selectedList.memberList.lenth === 0)? '': changeContentsStat()" :style="(currentCodeKey === this.selectedCodeObj.codeKey && workDate.workToDate === null && selectedList.memberList.lenth === 0) ? 'background: #F5F5F9!important; color: #A7A7A7!important; ': ''" :btnTitle="$t('APPLY')" class="font16 mright-05 applyBtn"/>
       </div>
       <!-- <div style="width: 100%; height: 40px; padding: 5px 20px; margin-top: 15px;">
         <gBtnSmall @click="closeSelectPop" btnThema="light" btnTitle="취소"/>
         <gBtnSmall @click="changeContentsStat" btnTitle="적용" class="mright-05"/>
       </div> -->
-    </div>
-    <div v-if="selectBookListShowYn"  style="width: 100%; height: 100%; position: fixed;top: 0; left: 0; z-index: 12;">
-      <receiverAccessList :oneMemberCanAddYn="true" :propData="{currentTeamKey: this.alimDetail.creTeamKey}" :chanAlimListTeamKey="this.alimDetail.creTeamKey" :itemType="shareActorItemType" @closeXPop='selectBookListShowYn=false' :parentList='parentList' :selectList='selectedList'  @sendReceivers='setSelectedList'/>
+      <receiverAccessList v-if="selectBookListShowYn" :oneMemberCanAddYn="true" :propData="{currentTeamKey: this.alimDetail.creTeamKey}" :chanAlimListTeamKey="this.alimDetail.creTeamKey" :itemType="shareActorItemType" @closeXPop='selectBookListShowYn=false' :parentList='parentList' :selectList='selectedList'  @sendReceivers='setSelectedList'/>
     </div>
   </div>
 </template>
@@ -98,7 +96,7 @@ export default {
       nullObj: { codeKey: 0, codeNameMtext: '상태없음' },
       selectedCodeObj: { codeKey: null, codeNameMtext: null },
       defaltMemoYn: true,
-      dateHolder: '선택하세요',
+      dateHolder: 'Set a target date',
       parentList: { memberList: [], bookList: [] },
       selectBookListShowYn: false,
       colorList: [
@@ -448,6 +446,138 @@ export default {
 }
 </script>
 <style scoped>
-.selectedCode {border: 2px solid #5F61BD!important; margin: 5px 5px!important;}
-.activeInput {background: #cccccc1c;}
+.manageCodePopWrap {
+  padding: 0 10px;
+  border-radius: 8px;
+  background: #bfbfda;
+  color: #fff;
+  text-align: left;
+}
+.selectedCode {
+  border: 2px solid #5F61BD!important;
+  margin: 5px 5px!important;
+}
+.activeInput {
+  background: #cccccc1c;
+}
+.manageCodePopBg {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: #00000025;
+  z-index: 10;
+}
+.manageCodePopBox {
+  display: flex;
+  padding: 10px 0;
+  flex-direction: column;
+  width: 80%;
+  min-height: 300px;
+  height: 80%;
+  position: fixed;
+  box-shadow: rgb(0 0 0 / 12%) 4px 4px 12px 1px;
+  top: 10%;
+  left: 10%;
+  border-radius:0.8rem;
+  background: #FFF;
+  z-index: 11
+}
+.manageCodePopHeader {
+  width: 100%;
+  position: relative;
+  float: left;
+  padding: 0 20px;
+  box-shadow: 0 4px 4px -4px #ccc;
+  height: 35px;
+}
+.manageCodePopHeader > img {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+.manageCodePopBody {
+  width: 100%;
+  float: left;
+  padding: 0 20px;
+  margin-top: 10px;
+  overflow: hidden scroll;
+}
+.optionTitle {
+  color: #6c757d;
+}
+.optionContBox {
+  float: left;
+  color: #6c757d;
+  border-radius: 5px !important;
+  padding: 10px 6px!important;
+  background: ghostwhite !important;
+  width: 100%;
+  height: 40px;
+  margin-right: 10px;
+}
+.datePicker {
+  font-size: 14px !important;
+  float: left !important;
+  width: 100% !important;
+}
+.stateCodeItem {
+  width: calc(50% - 10px);
+  text-align: center;
+  float: left;
+  position: relative;
+  margin: 7px 5px;
+  border-radius: 8px;
+  min-height: 30px;
+  padding: 5px 0;
+}
+.stateCodeItem > img {
+  width: 15px;
+  position: absolute;
+  left: 8px;
+  top: 10px;
+}
+.stateInputArea {
+  width: 100%;
+  height: 100px;
+  border-radius: 8px;
+  margin-top: 5px;
+  cursor: text;
+  border: 1px solid #EEEEEE;
+  float: left;
+  padding: 5px 10px 10px 10px;
+  overflow: hidden scroll;
+}
+.activeInput {
+  width: 100%;
+  height: 100px;
+  border-radius: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  float: left;
+  padding: 10px 15px;
+  overflow: hidden scroll;
+}
+.applyBtnWrap {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  padding: 5px 20px;
+  margin-top: 15px;
+}
+.applyBtn {
+  width: 155px;
+  height: 33px;
+  padding: 0px 5px 0px 7px;
+}
+.selectBookListPopBg {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 12;
+}
 </style>

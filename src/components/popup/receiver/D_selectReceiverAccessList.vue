@@ -1,9 +1,9 @@
 <template>
-<div style="height: 100vh; background-color:white; width:100%; z-index:9999; position:absolute; top:0; left:0">
+<div class="accessListPop">
     <popHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  />
     <!--  <gBtnSmall :btnTitle="memberBtnText" @click="memberEditClick" class="fl" style="right:0; top:25px; transform: translate(-50%, -50%);position:absolute;"  v-if="detailOpenYn && selectPopYn !== true " /> -->
-    <div class="w100P pagePaddingWrap" style="position:absolute; overflow: auto; padding-top:50px" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
-      <div style="width: 100%; position: relative; float: left; height: calc(100% - 95px); overflow: auto;">
+    <div class="w100P pagePaddingWrap accessPopBody" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
+      <div>
         <selectBookNMemberList v-if="detailOpenYn === false" ref="selectBookNMemberListCompo" :simplePop="true" :itemType="itemType" @addSelectList="addSelectList" @delectClick="delectClick" :propData='propData' :selectBookNList='memberList' :selectList='selectList' @detail='detailOpen' />
         <!-- <selectBookNMemberList ref="selectedMemberListCompo" v-if="detailOpenYn === true" :itemType="itemType" @addSelectList="addSelectList" :selectBookNList='memberList' :selectList='selectList' @detail='detailOpen' :memberOnly='true' /> -->
         <transition name="showGroup">
@@ -11,7 +11,7 @@
             <memberList :listData="memberList" :parentSelectList="selectList.memberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
         </transition>
       </div>
-      <selectedListCompo :oneMemberCanAddYn="oneMemberCanAddYn" :itemType="itemType"  @changeSelectedList="changeSelectedItem" @changeSelectMemberList="changeSelectMemberList" ref="testCompo" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" style="float: left; width:100%; position: absolute; bottom:0px; left:0px; min-height: 150px;" />
+      <selectedListCompo class="selectedListCompo" :oneMemberCanAddYn="oneMemberCanAddYn" :itemType="itemType"  @changeSelectedList="changeSelectedItem" @changeSelectMemberList="changeSelectMemberList" ref="testCompo" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" />
     </div>
 </div>
 
@@ -313,22 +313,51 @@ export default {
 <style >
 /* btnPlus common.css로 옮김 */
 
-.longHeight{
-height:100% !important;
+.longHeight {
+height: 100% !important;
 }
-.selectedReceiverBox{
-    height: calc(100% - 100px);
-    width: 100%;
-    margin-top: 5px;
-    overflow-y: scroll;
-    padding: 10px;
-    background-color:white;
-    text-align: left;
+.selectedReceiverBox {
+  height: calc(100% - 100px);
+  width: 100%;
+  margin-top: 5px;
+  overflow-y: scroll;
+  padding: 10px;
+  background-color: white;
+  text-align: left;
 }
 [contenteditable=true] {
   outline: none;
 }
 input:focus{
   outline: none;
+}
+.accessListPop {
+  height: 100vh;
+  background-color:white;
+  width:100%;
+  z-index: 99999;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.accessPopBody {
+  position:absolute;
+  overflow: auto;
+  padding-top:50px
+}
+.accessPopBody > div:first-child {
+  width: 100%;
+  position: relative;
+  float: left;
+  height: calc(100% - 95px);
+  overflow: auto;
+}
+.selectedListCompo {
+  float: left !important;
+  width: 100% !important;
+  position: absolute !important;
+  bottom: 0px !important;
+  left: 0px !important;
+  min-height: 150px !important;
 }
 </style>
