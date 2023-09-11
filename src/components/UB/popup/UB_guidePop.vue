@@ -17,9 +17,7 @@
     </div>
   </div>
 </template>
-
 <script>
-
 export default {
   components: {
   },
@@ -98,7 +96,6 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 .guidePopWrap {
   width: 80%;

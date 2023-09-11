@@ -50,8 +50,6 @@ export default {
     this.setMemberList()
   },
   created () {
-    console.log('this.propMemberList = 이 채널을 팔로우하는 모든 사람', this.propMemberList)
-    console.log('pFollowerMemList = 이 주소록에 포함된 사람', this.pSelectedList)
     this.mSelectedAlready()
     var this_ = this
     this.$nextTick(() => {
@@ -73,7 +71,6 @@ export default {
         this.mFollowerMemList = this.pFollowerMemList
         for (let i = 0; i < this.mFollowerMemList.length; i++) {
           this.mFollowerMemList[i].selectedYn = true
-          console.log('this.mFollowerMemList', this.mFollowerMemList)
         }
       }
     },
@@ -83,8 +80,6 @@ export default {
         this.mSelectedMemberList = data
       } else {
         var findIdx = this.mSelectedMemberList.findIndex(item => item.accessKey === data.userKey)
-        console.log(this.mSelectedMemberList)
-        console.log(data)
         if (findIdx !== -1) {
           this.mSelectedMemberList.splice(findIdx, 1)
         }
@@ -206,18 +201,52 @@ export default {
 </script>
 
 <style scoped>
-.selectedBox{background-color:#6768A720;}
-.receiverTeamMemberArea{float: left;  width: 100%; height: 100%;}
-.cBlack{
-    color: black;
+.selectedBox {
+  background-color:#6768A720;
 }
-.selPopFr{
-    float:right;
-    margin-right: 4rem;
+.receiverTeamMemberArea {
+  float: left;
+  width: 100%;
+  height: 100%;
 }
-.memberPicImgWrap {width: 50px; height: 50px; border-radius: 100%; border:1.5px solid #ECEDF5; float: left; background: #ECEDF5; overflow: hidden; display: flex;}
-.memberPicImgWrap img {width: 100%;}
-.receiverTeamMemberCard {border-bottom:1px solid #ddd; cursor: pointer; padding: 10px 10px; padding-bottom: 0;}
-.filterTagBox {/* border: 1px solid #6768a745;  */padding: 0 10px; min-height: 20px; line-height: 20px; min-width: 80px; float: left; border-radius: 15px;}
-.filterWrap{width: 33.3%; display: flex; justify-content: center;}
+.cBlack {
+  color: black;
+}
+.selPopFr {
+  float: right;
+  margin-right: 4rem;
+}
+.memberPicImgWrap {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border: 1.5px solid #ECEDF5;
+  float: left;
+  background: #ECEDF5;
+  overflow: hidden;
+  display: flex;
+}
+.memberPicImgWrap img {
+  width: 100%;
+}
+.receiverTeamMemberCard {
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  padding: 10px 10px;
+  padding-bottom: 0;
+}
+.filterTagBox {
+  /* border: 1px solid #6768a745;  */
+  padding: 0 10px;
+  min-height: 20px;
+  line-height: 20px;
+  min-width: 80px;
+  float: left;
+  border-radius: 15px;
+}
+.filterWrap {
+  width: 33.3%;
+  display: flex;
+  justify-content: center;
+}
 </style>

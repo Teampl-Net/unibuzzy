@@ -20,32 +20,31 @@
     <gConfirmPop @no="okPopShowYn = false" :confirmText="$t('RECEPT_MSG_ACCEPT')" confirmType='two' @ok="okMember" v-if="okPopShowYn" />
     <gConfirmPop @no="rejectPopShowYn = false" :confirmText="$t('RECEPT_MSG_REJECT')" confirmType='two' @ok="rejectMember" v-if="rejectPopShowYn" />
     <!-- <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" /> -->
-    <p class="textLeft fl font16 fontBold" style="line-height: 30px;">{{ $t('COMMON_BTN_REQLIST') + '(' + this.managingList.length + ')'}}</p>
-    <gBtnSmall @click="rejectClick" :btnTitle="$t('COMM_BTN_REJECT')" :class="{'CWDeepGrayBgColor' : managingList.length === 0}" style="margin-left: 5px;"/>
+    <p class="textLeft fl font16 fontBold lineHeight30">{{ $t('COMMON_BTN_REQLIST') + '(' + this.managingList.length + ')'}}</p>
+    <gBtnSmall class="mLeft05" @click="rejectClick" :btnTitle="$t('COMM_BTN_REJECT')" :class="{'CWDeepGrayBgColor' : managingList.length === 0}"/>
     <gBtnSmall @click="accessClick" :btnTitle="$t('COMM_BTN_APPROVE')" :class="{'CWDeepGrayBgColor' : managingList.length === 0}" />
     <!-- <gBtnSmall @click="okPopShowYn = true" btnTitle="삭제" /> -->
-    <div style="float: right; margin-top: 2px;margin-right: 5px; padding: 2px">
-        <input v-model="allClickYn" @click="checkBoxValue(true)" type="checkbox" name="" id="allCheck" style="width: 15px; margin: 3px 0px;margin-top: 2px; margin-right: 5px; float: left; height:18px;">
+    <div class="receptAllCheckWrap">
+        <input v-model="allClickYn" @click="checkBoxValue(true)" type="checkbox" name="" id="allCheck">
         <label class="font15 fl" for="allCheck">{{ $t('RECEPT_BTN_ALL') }}</label>
     </div>
-    <div style="width: 100%; height: 1.5px; background: #ccc; margin: 5px 0; margin-top: 5px;float: left;"></div>
+    <div class="receptDivide"></div>
     <div class="reqCard"  v-for="(member, index) in managingList" :id="'reqCard'+member.userKey" :key="index" >
-        <input @click="checkBoxValue(false)" type="checkbox" class="reqCheck" style="float: left; width: 18px;height: 18px; margin: 5px 0; margin-right: 10px;" :id="'check' + member.userKey">
-        <div style="width: calc(100% - 30px); float: left;">
-            <div class="fl mleft-01 w100P" style="position: relative;">
-                <div v-if="member.userProfileImg"  class="reqPicImgWrap">
-                <img :src="(member.domainPath? member.domainPath + member.userProfileImg : member.userProfileImg)" />
+        <input @click="checkBoxValue(false)" type="checkbox" class="reqCheck" :id="'check' + member.userKey">
+        <div class="receptMemBox">
+            <div class="fl mleft-01 w100P">
+                <div v-if="member.userProfileImg" class="reqPicImgWrap">
+                  <img :src="(member.domainPath? member.domainPath + member.userProfileImg : member.userProfileImg)" />
                 </div>
-                <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style=" width: 30px; float: left; " />
+                <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" />
                 <!-- <div class="fl adminTag" :class="{nonTag: (!member.managerKey > 0 && currentTab === 'Show') || (!member.managerKey > 0 && currentTab === 'Admin') }">
                 <p v-if="member.ownerYn" class="font8 commonBlack fontBold" style="">관리자</p>
                 <p v-else class="font8 commonBlack fontBold" style="">매니저</p>
                 </div> -->
-                <p class="fl font16 fontBold commonBlack" style="text-align:left; padding-left:5px; width:calc(100% - 40px); line-height:30px; white-space: nowrap; text-overflow: ellipsis;overflow: hidden scroll;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
+                <p class="fl font16 fontBold commonBlack receptMemName">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
             </div>
-            <div style="width: 100%; min-height: 30px; margin-top: 10px; float: left;">
-                <p v-html="this.decodeContents(member.reqMemberStr)" class="textLeft font15 commonBlack" style="white-space: pre-wrap; word-wrap: break-word;">
-                </p>
+            <div class="reqMemStrWrap">
+                <p v-html="this.decodeContents(member.reqMemberStr)" class="textLeft font15 commonBlack"></p>
             </div>
         </div>
     </div>
@@ -201,48 +200,134 @@ export default {
 </script>
 
 <style scoped>
-.memberItemBox{
+.memberItemBox {
   min-width: 125px;
-
-  display: flex; flex-direction: row; align-items: center; justify-content: flex-end; align-content: center; height: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  align-content: center;
+  height: 30px;
 }
-.reqCard{
-
+.reqCard {
   float: left;
-  width: 100%; min-height: 50px; padding: 0.5rem; border-bottom: 0.8px solid #ccc; float: left;
+  width: 100%;
+  min-height: 50px;
+  padding: 0.5rem;
+  border-bottom: 0.8px solid #ccc;
+  float: left;
   background-color: white;
   transition : background-color 0.5s ease-in;
   animation-name: fadein; animation-duration: 0.3s;
   white-space: nowrap;
   /* transition : height 0.5s ease-in; */
 }
-.adminTag{
-  width: 30px;background-color:#CCCCCC; border-radius:0.5rem; position: absolute; bottom:-0.4rem;
-  animation-name: fadein; animation-duration: 0.3s;
+.adminTag {
+  width: 30px;
+  background-color:#CCCCCC;
+  border-radius:0.5rem;
+  position: absolute;
+  bottom:-0.4rem;
+  animation-name: fadein;
+  animation-duration: 0.3s;
   animation-fill-mode: forwards;
 }
-.nonTag{
-  animation-name: fadeout; animation-duration: 0.3s;
+.nonTag {
+  animation-name: fadeout;
+  animation-duration: 0.3s;
   animation-fill-mode: forwards;
 
 }
-.noneCard{
-  animation-name: listout; animation-duration: 0.2s;
+.noneCard {
+  animation-name: listout;
+  animation-duration: 0.2s;
   animation-fill-mode: forwards;
-
 }
 @keyframes listout {
   0% {
     /* padding: 0.5rem; */
     opacity: 1;
   }
-
   100% {
     /* margin-right: 100%; */
     opacity: 0;
   }
 }
 
-.reqPicImgWrap {width: 28px; height: 28px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex; margin-right: 5px}
-.reqPicImgWrap img {width: 100%;}
+.reqPicImgWrap {
+  width: 28px;
+  height: 28px;
+  border-radius: 100%;
+  border:1.5px solid #6768a7;
+  float: left;
+  background: #6768a745;
+  overflow: hidden;
+  display: flex;
+  margin-right: 5px
+}
+.reqPicImgWrap img {
+  width: 100%;
+}
+.receptAllCheckWrap {
+  float: right;
+  margin-top: 2px;
+  margin-right: 5px;
+  padding: 2px
+}
+.receptAllCheckWrap > input {
+  width: 15px;
+  margin: 3px 0px;
+  margin-top: 2px;
+  margin-right: 5px;
+  float: left;
+  height: 18px;
+}
+.mLeft05 {
+  margin-left: 5px !important;
+}
+.receptDivide {
+  width: 100%;
+  height: 1.5px;
+  background: #ccc;
+  margin: 5px 0;
+  margin-top: 5px;
+  float: left;
+}
+.reqCheck {
+  float: left;
+  width: 18px;
+  height: 18px;
+  margin: 5px 0;
+  margin-right: 10px;
+}
+.receptMemBox {
+  width: calc(100% - 30px);
+  float: left;
+}
+.receptMemBox > div:first-child {
+  position: relative;
+}
+.reqPicImgWrap + img {
+  width: 30px;
+  float: left;
+}
+.receptMemName {
+  text-align: left;
+  padding-left: 5px;
+  width: calc(100% - 40px);
+  line-height: 30px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden scroll;
+}
+.reqMemStrWrap {
+  width: 100%;
+  min-height: 30px;
+  margin-top: 10px;
+  float: left;
+}
+.reqMemStrWrap > p {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
 </style>

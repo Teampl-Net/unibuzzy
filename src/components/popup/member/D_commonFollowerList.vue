@@ -25,10 +25,10 @@
     <gConfirmPop :confirmText='confirmManagerText' :confirmType="two" @no="confirmManagerPopShowYn = false, reportYn = false" @ok="okSaveManager" v-if="confirmManagerPopShowYn"/>
     <!-- <gAlertPop @closePop="closeCommonAlertPop" @clickBtn="clickAlertPopBtn" v-if="openCommonAlertPopShowYn" :btnList="interfaceBtnList" /> -->
     <div class="followerCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :key="index" >
-        <div style="width: 100%; min-height: 40px; height: 100%; float: left; display: flex; align-items: center; justify-content:space-between;">
-            <div class="fl mleft-01 w100P" style="position: relative; display: flex;min-height: 40px; height: 100%; width: calc(100% - 130px)"  @click="goMemberInfo(member)">
-                <div style="float: left; display: flex; flex-direction: column; width: 35px; margin-right: 25px; justify-content: center; align-items: center;">
-                    <gProfileImg :smallYn="true" :userInfo="member" style="width: 35px; height: 35px;" />
+        <div class="followerCardWrap">
+            <div class="fl mleft-01 w100P followerCardInfoArea" @click="goMemberInfo(member)">
+                <div class="followerAuth">
+                    <gProfileImg class="followerImg" :smallYn="true" :userInfo="member" />
                     <!-- <div class="fl adminTag" :class="{nonTag: (!member.managerKey > 0 && currentTab === 'Show') || (!member.managerKey > 0 && currentTab === 'Admin') }">
                     <p v-if="member.ownerYn" class="font8 commonBlack fontBold" style="">관리자</p>
                     <p v-else class="font8 commonBlack fontBold" style="">매니저</p>
@@ -36,24 +36,24 @@
                     <!-- <div v-if="member.ownerYn || member.ownerYn === 1" style="padding: 3px 8px;float: left; margin-top: 4px; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
                         <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'소유자'}}</p>
                     </div> -->
-                    <div v-if="member.ownerYn" style="padding: 3px 8px;float: left; margin-top: 4px;  border-radius: 8px; line-height: 18px; height: 23px; background-color:rgb(254 224 224);"  >
+                    <div v-if="member.ownerYn" class="followerAuthBox">
                         <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{ $t('Owner') }}</p>
                     </div>
-                    <div v-else-if="member.memberTypeKey" style="padding: 3px 8px;float: left; margin-top: 4px;  border-radius: 8px; line-height: 18px; height: 23px; background-color:rgb(254 224 224);"  >
+                    <div v-else-if="member.memberTypeKey" class="followerAuthBox">
                         <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{ $t('Member') }}</p>
                     </div>
-                    <div v-else style="padding: 3px 8px;float: left; margin-top: 4px; border-radius: 8px; line-height: 18px; height: 23px; background-color:#F5F5F9;"  >
+                    <div v-else class="followerAuthBox followerBg">
                         <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{ $t('Follower') }}</p>
                     </div>
                 </div>
-                <div style="width: calc(100% - 50px); min-height: 20px; float: left; display: flex; flex-direction: column;">
-                    <p class="fl font16 grayBlack" style="text-align:left; width:calc(100%); line-height:23px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-weight: bold;">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
+                <div class="followerInfoBox">
+                    <p class="fl font16 grayBlack followerName">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
                     <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold  textLeft textOverdot w-100P">{{member.userEmail? member.userEmail: this.$t('No Email Info')}}</p>
                     <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{this.$changeFollowerInfo('email', member.userEmail)}}</p>
                     <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold textLeft textOverdot">{{member.phoneEnc? member.phoneEnc: this.$t('No Phone Number Info')}}</p>
                     <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{this.$changeFollowerInfo('phone', member.phoneEnc)}}</p>
                     <div class="w100P fl">
-                        <p class="textLeft fl fontBold grayBlack font12 " >{{this.$changeText(member.memberNameMtext)}}</p>
+                        <p class="textLeft fl fontBold grayBlack font12" >{{this.$changeText(member.memberNameMtext)}}</p>
                         <!-- <p class="textLeft fl fontBold grayBlack font12" v-for="(info, index) in member.memberInfoList" :key="index">
                             {{index !== 0 ? ' | ' : '('}}{{'' + this.$changeText(info.memberTypeItemNameMtext)}}: {{info.itemVal}}{{index === member.memberInfoList.length - 1? ')' : ''}}
                         </p> -->
@@ -61,9 +61,9 @@
                 </div>
             </div>
             <div class="fr  memberItemBox" >
-                <div v-if="$appType !== 'UB'" @click="clickManagerBox('ALIM', member, index, member.mngAlimYn)" :class="{activeMAlim: member.mngAlimYn === 1}" class="font12 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center; height: 35px; border-radius: 5px;     box-shadow: inset 0 0 4px 1px #00000010; padding: 5px;">{{ $t('COMMON_TAB_NOTI') }}</div>
+                <div v-if="$appType !== 'UB'" @click="clickManagerBox('ALIM', member, index, member.mngAlimYn)" :class="{activeMAlim: member.mngAlimYn === 1}" class="font12 cursorP alimMngBtn">{{ $t('COMMON_TAB_NOTI') }}</div>
                 <!-- <div @click="clickManagerBox('MEMBER', member, index, member.mngMemberYn)" :class="{activeMMember: member.mngMemberYn === 1}" class="font12 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center; height: 35px; border-radius: 5px;    box-shadow: inset 0 0 4px 1px #00000010; padding: 5px;">{{ $t('FOLLOW_NAME_MEMBER') }}</div> -->
-                <div @click="clickManagerBox('CHAN', member, index, member.mngTeamYn)" :class="{activeMChan: member.mngTeamYn === 1}" class="font12 cursorP" style=" display: flex; justify-content: center; align-items: center; height: 35px; border-radius: 5px; ;    box-shadow: inset 0 0 4px 1px #00000010; padding: 5px;">{{ this.$t('COMM_CHAN_MANAGER') }}</div>
+                <div @click="clickManagerBox('CHAN', member, index, member.mngTeamYn)" :class="{activeMChan: member.mngTeamYn === 1}" class="font12 cursorP memMngBtn">{{ this.$t('COMM_CHAN_MANAGER') }}</div>
                 <!-- <div v-if="member.ownerYn" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
                     <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'소유자'}}</p>
                 </div>
@@ -73,7 +73,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -110,7 +109,6 @@ export default {
     if (this.managingList) {
       this.disp_list = this.managingList
     }
-    console.log('=====this.managingList', this.managingList)
   },
   methods: {
     clickManagerBox (manType, member, index, status) {
@@ -140,8 +138,6 @@ export default {
       this.confirmManagerPopShowYn = false
     },
     async setManager (manType, member, index) { // index 1: 관리자 제외 / 0: 관리자로 지정
-      // eslint-disable-next-line no-debugger
-      debugger
       var param = {}
       if (member.managerKey) {
         param.managerKey = member.managerKey
@@ -204,10 +200,6 @@ export default {
           localStatusObj.mngTeamYn = false
         }
       }
-      console.log('param')
-      console.log(localStatusObj)
-      // eslint-disable-next-line no-debugger
-      debugger
       if (localStatusObj.mngAlimYn === false && localStatusObj.mngMemberYn === false && localStatusObj.mngTeamYn === false) {
         await this.deleteManager(param)
       } else {
@@ -266,31 +258,45 @@ export default {
 </script>
 
 <style scoped>
-.memberItemBox{
-  display: flex; flex-direction: row; align-items: center; justify-content: flex-end; align-content: center; height: 30px;
+.memberItemBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  align-content: center;
+  height: 30px;
 }
-.followerCard{
-
+.followerCard {
   float: left;
-  width: 100%; min-height: 50px; padding: 0.5rem 1rem; border-bottom: 0.8px solid #ccc; float: left;
+  width: 100%;
+  min-height: 50px;
+  padding: 0.5rem 1rem;
+  border-bottom: 0.8px solid #ccc;
+  float: left;
   background-color: white;
   transition : background-color 0.5s ease-in;
   animation-name: fadein; animation-duration: 0.3s;
   white-space: nowrap;
   /* transition : height 0.5s ease-in; */
 }
-.adminTag{
-  width: 30px;background-color:#CCCCCC; border-radius:0.5rem; position: absolute; bottom:-0.4rem;
-  animation-name: fadein; animation-duration: 0.3s;
+.adminTag {
+  width: 30px;
+  background-color:#CCC;
+  border-radius:0.5rem;
+  position: absolute;
+  bottom:-0.4rem;
+  animation-name: fadein;
+  animation-duration: 0.3s;
   animation-fill-mode: forwards;
 }
 .nonTag{
-  animation-name: fadeout; animation-duration: 0.3s;
+  animation-name: fadeout;
+  animation-duration: 0.3s;
   animation-fill-mode: forwards;
-
 }
 .noneCard{
-  animation-name: listout; animation-duration: 0.2s;
+  animation-name: listout;
+  animation-duration: 0.2s;
   animation-fill-mode: forwards;
 
 }
@@ -305,26 +311,112 @@ export default {
     opacity: 0;
   }
 }
-
-.managerPicImgWrap {width: 30px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex; }
-.managerPicImgWrap img {width: 100%;}
+.managerPicImgWrap {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border:1.5px solid #6768a7;
+  float: left;
+  background: #6768a745;
+  overflow: hidden;
+  display: flex;
+}
+.managerPicImgWrap img {
+  width: 100%;
+}
 
 .activeMAlim {
-    background: #DFF7FF!important;
-    color: #2D75B7;
-    font-weight: bold;
-    box-shadow: 0 0 4px 1px #00000025!important;
+  background: #DFF7FF!important;
+  color: #2D75B7;
+  font-weight: bold;
+  box-shadow: 0 0 4px 1px #00000025!important;
 }
 .activeMMember{
-    background: #D0FBE8!important;
-    color: #2DB77D;
-    font-weight: bold;
-    box-shadow: 0 0 4px 1px #00000025!important;
+  background: #D0FBE8!important;
+  color: #2DB77D;
+  font-weight: bold;
+  box-shadow: 0 0 4px 1px #00000025!important;
 }
 .activeMChan {
-    background: #FBF6D0!important;
-    color: #B7902D;
-    font-weight: bold;
-    box-shadow: 0 0 4px 1px #00000025!important;
+  background: #FBF6D0!important;
+  color: #B7902D;
+  font-weight: bold;
+  box-shadow: 0 0 4px 1px #00000025!important;
+}
+.followerCardWrap {
+  width: 100%;
+  min-height: 40px;
+  height: 100%;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.followerCardInfoArea {
+  position: relative;
+  display: flex;
+  min-height: 40px;
+  height: 100%;
+  width: calc(100% - 130px)
+}
+.followerAuth {
+  float: left;
+  display: flex;
+  flex-direction: column;
+  width: 35px;
+  margin-right: 25px;
+  justify-content: center;
+  align-items: center;
+}
+.followerImg {
+  width: 35px !important;
+  height: 35px !important;
+}
+.followerAuthBox {
+  padding: 3px 8px;
+  float: left;
+  margin-top: 4px;
+  border-radius: 8px;
+  line-height: 18px;
+  height: 23px;
+  background-color:rgb(254 224 224);
+}
+.followerBg {
+  background-color:#F5F5F9;
+}
+.followerInfoBox {
+  width: calc(100% - 50px);
+  min-height: 20px;
+  float: left;
+  display: flex;
+  flex-direction: column;
+}
+.followerName {
+  text-align: left;
+  width: 100%;
+  line-height: 23px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-weight: bold;
+}
+.alimMngBtn {
+  margin-right: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 4px 1px #00000010;
+  padding: 5px;
+}
+.memMngBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 4px 1px #00000010;
+  padding: 5px;
 }
 </style>
