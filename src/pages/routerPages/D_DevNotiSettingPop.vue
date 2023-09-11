@@ -47,7 +47,7 @@
                     <option value="5">5초뒤</option>
                 </select>
             </div>
-            <gBtnLarge style="float: left;" @click="sendDevPush" btnTitle="이벤트 발생"/>
+            <gBtnLarge style="float: left;" @click="sendContentsPush" btnTitle="이벤트 발생"/>
             <p class="font18 fontBold textLeft mright-1 fl w100P mbottom-05 mtop-2">webview url 변경</p>
             <input ref="urlInput" v-model="changeUrl" type="text" name="" style="width: 100%; float: left; height: 30px;" id="">
             <gBtnLarge style="float: left; margin-top: 10px;" @click="changeWebviewUrl" btnTitle="url 변경"/>
@@ -117,7 +117,7 @@ export default {
       this.mParamObj.targetObj = this.targetList[0]
       return resultData
     },
-    sendDevPush () {
+    sendContentsPush () {
       this.closeXPop()
       var this_ = this
       // eslint-disable-next-line no-new-object
@@ -146,7 +146,7 @@ export default {
       pushParam.allRecvYn = false
       setTimeout(() => {
         this_.$commonAxiosFunction({
-          url: '/sUniB/tp.sendDevPush',
+          url: '/sUniB/tp.sendContentsPush',
           param: pushParam
         }, true)
       }, this.mParamObj.time * 1000)

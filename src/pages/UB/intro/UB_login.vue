@@ -42,7 +42,7 @@
           {{ $t('LOG_BTN_APPLE') }}
         </div>
         <div v-else-if="!mobileYn" class="loginBtn appleWebLoginBtn">
-          <div id="appleid-signin"  class="signin-button appleWebLoginBtn" data-color="black" data-border="true" data-type="sign in">
+          <div id="appleid-signin"  class="signin-button appleWebLoginBtn" data-color="black" data-border="true" data-type="sign-in">
           </div>
           <div @click="clickAppleLoginInWeb" class="font20 loginAppleWeb">
             <img src="../../../assets/images/intro/login/login_apple.png">
@@ -145,6 +145,16 @@ export default {
       if (this.mobileYn || window.ReactNativeWebView) {
         this.AppleLoginBtn()
       } else {
+        // eslint-disable-next-line no-undef
+        AppleID.auth.init({
+          clientId: 'com.uniBuzzy.login',
+          scope: 'name email',
+          redirectURI: 'https://unibuzzy.com',
+          // eslint-disable-next-line no-tabs
+          state: 'signin',	// csrf, php의 openssl_random_pseudo_bytes
+          // eslint-disable-next-line no-tabs
+          usePopup: true	// or false defaults to false
+        })
         document.querySelector('#appleid-signin').click()
       }
     },

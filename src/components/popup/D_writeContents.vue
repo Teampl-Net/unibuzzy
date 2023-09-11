@@ -34,7 +34,9 @@
     "FORM_MSG_SUCCESS_EDIT": "수정되었습니다.",
     "FORM_MSG_FAIL_EDIT": "게시되지 못했습니다.",
     "FORM_MSG_SUCCESS_POST": "발송되었습니다.",
-    "FORM_MSG_FAIL_POST": "발송하지 못했습니다."
+    "FORM_MSG_FAIL_POST": "발송하지 못했습니다.",
+    "FORM_MSG_SUCCESS_SEND_ALIM": "성공적으로 발송되었습니다.",
+    "FORM_MESSAGE_ASK_SEND_ALIM": "멤버들에게 알림이 발송되지 않는 게시글입니다. 멤버들을 향해 알림을 발송하시겠습니까? "
   },
   "en": {
     "FORM_BTN_WRITE": "Write",
@@ -71,7 +73,9 @@
     "FORM_MSG_FAIL_EDIT": "Failed to publish.",
     "FORM_MSG_SUCCESS_POST": "Sent.",
     "FORM_MSG_SUCCESS_WRITE_POST": "Saved.",
-    "FORM_MSG_FAIL_POST": "Failed to send."
+    "FORM_MSG_FAIL_POST": "Failed to send.",
+    "FORM_MSG_SUCCESS_SEND_ALIM": "successfully",
+    "FORM_MESSAGE_ASK_SEND_ALIM": "The post does not send notifications to members. Would you like to send notifications to members?"
   }
 }
 </i18n>
@@ -170,7 +174,9 @@
   </div>
   <gToolBox :propTools='mToolBoxOptions' @changeTextStyle='changeFormEditorStyle' />
   <gCertiPop :pPopText="$t('FORM_MSG_ID')" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  />
-
+  <onlyMemberSelectPop v-if="mSelectMemPopShowYn" :propData="propData" :pSelectedList="mSelectMemberList" :pClosePop="backClick" />
+  <div v-if="mAskSendAlimPopShowYn" @click="closeAskAlimPop" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 98;"></div>
+  <commonConfirmPop v-if="mAskSendAlimPopShowYn" @no="closeAskAlimPop" confirmType="two" @ok="sendAlimToMember" :confirmText="$t('FORM_MESSAGE_ASK_SEND_ALIM')" />
   <commonConfirmPop v-if="failPopYn" @no="failPopYn = false" confirmType="timeout" :confirmText="errorText" />
   <gConfirmPop v-if="contentType === 'ALIM' && checkPopYn" :confirmText="requestPushYn === false? $t('FORM_MSG_SEND_NOTI'):$t('FORM_MSG_APPLY_NOTI')" @ok='sendMsg(), checkPopYn=false' @no='confirmNo()' />
   <gConfirmPop v-if="contentType === 'BOAR' && checkPopYn" :confirmText="modiYn? $t('FORM_MSG_EDIT') : $t('FORM_MSG_SAVE')" @ok='sendBoard(), checkPopYn=false' @no='confirmNo()'   />
@@ -187,8 +193,10 @@ import checkBtnArea from './writeContentUnit/D_commonCheckBtn.vue'
 import commonConfirmPop from './confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../unit/formEditor/Tal_formEditor.vue'
 import attachFileList from '../unit/formEditor/Tal_attachFile.vue'
+import onlyMemberSelectPop from '../UB/popup/UB_onlyMemberSelectPop.vue'
 export default {
   components: {
+    onlyMemberSelectPop,
     attachFileList,
     formEditor,
     checkBtnArea,
@@ -196,6 +204,10 @@ export default {
   },
   data () {
     return {
+      mContentsParams: {},
+      mAskSendAlimPopShowYn: false,
+      mSelectMemPopShowYn: false,
+      mSelectMemberList: [],
       failPopYn: false,
       errorText: '',
       confirmText: '',
@@ -229,7 +241,7 @@ export default {
       mToolBoxOptions: {},
       gCertiPopShowYn: false,
       mCanWriteYn: true,
-
+      mBoardList: [],
       isMobile: /Mobi/i.test(window.navigator.userAgent)
     }
   },
@@ -304,7 +316,10 @@ export default {
         if (this.propData.titleStr) {
           this.writePushTitle = this.propData.titleStr
         }
-        this.getCabinetDetail(this.propData.cabinetKey)
+        const this_ = this
+        this.getCabinetDetail(this.propData.cabinetKey).then(res => {
+          this_.mBoardList = res
+        })
       }
     }
     if (this.params && this.params.userKey) {
@@ -423,6 +438,24 @@ export default {
     }
   },
   methods: {
+    async sendAlimToMember () {
+      /* this.mAskSendAlimPopShowYn = false
+      this.mSelectMemPopShowYn = true */
+      this.mContentsParams.allRecvYn = true
+      const res = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.sendContentsPush',
+        param: this.mContentsParams
+      })
+      console.log(res)
+      if (res.data && res.data.result) {
+        this.$showToastPop(this.$t('FORM_MSG_SUCCESS_SEND_ALIM'))
+        this.closeXPop(true)
+      }
+    },
+    closeAskAlimPop () {
+      this.mAskSendAlimPopShowYn = false
+      this.closeXPop(true)
+    },
     horizontalScroll (e) {
       if (e.deltaY === 0) return
       e.preventDefault()
@@ -480,13 +513,12 @@ export default {
       return mCabinet
     },
     async selectBoard (data, index) {
-      // eslint-disable-next-line no-debugger
-      debugger
       this.selectBoardIndex = index
       this.mCanWriteYn = true
       var mCabinet
       if (!this.propData.initData) {
         mCabinet = await this.getCabinetDetail(data.cabinetKey)
+        this.mBoardList = mCabinet
         var mCabinetShare = mCabinet.mShareItemList
         if (mCabinetShare[0]) {
           if (mCabinetShare[0].shareType) {
@@ -504,6 +536,7 @@ export default {
           return
         }
       } else {
+        this.mBoardList = [data]
         mCabinet = data
         // if (this.contentType === 'BOAR' && (!this.GE_USER.certiDate) && (mCabinet.blindYn === 1 || mCabinet.blindYn === true)) {
         // // 익명게시판일 떄
@@ -917,6 +950,7 @@ export default {
         } else {
           param.workStatCodeKey = 40
         }
+        this.mContentsParams = param
         var result = await this.$saveContents(param)
         if (result.result === true) {
           var newParam = {}
@@ -941,18 +975,33 @@ export default {
             this.$emit('successWrite', newP)
           }
         }
+        const cab = this.mBoardList[this.selectBoardIndex]
+        // const cab = await this.getCabinetDetail(this.selectBoardCabinetKey)
+        console.log(cab)
+        if (cab && cab.shareList) {
+          if (cab.shareList[0].accessKind === 'T') {
+            // eslint-disable-next-line no-debugger
+            debugger
+            this.mContentsParams.contentsKey = result.contents.contentsKey
+            this.mContentsParams.jobkindId = 'BOAR'
+            this.mAskSendAlimPopShowYn = true
+            return
+          }
+        }
         // this.$showToastPop('게시되었습니다.')
         if (!this.modiYn) {
           this.$showToastPop(this.$t('FORM_MSG_SUCCESS_WRITE_POST'))
         } else {
           this.$showToastPop(this.$t('FORM_MSG_SUCCESS_EDIT'))
         }
+        this.closeXPop(true)
       } catch (error) {
         this.$showToastPop(this.$t('FORM_MSG_FAIL_EDIT'))
         console.error(error)
       } finally {
-        this.closeXPop(true)
         this.sendLoadingYn = false
+        /* this.closeXPop(true)
+        this.sendLoadingYn = false */
       }
     },
     async sendMsg () {
