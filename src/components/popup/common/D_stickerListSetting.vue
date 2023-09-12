@@ -10,19 +10,19 @@
 </i18n>
 <template>
   <div ref="layerPopUp" v-if="this.openStickerPopYn" @click="saveUserDoStickerList" @wheel="saveUserDoStickerList" class="w100P h100P layerPopUp"></div>
-    <div v-if="this.openStickerPopYn" style="width: 70%; max-height: 140px; right: 0; right: 10px; bottom: 20px; background: #fff; border: 2px solid #5F61BD; border-radius: 25px; padding: 10px 20px; position: absolute; z-index: 8;">
-      <div class="fl w100P mbottom-05" style="height: 35px; display: flex; align-items: center;overflow: scroll hidden; border-bottom: 2px solid #ccc;" @wheel="horizontalScroll" id="stickerContList">
+    <div v-if="this.openStickerPopYn" class="stickerPopWrap">
+      <div class="fl w100P mbottom-05 stickerListWrap" @wheel="horizontalScroll" id="stickerContList">
         <!-- <template style="" v-for="(value, index) in this.contDetail.D_CONT_USER_STICKER_LIST" :key="index"> -->
         <p v-if="this.mContStickerList.length === 0" class="font14 textLeft fontBold">{{ $t('STICK_MSG_ADD_LABEL') }}</p>
         <template style="" v-for="(value, index) in this.mContStickerList" :key="index">
-          <gStickerLine @click="selectStickerFromBox(value)" :pSelecteModeYn="true" :mContStickerList="this.mContStickerList" v-if="value" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value" />
+          <gStickerLine class="stickerLineItem" @click="selectStickerFromBox(value)" :pSelecteModeYn="true" :mContStickerList="this.mContStickerList" v-if="value" :pSticker="value" />
         </template>
       </div>
-      <div class="fl w100P mbottom-05" :class="!isMobile? 'thinScrollBar':''" style="height: 35px; display: flex; align-items: center;overflow: auto hidden;" @wheel="horizontalScroll" id="stickerMList">
-        <div @click="openStickerDetailPop(mAddStickerObj)" class="cursorP mright-05 fontBold" style="width: 25px; height: 25px; flex-shrink: 0; line-height: 25px; background: #5F61BD; color: #fff; border-radius: 5px;">+</div>
-        <template style="float: left; height: 35px; width: calc(100% - 20px);" v-for="(value, index) in this.GE_NON_SELECTED_STICKER_LIST" :key="index" >
+      <div class="fl w100P mbottom-05 stickerManageWrap" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll" id="stickerMList">
+        <div @click="openStickerDetailPop(mAddStickerObj)" class="cursorP mright-05 fontBold openDetailPopBtn">+</div>
+        <template class="stickerTemplate" v-for="(value, index) in this.GE_NON_SELECTED_STICKER_LIST" :key="index" >
           <!-- <gStickerLine v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" /> -->
-          <gStickerLine class="stickerIcon" v-if="value" style="float: left; margin-right: 10px; min-width: 30px; margin-bottom: 0 !important;" :pSticker="value" @click="selectSticker(value)"/>
+          <gStickerLine class="stickerIcon" v-if="value" :pSticker="value" @click="selectSticker(value)"/>
         </template>
       </div>
       <transition name="showModal">
@@ -183,11 +183,9 @@ export default {
       // eslint-disable-next-line no-new-object
       var param = new Object()
       var keyList = []
-      console.log(this.mContStickerList.length)
       for (var i = 0; i < this.mContStickerList.length; i++) {
         if (!this.mContStickerList[i]) continue
         var stickerKey = this.mContStickerList[i].stickerKey
-        console.log(stickerKey)
         keyList.push(stickerKey)
       }
       param.stickerKeyList = keyList
@@ -225,7 +223,6 @@ export default {
       }
     },
     // deleteSticker (sticker) {
-    //   console.log(sticker)
     //   var idx = this.mStickerList.findIndex((item) => Number(item.stickerKey) === Number(sticker.stickerKey))
     //   if (idx !== -1) {
     //     this.mStickerList.splice(idx, 1)
@@ -235,7 +232,6 @@ export default {
       // selectSticker(value)
       this.mAddStickerObj = { picBgPath: '#E57373', nameMtext: '' }
       this.mAddStickerObj.modiYn = false
-      console.log(this.mAddStickerObj)
       var params = {}
       params.targetType = 'stickerDetail'
       params.addStickerObj = this.mAddStickerObj
@@ -262,7 +258,7 @@ export default {
 }
 </script>
 <style scoped>
-.layerPopUp{
+.layerPopUp {
   /* display: none; */
   position: fixed;
   top: 0;
@@ -274,9 +270,57 @@ export default {
 .stickerIcon {
   transform-origin: top;
   animation: stickerIconAni 3s infinite linear;
+  float: left !important;
+  margin-right: 10px !important;
+  min-width: 30px !important;
+  margin-bottom: 0 !important;
 }
-
-@keyframes stickerIconAni{
+.stickerPopWrap {
+  width: 70%;
+  max-height: 140px;
+  right: 0;
+  right: 10px;
+  bottom: 20px;
+  background: #fff;
+  border: 2px solid #5F61BD;
+  border-radius: 25px;
+  padding: 10px 20px;
+  position: absolute;
+  z-index: 8;
+}
+.stickerListWrap {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  overflow: scroll hidden;
+  border-bottom: 2px solid #ccc;
+}
+.stickerLineItem {
+  float: left !important;
+  margin-right: 5px !important;
+  min-width: 30px !important;
+}
+.stickerManageWrap {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  overflow: auto hidden
+}
+.openDetailPopBtn {
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+  line-height: 25px;
+  background: #5F61BD;
+  color: #fff;
+  border-radius: 5px;
+}
+.stickerTemplate {
+  float: left;
+  height: 35px;
+  width: calc(100% - 20px);
+}
+@keyframes stickerIconAni {
   0%, 50%, 100%{
     transform: rotate(0deg);
   }

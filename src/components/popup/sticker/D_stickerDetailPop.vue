@@ -19,29 +19,29 @@
 }
 </i18n>
 <template>
-    <div style="width: calc(100% - 60px); height: 350px; border-radius: 0.8rem; z-index: 12; border: 1px solid #ccc; background: #FFF; position: fixed; top: 30%; left: 30px;">
-        <div  class="newHeaderLine" style="width: 100%; padding: 10px 20px; display: flex; align-items: center; position: relative; height: 50px;">
+    <div class="stickerDetailPopWrap">
+        <div  class="newHeaderLine stickerDetailHeader">
             <p class="fl font20 commonColor fontBold">{{mStickerObj.modiYn? $t('STICK_NAME_INFO') : $t('STICK_NAME_ADD') }}</p>
-            <img class="cursorP" @click="backClick" src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute;  right: 15px; top: 15px;" alt="">
+            <img class="cursorP closeImg" @click="backClick" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
-        <div class="okScrollBar thinScrollBar" style="width: 100%; overflow: hidden scroll ;padding: 10px; height: calc(100% - 100px); float: left; display: flex; flex-direction: column; align-items: center;">
+        <div class="okScrollBar thinScrollBar stickerDetailList">
             <p class="textLeft font16 fontBold w-100P commonColor mleft-1 ">{{$t('STICK_TITLE_NAME')}}</p>
-            <div style="width: 100%; float: left; min-height: 30px; display: flex; align-items: center; padding: 0 10px;">
-                <input v-model="mStickerObj.nameMtext" type="text" name="" :placeholder="$t('STICK_MSG_NONAME')" style="float: left; width: calc(100% - 40px);  margin-top: 0.5rem;height: 30px;" id="">
-                <div style="width: 30px; height: 30px; border-radius: 100%; float: right; margin-left: 10px; margin-top: 8px;" :style="'background: ' + mStickerObj.picBgPath + ';'" ></div>
+            <div class="stickerNameInputBox">
+                <input v-model="mStickerObj.nameMtext" type="text" name="" :placeholder="$t('STICK_MSG_NONAME')" id="">
+                <div :style="'background: ' + mStickerObj.picBgPath + ';'" ></div>
             </div>
-            <div class="fr" style="width: calc(100% - 20px); margin-top: 10px;">
+            <div class="fr colorPickerWrap">
                 <gColorPicker :deepYn="true" :inLineYn="isMobile? true : false" :colorPick="mStickerObj.picBgPath" @closePop="closeColorPickerPop" @choiceColor='choiceColor' ref="colorPicker" />
             </div>
-            <div class="textLeft mtop-1 fontBold w100P fl" style="padding: 0 1rem;">
-              <p class="font16 commonColor fl textLeft" style="width: calc(50% - 0.5rem);">{{ $t('STICK_TITLE_PREVIEW') }}</p>
+            <div class="textLeft mtop-1 fontBold w100P fl stickerPreviewWrap">
+              <p class="font16 commonColor fl textLeft">{{ $t('STICK_TITLE_PREVIEW') }}</p>
               <!-- <p class="fr font14 cursorP textCenter contrastBtn" @click="contrastColor">반전</p> -->
             </div>
-            <div style="width: 100%; min-height: 50px; float: left; padding-left: 10px;">
-                <gStickerLine :pContrastColorYn="this.contrastColorYn" style="width: calc(100% - 40px);" v-if="mStickerObj.nameMtext && mStickerObj.nameMtext !== ''" :pSticker="mStickerObj" />
+            <div class="stickerLineWrap">
+                <gStickerLine class="stickerLineEach" :pContrastColorYn="this.contrastColorYn" v-if="mStickerObj.nameMtext && mStickerObj.nameMtext !== ''" :pSticker="mStickerObj" />
             </div>
         </div>
-        <div style="width: 100%; float: left; background:#FFF; height: 30px; display: flex; justify-content: center; align-items: center;">
+        <div class="stickerBtnWrap">
             <gBtnSmall :btnTitle="mStickerObj.modiYn? $t('COMM_BTN_EDIT2') : $t('COMMON_BTN_ADD')" @click="checkInput" class="mright-05" />
             <gBtnSmall v-if="mStickerObj.modiYn" :btnTitle="$t('COMMON_BTN_DELETE')" @click="askDelete"  btnThema="light" class="mright-05"/>
             <gBtnSmall v-else :btnTitle="$t('COMM_BTN_CANCEL')" @click="backClick"  btnThema="light"/>
@@ -72,9 +72,6 @@ export default {
     history.push(this.popId)
     this.$store.commit('D_HISTORY/updateStack', history)
   },
-  updated () {
-    console.log(this.mStickerObj)
-  },
   methods: {
     contrastColor () {
       if (this.contrastColorYn) {
@@ -84,8 +81,6 @@ export default {
       }
     },
     checkInput () {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.mStickerObj.nameMtext.trim() === '') {
         this.mConfirmType = 'timeout'
         this.mConfirmText = this.$t('STICK_MSG_NONAME')
@@ -121,7 +116,6 @@ export default {
     choiceColor (color) {
       this.mStickerObj.picBgPath = color
       this.$refs.colorPicker.setColor(color)
-      // console.log(color)
     },
     async saveSticker (paramData) {
       // eslint-disable-next-line no-new-object
@@ -185,7 +179,6 @@ export default {
         this.mConfirmDeletePopShowYn = false
         var hStack = this.$store.getters['D_HISTORY/hStack']
         var removePage = hStack[hStack.length - 1]
-        console.log(hStack)
         if (hStack[hStack.length - 1] === 'gConfirmPop') {
           hStack = hStack.filter((element, index) => index < hStack.length - 1)
           this.$store.commit('D_HISTORY/setRemovePage', removePage)
@@ -200,7 +193,6 @@ export default {
     backClick () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
-      console.log(hStack)
       if (this.popId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
@@ -250,5 +242,90 @@ export default {
   height: 24px;
   padding: 0px 5px;
   margin-right: 5px;
+}
+.stickerDetailPopWrap {
+  width: calc(100% - 60px);
+  height: 350px;
+  border-radius: 0.8rem;
+  z-index: 12;
+  border: 1px solid #ccc;
+  background: #FFF;
+  position: fixed;
+  top: 30%;
+  left: 30px;
+}
+.stickerDetailHeader {
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 50px;
+}
+.closeImg {
+  width: 25px;
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
+.stickerDetailList {
+  width: 100%;
+  overflow: hidden scroll;
+  padding: 10px;
+  height: calc(100% - 100px);
+  float: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stickerNameInputBox {
+  width: 100%;
+  float: left;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+.stickerNameInputBox > input {
+  float: left;
+  width: calc(100% - 40px);
+  margin-top: 0.5rem;
+  height: 30px;
+}
+.stickerNameInputBox > div {
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  float: right;
+  margin-left: 10px;
+  margin-top: 8px;
+}
+.colorPickerWrap {
+  width: calc(100% - 20px);
+  margin-top: 10px;
+}
+.stickerPreviewWrap {
+  padding: 0 1rem;
+}
+.stickerPreviewWrap > p {
+  width: calc(50% - 0.5rem);
+}
+.stickerLineWrap {
+  width: 100%;
+  min-height: 50px;
+  float: left;
+  padding-left: 10px;
+}
+.stickerLineEach {
+  width: calc(100% - 40px) !important;
+}
+.stickerBtnWrap {
+  width: 100%;
+  float: left;
+  background: #FFF;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

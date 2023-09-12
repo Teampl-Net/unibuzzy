@@ -15,39 +15,39 @@
 }
 </i18n>
 <template>
-<div style="width: 100%; min-height: 320px; left:0; background: #FFF; border-radius: 25px 25px 0px 0px; display: flex; flex-direction: column;padding: 20px 20px; position: absolute; bottom: 0; z-index: 11;">
-  <div style="position: relative; width: 100%; min-height: 40px; margin-bottom: 10px; float: left;">
+<div class="bottomSheetWrap">
+  <div class="bottomSheetHeader">
       <p class="font20 fontBold textLeft">{{ $t('BOTTOM_MSG_WHERE') }}</p>
-      <img src="../../../../assets/images/common/grayXIcon.svg" @click="closePop()" style="width: 20px; position: absolute; right: 8px;top: 5px;" alt="">
+      <img src="../../../../assets/images/common/grayXIcon.svg" @click="closePop()" alt="">
   </div>
-  <div style="width: 100%; min-height: 100px;">
-      <div style="width: 100%; min-height: 100px; display: flex;  float: left; justify-content: space-between;">
+  <div class="bottomSheetBody">
+      <div>
           <div @click="selectWriteType('ALIM')"  class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'ALIM' ? 'border: 3px solid #7678E2!important; ' : ''">
             <div v-if="mAlimClickYn === false" class="noneClickCSS fl wh100P"></div>
               <img style="width: 36px;" src="../../../../assets/images/main/main_contentsBellIcon2.png" alt="">
-              <img v-if="this.mSelectedWriteType === 'ALIM'" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
+              <img v-if="this.mSelectedWriteType === 'ALIM'" class="contTypeImg" src="../../../../assets/images/common/selectCheckIcon.svg" alt="">
               <p :class="{lightGray: this.mSelectedWriteType !== 'ALIM' }" class="font14 fontBold mtop-05 commonColor">{{mAlimClickYn === true ? $t('COMMON_TAB_NOTI') : $t('COMM_MSG_NOPERM')}}</p>
           </div>
           <div @click="selectWriteType('BOAR')" class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'BOAR' ? 'border: 3px solid #7678E2!important; ' : ''">
               <img class="img-w30" src="../../../../assets/images/main/baordIcon.svg" alt="">
-              <img v-if="this.mSelectedWriteType === 'BOAR'" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
+              <img v-if="this.mSelectedWriteType === 'BOAR'" class="contTypeImg" src="../../../../assets/images/common/selectCheckIcon.svg" alt="">
               <p :class="{lightGray: this.mSelectedWriteType !== 'BOAR'}" class="font14 fontBold mtop-03 commonColor">{{ $t('COMMON_TAB_POST') }}</p>
           </div>
       </div>
   </div>
-  <div style="width: 100%; margin-top: 20px; min-height: 30px;" v-if="!propTeamKey">
+  <div class="bottomSheetChanList" v-if="!propTeamKey">
       <p class="font20 fontBold textLeft">{{ $t('BOTTOM_MSG_CHAN') }}</p>
-      <div class="lightGray cursorP font16 fontBold okScrollBar" style="border: 3px solid #F4F4F4!important; width: 100%; height: 160px!important; border-radius: 8px; overflow: hidden scroll; padding :15px 20px;" name="" id="">
-          <div style="width: 100%; height: 30px; padding: 0 5px; float: left;">
-              <div v-for="(chan, index) in mSelectChanList" style="position: relative; float: left; width: 100%; min-height: 100%;" :key="index">
+      <div class="lightGray cursorP font16 fontBold okScrollBar bottomSheetChanListWrap" name="" id="">
+          <div class="bottomSheetChanListBox">
+              <div class="bottomSheetItem" v-for="(chan, index) in mSelectChanList" :key="index">
                   <p @click="this.mSelectedChan = chan.teamKey"  class="font16 textLeft h100P " :class="this.mSelectedChan === chan.teamKey? 'commonLightColor' : 'commonGray'" >{{this.$changeText(chan.nameMtext)}}</p>
-                  <img src="../../../../assets/images/common/listSelectCheck.svg" style="position: absolute; right: 10px; top: 5px; " v-if="this.mSelectedChan === chan.teamKey" alt="">
+                  <img src="../../../../assets/images/common/listSelectCheck.svg" v-if="this.mSelectedChan === chan.teamKey" alt="">
               </div>
           </div>
       </div>
   </div>
   <gBtnLarge v-if="mSelectChanList.length > 0" :style="this.mSelectedChan === 0? 'background: #F4F4F4!important; color: #AAAAAA!important;': ''" class="mtop-2 fontBold" @click="this.mSelectedChan === 0? '' : openWritePushPop()" :btnTitle="$t('COMM_BTN_WRITE')" />
-  <gBtnLarge  v-else style="background: #F4F4F4!important; color: #AAAAAA!important;" class="mtop-2 fontBold" :btnTitle="$t('BOTTOM_MSG_NOCHAN')" />
+  <gBtnLarge  v-else class="mtop-2 fontBold noChanBtn" :btnTitle="$t('BOTTOM_MSG_NOCHAN')" />
 </div>
 </template>
 
@@ -204,12 +204,97 @@ export default {
 
 <style>
 .writeTypeBtnStyle {
-    float:left; width: calc(50% - 10px); height: 95px; cursor:pointer; border-radius: 6px;position: relative; border: 3px solid #F4F4F4; display: flex; flex-direction: column; justify-content: center; align-items: center;
+  float: left;
+  width: calc(50% - 10px);
+  height: 95px;
+  cursor: pointer;
+  border-radius: 6px;
+  position: relative;
+  border: 3px solid #F4F4F4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .noneClickCSS {
   border-radius: 6px;
   position: absolute;
   background: #00000030;
   /* background: #cccccc; */
+}
+.bottomSheetWrap {
+  width: 100%;
+  min-height: 320px;
+  left: 0;
+  background: #FFF;
+  border-radius: 25px 25px 0px 0px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px;
+  position: absolute;
+  bottom: 0;
+  z-index: 11;
+}
+.bottomSheetHeader {
+  position: relative;
+  width: 100%;
+  min-height: 40px;
+  margin-bottom: 10px;
+  float: left;
+}
+.bottomSheetHeader > img {
+  width: 20px;
+  position: absolute;
+  right: 8px;
+  top: 5px;
+}
+.bottomSheetBody {
+  width: 100%;
+  min-height: 100px;
+}
+.bottomSheetBody > div {
+  width: 100%;
+  min-height: 100px;
+  display: flex;
+  float: left;
+  justify-content: space-between;
+}
+.contTypeImg {
+  position: absolute;
+  left: -15px;
+  top: -10px;
+}
+.bottomSheetChanList {
+  width: 100%;
+  margin-top: 20px;
+  min-height: 30px;
+}
+.bottomSheetChanListWrap {
+  border: 3px solid #F4F4F4 !important;
+  width: 100%; height: 160px !important;
+  border-radius: 8px;
+  overflow: hidden scroll;
+  padding :15px 20px;
+}
+.bottomSheetChanListBox {
+  width: 100%;
+  height: 30px;
+  padding: 0 5px;
+  float: left;
+}
+.bottomSheetItem {
+  position: relative;
+  float: left;
+  width: 100%;
+  min-height: 100%;
+}
+.bottomSheetItem > img {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+.noChanBtn {
+  background: #F4F4F4 !important;
+  color: #AAAAAA !important;
 }
 </style>
