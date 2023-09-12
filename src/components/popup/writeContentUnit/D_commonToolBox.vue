@@ -15,20 +15,26 @@
 }
 </i18n>
 <template>
-  <div v-if="propTools" style="position: absolute !important; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 40px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px; padding: 5px 10px;z-index: 100000; background: #FFFFFF;">
-    <div class="fl h100P " style="width: 25%;">
-      <p style=" color: #6768A7; float: left; line-height: 35px; margin-right: 5px; font-size: 18px; width: 100%; " @mousedown="clickSelectBox()">{{ $t('FORM_TITLE_FONT') }} {{propTools.ftSize}}</p>
-      <div v-if="mFontSelectBoxShowYn" style="width: 25%; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">
-        <div @mousedown="changeFontSize(20)" style="font-size: 20px; height: 30px;  color: #6768A7;" value="20">{{ $t('FORM_BTN_BIG') }}</div>
-        <div @mousedown="changeFontSize(16)" style="font-size: 16px; height: 30px; color: #6768A7;" value="16">{{ $t('FORM_BTN_MID') }}</div>
-        <div @mousedown="changeFontSize(12)" style="font-size: 12px; height: 30px; color: #6768A7;" value="12">{{ $t('FORM_BTN_SMALL') }}</div>
+  <div v-if="propTools" class="toolBoxWrap">
+    <div class="fl h100P fontSizeBox">
+      <p class="fontSizeTitle" @mousedown="clickSelectBox()">{{ $t('FORM_TITLE_FONT') }} {{propTools.ftSize}}</p>
+      <div v-if="mFontSelectBoxShowYn" class="fontSizeWrap">
+        <div @mousedown="changeFontSize(20)" class="fontOption font20" value="20">{{ $t('FORM_BTN_BIG') }}</div>
+        <div @mousedown="changeFontSize(16)" class="fontOption font16" value="16">{{ $t('FORM_BTN_MID') }}</div>
+        <div @mousedown="changeFontSize(12)"  class="fontOption font12" value="12">{{ $t('FORM_BTN_SMALL') }}</div>
       </div>
     </div>
-    <div   class="fl" style="display: flex; width: 45%;height: 100%; align-ite ms: center; justify-content: space-around; around; align-items: center;">
-      <div @click="changeTextStyle({ type: 'bold' })" :class="this.propTools.boldYn === true ? 'selectedStyle': ''" class="fl" style=" width: 25px; text-align: center;cursor: pointer;"><img class="w100P" src="../../../assets/images/formEditor/boldIcon.svg" alt=""></div>
-      <div @click="changeTextStyle({ type: 'italic' })" :class="this.propTools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w100P" src="../../../assets/images/formEditor/italicIcon.svg" alt=""></div>
-      <div @click="changeTextStyle({ type: 'underLine' })" :class="this.propTools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w100P" src="../../../assets/images/formEditor/underlineIcon.svg" alt=""></div>
-      <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" class="fl" style="width: 24px; margin-left: 5px; cursor: pointer;" alt="">
+    <div class="fl fontStyleWrap">
+      <div @click="changeTextStyle({ type: 'bold' })" :class="this.propTools.boldYn === true ? 'selectedStyle': ''" class="fl fontStyleItem">
+        <img class="w100P" src="../../../assets/images/formEditor/boldIcon.svg" alt="">
+      </div>
+      <div @click="changeTextStyle({ type: 'italic' })" :class="this.propTools.italicYn === true ? 'selectedStyle': ''" class="fl fontStyleItem">
+        <img class="w100P" src="../../../assets/images/formEditor/italicIcon.svg" alt="">
+      </div>
+      <div @click="changeTextStyle({ type: 'underLine' })" :class="this.propTools.underLineYn === true ? 'selectedStyle': ''" class="fl fontStyleItem">
+        <img class="w100P" src="../../../assets/images/formEditor/underlineIcon.svg" alt="">
+      </div>
+      <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" class="fl deleteFormCard" alt="">
     </div>
   </div>
 </template>
@@ -46,6 +52,7 @@ export default {
   methods: {
     changeFontSize (fontSize) {
       this.changeTextStyle({ type: 'font', size: fontSize })
+      this.mFontSelectBoxShowYn = false
     },
     changeTextStyle (obj) {
       this.$emit('changeTextStyle', obj)
@@ -72,5 +79,73 @@ export default {
 </script>
 
 <style>
-.selectedStyle {background: #d7d7e63f;}
+.selectedStyle {
+  background: #d7d7e63f;
+}
+.toolBoxWrap {
+  position: absolute !important;
+  bottom: 0;
+  left: 0;
+  border: 1px solid #ccc;
+  width: 100%;
+  height: 40px;
+  box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px;
+  padding: 5px 10px;
+  z-index: 1000000;
+  background: #FFFFFF;
+}
+.fontSizeBox {
+  width: 25%;
+}
+.fontSizeTitle {
+  color: #6768A7;
+  float: left;
+  line-height: 35px;
+  margin-right: 5px;
+  font-size: 18px;
+  width: 100%;
+}
+.fontSizeWrap {
+  width: 25%;
+  position: absolute;
+  background: #fff;
+  min-height: 80px;
+  left: 2px;
+  top: -90px;
+  border: 1px solid #ccc;
+  border-bottom: none;
+}
+.fontOption {
+  height: 30px;
+  color: #6768A7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.font20 {
+  font-size: 20px;
+}
+.font16 {
+  font-size: 16px;
+}
+.font12 {
+  font-size: 12px;
+}
+.fontStyleWrap {
+  display: flex;
+  width: 45%;
+  height: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
+.fontStyleItem {
+  width: 25px;
+  text-align: center;
+  cursor: pointer;
+}
+.deleteFormCard {
+  width: 24px;
+  margin-left: 5px;
+  cursor: pointer;
+}
 </style>
