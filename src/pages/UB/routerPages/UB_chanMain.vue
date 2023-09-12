@@ -903,6 +903,7 @@ export default {
       if (initData.shortLink) {
         const initLink = JSON.parse(initData.shortLink.shortLink)
         this.mChanInfo.copyTextStr = initLink.shortLink
+        initData.team.copyTextStr = initLink.shortLink
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [initData.team])
         this.mMakeDeepLinkIng = false
       }
