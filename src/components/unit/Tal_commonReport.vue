@@ -67,7 +67,7 @@
         <img class="fr cursorP mright-05" @click="closePop()" src="../../assets/images/common/popup_close.png"/>
         <p class="fl font16 fontBold textLeft w100P mtop-1">{{ $t('REPO_TITLE_REPORT') }}</p>
         <p class="fl lightGray font12 textLeft w100P mtop-05 mbottom-1">{{ $t('REPO_MSG_DESC') }}</p>
-        <div class="fl w100P" style="height: 390px; overflow: hidden scroll; display:flex; flex-direction:column;">
+        <div class="fl w100P reportListWrap">
           <div v-for="(data, index) in reportList" :key="index" @click="reportClick(data)" class="fl w100P textLeft font14 commonColor reportCard" :style="index === 0 ? 'border-top:1px solid #eeeeee;': ''" >
             <p class="fl font14 mleft-1">{{data.reportTitle}}</p> <p class="fr font16">></p>
           </div>
@@ -264,5 +264,11 @@ export default {
 }
 .right01 {
   right: 0.1rem;
+}
+.reportListWrap {
+  height: 390px;
+  overflow: hidden scroll;
+  display: flex;
+  flex-direction: column;
 }
 </style>

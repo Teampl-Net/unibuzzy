@@ -1,5 +1,5 @@
 <template>
-    <div :ref="'stateCodeFor' + this.contentsKey" v-if="DISP_CODE_VALUE" style=" padding: 0 10px; border-radius: 8px; background: #bfbfda;  color: #fff; text-align: left;">
+    <div class="manageStateCompo" :ref="'stateCodeFor' + this.contentsKey" v-if="DISP_CODE_VALUE">
         <div class="font14">{{$changeText(DISP_CODE_VALUE.codeNameMtext)}}</div>
         {{currentWorker}}
     </div>
@@ -307,6 +307,18 @@ export default {
 }
 </script>
 <style scoped>
-.selectedCode {border: 2px solid #5F61BD!important; margin: 5px 5px!important;}
-.activeInput {background: #cccccc1c;}
+.selectedCode {
+  border: 2px solid #5F61BD !important;
+  margin: 5px 5px !important;
+}
+.activeInput {
+  background: #cccccc1c;
+}
+.manageStateCompo {
+  padding: 0 10px;
+  border-radius: 8px;
+  background: #bfbfda;
+  color: #fff;
+  text-align: left;
+}
 </style>
