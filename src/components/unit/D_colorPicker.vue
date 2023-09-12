@@ -1,7 +1,7 @@
 <template>
 
 <!-- box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; max-height:50px; -->
-    <div v-if="inLineYn !== false" class="" id="colorPickerWrap" style="background-color: #ECECF570; padding: 5px 10px; border-radius: 8px; overflow: auto; white-space: nowrap;     display: flex; flex-direction: row; align-items: center;" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
+    <div v-if="inLineYn !== false" class="colorPickerWrap" id="colorPickerWrap" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
         <!-- <div :style="'background-color:' + this.selectedColor" style=" width: calc(100% - 100px); margin-left: 10px; float: left; height: 50px; margin-bottom: 20px;">{{this.selectedColor}}</div>
         <gBtnSmall @click="selectColor" style="float: left; height: 23px; margin-bottom: 5px; line-height: 23px;margin-left: 10px" btnTitle="선택"/>
         <gBtnSmall @click="closePop" style="float: left; height: 23px; color: #A9AACD; border: 1px solid #A9AACD; line-height: 23px; background: #FFFFFF; margin-left: 10px" btnTitle="닫기"/> -->
@@ -14,11 +14,11 @@
             </div>
           </div>
         </div> -->
-      <div v-for="(value, index) in colorList" :key="index" class="mright-03" @click="pickColor(value)" :style="'background:' + value" style="min-width:30px; max-width:30px; max-height: 30px; min-height: 30px; border-radius:100%; display: flex; justify-content: center; align-items: center;">
+      <div v-for="(value, index) in colorList" :key="index" class="mright-03 colorItem" @click="pickColor(value)" :style="'background:' + value">
         <img src="../../assets/images/common/icon_check_white.svg" class="fl img-w20" v-show="selectedColor === value" alt="">
       </div>
     </div>
-    <div v-else class="" style="background-color: #ECECF570; min-height: 50px; height: 100%; padding: 5px 10px; border-radius: 8px; white-space: nowrap; flex-direction: row; align-items: center;">
+    <div v-else class="colorPickerWrapPop">
         <!-- <div :style="'background-color:' + this.selectedColor" style=" width: calc(100% - 100px); margin-left: 10px; float: left; height: 50px; margin-bottom: 20px;">{{this.selectedColor}}</div>
         <gBtnSmall @click="selectColor" style="float: left; height: 23px; margin-bottom: 5px; line-height: 23px;margin-left: 10px" btnTitle="선택"/>
         <gBtnSmall @click="closePop" style="float: left; height: 23px; color: #A9AACD; border: 1px solid #A9AACD; line-height: 23px; background: #FFFFFF; margin-left: 10px" btnTitle="닫기"/> -->
@@ -31,7 +31,7 @@
             </div>
           </div>
         </div> -->
-      <div v-for="(value, index) in colorList" :key="index" class="mright-03" @click="pickColor(value)" :style="'background:' + value" style="min-width:30px; max-width:30px; max-height: 30px; min-height: 30px; float: left; border-radius:100%; display: flex; justify-content: center; align-items: center; margin-bottom: 5px;">
+      <div v-for="(value, index) in colorList" :key="index" class="mright-03 colorPickerPopItem" @click="pickColor(value)" :style="'background:' + value">
         <img src="../../assets/images/common/icon_check_white.svg" class="fl img-w20" v-show="selectedColor === value" alt="">
       </div>
     </div>
@@ -105,14 +105,51 @@ export default {
   computed: {
   },
   watch: {
-    // colorPick () {
-    //   console.log(this.selectedColor)
-    //   this.selectedColor = this.colorPick
-    // }
   }
 }
 </script>
 
 <style scoped>
-
+.colorPickerWrap {
+  background-color: #ECECF570;
+  padding: 5px 10px;
+  border-radius: 8px;
+  overflow: auto;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.colorItem {
+  min-width: 30px;
+  max-width: 30px;
+  max-height: 30px;
+  min-height: 30px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.colorPickerWrapPop {
+  background-color: #ECECF570;
+  min-height: 50px;
+  height: 100%;
+  padding: 5px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+  flex-direction: row;
+  align-items: center;
+}
+.colorPickerPopItem {
+  min-width: 30px;
+  max-width: 30px;
+  max-height: 30px;
+  min-height: 30px;
+  float: left;
+  border-radius:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 5px;
+}
 </style>

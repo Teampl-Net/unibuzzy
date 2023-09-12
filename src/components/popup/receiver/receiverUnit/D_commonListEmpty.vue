@@ -1,6 +1,6 @@
 <template>
-<div style="width: 100%; height: 100%; position: absolute; top:0; left:0;">
-  <div class="w100P fl" style="position: absolute; top: 50%; transform: translateY(-50%)">
+<div class="emptyListWrap">
+  <div class="w100P fl emptyListBox">
     <div class="w100P fl">
       <img src="../../../../assets/images/editChan/icon_emptyBox.svg" alt="">
     </div>
@@ -24,6 +24,17 @@ export default {
   }
 }
 </script>
-<style>
-
+<style scoped>
+.emptyListWrap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top:0;
+  left:0;
+}
+.emptyListBox {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
 </style>

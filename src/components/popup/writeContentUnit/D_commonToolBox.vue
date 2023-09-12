@@ -15,7 +15,7 @@
 }
 </i18n>
 <template>
-  <div v-if="propTools" style="position: absolute !important; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 40px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px; padding: 5px 10px;z-index: 11; background: #FFFFFF;">
+  <div v-if="propTools" style="position: absolute !important; bottom: 0; left: 0; border: 1px solid #ccc; ;width: calc(100%); height: 40px;box-shadow: rgb(130 130 153 / 39%) 0px 6px 9px -5px; padding: 5px 10px;z-index: 100000; background: #FFFFFF;">
     <div class="fl h100P " style="width: 25%;">
       <p style=" color: #6768A7; float: left; line-height: 35px; margin-right: 5px; font-size: 18px; width: 100%; " @mousedown="clickSelectBox()">{{ $t('FORM_TITLE_FONT') }} {{propTools.ftSize}}</p>
       <div v-if="mFontSelectBoxShowYn" style="width: 25%; position: absolute; background: #fff; min-height: 80px; left: 2px; top: -90px; border: 1px solid #ccc; border-bottom: none;">

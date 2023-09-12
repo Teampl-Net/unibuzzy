@@ -66,7 +66,6 @@ export default {
     GE_IMG_LIST () {
       if (!this.propImgList || this.propImgList.length === 0) return
       if (!this.propImgList[0].attributes) {
-        console.log(this.propImgList)
         return this.propImgList
       }
       var returnImgList = []
@@ -144,7 +143,6 @@ export default {
             outlineID: 'pswp__icn-download'
           },
           onClick: (event, el, pswp) => {
-            console.log(pswp.currIndex)
             var index = pswp.currIndex
             var targetImg = this.GE_IMG_LIST[index]
             this.download(targetImg)

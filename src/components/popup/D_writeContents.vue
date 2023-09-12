@@ -1417,7 +1417,7 @@ export default {
   /* left: 5%; */
   /* bottom: 0; */
   top: 5%;
-  z-index: 9999;
+  z-index: 1000000;
   left: 5%;
   /* transform: translate(-50%, -50%); */
   width: 90%;
@@ -1437,7 +1437,6 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  z-index: 9999;
   /* overflow: hidden; */
   /* clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%); */
 }

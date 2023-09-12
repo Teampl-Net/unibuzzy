@@ -1,19 +1,21 @@
 <template>
-<div style="width: 100%; float: left;">
-      <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
-      <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w100P" style=""></myObserver>
-      <div class="fl w100P" ref="commonListCompo" style="margin-top: 10px;">
+<div class="w100P fl">
+      <div v-if="saveMemoLoadingYn" id="loading">
+        <div class="spinner"></div>
+      </div>
+      <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w100P"></myObserver>
+      <div class="fl w100P mTop10" ref="commonListCompo">
         <!-- eslint-disable-next-line vue/no-useless-template-attributes -->
         <template v-for="(alim, index0) in this.commonListData" :key="index0" >
           <div :id="'memoCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea" :style="(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey) && alim.titleBlindYn? 'border-bottom: none; margin-bottom: 0;' : ''">
-                <div  @click="goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;">
+                <div  @click="goChanDetail(alim)" class="pushChanLogoImgWrap" :style="'background-image: url(' + (alim.domainPath ? alim.domainPath + alim.logoPathMtext : alim.logoPathMtext) + ');'">
                   <!-- <img v-if="alimListYn" class="fl cursorP pushDetailChanLogo" style="" @click="goChanDetail(alim)" :src="alim.logoPathMtext">
                   <img v-else class="fl cursorP pushDetailChanLogo" @click="goChanDetail(alim)" :src="alim.logoPathMtext"> -->
                 </div>
                 <div class="pushDetailHeaderTextArea ">
-                  <div @click="clickCard(alim)" :class="alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46? 'completeWork': ''"  style="width: calc(100% - 30px); word-wrap:break-word;" class="font16 fl fontBold commonBlack cursorDragText">
+                  <div @click="clickCard(alim)" :class="alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46? 'completeWork': ''" class="font16 fl fontBold commonBlack cursorDragText contentsItemWrap">
                     <p v-if="alim.jobkindId === 'ALIM'" class="font14 mtop-03 fl contentTypeTextArea fontNomal" style="background:#6768A7; margin-top: 3px; color: #FFF;">{{'알림'}}</p>
                     <p v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl mtop-03 contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</p>
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
@@ -1322,70 +1324,142 @@ export default {
 }
 </script>
 <style scoped>
+#loading {
+  display: block;
+  z-index:9999999;
+}
 .bodyFullStr {
   word-break: break-all;
   max-height: 400px;
   overflow: hidden;
 }
-.commonListTr, .commonListTr td, .commonListTr th {height: 4rem; }
-.listHeader {text-align: center;}
-.listBodyRow{width: calc(100% - 60px);}
-.commonListWrap{overflow-y: scroll; width: 100%; overflow-x: hidden; height: 100%;}
+.commonListTr, .commonListTr td, .commonListTr th {
+  height: 4rem;
+}
+.listHeader {
+  text-align: center;
+}
+.listBodyRow {
+  width: calc(100% - 60px);
+}
+.commonListWrap {
+  overflow-y: scroll;
+  width: 100%;
+  overflow-x: hidden;
+  height: 100%;
+}
 
-.pushDetailWrap{height: fit-content;}
-.commonPushListTopArea{min-height: 3.5rem; margin-bottom: 1rem; border-bottom: 0.5px solid #CFCFCF}
-.pushDetailChanLogo{width: 30px; margin-right: 1px;}
-.pushDetailChanLogo img {width: 100%;}
-.pushDetailHeaderTextArea{width: calc(100% - 50px); cursor: pointer; float: left;margin-top: 0.1rem;}
+.pushDetailWrap {
+  height: fit-content;
+}
+.commonPushListTopArea {
+  min-height: 3.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 0.5px solid #CFCFCF;
+}
+.pushDetailChanLogo {
+  width: 30px;
+  margin-right: 1px;
+}
+.pushDetailChanLogo img {
+  width: 100%;
+}
+.pushDetailHeaderTextArea {
+  width: calc(100% - 50px);
+  cursor: pointer;
+  float: left;
+  margin-top: 0.1rem;
+}
 
-.alimCheckContents{width: 100%;float: right; min-height: 20px;}
-.alimCheckContents > img {margin-top: 3px;}
+.alimCheckContents {
+  width: 100%;
+  float: right;
+  min-height: 20px;
+}
+.alimCheckContents > img {
+  margin-top: 3px;
+}
 
-.pushChanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}
-.pushMbox{margin-bottom: 20px;}
+.pushChanLogoImgWrap {
+  width: 40px;
+  float: left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border-radius: 40px;
+  margin-right: 0.5rem;
+  border: 2px solid #ccc;
+  position: relative;;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.pushMbox {
+  margin-bottom: 20px;
+}
 /* .userDoWrap img {width: 1rem;} */
-.commonListContentBox{
-    position: relative;
-    width: calc(100% - 1rem);
-    margin: 0.7rem 0.5rem;
-    float: left;
-    border-radius: 0.8rem;
-    background-color: #ffffff;
-    color: #363c5f;
-    padding: 0.8rem 1rem;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 0 7px 3px #b7b4b440;
+.commonListContentBox {
+  position: relative;
+  width: calc(100% - 1rem);
+  margin: 0.7rem 0.5rem;
+  float: left;
+  border-radius: 0.8rem;
+  background-color: #ffffff;
+  color: #363c5f;
+  padding: 0.8rem 1rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 7px 3px #b7b4b440;
 
-    animation-name: fadein;
-    animation-duration: 0.3s;
-    /* animation-timing-function: linear; */
-    /* animation-delay: 0.5s; */
+  animation-name: fadein;
+  animation-duration: 0.3s;
+  /* animation-timing-function: linear; */
+  /* animation-delay: 0.5s; */
+}
+.creatorListContentBox {
+/* background-color: #6768a712 !important; */
+background-color: #f5f5ff !important;
+box-shadow: 0 0 7px 3px #6768a740 !important;
+}
 
-    }
-.creatorListContentBox{
-    /* background-color: #6768a712 !important; */
-    background-color: #f5f5ff !important;
-    box-shadow: 0 0 7px 3px #6768a740 !important;
-    }
-
-.alimListMemoBorder{
-  width: calc(100% + 2rem); height: 2px; margin: 10px 0; margin-bottom: 0; margin-left: -1rem;
+.alimListMemoBorder {
+  width: calc(100% + 2rem);
+  height: 2px;
+  margin: 10px 0;
+  margin-bottom: 0;
+  margin-left: -1rem;
   background: #ccc;
 }
 
-.alimListMemoBoxBackground{
-  width: 100% !important; height: 100% !important; background: #00000036 !important; position: absolute !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;}
-.h-400max{ max-height: 400px;} .overHidden{overflow: hidden;}
+.alimListMemoBoxBackground {
+  width: 100% !important;
+  height: 100% !important;
+  background: #00000036 !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 999999 !important;
+}
+.h-400max {
+  max-height: 400px;
+}
+.overHidden {
+  overflow: hidden;
+}
 
 .completeWork, .completeWork div, .completeWork span, .completeWork a, .completeWork pre {
   text-decoration: line-through;
 }
-.completeWork{
+.completeWork {
   text-decoration: line-through!important;
   color: #303030;
   text-decoration: overline;
   text-decoration-color: #303030;
+}
+.contentsItemWrap {
+  width: calc(100% - 30px);
+  word-wrap:break-word;
 }
 </style>

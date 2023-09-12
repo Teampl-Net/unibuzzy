@@ -113,8 +113,6 @@ export default {
       return fileExt
     },
     goDetail () {
-      console.log('여기 보세요~~')
-      console.log(this.GE_FILE_LIST)
       var param = {}
       param.targetType = 'contentsDetail'
       param.targetKey = this.GE_FILE_LIST.contentsKey

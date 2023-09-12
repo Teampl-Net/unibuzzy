@@ -14,63 +14,57 @@
 </i18n>
 <template>
   <unknownLoginPop v-if="mUnknownLoginPopYn" /> <!-- 아래의 position:absolute였는데 fixed로 바꿔봄... -->
-  <div class="fl w100P" ref='memoPopCompo' style="position: fixed; bottom: 0; min-height: 50px; background: #fff; padding: 0.5rem 20px; padding-top: 10px; box-shadow: 0px -2px 3px 0px #eee;">
-    <div v-if="meMemoData"  class="fl" style="width: calc(100% - 20px);min-height: 30px; margin: 0 10px 10px 10px; border-radius: 5px; background-color: #dddddd90; padding: 0.5rem 1rem; position: relative;" >
+  <div class="fl w100P memoPopWrap" ref='memoPopCompo'>
+    <div v-if="meMemoData" class="fl meMemoBox">
         <p class="fl commonBlack font14" >{{this.$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
-        <div class="fl mleft-05 mright-05 font14 commonBlack textOverdot w100P" style="text-align: left;" v-html="meMemoData.memo.bodyFullStr"></div>
-      <div style="width:20px;  position: absolute; top:0.2rem; right:0.5rem" @click="cancel">
-        <img src="../../../assets/images/common/searchXIcon.svg" style="width:50%;" alt="">
+        <div class="fl mleft-05 mright-05 font14 commonBlack textOverdot w100P textLeft" v-html="meMemoData.memo.bodyFullStr"></div>
+      <div class="cancelBtn" @click="cancel">
+        <img src="../../../assets/images/common/searchXIcon.svg" alt="">
       </div>
-
     </div>
-    <div v-if="this.attachTrueFileList.length > 0" style="width: calc(100%); display: flex; align-items: center; min-height: 30px; " class="fl mbottom-05 mtop-05">
-      <div v-if="this.attachTrueFileList.length > 0" class="fl mtop-05" style="width: 100%; overflow: auto; width: calc(100% - 55px); margin-top: 2px;">
-        <div :style="attachFileWidth" style="min-width: 100%; float: left; overflow: auto; white-space: nowrap;">
-          <div class="CMiddleBorderColor" style="padding: 3px 10px; float: left; margin-right: 5px; height: 30px; max-width: 200px; padding-right: 25px; box-shadow: 1px 3px 3px 0px #e9e7e7; border-radius: 8px; position: relative; " v-for="(value, index) in  attachTrueFileList" :key="index">
+    <div v-if="this.attachTrueFileList.length > 0" class="fl mbottom-05 mtop-05 attachFileWrap">
+      <div class="fl mtop-05 attachFileBox">
+        <div @wheel="horizontalScroll" id="attachFileArea" :class="mobileYn? '':'thinScrollBar'" class="attachFileArea">
+          <div class="CMiddleBorderColor attachFileItem" v-for="(value, index) in  attachTrueFileList" :key="index">
               <p class="CMiddleColor font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p>
-              <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" style="position: absolute; right: 5px;top: 7px;" alt="">
+              <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" alt="">
           </div>
         </div>
       </div>
     </div>
-    <form @submit.prevent="formSubmit" hidden style="overflow: hidden; width: 100%; cursor: pointer; height: 300px; position: relative; " method="post">
-            <!-- <div v-if="mSelectedImgList.length === 0" style="cursor: pointer; background: #FFF; width: calc(100%); min-height: 70px; height: 100%;display: flex; font-size: 14px;color: rgb(103, 104, 167);justify-content: center;align-items: center;">
-                <img  class="fl" src="../../../assets/images/formEditor/gallery_gray.svg" style="width: 20px;"  alt="">
-            </div> -->
-            <!-- <input hidden class="formImageFile" multiple type="file" title ="선택" accept="image/jpeg, image/png, image/jpg, image/heic"  ref="selectFile" id="input-file" @change="handleImageUpload(event)"/> -->
-            <input hidden class="formImageFile" multiple type="file" title ="선택" accept="image/*, image/heic"  ref="selectFile" id="input-file" @change="handleImageUpload(event)"/>
-            <!-- <button  class="whiteBtn mright-1" type="submit" :disabled="isUploading">업로드</button> -->
+    <form @submit.prevent="formSubmit" class="fileSubmitForm" hidden method="post">
+      <input hidden class="formImageFile" multiple type="file" title ="선택" accept="image/*, image/heic"  ref="selectFile" id="input-file" @change="handleImageUpload(event)"/>
     </form>
-    <div v-if="mSelectedImgList && mSelectedImgList.length > 0" style="overflow: hidden; border: 1px solid rgb(167, 167, 167); border-radius: 10px; padding: 8px; margin-bottom: 10px;  width: 100%; cursor: pointer; max-height: 300px; position: relative; " >
-        <div v-if="mSelectedImgList && mSelectedImgList.length > 0"  ref="imageBox" class="fl mright-05 formCard" style="position: relative;overflow: scroll hidden; width: 100%; height: calc(100%)">
-            <div class="fl mright-05" :style="allImgWidth" style="height:100%; width: var(--width)" >
-                <div style="float: left; height: 100%; position: relative;" v-for="(value, index) in mSelectedImgList" :key="index">
-                    <img class="editorImg" :style="{height: setImgSize(index), height: value.scrollHeight + 'px'}" style="min-height: 80px; max-height: 300px;" :id="'addImg' + index" :class="{addTrue :  value.addYn}" :src="value.previewImgUrl" />
-                    <div class="cursorP" @click="deleteSelectImgList(index)" style="position: absolute; height: 25px; border-radius: 100%; background: #FFF; padding: 5px; right: 5px; top: 5px; box-shadow: 0 0 4px 4px #00000030; width: 25px;" >
-                        <img style="width: 100%; float: left;" src="../../../assets/images/common/popup_close.png" alt="">
+    <div class="memoSelectedImg" v-if="mSelectedImgList && mSelectedImgList.length > 0">
+        <div ref="imageBox" @wheel="horizontalScroll" id="memoSelectedImgBox" :class="mobileYn? '':'thinScrollBar'" class="fl mright-05 formCard memoSelectedImgBox">
+            <div class="fl mright-05 memoSelectedImgWrap" :style="allImgWidth">
+                <div class="attachImgItem" v-for="(value, index) in mSelectedImgList" :key="index">
+                    <img class="editorImg" :style="{height: setImgSize(index), height: value.scrollHeight + 'px'}" :id="'addImg' + index" :class="{addTrue :  value.addYn}" :src="value.previewImgUrl" />
+                    <div class="cursorP" @click="deleteSelectImgList(index)">
+                        <img class="w100P fl" src="../../../assets/images/common/popup_close.png" alt="">
                     </div>
                 </div>
                 <!-- <span @click="deleteFile(index)" style="position: absolute; top: 0; right: 7px; cursor: pointer;">x</span> -->
             </div>
         </div><!-- mSelectedImgList : {{ mSelectedImgList }} -->
     </div>
-    <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" style="width:20px; line-height: 80px; margin-top: 1rem" class="fl mright-02" alt="">
+    <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" class="fl mright-02 turnRightIcon" alt="">
 
     <!-- <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;"> -->
-      <div style="width: 100%; display: flex; align-items: center; float: left; flex-wrap: wrap;">
-        <div @click="toggleAttachMenu" style="position: relative; width: 40px; height: 40px; margin-right: 8px; border-radius: 5px; background: #dcddeb; float: left; font-size: 30px;color: #FFF; font-weight: bold">+</div>
-        <pre :placeholder="$t('EMPT_MSG_WRITE_COMM')" @focus="test" @keydown="inputEnterKey" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding " :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}" style="width:calc(100% - 81px); min-height:2.5rem; text-align:left; float: left; resize: none; border-radius: 10px; border: 1px solid #a7a7a7"  contenteditable=true  @input="inputTextCheck"/>
+      <div class="memoInputWrap">
+        <div @click="toggleAttachMenu" class="attachMenuToggle">+</div>
+        <pre :placeholder="$t('EMPT_MSG_WRITE_COMM')" @focus="test" @keydown="inputEnterKey" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding memoTextTag" :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}"  contenteditable=true  @input="inputTextCheck"/>
         <!-- <div style="width: 30px; height: 100%;"> -->
         <img v-if="mWatchInputData.trim() !== ''" @click="saveMemo()" src="../../../assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mleft-05">
         <img v-else @click="$showToastPop(this.$t('EMPT_MSG_WRITE_COMM2'))" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mleft-05">
-        <div v-show="attachMenuShowYn" style="width: 100%; height: 50px; display: flex; align-items: center;">
-          <div class="font16 commonColor" @click.stop="addImgFile" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 33%; border-right: 1px solid #eee;">
-            <img src="../../../assets/images/common/fileType_img.svg" alt="" style="margin-right: 8px; width: 12px;">
+        <div v-show="attachMenuShowYn" class="attachMenuWrap">
+          <div class="font16 commonColor addImgBtn" @click.stop="addImgFile">
+            <img src="../../../assets/images/common/fileType_img.svg" alt="">
             {{ $t('EMPT_BTN_PIC') }}
           </div>
-          <attachFileList @click.stop="attachMenuShowYn = false" targetType="memo" ref="attCompo" style="width: calc(33%);" :pOneLineYn="true" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
-          <div @click.stop="toggleAttachMenu" class="font16 commonColor" style="display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; margin-top: 2px; width: 33%;">
-            <img src="../../../assets/images/common/searchXIcon.svg" alt="" style="margin-right: 8px; width: 12px;">
+          <attachFileList class="width33" @click.stop="attachMenuShowYn = false" targetType="memo" ref="attCompo" :pOneLineYn="true" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+          <div @click.stop="toggleAttachMenu" class="font16 commonColor addImgBtn noBorder">
+            <img src="../../../assets/images/common/searchXIcon.svg" alt="">
             {{ $t('COMM_BTN_CLOSE') }}
           </div>
         </div>
@@ -110,7 +104,8 @@ export default {
       mSelectedImgList: [],
       selectFile: null,
       attachMenuShowYn: false,
-      firstEnterYn: false
+      firstEnterYn: false,
+      mobileYn: this.$getMobileYn()
     }
   },
   updated () {
@@ -145,7 +140,6 @@ export default {
       var imgList = this.mSelectedImgList
       var imgWidth = 0
       for (var i = 0; i < imgList.length; i++) {
-        console.log(imgWidth)
         if (imgList[i].scrollWidth) { imgWidth += (Number(imgList[i].scrollWidth + 20)) }
       }
       return {
@@ -496,23 +490,197 @@ export default {
       console.log(this.sFileList)
       this.$refs.attCompo.deleteFileList(value, index)
       this.delAttachFile(value)
+    },
+    horizontalScroll (e) {
+      if (e.deltaY === 0) return
+      e.preventDefault()
+      var channelWrap = document.querySelector(`#${e.currentTarget.id}`)
+      channelWrap.scrollTo({
+        left: channelWrap.scrollLeft + e.deltaY / 10
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-.width65{
-width: calc(100% - 65px) !important;
-
+.width65 {
+  width: calc(100% - 65px) !important;
 }
 span.label.highlight {
-    background: #E1ECF4;
-    border: 1px dotted #39739d;
+  background: #E1ECF4;
+  border: 1px dotted #39739d;
 }
 
-.memoCardTextid:empty:before{
+.memoCardTextid:empty:before {
   content: attr(placeholder);
   color:#AFAFAF;
+}
+.memoPopWrap {
+  position: fixed;
+  bottom: 0;
+  min-height: 50px;
+  background: #fff;
+  padding: 0.5rem 20px;
+  padding-top: 10px;
+  box-shadow: 0px -2px 3px 0px #eee;
+}
+.meMemoBox {
+  width: calc(100% - 20px);
+  min-height: 30px;
+  margin: 0 10px 10px 10px;
+  border-radius: 5px;
+  background-color: #dddddd90;
+  padding: 0.5rem 1rem;
+  position: relative;
+}
+.cancelBtn {
+  width:20px;
+  position: absolute;
+  top:0.2rem;
+  right:0.5rem;
+}
+.cancelBtn > img {
+  width: 50%;
+}
+.attachFileWrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  min-height: 30px;
+}
+.attachFileBox {
+  width: 100%;
+  overflow: hidden;
+  margin-top: 2px;
+}
+.attachFileArea {
+  width: 100%;
+  float: left;
+  overflow: auto;
+  display: flex;
+}
+.attachFileItem {
+  padding: 3px 10px;
+  float: left;
+  margin-right: 5px;
+  height: 30px;
+  max-width: 200px;
+  padding-right: 25px;
+  box-shadow: 1px 3px 3px 0px #e9e7e7;
+  border-radius: 8px;
+  position: relative;
+}
+.attachFileItem > img {
+  position: absolute;
+  right: 5px;
+  top: 7px;
+}
+.fileSubmitForm {
+  overflow: hidden;
+  width: 100%;
+  cursor: pointer;
+  height: 300px;
+  position: relative;
+}
+.memoSelectedImg {
+  overflow: hidden;
+  border: 1px solid rgb(167, 167, 167);
+  border-radius: 10px;
+  padding: 8px;
+  margin-bottom: 10px;
+  width: 100%;
+  cursor: pointer;
+  max-height: 300px;
+  position: relative;
+}
+.memoSelectedImgBox {
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+.memoSelectedImgWrap {
+  height: 100%;
+  width: var(--width);
+}
+.attachImgItem {
+  float: left;
+  height: 100%;
+  position: relative;
+}
+.attachImgItem > img {
+  min-height: 80px;
+  max-height: 300px;
+}
+.attachImgItem > div {
+  position: absolute;
+  height: 25px;
+  border-radius: 100%;
+  background: #FFF;
+  padding: 5px;
+  right: 5px;
+  top: 5px;
+  box-shadow: 0 0 4px 4px #00000030;
+  width: 25px;
+}
+.turnRightIcon {
+  width:20px;
+  line-height: 80px;
+  margin-top: 1rem;
+}
+.memoInputWrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  float: left;
+  flex-wrap: wrap;
+}
+.attachMenuToggle {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  border-radius: 5px;
+  background: #dcddeb;
+  float: left;
+  font-size: 30px;
+  color: #FFF;
+  font-weight: bold;
+}
+.memoTextTag {
+  width: calc(100% - 81px);
+  min-height: 2.5rem;
+  text-align: left;
+  float: left;
+  resize: none;
+  border-radius: 10px;
+  border: 1px solid #a7a7a7;
+}
+.attachMenuWrap {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+.addImgBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 2px;
+  width: 33%;
+  border-right: 1px solid #eee;
+}
+.addImgBtn > img {
+  margin-right: 8px;
+  width: 12px;
+}
+.noBorder {
+  border: 0;
+}
+.width33 {
+  width: 33% !important;
 }
 </style>

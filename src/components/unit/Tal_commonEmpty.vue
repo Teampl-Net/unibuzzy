@@ -43,7 +43,7 @@
 </i18n>
 <template>
 <div class="w100P fl">
-  <img src="../../assets/images/common/icon_box_empty.svg" style="width:50px;" alt="">
+  <img class="emptyImg" src="../../assets/images/common/icon_box_empty.svg" alt="">
   <p class="mtop-05 font14 fontBold commonColor">{{midleText}}</p>
 </div>
 
@@ -123,5 +123,7 @@ export default {
 }
 </script>
 <style>
-
+.emptyImg {
+  width: 50px;
+}
 </style>
