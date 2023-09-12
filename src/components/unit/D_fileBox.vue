@@ -9,28 +9,28 @@
 }
 </i18n>
 <template>
-  <div v-if="GE_FILE_LIST" :style="this.contentsEle.ownUserKey === this.contentsEle.accessCreUserKey? 'background-color: #f8f8ff;':'background-color: #fff;'" style="background-color: #fff; margin-bottom: 10px; width: 100%; box-shadow: rgb(103 104 167 / 40%) 0px 1px 3px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
-      <div class="attachedFileTitle" style="width: 100%; padding: 12px 20px;">
-        <p @click="download" class="fl cursorP textLeft textOverdot commonBlack fontBold font16" style="max-width: calc(100% - 110px); line-height: 24px;" >
-          <img :src="this.$settingFileIcon(contentsEle.fileName)" style="width: 16px; float: left; margin-right: 5px;" alt="">
+  <div v-if="GE_FILE_LIST" class="fileBoxArea" :style="this.contentsEle.ownUserKey === this.contentsEle.accessCreUserKey? 'background-color: #f8f8ff;':'background-color: #fff;'">
+      <div class="attachedFileTitle">
+        <p @click="download" class="fl cursorP textLeft textOverdot commonBlack fontBold font16 fileBoxNameWrap">
+          <img :src="this.$settingFileIcon(contentsEle.fileName)" alt="">
           {{ getFileName(contentsEle.fileName) }}
         </p>
-        <p class="fl textLeft commonBlack fontBold font16" style="width: 30px;">.{{ getFileExt(contentsEle.fileName) }}</p>
+        <p class="fl textLeft commonBlack fontBold font16 fileBoxExtend">.{{ getFileExt(contentsEle.fileName) }}</p>
         <p class="fr textLeft commonBlack font12 font Bold mtop-03">{{ this.$byteConvert(contentsEle.fileSizeKb) }}</p>
-        <div style="clear: both; font-weight: normal; display: flex; align-items: center; justify-content: space-between;" class="font14 textLeft">
-          <div class="textOverdot" style="width: 100%;">
+        <div class="font14 textLeft fileBoxInfoWrap">
+          <div class="textOverdot w100P">
             <img src="../../assets/images/footer/icon_people.svg" class="img-w12" alt="">
             &nbsp;{{ this.$changeText(contentsEle.accessCreUserName) }}
-            <p class="font12 fr mleft-1 mtop-01" style="max-width: 70px;">{{ this.$changeDateFormat(contentsEle.creDate) }}</p>
+            <p class="font12 fr mleft-1 mtop-01 fileBoxCreDate">{{ this.$changeDateFormat(contentsEle.creDate) }}</p>
           </div>
         </div>
-        <div class="curosrP" @click="selectAttachedFile" style="float: right; width: 20px; height: 20px;">
-          <img style="width: 20px; height: 19px;" :src="this.myFilekey !== null? require('../../assets/images/common/colorStarIcon.svg'):require('../../assets/images/common/starIcon.svg')" alt="">
+        <div class="curosrP fileBoxFavBtn" @click="selectAttachedFile">
+          <img :src="this.myFilekey !== null? require('../../assets/images/common/colorStarIcon.svg'):require('../../assets/images/common/starIcon.svg')" alt="">
         </div>
       </div>
-      <img v-if="contentsEle.fileType === 'I'" @click="openImgPop" style="width: 100%; height: auto; margin-bottom: 20px;" :src="this.contentsEle.domainPath ? this.contentsEle.domainPath + this.contentsEle.pathMtext : this.contentsEle.pathMtext" alt="">
+      <img v-if="contentsEle.fileType === 'I'" class="fileBoxImg" @click="openImgPop" :src="this.contentsEle.domainPath ? this.contentsEle.domainPath + this.contentsEle.pathMtext : this.contentsEle.pathMtext" alt="">
       <div class="textLeft font12 fontBold ml-04">{{ $t('FILE_TITLE_RELA_CON') }}</div>
-      <smallContentsBox style="padding: 12px 20px;" @click="goDetail" :accessKind="contentsEle.accessKind" class="cursorP" :contentsEle="GE_FILE_LIST"></smallContentsBox>
+      <smallContentsBox @click="goDetail" :accessKind="contentsEle.accessKind" class="cursorP paddingStyle" :contentsEle="GE_FILE_LIST"></smallContentsBox>
       <!-- <p class="font14 textRight" style="width: 100%;">다운 {{ contentsEle.dnCount }}</p> -->
     </div>
 </template>
@@ -147,3 +147,59 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.fileBoxArea {
+  background-color: #fff;
+  margin-bottom: 10px;
+  width: 100%;
+  box-shadow: rgb(103 104 167 / 40%) 0px 1px 3px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.attachedFileTitle {
+  width: 100%;
+  padding: 12px 20px;
+}
+.fileBoxNameWrap {
+  max-width: calc(100% - 110px);
+  line-height: 24px;
+}
+.fileBoxNameWrap > img {
+  width: 16px;
+  float: left;
+  margin-right: 5px;
+}
+.fileBoxExtend {
+  width: 30px;
+}
+.fileBoxInfoWrap {
+  clear: both;
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.fileBoxCreDate {
+  max-width: 70px;
+}
+.fileBoxFavBtn {
+  float: right;
+  width: 20px;
+  height: 20px;
+}
+.fileBoxFavBtn > img {
+  width: 20px;
+  height: 19px;
+}
+.fileBoxImg {
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+.paddingStyle {
+  padding: 12px 20px;
+}
+</style>
