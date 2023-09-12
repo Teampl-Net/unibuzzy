@@ -1,7 +1,7 @@
 <template>
   <div id="smallConfirmPopWrap">
     <p class="smallConfirmText" v-html="confirmText"></p>
-    <div v-if="addSmallTextYn" style="width: 100%; height: 40px; background: none;"></div>
+    <div class="smallText" v-if="addSmallTextYn"></div>
     <p v-if="addSmallTextYn" class="addSmallText" v-html="addSmallMsg"></p>
   </div>
 </template>
@@ -49,6 +49,25 @@ export default {
   animation: fadein 0.3s ease-in-out;
   animation-fill-mode: forwards;
 }
-.smallConfirmText {font-size: 14px; color: black; width: 100%; word-break: keep-all; float: left; text-align: center; }
-.addSmallText {font-size: 12px; color: #505050; width: 100%; word-break: keep-all; float: left; text-align: center;}
+.smallText {
+  width: 100%;
+  height: 40px;
+  background: none;
+}
+.smallConfirmText {
+  font-size: 14px;
+  color: black;
+  width: 100%;
+  word-break: keep-all;
+  float: left;
+  text-align: center;
+}
+.addSmallText {
+  font-size: 12px;
+  color: #505050;
+  width: 100%;
+  word-break: keep-all;
+  float: left;
+  text-align: center;
+}
 </style>

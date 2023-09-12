@@ -142,6 +142,15 @@ img {
   height: 20px;
 }
 /* .mainMenuIcon{width: 1.8rem; margin-top: 5px; -webkit-user-drag: none;} */
-.mainHeaderLogo{width: 1.7rem; margin: 0 0.4rem; -webkit-user-drag: none;}
-.menuBtn { height: 20px; position: absolute; left: 20px; -webkit-user-drag: none; }
+.mainHeaderLogo {
+  width: 1.7rem;
+  margin: 0 0.4rem;
+  -webkit-user-drag: none;
+}
+.menuBtn {
+  height: 20px;
+  position: absolute;
+  left: 20px;
+  -webkit-user-drag: none;
+}
 </style>

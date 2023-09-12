@@ -13,26 +13,26 @@
   }
   </i18n>
 <template>
-  <div class="fl headerBottom" style="z-index: 101; position: relative; height: 250px; width: 350px; left: calc(50% - 175px); top: calc(50% - 125px); background: white; box-shadow: 0px 7px 9px 9px #00000036; border-radius: 5px;">
-    <div class="fl fontBold font14" style="color: white; height: 30px; top: -30px; position: absolute; width: 100%; display: flex; align-items: center; justify-content: center;">
+  <div class="fl headerBottom unknownPopWrap">
+    <div class="fl fontBold font14 unknownPopHeader">
       <!-- <span class="commonLightColor textOverdot fontBold fl" style="max-width: 120px;" >{{ this.$changeText(pContDetail.nameMtext) }}</span> -->
       <!-- <span style="text-shadow: 2px 2px 9px black;" class="fl fontBold w100P">더알림을 더 돌아다녀보고 싶으시면 로그인하세요!</span> -->
     </div>
-    <div class="popHeader fl textRight w100P" style="height: 40px; line-height: 50px; padding: 10px;">
-      <img style="width: 15px;" class="fr cursorP" src="../../../assets/images/common/popup_close.png" @click="pClosePop ? pClosePop() : backClick" />
+    <div class="popHeader fl textRight w100P closeIconWrap">
+      <img class="fr cursorP" src="../../../assets/images/common/popup_close.png" @click="pClosePop ? pClosePop() : backClick" />
     </div>
-    <div class="popDAlim fl w100P" style="height: 30px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
+    <div class="popDAlim fl w100P headerLogoWrap">
       <img class="fl mainHeaderLogo" src="../../../assets/images/common/thealim_header_logo.png" />
       <div class="font25 headerFont commonColor fl mright-05">{{ $t('COMMON_NAME_APP') }}</div>
     </div>
-    <div class="fl w100P" style="height: calc(100% - 100px);">
+    <div class="fl w100P unknownPopBody">
       <!-- <div class="fl textLeft font16" style="width: 80%;"> -->
         <!-- <span class="fontBold fl w100P">{{ this.$changeText(pContDetail.nameMtext) }}채널뿐 아니라,</span> -->
       <!-- </div> -->
       <!-- <div class="fl textLeft font16" style="width: 80%; margin-bottom: 20px;">나에게 필요할 채널과 게시판 더 보고 싶다면?</div> -->
-      <div class="fl textLeft font16 textCenter fontBold" style="width: 100%; margin-bottom: 35px; height: 30px; line-height: 30px;">{{ $t('LOGIN_MSG_INTO_POP') }}<br>{{ $t('LOGIN_MSG_INTO_POP2') }}</div>
-      <div class="fl w100P" style="height: calc(100% - 50px); display: flex; align-items: center; justify-content: center;">
-        <div class="fl font20 cursorP CDeepBgColor CDeepColorBorder textCenter fontBold" style="color: white; height: 50px; border-radius: 5px; line-height: 50px; width: 90%;" @click="goLoginPage">{{ $t('LOGIN_MSG_BTN') }}</div>
+      <div class="fl textLeft font16 textCenter fontBold unknownText">{{ $t('LOGIN_MSG_INTO_POP') }}<br>{{ $t('LOGIN_MSG_INTO_POP2') }}</div>
+      <div class="fl w100P unknownLoginBtnWrap">
+        <div class="fl font20 cursorP CDeepBgColor CDeepColorBorder textCenter fontBold unknownLoginBtn" @click="goLoginPage">{{ $t('LOGIN_MSG_BTN') }}</div>
         <!-- <div class="fl font22 cursorP CDeepBgColor CDeepColorBorder textCenter fontBold" style="color: white; height: 50px; border-radius: 5px; line-height: 50px; width: 90%;" @click="tableYn = true">소셜 로그인 하러가기</div> -->
       </div>
     </div>
@@ -76,7 +76,6 @@ export default {
   created () {
     var history = this.$store.getters['D_HISTORY/hStack']
     this.popId = 'selectStickerPop' + history.length
-    // console.log(history)
     history.push(this.popId)
     this.$store.commit('D_HISTORY/updateStack', history)
   }
@@ -84,8 +83,66 @@ export default {
 </script>
 <style scoped>
 .mainHeaderLogo {
-    width: 1.7rem;
-    margin: 0 0.4rem;
-    -webkit-user-drag: none;
+  width: 1.7rem;
+  margin: 0 0.4rem;
+  -webkit-user-drag: none;
+}
+.unknownPopWrap {
+  z-index: 101;
+  position: relative;
+  height: 250px;
+  width: 350px;
+  left: calc(50% - 175px);
+  top: calc(50% - 125px);
+  background: white;
+  box-shadow: 0px 7px 9px 9px #00000036;
+  border-radius: 5px;
+}
+.unknownPopHeader {
+  color: white;
+  height: 30px;
+  top: -30px;
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.closeIconWrap {
+  height: 40px;
+  line-height: 50px;
+  padding: 10px;
+}
+.closeIconWrap > img {
+  width: 15px;
+}
+.headerLogoWrap {
+  height: 30px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.unknownPopBody {
+  height: calc(100% - 100px);
+}
+.unknownText {
+  width: 100%;
+  margin-bottom: 35px;
+  height: 30px;
+  line-height: 30px;
+}
+.unknownLoginBtnWrap {
+  height: calc(100% - 50px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.unknownLoginBtn {
+  color: white;
+  height: 50px;
+  border-radius: 5px;
+  line-height: 50px;
+  width: 90%;
 }
 </style>

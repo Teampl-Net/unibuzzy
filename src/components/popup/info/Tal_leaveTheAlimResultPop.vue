@@ -43,10 +43,45 @@ export default {
 }
 </script>
 <style scoped>
-.modalBack{width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; z-index:999}
-.leaveContainer{width: 80%; max-width: 670px; background-color: #FFFFFF !important; height: 600px; border-radius: 10px; padding: 1rem;}
-.leaveContentsArea{height: 90%;display: flex; justify-content: center; align-items: center; flex-direction: column;}
-.leaveContentsArea img {width: 6rem;}
-.leaveComplete-1{color: #6768A7; font-size: 15px; font-weight: bold; margin-top: 2rem;}
-.leaveComplete-2{color: #6768A7; font-size: 12px; margin-top: 0.5rem;}
+.modalBack {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #00000026;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.leaveContainer {
+  width: 80%;
+  max-width: 670px;
+  background-color: #FFFFFF !important;
+  height: 600px;
+  border-radius: 10px;
+  padding: 1rem;
+}
+.leaveContentsArea {
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.leaveContentsArea img {
+  width: 6rem;
+}
+.leaveComplete-1 {
+  color: #6768A7;
+  font-size: 15px;
+  font-weight: bold;
+  margin-top: 2rem;
+}
+.leaveComplete-2 {
+  color: #6768A7;
+  font-size: 12px;
+  margin-top: 0.5rem;
+}
 </style>

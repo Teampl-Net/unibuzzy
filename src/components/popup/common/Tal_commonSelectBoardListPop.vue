@@ -17,19 +17,19 @@
 }
 </i18n>
 <template>
-    <div style="width: calc(100% - 100px); position: absolute; left: 50px; background:rgb(220, 221, 235); min-height: 500px;top: 15%; padding: 20px; padding-top: 0;border-radius: 0.8rem; overflow: hidden; box-shadow: 0 0 9px 4px #ccc;  z-index: 999999;">
+    <div class="selectBoardListPopWrap">
         <div class="selectPopHeader" >
             <p class="font24 commonBlack fontBold fl textLeft mbottom-05">{{ mainText === '이동'? $t('COMMON_BTN_MOVE_POST'):$t('COMMON_BTN_COPY_POST') }}</p>
-            <img @click="closeXPop" class="fr" style="width: 25px; margin-top: 5px;" src="../../../assets/images/common/popup_close.png" alt="">
+            <img @click="closeXPop" class="fr closeImg" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
         <p class="font16 textLeft commonBlack fontBold mtop-05 fl mbottom-05">{{ mainText === '이동'? $t('BOAR_SELECT_MSG_MOVE'):$t('BOAR_SELECT_MSG_COPY') }}</p>
-        <div :style="boardDetail.cabinetKey === value.cabinetKey? 'background: rgb(234 233 233) !important; color: #FFF;': 'background: #FFF;'" @click="selectCabinet(value)" :class="selectedCabinet && selectedCabinet.cabinetKey === value.cabinetKey? 'activeCabinet': ''" :id="'selectBoard' + value.cabinetKey" style="width: 100%; box-shadow: 0 0 7px 3px #b7b4b440; padding: 10px; border: 1px solid #ccc; margin-bottom: 10px;border-radius: 8px;float:left; min-height: 30px;" :fileYn="value.fileYn" :cabinetKey="value.cabinetKey"  v-for="(value, index) in boardList" :key="index">
-            <div style="width: 25px; margin-right: 10px; height: 25px; border-radius: 100%; float: left;" :style="'background: ' + value.picBgPath"></div>
+        <div class="boardListItem" :style="boardDetail.cabinetKey === value.cabinetKey? 'background: rgb(234 233 233) !important; color: #FFF;': 'background: #FFF;'" @click="selectCabinet(value)" :class="selectedCabinet && selectedCabinet.cabinetKey === value.cabinetKey? 'activeCabinet': ''" :id="'selectBoard' + value.cabinetKey" :fileYn="value.fileYn" :cabinetKey="value.cabinetKey"  v-for="(value, index) in boardList" :key="index">
+            <div :style="'background: ' + value.picBgPath"></div>
             <p :style="boardDetail.cabinetKey === value.cabinetKey? 'color: #9d9d9d;': 'color: #303030;'" class="font16 commonBlack fontBold fl">{{this.$changeText(value.cabinetNameMtext)}}</p>
         </div>
-        <div style="width: 100%; min-height: 30px; float: left;">
+        <div class="boardListPopBtnWrap">
             <gBtnSmall @click="closeXPop" style="" btnThema="light" :btnTitle="$t('COMM_BTN_CANCEL')" />
-            <gBtnSmall @click="openConfirmPop" style="margin-right: 0.5rem;" :btnTitle="mainText === '이동'? $t('BOAR_SELECT_BTN_MOVE'):$t('BOAR_SELECT_BTN_COPY')" />
+            <gBtnSmall @click="openConfirmPop" class="mRight05" :btnTitle="mainText === '이동'? $t('BOAR_SELECT_BTN_MOVE'):$t('BOAR_SELECT_BTN_COPY')" />
         </div>
         <gConfirmPop :confirmText="returnConfirmText()" :confirmType="'two'" @no="confirmPopShowYn = false" @ok="confirmOk" v-if="confirmPopShowYn"/>
         <gConfirmPop :confirmText="confirmText" :confirmType="'timeout'" @no="errorPopShowYn = false"  @ok="errorPopShowYn = false" v-if="errorPopShowYn"/>
@@ -132,7 +132,6 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$getTeamMenuList(paramMap)
       this.boardList = result
-      // console.log(result)
       this.currentTeamKey = this.boardList[0].teamKey
     },
     async saveMCabContents () {
@@ -149,7 +148,6 @@ export default {
         url: '/sUniB/tp.saveMCabContents',
         param: { mCabContents: param }
       })
-      // console.log(result)
       if (result && result.data && result.data.result) {
         this.confirmPopShowYn = false
         if (this.GE_LOCALE === 'ko') {
@@ -173,8 +171,59 @@ export default {
 </script>
 
 <style scoped>
-.selectPopHeader {
-    width: calc(100% + 40px); background: #fff; margin-left: -20px; height: 50px; float:left; border-bottom: 1px solid #ccc; padding: 10px 15px;
+.selectBoardListPopWrap {
+  width: calc(100% - 100px);
+  position: absolute;
+  left: 50px;
+  background:rgb(220, 221, 235);
+  min-height: 500px;
+  top: 15%;
+  padding: 20px;
+  padding-top: 0;
+  border-radius: 0.8rem;
+  overflow: hidden;
+  box-shadow: 0 0 9px 4px #ccc;
+  z-index: 999999;
 }
-.activeCabinet {background: #6768A750!important;}
+.selectPopHeader {
+  width: calc(100% + 40px);
+  background: #fff;
+  margin-left: -20px;
+  height: 50px;
+  float: left;
+  border-bottom: 1px solid #ccc;
+  padding: 10px 15px;
+}
+.activeCabinet {
+  background: #6768A750 !important;
+}
+.closeImg {
+  width: 25px;
+  margin-top: 5px;
+}
+.boardListItem {
+  width: 100%;
+  box-shadow: 0 0 7px 3px #b7b4b440;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  float:left;
+  min-height: 30px;
+}
+.boardListItem > div {
+  width: 25px;
+  margin-right: 10px;
+  height: 25px;
+  border-radius: 100%;
+  float: left;
+}
+.boardListPopBtnWrap {
+  width: 100%;
+  min-height: 30px;
+  float: left;
+}
+.mRight05 {
+  margin-right: 0.5rem !important;
+}
 </style>

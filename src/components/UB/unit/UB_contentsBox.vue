@@ -199,7 +199,7 @@
 
   <!-- <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/> -->
   <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
-  <div v-if="mSelectBoardPopShowYn === true" class="selectBoardBg"/>
+  <div v-if="mSelectBoardPopShowYn === true" class="profilePopBg"/>
   <div v-if="mSelectBoardPopShowYn === true" class="selectBoardWrap">
     <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" :boardDetail="mMoveContentsDetailValue" />
   </div>
@@ -1808,7 +1808,7 @@ pre div[id='formEditText'] {
   width: 100%;
   height: 100vh;
   position: fixed;
-  z-index: 9;
+  z-index: 100000;
   top: 0;
   left: 0;
 }

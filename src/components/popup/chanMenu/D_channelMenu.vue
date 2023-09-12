@@ -31,44 +31,50 @@
 
     <div class="menuHeader newHeaderLine" :style="'height:' + (this.$STATUS_HEIGHT + 50)+ 'px; top: 0; padding-top: ' + (this.$STATUS_HEIGHT) + 'px'" >
       <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
-      <p class="fontBold font20 fl editColor" style="white-space: nowrap;" >{{ $t('CHAN_MENU_TITLE_MENU') }}</p>
-      <img v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)" class="fr cursorP img-w23" style="margin-right:10px;" src="../../../assets/images/editChan/icon_setting.svg" @click="clickEditChanBtn"  />
+      <p class="fontBold font20 fl editColor noWrap" >{{ $t('CHAN_MENU_TITLE_MENU') }}</p>
+      <img v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)" class="fr cursorP img-w23 mRight10" src="../../../assets/images/editChan/icon_setting.svg" @click="clickEditChanBtn"  />
       <div v-else />
     </div>
 
-    <div class="fl w100P h100P" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'"  style="overflow: hidden scroll;">
-      <div class="fl w100P mtop-2" style="margin-top:50px; border-bottom: 2px solid #6768a730" >
-        <div class="fl font14 cursorP commonColor fontBold textLeft w100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730" @click="boardDropDown">
-          <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">{{ $t('COMMON_NAME_BOARD') }}</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.BOARD_CONTENT_LIST.length}})</span></p>
+    <div class="fl w100P h100P scrollOn" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'">
+      <div class="fl w100P mtop-2 dMenuDivide">
+        <div class="fl font14 cursorP commonColor fontBold textLeft w100P dMenuGroup" @click="boardDropDown">
+          <p class="mleft-1 fl font18 minWidth150">
+            <span class="font18 fl commonColor">{{ $t('COMMON_NAME_BOARD') }}</span>
+            <span class="fl mleft-05 commonColor font16 lineHeight26">({{this.BOARD_CONTENT_LIST.length}})</span>
+          </p>
           <!-- <span class="fl mLeft-1"></span> -->
           <!-- ({{this.BOARD_CONTENT_LIST.length}}) -->
-          <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn" style=" margin-top : 0.5rem;" >
-          <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
+          <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
+          <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
         </div>
-        <div class="boardBox boardBoxDown mleft-2" style="overflow: hidden scroll; width: 100%; clear:left;" ref="boardRef" :class="{boardBoxUp : mBoardDropEvenYn === false, boardBoxDown: mBoardDropEvenYn === true}" >
+        <div class="boardBox boardBoxDown mleft-2 w100P scrollOn fl" ref="boardRef" :class="{boardBoxUp : mBoardDropEvenYn === false, boardBoxDown: mBoardDropEvenYn === true}" >
           <menuBoardList :propBoardList="this.BOARD_CONTENT_LIST" @boardContentsClick="boardContentsClick" />
         </div>
       </div>
       <div v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ((this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))" class="fl w100P" style="border-bottom: 2px solid #6768a730" :style="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
-        <div class="fl font14 cursorP commonColor fontBold  textLeft w100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="bookDropDown">
-          <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">{{ $t('COMMON_NAME_ADDRBOOK') }}</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.CABINET_LIST.length}})</span></p>
-          <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn" style=" margin-top : 0.5rem;" >
-          <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
+        <div class="fl font14 cursorP commonColor fontBold  textLeft w100P dMenuGroup" @click="bookDropDown">
+          <p class="mleft-1 fl font18 minWidth150">
+            <span class="font18 fl commonColor">{{ $t('COMMON_NAME_ADDRBOOK') }}</span>
+            <span class="fl mleft-05 commonColor font16 lineHeight26">({{this.CABINET_LIST.length}})</span>
+          </p>
+          <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
+          <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
         </div>
-        <div class="boardBox boardBoxDown mleft-2" style="overflow: hidden scroll; width: 100%; clear:left " ref="addressBookGroupRef" :class="{boardBoxUp : mAddressDropEvenYn === false, boardBoxDown: mAddressDropEvenYn === true}" >
+        <div class="boardBox boardBoxDown mleft-2 w100P scrollOn fl" ref="addressBookGroupRef" :class="{boardBoxUp : mAddressDropEvenYn === false, boardBoxDown: mAddressDropEvenYn === true}" >
           <addressBookList :propAddressBookList="CABINET_LIST" @openBookDetail='openBookDetailPop' />
         </div>
       </div>
 
       <div v-if="!GE_USER.unknownYn && $appType !== 'UB'" class="fl w100P" style="">
-        <div class="fl font14 cursorP commonColor fontBold  textLeft w100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="convenienceFuncDropdown">
+        <div class="fl font14 cursorP commonColor fontBold  textLeft w100P dMenuGroup" @click="convenienceFuncDropdown">
           <p class="mleft-1 fl font18 commonColor" >{{ $t('CHAN_MENU_QUICK') }}</p>
-          <img v-show="mConvDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn " style=" margin-top : 0.5rem;" >
-          <img v-show="mConvDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
+          <img v-show="mConvDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
+          <img v-show="mConvDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
         </div>
-        <div class="boardBox boardBoxDown mleft-2" style="overflow: hidden scroll; width: calc(100% - 100px); clear:left " ref="convenienceFunction" :class="{boardBoxUp : mConvDropEvenYn === false, boardBoxDown:mConvDropEvenYn === true}" >
-          <div v-for="(data, index) in mConvenienceFuncList" :key="index" @click="convenienceFunc(data.targetType)" class=" fl cursorP mleft-05" style="width:100%; padding: 10px 0;">
-            <div class="fl mleft-05 textLeft font16 textOverdot" style="width: calc(100% - 30px - 3rem); margin: 0 0 0 0; width:100% !important;" v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1)) " >
+        <div class="boardBox boardBoxDown mleft-2 conviFuncTitle" ref="convenienceFunction" :class="{boardBoxUp : mConvDropEvenYn === false, boardBoxDown:mConvDropEvenYn === true}" >
+          <div v-for="(data, index) in mConvenienceFuncList" :key="index" @click="convenienceFunc(data.targetType)" class=" fl cursorP mleft-05 conviItemWrap">
+            <div class="fl mleft-05 textLeft font16 textOverdot conviItem" v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1)) " >
               <span class="grayBlack fontBold mleft-05 w100P textOverdot textLeft fl" >
                 <img class="fl cursorP img-w18 mright-05" alt="작성 아이콘"  src="../../../assets/images/editChan/icon_write.svg">
                 {{data.title}}
@@ -83,40 +89,44 @@
 <div v-else-if="mLoadYn && $appType === 'UB' && $route.path === `/chan/${CHANNEL_DETAIL.teamKey}`">
   <div class="popUpBackgroundGray" @click="goNo"></div>
   <div class="channelMenuWrap showModal-enter " :class="{'showModal-leave': mCloseEventYn === true  }">
-
     <div class="menuHeader newHeaderLine" :style="'height:' + (this.$STATUS_HEIGHT + 50)+ 'px; top: 0; padding-top: ' + (this.$STATUS_HEIGHT) + 'px'" >
       <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
-      <p class="fontBold font20 fl editColor" style="white-space: nowrap;" >{{ $t('CHAN_MENU_TITLE_MENU') }}</p>
+      <p class="fontBold font20 fl editColor noWrap">{{ $t('CHAN_MENU_TITLE_MENU') }}</p>
       <div />
     </div>
-
-    <div class="fl w100P" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'" style="height: calc(100% - 110px); overflow: hidden scroll; display:flex; justify-content:space-between; flex-direction:Column;">
+    <div class="fl w100P menuContWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'">
       <div>
-        <div class="fl w100P mtop-2" style="margin-top:50px; border-bottom: 2px solid #6768a730" >
-          <div class="fl font14 cursorP commonColor fontBold textLeft w100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730" @click="boardDropDown">
-            <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">{{ $t('COMMON_NAME_BOARD') }}</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.BOARD_CONTENT_LIST.length}})</span></p>
+        <div class="fl w100P mtop-2 dMenuDivide">
+          <div class="fl font14 cursorP commonColor fontBold textLeft w100P dMenuGroup" @click="boardDropDown">
+            <p class="mleft-1 fl font18 minWidth150">
+              <span class="font18 fl commonColor">{{ $t('COMMON_NAME_BOARD') }}</span>
+              <span class="fl mleft-05 commonColor font16 lineHeight26">({{this.BOARD_CONTENT_LIST.length}})</span>
+            </p>
             <!-- <span class="fl mLeft-1"></span> -->
             <!-- ({{this.BOARD_CONTENT_LIST.length}}) -->
-            <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn" style=" margin-top : 0.5rem;" >
-            <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
+            <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
+            <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
           </div>
-          <div class="boardBox boardBoxDown mleft-2" style="overflow: hidden scroll; width: 100%; clear:left;" ref="boardRef" :class="{boardBoxUp : mBoardDropEvenYn === false, boardBoxDown: mBoardDropEvenYn === true}" >
+          <div class="boardBox boardBoxDown mleft-2 scrollOn w100P fl" ref="boardRef" :class="{boardBoxUp : mBoardDropEvenYn === false, boardBoxDown: mBoardDropEvenYn === true}" >
             <menuBoardList :propBoardList="this.BOARD_CONTENT_LIST" @boardContentsClick="boardContentsClick" />
           </div>
         </div>
         <div v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ((this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))" class="fl w100P" style="border-bottom: 2px solid #6768a730" :style="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
-          <div class="fl font14 cursorP commonColor fontBold  textLeft w100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="bookDropDown">
-            <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">{{ $t('CHAN_MENU_TITLE_ADDR') }}</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.CABINET_LIST.length}})</span></p>
-            <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn" style=" margin-top : 0.5rem;" >
-            <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
+          <div class="fl font14 cursorP commonColor fontBold  textLeft w100P dMenuGroup" @click="bookDropDown">
+            <p class="mleft-1 fl font18 minWidth150">
+              <span class="font18 fl commonColor">{{ $t('CHAN_MENU_TITLE_ADDR') }}</span>
+              <span class="fl mleft-05 commonColor font16 lineHeight26">({{this.CABINET_LIST.length}})</span>
+            </p>
+            <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
+            <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
           </div>
-          <div class="boardBox boardBoxDown mleft-2" style="overflow: hidden scroll; width: 100%; clear:left " ref="addressBookGroupRef" :class="{boardBoxUp : mAddressDropEvenYn === false, boardBoxDown: mAddressDropEvenYn === true}" >
+          <div class="boardBox boardBoxDown mleft-2 scrollOn w100P fl" ref="addressBookGroupRef" :class="{boardBoxUp : mAddressDropEvenYn === false, boardBoxDown: mAddressDropEvenYn === true}" >
             <addressBookList :propAddressBookList="CABINET_LIST" @openBookDetail='openBookDetailPop' />
           </div>
         </div>
       </div>
     </div>
-    <div class="w100P textRight fontBold cursorP" style="overflow:hidden; height: 50px; padding: 10px; padding-bottom:60px;" v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)">
+    <div class="w100P textRight fontBold cursorP mngChanBtn" v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)">
       <gBtnSmall btnTitle=" Manager Settings" class="" @click="clickEditChanBtn" />
     </div>
   </div>
@@ -173,8 +183,6 @@ export default {
           this.mLoadYn = true
         })
       })
-      console.log(this.CHANNEL_DETAIL)
-
       if (this.CHANNEL_DETAIL) {
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH) {
           if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn) {
@@ -278,8 +286,6 @@ export default {
       }
 
       this.mAddressBookList = tempList
-      console.log('##########  GET CABINET LIST  ##########')
-      console.log(this.mAddressBookList)
     },
     async getTeamMenuList () {
       var paramMap = new Map()
@@ -290,8 +296,6 @@ export default {
 
       var result = await this.$getTeamMenuList(paramMap, true)
       this.mBoardContentsList = result
-      console.log('##########  GET BOARD CONTENT LIST  ##########')
-      console.log(this.mBoardContentsList)
     },
     /** 화면상 게시판의 높이를 myBoardList.length를 통해 구해주는 함수 */
     boardListLength () {
@@ -398,10 +402,8 @@ export default {
           contentList[i].shareItem = resultMainData.cabinet.mShareItemList
         }
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
-        console.log('!!!!!!!!!!!!!!!!!')
       }
       var goBoardMainParam = {}
-      console.log('resultMainData', resultMainData)
       goBoardMainParam.initData = resultMainData
       goBoardMainParam.targetType = 'boardMain'
       goBoardMainParam.teamKey = boardListData.teamKey
@@ -409,7 +411,6 @@ export default {
       goBoardMainParam.cabinetNameMtext = boardListData.cabinetNameMtext
       // 채널에서 들어왔는지, 링크나 메인에서 바로 들어왔는지 구분
       goBoardMainParam.chanYn = true
-      console.log('==goBoardMainParam==', goBoardMainParam)
       this.$emit('openItem', goBoardMainParam)
       // var boardDetail = result
 
@@ -506,13 +507,23 @@ export default {
   align-items: center;
   z-index: 10;
   background-color: white;
-  max-width:500px;
+  max-width: 500px;
   position: absolute;
   right: 0;
 }
-.menuHeader p{color: #FFFFFF; text-align: center;}
+.menuHeader p {
+  color: #FFFFFF;
+  text-align: center;
+}
 
-.menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%); color: #FFFFFF; }
+.menuRow {
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: left;
+  height: 3.8rem;
+  border-bottom: 0.5px solid rgb(255 255 255 / 26%);
+  color: #FFFFFF;
+}
 
 .channelMenuWrap{
   background-color: white ;
@@ -526,21 +537,111 @@ export default {
   border-bottom-left-radius: 10px;
   }
 
-.editColor{ color: #6768a7 !important; }
-.editWhiteColor{ color: #fff; }
-.editRow{ padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid #ccc; }
-
-.boardBox{ width:100%; height: 0px; display: block; position: relative; }
-.boardBoxDown{ animation: dropdown 300ms ease ; animation-fill-mode: both; }
-.boardBoxUp{ animation: dropup 300ms ease; animation-fill-mode: both; }
-
-.popUpBackgroundGray{ width: 100%; height: 100vh; position: absolute; z-index:1000; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; }
-@keyframes dropdown { 0% {height: 0px;} 100% {height: var(--menuHeight) } }
-@keyframes dropup { 0% {height: var(--menuHeight);} 100% {height: 0px;} }
-.dropdownBtn{
-  width:13px;
-  margin:0 auto;
-  margin-right:15px;
+.editColor {
+  color: #6768a7 !important;
+}
+.editWhiteColor {
+  color: #fff;
+}
+.editRow {
+  padding: 1rem;
+  box-sizing: border-box;
+  text-align: left;
+  height: 3.8rem;
+  border-bottom: 0.5px solid #ccc;
 }
 
+.boardBox {
+  width:100%;
+  height: 0px;
+  display: block;
+  position: relative;
+}
+.boardBoxDown {
+  animation: dropdown 300ms ease;
+  animation-fill-mode: both;
+}
+.boardBoxUp {
+  animation: dropup 300ms ease;
+  animation-fill-mode: both;
+}
+.popUpBackgroundGray {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  background: #00000026;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.noWrap {
+  white-space: nowrap;
+}
+.dMenuDivide {
+  margin-top:50px;
+  border-bottom: 2px solid #6768a730;
+}
+.dMenuGroup {
+  white-space: nowrap;
+  padding:10px 0;
+  border-bottom: 2px solid #6768a730;
+}
+.mTop05 {
+  margin-top: 0.5rem;
+}
+.lineHeight26 {
+  line-height: 26px;
+}
+.minWidth150 {
+  min-width: 150px;
+}
+.conviFuncTitle {
+  overflow: hidden scroll;
+  width: calc(100% - 100px);
+  clear: left;
+}
+.conviItemWrap {
+  width:100%;
+  padding: 10px 0;
+}
+.conviItem {
+  width: calc(100% - 30px - 3rem);
+  margin: 0 0 0 0;
+  width: 100% !important;
+}
+.menuContWrap {
+  height: calc(100% - 110px);
+  overflow: hidden scroll;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.mngChanBtn {
+  overflow: hidden;
+  height: 50px;
+  padding: 10px;
+  padding-bottom: 60px;
+}
+@keyframes dropdown {
+  0% {
+    height: 0px;
+  } 100% {
+    height: var(--menuHeight)
+  }
+}
+@keyframes dropup {
+  0% {
+    height: var(--menuHeight);
+  } 100% {
+    height: 0px;
+  }
+}
+.dropdownBtn {
+  width: 13px;
+  margin: 0 auto;
+  margin-right: 15px;
+}
 </style>

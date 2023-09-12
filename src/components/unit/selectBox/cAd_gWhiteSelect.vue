@@ -19,6 +19,20 @@ export default {
 }
 </script>
 <style scoped>
-.gWhiteStyle{float: left; border-radius: 5px; height: 30px; background-color: #FFFFFF; border: 1px solid #BFBFDA; color: #3A3A3A; font-size: 12px; text-align: center; box-sizing: border-box; padding: 0.2rem 0.6rem;}
-.borderRadius{border-radius: 18px; height: 32px;}
+.gWhiteStyle {
+  float: left;
+  border-radius: 5px;
+  height: 30px;
+  background-color: #FFFFFF;
+  border: 1px solid #BFBFDA;
+  color: #3A3A3A;
+  font-size: 12px;
+  text-align: center;
+  box-sizing: border-box;
+  padding: 0.2rem 0.6rem;
+}
+.borderRadius {
+  border-radius: 18px;
+  height: 32px;
+}
 </style>
