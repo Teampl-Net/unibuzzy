@@ -15,7 +15,7 @@
             <img @click="selectAttachedFile(value.myFilekey, value, index, 'F')" :src="value.myFilekey? require('../../../../assets/images/common/colorStarIcon.svg'):require('../../../../assets/images/common/starIcon.svg')" alt="">
           </div>
         </templete>
-        <p class="fl font14 fontBold w100P textLeft mtop-05" v-if="mAttachFileList.D_BODY_IMG_FILE_LIST && mAttachFileList.D_BODY_IMG_FILE_LIST.length > 0">{{ this.$t('COMM_SUBTITLE_BODY_IMG') }}</p>
+        <!-- <p class="fl font14 fontBold w100P textLeft mtop-05" v-if="mAttachFileList.D_BODY_IMG_FILE_LIST && mAttachFileList.D_BODY_IMG_FILE_LIST.length > 0">{{ this.$t('COMM_SUBTITLE_BODY_IMG') }}</p>
         <templete v-for="(value, index) in mAttachFileList.D_BODY_IMG_FILE_LIST" :key="index">
           <div class="attachFileItem">
             <img :src="$settingFileIcon(value.fileName)" alt="">
@@ -24,7 +24,7 @@
             </a>
             <img @click="selectAttachedFile(value.myFilekey, value, index, 'I')" :src="value.myFilekey? require('../../../../assets/images/common/colorStarIcon.svg'):require('../../../../assets/images/common/starIcon.svg')" alt="">
           </div>
-        </templete>
+        </templete> -->
       </div>
     </div>
   </div>

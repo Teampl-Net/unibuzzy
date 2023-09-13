@@ -250,7 +250,6 @@ export default {
     pNoAuthYn: {}
   },
   created () {
-    console.log(this.contentsEle)
     // this.saveStickerList()
     if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
     else this.mFadeNotShowYn = false

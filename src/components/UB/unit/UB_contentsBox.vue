@@ -135,7 +135,7 @@
             </div>
             <p class="font12 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
           </div>
-          <div class="userDoBox" @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0">
+          <div class="userDoBox" @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0 && CONT_DETAIL.fileCount > 0">
             <div class="userDoItem">
               <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
               <img v-else src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
