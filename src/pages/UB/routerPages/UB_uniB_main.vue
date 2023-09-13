@@ -9,8 +9,14 @@
       <guidePop v-if="mGuidePopShowYn" :pClosePop="closeGuidePop" />
     </transition>
     <div class="w100P uniBTownBox">
-      <div class="ballon">Go to other town?</div>
-      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" alt="">
+      <div class="ballon">
+        <img src="@/assets/images/main/ballon.png" alt="go to other town?" class="w100P"/>
+      </div>
+      <div class="planeBox">
+        <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="" alt="">
+      </div>
+      <!-- <div class="ballon">Go to other town?</div>
+      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" alt=""> -->
       <!-- my profile -->
       <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}" class="profileBox">
         <gProfileImg :selfYn="true" class="fl profileImg" />
@@ -469,21 +475,12 @@ export default {
   align-items: center; */
   /* overflow: hidden; */
 }
-.planeImg {
-  transition: 0.2s;
+.planeImg{
+  width:100%;
   filter: drop-shadow(5px 5px 5px #00000036);
-  opacity:0;
+  opacity: 0;
   transition: 0.2s;
   animation: flyingPlane 1s 2s ease-in-out both, moving 3s 3s ease-in-out infinite alternate;
-  width: 100px;
-  position: absolute;
-  right: 30px;
-  top: 100px;
-}
-.planeImg:hover {
-  transform: scale(1.2);
-  transform-origin: 50% 50%;
-  transition: 0.2s;
 }
 @keyframes flyingPlane{
   0% {
@@ -501,12 +498,7 @@ export default {
     transform:translateY(-10px)
   }
 }
-.planeBox:hover {
-  transform: scale(1.2);
-  transform-origin: 50% 50%;
-  transition: 0.2s;
-}
-.ballon {
+/* .ballon {
   font-weight: bold;
   position: absolute;
   display: flex;
@@ -529,7 +521,7 @@ export default {
     position: absolute;
     top: 30px;
     left: 80px;
-}
+} */
 .uniBCard {
   position: fixed;
   top: 0;
@@ -598,8 +590,36 @@ export default {
   position: absolute;
   transform: translate(-50%, -50%);
 }
+.planeBox{
+  width:20%;
+  max-width: 100px;
+  position: absolute;
+  right: 30px;
+  top: 100px;
+  opacity: 1;
+}
+.planeBox:hover {
+  transform: scale(1.2);
+  transform-origin: center;
+  transition: 0.2s;
+}
+.ballon {
+  font-weight: bold;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: 50%;
+  max-width: 220px;
+  right: -30px;
+  top: 80px;
+  border-radius: 5px;
+  padding: 8px 12.8px;
+  font-size: 14px;
+}
 @media screen and (max-width: 768px) {
-  .planeImg {
+  .planeBox {
     width: 80px !important;
     top: 80px !important;
   }
