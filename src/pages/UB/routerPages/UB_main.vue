@@ -143,7 +143,7 @@ export default {
     }
   },
   created () {
-    if (this.GE_USER.myTeamKey === 836) {
+    if (this.GE_USER.myTeamKey === 836 || !this.GE_USER.myTeamKey) {
       this.$router.push({ name: 'uniBmain' })
       return
     }
