@@ -184,7 +184,7 @@
 </div>
 <selectType :chanInfo="this.CHANNEL_DETAIL" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
 <selectBookList :chanInfo="this.CHANNEL_DETAIL" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" :pClosePop="closeSelectPop" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList" @openPop='openPop' />
-<receiverAccessList :chanInfo="this.CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" v-if="receiverAccessListYn" @closeXPop='receiverAccessListYn=false' :parentList='selectedList.data' :selectList='permissionSelectedList'  @sendReceivers='receiverPoolInSetting'/>
+<receiverAccessList :chanInfo="this.CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" v-if="receiverAccessListYn" :pClosePop="closeAccessPop" @closeXPop='receiverAccessListYn=false' :parentList='selectedList.data' :selectList='permissionSelectedList'  @sendReceivers='receiverPoolInSetting'/>
 <gConfirmPop  :confirmText="$t('EDIT_BOARD_MSG_EDITSUCC')" confirmType='timeout' v-if="okPopYn" @no='closePop' />
 <selectSampleListPop :cabinetDetail="this.modiBoardDetailProps" @setSampleGuide="setSampleGuide" :propsInnerHtml="guideSampleInnerHtml" v-if="samplePopShowYn" @closeXPop="closeSampleListPop" />
 </template>
@@ -374,6 +374,9 @@ export default {
   },
   // emits: ['openPop', 'goPage'],
   methods: {
+    closeAccessPop () {
+      this.receiverAccessListYn = false
+    },
     closeSelectPop () {
       this.selectBookListShowYn = false
     },

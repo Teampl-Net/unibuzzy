@@ -24,6 +24,7 @@ import memberList from './receiverUnit/D_commonBookMemberList.vue'
 import selectedListCompo from './D_selectedReceiverList.vue'
 export default {
   props: {
+    pClosePop: Function,
     selectPopYn: {},
     chanInfo: {},
     detailSelectedYn: {},
@@ -244,7 +245,8 @@ export default {
         // MemberList에 구성원추가 팝업
         this.addPopOpenYn = false
       } else if (this.detailOpenYn) {
-        this.detailOpenYn = false
+        this.$emit('closeXPop')
+        // this.detailOpenYn = false
         this.receiverTitle = 'Group Management'
         if (this.selectPopYn) {
           this.receiverTitle = 'Select target'
