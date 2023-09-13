@@ -1034,7 +1034,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   position: fixed;
   top:0;
   left:0;
-  z-index: 999999;
+  z-index: 9999999;
   background: #0101014b;
 }
 

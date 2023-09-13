@@ -50,7 +50,8 @@ export default {
       sFileList: [],
       gAttachKey: 0,
       uploadCnt: 0,
-      errorShowYn: false
+      errorShowYn: false,
+      mIsDraggedYn: false
     }
   },
   props: {
@@ -82,6 +83,87 @@ export default {
     }
   },
   methods: {
+    async onDrop (file) {
+      // 기본 액션을 막음 (링크 열기같은 것들)
+      // event.preventDefault()
+      // this.mIsDraggedYn = false
+      const files = file
+
+      this.selectFile = null
+      const options = {
+        maxSizeMB: 1,
+        maxWidthOrHeight: 1500,
+        useWebWorker: true
+      }
+      if (files.length > 0) {
+        this.uploadCnt = 0
+        // 0 번째 파일을 가져 온다.
+        for (var k = 0; k < files.length; k++) {
+          this.selectFile = null
+          this.gAttachKey += 1
+          this.selectFile = files[k]
+          let fileExt = this.selectFile.name.substring(
+            this.selectFile.name.lastIndexOf('.') + 1
+          )
+          // 소문자로 변환
+          fileExt = fileExt.toLowerCase()
+          if (
+            ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
+          ) {
+            console.log('originalFile instanceof Blob', this.selectFile instanceof Blob) // true
+            console.log(`originalFile size ${this.selectFile.size / 1024 / 1024} MB`)
+
+            try {
+              // this.selectFile = files[this.uploadCnt]
+              // eslint-disable-next-line no-undef
+              var compressedFile = await this.$imageCompression(this.selectFile, options)
+              console.log(compressedFile)
+              console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
+              var src = null
+              if (compressedFile instanceof Blob) {
+                src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+                const decodImg = atob(src.split(',')[1])
+                const array = []
+                for (let i = 0; i < decodImg.length; i++) {
+                  array.push(decodImg.charCodeAt(i))
+                }
+                const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+                var newFile = new File([Bfile], compressedFile.name)
+              } else {
+                src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+              }
+
+              console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
+              // console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
+
+              this.preImgUr = src
+              this.selectFile = compressedFile
+              this.sFileList.push({ preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
+              this.$emit('setSelectedAttachFileList', { attachYn: true, preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
+              this.uploadCnt += 1
+            /* await uploadToServer(compressedFile) */ // write your own logic
+            } catch (error) {
+              console.log(error)
+            }
+          } else {
+            if (this.selectFile.size > 10000000) {
+              this.errorShowYn = true
+              return true
+            }
+            if (!this.sFileList) {
+              this.sFileList = []
+            }
+            this.sFileList.push({ fileYn: true, attachKey: this.gAttachKey, addYn: true, attachYn: true, file: this.selectFile })
+            this.$emit('setSelectedAttachFileList', { attachYn: true, fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile })
+          }
+        }
+      } else {
+        // 파일을 선택하지 않았을때
+        this.$emit('noneFile')
+        this.selectFile = null
+        this.previewImgUrl = null
+      }
+    },
     async handleImageUpload () {
       this.selectFile = null
       const options = {

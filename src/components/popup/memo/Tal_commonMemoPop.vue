@@ -14,7 +14,7 @@
 </i18n>
 <template>
   <unknownLoginPop v-if="mUnknownLoginPopYn" /> <!-- 아래의 position:absolute였는데 fixed로 바꿔봄... -->
-  <div class="fl w100P memoPopWrap" ref='memoPopCompo'>
+  <div class="fl w100P memoPopWrap" ref='memoPopCompo' :class="mIsDraggedYn? 'dragged':''" @drop="onDrop">
     <div v-if="meMemoData" class="fl meMemoBox">
         <p class="fl commonBlack font14" >{{this.$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
         <div class="fl mleft-05 mright-05 font14 commonBlack textOverdot w100P textLeft" v-html="meMemoData.memo.bodyFullStr"></div>
@@ -51,7 +51,7 @@
     <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" class="fl mright-02 turnRightIcon" alt="">
 
     <!-- <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;"> -->
-      <div class="memoInputWrap">
+      <div class="memoInputWrap"  @dragenter="onDragenter" @dragover="onDragover" @dragleave="onDragleave">
         <div @click="toggleAttachMenu" class="attachMenuToggle">+</div>
         <pre :placeholder="$t('EMPT_MSG_WRITE_COMM')" @focus="test" @keydown="inputEnterKey" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding memoTextTag" :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}"  contenteditable=true  @input="inputTextCheck"/>
         <!-- <div style="width: 30px; height: 100%;"> -->
@@ -105,7 +105,8 @@ export default {
       selectFile: null,
       attachMenuShowYn: false,
       firstEnterYn: false,
-      mobileYn: this.$getMobileYn()
+      mobileYn: this.$getMobileYn(),
+      mIsDraggedYn: false
     }
   },
   updated () {
@@ -148,6 +149,27 @@ export default {
     }
   },
   methods: {
+    onDragenter () {
+      // class 넣기
+      this.mIsDraggedYn = true
+    },
+    onDragleave () {
+      // class 삭제
+      this.mIsDraggedYn = false
+    },
+    onDragover (event) {
+      // 드롭을 허용하도록 prevetDefault() 호출
+      event.preventDefault()
+    },
+    onDrop (event) {
+      event.preventDefault()
+      this.mIsDraggedYn = false
+      const files = event.dataTransfer.files
+      const fileRef = this.$refs.attCompo
+      if (fileRef) {
+        fileRef.onDrop(files)
+      }
+    },
     inputEnterKey (event) {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       if (event.keyCode === 13 && !isMobile && !this.nowLoadingYn) {
@@ -682,5 +704,8 @@ span.label.highlight {
 }
 .width33 {
   width: 33% !important;
+}
+.dragged {
+  border: 2px dashed rgb(33, 63, 143) !important;
 }
 </style>

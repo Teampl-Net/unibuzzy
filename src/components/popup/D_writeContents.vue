@@ -81,7 +81,7 @@
 </i18n>
 <template>
 <!-- <div style="width: 100%; float: left;"> -->
-  <div class="whitePaper hhhhhh">
+  <div class="whitePaper hhhhhh" :class="mIsDraggedYn? 'dragged':''" @drop="onDrop" @dragenter="onDragenter" @dragover="onDragover" @dragleave="onDragleave">
       <!-- 컨텐츠 작성 헤더 영역 -->
       <div class="w100P fl writeHeader">
         <div class="fl w100P writeHeaderBox">
@@ -160,7 +160,7 @@
         <div class="fl w100P mtop-1 contentsFileBox">
           <p class="fontBold commonColor CDeepColor font16 fl mright-1 keepAll">{{ $t('FORM_BTN_FILE') }}</p>
           <div class="fl mleft-05 fileItemBox">
-            <attachFileList :attachTrueAddFalseList="pAttachFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
+            <attachFileList ref="attachFileRef" :attachTrueAddFalseList="pAttachFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
           </div>
         </div>
 
@@ -242,7 +242,8 @@ export default {
       gCertiPopShowYn: false,
       mCanWriteYn: true,
       mBoardList: [],
-      isMobile: /Mobi/i.test(window.navigator.userAgent)
+      isMobile: /Mobi/i.test(window.navigator.userAgent),
+      mIsDraggedYn: false
     }
   },
   props: {
@@ -438,6 +439,27 @@ export default {
     }
   },
   methods: {
+    onDragenter () {
+      // class 넣기
+      this.mIsDraggedYn = true
+    },
+    onDragleave () {
+      // class 삭제
+      this.mIsDraggedYn = false
+    },
+    onDragover (event) {
+      // 드롭을 허용하도록 prevetDefault() 호출
+      event.preventDefault()
+    },
+    onDrop (event) {
+      event.preventDefault()
+      this.mIsDraggedYn = false
+      const files = event.dataTransfer.files
+      const fileRef = this.$refs.attachFileRef
+      if (fileRef) {
+        fileRef.onDrop(files)
+      }
+    },
     async sendAlimToMember () {
       /* this.mAskSendAlimPopShowYn = false
       this.mSelectMemPopShowYn = true */
@@ -1545,5 +1567,8 @@ export default {
 }
 #loading {
   display: block;
+}
+.dragged {
+  border: 2px dashed rgb(33, 63, 143) !important;
 }
 </style>
