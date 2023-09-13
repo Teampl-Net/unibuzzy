@@ -26,7 +26,7 @@
 </i18n>
 <template>
 <div class="w100P h100P">
-    <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" class="popBg" ></div>
+    <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" class="popBg"></div>
     <unknownLoginPop :pClosePop="closeUnknownLoginPop" class="fixed" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
     <statCodeComponent @closeXPop="workStateCodePopShowYn = false" :currentWorker="{workUserKey: workStateCodePopProps.workUserKey, workUserName: workStateCodePopProps.workUserName}" :teamKey="workStateCodePopProps.creTeamKey" :alimDetail="workStateCodePopProps" :contentsKey="workStateCodePopProps.contentsKey" v-if="workStateCodePopShowYn" :codeList="workStateCodePopProps.workStatCodeList" :currentCodeKey="workStateCodePopProps.workStatCodeKey" class="fr "></statCodeComponent>
     <div v-if="saveMemoLoadingYn" id="loading"><div class="spinner"></div></div>
@@ -1582,7 +1582,7 @@ export default {
 }
 #loading {
   display: block;
-  z-index:999999
+  z-index: 999999;
 }
 .popBg {
   width:100%;
@@ -1695,7 +1695,7 @@ export default {
   width: 100%;
   height: 100%;
   padding-bottom: 60px;
-  -webkit-overflow-scrolling: touch;
+  /* -webkit-overflow-scrolling: touch; */
 }
 .memoPop {
   z-index: 999999 !important;

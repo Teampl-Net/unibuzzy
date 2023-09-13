@@ -1,13 +1,13 @@
 <template>
-    <div style="border-radius: 0.8rem; box-shadow: 0 0 4px 4px #00000026; width: calc(100% - 40px); height: 350px; position: fixed; background: #FFF; z-index: 100; top: 50%; left: 20px; transform: translateY(-50%);">
-        <div class="newHeaderLine" style="width: 100%; height: 50px; float: left; position: relative; padding: 0 20px; display: flex; align-items: center;">
+    <div class="modiMemoWrap">
+        <div class="newHeaderLine modiMemoHeader">
             <p class="textLeft fl font20 fontBold commonColor">{{ $t('COMM_TITLE_COMMENT_EDIT2') }}</p>
-            <img @click="backClick" src="../../../assets/images/common/popup_close.png" style="position: absolute; right: 20px; top: 15px; width: 20px;" alt="">
+            <img @click="backClick" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
-        <div style="width: 100%; height: calc(100% - 100px);float: left; padding: 10px 20px;">
-            <pre contenteditable style="display:inline-block; outline: none; width: calc(100%); border-radius: 5px; height: 100%; border: 1px solid #ccc; word-break: break-all; " autofocus ref="formTextArea" id="memoModiInput" class="" ></pre>
+        <div class="modiMemoCont">
+            <pre contenteditable autofocus ref="formTextArea" id="memoModiInput" class="" ></pre>
         </div>
-        <div style="width: 100%; height: 50px; float: left; display: flex; justify-content: center; align-items: center">
+        <div class="modiMemoFooter">
             <gBtnSmall :btnTitle="$t('COMM_BTN_EDIT2')" @click="updateMemo" class="mright-05"/>
             <gBtnSmall btnThema="light" @click="backClick" :btnTitle="$t('COMM_BTN_CLOSE')"/>
         </div>
@@ -127,5 +127,55 @@ export default {
 <style scoped>
 pre #parentNameCard {
     display: none;
+}
+.modiMemoWrap {
+  border-radius: 0.8rem;
+  box-shadow: 0 0 4px 4px #00000026;
+  width: calc(100% - 40px);
+  height: 350px;
+  position: fixed;
+  background: #FFF;
+  z-index: 100;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+}
+.modiMemoHeader {
+  width: 100%;
+  height: 50px;
+  float: left;
+  position: relative;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+}
+.modiMemoHeader > img {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  width: 20px;
+}
+.modiMemoCont {
+  width: 100%;
+  height: calc(100% - 100px);
+  float: left;
+  padding: 10px 20px;
+}
+.modiMemoCont > pre {
+  display:inline-block;
+  outline: none;
+  width: 100%;
+  border-radius: 5px;
+  height: 100%;
+  border: 1px solid #ccc;
+  word-break: break-all;
+}
+.modiMemoFooter {
+  width: 100%;
+  height: 50px;
+  float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

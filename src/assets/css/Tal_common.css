@@ -193,7 +193,7 @@ input, select {
 }
 
 .scrollOn {
-  overflow: hidden auto;
+  overflow: auto;
 }
 .scrollHidden {
   overflow: hidden;

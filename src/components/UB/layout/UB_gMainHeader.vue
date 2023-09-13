@@ -33,6 +33,13 @@ export default {
       mContentsYn: false
     }
   },
+  created () {
+    if (this.ROUTER_PATH.includes('contents')) {
+      this.mContentsYn = true
+    } else {
+      this.mContentsYn = false
+    }
+  },
   methods: {
     hasHistory () {
       return window.history.length > 1

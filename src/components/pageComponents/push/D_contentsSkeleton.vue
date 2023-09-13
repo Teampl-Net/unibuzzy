@@ -4,11 +4,11 @@
     class="skeletonBox"
   >
     <div class="skeletonProfileCard"></div>
-    <div style="width: calc(100% - 80px); margin-left: 10px; height: 40px; float: left; display: flex; flex-direction: column;">
-        <div style="width: calc(100% - 80px); height: 20px; float: left; background: rgba(231, 231, 231, 0.6); margin-bottom: 5px;"></div>
-        <div style="width: 170px; height: 15px; float: left; background: rgba(231, 231, 231, 0.6);"></div>
+    <div class="skeletonTop">
+        <div></div>
+        <div></div>
     </div>
-    <div style="width: 100%; height: 50px; float: left; background: rgba(231, 231, 231, 0.6); margin-top: 5px;"></div>
+    <div class="skeletonBottom"></div>
   </div>
 </template>
 
@@ -83,5 +83,35 @@ export default {
       transform: translateX(100%);
     }
   }
+}
+.skeletonTop {
+  width: calc(100% - 80px);
+  margin-left: 10px;
+  height: 40px;
+  float: left;
+  display: flex;
+  flex-direction: column;
+  & > div {
+    &:first-child {
+      width: calc(100% - 80px);
+      height: 20px;
+      float: left;
+      background: rgba(231, 231, 231, 0.6);
+      margin-bottom: 5px;
+    }
+    &:last-child {
+      width: 170px;
+      height: 15px;
+      float: left;
+      background: rgba(231, 231, 231, 0.6);
+    }
+  }
+}
+.skeletonBottom {
+  width: 100%;
+  height: 50px;
+  float: left;
+  background: rgba(231, 231, 231, 0.6);
+  margin-top: 5px;
 }
 </style>

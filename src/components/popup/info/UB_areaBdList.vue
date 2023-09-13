@@ -1,5 +1,5 @@
 <template>
-  <div class="w100P h100P" style="background: white; padding-top: 50px; z-index: 99999; position: absolute;">
+  <div class="w100P h100P areaBdListWrap">
     <div v-for="(chan, idx) in GE_MAIN_CHAN_LIST" :key="idx">{{ this.$changeText(chan.nameMtext) }}</div>
   </div>
 </template>
@@ -13,4 +13,10 @@ export default {
 }
 </script>
 <style scoped>
+.areaBdListWrap {
+  background: white;
+  padding-top: 50px;
+  z-index: 99999;
+  position: absolute;
+}
 </style>

@@ -112,7 +112,7 @@ export default {
       this.$router.push({ name: 'policies' })
       return
     } else {
-      if (this.GE_USER.myTeamKey === 836 || !this.GE_USER.myTeamKey) {
+      if (this.GE_USER.myTeamKey === 836) {
         this.$router.push({ name: 'uniBmain' })
         return
       }

@@ -2204,7 +2204,6 @@ export default {
     background-color: #FFF;
     top: 0;
     left: 0;
-    z-index: 2;
     will-change: transform;
     transition: transform 0.3s linear;
 }

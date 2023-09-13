@@ -1,39 +1,39 @@
 <template>
-    <div style="border-radius: 20px; width: 80%; height: 80%; position: absolute; top: 10%; left: 10%;  z-index: 99999; padding: 20px; padding-bottom: 0;float: left; background-color: #fff;">
-        <div class="font20 fontBold w100P" style="height: 50px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
-          <div style="display: flex; align-items: center; width: calc(100% - 25px);">
-            <div class="fl" :style="pChanInfo.logoDomainPath? `background-image: url(${pChanInfo.logoDomainPath + pChanInfo.logoPathMtext });`:`background-image: url(${pChanInfo.logoPathMtext });`" style="border-radius: 100%; border: 1px solid #aaa; width: 50px; height: 50px; margin-right: 10px; background-position: center; background-size: cover; background-color: white;"></div>
+    <div class="chanInfoBoxWrap">
+        <div class="font20 fontBold w100P chanInfoBoxHeader">
+          <div class="chanInfoBoxTitle">
+            <div class="fl chanInfoBoxLogo" :style="pChanInfo.logoDomainPath? `background-image: url(${pChanInfo.logoDomainPath + pChanInfo.logoPathMtext });`:`background-image: url(${pChanInfo.logoPathMtext });`"></div>
             <!-- <img style="width: 20px; margin-right: 5px;" :src="pChanInfo.logoDomainPath? pChanInfo.logoDomainPath + pChanInfo.logoPathMtext:pChanInfo.logoPathMtext" alt=""> -->
-            <p class="textOverdot textLeft mleft-05" style="width: calc(100% - 60px); padding: none!important;">{{ $changeText(pChanInfo.bdAreaNameMtext) }}</p>
+            <p class="textOverdot textLeft mleft-05 chanInfoBoxTitle">{{ $changeText(pChanInfo.bdAreaNameMtext) }}</p>
           </div>
-          <div class="cursorP" @click="pClosePop" style="width: 25px;">
-            <img style="width: 25px;" src="../../../assets/images/common/popup_close.png" alt="">
+          <div class="cursorP chanInfoCloseImg" @click="pClosePop">
+            <img class="w100P" src="../../../assets/images/common/popup_close.png" alt="">
           </div>
         </div>
-        <div class="w100P flexCenter" style="position: relative; flex-direction: column; justify-content: flex-start; height: calc(100% - 110px); padding: 0px 0px 20px 0px; background: #bbb8ff; border-radius: 20px; border: 2px solid #000;">
-          <div class="fontBold font18" style="left: -10px; top: 10px; transform: rotate(-10deg); min-width: 60%; padding: 0 5px; height: 35px; border: 1px solid black; background: #fff; box-shadow: 3px 3px #36496b; line-height: 35px; position: absolute;">{{ $changeText(pChanInfo.nameMtext) }}</div>
-          <div class="fontBold font18" style="right: 10px; top: 50px; width: 60%; height: 35px; border: 1px solid black; background: #fff; box-shadow: 3px 3px #36496b; line-height: 35px; position: absolute;">{{ pChanInfo.fCount }} followers</div>
-          <div class="fontBold w100P" style="margin-top: 100px; text-align:left; padding-left: 10px;">Popular Post</div>
-          <div class="w100P" style="height: calc(100% - 110px); margin-top: 10px; overflow: auto; padding: 0 10px;">
+        <div class="w100P flexCenter chanInfoBoxBody">
+          <div class="fontBold font18 chanInfoBoxName">{{ $changeText(pChanInfo.nameMtext) }}</div>
+          <div class="fontBold font18 chanInfoBoxCount">{{ pChanInfo.fCount }} followers</div>
+          <div class="fontBold w100P chanInfoBoxPopTitle">Popular Post</div>
+          <div class="w100P chanInfoBoxContWrap">
             <template v-if="GE_DISP_CONTS_LIST && GE_DISP_CONTS_LIST.length > 0">
-              <div @click="goContentsDetail(cont)" v-for="cont, index in GE_DISP_CONTS_LIST" :key="index" style="width: 100%; border-radius: 5px; padding: 5px; background: #FFFFFF98; margin-bottom: 10px; position: relative; overflow: hidden;">
+              <div class="chanInfoBoxCont" @click="goContentsDetail(cont)" v-for="cont, index in GE_DISP_CONTS_LIST" :key="index">
                   <div>
                     <div>
                       <p class="font12 commonColor fontBold textLeft">{{ `${$changeText(cont.cabinetNameMtext)} Board > ${cont.showCreNameYn? $changeText(cont.creUserName) : 'Anonymous'}` }}</p>
                       <p class="font12 lightGray textLeft">{{ `${$changeDateFormat(cont.creDate)}` }}</p>
                     </div>
                   </div>
-                  <div ref="contentsBoxRef" style="width: 100%; margin-left: 3px; margin-bottom: 5px; margin-top: 5px; padding-left: 5px; border-left: 2px solid #CCC; position: relative;">
-                      <p class="font14 textLeft fontBold" style="width: 99%; overflow: hidden;" >{{ cont.title }}</p>
-                      <pre class="font14 textLeft textOverdot" style="width: calc(100% - 10px); height: 100px; overflow: hidden; word-break: break-all;" v-html="$setBodyLength(cont.bodyFullStr)"></pre>
+                  <div class="chanInfoBoxContPre" ref="contentsBoxRef">
+                      <p class="font14 textLeft fontBold">{{ cont.title }}</p>
+                      <pre class="font14 textLeft textOverdot" v-html="$setBodyLength(cont.bodyFullStr)"></pre>
                   </div>
-                  <div class="w100P" style="position: absolute; bottom: 0; left: 0; height: 100px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9));"></div>
+                  <div class="w100P chanInfoBoxFade"></div>
               </div>
             </template>
             <gEmpty v-else-if="GE_DISP_CONTS_LIST && GE_DISP_CONTS_LIST.length === 0" :tabName="currentTabName" contentName="전체" :key="mEmptyReloadKey" class="mtop-2"/>
           </div>
         </div>
-        <div style="height: 40px; display: flex; align-items: center; justify-content: flex-end;">
+        <div class="chanInfoBoxFooter">
           <gBtnSmall @click="goToLink" class="mleft-05" btnTitle="Let's go!"/>
         </div>
     </div>
@@ -90,7 +90,6 @@ export default {
       } catch (error) {
         console.log(error)
       }
-      console.log(returnContsList)
       if (this.returnContsList) {
         return this.replaceArr(returnContsList)
       } else {
@@ -141,7 +140,6 @@ export default {
           contentList[i].shareItem = resultMainData.cabinet.mShareItemList
         }
         this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
-        console.log('!!!!!!!!!!!!!!!!!')
       }
       var goBoardMainParam = {}
       goBoardMainParam.initData = resultMainData
@@ -149,7 +147,6 @@ export default {
       goBoardMainParam.teamKey = paramObj.teamKey
       goBoardMainParam.targetKey = paramObj.cabinetKey
       goBoardMainParam.cabinetNameMtext = paramObj.cabinetNameMtext
-      console.log('goBoardMainParam', goBoardMainParam)
       this.$emit('openPage', goBoardMainParam)
     },
     goContentsDetail (param) {
@@ -169,4 +166,133 @@ export default {
   }
 }
 </script>
-<style scoped></style>
+<style scoped>
+.chanInfoBoxWrap {
+  border-radius: 20px;
+  width: 80%;
+  height: 80%;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  z-index: 99999;
+  padding: 20px;
+  padding-bottom: 0;
+  float: left;
+  background-color: #fff;
+}
+.chanInfoBoxHeader {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.chanInfoBoxTitleBox {
+  display: flex;
+  align-items: center;
+  width: calc(100% - 25px);
+}
+.chanInfoBoxLogo {
+  border-radius: 100%;
+  border: 1px solid #aaa;
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  background-position: center;
+  background-size: cover;
+  background-color: white;
+}
+.chanInfoBoxTitle {
+  width: calc(100% - 60px);
+  padding: none !important;
+}
+.chanInfoCloseImg {
+  width: 25px;
+}
+.chanInfoBoxBody {
+  position: relative;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: calc(100% - 110px);
+  padding: 0px 0px 20px 0px;
+  background: #bbb8ff;
+  border-radius: 20px; border:
+  2px solid #000;
+}
+.chanInfoBoxName {
+  left: -10px;
+  top: 10px;
+  transform: rotate(-10deg);
+  min-width: 60%;
+  padding: 0 5px;
+  height: 35px;
+  border: 1px solid black;
+  background: #fff;
+  box-shadow: 3px 3px #36496b;
+  line-height: 35px;
+  position: absolute;
+}
+.chanInfoBoxCount {
+  right: 10px;
+  top: 50px;
+  width: 60%;
+  height: 35px;
+  border: 1px solid black;
+  background: #fff;
+  box-shadow: 3px 3px #36496b;
+  line-height: 35px;
+  position: absolute;
+}
+.chanInfoBoxPopTitle {
+  margin-top: 100px;
+  text-align: left;
+  padding-left: 10px;
+}
+.chanInfoBoxContWrap {
+  height: calc(100% - 110px);
+  margin-top: 10px;
+  overflow: auto;
+  padding: 0 10px;
+}
+.chanInfoBoxCont {
+  width: 100%;
+  border-radius: 5px;
+  padding: 5px;
+  background: #FFFFFF98;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.chanInfoBoxContPre {
+  width: 100%;
+  margin-left: 3px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding-left: 5px;
+  border-left: 2px solid #CCC;
+  position: relative;
+}
+.chanInfoBoxContPre > p {
+  width: 99%;
+  overflow: hidden;
+}
+.chanInfoBoxContPre > pre {
+  width: calc(100% - 10px);
+  height: 100px;
+  overflow: hidden;
+  word-break: break-all;
+}
+.chanInfoBoxFade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9));
+}
+.chanInfoBoxFooter {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+</style>
