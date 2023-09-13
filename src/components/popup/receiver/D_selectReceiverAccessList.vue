@@ -8,10 +8,10 @@
         <!-- <selectBookNMemberList ref="selectedMemberListCompo" v-if="detailOpenYn === true" :itemType="itemType" @addSelectList="addSelectList" :selectBookNList='memberList' :selectList='selectList' @detail='detailOpen' :memberOnly='true' /> -->
         <transition name="showGroup">
             <!-- <memberList :listData="memberList" :parentSelectList="pSelectedMemberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" /> -->
-            <memberList :listData="memberList" :parentSelectList="selectList.memberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
+            <memberList :listData="memberList" :propMemberList="memberList" :parentSelectList="selectList.memberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.propData" class="memberListStyle" transition="showGroup" ref="memberListCompo" v-if="detailOpenYn" />
         </transition>
       </div>
-      <selectedListCompo class="selectedListCompo" :oneMemberCanAddYn="oneMemberCanAddYn" :itemType="itemType"  @changeSelectedList="changeSelectedItem" @changeSelectMemberList="changeSelectMemberList" ref="testCompo" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" />
+      <selectedListCompo class="selectedListCompo" ref="selectedListCompo" :oneMemberCanAddYn="oneMemberCanAddYn" :itemType="itemType"  @changeSelectedList="changeSelectedItem" @changeSelectMemberList="changeSelectMemberList" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" />
     </div>
 </div>
 
@@ -36,8 +36,6 @@ export default {
   },
   created () {
     this.memberList = this.parentList
-    // console.log(this.parentList)
-
 
     // if (!this.selectList) {
     //   // console.log(this.propData)
@@ -82,10 +80,18 @@ export default {
     }
   },
   methods: {
-    changeSelectMemberList ({params, accessKey}) {
-      this.setSelectedList.memberList = params.memberList
-      var idx = this.memberList.memberList.findIndex((item) => item.accessKey === accessKey)
-      this.memberList.memberList[idx].selectedYn = false
+    changeSelectMemberList (params) {
+      this.setSelectedList.memberList = params
+
+      if (this.$refs.selectedListCompo) {
+        this.$refs.selectedListCompo.newUpdateMember(params)
+        this.$refs.selectedListCompo.upDatePage()
+      }
+      if (this.$refs.memberListCompo) {
+        this.$refs.memberListCompo.deleteSelectedMember(params, true)
+      }
+      // var idx = this.memberList.findIndex((item) => item.accessKey === accessKey)
+      // this.memberList[idx].selectedYn = false
     },
     async detailOpen (data) {
       // this.detailOpenYn = true
@@ -221,9 +227,8 @@ export default {
     },
     addSelectList (data) {
       this.setSelectedList = data
-      this.$refs.testCompo.upDatePage(data)
+      this.$refs.selectedListCompo.upDatePage(data)
     },
-
     delectClick (index) {
       this.setSelectedList.memberList.splice(index, 1)
     },
@@ -335,7 +340,7 @@ input:focus{
   height: 100vh;
   background-color:white;
   width:100%;
-  z-index: 99999;
+  z-index: 9999999;
   position: fixed;
   top: 0;
   left: 0;

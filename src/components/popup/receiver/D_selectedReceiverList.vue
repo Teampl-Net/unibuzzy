@@ -209,10 +209,10 @@ export default {
         this.teamList.type = 'C'
         this.$emit('changeSelectBookList', this.teamList.bookList)
       } else if (type === 'member') {
-        var accessKey = this.teamList.memberList[index].accessKey
+        // var accessKey = this.teamList.memberList[index].accessKey
         this.teamList.memberList.splice(index, 1)
         this.teamList.type = 'U'
-        this.$emit('changeSelectMemberList', { params: this.teamList, accessKey: accessKey })
+        this.$emit('changeSelectMemberList', this.teamList.memberList)
       }
       if (key !== undefined && key !== null && key !== '') {
         this.teamList.delKey = key

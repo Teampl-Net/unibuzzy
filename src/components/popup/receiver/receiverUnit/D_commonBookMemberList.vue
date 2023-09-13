@@ -103,6 +103,7 @@ export default {
       }
     },
     setMemberList () {
+      if (!this.propMemberList) return
       this.mCommonMemberList = this.propMemberList
       for (let i = 0; i < this.mCommonMemberList.length; i++) {
         this.mCommonMemberList[i].jobkindId = 'USER'

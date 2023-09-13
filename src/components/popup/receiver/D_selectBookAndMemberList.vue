@@ -144,11 +144,11 @@ export default {
 				if (type === 'add') {
 					this.addSelectedList(data, idx)
 				} else if (type === 'open') {
-                    if (data.jobkindId === 'BOOK') this.$emit('detail', data)
-                } else if (type === 'deleteList') {
-                    this.delSelectList(data.accessKey, 'U')
-                    this.$emit('delectClick', idx)
-                }
+            if (data.jobkindId === 'BOOK') this.$emit('detail', data)
+        } else if (type === 'deleteList') {
+            this.delSelectList(data.accessKey, 'U')
+            this.$emit('delectClick', idx)
+        }
     	},
         setParentSelectList () {
             console.log(this.selectedMemberList)
