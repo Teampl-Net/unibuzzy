@@ -9,7 +9,7 @@
     <div @click="routePage('chanList')" class="footerRouter flex1">
       <div class="commonColor fontBold text-center font12">
         <img v-if="this.$route.path === '/chanList'" :src="footerIcon[2].fullIcon" /> <img v-else :src="footerIcon[2].icon" />
-        <p :class="this.$route.path === '/chanList' ? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_CHANNEL') }}</p>
+        <p :class="this.$route.path === '/chanList' ? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_CHANNELS') }}</p>
       </div>
     </div>
     <!-- <div class="footerRouter" style="flex: 1 !important">

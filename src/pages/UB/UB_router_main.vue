@@ -451,10 +451,13 @@ export default {
     async goChanDetail (detailValue) {
       const chanMainParam = {}
       chanMainParam.targetType = 'chanDetail'
+      console.log('detailValue*********************')
+      console.log(detailValue)
       let teamKey = detailValue.targetKey
       if (!teamKey && detailValue.creTeamKey) {
         teamKey = detailValue.creTeamKey
       }
+      console.log('teamKey=======', teamKey)
       chanMainParam.teamKey = teamKey
       chanMainParam.targetKey = teamKey
       if (detailValue && detailValue.nameMtext) chanMainParam.nameMtext = detailValue.nameMtext

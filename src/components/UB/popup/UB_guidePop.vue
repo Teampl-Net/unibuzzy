@@ -12,7 +12,7 @@
         </div>
       </div>
       <div @wheel="horizontalScroll" id="chanListWrap" ref="chanListWrap" class="okScrollBar contentsWrap" :style="calcPaddingTop" @mousedown="testTwo" @mouseup="testTr">
-        <img v-for="img, index in mImgList" class="h100P" :key="index" :src="img" alt="guideImg">
+        <img v-for="img, index in mImgList" class="w100P" :key="index" :src="img" alt="guideImg">
       </div>
     </div>
   </div>
@@ -24,12 +24,13 @@ export default {
   data () {
     return {
       mImgList: [
-        '/resource/main/app1.png',
-        '/resource/main/app2.png',
-        '/resource/main/app3.jpg',
-        '/resource/main/app4.jpg',
-        '/resource/main/app5.jpg',
-        '/resource/main/app6.png'
+        '/resource/main/guide1.png',
+        '/resource/main/guide2.png',
+        '/resource/main/guide3.png',
+        '/resource/main/guide4.png',
+        '/resource/main/guide5.png',
+        '/resource/main/guide6.png',
+        '/resource/main/guide7.png'
       ]
     }
   },
@@ -98,13 +99,13 @@ export default {
 </script>
 <style scoped>
 .guidePopWrap {
-  width: 80%;
-  height: 70%;
+  width: 90%;
+  height: 60%;
   border-radius: 10px;
   z-index: 99999;
   position: absolute;
-  left: 10%;
-  top:15%;
+  left: 5%;
+  top:20%;
 }
 .guidePopBox {
   width: 100%;

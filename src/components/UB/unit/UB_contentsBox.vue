@@ -20,7 +20,7 @@
   <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
     <!-- <button @click="downloadPdf">다운로드</button> -->
     <!-- <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;"> -->
-  <div :class="animationYn? 'newContentsAni':''" class="contentsWrap" key="animationYn" v-if="this.CONT_DETAIL" :style="`padding-bottom: ${this.$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`">
+  <div :class="animationYn? 'newContentsAni':''" class="contentsWrap" @dragenter="onDragenter" @dragover="onDragover" key="animationYn" v-if="this.CONT_DETAIL" :style="`padding-bottom: ${this.$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`">
     <div v-if="propJustShowYn" :style="propPreStickerList && propPreStickerList.length > 0? 'height: calc(100% - 50px);' : 'height: calc(100%); '" class="justSticker"></div>
     <!-- :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" -->
     <div class="contentsCardHeaderArea">
@@ -195,7 +195,7 @@
   </div>
   <!-- </vue3-simple-html2pdf> -->
   <!-- 밑에는 댓글 작성 창 -->
-  <gMemoPop style="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="!pNoAuthYn && this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
+  <gMemoPop tyle="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="!pNoAuthYn && this.propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
 
   <!-- <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/> -->
   <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
@@ -319,6 +319,14 @@ export default {
     }
   },
   methods: {
+    onDragenter () {
+      // class 넣기
+      const memoRef = this.$refs.gMemoRef
+      if (memoRef) {
+        memoRef.onDragenter()
+        // this.mIsDraggedYn = true
+      }
+    },
     closeProfilePop () {
       this.mProfilePopShowYn = false
     },
@@ -869,11 +877,26 @@ export default {
       }
       if (result) {
         this.$showToastPop(toastText)
+        if (this.$route.fullPath.includes('contents')) {
+          this.goBack()
+        }
       }
       // 반복문에 index값을 prop으로 받아 해당 함수가 리스트에 몇번째에서 발생한지 인지하고 그 인덱스를 삭제
       this.$emit('contDelete', this.propContIndex)
       // @@@ 추후에 vuex에 컨텐츠 삭제를 해야함 @@@@ @@@@ @@@@ @@@@ @@@@ #추가
       // this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', inParam)
+    },
+    hasHistory () {
+      return window.history.length > 1
+    },
+    async goBack () {
+      if (this.hasHistory()) {
+        this.$router.go(-1)
+      } else {
+        this.$router.push('/')
+      }
+      // this.$router.go(-1)
+      // this.$router.replace({ path: '/' })
     },
     moveOrCopyContent (type) {
       this.mSelectBoardType = type

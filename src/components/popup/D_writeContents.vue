@@ -81,7 +81,7 @@
 </i18n>
 <template>
 <!-- <div style="width: 100%; float: left;"> -->
-  <div class="whitePaper hhhhhh" :class="mIsDraggedYn? 'dragged':''" @drop="onDrop" @dragenter="onDragenter" @dragover="onDragover" @dragleave="onDragleave">
+  <div class="whitePaper hhhhhh" :class="mIsDraggedYn? 'dragged':''" @drop="onDrop" @dragenter="onDragenter" @dragover="onDragover">
       <!-- 컨텐츠 작성 헤더 영역 -->
       <div class="w100P fl writeHeader">
         <div class="fl w100P writeHeaderBox">

@@ -22,7 +22,7 @@
         <img src="../../../assets/images/common/searchXIcon.svg" alt="">
       </div>
     </div>
-    <div v-if="this.attachTrueFileList.length > 0" class="fl mbottom-05 mtop-05 attachFileWrap">
+    <div v-if="this.attachTrueFileList.length > 0" class="fl mbottom-05 mtop-05 attachFileWrap" @drop="onDrop">
       <div class="fl mtop-05 attachFileBox">
         <div @wheel="horizontalScroll" id="attachFileArea" :class="mobileYn? '':'thinScrollBar'" class="attachFileArea">
           <div class="CMiddleBorderColor attachFileItem" v-for="(value, index) in  attachTrueFileList" :key="index">

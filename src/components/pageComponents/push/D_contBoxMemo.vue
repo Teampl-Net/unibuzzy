@@ -17,7 +17,7 @@
     <modiMemoPop :propContDetail="propContDetail" ref="modiMemoPop" :pClosePop="closeModiMemoPop" :pMemoEle="mModiMemoObj" v-if="mModiMemoPopShowYn" />
     <div class="noChildMemoWrap" v-if="!childShowYn">
         <div class="noChildUserNameBox" @click="clickMemoEvnt({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
-            <p class="commonBlack textLeft font14 fontBold">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
+            <p class="commonBlack textLeft font14 fontBold textOverdot">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
         </div>
         <img v-if="propMemoEle.attachMfilekey" src="../../../assets/images/contents/icon_clip.png" class="attachFileIcon" alt="">
         <!-- <div class="contBoxMemoArea" :style="propMemoEle.attachMfilekey? 'width: calc(100% - 170px);' : 'width: calc(100% - 150px);'" style=" min-height: 20px; overflow: hidden; position: relative; max-height: 80px; padding-bottom: 30px;" @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })"> -->

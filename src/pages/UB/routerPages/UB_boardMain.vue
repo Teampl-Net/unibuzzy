@@ -107,7 +107,7 @@
       @click="refreshAll" >
         <img src="@/assets/images/common/reload_button.svg" class="cursorP" />
       </div>
-    <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" v-if="CAB_DETAIL.cabinetKey === 13909 || (CHANNEL_DETAIL &&  CAB_DETAIL.shareAuth && this.CAB_DETAIL.shareAuth.W === true && CHANNEL_DETAIL.D_CHAN_AUTH.followYn)" @click="openWriteBoard" alt="button for write contents" class="img-78 writeBtn">
+    <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" v-if="CAB_DETAIL.cabinetKey === 13909 || CAB_DETAIL.cabinetKey === 13905 || (CHANNEL_DETAIL &&  CAB_DETAIL.shareAuth && this.CAB_DETAIL.shareAuth.W === true && CHANNEL_DETAIL.D_CHAN_AUTH.followYn)" @click="openWriteBoard" alt="button for write contents" class="img-78 writeBtn">
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
   <!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propParams="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->

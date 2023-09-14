@@ -1,9 +1,9 @@
 <template>
     <!-- <div class="searchResultWrap" id="searchResultWrapLength"> -->
     <div class="searchResultWrap" id="searchResultWrapLength" :style="!setSearchList || setSearchList.length === 0 ?'border-bottom:none':''">
-        <div v-for="(value, index) in setSearchList" :key="index" class="searchResultBox ">
+        <div v-for="(value, index) in setSearchList" :key="index" class="searchResultBox textOverdot">
           <span>{{value.typeName}}: </span>
-          {{changeSearchBox(value.typeName, value.keyword)}}
+          {{value.keyword}}
             <img v-on:click="delSearchKey(value.type)" class="cursorP searchXIcon" src="../../assets/images/common/searchXIcon.svg"  alt="">
         </div>
     </div>
@@ -25,10 +25,13 @@ export default {
     },
     castingSearchKey (searchMap) {
     },
-    changeSearchBox (type, keword) {
+    changeSearchBox (type, keyword) {
+      console.log('얍!!')
+      console.log(type)
+      console.log(keyword)
       if (7 - type.length) {
         var chaneTxtLength = 7 - type.length
-        var resultKeyword = keword.substring(0, chaneTxtLength)
+        var resultKeyword = keyword.substring(0, chaneTxtLength)
       }
       return resultKeyword
     }

@@ -423,7 +423,6 @@ export default {
         var result = response.data
         if (result.result === true || result.result === 'true') {
           this.mCreCheckPopYn = false
-          this.mCreatedSuccessPopYn = true
           params.targetType = 'chanDetail'
           params.popHeaderText = 'EN$^$' + this.mInputChannelName
           if (this.chanDetail && this.chanDetail.modiYn !== undefined && this.chanDetail.modiYn !== null && this.chanDetail.modiYn !== '' && this.chanDetail.modiYn === true) {
@@ -453,6 +452,7 @@ export default {
           if (this.pSelectedAreaInfo) {
             this.mParams.areaInfo = this.pSelectedAreaInfo
           }
+          this.mCreatedSuccessPopYn = true
 
           // this.mCreatedSuccessPopYn = false
           // this.$emit('successCreChan', params)
