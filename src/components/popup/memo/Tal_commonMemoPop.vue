@@ -103,7 +103,7 @@ export default {
       mUploadFileList: [],
       mSelectedImgList: [],
       selectFile: null,
-      attachMenuShowYn: false,
+      // attachMenuShowYn: false,
       firstEnterYn: false,
       mobileYn: this.$getMobileYn(),
       mIsDraggedYn: false
@@ -539,7 +539,7 @@ span.label.highlight {
   color:#AFAFAF;
 }
 .memoPopWrap {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   min-height: 50px;
   background: #fff;

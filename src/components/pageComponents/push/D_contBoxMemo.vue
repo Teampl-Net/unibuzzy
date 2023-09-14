@@ -30,7 +30,7 @@
         </div>
         <p class="fl commonGray textLeft mleft-05 font12 fontNomal">{{this.$changeSimpleDateFormat(propMemoEle.creDate)}}</p>
     </div>
-    <div v-else-if="propMemoEle" class="fullMemoWrap" :style="propMIndex !== (propMemoLength - 1)? 'border-bottom: 1px solid #cccccc50;':''">
+    <div v-else-if="propMemoEle" ref="fullMemoWrap" class="fullMemoWrap" :style="propMIndex !== (propMemoLength - 1)? 'border-bottom: 1px solid #cccccc50;':''">
         <div class="parentMemoBox">
             <div class="parentMemoTop">
                 <img class="parentMemoMore" v-if="!pNoAuthYn" src="../../../assets/images/push/contents_moreBtnIcon.svg" alt="" @click="contMenuClick(propMemoEle)">

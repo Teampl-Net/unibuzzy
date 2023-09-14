@@ -106,7 +106,6 @@ export default {
     }
   },
   mounted () {
-    console.log('콘텐츠인포', this.contentsInfo)
     if (this.contentType === 'ALIM') {
       this.contentText = '알림'
     } else if (this.contentType === 'BOAR') {

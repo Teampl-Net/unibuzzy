@@ -88,7 +88,7 @@
     <!-- <div id="stickerArea" style="width: 100%; min-height: 20px; float: left;">
         <gSticker @click="mStickerPopShowYn = true" :pSticker="{nameMtext: 'test', picBgPath: '#CCC'}"/>
     </div> -->
-    <div v-if="!propJustShowYn" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px; position: relative;">
+    <div v-if="!propJustShowYn" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  @click="goContentsDetail(mContentMoreShowYn)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px; position: relative;">
       <div v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
       <div v-else-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
       <div v-else class="fl w100P contentsPreWrap" ref="contentsBoxRef" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
@@ -101,9 +101,9 @@
           <gStickerLine class="stickerItem" @click="goStickerContentsList(value)" v-if="value" :pSmallYn="true" :pSticker="value.sticker" />
         </template>
       </div>
-      <div v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w100P fadeEffect"></div>
-      <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="cursorP w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 moreBtn">{{$t('COMMON_NAME_MORE')}} > </p>
-      <p v-else-if="mFadeNotShowYn && !mContentMoreShowYn" @click.stop="foldContentsDetail" class="w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 cursorP moreBtn"> Fold &lt; </p>
+      <div v-if="!mFadeNotShowYn && mContentMoreShowYn && mFoldYn" class="w100P fadeEffect"></div>
+      <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn && mFoldYn" class="cursorP w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 moreBtn">{{$t('COMMON_NAME_MORE')}} > </p>
+      <p v-else-if="!mFadeNotShowYn && !mContentMoreShowYn && !mFoldYn" @click.stop="foldContentsDetail" class="w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 cursorP moreBtn"> Fold &lt; </p>
     </div>
     <div class="stickerFullWrap" v-else>
       <template v-for="(value, index) in propPreStickerList" :key="index" >
@@ -187,7 +187,6 @@
           <template v-for="(memo, mIndex) in this.CONT_DETAIL.memoList" :key="mIndex">
               <memoCompo :pNoAuthYn="pNoAuthYn" @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="this.CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="this.propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.memoList.length" @memoEmitFunc='memoEmitFunc' />
           </template>
-          <!-- <img v-if="propDetailYn === false && this.CONT_DETAIL.D_MEMO_LIST && this.CONT_DETAIL.D_MEMO_LIST.length > 3" class="img-w4 mtop-05" src="../../../assets/images/common/icon_menu_round_vertical_gray.svg" alt="" @click="goContentsDetail()"> -->
           <p v-if="propDetailYn === false && this.mMemoMoreShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="this.goContentsDetail(undefined, true)" >{{ returnCommentText() }}</p>
           <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w100P"></myObserver>
       </div>
@@ -258,7 +257,7 @@ export default {
     return {
       mMemoLeng: 0,
       mFadeNotShowYn: false,
-      mContentMoreShowYn: true,
+      mContentMoreShowYn: false,
       mStickerList: [],
       mContStickerList: [],
       openStickerListYn: false,
@@ -298,7 +297,8 @@ export default {
       animationYn: false,
       mProfilePopShowYn: false,
       mPopParam: {},
-      mshowMoreYn: false
+      mshowMoreYn: false,
+      mFoldYn: true
     }
   },
   async mounted () {
@@ -355,12 +355,14 @@ export default {
     alimBigView () {
       var contentsBodyBoxArea = window.document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
       contentsBodyBoxArea.style.maxHeight = '100%'
-      this.mFadeNotShowYn = true
+      // this.mFadeNotShowYn = true
       this.mContentMoreShowYn = false
+      this.mFoldYn = false
     },
     foldContentsDetail () {
       this.mContentMoreShowYn = true
       this.mFadeNotShowYn = false
+      this.mFoldYn = true
       var contentsBodyBoxArea = window.document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
       contentsBodyBoxArea.style.maxHeight = '300px'
     },
@@ -1138,7 +1140,7 @@ export default {
                 var contentHeight = contents + imgsHeight
                 // var bodyMoreText = this.$refs['bodyMoreRef' + this.contentsEle.contentsKey]
                 // var bodyMoreText = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
-                if (contentHeight > 399) {
+                if (contentHeight > 300) {
                   // this.mMoreYn = true
                   this.mContentMoreShowYn = true
                 } else {
@@ -1150,8 +1152,11 @@ export default {
           }
         } else {
           var contentHeight = contents
+          console.log('와오아')
+          console.log(this.CONT_DETAIL.title)
+          console.log(contentHeight)
           // var bodyMoreText = await window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
-          if (contentHeight > 399) {
+          if (contentHeight > 300) {
             // bodyMoreText.style.display = 'block'
             this.mContentMoreShowYn = true
           } else {
@@ -1743,7 +1748,7 @@ pre div[id='formEditText'] {
 }
 .moreBtn {
   position: absolute;
-  bottom: 0;
+  bottom: -20px;
   right: 10px;
 }
 .stickerFullWrap {
@@ -1816,7 +1821,7 @@ pre div[id='formEditText'] {
   cursor: pointer;
   padding: 10px 20px 0 20px;
   min-height: 20px;
-  margin-bottom: 10px
+  margin-bottom: 10px;
 }
 .selectBoardBg {
   width: 100vw;
