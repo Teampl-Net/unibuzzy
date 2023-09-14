@@ -130,7 +130,6 @@ export default {
       var checkParam = {}
       checkParam.userKey = Number(param.dcmKey)
       checkParam.fcmKey = param.fcmKey
-      console.log('checkParam', checkParam)
     }
     // this.getCTeamList()
     // this.showCloudLoading(false, 5000)
@@ -234,7 +233,6 @@ export default {
           this.mAttachFileList = target.attachFileList
         }
         var paramMap = new Map()
-        console.log(this.GE_USER.userKey)
         paramMap.set('contentsKey', target.targetKey)
         paramMap.set('jobkindId', target.contentsJobkindId)
         paramMap.set('ownUserKey', this.GE_USER.userKey)
@@ -264,7 +262,6 @@ export default {
       }
     },
     closeXPop (page) {
-      console.log('page', page)
       if (page === 'main') {
         this.mTargetType = 'main'
         this.$router.push('/')
@@ -279,7 +276,6 @@ export default {
       var pageData = await this.$getRouterViewData('search')
       pageData.pSearchList = data
       this.sendInitData = pageData
-      console.log({ initData: pageData })
       await this.$router.replace({
         name: 'search'
       })
@@ -390,11 +386,8 @@ export default {
       }
     },
     getParamMap (urlString) {
-      // eslint-disable-next-line no-debugger
-      debugger
       const splited = urlString.replace('?', '').split(/[=?&]/)
       const param = {}
-      console.log(splited)
       for (let i = 0; i < splited.length; i++) {
         param[splited[i]] = splited[++i]
       }
@@ -438,26 +431,20 @@ export default {
       paramMap.set('cabinetKey', params.targetKey)
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', this.GE_USER.userKey)
-      // console.log(paramMap)
       var response = await this.$commonAxiosFunction({
         url: '/sUniB/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
-      console.log('mCabinet')
-      console.log(mCabinet)
       return mCabinet
     },
     async goChanDetail (detailValue) {
       const chanMainParam = {}
       chanMainParam.targetType = 'chanDetail'
-      console.log('detailValue*********************')
-      console.log(detailValue)
       let teamKey = detailValue.targetKey
       if (!teamKey && detailValue.creTeamKey) {
         teamKey = detailValue.creTeamKey
       }
-      console.log('teamKey=======', teamKey)
       chanMainParam.teamKey = teamKey
       chanMainParam.targetKey = teamKey
       if (detailValue && detailValue.nameMtext) chanMainParam.nameMtext = detailValue.nameMtext
@@ -474,8 +461,6 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('fUserKey', this.GE_USER.userKey)
       paramMap.set('userKey', this.GE_USER.userKey)
-      // eslint-disable-next-line no-debugger
-      debugger
       try {
         // 메인일 경우에만 로딩화면이 안 보이도록 처리(다른 화면에서는 로딩이 보여야 함)
         let nonLoadingYn = true
@@ -659,7 +644,6 @@ export default {
       this.$router.push(`/board/${params.teamKey}/${params.targetKey}`)
     },
     async openPage (params) {
-      console.log('================params.targetType', params.targetType)
       if (params.targetType === 'chanDetail') {
         if (this.$route.path === '/') {
           /* await new Promise((resolve) => setTimeout(resolve, 1500)) */
@@ -679,7 +663,6 @@ export default {
         if (this.$route.path === '/') {
           /* await new Promise((resolve) => setTimeout(resolve, 1500)) */
         }
-        console.log('goBoardDetail이 실행됩니다~~~')
         this.goBoardDetail(params)
         this.hideMenu()
         return
@@ -735,8 +718,6 @@ export default {
       } else if (page !== 'chanList' && page !== 'myPage' && page !== 'main') {
         pageData = await this.$getRouterViewData(page, mainYn)
       } else if (page === 'myPage') {
-        // eslint-disable-next-line no-debugger
-        debugger
         // @point
         // eslint-disable-next-line no-new-object
         var param = new Object()
@@ -764,8 +745,6 @@ export default {
         } */
       }
       this.mTargetType = page
-      // eslint-disable-next-line no-debugger
-      debugger
       this.sendInitData = pageData
       this.sendInitData.targetType = page
       if (page === 'main' && this.GE_USER.myTeamKey === 836) {
