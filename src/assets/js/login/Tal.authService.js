@@ -1,28 +1,23 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
-// import { firebaseApp } from "./Tal.firebase"
+import { getAuth, signInWithPopup, GoogleAuthProvider, GithubAuthProvider } from 'firebase/auth'
 
 class AuthServcie {
-  constructor () {
-    // this.auth = firebase.getAuth()
-    this.googleProvider = new firebase.auth.GoogleAuthProvider()
-    this.githubProvider = new firebase.auth.GithubAuthProvider()
-
-    // this.googleProvider = firebase.GoogleAuthProvider()
-    // this.githubProvider = firebase.GithubAuthProvider()
+  constructor (app) {
+    this.auth = getAuth(app)
   }
 
   async login (providerName) {
-    const provider = this.getProvider(providerName)
-    return await firebase.auth().signInWithPopup(provider)
+    const Provider = this.getProvider(providerName)
+    const result = await signInWithPopup(this.auth, new Provider())
+    result.credential = Provider.credentialFromResult(result)
+    return result
   }
 
   getProvider (providerName) {
     switch (providerName) {
       case 'Google':
-        return this.googleProvider
+        return GoogleAuthProvider
       case 'Github':
-        return this.githubProvider
+        return GithubAuthProvider
     }
   }
 }

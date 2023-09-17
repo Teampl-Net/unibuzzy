@@ -46,7 +46,6 @@ import { onMessage } from '@/assets/js/webviewInterface'
 import { saveUser } from '../../public/commonAssets/Tal_axiosFunction.js'
 import { setUserInfo } from '@/assets/js/login/Tal_userSetting'
 
-console.log(firebaseInitialize)
 const authService = new AuthService(firebaseInitialize)
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
