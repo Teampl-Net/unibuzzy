@@ -61,10 +61,6 @@ import UBConst from '@/assets/js/UB_Const'
 import i18n from './assets/i18n'
 // eslint-disable-next-line camelcase
 
-import { firebaseInitialize } from '@/assets/js/login/UB.firebase'
-
-console.log(firebaseInitialize)
-
 let app = {}
 let type = ''
 type = 'UB'

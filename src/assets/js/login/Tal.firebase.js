@@ -1,12 +1,9 @@
-/* eslint-disable no-unused-vars */
-
-/* eslint-disable no-undef */
-// eslint-disable-next-line no-unused-vars
 import { initializeApp } from 'firebase/app'
+import { getMessaging } from 'firebase/messaging'
+
 // eslint-disable-next-line camelcase
 import { methods } from '../../../../public/commonAssets/Tal_axiosFunction'
 import store from '../../../store'
-import { functions } from '../D_vuexFunction'
 // eslint-disable-next-line camelcase
 const firebaseConfig = {
   apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
@@ -18,19 +15,17 @@ const firebaseConfig = {
   measurementId: 'G-0BYBFKL8TS'
 }
 
-!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
+export const firebaseInitialize = initializeApp(firebaseConfig)
+const messaging = getMessaging(firebaseInitialize)
 
-export const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
-console.log(firebaseApp)
 var isMobile = /Mobi/i.test(window.navigator.userAgent)
 var appYn = localStorage.getItem('nativeYn')
 // isMobile = /Mobi/i.test(window.navigator.userAgent)
 // isMobile = true
 if (!isMobile && (appYn === 'false' || appYn === false)) {
-  const messaging = firebase.messaging()
   messaging.usePublicVapidKey('BKz1oF6HiJg6kscmJ2I0hil9fAsP68N0OrkQN7Vgo_DBQYPmnswNcIK7P71CFvKrdvwLRlemD-DfAppHIZfQ46g')
   // token값 알아내기
-  messaging.requestPermission()
+  Notification.requestPermission()
     .then(function () {
       console.log('Have permission')
       return messaging.getToken()
@@ -55,7 +50,7 @@ if (!isMobile && (appYn === 'false' || appYn === false)) {
     .catch(function (arr) {
       console.log('Error Occured')
     })
-  messaging.onMessage(function (payload) {
+  // messaging.onMessage(function (payload) {
     /* console.log('onMessage: ', payload)
     var message = payload.data
     functions.recvNotiFromBridge(message, false)
@@ -87,7 +82,7 @@ if (!isMobile && (appYn === 'false' || appYn === false)) {
       // image: icon
       }
     } */
-    /* var title = payload.data.title
+  /* var title = payload.data.title
     var options = {
       body: payload.data.body,
       data: payload.data,
@@ -108,5 +103,5 @@ if (!isMobile && (appYn === 'false' || appYn === false)) {
       console.log(registration)
     }) */
 
-  })
+  // })
 }
