@@ -45,6 +45,7 @@
 // import attachFileListPop from '../pageComponents/main/unit/D_commonAttachFileListPop.vue'
 // import html2pdf from 'html2pdf.js'
 import { onMessage } from '@/assets/js/webviewInterface'
+import { Base64 } from 'js-base64'
 
 export default {
   data () {
@@ -1281,7 +1282,6 @@ export default {
       }
     },
     decodeContents (data, completeYn) {
-      // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
       if (completeYn) {
         changeText = changeText.replaceAll('formCard', 'formCard completeWork')

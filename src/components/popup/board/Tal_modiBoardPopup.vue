@@ -121,6 +121,7 @@
 <selectSampleListPop :cabinetDetail="this.modiBoardDetailProps" @setSampleGuide="setSampleGuide" :propsInnerHtml="guideSampleInnerHtml" v-if="samplePopShowYn" @closeXPop="closeSampleListPop" />
 </template>
 <script>
+import { Base64 } from 'js-base64'
 import loadingCompo from '../../../components/layout/Tal_loading.vue'
 import selectType from './editBoardUnit/D_addChannelMenu.vue'
 // import shareSelect from './Tal_shareSelect.vue'
@@ -1329,7 +1330,6 @@ export default {
       }
     },
     decodeContents (data) {
-      // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
       return changeText
     }

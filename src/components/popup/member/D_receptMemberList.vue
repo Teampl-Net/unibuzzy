@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import { Base64 } from 'js-base64'
 // eslint-disable-next-line
 export default {
   props: {
@@ -98,7 +99,6 @@ export default {
       }
     },
     decodeContents (data) {
-      // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
       return changeText
     },
