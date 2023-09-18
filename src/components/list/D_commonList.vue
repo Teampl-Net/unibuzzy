@@ -128,6 +128,7 @@
 </div>
 </template>
 <script>
+import { Base64 } from 'js-base64'
 // eslint-disable vue/no-useless-template-attributes
 // import { nextTick } from '@vue/runtime-core'
 /* eslint-disable */
@@ -1247,7 +1248,6 @@ export default {
       this.$emit('moreList', true)
     },
     setBodyLength1 (str) {
-      // eslint-disable-next-line no-undef
       str = Base64.decode(str)
       // str = atob(str)
       str.replace('contenteditable= true', '')

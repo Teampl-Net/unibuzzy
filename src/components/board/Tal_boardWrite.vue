@@ -68,6 +68,7 @@
   </div> -->
 </template>
 <script>
+import { Base64 } from 'js-base64'
 import commonConfirmPop from '@/components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '@/components/unit/formEditor/Tal_formEditor.vue'
 import progressBar from '@/components/popup/common/Tal_commonProgressBar.vue'
@@ -325,7 +326,6 @@ export default {
       }
     },
     decodeContents (data) {
-      // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
       return changeText
     },

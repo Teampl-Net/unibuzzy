@@ -71,6 +71,7 @@
 </div>
 </template>
 <script>
+import { Base64 } from 'js-base64'
 /* import pushLoadingCompo from '../../components/layout/Tal_loading.vue' */
 // import imgPreviewPop from '../../components/popup/file/Tal_imgPreviewPop.vue'
 import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
@@ -1287,7 +1288,6 @@ export default {
       param.creTeamKey = data.creTeamKey
       param.currentTeamKey = data.creTeamKey
       if (data.attachMfilekey) { param.attachMfilekey = data.attachMfilekey }
-      // eslint-disable-next-line no-undef
       param.bodyFullStr = Base64.decode(data.bodyFullStr)
       param.UseAnOtherYn = true
       param.selectBoardYn = true
