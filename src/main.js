@@ -24,7 +24,7 @@ import commonjs from './assets/js/Tal_common'
 import getjs from './assets/js/D_vuexFunction'
 import commonSharejs from './assets/js/Tal_commonShare'
 import gMainTab from './components/popup/memberInfo/memberUnit/D_commonMainTabCompo.vue'
-import webViewBridge from './assets/js/webViewBridge'
+import './assets/js/webViewBridge'
 import gFileBox from './components/unit/D_fileBox.vue'
 import commonList from './components/list/D_commonList.vue'
 import gChannelList from './components/list/D_commonChanList.vue'
@@ -81,7 +81,7 @@ if (type === 'D') {
     import('./components/popup/confirmPop/D_commonCertiPop.vue')
   ])
 
-  app = createApp(moTheAlim).use(router).use(router).use(store)
+  app = createApp(moTheAlim).use(router).use(store)
   importsD.then(([fullModal, TalHeader, popHeader, TalFooter, gStepProgress, gSticker, gSelectStickerPop, gStickerLine, smallPop, gSelectBoardPop, gInputSmallPop, gCertiPop]) => {
     app.component('fullModal', fullModal.default)
     app.component('TalHeader', TalHeader.default)
@@ -109,7 +109,7 @@ if (type === 'D') {
     import('./components/popup/common/Tal_commonSelectBoardListPop.vue'),
     import('./components/UB/layout/UB_gCloudLoading.vue')
   ])
-  app = createApp(uniBuzzy).use(router).use(router).use(store)
+  app = createApp(uniBuzzy).use(router).use(store)
   importsUB.then(([gUBHeader, gFavList, popHeader, gPopupWrap, gSelectFilter, gLogList, smallPop, gFooter, gSelectBoardPop, gCloudLoading]) => {
     app.component('gUBHeader', gUBHeader.default)
     app.component('gFavList', gFavList.default)
@@ -166,13 +166,11 @@ app.component('gChannelPop', gChannelPop)
 app.component('gToolBox', gToolBox)
 app.component('gProfileImg', gProfileImg)
 
-app.use(webViewBridge)
 app.use(commonjs)
 app.use(i18n)
 app.use(UBConst)
 app.use(openView)
 app.use(getjs)
-app.use(Vuex)
 app.use(commonSharejs)
 app.use(BootstrapVue3)
 // app.use(Vue3SimpleHtml2pdf)
