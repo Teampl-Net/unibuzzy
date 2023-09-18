@@ -142,6 +142,7 @@
 </div>
 </template>
 <script>
+import { Base64 } from 'js-base64'
 // import findContentsList from '../D_findContentsList.vue'
 /* import boardList from '@/components/list/D_commonList.vue' */
 import findContentsList from '@/components/popup/common/D_findContentsList.vue'
@@ -533,7 +534,6 @@ export default {
       param.creTeamKey = data.creTeamKey
       param.currentTeamKey = data.creTeamKey
       if (data.attachMfilekey) { param.attachMfilekey = data.attachMfilekey }
-      // eslint-disable-next-line no-undef
       param.bodyFullStr = Base64.decode(data.bodyFullStr)
       param.UseAnOtherYn = true
       param.selectBoardYn = true

@@ -28,6 +28,7 @@
     "dayjs": "^1.11.9",
     "express-session": "^1.17.3",
     "firebase": "10.4.0",
+    "js-base64": "^3.7.5",
     "module": "1.2.5",
     "photoswipe": "^5.4.0",
     "postcss-load-config": "^4.0.1",
