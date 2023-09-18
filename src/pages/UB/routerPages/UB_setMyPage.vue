@@ -54,7 +54,7 @@
           <div @click="changeUserImg()" class="font14 changeImgBtn">{{ $t('COMM_BTN_EDIT') }}</div>
         </div>
         <div class="font20 fontBold mtop-1 userNameBox" v-show="!changeYn" >
-          <span class="fl">{{this.$changeText(this.GE_USER.userDispMtext)}}</span>
+          <span class="fl textOverdot">{{this.$changeText(this.GE_USER.userDispMtext)}}</span>
           <img src="@/assets/images/push/noticebox_edit.png" class="fr cursorP" @click="changeUserDispMtext()" >
         </div>
 
@@ -620,6 +620,9 @@ th {
 }
 .leaveText span {
   text-decoration: underline;
+}
+.userNameBox > span {
+  max-width: calc(100% - 30px);
 }
 /* .picImgWrap {position: relative; border-radius: 80px; border:2.5px solid #6768a7; background: #6768a745;padding: 5px; padding-top: 10px; padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem;
 }

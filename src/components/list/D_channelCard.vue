@@ -132,7 +132,7 @@
             <p @click="goChannelMain(chanElement)" class="font12 fr lightGray textLeft">{{ `${$changeDateFormat(chanElement.popCList[0].creDate)}` }}</p>
             <div ref="contentsBoxRef" class="fl popularContentsItem">
                 <p class="font14 textLeft fontBold" >{{ chanElement.popCList[0].title }}</p>
-                <pre class="fl font14 textLeft textOverdot" v-html="$setBodyLength(chanElement.popCList[0].bodyFullStr)"></pre>
+                <!-- <pre class="fl font14 textLeft textOverdot" v-html="$setBodyLength(chanElement.popCList[0].bodyFullStr)"></pre> -->
             </div>
         </div>
       </div>

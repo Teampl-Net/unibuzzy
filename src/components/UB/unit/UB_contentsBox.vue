@@ -125,7 +125,7 @@
           </div>
           <div class="userDoBox" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)">
             <div class="userDoItem">
-              <img v-if="this.CONT_DETAIL.D_CONT_USER_DO && !this.CONT_DETAIL.D_CONT_USER_DO[1].doKey" class="" src="../../../assets/images/contents/cont_star_no.svg" alt="">
+              <img v-if="this.CONT_DETAIL.D_CONT_USER_DO && !this.CONT_DETAIL.D_CONT_USER_DO[0].doKey" class="" src="../../../assets/images/contents/cont_star_no.svg" alt="">
               <img v-else src="../../../assets/images/contents/cont_star.svg" alt="" class="">
             </div>
             <p class="font12 fontBold fl mtop-01  w100P userDoColor">{{CONT_DETAIL.starCount}}</p>
@@ -1132,6 +1132,8 @@ export default {
 
         // 이미지를 불러오는 이유는 마운트 시점에 이미지의 크기를 못받오기에 추가함
         var imgList = await window.document.querySelectorAll('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
+        console.log('뭐지?')
+        console.log('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
         if (imgList && imgList.length > 0) {
           for (let i = 0; i < imgList.length; i++) {
             imgList[i].addEventListener('load', (event) => {

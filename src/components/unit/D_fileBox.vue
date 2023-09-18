@@ -16,7 +16,7 @@
           {{ getFileName(contentsEle.fileName) }}
         </p>
         <p class="fl textLeft commonBlack fontBold font16 fileBoxExtend">.{{ getFileExt(contentsEle.fileName) }}</p>
-        <p class="fr textLeft commonBlack font12 font Bold mtop-03">{{ this.$byteConvert(contentsEle.fileSizeKb) }}</p>
+        <p class="fr textLeft commonBlack font12 font Bold mtop-03 textOverdot">{{ this.$byteConvert(contentsEle.fileSizeKb) }}</p>
         <div class="font14 textLeft fileBoxInfoWrap">
           <div class="textOverdot w100P">
             <img src="../../assets/images/footer/icon_people.svg" class="img-w12" alt="">

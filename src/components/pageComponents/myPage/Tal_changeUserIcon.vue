@@ -42,8 +42,8 @@
             </div>
           </div>
           <div class="closeBtnArea">
-            <gBtnSmall @click="this.$emit('noChange')" :btnTitle="$t('COMM_BTN_CLOSE')" btnThema="light"/>
-            <gBtnSmall @click="updateUserIcon" :btnTitle="$t('COMMON_BTN_SELECTED')" class="mright-05" />
+            <gBtnSmall @click="this.$emit('noChange')" :btnTitle="$t('COMM_BTN_CANCEL')" btnThema="light"/>
+            <gBtnSmall @click="updateUserIcon" :btnTitle="$t('COMMON_BTN_OKAY')" class="mright-05" />
           </div>
         </div>
         <gConfirmPop :confirmText="$t('USER_MSG_NO_IMG')" class="" confirmType='one' @no='confirmPopShowYn = false' v-if="confirmPopShowYn"/>

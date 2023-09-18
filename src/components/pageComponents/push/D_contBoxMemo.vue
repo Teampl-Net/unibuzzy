@@ -15,6 +15,8 @@
 <template>
     <div v-if="mModiMemoPopShowYn" class="modiMemoPopBg" @click="closeModiMemoPop"></div>
     <modiMemoPop :propContDetail="propContDetail" ref="modiMemoPop" :pClosePop="closeModiMemoPop" :pMemoEle="mModiMemoObj" v-if="mModiMemoPopShowYn" />
+    <div class="modiMemoPopBg" v-if="mContMenuShowYn" @click="mContMenuShowYn = false"></div>
+    <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="propMemoEle" contentType="MEMO" :contentOwner="this.GE_USER.userKey === propMemoEle.creUserKey"/>
     <div class="noChildMemoWrap" v-if="!childShowYn">
         <div class="noChildUserNameBox" @click="clickMemoEvnt({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
             <p class="commonBlack textLeft font14 fontBold textOverdot">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
@@ -116,8 +118,6 @@
         <attachFileListPop @updateMemo="updateMemo" propTargetType="R" :propFileData="this.mResultParam" v-if="mFilePopShowYn === true" @closePop="mFilePopShowYn = false"/>
         <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk()" @no='mConfirmPopShowYn=false'/>
     </div>
-    <div class="modiMemoPopBg" v-if="mContMenuShowYn" @click="mContMenuShowYn = false"></div>
-    <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="propMemoEle" contentType="MEMO" :contentOwner="this.GE_USER.userKey === propMemoEle.creUserKey"/>
 </template>
 
 <script>

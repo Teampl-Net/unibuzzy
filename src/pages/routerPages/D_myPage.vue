@@ -7,7 +7,7 @@
       </div>
       <div class="myProfileRight">
         <div class="myProfileRightContents">
-          <p class="font18 fontBold fl textLeft w100P h100P commonBlack" >{{$changeText(GE_USER.userDispMtext)}}</p>
+          <p class="font18 fontBold fl textLeft w100P h100P commonBlack textOverdot" >{{$changeText(GE_USER.userDispMtext)}}</p>
           <span class="font14 myProfileRightInfo commonBlack textOverdot">{{GE_USER.userEmail}}</span>
         </div>
       </div>

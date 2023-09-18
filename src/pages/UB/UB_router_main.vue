@@ -992,7 +992,7 @@ export default {
   width: 100%;
 }
 .footerStyle {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   z-index: 999;
 }

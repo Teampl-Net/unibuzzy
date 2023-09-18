@@ -4,6 +4,7 @@
       <select v-model="showArray" class="mright-05">
         <option value="recent" class="font16 orderOption">Recent</option>
         <option value="popular" class="font16 orderOption">Popular</option>
+        <option value="name" class="font16 orderOption">Name</option>
       </select>
       <div class="mright-05 reloadWrap" :style="'bottom:' + (this.$STATUS_HEIGHT + 150)+ 'px'"  @click="refreshList">
           <img src="@/assets/images/common/commonReload.png" class="cursorP">
@@ -19,10 +20,10 @@
       </div>
       <div id="chanListWrap" ref="chanListWrap" class="chanItemBox" :style="calcPaddingTop" @mousedown="testTwo" @mouseup="testTr">
           <gEmpty class="mTop50" :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" />
-          <template v-for="(chanEle, index) in filterChannelList()" :key="index">
+          <template v-for="(chanEle, index) in GE_DISP_TEAM_LIST" :key="index">
             <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             <!-- <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @scrollMove="scrollMove" /> -->
-            <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
+            <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 3" @triggerIntersected="loadMore" class="fl wich" />
           </template>
       </div>
     </div>
@@ -89,14 +90,13 @@ export default {
   mounted () {
     this.mChanListScrollBox = document.getElementById('chanListWrap')
 
-    if (!this.initData) this.changeTab(this.mViewTab)
+    // if (!this.initData) this.changeTab(this.mViewTab)
 
     this.$emit('closeLoading')
     this.mLoadingYn = false
-    this.showArray = 'recent'
   },
   created () {
-    this.$emit('changePageHeader', this.$t('COMMON_NAME_CHANNEL'))
+    this.$emit('changePageHeader', this.$t('COMMON_NAME_CHANNELS'))
     if (this.propData) {
       if (this.propData.channelTabType !== undefined && this.propData.channelTabType !== null && this.propData.channelTabType !== '') {
         this.mViewTab = this.propData.channelTabType
@@ -158,7 +158,7 @@ export default {
     this.introChanPageTab()
     this.mScrolledYn = false
     this.findPaddingTopChan()
-    this.filterChannelList()
+    // this.filterChannelList()
   },
   methods: {
     goChannelMain (param) {
@@ -332,14 +332,21 @@ export default {
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
       // paramMap.set('cateItemKey', 3)
-      if (this.mViewTab === 'user') {
-        paramMap.set('userKey', userKey)
-      } else if (this.mViewTab === 'all') {
-        paramMap.set('fUserKey', userKey)
-      } else if (this.mViewTab === 'mychannel') {
-        paramMap.set('userKey', userKey)
-        paramMap.set('managerYn', true)
+      // if (this.mViewTab === 'user') {
+      //   paramMap.set('userKey', userKey)
+      // } else if (this.mViewTab === 'all') {
+      paramMap.set('fUserKey', userKey)
+      if (this.showArray === 'popular') {
+        paramMap.set('orderbyStr', 'followerCount DESC')
+      } else if (this.showArray === 'recent') {
+        paramMap.set('orderbyStr', null)
+      } else if (this.showArray === 'name') {
+        paramMap.set('orderbyStr', 'nameMtext')
       }
+      // } else if (this.mViewTab === 'mychannel') {
+      //   paramMap.set('userKey', userKey)
+      //   paramMap.set('managerYn', true)
+      // }
       if (offsetInput !== undefined) {
         paramMap.set('offsetInt', offsetInput)
       } else {
@@ -413,17 +420,17 @@ export default {
       } else {
         this.mEndListYn = false
       }
-    },
-    filterChannelList () {
-      if (this.mChannelList) {
-        this.mFilteredChannel = this.mChannelList
-        if (this.showArray === 'popular') {
-          return this.mFilteredChannel.slice().sort((a, b) => b.followerCount - a.followerCount)
-        } else if (this.showArray === 'recent') {
-          return this.mFilteredChannel
-        }
-      }
     }
+    // filterChannelList () {
+    //   if (this.mChannelList) {
+    //     this.mFilteredChannel = this.mChannelList
+    //     if (this.showArray === 'popular') {
+    //       return this.mFilteredChannel.slice().sort((a, b) => b.followerCount - a.followerCount)
+    //     } else if (this.showArray === 'recent') {
+    //       return this.mFilteredChannel
+    //     }
+    //   }
+    // }
   },
   computed: {
     filteredData () {
@@ -476,6 +483,11 @@ export default {
     }
   },
   watch: {
+    showArray: {
+      handler (value, old) {
+        this.refreshList()
+      }
+    },
     GE_CREATE_CHAN_LIST: {
       handler (value, old) {
         if (!value || value.length === 0) return

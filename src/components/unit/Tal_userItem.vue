@@ -6,7 +6,7 @@
             <span class="fontBold commonColor">{{uItem === '이메일'? $t('COMMON_NAME_EMAIL'):$t('COMMON_NAME_PHONE')}}</span>
         </div>
         <div class="userInfoBox">
-            <span v-if="this.uItem === '이메일'" class="fl">{{this.GE_USER.userEmail}}</span>
+            <span v-if="this.uItem === '이메일'" class="fl textOverdot">{{this.GE_USER.userEmail}}</span>
             <span v-else-if="this.uItem === '휴대폰 번호'" class="fl">{{this.$setPhone(this.GE_USER.phoneEnc)}}</span>
             <!-- <gBtnSmall v-if="this.uItem === '이메일'" btnThema="light" style="float: right;" :btnTitle="$t('COMM_BTN_EDIT')" v-on:click="openChangePop(uItem)" /> -->
             <!-- <gBtnSmall v-if="this.uItem === '휴대폰 번호'" btnThema="light" style="float: right;" btnTitle="실명인증" v-on:click="openChangePop(uItem)" /> -->
@@ -58,5 +58,8 @@ export default {
 }
 .userInfoBox {
   height: 40%;
+}
+.userInfoBox > span {
+  width: 100%;
 }
 </style>

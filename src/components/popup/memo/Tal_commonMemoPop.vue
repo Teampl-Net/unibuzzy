@@ -57,7 +57,7 @@
         <!-- <div style="width: 30px; height: 100%;"> -->
         <img v-if="mWatchInputData.trim() !== ''" @click="saveMemo()" src="../../../assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mleft-05">
         <img v-else @click="$showToastPop(this.$t('EMPT_MSG_WRITE_COMM2'))" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mleft-05">
-        <div v-show="attachMenuShowYn" class="attachMenuWrap">
+        <div v-if="attachMenuShowYn" class="attachMenuWrap">
           <div class="font16 commonColor addImgBtn" @click.stop="addImgFile">
             <img src="../../../assets/images/common/fileType_img.svg" alt="">
             {{ $t('EMPT_BTN_PIC') }}
@@ -103,7 +103,7 @@ export default {
       mUploadFileList: [],
       mSelectedImgList: [],
       selectFile: null,
-      // attachMenuShowYn: false,
+      attachMenuShowYn: false,
       firstEnterYn: false,
       mobileYn: this.$getMobileYn(),
       mIsDraggedYn: false
@@ -539,7 +539,7 @@ span.label.highlight {
   color:#AFAFAF;
 }
 .memoPopWrap {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   min-height: 50px;
   background: #fff;
@@ -669,6 +669,7 @@ span.label.highlight {
   font-size: 30px;
   color: #FFF;
   font-weight: bold;
+  line-height: 40px;
 }
 .memoTextTag {
   width: calc(100% - 81px);
