@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import ClipboardJS from 'clipboard'
 /* import followerList from './Tal_chanFollowerList.vue' */
 import welcomePopUp from '../channel/Tal_chanFollowInfo.vue'
 export default {
@@ -250,7 +251,6 @@ export default {
       this.$changeRecvAlimYn(param)
     },
     async copyText () {
-      // eslint-disable-next-line no-undef
       var clip = new ClipboardJS('#copyTextBody')
       var _this = this
       clip.on('success', function (e) {
