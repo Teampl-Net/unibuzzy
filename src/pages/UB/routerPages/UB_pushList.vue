@@ -359,7 +359,7 @@ export default {
               }
               idx2 = dataList.findIndex((item) => item.contentsKey === this_.allContentsList[i].contentsKey)
               if (idx2 !== -1) {
-                this.allContentsList[i] = dataList[idx2]
+                this_.allContentsList[i] = dataList[idx2]
                 returnAllList.push(dataList[idx2])
               } else {
                 returnAllList.push(this_.allContentsList[i])
@@ -503,8 +503,6 @@ export default {
         ...result.content
       ]
       this.allContentsList = this.replaceArr(newArr)
-      console.log('최초 init')
-      console.log(this.allContentsList)
       if (this.targetCKey) {
         this.canLoadYn = true
         this.loadMore(true)
@@ -528,7 +526,7 @@ export default {
         this.canLoadYn = true
         this.hideSkeleton(true)
       } else {
-        await this.initGetContentsList()
+        // await this.initGetContentsList()
         this.hideSkeleton(true)
         this.findPopShowYn = false
         if (this.readySearchList) {

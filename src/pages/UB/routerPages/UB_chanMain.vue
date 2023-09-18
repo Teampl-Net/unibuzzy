@@ -913,7 +913,7 @@ export default {
       }
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
-      // this.getMyChan(teamKey, paramMap)
+      this.getMyChan(teamKey, paramMap)
     },
     async getMyChan (teamKey, paramMap) {
       if (this.mChanInfo.initData.cTeamList && this.mChanInfo.initData.cTeamList.length > 0) {
