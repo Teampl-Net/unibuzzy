@@ -72,6 +72,10 @@ import editBookListPop from '@/components/UB/popup/UB_editBookListPop.vue'
 export default {
   data () {
     return {
+      mAppUpdatePopShwoYn: false,
+      mNetPopShowYn: false,
+      mCabKeyListStr: null,
+      mAreaInfo: {},
       // mUnknownLoginPopYn: false,
       mEnterCloudsYn: false,
       mAfterCloudYn: false,
