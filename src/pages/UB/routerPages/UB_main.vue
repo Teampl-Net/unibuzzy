@@ -99,6 +99,7 @@ export default {
   },
   data () {
     return {
+      mLoadingYn: false,
       mTownTeamKey: null,
       mBoardPopShowYn: false,
       mAppCloseYn: false,
