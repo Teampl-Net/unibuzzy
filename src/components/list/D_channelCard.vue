@@ -61,7 +61,7 @@
             />
             <!-- {{$route.path === "/" ? $changeText(chanElement.nameMtext) + " Channel " : `${$changeText(chanElement.bdAreaNameMtext)} > ${$changeText(chanElement.nameMtext )}`}} -->
             <div v-if="$route.path === '/'" class="w100P flexAlignCenter">
-              <p class="chanName">{{ $changeText(chanElement.nameMtext) }}</p>
+              <p class="chanName textOverdot">{{ $changeText(chanElement.nameMtext) }}</p>
               <img class="chanIcon" src="../../assets/images/footer/icon_channel_fillin.svg" alt="">
             </div>
             <div v-else class="dispInlineBlock">

@@ -1132,8 +1132,6 @@ export default {
 
         // 이미지를 불러오는 이유는 마운트 시점에 이미지의 크기를 못받오기에 추가함
         var imgList = await window.document.querySelectorAll('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
-        console.log('뭐지?')
-        console.log('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
         if (imgList && imgList.length > 0) {
           for (let i = 0; i < imgList.length; i++) {
             imgList[i].addEventListener('load', (event) => {
@@ -1156,9 +1154,6 @@ export default {
           }
         } else {
           var contentHeight = contents
-          console.log('와오아')
-          console.log(this.CONT_DETAIL.title)
-          console.log(contentHeight)
           // var bodyMoreText = await window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
           if (contentHeight > 300) {
             // bodyMoreText.style.display = 'block'
@@ -1822,7 +1817,7 @@ pre div[id='formEditText'] {
 }
 .contentsCardMemoArea {
   width: 100%;
-  float: left;
+  clear: both;
   cursor: pointer;
   padding: 10px 20px 0 20px;
   min-height: 20px;

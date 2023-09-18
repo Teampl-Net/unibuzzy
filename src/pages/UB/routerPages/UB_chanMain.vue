@@ -883,8 +883,8 @@ export default {
         }
         initData = result.data
         initData.team = teamDetail
+        initData.contentsList = result.data.contentsListPage
         if (!initData.cabinetKeyListStr) {
-          initData.contentsList = result.data.contentsListPage
           initData.cabinetKeyListStr = result.data.cabinetKeyListStr
         }
         this.mCabKeyListStr = initData.cabinetKeyListStr
@@ -913,7 +913,10 @@ export default {
       }
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
-      /* if (this.mChanInfo.initData.cTeamList && this.mChanInfo.initData.cTeamList.length > 0) {
+      // this.getMyChan(teamKey, paramMap)
+    },
+    async getMyChan (teamKey, paramMap) {
+      if (this.mChanInfo.initData.cTeamList && this.mChanInfo.initData.cTeamList.length > 0) {
         var result1 = await this.$getTeamList(paramMap, false)
         var followList = result1.data.content
         for (let i = 0; i < followList.length; i++) {
@@ -922,7 +925,7 @@ export default {
           }
         }
         this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
-      } */
+      }
     },
     async getTownCabinetList () {
       var param = {}

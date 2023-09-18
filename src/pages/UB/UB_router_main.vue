@@ -531,7 +531,12 @@ export default {
       // if (!teamKey && detailValue.creTeamKey) {
       //   encodedTeamKey = detailValue.creTeamKey
       // }
-      /* if (initData.cTeamList && initData.cTeamList.length > 0) {
+      this.getMyChan(initData, teamKey, paramMap)
+      this.$router.push(`/chan/${teamKey}`)
+      // this.showCloudLoading(false, 1750)
+    },
+    async getMyChan (initData, teamKey, paramMap) {
+      if (initData.cTeamList && initData.cTeamList.length > 0) {
         var result1 = await this.$getTeamList(paramMap, false)
         var followList = result1.data.content
         for (let i = 0; i < followList.length; i++) {
@@ -539,10 +544,8 @@ export default {
             followList[i].changeYn = true
           }
         }
-
-      } */
-      this.$router.push(`/chan/${teamKey}`)
-      // this.showCloudLoading(false, 1750)
+        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
+      }
     },
     async openPop (params) {
       this.mPopType = params.targetType

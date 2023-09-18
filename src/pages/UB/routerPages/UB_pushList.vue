@@ -503,6 +503,8 @@ export default {
         ...result.content
       ]
       this.allContentsList = this.replaceArr(newArr)
+      console.log('최초 init')
+      console.log(this.allContentsList)
       if (this.targetCKey) {
         this.canLoadYn = true
         this.loadMore(true)
@@ -527,6 +529,7 @@ export default {
         this.hideSkeleton(true)
       } else {
         await this.initGetContentsList()
+        this.hideSkeleton(true)
         this.findPopShowYn = false
         if (this.readySearchList) {
           this.requestSearchList(this.readySearchList)
@@ -1026,6 +1029,7 @@ export default {
         // ...this.alimContentsList,
         ...resultList.content
       ]
+      console.log('새로고침')
       this.allContentsList = this.replaceArr(newArr)
       for (let i = 0; i < this.allContentsList.length; i++) {
         cont = this.allContentsList[i]
@@ -1121,6 +1125,8 @@ export default {
               ]
               this.allContentsList = this.replaceArr(newArr)
             }
+            console.log('로드하기')
+            console.log(this.allContentsList)
             this.contentsList = this.replaceArr(newArr)
             this.$emit('numberOfElements', resultList.totalElements)
           }
@@ -1229,6 +1235,8 @@ export default {
         ...contentList
       ]
       this.allContentsList = this.replaceArr(newArr)
+      console.log('탭 변경')
+      console.log(this.allContentsList)
       for (let i = 0; i < this.allContentsList.length; i++) {
         cont = this.allContentsList[i]
         tempContentDetail = []
