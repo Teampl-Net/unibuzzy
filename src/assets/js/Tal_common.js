@@ -1,4 +1,5 @@
 import axiosCommonFunction from 'axios'
+import { Base64 } from 'js-base64'
 import routerMain from '../../pages/Tal_router_main.vue'
 import { commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
 import store from '../../store'
@@ -1234,7 +1235,6 @@ export const commonMethods = {
   },
   setBodyLength (str, completeYn) {
     if (!str) return
-    // eslint-disable-next-line no-undef
     str = Base64.decode(str)
     str.replace('contenteditable= true', '')
     str = str.replaceAll('<pre', '<div')

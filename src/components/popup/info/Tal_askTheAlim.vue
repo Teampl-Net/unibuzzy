@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import { Base64 } from 'js-base64'
 import commonConfirmPop from '../confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../../unit/formEditor/Tal_formEditor.vue'
 export default {
@@ -209,7 +210,6 @@ export default {
       } */
     },
     decodeContents (data) {
-      // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
       return changeText
     },

@@ -27,6 +27,8 @@
 </div>
 </template>
 <script>
+import { Base64 } from 'js-base64'
+
 export default {
   data () {
     return {
@@ -60,7 +62,6 @@ export default {
   },
   methods: {
     /* decodeContents (data) {
-      // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
       // eslint-disable-next-line no-
       return changeText
@@ -81,7 +82,6 @@ export default {
       this.$emit('closePushPop')
     },
     setBodyLength (str) {
-      // eslint-disable-next-line no-undef
       str = Base64.decode(str)
       // str = atob(str)
       str.replace('contenteditable= true', '')

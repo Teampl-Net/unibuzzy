@@ -191,6 +191,7 @@
 </template>
 
 <script>
+import { Base64 } from 'js-base64'
 import checkBtnArea from './writeContentUnit/D_commonCheckBtn.vue'
 import commonConfirmPop from './confirmPop/Tal_commonConfirmPop.vue'
 import formEditor from '../unit/formEditor/Tal_formEditor.vue'
@@ -520,7 +521,6 @@ export default {
       this.mToolBoxOptions = toolBoxOption
     },
     decodeContents (data) {
-      // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
       return changeText
     },
