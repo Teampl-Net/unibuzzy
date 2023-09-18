@@ -50,6 +50,8 @@
 
 </template>
 <script>
+import ClipboardJS from 'clipboard'
+
 export default {
   props: {
     chanInfo: {},
@@ -71,7 +73,6 @@ export default {
       this.$emit('applyMember', true)
     },
     async copyText () {
-      // eslint-disable-next-line no-undef
       var clip = new ClipboardJS('#copyTextBody')
       var _this = this
       clip.on('success', function (e) {
