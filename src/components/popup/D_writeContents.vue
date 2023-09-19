@@ -204,6 +204,7 @@ export default {
   },
   data () {
     return {
+      mSelectedBoard: null,
       mContentsParams: {},
       mAskSendAlimPopShowYn: false,
       mSelectMemPopShowYn: false,
@@ -569,6 +570,7 @@ export default {
         this.selectBoardCabinetKey = mCabinet.cabinetKey
         this.cabinetName = mCabinet.cabinetNameMtext
       }
+      this.mSelectedBoard = mCabinet
       // var cardList = document.querySelectorAll('.commonFormCard')
       if (mCabinet.guideFullStr) {
         this.$refs.complexEditor.addFormCard('text', this.decodeContents(mCabinet.guideFullStr))
@@ -935,6 +937,9 @@ export default {
 
         param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
         // param.bodyFullStr = innerHtml.replaceAll('formEditorTextPadding', '')
+        if (this.mSelectedBoard && this.mSelectedBoard.shareList && this.mSelectedBoard.shareList[0] && this.mSelectedBoard.shareList[0].accessKind && this.mSelectedBoard.shareList[0].accessKind === 'T') {
+          param.allRecvYn = true
+        }
         param.jobkindId = 'BOAR'
         param.creCabinetKey = this.selectBoardCabinetKey
         if (this.selectBoardYn === true) {
