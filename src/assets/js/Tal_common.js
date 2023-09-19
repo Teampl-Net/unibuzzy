@@ -270,15 +270,15 @@ export const commonMethods = {
 
     if (this.$locale && this.$locale === 'KR') {
       if (diffDate === 1) {
-        return 'yesterday' + this.$dayjs(compareDate).add(13, 'hour').format(format)
+        return 'yesterday' + this.$dayjs(compareDate).add(9, 'hour').format(format)
       } else {
-        return this.$dayjs(compareDate).add(13, 'hour').format(format)
+        return this.$dayjs(compareDate).add(9, 'hour').format(format)
       }
     } else if (this.$locale && this.$locale === 'US') {
       if (diffDate === 1) {
-        return 'yesterday ' + this.$dayjs(compareDate).add(0, 'hour').format(format)
+        return 'yesterday ' + this.$dayjs(compareDate).add(-4, 'hour').format(format)
       } else {
-        return this.$dayjs(compareDate).add(0, 'hour').format(format)
+        return this.$dayjs(compareDate).add(-4, 'hour').format(format)
       }
     }
 

@@ -937,7 +937,7 @@ export default {
 
         param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
         // param.bodyFullStr = innerHtml.replaceAll('formEditorTextPadding', '')
-        if (this.mSelectedBoard && this.mSelectedBoard.shareList && this.mSelectedBoard.shareList[0] && this.mSelectedBoard.shareList[0].accessKind && this.mSelectedBoard.shareList[0].accessKind === 'T') {
+        if (this.mSelectedBoard && this.mSelectedBoard.shareList && this.mSelectedBoard.shareList[0] && this.mSelectedBoard.shareList[0].accessKind && this.mSelectedBoard.shareList[0].accessKind === 'F') {
           param.allRecvYn = true
         }
         param.jobkindId = 'BOAR'
@@ -1002,9 +1002,8 @@ export default {
             this.$emit('successWrite', newP)
           }
         }
-        const cab = this.mBoardList[this.selectBoardIndex]
+        const cab = this.selectBoardList[this.selectBoardIndex]
         // const cab = await this.getCabinetDetail(this.selectBoardCabinetKey)
-        console.log(cab)
         if (cab && cab.shareList) {
           if (cab.shareList[0].accessKind === 'T') {
             // eslint-disable-next-line no-debugger
