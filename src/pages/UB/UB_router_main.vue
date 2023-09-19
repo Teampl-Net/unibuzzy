@@ -995,7 +995,7 @@ export default {
   width: 100%;
 }
 .footerStyle {
-  position: fixed;
+  position: fixed !important;
   bottom: 0;
   z-index: 999;
 }
