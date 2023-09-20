@@ -45,7 +45,7 @@
         <div id="pushListWrap" class="scrollHidden" ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'">
           <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
           <div class="w100P fl commonListContentBox" style="height:1px;" />
-          <template v-for="(cont, index) in GE_DISP_ALL_LIST" :key="index">
+          <template v-for="(cont, index) in GE_DISP_ALL_LIST" :key="cont.contentsKey">
             <gUBContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" @contDelete="refreshAll" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" @fileDownload="fileDownload"/>
             <myObserver v-if="index === this.GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>

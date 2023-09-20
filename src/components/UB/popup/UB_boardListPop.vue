@@ -45,8 +45,8 @@
             </div>
         </div>
         <div ref="pushListWrapWrapCompo" class="contentsListWrap">
-            <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="index" >
-                <gContentsBox  :pUnknownYn="false" ref="myContentsBox"  @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPage="goChannelMain" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
+            <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="cont.contentsKey" >
+                <gUBContentsBox  :pUnknownYn="false" ref="myContentsBox"  @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPage="goChannelMain" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
                 <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 13 ?  index === this.GE_DISP_CONTS_LIST.length - 13 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
             </template>
             <template v-if="!GE_DISP_CONTS_LIST">

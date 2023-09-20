@@ -313,8 +313,14 @@ export default {
       this_.addImgEvnt()
       // this_.showContentMore()
     })
-    await this.setContentsMoreText()
+    // const intervalHandler = setInterval(() => {
+    //   if (this.$refs['mainContRef' + this.contentsEle.contentsKey]) {
+    //     this.setContentsMoreText()
+    //     clearInterval(intervalHandler)
+    //   }
+    // }, 100)
     // this.showContentMore()
+    this.setContentsMoreText()
     await this.setPreTagInFirstTextLine()
     if (this.pNoAuthYn) {
       this.alimBigView()
@@ -1129,7 +1135,6 @@ export default {
         if (this.$refs['mainContRef' + this.contentsEle.contentsKey]) {
           var contents = this.$refs['mainContRef' + this.contentsEle.contentsKey].offsetHeight
         }
-
         // 이미지를 불러오는 이유는 마운트 시점에 이미지의 크기를 못받오기에 추가함
         var imgList = await window.document.querySelectorAll('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
         if (imgList && imgList.length > 0) {
@@ -1162,6 +1167,9 @@ export default {
             this.mContentMoreShowYn = false
           }
         }
+        console.log(this.CONT_DETAIL.title)
+        console.log(contents)
+        console.log(this.mContentMoreShowYn)
         // })
       } catch (e) {
         console.log(e)

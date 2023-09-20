@@ -140,21 +140,21 @@
             <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" style="float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 60px;">
               <div class="w100P fl chanRow" style="height:1px;" />
               <template v-if="this.mSearchContentTab === 'ALL'" >
-                <gUBContentsBox @openImgPop="openImgPop" @openPage="goChannelMain" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALL_LIST" :key="index" />
+                <gUBContentsBox @openImgPop="openImgPop" @openPage="goChannelMain" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in this.GE_DISP_ALL_LIST" :key="cont.contentsKey" />
                 <template v-if="mGetAxiosYn && GE_DISP_ALL_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
                 <gListEmpty v-else-if="this.GE_DISP_ALL_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
               </template>
               <template v-if="this.mSearchContentTab === 'ALIM'" >
-                <gUBContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_ALIM_LIST" :key="index" />
+                <gUBContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in this.GE_DISP_ALIM_LIST" :key="cont.contentsKey" />
                 <template v-if="mGetAxiosYn && GE_DISP_ALIM_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
                 <gListEmpty v-else-if="this.GE_DISP_ALIM_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
               </template>
               <template v-if="this.mSearchContentTab === 'BOAR'" >
-                <gUBContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.GE_DISP_BOAR_LIST" :key="index" />
+                <gUBContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in this.GE_DISP_BOAR_LIST" :key="cont.contentsKey" />
                 <template v-if="mGetAxiosYn &&  this.GE_DISP_BOAR_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>

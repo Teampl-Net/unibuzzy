@@ -956,7 +956,7 @@ export default {
   /* background-color: #6768a7; */
   background-color: white;
   color: #5F61BD;
-  z-index: 10000;
+  z-index: 100000;
   left: 0;
 }
 .myPageBgColor {
@@ -997,6 +997,11 @@ export default {
 .footerStyle {
   position: fixed !important;
   bottom: 0;
-  z-index: 999;
+  z-index: 999 !important;
+}
+@media (max-height: 500px) {
+  .footerStyle {
+    display: none;
+  }
 }
 </style>

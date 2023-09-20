@@ -7,7 +7,7 @@
     <searchResult class="pTop10" v-if="resultSearchKeyList.length > 0" :searchList="resultSearchKeyList" @changeSearchList="changeSearchList" />
     <div class="moreListBox">
       <div id="pushListWrap" class="pushListWrapWrap " ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'">
-        <template  v-for="(cont, index) in GE_DISP_CONT_LIST" :key="index">
+        <template  v-for="(cont, index) in GE_DISP_CONT_LIST" :key="cont.contentsKey">
           <gUBContentsBox @openImgPop="openImgPop" @openPage="goChannelMain" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" @fileDownload="fileDownload"/>
           <myObserver v-if="index === GE_DISP_CONT_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
         </template>
