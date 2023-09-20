@@ -9,7 +9,7 @@
 }
 </i18n>
 <template>
-  <div class="w100P pSide-1 boardCardWrap" :class="{BoardCardBox: $route.path === '/'}" @click="goBaordMain(boardElement)">
+  <div class="w100P pSide-1 boardCardWrap" :class="{BoardCardBox: $route.path === '/'}" @click="goBoardMain">
     <div class="boardColorBox" :style="`background-color: ${boardElement.picBgPath}`">
       <img :src="require(`@/assets/images/editChan/icon_board.svg`)" alt="board"/>
     </div>
@@ -31,7 +31,7 @@ export default {
     boardElement: {}
   },
   methods: {
-    goBaordMain (boardElement) {
+    goBoardMain () {
       var openPopParam = {}
       openPopParam.targetKey = this.boardElement.teamKey
       openPopParam.targetType = 'chanDetail'

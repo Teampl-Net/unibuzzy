@@ -36,16 +36,6 @@ export default {
     selectedYn: Boolean,
     pBestYn: Boolean,
     pGoChannelMain: Function
-  },
-  methods: {
-    goChannelMain () {
-      var openPopParam = {}
-      openPopParam = this.chanElement
-      openPopParam.value = this.chanElement
-      openPopParam.targetKey = this.chanElement.teamKey
-      openPopParam.targetType = 'chanDetail'
-      this.$emit('openPop', openPopParam)
-    }
   }
 }
 </script>

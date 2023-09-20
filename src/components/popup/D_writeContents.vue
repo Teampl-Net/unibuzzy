@@ -37,7 +37,7 @@
     "FORM_MSG_FAIL_POST": "발송하지 못했습니다.",
     "FORM_MSG_SUCCESS_SEND_ALIM": "성공적으로 발송되었습니다.",
     "FORM_MESSAGE_ASK_SEND_ALIM": "멤버들에게 알림이 발송되지 않는 게시글입니다. 멤버들을 향해 알림을 발송하시겠습니까? ",
-    "FORM_MSG_DRAG": "이곳에 파일을 드래그하세요."
+    "FORM_MSG_DRAG": "이곳에 파일을 올려 주세요."
   },
   "en": {
     "FORM_BTN_WRITE": "Write",
@@ -77,13 +77,13 @@
     "FORM_MSG_FAIL_POST": "Failed to send.",
     "FORM_MSG_SUCCESS_SEND_ALIM": "successfully",
     "FORM_MESSAGE_ASK_SEND_ALIM": "The post does not send notifications to members. Would you like to send notifications to members?",
-    "FORM_MSG_DRAG": "Drag the file here."
+    "FORM_MSG_DRAG": "Drop the file here."
   }
 }
 </i18n>
 <template>
 <!-- <div style="width: 100%; float: left;"> -->
-  <div class="whitePaper hhhhhh" @drop="onDrop" @dragleave="onDragleave" @dragenter="onDragenter" @dragover="onDragover">
+  <div class="whitePaper hhhhhh" style="cursor: default;" @drop="onDrop" @dragleave="onDragleave" @dragenter="onDragenter" @dragover="onDragover">
       <!-- 컨텐츠 작성 헤더 영역 -->
       <div class="w100P fl writeHeader">
         <div class="fl w100P writeHeaderBox">
