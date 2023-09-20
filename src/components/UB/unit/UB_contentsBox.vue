@@ -1167,9 +1167,6 @@ export default {
             this.mContentMoreShowYn = false
           }
         }
-        console.log(this.CONT_DETAIL.title)
-        console.log(contents)
-        console.log(this.mContentMoreShowYn)
         // })
       } catch (e) {
         console.log(e)

@@ -896,7 +896,10 @@ export default {
         this.paddingTop = element.clientHeight + 45
       }
     },
-    async refreshAll () {
+    async refreshAll (propIndex) {
+      if (!propIndex) {
+        this.$emit('updateContentsCount', 'minus')
+      }
       // 새로고침
       this.targetCKey = null
       this.offsetInt = 0

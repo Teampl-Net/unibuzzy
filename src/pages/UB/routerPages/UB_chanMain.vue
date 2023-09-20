@@ -103,6 +103,7 @@
         </div>
         <div ref="chanPushListArea" :style="`$`" class="fl"  style="width: 100%; min-height: calc(100% - 210px); border-top: 2px solid #eeeeee; background: rgb(220, 221, 235);">
             <pushList
+                @updateContentsCount="updateContentsCount"
                 :pCabinetKeyListStr="mCabKeyListStr"
                 :pUnknownYn="mUnknownYn"
                 @openImgPop="openImgPop"
@@ -307,6 +308,13 @@ export default {
     }, 100)
   },
   methods: {
+    updateContentsCount (type) {
+      if (type === 'minus') {
+        this.CHANNEL_DETAIL.totalContentsCount--
+      } else if (type === 'plus') {
+        this.CHANNEL_DETAIL.totalContentsCount++
+      }
+    },
     async closeWritePushPop (reloadYn) {
       this.writeContentsYn = false
     },

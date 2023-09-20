@@ -986,6 +986,8 @@ export default {
           await this.$getContentsList(newParam).then(newReslute => {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
           })
+          var detail = this.$getDetail('TEAM', this.params.targetKey)
+          detail[0].totalContentsCount++
 
           var newP = {}
           newP.targetKey = result.contents.contentsKey
