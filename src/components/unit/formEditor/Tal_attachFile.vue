@@ -33,7 +33,11 @@
       <div v-if="this.targetType !== 'memo' && this.sFileList.length > 0" :class="pOneLineYn? '' : 'mtop-05'" class="fl w100P scrollOn" :style="pOneLineYn? 'width: calc(100% - 55px); margin-top: 2px;': ''">
           <div :style="attachFileWidth" class="attachFileBox">
             <div class="CMiddleBorderColor attachFileItem" v-for="(value, index) in this.sFileList" :key="index">
-                <p class="CMiddleColor font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p>
+              <div class="w100P fileNameArea">
+                <p class="CMiddleColor font12 textOverdot">{{splitName(value.file.name)}}</p>
+                <p class="CMiddleColor font12">{{splitExt(value.file.name)}}</p>
+              </div>
+                <!-- <p class="CMiddleColor font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p> -->
                 <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" alt="">
             </div>
           </div>
@@ -83,6 +87,14 @@ export default {
     }
   },
   methods: {
+    splitName (name) {
+      const lastIndex = name.lastIndexOf('.')
+      return name.substr(0, lastIndex)
+    },
+    splitExt (name) {
+      const lastIndex = name.lastIndexOf('.')
+      return name.substr(lastIndex)
+    },
     async onDrop (file) {
       // 기본 액션을 막음 (링크 열기같은 것들)
       // event.preventDefault()
@@ -102,6 +114,12 @@ export default {
           this.selectFile = null
           this.gAttachKey += 1
           this.selectFile = files[k]
+          const index = this.sFileList.findIndex(item => {
+            return item.name === this.selectFile.name
+          })
+          if (index !== -1) {
+            return
+          }
           let fileExt = this.selectFile.name.substring(
             this.selectFile.name.lastIndexOf('.') + 1
           )
@@ -173,7 +191,7 @@ export default {
       }
       var test = document.getElementById('selectFileAttach')
       console.log(test)
-      if (this.$refs.selectFileAttach.files.length > 0) {
+      if (this.$refs.selectFileAttach && this.$refs.selectFileAttach.files.length > 0) {
         this.uploadCnt = 0
         // 0 번째 파일을 가져 온다.
         for (var k = 0; k < this.$refs.selectFileAttach.files.length; k++) {
@@ -430,8 +448,8 @@ export default {
   padding: 3px 10px;
   float: left;
   margin-left: 5px;
-  height: 30px;
-  max-width: 200px;
+  height: 25px;
+  max-width: 150px;
   padding-right: 25px;
   box-shadow: 1px 3px 3px 0px #e9e7e7;
   border-radius: 8px;
@@ -441,5 +459,15 @@ export default {
   position: absolute;
   right: 5px;
   top: 7px;
+}
+.fileNameArea {
+  display: flex;
+  align-items: center;
+}
+.fileNameArea > p:first-child {
+  max-width: calc(100% - 30px);
+}
+.fileNameArea > p:last-child {
+  width: 30px;
 }
 </style>

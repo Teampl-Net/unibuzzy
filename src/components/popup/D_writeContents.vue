@@ -36,7 +36,8 @@
     "FORM_MSG_SUCCESS_POST": "발송되었습니다.",
     "FORM_MSG_FAIL_POST": "발송하지 못했습니다.",
     "FORM_MSG_SUCCESS_SEND_ALIM": "성공적으로 발송되었습니다.",
-    "FORM_MESSAGE_ASK_SEND_ALIM": "멤버들에게 알림이 발송되지 않는 게시글입니다. 멤버들을 향해 알림을 발송하시겠습니까? "
+    "FORM_MESSAGE_ASK_SEND_ALIM": "멤버들에게 알림이 발송되지 않는 게시글입니다. 멤버들을 향해 알림을 발송하시겠습니까? ",
+    "FORM_MSG_DRAG": "이곳에 파일을 드래그하세요."
   },
   "en": {
     "FORM_BTN_WRITE": "Write",
@@ -75,13 +76,14 @@
     "FORM_MSG_SUCCESS_WRITE_POST": "Saved.",
     "FORM_MSG_FAIL_POST": "Failed to send.",
     "FORM_MSG_SUCCESS_SEND_ALIM": "successfully",
-    "FORM_MESSAGE_ASK_SEND_ALIM": "The post does not send notifications to members. Would you like to send notifications to members?"
+    "FORM_MESSAGE_ASK_SEND_ALIM": "The post does not send notifications to members. Would you like to send notifications to members?",
+    "FORM_MSG_DRAG": "Drag the file here."
   }
 }
 </i18n>
 <template>
 <!-- <div style="width: 100%; float: left;"> -->
-  <div class="whitePaper hhhhhh" :class="mIsDraggedYn? 'dragged':''" @drop="onDrop" @dragenter="onDragenter" @dragover="onDragover">
+  <div class="whitePaper hhhhhh" @drop="onDrop" @dragleave="onDragleave" @dragenter="onDragenter" @dragover="onDragover">
       <!-- 컨텐츠 작성 헤더 영역 -->
       <div class="w100P fl writeHeader">
         <div class="fl w100P writeHeaderBox">
@@ -170,7 +172,7 @@
         <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
       </div>
     </div>
-
+    <div v-if="mIsDraggedYn" class="flexJustiCenter dragBox">{{ this.$t('FORM_MSG_DRAG') }}</div>
   </div>
   <gToolBox :propTools='mToolBoxOptions' @changeTextStyle='changeFormEditorStyle' />
   <gCertiPop :pPopText="$t('FORM_MSG_ID')" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  />
@@ -244,7 +246,8 @@ export default {
       mCanWriteYn: true,
       mBoardList: [],
       isMobile: /Mobi/i.test(window.navigator.userAgent),
-      mIsDraggedYn: false
+      mIsDraggedYn: false,
+      enterTarget: null
     }
   },
   props: {
@@ -440,13 +443,18 @@ export default {
     }
   },
   methods: {
-    onDragenter () {
+    onDragenter (event) {
       // class 넣기
       this.mIsDraggedYn = true
+      this.enterTarget = event.target
     },
-    onDragleave () {
+    onDragleave (event) {
       // class 삭제
-      this.mIsDraggedYn = false
+      if (this.enterTarget === event.target) {
+        event.stopPropagation()
+        event.preventDefault()
+        this.mIsDraggedYn = false
+      }
     },
     onDragover (event) {
       // 드롭을 허용하도록 prevetDefault() 호출
@@ -1566,15 +1574,27 @@ export default {
 }
 .contentsFormBox {
   padding: 0px 1.5rem 0rem 1.5rem;
+  position: relative;
+  z-index: 1;
 }
 .formEditor {
   margin-top: 1rem !important;
   margin-bottom: 1rem !important;
+  position: relative !important;
+  z-index: 1000 !important;
 }
 #loading {
   display: block;
 }
-.dragged {
-  border: 2px dashed rgb(33, 63, 143) !important;
+.dragBox {
+  line-height: 400px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  color: #fff;
+  border-radius: 0.8rem;
+  background: rgba(0,0,0,0.3);
+  font-weight: bold;
+  font-size: 20px;
 }
 </style>

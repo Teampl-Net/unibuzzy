@@ -20,7 +20,7 @@
   <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
     <!-- <button @click="downloadPdf">다운로드</button> -->
     <!-- <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;"> -->
-  <div :class="animationYn? 'newContentsAni':''" class="contentsWrap" @dragenter="onDragenter" @dragover="onDragover" key="animationYn" v-if="this.CONT_DETAIL" :style="`padding-bottom: ${this.$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`">
+  <div :class="animationYn? 'newContentsAni':''" class="contentsWrap" @dragenter="onDragenter" @dragleave="onDragleave" @dragover="onDragover" key="animationYn" v-if="this.CONT_DETAIL" :style="`padding-bottom: ${this.$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`">
     <div v-if="propJustShowYn" :style="propPreStickerList && propPreStickerList.length > 0? 'height: calc(100% - 50px);' : 'height: calc(100%); '" class="justSticker"></div>
     <!-- :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" -->
     <div class="contentsCardHeaderArea">
@@ -300,7 +300,8 @@ export default {
       mProfilePopShowYn: false,
       mPopParam: {},
       mshowMoreYn: false,
-      mFoldYn: true
+      mFoldYn: true,
+      enterTarget: null
     }
   },
   async mounted () {
@@ -327,12 +328,25 @@ export default {
     }
   },
   methods: {
-    onDragenter () {
+    onDragenter (event) {
       // class 넣기
       const memoRef = this.$refs.gMemoRef
       if (memoRef) {
         memoRef.onDragenter()
         // this.mIsDraggedYn = true
+      }
+      this.enterTarget = event.target
+    },
+    onDragleave (event) {
+      // class 삭제
+      if (this.enterTarget === event.target) {
+        event.stopPropagation()
+        event.preventDefault()
+        const memoRef = this.$refs.gMemoRef
+        if (memoRef) {
+          memoRef.onDragleave()
+          // this.mIsDraggedYn = true
+        }
       }
     },
     closeProfilePop () {

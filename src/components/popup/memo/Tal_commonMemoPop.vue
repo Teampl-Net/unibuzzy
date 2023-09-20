@@ -26,7 +26,10 @@
       <div class="fl mtop-05 attachFileBox">
         <div @wheel="horizontalScroll" id="attachFileArea" :class="mobileYn? '':'thinScrollBar'" class="attachFileArea">
           <div class="CMiddleBorderColor attachFileItem" v-for="(value, index) in  attachTrueFileList" :key="index">
-              <p class="CMiddleColor font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p>
+              <div class="w100P fileNameArea">
+                <p class="CMiddleColor font12 textOverdot">{{splitName(value.file.name)}}</p>
+                <p class="CMiddleColor font12">{{splitExt(value.file.name)}}</p>
+              </div>
               <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" alt="">
           </div>
         </div>
@@ -57,7 +60,7 @@
         <!-- <div style="width: 30px; height: 100%;"> -->
         <img v-if="mWatchInputData.trim() !== ''" @click="saveMemo()" src="../../../assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mleft-05">
         <img v-else @click="$showToastPop(this.$t('EMPT_MSG_WRITE_COMM2'))" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mleft-05">
-        <div v-if="attachMenuShowYn" class="attachMenuWrap">
+        <div v-show="attachMenuShowYn" class="attachMenuWrap">
           <div class="font16 commonColor addImgBtn" @click.stop="addImgFile">
             <img src="../../../assets/images/common/fileType_img.svg" alt="">
             {{ $t('EMPT_BTN_PIC') }}
@@ -149,6 +152,14 @@ export default {
     }
   },
   methods: {
+    splitName (name) {
+      const lastIndex = name.lastIndexOf('.')
+      return name.substr(0, lastIndex)
+    },
+    splitExt (name) {
+      const lastIndex = name.lastIndexOf('.')
+      return name.substr(lastIndex)
+    },
     onDragenter () {
       // class 넣기
       this.mIsDraggedYn = true
@@ -708,5 +719,15 @@ span.label.highlight {
 }
 .dragged {
   border: 2px dashed rgb(33, 63, 143) !important;
+}
+.fileNameArea {
+  display: flex;
+  align-items: center;
+}
+.fileNameArea > p:first-child {
+  max-width: calc(100% - 30px);
+}
+.fileNameArea > p:last-child {
+  width: 30px;
 }
 </style>
