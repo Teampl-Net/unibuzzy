@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import moTheAlim from './Tal_moTheAlim.vue'
 import uniBuzzy from './uniBuzzy.vue'
 import router from './router'
 import Vuex from 'vuex'
@@ -26,7 +25,6 @@ import commonSharejs from './assets/js/Tal_commonShare'
 import gMainTab from './components/popup/memberInfo/memberUnit/D_commonMainTabCompo.vue'
 import './assets/js/webViewBridge'
 import gFileBox from './components/unit/D_fileBox.vue'
-import commonList from './components/list/D_commonList.vue'
 import gChannelList from './components/list/D_commonChanList.vue'
 import gInput from './components/common/UB_commonInput.vue'
 import gSearchBox from './components/unit/Tal_searchBox.vue'
@@ -45,7 +43,6 @@ import gCheckBtn from './components/popup/writeContentUnit/D_commonCheckBtn.vue'
 import gConfirmPop from './components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import myObserver from './components/Tal_ScrollObserver.vue'
 import gMemoPop from './components/popup/memo/Tal_commonMemoPop.vue'
-import gMemoList from './components/popup/memo/Tal_commonMemoList.vue'
 import imgLongClickPop from './components/popup/Tal_imgLongClickPop.vue'
 import gPreLoader from './components/unit/Tal_preloader.vue'
 import gListEmpty from './components/popup/receiver/receiverUnit/D_commonListEmpty.vue'
@@ -62,71 +59,34 @@ import i18n from './assets/i18n'
 // eslint-disable-next-line camelcase
 
 let app = {}
-let type = ''
-type = 'UB'
-// type = 'D'
-if (type === 'D') {
-  const importsD = Promise.all([
-    import('./components/popup/common/Tal_gPopupWrap.vue'),
-    import('./components/layout/Tal_gMainHeader.vue'),
-    import('./components/layout/Tal_gPopHeader.vue'),
-    import('./components/layout/Tal_gFooter.vue'),
-    import('./components/unit/Tal_stepProgressBar.vue'),
-    import('./components/common/D_commonSticker.vue'),
-    import('./components/popup/sticker/D_myStickerListPop.vue'),
-    import('./components/common/D_commonStickerLine.vue'),
-    import('./components/popup/confirmPop/Tal_smallCommonConfirmPop.vue'),
-    import('./components/popup/common/Tal_commonSelectBoardListPop.vue'),
-    import('./components/popup/memberInfo/memberUnit/D_commonSmallInput.vue'),
-    import('./components/popup/confirmPop/D_commonCertiPop.vue')
-  ])
-
-  app = createApp(moTheAlim).use(router).use(store)
-  importsD.then(([fullModal, TalHeader, popHeader, TalFooter, gStepProgress, gSticker, gSelectStickerPop, gStickerLine, smallPop, gSelectBoardPop, gInputSmallPop, gCertiPop]) => {
-    app.component('fullModal', fullModal.default)
-    app.component('TalHeader', TalHeader.default)
-    app.component('popHeader', popHeader.default)
-    app.component('TalFooter', TalFooter.default)
-    app.component('gStepProgress', gStepProgress.default)
-    app.component('gSticker', gSticker.default)
-    app.component('gSelectStickerPop', gSelectStickerPop.default)
-    app.component('gStickerLine', gStickerLine.default)
-    app.component('smallPop', smallPop.default)
-    app.component('gSelectBoardPop', gSelectBoardPop.default)
-    app.component('gInputPop', gInputSmallPop.default)
-    app.component('gCertiPop', gCertiPop.default)
-  })
-} else if (type === 'UB') {
-  const importsUB = Promise.all([
-    import('./components/UB/layout/UB_gMainHeader.vue'),
-    import('./components/UB/popup/UB_favListPop.vue'),
-    import('./components/UB/layout/UB_gPopHeader.vue'),
-    import('./components/UB/popup/common/UB_gPopupWrap.vue'),
-    import('./components/UB/unit/UB_commonSelectFilter.vue'),
-    import('./components/pageComponents/main/D_notiHistoryList.vue'),
-    import('./components/popup/confirmPop/Tal_smallCommonConfirmPop.vue'),
-    import('./components/UB/layout/UB_gFooter.vue'),
-    import('./components/popup/common/Tal_commonSelectBoardListPop.vue'),
-    import('./components/UB/layout/UB_gCloudLoading.vue')
-  ])
-  app = createApp(uniBuzzy).use(router).use(store)
-  importsUB.then(([gUBHeader, gFavList, popHeader, gPopupWrap, gSelectFilter, gLogList, smallPop, gFooter, gSelectBoardPop, gCloudLoading]) => {
-    app.component('gUBHeader', gUBHeader.default)
-    app.component('gFavList', gFavList.default)
-    app.component('popHeader', popHeader.default)
-    app.component('gPopupWrap', gPopupWrap.default)
-    app.component('gSelectFilter', gSelectFilter.default)
-    app.component('gSelectBoardPop', gSelectBoardPop.default)
-    app.component('smallPop', smallPop.default)
-    app.component('gLogList', gLogList.default)
-    app.component('gFooter', gFooter.default)
-    app.component('gCloudLoading', gCloudLoading.default)
-  })
-  // const gNProfileImg = require('./components/common/N_commonProfile.vue')
-  // const gNCloudLoading = require('./components/layout/N_cloudLoading.vue')
-  // app.component('gNProfileImg', gNProfileImg)
-  // app.component('gNCloudLoading', gNCloudLoading)
-}
+const importsUB = Promise.all([
+  import('./components/UB/layout/UB_gMainHeader.vue'),
+  import('./components/UB/popup/UB_favListPop.vue'),
+  import('./components/UB/layout/UB_gPopHeader.vue'),
+  import('./components/UB/popup/common/UB_gPopupWrap.vue'),
+  import('./components/UB/unit/UB_commonSelectFilter.vue'),
+  import('./components/pageComponents/main/D_notiHistoryList.vue'),
+  import('./components/popup/confirmPop/Tal_smallCommonConfirmPop.vue'),
+  import('./components/UB/layout/UB_gFooter.vue'),
+  import('./components/popup/common/Tal_commonSelectBoardListPop.vue'),
+  import('./components/UB/layout/UB_gCloudLoading.vue')
+])
+app = createApp(uniBuzzy).use(router).use(store)
+importsUB.then(([gUBHeader, gFavList, popHeader, gPopupWrap, gSelectFilter, gLogList, smallPop, gFooter, gSelectBoardPop, gCloudLoading]) => {
+  app.component('gUBHeader', gUBHeader.default)
+  app.component('gFavList', gFavList.default)
+  app.component('popHeader', popHeader.default)
+  app.component('gPopupWrap', gPopupWrap.default)
+  app.component('gSelectFilter', gSelectFilter.default)
+  app.component('gSelectBoardPop', gSelectBoardPop.default)
+  app.component('smallPop', smallPop.default)
+  app.component('gLogList', gLogList.default)
+  app.component('gFooter', gFooter.default)
+  app.component('gCloudLoading', gCloudLoading.default)
+})
+// const gNProfileImg = require('./components/common/N_commonProfile.vue')
+// const gNCloudLoading = require('./components/layout/N_cloudLoading.vue')
+// app.component('gNCloudLoading', gNCloudLoading)
 
 // app.use(VueEasyLightbox)
 app.component('gContentsBox', gContentsBox)
@@ -141,7 +101,6 @@ app.component(VueCropper)
 app.component('gMainTab', gMainTab)
 app.component('gChannelList', gChannelList)
 app.component('gImgPop', gImgPop)
-app.component('commonList', commonList)
 app.component('gFileBox', gFileBox)
 app.component('gWhiteSelect', gWhiteSelect)
 app.component('gAxiosLoading', gAxiosLoading)
@@ -150,7 +109,6 @@ app.component('gCheckBtn', gCheckBtn)
 app.component('gConfirmPop', gConfirmPop)
 app.component('gSvg', gSvg)
 app.component('gPreLoader', gPreLoader)
-app.component('gMemoList', gMemoList)
 app.component('myObserver', myObserver)
 app.component('gLoadingS', gLoadingS)
 app.component('gMemoPop', gMemoPop)

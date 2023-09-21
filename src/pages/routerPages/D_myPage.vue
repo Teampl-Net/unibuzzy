@@ -30,25 +30,14 @@
       </div>
       <div class="h100P font20 grayBlack goFileBtn">></div>
     </div>
-    <top5Alim v-if="$appType !== 'UB'" class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPop" ref="topAlim" />
-    <top5Channel v-if="$appType !== 'UB'" class="mainContentsBoxArea top5Chan" :propChanList="this.mMainChanList" @openPop="openPop" ref="topChan" />
-    <myContents class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPage" v-else />
-
-    <div v-if="false" class="commonBlack w100P h100P fl">
-      <myActList @closeLoading="mLoadingYn = false" ref="commonActList" :viewTab="myPageTabType" @openContentsDetailPop="openContentsDetailPop" @openPop="openPop" style="border-radius: 0.8rem;" @goMyChanList="goMyChanList" />
-      <logList v-if="myPageTabType === 'ml'" />
-    </div>
+    <myContents class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPage"/>
   </div>
 <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
 </template>
 <script>
-import top5Channel from '../../components/pageComponents/main/D_top5ChanList.vue'
-import top5Alim from '../../components/pageComponents/main/D_top5ContentsList.vue'
 import myContents from '../../components/UB/myPage/UB_myContents.vue'
 
 import loadingCompo from '../../components/layout/Tal_loading.vue'
-import myActList from '../../components/pageComponents/myPage/D_myActList.vue'
-import logList from '../../pages/routerPages/Tal_logList.vue'
 export default {
   data () {
     return {
@@ -68,10 +57,6 @@ export default {
     propParams: {}
   },
   components: {
-    top5Channel,
-    top5Alim,
-    myActList,
-    logList,
     loadingCompo,
     myContents
   },

@@ -58,10 +58,6 @@
         </div> -->
       </div>
     </transition>
-      <div v-if="pPartnerLoginYn" class="fl partnerWrap">
-        <img src="../../../assets/images/common//DAlimMainQrCode.jpg">
-        <p class="font16 fontBold textLeft mleft-1 fl">더알림 앱을 휴대폰에 설치하면<br>편하게 실시간으로 알림을 받을 수 있습니다!</p>
-      </div>
       <!-- <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
       <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
         더알림계정으로 로그인
@@ -70,7 +66,6 @@
 </template>
 
 <script>
-// import naver from '../Tal_naverCompo.vue'
 import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import AuthService from '../../../assets/js/login/Tal.authService'
 import { firebaseInitialize } from '../../../assets/js/login/UB.firebase'

@@ -38,7 +38,7 @@
         </div>
         <div class="font20 fontBold mtop-1" style="width:100%; display: flex; justify-content: center; float:left; transform: translate(10px);" v-show="!changeYn" >
           <span class="fl">{{this.$changeText(this.GE_USER.userDispMtext)}}</span>
-          <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
+          <img src="../../assets/images/contents/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
         </div>
 
         <div class="fl" style=" width:100%; position: relative;" v-show="changeYn">

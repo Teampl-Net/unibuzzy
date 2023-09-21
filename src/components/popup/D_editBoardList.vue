@@ -20,7 +20,7 @@
               </div>
 
               <div class="fl " style="width:100px; height: 100%;position:absolute; top:0; right: 0; display: flex;flex-direction: row; justify-content: space-around; align-items: center;">
-                <img src="../../assets/images/push/noticebox_edit.png" style="width: 20px; margin: 0 10px;" class="fr" @click="openModiBoardPop(data)" >
+                <img src="../../assets/images/contents/noticebox_edit.png" style="width: 20px; margin: 0 10px;" class="fr" @click="openModiBoardPop(data)" >
                 <img src="../../assets/images/formEditor/trashIcon_gray.svg" style="width: 20px; margin: 0 10px;" class="fr" @click="checkDelete(data, index)" >
               </div>
 

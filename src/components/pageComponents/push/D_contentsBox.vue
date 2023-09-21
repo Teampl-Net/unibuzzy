@@ -31,11 +31,11 @@
                       </template>
                       <template v-else>
                           <p @click="goContentsDetail()" class="cursorDragText textLeft textOverdot commonBlack fontBold font16" :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''"  style="width: calc(100% - 35px);">
-                              <img v-if="CONT_DETAIL.jobkindId === 'ALIM'" src="../../../assets/images/push/contTitle_alim.svg" class="cursorNotDrag" style="width: 20px; margin-top: 2px; float: left; margin-right: 5px;" alt="">
-                              <img v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" src="../../../assets/images/push/contTitle_board.svg" class="cursorNotDrag" style="width: 20px; margin-top: 2px;  float: left; margin-right: 5px;" alt="">
+                              <img v-if="CONT_DETAIL.jobkindId === 'ALIM'" src="../../../assets/images/contents/contTitle_alim.svg" class="cursorNotDrag" style="width: 20px; margin-top: 2px; float: left; margin-right: 5px;" alt="">
+                              <img v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" src="../../../assets/images/contents/contTitle_board.svg" class="cursorNotDrag" style="width: 20px; margin-top: 2px;  float: left; margin-right: 5px;" alt="">
                               {{CONT_DETAIL.title}}
                           </p>
-                          <img v-if="!pNoAuthYn" src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 0; top: 0;" alt="" @click="contentMenuClick">
+                          <img v-if="!pNoAuthYn" src="../../../assets/images/contents/contents_moreBtnIcon.svg" style="position: absolute; right: 0; top: 0;" alt="" @click="contentMenuClick">
                       </template>
                   </div>
                   <div style="width: 100%; position: relative; height: 50%; min-height: 25px;">
@@ -65,7 +65,7 @@
                               {{ this.$t('COMMON_TAB_ALL') }}
                           </template>
                           <template v-else-if="CONT_DETAIL.rUserCount !== -1">
-                              <img src="../../../assets/images/push/userIcon.svg" class="img-w13 mright-01 fl" alt="">
+                              <img src="../../../assets/images/contents/userIcon.svg" class="img-w13 mright-01 fl" alt="">
                               <p class="font12 fl mleft-01 CDeepColor" style="line-height: 1; margin-top: 1px;">{{CONT_DETAIL.rUserCount}}</p>
                           </template>
                       </div>
@@ -134,8 +134,8 @@
                 </div>
                 <div @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: left; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                   <div style="width: 100%; height: 20px; float: left;">
-                    <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
-                    <img v-else src="../../../assets/images/push/contentsClipIcon.svg" class="" alt="">
+                    <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="../../../assets/images/contents/contentsClipIcon.svg" class="" alt="">
+                    <img v-else src="../../../assets/images/contents/contentsClipIcon.svg" class="" alt="">
                 </div>
                 <p class="font12 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
               </div>
@@ -143,7 +143,7 @@
                   <div style="float: right; width: 140px; height: 100%; float: left;">
                       <div style="width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; cursor: pointer;justify-content: center; align-items: center;">
                           <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
-                              <img src="../../../assets/images/push/contentsShareIcon.svg" class=" fl" alt="공유 아이콘"
+                              <img src="../../../assets/images/contents/contentsShareIcon.svg" class=" fl" alt="공유 아이콘"
                                   data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
                                       :data-clipboard-text="CONT_DETAIL.copyTextStr">
                           </div>
@@ -151,7 +151,7 @@
                       </div>
                       <div v-if="$appType === 'D'" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : openStickerPop()" style="cursor: pointer; width: 30px; height: 35px; display: flex; float: right; margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                         <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center; align-items: center;">
-                          <img src="../../../assets/images/push/stickerIcon.svg" class="img-w20" alt="">
+                          <img src="../../../assets/images/contents/stickerIcon.svg" class="img-w20" alt="">
                         </div>
                         <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{this.$t('COMMON_NAME_LABEL')}}</p>
                       </div>
@@ -163,8 +163,8 @@
                       </div> -->
                       <div v-if="$appType === 'D'" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : subScribeContents()" style="width: 30px; height: 35px; display: flex; float: right;cursor: pointer;  margin-right: 10px;flex-direction: column; justify-content: center; align-items: center;">
                           <div style="width: 100%; height: 20px; float: left; display: flex; justify-content: center;">
-                              <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/push/contentsBellIcon_on.svg" class=" " alt="">
-                              <img v-else src="../../../assets/images/push/contentsBellIcon.svg" class="" alt="">
+                              <img v-if="this.CONT_DETAIL.subsYn === 1 || this.CONT_DETAIL.subsYn === true" src="../../../assets/images/contents/contentsBellIcon_on.svg" class=" " alt="">
+                              <img v-else src="../../../assets/images/contents/contentsBellIcon.svg" class="" alt="">
                           </div>
                           <p class="font12 fontBold fl mtop-01  w-100P userDoColor">{{this.$t('COMMON_NAME_INTEREST')}}</p>
                       </div>
@@ -205,7 +205,6 @@
 
   <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
 
-  <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="mSelectImgIndex" @closePop="this.mPreviewPopShowYn = false " v-if="mPreviewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.mClickImgList" />
   <template v-if="mContRecvPopShowYn">
     <div @click="this.$refs.recvListPop.closeXPop()" style="width: calc(100% + 1rem); height: 100%; top: 0; z-index: 10; left: -1rem; position: fixed; background: #00000026"></div>
     <recvListPop ref="recvListPop" @closeXPop="closeRecvListPop" :initData="mActorListInitDataList"/>
@@ -218,7 +217,6 @@
 import stickerListSetting from '../../popup/common/D_stickerListSetting.vue'
 import memoCompo from './D_contBoxMemo.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
-import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
 import statCodeComponent from '@/components/board/D_manageStateCode.vue'
 import statCodePop from '@/components/board/D_manageStateCodePop.vue'
 import attachFileListPop from '../main/unit/D_commonAttachFileListPop.vue'
@@ -232,7 +230,6 @@ export default {
     memoCompo,
     statCodeComponent,
     statCodePop,
-    imgPreviewPop,
     recvListPop,
     userDetailPop
   },

@@ -51,7 +51,7 @@
 
   <div class="fr queItemWrap">
     <!-- <img class="fl img-w20" src="../../../../../assets/images/board/icon_edit.svg" @click="emit('editQue')" alt=""> -->
-    <!-- <img class="fl img-w20 cursorP" style="height: 20px; margin-right: 8px;" src="../../../../../assets/images/push/noticebox_edit.png"  alt=""> -->
+    <!-- <img class="fl img-w20 cursorP" style="height: 20px; margin-right: 8px;" src="../../../../../assets/images/contents/noticebox_edit.png"  alt=""> -->
     <!-- <div style="width: 20px; margin-left: 10px; height: 18px; border: 1.5px solid #DC143C; border-radius: 100%; display: flex; justify-content: center; align-items: center;">
         <p class="fl img-w20 cursorP commonRed" style="height: 20px; margin-bottom: 12px;"  @click="modiItemDetail('deleteQue')">-</p>
     </div> -->

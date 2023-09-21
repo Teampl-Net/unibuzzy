@@ -55,7 +55,7 @@
         </div>
         <div class="font20 fontBold mtop-1 userNameBox" v-show="!changeYn" >
           <span class="fl textOverdot">{{this.$changeText(this.GE_USER.userDispMtext)}}</span>
-          <img src="@/assets/images/push/noticebox_edit.png" class="fr cursorP" @click="changeUserDispMtext()" >
+          <img src="@/assets/images/contents/noticebox_edit.png" class="fr cursorP" @click="changeUserDispMtext()" >
         </div>
 
         <div class="fl nameChangeWrap" v-show="changeYn">

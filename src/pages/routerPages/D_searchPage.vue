@@ -172,20 +172,16 @@
       <transition name="showModal">
           <findChannelList @searchList="requestSearchList" transition="showModal" v-if="mActiveSearch === 'CHAN' && mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' />
       </transition>
-      <transition name="showUp" >
-        <bottomSheets v-if="mBottomSheetOpenYn" :propSelectSearchObj='mSelectSearchObj' @closePop='mBottomSheetOpenYn = false' @bottSheetEmit='bottSheetEmit' :propBusinessItemList='mBusinessItemList' />
-      </transition>
   </template>
 
 <script>
-import bottomSheets from '../../components/pageComponents/main/unit/D_commonBottomSheets.vue'
 // import cSearchBox from '../../components/unit/D_cSearchBox.vue'
 import findContentsList from '@/components/popup/common/D_findContentsList.vue'
 import findChannelList from '@/components/popup/common/Tal_findChannelList.vue'
 import SkeletonBox from '@/components/pageComponents/push/D_contentsSkeleton'
 import searchBox from '../../components/unit/D_SearchBox.vue'
 export default {
-  components: { bottomSheets, searchBox, findContentsList, findChannelList, SkeletonBox },
+  components: { searchBox, findContentsList, findChannelList, SkeletonBox },
   data () {
     return {
       mobileYn: this.$getMobileYn(),
