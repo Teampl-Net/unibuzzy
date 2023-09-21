@@ -1,6 +1,6 @@
 <template>
     <div class="gTitleWrap" :class="this.pageType === 'manageChan' ? 'mbottomNoneIm': ''">
-      <img src="../../../assets/images/main/icon_channer.png" style="float: left; margin-top: 0.3rem;width: 1rem; margin-right: 0.5rem" alt="">
+      <img src="../../../assets/images/main/icon_channel.png" style="float: left; margin-top: 0.3rem;width: 1rem; margin-right: 0.5rem" alt="">
       <span style="line-height: 30px;">{{titleText}}</span><span style="background: #6768A7; width: 2px; margin-top: 0.45rem; height: 15px; margin-right: 0.3rem"></span><span style="line-height: 30px;"> {{this.selectedChan}}</span>
       <div v-if="this.pageType === 'writePush'" style="width: 100%; height: 4rem; float: none;">
           <gWhiteButton btnName="발송하기" v-on:click="clickE('sendPushMsg')" class="mright-05"/>

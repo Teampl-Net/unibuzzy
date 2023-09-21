@@ -22,7 +22,7 @@
       <div class="fl w100P dispContents">
         <p class="fl commonBlack creChanInput w100P font16 fontBold" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
         <p class="fl commonGray creChanInput w100P font14 " v-if="readOnlyYn && !changeYn && this.GE_USER.certiDate" >{{this.$changeText(this.mUserInfo.userDispMtext)}}</p>
-        <img v-if="readOnlyYn && !changeYn && selfYn" src="@/assets/images/push/noticebox_edit.png"  class="fr cursorP myName" @click="changeUserDispMtext()" >
+        <img v-if="readOnlyYn && !changeYn && selfYn" src="@/assets/images/contents/noticebox_edit.png"  class="fr cursorP myName" @click="changeUserDispMtext()" >
         <div v-show="changeYn" class="fl creChanInput" style="">
             <input class="fl font16 nameInput" type="text" v-model="memName" @keyup.enter="setDispName" />
             <div class="fl" style="width: 100px">

@@ -29,11 +29,11 @@
           </template>
           <template v-else>
             <p @click="goContentsDetail()" class="cursorDragText textLeft textOverdot commonBlack fontBold font14 noPerm" :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''">
-              <img v-if="CONT_DETAIL.jobkindId === 'ALIM'" src="@/assets/images/push/contTitle_alim.svg" class="cursorNotDrag jobkindImg" alt="Alim">
-              <img v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" src="@/assets/images/push/contTitle_board.svg" class="cursorNotDrag" alt="Board">
+              <img v-if="CONT_DETAIL.jobkindId === 'ALIM'" src="@/assets/images/contents/contTitle_alim.svg" class="cursorNotDrag jobkindImg" alt="Alim">
+              <img v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" src="@/assets/images/contents/contTitle_board.svg" class="cursorNotDrag" alt="Board">
               {{CONT_DETAIL.title}}
             </p>
-            <img v-if="!pNoAuthYn" class="moreBtn" src="@/assets/images/push/contents_moreBtnIcon.svg" alt="" @click="contentMenuClick">
+            <img v-if="!pNoAuthYn" class="moreBtn" src="@/assets/images/contents/contents_moreBtnIcon.svg" alt="" @click="contentMenuClick">
           </template>
         </div>
         <div class="contentsInfoBox">
@@ -48,7 +48,7 @@
               {{ this.$t('COMMON_TAB_ALL') }}
             </template>
             <template v-else-if="CONT_DETAIL.rUserCount !== -1">
-              <img src="@/assets/images/push/userIcon.svg" class="img-w13 mright-01 fl" alt="">
+              <img src="@/assets/images/contents/userIcon.svg" class="img-w13 mright-01 fl" alt="">
               <p class="font10 fl mleft-01 CDeepColor userCount">{{CONT_DETAIL.rUserCount}}</p>
             </template>
           </div>
@@ -110,15 +110,15 @@
             </div>
             <div class="userDoCont" @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0">
               <div class="userDoImgBox">
-                <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="@/assets/images/push/contentsClipIcon.svg" class="" alt="">
-                  <img v-else src="@/assets/images/push/contentsClipIcon.svg" class="w100P" alt="">
+                <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="@/assets/images/contents/contentsClipIcon.svg" class="" alt="">
+                  <img v-else src="@/assets/images/contents/contentsClipIcon.svg" class="w100P" alt="">
               </div>
               <p class="font10 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
             </div>
           </div>
           <div class="shareBox">
             <div class="shareImgBox">
-              <img src="../../../assets/images/push/contentsShareIcon.svg" class=" fl" alt="공유 아이콘"
+              <img src="../../../assets/images/contents/contentsShareIcon.svg" class=" fl" alt="공유 아이콘"
                 data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
                 :data-clipboard-text="CONT_DETAIL.copyTextStr">
             </div>

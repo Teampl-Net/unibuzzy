@@ -136,21 +136,6 @@
             v-if="mErrorPopShowYn"
             @ok="confirmOk"
         />
-        <div
-            v-if="writeBottSheetYn"
-            @click="writeBottSheetYn = false"
-            class="popBg"
-            >
-        </div>
-        <transition name="showUp">
-            <writeBottSheet
-                v-if="writeBottSheetYn === true"
-                @openPop="openWriteContentsPop"
-                @closePop="writeBottSheetYn = false"
-                :propTeamKey="CHANNEL_DETAIL.teamKey"
-                @openMember="openChannelMsgPop()"
-            />
-        </transition>
         <writeContents
             v-if="writeContentsYn === true"
             ref="chanAlimListWritePushRefs"
@@ -193,7 +178,7 @@
         <img
         v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn"
         id="writeBtn"
-        src="../../../assets/images/button/Icon_WriteAlimBtn.png"
+        src="../../../assets/images/button/Icon_WriteBoardBtn.png"
         @click="openWritePushPop"
         alt="button for write contents"
         class="img-78 img-w66 writeContentsBtn"
@@ -208,7 +193,6 @@ import writeContents from '../../../components/popup/D_writeContents.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
 // import recMemberPop from '../../../components/popup/member/D_recMemberPop.vue'
 // import boardWrite from '../../board/Tal_boardWrite.vue'
-import writeBottSheet from '../../../components/pageComponents/main/unit/D_contentsWriteBottSheet.vue'
 import followerList from '../../../components/UB/popup/UB_followerList.vue'
 import userDetailPop from '../../../components/UB/popup/UB_userDetailPop.vue'
 // import unknownLoginPop from '@/components/pageComponents/channel/D_unknownLoginPop.vue'
@@ -280,7 +264,6 @@ export default {
   },
   components: {
     pushList,
-    writeBottSheet,
     writeContents,
     followerList,
     userDetailPop

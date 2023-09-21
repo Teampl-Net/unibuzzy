@@ -49,7 +49,7 @@
       <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditChanPop" style="">
         <th class="font16 w100P padding10">
           <div class="myChanMenuImgArea editMychanRow mright-05">
-            <img class="img-w20 chanImg" src="../../../assets/images/main/icon_channer.png"/>
+            <img class="img-w20 chanImg" src="../../../assets/images/main/icon_channel.png"/>
             <!-- <img style="width:20px;" class="fl" src="../../../assets/images/main/icon_channel.png"> -->
           </div>
           <div class="fl mleft-05 mngChanRow">
