@@ -117,7 +117,7 @@
                 </div>
                 <p class='font12 fl' style="color:#aaa; " v-else >{{ $t('FORM_MSG_TARGET') }}</p>
                 <!-- 이미지 임시!!! -->
-                <!-- <img class="fr img-w17 mright-05"  src="../../assets/images/push/plusIcon.svg" /> -->
+                <!-- <img class="fr img-w17 mright-05"  src="../../assets/images/contents/plusIcon.svg" /> -->
                 <img class="fr img-w17 mright-05"  src="../../assets/images/formEditor/icon_formEditPlus.svg" />
               </div>
             </div>

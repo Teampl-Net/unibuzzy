@@ -35,7 +35,7 @@
     <div v-else-if="propMemoEle" ref="fullMemoWrap" class="fullMemoWrap" :style="propMIndex !== (propMemoLength - 1)? 'border-bottom: 1px solid #cccccc50;':''">
         <div class="parentMemoBox">
             <div class="parentMemoTop">
-                <img class="parentMemoMore" v-if="!pNoAuthYn" src="../../../assets/images/push/contents_moreBtnIcon.svg" alt="" @click="contMenuClick(propMemoEle)">
+                <img class="parentMemoMore" v-if="!pNoAuthYn" src="../../../assets/images/contents/contents_moreBtnIcon.svg" alt="" @click="contMenuClick(propMemoEle)">
                 <!-- <div :style="this.GE_USER.userKey === propMemoEle.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
                     <div :style="'background-image: url(' + propMemoEle.domainPath + propMemoEle.userProfileImg + ');'" style="height: 36px; width: 36px; border-radius: 100%;  background-repeat: no-repeat; background-position: center; background-size: cover;"></div>
                 </div> -->
@@ -64,7 +64,7 @@
                 </div>
                 <div class="cursorP parentMemoAttachFile" v-if="getAttachTrueFile(propMemoEle.attachFileList).length > 0">
                   <div class="downloadFileBtn" @click="showFileDownloadPop(propMemoEle)">
-                    <img class=" mright-05 memoAttachFileIcon" src="../../../assets/images/push/attachFileIcon.png" alt="">
+                    <img class=" mright-05 memoAttachFileIcon" src="../../../assets/images/contents/attachFileIcon.png" alt="">
                     <p v-if="getAttachTrueFile(propMemoEle.attachFileList).length === 1" class="textLeft font12 fontBold commonColor attachFileName">{{getFileName(getAttachTrueFile(propMemoEle.attachFileList)[0].fileName)}}</p>
                     <p v-if="getAttachTrueFile(propMemoEle.attachFileList).length === 1" class="textLeft font12 mright-1 fontBold commonColor">.{{getFileExt(getAttachTrueFile(propMemoEle.attachFileList)[0].fileName)}}</p>
                     <p v-else class="textLeft font12 mright-1 fontBold commonColor">{{getAttachTrueFile(propMemoEle.attachFileList).length + " " + $t('MEMO_TITLE_FILES')}}</p>
@@ -75,7 +75,7 @@
         <div class="childMemoWrap">
             <div class="childMemoItem" v-for="(cmemo, cIndex) in propMemoEle.cmemoList" :key="cIndex">
                 <div class="childUserInfo">
-                    <img src="../../../assets/images/push/contents_moreBtnIcon.svg" class="parentMemoMore" alt="" @click="contMenuClick(cmemo)">
+                    <img src="../../../assets/images/contents/contents_moreBtnIcon.svg" class="parentMemoMore" alt="" @click="contMenuClick(cmemo)">
                     <gProfileImg :selfYn="cmemo.creUserKey === this.GE_USER.userKey ? true: false" :userInfo="cmemo" class="memoUserProfile mTop-0" />
                     <div class="memoUserInfo mTop-2">
                         <p class="fl commonBlack mright-05 textLeft font14 fontBold" @click="clickMemoEvnt({ targetType: 'goUserProfile', value: cmemo })">{{this.$changeText(cmemo.userDispMtext)}}</p>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="cursorP parentMemoAttachFile" v-if="cmemo.attachFileList && cmemo.attachFileList.length > 0 && getAttachTrueFile(cmemo.attachFileList).length > 0">
                   <div class="downloadFileBtn" @click="showFileDownloadPop(cmemo)">
-                    <img class=" mright-05 memoAttachFileIcon" src="../../../assets/images/push/attachFileIcon.png" alt="">
+                    <img class=" mright-05 memoAttachFileIcon" src="../../../assets/images/contents/attachFileIcon.png" alt="">
                     <p v-if="getAttachTrueFile(cmemo.attachFileList).length === 1" class="textLeft font12 fontBold commonColor attachFileName">{{getFileName(getAttachTrueFile(propMemoEle.attachFileList)[0].fileName)}}</p>
                     <p v-if="getAttachTrueFile(cmemo.attachFileList).length === 1" class="textLeft font12 mright-1 fontBold commonColor">.{{getFileExt(getAttachTrueFile(propMemoEle.attachFileList)[0].fileName)}}</p>
                     <p v-else class="textLeft font12 mright-1 fontBold commonColor">{{getAttachTrueFile(cmemo.attachFileList).length + " " + $t('MEMO_TITLE_FILES')}}</p>

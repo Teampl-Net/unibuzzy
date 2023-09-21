@@ -760,11 +760,6 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   .gBtnSmall{
     float: left!important; margin-top: 0.7rem
   }
-  .pushDetailWrap{
-    padding-top: 50px;
-    background-image: url('../images/push/push_bg.png');
-    background-size: cover;
-  }
   .root {
       align-items: center;
       filter: drop-shadow(0 0 6px #0000002E);

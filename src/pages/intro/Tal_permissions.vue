@@ -22,8 +22,7 @@
   <div class="introBackground">
       <div class="introWhiteCard" style="min-height: 300px;">
             <div class="text-start px-4 permissionHeaderWrap">
-                <img v-if="$appType === 'D'" src="../../assets/images/intro/tal_permission_header_logo.png" class="fl mtop-03" style="height: 70%;">
-                <img v-else-if="$appType === 'UB'" src="../../assets/images/intro/login/uniB_logo.png" class="fl mtop-03" style="height: 70%;">
+                <img src="../../assets/images/intro/login/uniB_logo.png" class="fl mtop-03" style="height: 70%;">
                 <div class="ms-2 fl permissionHeaderTextWrap">
                     <p class="fl headerFont h100P">{{ $t('APP_NAME') }}</p>
                     <div class="fl ms-1 h100P headerLogoDiv" >

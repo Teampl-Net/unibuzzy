@@ -1,6 +1,6 @@
 import axiosCommonFunction from 'axios'
 import { Base64 } from 'js-base64'
-import routerMain from '../../pages/Tal_router_main.vue'
+import routerMain from '../../pages/UB/UB_router_main.vue'
 import { commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
 import store from '../../store'
 // eslint-disable-next-line no-unused-vars
