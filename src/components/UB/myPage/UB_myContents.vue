@@ -17,7 +17,7 @@
 
 <script>
 import listTitle from '@/components/unit/Tal_main_title.vue'
-import contentsList from '@/components/list/D_commonListTable.vue'
+import contentsList from '@/components/list/UB_commonListTable.vue'
 export default {
   name: 'top5PushList',
   data () {

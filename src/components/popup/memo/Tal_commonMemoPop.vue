@@ -85,7 +85,7 @@
 
 <script>
 import attachFileList from '../../../components/unit/formEditor/Tal_attachFile.vue'
-import unknownLoginPop from '../../pageComponents/channel/D_unknownLoginPop.vue'
+import unknownLoginPop from '../../pageComponents/channel/UB_unknownLoginPop.vue'
 export default {
   props: {
     mememo: {},

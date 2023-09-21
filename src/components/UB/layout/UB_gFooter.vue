@@ -92,7 +92,7 @@ export default {
   text-align: left;
   width: 100%;
   height: 60px;
-  z-index: 99999 !important;
+  z-index: 999 !important;
 }
 
 .footerRouter {

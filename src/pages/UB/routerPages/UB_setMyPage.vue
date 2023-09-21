@@ -108,7 +108,6 @@
     <gConfirmPop :confirmText='checkVersionText' class="" confirmType='two' @ok="goPlayStore" @no='checkVersionPopShowYn = false' v-if="checkVersionPopShowYn"/>
     <gConfirmPop :confirmText='reloadShowText' class="" confirmType='two' @ok="reloadOk" @no='reloadShowYn = false' v-if="reloadShowYn"/>
     <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
-    <DevNotiSettingPop :id="devPopId" v-if="devModePopShowYn" @closeXPop="backClick" />
   </div>
 </template>
 
@@ -120,7 +119,6 @@ import settingAlim from '@/components/pageComponents/myPage/Tal_SettingAlimDetai
 import userImgSelectCompo from '@/components/pageComponents/myPage/Tal_changeUserIcon.vue'
 /* import pushPop from '@/components/popup/Tal_pushDetailPopup.vue' */
 import { onMessage } from '@/assets/js/webviewInterface'
-import DevNotiSettingPop from '@/pages/routerPages/D_DevNotiSettingPop.vue'
 import { getCurrentInstance } from 'vue'
 import i18n from '../../../assets/i18n'
 export default {
@@ -130,8 +128,7 @@ export default {
     logoutPop,
     // policyPop,
     settingAlim,
-    userImgSelectCompo,
-    DevNotiSettingPop
+    userImgSelectCompo
   },
   data () {
     return {

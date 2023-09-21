@@ -68,7 +68,7 @@ import writeContents from '../../components/popup/D_writeContents.vue'
 import editMyChanMenu from '../../components/UB/popup/UB_editMyChanMenu.vue'
 import favListPop from '../../components/UB/popup/UB_favListPop.vue'
 import editBookListPop from '@/components/UB/popup/UB_editBookListPop.vue'
-// import unknownLoginPop from '../../components/pageComponents/channel/D_unknownLoginPop.vue'
+// import unknownLoginPop from '../../components/pageComponents/channel/UB_unknownLoginPop.vue'
 export default {
   data () {
     return {
