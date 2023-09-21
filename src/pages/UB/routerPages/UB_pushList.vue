@@ -78,8 +78,8 @@ import SkeletonBox from '../../../components/pageComponents/push/D_contentsSkele
 import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import findContentsList from '../../../components/popup/common/D_findContentsList.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
-import statCodeComponent from '../../../components/board/D_manageStateCodePop.vue'
-import unknownLoginPop from '@/components/pageComponents/channel/D_unknownLoginPop.vue'
+import statCodeComponent from '../../../components/board/UB_manageStateCodePop.vue'
+import unknownLoginPop from '@/components/pageComponents/channel/UB_unknownLoginPop.vue'
 export default {
   name: 'pushList',
   components: {

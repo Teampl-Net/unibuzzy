@@ -14,8 +14,8 @@ import openView from './assets/js/D_openView'
 import './registerServiceWorker'
 import gActiveBar from './components/unit/Tal_gActiveBar.vue'
 import gWhiteSelect from './components/unit/selectBox/cAd_gWhiteSelect.vue'
-import gButtonS from './components/button/Tal_gButtonS.vue'
-import gButtonL from './components/button/Tal_gButtonL.vue'
+import gButtonS from './components/button/UB_commonButtonS.vue'
+import gButtonL from './components/button/UB_commonButtonL.vue'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
 import imageCompression from 'browser-image-compression'
@@ -25,7 +25,6 @@ import commonSharejs from './assets/js/Tal_commonShare'
 import gMainTab from './components/popup/memberInfo/memberUnit/D_commonMainTabCompo.vue'
 import './assets/js/webViewBridge'
 import gFileBox from './components/unit/D_fileBox.vue'
-import gChannelList from './components/list/D_commonChanList.vue'
 import gInput from './components/common/UB_commonInput.vue'
 import gSearchBox from './components/unit/Tal_searchBox.vue'
 import gAxiosLoading from './components/D_axiosLoadingSpinner.vue'
@@ -52,8 +51,9 @@ import Iconwink from './components/Tal_winkAlimLogo.vue'
 import gToolBox from './components/popup/writeContentUnit/D_commonToolBox.vue'
 import gLoadingS from './components/Tal_smallLoading.vue'
 import gAlertPop from './components/popup/Tal_commonAlertPop.vue'
-import channelCard from './components/list/D_channelCard.vue'
-import gProfileImg from './components/common/D_commonProfile.vue'
+import channelCard from './components/list/UB_channelCard.vue'
+import gProfileImg from './components/common/UB_commonProfile.vue'
+import gBoardCard from './components/popup/board/editBoardUnit/UB_commonBoardCard.vue'
 import UBConst from '@/assets/js/UB_Const'
 import i18n from './assets/i18n'
 // eslint-disable-next-line camelcase
@@ -65,14 +65,13 @@ const importsUB = Promise.all([
   import('./components/UB/layout/UB_gPopHeader.vue'),
   import('./components/UB/popup/common/UB_gPopupWrap.vue'),
   import('./components/UB/unit/UB_commonSelectFilter.vue'),
-  import('./components/pageComponents/main/D_notiHistoryList.vue'),
   import('./components/popup/confirmPop/Tal_smallCommonConfirmPop.vue'),
   import('./components/UB/layout/UB_gFooter.vue'),
   import('./components/popup/common/Tal_commonSelectBoardListPop.vue'),
   import('./components/UB/layout/UB_gCloudLoading.vue')
 ])
 app = createApp(uniBuzzy).use(router).use(store)
-importsUB.then(([gUBHeader, gFavList, popHeader, gPopupWrap, gSelectFilter, gLogList, smallPop, gFooter, gSelectBoardPop, gCloudLoading]) => {
+importsUB.then(([gUBHeader, gFavList, popHeader, gPopupWrap, gSelectFilter, smallPop, gFooter, gSelectBoardPop, gCloudLoading]) => {
   app.component('gUBHeader', gUBHeader.default)
   app.component('gFavList', gFavList.default)
   app.component('popHeader', popHeader.default)
@@ -80,7 +79,6 @@ importsUB.then(([gUBHeader, gFavList, popHeader, gPopupWrap, gSelectFilter, gLog
   app.component('gSelectFilter', gSelectFilter.default)
   app.component('gSelectBoardPop', gSelectBoardPop.default)
   app.component('smallPop', smallPop.default)
-  app.component('gLogList', gLogList.default)
   app.component('gFooter', gFooter.default)
   app.component('gCloudLoading', gCloudLoading.default)
 })
@@ -99,7 +97,6 @@ app.component('gActiveBar', gActiveBar)
 app.component('Datepicker', Datepicker)
 app.component(VueCropper)
 app.component('gMainTab', gMainTab)
-app.component('gChannelList', gChannelList)
 app.component('gImgPop', gImgPop)
 app.component('gFileBox', gFileBox)
 app.component('gWhiteSelect', gWhiteSelect)
@@ -123,6 +120,7 @@ app.component('gListEmpty', gListEmpty)
 app.component('gChannelPop', gChannelPop)
 app.component('gToolBox', gToolBox)
 app.component('gProfileImg', gProfileImg)
+app.component('gBoardCard', gBoardCard)
 
 app.use(commonjs)
 app.use(i18n)

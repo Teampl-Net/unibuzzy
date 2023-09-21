@@ -2,7 +2,6 @@
   <div class="selectSchoolPopWrap" @click.stop="preventDefault">
     <gConfirmPop :confirmText="mConfirmPopText" confirmType="one" @no="mConfirmPopShowYn = false" v-if="mConfirmPopShowYn"/>
     <div class="transWhite selectSchoolPopBox">
-      <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
       <div class="font25 fontBold w100P selectSchoolPopHeader">
         <div class="selectSchoolPopTitle">
           <p class="textOverdot textLeft">Town List</p>
@@ -33,14 +32,13 @@
 </template>
 
 <script>
-import channelCard from '@/components/list/D_channelCard.vue'
-/* import loadingCompo from '../../components/layout/Tal_loading.vue' */
+/* import loadingCompo from '../../components/layout/UB_loading.vue' */
 
-import chanSkeleton from '@/components/pageComponents/channel/D_channelSkeleton.vue'
+import chanSkeleton from '@/components/pageComponents/channel/UB_channelSkeleton.vue'
 export default {
   name: 'user',
   components: {
-    channelCard,
+    // channelCard,
     /* loadingCompo, */
     chanSkeleton
   },

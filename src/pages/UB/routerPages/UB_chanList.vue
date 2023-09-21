@@ -14,7 +14,6 @@
       </div>
     </div>
     <div class="chanListWrap">
-      <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
       <div class="skeletonWrap" v-if="GE_DISP_TEAM_LIST.length === 0 && mEndListYn === false">
           <chanSkeleton  v-for="(value) in 10" :key="value"/>
       </div>
@@ -31,14 +30,12 @@
 </template>
 
 <script>
-import channelCard from '@/components/list/D_channelCard.vue'
-/* import loadingCompo from '../../components/layout/Tal_loading.vue' */
+/* import loadingCompo from '../../components/layout/UB_loading.vue' */
 
-import chanSkeleton from '@/components/pageComponents/channel/D_channelSkeleton.vue'
+import chanSkeleton from '@/components/pageComponents/channel/UB_channelSkeleton.vue'
 export default {
   name: 'user',
   components: {
-    channelCard,
     /* loadingCompo, */
     chanSkeleton
   },

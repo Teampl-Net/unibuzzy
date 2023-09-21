@@ -42,7 +42,7 @@
     </div>
 </template>
 <script>
-// import attachFileListPop from '../pageComponents/main/unit/D_commonAttachFileListPop.vue'
+// import attachFileListPop from '../pageComponents/main/unit/UB_commonAttachFileListPop.vue'
 // import html2pdf from 'html2pdf.js'
 import { onMessage } from '@/assets/js/webviewInterface'
 import { Base64 } from 'js-base64'

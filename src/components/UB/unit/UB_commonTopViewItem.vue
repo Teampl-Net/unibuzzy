@@ -146,8 +146,8 @@
 <script>
 import stickerListSetting from '@/components/popup/common/D_stickerListSetting.vue'
 import { onMessage } from '@/assets/js/webviewInterface'
-import statCodePop from '@/components/board/D_manageStateCodePop.vue'
-import attachFileListPop from '@/components/pageComponents/main/unit/D_commonAttachFileListPop.vue'
+import statCodePop from '@/components/board/UB_manageStateCodePop.vue'
+import attachFileListPop from '@/components/pageComponents/main/unit/UB_commonAttachFileListPop.vue'
 import recvListPop from '@/components/pageComponents/push/D_contentsRecvListPop.vue'
 import userDetailPop from '@/components/UB/popup/UB_userDetailPop.vue'
 

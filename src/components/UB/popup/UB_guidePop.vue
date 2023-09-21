@@ -2,7 +2,6 @@
   <div class="guidePopWrap" @click.stop="preventDefault">
     <gConfirmPop :confirmText="mConfirmPopText" confirmType="one" @no="mConfirmPopShowYn = false" v-if="mConfirmPopShowYn"/>
     <div class="transWhite guidePopBox">
-      <!-- <findChannelList @searchList="requestSearchList" v-if="mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' @goChannelMain='searchCloseNopenPop' /> -->
       <div class="font25 fontBold w100P guidePopHeader">
         <div class="guidePopTitle">
           <p class="textOverdot textLeft">Guide</p>

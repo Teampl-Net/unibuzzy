@@ -37,7 +37,7 @@
 <script>
 import myContents from '../../components/UB/myPage/UB_myContents.vue'
 
-import loadingCompo from '../../components/layout/Tal_loading.vue'
+import loadingCompo from '../../components/layout/UB_loading.vue'
 export default {
   data () {
     return {

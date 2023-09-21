@@ -195,7 +195,7 @@ import { onMessage } from '../../../assets/js/webviewInterface'
 // import boardWrite from '../../board/Tal_boardWrite.vue'
 import followerList from '../../../components/UB/popup/UB_followerList.vue'
 import userDetailPop from '../../../components/UB/popup/UB_userDetailPop.vue'
-// import unknownLoginPop from '@/components/pageComponents/channel/D_unknownLoginPop.vue'
+// import unknownLoginPop from '@/components/pageComponents/channel/UB_unknownLoginPop.vue'
 // import { AES, enc } from 'crypto-js'
 export default {
   data () {

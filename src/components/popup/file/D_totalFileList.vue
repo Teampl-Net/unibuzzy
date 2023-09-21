@@ -68,8 +68,8 @@
 <script>
 import findContentsList from '../../popup/common/D_findContentsList.vue'
 import serachResult from '../../unit/Tal_searchResult.vue'
-import chanRoundIcon from '../../pageComponents/main/D_chanRoundIcon.vue'
-import circleSkeleton from '../../pageComponents/main/D_mainChanCircleSkeleton.vue'
+import chanRoundIcon from '../../pageComponents/main/UB_chanRoundIcon.vue'
+import circleSkeleton from '../../pageComponents/main/UB_mainChanCircleSkeleton.vue'
 export default {
   name: 'App',
   components: {

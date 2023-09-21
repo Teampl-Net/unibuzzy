@@ -218,9 +218,9 @@
 import stickerListSetting from '../../popup/common/D_stickerListSetting.vue'
 import memoCompo from '../../pageComponents/push/D_contBoxMemo.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
-import statCodeComponent from '@/components/board/D_manageStateCode.vue'
-import statCodePop from '@/components/board/D_manageStateCodePop.vue'
-import attachFileListPop from '../../pageComponents/main/unit/D_commonAttachFileListPop.vue'
+import statCodeComponent from '@/components/board/UB_manageStateCode.vue'
+import statCodePop from '@/components/board/UB_manageStateCodePop.vue'
+import attachFileListPop from '../../pageComponents/main/unit/UB_commonAttachFileListPop.vue'
 import recvListPop from '../../pageComponents/push/D_contentsRecvListPop.vue'
 import userDetailPop from '../popup/UB_userDetailPop.vue'
 

@@ -20,7 +20,7 @@
       <draggable  ref="editableArea" @end="changePosTeamMenu" class="ghostClass dragBox" :options="{ghostClass:'sortable-ghost',animation:150}" v-model="cabinetList" ghost-class="ghost" :disabled='enabled' delay="200"  >
         <transition-group>
           <template v-for="(data, index) in cabinetList" :key='index'>
-            <boardCard :propData='data' @cardEmit='cardEmit' :compoIdx='index' :style="cabinetList.length - 1 === index && index !== 0? 'padding-bottom: 100px; border-bottom: 0;':''" />
+            <gBoardCard :propData='data' @cardEmit='cardEmit' :compoIdx='index' :style="cabinetList.length - 1 === index && index !== 0? 'padding-bottom: 100px; border-bottom: 0;':''" />
           </template>
         </transition-group>
       </draggable>
@@ -33,9 +33,8 @@
 </template>
 
 <script>
-import boardCard from '@/components/popup/board/editBoardUnit/D_commonBoardCard .vue'
 import { VueDraggableNext } from 'vue-draggable-next'
-import modiBoardPop from '@/components/popup/board/D_modiBoardPopup.vue'
+import modiBoardPop from '@/components/popup/board/UB_modiBoardPopup.vue'
 import gPopHeader from '../layout/UB_gPopHeader.vue'
 export default {
   props: {
@@ -114,7 +113,6 @@ export default {
     }
   },
   components: {
-    boardCard,
     modiBoardPop,
     draggable: VueDraggableNext,
     gPopHeader

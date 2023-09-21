@@ -123,7 +123,7 @@
 <script>
 import { onMessage } from '../../../assets/js/webviewInterface'
 import modiMemoPop from './D_modiMemoPop.vue'
-import attachFileListPop from '../main/unit/D_commonAttachFileListPop.vue'
+import attachFileListPop from '../main/unit/UB_commonAttachFileListPop.vue'
 export default {
   props: {
     propMemoLength: {},

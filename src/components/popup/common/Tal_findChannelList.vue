@@ -60,9 +60,7 @@
 </template>
 
 <script>
-import channelCard from '../../../components/list/D_channelCard.vue'
 export default {
-  components: { channelCard },
   data () {
     return {
       newestSearchKeyWordList: {},
