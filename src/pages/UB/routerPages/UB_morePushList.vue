@@ -1,5 +1,5 @@
 <template>
-  <popHeader :headerTitle="`Saved`" @closeXPop="closeXPop"/>
+  <gPopHeader :headerTitle="`Saved`" @closeXPop="closeXPop"/>
   <div class="w100P h100P moreListWrap">
     <transition name="showModal">
       <findContentsList v-if="findPopShowYn" :tpGroupCode="false" contentsListTargetType="BOAR" transition="showModal" @searchList="requestSearchList" :pClosePop="closeSearch" />
@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import findContentsList from '@/components/popup/common/D_findContentsList.vue'
-import searchResult from '@/components/unit/Tal_searchResult.vue'
+import findContentsList from '@/components/popup/common/UB_findContentsList.vue'
+import searchResult from '@/components/unit/UB_searchResult.vue'
 export default {
   components: {
     findContentsList,
@@ -93,7 +93,7 @@ export default {
       var resultList = await this.getContentsList()
       var newArr = []
       if (newArr.length > 0) {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newArr)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', newArr)
       }
       this.mContentsList = resultList.content
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -167,7 +167,7 @@ export default {
       if (resultList === '') {
         this.mContentsList = []
       } else {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         var newArr = []
         newArr = [
           ...resultList.content
@@ -235,7 +235,7 @@ export default {
       }
 
       var result = await this.$getContentsList(param, false)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', result.content)
 
       return result
     },
@@ -264,10 +264,10 @@ export default {
   },
   computed: {
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_DISP_CONT_LIST () {
       var idx1, idx2
@@ -299,7 +299,7 @@ export default {
       return contList
     },
     GE_NEW_CONT_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_NEW_CONT_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_NEW_CONT_LIST']
     }
   }
 }

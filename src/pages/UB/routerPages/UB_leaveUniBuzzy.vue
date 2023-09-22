@@ -18,7 +18,7 @@
 </i18n>
 <template>
 <div class="pagePaddingWrap leavePageWrap">
-  <popHeader :pClosePop="backClick" class="headerShadow" headerTitle="Withdrawal from an account"  />
+  <gPopHeader :pClosePop="backClick" class="headerShadow" headerTitle="Withdrawal from an account"  />
   <leaveResultPop v-if="this.resultPopShowYn" @closeXPop="closeXPop"/>
   <div class="leaveContentsWrap">
     <p class="pointTitle">{{ $t('MSG_ASK_LEAVE') }}</p>
@@ -303,7 +303,7 @@ Supplementary Provisions
 </template>
 
 <script>
-import leaveResultPop from '../../../components/popup/info/Tal_leaveTheAlimResultPop.vue'
+import leaveResultPop from '../../../components/popup/info/UB_leaveTheAlimResultPop.vue'
 export default {
   data () {
     return {
@@ -321,7 +321,7 @@ export default {
   },
   computed: {
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_LOCALE () {
       return this.$i18n.locale
@@ -355,8 +355,8 @@ export default {
     closeXPop () {
       this.resultPopShowYn = false
       // this.$emit('closeXPop')
-      // this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
-      // this.$store.commit('D_USER/MU_CLEAN_USER')
+      // this.$store.commit('UB_CHANNEL/MU_CLEAN_CHAN_LIST')
+      // this.$store.commit('UB_USER/MU_CLEAN_USER')
       // localStorage.setItem('loginYn', false)
       // localStorage.setItem('user', '')
       // localStorage.setItem('sessionUser', '')

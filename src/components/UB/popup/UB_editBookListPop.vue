@@ -74,9 +74,9 @@
         </div>
       </div>
       <div class="bookAndMemListWrap" style="" :style="mDetailOpenYn ? 'height: calc(100% - 80px);' : '' ">
-        <bookListCompo class="editBookContentListCompo" ref="bookListCompoRef" v-if="!mDetailOpenYn" :propBookList="mEditBookList" :propData="propData" :selectBookDetail="selectBookDetail" @getTeamCabList="this.getBookList" @refreshList="getBookList" @openMCabUserList='openMCabUserList' @openPop="openPop" @delAddress="delAddress" />
+        <gBookList class="editBookContentListCompo" ref="bookListCompoRef" v-if="!mDetailOpenYn" :propBookList="mEditBookList" :propData="propData" :selectBookDetail="selectBookDetail" @getTeamCabList="this.getBookList" @refreshList="getBookList" @openMCabUserList='openMCabUserList' @openPop="openPop" @delAddress="delAddress" />
         <transition name="showGroup">
-          <memberList  class="editBookContentListCompo" ref="memberListRef" v-if="mDetailOpenYn" @memberInfo="memberInfo" :pFollowerMemList="mFollowerMemList" :propMemberList="memberList" :propData="selectBookDetail"  :pSearchFilterList="this.mSearchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="this.CHANNEL_DETAIL" transition="showGroup" @openPop="openPop" @delAddress="delAddress" />
+          <gBookMemberList  class="editBookContentListCompo" ref="memberListRef" v-if="mDetailOpenYn" @memberInfo="memberInfo" :pFollowerMemList="mFollowerMemList" :propMemberList="memberList" :propData="selectBookDetail"  :pSearchFilterList="this.mSearchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="this.CHANNEL_DETAIL" transition="showGroup" @openPop="openPop" @delAddress="delAddress" />
         </transition>
         <div class="btnPlus btn1" @click="openExcelUploadPop" v-if="mDetailOpenYn && mPlusMenuShowYn" >
           <p class="font12" v-html="$t('EDIT_BOOK_BTN_EXCEL')"></p>
@@ -105,15 +105,11 @@
 </template>
 
 <script>
-import gConfirmPop from '@/components/popup/confirmPop/Tal_commonConfirmPop.vue'
-// import findContentsList from '../common/D_findContentsList.vue'
+// import findContentsList from '../common/UB_findContentsList.vue'
 import creAddressBook from './UB_creAddressBook.vue'
-import bookListCompo from '@/components/popup/receiver/receiverUnit/D_commonBookList.vue'
-import memberList from '@/components/popup/receiver/receiverUnit/D_commonBookMemberList.vue'
-import excelUploadPop from '@/components/popup/receiver/Tal_excelUpload.vue'
+import excelUploadPop from '@/components/popup/receiver/UB_excelUpload.vue'
 import onlyMemberSelectPop from './UB_onlyMemberSelectPop.vue'
 import bookMemberDetail from './UB_bookMemberDetail.vue'
-import gPopHeader from '../layout/UB_gPopHeader.vue'
 export default {
   props: {
     propData: {},
@@ -133,7 +129,7 @@ export default {
       this.openMCabUserList(this.propData.value.clickData)
     }
   },
-  components: { bookListCompo, memberList, excelUploadPop, gConfirmPop, gPopHeader, creAddressBook, onlyMemberSelectPop, bookMemberDetail },
+  components: { excelUploadPop, creAddressBook, onlyMemberSelectPop, bookMemberDetail },
   data () {
     return {
       mEditBookList: [],
@@ -179,12 +175,12 @@ export default {
     },
     async closePop () {
       if (this.mPopType === 'creAddressBook') {
-        var hStack = this.$store.getters['D_HISTORY/hStack']
+        var hStack = this.$store.getters['UB_HISTORY/hStack']
         var removePage = hStack[hStack.length - 1]
         if (this.mCreAddrId === hStack[hStack.length - 1]) {
           hStack = hStack.filter((element, index) => index < hStack.length - 1)
-          this.$store.commit('D_HISTORY/setRemovePage', removePage)
-          this.$store.commit('D_HISTORY/updateStack', hStack)
+          this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+          this.$store.commit('UB_HISTORY/updateStack', hStack)
         }
         await this.getBookList()
       } else if (this.mPopType === 'selectMemberPop') {
@@ -205,10 +201,10 @@ export default {
       cabinet.menuType = 'G'
       param.cabinet = cabinet
       this.mPropData = param
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       this.mCreAddrId = 'creAddressBook' + history.length
       history.push(this.mCreAddrId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       this.mPopType = 'creAddressBook'
     },
     confirmOk () {
@@ -379,19 +375,19 @@ export default {
       }
     },
     backClick (backYn) {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.propData.value && this.propData.value.clickData) {
         if (this.mExcelPopId === hStack[hStack.length - 1]) {
           hStack = hStack.filter((element, index) => index < hStack.length - 1)
-          this.$store.commit('D_HISTORY/setRemovePage', removePage)
-          this.$store.commit('D_HISTORY/updateStack', hStack)
+          this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+          this.$store.commit('UB_HISTORY/updateStack', hStack)
           this.mExcelUploadShowYn = false
         } else {
           this.mSearchKeyword = ''
           hStack = hStack.filter((element, index) => index < hStack.length - 1)
-          this.$store.commit('D_HISTORY/setRemovePage', removePage)
-          this.$store.commit('D_HISTORY/updateStack', hStack)
+          this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+          this.$store.commit('UB_HISTORY/updateStack', hStack)
           this.getBookList()
           this.mDetailOpenYn = false
           this.mCabinetName = ''
@@ -401,8 +397,8 @@ export default {
         if (this.mSelectPopId === hStack[hStack.length - 1]) {
           this.mSearchKeyword = ''
           hStack = hStack.filter((element, index) => index < hStack.length - 1)
-          this.$store.commit('D_HISTORY/setRemovePage', removePage)
-          this.$store.commit('D_HISTORY/updateStack', hStack)
+          this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+          this.$store.commit('UB_HISTORY/updateStack', hStack)
           // this.getBookList()
           this.mDetailOpenYn = false
           this.mCabinetName = ''
@@ -410,14 +406,14 @@ export default {
         // } else if (this.subPopId === hStack[hStack.length - 1]) {
         //   this.mSearchKeyword = ''
         //   hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        //   this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        //   this.$store.commit('D_HISTORY/updateStack', hStack)
+        //   this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+        //   this.$store.commit('UB_HISTORY/updateStack', hStack)
         //   this.mDetailOpenYn = false
         //   this.mCabinetName = ''
         } else if (this.mExcelPopId === hStack[hStack.length - 1]) {
           hStack = hStack.filter((element, index) => index < hStack.length - 1)
-          this.$store.commit('D_HISTORY/setRemovePage', removePage)
-          this.$store.commit('D_HISTORY/updateStack', hStack)
+          this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+          this.$store.commit('UB_HISTORY/updateStack', hStack)
           this.mExcelUploadShowYn = false
         } else {
           if (backYn) {
@@ -433,11 +429,11 @@ export default {
       this.mSearchKeyword = ''
       this.selectBookDetail = data
       this.setBookSearchFilter()
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       this.mSelectPopId = 'selectMemeberPopup' + history.length
       // this.mSelectPopId = this.$setParentsId(this.pPopId, this.mSelectPopId)
       history.push(this.mSelectPopId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/updateStack', history)
 
       await this.getBookMemberList()
     },
@@ -462,11 +458,11 @@ export default {
     openExcelUploadPop () {
       this.mPlusMenuShowYn = false
       if (!this.mMobileYn) {
-        var history = this.$store.getters['D_HISTORY/hStack']
+        var history = this.$store.getters['UB_HISTORY/hStack']
         this.mExcelPopId = 'excelUploadPop' + history.length
         this.mExcelPopId = this.$setParentsId(this.pPopId, this.mExcelPopId)
         history.push(this.mExcelPopId)
-        this.$store.commit('D_HISTORY/updateStack', history)
+        this.$store.commit('UB_HISTORY/updateStack', history)
 
         this.mExcelUploadShowYn = true
       } else {
@@ -506,13 +502,13 @@ export default {
       return this.$i18n.locale
     },
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     CHANNEL_DETAIL () {
       return this.$getDetail('TEAM', this.propData.teamKey)[0]

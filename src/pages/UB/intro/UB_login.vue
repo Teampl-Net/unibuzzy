@@ -25,7 +25,7 @@
         <p class="w100P fl fontBold textCenter font50">uniBuzzy</p>
       </div>
     </div>
-    <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="Are you sure to quit uniBuzzy?" />
+    <gConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="Are you sure to quit uniBuzzy?" />
     <transition name="showUp" class="duration">
       <div class="py-3 px-4 uniBLogo" v-show="showStartBtnYn">
         <img src="../../../assets/images/intro/login/uniB_logo.png" class="" >
@@ -66,12 +66,12 @@
 </template>
 
 <script>
-import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
-import AuthService from '../../../assets/js/login/Tal.authService'
+// import naver from '../Tal_naverCompo.vue'
+import AuthService from '../../../assets/js/login/UB.authService'
 import { firebaseInitialize } from '../../../assets/js/login/UB.firebase'
 import { onMessage } from '../../../assets/js/webviewInterface'
 import { saveUser } from '../../../../public/commonAssets/Tal_axiosFunction.js'
-import { setUserInfo } from '../../../assets/js/login/Tal_userSetting'
+import { setUserInfo } from '../../../assets/js/login/UB_userSetting'
 
 const authService = new AuthService(firebaseInitialize)
 export default {
@@ -101,13 +101,9 @@ export default {
     },
     pSetUserItem: Function
   },
-  components: {
-    commonConfirmPop
-    // naver
-  },
   computed: {
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     }
   },
   created () {

@@ -54,13 +54,13 @@ export default {
   },
   computed: {
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     history () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_DISP_CONTS_LIST () {
       try {
@@ -139,7 +139,7 @@ export default {
         for (let i = 0; i < contentList.length; i++) {
           contentList[i].shareItem = resultMainData.cabinet.mShareItemList
         }
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', contentList)
       }
       var goBoardMainParam = {}
       goBoardMainParam.initData = resultMainData
@@ -161,7 +161,7 @@ export default {
   created () {
     if (this.pChanInfo && this.pChanInfo.popCList) {
       this.mContsList = this.pChanInfo.popCList
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.pChanInfo.popCList)
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', this.pChanInfo.popCList)
     }
   }
 }

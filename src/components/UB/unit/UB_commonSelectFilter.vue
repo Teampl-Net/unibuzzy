@@ -35,8 +35,8 @@
     </div>
 </template>
 <script>
-import searchResult from '../../../components/unit/Tal_searchResult.vue'
-import cSearchBox from '../../../components/unit/D_cSearchBox.vue'
+import searchResult from '../../../components/unit/UB_searchResult.vue'
+import cSearchBox from '../../../components/unit/UB_cSearchBox.vue'
 export default {
   components: {
     cSearchBox,

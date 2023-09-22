@@ -85,7 +85,6 @@
     </div>
     <template v-if="!propJustShowYn && (pNoAuthYn || (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" >
       <div v-if="!pNoAuthYn && this.CONT_DETAIL.D_CONT_USER_DO " class="contentsCardUserDoArea">
-        <stickerListSetting @mContStickerList="saveStickerList" @openStickerPop="openStickerPop"  v-if="this.openStickerListYn" :openStickerListYn="this.openStickerListYn" :contDetail="this.CONT_DETAIL" :propStickerList="this.mStickerList" @openPop="openSettingStickerPop" />
           <div class="userDoBox" v-if="this.CONT_DETAIL.D_CONT_USER_DO && this.CONT_DETAIL.D_CONT_USER_DO[1]">
             <div class="userDoCont" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)">
               <div class="userDoImgBox">
@@ -144,16 +143,14 @@
   <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
 </template>
 <script>
-import stickerListSetting from '@/components/popup/common/D_stickerListSetting.vue'
 import { onMessage } from '@/assets/js/webviewInterface'
 import statCodePop from '@/components/board/UB_manageStateCodePop.vue'
 import attachFileListPop from '@/components/pageComponents/main/unit/UB_commonAttachFileListPop.vue'
-import recvListPop from '@/components/pageComponents/push/D_contentsRecvListPop.vue'
+import recvListPop from '@/components/pageComponents/push/UB_contentsRecvListPop.vue'
 import userDetailPop from '@/components/UB/popup/UB_userDetailPop.vue'
 
 export default {
   components: {
-    stickerListSetting,
     attachFileListPop,
     statCodePop,
     recvListPop,
@@ -307,7 +304,7 @@ export default {
         if (this.GE_USER.unknownYn) return
         param.creUserKey = this.GE_USER.userKey
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getStickerList',
+          url: 'https://www.unibuzzy.com/sUniB/tp.getStickerList',
           param: param
         })
         this.mStickerList = result.data
@@ -411,7 +408,7 @@ export default {
       paramMap.set('teamKey', this.contentsEle.creTeamKey)
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getContentsActorList',
+          url: 'https://www.unibuzzy.com/sUniB/tp.getContentsActorList',
           param: Object.fromEntries(paramMap)
         })
         if (result && result.data && result.data.length > 0) {
@@ -434,7 +431,7 @@ export default {
       }
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: 'https://www.unibuzzy.com/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -464,7 +461,7 @@ export default {
             }
             saveMemoObj.creTeamKey = this.CONT_DETAIL.creTeamKey
             saveMemoObj.jobkindId = this.CONT_DETAIL.jobkindId
-            await this.$store.commit('D_CHANNEL/MU_ADD_MEMO', saveMemoObj)
+            await this.$store.commit('UB_CHANNEL/MU_ADD_MEMO', saveMemoObj)
           }
         }
       } catch (e) {
@@ -499,7 +496,7 @@ export default {
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
       this.mFileDownData = detailData
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
     async settingFileList_downAtt () {
       try {
@@ -519,7 +516,7 @@ export default {
           cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
           this.mFileDownData.D_ATTACH_FILE_LIST = attachFileList
           this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS', [cont])
           return bodyImgFileList
         }
       } catch (error) {
@@ -544,7 +541,7 @@ export default {
           cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
           this.mFileDownData.D_ATTACH_FILE_LIST = attachFileList
           this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS', [cont])
           return bodyImgFileList
         }
       } catch (error) {
@@ -565,7 +562,7 @@ export default {
           cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
           this.mFileDownData.D_ATTACH_FILE_LIST = attachFileList
           this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
+          this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
         return bodyImgFileList
       }
     },
@@ -714,12 +711,12 @@ export default {
           var param = {}
           param = this.contentsEle
           var result = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.deleteContents',
+            url: 'https://www.unibuzzy.com/sUniB/tp.deleteContents',
             param: param
           })
           if (result) {
             this.$emit('contDelete', this.propContIndex)
-            // this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', [this.contentsEle])
+            // this.$store.commit('UB_CHANNEL/MU_DEL_CONT_LIST', [this.contentsEle])
             this.$showToastPop(this.$t('COMM_MSG_CANCELED_NOTI'))
           }
         } catch (e) {
@@ -790,7 +787,7 @@ export default {
         inParam.mccKey = this.contentsEle.mccKey
         inParam.jobkindId = 'ALIM'
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteMCabContents',
+          url: 'https://www.unibuzzy.com/sUniB/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.contentsEle.jobkindId === 'BOAR') {
@@ -801,7 +798,7 @@ export default {
         inParam.teamKey = this.contentsEle.creTeamKey
         inParam.deleteYn = true
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteContents',
+          url: 'https://www.unibuzzy.com/sUniB/tp.deleteContents',
           param: inParam
         })
       }
@@ -811,7 +808,7 @@ export default {
       // 반복문에 index값을 prop으로 받아 해당 함수가 리스트에 몇번째에서 발생한지 인지하고 그 인덱스를 삭제
       this.$emit('contDelete', this.propContIndex)
       // @@@ 추후에 vuex에 컨텐츠 삭제를 해야함 @@@@ @@@@ @@@@ @@@@ @@@@ #추가
-      // this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', inParam)
+      // this.$store.commit('UB_CHANNEL/MU_DEL_CONT_LIST', inParam)
     },
     moveOrCopyContent (type) {
       this.mSelectBoardType = type
@@ -932,7 +929,7 @@ export default {
     async saveActAxiosFunc (param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveClaimLog',
+          url: 'https://www.unibuzzy.com/sUniB/tp.saveClaimLog',
           param: param
         })
         if (result) {
@@ -994,7 +991,7 @@ export default {
       memo.ownUserKey = this.GE_USER.userkey
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: 'https://www.unibuzzy.com/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -1015,7 +1012,7 @@ export default {
             }
             saveMemoObj.creTeamKey = this.CONT_DETAIL.creTeamKey
             saveMemoObj.jobkindId = this.CONT_DETAIL.jobkindId
-            await this.$store.commit('D_CHANNEL/MU_ADD_MEMO', saveMemoObj)
+            await this.$store.commit('UB_CHANNEL/MU_ADD_MEMO', saveMemoObj)
           }
         }
       } catch (e) {
@@ -1211,7 +1208,7 @@ export default {
             tempDetail.subsYn = result.subsYn = 1
           }
           tempDetail.starCount = result.starCount
-          this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
+          this_.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
         })
         for (var d = changeUserDoList.length - 1; d >= 0; d--) {
           if (changeUserDoList[d].doType === act.doType) {
@@ -1224,7 +1221,7 @@ export default {
         if (act.doType === 'ST') {
           tempDetail.starCount += 1
         }
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
+        this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
         // }
       }
     },
@@ -1264,14 +1261,14 @@ export default {
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSubscribe',
+        url: 'https://www.unibuzzy.com/sUniB/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop(reqText)
       this.cDetail.subsYn = param.subsYn
       var contentsDetail = this.CONT_DETAIL
       // contentsDetail.subsYn = param.subsYn
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [contentsDetail])
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [contentsDetail])
     },
     replaceArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
@@ -1307,11 +1304,11 @@ export default {
     },
     openImgDetailAlert (img) {
       if (this.imgClickYn === false) return
-      // var history = this.$store.getters['D_HISTORY/hStack']
+      // var history = this.$store.getters['UB_HISTORY/hStack']
       // this.alertPopId = 'imgDetailAlertPop' + history.length
       // this.alertPopId = this.$setParentsId(this.pPopId, this.alertPopId)
       // history.push(this.alertPopId)
-      // this.$store.commit('D_HISTORY/updateStack', history)
+      // this.$store.commit('UB_HISTORY/updateStack', history)
       this.mImgDetailAlertShowYn = true
       this.mClickEndYn = false
     },
@@ -1344,7 +1341,7 @@ export default {
       return this.$i18n.locale
     },
     GE_STICKER_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_STICKER_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_STICKER_LIST']
     },
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', this.contentsEle.creTeamKey)
@@ -1367,7 +1364,7 @@ export default {
       var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKey)
       if (!cont) {
         cont = [this.contentsEle]
-        // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
+        // this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
       }
       if (cont && cont.length > 0) {
         const viewAuth = this.$checkUserAuth(cont[0].shareItem).V
@@ -1395,11 +1392,11 @@ export default {
       }
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
-      // return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
+      // return this.$store.getters['UB_USER/GE_USER']
     },
     GE_NEW_MEMO_LIST (state) {
-      return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_NEW_MEMO_LIST']
     }
   },
   watch: {
@@ -1444,7 +1441,7 @@ export default {
         content = this.CONT_DETAIL
         // if (this.contentsEle && (content === undefined || content === null)) content = this.contentsEle
         if (value[0].targetKey !== content.contentsKey) return
-        // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
+        // this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
         var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
         if (memoAleadyIdx !== -1) {
           content.D_MEMO_LIST[memoAleadyIdx] = value[0]
@@ -1458,7 +1455,7 @@ export default {
         this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newArr)
         // eslint-disable-next-line vue/no-mutating-props
         this.contentsEle.D_MEMO_LIST = this.replaceArr(newArr)
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
       },
       deep: true
     }

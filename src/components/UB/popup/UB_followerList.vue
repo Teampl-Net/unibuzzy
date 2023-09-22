@@ -5,17 +5,13 @@
       <img @click="pClosePop" class="cursorP closeIcon" src="@/assets/images/common/popup_close.png">
     </div>
     <div class="followerListWrap">
-      <userItem class="mTop10" @click="openProfilePop(user)" :style="index !== pManagerList.length - 1? 'border-bottom: 1px solid #999;':''" v-for="(user, index) in pManagerList" :key="user.userKey" :pUserData="user" />
+      <gUserItem class="mTop10" @click="openProfilePop(user)" :style="index !== pManagerList.length - 1? 'border-bottom: 1px solid #999;':''" v-for="(user, index) in pManagerList" :key="user.userKey" :pUserData="user" />
     </div>
   </div>
 </template>
 
 <script>
-import userItem from '../unit/UB_commonUserItem.vue'
 export default {
-  components: {
-    userItem
-  },
   props: {
     pManagerList: Array,
     pClosePop: Function,

@@ -70,7 +70,7 @@
             Pin
           </div>
           <div id="topView" class="topViewContentsWrap" @wheel="horizontalScroll">
-            <commonTopViewItem @contDelete="refreshAll" @openImgPop="openImgPop" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.CAB_DETAIL.topviewList.content" :key="index"/>
+            <gTopViewItem @contDelete="refreshAll" @openImgPop="openImgPop" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont, index) in this.CAB_DETAIL.topviewList.content" :key="index"/>
           </div>
         </div>
       </div>
@@ -137,18 +137,15 @@
 </template>
 <script>
 import { Base64 } from 'js-base64'
-// import findContentsList from '../D_findContentsList.vue'
+// import findContentsList from '../UB_findContentsList.vue'
 /* import boardList from '@/components/list/D_commonList.vue' */
-import findContentsList from '@/components/popup/common/D_findContentsList.vue'
+import findContentsList from '@/components/popup/common/UB_findContentsList.vue'
 // import boardWrite from '@/components/board/Tal_boardWrite.vue'
-import writeContents from '@/components/popup/D_writeContents.vue'
+import writeContents from '@/components/popup/UB_writeContents.vue'
 
-// import imgLongClickPop from '@/components/popup/Tal_imgLongClickPop.vue'
 import { onMessage } from '@/assets/js/webviewInterface'
 
 import pinPostPop from '../../../components/UB/popup/UB_pinPostPop.vue'
-
-import commonTopViewItem from '../../../components/UB/unit/UB_commonTopViewItem.vue'
 
 export default {
   components: {
@@ -157,7 +154,6 @@ export default {
     // boardWrite,
     writeContents,
     // imgLongClickPop,
-    commonTopViewItem,
     pinPostPop
   },
   props: {
@@ -217,7 +213,7 @@ export default {
             this_.readyFunction()
             return
           }
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.content)
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', response.content)
           var newArr = [
             ...this_.BOARD_CONT_LIST,
             ...response.content
@@ -497,7 +493,7 @@ export default {
             // cont.memoCount = newList.length
             cont.memoCount += 1
             // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+            this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [cont])
           }
         }
       } catch (e) {
@@ -541,7 +537,7 @@ export default {
       ]
       var newList = await this.replaceMemoArr(newArr)
       cont.D_MEMO_LIST = newList
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [cont])
     },
     deleteConfirm (data) {
       if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo' && data !== 'board')) {
@@ -586,11 +582,11 @@ export default {
     },
     /* 이미지 다운로드 */
     imgLongClick (param) {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       this.alertPopId = 'imgDetailAlertPop' + history.length
       this.alertPopId = this.$setParentsId(this.pPopId, this.alertPopId)
       history.push(this.alertPopId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       this.selectImgObject = param.selectObj
       this.selectImgParam = param.previewParam
       this.imgDetailAlertShowYn = true
@@ -768,7 +764,7 @@ export default {
 
         // this.currentMemoList = cont.D_MEMO_LIST
         // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [cont])
         // this.currentMemoObj = cont
         // this.memoSetCount(response.totalElements)
       }
@@ -852,25 +848,25 @@ export default {
       this.closeWriteBoardPop()
     },
     backClick () {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       if (this.writePopId === hStack[hStack.length - 1]) {
         this.closeWriteBoardPop()
       } else if (this.alertPopId === hStack[hStack.length - 1]) {
         var removePage = history[history.length - 1]
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+        this.$store.commit('UB_HISTORY/updateStack', hStack)
         this.imgDetailAlertShowYn = false
       } else {
         this.previewPopShowYn = false
       }
     },
     closeWriteBoardPop () {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       this.boardWriteYn = false
     },
     successSave () {
@@ -1012,11 +1008,11 @@ export default {
       }
       this.boardWriteData = {}
       this.boardWriteData = params
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       this.writePopId = 'writeContents' + history.length
       this.writePopId = this.$setParentsId(this.pPopId, this.writePopId)
       history.push(this.writePopId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/updateStack', history)
 
       this.boardWriteYn = true
 
@@ -1029,7 +1025,7 @@ export default {
       var index = cabinetList.findIndex((item) => item.cabinetKey === this.CAB_DETAIL.cabinetKey)
       cabinetList[index] = Detail
       tempChan.ELEMENTS.cabinetList = cabinetList
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', tempChan)
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', tempChan)
       /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     openWriteBoard () {
@@ -1061,11 +1057,11 @@ export default {
       }
       this.boardWriteData = {}
       this.boardWriteData = params
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       this.writePopId = 'writeContents' + history.length
       this.writePopId = this.$setParentsId(this.pPopId, this.writePopId)
       history.push(this.writePopId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/updateStack', history)
 
       this.boardWriteYn = true
 
@@ -1279,7 +1275,7 @@ export default {
       if (!resultList || (resultList.content && resultList.content.length === 0)) {
         this.mCabContentsList = []
       } else {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         this.mCabContentsList = this.replaceArr(resultList.content)
         if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
           this.endListYn = true
@@ -1432,7 +1428,7 @@ export default {
       var index = cabinetList.findIndex((item) => item.cabinetKey === this.CAB_DETAIL.cabinetKey)
       cabinetList[index].boardList = uniqueArr
       tempChan.ELEMENTS.cabinetList = cabinetList
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', tempChan)
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', tempChan)
       /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     async loadMore (pageSize) {
@@ -1444,7 +1440,7 @@ export default {
           resultList = {}
           resultList.content = []
         }
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
 
         // const newArr = [
         //   ...this.CAB_DETAIL.boardList,
@@ -1512,10 +1508,10 @@ export default {
       return null
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     calcBoardPaddingTop () {
       return {
@@ -1552,19 +1548,19 @@ export default {
       }
     },
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     GE_NEW_CONT_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_NEW_CONT_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_NEW_CONT_LIST']
     },
     GE_NEW_MEMO_LIST (state) {
-      return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_NEW_MEMO_LIST']
     },
     GE_DEL_CONT_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_DEL_CONT_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_DEL_CONT_LIST']
     }
   },
   watch: {
@@ -1608,7 +1604,7 @@ export default {
           content = this.mCabContentsList[index]
           var count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
           this.mCabContentsList[index].memoCount = count
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mCabContentsList[index])
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', this.mCabContentsList[index])
         }
         if (!content) return
         var memoAleadyIdx1 = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))

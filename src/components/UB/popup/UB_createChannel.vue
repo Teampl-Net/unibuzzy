@@ -120,8 +120,7 @@
 </template>
 
 <script>
-import seleciconBgPopup from '@/components/popup/creChannel/Tal_selectChaniconBgPopup.vue'
-// import gPopHeader from '../layout/UB_gPopHeader.vue'
+import seleciconBgPopup from '@/components/popup/creChannel/UB_selectChaniconBgPopup.vue'
 export default {
   created () {
     if (this.pSelectedAreaInfo) {
@@ -445,7 +444,7 @@ export default {
 
           if (this.mDeleteYn !== true) await this.$addChanList(teamKey)
           if (this.mDeleteYn === true) {
-            await this.$store.dispatch('D_CHANNEL/AC_REMOVE_CHANNEL', gParam)
+            await this.$store.dispatch('UB_CHANNEL/AC_REMOVE_CHANNEL', gParam)
           }
 
           this.mParams = params
@@ -473,7 +472,7 @@ export default {
       temp.teamKeyWord = data.teamKeyWord
       temp.creUserName = data.creUserName
       temp.deleteYn = data.deleteYn
-      this.$store.dispatch('D_CHANNEL/AC_ADD_UPDATE_CHAN_LIST', temp)
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_UPDATE_CHAN_LIST', temp)
       this.pClosePop()
     },
     async newChannelInPool (newCreTeamKey) {
@@ -484,8 +483,8 @@ export default {
       var resultList = await this.$getTeamList(paramMap)
       var response = resultList.data.content[0]
       response.detailPageYn = true
-      // await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
-      await this.$store.dispatch('D_CHANNEL/AC_CREATE_CHANNEL', response)
+      // await this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [response])
+      await this.$store.dispatch('UB_CHANNEL/AC_CREATE_CHANNEL', response)
     }
   },
   watch: {
@@ -504,7 +503,7 @@ export default {
       return this.$i18n.locale
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     getChanBoxSize () {
       return {

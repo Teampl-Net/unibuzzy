@@ -234,7 +234,7 @@ export default {
       this.CHANNEL_DETAIL.memberTypeKey = this.selectMemberObj.memberTypeKey
       this.CHANNEL_DETAIL.userKey = this.GE_USER.userKey
       this.CHANNEL_DETAIL.teamKey = this.chanElement.teamKey
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
       await this.$addChanList(this.chanElement.teamKey)
     },
     stopFollowing () {
@@ -258,7 +258,7 @@ export default {
   },
   computed: {
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     CHANNEL_DETAIL () {
       if (!this.chanElement && !this.mDirectTeamKey) return {}

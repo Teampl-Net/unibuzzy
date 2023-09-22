@@ -63,9 +63,9 @@
 </template>
 
 <script>
-import searchResult from '@/components/unit/Tal_searchResult.vue'
-import findContentsList from '@/components/popup/common/D_findContentsList.vue'
-import SkeletonBox from '@/components/pageComponents/push/D_contentsSkeleton'
+import searchResult from '@/components/unit/UB_searchResult.vue'
+import findContentsList from '@/components/popup/common/UB_findContentsList.vue'
+import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton'
 export default {
   components: {
     findContentsList,
@@ -99,9 +99,9 @@ export default {
     }
   },
   created () {
-    var history = this.$store.getters['D_HISTORY/hStack']
+    var history = this.$store.getters['UB_HISTORY/hStack']
     history.push(this.popId)
-    this.$store.commit('D_HISTORY/updateStack', history)
+    this.$store.commit('UB_HISTORY/updateStack', history)
     var this_ = this
     this.getTownCabinetList().then((res) => {
       this.getMyContentsList(null, null, true).then((result) => {
@@ -125,7 +125,7 @@ export default {
         // this.CHANNEL_DETAIL.followerKey = null
         // this.CHANNEL_DETAIL.userTeamInfo = null
         // this.CHANNEL_DETAIL.followerCount -= 1
-        // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+        // this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
 
         this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
 
@@ -190,7 +190,7 @@ export default {
         // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
         // this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
         // this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
-        // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+        // this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
         // await this.$addChanList(this.mChanInfo.teamKey)
         cont.followerKey = true
       } else {
@@ -426,7 +426,7 @@ export default {
       /* var cont
       var tempContentDetail
       var contentDetail */
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       // this.endListSetFunc(resultList)
       if (!this.mContsList) this.mContsList = []
       if (this.mContsList.length > 0) {
@@ -529,12 +529,12 @@ export default {
       return uniqueArr
     },
     closeXPop () {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.popId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+        this.$store.commit('UB_HISTORY/updateStack', hStack)
         if (this.pClosePop) {
           this.pClosePop()
         }
@@ -545,16 +545,16 @@ export default {
   },
   computed: {
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_DISP_CONTS_LIST () {
       try {

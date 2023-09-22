@@ -1,9 +1,12 @@
-import { initializeApp } from 'firebase/app'
-import { getMessaging } from 'firebase/messaging'
+/* eslint-disable no-unused-vars */
 
+/* eslint-disable no-undef */
+// eslint-disable-next-line no-unused-vars
+import { initializeApp } from 'firebase/app'
 // eslint-disable-next-line camelcase
 import { methods } from '../../../../public/commonAssets/Tal_axiosFunction'
 import store from '../../../store'
+import { functions } from '../D_vuexFunction'
 // eslint-disable-next-line camelcase
 const firebaseConfig = {
   apiKey: 'AIzaSyBXkAC70q-Y226eQICl5h9Txu55moSSAwQ',
@@ -14,16 +17,18 @@ const firebaseConfig = {
   appId: '1:947851330767:web:de8bc42cf920be3ae563ba'
 }
 
-export const firebaseInitialize = initializeApp(firebaseConfig)
-const messaging = getMessaging(firebaseInitialize)
+!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
 
+export const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
+console.log(firebaseApp)
 var isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent)
 var appYn = localStorage.getItem('nativeYn')
 // isMobile = /Mobi/i.test(window.navigator.userAgent)
 if (!isMobile && (appYn === 'false' || appYn === false)) {
+  const messaging = firebase.messaging()
   // messaging.usePublicVapidKey('BD3_tmx3J9zVyU3-Bfbxe5sJ0HZVgECvcs1i4A9gnCbv_ZHRn_nX41BCT4uGY9EVwewwzG6XblQrTLa49dRYNYg')
   // token값 알아내기
-  Notification.requestPermission()
+  messaging.requestPermission()
     .then(function () {
       console.log('Have permission')
       return messaging.getToken()
@@ -32,7 +37,7 @@ if (!isMobile && (appYn === 'false' || appYn === false)) {
       localStorage.setItem('fcmKey', token)
       // eslint-disable-next-line no-debugger
       debugger
-      var user = store.getters['D_USER/GE_USER']
+      var user = store.getters['UB_USER/GE_USER']
       if (user && user.fcmKey) {
         if (user.fcmKey) {
           if (token === user.fcmKey) {
@@ -40,7 +45,7 @@ if (!isMobile && (appYn === 'false' || appYn === false)) {
           }
         }
         user.fcmKey = token
-        store.dispatch('D_USER/AC_USER', user)
+        store.dispatch('UB_USER/AC_USER', user)
         methods.saveFcmToken()
       }
       console.log('token: ' + token)
@@ -48,7 +53,7 @@ if (!isMobile && (appYn === 'false' || appYn === false)) {
     .catch(function (arr) {
       console.log('Error Occured')
     })
-    // essaging.onMessage(function (payload) {
+  messaging.onMessage(function (payload) {
     /* console.log('onMessage: ', payload)
     var message = payload.data
     functions.recvNotiFromBridge(message, false)
@@ -80,7 +85,7 @@ if (!isMobile && (appYn === 'false' || appYn === false)) {
       // image: icon
       }
     } */
-  /* var title = payload.data.title
+    /* var title = payload.data.title
     var options = {
       body: payload.data.body,
       data: payload.data,
@@ -101,5 +106,5 @@ if (!isMobile && (appYn === 'false' || appYn === false)) {
       console.log(registration)
     }) */
 
-  //  })
+  })
 }

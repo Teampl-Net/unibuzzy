@@ -28,11 +28,7 @@
 </template>
 
 <script>
-import gPopHeader from '../layout/UB_gPopHeader.vue'
 export default {
-  components: {
-    gPopHeader
-  },
   props: {
     propData: {},
     pClosePop: Function

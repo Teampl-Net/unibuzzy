@@ -87,13 +87,13 @@ export default {
   },
   computed: {
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     history () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     }
   }
 }

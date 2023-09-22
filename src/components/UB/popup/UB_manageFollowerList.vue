@@ -28,9 +28,6 @@
 </i18n>
 <template>
 <div class="w100P h100P mngFollowerListWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 90)+ 'px'">
-    <transition name="show_left">
-      <editMemberTypePop v-if="mPopType === 'editMemberTypePop'" :propData="mPropData" style="padding-top: 0;" :pClosePop="closePop" />
-    </transition>
     <gPopHeader :headerTitle="$t('FOLLOW_BTN_MANA_MEM')" :pClosePop="pClosePop" />
     <!-- <div style="width: 100%; float: left; height: 40px;">
         <p class="font16 fontBold fl mright-05 grayBlack">필터: </p>
@@ -60,7 +57,7 @@
       </div>
     </div>
     <div class="w100P memberListContentsBox">
-      <commonMemberList :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
+      <followerItem :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
     </div>
     <gConfirmPop class="confirmPop" v-if="errorPopYn" :confirmText="errorText" confirmType='timeout' @no="errorPopYn = false"/>
     <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
@@ -71,9 +68,6 @@
                 <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">{{ $t('FOLLOW_BTN_MANA_MEM') }}</p>
                 <img @click="closeRecMemberPop" src="../../../assets/images/common/popup_close.png" alt="">
             </div>
-            <div class="receptContentsBox">
-                <receptMemberList @okMember="okMember" :managingList='this.reqMemList' @openPop='openPop'  @match='matchInfo' @memberInfo='memberInfo'/>
-            </div>
         </div>
     </transition>
     <gConfirmPop @no="timerPopShowYn = false" :confirmText="$t('FOLLOW_MSG_SUCCESS')" confirmType='timeout' v-if="timerPopShowYn" />
@@ -82,11 +76,7 @@
 </template>
 <script>
 /* eslint-disable */
-// import cMainTab from '../memberInfo/memberUnit/D_commonMainTabCompo.vue'
-import commonMemberList from '@/components/popup/member/D_commonFollowerList.vue'
-import receptMemberList from '@/components/popup/member/D_receptMemberList.vue'
-import gPopHeader from '../layout/UB_gPopHeader.vue'
-import editMemberTypePop from './UB_editMemberTypePop.vue'
+import followerItem from '@/components/popup/member/UB_followerListItem.vue'
 export default {
   props: {
     propData: {},
@@ -225,7 +215,7 @@ export default {
       param.targetType = 'memberForm'
       param.popHeaderText = '공개신청서 만들기'
       // param.teamKey = this.propData.currentTeamKey
-      param.teamKey = this.$store.getters('D_CHANNEL/GE_RECENT_CHANGE_TEAM')
+      param.teamKey = this.$store.getters('UB_CHANNEL/GE_RECENT_CHANGE_TEAM')
       this.$emit('openPop', param)
     },
     matchInfo(){
@@ -395,13 +385,13 @@ export default {
       return uniqueArr
     }
   },
-  components: { commonMemberList, receptMemberList, gPopHeader, editMemberTypePop},
+  components: { followerItem },
   computed: {
     /* GE_NEW_MAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_NEW_MAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_NEW_MAN_LIST']
     },
     GE_NEW_SHOW_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_NEW_SHOW_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_NEW_SHOW_LIST']
     }, */
     CHANNEL_DETAIL () {
       var detailList = this.$getDetail('TEAM', this.propData.teamKey)
@@ -434,13 +424,13 @@ export default {
       return returnData
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     history () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     },
     GE_LOCALE () {
       return this.$i18n.locale

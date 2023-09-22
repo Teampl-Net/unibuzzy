@@ -3,7 +3,7 @@ import router from '../../router'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 import store from '../../store'
 import { onMessage } from '../../assets/js/webviewInterface'
-import { functions } from '../../assets/js/D_vuexFunction'
+import { functions } from './D_vuexFunction'
 const isJsonString = (str) => {
   try {
     JSON.parse(str)
@@ -116,9 +116,9 @@ const isJsonString = (str) => {
 
           localStorage.setItem('appType', 'UB')
         } else if (message.type === 'returnImpData') {
-          store.dispatch('D_USER/AC_SET_CERTI', message.certi)
+          store.dispatch('UB_USER/AC_SET_CERTI', message.certi)
         } else if (message.type === 'certiInfo') {
-          store.dispatch('D_USER/AC_SET_CERTI', message.certiInfo)
+          store.dispatch('UB_USER/AC_SET_CERTI', message.certiInfo)
         } else if (message.type === 'requestUserPermission') {
           router.replace({ path: '/' })
         } else if (message.type === 'deviceSystemName') {
@@ -130,7 +130,7 @@ const isJsonString = (str) => {
           }
         } else if (message.type === 'deepLinkUrl') {
           localStorage.setItem('nativeYn', true)
-          store.commit('D_HISTORY/changeDeepLinkQueue', message.url)
+          store.commit('UB_HISTORY/changeDeepLinkQueue', message.url)
           var urlString = message.url.toString()
           const params = new URLSearchParams(
             urlString.replace('https://mo.d-alim.com', '')
@@ -142,18 +142,18 @@ const isJsonString = (str) => {
             queList.push({ targetKind: param[0], targetKey: param[1] })
           }
 
-          store.commit('D_HISTORY/changeDeepLinkQueue', queList)
+          store.commit('UB_HISTORY/changeDeepLinkQueue', queList)
         } else if (message.type === 'goback') {
           if (
-            store.getters['D_USER/GE_NET_STATE'] === false ||
-            store.getters['D_USER/GE_NET_STATE'] === 'false'
+            store.getters['UB_USER/GE_NET_STATE'] === false ||
+            store.getters['UB_USER/GE_NET_STATE'] === 'false'
           ) { return }
-          var hStack = store.getters['D_HISTORY/hStack']
+          var hStack = store.getters['UB_HISTORY/hStack']
           var removePage = hStack[hStack.length - 1]
           if (removePage && removePage.includes('router$#$')) {
             hStack = hStack.filter((element, index) => index < hStack.length - 1)
-            store.commit('D_HISTORY/setRemovePage', removePage)
-            store.commit('D_HISTORY/updateStack', hStack)
+            store.commit('UB_HISTORY/setRemovePage', removePage)
+            store.commit('UB_HISTORY/updateStack', hStack)
             router.go(-1)
             return
           }
@@ -163,8 +163,8 @@ const isJsonString = (str) => {
           ) {
             router.replace({ path: '/' })
           }
-          var current = store.getters['D_HISTORY/hUpdate']
-          store.commit('D_HISTORY/updatePage', current + 1)
+          var current = store.getters['UB_HISTORY/hUpdate']
+          store.commit('UB_HISTORY/updatePage', current + 1)
         } else if (message.type === 'pushmsg') {
           console.log(message)
           var isMobile = /Mobi/i.test(window.navigator.userAgent)
@@ -198,7 +198,7 @@ const isJsonString = (str) => {
           if (appActiveYn !== true && appActiveYn !== 'true') {
             if (
               JSON.parse(notiDetailObj.userDo).userKey ===
-              store.getters['D_USER/GE_USER'].userKey
+              store.getters['UB_USER/GE_USER'].userKey
             ) {
               return
             }
@@ -208,12 +208,12 @@ const isJsonString = (str) => {
               )
               return
             }
-            var popHistory = store.getters['D_HISTORY/GE_GPOP_STACK']
+            var popHistory = store.getters['UB_HISTORY/GE_GPOP_STACK']
             var currentPage = 0
             if (popHistory && popHistory.length > 0) {
               currentPage = popHistory[popHistory.length - 1]
             }
-            store.dispatch('D_NOTI/AC_ADD_NEW_NOTI', {
+            store.dispatch('UB_NOTI/AC_ADD_NEW_NOTI', {
               notiDetailObj: notiDetailObj,
               currentPage: currentPage,
               addVueResult: addVueResult
@@ -241,7 +241,7 @@ const isJsonString = (str) => {
             // window.open(appInfo.playStoreUrl, '_blank')
           } */
         } else if (message.type === 'netStateYn') {
-          store.dispatch('D_USER/AC_NET_STATE', message.netStateYn)
+          store.dispatch('UB_USER/AC_NET_STATE', message.netStateYn)
           // localStorage.setItem('netStateYn', message.netStateYn)
           // var appInfo = JSON.parse(message.appInfo)
           // alert(localStorage.getItem('netStateYn') + '!!!!')
@@ -263,10 +263,10 @@ const isJsonString = (str) => {
               // window.open(appInfo.playStoreUrl, '_blank')
             } */
         } else if (message.type === 'activeApp') {
-          // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
+          // store.dispatch('UB_USER/AC_NET_STATE', message.activeYn)
         } else if (message.type === 'addConsole') {
           // this.$addConsole(message.log)
-          // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
+          // store.dispatch('UB_USER/AC_NET_STATE', message.activeYn)
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)

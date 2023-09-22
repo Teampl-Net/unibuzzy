@@ -19,12 +19,12 @@
     <div class="popBg" v-if="GE_USER.unknownYn && mUnknownLoginPopYn"></div>
     <!-- <unknownLoginPop :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" /> -->
     <gImgPop @closeXPop="closeImgPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" />
-    <commonConfirmPop v-if="mAppUpdatePopShwoYn" @no="goAppStore" confirmType="one" :confirmText="$t('MAIN_MSG_UPDATE')" />
+    <gConfirmPop v-if="mAppUpdatePopShwoYn" @no="goAppStore" confirmType="one" :confirmText="$t('MAIN_MSG_UPDATE')" />
     <gConfirmPop :confirmText="mErrorPopBodyStr" confirmType='one' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" style="z-index: 9999999999999999999999;"/>
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
     <gConfirmPop :confirmText="$t('MAIN_MSG_DIS_CONN')" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
     <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" :pContentsYn="mTargetType === 'contentsDetail' || mTargetType === 'contDetail'" @goFavList="openPop" @goLogList="openPop" v-if="(mRouterHeaderInfo !== 'leave' && mTargetType !== 'chanDetail' && mTargetType !== 'boardMain') || $route.path === '/chanList' " @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9;" />
-    <chanHeader :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 20)  + 'px'" v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === '' && mRouterHeaderInfo !== 'leave'" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo && mChanInfo.targetKey? mChanInfo.targetKey:''" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" :pChanInfo="mChanInfo" @openPop="openPop" class="chanDetailPopHeader" @bgColor="setBgColor"/>
+    <gChanMainHeader :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 20)  + 'px'" v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === '' && mRouterHeaderInfo !== 'leave'" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo && mChanInfo.targetKey? mChanInfo.targetKey:''" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" :pChanInfo="mChanInfo" @openPop="openPop" class="chanDetailPopHeader" @bgColor="setBgColor"/>
     <div class="popBgWrite" v-if="mPopType === 'writeContents'" @click="mPopType = ''"></div>
     <writeContents v-if="mPopType === 'writeContents'" @closeXPop="closeWritePop" :params="mPopParams" :propData="mPopParams" :contentType="mPopParams.contentsJobkindId" />
     <div v-if="mPopType === 'logList'" class="popBg" @click="closeWritePop"></div>
@@ -38,9 +38,8 @@
     <!-- <gFavList /> -->
     <div class="popBg" v-if="mMenuShowYn" @click="hideMenu"></div>
     <transition name="show_left">
-      <D_MENU transition="show_left" @hideMenu="hideMenu" @openPop="openPop" @goPage="changeRouterPath" class="D_menuStyle " v-if="mMenuShowYn" />
+      <gMainMenu transition="show_left" @hideMenu="hideMenu" @openPop="openPop" @goPage="changeRouterPath" class="D_menuStyle " v-if="mMenuShowYn" />
     </transition>
-    <policies :pPolicyType="mPolicyType" v-if="mPolicyType === 'termsOfUse' || mPolicyType === 'privacy'" :pClosePolicyPop="closePolicyPop" />
     <editMyChanMenu style="z-index: 999999;" v-if="mPopType === 'myChanMenuEdit'" :pClosePop="closeWritePop" :propData="mPopParams" />
     <editBookListPop v-if="mPopType === 'editBookList'" :propData="mPopParams" @closeXPop="closeBookListPop" />
     <transition name="show_right">
@@ -57,14 +56,9 @@
 </template>
 <script>
 // import { AES } from 'crypto-js'
-import gUBHeader from '../../components/UB/layout/UB_gMainHeader'
-import commonConfirmPop from '../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
-import D_MENU from '../../components/UB/popup/common/UB_common_menu.vue'
-import policies from './intro/UB_policies.vue'
-import chanHeader from '../../components/UB/layout/UB_gChanMainHeader.vue'
-import chanMenu from '../../components/popup/chanMenu/D_channelMenu.vue'
+import chanMenu from '../../components/popup/chanMenu/UB_channelMenu.vue'
 import notiHistoryList from '@/components/UB/popup/UB_notiHistoryList.vue'
-import writeContents from '../../components/popup/D_writeContents.vue'
+import writeContents from '../../components/popup/UB_writeContents.vue'
 import editMyChanMenu from '../../components/UB/popup/UB_editMyChanMenu.vue'
 import favListPop from '../../components/UB/popup/UB_favListPop.vue'
 import editBookListPop from '@/components/UB/popup/UB_editBookListPop.vue'
@@ -127,7 +121,7 @@ export default {
     if (localStorage.getItem('backBtnShowYn') !== undefined && localStorage.getItem('backBtnShowYn') !== 'undefined') {
       this.mBackBtnShowYn = JSON.parse(localStorage.getItem('backBtnShowYn'))
     }
-    this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST') // 앱 시작 vuex 초기화
+    this.$store.commit('UB_CHANNEL/MU_CLEAN_CHAN_LIST') // 앱 시작 vuex 초기화
     var urlString = location.search
     var param = this.getParamMap(urlString)
     if (param.fcmKey && param.dcmKey) {
@@ -175,11 +169,11 @@ export default {
       this.mGImgPopShowYn = false
     },
     deleteHistory () {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
     },
     setMainInfo (params) {
       this.mFTeamList = params.fTeamList
@@ -255,12 +249,12 @@ export default {
         this.mPopId = 'gPopup' + this.mPopN
       }
       try {
-        this.$store.dispatch('D_HISTORY/AC_ADD_POP_HISTORY_STACK', this.mPopId)
+        this.$store.dispatch('UB_HISTORY/AC_ADD_POP_HISTORY_STACK', this.mPopId)
       } catch (error) {
         console.log(error)
       }
       try {
-        this.$store.dispatch('D_HISTORY/AC_ADD_ALL_HISTORY_STACK', this.mPopId)
+        this.$store.dispatch('UB_HISTORY/AC_ADD_ALL_HISTORY_STACK', this.mPopId)
       } catch (error) {
         console.log(error)
       }
@@ -497,7 +491,7 @@ export default {
         var initData = {}
         initData.team = teamDetail
         if (result.data.contentsListPage && result.data.contentsListPage.content && result.data.contentsListPage.content.length > 0) {
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', result.data.contentsListPage.content)
         }
         initData = result.data
         initData.contentsList = result.data.contentsListPage
@@ -548,7 +542,7 @@ export default {
             followList[i].changeYn = true
           }
         }
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', followList)
       }
     },
     async openPop (params) {
@@ -590,7 +584,7 @@ export default {
 
         var result = await this.$getContentsList(param, false)
         if (result) {
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', result.content)
 
           var resultList = result.content
 
@@ -630,12 +624,12 @@ export default {
       this.$showHistoryStack()
     },
     closePop (reloadYn) {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
-      this.$store.dispatch('D_HISTORY/AC_REMOVE_POP_HISTORY_STACK')
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
+      this.$store.dispatch('UB_HISTORY/AC_REMOVE_POP_HISTORY_STACK')
       this.mTargetType = ''
       this.mGPopShowYn = false
     },
@@ -808,7 +802,7 @@ export default {
     // setTimeout(() => {
     //   this.mAfterCloudYn = true
     // }, 1000)
-    this.$showChanCommonPop(false)
+    // this.$showChanCommonPop(false)
     if (
       localStorage.getItem('systemName') !== undefined &&
     localStorage.getItem('systemName') !== 'undefined' &&
@@ -841,7 +835,7 @@ export default {
       return JSON.parse(localStorage.getItem('backBtnShowYn'))
     },
     GE_NET_STATE () {
-      return this.$store.getters['D_USER/GE_NET_STATE']
+      return this.$store.getters['UB_USER/GE_NET_STATE']
     },
     GE_WINDOW_SIZE () {
       return {
@@ -849,19 +843,19 @@ export default {
       }
     },
     GE_GPOP_STACK () {
-      return this.$store.getters['D_HISTORY/GE_GPOP_STACK']
+      return this.$store.getters['UB_HISTORY/GE_GPOP_STACK']
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_NEW_NOTI () {
-      return this.$store.getters['D_NOTI/GE_NEW_NOTI']
+      return this.$store.getters['UB_NOTI/GE_NEW_NOTI']
     },
     historyStack () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
@@ -933,11 +927,6 @@ export default {
     writeContents,
     notiHistoryList,
     // unknownLoginPop,
-    gUBHeader,
-    commonConfirmPop,
-    D_MENU,
-    policies,
-    chanHeader,
     chanMenu,
     favListPop,
     editBookListPop

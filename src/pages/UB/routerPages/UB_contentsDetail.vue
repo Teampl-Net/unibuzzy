@@ -153,13 +153,13 @@ export default {
       return this.$i18n.locale
     },
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     CHANNEL_DETAIL () {
       let chan = {}
@@ -195,7 +195,7 @@ export default {
       if (!this.cDetail || !this.CHANNEL_DETAIL) return
       // var cont = this.$getContentsDetail(null, this.cDetail.contentsKey, this.CHANNEL_DETAIL.teamKey)
       // if (!cont) {
-      //   this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.cDetail])
+      //   this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.cDetail])
       // }
       // console.log(cont)
       // if (cont) {
@@ -207,10 +207,10 @@ export default {
       // }
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_RECENT_CHANGE_TEAM () {
-      return this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM']
+      return this.$store.getters['UB_CHANNEL/GE_RECENT_CHANGE_TEAM']
     },
     getWindowSize () {
       return {
@@ -218,7 +218,7 @@ export default {
       }
     },
     GE_NEW_MEMO_LIST (state) {
-      return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_NEW_MEMO_LIST']
     }
   },
   watch: {
@@ -245,7 +245,7 @@ export default {
         if (value[0].targetKey !== content.contentsKey) return
         var count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
         this.CONT_DETAIL.memoCount = count
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
         var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
         if (memoAleadyIdx !== -1) {
           content.D_MEMO_LIST[memoAleadyIdx] = value[0]
@@ -257,7 +257,7 @@ export default {
           ]
         }
         this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newArr)
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
       },
       deep: true
     }
@@ -500,7 +500,7 @@ export default {
         openPageParam.cabinetKey = detailData.cabinetKey
       }
       this.$emit('clearInfo', { detail: openPageParam, targetType: 'contDetail' })
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
     onLoadFunction () {
       var thisthis = this
@@ -729,7 +729,7 @@ export default {
           param: inParam
         })
       }
-      this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', inParam)
+      this.$store.commit('UB_CHANNEL/MU_DEL_CONT_LIST', inParam)
       this.$emit('closeXPop', true)
     },
     report (type) {
@@ -856,24 +856,24 @@ export default {
       // this.settingFileList(false)
     },
     backClick () {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.alertPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+        this.$store.commit('UB_HISTORY/updateStack', hStack)
         this.imgDetailAlertShowYn = false
       } else {
         this.previewPopShowYn = false
       }
     },
     openImgDetailAlert (img) {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       this.alertPopId = 'imgDetailAlertPop' + history.length
       this.alertPopId = this.$setParentsId(this.pPopId, this.alertPopId)
       history.push(this.alertPopId)
-      this.$store.commit('D_HISTORY/updateStack', history)
-      // console.log(this.$store.getters['D_HISTORY/hStack'])
+      this.$store.commit('UB_HISTORY/updateStack', history)
+      // console.log(this.$store.getters['UB_HISTORY/hStack'])
       this.imgDetailAlertShowYn = true
       this.clickEndYn = false
     },
@@ -1104,7 +1104,7 @@ export default {
         }
         this.CONT_DETAIL.D_MEMO_LIST = memos
         this.CONT_DETAIL.memoCount = this.$countingTotalMemo(memos)
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', this.CONT_DETAIL)
+        this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS', this.CONT_DETAIL)
       }
     },
     async memoLoadMore () {
@@ -1136,7 +1136,7 @@ export default {
       var cont = this.CONT_D_MEMO
       var index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === memo.memoKey)
       cont.D_MEMO_LIST[index].bodyFullStr = memo.bodyFullStr
-      this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+      this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS', [cont])
     },
     endListCheckFunc (resultList) {
       if (resultList === undefined || resultList === null || resultList === '') return
@@ -1189,7 +1189,7 @@ export default {
         this.CONT_DETAIL.memoCount = result.data.totalElements
         // this.CONT_DETAIL.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
         // this.offsetInt = result.data.totalElements
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }
       // this.$refs.boardMemoListCompo[0].memoLoadingHide()
     },
@@ -1278,7 +1278,7 @@ export default {
         var cont = this.CONT_DETAIL
         cont.D_ATTACH_FILE_LIST = attachFileList
         cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS', [cont])
       }
     },
     decodeContents (data, completeYn) {
@@ -1314,7 +1314,7 @@ export default {
     //   }
     //   /* var cont = this.CONT_DETAIL
     //   cont.D_CONT_USER_DO = D_CONT_USER_DO
-    //   this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
+    //   this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
     //   return D_CONT_USER_DO
     // },
 
@@ -1372,7 +1372,7 @@ export default {
           // temp.push({ doType: act.doType, doKey: result.doKey })
           tempDetail.D_CONT_USER_DO = temp
           tempDetail.likeCount = result.likeCount
-          this_.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
+          this_.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
         })
         for (var d = temp.length - 1; d >= 0; d--) {
           if (temp[d].doType === act.doType) {
@@ -1382,7 +1382,7 @@ export default {
         if (act.doType === 'LI') {
           tempDetail.likeCount += 1
         }
-        this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
+        this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
         // }
       }
     },

@@ -155,10 +155,10 @@ export default {
   },
   computed: {
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     history () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     }
   },
   watch: {
@@ -191,11 +191,11 @@ export default {
       this.$emit('openImgPop', param)
     },
     closeXPop () {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       if (this.pClosePop) this.pClosePop()
     },
     gotoSearchPage () {
@@ -254,7 +254,7 @@ export default {
         for (let i = 0; i < contentList.length; i++) {
           contentList[i].shareItem = resultMainData.cabinet.mShareItemList
         }
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', contentList)
       }
       var goBoardMainParam = {}
       goBoardMainParam.initData = resultMainData

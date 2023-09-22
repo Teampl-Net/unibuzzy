@@ -143,18 +143,16 @@
 
 </template>
 <script>
-import gPopHeader from '../layout/UB_gPopHeader.vue'
 import manageFollowerList from './UB_manageFollowerList.vue'
 import editBookListPop from './UB_editBookListPop.vue'
 import userDetailPop from './UB_userDetailPop.vue'
 // import createChannel from './UB_createChannel.vue'
 import editBoardListPop from './UB_editBoardListPop.vue'
-import seleciconBgPopup from '@/components/popup/creChannel/Tal_selectChaniconBgPopup.vue'
+import seleciconBgPopup from '@/components/popup/creChannel/UB_selectChaniconBgPopup.vue'
 import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel'
 
 export default {
   components: {
-    gPopHeader,
     manageFollowerList,
     editBookListPop,
     // createChannel,
@@ -183,7 +181,7 @@ export default {
   },
   computed: {
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     CHANNEL_DETAIL () {
       var detailList = this.$getDetail('TEAM', this.propData.teamKey)

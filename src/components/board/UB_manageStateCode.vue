@@ -116,21 +116,21 @@ export default {
       }
     }, */
     openSelectPop () {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       this.selectPopId = 'selectStateCodePop' + this.contentsKey
       // this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
       history.push(this.selectPopId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       this.selectPopShowYn = true
     },
     closeSelectPop () {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       this.workDate = { toDate: '', fromDate: '' }
       if (this.selectPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+        this.$store.commit('UB_HISTORY/updateStack', hStack)
         var idx = this.codeList.findIndex((item) => item.codeKey === this.currentCodeKey)
         this.selectPopShowYn = false
         if (idx !== -1) {
@@ -203,7 +203,7 @@ export default {
             newParam.contentsKey = result.data.contents.contentsKey
             newParam.jobkindId = 'BOAR'
             await this.$getContentsList(newParam).then(newReslute => {
-              this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
+              this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
             })
             this.$showToastPop('업무 상태가 변경되었습니다.')
 
@@ -216,7 +216,7 @@ export default {
           params.jobkindId = result.contents.jobkindId
           var resultList = await this.$getContentsList(param)
           var detailData = resultList.content[0]
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData]) */
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData]) */
         }
       } catch (error) {
         console.error(error)
@@ -279,13 +279,13 @@ export default {
       return this.codeList[idx]
     },
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     }
   },
   watch: {

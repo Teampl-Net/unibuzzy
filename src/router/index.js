@@ -75,7 +75,7 @@ routes = [
               localStorage.setItem('preDataYn', 'true')
             }
           } else {
-            store.commit('D_PRE_DATA/MU_CLEAN')
+            store.commit('UB_PRE_DATA/MU_CLEAN')
             localStorage.removeItem('preDataYn')
             localStorage.removeItem('preListTeamKey')
           }
@@ -85,7 +85,7 @@ routes = [
         beforeRouteLeave (to, from, next) {
           // 여기에 페이지를 떠나기 전에 수행할 작업을 추가합니다.
           if (to.name !== 'contents') {
-            store.commit('D_PRE_DATA/MU_CLEAN')
+            store.commit('UB_PRE_DATA/MU_CLEAN')
             localStorage.removeItem('preDataYn')
             localStorage.removeItem('preListTeamKey')
           }
@@ -108,16 +108,23 @@ routes = [
         // alias: ['/:pTeamKey', '']
       },
       {
+        path: '/unknown',
+        name: 'unknown',
+        props: true,
+        // component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_main.vue')
+        component: login
+      },
+      {
         path: '/search',
         name: 'search',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_searchPage.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/UB_searchPage.vue')
       },
       {
         path: '/myPage',
         name: 'myPage',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_myPage.vue'),
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/UB_myPage.vue'),
         meta: {
           page: 4
         }
@@ -135,7 +142,7 @@ routes = [
         path: '/fileBox',
         name: 'fileBox',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../components/popup/file/D_totalFileList.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../components/popup/file/UB_totalFileList.vue')
       },
       {
         path: '/saveBox',
@@ -181,10 +188,16 @@ routes = [
     component: login
   },
   {
+    path: '/testLoginPage',
+    name: 'testLoginPage',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/UB_testLoginPage.vue')
+  },
+  {
     path: '/permissions',
     name: 'permissions',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_permissions.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/UB_permissions.vue')
   },
   {
     path: '/policy/:type',
@@ -198,12 +211,6 @@ routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../pages/UB/intro/UB_agreePolicies.vue')
   },
-  {
-    path: '/saveName',
-    name: 'saveName',
-    props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/Tal_saveName.vue')
-  },
   // {
   //   path: '/test',
   //   name: 'test',
@@ -214,7 +221,7 @@ routes = [
     path: '/errorPage',
     name: 'errorPage',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_errorPage.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/UB_errorPage.vue')
   }
 ]
 
@@ -225,9 +232,9 @@ const router = createRouter({
 })
 router.afterEach((to, from) => {
   console.log(to)
-  var history = store.getters['D_HISTORY/hStack']
+  var history = store.getters['UB_HISTORY/hStack']
   console.log(history)
   history.push('router$#$' + to.name)
-  store.commit('D_HISTORY/updateStack', history)
+  store.commit('UB_HISTORY/updateStack', history)
 })
 export default router

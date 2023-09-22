@@ -57,13 +57,13 @@ export default {
   },
   computed: {
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     history () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     }
   },
   watch: {
@@ -81,11 +81,11 @@ export default {
   },
   methods: {
     closeXPop (reloadYn) {
-      // var history = this.$store.getters['D_HISTORY/hStack']
+      // var history = this.$store.getters['UB_HISTORY/hStack']
       // var removePage = history[history.length - 1]
       // history = history.filter((element, index) => index < history.length - 1)
-      // this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      // this.$store.commit('D_HISTORY/updateStack', history)
+      // this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      // this.$store.commit('UB_HISTORY/updateStack', history)
       this.$emit('closeXPop')
     },
     async getNotiHistoryList (noti) {
@@ -127,7 +127,7 @@ export default {
       }
     },
     notiClear () {
-      this.$store.dispatch('D_NOTI/AC_CLEAR_NOTI_LIST')
+      this.$store.dispatch('UB_NOTI/AC_CLEAR_NOTI_LIST')
       this.mConfirmPopShowYn = false
     },
     async goNotiDetail (message) {
@@ -138,12 +138,12 @@ export default {
         alert(this.$t('COMMON_MSG_NOTFOUND'))
         return
       }
-      var popHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
+      var popHistory = this.$store.getters['UB_HISTORY/GE_GPOP_STACK']
       var currentPage = 0
       if (popHistory && popHistory.length > 0) {
         currentPage = popHistory[popHistory.length - 1]
       }
-      this.$store.dispatch('D_NOTI/AC_ADD_NEW_NOTI', { notiDetailObj: message, currentPage: currentPage, addVueResult: addVueResult })
+      this.$store.dispatch('UB_NOTI/AC_ADD_NEW_NOTI', { notiDetailObj: message, currentPage: currentPage, addVueResult: addVueResult })
     }
   },
   components: {

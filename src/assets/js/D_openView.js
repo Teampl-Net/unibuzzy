@@ -6,9 +6,9 @@ import store from '../../store'
 import { mapGetters, mapActions } from 'vuex'
 import axios from 'axios'
 import { methods, commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
-import { commonMethods } from './Tal_common'
+import { commonMethods } from './UB_common'
 var this_ = this
-// var g_user = store.getters['D_USER/GE_USER']
+// var g_user = store.getters['UB_USER/GE_USER']
 var g_axiosQueue = []
 var notiDetail
 export const isJsonString = (str) => {
@@ -47,7 +47,7 @@ export const openView = {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
-      paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
+      paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
     }
     var contentDetail = await commonAxiosFunction({ url: '/sUniB/tp.getMyContentsList', param: paramSet }, nonLoadingYn)
     if (!contentDetail || !contentDetail.data) {
@@ -59,7 +59,7 @@ export const openView = {
     content = await commonMethods.settingUserDo(content)
     if (!content.D_MEMO_LIST && (!content.memoList || content.memoList.length === 0)) content.D_MEMO_LIST = []
 
-    this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [content])
+    this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [content])
     result.content = content
     if (content.jobkindId === 'BOAR') {
       var cabinetInfo = content.cabinet
@@ -122,12 +122,12 @@ export const openView = {
     return resultData
   },
   async getMainBoard () {
-    if (!(store.getters['D_USER/GE_USER'] && store.getters['D_USER/GE_USER'].userKey)) {
+    if (!(store.getters['UB_USER/GE_USER'] && store.getters['UB_USER/GE_USER'].userKey)) {
       await openView.getUnknownMainBoard()
       return
     }
     var paramMap = new Map()
-    paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
+    paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
     var response = await commonAxiosFunction({ url: '/sUniB/tp.getMainBoard', param: Object.fromEntries(paramMap) }, false)
     // eslint-disable-next-line no-debugger
     debugger
@@ -141,8 +141,8 @@ export const openView = {
       /* this.mMainChanList = response.data.teamList.splice(0, 5)
       this.mMainMChanList = response.data.mTeamList
       this.setContsList(response.data.alimList) */
-      await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...resultObject.chanList, ...resultObject.mChanList])
-      await store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', response.data.alimList.content)
+      await store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [...resultObject.chanList, ...resultObject.mChanList])
+      await store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', response.data.alimList.content)
       return resultObject
     }
   },
@@ -155,27 +155,27 @@ export const openView = {
       var resultObject = new Object()
       resultObject.chanList = response.data.teamList.content
       resultObject.alimList = response.data.alimList.content
-      await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', resultObject.chanList)
-      await store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultObject.alimList)
+      await store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', resultObject.chanList)
+      await store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultObject.alimList)
     }
   },
   async getSearchMainBoard (nonLoadingYn) {
     var paramMap = new Map()
     paramMap.set('cateGroupKey', 2)
     paramMap.set('orderbyStr', 'followerCount DESC')
-    paramMap.set('creUserKey', store.getters['D_USER/GE_USER'].userKey)
+    paramMap.set('creUserKey', store.getters['UB_USER/GE_USER'].userKey)
     var response = await commonAxiosFunction({ url: '/sUniB/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
     // eslint-disable-next-line no-debugger
     debugger
     if (response.data.result === 'OK') {
       console.log(response.data)
-      await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response.data.teamList.content)
+      await store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', response.data.teamList.content)
       return response.data
     }
   },
   async getMainChanList () {
     var paramMap = new Map()
-    paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
+    paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
     var response = await methods.getTeamList(paramMap)
     // var response = await commonAxiosFunction({ url: '/sUniB/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, false)
     // eslint-disable-next-line no-debugger
@@ -183,7 +183,7 @@ export const openView = {
     console.log(response)
     if (response.data.content) {
       // console.log(response.data)
-      await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', response.data.content)
+      await store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', response.data.content)
       return response.data
     }
   },
@@ -196,7 +196,7 @@ export const openView = {
     paramMap.set('currentTeamKey', teamKey)
     paramMap.set('sysCabinetCode', 'BOAR')
     paramMap.set('shareType', 'W')
-    paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
+    paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
     // console.log(paramMap)
     var response = await commonAxiosFunction({ url: '/sUniB/tp.getCabinetListForMyShareType', param: Object.fromEntries(paramMap) }, false)
     console.log(response)
@@ -213,7 +213,7 @@ export const openView = {
     // paramMap.set('currentTeamKey', teamKey)
     // paramMap.set('sysCabinetCode', 'BOAR')
     // paramMap.set('shareType', 'W')
-    // paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
+    // paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
     // // console.log(paramMap)
     // var response = await commonAxiosFunction({ url: '/sUniB/tp.getTeamMenuList', param: Object.fromEntries(paramMap) }, false)
     // console.log(response)
@@ -266,11 +266,11 @@ export const openView = {
     // 채널리스트를 메인에서 팝업으로 열 시 데이터를 미리 보내주기 위해 만듬
     var paramMap = new Map()
     if (tabName === 'user') {
-      paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
+      paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
     } else if (tabName === 'all') {
-      paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
+      paramMap.set('fUserKey', store.getters['UB_USER/GE_USER'].userKey)
     } else if (tabName === 'mychannel') {
-      paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
+      paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
       paramMap.set('managerYn', true)
     }
     paramMap.set('offsetInt', 0)
@@ -287,7 +287,7 @@ export const openView = {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
-      paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
+      paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
     }
     var result = await commonAxiosFunction({ url: '/sUniB/tp.getMyContentsList', param: paramSet }, false)
     console.log(result)

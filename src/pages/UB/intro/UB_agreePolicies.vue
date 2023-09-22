@@ -30,7 +30,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-// import { loginCheck } from '../../assets/js/Tal_common'
+// import { loginCheck } from '../../assets/js/UB_common'
 import { onMessage } from '../../../assets/js/webviewInterface'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -41,7 +41,7 @@ export default {
       if (this.pPartnerLoginYn && this.pGoLoginPage) {
         // this.pGoLoginPage()
       } else {
-        this.$router.replace({ name: 'login' })
+        this.$router.push('/login')
       }
     }
     /* window.ReactNativeWebView.postMessage(
@@ -96,7 +96,7 @@ export default {
       if (this.pPartnerLoginYn && this.pGoLoginPage) {
         this.pGoLoginPage()
       } else {
-        this.$router.replace({ name: 'login' })
+        this.$router.push('/login')
       }
     }
   }

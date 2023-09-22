@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     }
   },
   methods: {
@@ -180,7 +180,7 @@ export default {
           resultList = {}
           resultList.content = []
         }
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
 
         // const newArr = [
         //   ...this.CAB_DETAIL.boardList,

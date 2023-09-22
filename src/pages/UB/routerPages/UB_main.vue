@@ -1,6 +1,6 @@
 <template>
   <div ref="mainRef" class="w100P h100P mainWrap" @click="getInRectImgList">
-    <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="Do you want to exit UniBuzzy?" />
+    <gConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="Do you want to exit UniBuzzy?" />
     <createBoardChannel v-if="mCreChannelShowYn" @successCreBoard="successCreBoard" @successCreChan="successCreChan" :pAreaInfo="mAreaInfo" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
     <!-- <createChannel @successCreChan="successCreChan" v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" /> -->
     <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" class="popBg"></div>
@@ -81,7 +81,6 @@
   </div>
 </template>
 <script>
-import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
 // import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
 import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
@@ -153,7 +152,7 @@ export default {
     // this.findAllDrawn()
     this.resetHistory()
     this.setNativeHeight()
-    this.$store.commit('D_HISTORY/updateStack', [0])
+    this.$store.commit('UB_HISTORY/updateStack', [0])
     this.$emit('clearInfo', { detail: null, targetType: 'main' })
     // this.getUserTeamList()
 
@@ -317,7 +316,7 @@ export default {
       }, true)
       if (result.data) {
         localStorage.setItem('user', JSON.stringify(result.data.userInfo))
-        await this.$store.dispatch('D_USER/AC_USER', result.data.userInfo)
+        await this.$store.dispatch('UB_USER/AC_USER', result.data.userInfo)
         localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
         // this.$router.push('/')
         // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)
@@ -525,8 +524,8 @@ export default {
             this.village.areaList[area.priority].buildingList.push(buildingObj)
           }
         }
-        // await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mBdAreaList, ...this.mMainMChanList])
-        // await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimListmMainAlimList)
+        // await this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [...this.mBdAreaList, ...this.mMainMChanList])
+        // await this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimListmMainAlimList)
         if (response.data.cTeamList) {
           // area.bdList[j].teamKey = area.bdList[j].targetKey
           await this.$addChanVuex(response.data.cTeamList)
@@ -547,9 +546,9 @@ export default {
       }
     },
     resetHistory () {
-      this.$store.commit('D_HISTORY/setRemovePage', '')
-      this.$store.commit('D_HISTORY/updateStack', [])
-      this.$store.dispatch('D_HISTORY/AC_CLEAR_GPOP_STACK')
+      this.$store.commit('UB_HISTORY/setRemovePage', '')
+      this.$store.commit('UB_HISTORY/updateStack', [])
+      this.$store.dispatch('UB_HISTORY/AC_CLEAR_GPOP_STACK')
       // this.$emit('changePageHeader', 'uniBuzzy')
     },
     moveToChan (clickedInfo) {
@@ -921,31 +920,30 @@ export default {
       return showYn
     },
     historyStack () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_CREATE_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_CREATE_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_CREATE_CHAN_LIST']
     },
     GE_REMOVE_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_REMOVE_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_REMOVE_CHAN_LIST']
     },
     GE_UPDATE_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_UPDATE_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_UPDATE_CHAN_LIST']
     }
   },
   components: {
     mainBoardList,
     // createChannel,
-    commonConfirmPop,
     // UBInfoBox,
     selectSchoolPop,
     UBAreaBdList,

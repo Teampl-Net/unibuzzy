@@ -35,7 +35,6 @@
 <script>
 import { VueDraggableNext } from 'vue-draggable-next'
 import modiBoardPop from '@/components/popup/board/UB_modiBoardPopup.vue'
-import gPopHeader from '../layout/UB_gPopHeader.vue'
 export default {
   props: {
     // editList: {},
@@ -62,16 +61,16 @@ export default {
       return this.cabinetList
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     CHANNEL_DETAIL () {
       return this.$getDetail('TEAM', this.propData.teamKey)[0]
     },
     history () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
@@ -114,8 +113,7 @@ export default {
   },
   components: {
     modiBoardPop,
-    draggable: VueDraggableNext,
-    gPopHeader
+    draggable: VueDraggableNext
     // longPress: VueDirectiveLongPress
   },
   methods: {
@@ -192,7 +190,7 @@ export default {
       // }
       // this.cabinetList = uniqueArr
       this.cabinetList = result
-      // this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', this.CHANNEL_DETAIL)
+      // this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', this.CHANNEL_DETAIL)
       /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     goPage (link) {
@@ -202,11 +200,11 @@ export default {
       this.$emit('openPop', param)
     },
     goNo () {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       this.$emit('closeXPop')
     },
     replaceArr (arr) {

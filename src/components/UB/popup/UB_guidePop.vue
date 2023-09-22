@@ -54,10 +54,10 @@ export default {
   },
   computed: {
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     history () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     },
     calcPaddingTop () {
       return {
@@ -65,13 +65,13 @@ export default {
       }
     },
     GE_NEW_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_NEW_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_NEW_CHAN_LIST']
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_DISP_TEAM_LIST () {
       var index = null

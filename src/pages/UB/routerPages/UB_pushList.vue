@@ -31,7 +31,7 @@
     <statCodeComponent @closeXPop="workStateCodePopShowYn = false" :currentWorker="{workUserKey: workStateCodePopProps.workUserKey, workUserName: workStateCodePopProps.workUserName}" :teamKey="workStateCodePopProps.creTeamKey" :alimDetail="workStateCodePopProps" :contentsKey="workStateCodePopProps.contentsKey" v-if="workStateCodePopShowYn" :codeList="workStateCodePopProps.workStatCodeList" :currentCodeKey="workStateCodePopProps.workStatCodeKey" class="fr "></statCodeComponent>
     <div v-if="saveMemoLoadingYn" id="loading"><div class="spinner"></div></div>
     <div class="pushListArea" >
-      <commonConfirmPop v-if="failPopYn" @no="failPopYn=false" confirmType="timeout" :confirmText="errorText" />
+      <gConfirmPop v-if="failPopYn" @no="failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
         <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" :subTabList="mBoardFilterList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl selectFilter" @changeTab="changeTab" @changeBoardTab="changeBoard"/>
         <div v-on="handleScroll" class="reloadImgWrap" @click="refreshAll">
@@ -74,9 +74,8 @@
 </template>
 <script>
 import { Base64 } from 'js-base64'
-import SkeletonBox from '../../../components/pageComponents/push/D_contentsSkeleton'
-import commonConfirmPop from '../../../components/popup/confirmPop/Tal_commonConfirmPop.vue'
-import findContentsList from '../../../components/popup/common/D_findContentsList.vue'
+import SkeletonBox from '../../../components/pageComponents/push/UB_contentsSkeleton'
+import findContentsList from '../../../components/popup/common/UB_findContentsList.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
 import statCodeComponent from '../../../components/board/UB_manageStateCodePop.vue'
 import unknownLoginPop from '@/components/pageComponents/channel/UB_unknownLoginPop.vue'
@@ -85,7 +84,6 @@ export default {
   components: {
     SkeletonBox,
     findContentsList,
-    commonConfirmPop,
     statCodeComponent,
     unknownLoginPop
   },
@@ -109,9 +107,9 @@ export default {
     // reloadKey: 0
   },
   beforeUnmount () {
-    this.$store.dispatch('D_PRE_DATA/AC_PRE_DETAIL_DATA', this.GE_CHANNEL_DETAIL)
-    this.$store.dispatch('D_PRE_DATA/AC_PRE_LIST_DATA', this.GE_DISP_ALL_LIST)
-    this.$store.dispatch('D_PRE_DATA/AC_PRE_SCROLL_POSITION', { position: this.box.scrollTop, targetKind: 'chanMain', targetKey: this.GE_CHANNEL_DETAIL.teamKey })
+    this.$store.dispatch('UB_PRE_DATA/AC_PRE_DETAIL_DATA', this.GE_CHANNEL_DETAIL)
+    this.$store.dispatch('UB_PRE_DATA/AC_PRE_LIST_DATA', this.GE_DISP_ALL_LIST)
+    this.$store.dispatch('UB_PRE_DATA/AC_PRE_SCROLL_POSITION', { position: this.box.scrollTop, targetKind: 'chanMain', targetKey: this.GE_CHANNEL_DETAIL.teamKey })
   },
   created () {
     this.loadingYn = true
@@ -167,7 +165,7 @@ export default {
             this.$nextTick(() => {
               setTimeout(() => {
                 this.scrollMove(this.scrollPosition)
-                this.$store.dispatch('D_PRE_DATA/AC_PRE_LIST_DATA', [])
+                this.$store.dispatch('UB_PRE_DATA/AC_PRE_LIST_DATA', [])
               }, 1500)
             })
           }
@@ -235,7 +233,7 @@ export default {
           content = this.GE_DISP_ALL_LIST[index]
           count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
           this.GE_DISP_ALL_LIST[index].memoCount = count
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_ALL_LIST[index])
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_ALL_LIST[index])
         }
         if (!content) return
 
@@ -251,7 +249,7 @@ export default {
         }
         var idx1 = this.allContentsList.findIndex((item) => item.contentsKey === content.contentsKey)
         this.allContentsList[idx1].D_MEMO_LIST = this.replaceMemoArr(newArr)
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.allContentsList[idx1]])
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.allContentsList[idx1]])
       },
       deep: true
     },
@@ -311,10 +309,10 @@ export default {
       }
     },
     GE_DEL_CONT_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_DEL_CONT_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_DEL_CONT_LIST']
     },
     GE_PRE_DATA () {
-      return this.$store.getters['D_PRE_DATA/GE_PRE_DATA']
+      return this.$store.getters['UB_PRE_DATA/GE_PRE_DATA']
     },
     GE_CHANNEL_DETAIL () {
       if (this.chanAlimYn) {
@@ -323,13 +321,13 @@ export default {
       } else return null
     },
     GE_NEW_CONT_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_NEW_CONT_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_NEW_CONT_LIST']
     },
     GE_RECENT_NOTI_LIST () {
-      return this.$store.getters['D_NOTI/GE_RECENT_NOTI_LIST']
+      return this.$store.getters['UB_NOTI/GE_RECENT_NOTI_LIST']
     },
     GE_NEW_MEMO_LIST (state) {
-      return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_NEW_MEMO_LIST']
     },
     GE_DISP_ALL_LIST () {
       // const parentYn = this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey) ? 1 : 0
@@ -388,22 +386,22 @@ export default {
       return this.replaceArr(returnAllList)
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_RECENT_CHANGE_TEAM () {
-      return this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM']
+      return this.$store.getters['UB_CHANNEL/GE_RECENT_CHANGE_TEAM']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     currentPage () {
-      return this.$store.getters['D_HISTORY/hCPage']
+      return this.$store.getters['UB_HISTORY/hCPage']
     }
   },
   methods: {
@@ -497,7 +495,7 @@ export default {
         this.hideSkeleton(true)
         return
       }
-      await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
+      await this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', result.content)
       if (!this.allContentsList) this.allContentsList = []
       newArr = [
         ...this.allContentsList,
@@ -579,7 +577,7 @@ export default {
 
       cont.D_MEMO_LIST = newList
 
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [cont])
     },
     replaceMemoArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
@@ -650,8 +648,8 @@ export default {
             cont.D_MEMO_LIST = this.allContentsList[idx].D_MEMO_LIST
           }
           cont.memoCount -= 1
-          this.$store.dispatch('D_CHANNEL/AC_DEL_MEMO_REPLACE_CONTENT', [cont])
-          // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+          this.$store.dispatch('UB_CHANNEL/AC_DEL_MEMO_REPLACE_CONTENT', [cont])
+          // this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS', [cont])
         }
         this.$showToastPop(this.$t('COMMON_MSG_DELETED_COMMENT'))
       } catch (error) {
@@ -856,12 +854,12 @@ export default {
     },
 
     backClick () {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.alertPopId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+        this.$store.commit('UB_HISTORY/updateStack', hStack)
         this.imgDetailAlertShowYn = false
       } else {
         this.previewPopShowYn = false
@@ -1023,7 +1021,7 @@ export default {
       var tempContentDetail
       var contentDetail
       console.log(resultList.content)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       // this.endListSetFunc(resultList)
       newArr = [
         // 리프레쉬인데 기존 리스트를 받아 중복처리를 하는게 이상하고 실제 삭제한 데이터가 사라지지 않음
@@ -1044,7 +1042,7 @@ export default {
         }
         if (!cont.D_MEMO_LIST) {
           cont.D_MEMO_LIST = cont.memoList
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [cont])
         } else {
           // eslint-disable-next-line no-redeclare
           var newArr = [
@@ -1053,7 +1051,7 @@ export default {
           ]
           var newList2 = this.replaceMemoArr(newArr)
           cont.D_MEMO_LIST = newList2
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [cont])
         }
       }
     },
@@ -1107,7 +1105,7 @@ export default {
                 }
               }
             } */
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+            this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
             if (descYn) {
               if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
               newArr = [
@@ -1250,7 +1248,7 @@ export default {
 
         if (!cont.D_MEMO_LIST) {
           cont.D_MEMO_LIST = cont.memoList
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [cont])
         } else {
           // eslint-disable-next-line no-redeclare
           var test = contentDetail.D_MEMO_LIST
@@ -1269,10 +1267,10 @@ export default {
           // eslint-disable-next-line no-redeclare
           var newList = this.replaceMemoArr(newArr)
           cont.D_MEMO_LIST = newList
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [cont])
         }
       }
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', contentList)
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', contentList)
       this.endListSetFunc(resultList)
       this.findPopShowYn = false
       this.introPushPageTab()
@@ -1325,7 +1323,7 @@ export default {
       if (resultList === '') {
         this.allContentsList = []
       } else {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         var newArr = []
         newArr = [
           // ...this.boardContentsList,
@@ -1425,7 +1423,7 @@ export default {
       if (resultList === '') {
         this.allContentsList = []
       } else {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         var newArr = []
 
         newArr = [
@@ -1439,10 +1437,10 @@ export default {
     },
     /* 이미지 다운로드 */
     imgLongClick (param) {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       this.alertPopId = 'imgDetailAlertPop' + history.length
       history.push(this.alertPopId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       this.selectImgObject = param.selectObj
       this.selectImgParam = param.previewParam
       this.imgDetailAlertShowYn = true

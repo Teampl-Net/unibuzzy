@@ -83,7 +83,7 @@
 <template>
 <!-- 이 페이지는 gPop에서 열어주지 않고 있고, editBoard 파일에서 가지고 있다. -->
 <div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap modiBoardPopWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'">
-  <popHeader @closeXPop="closePop()" :pClosePop="pClosePop" :headerTitle="$t('EDIT_BOARD_NAME_BOARD')" />
+  <gPopHeader @closeXPop="closePop()" :pClosePop="pClosePop" :headerTitle="$t('EDIT_BOARD_NAME_BOARD')" />
   <loadingCompo v-if="loadingYn" />
   <!-- 헤더를 제외한 나머지 부분 // 스크롤을 위해 넣었으나, overflow가 되면서 밑 권한 설정 화면에서 쉐도우 처리 양 끝이 hidden 됨-->
   <div class="w100P h100P fl ptop-1 modiBoardPopContWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
@@ -182,7 +182,6 @@
   </div>
   <gBtnSmall @click="updateCabinet" :btnTitle="$t('EDIT_BOARD_BTN_EDIT')" class="font16 CDeepBgColor updateCabinetBtn" />
 </div>
-<selectType :chanInfo="this.CHANNEL_DETAIL" v-if="selectTypePopShowYn" @closePop='selectTypePopShowYn = false' @addFinish='addResult' />
 <selectBookList :chanInfo="this.CHANNEL_DETAIL" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" :pClosePop="closeSelectPop" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList" @openPop='openPop' />
 <receiverAccessList :chanInfo="this.CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" v-if="receiverAccessListYn" :pClosePop="closeAccessPop" @closeXPop='receiverAccessListYn=false' :parentList='selectedList.data' :selectList='permissionSelectedList'  @sendReceivers='receiverPoolInSetting'/>
 <gConfirmPop  :confirmText="$t('EDIT_BOARD_MSG_EDITSUCC')" confirmType='timeout' v-if="okPopYn" @no='closePop' />
@@ -191,11 +190,9 @@
 <script>
 import { Base64 } from 'js-base64'
 import loadingCompo from '../../layout/UB_loading.vue'
-import selectType from './editBoardUnit/UB_addChannelMenu.vue'
 // import shareSelect from './Tal_shareSelect.vue'
-import selectBookList from '../receiver/D_selectBookList.vue'
-// import selectBookList from './receiver/Tal_selectBookList.vue'
-import receiverAccessList from '../receiver/D_selectReceiverAccessList.vue'
+import selectBookList from '../receiver/UB_selectBookList.vue'
+import receiverAccessList from '../receiver/UB_selectReceiverAccessList.vue'
 import selectSampleListPop from './UB_manageSamplePop.vue'
 import seletedIconText from './editBoardUnit/UB_selectReceivIconText.vue'
 export default {
@@ -209,10 +206,10 @@ export default {
     // 로딩 닫기는 디테일을 가져오고 난 뒤
     // this.$emit('openLoading')
     this.loadingYn = true
-    /* var history = this.$store.getters['D_HISTORY/hStack']
+    /* var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'modiBoardPop' + this.modiBoardDetailProps.cabinetKey
     history.push(this.popId)
-    this.$store.commit('D_HISTORY/updateStack', history) */
+    this.$store.commit('UB_HISTORY/updateStack', history) */
 
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
@@ -284,10 +281,10 @@ export default {
       }
     },
     history () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
@@ -367,7 +364,6 @@ export default {
   },
   components: {
     seletedIconText,
-    selectType,
     selectBookList,
     receiverAccessList,
     loadingCompo,
@@ -1097,7 +1093,7 @@ export default {
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
         this.okPopYn = true
       }
-      // this.$store.dispatch('D_CHANNEL/AC_ADD_UPDATE_CHAN_LIST', 'CABINET')
+      // this.$store.dispatch('UB_CHANNEL/AC_ADD_UPDATE_CHAN_LIST', 'CABINET')
     },
     closePop () {
       this.$checkDeleteHistory('modiBoardPop')
@@ -1144,10 +1140,10 @@ export default {
       this.selectBoardTypeText = data.chanMenuTitle
 
       this.selectId = data.idNum
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       this.selectTypePopShowYn = false
     },
     click () {

@@ -35,11 +35,10 @@
 }
 </i18n>
 <template>
-  <popHeader :headerTitle="`Settings`" @closeXPop="closeXPop"/>
+  <gPopHeader :headerTitle="`Settings`" @closeXPop="closeXPop"/>
   <div class="setMyPageWrap">
     <logoutPop v-if="logOutShowYn" @goLogOut="closeLogoutPop" @closePop="closeOnlyLogoutPop"/>
     <!-- <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" /> -->
-    <settingAlim v-if="settingAlimPopYn"   @closePolicyPop="settingAlimPopYn = false" />
     <userImgSelectCompo @closeXPop="closeImgPop" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
     <div>
        <div class="languageArea" :style="'padding-top:' + (this.$STATUS_HEIGHT + 5)+ 'px;'">
@@ -112,11 +111,9 @@
 </template>
 
 <script>
-import userItem from '@/components/unit/Tal_userItem.vue'
-import logoutPop from '@/components/pageComponents/myPage/Tal_logoutPop.vue'
-// import policyPop from '@/components/pageComponents/myPage/Tal_policyPop.vue'
-import settingAlim from '@/components/pageComponents/myPage/Tal_SettingAlimDetail.vue'
-import userImgSelectCompo from '@/components/pageComponents/myPage/Tal_changeUserIcon.vue'
+import userItem from '@/components/unit/UB_userItem.vue'
+import logoutPop from '@/components/pageComponents/myPage/UB_logoutPop.vue'
+import userImgSelectCompo from '@/components/pageComponents/myPage/UB_changeUserIcon.vue'
 /* import pushPop from '@/components/popup/Tal_pushDetailPopup.vue' */
 import { onMessage } from '@/assets/js/webviewInterface'
 import { getCurrentInstance } from 'vue'
@@ -127,7 +124,6 @@ export default {
     userItem,
     logoutPop,
     // policyPop,
-    settingAlim,
     userImgSelectCompo
   },
   data () {
@@ -193,21 +189,21 @@ export default {
       return this.$i18n.locale
     },
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     history () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     }
   },
   watch: {
     pageUpdate (value, old) {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       if (this.popId === hStack[hStack.length - 1]) {
         this.closeXPop()
       }
@@ -235,7 +231,7 @@ export default {
       // eslint-disable-next-line no-new-object
       var user = new Object()
       // param.user = this.userInfo
-      var localUser = this.$store.getters['D_USER/GE_USER']
+      var localUser = this.$store.getters['UB_USER/GE_USER']
       if (localUser.userEmail !== undefined && localUser.userEmail !== null && localUser.userEmail !== '') { user.soEmail = localUser.userEmail }
       if (localUser.userKey !== undefined && localUser.userKey !== null && localUser.userKey !== '') { user.userKey = localUser.userKey }
       if (localUser.soAccessToken !== undefined && localUser.soAccessToken !== null && localUser.soAccessToken !== '') { user.soAccessToken = localUser.soAccessToken }
@@ -255,7 +251,7 @@ export default {
         user = result.data.userMap
         try {
           localStorage.setItem('user', JSON.stringify(result.data.userMap))
-          await this.$store.dispatch('D_USER/AC_USER', result.data.userMap)
+          await this.$store.dispatch('UB_USER/AC_USER', result.data.userMap)
           localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
 
           // 다른 JS 파일에서 전역 변수 수정하기
@@ -275,11 +271,11 @@ export default {
       this.$router.push('/mypage')
     },
     backClick () {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       if (this.changeUserIconPop === removePage) {
         this.changeUserIconShowYn = false
       } else if (this.devPopId === removePage) {
@@ -290,19 +286,19 @@ export default {
       this.$router.push('/cancel')
     },
     openDevPop () {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       this.devPopId = 'devModPop' + history.length
       history.push(this.devPopId)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       this.devModePopShowYn = true
     },
     closeDevPop () {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.popId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+        this.$store.commit('UB_HISTORY/updateStack', hStack)
         this.$emit('closePop')
       } else {
 
@@ -388,7 +384,7 @@ export default {
       onMessage('REQ', 'reloadApp')
     },
     cleanApp () {
-      this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+      this.$store.commit('UB_CHANNEL/MU_CLEAN_CHAN_LIST')
       this.$router.push('/')
       this.$emit('closeXPop')
     },
@@ -397,10 +393,10 @@ export default {
         ;
       } else {
         this.changeUserIconShowYn = true
-        var history = this.$store.getters['D_HISTORY/hStack']
+        var history = this.$store.getters['UB_HISTORY/hStack']
         this.changeUserIconPop = 'changeUserIconPop' + history.length
         history.push(this.changeUserIconPop)
-        this.$store.commit('D_HISTORY/updateStack', history)
+        this.$store.commit('UB_HISTORY/updateStack', history)
       }
     },
     closeImgPop () {
@@ -421,7 +417,7 @@ export default {
       var result = await this.$changeDispName(param)
       if (result.data) {
         this.changeYn = false
-        this.$store.commit('D_USER/MU_USER', result.data.userInfo)
+        this.$store.commit('UB_USER/MU_USER', result.data.userInfo)
         // this.$router.push('/')
         this.$emit('closeXPop')
         // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)

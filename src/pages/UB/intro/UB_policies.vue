@@ -1,6 +1,6 @@
 <template>
   <div id="commonWrap" class="policyPageWrap" ref="commonWrap">
-      <popHeader :headerTitle="headerTitle" :pClosePop="closeXPop" class="policyHeader"/>
+      <gPopHeader :headerTitle="headerTitle" :pClosePop="closeXPop" class="policyHeader"/>
       <div id="Uarea" v-if="this.mPolicyType === 'termsOfUse'" class="policy-01">
           <p class="font16 titleText mbottom-05">Effective Date: 2023-07-11</p>
           <p class="mbottom-1 font15 mleft-1">
@@ -110,10 +110,10 @@ export default {
   },
   computed: {
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     history () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     }
   },
   watch: {
@@ -147,7 +147,7 @@ export default {
 </script>
 
 <style scoped>
-@import url(../../../assets/css/Tal_common.css);
+@import url(../../../assets/css/UB_common.css);
 p{color: #2c3e50;}
 .policyPageWrap{position: absolute;width: 100%;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF; left: 0; padding-bottom: 30px;}
 .policyHeader{box-shadow: 0px 7px 9px -9px #00000036;}

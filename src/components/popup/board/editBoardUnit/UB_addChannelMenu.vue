@@ -58,15 +58,15 @@ export default{
   },
 computed: {
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
     pageUpdate (value, old) {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       if (this.popId === hStack[hStack.length - 1]) {
         this.closeXPop()
       }
@@ -75,19 +75,19 @@ computed: {
     }
   },
   created () {
-    var history = this.$store.getters['D_HISTORY/hStack']
+    var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'selectChanTypePop' + history.length
     history.push(this.popId)
-    this.$store.commit('D_HISTORY/updateStack', history)
+    this.$store.commit('UB_HISTORY/updateStack', history)
 
   },
   methods: {
     closeXPop () {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       this.$emit('closePop')
     },
     setResult () {

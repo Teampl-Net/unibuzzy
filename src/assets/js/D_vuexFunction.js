@@ -5,9 +5,10 @@
 import store from '../../store'
 import { mapGetters, mapActions } from 'vuex'
 import { methods, commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
-import { commonMethods } from './Tal_common'
+import { commonMethods } from './UB_common'
+
 var this_ = this
-// var g_user = store.getters['D_USER/GE_USER']
+// var g_user = store.getters['UB_USER/GE_USER']
 var g_axiosQueue = []
 var notiDetail
 export const isJsonString = (str) => {
@@ -20,10 +21,10 @@ export const isJsonString = (str) => {
 }
 
 export const functions = {
-  /* ...mapActions('D_USER', [
+  /* ...mapActions('UB_USER', [
     'AC_USER'
   ]),
-  ...mapActions('D_CHANNEL', [
+  ...mapActions('UB_CHANNEL', [
     'AC_MAIN_CHAN_LIST'
   ]),
   ...mapActions('D_CONTENTS', [
@@ -48,9 +49,9 @@ export const functions = {
   async actionVuex (type, data, targetKey, allYn, replaceYn, creTeamKey, creCabinetKey) {
     var ActName
     if (type === 'T' || type === 'B' || type === 'C') {
-      ActName = 'D_CHANNEL/AC_MAIN_CHAN_LIST'
+      ActName = 'UB_CHANNEL/AC_MAIN_CHAN_LIST'
     } else if (type === 'COMMONCONT') {
-      ActName = 'D_CHANNEL/AC_SET_CHAN_CONT_LIST'
+      ActName = 'UB_CHANNEL/AC_SET_CHAN_CONT_LIST'
     }
 
     if (allYn) {
@@ -60,15 +61,15 @@ export const functions = {
         var dataList, team, childList, cabIndex, contIndex, cabiList, cabiDetail
         var index
         if (type === 'T') {
-          dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+          dataList = store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
           index = dataList.findIndex((item) => item.teamKey === targetKey)
           dataList[index] = data
-          store.commit('D_CHANNEL/MU_RECENT_CHANGE_TEAM', targetKey)
+          store.commit('UB_CHANNEL/MU_RECENT_CHANGE_TEAM', targetKey)
           /* if (data.detailPageYn) {
-            store.dispatch('D_CHANNEL/AC_RECENT_CHANGE_TEAM', targetKey)
+            store.dispatch('UB_CHANNEL/AC_RECENT_CHANGE_TEAM', targetKey)
           } */
         } else if (type === 'B') {
-          dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+          dataList = store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
           index = dataList.findIndex((item) => item.teamKey === creTeamKey)
           team = dataList[index]
           childList = team.ELEMENTS.cabinetList
@@ -76,14 +77,14 @@ export const functions = {
           childList[cabIndex] = data
           team.ELEMENTS.cabinetList = childList
           dataList = team
-          store.commit('D_CHANNEL/MU_RECENT_CHANGE_TEAM', creTeamKey)
+          store.commit('UB_CHANNEL/MU_RECENT_CHANGE_TEAM', creTeamKey)
         } else if (type === 'COMMONCONT') {
-          dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+          dataList = store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
           index = dataList.findIndex((item) => item.teamKey === targetKey)
           dataList[index] = data
         } else if (type === 'C') {
           if (creCabinetKey) {
-            dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+            dataList = store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
             index = dataList.findIndex((item) => item.teamKey === creTeamKey)
             team = dataList[index]
             childList = team.ELEMENTS.boardList
@@ -91,9 +92,9 @@ export const functions = {
             childList[contIndex] = data
             team.ELEMENTS.boardList = childList
             dataList[index] = team
-            store.commit('D_CHANNEL/MU_RECENT_CHANGE_TEAM', creTeamKey)
+            store.commit('UB_CHANNEL/MU_RECENT_CHANGE_TEAM', creTeamKey)
           } else {
-            dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+            dataList = store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
             index = dataList.findIndex((item) => item.teamKey === creTeamKey)
             team = dataList[index]
             childList = team.ELEMENTS.alimList
@@ -101,7 +102,7 @@ export const functions = {
             childList[contIndex] = data
             team.ELEMENTS.alimList = childList
             dataList[index] = team
-            store.commit('D_CHANNEL/MU_RECENT_CHANGE_TEAM', creTeamKey)
+            store.commit('UB_CHANNEL/MU_RECENT_CHANGE_TEAM', creTeamKey)
           }
         }
         await store.dispatch(ActName, dataList).then(() => {
@@ -114,7 +115,7 @@ export const functions = {
     var dataList
     var result
     if (type === 'TEAM') {
-      dataList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      dataList = store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
       result = dataList.filter(data => data.teamKey === targetKey)
       return result
     }
@@ -147,7 +148,7 @@ export const functions = {
     if (!targetKey) return null
     if (!teamDetail) {
       if (teamKey) {
-        var teamList = store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+        var teamList = store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
         var result = teamList.filter(data => data.teamKey === teamKey)
         if (result && result.length > 0) {
           teamDetail = result[0]
@@ -169,7 +170,7 @@ export const functions = {
     }
   },
   async addChanVuex (data) {
-    await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', data)
+    await store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', data)
   },
   async addChanList (teamKey) {
     var result = null
@@ -178,7 +179,7 @@ export const functions = {
     var paramMap = new Map()
     if (teamKey === undefined || teamKey === null) return 'teamKey정보가 누락되었습니다.'
     paramMap.set('teamKey', teamKey)
-    paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
+    paramMap.set('fUserKey', store.getters['UB_USER/GE_USER'].userKey)
     console.log('############# addChanList ############')
     console.log(paramMap)
     try {
@@ -186,7 +187,7 @@ export const functions = {
       console.log(resultList)
       // if (resultList.data === undefined || resultList.data === null || resultList.data === '') return
       var response = resultList.data.content[0]
-      await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [response])
+      await store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [response])
     } catch (error) {
 
     } finally {
@@ -223,7 +224,7 @@ export const functions = {
         }
       }
 
-      store.dispatch('D_NOTI/AC_ADD_NOTI_LIST', notiDetail)
+      store.dispatch('UB_NOTI/AC_ADD_NOTI_LIST', notiDetail)
       if (JSON.parse(notiDetail.userDo).targetKind === 'C') {
         if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {
           addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, 'BOAR')
@@ -234,7 +235,7 @@ export const functions = {
         var memo = await functions.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
         memo.jobkindId = notiDetail.jobkindId
         memo.creTeamKey = notiDetail.creTeamKey
-        await store.commit('D_CHANNEL/MU_ADD_MEMO', memo)
+        await store.commit('UB_CHANNEL/MU_ADD_MEMO', memo)
         addVueResult = await functions.addContents(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
       } else if (JSON.parse(notiDetail.userDo).targetKind === 'T') {
         addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
@@ -260,11 +261,11 @@ export const functions = {
     var param = new Object()
     param.contentsKey = targetKey
     param.jobkindId = jobkindId
-    param.userKey = store.getters['D_USER/GE_USER'].userKey
+    param.userKey = store.getters['UB_USER/GE_USER'].userKey
     var resultList = await methods.getContentsList(param, true)
     if (!resultList || !resultList.content || resultList.content.length === 0) return false
     var detailData = resultList.content[0]
-    store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+    store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData])
     return detailData
   },
   async settingAlimNoti (message) {
@@ -317,17 +318,17 @@ export const functions = {
         var user = null
         if (notiDetail.actType === 'ME' || notiDetail.actType === 'FM') {
           user = await functions.getFollowerList(channelL[0].teamKey, Number(JSON.parse(notiDetail.userDo).userKey))
-          if (user.length === 1) this.$store.commit('D_CHANNEL/MU_REPLACE_SHOW_PROFILE_USER', [user[0]])
+          if (user.length === 1) this.$store.commit('UB_CHANNEL/MU_REPLACE_SHOW_PROFILE_USER', [user[0]])
         } else if (notiDetail.actType === 'MA') {
           user = await functions.getFollowerList(channelL[0].teamKey, Number(JSON.parse(notiDetail.userDo).userKey))
-          if (Number(JSON.parse(notiDetail.userDo).userKey) === store.getters['D_USER/GE_USER'].userKey) {
+          if (Number(JSON.parse(notiDetail.userDo).userKey) === store.getters['UB_USER/GE_USER'].userKey) {
             if (user.memberYn === 1 || user.memberYn === true) {
             } else {
-              store.dispatch('D_CHANNEL/AC_CHANNEL_NOTI_QUEUE', notiDetail)
+              store.dispatch('UB_CHANNEL/AC_CHANNEL_NOTI_QUEUE', notiDetail)
             }
           }
           // channelL[0].ELEMENTS.showProfileUserList.push(user)
-          if (user.length === 1) store.commit('D_CHANNEL/MU_REPLACE_MANAGER', [user[0]])
+          if (user.length === 1) store.commit('UB_CHANNEL/MU_REPLACE_MANAGER', [user[0]])
         }
       }
     }

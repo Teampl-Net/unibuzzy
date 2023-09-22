@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="samplePopBottom">
-                <!-- <gBtnSmall v-if="this.$store.getters['D_USER/GE_USER'].userKey === 1" @click="addSample" btnTitle="샘플로 저장" class="fl" style="float: left;" /> -->
+                <!-- <gBtnSmall v-if="this.$store.getters['UB_USER/GE_USER'].userKey === 1" @click="addSample" btnTitle="샘플로 저장" class="fl" style="float: left;" /> -->
                 <gBtnSmall @click="closeXPop" btnThema="light" :btnTitle="$t('COMM_BTN_CANCEL')" />
                 <gBtnSmall @click="saveGuide" :btnTitle="$t('COMMON_BTN_OK')" class="mright-05" />
             </div>
@@ -60,10 +60,10 @@ export default {
   },
   computed: {
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
@@ -79,11 +79,11 @@ export default {
     }
   },
   created () {
-    var history = this.$store.getters['D_HISTORY/hStack']
+    var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'manageSamplePop' + this.cabinetDetail.cabinetKey
     // this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
     history.push(this.popId)
-    this.$store.commit('D_HISTORY/updateStack', history)
+    this.$store.commit('UB_HISTORY/updateStack', history)
     // this.getGuidList()
   },
   methods: {
@@ -99,12 +99,12 @@ export default {
       this.samplePopShowYn = false
     },
     closeXPop () {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.popId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+        this.$store.commit('UB_HISTORY/updateStack', hStack)
         this.$emit('closeXPop')
       }
     },

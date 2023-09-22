@@ -189,9 +189,8 @@
 <script>
 /* eslint-disable vue/no-async-in-computed-properties */
 import pushList from './UB_pushList'
-import writeContents from '../../../components/popup/D_writeContents.vue'
+import writeContents from '../../../components/popup/UB_writeContents.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
-// import recMemberPop from '../../../components/popup/member/D_recMemberPop.vue'
 // import boardWrite from '../../board/Tal_boardWrite.vue'
 import followerList from '../../../components/UB/popup/UB_followerList.vue'
 import userDetailPop from '../../../components/UB/popup/UB_userDetailPop.vue'
@@ -383,7 +382,7 @@ export default {
             this.CHANNEL_DETAIL.nameMtext
           )
           this.mSaveFollowerParam.userKey =
-            this.$store.getters['D_USER/GE_USER'].userKey
+            this.$store.getters['UB_USER/GE_USER'].userKey
           this.mSaveFollowerParam.userName = this.$changeText(
             this.GE_USER.userDispMtext
           )
@@ -409,7 +408,7 @@ export default {
             this.CHANNEL_DETAIL.userTeamInfo = null
             // this.CHANNEL_DETAIL.followYn = false
             this.CHANNEL_DETAIL.followerCount -= 1
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+            this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [
               this.CHANNEL_DETAIL
             ])
 
@@ -467,7 +466,7 @@ export default {
           title
         ).then((res) => {
           this.CHANNEL_DETAIL.copyTextStr = res
-          this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+          this_.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [
             this.CHANNEL_DETAIL
           ])
           this_.mMakeDeepLinkIng = false
@@ -516,7 +515,7 @@ export default {
         toastText = '채널 알림이 활성화 되었습니다'
       }
       this.axiosQueue.push('changeRecvAlimYn')
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
 
       await this.$changeRecvAlimYn({ follower: param })
       await this.$addChanList(this.CHANNEL_DETAIL.teamKey).then(() => {
@@ -527,7 +526,7 @@ export default {
       })
       this.CHANNEL_DETAIL.copyTextStr =
         this.mChanInfo.initData.team.copyTextStr
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
       setTimeout(() => {
         this.$showToastPop(toastText)
       }, 500)
@@ -554,7 +553,7 @@ export default {
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = response.data.doKey
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [
             this.CHANNEL_DETAIL
           ])
         } else {
@@ -572,7 +571,7 @@ export default {
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = null
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [
             this.CHANNEL_DETAIL
           ])
         }
@@ -682,7 +681,7 @@ export default {
         this.CHANNEL_DETAIL.teamKey = this.selectMemberObj.teamKey
         this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
         this.ChanFollowYn = true
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
         // this.getChanMain()
         if (this.$refs.ChanAlimListPushListCompo) {
           this.$refs.ChanAlimListPushListCompo.refreshAll()
@@ -708,22 +707,22 @@ export default {
       this.$emit('openPop', param)
     },
     backClick () {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       if (this.writeAlimPopId === hStack[hStack.length - 1]) {
         history = history.filter(
           (element, index) => index < history.length - 1
         )
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', history)
+        this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+        this.$store.commit('UB_HISTORY/updateStack', history)
         this.closeWritePushPop()
       } else if (this.mWriteBoardPopId === hStack[hStack.length - 1]) {
         history = history.filter(
           (element, index) => index < history.length - 1
         )
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', history)
+        this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+        this.$store.commit('UB_HISTORY/updateStack', history)
         this.closeWritePushPop()
       }
     },
@@ -732,11 +731,11 @@ export default {
       // thiopenPop.mChanInfoPopShowYn = true
     },
     closeDetailPop () {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       this.mChanInfoPopShowYn = false
     },
     async changeFollowYn () {
@@ -868,7 +867,7 @@ export default {
           result.data.contentsListPage.content.length > 0
         ) {
           this.$store.dispatch(
-            'D_CHANNEL/AC_ADD_CONTENTS',
+            'UB_CHANNEL/AC_ADD_CONTENTS',
             result.data.contentsListPage.content
           )
         }
@@ -895,7 +894,7 @@ export default {
         const initLink = JSON.parse(initData.shortLink.shortLink)
         this.mChanInfo.copyTextStr = initLink.shortLink
         initData.team.copyTextStr = initLink.shortLink
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [initData.team])
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [initData.team])
         this.mMakeDeepLinkIng = false
       }
       this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
@@ -915,7 +914,7 @@ export default {
             followList[i].changeYn = true
           }
         }
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', followList)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', followList)
       }
     },
     async getTownCabinetList () {
@@ -1090,7 +1089,7 @@ export default {
           if (initData.shortLink) {
             const initLink = JSON.parse(initData.shortLink.shortLink)
             this.CHANNEL_DETAIL.copyTextStr = initLink.shortLink
-            this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+            this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [
               this.CHANNEL_DETAIL
             ])
             this.mMakeDeepLinkIng = false
@@ -1114,7 +1113,7 @@ export default {
               }
               this.$makeShareLink(ketSet, 'chanDetail', message, title).then(res => {
                 this.CHANNEL_DETAIL.copyTextStr = res
-                this_.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [
+                this_.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [
                   this.CHANNEL_DETAIL
                 ])
                 this_.mMakeDeepLinkIng = false
@@ -1188,7 +1187,7 @@ export default {
       }
     },
     GE_RECENT_CHANGE_TEAM () {
-      return this.$store.getters['D_CHANNEL/GE_RECENT_CHANGE_TEAM']
+      return this.$store.getters['UB_CHANNEL/GE_RECENT_CHANGE_TEAM']
     },
     settingBackground () {
       var imgPath =
@@ -1229,19 +1228,19 @@ export default {
       }
     },
     GE_CHANNEL_NOTI_QUEUE () {
-      return this.$store.getters['D_CHANNEL/GE_CHANNEL_NOTI_QUEUE']
+      return this.$store.getters['UB_CHANNEL/GE_CHANNEL_NOTI_QUEUE']
     },
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_PRE_DATA () {
-      return this.$store.getters['D_PRE_DATA/GE_PRE_DATA']
+      return this.$store.getters['UB_PRE_DATA/GE_PRE_DATA']
     }
   },
   watch: {
@@ -1266,7 +1265,7 @@ export default {
             this.$nextTick(() => {
               /* setTimeout(() => {
                 this.scrollMove(this.scrollPosition)
-                // this.$store.dispatch('D_PRE_DATA/AC_PRE_LIST_DATA', [])
+                // this.$store.dispatch('UB_PRE_DATA/AC_PRE_LIST_DATA', [])
               }, 1500) */
             })
           }

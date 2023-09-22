@@ -97,9 +97,8 @@
 <script>
 /* eslint-disable */
 // eslint-disable-next-line
-import popUp from '@/components/popup/confirmPop/Tal_commonConfirmPop.vue'
 import { onMessage } from '@/assets/js/webviewInterface'
-import userImgSelectCompo from '@/components/pageComponents/myPage/Tal_changeUserIcon.vue'
+import userImgSelectCompo from '@/components/pageComponents/myPage/UB_changeUserIcon.vue'
 export default {
     data () {
         return {
@@ -134,7 +133,6 @@ export default {
         }
     },
     components: {
-        popUp,
         userImgSelectCompo
     },
     props:{
@@ -148,7 +146,7 @@ export default {
     },
     computed: {
         GE_USER () {
-            return this.$store.getters['D_USER/GE_USER']
+            return this.$store.getters['UB_USER/GE_USER']
         },
         CHANNEL_DETAIL () {
             return this.$getDetail('TEAM', this.propData.teamKey)[0]
@@ -227,19 +225,19 @@ export default {
         // this.getAnotherUserTeamInfo()
         this.$emit('closeLoading')
 
-        var history = this.$store.getters['D_HISTORY/hStack']
+        var history = this.$store.getters['UB_HISTORY/hStack']
         this.mUserDetailPopId = 'userDetailPop' + history.length
         history.push(this.mUserDetailPopId)
-        this.$store.commit('D_HISTORY/updateStack', history)
+        this.$store.commit('UB_HISTORY/updateStack', history)
     },
 	methods: {
     backClick () {
-        var hStack = this.$store.getters['D_HISTORY/hStack']
+        var hStack = this.$store.getters['UB_HISTORY/hStack']
         var removePage = hStack[hStack.length - 1]
         if (this.mUserDetailPopId === hStack[hStack.length - 1]) {
             hStack = hStack.filter((element, index) => index < hStack.length - 1)
-            this.$store.commit('D_HISTORY/setRemovePage', removePage)
-            this.$store.commit('D_HISTORY/updateStack', hStack)
+            this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+            this.$store.commit('UB_HISTORY/updateStack', hStack)
             this.pClosePop()
         } else {
 
@@ -325,7 +323,7 @@ export default {
             var result = await this.$changeDispName(param)
             // console.log(result)
             if (result.data) {
-                this.$store.commit('D_USER/MU_USER', result.data.userInfo)
+                this.$store.commit('UB_USER/MU_USER', result.data.userInfo)
                 localStorage.setItem('sessionUser', JSON.stringify(result.data))
                 this.changeYn = false
                 this.$emit('closeXPop', true)
@@ -346,20 +344,20 @@ export default {
                 this.changeUserIconShowYn = true
                 this.changeUserIconPop = 'changeUserIconPop' + history.length
 
-                var history = this.$store.getters['D_HISTORY/hStack']
+                var history = this.$store.getters['UB_HISTORY/hStack']
                 // console.log(history)
                 history.push(this.changeUserIconPop)
-                this.$store.commit('D_HISTORY/updateStack', history)
-                // console.log(this.$store.getters['D_HISTORY/hStack'])
+                this.$store.commit('UB_HISTORY/updateStack', history)
+                // console.log(this.$store.getters['UB_HISTORY/hStack'])
             }
         },
         backClick () {
-            var hStack = this.$store.getters['D_HISTORY/hStack']
+            var hStack = this.$store.getters['UB_HISTORY/hStack']
             var removePage = hStack[hStack.length - 1]
             if (this.changeUserIconPop === hStack[hStack.length - 1]) {
                 hStack = hStack.filter((element, index) => index < hStack.length - 1)
-                this.$store.commit('D_HISTORY/setRemovePage', removePage)
-                this.$store.commit('D_HISTORY/updateStack', hStack)
+                this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+                this.$store.commit('UB_HISTORY/updateStack', hStack)
                 this.changeUserIconShowYn = false
             } else {
 

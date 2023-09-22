@@ -132,11 +132,11 @@ export default {
   },
   methods: {
     closeGuidePop () {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       this.mGuidePopShowYn = false
     },
     openGuidePop () {
@@ -170,7 +170,7 @@ export default {
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
       if (result.data) {
         localStorage.setItem('user', JSON.stringify(result.data.userInfo))
-        await this.$store.dispatch('D_USER/AC_USER', result.data.userInfo)
+        await this.$store.dispatch('UB_USER/AC_USER', result.data.userInfo)
         localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
         // this.$router.push('/')
         // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)
@@ -324,8 +324,8 @@ export default {
         this.mMainChanList = response.data.teamList
         this.mMainMChanList = response.data.mTeamList
         this.mMainAlimList = response.data.alimList.content
-        await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
-        await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
+        await this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
+        await this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
       }
       console.log(this.mMainChanList)
       console.log(this.mMainMChanList)
@@ -345,9 +345,9 @@ export default {
       }
     },
     resetHistory () {
-      this.$store.commit('D_HISTORY/setRemovePage', '')
-      this.$store.commit('D_HISTORY/updateStack', [])
-      this.$store.dispatch('D_HISTORY/AC_CLEAR_GPOP_STACK')
+      this.$store.commit('UB_HISTORY/setRemovePage', '')
+      this.$store.commit('UB_HISTORY/updateStack', [])
+      this.$store.dispatch('UB_HISTORY/AC_CLEAR_GPOP_STACK')
       this.$emit('changePageHeader', 'uniBuzzy')
     },
     getInRectImgList (event) {
@@ -420,22 +420,22 @@ export default {
   },
   computed: {
     historyStack () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_CREATE_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_CREATE_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_CREATE_CHAN_LIST']
     },
     GE_REMOVE_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_REMOVE_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_REMOVE_CHAN_LIST']
     },
     GE_UPDATE_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_UPDATE_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_UPDATE_CHAN_LIST']
     }
   },
   components: {

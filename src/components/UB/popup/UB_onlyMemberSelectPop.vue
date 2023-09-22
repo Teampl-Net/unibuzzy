@@ -2,7 +2,7 @@
   <div class="fl selectMemberPopWrap">
       <gPopHeader headerTitle="Select Followers" :pClosePop="pClosePop" />
       <!-- <div style="width:100%; height:calc(100%);" > -->
-      <memberListCompo class="fl memberListCompo" :style="'margin-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'" :pSelectedList="pSelectedList" :propMemberList="memberList" ref="memberListCompo"  :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData"/>
+      <gBookMemberList class="fl memberListCompo" :style="'margin-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'" :pSelectedList="pSelectedList" :propMemberList="memberList" ref="memberListCompo"  :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData"/>
       <!-- <selectedListCompo class="fl" style="height:calc(50% - 50px);" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' /> -->
       <selectedListCompo class="fl selectedListCompo" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="propData.currentTeamKey || propData.teamKey" @changeSelectMemberList="changeSelectMemberList"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
       <!-- </div> this.propData.selectMemberType==='member'? true:false -->
@@ -12,9 +12,7 @@
 
 <script>
 // eslint-disable-next-line
-import memberListCompo from '@/components/popup/receiver/receiverUnit/D_commonBookMemberList.vue'
-import selectedListCompo from '@/components/popup/receiver/D_selectedReceiverList.vue'
-import gPopHeader from '../layout/UB_gPopHeader.vue'
+import selectedListCompo from '@/components/popup/receiver/UB_selectedReceiverList.vue'
 export default {
   props: {
     propData: {},
@@ -42,7 +40,7 @@ export default {
     this.pList = a
     if (this.propData.editBookOpend === true) { this.pList = [] }
   },
-  components: { memberListCompo, selectedListCompo, gPopHeader },
+  components: { selectedListCompo },
   methods: {
     async closeConfirmPop () {
       await this.$refs.gConfirmPopRef.goNo()
@@ -218,11 +216,11 @@ export default {
             } */
     },
     backClick () {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       hStack = hStack.filter((element, index) => index < hStack.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', hStack)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', hStack)
       this.$emit('closeXPop', true)
     },
     async setManager (list) {

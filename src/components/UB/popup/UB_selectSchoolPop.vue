@@ -247,7 +247,7 @@ export default {
         }
       }
       if (newArr.length > 0) {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', newArr)
       }
       this.mChannelList = resultList.content
       var chanListWrap = await this.$refs.chanListWrap
@@ -276,7 +276,7 @@ export default {
           }
         }
         if (addList.length > 0) {
-          this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', addList)
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', addList)
         }
         const newArr = [
           ...this.mChannelList,
@@ -318,7 +318,7 @@ export default {
         }
       }
       if (addList.length > 0) {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', addList)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', addList)
       }
       this.mChannelList = resultList.content
       if (this.mChannelList.length === 0) this.mEmptyYn = true
@@ -386,7 +386,7 @@ export default {
         }
       }
       if (newArr.length > 0) {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', newArr)
       }
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.mEndListYn = true
@@ -423,7 +423,7 @@ export default {
         }
       }
       if (newArr.length > 0) {
-        this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', newArr)
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', newArr)
       }
       this.mChannelList = resultList.content
       this.findPaddingTopChan()
@@ -436,10 +436,10 @@ export default {
   },
   computed: {
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     },
     history () {
-      return this.$store.getters['D_HISTORY/hStack']
+      return this.$store.getters['UB_HISTORY/hStack']
     },
     calcPaddingTop () {
       return {
@@ -447,13 +447,13 @@ export default {
       }
     },
     GE_NEW_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_NEW_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_NEW_CHAN_LIST']
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_DISP_TEAM_LIST () {
       var index = null

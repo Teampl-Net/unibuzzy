@@ -64,18 +64,18 @@
                         <img src="../../../assets/images/common/arrowNextIcon.svg" alt="">
                     </div>
                     <div class="sampleDetailPopPre">
-                        <p class="font16 fontBold commonColor mbottom-05 textLeft" style="margin-top: 7px;">{{ $t('SAMP_TITLE_PREVIEW') }}</p>
-                        <div class="font14" v-html="this.selectedSampleObj.bodyFullStr" style="width: 100%; overflow: hidden scroll; text-align: left; height: 100%; float: left; border-radius: 0.8rem; box-shadow: rgb(140 140 140 / 10%) 0px 0px 10px 4px inset; padding: 10px 20px; "></div>
-                        <div v-if="this.selectedSampleObj.sampleKey > 0" class="font14 mtop-05" @click="askDelSample" style=" cursor: pointer; background: #D9D9D9; color: #FFF; line-height: 30px; border-radius: 5px; min-width: 3rem; float: right; height: 30px; padding: 0 20px; text-align: center;">
+                        <p class="font16 fontBold commonColor mbottom-05 textLeft">{{ $t('SAMP_TITLE_PREVIEW') }}</p>
+                        <div class="font14 sampleDetailPopText" v-html="this.selectedSampleObj.bodyFullStr"></div>
+                        <div v-if="this.selectedSampleObj.sampleKey > 0" class="font14 mtop-05 sampleDetailPopDelete" @click="askDelSample">
                           {{ $t('SAMP_BTN_DELETE') }}
                         </div>
-                        <div v-if="this.selectedSampleObj.sampleKey > 0" class="font14 mtop-05" @click="this.openMakeSamplePop('modi')" style=" cursor: pointer; margin-right: 5px; background: #D9D9D9; color: #FFF; line-height: 30px; border-radius: 5px; min-width: 3rem; float: right; height: 30px; padding: 0 20px; text-align: center;">
+                        <div v-if="this.selectedSampleObj.sampleKey > 0" class="font14 mtop-05 sampleDetailPopEdit" @click="this.openMakeSamplePop('modi')">
                           {{ $t('SAMP_BTN_EDIT') }}
                         </div>
                     </div>
                 </div>
             </div>
-            <div style="width: 100%; padding: 0 20px; height: 40px; float: left;">
+            <div class="sampleDetailPopBottom">
                 <gBtnSmall @click="closeXPop" btnThema="light" :btnTitle="$t('COMM_BTN_CLOSE')" />
                 <gBtnSmall @click="okSelectSample" :btnTitle="$t('COMMON_BTN_SELECT')" class="mright-05" />
             </div>
@@ -85,7 +85,7 @@
     </div>
 </template>
 <script>
-import makeSamplePop from './D_wirteSamplePop.vue'
+import makeSamplePop from './UB_wirteSamplePop.vue'
 export default {
   components: {
     makeSamplePop
@@ -105,11 +105,11 @@ export default {
     }
   },
   created () {
-    var history = this.$store.getters['D_HISTORY/hStack']
+    var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'selectSamplePop' + history.length
     // this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
     history.push(this.popId)
-    this.$store.commit('D_HISTORY/updateStack', history)
+    this.$store.commit('UB_HISTORY/updateStack', history)
     this.getGuideList()
   },
   props: {
@@ -117,10 +117,10 @@ export default {
   },
   computed: {
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
@@ -193,12 +193,12 @@ export default {
       this.selectedSampleObj = obj
     },
     closeXPop () {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.popId === hStack[hStack.length - 1]) {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', hStack)
+        this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+        this.$store.commit('UB_HISTORY/updateStack', hStack)
         this.$emit('closeXPop')
       }
     },
@@ -339,6 +339,50 @@ export default {
   width: 100%;
   height: calc(100% - 200px);
   margin-top:10px;
+  float: left;
+}
+.sampleDetailPopPre > p {
+  margin-top: 7px;
+}
+.sampleDetailPopText {
+  width: 100%;
+  overflow: hidden scroll;
+  text-align: left;
+  height: 100%;
+  float: left;
+  border-radius: 0.8rem;
+  box-shadow: rgb(140 140 140 / 10%) 0px 0px 10px 4px inset;
+  padding: 10px 20px;
+}
+.sampleDetailPopDelete {
+  cursor: pointer;
+  background: #D9D9D9;
+  color: #FFF;
+  line-height: 30px;
+  border-radius: 5px;
+  min-width: 3rem;
+  float: right;
+  height: 30px;
+  padding: 0 20px;
+  text-align: center;
+}
+.sampleDetailPopEdit {
+  cursor: pointer;
+  margin-right: 5px;
+  background: #D9D9D9;
+  color: #FFF;
+  line-height: 30px;
+  border-radius: 5px;
+  min-width: 3rem;
+  float: right;
+  height: 30px;
+  padding: 0 20px;
+  text-align: center;
+}
+.sampleDetailPopBottom {
+  width: 100%;
+  padding: 0 20px;
+  height: 40px;
   float: left;
 }
 </style>

@@ -20,7 +20,7 @@ export default {
   computed: {
     GE_USER_INFO () {
       if (this.selfYn) {
-        return this.$store.getters['D_USER/GE_USER']
+        return this.$store.getters['UB_USER/GE_USER']
       } else {
         if (this.userInfo) {
           return this.userInfo
@@ -30,7 +30,7 @@ export default {
       }
     },
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     }
   },
   watch: {

@@ -18,7 +18,7 @@
 <template>
 <!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
   <div class="w100P h100P ptop-50" :style="'padding-top:' + (this.$STATUS_HEIGHT + 50 )+ 'px'" >
-    <!-- <popHeader :headerTitle="$t('SEAR_TITLE_CHAN')" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/> -->
+    <!-- <gPopHeader :headerTitle="$t('SEAR_TITLE_CHAN')" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/> -->
     <div class="findPopBody mtop-05">
       <div class="searchInputArea">
         <img @click="findChannel" class="searchIcon cursorP img-w20" src="../../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
@@ -80,10 +80,10 @@ export default {
   },
   computed: {
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_DISP_TEAM_LIST () {
       var index = null
@@ -99,21 +99,21 @@ export default {
       return returnData
     },
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
     pageUpdate (value, old) {
-      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var hStack = this.$store.getters['UB_HISTORY/hStack']
       if (this.popId === hStack[hStack.length - 1]) {
-        var history = this.$store.getters['D_HISTORY/hStack']
+        var history = this.$store.getters['UB_HISTORY/hStack']
         var removePage = history[history.length - 1]
         history = history.filter((element, index) => index < history.length - 1)
-        this.$store.commit('D_HISTORY/setRemovePage', removePage)
-        this.$store.commit('D_HISTORY/updateStack', history)
+        this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+        this.$store.commit('UB_HISTORY/updateStack', history)
         this.closeXPop()
       }
     },

@@ -71,13 +71,11 @@
 </template>
 
 <script>
-import gPopHeader from '../layout/UB_gPopHeader.vue'
 import createChannel from '@/components/UB/popup/UB_createChannel.vue'
-import seleciconBgPopup from '@/components/popup/creChannel/Tal_selectChaniconBgPopup.vue'
+import seleciconBgPopup from '@/components/popup/creChannel/UB_selectChaniconBgPopup.vue'
 
 export default {
   components: {
-    gPopHeader,
     createChannel,
     seleciconBgPopup
   },
@@ -273,7 +271,7 @@ export default {
   },
   computed: {
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     }
   }
 }

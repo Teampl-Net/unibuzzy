@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import listTitle from '@/components/unit/Tal_main_title.vue'
+import listTitle from '@/components/unit/UB_mainTitle.vue'
 import contentsList from '@/components/list/UB_commonListTable.vue'
 export default {
   name: 'top5PushList',
@@ -61,7 +61,7 @@ export default {
       param.ownUserKey = this.GE_USER.userKey
 
       var result = await this.$getContentsList(param, false)
-      this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', result.content)
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', result.content)
 
       var resultList = result.content
 
@@ -112,10 +112,10 @@ export default {
   },
   computed: {
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
     GE_DISP_CONT_LIST () {
       var idx1, idx2
@@ -148,7 +148,7 @@ export default {
       return contList
     },
     GE_NEW_CONT_LIST () {
-      return this.$store.getters['D_CHANNEL/GE_NEW_CONT_LIST']
+      return this.$store.getters['UB_CHANNEL/GE_NEW_CONT_LIST']
     },
     GE_LOCALE () {
       return this.$i18n.locale
