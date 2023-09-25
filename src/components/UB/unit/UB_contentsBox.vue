@@ -25,7 +25,7 @@
     <!-- :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" -->
     <div class="contentsCardHeaderArea">
       <div @click="goChannelMain" :style="this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
-        <div class="chanIcon" :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext : CONT_DETAIL.logoPathMtext) + ');'"></div>
+        <div class="chanIcon" :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + $changeUrlBackslash(CONT_DETAIL.logoPathMtext) : CONT_DETAIL.logoPathMtext) + ');'"></div>
       </div>
       <div class="contentsCardInfo" >
         <div class="contentsCardInfoBox">

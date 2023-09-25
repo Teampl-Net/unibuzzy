@@ -9,7 +9,7 @@
 }
 </i18n>
 <template>
-    <div v-if="CHANNEL_DETAIL && mChanInfo" class="scrollOn" id="chanMainRef" ref="chanMainRef" :style="`background-image: url(${CHANNEL_DETAIL.bgDomainPath + CHANNEL_DETAIL.bgPathMtext});height: calc(100% + ${Number($STATUS_HEIGHT)}px);  padding-top: ${Number($STATUS_HEIGHT)}px;`">
+    <div v-if="CHANNEL_DETAIL && mChanInfo" class="scrollOn" id="chanMainRef" ref="chanMainRef" :style="`background-image: url(${CHANNEL_DETAIL.bgDomainPath + $changeUrlBackslash(CHANNEL_DETAIL.bgPathMtext)});height: calc(100% + ${Number($STATUS_HEIGHT)}px);  padding-top: ${Number($STATUS_HEIGHT)}px;`">
         <div v-if="!mChanCardShowYn" class="font20 fl fontBold chanInfoCard" :style="`top: ${Number($STATUS_HEIGHT)}px; height:${ 50}px `" >
             <p :style="CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;'">{{$changeText(CHANNEL_DETAIL.nameMtext)}}</p>
             <img
@@ -20,7 +20,7 @@
             />
         </div>
         <div ref="chanCardTopArea"  :class="['fade-out-element', { 'hidden': !mChanCardShowYn }]" class="fl chanCardTop" :style="`margin-top: ${50}px`" >
-            <div class="chanIcon" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'"></div>
+            <div class="chanIcon" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + $changeUrlBackslash(this.CHANNEL_DETAIL.logoPathMtext) : this.CHANNEL_DETAIL.logoPathMtext) + ');'"></div>
             <div class="chanFollowArea">
                 <div class="blankBox"></div>
                 <div class="font20 fontBold chanNameBox">

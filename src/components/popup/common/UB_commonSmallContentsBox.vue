@@ -1,7 +1,7 @@
 <template>
   <div class="w100P">
     <div class="smallContBoxWrap">
-          <div class="smallContBoxIcon" :style="'background-image: url(' + (contentsEle.domainPath ? contentsEle.domainPath + contentsEle.logoPathMtext : contentsEle.logoPathMtext) + ');'"></div>
+          <div class="smallContBoxIcon" :style="'background-image: url(' + (contentsEle.domainPath ? contentsEle.domainPath + $changeUrlBackslash(contentsEle.logoPathMtext) : contentsEle.logoPathMtext) + ');'"></div>
           <div class="mleft-1 smallContBoxInfoWrap">
             <div class="smallContBoxInfoBox">
               <p class=" textLeft textOverdot commonBlack fontBold font14 smallContBoxInfoTitle">

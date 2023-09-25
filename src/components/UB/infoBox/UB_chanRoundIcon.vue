@@ -1,7 +1,7 @@
 <template>
     <div  v-if="chanElement" class="cursorP chanIconWrap" @click="pGoChannelMain(chanElement)">
         <div class="roundImg"
-            :style="'background-image: url(' + mImgPath + ');' + `border: ${selectedYn? '2px solid #5F61BD;':'0.5px solid rgba(0, 0, 0, 0.1);'}` + `${pBestYn? 'box-shadow: 0px 0px 10px 5px #f7d83c;':''}`" >
+            :style="'background-image: url(' + $changeUrlBackslash(mImgPath) + ');' + `border: ${selectedYn? '2px solid #5F61BD;':'0.5px solid rgba(0, 0, 0, 0.1);'}` + `${pBestYn? 'box-shadow: 0px 0px 10px 5px #f7d83c;':''}`" >
             <div v-if="pBestYn" class="CWhiteBgColor chanIconImgBox">
                 <img class="fl w100P" src="../../../assets/images/channel/ownerChannel_crown.svg" alt="">
             </div>

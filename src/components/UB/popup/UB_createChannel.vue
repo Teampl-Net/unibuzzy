@@ -39,9 +39,9 @@
 <template>
   <div class="createChanCompo" @click.stop="preventDefault">
     <!-- <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" /> -->
-    <gPopHeader :headerTitle="`Edit a Channel`" :pClosePop="pClosePop"/>
+    <!-- <gPopHeader v-if="chanDetail.modiYn" :headerTitle="`Edit a Channel`" :pClosePop="pClosePop"/> -->
     <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
-      <div :style="'background: url(' + mSelectedBg.selectPath + ');'" class="createChanWrap"  >
+      <div :style="`background: url('${$changeUrlBackslash(mSelectedBg.selectPath)}'`" class="createChanWrap"  >
         <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 150}px;`">
           <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP">
             <label @click="mIconBgSelectPopYn='bgPop'"  class='backgroundLabel commonColor' for="input-Backimgfile">
@@ -62,7 +62,9 @@
                 <img class="cameraIcon" src="@/assets/images/channel/icon_camera.svg" alt="">
               </label>
             </form>
-            <div @click="mIconBgSelectPopYn='iconPop'" class="channelLogoArea cursorP" :style="'background-image: url(' + mSelectedIcon.selectPath + ')'"></div>
+            <div @click="mIconBgSelectPopYn='iconPop'" class="channelLogoArea cursorP">
+                <img class="w100P" :src="mSelectedIcon.selectPath" />
+            </div>
             <div class="w100P fl editChanArea">
               <div v-if="!pChannelModi || chanDetail.modiYn === false" class="w100P typeBox">
                 <p class="textLeft font20 fontBold w100P">{{ pBdAreaList && pBdAreaList.length > 0 && pBdAreaList[0].bdList? $changeText(pBdAreaList[0].bdList[0].nameMtext):'Campus' }} > {{ pSelectedAreaInfo? pSelectedAreaInfo.bdAreaNameMtext:'Area' }}</p>
@@ -93,7 +95,7 @@
                     {{ $t('CRE_BTN_PREVIEW') }}
                   </p>
                 </div>
-                <div v-if="mTopColorPreviewYn === true" class="fl w100P previewWrap" :style="'background: url(' + mSelectedBg.selectPath + ');'">
+                <div v-if="mTopColorPreviewYn === true" class="fl w100P previewWrap" :style="`background: url('${mSelectedBg.selectPath}';`">
                   <img v-if="mBtnColor === false" src="@/assets/images/common/icon_back.png" class="img-w15 fl mleft-05" alt="">
                   <img v-else-if="mBtnColor === true" src="@/assets/images/common/icon_back_white.png" class="img-w15 fl mleft-05" alt="">
                   <p :style="mBtnColor === false ? 'color: #6768a7;' : 'color:white;' " class="fl font20 fontBold">{{mInputChannelName}}</p>
@@ -318,6 +320,8 @@ export default {
       } else if (this.mIconBgSelectPopYn === 'bdPop') {
         this.mSelectedBd = param
       }
+      console.log('ㅇ기염')
+      console.log(this.mSelectedIcon)
       this.mIconBgSelectPopYn = false
     },
     checkValue () {
@@ -535,7 +539,7 @@ export default {
   border-radius: 5px;
 }
 
-.channelLogoArea{
+.channelLogoArea {
   border:1px solid #ccc;
   width: 120px;
   overflow: hidden;
@@ -553,7 +557,7 @@ export default {
   background-position: center;
   background-repeat: no-repeat;
 }
-.channelLogoLabel{
+.channelLogoLabel {
   width: 35px;
   height: 35px;
   background-color: white;

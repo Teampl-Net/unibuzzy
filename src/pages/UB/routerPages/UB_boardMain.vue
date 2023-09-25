@@ -38,7 +38,7 @@
       <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :style="propParams.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="@/assets/images/channel/icon_official.svg" v-if="propParams.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propParams.nameMtext)}}</p> -->
       <div id="boardInfoSummary" class="mt-header boardWhiteBox">
         <div v-if="CHANNEL_DETAIL" id="chanInfoSummary" ref="chanImg"  class="boardCard chanInfoSummary">{{value}}
-          <div class="chanImgRound" :style="'background-image: url('+  (CHANNEL_DETAIL.logoDomainPath? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');'"></div>
+          <div class="chanImgRound" :style="'background-image: url('+  (CHANNEL_DETAIL.logoDomainPath? CHANNEL_DETAIL.logoDomainPath + $changeUrlBackslash(CHANNEL_DETAIL.logoPathMtext) : CHANNEL_DETAIL.logoPathMtext) + ');'"></div>
             <div class="chanTextBox fl mleft-05 w100P">
               <div class="fl font16  w100P">
                 <div class="width50px">

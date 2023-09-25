@@ -33,7 +33,7 @@
                 <!-- 유저 영역 -->
                 <template v-else-if="actor.accessKind === 'U'">
                     <div class="imgCircle middleBgColor fl" @click="clickEvntToParents('open')" >
-                        <div v-if="actor.domainPath || actor.userProfileImg" :style="'background-image: url(' + (actor.domainPath? actor.domainPath + (actor.userProfileImg ? actor.userProfileImg : actor.pathMtext ) : actor.userProfileImg ) + ');'"  class="memberPicImgWrap recvUserIcon">
+                        <div v-if="actor.domainPath || actor.userProfileImg" :style="'background-image: url(' + (actor.domainPath? actor.domainPath + (actor.userProfileImg ? $changeUrlBackslash(actor.userProfileImg) : $changeUrlBackslash(actor.pathMtext) ) : actor.userProfileImg ) + ');'"  class="memberPicImgWrap recvUserIcon">
                         </div>
                         <div v-else  class="memberPicImgWrap recvUserIcon noIcon">
                         </div>

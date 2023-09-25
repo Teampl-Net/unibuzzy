@@ -12,7 +12,7 @@
       <template  v-if="mCabContentsList && mCabContentsList.length > 0">
         <div class="w100P pinContentsBox" v-for="(cont) in mCabContentsList" :key="cont.contentsKey">
           <div class="w100P flexAlignCenter">
-            <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound chanImgBox" :style="'background-image: url(' + (cont.domainPath? cont.domainPath + cont.logoPathMtext : cont.logoPathMtext) + ');'"></div>
+            <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound chanImgBox" :style="'background-image: url(' + (cont.domainPath? cont.domainPath + $changeUrlBackslash(cont.logoPathMtext) : cont.logoPathMtext) + ');'"></div>
             <div class="contentsItem">
               <p class="w100P fontBold font16 textOverdot textLeft">{{ cont.title }}</p>
               <div class="font12 flexAlignCenter">

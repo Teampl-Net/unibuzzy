@@ -30,7 +30,7 @@
         :style="
             'background-image: url(' +
             (chanElement.logoDomainPath !== undefind
-            ? chanElement.logoDomainPath + chanElement.logoPathMtext
+            ? chanElement.logoDomainPath + $changeUrlBackslash(chanElement.logoPathMtext)
             : chanElement.logoPathMtext) +
             ');'
         "

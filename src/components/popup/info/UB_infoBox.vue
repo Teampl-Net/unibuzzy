@@ -2,7 +2,7 @@
     <div class="chanInfoBoxWrap">
         <div class="font20 fontBold w100P chanInfoBoxHeader">
           <div class="chanInfoBoxTitle">
-            <div class="fl chanInfoBoxLogo" :style="pChanInfo.logoDomainPath? `background-image: url(${pChanInfo.logoDomainPath + pChanInfo.logoPathMtext });`:`background-image: url(${pChanInfo.logoPathMtext });`"></div>
+            <div class="fl chanInfoBoxLogo" :style="pChanInfo.logoDomainPath? `background-image: url(${pChanInfo.logoDomainPath + $changeUrlBackslash(pChanInfo.logoPathMtext) });`:`background-image: url(${pChanInfo.logoPathMtext });`"></div>
             <!-- <img style="width: 20px; margin-right: 5px;" :src="pChanInfo.logoDomainPath? pChanInfo.logoDomainPath + pChanInfo.logoPathMtext:pChanInfo.logoPathMtext" alt=""> -->
             <p class="textOverdot textLeft mleft-05 chanInfoBoxTitle">{{ $changeText(pChanInfo.bdAreaNameMtext) }}</p>
           </div>

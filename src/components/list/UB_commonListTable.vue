@@ -17,7 +17,7 @@
       </colgroup> -->
       <tr v-for="(value, index) in propContentsList" class="contListTr" :key="index" :style="index === propContentsList.length - 1 ? 'border: none!important;' : ''" >
         <td class="contListTd" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}">
-          <div class="top5PushChanLogoImgWrap w100P fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'">
+          <div class="top5PushChanLogoImgWrap w100P fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + $changeUrlBackslash(value.logoPathMtext) : value.logoPathMtext) + ');'">
           </div>
         </td>
         <td class="top5PushTd" @click="goChanDetail(value)" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage', marginLeft: value.officialYn}">

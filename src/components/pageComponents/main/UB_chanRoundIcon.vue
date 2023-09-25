@@ -1,7 +1,7 @@
 <template>
     <div class="cursorP chanIconWrap" @click="goChannelMain">
         <div v-if="chanElement" class="chanIconBox"
-            :style="'background-image: url(' + (chanElement.logoDomainPath !== undefind ? chanElement.logoDomainPath + chanElement.logoPathMtext : chanElement.logoPathMtext) + ');' + `border: ${selectedYn? '2px solid #5F61BD;':'0.5px solid rgba(0, 0, 0, 0.1);'}`" >
+            :style="'background-image: url(' + (chanElement.logoDomainPath !== undefind ? chanElement.logoDomainPath + $changeUrlBackslash(chanElement.logoPathMtext) : chanElement.logoPathMtext) + ');' + `border: ${selectedYn? '2px solid #5F61BD;':'0.5px solid rgba(0, 0, 0, 0.1);'}`" >
             <div class="CWhiteBgColor chanIconImgWrap">
                 <img class="w100P fl" src="../../../assets/images/channel/ownerChannel_crown.svg" v-if="chanElement.ownerYn" alt="">
                 <img class="w100P fl" src="../../../assets/images/common/icon_setting_gear.svg" v-else alt="">

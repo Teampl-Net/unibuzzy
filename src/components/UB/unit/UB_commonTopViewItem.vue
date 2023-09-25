@@ -18,7 +18,7 @@
     <div v-if="propJustShowYn" class="stickerBox" :style="propPreStickerList && propPreStickerList.length > 0? 'height: calc(100% - 50px);' : 'height: calc(100%);'"></div>
     <div class="contentsCardHeaderArea">
       <div @click="goChannelMain()" :style="this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
-        <div class="chanImgBox" :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext : CONT_DETAIL.logoPathMtext) + ');'"></div>
+        <div class="chanImgBox" :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + $changeUrlBackslash(CONT_DETAIL.logoPathMtext) : CONT_DETAIL.logoPathMtext) + ');'"></div>
       </div>
       <div class="contentsDetailArea">
         <div class="contentsHeaderBox">

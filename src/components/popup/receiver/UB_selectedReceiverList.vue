@@ -56,7 +56,7 @@
       </div>
       <div v-for="(member, index) in teamList.memberList" :key='index'  class=" fl mright-1 selectedBookListWrap">
         <div class="middleBgColor fl imgCircle" >
-          <div v-if="member.domainPath || member.userProfileImg" :style="'background-image: url(' + (member.domainPath? member.domainPath + (member.userProfileImg ? member.userProfileImg : member.pathMtext) : member.userProfileImg ) + ');'"  class="memberPicImgWrap selectedMemImgWrap"></div>
+          <div v-if="member.domainPath || member.userProfileImg" :style="'background-image: url(' + (member.domainPath? member.domainPath + (member.userProfileImg ? $changeUrlBackslash(member.userProfileImg) : $changeUrlBackslash(member.pathMtext)) : member.userProfileImg ) + ');'"  class="memberPicImgWrap selectedMemImgWrap"></div>
           <div v-else class="memberPicImgWrap selectedMemImgWrap noImg"></div>
         </div>
         <p class="fl font15 commonBlack textOverdot w100P">{{this.GE_USER.userKey === member.userKey ? $t('EDIT_BOOK_NAME_ME') : this.$changeText(member.userDispMtext)}}</p>
