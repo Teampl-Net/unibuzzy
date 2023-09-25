@@ -9,16 +9,12 @@
   }
   </i18n>
   <template>
-  <div class="w100P pSide-1 chanCardWrap" :style="
-        $appType === 'UB'
-            ? 'background-color: rgba(255, 255, 255 ,0.5); border-radius: 10px;'
-            : ''
-        "
-        :class="{channelCardBox : $route.path === '/'}"
+  <div class="w100P pSide-1 chanCardWrap"
+  :class="{channelCardBox : $route.path === '/'}"
   >
     <div @click="goChannelMain(chanElement)" class="w100P channelCardArea">
         <div
-        v-if="$appType === 'UB' && pSelectedYn === true"
+        v-if="pSelectedYn === true"
         class="font11 selectedChannel"
         >
         Now
@@ -338,6 +334,8 @@ export default {
   padding-top: 15px;
   padding-bottom: 15px;
   margin-top: 5px;
+  background-color: rgba(255, 255, 255 ,0.5);
+  border-radius: 10px;
 }
 .selectedChannel {
   background-color: #fff;

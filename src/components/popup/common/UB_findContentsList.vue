@@ -57,12 +57,6 @@
           :placeholder="$t('SEAR_MSG_SELE_DATE')"
           titleFormat="YYYY-MM-DD"
         ></Datepicker>
-        <div class="stickerArea" v-if="mStickerList && mStickerList.length > 0 && $appType === 'D'">
-            <p class="fontBold font16 commonColor textLeft mtop-1 fl w-100P mbottom-05">{{ $t('SEAR_MSG_SELE_LABEL') }}</p>
-            <template v-for="(value, index) in mStickerList" :key="index" >
-                <gStickerLine class="stickerItem" v-if="value && contentsListTargetType !== 'fileBox'" @click="selectSticker(value)" :pSelectedYn="selectedSticker && value.stickerKey === selectedSticker.stickerKey" :pSticker="value" />
-            </template>
-        </div>
         <div v-if="tpGroupCode && tpGroupCode.length > 5" class="findPopMainSearchArea mtop-05">
             <select v-model="stateCode" class="searchInput selectInput font14 mtop-05" name="" id="statCodeKeyInput">
                 <option hidden value="0">{{ $t('SEAR_MSG_SELE_STATUS') }}</option>

@@ -25,68 +25,7 @@
 }
 </i18n>
 <template>
-<div v-if="mLoadYn && $appType === 'D'">
-  <div class="popUpBackgroundGray" @click="goNo"></div>
-  <div class="channelMenuWrap showModal-enter " :class="{'showModal-leave': mCloseEventYn === true  }" >
-
-    <div class="menuHeader newHeaderLine" :style="'height:' + (this.$STATUS_HEIGHT + 50)+ 'px; top: 0; padding-top: ' + (this.$STATUS_HEIGHT) + 'px'" >
-      <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
-      <p class="fontBold font20 fl editColor noWrap" >{{ $t('CHAN_MENU_TITLE_MENU') }}</p>
-      <img v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)" class="fr cursorP img-w23 mRight10" src="../../../assets/images/editChan/icon_setting.svg" @click="clickEditChanBtn"  />
-      <div v-else />
-    </div>
-
-    <div class="fl w100P h100P scrollOn" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'">
-      <div class="fl w100P mtop-2 dMenuDivide">
-        <div class="fl font14 cursorP commonColor fontBold textLeft w100P dMenuGroup" @click="boardDropDown">
-          <p class="mleft-1 fl font18 minWidth150">
-            <span class="font18 fl commonColor">{{ $t('COMMON_NAME_BOARD') }}</span>
-            <span class="fl mleft-05 commonColor font16 lineHeight26">({{this.BOARD_CONTENT_LIST.length}})</span>
-          </p>
-          <!-- <span class="fl mLeft-1"></span> -->
-          <!-- ({{this.BOARD_CONTENT_LIST.length}}) -->
-          <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
-          <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
-        </div>
-        <div class="boardBox boardBoxDown mleft-2 w100P scrollOn fl" ref="boardRef" :class="{boardBoxUp : mBoardDropEvenYn === false, boardBoxDown: mBoardDropEvenYn === true}" >
-          <menuBoardList :propBoardList="this.BOARD_CONTENT_LIST" @boardContentsClick="boardContentsClick" />
-        </div>
-      </div>
-      <div v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ((this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))" class="fl w100P" style="border-bottom: 2px solid #6768a730" :style="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
-        <div class="fl font14 cursorP commonColor fontBold  textLeft w100P dMenuGroup" @click="bookDropDown">
-          <p class="mleft-1 fl font18 minWidth150">
-            <span class="font18 fl commonColor">{{ $t('COMMON_NAME_ADDRBOOK') }}</span>
-            <span class="fl mleft-05 commonColor font16 lineHeight26">({{this.CABINET_LIST.length}})</span>
-          </p>
-          <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
-          <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
-        </div>
-        <div class="boardBox boardBoxDown mleft-2 w100P scrollOn fl" ref="addressBookGroupRef" :class="{boardBoxUp : mAddressDropEvenYn === false, boardBoxDown: mAddressDropEvenYn === true}" >
-          <addressBookList :propAddressBookList="CABINET_LIST" @openBookDetail='openBookDetailPop' />
-        </div>
-      </div>
-
-      <div v-if="!GE_USER.unknownYn && $appType !== 'UB'" class="fl w100P" style="">
-        <div class="fl font14 cursorP commonColor fontBold  textLeft w100P dMenuGroup" @click="convenienceFuncDropdown">
-          <p class="mleft-1 fl font18 commonColor" >{{ $t('CHAN_MENU_QUICK') }}</p>
-          <img v-show="mConvDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
-          <img v-show="mConvDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
-        </div>
-        <div class="boardBox boardBoxDown mleft-2 conviFuncTitle" ref="convenienceFunction" :class="{boardBoxUp : mConvDropEvenYn === false, boardBoxDown:mConvDropEvenYn === true}" >
-          <div v-for="(data, index) in mConvenienceFuncList" :key="index" @click="convenienceFunc(data.targetType)" class=" fl cursorP mleft-05 conviItemWrap">
-            <div class="fl mleft-05 textLeft font16 textOverdot conviItem" v-if="data.targetType !== 'writePush' || (data.targetType === 'writePush' && (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === true || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1)) " >
-              <span class="grayBlack fontBold mleft-05 w100P textOverdot textLeft fl" >
-                <img class="fl cursorP img-w18 mright-05" alt="작성 아이콘"  src="../../../assets/images/editChan/icon_write.svg">
-                {{data.title}}
-                </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<div v-else-if="mLoadYn && $appType === 'UB' && $route.path === `/chan/${CHANNEL_DETAIL.teamKey}`">
+<div v-if="mLoadYn && $route.path === `/chan/${CHANNEL_DETAIL.teamKey}`">
   <div class="popUpBackgroundGray" @click="goNo"></div>
   <div class="channelMenuWrap showModal-enter " :class="{'showModal-leave': mCloseEventYn === true  }">
     <div class="menuHeader newHeaderLine" :style="'height:' + (this.$STATUS_HEIGHT + 50)+ 'px; top: 0; padding-top: ' + (this.$STATUS_HEIGHT) + 'px'" >

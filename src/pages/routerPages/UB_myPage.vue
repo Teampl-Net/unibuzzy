@@ -81,15 +81,7 @@ export default {
       }
       // this.mContsList = this.initData.alimList.content
     } else {
-      if (this.$appType === 'UB') {
-        this.$emit('changeRouterPath', 'myPage')
-      } else {
-        this.$getRouterViewData('myPage').then((data) => {
-          this.mContsList = this.replaceArr(data.alimList.content)
-          this.mMainChanList = data.chanList
-          this.mMainMChanList = data.mChanList
-        })
-      }
+      this.$emit('changeRouterPath', 'myPage')
     }
     // var this_ = this
     /* this.getMainBoard().then(res => {

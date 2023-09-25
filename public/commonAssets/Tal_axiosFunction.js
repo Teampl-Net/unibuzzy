@@ -181,7 +181,7 @@ export const methods = {
     // if (user.indexOf('iPhone') > -1 || user.indexOf('Android') > -1) {
     //   mobileYn = true
     // }
-    if (this.$appType === 'UB' && this.$mobileYn) {
+    if (this.$mobileYn) {
       mobileYn = true
     }
     return mobileYn

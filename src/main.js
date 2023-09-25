@@ -196,13 +196,6 @@ app.config.globalProperties.$Vuex = Vuex
 app.config.globalProperties.$imageCompression = imageCompression
 app.config.globalProperties.$commonAxiosFunction = commonAxiosFunction
 app.config.globalProperties.$store = store
-if (localStorage.getItem('appType')) {
-  app.config.globalProperties.$appType = localStorage.getItem('appType')
-  app.config.globalProperties.$mobileYn = true
-} else {
-  app.config.globalProperties.$appType = 'UB'
-  app.config.globalProperties.$mobileYn = null
-}
 const user = store.getters['UB_USER/GE_USER']
 if (user.countryCode) {
   app.config.globalProperties.$locale = user.countryCode
