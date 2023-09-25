@@ -107,7 +107,6 @@
             }}
             </p>
             <div v-if="$route.path === '/chanList' && chanElement.creUserKey !== GE_USER.userKey" class="fr">
-              <!-- <p v-if="mFollowYn" @click.stop="preventDefault" class="fontBold" style="cursor:auto; border-radius:5px; padding:5px 10px; background-color:#ccc; color:#062BB5;"> Following </p> -->
               <p v-if="(chanElement && chanElement.followerKey && chanElement.followerKey !== null) || (chanElement && chanElement.D_CHAN_AUTH && chanElement.D_CHAN_AUTH.followerKey)" @click.stop="preventDefault" class="fontBold unfollowBtn"> Following </p>
               <p v-else @click.stop="saveFollower" class="fontBold cursorP followBtn"> + Follow </p>
             </div>
@@ -128,7 +127,6 @@
             <p @click="goChannelMain(chanElement)" class="font12 fr lightGray textLeft">{{ `${$changeDateFormat(chanElement.popCList[0].creDate)}` }}</p>
             <div ref="contentsBoxRef" class="fl popularContentsItem">
                 <p class="font14 textLeft fontBold" >{{ chanElement.popCList[0].title }}</p>
-                <!-- <pre class="fl font14 textLeft textOverdot" v-html="$setBodyLength(chanElement.popCList[0].bodyFullStr)"></pre> -->
             </div>
         </div>
       </div>
@@ -139,11 +137,9 @@
 export default {
   props: {
     chanElement: {},
-    pPopTitle: {},
     pSelectedYn: Boolean
   },
   created () {
-    // console.log('chanElement', this.chanElement)
     if (this.$route.path === '/chanList') {
       this.$nextTick(() => {
         this.showFollowYn()
@@ -157,12 +153,10 @@ export default {
     const this_ = this
     this.$nextTick(async () => {
       this_.addImgEvnt()
-      // this_.showContentMore()
     })
   },
   data () {
     return {
-      mSaveFollowerType: '',
       mDirectTeamKey: null,
       selectMemberObj: {},
       mFollowYn: false
@@ -232,24 +226,6 @@ export default {
       this.CHANNEL_DETAIL.teamKey = this.chanElement.teamKey
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
       await this.$addChanList(this.chanElement.teamKey)
-    },
-    stopFollowing () {
-      this.mFollowYn = false
-    },
-    async getMemberTypeList () {
-      var param = {}
-      param.teamKey = Number(this.$route.params.encodedTeamKey)
-      // param.cateItemKey = this.propCateItemKey
-      var memberTypeList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeList',
-        param: param
-      }, true)
-      if (memberTypeList.data.result) {
-        this.mMemberTypeList = memberTypeList.data.memberTypeList
-        if (this.mMemberTypeList.length > 0) {
-          this.selectMemberObj = this.mMemberTypeList[0]
-        }
-      }
     }
   },
   computed: {

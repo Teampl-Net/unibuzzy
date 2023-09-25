@@ -30,7 +30,6 @@ export default {
   created () {
     var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'modiMemoPop' + history.length
-    // console.log(history)
     history.push(this.popId)
     this.$store.commit('UB_HISTORY/updateStack', history)
 
@@ -60,9 +59,8 @@ export default {
         if (data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1) {
           data.push(current)
         }
-        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+        data = data.sort(function (a, b) {
           return b.memoKey - a.memoKey
-          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data
       }, [])
@@ -100,7 +98,6 @@ export default {
           this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [contDetail])
           this.backClick()
         }
-        console.log(result)
       } catch (error) {
         console.error(error)
       }
@@ -117,9 +114,6 @@ export default {
   watch: {
     pageUpdate (value, old) {
       this.backClick()
-      /* if (this.popId === hStack[hStack.length - 1]) {
-                this.closeSubPop()
-            } */
     }
   }
 }

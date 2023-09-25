@@ -8,7 +8,8 @@
     "ADD_COMMENT": "댓글 추가",
     "STATUS_CHECK_POP": "상태값 설정 후 댓글을 작성해주세요",
     "NO_SELECTED_MANAGER": "선택된 담당자가 없습니다.",
-    "APPLY": "적용하기"
+    "APPLY": "적용하기",
+    "STATUS_TITLE_STATUS": "상태설정"
   },
   "en": {
     "TASK_MANAGEMENT": "Task Management",
@@ -18,14 +19,13 @@
     "ADD_COMMENT": "Add Comment",
     "STATUS_CHECK_POP": "Add comment after setting its status.",
     "NO_SELECTED_MANAGER": "No selected manger yet.",
-    "APPLY": "Apply"
+    "APPLY": "Apply",
+    "STATUS_TITLE_STATUS": "Status Settings"
   }
 }
 </i18n>
 <template>
-  <!-- wh100P 삭제함-->
-  <div class="fl manageCodePopWrap" :ref="'stateCodePop' + this.contentsKey">
-    <!-- <div class="manageCodePopBg" @click="closeSelectPop"></div> -->
+  <div class="fl manageCodePopWrap" :ref="'stateCodePop' + contentsKey">
     <div class="manageCodePopBox">
       <div class="font18 commonColor fontBold manageCodePopHeader">
         {{ $t('TASK_MANAGEMENT') }}
@@ -36,7 +36,7 @@
         <p class="font15 textLeft fl fontBold w100P mtop-05 optionTitle">{{ $t('FOUND_DATE') }}</p>
         <div class="commonListContentBox cursorP font14 optionContBox">{{settingDate(alimDetail.creDate)}}</div>
         <p class="font15  textLeft fl fontBold w100P mtop-05 optionTitle">{{ $t('MANAGER') }}</p>
-        <div class="commonListContentBox cursorP font14 optionContBox" @click="openSelectMemberPop">{{selectedList.memberList.length> 0 ? this.$changeText(selectedList.memberList[0].userDispMtext) : $t('NO_SELECTED_MANAGER') }}</div>
+        <div class="commonListContentBox cursorP font14 optionContBox" @click="openSelectMemberPop">{{selectedList.memberList.length> 0 ? $changeText(selectedList.memberList[0].userDispMtext) : $t('NO_SELECTED_MANAGER') }}</div>
         <p class="font15 textLeft fl fontBold w100P mtop-05 optionTitle">{{ $t('DUE_DATE') }}</p>
         <Datepicker
           class="datePicker"
@@ -47,36 +47,23 @@
           :placeholder="dateHolder"
           titleFormat="YYYY-MM-DD"
         ></Datepicker>
-        <p class="font15 textLeft fl fontBold w100P mtop-1">상태설정</p>
+        <p class="font15 textLeft fl fontBold w100P mtop-1 optionTitle">{{ $t('STATUS_TITLE_STATUS') }}</p>
         <div class="w100P fl">
-          <div @click="selectCode(value)" class="cursorP stateCodeItem" :class="value.codeKey === selectedCodeObj.codeKey? 'selectedCode' : ''" v-for="(value, index) in this.codeList" :key="index" :style="statBackColor(value.codeKey, true)" >
-            <p :style="statBackColor(value.codeKey)" class="commonBlack mleft-05 font14 fontBold">{{this.$changeText(value.codeNameMtext)}}</p>
+          <div @click="selectCode(value)" class="cursorP stateCodeItem" :class="value.codeKey === selectedCodeObj.codeKey? 'selectedCode' : ''" v-for="(value, index) in codeList" :key="index" :style="statBackColor(value.codeKey, true)" >
+            <p :style="statBackColor(value.codeKey)" class="commonBlack mleft-05 font14 fontBold">{{$changeText(value.codeNameMtext)}}</p>
             <img :src="value.domainPath + value.pathMtext" alt="">
           </div>
         </div>
         <p class="font15 textLeft fl fontBold w100P mtop-05">{{ $t('ADD_COMMENT') }}</p>
-        <!-- <p class="font14 commonBlack textLeft">빈칸으로 작성시{{'"상태를 "' + this.$changeText(this.selectedCodeObj.codeNameMtext) + '"(으)로 변경합니다." 댓글이 추가됩니다.'}}</p> -->
         <div @click="changeInputText" ref="memoBodyStr" class="commonBlack font15 textLeft stateInputArea" v-if="selectedCodeObj.codeKey !== 0" :contenteditable="true"></div>
         <div ref="memoBodyStr" v-else class="commonBlack font15 textLeft activeInput" >
             {{ $t('STATUS_CHECK_POP') }}
         </div>
-        <!-- <span class="font15 commonBlack" v-show="selectedCodeObj.codeKey === 0">상태를 선택하고 댓글을 입력해주세요</span> -->
-        <!-- <div @click="selectCode(value)" :style="Number(index) === Number(this.codeList.length - 1)? 'border-bottom: none !important;':'border-bottom: 1px solid #ccc;'" :class="value.codeKey === selectedCodeObj.codeKey? 'selectedCode' : ''" v-for="(value, index) in this.codeList" :key="index" style="width: 100%; position: relative; border min-height: 30px; padding: 5px 0;">
-            <p class="commonBlack mleft-05 font16 fontBold">{{this.$changeText(value.codeNameMtext)}}</p>
-            <img v-if="value.codeKey === selectedCodeObj.codeKey" src="../../assets/images/common/Tal_checkImage.svg" style="width: 20px;position: absolute; right: 10px; top: 10px;" alt="">
-        </div> -->
       </div>
-      <!-- <div style="width: 100%; height: 40px; display: flex; justify-content: center; padding: 5px 20px; margin-top: 15px;">
-        <gBtnSmall @click="(currentCodeKey === this.selectedCodeObj.codeKey || (this.workDate.toDate) === '') === true ? '': changeContentsStat()" :style="(currentCodeKey === this.selectedCodeObj.codeKey || (this.workDate.toDate) === '') === true ? 'background: #F5F5F9!important; color: #A7A7A7!important; ': ''" style="width: 155px; height: 33px; padding: 0px 5px 0px 7px; "  btnTitle="적용하기" class="font16 mright-05"/>
-      </div> -->
       <div class="applyBtnWrap">
-        <gBtnSmall @click="(currentCodeKey === this.selectedCodeObj.codeKey && workDate.workToDate === null && selectedList.memberList.lenth === 0)? '': changeContentsStat()" :style="(currentCodeKey === this.selectedCodeObj.codeKey && workDate.workToDate === null && selectedList.memberList.lenth === 0) ? 'background: #F5F5F9!important; color: #A7A7A7!important; ': ''" :btnTitle="$t('APPLY')" class="font16 mright-05 applyBtn"/>
+        <gBtnSmall @click="(currentCodeKey === selectedCodeObj.codeKey && workDate.workToDate === null && selectedList.memberList.lenth === 0)? '': changeContentsStat()" :style="(currentCodeKey === selectedCodeObj.codeKey && workDate.workToDate === null && selectedList.memberList.lenth === 0) ? 'background: #F5F5F9!important; color: #A7A7A7!important; ': ''" :btnTitle="$t('APPLY')" class="font16 mright-05 applyBtn"/>
       </div>
-      <!-- <div style="width: 100%; height: 40px; padding: 5px 20px; margin-top: 15px;">
-        <gBtnSmall @click="closeSelectPop" btnThema="light" btnTitle="취소"/>
-        <gBtnSmall @click="changeContentsStat" btnTitle="적용" class="mright-05"/>
-      </div> -->
-      <receiverAccessList v-if="selectBookListShowYn" :oneMemberCanAddYn="true" :propData="{currentTeamKey: this.alimDetail.creTeamKey}" :chanAlimListTeamKey="this.alimDetail.creTeamKey" :itemType="shareActorItemType" @closeXPop='selectBookListShowYn=false' :parentList='parentList' :selectList='selectedList'  @sendReceivers='setSelectedList'/>
+      <receiverAccessList v-if="selectBookListShowYn" :oneMemberCanAddYn="true" :propData="{currentTeamKey: alimDetail.creTeamKey}" :chanAlimListTeamKey="alimDetail.creTeamKey" :itemType="shareActorItemType" @closeXPop='selectBookListShowYn=false' :parentList='parentList' :selectList='selectedList'  @sendReceivers='setSelectedList'/>
     </div>
   </div>
 </template>
@@ -98,25 +85,7 @@ export default {
       defaltMemoYn: true,
       dateHolder: 'Set a target date',
       parentList: { memberList: [], bookList: [] },
-      selectBookListShowYn: false,
-      colorList: [
-        '#FFCDD2',
-        '#F8BBD0',
-        '#E1BEE7',
-        '#D1C4E9',
-        '#C5CAE9',
-        '#BBDEFB',
-        '#B3E5FC',
-        '#B2EBF2',
-        '#FFCCBC',
-        '#FFE0B2',
-        '#FFECB3',
-        '#FFF9C4',
-        '#F0F4C3',
-        '#DCEDC8',
-        '#C8E6C9',
-        '#B2DFDB'
-      ]
+      selectBookListShowYn: false
     }
   },
   async created () {
@@ -169,7 +138,6 @@ export default {
                 }
               })
             }
-            // this.parentList.bookList.push(this.alimDetail.shareList[i])
           } else if (accessKind === 'T') {
             paramMap = new Map()
             paramMap.set('teamKey', this.teamKey)
@@ -203,11 +171,9 @@ export default {
   },
   props: {
     codeList: {},
-    currentWorker: {},
-    currentCodeKey: {},
     contentsKey: {},
     teamKey: {},
-    alimDetail: {} // 원만해서는 쓰지말기
+    alimDetail: {}
   },
   methods: {
     setSelectedList (datas) {
@@ -217,14 +183,11 @@ export default {
       this.selectBookListShowYn = false
       if (data.memberList) {
         var settingMemList = []
-        // memberCount = data.memberList.length
         for (let i = 0; i < data.memberList.length; i++) {
           var tempList = {}
           tempList.userDispMtext = this.$changeText(data.memberList[i].userDispMtext)
           tempList.userNameMtext = this.$changeText(data.memberList[i].userNameMtext)
           tempList.accessKey = data.memberList[i].accessKey
-          // eslint-disable-next-line no-debugger
-          debugger
           tempList.accessKind = 'U'
           tempList.cabinetKey = this.alimDetail.cabinetKey
           settingMemList.push(tempList)
@@ -234,23 +197,13 @@ export default {
       }
     },
     changeInputText () {
-      /* this.$refs.memoBodyStr.addEventListener('change', () => {
-        alert(true)
-      }) */
       this.defaltMemoYn = false
     },
-    /* changeDefaltText () {
-      if (this.selectedCodeObj.codeKey !== 0 && this.$refs.memoBodyStr && this.defaltMemoYn) {
-        this.$refs.memoBodyStr.innerHTML = '상태를 "' + this.$changeText(this.selectedCodeObj.codeNameMtext) + '"(으)로 변경합니다.'
-      }
-    }, */
     openSelectPop () {
       var history = this.$store.getters['UB_HISTORY/hStack']
       this.selectPopId = 'selectStateCodePop' + this.contentsKey
-      // this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
       history.push(this.selectPopId)
       this.$store.commit('UB_HISTORY/updateStack', history)
-      // this.selectPopShowYn = true
     },
     closeSelectPop () {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
@@ -271,7 +224,6 @@ export default {
     },
     selectCode (value) {
       this.selectedCodeObj = value
-      /* this.changeDefaltText() */
     },
     async changeContentsStat () {
       // eslint-disable-next-line no-new-object
@@ -287,12 +239,9 @@ export default {
           setOkYn = true
         }
         if (this.workDate.toDate !== undefined && this.workDate.toDate !== null && this.workDate.toDate !== '') {
-          // eslint-disable-next-line no-debugger
-          debugger
           var toDate = this.settingDate(this.workDate.toDate)
           param.workToDateStr = toDate
           param.memoHeaderStr += 'Due Date ' + this.settingDate(this.workDate.toDate)
-          // param.memoHeaderStr = '<p class="commonMemoWorkStatHeaderColor" style="font-weight: bold; text-align: left; font-size: 14px; width: 100%;">접수일 ' + this. + '<br></p>'
           setOkYn = true
         }
         if (this.selectedList.memberList.length > 0 && this.selectedList.memberList[0] && this.chanSelectedListYn) {
@@ -302,11 +251,6 @@ export default {
           setOkYn = true
         }
         param.memoHeaderStr += 'Changed<br></p>'
-        /* if (this.workDate.fromDate !== '') {
-          var fromDate = this.settingDate(this.workDate.fromDate)
-          param.workFromDateStr = fromDate
-          setOkYn = true
-        } */
         if (setOkYn) {
           param.memoBodyStr = this.$refs.memoBodyStr.innerHTML
           if (!param.memoBodyStr || param.memoBodyStr === '') {
@@ -315,14 +259,10 @@ export default {
           }
           param.contentsKey = this.contentsKey
           param.creTeamKey = this.teamKey
-          // eslint-disable-next-line no-debugger
-          debugger
           var result = await this.$commonAxiosFunction({
             url: '/sUniB/tp.updateWorkStat',
             param: param
           })
-          // eslint-disable-next-line no-debugger
-          debugger
           if (result.data.result === true) {
             var newParam = {}
             newParam.contentsKey = result.data.contents.contentsKey
@@ -330,22 +270,13 @@ export default {
             await this.$getContentsList(newParam).then(newReslute => {
               this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
             })
-            this.$showToastPop('업무 상태가 변경되었습니다.')
+            this.$showToastPop('Status has changed.')
 
             this.closeSelectPop()
           }
-
-          // eslint-disable-next-line no-new-object
-          /* var params = new Object()
-          params.contentsKey = result.contents.contentsKey
-          params.jobkindId = result.contents.jobkindId
-          var resultList = await this.$getContentsList(param)
-          var detailData = resultList.content[0]
-          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData]) */
         }
       } catch (error) {
         console.error(error)
-        // this.$showToastPop('일시적인 오류로 발송하지 못했습니다. 잠시 후 다시 시도해주세요.')
       } finally {
         this.$emit('closeXPop', true)
         this.sendLoadingYn = false
@@ -358,19 +289,6 @@ export default {
       if (date !== '') {
         return this.$dayjs(date).format('YYYY-MM-DD')
       }
-    },
-    openPushReceiverSelect () {
-      var param = {}
-      param.targetType = 'selectBookList'
-      param.targetKey = this.params.targetKey
-      param.teamKey = this.params.targetKey
-      param.teamNameMtext = this.params.teamNameMtext
-
-      var selectedList = this.receiverList
-      param.pSelectedList = selectedList
-
-      this.$emit('openPop', param)
-      // this.receiverPopYn = true
     },
     statBackColor (value, boxYn) {
       if (!value) {
@@ -394,18 +312,6 @@ export default {
     }
   },
   computed: {
-    GE_LOCALE () {
-      return this.$i18n.locale
-    },
-    DISP_CODE_VALUE () {
-      if (!this.codeList) return null
-      if (!this.currentCodeKey) {
-        return this.nullObj
-      }
-      var idx = this.codeList.findIndex((item) => item.codeKey === this.currentCodeKey)
-      if (idx === -1) return null
-      return this.codeList[idx]
-    },
     historyStack () {
       return this.$store.getters['UB_HISTORY/hRPage']
     },
@@ -417,15 +323,6 @@ export default {
     }
   },
   watch: {
-    DISP_CODE_VALUE: {
-      immediate: true,
-      handler (value, old) {
-        if (value) {
-          this.selectedCodeObj = value
-        }
-      },
-      deep: true
-    },
     pageUpdate (value, old) {
       this.closeSelectPop()
     },

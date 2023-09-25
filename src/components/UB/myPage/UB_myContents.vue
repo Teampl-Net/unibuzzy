@@ -8,7 +8,7 @@
         <!-- <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/> -->
       </div>
       <div class="pushListWrap fl scrollHidden">
-        <contentsList v-if="mContentsList && mContentsList.length > 0" :propContentsList="mContentsList" @goChanDetail="openPop" />
+        <contentsList v-if="mContentsList && mContentsList.length > 0" :propContentsList="mContentsList" @goContentsDetail="openPop" />
         <gEmpty v-else :tabName="currentTabName" contentName="전체" class="mtop-2"/>
       </div>
     </div>

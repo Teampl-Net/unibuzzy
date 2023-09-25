@@ -205,11 +205,6 @@
   </div>
 
   <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
-
-  <template v-if="mContRecvPopShowYn">
-    <div @click="this.$refs.recvListPop.closeXPop()" class="recvPopBg"></div>
-    <recvListPop ref="recvListPop" @closeXPop="closeRecvListPop" :initData="mActorListInitDataList"/>
-  </template>
   <!-- <div v-if="mStickerPopShowYn" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 8; background: #00000026;"></div> -->
   <!-- <gSelectsPop v-if="mStickerPopShowYn" @closeXPop="mStickerPopShowYn=false" style="" :pContentsEle="this.CONT_DETAIL"/> -->
 </template>
@@ -219,7 +214,6 @@ import { onMessage } from '../../../assets/js/webviewInterface'
 import statCodeComponent from '@/components/board/UB_manageStateCode.vue'
 import statCodePop from '@/components/board/UB_manageStateCodePop.vue'
 import attachFileListPop from '../../pageComponents/main/unit/UB_commonAttachFileListPop.vue'
-import recvListPop from '../../pageComponents/push/UB_contentsRecvListPop.vue'
 import userDetailPop from '../popup/UB_userDetailPop.vue'
 
 export default {
@@ -228,7 +222,6 @@ export default {
     memoCompo,
     statCodeComponent,
     statCodePop,
-    recvListPop,
     userDetailPop
   },
   props: {

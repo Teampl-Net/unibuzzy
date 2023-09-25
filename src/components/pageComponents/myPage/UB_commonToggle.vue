@@ -1,5 +1,5 @@
 <template>
-     <div class="toggle-switch">
+    <div class="toggle-switch">
         <input type="checkbox" :id="toggleId" v-model="toggle" @click="test1" />
         <label :for="toggleId" @click="toggleOnOff" >
         <span class="toggle-track" :style="toggle === false ? 'background-color: #cccccc !important; ' : ''"></span>
@@ -26,8 +26,6 @@ export default ({
   mounted () {
     if (this.isChecked) {
       document.getElementById(this.toggleId).checked = true
-      // var a =
-      // a.checked = true
     }
   },
   methods: {

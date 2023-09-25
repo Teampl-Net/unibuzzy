@@ -135,25 +135,18 @@
   <div v-if="mSelectBoardPopShowYn === true" class="selectBoardPopBg">
     <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" :boardDetail="mMoveContentsDetailValue" />
   </div>
-  <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
-  <template v-if="mContRecvPopShowYn">
-    <div class="recvPopBg" @click="this.$refs.recvListPop.closeXPop()"></div>
-    <recvListPop ref="recvListPop" @closeXPop="closeRecvListPop" :initData="mActorListInitDataList"/>
-  </template>
   <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
 </template>
 <script>
 import { onMessage } from '@/assets/js/webviewInterface'
 import statCodePop from '@/components/board/UB_manageStateCodePop.vue'
 import attachFileListPop from '@/components/pageComponents/main/unit/UB_commonAttachFileListPop.vue'
-import recvListPop from '@/components/pageComponents/push/UB_contentsRecvListPop.vue'
 import userDetailPop from '@/components/UB/popup/UB_userDetailPop.vue'
 
 export default {
   components: {
     attachFileListPop,
     statCodePop,
-    recvListPop,
     userDetailPop
   },
   props: {

@@ -6,12 +6,6 @@
 </template>
 <script>
 export default {
-  mounted () {
-  },
-  data: function () {
-    return { // 데이터 정의
-    }
-  },
   props: {
     btnTitle: String,
     btnThema: {}

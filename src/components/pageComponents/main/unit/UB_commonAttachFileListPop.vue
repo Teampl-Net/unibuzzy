@@ -2,7 +2,7 @@
   <!-- <div class="attachFilePopBg" @click="closePop()"/> -->
   <div class="attachFilePopWrap">
     <div class="attachFilePopArea">
-      <p class="textLeft font16 fontBold mbottom-1">{{ this.$t('COMM_TITLE_FILE_DOWNL') }}</p>
+      <p class="textLeft font16 fontBold mbottom-1">{{ $t('COMM_TITLE_FILE_DOWNL') }}</p>
       <img @click="closePop()" src="../../../../assets/images/common/grayXIcon.svg" class="cursorP closeBtnImg" alt="">
       <div class="fl w100P thinScrollBar attachFileListWrap">
         <p class="fl font14 fontBold w100P textLeft" v-if="mAttachFileList.D_ATTACH_FILE_LIST && mAttachFileList.D_ATTACH_FILE_LIST.length > 0">{{ $t('COMM_NAME_CONT_FILE') }}</p>
@@ -15,16 +15,6 @@
             <img @click="selectAttachedFile(value.myFilekey, value, index, 'F')" :src="value.myFilekey? require('../../../../assets/images/common/colorStarIcon.svg'):require('../../../../assets/images/common/starIcon.svg')" alt="">
           </div>
         </templete>
-        <!-- <p class="fl font14 fontBold w100P textLeft mtop-05" v-if="mAttachFileList.D_BODY_IMG_FILE_LIST && mAttachFileList.D_BODY_IMG_FILE_LIST.length > 0">{{ this.$t('COMM_SUBTITLE_BODY_IMG') }}</p>
-        <templete v-for="(value, index) in mAttachFileList.D_BODY_IMG_FILE_LIST" :key="index">
-          <div class="attachFileItem">
-            <img :src="$settingFileIcon(value.fileName)" alt="">
-            <a :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray cursorP textOverdot"  >
-            {{value.fileName}}
-            </a>
-            <img @click="selectAttachedFile(value.myFilekey, value, index, 'I')" :src="value.myFilekey? require('../../../../assets/images/common/colorStarIcon.svg'):require('../../../../assets/images/common/starIcon.svg')" alt="">
-          </div>
-        </templete> -->
       </div>
     </div>
   </div>

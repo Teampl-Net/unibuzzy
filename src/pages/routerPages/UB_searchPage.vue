@@ -31,7 +31,7 @@
   <template>
   <!--  -->
     <template v-if="mSearchModeYn === false">
-      <div class="w100P h100P" :style="$route.path === '/search' && $appType !== 'UB' ? `padding-top: ${(this.$STATUS_HEIGHT + 50)}px;`:'padding-top: 50px;'" style=" overflow:auto; padding-bottom: 60px;">
+      <div class="w100P h100P" style="padding-top: 50px; overflow:auto; padding-bottom: 60px;">
       <!-- <div class="w100P h100P" style=" overflow:auto; padding-bottom: 60px; padding-top: 50px;"> -->
         <div class="searchBodyTop pSide-1" style="overflow-x:hidden; background: white">
           <div class="fl w100P" style="padding-top:20px; padding-bottom:10px; height: 30px; float: left;">

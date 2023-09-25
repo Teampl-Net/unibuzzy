@@ -18,10 +18,10 @@
 </i18n>
 <template>
     <div class="w100P fl">
-      <div class="changePopBg" @click="this.$emit('no')"></div>
+      <div class="changePopBg" @click="$emit('no')"></div>
       <div class="changePopBox">
           <p class="fl textLeft commonColor font18 fontBold mleft-05 mbottom-05">{{ $t('USER_CHANGE_PROFILE_IMG') }}</p>
-          <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl w-100P" @changeTab= "changeTab" />
+          <gActiveBar  ref="activeBar" :tabList="activeTabList" class="fl w-100P" @changeTab= "changeTab" />
           <div v-if="viewTab === 'icon'" class="chanIconWrap">
             <div class="iconItem" @click="selectIcon(value.imageFilekey)" :class="selectedIconFileKey === value.imageFilekey ? 'selectedColor' : ''" v-for="(value, index) in teamImgList" :key="index">
               <img class="w100P" :src="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext"  alt="">
@@ -29,7 +29,6 @@
           </div>
           <div v-show="viewTab === 'img'" class="chanImgWrap">
             <div @click="imgClickToInput" class="cropperImgArea selectedImgBox">
-              <!-- <div @click="changeImgClick" style="width:80%; height:80%; min-height: 240px; cursor: pointer; border: 1px solid #ccc; overflow: auto; border-radius: 5px; margin-bottom: 10px; float: left;" ref="selectImgPopRef" class="cropperImgArea"> -->
               <img id="profileImg" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
             </div>
 
@@ -42,7 +41,7 @@
             </div>
           </div>
           <div class="closeBtnArea">
-            <gBtnSmall @click="this.$emit('noChange')" :btnTitle="$t('COMM_BTN_CANCEL')" btnThema="light"/>
+            <gBtnSmall @click="$emit('noChange')" :btnTitle="$t('COMM_BTN_CANCEL')" btnThema="light"/>
             <gBtnSmall @click="updateUserIcon" :btnTitle="$t('COMMON_BTN_OKAY')" class="mright-05" />
           </div>
         </div>
@@ -158,10 +157,7 @@ export default {
             this.previewImgUrl = src
             this.uploadFileList.push({ previewImgUrl: src, addYn: true, file: newFile })
 
-            // editorImgResize1(canvas.toDataURL('image/png', 0.8))
-            // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
             this.refImg = this.$refs.image
-            // // console.log(this.cropper)
 
             this.cropper = new Cropper(this.refImg, {
               viewMode: '1',
@@ -184,78 +180,11 @@ export default {
         this.previewImgUrl = null
       }
     },
-
-    async previewFile () {
-      // 선택된 파일이 있는가?
-      if (this.$refs.selectFile.files.length > 0) {
-        // 0 번째 파일을 가져 온다.
-        this.selectedImgPath = ''
-        this.selectedImgFilekey = ''
-        this.selectFile = null
-        this.previewImgUrl = null
-        this.cropperYn = true
-        // for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
-        this.selectFile = this.$refs.selectFile.files[0]
-        // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
-        // eslint-disable-next-line no-unused-vars
-        var tt = this.selectFile
-
-        let fileExt = this.selectFile.name.substring(
-          this.selectFile.name.lastIndexOf('.') + 1
-        )
-        // 소문자로 변환
-        fileExt = fileExt.toLowerCase()
-        if (
-          ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
-        ) {
-        // FileReader 를 활용하여 파일을 읽는다
-          var reader = new FileReader()
-          var thisthis = this
-          reader.onload = e => {
-            var image = new Image()
-            image.onload = async function () {
-              var result = await thisthis.$saveFileSize(image, thisthis.selectFile)
-              thisthis.previewImgUrl = result.path
-              thisthis.uploadFileList.push({ previewImgUrl: result.path, addYn: true, file: result.file })
-
-              // editorImgResize1(canvas.toDataURL('image/png', 0.8))
-              // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
-              thisthis.refImg = thisthis.$refs.image
-
-              thisthis.cropper = new Cropper(thisthis.refImg, {
-                viewMode: '1',
-                dragMode: 'move',
-                preview: '.cropperPreviewImg',
-                aspectRatio: 1 / 1,
-                cropBoxResizable: true,
-                wheelZoomRatio: 0.1,
-                movable: false
-              })
-              thisthis.cropper.replace(thisthis.previewImgUrl)
-            }
-            image.onerror = function () {
-
-            }
-            image.src = e.target.result
-            // this.previewImgUrl = e.target.result
-          }
-          reader.readAsDataURL(this.selectFile)
-          // await this.$editorImgResize(this.selectFile)
-        }
-        // }
-      } else {
-        return null
-        // this.selectFile = null
-        // this.previewImgUrl = null
-      }
-    },
     selectIcon (fileKey) {
       this.selectedIconFileKey = fileKey
     },
     changeTab (tab) {
       this.viewTab = tab
-    },
-    changeUserIcon () {
     },
     async getCodeList () {
       var resultList = null
@@ -264,13 +193,10 @@ export default {
       param.groupCode = 'U_ICON'
       resultList = await this.$getCodeList(param)
       this.teamImgList = resultList
-
-      // var a = this.teamImgList
     },
     async crop () {
       var cropImg = this.cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096, imageSmoothingEnabled: false, imageSmoothingQuality: 'high' })
       var dataURL = cropImg.toDataURL('image/jpeg', 0.8)
-      // const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
       const decodImg = atob(dataURL.split(',')[1])
       const array = []
       for (let i = 0; i < decodImg.length; i++) {
@@ -278,7 +204,6 @@ export default {
       }
       const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
       var newSelectFileName = this.selectFile.name
-      // newSelectFileName = newSelectFileName.replaceAll(' ', '')
       const files = new File([Bfile], this.convertFilename(newSelectFileName))
 
       return files
@@ -294,8 +219,6 @@ export default {
         for (var i = 0; i < this.uploadFileList.length; i++) {
           form = new FormData()
           if (this.cropperYn === true) this.uploadFileList[i].file = await this.crop()
-          // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
-          // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
           form.append('files[0]', (this.uploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
@@ -314,18 +237,11 @@ export default {
                 tempLocalStorage.userProfileImg = res.data[0].pathMtext
                 tempLocalStorage.picMfilekey = this.selectedImgFilekey
                 localStorage.setItem('sessionUser', JSON.stringify(tempLocalStorage))
-                // localStorage.getItem('sessionUser').userProfileImg = this.selectedImgPath
-                // localStorage.getItem('sessionUser').picMfilekey = this.selectedImgFilekey
-                // local.userProfileImg = this.selectedImgPath
-                // local.picMfilekey = this.selectedImgFilekey
-                // localStorage.setItem('sessionUser', JSON.parse(local))
               }
             })
             .catch(error => {
               console.log(error)
             })
-          /* } */
-          // var selFile = this.selectFileList[i].file
         }
       } else {
         this.confirmPopShowYn = true
@@ -334,13 +250,10 @@ export default {
       return true
     },
     async updateUserIcon () {
-      // KO$^$수망고$#$EN$^$sumango
       var param = {}
       var user = {}
-      // param.user = this.userInfo
       user.userKey = this.GE_USER.userKey
       if (this.viewTab === 'img') {
-        // localStorage.setItem('sessionUser').userProfileImg = this.selectedImgPath
         if (this.selectedImgFilekey === '' || this.selectedImgFilekey === undefined) {
           const res = await this.formSubmit()
           if (!res) return
@@ -357,12 +270,7 @@ export default {
         this.$store.commit('UB_USER/MU_USER', result.data.userInfo)
         localStorage.setItem('sessionUser', JSON.stringify(result.data))
         localStorage.setItem('sessionUser', JSON.stringify(result.data))
-        // this.$router.replace({ path: '/' })
         this.$emit('closeXPop')
-        // this.userInfo.userDispMtext =  this.$changeText(param.user.userDispMtext)
-        // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
-      } else {
-
       }
     }
   }

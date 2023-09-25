@@ -15,8 +15,6 @@
 <template>
   <div class="fl headerBottom unknownPopWrap">
     <div class="fl fontBold font14 unknownPopHeader">
-      <!-- <span class="commonLightColor textOverdot fontBold fl" style="max-width: 120px;" >{{ this.$changeText(pContDetail.nameMtext) }}</span> -->
-      <!-- <span style="text-shadow: 2px 2px 9px black;" class="fl fontBold w100P">더알림을 더 돌아다녀보고 싶으시면 로그인하세요!</span> -->
     </div>
     <div class="popHeader fl textRight w100P closeIconWrap">
       <img class="fr cursorP" src="../../../assets/images/common/popup_close.png" @click="pClosePop ? pClosePop() : backClick" />
@@ -26,41 +24,26 @@
       <div class="font25 headerFont commonColor fl mright-05">{{ $t('COMMON_NAME_APP') }}</div>
     </div>
     <div class="fl w100P unknownPopBody">
-      <!-- <div class="fl textLeft font16" style="width: 80%;"> -->
-        <!-- <span class="fontBold fl w100P">{{ this.$changeText(pContDetail.nameMtext) }}채널뿐 아니라,</span> -->
-      <!-- </div> -->
-      <!-- <div class="fl textLeft font16" style="width: 80%; margin-bottom: 20px;">나에게 필요할 채널과 게시판 더 보고 싶다면?</div> -->
       <div class="fl textLeft font16 textCenter fontBold unknownText">{{ $t('LOGIN_MSG_INTO_POP') }}<br>{{ $t('LOGIN_MSG_INTO_POP2') }}</div>
       <div class="fl w100P unknownLoginBtnWrap">
         <div class="fl font20 cursorP CDeepBgColor CDeepColorBorder textCenter fontBold unknownLoginBtn" @click="goLoginPage">{{ $t('LOGIN_MSG_BTN') }}</div>
-        <!-- <div class="fl font22 cursorP CDeepBgColor CDeepColorBorder textCenter fontBold" style="color: white; height: 50px; border-radius: 5px; line-height: 50px; width: 90%;" @click="tableYn = true">소셜 로그인 하러가기</div> -->
       </div>
     </div>
-    <!-- <div class="fl w100P textCenter" style="height: 100px; border-top: 1px solid #ccc; padding: 10px; display: flex; justify-content: center; flex-direction: column; align-items: center;">
-      <span class="w100P fl fontBold" style="height: 30px; line-height: 30px;">더알림 계정이 아직 없다면?</span>
-      <span class="w100P fl" style="height: 30px; line-height: 30px;">소셜 계정으로 쉽고 빠르게 <span class="fontBold commonColor">Sign up</span></span>
-    </div> -->
   </div>
 </template>
 <script>
 export default {
   props: {
     pClosePop: {}
-    // pContDetail: {}
-  },
-  data () {
-    return {
-      // isMobile: /Mobi/i.test(window.navigator.userAgent)
-    }
   },
   methods: {
     goLoginPage () {
-      var isMobile = /Mobi/i.test(window.navigator.userAgent)
-      if (isMobile && (localStorage.getItem('nativeYn') === false || localStorage.getItem('nativeYn') === 'false')) {
-        window.location.href = 'https://thealim.page.link/LOGIN'
-      } else {
-        this.$router.push({ path: '/policies' })
-      }
+      // var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      // if (isMobile && (localStorage.getItem('nativeYn') === false || localStorage.getItem('nativeYn') === 'false')) {
+      //   window.location.href = 'https://thealim.page.link/LOGIN'
+      // } else {
+      this.$router.push({ path: '/policies' })
+      // }
     },
     backClick () {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
