@@ -7,44 +7,6 @@
         <gReceiveCard :propData="data" option="SELE"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
     </div>
 </div>
-    <!-- <div v-if="false" style="width: 100%; height: 100%;"  class="">
-        <div style="width: 100%; padding: 0 5px; height: calc(100% - 60px); overflow: hidden scroll;">
-            <div v-for="(data, index) in bookList" :key="index">
-                <div class=" fl" style="width: 100%; border-bottom:1px solid #ddd; padding: 0.7rem 0;">
-                    <div @click="clickList(data)" style="width: calc(100% - 60px); height: 100%;" class="fl">
-                        <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
-                            <img src="../../../assets/images/channel/channer_addressBook.svg" style="width:30px" alt="">
-                        </div>
-                        <p class="fl font15 commonBlack  receiverTeamText">{{this.$changeText(data.cabinetNameMtext)}}</p>
-                    </div>
-
-                    <div @click="addSelectedList(data, index, 'C')" class="fr mright-1" style="position: relative; height: 100%;">
-
-                        <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn">
-                        <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
-                    </div>
-
-                </div>
-            </div>
-
-            <div v-for="(data, index) in memberList" :key="index">
-                <div @click="clickList(data)" class=" fl" style="width: 100%; border-bottom:1px solid #ddd; padding: 0.7rem 0;">
-                    <div style="width: calc(100% - 60px); height: 100%;" class="fl">
-                        <div style="width:40px; height:100%; line-height:40px" class="fl mright-05">
-                            <img src="../../../assets/images/main/main_subscriber.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 10px;" class="fl"/>
-                        </div>
-                        <p class="fl font15 commonBlack  receiverTeamText">{{this.$changeText(data.userDispMtext || data.userDispMtext)}}</p>
-                    </div>
-
-                    <div @click="addSelectedList(data, index, 'U')" class="fr mright-1" style="position: relative; height: 100%;">
-                        <img style="width: 30px;" src="../../../assets/images/common/plusoutline.svg" alt="" v-if="!data.selectedYn">
-                        <img style="width: 30px;" src="../../../assets/images/common/Tal_checkImage.svg" alt="" v-else>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
 </template>
 
 <script>
@@ -106,17 +68,41 @@ export default {
         }
     },
     watch: {
-        historyStack (value, old) {
-            var hStack = this.$store.getters['UB_HISTORY/hStack']
-            if (this.popId === hStack[hStack.length - 1]) {
-            var history = this.$store.getters['UB_HISTORY/hStack']
-            var removePage = history[history.length - 1]
-            history = history.filter((element, index) => index < history.length - 1)
-            this.$store.commit('UB_HISTORY/setRemovePage', removePage)
-            this.$store.commit('UB_HISTORY/updateStack', history)
-            this.closeXPop()
-            }
-        }
+      selectBookNList: {
+        immediate: true,
+        handler (val) {
+          if (this.selectBookNList.memberList) {
+              if (this.selectBookNList.memberList.length > 0) {
+                  this.memberList = [...this.selectBookNList.memberList]
+                  for (var i = 0; i < this.memberList.length; i++) {
+                    this.memberList[i].jobkindId = 'USER'
+                    this.memberList[i].selectedYn = false
+                  }
+              }
+          }
+          if (this.selectBookNList.bookList) {
+              if (this.selectBookNList.bookList.length > 0) {
+                  this.bookList = [...this.selectBookNList.bookList]
+                  for (var i = 0; i < this.bookList.length; i++) {
+                    this.bookList[i].jobkindId = 'BOOK'
+                    this.bookList[i].selectedYn = false
+                  }
+              }
+          }
+        },
+        deep: true
+      },
+      historyStack (value, old) {
+          var hStack = this.$store.getters['UB_HISTORY/hStack']
+          if (this.popId === hStack[hStack.length - 1]) {
+          var history = this.$store.getters['UB_HISTORY/hStack']
+          var removePage = history[history.length - 1]
+          history = history.filter((element, index) => index < history.length - 1)
+          this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+          this.$store.commit('UB_HISTORY/updateStack', history)
+          this.closeXPop()
+          }
+      }
     },
     data () {
         return {

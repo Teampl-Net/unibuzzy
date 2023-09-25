@@ -119,12 +119,6 @@ export default {
       ]
     }
   },
-  updated () {
-    /* this.changeDefaltText() */
-    /* if (this.$refs.memoBodyStr && this.currentCodeKey && this.selectedCodeObj.codeKey !== 0) {
-      this.$refs.memoBodyStr.innerHTML = '"상태를 "' + this.$changeText(this.selectedCodeObj.codeNameMtext) + '"(으)로 변경합니다."'
-    } */
-  },
   async created () {
     this.openSelectPop()
     if (this.alimDetail) {
@@ -138,7 +132,7 @@ export default {
           var accessKind = this.alimDetail.shareList[i].accessKind
           if (accessKind === 'U') {
             this.parentList.memberList.push(this.alimDetail.shareList[i])
-          } else if (accessKind === 'C' || accessKind === 'M') {
+          } else if (accessKind === 'C' || accessKind === 'M' || accessKind === 'F') {
             if (this.alimDetail.shareList[i].muserList && this.alimDetail.shareList[i].muserList.length > 0) {
               for (var s = 0; s < this.alimDetail.shareList[i].muserList.length; s++) {
                 var shareUser = this.alimDetail.shareList[i].muserList[s]

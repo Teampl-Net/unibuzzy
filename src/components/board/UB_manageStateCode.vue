@@ -10,7 +10,7 @@ export default {
   },
   data () {
     return {
-      selectedList: { memberList: [], bookList: [] },
+      mSelectedList: { memberList: [], bookList: [] },
       selectPopShowYn: false,
       selectPopId: null,
       workDate: { toDate: '', fromDate: '' },
@@ -101,7 +101,7 @@ export default {
           tempList.cabinetKey = this.alimDetail.cabinetKey
           settingMemList.push(tempList)
         }
-        this.selectedList.memberList = settingMemList
+        this.mSelectedList.memberList = settingMemList
       }
     },
     changeInputText () {
@@ -171,10 +171,10 @@ export default {
             setOkYn = true
           }
         }
-        if (this.selectedList.memberList.length > 0 && this.selectedList.memberList[0]) {
-          param.workUserKey = this.selectedList.memberList[0].accessKey
-          param.workUserName = this.selectedList.memberList[0].userDispMtext
-          param.memoHeaderStr += 'Manager' + this.$changeText(this.selectedList.memberList[0].userDispMtext)
+        if (this.mSelectedList.memberList.length > 0 && this.mSelectedList.memberList[0]) {
+          param.workUserKey = this.mSelectedList.memberList[0].accessKey
+          param.workUserName = this.mSelectedList.memberList[0].userDispMtext
+          param.memoHeaderStr += 'Manager' + this.$changeText(this.mSelectedList.memberList[0].userDispMtext)
           setOkYn = true
         }
         // param.memoHeaderStr += '(으)로 변경<br></p>'

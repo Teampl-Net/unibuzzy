@@ -36,23 +36,6 @@ export default {
   },
   created () {
     this.memberList = this.parentList
-
-    // if (!this.selectList) {
-    //   // console.log(this.propData)
-    //   var paramMap = new Map()
-    //   paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
-    //   paramMap.set('sysCabinetCode', 'USER')
-    //   paramMap.set('adminYn', true)
-    //   var result = await this.$commonAxiosFunction({
-    //       url: '/sUniB/tp.getTeamMenuList',
-    //       param: Object.fromEntries(paramMap)
-    //   })
-    //   this.bookList = result.data
-    //   for(var i = 0; i < this.bookList.length; i ++) {
-    //       var changeT = this.bookList[i].cabinetNameMtext
-    //       this.bookList[i].cabinetNameMtext = this.$changeText(changeT)
-    //   }
-    // }
   },
   components: { selectedListCompo, selectBookNMemberList },
   data () {
