@@ -28,36 +28,34 @@
 <div v-if="mLoadYn && $route.path === `/chan/${CHANNEL_DETAIL.teamKey}`">
   <div class="popUpBackgroundGray" @click="goNo"></div>
   <div class="channelMenuWrap showModal-enter " :class="{'showModal-leave': mCloseEventYn === true  }">
-    <div class="menuHeader newHeaderLine" :style="'height:' + (this.$STATUS_HEIGHT + 50)+ 'px; top: 0; padding-top: ' + (this.$STATUS_HEIGHT) + 'px'" >
+    <div class="menuHeader newHeaderLine" :style="'height:' + ($STATUS_HEIGHT + 50)+ 'px; top: 0; padding-top: ' + ($STATUS_HEIGHT) + 'px'" >
       <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
       <p class="fontBold font20 fl editColor noWrap">{{ $t('CHAN_MENU_TITLE_MENU') }}</p>
       <div />
     </div>
-    <div class="fl w100P menuContWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'">
+    <div class="fl w100P menuContWrap" :style="'padding-top:' + ($STATUS_HEIGHT )+ 'px'">
       <div>
         <div class="fl w100P mtop-2 dMenuDivide">
           <div class="fl font14 cursorP commonColor fontBold textLeft w100P dMenuGroup" @click="boardDropDown">
             <p class="mleft-1 fl font18 minWidth150">
               <span class="font18 fl commonColor">{{ $t('COMMON_NAME_BOARD') }}</span>
-              <span class="fl mleft-05 commonColor font16 lineHeight26">({{this.BOARD_CONTENT_LIST.length}})</span>
+              <span class="fl mleft-05 commonColor font16 lineHeight26">({{BOARD_CONTENT_LIST.length}})</span>
             </p>
-            <!-- <span class="fl mLeft-1"></span> -->
-            <!-- ({{this.BOARD_CONTENT_LIST.length}}) -->
-            <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
-            <img v-show="this.BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
+            <img v-show="BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
+            <img v-show="BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
           </div>
           <div class="boardBox boardBoxDown mleft-2 scrollOn w100P fl" ref="boardRef" :class="{boardBoxUp : mBoardDropEvenYn === false, boardBoxDown: mBoardDropEvenYn === true}" >
-            <menuBoardList :propBoardList="this.BOARD_CONTENT_LIST" @boardContentsClick="boardContentsClick" />
+            <menuBoardList :propBoardList="BOARD_CONTENT_LIST" @boardContentsClick="boardContentsClick" />
           </div>
         </div>
-        <div v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ((this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))" class="fl w100P" style="border-bottom: 2px solid #6768a730" :style="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
+        <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ((CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))" class="fl w100P" style="border-bottom: 2px solid #6768a730" :style="(CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
           <div class="fl font14 cursorP commonColor fontBold  textLeft w100P dMenuGroup" @click="bookDropDown">
             <p class="mleft-1 fl font18 minWidth150">
               <span class="font18 fl commonColor">{{ $t('CHAN_MENU_TITLE_ADDR') }}</span>
-              <span class="fl mleft-05 commonColor font16 lineHeight26">({{this.CABINET_LIST.length}})</span>
+              <span class="fl mleft-05 commonColor font16 lineHeight26">({{CABINET_LIST.length}})</span>
             </p>
-            <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
-            <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
+            <img v-show="CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
+            <img v-show="CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
           </div>
           <div class="boardBox boardBoxDown mleft-2 scrollOn w100P fl" ref="addressBookGroupRef" :class="{boardBoxUp : mAddressDropEvenYn === false, boardBoxDown: mAddressDropEvenYn === true}" >
             <addressBookList :propAddressBookList="CABINET_LIST" @openBookDetail='openBookDetailPop' />
@@ -65,7 +63,7 @@
         </div>
       </div>
     </div>
-    <div class="w100P textRight fontBold cursorP mngChanBtn" v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)">
+    <div class="w100P textRight fontBold cursorP mngChanBtn" v-if="(CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)">
       <gBtnSmall btnTitle=" Manager Settings" class="" @click="clickEditChanBtn" />
     </div>
   </div>
@@ -92,21 +90,18 @@ export default {
     return {
       mChanAlimListTeamKey: 0,
       mScreenHeight: 0,
-      mOwnerYn: false,
-      mAdminYn: false,
       mAddressBookList: [],
       mBoardContentsList: [],
       mBoardDropEvenYn: true,
       mAddressDropEvenYn: true,
-      mConvDropEvenYn: true,
       mCloseEventYn: false,
-      mConvenienceFuncList: [{ title: '알림작성', targetType: 'writeContents' }, { title: '게시글작성', targetType: 'writeBoard' }],
-      mLoadYn: false,
-      parentYn: '',
-      pOpenChanMenuYn: Boolean
+      mLoadYn: false
     }
   },
-  components: { addressBookList, menuBoardList },
+  components: {
+    addressBookList,
+    menuBoardList
+  },
   methods: {
     readyFunction () {
       var history = this.$store.getters['UB_HISTORY/hStack']
@@ -122,57 +117,10 @@ export default {
           this.mLoadYn = true
         })
       })
-      if (this.CHANNEL_DETAIL) {
-        if (this.CHANNEL_DETAIL.D_CHAN_AUTH) {
-          if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn) {
-            this.mConvenienceFuncList = [{ title: this.$t('CHAN_MENU_WRITE_POST'), targetType: 'writeBoard' }]
-          }
-        }
-      }
-    },
-    /** 편리기능에 있는 버튼 클릭 함수 입니다.  */
-    async convenienceFunc (targetType) {
-      var param = {}
-      param.targetType = targetType
-      if (targetType === 'writeContents') {
-        if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
-          this.$showToastPop(this.$t('COMM_MSG_MEMB_NEED'))
-          // this.$checkDeleteHistory('bottomWriteSheets')
-          var history = this.$store.getters['UB_HISTORY/hStack']
-          var removePage = history[history.length - 1]
-          history = history.filter((element, index) => index < history.length - 1)
-          await this.$store.commit('UB_HISTORY/setRemovePage', removePage)
-          await this.$store.commit('UB_HISTORY/updateStack', history)
-
-          this.$emit('openChanMsgPop')
-          return
-        }
-        param.targetType = 'writeContents'
-        param.contentsJobkindId = 'ALIM'
-      } else if (targetType === 'writeBoard') {
-        param.targetType = 'writeContents'
-        param.contentsJobkindId = 'BOAR'
-        // 게시글 작성의 경우 작성하는 게시판을 지정해야하기에 Yn을 추가하였습니다.
-        param.selectBoardYn = true
-      }
-      param.teamKey = this.propData.teamKey || this.propData.targetKey
-      param.targetKey = this.mChanAlimListTeamKey
-      param.currentTeamKey = this.mChanAlimListTeamKey
-
-      history = this.$store.getters['UB_HISTORY/hStack']
-      removePage = history[history.length - 1]
-      history = history.filter((element, index) => index < history.length - 1)
-      await this.$store.commit('UB_HISTORY/setRemovePage', removePage)
-      await this.$store.commit('UB_HISTORY/updateStack', history)
-      this.$emit('openItem', param)
-      this.mCloseEventYn = true
-
-      this.$emit('closePop')
     },
     async clickEditChanBtn () {
       if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn) {
         this.$showToastPop(this.$t('CHAN_MSG_NOFOLLOW'))
-        // this.$checkDeleteHistory('bottomWriteSheets')
         var history = this.$store.getters['UB_HISTORY/hStack']
         var removePage = history[history.length - 1]
         history = history.filter((element, index) => index < history.length - 1)
@@ -190,10 +138,6 @@ export default {
       param.teamNameMtext = this.teamName()
 
       this.$emit('openItem', param)
-    },
-    refresh () {
-      this.getTeamCabList()
-      this.getTeamMenuList()
     },
     openBookDetailPop (clickAddressBookData) {
       var params = {}
@@ -253,32 +197,10 @@ export default {
         })
       }
     },
-    mConvenienceFuncListLength () {
-      if (this.mConvenienceFuncList) {
-        var mConvenienceFuncListLength = this.mConvenienceFuncList.length === 0 ? 1 : this.mConvenienceFuncList.length * 45 + 10
-        this.$nextTick(() => {
-          if (this.$refs.convenienceFunction) {
-            this.$refs.convenienceFunction.style.setProperty('--menuHeight', (mConvenienceFuncListLength + 'px'))
-          }
-        })
-      } else {
-        this.$nextTick(() => {
-          if (this.$refs.convenienceFunction) {
-            this.$refs.convenienceFunction.style.setProperty('--menuHeight', ('30px'))
-          }
-        })
-      }
-    },
     boardDropDown () {
       if (this.BOARD_CONTENT_LIST.length !== 0) {
         this.boardListLength()
         if (this.mBoardDropEvenYn) { this.mBoardDropEvenYn = false } else { this.mBoardDropEvenYn = true }
-      }
-    },
-    convenienceFuncDropdown () {
-      if (this.mConvenienceFuncList.length !== 0) {
-        this.mConvenienceFuncListLength()
-        if (this.mConvDropEvenYn) { this.mConvDropEvenYn = false } else { this.mConvDropEvenYn = true }
       }
     },
     /** 화면상 주소록의 높이를 mAddressBookList.length를 통해 구해주는 함수 */
@@ -304,14 +226,6 @@ export default {
         if (this.mAddressDropEvenYn) { this.mAddressDropEvenYn = false } else { this.mAddressDropEvenYn = true }
       }
     },
-    goPage (link) {
-      this.$emit('goPage', link)
-    },
-    openPop (link) {
-      var params = {}
-      params.targetType = link
-      this.$emit('openPop', params)
-    },
     async goNo () {
       this.mCloseEventYn = true
       var history = this.$store.getters['UB_HISTORY/hStack']
@@ -320,17 +234,6 @@ export default {
       await this.$store.commit('UB_HISTORY/setRemovePage', removePage)
       await this.$store.commit('UB_HISTORY/updateStack', history)
       this.$emit('closePop')
-    },
-    editChanMenu () {
-      var param = {}
-      param.targetType = 'editBoard'
-      param.popHeaderText = this.$t('MANA_NAME_BOARD')
-      param.currentTeamKey = this.mChanAlimListTeamKey
-      param.teamKey = this.mChanAlimListTeamKey
-
-      param.teamNameMtext = this.teamName()
-
-      this.$emit('openPop', param)
     },
     async boardContentsClick (boardListData) {
       var resultMainData = await this.$getBoardMainData(boardListData)
@@ -351,21 +254,6 @@ export default {
       // 채널에서 들어왔는지, 링크나 메인에서 바로 들어왔는지 구분
       goBoardMainParam.chanYn = true
       this.$emit('openItem', goBoardMainParam)
-      // var boardDetail = result
-
-      // var params = {}
-      // params.targetType = 'boardMain'
-      // if (this.propData.value) {
-      //   params.nameMtext = this.propData.value.nameMtext
-      //   params.ownerYn = this.propData.value.ownerYn
-      // } else {
-      //   params.nameMtext = this.propData.nameMtext
-      // }
-      // params.currentTeamKey = this.mChanAlimListTeamKey
-      // params.targetKey = data.cabinetKey
-      // params.value = data
-
-      // this.$emit('openItem', params)
     },
     teamName () {
       var teamName
@@ -405,30 +293,14 @@ export default {
         return this.mBoardContentsList
       }
       return this.mBoardContentsList
-    },
-    GE_LOCALE () {
-      return this.$i18n.locale
     }
-
   },
   watch: {
-    GE_LOCALE: {
-      immediate: true,
-      handler (value) {
-        this.mConvenienceFuncList = [{ title: this.$t('CHAN_MENU_SEND_NOTI'), targetType: 'writeContents' }, { title: this.$t('CHAN_MENU_WRITE_POST'), targetType: 'writeBoard' }]
-      },
-      deep: true
-    },
     pageUpdate (value, old) {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
       if (this.$setParentsId(this.pPopId, 'chanMenu' + this.mChanAlimListTeamKey) === hStack[hStack.length - 1]) {
         this.goNo()
       }
-    },
-    historyStack (value, old) {
-    },
-    CHANNEL_DETAIL () {
-      console.log(this.CHANNEL_DETAIL)
     }
   }
 }
@@ -436,7 +308,6 @@ export default {
 
 <style scoped>
 .menuHeader {
-  /* padding: 0.5rem 0; */
   width: 100%;
   border-bottom: 1px solid #fff;
   border-top-left-radius: 10px;

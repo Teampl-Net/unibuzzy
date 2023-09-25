@@ -20,7 +20,7 @@
       <div id="chanListWrap" ref="chanListWrap" class="chanItemBox" :style="calcPaddingTop" @mousedown="testTwo" @mouseup="testTr">
           <gEmpty class="mTop50" :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" />
           <template v-for="(chanEle, index) in GE_DISP_TEAM_LIST" :key="index">
-            <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
+            <gChannelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             <!-- <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @scrollMove="scrollMove" /> -->
             <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 3" @triggerIntersected="loadMore" class="fl wich" />
           </template>

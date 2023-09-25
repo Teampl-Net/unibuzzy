@@ -26,7 +26,7 @@
         <template v-else>
           <div class="mbottom-1" v-for="town in mSortList" :key="town.townTeamKey">
             <div class="textLeft fontBold townTitle">{{ $changeText(town.townNameMtext) }}</div>
-            <channelCard v-for="(chanEle, index) in town.favList" :key="index" class="moveBox chanRow mTop10" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
+            <gChannelCard v-for="(chanEle, index) in town.favList" :key="index" class="moveBox chanRow mTop10" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
           </div>
         </template>
       </div>

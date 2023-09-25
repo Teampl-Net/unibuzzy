@@ -34,10 +34,6 @@
                     <img @click="closeXPop" src="../../../assets/images/common/popup_close.png" alt="">
                 </div>
                 <div class="writeSamplePopBody">
-                    <!-- <div style="width: 100%; height: 35px; float: left; position: relative;">
-                        <p class="font16 fontBold commonColor textLeft" style="margin-top: 7px;">{{propsInnerHtml? '수정' : '작성'}}하기</p>
-                        <gBtnSmall @click="addSample" btnTitle="저장" style="position: absolute; right: 5px; top: 0px; "/>
-                    </div> -->
                     <div class="writeSamplePopBox">
                         <div class="writeBoxInputWrap">
                             <label  for="sampleTitleMtext" class="font15 fontBold grayBlack textLeft fl">{{ $t('SAMP_TITLE_NAME') }}</label>
@@ -51,8 +47,8 @@
                                 <img src="../../../assets/images/common/arrowBackIcon.svg" alt="">
                             </div>
                             <div ref="scrollIconWrap" class="writeSampleScrollWrap">
-                                <div class="h100P fl" :style="'width: +' + (60 * smapleIconList.length) + 'px;'">
-                                    <div class="writeSampleImgItem" @click="this.makeSampleIconFilekey = value.imageFilekey" v-for="(value, index) in smapleIconList" :style="this.makeSampleIconFilekey === value.imageFilekey ? 'background: #F1F1FF;' : ''" :key="index">
+                                <div class="h100P fl" :style="'width: +' + (60 * sampleIconList.length) + 'px;'">
+                                    <div class="writeSampleImgItem" @click="makeSampleIconFilekey = value.imageFilekey" v-for="(value, index) in sampleIconList" :style="makeSampleIconFilekey === value.imageFilekey ? 'background: #F1F1FF;' : ''" :key="index">
                                         <img class="w100P fl" :src="value.domainPath + value.pathMtext" alt="">
                                     </div>
                                 </div>
@@ -61,13 +57,9 @@
                                 <img src="../../../assets/images/common/arrowNextIcon.svg" alt="">
                             </div>
                         </div>
-                        <!-- <div style="width: 80px; height: 80px; border-radius: 8px; border: 1px solid #ccc;">
-                            아이콘을 선택하세요!
-                        </div> -->
                         <p class="font15 fontBold grayBlack textLeft fl w-100P mbottom-05" >{{ $t('SAMP_TITLE_CONTENTS') }}</p>
                         <div class="writeSamplePreWrap">
                             <pre id="sampleInputArea" ref="sampleInputArea" class="fl editableContent"  contenteditable=true ></pre>
-                            <!-- <div ref="sampleInputArea" id="sampleInputArea" class="font15" style="width: 100%; overflow: hidden scroll; height: 100%; text-align: left;" :contenteditable="true"></div> -->
                         </div>
                     </div>
                 </div>
@@ -75,13 +67,6 @@
                     <gBtnSmall @click="closeXPop" btnTitle="취소" btnThema="light"/>
                     <gBtnSmall @click="createSample" :btnTitle="makeType === 'modi' ? $t('COMM_BTN_EDIT2') : $t('COMMON_BTN_ADD')" class="mright-05"/>
                 </div>
-                <!-- <div v-if="titleMtextShowYn" style="height: 100%; width: 100%; background: #00000026; position: fixed;left: 0%; top: 0%;z-index: 999999;">
-                </div>
-                <div v-if="titleMtextShowYn" style="height: 300px; width: 80%; background: #FFF; box-shadow: 0 0 4px 4px #00000026; border-radius: 0.8rem; position: fixed; padding: 10px 0; left: 10%; top: 30%;z-index: 9999999;">
-                    <div class="headerShadow" style="width: 100%; height: 30px; float: left; padding: 0 20px;">
-                        <p class="font16 fontBold textLeft commonColor mbottom-05">샘플 {{propsInnerHtml? '수정' : '작성'}}</p>
-                    </div>
-                </div> -->
             </div>
         </transition>
     </div>
@@ -90,11 +75,8 @@
 export default {
   data () {
     return {
-      samplePopShowYn: false,
-      popId: null,
       sampleTitleMtext: '',
-      addSampleMtextPopId: null,
-      smapleIconList: [],
+      sampleIconList: [],
       makeSampleIconFilekey: null
     }
   },
@@ -103,8 +85,6 @@ export default {
     propsInnerHtml: {},
     makeType: {},
     selectedSample: {}
-  },
-  components: {
   },
   computed: {
     historyStack () {
@@ -117,14 +97,10 @@ export default {
   watch: {
     pageUpdate (value, old) {
       this.closeXPop()
-    },
-    historyStack (value, old) {
     }
   },
   mounted () {
     if (this.makeType === 'modi' && this.propsInnerHtml) {
-      // eslint-disable-next-line no-debugger
-      debugger
       this.$refs.sampleInputArea.innerHTML = this.propsInnerHtml
       if (this.selectedSample) {
         this.sampleTitleMtext = this.$changeText(this.selectedSample.titleMtext)
@@ -138,10 +114,8 @@ export default {
     this.getCodeList()
     var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'writeSamplePop' + this.cabinetDetail.cabinetKey
-    // this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
     history.push(this.popId)
     this.$store.commit('UB_HISTORY/updateStack', history)
-    // this.getGuidList()
   },
   methods: {
     goScroll (to) {
@@ -159,49 +133,12 @@ export default {
     },
     async getCodeList () {
       var resultList = null
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.groupCode = 'S_ICON'
       resultList = await this.$getCodeList(param)
-      this.smapleIconList = resultList
-      // eslint-disable-next-line no-debugger
-      debugger
-      // this.contentsHeight = document.getElementById('chanIconBox').scrollHeight
-      // var a = this.teamImgList
-    },
-    addSample () {
-      /* var bodyStr = document.getElementById('sampleInputArea').innerHTML
-      bodyStr = bodyStr.trim()
-      if (!bodyStr || bodyStr === '') {
-        alert('내용을 추가해주세요')
-        return
-      }
-      var history = this.$store.getters['UB_HISTORY/hStack']
-      this.addSampleMtextPopId = 'addSampleMtextPop' + this.cabinetDetail.cabinetKey
-      // this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
-      history.push(this.addSampleMtextPopId)
-      this.$store.commit('UB_HISTORY/updateStack', history) */
-      this.getCodeList()
-      /* this.titleMtextShowYn = true */
-    },
-    okSelectSample (selectedObj) {
-      /* var guideInput = this.$refs.sampleInputArea
-      guideInput.innerHTML = selectedObj.bodyFullStr */
-      // this.closeSamplePop()
-    },
-    async makeSample () {
-      /* this.$showAxiosLoading(true)
-      var hStack = this.$store.getters['UB_HISTORY/hStack']
-      var removePage = hStack[hStack.length - 1]
-      hStack = hStack.filter((element, index) => index < hStack.length - 1)
-      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
-      this.$store.commit('UB_HISTORY/updateStack', hStack)
-      this.titleMtextShowYn = false
-      await this.createSample() */
+      this.sampleIconList = resultList
     },
     closeXPop (reloadYn) {
-      // eslint-disable-next-line no-debugger
-      debugger
       var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.popId === hStack[hStack.length - 1]) {
@@ -211,31 +148,15 @@ export default {
         this.$emit('closeXPop', reloadYn)
       }
     },
-    async saveGuide () {
-      var bodyStr = document.getElementById('sampleInputArea').innerHTML
-      // bodyStr = bodyStr.trim()
-      this.$emit('setSampleGuide', bodyStr)
-      // eslint-disable-next-line no-debugger
-      debugger
-      this.closeXPop()
-    },
     async createSample () {
-      // console.log(this.permissionWGroup.selectedList)
-      // console.log(this.permissionVGroup.selectedList)
-      // console.log(this.permissionRGroup.selectedList)
-
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      // eslint-disable-next-line no-new-object
-      var sample = new Object()
+      var param = {}
+      var sample = {}
       sample.titleMtext = this.cabinetDetail.teamMenuKey
       sample.targetType = 'GUIDE_'
       var bodyStr = document.getElementById('sampleInputArea').innerHTML
       bodyStr = bodyStr.trim()
       sample.bodyMinStr = bodyStr
       sample.bodyFullStr = bodyStr
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.makeType === 'modi') {
         sample.sampleKey = this.selectedSample.sampleKey
       }
@@ -252,8 +173,7 @@ export default {
       sample.titleMtext = 'EN$^$' + this.sampleTitleMtext
       sample.creUserKey = this.$store.getters['UB_USER/GE_USER'].userKey
       param.sample = sample
-      // eslint-disable-next-line no-unused-vars
-      var result = await this.$commonAxiosFunction({
+      await this.$commonAxiosFunction({
         url: '/sUniB/tp.saveSample',
         param: param
       })

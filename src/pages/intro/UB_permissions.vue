@@ -50,42 +50,76 @@ export default {
     setTimeout(() => {
       onMessage('REQ', 'requestUserPermission')
     }, 800)
-  },
-  computed: {
-    GE_LOCALE () {
-      return this.$i18n.locale
-    }
   }
 }
 </script>
 
 <style scoped>
-    p{color: #062BB5; font-weight: bold;}
-  .test{ display:flex; justify-content: center; align-items: center; height:100vh; }
-  .permissionHeaderWrap {width: 100%; padding-top: 0.7rem; border-bottom: 2px solid #062BB5; min-height: 50px; height: 20%; box-sizing: border-box}
-  .permissionHeaderTextWrap {width: calc(90% - 48px); height: 100%;}
-  .permissionHeaderTextWrap p{font-size: 10px; color: #062BB5; line-height: 13px; font-weight: bold;}
-  .permissionHeaderTextWrap> p{line-height: 52px; font-size: 20px}
-  .permissionTitleText {height: 80%; width: 100%;  box-sizing: border-box}
-  .headerFont {font-size: 19px;}
-  .headerLogoDiv{line-height: 10px; display: flex; flex-direction: column; justify-content : center;}
-  .permissionLine{width: 100%; border: 0.5px solid #00000029;}
+p {
+  color: #062BB5;
+  font-weight: bold;
+}
+.test {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  height:100vh;
+}
+.permissionHeaderWrap {
+  width: 100%;
+  padding-top: 0.7rem;
+  border-bottom: 2px solid #062BB5;
+  min-height: 50px;
+  height: 20%;
+  box-sizing: border-box;
+}
+.permissionHeaderTextWrap {
+  width: calc(90% - 48px);
+  height: 100%;
+}
+.permissionHeaderTextWrap p {
+  font-size: 10px;
+  color: #062BB5;
+  line-height: 13px; font-weight: bold;
+}
+.permissionHeaderTextWrap> p {
+  line-height: 52px;
+  font-size: 20px;
+}
+.permissionTitleText {
+  height: 80%;
+  width: 100%;
+  box-sizing: border-box;
+}
+.headerFont {
+  font-size: 19px;
+}
+.headerLogoDiv {
+  line-height: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content : center;
+}
+.permissionLine {
+  width: 100%;
+  border: 0.5px solid #00000029;
+}
 
-  @media (max-width: 420px) {
-    .permissionHeaderWrap {
-      height: 22%;
-    }
-    .permissionHeaderTextWrap {
-      padding-top: 10px;
-      height: auto;
-      display: flex;
-      flex-direction: column;
-    }
-    .permissionHeaderTextWrap > p {
-      line-height: 1rem;
-    }
-    .headerLogoDiv {
-      flex-grow: 1;
-    }
+@media (max-width: 420px) {
+  .permissionHeaderWrap {
+    height: 22%;
   }
+  .permissionHeaderTextWrap {
+    padding-top: 10px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .permissionHeaderTextWrap > p {
+    line-height: 1rem;
+  }
+  .headerLogoDiv {
+    flex-grow: 1;
+  }
+}
 </style>

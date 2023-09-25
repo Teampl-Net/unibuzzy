@@ -44,7 +44,7 @@ import gMemoPop from './components/popup/memo/UB_commonMemoPop.vue'
 import gListEmpty from './components/popup/receiver/receiverUnit/UB_commonListEmpty.vue'
 import gToolBox from './components/popup/writeContentUnit/UB_commonToolBox.vue'
 import gLoadingS from './components/UB_smallLoading.vue'
-import channelCard from './components/list/UB_channelCard.vue'
+import gChannelCard from './components/list/UB_channelCard.vue'
 import gProfileImg from './components/common/UB_commonProfile.vue'
 import gBoardCard from './components/popup/board/editBoardUnit/UB_commonBoardCard.vue'
 import gBookList from './components/popup/receiver/receiverUnit/UB_commonBookList.vue'
@@ -103,7 +103,7 @@ app.component('myObserver', myObserver)
 app.component('gLoadingS', gLoadingS)
 app.component('gMemoPop', gMemoPop)
 app.component('gToggle', gToggle)
-app.component('channelCard', channelCard)
+app.component('gChannelCard', gChannelCard)
 app.component('gEmpty', gEmpty)
 app.component('gReport', gReport)
 app.component('gListEmpty', gListEmpty)
@@ -125,8 +125,6 @@ app.use(openView)
 app.use(getjs)
 app.use(commonSharejs)
 app.use(BootstrapVue3)
-// app.use(Vue3SimpleHtml2pdf)
-// app.component('attachFileListPop', attachFileListPop)
 app.use(axiosFunction)
 app.use(coreService)
 app.use(uploadFile)
@@ -212,24 +210,3 @@ app.mount('#app')
 window.app = app
 document.title = 'uniBuzzy'
 localStorage.setItem('loginYn', 'false')
-/* if (navigator.serviceWorker) {
-  navigator.serviceWorker.register('./firebase-messaging-sw.js')
-    .then(function (reg) {
-      console.log('서비스워커 등록성공 :', reg)
-      reg.addEventListener('message', evnt => {
-        console.log(evnt)
-      })
-      reg.addEventListener('push', evnt => {
-        console.log(evnt)
-      })
-    })
-    .catch(function (error) { console.log('서비스워커 등록실패 :', error) })
-  navigator.serviceWorker.addEventListener('message', (event) => {
-    // event is a MessageEvent object
-    console.log(event)
-  })
-  navigator.serviceWorker.addEventListener('swMessageCome', (event) => {
-    // event is a MessageEvent object
-    console.log(event)
-  })
-} */

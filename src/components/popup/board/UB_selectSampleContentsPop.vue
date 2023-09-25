@@ -30,32 +30,24 @@
                 <p class="font18 fontBold textLeft">{{ $t('SAMP_NAME_SAMPLE') }}</p>
             </div>
             <div class="sampleDetailPopBody">
-                <!-- <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"  style=" width:calc(100%); padding-top: 0!important"/> -->
-                <!-- <select style="width: 100%; height: 30px;margin-bottom: 10px;float: left;">
-                    <option hidden value="">선택안함</option>
-                    <option value=""></option>
-                    <option value="">선택안함</option>
-                    <option value="">선택안함</option>
-                </select> -->
                 <div class="sampleDetailPopTop">
                     <div class="sampleDetailPopAdd">
-                        <p class="font16 fontBold commonColor textLeft ">[{{this.$changeText(this.cabinetDetail.teamNameMtext)}}] {{ $t('SAMP_TITLE_LIST') }}</p>
+                        <p class="font16 fontBold commonColor textLeft ">[{{$changeText(cabinetDetail.teamNameMtext)}}] {{ $t('SAMP_TITLE_LIST') }}</p>
                         <gBtnSmall class="sampleDetailPopAddBtn" @click="openMakeSamplePop('new')" :btnTitle="$t('COMMON_BTN_ADD')"/>
                     </div>
                     <div class="sampleDetailPopLeft" @click="goScroll('back')">
                         <img src="../../../assets/images/common/arrowBackIcon.svg" alt="">
-                    </div><!-- okScrollBar -->
+                    </div>
                     <div ref="sampleScrollWrap" class="sampleScrollWrap">
-                    <!-- <div ref="sampleScrollWrap" style="width: calc(100% - 40px); overflow: scroll hidden; height: 100px; float: left;"> -->
-                        <div class="sampleDetailContentsBox" :style="'width: ' + this.sampleList.length * 100 + 'px;'">
+                        <div class="sampleDetailContentsBox" :style="'width: ' + sampleList.length * 100 + 'px;'">
                             <p class="font15 mleft-05 grayBlack textLeft" v-if="sampleList.length === 0">{{ $t('SAMP_MSG_NOSMAPLE') }}</p>
                             <div class="sampleDetailContentsItem" v-for="(value, index) in sampleList" @click="selectSample(value)" :key="index">
-                                <div :class="value.sampleKey === this.selectedSampleObj.sampleKey? 'selectedSample': ''">
+                                <div :class="value.sampleKey === selectedSampleObj.sampleKey? 'selectedSample': ''">
                                     <img src="../../../assets/images/common/errorIcon.svg" v-if="value.sampleKey === 9" alt="">
                                     <img src="../../../assets/images/common/timeIcon.svg" v-if="value.sampleKey === 7" alt="">
                                     <img src="../../../assets/images/common/marketIcon.svg" v-if="value.sampleKey === 8" alt="">
                                     <img :src="value.domainPath + value.pathMtext" alt="">
-                                    <p class="font14 commonBlack mtop-05 textOverdot" :class="value.sampleKey === this.selectedSampleObj.sampleKey? 'fontBold' : ''">{{this.$changeText(value.titleMtext)}}</p>
+                                    <p class="font14 commonBlack mtop-05 textOverdot" :class="value.sampleKey === selectedSampleObj.sampleKey? 'fontBold' : ''">{{$changeText(value.titleMtext)}}</p>
                                 </div>
                             </div>
                         </div>
@@ -65,11 +57,11 @@
                     </div>
                     <div class="sampleDetailPopPre">
                         <p class="font16 fontBold commonColor mbottom-05 textLeft">{{ $t('SAMP_TITLE_PREVIEW') }}</p>
-                        <div class="font14 sampleDetailPopText" v-html="this.selectedSampleObj.bodyFullStr"></div>
-                        <div v-if="this.selectedSampleObj.sampleKey > 0" class="font14 mtop-05 sampleDetailPopDelete" @click="askDelSample">
+                        <div class="font14 sampleDetailPopText" v-html="selectedSampleObj.bodyFullStr"></div>
+                        <div v-if="selectedSampleObj.sampleKey > 0" class="font14 mtop-05 sampleDetailPopDelete" @click="askDelSample">
                           {{ $t('SAMP_BTN_DELETE') }}
                         </div>
-                        <div v-if="this.selectedSampleObj.sampleKey > 0" class="font14 mtop-05 sampleDetailPopEdit" @click="this.openMakeSamplePop('modi')">
+                        <div v-if="selectedSampleObj.sampleKey > 0" class="font14 mtop-05 sampleDetailPopEdit" @click="openMakeSamplePop('modi')">
                           {{ $t('SAMP_BTN_EDIT') }}
                         </div>
                     </div>
@@ -81,7 +73,7 @@
             </div>
             <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false'  />
         </div>
-        <makeSamplePop :makeType="makeSampleType" :selectedSample="selectedSampleObj" :propsInnerHtml="this.selectedSampleObj.bodyFullStr" v-if="makeSamplePopShowYn" @closeXPop="closeMakeSamplePop" :cabinetDetail="this.cabinetDetail"/>
+        <makeSamplePop :makeType="makeSampleType" :selectedSample="selectedSampleObj" :propsInnerHtml="selectedSampleObj.bodyFullStr" v-if="makeSamplePopShowYn" @closeXPop="closeMakeSamplePop" :cabinetDetail="cabinetDetail"/>
     </div>
 </template>
 <script>
@@ -94,8 +86,6 @@ export default {
     return {
       sampleList: [],
       selectedSampleObj: { sampleKey: 0, bodyMinStr: '', bodyFullStr: '' },
-      activeTabList: [{ display: '오류용', name: 'E' }, { display: '문의용', name: 'Q' }],
-      previewShowYn: false,
       popId: null,
       confirmText: '',
       confirmType: 'two',
@@ -107,7 +97,6 @@ export default {
   created () {
     var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'selectSamplePop' + history.length
-    // this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
     history.push(this.popId)
     this.$store.commit('UB_HISTORY/updateStack', history)
     this.getGuideList()
@@ -126,8 +115,6 @@ export default {
   watch: {
     pageUpdate (value, old) {
       this.closeXPop()
-    },
-    historyStack (value, old) {
     }
   },
   methods: {
@@ -165,10 +152,8 @@ export default {
       this.selectedSampleObj = { sampleKey: 0, bodyMinStr: '', bodyFullStr: '' }
     },
     async delSample () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      // eslint-disable-next-line no-new-object
-      var sample = new Object()
+      var param = {}
+      var sample = {}
       sample.sampleKey = this.selectedSampleObj.sampleKey
       sample.deleteYn = true
       param.sample = sample
@@ -181,13 +166,8 @@ export default {
       this.getGuideList()
     },
     async okSelectSample () {
-      // eslint-disable-next-line no-debugger
-      debugger
       await this.$emit('okSelectSample', this.selectedSampleObj)
       await this.closeXPop()
-    },
-    openPreviewArea () {
-      this.previewShowYn = true
     },
     selectSample (obj) {
       this.selectedSampleObj = obj
@@ -203,19 +183,13 @@ export default {
       }
     },
     async getGuideList (teamKey, userKey, showProfileYn, managerYn) {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.targetType = 'GUIDE_'
       param.creTeamKey = this.cabinetDetail.creTeamKey
-      // paramMap.set('followerType', 'M')
-      // eslint-disable-next-line no-unused-vars
-      var result = await this.$commonAxiosFunction({
+      const result = await this.$commonAxiosFunction({
         url: '/sUniB/tp.getSampleList',
         param: { sample: param }
       })
-      // eslint-disable-next-line no-debugger
-      debugger
-      console.log(result)
       if (result.data.result === true) {
         this.sampleList = result.data.sampleList
       }

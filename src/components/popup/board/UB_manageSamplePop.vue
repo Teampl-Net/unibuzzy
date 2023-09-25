@@ -27,12 +27,10 @@
                     </div>
                     <div class="samplePopContents">
                         <pre id="guideInputArea" ref="guideInputArea" class="fl editableContent" contenteditable=true ></pre>
-                        <!-- <div ref="guideInputArea" id="guideInputArea" class="font15" style="width: 100%; overflow: hidden scroll; height: 100%; text-align: left;" :contenteditable="true"></div> -->
                     </div>
                 </div>
             </div>
             <div class="samplePopBottom">
-                <!-- <gBtnSmall v-if="this.$store.getters['UB_USER/GE_USER'].userKey === 1" @click="addSample" btnTitle="샘플로 저장" class="fl" style="float: left;" /> -->
                 <gBtnSmall @click="closeXPop" btnThema="light" :btnTitle="$t('COMM_BTN_CANCEL')" />
                 <gBtnSmall @click="saveGuide" :btnTitle="$t('COMMON_BTN_OK')" class="mright-05" />
             </div>
@@ -46,9 +44,7 @@ export default {
   data () {
     return {
       samplePopShowYn: false,
-      popId: null,
-      smapleIconList: [],
-      makeSampleIconFilekey: null
+      popId: null
     }
   },
   props: {
@@ -81,16 +77,13 @@ export default {
   created () {
     var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'manageSamplePop' + this.cabinetDetail.cabinetKey
-    // this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
     history.push(this.popId)
     this.$store.commit('UB_HISTORY/updateStack', history)
-    // this.getGuidList()
   },
   methods: {
     okSelectSample (selectedObj) {
       var guideInput = this.$refs.guideInputArea
       guideInput.innerHTML = selectedObj.bodyFullStr
-      // this.closeSamplePop()
     },
     openSampleListPop () {
       this.samplePopShowYn = true
@@ -110,14 +103,11 @@ export default {
     },
     async saveGuide () {
       var bodyStr = document.getElementById('guideInputArea').innerHTML
-      // bodyStr = bodyStr.trim()
       if (this.$checkEmptyInnerHtml(document.getElementById('guideInputArea'))) {
         this.$emit('setSampleGuide', bodyStr)
       } else {
         this.$emit('setSampleGuide', '')
       }
-      // eslint-disable-next-line no-debugger
-      debugger
       this.closeXPop()
     }
   }

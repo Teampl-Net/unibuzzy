@@ -23,7 +23,7 @@
         </div>
         <gEmpty tabName="전체" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" class="mt-header" />
         <template v-for="(chanEle, index) in GE_DISP_TEAM_LIST" :key="index">
-          <channelCard :style="chanEle.teamKey === GE_USER.myTeamKey? 'border: 2px solid #7978BD;':''" class="moveBox chanRow cursorP margin15" :pSelectedYn="chanEle.teamKey === GE_USER.myTeamKey" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" :pPopTitle="'townList'"/>
+          <gChannelCard :style="chanEle.teamKey === GE_USER.myTeamKey? 'border: 2px solid #7978BD;':''" class="moveBox chanRow cursorP margin15" :pSelectedYn="chanEle.teamKey === GE_USER.myTeamKey" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" :pPopTitle="'townList'"/>
           <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
         </template>
       </div>

@@ -121,7 +121,7 @@
           <input class="fl mleft-05 titlePlaceholder" type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="$t('FORM_MSG_TITLE')" v-model="writePushTitle" >
         </div>
 
-        <div class="fl w100P mtop-1 contentsFileBox">
+        <div v-if="fileYn" class="fl w100P mtop-1 contentsFileBox">
           <p class="fontBold commonColor CDeepColor font16 fl mright-1 keepAll">{{ $t('FORM_BTN_FILE') }}</p>
           <div class="fl mleft-05 fileItemBox">
             <attachFileList ref="attachFileRef" :attachTrueAddFalseList="pAttachFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
@@ -180,6 +180,7 @@ export default {
       showCreNameYn: true, // 작성자 명 공개
       canReplyYn: true, // 댓글 허용
       titleShowYn: false, // 제목 공개 허용
+      fileYn: false,
       writePushTitle: '',
       receiverList: { memberList: [], bookList: [] },
       bodyString: '',
@@ -243,8 +244,6 @@ export default {
     }
   },
   created () {
-    // eslint-disable-next-line no-debugger
-    debugger
     if (this.contentType === 'BOAR') this.titleShowYn = true
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth
@@ -254,6 +253,8 @@ export default {
         this.setSelectedList(this.params.selectedList)
       }
     }
+    console.log('???????????')
+    console.log(this.params)
     if (this.params && (this.params.bodyFullStr || this.propData.guideFullStr)) {
       if (this.contentType === 'ALIM') {
         if (this.params.UseAnOtherYn) {
@@ -496,7 +497,7 @@ export default {
         param: Object.fromEntries(paramMap)
       }, true)
       var mCabinet = response.data.mCabinet
-      if (mCabinet && mCabinet.fileYn) {
+      if (mCabinet) {
         this.fileYn = mCabinet.fileYn
       }
       return mCabinet
@@ -527,17 +528,11 @@ export default {
       } else {
         this.mBoardList = [data]
         mCabinet = data
-        // if (this.contentType === 'BOAR' && (!this.GE_USER.certiDate) && (mCabinet.blindYn === 1 || mCabinet.blindYn === true)) {
-        // // 익명게시판일 떄
-        //   this.mCanWriteYn = false
-        //   this.gCertiPopShowYn = true
-        //   return
-        // }
         this.selectBoardCabinetKey = mCabinet.cabinetKey
         this.cabinetName = mCabinet.cabinetNameMtext
       }
       this.mSelectedBoard = mCabinet
-      // var cardList = document.querySelectorAll('.commonFormCard')
+      this.fileYn = this.mSelectedBoard.fileYn
       if (mCabinet.guideFullStr) {
         this.$refs.complexEditor.addFormCard('text', this.decodeContents(mCabinet.guideFullStr))
       }

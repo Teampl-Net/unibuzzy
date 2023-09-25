@@ -23,7 +23,6 @@ import selectBookNMemberList from './UB_selectBookAndMemberList.vue'
 import selectedListCompo from './UB_selectedReceiverList.vue'
 export default {
   props: {
-    pClosePop: Function,
     selectPopYn: {},
     chanInfo: {},
     detailSelectedYn: {},

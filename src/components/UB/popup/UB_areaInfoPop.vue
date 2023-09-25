@@ -100,7 +100,7 @@
           <div v-if="pAreaInfo.priority !== 1" class="w100P allListContents">
             <gEmpty class="mt-header" tabName="전체" contentName="채널" v-if="pAreaDetail.bdList && pAreaDetail.bdList.length === 0" />
             <template v-for="(chanEle, index) in pAreaDetail.bdList" :key="index">
-              <channelCard v-if="chanEle.targetKind === 'T'" class="moveBox cursorP chanRow mTop10" :pTeamList="GE_DISP_TEAM_LIST" @openImgPop="openImgPop" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
+              <gChannelCard v-if="chanEle.targetKind === 'T'" class="moveBox cursorP chanRow mTop10" :pTeamList="GE_DISP_TEAM_LIST" @openImgPop="openImgPop" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
               <boardCard v-else class="moveBox chanRow cursorP" :boardElement="chanEle" @click="goBoardMain(chanEle)" @scrollMove="scrollMove" />
             </template>
           </div>

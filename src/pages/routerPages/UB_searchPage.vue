@@ -130,7 +130,7 @@
               </div>
               <template v-else>
                 <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
-                    <channelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="goChannelMain" />
+                    <gChannelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="goChannelMain" />
                     <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="recommendLoadMore" class="fl wich" />
                 </template>
               </template>

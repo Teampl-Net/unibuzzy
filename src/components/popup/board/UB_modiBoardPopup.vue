@@ -82,15 +82,15 @@
 </i18n>
 <template>
 <!-- 이 페이지는 gPop에서 열어주지 않고 있고, editBoard 파일에서 가지고 있다. -->
-<div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap modiBoardPopWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'">
+<div class="addNewBoardWrap pagePaddingWrap jjjPaddingWrap modiBoardPopWrap" :style="'padding-top:' + ($STATUS_HEIGHT)+ 'px'">
   <gPopHeader @closeXPop="closePop()" :pClosePop="pClosePop" :headerTitle="$t('EDIT_BOARD_NAME_BOARD')" />
   <loadingCompo v-if="loadingYn" />
   <!-- 헤더를 제외한 나머지 부분 // 스크롤을 위해 넣었으나, overflow가 되면서 밑 권한 설정 화면에서 쉐도우 처리 양 끝이 hidden 됨-->
-  <div class="w100P h100P fl ptop-1 modiBoardPopContWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
+  <div class="w100P h100P fl ptop-1 modiBoardPopContWrap" :style="'padding-top:' + ($STATUS_HEIGHT + 60)+ 'px'">
     <div class="itemWrite fl w100P">
       <p class="fontBold  textLeft font16 fl width100px">{{ $t('EDIT_BOARD_TITLE_NAME') }}</p>
       <input class="fl boardNameInput" v-model="boardName" type="text" :placeholder="$t('EDIT_BOARD_MSG_NAME')" id="channelName">
-      <div class="fl mleft-1 boardSelectColor" @click="this.colorPickerShowYn = !this.colorPickerShowYn" :style="'background:' + this.selectedColor + ';'" ></div>
+      <div class="fl mleft-1 boardSelectColor" @click="colorPickerShowYn = !colorPickerShowYn" :style="'background:' + selectedColor + ';'" ></div>
     </div>
     <div v-if="colorPickerShowYn" class="fr optionWrap">
       <gColorPicker :colorPick="selectedColor" @closePop="closeColorPickerPop" v-if="colorPickerShowYn" @choiceColor='choiceColor' ref="colorPicker" />
@@ -107,74 +107,70 @@
     </div>
     <div class="itemWrite fl ">
       <p class="fontBold  textLeft font16 fl width100px">{{ $t('EDIT_BOARD_TITLE_SAMPLE') }}</p>
-      <div class="fr textLeft receivBox optionWrap padding5" @click="this.samplePopShowYn = true" >
+      <div class="fr textLeft receivBox optionWrap padding5" @click="samplePopShowYn = true" >
         <p class="fl textLeft commonDarkGray font14 textOverdot pholder samplePholder" :placeholder="$t('EDIT_BOARD_MSG_SAMPLE')">{{this.guideSampleInnerHtml? $t('EDIT_BOARD_MSG_ISSAMPLE'): ''}}</p>
       </div>
     </div>
     <div class="itemWrite fl ">
       <p class="fontBold  textLeft font16 fl width100px">{{ $t('COMMON_TITLE_SHARE') }}</p>
       <div class="fl optionWrap">
-        <gCheckBtn id="all" ref="all" class="fl gCheck-W"  :title="$t('COMMON_TAB_ALL')" :selectedYn="this.shareGroup.type === 'A'" @click="changeSelectType('A')" />
-        <gCheckBtn id="fol" ref="fol" class="fl gCheck-W mleft-05"  :title="$t('EDIT_BOARD_BTN_ALLMEM')" :selectedYn="this.shareGroup.type === 'F'" @click="changeSelectType('F')" />
-        <gCheckBtn id="sel" ref="sel" class="fl gCheck-W mleft-05"  :title="$t('COMMON_BTN_SELECTED')" :selectedYn="this.shareGroup.type === 'S'" @click="changeSelectType('S')" />
-        <!-- <p class="fr font12 commonDarkGray " style="padding-top:12px">{{this.shareGroup.type === 'S' ? setSelectReceiveCount(this.shareGroup.selectedList) : '전체'}}</p> -->
-        <p class="fr font12 commonDarkGray pTop12" v-if="this.shareGroup.type === 'A'">{{ $t('COMMON_TAB_ALL') }}</p>
-        <seletedIconText class="pTop12" v-else :propData='setSelectReceiveCount(this.shareGroup.selectedList)' />
+        <gCheckBtn id="all" ref="all" class="fl gCheck-W"  :title="$t('COMMON_TAB_ALL')" :selectedYn="shareGroup.type === 'A'" @click="changeSelectType('A')" />
+        <gCheckBtn id="fol" ref="fol" class="fl gCheck-W mleft-05"  :title="$t('EDIT_BOARD_BTN_ALLMEM')" :selectedYn="shareGroup.type === 'F'" @click="changeSelectType('F')" />
+        <gCheckBtn id="sel" ref="sel" class="fl gCheck-W mleft-05"  :title="$t('COMMON_BTN_SELECTED')" :selectedYn="shareGroup.type === 'S'" @click="changeSelectType('S')" />
+        <p class="fr font12 commonDarkGray pTop12" v-if="shareGroup.type === 'A'">{{ $t('COMMON_TAB_ALL') }}</p>
+        <seletedIconText class="pTop12" v-else :propData='setSelectReceiveCount(shareGroup.selectedList)' />
       </div>
     </div>
-    <div class="fr textLeft receivBox pholder optionWrap padding5" v-if="this.shareGroup.type === 'S'" @click="showSelectBookPop('select')" :placeholder="$t('EDIT_BOARD_MSG_SHARE')">
-      {{setReceiveName(this.shareGroup.selectedList)}}
+    <div class="fr textLeft receivBox pholder optionWrap padding5" v-if="shareGroup.type === 'S'" @click="showSelectBookPop('select')" :placeholder="$t('EDIT_BOARD_MSG_SHARE')">
+      {{setReceiveName(shareGroup.selectedList)}}
     </div>
     <!-- 권한 설정 -->
     <div class="fl w100P mtop-1 boardAuthWrap" :class="{'mtop-2' : shareGroup.type === 'S'}">
-      <triangleTag class="triangleTag" :style="this.shareGroup.type === 'A' ? 'left: calc(1.5rem + 100px)' : 'left: calc(1.5rem + 100px + 80px)'"/>
+      <triangleTag class="triangleTag" :style="shareGroup.type === 'A' ? 'left: calc(1.5rem + 100px)' : 'left: calc(1.5rem + 100px + 80px)'"/>
       <div class="fl w100P boardAuthBox">
         <!-- 열람 권한 -->
         <div class="fl w100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
-          <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
+          <div class="itemWrite fl " :style="shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl width100px">{{ $t('EDIT_BOARD_TITLE_READ') }}</p>
-            <div class="fl authBtnWrap" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
-              <gCheckBtn class="fl gCheck-W"  :title="$t('COMMON_TAB_ALL')" :selectedYn="permissionVGroup.type === 'A'" @click="this.permissionVGroup.type = 'A'" />
-              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn="permissionVGroup.type === 'S'" @click="this.permissionVGroup.type = 'S'" />
-              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('EDIT_BOARD_BTN_NONE')" :selectedYn="permissionVGroup.type === 'N'" @click="this.permissionVGroup.type = 'N'" />
+            <div class="fl authBtnWrap" v-if="shareGroup.type === 'A' || shareGroup.type === 'F'">
+              <gCheckBtn class="fl gCheck-W"  :title="$t('COMMON_TAB_ALL')" :selectedYn="permissionVGroup.type === 'A'" @click="permissionVGroup.type = 'A'" />
+              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn="permissionVGroup.type === 'S'" @click="permissionVGroup.type = 'S'" />
+              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('EDIT_BOARD_BTN_NONE')" :selectedYn="permissionVGroup.type === 'N'" @click="permissionVGroup.type = 'N'" />
             </div>
           </div>
           <div class="fr textLeft receivBox authBtnWrap padding5" v-if="permissionVGroup.type === 'S'" @click="showSelectBookPop('V')" >
-            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" :placeholder="$t('EDIT_BOARD_MSG_STATUS')">{{setReceiveName(this.permissionVGroup.selectedList)}}</p>
-            <!-- <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionVGroup.selectedList)}}</p> -->
-            <seletedIconText :propData='setSelectReceiveCount(this.permissionVGroup.selectedList)' />
+            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" :placeholder="$t('EDIT_BOARD_MSG_STATUS')">{{setReceiveName(permissionVGroup.selectedList)}}</p>
+            <seletedIconText :propData="setSelectReceiveCount(permissionVGroup.selectedList)" />
           </div>
         </div>
         <!-- 게시글 작성 권한 -->
         <div class="fl w100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}">
-          <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
+          <div class="itemWrite fl " :style="shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl width100px">{{ $t('EDIT_BOARD_TITLE_WRITE') }}</p>
-            <div class="fl authBtnWrap" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
-              <gCheckBtn class="fl gCheck-W"  :title="$t('COMMON_TAB_ALL')" :selectedYn="permissionWGroup.type === 'A'" @click="this.permissionWGroup.type = 'A'" />
-              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn="permissionWGroup.type === 'S'" @click="this.permissionWGroup.type = 'S'" />
-              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('EDIT_BOARD_BTN_NONE')"  :selectedYn="permissionWGroup.type === 'N'" @click="this.permissionWGroup.type = 'N'" />
+            <div class="fl authBtnWrap" v-if="shareGroup.type === 'A' || shareGroup.type === 'F'">
+              <gCheckBtn class="fl gCheck-W"  :title="$t('COMMON_TAB_ALL')" :selectedYn="permissionWGroup.type === 'A'" @click="permissionWGroup.type = 'A'" />
+              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn="permissionWGroup.type === 'S'" @click="permissionWGroup.type = 'S'" />
+              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('EDIT_BOARD_BTN_NONE')"  :selectedYn="permissionWGroup.type === 'N'" @click="permissionWGroup.type = 'N'" />
             </div>
           </div>
           <div class="fr textLeft receivBox authBtnWrap padding5" v-if="permissionWGroup.type === 'S'" @click="showSelectBookPop('W')">
-            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" :placeholder="$t('EDIT_BOARD_MSG_STATUS')">{{setReceiveName(this.permissionWGroup.selectedList)}}</p>
-            <!-- <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionWGroup.selectedList)}}</p> -->
-            <seletedIconText :propData='setSelectReceiveCount(this.permissionWGroup.selectedList)' />
+            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" :placeholder="$t('EDIT_BOARD_MSG_STATUS')">{{setReceiveName(permissionWGroup.selectedList)}}</p>
+            <seletedIconText :propData="setSelectReceiveCount(permissionWGroup.selectedList)" />
           </div>
         </div>
         <!-- 댓글 권한 -->
         <div class="fl w100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}" style="position: relative;">
-          <div class="itemWrite fl " :style="this.shareGroup.type === 'S' ? 'display: contents;' : '' ">
+          <div class="itemWrite fl " :style="shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl width100px">{{ $t('EDIT_BOARD_TITLE_COMMENT') }}</p>
-            <div class="fl authBtnWrap" v-if="this.shareGroup.type === 'A' || this.shareGroup.type === 'F'">
-              <gCheckBtn class="fl gCheck-W" :title="$t('COMMON_TAB_ALL')" :selectedYn="permissionRGroup.type === 'A'" @click="this.permissionRGroup.type = 'A'" />
-              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn="permissionRGroup.type === 'S'" @click="this.permissionRGroup.type = 'S'" />
-              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('EDIT_BOARD_BTN_NONE')" :selectedYn="permissionRGroup.type === 'N'" @click="this.permissionRGroup.type = 'N'" />
+            <div class="fl authBtnWrap" v-if="shareGroup.type === 'A' || shareGroup.type === 'F'">
+              <gCheckBtn class="fl gCheck-W" :title="$t('COMMON_TAB_ALL')" :selectedYn="permissionRGroup.type === 'A'" @click="permissionRGroup.type = 'A'" />
+              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn="permissionRGroup.type === 'S'" @click="permissionRGroup.type = 'S'" />
+              <gCheckBtn class="fl gCheck-W mleft-05" :title="$t('EDIT_BOARD_BTN_NONE')" :selectedYn="permissionRGroup.type === 'N'" @click="permissionRGroup.type = 'N'" />
             </div>
           </div>
           <div class="fr textLeft receivBox authBtnWrap padding5" v-if="permissionRGroup.type === 'S'" @click="showSelectBookPop('R')" >
-            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" :placeholder="$t('EDIT_BOARD_MSG_STATUS')">{{setReceiveName(this.permissionRGroup.selectedList)}}</p>
-            <!-- <p class="fr font12 commonDarkGray" style="">{{setSelectReceiveCount(this.permissionRGroup.selectedList)}}</p> -->
-            <seletedIconText v-if="permissionRGroup.type === 'S'" :propData='setSelectReceiveCount(this.permissionRGroup.selectedList)' />
+            <p class="fl textLeft commonDarkGray font14 textOverdot pholder permissionBox" :placeholder="$t('EDIT_BOARD_MSG_STATUS')">{{setReceiveName(permissionRGroup.selectedList)}}</p>
+            <selectedIconText v-if="permissionRGroup.type === 'S'" :propData='setSelectReceiveCount(permissionRGroup.selectedList)' />
           </div>
         </div>
       </div>
@@ -182,19 +178,18 @@
   </div>
   <gBtnSmall @click="updateCabinet" :btnTitle="$t('EDIT_BOARD_BTN_EDIT')" class="font16 CDeepBgColor updateCabinetBtn" />
 </div>
-<selectBookList :chanInfo="this.CHANNEL_DETAIL" :propData="this.chanProps" :boardDetail="this.boardDetail" :chanAlimListTeamKey="this.modiBoardDetailProps.teamKey" v-if="selectBookListShowYn" :pClosePop="closeSelectPop" @closeXPop='selectBookListShowYn = false' :selectPopYn='true' @sendReceivers='setSelectedList' :pSelectedList="selectedList" @openPop='openPop' />
-<receiverAccessList :chanInfo="this.CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" v-if="receiverAccessListYn" :pClosePop="closeAccessPop" @closeXPop='receiverAccessListYn=false' :parentList='selectedList.data' :selectList='permissionSelectedList'  @sendReceivers='receiverPoolInSetting'/>
+<selectBookList v-if="selectBookListShowYn" :chanInfo="CHANNEL_DETAIL" :propData="chanProps" :pClosePop="closeSelectPop" @closeXPop="selectBookListShowYn = false" :selectPopYn="true" @sendReceivers='setSelectedList' :pSelectedList="selectedList" />
+<receiverAccessList v-if="receiverAccessListYn" :chanInfo="CHANNEL_DETAIL" :propData="CHANNEL_DETAIL" :itemType="shareActorItemType" @closeXPop="receiverAccessListYn=false" :parentList="selectedList.data" :selectList="permissionSelectedList"  @sendReceivers="receiverPoolInSetting"/>
 <gConfirmPop  :confirmText="$t('EDIT_BOARD_MSG_EDITSUCC')" confirmType='timeout' v-if="okPopYn" @no='closePop' />
-<selectSampleListPop :cabinetDetail="this.modiBoardDetailProps" @setSampleGuide="setSampleGuide" :propsInnerHtml="guideSampleInnerHtml" v-if="samplePopShowYn" @closeXPop="closeSampleListPop" />
+<selectSampleListPop v-if="samplePopShowYn" :cabinetDetail="modiBoardDetailProps" @setSampleGuide="setSampleGuide" :propsInnerHtml="guideSampleInnerHtml" @closeXPop="closeSampleListPop" />
 </template>
 <script>
 import { Base64 } from 'js-base64'
 import loadingCompo from '../../layout/UB_loading.vue'
-// import shareSelect from './Tal_shareSelect.vue'
 import selectBookList from '../receiver/UB_selectBookList.vue'
 import receiverAccessList from '../receiver/UB_selectReceiverAccessList.vue'
 import selectSampleListPop from './UB_manageSamplePop.vue'
-import seletedIconText from './editBoardUnit/UB_selectReceivIconText.vue'
+import selectedIconText from './editBoardUnit/UB_selectReceiveIconText.vue'
 export default {
   props: {
     modiBoardDetailProps: {},
@@ -204,12 +199,7 @@ export default {
   },
   created () {
     // 로딩 닫기는 디테일을 가져오고 난 뒤
-    // this.$emit('openLoading')
     this.loadingYn = true
-    /* var history = this.$store.getters['UB_HISTORY/hStack']
-    this.popId = 'modiBoardPop' + this.modiBoardDetailProps.cabinetKey
-    history.push(this.popId)
-    this.$store.commit('UB_HISTORY/updateStack', history) */
 
     this.boardDetail = this.modiBoardDetailProps
     this.getCabinetDetail()
@@ -223,55 +213,6 @@ export default {
     this.loadingYn = false
   },
   computed: {
-    TLeftPosition () {
-      var targetW
-      if (this.shareGroup.type === 'A') {
-        // this.$nextTick(() => {
-        targetW = window.document.getElementById('all').getBoundingClientRect().left
-        // })
-      } else if (this.shareGroup.type === 'F') {
-        // this.$nextTick(() => {
-        targetW = window.document.getElementById('fol').getBoundingClientRect().left
-        // })
-      } else {
-        // this.$nextTick(() => {
-        targetW = window.document.getElementById('sel').getBoundingClientRect().left
-        // })
-      }
-      return {
-        '--left': targetW + 'px'
-      }
-    },
-    CAB_FUNCTION_TEXT () {
-      var text = ''
-      if (this.workStatYn === true) {
-        text += this.$t('EDIT_BOARD_MSG_STATUSO')
-      } else {
-        text += this.$t('EDIT_BOARD_MSG_STATUSX')
-      }
-      if (this.replyYnInput === true) {
-        text += this.$t('EDIT_BOARD_MSG_COMMENTO')
-      } else {
-        text += this.$t('EDIT_BOARD_MSG_COMMENTX')
-      }
-      if (this.fileYnInput === true) {
-        text += this.$t('EDIT_BOARD_MSG_FILEO')
-      } else {
-        text += this.$t('EDIT_BOARD_MSG_FILEX')
-      }
-      if (this.blindYn === true) {
-        text += this.$t('EDIT_BOARD_MSG_ANONY')
-      } else {
-        text += this.$t('EDIT_BOARD_MSG_ID')
-      }
-      if (this.titleBlindYn === true) {
-        text += this.$t('EDIT_BOARD_MSG_HIDETITLEO')
-      } else {
-        text += this.$t('EDIT_BOARD_MSG_HIDETITLEX')
-      }
-
-      return text
-    },
     CHANNEL_DETAIL () {
       var team = this.$getDetail('TEAM', this.modiBoardDetailProps.teamKey)
       if (team) {
@@ -363,13 +304,12 @@ export default {
     }
   },
   components: {
-    seletedIconText,
+    selectedIconText,
     selectBookList,
     receiverAccessList,
     loadingCompo,
     selectSampleListPop
   },
-  // emits: ['openPop', 'goPage'],
   methods: {
     closeAccessPop () {
       this.receiverAccessListYn = false
@@ -394,15 +334,6 @@ export default {
         this.permissionVGroup.type = 'A'
         this.permissionRGroup.type = 'A'
       }
-
-      // this.permissionWGroup.selectedList = { bookList: [], memberList: [] }
-      // this.permissionVGroup.selectedList = { bookList: [], memberList: [] }
-      // this.permissionRGroup.selectedList = { bookList: [], memberList: [] }
-      // this.shareGroup.selectedList = { bookList: [], memberList: [] }
-      // this.selectedReceiver = '게시판을 공유할 대상을 선택해주세요.'
-      // this.writePermission = '클릭하여 권한을 설정해주세요.'
-      // this.readPermission = '클릭하여 권한을 설정해주세요.'
-      // this.commentPermission = '클릭하여 권한을 설정해주세요.'
     },
     setSelectReceiveCount (selectGroup) {
       if (!selectGroup || !selectGroup.bookList || !selectGroup.memberList) return
@@ -417,45 +348,33 @@ export default {
         }
       }
       var userSize = selectGroup.memberList.length
-      // var text = ''
       var text = {}
       var list = []
       if (userSize === 0 && bookSize === 0 && memberSize === 0) {
         return ''
       } else {
         if (bookSize && bookSize > 0) {
-          // text += '주소록' + bookSize
-          // if (memberSize > 0) {
-          //   text += ', '
-          // }
           text = {}
           text.type = 'book'
           text.count = bookSize
           list.push(text)
         }
         if (memberSize && memberSize > 0) {
-          // text += '주소록' + bookSize
-          // if (memberSize > 0) {
-          //   text += ', '
-          // }
           text = {}
           text.type = 'member'
           text.count = memberSize
           list.push(text)
         }
         if (userSize && userSize > 0) {
-          // text += '유저' + memberSize
           text = {}
           text.type = 'user'
           text.count = userSize
           list.push(text)
         }
-        // return text
         return list
       }
     },
     setReceiveName (selectGroup) {
-      // if (!selectGroup || !selectGroup.bookList || !selectGroup.memberList) return
       var bookSize = selectGroup.bookList
       var memberSize = selectGroup.memberList
       var temp = ''
@@ -476,38 +395,8 @@ export default {
 
       return text
     },
-    closeFuncPop () {
-      // this.changeFunc()
-      this.functionPopShowYn = false
-    },
     openPop (param) {
       this.$emit('openPop', param)
-    },
-    changePermission (id, type) {
-      switch (id) {
-        case 'W':
-          this.permissionWGroup.type = type
-          break
-        case 'V':
-          this.permissionVGroup.type = type
-          break
-        case 'R':
-          this.permissionRGroup.type = type
-          break
-      }
-    },
-    selectPermission (id) {
-      switch (id) {
-        case 'write':
-          this.writePermissionSelectYn = true
-          break
-        case 'read':
-          this.readPermissionSelectYn = true
-          break
-        case 'comment':
-          this.commentPermissionSelectYn = true
-          break
-      }
     },
     closeColorPickerPop (value) {
       if (value === '0') {
@@ -519,7 +408,6 @@ export default {
     async getCabinetDetail () {
       // eslint-disable-next-line no-new-object
       var param = new Object()
-      // var tt = this.propData
       param.currentTeamKey = this.modiBoardDetailProps.teamKey
       param.cabinetKey = this.modiBoardDetailProps.cabinetKey
       param.adminYn = true
@@ -551,23 +439,18 @@ export default {
       var findListInT = cabShareList.findIndex(i => i.accessKind === 'T')
       if (findListInT !== -1) {
         this.shareGroup.type = 'A'
-        // this.selectedReceiver = '전체에게 공유 중'
       } else {
         findListInT = cabShareList.findIndex(i => i.accessKind === 'F')
         if (findListInT !== -1) {
           this.shareGroup.type = 'F'
-          // this.selectedReceiver = '전체에게 공유 중'
         } else {
           this.shareGroup.type = 'S'
           this.shareGroup.selectedList = { bookList: [], memberList: [] }
-          // var shareMemCount = 0
-          // var shareBookCount = 0
           if (cabShareList) {
             for (let i = 0; i < cabShareList.length; i++) {
               if (cabShareList[i].accessKey === undefined || cabShareList[i].accessKey === null || cabShareList[i].accessKey === '') continue
               if (cabShareList[i].accessKind === 'C') {
                 if (cabShareList[i].cabinetNameMtext === null) continue
-                /* shareBookCount += 1 */
                 if (cabShareList[i].muserList) {
                   cabShareList[i].mUserList = cabShareList[i].muserList
                 }
@@ -586,25 +469,12 @@ export default {
                 }
                 this.shareGroup.selectedList.bookList.push(cabShareList[i])
               } else if (cabShareList[i].accessKind === 'U') {
-              // shareMemCount += 1
                 this.shareGroup.selectedList.memberList.push(cabShareList[i])
               }
             }
-            // this.selectedList = {}
-          // this.selectedList.data = this.shareGroup.selectedList
-          // this.selectedReceiver = this.shareGroup.selectedList  shareBookCount + '개 그룹, ' + shareMemCount + '명 에게 공유 중'
           }
         }
-
-        /* this.permissionWGroup.type = 'S'
-        this.permissionRGroup.type = 'S'
-        this.permissionVGroup.type = 'S' */
-        // var cabinetCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'C').length
-        // var userCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'U').length
-        // this.selectedReceiver = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
       }
-      // this.selectShareList = data.mCabinet.cabShareList
-      // this.selectItemList = data.mCabinet.mShareItemList
 
       // 권한을 사용하는지 안하는지 체크하기 위해 한개라도 W,V,R 값이 있으면 ture로 변환 없으면 type = 'N' 처리
       var w = false
@@ -621,7 +491,6 @@ export default {
 
         cIndex = cabShareList.findIndex(item => item.accessKey === mShareItemList[i].accessKey)
         if (mShareItemList[i].accessKind === 'C') {
-          // mShareItemList[i].accessKey = mShareItemList[i].accessKey
           mShareItemList[i].shareSeq = cabShareList[cIndex].accessKey
           mShareItemList[i].cabinetKey = cabShareList[cIndex].accessKey
           mShareItemList[i].cabinetKey = cabShareList[cIndex].accessKey
@@ -633,7 +502,6 @@ export default {
           if (cabShareList[cIndex].cabinetNameMtext === null) continue
           mShareItemList[i].cabinetNameMtext = this.$changeText(cabShareList[cIndex].cabinetNameMtext)
         } else if (mShareItemList[i].accessKind === 'M') {
-          // mShareItemList[i].accessKey = mShareItemList[i].accessKey
           mShareItemList[i].shareSeq = cabShareList[cIndex].accessKey
           if (cabShareList[cIndex].nameMtext === null) continue
           mShareItemList[i].memberYn = true
@@ -659,13 +527,11 @@ export default {
           } else {
             this.permissionWGroup.type = 'S'
             if (mShareItemList[i].accessKind === 'C') {
-              // this.permissionWGroup.selectedList.bookList = []
               this.permissionWGroup.selectedList.bookList.push(mShareItemList[i])
             } else if (mShareItemList[i].accessKind === 'M') {
               this.permissionWGroup.selectedList.bookList.push(mShareItemList[i])
             }
             if (mShareItemList[i].accessKind === 'U') {
-              // this.permissionWGroup.selectedList.memberList = []
               this.permissionWGroup.selectedList.memberList.push(mShareItemList[i])
             }
           }
@@ -677,14 +543,11 @@ export default {
           } else {
             this.permissionVGroup.type = 'S'
             if (mShareItemList[i].accessKind === 'C') {
-              // this.permissionVGroup.selectedList.bookList = []
               this.permissionVGroup.selectedList.bookList.push(mShareItemList[i])
             } else if (mShareItemList[i].accessKind === 'M') {
-              // this.permissionVGroup.selectedList.bookList = []
               this.permissionVGroup.selectedList.bookList.push(mShareItemList[i])
             }
             if (mShareItemList[i].accessKind === 'U') {
-              // this.permissionVGroup.selectedList.memberList = []
               this.permissionVGroup.selectedList.memberList.push(mShareItemList[i])
             }
           }
@@ -696,14 +559,11 @@ export default {
           } else {
             this.permissionRGroup.type = 'S'
             if (mShareItemList[i].accessKind === 'C') {
-              // this.permissionRGroup.selectedList.bookList = []
               this.permissionRGroup.selectedList.bookList.push(mShareItemList[i])
             } else if (mShareItemList[i].accessKind === 'M') {
-              // this.permissionRGroup.selectedList.bookList = []
               this.permissionRGroup.selectedList.bookList.push(mShareItemList[i])
             }
             if (mShareItemList[i].accessKind === 'U') {
-              // this.permissionRGroup.selectedList.memberList = []
               this.permissionRGroup.selectedList.memberList.push(mShareItemList[i])
             }
           }
@@ -719,20 +579,6 @@ export default {
         this.permissionRGroup.type = 'S'
       }
 
-      // var cabinetCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'C').length
-      // var userCount = mShareItemList.filter(i => i.shareType === 'W' && i.accessKind === 'U').length
-      // this.writePermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
-
-      // cabinetCount = mShareItemList.filter(i => i.shareType === 'V' && i.accessKind === 'C').length
-      // userCount = mShareItemList.filter(i => i.shareType === 'V' && i.accessKind === 'U').length
-      // this.readPermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
-
-      // cabinetCount = mShareItemList.filter(i => i.shareType === 'R' && i.accessKind === 'C').length
-      // userCount = mShareItemList.filter(i => i.shareType === 'R' && i.accessKind === 'U').length
-      // this.commentPermission = cabinetCount + '개 그룹, ' + userCount + '명 에게 권한 부여'
-      this.setTextPermission()
-
-      // this.$emit('closeLoading')
       this.loadingYn = false
     },
     selectShareActorItem (itemType) {
@@ -767,12 +613,6 @@ export default {
           this.$showToastPop(this.$t('EDIT_BOARD_MSG_SELECTMEM'))
         }
       }
-      // if (this.selectedList.data) {
-      //   if (this.selectedList.data.bookList || this.selectedList.data.memberList) {
-      //     this.shareActorItemType = itemType
-      //     this.receiverAccessListYn = true
-      //   }
-      // }
     },
     choiceColor (color) {
       this.selectedColor = color
@@ -846,9 +686,6 @@ export default {
             shareList.push(share)
           }
         }
-        // eslint-disable-next-line no-array-constructor
-        /* shareSeqList = new Array()
-        shareSeqList = this.shareGroup.selectedList.memberList */
         for (i = 0; i < this.shareGroup.selectedList.length; i++) {
           share = {}
           share.creTeamKey = this.CHANNEL_DETAIL.teamKey
@@ -861,7 +698,6 @@ export default {
           } else if (this.shareGroup.selectedList[i].userKey) {
             share.accessKey = this.shareGroup.selectedList[i].userKey
           }
-          // hare.accessKey = shareSeqList[i].cabinetKey
           share.shareSeq = this.shareGroup.selectedList[i].accessKey
           index = shareList.findIndex(item => item.accessKey === this.shareGroup.selectedList[i].accessKey)
           if (index === -1 && !share.accessKey) {
@@ -873,13 +709,11 @@ export default {
       if (this.permissionWGroup.type === 'A') {
         for (var sh = 0; sh < shareList.length; sh++) {
           item = {}
-          // item.shareSeq = shareList[sh].accessKey
           item.shareSeq = 0
           item.shareType = 'W' // 작성
           itemList.push(item)
         }
       } else if (this.permissionWGroup.type === 'N') {
-        // itemList = []
       } else if (this.permissionWGroup.type === 'S') {
         if (this.permissionWGroup.selectedList.bookList) {
           for (let i = 0; i < this.permissionWGroup.selectedList.bookList.length; i++) {
@@ -911,7 +745,6 @@ export default {
 
             teampItemList.shareSeq = this.permissionWGroup.selectedList.bookList[i].accessKey
             itemList.push(teampItemList)
-            // if(teampItemList.shareType !== data.bookList[i].shareType ){
           }
         }
 
@@ -944,13 +777,10 @@ export default {
       if (this.permissionVGroup.type === 'A') {
         for (sh = 0; sh < shareList.length; sh++) {
           item = {}
-          // item.shareSeq = shareList[sh].accessKey
           item.shareSeq = 0
           item.shareType = 'V' // 작성
           itemList.push(item)
         }
-      } else if (this.permissionVGroup.type === 'N') {
-        // itemList = []
       } else if (this.permissionVGroup.type === 'S') {
         if (this.permissionVGroup.selectedList.bookList) {
           for (let i = 0; i < this.permissionVGroup.selectedList.bookList.length; i++) {
@@ -981,7 +811,6 @@ export default {
             }
             teampItemList.shareSeq = this.permissionVGroup.selectedList.bookList[i].accessKey
             itemList.push(teampItemList)
-            // if(teampItemList.shareType !== data.bookList[i].shareType ){
           }
         }
 
@@ -1015,13 +844,10 @@ export default {
       if (this.permissionRGroup.type === 'A') {
         for (sh = 0; sh < shareList.length; sh++) {
           item = {}
-          // item.shareSeq = shareList[sh].accessKey
           item.shareSeq = 0
           item.shareType = 'R' // 작성
           itemList.push(item)
         }
-      } else if (this.permissionRGroup.type === 'N') {
-        // itemList = []
       } else if (this.permissionRGroup.type === 'S') {
         if (this.permissionRGroup.selectedList.bookList) {
           for (let i = 0; i < this.permissionRGroup.selectedList.bookList.length; i++) {
@@ -1052,7 +878,6 @@ export default {
             teampItemList.cabinetKey = this.modiBoardDetailProps.cabinetKey
             teampItemList.shareSeq = this.permissionRGroup.selectedList.bookList[i].accessKey
             itemList.push(teampItemList)
-            // if(teampItemList.shareType !== data.bookList[i].shareType ){
           }
         }
 
@@ -1093,7 +918,6 @@ export default {
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
         this.okPopYn = true
       }
-      // this.$store.dispatch('UB_CHANNEL/AC_ADD_UPDATE_CHAN_LIST', 'CABINET')
     },
     closePop () {
       this.$checkDeleteHistory('modiBoardPop')
@@ -1122,7 +946,6 @@ export default {
         param.param = selectListParamMap
         var initData = await this.$getGPopData(param)
         this.chanProps.initData = initData
-        // param.initData = initData
         this.selectBookListShowYn = true
         this.$addHistoryStack('modiPopReceiverSelecPop')
       } else {
@@ -1130,37 +953,10 @@ export default {
         this.selectShareActorItem(type)
       }
     },
-    goNo () {
-      this.closePop()
-    },
-    boardTypeClick () {
-      this.selectTypePopShowYn = true
-    },
-    addResult (data) {
-      this.selectBoardTypeText = data.chanMenuTitle
-
-      this.selectId = data.idNum
-      var history = this.$store.getters['UB_HISTORY/hStack']
-      var removePage = history[history.length - 1]
-      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
-      this.$store.commit('UB_HISTORY/updateStack', history)
-      this.selectTypePopShowYn = false
-    },
-    click () {
-      var toggle0 = document.getElementById('toggle0')
-      this.show = !toggle0.checked
-      if (!toggle0.checked) {
-        this.statusSelectShowYn = true
-      } else {
-        this.statusSelectShowYn = false
-      }
-    },
     receiverPoolInSetting (datas) {
-      // var bookCount, memberCount
       if (datas.bookList) {
         var settingBookList = []
         const books = datas.bookList
-        // bookCount = books.length
         for (var i = 0; i < books.length; i++) {
           var tempList = {}
           var accKey = null
@@ -1188,26 +984,22 @@ export default {
           if (!this.permissionWGroup.selectedList.bookList) {
             this.permissionWGroup.selectedList.bookList = []
           }
-          // this.permissionWGroup.selectedList.bookList = []
           this.permissionWGroup.selectedList.bookList = settingBookList
         } else if (this.currentSelectBookType === 'V') {
           if (!this.permissionVGroup.selectedList.bookList) {
             this.permissionVGroup.selectedList.bookList = []
           }
-          // this.permissionVGroup.selectedList.bookList = []
           this.permissionVGroup.selectedList.bookList = settingBookList
         } else if (this.currentSelectBookType === 'R') {
           if (!this.permissionRGroup.selectedList.bookList) {
             this.permissionRGroup.selectedList.bookList = []
           }
-          // this.permissionRGroup.selectedList.bookList = []
           this.permissionRGroup.selectedList.bookList = settingBookList
         }
       }
       if (datas.memberList) {
         const members = datas.memberList
         var settingMemList = []
-        // memberCount = members.length
         for (let i = 0; i < members.length; i++) {
           tempList = {}
           tempList.userDispMtext = this.$changeText(members[i].userDispMtext)
@@ -1236,30 +1028,20 @@ export default {
           if (!this.permissionWGroup.selectedList.memberList) {
             this.permissionWGroup.selectedList.memberList = []
           }
-          // this.permissionWGroup.selectedList.memberList = []
           this.permissionWGroup.selectedList.memberList = settingMemList
         } else if (this.currentSelectBookType === 'V') {
           if (!this.permissionVGroup.selectedList.memberList) {
             this.permissionVGroup.selectedList.memberList = []
           }
-          // this.permissionVGroup.selectedList.memberList = []
           this.permissionVGroup.selectedList.memberList = settingMemList
         } else if (this.currentSelectBookType === 'R') {
           if (!this.permissionRGroup.selectedList.memberList) {
             this.permissionRGroup.selectedList.memberList = []
           }
-          // this.permissionRGroup.selectedList.memberList = []
           this.permissionRGroup.selectedList.memberList = settingMemList
         }
       }
 
-      // if (this.currentSelectBookType === 'W') {
-      //   this.writePermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-      // } else if (this.currentSelectBookType === 'V') {
-      //   this.readPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-      // } else if (this.currentSelectBookType === 'R') {
-      //   this.commentPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-      // }
       this.setTextPermission()
     },
     setSelectedList (datas) {
@@ -1267,10 +1049,8 @@ export default {
       this.selectedShareList = []
       var data = datas
       this.selectBookListShowYn = false
-      // var bookCount, memberCount
       if (data.bookList) {
         var settingBookList = []
-        // bookCount = data.bookList.length
         const books = datas.bookList
         for (var i = 0; i < books.length; i++) {
           var tempList = {}
@@ -1325,7 +1105,6 @@ export default {
       }
       if (data.memberList) {
         var settingMemList = []
-        // memberCount = data.memberList.length
         for (let i = 0; i < data.memberList.length; i++) {
           tempList = {}
           var uAccKey = data.memberList[i].userKey
@@ -1380,63 +1159,6 @@ export default {
           }
         }
       }
-      // if (bookCount === undefined) bookCount = 0
-      // if (memberCount === undefined) memberCount = 0
-      // if (this.currentSelectBookType === 'select') {
-      //   this.selectedReceiver = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-      // } else {
-      //   if (this.currentSelectBookType === 'W') {
-      //     this.writePermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-      //   } else if (this.currentSelectBookType === 'V') {
-      //     this.readPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-      //   } else if (this.currentSelectBookType === 'R') {
-      //     this.commentPermission = bookCount + '개 그룹, ' + memberCount + '명 에게 권한 부여'
-      //   }
-      // }
-      this.setTextPermission()
-      // this.setTextPermission(bookCount, memberCount)
-    },
-    // // 작성, 열람, 댓글의 텍스트를 셋팅해준다.
-    setTextPermission () {
-      /*
-      var sharMem, sharBook, WMem, WBook, VMem, VBook, RMem, RBook
-      if (this.shareGroup.selectedList.bookList) { sharBook = this.shareGroup.selectedList.bookList.length !== 0 ? this.shareGroup.selectedList.bookList.length + '개 그룹' : '' } else { sharBook = '' }
-      if (this.shareGroup.selectedList.memberList) { sharMem = this.shareGroup.selectedList.memberList.length !== 0 ? this.shareGroup.selectedList.memberList.length + '명' : '' } else { sharMem = '' }
-
-      if (this.permissionWGroup.selectedList.bookList) { WBook = this.permissionWGroup.selectedList.bookList.length !== 0 ? this.permissionWGroup.selectedList.bookList.length + '개 그룹' : '' } else { WBook = '' }
-      if (this.permissionWGroup.selectedList.memberList) { WMem = this.permissionWGroup.selectedList.memberList.length !== 0 ? this.permissionWGroup.selectedList.memberList.length + '명' : '' } else { WMem = '' }
-
-      if (this.permissionVGroup.selectedList.bookList) { VBook = this.permissionVGroup.selectedList.bookList.length !== 0 ? this.permissionVGroup.selectedList.bookList.length + '개 그룹' : '' } else { VBook = '' }
-      if (this.permissionVGroup.selectedList.memberList) { VMem = this.permissionVGroup.selectedList.memberList.length !== 0 ? this.permissionVGroup.selectedList.memberList.length + '명' : '' } else { VMem = '' }
-
-      if (this.permissionRGroup.selectedList.bookList) { RBook = this.permissionRGroup.selectedList.bookList.length !== 0 ? this.permissionRGroup.selectedList.bookList.length + '개 그룹' : '' } else { RBook = '' }
-      if (this.permissionRGroup.selectedList.memberList) { RMem = this.permissionRGroup.selectedList.memberList.length !== 0 ? this.permissionRGroup.selectedList.memberList.length + '명' : '' } else { RMem = '' }
- */
-      /* if (sharBook === '' && sharMem === '') { this.selectedReceiver = '게시판을 공유할 대상을 선택해주세요.' } else {
-        this.selectedReceiver = sharBook + (sharBook !== '' ? sharMem !== '' ? ', ' : '' : '') + sharMem + ' 에게 권한 부여 중'
-      } */
-
-      /* if (WBook === '' && WMem === '') { this.writePermission = '클릭하여 권한을 설정해주세요.' } else {
-        this.writePermission = WBook + (WBook !== '' ? WMem !== '' ? ', ' : '' : '') + WMem + ' 에게 권한 부여 중'
-      }
-
-      if (VBook === '' && VMem === '') { this.readPermission = '클릭하여 권한을 설정해주세요.' } else {
-        this.readPermission = VBook + (VBook !== '' ? VMem !== '' ? ', ' : '' : '') + VMem + ' 에게 권한 부여 중'
-      }
-
-      if (RBook === '' && RMem === '') { this.commentPermission = '클릭하여 권한을 설정해주세요.' } else {
-        this.commentPermission = RBook + (RBook !== '' ? RMem !== '' ? ', ' : '' : '') + RMem + ' 에게 권한 부여 중'
-      } */
-    },
-    changeShareType (type) {
-      this.shareType = type
-    },
-    changed () {
-      this.multiStatus += this.inputvalue
-    },
-    statusDeleteYn (index) {
-      // this.multiStatus.removeItem(index)
-      this.multiStatus.splice(index, 1)
     },
     showSelectStatus (input) {
       this.showSelectStatusShowYn = true
@@ -1446,32 +1168,6 @@ export default {
       } else {
         this.showNewYn = false
         this.count = 1
-      }
-    },
-    hidePop () {
-      this.hideSelectStatus()
-      this.functionPopShowYn = false
-    },
-    hideSelectStatus () {
-      if (this.inputvalue !== '') {
-        this.multiStatus.unshift(this.inputvalue)
-        this.inputvalue = ''
-      } else if (this.inputvalue === '') {
-        this.showSelectStatusShowYn = false
-      }
-
-      this.count -= 1
-      if (this.count === 0) {
-        this.showSelectStatusShowYn = false
-      } else if (this.count === 1) {
-        this.showNewYn = false
-      }
-    },
-    showHidePermission () {
-      if (this.sharePermissionShowYn) {
-        this.sharePermissionShowYn = false
-      } else {
-        this.sharePermissionShowYn = true
       }
     },
     decodeContents (data) {

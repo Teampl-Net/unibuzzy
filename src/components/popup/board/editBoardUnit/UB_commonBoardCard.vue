@@ -26,13 +26,8 @@
       </div>
       <div class="fl w100P textOverdot boardTitleArea" @click="emit('open')">
         <div class="textLeft fl w100P textOverdot">
-          <p class="fl font16 commonDarkGray fontBold w100P">{{this.$changeText(propData.cabinetNameMtext)}}</p>
-          <!-- <div class="fl w100P textLeft" style="overflow: hidden; white-space: nowrap; display: flex; align-items: center">
-            <p class="fl font14 commonDarkGray mleft-05" :class="index === 0 ? 'mleft-0' : '' " v-for="(value, index) in propData.mUserList" :key="index">{{this.$changeText(value.userDispMtext)}}</p>
-          </div> -->
-          <!-- white-space: nowrap; text-overflow: ellipsis; overflow: hidden; -->
+          <p class="fl font16 commonDarkGray fontBold w100P">{{$changeText(propData.cabinetNameMtext)}}</p>
           <p class="fl font14 commonDarkGray w100P textOverdot">{{subTitle}}</p>
-          <!-- <p class="fl font14 commonDarkGray mleft-05" >{{this.propData.mUserList.length}}</p> -->
         </div>
       </div>
       <!-- 공통 -->
@@ -42,7 +37,6 @@
       </div>
       <div v-if="option === 'SELE'" class="fr cursorP flexAlignCenter" @click="emit('add')">
         <div class="fl mright-03 boardSelectBox" :class="{ 'CDeepBgColor' : propData.selectedYn === true }">
-          <!-- <img v-if="propData.selectedYn === true" class="fl img-w13" src="../../../../assets/images/common/icon_check_white.svg" alt="선택 아이콘"> -->
           <img class="fl img-w13" src="../../../../assets/images/common/icon_check_white.svg" alt="선택 아이콘">
         </div>
       </div>
@@ -81,18 +75,13 @@ export default {
   },
   created () {
     this.setSubTitle()
-  },
-  computed: {
-    GE_USER () {
-      return this.$store.getters['UB_USER/GE_USER']
-    }
   }
 }
 
 </script>
 
 <style scoped>
-.rowBaseCss{
+.rowBaseCss {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -104,7 +93,6 @@ export default {
   left: 0px;
 }
 .selectedSpan {
-  /* position: absolute; */
   width: 20px;
   height: 20px;
   left: 330px;

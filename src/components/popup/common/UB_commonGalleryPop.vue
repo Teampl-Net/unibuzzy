@@ -4,9 +4,6 @@
 </template>
 
 <script>
-// import { onMessage } from '../../../assets/js/webviewInterface'
-// import PhotoSwipeLightbox from 'photoswipe/src/js/lightbox'
-// import 'photoswipe/src/photoswipe.css'
 import PhotoSwipeLightbox from 'photoswipe/dist/photoswipe-lightbox.esm.js'
 import { onMessage } from '../../../assets/js/webviewInterface'
 import 'photoswipe/dist/photoswipe.css'
@@ -72,7 +69,6 @@ export default {
       for (var i = 0; i < this.propImgList.length; i++) {
         var imgObject = {}
         var img = new Image()
-        // img.src = this.propImgList[i].domainPath + this.propImgList[i].pathMtext
         img.src = this.propImgList[i].currentSrc
         imgObject.src = img.src
         imgObject.fileKey = Number(this.propImgList[i].attributes.fileKey.value)
@@ -110,20 +106,12 @@ export default {
           var result = await this.$downloadFile(fKey, imgPath)
           console.log(result)
         }
-        // this.$showToastPop('정상적으로 저장되었습니다!')
         this.$showToastPop('Successfully saved!')
-        // this.saveOkPopShowYn = true
       } catch (error) {
         this.$showToastPop('save Failed')
-        // console.log(error)
       }
     }
   },
-  /* setup (props) {
-     return {
-       imagesData: props.images
-     }
-   }, */
   mounted () {
     var this_ = this
     if (!this.GE_IMG_LIST || this.GE_IMG_LIST.length === 0) return
@@ -160,19 +148,17 @@ export default {
   unmounted () {
     if (this.lightbox) {
       this.$emit('closeXPop')
-      // this.lightbox.destroy()
-      // this.lightbox = null
     }
   }
 }
 </script>
 
- <style>
- .pswp--custom-icon-colors {
-   --pswp-icon-color: #fff;
-   --pswp-icon-color-secondary: #333;
- }
- .pswp__top-bar {
-  padding-top: 30px;
- }
- </style>
+<style>
+.pswp--custom-icon-colors {
+  --pswp-icon-color: #fff;
+  --pswp-icon-color-secondary: #333;
+}
+.pswp__top-bar {
+padding-top: 30px;
+}
+</style>
