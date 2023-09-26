@@ -38,18 +38,16 @@
 </i18n>
 <template>
   <div class="createChanCompo" @click.stop="preventDefault">
-    <!-- <gPopHeader :headerTitle="chanDetail.modiYn? 'Edit a Channel':'Create a Channel'" :pClosePop="pClosePop" /> -->
-    <!-- <gPopHeader v-if="chanDetail.modiYn" :headerTitle="`Edit a Channel`" :pClosePop="pClosePop"/> -->
-    <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
+    <selectIconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :pClosePop="closeBgPop" :selectIcon="mSelectedIcon" :selectBg="mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
       <div :style="`background: url('${$changeUrlBackslash(mSelectedBg.selectPath)}'`" class="createChanWrap"  >
-        <div class="createChanContentsWrap" :style="`margin-top: ${Number(this.$STATUS_HEIGHT) + 150}px;`">
+        <div class="createChanContentsWrap" :style="`margin-top: ${Number($STATUS_HEIGHT) + 150}px;`">
           <form @submit.prevent="formSubmit" method="post" class="changeBgBtnWrap cursorP">
             <label @click="mIconBgSelectPopYn='bgPop'"  class='backgroundLabel commonColor' for="input-Backimgfile">
               <img :src="require(`@/assets/images/channel/icon_camera.svg`)" class="cursorP cameraIcon" alt="">
               Edit Background
             </label>
           </form>
-          <div v-if="(pChannelModi || chanDetail.modiYn === true) && this.chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel deleteBtn">
+          <div v-if="(pChannelModi || chanDetail.modiYn === true) && chanDetail.D_CHAN_AUTH.ownerYn" @click="chanDelete" class="backgroundLabel deleteBtn">
             <p class="font14">
               <img class="cameraIcon" src="@/assets/images/formEditor/trashIcon_gray2.svg" alt="">
               {{ $t('CRE_BTN_DELETE_CHAN') }}
@@ -95,7 +93,7 @@
                     {{ $t('CRE_BTN_PREVIEW') }}
                   </p>
                 </div>
-                <div v-if="mTopColorPreviewYn === true" class="fl w100P previewWrap" :style="`background: url('${mSelectedBg.selectPath}';`">
+                <div v-if="mTopColorPreviewYn === true" class="fl w100P previewWrap" :style="`background: url('${mSelectedBg.selectPath}');`">
                   <img v-if="mBtnColor === false" src="@/assets/images/common/icon_back.png" class="img-w15 fl mleft-05" alt="">
                   <img v-else-if="mBtnColor === true" src="@/assets/images/common/icon_back_white.png" class="img-w15 fl mleft-05" alt="">
                   <p :style="mBtnColor === false ? 'color: #6768a7;' : 'color:white;' " class="fl font20 fontBold">{{mInputChannelName}}</p>
@@ -103,26 +101,19 @@
                   <img v-else-if="mBtnColor === true" src="@/assets/images/common/icon_menu_white.png" class="img-w25 fr mright-05" alt="">
                 </div>
               </div>
-            <!-- <div style="width:100%; height: 30px" class="mtop-1 fl" >
-              <p class="textLeft font20 fl fontBold w100P" style="line-height: 30px;">{{ $t('COMMON_NAME_CATEGORY') }}</p>
-              <div class="fl mtop-05" style="width: 100%;" :key="mReloadKey">
-                <div :class="{activeTypeBox: mSelectedTeamTypeKey ===value.cateKey}" @click="selectChanType(value)" v-for="(value, index) in pBdAreaList" :key="index" :style="getChanBoxSize" class="fl cursorP" style="min-width:40px; width: var(--chanBoxSize); margin-right: 10px; height:2.5rem; margin-bottom: 10px; border-radius: 5px; background: rgb(245 245 245); display: flex; padding: 0 10px; justify-content: space-around; align-items: center; ">
-                </div>
-              </div>
-            </div> -->
             </div>
-            <div @click="checkValue" class="creChanBigBtn fl mtop-1;" :style="(pChannelModi || chanDetail.modiYn === true)? 'bottom: 20px;':'bottom:80px;'">{{mPageType === '생성'? $t('CRE_BTN_CREATE'):$t('EDIT_NAME_CHAN')}}</div>
+            <div @click="checkValue" class="creChanBigBtn fl mtop-1">{{mPageType === '생성'? $t('CRE_BTN_CREATE'):$t('EDIT_NAME_CHAN')}}</div>
           </div>
         </div>
       </div>
       <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreCheckPopYn" :pDelete="mDelete" @ok='setParam' />
-      <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreChan', mParams)" confirmType="one" v-if="mCreatedSuccessPopYn"/>
+      <gConfirmPop :confirmText="returnConfirmText('A')" @no="$emit('successCreChan', mParams)" confirmType="one" v-if="mCreatedSuccessPopYn"/>
       <gConfirmPop :confirmText='mErrorPopMsg' confirmType='timeout' v-if="mErrorPopYn === true" @no='mErrorPopYn=false,mCreCheckPopYn=false' />
   </div>
 </template>
 
 <script>
-import seleciconBgPopup from '@/components/popup/creChannel/UB_selectChaniconBgPopup.vue'
+import selectIconBgPopup from '@/components/popup/creChannel/UB_selectChaniconBgPopup.vue'
 export default {
   created () {
     if (this.pSelectedAreaInfo) {
@@ -167,7 +158,6 @@ export default {
     pBdAreaList: Array,
     pSelectedAreaInfo: Object,
     pSelectedBuilding: Object,
-    pCreateNew: Boolean,
     pChannelModi: Boolean
   },
   data () {
@@ -213,7 +203,6 @@ export default {
       mBtnColor: false,
       mTopColorPreviewYn: false,
       mBusinessItemList: [],
-      mReloadKey: 0,
       mParams: {},
       mDelete: false
     }
@@ -265,18 +254,13 @@ export default {
       }
     },
     async getCateItemList () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.cateGroupKey = 2
       var cateItemList = await this.$commonAxiosFunction({
         url: '/sUniB/tp.getCateItemList',
         param: param
       })
       this.mBusinessItemList = cateItemList.data.cateItemList
-    },
-    selectChanType (value) {
-      this.mSelectedTeamTypeKey = value.cateKey
-      this.mSelectTypeText = value.itemNameMtext
     },
     chanDelete () {
       this.mDeleteYn = true
@@ -373,7 +357,7 @@ export default {
         }
         var teamType = this.$teamTypeString(this.mSelectedTeamTypeKey)
         if (this.mInputChannelMemo === undefined || this.mInputChannelMemo === null || this.mInputChannelMemo.replace(' ', '') === '') {
-          gParam.memoMtext = teamType + '의 산업군을 가진 채널입니다.'
+          gParam.memoMtext = gParam.nameMtext
         }
 
         gParam.cateItemKey = this.mSelectedTeamTypeKey
@@ -392,7 +376,6 @@ export default {
         gParam.creUserKey = this.GE_USER.userKey
         gParam.logoFilekey = this.mSelectedIcon.selectedId
         gParam.picMfilekey = this.mSelectedBg.selectedId
-        // gParam.teamKeyWord = this.keyWord0 + ',' + this.keyWord1 + ',' + this.keyWord2
         gParam.creUserName = this.$changeText(this.GE_USER.userDispMtext)
         gParam.blackYn = this.mBtnColor
 
@@ -456,9 +439,6 @@ export default {
             this.mParams.areaInfo = this.pSelectedAreaInfo
           }
           this.mCreatedSuccessPopYn = true
-
-          // this.mCreatedSuccessPopYn = false
-          // this.$emit('successCreChan', params)
         }
       } catch (error) {
         console.log(error)
@@ -483,11 +463,9 @@ export default {
       var paramMap = new Map()
       paramMap.set('teamKey', newCreTeamKey)
       paramMap.set('fUserKey', this.GE_USER.userKey)
-      // paramMap.set('bdIconPath',)
       var resultList = await this.$getTeamList(paramMap)
       var response = resultList.data.content[0]
       response.detailPageYn = true
-      // await this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [response])
       await this.$store.dispatch('UB_CHANNEL/AC_CREATE_CHANNEL', response)
     }
   },
@@ -523,8 +501,7 @@ export default {
     }
   },
   components: {
-    seleciconBgPopup
-    // gPopHeader
+    selectIconBgPopup
   }
 
 }
@@ -621,6 +598,7 @@ export default {
   margin: 0 auto;
   cursor: pointer;
   position: absolute;
+  bottom: 20px;
 }
 .activeTypeBox {
   background: #6768a7 !important;

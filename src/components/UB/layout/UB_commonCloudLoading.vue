@@ -10,14 +10,6 @@ export default {
     pEnterCloudsYn: Boolean,
     pCloudLeftClass: String,
     pCloudRightClass: String
-  },
-  data () {
-    return {
-    }
-  },
-  methods: {
-    showAnimation () {
-    }
   }
 }
 </script>

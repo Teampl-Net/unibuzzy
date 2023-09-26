@@ -20,11 +20,11 @@
     <unknownLoginPop class="loginPop" :pClosePop="closeUnknownLoginPop" v-if="mUnknownLoginPopYn"/>
     <div class="w100P">
       <logoutPop v-if="mLogOutPopShowYn" @goLogout="goLogout" @closePop="closeLogoutPop" />
-      <div class="menuHeader" :style="'top:' + (this.$STATUS_HEIGHT) + 'px'">
-        <img v-on:click="this.$emit('hideMenu')" class="mtop-05 cursorP mleft-1 fl" src="../../../../assets/images/common/grayXIcon.svg"/>
+      <div class="menuHeader" :style="'top:' + ($STATUS_HEIGHT) + 'px'">
+        <img v-on:click="$emit('hideMenu')" class="mtop-05 cursorP mleft-1 fl" src="../../../../assets/images/common/grayXIcon.svg"/>
         <p class="font20">Menu</p>
       </div>
-      <div class="mt-header" :style="'padding-top:' + (this.$STATUS_HEIGHT) + 'px'">
+      <div class="mt-header" :style="'padding-top:' + ($STATUS_HEIGHT) + 'px'">
         <div class="menuRow fontBold" v-for="(value, index) in menuList" :key="index" :style="(index + 1) % 4 === 0 ? 'border-bottom: 3px solid #F5F5F9; ' : ''">
           <div class="wh100P" v-if="value.type === 'page'" v-on:click="goPage(value.link)">
             <img class="fl mright-1 mtop-02" :src="value.iconUrl" alt="">
@@ -59,10 +59,6 @@ export default {
         { iconUrl: 'resource/menu/icon_user_color.svg', menuText: '마이페이지', link: 'myPage', type: 'page' },
         { iconUrl: 'resource/menu/icon_text_color.svg', menuText: 'Terms of Use', link: 'termsOfUse', type: 'page' },
         { iconUrl: 'resource/menu/icon_board_color.svg', menuText: 'Privacy Policy', link: 'privacy', type: 'page' }
-        // { iconUrl: 'resource/menu/icon_D-alim_color.svg', menuText: '더알림 소개', link: 'theAlimInfo', type: 'pop' },
-        // { iconUrl: 'resource/menu/icon_text_color.svg', menuText: '자주 찾는 질문', link: 'question', type: 'pop' },
-        // { iconUrl: 'resource/menu/icon_board_color.svg', menuText: '문의하기', link: 'askTal', type: 'pop', jobKind: 'QUES' },
-        // { iconUrl: 'resource/menu/icon_report_color.svg', menuText: '오류접수', link: 'askTal', type: 'pop', jobKind: 'ERRO' }
       ]
     }
   },
@@ -120,10 +116,6 @@ export default {
           { iconUrl: 'resource/menu/icon_user_color.svg', menuText: this.$t('COMMON_NAME_MY_PAGE'), link: 'myPage', type: 'page' },
           { iconUrl: 'resource/menu/icon_text_color.svg', menuText: 'Terms of Use', link: 'termsOfUse', type: 'page' },
           { iconUrl: 'resource/menu/icon_board_color.svg', menuText: 'Privacy Policy', link: 'privacy', type: 'page' }
-          // { iconUrl: 'resource/menu/icon_D-alim_color.svg', menuText: this.$t('MENU_BTN_INTRO'), link: 'theAlimInfo', type: 'pop' },
-          // { iconUrl: 'resource/menu/icon_text_color.svg', menuText: this.$t('MENU_BTN_FAQ'), link: 'question', type: 'pop' },
-          // { iconUrl: 'resource/menu/icon_board_color.svg', menuText: this.$t('MENU_BTN_REQ'), link: 'askTal', type: 'pop', jobKind: 'QUES' },
-          // { iconUrl: 'resource/menu/icon_report_color.svg', menuText: this.$t('MENU_BTN_REPO_ERROR'), link: 'askTal', type: 'pop', jobKind: 'ERRO' }
         ]
       },
       deep: true

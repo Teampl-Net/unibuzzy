@@ -1,13 +1,11 @@
 <template>
   <div v-if="$route.path !== '/chanList'" class="commonPopHeaderWrap chanMainHeader">
     <div @click="goMain" class="fl cursorP mainBackBtn">
-      <!-- <img v-if="mBlackYn === false && targetType !== 'boardMain'" src="../../../assets/images/common/icon_back_white.png" class=" commonPopBackBtn" > -->
       <img v-if="targetType !== 'boardMain'" :src="dynamicSrc()" class=" commonPopBackBtn" >
       <img class=" commonPopBackBtn" v-else src="@/assets/images/common/icon_back.png">
-      <!-- <img v-else-if="mBlackYn === true" src="../../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" > -->
     </div>
     <span class="popHeaderTitleSpan font20" :style="bgblack === true ? 'color:white;':'' ">
-      {{this.$changeText(headerTitle)}}
+      {{$changeText(headerTitle)}}
     </span>
     <div v-if="targetType === 'chanDetail' && chanAlimListTeamKey" class="chanMenubar cursorP" @click="openMenu">
       <img :src="dynamicSrcMenu()"/>
@@ -26,10 +24,7 @@ export default {
   },
   data () {
     return {
-      mBlackYn: false,
-      blackYn: false,
-      imageSrc: '',
-      mChanInfo: this.pChanInfo
+      blackYn: false
     }
   },
   created () {
@@ -37,9 +32,6 @@ export default {
       this.blackYn = this.pChanInfo.initData.team.content[0].blackYn
     }
     this.$addHistoryStack('chanMain')
-  },
-  beforeUnmount () {
-    // this.$checkDeleteHistory('chanMain')
   },
   computed: {
     pageUpdate () {
@@ -186,17 +178,9 @@ export default {
       } else {
         this.$router.push('/')
       }
-      // this.$router.go(-1)
-      // this.$router.replace({ path: '/' })
     },
     openMenu () {
       this.$emit('openMenu')
-    },
-    // closeXPop () {
-    //   this.$emit('closeXPop', 'main')
-    // },
-    sendBtnClick () {
-      this.$emit('sendOk')
     }
   }
 }

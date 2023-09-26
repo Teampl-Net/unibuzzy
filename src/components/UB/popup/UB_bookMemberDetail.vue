@@ -26,25 +26,20 @@
 <div id="addTeamMemberArea" class="addTeamMemberArea">
     <gPopHeader headerTitle="Add Manually" :pClosePop="pClosePop" />
     <div class="w100P ptop-8"></div>
-    <userImgSelectCompo  @closeXPop="closeXPop" :pSelectedIconPath="this.mUserInfo.domainPath + mUserInfo.userProfileImg" :parentSelectedIconFileKey="mUserInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
-    <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
-        <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="@/assets/images/common/icon_back.png"/>
-        <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
-    </div> -->
+    <userImgSelectCompo  @closeXPop="closeXPop" :pSelectedIconPath="mUserInfo.domainPath + mUserInfo.userProfileImg" :parentSelectedIconFileKey="mUserInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
     <div class="w100P fl mbottom-1 box1" :style="`padding-top: ${$STATUS_HEIGHT + 50}px;`">
         <div class="flexCenter" :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
-            <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + $changeUrlBackslash(this.mUserInfo.userProfileImg) : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " class="userProfileImgWrap certiIconBox">
-                <img v-if="this.GE_USER.certiDate" class="img-w38" src="@/assets/images/common/userCertiIcon.svg" alt="">
+            <div :style="'background-image: url(' + (mUserInfo.domainPath ? mUserInfo.domainPath + $changeUrlBackslash(mUserInfo.userProfileImg) : mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " class="userProfileImgWrap certiIconBox">
+                <img v-if="GE_USER.certiDate" class="img-w38" src="@/assets/images/common/userCertiIcon.svg" alt="">
             </div>
         </div>
         <div v-if="selfYn" @click="changeUserImg()" class="font14 myIconBtn">변경</div>
-        <!-- <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="  float: left; " /> -->
     </div>
     <div class="addMemberTextArea fl">
 
       <div class="fl w100P dispContents">
         <p class="fl commonBlack creChanInput w100P font16 fontBold" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
-        <p class="fl commonGray creChanInput w100P font14 " v-if="readOnlyYn && !changeYn && this.GE_USER.certiDate" >{{this.$changeText(this.mUserInfo.userDispMtext)}}</p>
+        <p class="fl commonGray creChanInput w100P font14 " v-if="readOnlyYn && !changeYn && GE_USER.certiDate" >{{$changeText(mUserInfo.userDispMtext)}}</p>
         <img v-if="readOnlyYn && !changeYn && selfYn" src="@/assets/images/contents/noticebox_edit.png" class="fr cursorP noticeEditBtn" @click="changeUserDispMtext()" >
         <div v-show="changeYn" class="fl creChanInput" style="">
             <input class="fl font16 nameInput" type="text" v-model="memName" @keyup.enter="setDispName" />
@@ -53,7 +48,6 @@
                 <p class="fl mleft-1 font13 height30" @click="changeYn = false">{{ $t('COMM_BTN_CANCEL') }}</p>
             </div>
         </div>
-        <!-- <p class="fl whiteColor CMiddleBgColor font12" style="padding: 2px 6px; border-radius:10px; " v-if="userGrade !== ''" >{{userGrade}}</p> -->
       </div>
       <div class="mtop-1 fl w100P flexJustiCenter" v-if="!readOnlyYn && !selfYn">
         <img src="/resource/footer/icon_people.svg" class="img-w20 fl mright-05" alt="">
@@ -77,7 +71,6 @@
         <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="fl flexCenter">
           <div class="flexAlignCenter flexColumn">
             <div class="nativeServiceBtnWrap">
-              <img v-if="value.type === 'ALIM'" src="@/assets/images/editChan/icon_bellSolid.svg" class="img-w20" alt="">
               <img v-if="value.type === 'MAIL'" src="@/assets/images/editChan/icon_letter.svg"  class="img-w20" alt="">
               <img v-if="value.type === 'PHON'" src="@/assets/images/editChan/icon_phoneSolid.svg" class="img-w20" alt="">
               <img v-if="value.type === 'TEXT'" src="@/assets/images/editChan/icon_textSolid.svg"  class="img-w20" alt="">
@@ -115,7 +108,6 @@
         </div>
     </div>
     <gBtnSmall v-if="!readOnlyYn" :btnTitle="$t('COMM_BTN_APPLY')" class="applyBtnStyle" @click="addDirectAddMemList" />
-    <!-- <gBtnSmall v-if="propData.managerKey" btnTitle="삭제" class="fl" style="position:absolute; bottom:2rem; right: 3rem; background-color:#ff0000; font-weight:bold;" @click="deleteManager" /> -->
 </div>
 </template>
 
@@ -131,15 +123,12 @@ export default {
             memEmail: '',
             memPhone: '',
             memberList:[],
-            addMemYn: false,
             confirmPopShowYn: false,
-            tempIndex: null,
             confirmText: '',
             readOnlyYn:false,
             userProfileImg : undefined,
             domainPath : '',
             systemName: 'iOS',
-            // mobileYn: this.$getMobileYn(),
             popSize: 0,
             changeUserIconShowYn: false,
             changeUserIconPop: null,
@@ -147,9 +136,7 @@ export default {
             selfYn: false,
             changeYn: false,
             tempUserDispName: '',
-            thisUserKey: null,
-            profileFunc: [{ funcTitle: '알림작성', type: 'ALIM' }, { funcTitle: '메일쓰기', type: 'MAIL' }, { funcTitle: '전화걸기', type: 'PHON' }, { funcTitle: '문자쓰기', type: 'TEXT' }],
-            userGrade: '',
+            profileFunc: [{ funcTitle: '메일쓰기', type: 'MAIL' }, { funcTitle: '전화걸기', type: 'PHON' }, { funcTitle: '문자쓰기', type: 'TEXT' }],
             mUserInfo: {}
         }
     },
@@ -184,72 +171,13 @@ export default {
             } else {
                 await this.getMemberListGetUserInfo()
             }
-            // if (this.mUserInfo.userEmail)
-            //     this.memEmail = this.mUserInfo.userEmail
-            // else{ this.memEmail= this.$t('MEM_DETAIL_MSG_NOMAIL')}
-            // if (this.mUserInfo.userDispMtext)
-            //     this.memName = this.$changeText(this.mUserInfo.userDispMtext)
-            // if (this.mUserInfo.phoneEnc)
-            //     this.memPhone = this.mUserInfo.phoneEnc
-            // else{ this.memPhone= this.$t('MEM_DETAIL_MSG_NOPHONE') }
-            // this.setUserGrade(this.mUserInfo)
-            /*
-            if(this.propData.userProfileImg){
-                this.userProfileImg = this.propData.domainPath + this.propData.userProfileImg
-            }
-            if(this.propData.readOnlyYn){this.readOnlyYn = true}
-
-                if(this.propData.userDispMtext){
-                    this.memName = this.$changeText(this.propData.userDispMtext)
-                }else{
-                    this.memName = this.$changeText(this.propData.userNameMtext)
-                }
-            if(this.readOnlyYn){
-                if(this.propData.userEmail){ this.memEmail= this.propData.userEmail }else{ this.memEmail= '등록된 이메일이 없습니다.'}
-                if(this.propData.phoneEnc){ this.memPhone= this.propData.phoneEnc }else{ this.memPhone= '등록된 번호가 없습니다.' }
-                if (this.propData.selfYn) {
-                    this.selfYn = this.propData.selfYn
-
-                    if(this.GE_USER.userProfileImg){
-                        this.userProfileImg = this.GE_USER.userProfileImg
-                        this.domainPath = this.GE_USER.domainPath || ''
-                        this.picMfilekey = this.GE_USER.picMfilekey
-                    }
-                    if (this.GE_USER.userEmail)
-                        this.memEmail = this.GE_USER.userEmail
-                    else{ this.memEmail= '등록된 이메일이 없습니다.'}
-                    if (this.GE_USER.userDispMtext)
-                        this.memName = this.$changeText(this.GE_USER.userDispMtext)
-                    if (this.GE_USER.phoneEnc)
-                        this.memPhone = this.GE_USER.phoneEnc
-                    else{ this.memPhone= '등록된 번호가 없습니다.' }
-                } else if (this.propData.userKey) {
-                    var userKey = this.propData.userKey
-                    await this.getMemberListGetUserInfo()
-
-                    // var param = {}
-                    // param.userKey
-                    // var response = await this.$commonAxiosFunction({
-                    // url: '/sUniB/tp.getUserList',
-                    // param: param
-                    // })
-                    // // console.log(response)
-
-                    // var list = await result.data.content
-                    // // console.log(list)
-                }
-            } */
         }
         if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
-        // this.readOnlyYn = false
-        // this.getAnotherUserTeamInfo()
         this.$emit('closeLoading')
     },
     methods:{
         profileFuncEvent (type) {
-            if (type === 'ALIM') {
-                this.sendPushAlim()
-            } else if (type === 'MAIL') {
+            if (type === 'MAIL') {
                 this.sendMail(this.memEmail)
             } else if (type === 'PHON') {
                 this.callPhone(this.memPhone)
@@ -268,30 +196,7 @@ export default {
             })
             if (result.data.content) this.mUserInfo = result.data.content[0]
         },
-        async setUserGrade (anotherAuth) {
-        if (anotherAuth) {
-            var grade = this.$getFollowerType(anotherAuth)
-            this.userGrade = grade
-        }
-        },
-        sendPushAlim () {
-            var param = {}
-            param.targetType = 'writeContents'
-            param.contentsJobkindId = 'ALIM'
-            param.teamKey =  this.propData.teamKey
-            param.targetKey =  this.propData.teamKey
-            param.currentTeamKey =  this.propData.teamKey
-            param.userKey = this.propData.userKey
-            param.userName = this.memName
-            param.targetUserKey = this.thisUserKey
-            if (this.propData.userDispMtext) { param.userDispMtext = this.propData.userDispMtext } else { param.userNameMtext = this.propData.userNameMtext }
-            param.replyPopYn = true
-            if (this.propData.userDispMtext) { param.creUserName = this.propData.userDispMtext } else { param.creUserName = this.propData.userNameMtext }
-            param.creUserKey = this.propData.userKey
-            this.$emit('openPop', param)
-        },
         async setDispName () {
-            // KO$^$수망고$#$EN$^$sumango
             var param = {}
             var user = {}
             user.userKey = this.GE_USER.userKey
@@ -304,7 +209,6 @@ export default {
                 localStorage.setItem('sessionUser', JSON.stringify(result.data))
                 this.changeYn = false
                 this.$emit('closeXPop', true)
-                // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
             }
         },
         changeUserDispMtext () {
@@ -368,20 +272,6 @@ export default {
                 alert(this.$t('MEM_DETAIL_MSG_NOPHONE'))
             }
         },
-        async deleteManager () {
-
-            var result = await this.$commonAxiosFunction({
-                url: '/sUniB/tp.deleteManager',
-                param: this.propData
-            })
-            if(result.data === true){this.$emit('deleteManager')}
-
-        },
-        testInput(){
-            this.memName = '11111wwww'
-            this.memEmail = '11111@naver.com'
-            this.memPhone = '01011111111'
-        },
         regEmail(text) {
             var regemail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
             if (regemail.test(text) === true) {
@@ -401,9 +291,6 @@ export default {
         },
         deleteMem(data,index) {
             this.memberList.splice(index, 1);
-        },
-        ok(){
-            this.confirmPopShowYn = false
         },
         async addDirectAddMemList () {
             var checkYn = await this.checkParam()
@@ -452,10 +339,6 @@ export default {
                 this.confirmPopShowYn = true
             }
             return result
-        },
-        async getUserInform () {
-            var test = await this.$getUserInform()
-            return this.userInfo
         }
     }
 }

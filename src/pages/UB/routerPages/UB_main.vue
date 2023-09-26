@@ -7,9 +7,9 @@
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
     </transition>
-    <div v-if="mInfoBoxShowYn" @click="closeInfoBox" class="popBg"></div>
+    <div v-if="mInfoBoxShowYn && !mSelectWriteTypePopShowYn" @click="closeInfoBox" class="popBg"></div>
     <transition name="showUp">
-      <areaInfoPop :pBdClickedYn="mBdClickedYn" :pBoardList="mBoardList" :chanDetail="{ modiYn: false }" @openImgPop="openImgPop" :pBdAreaList="mBdAreaList" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
+      <areaInfoPop :pBdClickedYn="mBdClickedYn" :pBoardList="mBoardList" :chanDetail="{ modiYn: false }" @openImgPop="openImgPop" :pBdAreaList="mBdAreaList" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn && !mSelectWriteTypePopShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
     </transition>
     <div v-if="mChanInfoPopShowYn" @click="closeChanInfoBox" class="popBg"></div>
     <transition name="showUp">
@@ -65,6 +65,9 @@
         <img class="w100P" src="/resource/main/ub_lab.png" alt="">
         <span class="fontBold">Laboratory</span>
       </div>
+      <div class="fl" style="width: 66px; height: 66px; border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index:1000;">
+        <img id='writeBtn' src="../../../assets/images/button/Icon_WriteBoardBtn.svg" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="height: auto; cursor: pointer;">
+      </div>
     </div>
     <!-- <div class="PostsBallon">view Town's Posts</div>
     <div @click="openBoardPop" class="cursorP testBox" style="width: 70px; position: fixed; bottom: 100px; right: 15px; ">
@@ -73,6 +76,10 @@
     <div v-if="mBoardPopShowYn" class="popBg" @click="$refs.mainBoardRef.closeXPop"></div>
     <transition name="showUp">
         <mainBoardList @openImgPop="openImgPop" @openPage="openPage" @openPop="openPop" :pAreaInfo="mAreaInfo" :pTownTeamKey="mTownTeamKey" v-if="mBoardPopShowYn" ref="mainBoardRef" :pClosePop="closeBoardPop"/>
+    </transition>
+    <div v-if="mSelectWriteTypePopShowYn" class="popBg" @click="mSelectWriteTypePopShowYn = false"></div>
+    <transition name="showUp">
+      <writeBottSheet transition="showUp" v-if="mSelectWriteTypePopShowYn" @openPop="openPop" @closePop="mSelectWriteTypePopShowYn = false" :propChanList="mSelectChanList" />
     </transition>
   </div>
 </template>
@@ -85,6 +92,7 @@ import { onMessage } from '../../../assets/js/webviewInterface'
 import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel.vue'
 import mainBoardList from '../../../components/UB/popup/UB_boardListPop.vue'
 import infoBox from '../../../components/popup/info/UB_infoBox.vue'
+import writeBottSheet from '../../../components/popup/writeContentUnit/UB_contentsWriteBottSheet.vue'
 // import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
   props: {
@@ -134,7 +142,9 @@ export default {
       mOffsetInt: 0,
       mChanInfoPopShowYn: false,
       mSelectedChanInfo: {},
-      mBoardList: []
+      mBoardList: [],
+      mSelectChanList: [],
+      mSelectWriteTypePopShowYn: false
     }
   },
   created () {
@@ -187,6 +197,26 @@ export default {
     // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
   },
   methods: {
+    async openSelectWriteTypePop () {
+      await this.getTeamList(true)
+      this.mSelectWriteTypePopShowYn = true
+    },
+    async getTeamList (loadingYn) {
+      var paramMap = new Map()
+      paramMap.set('userKey', this.GE_USER.userKey)
+      paramMap.set('pageSize', 100)
+      var nonLoading = true
+      if (loadingYn) {
+        nonLoading = false
+      }
+
+      var resultList = await this.$getTeamList(paramMap, nonLoading)
+      if (resultList.data) {
+        this.mSelectChanList = resultList.data.content
+      } else {
+        this.mSelectChanList = []
+      }
+    },
     goLab () {
       this.$router.push('/board/824/13905')
       this.$emit('goInquiries', 'lab')
@@ -938,7 +968,8 @@ export default {
     selectSchoolPop,
     areaInfoPop,
     createBoardChannel,
-    infoBox
+    infoBox,
+    writeBottSheet
   }
 }
 </script>

@@ -4,8 +4,7 @@
     <div class="boxLine"></div>
     <div class="fl w100P">
       <div class="tabWrap">
-        <gActiveBar ref="activeBarPushListTop5" :tabList="this.mActiveTabList" @changeTab="changeTab" />
-        <!-- <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/> -->
+        <gActiveBar ref="activeBarPushListTop5" :tabList="mActiveTabList" @changeTab="changeTab" />
       </div>
       <div class="pushListWrap fl scrollHidden">
         <contentsList v-if="mContentsList && mContentsList.length > 0" :propContentsList="mContentsList" @goContentsDetail="openPop" />
@@ -25,7 +24,6 @@ export default {
       mMoreLink: 'push',
       mActiveTabList: [{ display: 'My', name: 'M' }, { display: 'Liked', name: 'L' }],
       mViewTab: 'M',
-      mCurrentTabName: this.$t('COMMON_TAB_ALL'),
       mContentsList: []
     }
   },
@@ -38,15 +36,12 @@ export default {
   },
   methods: {
     async getPushContentsList () {
-      // @point
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
 
       param.pageSize = 5
       param.offsetInt = 0
 
       param.jobkindId = 'BOAR'
-      // param.allYn = true
       if (this.mViewTab === 'L') {
         param.DESCYn = true
         param.findActLikeYn = true
@@ -76,30 +71,6 @@ export default {
       }, [])
       uniqueArr.splice(5, 0)
       return uniqueArr
-    },
-    async getContentsList (loadingYn) {
-      var param = {}
-      var resultData = null
-      param.offsetInt = 0
-      param.pageSize = 5
-      if (this.mViewTab === 'P') {
-        param.jobkindId = 'ALIM'
-        param.ownUserKey = this.GE_USER.userKey
-      } else if (this.mViewTab === 'B') {
-        param.boardYn = true
-        param.ownUserKey = this.GE_USER.userKey
-        param.jobkindId = 'BOAR'
-      } else if (this.mViewTab === 'A') {
-        param.allYn = true
-      }
-      var noneLoading = true
-      if (loadingYn) {
-        noneLoading = false
-      }
-      resultData = await this.$getContentsList(param, noneLoading)
-
-      this.mContentsList = resultData.content
-      return resultData
     },
     openPop (value) {
       value.alimTabType = this.mViewTab
@@ -155,11 +126,6 @@ export default {
     }
   },
   watch: {
-    // mViewTab: {
-    //   handler (val) {
-
-    //   }
-    // },
     propAlimList: {
       immediate: true,
       handler (value, old) {

@@ -1,5 +1,4 @@
 <template>
-  <!-- <div class="w100P " style="position: fixed; top: 0; left: 0; height: 60px; background: none; z-index: 9; display: flex; align-items: center; justify-content: center;"> -->
   <div class="mainHeaderWrap headerBottom" v-if="pRouterHeaderInfo" :style="(ROUTER_PATH && (ROUTER_PATH === '/' || ROUTER_PATH === '/unibuzzy')? 'background: none !important; box-shadow: none !important;' : '') ">
     <div v-if="mContentsYn" v-on:click="goBack" class="fl cursorP mainHeaderBack">
       <img src="../../../assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
@@ -7,9 +6,7 @@
     <div v-else v-on:click="showMenu" class="fl cursorP mainHeaderBack">
       <img class="mainMenuIcon" @click="showMenu()" src="../../../assets/images/common/icon_menu.png"/>
     </div>
-    <!-- <img v-if="pRouterHeaderInfo.logoImg" :src="pRouterHeaderInfo.logoImg" height="30" style="margin-right: 5px; border: 2px solid white; background: white; border-radius: 100%; -webkit-user-drag: none;" /> -->
     <div class="headerTitleBox">
-      <!-- <p v-if="$route.path === '/'" class="headerFont fontBold fl w100P" style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color: #062bb5;">{{ pRouterHeaderInfo }}</p> -->
       <p class="headerFont fontBold fl w100P headerTitle">{{ pRouterHeaderInfo }}</p>
     </div>
     <div @click="goLogList" class="cursorP bellIconBox">
@@ -24,8 +21,6 @@
 export default {
   props: {
     pRouterHeaderInfo: String
-  },
-  components: {
   },
   data () {
     return {
@@ -50,8 +45,6 @@ export default {
       } else {
         this.$router.push('/')
       }
-      // this.$router.go(-1)
-      // this.$router.replace({ path: '/' })
     },
     closePop () {
       this.mInfoBoxShowYn = false
@@ -64,9 +57,6 @@ export default {
       param.targetType = 'logList'
       param.popHeaderText = '알림이력'
       this.$emit('goLogList', param)
-    },
-    openPage (param) {
-      this.$emit('openPage', param)
     },
     goFavList () {
       const param = {}

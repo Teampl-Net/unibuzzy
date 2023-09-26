@@ -13,7 +13,6 @@
 }
 </i18n>
 <template>
-<!-- <div style="width: 100%; height: 100vh; position: absolute; z-index: 999; top:0; left: 0; background: #00000026; display: flex; justify-content: center; align-items: center; " @click="goNo"></div> -->
   <div class="w100P h100P channelMenuEditWrap pagePaddingWrap">
     <gPopHeader :headerTitle="propData.popHeaderText" :pClosePop="pClosePop" />
     <div v-if="CHANNEL_DETAIL" class="h100P boardListWrap">
@@ -28,8 +27,8 @@
       <gListEmpty v-if="cabinetList.length === 0" :title="$t('EDIT_BOARD_MSG_NOBOARD')" :subTitle="$t('EDIT_BOARD_MSG_CREBOARD')" option='EDIT' />
     </div>
   </div>
-  <gConfirmPop :confirmText='errorBoxText' confirmType='two' @no='errorBoxYn = false' @ok='confirmfunc' v-if="errorBoxYn"/>
-  <modiBoardPop :chanInfo="this.chanInfo" :pClosePop="closeNrefresh" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop='closeNrefresh' :chanName='teamNameText' @openPop='openPop'/>
+  <gConfirmPop :confirmText="errorBoxText" confirmType='two' @no="errorBoxYn = false" @ok="confirmfunc" v-if="errorBoxYn"/>
+  <modiBoardPop :chanInfo="chanInfo" :pClosePop="closeNrefresh" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop="closeNrefresh" :chanName="teamNameText" @openPop="openPop"/>
 </template>
 
 <script>
@@ -37,9 +36,7 @@ import { VueDraggableNext } from 'vue-draggable-next'
 import modiBoardPop from '@/components/popup/board/UB_modiBoardPopup.vue'
 export default {
   props: {
-    // editList: {},
     teamNameText: {},
-
     propData: {},
     pPopId: {},
     pClosePop: Function
@@ -53,11 +50,6 @@ export default {
       if (this.cabinetList.length === 0) {
         return []
       }
-      // for (var i = 0; i <this.cabinetList.length; i++) {
-
-      //  console.log(this.cabinetList[i])
-      /* this.cabinetList[i].shareAuth = this.$checkUserAuth(this.cabinetList[i].mShareItemList) */
-      // }
       return this.cabinetList
     },
     GE_USER () {
@@ -75,10 +67,6 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      // if (this.history[this.history.length - 1] === 'modiBoardPop') {
-      //   this.closeNrefresh()
-      //   return
-      // }
       if (this.popId === this.history[this.history.length - 1]) {
         this.goNo()
       }
@@ -98,7 +86,6 @@ export default {
     return {
       popId: null,
       modiBoardDetailProps: null,
-      dragging: false,
       modiBoardPopShowYn: false,
       enabled: false,
       errorBoxText: '',
@@ -107,14 +94,12 @@ export default {
       currentConfirmType: '',
       currentTeamKey: null,
       chanInfo: null,
-      cabinetList: [],
-      axiosQueue: []
+      cabinetList: []
     }
   },
   components: {
     modiBoardPop,
     draggable: VueDraggableNext
-    // longPress: VueDirectiveLongPress
   },
   methods: {
     cardEmit (param) {
@@ -166,7 +151,6 @@ export default {
       }
     },
     closeNrefresh () {
-      // this.$checkDeleteHistory('modiBoardPop')
       this.modiBoardPopShowYn = false
       this.getTeamMenuList()
     },
@@ -177,27 +161,7 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       paramMap.set('adminYn', true)
       var result = await this.$getTeamMenuList(paramMap, true)
-      // var uniqueArr = []
-      // if (result && result.length > 0) {
-      //   var newArr = []
-
-      //   newArr = [
-      //       ...this.cabinetList,
-      //       ...result
-      //   ]
-      //   uniqueArr = this.replaceArr(newArr)
-
-      // }
-      // this.cabinetList = uniqueArr
       this.cabinetList = result
-      // this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', this.CHANNEL_DETAIL)
-      /* this.$actionVuex('TEAM', this.CHANNEL_DETAIL, this.CHANNEL_DETAIL.teamKey, false, true) */
-    },
-    goPage (link) {
-      this.$emit('goPage', link)
-    },
-    openPop (param) {
-      this.$emit('openPop', param)
     },
     goNo () {
       var history = this.$store.getters['UB_HISTORY/hStack']
@@ -207,18 +171,8 @@ export default {
       this.$store.commit('UB_HISTORY/updateStack', history)
       this.$emit('closeXPop')
     },
-    replaceArr (arr) {
-      var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex(({ cabinetKey }) => cabinetKey === current.cabinetKey) === -1) {
-          data.push(current)
-        }
-        return data
-      }, [])
-      return uniqueArr
-    },
     async deleteCabinet (data, index) {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.currentTeamKey = data.creTeamKey
       param.cabinetKey = data.cabinetKey
       param.menuType = data.menuType
@@ -228,18 +182,14 @@ export default {
       }
     },
     openModiBoardPop (data) {
-      // this.$addHistoryStack('modiBoardPop')
       this.modiBoardDetailProps = data
       this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
       this.modiBoardPopShowYn = true
     },
-
     async addBoardRow () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.creMenuYn = true
-      // eslint-disable-next-line no-new-object
-      var cabinet = new Object()
+      var cabinet = {}
       var defaultAddBoardName = this.$checkSameName(this.CAB_DETAIL, 'board')
       cabinet.cabinetNameMtext = 'EN$^$' + defaultAddBoardName
       cabinet.currentTeamKey = this.CHANNEL_DETAIL.teamKey
@@ -252,48 +202,16 @@ export default {
       param.cabinet = cabinet
       var result = await this.$saveCabinet(param)
       if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
-        // var addBoard = {'cabinetNameMtext': defaultAddBoardName, 'idNum':2, 'cabinetKey': result.cabinetKey}
-        // this.boardList = []
         await this.getTeamMenuList()
       }
-      // if (this.CAB_DETAIL.length > 0) {
-      //   this.anima()
-      // }
     },
     anima () {
       document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
       setTimeout(() => {
         document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = ''
-      //     // document.getElementsByClassName('foo')[0].classList.remove('foo')
       }, 800)
     },
     async changePosTeamMenu () {
-      // // eslint-disable-next-line no-new-object
-      // var paramSet = new Object()
-      // // eslint-disable-next-line no-array-constructor
-      // var teamMenuList = new Array()
-      // // eslint-disable-next-line no-new-object
-      // var menu = new Object()
-      // var cardList = document.getElementsByClassName('boardListCard')
-      // var index = null
-      // for (var s = cardList.length - 1; s >= 0; s--) {
-      //   index = Number(cardList[s].getAttribute('index'))
-      //   for (var i = 0; i < this.CAB_DETAIL.length; i++) {
-      //     if (index === i) {
-      //       menu = {}
-      //       menu.menuType = 'C'
-      //       if (this.CAB_DETAIL[i].menuType) { menu.MenuType = this.CAB_DETAIL[i].menuType }
-      //       if (this.CAB_DETAIL[i].teamKey) { menu.teamKey = this.CAB_DETAIL[i].teamKey }
-      //       if (this.CAB_DETAIL[i].parentMenuKey) { menu.parentMenuKey = this.CAB_DETAIL[i].parentMenuKey }
-      //       if (this.CAB_DETAIL[i].cabinetKey) { menu.cabinetKey = this.CAB_DETAIL[i].cabinetKey }
-      //       if (this.CAB_DETAIL[i].cabinetNameMtext) { menu.cabinetNameMtext = this.CAB_DETAIL[i].cabinetNameMtext }
-      //       if (this.CAB_DETAIL[i].sysCabinetCode) { menu.sysCabinetCode = this.CAB_DETAIL[i].sysCabinetCode }
-      //       teamMenuList.push(menu)
-      //       break
-      //     }
-      //   }
-      // }
-
       var paramSet = {}
 
       var tempList = []
@@ -305,34 +223,13 @@ export default {
       }
 
       paramSet.teamMenuList = [...tempList]
-      var result = await this.$commonAxiosFunction(
+      await this.$commonAxiosFunction(
         {
           url: '/sUniB/tp.changePosTeamMenu',
           param: paramSet
         }
       )
-      console.log(result)
-      // this.cabinetList = []
-      // await this.getTeamMenuList()
-
-      // if (result.data.result === true) {
-      // this.cabinetList = teamMenuList
-      // this.boardList = []
-      // await this.getTeamMenuList()
-      //   this.boardList = new Array(tempList)[0]
-      //   // console.log(this.boardList)
-      // }
-    },
-    indexChange (list) {
-      var tempList = []
-      for (let i = 0; i < list.length; i++) {
-        var a = i
-        tempList.push(list[list.length - (a + 1)])
-      }
-
-      this.CAB_DETAIL = new Array(tempList)
     }
-    // this.boardList.push()
   }
 }
 
@@ -342,8 +239,6 @@ export default {
 .addNewEffect {
   transition: background-color 0.5s ease-in;
 }
-/* btnPlus common.css로 옮김 */
-
 .menuHeader {
   position: absolute;
   top: 0rem;

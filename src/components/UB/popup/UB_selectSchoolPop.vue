@@ -21,10 +21,10 @@
         <div class="textRight cursorP" @click="resetSearch" v-if="mSearchYn">
           Reset
         </div>
-        <gEmpty tabName="전체" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" class="mt-header" />
+        <gEmpty tabName="전체" contentName="채널" v-if="mEmptyYn && GE_DISP_TEAM_LIST.length === 0" class="mt-header" />
         <template v-for="(chanEle, index) in GE_DISP_TEAM_LIST" :key="index">
           <gChannelCard :style="chanEle.teamKey === GE_USER.myTeamKey? 'border: 2px solid #7978BD;':''" class="moveBox chanRow cursorP margin15" :pSelectedYn="chanEle.teamKey === GE_USER.myTeamKey" :chanElement="chanEle" @click="goTown(chanEle)" @scrollMove="scrollMove" :pPopTitle="'townList'"/>
-          <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
+          <myObserver v-if="GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="loadMore" class="fl wich" />
         </template>
       </div>
     </div>
@@ -32,22 +32,13 @@
 </template>
 
 <script>
-/* import loadingCompo from '../../components/layout/UB_loading.vue' */
-
 import chanSkeleton from '@/components/pageComponents/channel/UB_channelSkeleton.vue'
 export default {
-  name: 'user',
   components: {
-    // channelCard,
-    /* loadingCompo, */
     chanSkeleton
   },
   data () {
     return {
-      // mSearchList: [{ searchType: '정렬', dispName: '전체' }, { searchType: '산업군', dispName: '전체' }, { searchType: '유형', dispName: '전체' }],
-      mSearchList: [{ searchType: this.$t('COMMON_NAME_CATEGORY'), dispName: this.$t('COMMON_TAB_ALL') }],
-      mSelectSearchObj: {},
-      mBottomSheetOpenYn: false,
       mChannelList: [],
       mPaddingTop: 50,
       mChanListScrollBox: null,
@@ -55,7 +46,6 @@ export default {
       mScrollDirection: null,
       mFirstContOffsetY: null,
       mScrolledYn: false,
-      mHeaderTop: 0,
       mOffsetInt: 0,
       mEndListYn: true,
       mViewTab: 'all',
@@ -69,7 +59,6 @@ export default {
       mEmptyYn: true,
       mLoadingYn: false,
       mAxiosQueue: [],
-      mSearchCateKey: 3,
       mInputObj: { val: null },
       mSearchYn: false,
       mConfirmPopShowYn: false,
@@ -77,8 +66,6 @@ export default {
     }
   },
   props: {
-    pOpenUnknownLoginPop: Function,
-    params: {},
     popYn: Boolean,
     propData: {},
     initData: {},
@@ -95,7 +82,6 @@ export default {
   mounted () {
     this.$addHistoryStack('selectSchoolPop')
     this.mChanListScrollBox = document.getElementById('chanListWrap')
-    // this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
     this.$emit('closeLoading')
     this.mLoadingYn = false
   },
@@ -147,24 +133,12 @@ export default {
       }
     },
     goTown (chanEle) {
-      // if (chanEle.teamKey === 836) {
-      //   this.$router.push({ name: 'uniBmain' })
-      //   return
-      // }
       if (this.GE_USER.myTeamKey === chanEle.teamKey) {
         this.mConfirmPopText = 'Currently selected town.'
         this.mConfirmPopShowYn = true
         return
       }
       this.pGoTown(chanEle)
-    },
-    searchCloseNopenPop (openPopParam) {
-      this.mChanFindPopShowYn = false
-      this.openPop(openPopParam)
-    },
-    searchBoxClick (searchData) {
-      this.mSelectSearchObj = searchData
-      this.mBottomSheetOpenYn = true
     },
     replaceArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
@@ -229,30 +203,6 @@ export default {
         this.mScrollPosition = this.mChanListScrollBox.scrollTop
       }
     },
-    async refreshList () {
-      this.mEndListYn = false
-      this.mChannelList = []
-      this.mScrolledYn = false
-      var pSize = 10
-      if (this.mOffsetInt !== 0 && this.mOffsetInt !== '0' && Number(this.mOffsetInt) > 0) {
-        pSize = Number(this.mOffsetInt) * 10
-      }
-      this.endList = true
-      var resultList = await this.getChannelList(pSize, 0, null)
-      this.mChannelList = resultList.content
-      var newArr = []
-      for (var i = 0; i < resultList.content.length; i++) {
-        if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
-          newArr.push(resultList.content[i])
-        }
-      }
-      if (newArr.length > 0) {
-        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', newArr)
-      }
-      this.mChannelList = resultList.content
-      var chanListWrap = await this.$refs.chanListWrap
-      await chanListWrap.scrollTo({ top: 0, behavior: 'smooth' })
-    },
     endListSetFunc (resultList) {
       if (resultList === undefined || resultList === null || resultList === '') return
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -286,9 +236,6 @@ export default {
       }
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'loadMore')
       this.mAxiosQueue.splice(queueIndex, 1)
-    },
-    openManagerChanDetail (openParam) {
-      this.$emit('openPop', openParam)
     },
     allChannelInfo () {
       for (var i = 0; i < this.GE_DISP_TEAM_LIST.length; i++) {
@@ -340,9 +287,6 @@ export default {
       this.scrollMove()
       this.introChanPageTab()
     },
-    openPop (openPopParam) {
-      this.$emit('openPop', openPopParam)
-    },
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
       if (this.mAxiosQueue.findIndex((item) => item === 'getChannelList') !== -1) return
       this.mAxiosQueue.push('getChannelList')
@@ -375,63 +319,6 @@ export default {
       var resultList = result.data
       this.endListSetFunc(resultList)
       return resultList
-    },
-    async requestSearchList (paramMap) {
-      this.mResultSearchKeyList = await this.castingSearchMap(paramMap)
-      var resultList = await this.getChannelList(null, null, true)
-      var newArr = []
-      for (var i = 0; i < resultList.content.length; i++) {
-        if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
-          newArr.push(resultList.content[i])
-        }
-      }
-      if (newArr.length > 0) {
-        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', newArr)
-      }
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.mEndListYn = true
-      } else {
-        this.mEndListYn = false
-      }
-      this.mChannelList = resultList.content
-      this.mViewTab = 'all'
-      this.$refs.activeBar.switchtab(1)// 전체
-      this.$refs.activeBar.selectTab('all')// 전체
-      this.mChanFindPopShowYn = false
-    },
-    async castingSearchMap (sMap) {
-      var searchObj = {}
-      var resultArray = []
-      if (sMap.get('nameMtext') !== undefined && sMap.get('nameMtext') !== null && sMap.get('nameMtext') !== '') {
-        searchObj.typeName = this.$t('COMMON_NAME_CHANNEL')
-        searchObj.keyword = sMap.get('nameMtext')
-        resultArray.push(searchObj)
-      }
-      return resultArray
-    },
-    async changeSearchList (idx) {
-      this.mResultSearchKeyList.splice(idx, 1)
-      if (this.mResultSearchKeyList.length === 0) {
-        this.mPaddingTop = 50
-      }
-      this.mOffsetInt = 0
-      var resultList = await this.getChannelList(null, null, true)
-      var newArr = []
-      for (var i = 0; i < resultList.content.length; i++) {
-        if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
-          newArr.push(resultList.content[i])
-        }
-      }
-      if (newArr.length > 0) {
-        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', newArr)
-      }
-      this.mChannelList = resultList.content
-      this.findPaddingTopChan()
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.mEndListYn = true
-      } else {
-        this.mEndListYn = false
-      }
     }
   },
   computed: {

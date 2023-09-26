@@ -18,8 +18,6 @@
 </template>
 <script>
 export default {
-  components: {
-  },
   data () {
     return {
       mImgList: [
@@ -63,28 +61,6 @@ export default {
       return {
         '--paddingTopLength': this.mPaddingTop + 'px'
       }
-    },
-    GE_NEW_CHAN_LIST () {
-      return this.$store.getters['UB_CHANNEL/GE_NEW_CHAN_LIST']
-    },
-    GE_MAIN_CHAN_LIST () {
-      return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
-    },
-    GE_USER () {
-      return this.$store.getters['UB_USER/GE_USER']
-    },
-    GE_DISP_TEAM_LIST () {
-      var index = null
-      var teamList = this.GE_MAIN_CHAN_LIST
-      for (var i = 0; i < this.mChannelList.length; i++) {
-        index = teamList.findIndex((item) => item.teamKey === this.mChannelList[i].teamKey)
-        if (index !== -1) {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          this.mChannelList[i] = teamList[index]
-        }
-      }
-      var returnData = this.mChannelList
-      return returnData
     }
   },
   watch: {

@@ -45,19 +45,19 @@
             </div>
         </div>
         <div ref="pushListWrapWrapCompo" class="contentsListWrap">
-            <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="cont.contentsKey" >
+            <template v-for="(cont, index) in GE_DISP_CONTS_LIST" :key="cont.contentsKey" >
                 <gUBContentsBox  :pUnknownYn="false" ref="myContentsBox"  @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPage="goChannelMain" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
-                <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 13 ?  index === this.GE_DISP_CONTS_LIST.length - 13 : index === this.GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
+                <myObserver v-if="GE_DISP_CONTS_LIST && GE_DISP_CONTS_LIST.length > 13 ?  index === GE_DISP_CONTS_LIST.length - 13 : index === GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
             </template>
             <template v-if="!GE_DISP_CONTS_LIST">
                 <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
             </template>
         </div>
         <div class="goBtnWrap">
-          <gBtnSmall @click="goChannelMain(this.pAreaInfo)" btnTitle="Go Channel" class="fr" />
+          <gBtnSmall @click="goChannelMain(pAreaInfo)" btnTitle="Go Channel" class="fr" />
         </div>
         <transition name="showModal">
-            <findContentsList ref="findContentRef" transition="showModal" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="this.mFindPopShowYn = false" />
+            <findContentsList ref="findContentRef" transition="showModal" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="mFindPopShowYn = false" />
         </transition>
     </div>
 </template>
@@ -91,11 +91,7 @@ export default {
       mContsList: null,
       mPageSize: 20,
       mOffsetInt: 0,
-      mFindPopShowYn: false,
-      mMemberTypeList: [],
-      selectMemberObj: {},
-      mSaveFollowerParam: {},
-      emptyYn: false
+      mFindPopShowYn: false
     }
   },
   created () {
@@ -110,95 +106,6 @@ export default {
     })
   },
   methods: {
-    async confirmOk (cont) {
-      this.mErrorPopShowYn = false
-      // eslint-disable-next-line no-new-object
-      this.mSaveFollowerParam = new Object()
-      this.mSaveFollowerParam.teamKey = cont.creTeamKey
-      this.mSaveFollowerParam.userKey = this.GE_USER.userKey
-      this.mSaveFollowerParam.userName = this.$changeText(this.GE_USER.userDispMtext)
-      var result = false
-      if (cont.followerKey) {
-        result = await this.$changeFollower({ follower: this.mSaveFollowerParam, doType: 'CR' }, 'del')
-        // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
-        // this.CHANNEL_DETAIL.D_CHAN_AUTH = null
-        // this.CHANNEL_DETAIL.followerKey = null
-        // this.CHANNEL_DETAIL.userTeamInfo = null
-        // this.CHANNEL_DETAIL.followerCount -= 1
-        // this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
-
-        this.$emit('showToastPop', '구독 취소가 완료되었습니다.')
-
-        if (result.result || result) {
-          cont.followerKey = null
-        } else {
-          this.mErrorPopBodyStr = '실패했습니다. 관리자에게 문의해주세요'
-          this.mErrorPopBtnType = 'timeover'
-          this.mErrorPopShowYn = true
-        }
-      } else {
-        await this.okMember(cont)
-        // this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>우리채널에 알림을 보낼 수 있어요!<br>멤버들끼리 자유롭게 소통할 수 있어요!'
-        // this.openChannelMsgPop()
-      }
-    },
-    async getMemberTypeList (teamKey) {
-      var param = {}
-      param.teamKey = teamKey
-      // param.cateItemKey = this.propCateItemKey
-      var memberTypeList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeList',
-        param: param
-      })
-      if (memberTypeList.data.result) {
-        this.mMemberTypeList = memberTypeList.data.memberTypeList
-        if (this.mMemberTypeList.length > 0) {
-          this.selectMemberObj = this.mMemberTypeList[0]
-        }
-      }
-    },
-    async okMember (cont) {
-      await this.getMemberTypeList(cont.creTeamKey)
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.memberTypeKey = this.selectMemberObj.memberTypeKey
-      var memberTypeItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeItemList',
-        param: param
-      })
-      if (memberTypeItemList.data.result) {
-        // if (memberTypeItemList.data.memberTypeItemList.length === 0) {
-        // eslint-disable-next-line no-new-object
-        var typeParam = new Object()
-        if (cont.followerKey) {
-          typeParam.followerKey = cont.followerKey
-        }
-        if (this.selectMemberObj.memberTypeItemKey) {
-          typeParam.memberTypeItemKey = this.selectMemberObj.memberTypeItemKey
-        }
-        typeParam.memberTypeKey = this.selectMemberObj.memberTypeKey
-        typeParam.userKey = this.GE_USER.userKey
-        typeParam.teamKey = cont.creTeamKey
-        await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveFollower',
-          param: { follower: typeParam, appType: 'UB', doType: 'CR' }
-        })
-        // } else {
-        //   this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
-        //   return true
-        // }
-        // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
-        // this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
-        // this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
-        // this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
-        // await this.$addChanList(this.mChanInfo.teamKey)
-        cont.followerKey = true
-      } else {
-        this.$showToastPop(this.$t('ERROR_MSG_INQUIRY_MANAG'))
-        return false
-      }
-      this.$emit('closeLoading')
-    },
     goChannelMain (param) {
       const pageParam = {}
       if (param.teamKey) {
@@ -239,19 +146,8 @@ export default {
         this.$refs.findContentRef.closeXPop()
       }
     },
-    async refreshAll () {
-      // 새로고침
-      this.mSearchList = []
-      this.offsetInt = 0
-      this.mOffsetInt = 0
-      this.mPageSize = 20
-      this.mCanLoadYn = true
-      var ScrollWrap = this.$refs.pushListWrapWrapCompo
-      ScrollWrap.scrollTo({ top: 0 })
-    },
     async castingSearchMap (param) {
-      // eslint-disable-next-line no-new-object
-      var searchObj = new Object()
+      var searchObj = {}
       var resultArray = []
       if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
         searchObj.typeName = this.$t('CHAN_POST_TITLE')
@@ -332,79 +228,9 @@ export default {
         }
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      /* console.log(data)
-      var searchObj = {}
-      var index = null
-      var mSearchList = []
-      if (data.searchKey) {
-        searchObj = { accessKind: 'title', accessKey: data.searchKey, dispName: data.searchKey, searchType: '제목' }
-        index = mSearchList.findIndex(item => item.searchType === '제목')
-        if (index !== -1) {
-          mSearchList.splice(index, 1)
-        }
-        mSearchList.push(searchObj)
-      }
-      if (data.creTeamNameMtext) {
-        searchObj = { accessKind: 'nameMtext', accessKey: data.creTeamNameMtext, dispName: data.creTeamNameMtext, searchType: '채널명' }
-        index = mSearchList.findIndex(item => item.searchType === '채널명')
-        if (index !== -1) {
-          mSearchList.splice(index, 1)
-        }
-        mSearchList.push(searchObj)
-      }
-      if (data.creUserName) {
-        searchObj = { accessKind: 'creUserName', accessKey: data.creUserName, dispName: data.creUserName, searchType: '작성자' }
-        index = mSearchList.findIndex(item => item.searchType === '작성자')
-        if (index !== -1) {
-          mSearchList.splice(index, 1)
-        }
-        mSearchList.push(searchObj)
-      }
-      if (data.fromCreDateStr && data.toCreDateStr) {
-        searchObj = { accessKind: 'creDateStr', accessKey: data.fromCreDateStr + '~' + data.toCreDateStr, dispName: data.fromCreDateStr + '~' + data.toCreDateStr, searchType: '날짜' }
-        index = mSearchList.findIndex(item => item.searchType === '날짜')
-        if (index !== -1) {
-          mSearchList.splice(index, 1)
-        }
-        mSearchList.push(searchObj)
-      }
-      if (data.selectedSticker) {
-        searchObj = { accessKind: 'SK', accessKey: data.selectedSticker.stickerKey, dispName: this.$changeText(data.selectedSticker.nameMtext), searchType: '분류' }
-        index = mSearchList.findIndex(item => item.searchType === '분류')
-        if (index !== -1) {
-          mSearchList.splice(index, 1)
-        }
-        mSearchList.push(searchObj)
-      }
-      console.log(mSearchList) */
       this.closeFindPop()
       var resultList = await this.getMyContentsList(null, null, false)
       this.setContsList(resultList)
-    },
-    setSearchParam (searchList) {
-      if (searchList) {
-        var param = {}
-        for (var i = 0; i < searchList.length; i++) {
-          const searchObj = searchList[i]
-          if (searchObj.accessKind !== 'SK' && searchObj.accessKind !== 'creDate') {
-            param[searchObj.accessKind] = searchObj.accessKey
-          } else if (searchObj.accessKind === 'creDateStr') {
-            const creDateStr = searchObj.accessKey
-            const fromDateStr = creDateStr.split('~')[0]
-            const toDateStr = creDateStr.split('~')[1]
-            param.fromCreDateStr = fromDateStr
-            param.toCreDateStr = toDateStr
-          } else if (searchObj.accessKind === 'SK') {
-            param.findActStickerYn = true
-            param.stickerKey = searchObj.searchKey
-          }
-          var this_ = this
-          this.mContsList = []
-          this.getMyContentsList(null, null, null, param).then((result) => {
-            this_.setContsList(result)
-          })
-        }
-      }
     },
     async getTownCabinetList () {
       if (this.pTownTeamKey) {
@@ -423,11 +249,7 @@ export default {
       if (!resultList) return
       var newArr = []
       this.endListSetFunc(resultList)
-      /* var cont
-      var tempContentDetail
-      var contentDetail */
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
-      // this.endListSetFunc(resultList)
       if (!this.mContsList) this.mContsList = []
       if (this.mContsList.length > 0) {
         newArr = [
@@ -513,17 +335,11 @@ export default {
       }
     },
     replaceArr (arr) {
-      // var this_ = this
       if (!arr && arr.length === 0) return []
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
-        /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
         }
-        /* data = data.sort(function (a, b) { // num으로 오름차순 정렬
-          return b.contentsKey - a.contentsKey
-          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
-        }) */
         return data
       }, [])
       return uniqueArr
@@ -594,9 +410,6 @@ export default {
   watch: {
     pageUpdate (value, old) {
       this.closeXPop()
-      /* if (this.popId === hStack[hStack.length - 1]) {
-                this.closeSubPop()
-            } */
     }
   }
 }

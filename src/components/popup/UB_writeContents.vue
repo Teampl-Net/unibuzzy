@@ -135,7 +135,6 @@
     <div v-if="mIsDraggedYn" class="flexJustiCenter dragBox">{{ this.$t('FORM_MSG_DRAG') }}</div>
   </div>
   <gToolBox :propTools='mToolBoxOptions' @changeTextStyle='changeFormEditorStyle' />
-  <onlyMemberSelectPop v-if="mSelectMemPopShowYn" :propData="propData" :pSelectedList="mSelectMemberList" :pClosePop="backClick" />
   <div v-if="mAskSendAlimPopShowYn" @click="closeAskAlimPop" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 98;"></div>
   <gConfirmPop v-if="mAskSendAlimPopShowYn" @no="closeAskAlimPop" confirmType="two" @ok="sendAlimToMember" :confirmText="$t('FORM_MESSAGE_ASK_SEND_ALIM')" />
   <gConfirmPop v-if="failPopYn" @no="failPopYn = false" confirmType="timeout" :confirmText="errorText" />
@@ -152,10 +151,8 @@
 import { Base64 } from 'js-base64'
 import formEditor from '../unit/formEditor/UB_formEditor.vue'
 import attachFileList from '../unit/formEditor/UB_attachFile.vue'
-import onlyMemberSelectPop from '../UB/popup/UB_onlyMemberSelectPop.vue'
 export default {
   components: {
-    onlyMemberSelectPop,
     attachFileList,
     formEditor
   },
@@ -164,7 +161,6 @@ export default {
       mSelectedBoard: null,
       mContentsParams: {},
       mAskSendAlimPopShowYn: false,
-      mSelectMemPopShowYn: false,
       mSelectMemberList: [],
       failPopYn: false,
       errorText: '',

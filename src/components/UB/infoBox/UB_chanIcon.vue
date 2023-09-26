@@ -6,7 +6,7 @@
                 <img class="fl w100P" src="../../../assets/images/channel/ownerChannel_crown.svg" alt="">
             </div>
         </div>
-        <p class="commonGray font14 w100P textOverdot pTop-05">{{this.$changeText(chanElement.nameMtext)}}</p>
+        <p class="commonGray font14 w100P textOverdot pTop-05">{{$changeText(chanElement.nameMtext)}}</p>
     </div>
 </template>
 <script>

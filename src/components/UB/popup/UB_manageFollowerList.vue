@@ -5,11 +5,7 @@
     "FOLLOW_BTN_ORDER_CRE": "등록순",
     "FOLLOW_BTN_ORDER_NAME": "이름순",
     "FOLLOW_BTN_MANA_MEM": "멤버관리",
-    "FOLLOW_BTN_MANA_TYPE": "유형관리",
     "FOLLOW_MSG_SUCCESS": "승인되었습니다!",
-    "FOLLOW_TITLE_MANA_MEMTYPE": "멤버유형관리",
-    "FOLLOW_MSG_WAIT": "상대방이 구독하기를 기다리는 중 입니다.",
-    "FOLLOW_MSG_AUTO": "구독 시 자동으로 매니저로 등록됩니다.",
     "FOLLOW_TITLE_ADD_USER": "유저 추가"
   },
   "en": {
@@ -17,34 +13,16 @@
     "FOLLOW_BTN_ORDER_CRE": "Created",
     "FOLLOW_BTN_ORDER_NAME": "Name",
     "FOLLOW_BTN_MANA_MEM": "Manage Members",
-    "FOLLOW_BTN_MANA_TYPE": "Manage Types",
     "FOLLOW_MSG_SUCCESS": "Approved!",
-    "FOLLOW_TITLE_MANA_MEMTYPE": "Manage Member Types",
-    "FOLLOW_MSG_WAIT": "Waiting for the other person to subscribe.",
-    "FOLLOW_MSG_AUTO": "Users are automatically registered as managers upon subscription.",
     "FOLLOW_TITLE_ADD_USER": "Add a User"
   }
 }
 </i18n>
 <template>
-<div class="w100P h100P mngFollowerListWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 90)+ 'px'">
+<div class="w100P h100P mngFollowerListWrap" :style="'padding-top:' + ($STATUS_HEIGHT + 90)+ 'px'">
     <gPopHeader :headerTitle="$t('FOLLOW_BTN_MANA_MEM')" :pClosePop="pClosePop" />
-    <!-- <div style="width: 100%; float: left; height: 40px;">
-        <p class="font16 fontBold fl mright-05 grayBlack">필터: </p>
-        <div class="font16 filterBlock" style="">관리자<img class="cursorP" style="" src="../../../assets/images/common/searchXIcon.svg" alt=""></div>
-    </div> -->
-    <!-- <input type="text" name="" placeholder="이름을 입력해주세요." class="fl" id=""> -->
-    <div class="pageTopAreaStyle" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px;'">
-        <!-- <div class="receptListBtnStyle fr" style="margin-bottom: 10px;" :style="'padding-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'">
-          <gBtnSmall @click="openMemberTypePop" :btnTitle="$t('FOLLOW_BTN_MANA_TYPE')" style="padding: 0 10px !important;" class="cursorP fl"/>
-          <gBtnSmall @click="openReceptListPop" :btnTitle="$t('COMMON_BTN_REQLIST')" style="padding: 0 10px !important;" class="cursorP fl mright-05"/>
-        </div> -->
+    <div class="pageTopAreaStyle" :style="'padding-top:' + ($STATUS_HEIGHT + 60)+ 'px;'">
         <gMainTab :activeTabList='activeTabList' class="mainTab" :activeTab='activeTab' @changeTab='changeTab' />
-        <!-- <div class="tableTopArea">
-            <p class="font14  fontBold fl" style="margin-left: 40px; width: calc((100% - 165px)*0.4);">기본정보</p>
-            <p class="font14  fontBold fl" style="width: calc((100% - 165px)*0.6);"></p>
-            <p class="font14  fontBold fl" style="width: 125px;">권한</p>
-        </div> -->
     </div>
     <div class="w100P fl memberSearchArea">
       <div class="fl memberSearchBox">
@@ -57,19 +35,10 @@
       </div>
     </div>
     <div class="w100P memberListContentsBox">
-      <followerItem :managingList='this.GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
+      <followerItem :managingList='GE_DISP_MANAGER_LIST'  @saveManager='saveManager' :memberYn="tab==='M'? true: false" @openPop='openPop' @memberInfo='memberInfo'/>
     </div>
     <gConfirmPop class="confirmPop" v-if="errorPopYn" :confirmText="errorText" confirmType='timeout' @no="errorPopYn = false"/>
     <smallPop v-if="smallPopYn" :confirmText='confirmMsg' :addSmallMsg='addSmallMsg' :addSmallTextYn="true" @no="smallPopYn = false" />
-    <div v-if="receptListPopShowYn" class="modalBackStyle" > </div>
-    <transition name="showUp">
-        <div class="receptList" v-if="receptListPopShowYn">
-            <div class="headerShadow receptListHeader">
-                <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">{{ $t('FOLLOW_BTN_MANA_MEM') }}</p>
-                <img @click="closeRecMemberPop" src="../../../assets/images/common/popup_close.png" alt="">
-            </div>
-        </div>
-    </transition>
     <gConfirmPop @no="timerPopShowYn = false" :confirmText="$t('FOLLOW_MSG_SUCCESS')" confirmType='timeout' v-if="timerPopShowYn" />
 </div>
 
@@ -88,9 +57,6 @@ export default {
       mOrderByText: 'creDate',
       errorPopYn : false,
       errorText: '',
-      // activeTabList: [/* { display: '멤버', name: 'M' },  */{ display: '전체', name: 'F' }/* , { display: '매니저', name: 'Admin' } */],
-      // activeTabList: [{ display: '공개구독', name: 'Open' }, { display: '멤버', name: 'Show' }, { display: '알림매니저', name: 'AlimAdmin' }, { display: '채널매니저', name: 'Admin' }],
-      // activeTabList: [{ display: '전체', name: 'A' }, { display: '멤버', name: 'M' }, { display: '매니저', name: 'AD' }],
       activeTabList: [{ display: '전체', name: 'A' }, { display: '매니저', name: 'AD' } ],
       activeTab: 'A',
       tab: 'F',
@@ -100,9 +66,6 @@ export default {
       confirmMsg:'',
       addSmallMsg:'',
       ownerYn : false,
-      currentTeamKey: null,
-      receptListPopShowYn: false,
-      reqMemList: [],
       timerPopShowYn: false,
       searchFilterObj: {
         memberYn: null,
@@ -111,9 +74,7 @@ export default {
         userDispMtext: '',
         phoneEnc: '',
         userEmail: ''
-      },
-      mPopType: '',
-      mPropData: {}
+      }
     }
   },
   created () {
@@ -125,9 +86,6 @@ export default {
     this.ownerYn = true
   },
   methods: {
-    closePop () {
-      this.mPopType = ''
-    },
     changeOrderBy () {
       if (this.mOrderByText === 'creDate') {
         this.managerList = this.managerList.sort((a,b) => {
@@ -146,7 +104,6 @@ export default {
     async searchMember () {
       var result= {}
       var paramMap = new Map()
-       // paramMap.set('showProfileYn', true)
       paramMap.set('teamKey', this.propData.teamKey)
       if (/^[0-9]*$/g.test(this.mSearchKeyword)) {
         paramMap.set('phoneEnc', this.mSearchKeyword)
@@ -166,65 +123,7 @@ export default {
       })
       this.managerList = result.data.content
     },
-    async openReceptListPop () {
-      await this.getReqMemList()
-      this.$addHistoryStack('receptListPop')
-      this.receptListPopShowYn = true
-    },
-    async openMemberTypePop () {
-      var param = {}
-      param.targetType = 'editMemberTypePop'
-      param.popHeaderText = this.$t('FOLLOW_TITLE_MANA_MEMTYPE')
-      param.teamKey = this.propData.teamKey
-      var resultList = null
-      var memberTypeList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeList',
-        param: param
-      }, true)
-      if (memberTypeList.data.result) {
-        resultList = memberTypeList.data.memberTypeList
-        var itemList = null
-        if (resultList.length > 0) {
-            // eslint-disable-next-line no-new-object
-            var itemParam = new Object()
-            itemParam.memberTypeKey = resultList[0].memberTypeKey
-            var memberTypeItemList = await this.$commonAxiosFunction({
-                url: '/sUniB/tp.getMemberTypeItemList',
-                param: itemParam
-            }, true)
-            itemList = memberTypeItemList.data.memberTypeItemList
-            resultList[0].itemList = itemList
-            for (var i = 0; i < itemList.length; i ++) {
-                itemList[i].addYn = false
-            }
-        }
-        param.initData = resultList
-        this.mPropData = param
-      }
-
-
-      this.mPopType = 'editMemberTypePop'
-      // this.$emit('openPop', param)
-    },
-    closeRecMemberPop () {
-        this.$checkDeleteHistory('receptListPop')
-        this.receptListPopShowYn = false
-    },
-    memberFormClick(){
-      var param = {}
-      param.targetType = 'memberForm'
-      param.popHeaderText = '공개신청서 만들기'
-      // param.teamKey = this.propData.currentTeamKey
-      param.teamKey = this.$store.getters('UB_CHANNEL/GE_RECENT_CHANGE_TEAM')
-      this.$emit('openPop', param)
-    },
-    matchInfo(){
-      this.smallPopYn = true
-      this.confirmMsg = this.$t('FOLLOW_MSG_WAIT')
-      this.addSmallMsg = this.$t('FOLLOW_MSG_AUTO')
-    },
     memberInfo(member){
-      // if(this.tab === 'Show' && member.showProfileYn){
         var param = {}
         param = member
         param.targetType = 'bookMemberDetail'
@@ -232,10 +131,6 @@ export default {
         param.userKey = member.userKey
         param.readOnlyYn = true
         this.$emit('memberInfo',param)
-      // } else {
-      //   this.errorText = '멤버로 신청한 관리자가 아닙니다.'
-      //   this.errorPopYn = true
-      // }
     },
     openPop (param) {
       this.$emit('openPop', param)
@@ -243,47 +138,11 @@ export default {
     changeTab (typeName) {
       this.activeTab = typeName
       this.getFollowerList()
-      // this.tab = typeName
-      // this.getFollowerList()
-    },
-    refresh () {
-      this.getFollowerList(this.tab)
-    },
-    async okMember (param) {
-        this.closeRecMemberPop()
-        var fKeyList = []
-        for (var f = 0; f < param.length; f ++) {
-            fKeyList.push(param[f].followerKey)
-        }
-        await this.updateFollower(fKeyList)
-        this.$addChanList(this.propData.teamKey)
-        /* this.timerPopShowYn = true */
-        // 리스트로 등업신청 해줘야함
-    },
-    async updateFollower (fKeyList) {
-      var param = {}
-      var params = {}
-      param.followerKeyList = fKeyList
-      param.teamKey = this.propData.teamKey
-      param.memberYn = true
-      param.reqMemberStatus = '99'
-      params = { follower: param, doType: 'AP' }
-      var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveFollower',
-        param: params
-      })
-      if (result.data.result === true) {
-        /* this.okPopShowYn = true */
-        this.$showToastPop(this.$t('FOLLOW_MSG_SUCCESS'))
-        this.getFollowerList()
-      }
     },
     async getFollowerList () {
       var result= {}
       var paramMap = new Map()
-       // paramMap.set('showProfileYn', true)
       paramMap.set('teamKey', this.propData.teamKey)
-      // paramMap.set('adminYn', true)
       if (this.activeTab === 'AD') {
         paramMap.set('managerYn', true)
       } else if (this.activeTab === 'M') {
@@ -307,55 +166,12 @@ export default {
       if (this.searchFilterObj.userEmail != null && this.searchFilterObj.userEmail !== '') {
         paramMap.set('userEmail', this.searchFilterObj.userEmail)
       }
-      /* if (this.tab === 'M') {
-        paramMap.set('memberYn', true)
-      } else {
-
-      } */
 
       result = await this.$commonAxiosFunction({
           url: '/sUniB/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
         this.managerList = result.data.content
-      // paramMap.set('followerType', 'M')
-    },
-    async getReqMemList () {
-      var result= {}
-      var paramMap = new Map()
-       // paramMap.set('showProfileYn', true)
-      paramMap.set('teamKey', this.propData.teamKey)
-      paramMap.set('reqMemberStatus', '01')
-      paramMap.set('pageSize', 100)
-
-      result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getFollowerList',
-          param: Object.fromEntries(paramMap)
-    })
-        this.reqMemList = result.data.content
-      // paramMap.set('followerType', 'M')
-    },
-
-    async setManager (param) {
-
-      var params = {}
-      params.userKey = param.userKey
-      // params.userName = this.$changeText(JSON.parse(localStorage.getItem('sessionUser')).userDispMtext)
-      params.teamKey = this.propData.teamKey
-      /* var toastText =  */
-      if (param.manager) {
-        await this.saveManager(params)
-      } else {
-        await this.deleteManager(params)
-      }
-      this.getFollowerList(this.tab)
-    },
-    async deleteManager (param) {
-      var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.deleteManager',
-        param: param
-      })
-
     },
     async saveManager (follower) {
       var param = {}
@@ -364,16 +180,6 @@ export default {
         url: '/sUniB/tp.saveManager',
         param: param
       })
-    },
-
-    async openAddManagerPop () {
-      var param = {}
-      param.targetType = 'bookMemberDetail'
-      // param.currentCabinetKey = this.propData.cabinetKey
-      param.currentTeamKey = this.propData.teamKey
-      param.popHeaderText = this.$t('FOLLOW_TITLE_ADD_USER')
-      param.newMemYn = true
-      this.$emit('openPop', param)
     },
     replaceArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
@@ -385,14 +191,10 @@ export default {
       return uniqueArr
     }
   },
-  components: { followerItem },
+  components: {
+    followerItem
+  },
   computed: {
-    /* GE_NEW_MAN_LIST () {
-      return this.$store.getters['UB_CHANNEL/GE_NEW_MAN_LIST']
-    },
-    GE_NEW_SHOW_LIST () {
-      return this.$store.getters['UB_CHANNEL/GE_NEW_SHOW_LIST']
-    }, */
     CHANNEL_DETAIL () {
       var detailList = this.$getDetail('TEAM', this.propData.teamKey)
       if (detailList) {

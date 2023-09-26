@@ -43,8 +43,6 @@ export default {
       this.mCabContentsList = result.content
     })
   },
-  components: {
-  },
   data () {
     return {
       mCabContentsList: [],
@@ -53,7 +51,6 @@ export default {
     }
   },
   props: {
-    pChanDetail: {},
     pBoardDetail: {},
     pClosePop: Function,
     pTVList: Array,
@@ -112,11 +109,7 @@ export default {
       }
     },
     async getContentsList (pageSize, offsetInput) {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      /* if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
-        param.creTeamKey = this.chanDetailKey
-      } */
+      var param = {}
       this.$emit('closeLoading')
       if (!this.mPropParams) {
         param.cabinetKey = this.$route.params.targetKey
@@ -127,8 +120,6 @@ export default {
       param.offsetInt = this.offsetInt
       if (offsetInput !== undefined) {
         param.offsetInt = offsetInput
-      // } else {
-        // param.offsetInt = this.offsetInt
       }
       if (pageSize) {
         param.pageSize = pageSize
@@ -150,10 +141,6 @@ export default {
       if (this.viewTab === 'N') {
         this.totalElements = resultList.totalElements
       }
-      for (var i = 0; i < resultList.length; i++) {
-        // resultList.
-      }
-      // this.$emit('changePageHeader', resultList.cabinetNameMtext)
 
       return resultList
     },
@@ -165,7 +152,6 @@ export default {
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
           return b.mccKey - a.mccKey
-          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data
       }, [])
@@ -182,12 +168,6 @@ export default {
         }
         this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
 
-        // const newArr = [
-        //   ...this.CAB_DETAIL.boardList,
-        //   ...resultList.content
-        // ]
-
-        // 더 불러온 컨텐츠에 D_MEMO_LIST가 없어 넣어주고 있음
         const newArr = [
           ...this.mCabContentsList,
           ...resultList.content
@@ -195,7 +175,6 @@ export default {
 
         var uniqueArr = this.replaceArr(newArr)
         var tempCabData = this.pBoardDetail
-        // tempCabData.boardList
         this.mCabContentsList = uniqueArr
         if (this.viewTab === 'N') {
           tempCabData.totalContentsCount = resultList.totalElements
@@ -212,7 +191,6 @@ export default {
             }
           }
         }
-      } else {
       }
     }
   }

@@ -1,12 +1,9 @@
 <template>
   <div class="fl selectMemberPopWrap">
       <gPopHeader headerTitle="Select Followers" :pClosePop="pClosePop" />
-      <!-- <div style="width:100%; height:calc(100%);" > -->
-      <gBookMemberList class="fl memberListCompo" :style="'margin-top:' + (this.$STATUS_HEIGHT + 20)+ 'px;'" :pSelectedList="pSelectedList" :propMemberList="memberList" ref="memberListCompo"  :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData"/>
-      <!-- <selectedListCompo class="fl" style="height:calc(50% - 50px);" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' /> -->
+      <gBookMemberList class="fl memberListCompo" :style="'margin-top:' + ($STATUS_HEIGHT + 20)+ 'px;'" :pSelectedList="pSelectedList" :propMemberList="memberList" ref="memberListCompo"  :parentSelectList="pList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData"/>
       <selectedListCompo class="fl selectedListCompo" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="propData.currentTeamKey || propData.teamKey" @changeSelectMemberList="changeSelectMemberList"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
-      <!-- </div> this.propData.selectMemberType==='member'? true:false -->
-      <gConfirmPop ref="gConfirmPopRef" :confirmText="this.propData.selectMemberType === 'member'? 'Do you want to add as a member?': 'Do you want to add as a manager?'" confirmType='two' @no="closeConfirmPop" @ok="saveMember" v-if="confirmPopShowYn"/>
+      <gConfirmPop ref="gConfirmPopRef" :confirmText="propData.selectMemberType === 'member'? 'Do you want to add as a member?': 'Do you want to add as a manager?'" confirmType='two' @no="closeConfirmPop" @ok="saveMember" v-if="confirmPopShowYn"/>
   </div>
 </template>
 
@@ -24,11 +21,9 @@ export default {
       memberList: [],
       selectedList: [{ memberList: [] }],
       pList: [{ memberList: [] }],
-      receiverTitle: '신청 목록',
       confirmPopShowYn: false,
       confirmText: '',
       directAddMemList: []
-
     }
   },
   created () {
@@ -56,7 +51,7 @@ export default {
         data
       ]
       this.selectedList.memberList = newArr
-      // this.$refs.selectedListCompo.upDatePage()
+      // this.$refs..upDatePage()
 
       await this.changeSelectMemberList(this.selectedList.memberList)
     },
@@ -64,9 +59,7 @@ export default {
       var paramMap = new Map()
 
       paramMap.set('teamKey', this.propData.currentTeamKey)
-      // paramMap.set('showProfileYn', true)
       paramMap.set('pageSize', 1000)
-      // paramMap.set('followerType', 'M')
       var result = await this.$commonAxiosFunction({
         url: '/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
@@ -126,15 +119,13 @@ export default {
           }
         }
       }
-      // this.$refs.memberListCompo.deSelectList(data.index)
     },
     refresh () {
       this.getFollowerList()
     },
     async saveMember () {
       var userKeyList = []
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       // eslint-disable-next-line no-unused-vars
       var result = null
       for (var i = 0; i < this.memberList.length; i++) {
@@ -154,10 +145,8 @@ export default {
         if (this.directAddMemList !== undefined && this.directAddMemList !== null && this.directAddMemList.length > 0) {
           var follower = null
           for (var u = 0; u < this.directAddMemList.length; u++) {
-            // eslint-disable-next-line no-new-object
-            follower = new Object()
-            // eslint-disable-next-line no-new-object
-            param = new Object()
+            follower = {}
+            param = {}
             follower.teamKey = this.propData.currentTeamKey
 
             follower.inEmail = this.directAddMemList[u].userEmail
@@ -173,7 +162,6 @@ export default {
           }
         }
       } else {
-        // eslint-disable-next-line no-new-object
         if (userKeyList !== undefined && userKeyList !== null && userKeyList.length > 0) {
           param.userKeyList = userKeyList
           param.cabinetKey = this.propData.cabinetKey
@@ -186,13 +174,10 @@ export default {
         }
 
         if (this.directAddMemList !== undefined && this.directAddMemList !== null && this.directAddMemList.length > 0) {
-          // eslint-disable-next-line no-new-object
-          var mCabContents = new Object()
+          var mCabContents = {}
           for (var d = 0; d < this.directAddMemList.length; d++) {
-            // eslint-disable-next-line no-new-object
-            mCabContents = new Object()
-            // eslint-disable-next-line no-new-object
-            param = new Object()
+            mCabContents = {}
+            param = {}
             mCabContents.jobkindId = 'USER'
             mCabContents.cabinetKey = this.propData.cabinetKey
             mCabContents.targetKey = this.propData.currentTeamKey
@@ -209,13 +194,7 @@ export default {
       if (this.$refs.gConfirmPopRef) {
         await this.$refs.gConfirmPopRef.goNo()
       }
-      // this.confirmPopShowYn = false
       this.pClosePop()
-      // this.$emit('closeXPop', true)
-
-      /* if (result.data.result === true && result.data.message === 'OK') {
-                this.$emit('closeXPop', true)
-            } */
     },
     backClick () {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
@@ -228,7 +207,6 @@ export default {
     async setManager (list) {
       this.confirmPopShowYn = true
     }
-
   }
 }
 </script>

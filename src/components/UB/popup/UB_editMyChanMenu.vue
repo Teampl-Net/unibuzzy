@@ -29,8 +29,6 @@
 }
 </i18n>
 <template>
-<seleciconBgPopup v-if="mSelectBuildingPop" :pSelectedBuilding="mSelectedBuilding" :selectBd="this.mSelectedBuilding" @no='mSelectBuildingPop=false' @makeParam='setIconOrBGData' :opentype="mSelectBuilding" :pClosePop="closeSelectBuildingPop"/>
-
 <div class="editChanWrap">
   <transition name="show_left">
     <manageFollowerList v-if="mPopType === 'memberManagement'" :propData="mCommonParam" style="padding-top: 0;" @memberInfo="openMemberInfo" @openPop="openPop" :pClosePop="closePop" />
@@ -38,19 +36,17 @@
   <transition name="show_left">
     <editBookListPop v-if="mPopType === 'editBookList'" @memberInfo="openMemberInfo" :propData="mCommonParam" :pClosePop="closePop" />
   </transition>
-  <!-- <createChannel @successCreChan="successCreChan" v-if="mPopType === 'createChannel'" :chanDetail="mCommonParam" :pClosePop="closePop" /> -->
   <createBoardChannel @successCreChan="successCreChan" v-if="mPopType === 'createChannel'" :channelModiYn="channelModiYn=true" :chanDetail="mCommonParam" :pClosePop="closePop" />
   <editBoardListPop v-if="mPopType === 'editBoard'" :propData="mCommonParam" :pClosePop="closePop" />
   <div class="userDetailShadow" v-if="mUserDetailPopShowYn" @click="mSelectedMemberInfo"></div>
   <userDetailPop v-if="mUserDetailPopShowYn" :propData="mSelectedMemberInfo" :pClosePop="closeMemberInfo" />
   <gPopHeader :headerTitle="$t('MANA_TITLE_CHANDETAIL')" :pClosePop="pClosePop" />
-  <div class="editMyChanMenuWrap" :style="`padding-top: ${Number(this.$STATUS_HEIGHT + 70)}px`">
+  <div class="editMyChanMenuWrap" :style="`padding-top: ${Number($STATUS_HEIGHT + 70)}px`">
     <table class="myChanMenuTable w100P fl" >
-      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditChanPop" style="">
+      <tr v-if="CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditChanPop" style="">
         <th class="font16 w100P padding10">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/main/icon_channel.png"/>
-            <!-- <img style="width:20px;" class="fl" src="../../../assets/images/main/icon_channel.png"> -->
           </div>
           <div class="fl mleft-05 mngChanRow">
             <p class="font16 commonDarkGray fontBold">{{ $t('MANA_NAME_CAHN') }}</p>
@@ -62,7 +58,7 @@
         </th>
       </tr>
 
-      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1" @click="openEditManagerPop('manager')">
+      <tr v-if="CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1" @click="openEditManagerPop('manager')">
         <th class="font16 w100P padding10">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w25 chanImg " src="../../../assets/images/editChan/icon_userEdit.svg">
@@ -77,7 +73,7 @@
         </th>
       </tr>
 
-      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1" @click="openEditCabinetPop">
+      <tr v-if="CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1" @click="openEditCabinetPop">
         <th class="font16 w100P padding10">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_addressBook.svg">
@@ -92,7 +88,7 @@
         </th>
       </tr>
 
-      <tr v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditBoardPop">
+      <tr v-if="CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditBoardPop">
         <th class="font16 w100P padding10">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">
@@ -106,37 +102,6 @@
           </div>
         </th>
       </tr>
-
-      <!-- <tr @click="openEditMemberPop">
-        <th class="font16 w100P">
-          <div class="myChanMenuImgArea editMychanRow mright-05">
-            <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">
-          </div>
-          <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
-            <p class="font16 commonDarkGray fontBold">공개신청서 관리</p>
-            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">게시판을 생성, 수정할 수 있어요.</p>
-          </div>
-          <div class="myChanMenuImgAreaRight editMychanRow">
-            <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
-          </div>
-        </th>
-      </tr> -->
-
-      <!-- <tr @click="autoAnswerClick">
-        <th class="font16 w100P">
-          <div class="myChanMenuImgArea editMychanRow mright-05">
-            <img class="img-w20 chanImg" src="../../../assets/images/editChan/icon_board.svg">
-          </div>
-          <div class="fl mleft-05" style="height: 80%; width: calc(100% - 100px);">
-            <p class="font16 commonDarkGray fontBold">자동 응답</p>
-            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">채널의 자동 응답을 설정할 수 있어요.</p>
-          </div>
-          <div class="myChanMenuImgAreaRight editMychanRow">
-            <img class="btnStyle chanBackImg" src="../../../assets/images/common/icon_backWhitePurple.svg" alt="">
-          </div>
-        </th>
-      </tr> -->
-
     </table>
   </div>
 </div>
@@ -146,18 +111,14 @@
 import manageFollowerList from './UB_manageFollowerList.vue'
 import editBookListPop from './UB_editBookListPop.vue'
 import userDetailPop from './UB_userDetailPop.vue'
-// import createChannel from './UB_createChannel.vue'
 import editBoardListPop from './UB_editBoardListPop.vue'
-import seleciconBgPopup from '@/components/popup/creChannel/UB_selectChaniconBgPopup.vue'
 import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel'
 
 export default {
   components: {
     manageFollowerList,
     editBookListPop,
-    // createChannel,
     editBoardListPop,
-    seleciconBgPopup,
     createBoardChannel,
     userDetailPop
   },
@@ -169,8 +130,6 @@ export default {
     return {
       mCommonParam: {},
       mPopType: '',
-      mSelectBuildingPop: false,
-      mSelectBuilding: 'building',
       channelModiYn: true,
       mSelectedMemberInfo: {},
       mUserDetailPopShowYn: false
@@ -228,7 +187,6 @@ export default {
       this.mCommonParam.chanName = this.propData.teamNameMtext
       this.mCommonParam.popHeaderText = this.$t('MANA_NAME_ADDRBOOK')
       this.mPopType = 'editBookList'
-      // this.openPop()
     },
     async openEditBoardPop () {
       this.mCommonParam.targetType = 'editBoard'
@@ -248,12 +206,6 @@ export default {
       this.mCommonParam.popHeaderText = this.$t('MANA_NAME_BOARD')
       this.mCommonParam.targetKey = this.propData.teamKey
       this.mPopType = 'editBoard'
-      // this.openPop()
-    },
-    chanDetailClick () {
-      this.mCommonParam.targetType = 'chanInfo'
-      this.mCommonParam.popHeaderText = this.$t('MANA_TITLE_CHANDETAIL')
-      this.openPop()
     },
     openEditChanPop () {
       this.mCommonParam.targetType = 'createChannel'
@@ -261,7 +213,6 @@ export default {
       this.mCommonParam.popHeaderText = this.$t('MANA_TITLE_EDITCHAN')
       this.mCommonParam.modiYn = true
       this.mPopType = 'createChannel'
-      // this.openPop()
     },
     async openEditManagerPop () {
       this.mCommonParam.targetType = 'memberManagement'
@@ -276,23 +227,8 @@ export default {
       this.mCommonParam.initData = initData
       this.mPopType = 'memberManagement'
     },
-    autoAnswerClick () {
-      this.mCommonParam.targetType = 'autoAnswer'
-      this.mCommonParam.popHeaderText = '자동 응답'
-      this.openPop()
-    },
-    openEditMemberPop () {
-      this.mCommonParam.targetType = 'memberFormList'
-      this.mCommonParam.popHeaderText = '공개신청서 목록'
-      this.openPop()
-    },
     openPop () {
-      // this.$emit('openPop', this.CHANNEL_DETAIL)
       this.$emit('openPop', this.mCommonParam)
-    },
-    openSelectBuildingPop () {
-      this.mSelectBuildingPop = true
-      this.mSelectBuilding = 'building'
     }
   }
 

@@ -127,7 +127,10 @@ export default {
       history = history.filter((element, index) => index < history.length - 1)
       this.$store.commit('UB_HISTORY/setRemovePage', removePage)
       this.$store.commit('UB_HISTORY/updateStack', history)
-      this.pClosePop()
+      this.$emit('closePop')
+      if (this.pClosePop) {
+        this.pClosePop()
+      }
     },
     requestSearchPushList () {
       var param = {}

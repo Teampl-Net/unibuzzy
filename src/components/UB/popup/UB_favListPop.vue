@@ -66,7 +66,6 @@ export default {
   components: {
   },
   props: {
-    pClosePop: Function,
     pFTeamList: Array
   },
   data () {
@@ -94,15 +93,12 @@ export default {
       if (this.GE_USER.userKey) {
         paramMap.set('userKey', this.GE_USER.userKey)
       } else {
-        // paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
         if ((localStorage.getItem('sessionUser'))) paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       }
       if (this.GE_USER.soAccessToken && this.GE_USER.soAccessToken !== '') { paramMap.set('soAccessToken', this.GE_USER.soAccessToken) }
       if (this.GE_USER.fcmKey !== undefined && this.GE_USER.fcmKey !== null && this.GE_USER.fcmKey !== '') { paramMap.set('fcmKey', this.GE_USER.fcmKey) }
       paramMap.set('userEmail', this.GE_USER.userEmail)
       paramMap.set('soEmail', this.GE_USER.soEmail)
-      // paramMap.set('myTeamKey', this.GE_USER.myTeamKey)
-      // paramMap.set('myTeamKey', 836)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
       var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap))
@@ -123,7 +119,7 @@ export default {
       pageParam.nameMtext = param.nameMtext
       this.$emit('openPage', pageParam)
     },
-    closeXPop (reloadYn) {
+    closeXPop () {
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)

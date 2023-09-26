@@ -1,5 +1,5 @@
 <template>
-  <seleciconBgPopup v-if="mSelectBuildingPop" :pSelectedBuilding="mSelectedBuilding" :selectBd="this.mSelectedBuilding" @no='mSelectBuildingPop=false' @makeParam='setIconOrBGData' :opentype="mSelectBuilding" :pClosePop="closeSelectBuildingPop"/>
+  <selectIconBgPopup v-if="mSelectBuildingPop" :pSelectedBuilding="mSelectedBuilding" :selectBd="mSelectedBuilding" @no='mSelectBuildingPop=false' @makeParam='setIconOrBGData' :opentype="mSelectBuilding" :pClosePop="closeSelectBuildingPop"/>
   <div :style="!mScrollHiddenYn? 'overflow-y: scroll;':''" class="createChanBox" @click.stop="preventDefault">
     <gPopHeader v-if="mShowBdOrChan==='C'" :headerTitle="`Create New Board`" :pClosePop="pClosePop" />
     <gPopHeader v-else-if="mShowBdOrChan==='T'" :headerTitle="`Create New Channel`" :pClosePop="pClosePop" />
@@ -48,7 +48,7 @@
               <p class="createBoardTitle">Board Name</p>
               <div class="flexAlignCenter">
                 <input class="boardNameInput" type="text" v-model="mNewBoardName" placeholder="Please enter up to 20 characters in the board name."/>
-                <div class="mleft-1" @click="this.colorPickerShowYn = !this.colorPickerShowYn" :style="'background:' + this.selectedColor + ';'" ></div>
+                <div class="mleft-1" @click="colorPickerShowYn = !colorPickerShowYn" :style="'background:' + selectedColor + ';'" ></div>
               </div>
               <div v-if="colorPickerShowYn" class="fr w100P">
                 <gColorPicker :colorPick="selectedColor" @closePop="closeColorPickerPop" v-if="colorPickerShowYn" @choiceColor='choiceColor' ref="colorPicker" />
@@ -66,18 +66,18 @@
       <createChannel class="creChanCompo" @changeBgPopShowYn="changeBgPopShowYn" :pBdKey="mBuildingKey" :class="{margin220 : mShowBdOrChan==='T' || mChannelModi}" v-if="mShowBdOrChan==='T' || (!mShowBdOrChan && mSelectedTab === 1) || mChannelModi" :pClosePop="pClosePop" :pChannelModi="mChannelModi" :pCreateNew="mCreateNew" :chanDetail="chanDetail" @successCreChan="openPage" @openPage="openPage" :pSelectedBuilding="mSelectedBuilding" :pSelectedAreaInfo="pSelectedAreaInfo" :pBdAreaList="pBdAreaList"/>
     </div>
     <gConfirmPop :confirmText="mCreCheckPopText === null ? returnConfirmText('B') : mCreCheckPopText" @no='mCreBoardCheckPopYn=false, mDeleteYn=false, mCreCheckPopText=null' v-if="mCreBoardCheckPopYn" :pCreBoardCheckPopYn="mCreBoardCheckPopYn" @ok='newBoard' />
-    <gConfirmPop :confirmText="returnConfirmText('A')" @no="this.$emit('successCreBoard', mNewBoardInfo)" confirmType="one" v-if="mCreatedSuccessPopYn" :pCloseCreatedSuccessPopYn="closeCreatedSuccessPopYn" :pNewBoard="mNewBoardInfo"/>
+    <gConfirmPop :confirmText="returnConfirmText('A')" @no="$emit('successCreBoard', mNewBoardInfo)" confirmType="one" v-if="mCreatedSuccessPopYn" :pCloseCreatedSuccessPopYn="closeCreatedSuccessPopYn" :pNewBoard="mNewBoardInfo"/>
   </div>
 </template>
 
 <script>
 import createChannel from '@/components/UB/popup/UB_createChannel.vue'
-import seleciconBgPopup from '@/components/popup/creChannel/UB_selectChaniconBgPopup.vue'
+import selectIconBgPopup from '@/components/popup/creChannel/UB_selectChaniconBgPopup.vue'
 
 export default {
   components: {
     createChannel,
-    seleciconBgPopup
+    selectIconBgPopup
   },
   props: {
     pClosePop: Function,
@@ -102,8 +102,6 @@ export default {
       mSelectedChanIndex: 0,
       mNewBoardName: '',
       mNewBoardMemo: '',
-      mNewResult: [],
-      mMyTeamNameList: [],
       colorPickerShowYn: false,
       selectedColor: '#FFCDD2',
       mShowBdOrChan: '',
@@ -137,9 +135,6 @@ export default {
     },
     selectTab (index) {
       this.mSelectedTab = Number(index)
-      // if (this.mSelectedTab === 0) {
-      //   this.getMatchName()
-      // }
     },
     openSelectBuildingPop () {
       this.mSelectBuildingPop = true
@@ -150,9 +145,6 @@ export default {
     },
     preventDefault () {
       return false
-    },
-    showColorPicker () {
-      this.colorPickerShowYn = true
     },
     closeColorPicker () {
       this.colorPickerShowYn = true
@@ -258,7 +250,6 @@ export default {
     }
   },
   created () {
-    // this.mSelectedTab = -1
     if (this.chanDetail && this.chanDetail.bdKey) {
       this.mBuildingKey = this.chanDetail.bdKey
       this.mSelectedBuilding.selectPath = this.chanDetail.bdIconPath

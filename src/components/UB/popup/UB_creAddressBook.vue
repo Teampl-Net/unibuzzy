@@ -69,7 +69,6 @@ export default {
         var thisParam = {}
         thisParam.cabinetType = 'address'
         this.closePop()
-        // this.$emit('saveCabinet', thisParam)
       } catch (error) {
         console.error(error)
         this.$showToastPop(this.$t('EDIT_BOOK_MSG_SAVE'))
@@ -85,7 +84,14 @@ export default {
 </script>
 <style>
 .addressBookInputType{
-  padding-left: 5px; height: 30px; border: 1px solid #ccc; border-radius: 5px; cursor: text; width: calc(100% - 100px); background: white !important; float: left;
+  padding-left: 5px;
+  height: 30px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: text;
+  width: calc(100% - 100px);
+  background: white !important;
+  float: left;
 }
 .addressBookInputType::placeholder {
   color : #BDBDBD;
@@ -95,7 +101,6 @@ export default {
   align-items: center;
   min-height: 65px;
   padding-top: 100px !important;
-  /* border-bottom: 1px solid #ccc; */
 }
 .createTeamWrap {
   width:100%;

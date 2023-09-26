@@ -47,14 +47,14 @@
     </transition>
     <onlyMemberSelectPop v-if="mPopType === 'selectMemberPop'" :pSelectedList="memberList" :propData="mPropData" :pClosePop="backClick" />
     <bookMemberDetail v-if="mPopType === 'bookMemberDetail'" @addDirectAddMemList="saveMemberDirectly" :propData="mPropData" :pClosePop="backClick" />
-    <gPopHeader :headerTitle="mDetailOpenYn? `Manage ${this.$changeText(selectBookDetail.cabinetNameMtext)}`:'Manage Team'" :pClosePop="closeXPop" />
+    <gPopHeader :headerTitle="mDetailOpenYn? `Manage ${$changeText(selectBookDetail.cabinetNameMtext)}`:'Manage Team'" :pClosePop="closeXPop" />
     <gConfirmPop :confirmText='mConfirmText' :confirmType="mConfirmType" v-if="mConfirmPopShowYn" @no='mConfirmPopShowYn=false' @ok='confirmOk' />
-    <div class="pagePaddingWrap longHeight bookListBox"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
+    <div class="pagePaddingWrap longHeight bookListBox"  :style="'padding-top:' + ($STATUS_HEIGHT + 60)+ 'px'">
       <div class="w100P filterArea" v-if="mCabinetName !== ''" >
-        <div class="searchBox" v-if="this.mSearchFilterList.length > 0">
+        <div class="searchBox" v-if="mSearchFilterList.length > 0">
           <p class="font14 commonBlack fontBold fl lineHeight30">{{ $t('EDIT_BOOK_TITLE_FILTER') }}</p>
           <div class="selectBox">
-            <div class="selectList" v-for="(value, index) in this.mSearchFilterList" :key="index">
+            <div class="selectList" v-for="(value, index) in mSearchFilterList" :key="index">
               <select  v-model="value.selectGroup" @change="searchFilter()"  name="" class="font14" id="">
                 <option value="all" @click="changeValue('all')">{{value.text + $t('COMMON_TAB_ALL')}}</option>
                 <option :value="option" @click="changeValue(option)" v-for="(option, oIdx) in value.groupList" :key="oIdx">{{option}}</option>
@@ -74,9 +74,9 @@
         </div>
       </div>
       <div class="bookAndMemListWrap" style="" :style="mDetailOpenYn ? 'height: calc(100% - 80px);' : '' ">
-        <gBookList class="editBookContentListCompo" ref="bookListCompoRef" v-if="!mDetailOpenYn" :propBookList="mEditBookList" :propData="propData" :selectBookDetail="selectBookDetail" @getTeamCabList="this.getBookList" @refreshList="getBookList" @openMCabUserList='openMCabUserList' @openPop="openPop" @delAddress="delAddress" />
+        <gBookList class="editBookContentListCompo" ref="bookListCompoRef" v-if="!mDetailOpenYn" :propBookList="mEditBookList" :propData="propData" :selectBookDetail="selectBookDetail" @getTeamCabList="getBookList" @refreshList="getBookList" @openMCabUserList='openMCabUserList' @openPop="openPop" @delAddress="delAddress" />
         <transition name="showGroup">
-          <gBookMemberList  class="editBookContentListCompo" ref="memberListRef" v-if="mDetailOpenYn" @memberInfo="memberInfo" :pFollowerMemList="mFollowerMemList" :propMemberList="memberList" :propData="selectBookDetail"  :pSearchFilterList="this.mSearchFilterList" @searchFilter="searchFilter" :bookType="this.selectBookDetail.sSub" @refreshList="getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="this.CHANNEL_DETAIL" transition="showGroup" @openPop="openPop" @delAddress="delAddress" />
+          <gBookMemberList  class="editBookContentListCompo" ref="memberListRef" v-if="mDetailOpenYn" @memberInfo="memberInfo" :pFollowerMemList="mFollowerMemList" :propMemberList="memberList" :propData="selectBookDetail"  :pSearchFilterList="mSearchFilterList" @searchFilter="searchFilter" :bookType="selectBookDetail.sSub" @refreshList="getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="CHANNEL_DETAIL" transition="showGroup" @openPop="openPop" @delAddress="delAddress" />
         </transition>
         <div class="btnPlus btn1" @click="openExcelUploadPop" v-if="mDetailOpenYn && mPlusMenuShowYn" >
           <p class="font12" v-html="$t('EDIT_BOOK_BTN_EXCEL')"></p>
@@ -87,7 +87,7 @@
         <div class="btnPlus btn3" @click="newAddMember" v-if=" mDetailOpenYn && mPlusMenuShowYn" >
           <p class="font12" v-html="$t('EDIT_BOOK_BTN_DIRECT')"></p>
         </div>
-        <div class="btnPlus btn4" @click="this.openSelectMemberPop()" v-if="mDetailOpenYn && mPlusMenuShowYn" >
+        <div class="btnPlus btn4" @click="openSelectMemberPop()" v-if="mDetailOpenYn && mPlusMenuShowYn" >
           <p class="font12" v-html="$t('EDIT_BOOK_BTN_USER')"></p>
         </div>
 
@@ -99,13 +99,12 @@
         </div>
       </div>
     </div>
-    <excelUploadPop @success="successExcelUpload" :cabinetKey="this.selectBookDetail.cabinetKey" :targetKey="this.selectBookDetail.teamKey" v-if="mExcelUploadShowYn" @closePop="backClick"/>
+    <excelUploadPop @success="successExcelUpload" :cabinetKey="selectBookDetail.cabinetKey" :targetKey="selectBookDetail.teamKey" v-if="mExcelUploadShowYn" @closePop="backClick"/>
     <div class="popShadow" @click="backClick()" v-if="mExcelUploadShowYn"></div>
   </div>
 </template>
 
 <script>
-// import findContentsList from '../common/UB_findContentsList.vue'
 import creAddressBook from './UB_creAddressBook.vue'
 import excelUploadPop from '@/components/popup/receiver/UB_excelUpload.vue'
 import onlyMemberSelectPop from './UB_onlyMemberSelectPop.vue'
@@ -115,7 +114,6 @@ export default {
     propData: {},
     pPopId: {},
     pClosePop: Function,
-    // gPopwrap에 있는 gPopHeader가 back을 해주고 있고 여기 열리는 detail 때문에 값을  editbook.vue <-> gPopHeader.vue 서로 이동해주고 있음
     propBookDetailPopYn: {}
   },
   mounted () {
@@ -134,10 +132,7 @@ export default {
     return {
       mEditBookList: [],
       mSelectPopId: null,
-      // subPopId: null,
       mDetailOpenYn: false,
-      mFindKeyList: {},
-      mResultSearchKeyList: [],
       mCabinetName: '',
 
       mExcelUploadShowYn: false,
@@ -277,7 +272,6 @@ export default {
         var changeT = this.mEditBookList[i].cabinetNameMtext
         this.mEditBookList[i].cabinetNameMtext = this.$changeText(changeT)
       }
-      //
     },
     openPop (params) {
       if (params.targetType === 'creAddressBook') {
@@ -287,7 +281,6 @@ export default {
     },
     newAddMember () {
       this.mPlusMenuShowYn = false
-      // this.newYn = false
       var data = {}
       data.targetType = 'bookMemberDetail'
       data.popHeaderText = this.$t('EDIT_BOOK_NAME_ADDUSER')
@@ -295,7 +288,6 @@ export default {
       data.currentTeamKey = this.CHANNEL_DETAIL.teamKey
       this.mPropData = data
       this.mPopType = 'bookMemberDetail'
-      // this.$emit('openPop', data)
     },
     async addMe () {
       var myData = {}
@@ -365,7 +357,6 @@ export default {
             this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
           }
           if (this.memberList[i].userKey === this.GE_USER.userKey) {
-            /* if (this.mImInYn) this.mImInYn = true */
             this.mImInYn = true
           }
         }
@@ -403,13 +394,6 @@ export default {
           this.mDetailOpenYn = false
           this.mCabinetName = ''
           this.closePop()
-        // } else if (this.subPopId === hStack[hStack.length - 1]) {
-        //   this.mSearchKeyword = ''
-        //   hStack = hStack.filter((element, index) => index < hStack.length - 1)
-        //   this.$store.commit('UB_HISTORY/setRemovePage', removePage)
-        //   this.$store.commit('UB_HISTORY/updateStack', hStack)
-        //   this.mDetailOpenYn = false
-        //   this.mCabinetName = ''
         } else if (this.mExcelPopId === hStack[hStack.length - 1]) {
           hStack = hStack.filter((element, index) => index < hStack.length - 1)
           this.$store.commit('UB_HISTORY/setRemovePage', removePage)
@@ -431,7 +415,6 @@ export default {
       this.setBookSearchFilter()
       var history = this.$store.getters['UB_HISTORY/hStack']
       this.mSelectPopId = 'selectMemeberPopup' + history.length
-      // this.mSelectPopId = this.$setParentsId(this.pPopId, this.mSelectPopId)
       history.push(this.mSelectPopId)
       this.$store.commit('UB_HISTORY/updateStack', history)
 
@@ -439,21 +422,6 @@ export default {
     },
     searchFilter () {
       this.getBookMemberList()
-    },
-    async requestSearchList (param) {
-      if (param) {
-        if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
-          this.mFindKeyList.searchKey = param.searchKey
-        } if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
-          this.mFindKeyList.creTeamNameMtext = param.creTeamNameMtext
-        } if (param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
-          this.mFindKeyList.toCreDateStr = param.toCreDateStr
-        } if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '') {
-          this.mFindKeyList.fromCreDateStr = param.fromCreDateStr
-        }
-      }
-      this.mResultSearchKeyList = await this.castingSearchMap(this.mFindKeyList)
-      await this.getPushContentsList()
     },
     openExcelUploadPop () {
       this.mPlusMenuShowYn = false
@@ -490,7 +458,6 @@ export default {
 
       this.mPropData = param
       this.mPopType = 'selectMemberPop'
-      // this.$emit('openPop', param)
     },
     successExcelUpload () {
       this.backClick()

@@ -57,15 +57,23 @@
 // eslint-disable-next-line
 export default {
   props: {
-    managingList: {}
+    managingList: {},
+    memberYn: {}
   },
   computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
     GE_LOCALE () {
       return this.$i18n.locale
     }
   },
   data () {
     return {
+      systemName: localStorage.getItem('systemName'),
+      interfaceBtnList: [{ text: this.$t('COMM_BTN_SEND_NOTI'), event: 'sendPush' }],
+      openCommonAlertPopShowYn: false,
+      selectedMember: null,
       confirmManagerText: '',
       confirmManagerPopShowYn: false,
       selectedUserParamObj: {}
@@ -112,25 +120,42 @@ export default {
       param.teamKey = member.teamKey
       param.followerKey = member.followerKey
       var localStatusObj = {}
-      // 추후 멤버 매니저가 복구되면 사용할 코드
-      // if (member.mngMemberYn === 1) {
-      //   if (manType === 'MEMBER') {
-      //     param.mngMemberYn = false
-      //     this.managingList[index].mngMemberYn = 0
-      //     param.manDelYn = true
-      //     localStatusObj.mngMemberYn = false
-      //   } else {
-      //     localStatusObj.mngMemberYn = true
-      //   }
-      // } else {
-      //   if (manType === 'MEMBER') {
-      //     param.mngMemberYn = true
-      //     this.managingList[index].mngMemberYn = 1
-      //     localStatusObj.mngMemberYn = true
-      //   } else {
-      //     localStatusObj.mngMemberYn = false
-      //   }
-      // }
+      if (member.mngAlimYn === 1) {
+        if (manType === 'ALIM') {
+          param.mngAlimYn = false
+          this.managingList[index].mngAlimYn = 0
+          param.manDelYn = true
+          localStatusObj.mngAlimYn = false
+        } else {
+          localStatusObj.mngAlimYn = true
+        }
+      } else {
+        if (manType === 'ALIM') {
+          param.mngAlimYn = true
+          this.managingList[index].mngAlimYn = 1
+          localStatusObj.mngAlimYn = true
+        } else {
+          localStatusObj.mngAlimYn = false
+        }
+      }
+      if (member.mngMemberYn === 1) {
+        if (manType === 'MEMBER') {
+          param.mngMemberYn = false
+          this.managingList[index].mngMemberYn = 0
+          param.manDelYn = true
+          localStatusObj.mngMemberYn = false
+        } else {
+          localStatusObj.mngMemberYn = true
+        }
+      } else {
+        if (manType === 'MEMBER') {
+          param.mngMemberYn = true
+          this.managingList[index].mngMemberYn = 1
+          localStatusObj.mngMemberYn = true
+        } else {
+          localStatusObj.mngMemberYn = false
+        }
+      }
       if (member.mngTeamYn === 1) {
         if (manType === 'CHAN') {
           param.mngTeamYn = false
@@ -162,8 +187,45 @@ export default {
       })
       return result
     },
+    openCommonAlertPop (member) {
+      this.selectedMember = member
+      this.openCommonAlertPopShowYn = true
+    },
+    closeCommonAlertPop () {
+      this.openCommonAlertPopShowYn = false
+    },
+    clickAlertPopBtn (eventType) {
+      if (eventType === 'sendPush') this.openPop('writePush', this.selectedMember)
+      else if (eventType === 'sendEmail') this.sendMail()
+      else if (eventType === 'callPhone') this.callPhone()
+      else if (eventType === 'sendSms') this.sendSms()
+      this.closeCommonAlertPop()
+    },
+    openPop (targetType, member) {
+      var param = {}
+      param.targetType = targetType
+      param.teamKey = member.teamKey
+      param.userKey = member.userKey
+      if (member.userDispMtext) { param.userDispMtext = member.userDispMtext } else { param.userNameMtext = member.userNameMtext }
+
+      if (targetType === 'writePush') {
+        // param.targetKey = this.detailVal.value.creTeamKey
+        param.targetKey = member.teamKey
+        param.replyPopYn = true
+        // param.creUserName = this.alimDetail[0].creUserName
+        if (member.userDispMtext) { param.creUserName = member.userDispMtext } else { param.creUserName = member.userNameMtext }
+
+        param.creUserKey = member.userKey
+        // this.$emit('openPop', params)
+      }
+      this.$emit('openPop', param)
+    },
     goMemberInfo (member) {
+      // if (member.memberYn || member.ownerYn || member.managerKey > 0) {
       this.$emit('memberInfo', member)
+      // } else {
+      //   this.$showToastPop(this.$t('FOLLOW_MSG_NOAUTH'))
+      // }
     }
   }
 }
