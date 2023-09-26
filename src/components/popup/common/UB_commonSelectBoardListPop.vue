@@ -25,7 +25,7 @@
         <p class="font16 textLeft commonBlack fontBold mtop-05 fl mbottom-05">{{ mainText === '이동'? $t('BOAR_SELECT_MSG_MOVE'):$t('BOAR_SELECT_MSG_COPY') }}</p>
         <div class="boardListItem" :style="boardDetail.cabinetKey === value.cabinetKey? 'background: rgb(234 233 233) !important; color: #FFF;': 'background: #FFF;'" @click="selectCabinet(value)" :class="selectedCabinet && selectedCabinet.cabinetKey === value.cabinetKey? 'activeCabinet': ''" :id="'selectBoard' + value.cabinetKey" :fileYn="value.fileYn" :cabinetKey="value.cabinetKey"  v-for="(value, index) in boardList" :key="index">
             <div :style="'background: ' + value.picBgPath"></div>
-            <p :style="boardDetail.cabinetKey === value.cabinetKey? 'color: #9d9d9d;': 'color: #303030;'" class="font16 commonBlack fontBold fl">{{this.$changeText(value.cabinetNameMtext)}}</p>
+            <p :style="boardDetail.cabinetKey === value.cabinetKey? 'color: #9d9d9d;': 'color: #303030;'" class="font16 commonBlack fontBold fl">{{$changeText(value.cabinetNameMtext)}}</p>
         </div>
         <div class="boardListPopBtnWrap">
             <gBtnSmall @click="closeXPop" style="" btnThema="light" :btnTitle="$t('COMM_BTN_CANCEL')" />

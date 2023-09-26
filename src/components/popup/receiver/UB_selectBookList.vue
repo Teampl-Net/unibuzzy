@@ -16,13 +16,13 @@
 </i18n>
 <template>
 <div class="selectBookListWrap">
-    <gPopHeader @closeXPop="backClick" :pClosePop="pClosePop" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' />
-    <div class="pagePaddingWrap selectBookListContents" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
-      <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
+    <gPopHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' />
+    <div class="pagePaddingWrap selectBookListContents" :style="'padding-top:' + ($STATUS_HEIGHT + 60)+ 'px'" >
+      <gActiveBar ref="activeBar" :tabList="activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
       <div class="bookListStyle">
-        <gBookList :propBookList="bookList" :teamInfo="this.propData" :parentSelectList="pSelectedBookList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
+        <gBookList :propBookList="bookList" :teamInfo="propData" :parentSelectList="pSelectedBookList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
         <transition name="showGroup">
-            <gBookMemberList :propMemberList="memberList" :parentSelectList="pSelectedMemberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="this.selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
+            <gBookMemberList :propMemberList="memberList" :parentSelectList="pSelectedMemberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
         </transition>
       </div>
       <selectedListCompo class="selectedListStyle" :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" @changeSelectBookList="changeSelectBookList" @changeSelectMemberList="changeSelectMemberList" ref="selectedListCompo" style="" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
@@ -36,8 +36,6 @@ import selectedListCompo from './UB_selectedReceiverList.vue'
 export default {
   props: {
     selectPopYn: {},
-    chanInfo: {},
-    detailSelectedYn: {},
     selectedListYn: {},
     propData: {},
     pSelectedList: {},
@@ -47,19 +45,14 @@ export default {
     return {
       memberList: [],
       bookList: [],
-      popId: null,
-      subPopId: null,
       selectedYn: false,
-      setSelectedList: [],
       detailOpenYn: false,
-      // titleText: '팀플',
       receiverTitle: this.$t('SELECT_GROUP_DROP_NAME'),
       selectReceivers: [],
       selectedTeamList: [],
       selectedMemberList: [],
       selectedList: {},
       selectBookDetail: null,
-      oriList: {},
       pSelectedBookList: {},
       pSelectedMemberList: {},
       activeTabList: [{ display: this.$t('COMMON_NAME_ADDRBOOK'), name: 'B' }],
@@ -76,7 +69,6 @@ export default {
     }
     this.editBookSelectedList()
     this.$addHistoryStack('modiPopReceiverSelecPop')
-    // this.getBookList()
   },
   beforeUnmount () {
     this.$checkDeleteHistory('modiPopReceiverSelecPop')
@@ -104,9 +96,6 @@ export default {
         }
         param.memberList = test2
       }
-      console.log('*****************')
-      console.log(this.pSelectedList)
-      console.log(param)
       localStorage.setItem('ori', JSON.stringify(param))
       localStorage.setItem('ori', JSON.stringify(this.selectedList))
       var this_ = this
@@ -137,8 +126,6 @@ export default {
       })
       if (result.status === 200) {
         this.bookList = result.data.memberTypeList
-        // eslint-disable-next-line no-debugger
-        debugger
         for (var i = 0; i < this.bookList.length; i++) {
           this.bookList[i].memberYn = true
         }
@@ -182,8 +169,6 @@ export default {
       this.editMemberSelectedList()
     },
     sendReceivers (data) {
-      console.log('%%%%%%%%%%%%%%%%%%%%%%')
-      console.log(data)
       this.$emit('sendReceivers', data)
     },
     addMe (data) {
@@ -195,7 +180,6 @@ export default {
       }
       this.changeSelectMemberList(this.selectedList.memberList)
     },
-    // 유민참고
     changeSelectMemberList (data) {
       if (data.accessKey !== undefined) {
         for (let i = 0; i < data.length; i++) {
@@ -267,23 +251,9 @@ export default {
         }
       }
     },
-    setResult () {
-      var obj = {}
-      obj.data = this.selectReceivers
-      obj.selectedTeamList = this.selectedTeamList
-      obj.selectedMemberList = this.selectedMemberList
-      this.$emit('selectedReceiver', obj)
-    },
-    delectClick (data, index) {
-      this.selectReceivers.splice(index, 1)
-    },
-    addTeamList (obj) {
-      this.selectReceivers.unshift(obj)
-    },
     addMemberList (obj) {
       this.selectReceivers.unshift(obj)
     },
-
     backClick () {
       if (this.detailOpenYn === true) {
         var removePage = this.historyStack[this.historyStack.length - 1]
@@ -323,10 +293,6 @@ export default {
         this.detailOpenYn = true
 
         this.selectBookDetail = data
-        // var history = this.$store.getters['UB_HISTORY/hStack']
-        // this.subPopId = 'commonBookMemberList' + history.length
-        // history.push(this.subPopId)
-        // this.$store.commit('UB_HISTORY/updateStack', history)
         this.$addHistoryStack('commonBookMemberList')
 
         this.receiverTitle = this.$t('SELECT_MANA_MEMBER')
@@ -353,21 +319,42 @@ export default {
 </script>
 
 <style >
-  .selectBookListWrap{
-    height: 100vh; background-color:white; width:100%; z-index:99999999; position:absolute; top:0; left:0;
-  }
-  .bookListStyle{
-    width: 100%; position: relative; float: left; height: calc(100% - 150px) ; overflow: hidden auto; padding-bottom: 60px;
-  }
-  .memberListStyle{
-    position: absolute; top: 0; overFlow: hidden scroll; background: #fff; padding-bottom: 60px;
-  }
-  .selectBookListContents{
-    position:absolute; overflow: auto;
-  }
-  .selectedListStyle{float: left; width:100%; position: absolute; bottom:0px; left:0px;
-    min-height: 150px;
-    height: 150px;
-    max-height: 150px;
-  }
+.selectBookListWrap {
+  height: 100vh;
+  background-color: white;
+  width: 100%;
+  z-index: 99999999;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.bookListStyle {
+  width: 100%;
+  position: relative;
+  float: left;
+  height: calc(100% - 150px);
+  overflow: hidden auto;
+  padding-bottom: 60px;
+}
+.memberListStyle {
+  position: absolute;
+  top: 0;
+  overFlow: hidden scroll;
+  background: #fff;
+  padding-bottom: 60px;
+}
+.selectBookListContents {
+  position:absolute;
+  overflow: auto;
+}
+.selectedListStyle {
+  float: left;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  min-height: 150px;
+  height: 150px;
+  max-height: 150px;
+}
 </style>

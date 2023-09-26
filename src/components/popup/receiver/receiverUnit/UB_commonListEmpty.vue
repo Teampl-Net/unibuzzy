@@ -13,14 +13,12 @@
 </div>
 </template>
 <script>
-// import a from '../../../../assets/images/editChan'
 export default {
   props: {
     title: { type: String, defalut: '비어있어요.' },
     subTitle: { type: String, defalut: '버튼을 눌러 생성해보세요.' },
     subTitleYn: { type: Boolean, defalut: false },
     option: { type: String, defalut: 'SELE' }
-
   }
 }
 </script>

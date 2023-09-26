@@ -1,8 +1,6 @@
 <template>
 <div class="fl btnBaseCss font14" :class="selectedYn === true ? 'CDeepColor CWhiteBgColor selectPadding selectBorder' : 'commonGray commonGrayBorderColor commonGrayBG noneSelectPadding' ">
-  <!-- <div class="fl img-w15"> -->
   <img class="img-w15" v-if="selectedYn === true" src="../../../assets/images/common/icon_check_commonColor.svg" />
-  <!-- </div> -->
   <span v-html="title"></span>
 </div>
 </template>
@@ -15,18 +13,11 @@ export default {
   props: {
     title: {},
     selectedYn: Boolean
-    // bgNone: { type: Boolean, default: false }
   }
 }
 </script>
 
 <style>
-/* .selectPadding {
-  padding: 0 7px !important;
-}
-.noneSelectPadding {
-  padding: 0 14.5px !important;
-} */
   .selectBorder {
     border-width: 2px !important;
   }

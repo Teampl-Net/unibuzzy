@@ -38,14 +38,4 @@ export default {
 .positionAB {
   position: absolute;
 }
-/* .mainTabArea::before {
-  box-shadow: none !important;
-  content : "";
-  position: absolute;
-  bottom: 0;
-  height  : 1px;
-  width   : 80%;
-  right: 0;
-  border-bottom : 1px solid #6768a7
-} */
 </style>

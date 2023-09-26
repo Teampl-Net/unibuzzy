@@ -16,7 +16,7 @@
     <div v-if="mModiMemoPopShowYn" class="modiMemoPopBg" @click="closeModiMemoPop"></div>
     <modiMemoPop :propContDetail="propContDetail" ref="modiMemoPop" :pClosePop="closeModiMemoPop" :pMemoEle="mModiMemoObj" v-if="mModiMemoPopShowYn" />
     <div class="modiMemoPopBg" v-if="mContMenuShowYn" @click="mContMenuShowYn = false"></div>
-    <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="propMemoEle" contentType="MEMO" :contentOwner="userKey === propMemoEle.creUserKey"/>
+    <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="propMemoEle" contentType="MEMO" :contentOwner="GE_USER.userKey === propMemoEle.creUserKey"/>
     <div class="noChildMemoWrap" v-if="!childShowYn">
         <div class="noChildUserNameBox" @click="clickMemoEvnt({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
             <p class="commonBlack textLeft font14 fontBold textOverdot">{{$changeText(propMemoEle.userDispMtext)}}</p>
@@ -447,7 +447,7 @@ export default {
     },
     writeMeMemo (memo) {
       this.mCurrentMemoObj = memo
-      if ((this.propContDetail.jobkindId === 'ALIM' && this.propContDetail.canReplyYn === 1) || (this.propContDetail.jobkindId === 'BOAR' && this.$checkUserAuth(this.propContDetail.shareItem).R === true)) {
+      if ((this.propContDetail.jobkindId === 'BOAR' && this.$checkUserAuth(this.propContDetail.shareItem).R === true)) {
         var data = {}
         data.parentMemoKey = this.mCurrentMemoObj.memoKey // 대댓글때 사용하는것임
         if (this.mCurrentMemoObj.parentMemoKey !== undefined && this.mCurrentMemoObj.parentMemoKey !== null && this.mCurrentMemoObj.parentMemoKey !== '') {

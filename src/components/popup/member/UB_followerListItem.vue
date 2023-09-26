@@ -21,52 +21,32 @@
 }
 </i18n>
 <template>
-    <gConfirmPop :confirmText='confirmManagerText' :confirmType="two" @no="confirmManagerPopShowYn = false, reportYn = false" @ok="okSaveManager" v-if="confirmManagerPopShowYn"/>
+    <gConfirmPop :confirmText="confirmManagerText" :confirmType="two" @no="confirmManagerPopShowYn = false, reportYn = false" @ok="okSaveManager" v-if="confirmManagerPopShowYn"/>
     <div class="followerCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :key="index" >
         <div class="followerCardWrap">
             <div class="fl mleft-01 w100P followerCardInfoArea" @click="goMemberInfo(member)">
                 <div class="followerAuth">
                     <gProfileImg class="followerImg" :smallYn="true" :userInfo="member" />
-                    <!-- <div class="fl adminTag" :class="{nonTag: (!member.managerKey > 0 && currentTab === 'Show') || (!member.managerKey > 0 && currentTab === 'Admin') }">
-                    <p v-if="member.ownerYn" class="font8 commonBlack fontBold" style="">관리자</p>
-                    <p v-else class="font8 commonBlack fontBold" style="">매니저</p>
-                    </div> -->
-                    <!-- <div v-if="member.ownerYn || member.ownerYn === 1" style="padding: 3px 8px;float: left; margin-top: 4px; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
-                        <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'소유자'}}</p>
-                    </div> -->
                     <div v-if="member.ownerYn" class="followerAuthBox">
                         <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{ $t('Owner') }}</p>
                     </div>
-                    <div v-else-if="member.memberTypeKey" class="followerAuthBox">
+                    <div v-else class="followerAuthBox">
                         <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{ $t('Member') }}</p>
-                    </div>
-                    <div v-else class="followerAuthBox followerBg">
-                        <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{ $t('Follower') }}</p>
                     </div>
                 </div>
                 <div class="followerInfoBox">
-                    <p class="fl font16 grayBlack followerName">{{this.$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
-                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold  textLeft textOverdot w-100P">{{member.userEmail? member.userEmail: this.$t('No Email Info')}}</p>
-                    <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{this.$changeFollowerInfo('email', member.userEmail)}}</p>
-                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold textLeft textOverdot">{{member.phoneEnc? member.phoneEnc: this.$t('No Phone Number Info')}}</p>
-                    <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{this.$changeFollowerInfo('phone', member.phoneEnc)}}</p>
+                    <p class="fl font16 grayBlack followerName">{{$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
+                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold  textLeft textOverdot w-100P">{{member.userEmail? member.userEmail: $t('No Email Info')}}</p>
+                    <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{$changeFollowerInfo('email', member.userEmail)}}</p>
+                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold textLeft textOverdot">{{member.phoneEnc? member.phoneEnc: $t('No Phone Number Info')}}</p>
+                    <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{$changeFollowerInfo('phone', member.phoneEnc)}}</p>
                     <div class="w100P fl">
-                        <p class="textLeft fl fontBold grayBlack font12" >{{this.$changeText(member.memberNameMtext)}}</p>
-                        <!-- <p class="textLeft fl fontBold grayBlack font12" v-for="(info, index) in member.memberInfoList" :key="index">
-                            {{index !== 0 ? ' | ' : '('}}{{'' + this.$changeText(info.memberTypeItemNameMtext)}}: {{info.itemVal}}{{index === member.memberInfoList.length - 1? ')' : ''}}
-                        </p> -->
+                        <p class="textLeft fl fontBold grayBlack font12" >{{$changeText(member.memberNameMtext)}}</p>
                     </div>
                 </div>
             </div>
             <div class="fr  memberItemBox" >
-                <!-- <div @click="clickManagerBox('MEMBER', member, index, member.mngMemberYn)" :class="{activeMMember: member.mngMemberYn === 1}" class="font12 cursorP" style="margin-right: 5px; display: flex; justify-content: center; align-items: center; height: 35px; border-radius: 5px;    box-shadow: inset 0 0 4px 1px #00000010; padding: 5px;">{{ $t('FOLLOW_NAME_MEMBER') }}</div> -->
-                <div @click="clickManagerBox('CHAN', member, index, member.mngTeamYn)" :class="{activeMChan: member.mngTeamYn === 1}" class="font12 cursorP memMngBtn">{{ this.$t('COMM_CHAN_MANAGER') }}</div>
-                <!-- <div v-if="member.ownerYn" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
-                    <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'소유자'}}</p>
-                </div>
-                <div v-if="member.managerKey > 0 || member.grantDate != null" style="padding: 3px 8px;float: right; border-radius: 8px; line-height: 18px; margin-left: 5px; height: 23px; background-color:#F5F5F9;"  >
-                    <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{'관리자'}}</p>
-                </div> -->
+                <div @click="clickManagerBox('CHAN', member, index, member.mngTeamYn)" :class="{activeMChan: member.mngTeamYn === 1}" class="font12 cursorP memMngBtn">{{ $t('COMM_CHAN_MANAGER') }}</div>
             </div>
         </div>
     </div>
@@ -77,26 +57,15 @@
 // eslint-disable-next-line
 export default {
   props: {
-    managingList: {},
-    memberYn: {}
+    managingList: {}
   },
   computed: {
-    GE_USER () {
-      return this.$store.getters['UB_USER/GE_USER']
-    },
     GE_LOCALE () {
       return this.$i18n.locale
     }
-    /* CHANNEL_DETAIL () {
-      return this.$getDetail('TEAM', this.propData.teamKey)[0]
-    } */
   },
   data () {
     return {
-      systemName: localStorage.getItem('systemName'),
-      interfaceBtnList: [{ text: this.$t('COMM_BTN_SEND_NOTI'), event: 'sendPush' }],
-      openCommonAlertPopShowYn: false,
-      selectedMember: null,
       confirmManagerText: '',
       confirmManagerPopShowYn: false,
       selectedUserParamObj: {}
@@ -143,42 +112,25 @@ export default {
       param.teamKey = member.teamKey
       param.followerKey = member.followerKey
       var localStatusObj = {}
-      if (member.mngAlimYn === 1) {
-        if (manType === 'ALIM') {
-          param.mngAlimYn = false
-          this.managingList[index].mngAlimYn = 0
-          param.manDelYn = true
-          localStatusObj.mngAlimYn = false
-        } else {
-          localStatusObj.mngAlimYn = true
-        }
-      } else {
-        if (manType === 'ALIM') {
-          param.mngAlimYn = true
-          this.managingList[index].mngAlimYn = 1
-          localStatusObj.mngAlimYn = true
-        } else {
-          localStatusObj.mngAlimYn = false
-        }
-      }
-      if (member.mngMemberYn === 1) {
-        if (manType === 'MEMBER') {
-          param.mngMemberYn = false
-          this.managingList[index].mngMemberYn = 0
-          param.manDelYn = true
-          localStatusObj.mngMemberYn = false
-        } else {
-          localStatusObj.mngMemberYn = true
-        }
-      } else {
-        if (manType === 'MEMBER') {
-          param.mngMemberYn = true
-          this.managingList[index].mngMemberYn = 1
-          localStatusObj.mngMemberYn = true
-        } else {
-          localStatusObj.mngMemberYn = false
-        }
-      }
+      // 추후 멤버 매니저가 복구되면 사용할 코드
+      // if (member.mngMemberYn === 1) {
+      //   if (manType === 'MEMBER') {
+      //     param.mngMemberYn = false
+      //     this.managingList[index].mngMemberYn = 0
+      //     param.manDelYn = true
+      //     localStatusObj.mngMemberYn = false
+      //   } else {
+      //     localStatusObj.mngMemberYn = true
+      //   }
+      // } else {
+      //   if (manType === 'MEMBER') {
+      //     param.mngMemberYn = true
+      //     this.managingList[index].mngMemberYn = 1
+      //     localStatusObj.mngMemberYn = true
+      //   } else {
+      //     localStatusObj.mngMemberYn = false
+      //   }
+      // }
       if (member.mngTeamYn === 1) {
         if (manType === 'CHAN') {
           param.mngTeamYn = false
@@ -210,45 +162,8 @@ export default {
       })
       return result
     },
-    openCommonAlertPop (member) {
-      this.selectedMember = member
-      this.openCommonAlertPopShowYn = true
-    },
-    closeCommonAlertPop () {
-      this.openCommonAlertPopShowYn = false
-    },
-    clickAlertPopBtn (eventType) {
-      if (eventType === 'sendPush') this.openPop('writePush', this.selectedMember)
-      else if (eventType === 'sendEmail') this.sendMail()
-      else if (eventType === 'callPhone') this.callPhone()
-      else if (eventType === 'sendSms') this.sendSms()
-      this.closeCommonAlertPop()
-    },
-    openPop (targetType, member) {
-      var param = {}
-      param.targetType = targetType
-      param.teamKey = member.teamKey
-      param.userKey = member.userKey
-      if (member.userDispMtext) { param.userDispMtext = member.userDispMtext } else { param.userNameMtext = member.userNameMtext }
-
-      if (targetType === 'writePush') {
-        // param.targetKey = this.detailVal.value.creTeamKey
-        param.targetKey = member.teamKey
-        param.replyPopYn = true
-        // param.creUserName = this.alimDetail[0].creUserName
-        if (member.userDispMtext) { param.creUserName = member.userDispMtext } else { param.creUserName = member.userNameMtext }
-
-        param.creUserKey = member.userKey
-        // this.$emit('openPop', params)
-      }
-      this.$emit('openPop', param)
-    },
     goMemberInfo (member) {
-      // if (member.memberYn || member.ownerYn || member.managerKey > 0) {
       this.$emit('memberInfo', member)
-      // } else {
-      //   this.$showToastPop(this.$t('FOLLOW_MSG_NOAUTH'))
-      // }
     }
   }
 }

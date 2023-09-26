@@ -25,19 +25,17 @@
   }
 </i18n>
 <template>
-  <!-- <div style="width: 100%; height: 100%; padding: 0 20px; > -->
   <div class="fl w100P" @click.stop="preventDefault">
     <div class="selectImgPopBg" @click="closePop()"></div>
-    <div :class="{popupTop: pSelectedBuilding}" class="confirmPopWrap changeBgPopWrap" :style="'padding-bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'" >
-    <!-- <div style="width: 50%; height: 50%; padding: 0 20px; overflow: auto;" > -->
+    <div :class="{popupTop: pSelectedBuilding}" class="confirmPopWrap changeBgPopWrap" :style="'padding-bottom:' + ($STATUS_HEIGHT + 60)+ 'px'" >
         <div class="creChanIntroTextWrap">
             <p class="fontBold font18">{{msgTitle}}</p>
             <img src="../../../assets/images/common/popup_close.png" @click="pClosePop"/>
         </div>
-        <gActiveBar ref="activeBar" :tabList="this.activeTabList" class="fl activeBar" @changeTab= "changeTab" />
+        <gActiveBar ref="activeBar" :tabList="activeTabList" class="fl activeBar" @changeTab= "changeTab" />
         <div id="creChanContentsArea" class="chanImgContentsWrap">
             <div style="width: 100%; height: 100%;"  v-show="viewTab === 'img'">
-              <div :style="'height: ' + this.contentsHeight + 'px;'" class="imgContArea">
+              <div :style="'height: ' + contentsHeight + 'px;'" class="imgContArea">
                 <div  @click="imgClickToInput" ref="selectImgPopRef" class="cropperImgArea imgCont">
                   <img v-if="changeImgYn = true" :style="imgMode ==='W' ? 'height: 100%;': 'width: 100%; '"  id="profileImg" ref="image" :src="previewImgUrl" alt="" class="preview hidden">
                 </div>
@@ -53,7 +51,6 @@
             <div v-show="viewTab === 'icon'" id="chanIconBox" class="chanIconContentsWrap">
               <div class="createChannelSelectBox" :class="{activeTypeBox: selectedId ===value.imageFilekey}" @click="selectChanInfo(value)" v-for="(value,index) in teamImgList" :key="index" :style="getChanBoxSize" style="">
                 <img v-if="opentype =='iconPop'" class="iconPopImg" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)" />
-                <!-- <p class="font15"  v-if="opentype =='iconPop'" style="" >{{this.$changeText(value.codeNameMtext)}}</p> -->
 
                 <img class="w100P h100P" v-if="opentype =='bgPop'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' />
                 <img class="w100P h100P" v-if="opentype =='building'" :src='(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)' />
@@ -66,25 +63,18 @@
 
     </div>
   </div>
-  <!-- <crop v-if="cropYn" @no="cropYn=false" :imgUrl="previewImgUrl" :selectFile="selectFile" :bgYn="opentype === 'bgPop' ? true : false" @cropImage="cropImage" /> -->
 </template>
 
 <script>
-// import a from ' resource/channeliconbg/CHAR01.png'\
-// import crop from './Tal_cropTest.vue'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
 export default {
-  components: {
-    // crop
-  },
   props: {
     opentype: {},
     selectIcon: {},
     selectBg: {},
     pClosePop: Function,
-    pSelectedBuilding: Object,
-    selectBd: Object
+    pSelectedBuilding: Object
   },
   mounted () {
     if (document.getElementById('chanIconBox').scrollHeight > 0) {
@@ -106,10 +96,7 @@ export default {
     this.$addHistoryStack('channelImgChangePop')
   },
   created () {
-    this.getOpenType()
-    this.getCodeList()
-    this.setDefaultData()
-    this.dataSetting()
+    this.readyFunction()
     if (this.previewImgUrl) {
       this.$nextTick(() => {
         var w = document.getElementById('profileImg').clientWidth
@@ -125,11 +112,10 @@ export default {
   data () {
     return {
       selectedId: '',
-      selectedBack: '',
       teamImgList: [],
+      uploadFileList: [],
       selectPath: '',
       selectFile: null,
-      uploadFileList: [],
       msgTitle: '',
       msgError: '',
       imgMode: 'W',
@@ -143,15 +129,19 @@ export default {
         { display: this.$t('USER_PROFILE_ICON'), name: 'icon' },
         { display: this.$t('USER_PROFILE_MY_IMG'), name: 'img' }
       ],
-      close_black: require('@/assets/images/common/close_black.svg'),
       cropper: {},
       refImg: {},
-      cropYn: false,
       cropperYn: false,
       changeImgYn: true
     }
   },
   methods: {
+    readyFunction () {
+      this.getOpenType()
+      this.getCodeList()
+      this.setDefaultData()
+      this.dataSetting()
+    },
     getOpenType () {
       if (this.opentype === 'building') {
         return this.activeTabList.splice(1)
@@ -163,13 +153,7 @@ export default {
       if (this.cropperYn === false) this.$refs.selectFileChangeIconNBG.click()
     },
     changeBtnClick () {
-      // this.cropper.destroy()
-      // this.selectFile = []
-      // this.uploadFileList = []
-      // this.changeImgYn = false
-      // this.changeImgYn = true
       this.$refs.selectFileChangeIconNBG.click()
-      // this.previewFile()
     },
     dataSetting () {
       if (this.opentype === 'bgPop') {
@@ -184,7 +168,6 @@ export default {
           this.selectedImgFilekey = this.selectBg.selectedId
         }
       } else if (this.opentype === 'iconPop') {
-        // .stringify(this.selectIcon))
         if (this.selectIcon.iconType === 'icon' || this.selectIcon.selectedId < 16) {
           this.viewTab = 'icon'
           this.selectedId = this.selectIcon.selectedId
@@ -196,7 +179,6 @@ export default {
           this.selectedImgFilekey = this.selectIcon.selectedId
         }
       } else if (this.opentype === 'building') {
-        // .stringify(this.selectIcon))
         if (this.selectIcon) {
           if (this.selectIcon.iconType === 'icon' || this.selectIcon.selectedId < 16) {
             this.viewTab = 'icon'
@@ -218,7 +200,6 @@ export default {
           this.previewImgUrl = this.selectBg.selectPath
           this.selectedImgPath = this.selectBg.selectPath
           this.selectedImgFilekey = this.selectBg.selectedId
-        // } else if (data === 'icon'){
         }
       } else {
         if (data === 'img') {
@@ -227,12 +208,10 @@ export default {
           this.selectedImgFilekey = this.selectIcon.selectedId
         }
       }
-      // this.dataSetting()
     },
     async getCodeList () {
       var resultList = null
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       if (this.opentype === 'bgPop') {
         param.groupCode = 'T_BG__'
       } else if (this.opentype === 'iconPop') {
@@ -242,8 +221,6 @@ export default {
       }
       resultList = await this.$getCodeList(param)
       this.teamImgList = resultList
-      // this.contentsHeight = document.getElementById('chanIconBox').scrollHeight
-      // var a = this.teamImgList
     },
     setDefaultData () {
       if (this.opentype === 'iconPop') {
@@ -259,26 +236,21 @@ export default {
     },
     async setParam () {
       if (this.viewTab === 'icon') {
-        // eslint-disable-next-line no-new-object
-        var param = new Object()
+        var param = {}
         if (this.selectedId !== '') {
           param.selectedId = this.selectedId
           param.selectPath = this.selectPath
           param.iconType = this.viewTab
           this.$emit('makeParam', param)
-        } else {
         }
       } else if (this.viewTab === 'img') {
         if (this.selectedImgPath !== undefined && this.selectedImgPath !== null && this.selectedImgPath !== '') {
           if (this.selectedImgFilekey !== undefined && this.selectedImgFilekey !== null && this.selectedImgFilekey !== '') {
           }
         } else {
-          // this.cropYn = true
-          // return
           await this.formSubmit()
         }
-        // eslint-disable-next-line no-new-object
-        param = new Object()
+        param = {}
         param.selectedId = this.selectedImgFilekey
         param.selectPath = this.selectedImgPath
         param.iconType = this.viewTab
@@ -310,10 +282,6 @@ export default {
         this.cropperYn = true
 
         this.selectFile = this.$refs.selectFileChangeIconNBG.files[0]
-        // var selectFileName = this.selectFile.name
-        // this.selectFile.name = this.selectFile.name.replaceAll(' ', '')
-        // selectFileName = selectFileName.replaceAll(' ', '')
-        // this.selectFile.name = selectFileName
 
         let fileExt = this.selectFile.name.substring(
           this.selectFile.name.lastIndexOf('.') + 1
@@ -327,12 +295,9 @@ export default {
           console.log(`originalFile size ${this.selectFile.size / 1024 / 1024} MB`)
 
           try {
-            // eslint-disable-next-line no-undef
-            var compressedFile = await this.$imageCompression(this.selectFile, options)
+            const compressedFile = await this.$imageCompression(this.selectFile, options)
             console.log('sssssssssaaa', compressedFile)
             compressedFile.name = compressedFile.name.replaceAll(' ', '')
-            console.log('_______________________')
-            console.log(compressedFile.name)
 
             console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
             console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
@@ -353,12 +318,9 @@ export default {
             }
             console.log(` @@ compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
             console.log(newFile)
-            // console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
             this.previewImgUrl = src
             this.uploadFileList.push({ previewImgUrl: src, addYn: true, file: newFile })
-            // editorImgResize1(canvas.toDataURL('image/png', 0.8))
-            // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
             this.refImg = this.$refs.image
 
             this.cropper = new Cropper(this.refImg, {
@@ -366,7 +328,6 @@ export default {
               dragMode: 'move',
               preview: '.cropperPreviewImg',
               aspectRatio: (this.opentype === 'bgPop' ? 2 / 3 : 1 / 1),
-              // aspectRatio: 16 / 9,
               cropBoxResizable: true,
               wheelZoomRatio: 0.1,
               movable: false
@@ -400,90 +361,9 @@ export default {
         this.previewImgUrl = null
       }
     },
-
-    async previewFile () {
-      if (this.$refs.selectFileChangeIconNBG.files.length > 0) {
-        this.selectedImgPath = ''
-        this.selectedImgFilekey = ''
-        this.selectFile = null
-        this.previewImgUrl = null
-        this.cropperYn = true
-        // 0 번째 파일을 가져 온다.
-        // for (var k = 0; k < this.$refs.selectFileChangeIconNBG.files.length; k++) {
-        // this.selectFile = this.$refs.selectFileChangeIconNBG.files[k]
-        this.selectFile = this.$refs.selectFileChangeIconNBG.files[0]
-        // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
-        // eslint-disable-next-line no-unused-vars
-        var tt = this.selectFile
-        let fileExt = this.selectFile.name.substring(
-          this.selectFile.name.lastIndexOf('.') + 1
-        )
-        // 소문자로 변환
-        fileExt = fileExt.toLowerCase()
-        if (
-          ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
-        ) {
-        // FileReader 를 활용하여 파일을 읽는다
-          var reader = new FileReader()
-          var thisthis = this
-          reader.onload = e => {
-            var image = new Image()
-            image.onload = async function () {
-              var result = await thisthis.$saveFileSize(image, thisthis.selectFile)
-              thisthis.previewImgUrl = result.path
-              thisthis.uploadFileList.push({ previewImgUrl: result.path, addYn: true, file: result.file })
-
-              // editorImgResize1(canvas.toDataURL('image/png', 0.8))
-              // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
-              thisthis.refImg = thisthis.$refs.image
-
-              thisthis.cropper = new Cropper(thisthis.refImg, {
-                viewMode: '1',
-                dragMode: 'move',
-                preview: '.cropperPreviewImg',
-                aspectRatio: (thisthis.opentype === 'bgPop' ? 2 / 3 : 1 / 1),
-                cropBoxResizable: true,
-                wheelZoomRatio: 0.1,
-                movable: false
-              })
-
-              thisthis.cropper.replace(thisthis.previewImgUrl)
-            }
-            image.onerror = function () {
-
-            }
-            image.src = e.target.result
-            // this.previewImgUrl = e.target.result
-          }
-          reader.readAsDataURL(this.selectFile)
-          // await this.$editorImgResize(this.selectFile)
-          // this.cropYn = true
-        }
-        // }
-      } else {
-        return null
-        // this.selectFile = null
-        // this.previewImgUrl = null
-      }
-    },
-    async cropImage (img) {
-      if (this.uploadFileList.length > 0) {
-        for (var i = 0; i < this.uploadFileList.length; i++) {
-          this.uploadFileList[i].file = img
-        }
-        await this.formSubmit()
-
-        var param = {}
-        param.selectedId = this.selectedImgFilekey
-        param.selectPath = this.selectedImgPath
-        param.iconType = this.viewTab
-        this.$emit('makeParam', param)
-      }
-    },
     async crop () {
       var cropImg = this.cropper.getCroppedCanvas({ maxWidth: 4096, maxHeight: 4096, imageSmoothingEnabled: false })
       var dataURL = cropImg.toDataURL('image/jpeg', 0.8)
-      // const imgBase64 = previewCanvas.toDataURL('image/png', 0.8)
       const decodImg = atob(dataURL.split(',')[1])
       const array = []
       for (let i = 0; i < decodImg.length; i++) {
@@ -504,12 +384,9 @@ export default {
     async formSubmit () {
       if (this.uploadFileList.length > 0) {
         var form = new FormData()
-        // var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
           form = new FormData()
           if (this.cropperYn === true) this.uploadFileList[i].file = await this.crop()
-          // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
-          // thisthis.uploadFileList[i].filePath = Base64.decode(thisthis.uploadFileList[i].filePath.replaceAll('data:image/png;base64,', ''))
           form.append('files[0]', (this.uploadFileList[i]).file)
 
           await this.$axios
@@ -530,8 +407,6 @@ export default {
             .catch(error => {
               console.log(error)
             })
-          /* } */
-          // var selFile = this.selectFileList[i].file
         }
       } else {
         this.$showToastPop(this.$t('COMM_MSG_SELECT_FILE'))
@@ -540,7 +415,7 @@ export default {
     },
     closePop () {
       this.$removeHistoryStack()
-      this.$emit('no')
+      this.pClosePop()
     },
     preventDefault () {
       return false
@@ -549,7 +424,6 @@ export default {
   computed: {
     getChanBoxSize () {
       return {
-        // '--chanBoxSize': window.innerWidth / 4 - 20 + 'px'
         '--chanBoxSize': window.innerWidth / 4 - 20 + 'px'
       }
     },
@@ -578,7 +452,6 @@ export default {
   padding: 1rem 2rem;
   overflow: auto;
   left: 5%;
-  /* height: 70%; */
   max-height:700px ;
   box-shadow: 2px 3px 6px 3px #ccc;
   transform: translateY(-50%);
@@ -600,10 +473,7 @@ export default {
   height: 50px; line-height: 50px; background: #6768a7; color: #fff; border-radius: 8px;
   width: 100%;
   margin-top: 10px;
-  /* bottom: 10px;
-  left: 5%; */
 }
-/* .activeTypeBox{background: #6768a7; color: #fff; opacity: 0.5;}*/
 .activeTypeBox {
   color: black;
   opacity: 0.4;
@@ -632,8 +502,6 @@ export default {
 .cropperImgArea img {
   display: block;
   max-width: 100%
-  /* object-fit: contain; width: 100%; height: 100%; */
-  /* This rule is very important, please don't ignore this */
 }
 
 .popupTop {

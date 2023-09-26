@@ -25,13 +25,13 @@
       </div>
     </div>
     <div class="fl fontStyleWrap">
-      <div @click="changeTextStyle({ type: 'bold' })" :class="this.propTools.boldYn === true ? 'selectedStyle': ''" class="fl fontStyleItem">
+      <div @click="changeTextStyle({ type: 'bold' })" :class="propTools.boldYn === true ? 'selectedStyle': ''" class="fl fontStyleItem">
         <img class="w100P" src="../../../assets/images/formEditor/boldIcon.svg" alt="">
       </div>
-      <div @click="changeTextStyle({ type: 'italic' })" :class="this.propTools.italicYn === true ? 'selectedStyle': ''" class="fl fontStyleItem">
+      <div @click="changeTextStyle({ type: 'italic' })" :class="propTools.italicYn === true ? 'selectedStyle': ''" class="fl fontStyleItem">
         <img class="w100P" src="../../../assets/images/formEditor/italicIcon.svg" alt="">
       </div>
-      <div @click="changeTextStyle({ type: 'underLine' })" :class="this.propTools.underLineYn === true ? 'selectedStyle': ''" class="fl fontStyleItem">
+      <div @click="changeTextStyle({ type: 'underLine' })" :class="propTools.underLineYn === true ? 'selectedStyle': ''" class="fl fontStyleItem">
         <img class="w100P" src="../../../assets/images/formEditor/underlineIcon.svg" alt="">
       </div>
       <img @click="delFormCard()" src="../../../assets/images/formEditor/trashIcon.svg" class="fl deleteFormCard" alt="">
@@ -69,7 +69,6 @@ export default {
         window.getSelection().addRange(thisWindow.lastFocus)
         document.getSelection().addRange(thisWindow.lastFocus)
       }, 100)
-      // 끝
     },
     delFormCard () {
       this.changeTextStyle({ type: 'delFormCard' })

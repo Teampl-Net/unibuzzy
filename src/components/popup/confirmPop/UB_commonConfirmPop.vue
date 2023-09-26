@@ -2,7 +2,6 @@
   <div class="confirmPopArea">
     <div class="confirmBg" @click="goNo"></div>
     <div :style="popLeft" class="zoomInOutPop confirmPopWrap">
-    <!-- <div class="zoomInOutPop confirmPopWrap" style="left: 5%;"> -->
       <div class="confirmPopHeader" >
         <img src="/resource/logo/UB_uniBLogo.png" class="fl" >
         <p class="font24 headerFont commonColor fl appNameP">{{ $t('COMMON_NAME_APP') }}</p>
@@ -32,54 +31,25 @@
 </template>
 <script>
 export default {
-  data () {
-    return {
-
-    }
-  },
   props: {
     confirmText: {},
     confirmType: {},
-    nonHeaderYn: { type: Boolean, default: false },
-    pCloseCreateConfirmPop: Function,
-    pNewChanTeam: Array,
-    pGoChannelMain: Function,
     pDelete: Boolean,
-    pNewBoard: Array,
-    pCreBoardCheckPopYn: Boolean,
-    pCloseCreatedSuccessPopYn: Function
+    pNewBoard: Array
   },
   methods: {
     goOk () {
       this.$emit('ok')
-      if (this.pDelete === true) {
-        setTimeout(() => {
-          this.$showToastPop('Channel has been deleted.')
-        }, 1000)
-      }
     },
     goNo () {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
-      // eslint-disable-next-line
-      if ('gConfirmPop' === (hStack[hStack.length- 1])) {
+      if ((hStack[hStack.length - 1]) === 'gConfirmPop') {
         hStack = hStack.filter((element, index) => index < hStack.length - 1)
         this.$store.commit('UB_HISTORY/setRemovePage', removePage)
         this.$store.commit('UB_HISTORY/updateStack', hStack)
         this.$emit('no')
-        if (this.pCloseCreatedSuccessPopYn) {
-          this.pCloseCreatedSuccessPopYn()
-          this.goBoardMain()
-        }
       }
-    },
-    goBoardMain () {
-      var openPopParam = {}
-      openPopParam.teamKey = this.pNewBoard.creTeamKey
-      openPopParam.targetKey = this.pNewBoard.cabinetKey
-      openPopParam.cabinetNameMtext = this.pNewBoard.cabinetNameMtext
-      openPopParam.targetType = 'boardMain'
-      this.$emit('openPop', openPopParam)
     }
   },
   computed: {
@@ -102,13 +72,6 @@ export default {
   },
   created () {
     this.$addHistoryStack('gConfirmPop')
-  },
-  mounted () {
-    // if (this.confirmType === 'timeout') {
-    //   this.$delayAfterFunc(2000, this.goNo)
-
-    //   // this.tiemOut()
-    // }
   }
 }
 </script>

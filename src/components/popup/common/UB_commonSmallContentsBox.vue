@@ -10,7 +10,7 @@
                 <img v-else-if="accessKind === 'R'" src="../../../assets/images/common/icon_memo_filter.svg" alt="">
                 {{contentsEle.title}}
               </p>
-              <p class="font12 mleft-1 smallContBoxCreDate">{{ this.$changeDateFormat(contentsEle.creDate) }}</p>
+              <p class="font12 mleft-1 smallContBoxCreDate">{{ $changeDateFormat(contentsEle.creDate) }}</p>
             </div>
             <div class="textLeft smallContBoxUserInfo">
               <p class="textOverdot fontBold font12 smallContBoxUserName">{{ $changeText(contentsEle.nameMtext) + '(' + contentsEle.creUserName + ')'}}</p>
@@ -23,9 +23,7 @@
 
 <script>
 export default {
-  props: ['contentsEle', 'accessKind'],
-  methods: {
-  }
+  props: ['contentsEle', 'accessKind']
 }
 </script>
 

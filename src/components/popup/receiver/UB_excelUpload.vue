@@ -36,32 +36,21 @@
 </i18n>
 <template>
     <div id="exelUploadPop" class="excelUploadPopWrap">
-        <gConfirmPop v-if="confirmYn" @ok="saveList" @no="this.confirmYn = false" confirmType="two" :confirmText="confirmMsg" />
+        <gConfirmPop v-if="confirmYn" @ok="saveList" @no="confirmYn = false" confirmType="two" :confirmText="confirmMsg" />
         <div class="excelPopHeader">
             <p class="fontBold font18">{{ $t('EXCEL_TITLE_EXCEL') }}</p>
-            <img @click="this.$emit('closePop')" class="cursorP closeBtnImg" src="../../../assets/images/common/popup_close.png" alt="">
+            <img @click="$emit('closePop')" class="cursorP closeBtnImg" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
         <div class="excelPopBody">
-            <!-- <div style="width: 100%; min-height: 50px; float: left;">
-              <gStepProgress :activeStep="activeStep" :progressStep="progressStep" />
-            </div> --> <!-- <span class="font14 lightGray">{{activeStep === 0 ? '[닫기]' : '[펼치기]'}}</span> -->
             <p class="commonColor font16 fontBold textLeft">STEP.0 {{ $t('EXCEL_MSG_DOWN') }}</p>
             <div class="step0Area">
-              <!-- <p class="font15 fontBold textLeft commonBlack">구성원 유형</p> -->
               <div class="step0BtnWrap" v-for="(value, index) in uploadTypeList" :key="index">
-                  <gBtnSmall class="step0Btn" @click="downLoadTemplete(value.filePath)" :btnTitle="value.text"/>
+                  <gBtnSmall class="step0Btn" @click="downLoadTemplate(value.filePath)" :btnTitle="value.text"/>
               </div>
             </div>
-            <!-- <gBtnSmall class="fl mleft-05" style="float: right;" @click="activeStep === 1 ? this.$refs.downBtn.click() : ''" :style="activeStep !== 1 ? 'background-color:#ccc; cursor: default;' : ''" btnTitle="다운로드" />
-             -->
-            <!-- <div style="width: 100%; float: left; min-height: 40px;">
-              <p class="commonColor font16 fl fontBold textLeft">STEP.1 <a class="lightGray" ref="downBtn" href="/commonFile/thealim_member_upload_list.xlsx" download>템플릿 파일을 다운로드</a> 하여 작성합니다.</p>
-              <gBtnSmall class="fl mleft-05" style="float: left;" @click="activeStep === 1 ? this.$refs.downBtn.click() : ''" :style="activeStep !== 1 ? 'background-color:#ccc; cursor: default;' : ''" btnTitle="다운로드" />
-            </div> -->
             <div class="step1Area" v-if="activeStep >= 0">
-              <p class="commonColor font16 fontBold textLeft">STEP.1 {{ $t('EXCEL_MSG_CHECK') }}</p> <!-- 하고 정합성 테스트를 합니다. -->
+              <p class="commonColor font16 fontBold textLeft">STEP.1 {{ $t('EXCEL_MSG_CHECK') }}</p>
               <div class="commonBoxStyle step1BtnWrap">
-                <!-- <gBtnSmall style="float: left;" btnTitle="파일선택"/> -->
                 <div class="w100P step1BtnBox">
                   <label for="input-file">
                   {{ selectFile? selectFile.name:$t('COMMON_MSG_NOFILE') }}
@@ -73,11 +62,10 @@
                   <gBtnSmall @click="checkUploadYn" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_TEST')" />
                 </div>
               </div>
-              <!-- <p class="commonBlack font16 textLeft">STEP.3 업로드한 데이터의 정보를 확인합니다.</p> -->
             </div>
-            <div v-if="this.checkUserYn" class="checkResultArea">
+            <div v-if="checkUserYn" class="checkResultArea">
               <p class="font14 fontBold font fl commonColor resultTitle">{{$t('EXCEL_TITLE_RESULT')}}</p>
-              <p class="font13 fr lightGray">{{$t('EXCEL_TITLE_FIT') + ' ' + this.excelFileList.length + ', ' + $t('EXCEL_TITLE_NO_FIT') + this.failList.length}}</p>
+              <p class="font13 fr lightGray">{{$t('EXCEL_TITLE_FIT') + ' ' + excelFileList.length + ', ' + $t('EXCEL_TITLE_NO_FIT') + failList.length}}</p>
               <div class="commonBoxStyle resultBox">
                   <table class="w100P">
                       <colgroup>
@@ -95,7 +83,7 @@
                       </tbody>
                   </table>
                   <div class="excelListWrap">
-                    <table v-if="this.excelFileList.length > 0 " id="contentsTable w100P">
+                    <table v-if="excelFileList.length > 0 " id="contentsTable w100P">
                         <colgroup>
                           <col style="width: 10%">
                           <col style="width: 20%">
@@ -105,28 +93,16 @@
                           <col style="width: 15%;">
                         </colgroup>
                         <tbody>
-                            <tr v-if="this.uploadErrorYn"><td colspan="3">{{ $t('EXCEL_MSG_FAIL') }}</td></tr>
+                            <tr v-if="uploadErrorYn"><td colspan="3">{{ $t('EXCEL_MSG_FAIL') }}</td></tr>
                             <tr v-for="(value, index) in failList" :key="index">
                                 <td v-for="(fData, fDIndex) in value" :key="fDIndex" class="font14">
                                   <span>{{fData}}</span>
                                 </td>
-                                <!-- <td v-if="value[1]" class="font14">{{value[1]}}</td>
-                                <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td>
-                                <td v-if="value[2]" class="font14">{{value[2]}}</td>
-                                <td v-else class="font14 commonBlue">{{'데이터 누락'}}</td>
-                                <td v-if="value[3]" class="font14">{{value[3]}}</td>
-                                <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td> -->
                             </tr>
                             <tr v-for="(value, index) in excelFileList" :key="index">
                                 <td v-for="(eData, eDIndex) in value" :key="eDIndex" class="font14">
                                   <div class="dataItem" >{{eData}}</div>
                                 </td>
-                                <!-- <td v-if="value[1]" class="font14">{{value[1]}}</td>
-                                <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td>
-                                <td v-if="value[2]" class="font14">{{value[2]}}</td>
-                                <td v-else class="font14 commonBlue">{{'데이터 누락'}}</td>
-                                <td v-if="value[3]" class="font14">{{value[3]}}</td>
-                                <td v-else class="font14 commonRed">{{'필수정보 누락'}}</td> -->
                             </tr>
                         </tbody>
                     </table>
@@ -152,7 +128,6 @@ export default {
       failList: [],
       confirmMsg: '',
       confirmYn: false,
-      progressStep: [0, 1, 3],
       excelTitleRowList: [],
       activeStep: 0,
       bookType: 'EMPL',
@@ -169,7 +144,7 @@ export default {
     }
   },
   methods: {
-    downLoadTemplete (path) {
+    downLoadTemplate (path) {
       var iframe
       iframe = document.getElementById('hiddenExcelDownloader')
       if (iframe == null) {
@@ -179,18 +154,7 @@ export default {
         document.body.appendChild(iframe)
       }
       iframe.src = path
-      // link = link.replaceAll('http://61.97.186.14:19090/', '')
-      // iframe.src = 'https://mo.d-alim.com/commonFile/thealim_member_upload_list.xlsx'
-      // iframe.download = name
       return false
-    },
-    async test () {
-      var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.uploadTpUserRequireListExcelFile',
-        // eslint-disable-next-line no-new-object
-        param: new Object()
-      })
-      this.excelFileList = result.data.resultList
     },
     changeFile () {
       this.activeStep = 1
@@ -201,14 +165,11 @@ export default {
       }
     },
     checkUploadYn () {
-      // if (!this.checkUserYn) {
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
         var form = new FormData()
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
           this.selectFile = this.$refs.selectFile.files[k]
-          // var selFile = this.selectFileList[i].file
-          // Here we create unique key 'files[i]' in our response dict
           form.append('files[' + k + ']', this.selectFile)
 
           this.isUploading = true
@@ -269,7 +230,6 @@ export default {
       } else {
         this.$showToastPop(this.$t('COMMON_MSG_NOFILE'))
       }
-      // }
     },
     confirmSavePop () {
       if (this.checkUserYn) {
@@ -293,7 +253,6 @@ export default {
       var result = await this.$commonAxiosFunction({
         url: '/sUniB/tp.saveMUserFromExcelFile',
         param: {
-          /* cabientType:  */
           bookType: this.bookType,
           excelList: this.excelFileList,
           cabinetKey: this.cabinetKey,

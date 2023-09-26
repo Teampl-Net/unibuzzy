@@ -60,7 +60,7 @@
           <div v-if="pAreaDetail.popTeamList && pAreaDetail.popTeamList.length > 0" class="w100P popularWrap">
             <div class="h100P w33P">
               <div class="number2">
-                <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[1]"  :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[1]" />
+                <chanIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[1]"  :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[1]" />
               </div>
               <div class="fontBold font16 number2Bottom">
                 <p class="margin5">2</p>
@@ -69,7 +69,7 @@
             </div>
             <div class="w33P">
               <div class="number1">
-                <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[0]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[0]" :pBestYn="true" />
+                <chanIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[0]" :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[0]" :pBestYn="true" />
               </div>
               <div class="fontBold font16 number1Bottom">
                 <p class="margin5">1</p>
@@ -78,7 +78,7 @@
             </div>
             <div class="w33P">
               <div class="number3">
-                <chanRoundIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[2]"  :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[2]"/>
+                <chanIcon :pAreaInfo="pAreaInfo" v-if="pAreaDetail.popTeamList[2]"  :pGoChannelMain="goChannelMain" :selectedYn="false" :chanElement="pAreaDetail.popTeamList[2]"/>
               </div>
               <div class="fontBold font16 number3Bottom">
                 <p class="margin5">3</p>
@@ -134,11 +134,11 @@
   </div> -->
 </template>
 <script>
-import chanRoundIcon from '../infoBox/UB_chanRoundIcon.vue'
+import chanIcon from '../infoBox/UB_chanIcon.vue'
 import boardCard from '../infoBox/UB_boardCard.vue'
 export default {
   components: {
-    chanRoundIcon,
+    chanIcon,
     boardCard
   },
   props: {

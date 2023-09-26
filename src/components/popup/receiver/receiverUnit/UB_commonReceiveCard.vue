@@ -25,7 +25,7 @@
         </div>
         <div class="fl flexAlignCenter" :style="option === 'EDIT' ? 'width: calc(100% - 150px);' : 'width: calc(100% - 100px);' " @click="clickEvntToParents('open')">
           <div class="textLeft fl textOverdot w100P">
-            <p class="fl font16 commonDarkGray fontBold textOverdot w100P">{{this.$changeText(propData.cabinetNameMtext)}}</p>
+            <p class="fl font16 commonDarkGray fontBold textOverdot w100P">{{$changeText(propData.cabinetNameMtext)}}</p>
             <p class="fl font14 commonDarkGray textOverdot w100P">{{cabinetNames}}</p>
           </div>
         </div>
@@ -36,7 +36,7 @@
         </div>
         <div class="fl cabinetNameWrap" @click="clickEvntToParents('open')">
           <div class="textLeft fl textOverdot w100P">
-            <p class="fl font16 commonDarkGray fontBold textOverdot w100P">{{this.$changeText(propData.nameMtext)}}</p>
+            <p class="fl font16 commonDarkGray fontBold textOverdot w100P">{{$changeText(propData.nameMtext)}}</p>
             <p class="fl font14 commonDarkGray textOverdot w100P">{{cabinetNames}}</p>
           </div>
         </div>
@@ -51,9 +51,9 @@
         <div class="fl w100P flexAlignCenter" @click="clickEvntToParents('open')">
           <div class="textLeft fl w100P">
             <p class="fl font16 commonDarkGray fontBold w100P"><img v-if="propData.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../../assets/images/editChan/icon_self.svg">{{this.$changeText(propData.userDispMtext)}}</p>
-            <p class="fl font14 commonDarkGray">{{propData.userEmail ? changeDot('email', propData.userEmail) : this.$t('NONE_MSG_REGIST_EMAIL')}}</p>
+            <p class="fl font14 commonDarkGray">{{propData.userEmail ? changeDot('email', propData.userEmail) : $t('NONE_MSG_REGIST_EMAIL')}}</p>
             <p class="fl font14 commonDarkGray divideLine">|</p>
-            <p class="fl font14 commonDarkGray">{{propData.phoneEnc ? changeDot('phone', propData.phoneEnc) : this.$t('NONE_MSG_REGIST_NUM')}}</p>
+            <p class="fl font14 commonDarkGray">{{propData.phoneEnc ? changeDot('phone', propData.phoneEnc) : $t('NONE_MSG_REGIST_NUM')}}</p>
           </div>
         </div>
       </template>
@@ -65,7 +65,6 @@
 
       <div v-if="option === 'SELE'" class="fr cursorP flexAlignCenter" @click="clickEvntToParents('editList', compoIdx)">
         <div class="fl mright-03 selectImgWrap" :class="{ 'CDeepBgColor' : propData.selectedYn === true}">
-          <!-- <img v-if="propData.selectedYn === true" class="fl img-w13" src="../../../../assets/images/common/icon_check_white.svg" alt="선택 아이콘"> -->
           <img class="fl img-w13" src="../../../../assets/images/common/icon_check_white.svg" alt="선택 아이콘">
         </div>
       </div>
@@ -81,18 +80,14 @@ export default {
       cabinetNames: {},
       mSelectedMemberIdx: 0,
       mSelectedMembers: [],
-      mSelectedInfo: [],
-      pPropMemberList: [],
-      pFollowerMemList: []
+      mSelectedInfo: []
     }
   },
   props: {
     propData: {},
     option: { type: String, default: 'EDIT' },
     selectedYn: { type: Boolean, default: false },
-    compoIdx: {},
-    subTitleHidden: { type: Boolean, default: false },
-    pSelectedList: {}
+    compoIdx: {}
   },
   methods: {
     clickEvntToParents (type, index) {

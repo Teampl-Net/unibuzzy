@@ -15,7 +15,7 @@
 <template>
   <div class="receiverTeamMemberArea" >
     <template v-for="(data, index) in mCommonMemberList" :key='data'>
-      <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'" :pFollowerMemList="pFollowerMemList" :pPropMemberList="propMemberList" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
+      <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
     </template>
     <gListEmpty v-if="mCommonMemberList.length === 0" :title="$t('SELECT_MSG_MEMBERS_NONE')" :subTitle="$t('SELECT_MSG_MEMBERS_ADD')" :option="selectPopYn === true ? 'SELE' : 'EDIT'" />
   </div>
@@ -30,8 +30,7 @@ export default {
     selectPopYn: {},
     parentSelectList: {},
     pSearchFilterList: {},
-    pFollowerMemList: {},
-    pSelectedList: {}
+    pFollowerMemList: {}
   },
   data () {
     return {
@@ -85,7 +84,6 @@ export default {
       }
       this.setParentSelectList()
     },
-
     receiveCardEmit (param) {
       var type = param.targetType
       var data = param.data
@@ -106,9 +104,6 @@ export default {
       for (let i = 0; i < this.mCommonMemberList.length; i++) {
         this.mCommonMemberList[i].jobkindId = 'USER'
       }
-    },
-    async refresh () {
-      if (this.propData.selectMemberType === 'manager') { await this.getFollowerList() } else { this.$emit('refreshList') }
     },
     setParentSelectList () {
       var tempList = this.mCommonMemberList
@@ -135,7 +130,6 @@ export default {
     },
     async deleteMember (data, index) {
       // 주소록 관리에서 주소 삭제가 안되기에 주석처리 하였음.
-      // if (this.propData.value.creUserKey !== data.userKey) {
       if (this.propData.selectMemberType === 'manager') {
         this.$emit('deleteManager', data)
       } else {
@@ -178,22 +172,11 @@ export default {
         this.mSelectedMemberList.splice(findIdx, 1)
         this.mCommonMemberList[index].selectedYn = false
       }
-    },
-    searchFilter () {
-      this.$emit('searchFilter', this.mSearchFilterList)
     }
   },
   watch: {
     propMemberList () {
       this.setMemberList()
-    }
-  },
-  computed: {
-    GE_USER () {
-      return this.$store.getters['UB_USER/GE_USER']
-    },
-    CHANNEL_DETAIL () {
-      return this.$getDetail('TEAM', this.teamInfo.teamKey)[0]
     }
   }
 }

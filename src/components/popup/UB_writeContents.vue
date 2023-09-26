@@ -82,7 +82,6 @@
 }
 </i18n>
 <template>
-<!-- <div style="width: 100%; float: left;"> -->
   <div class="whitePaper hhhhhh" style="cursor: default;" @drop="onDrop" @dragleave="onDragleave" @dragenter="onDragenter" @dragover="onDragover">
       <!-- 컨텐츠 작성 헤더 영역 -->
       <div class="w100P fl writeHeader">
@@ -105,7 +104,6 @@
               {{ $t('FORM_TITLE_BOARD') }}
               <pss class="font12 fl boardPlaceHolder" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</pss>
             </p>
-            <!-- <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p> -->
             <div class="fl boardListWrap" :class="!isMobile? 'thinScrollBar':''" id="boardListWrap" @wheel="horizontalScroll" >
               <div v-for="(data, index) in selectBoardList" :key="index" class="fl mleft-05 font12 fontBold boardItem" @click="selectBoard(data, index)" :style="{background: data.picBgPath}" :class="{'CDeepBorderColor selectPadding' : selectBoardIndex === index, 'noneSelectPadding' : selectBoardIndex !== index, 'mleft-0': index === 0}">
                 <div class="fl"> <img class="img-w15" v-if="selectBoardIndex === index" src="../../assets/images/common/icon_check_commonColor.svg" /></div>
@@ -137,12 +135,10 @@
     <div v-if="mIsDraggedYn" class="flexJustiCenter dragBox">{{ this.$t('FORM_MSG_DRAG') }}</div>
   </div>
   <gToolBox :propTools='mToolBoxOptions' @changeTextStyle='changeFormEditorStyle' />
-  <gCertiPop :pPopText="$t('FORM_MSG_ID')" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  />
   <onlyMemberSelectPop v-if="mSelectMemPopShowYn" :propData="propData" :pSelectedList="mSelectMemberList" :pClosePop="backClick" />
   <div v-if="mAskSendAlimPopShowYn" @click="closeAskAlimPop" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 98;"></div>
   <gConfirmPop v-if="mAskSendAlimPopShowYn" @no="closeAskAlimPop" confirmType="two" @ok="sendAlimToMember" :confirmText="$t('FORM_MESSAGE_ASK_SEND_ALIM')" />
   <gConfirmPop v-if="failPopYn" @no="failPopYn = false" confirmType="timeout" :confirmText="errorText" />
-  <gConfirmPop v-if="contentType === 'ALIM' && checkPopYn" :confirmText="requestPushYn === false? $t('FORM_MSG_SEND_NOTI'):$t('FORM_MSG_APPLY_NOTI')" @ok='sendMsg(), checkPopYn=false' @no='confirmNo()' />
   <gConfirmPop v-if="contentType === 'BOAR' && checkPopYn" :confirmText="modiYn? $t('FORM_MSG_EDIT') : $t('FORM_MSG_SAVE')" @ok='sendBoard(), checkPopYn=false' @no='confirmNo()'   />
   <gConfirmPop @no="closeXPop()" :confirmText="contentType === 'ALIM' ? $t('FORM_MSG_SUCCESS_APPLY') : $t('FORM_MSG_SUCCESS_SAVE') " confirmType='timeout' v-if="okPopYn" />
   <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
@@ -178,7 +174,6 @@ export default {
       okPopYn: false,
       allRecvYn: true,
       showCreNameYn: true, // 작성자 명 공개
-      canReplyYn: true, // 댓글 허용
       titleShowYn: false, // 제목 공개 허용
       fileYn: false,
       writePushTitle: '',
@@ -190,7 +185,6 @@ export default {
       editorType: 'text',
       complexOkYn: false,
       selectedReceiverList: [],
-      receiverText: '',
       checkPopYn: false,
 
       modiYn: false,
@@ -202,7 +196,6 @@ export default {
       cabBlindYn: false,
 
       mToolBoxOptions: {},
-      gCertiPopShowYn: false,
       mCanWriteYn: true,
       mBoardList: [],
       isMobile: /Mobi/i.test(window.navigator.userAgent),
@@ -219,11 +212,7 @@ export default {
   watch: {
     GE_USER: {
       handler (value, old) {
-        console.log(value)
         if (!value || !value.certiDate) return
-        console.log(value.certiDate)
-        console.log(this.selectBoardIndex)
-        console.log(this.selectBoardList)
         if (value.certiDate) this.mCanWriteYn = true
       },
       deep: true
@@ -237,35 +226,17 @@ export default {
       },
       deep: true
 
-    },
-    receiverList () {
-      console.log(' ^^^^^################## ')
-      console.log(this.receiverList)
     }
   },
   created () {
     if (this.contentType === 'BOAR') this.titleShowYn = true
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth
-    if (this.contentType === 'ALIM') {
-      if (this.params.selectedList) {
-        this.allRecvYn = false
-        this.setSelectedList(this.params.selectedList)
-      }
+    if (this.propData && this.propData.value && this.propData.value.fileYn) {
+      this.fileYn = true
     }
-    console.log('???????????')
-    console.log(this.params)
     if (this.params && (this.params.bodyFullStr || this.propData.guideFullStr)) {
-      if (this.contentType === 'ALIM') {
-        if (this.params.UseAnOtherYn) {
-          // 게시글을 -> 알림 // 알림 -> 게시글을 할 땐 decode가 필요없기에 구분
-          this.bodyString = this.decodeContents(this.params.bodyFullStr)
-          if (this.params.titleStr) {
-            this.titleShowYn = true
-            this.writePushTitle = this.params.titleStr
-          }
-        }
-      } else if (this.contentType === 'BOAR') {
+      if (this.contentType === 'BOAR') {
         this.titleShowYn = true
         if (this.propData.UseAnOtherYn) {
           this.bodyString = this.decodeContents(this.propData.bodyFullStr)
@@ -299,12 +270,9 @@ export default {
         for (const i of items) {
           var item = i
           if (item.type.indexOf('image') !== -1) {
-          /* this.editorType = 'complex' */
             var file = item.getAsFile()
             this.handleImageUpload(file)
-          // console.log(file);
-          // uploadFile(file);
-          } else {}
+          }
         }
         e.preventDefault()
         var textData = (e.originalEvent || e).clipboardData.getData('Text')
@@ -312,7 +280,6 @@ export default {
       })
     }
 
-    // var screenSize = document.querySelector('#alimWrap')
     var textArea = document.querySelector('#textMsgBoxPush')
     if (textArea) {
       textArea.addEventListener('focus', () => {
@@ -329,37 +296,25 @@ export default {
       this.$refs.textAreaRequestTitle.readOnly = true
     }
 
-    // if (this.propData.parentAttachTrueFileList && this.propData.parentAttachTrueFileList.length > 0) {
-    //   this.addFalseList = [
-    //     ...this.addFalseList,
-    //     ...this.propData.parentAttachTrueFileList
-    //   ]
-    // }
-
     if (this.bodyString !== undefined && this.bodyString !== null && this.bodyString !== '') this.settingAlim()
 
     if (this.contentType === 'BOAR') {
       var temp = document.createElement('div')
       temp.innerHTML = this.bodyString
       if (temp.getElementsByClassName('formCard').length > 0) {
-        // this.$refs.activeBar.switchtab(1)
         var innerHtml = ''
         var newArr = []
         var formC = temp.getElementsByClassName('formCard')
-        // eslint-disable-next-line no-new-object
-        var jsonObj = new Object()
+        var jsonObj = {}
         var imgYn = true
         for (var i = 0; i < formC.length; i++) {
-          // eslint-disable-next-line no-new-object
-          jsonObj = new Object()
+          jsonObj = {}
           imgYn = true
           innerHtml += formC[i].outerHTML
           jsonObj.innerHtml = formC[i].innerHTML
           jsonObj.type = 'image'
           jsonObj.targetKey = i - 1
           for (var c = 0; c < formC[i].classList.length; c++) {
-            // // eslint-disable-next-line no-debugger
-            // debugger
             if (formC[i].classList[c] === 'formText') {
               jsonObj.innerHtml = this.$findATagDelete(formC[i].innerHTML)
               jsonObj.type = 'text'
@@ -430,14 +385,11 @@ export default {
       }
     },
     async sendAlimToMember () {
-      /* this.mAskSendAlimPopShowYn = false
-      this.mSelectMemPopShowYn = true */
       this.mContentsParams.allRecvYn = true
       const res = await this.$commonAxiosFunction({
         url: '/sUniB/tp.sendContentsPush',
         param: this.mContentsParams
       })
-      console.log(res)
       if (res.data && res.data.result) {
         this.$showToastPop(this.$t('FORM_MSG_SUCCESS_SEND_ALIM'))
         this.closeXPop(true)
@@ -454,14 +406,6 @@ export default {
       channelWrap.scrollTo({
         left: channelWrap.scrollLeft + e.deltaY / 10
       })
-    },
-    goSavePhonePop () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.targetType = 'changePhone'
-      this.gCertiPopShowYn = false
-      this.openPop(param)
-      // this.openPop(param)
     },
     changeFormEditorStyle (changeParam) {
       // toolbox에 기능 전부, 선택된 formEditor에 드레그 한 text로 처리를 하기에 ref로 접근해서 함수를 실행하고 있습니다.
@@ -492,7 +436,6 @@ export default {
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', this.GE_USER.userKey)
       var response = await this.$commonAxiosFunction({
-        // url: '/sUniB/tp.getCabinetDetail',
         url: '/sUniB/tp.getCabinetListForMyShareType',
         param: Object.fromEntries(paramMap)
       }, true)
@@ -547,76 +490,12 @@ export default {
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', this.GE_USER.userKey)
-      // console.log(paramMap)
       await this.$getTeamMenuList(paramMap).then((result) => {
         this.selectBoardList = result
         if (this.selectBoardList.length > 0) {
-          // this.$nextTick(() => {
-          // document.getElementById('selectBoardCheckBox0').checked = true
-          console.log(this.selectBoardList[0])
           this.selectBoard(this.selectBoardList[0], 0)
-          // })
         }
       })
-      // console.log(result)
-    },
-    // gPopWrap에서 선택한 리스트가 넘겨주고 있음
-    setSelectedList (obj) {
-      // var mList = []
-      // var bList = []
-      // var myMList = []
-      // var myBList = []
-      console.log('2!@#!@#!@@@@@2222')
-      console.log(obj)
-      // if (this.receiverList.memberList !== undefined && this.receiverList.memberList !== null && this.receiverList.memberList.length > 0) {
-      //   myMList = this.receiverList.memberList
-      // }
-      // if (this.receiverList.bookList !== undefined && this.receiverList.bookList !== null && this.receiverList.bookList.length > 0) {
-      //   myBList = this.receiverList.bookList
-      // }
-      this.receiverList = obj
-      // if (obj.bookList && obj.bookList.length > 0) {
-      //   this.receiverList.bookList = obh
-      // }
-      console.log('-----------------------------------')
-      console.log(this.receiverList)
-      this.receiverList.list = []
-      for (let i = 0; i < this.receiverList.memberList.length; i++) {
-        var temp = {}
-        temp.type = 'USER'
-        temp.name = this.$changeText(this.receiverList.memberList[i].userDispMtext)
-        this.receiverList.list.push(temp)
-      }
-      for (let i = 0; i < this.receiverList.bookList.length; i++) {
-        temp = {}
-        temp.type = 'BOOK'
-        temp.memberYn = this.receiverList.bookList[i].memberYn
-        if (!this.receiverList.bookList[i].memberYn) {
-          temp.name = this.$changeText(this.receiverList.bookList[i].cabinetNameMtext)
-        } else {
-          temp.name = this.$changeText(this.receiverList.bookList[i].nameMtext)
-        }
-        this.receiverList.list.push(temp)
-      }
-      this.list = []
-      this.selectedReceiverList = []
-      // this.receiverTotalNum = myMList.length + mList.length + myBList.length + bList.length
-      // this.receiverText = ''
-      this.setRecvText()
-    },
-    setRecvText () {
-      var list = this.receiverList.list
-      var uCount = 0
-      var bCount = 0
-      console.log(list)
-      for (var i = 0; i < list.length; i++) {
-        if (list[i].type === 'USER') uCount += 1
-        if (list[i].type === 'BOOK') bCount += 1
-      }
-      var a = (bCount > 0) ? this.$t('COMMON_NAME_ADDRBOOK') + bCount : ''
-      var b = (bCount > 0 && uCount > 0) ? ', ' : ''
-      var c = (uCount > 0) ? this.$t('COMMON_TITLE_USER') + uCount : ''
-      this.receiverText = a + b + c
     },
     setParamInnerHtml (formCard) {
       var innerHtml = ''
@@ -626,14 +505,12 @@ export default {
 
       this.propFormData = []
       this.propFormData.push(...formCard)
-      // this.propFormData = formCard
       document.getElementById('msgBox').innerHTML = ''
       document.getElementById('msgBox').innerHTML = innerHtml
       this.editorType = 'complex'
       this.complexOkYn = true
       if (this.contentType === 'ALIM') this.clickPageTopBtn()
       if (this.contentType === 'BOAR') this.boardDataCheck()
-      // this.formEditorShowYn = false
     },
     async clickPageTopBtn () {
       // 취소를 누르거나 유효성 검사 (이 함수)에 통과하지 못하면 값을 다시 가져와야함. 그러므로 --> this.complexOkYn = false
@@ -729,23 +606,10 @@ export default {
         this.checkPopYn = true
       }
     },
-    onReady (editor) {
-      // Insert the toolbar before the editable area.
-      editor.ui.getEditableElement().parentElement.insertBefore(
-        editor.ui.view.toolbar.element,
-        editor.ui.getEditableElement()
-      )
-    },
-
     changeUploadList (upList) {
-      console.log('upList')
-      console.log(upList)
-      console.log(this.uploadFileList)
-      // upList.selectFileList.targetKey = upList.targetKey
       if (this.uploadFileList.length > 0) {
         console.log(this.uploadFileList.findIndex(item => item.targetKey === upList.targetKey))
         var index = this.uploadFileList.findIndex(item => item.targetKey === upList.targetKey)
-        // console.log(index)
         if (index === -1) {
           var temp = this.uploadFileList
           this.uploadFileList = []
@@ -760,16 +624,9 @@ export default {
         this.uploadFileList.push(upList)
       }
     },
-    encodeUTF8 (str) { //  특수문자도 포함할 경우 encodeURIComponent(str)를 사용.
-      return encodeURI(str)
-    },
-    openPop (param) {
-      this.$emit('openPop', param)
-    },
     confirmNo () {
       this.checkPopYn = false
       this.complexOkYn = false
-      // console.log(this.propFormData)
     },
     setParamInnerText (innerText) {
       if (innerText !== undefined && innerText !== null && innerText !== '') {
@@ -786,20 +643,16 @@ export default {
       var innerHtml = ''
       var newArr = []
       var formC = temp.getElementsByClassName('formCard')
-      // eslint-disable-next-line no-new-object
-      var jsonObj = new Object()
+      var jsonObj = {}
       var imgYn = true
       for (var i = 0; i < formC.length; i++) {
-        // eslint-disable-next-line no-new-object
-        jsonObj = new Object()
+        jsonObj = {}
         imgYn = true
         innerHtml += formC[i].outerHTML
         jsonObj.innerHtml = formC[i].innerHTML
         jsonObj.type = 'image'
         jsonObj.targetKey = i
         for (var c = 0; c < formC[i].classList.length; c++) {
-          // // eslint-disable-next-line no-debugger
-          // debugger
           if (formC[i].classList[c] === 'formText') {
             jsonObj.innerHtml = this.$findATagDelete(formC[i].innerHTML)
             jsonObj.type = 'text'
@@ -847,11 +700,7 @@ export default {
       this.$refs.complexEditor.setFormCard(this.propFormData)
       document.getElementById('msgBox').innerHTML = ''
       document.getElementById('msgBox').innerHTML = innerHtml
-      // this.viewTab = 'complex'
       this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
-      // console.log('this.propData.parentAttachTrueFileList')
-      // // console.log(this.propData.parentAttachTrueFileList)
-      // this.formEditorShowYn = true
     },
     closeXPop (reloadYn) {
       var history = this.$store.getters['UB_HISTORY/hStack']
@@ -897,7 +746,6 @@ export default {
         innerHtml = document.getElementById('msgBox').innerHTML
 
         param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
-        // param.bodyFullStr = innerHtml.replaceAll('formEditorTextPadding', '')
         if (this.mSelectedBoard && this.mSelectedBoard.shareList && this.mSelectedBoard.shareList[0] && this.mSelectedBoard.shareList[0].accessKind && this.mSelectedBoard.shareList[0].accessKind === 'F') {
           param.allRecvYn = true
         }
@@ -948,7 +796,9 @@ export default {
             this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
           })
           var detail = this.$getDetail('TEAM', this.params.targetKey)
-          detail[0].totalContentsCount++
+          if (detail && detail[0] && detail[0].totalContentsCount) {
+            detail[0].totalContentsCount++
+          }
 
           var newP = {}
           newP.targetKey = result.contents.contentsKey
@@ -966,18 +816,14 @@ export default {
           }
         }
         const cab = this.selectBoardList[this.selectBoardIndex]
-        // const cab = await this.getCabinetDetail(this.selectBoardCabinetKey)
         if (cab && cab.shareList) {
           if (cab.shareList[0].accessKind === 'T') {
-            // eslint-disable-next-line no-debugger
-            debugger
             this.mContentsParams.contentsKey = result.contents.contentsKey
             this.mContentsParams.jobkindId = 'BOAR'
             this.mAskSendAlimPopShowYn = true
             return
           }
         }
-        // this.$showToastPop('게시되었습니다.')
         if (!this.modiYn) {
           this.$showToastPop(this.$t('FORM_MSG_SUCCESS_WRITE_POST'))
         } else {
@@ -989,128 +835,6 @@ export default {
         console.error(error)
       } finally {
         this.sendLoadingYn = false
-        /* this.closeXPop(true)
-        this.sendLoadingYn = false */
-      }
-    },
-    async sendMsg () {
-      this.checkPopYn = false
-      this.sendLoadingYn = true
-
-      try {
-        var param = {}
-        var innerHtml = ''
-        param.bodyHtmlYn = true // 기본알림또한 html형식으로 들어감
-        var targetMsgDiv = null
-        if (this.uploadFileList.length > 0) {
-          this.progressShowYn = true
-          await this.formSubmit()
-          setTimeout(() => {
-            this.progressShowYn = false
-          }, 2000)
-        } else {
-        }
-        // this.$refs.complexEditor.setParamInnerHtml()
-        param.bodyHtmlYn = true
-        /* 용량 관리 위해: 나중에 주석 풀어야 함_수민 */
-        /* var imgSrc = null
-        var imgList = document.querySelectorAll('#msgBox img')
-        for (var img=0; img < imgList.length; img ++) {
-            imgSrc = imgList[img].src
-            paramImgList.push(imgSrc)
-            imgList[img].src = 'imgTagSrc' + img
-            }
-            param.imgList = imgList
-            */
-        var formList = document.querySelectorAll('#msgBox .formCard')
-        if (formList) {
-          for (var f = 0; f < formList.length; f++) {
-            formList[f].contentEditable = false
-            // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
-            if (formList[f].id === 'formEditText') {
-              if (formList[f].innerText === '') {
-                formList[f].remove()
-              } else {
-                formList[f].classList.remove('formEditorTextPadding')
-                innerHtml = formList[f].innerHTML
-                formList[f].innerHTML = this.$findUrlChangeAtag(innerHtml)
-              }
-            }
-          }
-          param.getBodyHtmlYn = true
-        }
-        targetMsgDiv = document.getElementById('msgBox')
-        innerHtml = targetMsgDiv.innerHTML
-
-        param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
-        param.allRecvYn = this.allRecvYn
-        var attachFileList = await this.setAttachFileList()
-        if (attachFileList.length > 0) {
-          param.attachFileList = attachFileList
-        }
-        if (this.allRecvYn === true) {
-
-        } else {
-          // console.log(this.param)
-          // if (this.replyPopYn) {
-          //   param.parentContentsKey = this.params.targetContentsKey
-          //   param.actorList = [{ accessKind: 'U', accessKey: this.params.creUserKey }]
-          // } else {
-          if (this.params.userKey) {
-            param.actorList = [{ accessKind: 'U', accessKey: this.params.userKey }]
-          } else {
-            await this.settingRecvList()
-            if (this.selectedReceiverList.length > 0) {
-              param.actorList = this.selectedReceiverList
-            } else {
-              this.errorText = this.$t('FORM_MSG_SU_TARGET')
-              this.failPopYn = true
-              return
-            }
-          }
-          // }
-        }
-        param.teamName = this.$changeText(this.params.targetNameMtext)
-        param.creTeamKey = this.params.targetKey || this.creTeamKey
-        if (this.params.currentTeamKey || this.params.creTeamKey) {
-          param.creTeamKey = this.params.currentTeamKey || this.params.creTeamKey
-        }
-
-        param.creUserKey = this.GE_USER.userKey
-        if (this.writePushTitle !== '') {
-          param.title = this.writePushTitle
-        } else {
-          // param.title = this.encodeUTF8(this.$titleToBody(targetMsgDiv))
-          param.title = this.$titleToBody(targetMsgDiv)
-        }
-        //
-        param.jobkindId = 'ALIM'
-        param.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
-
-        param.showCreNameYn = this.showCreNameYn
-        param.canReplyYn = this.canReplyYn
-        // var result
-        if (this.requestPushYn === true) {
-          param.requestTitle = this.requestTitle
-          this.okPopYn = true
-          return
-        }
-        // eslint-disable-next-line no-debugger
-        debugger
-        var result = await this.$saveContents(param)
-        param = {}
-        param.contentsKey = result.contents.contentsKey
-        param.jobkindId = result.contents.jobkindId
-        var resultList = await this.$getContentsList(param)
-        var detailData = resultList.content[0]
-        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData])
-        this.$showToastPop(this.$t('FORM_MSG_SUCCESS_WRITE_POST'))
-      } catch (error) {
-        this.$showToastPop(this.$t('FORM_MSG_FAIL_POST'))
-        console.error(error)
-      } finally {
-        this.sendLoadingYn = false
-        this.closeXPop(true)
       }
     },
     // 선택한 수신리스트를 서비스에 보내 전 데이터 전처리
@@ -1128,16 +852,9 @@ export default {
             shareItemBookObject.accessKind = 'M'
             shareItemBookObject.accessKey = selectedBookList.memberTypeKey
           }
-          /* this.list.push(this.receiverList.bookList[i].cabinetKey) */
-          // this.receiverText += ', ' + selectedBookList.cabinetNameMtext
-          // this.list.push(shareItemBookObject)
-          // this.receiverText += selectedBookList.cabinetNameMtext + ', '
           this.selectedReceiverList.push(shareItemBookObject)
         }
-        /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
       }
-      // var shareItemMemberList = []
-      // eslint-disable-next-line no-new-object
       var shareItemMemberObject = {}
       if (this.receiverList.memberList) {
         for (let i = 0; i < this.receiverList.memberList.length; i++) {
@@ -1145,8 +862,6 @@ export default {
           shareItemMemberObject = {}
           shareItemMemberObject.accessKind = 'U'
           shareItemMemberObject.accessKey = selectedMemberList.userKey
-          /* this.selectedReceiverList.push(this.receiverList.bookList[i].cabinetKey) */
-          // this.receiverText += this.$changeText(selectedMemberList.userDispMtext || selectedMemberList.userNameMtext) + ', '
           this.selectedReceiverList.push(shareItemMemberObject)
         }
       }
@@ -1166,25 +881,7 @@ export default {
         setObj.fileName = this.uploadFileList[i].file.name.normalize('NFC')
         newAttachFileList.push(setObj)
       }
-      console.log(newAttachFileList)
       return newAttachFileList
-    },
-    async openPushReceiverSelect () {
-      var param = {}
-      param.targetType = 'selectBookList'
-      param.targetKey = this.params.targetKey
-      param.teamKey = this.params.targetKey
-      param.teamNameMtext = this.params.teamNameMtext
-      var selectListParamMap = new Map()
-      selectListParamMap.set('teamKey', this.params.targetKey)
-      param.param = selectListParamMap
-      var initData = await this.$getGPopData(param)
-      param.initData = initData
-      var selectedList = this.receiverList
-      param.pSelectedList = selectedList
-
-      this.$emit('openPop', param)
-      // this.receiverPopYn = true
     },
     async handleImageUpload (file) {
       this.selectFile = null
@@ -1235,64 +932,19 @@ export default {
         }
       }
     },
-
-    async previewFile (file) {
-      let fileExt = file.name.substring(
-        file.name.lastIndexOf('.') + 1
-      )
-      // 소문자로 변환
-      fileExt = fileExt.toLowerCase()
-      if (
-        ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
-      ) {
-        // FileReader 를 활용하여 파일을 읽는다
-        var reader = new FileReader()
-        var thisthis = this
-        reader.onload = e => {
-          var image = new Image()
-          image.onload = async function () {
-            var result = await thisthis.$saveFileSize(image, file)
-            thisthis.$refs.complexEditor.addFormCard('image', result.path, true)
-            thisthis.$refs.complexEditor.successImgPreview({ targetKey: document.querySelectorAll('#eContentsWrap .formDiv').length - 1, selectFileList: { previewImgUrl: result.path, addYn: true, file: result.file, targetKey: result.file.name }, originalType: 'image' })
-            // this.$emit('updateImgForm', this.previewImgUrl)
-            // editorImgResize1(canvas.toDataURL('image/png', 0.8))
-            // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
-          }
-          image.onerror = function () {
-
-          }
-          image.src = e.target.result
-          // this.previewImgUrl = e.target.result
-        }
-        reader.readAsDataURL(file)
-      }
-    },
     async formSubmit () {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.uploadFileList.length > 0) {
         var iList = document.querySelectorAll('.formCard .addTrue')
-        // Form 필드 생성
-        // if (!this.selectFileList.length) return
         var form = new FormData()
         var thisthis = this
         for (var i = 0; i < this.uploadFileList.length; i++) {
-          // var selFile = this.selectFileList[i].file
           form = new FormData()
-          // Here we create unique key 'files[i]' in our response dictBase64.decode(data)
-          // thisthis.uploadFileList[i].previewImgUrl = Base64.decode(thisthis.uploadFileList[i].previewImgUrl.replaceAll('data:image/png;base64,', ''))
           const oldFile = thisthis.uploadFileList[i].file
           const newFile = new File([oldFile], oldFile.name.normalize('NFC'), { type: oldFile.type })
           form.append('files[0]', newFile)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
             .post('https://unibuzzy.com/file/tp.uploadFile', form,
-              /* {
-                onUploadProgress: (progressEvent) => {
-                  var percentage = (progressEvent.loaded * 100) / progressEvent.total
-                  thisthis.uploadFileList[i].percentage = Math.round(percentage)
-                }
-              }, */
               {
                 headers: {
                   'Content-Type': 'multipart/form-data; charset: UTF-8;'
@@ -1317,17 +969,12 @@ export default {
               this.isUploading = false
             })
         }
-        // console.log(this.uploadFileList)
         iList = document.querySelectorAll('.msgArea .formCard .addTrue')
         if (iList.length > 0) {
           for (var s = 0; s < this.uploadFileList.length; s++) {
             var uploadFile = this.uploadFileList[s]
             if (uploadFile.successSave) {
               for (var il = 0; il < iList.length; il++) {
-                // console.log('여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-                // console.log(uploadFile[0].previewImgUrl)
-                // console.log(iList[il].src)
-                // console.log('여기!!!!!!!!!끝!!!!!!!!!!!!!!!!!!!!!!')
                 if (!uploadFile.attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
                   if (iList[il].src === uploadFile.previewImgUrl) {
                     iList[il].src = uploadFile.filePath
@@ -1337,8 +984,6 @@ export default {
                     iList[il].classList.remove('addTrue')
                     iList[il].classList.add('addFalse')
                     break
-                  } else {
-
                   }
                 }
               }
@@ -1353,8 +998,6 @@ export default {
       return true
     },
     delAttachFile (dFile) {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (dFile.addYn) {
         for (var d = 0; d < this.uploadFileList.length; d++) {
           if (this.uploadFileList[d].attachYn === true && this.uploadFileList[d].attachKey === dFile.attachKey) {
@@ -1369,29 +1012,11 @@ export default {
       if (sFile.addYn === true) {
         this.uploadFileList.push(sFile)
       }
-      // console.log(this.uploadFileList)
     }
   },
   computed: {
     GE_USER () {
       return this.$store.getters['UB_USER/GE_USER']
-    },
-    // setScrollWidth () {
-    //   var w = 150 * this.receiverTotalNum
-    //   return 'width: ' + w + 'px'
-    // },
-    setColor () {
-      return {
-        'background-color': this.colorList[this.selectedC]
-      }
-    },
-    setBoxHeight () {
-      var h = window.innerHeight
-      var cal = h * 0.15
-      return 'min-height: ' + cal + 'px'
-      // return {
-      //   '--writeContenHeight': cal + 'px'
-      // }
     }
   }
 }
@@ -1400,34 +1025,20 @@ export default {
 <style scoped>
 
 .whitePaper {
-  /* overflow: auto; */
-  /* position: fixed; */
   position: absolute;
-  /* left: 5%; */
-  /* bottom: 0; */
   top: 5%;
   z-index: 1000000;
   left: 5%;
-  /* transform: translate(-50%, -50%); */
   width: 90%;
-
-  /* border-radius: 0.8rem 0.8rem 0 0; */
   border-radius: 0.8rem;
-  /* height: 90%; */
   height: 78%;
   min-height: 500px;
-
-  /* background-color: #f9f9f9; */
   background-color: #f5f5f5 !important;
   color: #363c5f;
-  /* padding: 1.5rem; */
   text-align: left;
-  /* box-shadow: 0 0 9px 0 #ccc; */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  /* overflow: hidden; */
-  /* clip-path: polygon(0 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%  , 0 100%); */
 }
 .titlePlaceholder {
   width: calc(100% - 3.5rem);
@@ -1438,8 +1049,6 @@ export default {
   color: #AFAFAF
 }
 .writeContenBtn {
-  /* border: 2px solid #FFFFFF; */
-  /* line-height: 28px; */
   height: 35px;
   font-size:14px;
   padding :7px 20px !important;

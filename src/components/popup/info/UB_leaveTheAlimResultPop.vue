@@ -26,15 +26,6 @@
 </template>
 <script>
 export default {
-  data () {
-    return {
-    }
-  },
-  computed: {
-    GE_LOCALE () {
-      return this.$i18n.locale
-    }
-  },
   methods: {
     closePop () {
       this.$emit('closeXPop')

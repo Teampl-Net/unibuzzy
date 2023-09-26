@@ -1,18 +1,18 @@
 <template>
   <gPopHeader :headerTitle="`File Box`" @closeXPop="closeXPop"/>
-  <div @click="click" id="fileBoxWrap" class="fileBoxWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px;'">
+  <div @click="click" id="fileBoxWrap" class="fileBoxWrap" :style="'padding-top:' + ($STATUS_HEIGHT + 60)+ 'px;'">
     <div class="fileBoxTopArea">
-      <div class="chanTitle" v-if="this.mMainChanList">
+      <div class="chanTitle" v-if="mMainChanList">
         <img src="../../../assets/images/main/main_followIcon2.png" class="img-w23 cursorP" alt="">
         <p class="font20 fontBold deepBorderColor textLeft CDeepColor">{{ $t('COMMON_NAME_CHANNEL') }}</p>
       </div>
-      <div v-if="this.mMainChanList.length > 0" id="fileChannelWrap" class="fileChanWrap" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
+      <div v-if="mMainChanList.length > 0" id="fileChannelWrap" class="fileChanWrap" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
         <div class="fileChanBox">
           <div class="cursorP chanAll" :style="selectedChannelIdx === 0? 'border: 2px solid #5F61BD;':'border: 0.5px solid rgba(0, 0, 0, 0.1);'" @click="selectTeam(null, 0)">
             {{ $t('COMMON_TAB_ALL') }}
           </div>
-          <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :selectedYn="selectedChannelIdx === index + 1? true:false" :key="index" @click="selectTeam(chan.teamKey, index+1)"/>
-          <template v-if="this.mMainChanList.length === 0">
+          <chanRoundIcon :chanElement="chan" v-for="(chan, index) in mMainChanList" :selectedYn="selectedChannelIdx === index + 1? true:false" :key="index" @click="selectTeam(chan.teamKey, index+1)"/>
+          <template v-if="mMainChanList.length === 0">
               <circleSkeleton v-for="(value) in 10" :key="value"/>
           </template>
         </div>
@@ -22,9 +22,6 @@
     <div id="fileFilterBox" class="fileFilterArea">
       <div>
         <img src="../../../assets/images/common/common_filter.svg" alt="">
-        <div class="filterIconWrap" @click="selectKind('ALIM')" :class="{'selectedIcon':(selectedKind==='ALIM')}">
-          <img src="../../../assets/images/common/icon_alim.svg" class="filterIcon" alt="">
-        </div>
         <div class="filterIconWrap" @click="selectKind('BOAR')" :class="{'selectedIcon':(selectedKind==='BOAR')}">
           <img src="../../../assets/images/common/icon_board_color.svg" class="filterIcon" alt="">
         </div>
@@ -45,17 +42,17 @@
         </div>
       </div>
     </div>
-    <serachResult @changeSearchList="changeSearchList" :searchList="this.resultSearchKeyList" />
+    <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
 
     <div class="fileContentsWrap" v-if="fileList.length > 0">
       <template v-for="(date, index) in dateList" :key="index">
         <div class="textLeft fontBold font14 attachFileBg fileContentsTag" :style="index !== 0? 'margin-top: 30px;':'margin-top: 10px;'">{{ date }}</div>
         <div class="fileContentsItem">
           <template v-for="(cont, index) in fileList" :key="index">
-            <gFileBox @openImgPop="openImgPop" @openPop="openPop" listType="T" :contentsEle="cont" :key="index" v-if="$changeDateFormat(cont.creDate) === date"/>
+            <gFileBox @openImgPop="openImgPop" @openPop="openPop" :contentsEle="cont" :key="index" v-if="$changeDateFormat(cont.creDate) === date"/>
           </template>
         </div>
-        <myObserver v-if="index === this.dateList.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
+        <myObserver v-if="index === dateList.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
       </template>
     </div>
     <gEmpty :contentName="contentName" v-else class="mtop-2"/>
@@ -67,23 +64,20 @@
 
 <script>
 import findContentsList from '../../popup/common/UB_findContentsList.vue'
-import serachResult from '../../unit/UB_searchResult.vue'
+import searchResult from '../../unit/UB_searchResult.vue'
 import chanRoundIcon from '../../pageComponents/main/UB_chanRoundIcon.vue'
 import circleSkeleton from '../../pageComponents/main/UB_mainChanCircleSkeleton.vue'
 export default {
-  name: 'App',
   components: {
     chanRoundIcon,
     circleSkeleton,
     findContentsList,
-    serachResult
+    searchResult
   },
   async created () {
-    // this.$emit('changePageHeader', 'File Box')
-    this.getContentsList()
+    this.getTeamList()
     var result = await this.getFileList(0)
     this.returnResultList(result)
-    this.offsetInt = 1
   },
   data () {
     return {
@@ -97,7 +91,7 @@ export default {
       findPopShowYn: false,
       findKeyList: {},
       resultSearchKeyList: [],
-      offsetInt: 0,
+      offsetInt: 1,
       endListYn: false,
       isMobile: /Mobi/i.test(window.navigator.userAgent),
       contentName: '파일함'
@@ -274,7 +268,7 @@ export default {
       }, nonLoadingYn)
       return result
     },
-    async getContentsList () {
+    async getTeamList () {
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
       var nonLoading = true
@@ -303,10 +297,8 @@ export default {
       this.dateList = newArr
     },
     async castingSearchMap (param) {
-      // eslint-disable-next-line no-new-object
-      var searchObj = new Object()
+      var searchObj = {}
       var resultArray = []
-      // if (this.resultSearchKeyList.length > 0) resultArray = this.resultSearchKeyList
       if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
         searchObj.typeName = 'File'
         searchObj.type = 'searchKey'
@@ -341,16 +333,13 @@ export default {
       }
     },
     replaceFileArr (arr) {
-      // var this_ = this
       if (!arr && arr.length === 0) return []
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex((item) => Number(item.fileKey) === Number(current.fileKey)) === -1) {
-        /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
         }
-        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+        data = data.sort(function (a, b) {
           return b.creDate - a.creDate
-          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data
       }, [])

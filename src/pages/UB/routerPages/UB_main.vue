@@ -37,10 +37,6 @@
         <UBInfoBox v-if="mInfoBoxShowYn" :pType="'BD'" @openPage="openPage" :pChan="clickedBd" />
         <UBInfoBox v-else-if="clickedArea.clickedYn" :pType="'AR'" :pMoveToDetail="moveToChan" :pClickedInfo="clickedArea" :pVillageInfo="village.villageInfo" :innerHeight="innerHeight" :innerWidth="innerWidth" />
       </transition> -->
-      <div v-if="mShowAreaBdListYn" @click="mShowAreaBdListYn = false" class="w100P h100P popBg"></div>
-      <transition name="showUp">
-        <UBAreaBdList v-if="mShowAreaBdListYn" class="bdList"/>
-      </transition>
       <template v-if="!mLoadingYn">
           <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
             <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
@@ -83,7 +79,6 @@
 <script>
 import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
 // import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
-import UBAreaBdList from '../../../components/popup/info/UB_areaBdList.vue'
 import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue'
 // import createChannel from '../../../components/UB/popup/UB_createChannel.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
@@ -421,9 +416,6 @@ export default {
       // param.readOnlyYn = true
       // param.selfYn = true
       // this.$emit('openPop', param)
-    },
-    openAreaBdList () {
-      this.mShowAreaBdListYn = true
     },
     async goLoginPage () {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
@@ -943,14 +935,10 @@ export default {
   },
   components: {
     mainBoardList,
-    // createChannel,
-    // UBInfoBox,
     selectSchoolPop,
-    UBAreaBdList,
     areaInfoPop,
     createBoardChannel,
     infoBox
-    // UBBgEffect
   }
 }
 </script>

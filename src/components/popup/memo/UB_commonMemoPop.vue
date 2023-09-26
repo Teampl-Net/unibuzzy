@@ -13,16 +13,16 @@
   }
 </i18n>
 <template>
-  <unknownLoginPop v-if="mUnknownLoginPopYn" /> <!-- 아래의 position:absolute였는데 fixed로 바꿔봄... -->
+  <unknownLoginPop v-if="mUnknownLoginPopYn" />
   <div class="fl w100P memoPopWrap" ref='memoPopCompo' :class="mIsDraggedYn? 'dragged':''" @drop="onDrop">
     <div v-if="meMemoData" class="fl meMemoBox">
-        <p class="fl commonBlack font14" >{{this.$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
+        <p class="fl commonBlack font14" >{{$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
         <div class="fl mleft-05 mright-05 font14 commonBlack textOverdot w100P textLeft" v-html="meMemoData.memo.bodyFullStr"></div>
       <div class="cancelBtn" @click="cancel">
         <img src="../../../assets/images/common/searchXIcon.svg" alt="">
       </div>
     </div>
-    <div v-if="this.attachTrueFileList.length > 0" class="fl mbottom-05 mtop-05 attachFileWrap" @drop="onDrop">
+    <div v-if="attachTrueFileList.length > 0" class="fl mbottom-05 mtop-05 attachFileWrap" @drop="onDrop">
       <div class="fl mtop-05 attachFileBox">
         <div @wheel="horizontalScroll" id="attachFileArea" :class="mobileYn? '':'thinScrollBar'" class="attachFileArea">
           <div class="CMiddleBorderColor attachFileItem" v-for="(value, index) in  attachTrueFileList" :key="index">
@@ -47,19 +47,15 @@
                         <img class="w100P fl" src="../../../assets/images/common/popup_close.png" alt="">
                     </div>
                 </div>
-                <!-- <span @click="deleteFile(index)" style="position: absolute; top: 0; right: 7px; cursor: pointer;">x</span> -->
             </div>
-        </div><!-- mSelectedImgList : {{ mSelectedImgList }} -->
+        </div>
     </div>
     <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" class="fl mright-02 turnRightIcon" alt="">
-
-    <!-- <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;"> -->
       <div class="memoInputWrap"  @dragenter="onDragenter" @dragover="onDragover" @dragleave="onDragleave">
         <div @click="toggleAttachMenu" class="attachMenuToggle">+</div>
-        <pre :placeholder="$t('EMPT_MSG_WRITE_COMM')" @focus="test" @keydown="inputEnterKey" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding memoTextTag" :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}"  contenteditable=true  @input="inputTextCheck"/>
-        <!-- <div style="width: 30px; height: 100%;"> -->
+        <pre :placeholder="$t('EMPT_MSG_WRITE_COMM')" @focus="preFocus" @keydown="inputEnterKey" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding memoTextTag" :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}"  contenteditable=true  @input="inputTextCheck"/>
         <img v-if="mWatchInputData.trim() !== ''" @click="saveMemo()" src="../../../assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mleft-05">
-        <img v-else @click="$showToastPop(this.$t('EMPT_MSG_WRITE_COMM2'))" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mleft-05">
+        <img v-else @click="$showToastPop($t('EMPT_MSG_WRITE_COMM2'))" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mleft-05">
         <div v-show="attachMenuShowYn" class="attachMenuWrap">
           <div class="font16 commonColor addImgBtn" @click.stop="addImgFile">
             <img src="../../../assets/images/common/fileType_img.svg" alt="">
@@ -72,14 +68,6 @@
           </div>
         </div>
       </div>
-      <!-- </div> -->
-    <!-- </div> -->
-    <!-- <div style="width: 100%; height: 100%; position: flex; top: 0; left: 0; background: #00000026; z-index: 98;"></div>
-    <transition name="showUp">
-        <div style="width: 100%; height: 100px; position: fixed; bottom: 0; background: #FFF; z-index: 99; border-radius: 10px 10px 0 0; box-shadow: 0 0 4px 4px #00000030; left: 0;">
-            <div></div>
-        </div>
-    </transition> -->
   </div>
 </template>
 
@@ -87,11 +75,6 @@
 import attachFileList from '../../../components/unit/formEditor/UB_attachFile.vue'
 import unknownLoginPop from '../../pageComponents/channel/UB_unknownLoginPop.vue'
 export default {
-  props: {
-    mememo: {},
-    resetMemoYn: {},
-    writeMemoTempData: {}
-  },
   components: {
     attachFileList,
     unknownLoginPop
@@ -99,21 +82,15 @@ export default {
   data () {
     return {
       mUnknownLoginPopYn: false,
-      memoText: '',
       meMemoData: null,
-      okResetYn: false,
       mWatchInputData: '',
       mUploadFileList: [],
       mSelectedImgList: [],
       selectFile: null,
       attachMenuShowYn: false,
-      firstEnterYn: false,
       mobileYn: this.$getMobileYn(),
       mIsDraggedYn: false
     }
-  },
-  updated () {
-    // this.settingPop()
   },
   mounted () {
     this.settingPop()
@@ -188,9 +165,7 @@ export default {
           event.preventDefault()
           this.saveMemo()
         } else if (event.ctrlKey) {
-          var myCreHtml = null
-          // eslint-disable-next-line no-useless-escape
-          myCreHtml = this.$refs.memoTextTag.innerHTML + '<br>'
+          const myCreHtml = this.$refs.memoTextTag.innerHTML + '<br>'
           this.$refs.memoTextTag.innerHTML = ''
           this.$refs.memoTextTag.focus()
           this.$pasteHtmlAtCaret(myCreHtml)
@@ -234,7 +209,6 @@ export default {
 
       if (this.$refs.selectFile.files && this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
-        // var filesYn = this.$refs.selectFile.files.length > 1
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
           this.selectFile = this.$refs.selectFile.files[k]
           let fileExt = this.selectFile.name.substring(
@@ -250,8 +224,7 @@ export default {
             console.log(`originalFile size ${this.selectFile.size / 1024 / 1024} MB`)
 
             try {
-            // eslint-disable-next-line no-undef
-              var compressedFile = await this.$imageCompression(this.selectFile, options)
+              const compressedFile = await this.$imageCompression(this.selectFile, options)
               console.log(compressedFile)
               console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
               var src = null
@@ -268,32 +241,10 @@ export default {
                 src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
               }
 
-              // var image = new Image()
-              // image.src = src
-
-              // image.onload = function () {
-              //   // Resize image
-              //   console.log(image.width + ' // ' + image.height)
-              // }
-
               console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-              // console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
-              /* var imageBox = document.createElement('img')
-              var divBox = document.createElement('div')
-              imageBox.src = src
-              divBox.style.width = '100%'
-              divBox.style.height = '100%'
-              divBox.id = 'sizeDiv'
-              divBox.append(imageBox)
-              this.$refs.memoPopCompo.append(divBox)
-              var sizeDiv = document.getElementById('sizeDiv')
-              // divBox.style.display = 'none'
-              var imgHeight = divBox.scrollHeight
-              this.$refs.memoPopCompo.remove(sizeDiv) */
+
               this.mSelectedImgList.push({ previewImgUrl: src, addYn: true, file: newFile, attachYn: false })
               console.log(this.mSelectedImgList)
-              // this.mUploadFileList.push({ mSelectedImgList: { previewImgUrl: src, originalFile: this.selectFile, addYn: true, file: newFile }, originalType: 'image' })
-              /* await uploadToServer(compressedFile) */ // write your own logic
             } catch (error) {
               console.log(error)
             }
@@ -305,32 +256,21 @@ export default {
       }
     },
     async formSubmit () {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.mUploadFileList.length > 0) {
         // Form 필드 생성
-        // if (!this.mSelectedImgList.length) return
         var form = new FormData()
         for (var i = 0; i < this.mUploadFileList.length; i++) {
-          // var selFile = this.mSelectedImgList[i].file
           form = new FormData()
           form.append('files[0]', (this.mUploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
             .post('https://unibuzzy.com/file/tp.uploadFile', form,
-              /* {
-                onUploadProgress: (progressEvent) => {
-                  var percentage = (progressEvent.loaded * 100) / progressEvent.total
-                  thisthis.uploadFileList[i].percentage = Math.round(percentage)
-                }
-              }, */
               {
                 headers: {
                   'Content-Type': 'multipart/form-data; charset: UTF-8;'
                 }
               })
             .then(res => {
-              console.log(res)
               if (res.data.length > 0) {
                 if (this.mUploadFileList[i].attachYn === true) {
                   this.mUploadFileList[i].attachYn = true
@@ -345,12 +285,10 @@ export default {
             })
             .catch(error => {
               console.log(error)
-              // this.response = error
-              // this.isUploading = false
             })
         }
       } else {
-        alert('파일을 선택해 주세요.')
+        this.$showToastPop('Please select a file.')
       }
       return true
     },
@@ -361,8 +299,6 @@ export default {
       console.log(this.mUploadFileList)
     },
     delAttachFile (dFile) {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (dFile.addYn) {
         for (var d = 0; d < this.mUploadFileList.length; d++) {
           if (this.mUploadFileList[d].attachYn === true && this.mUploadFileList[d].attachKey === dFile.attachKey) {
@@ -376,7 +312,7 @@ export default {
     inputTextCheck (e) {
       this.mWatchInputData = e.target.innerText
     },
-    test () {
+    preFocus () {
       if (this.$checkMobile() === 'IOS') {
         this.$emit('writeMemoScrollMove')
         this.$nextTick(() => {
@@ -384,13 +320,6 @@ export default {
           this.$refs.memoPopCompo.style.bottom = 0
         })
       }
-    },
-    getMemoData () {
-      return this.$refs.memoTextTag.innerHTML
-    },
-    setMemoData (data) {
-      this.$refs.memoTextTag.focus()
-      this.$pasteHtmlAtCaret(data)
     },
     clearMemo () {
       this.meMemoData = null
@@ -405,12 +334,6 @@ export default {
         var textData = (e.originalEvent || e).clipboardData.getData('Text')
         document.execCommand('insertHTML', false, textData)
       })
-      // // this.$refs.memoTextTag.focus()
-      // if (this.writeMemoTempData !== undefined && this.writeMemoTempData !== null && this.writeMemoTempData !== '' && this.writeMemoTempData !== {}) {
-      //   this.setMemoData(this.writeMemoTempData)
-      // } else {
-      //   if (this.mememo) this.setMememo()
-      // }
       document.querySelector('#memoTextTag').addEventListener('keydown', (event) => {
         var keycode = event.keyCode
         if (keycode === 8 || keycode === 46) {
@@ -423,47 +346,10 @@ export default {
                 event.preventDefault()
                 el.remove()
                 this.cancel()
-                // this.$emit('clearMemoObj')
               }
             }
           } catch (error) {
           }
-        }
-      })
-      // this.$refs.memoTextTag.focus()
-    },
-    textReSize (text) {
-      var returnT = text
-      // eslint-disable-next-line no-debugger
-      debugger
-      if (text.length >= 20) {
-        returnT = text.substring(0, 64) + '..'
-      } else {
-        returnT = text.substring(0, 64)
-      }
-      return returnT
-    },
-    setMememo (mememo) {
-      console.log(mememo)
-      var myCreHtml = null
-      myCreHtml = '<span id="parentNameCard" style="padding:0 5px; border-radius: 10px;" class="parentNameCard CLightBgColor" @click="findmememoMemo(parentKey' + mememo.memo.memoKey + ')"  id="parentKey' + mememo.memo.memoKey + '">'
-      myCreHtml += '@' + this.$changeText(mememo.memo.userDispMtext)
-      myCreHtml += '</span> '
-      this.$nextTick(() => {
-        try {
-          // var spanTag = document.querySelectorAll('#memoTextTag .parentNameCard')
-          this.$refs.memoTextTag.innerHTML = ''
-          // 20221230 수민삭제
-          /* for (var i = 0; i < spanTag.length; i++) {
-            this.$refs.memoTextTag.innerText.leftTrim()
-            spanTag[i].remove()
-          } */
-          // this.$refs.memoTextTag.append(myCreHtml)
-          this.$refs.memoTextTag.focus()
-          this.$pasteHtmlAtCaret(myCreHtml)
-          this.$refs.memoTextTag.blur()
-          this.$refs.memoTextTag.focus()
-        } catch (error) {
         }
       })
     },
@@ -512,11 +398,10 @@ export default {
           }
           param.attachFileList = attachFileList
         }
-        // html = this.$deleteEmoji(html)
         this.$emit('saveMemoText', param)
         inputMemoArea.classList.add('memoTextPadding')
       } else {
-        this.$showToastPop('댓글의 내용을 입력해주세요.')
+        this.$showToastPop('Please enter the comments.')
       }
     },
     deleteFileList (value, index) {
@@ -530,6 +415,23 @@ export default {
       var channelWrap = document.querySelector(`#${e.currentTarget.id}`)
       channelWrap.scrollTo({
         left: channelWrap.scrollLeft + e.deltaY / 10
+      })
+    },
+    setMememo (mememo) {
+      var myCreHtml = null
+      myCreHtml = '<span id="parentNameCard" style="padding:0 5px; border-radius: 10px;" class="parentNameCard CLightBgColor" @click="findmememoMemo(parentKey' + mememo.memo.memoKey + ')"  id="parentKey' + mememo.memo.memoKey + '">'
+      myCreHtml += '@' + this.$changeText(mememo.memo.userDispMtext)
+      myCreHtml += '</span> '
+      this.$nextTick(() => {
+        try {
+          this.$refs.memoTextTag.innerHTML = ''
+          this.$refs.memoTextTag.focus()
+          this.$pasteHtmlAtCaret(myCreHtml)
+          this.$refs.memoTextTag.blur()
+          this.$refs.memoTextTag.focus()
+        } catch (error) {
+          console.log(error)
+        }
       })
     }
   }

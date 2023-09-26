@@ -6,7 +6,7 @@
       <!-- <selectedListCompo class="fl" style="height:calc(50% - 50px);" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="this.propData.currentTeamKey"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' /> -->
       <selectedListCompo class="fl selectedListCompo" @addMemberList="changeDirectMemList" @openAddPop="openNewMemberPop" :selectMemberPopYn="true" ref="selectedListCompo" :currentTeamKey="propData.currentTeamKey || propData.teamKey" @changeSelectMemberList="changeSelectMemberList"  @changeSelectedList="changeSelectedList" :listData='selectedList' :btnVisible='true' @btnClick='setManager' />
       <!-- </div> this.propData.selectMemberType==='member'? true:false -->
-      <gConfirmPop ref="gConfirmPopRef" :confirmText="this.propData.selectMemberType === 'member'? 'Do you want to add as a member?': 'Do you want to add as a manager?'" confirmType='two' @no='closeConfirmPop' @ok="saveMember" v-if="confirmPopShowYn"/>
+      <gConfirmPop ref="gConfirmPopRef" :confirmText="this.propData.selectMemberType === 'member'? 'Do you want to add as a member?': 'Do you want to add as a manager?'" confirmType='two' @no="closeConfirmPop" @ok="saveMember" v-if="confirmPopShowYn"/>
   </div>
 </template>
 
@@ -206,7 +206,9 @@ export default {
         }
       }
 
-      await this.$refs.gConfirmPopRef.goNo()
+      if (this.$refs.gConfirmPopRef) {
+        await this.$refs.gConfirmPopRef.goNo()
+      }
       // this.confirmPopShowYn = false
       this.pClosePop()
       // this.$emit('closeXPop', true)

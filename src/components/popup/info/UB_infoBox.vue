@@ -3,7 +3,6 @@
         <div class="font20 fontBold w100P chanInfoBoxHeader">
           <div class="chanInfoBoxTitle">
             <div class="fl chanInfoBoxLogo" :style="pChanInfo.logoDomainPath? `background-image: url(${pChanInfo.logoDomainPath + $changeUrlBackslash(pChanInfo.logoPathMtext) });`:`background-image: url(${pChanInfo.logoPathMtext });`"></div>
-            <!-- <img style="width: 20px; margin-right: 5px;" :src="pChanInfo.logoDomainPath? pChanInfo.logoDomainPath + pChanInfo.logoPathMtext:pChanInfo.logoPathMtext" alt=""> -->
             <p class="textOverdot textLeft mleft-05 chanInfoBoxTitle">{{ $changeText(pChanInfo.bdAreaNameMtext) }}</p>
           </div>
           <div class="cursorP chanInfoCloseImg" @click="pClosePop">
@@ -43,12 +42,10 @@ export default {
   props: {
     pChanInfo: {},
     pAreaInfo: {},
-    pAreaDetail: {},
     pClosePop: Function
   },
   data () {
     return {
-      frameLink: '',
       mContsList: []
     }
   },
@@ -152,11 +149,6 @@ export default {
     goContentsDetail (param) {
       this.$router.push(`/contents/${param.contentsKey}/${param.creTeamKey}/${param.cabinetKey}`)
     }
-    // moveToDetail () {
-    //   if (this.pMoveToDetail) {
-    //     this.pMoveToDetail(this.pChan)
-    //   }
-    // }
   },
   created () {
     if (this.pChanInfo && this.pChanInfo.popCList) {

@@ -36,7 +36,6 @@ export default {
   props: {
     propBookList: {},
     propData: {},
-    chanAlimListTeamKey: {},
     parentSelectList: {},
     selectPopYn: Boolean
   },
@@ -181,12 +180,6 @@ export default {
       param.cabinet = data
       this.$emit('openPop', param)
     },
-    anima () {
-      document.getElementsByClassName('foo')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
-      setTimeout(() => {
-        document.getElementsByClassName('foo')[0].style.backgroundColor = ''
-      }, 800)
-    },
     async changePosTeamMenu (event) {
       var paramSet = {}
       var tempList = []
@@ -198,13 +191,12 @@ export default {
         tempList.push(temp)
       }
       paramSet.teamMenuList = [...tempList]
-      var result = await this.$commonAxiosFunction(
+      await this.$commonAxiosFunction(
         {
           url: '/sUniB/tp.changePosTeamMenu',
           param: paramSet
         }
       )
-      console.log(result)
 
       this.$emit('getBookList')
     }
