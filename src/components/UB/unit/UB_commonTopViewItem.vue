@@ -14,15 +14,14 @@
   </div>
   <div class="profilePopBg" v-if="mProfilePopShowYn" @click="closeProfilePop"></div>
   <userDetailPop v-if="mProfilePopShowYn" :propData="mPopParam" :pClosePop="closeProfilePop" />
-  <div :class="animationYn? 'newContentsAni':''" class="contentsWrap" key="animationYn" v-if="this.CONT_DETAIL" :style="`padding-bottom: ${this.$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`">
-    <div v-if="propJustShowYn" class="stickerBox" :style="propPreStickerList && propPreStickerList.length > 0? 'height: calc(100% - 50px);' : 'height: calc(100%);'"></div>
+  <div :class="animationYn? 'newContentsAni':''" class="contentsWrap" key="animationYn" v-if="CONT_DETAIL" :style="`padding-bottom: ${$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`">
     <div class="contentsCardHeaderArea">
-      <div @click="goChannelMain()" :style="this.GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
+      <div @click="goChannelMain()" :style="GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
         <div class="chanImgBox" :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + $changeUrlBackslash(CONT_DETAIL.logoPathMtext) : CONT_DETAIL.logoPathMtext) + ');'"></div>
       </div>
       <div class="contentsDetailArea">
         <div class="contentsHeaderBox">
-          <template v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn">
+          <template v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== GE_USER.userKey) && CONT_DETAIL.titleBlindYn">
             <p class="textLeft textOverdot commonBlack fontBold font14 noPerm">
               {{ $t('COMM_MSG_NOPERM') }}
             </p>
@@ -39,77 +38,52 @@
         <div class="contentsInfoBox">
           <div class="CLDeepGrayColor font10 fl textLeft fontBold userInfoBox">
             <p @click="goUserProfile()" class="textOverdot w100P fontNomal h100P textOverdot">
-              {{this.$changeText(CONT_DETAIL.creUserName)}}
+              {{$changeText(CONT_DETAIL.creUserName)}}
             </p>
           </div>
-          <p class="fr CLDeepGrayColor font10 creDate">{{this.$changeDateFormat(CONT_DETAIL.creDate)}}</p>
-          <div @click="openRecvActorListPop(CONT_DETAIL.rUserCount === -1? true : '')" class="fr cursorP font10 commonGrayBG CDeepColor fontBold mtop-02 mright-05 receiveUser" v-if="CONT_DETAIL.jobkindId === 'ALIM'" :style="CONT_DETAIL.rUserCount !== -1 && CONT_DETAIL.creUserKey === GE_USER.userKey? 'background: rgb(221 229 251)!important;':''">
-            <template   v-if="CONT_DETAIL.rUserCount === -1">
-              {{ this.$t('COMMON_TAB_ALL') }}
-            </template>
-            <template v-else-if="CONT_DETAIL.rUserCount !== -1">
-              <img src="@/assets/images/contents/userIcon.svg" class="img-w13 mright-01 fl" alt="">
-              <p class="font10 fl mleft-01 CDeepColor userCount">{{CONT_DETAIL.rUserCount}}</p>
-            </template>
-          </div>
+          <p class="fr CLDeepGrayColor font10 creDate">{{$changeDateFormat(CONT_DETAIL.creDate)}}</p>
         </div>
         <div v-if="!GE_USER.unknownYn" class="w100P fl">
           <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && !pNoAuthYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
-          <!-- <p class="fr font10 lightGray mright-03" @click="CONT_DETAIL.rUserCount !== -1? this.openRecvListPop(): ''" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" > -->
-          <p class="fl commonColor font10 fl textLeft fontBold cursorP replyBtn" v-if="!pNoAuthYn && CONT_DETAIL.creUserKey !== GE_USER.userKey && CONT_DETAIL.showCreNameYn === 1 && CONT_DETAIL.jobkindId === 'ALIM'" @click="sendReply">{{ this.$t('COMM_BTN_REPLY') }}</p>
-          <div v-if="cancelTimerShowCheck(CONT_DETAIL)" class="fl" :id="'timerArea'+CONT_DETAIL.contentsKey" @click="cancelConfirm(CONT_DETAIL)">
-            <p :id="'timerText'+CONT_DETAIL.contentsKey" class="font10 fl textRight w100P" >{{setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)}}</p>
-          </div>
         </div>
       </div>
     </div>
     <div v-if="!propJustShowYn" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  @click="goContentsDetail(true)" class="contentsCardBodyArea">
-      <div v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font10 cursorP mbottom-05 bodyFullStr" v-html="$notPerText()"></div>
-      <div v-else-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== this.GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
+      <div v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" @cick="zzz" class="font10 cursorP mbottom-05 bodyFullStr" v-html="$notPerText()"></div>
+      <div v-else-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== GE_USER.userKey) && CONT_DETAIL.titleBlindYn" @cick="zzz" class="" ></div>
       <div v-else class="fl w100P contentsBoxWrap" ref="contentsBoxRef" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
         <pre :ref="'mainContRef' + CONT_DETAIL.contentsKey" @loadeddata="testLoad"  :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font10 mbottom-05 mainConts cursorDragText h100P w100P fl contentsPre" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
-      </div>
-      <div v-if="!propJustShowYn && CONT_DETAIL.D_CONT_USER_STICKER_LIST && CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0" class="stickerArea">
-        <template v-for="(value, index) in CONT_DETAIL.D_CONT_USER_STICKER_LIST" :key="index" >
-        <!-- <template v-for="(value, index) in this.mContStickerList" :key="index" > -->
-          <gStickerLine @click="goStickerContentsList(value)" v-if="value" :pSmallYn="true" class="stickerItem" :pSticker="value.sticker" />
-        </template>
       </div>
       <div v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w100P fadeEffect"></div>
       <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn" class="w-100P textRight fr font10 commonColor fontBold mtop-05 mright-1 bodyMore">{{$t('COMMON_NAME_MORE')}} > </p>
     </div>
-    <div v-else class="stickerAreaFull">
-      <template v-for="(value, index) in propPreStickerList" :key="index" >
-        <gStickerLine v-if="value" :pSelecteModeYn="true" :pSmallYn="true" class="stickerItem" @click="this.$emit('selectSticker', value)" :pSticker="value" />
-      </template>
-    </div>
-    <template v-if="!propJustShowYn && (pNoAuthYn || (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === this.GE_USER.userKey)" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" >
-      <div v-if="!pNoAuthYn && this.CONT_DETAIL.D_CONT_USER_DO " class="contentsCardUserDoArea">
-          <div class="userDoBox" v-if="this.CONT_DETAIL.D_CONT_USER_DO && this.CONT_DETAIL.D_CONT_USER_DO[1]">
-            <div class="userDoCont" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(this.CONT_DETAIL.D_CONT_USER_DO[1], this.CONT_DETAIL.contentKey)">
+    <template v-if="!propJustShowYn && (pNoAuthYn || (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === GE_USER.userKey)" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" >
+      <div v-if="!pNoAuthYn && CONT_DETAIL.D_CONT_USER_DO " class="contentsCardUserDoArea">
+          <div class="userDoBox" v-if="CONT_DETAIL.D_CONT_USER_DO && CONT_DETAIL.D_CONT_USER_DO[1]">
+            <div class="userDoCont" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(CONT_DETAIL.D_CONT_USER_DO[1], CONT_DETAIL.contentKey)">
               <div class="userDoImgBox">
-                <img class="w100P" v-if="!this.CONT_DETAIL.D_CONT_USER_DO[1].doKey || this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" src="@/assets/images/contents/cont_like_no.svg" alt="">
+                <img class="w100P" v-if="!CONT_DETAIL.D_CONT_USER_DO[1].doKey || CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0" src="@/assets/images/contents/cont_like_no.svg" alt="">
                 <img class="w100P" v-else src="@/assets/images/contents/cont_like.svg" alt="">
               </div>
               <p class="font10 fl fontBold w100P mtop-01  userDoColor">{{CONT_DETAIL.likeCount}}</p>
             </div>
-            <div class="userDoCont" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(this.CONT_DETAIL.D_CONT_USER_DO[0], this.CONT_DETAIL.contentKey)">
+            <div class="userDoCont" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(CONT_DETAIL.D_CONT_USER_DO[0], CONT_DETAIL.contentKey)">
               <div class="userDoImgBox">
-                <img class="w100P" v-if="!this.CONT_DETAIL.D_CONT_USER_DO[0].doKey || this.CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" src="@/assets/images/contents/cont_star_no.svg" alt="">
+                <img class="w100P" v-if="!CONT_DETAIL.D_CONT_USER_DO[0].doKey || CONT_DETAIL.D_CONT_USER_DO[0].doKey === 0" src="@/assets/images/contents/cont_star_no.svg" alt="">
                 <img class="w100P" v-else src="@/assets/images/contents/cont_star.svg" alt="">
               </div>
               <p class="font10 fontBold fl mtop-01  w100P userDoColor">{{CONT_DETAIL.starCount}}</p>
             </div>
-            <div class="userDoCont" @click="this.goContentsDetail(undefined, true)">
+            <div class="userDoCont" @click="goContentsDetail(undefined, true)">
               <div class="userDoImgBox">
                 <img class="w100P" v-if="mWriteMemoYn" src="@/assets/images/contents/cont_memo.svg" alt="">
                 <img class="w100P" v-else src="@/assets/images/contents/cont_memo_no.svg" alt="">
               </div>
               <p class="font10 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
             </div>
-            <div class="userDoCont" @click="clickFileDownload()" v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0">
+            <div class="userDoCont" @click="clickFileDownload()" v-if="CONT_DETAIL.attachMfilekey && CONT_DETAIL.attachMfilekey > 0">
               <div class="userDoImgBox">
-                <img v-if="this.CONT_DETAIL.attachMfilekey && this.CONT_DETAIL.attachMfilekey > 0" src="@/assets/images/contents/contentsClipIcon.svg" class="" alt="">
+                <img v-if="CONT_DETAIL.attachMfilekey && CONT_DETAIL.attachMfilekey > 0" src="@/assets/images/contents/contentsClipIcon.svg" class="" alt="">
                   <img v-else src="@/assets/images/contents/contentsClipIcon.svg" class="w100P" alt="">
               </div>
               <p class="font10 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
@@ -121,21 +95,21 @@
                 data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
                 :data-clipboard-text="CONT_DETAIL.copyTextStr">
             </div>
-            <p class="font10 fl fontBold w-100P mtop-01 userDoColor">{{this.$t('COMMON_NAME_SHARE')}}</p>
+            <p class="font10 fl fontBold w-100P mtop-01 userDoColor">{{$t('COMMON_NAME_SHARE')}}</p>
           </div>
         </div>
         <div v-else class="contentsCardUserDoArea">
         </div>
     </template>
   </div>
-  <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"/>
-  <statCodePop @closeXPop="this.mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
+  <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="GE_USER.userKey === CONT_DETAIL.creUserKey"/>
+  <statCodePop @closeXPop="mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
   <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
   <div v-if="mSelectBoardPopShowYn === true" class="selectBoardPopShadow" />
   <div v-if="mSelectBoardPopShowYn === true" class="selectBoardPopBg">
     <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" :boardDetail="mMoveContentsDetailValue" />
   </div>
-  <attachFileListPop propTargetType="C" :propFileData="this.mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
+  <attachFileListPop propTargetType="C" :propFileData="mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
 </template>
 <script>
 import { onMessage } from '@/assets/js/webviewInterface'
@@ -156,65 +130,32 @@ export default {
     contentsEle: {},
     propDetailYn: {},
     propContIndex: {},
-    imgClickYn: {},
     propJustShowYn: {},
-    propPreStickerList: {},
     index: {},
     pNoAuthYn: {}
   },
   created () {
     if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
     else this.mFadeNotShowYn = false
-    if (this.CONT_DETAIL) {
-      if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST) {
-        var stickerList = []
-        for (var s = 0; s < this.CONT_DETAIL.D_CONT_USER_STICKER_LIST.length; s++) {
-          if (!this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[s].sticker) continue
-          stickerList.push(this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[s].sticker)
-        }
-        this.mContStickerList = this.replaceArr(stickerList)
-      }
-    }
   },
   data () {
     return {
       mFadeNotShowYn: false,
       mContentMoreShowYn: true,
-      mStickerList: [],
-      mContStickerList: [],
-      openStickerListYn: false,
-      mMoreYn: false,
-      mFilePopShowYn: false,
       mLoadingShowYn: false,
       mContMenuShowYn: false,
       mConfirmText: '',
       mConfirmType: 'one',
       mConfirmPopShowYn: false,
       mCurrentConfirmType: '',
-      // mMemoWritePopShowYn: true,
-      mContentsSharLink: null,
-
       mSelectBoardPopShowYn: false,
       mMoveContentsDetailValue: {},
       mSelectBoardType: '',
-      mMemoResetYn: false,
       mWorkStateCodePopShowYn: false,
       mWorkStateCodePopProps: {},
       mClickImgList: [],
-      mClickTime: null,
       mClickEndYn: false,
-      mSelectedImgIndex: 0,
-      mImgDetailAlertShowYn: false,
-      mPreviewPopShowYn: false,
-      mSelectImgObject: {},
-      mFileDownData: {},
-      mFilePopData: {},
-      mFilePopYn: false,
-      mContRecvPopShowYn: false,
-      mActorListInitDataList: [],
       mWriteMemoYn: false,
-      mMemoMoreShowYn: false,
-      mStickerPopShowYn: false,
       animationYn: false,
       mProfilePopShowYn: false,
       mPopParam: {}
@@ -224,21 +165,15 @@ export default {
     this.addImgEvnt()
   },
   async mounted () {
-    // this.addImgEvnt()
     var scrollWrap = document.getElementById('mainAllWrap')
     if (scrollWrap) {
       scrollWrap.addEventListener('scroll', this.handleScroll)
     }
-    // if (this.CONT_DETAIL.attachMfilekey && !this.CONT_DETAIL.D_ATTACH_FILE_LIST) {
-    //   this.settingFileList()
-    // }
     var this_ = this
     this.$nextTick(async () => {
       this_.addImgEvnt()
-      // this_.showContentMore()
     })
     await this.setContentsMoreText()
-    // this.showContentMore()
     await this.setPreTagInFirstTextLine()
     if (this.pNoAuthYn) {
       this.alimBigView()
@@ -255,228 +190,18 @@ export default {
         return `See all ${this.mMemoLeng} comments`
       }
     },
-    // showContentMore () {
-    //   if (this.propDetailYn) this.alimBigView()
-    //   let contentHeight = 0
-    //   if (this.$refs.mainContRef) {
-    //     contentHeight = this.$refs.mainContRef.offsetHeight
-    //   }
-    //   // var bodyMoreText = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
-    //   if (contentHeight < 300) {
-    //     this.mContentMoreShowYn = false
-    //     // bodyMoreText.style.display = 'block'
-    //   } else {
-    //     this.mContentMoreShowYn = true
-    //     // bodyMoreText.style.display = 'none'
-    //   }
-    // },
     alimBigView () {
       var contentsBodyBoxArea = window.document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
-      // var bodyMoreArea = window.document.getElementById('bodyMore' + this.CONT_DETAIL.contentsKey)
       contentsBodyBoxArea.style.maxHeight = '100%'
-      // let contentRef = {}
-      // if (this.$refs.mainContRef) {
-      //   this.mContentMoreShowYn = false
-      //   contentRef = this.$refs.mainContRef
-      //   contentRef.style.maxHeight = '100%'
-      // }
       this.mContentMoreShowYn = false
-      // this.mMoreYn = false
-      // bodyMoreArea.style.display = 'none'
-    },
-    saveStickerList (params) {
-      this.mContStickerList = params.mContStickerList
-    },
-    async openStickerPop () {
-      if (this.GE_USER.unknownYn) {
-        this.pOpenUnknownLoginPop(this.CONT_DETAIL)
-        return
-      }
-      if (!this.openStickerListYn) {
-        var param = {}
-        if (this.GE_USER.unknownYn) return
-        param.creUserKey = this.GE_USER.userKey
-        var result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.getStickerList',
-          param: param
-        })
-        this.mStickerList = result.data
-        // var index
-        // for (var i = 0; i < this.mContStickerList.length; i++) {
-        //   index = this.mStickerList.findIndex((item) => Number(item.stickerKey) === Number(this.mContStickerList[i].stickerKey))
-        //   if (index !== -1) {
-        //     this.mStickerList.splice(index, 1)
-        //   }
-        // }
-        this.openStickerListYn = true
-      } else {
-        this.openStickerListYn = false
-      }
-    },
-    openSettingStickerPop (params) {
-      this.$emit('openPop', params)
-    },
-    addAnimation () {
-      this.animationYn = true
-      var this_ = this
-      setTimeout(() => {
-        this_.animationYn = false
-      }, 2000)
-    },
-    goStickerContentsList (val) {
-      if (!val.stickerKey) return
-      this.$emit('requestSearchSticker', { selectedSticker: val })
-    },
-    updateMemo (param) {
-      var idx
-      var idx2
-      if (param[2] !== null) {
-        idx = this.CONT_DETAIL.D_MEMO_LIST.findIndex((item) => item.memoKey === Number(param[2]))
-        idx2 = this.CONT_DETAIL.D_MEMO_LIST[idx].cmemoList.findIndex((item) => item.memoKey === Number(param[1]))
-        this.CONT_DETAIL.D_MEMO_LIST[idx].cmemoList[idx2].attachFileList = param[0]
-      } else {
-        idx = this.CONT_DETAIL.D_MEMO_LIST.findIndex((item) => item.memoKey === Number(param[1]))
-        this.CONT_DETAIL.D_MEMO_LIST[idx].attachFileList = param[0]
-      }
     },
     openImgPop (param) {
       this.$emit('openImgPop', param)
-    },
-    setMoreMemoBtn () {
-      if (!this.CONT_DETAIL) return
-      var memoList = this.CONT_DETAIL.D_MEMO_LIST
-      if (!memoList) {
-        memoList = this.CONT_DETAIL.memoList
-      }
-      /* if (memoList.length > 3) {
-        return true
-      } */
-      var leng = memoList.length
-      for (var i = 0; i < memoList.length; i++) {
-        if (memoList[i].creUserKey === this.GE_USER.userKey) this.mWriteMemoYn = true
-        for (var c = 0; c < memoList[i].cmemoList.length; c++) {
-          if (memoList[i].cmemoList[c].creUserKey === this.GE_USER.userKey) this.mWriteMemoYn = true
-        }
-        leng += memoList[i].cmemoList.length
-      }
-      if (leng > 3) {
-        this.mMemoMoreShowYn = true
-        if (this.CONT_DETAIL && this.CONT_DETAIL.memoCount) this.mMemoLeng = this.CONT_DETAIL.memoCount
-      }
-    },
-    closeRecvListPop (openPopParam) {
-      this.mContRecvPopShowYn = false
-      if (openPopParam) {
-        this.openWriteContentsPop(openPopParam)
-      }
-    },
-    openWriteContentsPop (openPopParam) {
-      var param = {}
-      param.selectedList = openPopParam
-      param.targetType = 'writeContents'
-      param.targetKey = this.contentsEle.creTeamKey
-      param.popHeaderText = this.contentsEle.nameMtext
-      this.$emit('openPop', param)
-    },
-    sendReply () {
-      var selectedList = { memberList: [], bookList: [] }
-      var creUserObj = {}
-      creUserObj.accessKind = 'U'
-      creUserObj.userKey = this.contentsEle.creUserKey
-      creUserObj.userDispMtext = 'EN$^$' + this.contentsEle.creUserName
-      selectedList.memberList.push(creUserObj)
-      this.openWriteContentsPop(selectedList)
-    },
-    async openRecvActorListPop (allYn) {
-      if (allYn === true) {
-        this.$showToastPop('채널 전체 대상 알림입니다!')
-        return
-      }
-      if (this.contentsEle.creUserKey !== this.GE_USER.userKey) {
-        this.$showToastPop('내가 보낸 알림만 수신자 확인이 가능합니다!')
-        return
-      }
-      var paramMap = new Map()
-      paramMap.set('contentsKey', this.contentsEle.contentsKey)
-      paramMap.set('teamKey', this.contentsEle.creTeamKey)
-      try {
-        var result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.getContentsActorList',
-          param: Object.fromEntries(paramMap)
-        })
-        if (result && result.data && result.data.length > 0) {
-          var actorList = result.data
-          this.mActorListInitDataList.actorList = actorList
-          this.mContRecvPopShowYn = true
-        }
-      } catch (e) {
-        console.error('D_contentsDetail 오류')
-        console.error(e)
-      } finally {
-        /* this.memoShowYn = false
-        this.mLoadingShowYn = false */
-      }
-    },
-    async saveModiMemo (modiMemoObj) {
-      var memo = null
-      if (modiMemoObj.param) {
-        memo = modiMemoObj.param
-      }
-      try {
-        var result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.saveMemo',
-          param: { memo: memo }
-        })
-        // if (result.data.result === true || result.data.result === 'true') {
-        if (result.data && result.data.result) {
-          this.$refs.gMemoRef.clearMemo()
-          this.mMememoValue = {}
-          //   this.getMemoList(true)
-          if (result.data.resultList && result.data.resultList.memoList.length > 0) {
-            var saveMemoObj = {}
-            var index
-            if (memo.parentMemoKey) {
-              // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 ^memo%키값을 찾음
-              index = await result.data.resultList.memoList.findIndex((item) => item.memoKey === memo.parentMemoKey)
-              saveMemoObj = await result.data.resultList.memoList[index]
-            } else {
-              saveMemoObj = await result.data.resultList.memoList[0]
-
-              saveMemoObj = await result.data.resultList.memoList[0]
-              var newMemoList = [
-                ...this.CONT_DETAIL.D_MEMO_LIST,
-                ...result.data.resultList.memoList
-              ]
-
-              this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newMemoList)
-              // eslint-disable-next-line vue/no-mutating-props
-              this.contentsEle.D_MEMO_LIST = this.replaceArr(newMemoList)
-            }
-            saveMemoObj.creTeamKey = this.CONT_DETAIL.creTeamKey
-            saveMemoObj.jobkindId = this.CONT_DETAIL.jobkindId
-            await this.$store.commit('UB_CHANNEL/MU_ADD_MEMO', saveMemoObj)
-          }
-        }
-      } catch (e) {
-        console.error('D_contentsDetail 오류')
-        console.error(e)
-      } finally {
-        this.memoShowYn = false
-        this.mLoadingShowYn = false
-      }
     },
     async clickFileDownload () {
       await this.getContentsDetail()
       await this.settingFileList_downAtt()
       this.mFilePopData = this.mFileDownData
-      // if (!this.propDetailYn) {
-      //   await this.getContentsDetail()
-      //   await this.settingFileList_downAtt()
-      //   this.mFilePopData = this.mFileDownData
-      // } else {
-      //   this.mFilePopData = this.CONT_DETAIL
-      // }
-      // this.$emit('fileDownload', this.mFileDownData)
       this.mFilePopYn = true
     },
     async getContentsDetail () {
@@ -516,31 +241,6 @@ export default {
         console.log(error)
       }
     },
-    async settingFileList_old () {
-      try {
-        if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
-          var attachFileList = []
-          var bodyImgFileList = []
-          for (var a = 0; a < this.CONT_DETAIL.attachFileList.length; a++) {
-            if (this.CONT_DETAIL.attachFileList[a].attachYn === true) {
-              attachFileList.push(this.CONT_DETAIL.attachFileList[a])
-            } else if (this.CONT_DETAIL.attachFileList[a].attachYn === false) {
-              bodyImgFileList.push(this.CONT_DETAIL.attachFileList[a])
-            }
-          }
-
-          var cont = this.contentsEle
-          cont.D_ATTACH_FILE_LIST = attachFileList
-          cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.mFileDownData.D_ATTACH_FILE_LIST = attachFileList
-          this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS', [cont])
-          return bodyImgFileList
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    },
     async settingFileList () {
       if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
         var bodyImgFileList = []
@@ -549,24 +249,14 @@ export default {
             bodyImgFileList.push(this.CONT_DETAIL.attachFileList[a])
           }
         }
-
-        /*  var cont = this.contentsEle
-          cont.D_ATTACH_FILE_LIST = attachFileList
-          cont.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.mFileDownData.D_ATTACH_FILE_LIST = attachFileList
-          this.mFileDownData.D_BODY_IMG_FILE_LIST = bodyImgFileList
-          this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS', [cont]) */
         return bodyImgFileList
       }
     },
     async setPreTagInFirstTextLine () {
       // 본문 영역에 첫번째 줄이 사진이 아닐 경우 라인을 그어주기 위한 함수
-      // if (!window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)) return
-      // if (!this.$refs.mainContRef) return
       if (!this.$refs[['mainContRef' + this.contentsEle.contentsKey]]) return
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
 
-      // var contents = await window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)
       if (this.$refs['mainContRef' + this.contentsEle.contentsKey]) var contents = this.$refs['mainContRef' + this.contentsEle.contentsKey]
       if (!contents || !contents.childNodes || contents.childNodes.length === 0) return
       if (contents.childNodes.length > 0) {
@@ -601,75 +291,8 @@ export default {
         return memoFristTop
       })
     },
-    cancelConfirm () {
-      this.mConfirmText = this.$t('COMMON_MSG_CANCEL_NOTI')
-      this.mCurrentConfirmType = 'alimCancel'
-      this.mConfirmType = 'two'
-      this.mConfirmPopShowYn = true
-    },
-    setIntervalTimer (date, contentsKey) {
-      var time = this.$cancelTimer(date)
-      // var innerHTML = '<p class="CErrorColor font10 fr mleft-05" style="text-decoration: underline;" id="contentsTime' + contentsKey +'"></p> <p class="font10 fr textRight" id="contentsTime' + contentsKey + '"></p>'
-      if (time !== false) {
-        this.$nextTick(() => {
-          // document.getElementById('timerText'+contentsKey).innerHTML = innerHTML
-          setInterval(() => {
-            time = this.$cancelTimer(date)
-            if (time !== false) {
-              if (document.getElementById('timerText' + contentsKey)) document.getElementById('timerText' + contentsKey).innerHTML = time
-            } else {
-              clearInterval()
-              if (document.getElementById('timerBtn' + contentsKey)) document.getElementById('timerBtn' + contentsKey).innerText = ''
-              if (document.getElementById('timerText' + contentsKey)) document.getElementById('timerText' + contentsKey).innerText = ''
-              if (document.getElementById('timerArea' + contentsKey)) document.getElementById('timerArea' + contentsKey).innerText = ''
-            }
-          }, 1000)
-        })
-      }
-    },
-    cancelTimerShowCheck (contents) {
-      var result = false
-      if (contents.jobkindId === 'ALIM' && contents.creUserKey === this.GE_USER.userKey) {
-        var time = this.$cancelTimer(contents.creDate)
-        if (time !== false) {
-          result = true
-        }
-      }
-      return result
-    },
-    memoLoadMore () {
-      this.$emit('memoLoadMore')
-    },
-    writeMemoScrollMove () {
-      this.$emit('writeMemoScrollMove')
-    },
     handleScroll () {
       this.mClickEndYn = true
-    },
-    clearMemoObj () {
-      this.mMememoValue = null
-    },
-    writeMeMemo (memoObj) {
-      this.mMememoValue = {}
-      this.mMememoValue = memoObj
-      this.$refs.gMemoRef.setMememo(memoObj)
-    },
-    memoEmitFunc (emitData) {
-      var type = emitData.targetType
-      var data = emitData.value
-      if (type === 'goUserProfile') {
-        if (this.propDetailYn) {
-          this.goUserProfile(data.creUserKey)
-        } else {
-          this.goContentsDetail(undefined, true)
-        }
-        //
-      } else if (type === 'goContentsDetail') {
-        // 댓글로 스크롤하기 위해 2번째 파라미터를 true로 보내줌 (1번째는 컨텐츠 더보기 유무)
-        this.goContentsDetail(undefined, true)
-      } else if (type === 'writeMeMemo') {
-        this.writeMeMemo(data)
-      }
     },
     confirmOk () {
       var toastText = ''
@@ -684,43 +307,12 @@ export default {
         param.creUserKey = this.GE_USER.userKey
         toastText = this.$t('COMMON_MSG_REPORT_USER')
         this.saveActAxiosFunc(param, toastText)
-      } else if (this.mCurrentConfirmType === 'alimDEL') {
-        this.deleteContents(this.$t('COMMON_MSG_DELETED_NOTI'))
       } else if (this.mCurrentConfirmType === 'boardDEL') {
         this.deleteContents(this.$t('COMMON_MSG_DELETED_POST'))
-      } else if (this.mCurrentConfirmType === 'alimCancel') {
-        this.alimCancle()
       }
 
       this.mCurrentConfirmType = ''
       this.mConfirmPopShowYn = false
-    },
-    async alimCancle () {
-      // 현재 시간과 비교하며 3분이 지났으면 false가 오고있음 혹시 모르니 한번 더 체크하는 중
-      var checkTime = this.$cancelTimer(this.contentsEle.creDate)
-      if (checkTime !== false) {
-        this.mLoadingShowYn = true
-        try {
-          var param = {}
-          param = this.contentsEle
-          var result = await this.$commonAxiosFunction({
-            url: 'https://www.unibuzzy.com/sUniB/tp.deleteContents',
-            param: param
-          })
-          if (result) {
-            this.$emit('contDelete', this.propContIndex)
-            // this.$store.commit('UB_CHANNEL/MU_DEL_CONT_LIST', [this.contentsEle])
-            this.$showToastPop(this.$t('COMM_MSG_CANCELED_NOTI'))
-          }
-        } catch (e) {
-          this.$showToastPop(this.$t('COMM_MSG_CANCEL_FAIL'))
-          console.log(e)
-        } finally {
-          this.mLoadingShowYn = false
-        }
-      } else {
-        this.$showToastPop(this.$t('COMM_MSG_CANCLE_TIMEOUT'))
-      }
     },
     editable (type, allYn) {
       this.mContMenuShowYn = false
@@ -808,23 +400,11 @@ export default {
       this.mMoveContentsDetailValue = this.CONT_DETAIL
       this.mSelectBoardPopShowYn = true
     },
-    closeSelectBoardPop () {
-      this.mSelectBoardPopShowYn = false
-    },
     async makeNewContents (type) { // writeBoard -> 알림을 게시글로 작성, writeAlim -> 게시글을 알림으로 작성
       if (this.contentsEle.creTeamKey && type !== 'writeBoard' && (!this.CHANNEL_DETAIL.ownerYn || !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) && (!this.CHANNEL_DETAIL.memberYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn) && (this.CHANNEL_DETAIL.memberYn === 0 || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 0) && (!this.CHANNEL_DETAIL.managerKey || !this.CHANNEL_DETAIL.D_CHAN_AUTH.managerKey)) {
         this.$showToastPop(this.$t('COMM_MSG_MEMB_NEED'))
-        // this.$checkDeleteHistory('bottomWriteSheets')
-        // this.$emit('openMember')
         return
       }
-      // const param = {}
-      // param.contentsKey = this.contentsEle.contentsKey
-      // param.targetKey = this.contentsEle.contentsKey
-      // param.jobkindId = this.contentsEle.jobkindId
-      // param.userKey = this.GE_USER.userKey
-      // param.ownUserKey = this.GE_USER.userKey
-      // var resultList = await this.$getContentsList(param)
       var writeParam = {}
       writeParam.contentsJobkindId = type === 'writeBoard' ? 'BOAR' : 'ALIM'
       writeParam.targetKey = this.contentsEle.creTeamKey
@@ -850,26 +430,9 @@ export default {
       writeParam.bodyFullStr = this.contentsEle.bodyFullStr
       writeParam.modiContentsKey = this.contentsEle.contentsKey
       this.$emit('openPop', writeParam)
-      // this.mSeleteWriteTypePopShowYn = false
     },
-    /* makeNewContents (type) {
-      var tempData = JSON.parse(JSON.stringify(this.contentsEle))
-      tempData.contentsJobkindId = type === 'writeBoard' ? 'BOAR' : type === 'writeAlim' ? 'ALIM' : undefined
-      tempData.targetType = 'writeContents'
-
-      tempData.UseAnOtherYn = true
-      tempData.selectBoardYn = true
-
-      // tempData.bodyFullStr = tempData.bodyFullStr
-      tempData.titleStr = tempData.title
-
-      tempData.modiContentsKey = tempData.contentsKey
-
-      this.$emit('openPop', tempData)
-    }, */
     bloc (type) {
       var typeText = type === 'USER' ? this.$t('COMMON_TITLE_USER') : this.$t('COMMON_TAB_POST')
-      // this.mConfirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
       if (this.GE_LOCALE === 'ko') {
         this.mConfirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
       } else {
@@ -878,13 +441,6 @@ export default {
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true
       this.mCurrentConfirmType = 'BLOC'
-    },
-    returnConfirmText () {
-      if (this.GE_LOCALE === 'ko') {
-        return '[' + this.$changeText(this.chanDetail.nameMtext) + '] 채널에 <br>멤버신청서를 제출하시겠습니까?'
-      } else {
-        return `Do you want to apply for membership on the [${this.$changeText(this.chanDetail.nameMtext)}] channel?`
-      }
     },
     report (type) {
       var targetKind
@@ -939,20 +495,17 @@ export default {
     },
     textCopy () {
       const textarea = document.createElement('textarea')
-      // textarea.style.display = 'none'
       document.body.appendChild(textarea)
 
       var contKey, content
       try {
         if (this.contentsEle.jobkindId) {
           contKey = this.contentsEle.contentsKey
-          // content = document.getElementById('bodyFullStr' + contKey).innerText
           content = this.$refs[['mainContRef' + contKey]].innerText
         }
 
         textarea.value = content
         textarea.select()
-        // 복사 후 textarea 지우기
         document.execCommand('copy')
         document.body.removeChild(textarea)
         this.$showToastPop(this.$t('COMMON_MSG_COPY_SUCCESS'))
@@ -960,66 +513,9 @@ export default {
         this.$showToastPop(this.$t('COMMON_MSG_COPY_FAIL'))
       }
     },
-    async saveMemo (inSaveMemoObj) {
-      if (inSaveMemoObj.saveMemoHtml === undefined) return
-      this.mLoadingShowYn = true
-      var memo = {}
-      if (inSaveMemoObj.attachFileList) {
-        memo.attachFileList = inSaveMemoObj.attachFileList
-      }
-      memo.parentMemoKey = null
-      if (this.mMememoValue !== undefined && this.mMememoValue !== null && this.mMememoValue !== {}) {
-        memo.parentMemoKey = this.mMememoValue.parentMemoKey
-      }
-
-      memo.bodyFullStr = inSaveMemoObj.saveMemoHtml
-      /* memo.bodyFilekey  */
-      memo.targetKind = 'C'
-      memo.targetKey = this.CONT_DETAIL.contentsKey
-      // memo.toUserKey = this.CONT_DETAIL.creUserKey 대댓글때 사용하는것임
-      memo.creUserKey = this.GE_USER.userKey
-      memo.creUserName = this.$changeText(this.GE_USER.userDispMtext)
-      memo.userName = this.$changeText(this.GE_USER.userDispMtext)
-      memo.allYn = true
-      memo.ownUserKey = this.GE_USER.userkey
-      try {
-        var result = await this.$commonAxiosFunction({
-          url: 'https://www.unibuzzy.com/sUniB/tp.saveMemo',
-          param: { memo: memo }
-        })
-        // if (result.data.result === true || result.data.result === 'true') {
-        if (result.data && result.data.result) {
-          this.$refs.gMemoRef.clearMemo()
-          this.mMememoValue = {}
-          //   this.getMemoList(true)
-          if (result.data.resultList && result.data.resultList.memoList.length > 0) {
-            var saveMemoObj = {}
-            var index
-            this.$emit('scrollToMemoTop')
-            if (memo.parentMemoKey) {
-              // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 키값을 찾음
-              index = await result.data.resultList.memoList.findIndex((item) => item.memoKey === memo.parentMemoKey)
-              saveMemoObj = await result.data.resultList.memoList[index]
-            } else {
-              saveMemoObj = await result.data.resultList.memoList[0]
-            }
-            saveMemoObj.creTeamKey = this.CONT_DETAIL.creTeamKey
-            saveMemoObj.jobkindId = this.CONT_DETAIL.jobkindId
-            await this.$store.commit('UB_CHANNEL/MU_ADD_MEMO', saveMemoObj)
-          }
-        }
-      } catch (e) {
-        console.error('D_contentsDetail 오류')
-        console.error(e)
-      } finally {
-        this.memoShowYn = false
-        this.mLoadingShowYn = false
-      }
-    },
     /** 컨텐츠의 크기를 비교해서 더보기> 버튼 보여주는 함수 */
     async setContentsMoreText () {
       // 컨텐츠가 게시글이면서 권한이 없으면 리턴
-      // if (!window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)) return
       if (!this.$refs['mainContRef' + this.contentsEle.contentsKey]) return
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
       try {
@@ -1038,12 +534,8 @@ export default {
               try {
                 var imgsHeight = 0
                 imgsHeight += imgList[i].clientHeight
-                // imgsHeight += event.path[0].clientHeight
                 var contentHeight = contents + imgsHeight
-                // var bodyMoreText = this.$refs['bodyMoreRef' + this.contentsEle.contentsKey]
-                // var bodyMoreText = window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
                 if (contentHeight > 399) {
-                  // this.mMoreYn = true
                   this.mContentMoreShowYn = true
                 } else {
                   this.mContentMoreShowYn = false
@@ -1054,15 +546,12 @@ export default {
           }
         } else {
           var contentHeight = contents
-          // var bodyMoreText = await window.document.getElementById('bodyMore' + this.contentsEle.contentsKey)
           if (contentHeight > 399) {
-            // bodyMoreText.style.display = 'block'
             this.mContentMoreShowYn = true
           } else {
             this.mContentMoreShowYn = false
           }
         }
-        // })
       } catch (e) {
         console.log(e)
       }
@@ -1075,18 +564,11 @@ export default {
       } else {
         onMessage('REQ', 'nativeShare', shareItem)
       }
-      /*  if (window.navigator.share) {
-        window.navigator.share({ title: '더알림', text: this.CONT_DETAIL.title, url: this.CONT_DETAIL.copyTextStr })
-      } else {
-        this.$showToastPop('지원하지 않는 브라우저입니다.')
-      } */
     },
     goChannelMain () {
       var openPopParam = {}
       openPopParam.targetKey = this.CONT_DETAIL.creTeamKey
       openPopParam.targetType = 'chanDetail'
-      // targetContentsKey키를 주면 스크롤 이벤트가 작동
-      // openPopParam.targetContentsKey = this.CONT_DETAIL.contentsKey
       this.$emit('openPop', openPopParam)
     },
     async goUserProfile (targetUserKey) {
@@ -1094,7 +576,6 @@ export default {
         this.$showToastPop(this.$t('CONF_MSG_CHECK_UNABLE'))
         return
       }
-      // const result = await this.$getAxiosContentsDetail(this.CONT_DETAIL.contentsKey, this.CONT_DETAIL.jobkindId)
       var openPopParam = {}
       openPopParam.targetKey = this.CONT_DETAIL.creTeamKey
       openPopParam.teamKey = this.CONT_DETAIL.creTeamKey
@@ -1112,14 +593,12 @@ export default {
       if (this.propDetailYn) return
       // 권한이 없는 컨텐츠는 이동하지 못하게 리턴
       if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
-      // if (window.getSelection() !== null || window.getSelection() !== '') return
       if (moreCheckYn) {
         this.alimBigView()
         return
       }
       if (this.GE_USER.unknownYn) {
         this.pOpenUnknownLoginPop(this.CONT_DETAIL)
-        // this.$showToastPop('로그인 후 이용가능합니다.')
         return
       }
       var openPopParam = {}
@@ -1145,7 +624,6 @@ export default {
     async changeAct (act, key) {
       if (this.GE_USER.unknownYn) {
         this.pOpenUnknownLoginPop(this.CONT_DETAIL)
-        // this.$showToastPop('로그인 후 이용가능합니다.')
         return
       }
       // eslint-disable-next-line no-unused-vars
@@ -1162,12 +640,10 @@ export default {
           if (changeUserDoList[i].doKey === 1) return
         }
       }
-      // this.pushDetail = JSON.parse(this.propParams).data
       if (Number(act.doKey) > 0) {
         saveYn = false
       }
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.targetKey = this.CONT_DETAIL.contentsKey
       if (param.targetKey === null) { return }
       param.doType = act.doType
@@ -1221,14 +697,12 @@ export default {
     async subScribeContents () {
       if (this.GE_USER.unknownYn) {
         this.pOpenUnknownLoginPop(this.CONT_DETAIL)
-        // this.$showToastPop('로그인 후 이용가능합니다.')
         return
       }
       // eslint-disable-next-line no-unused-vars
       var result = null
       var subsYn = this.CONT_DETAIL.subsYn
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.targetKey = this.CONT_DETAIL.contentsKey
       param.targetKind = 'C'
       if (param.targetKey === null) { return }
@@ -1238,7 +712,6 @@ export default {
         param.subsYn = true
       }
       param.userKey = this.GE_USER.userKey
-      // var req = 'save'
       var reqText = ''
       if (this.GE_LOCALE === 'ko') {
         reqText = '해당 컨텐츠의 알림설정이 되었습니다.'
@@ -1260,7 +733,6 @@ export default {
       this.$showToastPop(reqText)
       this.cDetail.subsYn = param.subsYn
       var contentsDetail = this.CONT_DETAIL
-      // contentsDetail.subsYn = param.subsYn
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [contentsDetail])
     },
     replaceArr (arr) {
@@ -1270,7 +742,6 @@ export default {
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
           return b.memoKey - a.memoKey
-          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data
       }, [])
@@ -1281,10 +752,8 @@ export default {
       this.mWorkStateCodePopShowYn = true
     },
     async addImgEvnt () {
-      // if (!this.imgClickYn) return
       var contBody = this.$refs.contentsBoxRef
       if (!contBody) return
-      // var fileList = await this.settingFileList()
       this.mClickImgList = contBody.querySelectorAll('img')
       for (let m = 0; m < this.mClickImgList.length; m++) {
         var this_ = this
@@ -1294,47 +763,11 @@ export default {
           }
         })
       }
-    },
-    openImgDetailAlert (img) {
-      if (this.imgClickYn === false) return
-      // var history = this.$store.getters['UB_HISTORY/hStack']
-      // this.alertPopId = 'imgDetailAlertPop' + history.length
-      // this.alertPopId = this.$setParentsId(this.pPopId, this.alertPopId)
-      // history.push(this.alertPopId)
-      // this.$store.commit('UB_HISTORY/updateStack', history)
-      this.mImgDetailAlertShowYn = true
-      this.mClickEndYn = false
-    },
-    longClickAlertClick (btnType) {
-      if (btnType === 'download') this.imgDownload()
-      else if (btnType === 'share');
-      else if (btnType === 'preview') {
-        this.mImgDetailAlertShowYn = false
-        this.mClickEndYn = false
-        this.mPreviewPopShowYn = true
-      }
-    },
-    async imgDownload () {
-      try {
-        if (this.$getMobileYn()) {
-          onMessage('REQ', 'saveCameraRoll', this.mSelectImgObject.path)
-        } else {
-          // eslint-disable-next-line no-unused-vars
-          var result = await this.$downloadFile(this.mSelectImgObject.fileKey, this.mSelectImgObject.path)
-        }
-        this.$showToastPop(this.$t('COMM_MSG_AFTER_SAVE'))
-        this.mImgDetailAlertShowYn = false
-      } catch (error) {
-        console.log(error)
-      }
     }
   },
   computed: {
     GE_LOCALE () {
       return this.$i18n.locale
-    },
-    GE_STICKER_LIST () {
-      return this.$store.getters['UB_CHANNEL/GE_STICKER_LIST']
     },
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', this.contentsEle.creTeamKey)
@@ -1357,29 +790,14 @@ export default {
       var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKey)
       if (!cont) {
         cont = [this.contentsEle]
-        // this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
       }
       if (cont && cont.length > 0) {
         const viewAuth = this.$checkUserAuth(cont[0].shareItem).V
-        /* if (cont[0].shareList) {
-          const shareList = cont[0].shareList
-          const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
-          if (index !== -1) {
-            viewAuth = true
-          }
-        } */
         cont[0].VIEW_YN = viewAuth
         return cont[0]
       } else {
         var content = this.contentsEle
         const viewAuth = this.$checkUserAuth(this.contentsEle.shareItem).V
-        /* if (this.contentsEle.shareList) {
-          const shareList = this.contentsEle.shareList
-          const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
-          if (index !== -1) {
-            viewAuth = true
-          }
-        } */
         content.VIEW_YN = viewAuth
         return content
       }
@@ -1397,32 +815,6 @@ export default {
       immediate: true,
       handler (value) {
         this.mActiveTabList = [{ display: this.$t('COMMON_TAB_FOLLOWING'), name: 'user' }, { display: this.$t('COMMON_TAB_ALL'), name: 'all' }, { display: this.$t('COMMON_TAB_MANAGING'), name: 'mychannel' }]
-      },
-      deep: true
-    },
-    GE_STICKER_LIST: {
-      handler (value, old) {
-        if (this.GE_STICKER_LIST.length === 0) {
-          this.CONT_DETAIL.D_CONT_USER_STICKER_LIST = []
-          return
-        }
-        if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0) {
-          var newArr = []
-          var idx
-          for (var i = 0; i < this.CONT_DETAIL.D_CONT_USER_STICKER_LIST.length; i++) {
-            if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker !== null) {
-              idx = this.GE_STICKER_LIST.findIndex((value) => {
-                return value.stickerKey === this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker.stickerKey
-              })
-              if (idx !== -1) {
-                this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker.picBgPath = this.GE_STICKER_LIST[idx].picBgPath
-                this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker.nameMtext = this.GE_STICKER_LIST[idx].nameMtext
-                newArr.push(this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i])
-              }
-            }
-          }
-          this.CONT_DETAIL.D_CONT_USER_STICKER_LIST = newArr
-        }
       },
       deep: true
     },

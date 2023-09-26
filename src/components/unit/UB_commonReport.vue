@@ -30,28 +30,18 @@
   }
 }
 </i18n>
-<!-- eslint-disable no-irregular-whitespace -->
 <template>
   <div class="w100P fl">
     <div v-show="reportPopStep === 0" class="reportCompoArea">
       <div class="fl memoFuncArea">
-      <!--  <p class="fl font16 w100P commonColor" style="min-height:50px; line-height:50px; " @click="emit('sendPush')" v-if="contentOwner && contentType !== 'ALIM'" >알림으로 공유</p> -->
         <p class="fl font16 w100P commonColor rowText" @click="emit('move')" v-if="contentOwner && contentType === 'BOAR'" >{{ $t('COMMON_BTN_MOVE_POST') }}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('copy')" v-if="contentOwner && contentType === 'BOAR' " >{{ $t('COMMON_BTN_COPY_POST') }}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType === 'BOAR'">{{ $t('COMM_BTN_EDIT_POST') }}</p>
-        <p class="fl font16 w100P commonColor rowText" @click="emit('writeBoard')" v-if="contentType === 'ALIM' " :style="contentType === 'ALIM' ? 'border-top:none;' : '' " >{{ $t('COMMON_BTN_CONVERT_NOTI_TO_POST') }}</p>
-        <!-- <p class="fl font16 w100P commonColor rowText" @click="emit('writeAlim')" v-if="!GE_USER.unknownYn && contentType === 'BOAR'" >{{ $t('COMMON_BTN_CONVERT_POST_TO_NOTI') }}</p> -->
-        <p class="fl font16 w100P commonColor rowText" @click="emit('delete')" v-if="contentOwner || contentType === 'ALIM'">{{ this.contentType === 'MEMO' ? $t('COMMON_BTN_DELETE_COMMENT') : $t('COMMON_BTN_DELETE_POST')}}</p>
+        <p class="fl font16 w100P commonColor rowText" @click="emit('delete')" v-if="contentOwner">{{ contentType === 'MEMO' ? $t('COMMON_BTN_DELETE_COMMENT') : $t('COMMON_BTN_DELETE_POST')}}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('textCopy')" >{{ $t('COMMON_BTN_COPY_CLIPBOARD') }}</p>
-        <!-- <p class="fl font16 w100P commonColor rowText" @click="emit('subScribe')" >이 {{contentText}}에 대한 푸쉬알림 {{contentsInfo.subsYn? '끄기' : '켜기'}}</p> -->
-        <!-- <p class="fl font16 w100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" @click="emit('alimBloc')" v-if="contentOwner && contentType === 'ALIM'" >{{contentText}} 삭제</p> -->
-        <!-- <p class="fl font16 w100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" :style="contentType === 'ALIM' ? 'border: none  !important;' : '' " @click="emit('delete', true)" v-if="contentOwner || contentType === 'ALIM'" >{{contentType === 'ALIM' ? '모든 수신자에게서 ': ''}}{{contentText}} 회수</p> -->
-        <p class="fl font16 w100P menuListBase rowText" :style="contentType === 'ALIM' ? 'border-top: 1px solid #eee;' : ''" @click="report(contentType)" v-if="!GE_USER.unknownYn && !contentOwner" >{{ contentText === '게시글'? $t('COMMON_BTN_REPORT_POST'):$t('COMMON_BTN_REPORT_COMMENT') }}</p>
-        <p class="fl font16 w100P menuListBase whiteBorder" @click="report('CHANNEL')" v-if="this.contentType === 'ALIM' && !contentOwner">{{ $t('COMMON_BTN_REPORT_CHAN') }}</p>
-        <p class="fl font16 w100P menuListBase whiteBorder" @click="report('USER')" v-if="!GE_USER.unknownYn && (this.contentType === 'MEMO' || this.contentType === 'BOAR') && !contentOwner">{{ $t('COMMON_BTN_REPORT_USER') }}</p>
-        <!-- <p class="fl font16 w100P menuListBase" style="border-top: 1px solid #eee;" @click="bloc('channel')" v-if="this.contentType === 'ALIM' && !contentOwner">채널 차단</p> -->
-        <p class="fl font16 w100P menuListBase whiteBorder" @click="bloc('USER')" v-if="!GE_USER.unknownYn && (this.contentType === 'MEMO' || this.contentType === 'BOAR') && !contentOwner">{{ $t('COMMON_BTN_BLOCK_USER') }}</p>
-
+        <p class="fl font16 w100P menuListBase rowText" @click="report(contentType)" v-if="!GE_USER.unknownYn && !contentOwner" >{{ contentText === '게시글'? $t('COMMON_BTN_REPORT_POST'):$t('COMMON_BTN_REPORT_COMMENT') }}</p>
+        <p class="fl font16 w100P menuListBase whiteBorder" @click="report('USER')" v-if="!GE_USER.unknownYn && (contentType === 'MEMO' || contentType === 'BOAR') && !contentOwner">{{ $t('COMMON_BTN_REPORT_USER') }}</p>
+        <p class="fl font16 w100P menuListBase whiteBorder" @click="bloc('USER')" v-if="!GE_USER.unknownYn && (contentType === 'MEMO' || contentType === 'BOAR') && !contentOwner">{{ $t('COMMON_BTN_BLOCK_USER') }}</p>
       </div>
 
       <div class="fl mtop-05 closeReportBtn" @click="closePop()">
@@ -106,9 +96,7 @@ export default {
     }
   },
   mounted () {
-    if (this.contentType === 'ALIM') {
-      this.contentText = '알림'
-    } else if (this.contentType === 'BOAR') {
+    if (this.contentType === 'BOAR') {
       this.contentText = '게시글'
     } else if (this.contentType === 'MEMO') {
       this.contentText = '댓글'
@@ -153,7 +141,6 @@ export default {
     },
     GE_USER () {
       return this.$store.getters['UB_USER/GE_USER']
-      // return this.$store.getters['UB_USER/GE_USER']
     },
     GE_LOCALE () {
       return this.$i18n.locale

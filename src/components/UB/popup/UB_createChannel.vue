@@ -93,7 +93,7 @@
                     {{ $t('CRE_BTN_PREVIEW') }}
                   </p>
                 </div>
-                <div v-if="mTopColorPreviewYn === true" class="fl w100P previewWrap" :style="`background: url('${mSelectedBg.selectPath}');`">
+                <div v-if="mTopColorPreviewYn === true" class="fl w100P previewWrap" :style="`background: url('${$changeUrlBackslash(mSelectedBg.selectPath)}');`">
                   <img v-if="mBtnColor === false" src="@/assets/images/common/icon_back.png" class="img-w15 fl mleft-05" alt="">
                   <img v-else-if="mBtnColor === true" src="@/assets/images/common/icon_back_white.png" class="img-w15 fl mleft-05" alt="">
                   <p :style="mBtnColor === false ? 'color: #6768a7;' : 'color:white;' " class="fl font20 fontBold">{{mInputChannelName}}</p>

@@ -1,22 +1,7 @@
-<i18n>
-{
-  "ko": {
-    "MY_TITLE_RECE_ALIM": "최근 알림",
-    "MY_TITLE_TOP5_CHAN": "채널 TOP5"
-  },
-  "en": {
-    "MY_TITLE_RECE_ALIM": "Recent Contents",
-    "MY_TITLE_TOP5_CHAN": "Top 5 Channels"
-  }
-}
-</i18n>
 <template>
   <div class="top5TitleWrap textLeft">
-    <img v-if="propListTitle === '알림' || propListTitle === '내 컨텐츠'" class="mright-03 fl pushImg"  src="../../assets/images/main/pushIcon.svg"/>
-    <img v-else-if="propListTitle === '채널'" class="mright-03 mtop-05 fl chanImg" src="../../assets/images/main/chanIcon.svg"/>
-    <p class="commonColor mtop-03 fl fontBold font18" v-if="propListTitle === '알림'"> {{ $t('MY_TITLE_RECE_ALIM') }}</p>
-    <p class="commonColor mtop-03 fl fontBold font18" v-else-if="propListTitle === '내 컨텐츠'">My Contents</p>
-    <p class="commonColor mtop-03 fl fontBold font18" v-else>{{ $t('MY_TITLE_TOP5_CHAN') }}</p>
+    <img class="mright-03 fl pushImg"  src="../../assets/images/main/pushIcon.svg"/>
+    <p class="commonColor mtop-03 fl fontBold font18" v-if="propListTitle === '내 컨텐츠'">My Contents</p>
     <gBtnSmall v-if="propListTitle !== '내 컨텐츠'" :btnThema="'light'" class="mtop-05 moreBtn" :btnTitle="$t('COMMON_NAME_MORE')" v-on:click="openPop(propMoreLink)" />
   </div>
 </template>
@@ -24,14 +9,12 @@
 export default {
   props: {
     propListTitle: String,
-    propMoreLink: {},
-    propViewTab: {}
+    propMoreLink: {}
   },
   emits: ['openPop'],
   methods: {
     openPop (moreLink) {
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
+      var params = {}
       if (moreLink === 'push') {
         params.targetType = 'pushList'
         params.popHeaderText = '알림'

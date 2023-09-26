@@ -232,6 +232,9 @@ export default {
       this.fileYn = true
     }
     if (this.params && (this.params.bodyFullStr || this.propData.guideFullStr)) {
+      if (this.params.value && this.params.value.fileYn) {
+        this.fileYn = true
+      }
       if (this.contentType === 'BOAR') {
         this.titleShowYn = true
         if (this.propData.UseAnOtherYn) {

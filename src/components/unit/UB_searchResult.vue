@@ -1,5 +1,4 @@
 <template>
-    <!-- <div class="searchResultWrap" id="searchResultWrapLength"> -->
     <div class="searchResultWrap" id="searchResultWrapLength" :style="!setSearchList || setSearchList.length === 0 ?'border-bottom:none':''">
         <div v-for="(value, index) in setSearchList" :key="index" class="searchResultBox textOverdot">
           <span>{{value.typeName}}: </span>
@@ -20,20 +19,7 @@ export default {
   },
   methods: {
     delSearchKey (type) {
-      // this.tempSearchList.splice(delKey, 1)
       this.$emit('changeSearchList', type)
-    },
-    castingSearchKey (searchMap) {
-    },
-    changeSearchBox (type, keyword) {
-      console.log('얍!!')
-      console.log(type)
-      console.log(keyword)
-      if (7 - type.length) {
-        var chaneTxtLength = 7 - type.length
-        var resultKeyword = keyword.substring(0, chaneTxtLength)
-      }
-      return resultKeyword
     }
   },
   computed: {
@@ -55,10 +41,8 @@ export default {
   min-height: 1rem;
   padding: 0.2rem 0;
   padding-top: 0.6rem;
-  /* background: rgb(220, 221, 235); */
   width: 100%;
   float: left;
-  /* border-bottom: 1px solid #d1d1d1 */;
 }
 .searchResultBox {
   margin-right: 0.8rem;
@@ -66,7 +50,6 @@ export default {
   margin-bottom: 5px;
   max-width: 120px;
   border: 1px solid #d1d1d1;
-  /*  border: 2px solid none;background-color: #bfbfda6b; */
   position: relative;
   border-radius: 10px;
   float: left;

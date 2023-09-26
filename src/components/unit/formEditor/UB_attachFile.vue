@@ -16,28 +16,27 @@
 </i18n>
 <template>
     <div class="w100P fl">
-      <gConfirmPop @no="this.errorShowYn = false" :confirmText="$t('FORM_MSG_MAX')" confirmType='timeout' v-if="errorShowYn" />
-      <div @click="this.$refs.selectFileAttach.click()" class="font16 commonColor attachBtnMemo" v-if="this.targetType === 'memo'">
+      <gConfirmPop @no="errorShowYn = false" :confirmText="$t('FORM_MSG_MAX')" confirmType='timeout' v-if="errorShowYn" />
+      <div @click="$refs.selectFileAttach.click()" class="font16 commonColor attachBtnMemo" v-if="targetType === 'memo'">
           <img src="../../../assets/images/common/fileIcon.svg" alt="">
           {{ $t('FORM_BTN_ATTACH') }}
       </div>
-      <div v-else @click="this.$refs.selectFileAttach.click()" class="font14 whiteColor attachFileBg fl attachBtn">
+      <div v-else @click="$refs.selectFileAttach.click()" class="font14 whiteColor attachFileBg fl attachBtn">
         +{{ $t('FORM_BTN_ATTACH') }}
       </div>
-      <form v-if="this.targetType === 'memo'" @submit.prevent="formSubmit" class="font16 commonColor formWrapMemo" method="post">
+      <form v-if="targetType === 'memo'" @submit.prevent="formSubmit" class="font16 commonColor formWrapMemo" method="post">
           <input class="attachFile" hidden type="file" :title ="$t('FORM_BTN_SELECT')"  ref="selectFileAttach" multiple accept="*" id="selectFileAttach" @change="handleImageUpload"/>
       </form>
       <form v-else @submit.prevent="formSubmit" hidden class="font14 whiteColor attachFileBg fl formWrap" method="post">
           <input class="attachFile w100P" hidden  type="file" :title ="$t('FORM_BTN_SELECT')"  ref="selectFileAttach" multiple accept="*" id="selectFileAttach" @change="handleImageUpload"/>
       </form>
-      <div v-if="this.targetType !== 'memo' && this.sFileList.length > 0" :class="pOneLineYn? '' : 'mtop-05'" class="fl w100P scrollOn" :style="pOneLineYn? 'width: calc(100% - 55px); margin-top: 2px;': ''">
+      <div v-if="targetType !== 'memo' && sFileList.length > 0" :class="pOneLineYn? '' : 'mtop-05'" class="fl w100P scrollOn" :style="pOneLineYn? 'width: calc(100% - 55px); margin-top: 2px;': ''">
           <div :style="attachFileWidth" class="attachFileBox">
-            <div class="CMiddleBorderColor attachFileItem" v-for="(value, index) in this.sFileList" :key="index">
+            <div class="CMiddleBorderColor attachFileItem" v-for="(value, index) in sFileList" :key="index">
               <div class="w100P fileNameArea">
                 <p class="CMiddleColor font12 textOverdot">{{splitName(value.file.name)}}</p>
                 <p class="CMiddleColor font12">{{splitExt(value.file.name)}}</p>
               </div>
-                <!-- <p class="CMiddleColor font15 textOverdot" style="">{{value.file.name}} ({{this.$byteConvert(value.file.size)}})</p> -->
                 <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" alt="">
             </div>
           </div>
@@ -96,9 +95,6 @@ export default {
       return name.substr(lastIndex)
     },
     async onDrop (file) {
-      // 기본 액션을 막음 (링크 열기같은 것들)
-      // event.preventDefault()
-      // this.mIsDraggedYn = false
       const files = file
 
       this.selectFile = null
@@ -152,14 +148,12 @@ export default {
               }
 
               console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-              // console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
               this.preImgUr = src
               this.selectFile = compressedFile
               this.sFileList.push({ preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
               this.$emit('setSelectedAttachFileList', { attachYn: true, preImgUrl: src, attachKey: this.gAttachKey, addYn: true, file: newFile })
               this.uploadCnt += 1
-            /* await uploadToServer(compressedFile) */ // write your own logic
             } catch (error) {
               console.log(error)
             }
@@ -260,78 +254,12 @@ export default {
         this.previewImgUrl = null
       }
     },
-    async previewFile () {
-      this.preImgUrl = null
-      // 선택된 파일이 있는가?
-      if (this.$refs.selectFileAttach.files.length > 0) {
-        // 0 번째 파일을 가져 온다.
-
-        for (var k = 0; k < this.$refs.selectFileAttach.files.length; k++) {
-          this.selectFile = null
-          this.gAttachKey += 1
-          this.selectFile = this.$refs.selectFileAttach.files[k]
-
-          // 마지막 . 위치를 찾고 + 1 하여 확장자 명을 가져온다.
-
-          let fileExt = this.selectFile.name.substring(
-            this.selectFile.name.lastIndexOf('.') + 1
-          )
-          // 소문자로 변환
-          fileExt = fileExt.toLowerCase()
-          if (
-            ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
-          ) {
-            var reader = new FileReader()
-            var thisthis = this
-            reader.onload = async e => {
-              var image = new Image()
-              image.onload = async function () {
-                // Resize image
-                thisthis.selectFile = thisthis.$refs.selectFileAttach.files[thisthis.uploadCnt]
-                var result = await thisthis.$saveFileSize(image, thisthis.selectFile)
-                thisthis.preImgUr = result.path
-                thisthis.selectFile = result.file
-                thisthis.sFileList.push({ preImgUrl: result.path, attachKey: thisthis.gAttachKey, addYn: true, file: result.file })
-                thisthis.$emit('setSelectedAttachFileList', [{ attachYn: true, preImgUrl: result.path, attachKey: thisthis.gAttachKey, addYn: true, file: result.file }])
-                thisthis.uploadCnt += 1
-                // editorImgResize1(canvas.toDataURL('image/png', 0.8))
-                // settingSrc(tempImg, canvas.toDataURL('image/png', 0.8))
-              }
-              image.onerror = function () {
-
-              }
-              image.src = e.target.result
-              // this.preImgUrl = e.target.result
-            }
-            reader.readAsDataURL(this.selectFile)
-            // await this.$editorImgResize(this.selectFile)
-          } else {
-            if (this.selectFile.size > 10000000) {
-              this.errorShowYn = true
-              return true
-            }
-            if (!this.sFileList) {
-              this.sFileList = []
-            }
-            this.sFileList.push({ fileYn: true, attachKey: this.gAttachKey, addYn: true, attachYn: true, file: this.selectFile })
-            this.$emit('setSelectedAttachFileList', [{ attachYn: true, fileYn: true, attachKey: this.gAttachKey, addYn: true, file: this.selectFile }])
-          }
-        }
-      } else {
-        this.selectFile = null
-        this.preImgUrl = null
-      }
-    },
     async formSubmit () {
       if (this.sFileList.length > 0) {
         // Form 필드 생성
         var form = new FormData()
 
-        // if (!this.sFileList.length) return
-
         for (var i = 0; i < this.sFileList.length; i++) {
-          // var selFile = this.sFileList[i].file
-          // Here we create unique key 'files[i]' in our response dict
           form.append('files[' + i + ']', this.sFileList[i].file)
 
           this.$axios

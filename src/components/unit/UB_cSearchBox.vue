@@ -16,11 +16,6 @@ export default {
     propSearchBox: {},
     propChanSearchYn: { type: Boolean, default: false }
   },
-  data () {
-    return {
-
-    }
-  },
   methods: {
     searchFunc () {
       this.$emit('searchBoxClick', this.propSearchBox)

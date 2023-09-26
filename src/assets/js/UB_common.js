@@ -1150,6 +1150,7 @@ export const commonMethods = {
     }
   },
   changeUrlBackslash (url) {
+    if (!url) return
     var changedUrl = url.replace(/\\/ig, '/')
     return changedUrl
   },

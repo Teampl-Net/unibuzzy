@@ -1,21 +1,14 @@
 <template>
-  <!-- <p class="fl w100P font12 commonBlack">{{mNotiEle.largeIcon}}</p> -->
   <div v-if="mNotiEle.title" class="notiEle">
       <div class="chanImgBox">
           <img v-if="mImgPath" :src="mImgPath" class="w100P fl h100P" alt="">
       </div>
-      <!-- {{mNotiEle.largeIcon}} -->
       <div class="contentsWrap">
-        <!-- <p class="fr font12 fontBold lightGray mbottom-05 textLeft">{{$dayjs(parseCreDate).format('YYYY-MM-DD hh:mm')}}</p> -->
           <p class="font14 commonBlack fontBold textLeft w100P fl">{{mNotiEle.title}}</p>
           <p class="font14 commonBlack textLeft w100P fl" v-html="mDispMessage"></p>
           <p class="fr font12 fontBold lightGray mbottom-05 textRight w100P fr">{{$changeDateFormat(mNotiEle.creDate)}}</p>
       </div>
   </div>
-  <!-- <div class="fl w100P" style="overflow:auto">
-    {{this.mNotiEle.creDate}}
-    {{parseCreDate}}
-  </div> -->
 </template>
 
 <script>
@@ -54,17 +47,6 @@ export default {
       }
       this.mDispMessage = this.replacePattern(this.mNotiEle.dispText, changeVal)
     }
-    // if (this.mNotiEle.userDo) {
-    //   var notiDate = JSON.parse(this.mNotiEle.creDate)
-    //   var date = new Date()
-    //   date.setFullYear(parseInt(notiDate.year))
-    //   date.setMonth(parseInt(notiDate.monthValue) - 1)
-    //   date.setDate(parseInt(notiDate.dayOfMonth))
-    //   date.setHours(parseInt(notiDate.hour))
-    //   date.setMinutes(parseInt(notiDate.minute))
-    //   date.setSeconds(parseInt(notiDate.second))
-    //   this.parseCreDate = date
-    // }
   }
 }
 </script>

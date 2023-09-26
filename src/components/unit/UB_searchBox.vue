@@ -17,7 +17,7 @@
 <template>
   <div class="fl cursorP commonColorBorder" style="border-radius: 7px; min-width: 80px; padding:3px 7px;  padding-right: 25px; position: relative;">
     <p class="fl font12 lightGray"><small class="fl font12 commonColor fontBold mleft-03">{{ returnLocaleText(propSearchBox.searchType) }}</small><small class="fl font12 fontBold lightGray mleft-03">{{propSearchBox.dispName}}</small></p>
-    <img class="cursorP" @click="this.$emit('delSearchBox')" src="../../assets/images/common/popup_close.png" style="width: 10px; position: absolute; right: 5px;  top: 8px;" alt="">
+    <img class="cursorP" @click="$emit('delSearchBox')" src="../../assets/images/common/popup_close.png" style="width: 10px; position: absolute; right: 5px;  top: 8px;" alt="">
   </div>
 </template>
 
@@ -29,10 +29,6 @@ export default {
   computed: {
     GE_LOCALE () {
       return this.$i18n.locale
-    }
-  },
-  data () {
-    return {
     }
   },
   methods: {
@@ -57,5 +53,4 @@ export default {
 </script>
 
 <style>
-
 </style>

@@ -44,7 +44,7 @@
       <!-- 유저 영역 -->
       <template v-else-if="propData.jobkindId === 'USER'">
         <div class="imgCircle middleBgColor fl" @click="clickEvntToParents('open')" >
-          <div v-if="propData.domainPath || propData.userProfileImg" :style="'background-image: url(' + (propData.domainPath? propData.domainPath + ($changeUrlBackslash(propData.userProfileImg) ? $changeUrlBackslash(propData.userProfileImg) : propData.pathMtext ) : propData.userProfileImg ) + ');'" class="memberPicImgWrap">
+          <div v-if="propData.domainPath || propData.userProfileImg" :style="'background-image: url(' + (propData.domainPath? propData.domainPath + ($changeUrlBackslash(propData.userProfileImg) ? $changeUrlBackslash(propData.userProfileImg) : $changeUrlBackslash(propData.pathMtext) ) : propData.userProfileImg ) + ');'" class="memberPicImgWrap">
           </div>
           <div v-else class="memberPicImgWrap imgPholder"></div>
         </div>

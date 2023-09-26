@@ -13,7 +13,6 @@ import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_a
 import openView from './assets/js/D_openView'
 import './registerServiceWorker'
 import gActiveBar from './components/unit/UB_commonActiveBar.vue'
-import gWhiteSelect from './components/unit/selectBox/cAd_gWhiteSelect.vue'
 import gButtonS from './components/button/UB_commonButtonS.vue'
 import gButtonL from './components/button/UB_commonButtonL.vue'
 import Datepicker from 'vue-datepicker-next'
@@ -94,7 +93,6 @@ app.component(VueCropper)
 app.component('gMainTab', gMainTab)
 app.component('gImgPop', gImgPop)
 app.component('gFileBox', gFileBox)
-app.component('gWhiteSelect', gWhiteSelect)
 app.component('gAxiosLoading', gAxiosLoading)
 app.component('gColorPicker', gColorPicker)
 app.component('gCheckBtn', gCheckBtn)

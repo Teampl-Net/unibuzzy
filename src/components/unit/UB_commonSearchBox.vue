@@ -1,8 +1,8 @@
 <template>
     <div class="pushListSearchArea">
       <div class="searchImgBox">
-        <img class="searchIcon mtop-03 cursorP" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
-        <div class="searchInput font15" :class="{darkerBgColor : this.targetType === 'myActList'}" @click="this.$emit('openFindPop')" ref="alimSearchKey" />
+        <img class="searchIcon mtop-03 cursorP" @click="$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+        <div class="searchInput font15" :class="{darkerBgColor : targetType === 'myActList'}" @click="$emit('openFindPop')" ref="alimSearchKey" />
       </div>
       <div class="searchResultWrap">
         <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
@@ -21,19 +21,13 @@ export default {
     searchResult
   },
   methods: {
-    requestSearch () {
-      // eslint-disable-next-line no-new-object
-    },
     changeSearchList (type) {
       this.$emit('changeSearchList', type)
     }
   },
   props: {
     resultSearchKeyList: {},
-    targetType: {},
-    searchType: {}
-  },
-  computed: {
+    targetType: {}
   }
 }
 </script>

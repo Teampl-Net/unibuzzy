@@ -1,36 +1,10 @@
 <template>
-
-<!-- box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; max-height:50px; -->
     <div v-if="inLineYn !== false" class="colorPickerWrap" id="colorPickerWrap" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
-        <!-- <div :style="'background-color:' + this.selectedColor" style=" width: calc(100% - 100px); margin-left: 10px; float: left; height: 50px; margin-bottom: 20px;">{{this.selectedColor}}</div>
-        <gBtnSmall @click="selectColor" style="float: left; height: 23px; margin-bottom: 5px; line-height: 23px;margin-left: 10px" btnTitle="선택"/>
-        <gBtnSmall @click="closePop" style="float: left; height: 23px; color: #A9AACD; border: 1px solid #A9AACD; line-height: 23px; background: #FFFFFF; margin-left: 10px" btnTitle="닫기"/> -->
-        <!-- <div style="width: 100%; height:calc(100% - 50px); overflow-y: auto; overflow-x: hidden;">
-          <div v-for="(value, index) in colorList" :key="index" style="width: 100%;">
-            <div style="width: 50%; float: left; ">
-              <div style="width: 100%; height: 50px; display: flex; justify-content: center;" v-for="(color1, index) in value" :key="index" >
-                <div style="width: calc(100% - 30px); margin-right: 10px; height: 40px; float: left; margin-bottom: 7px;" @click="pickColor(color1[1])"  :style="'background:' + color1[1]"></div>
-              </div>
-            </div>
-          </div>
-        </div> -->
       <div v-for="(value, index) in colorList" :key="index" class="mright-03 colorItem" @click="pickColor(value)" :style="'background:' + value">
         <img src="../../assets/images/common/icon_check_white.svg" class="fl img-w20" v-show="selectedColor === value" alt="">
       </div>
     </div>
     <div v-else class="colorPickerWrapPop">
-        <!-- <div :style="'background-color:' + this.selectedColor" style=" width: calc(100% - 100px); margin-left: 10px; float: left; height: 50px; margin-bottom: 20px;">{{this.selectedColor}}</div>
-        <gBtnSmall @click="selectColor" style="float: left; height: 23px; margin-bottom: 5px; line-height: 23px;margin-left: 10px" btnTitle="선택"/>
-        <gBtnSmall @click="closePop" style="float: left; height: 23px; color: #A9AACD; border: 1px solid #A9AACD; line-height: 23px; background: #FFFFFF; margin-left: 10px" btnTitle="닫기"/> -->
-        <!-- <div style="width: 100%; height:calc(100% - 50px); overflow-y: auto; overflow-x: hidden;">
-          <div v-for="(value, index) in colorList" :key="index" style="width: 100%;">
-            <div style="width: 50%; float: left; ">
-              <div style="width: 100%; height: 50px; display: flex; justify-content: center;" v-for="(color1, index) in value" :key="index" >
-                <div style="width: calc(100% - 30px); margin-right: 10px; height: 40px; float: left; margin-bottom: 7px;" @click="pickColor(color1[1])"  :style="'background:' + color1[1]"></div>
-              </div>
-            </div>
-          </div>
-        </div> -->
       <div v-for="(value, index) in colorList" :key="index" class="mright-03 colorPickerPopItem" @click="pickColor(value)" :style="'background:' + value">
         <img src="../../assets/images/common/icon_check_white.svg" class="fl img-w20" v-show="selectedColor === value" alt="">
       </div>
@@ -79,14 +53,8 @@ export default {
       this.selectedColor = color
       this.$emit('choiceColor', this.selectedColor)
     },
-    selectColor () {
-      this.$emit('closePop', this.selectedColor)
-    },
     closePop () {
       this.$emit('closePop', '0')
-    },
-    setColor (color) {
-      this.selectedColor = color
     }
   },
   props: {
@@ -99,12 +67,6 @@ export default {
     if (this.deepYn) {
       this.colorList = ['#c98276', '#E57373', '#ff5252', '#BA68C8', '#9575CD', '#7986CB', '#6497b1', '#005b96', '#6e7f80', '#36454f', '#000000', '#011f4b', '#a70000', '#ff0000', '#ff4d00', '#ff9a00', '#4DB6AC']
     }
-  },
-  components: {
-  },
-  computed: {
-  },
-  watch: {
   }
 }
 </script>

@@ -11,7 +11,7 @@
           <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
         </div>
         <div class="fr tActiveBarSearchIcon">
-          <img class="fl cursorP img-w20" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+          <img class="fl cursorP img-w20" @click="$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
         </div>
       </div>
       <div v-if="searchYn && resultSearchKeyList && resultSearchKeyList.length > 0" class="searchItemWrap">
@@ -19,15 +19,15 @@
       </div>
     </div>
 
-    <div class="activeBarWrap" v-else :style="(this.modeType === 'write' || this.channelYn) ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
-      <div ref="tabbar" class="activeBarArea" :class="!channelYn? 'pagePaddingWrap':''" :style="{color: this.modeType === 'write' ? 'background: transparent' : '', display: channelYn? 'flex':''}" >
+    <div class="activeBarWrap" v-else :style="(modeType === 'write' || channelYn) ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
+      <div ref="tabbar" class="activeBarArea" :class="!channelYn? 'pagePaddingWrap':''" :style="{color: modeType === 'write' ? 'background: transparent' : '', display: channelYn? 'flex':''}" >
         <div class="fl tabTitleBox textLeft tActiveBarItem" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" :style="channelYn? 'flex: 1 1 0%':''">
           <p :style="!channelYn? activebarWidth:''" :class="{mWidth : tabTrimLength(tab.display) > 3, commonColor: index === activetab && channelYn, lightGray: index !== activetab && channelYn}" class="tabItem font16 fontBold commonColor" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
         </div>
-        <div class="activeBar fl tActiveBarBottom noLeft"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3 }"></div>
+        <div class="activeBar fl tActiveBarBottom noLeft"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(selectedTabName) > 3 }"></div>
         <div class="barSearchBox" v-if="searchYn && !channelYn">
           <div class="fr activeBarSearchIcon">
-            <img class="fl cursorP img-w20 lineHeight40" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+            <img class="fl cursorP img-w20 lineHeight40" @click="$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
             <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
           </div>
           <div class="fr channelSearchIcon">
-            <img class="fl cursorP img-w20 lineHeight40" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+            <img class="fl cursorP img-w20 lineHeight40" @click="$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
           </div>
         </div>
       </div>
@@ -65,10 +65,8 @@ export default {
   },
   data () {
     return {
-      transition: 'slide-next',
       activetab: 0,
       tabwidth: 3,
-      touch: { sx: null, sy: null, st: null, ex: null, ey: null, et: null },
       selectedTabName: '',
       mSelectedTab: 0
     }
@@ -109,7 +107,6 @@ export default {
     }
   },
   created () {
-    // this.selectedTabName = this.tabList.display
     if (this.activetabProp) {
       for (var i = 0; i < this.tabList.length; i++) {
         if (this.tabList[i].name === this.activetabProp) {
@@ -130,7 +127,6 @@ export default {
     } if (window.innerWidth < 290) {
       this.tabwidth = 3
     }
-    // }
   },
   computed: {
     pointer () {

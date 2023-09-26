@@ -1,21 +1,15 @@
 <template>
     <div class="fl w100P mTop0" :style="(modeType === 'write' || channelYn) ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
-      <div class="tabWrap" ref="tabbar" :style="{color: this.modeType === 'write' ? 'background: transparent' : ''}" >
-        <!-- <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;" :style="channelYn? 'flex: 1 1 0%':''">
-          <p :style="!channelYn? activebarWidth:''" :class="{mWidth : tabTrimLength(tab.display) > 3, commonColor: index === activetab && channelYn, lightGray: index !== activetab && channelYn}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
-        </div> -->
-        <!-- @change="selectTab(filter.name, filter.display)" -->
+      <div class="tabWrap" ref="tabbar" :style="{color: modeType === 'write' ? 'background: transparent' : ''}" >
         <select class="fl selectStyle" ref="tab" @change="handleTabChange"  >
             <option v-for="(filter, idx) in tabList" :key="idx" :value="JSON.stringify(filter)">{{ filter.display }}</option>
         </select>
         <select  v-if="subTabList" class="fl selectStyle mLeft10" ref="tab" @change="handleBoardTabChange"  >
             <option v-for="(filter, idx) in subTabList" :key="idx" :value="JSON.stringify(filter)">{{ filter.display }}</option>
         </select>
-        <!-- <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div> -->
-
         <div class="fr searchWrap" v-if="searchYn && !channelYn">
           <div class="fr">
-            <img class="fl cursorP img-w20 lineHeight40" @click="this.$emit('openFindPop')" src="../../../assets/images/common/iocn_search.png" alt="button for search">
+            <img class="fl cursorP img-w20 lineHeight40" @click="$emit('openFindPop')" src="../../../assets/images/common/iocn_search.png" alt="button for search">
           </div>
         </div>
       </div>
@@ -25,7 +19,7 @@
             <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
           </div>
           <div class="fl searchIconBox">
-            <img class="fl cursorP img-w20 lineHeight40" @click="this.$emit('openFindPop')" src="../../../assets/images/common/iocn_search.png" alt="button for search">
+            <img class="fl cursorP img-w20 lineHeight40" @click="$emit('openFindPop')" src="../../../assets/images/common/iocn_search.png" alt="button for search">
           </div>
         </div>
       </div>
@@ -64,12 +58,6 @@ export default {
   methods: {
     searchBoxClick (searchData) {
       this.$emit('searchBoxClick', searchData)
-    },
-    tabTrimLength (displayName) {
-      if (this.modeType === 'Basic') {
-        var text = displayName.replaceAll(' ', '')
-        return text.length
-      }
     },
     changeSearchList (type) {
       this.$emit('changeSearchList', type)
@@ -110,7 +98,6 @@ export default {
     }
   },
   created () {
-    // this.selectedTabName = this.tabList.display
     if (this.activetabProp) {
       for (var i = 0; i < this.tabList.length; i++) {
         if (this.tabList[i].name === this.activetabProp) {
@@ -131,7 +118,6 @@ export default {
     } if (window.innerWidth < 290) {
       this.tabwidth = 3
     }
-    // }
   },
   computed: {
     pointer () {

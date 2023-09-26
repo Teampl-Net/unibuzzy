@@ -3,20 +3,13 @@
             <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100%); height: var(--cardHeight)">
               <div class="fl mright-05" style="width:100%;">
                   <img  class="editorImg addFalse" :filekey="pFilekey" style="width:100%;" :src="pSrc" />
-                  <!-- <span @click="deleteFile(index)" style="position: absolute; top: 0; right: 7px; cursor: pointer;">x</span> -->
               </div>
           </div>
-            <!-- <button  class="whiteBtn mright-1" type="submit" :disabled="isUploading">업로드</button> -->
-        <!-- <div>
-            <hr />
-            selectFileList : {{ selectFileList }}
-        </div> -->
         </div>
         <div v-else-if="multiFileSrc" :style="settingCardHeight" style="overflow: hidden; cursor: pointer; min-height: 70px;height: var(--cardHeight);position: relative;height: var(--cardHeight)" method="post">
             <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100%); height: var(--cardHeight)">
               <div class="fl mright-05" style="width:100%;">
                   <img  class="editorImg addTrue" style="width:100%;" :src="multiFileSrc" />
-                  <!-- <span @click="deleteFile(index)" style="position: absolute; top: 0; right: 7px; cursor: pointer;">x</span> -->
               </div>
           </div>
         </div>
@@ -28,16 +21,10 @@
             <div ref="imageBox" class="fl mright-05 formCard" style="position: relative; width: calc(100%)">
                 <div  class="fl mright-05" :style="settingImgSize" style="width:100%;" >
                     <img  class="editorImg" style="width:100%;" :class="{addTrue :  firstFile.addYn}" :src="firstFile.previewImgUrl" />
-                    <!-- <span @click="deleteFile(index)" style="position: absolute; top: 0; right: 7px; cursor: pointer;">x</span> -->
                 </div>
             </div>
-            <!-- <button  class="whiteBtn mright-1" type="submit" :disabled="isUploading">업로드</button> -->
-        <!-- <div>
-            <hr />
-            selectFileList : {{ selectFileList }}
-        </div> -->
         </form>
-        <div v-if="propSelectRow === targetKey && this.firstFile.previewImgUrl" class="fl imgRotationFuncBox">
+        <div v-if="propSelectRow === targetKey && firstFile.previewImgUrl" class="fl imgRotationFuncBox">
             <div @click="rotationImg(270)" class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 6px;"><img class="img-w15" src="../../../assets/images/formEditor/icon_rotate_left.svg" alt=""></div>
             <div @click="rotationImg(180)" class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 5px;"><img  class="img-w15" src="../../../assets/images/formEditor/icon_rotate_180.svg" alt=""></div>
             <div @click="rotationImg(90)"  class="CLightPurpleBorderColor" style="flex: 1; display: flex; justify-content: center; border-radius: 8px; padding: 5px;"><img  class="img-w15" src="../../../assets/images/formEditor/icon_rotate_right.svg" alt=""></div>
@@ -52,15 +39,7 @@ export default {
   mounted () {
     // eslint-disable-next-line no-unused-vars
     var test = this.$refs.imageBox
-
-    // console.log('!!!!!!!!!!!!!!')
-    // console.log(this.pSrc)
-    // console.log(this.multiFileSrc)
-
     this.cardHeight = this.$refs.imageBox.scrollHeight
-    // if (!this.pSrc) {
-    //   this.$refs.selectFile.click()
-    // }
     if (this.pasteImgYn === false) {
       if (this.pSrc) return
       if (this.multiFileSrc) return
@@ -121,13 +100,6 @@ export default {
   },
   methods: {
     async rotationImg (angle) {
-      // const options = {
-      //   maxSizeMB: 1,
-      //   maxWidthOrHeight: 1500,
-      //   useWebWorker: true
-      // }
-      // console.log(this.firstFile)
-      // console.log(this.selectFileList)
       var tempImage = new Image()
       tempImage.src = this.firstFile.previewImgUrl
       tempImage.ref = 'tempImageRefs'
@@ -172,36 +144,12 @@ export default {
         }
         const Bfile = await new Blob([new Uint8Array(array)], { type: 'image/png' })
 
-        // var compressedFile = await this.$imageCompression(Bfile, options)
-        // console.log(compressedFile)
-        // console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
-
         var nFile = await new File([Bfile], this_.firstFile.file.name)
 
         console.log(nFile)
 
         console.log('originalFile instanceof Blob', nFile instanceof Blob) // true
         console.log(`originalFile size ${nFile.size / 1024 / 1024} MB`)
-
-        // var src = null
-        // src = this_.$imageCompression.getDataUrlFromFile(nFile)
-
-        // var src = null
-        // if (compressedFile instanceof Blob) {
-        //   src = this_.$imageCompression.getDataUrlFromFile(compressedFile)
-        //   const decodeImg = atob(src.split(',')[1])
-        //   const tempList = []
-        //   for (let i = 0; i < decodeImg.length; i++) {
-        //     tempList.push(decodeImg.charCodeAt(i))
-        //   }
-        //   const newBfile = new Blob([new Uint8Array(tempList)], { type: 'image/png' })
-        //   var newFile = new File([newBfile], compressedFile.name)
-        // } else {
-        //   src = this_.$imageCompression.getDataUrlFromFile(compressedFile)
-        // }
-
-        // this_.selectFileList[0].previewImgUrl = src
-        // this_.selectFileList[0].file = newFile
 
         this_.selectFileList[0].previewImgUrl = dataURI
         this_.selectFileList[0].file = nFile
@@ -212,15 +160,12 @@ export default {
           this_.firstFile = this_.selectFileList[0]
         } else {
           this_.firstFile = this_.selectFileList[0]
-          // }
         }
-        // this.$emit('updateImgForm', this.previewImgUrl)
         setTimeout(() => {
           this_.cardHeight = this_.$refs.imageBox.scrollHeight
         }, 10)
         this_.fileCnt += 1
         this_.firstFile.previewImgUrl = dataURI
-        // if (this_.multiFileSrc) this_.multiFileSrc = dataURI
       }
     },
     async handleImageUpload (event) {
@@ -233,7 +178,6 @@ export default {
 
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
-        // var filesYn = this.$refs.selectFile.files.length > 1
         for (var k = 0; k < this.$refs.selectFile.files.length; k++) {
           this.selectFile = this.$refs.selectFile.files[k]
           let fileExt = this.selectFile.name.substring(
@@ -267,16 +211,7 @@ export default {
                 src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
               }
 
-              // var image = new Image()
-              // image.src = src
-
-              // image.onload = function () {
-              //   // Resize image
-              //   console.log(image.width + ' // ' + image.height)
-              // }
-
               console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
-              // console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
 
               this.selectFileList.push({ previewImgUrl: src, addYn: true, file: newFile })
               console.log(document.querySelectorAll('#eContentsWrap .formDiv').length)
@@ -298,12 +233,10 @@ export default {
               // }
               }
               var this_ = this
-              // this.$emit('updateImgForm', this.previewImgUrl)
               setTimeout(() => {
                 this_.cardHeight = this_.$refs.imageBox.scrollHeight
               }, 10)
               this_.fileCnt += 1
-            /* await uploadToServer(compressedFile) */ // write your own logic
             } catch (error) {
               console.log(error)
             }
@@ -316,33 +249,6 @@ export default {
         this.previewImgUrl = null
       }
     },
-
-    async previewFile (file) {
-      this.previewImgUrl = null
-
-      var reader = new FileReader()
-      var thisthis = this
-      reader.onload = e => {
-        var image = new Image()
-        image.onload = async function () {
-          // Resize image
-          var result = await thisthis.$saveFileSize(image, thisthis.selectFile)
-
-          return result
-        }
-        image.onerror = function () {
-
-        }
-        image.src = e.target.result
-        // this.previewImgUrl = e.target.result
-      }
-      reader.readAsDataURL(file)
-      // await this.$editorImgResize(this.selectFile)
-      /* if (thisthis.$refs.selectFile.files.length > 1) {
-        thisthis.$emit('setMultiFile', thisthis.selectFileList)
-      } */
-      // console.log(this.selectFileList)
-    },
     deleteFile (idx) {
       this.selectFileList.splice(idx, 1)
     },
@@ -351,11 +257,7 @@ export default {
         // Form 필드 생성
         var form = new FormData()
 
-        // if (!this.selectFileList.length) return
-
         for (var i = 0; i < this.selectFileList.length; i++) {
-          // var selFile = this.selectFileList[i].file
-          // Here we create unique key 'files[i]' in our response dict
           form.append('files[' + i + ']', this.selectFileList[i].file)
 
           this.isUploading = true

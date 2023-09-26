@@ -9,36 +9,34 @@
 }
 </i18n>
 <template>
-  <div v-if="GE_FILE_LIST" class="fileBoxArea" :style="this.contentsEle.ownUserKey === this.contentsEle.accessCreUserKey? 'background-color: #f8f8ff;':'background-color: #fff;'">
+  <div v-if="GE_FILE_LIST" class="fileBoxArea" :style="contentsEle.ownUserKey === contentsEle.accessCreUserKey? 'background-color: #f8f8ff;':'background-color: #fff;'">
       <div class="attachedFileTitle">
         <p @click="download" class="fl cursorP textLeft textOverdot commonBlack fontBold font16 fileBoxNameWrap">
-          <img :src="this.$settingFileIcon(contentsEle.fileName)" alt="">
+          <img :src="$settingFileIcon(contentsEle.fileName)" alt="">
           {{ getFileName(contentsEle.fileName) }}
         </p>
         <p class="fl textLeft commonBlack fontBold font16 fileBoxExtend">.{{ getFileExt(contentsEle.fileName) }}</p>
-        <p class="fr textLeft commonBlack font12 font Bold mtop-03 textOverdot">{{ this.$byteConvert(contentsEle.fileSizeKb) }}</p>
+        <p class="fr textLeft commonBlack font12 font Bold mtop-03 textOverdot">{{ $byteConvert(contentsEle.fileSizeKb) }}</p>
         <div class="font14 textLeft fileBoxInfoWrap">
           <div class="textOverdot w100P">
             <img src="../../assets/images/footer/icon_people.svg" class="img-w12" alt="">
-            &nbsp;{{ this.$changeText(contentsEle.accessCreUserName) }}
-            <p class="font12 fr mleft-1 mtop-01 fileBoxCreDate">{{ this.$changeDateFormat(contentsEle.creDate) }}</p>
+            &nbsp;{{ $changeText(contentsEle.accessCreUserName) }}
+            <p class="font12 fr mleft-1 mtop-01 fileBoxCreDate">{{ $changeDateFormat(contentsEle.creDate) }}</p>
           </div>
         </div>
         <div class="curosrP fileBoxFavBtn" @click="selectAttachedFile">
-          <img :src="this.myFilekey !== null? require('../../assets/images/common/colorStarIcon.svg'):require('../../assets/images/common/starIcon.svg')" alt="">
+          <img :src="myFilekey !== null? require('../../assets/images/common/colorStarIcon.svg'):require('../../assets/images/common/starIcon.svg')" alt="">
         </div>
       </div>
-      <img v-if="contentsEle.fileType === 'I'" class="fileBoxImg" @click="openImgPop" :src="this.contentsEle.domainPath ? this.contentsEle.domainPath + this.contentsEle.pathMtext : this.contentsEle.pathMtext" alt="">
+      <img v-if="contentsEle.fileType === 'I'" class="fileBoxImg" @click="openImgPop" :src="contentsEle.domainPath ? contentsEle.domainPath + contentsEle.pathMtext : contentsEle.pathMtext" alt="">
       <div class="textLeft font12 fontBold ml-04">{{ $t('FILE_TITLE_RELA_CON') }}</div>
       <smallContentsBox @click="goDetail" :accessKind="contentsEle.accessKind" class="cursorP paddingStyle" :contentsEle="GE_FILE_LIST"></smallContentsBox>
-      <!-- <p class="font14 textRight" style="width: 100%;">다운 {{ contentsEle.dnCount }}</p> -->
     </div>
 </template>
 
 <script>
 import smallContentsBox from '../popup/common/UB_commonSmallContentsBox.vue'
 export default {
-  name: 'App',
   components: {
     smallContentsBox
   },
@@ -68,8 +66,7 @@ export default {
   },
   methods: {
     async selectAttachedFile () {
-      // eslint-disable-next-line no-new-object
-      var file = new Object()
+      var file = {}
       if (this.myFilekey === null) {
         file.fileKey = this.contentsEle.fileKey
         file.accessKind = this.contentsEle.accessKind
@@ -91,7 +88,6 @@ export default {
       var returnImgList = []
       var imgObject = {}
       var img = new Image()
-      // img.src = this.propImgList[i].domainPath + this.propImgList[i].pathMtext
       img.src = this.contentsEle.domainPath + this.contentsEle.pathMtext
       imgObject.src = img.src
       imgObject.fileKey = Number(this.contentsEle.fileKey)
@@ -136,10 +132,9 @@ export default {
         var filePath = this.contentsEle.domainPath ? this.contentsEle.domainPath + this.contentsEle.pathMtext : this.contentsEle.pathMtext
         var result = await this.$downloadFile(this.contentsEle.fileKey, filePath)
         console.log(result)
-        this.$showToastPop('파일이 저장되었습니다!')
-        // this.saveOkPopShowYn = true
+        this.$showToastPop('File saved!')
       } catch (error) {
-        // console.log(error)
+        console.log(error)
       }
     }
   }
