@@ -31,7 +31,6 @@ export default defineComponent({
 
     onUnmounted(() => {
       observer.disconnect()
-    //   observer.value.disconnect();
     })
 
     return {

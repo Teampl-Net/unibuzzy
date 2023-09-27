@@ -17,9 +17,6 @@
 <template>
   <div class="loginContentsWrap">
     <div v-if="GE_USER.unknownYn" class="videoArea">
-      <!-- <video autoplay muted loop playsinline :style="showStartBtnYn ? 'filter: blur(2px)' : 'filter: blur(0)'">
-        <source :src="introVideo" type="video/mp4" >
-      </video> -->
       <div v-show="showStartBtnYn" class="fade-in fontBold textLeft loginTitle">
         <p class="w100P fl textCenter font18">Everything for campus life, </p>
         <p class="w100P fl fontBold textCenter font50">uniBuzzy</p>
@@ -52,21 +49,12 @@
         <div class="loginBtn font20 mbottom-2" v-on:click="openTestLoginPage">
           {{ $t('LOG_BTN_UNIB') }}
         </div>
-        <!-- <div class="loginBtn font18" style="background: #aaa!important;" @click="justLookAround">
-          <img src="../../../assets/images/footer/icon_search_fillin.svg">
-          {{ $t('LOG_BTN_NO_LOGIN') }}
-        </div> -->
       </div>
     </transition>
-      <!-- <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
-      <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
-        더알림계정으로 로그인
-      </div> -->
   </div>
 </template>
 
 <script>
-// import naver from '../Tal_naverCompo.vue'
 import AuthService from '../../../assets/js/login/UB.authService'
 import { firebaseInitialize } from '../../../assets/js/login/UB.firebase'
 import { onMessage } from '../../../assets/js/webviewInterface'
@@ -83,7 +71,6 @@ export default {
       appCloseYn: false,
       appYn: false,
       mobileYn: this.$getMobileYn(),
-      introVideo: '/resource/video/introVideo.mp4',
       showStartBtnYn: false
     }
   },
@@ -160,11 +147,6 @@ export default {
       user.rToken = ''
       var userProfile = await setUserInfo(user)
 
-      /* if (userProfile.mobile === undefined || userProfile.mobile === null || userProfile.mobile === 'null' || userProfile.mobile === '') {
-                // localStorage.setItem('tempUserInfo', JSON.stringify(userProfile))
-                router.push({ name: 'savePhone', params: { user: JSON.stringify(userProfile) } })
-              } else */
-      // await saveUser(userProfile, true) // 서버에 save요청
       if (this.pPartnerLoginYn) {
         if (this.pSetUserItem) {
           await this.pSetUserItem(userProfile)
@@ -173,13 +155,6 @@ export default {
         await saveUser(userProfile, true)
       }
       localStorage.setItem('loginYn', true)
-      // this.$router.replace({ path: '/' })
-
-      /* if (this.$route.params.boardData && this.$route.params.boardData !== 'social') {
-        this.$router.replace({ name: 'boardDetail', query: { boardData: this.$route.params.boardData } })
-      } else {
-        this.$router.replace({ path: '/' })
-      } */
     },
     closeApp () {
       onMessage('closeApp', 'requestUserPermission')
@@ -190,7 +165,6 @@ export default {
     },
     GoogleLoginBtn () {
       if (this.mobileYn || window.ReactNativeWebView) {
-        // onMessage('REQ', 'loginGoogle', {})
         window.ReactNativeWebView.postMessage(
           JSON.stringify({
             type: 'REQ',
@@ -214,8 +188,7 @@ export default {
       localStorage.setItem('loginType', 'google')
       authService.login('Google').then(async function (result) {
         if (result.user) {
-          // eslint-disable-next-line no-new-object
-          var user = new Object()
+          var user = {}
           user.email = result.user.email
           user.mobile = result.user.phoneNumber
           user.name = result.user.displayName
@@ -230,15 +203,6 @@ export default {
         } else {
           await saveUser(userProfile, true)
         }
-        //
-
-        /* if (this_.$route.params.boardData && this_.$route.params.boardData !== 'social') {
-          this_.$router.replace({ name: 'boardDetail', query: { boardData: this.$route.params.boardData } })
-        } else {
-          this_.$router.replace({ path: '/' })
-        } */
-        /* localStorage.setItem('loginYn', true)
-        thisthis.$router.replace({ path: '/' }) */
       })
     },
     pictureResponse (data) {
@@ -250,10 +214,6 @@ export default {
       )
     }
   }
-  // onMessage (data) {
-  //   window.nsWebViewBridge.emit('onMessage', data)
-  // }
-
 }
 </script>
 

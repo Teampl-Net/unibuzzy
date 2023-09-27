@@ -31,7 +31,7 @@
   <template>
   <!--  -->
     <template v-if="mSearchModeYn === false">
-      <div class="w100P h100P" style="padding-top: 50px; overflow:auto; padding-bottom: 60px;">
+      <div class="w100P h100P" :style="$route.path === '/search' && $appType !== 'UB' ? `padding-top: ${($STATUS_HEIGHT + 50)}px;`:'padding-top: 50px;'" style=" overflow:auto; padding-bottom: 60px;">
       <!-- <div class="w100P h100P" style=" overflow:auto; padding-bottom: 60px; padding-top: 50px;"> -->
         <div class="searchBodyTop pSide-1" style="overflow-x:hidden; background: white">
           <div class="fl w100P" style="padding-top:20px; padding-bottom:10px; height: 30px; float: left;">
@@ -41,7 +41,7 @@
           <!-- input Box -->
           <div class="fl w100P" style="position: relative; margin-top: 1rem; min-height: 50px;">
             <img @click="setSearchList()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
-            <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" style="margin-top:10px;"/>
+            <input @focus="mInputFocusYn = true" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" style="margin-top:10px;"/>
             <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
           </div>
 
@@ -61,62 +61,24 @@
             </div>
             <p v-if="mSearchHistoryList.length === 0" class="w-100P fl mbottom-2 font16 lightGray textCenter">{{ $t("SEAR_MSG_NOT_SEARCH") }}</p>
           </template>
-
-          <!-- 산업군 -->
-          <!-- <div v-if="mBusinessItemList.length > 0" class="fl w-100P" style="min-height: 50px; float: left; display: flex; flex-wrap: wrap; gap: 10px;">
-            <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">{{ $t("SEAR_TITLE_FIND_CATEGORY") }}</p>
-            <div v-for="(business, index) in mBusinessItemList" @click="setCataItem(business)" :key="index" class="fl font14 cursorP fontBold" style="padding: 0 8px; border-radius:30px; line-height: 24px;  min-width:30px;" :class=" this.mCateItem === business.cateKey ? 'commonLightBGColor fontBold CWhiteColor' : 'commonGrayBorderColor lightGray'">
-              {{$changeText(business.itemNameMtext)}}
-            </div>
-          </div> -->
-          <!-- <div v-if="!GE_USER.unknownYn && mMyStickerList.length > 0" class="fl w-100P mtop-1" style="min-height: 50px;  float: left; display: flex; flex-wrap: wrap; gap: 10px;">
-            <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft">{{ $t("SEAR_TITLE_FIND_LABEL") }}</p>
-            <template v-for="(sticker, index) in mMyStickerList" :key="index" >
-              <gStickerLine @click="searchSticker(sticker)"  v-if="sticker" style="float: left; min-width: 30px;" :pSticker="sticker" />
-            </template>
-          </div> -->
         </div>
-
-        <!-- 채널 추천 영역 -->
-        <!-- <div v-if="$appType !== 'UB'" class="w100P fl" style="height: calc(100% - 280px); background: white; ">
-          <div class="fl w100P pSide-1" style="height: 30px; float: left;">
-            <img src="../../assets/images/main/icon_3d_star.png" style="float: left; margin-right: 8px;" class="img-w23" alt="">
-            <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">{{ $t("SEAR_MSG_CHAN_RECOMMEND") }}</p>
-          </div>
-          <div class="w100P fl pSide-1" style="height: 40px;">
-            <gActiveBar :testYn='true' ref="activeBar" :tabList="this.mActiveTabRecommendList" class="fl" @changeTab="changeRecommendTab" />
-          </div>
-          <div class="w100P fl" style="overflow: auto; height: calc(100% - 70px);">
-            <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
-              <channelCard class=" moveBox" :chanElement="chanEle" @openPop="openPop" />
-              <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="recommendLoadMore" class="fl wich" />
-            </template>
-          </div>
-        </div> -->
       </div>
       </template>
 
       <!-- 검색 키워드가 있다면 -->
       <template v-if="mSearchModeYn === true">
-        <div v-if="mSearchModeYn === true" class="w100P h100P"  style="position: absolute; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10; overflow:hidden;" :style="`top:${this.$STATUS_HEIGHT}px`">
+        <div v-if="mSearchModeYn === true" class="w100P h100P"  style="position: absolute; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10; overflow:hidden;" :style="`top:${$STATUS_HEIGHT}px`">
           <div class="fl w100P" :style="`height: ${60}px;`" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: flex-start; position: fixed; z-index: 3; background: white;" >
             <img @click="searchClear()" src="../../assets/images/common/icon_back.png" class="fl img-w12 cursorP mright-1 mleft-05" alt="">
             <div class="fl w100P mright-1" style="width:calc(100% - 90px); position: relative;">
-              <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" />
+              <input @focus="mInputFocusYn = true" class="searchPageInputAera font14 fontBold" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" />
               <img  @click="setSearchList()" class="searchPageIconWich cursorP img-w20" style="top: 0.5rem;" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
-              <!-- <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt=""> -->
             </div>
-            <img class="fr cursorP" v-if="mActiveSearch === 'CONT'" @click="mActiveSearch === 'CHAN' ? this.mChanFindPopShowYn = true : this.mFindPopShowYn = true"  style="width: 30px;" src="../../assets/images/common/common_filter.svg" alt="">
+            <img class="fr cursorP" v-if="mActiveSearch === 'CONT'" @click="mActiveSearch === 'CHAN' ? mChanFindPopShowYn = true : mFindPopShowYn = true"  style="width: 30px;" src="../../assets/images/common/common_filter.svg" alt="">
           </div>
           <!-- 공통 검색 탭 영역 -->
-          <div  class="w100P fl pSide-1 chanListHeader " :style="`margin-top: ${60}px;`" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="this.mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
-            <gActiveBar :testYn='true' ref="mainActiveBar" :tabList="this.mActiveSearchTabList" class="fl" @changeTab="changeSearchTab" />
-              <!-- <template v-if="mActiveSearch === 'CHAN'">
-                <cSearchBox class="mright-03 mtop-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" @searchBoxClick='searchBoxClick' />
-              </template> -->
-              <!-- <div v-if="mActiveSearch === 'CONT'" class="fl w100P mtop-05" style="display: flex;">
-                  <p v-for="(tab, index) in mSearchContentTabList" :key="index" @click="changeContentsTab(tab.name)" class="fl font16 " :class=" this.mSearchContentTab === tab.name ? 'commonLightColorBorder2 fontBold commonLightColor' : 'commonGrayBorderColor lightGray'" style="line-height: 30px; width: calc(100% / 3); height: 30px;"> {{tab.display}}</p>
-              </div> -->
+          <div  class="w100P fl pSide-1 chanListHeader " :style="`margin-top: ${60}px;`" v-on="handleScroll" ref="chanListHeader" id="chanListPageHeader" :class="mScrolledYn? 'chanListHeader--unpinned': 'chanListHeader--pinned'">
+            <gActiveBar :testYn='true' ref="mainActiveBar" :tabList="mActiveSearchTabList" class="fl" @changeTab="changeSearchTab" />
               <template v-if="mActiveSearch === 'CONT'">
                 <searchBox class="mright-03 mtop-03 mbottom-1" :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" @delSearchBox="deleteSearchKey(value)" />
               </template>
@@ -125,11 +87,11 @@
           <div class="fl wh100P chanListWrap"  id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style=" overflow:auto;padding: 0 10px; padding-top: calc(var(--paddingTopLength));  "  >
             <!-- 채널 리스트 -->
             <div v-if="mActiveSearch === 'CHAN'" class="w100P fl" style="overflow: auto; ">
-              <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true && this.GE_DISP_TEAM_LIST.length === 0" class="w100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
+              <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true && GE_DISP_TEAM_LIST.length === 0" class="w100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
                 <gListEmpty title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' />
               </div>
               <template v-else>
-                <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index" >
+                <template v-for="(chanEle, index) in GE_DISP_TEAM_LIST" :key="index" >
                     <gChannelCard class=" moveBox chanRow" :chanElement="chanEle" @openPop="goChannelMain" />
                     <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 5" @triggerIntersected="recommendLoadMore" class="fl wich" />
                 </template>
@@ -139,26 +101,26 @@
             <!-- 컨텐츠 리스트 -->
             <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" style="float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 60px;">
               <div class="w100P fl chanRow" style="height:1px;" />
-              <template v-if="this.mSearchContentTab === 'ALL'" >
-                <gUBContentsBox @openImgPop="openImgPop" @openPage="goChannelMain" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in this.GE_DISP_ALL_LIST" :key="cont.contentsKey" />
+              <template v-if="mSearchContentTab === 'ALL'" >
+                <gUBContentsBox @openImgPop="openImgPop" @openPage="goChannelMain" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in GE_DISP_ALL_LIST" :key="cont.contentsKey" />
                 <template v-if="mGetAxiosYn && GE_DISP_ALL_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
-                <gListEmpty v-else-if="this.GE_DISP_ALL_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+                <gListEmpty v-else-if="GE_DISP_ALL_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
               </template>
-              <template v-if="this.mSearchContentTab === 'ALIM'" >
-                <gUBContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in this.GE_DISP_ALIM_LIST" :key="cont.contentsKey" />
+              <template v-if="mSearchContentTab === 'ALIM'" >
+                <gUBContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in GE_DISP_ALIM_LIST" :key="cont.contentsKey" />
                 <template v-if="mGetAxiosYn && GE_DISP_ALIM_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
-                <gListEmpty v-else-if="this.GE_DISP_ALIM_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+                <gListEmpty v-else-if="GE_DISP_ALIM_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
               </template>
-              <template v-if="this.mSearchContentTab === 'BOAR'" >
-                <gUBContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in this.GE_DISP_BOAR_LIST" :key="cont.contentsKey" />
-                <template v-if="mGetAxiosYn &&  this.GE_DISP_BOAR_LIST.length === 0">
+              <template v-if="mSearchContentTab === 'BOAR'" >
+                <gUBContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in GE_DISP_BOAR_LIST" :key="cont.contentsKey" />
+                <template v-if="mGetAxiosYn &&  GE_DISP_BOAR_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
-                <gListEmpty v-else-if="this.GE_DISP_BOAR_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+                <gListEmpty v-else-if="GE_DISP_BOAR_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
               </template>
               <myObserver @triggerIntersected="contentsLoadMore" id="observer" class="fl w100P" style=""></myObserver>
             </div>
@@ -167,12 +129,17 @@
       </template>
       <div v-if="mBottomSheetOpenYn"  @click="mBottomSheetOpenYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
       <transition name="showModal">
-          <findContentsList :pTitleShowYn="false" transition="showModal" @searchList="requestSearchList" v-if="mActiveSearch === 'CONT' && mFindPopShowYn" @closePop="this.mFindPopShowYn = false" />
+          <findContentsList :pTitleShowYn="false" transition="showModal" @searchList="requestSearchList" v-if="mActiveSearch === 'CONT' && mFindPopShowYn" @closePop="mFindPopShowYn = false" />
+      </transition>
+      <transition name="showModal">
+          <findChannelList @searchList="requestSearchList" transition="showModal" v-if="mActiveSearch === 'CHAN' && mChanFindPopShowYn" @closePop='mChanFindPopShowYn = false' />
+      </transition>
+      <transition name="showUp" >
+        <bottomSheets v-if="mBottomSheetOpenYn" :propSelectSearchObj='mSelectSearchObj' @closePop='mBottomSheetOpenYn = false' @bottSheetEmit='bottSheetEmit' :propBusinessItemList='mBusinessItemList' />
       </transition>
   </template>
 
 <script>
-// import cSearchBox from '../../components/unit/UB_cSearchBox.vue'
 import findContentsList from '@/components/popup/common/UB_findContentsList.vue'
 import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton'
 import searchBox from '../../components/unit/UB_searchBox.vue'
@@ -183,13 +150,8 @@ export default {
       mobileYn: this.$getMobileYn(),
       mSearchModeYn: false,
       mBusinessItemList: [],
-      mMyStickerList: [],
       mInputText: '',
       mFindText: '',
-      mStikcerKey: '',
-      // mActiveTabRecommendList: [{ display: '인기', name: 'P' }, { display: '맞춤', name: 'CUST' }],
-      mActiveTabRecommendList: [{ display: this.$t('SEAR_TAB_POP_CHAN'), name: 'P' }, { display: this.$t('COMMON_TAB_RECENT'), name: 'N' }],
-      mActiveRecommend: 'P',
       mCateItem: '',
       mTempCateItem: '',
 
@@ -242,17 +204,12 @@ export default {
   mounted () {
   },
   updated () {
-    /* this.mChanPlaceHolder = this.$t('SEAR_MSG_KEYWORD')
-    this.mActiveTabRecommendList = [{ display: this.$t('SEAR_TAB_POP_CHAN'), name: 'P' }, { display: this.$t('COMMON_TAB_RECENT'), name: 'N' }]
-    this.mActiveSearchTabList = [{ display: this.$t('COMMON_NAME_CHANNEL'), name: 'CHAN' }, { display: this.$t('COMMON_TAB_CONTENTS'), name: 'CONT' }]
-    this.mSearchContentTabList = [{ display: this.$t('COMMON_TAB_ALL'), name: 'ALL' }, { display: this.$t('COMMON_TAB_NOTI'), name: 'ALIM' }, { display: this.$t('COMMON_TAB_POST'), name: 'BOAR' }] */
     if (this.mSearchModeYn === true) {
       this.mChanListScrollBox = window.document.getElementById('chanListWrap')
       this.mChanListScrollBox.addEventListener('scroll', this.handleScroll)
     }
   },
   created () {
-    // gMainHearder에서 changePageHeader === '검색' ? 'white' 를 하고 있음
     this.$emit('changePageHeader', this.$t('COMMON_NAME_SEARCH'))
     this.readyFunc()
   },
@@ -271,26 +228,6 @@ export default {
     },
     openImgPop (param) {
       this.$emit('openImgPop', param)
-    },
-    searchBoxClick (searchData) {
-      this.mSelectSearchObj = searchData
-      this.mBottomSheetOpenYn = true
-    },
-    bottSheetEmit (pramData) {
-      console.log(pramData)
-      var targetType = pramData.targetType
-      var dispName = pramData.dispName
-      var idx
-      if (targetType === 'changeOrderBy') {
-        idx = this.mSearchList.findIndex(item => item.searchType === '정렬')
-      } else if (targetType === 'changeBusiness') {
-        idx = this.mSearchList.findIndex(item => item.searchType === '산업군')
-        this.setCataItem(pramData)
-      } else if (targetType === 'changeAdmin') {
-        idx = this.mSearchList.findIndex(item => item.searchType === '유형')
-      }
-      if (idx !== -1) this.mSearchList[idx].dispName = dispName
-      this.mBottomSheetOpenYn = false
     },
     requestSearchList (data) {
       var searchObj = {}
@@ -339,8 +276,6 @@ export default {
       this.mFindPopShowYn = false
     },
     setSearchList () {
-      // eslint-disable-next-line no-debugger
-      debugger
       if (this.mActiveSearch === 'CHAN') {
         this.findData()
       } else {
@@ -355,34 +290,6 @@ export default {
         this.changeContentsTab(this.mSearchContentTab)
       }
     },
-    async setCataItem (business) {
-      if (this.GE_DISP_TEAM_LIST.length === 0) return
-      if (this.mCateItem === business.cateKey) {
-        this.mCateItem = ''
-      } else {
-        this.mCateItem = business.cateKey
-      }
-      this.mSearchModeYn = true
-      this.mSearchList = [{ searchType: '산업군', dispName: this.$changeText(business.itemNameMtext) }]
-      this.findData()
-      this.mCateItem = ''
-      // 20230109수민삭제
-      // this.changeRecommendTab(this.mActiveRecommend)
-    },
-    async searchSticker (sticker) {
-      this.mStikcerKey = sticker.stickerKey
-      this.mSearchModeYn = true
-      this.mSearchList = [{ searchType: '분류', accessKind: 'SK', accessKey: sticker.stickerKey, dispName: this.$changeText(sticker.nameMtext) }]
-      this.mActiveSearch = 'CONT'
-      await this.changeSearchTab('CONT')
-      /* this.changeSearchTab('CONT') */
-      this.mStikcerKey = ''
-      this.$nextTick(() => {
-        this.$refs.mainActiveBar.switchtab(1)
-      })
-      // 20230109수민삭제
-      // this.changeRecommendTab(this.mActiveRecommend)
-    },
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
     },
@@ -390,16 +297,12 @@ export default {
       var currentTime = new Date()
       var time = currentTime - this.mScrollCheckSec
       var element = document.getElementsByClassName('chanRow')[0]
-      // var parentElement = element.parentElement
-      // this.mFirstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
       this.mFirstContOffsetY = this.getAbsoluteTop(element)
       if (this.mFirstContOffsetY > 0) {
         this.mScrollDirection = 'up'
         this.mScrolledYn = false
       }
       if (time / 1000 > 1 && this.$diffInt(this.mChanListScrollBox.scrollTop, this.mScrollPosition) > 150) {
-        // var test = document.getElementById('chanListPageHeader')
-        // this.mHeaderTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
         this.mScrollCheckSec = currentTime
 
         if (this.mFirstContOffsetY < 0) {
@@ -415,11 +318,6 @@ export default {
         this.mScrollPosition = this.mChanListScrollBox.scrollTop
       }
     },
-    inputBlur () {
-      // setTimeout(() => {
-      //   this.mInputFocusYn = false
-      // }, 1)
-    },
     openPop (openPopParam) {
       this.$emit('openPop', openPopParam)
     },
@@ -428,19 +326,10 @@ export default {
         this.mCanLoadYn = false
         try {
           var resultList = await this.getPushContentsList(null, null, false)
+          // this.mGetAxiosYn = false
           if (resultList === undefined || resultList === '') {
             return
           }
-          // 더 불러온 컨텐츠에 D_MEMO_LIST가 없어 넣어주고 있음
-          /* if (resultList.content) {
-              if (resultList.content.length > 0) {
-                for (let i = 0; i < resultList.content.length; i++) {
-                  if (resultList.content[i].D_MEMO_LIST === undefined || resultList.content[i].D_MEMO_LIST === null || resultList.content[i].D_MEMO_LIST === '') {
-                    resultList.content[i].D_MEMO_LIST = resultList.content[i].memoList
-                  }
-                }
-              }
-            } */
           var newArr = []
           this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
 
@@ -477,13 +366,12 @@ export default {
       this.mEmptyYn = false
       this.mSearchContentTab = name
       var resultList = await this.getPushContentsList(null, null, true)
+      this.mAxiosYn = false
       var contentList = []
       if (resultList && resultList.content) {
         contentList = resultList.content
       }
       // if (!resultList || resultList === '') return
-      // this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
-      // this.mAlimContentsList = resultList.content
       var newArr = []
       var cont
       var tempContentDetail
@@ -611,10 +499,6 @@ export default {
       }
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', contentList)
       this.mContentReloadKey += 1
-      // this.endListSetFunc(resultList)
-      // this.mFindPopShowYn = false
-      // this.introPushPageTab()
-      // this.scrollMove()
     },
     async changeSearchTab (name) {
       this.mEmptyYn = false
@@ -626,18 +510,6 @@ export default {
         this.mSearchList = [{ accessKey: this.mInputText, accessKind: 'nameMtext', dispName: this.mInputText, searchType: '채널명' }]
       }
       this.findData()
-    },
-    async changeRecommendTab (name) {
-      // eslint-disable-next-line no-debugger
-      debugger
-      console.log(name)
-      this.mEmptyYn = false
-      this.mActiveRecommend = name
-      this.mOffsetInt = 0
-      this.mChannelList = []
-
-      var result = await this.getChannelList(true)
-      this.mChannelList = result.content
     },
     readyFunc () {
       console.log(this.initData)
@@ -652,14 +524,9 @@ export default {
           })
         }
         this.mBusinessItemList = this.initData.cateItemList
-        this.mMyStickerList = this.initData.stickerList
         this.mEmptyYn = false
         this.mOffsetInt = 0
-        // this.mChannelList = this.initData.teamList.content
-        // this.endListSetFunc(this.initData.teamList)
       }
-      // this.getCateItemList()
-      // this.changeRecommendTab(this.mActiveRecommend)
       this.getSearchHistory()
       this.$emit('enterCloudLoading', false)
       setTimeout(() => {
@@ -683,15 +550,6 @@ export default {
     searchHistoryClear () {
       localStorage.setItem('searchKeyWordHistoryList', JSON.stringify([]))
       this.mSearchHistoryList = []
-    },
-    async getCateItemList () {
-      var cateItemList = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getCateItemList',
-        param: { cateGroupKey: 2 }
-      })
-      this.mBusinessItemList = cateItemList.data.cateItemList
-      // this.mBusinessItemList.unshift({ cateKey: 0, itemNameMtext: 'KO$^$전체' })
-      console.log(this.mBusinessItemList)
     },
     async findData (searchKind) {
       this.mInputFocusYn = false
@@ -730,7 +588,6 @@ export default {
       this.mActiveSearch = 'CHAN'
 
       if (this.mTempCateItem) this.mCateItem = this.mTempCateItem
-      // if (this.mTempRecommendList.length > 0) this.mChannelList = this.mTempRecommendList
     },
     replaceContentListArr (arr) {
       if (!arr && arr.length === 0) return []
@@ -756,7 +613,7 @@ export default {
           }
         }
         if (addList.length > 0) {
-          this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', addList)
+          this.$store.dispatch('UB_CHANNEL/AC_ADUB_CHANNEL', addList)
         }
         const newArr = [
           ...this.mChannelList,
@@ -779,15 +636,6 @@ export default {
       paramMap.set('pageSize', 10)
       if (this.mCateItem) paramMap.set('cateItemKey', this.mCateItem)
 
-      // if (this.mViewTab === 'user') {
-      //   paramMap.set('userKey', userKey)
-      // } else if (this.mViewTab === 'all') {
-      //   paramMap.set('fUserKey', userKey)
-      // } else if (this.mViewTab === 'mychannel') {
-      //   paramMap.set('userKey', userKey)
-      //   paramMap.set('managerYn', true)
-      // }
-
       if (this.mFindText !== '') {
         paramMap.set('nameMtext', this.mFindText)
       }
@@ -804,7 +652,6 @@ export default {
       this.endListSetFunc(resultList)
       return resultList
     },
-
     endListSetFunc (resultList) {
       if (resultList === undefined || resultList === null || resultList === '') return
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
@@ -828,16 +675,11 @@ export default {
     async getPushContentsList (pageSize, offsetInput, loadingYn) {
       if (this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') === -1) {
         this.mAxiosQueue.push('getPushContentsList')
-        // @point
-        // eslint-disable-next-line no-new-object
-        var param = new Object()
+        var param = {}
 
-        // param.offsetInt = this.mContentsOffsetInt
         param.offsetInt = this.mOffsetInt
 
         if (this.mSearchList) {
-          console.log('hohohoho')
-          console.log(this.mSearchList)
           for (var i = 0; i < this.mSearchList.length; i++) {
             if (this.mSearchList[i].accessKind && this.mSearchList[i].accessKey) {
               if (this.mSearchList[i].accessKind === 'title') {
@@ -865,26 +707,12 @@ export default {
         param.findActStarYn = false
         param.DESCYn = true
 
-        // if (this.viewTab === 'N') {
-        // } else if (this.viewTab === 'L') {
-        //   param.findActYn = true
-        //   param.findActLikeYn = true
-        // } else if (this.viewTab === 'S') {
-        //   param.findActYn = true
-        //   param.findActStarYn = true
-        // } else if (this.viewTab === 'M') {
-        //   param.creUserKey = this.GE_USER.userKey
-        // }
         if (this.mSearchContentTab === 'ALIM') {
           param.jobkindId = 'ALIM'
           param.ownUserKey = this.GE_USER.userKey
         } else if (this.mSearchContentTab === 'BOAR') {
           param.jobkindId = 'BOAR'
-          // if (this.viewTab === 'N') {
           param.boardYn = true
-          // } else {
-          //   param.ownUserKey = this.GE_USER.userKey
-          // }
         } else if (this.mSearchContentTab === 'ALL') {
           param.allYn = true
           param.ownUserKey = this.GE_USER.userKey
@@ -895,11 +723,11 @@ export default {
         }
         this.mGetAxiosYn = true
         var result = await this.$getContentsList(param, nonLoading)
-        this.mGetAxiosYn = false
         await this.endListSetFunc(result)
         var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList')
         this.mAxiosQueue.splice(queueIndex, 1)
         var resultList = result
+        // this.mGetAxiosYn = false
         return resultList
       }
     },

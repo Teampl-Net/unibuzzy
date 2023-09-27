@@ -295,7 +295,7 @@ Supplementary Provisions
       </textarea>
     </div>
     <div class="inputArea"><input type="checkbox" name="agreeOut" v-model="agreeOut" id="agreeOut"><label  for="agreeOut">{{ $t('MSG_AGREE') }}</label></div>
-    <gBtnSmall v-on:click="requestLeave()" :btnTitle="this.completeBtnTitle" class="mtop-1 smallBtnStyle" />
+    <gBtnSmall v-on:click="requestLeave()" :btnTitle="completeBtnTitle" class="mtop-1 smallBtnStyle" />
   </div>
 <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn=false"/>
 </div>
@@ -348,19 +348,9 @@ export default {
       })
       console.log(result)
       this.resultPopShowYn = true
-      // if (result.data.result === true) {
-      //   this.resultPopShowYn = true
-      // }
     },
     closeXPop () {
       this.resultPopShowYn = false
-      // this.$emit('closeXPop')
-      // this.$store.commit('UB_CHANNEL/MU_CLEAN_CHAN_LIST')
-      // this.$store.commit('UB_USER/MU_CLEAN_USER')
-      // localStorage.setItem('loginYn', false)
-      // localStorage.setItem('user', '')
-      // localStorage.setItem('sessionUser', '')
-      // this.$router.replace({ name: 'policies' })
       this.$UBLogOut()
       this.$router.replace({ name: 'login' })
     }

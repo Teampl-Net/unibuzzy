@@ -14,7 +14,7 @@
         <gEmpty :tabName="`스크랩`" contentName="게시판" v-if="GE_DISP_CONT_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
       </div>
     </div>
-    <div @click="openSearch" class="cursorP searchBtnWrap" :style="'bottom:' + (this.$STATUS_HEIGHT + 80)+ 'px'">
+    <div @click="openSearch" class="cursorP searchBtnWrap" :style="'bottom:' + ($STATUS_HEIGHT + 80)+ 'px'">
       <img src="@/assets/images/button/icon_search_color.svg" alt="search btn">
     </div>
   </div>
@@ -32,7 +32,6 @@ export default {
     propParams: Object
   },
   created () {
-    // this.$emit('changePageHeader', 'Saved')
     if (this.propParams && this.propParams.targetType === 'totalSaveList') {
       this.mContentsList = this.propParams.saveList
     } else {
@@ -160,9 +159,6 @@ export default {
         }
       }
       this.resultSearchKeyList = await this.castingSearchMap(this.findKeyList)
-      console.log('this.resultSearchKeyList')
-      console.log(this.resultSearchKeyList)
-      // this.findPaddingTopPush()
       var resultList = await this.getContentsList()
       if (resultList === '') {
         this.mContentsList = []
@@ -175,19 +171,16 @@ export default {
         this.mContentsList = this.replaceArr(newArr)
         this.endListSetFunc(resultList)
       }
-      // this.scrollMove()
       this.findPopShowYn = false
     },
     replaceArr (arr) {
       if (!arr && arr.length === 0) return []
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
-        /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
           return b.contentsKey - a.contentsKey
-          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data
       }, [])
@@ -205,8 +198,7 @@ export default {
       }
     },
     async getContentsList () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
 
       param.DESCYn = true
       param.findActLikeYn = false

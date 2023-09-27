@@ -17,14 +17,13 @@
 <template>
   <div class="w100P h100P listRefresh scrollHidden">
     <div class="popBg" v-if="GE_USER.unknownYn && mUnknownLoginPopYn"></div>
-    <!-- <unknownLoginPop :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" /> -->
     <gImgPop @closeXPop="closeImgPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" />
     <gConfirmPop v-if="mAppUpdatePopShwoYn" @no="goAppStore" confirmType="one" :confirmText="$t('MAIN_MSG_UPDATE')" />
     <gConfirmPop :confirmText="mErrorPopBodyStr" confirmType='one' @no='mErrorPopShowYn = false' v-if="mErrorPopShowYn" style="z-index: 9999999999999999999999;"/>
     <gConfirmPop :confirmText="mNetPopBodyStr" confirmType='no' @no='mNetPopShowYn = false' v-if="mNetPopShowYn" style="z-index: 9999999999999;"/>
     <gConfirmPop :confirmText="$t('MAIN_MSG_DIS_CONN')" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
-    <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" :pContentsYn="mTargetType === 'contentsDetail' || mTargetType === 'contDetail'" @goFavList="openPop" @goLogList="openPop" v-if="(mRouterHeaderInfo !== 'leave' && mTargetType !== 'chanDetail' && mTargetType !== 'boardMain') || $route.path === '/chanList' " @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9;" />
-    <gChanMainHeader :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 20)  + 'px'" v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === '' && mRouterHeaderInfo !== 'leave'" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo && mChanInfo.targetKey? mChanInfo.targetKey:''" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" :pChanInfo="mChanInfo" @openPop="openPop" class="chanDetailPopHeader" @bgColor="setBgColor"/>
+    <gUBHeader :class="{ myPageBgColor : mMyPageBgColorYn }" :pContentsYn="mTargetType === 'contentsDetail' || mTargetType === 'contDetail'" @goFavList="openPop" @goLogList="openPop" v-if="(mRouterHeaderInfo !== 'leave' && mTargetType !== 'chanDetail' && mTargetType !== 'boardMain') || $route.path === '/chanList' " @showMenu="showMenu" ref="UBMainHeaderWrap" class="header_footer " :pRouterHeaderInfo="mRouterHeaderInfo" :style="'height: ' + ($STATUS_HEIGHT + 50) + 'px; padding-top: ' + ($STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9;" />
+    <gChanMainHeader :style="'padding-top: ' + (Number($STATUS_HEIGHT) + 20)  + 'px'" v-if="(mTargetType === 'chanDetail' || mTargetType === 'boardMain') && mPopType === '' && mRouterHeaderInfo !== 'leave'" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @openMenu='openChanMenu' :chanAlimListTeamKey="mChanInfo && mChanInfo.targetKey? mChanInfo.targetKey:''" :headerTitle="mHeaderTitle" :thisPopN="mPopN" :targetType="mTargetType" :pChanInfo="mChanInfo" @openPop="openPop" class="chanDetailPopHeader" @bgColor="setBgColor"/>
     <div class="popBgWrite" v-if="mPopType === 'writeContents'" @click="mPopType = ''"></div>
     <writeContents v-if="mPopType === 'writeContents'" @closeXPop="closeWritePop" :params="mPopParams" :propData="mPopParams" :contentType="mPopParams.contentsJobkindId" />
     <div v-if="mPopType === 'logList'" class="popBg" @click="closeWritePop"></div>
@@ -35,7 +34,6 @@
     <transition name="showUp">
       <favListPop v-if="mPopType === 'favList'" @openPage="goOpenPage" :pFTeamList="mFTeamList" @closeXPop="closeWritePop" />
     </transition>
-    <!-- <gFavList /> -->
     <div class="popBg" v-if="mMenuShowYn" @click="hideMenu"></div>
     <transition name="show_left">
       <gMainMenu transition="show_left" @hideMenu="hideMenu" @openPop="openPop" @goPage="changeRouterPath" class="D_menuStyle " v-if="mMenuShowYn" />
@@ -51,18 +49,15 @@
       <router-view :key="$route.fullPath" ref="routerView" @goInquiries="goInquiries" @openImgPop="openImgPop" @setMainInfo="setMainInfo" @enterCloudLoading="enterCloudLoading" @showCloudLoading="showCloudLoading" @changeRouterPath="changeRouterPath" @openPop="openPop" @clearInfo="clearInfo" :pAreaInfo="mAreaInfo" :pCabKeyListStr="mCabKeyListStr" :pCampusTownInfo="mCampusTownInfo" :propParams="mChanInfo" :pPopId="mPopId" :parentPopN="mPopN" :initData="sendInitData" @bgcolor='setBgColor' @openPage="goOpenPage" @goDetail="goDetail" @openUserProfile="openPop" :popYn="false" @changePageHeader="changePageHeader" />
     </div>
     <gFooter v-if="!$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow footerStyle"/>
-    <!-- <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" /> -->
   </div>
 </template>
 <script>
-// import { AES } from 'crypto-js'
 import chanMenu from '../../components/popup/chanMenu/UB_channelMenu.vue'
 import notiHistoryList from '@/components/UB/popup/UB_notiHistoryList.vue'
 import writeContents from '../../components/popup/UB_writeContents.vue'
 import editMyChanMenu from '../../components/UB/popup/UB_editMyChanMenu.vue'
 import favListPop from '../../components/UB/popup/UB_favListPop.vue'
 import editBookListPop from '@/components/UB/popup/UB_editBookListPop.vue'
-// import unknownLoginPop from '../../components/pageComponents/channel/UB_unknownLoginPop.vue'
 export default {
   data () {
     return {
@@ -70,7 +65,6 @@ export default {
       mNetPopShowYn: false,
       mCabKeyListStr: null,
       mAreaInfo: {},
-      // mUnknownLoginPopYn: false,
       mEnterCloudsYn: false,
       mAfterCloudYn: false,
       mPolicyType: '',
@@ -129,8 +123,6 @@ export default {
       checkParam.userKey = Number(param.dcmKey)
       checkParam.fcmKey = param.fcmKey
     }
-    // this.getCTeamList()
-    // this.showCloudLoading(false, 5000)
   },
   methods: {
     updatePChanInfo () {
@@ -320,7 +312,6 @@ export default {
             goDetailParam.targetKey = notiUserDo.targetKey
             this.goChanDetail(goDetailParam)
           }
-          // goDetailParam.value = vuexResultData
         } else {
           this.$refs.mainGPopWrap.recvNotiFromMain(notiDetail, currentPage, vuexResultData)
         }
@@ -350,7 +341,6 @@ export default {
           axiosParam.userKey = this.GE_USER.userKey
           axiosParam.ownUserKey = this.GE_USER.userKey
           axiosParam.creTeamKey = axiosParam.teamKey
-          // axiosParam.cabinetKey = detailParam.cabinetKey
         }
 
         var result = await this.$getContentDetailData(axiosParam, false)
@@ -410,8 +400,6 @@ export default {
     },
     async goOpenPage (param) {
       if (param.targetType === 'chanDetail' || param.targetType === 'boardMain') {
-        // this.mCloudLoadingShowYn = true
-        // this.showCloudLoading(true)
         if (this.$route.path === '/') {
           this.showCloudLoading(true, true)
           this.enterCloudLoading(true)
@@ -446,7 +434,6 @@ export default {
       chanMainParam.teamKey = teamKey
       chanMainParam.targetKey = teamKey
       if (detailValue && detailValue.nameMtext) chanMainParam.nameMtext = detailValue.nameMtext
-      // chanMainParam.chanName = detailValue.nameMtext
       if (detailValue.contentsKey) {
         chanMainParam.jobkindId = detailValue.jobkindId
         chanMainParam.targetContentsKey = detailValue.contentsKey
@@ -468,7 +455,6 @@ export default {
         const result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.showCloudLoading(false)
-          // this.$showToastPop('채널을 찾을 수 없습니다!')
           this.$showToastPop('Channel not found!')
           return
         }
@@ -497,7 +483,6 @@ export default {
         initData.contentsList = result.data.contentsListPage
       } catch (error) {
         this.showCloudLoading(false)
-        // this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
         this.$showToastPop('Sorry! Please contact the administrator.')
         console.error(error)
       }
@@ -522,16 +507,8 @@ export default {
       }
       this.mChanMainTeamKey = detailValue.teamKey
       this.mTargetType = 'chanDetail'
-      // this.$router.push({ name: 'chanMain', params: { pTeamKey: this.mChanMainTeamKey } })
-      // const encryptedTeamKey = AES.encrypt(teamKey, 'encryptionSecret').toString()
-      // const encodedTeamKey = encodeURIComponent(encryptedTeamKey)
-      // let encodedTeamKey = detailValue.targetKey
-      // if (!teamKey && detailValue.creTeamKey) {
-      //   encodedTeamKey = detailValue.creTeamKey
-      // }
       this.getMyChan(initData, teamKey, paramMap)
       this.$router.push(`/chan/${teamKey}`)
-      // this.showCloudLoading(false, 1750)
     },
     async getMyChan (initData, teamKey, paramMap) {
       if (initData.cTeamList && initData.cTeamList.length > 0) {
@@ -568,8 +545,7 @@ export default {
     },
     async goMoreList (type) {
       if (type === 'saved') {
-        // eslint-disable-next-line no-new-object
-        var param = new Object()
+        var param = {}
 
         param.DESCYn = true
         param.findActLikeYn = false
@@ -594,11 +570,6 @@ export default {
         }
       }
     },
-    // goLogList (param) {
-    //   this.openPage(param)
-    //   this.mRouterHeaderInfo = param.popHeaderText
-    //   this.$router.push({ name: 'logList' })
-    // },
     changePageHeader (title) {
       this.mRouterHeaderInfo = title
     },
@@ -641,14 +612,10 @@ export default {
         this.mChanInfo.chanYn = params.chanYn
       }
       this.mTargetType = 'boardMain'
-      // await this.getCabinetDetail(params)
       this.$router.push(`/board/${params.teamKey}/${params.targetKey}`)
     },
     async openPage (params) {
       if (params.targetType === 'chanDetail') {
-        if (this.$route.path === '/') {
-          /* await new Promise((resolve) => setTimeout(resolve, 1500)) */
-        }
         await this.goChanDetail(params)
         return
       } else if (params.targetType === 'favList') {
@@ -661,9 +628,6 @@ export default {
       } else if (params.targetType === 'myPage') {
         this.goMyPage(params)
       } else if (params.targetType === 'boardMain') {
-        if (this.$route.path === '/') {
-          /* await new Promise((resolve) => setTimeout(resolve, 1500)) */
-        }
         this.goBoardDetail(params)
         this.hideMenu()
         return
@@ -680,7 +644,6 @@ export default {
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
-      // paramMap.set('cateItemKey', 3)
       if (this.mViewTab === 'user') {
         paramMap.set('userKey', userKey)
       } else if (this.mViewTab === 'all') {
@@ -719,15 +682,12 @@ export default {
       } else if (page !== 'chanList' && page !== 'myPage' && page !== 'main') {
         pageData = await this.$getRouterViewData(page, mainYn)
       } else if (page === 'myPage') {
-        // @point
-        // eslint-disable-next-line no-new-object
-        var param = new Object()
+        var param = {}
 
         param.pageSize = 5
 
         param.creUserKey = this.GE_USER.userKey
         param.jobkindId = 'BOAR'
-        // param.allYn = true
 
         var result = await this.$getContentsList(param, mainYn)
 
@@ -741,9 +701,6 @@ export default {
         pageData = await this.getChannelList(10, 0, mainYn)
       }
       if (page !== 'main' && page !== 'termsOfUse' && page !== 'privacy') {
-        /* if (this.$route.path === '/') {
-          await new Promise((resolve) => setTimeout(resolve, 1500))
-        } */
       }
       this.mTargetType = page
       this.sendInitData = pageData
@@ -757,12 +714,6 @@ export default {
           name: page
         })
       }
-      /* if (this.$route.path === '/' && page === 'main') {
-        this.enterCloudLoading(false)
-        setTimeout(() => {
-          this.showCloudLoading(false)
-        }, 500)
-      } */
     },
     changeNetStatePop () {
       if (this.mNetReturnPopShowYn === true) return
@@ -784,25 +735,7 @@ export default {
       }
     }
   },
-  // beforeCreate () {
-  //   if (!this.isMobile) {
-  //     if ('serviceWorker' in navigator && 'SyncManager' in window) {
-  //       const channel = new BroadcastChannel('new-server-post')
-  //       // service worker가 보낸 message 수신
-  //       channel.addEventListener('message', event => {
-  //         const response = event.data
-  //         var message = response.noti.data
-  //         console.log('onMessage: ', message)
-  //         this.$recvNotiFromBridge(null, null, message)
-  //       })
-  //     }
-  //   }
-  // },
   mounted () {
-    // setTimeout(() => {
-    //   this.mAfterCloudYn = true
-    // }, 1000)
-    // this.$showChanCommonPop(false)
     if (
       localStorage.getItem('systemName') !== undefined &&
     localStorage.getItem('systemName') !== 'undefined' &&

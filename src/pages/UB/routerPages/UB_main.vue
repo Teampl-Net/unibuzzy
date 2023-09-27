@@ -1,8 +1,7 @@
 <template>
   <div ref="mainRef" class="w100P h100P mainWrap" @click="getInRectImgList">
-    <gConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="Do you want to exit UniBuzzy?" />
+    <gConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="mAppCloseYn=false" confirmType="two" confirmText="Do you want to exit UniBuzzy?" />
     <createBoardChannel v-if="mCreChannelShowYn" @successCreBoard="successCreBoard" @successCreChan="successCreChan" :pAreaInfo="mAreaInfo" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
-    <!-- <createChannel @successCreChan="successCreChan" v-if="mCreChannelShowYn" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" /> -->
     <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" class="popBg"></div>
     <transition name="showUp">
       <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
@@ -16,27 +15,19 @@
       <infoBox v-if="mChanInfoPopShowYn" @openPop="openPop" :pClosePop="closeChanInfoBox" @openPage="openPage" :pAreaInfo="mAreaInfo" :pAreaDetail="mAreaDetail" :pChanInfo="mSelectedChanInfo" />
     </transition>
     <div class="w100P mainTownArea">
-      <!-- <div class="ballon">Go to other town?</div> -->
       <div class="ballon">
         <img src="@/assets/images/main/ballon.png" alt="go to other town?" class="w100P"/>
       </div>
       <div class="planeBox">
         <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="" alt="">
       </div>
-      <!-- <UBBgEffect /> -->
-      <!-- my profile -->
-      <div @click="goUserProfile" class="profileBox" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}">
+      <div @click="goUserProfile" class="profileBox" v-if="!GE_USER.unknownYn" :style="{top: $STATUS_HEIGHT + 60 + 'px'}">
         <gProfileImg :selfYn="true" class="fl profileImg" />
-        <div class="fl font20 fontBold userName">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
+        <div class="fl font20 fontBold userName">{{ $changeText(GE_USER.userDispMtext) }}</div>
       </div>
       <div v-else class="w100P loginBtnWrap">
         <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr loginBtn"/>
       </div>
-    <!-- <div v-if="mInfoBoxShowYn" @click="closeInfoBox" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 99999; background: #00000050;"></div>
-      <transition name="showUp">
-        <UBInfoBox v-if="mInfoBoxShowYn" :pType="'BD'" @openPage="openPage" :pChan="clickedBd" />
-        <UBInfoBox v-else-if="clickedArea.clickedYn" :pType="'AR'" :pMoveToDetail="moveToChan" :pClickedInfo="clickedArea" :pVillageInfo="village.villageInfo" :innerHeight="innerHeight" :innerWidth="innerWidth" />
-      </transition> -->
       <template v-if="!mLoadingYn">
           <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
             <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
@@ -53,8 +44,6 @@
                   <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold"></div>
                 </div>
                 <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl"/>
-                <!-- <span class="fontBold font12" style="position: absolute; background: rgba(100,100,100,0.7); color: white; border-radius: 5px; padding: 0 5px; top: -15px;left: 0;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
-                <!-- <span class="fontBold font12" :style="[{left: -(village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority) + 1) / 2 * 20) + 'px'}]" style="position: absolute; background: rgba(100,100,100,0.7); color: white; width: 100px; border-radius: 5px; padding: 0 5px;">{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span> -->
                 <span v-if="!(area.priority === 0 && index === 0) && village.areaList[area.priority].buildingList[index].maskedImageUrl" class="fontBold font12 bdName"
                 :style="[{ 'background-color': index === 0 ? '#f1f1f1CC' : (index === 1 || index === 2) ? '#f1f1f199' : (index === 3 || index === 4) ? '#f1f1f180' : '' }, {left: -40 + (village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority)) / 2 * 10) + 'px'}]" >{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
             </div>
@@ -69,10 +58,6 @@
         <img id='writeBtn' src="../../../assets/images/button/Icon_WriteBoardBtn.svg" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="height: auto; cursor: pointer;">
       </div>
     </div>
-    <!-- <div class="PostsBallon">view Town's Posts</div>
-    <div @click="openBoardPop" class="cursorP testBox" style="width: 70px; position: fixed; bottom: 100px; right: 15px; ">
-        <img style="width: 100%;" src="../../../assets/images/main/UBTownFeed.svg" alt="">
-    </div> -->
     <div v-if="mBoardPopShowYn" class="popBg" @click="$refs.mainBoardRef.closeXPop"></div>
     <transition name="showUp">
         <mainBoardList @openImgPop="openImgPop" @openPage="openPage" @openPop="openPop" :pAreaInfo="mAreaInfo" :pTownTeamKey="mTownTeamKey" v-if="mBoardPopShowYn" ref="mainBoardRef" :pClosePop="closeBoardPop"/>
@@ -85,20 +70,13 @@
 </template>
 <script>
 import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
-// import UBInfoBox from '../../../components/popup/info/UB_infoBox.vue'
 import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue'
-// import createChannel from '../../../components/UB/popup/UB_createChannel.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
 import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel.vue'
 import mainBoardList from '../../../components/UB/popup/UB_boardListPop.vue'
 import infoBox from '../../../components/popup/info/UB_infoBox.vue'
 import writeBottSheet from '../../../components/popup/writeContentUnit/UB_contentsWriteBottSheet.vue'
-// import UBBgEffect from '../../../components/pageComponents/main/UB_bgEffect.vue'
 export default {
-  props: {
-    // pFindAllDrawn: Function
-    // pCampusTownInfo: {}
-  },
   data () {
     return {
       mLoadingYn: false,
@@ -152,14 +130,10 @@ export default {
       this.$router.push({ name: 'uniBmain' })
       return
     }
-    // localStorage.clear()
-
-    // this.findAllDrawn()
     this.resetHistory()
     this.setNativeHeight()
     this.$store.commit('UB_HISTORY/updateStack', [0])
     this.$emit('clearInfo', { detail: null, targetType: 'main' })
-    // this.getUserTeamList()
 
     var urlParam = localStorage.getItem('deepLinkQueue')
     if (urlParam && urlParam.trim() !== '') {
@@ -184,17 +158,7 @@ export default {
       } else {
         this.$emit('changePageHeader', 'Campus')
       }
-      /* this.$emit('enterCloudLoading', false)
-      setTimeout(() => {
-        this.$emit('showCloudLoading', false)
-      }, 500) */
     })
-
-    // if (this.pCampusTownInfo) {
-    //   // this.village = this.pCampusTownInfo
-    // }
-    // const vilInfo = this.village.villageInfo
-    // const headerInfoParam = { name: vilInfo.name, logoImg: vilInfo.logoImg }
   },
   methods: {
     async openSelectWriteTypePop () {
@@ -271,10 +235,6 @@ export default {
       this.mCreChannelShowYn = true
     },
     closeBoardPop (shadowClickYn) {
-    /*     if (shadowClickYn) {
-            this.$refs.mainBoardRef
-            refs.mainBoardRef.closeXPop
-        } */
       this.mBoardPopShowYn = false
     },
     openBoardPop () {
@@ -318,7 +278,7 @@ export default {
       return resultList
     },
     async openSelectSchoolPop () {
-      this.mSchoolList = null/* await this.getChannelList(10, 0, false) */
+      this.mSchoolList = null
       this.mSelectSchoolPopShowYn = true
     },
     closeSelectSchoolPop () {
@@ -343,12 +303,9 @@ export default {
         localStorage.setItem('user', JSON.stringify(result.data.userInfo))
         await this.$store.dispatch('UB_USER/AC_USER', result.data.userInfo)
         localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
-        // this.$router.push('/')
-        // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)
       } else {
         this.$showToastPop(this.$t('COMMON_MSG_FAILED'))
       }
-      // this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))
       this.getMainBoard().then(res => {
         this.createMaskingAreaImg()
         this.innerWidth = window.innerWidth
@@ -367,13 +324,11 @@ export default {
       if (this.GE_USER.myTeamKey === 836) {
         this.$router.push({ name: 'uniBmain' })
       }
-      // this.$router.go(0)
     },
     async openChanInfoPop (area, teamKey) {
       const param = {
         bdArea: {
           bdAreaKey: area.bdAreaKey
-          // bdAreaKey: 3
         }
       }
       if (area.priority === 0) {
@@ -402,7 +357,6 @@ export default {
       const param = {
         bdArea: {
           bdAreaKey: area.bdAreaKey
-          // bdAreaKey: 3
         }
       }
       if (area.priority === 0) {
@@ -438,19 +392,11 @@ export default {
       this.mSelectedAreaInfo = value
     },
     goUserProfile () {
-      // this.$router.push('/myPage')
       this.$emit('changeRouterPath', 'myPage')
-      // const param = {}
-      // param.targetType = 'setMypage'
-      // param.popHeaderText = this.$t('PROF_NAME_SETTING')
-      // param.readOnlyYn = true
-      // param.selfYn = true
-      // this.$emit('openPop', param)
     },
     async goLoginPage () {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       if (isMobile && (localStorage.getItem('nativeYn') === true || localStorage.getItem('nativeYn') === 'false')) {
-        // window.location.href = 'http://192.168.0.10:8080/#/login'
         this.$router.push({ path: '/login' })
       } else {
         this.$router.push({ path: '/policies' })
@@ -471,15 +417,12 @@ export default {
       if (this.GE_USER.userKey) {
         paramMap.set('userKey', this.GE_USER.userKey)
       } else {
-        // paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
         if ((localStorage.getItem('sessionUser'))) paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
       }
       if (this.GE_USER.soAccessToken && this.GE_USER.soAccessToken !== '') { paramMap.set('soAccessToken', this.GE_USER.soAccessToken) }
       if (this.GE_USER.fcmKey !== undefined && this.GE_USER.fcmKey !== null && this.GE_USER.fcmKey !== '') { paramMap.set('fcmKey', this.GE_USER.fcmKey) }
       paramMap.set('userEmail', this.GE_USER.userEmail)
       paramMap.set('soEmail', this.GE_USER.soEmail)
-      // paramMap.set('myTeamKey', this.GE_USER.myTeamKey)
-      // paramMap.set('myTeamKey', 836)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
       paramMap.set('fUserKey', this.GE_USER.userKey)
@@ -546,10 +489,7 @@ export default {
             this.village.areaList[area.priority].buildingList.push(buildingObj)
           }
         }
-        // await this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [...this.mBdAreaList, ...this.mMainMChanList])
-        // await this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimListmMainAlimList)
         if (response.data.cTeamList) {
-          // area.bdList[j].teamKey = area.bdList[j].targetKey
           await this.$addChanVuex(response.data.cTeamList)
         }
       }
@@ -571,14 +511,10 @@ export default {
       this.$store.commit('UB_HISTORY/setRemovePage', '')
       this.$store.commit('UB_HISTORY/updateStack', [])
       this.$store.dispatch('UB_HISTORY/AC_CLEAR_GPOP_STACK')
-      // this.$emit('changePageHeader', 'uniBuzzy')
     },
     moveToChan (clickedInfo) {
-      // const errorRoute = { name: 'errorPage', query: { errorStatus: error.response.status } }
       this.closeInfoBox()
       this.$emit('chanInfo', clickedInfo)
-      // const chanRoute = { name: 'chanMain', query: {chanInfo: JSON.stringify(clickedInfo)} }
-      // this.$router.push(chanRoute)
     },
     createMaskingAreaImg () {
       const areaList = this.village.areaList
@@ -669,7 +605,6 @@ export default {
           targetImage.src = area.imgLink
         }
       }
-      // this.mLoadingYn = false
     },
     createMaskingBuildingImg (area, lastYn) {
       const bdList = area.buildingList
@@ -754,8 +689,6 @@ export default {
             }
           }
           // 마스킹 이미지 그리기
-          // if (bd.type !== 'CB') bd.top = 200
-          // context.drawImage(this, newWidth + bd.left, newHeight + bd.top, bd.w, bd.h)
           context.drawImage(this, 0, 0, bd.w, bd.h)
           // 마스킹 이미지를 base64로 변환하여 출력
           bd.maskedImageUrl = canvas.toDataURL()
@@ -865,8 +798,6 @@ export default {
     async getBoardList (teamKey) {
       const chanMainParam = {}
       chanMainParam.targetType = 'chanDetail'
-      // const encryptedKey = decodeURIComponent(encodedKey)
-      // const teamKey = AES.decrypt(encryptedKey, 'encryptionSecret').toString(enc.Utf8)
       chanMainParam.teamKey = teamKey
       chanMainParam.targetKey = teamKey
       const param = {}
@@ -878,7 +809,6 @@ export default {
         false
       )
       if (!result || !result.data) {
-        // this.$showToastPop('채널을 찾을 수 없습니다!')
         this.$showToastPop('Channel not found!')
       } else {
         this.mBoardList = result.data
@@ -904,9 +834,6 @@ export default {
     }
   },
   watch: {
-    /* locale (val) {
-      this.$i18n.locale = val
-    }, */
     mLoadingYn (val) {
       if (!val) {
         this.$emit('enterCloudLoading', false)

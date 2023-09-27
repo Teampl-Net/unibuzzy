@@ -1,5 +1,5 @@
 <template>
-  <div ref="uniBMainRef" class="w100P h100P uniBMainWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT)+ 'px'">
+  <div ref="uniBMainRef" class="w100P h100P uniBMainWrap" :style="'padding-top:' + ($STATUS_HEIGHT)+ 'px'">
     <div v-if="mGuidePopShowYn" @click="closeGuidePop" class="popBg"></div>
     <div v-if="mSelectSchoolPopShowYn" @click="closeSelectSchoolPop" class="popBg"></div>
     <transition name="showUp">
@@ -15,17 +15,13 @@
       <div class="planeBox">
         <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="" alt="">
       </div>
-      <!-- <div class="ballon">Go to other town?</div>
-      <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" alt=""> -->
-      <!-- my profile -->
-      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: this.$STATUS_HEIGHT + 60 + 'px'}" class="profileBox">
+      <div @click="goUserProfile" v-if="!GE_USER.unknownYn" :style="{top: $STATUS_HEIGHT + 60 + 'px'}" class="profileBox">
         <gProfileImg :selfYn="true" class="fl profileImg" />
-        <div class="fl font20 fontBold userName">{{ this.$changeText(this.GE_USER.userDispMtext) }}</div>
+        <div class="fl font20 fontBold userName">{{ $changeText(GE_USER.userDispMtext) }}</div>
       </div>
       <div v-else class="w100P btnWrap">
         <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr mTop60" />
       </div>
-      <!-- <img v-for="elem in mUniBElementList" :key="elem.key" :src="elem.maskedImageUrl" :style="`width: ${elem.w}px; height: ${elem.h}px;`" style="position: absolute; transform: translate(-50%, 0);" alt=""> -->
       <template v-for="(uniB) in mUniBElementList" :key="uniB.key">
         <img @click="uniB.clickFunction" class="w100P mobileNone uniBimg" :class="uniB.key !== 1? 'zoom':''" :src="uniB.imgLink" :style="{ width: uniB.w, left: uniB.left, top: uniB.top }"/>
         <img @click="uniB.clickFunction" class="w100P pcNone uniBimg" :class="uniB.key !== 1? 'zoom':''" :src="uniB.imgLink" :style="{ width: uniB.mobileW, left: uniB.left, top: uniB.top }"/>
@@ -172,82 +168,10 @@ export default {
         localStorage.setItem('user', JSON.stringify(result.data.userInfo))
         await this.$store.dispatch('UB_USER/AC_USER', result.data.userInfo)
         localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
-        // this.$router.push('/')
-        // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)
       } else {
         this.$showToastPop(this.$t('COMMON_MSG_FAILED'))
       }
       this.$router.push('/')
-      // window.location.reload()
-      // this.$router.go(0)
-    },
-    closeInfoBox () {
-      this.resetHistory()
-      if (this.clickedArea && this.clickedArea.clickedYn) {
-        this.clickedArea.clickedYn = false
-      } else if (this.clickedBd && this.clickeduniB.clickedYn) {
-        this.clickeduniB.clickedYn = false
-      }
-      this.mInfoBoxShowYn = false
-      return false
-    },
-    createMaskingUniBImg () {
-      // eslint-disable-next-line no-debugger
-      debugger
-      const uniBList = this.mUniBList
-      const h = window.innerHeight
-      const w = window.innerWidth
-      if (uniBList && uniBList.length !== 0) {
-        for (let i = 0; i < uniBList.length; i++) {
-          const uniB = uniBList[i]
-          uniB.w = 1 / 10 * w
-          uniB.h = 1 / 10 * h
-          let blankWidth = 0
-          if (window.innerWidth > 1000) {
-            blankWidth = (window.innerWidth - 1000) / 2
-          }
-          if (uniB.key === 1) { // youtube
-            uniB.w = w
-            uniB.left = 50
-            uniB.top = 20
-          } else if (uniB.key === 2) { // inquiries
-            uniB.h = h / 9
-            uniB.left = 400 / 564 * w - blankWidth
-            uniB.top = 63 / 100 * h - uniB.h
-          } else if (uniB.key === 3) { // faq
-            uniB.h = 1 / 12 * h
-            uniB.left = 360 / 564 * w - blankWidth
-            uniB.top = 310 / 1000 * h - uniB.h
-          } else if (uniB.key === 4) { // instagram
-            uniB.h = 1 / 5 * h
-            uniB.left = 370 / 564 * w - blankWidth
-            uniB.top = 9 / 10 * h - uniB.h - 60
-          } else if (uniB.key === 5) { // download
-            uniB.h = 1 / 4 * h
-            uniB.left = 120 / 564 * w - blankWidth
-            uniB.top = 19 / 20 * h - uniB.h - 20
-          }
-          const targetImage = new Image()
-          targetImage.src = uniB.imgLink
-          targetImage.onload = function () {
-            const canvas = document.createElement('canvas')
-            const scaleFactor = uniB.h / this.height
-            const newWidth = Math.floor(this.width * scaleFactor)
-            const newHeight = Math.floor(this.height * scaleFactor)
-            canvas.width = newWidth
-            canvas.height = newHeight
-            uniB.w = newWidth
-            uniB.h = newHeight
-            const context = canvas.getContext('2d', { willReadFrequently: true })
-            // 마스킹 이미지 그리기
-            context.drawImage(this, 0, 0, uniB.w, uniB.h)
-            uniB.ctx = context
-            // 마스킹 이미지를 base64로 변환하여 출력
-            uniB.maskedImageUrl = canvas.toDataURL()
-          }
-          targetImage.src = uniB.imgLink
-        }
-      }
     },
     async openSelectSchoolPop () {
       this.mSchoolList = await this.getChannelList(10, 0, false)
@@ -256,7 +180,6 @@ export default {
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
-      // paramMap.set('cateItemKey', 3)
       if (this.mViewTab === 'user') {
         paramMap.set('userKey', userKey)
       } else if (this.mViewTab === 'all') {
@@ -295,42 +218,6 @@ export default {
     openPop (openParam) {
       this.$emit('openPop', openParam)
     },
-    async getMainBoard () {
-      // eslint-disable-next-line no-debugger
-      debugger
-      if (this.GE_USER.unknownYn) {
-        this.GE_USER.userKey = 225
-      }
-      console.log('getMainBoard')
-      if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
-      this.mAxiosQueue.push('getMainBoard')
-      var paramMap = new Map()
-      if (this.GE_USER.userKey) {
-        paramMap.set('userKey', this.GE_USER.userKey)
-      } else {
-        paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
-      }
-      if (this.GE_USER.soAccessToken && this.GE_USER.soAccessToken !== '') { paramMap.set('soAccessToken', this.GE_USER.soAccessToken) }
-      if (this.GE_USER.fcmKey !== undefined && this.GE_USER.fcmKey !== null && this.GE_USER.fcmKey !== '') { paramMap.set('fcmKey', this.GE_USER.fcmKey) }
-      paramMap.set('userEmail', this.GE_USER.userEmail)
-      paramMap.set('soEmail', this.GE_USER.soEmail)
-      var isMobile = /Mobi/i.test(window.navigator.userAgent)
-      paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
-      )
-      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
-      this.mAxiosQueue.splice(queueIndex, 1)
-      if (response && (response.status === 200 || response.status === '200')) {
-        this.mMainChanList = response.data.teamList
-        this.mMainMChanList = response.data.mTeamList
-        this.mMainAlimList = response.data.alimList.content
-        await this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [...this.mMainChanList, ...this.mMainMChanList])
-        await this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
-      }
-      console.log(this.mMainChanList)
-      console.log(this.mMainMChanList)
-      console.log(this.mMainAlimList)
-    },
     setNativeHeight () {
       var varUA = localStorage.getItem('systemName')
       var nativeYn = localStorage.getItem('nativeYn')
@@ -350,55 +237,6 @@ export default {
       this.$store.dispatch('UB_HISTORY/AC_CLEAR_GPOP_STACK')
       this.$emit('changePageHeader', 'uniBuzzy')
     },
-    getInRectImgList (event) {
-      // 빌딩부터 역순으로 뒤짐
-      // 빌딩이 발견됨, 스타일클리어 시키고, 효과를 주고 return해버리기
-      // 빌딩 클릭이 없음, uniBclick을 찾음
-      let blankWidth = 0
-      if (window.innerWidth > 1000) {
-        blankWidth = (window.innerWidth - 1000) / 2
-      }
-      this.clickedUniB = {}
-      this.allClearFocus()
-      let findYn = false
-      const uniBList = this.mUniBList
-      for (let i = 0; i < uniBList.length; i++) {
-        const uniB = uniBList[i]
-        if (uniB.ctx === null) { continue }
-        findYn = false
-        if (event.clientX >= uniB.left + blankWidth && event.clientX <= (uniB.left + uniB.w + blankWidth) && event.clientY >= uniB.top && event.clientY <= (uniB.top + uniB.h)) {
-          findYn = true
-          uniB.onImgYn = true
-          break
-        }
-        uniB.onImgYn = false
-      }
-      this.allClearFocus()
-      if (findYn === false) {
-        return
-      }
-      // 마우스 위치가 마스킹 영역 내부에 있는지 확인
-      for (let i = uniBList.length - 1; i >= 0; i--) {
-        const uniB = uniBList[i]
-        if (uniB.onImgYn === false) { continue }
-        const _x = event.clientX - uniB.left - blankWidth
-        const _y = event.clientY - uniB.top
-        const pixelData = uniB.ctx.getImageData(_x, _y, 1, 1).data
-        if (pixelData[3] !== 0) {
-          this.clickedUniB = uniB
-          uniB.clickedYn = true
-          uniB.maskedImageStyle = { filter: 'drop-shadow(0 0 5px yellow) drop-shadow(0 0 40px white)' }
-          break
-        }
-      }
-    },
-    allClearFocus () {
-      for (let i = 0; i < this.mUniBList.length; i++) {
-        const uniB = this.mUniBList[i]
-        uniB.clickedYn = false
-        uniB.maskedImageStyle = {}
-      }
-    },
     setWindowSize () {
       this.innerWidth = window.innerWidth
       const nowHeight = window.innerHeight
@@ -416,7 +254,6 @@ export default {
   mounted () {
     this.findAllDrawn()
     this.setWindowSize()
-    window.addEventListener('resize', this.createMaskingUniBImg)
   },
   computed: {
     historyStack () {

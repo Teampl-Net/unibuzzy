@@ -22,7 +22,7 @@
   <div class="introBackground">
       <div class="introWhiteCard" style="min-height: 300px;">
             <div class="text-start px-4 permissionHeaderWrap">
-                <img src="../../assets/images/intro/login/uniB_logo.png" class="fl mtop-03" style="height: 70%;">
+                <img src="../../assets/images/intro/login/uniB_logo.png" class="fl mtop-03">
                 <div class="ms-2 fl permissionHeaderTextWrap">
                     <p class="fl headerFont h100P">{{ $t('APP_NAME') }}</p>
                     <div class="fl ms-1 h100P headerLogoDiv" >
@@ -72,6 +72,9 @@ p {
   min-height: 50px;
   height: 20%;
   box-sizing: border-box;
+}
+.permissionHeaderWrap > img {
+  height: 70%;
 }
 .permissionHeaderTextWrap {
   width: calc(90% - 48px);

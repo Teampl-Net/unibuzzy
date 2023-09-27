@@ -38,10 +38,9 @@
   <gPopHeader :headerTitle="`Settings`" @closeXPop="closeXPop"/>
   <div class="setMyPageWrap">
     <logoutPop v-if="logOutShowYn" @goLogOut="closeLogoutPop" @closePop="closeOnlyLogoutPop"/>
-    <!-- <policyPop v-if="this.showPolicyPopYn" :policyType="this.policyType" @closePolicyPop="closePolicyPop" /> -->
-    <userImgSelectCompo @closeXPop="closeImgPop" :pSelectedIconPath="this.GE_USER.domainPath + this.GE_USER.userProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
+    <userImgSelectCompo @closeXPop="closeImgPop" :pSelectedIconPath="GE_USER.domainPath + GE_USER.userProfileImg" :parentSelectedIconFileKey="GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
     <div>
-       <div class="languageArea" :style="'padding-top:' + (this.$STATUS_HEIGHT + 5)+ 'px;'">
+       <div class="languageArea" :style="'padding-top:' + ($STATUS_HEIGHT + 5)+ 'px;'">
          <p class="font12 fl mright-05">{{ $t('PROF_TITLE_LANGUAGE') }}</p>
         <select class="fl mRight10 font12" @change="change18n('userLang', selectedI18nLocale)" v-model="selectedI18nLocale" name="selectLang" id="selectLang"><option value="en">English</option><option value="ko">한국어</option></select>
         <p class="font12 fl mright-05">{{ $t('ROPF_TITLE_TIME') }}</p>
@@ -49,11 +48,11 @@
        </div>
        <div class="profileWrap ">
         <div @click="changeUserImg()" class="cursorP imgSize">
-          <div class="roundDiv profilePicImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"></div>
+          <div class="roundDiv profilePicImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + $changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"></div>
           <div @click="changeUserImg()" class="font14 changeImgBtn">{{ $t('COMM_BTN_EDIT') }}</div>
         </div>
         <div class="font20 fontBold mtop-1 userNameBox" v-show="!changeYn" >
-          <span class="fl textOverdot">{{this.$changeText(this.GE_USER.userDispMtext)}}</span>
+          <span class="fl textOverdot">{{$changeText(GE_USER.userDispMtext)}}</span>
           <img src="@/assets/images/contents/noticebox_edit.png" class="fr cursorP" @click="changeUserDispMtext()" >
         </div>
 
@@ -75,9 +74,7 @@
     </div>
     <div class="subPaddingWrap">
       <table>
-        <!-- <tr @click="settingAlimPopYn = true"><th colspan="2">알림 설정</th></tr> -->
-        <tr><th>{{ $t('PROF_TITLE_DOWNLOAD') }}</th><td class="textRight">{{this.$dayjs(GE_USER.creDate).format('YYYY/MM/DD')}}</td></tr>
-        <!-- <tr><th class="font16">가입일</th><td class="textRight font16">{{this.$changeDateFormat(GE_USER.creDate, true)}}</td></tr> -->
+        <tr><th>{{ $t('PROF_TITLE_DOWNLOAD') }}</th><td class="textRight">{{$dayjs(GE_USER.creDate).format('YYYY/MM/DD')}}</td></tr>
         <tr @click="openPolicyPop('privacy')"><th class="font16" colspan="2">{{ $t('PROF_BTN_POLICY') }}</th></tr>
         <tr @click="openPolicyPop('termsOfUse')"><th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_TERMS') }}</th></tr>
         <tr @click="checkAppVersion" v-if="isMobile">
@@ -86,16 +83,8 @@
             <p class="font10">{{ $t('PROF_TITLE_LATE_VERSION') }}: {{lastVersion}}</p>
           </th>
           <td class="textRight font16">{{appVersion}}</td></tr>
-          <tr @click="cleanApp"><th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_CASH') }}</th></tr>
-          <tr v-if="isMobile && this.systemName === 'android' || this.systemName === 'Android'" @click="reloadApp"><th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_CASH') }}</th></tr>
-          <!-- <tr @click="this.myChanListPopYn = true">
-            <th>
-              내 채널 -->
-              <!-- <a href="http://adm.pushmsg.net/">내 채널</a> -->
-            <!-- </th>
-            <td class="textRight"></td>
-          </tr> -->
-
+          <tr v-if="isMobile && systemName === 'android' || systemName === 'Android'" @click="reloadApp"><th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_CASH') }}</th></tr>
+          <tr v-else @click="cleanApp"><th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_CASH') }}</th></tr>
       </table>
       <div v-on:click="openLogoutPop" class="font14 cursorP logoutBtn">
         {{ $t('PROF_BTN_LOGOUT') }}
@@ -114,7 +103,6 @@
 import userItem from '@/components/unit/UB_userItem.vue'
 import logoutPop from '@/components/pageComponents/myPage/UB_logoutPop.vue'
 import userImgSelectCompo from '@/components/pageComponents/myPage/UB_changeUserIcon.vue'
-/* import pushPop from '@/components/popup/Tal_pushDetailPopup.vue' */
 import { onMessage } from '@/assets/js/webviewInterface'
 import { getCurrentInstance } from 'vue'
 import i18n from '../../../assets/i18n'
@@ -123,23 +111,18 @@ export default {
   components: {
     userItem,
     logoutPop,
-    // policyPop,
     userImgSelectCompo
   },
   data () {
     return {
-      pageHistoryName: '',
       selectedI18nLocale: i18n.global.locale,
       selectedLocale: this.$locale,
       changeUserIconShowYn: false,
-      myChanListPopYn: false,
       userEmail: { click: 'changeEmail', icon: '/resource/common/main_email.png', title: '이메일', value: localStorage.getItem('userEmail'), btnText: '변경', link: 'http://naver.com' },
       userPhone: { click: 'changeMobile', icon: '/resource/common/main_phone.png', title: '휴대폰 번호', value: localStorage.getItem('userMobile'), btnText: '변경', link: 'http://naver.com' },
       appVersion: 0,
       logOutShowYn: false,
       showPolicyPopYn: false,
-      policyType: 'useTheAlim',
-      settingAlimPopYn: false,
       tempUserDispName: '',
       changeYn: false,
       errorBoxYn: false,
@@ -161,8 +144,6 @@ export default {
   },
   created () {
     localStorage.setItem('notiReloadPage', 'none')
-    // this.$emit('changePageHeader', 'Settings')
-    // .stringify(localStorage.getItem('appInfo')))
     if (this.isMobile) {
       this.appInfo = JSON.parse(localStorage.getItem('appInfo'))
       if (this.appInfo) {
@@ -171,9 +152,6 @@ export default {
       }
     }
     if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
-
-    /* var history = localStorage.getItem('popHistoryStack').split('$#$')
-    this.pageHistoryName = 'page' + (history.length - 1) */
   },
   computed: {
     GE_TIME_LOCALE () {
@@ -226,11 +204,8 @@ export default {
   },
   methods: {
     async change18n (target, type) {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      // eslint-disable-next-line no-new-object
-      var user = new Object()
-      // param.user = this.userInfo
+      var param = {}
+      var user = {}
       var localUser = this.$store.getters['UB_USER/GE_USER']
       if (localUser.userEmail !== undefined && localUser.userEmail !== null && localUser.userEmail !== '') { user.soEmail = localUser.userEmail }
       if (localUser.userKey !== undefined && localUser.userKey !== null && localUser.userKey !== '') { user.userKey = localUser.userKey }
@@ -240,7 +215,6 @@ export default {
       user[target] = type
       param.user = user
 
-      // param.updateYn = true
       var result = null
       var response = await this.$commonAxiosFunction({
         url: '/sUniB/tp.saveUser',
@@ -314,12 +288,6 @@ export default {
         this.setTimer(false)
       }
     },
-    devSendPush () {
-      // 1. 알림을 수신할래? 클릭할래?
-      // 2. 어떤 컨텐츠를 수신할래? 없으면 가장최신
-      // 3. 몇초뒤에 수신할래?
-
-    },
     setTimer (startYn) {
       var intervalId = null
       if (startYn) {
@@ -349,7 +317,6 @@ export default {
             this.checkVersionText = 'An app version update is required. <br>Go to the Play Store?'
           }
           this.checkVersionPopShowYn = true
-          // window.open(appInfo.playStoreUrl, '_blank')
         }
       }
     },
@@ -369,12 +336,8 @@ export default {
       if (systemName === 'android' || systemName === 'Android') {
         if (appInfo.current !== appInfo.last) {
           window.open('https://play.google.com/store/apps/details?id=com.tal_project', '_blank')
-        /* onMessage('closeApp', 'requestUserPermission').then(res => {
-        aTag.click()
-      }) */
         }
       }
-      // document.body.removeChild(aTag)
     },
     reloadApp () {
       this.reloadShowText = this.$t('PROF_MSG_RESTART')
@@ -403,10 +366,8 @@ export default {
       this.changeUserIconShowYn = false
     },
     async setDispName () {
-      // KO$^$수망고$#$EN$^$sumango
       var param = {}
       var user = {}
-      // param.user = this.GE_USER
       user.userKey = this.GE_USER.userKey
       user.userNameMtext = this.GE_USER.userNameMtext
       user.userDispMtext = 'EN$^$' + this.tempUserDispName
@@ -418,9 +379,7 @@ export default {
       if (result.data) {
         this.changeYn = false
         this.$store.commit('UB_USER/MU_USER', result.data.userInfo)
-        // this.$router.push('/')
         this.$emit('closeXPop')
-        // this.GE_USER.userDispMtext = await this.$changeText(param.user.userDispMtext)
       } else {
         this.errorBoxText = this.$t('PROF_MSG_NAME_ERROR')
         this.errorBoxYn = true
@@ -431,8 +390,7 @@ export default {
       this.tempUserDispName = this.$changeText(this.GE_USER.userDispMtext)
     },
     openPop (target, title) {
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
+      var params = {}
       params.targetType = target
       params.popHeaderText = title
       this.$emit('openPop', params)
@@ -450,25 +408,10 @@ export default {
     },
     openPolicyPop (type) {
       this.$emit('changeRouterPath', type)
-      // this.policyType = type
-      // this.showPolicyPopYn = true
     },
     closePolicyPop () {
       this.showPolicyPopYn = false
-    },
-
-    callPhone (num) {
-      if (num !== undefined && num != null && num !== '') {
-        if (this.systemName !== 'Android' && this.systemName !== 'android') { document.location.href = 'tel:' + num } else { onMessage('REQ', 'callphone', num) }
-      } else {
-        this.errorBoxText = this.$t('PROF_MSG_NO_PHONE')
-        this.errorBoxYn = true
-      }
-    },
-    openManagerChanDetail (param) {
-      this.$emit('openPop', param)
     }
-
   }
 }
 </script>

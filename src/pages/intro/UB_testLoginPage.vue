@@ -26,11 +26,11 @@
 </i18n>
 <template>
 <div class="introBackground">
-  <gConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
-    <div class="introWhiteCard" style=" min-height: 450px;">
-      <div class="pagePaddingWrap" style="padding-top: 20px;">
+  <gConfirmPop v-if="failPopYn" @no="failPopYn=false" confirmType="timeout" :confirmText="errorText" />
+    <div class="introWhiteCard">
+      <div class="pagePaddingWrap pTop-20">
         <div class="mbottom-1 mtop-1">
-          <img class="mbottom-05" src="../../assets/images/intro/login/uniB_logo.png" style="width: 5rem" alt="" @click="testLogin">
+          <img class="mbottom-05 uniBLogoImg" src="../../assets/images/intro/login/uniB_logo.png" alt="" @click="testLogin">
           <p class="font20 mbottom-05 fontBold">{{ $t('MSG_WELCOME') }}</p>
         </div>
         <div class="mtop-05 introText" style="height: 40px;">
@@ -100,6 +100,12 @@ export default {
 }
 </script>
 <style scoped>
+.introWhiteCard {
+  min-height: 450px;
+}
+.uniBLogoImg {
+  width: 5rem;
+}
 .introText {
   width: 100%;
   height: 4rem;

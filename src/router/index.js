@@ -52,23 +52,17 @@ routes = [
         beforeEnter (to, from, next) {
           if (from.name && from.name !== to.name && from.name === 'chanMain') {
             localStorage.setItem('preListTeamKey', from.params.encodedTeamKey)
-            // eslint-disable-next-line no-debugger
-            debugger
           }
           next()
           // ...
         }
       },
       {
-        // path: '/chan/:key',
-        // path: '/chan/:pTeamKey',
         path: '/chan/:encodedTeamKey',
         name: 'chanMain',
         props: true,
         component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_chanMain.vue'),
         beforeEnter (to, from, next) {
-          // eslint-disable-next-line no-debugger
-          debugger
           if (from.name && from.name !== to.name && from.name === 'contents') {
             const fromTeamKey = localStorage.getItem('preListTeamKey')
             if (fromTeamKey && fromTeamKey === to.params.encodedTeamKey) {
@@ -95,17 +89,12 @@ routes = [
           // 다음 페이지로 이동하려면 next()를 호출합니다.
           next()
         }
-
-        // alias: ['/:pTeamKey', '']
       },
       {
-        // path: '/chan/:key',
-        // path: '/chan/:pTeamKey',
         path: '/board/:teamKey/:targetKey',
         name: 'board',
         props: true,
         component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_boardMain.vue')
-        // alias: ['/:pTeamKey', '']
       },
       {
         path: '/unknown',
@@ -156,15 +145,6 @@ routes = [
         props: true,
         component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_leaveUniBuzzy.vue')
       },
-      /* {
-          path: '/',
-          name: 'pushList',
-          props: true,
-          component: pushList,
-          meta: {
-            page: 2
-          }
-        }, */
       {
         path: '/chanList',
         name: 'chanList',
@@ -211,12 +191,6 @@ routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../pages/UB/intro/UB_agreePolicies.vue')
   },
-  // {
-  //   path: '/test',
-  //   name: 'test',
-  //   props: true,
-  //   component: () => import(/* webpackChunkName: "about" */ '../pages/intro/suminTest.vue')
-  // },
   {
     path: '/errorPage',
     name: 'errorPage',

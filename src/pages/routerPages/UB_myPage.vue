@@ -1,5 +1,5 @@
 <template>
-  <div  class="w100P h100P pagePaddingWrap myPageWrap"  :style="'padding-top:' + (this.$STATUS_HEIGHT + 50)+ 'px'">
+  <div  class="w100P h100P pagePaddingWrap myPageWrap"  :style="'padding-top:' + ($STATUS_HEIGHT + 50)+ 'px'">
     <loadingCompo v-if="mLoadingYn === true" />
     <div class="myProfileWrap" @click="goSetMyPage">
       <div class="myProfileLeft">
@@ -30,13 +30,12 @@
       </div>
       <div class="h100P font20 grayBlack goFileBtn">></div>
     </div>
-    <myContents class="mainContentsBoxArea" :propAlimList="this.GE_DISP_CONTS_LIST" @openPop="openPage"/>
+    <myContents class="mainContentsBoxArea" :propAlimList="GE_DISP_CONTS_LIST" @openPop="openPage"/>
   </div>
 <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
 </template>
 <script>
 import myContents from '../../components/UB/myPage/UB_myContents.vue'
-
 import loadingCompo from '../../components/layout/UB_loading.vue'
 export default {
   data () {
@@ -44,8 +43,7 @@ export default {
       mLoadingYn: false,
       mContsList: [],
       mMainMChanList: [],
-      mMainChanList: [],
-      mAxiosQueue: []
+      mMainChanList: []
     }
   },
   props: {
@@ -67,7 +65,6 @@ export default {
       this.$emit('showCloudLoading', false)
     }, 1000)
     if (this.propParams && this.propParams.targetType === 'myPage') {
-      // this.mInitData = this.initData
       if (this.propParams && this.propParams.mContentsList && this.propParams.mContentsList.content) {
         this.mContsList = this.replaceArr(this.propParams.mContentsList.content)
       } else {
@@ -79,17 +76,9 @@ export default {
         this.mMainChanList = this.initData.chanList
         this.mMainMChanList = this.initData.mChanList
       }
-      // this.mContsList = this.initData.alimList.content
     } else {
       this.$emit('changeRouterPath', 'myPage')
     }
-    // var this_ = this
-    /* this.getMainBoard().then(res => {
-      this_.mLoadingYn = false
-    }) */
-    /* this.getMyContentsList().then((result) => {
-      this_.setContsList(result)
-    }) */
 
     this.$emit('changePageHeader', this.$t('COMMON_NAME_MY_PAGE'))
     this.mLoadingYn = false
@@ -112,7 +101,6 @@ export default {
       return this.$store.getters['UB_CHANNEL/GE_RECENT_CHANGE_TEAM']
     },
     GE_DISP_CONTS_LIST () {
-      // console.log(this.ALIM_LIST_RELOAD_CONT)
       var idx1, idx2
       var returnContsList = []
       var chanDetail = null
@@ -134,15 +122,12 @@ export default {
           idx2 = dataList.findIndex((item) => item.contentsKey === this.mContsList[i].contentsKey)
           if (idx2 !== -1) {
             returnContsList.push(dataList[idx2])
-            // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-            // this.mContsList[i] = dataList[idx2]
           } else {
             returnContsList.push(this.mContsList[i])
           }
         }
       }
       var returnList = this.replaceArr(returnContsList)
-      console.log('헐랭', returnList)
       return returnList
     }
   },
@@ -159,66 +144,18 @@ export default {
     openPage (value) {
       this.$emit('openPage', value)
     },
-    /* async getMyContentsList (pageSize, offsetInput, loadingYn) {
-      if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
-      this.mAxiosQueue.push('getPushContentsList')
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      param.ownUserKey = this.propUserKey
-      param.subsUserKey = this.propUserKey
-      param.allYn = true
-
-      if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.mOffsetInt }
-
-      if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = this.mPageSize }
-      var nonLoading = true
-      if (loadingYn) {
-        nonLoading = false
-      }
-      var result = await this.$getContentsList(param, nonLoading)
-      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList')
-      this.mAxiosQueue.splice(queueIndex, 1)
-      var resultList = result
-      this.loadingYn = false
-      return resultList
-    }, */
-    async setContsList (resultList) {
-      if (!resultList || resultList === '') return
-      var newArr = []
-      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
-      // this.endListSetFunc(resultList)
-      if (this.mContsList.length > 0) {
-        newArr = [
-          ...this.mContsList,
-          ...resultList.content
-        ]
-      } else {
-        newArr = resultList.content
-      }
-      this.mContsList = this.replaceArr(newArr)
-    },
     replaceArr (arr) {
-      // var this_ = this
       if (!arr || (arr && arr.length === 0)) return []
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
-        /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
           return b.contentsKey - a.contentsKey
-          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data
       }, [])
       return uniqueArr
-    },
-    goMyChanList () {
-      var param = {}
-      param.targetType = 'chanList'
-      param.popHeaderText = '채널'
-      param.channelTabType = 'mychannel'
-      this.$emit('openPop', param)
     },
     goSetMyPage () {
       var param = {}
@@ -237,11 +174,6 @@ export default {
       param.targetType = 'totalSaveList'
       param.popHeaderText = '저장 목록'
       this.$emit('openPop', param)
-    },
-    openContentsDetailPop (detailValue) {
-      console.log(' == Open Contents Detail == ')
-      console.log(detailValue)
-      this.$emit('goDetail', detailValue)
     },
     openPop (openPopData) {
       this.$emit('openPop', openPopData)

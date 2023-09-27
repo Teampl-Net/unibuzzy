@@ -20,7 +20,7 @@
             />
         </div>
         <div ref="chanCardTopArea"  :class="['fade-out-element', { 'hidden': !mChanCardShowYn }]" class="fl chanCardTop" :style="`margin-top: ${50}px`" >
-            <div class="chanIcon" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + $changeUrlBackslash(this.CHANNEL_DETAIL.logoPathMtext) : this.CHANNEL_DETAIL.logoPathMtext) + ');'"></div>
+            <div class="chanIcon" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? CHANNEL_DETAIL.logoDomainPath + $changeUrlBackslash(CHANNEL_DETAIL.logoPathMtext) : CHANNEL_DETAIL.logoPathMtext) + ');'"></div>
             <div class="chanFollowArea">
                 <div class="blankBox"></div>
                 <div class="font20 fontBold chanNameBox">
@@ -87,13 +87,12 @@
                                 CHANNEL_DETAIL.totalContentsCount
                                 }}</span>
                             </div>
-                            <!-- <div v-if="mChanInfo.managerList" class="fontBold font14" style="float: left;">Manager: <span style="color:black; font-weight: 1000;">{{ mChanInfo.managerList.length }}</span></div> -->
                         </div>
                         <div class="w100P fl font14 textLeft">
                         My Status
                         <span class="fontBold contentsCount">{{
-                            this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)
-                            ? this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)
+                            $getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)
+                            ? $getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)
                             : "-"
                         }}</span>
                         </div>
@@ -109,19 +108,19 @@
                 @openImgPop="openImgPop"
                 @goScroll="scrollOn"
                 :pBoardList="mChanInfo.boardList"
-                :propParams="this.mChanInfo.initData"
-                :initData="this.mChanInfo.initData? this.mChanInfo.initData.contentsList : null"
+                :propParams="mChanInfo.initData"
+                :initData="mChanInfo.initData? mChanInfo.initData.contentsList : null"
                 @cMemoEditYn="changeMemoEditYn"
                 :chanAlimYn="true"
-                :pChannelDetail="this.CHANNEL_DETAIL"
-                :chanAlimTargetType="this.mChanInfo.targetType"
+                :pChannelDetail="CHANNEL_DETAIL"
+                :chanAlimTargetType="mChanInfo.targetType"
                 ref="ChanAlimListPushListCompo"
                 :alimListYn="true"
                 @openPage="openPage"
-                :chanDetailKey="this.CHANNEL_DETAIL.teamKey"
+                :chanDetailKey="CHANNEL_DETAIL.teamKey"
                 @numberOfElements="numberOfElements"
-                @openLoading="this.$emit('openLoading')"
-                @closeLoading="this.$emit('closeLoading')"
+                @openLoading="$emit('openLoading')"
+                @closeLoading="$emit('closeLoading')"
                 @openPop="openWriteContentsPop"
                 @openUserProfile="openItem"
                 @changeMainTab="changeMainTab"
@@ -191,11 +190,8 @@
 import pushList from './UB_pushList'
 import writeContents from '../../../components/popup/UB_writeContents.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
-// import boardWrite from '../../board/Tal_boardWrite.vue'
 import followerList from '../../../components/UB/popup/UB_followerList.vue'
 import userDetailPop from '../../../components/UB/popup/UB_userDetailPop.vue'
-// import unknownLoginPop from '@/components/pageComponents/channel/UB_unknownLoginPop.vue'
-// import { AES, enc } from 'crypto-js'
 export default {
   data () {
     return {
@@ -205,31 +201,21 @@ export default {
       mChanCardShowYn: true,
       mLastScroll: null,
       mCabKeyListStr: null,
-      imgSource: '/resource/common/memIconPublic.svg',
       isImgChanged: false,
-      mUnknownLoginPopYn: false,
       mUnknownYn: false,
-      smallPopYn: false,
-      alimListToDetail: false,
-      mChanMainScrollWrap: null,
-      mChanMainScrollDirection: null,
-      mChanMainScrollPosition: null,
       mErrorPopShowYn: false,
       mErrorPopBodyStr: '',
       mErrorPopBtnType: 'two',
-      mChanInfoPopShowYn: false,
       myContentsCount: null,
       mSaveFollowerParam: null,
       mWriteAlimData: {},
       writeContentsYn: false,
       writeAlimPopId: '',
-      mChanNameLongYn: false,
       mSaveFollowerType: '',
       mPushListMainTab: 'A',
       axiosQueue: [],
       mWriteBoardData: {},
       mWriteBoardPopId: '',
-      mReceptMemPopShowYn: false,
       mWriteBtnShowYn: true,
       mMakeDeepLinkIng: false,
       mChanPopMessage: '',
@@ -237,7 +223,6 @@ export default {
       writeBottSheetYn: false,
       mwWidth: 0,
       mwHeight: 0,
-      prevVisualViewport: 0,
       mDirectTeamKey: null,
       mChanInfo: {},
       mFollowerListPopShowYn: false,
@@ -246,20 +231,14 @@ export default {
       mPopParam: {},
       selectMemberObj: null,
       mMemberTypeList: [],
-      mBoardContentsList: [],
       pushListWrap: null,
-      mAxiosQueue: [],
       mBookListPopShowYn: false,
       mProfilePopShowYn: true,
       mTeamDetail: []
     }
   },
   props: {
-    pCabKeyListStr: {},
-    propParams: {},
-    pClearInfo: Function,
-    pAreaInfo: {},
-    pGoChannelMain: Function
+    propParams: {}
   },
   components: {
     pushList,
@@ -281,7 +260,6 @@ export default {
           if (chanCardTopArea) {
             chanCardTopArea.style.opacity = opacity.toFixed(2)
           }
-          // chanCardTopRef.style.marginTop = Number(this.$STATUS_HEIGHT) + 'px'
         }
 
         chanMainRef.addEventListener('scroll', this.handleScroll)
@@ -427,8 +405,6 @@ export default {
             }
           } else {
             await this.okMember()
-            // this.mChanPopMessage = '[' + this.$changeText(this.CHANNEL_DETAIL.nameMtext) + '] 채널의 구독자가 되었습니다.<br>멤버가 되면<br>우리채널에 알림을 보낼 수 있어요!<br>멤버들끼리 자유롭게 소통할 수 있어요!'
-            // this.openChannelMsgPop()
           }
         }
       }
@@ -726,18 +702,6 @@ export default {
         this.closeWritePushPop()
       }
     },
-    openPop () {
-      this.alimListToDetail = true
-      // thiopenPop.mChanInfoPopShowYn = true
-    },
-    closeDetailPop () {
-      var history = this.$store.getters['UB_HISTORY/hStack']
-      var removePage = history[history.length - 1]
-      history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
-      this.$store.commit('UB_HISTORY/updateStack', history)
-      this.mChanInfoPopShowYn = false
-    },
     async changeFollowYn () {
       this.mSaveFollowerType = 'follow'
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn === true) {
@@ -745,22 +709,9 @@ export default {
         this.mErrorPopBtnType = 'two'
         this.mErrorPopShowYn = true
       } else {
-        // this.mErrorPopBodyStr = 'You followed' + 'Channel name'
-        // this.mErrorPopBtnType = 'one'
-        // this.mErrorPopShowYn = true
         this.ChanFollowYn = true
         this.confirmOk()
-        // this.$router.go(0)
       }
-    },
-    editChan () {
-      var param = {}
-      param.targetType = 'createChannel'
-      param.popHeaderText = '채널 수정'
-      param.targetKey = this.CHANNEL_DETAIL.teamKey
-      param.modiYn = true
-      param.ownerYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn
-      this.$emit('openPop', param)
     },
     setWindowSize () {
       this.mwWidth = window.innerWidth
@@ -772,7 +723,6 @@ export default {
       const pushList = document.getElementById('pushListWrap')
       if (pushList) {
         if (this.mChanCardShowYn) {
-          // pushList.className = 'scrollHidden'
         } else {
           if (pushList.scrollTop <= 0) {
             const chanCardTopRef = this.$refs.chanPushListArea
@@ -783,10 +733,8 @@ export default {
             if (chanCardTopRef) {
               const scrollTop = chanMainRef.scrollTop
               // up
-              // const triggerPosition = chanCardTopRef.getBoundingClientRect().top
 
               this.mChanCardShowYn = true
-              // chanCardTopRef.style.marginTop = ''
               const opacity = Math.max(0, 1)
               if (chanCardTopArea) {
                 chanCardTopArea.style.opacity = opacity.toFixed(2)
@@ -796,18 +744,6 @@ export default {
           }
         }
       }
-      /*       console.log('scrollOn')
-      const chanCardTopRef = this.$refs.chanPushListArea
-      if (chanCardTopRef) {
-        console.log(chanCardTopRef.scrollTop)
-      } */
-      // pushList 스크롤시 발생하는듯
-    },
-    handleResize (event) {
-      if (this.$checkMobile() === 'IOS') {
-      } else {
-        this.setWindowSize()
-      }
     },
     openItem (param) {
       this.$emit('openPop', param)
@@ -816,8 +752,6 @@ export default {
       const chanMainParam = {}
       chanMainParam.targetType = 'chanDetail'
       const encodedKey = Number(this.$route.params.encodedTeamKey)
-      // const encryptedKey = decodeURIComponent(encodedKey)
-      // const teamKey = AES.decrypt(encryptedKey, 'encryptionSecret').toString(enc.Utf8)
       const teamKey = encodedKey
       chanMainParam.teamKey = teamKey
       chanMainParam.targetKey = teamKey
@@ -831,7 +765,6 @@ export default {
           false
         )
         if (!result || !result.data || result.data.result !== 'OK') {
-          // this.$showToastPop('채널을 찾을 수 없습니다!')
           this.$showToastPop('Channel not found!')
           return
         }
@@ -855,12 +788,9 @@ export default {
             }
           }
         }
-        // this.mCabKeyListStr = result.data.cabinetKeyListStr
-        // await this.$addChanVuex([teamDetail])
         chanMainParam.nameMtext = teamDetail.nameMtext
         chanMainParam.chanName = teamDetail.nameMtext
         var initData = {}
-        // initData.team = teamDetail
         if (
           result.data.contentsListPage &&
           result.data.contentsListPage.content &&
@@ -879,7 +809,6 @@ export default {
         }
         this.mCabKeyListStr = initData.cabinetKeyListStr
       } catch (error) {
-        // this.$showToastPop('죄송합니다! 관리자에게 문의해주세요!')
         this.$showToastPop('Sorry! Please contact the administrator.')
         console.error(error)
       }
@@ -917,116 +846,9 @@ export default {
         this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', followList)
       }
     },
-    async getTownCabinetList () {
-      var param = {}
-      param.parentTeamKey = Number(this.$route.params.encodedTeamKey)
-      var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getTownCabinetList',
-        param: param
-      })
-      if (result && result.data && result.data.result) {
-        this.mCabKeyListStr = result.data.cabinetKeyListStr
-      }
-    },
-    async getMyContentsList (pageSize, offsetInput, loadingYn, searchParam) {
-      if (
-        this.mAxiosQueue.length > 0 &&
-        this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !==
-          -1
-      ) { return }
-      this.mAxiosQueue.push('getPushContentsList')
-      var param = {}
-      if (searchParam) {
-        param = searchParam
-      }
-      if (this.viewTab === 'P') {
-        param.orderbyStr = 'a.popPoint DESC, a.creDate DESC'
-      } else if (this.viewTab === 'N') {
-        param.orderbyStr = 'a.creDate DESC'
-      }
-      param.myUserKey = this.GE_USER.userKey
-      param.cabinetKeyListStr = this.mCabKeyListStr
-      if (
-        offsetInput !== undefined &&
-        offsetInput !== null &&
-        offsetInput !== ''
-      ) {
-        param.offsetInt = offsetInput
-      } else {
-        param.offsetInt = this.mOffsetInt
-      }
-
-      if (pageSize !== undefined && pageSize !== null && pageSize !== '') {
-        param.pageSize = pageSize
-      } else {
-        param.pageSize = this.mPageSize
-      }
-
-      if (this.mFindKeyList) {
-        if (
-          this.mFindKeyList.searchKey !== undefined &&
-          this.mFindKeyList.searchKey !== null &&
-          this.mFindKeyList.searchKey !== ''
-        ) {
-          param.title = this.mFindKeyList.searchKey
-        }
-        if (
-          this.mFindKeyList.creTeamNameMtext !== undefined &&
-          this.mFindKeyList.creTeamNameMtext !== null &&
-          this.mFindKeyList.creTeamNameMtext !== ''
-        ) {
-          param.creTeamNameMtext = this.mFindKeyList.creTeamNameMtext
-        }
-        if (
-          this.mFindKeyList.toCreDateStr !== undefined &&
-          this.mFindKeyList.toCreDateStr !== null &&
-          this.mFindKeyList.toCreDateStr !== ''
-        ) {
-          param.toCreDateStr = this.mFindKeyList.toCreDateStr
-        }
-        if (
-          this.mFindKeyList.fromCreDateStr !== undefined &&
-          this.mFindKeyList.fromCreDateStr !== null &&
-          this.mFindKeyList.fromCreDateStr !== ''
-        ) {
-          param.fromCreDateStr = this.mFindKeyList.fromCreDateStr
-        }
-        if (
-          this.mFindKeyList.workStatCodeKey !== undefined &&
-          this.mFindKeyList.workStatCodeKey !== null &&
-          this.mFindKeyList.workStatCodeKey !== ''
-        ) {
-          param.workStatCodeKey = this.mFindKeyList.workStatCodeKey
-        }
-        if (
-          this.mFindKeyList.creUserName !== undefined &&
-          this.mFindKeyList.creUserName !== null &&
-          this.mFindKeyList.creUserName !== ''
-        ) {
-          param.creUserName = this.mFindKeyList.creUserName
-        }
-        if (this.mFindKeyList.selectedSticker) {
-          param.findActStickerYn = true
-          param.findActYn = true
-          param.stickerKey = this.mFindKeyList.selectedSticker.stickerKey
-        }
-      }
-      var nonLoading = true
-      if (loadingYn) {
-        nonLoading = false
-      }
-      var result = await this.$getContentsList(param, nonLoading)
-      var queueIndex = this.mAxiosQueue.findIndex(
-        (item) => item === 'getPushContentsList'
-      )
-      this.mAxiosQueue.splice(queueIndex, 1)
-      var resultList = result
-      return resultList
-    },
     async getMemberTypeList () {
       var param = {}
       param.teamKey = Number(this.$route.params.encodedTeamKey)
-      // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction(
         {
           url: '/sUniB/tp.getMemberTypeList',
@@ -1201,18 +1023,11 @@ export default {
           this.$getMobileYn() === true ? this.mwWidth + 'px ' : '100% ',
         '--wHeight':
           this.$getMobileYn() === true ? this.mwHeight + 'px ' : '100% ',
-        // '--wWidth': this.$getMobileYn() === true ? window.innerWidth + 'px ' : '100% ',
-        // '--wHeight': this.$getMobileYn() === true ? window.innerHeight + 'px ' : '100% ',
         '--backImg': imgPath,
         '--paddingTop': this.$STATUS_HEIGHT + 'px',
         'padding-top': Number(this.$STATUS_HEIGHT) + 'px'
       }
     },
-    // getWindowHeight () {
-    //   return {
-
-    //   }
-    // },
     REQ_MEM_OBJ () {
       if (
         this.CHANNEL_DETAIL &&
@@ -1262,25 +1077,17 @@ export default {
             }
 
             this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
-            this.$nextTick(() => {
-              /* setTimeout(() => {
-                this.scrollMove(this.scrollPosition)
-                // this.$store.dispatch('UB_PRE_DATA/AC_PRE_LIST_DATA', [])
-              }, 1500) */
-            })
           }
         }
       }
     },
     mChanCardShowYn (val, old) {
       const pushList = document.getElementById('pushListWrap')
-      // const chanCardTopRef = this.$refs.chanPushListArea
       const chanMainRef = this.$refs.chanMainRef
       if (pushList) {
         if (val && !old) {
           pushList.className = 'scrollHidden'
           chanMainRef.className = 'scrollOn'
-          // chanCardTopRef.style.height = 'calc(100% - 210px)'
         } else if (!val && old) {
           pushList.className = 'scrollOn'
           chanMainRef.className = 'scrollHidden'
@@ -1288,7 +1095,6 @@ export default {
             pushList.scrollTo({ top: this.scrollPosition })
             this.scrollPosition = null
           }
-          // chanCardTopRef.style.height = 'calc(100% - 200px - ' + this.$STATUS_HEIGHT + 'px'
         }
       }
     },
@@ -1324,9 +1130,6 @@ export default {
     GE_MAIN_CHAN_LIST (value, old) {},
     pageUpdate (value, old) {
       this.backClick()
-      /* if (this.pPopId === hStack[hStack.length - 1]) {
-            this.closeSubPop()
-        } */
     },
     historyStack (value, old) {}
   }

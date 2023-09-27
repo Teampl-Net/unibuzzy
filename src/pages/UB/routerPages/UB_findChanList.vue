@@ -16,9 +16,7 @@
 }
 </i18n>
 <template>
-<!-- <subHeader class="headerShadow" :headerTitle="this.headerTitle" :subTitlebtnList= "this.subTitlebtnList" @subHeaderEvent="subHeaderEvent"></subHeader> -->
-  <div class="w100P h100P ptop-50" :style="'padding-top:' + (this.$STATUS_HEIGHT + 50 )+ 'px'" >
-    <!-- <gPopHeader :headerTitle="$t('SEAR_TITLE_CHAN')" @closeXPop="closeXPop" style="position: fixed; top: 0;box-shadow: 0px 7px 9px -9px #00000036;"/> -->
+  <div class="w100P h100P ptop-50" :style="'padding-top:' + ($STATUS_HEIGHT + 50 )+ 'px'" >
     <div class="findPopBody mtop-05">
       <div class="searchInputArea">
         <img @click="findChannel" class="searchIcon cursorP img-w20" src="../../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
@@ -42,15 +40,15 @@
       </template>
     </div>
 
-    <template v-if="mFindKeyWord !== '' && this.GE_DISP_TEAM_LIST.length > 0">
+    <template v-if="mFindKeyWord !== '' && GE_DISP_TEAM_LIST.length > 0">
       <div class="w100P fl chanCardWrap">
-        <template v-for="(chanEle, index) in this.GE_DISP_TEAM_LIST" :key="index">
+        <template v-for="(chanEle, index) in GE_DISP_TEAM_LIST" :key="index">
           <gChannelCard class="moveBox chanRow" :chanElement="chanEle" @openPop="goChannelMain" />
           <myObserver v-if="index === GE_DISP_TEAM_LIST.length - 1" @triggerIntersected="loadMore" class="fl wich" />
         </template>
       </div>
     </template>
-    <template v-if="mFindKeyWord !== '' && this.GE_DISP_TEAM_LIST.length === 0">
+    <template v-if="mFindKeyWord !== '' && GE_DISP_TEAM_LIST.length === 0">
       <div class="w100P fl chanEmptyWrap">
         <gListEmpty title="There's no search result." subTitle='Would you like to search again?' option='SELE' :subTitleYn='true' />
       </div>
@@ -116,8 +114,6 @@ export default {
         this.$store.commit('UB_HISTORY/updateStack', history)
         this.closeXPop()
       }
-    },
-    historyStack (value, old) {
     }
   },
   created () {
@@ -130,9 +126,7 @@ export default {
       localStorage.setItem('searchKeyWordHistoryList', JSON.stringify([]))
       localKeyWordOBJ = JSON.parse(localStorage.getItem('searchKeyWordHistoryList'))
     }
-    console.log(localKeyWordOBJ)
     this.mSearchHistoryList = localKeyWordOBJ
-    console.log(this.mSearchHistoryList)
   },
   methods: {
     goChannelMain (param) {
@@ -156,32 +150,10 @@ export default {
       var paramMap = new Map()
 
       paramMap.set('fUserKey', this.GE_USER.userKey)
-      // paramMap.set('cateItemKey', 3)
       paramMap.set('nameMtext', this.nameMtext)
       paramMap.set('offsetInt', this.mOffsetInt)
       paramMap.set('pageSize', 10)
 
-      // if (this.mViewTab === 'user') {
-      //   paramMap.set('userKey', userKey)
-      // } else if (this.mViewTab === 'all') {
-      //   paramMap.set('fUserKey', userKey)
-      // } else if (this.mViewTab === 'mychannel') {
-      //   paramMap.set('userKey', userKey)
-      //   paramMap.set('managerYn', true)
-      // }
-      // if (this.mResultSearchKeyList.length > 0) {
-      //   paramMap.set('nameMtext', this.mResultSearchKeyList[0].keyword)
-      // }
-      // if (offsetInput !== undefined) {
-      //   paramMap.set('offsetInt', offsetInput)
-      // } else {
-      //   paramMap.set('offsetInt', this.mOffsetInt)
-      // }
-      // if (pageSize) {
-      //   paramMap.set('pageSize', pageSize)
-      // } else {
-      //   paramMap.set('pageSize', 10)
-      // }
       var noneLoadingYn = true
       if (mLoadingYn) {
         noneLoadingYn = false
@@ -226,14 +198,8 @@ export default {
       this.mSearchHistoryList.unshift(this.nameMtext)
       localStorage.setItem('searchKeyWordHistoryList', JSON.stringify(this.mSearchHistoryList))
       this.mFindKeyWord = this.nameMtext
-      // var paramMap = new Map()
-      // if (this.nameMtext !== undefined && this.nameMtext !== null && this.nameMtext !== '') {
-      //   paramMap.set('nameMtext', this.nameMtext)
-      // }
-      // this.$emit('searchList', paramMap)
       var result = await this.getChannelList(true)
       this.mChannelList = result.content
-      console.log(this.mChannelList)
     }
   }
 }
@@ -293,7 +259,7 @@ export default {
 }
 .chanCardWrap {
   overflow: auto;
-  height: calc(100% - 90px);
+  /* height: calc(100% - 90px); */
 }
 .chanEmptyWrap {
   overflow: auto;

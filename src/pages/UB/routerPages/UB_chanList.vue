@@ -1,15 +1,15 @@
 <template>
-  <div class="w100P h100P chanListArea" :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 50 )+ 'px'">
+  <div class="w100P h100P chanListArea" :style="'padding-top: ' + (Number($STATUS_HEIGHT) + 50 )+ 'px'">
     <div class="w100P filterWrap">
       <select v-model="showArray" class="mright-05">
         <option value="recent" class="font16 orderOption">Recent</option>
         <option value="popular" class="font16 orderOption">Popular</option>
         <option value="name" class="font16 orderOption">Name</option>
       </select>
-      <div class="mright-05 reloadWrap" :style="'bottom:' + (this.$STATUS_HEIGHT + 150)+ 'px'"  @click="refreshList">
+      <div class="mright-05 reloadWrap" :style="'bottom:' + ($STATUS_HEIGHT + 150)+ 'px'"  @click="refreshList">
           <img src="@/assets/images/common/commonReload.png" class="cursorP">
       </div>
-      <div @click="$router.push('/findChan')" class="cursorP createChanBtnWrap" :style="'bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
+      <div @click="$router.push('/findChan')" class="cursorP createChanBtnWrap" :style="'bottom:' + ($STATUS_HEIGHT + 60)+ 'px'">
         <img src="@/assets/images/button/icon_search_color.svg" alt="채널 만들기 버튼">
       </div>
     </div>
@@ -18,11 +18,11 @@
           <chanSkeleton  v-for="(value) in 10" :key="value"/>
       </div>
       <div id="chanListWrap" ref="chanListWrap" class="chanItemBox" :style="calcPaddingTop" @mousedown="testTwo" @mouseup="testTr">
-          <gEmpty class="mTop50" :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && this.GE_DISP_TEAM_LIST.length === 0" />
+          <gEmpty class="mTop50" :tabName="mCurrentTabName" contentName="채널" v-if="mEmptyYn && GE_DISP_TEAM_LIST.length === 0" />
           <template v-for="(chanEle, index) in GE_DISP_TEAM_LIST" :key="index">
             <gChannelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @click="goChannelMain(chanEle)" @scrollMove="scrollMove" />
             <!-- <channelCard class="moveBox chanRow cursorP" :chanElement="chanEle" @scrollMove="scrollMove" /> -->
-            <myObserver v-if="this.GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 3" @triggerIntersected="loadMore" class="fl wich" />
+            <myObserver v-if="GE_DISP_TEAM_LIST.length > 0 && index === GE_DISP_TEAM_LIST.length - 3" @triggerIntersected="loadMore" class="fl wich" />
           </template>
       </div>
     </div>
@@ -30,50 +30,31 @@
 </template>
 
 <script>
-/* import loadingCompo from '../../components/layout/UB_loading.vue' */
 
 import chanSkeleton from '@/components/pageComponents/channel/UB_channelSkeleton.vue'
 export default {
   name: 'user',
   components: {
-    /* loadingCompo, */
     chanSkeleton
   },
   data () {
     return {
-      // mSearchList: [{ searchType: '정렬', dispName: '전체' }, { searchType: '산업군', dispName: '전체' }, { searchType: '유형', dispName: '전체' }],
-      mSearchList: [{ searchType: this.$t('COMMON_NAME_CATEGORY'), dispName: this.$t('COMMON_TAB_ALL') }],
-      mSelectSearchObj: {},
-      mBottomSheetOpenYn: false,
       mChannelList: [],
       mPaddingTop: 50,
       mChanListScrollBox: null,
-      mScrollPosition: 0,
-      mScrollDirection: null,
-      mFirstContOffsetY: null,
       mScrolledYn: false,
-      mHeaderTop: 0,
       mOffsetInt: 0,
       mEndListYn: false,
       mViewTab: 'all',
       mActiveTabList: [{ display: this.$t('COMMON_TAB_FOLLOWING'), name: 'user' }, { display: this.$t('COMMON_TAB_ALL'), name: 'all' }, { display: this.$t('COMMON_TAB_MANAGING'), name: 'mychannel' }],
       mChanFindPopShowYn: false,
-      mResultSearchKeyList: '',
-      myChanListPopYn: false,
-      mScrollCheckSec: 0,
-      mListShowYn: true,
       mCurrentTabName: this.$t('COMMON_TAB_ALL'),
       mEmptyYn: true,
       mLoadingYn: false,
-      mAxiosQueue: [],
-      mSearchCateKey: 3,
-      showArray: 'recent',
-      mFilteredChannel: []
+      showArray: 'recent'
     }
   },
   props: {
-    pOpenUnknownLoginPop: Function,
-    params: {},
     popYn: Boolean,
     propData: {},
     initData: {}
@@ -86,9 +67,6 @@ export default {
   },
   mounted () {
     this.mChanListScrollBox = document.getElementById('chanListWrap')
-
-    // if (!this.initData) this.changeTab(this.mViewTab)
-
     this.$emit('closeLoading')
     this.mLoadingYn = false
   },
@@ -129,25 +107,6 @@ export default {
         }
       })
     }
-    /* if (!this.GE_DISP_TEAM_LIST || this.GE_DISP_TEAM_LIST.length === 0) {
-      var resultList = await this.getChannelList(null, null, false)
-      var newArr = []
-      for (var i = 0; i < resultList.content.length; i++) {
-        if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
-          newArr.push(resultList.content[i])
-        }
-      }
-      if (newArr.length > 0) {
-        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', newArr)
-      }
-      this.mChannelList = resultList.content
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.mEndListYn = true
-      } else {
-        this.mEndListYn = false
-      }
-    } */
-
     this.$emit('enterCloudLoading', false)
     setTimeout(() => {
       this.$emit('showCloudLoading', false)
@@ -155,7 +114,6 @@ export default {
     this.introChanPageTab()
     this.mScrolledYn = false
     this.findPaddingTopChan()
-    // this.filterChannelList()
   },
   methods: {
     goChannelMain (param) {
@@ -166,37 +124,12 @@ export default {
       pageParam.areaInfo = this.pAreaInfo
       this.$emit('openPage', pageParam)
     },
-    searchCloseNopenPop (openPopParam) {
-      this.mChanFindPopShowYn = false
-      this.openPop(openPopParam)
-    },
-    searchBoxClick (searchData) {
-      this.mSelectSearchObj = searchData
-      this.mBottomSheetOpenYn = true
-    },
-    replaceArr (arr) {
-      var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex(({ teamKey }) => teamKey === current.teamKey) === -1) {
-          data.push(current)
-        }
-        return data
-      }, [])
-      return uniqueArr
-    },
     findPaddingTopChan () {
       // 검색 시 리스트와 검색팝업 패딩 설정
       var element = document.getElementById('searchResultWrapLength')
       if (element) {
         this.mPaddingTop = element.clientHeight + 50
       }
-    },
-    async refreshAll () {
-      // 새로고침
-      this.mResultSearchKeyList = []
-      this.changeTab('user')
-      await this.$refs.activeBar.switchtab(0)
-      var chanListWrap = await this.$refs.chanListWrap
-      await chanListWrap.scrollTo({ top: 0 })
     },
     scrollMove () {
       if (this.GE_DISP_TEAM_LIST.length > 0) {
@@ -235,8 +168,6 @@ export default {
       }
       this.mChannelList = resultList.content
       var chanListWrap = await this.$refs.chanListWrap
-      // eslint-disable-next-line no-debugger
-      debugger
       await chanListWrap.scrollTo({ top: 0, behavior: 'smooth' })
     },
     endListSetFunc (resultList) {
@@ -269,9 +200,6 @@ export default {
         this.mChannelList = newArr
       }
     },
-    openManagerChanDetail (openParam) {
-      this.$emit('openPop', openParam)
-    },
     allChannelInfo () {
       for (var i = 0; i < this.GE_DISP_TEAM_LIST.length; i++) {
         if (this.GE_DISP_TEAM_LIST[i].userTeamInfo) {
@@ -282,56 +210,9 @@ export default {
         }
       }
     },
-    async changeTab (tab) {
-      this.mViewTab = tab
-      this.mOffsetInt = 0
-      this.mListShowYn = false
-      this.mEmptyYn = false
-      this.mChannelList = []
-      this.mEndListYn = false
-      // this.GE_DISP_TEAM_LIST = []
-      var resultList = await this.getChannelList(undefined, 0, true)
-
-      var addList = []
-      if (!resultList) return
-      for (var i = 0; i < resultList.content.length; i++) {
-        if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
-          addList.push(resultList.content[i])
-        }
-      }
-      if (addList.length > 0) {
-        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', addList)
-      }
-      this.mChannelList = resultList.content
-      if (this.mChannelList.length === 0) this.mEmptyYn = true
-
-      this.mListShowYn = true
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.mEndListYn = true
-      } else {
-        this.mEndListYn = false
-      }
-      if (this.mViewTab === 'all') {
-        this.allChannelInfo()
-      }
-      if (this.mViewTab === 'mychannel') {
-        this.myChanListPopYn = true
-      } else {
-        this.myChanListPopYn = false
-      }
-      this.scrollMove()
-      this.introChanPageTab()
-    },
-    openPop (openPopParam) {
-      this.$emit('openPop', openPopParam)
-    },
     async getChannelList (pageSize, offsetInput, mLoadingYn) {
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
-      // paramMap.set('cateItemKey', 3)
-      // if (this.mViewTab === 'user') {
-      //   paramMap.set('userKey', userKey)
-      // } else if (this.mViewTab === 'all') {
       paramMap.set('fUserKey', userKey)
       if (this.showArray === 'popular') {
         paramMap.set('orderbyStr', 'followerCount DESC')
@@ -340,10 +221,6 @@ export default {
       } else if (this.showArray === 'name') {
         paramMap.set('orderbyStr', 'nameMtext')
       }
-      // } else if (this.mViewTab === 'mychannel') {
-      //   paramMap.set('userKey', userKey)
-      //   paramMap.set('managerYn', true)
-      // }
       if (offsetInput !== undefined) {
         paramMap.set('offsetInt', offsetInput)
       } else {
@@ -360,74 +237,7 @@ export default {
       var resultList = result.data
       this.endListSetFunc(resultList)
       return resultList
-    },
-    async requestSearchList (paramMap) {
-      this.mResultSearchKeyList = await this.castingSearchMap(paramMap)
-      var resultList = await this.getChannelList(null, null, true)
-      var newArr = []
-      for (var i = 0; i < resultList.content.length; i++) {
-        if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
-          newArr.push(resultList.content[i])
-        }
-      }
-      if (newArr.length > 0) {
-        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', newArr)
-      }
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.mEndListYn = true
-      } else {
-        this.mEndListYn = false
-      }
-      this.mChannelList = resultList.content
-      this.mViewTab = 'all'
-      this.$refs.activeBar.switchtab(1)// 전체
-      this.$refs.activeBar.selectTab('all')// 전체
-      this.mChanFindPopShowYn = false
-    },
-    async castingSearchMap (sMap) {
-      var searchObj = {}
-      var resultArray = []
-      if (sMap.get('nameMtext') !== undefined && sMap.get('nameMtext') !== null && sMap.get('nameMtext') !== '') {
-        searchObj.typeName = this.$t('COMMON_NAME_CHANNEL')
-        searchObj.keyword = sMap.get('nameMtext')
-        resultArray.push(searchObj)
-      }
-      return resultArray
-    },
-    async changeSearchList (idx) {
-      this.mResultSearchKeyList.splice(idx, 1)
-      if (this.mResultSearchKeyList.length === 0) {
-        this.mPaddingTop = 50
-      }
-      this.mOffsetInt = 0
-      var resultList = await this.getChannelList(null, null, true)
-      var newArr = []
-      for (var i = 0; i < resultList.content.length; i++) {
-        if (!this.$getDetail('TEAM', resultList.content[i].teamKey) || this.$getDetail('TEAM', resultList.content[i].teamKey).length === 0) {
-          newArr.push(resultList.content[i])
-        }
-      }
-      if (newArr.length > 0) {
-        this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', newArr)
-      }
-      this.mChannelList = resultList.content
-      this.findPaddingTopChan()
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
-        this.mEndListYn = true
-      } else {
-        this.mEndListYn = false
-      }
     }
-    // filterChannelList () {
-    //   if (this.mChannelList) {
-    //     this.mFilteredChannel = this.mChannelList
-    //     if (this.showArray === 'popular') {
-    //       return this.mFilteredChannel.slice().sort((a, b) => b.followerCount - a.followerCount)
-    //     } else if (this.showArray === 'recent') {
-    //       return this.mFilteredChannel
-    //     }
-    //   }
-    // }
   },
   computed: {
     filteredData () {

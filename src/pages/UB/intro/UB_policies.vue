@@ -1,7 +1,7 @@
 <template>
   <div id="commonWrap" class="policyPageWrap" ref="commonWrap">
       <gPopHeader :headerTitle="headerTitle" :pClosePop="closeXPop" class="policyHeader"/>
-      <div id="Uarea" v-if="this.mPolicyType === 'termsOfUse'" class="policy-01">
+      <div id="Uarea" v-if="mPolicyType === 'termsOfUse'" class="policy-01">
           <p class="font16 titleText mbottom-05">Effective Date: 2023-07-11</p>
           <p class="mbottom-1 font15 mleft-1">
             Welcome to uniBuzzy! By using uniBuzzy, you agree to be bound by these Terms of Use ("Terms"). Please read them carefully.<br><br>
@@ -140,7 +140,6 @@ export default {
       } else {
         this.$router.push('/')
       }
-      // th
     }
   }
 }
