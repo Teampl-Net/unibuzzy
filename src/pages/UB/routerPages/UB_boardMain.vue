@@ -32,10 +32,8 @@
   <div v-if="mPinPostPopShowYn" @click="closePinPostPop = false" class="w100P h100P popBg"></div>
   <pinPostPop v-if="mPinPostPopShowYn" :pUpdateTopview="updateTopview" :pTVList="this.CAB_DETAIL.topviewList? this.CAB_DETAIL.topviewList.content:[]" :pChanDetail="CHANNEL_DETAIL" :pClosePop="closePinPostPop" :pBoardDetail="CAB_DETAIL" />
   <div id="boardWrap" v-if="CAB_DETAIL" :style="CAB_DETAIL.picBgPath? 'background: ' + CAB_DETAIL.picBgPath + ';' + 'padding-top: ' + this.$STATUS_HEIGHT + 'px' : 'background: #ece6cc;' + 'padding-top: ' + this.$STATUS_HEIGHT + 'px'" ref="boardListWrap" class="boardListWrap">
-    <!-- <span class="font20 fontBold">{{ this.$changeText(mCabinetContentsDetail.cabinetNameMtext)}}</span> -->
     <p class="font20 fontBold textOverdot cabinetName" :style="CAB_DETAIL.cabinetNameMtext.length > 15 ? 'font-size:18px !important;' :''">{{ this.$changeText(CAB_DETAIL.cabinetNameMtext)}}</p>
     <div id="summaryHeader" class="summaryHeader">
-      <!-- <p class="font20 fontBold" style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex;" :style="propParams.officialYn ? 'padding-right: 30px;':'' "> <img class="fl" src="@/assets/images/channel/icon_official.svg" v-if="propParams.officialYn" style="width:30px;" alt="" /> {{this.$changeText(propParams.nameMtext)}}</p> -->
       <div id="boardInfoSummary" class="mt-header boardWhiteBox">
         <div v-if="CHANNEL_DETAIL" id="chanInfoSummary" ref="chanImg"  class="boardCard chanInfoSummary">{{value}}
           <div class="chanImgRound" :style="'background-image: url('+  (CHANNEL_DETAIL.logoDomainPath? CHANNEL_DETAIL.logoDomainPath + $changeUrlBackslash(CHANNEL_DETAIL.logoPathMtext) : CHANNEL_DETAIL.logoPathMtext) + ');'"></div>
@@ -80,7 +78,6 @@
             <findContentsList :pOnlyMineYn="mOnlyMineYn" :tpGroupCode="(CAB_DETAIL.workStatYn === 1 || CAB_DETAIL.workStatYn === true) ? 'C_STAT' : null" :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop"/>
           </transition>
           <div id="commonBoardListHeader" ref="boardListHeader" class="boardListHeader" :class="this.scrolledYn? 'boardListHeader--unpinned': 'boardListHeader--pinned'" v-on="handleScroll" >
-            <!-- <gActiveBar :searchYn="true" @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab"  style=" width:calc(100%);"/> -->
             <gSelectFilter :searchYn='true' @click="consoleShow" @changeSearchList="changeSearchList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl selectFilter" @changeTab= "changeTab" />
           </div>
           <div :style="calcBoardPaddingTop" style="padding-top: calc(60px + var(--paddingTopLength)) ; height: calc(100%); padding-bottom: 40px; min-height: 500px" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
@@ -88,16 +85,7 @@
             <div class="w100P fl commonBoardListContentBox showFirstRow" />
             <gUBContentsBox @contDelete="refreshAll" @openImgPop="openImgPop" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in this.BOARD_CONT_LIST" :key="cont.contentsKey"/>
             <myObserver @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
-            <!-- <boardList :emptyYn="BOARD_CONT_LIST.length === 0? true: false" :shareAuth="CAB_DETAIL.shareAuth" :blindYn="(CAB_DETAIL.blindYn === 1)" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonListData="BOARD_CONT_LIST" @contentMenuClick="contentMenuClick" style=" margin-top: 5px; float: left;"
-              @refresh='refresh' @openPop="openPop" @makeNewContents="makeNewContents" @moveOrCopyContent="moveOrCopyContent" @imgLongClick="imgLongClick"
-              @writeMememo="writeMememo" @riteMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore'
-              @clearMemo='clearMemo'/> -->
           <gEmpty v-if="emptyYn && BOARD_CONT_LIST.length === 0" :tabName="currentTabName" contentName="전체" :key="mEmptyReloadKey" class="mtop-2"/>
-            <!-- <commonList @delContents="delContents" id="commonPush" :chanAlimYn="chanAlimYn" v-if=" viewMainTab === 'P'" :commonListData="this.GE_DISP_ALIM_LIST" @makeNewContents="makeNewContents"
-              @moveOrCopyContent="moveOrCopyContent" @goDetail="openPop" @imgLongClick="imgLongClick" @clickImg="openImgPreviewPop" :targetContentsKey="targetCKey"
-              ref='pushListChangeTabLoadingComp' :imgUrl="this.imgUrl" @openLoading="this.loadingYn = true" @refresh="refreshList" style="padding-bottom: 20px; margin-top: 0px;"
-              :alimListYn="this.alimListYn" @moreList="loadMore" @topLoadMore="loadMore" @scrollMove="scrollMove" @targetContentScrollMove="targetContentScrollMove"
-              @openPop="openUserProfile" @writeMememo="writeMememo" @writeMemo="writeMemo" @deleteMemo='deleteConfirm' @yesLoadMore='yesLoadMore' /> -->
           </div>
         </div>
       </div>
@@ -110,26 +98,12 @@
     <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" v-if="CAB_DETAIL.cabinetKey === 13909 || CAB_DETAIL.cabinetKey === 13905 || (CHANNEL_DETAIL &&  CAB_DETAIL.shareAuth && this.CAB_DETAIL.shareAuth.W === true && CHANNEL_DETAIL.D_CHAN_AUTH.followYn)" @click="openWriteBoard" alt="button for write contents" class="img-78 writeBtn">
   </div>
   <gConfirmPop :confirmText='errorBoxText' :confirmType="confirmType ? 'two' : 'timeout'" @no="errorBoxYn = false, reportYn = false" @ok="confirmOk" v-if="errorBoxYn"/>
-  <!-- <boardWrite @closeXPop="closeXPop" @successWrite="successWriteBoard" @successSave="this.$refs.boardMainPop.getContentsList()" :propParams="this.params" v-if="this.targetType=== 'writeBoard'" :sendOk='sendOkYn' @openPop='openPop' /> -->
-  <!-- <div v-if="boardWriteYn" style="width:100%; height:100%; top:0; left:0; position: absolute; z-index:999"> -->
-    <!-- <boardWrite @closeXPop="closeWriteBoardPop()" @successWrite="successWriteBoard" @successSave="getContentsList" :propParams="boardWriteData" :sendOk='sendOkYn' @openPop='openPop' style="z-index:999"/> -->
   <div v-if="boardWriteYn" class="writePopBg"></div>
   <writeContents class="writeContentsPop" v-if="boardWriteYn"  ref="chanAlimListWritePushRefs" @successWrite="successWriteBoard" @successSave="getContentsList" :contentType="currentPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWriteBoardPop' :propData="boardWriteData" :params="boardWriteData"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propParams="boardWriteData" />
-  <!-- </div> -->
-  <!-- <div style="width: 100vw; height: 100vh; dispaly: flex; flex-direction: column; align-items:center; position: absolute; bottom: 0; right: 0;background: #00000026; z-index: 999999;" v-if="mGuidePopShowYn">
-  </div>
-  <div style="dispaly: flex; flex-direction: column; align-items:center; position: absolute; bottom: 5rem; right: 20px;;background: #00000026; z-index: 999999; width: calc(100% - 40px); height: 250px; background: #FFFFFF; border-radius: 0.8rem;">
-    <img src="@/assets/images/main/main_logo.png" alt="">
-    <p class="commonColor font20 fontBold">아직 작성중인 글이 없어요<br>가장먼저 게시글을 작성해보세요!</p>
-  </div> -->
-
   <div v-if="memoShowYn === true" class="boardMainMemoBoxBackground" @click="memoPopNo()"></div>
   <transition name="showMemoPop">
     <gMemoPop class="memoPop" ref="gMemoRef" transition="showMemoPop"  v-if="memoShowYn" @saveMemoText="saveMemo" :mememo='mememoValue' @mememoCancel='mememoCancel' :writeMemoTempData='tempMemoData'/>
   </transition>
-
-  <!-- <imgLongClickPop @closePop="backClick" @clickBtn="longClickAlertClick" v-if="imgDetailAlertShowYn" /> -->
-  <!-- <gCertiPop :pPopText="'실명인증을 하면 익명게시판에 글을 작성할 수 있어요'" @goSavePhonePop="goSavePhonePop" v-if="gCertiPopShowYn" @no='gCertiPopShowYn = false'  /> -->
   <gReport v-if="reportYn" @closePop="reportYn = false" :contentType="contentType" :contentOwner="contentOwner" @editable="editable" @report="report" @bloc="bloc" />
   <smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn = false"/>
   <gSelectBoardPop :type="this.selectBoardType" @closeXPop="closeSelectBoardPop" v-if="selectBoardPopShowYn" :boardDetail="boardDetailValue" :boardValue="detailVal" />
@@ -137,10 +111,7 @@
 </template>
 <script>
 import { Base64 } from 'js-base64'
-// import findContentsList from '../UB_findContentsList.vue'
-/* import boardList from '@/components/list/D_commonList.vue' */
 import findContentsList from '@/components/popup/common/UB_findContentsList.vue'
-// import boardWrite from '@/components/board/Tal_boardWrite.vue'
 import writeContents from '@/components/popup/UB_writeContents.vue'
 
 import { onMessage } from '@/assets/js/webviewInterface'
@@ -150,10 +121,7 @@ import pinPostPop from '../../../components/UB/popup/UB_pinPostPop.vue'
 export default {
   components: {
     findContentsList,
-    /* boardList, */
-    // boardWrite,
     writeContents,
-    // imgLongClickPop,
     pinPostPop
   },
   props: {
@@ -172,8 +140,6 @@ export default {
       }
     })
     if (this.CAB_DETAIL) {
-      // this.boardListWrap.scrolTop = this.currentScroll
-      // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
       this.box = this.$refs.boardListWrap // 이 dom scroll 이벤트를 모니터링합니다
       if (this.box) {
         this.box.addEventListener('scroll', this.updateScroll)
@@ -186,25 +152,20 @@ export default {
       if (this.listBox) {
         this.listBox.addEventListener('scroll', this.handleScroll)
       }
-      // eslint-disable-next-line no-unused-vars
       if (this.findPopShowYn) {
         this.findPaddingTopBoard()
       }
     }
   },
   created () {
-    // this.$emit('clearInfo', { detail: '', targetType: 'boardMain' })
     this.mCreTeamKey = this.$route.params.teamKey
     if (this.pOnlyMineYn) {
       this.mOnlyMineYn = true
-      // this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }]
       this.mCommonFilterList = [{ display: 'Recent', name: 'N' }, { display: 'Popular', name: 'P' }, { display: 'Saved', name: 'S' }]
     }
     this.mPropParams = this.propParams
-    // this.$emit('clearInfo', { detail: this.mPropParams, targetType: 'boardMain' })
     this.$emit('openLoading')
     if (!this.mPropParams || this.mPropParams.targetType !== 'boardMain') {
-      // this.$router.go(-1)
       var this_ = this
       this.getCabinetDetail().then(() => {
         this.$addChanList(this.mCreTeamKey)
@@ -248,7 +209,6 @@ export default {
     }
   },
   mounted () {
-    // this.readyFunction()
     this.$nextTick(() => {
       if (document.getElementById('boardItemBox')) {
         if (this.CAB_DETAIL && this.CAB_DETAIL.topviewList) {
@@ -268,7 +228,6 @@ export default {
       mPinPostPopShowYn: false,
       mGuidePopShowYn: false,
       paddingTop: 0,
-      // activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 쓴', name: 'M' }],
       mCommonFilterList: [{ display: 'Recent', name: 'N' }, { display: 'Popular', name: 'P' }, { display: 'Saved', name: 'S' }, { display: 'My', name: 'M' }],
       listBox: null,
       firstContOffsetY: null,
@@ -287,7 +246,6 @@ export default {
       pageHistoryName: '',
       findPopShowYn: false,
       actorList: [],
-      /* subHistoryList: [], */
       viewTab: 'N',
       findKeyList: {},
       resultSearchKeyList: [],
@@ -322,7 +280,6 @@ export default {
       axiosQueue: [],
       saveMemoLoadingYn: false,
       tempMemoData: {},
-      // gCertiPopShowYn: false,
       mPropParams: null,
       mOnlyMineYn: false,
       mCreTeamKey: -1
@@ -360,12 +317,9 @@ export default {
       this.mPinPostPopShowYn = false
     },
     goSavePhonePop () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.targetType = 'changePhone'
-      // this.gCertiPopShowYn = false
       this.$emit('openPop', param)
-      // this.openPop(param)
     },
     openImgPop (param) {
       this.$emit('openImgPop', param)
@@ -374,8 +328,6 @@ export default {
       var this_ = this
       this.$nextTick(() => {
         var blockBox = document.getElementById('summaryHeader')
-        // this_.boardListWrap.addEventListener('scroll', this_.saveScroll)
-        // this.listBox = document.getElementsByClassName('commonBoardListWrap')[0]
         this_.listBox = this_.$refs.commonBoardListWrapCompo
         if (!this_.listBox) {
           return
@@ -403,7 +355,6 @@ export default {
     memoPopNo () {
       this.memoShowYn = false
       this.tempMemoData = this.$refs.gMemoRef.getMemoData()
-      // document.body.focus()
     },
     clearMemo () {
       this.tempMemoData = undefined
@@ -440,8 +391,7 @@ export default {
       if (this.axiosQueue.findIndex((item) => item === 'saveMemo') !== -1) return
       this.axiosQueue.push('saveMemo')
       this.saveMemoLoadingYn = true
-      // eslint-disable-next-line no-new-object
-      var memo = new Object()
+      var memo = {}
       memo.parentMemoKey = null
       if (this.mememoValue !== undefined && this.mememoValue !== null && this.mememoValue !== {}) {
         memo.parentMemoKey = this.mememoValue.parentMemoKey
@@ -450,10 +400,8 @@ export default {
       if (inSaveMemoObj.attachFileList) {
         memo.attachFileList = inSaveMemoObj.attachFileList
       }
-      /* memo.bodyFilekey  */
       memo.targetKind = 'C'
       memo.targetKey = this.currentContentsKey
-      // memo.toUserKey = this.alimDetail[0].creUserKey 대댓글때 사용하는것임
       memo.creUserKey = this.GE_USER.userKey
       memo.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
@@ -465,16 +413,8 @@ export default {
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
         this.axiosQueue.splice(queueIndex, 1)
         if (result.data.result === true || result.data.result === 'true') {
-          /* this.confirmText = '댓글 저장 성공'
-          this.confirmPopShowYn = true */
           this.memoShowYn = false
-          // await this.getContentsList()
-          // await this.getBoardMemoList(true)
-
-          // this.currentMemoList = []
-          // var cont = this.currentMemoObj
           var idx, memoLength, cont
-          // if (this.viewMainTab === 'P') {
           idx = this.BOARD_CONT_LIST.findIndex(i => i.contentsKey === this.currentContentsKey)
           if (idx !== -1) {
             memoLength = this.BOARD_CONT_LIST[idx].memoList.length
@@ -490,9 +430,7 @@ export default {
             ]
             var newList = this.replaceMemoArr(newArr)
             cont.D_MEMO_LIST = newList
-            // cont.memoCount = newList.length
             cont.memoCount += 1
-            // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
             this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [cont])
           }
         }
@@ -518,10 +456,8 @@ export default {
         } else {
           await this.$downloadFile(this.selectImgObject.fileKey, this.selectImgObject.path)
         }
-        // this.$showToastPop('저장되었습니다!')
         this.$showToastPop('Saved')
         this.backClick()
-        // this.failPopYn = true
       } catch (error) {
         console.log(error)
       }
@@ -580,20 +516,8 @@ export default {
       this.mememoValue = memo
       this.memoShowYn = true
     },
-    /* 이미지 다운로드 */
-    imgLongClick (param) {
-      var history = this.$store.getters['UB_HISTORY/hStack']
-      this.alertPopId = 'imgDetailAlertPop' + history.length
-      this.alertPopId = this.$setParentsId(this.pPopId, this.alertPopId)
-      history.push(this.alertPopId)
-      this.$store.commit('UB_HISTORY/updateStack', history)
-      this.selectImgObject = param.selectObj
-      this.selectImgParam = param.previewParam
-      this.imgDetailAlertShowYn = true
-    },
     makeNewContents (data) {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.targetKey = data.contentsKey
       param.targetType = data.writeType === 'BOAR' ? 'writeBoard' : data.writeType === 'ALIM' ? 'writePush' : undefined
       param.writeType = data.writeType
@@ -624,15 +548,13 @@ export default {
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
           return b.mccKey - a.mccKey
-          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data
       }, [])
       return uniqueArr
     },
     goProfile () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.targetType = 'bookMemberDetail'
       param.popHeaderText = '내 정보'
       param.readOnlyYn = true
@@ -760,13 +682,7 @@ export default {
           cont.D_MEMO_LIST.splice(index, 1)
         }
         cont.memoCount -= 1
-        // cont.memoCount = this.$countingTotalMemo(cont.D_MEMO_LIST)
-
-        // this.currentMemoList = cont.D_MEMO_LIST
-        // this.settingOffsetIntTotalMemoCount(cont.D_MEMO_LIST)
         this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [cont])
-        // this.currentMemoObj = cont
-        // this.memoSetCount(response.totalElements)
       }
       this.$showToastPop(this.$t('COMMON_MSG_DELETED_COMMENT'))
     },
@@ -836,8 +752,6 @@ export default {
       }
     },
     successWriteBoard (data) {
-      // this.$emit('successWrite', data)
-      // successWriteBoard
       this.findKeyList.searchKey = null
       this.findKeyList.toCreDateStr = null
       this.findKeyList.fromCreDateStr = null
@@ -891,7 +805,6 @@ export default {
       this.offsetInt = 0
       var ScrollWrap = this.$refs.commonBoardListWrapCompo
       ScrollWrap.scrollTo({ top: 0 })
-      // this.$refs.activeBar.switchtab(0)
     },
     getAbsoluteTop (element) {
       return window.pageYOffset + element.getBoundingClientRect().top
@@ -921,30 +834,8 @@ export default {
           }
         }
       }
-      // var test = document.getElementById('boardPageHeader')
-      // parentElement = element.parentElement
-      // this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
-      // var test = this.firstContOffsetY
-
       this.scrollPosition = this.listBox.scrollTop
     },
-    // handleScroll () {
-    //   var element = document.getElementsByClassName('boardRow')[0]
-    //   var parentElement = element.parentElement
-    //   this.firstContOffsetY = this.getAbsoluteTop(element) - this.getAbsoluteTop(parentElement)
-
-    //   var test = document.getElementById('commonBoardListHeader')
-    //   parentElement = element.parentElement
-    //   this.headerTop = this.getAbsoluteTop(test) - this.getAbsoluteTop(parentElement)
-    //   if (this.firstContOffsetY < 0) {
-    //     if (this.newBox.scrollTop > this.newScrollPosition) {
-    //       this.scrolledYn = true
-    //     } else if (this.box.scrollTop <= this.newScrollPosition) {
-    //       this.scrolledYn = false
-    //     }
-    //   }
-    //   this.newScrollPosition = this.newBox.scrollTop
-    // },
     async refresh () {
       var pSize = 10
       if (this.offsetInt !== 0 && this.offsetInt !== '0' && Number(this.offsetInt) > 0) {
@@ -954,79 +845,6 @@ export default {
       var resultList = await this.getContentsList(pSize, 0)
       this.mCabContentsList = resultList.content
       this.endList = false
-      // 임시 삭제
-      /* var pSize = 10
-      if (this.offsetInt !== 0 && this.offsetInt !== '0' && Number(this.offsetInt) > 0) {
-        pSize = Number(this.offsetInt) * 10
-      }
-      this.endList = true
-      var resultList = await this.getContentsList(pSize, 0)
-      this.mCabContentsList = resultList.content
-      this.endList = false
-    },
-    updateScroll () {
-      var blockBox = document.getElementById('summaryHeader')
-      if (this.box.scrollTop > this.scrollPosition) {
-        this.scrollDirection = 'down'
-      } else if (this.box.scrollTop < this.scrollPosition) {
-        this.scrollDirection = 'up'
-      }
-
-      this.scrollPosition = this.box.scrollTop
-
-      if (this.scrollDirection === 'down' && this.scrollPosition > 200) {
-        blockBox.style.height = '50px'
-        // blockBox.scrollHeight = 100
-        document.getElementById('boardInfoSummary').classList.add('displayNIm')
-        // document.getElementById('boardInfoSummary2').classList.add('displayBIm')
-        document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
-        this.reloadShowYn = true
-      } else if (this.scrollDirection === 'up' && this.scrollPosition < 250) {
-        blockBox.style.height = '300px'
-        this.box.style.height = ''
-        document.getElementById('boardInfoSummary').classList.remove('displayNIm')
-        // document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
-        document.getElementById('boardItemBox').classList.remove('boardItemBoxHeight')
-        this.reloadShowYn = false
-      }
-    },
-    openWriteBoard () {
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
-      params.targetType = 'writeContents'
-      params.actorList = this.actorList
-      params.targetNameMtext = this.propParams.nameMtext
-      params.teamKey = this.propParams.currentTeamKey
-      params.currentTeamKey = this.propParams.currentTeamKey
-      params.bodyFullStr = ''
-      params.cabinetNameMtext = this.$changeText(this.CAB_DETAIL.cabinetNameMtext)
-      params.cabinetKey = this.CAB_DETAIL.cabinetKey
-      params.value = this.CAB_DETAIL
-      params.contentsJobkindId = 'BOAR'
-      if (this.CAB_DETAIL.guideFullStr) {
-        params.guideFullStr = this.CAB_DETAIL.guideFullStr
-      }
-      this.boardWriteData = {}
-      this.boardWriteData = params
-      var history = this.$store.getters['UB_HISTORY/hStack']
-      this.writePopId = 'writeContents' + history.length
-      this.writePopId = this.$setParentsId(this.pPopId, this.writePopId)
-      history.push(this.writePopId)
-      this.$store.commit('UB_HISTORY/updateStack', history)
-
-      this.boardWriteYn = true
-
-      // this.$emit('openPop', params)
-    },
-    updateStoreData (Detail) {
-      // console.log(this.CAB_DETAIL)
-      var tempChan = this.CHANNEL_DETAIL
-      var cabinetList = tempChan.ELEMENTS.cabinetList
-      var index = cabinetList.findIndex((item) => item.cabinetKey === this.CAB_DETAIL.cabinetKey)
-      cabinetList[index] = Detail
-      tempChan.ELEMENTS.cabinetList = cabinetList
-      this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', tempChan)
-      /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     openWriteBoard () {
       if (this.GE_USER.unknownYn) {
@@ -1038,13 +856,11 @@ export default {
         this.gCertiPopShowYn = true
         return
       }
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
+      var params = {}
       params.targetType = 'writeContents'
       params.actorList = this.actorList
       params.targetNameMtext = this.CHANNEL_DETAIL.nameMtext
       params.teamKey = this.CHANNEL_DETAIL.teamKey
-      // params.currentTeamKey = this.mPropParams.currentTeamKey
       params.currentTeamKey = this.CHANNEL_DETAIL.teamKey
 
       params.bodyFullStr = ''
@@ -1064,8 +880,6 @@ export default {
       this.$store.commit('UB_HISTORY/updateStack', history)
 
       this.boardWriteYn = true
-
-      // this.$emit('openPop', params)
     },
     updateScroll () {
       var blockBox = document.getElementById('summaryHeader')
@@ -1083,7 +897,6 @@ export default {
 
       if (this.scrollDirection === 'down' && this.scrollPosition > offset) {
         blockBox.style.height = '50px'
-        // blockBox.scrollHeight = 100
         if (this.scrollPosition > (offset + 50 - 1)) {
           this.box.style.overflow = 'hidden'
         }
@@ -1092,7 +905,6 @@ export default {
         if (document.getElementById('topViewWrap')) {
           document.getElementById('topViewWrap').classList.add('displayNIm')
         }
-        // document.getElementById('boardInfoSummary2').classList.add('displayBIm')
         document.getElementById('boardItemBox').classList.add('boardItemBoxHeight')
         this.reloadShowYn = true
       } else if (this.scrollDirection === 'up' && this.scrollPosition < offset) {
@@ -1102,46 +914,26 @@ export default {
         if (document.getElementById('topViewWrap')) {
           document.getElementById('topViewWrap').classList.remove('displayNIm')
         }
-        // document.getElementById('boardInfoSummary2').classList.remove('displayBIm')
         document.getElementById('boardItemBox').classList.remove('boardItemBoxHeight')
         this.reloadShowYn = false
       }
     },
     async getCabinetDetail () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      // var tt = this.propParams
+      var param = {}
       param.currentTeamKey = this.$route.params.teamKey
       param.cabinetKey = this.$route.params.targetKey
       var resultList = await this.$getCabinetDetail(param)
-      // mShareItemList가 잘 들어오면 save잘 된것
-      //   this.shareAuth.R = true
-      //   this.shareAuth.W = true
-      //   this.shareAuth.V = true
-      // } else {
       resultList.mCabinet.shareAuth = this.$checkUserAuth(resultList.mCabinet.mShareItemList)
       if (resultList && resultList.mCabinet) {
         this.cabinetDetail = resultList.mCabinet
       }
-      // this.updateStoreData(resultList.mCabinet)
-      // eslint-disable-next-line no-new-object
-
-      // }
-      /* if (this.shareAuth.V === false) {
-        this.$emit('closeXPop')
-      } */
-      // this.actorList = this.CAB_DETAIL.mShareItemList
       this.findPopShowYn = false
       setTimeout(() => {
         this.$emit('closeLoading')
       }, 500)
     },
     async getContentsList (pageSize, offsetInput) {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      /* if (this.chanDetailKey !== undefined && this.chanDetailKey !== null && this.chanDetailKey !== '') {
-        param.creTeamKey = this.chanDetailKey
-      } */
+      var param = {}
       this.$emit('closeLoading')
       if (!this.mPropParams || this.mPropParams.targetType !== 'boardMain') {
         param.cabinetKey = this.$route.params.targetKey
@@ -1155,8 +947,6 @@ export default {
       param.offsetInt = this.offsetInt
       if (offsetInput !== undefined) {
         param.offsetInt = offsetInput
-      // } else {
-        // param.offsetInt = this.offsetInt
       }
       if (pageSize) {
         param.pageSize = pageSize
@@ -1200,9 +990,6 @@ export default {
         param.findActYn = true
         param.ownUserKey = this.GE_USER.userKey
         param.findActStarYn = true
-      // } else if (this.viewTab === 'R') {
-      //   param.findLogReadYn = false
-      // }
       } else if (this.viewTab === 'M') {
         param.creUserKey = this.GE_USER.userKey
         param.ownUserKey = this.GE_USER.userKey
@@ -1212,26 +999,19 @@ export default {
       if (this.viewTab === 'N') {
         this.totalElements = resultList.totalElements
       }
-      for (var i = 0; i < resultList.length; i++) {
-        // resultList.
-      }
       if (!resultList || (resultList && resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize))) {
         this.endListYn = true
       }
-      // this.$emit('changePageHeader', resultList.cabinetNameMtext)
-
       return resultList
     },
     closeSearchPop () {
       this.findPopShowYn = false
-      /* this.subHistoryList.splice(-1, 1) */
     },
     goDetail (value) {
       if (this.CAB_DETAIL.shareAuth.V === false && value.creUserKey !== this.GE_USER.userKey) {
         this.errorBoxText = this.$t('CHAN_POST_NO_PERMI')
         this.errorBoxYn = true
       } else {
-        // value.functions = [{replyYn:this.propParams.value.replyYn},{fileYn:this.propParams.value.fileYn},{blindYn:this.propParams.value.blindYn}]
         value.replyYn = this.CAB_DETAIL.replyYn
         value.fileYn = this.CAB_DETAIL.fileYn
         value.blindYn = this.CAB_DETAIL.blindYn
@@ -1250,8 +1030,6 @@ export default {
       if (this.viewTab !== tabName) {
         this.readCheckBoxYn = false
       }
-      // this.$emit('openLoading')
-      // activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '중요한', name: 'S' }, { display: '내가 쓴', name: 'M' }],
       this.viewTab = tabName
       switch (this.viewTab) {
         case 'N' :
@@ -1268,10 +1046,8 @@ export default {
           break
       }
       this.offsetInt = 0
-      // this.mCabContentsList = []
       this.emptyYn = false
       var resultList = await this.getContentsList(null, 0)
-      // if (resultList)
       if (!resultList || (resultList.content && resultList.content.length === 0)) {
         this.mCabContentsList = []
       } else {
@@ -1331,10 +1107,8 @@ export default {
       this.findPopShowYn = false
     },
     async castingSearchMap (param) {
-      // eslint-disable-next-line no-new-object
-      var searchObj = new Object()
+      var searchObj = {}
       var resultArray = []
-      // if (this.resultSearchKeyList.length > 0) resultArray = this.resultSearchKeyList
       if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
         searchObj.typeName = this.$t('CHAN_POST_TITLE')
         searchObj.type = 'searchKey'
@@ -1409,19 +1183,8 @@ export default {
         }
       }
       this.scrollMove()
-      // await this.getCabinetDetail()
-
       this.findPopShowYn = false
     },
-    // replaceArr (arr) {
-    //   var uniqueArr = arr.reduce(function (data, current) {
-    //     if (data.findIndex(({ contentsKey }) => contentsKey === current.contentsKey) === -1) {
-    //       data.push(current)
-    //     }
-    //     return data
-    //   }, [])
-    //   return uniqueArr
-    // },
     updateStoreBoardList (uniqueArr) {
       var tempChan = this.CHANNEL_DETAIL
       var cabinetList = tempChan.ELEMENTS.cabinetList
@@ -1429,7 +1192,6 @@ export default {
       cabinetList[index].boardList = uniqueArr
       tempChan.ELEMENTS.cabinetList = cabinetList
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', tempChan)
-      /* this.$actionVuex('TEAM', tempChan, this.CHANNEL_DETAIL.teamKey, false, true) */
     },
     async loadMore (pageSize) {
       if (this.endListYn === false) {
@@ -1442,12 +1204,6 @@ export default {
         }
         this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
 
-        // const newArr = [
-        //   ...this.CAB_DETAIL.boardList,
-        //   ...resultList.content
-        // ]
-
-        // 더 불러온 컨텐츠에 D_MEMO_LIST가 없어 넣어주고 있음
         const newArr = [
           ...this.BOARD_CONT_LIST,
           ...resultList.content
@@ -1455,7 +1211,6 @@ export default {
 
         var uniqueArr = this.replaceArr(newArr)
         var tempCabData = this.CAB_DETAIL
-        // tempCabData.boardList
         this.mCabContentsList = uniqueArr
         if (this.viewTab === 'N') {
           tempCabData.totalContentsCount = resultList.totalElements
@@ -1484,7 +1239,6 @@ export default {
         }
         data = data.sort(function (a, b) { // num으로 오름차순 정렬
           return b.memoKey - a.memoKey
-          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
         return data
       }, [])
@@ -1524,7 +1278,6 @@ export default {
       var vPoolChanInfo = null
       var vPoolContList = []
       if (!this.mCabContentsList) {
-        // this.emptyYn = true
         return []
       }
       for (let i = 0; i < this.mCabContentsList.length; i++) {
@@ -1585,10 +1338,8 @@ export default {
       handler (val, old) {
         if (!val) return
         if (val.unknownYn) {
-          // this.activeTabList = [{ display: '최신', name: 'N' }]
           this.mCommonFilterList = [{ display: 'Recent', name: 'N' }]
         } else {
-          // this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 쓴', name: 'M' }]
           this.mCommonFilterList = [{ display: 'Recent', name: 'N' }, { display: 'Popular', name: 'P' }, { display: 'Saved', name: 'S' }, { display: 'My', name: 'M' }]
         }
       }
@@ -1597,7 +1348,6 @@ export default {
       async handler (value, old) {
         var newArr = []
         if (!value || value.length === 0) return
-        // var memoContents = value[0]
         var content = null
         var index = this.mCabContentsList.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
         if (index !== -1) {
