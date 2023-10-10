@@ -188,7 +188,7 @@
 <script>
 /* eslint-disable vue/no-async-in-computed-properties */
 import pushList from './PushList'
-import writeContents from '@/components/popup/WriteContents.vue'
+import writeContents from '@/components/popup/contents/WriteContents.vue'
 import { onMessage } from '@/assets/js/webviewInterface'
 import followerList from '@/components/pageComponents/channel/popup/FollowerListPop.vue'
 import userDetailPop from '@/components/popup/UserDetailPop.vue'

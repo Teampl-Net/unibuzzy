@@ -56,7 +56,7 @@
 <script>
 import chanMenu from '@/components/pageComponents/channel/popup/ChannelMenu.vue'
 import notiHistoryList from '@/components/popup/NotiHistoryList.vue'
-import writeContents from '@/components/popup/WriteContents.vue'
+import writeContents from '@/components/popup/contents/WriteContents.vue'
 import editMyChanMenu from '@/components/pageComponents/channel/container/EditMyChanMenu.vue'
 import favListPop from '@/components/popup/FavListPop.vue'
 import editBookListPop from '@/components/pageComponents/channel/popup/EditBookListPop.vue'

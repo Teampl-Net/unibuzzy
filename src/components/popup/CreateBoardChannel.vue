@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import createChannel from '@/components/unit/CreateChannel.vue'
+import createChannel from '@/components/unit/channel/CreateChannel.vue'
 import selectIconBgPopup from '@/components/popup/SelectChaniconBgPopup.vue'
 
 export default {

@@ -114,7 +114,7 @@
 <script>
 import chanIcon from '@/components/pageComponents/main/unit/ChanIcon.vue'
 import boardCard from '@/components/pageComponents/main/unit/BoardCard.vue'
-import chanRoundIcon from '@/components/unit/ChanRoundIcon.vue'
+import chanRoundIcon from '@/components/unit/channel/ChanRoundIcon.vue'
 export default {
   components: {
     chanRoundIcon,

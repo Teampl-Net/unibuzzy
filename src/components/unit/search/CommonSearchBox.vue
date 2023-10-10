@@ -1,7 +1,7 @@
 <template>
     <div class="pushListSearchArea">
       <div class="searchImgBox">
-        <img class="searchIcon mtop-03 cursorP" @click="$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+        <img class="searchIcon mtop-03 cursorP" @click="$emit('openFindPop')" src="@/assets/images/common/iocn_search.png" alt="검색버튼">
         <div class="searchInput font15" :class="{darkerBgColor : targetType === 'myActList'}" @click="$emit('openFindPop')" ref="alimSearchKey" />
       </div>
       <div class="searchResultWrap">
@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-import searchResult from '../../components/unit/SearchResult.vue'
+import searchResult from '@/components/unit/search/SearchResult.vue'
 export default {
   data () {
     return {

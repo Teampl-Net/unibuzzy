@@ -91,7 +91,7 @@
           <div class="fr flexAlignCenter">
             <gBtnSmall class="writeContenBtn" v-if="contentType === 'ALIM'"   :btnTitle="contentType === 'ALIM' && requestPushYn === false ? $t('FORM_BTN_SEND') : $t('FORM_BTN_LONG_APPLY')" @click="clickPageTopBtn()"  />
             <gBtnSmall :btnThema="mCanWriteYn? '' : 'light'" :style="!mCanWriteYn? 'background: #FFF; cursor: default;' : ''" class="writeContenBtn" v-if="contentType === 'BOAR'"   :btnTitle="contentType === 'BOAR' && modiYn === true ? $t('FORM_BTN_EDIT') : $t('FORM_BTN_POST')" @click="mCanWriteYn? boardDataCheck(): ''"   />
-            <img style="width: 1rem;" @click="closeXPop" class="mleft-2 fr cursorP"  src="../../assets/images/common/popup_close.png"/>
+            <img style="width: 1rem;" @click="closeXPop" class="mleft-2 fr cursorP"  src="@/assets/images/common/popup_close.png"/>
           </div>
         </div>
         <div class="fl mtop-05 headerLine"></div>
@@ -106,7 +106,7 @@
             </p>
             <div class="fl boardListWrap" :class="!isMobile? 'thinScrollBar':''" id="boardListWrap" @wheel="horizontalScroll" >
               <div v-for="(data, index) in selectBoardList" :key="index" class="fl mleft-05 font12 fontBold boardItem" @click="selectBoard(data, index)" :style="{background: data.picBgPath}" :class="{'CDeepBorderColor selectPadding' : selectBoardIndex === index, 'noneSelectPadding' : selectBoardIndex !== index, 'mleft-0': index === 0}">
-                <div class="fl"> <img class="img-w15" v-if="selectBoardIndex === index" src="../../assets/images/common/icon_check_commonColor.svg" /></div>
+                <div class="fl"> <img class="img-w15" v-if="selectBoardIndex === index" src="@/assets/images/common/icon_check_commonColor.svg" /></div>
                 <label class="mleft-03 font14"  :class="{'commonColor selectBoardBorder' : selectBoardIndex === index}" :for="'selectBoardCheckBox'+index">{{this.$changeText(data.cabinetNameMtext)}}</label>
               </div>
             </div>
@@ -149,8 +149,8 @@
 
 <script>
 import { Base64 } from 'js-base64'
-import formEditor from '../unit/formEditor/FormEditor.vue'
-import attachFileList from '../unit/formEditor/AttachFile.vue'
+import formEditor from '../../unit/formEditor/FormEditor.vue'
+import attachFileList from '../../unit/formEditor/AttachFile.vue'
 export default {
   components: {
     attachFileList,

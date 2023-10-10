@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import modiMemoPop from '../../popup/ModiMemoPop.vue'
+import modiMemoPop from '../../popup/contents/ModiMemoPop.vue'
 import attachFileListPop from '../../pageComponents/main/unit/CommonAttachFileListPop'
 export default {
   props: {

@@ -36,12 +36,12 @@
               class="CWhiteBgColor mngChanEffect"
           >
               <img
-              src="../../assets/images/channel/ownerChannel_crown.svg"
+              src="@/assets/images/channel/ownerChannel_crown.svg"
               v-if="chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey"
               alt=""
               />
               <img
-              src="../../assets/images/common/icon_setting_gear.svg"
+              src="@/assets/images/common/icon_setting_gear.svg"
               v-else
               alt=""
               />
@@ -52,13 +52,13 @@
             <img
             class="fl img-w14 mtop-02 mright-02"
             v-if="chanElement.officialYn"
-            src="../../assets/images/main/main_officialMark.svg"
+            src="@/assets/images/main/main_officialMark.svg"
             alt=""
             />
             <!-- {{$route.path === "/" ? $changeText(chanElement.nameMtext) + " Channel " : `${$changeText(chanElement.bdAreaNameMtext)} > ${$changeText(chanElement.nameMtext )}`}} -->
             <div v-if="$route.path === '/'" class="w100P flexAlignCenter">
               <p class="chanName textOverdot">{{ $changeText(chanElement.nameMtext) }}</p>
-              <img class="chanIcon" src="../../assets/images/footer/icon_channel_fillin.svg" alt="">
+              <img class="chanIcon" src="@/assets/images/footer/icon_channel_fillin.svg" alt="">
             </div>
             <div v-else class="dispInlineBlock">
               {{ $changeText(chanElement.nameMtext) }}
@@ -95,7 +95,7 @@
         <div class="w100P fl font14 textLeft lightGray">
             <p class="fl font14">{{ $changeText(chanElement.bdAreaNameMtext) }}</p>
             <img
-            src="../../assets/images/editChan/icon_user_Gray.svg"
+            src="@/assets/images/editChan/icon_user_Gray.svg"
             class="img-w15 mright-01 fl mleft-03 mtop-01"
             alt=""
             />

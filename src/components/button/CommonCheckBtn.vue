@@ -1,6 +1,6 @@
 <template>
 <div class="fl btnBaseCss font14" :class="selectedYn === true ? 'CDeepColor CWhiteBgColor selectPadding selectBorder' : 'commonGray commonGrayBorderColor commonGrayBG noneSelectPadding' ">
-  <img class="img-w15" v-if="selectedYn === true" src="../../../assets/images/common/icon_check_commonColor.svg" />
+  <img class="img-w15" v-if="selectedYn === true" src="@/assets/images/common/icon_check_commonColor.svg" />
   <span v-html="title"></span>
 </div>
 </template>

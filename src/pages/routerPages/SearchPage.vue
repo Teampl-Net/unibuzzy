@@ -143,7 +143,7 @@
   </template>
 
 <script>
-import findContentsList from '@/components/popup/FindContentsList.vue'
+import findContentsList from '@/components/popup/contents/FindContentsList.vue'
 import SkeletonBox from '@/components/unit/contents/ContentsSkeleton'
 import searchBox from '../../components/pageComponents/search/unit/SearchBox'
 export default {

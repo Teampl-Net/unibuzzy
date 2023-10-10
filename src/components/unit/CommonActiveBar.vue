@@ -11,7 +11,7 @@
           <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
         </div>
         <div class="fr tActiveBarSearchIcon">
-          <img class="fl cursorP img-w20" @click="$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+          <img class="fl cursorP img-w20" @click="$emit('openFindPop')" src="@/assets/images/common/iocn_search.png" alt="검색버튼">
         </div>
       </div>
       <div v-if="searchYn && resultSearchKeyList && resultSearchKeyList.length > 0" class="searchItemWrap">
@@ -27,7 +27,7 @@
         <div class="activeBar fl tActiveBarBottom noLeft"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(selectedTabName) > 3 }"></div>
         <div class="barSearchBox" v-if="searchYn && !channelYn">
           <div class="fr activeBarSearchIcon">
-            <img class="fl cursorP img-w20 lineHeight40" @click="$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+            <img class="fl cursorP img-w20 lineHeight40" @click="$emit('openFindPop')" src="@/assets/images/common/iocn_search.png" alt="검색버튼">
           </div>
         </div>
       </div>
@@ -37,7 +37,7 @@
             <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
           </div>
           <div class="fr channelSearchIcon">
-            <img class="fl cursorP img-w20 lineHeight40" @click="$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">
+            <img class="fl cursorP img-w20 lineHeight40" @click="$emit('openFindPop')" src="@/assets/images/common/iocn_search.png" alt="검색버튼">
           </div>
         </div>
       </div>
@@ -47,8 +47,8 @@
     </div>
 </template>
 <script>
-import searchResult from '../../components/unit/SearchResult.vue'
-import cSearchBox from './CSearchBox.vue'
+import searchResult from '../../components/unit/search/SearchResult.vue'
+import cSearchBox from './search/CSearchBox.vue'
 export default {
   components: {
     cSearchBox,

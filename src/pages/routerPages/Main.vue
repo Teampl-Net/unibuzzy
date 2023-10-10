@@ -75,7 +75,7 @@ import { onMessage } from '@/assets/js/webviewInterface'
 import createBoardChannel from '@/components/popup/CreateBoardChannel.vue'
 import mainBoardList from '@/components/pageComponents/main/popup/BoardListPop.vue'
 import infoBox from '@/components/pageComponents/main/popup/InfoBox.vue'
-import writeBottSheet from '@/components/popup/ContentsWriteBottSheet.vue'
+import writeBottSheet from '@/components/popup/contents/ContentsWriteBottSheet.vue'
 export default {
   data () {
     return {

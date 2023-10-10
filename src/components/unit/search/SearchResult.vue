@@ -3,7 +3,7 @@
         <div v-for="(value, index) in setSearchList" :key="index" class="searchResultBox textOverdot">
           <span>{{value.typeName}}: </span>
           {{value.keyword}}
-            <img v-on:click="delSearchKey(value.type)" class="cursorP searchXIcon" src="../../assets/images/common/searchXIcon.svg"  alt="">
+            <img v-on:click="delSearchKey(value.type)" class="cursorP searchXIcon" src="@/assets/images/common/searchXIcon.svg"  alt="">
         </div>
     </div>
 </template>

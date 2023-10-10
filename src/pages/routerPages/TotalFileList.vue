@@ -66,9 +66,9 @@
 </template>
 
 <script>
-import findContentsList from '@/components/popup/FindContentsList.vue'
-import searchResult from '@/components/unit/SearchResult.vue'
-import chanRoundIcon from '@/components/unit/ChanRoundIcon.vue'
+import findContentsList from '@/components/popup/contents/FindContentsList.vue'
+import searchResult from '@/components/unit/search/SearchResult.vue'
+import chanRoundIcon from '@/components/unit/channel/ChanRoundIcon.vue'
 import circleSkeleton from '@/components/pageComponents/fileBox/unit/MainChanCircleSkeleton.vue'
 import SkeletonBox from '@/components/unit/contents/ContentsSkeleton'
 export default {

@@ -25,25 +25,25 @@ import gMainTab from './components/popup/CommonMainTabCompo.vue'
 import './assets/js/webViewBridge'
 import gFileBox from './components/unit/contents/CommonFileBox.vue'
 import gInput from './components/unit/CommonInput.vue'
-import gSearchBox from './components/unit/CommonSearchBox.vue'
+import gSearchBox from './components/unit/search/CommonSearchBox.vue'
 import gAxiosLoading from './components/layout/AxiosLoadingSpinner.vue'
 import coreService from '../public/commonAssets/D_coreService'
 import uploadFile from './assets/js/uploadFile'
 import gUBContentsBox from './components/unit/contents/ContentsBox.vue'
 import VueCropper from 'vue-cropperjs'
 import gColorPicker from './components/unit/CommonColorPicker.vue'
-import gImgPop from './components/popup/CommonGalleryPop.vue'
+import gImgPop from './components/popup/contents/CommonGalleryPop.vue'
 import gToggle from './components/button/CommonToggle.vue'
 import gEmpty from './components/unit/CommonEmpty.vue'
 import gReport from './components/unit/contents/CommonReport.vue'
-import gCheckBtn from './components/unit/formEditor/CommonCheckBtn.vue'
+import gCheckBtn from './components/button/CommonCheckBtn.vue'
 import gConfirmPop from './components/popup/confirmPop/CommonConfirmPop.vue'
 import myObserver from './components/unit/ScrollObserver.vue'
-import gMemoPop from './components/popup/CommonMemoPop.vue'
+import gMemoPop from './components/popup/contents/CommonMemoPop.vue'
 import gListEmpty from './components/unit/receiverUnit/CommonListEmpty.vue'
 import gToolBox from './components/unit/formEditor/CommonToolBox.vue'
 import gLoadingS from './components/layout/SmallLoading.vue'
-import gChannelCard from './components/unit/ChannelCard.vue'
+import gChannelCard from './components/unit/channel/ChannelCard.vue'
 import gProfileImg from './components/unit/CommonProfile.vue'
 import gBoardCard from './components/pageComponents/channel/unit/editBoard/CommonBoardCard.vue'
 import gBookList from './components/unit/receiverUnit/CommonBookList.vue'
@@ -61,7 +61,7 @@ let app = {}
 const importsUB = Promise.all([
   import('./components/layout/CommonMainHeader.vue'),
   import('./components/layout/CommonPopHeader.vue'),
-  import('./components/unit/CommonSelectFilter.vue'),
+  import('./components/unit/search/CommonSelectFilter.vue'),
   import('./components/popup/confirmPop/SmallCommonConfirmPop.vue'),
   import('./components/layout/CommonFooter.vue'),
   import('./components/popup/CommonSelectBoardListPop.vue'),

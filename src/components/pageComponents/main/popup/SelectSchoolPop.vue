@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import chanSkeleton from '@/components/unit/ChannelSkeleton.vue'
+import chanSkeleton from '@/components/unit/channel/ChannelSkeleton.vue'
 export default {
   components: {
     chanSkeleton
