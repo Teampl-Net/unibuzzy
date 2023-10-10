@@ -30,7 +30,7 @@
     <div class="introWhiteCard">
       <div class="pagePaddingWrap pTop-20">
         <div class="mbottom-1 mtop-1">
-          <img class="mbottom-05 uniBLogoImg" src="../../assets/images/intro/login/uniB_logo.png" alt="" @click="testLogin">
+          <img class="mbottom-05 uniBLogoImg" src="@/assets/images/intro/login/uniB_logo.png" alt="" @click="testLogin">
           <p class="font20 mbottom-05 fontBold">{{ $t('MSG_WELCOME') }}</p>
         </div>
         <div class="mtop-05 introText" style="height: 40px;">

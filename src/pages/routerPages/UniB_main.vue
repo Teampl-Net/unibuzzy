@@ -30,8 +30,8 @@
   </div>
 </template>
 <script>
-import selectSchoolPop from '../../../components/pageComponents/main/popup/SelectSchoolPop.vue'
-import guidePop from '../../../components/pageComponents/main/popup/GuidePop.vue'
+import selectSchoolPop from '@/components/pageComponents/main/popup/SelectSchoolPop.vue'
+import guidePop from '@/components/pageComponents/main/popup/GuidePop.vue'
 export default {
   data () {
     return {

@@ -146,7 +146,7 @@ export default {
 </script>
 
 <style scoped>
-@import url(../../../assets/css/UB_common.css);
+@import url(../../assets/css/UB_common.css);
 p{color: #2c3e50;}
 .policyPageWrap{position: absolute;width: 100%;height: 100vh;top: 0;z-index: 999999; background: #FFFFFF; left: 0; padding-bottom: 30px;}
 .policyHeader{box-shadow: 0px 7px 9px -9px #00000036;}

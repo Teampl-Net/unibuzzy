@@ -14,7 +14,7 @@
             <p :style="CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;'">{{$changeText(CHANNEL_DETAIL.nameMtext)}}</p>
             <img
                 class="fl"
-                src="../../../assets/images/channel/icon_official.svg"
+                src="@/assets/images/channel/icon_official.svg"
                 v-if="CHANNEL_DETAIL.officialYn"
                 alt=""
             />
@@ -27,7 +27,7 @@
                     <p :style="CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;'">{{$changeText(CHANNEL_DETAIL.nameMtext)}}</p>
                     <img
                         class="fl"
-                        src="../../../assets/images/channel/icon_official.svg"
+                        src="@/assets/images/channel/icon_official.svg"
                         v-if="CHANNEL_DETAIL.officialYn"
                         alt=""
                     />
@@ -61,7 +61,7 @@
                         :data-clipboard-text="CHANNEL_DETAIL.copyTextStr"
                         >
                         <img
-                            src="../../../assets/images/contents/icon_share.png"
+                            src="@/assets/images/contents/icon_share.png"
                         />
                     </div>
                 </div>
@@ -177,7 +177,7 @@
         <img
         v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn"
         id="writeBtn"
-        src="../../../assets/images/button/Icon_WriteBoardBtn.png"
+        src="@/assets/images/button/Icon_WriteBoardBtn.png"
         @click="openWritePushPop"
         alt="button for write contents"
         class="img-78 img-w66 writeContentsBtn"
@@ -187,11 +187,11 @@
 
 <script>
 /* eslint-disable vue/no-async-in-computed-properties */
-import pushList from './UB_pushList'
-import writeContents from '../../../components/popup/WriteContents.vue'
-import { onMessage } from '../../../assets/js/webviewInterface'
-import followerList from '../../../components/pageComponents/channel/popup/FollowerListPop.vue'
-import userDetailPop from '../../../components/popup/UserDetailPop.vue'
+import pushList from './PushList'
+import writeContents from '@/components/popup/WriteContents.vue'
+import { onMessage } from '@/assets/js/webviewInterface'
+import followerList from '@/components/pageComponents/channel/popup/FollowerListPop.vue'
+import userDetailPop from '@/components/popup/UserDetailPop.vue'
 export default {
   data () {
     return {

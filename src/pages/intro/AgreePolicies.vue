@@ -1,7 +1,7 @@
 <template>
   <div class="policiesWrap">
     <div class="policyHeaderWrap px-4" >
-      <img src="../../../assets/images/intro/login/uniB_logo.png" class="h100P fl" >
+      <img src="@/assets/images/intro/login/uniB_logo.png" class="h100P fl" >
     </div>
     <div class="policyContentsWrap" >
       <p class="font14 fontBold">uniBuzzy begins when you agree Terms and Conditions and Privacy Policy.</p>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { onMessage } from '../../../assets/js/webviewInterface'
+import { onMessage } from '@/assets/js/webviewInterface'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: 'policy',

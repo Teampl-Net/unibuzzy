@@ -25,24 +25,24 @@
     <gConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="Are you sure to quit uniBuzzy?" />
     <transition name="showUp" class="duration">
       <div class="py-3 px-4 uniBLogo" v-show="showStartBtnYn">
-        <img src="../../../assets/images/intro/login/uniB_logo.png" class="" >
+        <img src="@/assets/images/intro/login/uniB_logo.png" class="" >
       </div>
     </transition>
     <transition name="showUp" class="duration">
       <div class="loginArea" v-show="showStartBtnYn">
         <div class="loginBtn font20" @click="GoogleLoginBtn">
-          <img src="../../../assets/images/intro/login/login_google.png">
+          <img src="@/assets/images/intro/login/login_google.png">
           {{ $t('LOG_BTN_GOOGLE') }}
         </div>
         <div v-if="(this.systemName !== 'Android' && this.systemName !== 'android') && mobileYn" class="loginBtn font20" v-on:click="AppleLoginBtn">
-          <img src="../../../assets/images/intro/login/login_apple.png">
+          <img src="@/assets/images/intro/login/login_apple.png">
           {{ $t('LOG_BTN_APPLE') }}
         </div>
         <div v-else-if="!mobileYn" class="loginBtn appleWebLoginBtn">
           <div id="appleid-signin"  class="signin-button appleWebLoginBtn" data-color="black" data-border="true" data-type="sign-in">
           </div>
           <div @click="clickAppleLoginInWeb" class="font20 loginAppleWeb">
-            <img src="../../../assets/images/intro/login/login_apple.png">
+            <img src="@/assets/images/intro/login/login_apple.png">
             {{ $t('LOG_BTN_APPLE') }}
           </div>
         </div>
@@ -55,11 +55,11 @@
 </template>
 
 <script>
-import AuthService from '../../../assets/js/login/UB.authService'
-import { firebaseInitialize } from '../../../assets/js/login/UB.firebase'
-import { onMessage } from '../../../assets/js/webviewInterface'
-import { saveUser } from '../../../../public/commonAssets/Tal_axiosFunction.js'
-import { setUserInfo } from '../../../assets/js/login/UB_userSetting'
+import AuthService from '@/assets/js/login/UB.authService'
+import { firebaseInitialize } from '@/assets/js/login/UB.firebase'
+import { onMessage } from '@/assets/js/webviewInterface'
+import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
+import { setUserInfo } from '@/assets/js/login/UB_userSetting'
 
 const authService = new AuthService(firebaseInitialize)
 export default {

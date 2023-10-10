@@ -40,7 +40,7 @@
             <div ref="bdRef" :id="`area${area.bdAreaKey}bd${bd.bdKey}pri${bd.priority}`" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}"
             :style="[`z-index: ${1000 - bd.priority};`, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top + 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
                 <div v-if="area.priority === 0" class="banner flexCenter" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
-                  <img src="../../../assets/images/main/banner2.png" class="w100P"/> <!-- 여기 -->
+                  <img src="@/assets/images/main/banner2.png" class="w100P"/> <!-- 여기 -->
                   <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold"></div>
                 </div>
                 <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl"/>
@@ -55,7 +55,7 @@
         <span class="fontBold">Laboratory</span>
       </div>
       <div class="fl" style="width: 66px; height: 66px; border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index:1000;">
-        <img id='writeBtn' src="../../../assets/images/button/Icon_WriteBoardBtn.svg" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="height: auto; cursor: pointer;">
+        <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="height: auto; cursor: pointer;">
       </div>
     </div>
     <div v-if="mBoardPopShowYn" class="popBg" @click="$refs.mainBoardRef.closeXPop"></div>
@@ -69,13 +69,13 @@
   </div>
 </template>
 <script>
-import areaInfoPop from '../../../components/pageComponents/main/popup/AreaInfoPop.vue'
-import selectSchoolPop from '../../../components/pageComponents/main/popup/SelectSchoolPop.vue'
-import { onMessage } from '../../../assets/js/webviewInterface'
+import areaInfoPop from '@/components/pageComponents/main/popup/AreaInfoPop.vue'
+import selectSchoolPop from '@/components/pageComponents/main/popup/SelectSchoolPop.vue'
+import { onMessage } from '@/assets/js/webviewInterface'
 import createBoardChannel from '@/components/popup/CreateBoardChannel.vue'
-import mainBoardList from '../../../components/pageComponents/main/popup/BoardListPop.vue'
-import infoBox from '../../../components/pageComponents/main/popup/InfoBox.vue'
-import writeBottSheet from '../../../components/popup/ContentsWriteBottSheet.vue'
+import mainBoardList from '@/components/pageComponents/main/popup/BoardListPop.vue'
+import infoBox from '@/components/pageComponents/main/popup/InfoBox.vue'
+import writeBottSheet from '@/components/popup/ContentsWriteBottSheet.vue'
 export default {
   data () {
     return {
@@ -1068,18 +1068,10 @@ export default {
     left: 100px;
 }
 /* .st0 .slick-next::after {
-  content : url('../../../assets/images/main/UBTownFeed.svg');
+  content : url('@/assets/images/main/UBTownFeed.svg');
 } */
-.testBox {
- content : url('../../../assets/images/main/UBTownFeed.svg')
-}
 .bdDiv:hover {
   cursor: pointer;
-  transform: scale(1.2);
-  transform-origin: 50% 50%;
-  transition: 0.2s;
-}
-.testBox:hover {
   transform: scale(1.2);
   transform-origin: 50% 50%;
   transition: 0.2s;
