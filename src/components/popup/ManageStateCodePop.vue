@@ -29,7 +29,7 @@
     <div class="manageCodePopBox">
       <div class="font18 commonColor fontBold manageCodePopHeader">
         {{ $t('TASK_MANAGEMENT') }}
-        <img @click="closeSelectPop" class="cursorP" src="../../assets/images/common/smallPopXIcon.svg" alt="">
+        <img @click="closeSelectPop" class="cursorP" src="@/assets/images/common/smallPopXIcon.svg" alt="">
       </div>
 
       <div class="thinScrollBar manageCodePopBody" >
@@ -68,7 +68,7 @@
   </div>
 </template>
 <script>
-import receiverAccessList from '../popup/receiver/SelectReceiverAccessList.vue'
+import receiverAccessList from './receiver/SelectReceiverAccessList.vue'
 export default {
   components: {
     receiverAccessList

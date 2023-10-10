@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import listTitle from '../unit/MainTitle'
-import contentsList from '@/components/list/UB_commonListTable.vue'
-import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton'
+import listTitle from '../unit/MainTitle.vue'
+import contentsList from './CommonListTable.vue'
+import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton.vue'
 export default {
   name: 'top5PushList',
   data () {

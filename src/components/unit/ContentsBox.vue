@@ -146,8 +146,8 @@
 <script>
 import memoCompo from '@/components/pageComponents/push/UB_contBoxMemo.vue'
 import { onMessage } from '@/assets/js/webviewInterface'
-import statCodeComponent from '@/components/board/UB_manageStateCode.vue'
-import statCodePop from '@/components/board/UB_manageStateCodePop.vue'
+import statCodeComponent from '../unit/UB_manageStateCode'
+import statCodePop from '../popup/ManageStateCodePop.vue'
 import attachFileListPop from '@/components/pageComponents/main/unit/UB_commonAttachFileListPop.vue'
 import userDetailPop from '@/components/popup/UserDetailPop'
 

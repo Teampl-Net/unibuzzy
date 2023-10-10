@@ -28,7 +28,7 @@
 
           </div>
         </td >
-          <img src="../../assets/images/channel/icon_official2.svg" class="officialImg" v-if="value.officialYn" />
+          <img src="@/assets/images/channel/icon_official2.svg" class="officialImg" v-if="value.officialYn" />
           <td class="creDate">
             <span class="commonBlack mtop-01 font12 fr">{{$changeDateFormat(value.creDate)}}</span>
           </td>
