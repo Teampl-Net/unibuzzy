@@ -114,7 +114,7 @@
 <script>
 import { onMessage } from '@/assets/js/webviewInterface'
 import statCodePop from '../../../popup/ManageStateCodePop.vue'
-import attachFileListPop from '@/components/pageComponents/main/unit/UB_commonAttachFileListPop.vue'
+import attachFileListPop from '@/components/pageComponents/main/unit/CommonAttachFileListPop.vue'
 import userDetailPop from '@/components/popup/UserDetailPop.vue'
 
 export default {

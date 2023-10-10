@@ -31,7 +31,7 @@
 
 <script>
 
-import chanSkeleton from '@/components/pageComponents/channel/UB_channelSkeleton.vue'
+import chanSkeleton from '@/components/unit/ChannelSkeleton.vue'
 export default {
   name: 'user',
   components: {

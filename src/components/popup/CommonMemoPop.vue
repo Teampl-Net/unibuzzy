@@ -73,7 +73,7 @@
 
 <script>
 import attachFileList from '@/components/unit/formEditor/AttachFile.vue'
-import unknownLoginPop from '@/components/pageComponents/channel/UB_unknownLoginPop.vue'
+import unknownLoginPop from '@/components/popup/UnknownLoginPop.vue'
 export default {
   components: {
     attachFileList,

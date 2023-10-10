@@ -20,7 +20,7 @@
 <script>
 import listTitle from '../unit/MainTitle.vue'
 import contentsList from './CommonListTable.vue'
-import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton.vue'
+import SkeletonBox from '@/components/unit/contents/ContentsSkeleton'
 export default {
   name: 'top5PushList',
   data () {

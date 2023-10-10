@@ -144,11 +144,11 @@
   </div>
 </template>
 <script>
-import memoCompo from '@/components/pageComponents/push/UB_contBoxMemo.vue'
+import memoCompo from './ContBoxMemo'
 import { onMessage } from '@/assets/js/webviewInterface'
-import statCodeComponent from '../unit/UB_manageStateCode'
-import statCodePop from '../popup/ManageStateCodePop.vue'
-import attachFileListPop from '@/components/pageComponents/main/unit/UB_commonAttachFileListPop.vue'
+import statCodeComponent from './ManageStateCode'
+import statCodePop from '../../popup/ManageStateCodePop.vue'
+import attachFileListPop from '@/components/pageComponents/main/unit/CommonAttachFileListPop.vue'
 import userDetailPop from '@/components/popup/UserDetailPop'
 
 export default {

@@ -19,13 +19,13 @@
         <p class="fr textLeft commonBlack font12 font Bold mtop-03 textOverdot">{{ $byteConvert(contentsEle.fileSizeKb) }}</p>
         <div class="font14 textLeft fileBoxInfoWrap">
           <div class="textOverdot w100P">
-            <img src="../../assets/images/footer/icon_people.svg" class="img-w12" alt="">
+            <img src="@/assets/images/footer/icon_people.svg" class="img-w12" alt="">
             &nbsp;{{ $changeText(contentsEle.accessCreUserName) }}
             <p class="font12 fr mleft-1 mtop-01 fileBoxCreDate">{{ $changeDateFormat(contentsEle.creDate) }}</p>
           </div>
         </div>
         <div class="curosrP fileBoxFavBtn" @click="selectAttachedFile">
-          <img :src="myFilekey !== null? require('../../assets/images/common/colorStarIcon.svg'):require('../../assets/images/common/starIcon.svg')" alt="">
+          <img :src="myFilekey !== null? require('@/assets/images/common/colorStarIcon.svg'):require('@/assets/images/common/starIcon.svg')" alt="">
         </div>
       </div>
       <img v-if="contentsEle.fileType === 'I'" class="fileBoxImg" @click="openImgPop" :src="contentsEle.domainPath ? contentsEle.domainPath + contentsEle.pathMtext : contentsEle.pathMtext" alt="">
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import smallContentsBox from '../popup/CommonSmallContentsBox.vue'
+import smallContentsBox from '../../popup/CommonSmallContentsBox.vue'
 export default {
   components: {
     smallContentsBox

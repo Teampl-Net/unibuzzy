@@ -17,10 +17,10 @@
     <div class="fl fontBold font14 unknownPopHeader">
     </div>
     <div class="popHeader fl textRight w100P closeIconWrap">
-      <img class="fr cursorP" src="../../../assets/images/common/popup_close.png" @click="pClosePop ? pClosePop() : backClick" />
+      <img class="fr cursorP" src="@/assets/images/common/popup_close.png" @click="pClosePop ? pClosePop() : backClick" />
     </div>
     <div class="popDAlim fl w100P headerLogoWrap">
-      <img class="fl mainHeaderLogo" src="../../../assets/images/common/thealim_header_logo.png" />
+      <img class="fl mainHeaderLogo" src="@/assets/images/common/thealim_header_logo.png" />
       <div class="font25 headerFont commonColor fl mright-05">{{ $t('COMMON_NAME_APP') }}</div>
     </div>
     <div class="fl w100P unknownPopBody">

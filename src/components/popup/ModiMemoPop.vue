@@ -2,7 +2,7 @@
     <div class="modiMemoWrap">
         <div class="newHeaderLine modiMemoHeader">
             <p class="textLeft fl font20 fontBold commonColor">{{ $t('COMM_TITLE_COMMENT_EDIT2') }}</p>
-            <img @click="backClick" src="../../../assets/images/common/popup_close.png" alt="">
+            <img @click="backClick" src="@/assets/images/common/popup_close.png" alt="">
         </div>
         <div class="modiMemoCont">
             <pre contenteditable autofocus ref="formTextArea" id="memoModiInput" class="" ></pre>

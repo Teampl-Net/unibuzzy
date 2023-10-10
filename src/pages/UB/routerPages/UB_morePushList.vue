@@ -25,7 +25,7 @@
 
 <script>
 import findContentsList from '@/components/popup/FindContentsList.vue'
-import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton'
+import SkeletonBox from '@/components/unit/contents/ContentsSkeleton'
 import searchResult from '@/components/unit/SearchResult.vue'
 export default {
   components: {

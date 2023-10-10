@@ -102,7 +102,7 @@
 <script>
 import userItem from '../../../components/pageComponents/myPage/unit/UserItem.vue'
 import logoutPop from '@/components/popup/LogoutPop.vue'
-import userImgSelectCompo from '@/components/pageComponents/myPage/UB_changeUserIcon.vue'
+import userImgSelectCompo from '../../../components/pageComponents/myPage/unit/ChangeUserIcon.vue'
 import { onMessage } from '@/assets/js/webviewInterface'
 import { getCurrentInstance } from 'vue'
 import i18n from '../../../assets/i18n'

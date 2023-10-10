@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import unknownLoginPop from '../pageComponents/channel/UB_unknownLoginPop.vue'
+import unknownLoginPop from '@/components/popup/UnknownLoginPop.vue'
 import logoutPop from './LogoutPop.vue'
 export default {
   data () {

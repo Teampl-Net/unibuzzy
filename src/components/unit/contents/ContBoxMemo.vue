@@ -108,8 +108,8 @@
 </template>
 
 <script>
-import modiMemoPop from './UB_modiMemoPop.vue'
-import attachFileListPop from '../main/unit/UB_commonAttachFileListPop.vue'
+import modiMemoPop from '../../popup/ModiMemoPop.vue'
+import attachFileListPop from '../../pageComponents/main/unit/CommonAttachFileListPop'
 export default {
   props: {
     propMemoLength: {},

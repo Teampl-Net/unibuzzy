@@ -91,7 +91,7 @@
 /* eslint-disable */
 // eslint-disable-next-line
 import { onMessage } from '@/assets/js/webviewInterface'
-import userImgSelectCompo from '@/components/pageComponents/myPage/UB_changeUserIcon.vue'
+import userImgSelectCompo from '../pageComponents/myPage/unit/ChangeUserIcon.vue'
 export default {
     data () {
         return {

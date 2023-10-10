@@ -53,8 +53,8 @@
 
     <div class="reportCompoArea marginTop0" v-if="reportPopStep === 1">
       <div class="fl w100P reportHeader" >
-        <img class="cursorP mleft-05" @click="revReport()" src="../../assets/images/common/icon_back.png"/>
-        <img class="fr cursorP mright-05" @click="closePop()" src="../../assets/images/common/popup_close.png"/>
+        <img class="cursorP mleft-05" @click="revReport()" src="@/assets/images/common/icon_back.png"/>
+        <img class="fr cursorP mright-05" @click="closePop()" src="@/assets/images/common/popup_close.png"/>
         <p class="fl font16 fontBold textLeft w100P mtop-1">{{ $t('REPO_TITLE_REPORT') }}</p>
         <p class="fl lightGray font12 textLeft w100P mtop-05 mbottom-1">{{ $t('REPO_MSG_DESC') }}</p>
         <div class="fl w100P reportListWrap">
@@ -67,8 +67,8 @@
 
     <div class="reportCompoArea marginTop0" v-if="reportPopStep === 2">
       <div class="fl w100P reportHeader">
-        <img class="cursorP mleft-05" @click="revReport()" src="../../assets/images/common/icon_back.png"/>
-        <img class="cursorP mright-05 right01" @click="closePop()" src="../../assets/images/common/popup_close.png"/>
+        <img class="cursorP mleft-05" @click="revReport()" src="@/assets/images/common/icon_back.png"/>
+        <img class="cursorP mright-05 right01" @click="closePop()" src="@/assets/images/common/popup_close.png"/>
         <p class="fl font16 fontBold textLeft w100P mtop-1">{{ $t('REPO_TITLE_REASON') }} {{reportDetailTitle}}</p>
         <p class="fl lightGray font12 textLeft w100P mtop-05 mbottom-1">{{ $t('REPO_MSG_DESC') }}</p>
         <gBtnSmall class="mtop-1 "  v-on:click="sendBtnClick" :btnTitle="$t('REPO_BTN_SUBMIT')"  />
