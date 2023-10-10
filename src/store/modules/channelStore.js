@@ -2,7 +2,7 @@
 /* eslint-disable camelcase */
 
 // import { methods } from '../../../public/commonAssets/Tal_axiosFunction'
-import { commonMethods } from '../../assets/js/UB_common'
+import { commonMethods } from '../../assets/js/common'
 import { functions } from '../../assets/js/D_vuexFunction'
 const D_CHANNEL = {
   namespaced: true,

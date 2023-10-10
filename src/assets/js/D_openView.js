@@ -6,7 +6,7 @@ import store from '../../store'
 import { mapGetters, mapActions } from 'vuex'
 import axios from 'axios'
 import { methods, commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
-import { commonMethods } from './UB_common'
+import { commonMethods } from './common'
 var this_ = this
 // var g_user = store.getters['UB_USER/GE_USER']
 var g_axiosQueue = []
