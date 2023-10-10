@@ -37,7 +37,7 @@
 <template>
   <gPopHeader :headerTitle="`Settings`" @closeXPop="closeXPop"/>
   <div class="setMyPageWrap">
-    <logoutPop v-if="logOutShowYn" @goLogOut="closeLogoutPop" @closePop="closeOnlyLogoutPop"/>
+    <logoutPop v-if="logOutShowYn" @goLogout="goLogout" @closePop="closeOnlyLogoutPop"/>
     <userImgSelectCompo @closeXPop="closeImgPop" :pSelectedIconPath="GE_USER.domainPath + GE_USER.userProfileImg" :parentSelectedIconFileKey="GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
     <div>
        <div class="languageArea" :style="'padding-top:' + ($STATUS_HEIGHT + 5)+ 'px;'">
@@ -101,7 +101,7 @@
 
 <script>
 import userItem from '@/components/unit/UB_userItem.vue'
-import logoutPop from '@/components/pageComponents/myPage/UB_logoutPop.vue'
+import logoutPop from '@/components/popup/LogoutPop.vue'
 import userImgSelectCompo from '@/components/pageComponents/myPage/UB_changeUserIcon.vue'
 import { onMessage } from '@/assets/js/webviewInterface'
 import { getCurrentInstance } from 'vue'
@@ -203,6 +203,11 @@ export default {
     return { setGlobalValue }
   },
   methods: {
+    async goLogout (request) {
+      this.logOutShowYn = false
+
+      this.$UBLogOut()
+    },
     async change18n (target, type) {
       var param = {}
       var user = {}

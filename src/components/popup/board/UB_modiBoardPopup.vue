@@ -185,7 +185,7 @@
 </template>
 <script>
 import { Base64 } from 'js-base64'
-import loadingCompo from '../../layout/UB_loading.vue'
+import loadingCompo from '../../layout/CommonLoading.vue'
 import selectBookList from '../receiver/UB_selectBookList.vue'
 import receiverAccessList from '../receiver/UB_selectReceiverAccessList.vue'
 import selectSampleListPop from './UB_manageSamplePop.vue'

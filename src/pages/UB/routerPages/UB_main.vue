@@ -69,11 +69,11 @@
   </div>
 </template>
 <script>
-import areaInfoPop from '../../../components/UB/popup/UB_areaInfoPop.vue'
-import selectSchoolPop from '../../../components/UB/popup/UB_selectSchoolPop.vue'
+import areaInfoPop from '../../../components/pageComponents/main/popup/AreaInfoPop.vue'
+import selectSchoolPop from '../../../components/pageComponents/main/popup/SelectSchoolPop.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
-import createBoardChannel from '@/components/UB/popup/UB_createBoardChannel.vue'
-import mainBoardList from '../../../components/UB/popup/UB_boardListPop.vue'
+import createBoardChannel from '@/components/popup/CreateBoardChannel.vue'
+import mainBoardList from '../../../components/pageComponents/main/popup/BoardListPop.vue'
 import infoBox from '../../../components/popup/info/UB_infoBox.vue'
 import writeBottSheet from '../../../components/popup/writeContentUnit/UB_contentsWriteBottSheet.vue'
 export default {

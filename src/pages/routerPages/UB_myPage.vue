@@ -35,8 +35,8 @@
 <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
 </template>
 <script>
-import myContents from '../../components/UB/myPage/UB_myContents.vue'
-import loadingCompo from '../../components/layout/UB_loading.vue'
+import myContents from '../../components/pageComponents/myPage/MyContents.vue'
+import loadingCompo from '../../components/layout/CommonLoading.vue'
 export default {
   data () {
     return {

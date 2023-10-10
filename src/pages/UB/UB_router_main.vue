@@ -55,11 +55,11 @@
 </template>
 <script>
 import chanMenu from '../../components/popup/chanMenu/UB_channelMenu.vue'
-import notiHistoryList from '@/components/UB/popup/UB_notiHistoryList.vue'
-import writeContents from '../../components/popup/UB_writeContents.vue'
-import editMyChanMenu from '../../components/UB/popup/UB_editMyChanMenu.vue'
-import favListPop from '../../components/UB/popup/UB_favListPop.vue'
-import editBookListPop from '@/components/UB/popup/UB_editBookListPop.vue'
+import notiHistoryList from '@/components/popup/NotiHistoryList.vue'
+import writeContents from '../../components/popup/WriteContents.vue'
+import editMyChanMenu from '../../components/pageComponents/channel/container/EditMyChanMenu.vue'
+import favListPop from '../../components/popup/FavListPop.vue'
+import editBookListPop from '../../components/pageComponents/channel/popup/EditBookListPop.vue'
 export default {
   data () {
     return {

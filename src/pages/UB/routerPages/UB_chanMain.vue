@@ -188,10 +188,10 @@
 <script>
 /* eslint-disable vue/no-async-in-computed-properties */
 import pushList from './UB_pushList'
-import writeContents from '../../../components/popup/UB_writeContents.vue'
+import writeContents from '../../../components/popup/WriteContents.vue'
 import { onMessage } from '../../../assets/js/webviewInterface'
-import followerList from '../../../components/UB/popup/UB_followerList.vue'
-import userDetailPop from '../../../components/UB/popup/UB_userDetailPop.vue'
+import followerList from '../../../components/pageComponents/channel/popup/FollowerListPop.vue'
+import userDetailPop from '../../../components/popup/UserDetailPop.vue'
 export default {
   data () {
     return {

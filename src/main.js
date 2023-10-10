@@ -29,7 +29,7 @@ import gSearchBox from './components/unit/UB_commonSearchBox.vue'
 import gAxiosLoading from './components/UB_axiosLoadingSpinner.vue'
 import coreService from '../public/commonAssets/D_coreService'
 import uploadFile from './assets/js/UB_uploadFile'
-import gUBContentsBox from './components/UB/unit/UB_contentsBox.vue'
+import gUBContentsBox from './components/unit/ContentsBox.vue'
 import VueCropper from 'vue-cropperjs'
 import gColorPicker from './components/unit/UB_commonColorPicker.vue'
 import gImgPop from './components/popup/common/UB_commonGalleryPop.vue'
@@ -49,23 +49,23 @@ import gBoardCard from './components/popup/board/editBoardUnit/UB_commonBoardCar
 import gBookList from './components/popup/receiver/receiverUnit/UB_commonBookList.vue'
 import gBookMemberList from './components/popup/receiver/receiverUnit/UB_commonBookMemberList.vue'
 import gReceiveCard from './components/popup/receiver/receiverUnit/UB_commonReceiveCard.vue'
-import gChanMainHeader from './components/UB/layout/UB_commonChanMainHeader.vue'
-import gMainMenu from './components/UB/popup/common/UB_commonMenu.vue'
-import gTopViewItem from './components/UB/unit/UB_commonTopViewItem.vue'
-import gUserItem from './components/UB/unit/UB_commonUserItem.vue'
+import gChanMainHeader from '@/components/pageComponents/main/container/CommonChanMainHeader.vue'
+import gMainMenu from './components/popup/CommonMenu.vue'
+import gTopViewItem from './components/pageComponents/board/unit/CommonTopViewItem.vue'
+import gUserItem from './components/unit/CommonUserItem.vue'
 import UBConst from '@/assets/js/UB_Const'
 import i18n from './assets/i18n'
 // eslint-disable-next-line camelcase
 
 let app = {}
 const importsUB = Promise.all([
-  import('./components/UB/layout/UB_commonMainHeader.vue'),
-  import('./components/UB/layout/UB_commonPopHeader.vue'),
-  import('./components/UB/unit/UB_commonSelectFilter.vue'),
+  import('./components/layout/CommonMainHeader.vue'),
+  import('./components/layout/CommonPopHeader.vue'),
+  import('./components/unit/CommonSelectFilter.vue'),
   import('./components/popup/confirmPop/UB_smallCommonConfirmPop.vue'),
-  import('./components/UB/layout/UB_commonFooter.vue'),
+  import('./components/layout/CommonFooter.vue'),
   import('./components/popup/common/UB_commonSelectBoardListPop.vue'),
-  import('./components/UB/layout/UB_commonCloudLoading.vue')
+  import('./components/layout/CommonCloudLoading.vue')
 ])
 app = createApp(uniBuzzy).use(router).use(store)
 importsUB.then(([gUBHeader, gPopHeader, gSelectFilter, smallPop, gFooter, gSelectBoardPop, gCloudLoading]) => {

@@ -112,11 +112,11 @@
 <script>
 import { Base64 } from 'js-base64'
 import findContentsList from '@/components/popup/common/UB_findContentsList.vue'
-import writeContents from '@/components/popup/UB_writeContents.vue'
+import writeContents from '@/components/popup/WriteContents.vue'
 
 import { onMessage } from '@/assets/js/webviewInterface'
 
-import pinPostPop from '../../../components/UB/popup/UB_pinPostPop.vue'
+import pinPostPop from '../../../components/pageComponents/board/popup/PinPostPop.vue'
 
 export default {
   components: {
