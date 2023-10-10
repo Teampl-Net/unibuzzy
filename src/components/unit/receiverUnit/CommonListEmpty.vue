@@ -2,12 +2,12 @@
 <div class="emptyListWrap">
   <div class="w100P fl emptyListBox">
     <div class="w100P fl">
-      <img src="../../../../assets/images/editChan/icon_emptyBox.svg" alt="">
+      <img src="@/assets/images/editChan/icon_emptyBox.svg" alt="">
     </div>
     <p class="w100P fl CDeepColor font22 fontBold mtop-05">{{title}}</p>
     <p v-if="option === 'EDIT' || subTitleYn === true" class="w100P fl commonDarkGray font14">{{subTitle}}</p>
     <div class="w100P fl" v-if="option === 'EDIT'">
-      <img class="mtop-05" style="transform: translateX(25%)" src="../../../../assets/images/editChan/icon_arrowTurnBottom.svg" alt="">
+      <img class="mtop-05" style="transform: translateX(25%)" src="@/assets/images/editChan/icon_arrowTurnBottom.svg" alt="">
     </div>
   </div>
 </div>

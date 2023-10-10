@@ -17,11 +17,11 @@
 <template>
   <div class="fl w100P receiverItemWrap" :class="{ CWhiteGrayBgColor: (option === 'SELE' && propData.selectedYn === true) }" >
     <div class="fl w100P rowBaseCss">
-      <img v-if="searchYn === true" class="img-w15 fl" src="../../../../assets/images/common/icon_searchGray.svg" alt="">
+      <img v-if="searchYn === true" class="img-w15 fl" src="@/assets/images/common/icon_searchGray.svg" alt="">
       <!-- 주소록 영역 -->
       <template v-if="propData.jobkindId === 'BOOK' && !propData.memberYn">
         <div class="imgCircle middleBgColor fl" @click="clickEvntToParents('open')" >
-          <img src="../../../../assets/images/board/icon_book.svg" class="content img-w25"/>
+          <img src="@/assets/images/board/icon_book.svg" class="content img-w25"/>
         </div>
         <div class="fl flexAlignCenter" :style="option === 'EDIT' ? 'width: calc(100% - 150px);' : 'width: calc(100% - 100px);' " @click="clickEvntToParents('open')">
           <div class="textLeft fl textOverdot w100P">
@@ -32,7 +32,7 @@
       </template>
       <template v-else-if="propData.jobkindId === 'BOOK' && propData.memberYn">
         <div class="imgCircle middleBgColor fl" @click="clickEvntToParents('open')" >
-          <img src="../../../../assets/images/common/memberIcon.svg" class="content img-w30"/>
+          <img src="@/assets/images/common/memberIcon.svg" class="content img-w30"/>
         </div>
         <div class="fl cabinetNameWrap" @click="clickEvntToParents('open')">
           <div class="textLeft fl textOverdot w100P">
@@ -50,7 +50,7 @@
         </div>
         <div class="fl w100P flexAlignCenter" @click="clickEvntToParents('open')">
           <div class="textLeft fl w100P">
-            <p class="fl font16 commonDarkGray fontBold w100P"><img v-if="propData.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../../assets/images/editChan/icon_self.svg">{{this.$changeText(propData.userDispMtext)}}</p>
+            <p class="fl font16 commonDarkGray fontBold w100P"><img v-if="propData.userKey === GE_USER.userKey" class="img-w20 mright-03" src="@/assets/images/editChan/icon_self.svg">{{this.$changeText(propData.userDispMtext)}}</p>
             <p class="fl font14 commonDarkGray">{{propData.userEmail ? changeDot('email', propData.userEmail) : $t('NONE_MSG_REGIST_EMAIL')}}</p>
             <p class="fl font14 commonDarkGray divideLine">|</p>
             <p class="fl font14 commonDarkGray">{{propData.phoneEnc ? changeDot('phone', propData.phoneEnc) : $t('NONE_MSG_REGIST_NUM')}}</p>
@@ -59,13 +59,13 @@
       </template>
       <!-- 공통 -->
       <div v-if="option === 'EDIT'" class="fr cursorP flexAlignCenter">
-        <img v-if="propData.jobkindId === 'BOOK'" src="../../../../assets/images/board/icon_edit.svg" class="img-w20 fl editImg" @click="clickEvntToParents('edit')" >
-        <img src="../../../../assets/images/board/icon_trash.svg" class="img-w20 fl deleteImg" @click="clickEvntToParents('delete')" >
+        <img v-if="propData.jobkindId === 'BOOK'" src="@/assets/images/board/icon_edit.svg" class="img-w20 fl editImg" @click="clickEvntToParents('edit')" >
+        <img src="@/assets/images/board/icon_trash.svg" class="img-w20 fl deleteImg" @click="clickEvntToParents('delete')" >
       </div>
 
       <div v-if="option === 'SELE'" class="fr cursorP flexAlignCenter" @click="clickEvntToParents('editList', compoIdx)">
         <div class="fl mright-03 selectImgWrap" :class="{ 'CDeepBgColor' : propData.selectedYn === true}">
-          <img class="fl img-w13" src="../../../../assets/images/common/icon_check_white.svg" alt="선택 아이콘">
+          <img class="fl img-w13" src="@/assets/images/common/icon_check_white.svg" alt="선택 아이콘">
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@
     <div class="selectBoardListPopWrap">
         <div class="selectPopHeader" >
             <p class="font24 commonBlack fontBold fl textLeft mbottom-05">{{ mainText === '이동'? $t('COMMON_BTN_MOVE_POST'):$t('COMMON_BTN_COPY_POST') }}</p>
-            <img @click="closeXPop" class="fr closeImg" src="../../../assets/images/common/popup_close.png" alt="">
+            <img @click="closeXPop" class="fr closeImg" src="@/assets/images/common/popup_close.png" alt="">
         </div>
         <p class="font16 textLeft commonBlack fontBold mtop-05 fl mbottom-05">{{ mainText === '이동'? $t('BOAR_SELECT_MSG_MOVE'):$t('BOAR_SELECT_MSG_COPY') }}</p>
         <div class="boardListItem" :style="boardDetail.cabinetKey === value.cabinetKey? 'background: rgb(234 233 233) !important; color: #FFF;': 'background: #FFF;'" @click="selectCabinet(value)" :class="selectedCabinet && selectedCabinet.cabinetKey === value.cabinetKey? 'activeCabinet': ''" :id="'selectBoard' + value.cabinetKey" :fileYn="value.fileYn" :cabinetKey="value.cabinetKey"  v-for="(value, index) in boardList" :key="index">

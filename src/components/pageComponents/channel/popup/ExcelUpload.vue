@@ -39,7 +39,7 @@
         <gConfirmPop v-if="confirmYn" @ok="saveList" @no="confirmYn = false" confirmType="two" :confirmText="confirmMsg" />
         <div class="excelPopHeader">
             <p class="fontBold font18">{{ $t('EXCEL_TITLE_EXCEL') }}</p>
-            <img @click="$emit('closePop')" class="cursorP closeBtnImg" src="../../../assets/images/common/popup_close.png" alt="">
+            <img @click="$emit('closePop')" class="cursorP closeBtnImg" src="@/assets/images/common/popup_close.png" alt="">
         </div>
         <div class="excelPopBody">
             <p class="commonColor font16 fontBold textLeft">STEP.0 {{ $t('EXCEL_MSG_DOWN') }}</p>

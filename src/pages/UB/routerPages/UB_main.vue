@@ -74,7 +74,7 @@ import selectSchoolPop from '../../../components/pageComponents/main/popup/Selec
 import { onMessage } from '../../../assets/js/webviewInterface'
 import createBoardChannel from '@/components/popup/CreateBoardChannel.vue'
 import mainBoardList from '../../../components/pageComponents/main/popup/BoardListPop.vue'
-import infoBox from '../../../components/popup/info/UB_infoBox.vue'
+import infoBox from '../../../components/pageComponents/main/popup/InfoBox.vue'
 import writeBottSheet from '../../../components/popup/ContentsWriteBottSheet.vue'
 export default {
   data () {

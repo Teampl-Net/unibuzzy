@@ -111,7 +111,7 @@
 </template>
 <script>
 import { Base64 } from 'js-base64'
-import findContentsList from '@/components/popup/common/UB_findContentsList.vue'
+import findContentsList from '@/components/popup/FindContentsList.vue'
 import writeContents from '@/components/popup/WriteContents.vue'
 
 import { onMessage } from '@/assets/js/webviewInterface'

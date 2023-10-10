@@ -303,7 +303,7 @@ Supplementary Provisions
 </template>
 
 <script>
-import leaveResultPop from '../../../components/popup/info/UB_leaveTheAlimResultPop.vue'
+import leaveResultPop from '../../../components/pageComponents/intro/popup/LeaveTheAlimResultPop'
 export default {
   data () {
     return {

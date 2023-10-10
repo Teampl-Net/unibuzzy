@@ -66,7 +66,7 @@
 </template>
 <script>
 import SkeletonBox from '../../../components/pageComponents/push/UB_contentsSkeleton'
-import findContentsList from '../../../components/popup/common/UB_findContentsList.vue'
+import findContentsList from '../../../components/popup/FindContentsList.vue'
 import unknownLoginPop from '@/components/pageComponents/channel/UB_unknownLoginPop.vue'
 export default {
   name: 'pushList',

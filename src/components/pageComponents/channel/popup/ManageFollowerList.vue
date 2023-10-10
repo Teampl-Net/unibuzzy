@@ -45,7 +45,7 @@
 </template>
 <script>
 /* eslint-disable */
-import followerItem from '@/components/popup/member/UB_followerListItem.vue'
+import followerItem from '../unit/FollowerListItem.vue'
 export default {
   props: {
     propData: {},

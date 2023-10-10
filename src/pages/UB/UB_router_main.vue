@@ -54,7 +54,7 @@
   </div>
 </template>
 <script>
-import chanMenu from '../../components/popup/chanMenu/UB_channelMenu.vue'
+import chanMenu from '../../components/pageComponents/channel/popup/ChannelMenu.vue'
 import notiHistoryList from '@/components/popup/NotiHistoryList.vue'
 import writeContents from '../../components/popup/WriteContents.vue'
 import editMyChanMenu from '../../components/pageComponents/channel/container/EditMyChanMenu.vue'

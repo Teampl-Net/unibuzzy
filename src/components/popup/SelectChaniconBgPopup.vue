@@ -30,7 +30,7 @@
     <div :class="{popupTop: pSelectedBuilding}" class="confirmPopWrap changeBgPopWrap" :style="'padding-bottom:' + ($STATUS_HEIGHT + 60)+ 'px'" >
         <div class="creChanIntroTextWrap">
             <p class="fontBold font18">{{msgTitle}}</p>
-            <img src="../../../assets/images/common/popup_close.png" @click="pClosePop"/>
+            <img src="@/assets/images/common/popup_close.png" @click="pClosePop"/>
         </div>
         <gActiveBar ref="activeBar" :tabList="activeTabList" class="fl activeBar" @changeTab= "changeTab" />
         <div id="creChanContentsArea" class="chanImgContentsWrap">

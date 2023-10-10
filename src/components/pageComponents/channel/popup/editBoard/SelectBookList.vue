@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import selectedListCompo from './UB_selectedReceiverList.vue'
+import selectedListCompo from '../../../../popup/receiver/SelectedReceiverList.vue'
 export default {
   props: {
     selectPopYn: {},

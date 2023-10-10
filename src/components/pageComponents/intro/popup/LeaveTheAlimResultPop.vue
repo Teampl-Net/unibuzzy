@@ -16,7 +16,7 @@
 <div class="modalBack">
     <div class="leaveContainer">
       <div class="leaveContentsArea">
-        <img src="../../../assets/images/common/message_logo.png" alt="bell icon">
+        <img src="@/assets/images/common/message_logo.png" alt="bell icon">
         <p class="leaveComplete-1">{{ $t('MSG_LEAVE_UNIB') }}</p>
         <p class="leaveComplete-2 textCenter">{{ $t('MSG_ENDING_UNIB1') }}<br>{{ $t('MSG_ENDING_UNIB2') }}</p>
       </div>

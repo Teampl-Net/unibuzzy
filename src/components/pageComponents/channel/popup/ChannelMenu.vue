@@ -29,7 +29,7 @@
   <div class="popUpBackgroundGray" @click="goNo"></div>
   <div class="channelMenuWrap showModal-enter " :class="{'showModal-leave': mCloseEventYn === true  }">
     <div class="menuHeader newHeaderLine" :style="'height:' + ($STATUS_HEIGHT + 50)+ 'px; top: 0; padding-top: ' + ($STATUS_HEIGHT) + 'px'" >
-      <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="../../../assets/images/common/popup_close.png"/>
+      <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="@/assets/images/common/popup_close.png"/>
       <p class="fontBold font20 fl editColor noWrap">{{ $t('CHAN_MENU_TITLE_MENU') }}</p>
       <div />
     </div>
@@ -41,8 +41,8 @@
               <span class="font18 fl commonColor">{{ $t('COMMON_NAME_BOARD') }}</span>
               <span class="fl mleft-05 commonColor font16 lineHeight26">({{BOARD_CONTENT_LIST.length}})</span>
             </p>
-            <img v-show="BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
-            <img v-show="BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
+            <img v-show="BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true" src="@/assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
+            <img v-show="BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn !== true" src="@/assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
           </div>
           <div class="boardBox boardBoxDown mleft-2 scrollOn w100P fl" ref="boardRef" :class="{boardBoxUp : mBoardDropEvenYn === false, boardBoxDown: mBoardDropEvenYn === true}" >
             <menuBoardList :propBoardList="BOARD_CONTENT_LIST" @boardContentsClick="boardContentsClick" />
@@ -54,8 +54,8 @@
               <span class="font18 fl commonColor">{{ $t('CHAN_MENU_TITLE_ADDR') }}</span>
               <span class="fl mleft-05 commonColor font16 lineHeight26">({{CABINET_LIST.length}})</span>
             </p>
-            <img v-show="CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
-            <img v-show="CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
+            <img v-show="CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="@/assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
+            <img v-show="CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="@/assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
           </div>
           <div class="boardBox boardBoxDown mleft-2 scrollOn w100P fl" ref="addressBookGroupRef" :class="{boardBoxUp : mAddressDropEvenYn === false, boardBoxDown: mAddressDropEvenYn === true}" >
             <addressBookList :propAddressBookList="CABINET_LIST" @openBookDetail='openBookDetailPop' />
@@ -70,8 +70,8 @@
 </div>
 </template>
 <script>
-import addressBookList from './UB_addressBookList.vue'
-import menuBoardList from './UB_boardContentsList.vue'
+import addressBookList from '../container/chanMenu/AddressBookList.vue'
+import menuBoardList from '../container/chanMenu/BoardContentsList.vue'
 
 export default {
   props: {

@@ -21,7 +21,7 @@ import imageCompression from 'browser-image-compression'
 import commonjs from './assets/js/UB_common'
 import getjs from './assets/js/D_vuexFunction'
 import commonSharejs from './assets/js/UB_commonShare'
-import gMainTab from './components/popup/memberInfo/memberUnit/UB_commonMainTabCompo.vue'
+import gMainTab from './components/popup/CommonMainTabCompo.vue'
 import './assets/js/webViewBridge'
 import gFileBox from './components/unit/CommonFileBox.vue'
 import gInput from './components/common/UB_commonInput.vue'
@@ -32,23 +32,23 @@ import uploadFile from './assets/js/UB_uploadFile'
 import gUBContentsBox from './components/unit/ContentsBox.vue'
 import VueCropper from 'vue-cropperjs'
 import gColorPicker from './components/unit/CommonColorPicker.vue'
-import gImgPop from './components/popup/common/UB_commonGalleryPop.vue'
+import gImgPop from './components/popup/CommonGalleryPop.vue'
 import gToggle from './components/pageComponents/myPage/UB_commonToggle.vue'
 import gEmpty from './components/unit/CommonEmpty.vue'
 import gReport from './components/unit/CommonReport.vue'
 import gCheckBtn from './components/unit/formEditor/CommonCheckBtn.vue'
-import gConfirmPop from './components/popup/confirmPop/UB_commonConfirmPop.vue'
+import gConfirmPop from './components/popup/confirmPop/CommonConfirmPop.vue'
 import myObserver from './components/unit/ScrollObserver.vue'
 import gMemoPop from './components/popup/CommonMemoPop.vue'
-import gListEmpty from './components/popup/receiver/receiverUnit/UB_commonListEmpty.vue'
+import gListEmpty from './components/unit/receiverUnit/CommonListEmpty.vue'
 import gToolBox from './components/unit/formEditor/CommonToolBox.vue'
 import gLoadingS from './components/layout/SmallLoading.vue'
 import gChannelCard from './components/list/UB_channelCard.vue'
 import gProfileImg from './components/common/UB_commonProfile.vue'
 import gBoardCard from './components/pageComponents/channel/unit/editBoard/CommonBoardCard.vue'
-import gBookList from './components/popup/receiver/receiverUnit/UB_commonBookList.vue'
-import gBookMemberList from './components/popup/receiver/receiverUnit/UB_commonBookMemberList.vue'
-import gReceiveCard from './components/popup/receiver/receiverUnit/UB_commonReceiveCard.vue'
+import gBookList from './components/unit/receiverUnit/CommonBookList.vue'
+import gBookMemberList from './components/unit/receiverUnit/CommonBookMemberList.vue'
+import gReceiveCard from './components/unit/receiverUnit/CommonReceiveCard.vue'
 import gChanMainHeader from '@/components/pageComponents/main/container/CommonChanMainHeader.vue'
 import gMainMenu from './components/popup/CommonMenu.vue'
 import gTopViewItem from './components/pageComponents/board/unit/CommonTopViewItem.vue'
@@ -62,9 +62,9 @@ const importsUB = Promise.all([
   import('./components/layout/CommonMainHeader.vue'),
   import('./components/layout/CommonPopHeader.vue'),
   import('./components/unit/CommonSelectFilter.vue'),
-  import('./components/popup/confirmPop/UB_smallCommonConfirmPop.vue'),
+  import('./components/popup/confirmPop/SmallCommonConfirmPop.vue'),
   import('./components/layout/CommonFooter.vue'),
-  import('./components/popup/common/UB_commonSelectBoardListPop.vue'),
+  import('./components/popup/CommonSelectBoardListPop.vue'),
   import('./components/layout/CommonCloudLoading.vue')
 ])
 app = createApp(uniBuzzy).use(router).use(store)

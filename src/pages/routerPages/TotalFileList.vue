@@ -3,7 +3,7 @@
   <div @click="click" id="fileBoxWrap" class="fileBoxWrap" :style="'padding-top:' + ($STATUS_HEIGHT + 60)+ 'px;'">
     <div class="fileBoxTopArea">
       <div class="chanTitle" v-if="mMainChanList">
-        <img src="../../../assets/images/main/main_followIcon2.png" class="img-w23 cursorP" alt="">
+        <img src="@/assets/images/main/main_followIcon2.png" class="img-w23 cursorP" alt="">
         <p class="font20 fontBold deepBorderColor textLeft CDeepColor">{{ $t('COMMON_NAME_CHANNEL') }}</p>
       </div>
       <div v-if="mMainChanList.length > 0" id="fileChannelWrap" class="fileChanWrap" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
@@ -21,24 +21,24 @@
 
     <div id="fileFilterBox" class="fileFilterArea">
       <div>
-        <img src="../../../assets/images/common/common_filter.svg" alt="">
+        <img src="@/assets/images/common/common_filter.svg" alt="">
         <div class="filterIconWrap" @click="selectKind('BOAR')" :class="{'selectedIcon':(selectedKind==='BOAR')}">
-          <img src="../../../assets/images/common/icon_board_color.svg" class="filterIcon" alt="">
+          <img src="@/assets/images/common/icon_board_color.svg" class="filterIcon" alt="">
         </div>
         <div class="filterIconWrap" @click="selectKind('MEMO')" :class="{'selectedIcon':(selectedKind==='MEMO')}">
-          <img src="../../../assets/images/common/icon_memo_filter.svg" class="filterIcon"  alt="">
+          <img src="@/assets/images/common/icon_memo_filter.svg" class="filterIcon"  alt="">
         </div>
         <div style="height: 18px; border-right: 1.5px solid #AEB0FB; border-radius: 8px;"></div>
         <div class="filterIconWrap" @click="selectContType('F')" :class="{'selectedIcon':(selectedContType==='F')}">
-          <img src="../../../assets/images/common/fileIcon.svg" class="filterIcon" alt="">
+          <img src="@/assets/images/common/fileIcon.svg" class="filterIcon" alt="">
         </div>
         <div class="filterIconWrap" @click="selectContType('I')" :class="{'selectedIcon':(selectedContType==='I')}">
-          <img src="../../../assets/images/common/fileType_img.svg" class="filterIcon" alt="">
+          <img src="@/assets/images/common/fileType_img.svg" class="filterIcon" alt="">
         </div>
       </div>
       <div>
         <div class="filterIconWrap filterIconSearch" @click="openSearchPop">
-          <img src="../../../../public/resource/menu/icon_search_color.svg" class="filterIcon" alt="">
+          <img src="/public/resource/menu/icon_search_color.svg" class="filterIcon" alt="">
         </div>
       </div>
     </div>
@@ -66,10 +66,10 @@
 </template>
 
 <script>
-import findContentsList from '../../popup/common/UB_findContentsList.vue'
-import searchResult from '../../unit/SearchResult.vue'
-import chanRoundIcon from '../../pageComponents/main/UB_chanRoundIcon.vue'
-import circleSkeleton from '../../pageComponents/main/UB_mainChanCircleSkeleton.vue'
+import findContentsList from '@/components/popup/FindContentsList.vue'
+import searchResult from '@/components/unit/SearchResult.vue'
+import chanRoundIcon from '@/components/pageComponents/main/UB_chanRoundIcon.vue'
+import circleSkeleton from '@/components/pageComponents/main/UB_mainChanCircleSkeleton.vue'
 import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton'
 export default {
   components: {

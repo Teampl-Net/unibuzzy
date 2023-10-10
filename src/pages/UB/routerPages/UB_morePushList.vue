@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import findContentsList from '@/components/popup/common/UB_findContentsList.vue'
+import findContentsList from '@/components/popup/FindContentsList.vue'
 import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton'
 import searchResult from '@/components/unit/SearchResult.vue'
 export default {

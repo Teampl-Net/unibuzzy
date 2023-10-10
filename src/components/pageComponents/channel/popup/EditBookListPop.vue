@@ -106,7 +106,7 @@
 
 <script>
 import creAddressBook from './CreAddressBook.vue'
-import excelUploadPop from '@/components/popup/receiver/UB_excelUpload.vue'
+import excelUploadPop from '@/components/pageComponents/channel/popup/ExcelUpload.vue'
 import onlyMemberSelectPop from './OnlyMemberSelectPop.vue'
 import bookMemberDetail from './BookMemberDetail.vue'
 export default {

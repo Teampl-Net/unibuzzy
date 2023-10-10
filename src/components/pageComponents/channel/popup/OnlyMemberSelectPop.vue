@@ -9,7 +9,7 @@
 
 <script>
 // eslint-disable-next-line
-import selectedListCompo from '@/components/popup/receiver/UB_selectedReceiverList.vue'
+import selectedListCompo from '@/components/popup/receiver/SelectedReceiverList.vue'
 export default {
   props: {
     propData: {},

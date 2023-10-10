@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import selectIconBgPopup from '@/components/popup/creChannel/UB_selectChaniconBgPopup.vue'
+import selectIconBgPopup from '@/components/popup/SelectChaniconBgPopup.vue'
 export default {
   created () {
     if (this.pSelectedAreaInfo) {

@@ -5,9 +5,9 @@
           <div class="mleft-1 smallContBoxInfoWrap">
             <div class="smallContBoxInfoBox">
               <p class=" textLeft textOverdot commonBlack fontBold font14 smallContBoxInfoTitle">
-                <img v-if="contentsEle.jobkindId === 'ALIM'" src="../../../assets/images/common/icon_alim.svg" alt="">
-                <img v-else-if="contentsEle.jobkindId === 'BOAR' && accessKind !== 'R'" src="../../../assets/images/common/icon_board_color.svg" alt="">
-                <img v-else-if="accessKind === 'R'" src="../../../assets/images/common/icon_memo_filter.svg" alt="">
+                <img v-if="contentsEle.jobkindId === 'ALIM'" src="@/assets/images/common/icon_alim.svg" alt="">
+                <img v-else-if="contentsEle.jobkindId === 'BOAR' && accessKind !== 'R'" src="@/assets/images/common/icon_board_color.svg" alt="">
+                <img v-else-if="accessKind === 'R'" src="@/assets/images/common/icon_memo_filter.svg" alt="">
                 {{contentsEle.title}}
               </p>
               <p class="font12 mleft-1 smallContBoxCreDate">{{ $changeDateFormat(contentsEle.creDate) }}</p>

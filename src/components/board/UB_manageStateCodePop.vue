@@ -68,7 +68,7 @@
   </div>
 </template>
 <script>
-import receiverAccessList from '../popup/receiver/UB_selectReceiverAccessList.vue'
+import receiverAccessList from '../popup/receiver/SelectReceiverAccessList.vue'
 export default {
   components: {
     receiverAccessList

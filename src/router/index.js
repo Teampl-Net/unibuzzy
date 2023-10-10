@@ -131,7 +131,7 @@ routes = [
         path: '/fileBox',
         name: 'fileBox',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../components/popup/file/UB_totalFileList.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/TotalFileList.vue')
       },
       {
         path: '/saveBox',

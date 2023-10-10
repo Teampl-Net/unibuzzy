@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import smallContentsBox from '../popup/common/UB_commonSmallContentsBox.vue'
+import smallContentsBox from '../popup/CommonSmallContentsBox.vue'
 export default {
   components: {
     smallContentsBox

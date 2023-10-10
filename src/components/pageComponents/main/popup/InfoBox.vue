@@ -6,7 +6,7 @@
             <p class="textOverdot textLeft mleft-05 chanInfoBoxTitle">{{ $changeText(pChanInfo.bdAreaNameMtext) }}</p>
           </div>
           <div class="cursorP chanInfoCloseImg" @click="pClosePop">
-            <img class="w100P" src="../../../assets/images/common/popup_close.png" alt="">
+            <img class="w100P" src="@/assets/images/common/popup_close.png" alt="">
           </div>
         </div>
         <div class="w100P flexCenter chanInfoBoxBody">

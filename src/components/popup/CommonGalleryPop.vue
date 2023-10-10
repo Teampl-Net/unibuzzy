@@ -5,7 +5,7 @@
 
 <script>
 import PhotoSwipeLightbox from 'photoswipe/dist/photoswipe-lightbox.esm.js'
-import { onMessage } from '../../../assets/js/webviewInterface'
+import { onMessage } from '@/assets/js/webviewInterface'
 import 'photoswipe/dist/photoswipe.css'
 
 export default {
