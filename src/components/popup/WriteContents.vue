@@ -149,8 +149,8 @@
 
 <script>
 import { Base64 } from 'js-base64'
-import formEditor from '../unit/formEditor/UB_formEditor.vue'
-import attachFileList from '../unit/formEditor/UB_attachFile.vue'
+import formEditor from '../unit/formEditor/FormEditor.vue'
+import attachFileList from '../unit/formEditor/AttachFile.vue'
 export default {
   components: {
     attachFileList,

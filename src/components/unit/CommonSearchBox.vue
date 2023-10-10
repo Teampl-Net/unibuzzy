@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-import searchResult from '../../components/unit/UB_searchResult.vue'
+import searchResult from '../../components/unit/SearchResult.vue'
 export default {
   data () {
     return {

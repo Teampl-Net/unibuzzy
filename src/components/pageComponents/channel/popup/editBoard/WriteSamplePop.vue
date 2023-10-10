@@ -31,7 +31,7 @@
             <div class="writeSamplePopWrap">
                 <div class="headerShadow writeSamplePopHeader">
                     <p class="font18 fontBold textLeft">{{makeType === 'modi'? $t('SAMP_NAME_EDIT_SAMPLE') : $t('SAMP_NAME_ADD_SAMPLE')}}</p>
-                    <img @click="closeXPop" src="../../../assets/images/common/popup_close.png" alt="">
+                    <img @click="closeXPop" src="@/assets/images/common/popup_close.png" alt="">
                 </div>
                 <div class="writeSamplePopBody">
                     <div class="writeSamplePopBox">
@@ -44,7 +44,7 @@
                         </p>
                         <div class="writeSampleImgWrap">
                             <div class="writeSampleLeft" @click="goScroll('back')">
-                                <img src="../../../assets/images/common/arrowBackIcon.svg" alt="">
+                                <img src="@/assets/images/common/arrowBackIcon.svg" alt="">
                             </div>
                             <div ref="scrollIconWrap" class="writeSampleScrollWrap">
                                 <div class="h100P fl" :style="'width: +' + (60 * sampleIconList.length) + 'px;'">
@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                             <div class="writeSampleRight" @click="goScroll('next')">
-                                <img src="../../../assets/images/common/arrowNextIcon.svg" alt="">
+                                <img src="@/assets/images/common/arrowNextIcon.svg" alt="">
                             </div>
                         </div>
                         <p class="font15 fontBold grayBlack textLeft fl w-100P mbottom-05" >{{ $t('SAMP_TITLE_CONTENTS') }}</p>

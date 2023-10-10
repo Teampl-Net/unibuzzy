@@ -64,12 +64,12 @@
 <script>
 // eslint-disable vue/no-unused-components
 import { VueDraggableNext } from 'vue-draggable-next'
-import formText from './UB_formText.vue'
-import formImage from './UB_formImage.vue'
-import formVideo from './UB_formVideo.vue'
-import formBlock from './UB_formBlock.vue'
-import formDot from './UB_formDotLine.vue'
-import formLine from './UB_formLine.vue'
+import formText from './FormText.vue'
+import formImage from './FormImage.vue'
+import formVideo from './FormVideo.vue'
+import formBlock from './FormBlock.vue'
+import formDot from './FormDotLine.vue'
+import formLine from './FormLine.vue'
 export default {
   mounted () {
     this.addFormCard('text')

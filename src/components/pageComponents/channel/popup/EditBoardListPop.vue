@@ -33,7 +33,7 @@
 
 <script>
 import { VueDraggableNext } from 'vue-draggable-next'
-import modiBoardPop from '@/components/popup/board/UB_modiBoardPopup.vue'
+import modiBoardPop from './editBoard/ModiBoardPopup.vue'
 export default {
   props: {
     teamNameText: {},

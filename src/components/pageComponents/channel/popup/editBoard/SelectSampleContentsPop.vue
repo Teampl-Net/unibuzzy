@@ -36,16 +36,16 @@
                         <gBtnSmall class="sampleDetailPopAddBtn" @click="openMakeSamplePop('new')" :btnTitle="$t('COMMON_BTN_ADD')"/>
                     </div>
                     <div class="sampleDetailPopLeft" @click="goScroll('back')">
-                        <img src="../../../assets/images/common/arrowBackIcon.svg" alt="">
+                        <img src="@/assets/images/common/arrowBackIcon.svg" alt="">
                     </div>
                     <div ref="sampleScrollWrap" class="sampleScrollWrap">
                         <div class="sampleDetailContentsBox" :style="'width: ' + sampleList.length * 100 + 'px;'">
                             <p class="font15 mleft-05 grayBlack textLeft" v-if="sampleList.length === 0">{{ $t('SAMP_MSG_NOSMAPLE') }}</p>
                             <div class="sampleDetailContentsItem" v-for="(value, index) in sampleList" @click="selectSample(value)" :key="index">
                                 <div :class="value.sampleKey === selectedSampleObj.sampleKey? 'selectedSample': ''">
-                                    <img src="../../../assets/images/common/errorIcon.svg" v-if="value.sampleKey === 9" alt="">
-                                    <img src="../../../assets/images/common/timeIcon.svg" v-if="value.sampleKey === 7" alt="">
-                                    <img src="../../../assets/images/common/marketIcon.svg" v-if="value.sampleKey === 8" alt="">
+                                    <img src="@/assets/images/common/errorIcon.svg" v-if="value.sampleKey === 9" alt="">
+                                    <img src="@/assets/images/common/timeIcon.svg" v-if="value.sampleKey === 7" alt="">
+                                    <img src="@/assets/images/common/marketIcon.svg" v-if="value.sampleKey === 8" alt="">
                                     <img :src="value.domainPath + value.pathMtext" alt="">
                                     <p class="font14 commonBlack mtop-05 textOverdot" :class="value.sampleKey === selectedSampleObj.sampleKey? 'fontBold' : ''">{{$changeText(value.titleMtext)}}</p>
                                 </div>
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <div class="sampleDetailPopRight" @click="goScroll('next')">
-                        <img src="../../../assets/images/common/arrowNextIcon.svg" alt="">
+                        <img src="@/assets/images/common/arrowNextIcon.svg" alt="">
                     </div>
                     <div class="sampleDetailPopPre">
                         <p class="font16 fontBold commonColor mbottom-05 textLeft">{{ $t('SAMP_TITLE_PREVIEW') }}</p>
@@ -77,7 +77,7 @@
     </div>
 </template>
 <script>
-import makeSamplePop from './UB_wirteSamplePop.vue'
+import makeSamplePop from './WriteSamplePop.vue'
 export default {
   components: {
     makeSamplePop

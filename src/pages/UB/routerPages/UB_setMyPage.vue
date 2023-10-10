@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import userItem from '@/components/unit/UB_userItem.vue'
+import userItem from '../../../components/pageComponents/myPage/unit/UserItem.vue'
 import logoutPop from '@/components/popup/LogoutPop.vue'
 import userImgSelectCompo from '@/components/pageComponents/myPage/UB_changeUserIcon.vue'
 import { onMessage } from '@/assets/js/webviewInterface'

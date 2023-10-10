@@ -29,8 +29,8 @@
     </div>
 </template>
 <script>
-import searchResult from '@/components/unit/UB_searchResult.vue'
-import cSearchBox from '@/components/unit/UB_cSearchBox.vue'
+import searchResult from '@/components/unit/SearchResult.vue'
+import cSearchBox from '@/components/unit/CSearchBox.vue'
 export default {
   components: {
     cSearchBox,

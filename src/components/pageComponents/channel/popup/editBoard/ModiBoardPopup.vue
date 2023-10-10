@@ -185,11 +185,11 @@
 </template>
 <script>
 import { Base64 } from 'js-base64'
-import loadingCompo from '../../layout/CommonLoading.vue'
-import selectBookList from '../receiver/UB_selectBookList.vue'
-import receiverAccessList from '../receiver/UB_selectReceiverAccessList.vue'
-import selectSampleListPop from './UB_manageSamplePop.vue'
-import selectedIconText from './editBoardUnit/UB_selectReceiveIconText.vue'
+import loadingCompo from '../../../../layout/CommonLoading.vue'
+import selectBookList from '../../../../popup/receiver/UB_selectBookList.vue'
+import receiverAccessList from '../../../../popup/receiver/UB_selectReceiverAccessList.vue'
+import selectSampleListPop from './ManageSamplePop.vue'
+import selectedIconText from '../../unit/editBoard/SelectReceiveIconText.vue'
 export default {
   props: {
     modiBoardDetailProps: {},

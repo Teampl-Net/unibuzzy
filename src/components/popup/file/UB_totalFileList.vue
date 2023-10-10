@@ -67,7 +67,7 @@
 
 <script>
 import findContentsList from '../../popup/common/UB_findContentsList.vue'
-import searchResult from '../../unit/UB_searchResult.vue'
+import searchResult from '../../unit/SearchResult.vue'
 import chanRoundIcon from '../../pageComponents/main/UB_chanRoundIcon.vue'
 import circleSkeleton from '../../pageComponents/main/UB_mainChanCircleSkeleton.vue'
 import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton'

@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import listTitle from '@/components/unit/UB_mainTitle.vue'
+import listTitle from '../unit/MainTitle'
 import contentsList from '@/components/list/UB_commonListTable.vue'
 import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton'
 export default {

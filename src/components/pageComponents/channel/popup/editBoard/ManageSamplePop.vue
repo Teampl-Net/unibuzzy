@@ -39,7 +39,7 @@
     </div>
 </template>
 <script>
-import selectSamplePop from './UB_selectSampleContentsPop.vue'
+import selectSamplePop from './SelectSampleContentsPop.vue'
 export default {
   data () {
     return {

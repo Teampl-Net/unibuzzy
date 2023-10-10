@@ -1,6 +1,6 @@
 <template>
   <div class="top5TitleWrap textLeft">
-    <img class="mright-03 fl pushImg"  src="../../assets/images/main/pushIcon.svg"/>
+    <img class="mright-03 fl pushImg"  src="@/assets/images/main/pushIcon.svg"/>
     <p class="commonColor mtop-03 fl fontBold font18" v-if="propListTitle === '내 컨텐츠'">My Contents</p>
     <gBtnSmall v-if="propListTitle !== '내 컨텐츠'" :btnThema="'light'" class="mtop-05 moreBtn" :btnTitle="$t('COMMON_NAME_MORE')" v-on:click="openPop(propMoreLink)" />
   </div>

@@ -17,11 +17,11 @@
 <template>
   <div class="fl w100P boardCardWrap" :class="{ CWhiteGrayBgColor: (option === 'SELE' && propData.selectedYn === true) }" >
     <div class="fl w100P rowBaseCss">
-      <img v-if="searchYn === true" class="img-w15 fl" src="../../../../assets/images/common/icon_searchGray.svg" alt="">
+      <img v-if="searchYn === true" class="img-w15 fl" src="@/assets/images/common/icon_searchGray.svg" alt="">
 
       <!-- -->
       <div class="fl" >
-        <img v-if="!propData.picBgPath" class="img-w20 mright-05" src="../../../../assets/images/board/icon_lock_gray.svg" alt="">
+        <img v-if="!propData.picBgPath" class="img-w20 mright-05" src="@/assets/images/board/icon_lock_gray.svg" alt="">
         <div class="boardColorCircle" v-else :style="{ background: propData.picBgPath || '#ffffff' }"></div>
       </div>
       <div class="fl w100P textOverdot boardTitleArea" @click="emit('open')">
@@ -32,12 +32,12 @@
       </div>
       <!-- 공통 -->
       <div v-if="option === 'EDIT'" class="fr cursorP flexAlignCenter">
-        <img src="../../../../assets/images/board/icon_edit.svg" class="img-w20 fl editImg" @click="emit('edit')" >
-        <img src="../../../../assets/images/board/icon_trash.svg" class="img-w20 fl deleteImg" @click="emit('delete')" >
+        <img src="@/assets/images/board/icon_edit.svg" class="img-w20 fl editImg" @click="emit('edit')" >
+        <img src="@/assets/images/board/icon_trash.svg" class="img-w20 fl deleteImg" @click="emit('delete')" >
       </div>
       <div v-if="option === 'SELE'" class="fr cursorP flexAlignCenter" @click="emit('add')">
         <div class="fl mright-03 boardSelectBox" :class="{ 'CDeepBgColor' : propData.selectedYn === true }">
-          <img class="fl img-w13" src="../../../../assets/images/common/icon_check_white.svg" alt="선택 아이콘">
+          <img class="fl img-w13" src="@/assets/images/common/icon_check_white.svg" alt="선택 아이콘">
         </div>
       </div>
     </div>

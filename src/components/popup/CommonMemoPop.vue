@@ -19,7 +19,7 @@
         <p class="fl commonBlack font14" >{{$changeText(meMemoData.memo.userDispMtext || meMemoData.memo.userNameMtext)}}</p>
         <div class="fl mleft-05 mright-05 font14 commonBlack textOverdot w100P textLeft" v-html="meMemoData.memo.bodyFullStr"></div>
       <div class="cancelBtn" @click="cancel">
-        <img src="../../../assets/images/common/searchXIcon.svg" alt="">
+        <img src="@/assets/images/common/searchXIcon.svg" alt="">
       </div>
     </div>
     <div v-if="attachTrueFileList.length > 0" class="fl mbottom-05 mtop-05 attachFileWrap" @drop="onDrop">
@@ -30,7 +30,7 @@
                 <p class="CMiddleColor font12 textOverdot">{{splitName(value.file.name)}}</p>
                 <p class="CMiddleColor font12">{{splitExt(value.file.name)}}</p>
               </div>
-              <img src="../../../assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" alt="">
+              <img src="@/assets/images/common/popup_close.png" @click="deleteFileList(value, index)" class="img-w10" alt="">
           </div>
         </div>
       </div>
@@ -44,26 +44,26 @@
                 <div class="attachImgItem" v-for="(value, index) in mSelectedImgList" :key="index">
                     <img class="editorImg" :style="{height: setImgSize(index), height: value.scrollHeight + 'px'}" :id="'addImg' + index" :class="{addTrue :  value.addYn}" :src="value.previewImgUrl" />
                     <div class="cursorP" @click="deleteSelectImgList(index)">
-                        <img class="w100P fl" src="../../../assets/images/common/popup_close.png" alt="">
+                        <img class="w100P fl" src="@/assets/images/common/popup_close.png" alt="">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <img v-if="meMemoData !== null" src="../../../assets/images/common/icon-turn-right.svg" class="fl mright-02 turnRightIcon" alt="">
+    <img v-if="meMemoData !== null" src="@/assets/images/common/icon-turn-right.svg" class="fl mright-02 turnRightIcon" alt="">
       <div class="memoInputWrap"  @dragenter="onDragenter" @dragover="onDragover" @dragleave="onDragleave">
         <div @click="toggleAttachMenu" class="attachMenuToggle">+</div>
         <pre :placeholder="$t('EMPT_MSG_WRITE_COMM')" @focus="preFocus" @keydown="inputEnterKey" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding memoTextTag" :class="{width65: meMemoData !== null, CDeepBorderColor: mWatchInputData.trim() !== ''}"  contenteditable=true  @input="inputTextCheck"/>
-        <img v-if="mWatchInputData.trim() !== ''" @click="saveMemo()" src="../../../assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mleft-05">
-        <img v-else @click="$showToastPop($t('EMPT_MSG_WRITE_COMM2'))" src="../../../assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mleft-05">
+        <img v-if="mWatchInputData.trim() !== ''" @click="saveMemo()" src="@/assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mleft-05">
+        <img v-else @click="$showToastPop($t('EMPT_MSG_WRITE_COMM2'))" src="@/assets/images/common/icon_send_off.svg" alt="" class="fl img-w25 mleft-05">
         <div v-show="attachMenuShowYn" class="attachMenuWrap">
           <div class="font16 commonColor addImgBtn" @click.stop="addImgFile">
-            <img src="../../../assets/images/common/fileType_img.svg" alt="">
+            <img src="@/assets/images/common/fileType_img.svg" alt="">
             {{ $t('EMPT_BTN_PIC') }}
           </div>
           <attachFileList class="width33" @click.stop="attachMenuShowYn = false" targetType="memo" ref="attCompo" :pOneLineYn="true" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
           <div @click.stop="toggleAttachMenu" class="font16 commonColor addImgBtn noBorder">
-            <img src="../../../assets/images/common/searchXIcon.svg" alt="">
+            <img src="@/assets/images/common/searchXIcon.svg" alt="">
             {{ $t('COMM_BTN_CLOSE') }}
           </div>
         </div>
@@ -72,8 +72,8 @@
 </template>
 
 <script>
-import attachFileList from '../../../components/unit/formEditor/UB_attachFile.vue'
-import unknownLoginPop from '../../pageComponents/channel/UB_unknownLoginPop.vue'
+import attachFileList from '@/components/unit/formEditor/AttachFile.vue'
+import unknownLoginPop from '@/components/pageComponents/channel/UB_unknownLoginPop.vue'
 export default {
   components: {
     attachFileList,
