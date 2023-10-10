@@ -80,7 +80,6 @@ const D_CHANNEL = {
     },
     MU_ADD_MEMO: (state, payload) => {
       var index = null
-      debugger
       if (!payload) return
       // 1. 채널을 찾음
       var chanIndex = state.chanList.findIndex((item) => item.teamKey === Number(payload.creTeamKey))
@@ -225,6 +224,7 @@ const D_CHANNEL = {
             }
             state.chanList.push(payload[i])
           }
+          payload[i].ELEMENTS = { alimList: [], boardList: [], cabinetList: [], commonList: { type: 'ALIM', list: [] }, managerList: [], showProfileUserList: [] }
           continue
         }
         var team = payload[i]
@@ -420,7 +420,6 @@ const D_CHANNEL = {
               for (var s = 0; s < payload[i].memoList.length; s++) {
                 newArr.push(payload[i].memoList[s])
               }
-              debugger
               if (newArr && newArr.length > 0) {
                 var uniqueArr = newArr.reduce(function (data, current) {
                   // var addData = []

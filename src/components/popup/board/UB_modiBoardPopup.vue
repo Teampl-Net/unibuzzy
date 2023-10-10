@@ -619,10 +619,8 @@ export default {
       this.$refs.colorPicker.setColor(color)
     },
     async updateCabinet () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
-      // eslint-disable-next-line no-new-object
-      var cabinet = new Object()
+      var param = {}
+      var cabinet = {}
       cabinet.teamMenuKey = this.modiBoardDetailProps.teamMenuKey
       cabinet.cabinetNameMtext = 'EN$^$' + this.boardName
       cabinet.cabinetKey = this.modiBoardDetailProps.cabinetKey
@@ -638,10 +636,8 @@ export default {
       }
       var shareList = []
       var itemList = []
-      // eslint-disable-next-line no-new-object
-      var share = new Object()
-      // eslint-disable-next-line no-new-object
-      var item = new Object()
+      var share = {}
+      var item = {}
       share.cabinetKey = this.modiBoardDetailProps.cabinetKey
       var teampItemList = {}
       var shareSeqList = null

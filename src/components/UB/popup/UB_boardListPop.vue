@@ -44,20 +44,21 @@
                 <searchResult @changeSearchList="requestSearchList" :searchList="resultSearchKeyList" />
             </div>
         </div>
-        <div ref="pushListWrapWrapCompo" class="contentsListWrap">
+        <div ref="pushListWrapWrapCompo" class="contentsListWrap" :style="resultSearchKeyList.length? 'height: calc(100% - 230px);':''">
             <template v-for="(cont, index) in GE_DISP_CONTS_LIST" :key="cont.contentsKey" >
                 <gUBContentsBox  :pUnknownYn="false" ref="myContentsBox"  @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPage="goChannelMain" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
                 <myObserver v-if="GE_DISP_CONTS_LIST && GE_DISP_CONTS_LIST.length > 13 ?  index === GE_DISP_CONTS_LIST.length - 13 : index === GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
             </template>
-            <template v-if="!GE_DISP_CONTS_LIST">
+            <template v-if="(!GE_DISP_CONTS_LIST || GE_DISP_CONTS_LIST.length === 0) && mShowSkeletonYn">
                 <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
             </template>
+            <gListEmpty  v-else-if="!GE_DISP_CONTS_LIST || GE_DISP_CONTS_LIST.length === 0" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' />
         </div>
         <div class="goBtnWrap">
           <gBtnSmall @click="goChannelMain(pAreaInfo)" btnTitle="Go Channel" class="fr" />
         </div>
         <transition name="showModal">
-            <findContentsList ref="findContentRef" transition="showModal" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="mFindPopShowYn = false" />
+            <findContentsList style="height: 100% !important;" ref="findContentRef" transition="showModal" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="mFindPopShowYn = false" />
         </transition>
     </div>
 </template>
@@ -91,7 +92,8 @@ export default {
       mContsList: null,
       mPageSize: 20,
       mOffsetInt: 0,
-      mFindPopShowYn: false
+      mFindPopShowYn: false,
+      mShowSkeletonYn: true
     }
   },
   created () {
@@ -197,6 +199,7 @@ export default {
     async requestSearchList (param) {
       this.mOffsetInt = 0
       this.mContsList = []
+      this.mShowSkeletonYn = true
       if (param === 'searchKey') {
         this.findKeyList.searchKey = null
       } else if (param === 'creUserName') {
@@ -246,7 +249,10 @@ export default {
       }
     },
     async setContsList (resultList) {
-      if (!resultList) return
+      if (!resultList) {
+        this.mShowSkeletonYn = false
+        return
+      }
       var newArr = []
       this.endListSetFunc(resultList)
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
@@ -260,6 +266,7 @@ export default {
         newArr = resultList.content
       }
       this.mContsList = this.replaceArr(newArr)
+      this.mShowSkeletonYn = false
     },
     async loadMore (descYn) {
       if (this.mCanLoadYn && this.mEndListYn === false) {

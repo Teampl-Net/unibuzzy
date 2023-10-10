@@ -87,7 +87,10 @@
           <div class="fl wh100P chanListWrap"  id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style=" overflow:auto;padding: 0 10px; padding-top: calc(var(--paddingTopLength));  "  >
             <!-- 채널 리스트 -->
             <div v-if="mActiveSearch === 'CHAN'" class="w100P fl" style="overflow: auto; ">
-              <div v-if="mActiveSearch === 'CHAN' && mEmptyYn === true && GE_DISP_TEAM_LIST.length === 0" class="w100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
+              <div v-if="mSkeletonYn" class="w100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
+                <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
+              </div>
+              <div v-else-if="mActiveSearch === 'CHAN' && mEmptyYn === true && GE_DISP_TEAM_LIST.length === 0" class="w100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
                 <gListEmpty title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' />
               </div>
               <template v-else>
@@ -195,7 +198,8 @@ export default {
       mChanFindPopShowYn: false,
       mGetAxiosYn: false,
 
-      mChanPlaceHolder: this.$t('SEAR_MSG_KEYWORD')
+      mChanPlaceHolder: this.$t('SEAR_MSG_KEYWORD'),
+      mSkeletonYn: false
     }
   },
   props: {
@@ -276,6 +280,7 @@ export default {
       this.mFindPopShowYn = false
     },
     setSearchList () {
+      this.mSkeletonYn = true
       if (this.mActiveSearch === 'CHAN') {
         this.findData()
       } else {
@@ -371,7 +376,7 @@ export default {
       if (resultList && resultList.content) {
         contentList = resultList.content
       }
-      // if (!resultList || resultList === '') return
+      // if (!resultList || resultList === '') this.mSkeletonYn = false return
       var newArr = []
       var cont
       var tempContentDetail
@@ -498,12 +503,14 @@ export default {
         }
       }
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', contentList)
+      this.mSkeletonYn = false
       this.mContentReloadKey += 1
     },
     async changeSearchTab (name) {
       this.mEmptyYn = false
       this.mActiveSearch = name
       this.mOffsetInt = 0
+      this.mSkeletonYn = true
       if (this.mInputText && name === 'CONT') {
         this.mSearchList = [{ accessKey: this.mInputText, accessKind: 'title', dispName: this.mInputText, searchType: '제목' }]
       } else if (this.mInputText && name === 'CHAN') {
@@ -512,7 +519,6 @@ export default {
       this.findData()
     },
     readyFunc () {
-      console.log(this.initData)
       if (this.initData) {
         if (this.initData.pSearchList) {
           this.mSearchList = this.initData.pSearchList
@@ -579,6 +585,7 @@ export default {
         } else {
           this.mChannelList = resultList.content
         }
+        this.mSkeletonYn = false
       }
     },
     searchClear () {
@@ -770,6 +777,14 @@ export default {
       if (removePage === 'searchPop') {
         this.closeXPop()
       }
+    },
+    mAllContentsList: {
+      immediate: true,
+      handler (val) {
+        console.log('뭐임...')
+        console.log(val)
+      },
+      deep: true
     }
   },
   computed: {
@@ -943,8 +958,6 @@ export default {
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       if (returnAllList.length === 0) this.mEmptyYn = true
-      console.log('여김다')
-      console.log(this.replaceContentListArr(returnAllList))
 
       return this.replaceContentListArr(returnAllList)
     },

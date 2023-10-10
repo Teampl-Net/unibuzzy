@@ -160,9 +160,13 @@ export const functions = {
     if (detailData && detailData.length !== 0) {
       return detailData
     } else {
-      detailData = teamDetail.ELEMENTS.alimList.filter(cab => cab.contentsKey === Number(targetKey))
-      if (!detailData || detailData.length === 0) {
-        detailData = teamDetail.ELEMENTS.boardList.filter(cab => cab.contentsKey === Number(targetKey))
+      if (teamDetail && teamDetail.ELEMENTS) {
+        detailData = teamDetail.ELEMENTS.alimList.filter(cab => cab.contentsKey === Number(targetKey))
+        if (!detailData || detailData.length === 0) {
+          detailData = teamDetail.ELEMENTS.boardList.filter(cab => cab.contentsKey === Number(targetKey))
+        }
+      } else {
+        detailData = []
       }
       // var queueIndex = g_axiosQueue.findIndex((item) => item === 'getContentsDetail')
       // g_axiosQueue.splice(queueIndex, 1)

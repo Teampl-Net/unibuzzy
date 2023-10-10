@@ -11,7 +11,10 @@
           <gUBContentsBox @openImgPop="openImgPop" @openPage="goChannelMain" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" @fileDownload="fileDownload"/>
           <myObserver v-if="index === GE_DISP_CONT_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
         </template>
-        <gEmpty :tabName="`스크랩`" contentName="게시판" v-if="GE_DISP_CONT_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
+        <template v-if="mSkeletonShowYn">
+          <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
+        </template>
+        <gEmpty :tabName="`스크랩`" contentName="게시판" v-else-if="GE_DISP_CONT_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
       </div>
     </div>
     <div @click="openSearch" class="cursorP searchBtnWrap" :style="'bottom:' + ($STATUS_HEIGHT + 80)+ 'px'">
@@ -22,11 +25,13 @@
 
 <script>
 import findContentsList from '@/components/popup/common/UB_findContentsList.vue'
+import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton'
 import searchResult from '@/components/unit/UB_searchResult.vue'
 export default {
   components: {
     findContentsList,
-    searchResult
+    searchResult,
+    SkeletonBox
   },
   props: {
     propParams: Object
@@ -35,6 +40,7 @@ export default {
     if (this.propParams && this.propParams.targetType === 'totalSaveList') {
       this.mContentsList = this.propParams.saveList
     } else {
+      this.mSkeletonShowYn = true
       this.offsetInt = 0
       this.loadMore()
     }
@@ -46,7 +52,8 @@ export default {
       offsetInt: 0,
       findKeyList: {},
       findPopShowYn: false,
-      resultSearchKeyList: []
+      resultSearchKeyList: [],
+      mSkeletonShowYn: false
     }
   },
   methods: {
@@ -244,7 +251,8 @@ export default {
             ...newArr,
             ...this.GE_DISP_CONT_LIST
           ]
-          this.mContentsList = this.replaceArr(newArr)
+          this.mContentsList = await this.replaceArr(newArr)
+          this.mSkeletonShowYn = false
           await this.endListSetFunc(result)
         } catch (e) {
           console.log(e)

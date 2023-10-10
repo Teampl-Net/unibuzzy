@@ -129,8 +129,6 @@ export const openView = {
     var paramMap = new Map()
     paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
     var response = await commonAxiosFunction({ url: '/sUniB/tp.getMainBoard', param: Object.fromEntries(paramMap) }, false)
-    // eslint-disable-next-line no-debugger
-    debugger
     console.log(response)
     if (response.status === 200 || response.status === '200') {
       // eslint-disable-next-line no-new-object
@@ -165,8 +163,6 @@ export const openView = {
     paramMap.set('orderbyStr', 'followerCount DESC')
     paramMap.set('creUserKey', store.getters['UB_USER/GE_USER'].userKey)
     var response = await commonAxiosFunction({ url: '/sUniB/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
-    // eslint-disable-next-line no-debugger
-    debugger
     if (response.data.result === 'OK') {
       console.log(response.data)
       await store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', response.data.teamList.content)
@@ -178,8 +174,6 @@ export const openView = {
     paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
     var response = await methods.getTeamList(paramMap)
     // var response = await commonAxiosFunction({ url: '/sUniB/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, false)
-    // eslint-disable-next-line no-debugger
-    debugger
     console.log(response)
     if (response.data.content) {
       // console.log(response.data)
@@ -238,7 +232,6 @@ export const openView = {
       url: '/sUniB/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
     })
-    debugger
     console.log(result)
     if (result.status === 200) {
       return result.data

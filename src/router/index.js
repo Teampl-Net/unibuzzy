@@ -158,6 +158,11 @@ routes = [
         path: '/findChan',
         name: 'findChan',
         component: () => import(/* webpackChunkName: "about" */ '../pages/UB/routerPages/UB_findChanList.vue')
+      },
+      {
+        path: '/developer',
+        name: 'developer',
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/UB_developerPage.vue')
       }
     ]
   },

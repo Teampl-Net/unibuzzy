@@ -7,7 +7,10 @@
         <gActiveBar ref="activeBarPushListTop5" :tabList="mActiveTabList" @changeTab="changeTab" />
       </div>
       <div class="pushListWrap fl scrollHidden">
-        <contentsList v-if="mContentsList && mContentsList.length > 0" :propContentsList="mContentsList" @goContentsDetail="openPop" />
+        <template v-if="mSkeletonShowYn">
+          <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
+        </template>
+        <contentsList v-else-if="mContentsList && mContentsList.length > 0" :propContentsList="mContentsList" @goContentsDetail="openPop" />
         <gEmpty v-else :tabName="currentTabName" contentName="전체" class="mtop-2"/>
       </div>
     </div>
@@ -17,6 +20,7 @@
 <script>
 import listTitle from '@/components/unit/UB_mainTitle.vue'
 import contentsList from '@/components/list/UB_commonListTable.vue'
+import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton'
 export default {
   name: 'top5PushList',
   data () {
@@ -24,7 +28,8 @@ export default {
       mMoreLink: 'push',
       mActiveTabList: [{ display: 'My', name: 'M' }, { display: 'Liked', name: 'L' }],
       mViewTab: 'M',
-      mContentsList: []
+      mContentsList: [],
+      mSkeletonShowYn: true
     }
   },
   props: {
@@ -32,7 +37,13 @@ export default {
   },
   components: {
     listTitle,
-    contentsList
+    contentsList,
+    SkeletonBox
+  },
+  created () {
+    setTimeout(() => {
+      this.mSkeletonShowYn = false
+    }, 2000)
   },
   methods: {
     async getPushContentsList () {
@@ -60,7 +71,8 @@ export default {
 
       var resultList = result.content
 
-      this.mContentsList = resultList
+      this.mContentsList = await resultList
+      this.mSkeletonShowYn = false
     },
     replaceArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
@@ -77,6 +89,7 @@ export default {
       this.$emit('openPop', value)
     },
     async changeTab (tabName) {
+      this.mSkeletonShowYn = true
       this.mViewTab = tabName
       await this.getPushContentsList()
     }

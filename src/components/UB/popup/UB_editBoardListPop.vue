@@ -18,8 +18,8 @@
     <div v-if="CHANNEL_DETAIL" class="h100P boardListWrap">
       <draggable  ref="editableArea" @end="changePosTeamMenu" class="ghostClass dragBox" :options="{ghostClass:'sortable-ghost',animation:150}" v-model="cabinetList" ghost-class="ghost" :disabled='enabled' delay="200"  >
         <transition-group>
-          <template v-for="(data, index) in cabinetList" :key='index'>
-            <gBoardCard :propData='data' @cardEmit='cardEmit' :compoIdx='index' :style="cabinetList.length - 1 === index && index !== 0? 'padding-bottom: 100px; border-bottom: 0;':''" />
+          <template v-for="(data, index) in cabinetList" :key="data.cabinetKey">
+            <gBoardCard :propData="data" @cardEmit="cardEmit" :compoIdx="index" :style="cabinetList.length - 1 === index && index !== 0? 'padding-bottom: 100px; border-bottom: 0;':''" />
           </template>
         </transition-group>
       </draggable>
@@ -150,9 +150,9 @@ export default {
         this.errorBoxYn = false
       }
     },
-    closeNrefresh () {
+    async closeNrefresh () {
+      await this.getTeamMenuList()
       this.modiBoardPopShowYn = false
-      this.getTeamMenuList()
     },
     async getTeamMenuList () {
       var paramMap = new Map()

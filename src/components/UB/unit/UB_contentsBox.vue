@@ -136,12 +136,11 @@
     </template>
   </div>
   <!-- 밑에는 댓글 작성 창 -->
-  <gMemoPop tyle="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="!pNoAuthYn && propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
-
+  <gMemoPop style="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="!pNoAuthYn && propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
   <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
   <div v-if="mSelectBoardPopShowYn === true" class="profilePopBg"/>
   <div v-if="mSelectBoardPopShowYn === true" class="selectBoardWrap">
-    <gSelectBoardPop :type="mSelectBoardType" @closeXPop="mSelectBoardPopShowYn = false" :boardDetail="mMoveContentsDetailValue" />
+    <gSelectBoardPop :type="mSelectBoardType" @closeXPop="closeMoveContentsPop" :boardDetail="mMoveContentsDetailValue" />
   </div>
 </template>
 <script>
@@ -223,6 +222,10 @@ export default {
     }
   },
   methods: {
+    closeMoveContentsPop () {
+      this.mSelectBoardPopShowYn = false
+      this.$emit('contMove')
+    },
     onDragenter (event) {
       // class 넣기
       const memoRef = this.$refs.gMemoRef
@@ -1056,7 +1059,7 @@ export default {
       }
       if (cont[0] && cont[0].shareList && cont[0].shareList[0] && cont[0].shareList[0].length !== 0) {
         if (cont[0].shareList[0].accessKind === 'F') {
-          if (this.CHANNEL_DETAIL.D_CHAN_AUTH === true || (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) || this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) {
+          if (this.CHANNEL_DETAIL && (this.CHANNEL_DETAIL.D_CHAN_AUTH === true || (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) || this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)) {
             cont[0].VIEW_YN = true
             return cont[0]
           } else {

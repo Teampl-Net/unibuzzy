@@ -143,8 +143,6 @@ export async function saveUser (userProfile, loginYn) {
     param: setParam,
     firstYn: true
   })
-  // eslint-disable-next-line no-debugger
-  debugger
   if (result.data.message === 'OK') {
     if (localStorage.getItem('user')) {
       var localUser = JSON.parse(localStorage.getItem('user'))
@@ -250,7 +248,6 @@ export const methods = {
             // router.replace({ path: '/' })
           }
           // return
-          // eslint-disable-next-line no-debugger
         } catch (error) {
           console.log(error)
         }
@@ -558,8 +555,7 @@ export const methods = {
     return result
   },
   async saveCabinet (inputParamMap) {
-    // eslint-disable-next-line no-new-object
-    var paramSet = new Object()
+    var paramSet = {}
     if (inputParamMap) {
       paramSet = inputParamMap
     }
@@ -572,8 +568,7 @@ export const methods = {
     return result
   },
   async deleteCabinet (inputParamMap) {
-    // eslint-disable-next-line no-new-object
-    var paramSet = new Object()
+    var paramSet = {}
     if (inputParamMap) {
       paramSet = inputParamMap
     }
@@ -586,8 +581,7 @@ export const methods = {
     return result
   },
   async getTeamMenuList (inputParamMap, noneLoadingYn) {
-    // eslint-disable-next-line no-new-object
-    var paramMap = new Map()
+    var paramMap = {}
     if (inputParamMap) {
       paramMap = inputParamMap
     }
@@ -600,8 +594,7 @@ export const methods = {
     return result
   },
   async getCabinetDetail (inputParam) {
-    // eslint-disable-next-line no-new-object
-    var paramSet = new Object()
+    var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
     }

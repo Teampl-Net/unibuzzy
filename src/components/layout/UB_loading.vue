@@ -14,8 +14,6 @@
 export default {
   name: 'app',
   mounted () {
-    // eslint-disable-next-line no-debugger
-    debugger
     var this_ = this
     setTimeout(() => {
       this_.shows = false

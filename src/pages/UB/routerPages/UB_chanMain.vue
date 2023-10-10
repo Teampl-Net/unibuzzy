@@ -305,7 +305,6 @@ export default {
       writeParam.selectBoardYn = true
       writeParam.initData = teamList
       this.$emit('openPop', writeParam)
-      // this.mSeleteWriteTypePopShowYn = false
     },
     handleScroll () {
       const chanCardTopRef = this.$refs.chanPushListArea
@@ -317,7 +316,6 @@ export default {
         const scrollTop = chanMainRef.scrollTop
         if (scrollTop > this.mLastScroll) {
           // down
-
           if (chanCardTopRef.getBoundingClientRect().top < (55 + Number(this.$STATUS_HEIGHT))) {
             this.mChanCardShowYn = false
             const triggerPosition = chanCardTopRef.getBoundingClientRect().top
@@ -325,15 +323,11 @@ export default {
             if (chanCardTopArea) {
               chanCardTopArea.style.opacity = opacity.toFixed(2)
             }
-            // chanCardTopRef.style.marginTop = Number(this.$STATUS_HEIGHT) + 'px'
           }
         } else {
           // up
-          // const triggerPosition = chanCardTopRef.getBoundingClientRect().top
-
           if (chanCardTopRef.getBoundingClientRect().top >= (49 + Number(this.$STATUS_HEIGHT))) {
             this.mChanCardShowYn = true
-            // chanCardTopRef.style.marginTop = ''
             const opacity = Math.max(0, 1)
             if (chanCardTopArea) {
               chanCardTopArea.style.opacity = opacity.toFixed(2)
@@ -353,8 +347,7 @@ export default {
           this.mErrorPopBtnType = 'two'
         } else {
           var fStatus = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
-          // eslint-disable-next-line no-new-object
-          this.mSaveFollowerParam = new Object()
+          this.mSaveFollowerParam = {}
           this.mSaveFollowerParam.teamKey = this.CHANNEL_DETAIL.teamKey
           this.mSaveFollowerParam.teamName = this.$changeText(
             this.CHANNEL_DETAIL.nameMtext
@@ -379,12 +372,10 @@ export default {
             var queueIndex = this.axiosQueue.findIndex(
               (item) => item === 'changeFollower'
             )
-            // this.axiosQueue = this.axiosQueue.splice(queueIndex, 1)
             this.axiosQueue.splice(queueIndex, 1)
             this.CHANNEL_DETAIL.D_CHAN_AUTH = null
             this.CHANNEL_DETAIL.followerKey = null
             this.CHANNEL_DETAIL.userTeamInfo = null
-            // this.CHANNEL_DETAIL.followYn = false
             this.CHANNEL_DETAIL.followerCount -= 1
             this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [
               this.CHANNEL_DETAIL
@@ -394,7 +385,6 @@ export default {
             if (this.$refs.ChanAlimListPushListCompo) {
               this.$refs.ChanAlimListPushListCompo.refreshAll()
             }
-            // this.getChanMain()
             if (result.result || result) {
               this.$emit('pageReload')
             } else {
@@ -477,8 +467,7 @@ export default {
       if (
         this.axiosQueue.findIndex((item) => item === 'changeRecvAlimYn') !== -1
       ) { return }
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.followerKey = this.CHANNEL_DETAIL.userTeamInfo.followerKey
       var toastText = ''
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.notiYn === 1) {
@@ -586,7 +575,6 @@ export default {
     async getFollowerList () {
       var result = {}
       var paramMap = new Map()
-      // paramMap.set('showProfileYn', true)
       paramMap.set('teamKey', this.CHANNEL_DETAIL.teamKey)
       paramMap.set('pageSize', 100)
 
@@ -615,8 +603,7 @@ export default {
       this.$emit('openPop', param)
     },
     goProfile () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.targetType = 'bookMemberDetail'
       param.readOnlyYn = true
       param.selfYn = true
@@ -629,8 +616,7 @@ export default {
     async okMember () {
       if (this.mMemberTypeList && this.selectMemberObj) {
         this.ChanFollowYn = true
-        // eslint-disable-next-line no-new-object
-        var typeParam = new Object()
+        var typeParam = {}
         if (
           this.CHANNEL_DETAIL &&
           this.CHANNEL_DETAIL.D_CHAN_AUTH.followerKey
@@ -647,18 +633,12 @@ export default {
           url: '/sUniB/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }
         })
-        // } else {
-        //   this.selectMemberObj.initData = memberTypeItemList.data.memberTypeItemList
-        //   return true
-        // }
-        // this.memberTypeItemList = memberTypeItemList.data.memberTypeItemList
         this.CHANNEL_DETAIL.memberTypeKey = this.selectMemberObj.memberTypeKey
         this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn = true
         this.CHANNEL_DETAIL.teamKey = this.selectMemberObj.teamKey
         this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext = 'member'
         this.ChanFollowYn = true
         this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
-        // this.getChanMain()
         if (this.$refs.ChanAlimListPushListCompo) {
           this.$refs.ChanAlimListPushListCompo.refreshAll()
         }
@@ -1065,6 +1045,8 @@ export default {
         if (!val) return
         if (val.scrollPosition && val.scrollPosition.position !== undefined && val.scrollPosition.position !== null && val.scrollPosition.targetKind && val.scrollPosition.targetKey && val.listData && val.listData.length > 0) {
           if (val.scrollPosition.targetKind === 'chanMain' && val.scrollPosition.targetKey === Number(this.$route.params.encodedTeamKey)) {
+            console.log('보자보자')
+            console.log(val)
             this.allContentsList = val.listData
             this.mChanInfo = val.detailData
             this.mChanInfo.initData = {}

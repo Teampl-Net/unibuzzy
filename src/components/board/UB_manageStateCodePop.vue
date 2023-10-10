@@ -63,7 +63,7 @@
       <div class="applyBtnWrap">
         <gBtnSmall @click="(currentCodeKey === selectedCodeObj.codeKey && workDate.workToDate === null && selectedList.memberList.lenth === 0)? '': changeContentsStat()" :style="(currentCodeKey === selectedCodeObj.codeKey && workDate.workToDate === null && selectedList.memberList.lenth === 0) ? 'background: #F5F5F9!important; color: #A7A7A7!important; ': ''" :btnTitle="$t('APPLY')" class="font16 mright-05 applyBtn"/>
       </div>
-      <receiverAccessList v-if="selectBookListShowYn" :oneMemberCanAddYn="true" :propData="{currentTeamKey: alimDetail.creTeamKey}" :chanAlimListTeamKey="alimDetail.creTeamKey" :itemType="shareActorItemType" @closeXPop='selectBookListShowYn=false' :parentList='parentList' :selectList='selectedList'  @sendReceivers='setSelectedList'/>
+      <receiverAccessList v-if="selectBookListShowYn" :oneMemberCanAddYn="true" :propData="{currentTeamKey: alimDetail.creTeamKey}" :chanAlimListTeamKey="alimDetail.creTeamKey" :itemType="shareActorItemType" @closeXPop="selectBookListShowYn=false" :parentList="parentList" :selectList="selectedList"  @sendReceivers="setSelectedList"/>
     </div>
   </div>
 </template>

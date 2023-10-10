@@ -134,7 +134,6 @@ export const commonMethods = {
   },
   changeDateMemoFormat (date) {
     var compareDate = new Date(date)
-    console.log(compareDate)
     var toDate = new Date()
     var format = ''
     if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(toDate).format('YYYY')) {

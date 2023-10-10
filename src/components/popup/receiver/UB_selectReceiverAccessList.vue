@@ -27,7 +27,6 @@ export default {
     oneMemberCanAddYn: {},
     itemType: {}, // W: 작성/ V: 열람/ R: 댓글
     selectList: {} // 공유대상에서 선택한 북 & 멤버 리스트
-
   },
   created () {
     this.memberList = this.parentList

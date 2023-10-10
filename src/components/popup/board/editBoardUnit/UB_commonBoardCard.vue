@@ -57,6 +57,16 @@ export default {
     selectedYn: { type: Boolean, default: false },
     compoIdx: {}
   },
+  watch: {
+    propData: {
+      immediate: true,
+      handler (val) {
+        if (!val) return
+        this.setSubTitle()
+      },
+      deep: true
+    }
+  },
   methods: {
     emit (type) {
       var param = {}
@@ -66,15 +76,13 @@ export default {
       this.$emit('cardEmit', param)
     },
     setSubTitle () {
+      this.subTitle = ''
       if (this.propData.replyYn === 1) { this.subTitle += this.$t('BCARD_NAME_COMMENTO') } else { this.subTitle += '' }
       if (this.propData.replyYn === 1) this.subTitle += ', '
       if (this.propData.fileYn === 1) { this.subTitle += this.$t('BCARD_NAME_FILEO') } else { this.subTitle += '' }
       if (this.propData.fileYn === 1) this.subTitle += ', '
       if (this.propData.blindYn === 1) { this.subTitle += this.$t('BCARD_NAME_ANONY') } else { this.subTitle += this.$t('BCARD_NAME_ID') }
     }
-  },
-  created () {
-    this.setSubTitle()
   }
 }
 

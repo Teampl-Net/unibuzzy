@@ -44,7 +44,7 @@
     </div>
     <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
 
-    <div class="fileContentsWrap" v-if="fileList.length > 0">
+    <div class="fileContentsWrap" v-if="!mShowSkeletonYn && fileList.length > 0">
       <template v-for="(date, index) in dateList" :key="index">
         <div class="textLeft fontBold font14 attachFileBg fileContentsTag" :style="index !== 0? 'margin-top: 30px;':'margin-top: 10px;'">{{ date }}</div>
         <div class="fileContentsItem">
@@ -55,6 +55,9 @@
         <myObserver v-if="index === dateList.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
       </template>
     </div>
+    <template v-if="mShowSkeletonYn">
+        <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
+    </template>
     <gEmpty :contentName="contentName" v-else class="mtop-2"/>
   </div>
   <transition name="showModal">
@@ -67,12 +70,14 @@ import findContentsList from '../../popup/common/UB_findContentsList.vue'
 import searchResult from '../../unit/UB_searchResult.vue'
 import chanRoundIcon from '../../pageComponents/main/UB_chanRoundIcon.vue'
 import circleSkeleton from '../../pageComponents/main/UB_mainChanCircleSkeleton.vue'
+import SkeletonBox from '@/components/pageComponents/push/UB_contentsSkeleton'
 export default {
   components: {
     chanRoundIcon,
     circleSkeleton,
     findContentsList,
-    searchResult
+    searchResult,
+    SkeletonBox
   },
   async created () {
     this.getTeamList()
@@ -91,10 +96,11 @@ export default {
       findPopShowYn: false,
       findKeyList: {},
       resultSearchKeyList: [],
-      offsetInt: 1,
+      offsetInt: 0,
       endListYn: false,
       isMobile: /Mobi/i.test(window.navigator.userAgent),
-      contentName: '파일함'
+      contentName: '파일함',
+      mShowSkeletonYn: false
     }
   },
   watch: {
@@ -207,7 +213,7 @@ export default {
       this.returnResultList(result)
       await this.endListSetFunc(result.data)
     },
-    returnResultList (result) {
+    async returnResultList (result) {
       if (result.data === '') return
       var resultFileList = result.data.content.filter((item) => {
         return item.contents
@@ -233,9 +239,11 @@ export default {
           return item.fileType === 'I'
         })
       }
-      this.fileList = resultFileList
+      this.fileList = await resultFileList
+      this.mShowSkeletonYn = false
     },
     async getFileList (nonLoadingYn) {
+      this.mShowSkeletonYn = true
       var paramMap = new Map()
       if (JSON.stringify(this.findKeyList) !== '{}') {
         // eslint-disable-next-line no-new-object

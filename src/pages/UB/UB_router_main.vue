@@ -2,12 +2,14 @@
 {
   "ko": {
     "MAIN_MSG_UPDATE": "버전 업데이트가 필요합니다.<br>앱스토어로 이동합니다.",
+    "MAIN_MSG_CHANGE": "서비스가 업데이트되어 새로고침됩니다\n잠시후 다시 시도해주세요.",
     "MAIN_MSG_DIS_CONN": "네트워크의 연결이 끊어져<br>실행 할 수 없습니다.",
     "MAIN_MSG_RETRY": "네트워크 연결이 끊어졌습니다.<br> 잠시후 다시 시도 해주세요.",
     "MAIN_MSG_CONN": "네트워크가 연결되었습니다!"
   },
   "en": {
     "MAIN_MSG_UPDATE": "A version update is required.<br>Go to the App Store.",
+    "MAIN_MSG_CHANGE": "Service will be updated and refreshed\nPlease try again in a moment.",
     "MAIN_MSG_DIS_CONN": "The network is disconnected and cannot execute the request.",
     "MAIN_MSG_RETRY": "The network status is unstable. Please try again in a momentarily.",
     "MAIN_MSG_CONN": "Network is connected!"
@@ -100,6 +102,40 @@ export default {
     }
   },
   created () {
+    let patchTime = null
+    this.$commonAxiosFunction({
+      url: '/sUniB/tp.checkSystemSettingTime',
+      param: {}
+    }).then((result) => {
+      if (localStorage.getItem('patchTime')) {
+        const patchTimeStr = localStorage.getItem('patchTime')
+        try {
+          patchTime = JSON.parse(patchTimeStr)
+        } catch (error) {
+          localStorage.removeItem('patchTime')
+        }
+      }
+      if ((result.data.patchTime === 'none' && (patchTime === 'none' || !patchTime)) || !result.data.result) {
+        return
+      }
+      if (!patchTime || patchTime === 'none') {
+        localStorage.setItem('patchTime', JSON.stringify(result.data.patchTime))
+        localStorage.setItem('patchTime', result.data.patchTime)
+        alert(this.$t('MAIN_MSG_CHANGE'))
+        // eslint-disable-next-line no-self-assign
+        location.href = location.href
+      } else {
+        if (patchTime && result.data.patchTime) {
+          if (Number(result.data.patchTime) > Number(patchTime)) {
+            localStorage.setItem('patchTime', result.data.patchTime)
+            alert(this.$t('MAIN_MSG_CHANGE'))
+            // eslint-disable-next-line no-self-assign
+            location.href = location.href
+            // showSystemMsgPop(true)
+          }
+        }
+      }
+    })
     if (this.GE_USER.unknownYn) {
       this.$router.push({ name: 'policies' })
       return

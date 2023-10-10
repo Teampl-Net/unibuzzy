@@ -44,7 +44,7 @@
           <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
           <div class="w100P fl commonListContentBox" style="height:1px;" />
           <template v-for="(cont, index) in GE_DISP_ALL_LIST" :key="cont.contentsKey">
-            <gUBContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" @contDelete="refreshAll" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" @fileDownload="fileDownload"/>
+            <gUBContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" @contMove="refreshAll" @contDelete="refreshAll" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" @fileDownload="fileDownload"/>
             <myObserver v-if="index === GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
           </template>
 
@@ -94,6 +94,7 @@ export default {
     pBoardList: Array
   },
   beforeUnmount () {
+    this.GE_CHANNEL_DETAIL.boardList = this.pBoardList
     this.$store.dispatch('UB_PRE_DATA/AC_PRE_DETAIL_DATA', this.GE_CHANNEL_DETAIL)
     this.$store.dispatch('UB_PRE_DATA/AC_PRE_LIST_DATA', this.GE_DISP_ALL_LIST)
     this.$store.dispatch('UB_PRE_DATA/AC_PRE_SCROLL_POSITION', { position: this.box.scrollTop, targetKind: 'chanMain', targetKey: this.GE_CHANNEL_DETAIL.teamKey })
@@ -297,8 +298,10 @@ export default {
               returnAllList.push(this_.allContentsList[i])
             } else {
               chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
-              if (jobkindId === 'BOAR') {
+              if (jobkindId === 'BOAR' && chanDetail && chanDetail.ELEMENTS && chanDetail.ELEMENTS.boardList) {
                 dataList = chanDetail.ELEMENTS.boardList
+              } else {
+                dataList = []
               }
               idx2 = dataList.findIndex((item) => item.contentsKey === this_.allContentsList[i].contentsKey)
               if (idx2 !== -1) {
@@ -311,10 +314,12 @@ export default {
           })
         } else {
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          dataList = chanDetail.ELEMENTS.boardList
+          if (chanDetail && chanDetail.ELEMENTS && chanDetail.ELEMENTS.boardList) {
+            dataList = chanDetail.ELEMENTS.boardList
+          } else {
+            dataList = []
+          }
           idx2 = dataList.findIndex((item) => item.contentsKey === this.allContentsList[i].contentsKey)
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          // this.mainBoardList[i] = chanDetail.ELEMENTS.boardList
           if (idx2 !== -1) {
             // eslint-disable-next-line vue/no-side-effects-in-computed-properties
             this.allContentsList[i] = dataList[idx2]
@@ -326,7 +331,6 @@ export default {
       }
       // eslint-disable-next-line vue/no-side-effects-in-computed-properties
       if (this.allContentsList.length === 0) this.emptyYn = true
-      console.log(returnAllList)
       return this.replaceArr(returnAllList)
     },
     GE_USER () {
@@ -419,7 +423,6 @@ export default {
       window.document.addEventListener('wheel', (e) => {
         var scrollType = e.deltaY < 0 ? 'down' : 'up'
         if (scrollType === 'down') {
-          // console.log(this.box.scrollTop)
           if (this.box.scrollTop < 10) {
             this.$emit('goScroll')
           }
@@ -683,11 +686,9 @@ export default {
 
           if (this.firstContOffsetY < 0) {
             if (this.box.scrollTop > this.scrollPosition) {
-              console.log('going down')
               this.scrollDirection = 'down'
               this.scrolledYn = true
             } else if (this.box.scrollTop <= this.scrollPosition) {
-              console.log('going up')
               this.scrollDirection = 'up'
               this.scrolledYn = false
             }
@@ -709,7 +710,6 @@ export default {
       var cont
       var tempContentDetail
       var contentDetail
-      console.log(resultList.content)
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       newArr = [
         ...resultList.content
@@ -799,8 +799,6 @@ export default {
               ]
               this.allContentsList = this.replaceArr(newArr)
             }
-            console.log('로드하기')
-            console.log(this.allContentsList)
             this.contentsList = this.replaceArr(newArr)
             this.$emit('numberOfElements', resultList.totalElements)
           }
@@ -895,8 +893,6 @@ export default {
         ...contentList
       ]
       this.allContentsList = this.replaceArr(newArr)
-      console.log('탭 변경')
-      console.log(this.allContentsList)
       for (let i = 0; i < this.allContentsList.length; i++) {
         cont = this.allContentsList[i]
         tempContentDetail = []

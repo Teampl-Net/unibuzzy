@@ -135,8 +135,7 @@ export default {
       this.currentTeamKey = this.boardList[0].teamKey
     },
     async saveMCabContents () {
-      // eslint-disable-next-line no-new-object
-      var param = new Object()
+      var param = {}
       param.cabinetKey = this.selectedCabinet.cabinetKey
       param.jobkindId = 'BOAR'
       if (this.type === 'move') {

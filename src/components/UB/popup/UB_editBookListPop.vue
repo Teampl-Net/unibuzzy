@@ -391,9 +391,14 @@ export default {
           this.$store.commit('UB_HISTORY/setRemovePage', removePage)
           this.$store.commit('UB_HISTORY/updateStack', hStack)
           // this.getBookList()
-          this.mDetailOpenYn = false
-          this.mCabinetName = ''
-          this.closePop()
+          if (this.mSelectPopId === 'selectMemberPop') {
+            this.getBookMemberList()
+            this.this.mSelectPopId = ''
+          } else {
+            this.mDetailOpenYn = false
+            this.mCabinetName = ''
+            this.closePop()
+          }
         } else if (this.mExcelPopId === hStack[hStack.length - 1]) {
           hStack = hStack.filter((element, index) => index < hStack.length - 1)
           this.$store.commit('UB_HISTORY/setRemovePage', removePage)
@@ -403,6 +408,7 @@ export default {
           if (backYn) {
 
           } else {
+            this.getBookMemberList()
             this.mPopType = ''
             this.$emit('closeXPop')
           }
@@ -455,6 +461,10 @@ export default {
       param.selectMemberType = 'member'
       param.currentTeamKey = this.CHANNEL_DETAIL.teamKey
       param.editBookOpend = true
+      this.mSelectPopId = 'selectMemberPop'
+      var history = this.$store.getters['UB_HISTORY/hStack']
+      history.push(this.mCreAddrId)
+      this.$store.commit('UB_HISTORY/updateStack', history)
 
       this.mPropData = param
       this.mPopType = 'selectMemberPop'
