@@ -1,4 +1,4 @@
-# 📜 Guide for Developers
+#  Guide for Developers
 ## Index
 - [개발 가이드](#개발-가이드)
   1. [네이밍 규칙](#1-네이밍-규칙)
