@@ -112,8 +112,8 @@ export default {
 }
 </script>
 <style>
-@import './assets/css/UB_common.css';
-@import './assets/css/UB_resetStyles.css';
+@import './assets/css/common.css';
+@import './assets/css/resetStyles.css';
 
 /* @import '@/assets/css/N_common.css'; */
 /* @import '@/assets/css/resetStyles.css'; */

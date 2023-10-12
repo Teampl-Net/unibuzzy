@@ -113,8 +113,6 @@ const isJsonString = (str) => {
         } else if (message.type === 'appType') {
           localStorage.setItem('mobileYn', 'true')
           localStorage.setItem('nativeYn', 'true')
-
-          localStorage.setItem('appType', 'UB')
         } else if (message.type === 'returnImpData') {
           store.dispatch('UB_USER/AC_SET_CERTI', message.certi)
         } else if (message.type === 'certiInfo') {

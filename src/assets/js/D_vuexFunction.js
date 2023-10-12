@@ -5,7 +5,7 @@
 import store from '../../store'
 import { mapGetters, mapActions } from 'vuex'
 import { methods, commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
-import { commonMethods } from './UB_common'
+import { commonMethods } from './common'
 
 var this_ = this
 // var g_user = store.getters['UB_USER/GE_USER']
@@ -160,9 +160,13 @@ export const functions = {
     if (detailData && detailData.length !== 0) {
       return detailData
     } else {
-      detailData = teamDetail.ELEMENTS.alimList.filter(cab => cab.contentsKey === Number(targetKey))
-      if (!detailData || detailData.length === 0) {
-        detailData = teamDetail.ELEMENTS.boardList.filter(cab => cab.contentsKey === Number(targetKey))
+      if (teamDetail && teamDetail.ELEMENTS) {
+        detailData = teamDetail.ELEMENTS.alimList.filter(cab => cab.contentsKey === Number(targetKey))
+        if (!detailData || detailData.length === 0) {
+          detailData = teamDetail.ELEMENTS.boardList.filter(cab => cab.contentsKey === Number(targetKey))
+        }
+      } else {
+        detailData = []
       }
       // var queueIndex = g_axiosQueue.findIndex((item) => item === 'getContentsDetail')
       // g_axiosQueue.splice(queueIndex, 1)
