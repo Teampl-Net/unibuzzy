@@ -12,60 +12,60 @@ import 'cropperjs/dist/cropper.css'
 import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_axiosFunction'
 import openView from './assets/js/D_openView'
 import './registerServiceWorker'
-import gActiveBar from './components/unit/UB_commonActiveBar.vue'
-import gButtonS from './components/button/UB_commonButtonS.vue'
-import gButtonL from './components/button/UB_commonButtonL.vue'
+import gActiveBar from './components/unit/CommonActiveBar.vue'
+import gButtonS from './components/button/CommonButtonS.vue'
+import gButtonL from './components/button/CommonButtonL.vue'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
 import imageCompression from 'browser-image-compression'
-import commonjs from './assets/js/UB_common'
+import commonjs from './assets/js/common'
 import getjs from './assets/js/D_vuexFunction'
-import commonSharejs from './assets/js/UB_commonShare'
-import gMainTab from './components/popup/memberInfo/memberUnit/UB_commonMainTabCompo.vue'
+import commonSharejs from './assets/js/commonShare'
+import gMainTab from './components/popup/CommonMainTabCompo.vue'
 import './assets/js/webViewBridge'
-import gFileBox from './components/unit/UB_commonFileBox.vue'
-import gInput from './components/common/UB_commonInput.vue'
-import gSearchBox from './components/unit/UB_commonSearchBox.vue'
-import gAxiosLoading from './components/UB_axiosLoadingSpinner.vue'
+import gFileBox from './components/unit/contents/CommonFileBox.vue'
+import gInput from './components/unit/CommonInput.vue'
+import gSearchBox from './components/unit/search/CommonSearchBox.vue'
+import gAxiosLoading from './components/layout/AxiosLoadingSpinner.vue'
 import coreService from '../public/commonAssets/D_coreService'
-import uploadFile from './assets/js/UB_uploadFile'
-import gUBContentsBox from './components/UB/unit/UB_contentsBox.vue'
+import uploadFile from './assets/js/uploadFile'
+import gUBContentsBox from './components/unit/contents/ContentsBox.vue'
 import VueCropper from 'vue-cropperjs'
-import gColorPicker from './components/unit/UB_commonColorPicker.vue'
-import gImgPop from './components/popup/common/UB_commonGalleryPop.vue'
-import gToggle from './components/pageComponents/myPage/UB_commonToggle.vue'
-import gEmpty from './components/unit/UB_commonEmpty.vue'
-import gReport from './components/unit/UB_commonReport.vue'
-import gCheckBtn from './components/popup/writeContentUnit/UB_commonCheckBtn.vue'
-import gConfirmPop from './components/popup/confirmPop/UB_commonConfirmPop.vue'
-import myObserver from './components/UB_ScrollObserver.vue'
-import gMemoPop from './components/popup/memo/UB_commonMemoPop.vue'
-import gListEmpty from './components/popup/receiver/receiverUnit/UB_commonListEmpty.vue'
-import gToolBox from './components/popup/writeContentUnit/UB_commonToolBox.vue'
-import gLoadingS from './components/UB_smallLoading.vue'
-import gChannelCard from './components/list/UB_channelCard.vue'
-import gProfileImg from './components/common/UB_commonProfile.vue'
-import gBoardCard from './components/popup/board/editBoardUnit/UB_commonBoardCard.vue'
-import gBookList from './components/popup/receiver/receiverUnit/UB_commonBookList.vue'
-import gBookMemberList from './components/popup/receiver/receiverUnit/UB_commonBookMemberList.vue'
-import gReceiveCard from './components/popup/receiver/receiverUnit/UB_commonReceiveCard.vue'
-import gChanMainHeader from './components/UB/layout/UB_commonChanMainHeader.vue'
-import gMainMenu from './components/UB/popup/common/UB_commonMenu.vue'
-import gTopViewItem from './components/UB/unit/UB_commonTopViewItem.vue'
-import gUserItem from './components/UB/unit/UB_commonUserItem.vue'
-import UBConst from '@/assets/js/UB_Const'
+import gColorPicker from './components/unit/CommonColorPicker.vue'
+import gImgPop from './components/popup/contents/CommonGalleryPop.vue'
+import gToggle from './components/button/CommonToggle.vue'
+import gEmpty from './components/unit/CommonEmpty.vue'
+import gReport from './components/unit/contents/CommonReport.vue'
+import gCheckBtn from './components/button/CommonCheckBtn.vue'
+import gConfirmPop from './components/popup/confirmPop/CommonConfirmPop.vue'
+import myObserver from './components/unit/ScrollObserver.vue'
+import gMemoPop from './components/popup/contents/CommonMemoPop.vue'
+import gListEmpty from './components/unit/receiverUnit/CommonListEmpty.vue'
+import gToolBox from './components/unit/formEditor/CommonToolBox.vue'
+import gLoadingS from './components/layout/SmallLoading.vue'
+import gChannelCard from './components/unit/channel/ChannelCard.vue'
+import gProfileImg from './components/unit/CommonProfile.vue'
+import gBoardCard from './components/pageComponents/channel/unit/editBoard/CommonBoardCard.vue'
+import gBookList from './components/unit/receiverUnit/CommonBookList.vue'
+import gBookMemberList from './components/unit/receiverUnit/CommonBookMemberList.vue'
+import gReceiveCard from './components/unit/receiverUnit/CommonReceiveCard.vue'
+import gChanMainHeader from '@/components/pageComponents/main/container/CommonChanMainHeader.vue'
+import gMainMenu from './components/popup/CommonMenu.vue'
+import gTopViewItem from './components/pageComponents/board/unit/CommonTopViewItem.vue'
+import gUserItem from './components/unit/CommonUserItem.vue'
+import UBConst from '@/assets/js/Const'
 import i18n from './assets/i18n'
 // eslint-disable-next-line camelcase
 
 let app = {}
 const importsUB = Promise.all([
-  import('./components/UB/layout/UB_commonMainHeader.vue'),
-  import('./components/UB/layout/UB_commonPopHeader.vue'),
-  import('./components/UB/unit/UB_commonSelectFilter.vue'),
-  import('./components/popup/confirmPop/UB_smallCommonConfirmPop.vue'),
-  import('./components/UB/layout/UB_commonFooter.vue'),
-  import('./components/popup/common/UB_commonSelectBoardListPop.vue'),
-  import('./components/UB/layout/UB_commonCloudLoading.vue')
+  import('./components/layout/CommonMainHeader.vue'),
+  import('./components/layout/CommonPopHeader.vue'),
+  import('./components/unit/search/CommonSelectFilter.vue'),
+  import('./components/popup/confirmPop/SmallCommonConfirmPop.vue'),
+  import('./components/layout/CommonFooter.vue'),
+  import('./components/popup/CommonSelectBoardListPop.vue'),
+  import('./components/layout/CommonCloudLoading.vue')
 ])
 app = createApp(uniBuzzy).use(router).use(store)
 importsUB.then(([gUBHeader, gPopHeader, gSelectFilter, smallPop, gFooter, gSelectBoardPop, gCloudLoading]) => {

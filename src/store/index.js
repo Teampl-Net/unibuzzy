@@ -2,11 +2,11 @@
 import { createStore } from 'vuex'
 
 // 작성한 모듈을 가져옵니다.
-import UB_USER from '@/store/modules/UB_userStore.js'
-import UB_HISTORY from '@/store/modules/UB_historyStack.js'
-import UB_CHANNEL from '@/store/modules/UB_channelStore.js'
-import UB_NOTI from '@/store/modules/UB_notiStore.js'
-import UB_PRE_DATA from '@/store/modules/UB_previousData.js'
+import UB_USER from '@/store/modules/userStore.js'
+import UB_HISTORY from '@/store/modules/historyStack.js'
+import UB_CHANNEL from '@/store/modules/channelStore.js'
+import UB_NOTI from '@/store/modules/notiStore.js'
+import UB_PRE_DATA from '@/store/modules/previousData.js'
 
 import createPersistedState from 'vuex-persistedstate'
 
