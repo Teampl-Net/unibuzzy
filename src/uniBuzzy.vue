@@ -10,9 +10,6 @@
       </transition>
     </div> -->
     <gAxiosLoading />
-    <!-- <transition name="showModal">
-      <gPopupWrap transition="showModal"  @successWrite="successWriteBoard" :propParams="modalParam" ref="commonWrap" :headerTitle="headerTitle" @closePop="closePop" v-if="popShowYn" :parentPopN="parentPopN" />
-    </transition> -->
     <router-view ref="routerMainWrap" @closeCloudLoading="mCloudLoadingShowYn = false" @openPop="openPop" />
   </div>
 </template>
@@ -115,8 +112,8 @@ export default {
 }
 </script>
 <style>
-@import './assets/css/Tal_common.css';
-@import './assets/css/UB_resetStyles.css';
+@import './assets/css/common.css';
+@import './assets/css/resetStyles.css';
 
 /* @import '@/assets/css/N_common.css'; */
 /* @import '@/assets/css/resetStyles.css'; */

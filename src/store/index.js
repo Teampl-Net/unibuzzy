@@ -1,17 +1,17 @@
-/* eslint-disable */ 
+/* eslint-disable */
 import { createStore } from 'vuex'
 
 // 작성한 모듈을 가져옵니다.
-import D_USER from '@/store/modules/D_userStore.js'
-import D_HISTORY from '@/store/modules/D_historyStack.js'
-import D_CHANNEL from '@/store/modules/D_channelStore.js'
-import D_NOTI from '@/store/modules/D_notiStore.js'
-import D_PRE_DATA from '@/store/modules/D_previousData.js'
+import UB_USER from '@/store/modules/userStore.js'
+import UB_HISTORY from '@/store/modules/historyStack.js'
+import UB_CHANNEL from '@/store/modules/channelStore.js'
+import UB_NOTI from '@/store/modules/notiStore.js'
+import UB_PRE_DATA from '@/store/modules/previousData.js'
 
 import createPersistedState from 'vuex-persistedstate'
 
 const storageState = createPersistedState({
-  paths: ['D_USER', 'D_HISTORY', 'D_CHANNEL', 'D_NOTI', 'D_PRE_DATA'],
+  paths: ['UB_USER', 'UB_HISTORY', 'UB_CHANNEL', 'UB_NOTI', 'UB_PRE_DATA'],
   storage: window.localStorage
   /* key: 'vuexStore',
   storage: window.sessionStorage */
@@ -20,11 +20,11 @@ const storageState = createPersistedState({
 const store = createStore({
   modules: {
     // 키: 값 형태로 저장됩니다.
-    D_USER: D_USER,
-    D_HISTORY: D_HISTORY,
-    D_CHANNEL: D_CHANNEL,
-    D_NOTI: D_NOTI,
-    D_PRE_DATA: D_PRE_DATA
+    UB_USER: UB_USER,
+    UB_HISTORY: UB_HISTORY,
+    UB_CHANNEL: UB_CHANNEL,
+    UB_NOTI: UB_NOTI,
+    UB_PRE_DATA: UB_PRE_DATA
   },
   plugins: [storageState]
 })

@@ -5,7 +5,7 @@ import axios from 'axios'
 import router from '../../src/router'
 import { params } from 'vue-router'
 import { coreMethods } from './D_coreService'
-import { commonMethods } from '../../src/assets/js/Tal_common'
+import { commonMethods } from '../../src/assets/js/common'
 import store from '../../src/store'
 import { mapGetters, mapActions } from 'vuex'
 /* axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
@@ -34,7 +34,7 @@ export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
   if (setItem.firstYn || noAuthYn !== undefined) {
     console.log('pass')
   } else {
-    var user = store.getters['D_USER/GE_USER']
+    var user = store.getters['UB_USER/GE_USER']
     if (!user.unknownYn) {
       await methods.userLoginCheck()
     }
@@ -143,8 +143,6 @@ export async function saveUser (userProfile, loginYn) {
     param: setParam,
     firstYn: true
   })
-  // eslint-disable-next-line no-debugger
-  debugger
   if (result.data.message === 'OK') {
     if (localStorage.getItem('user')) {
       var localUser = JSON.parse(localStorage.getItem('user'))
@@ -152,7 +150,7 @@ export async function saveUser (userProfile, loginYn) {
       result.data.userMap.partnerToken = localUser.partnerToken
     }
     localStorage.setItem('user', JSON.stringify(result.data.userMap))
-    await store.dispatch('D_USER/AC_USER', result.data.userMap)
+    await store.dispatch('UB_USER/AC_USER', result.data.userMap)
     localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
     if (loginYn) {
       var userInfo = result.data.userMap
@@ -166,7 +164,7 @@ export async function saveUser (userProfile, loginYn) {
     location.href = '/'
   } else if (result.data.message === 'NG') {
     if (store !== undefined && store !== null) {
-      store.commit('D_USER/MU_CLEAN_USER')
+      store.commit('UB_USER/MU_CLEAN_USER')
     }
     localStorage.setItem('user', '')
     alert('Login failed. Please try it again later.')
@@ -181,7 +179,7 @@ export const methods = {
     // if (user.indexOf('iPhone') > -1 || user.indexOf('Android') > -1) {
     //   mobileYn = true
     // }
-    if (this.$appType === 'UB' && this.$mobileYn) {
+    if (this.$mobileYn) {
       mobileYn = true
     }
     return mobileYn
@@ -199,7 +197,7 @@ export const methods = {
       paramMap.set('userEmail', 'test02@teampl.net')
     } else {
       localStorage.setItem('testYn', false)
-      var user = store.getters['D_USER/GE_USER']
+      var user = store.getters['UB_USER/GE_USER']
       if (!user) {
         if (JSON.parse(localStorage.getItem('vuex'))) {
           user = JSON.parse(localStorage.getItem('vuex')).D_USER.userInfo
@@ -240,17 +238,16 @@ export const methods = {
             result.data.userMap.partnerToken = localUser.partnerToken
           }
           localStorage.setItem('user', JSON.stringify(result.data.userMap))
-          await store.dispatch('D_USER/AC_USER', result.data.userMap)
+          await store.dispatch('UB_USER/AC_USER', result.data.userMap)
           localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
           /*
-          await store.dispatch('D_USER/AC_USER', result.data.userMap)
+          await store.dispatch('UB_USER/AC_USER', result.data.userMap)
           await localStorage.setItem('user', JSON.stringify(result.data.userMap))
           await localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap)) */
           if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
             // router.replace({ path: '/' })
           }
           // return
-          // eslint-disable-next-line no-debugger
         } catch (error) {
           console.log(error)
         }
@@ -268,14 +265,14 @@ export const methods = {
       // router.replace({ name: 'policies' })
       router.replace({ name: 'login' })
       if (store !== undefined && store !== null) {
-        store.commit('D_USER/MU_CLEAN_USER')
+        store.commit('UB_USER/MU_CLEAN_USER')
       }
       localStorage.setItem('sessionUser', '')
       localStorage.setItem('user', '')
     }
     if (!user) {
       if (store !== undefined && store !== null) {
-        store.commit('D_USER/MU_CLEAN_USER')
+        store.commit('UB_USER/MU_CLEAN_USER')
       }
       window.localStorage.removeItem('testYn')
       localStorage.setItem('loginYn', false)
@@ -290,10 +287,10 @@ export const methods = {
     console.log(result)
     if (result) {
       await router.replace({ name: 'login' })
-      store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
-      await store.dispatch('D_USER/AC_USER', '')
+      store.commit('UB_CHANNEL/MU_CLEAN_CHAN_LIST')
+      await store.dispatch('UB_USER/AC_USER', '')
       if (store !== undefined && store !== null) {
-        store.commit('D_USER/MU_CLEAN_USER')
+        store.commit('UB_USER/MU_CLEAN_USER')
       }
 
       window.localStorage.setItem('loginYn', false)
@@ -310,10 +307,10 @@ export const methods = {
     console.log(result)
     if (result) {
       await router.replace({ name: 'login' })
-      store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
-      await store.dispatch('D_USER/AC_USER', '')
+      store.commit('UB_CHANNEL/MU_CLEAN_CHAN_LIST')
+      await store.dispatch('UB_USER/AC_USER', '')
       if (store !== undefined && store !== null) {
-        store.commit('D_USER/MU_CLEAN_USER')
+        store.commit('UB_USER/MU_CLEAN_USER')
       }
 
       window.localStorage.setItem('loginYn', false)
@@ -326,7 +323,7 @@ export const methods = {
   },
   async getTeamList (paramMap, noneLoadingYn) {
     var resultList = null
-    paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
+    paramMap.set('fUserKey', store.getters['UB_USER/GE_USER'].userKey)
     var result = await commonAxiosFunction({
       url: '/sUniB/tp.getUserTeamList',
       param: Object.fromEntries(paramMap)
@@ -341,18 +338,18 @@ export const methods = {
     param.targetKey = contentsKey
     // param.jobkindId = this.contentsEle.jobkindId
     param.jobkindId = jobkindId
-    param.userKey = store.getters['D_USER/GE_USER'].userKey
-    param.ownUserKey = store.getters['D_USER/GE_USER'].userKey
+    param.userKey = store.getters['UB_USER/GE_USER'].userKey
+    param.ownUserKey = store.getters['UB_USER/GE_USER'].userKey
     var resultList = await this.$getContentsList(param)
     if (resultList.content) var detailData = resultList.content[0]
-    this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+    this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData])
   },
   async getContentsList (inputParam, nonLoadingYn, noAuthYn) {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
-      if (!noAuthYn && store.getters['D_USER/GE_USER']) {
-        paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
+      if (!noAuthYn && store.getters['UB_USER/GE_USER']) {
+        paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
       }
     }
     var resultList = null
@@ -392,7 +389,7 @@ export const methods = {
     }
     var urlSet = null
     if (type === 'delete') { urlSet = '/sUniB/tp.deleteUserDo' } else if (type === 'save') { urlSet = '/sUniB/tp.saveUserDo' }
-    param.userKey = store.getters['D_USER/GE_USER'].userKey
+    param.userKey = store.getters['UB_USER/GE_USER'].userKey
     var result = null
 
     var response = await commonAxiosFunction({
@@ -408,7 +405,7 @@ export const methods = {
     if (inputParam) {
       param = inputParam
     }
-    param.creUserKey = store.getters['D_USER/GE_USER'].userKey
+    param.creUserKey = store.getters['UB_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
       url: '/sUniB/tp.saveSticker',
@@ -419,13 +416,13 @@ export const methods = {
     return result
   },
   async getStickerList (inputParam) {
-    if (store.getters['D_USER/GE_USER'].unknownYn) return
+    if (store.getters['UB_USER/GE_USER'].unknownYn) return
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {
       param = inputParam
     }
-    param.creUserKey = store.getters['D_USER/GE_USER'].userKey
+    param.creUserKey = store.getters['UB_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
       url: '/sUniB/tp.getStickerList',
@@ -444,7 +441,7 @@ export const methods = {
     if (type === 'del') { urlSet = '/sUniB/tp.deleteFollower' } else if (type === 'save') {
       paramSet.followerType = 'F'
     }
-    paramSet.userKey = store.getters['D_USER/GE_USER'].userKey
+    paramSet.userKey = store.getters['UB_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
       url: urlSet,
@@ -558,8 +555,7 @@ export const methods = {
     return result
   },
   async saveCabinet (inputParamMap) {
-    // eslint-disable-next-line no-new-object
-    var paramSet = new Object()
+    var paramSet = {}
     if (inputParamMap) {
       paramSet = inputParamMap
     }
@@ -572,8 +568,7 @@ export const methods = {
     return result
   },
   async deleteCabinet (inputParamMap) {
-    // eslint-disable-next-line no-new-object
-    var paramSet = new Object()
+    var paramSet = {}
     if (inputParamMap) {
       paramSet = inputParamMap
     }
@@ -586,8 +581,7 @@ export const methods = {
     return result
   },
   async getTeamMenuList (inputParamMap, noneLoadingYn) {
-    // eslint-disable-next-line no-new-object
-    var paramMap = new Map()
+    var paramMap = {}
     if (inputParamMap) {
       paramMap = inputParamMap
     }
@@ -600,8 +594,7 @@ export const methods = {
     return result
   },
   async getCabinetDetail (inputParam) {
-    // eslint-disable-next-line no-new-object
-    var paramSet = new Object()
+    var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
     }
@@ -656,7 +649,7 @@ export const methods = {
     // eslint-disable-next-line no-new-object
     var user = new Object()
     // param.user = this.userInfo
-    var localUser = store.getters['D_USER/GE_USER']
+    var localUser = store.getters['UB_USER/GE_USER']
     if (localUser.userEmail !== undefined && localUser.userEmail !== null && localUser.userEmail !== '') { user.soEmail = localUser.userEmail }
     if (localUser.userKey !== undefined && localUser.userKey !== null && localUser.userKey !== '') { user.userKey = localUser.userKey }
     if (localUser.soAccessToken !== undefined && localUser.soAccessToken !== null && localUser.soAccessToken !== '') { user.soAccessToken = localUser.soAccessToken }
@@ -674,7 +667,7 @@ export const methods = {
       param: param
     })
     result = response
-    store.commit('D_USER/MU_USER', result.data.userMap)
+    store.commit('UB_USER/MU_USER', result.data.userMap)
     return result
   }
 }

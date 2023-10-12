@@ -16,7 +16,7 @@ module.exports = {
       '^/sUniB': {
         // target: 'https://mo.d-alim.com:9443/service',
         target: 'https://www.unibuzzy.com',
-        // target: 'http://192.168.0.90:8083',
+        // target: 'http://192.168.0.46:9090',
         // target: 'http://192.168.0.10:9443',
         // target: 'http://localhost:19090',
         // target: 'http://192.168.219.103:19090',

@@ -141,7 +141,7 @@ const dService = {
             }
             /* returnData.partnerToken = json.data.accessUser.partnerToken
             returnData.uAccessToken = json.data.accessUser.uaccessToken
-            this.$store.commit('D_USER/MU_USER_ACCESS', returnData) */
+            this.$store.commit('UB_USER/MU_USER_ACCESS', returnData) */
             console.log(document.referrer)
             /* if (g_pOpener) {
               g_pOpener.postMessage(JSON.stringify({ resultMsg: 'saveUserInfo', result: true, userInfo: returnData }), document.referrer)

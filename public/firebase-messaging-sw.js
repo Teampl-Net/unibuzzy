@@ -164,8 +164,6 @@ self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open(CACHE_STATIC_NAME)
       .then(function (cache) {
-        // eslint-disable-next-line no-debugger
-        debugger
         console.log(cache)
         console.log('[Service Worker] Precaching App Shell')
         cache.addAll(FILES_TO_CACHE)

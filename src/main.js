@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import moTheAlim from './Tal_moTheAlim.vue'
 import uniBuzzy from './uniBuzzy.vue'
 import router from './router'
 import Vuex from 'vuex'
@@ -13,123 +12,76 @@ import 'cropperjs/dist/cropper.css'
 import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_axiosFunction'
 import openView from './assets/js/D_openView'
 import './registerServiceWorker'
-import gActiveBar from './components/unit/Tal_gActiveBar.vue'
-import gWhiteSelect from './components/unit/selectBox/cAd_gWhiteSelect.vue'
-import gButtonS from './components/button/Tal_gButtonS.vue'
-import gButtonL from './components/button/Tal_gButtonL.vue'
+import gActiveBar from './components/unit/CommonActiveBar.vue'
+import gButtonS from './components/button/CommonButtonS.vue'
+import gButtonL from './components/button/CommonButtonL.vue'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
 import imageCompression from 'browser-image-compression'
-import commonjs from './assets/js/Tal_common'
+import commonjs from './assets/js/common'
 import getjs from './assets/js/D_vuexFunction'
-import commonSharejs from './assets/js/Tal_commonShare'
-import gMainTab from './components/popup/memberInfo/memberUnit/D_commonMainTabCompo.vue'
+import commonSharejs from './assets/js/commonShare'
+import gMainTab from './components/popup/CommonMainTabCompo.vue'
 import './assets/js/webViewBridge'
-import gFileBox from './components/unit/D_fileBox.vue'
-import commonList from './components/list/D_commonList.vue'
-import gChannelList from './components/list/D_commonChanList.vue'
-import gInput from './components/common/UB_commonInput.vue'
-import gSearchBox from './components/unit/Tal_searchBox.vue'
-import gAxiosLoading from './components/D_axiosLoadingSpinner.vue'
+import gFileBox from './components/unit/contents/CommonFileBox.vue'
+import gInput from './components/unit/CommonInput.vue'
+import gSearchBox from './components/unit/search/CommonSearchBox.vue'
+import gAxiosLoading from './components/layout/AxiosLoadingSpinner.vue'
 import coreService from '../public/commonAssets/D_coreService'
-import uploadFile from './assets/js/Tal_uploadFile'
-import gContentsBox from './components/pageComponents/push/D_contentsBox.vue'
-import gUBContentsBox from './components/UB/unit/UB_contentsBox.vue'
+import uploadFile from './assets/js/uploadFile'
+import gUBContentsBox from './components/unit/contents/ContentsBox.vue'
 import VueCropper from 'vue-cropperjs'
-import gColorPicker from './components/unit/D_colorPicker.vue'
-import gImgPop from './components/popup/common/D_commonGalleryPop.vue'
-import gToggle from './components/pageComponents/myPage/Tal_commonToggle.vue'
-import gEmpty from './components/unit/Tal_commonEmpty.vue'
-import gReport from './components/unit/Tal_commonReport.vue'
-import gCheckBtn from './components/popup/writeContentUnit/D_commonCheckBtn.vue'
-import gConfirmPop from './components/popup/confirmPop/Tal_commonConfirmPop.vue'
-import myObserver from './components/Tal_ScrollObserver.vue'
-import gMemoPop from './components/popup/memo/Tal_commonMemoPop.vue'
-import gMemoList from './components/popup/memo/Tal_commonMemoList.vue'
-import imgLongClickPop from './components/popup/Tal_imgLongClickPop.vue'
-import gPreLoader from './components/unit/Tal_preloader.vue'
-import gListEmpty from './components/popup/receiver/receiverUnit/D_commonListEmpty.vue'
-import gChannelPop from './components/popup/common/D_commonChanPop.vue'
-import gSvg from './components/Tal_svgCollection.vue'
-import Iconwink from './components/Tal_winkAlimLogo.vue'
-import gToolBox from './components/popup/writeContentUnit/D_commonToolBox.vue'
-import gLoadingS from './components/Tal_smallLoading.vue'
-import gAlertPop from './components/popup/Tal_commonAlertPop.vue'
-import channelCard from './components/list/D_channelCard.vue'
-import gProfileImg from './components/common/D_commonProfile.vue'
-import UBConst from '@/assets/js/UB_Const'
+import gColorPicker from './components/unit/CommonColorPicker.vue'
+import gImgPop from './components/popup/contents/CommonGalleryPop.vue'
+import gToggle from './components/button/CommonToggle.vue'
+import gEmpty from './components/unit/CommonEmpty.vue'
+import gReport from './components/unit/contents/CommonReport.vue'
+import gCheckBtn from './components/button/CommonCheckBtn.vue'
+import gConfirmPop from './components/popup/confirmPop/CommonConfirmPop.vue'
+import myObserver from './components/unit/ScrollObserver.vue'
+import gMemoPop from './components/popup/contents/CommonMemoPop.vue'
+import gListEmpty from './components/unit/receiverUnit/CommonListEmpty.vue'
+import gToolBox from './components/unit/formEditor/CommonToolBox.vue'
+import gLoadingS from './components/layout/SmallLoading.vue'
+import gChannelCard from './components/unit/channel/ChannelCard.vue'
+import gProfileImg from './components/unit/CommonProfile.vue'
+import gBoardCard from './components/pageComponents/channel/unit/editBoard/CommonBoardCard.vue'
+import gBookList from './components/unit/receiverUnit/CommonBookList.vue'
+import gBookMemberList from './components/unit/receiverUnit/CommonBookMemberList.vue'
+import gReceiveCard from './components/unit/receiverUnit/CommonReceiveCard.vue'
+import gChanMainHeader from '@/components/pageComponents/main/container/CommonChanMainHeader.vue'
+import gMainMenu from './components/popup/CommonMenu.vue'
+import gTopViewItem from './components/pageComponents/board/unit/CommonTopViewItem.vue'
+import gUserItem from './components/unit/CommonUserItem.vue'
+import UBConst from '@/assets/js/Const'
 import i18n from './assets/i18n'
 // eslint-disable-next-line camelcase
 
 let app = {}
-let type = ''
-type = 'UB'
-// type = 'D'
-if (type === 'D') {
-  const importsD = Promise.all([
-    import('./components/popup/common/Tal_gPopupWrap.vue'),
-    import('./components/layout/Tal_gMainHeader.vue'),
-    import('./components/layout/Tal_gPopHeader.vue'),
-    import('./components/layout/Tal_gFooter.vue'),
-    import('./components/unit/Tal_stepProgressBar.vue'),
-    import('./components/common/D_commonSticker.vue'),
-    import('./components/popup/sticker/D_myStickerListPop.vue'),
-    import('./components/common/D_commonStickerLine.vue'),
-    import('./components/popup/confirmPop/Tal_smallCommonConfirmPop.vue'),
-    import('./components/popup/common/Tal_commonSelectBoardListPop.vue'),
-    import('./components/popup/memberInfo/memberUnit/D_commonSmallInput.vue'),
-    import('./components/popup/confirmPop/D_commonCertiPop.vue')
-  ])
-
-  app = createApp(moTheAlim).use(router).use(store)
-  importsD.then(([fullModal, TalHeader, popHeader, TalFooter, gStepProgress, gSticker, gSelectStickerPop, gStickerLine, smallPop, gSelectBoardPop, gInputSmallPop, gCertiPop]) => {
-    app.component('fullModal', fullModal.default)
-    app.component('TalHeader', TalHeader.default)
-    app.component('popHeader', popHeader.default)
-    app.component('TalFooter', TalFooter.default)
-    app.component('gStepProgress', gStepProgress.default)
-    app.component('gSticker', gSticker.default)
-    app.component('gSelectStickerPop', gSelectStickerPop.default)
-    app.component('gStickerLine', gStickerLine.default)
-    app.component('smallPop', smallPop.default)
-    app.component('gSelectBoardPop', gSelectBoardPop.default)
-    app.component('gInputPop', gInputSmallPop.default)
-    app.component('gCertiPop', gCertiPop.default)
-  })
-} else if (type === 'UB') {
-  const importsUB = Promise.all([
-    import('./components/UB/layout/UB_gMainHeader.vue'),
-    import('./components/UB/popup/UB_favListPop.vue'),
-    import('./components/UB/layout/UB_gPopHeader.vue'),
-    import('./components/UB/popup/common/UB_gPopupWrap.vue'),
-    import('./components/UB/unit/UB_commonSelectFilter.vue'),
-    import('./components/pageComponents/main/D_notiHistoryList.vue'),
-    import('./components/popup/confirmPop/Tal_smallCommonConfirmPop.vue'),
-    import('./components/UB/layout/UB_gFooter.vue'),
-    import('./components/popup/common/Tal_commonSelectBoardListPop.vue'),
-    import('./components/UB/layout/UB_gCloudLoading.vue')
-  ])
-  app = createApp(uniBuzzy).use(router).use(store)
-  importsUB.then(([gUBHeader, gFavList, popHeader, gPopupWrap, gSelectFilter, gLogList, smallPop, gFooter, gSelectBoardPop, gCloudLoading]) => {
-    app.component('gUBHeader', gUBHeader.default)
-    app.component('gFavList', gFavList.default)
-    app.component('popHeader', popHeader.default)
-    app.component('gPopupWrap', gPopupWrap.default)
-    app.component('gSelectFilter', gSelectFilter.default)
-    app.component('gSelectBoardPop', gSelectBoardPop.default)
-    app.component('smallPop', smallPop.default)
-    app.component('gLogList', gLogList.default)
-    app.component('gFooter', gFooter.default)
-    app.component('gCloudLoading', gCloudLoading.default)
-  })
-  // const gNProfileImg = require('./components/common/N_commonProfile.vue')
-  // const gNCloudLoading = require('./components/layout/N_cloudLoading.vue')
-  // app.component('gNProfileImg', gNProfileImg)
-  // app.component('gNCloudLoading', gNCloudLoading)
-}
+const importsUB = Promise.all([
+  import('./components/layout/CommonMainHeader.vue'),
+  import('./components/layout/CommonPopHeader.vue'),
+  import('./components/unit/search/CommonSelectFilter.vue'),
+  import('./components/popup/confirmPop/SmallCommonConfirmPop.vue'),
+  import('./components/layout/CommonFooter.vue'),
+  import('./components/popup/CommonSelectBoardListPop.vue'),
+  import('./components/layout/CommonCloudLoading.vue')
+])
+app = createApp(uniBuzzy).use(router).use(store)
+importsUB.then(([gUBHeader, gPopHeader, gSelectFilter, smallPop, gFooter, gSelectBoardPop, gCloudLoading]) => {
+  app.component('gUBHeader', gUBHeader.default)
+  app.component('gPopHeader', gPopHeader.default)
+  app.component('gSelectFilter', gSelectFilter.default)
+  app.component('smallPop', smallPop.default)
+  app.component('gFooter', gFooter.default)
+  app.component('gSelectBoardPop', gSelectBoardPop.default)
+  app.component('gCloudLoading', gCloudLoading.default)
+})
+// const gNProfileImg = require('./components/common/N_commonProfile.vue')
+// const gNCloudLoading = require('./components/layout/N_cloudLoading.vue')
+// app.component('gNCloudLoading', gNCloudLoading)
 
 // app.use(VueEasyLightbox)
-app.component('gContentsBox', gContentsBox)
 app.component('gUBContentsBox', gUBContentsBox)
 app.component('gSearchBox', gSearchBox)
 app.component('gBtnSmall', gButtonS)
@@ -139,32 +91,30 @@ app.component('gActiveBar', gActiveBar)
 app.component('Datepicker', Datepicker)
 app.component(VueCropper)
 app.component('gMainTab', gMainTab)
-app.component('gChannelList', gChannelList)
 app.component('gImgPop', gImgPop)
-app.component('commonList', commonList)
 app.component('gFileBox', gFileBox)
-app.component('gWhiteSelect', gWhiteSelect)
 app.component('gAxiosLoading', gAxiosLoading)
 app.component('gColorPicker', gColorPicker)
 app.component('gCheckBtn', gCheckBtn)
 app.component('gConfirmPop', gConfirmPop)
-app.component('gSvg', gSvg)
-app.component('gPreLoader', gPreLoader)
-app.component('gMemoList', gMemoList)
 app.component('myObserver', myObserver)
 app.component('gLoadingS', gLoadingS)
 app.component('gMemoPop', gMemoPop)
 app.component('gToggle', gToggle)
-app.component('iconWink', Iconwink)
-app.component('channelCard', channelCard)
-app.component('imgLongClickPop', imgLongClickPop)
-app.component('gAlertPop', gAlertPop)
+app.component('gChannelCard', gChannelCard)
 app.component('gEmpty', gEmpty)
 app.component('gReport', gReport)
 app.component('gListEmpty', gListEmpty)
-app.component('gChannelPop', gChannelPop)
 app.component('gToolBox', gToolBox)
 app.component('gProfileImg', gProfileImg)
+app.component('gBoardCard', gBoardCard)
+app.component('gBookList', gBookList)
+app.component('gBookMemberList', gBookMemberList)
+app.component('gReceiveCard', gReceiveCard)
+app.component('gChanMainHeader', gChanMainHeader)
+app.component('gMainMenu', gMainMenu)
+app.component('gTopViewItem', gTopViewItem)
+app.component('gUserItem', gUserItem)
 
 app.use(commonjs)
 app.use(i18n)
@@ -173,8 +123,6 @@ app.use(openView)
 app.use(getjs)
 app.use(commonSharejs)
 app.use(BootstrapVue3)
-// app.use(Vue3SimpleHtml2pdf)
-// app.component('attachFileListPop', attachFileListPop)
 app.use(axiosFunction)
 app.use(coreService)
 app.use(uploadFile)
@@ -244,14 +192,7 @@ app.config.globalProperties.$Vuex = Vuex
 app.config.globalProperties.$imageCompression = imageCompression
 app.config.globalProperties.$commonAxiosFunction = commonAxiosFunction
 app.config.globalProperties.$store = store
-if (localStorage.getItem('appType')) {
-  app.config.globalProperties.$appType = localStorage.getItem('appType')
-  app.config.globalProperties.$mobileYn = true
-} else {
-  app.config.globalProperties.$appType = 'UB'
-  app.config.globalProperties.$mobileYn = null
-}
-const user = store.getters['D_USER/GE_USER']
+const user = store.getters['UB_USER/GE_USER']
 if (user.countryCode) {
   app.config.globalProperties.$locale = user.countryCode
 } else {
@@ -267,24 +208,3 @@ app.mount('#app')
 window.app = app
 document.title = 'uniBuzzy'
 localStorage.setItem('loginYn', 'false')
-/* if (navigator.serviceWorker) {
-  navigator.serviceWorker.register('./firebase-messaging-sw.js')
-    .then(function (reg) {
-      console.log('서비스워커 등록성공 :', reg)
-      reg.addEventListener('message', evnt => {
-        console.log(evnt)
-      })
-      reg.addEventListener('push', evnt => {
-        console.log(evnt)
-      })
-    })
-    .catch(function (error) { console.log('서비스워커 등록실패 :', error) })
-  navigator.serviceWorker.addEventListener('message', (event) => {
-    // event is a MessageEvent object
-    console.log(event)
-  })
-  navigator.serviceWorker.addEventListener('swMessageCome', (event) => {
-    // event is a MessageEvent object
-    console.log(event)
-  })
-} */
