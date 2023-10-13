@@ -22,7 +22,7 @@ We continuosly updates to perfectly meet users' needs. now, become the King and 
 
 ### ✨Link✨
 [<img src="https://img.shields.io/badge/uniBuzzy-5f61bd?style=for-the-badge">](https://unibuzzy.com/#/)  
-[<img src="https://img.shields.io/badge/Instaram-E4405F?style=for-the-badge&logo=instagram&logoColor=white">](https://www.instagram.com/unibuzzy/)
+[<img src="https://img.shields.io/badge/Instargam-E4405F?style=for-the-badge&logo=instagram&logoColor=white">](https://www.instagram.com/unibuzzy/)
 
 ---
 
@@ -43,4 +43,4 @@ Integrating various apps shouldn't mean if has to be complcated to use. uniBuzzy
 ---
 
 ## Documents
-✅ [CONTRIBUTING.md]()
+✅ [CONTRIBUTING.md](https://github.com/Teampl-Net/unibuzzy/blob/main/CONTRIBUTING.md)
