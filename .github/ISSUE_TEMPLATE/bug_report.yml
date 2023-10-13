@@ -1,0 +1,68 @@
+name: Bug Report
+description: Template for Bug Reporting
+title: "[Bug]: what bug is?"
+labels: ["bug"]
+projects: []
+assignees: 
+  - ''
+
+body:
+# ===============================================================
+  - type: markdown
+    attributes:
+      value: "## Thank you for your Reporting!"
+  - type: checkboxes
+    id: bug-category
+    attributes:
+      label: Bug category
+      description: Select what bug category is.
+      options:
+        - label: "Code Error"
+        - label: "Network Error"
+        - label: "Structure Error"
+        - label: "Etc."
+    validations:
+      required: true
+  - type: input
+    id: bug-category-inperson
+    attributes:
+      label: ETC. bug category
+      description: only write when you choose Etc. category.
+      placeholder: If you already select another category, move to next step.
+    validations:
+      required: false
+  - type: textarea
+    id: bug-desc
+    attributes:
+      label: Bug Situation
+      description: Describe about Bug Details.
+      placeholder: "* Required Info.: file location / bug description"
+    validations:
+      required: true
+  - type: textarea
+    id: normal-fn
+    attributes:
+      label: The case of Normal Operation
+      description: If there is any bug, How is this work?
+    validations:
+      required: false
+      
+# ===============================================================
+  - type: markdown
+    attributes:
+      value: "## Additional Info."
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Reference
+      description: Upload additional pic. or video for description.
+      placeholder: When you drag&drop image, click this textarea at first.
+    validations:
+      required: false
+  - type: input
+    id: additional-info
+    attributes:
+      label: Etc.
+      description: If you have another info. to share, write here.
+    validations:
+      required: false
