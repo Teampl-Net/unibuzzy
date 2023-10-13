@@ -20,8 +20,9 @@ We continuosly updates to perfectly meet users' needs. now, become the King and 
 |<img src="https://www.unibuzzy.com/resource/gitImg/3.png">|<img src="https://www.unibuzzy.com/resource/gitImg/4.png">|<img src="https://www.unibuzzy.com/resource/gitImg/5.png">|<img src="https://www.unibuzzy.com/resource/gitImg/6.png">|
 |:---|---:|:---:|:---:|
 
-[⭐Go to uniBuzzy!](https://unibuzzy.com/#/)  
-[⭐Go to our Instagram!](https://www.instagram.com/unibuzzy/)
+### ✨Link✨
+[<img src="https://img.shields.io/badge/uniBuzzy-5f61bd?style=for-the-badge">](https://unibuzzy.com/#/)  
+[<img src="https://img.shields.io/badge/Instaram-E4405F?style=for-the-badge&logo=instagram&logoColor=white">](https://www.instagram.com/unibuzzy/)
 
 ---
 
