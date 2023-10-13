@@ -10,6 +10,7 @@
 - [github 가이드](#github-가이드)
   1. [커밋 기준](#1-커밋-기준)
   2. [커밋 메시지](#2-커밋-메시지)
+  3. [Pull request](#3-pull-request)
 ---
 
 # 개발 가이드
@@ -58,10 +59,6 @@ ex) mShowYn
 
 <br/>
 
----
-
-<br/>
-
 ## 2. vuex의 사용
 
 ### 2-1. vuex를 사용하는 이유
@@ -94,10 +91,6 @@ computed: {
 - channel list를 불러올 때, channel 상세를 불러올 때 (UB_channelStore.js > AC_ADD_CHANNEL)
 - user 정보를 불러올 때 (UB_userStore.js > AC_USER)
 - 팝업을 open할 때 (UB_UB_historyStack.js >updateStack)
-
-<br/>
-
----
 
 <br/>
 
@@ -145,10 +138,6 @@ methods: {
 
 <br/>
 
----
-
-<br/>
-
 ## 4. 접근 가능한 파일
 
 - **public 폴더 내 파일은 접근하지 않도록 주의**
@@ -162,18 +151,10 @@ methods: {
 
 <br/>
 
----
-
-<br/>
-
 ## 5. 존재하는 컴포넌트의 활용
 
 - vue/react는 하나의 컴포넌트를 만들어 반복 활용하는 효율성이 높음
 - 화면에서 자주 사용되는 요소의 경우 이미 컴포넌트가 생성되어 있을 가능성이 높으므로 파일을 새로 생성하기 보다는 기존의 컴포넌트를 활용
-
-<br/>
-
----
 
 <br/>
 
@@ -200,10 +181,6 @@ methods: {
 
 <br/>
 
----
-
-<br/>
-
 ## 2. 커밋 메시지
 [앵귤러 컨벤션](https://ec.europa.eu/component-library/v1.15.0/eu/docs/conventions/git/)이 대표적인 커밋메세지 규약이다.
 - `Fix`: 버그 수정
@@ -219,3 +196,14 @@ methods: {
 ```
 Perf: Font preload for first load
 ```
+
+<br/>
+
+## 3. Pull request
+Pull requests should be opened according to the template.
+- Description(*): Write about the purpose of opening the PR, guidance, and related explanations.
+- Changes(*): Write down the changes in the commit.
+- Check List(*): List to focus on when reviewing.
+- Related Issue: Connect if issues related to the PR are open.
+- Screenshot: Related screenshots or videos.
+<img src="https://unibuzzy.com/resource/gitImg/pr_example.png">
