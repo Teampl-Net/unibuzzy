@@ -1,0 +1,40 @@
+body:
+  - type: textarea
+    attributes:
+      label: Is your feature develop related to a problem?
+      description: A clear and concise description of what the problem is.
+      placeholder: "The following error is displayed: [...]"
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: The solution I'd like
+      description: A clear and concise description of what you want to happen.
+      placeholder: Tell us what your plan!
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Related Issue
+      description: Connect if issues related to the issue are open.
+      placeholder: Reference issue like #5
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Screenshots or video
+      description: It is helpful to attach screenshots or video similar to the desired features.
+      placeholder: When you drag&drop image, click this textarea at first
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: If you have another info. to share, write here.
+      placeholder: Anything to write down or refer to is fine
+    validations:
+      required: false

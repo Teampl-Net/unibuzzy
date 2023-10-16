@@ -1,5 +1,5 @@
 name: Bug Report
-description: Template for Bug Reporting
+description: Create a report to help us improve
 title: "[Bug]: what bug is?"
 labels: ["bug"]
 projects: []
@@ -11,16 +11,30 @@ body:
   - type: markdown
     attributes:
       value: "## Thank you for your Reporting!"
-  - type: checkboxes
+  - type: dropdown
+    id: env
+    attributes:
+      label: Environment
+      description: Select the environment in which the bug occurs.
+      options:
+        - "Android"
+        - "iOS"
+        - "Web"
+        - "Etc."
+      multiple: true
+    validations:
+      required: true
+  - type: dropdown
     id: bug-category
     attributes:
       label: Bug category
       description: Select what bug category is.
       options:
-        - label: "Code Error"
-        - label: "Network Error"
-        - label: "Structure Error"
-        - label: "Etc."
+        - "Code Error"
+        - "Network Error"
+        - "Layout Error (CSS)"
+        - "Etc."
+      multiple: true
     validations:
       required: true
   - type: input
@@ -34,16 +48,17 @@ body:
   - type: textarea
     id: bug-desc
     attributes:
-      label: Bug Situation
-      description: Describe about Bug Details.
+      label: Bug situation
+      description: Describe about bug details.
       placeholder: "* Required Info.: file location / bug description"
     validations:
       required: true
   - type: textarea
-    id: normal-fn
+    id: expected-behavior
     attributes:
-      label: The case of Normal Operation
+      label: Expected behavior
       description: If there is any bug, How is this work?
+      placeholder: Tell me the behavior you want
     validations:
       required: false
       
@@ -59,10 +74,11 @@ body:
       placeholder: When you drag&drop image, click this textarea at first.
     validations:
       required: false
-  - type: input
+  - type: textarea
     id: additional-info
     attributes:
-      label: Etc.
+      label: Additional context
       description: If you have another info. to share, write here.
+      placeholder: Anything to write down or refer to is fine
     validations:
       required: false
