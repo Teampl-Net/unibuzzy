@@ -33,12 +33,12 @@ yarn install
 
 ### Compiles and hot-reloads for development
 ```
-yarn run serve
+yarn serve
 ```
 
 ### Compiles and minifies for production
 ```
-yarn run build
+yarn build
 ```
 
 ## 📁 Project Structure
@@ -67,10 +67,7 @@ yarn run build
  ┣ 📂pages  
  ┃ ┣ 📂intro  
  ┃ ┣ 📂routerPages  
- ┣ 📂router  
- ┣ 📂src  
- ┃ ┗ 📂assets  
- ┃ ┗ ┗ 📂js  
+ ┣ 📂router
  ┣ 📂store  
  ┗ ┗ 📂modules
 ```
