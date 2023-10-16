@@ -44,3 +44,6 @@ Integrating various apps shouldn't mean if has to be complcated to use. uniBuzzy
 
 ## Documents
 ✅ [CONTRIBUTING.md](https://github.com/Teampl-Net/unibuzzy/blob/main/CONTRIBUTING.md)
+
+## License
+Licensed under the AGPL. See the [LICENSE](/LICENSE) file for details.
