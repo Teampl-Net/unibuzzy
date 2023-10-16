@@ -50,7 +50,7 @@ body:
   - type: textarea
     id: api-result
     attributes:
-      label: The case of Normal Operation
+      label: Result
       description: Please write down the information that the API should contain. (JSON)
       placeholder: "e.g. { title: string, contentsKey: Number }"
     validations:
