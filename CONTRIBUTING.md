@@ -74,8 +74,8 @@ yarn build
 
 ## ✨ Tutorials
 This is a tutorial for developers who are new to University.  
-[⭐ Go tutorial page](https://github.com/Teampl-Net/unibuzzy/blob/a657ad889f548516ca3802dc521c16ffd6fccfc3/docs/tutorials.md)
+[⭐ Go tutorial page](/docs/tutorials.md)
 
 ## 🧑‍💻 Guide
 This is a guide for developers.  
-[⭐ Go guide page](https://github.com/Teampl-Net/unibuzzy/blob/a657ad889f548516ca3802dc521c16ffd6fccfc3/docs/guide.md)
+[⭐ Go guide page](/docs/guide.md)
