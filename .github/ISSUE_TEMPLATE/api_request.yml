@@ -1,0 +1,64 @@
+name: API Request
+description: Template for API Request
+title: "API Request"
+labels: ["API"]
+projects: []
+assignees: 
+  - ''
+
+body:
+# ===============================================================
+  - type: markdown
+    attributes:
+      value: "## Please read the following carefully and submit the required items!"
+  - type: input
+    id: api-name
+    attributes:
+      label: Name of API
+      description: Please write down the name of the API you want to request.
+      placeholder: e.g. Get contents list
+    validations:
+      required: true
+  - type: input
+    id: api-page
+    attributes:
+      label: Name of Page
+      description: Please write down the name of the page or the file name that requires the API.
+      placeholder: e.g. channel main
+    validations:
+      required: true
+  - type: checkboxes
+    id: api-type
+    attributes:
+      label: Type of API
+      description: Please select what the API does.
+      options:
+        - label: "Create"
+        - label: "Read"
+        - label: "Update"
+        - label: "Delete"
+    validations:
+      required: true
+  - type: textarea
+    id: api-description
+    attributes:
+      label: Request
+      description: Please write down in detail what functions the API should perform.
+      placeholder: e.g. I want to get data from user-written posts within the channel. Each post must be imported by channel, and it must also be possible to search or sort posts if necessary.
+    validations:
+      required: true
+  - type: textarea
+    id: api-result
+    attributes:
+      label: Result
+      description: Please write down the information that the API should contain. (JSON)
+      placeholder: "e.g. { title: string, contentsKey: Number }"
+    validations:
+      required: true
+  - type: textarea
+    id: other
+    attributes:
+      label: Other
+      description: Please ask any other questions.
+    validations:
+      required: false
