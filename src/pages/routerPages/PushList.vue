@@ -551,7 +551,7 @@ export default {
           param.creUserKey = this.GE_USER.userKey
         }
         if (this.mSelectedCabinetKey !== -1) {
-          param.joskindId = 'BOAR'
+          param.jobkindId = 'BOAR'
           param.cabinetKey = this.mSelectedCabinetKey
         }
 
