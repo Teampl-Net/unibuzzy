@@ -54,8 +54,7 @@ body:
       description: Please write down the information that the API should contain. (JSON)
       placeholder: "e.g. { title: string, contentsKey: Number }"
     validations:
-      required: false
-    - type: textarea
+      required: true
   - type: textarea
     id: other
     attributes:
