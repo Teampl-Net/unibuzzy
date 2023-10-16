@@ -7,6 +7,7 @@
   4. [접근 가능한 파일](#4-접근-가능한-파일)
   5. [존재하는 컴포넌트의 활용](#5-존재하는-컴포넌트의-활용)
   6. [개발 시 지켜야 하는 규칙](#6-개발-시-지켜야-하는-규칙)
+  7. [자주 사용하는 공통 정의 함수](#7-자주-사용하는-공통-정의-함수)
 - [github 가이드](#github-가이드)
   1. [커밋 기준](#1-커밋-기준)
   2. [커밋 메시지](#2-커밋-메시지)
@@ -92,6 +93,43 @@ computed: {
 - user 정보를 불러올 때 (UB_userStore.js > AC_USER)
 - 팝업을 open할 때 (UB_UB_historyStack.js >updateStack)
 
+### 2-4. 자주 사용하는 vuex 저장소
+- **vuex 저장소의 구분**
+	- UB_CHANNEL (channelStore.js) : 채널과 콘텐츠 대한 정보를 저장
+	- UB_HISTORY (historyStack.js) : 지금까지 열린 팝업의 기록을 저장
+	- UB_NOTI (notiStore.js) : 수신한 알림 내역을 저장
+	- UB_PRE_DATA (previousData.js) : 컨텐츠 디테일에서 채널로 뒤로가기 했을 때 API 요청을 최소화하기 위해 채널의 정보를 저장
+	- UB_USER (userStore.js) : 유저 정보를 저장
+
+- **유저 정보를 가져오고 싶을 때**
+```javascript
+GE_USER () {
+  return this.$store.getters['UB_USER/GE_USER']
+  // 즉, UB_USER (userStore.js)안에서 GE_USER를 통해 유저 정보를 가져오겠다는 뜻
+}
+```
+
+- **수신한 알림의 이력을 가져오고 싶을 때**
+```javascript
+GE_NEW_NOTI () {
+  return this.$store.getters['UB_NOTI/GE_NEW_NOTI']
+}
+```
+
+- **채널 상세 데이터를 가져오고 싶을 때**
+```javascript
+// 아래와 같은 함수가 글로벌로 정의되어 있으므로 type에는 'TEAM'을, targetKey에는 teamKey를 넣어 함수를 호출
+getDetail (type, targetKey) {
+    var dataList
+    var result
+    if (type === 'TEAM') {
+      dataList = store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
+      result = dataList.filter(data => data.teamKey === targetKey)
+      return result
+    }
+  }
+```
+
 <br/>
 
 ## 3. 팝업을 오픈 할 때 유의할 점
@@ -167,6 +205,63 @@ methods: {
 - document.querySelector 등 dom에 직접 접근하는 것은 지양하고 ref로 접근해야 함
 
 <br/>
+
+## 7. 자주 사용하는 공통 정의 함수
+
+- changeDateFormat : YYYY/MM/DD HH:mm와 같이 날짜 형태를 정의하기 위해 사용
+```
+<parameter>
+date (String) : 변환되지 않은, 서버에서 받아온 날짜
+mustTimeShowYn (Boolean)  : 날짜만 표시할 경우 true
+```
+
+- changeText : 다국어 작업을 위해 유저 이름, 게시판 이름 등에 붙은 구분자를 제거해주기 위해 사용
+```
+<parameter>
+text (String) : 서버에서 받아온, KO와 EN 등의 구분자가 붙은 이름
+```
+
+- addHistoryStack : 팝업을 열 때 vuex 히스토리 저장소에 기록을 저장하기 위해 사용
+```
+<parameter>
+openPageId (String) : 화면에 나타난 팝업의 고유한 ID (주로 파일이름  + 숫자)
+```
+
+- removeHistoryStack : 팝업을 닫을 때 vuex 히스토리 저장소에서 기록을 삭제하기 위해 사용
+
+- showToastPop : 간단한 토스트 안내 팝업을 띄우기 위해 사용
+```
+<parameter>
+html (String) : 토스트 팝업의 내용으로 들어갈 텍스트
+```
+
+- getFileExt : 파일의 확장자를 추출하기 위해 사용
+```
+<parameter>
+fileName (String) : 확장자를 추출하고자 하는 파일의 이름
+```
+
+- checkMobile : 모바일 여부 및 운영체제를 판별하기 위해 사용
+
+- changeUrlBackslash : 이미지 URL에서 불필요한 역슬래시 `\`를 제거하기 위해 사용
+```
+<parameter>
+url (String)  : 역슬래시를 제거하고자 하는 URL
+```
+
+- setBodyLength : encode 된 내용을 decode 하기 위해 사용
+```
+<parameter>
+str (String)  : decode 되어 있는 콘텐츠 내용
+completeYn (Boolean)  : 업무 상태가 부여되어 있는 콘텐츠일 경우, 완료된 콘텐츠 여부를 전달하여 stroke 처리를 해주기 위한 값
+```
+
+- commonAxiosFunction : Axios를 호출하기 위한 기본적인 함수
+```
+<parameter>
+setImte (Object) : API를 호출하기 위해 필요한 parameter 뭉치
+nonLoadingYn (Boolean) : API 호출 시 로딩화면을 보여줄지, 아닐지 여부를 선택
+```
 
 ---
 
