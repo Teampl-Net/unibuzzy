@@ -1,6 +1,6 @@
 name: API Request
 description: Template for API Request
-title: ""
+title: "API Request"
 labels: ["API"]
 projects: []
 assignees: 
@@ -21,7 +21,7 @@ body:
       required: true
   - type: input
     id: api-page
-    attribute:
+    attributes:
       label: Name of Page
       description: Please write down the name of the page or the file name that requires the API.
       placeholder: e.g. channel main
