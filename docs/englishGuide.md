@@ -3,7 +3,7 @@
 - [Developing Guide](#Developing-Guide)
   1. [Naming Rules](#1-Naming-Rules)
   2. [Using vuex](#2-Using-vuex)
-  3. [Things to Keep in Mind When Opening PopUps](#3-Things-to-Keep-in-Mind-When-Opening-PopUps)
+  3. [Opening PopUps](#3-Opening-PopUps)
   4. [접근 가능한 파일](#4-접근-가능한-파일)
   5. [존재하는 컴포넌트의 활용](#5-존재하는-컴포넌트의-활용)
   6. [개발 시 지켜야 하는 규칙](#6-개발-시-지켜야-하는-규칙)
@@ -132,7 +132,7 @@ getDetail (type, targetKey) {
 
 <br/>
 
-## 3. Things to Keep in Mind When Opening PopUps
+## 3. Opening PopUps
 
 - uniBuzzy는 하이브리드 앱이므로 모바일 기기에서 뒤로 가기를 했을 때 기능을 따로 고려해주어야 함
 - 따라서 팝업을 열 때 무조건 vuex에 현재 열린 팝업에 대한 정보를 저장하고, 뒤로 가기 버튼으로 팝업을 닫고자 했을 때 현재 열린 팝업과 vuex에 저장된 가장 최신의 팝업 정보를 비교함
