@@ -3,7 +3,7 @@
 - [Developing Guide](#Developing-Guide)
   1. [Naming Rules](#1-Naming-Rules)
   2. [Using vuex](#2-Using-vuex)
-  3. [팝업을 오픈 할 때 유의할 점](#3-팝업을-오픈-할-때-유의할-점)
+  3. [Things to Keep in Mind When Opening PopUps](#3-Things-to-Keep-in-Mind-When-Opening-PopUps)
   4. [접근 가능한 파일](#4-접근-가능한-파일)
   5. [존재하는 컴포넌트의 활용](#5-존재하는-컴포넌트의-활용)
   6. [개발 시 지켜야 하는 규칙](#6-개발-시-지켜야-하는-규칙)
@@ -17,7 +17,7 @@
 # Developing Guide
 ## 1. Naming Rules
 
-### 1-1. Naming Source File
+### 1-1. Source File Naming Rules
 
 - 합성 규칙 : 기본은 명사로만 이루어짐
 - The first letter of the file should be capitalized.
@@ -27,32 +27,32 @@
  ex) ChanMain.vue
 ```
 
-### 1-2. Function Naming
+### 1-2. Function Naming Rules
 
-- 합성 규칙 : 동사 + 명사
-- 접두어 제외, 소스파일과 동일하게 카멜 케이스 사용
+- 합성 규칙 : verb + noun
+- Excluding the prefix, use camel cause like for the source file
 
 ```jsx
 ex) sendBoard ()
 ```
 
-### 1-3. 변수 네이밍 규칙
+### 1-3. Variable Naming Rules
 
 - 합성 규칙 : 기본은 명사로만 이루어짐
-- 그 외는 함수의 네이밍 규칙과 동일
-- prop에 정의된 변수는 구분될 수 있도록 이름의 맨 앞에  ‘p’를 붙임
+- otherwise, naming is the same as for functions
+- variables defined in prop should have 'p' at the beginning of their names to distinguish them
 
 ```jsx
 ex) pClosePop
 ```
 
-- data에 정의된 변수는 구분될 수 있도록 이름의 맨 앞에 ‘m’을 붙임
-
+- variables defined in data should have 'm' appended to beginning of their names to distinguish them
+  
 ```jsx
 ex) mContentsList
 ```
 
-- boolean 타입 변수는 구분될 수 있도록 이름의 맨 뒤에 ‘Yn’을 붙임
+- boolean type variables should have 'Yn" added to the end of the name to distinguish them
 
 ```jsx
 ex) mShowYn
@@ -72,7 +72,7 @@ ex) mShowYn
 - **actions** ⇒ vuex에 저장된 데이터를 변경하기 위해 화면에서 호출하는 기능
 - **mutations** ⇒ store.js 파일 내에서 실제로 vuex에 저장된 데이터에 접근하여 변경하는 기능
 - **getters** ⇒ vuex에 저장된 데이터를 가져와서 사용하도록 하는 기능
-- 즉 **화면에서 actions를 호출**하면, actions는 **mutations를 호출하여 데이터를 변경**하고 이렇게 저장된 **데이터를 getters를 통해 가져다 쓰는** 형식
+- 즉 **화면에서 actions를 호출**하면, actions는 **mutations를 호출하여 데이터를 변경**하고 이렇게 저장된 **데이터를 getters를 통해 가져다 쓰는** Form
 - vuex에 저장된 데이터를 가져다 쓸 때는 computed 내에 정의해서 사용
 
 ```jsx
@@ -84,24 +84,24 @@ computed: {
 }
 ```
 
-- 위의 예시 코드처럼, 현재 접속한 유저의 정보를 사용할 때는 GE_USER를 통해 데이터를 가져옴
+As in the example code above, when using the information of the currently connected user, data is retrieved through GE_USER
 
-### 2-3. vuex에 데이터를 저장하는 경우
+### 2-3. Storing Data in vuex
 
 - contents list를 불러올 때, contents 상세를 불러올 때 (UB_channelStore.js > AC_ADD_CONTENTS)
 - channel list를 불러올 때, channel 상세를 불러올 때 (UB_channelStore.js > AC_ADD_CHANNEL)
 - user 정보를 불러올 때 (UB_userStore.js > AC_USER)
 - 팝업을 open할 때 (UB_UB_historyStack.js >updateStack)
 
-### 2-4. 자주 사용하는 vuex 저장소
-- **vuex 저장소의 구분**
-	- UB_CHANNEL (channelStore.js) : 채널과 콘텐츠 대한 정보를 저장
-	- UB_HISTORY (historyStack.js) : 지금까지 열린 팝업의 기록을 저장
-	- UB_NOTI (notiStore.js) : 수신한 알림 내역을 저장
-	- UB_PRE_DATA (previousData.js) : 컨텐츠 디테일에서 채널로 뒤로가기 했을 때 API 요청을 최소화하기 위해 채널의 정보를 저장
-	- UB_USER (userStore.js) : 유저 정보를 저장
+### 2-4. Frequently Used vuex Repositories 
+- **vuex Repositories differentiation**
+	- UB_CHANNEL (channelStore.js) : store information about channels and content
+	- UB_HISTORY (historyStack.js) : saving histories of pop-ups opened so far
+	- UB_NOTI (notiStore.js) : saving received notifications history 
+	- UB_PRE_DATA (previousData.js) : stores channel information to minimize API requests when going back to a channel
+	- UB_USER (userStore.js) : saving user information
 
-- **유저 정보를 가져오고 싶을 때**
+- **When you want to retrieve user information**
 ```javascript
 GE_USER () {
   return this.$store.getters['UB_USER/GE_USER']
@@ -109,14 +109,14 @@ GE_USER () {
 }
 ```
 
-- **수신한 알림의 이력을 가져오고 싶을 때**
+- **When you want to retrieve the history of notifications you have received**
 ```javascript
 GE_NEW_NOTI () {
   return this.$store.getters['UB_NOTI/GE_NEW_NOTI']
 }
 ```
 
-- **채널 상세 데이터를 가져오고 싶을 때**
+- **When you want to retrive detailed channel data**
 ```javascript
 // 아래와 같은 함수가 글로벌로 정의되어 있으므로 type에는 'TEAM'을, targetKey에는 teamKey를 넣어 함수를 호출
 getDetail (type, targetKey) {
@@ -132,7 +132,7 @@ getDetail (type, targetKey) {
 
 <br/>
 
-## 3. 팝업을 오픈 할 때 유의할 점
+## 3. Things to Keep in Mind When Opening PopUps
 
 - uniBuzzy는 하이브리드 앱이므로 모바일 기기에서 뒤로 가기를 했을 때 기능을 따로 고려해주어야 함
 - 따라서 팝업을 열 때 무조건 vuex에 현재 열린 팝업에 대한 정보를 저장하고, 뒤로 가기 버튼으로 팝업을 닫고자 했을 때 현재 열린 팝업과 vuex에 저장된 가장 최신의 팝업 정보를 비교함
