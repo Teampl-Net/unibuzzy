@@ -134,13 +134,13 @@ getDetail (type, targetKey) {
 
 ## 3. Opening PopUps
 
-- uniBuzzy는 하이브리드 앱이므로 모바일 기기에서 뒤로 가기를 했을 때 기능을 따로 고려해주어야 함
-- 따라서 팝업을 열 때 무조건 vuex에 현재 열린 팝업에 대한 정보를 저장하고, 뒤로 가기 버튼으로 팝업을 닫고자 했을 때 현재 열린 팝업과 vuex에 저장된 가장 최신의 팝업 정보를 비교함
-- 이때 비교한 정보가 일치하면 팝업을 닫도록 해주어야 함
+- Since uniBuzzy is a hybrid app, functions must be considered separately when pressing back on a mobile device.
+- Therefore, when opening a pop-up, information about the currently open pop-up is always saved in Vuex, and when the pop-up is closed with the back button, the currently open pop-up is compared with the most recent pop-up information stored in Vuex.
+- At this point, if the compared information matches, the pop-up should be closed.
 
 ```jsx
 computed: {
-// history가 업데이트 되었는지 확인
+// Check if history has been updated
     pageUpdate () {
       return this.$store.getters['UB_HISTORY/hUpdate']
     },
@@ -150,18 +150,18 @@ computed: {
   },
 watch: {
   pageUpdate () {
-// 가장 최근의 팝업이 현재 팝업과 일치하면 닫아줌
+// Closes the most recent popup if it matches the current pop-up
     if (this.history[this.history.length - 1] === 'favListPop') {
       this.closeXPop()
     }
   }
 },
 mounted () {
-// 팝업이 열릴 때 history를 추가해줌
+// Add history when pop-up opens
   this.$addHistoryStack('favListPop')
 },
 methods: {
-// 팝업을 닫을 때 현재 팝업에 대한 정보를 삭제
+// Delete information about the current popup when closing the popup
 	closeXPop () {
     var history = this.$store.getters['UB_HISTORY/hStack']
     var removePage = history[history.length - 1]
