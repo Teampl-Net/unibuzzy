@@ -2,7 +2,7 @@
 ## Index
 - [Developing Guide](#Developing-Guide)
   1. [Naming Rules](#1-Naming-Rules)
-  2. [vuex의 사용](#2-vuex의-사용)
+  2. [Using vuex](#2-Using-vuex)
   3. [팝업을 오픈 할 때 유의할 점](#3-팝업을-오픈-할-때-유의할-점)
   4. [접근 가능한 파일](#4-접근-가능한-파일)
   5. [존재하는 컴포넌트의 활용](#5-존재하는-컴포넌트의-활용)
@@ -60,7 +60,7 @@ ex) mShowYn
 
 <br/>
 
-## 2. vuex의 사용
+## 2. Using vuex
 
 ### 2-1. vuex를 사용하는 이유
 
