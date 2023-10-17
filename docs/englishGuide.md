@@ -1,7 +1,7 @@
 # 🧑‍💻 Guide for Developers
 ## Index
 - [Developing Guide](#Developing-Guide)
-  1. [네이밍 규칙](#1-네이밍-규칙)
+  1. [Naming Rules](#1-네이밍-규칙)
   2. [vuex의 사용](#2-vuex의-사용)
   3. [팝업을 오픈 할 때 유의할 점](#3-팝업을-오픈-할-때-유의할-점)
   4. [접근 가능한 파일](#4-접근-가능한-파일)
