@@ -17,17 +17,17 @@
 # Developing Guide
 ## 1. Naming Rules
 
-### 1-1. 소스파일 네이밍 규칙
+### 1-1. Naming Source File
 
 - 합성 규칙 : 기본은 명사로만 이루어짐
-- 소스파일 맨 첫 글자는 대문자로 시작
-- 이후는 카멜 케이스 사용
+- The first letter of the file should be capitalized.
+- Afterwards use camel case. 
 
 ```jsx
  ex) ChanMain.vue
 ```
 
-### 1-2. 함수 네이밍 규칙
+### 1-2. Function Naming
 
 - 합성 규칙 : 동사 + 명사
 - 접두어 제외, 소스파일과 동일하게 카멜 케이스 사용
