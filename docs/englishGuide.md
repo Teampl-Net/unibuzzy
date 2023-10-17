@@ -14,7 +14,7 @@
   3. [Pull request](#3-pull-request)
 ---
 
-# 개발 가이드
+# Developing Guide
 ## 1. 네이밍 규칙
 
 ### 1-1. 소스파일 네이밍 규칙
