@@ -2,7 +2,7 @@
 ## Index
 - [Developing Guide](#Developing-Guide)
   1. [Naming Rules](#1-Naming-Rules)
-  2. [Using vuex](#2-Using-Vuex)
+  2. [Using Vuex](#2-Using-Vuex)
   3. [Opening PopUps](#3-Opening-PopUps)
   4. [Accessible Files](#4-Accessible-Files)
   5. [존재하는 컴포넌트의 활용](#5-존재하는-컴포넌트의-활용)
