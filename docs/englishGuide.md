@@ -62,13 +62,13 @@ ex) mShowYn
 
 ## 2. Using vuex
 
-### 2-1. vuex를 사용하는 이유
+### 2-1. Reason for using vuex
 
-- 모든 화면에서 하나의 데이터를 바라볼 수 있게 하여 언제나 최신 상태의 데이터 흐름을 유지할 수 있음
+- By allowing data to be viewed on all screens, you can maintain the most up-to-date data flow.
 
-### 2-2. vuex 사용 방법
+### 2-2. How To Use vuex
 
-- uniBuzzy에서는 vuex 사용 방법을 다음과 같이 구분하여 정의하고 있음
+- uniBuzzy defines how to use vueX as follows:
 - **actions** ⇒ vuex에 저장된 데이터를 변경하기 위해 화면에서 호출하는 기능
 - **mutations** ⇒ store.js 파일 내에서 실제로 vuex에 저장된 데이터에 접근하여 변경하는 기능
 - **getters** ⇒ vuex에 저장된 데이터를 가져와서 사용하도록 하는 기능
