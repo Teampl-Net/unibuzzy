@@ -2,9 +2,9 @@
 ## Index
 - [Developing Guide](#Developing-Guide)
   1. [Naming Rules](#1-Naming-Rules)
-  2. [Using vuex](#2-Using-vuex)
+  2. [Using vuex](#2-Using-Vuex)
   3. [Opening PopUps](#3-Opening-PopUps)
-  4. [접근 가능한 파일](#4-접근-가능한-파일)
+  4. [Accessible Files](#4-Accessible-Files)
   5. [존재하는 컴포넌트의 활용](#5-존재하는-컴포넌트의-활용)
   6. [개발 시 지켜야 하는 규칙](#6-개발-시-지켜야-하는-규칙)
   7. [자주 사용하는 공통 정의 함수](#7-자주-사용하는-공통-정의-함수)
@@ -60,13 +60,13 @@ ex) mShowYn
 
 <br/>
 
-## 2. Using vuex
+## 2. Using Vuex
 
-### 2-1. Reason for using vuex
+### 2-1. Reason for using Vuex
 
 - By allowing data to be viewed on all screens, you can maintain the most up-to-date data flow.
 
-### 2-2. How To Use vuex
+### 2-2. How To Use Vuex
 
 - uniBuzzy defines how to use vueX as follows:
 - **actions** ⇒ vuex에 저장된 데이터를 변경하기 위해 화면에서 호출하는 기능
@@ -86,7 +86,7 @@ computed: {
 
 As in the example code above, when using the information of the currently connected user, data is retrieved through GE_USER
 
-### 2-3. Storing Data in vuex
+### 2-3. Storing Data in Vuex
 
 - contents list를 불러올 때, contents 상세를 불러올 때 (UB_channelStore.js > AC_ADD_CONTENTS)
 - channel list를 불러올 때, channel 상세를 불러올 때 (UB_channelStore.js > AC_ADD_CHANNEL)
@@ -94,7 +94,7 @@ As in the example code above, when using the information of the currently connec
 - 팝업을 open할 때 (UB_UB_historyStack.js >updateStack)
 
 ### 2-4. Frequently Used vuex Repositories 
-- **vuex Repositories differentiation**
+- **Vuex Repositories differentiation**
 	- UB_CHANNEL (channelStore.js) : store information about channels and content
 	- UB_HISTORY (historyStack.js) : saving histories of pop-ups opened so far
 	- UB_NOTI (notiStore.js) : saving received notifications history 
@@ -176,10 +176,10 @@ methods: {
 
 <br/>
 
-## 4. 접근 가능한 파일
+## 4. Accessible Files
 
 - **public 폴더 내 파일은 접근하지 않도록 주의**
-- 오류 수정은 최대한 한국팀에서 진행할 예정이니 파일 내에서 기존에 script 부분은 최대한 보존
+- Error corrections will be carried out by the Korean team as much as possible, so the existing script part in the file should be generally preserved 
 - **assets > js 내에 있는 js파일도 기존에 작성한 부분은 최대한 보존해야 하며, 불가피한 이유 없이 삭제는 절대 금지**
 - 새로운 기능을 더하기 위하여 추가적으로 작성하는 것은 가능
 - router > index.js 파일도 최대한 수정하지 말 것
