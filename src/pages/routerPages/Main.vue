@@ -1,5 +1,5 @@
 <template>
-  <div ref="mainRef" class="w100P h100P mainWrap" @click="getInRectImgList">
+  <div ref="mainRef" class="w100P h100P mainWrap">
     <gConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="mAppCloseYn=false" confirmType="two" confirmText="Do you want to exit UniBuzzy?" />
     <createBoardChannel v-if="mCreChannelShowYn" @successCreBoard="successCreBoard" @successCreChan="successCreChan" :pAreaInfo="mAreaInfo" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
     <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" class="popBg"></div>
@@ -28,32 +28,12 @@
       <div v-else class="w100P loginBtnWrap">
         <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr loginBtn"/>
       </div>
-      <template v-if="!mLoadingYn">
-          <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
-            <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
-              <img :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
-              <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-top': area.priority !== 0 && area.priority !== 1 ? 15 + (village.areaList[area.priority].h)/1.5 + 'px' : ''}">
-                  <p class="textCenter fontBold font16">{{ area.bdAreaNameMtext }}</p>
-              </div>
-            </div>
-            <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
-            <div ref="bdRef" :id="`area${area.bdAreaKey}bd${bd.bdKey}pri${bd.priority}`" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}"
-            :style="[`z-index: ${1000 - bd.priority};`, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top + 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
-                <div v-if="area.priority === 0" class="banner flexCenter" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
-                  <img src="@/assets/images/main/banner2.png" class="w100P"/> <!-- 여기 -->
-                  <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold"></div>
-                </div>
-                <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl"/>
-                <span v-if="!(area.priority === 0 && index === 0) && village.areaList[area.priority].buildingList[index].maskedImageUrl" class="fontBold font12 bdName"
-                :style="[{ 'background-color': index === 0 ? '#f1f1f1CC' : (index === 1 || index === 2) ? '#f1f1f199' : (index === 3 || index === 4) ? '#f1f1f180' : '' }, {left: -40 + (village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority)) / 2 * 10) + 'px'}]" >{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
-            </div>
-            </template>
-        </template>
-      </template>
-      <div @click="goLab" class="laboratory cursorP">
-        <img class="w100P" src="/resource/main/ub_lab.png" alt="">
-        <span class="fontBold">Laboratory</span>
+      <div style="position: absolute; top: 150px; left: 50%; transform: translate(-50%, -50%); width: 150px; height: 100px;">
+        <img class="w100P h100P" style="position: absolute; top: 0; left: 0;" src="/resource/main/main_nametag.png" alt="">
+        <p class="w100P textOverdot fontBold" style="position: absolute; bottom: 10px; font-style: italic; padding: 0 5px;">{{ mTownName }}</p>
       </div>
+      <img @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])" class="mainPcNone zoom" v-for="building in mTownBuildingList" style="position: absolute; transform: translate(-50%, -50%);" :style="{ width: building.w, left: building.left, top: building.top }" :src="building.imgPath" :key="building.priority" alt="">
+      <img @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])" class="mainMobileNone zoom" v-for="building in mTownBuildingList" style="max-width: 290px; position: absolute; transform: translate(-50%, -50%);" :style="{ width: building.mobileW, left: building.left, top: building.top }" :src="building.imgPath" :key="building.priority" alt="">
       <div class="fl" style="width: 66px; height: 66px; border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index:1000;">
         <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="height: auto; cursor: pointer;">
       </div>
@@ -102,6 +82,72 @@ export default {
         },
         areaList: []
       },
+      mTownBuildingList: [
+        {
+          priority: 0,
+          left: '50%',
+          top: '65%',
+          w: '40%',
+          mobileW: '35%',
+          imgPath: '/resource/main/main_campus.svg'
+        },
+        {
+          priority: 1,
+          left: '80%',
+          top: '57%',
+          w: '40%',
+          mobileW: '35%',
+          imgPath: '/resource/main/main_plaza.svg'
+        },
+        {
+          priority: 2,
+          left: '77%',
+          top: '33%',
+          w: '40%',
+          mobileW: '35%',
+          imgPath: '/resource/main/main_club.svg'
+        },
+        {
+          priority: 3,
+          left: '15%',
+          top: '35%',
+          w: '25%',
+          mobileW: '20%',
+          imgPath: '/resource/main/main_major.svg'
+        },
+        {
+          priority: 4,
+          left: '46%',
+          top: '42%',
+          w: '55%',
+          mobileW: '50%',
+          imgPath: '/resource/main/main_classroom.svg'
+        },
+        {
+          priority: 5,
+          left: '82%',
+          top: '77%',
+          w: '40%',
+          mobileW: '35%',
+          imgPath: '/resource/main/main_living.svg'
+        },
+        {
+          priority: 6,
+          left: '50%',
+          top: '90%',
+          w: '45%',
+          mobileW: '40%',
+          imgPath: '/resource/main/main_nearby.svg'
+        },
+        {
+          priority: 7,
+          left: '18%',
+          top: '75%',
+          w: '30%',
+          mobileW: '25%',
+          imgPath: '/resource/main/main_lab.svg'
+        }
+      ],
       innerWidth: 0,
       innerHeight: 0,
       blankHeight: 0,
@@ -122,7 +168,8 @@ export default {
       mSelectedChanInfo: {},
       mBoardList: [],
       mSelectChanList: [],
-      mSelectWriteTypePopShowYn: false
+      mSelectWriteTypePopShowYn: false,
+      mTownName: ''
     }
   },
   created () {
@@ -150,14 +197,19 @@ export default {
       }
     }
     this.getMainBoard().then(res => {
-      this.createMaskingAreaImg()
-      this.innerWidth = window.innerWidth
-      this.innerHeight = window.innerHeight
+      // this.createMaskingAreaImg()
+      // this.innerWidth = window.innerWidth
+      // this.innerHeight = window.innerHeight
       if (this.mBdAreaList && this.mBdAreaList[0] && this.mBdAreaList[0].bdList && this.mBdAreaList[0].bdList[0]) {
         this.$emit('changePageHeader', this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext))
+        this.mTownName = this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext)
       } else {
         this.$emit('changePageHeader', 'Campus')
       }
+      this.$emit('enterCloudLoading', false)
+      setTimeout(() => {
+        this.$emit('showCloudLoading', false)
+      }, 800)
     })
   },
   methods: {
@@ -307,9 +359,6 @@ export default {
         this.$showToastPop(this.$t('COMMON_MSG_FAILED'))
       }
       this.getMainBoard().then(res => {
-        this.createMaskingAreaImg()
-        this.innerWidth = window.innerWidth
-        this.innerHeight = window.innerHeight
         if (this.mBdAreaList && this.mBdAreaList[0] && this.mBdAreaList[0].bdList && this.mBdAreaList[0].bdList[0]) {
           this.$emit('changePageHeader', this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext))
         } else {
@@ -353,6 +402,9 @@ export default {
       }
     },
     async openAreaInfoPop (area) {
+      if (area === undefined) {
+        this.goLab()
+      }
       if (this.mBgNotClickYn) return
       const param = {
         bdArea: {
@@ -439,8 +491,6 @@ export default {
         }
         this.$emit('setMainInfo', { fTeamList: this.mFTeamList, alimCount: this.mAlimCount })
         this.village.areaList = []
-        const leftList = [110, 110, -18, 235, 110, 0, 0]
-        const topList = [280, 280, 370, 370, 460, 0, 0]
         for (var i = 0; i < this.mBdAreaList.length; i++) {
           const area = this.mBdAreaList[i]
           const areaObj = {
@@ -453,10 +503,6 @@ export default {
             maskedImageUrl: '',
             maskedImageStyle: {},
             clickedYn: false,
-            left: leftList[i],
-            top: topList[i],
-            w: 0,
-            h: 0,
             buildingList: [
             ]
           }
@@ -1115,7 +1161,7 @@ export default {
   height: calc(100%);
   position: relative;
   background-repeat: no-repeat;
-  background-image: url('/resource/main/UB_mainBg.png');
+  background-image: url('/resource/main/main_background.png');
   background-position: center;
   background-size: 100% 100%;
   overflow: hidden;
@@ -1159,10 +1205,36 @@ export default {
     transform: scale(1.0);
   }
 }
+.mainPcNone {
+  display: none;
+}
+.zoom:hover {
+  cursor: pointer;
+  filter: drop-shadow(0 0 10px #f6ff7b);
+  -webkit-backface-visibility: hidden;
+  -webkit-transform: translate3d(0,0,0);
+  transform-origin: 50% 50%;
+  animation: uniB-zoom 0.8s;
+}
+@keyframes uniB-zoom {
+  0% {
+    transform: scale(1) translate(-50%, -50%)
+  } 50% {
+    transform: scale(1.05) translate(-50%, -50%)
+  } 100% {
+    transform: scale(1) translate(-50%, -50%)
+  }
+}
 @media screen and (max-width: 500px){
   .laboratory {
     width: 25% !important;
     bottom: 70px !important;
+  }
+  .mainPcNone {
+    display: block !important;
+  }
+  .mainMobileNone {
+    display: none !important;
   }
 }
 /* .st0 .slick-next:hover::after {
