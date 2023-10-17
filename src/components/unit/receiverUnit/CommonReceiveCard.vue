@@ -211,7 +211,7 @@ export default {
   height: 100%;
 }
 .imgPholder {
-  background-image: url('/resource/userCommonIcon/userImg01.svg');
+  /* background-image: url('/resource/userCommonIcon/userImg01.svg'); */
 }
 .divideLine {
   margin: 0 0.3rem;

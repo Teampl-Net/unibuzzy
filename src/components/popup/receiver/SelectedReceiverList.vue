@@ -211,7 +211,7 @@ export default {
   background-position: center;
 }
 .noImg {
-  background-image: url('/resource/userCommonIcon/userImg01.svg');
+  /* background-image: url('/resource/userCommonIcon/userImg01.svg'); */
 }
 .selectedMemDeleteBtn {
   border-radius: 100%;

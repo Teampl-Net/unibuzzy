@@ -40,6 +40,7 @@ export const commonMethods = {
     return t.content.cloneNode(true)
   },
   decodeHTML (str) {
+    console.log(str)
     str = str.replace('&amp;', '&')
     str = str.replace('&lt;', '<')
     str = str.replace('&gt;', '>')

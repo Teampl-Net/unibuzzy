@@ -73,7 +73,7 @@ export default {
   width: 20px;
 }
 .picNoWrap {
-  background-image: url('https://mo.d-alim.com/resource/userCommonIcon/userImg01.png');
+  /* background-image: url('https://mo.d-alim.com/resource/userCommonIcon/userImg01.png'); */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat

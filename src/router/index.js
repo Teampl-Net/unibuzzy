@@ -163,6 +163,11 @@ routes = [
         path: '/developer',
         name: 'developer',
         component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/DeveloperPage.vue')
+      },
+      {
+        path: '/todo',
+        name: 'todo',
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/TodoList.vue')
       }
     ]
   },
