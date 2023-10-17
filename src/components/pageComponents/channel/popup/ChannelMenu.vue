@@ -29,7 +29,7 @@
   <div class="popUpBackgroundGray" @click="goNo"></div>
   <div class="channelMenuWrap showModal-enter " :class="{'showModal-leave': mCloseEventYn === true  }">
     <div class="menuHeader newHeaderLine" :style="'height:' + ($STATUS_HEIGHT + 50)+ 'px; top: 0; padding-top: ' + ($STATUS_HEIGHT) + 'px'" >
-      <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="@/assets/images/common/popup_close.png"/>
+      <img @click="goNo" class="mleft-1 cursorP" src="@/assets/images/common/popup_close.png"/>
       <p class="fontBold font20 fl editColor noWrap">{{ $t('CHAN_MENU_TITLE_MENU') }}</p>
       <div />
     </div>
@@ -48,7 +48,7 @@
             <menuBoardList :propBoardList="BOARD_CONTENT_LIST" @boardContentsClick="boardContentsClick" />
           </div>
         </div>
-        <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ((CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))" class="fl w100P" style="border-bottom: 2px solid #6768a730" :style="(CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
+        <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ((CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))" class="fl w100P menuDivideLine" :style="(CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
           <div class="fl font14 cursorP commonColor fontBold  textLeft w100P dMenuGroup" @click="bookDropDown">
             <p class="mleft-1 fl font18 minWidth150">
               <span class="font18 fl commonColor">{{ $t('CHAN_MENU_TITLE_ADDR') }}</span>
@@ -325,7 +325,9 @@ export default {
   color: #FFFFFF;
   text-align: center;
 }
-
+.menuHeader > img {
+  width: 1rem;
+}
 .menuRow {
   padding: 1rem;
   box-sizing: border-box;
@@ -434,6 +436,9 @@ export default {
   height: 50px;
   padding: 10px;
   padding-bottom: 60px;
+}
+.menuDivideLine {
+  border-bottom: 2px solid #6768a730;
 }
 @keyframes dropdown {
   0% {

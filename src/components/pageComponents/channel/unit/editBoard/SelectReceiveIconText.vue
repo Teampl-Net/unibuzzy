@@ -1,6 +1,6 @@
 <template>
-  <div class="fr font12 commonDarkGray" style="">
-    <div v-for="(value, index) in propData" :key="index" class="fl " style="display: flex;">
+  <div class="fr font12 commonDarkGray">
+    <div v-for="(value, index) in propData" :key="index" class="fl dispFlex">
       <template v-if="value.type === 'book'">
         <img src="@/assets/images/editChan/icon_addressBook_Gray.svg" alt="" class="fl img-w15 mleft-03" >
         <p class="font12 commonDarkGray fl">{{value.count}}</p>
@@ -24,6 +24,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.dispFlex {
+  display: flex;
+}
 </style>

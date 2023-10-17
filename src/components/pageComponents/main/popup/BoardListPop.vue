@@ -58,7 +58,7 @@
           <gBtnSmall @click="goChannelMain(pAreaInfo)" btnTitle="Go Channel" class="fr" />
         </div>
         <transition name="showModal">
-            <findContentsList style="height: 100% !important;" ref="findContentRef" transition="showModal" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="mFindPopShowYn = false" />
+            <findContentsList class="impoH100P" ref="findContentRef" transition="showModal" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="mFindPopShowYn = false" />
         </transition>
     </div>
 </template>
@@ -493,5 +493,8 @@ export default {
   padding: 10px 0;
   display: flex;
   justify-content: flex-end;
+}
+.impoH100P {
+  height: 100% !important;
 }
 </style>

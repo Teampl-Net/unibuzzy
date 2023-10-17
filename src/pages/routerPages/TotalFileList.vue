@@ -28,7 +28,7 @@
         <div class="filterIconWrap" @click="selectKind('MEMO')" :class="{'selectedIcon':(selectedKind==='MEMO')}">
           <img src="@/assets/images/common/icon_memo_filter.svg" class="filterIcon"  alt="">
         </div>
-        <div style="height: 18px; border-right: 1.5px solid #AEB0FB; border-radius: 8px;"></div>
+        <div class="filterIconDivide"></div>
         <div class="filterIconWrap" @click="selectContType('F')" :class="{'selectedIcon':(selectedContType==='F')}">
           <img src="@/assets/images/common/fileIcon.svg" class="filterIcon" alt="">
         </div>
@@ -52,7 +52,7 @@
             <gFileBox @openImgPop="openImgPop" @openPop="openPop" :contentsEle="cont" :key="index" v-if="$changeDateFormat(cont.creDate) === date"/>
           </template>
         </div>
-        <myObserver v-if="index === dateList.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
+        <myObserver v-if="index === dateList.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w100P"></myObserver>
       </template>
     </div>
     <template v-if="mShowSkeletonYn">
@@ -493,5 +493,10 @@ export default {
   width: 98%;
   margin-left: 2%;
   margin-top: 8px;
+}
+.filterIconDivide {
+  height: 18px;
+  border-right: 1.5px solid #AEB0FB;
+  border-radius: 8px;
 }
 </style>

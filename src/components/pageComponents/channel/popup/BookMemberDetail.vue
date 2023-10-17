@@ -41,7 +41,7 @@
         <p class="fl commonBlack creChanInput w100P font16 fontBold" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
         <p class="fl commonGray creChanInput w100P font14 " v-if="readOnlyYn && !changeYn && GE_USER.certiDate" >{{$changeText(mUserInfo.userDispMtext)}}</p>
         <img v-if="readOnlyYn && !changeYn && selfYn" src="@/assets/images/contents/noticebox_edit.png" class="fr cursorP noticeEditBtn" @click="changeUserDispMtext()" >
-        <div v-show="changeYn" class="fl creChanInput" style="">
+        <div v-show="changeYn" class="fl creChanInput">
             <input class="fl font16 nameInput" type="text" v-model="memName" @keyup.enter="setDispName" />
             <div class="fl w100P">
                 <p class="fl mleft-1 font13 height30" @click="setDispName" >{{ $t('COMMON_BTN_OK') }}</p>
@@ -98,7 +98,7 @@
                     <th class="font15 infoTitleBox">{{ $t('COMMON_NAME_PHONE') }}</th>
                     <th class="font15 infoTitleBox"></th>
                 </tr>
-                <tr v-for="(data, index) in memberList" :key='index' style="height:50px;">
+                <tr class="height50" v-for="(data, index) in memberList" :key='index'>
                     <td class="font12 memList">{{data.name}}</td>
                     <td class="font12 memList">{{data.email}}</td>
                     <td class="font12 memList">{{data.phoneNum}}</td>
@@ -550,6 +550,9 @@ table {
   position: absolute !important;
   bottom: 2rem !important;
   right: 3rem !important;
+}
+.height50 {
+  height: 50px;
 }
 @media screen and (max-width: 300px) {
   .detailLabelText {

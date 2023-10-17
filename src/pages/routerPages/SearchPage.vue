@@ -31,12 +31,11 @@
   <template>
   <!--  -->
     <template v-if="mSearchModeYn === false">
-      <div class="w100P h100P" :style="$route.path === '/search' && $appType !== 'UB' ? `padding-top: ${($STATUS_HEIGHT + 50)}px;`:'padding-top: 50px;'" style=" overflow:auto; padding-bottom: 60px;">
-      <!-- <div class="w100P h100P" style=" overflow:auto; padding-bottom: 60px; padding-top: 50px;"> -->
-        <div class="searchBodyTop pSide-1" style="overflow-x:hidden; background: white">
-          <div class="fl w100P" style="padding-top:20px; padding-bottom:10px; height: 30px; float: left;">
-            <img src="../../assets/images/main/icon_3d_search.png" style="float: left; margin: 0 8px 8px 8px;" class="img-w23" alt="">
-            <p class="font20 fontBold commonColor textLeft" style="line-height: 26px;">{{ $t("SEAR_MSG_LOOK") }}</p>
+      <div class="w100P h100P searchPageWrap" :style="$route.path === '/search' && $appType !== 'UB' ? `padding-top: ${($STATUS_HEIGHT + 50)}px;`:'padding-top: 50px;'">
+        <div class="searchBodyTop pSide-1">
+          <div class="fl w100P searchDescBox">
+            <img src="../../assets/images/main/icon_3d_search.png" class="img-w23" alt="">
+            <p class="font20 fontBold commonColor textLeft">{{ $t("SEAR_MSG_LOOK") }}</p>
           </div>
           <!-- input Box -->
           <div class="fl w100P" style="position: relative; margin-top: 1rem; min-height: 50px;">
@@ -44,16 +43,15 @@
             <input @focus="mInputFocusYn = true" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" style="margin-top:10px;"/>
             <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
           </div>
-
           <!-- input 박스에 포커스가 되면 최근 검색이 등장 -->
           <template v-if="mInputFocusYn === true">
-            <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft mtop-05" style="padding-bottom:5px;">{{ $t("SEAR_MSG_RECE_KEYWORD") }}</p>
+            <p class="fl w-100P font16 fontBold CLDeepGrayColor textLeft mtop-05 pBottom-05">{{ $t("SEAR_MSG_RECE_KEYWORD") }}</p>
             <p v-if="mSearchHistoryList.length > 0" class="fr font13 lightGray mtop-05 pSide-05" @click="searchHistoryClear()">{{ $t("SEAR_BTN_CLEAR") }}</p>
-            <div class="fl pSide-05 thinScrollBar" style="padding-bottom:5px; width:100%; max-height:200px; overflow: auto">
-              <div style="width:100%; overflow-x:visible;">
-                <div style="display:flex; align-items:center; width:auto;">
-                  <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P" style="display:flex; align-items:center; justify-content:space-between; white-space:nowrap; overflow:hidden; margin-right:10px; width:auto; min-width:100px; max-width:100px; padding: 5px 7px 5px 10px; border:2px solid #CCCCCC90; border-radius:45px;">
-                    <p class="fl font14 grayBlack textLeft" style="height: 20px; line-height: 20px; white-space:nowrap; width:calc(100% - 15px); overflow:hidden; text-overflow:ellipsis; padding-right:3px;" @click="mInputText = data, findData()">{{data}}</p>
+            <div class="fl pSide-05 thinScrollBar searchHistoryWrap">
+              <div class="w100P">
+                <div class="searchHistoryBox">
+                  <div v-for="(data, index) in mSearchHistoryList" :key="index" class="fl w-100P searchHistoryItem">
+                    <p class="fl font14 grayBlack textLeft" @click="mInputText = data, findData()">{{data}}</p>
                     <img src="../../assets/images/common/grayXIcon.svg" @click="searchHistoryDelete(index)" class="fr img-w10" alt="">
                   </div>
                 </div>
@@ -67,12 +65,12 @@
 
       <!-- 검색 키워드가 있다면 -->
       <template v-if="mSearchModeYn === true">
-        <div v-if="mSearchModeYn === true" class="w100P h100P"  style="position: absolute; margin-bottom: 1rem; top:0; left:0; background: white; z-index:10; overflow:hidden;" :style="`top:${$STATUS_HEIGHT}px`">
-          <div class="fl w100P" :style="`height: ${60}px;`" style="padding: 10px; padding-top:15px; display: flex; align-items: center; justify-content: flex-start; position: fixed; z-index: 3; background: white;" >
+        <div v-if="mSearchModeYn === true" class="w100P h100P resultPageWrap" :style="`top:${$STATUS_HEIGHT}px`">
+          <div class="fl w100P searchInputArea" :style="`height: ${60}px;`">
             <img @click="searchClear()" src="../../assets/images/common/icon_back.png" class="fl img-w12 cursorP mright-1 mleft-05" alt="">
-            <div class="fl w100P mright-1" style="width:calc(100% - 90px); position: relative;">
+            <div class="fl w100P mright-1 searchInputBox">
               <input @focus="mInputFocusYn = true" class="searchPageInputAera font14 fontBold" ref="channelSearchKey" @keyup.enter="setSearchList()" v-model="mInputText" :placeholder="mChanPlaceHolder" />
-              <img  @click="setSearchList()" class="searchPageIconWich cursorP img-w20" style="top: 0.5rem;" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
+              <img  @click="setSearchList()" class="searchPageIconWich cursorP img-w20" src="../../assets/images/common/iocn_search_gray.png" alt="검색버튼">
             </div>
             <img class="fr cursorP" v-if="mActiveSearch === 'CONT'" @click="mActiveSearch === 'CHAN' ? mChanFindPopShowYn = true : mFindPopShowYn = true"  style="width: 30px;" src="../../assets/images/common/common_filter.svg" alt="">
           </div>
@@ -83,14 +81,13 @@
                 <searchBox class="mright-03 mtop-03 mbottom-1" :propSearchBox='value' v-for="(value, index) in mSearchList" :key="index" @delSearchBox="deleteSearchKey(value)" />
               </template>
           </div>
-
-          <div class="fl wh100P chanListWrap"  id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop" style=" overflow:auto;padding: 0 10px; padding-top: calc(var(--paddingTopLength));  "  >
+          <div class="fl wh100P chanListWrap"  id="chanListWrap" ref="chanListWrap" :style="calcPaddingTop">
             <!-- 채널 리스트 -->
-            <div v-if="mActiveSearch === 'CHAN'" class="w100P fl" style="overflow: auto; ">
-              <div v-if="mSkeletonYn" class="w100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
+            <div v-if="mActiveSearch === 'CHAN'" class="w100P fl scrollOn">
+              <div v-if="mSkeletonYn" class="w100P fl skeletonWrap">
                 <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
               </div>
-              <div v-else-if="mActiveSearch === 'CHAN' && mEmptyYn === true && GE_DISP_TEAM_LIST.length === 0" class="w100P fl" style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%);">
+              <div v-else-if="mActiveSearch === 'CHAN' && mEmptyYn === true && GE_DISP_TEAM_LIST.length === 0" class="w100P fl emptyWrap">
                 <gListEmpty title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' />
               </div>
               <template v-else>
@@ -102,35 +99,35 @@
             </div>
 
             <!-- 컨텐츠 리스트 -->
-            <div v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey" style="float: left; width: 100%; overflow: hidden scroll;  padding-bottom: 60px;">
+            <div class="contentsListWrap" v-if="mActiveSearch === 'CONT'" :key="mContentReloadKey">
               <div class="w100P fl chanRow" style="height:1px;" />
               <template v-if="mSearchContentTab === 'ALL'" >
                 <gUBContentsBox @openImgPop="openImgPop" @openPage="goChannelMain" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in GE_DISP_ALL_LIST" :key="cont.contentsKey" />
                 <template v-if="mGetAxiosYn && GE_DISP_ALL_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
-                <gListEmpty v-else-if="GE_DISP_ALL_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+                <gListEmpty class="emptyListStyle" v-else-if="GE_DISP_ALL_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true'/>
               </template>
               <template v-if="mSearchContentTab === 'ALIM'" >
                 <gUBContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in GE_DISP_ALIM_LIST" :key="cont.contentsKey" />
                 <template v-if="mGetAxiosYn && GE_DISP_ALIM_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
-                <gListEmpty v-else-if="GE_DISP_ALIM_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+                <gListEmpty class="emptyListStyle" v-else-if="GE_DISP_ALIM_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true'/>
               </template>
               <template v-if="mSearchContentTab === 'BOAR'" >
                 <gUBContentsBox @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in GE_DISP_BOAR_LIST" :key="cont.contentsKey" />
                 <template v-if="mGetAxiosYn &&  GE_DISP_BOAR_LIST.length === 0">
                   <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
                 </template>
-                <gListEmpty v-else-if="GE_DISP_BOAR_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' style="position: absolute; top:50%; left:50%; transform: translate(-50%, -50%); height: 100px;" />
+                <gListEmpty class="emptyListStyle" v-else-if="GE_DISP_BOAR_LIST.length === 0 && mEmptyYn === true" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true'/>
               </template>
               <myObserver @triggerIntersected="contentsLoadMore" id="observer" class="fl w100P" style=""></myObserver>
             </div>
           </div>
         </div>
       </template>
-      <div v-if="mBottomSheetOpenYn"  @click="mBottomSheetOpenYn = false" style="width: 100%; height: 100%; position: absolute; z-index: 10; left: 0; top: 0; background: #00000030;"></div>
+      <div class="bottomSheetBg" v-if="mBottomSheetOpenYn"  @click="mBottomSheetOpenYn = false"></div>
       <transition name="showModal">
           <findContentsList :pTitleShowYn="false" transition="showModal" @searchList="requestSearchList" v-if="mActiveSearch === 'CONT' && mFindPopShowYn" @closePop="mFindPopShowYn = false" />
       </transition>
@@ -141,7 +138,6 @@
         <bottomSheets v-if="mBottomSheetOpenYn" :propSelectSearchObj='mSelectSearchObj' @closePop='mBottomSheetOpenYn = false' @bottSheetEmit='bottSheetEmit' :propBusinessItemList='mBusinessItemList' />
       </transition>
   </template>
-
 <script>
 import findContentsList from '@/components/popup/contents/FindContentsList.vue'
 import SkeletonBox from '@/components/unit/contents/ContentsSkeleton'
@@ -990,40 +986,165 @@ export default {
   }
 }
 </script>
-  <style>
-  .searchBodyTop {
-    padding-top: 1.5rem;
-    float: left;
-    width:100%;
-    height: 280px;
-  }
-  .searchPageInputAera{
-    background: #e4e4e463;
-    width: 100%;
-    height: 35px;
-    border-radius: 8px !important;
-    padding: 0 0.4rem;
-    padding-left: 2rem !important;
-    box-sizing: border-box;
-    float: left;
-    border: 1px solid #cccccc;
-  }
-  .searchPageIconWich{ position: absolute; top: 1rem; left: 8px;}
-  .chanListHeader {
-    width: 100%;
-    will-change: transform;
-    transition: transform 0.3s linear;
-    padding: 0 1.5rem;
-    background-color: #FFF;
-    position: absolute;
-    z-index: 2;
-    top: 0;
-    left: 0;
-  }
-  .chanListHeader--pinned {
-      transform: translateY(0%);
-  }
-  .chanListHeader--unpinned {
-      transform: translateY(-100%);
-  }
-  </style>
+<style scoped>
+.searchPageWrap {
+  overflow:auto;
+  padding-bottom: 60px;
+}
+.searchBodyTop {
+  padding-top: 1.5rem;
+  float: left;
+  width:100%;
+  height: 280px;
+  overflow-x :hidden;
+  background: white;
+}
+.searchPageInputAera{
+  background: #e4e4e463;
+  width: 100%;
+  height: 35px;
+  border-radius: 8px !important;
+  padding: 0 0.4rem;
+  padding-left: 2rem !important;
+  box-sizing: border-box;
+  float: left;
+  border: 1px solid #cccccc;
+}
+.searchPageIconWich {
+  position: absolute;
+  top: 1rem;
+  left: 8px;
+}
+.chanListHeader {
+  width: 100%;
+  will-change: transform;
+  transition: transform 0.3s linear;
+  padding: 0 1.5rem;
+  background-color: #FFF;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+}
+.chanListHeader--pinned {
+  transform: translateY(0%);
+}
+.chanListHeader--unpinned {
+  transform: translateY(-100%);
+}
+.searchDescBox {
+  padding-top: 20px;
+  padding-bottom: 10px;
+  height: 30px;
+  float: left;
+}
+.searchDescBox > img {
+  float: left;
+  margin: 0 8px 8px 8px;
+}
+.searchDescBox > p {
+  line-height: 26px;
+}
+.searchHistoryWrap {
+  padding-bottom: 5px;
+  width: 100%;
+  max-height: 200px;
+  overflow: auto
+}
+.searchHistoryBox {
+  display: flex;
+  align-items: center;
+  width: auto;
+}
+.searchHistoryItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-right: 10px;
+  width: auto;
+  min-width: 100px;
+  max-width: 100px;
+  padding: 5px 7px 5px 10px;
+  border: 2px solid #CCCCCC90;
+  border-radius: 45px;
+}
+.searchHistoryItem > p {
+  height: 20px;
+  line-height: 20px;
+  white-space: nowrap;
+  width: calc(100% - 15px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 3px;
+}
+.resultPageWrap {
+  position: absolute;
+  margin-bottom: 1rem;
+  top: 0;
+  left: 0;
+  background: white;
+  z-index: 10;
+  overflow: hidden;
+}
+.searchInputArea {
+  padding: 10px;
+  padding-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: fixed;
+  z-index: 3;
+  background: white;
+}
+.searchInputBox {
+  width: calc(100% - 90px);
+  position: relative;
+}
+.searchInputBox > img {
+  top: 0.5rem;
+}
+.searchInputBox + img {
+  width: 30px;
+}
+.chanListWrap {
+  overflow: auto;
+  padding: 0 10px;
+  padding-top: calc(var(--paddingTopLength));
+}
+.skeletonWrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.emptyWrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.contentsListWrap {
+  float: left;
+  width: 100%;
+  overflow: hidden scroll;
+  padding-bottom: 60px;
+}
+.emptyListStyle {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  height: 100px !important;
+}
+.bottomSheetBg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  background: #00000030;
+}
+</style>

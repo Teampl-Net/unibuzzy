@@ -679,7 +679,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .mleft-6{margin-left: 6rem;}
 .mleft-10{margin-left: 10rem;}
 
-.mLeft10{margin-left: 10px;}
+.mLeft10{margin-left: 10px !important;}
 
 .ptop-1{padding-top: 1rem;}
 

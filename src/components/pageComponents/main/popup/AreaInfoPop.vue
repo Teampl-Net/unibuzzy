@@ -89,7 +89,7 @@
             <div class="flexAlignCenter">
               <img class="heartIcon" src="@/assets/images/bottom/icon_search.svg" alt="">
             <!--All List -->
-              <p class="fontBold font16" style="">All List</p>
+              <p class="fontBold font16">All List</p>
             </div>
             <img :src="`/resource/footer/icon_search_fillin.svg`" @click="gotoSearchPage" class="cursorP" />
           </div>

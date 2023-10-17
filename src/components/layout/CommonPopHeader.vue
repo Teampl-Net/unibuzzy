@@ -1,7 +1,7 @@
 <template>
   <div class="commonPopHeaderWrap " style="" :class="{ 'newHeaderLine' : !chanAlimListTeamKey && targetType !== 'createChannel' && targetType !== 'contentsDetail' && targetType !== 'boardMain' , 'headerShadow' : chanAlimListTeamKey}" :style="targetType === 'chanInfo' ? 'background:transparent !important;' : ';' + 'padding-top:' + ($STATUS_HEIGHT + 20)+ 'px;' + 'padding-bottom: 1.7rem'">
     <div v-on:click="closeXPop" class="fl cursorP closeIconBox">
-      <img v-if="bgblack === true " src="@/assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn" style="" >
+      <img v-if="bgblack === true " src="@/assets/images/common/icon_back_white.png" v-on:click="closeXPop" class=" commonPopBackBtn">
       <img v-else-if="pNoAuthYn === true " src="@/assets/images/footer/icon_home_fillin.svg"  v-on:click="goMain">
       <img v-else src="@/assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
     </div>

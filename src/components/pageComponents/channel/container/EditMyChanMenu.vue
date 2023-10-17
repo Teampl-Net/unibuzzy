@@ -31,7 +31,7 @@
 <template>
 <div class="editChanWrap">
   <transition name="show_left">
-    <manageFollowerList v-if="mPopType === 'memberManagement'" :propData="mCommonParam" style="padding-top: 0;" @memberInfo="openMemberInfo" @openPop="openPop" :pClosePop="closePop" />
+    <manageFollowerList class="pTop-0" v-if="mPopType === 'memberManagement'" :propData="mCommonParam" @memberInfo="openMemberInfo" @openPop="openPop" :pClosePop="closePop" />
   </transition>
   <transition name="show_left">
     <editBookListPop v-if="mPopType === 'editBookList'" @memberInfo="openMemberInfo" :propData="mCommonParam" :pClosePop="closePop" />
@@ -43,7 +43,7 @@
   <gPopHeader :headerTitle="$t('MANA_TITLE_CHANDETAIL')" :pClosePop="pClosePop" />
   <div class="editMyChanMenuWrap" :style="`padding-top: ${Number($STATUS_HEIGHT + 70)}px`">
     <table class="myChanMenuTable w100P fl" >
-      <tr v-if="CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditChanPop" style="">
+      <tr v-if="CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1" @click="openEditChanPop">
         <th class="font16 w100P padding10">
           <div class="myChanMenuImgArea editMychanRow mright-05">
             <img class="img-w20 chanImg" src="@/assets/images/main/icon_channel.png"/>
@@ -95,7 +95,7 @@
           </div>
           <div class="fl mleft-05 mngChanRow">
             <p class="font16 commonDarkGray fontBold">{{ $t('MANA_NAME_BOARD') }}</p>
-            <p class="font14 commonDarkGray textOverdot" style="width:calc(100%);">{{ $t('MANA_MSG_BOARD') }}</p>
+            <p class="font14 commonDarkGray textOverdot w100P">{{ $t('MANA_MSG_BOARD') }}</p>
           </div>
           <div class="myChanMenuImgAreaRight editMychanRow">
             <img class="btnStyle chanBackImg" src="@/assets/images/common/icon_backWhitePurple.svg" alt="">
@@ -320,5 +320,8 @@ export default {
 .mngChanRow {
   height: 80%;
   width: calc(100% - 100px);
+}
+.pTop-0 {
+  padding-top: 0 !important;
 }
 </style>

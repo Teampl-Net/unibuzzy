@@ -1,8 +1,8 @@
 <template>
     <div class="userItemWrap">
         <div class="userItemBox">
-            <img v-if="this.uItem === '휴대폰 번호'" style="width: 1rem;" class="mr-04 mbottom-01" src="@/assets/images/main/main_phone.png"/>
-            <img v-if="this.uItem === '이메일'" style="width: 1.2rem;" class="mr-04 mbottom-01" src="@/assets/images/main/main_email.png"/>
+            <img v-if="this.uItem === '휴대폰 번호'" class="mr-04 mbottom-01 width1" src="@/assets/images/main/main_phone.png"/>
+            <img v-if="this.uItem === '이메일'" class="mr-04 mbottom-01 width12" src="@/assets/images/main/main_email.png"/>
             <span class="fontBold commonColor">{{uItem === '이메일'? $t('COMMON_NAME_EMAIL'):$t('COMMON_NAME_PHONE')}}</span>
         </div>
         <div class="userInfoBox">
@@ -50,5 +50,11 @@ export default {
 }
 .userInfoBox > span {
   width: 100%;
+}
+.width1 {
+  width: 1rem;
+}
+.width12 {
+  width: 1.2rem;
 }
 </style>

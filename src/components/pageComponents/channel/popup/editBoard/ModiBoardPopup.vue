@@ -159,7 +159,7 @@
           </div>
         </div>
         <!-- 댓글 권한 -->
-        <div class="fl w100P " :class="{'shareSelecStyle': shareGroup.type === 'S'}" style="position: relative;">
+        <div class="fl w100P posiRelative" :class="{'shareSelecStyle': shareGroup.type === 'S'}">
           <div class="itemWrite fl " :style="shareGroup.type === 'S' ? 'display: contents;' : '' ">
             <p class="fontBold  textLeft font16 fl width100px">{{ $t('EDIT_BOARD_TITLE_COMMENT') }}</p>
             <div class="fl authBtnWrap" v-if="shareGroup.type === 'A' || shareGroup.type === 'F'">
@@ -1301,6 +1301,9 @@ export default {
   position: absolute !important;
   bottom: 1.5rem !important;
   left: 15% !important;
+}
+.posiRelative {
+  position: relative;
 }
 @media screen and (max-width:350px){
   .jjjPaddingWrap{

@@ -73,7 +73,7 @@
           </div>
         </div>
       </div>
-      <div class="bookAndMemListWrap" style="" :style="mDetailOpenYn ? 'height: calc(100% - 80px);' : '' ">
+      <div class="bookAndMemListWrap" :style="mDetailOpenYn ? 'height: calc(100% - 80px);' : '' ">
         <gBookList class="editBookContentListCompo" ref="bookListCompoRef" v-if="!mDetailOpenYn" :propBookList="mEditBookList" :propData="propData" :selectBookDetail="selectBookDetail" @getTeamCabList="getBookList" @refreshList="getBookList" @openMCabUserList='openMCabUserList' @openPop="openPop" @delAddress="delAddress" />
         <transition name="showGroup">
           <gBookMemberList  class="editBookContentListCompo" ref="memberListRef" v-if="mDetailOpenYn" @memberInfo="memberInfo" :pFollowerMemList="mFollowerMemList" :propMemberList="memberList" :propData="selectBookDetail"  :pSearchFilterList="mSearchFilterList" @searchFilter="searchFilter" :bookType="selectBookDetail.sSub" @refreshList="getBookMemberList" :selectPopYn="false" :parentSelectList="[]" :teamInfo="CHANNEL_DETAIL" transition="showGroup" @openPop="openPop" @delAddress="delAddress" />

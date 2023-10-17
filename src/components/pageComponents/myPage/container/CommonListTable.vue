@@ -9,8 +9,8 @@
 }
 </i18n>
 <template>
-  <div class="w100P h100P fl" style="">
-    <table class="w100P" style="">
+  <div class="w100P h100P fl">
+    <table class="w100P">
       <tr v-for="(value, index) in propContentsList" class="contListTr" :key="index" :style="index === propContentsList.length - 1 ? 'border: none!important;' : ''" >
         <td class="contListTd" :class="{top5MyPushColor: GE_USER.userKey === value.creUserKey, top5MyPushColorMyInfo: $route.path==='/myPage'}">
           <div class="top5PushChanLogoImgWrap w100P fl" @click="goContentsDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + $changeUrlBackslash(value.logoPathMtext) : value.logoPathMtext) + ');'">

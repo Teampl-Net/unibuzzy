@@ -26,7 +26,7 @@
             </div>
           </div>
         </div>
-        <myObserver @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
+        <myObserver @triggerIntersected="loadMore" id="observer" class="fl w100P"></myObserver>
       </template>
       <gEmpty v-else-if="mCabContentsList.length === 0" tabName="최신" contentName="게시판" option='EDIT' />
     </div>

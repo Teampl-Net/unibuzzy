@@ -20,8 +20,8 @@
   <div class="createTeamWrap">
     <gPopHeader :headerTitle="propData.targetType === 'creAddressBook'? 'Create Team':'Edit Team'" :pClosePop="pClosePop" />
     <div class="addressItemWrite">
-      <p class="fontBold textLeft font16 fl" style="width: 100px;">{{ $t('EDIT_BOOK_TITLE_NAME') }}</p>
-      <input v-model="inputAddressBookName" mCreAdressOpenType="text" :placeholder="$t('EDIT_BOOK_MSG_NONAME')" class="addressBookInputType"  id="addressBookName" style="">
+      <p class="fontBold textLeft font16 fl">{{ $t('EDIT_BOOK_TITLE_NAME') }}</p>
+      <input v-model="inputAddressBookName" mCreAdressOpenType="text" :placeholder="$t('EDIT_BOOK_MSG_NONAME')" class="addressBookInputType"  id="addressBookName">
     </div>
     <gBtnSmall class="font16 teamBtnStyle" :class="inputAddressBookName.trim() === '' ? 'CWhiteGrayBgColor CWDeepGrayColor' : 'CDeepBgColor'" :btnTitle='mCreAdressOpenType' @click="saveCabinet" />
   </div>
@@ -116,5 +116,8 @@ export default {
   position: absolute !important;
   bottom: 2rem !important;
   font-size: 16px !important;
+}
+.addressItemWrite > p {
+  width: 100px;
 }
 </style>

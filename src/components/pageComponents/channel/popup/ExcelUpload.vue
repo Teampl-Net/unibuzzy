@@ -54,7 +54,7 @@
                 <div class="w100P step1BtnBox">
                   <label for="input-file">
                   {{ selectFile? selectFile.name:$t('COMMON_MSG_NOFILE') }}
-                    <gBtnSmall style="margin-left: 10px;" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_SELECT')" />
+                    <gBtnSmall class="mLeft10" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_SELECT')" />
                   </label>
                   <form  @submit.prevent="formSubmit" class="excelFileForm" method="post">
                       <input class="formImageFile excelFileInput" type="file" title ="선택" accept=".xls,.xlsx" ref="selectFile" id="input-file" @change="changeFile"/>
@@ -111,7 +111,7 @@
               </div>
             </div>
             <p v-show="activeStep === 2" class="commonColor font16 fontBold fl textLeft mtop-05">STEP.3 {{ $t('EXCEL_MSG_ADD') }}</p>
-            <gBtnSmall v-show="activeStep === 2" @click="confirmSavePop" style="margin-top: 5px; " :style="!checkUserYn? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_UPLOAD')" />
+            <gBtnSmall class="mTop05" v-show="activeStep === 2" @click="confirmSavePop" :style="!checkUserYn? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_UPLOAD')" />
         </div>
     </div>
 </template>

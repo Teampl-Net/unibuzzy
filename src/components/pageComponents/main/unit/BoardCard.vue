@@ -15,8 +15,8 @@
     </div>
     <div class="fl mleft-1">
       <div class="w100P fl font16 fontBold textLeft grayBlack ">
-        <div class="w100P" style="display: flex; align-items: center;">
-          <p style="max-width: calc(100% - 30px);">{{ $changeText(boardElement.cabinetNameMtext)  }}</p>
+        <div class="w100P flexAlignCenter">
+          <p class="cabinetName">{{ $changeText(boardElement.cabinetNameMtext)  }}</p>
           <img :src="require(`@/assets/images/editChan/icon_board.svg`)" alt="board"/>
         </div>
         <p class="fr font13 lightGray fontNomal">{{ $t("SEAR_TAB_ACT_CAHNNEL") + " " +$changeDateFormat(boardElement.cabUpdDate) }}</p></div>
@@ -97,5 +97,8 @@ export default {
 }
 .boardColorBox + div > div > div > img {
   width:20px; margin-left: 10px;
+}
+.cabinetName {
+  max-width: calc(100% - 30px);
 }
 </style>

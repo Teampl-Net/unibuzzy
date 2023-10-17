@@ -18,7 +18,7 @@
 <div class="selectBookListWrap">
     <gPopHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' />
     <div class="pagePaddingWrap selectBookListContents" :style="'padding-top:' + ($STATUS_HEIGHT + 60)+ 'px'" >
-      <gActiveBar ref="activeBar" :tabList="activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
+      <gActiveBar ref="activeBar" :tabList="activeTabList" class="fl activeBar" @changeTab= "changeTab"/>
       <div class="bookListStyle">
         <gBookList :propBookList="bookList" :teamInfo="propData" :parentSelectList="pSelectedBookList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
         <transition name="showGroup">
@@ -356,5 +356,10 @@ export default {
   min-height: 150px;
   height: 150px;
   max-height: 150px;
+}
+.activeBar {
+  width: 100% !important;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
 }
 </style>

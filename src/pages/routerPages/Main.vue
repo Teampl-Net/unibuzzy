@@ -28,14 +28,14 @@
       <div v-else class="w100P loginBtnWrap">
         <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr loginBtn"/>
       </div>
-      <div style="position: absolute; top: 150px; left: 50%; transform: translate(-50%, -50%); width: 150px; height: 100px;">
-        <img class="w100P h100P" style="position: absolute; top: 0; left: 0;" src="/resource/main/main_nametag.png" alt="">
-        <p class="w100P textOverdot fontBold" style="position: absolute; bottom: 10px; font-style: italic; padding: 0 5px;">{{ mTownName }}</p>
+      <div class="mainTitleBox">
+        <img class="w100P h100P" src="/resource/main/main_nametag.png" alt="">
+        <p class="w100P textOverdot fontBold">{{ mTownName }}</p>
       </div>
-      <img @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])" class="mainPcNone zoom" v-for="building in mTownBuildingList" style="position: absolute; transform: translate(-50%, -50%);" :style="{ width: building.w, left: building.left, top: building.top }" :src="building.imgPath" :key="building.priority" alt="">
-      <img @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])" class="mainMobileNone zoom" v-for="building in mTownBuildingList" style="max-width: 290px; position: absolute; transform: translate(-50%, -50%);" :style="{ width: building.mobileW, left: building.left, top: building.top }" :src="building.imgPath" :key="building.priority" alt="">
-      <div class="fl" style="width: 66px; height: 66px; border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index:1000;">
-        <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="height: auto; cursor: pointer;">
+      <img @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])" class="mainPcNone zoom" :class="mSelectedAreaPriority === building.priority? 'clickEvent':''" v-for="building in mTownBuildingList" style="max-width: 290px; position: absolute; transform: translate(-50%, -50%);" :style="{ width: building.w, left: building.left, top: building.top }" :src="building.imgPath" :key="building.priority" alt="">
+      <img @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])" class="mainMobileNone zoom" :class="mSelectedAreaPriority === building.priority? 'clickEvent':''" v-for="building in mTownBuildingList"  style="max-width: 290px; position: absolute; transform: translate(-50%, -50%);" :style="{ width: building.mobileW, left: building.left, top: building.top }" :src="building.imgPath" :key="building.priority" alt="">
+      <div class="fl writeBtnWrap">
+        <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" @click="openSelectWriteTypePop()" alt="알림 작성 버튼">
       </div>
     </div>
     <div v-if="mBoardPopShowYn" class="popBg" @click="$refs.mainBoardRef.closeXPop"></div>
@@ -148,6 +148,7 @@ export default {
           imgPath: '/resource/main/main_lab.svg'
         }
       ],
+      mSelectedAreaPriority: -1,
       innerWidth: 0,
       innerHeight: 0,
       blankHeight: 0,
@@ -402,6 +403,17 @@ export default {
       }
     },
     async openAreaInfoPop (area) {
+      var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      if (isMobile && (localStorage.getItem('nativeYn') === true || localStorage.getItem('nativeYn') === 'false')) {
+        if (area === undefined) {
+          this.mSelectedAreaPriority = 7
+        } else {
+          this.mSelectedAreaPriority = area.priority
+        }
+        setTimeout(() => {
+          this.mSelectedAreaPriority = -1
+        }, 900)
+      }
       if (area === undefined) {
         this.goLab()
       }
@@ -1208,13 +1220,18 @@ export default {
 .mainPcNone {
   display: none;
 }
-.zoom:hover {
-  cursor: pointer;
+.clickEvent {
   filter: drop-shadow(0 0 10px #f6ff7b);
-  -webkit-backface-visibility: hidden;
-  -webkit-transform: translate3d(0,0,0);
-  transform-origin: 50% 50%;
+  transform-origin: center;
   animation: uniB-zoom 0.8s;
+}
+@media (hover: hover) { /* when supported */
+  .zoom:hover {
+    cursor: pointer;
+    filter: drop-shadow(0 0 10px #f6ff7b);
+    transform-origin: center;
+    animation: uniB-zoom 0.8s;
+  }
 }
 @keyframes uniB-zoom {
   0% {
@@ -1236,6 +1253,38 @@ export default {
   .mainMobileNone {
     display: none !important;
   }
+}
+.mainTitleBox {
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 100px;
+}
+.mainTitleBox > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.mainTitleBox > p {
+  position: absolute;
+  bottom: 10px;
+  font-style: italic;
+  padding: 0 5px;
+}
+.writeBtnWrap {
+  width: 66px;
+  height: 66px;
+  border-radius: 100%;
+  position: absolute;
+  bottom: 6rem;
+  right: 50px;
+  z-index:1000;
+}
+.writeBtnWrap > img {
+  height: auto;
+  cursor: pointer;
 }
 /* .st0 .slick-next:hover::after {
   content : url('../../..assets/images/main/UBTownFeed.svg#hover');
