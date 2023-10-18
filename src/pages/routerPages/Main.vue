@@ -1,5 +1,5 @@
 <template>
-  <div ref="mainRef" class="w100P h100P mainWrap">
+  <div ref="mainRef" class="w100P mainWrap">
     <gConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="mAppCloseYn=false" confirmType="two" confirmText="Do you want to exit UniBuzzy?" />
     <createBoardChannel v-if="mCreChannelShowYn" @successCreBoard="successCreBoard" @successCreChan="successCreChan" :pAreaInfo="mAreaInfo" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
     <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" class="popBg"></div>
@@ -34,7 +34,7 @@
       </div>
       <img @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])" class="mainPcNone zoom" v-for="building in mTownBuildingList" :class="mSelectedAreaPriority === building.priority? 'clickEvent':''" style="position: absolute; transform: translate(-50%, -50%);" :style="{ width: building.w, left: building.left, top: building.top }" :src="building.imgPath" :key="building.priority" alt="">
       <img @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])" class="mainMobileNone zoom" v-for="building in mTownBuildingList" :class="mSelectedAreaPriority === building.priority? 'clickEvent':''" style="max-width: 290px; position: absolute; transform: translate(-50%, -50%);" :style="{ width: building.mobileW, left: building.left, top: building.top }" :src="building.imgPath" :key="building.priority" alt="">
-      <div class="fl" style="width: 66px; height: 66px; border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index:1000;">
+      <div class="fl" style="width: 66px; height: 66px; border-radius: 100%; position: absolute; bottom: 3rem; right: 50px; z-index:1000;">
         <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="height: auto; cursor: pointer;">
       </div>
     </div>
@@ -135,8 +135,8 @@ export default {
           priority: 6,
           left: '50%',
           top: '90%',
-          w: '45%',
-          mobileW: '40%',
+          w: '55%',
+          mobileW: '50%',
           imgPath: '/resource/main/main_nearby.svg'
         },
         {
@@ -1159,6 +1159,7 @@ export default {
   align-items: center;
   overflow: hidden;
   z-index: -1;
+  height: calc(100% - 60px);
 }
 .popBg {
   width:100%;
