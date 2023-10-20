@@ -50,7 +50,7 @@
                 </div>
                 <div class="parentMemoFuncArea">
                     <p @click="mChangeMemoYn = false" v-if="GE_USER.userKey === propMemoEle.creUserKey && mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">{{ $t('COMM_BTN_CLOSE') }}</p>
-                    <p class="commonGray textLeft font12 fr" v-if="!mChangeMemoYn && !pNoAuthYn" @click="writeMeMemo(propMemoEle)">{{ $t('COMM_BTN_REPLY_COMM') }}</p>
+                    <p class="commonGray textLeft font12 fr cursorP" v-if="!mChangeMemoYn && !pNoAuthYn" @click="writeMeMemo(propMemoEle)">{{ $t('COMM_BTN_REPLY_COMM') }}</p>
                     <p class="commonGray textLeft font12 mright-05 cursorP fr " @blur="testFunction" @click="openModiMemoPop(propMemoEle)" v-if="GE_USER.userKey === propMemoEle.creUserKey && !mChangeMemoYn">{{ $t('COMM_BTN_EDIT2') }}</p>
                 </div>
                 <div class="cursorP parentMemoAttachFile" v-if="getAttachTrueFile(propMemoEle.attachFileList).length > 0">
@@ -158,6 +158,7 @@ export default {
     if (this.propMemoEle.bodyFullStr) {
       this.mModiMemoInput = this.propMemoEle.bodyFullStr
     }
+    console.log(this.propMemoEle)
     if (this.propMemoEle.attachMfilekey && this.propMemoEle.attachFileList && this.propMemoEle.attachFileList.length > 0) {
       for (var i = 0; i < this.propMemoEle.attachFileList.length; i++) {
         if (this.propMemoEle.attachFileList[i].attachYn) {
@@ -447,7 +448,8 @@ export default {
     },
     writeMeMemo (memo) {
       this.mCurrentMemoObj = memo
-      if ((this.propContDetail.jobkindId === 'BOAR' && this.$checkUserAuth(this.propContDetail.shareItem).R === true)) {
+      console.log(this.propContDetail)
+      if ((this.propContDetail.jobkindId === 'BOAR' && this.$checkUserAuth(this.propContDetail.shareItem).R === true) || this.propContDetail.todoKey) {
         var data = {}
         data.parentMemoKey = this.mCurrentMemoObj.memoKey // 대댓글때 사용하는것임
         if (this.mCurrentMemoObj.parentMemoKey !== undefined && this.mCurrentMemoObj.parentMemoKey !== null && this.mCurrentMemoObj.parentMemoKey !== '') {
@@ -561,8 +563,8 @@ export default {
   background: rgb(238 238 238);
   float: left;
   border: 1px solid #aaa;
-  padding-left: 10px;
-  margin: 10px 0;
+  /* padding-left: 10px; */
+  /* margin: 10px 0; */
   overflow: scroll hidden;
 }
 .parentMemoImg {
@@ -572,8 +574,8 @@ export default {
   align-items: center;
 }
 .parentMemoImg > img {
-  border-right: 0px solid #aaa;
-  border-left: 1px solid #aaa;
+  /* border-right: 0px solid #aaa; */
+  /* border-left: 1px solid #aaa; */
   margin-right: 10px;
   float: left;
   min-width: 70px;

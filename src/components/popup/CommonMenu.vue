@@ -57,7 +57,7 @@ export default {
         { iconUrl: 'resource/menu/icon_user_group_color.svg', menuText: '채널', link: 'chanList', type: 'page' },
         { iconUrl: 'resource/menu/icon_search_color.svg', menuText: '검색', link: 'search', type: 'page' },
         { iconUrl: 'resource/menu/icon_user_color.svg', menuText: '마이페이지', link: 'myPage', type: 'page' },
-        { iconUrl: 'resource/menu/icon_board_color.svg', menuText: 'Today Todo', link: 'todo', type: 'page' },
+        { iconUrl: 'resource/menu/icon_board_color.svg', menuText: 'Todo', link: 'todo', type: 'page' },
         { iconUrl: 'resource/menu/icon_text_color.svg', menuText: 'Terms of Use', link: 'termsOfUse', type: 'page' },
         { iconUrl: 'resource/menu/icon_board_color.svg', menuText: 'Privacy Policy', link: 'privacy', type: 'page' }
       ]
@@ -115,7 +115,7 @@ export default {
           { iconUrl: 'resource/menu/icon_user_group_color.svg', menuText: this.$t('COMMON_NAME_CHANNEL'), link: 'chanList', type: 'page' },
           { iconUrl: 'resource/menu/icon_search_color.svg', menuText: this.$t('COMMON_NAME_SEARCH'), link: 'search', type: 'page' },
           { iconUrl: 'resource/menu/icon_user_color.svg', menuText: this.$t('COMMON_NAME_MY_PAGE'), link: 'myPage', type: 'page' },
-          { iconUrl: 'resource/menu/icon_board_color.svg', menuText: 'Today Todo', link: 'todo', type: 'page' },
+          { iconUrl: 'resource/menu/icon_board_color.svg', menuText: 'Todo', link: 'todo', type: 'page' },
           { iconUrl: 'resource/menu/icon_text_color.svg', menuText: 'Terms of Use', link: 'termsOfUse', type: 'page' },
           { iconUrl: 'resource/menu/icon_board_color.svg', menuText: 'Privacy Policy', link: 'privacy', type: 'page' }
         ]

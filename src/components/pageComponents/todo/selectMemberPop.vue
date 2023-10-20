@@ -9,72 +9,48 @@
       <div class="popBg" v-if="mDeleteConfirmShowYn" @click="closeDeletePop"></div>
       <gConfirmPop v-if="mDeleteConfirmShowYn" :confirmText='mConfirmText' class="" confirmType='two' @ok="deleteContents" @no='closeDeletePop'/>
       <gPopHeader :headerTitle="'Detail'" :pClosePop="pClosePop" />
-      <div class="w100P fl" style=" display: flex; justify-content: space-between; align-items: center; padding: 0 5px; position: relative;  margin-top: 60px;">
+      <div class="w100P fl" style="border-bottom:1px solid #6768a7; display: flex; justify-content: space-between; align-items: center; padding: 0 5px 5px; position: relative;  margin-top: 60px;">
         <div style="display: flex; align-items: center; justify-content: center;">
-          <img v-if="mTodoDetail.status === '99'" src="../../../assets/images/todo/checkboxCheck.png" @click="completeTodo" width="30" height="30" class="cursorP" style="margin-right: 5px;"/>
-          <img v-else src="../../../assets/images/todo/checkboxBlank.png" width="30" height="30" @click="completeTodo" class="cursorP" style="margin-right: 5px;"/>
-          <!-- <p v-if="mTodoDetail.status === '00'" class="fl fontBold" style=" font-size: 12px; height:30px; width:60px; background-color: #6768a7; color: white; text-align: center; line-height: 30px; margin-right: 5px; border-radius: 20px;">Progress</p>
+          <p v-if="mTodoDetail.status === '00'" class="fl fontBold" style=" font-size: 12px; height:30px; width:60px; background-color: #6768a7; color: white; text-align: center; line-height: 30px; margin-right: 5px; border-radius: 20px;">Progress</p>
           <p v-else-if="mTodoDetail.status === '99'" class="fl fontBold" style="border:2px solid #6768a7; font-size: 12px; height:30px; width:70px; background-color: #6768a7; color: white; text-align: center; margin-right: 5px; border-radius: 20px; display:flex; align-items: center; justify-content: center;">Completed</p>
-          <p v-else-if="mTodoDetail.status === '98'" class="fl" style="border:2px solid #acacac; font-size: 12px; height:30px; width:40px; background-color: #acacac; color: white; text-align: center; margin-right: 5px; border-radius: 20px; display:flex; align-items: center; justify-content: center;">종료</p> -->
+          <p v-else-if="mTodoDetail.status === '98'" class="fl" style="border:2px solid #acacac; font-size: 12px; height:30px; width:40px; background-color: #acacac; color: white; text-align: center; margin-right: 5px; border-radius: 20px; display:flex; align-items: center; justify-content: center;">종료</p>
           <!-- <p v-if="mTodoDetail.writeYn" class="fl" style=" font-size: 12px; height:30px; width:30px; background-color: #3d9aff; color: white; text-align: center; line-height: 30px; margin-right: 5px;">작성</p> -->
           <p v-if="mTodoDetail.status === '00'" class="fl fontBold commonSubTitleTextBold mLeft-05">{{ mTodoDetail.title }}</p>
-          <p v-else-if="mTodoDetail.status === '99' || mTodoDetail.status === '98'" class="fl commonSubTitleTextBold mLeft-05" style="text-decoration: line-through;">{{ mTodoDetail.title }}</p>
+          <p v-else-if="mTodoDetail.status === '99' || mTodoDetail.status === '98'" class="fl commonSubTitleText mLeft-05" style="text-decoration: line-through;">{{ mTodoDetail.title }}</p>
         </div>
         <div style="display: flex; justify-content: center; align-items: center;">
-          <!-- <div v-if="mTodoDetail.status === '00'" class="cursorP fontBold" @click="openComplelePop" style=" height:30px; line-height: 30px; padding: 0 10px; background-color:#6768a7; color: white; border-radius: 10px; margin-right: 10px; font-size: 12px;">Complete</div> -->
+          <div v-if="mTodoDetail.status === '00'" class="cursorP fontBold" @click="openComplelePop" style=" height:30px; line-height: 30px; padding: 0 10px; background-color:#6768a7; color: white; border-radius: 10px; margin-right: 10px; font-size: 12px;">Complete</div>
           <img v-if="mTodoDetail.status === '00'" class="cursorP " src="../../../assets/images/todo/todoMenu.png" width="5" height="20" @click="openSubMenu('todo',mTodoDetail)"/>
         </div>
       </div>
-      <div class="w100P commonGrayText" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #6768a7;padding: 5px; font-size: 12px; height: 30px;">
-        <div style="display: flex; align-items: center; height: 30px;">
-          <p class="detailFont" :style="mTodoDetail.status === '00'? '': 'text-decoration: line-through;'">{{ changeTypeToText(mTodoDetail.todoType) }}({{ mTodoDetail.todoUserName? $changeText(mTodoDetail.todoUserName):'본인'}})</p>
+      <div style="height:calc(100% - 150px); margin-top:95px;  overflow: hidden auto; width: 100%;">
+        <div class="w100P commonGrayText" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid black;padding: 5px; font-size: 12px;">
+          <div style="display: flex; align-items: center; height: 30px;">
+            <p class="detailFont" :style="mTodoDetail.status === '00'? '': 'text-decoration: line-through;'">{{ changeTypeToText(mTodoDetail.todoType) }}({{ mTodoDetail.todoUserName? $changeText(mTodoDetail.todoUserName):'본인'}})</p>
+          </div>
+          <p class="detailFont" :style="mTodoDetail.status === '00'? '': 'text-decoration: line-through;'">Writer : {{ $changeText(mTodoDetail.creUserName) }} ({{ changeUSADate(mTodoDetail.creDate) }})</p>
         </div>
-        <p class="detailFont" :style="mTodoDetail.status === '00'? '': 'text-decoration: line-through;'">Writer : {{ $changeText(mTodoDetail.creUserName) }} ({{ changeUSADate(mTodoDetail.creDate) }})</p>
-      </div>
-      <!-- <div style="height:calc(100% - 200px);  overflow: hidden auto; width: 100%;">
-        <div class="w100P mTop-10" style=" padding: 5px 10px; display: flex; justify-content: start; min-height: 100px;"  v-html="mTodoDetail.comment"></div>
-        <div v-if="mMemoList.length !== 0" class="childMemoWrap" style=" overflow: hidden auto;">
-          <p class="fontBold" style=" margin-top: 5px; text-align: left;">Comment ({{ mMemoList.length }})</p>
+        <div class="w100P mTop-10" style="padding: 5px 10px; display: flex; justify-content: start; min-height: 100px;"  v-html="mTodoDetail.comment"></div>
+        <div v-if="mMemoList.length !== 0" class="childMemoWrap" style=" border-top: 1px solid #6768a7; overflow: hidden auto;">
           <div v-for="memo, index in mMemoList" :key="index" class="childMemoItem" style="border-bottom:1px solid #aaa;">
             <div class="childUserInfo">
               <div class="memoUserInfo">
-                <div  id="memoImgWrap" class="parentMemoImgWrap" style="">
-                    <div class="parentMemoImg" id="memoBodyImgWrap" >
-                        <img :src="memo.userProfileImg" alt="">
-                    </div>
-                </div>
-                <div style="display: flex; justify-content: center; flex-direction: column;">
-                  <p class="fl commonBlack mright-05 textLeft font16 fontBold">{{$changeText(memo.userDispMtext)}}</p>
-                  <p class="fl commonGray textLeft font12 fontNomal" style="display: flex; align-items: last baseline;">{{$changeDateMemoFormat(memo.creDate)}}</p>
-                </div>
+                <p class="fl commonBlack mright-05 textLeft font16 fontBold">{{$changeText(memo.userDispMtext)}}</p>
+                <p class="fl commonGray textLeft font12 fontNomal" style="display: flex; align-items: last baseline;">{{$changeDateMemoFormat(memo.creDate)}}</p>
               </div>
               <div class="cursorP" v-if="memo.creUserKey === GE_USER.userKey" style="width:10px">
                 <img src="../../../assets/images/todo/todoMenu.png" @click="openSubMenu('memo', memo)" alt="" width="4" height="15" style="right: 5px; top: 10px;">
               </div>
             </div>
             <div v-html="memo.bodyFullStr" style=" display: flex; justify-content: start; align-items: center; padding: 5px 0;"></div>
-            <p class="commonGray textLeft font12 fr" @click="writeMeMemo(memo)">{{ $t('COMM_BTN_REPLY_COMM') }}</p>
-            <p class="commonGray textLeft font12 mright-05 cursorP fr " @blur="testFunction" @click="openModiMemoPop(propMemoEle)">{{ $t('COMM_BTN_EDIT2') }}</p>
           </div>
         </div>
-        <div style="height:3px; background-color: #bdbee2; box-shadow:0 10px 10px -10px;"></div>
-        <div style=" height:60px; width: calc(100%); display: flex; justify-content: center; align-items: center; position: absolute; bottom: 0; left: 0;">
+        <div style="border-Top:1px solid #6768a7; height:60px; width: calc(100%); display: flex; justify-content: center; align-items: center; position: absolute; bottom: 0; left: 0;">
           <pre :placeholder="'Please add a comment.'" @focus="preFocus" @keydown="inputEnterKey" id="memoTextTag" ref="memoTextTag" class="fl editableContent memoCardTextid memoTextPadding memoTextTag" contenteditable=true  @input="inputTextCheck"/>
           <img @click="setSaveMemo()" src="@/assets/images/common/icon_send_on.svg" alt="" class="fl img-w25 mleft-05 cursorP">
         </div>
-      </div> -->
-      <div style="height:calc(100% - 200px);  overflow: hidden auto; width: 100%;">
-        <div class="w100P mTop-10" style=" padding: 5px 10px; display: flex; justify-content: start; min-height: 100px;"  v-html="mTodoDetail.comment"></div>
-        <div style="height:3px; background-color: #eaeaf3; box-shadow:0 10px 10px -10px;"></div>
-        <p class="fontBold" style=" margin-top: 5px; text-align: left; padding:5px;">Comment ({{ mMemoList.memoList.length }})</p>
-        <template v-for="(memo, mIndex) in mMemoList.memoList" :key="mIndex">
-          <div style=" padding: 0 5px; margin-top: 5px;">
-            <memoCompo @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="pTodoDetail" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="propDetailYn || mIndex < 3" :childShowYn="true" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="mMemoList.length" @memoEmitFunc='memoEmitFunc'/>
-          </div>
-        </template>
       </div>
     </div>
-    <gMemoPop style="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
     <div class="popBg" v-if="mOpenMenuShowYn" @click="closeSubMenu"></div>
     <div v-show="mOpenMenuShowYn" class="reportCompoArea">
       <div class="fl memoFuncArea">
@@ -88,7 +64,6 @@
     </div>
 </template>
 <script>
-import memoCompo from '../../../components/unit/contents/ContBoxMemo.vue'
 import modiMemoPop from '../../popup/contents/ModiMemoPop.vue'
 import setPop from './setPop.vue'
 
@@ -105,8 +80,7 @@ export default {
   },
   components: {
     modiMemoPop,
-    setPop,
-    memoCompo
+    setPop
   },
   data () {
     return {
@@ -124,9 +98,7 @@ export default {
       mSelectSubMenu: '',
       mUpdateTodoPopShowYn: false,
       mFamilyList: [],
-      mMemoList: [],
-      propDetailYn: true,
-      mMememoValue: {}
+      mMemoList: []
     }
   },
   created () {
@@ -141,17 +113,12 @@ export default {
       this.getTodoDetail(true)
     }
     console.log(this.pSelectTodo)
-    console.log(this.mMemoList)
   },
   methods: {
     async completeTodo () {
       if (this.pCompleteTodo) {
         const param = {}
-        if (this.mTodoDetail.status === '00') {
-          param.status = '99'
-        } else {
-          param.status = '00'
-        }
+        param.status = '99'
         param.todoKey = this.mTodoDetail.todoKey
         await this.pCompleteTodo(param)
       }
@@ -159,28 +126,6 @@ export default {
       await this.getTodoDetail()
       if (this.pGetTodoListGroupCab) {
         await this.pGetTodoListGroupCab(false)
-      }
-    },
-    writeMeMemo (memoObj) {
-      this.mMememoValue = {}
-      this.mMememoValue = memoObj
-      this.$refs.gMemoRef.setMememo(memoObj)
-    },
-    memoEmitFunc (emitData) {
-      var type = emitData.targetType
-      var data = emitData.value
-      if (type === 'goUserProfile') {
-        if (this.propDetailYn) {
-          this.goUserProfile(data.creUserKey)
-        } else {
-          this.goContentsDetail(undefined, true)
-        }
-        //
-      } else if (type === 'goContentsDetail') {
-        // 댓글로 스크롤하기 위해 2번째 파라미터를 true로 보내줌 (1번째는 컨텐츠 더보기 유무)
-        this.goContentsDetail(undefined, true)
-      } else if (type === 'writeMeMemo') {
-        this.writeMeMemo(data)
       }
     },
     openComplelePop () {
@@ -242,7 +187,7 @@ export default {
       if (day.length === 1) {
         day = '0' + day
       }
-      todayDate = date.toLocaleString('en-US', { month: 'short' }) + ' ' + day + ', ' + year
+      todayDate = month + '.' + day + '.' + year
       return todayDate
     },
     async setUpdateMemo (value) {
@@ -257,8 +202,8 @@ export default {
           if (result.data.resultList && result.data.resultList.memoList.length > 0) {
             var saveMemoObj = {}
             this.$emit('scrollToMemoTop')
-            saveMemoObj.creTeamKey = this.mTodoDetail.creTeamKey
-            saveMemoObj.jobkindId = this.mTodoDetail.jobkindId
+            saveMemoObj.creTeamKey = this.CONT_DETAIL.creTeamKey
+            saveMemoObj.jobkindId = this.CONT_DETAIL.jobkindId
             await this.$store.commit('UB_CHANNEL/MU_ADD_MEMO', saveMemoObj)
           }
         }
@@ -293,6 +238,7 @@ export default {
       }
     },
     async saveMemo (inSaveMemoObj) {
+      console.log(inSaveMemoObj)
       if (inSaveMemoObj.saveMemoHtml === undefined) return
       this.mLoadingShowYn = true
       var memo = {}
@@ -308,18 +254,17 @@ export default {
       /* memo.bodyFilekey  */
       memo.targetKind = 'T'
       memo.targetKey = this.mTodoDetail.todoKey
-      // memo.toUserKey = this.mTodoDetail.creUserKey 대댓글때 사용하는것임
+      // memo.toUserKey = this.CONT_DETAIL.creUserKey 대댓글때 사용하는것임
       memo.creUserKey = this.GE_USER.userKey
       memo.creUserName = this.$changeText(this.GE_USER.userDispMtext)
       memo.userName = this.$changeText(this.GE_USER.userDispMtext)
       memo.allYn = true
       memo.ownUserKey = this.GE_USER.userkey
-      memo.todoYn = true
       try {
         var result = await this.$commonAxiosFunction({
           url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
-        })
+        }, true)
         // if (result.data.result === true || result.data.result === 'true') {
         if (result.data && result.data.result) {
           this.$refs.gMemoRef.clearMemo()
@@ -336,22 +281,21 @@ export default {
             } else {
               saveMemoObj = await result.data.resultList.memoList[0]
             }
-            saveMemoObj.creTeamKey = this.mTodoDetail.creTeamKey
-            saveMemoObj.jobkindId = this.mTodoDetail.jobkindId
+            saveMemoObj.creTeamKey = this.CONT_DETAIL.creTeamKey
+            saveMemoObj.jobkindId = this.CONT_DETAIL.jobkindId
             await this.$store.commit('UB_CHANNEL/MU_ADD_MEMO', saveMemoObj)
           }
-          this.getTodoDetail()
         }
       } catch (e) {
         console.error('D_contentsDetail 오류')
         console.error(e)
       } finally {
+        const element = document.getElementById('memoTextTag')
+        element.innerText = ''
+        this.getTodoDetail(true)
         this.memoShowYn = false
         this.mLoadingShowYn = false
       }
-    },
-    clearMemoObj () {
-      this.mMememoValue = null
     },
     deleteContents () {
       if (this.mSelectSubMenu === 'todo') {
@@ -479,61 +423,9 @@ export default {
     },
     closeEndConfirmPop () {
       this.mEndTodoPopShowYn = false
-    },
-    // settingPop () {
-    //   document.querySelector('#memoTextTag').addEventListener('paste', (e) => {
-    //     e.preventDefault()
-    //     var textData = (e.originalEvent || e).clipboardData.getData('Text')
-    //     document.execCommand('insertHTML', false, textData)
-    //   })
-    //   document.querySelector('#memoTextTag').addEventListener('keydown', (event) => {
-    //     var keycode = event.keyCode
-    //     if (keycode === 8 || keycode === 46) {
-    //       try {
-    //         var s = window.getSelection()
-    //         var r = s.getRangeAt(0)
-    //         var el = r.startContainer.parentElement
-    //         if (el.classList.contains('parentNameCard')) {
-    //           if (r.startOffset === r.endOffset && r.endOffset === el.textContent.length) {
-    //             event.preventDefault()
-    //             el.remove()
-    //             this.cancel()
-    //           }
-    //         }
-    //       } catch (error) {
-    //       }
-    //     }
-    //   })
-    // },
-    inputEnterKey (event) {
-      var isMobile = /Mobi/i.test(window.navigator.userAgent)
-      if (event.keyCode === 13 && !isMobile && !this.nowLoadingYn) {
-        if (!event.shiftKey && !event.ctrlKey) {
-          event.preventDefault()
-          this.saveMemo()
-        } else if (event.ctrlKey) {
-          const myCreHtml = this.$refs.memoTextTag.innerHTML + '<br>'
-          this.$refs.memoTextTag.innerHTML = ''
-          this.$refs.memoTextTag.focus()
-          this.$pasteHtmlAtCaret(myCreHtml)
-          this.$refs.memoTextTag.blur()
-          this.$refs.memoTextTag.focus()
-        }
-      }
-    },
-    preFocus () {
-      if (this.$checkMobile() === 'IOS') {
-        this.$emit('writeMemoScrollMove')
-        this.$nextTick(() => {
-          this.$refs.memoPopCompo.style.position = 'fixed'
-          this.$refs.memoPopCompo.style.bottom = 0
-        })
-      }
     }
+
   },
-  // mounted () {
-  //   this.settingPop()
-  // },
   computed: {
     GE_USER () {
       return this.$store.getters['UB_USER/GE_USER']
@@ -629,42 +521,5 @@ export default {
   z-index: 14;
   top: 0;
   left: 0;
-}
-.parentMemoImgWrap {
-  float: left;
-  max-width: 100%;
-  background: rgb(238 238 238);
-  float: left;
-  border: 1px solid #aaa;
-  padding-left: 10px;
-  margin: 10px 0;
-  overflow: scroll hidden;
-  padding: 1px;
-    /* border: 2.5px solid rgb(204, 204, 204);
-    position: relative;
-    width: 40px;
-    height: 40px;
-    justify-content: center;
-    align-items: center;
-    border-radius: 100%;
-    float: left;
-    display: flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    margin-right: 5px;
-    margin-top: 3px;
-    margin-bottom: 5px; */
-}
-.parentMemoImg {
-  float: left;
-  height: 100%;
-  display:flex;
-  align-items: center;
-  /* width: 100%;
-    height: 100%;
-    border-radius: 100%;
-    overflow: hidden;
-    display: flex;
-    background-color: #fff; */
 }
 </style>

@@ -60,6 +60,8 @@ export default {
     }
   },
   created () {
+    console.log(this.selectedListYn)
+    console.log(this.propData)
     if (this.selectedListYn) {
       this.selectedTeamList = this.selectedList.selectedTeamList
       this.selectedMemberList = this.selectedList.selectedMemberList

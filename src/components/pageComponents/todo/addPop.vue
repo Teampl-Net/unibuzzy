@@ -1,9 +1,9 @@
 <template>
     <div class="chanInfoBoxWrap">
       <div class="modiMemoPopBg" v-if="mSetPopShowYn" @click="closeSetPop"></div>
-      <setPop v-if="mSetPopShowYn" :pClosePop="closeSetPop" :pSelectTodo="mSelectTodo" :pSaveTodo="saveTodo" :pFamilyList="mFamilyList" style="z-index: 999;"/>
+      <setPop v-if="mSetPopShowYn" :pClosePop="closeSetPop" :pSelectTodo="mSelectTodo" :pSaveTodo="saveTodo" :pFamilyList="mFamilyList" :pGetTodoFamilyList="pGetTodoFamilyList" :pGetCabiList="mGetCabiList" style="z-index: 999;"/>
       <gPopHeader :headerTitle="'Add'" :pClosePop="pClosePop" />
-      <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 15px 0; width:100%; margin-top: 50px; ">
+      <!-- <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 15px 0; width:100%; margin-top: 50px; ">
         <p class="fontBold commonSubTitleTextBold">{{ topDate() }}</p>
         <div style="display: flex; align-items: center; justify-content: center;">
           <p class="fontBold " style="font-size: 14px; margin-right: 5px;">Team</p>
@@ -11,13 +11,13 @@
             <option v-for="family, index in myFamilyList" :key="index" :value="family.value">{{ $changeText(family.opt)}}</option>
           </select>
         </div>
-      </div>
-      <div class="" style="border-bottom: 1px solid black; display: flex; justify-content: space-between; align-items: center; padding: 10px 5px 5px; margin:0px 10px">
+      </div> -->
+      <div class="" style=" display: flex; justify-content: space-between; align-items: center; padding: 10px 5px 5px; margin:0px 10px;  margin-top: 50px;">
         <p class="fontBold">Recent Todo</p>
         <div class="cursorP fontBold CDeepBgColor" style=" color: white; width: 60px; height:30px; font-size: 12px; line-height: 30px; text-align: center; border-radius: 20px;" @click="openSetPop('new')">New</div>
       </div>
       <div v-if="mRecentList.length === 0" class="fontBold" style="font-size: 20px; display: flex; justify-content: center; align-items: center; height:calc(100% - 300px)">There are no recent todo. </div>
-      <div v-else class="w100P fl scroll" style="padding: 10px; overflow: hidden auto; height:calc(100% - 150px);">
+      <div v-else class="w100P fl scroll" style="padding: 0 10px 10px; overflow: hidden auto; height:calc(100% - 120px);">
         <div v-for="todo,index in mRecentList" :key="index" class="cursorP" style="border: 1px solid #acacac; background-color: white; border-radius:0.5rem; height:60px; display: flex; justify-content: space-between; align-items: center; padding: 5px 10px; margin-top: 5px;" @click="openSetPop(todo)">
           <div style="display: flex; justify-content: center; align-items: center;">
             <p class="fontBold fl commonTitleText" style="margin-right: 5px;">{{ todo.title }}</p>
@@ -108,15 +108,10 @@ export default {
       param.todo.title = value.title
       param.todo.comment = value.comment
       param.todo.todoType = value.todoType
-      if (this.mSelectFamily === 'U') {
-        param.todo.targetKind = 'U'
-        param.todo.targetKey = this.GE_USER.userKey
-      } else {
-        param.todo.targetKind = 'C'
-        param.todo.targetKey = this.mSelectFamily
-      }
+      param.todo.targetKind = value.targetKind
+      param.todo.targetKey = value.targetKey
       param.todo.status = '00'
-      param.todo.todoDate = this.getDate(1)
+      param.todo.todoDateStr = value.todoDate
       param.todo.todoUserKey = value.todoUserKey
       param.todo.creUserKey = this.GE_USER.userKey
       var nonLoading = true

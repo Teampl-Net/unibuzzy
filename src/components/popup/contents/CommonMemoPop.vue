@@ -459,6 +459,7 @@ span.label.highlight {
   padding: 0.5rem 20px;
   padding-top: 10px;
   box-shadow: 0px -2px 3px 0px #eee;
+  z-index: 20 !important;
 }
 .meMemoBox {
   width: calc(100% - 20px);

@@ -5,15 +5,28 @@
   <gConfirmPop v-if="mDeleteConfirmShowYn" :confirmText='mConfirmText' class="" confirmType='two' @ok="deleteTodo" @no='closeDeletePop'/>
   <div class="popBg" v-if="mSetPopShowYn" @click="closeUpdatePop"></div>
   <setPop v-if="mSetPopShowYn" :pClosePop="closeUpdatePop" :pSelectTodo="mTodoObj" :pUpdateTodo="updateTodo" :pFamilyList="mFamilyList" :pGetTodoListGroupCab=getTodoListGroupCab style="z-index: 999;"/>
+  <template v-if="mShowSkeletonYn" style="height:100px">
+    <SkeletonBox v-for="(value) in [0,1,2]" :key="value" style="height:100px"/>
+  </template>
   <div class="todoBody">
     <div style="height:50px; border-bottom: 2px solid #6768a7; display: flex; justify-content: center; align-items: center; margin: 0 5px;">
       <div @click="goMain" class="fl cursorP mainHeaderBack">
         <img src="@/assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" width="12" height="20">
       </div>
-      <span class="popHeaderTitleSpan font20 h100P" style="color: #6768A7; font-weight: bold; display: flex; justify-content: center; align-items: center;">Today's Todo</span>
+      <div class="commonTitleText dateAreaBox " >
+        <div class="calBox" >
+          <img class="cursorP" src="../../assets/images/todo/rightArrow.png" style="transform: rotateZ(180deg)" width="20" height="20" @click="MoveDate(-1)"/>
+          <Datepicker class="cursorP fl DatePicker" v-model:value="mSelectDate" :editable="false" type="date" :format="'MMM DD, YYYY'"></Datepicker>
+          <img class="cursorP" src="../../assets/images/todo/rightArrow.png"  width="20" height="20" @click="MoveDate(1)"/>
+        </div>
+      </div>
+      <div class="todoFilter " style="position: absolute; top: 5px; right: 0;">
+        <div class="fr fontBold cursorP addBtn CDeepBgColor" @click="openAddTodoPop">Add</div>
+      </div>
+      <!-- <span class="popHeaderTitleSpan font20 h100P" style="color: #6768A7; font-weight: bold; display: flex; justify-content: center; align-items: center;">Today's Todo</span> -->
     </div>
     <div style="width: 100%; height:100%;">
-    <div class="dateArea" style="position: relative; ">
+    <!-- <div class="dateArea" style="position: relative; ">
       <div class="commonTitleText dateAreaBox " >
         <div class="calBox" >
           <img class="cursorP" src="../../assets/images/todo/commonArrowBack.svg" width="30" height="40" @click="MoveDate(-1)"/>
@@ -24,7 +37,7 @@
       <div class="todoFilter " style="position: absolute; top: 10px; right: 0;">
         <div class="fr fontBold cursorP addBtn CDeepBgColor" @click="openAddTodoPop">Add</div>
       </div>
-    </div>
+    </div> -->
     <div class="" style="display:flex; justify-content: space-between; align-items:center; border:2px solid #acacac; height:40px; margin: 10px; border-radius: 10px; background-color: #ededed;">
       <div class="fontBold" style="display:flex; justify-content: center; align-items: center; width:50%">
         <p  style="margin-right:10px">My</p>
@@ -37,87 +50,115 @@
     </div>
     <div v-if="mMyTodoCount === 0 && mTargetTodoCount === 0 && mCompleteTodoCount === 0" class="fontBold" style="font-size: 20px; display: flex; justify-content: center; align-items: center; height:calc(100% - 300px)">There are no today's todo. </div>
     <div v-else style=" height:calc(100% - 160px); overflow: hidden auto;">
-      <div v-if="mMyTodoYn" class="mBottom-10 fontBold " >
-        <p class="titleLine" style="padding:5px;">My Todo  <span style="margin-left:5px; font-size: 12px;">({{ mMyTodoCount }})</span></p>
+      <div v-if="mMyTodoYn" class="fontBold " style="text-align: left; padding: 5px 15px; display: flex; align-items: center">
+        <img src="../../../public/resource/menu/icon_board_color.svg" width="20" style="margin-right: 5px;"/>
+        <p style="font-size: 18px;">My Todo ({{ mMyTodoCount }})</p>
       </div>
       <template v-for="group, groupIndex in mGetTodoGroupList" :key="groupIndex" >
-        <div v-if="group.myTodoList.length !== 0" style="padding: 5px 20px;">
-          <div :class="todo.strikeOnOff? 'fade-out-box':''" v-for="todo, todoIndex in group.myTodoList" :key="todoIndex" class="w100P cursorP" style="background-color: white; display:flex;align-items: center; flex-direction: column; border-radius:0.5rem; border:2px solid #acacac; padding: 10px 10px; margin-bottom: 5px;">
+        <div v-if="group.myTodoList.length !== 0" style="padding: 5px 15px;">
+          <div style="padding:10px; border:2px solid #acacac; border-radius: 10px;">
+            <div :class="todo.strikeOnOff? 'fade-out-box':''" v-for="todo, todoIndex in group.myTodoList" :key="todoIndex" class="w100P cursorP" style="background-color: white; display:flex;align-items: center; flex-direction: column; padding: 10px 10px;" :style="(group.myTodoList.length- 1) === todoIndex? '':'border-bottom:1px solid #acacac;'">
+              <div style="width:100%; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; justify-content: center; align-items: center;;">
+                  <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
+                    <div class="MKAppUserPhoto MKShadow h100P">
+                      <img :src="todo.domainPath + todo.pathMtext" style="width:20px; height:20px;"/>
+                    </div>
+                  </div>
+                  <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext)}} (본인)</p>
+                  <p v-else class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
+                </div>
+                <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
+                <div style="display: flex; align-items: center;">
+                  <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxCheck.png" width="20" height="20"/>
+                  <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" @click="setCompleteTodo('myTodoList', groupIndex, todoIndex)"/>
+                    <p v-if="todo.status === '00'" class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" @click="openTodoDetail(todo)">
+                      <span class="strikeLine" :style="todo.strikeOnOff? 'transition: all .5s; width:100%;':'width:0;'"></span>
+                      {{ todo.title }}
+                    </p>
+                </div>
+                <div @click="openTodoDetail(todo)">
+                  <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <div v-if="mTargetTodoYn" class="fontBold " style="text-align: left; padding: 5px 15px; display: flex; align-items: center">
+        <img src="../../../public/resource/menu/icon_board_color.svg" width="20" style="margin-right: 5px;"/>
+        <p style="font-size: 18px;">Asked Todo ({{ mTargetTodoCount }})</p>
+      </div>
+      <template v-for="group, groupIndex in mGetTodoGroupList" :key="groupIndex" >
+        <div v-if="group.targetTodoList.length !== 0" style="padding: 5px 15px;">
+          <div style="padding:10px; border:2px solid #acacac; border-radius: 10px;">
+          <div :class="todo.strikeOnOff? 'fade-out-box':''" v-for="todo, todoIndex in group.targetTodoList" :key="todoIndex" class="w100P cursorP" style="background-color: white; display:flex;align-items: center; flex-direction: column; padding: 10px 10px;" :style="(group.targetTodoList.length - 1)=== todoIndex? '':'border-bottom:1px solid #acacac;'">
             <div style="width:100%; display: flex; align-items: center; justify-content: space-between;">
-              <div style="width:calc(100% - 10px);" @click="openTodoDetail(todo)">
-                <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
+                <div style="display: flex; justify-content: center; align-items: center;;">
+                  <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
+                    <div class="MKAppUserPhoto MKShadow h100P">
+                      <img :src="todo.domainPath + todo.pathMtext" style="width:20px; height:20px;"/>
+                    </div>
+                  </div>
+                  <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext)}} (본인)</p>
+                  <p v-else class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
+                </div>
+                <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
+                <div style="display: flex; align-items: center;">
+                  <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxCheck.png" width="20" height="20"/>
+                  <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" @click="setCompleteTodo('targetTodoList', groupIndex, todoIndex)"/>
+                    <p v-if="todo.status === '00'" class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" @click="openTodoDetail(todo)">
+                      <span class="strikeLine" :style="todo.strikeOnOff? 'transition: all .5s; width:100%;':'width:0;'"></span>
+                      {{ todo.title }}
+                    </p>
+                </div>
+                <div @click="openTodoDetail(todo)">
+                  <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
+                </div>
+              </div>
+          </div>
+        </div>
+        </div>
+      </template>
+      <div v-if="mCompleteTodoYn" class="fontBold " style="text-align: left; padding: 5px 15px; display: flex; align-items: center">
+        <img src="../../../public/resource/menu/icon_board_color.svg" width="20" style="margin-right: 5px;"/>
+        <p style="font-size: 18px;">Completed Todo ({{ mCompleteTodoCount }})</p>
+      </div>
+      <template v-for="group, groupIndex in mGetTodoGroupList" :key="groupIndex" >
+        <div v-if="group.completeTodoList.length !== 0" style="padding: 5px 15px;">
+          <div style="padding:10px; border:2px solid #acacac; border-radius: 10px;">
+          <div :class="todo.strikeOnOff? 'fade-out-box':''" v-for="todo, todoIndex in group.completeTodoList" :key="todoIndex" class="w100P cursorP" style="background-color: white; display:flex;align-items: center; flex-direction: column; padding: 10px 10px;" :style="(group.completeTodoList.length - 1)  === todoIndex? '':'border-bottom:1px solid #acacac;'">
+            <div style="width:100%; display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; justify-content: center; align-items: center;;">
+                <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
+                  <div class="MKAppUserPhoto MKShadow h100P">
+                    <img :src="todo.domainPath + todo.pathMtext" style="width:20px; height:20px;"/>
+                  </div>
+                </div>
+                <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext)}} (본인)</p>
+                <p v-else class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
               </div>
               <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
             </div>
             <div style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
               <div style="display: flex; align-items: center;">
-                <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxCheck.png" width="20" height="20"/>
-                <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" @click="setCompleteTodo('myTodoList', groupIndex, todoIndex)"/>
-                  <p v-if="todo.status === '00'" class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" @click="openTodoDetail(todo)">
-                    <span class="strikeLine" :style="todo.strikeOnOff? 'transition: all .5s; width:100%;':'width:0;'"></span>
+                <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" />
+                <img v-else src="../../assets/images/todo/checkboxCheck.png" width="20" height="20" @click="setCompleteTodo('completeTodoList', groupIndex, todoIndex)"/>
+                  <p class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" @click="openTodoDetail(todo)">
+                    <span class="strikeLine" :style="todo.strikeOnOff? 'transition: all .5s; width:0;':'width:100%;'"></span>
                     {{ todo.title }}
                   </p>
               </div>
-              <div>
-                <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(group.cabinetNameMtext)}} (본인)</p>
-                <p v-else class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(group.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
+              <div @click="openTodoDetail(todo)">
+                <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
               </div>
             </div>
           </div>
         </div>
-      </template>
-      <div v-if="mTargetTodoYn" class="mBottom-10 fontBold" >
-        <p class="titleLine" style="padding:5px;"> Asked Todo <span style="margin-left:5px; font-size: 12px;">({{ mTargetTodoCount }})</span></p>
-      </div>
-      <template v-for="group, groupIndex in mGetTodoGroupList" :key="groupIndex" >
-        <div v-if="group.targetTodoList.length !== 0" style="padding: 5px 20px;">
-          <div :class="todo.strikeOnOff? 'fade-out-box':''" v-for="todo, todoIndex in group.targetTodoList" :key="todoIndex" class="w100P cursorP" style="background-color: white; display:flex;align-items: center; flex-direction: column; border-radius:0.5rem; border:2px solid #acacac; padding: 10px 10px; margin-bottom: 5px;">
-            <div style="width:100%; display: flex; align-items: center; justify-content: space-between;">
-              <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
-              <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
-            </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
-              <div style="display: flex; align-items: center;">
-                <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxCheck.png" width="20" height="20"/>
-                <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" @click="setCompleteTodo('targetTodoList', groupIndex, todoIndex)"/>
-                <p v-if="todo.status === '00'" class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" @click="openTodoDetail(todo)">
-                  <span class="strikeLine" :style="todo.strikeOnOff? 'transition: all .5s; width:100%;':'width:0;'"></span>
-                  {{ todo.title }}
-                </p>
-              </div>
-              <div>
-                <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;">{{ changeTypeToText(todo.todoType)}} (본인)</p>
-                <p v-else class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;">{{ $changeText(group.cabinetNameMtext) }} ({{ todo.todoUserName? $changeText(todo.todoUserName): '나' }})</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
-      <div v-if="mCompleteTodoYn" class="mBottom-10 fontBold " >
-        <p class="titleLine" style="padding:5px;">Completed Todo  <span style="margin-left:5px; font-size: 12px;">({{ mCompleteTodoCount }})</span></p>
-      </div>
-      <template v-for="group, groupIndex in mGetTodoGroupList" :key="groupIndex" >
-        <div v-if="group.completeTodoList.length !== 0" style="padding: 5px 20px;">
-          <div :class="todo.strikeOnOff? 'fade-out-box':''" v-for="todo, todoIndex in group.completeTodoList" :key="todoIndex" class="w100P cursorP" style="background-color: white; display:flex;align-items: center; flex-direction: column; border-radius:0.5rem; border:2px solid #acacac; padding: 10px 10px; margin-bottom: 5px;">
-            <div style="width:100%; display: flex; align-items: center; justify-content: space-between;">
-              <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
-              <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
-            </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
-              <div style="display: flex; align-items: center;">
-                <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxBlank.png" width="20" height="20"/>
-                <img v-else src="../../assets/images/todo/checkboxCheck.png" width="20" height="20" @click="setCompleteTodo('completeTodoList', groupIndex, todoIndex)"/>
-                <p class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" @click="openTodoDetail(todo)">
-                  <span class="strikeLine" :style="!todo.strikeOnOff? 'width:100%; ':' transition: all .5s; width:0;'"></span>
-                  {{ todo.title }}
-                </p>
-              </div>
-              <div>
-                <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;">{{ $changeText(group.cabinetNameMtext)}} (본인)</p>
-                <p v-else class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;">{{ $changeText(group.cabinetNameMtext) }} ({{ todo.todoUserName? $changeText(todo.todoUserName): '나' }})</p>
-              </div>
-            </div>
-          </div>
         </div>
         </template>
     </div>
@@ -141,13 +182,16 @@ import detailPop from '../../components/pageComponents/todo/detailPop.vue'
 import setPop from '../../components/pageComponents/todo/setPop.vue'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
+import { commonMethods } from '../../assets/js/common'
+import SkeletonBox from '@/components/unit/contents/ContentsSkeleton'
 
 export default {
   components: {
     Datepicker,
     addPop,
     detailPop,
-    setPop
+    setPop,
+    SkeletonBox
   },
   data () {
     return {
@@ -189,15 +233,11 @@ export default {
         if (this.mGetTodoGroupList[groupIndex][value][todoIndex].status === '00') {
           this.mGetTodoGroupList[groupIndex][value][todoIndex].status = '99'
           this.mGetTodoGroupList[groupIndex][value][todoIndex].strikeOnOff = false
-          if (this.GE_USER.domainPath) {
-            this.mGetTodoGroupList[groupIndex][value][todoIndex].completeUserPicUrl = this.GE_USER.domainPath + this.GE_USER.pathMtext
-          } else {
-            // this.mGetTodoGroupList[groupIndex][value][todoIndex].completeUserPicUrl = require('@/assets/images/common/userImg01.png')
-          }
           this.mGetTodoGroupList[groupIndex][value][todoIndex].completeUserName = this.GE_USER.userNameMtext
           this.completeTodo(this.mGetTodoGroupList[groupIndex][value][todoIndex])
           this.mGetTodoGroupList[groupIndex].completeTodoList.unshift(this.mGetTodoGroupList[groupIndex][value][todoIndex])
           this.mGetTodoGroupList[groupIndex][value].splice(todoIndex, 1)
+          console.log(this.mGetTodoGroupList[groupIndex])
           if (value === 'myTodoList') {
             this.mMyTodoCount -= 1
             this.mCompleteMyTodoCount += 1
@@ -301,17 +341,17 @@ export default {
         this.mCompleteTodoCount = 0
         this.mCompleteMyTodoCount = 0
         this.mCompleteTargetTodoCount = 0
+        const myTodoList = []
+        const targetTodoList = []
+        const completeTodoList = []
+        const cabinetList = {}
         for (let i = 0; i < this.mGetTodoGroupList.length; i++) {
-          const cabinetList = {}
-          const myTodoList = []
-          const targetTodoList = []
-          const completeTodoList = []
           if (this.mGetTodoGroupList[i].mCabTodoList.length !== 0) {
-            cabinetList.cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
             for (let j = 0; j < this.mGetTodoGroupList[i].mCabTodoList.length; j++) {
               if (this.mGetTodoGroupList[i].mCabTodoList[j].status === '00' && this.mGetTodoGroupList[i].mCabTodoList[j].todoUserKey === this.GE_USER.userKey) {
                 this.mGetTodoGroupList[i].mCabTodoList[j].strikeOnOff = false
                 this.mGetTodoGroupList[i].mCabTodoList[j].sideMenuOpenYn = false
+                this.mGetTodoGroupList[i].mCabTodoList[j].cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
                 myTodoList.push(this.mGetTodoGroupList[i].mCabTodoList[j])
                 this.mMyTodoCount += 1
                 this.mMyTodoYn = true
@@ -319,6 +359,7 @@ export default {
               if (this.mGetTodoGroupList[i].mCabTodoList[j].status === '00' && this.mGetTodoGroupList[i].mCabTodoList[j].todoUserKey !== this.GE_USER.userKey && this.mGetTodoGroupList[i].mCabTodoList[j].creUserKey === this.GE_USER.userKey && this.mGetTodoGroupList[i].mCabTodoList[j].targetKind !== 'U') {
                 this.mGetTodoGroupList[i].mCabTodoList[j].strikeOnOff = false
                 this.mGetTodoGroupList[i].mCabTodoList[j].sideMenuOpenYn = false
+                this.mGetTodoGroupList[i].mCabTodoList[j].cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
                 targetTodoList.push(this.mGetTodoGroupList[i].mCabTodoList[j])
                 this.mTargetTodoCount += 1
                 this.mTargetTodoYn = true
@@ -326,6 +367,7 @@ export default {
               if (this.mGetTodoGroupList[i].mCabTodoList[j].status === '99') {
                 this.mGetTodoGroupList[i].mCabTodoList[j].strikeOnOff = false
                 this.mGetTodoGroupList[i].mCabTodoList[j].sideMenuOpenYn = false
+                this.mGetTodoGroupList[i].mCabTodoList[j].cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
                 completeTodoList.push(this.mGetTodoGroupList[i].mCabTodoList[j])
                 this.mCompleteTodoCount += 1
                 if (this.mGetTodoGroupList[i].mCabTodoList[j].todoUserKey === this.GE_USER.userKey) {
@@ -336,12 +378,12 @@ export default {
                 this.mCompleteTodoYn = true
               }
             }
-            cabinetList.myTodoList = myTodoList
-            cabinetList.targetTodoList = targetTodoList
-            cabinetList.completeTodoList = completeTodoList
-            getTodoGroupList.unshift(cabinetList)
           }
         }
+        cabinetList.myTodoList = myTodoList
+        cabinetList.targetTodoList = targetTodoList
+        cabinetList.completeTodoList = completeTodoList
+        getTodoGroupList.unshift(cabinetList)
         this.mGetTodoGroupList = getTodoGroupList
         console.log(this.mGetTodoGroupList)
         console.log(this.mTargetTodoCount)
@@ -380,6 +422,7 @@ export default {
       return returnData
     },
     async deleteTodo (loadingYn) {
+      commonMethods.showAxiosLoading(true)
       var param = {}
       param.todoKey = this.mTodoObj.todoKey
       var nonLoading = true
@@ -392,8 +435,10 @@ export default {
         this.getTodoListGroupCab()
         this.closeDeletePop()
       }
+      commonMethods.showAxiosLoading(false)
     },
     async updateTodo (value, loadingYn) {
+      this.mShowSkeletonYn = true
       const param = { todo: {} }
       param.todo.title = value.title
       param.todo.comment = value.comment
@@ -413,12 +458,11 @@ export default {
       var result = await this.$saveTodo(param, nonLoading)
       console.log(result)
       if (result.resultMsg === 'OK') {
-        if (this.pClosePop) {
-          this.pClosePop()
-        }
         if (this.getTodoListGroupCab) {
-          this.getTodoListGroupCab(true)
+          await this.getTodoListGroupCab(false)
         }
+        await this.closeUpdatePop()
+        this.mShowSkeletonYn = false
       }
     },
     openUpdatePop () {
@@ -719,5 +763,29 @@ export default {
   justify-content: flex-start;
   align-items: center;
   left: 1rem;
+}
+.picImgWrap {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  overflow: hidden;
+  display: flex;
+  background-color: #fff;
+}
+/* .picWrapReal {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+} */
+.MKAppUserPhotoBack {
+  border-radius:30px;
+  background-color:rgb(223, 224, 226);
+  min-width: 30px;
+  min-height: 30px;
+  margin-right: 5px;
+}
+.MKAppUserPhoto {
+  overflow:hidden;
+  border-radius:50%;
 }
 </style>
