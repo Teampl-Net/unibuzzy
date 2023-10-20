@@ -1,6 +1,7 @@
 <template>
   <addPop v-if="mAddTodoPopShowYn" :pClosePop="closeAddTodoPop" :pSelectDate="mSelectDate" :pGetTodoFamilyList="mGetTodoFamilyList" :pGetTodoListGroupCab="getTodoListGroupCab"/>
   <detailPop v-if="mTodoDetailShowYn" :pClosePop="closeTodoDetail" :pSelectTodo="mSelectTodo" :pGetTodoList="getTodoListGroupCab" :pCompleteTodo="completeTodo" :pGetTodoListGroupCab="getTodoListGroupCab" :pGetTodoFamilyList="mGetTodoFamilyList" :pUpdateTodo="updateTodo" :pTodoDetail="mTodoDetail" :pMemoList="mMemoList"/>
+  <unibDetailPop v-if="mUniBTodoDetailPopShowYn" />
   <div class="popBg" v-if="mDeleteConfirmShowYn" @click="closeDeletePop"></div>
   <gConfirmPop v-if="mDeleteConfirmShowYn" :confirmText='mConfirmText' class="" confirmType='two' @ok="deleteTodo" @no='closeDeletePop'/>
   <div class="popBg" v-if="mSetPopShowYn" @click="closeUpdatePop"></div>
@@ -116,8 +117,9 @@
                       {{ todo.title }}
                     </p>
                 </div>
-                <div @click="openTodoDetail(todo)">
-                  <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
+                <div style="display:flex; justify-content: center; align-items: center;">
+                  <div @click="openUniBTodoDetail" class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px; margin-right:5px">uniB_detail</div>
+                  <div @click="openTodoDetail(todo)" class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
                 </div>
               </div>
           </div>
@@ -178,6 +180,7 @@
 </template>
 <script>
 import addPop from '../../components/pageComponents/todo/addPop.vue'
+import unibDetailPop from '../../components/pageComponents/todo/unibDetailPop.vue'
 import detailPop from '../../components/pageComponents/todo/detailPop.vue'
 import setPop from '../../components/pageComponents/todo/setPop.vue'
 import Datepicker from 'vue-datepicker-next'
@@ -191,6 +194,7 @@ export default {
     addPop,
     detailPop,
     setPop,
+    unibDetailPop,
     SkeletonBox
   },
   data () {
@@ -214,7 +218,8 @@ export default {
       mSetPopShowYn: false,
       mFamilyList: [],
       mTodoDetail: {},
-      mMemoList: []
+      mMemoList: [],
+      mUniBTodoDetailPopShowYn: false
     }
   },
   created () {
@@ -227,6 +232,16 @@ export default {
     console.log(this.mSelectDate)
   },
   methods: {
+    openUniBTodoDetail () {
+      // var param = {}
+      // param.targetType = 'contentsDetail'
+      // param.targetKey = 1011783
+      // this.$emit('openPop', param)
+      this.$router.push('/todo/1011783/934/13624')
+    },
+    closeUniBTodoDetail () {
+      this.mUniBTodoDetailPopShowYn = false
+    },
     setCompleteTodo (value, groupIndex, todoIndex) {
       this.mGetTodoGroupList[groupIndex][value][todoIndex].strikeOnOff = true
       setTimeout(() => {

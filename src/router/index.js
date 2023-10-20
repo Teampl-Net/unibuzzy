@@ -168,6 +168,11 @@ routes = [
         path: '/todo',
         name: 'todo',
         component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/TodoList.vue')
+      },
+      {
+        path: '/todo/:contentsKey/:creTeamKey/:cabinetKey',
+        name: 'todoContents',
+        component: () => import(/* webpackChunkName: "about" */ '../components/pageComponents/todo/unibDetailPop.vue')
       }
     ]
   },

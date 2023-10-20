@@ -2,6 +2,9 @@
     <div class="chanInfoBoxWrap">
       <div class="modiMemoPopBg" v-if="mSetPopShowYn" @click="closeSetPop"></div>
       <setPop v-if="mSetPopShowYn" :pClosePop="closeSetPop" :pSelectTodo="mSelectTodo" :pSaveTodo="saveTodo" :pFamilyList="mFamilyList" :pGetTodoFamilyList="pGetTodoFamilyList" :pGetCabiList="mGetCabiList" style="z-index: 999;"/>
+      <div class="popBgWrite" v-if="mTheAlimWritePopShowYn" @click="closeTheAlimWrite"></div>
+      <todoWriteContents v-if="mTheAlimWritePopShowYn" :pClosePop="closeTheAlimWrite" :contentType="'TODO'" @closeXPop="closeTheAlimWrite"/>
+      <!-- <writeContents class="writeContentsPop" v-if="boardWriteYn"  ref="chanAlimListWritePushRefs" @successWrite="successWriteBoard" @successSave="getContentsList" :contentType="currentPushListMainTab === 'P' ? 'ALIM' : 'BOAR'" @closeXPop='closeWriteBoardPop' :propData="boardWriteData" :params="boardWriteData"  @openPop='openItem' :changeMainTab='changeMainTab' @toAlimFromBoard='toAlimFromBoard' :propParams="boardWriteData" /> -->
       <gPopHeader :headerTitle="'Add'" :pClosePop="pClosePop" />
       <!-- <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 15px 0; width:100%; margin-top: 50px; ">
         <p class="fontBold commonSubTitleTextBold">{{ topDate() }}</p>
@@ -14,7 +17,10 @@
       </div> -->
       <div class="" style=" display: flex; justify-content: space-between; align-items: center; padding: 10px 5px 5px; margin:0px 10px;  margin-top: 50px;">
         <p class="fontBold">Recent Todo</p>
-        <div class="cursorP fontBold CDeepBgColor" style=" color: white; width: 60px; height:30px; font-size: 12px; line-height: 30px; text-align: center; border-radius: 20px;" @click="openSetPop('new')">New</div>
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <div class="cursorP fontBold CDeepBgColor" style=" color: white; width: 60px; height:30px; font-size: 12px; line-height: 30px; text-align: center; border-radius: 20px; margin-right:5px" @click="openTheAlimWrite()">Uni_New</div>
+          <div class="cursorP fontBold CDeepBgColor" style=" color: white; width: 60px; height:30px; font-size: 12px; line-height: 30px; text-align: center; border-radius: 20px;" @click="openSetPop('new')">New</div>
+        </div>
       </div>
       <div v-if="mRecentList.length === 0" class="fontBold" style="font-size: 20px; display: flex; justify-content: center; align-items: center; height:calc(100% - 300px)">There are no recent todo. </div>
       <div v-else class="w100P fl scroll" style="padding: 0 10px 10px; overflow: hidden auto; height:calc(100% - 120px);">
@@ -38,6 +44,7 @@
 </template>
 <script>
 import setPop from './setPop.vue'
+import todoWriteContents from './todoWriteContents.vue'
 
 export default {
   props: {
@@ -47,7 +54,8 @@ export default {
     pClosePop: Function
   },
   components: {
-    setPop
+    setPop,
+    todoWriteContents
   },
   data () {
     return {
@@ -57,7 +65,8 @@ export default {
       mFamilyList: [],
       mSelectFamily: 'U',
       mRecentTodoList: [],
-      mRecentList: []
+      mRecentList: [],
+      mTheAlimWritePopShowYn: false
     }
   },
   created () {
@@ -65,6 +74,12 @@ export default {
     this.getSelectTodoDetail(true)
   },
   methods: {
+    openTheAlimWrite () {
+      this.mTheAlimWritePopShowYn = true
+    },
+    closeTheAlimWrite () {
+      this.mTheAlimWritePopShowYn = false
+    },
     async getSelectTodoDetail (loadingYn) {
       var paramMap = {}
       if (this.mSelectFamily === 'U') {
@@ -270,5 +285,14 @@ export default {
   z-index: 12;
   top: 0;
   left: 0;
+}
+.popBgWrite {
+  width:100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+  background: #00000050;
 }
 </style>
