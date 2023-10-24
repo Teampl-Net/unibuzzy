@@ -669,6 +669,36 @@ export const methods = {
     result = response
     store.commit('UB_USER/MU_USER', result.data.userMap)
     return result
+  },
+  async getTodoList (param, loadingYn) {
+    var response = await commonAxiosFunction({ url: '/sUniB/mk.getTodoList', param: param }, loadingYn)
+    console.log(response)
+    return response.data
+  },
+  async getTodoListGroupCab (param, loadingYn) {
+    var response = await commonAxiosFunction({ url: '/sUniB/mk.getTodoListGroupCab', param: param }, loadingYn)
+    console.log(response)
+    return response.data
+  },
+  async getMyCabinetList (param) {
+    var response = await commonAxiosFunction({ url: '/sUniB/tp.getMyCabinetList', param: param }, false)
+    console.log(response)
+    return response.data
+  },
+  async saveTodo (param) {
+    var response = await commonAxiosFunction({ url: '/sUniB/mk.saveTodo', param: param }, true)
+    console.log(response)
+    return response.data
+  },
+  async getSelectTodoDetail (param, loadingYn) {
+    var response = await commonAxiosFunction({ url: '/sUniB/mk.getSelectTodoDetail', param: param }, loadingYn)
+    console.log(response)
+    return response.data
+  },
+  async deleteTodo (param) {
+    var response = await commonAxiosFunction({ url: '/sUniB/mk.deleteTodo', param: param }, true)
+    console.log(response)
+    return response.data
   }
 }
 
@@ -703,5 +733,11 @@ export default {
     Vue.config.globalProperties.$UBLogOut = methods.UBLogOut
     Vue.config.globalProperties.$getFollowerList = methods.getFollowerList
     Vue.config.globalProperties.$coreLoginCheck = methods.coreLoginCheck
+    Vue.config.globalProperties.$getTodoList = methods.getTodoList
+    Vue.config.globalProperties.$getTodoListGroupCab = methods.getTodoListGroupCab
+    Vue.config.globalProperties.$getMyCabinetList = methods.getMyCabinetList
+    Vue.config.globalProperties.$saveTodo = methods.saveTodo
+    Vue.config.globalProperties.$getSelectTodoDetail = methods.getSelectTodoDetail
+    Vue.config.globalProperties.$deleteTodo = methods.deleteTodo
   }
 }

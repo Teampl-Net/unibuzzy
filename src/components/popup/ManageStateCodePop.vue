@@ -1,7 +1,7 @@
 <i18n>
 {
   "ko": {
-    "TASK_MANAGEMENT": "업무설정",
+    "TASK_MANAGEMENT": "Work설정",
     "FOUND_DATE": "발견일",
     "MANAGER": "담당자",
     "DUE_DATE": "목표일",

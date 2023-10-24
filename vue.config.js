@@ -18,7 +18,7 @@ module.exports = {
         target: 'https://www.unibuzzy.com',
         // target: 'http://192.168.0.46:9090',
         // target: 'http://192.168.0.10:9443',
-        // target: 'http://localhost:19090',
+        // target: 'http://localhost:9090',
         // target: 'http://192.168.219.103:19090',
         // https://mo.d-alim.com:10443
         changeOrigin: true,
@@ -39,8 +39,8 @@ module.exports = {
         logLevel: 'debug'
       },
       '^/login/service': {
-        // target: 'https://mo.d-alim.com',
-        target: 'http://192.168.0.10:8083',
+        target: 'https://mo.d-alim.com',
+        // target: 'http://192.168.0.10:8083',
         // target: 'http://192.168.0.10:9090',
         // target: 'http://192.168.0.10:19090',
         // target: 'http://localhost:19090',

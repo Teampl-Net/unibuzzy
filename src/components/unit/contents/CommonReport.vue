@@ -11,7 +11,7 @@
     "REPO_MSG_HATE": "혐오 발언 또는 상징",
     "REPO_MSG_BULLY": "따돌림 또는 괴롭힘",
     "REPO_MSG_VIOLENCE": "폭력",
-    "REPO_MSG_OTHER": "기타 문제",
+    "REPO_MSG_OTHER": "etc 문제",
     "REPO_BTN_SUBMIT": "제출하기"
   },
   "en": {
@@ -88,7 +88,7 @@ export default {
   data () {
     return {
       contentText: '',
-      reportList: [{ type: '', reportTitle: '스팸' }, { type: 'si', reportTitle: '나체 이미지 또는 성적 행위' }, { type: 'mu', reportTitle: '마음에 들지 않습니다.' }, { type: 'at', reportTitle: '사기 또는 거짓' }, { type: 'at', reportTitle: '혐오 발언 또는 상징' }, { type: 'at', reportTitle: '따돌림 또는 괴롭힘' }, { type: 'at', reportTitle: '폭력' }, { type: 'at', reportTitle: '기타 문제' }],
+      reportList: [{ type: '', reportTitle: '스팸' }, { type: 'si', reportTitle: '나체 이미지 또는 성적 행위' }, { type: 'mu', reportTitle: '마음에 들지 않습니다.' }, { type: 'at', reportTitle: '사기 또는 거짓' }, { type: 'at', reportTitle: '혐오 발언 또는 상징' }, { type: 'at', reportTitle: '따돌림 또는 괴롭힘' }, { type: 'at', reportTitle: '폭력' }, { type: 'at', reportTitle: 'etc 문제' }],
       reportPopStep: 0,
       reportType: '',
       reportDetailType: '',

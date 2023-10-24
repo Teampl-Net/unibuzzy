@@ -6,7 +6,7 @@
     "SEAR_MSG_ENTER_NAME": "작성자명을 입력해주세요",
     "SEAR_MSG_SELE_DATE": "날짜를 선택해주세요",
     "SEAR_MSG_SELE_LABEL": "라벨 선택",
-    "SEAR_MSG_SELE_STATUS": "업무 상태를 선택해주세요",
+    "SEAR_MSG_SELE_STATUS": "Work 상태를 선택해주세요",
     "SEAR_BTN_SEARCH": "검색하기",
     "SEAR_MSG_ENTER_CHANNAME": "채널명을 입력해주세요",
     "SEAR_TITLE_FILE": "파일 검색",

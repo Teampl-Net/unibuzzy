@@ -19,6 +19,7 @@ export default {
   props: {
     pMemoEle: {},
     propContDetail: {},
+    pSetUpdateMemo: Function,
     pClosePop: Function
   },
   data () {
@@ -84,19 +85,23 @@ export default {
         memo.memoKey = this.mMemoEle.memoKey
         memo.bodyFullStr = inputMemoArea.innerHTML
         memo.bodyMinStr = inputMemoArea.innerHTML
-        var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
-          param: { memo: memo }
-        })
-        if (result && result.data && result.data.result) {
-          var contDetail = this.propContDetail
-          var newArr = [
-            ...result.data.resultList.memoList,
-            ...contDetail.D_MEMO_LIST
-          ]
-          contDetail.D_MEMO_LIST = this.replaceArr(newArr)
-          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [contDetail])
-          this.backClick()
+        if (this.pSetUpdateMemo) {
+          this.pSetUpdateMemo(memo)
+        } else {
+          var result = await this.$commonAxiosFunction({
+            url: '/sUniB/tp.saveMemo',
+            param: { memo: memo }
+          })
+          if (result && result.data && result.data.result) {
+            var contDetail = this.propContDetail
+            var newArr = [
+              ...result.data.resultList.memoList,
+              ...contDetail.D_MEMO_LIST
+            ]
+            contDetail.D_MEMO_LIST = this.replaceArr(newArr)
+            this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [contDetail])
+            this.backClick()
+          }
         }
       } catch (error) {
         console.error(error)

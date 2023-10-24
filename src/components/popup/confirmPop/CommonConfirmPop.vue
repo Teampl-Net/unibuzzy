@@ -5,7 +5,7 @@
       <div class="confirmPopHeader" >
         <img src="/resource/logo/UB_uniBLogo.png" class="fl" >
         <p class="font24 headerFont commonColor fl appNameP">{{ $t('COMMON_NAME_APP') }}</p>
-        <p class="font15 headerFont commonColor fl appIntroP">{{ $t('COMM_INTRO_COMMT') }}</p>
+        <!-- <p class="font15 headerFont commonColor fl appIntroP">{{ $t('COMM_INTRO_COMMT') }}</p> -->
       </div>
 
       <div class="confirmPopBody" >
@@ -87,7 +87,7 @@ export default {
   position: fixed;
   z-index: 99999999999999;
   top: 30%;
-  min-height: 280px;
+  /* min-height: 280px; */
   box-shadow: 0 0 9px 2px #b8b8b8;
   max-height: 500px;
   max-height: 250px;
