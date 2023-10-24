@@ -71,7 +71,7 @@
                 </div>
                 <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
               </div>
-              <div style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
+              <div @click="openTodoDetail(todo)" style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
                 <div style="display: flex; align-items: center;">
                   <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxCheck.png" width="20" height="20"/>
                   <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" @click="setCompleteTodo('myTodoList', groupIndex, todoIndex)"/>
@@ -80,9 +80,7 @@
                       {{ todo.title }}
                     </p>
                 </div>
-                <div @click="openTodoDetail(todo)">
-                  <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
-                </div>
+                <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
               </div>
             </div>
           </div>
