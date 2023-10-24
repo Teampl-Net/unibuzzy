@@ -132,6 +132,7 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   max-width: 1000px;
+  min-height: 600px;
 }
 
 /* #moTheAlimWrap {
