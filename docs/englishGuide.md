@@ -8,7 +8,7 @@
   5. [존재하는 컴포넌트의 활용](#5-존재하는-컴포넌트의-활용)
   6. [개발 시 지켜야 하는 규칙](#6-개발-시-지켜야-하는-규칙)
   7. [자주 사용하는 공통 정의 함수](#7-자주-사용하는-공통-정의-함수)
-- [github 가이드](#github-가이드)
+- [github Guide](#github-guide)
   1. [커밋 기준](#1-커밋-기준)
   2. [커밋 메시지](#2-커밋-메시지)
   3. [Pull request](#3-pull-request)
@@ -19,7 +19,7 @@
 
 ### 1-1. Source File Naming Rules
 
-- 합성 규칙 : 기본은 명사로만 이루어짐
+- Naming rules with multiple words : Commonly, we use only nouns
 - The first letter of the file should be capitalized.
 - Afterwards use camel case. 
 
@@ -29,7 +29,7 @@
 
 ### 1-2. Function Naming Rules
 
-- 합성 규칙 : verb + noun
+- Naming rules with multiple words: verb + noun
 - Excluding the prefix, use camel cause like for the source file
 
 ```jsx
@@ -38,7 +38,7 @@ ex) sendBoard ()
 
 ### 1-3. Variable Naming Rules
 
-- 합성 규칙 : 기본은 명사로만 이루어짐
+- Naming rules with multiple words : Commonly, we use only nouns
 - otherwise, naming is the same as for functions
 - variables defined in prop should have 'p' at the beginning of their names to distinguish them
 
