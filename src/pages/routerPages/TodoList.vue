@@ -72,10 +72,10 @@
                 <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
               </div>
               <div @click="openTodoDetail(todo)" style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
-                <div style="display: flex; align-items: center;">
+                <div @click.stop="setCompleteTodo('myTodoList', groupIndex, todoIndex)" style="display: flex; align-items: center;">
                   <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxCheck.png" width="20" height="20"/>
-                  <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" @click="setCompleteTodo('myTodoList', groupIndex, todoIndex)"/>
-                    <p v-if="todo.status === '00'" class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" @click="openTodoDetail(todo)">
+                  <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" />
+                    <p v-if="todo.status === '00'" class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" >
                       <span class="strikeLine" :style="todo.strikeOnOff? 'transition: all .5s; width:100%;':'width:0;'"></span>
                       {{ todo.title }}
                     </p>
@@ -106,18 +106,18 @@
                 </div>
                 <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
               </div>
-              <div style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
-                <div style="display: flex; align-items: center;">
+              <div @click="openTodoDetail(todo)" style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
+                <div @click.stop="setCompleteTodo('targetTodoList', groupIndex, todoIndex)" style="display: flex; align-items: center;">
                   <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxCheck.png" width="20" height="20"/>
-                  <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" @click="setCompleteTodo('targetTodoList', groupIndex, todoIndex)"/>
-                    <p v-if="todo.status === '00'" class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" @click="openTodoDetail(todo)">
+                  <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" />
+                    <p v-if="todo.status === '00'" class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" >
                       <span class="strikeLine" :style="todo.strikeOnOff? 'transition: all .5s; width:100%;':'width:0;'"></span>
                       {{ todo.title }}
                     </p>
                 </div>
                 <div style="display:flex; justify-content: center; align-items: center;">
-                  <div @click="openUniBTodoDetail" class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px; margin-right:5px">uniB_detail</div>
-                  <div @click="openTodoDetail(todo)" class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
+                  <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px; margin-right:5px">uniB_detail</div>
+                  <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
                 </div>
               </div>
           </div>
@@ -144,18 +144,16 @@
               </div>
               <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
             </div>
-            <div style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
-              <div style="display: flex; align-items: center;">
+            <div @click="openTodoDetail(todo)" style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
+              <div @click.stop="setCompleteTodo('completeTodoList', groupIndex, todoIndex)" style="display: flex; align-items: center;">
                 <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" />
-                <img v-else src="../../assets/images/todo/checkboxCheck.png" width="20" height="20" @click="setCompleteTodo('completeTodoList', groupIndex, todoIndex)"/>
-                  <p class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" @click="openTodoDetail(todo)">
+                <img v-else src="../../assets/images/todo/checkboxCheck.png" width="20" height="20" />
+                  <p class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" >
                     <span class="strikeLine" :style="todo.strikeOnOff? 'transition: all .5s; width:0;':'width:100%;'"></span>
                     {{ todo.title }}
                   </p>
               </div>
-              <div @click="openTodoDetail(todo)">
-                <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
-              </div>
+              <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
             </div>
           </div>
         </div>
