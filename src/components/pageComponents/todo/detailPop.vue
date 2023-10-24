@@ -27,9 +27,9 @@
       </div>
       <div class="w100P commonGrayText" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #6768a7;padding: 5px; font-size: 12px; height: 30px;">
         <div style="display: flex; align-items: center; height: 30px;">
-          <p class="detailFont" :style="mTodoDetail.status === '00'? '': 'text-decoration: line-through;'">{{ changeTypeToText(mTodoDetail.todoType) }}({{ mTodoDetail.todoUserName? $changeText(mTodoDetail.todoUserName):'본인'}})</p>
+          <p class="detailFont" >{{ changeTypeToText(mTodoDetail.todoType) }}({{ mTodoDetail.todoUserName? $changeText(mTodoDetail.todoUserName):'본인'}})</p>
         </div>
-        <p class="detailFont" :style="mTodoDetail.status === '00'? '': 'text-decoration: line-through;'">Writer : {{ $changeText(mTodoDetail.creUserName) }} ({{ changeUSADate(mTodoDetail.creDate) }})</p>
+        <p class="detailFont" >Writer : {{ $changeText(mTodoDetail.creUserName) }} ({{ changeUSADate(mTodoDetail.creDate) }})</p>
       </div>
       <!-- <div style="height:calc(100% - 200px);  overflow: hidden auto; width: 100%;">
         <div class="w100P mTop-10" style=" padding: 5px 10px; display: flex; justify-content: start; min-height: 100px;"  v-html="mTodoDetail.comment"></div>

@@ -66,8 +66,8 @@
                       <img :src="todo.domainPath + todo.pathMtext" style="width:20px; height:20px;"/>
                     </div>
                   </div>
-                  <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext)}} (본인)</p>
-                  <p v-else class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
+                  <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext)}} (본인)</p>
+                  <p v-else class="fl todoFontSize" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
                 </div>
                 <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
               </div>
@@ -101,8 +101,8 @@
                       <img :src="todo.domainPath + todo.pathMtext" style="width:20px; height:20px;"/>
                     </div>
                   </div>
-                  <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext)}} (본인)</p>
-                  <p v-else class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
+                  <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext)}} (본인)</p>
+                  <p v-else class="fl todoFontSize" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
                 </div>
                 <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
               </div>
@@ -139,8 +139,8 @@
                     <img :src="todo.domainPath + todo.pathMtext" style="width:20px; height:20px;"/>
                   </div>
                 </div>
-                <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext)}} (본인)</p>
-                <p v-else class="fl todoFontSize" :style="todo.status === '99' || todo.status === '98'? 'text-decoration: line-through;':''" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
+                <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext)}} (본인)</p>
+                <p v-else class="fl todoFontSize" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
               </div>
               <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
             </div>
