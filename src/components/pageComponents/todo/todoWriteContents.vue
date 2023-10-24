@@ -149,7 +149,7 @@
           <div class="fl w100P mtop-1 " style="display: flex; align-items: center; justify-content: center; padding: 0 1.5rem;">
             <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all; margin-right:22px">Date</p>
             <div class="w100P" style="min-height: 2rem; float: left; ">
-              <input class="fl w100P " type="date" id="pushTitleInput"  v-model="writePushTitle" style="min-height:30px; padding-left: 5px;">
+              <input class="fl w100P " type="date" v-model="selectedDate" style="min-height:30px; padding-left: 5px;">
             </div>
           </div>
           <!-- <div class="fl w100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
@@ -225,6 +225,7 @@ export default {
       titleShowYn: false, // 제목 공개 허용
       canReplyYn: true,
       fileYn: false,
+      selectedDate: '',
       writePushTitle: '',
       receiverList: { memberList: [], bookList: [] },
       bodyString: '',
