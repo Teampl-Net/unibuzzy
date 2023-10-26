@@ -1,0 +1,139 @@
+<template>
+  <div class="accessListPop">
+      <PopHeader @closeXPop="checkClosePop" class="headerShadow" headerTitle="Select Target" />
+      <div class="pagePaddingWrap accessPopBody" :style="'padding-top:' + ($STATUS_HEIGHT + 60)+ 'px'">
+        <TargetList class="targetListWrap" ref="targetList" @closeXPop="closeXPop" @addTarget="addTarget" :pSelectData="pSelectData" :pSelectedTargetList="mSelectedTargetList" />
+        <SelectedTargetList class="selectedListCompo" ref="selectedListCompo" @saveTarget="saveTarget" @addTarget="addTarget" :pSelectedTargetList="mSelectedTargetList" />
+      </div>
+  </div>
+</template>
+
+<script>
+import TargetList from './TargetList.vue'
+import SelectedTargetList from './SelectedTargetList.vue'
+import PopHeader from './PopHeader.vue'
+export default {
+  name: 'SelectTargetPop',
+  components: {
+    SelectedTargetList,
+    TargetList,
+    PopHeader
+  },
+  props: {
+    pSelectData: Array,
+    pSelectedTargetList: Array
+  },
+  data () {
+    return {
+      mSelectedTargetList: [] // 선택된 targetList
+    }
+  },
+  created () {
+    this.$addHistoryStack('SelectTargetPop')
+    if (this.pSelectedTargetList && this.pSelectedTargetList.length > 0) {
+      this.mSelectedTargetList = [...this.pSelectedTargetList]
+    }
+  },
+  methods: {
+    checkClosePop () {
+      if (this.$refs.targetList) {
+        this.$refs.targetList.checkClosePop()
+      }
+    },
+    saveTarget () {
+      this.$emit('saveTarget', this.mSelectedTargetList)
+    },
+    addTarget (target) {
+      // 선택 여부를 판별하여 추가할지 삭제할지 선택
+      const result = this.checkSelectedYn(target)
+      if (result.result) {
+        this.mSelectedTargetList.splice(result.index, 1)
+      } else {
+        this.mSelectedTargetList.push(target)
+      }
+    },
+    checkSelectedYn (target) {
+      // 해당하는 target이 선택되었는지 아닌지를 판별해주는 함수
+      const index = this.mSelectedTargetList.findIndex(value => value.accessKey === target.accessKey && value.accessKind === target.accessKind)
+      if (index === -1) {
+        return { result: false }
+      } else {
+        return { result: true, index: index }
+      }
+    },
+    closeXPop () {
+      var history = this.$store.getters['UB_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
+      this.$checkDeleteHistory('selectTargetPop')
+      this.$emit('closeXPop')
+    }
+  }
+}
+</script>
+
+<style scoped>
+.pagePaddingWrap {
+  padding: 0px 1.5rem;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding-top: 50px;
+}
+.longHeight {
+height: 100% !important;
+}
+.selectedReceiverBox {
+  height: calc(100% - 100px);
+  width: 100%;
+  margin-top: 5px;
+  overflow-y: scroll;
+  padding: 10px;
+  background-color: white;
+  text-align: left;
+}
+[contenteditable=true] {
+  outline: none;
+}
+input:focus{
+  outline: none;
+}
+.accessListPop {
+  height: 100vh;
+  background-color:white;
+  width:100%;
+  z-index: 9999999;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+.accessPopBody {
+  position:absolute;
+  overflow: auto;
+  padding-top: 50px;
+  width: 100%;
+}
+.accessPopBody > div:first-child {
+  width: 100%;
+  position: relative;
+  float: left;
+  height: calc(100% - 95px);
+  overflow: auto;
+}
+.selectedListCompo {
+  float: left !important;
+  width: 100% !important;
+  position: absolute !important;
+  bottom: 0px !important;
+  left: 0px !important;
+  min-height: 150px !important;
+}
+.targetListWrap {
+  height: calc(100% - 150px) !important;
+}
+@media screen and (max-width:300px) {
+  .pagePaddingWrap {padding: 0 1rem!important;}
+}
+</style>
