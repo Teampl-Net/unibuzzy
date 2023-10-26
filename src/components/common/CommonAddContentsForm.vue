@@ -46,18 +46,18 @@
             id="title"
             type="text"
             placeholder="Title"
-            v-model="tagList.title"
+            v-model="params.title"
           />
         </fieldset>
       </fieldset>
 
       <!-- optional post values -->
       <fieldset id="optionalOptions">
-        <fieldset v-if="pOptions.model === 'mamkik'" id="date">
+        <fieldset v-if="pOptions.model === 'mankik'" id="date">
           <legend>날짜 선택</legend>
           <label for="">Date</label>
           <input
-            v-if="pOptions.model === 'mamkik'"
+            v-if="pOptions.model === 'mankik'"
             id="fromDate"
             type="date"
             v-model="params.fromDateStr"
@@ -65,7 +65,7 @@
           <input id="toDate" type="date" v-model="params.toDateStr" />
         </fieldset>
 
-        <fieldset v-if="pOptions.model === 'mamkik'" id="categoryTag">
+        <fieldset v-if="pOptions.model === 'mankik'" id="categoryTag">
           <legend>카테고리 선택</legend>
           <div class="categoryListWrap">
             <button
@@ -80,7 +80,7 @@
         </fieldset>
 
         <fieldset
-          v-if="pOptions.model === 'mamkik' || pOptions.model === 'unibuzzy'"
+          v-if="pOptions.model === 'mankik' || pOptions.model === 'unibuzzy'"
           id="uploadFile"
         >
           <legend>파일 첨부</legend>
@@ -155,6 +155,9 @@ export default defineComponent({
     const hasTitleYn = ref(false)
     const toggleTitleYn = () => {
       hasTitleYn.value = !hasTitleYn.value
+      if (hasTitleYn.value) {
+        params.title = ''
+      }
     }
 
     // Target 선택 기능
@@ -302,8 +305,20 @@ export default defineComponent({
             params.title = params.attachFileList[0].fileName
           }
         }
-        // if (params)
-        props.pPostContentsFn(params)
+
+        if (props.pOptions.model === 'mankik') {
+          if (hasTitleYn.value && !params.title) {
+            alert('제목을 작성해주세요.')
+          } else if (!params.toDateStr) {
+            alert('목표 날짜를 지정해주세요.')
+          } else if (!params.tagList.length) {
+            alert('게시글의 Tag을 선택해주세요.')
+          } else if (!params.bodyFullStr && !params.attachFileList.length) {
+            alert('공유하고자 하는 내용을 작성하거나, 파일을 첨부해주세요.')
+          } else {
+            props.pPostContentsFn(params)
+          }
+        }
       } catch (error) {
         console.error(error)
       }
@@ -335,6 +350,11 @@ main {
   height: calc(100% - 120px);
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
+  button {
+    border: 1px solid #000;
+    padding: 3px 6px;
+    margin: 2px;
+  }
 }
 legend {
   display: none;
