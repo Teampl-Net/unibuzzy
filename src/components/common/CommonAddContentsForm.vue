@@ -238,6 +238,9 @@ export default defineComponent({
       if (fileList.addYn === true) {
         tempFileList.push(fileList)
       }
+      if (hasTitleYn.value && !params.title) {
+        params.title = fileList.file.name
+      }
     }
     // ------ 파일 서버에 업로드
     const fileDataUploadToServer = async () => {
