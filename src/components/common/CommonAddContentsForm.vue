@@ -1,112 +1,131 @@
 <template>
-  <header>
-    <!-- Popup Title -->
-    <h1>{{ pOptions.purpose }}</h1>
-    <button>닫기</button>
-  </header>
-
-  <main>
-    <form>
-      <!-- neccessary post values -->
-      <fieldset id="neccessaryOptions">
-        <legend>기본 정보 설정</legend>
-
-        <fieldset id="postReceivers">
-          <legend>받는 사람 지정</legend>
-          <button type="button">All</button>
-          <button type="button" @click="toggleReceiverSelectPop">Select</button>
-
-          <!-- target선택 팝업 -->
-          <SelectTargetPop
-            v-if="showReceiverSelectList"
-            :pSelectData="receiverList"
-            :pSelectedTargetList="params.targetList"
-            :pSelectOnlyYn="pSelectOnlyYn"
-            @saveTarget="setTargetList"
-            @closeXPop="toggleReceiverSelectPop"
-          />
-
-          <!-- 선택된 target -->
-          <div v-if="params.targetList.length" class="selectedTargetList">
-            <div v-for="target in params.targetList" :key="target.accessKey">
-              {{ target.accessName }}
+  <div id="layout">
+    <header>
+      <!-- Popup Title -->
+      <h1>{{ pOptions.purpose }}</h1>
+      <button>닫기</button>
+    </header>
+    <main>
+      <form>
+        <!-- neccessary post values -->
+        <fieldset id="neccessaryOptions">
+          <legend>기본 정보 설정</legend>
+          <fieldset id="postReceivers">
+            <div class="selectReceiverBox">
+              <legend>받는 사람 지정</legend>
+              <label for="">Receiver</label>
+              <div class="btnWrap">
+                <button type="button">All</button>
+                <button type="button" @click="toggleReceiverSelectPop">
+                  Select
+                </button>
+              </div>
             </div>
-          </div>
-        </fieldset>
-
-        <div class="optionToggleBtnWrap">
-          <button type="button" @click="toggleAnonymousYn">익명</button>
-          <button type="button" @click="toggleCommentYn">댓글</button>
-          <button type="button" @click="toggleTitleYn">제목</button>
-        </div>
-
-        <fieldset v-if="hasTitleYn">
-          <label for="id">Title</label>
-          <input
-            id="title"
-            type="text"
-            placeholder="Title"
-            v-model="params.title"
-          />
-        </fieldset>
-      </fieldset>
-
-      <!-- optional post values -->
-      <fieldset id="optionalOptions">
-        <fieldset v-if="pOptions.model === 'mankik'" id="date">
-          <legend>날짜 선택</legend>
-          <label for="">Date</label>
-          <input
-            v-if="pOptions.model === 'mankik'"
-            id="fromDate"
-            type="date"
-            v-model="params.fromDateStr"
-          />
-          <input id="toDate" type="date" v-model="params.toDateStr" />
-        </fieldset>
-
-        <fieldset v-if="pOptions.model === 'mankik'" id="categoryTag">
-          <legend>카테고리 선택</legend>
-          <div class="categoryListWrap">
+            <!-- target선택 팝업 -->
+            <SelectTargetPop
+              v-if="showReceiverSelectList"
+              :pSelectData="receiverList"
+              :pSelectedTargetList="params.targetList"
+              :pSelectOnlyYn="pSelectOnlyYn"
+              @saveTarget="setSelectedTargetList"
+              @closeXPop="toggleReceiverSelectPop"
+            />
+            <!-- 선택된 target -->
+            <div v-if="params.targetList.length" class="selectedTargetList">
+              <div v-for="target in params.targetList" :key="target.accessKey">
+                {{ target.accessName }}
+              </div>
+            </div>
+          </fieldset>
+          <div class="optionToggleBtnWrap">
+            <label for="">Options</label>
             <button
               type="button"
-              v-for="tag in tagList"
-              :key="tag.categoryKey"
-              @click="toggleSelectTag(tag)"
+              @click="toggleAnonymousYn"
+              :class="{ activeBtn: params.showCreNameYn }"
             >
-              {{ tag.categoryNameMtext }}
+              익명
+            </button>
+            <button
+              type="button"
+              @click="toggleCommentYn"
+              :class="{ activeBtn: params.canReplyYn }"
+            >
+              댓글
+            </button>
+            <button
+              type="button"
+              @click="toggleTitleYn"
+              :class="{ activeBtn: hasTitleYn }"
+            >
+              제목
             </button>
           </div>
+          <fieldset v-if="hasTitleYn">
+            <label for="id">Title</label>
+            <input
+              id="title"
+              type="text"
+              placeholder="Title"
+              v-model="params.title"
+            />
+          </fieldset>
         </fieldset>
-
-        <fieldset
-          v-if="pOptions.model === 'mankik' || pOptions.model === 'unibuzzy'"
-          id="uploadFile"
-        >
-          <legend>파일 첨부</legend>
-          <AttachFile @setSelectedAttachFileList="setAttachedFile" />
+        <!-- optional post values -->
+        <fieldset id="optionalOptions">
+          <fieldset v-if="pOptions.model === 'mankik'" id="date">
+            <legend>날짜 선택</legend>
+            <label for="">Date</label>
+            <input
+              v-if="pOptions.model === 'mankik'"
+              id="fromDate"
+              type="date"
+              v-model="params.fromDateStr"
+            />
+            <input id="toDate" type="date" v-model="params.toDateStr" />
+          </fieldset>
+          <fieldset v-if="pOptions.model === 'mankik'" id="categoryTag">
+            <legend>카테고리 선택</legend>
+            <label for="">Tag</label>
+            <div class="categoryListWrap">
+              <button
+                type="button"
+                v-for="tag in tagDataList"
+                :key="tag.categoryKey"
+                @click="toggleSelectTag(tag)"
+              >
+                {{ tag.categoryNameMtext }}
+              </button>
+            </div>
+          </fieldset>
+          <fieldset
+            v-if="pOptions.model === 'mankik' || pOptions.model === 'unibuzzy'"
+            id="uploadFile"
+          >
+            <legend>파일 첨부</legend>
+            <label for="">File</label>
+            <AttachFile @setSelectedAttachFileList="setAttachedFile" />
+          </fieldset>
+          <fieldset>
+            <legend>작성 내용</legend>
+            <textarea
+              name=""
+              id=""
+              cols="30"
+              rows="10"
+              v-model="params.bodyFullStr"
+            ></textarea>
+          </fieldset>
         </fieldset>
-
-        <fieldset>
-          <legend>작성 내용</legend>
-          <textarea
-            name=""
-            id=""
-            cols="30"
-            rows="10"
-            v-model="params.bodyFullStr"
-          ></textarea>
-        </fieldset>
-      </fieldset>
-    </form>
-  </main>
-
-  <footer>
-    <div class="btnListWrap">
-      <button @click="postContents">완료</button>
-      <button>취소</button>
-    </div>
-  </footer>
+      </form>
+    </main>
+    <footer>
+      <div class="btnListWrap">
+        <button @click="postContents">완료</button>
+        <button>취소</button>
+      </div>
+    </footer>
+  </div>
 </template>
 
 <script>
@@ -174,7 +193,7 @@ export default defineComponent({
     }
 
     // Tag(category) 선택 기능
-    const tagList = props.pGetTagListFn()
+    const tagDataList = props.pGetTagListFn()
     const toggleSelectTag = (selectedTag) => {
       const indexToRemove = params.tagList.indexOf(selectedTag)
       if (indexToRemove !== -1) {
@@ -335,7 +354,7 @@ export default defineComponent({
       toggleCommentYn,
       hasTitleYn,
       toggleTitleYn,
-      tagList,
+      tagDataList,
       toggleSelectTag,
       setAttachedFile,
       postContents
@@ -345,16 +364,60 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-// 임시 CSS
+// Common CSS
+#layout {
+  width: 100%;
+  height: calc(100% - 120px);
+  margin-top: 60px;
+  padding: 16px 24px;
+
+  background-color: #f5f5f5;
+
+  border: 1px solid #000;
+  border-radius: 0.8rem;
+}
+button {
+  min-height: 30px;
+  padding: px 15px;
+  margin: 2px;
+
+  color: #7a7a7a;
+
+  background-color: #f1f1ff;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  &.activeBtn {
+    border: 2px solid #5f61bd;
+    color: #5f61bd;
+  }
+  &.closeBtn {
+    border: none;
+    background-color: none;
+  }
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  h1 {
+    font-size: 20px;
+  }
+}
+h1,
+label {
+  color: #5f61bd;
+  font-weight: bold;
+}
+textarea {
+  resize: none;
+}
+
+// Form CSS
 main {
   height: calc(100% - 120px);
+  margin-top: 16px;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
-  button {
-    border: 1px solid #000;
-    padding: 3px 6px;
-    margin: 2px;
-  }
 }
 legend {
   display: none;

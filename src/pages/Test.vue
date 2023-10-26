@@ -1,20 +1,11 @@
 <template>
-  <div
-    style="
-      margin-top: 60px;
-      border: 1px solid #000;
-      width: 100%;
-      height: calc(100% - 120px);
-    "
-  >
-    <CommonAddContentsForm
-      :pOptions="options"
-      :pUserInfo="userInfo"
-      :pGetTagListFn="getTagListFn"
-      :pGetReceiverList="getReceiverList"
-      :pPostContentsFn="postContents"
-    />
-  </div>
+  <CommonAddContentsForm
+    :pOptions="options"
+    :pUserInfo="userInfo"
+    :pGetTagListFn="getTagListFn"
+    :pGetReceiverList="getReceiverList"
+    :pPostContentsFn="postContents"
+  />
 </template>
 
 <script>
