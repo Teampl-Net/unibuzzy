@@ -193,9 +193,9 @@
       </form>
     </main>
     <footer>
-      <div class="btnListWrap">
-        <button @click="postContents">완료</button>
-        <button>취소</button>
+      <div class="footerBtnWrap">
+        <button @click="postContents">Post</button>
+        <button>Cancel</button>
       </div>
     </footer>
   </div>
@@ -477,22 +477,6 @@ button {
     background-color: none;
   }
 }
-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 8px;
-  h1 {
-    font-size: 20px;
-  }
-  button {
-    padding: 3px;
-    background-color: none;
-    border: none;
-    img {
-      width: 18px;
-    }
-  }
-}
 h1,
 label {
   min-width: 64px;
@@ -518,6 +502,36 @@ textarea {
 }
 .btnWrap img {
   width: 16px;
+}
+// header & footer
+header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  h1 {
+    font-size: 20px;
+  }
+  button {
+    padding: 3px;
+    background-color: none;
+    border: none;
+    img {
+      width: 18px;
+    }
+  }
+}
+footer {
+  .footerBtnWrap {
+    padding-top: 20px;
+    button {
+      font-size: 20px;
+      font-weight: bold;
+      &:first-child {
+        background-color: #5f61bd;
+        color: #fff;
+      }
+    }
+  }
 }
 
 // Form CSS
