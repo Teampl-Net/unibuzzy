@@ -3,7 +3,12 @@
     <header>
       <!-- Popup Title -->
       <h1>{{ pOptions.purpose }}</h1>
-      <button type="button">X</button>
+      <button type="button">
+        <img
+          src="../../assets/images/common/popup_close.png"
+          alt="close button"
+        />
+      </button>
     </header>
     <main>
       <form>
@@ -20,6 +25,11 @@
                   @click="selectAllReceivers"
                   :class="{ activeBtn: params.targetList === 'A' }"
                 >
+                  <img
+                    v-if="params.targetList === 'A'"
+                    src="../../assets/images/common/icon_check_commonColor.svg"
+                    alt="check image"
+                  />
                   All
                 </button>
                 <button
@@ -31,6 +41,14 @@
                       (params.targetList.length && params.targetList !== 'A')
                   }"
                 >
+                  <img
+                    v-if="
+                      showReceiverSelectList ||
+                      (params.targetList.length && params.targetList !== 'A')
+                    "
+                    src="../../assets/images/common/icon_check_commonColor.svg"
+                    alt="check image"
+                  />
                   Select
                 </button>
               </div>
@@ -45,10 +63,29 @@
               @closeXPop="toggleReceiverSelectPop"
             />
             <!-- 선택된 target -->
-            <div v-if="params.targetList.length" class="selectedTargetList">
+            <div
+              @click="toggleReceiverSelectPop"
+              v-if="params.targetList.length && params.targetList !== 'A'"
+              class="selectedTargetList"
+            >
               <div v-for="target in params.targetList" :key="target.accessKey">
+                <img
+                  v-if="target.accessKind === 'U' || target.accessKind === 'C'"
+                  src="../../assets/images/footer/icon_people.svg"
+                  alt="person image"
+                />
+                <img
+                  v-else
+                  src="../../assets/images/channel/channer_addressBook.svg"
+                  alt="address book image"
+                />
                 {{ target.accessName }}
               </div>
+              <img
+                class="plusImg"
+                src="../../assets/images/formEditor/icon_formEditPlus.svg"
+                alt="plus image"
+              />
             </div>
           </fieldset>
           <fieldset id="optionToggleBtnWrap">
@@ -59,6 +96,11 @@
                 @click="toggleAnonymousYn"
                 :class="{ activeBtn: params.showCreNameYn }"
               >
+                <img
+                  v-if="params.showCreNameYn"
+                  src="../../assets/images/common/icon_check_commonColor.svg"
+                  alt="check image"
+                />
                 익명
               </button>
               <button
@@ -66,6 +108,11 @@
                 @click="toggleCommentYn"
                 :class="{ activeBtn: params.canReplyYn }"
               >
+                <img
+                  v-if="params.canReplyYn"
+                  src="../../assets/images/common/icon_check_commonColor.svg"
+                  alt="check image"
+                />
                 댓글
               </button>
               <button
@@ -73,6 +120,11 @@
                 @click="toggleTitleYn"
                 :class="{ activeBtn: hasTitleYn }"
               >
+                <img
+                  v-if="hasTitleYn"
+                  src="../../assets/images/common/icon_check_commonColor.svg"
+                  alt="check image"
+                />
                 제목
               </button>
             </div>
@@ -205,6 +257,9 @@ export default defineComponent({
     const showReceiverSelectList = ref(false)
     const toggleReceiverSelectPop = () => {
       showReceiverSelectList.value = !showReceiverSelectList.value
+      if (showReceiverSelectList.value && params.targetList === 'A') {
+        params.targetList = []
+      }
     }
     const selectAllReceivers = () => {
       params.targetList = 'A'
@@ -397,8 +452,6 @@ export default defineComponent({
   padding: 16px 24px;
 
   background-color: #f5f5f5;
-
-  border: 1px solid #000;
   border-radius: 0.8rem;
 }
 button {
@@ -431,6 +484,14 @@ header {
   h1 {
     font-size: 20px;
   }
+  button {
+    padding: 3px;
+    background-color: none;
+    border: none;
+    img {
+      width: 18px;
+    }
+  }
 }
 h1,
 label {
@@ -455,14 +516,17 @@ textarea {
     margin: 20px;
   }
 }
+.btnWrap img {
+  width: 16px;
+}
 
 // Form CSS
 main {
   height: calc(100% - 120px);
   margin-top: 8px;
   padding-top: 16px;
-  border-top: 1px solid #000;
-  border-bottom: 1px solid #000;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 
   fieldset > fieldset {
     margin-top: 16px;
@@ -493,18 +557,31 @@ main {
   }
   #postReceivers {
     .selectedTargetList {
+      position: relative;
       display: flex;
       align-items: center;
-      min-height: 30px;
+      min-height: 35px;
       padding: 0 8px;
       margin-top: 5px;
-      // margin-left: ;
+      margin-left: 72px;
+      cursor: pointer;
 
       background-color: #fff;
       border: 1px solid rgb(204, 204, 204);
       border-radius: 8px;
       & > div {
         margin-right: 16px;
+        img {
+          width: 15px;
+        }
+      }
+      .plusImg {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translateY(-50%);
+
+        width: 20px;
       }
     }
   }
