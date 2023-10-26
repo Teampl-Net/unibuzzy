@@ -14,17 +14,19 @@
         <fieldset id="postReceivers">
           <legend>받는 사람 지정</legend>
           <button type="button">All</button>
-          <button @click="toggleReceiverSelectPop">Select</button>
+          <button type="button" @click="toggleReceiverSelectPop">Select</button>
 
           <!-- target선택 팝업 -->
-          <div
+          <SelectTargetPop
             v-if="showReceiverSelectList"
-            :pRecieverListData="receiverList"
-            :pSetTargetList="setTargetList"
-          ></div>
+            :pSelectData="receiverList"
+            :pSelectedTargetList="params.targetList"
+            @saveTarget="setTargetList"
+            @closeXPop="toggleReceiverSelectPop"
+          />
 
           <!-- 선택된 target -->
-          <div v-if="params.targetList" class="selectedTargetList">
+          <div v-if="params.targetList.length" class="selectedTargetList">
             <div v-for="target in params.targetList" :key="target.accessKey">
               {{ target.accessName }}
             </div>
@@ -109,16 +111,20 @@
 // vue settings
 import { defineComponent, ref, reactive, onMounted } from 'vue'
 
+// components
+import SelectTargetPop from './selectTarget/SelectTargetPop.vue'
+
 export default defineComponent({
   props: [
     'pOptions',
     'pUserInfo',
     'pGetTagListFn',
     'pGetReceiverList',
-    'pPostContentsFn',
-    'test'
+    'pPostContentsFn'
   ],
-  components: {},
+  components: {
+    SelectTargetPop
+  },
   setup(props) {
     // Tag List
     const tagList = props.pGetTagListFn()
@@ -199,6 +205,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 // 임시 CSS
 main {
+  height: calc(100% - 120px);
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
 }

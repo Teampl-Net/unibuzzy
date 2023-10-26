@@ -1,33 +1,83 @@
 <template>
-    <div class="activeBarWrap">
-      <div ref="tabbar" class="activeBarArea" :class="!channelYn? 'pagePaddingWrap':''">
-        <div class="fl tabTitleBox textLeft tActiveBarItem" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" :style="channelYn? 'flex: 1 1 0%':''">
-          <p :style="!channelYn? activebarWidth:''" :class="{mWidth : tabTrimLength(tab.display) > 3, commonColor: index === activetab && channelYn, lightGray: index !== activetab && channelYn}" class="tabItem font16 fontBold commonColor" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
-        </div>
-        <div class="activeBar fl tActiveBarBottom noLeft"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(selectedTabName) > 3 }"></div>
-        <div class="barSearchBox" v-if="searchYn && !channelYn">
-          <div class="fr activeBarSearchIcon">
-            <img class="fl cursorP img-w20 lineHeight40" @click="$emit('openFindPop')" src="@/assets/images/common/iocn_search.png" alt="검색버튼">
-          </div>
-        </div>
+  <div class="activeBarWrap">
+    <div
+      ref="tabbar"
+      class="activeBarArea"
+      :class="!channelYn ? 'pagePaddingWrap' : ''"
+    >
+      <div
+        class="fl tabTitleBox textLeft tActiveBarItem"
+        :class="index === activetab ? 'active' : ''"
+        v-for="(tab, index) in tabList"
+        @click="switchtab(index)"
+        :key="index"
+        ref="tab"
+        :style="channelYn ? 'flex: 1 1 0%' : ''"
+      >
+        <p
+          :style="!channelYn ? activebarWidth : ''"
+          :class="{
+            mWidth: tabTrimLength(tab.display) > 3,
+            commonColor: index === activetab && channelYn,
+            lightGray: index !== activetab && channelYn
+          }"
+          class="tabItem font16 fontBold commonColor"
+          v-html="tab.display"
+          v-on:click="selectTab(tab.name, tab.display)"
+        ></p>
       </div>
-      <div class="w100P" v-if="channelYn">
-        <div class="fl w100P channelSearchBox" v-if="searchYn">
-          <div class="fl mtop-03" v-if="propSearchList">
-            <cSearchBox class="mright-03" :propChanSearchYn='true' :propSearchBox='value' v-for="(value, index) in propSearchList" :key="index" @searchBoxClick='searchBoxClick' />
-          </div>
-          <div class="fr channelSearchIcon">
-            <img class="fl cursorP img-w20 lineHeight40" @click="$emit('openFindPop')" src="@/assets/images/common/iocn_search.png" alt="검색버튼">
-          </div>
+      <div
+        class="activeBar fl tActiveBarBottom noLeft"
+        ref="activeBar"
+        :style="activebarWidth"
+        :class="{ mWidth: tabTrimLength(selectedTabName) > 3 }"
+      ></div>
+      <div class="barSearchBox" v-if="searchYn && !channelYn">
+        <div class="fr activeBarSearchIcon">
+          <img
+            class="fl cursorP img-w20 lineHeight40"
+            @click="$emit('openFindPop')"
+            src="@/assets/images/common/iocn_search.png"
+            alt="검색버튼"
+          />
         </div>
-      </div>
-      <div v-if="searchYn && resultSearchKeyList && resultSearchKeyList.length > 0" class="pagePaddingWrap barSearchResultWrap">
-        <searchResult @changeSearchList="changeSearchList" :searchList="resultSearchKeyList" />
       </div>
     </div>
+    <div class="w100P" v-if="channelYn">
+      <div class="fl w100P channelSearchBox" v-if="searchYn">
+        <div class="fl mtop-03" v-if="propSearchList">
+          <cSearchBox
+            class="mright-03"
+            :propChanSearchYn="true"
+            :propSearchBox="value"
+            v-for="(value, index) in propSearchList"
+            :key="index"
+            @searchBoxClick="searchBoxClick"
+          />
+        </div>
+        <div class="fr channelSearchIcon">
+          <img
+            class="fl cursorP img-w20 lineHeight40"
+            @click="$emit('openFindPop')"
+            src="@/assets/images/common/iocn_search.png"
+            alt="검색버튼"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      v-if="searchYn && resultSearchKeyList && resultSearchKeyList.length > 0"
+      class="pagePaddingWrap barSearchResultWrap"
+    >
+      <searchResult
+        @changeSearchList="changeSearchList"
+        :searchList="resultSearchKeyList"
+      />
+    </div>
+  </div>
 </template>
 <script>
-import searchResult from '../../components/unit/search/SearchResult.vue'
+import searchResult from '../../unit/search/SearchResult.vue'
 import cSearchBox from '@/components/unit/search/CSearchBox.vue'
 export default {
   components: {
@@ -43,7 +93,7 @@ export default {
     testYn: { type: Boolean, default: false },
     channelYn: { type: Boolean, default: false }
   },
-  data () {
+  data() {
     return {
       activetab: 0,
       tabwidth: 3,
@@ -52,22 +102,26 @@ export default {
     }
   },
   methods: {
-    searchBoxClick (searchData) {
+    searchBoxClick(searchData) {
       this.$emit('searchBoxClick', searchData)
     },
-    tabTrimLength (displayName) {
+    tabTrimLength(displayName) {
       if (this.modeType === 'Basic') {
         var text = displayName.replaceAll(' ', '')
         return text.length
       }
     },
-    changeSearchList (type) {
+    changeSearchList(type) {
       this.$emit('changeSearchList', type)
     },
-    switchtab (n, tab) {
+    switchtab(n, tab) {
       this.mSelectedTab = n
       if (tab) {
-        if (tab.display !== undefined && tab.display !== null && tab.display !== '') {
+        if (
+          tab.display !== undefined &&
+          tab.display !== null &&
+          tab.display !== ''
+        ) {
           this.selectedTabName = tab.display.replaceAll(' ', '')
         }
         this.$emit('changeTab', tab.name)
@@ -79,14 +133,18 @@ export default {
         this_.activetab = Number(n)
       })
     },
-    selectTab (tab, displayName) {
-      if (displayName !== undefined && displayName !== null && displayName !== '') {
+    selectTab(tab, displayName) {
+      if (
+        displayName !== undefined &&
+        displayName !== null &&
+        displayName !== ''
+      ) {
         this.selectedTabName = displayName.replaceAll(' ', '')
       }
       this.$emit('changeTab', tab)
     }
   },
-  created () {
+  created() {
     if (this.activetabProp) {
       for (var i = 0; i < this.tabList.length; i++) {
         if (this.tabList[i].name === this.activetabProp) {
@@ -104,26 +162,28 @@ export default {
 
     if (window.innerWidth < 400) {
       this.tabwidth = 4
-    } if (window.innerWidth < 290) {
+    }
+    if (window.innerWidth < 290) {
       this.tabwidth = 3
     }
   },
   computed: {
-    pointer () {
+    pointer() {
       if (window.PointerEvent) return true
       else return false
     },
-    activebarWidth () {
+    activebarWidth() {
       var tabWidth = 100 / this.tabList.length
       if (this.testYn === true || this.channelYn) {
         return {
           '--tabwidth': tabWidth + '%',
-          '--transform': 'translateX(' + (this.activetab * 100) + '%' + ')'
+          '--transform': 'translateX(' + this.activetab * 100 + '%' + ')'
         }
       } else {
         return {
           '--tabwidth': this.tabwidth + 'rem',
-          '--transform': 'translateX(' + (this.activetab * this.tabwidth * 1) + 'rem' + ')'
+          '--transform':
+            'translateX(' + this.activetab * this.tabwidth * 1 + 'rem' + ')'
         }
       }
     }
@@ -131,9 +191,9 @@ export default {
 }
 </script>
 
-<style >
+<style>
 /* background: #e9e9e9 */
- /* background: #e4e4e463; */
+/* background: #e4e4e463; */
 .activeSearchInput {
   border: none;
   background: #e9e9e9;
@@ -182,7 +242,7 @@ export default {
   background: black;
   transition: 0.5s ease;
 }
-.mWidth{
+.mWidth {
   width: 4.5rem !important;
 }
 .tabcontainer {
@@ -194,7 +254,7 @@ export default {
 }
 
 .secondTab {
-  width:8.8rem;
+  width: 8.8rem;
 }
 
 .tabpane {
@@ -207,11 +267,11 @@ export default {
 }
 .tActiveBarWrap {
   margin-top: 0;
-  background: #FFF;
+  background: #fff;
 }
 .tActiveBarArea {
   padding-top: 10px;
-  background: #FFF;
+  background: #fff;
   border-bottom: 3px solid #ccc;
   height: 41px;
   position: relative;
@@ -227,7 +287,7 @@ export default {
 }
 .tActiveBarBottom {
   position: absolute;
-  background: #6768A7;
+  background: #6768a7;
   height: 3px;
   border-radius: 3px;
   left: 0;
@@ -260,8 +320,8 @@ export default {
 }
 .activeBarArea {
   padding-top: 10px;
-  background: #FFF;
-  border-bottom: 0.5px solid #6768A78A;
+  background: #fff;
+  border-bottom: 0.5px solid #6768a78a;
   height: 40px;
   float: left;
   position: relative;

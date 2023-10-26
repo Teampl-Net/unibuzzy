@@ -1,13 +1,10 @@
 <template>
   <div
     style="
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      margin-top: 60px;
       border: 1px solid #000;
-      width: 70%;
-      height: 80%;
+      width: 100%;
+      height: calc(100% - 120px);
     "
   >
     <CommonAddContentsForm

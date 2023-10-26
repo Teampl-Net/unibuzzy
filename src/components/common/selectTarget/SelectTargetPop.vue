@@ -1,18 +1,41 @@
 <template>
   <div class="accessListPop">
-      <PopHeader @closeXPop="checkClosePop" class="headerShadow" headerTitle="Select Target" />
-      <div class="pagePaddingWrap accessPopBody" :style="'padding-top:' + ($STATUS_HEIGHT + 60)+ 'px'">
-        <TargetList class="targetListWrap" ref="targetList" @closeXPop="closeXPop" @addTarget="addTarget" :pSelectData="pSelectData" :pSelectedTargetList="mSelectedTargetList" />
-        <SelectedTargetList class="selectedListCompo" ref="selectedListCompo" @saveTarget="saveTarget" @addTarget="addTarget" :pSelectedTargetList="mSelectedTargetList" />
-      </div>
+    <PopHeader
+      @closeXPop="checkClosePop"
+      class="headerShadow"
+      headerTitle="Select Target"
+    />
+    <div
+      class="pagePaddingWrap accessPopBody"
+      :style="'padding-top:' + ($STATUS_HEIGHT + 60) + 'px'"
+    >
+      <TargetList
+        class="targetListWrap"
+        ref="targetList"
+        @closeXPop="closeXPop"
+        @addTarget="addTarget"
+        :pSelectData="pSelectData"
+        :pSelectedTargetList="mSelectedTargetList"
+      />
+      <SelectedTargetList
+        class="selectedListCompo"
+        ref="selectedListCompo"
+        @saveTarget="saveTarget"
+        @addTarget="addTarget"
+        :pSelectedTargetList="mSelectedTargetList"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import { defineComponent } from 'vue'
+
+import PopHeader from './PopHeader.vue'
 import TargetList from './TargetList.vue'
 import SelectedTargetList from './SelectedTargetList.vue'
-import PopHeader from './PopHeader.vue'
-export default {
+
+export default defineComponent({
   name: 'SelectTargetPop',
   components: {
     SelectedTargetList,
@@ -23,27 +46,28 @@ export default {
     pSelectData: Array,
     pSelectedTargetList: Array
   },
-  data () {
+  data() {
     return {
       mSelectedTargetList: [] // 선택된 targetList
     }
   },
-  created () {
+  created() {
     this.$addHistoryStack('SelectTargetPop')
     if (this.pSelectedTargetList && this.pSelectedTargetList.length > 0) {
       this.mSelectedTargetList = [...this.pSelectedTargetList]
     }
   },
   methods: {
-    checkClosePop () {
+    checkClosePop() {
       if (this.$refs.targetList) {
         this.$refs.targetList.checkClosePop()
       }
     },
-    saveTarget () {
+    saveTarget() {
       this.$emit('saveTarget', this.mSelectedTargetList)
+      this.closeXPop()
     },
-    addTarget (target) {
+    addTarget(target) {
       // 선택 여부를 판별하여 추가할지 삭제할지 선택
       const result = this.checkSelectedYn(target)
       if (result.result) {
@@ -52,16 +76,20 @@ export default {
         this.mSelectedTargetList.push(target)
       }
     },
-    checkSelectedYn (target) {
+    checkSelectedYn(target) {
       // 해당하는 target이 선택되었는지 아닌지를 판별해주는 함수
-      const index = this.mSelectedTargetList.findIndex(value => value.accessKey === target.accessKey && value.accessKind === target.accessKind)
+      const index = this.mSelectedTargetList.findIndex(
+        (value) =>
+          value.accessKey === target.accessKey &&
+          value.accessKind === target.accessKind
+      )
       if (index === -1) {
         return { result: false }
       } else {
         return { result: true, index: index }
       }
     },
-    closeXPop () {
+    closeXPop() {
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -71,7 +99,7 @@ export default {
       this.$emit('closeXPop')
     }
   }
-}
+})
 </script>
 
 <style scoped>
@@ -83,7 +111,7 @@ export default {
   padding-top: 50px;
 }
 .longHeight {
-height: 100% !important;
+  height: 100% !important;
 }
 .selectedReceiverBox {
   height: calc(100% - 100px);
@@ -94,23 +122,23 @@ height: 100% !important;
   background-color: white;
   text-align: left;
 }
-[contenteditable=true] {
+[contenteditable='true'] {
   outline: none;
 }
-input:focus{
+input:focus {
   outline: none;
 }
 .accessListPop {
   height: 100vh;
-  background-color:white;
-  width:100%;
+  background-color: white;
+  width: 100%;
   z-index: 9999999;
   position: fixed;
   top: 0;
   left: 0;
 }
 .accessPopBody {
-  position:absolute;
+  position: absolute;
   overflow: auto;
   padding-top: 50px;
   width: 100%;
@@ -133,7 +161,9 @@ input:focus{
 .targetListWrap {
   height: calc(100% - 150px) !important;
 }
-@media screen and (max-width:300px) {
-  .pagePaddingWrap {padding: 0 1rem!important;}
+@media screen and (max-width: 300px) {
+  .pagePaddingWrap {
+    padding: 0 1rem !important;
+  }
 }
 </style>
