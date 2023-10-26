@@ -21,6 +21,7 @@
             v-if="showReceiverSelectList"
             :pSelectData="receiverList"
             :pSelectedTargetList="params.targetList"
+            :pSelectOnlyYn="pSelectOnlyYn"
             @saveTarget="setTargetList"
             @closeXPop="toggleReceiverSelectPop"
           />
@@ -82,7 +83,7 @@
           id="uploadFile"
         >
           <legend>파일 첨부</legend>
-          <input type="file" />
+          <AttachFile @setSelectedAttachFileList="setAttachedFile" />
         </fieldset>
 
         <fieldset>
@@ -101,18 +102,20 @@
 
   <footer>
     <div class="btnListWrap">
-      <button @click="pPostContentsFn(params)">완료</button>
+      <button @click="postContents">완료</button>
       <button>취소</button>
     </div>
   </footer>
 </template>
 
 <script>
-// vue settings
+// system settings
 import { defineComponent, ref, reactive, onMounted } from 'vue'
+import axios from 'axios'
 
 // components
 import SelectTargetPop from './selectTarget/SelectTargetPop.vue'
+import AttachFile from '../unit/formEditor/AttachFile.vue'
 
 export default defineComponent({
   props: [
@@ -120,13 +123,15 @@ export default defineComponent({
     'pUserInfo',
     'pGetTagListFn',
     'pGetReceiverList',
-    'pPostContentsFn'
+    'pPostContentsFn',
+    'pSelectOnlyYn'
   ],
   components: {
-    SelectTargetPop
+    SelectTargetPop,
+    AttachFile
   },
   setup(props) {
-    // Tag List
+    // Tag(category) List
     const tagList = props.pGetTagListFn()
 
     // 대상 지정하기 기능
@@ -160,7 +165,6 @@ export default defineComponent({
       fromDateStr: '',
       bodyFullStr: '',
       tagList: [],
-      attachYn: false,
       attachFileList: [],
       showCreNameYn: true,
       canReplyYn: false
@@ -185,18 +189,125 @@ export default defineComponent({
     const setTargetList = (selectedTargetList) => {
       params.targetList = selectedTargetList
     }
+    // attach file 설정
+    const tempFileList = []
+    // ------ 업로드한 파일 변수에 담기
+    const setAttachedFile = (fileList) => {
+      if (fileList.addYn === true) {
+        tempFileList.push(fileList)
+      }
+    }
+    // ------ 파일 서버에 업로드
+    const fileDataUploadToServer = async () => {
+      if (tempFileList.length > 0) {
+        let iList = document.querySelectorAll('.formCard .addTrue')
+        let form = new FormData()
+        for (var i = 0; i < tempFileList.length; i++) {
+          form = new FormData()
+          const oldFile = tempFileList[i].file
+          const newFile = new File([oldFile], oldFile.name.normalize('NFC'), {
+            type: oldFile.type
+          })
+          form.append('files[0]', newFile)
+          await axios
+            // 파일서버 fileServer fileserver FileServer Fileserver
+            .post('https://unibuzzy.com/file/tp.uploadFile', form, {
+              headers: {
+                'Content-Type': 'multipart/form-data; charset: UTF-8;'
+              }
+            })
+            .then((res) => {
+              console.log(res)
+              if (res.data.length > 0) {
+                if (tempFileList[i].attachYn === true) {
+                  tempFileList[i].attachYn = true
+                } else {
+                }
+                var path = res.data[0].domainPath + res.data[0].pathMtext
+                tempFileList[i].successSave = true
+                tempFileList[i].filePath = path
+                tempFileList[i].fileSizeKb = res.data[0].fileSizeKb
+                tempFileList[i].fileKey = res.data[0].fileKey
+              }
+            })
+            .catch((error) => {
+              this.response = error
+              this.isUploading = false
+            })
+        }
+        iList = document.querySelectorAll('.msgArea .formCard .addTrue')
+        if (iList.length > 0) {
+          for (let s = 0; s < tempFileList.length; s++) {
+            const uploadFile = tempFileList[s]
+            if (uploadFile.successSave) {
+              for (var il = 0; il < iList.length; il++) {
+                if (
+                  !uploadFile.attachYn &&
+                  (iList[il].attributes.filekey === undefined ||
+                    iList[il].attributes.filekey === null ||
+                    iList[il].attributes.filekey === '')
+                ) {
+                  if (iList[il].src === uploadFile.previewImgUrl) {
+                    iList[il].src = uploadFile.filePath
+                    // eslint-disable-next-line no-unused-vars
+                    iList[il].setAttribute('fileKey', uploadFile.fileKey)
+                    iList[il].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
+                    iList[il].classList.remove('addTrue')
+                    iList[il].classList.add('addFalse')
+                    break
+                  }
+                }
+              }
+            } else {
+              tempFileList.splice(s, 1)
+            }
+          }
+        }
+      } else {
+        alert(this.$t('COMMON_MSG_NOFILE'))
+      }
+      return true
+    }
+    // ------ 서버에 업로드된 파일 정보로 데이터 재가공
+    const handleFileListForUpload = () => {
+      const newAttachFileList = []
+      for (let i = 0; i < tempFileList.length; i++) {
+        const fileObj = {}
+        fileObj.addYn = true
+        fileObj.attachYn = tempFileList[i].attachYn
+        fileObj.fileKey = tempFileList[i].fileKey
+        fileObj.fileName = tempFileList[i].file.name.normalize('NFC')
+        newAttachFileList.push(fileObj)
+      }
+      return newAttachFileList
+    }
+
+    // 최종 Submit
+    const postContents = async () => {
+      try {
+        if (tempFileList.length > 0) {
+          await fileDataUploadToServer()
+        }
+        params.attachFileList = handleFileListForUpload()
+        props.pPostContentsFn(params)
+      } catch (error) {
+        console.error(error)
+      }
+    }
 
     return {
-      tagList,
+      params,
+      receiverList,
       showReceiverSelectList,
       toggleReceiverSelectPop,
       selectAllReceivers,
-      receiverList,
-      params,
+      setTargetList,
       toggleAnonymousYn,
       toggleCommentYn,
-      setTargetList,
-      toggleSelectTag
+      tagList,
+      toggleSelectTag,
+      setAttachedFile,
+      postContents
     }
   }
 })
