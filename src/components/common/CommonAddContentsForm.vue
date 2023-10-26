@@ -3,7 +3,7 @@
     <header>
       <!-- Popup Title -->
       <h1>{{ pOptions.purpose }}</h1>
-      <button>닫기</button>
+      <button type="button">X</button>
     </header>
     <main>
       <form>
@@ -51,57 +51,63 @@
               </div>
             </div>
           </fieldset>
-          <div class="optionToggleBtnWrap">
+          <fieldset id="optionToggleBtnWrap">
             <label for="">Options</label>
-            <button
-              type="button"
-              @click="toggleAnonymousYn"
-              :class="{ activeBtn: params.showCreNameYn }"
-            >
-              익명
-            </button>
-            <button
-              type="button"
-              @click="toggleCommentYn"
-              :class="{ activeBtn: params.canReplyYn }"
-            >
-              댓글
-            </button>
-            <button
-              type="button"
-              @click="toggleTitleYn"
-              :class="{ activeBtn: hasTitleYn }"
-            >
-              제목
-            </button>
-          </div>
-          <fieldset v-if="hasTitleYn">
-            <label for="id">Title</label>
+            <div class="btnWrap">
+              <button
+                type="button"
+                @click="toggleAnonymousYn"
+                :class="{ activeBtn: params.showCreNameYn }"
+              >
+                익명
+              </button>
+              <button
+                type="button"
+                @click="toggleCommentYn"
+                :class="{ activeBtn: params.canReplyYn }"
+              >
+                댓글
+              </button>
+              <button
+                type="button"
+                @click="toggleTitleYn"
+                :class="{ activeBtn: hasTitleYn }"
+              >
+                제목
+              </button>
+            </div>
+          </fieldset>
+          <fieldset v-if="hasTitleYn" id="postTitle">
+            <label for="">Title</label>
             <input
               id="title"
               type="text"
-              placeholder="Title"
+              placeholder="Please, enter the title."
               v-model="params.title"
             />
           </fieldset>
         </fieldset>
         <!-- optional post values -->
         <fieldset id="optionalOptions">
-          <fieldset v-if="pOptions.model === 'mankik'" id="date">
+          <legend>선택정 정보 설정</legend>
+          <fieldset v-if="pOptions.model === 'mankik'" id="dateSelect">
             <legend>날짜 선택</legend>
             <label for="">Date</label>
-            <input
-              v-if="pOptions.model === 'mankik'"
-              id="fromDate"
-              type="date"
-              v-model="params.fromDateStr"
-            />
-            <input id="toDate" type="date" v-model="params.toDateStr" />
+            <div class="dateBoxWrap">
+              <input
+                v-if="pOptions.model === 'mankik'"
+                id="fromDate"
+                type="date"
+                v-model="params.fromDateStr"
+              />
+              <span>TO</span>
+              <input id="toDate" type="date" v-model="params.toDateStr" />
+            </div>
           </fieldset>
           <fieldset v-if="pOptions.model === 'mankik'" id="categoryTag">
             <legend>카테고리 선택</legend>
             <label for="">Tag</label>
-            <div class="categoryListWrap">
+            <div class="btnWrap">
               <button
                 type="button"
                 v-for="tag in tagDataList"
@@ -127,6 +133,7 @@
               id=""
               cols="30"
               rows="10"
+              placeholder="Please, enter the contents."
               v-model="params.bodyFullStr"
             ></textarea>
           </fieldset>
@@ -395,15 +402,19 @@ export default defineComponent({
   border-radius: 0.8rem;
 }
 button {
+  min-width: 40px;
   min-height: 30px;
   padding: px 15px;
-  margin: 2px;
 
   color: #7a7a7a;
+  word-wrap: break-word;
 
   background-color: #f1f1ff;
   border: 1.5px solid #ccc;
   border-radius: 8px;
+  & + button {
+    margin-left: 8px;
+  }
   &.activeBtn {
     border: 2px solid #5f61bd;
     color: #5f61bd;
@@ -423,21 +434,85 @@ header {
 }
 h1,
 label {
+  min-width: 64px;
+  margin-right: 8px;
   color: #5f61bd;
   font-weight: bold;
+  text-align: start;
+}
+legend {
+  display: none;
+}
+input,
+textarea {
+  border: 1px solid rgba(103, 104, 167, 0.27);
 }
 textarea {
   resize: none;
+  width: 100%;
+  padding: 15px;
+  &::placeholder {
+    margin: 20px;
+  }
 }
 
 // Form CSS
 main {
   height: calc(100% - 120px);
-  margin-top: 16px;
+  margin-top: 8px;
+  padding-top: 16px;
   border-top: 1px solid #000;
   border-bottom: 1px solid #000;
-}
-legend {
-  display: none;
+
+  fieldset > fieldset {
+    margin-top: 16px;
+  }
+
+  .selectReceiverBox,
+  #optionToggleBtnWrap,
+  #dateSelect,
+  #categoryTag,
+  #uploadFile {
+    display: flex;
+    justify-content: space-between;
+    .btnWrap,
+    .dateBoxWrap {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      input {
+        min-height: 30px;
+        flex: 0 1 45%;
+      }
+      span {
+        margin: 0 8px;
+        flex-grow: 1;
+      }
+    }
+  }
+  #postReceivers {
+    .selectedTargetList {
+      display: flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 8px;
+      margin-top: 5px;
+      // margin-left: ;
+
+      background-color: #fff;
+      border: 1px solid rgb(204, 204, 204);
+      border-radius: 8px;
+      & > div {
+        margin-right: 16px;
+      }
+    }
+  }
+  #postTitle {
+    display: flex;
+    input {
+      flex-grow: 1;
+    }
+  }
 }
 </style>
