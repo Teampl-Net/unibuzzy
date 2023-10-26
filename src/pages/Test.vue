@@ -57,24 +57,70 @@ export default defineComponent({
       getReceiverList() {
         return [
           {
-            accessKind: 'ex1',
-            accessKey: 4216,
-            iconPath: 'asdasd',
-            accessName: 'target1',
-            cList: [
+            tabName: '주소록',
+            targetList: [
               {
-                accessKind: 'exex',
-                accessKey: 421655,
-                iconPath: 'asdasdasd',
-                accessName: 'target1-1'
+                accessKind: 'A',
+                accessKey: 1,
+                iconPath: require('@/assets/images/editChan/icon_addressBook.svg'),
+                accessName: '주소록1',
+                cList: [
+                  {
+                    accessKind: 'U',
+                    accessKey: 2,
+                    iconPath: require('@/assets/images/editChan/icon_addressBook.svg'),
+                    accessName: '유저1',
+                    cList: [
+                      {
+                        accessKind: 'C',
+                        accessKey: 3,
+                        iconPath: require('@/assets/images/editChan/icon_addressBook.svg'),
+                        accessName: '자식1'
+                      }
+                    ]
+                  },
+                  {
+                    accessKind: 'U',
+                    accessKey: 10,
+                    iconPath: require('@/assets/images/editChan/icon_addressBook.svg'),
+                    accessName: '유저2'
+                  }
+                ]
+              },
+              {
+                accessKind: 'A',
+                accessKey: 4,
+                iconPath: require('@/assets/images/editChan/icon_addressBook.svg'),
+                accessName: '주소록2',
+                cList: [
+                  {
+                    accessKind: 'U',
+                    accessKey: 5,
+                    iconPath: require('@/assets/images/editChan/icon_addressBook.svg'),
+                    accessName: '유저3'
+                  }
+                ]
               }
             ]
           },
           {
-            accessKind: 'ex2',
-            accessKey: 42162,
-            iconPath: 'asdasd',
-            accessName: 'target2'
+            tabName: '팀',
+            targetList: [
+              {
+                accessKind: 'T',
+                accessKey: 6,
+                iconPath: require('@/assets/images/editChan/icon_addressBook.svg'),
+                accessName: '팀1',
+                cList: [
+                  {
+                    accessKind: 'U',
+                    accessKey: 7,
+                    iconPath: require('@/assets/images/editChan/icon_addressBook.svg'),
+                    accessName: '유저2'
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
