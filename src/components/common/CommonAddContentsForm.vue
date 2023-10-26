@@ -15,8 +15,22 @@
               <legend>받는 사람 지정</legend>
               <label for="">Receiver</label>
               <div class="btnWrap">
-                <button type="button">All</button>
-                <button type="button" @click="toggleReceiverSelectPop">
+                <button
+                  type="button"
+                  @click="selectAllReceivers"
+                  :class="{ activeBtn: params.targetList === 'A' }"
+                >
+                  All
+                </button>
+                <button
+                  type="button"
+                  @click="toggleReceiverSelectPop"
+                  :class="{
+                    activeBtn:
+                      showReceiverSelectList ||
+                      (params.targetList.length && params.targetList !== 'A')
+                  }"
+                >
                   Select
                 </button>
               </div>
@@ -187,6 +201,7 @@ export default defineComponent({
     }
     const selectAllReceivers = () => {
       params.targetList = 'A'
+      showReceiverSelectList.value = false
     }
     const setSelectedTargetList = (selectedTargetList) => {
       params.targetList = selectedTargetList
