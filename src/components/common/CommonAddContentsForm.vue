@@ -162,10 +162,16 @@
             <div class="btnWrap">
               <button
                 type="button"
-                v-for="tag in tagDataList"
+                @click="toggleSelectTag(tag, index)"
+                v-for="(tag, index) in tagListForDom"
                 :key="tag.categoryKey"
-                @click="toggleSelectTag(tag)"
+                :class="{ activeBtn: tag.isSelected }"
               >
+                <img
+                  v-if="tag.isSelected"
+                  src="../../assets/images/common/icon_check_commonColor.svg"
+                  alt="check image"
+                />
                 {{ tag.categoryNameMtext }}
               </button>
             </div>
@@ -271,13 +277,23 @@ export default defineComponent({
 
     // Tag(category) 선택 기능
     const tagDataList = props.pGetTagListFn()
-    const toggleSelectTag = (selectedTag) => {
+    const tagListForDom = reactive([])
+    if (tagDataList.length) {
+      for (const tag of tagDataList) {
+        tag.isSelected = false
+        tagListForDom.push(tag)
+      }
+    }
+    const toggleSelectTag = (selectedTag, index) => {
       const indexToRemove = params.tagList.indexOf(selectedTag)
       if (indexToRemove !== -1) {
         params.tagList.splice(indexToRemove, 1)
+        tagListForDom[index].isSelected = false
       } else {
         params.tagList.push(selectedTag)
+        tagListForDom[index].isSelected = true
       }
+      console.log(tagListForDom, '456456564654654654654')
     }
 
     // fromDate기본값 설정
@@ -436,6 +452,7 @@ export default defineComponent({
       toggleTitleYn,
       tagDataList,
       toggleSelectTag,
+      tagListForDom,
       setAttachedFile,
       postContents
     }
