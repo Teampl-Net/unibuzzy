@@ -37,9 +37,10 @@
         <div class="optionToggleBtnWrap">
           <button type="button" @click="toggleAnonymousYn">익명</button>
           <button type="button" @click="toggleCommentYn">댓글</button>
+          <button type="button" @click="toggleTitleYn">제목</button>
         </div>
 
-        <fieldset>
+        <fieldset v-if="hasTitleYn">
           <label for="id">Title</label>
           <input
             id="title"
@@ -135,21 +136,25 @@ export default defineComponent({
     const params = reactive({
       title: '',
       targetList: [],
-      toDateStr: 'yyyy-mm-dd',
+      toDateStr: '',
       fromDateStr: '',
       bodyFullStr: '',
       tagList: [],
       attachFileList: [],
       showCreNameYn: true,
-      canReplyYn: false
+      canReplyYn: true
     })
 
-    // 익명 & 댓글 여부 설정
+    // 익명 & 댓글 & 제목 여부 설정
     const toggleAnonymousYn = () => {
       params.showCreNameYn = !params.showCreNameYn
     }
     const toggleCommentYn = () => {
       params.canReplyYn = !params.canReplyYn
+    }
+    const hasTitleYn = ref(false)
+    const toggleTitleYn = () => {
+      hasTitleYn.value = !hasTitleYn.value
     }
 
     // Target 선택 기능
@@ -289,6 +294,15 @@ export default defineComponent({
           await fileDataUploadToServer()
         }
         params.attachFileList = handleFileListForUpload()
+
+        if (!hasTitleYn.value) {
+          if (params.bodyFullStr) {
+            params.title = params.bodyFullStr
+          } else if (!params.bodyFullStr && params.attachFileList.length) {
+            params.title = params.attachFileList[0].fileName
+          }
+        }
+        // if (params)
         props.pPostContentsFn(params)
       } catch (error) {
         console.error(error)
@@ -304,6 +318,8 @@ export default defineComponent({
       setSelectedTargetList,
       toggleAnonymousYn,
       toggleCommentYn,
+      hasTitleYn,
+      toggleTitleYn,
       tagList,
       toggleSelectTag,
       setAttachedFile,
