@@ -44,7 +44,8 @@ export default defineComponent({
   },
   props: {
     pSelectData: Array,
-    pSelectedTargetList: Array
+    pSelectedTargetList: Array,
+    pSelectOnlyYn: Boolean
   },
   data() {
     return {
@@ -73,7 +74,11 @@ export default defineComponent({
       if (result.result) {
         this.mSelectedTargetList.splice(result.index, 1)
       } else {
-        this.mSelectedTargetList.push(target)
+        if (this.pSelectOnlyYn) {
+          this.mSelectedTargetList = [target]
+        } else {
+          this.mSelectedTargetList.push(target)
+        }
       }
     },
     checkSelectedYn(target) {
