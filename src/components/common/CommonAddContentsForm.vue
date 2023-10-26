@@ -131,20 +131,52 @@ export default defineComponent({
     AttachFile
   },
   setup(props) {
-    // Tag(category) List
-    const tagList = props.pGetTagListFn()
+    // submit params 세팅
+    const params = reactive({
+      title: '',
+      targetList: [],
+      toDateStr: 'yyyy-mm-dd',
+      fromDateStr: '',
+      bodyFullStr: '',
+      tagList: [],
+      attachFileList: [],
+      showCreNameYn: true,
+      canReplyYn: false
+    })
 
-    // 대상 지정하기 기능
-    const receiverList = props.pGetReceiverList()
-    const selectAllReceivers = () => {
-      params.targetList = 'A'
+    // 익명 & 댓글 여부 설정
+    const toggleAnonymousYn = () => {
+      params.showCreNameYn = !params.showCreNameYn
     }
+    const toggleCommentYn = () => {
+      params.canReplyYn = !params.canReplyYn
+    }
+
+    // Target 선택 기능
+    const receiverList = props.pGetReceiverList()
     const showReceiverSelectList = ref(false)
     const toggleReceiverSelectPop = () => {
       showReceiverSelectList.value = !showReceiverSelectList.value
     }
+    const selectAllReceivers = () => {
+      params.targetList = 'A'
+    }
+    const setSelectedTargetList = (selectedTargetList) => {
+      params.targetList = selectedTargetList
+    }
 
-    // 날짜 옵션 - fromDate기본값 설정
+    // Tag(category) 선택 기능
+    const tagList = props.pGetTagListFn()
+    const toggleSelectTag = (selectedTag) => {
+      const indexToRemove = params.tagList.indexOf(selectedTag)
+      if (indexToRemove !== -1) {
+        params.tagList.splice(indexToRemove, 1)
+      } else {
+        params.tagList.push(selectedTag)
+      }
+    }
+
+    // fromDate기본값 설정
     const now = new Date()
     const year = now.getFullYear()
     const month = String(now.getMonth() + 1).padStart(2, '0')
@@ -157,38 +189,6 @@ export default defineComponent({
       }
     })
 
-    // submit params 설정
-    const params = reactive({
-      title: '',
-      targetList: [],
-      toDateStr: 'yyyy-mm-dd',
-      fromDateStr: '',
-      bodyFullStr: '',
-      tagList: [],
-      attachFileList: [],
-      showCreNameYn: true,
-      canReplyYn: false
-    })
-    // 익명 & 댓글 여부 설정
-    const toggleAnonymousYn = () => {
-      params.showCreNameYn = !params.showCreNameYn
-    }
-    const toggleCommentYn = () => {
-      params.canReplyYn = !params.canReplyYn
-    }
-    // tagList 설정
-    const toggleSelectTag = (selectedTag) => {
-      const indexToRemove = params.tagList.indexOf(selectedTag)
-      if (indexToRemove !== -1) {
-        params.tagList.splice(indexToRemove, 1)
-      } else {
-        params.tagList.push(selectedTag)
-      }
-    }
-    // targetList 설정
-    const setTargetList = (selectedTargetList) => {
-      params.targetList = selectedTargetList
-    }
     // attach file 설정
     const tempFileList = []
     // ------ 업로드한 파일 변수에 담기
@@ -301,7 +301,7 @@ export default defineComponent({
       showReceiverSelectList,
       toggleReceiverSelectPop,
       selectAllReceivers,
-      setTargetList,
+      setSelectedTargetList,
       toggleAnonymousYn,
       toggleCommentYn,
       tagList,
