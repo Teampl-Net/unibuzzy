@@ -64,25 +64,28 @@
                 <div style="display: flex; justify-content: center; align-items: center;;">
                   <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
                     <div class="MKAppUserPhoto MKShadow h100P">
-                      <img :src="todo.domainPath + todo.pathMtext" style="width:20px; height:20px;"/>
+                      <img :src="todo.userDomainPath + todo.userProfileImg" style="width:20px; height:20px;"/>
                     </div>
                   </div>
                   <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext)}} (본인)</p>
                   <p v-else class="fl todoFontSize" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
                 </div>
-                <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
+                <!-- <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/> -->
               </div>
               <div @click="openTodoDetail(todo)" style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
-                <div @click.stop="setCompleteTodo('myTodoList', groupIndex, todoIndex)" style="display: flex; align-items: center;">
-                  <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxCheck.png" width="20" height="20"/>
-                  <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" />
+                <div style="display: flex; align-items: center;">
+                  <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxCheck.png" width="20" height="20" @click.stop="setCompleteTodo(todo, 'myTodoList', groupIndex, todoIndex)"/>
+                  <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" @click.stop="setCompleteTodo(todo, 'myTodoList', groupIndex, todoIndex)"/>
                     <p v-if="todo.status === '00'" class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" >
                       <span class="strikeLine" :style="todo.strikeOnOff? 'transition: all .5s; width:100%;':'width:0;'"></span>
                       {{ todo.title }}
                     </p>
                 </div>
-                <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
+                <div>
+                  <div v-for="tag, index in todo.tagList" :key="index" class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ tag.tagText }}</div>
+                </div>
               </div>
+              <div @click="openUniBTodoDetail" class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
             </div>
           </div>
         </div>
@@ -99,26 +102,28 @@
                 <div style="display: flex; justify-content: center; align-items: center;;">
                   <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
                     <div class="MKAppUserPhoto MKShadow h100P">
-                      <img :src="todo.domainPath + todo.pathMtext" style="width:20px; height:20px;"/>
+                      <img :src="todo.userDomainPath + todo.userProfileImg" style="width:20px; height:20px;"/>
                     </div>
                   </div>
                   <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext)}} (본인)</p>
                   <p v-else class="fl todoFontSize" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
                 </div>
-                <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
+                <!-- <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/> -->
               </div>
               <div @click="openTodoDetail(todo)" style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
-                <div @click.stop="setCompleteTodo('targetTodoList', groupIndex, todoIndex)" style="display: flex; align-items: center;">
-                  <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxCheck.png" width="20" height="20"/>
-                  <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" />
+                <div @click.stop="setCompleteTodo(todo, 'targetTodoList', groupIndex, todoIndex)" style="display: flex; align-items: center;">
+                  <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxCheck.png" width="20" height="20" @click.stop="setCompleteTodo(todo, 'targetTodoList', groupIndex, todoIndex)"/>
+                  <img v-else src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" @click.stop="setCompleteTodo(todo, 'targetTodoList', groupIndex, todoIndex)"/>
                     <p v-if="todo.status === '00'" class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" >
                       <span class="strikeLine" :style="todo.strikeOnOff? 'transition: all .5s; width:100%;':'width:0;'"></span>
                       {{ todo.title }}
                     </p>
                 </div>
                 <div style="display:flex; justify-content: center; align-items: center;">
-                  <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px; margin-right:5px">uniB_detail</div>
-                  <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
+                  <!-- <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px; margin-right:5px">uniB_detail</div> -->
+                  <div>
+                    <div v-for="tag, index in todo.tagList" :key="index" class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ tag.tagText }}</div>
+                  </div>
                 </div>
               </div>
           </div>
@@ -137,24 +142,27 @@
               <div style="display: flex; justify-content: center; align-items: center;;">
                 <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
                   <div class="MKAppUserPhoto MKShadow h100P">
-                    <img :src="todo.domainPath + todo.pathMtext" style="width:20px; height:20px;"/>
+                    <img :src="todo.userDomainPath + todo.userProfileImg" style="width:20px; height:20px;"/>
                   </div>
                 </div>
                 <p v-if="todo.targetKey === GE_USER.userKey" class="fl todoFontSize" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext)}} (본인)</p>
                 <p v-else class="fl todoFontSize" style="margin-right: 5px;" @click="openTodoDetail(todo)">{{ $changeText(todo.cabinetNameMtext) }} ({{ todo.creUserName? $changeText(todo.creUserName): '나' }})</p>
               </div>
-              <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/>
+              <!-- <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/> -->
             </div>
             <div @click="openTodoDetail(todo)" style="display: flex; align-items: center; justify-content: space-between; width:100%; margin-top: 5px;" >
-              <div @click.stop="setCompleteTodo('completeTodoList', groupIndex, todoIndex)" style="display: flex; align-items: center;">
-                <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" />
-                <img v-else src="../../assets/images/todo/checkboxCheck.png" width="20" height="20" />
+              <div style="display: flex; align-items: center;">
+                <img v-if="todo.strikeOnOff" src="../../assets/images/todo/checkboxBlank.png" width="20" height="20" @click.stop="setCompleteTodo(todo, 'completeTodoList', groupIndex, todoIndex)"/>
+                <img v-else src="../../assets/images/todo/checkboxCheck.png" width="20" height="20" @click.stop="setCompleteTodo(todo, 'completeTodoList', groupIndex, todoIndex)"/>
                   <p class="fl fontBold commonSubTitleTextBold mLeft-05" style="position: relative; margin-left: 5px;" >
                     <span class="strikeLine" :style="todo.strikeOnOff? 'transition: all .5s; width:0;':'width:100%;'"></span>
                     {{ todo.title }}
                   </p>
               </div>
-              <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div>
+              <!-- <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div> -->
+              <div>
+                <div v-for="tag, index in todo.tagList" :key="index" class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ tag.tagText }}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -269,7 +277,7 @@ export default {
         params.actorList = actorList
       }
       await this.$saveContents(params)
-      this.closeXPop('WriteContents', this.closeWritePop)
+      this.closeWritePop('WriteContents', this.closeWritePop)
     },
     returnTag () {
       return this.mTagList
@@ -284,62 +292,94 @@ export default {
     closeUniBTodoDetail () {
       this.mUniBTodoDetailPopShowYn = false
     },
-    setCompleteTodo (value, groupIndex, todoIndex) {
-      this.mGetTodoGroupList[groupIndex][value][todoIndex].strikeOnOff = true
-      setTimeout(() => {
-        if (this.mGetTodoGroupList[groupIndex][value][todoIndex].status === '00') {
-          this.mGetTodoGroupList[groupIndex][value][todoIndex].status = '99'
-          this.mGetTodoGroupList[groupIndex][value][todoIndex].strikeOnOff = false
-          this.mGetTodoGroupList[groupIndex][value][todoIndex].completeUserName = this.GE_USER.userNameMtext
-          this.completeTodo(this.mGetTodoGroupList[groupIndex][value][todoIndex])
-          this.mGetTodoGroupList[groupIndex].completeTodoList.unshift(this.mGetTodoGroupList[groupIndex][value][todoIndex])
-          this.mGetTodoGroupList[groupIndex][value].splice(todoIndex, 1)
-          console.log(this.mGetTodoGroupList[groupIndex])
-          if (value === 'myTodoList') {
-            this.mMyTodoCount -= 1
-            this.mCompleteMyTodoCount += 1
-          }
-          if (value === 'targetTodoList') {
-            this.mTargetTodoCount -= 1
-            this.mCompleteTargetTodoCount += 1
-          }
-          if (this.mMyTodoCount === 0) {
-            this.mMyTodoYn = false
-          }
-          if (this.mTargetTodoCount === 0) {
-            this.mTargetTodoYn = false
-          }
-          this.mCompleteTodoCount += 1
-          if (this.mCompleteTodoCount !== 0) {
-            this.mCompleteTodoYn = true
-          }
-        } else if (this.mGetTodoGroupList[groupIndex][value][todoIndex].status === '99') {
-          this.mGetTodoGroupList[groupIndex][value][todoIndex].status = '00'
-          this.mGetTodoGroupList[groupIndex][value][todoIndex].strikeOnOff = false
-          this.completeTodo(this.mGetTodoGroupList[groupIndex][value][todoIndex])
-          if (this.mGetTodoGroupList[groupIndex][value][todoIndex].todoUserKey === this.GE_USER.userKey) {
-            this.mGetTodoGroupList[groupIndex].myTodoList.unshift(this.mGetTodoGroupList[groupIndex][value][todoIndex])
-            this.mGetTodoGroupList[groupIndex][value].splice(todoIndex, 1)
-            this.mMyTodoCount += 1
-            this.mCompleteMyTodoCount -= 1
+    setCompleteTodo (value, menu, groupIndex, todoIndex) {
+      this.completeTodo(value)
+      // this.mGetTodoGroupList[groupIndex][value][todoIndex].strikeOnOff = true
+      // setTimeout(() => {
+      if (this.mGetTodoGroupList[groupIndex][menu][todoIndex].status === '00') {
+        this.mGetTodoGroupList[groupIndex][menu][todoIndex].status = '99'
+        this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
+        this.mGetTodoGroupList[groupIndex][menu][todoIndex].completeUserName = this.GE_USER.userNameMtext
+        // this.completeTodo(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+        this.mGetTodoGroupList[groupIndex].completeTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+        this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
+        console.log(this.mGetTodoGroupList[groupIndex])
+        if (menu === 'myTodoList') {
+          this.mMyTodoCount -= 1
+          this.mCompleteMyTodoCount += 1
+        }
+        if (menu === 'targetTodoList') {
+          this.mTargetTodoCount -= 1
+          this.mCompleteTargetTodoCount += 1
+        }
+        if (this.mMyTodoCount === 0) {
+          this.mMyTodoYn = false
+        }
+        if (this.mTargetTodoCount === 0) {
+          this.mTargetTodoYn = false
+        }
+        this.mCompleteTodoCount += 1
+        if (this.mCompleteTodoCount !== 0) {
+          this.mCompleteTodoYn = true
+        }
+      } else if (this.mGetTodoGroupList[groupIndex][menu][todoIndex].status === '99') {
+        console.log(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+        this.mGetTodoGroupList[groupIndex][menu][todoIndex].status = '00'
+        this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
+        // this.completeTodo(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+        for (let j = 0; j < this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList.length; j++) {
+          if (this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList[0].mUserList) {
+            for (let k = 0; k < this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList[j].mUserList.length; k++) {
+              if (this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList[j].mUserList[k].userKey === this.GE_USER.userKey) {
+                this.mGetTodoGroupList[groupIndex].myTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+                this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
+                this.mMyTodoCount += 1
+                this.mCompleteMyTodoCount -= 1
+                break
+              } else if (this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList[j].mUserList[k].userKey !== this.GE_USER.userKey) {
+                this.mGetTodoGroupList[groupIndex].targetTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+                this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
+                this.mTargetTodoCount += 1
+                this.mCompleteTargetTodoCount -= 1
+              }
+            }
           } else {
-            this.mGetTodoGroupList[groupIndex].targetTodoList.unshift(this.mGetTodoGroupList[groupIndex][value][todoIndex])
-            this.mGetTodoGroupList[groupIndex][value].splice(todoIndex, 1)
-            this.mTargetTodoCount += 1
-            this.mCompleteTargetTodoCount -= 1
-          }
-          if (this.mMyTodoCount !== 0) {
-            this.mMyTodoYn = true
-          }
-          if (this.mTargetTodoCount !== 0) {
-            this.mTargetTodoYn = true
-          }
-          this.mCompleteTodoCount -= 1
-          if (this.mCompleteTodoCount === 0) {
-            this.mCompleteTodoYn = false
+            if (this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList[j].userKey === this.GE_USER.userKey) {
+              this.mGetTodoGroupList[groupIndex].myTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+              this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
+              this.mMyTodoCount += 1
+              this.mCompleteMyTodoCount -= 1
+              break
+            } else if (this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList[j].userKey !== this.GE_USER.userKey) {
+              this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
+              this.mTargetTodoCount += 1
+              this.mCompleteTargetTodoCount -= 1
+            }
           }
         }
-      }, 3000)
+        // if (this.mGetTodoGroupList[groupIndex][menu][todoIndex].todoUserKey === this.GE_USER.userKey) {
+        //   this.mGetTodoGroupList[groupIndex].myTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+        //   this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
+        //   this.mMyTodoCount += 1
+        //   this.mCompleteMyTodoCount -= 1
+        // } else {
+        //   this.mGetTodoGroupList[groupIndex].targetTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+        //   this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
+        //   this.mTargetTodoCount += 1
+        //   this.mCompleteTargetTodoCount -= 1
+        // }
+        if (this.mMyTodoCount !== 0) {
+          this.mMyTodoYn = true
+        }
+        if (this.mTargetTodoCount !== 0) {
+          this.mTargetTodoYn = true
+        }
+        this.mCompleteTodoCount -= 1
+        if (this.mCompleteTodoCount === 0) {
+          this.mCompleteTodoYn = false
+        }
+      }
+      // }, 3000)
     },
     MoveDate (value) {
       this.setCountDate += value
@@ -348,21 +388,16 @@ export default {
       this.mSelectDate = returnDate
     },
     async completeTodo (value, loadingYn) {
-      const param = { todo: {} }
-      param.todo.todoKey = value.todoKey
-      param.todo.status = value.status
-      if (value.status === '99') {
-        param.todo.completeDate = this.getDate(0)
-        param.todo.completeUserKey = this.GE_USER.userKey
+      var param = {}
+      param.mccKey = value.mccKey
+      param.jobkindId = 'TODO'
+      if (value.status === '00') {
+        param.status = '99'
       } else {
-        param.todo.completeDate = null
-        param.todo.completeUserKey = 0
+        param.status = '00'
       }
-      var nonLoading = true
-      if (loadingYn) {
-        nonLoading = false
-      }
-      var result = await this.$saveTodo(param, nonLoading)
+      param.completeUserKey = this.GE_USER.userKey
+      var result = await this.$commonAxiosFunction({ url: '/sUniB/tp.saveMCabContents', param: { mCabContents: param } })
       console.log(result)
     },
     async getTodoList (loadingYn) {
@@ -412,77 +447,101 @@ export default {
       return this.mTargetDataList
     },
     async getTodoListGroupCab (loadingYn) {
-      var paramMap = {}
-      paramMap.userKey = this.GE_USER.userKey
-      paramMap.searchDate = this.getDate(1)
-      paramMap.sysCabinetCode = 'USER'
-      var nonLoading = true
-      if (loadingYn) {
-        nonLoading = false
+      // var paramMap = {}
+      // paramMap.userKey = this.GE_USER.userKey
+      // paramMap.searchDate = this.getDate(1)
+      // paramMap.sysCabinetCode = 'USER'
+      // var nonLoading = true
+      // if (loadingYn) {
+      //   nonLoading = false
+      // }
+      // var result = await this.$getTodoListGroupCab(paramMap, nonLoading)
+      // if (result.result) {
+      // this.convertTargetData(result.todo)
+      const param = {
+        ownUserKey: this.GE_USER.userKey,
+        userKey: this.GE_USER.userKey,
+        jobkindId: 'TODO'
       }
-      var result = await this.$getTodoListGroupCab(paramMap, nonLoading)
-      if (result.result) {
-        this.convertTargetData(result.todo)
-        const param = {
-          ownUserKey: this.GE_USER.userKey,
-          userKey: this.GE_USER.userKey,
-          jobkindId: 'TODO'
-        }
-        const myContents = await this.$getContentsList(param)
-        this.mGetTodoGroupList = myContents.content
-        this.mGetTodoFamilyList = result.todo
-        const getTodoGroupList = []
-        this.mMyTodoYn = false
-        this.mTargetTodoYn = false
-        this.mCompleteTodoYn = false
-        this.mMyTodoCount = 0
-        this.mTargetTodoCount = 0
-        this.mCompleteTodoCount = 0
-        this.mCompleteMyTodoCount = 0
-        this.mCompleteTargetTodoCount = 0
-        const myTodoList = []
-        const targetTodoList = []
-        const completeTodoList = []
-        const cabinetList = {}
-        for (let i = 0; i < this.mGetTodoGroupList.length; i++) {
-          if (this.mGetTodoGroupList[i].status === '00' && this.mGetTodoGroupList[i].creUserKey !== this.GE_USER.userKey) {
-            this.mGetTodoGroupList[i].strikeOnOff = false
-            this.mGetTodoGroupList[i].sideMenuOpenYn = false
-            // this.mGetTodoGroupList[i].cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
-            myTodoList.push(this.mGetTodoGroupList[i])
-            this.mMyTodoCount += 1
-            this.mMyTodoYn = true
-          } else if (this.mGetTodoGroupList[i].status === '00') {
-            this.mGetTodoGroupList[i].strikeOnOff = false
-            this.mGetTodoGroupList[i].sideMenuOpenYn = false
-            // this.mGetTodoGroupList[i].cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
-            targetTodoList.push(this.mGetTodoGroupList[i])
-            this.mTargetTodoCount += 1
-            this.mTargetTodoYn = true
+      const myContents = await this.$getContentsList(param)
+      this.mGetTodoGroupList = myContents.content
+      const getTodoGroupList = []
+      this.mMyTodoYn = false
+      this.mTargetTodoYn = false
+      this.mCompleteTodoYn = false
+      this.mMyTodoCount = 0
+      this.mTargetTodoCount = 0
+      this.mCompleteTodoCount = 0
+      this.mCompleteMyTodoCount = 0
+      this.mCompleteTargetTodoCount = 0
+      const myTodoList = []
+      const targetTodoList = []
+      const completeTodoList = []
+      const cabinetList = {}
+      for (let i = 0; i < this.mGetTodoGroupList.length; i++) {
+        this.mGetTodoGroupList[i].strikeOnOff = false
+        this.mGetTodoGroupList[i].sideMenuOpenYn = false
+        if (this.mGetTodoGroupList[i].status === '00' && this.mGetTodoGroupList[i].creUserKey !== this.GE_USER.userKey) {
+          for (let j = 0; j < this.mGetTodoGroupList[i].actorList.length; j++) {
+            if (this.mGetTodoGroupList[i].actorList[j].accesskey === this.GE_USER.userKey) {
+              myTodoList.push(this.mGetTodoGroupList[i])
+              this.mMyTodoCount += 1
+              this.mMyTodoYn = true
+            }
           }
-          if (this.mGetTodoGroupList[i].status === '99') {
-            this.mGetTodoGroupList[i].strikeOnOff = false
-            this.mGetTodoGroupList[i].sideMenuOpenYn = false
-            // this.mGetTodoGroupList[i].cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
+        } else if (this.mGetTodoGroupList[i].status === '00' && this.mGetTodoGroupList[i].creUserKey === this.GE_USER.userKey) {
+          console.log(this.mGetTodoGroupList[i])
+          for (let j = 0; j < this.mGetTodoGroupList[i].actorList.length; j++) {
+            if (this.mGetTodoGroupList[i].actorList[0].mUserList) {
+              for (let k = 0; k < this.mGetTodoGroupList[i].actorList[j].mUserList.length; k++) {
+                if (this.mGetTodoGroupList[i].actorList[j].mUserList[k].userKey === this.GE_USER.userKey) {
+                  myTodoList.push(this.mGetTodoGroupList[i])
+                  this.mMyTodoCount += 1
+                  this.mMyTodoYn = true
+                  break
+                } else if (this.mGetTodoGroupList[i].actorList[j].mUserList[k].userKey !== this.GE_USER.userKey) {
+                  targetTodoList.push(this.mGetTodoGroupList[i])
+                  this.mTargetTodoCount += 1
+                  this.mTargetTodoYn = true
+                }
+              }
+            } else {
+              if (this.mGetTodoGroupList[i].actorList[j].userKey === this.GE_USER.userKey) {
+                myTodoList.push(this.mGetTodoGroupList[i])
+                this.mMyTodoCount += 1
+                this.mMyTodoYn = true
+                break
+              } else if (this.mGetTodoGroupList[i].actorList[j].userKey !== this.GE_USER.userKey) {
+                targetTodoList.push(this.mGetTodoGroupList[i])
+                this.mTargetTodoCount += 1
+                this.mTargetTodoYn = true
+              }
+            }
+          }
+        }
+        if (this.mGetTodoGroupList[i].status === '99') {
+          if (this.mGetTodoGroupList[i].creUserKey === this.GE_USER.userKey) {
             completeTodoList.push(this.mGetTodoGroupList[i])
             this.mCompleteTodoCount += 1
-            if (this.mGetTodoGroupList[i].todoUserKey === this.GE_USER.userKey) {
-              this.mCompleteMyTodoCount += 1
-            } else if (this.mGetTodoGroupList[i].todoUserKey !== this.GE_USER.userKey && this.mGetTodoGroupList[i].creUserKey === this.GE_USER.userKey && this.mGetTodoGroupList[i].targetKind !== 'U') {
-              this.mCompleteTargetTodoCount += 1
-            }
-            this.mCompleteTodoYn = true
           }
+          this.mGetTodoGroupList[i].strikeOnOff = false
+          this.mGetTodoGroupList[i].sideMenuOpenYn = false
+          if (this.mGetTodoGroupList[i].todoUserKey === this.GE_USER.userKey) {
+            this.mCompleteMyTodoCount += 1
+          } else if (this.mGetTodoGroupList[i].todoUserKey !== this.GE_USER.userKey && this.mGetTodoGroupList[i].creUserKey === this.GE_USER.userKey && this.mGetTodoGroupList[i].targetKind !== 'U') {
+            this.mCompleteTargetTodoCount += 1
+          }
+          this.mCompleteTodoYn = true
         }
-        cabinetList.myTodoList = myTodoList
-        cabinetList.targetTodoList = targetTodoList
-        cabinetList.completeTodoList = completeTodoList
-        getTodoGroupList.unshift(cabinetList)
-        this.mGetTodoGroupList = getTodoGroupList
-        console.log('??')
-        console.log(this.mGetTodoGroupList)
-        console.log(this.mTargetTodoCount)
       }
+      cabinetList.myTodoList = myTodoList
+      cabinetList.targetTodoList = targetTodoList
+      cabinetList.completeTodoList = completeTodoList
+      getTodoGroupList.unshift(cabinetList)
+      this.mGetTodoGroupList = getTodoGroupList
+      console.log('??')
+      console.log(this.mGetTodoGroupList)
+      // }
     },
     todosideMenu (todo, value, groupIndex, todoIndex) {
       this.mSelectTodo = todo
@@ -631,8 +690,21 @@ export default {
     closeTodoDetail () {
       this.mTodoDetailShowYn = false
     },
-    openAddTodoPop () {
-      this.mWritePopShowYn = true
+    async openAddTodoPop () {
+      if (this.mGetTodoFamilyList.length === 0) {
+        var paramMap = {}
+        paramMap.userKey = this.GE_USER.userKey
+        paramMap.searchDate = this.getDate(1)
+        paramMap.sysCabinetCode = 'USER'
+        var result = await this.$getTodoListGroupCab(paramMap, true)
+        if (result.result) {
+          this.convertTargetData(result.todo)
+          this.mGetTodoFamilyList = result.todo
+          this.mWritePopShowYn = true
+        }
+      } else {
+        this.mWritePopShowYn = true
+      }
     },
     closeAddTodoPop () {
       this.mAddTodoPopShowYn = false

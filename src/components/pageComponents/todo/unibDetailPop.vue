@@ -47,10 +47,16 @@ export default {
     pPopId: {}
   },
   created () {
-    this.mContentsKey = this.$route.params.contentsKey
-    this.mCreTeamKey = this.$route.params.creTeamKey
-    this.mCabinetKey = this.$route.params.cabinetKey
-    this.readyFunction()
+    if (this.$route.path.split('/')[1] === 'todo') {
+      this.mCabinetKey = this.$route.params.cabinetKey
+      this.mContentsKey = this.$route.params.contentsKey
+      this.getContentsDetail()
+    } else {
+      this.mContentsKey = this.$route.params.contentsKey
+      this.mCreTeamKey = this.$route.params.creTeamKey
+      this.mCabinetKey = this.$route.params.cabinetKey
+      this.readyFunction()
+    }
   },
   updated () {
     this.settingAtag()
