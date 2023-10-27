@@ -20,7 +20,7 @@ export default defineComponent({
     return {
       options: {
         purpose: '테스트123',
-        model: 'mankik'
+        model: 'unibuzzy'
       },
       userInfo: {
         nickname: 'user1',

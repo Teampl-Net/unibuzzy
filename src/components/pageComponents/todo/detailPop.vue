@@ -463,11 +463,7 @@ export default {
         memo.attachFileList = inSaveMemoObj.attachFileList
       }
       memo.parentMemoKey = null
-      if (
-        this.mMememoValue !== undefined &&
-        this.mMememoValue !== null &&
-        this.mMememoValue !== {}
-      ) {
+      if (this.mMememoValue !== undefined && this.mMememoValue !== null) {
         memo.parentMemoKey = this.mMememoValue.parentMemoKey
       }
 

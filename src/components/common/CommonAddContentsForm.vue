@@ -186,17 +186,27 @@
           </fieldset>
           <fieldset>
             <legend>작성 내용</legend>
-            <textarea
+            <!-- <textarea
               name=""
               id=""
               cols="30"
               rows="10"
               placeholder="Please, enter the contents."
               v-model="params.bodyFullStr"
-            ></textarea>
+            ></textarea> -->
+            <FormEditor
+              ref="complexEditor"
+              @changeUploadList="changeUploadList"
+              @setParamInnerHtml="setParamInnerHtml"
+              @postToolBox="postToolBox"
+            />
           </fieldset>
         </fieldset>
       </form>
+      <gToolBox
+        :propTools="mToolBoxOptions"
+        @changeTextStyle="changeFormEditorStyle"
+      />
     </main>
     <footer>
       <div class="footerBtnWrap">
@@ -205,16 +215,30 @@
       </div>
     </footer>
   </div>
+  <gConfirmPop
+    v-if="failPopYn"
+    @no="failPopYn = false"
+    confirmType="timeout"
+    :confirmText="errorText"
+  />
+  <gConfirmPop
+    v-if="contentType === 'BOAR' && checkPopYn"
+    :confirmText="modiYn ? $t('FORM_MSG_EDIT') : $t('FORM_MSG_SAVE')"
+    @ok="sendBoard(), (checkPopYn = false)"
+    @no="confirmNo()"
+  />
 </template>
 
 <script>
 // system settings
-import { defineComponent, ref, reactive, onMounted } from 'vue'
+import { defineComponent, ref, reactive, onMounted, watch } from 'vue'
 import axios from 'axios'
 
 // components
 import SelectTargetPop from './selectTarget/SelectTargetPop.vue'
 import AttachFile from '../unit/formEditor/AttachFile.vue'
+import FormEditor from '../unit/formEditor/FormEditor.vue'
+
 export default defineComponent({
   props: [
     'pOptions',
@@ -227,9 +251,10 @@ export default defineComponent({
   ],
   components: {
     SelectTargetPop,
-    AttachFile
+    AttachFile,
+    FormEditor
   },
-  created () {
+  created() {
     this.$addHistoryStack('writeContents')
   },
   setup(props) {
@@ -288,7 +313,9 @@ export default defineComponent({
       }
     }
     const toggleSelectTag = (selectedTag, index) => {
-      const indexToRemove = params.tagTextList.indexOf(selectedTag.categoryNameMtext)
+      const indexToRemove = params.tagTextList.indexOf(
+        selectedTag.categoryNameMtext
+      )
       if (indexToRemove !== -1) {
         params.tagTextList.splice(indexToRemove, 1)
         tagListForDom[index].isSelected = false
@@ -321,6 +348,33 @@ export default defineComponent({
       }
       if (hasTitleYn.value && !params.title) {
         params.title = fileList.file.name
+      }
+    }
+    // formEditor 사용 업로드 시
+    const changeUploadList = (upList) => {
+      if (tempFileList.length > 0) {
+        console.log(
+          tempFileList.findIndex((item) => item.targetKey === upList.targetKey)
+        )
+        const index = tempFileList.findIndex(
+          (item) => item.targetKey === upList.targetKey
+        )
+        if (index === -1) {
+          const temp = []
+          for (const file of tempFileList) {
+            temp.push(file)
+          }
+          tempFileList.length = 0
+          for (const file of temp) {
+            tempFileList.push(file)
+          }
+          tempFileList.push(upList)
+          // tempFileList = [...temp, upList]
+        } else if (index !== -1) {
+          tempFileList.splice(index, 1, upList)
+        }
+      } else {
+        tempFileList.push(upList)
       }
     }
     // ------ 파일 서버에 업로드
@@ -357,8 +411,9 @@ export default defineComponent({
               }
             })
             .catch((error) => {
-              this.response = error
-              this.isUploading = false
+              // this.response = error
+              // this.isUploading = false
+              console.log(error)
             })
         }
         iList = document.querySelectorAll('.msgArea .formCard .addTrue')
@@ -424,6 +479,10 @@ export default defineComponent({
           }
         }
 
+        // formEditor 작성 내용 추출
+        boardDataCheck()
+
+        // params value 체크
         if (props.pOptions.model === 'mankik') {
           if (hasTitleYn.value && !params.title) {
             alert('제목을 작성해주세요.')
@@ -434,9 +493,193 @@ export default defineComponent({
           } else {
             props.pPostContentsFn(params)
           }
+        } else if (props.pOptions.model === 'unibuzzy') {
+          if (hasTitleYn.value && !params.title) {
+            alert('제목을 작성해주세요.')
+          } else if (!params.bodyFullStr && !params.attachFileList.length) {
+            alert('공유하고자 하는 내용을 작성하거나, 파일을 첨부해주세요.')
+          } else {
+            props.pPostContentsFn(params)
+          }
         }
       } catch (error) {
-        console.error(error)
+        console.log('error', error)
+      }
+    }
+
+    watch(params, (newp) => {
+      console.log(newp.bodyFullStr, '---------------ch')
+    })
+
+    // Regacy: 기존 FormEditor 컴포넌트 사용을 위한 레거시 코드들입니다. --------- 일부는 compositionAPI에 맞춰 수정
+    // ============ 변수설정 ===========
+    const contentType = ref('BOAR')
+    const complexEditor = ref(null)
+    const propFormData = reactive([])
+    const mToolBoxOptions = ref({})
+    const complexOkYn = ref(false)
+
+    // Regacy: confirm pop
+    const confirmPopVariable = reactive({
+      errorText: '',
+      failPopYn: false,
+      checkPopYn: false
+    })
+    const confirmNo = () => {
+      confirmPopVariable.checkPopYn = false
+      complexOkYn.value = false
+    }
+
+    // ============ regacy 함수 ===========
+    const postToolBox = (toolBoxOption) => {
+      // Regacy comment: toolbox에 들어간 option들을 formEditor에서 watch로 계속 넘겨받고 prop으로 넘겨주고 있습니다
+      mToolBoxOptions.value = toolBoxOption
+    }
+    const changeFormEditorStyle = (changeParam) => {
+      // Regacy Comment: toolbox에 기능 전부, 선택된 formEditor에 드레그 한 text로 처리를 하기에 ref로 접근해서 함수를 실행하고 있습니다.
+      // Regacy Comment: bold, italic, underLine은 text만 넘겨줘도 기능이 작동하기에 따로 구분을 하지 않았습니다.
+      const targetType = changeParam.type
+      if (targetType === 'font') {
+        complexEditor.value.changeFontSize(changeParam.size)
+      } else if (targetType === 'delFormCard') {
+        complexEditor.value.delFormCard()
+      } else {
+        complexEditor.value.changeTextStyle(targetType)
+      }
+    }
+    const setParamInnerHtml = (formCard) => {
+      console.log('=========== forCard whole body ===========', formCard)
+      let extractedInnerHtml = ''
+      let extractedOuterHtml = ''
+      for (let i = 0; i < formCard.length; i++) {
+        extractedOuterHtml += formCard[i].outerHtml
+        extractedInnerHtml += formCard[i].innerHtml
+      }
+      console.log(
+        `=========== forCard Data =========== \n - inner: ${extractedInnerHtml}\n - outer: ${extractedOuterHtml}`
+      )
+      extractedOuterHtml.replace('contenteditable', '')
+      params.bodyFullStr = extractedOuterHtml
+      propFormData.length = 0
+      propFormData.push(...formCard)
+      document.getElementById('msgBox').innerHTML = ''
+      document.getElementById('msgBox').innerHTML = extractedInnerHtml
+      // this.editorType = 'complex'
+      complexOkYn.value = true
+      if (contentType.value === 'ALIM') clickPageTopBtn()
+      if (contentType.value === 'BOAR') boardDataCheck()
+    }
+    const clickPageTopBtn = async () => {
+      // 취소를 누르거나 유효성 검사 (이 함수)에 통과하지 못하면 값을 다시 가져와야함. 그러므로 --> complexOkYn.value = false
+      if (complexOkYn.value === false) {
+        complexOkYn.value = true
+        await complexEditor.value.setParamInnerHtml()
+      } else {
+        let titleValue = params.title
+        titleValue = titleValue.trim()
+        if (hasTitleYn.value) {
+          if (
+            titleValue !== undefined &&
+            titleValue !== null &&
+            titleValue !== ''
+          ) {
+          } else {
+            confirmPopVariable.errorText = this.$t('FORM_MSG_TITLE')
+            confirmPopVariable.failPopYn = true
+            complexOkYn.value = false
+            return
+          }
+        }
+
+        // if (requestPushYn.value === true) {
+        //   if (this.requestTitle.replace(' ', '') === '') {
+        //     confirmPopVariable.errorText = this.$t('FORM_MSG_REASON')
+        //     confirmPopVariable.failPopYn = true
+        //     complexOkYn.value = false
+        //     return
+        //   }
+        // }
+        // if (this.allRecvYn === true) {
+        // } else {
+        //   await this.settingRecvList()
+        //   if (this.selectedReceiverList.length > 0) {
+        //   } else {
+        //     if (!this.params.userKey) {
+        //       confirmPopVariable.errorText = this.$t('FORM_MSG_SU_TARGET')
+        //       confirmPopVariable.failPopYn = true
+        //       complexOkYn.value = false
+        //       return
+        //     }
+        //   }
+        // }
+
+        let msgData = ''
+        msgData = document.getElementById('msgBox').innerText
+        msgData = msgData.trim()
+        if (
+          (msgData !== undefined && msgData !== null && msgData !== '') ||
+          tempFileList.length > 0
+        ) {
+        } else {
+          confirmPopVariable.errorText = this.$t('FORM_MSG_NOTI_NOCONT')
+          confirmPopVariable.failPopYn = true
+          complexOkYn.value = false
+          return
+        }
+        confirmPopVariable.checkPopYn = true
+      }
+    }
+    const boardDataCheck = () => {
+      if (complexOkYn.value === false) {
+        complexOkYn.value = true
+        complexEditor.value.setParamInnerHtml()
+      } else {
+        let title = params.title
+        title = title.trim()
+        if (title !== undefined && title !== null && title !== '') {
+        } else {
+          confirmPopVariable.errorText = this.$t('FORM_MSG_TITLE')
+          confirmPopVariable.failPopYn = true
+          complexOkYn.value = false
+          return
+        }
+        var msgData = ''
+        msgData = document.getElementById('msgBox').innerText
+        msgData = msgData.trim()
+        if (
+          (msgData !== undefined && msgData !== null && msgData !== '') ||
+          tempFileList.length > 0
+        ) {
+        } else {
+          confirmPopVariable.errorText = this.$t('FORM_MSG_POST_NOCONT')
+          confirmPopVariable.failPopYn = true
+          complexOkYn.value = false
+          return
+        }
+        // if (this.selectBoardYn === true) {
+        //   if (
+        //     this.selectBoardIndex !== undefined &&
+        //     this.selectBoardIndex !== null &&
+        //     this.selectBoardIndex !== ''
+        //   ) {
+        //     if (this.selectBoardCabinetKey === null) {
+        //       confirmPopVariable.errorText = this.$t('FORM_MSG_DIFFBOARD')
+        //       confirmPopVariable.failPopYn = true
+        //       complexOkYn.value = false
+        //       return
+        //     }
+        //   } else if (
+        //     this.selectBoardIndex === undefined ||
+        //     this.selectBoardIndex === null ||
+        //     this.selectBoardIndex === ''
+        //   ) {
+        //     confirmPopVariable.errorText = this.$t('FORM_MSG_NOBOARD')
+        //     confirmPopVariable.failPopYn = true
+        //     complexOkYn.value = false
+        //     return
+        //   }
+        // }
+        confirmPopVariable.checkPopYn = true
       }
     }
 
@@ -455,7 +698,17 @@ export default defineComponent({
       toggleSelectTag,
       tagListForDom,
       setAttachedFile,
-      postContents
+      changeUploadList,
+      postContents,
+      mToolBoxOptions,
+      postToolBox,
+      changeFormEditorStyle,
+      complexEditor,
+      setParamInnerHtml,
+      clickPageTopBtn,
+      boardDataCheck,
+      contentType,
+      confirmNo
     }
   }
 })
@@ -563,6 +816,7 @@ main {
   padding-top: 16px;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
+  overflow-y: auto;
 
   fieldset > fieldset {
     margin-top: 16px;
