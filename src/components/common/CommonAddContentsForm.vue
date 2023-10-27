@@ -391,7 +391,7 @@ export default defineComponent({
           form.append('files[0]', newFile)
           await axios
             // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://unibuzzy.com/file/tp.uploadFile', form, {
+            .post(props.pOptions.fileServerURL, form, {
               headers: {
                 'Content-Type': 'multipart/form-data; charset: UTF-8;'
               }
