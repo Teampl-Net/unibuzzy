@@ -134,11 +134,13 @@ input:focus {
   outline: none;
 }
 .accessListPop {
-  height: 100vh;
+  height: 100%;
   background-color: white;
   width: 100%;
   z-index: 9999999;
   position: fixed;
+  border-radius: 8px;
+  overflow: hidden;
   top: 0;
   left: 0;
 }

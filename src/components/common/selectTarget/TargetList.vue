@@ -11,7 +11,7 @@
 <template>
   <div class="w100P h100P">
     <ActiveBar v-if="mTabList.length > 0 " ref="activeBar" :tabList="mTabList" class="activeBarStyle" @changeTab="changeTab" />
-    <div class="w100P targetListBox" :style="mTabList.length === 0? '':'margin-top: 40px;'">
+    <div class="w100P targetListBox" :style="mTabList.length === 0? 'height: 100%;':'margin-top: 40px;'">
       <gListEmpty v-if="!mNowTargetList || mNowTargetList.length === 0" :title="$t('EDIT_BOOK_MSG_NOBOOK')" :subTitle="$t('EDIT_BOOK_MSG_CREBOOK')" option="SELE" />
       <TargetUnit v-else v-for="target in mNowTargetList" @openSelectTargetPop="openChild" @addTarget="addTarget" :key="target.accessKey" :pTargetData="target" :pSelectedYn="checkSelectedYn(target).result" pOption="SELECT" />
       <transition name="show_left">

@@ -18,9 +18,7 @@
   <div class="receiverItemWrap" :class="{ CWhiteGrayBgColor: (pOption === 'SELECT' && pSelectedYn === true) }" >
     <div @click="selectTarget(false)" class="rowBaseCss">
       <img v-if="searchYn === true" class="img-w15" src="@/assets/images/common/icon_searchGray.svg" alt="">
-      <div class="imgCircle">
-        <img :src="pTargetData.iconPath" class="img-w25"/>
-      </div>
+      <div class="middleBgColor fl imgCircle" style="background-size: cover; background-repeat: no-repeat; background-position: center center;" :style="`background-image: url('${pTargetData.iconPath}')`"></div>
       <div class="fl flexAlignCenter" :style="pSelectedYn === 'EDIT' ? 'width: calc(100% - 150px);' : 'width: calc(100% - 100px);'">
         <div class="textLeft fl textOverdot w100P">
           <p class="fl font16 commonDarkGray fontBold textOverdot w100P">{{$changeText(pTargetData.accessName)}}</p>

@@ -3,7 +3,7 @@
     <header>
       <!-- Popup Title -->
       <h1>{{ pOptions.purpose }}</h1>
-      <button type="button">
+      <button @click="pClosePop" type="button">
         <img
           src="../../assets/images/common/popup_close.png"
           alt="close button"
@@ -23,10 +23,10 @@
                 <button
                   type="button"
                   @click="selectAllReceivers"
-                  :class="{ activeBtn: params.targetList === 'A' }"
+                  :class="{ activeBtn: params.actorList === 'A' }"
                 >
                   <img
-                    v-if="params.targetList === 'A'"
+                    v-if="params.actorList === 'A'"
                     src="../../assets/images/common/icon_check_commonColor.svg"
                     alt="check image"
                   />
@@ -38,13 +38,13 @@
                   :class="{
                     activeBtn:
                       showReceiverSelectList ||
-                      (params.targetList.length && params.targetList !== 'A')
+                      (params.actorList.length && params.actorList !== 'A')
                   }"
                 >
                   <img
                     v-if="
                       showReceiverSelectList ||
-                      (params.targetList.length && params.targetList !== 'A')
+                      (params.actorList.length && params.actorList !== 'A')
                     "
                     src="../../assets/images/common/icon_check_commonColor.svg"
                     alt="check image"
@@ -57,7 +57,7 @@
             <SelectTargetPop
               v-if="showReceiverSelectList"
               :pSelectData="receiverList"
-              :pSelectedTargetList="params.targetList"
+              :pSelectedTargetList="params.actorList"
               :pSelectOnlyYn="pSelectOnlyYn"
               @saveTarget="setSelectedTargetList"
               @closeXPop="toggleReceiverSelectPop"
@@ -65,10 +65,10 @@
             <!-- 선택된 target -->
             <div
               @click="toggleReceiverSelectPop"
-              v-if="params.targetList.length && params.targetList !== 'A'"
+              v-if="params.actorList.length && params.actorList !== 'A'"
               class="selectedTargetList"
             >
-              <div v-for="target in params.targetList" :key="target.accessKey">
+              <div v-for="target in params.actorList" :key="target.accessKey">
                 <img
                   v-if="target.accessKind === 'U' || target.accessKind === 'C'"
                   src="../../assets/images/footer/icon_people.svg"
@@ -201,7 +201,7 @@
     <footer>
       <div class="footerBtnWrap">
         <button @click="postContents">Post</button>
-        <button>Cancel</button>
+        <button @click="pClosePop">Cancel</button>
       </div>
     </footer>
   </div>
@@ -215,7 +215,6 @@ import axios from 'axios'
 // components
 import SelectTargetPop from './selectTarget/SelectTargetPop.vue'
 import AttachFile from '../unit/formEditor/AttachFile.vue'
-
 export default defineComponent({
   props: [
     'pOptions',
@@ -223,21 +222,25 @@ export default defineComponent({
     'pGetTagListFn',
     'pGetReceiverList',
     'pPostContentsFn',
-    'pSelectOnlyYn'
+    'pSelectOnlyYn',
+    'pClosePop'
   ],
   components: {
     SelectTargetPop,
     AttachFile
   },
+  created () {
+    this.$addHistoryStack('writeContents')
+  },
   setup(props) {
     // submit params 세팅
     const params = reactive({
       title: '',
-      targetList: [],
+      actorList: [],
       toDateStr: '',
       fromDateStr: '',
       bodyFullStr: '',
-      tagList: [],
+      tagTextList: [],
       attachFileList: [],
       showCreNameYn: true,
       canReplyYn: true
@@ -263,34 +266,34 @@ export default defineComponent({
     const showReceiverSelectList = ref(false)
     const toggleReceiverSelectPop = () => {
       showReceiverSelectList.value = !showReceiverSelectList.value
-      if (showReceiverSelectList.value && params.targetList === 'A') {
-        params.targetList = []
+      if (showReceiverSelectList.value && params.actorList === 'A') {
+        params.actorList = []
       }
     }
     const selectAllReceivers = () => {
-      params.targetList = 'A'
+      params.actorList = 'A'
       showReceiverSelectList.value = false
     }
     const setSelectedTargetList = (selectedTargetList) => {
-      params.targetList = selectedTargetList
+      params.actorList = selectedTargetList
     }
 
     // Tag(category) 선택 기능
-    const tagDataList = props.pGetTagListFn()
+    const tagTextList = props.pGetTagListFn()
     const tagListForDom = reactive([])
-    if (tagDataList.length) {
-      for (const tag of tagDataList) {
+    if (tagTextList.length) {
+      for (const tag of tagTextList) {
         tag.isSelected = false
         tagListForDom.push(tag)
       }
     }
     const toggleSelectTag = (selectedTag, index) => {
-      const indexToRemove = params.tagList.indexOf(selectedTag)
+      const indexToRemove = params.tagTextList.indexOf(selectedTag.categoryNameMtext)
       if (indexToRemove !== -1) {
-        params.tagList.splice(indexToRemove, 1)
+        params.tagTextList.splice(indexToRemove, 1)
         tagListForDom[index].isSelected = false
       } else {
-        params.tagList.push(selectedTag)
+        params.tagTextList.push(selectedTag.categoryNameMtext)
         tagListForDom[index].isSelected = true
       }
       console.log(tagListForDom, '456456564654654654654')
@@ -426,8 +429,6 @@ export default defineComponent({
             alert('제목을 작성해주세요.')
           } else if (!params.toDateStr) {
             alert('목표 날짜를 지정해주세요.')
-          } else if (!params.tagList.length) {
-            alert('게시글의 Tag을 선택해주세요.')
           } else if (!params.bodyFullStr && !params.attachFileList.length) {
             alert('공유하고자 하는 내용을 작성하거나, 파일을 첨부해주세요.')
           } else {
@@ -450,7 +451,7 @@ export default defineComponent({
       toggleCommentYn,
       hasTitleYn,
       toggleTitleYn,
-      tagDataList,
+      tagTextList,
       toggleSelectTag,
       tagListForDom,
       setAttachedFile,
@@ -463,10 +464,14 @@ export default defineComponent({
 <style lang="scss" scoped>
 // Common CSS
 #layout {
-  width: 100%;
+  width: 80%;
   height: calc(100% - 120px);
-  margin-top: 60px;
   padding: 16px 24px;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 
   background-color: #f5f5f5;
   border-radius: 0.8rem;

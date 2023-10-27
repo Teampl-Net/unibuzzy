@@ -25,9 +25,7 @@
     <div class="selecteItemdArea" :class="!isMobile? 'thinScrollBar':''" id="selectedItemWrap" @wheel="horizontalScroll">
       <div v-for="target in pSelectedTargetList" :key="target.accessKey" class="fl mright-1 selectedBookListWrap">
         <div class="w100P fl">
-          <div class="middleBgColor fl imgCircle"  >
-              <img src="@/assets/images/channel/channer_addressBook.svg" class="fl img-w20" alt="">
-          </div>
+          <div class="middleBgColor fl imgCircle" style="background-size: cover; background-repeat: no-repeat; background-position: center center;" :style="`background-image: url('${target.iconPath}')`"></div>
           <p class="fl font15 commonBlack textOverdot w100P">{{$changeText(target.accessName)}}</p>
           <span class="fr whiteColor CDeepBgColor selectedItemDeleteBtn" @click="addTarget(target)">x</span>
         </div>

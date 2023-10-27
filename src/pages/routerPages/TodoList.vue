@@ -6,6 +6,7 @@
   <gConfirmPop v-if="mDeleteConfirmShowYn" :confirmText='mConfirmText' class="" confirmType='two' @ok="deleteTodo" @no='closeDeletePop'/>
   <div class="popBg" v-if="mSetPopShowYn" @click="closeUpdatePop"></div>
   <setPop v-if="mSetPopShowYn" :pClosePop="closeUpdatePop" :pSelectTodo="mTodoObj" :pUpdateTodo="updateTodo" :pFamilyList="mFamilyList" :pGetTodoListGroupCab=getTodoListGroupCab style="z-index: 999;"/>
+  <CommonAddContentsForm v-if="mWritePopShowYn" :pPostContentsFn="saveContents" :pGetReceiverList="returnTargetData" :pGetTagListFn="returnTag" :pOptions="mOption" />
   <template v-if="mShowSkeletonYn" style="height:100px">
     <SkeletonBox v-for="(value) in [0,1,2]" :key="value" style="height:100px"/>
   </template>
@@ -162,6 +163,8 @@
     </div>
   </div>
 </div>
+  <div class="popBg" v-if="mWritePopShowYn" @click="closeWritePop"></div>
+  <CommonAddContentsForm style="z-index: 13;" v-if="mWritePopShowYn" :pClosePop="closeWritePop" :pPostContentsFn="saveContents" :pGetReceiverList="returnTargetData" :pGetTagListFn="returnTag" :pOptions="mOption" />
   <div class="popBg" v-if="mOpenMenuShowYn" @click="closeSubMenu"></div>
     <div v-show="mOpenMenuShowYn" class="reportCompoArea">
       <div class="fl memoFuncArea">
@@ -183,6 +186,7 @@ import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
 import { commonMethods } from '../../assets/js/common'
 import SkeletonBox from '@/components/unit/contents/ContentsSkeleton'
+import CommonAddContentsForm from '../../components/common/CommonAddContentsForm.vue'
 
 export default {
   components: {
@@ -191,7 +195,8 @@ export default {
     detailPop,
     setPop,
     unibDetailPop,
-    SkeletonBox
+    SkeletonBox,
+    CommonAddContentsForm
   },
   data () {
     return {
@@ -215,7 +220,14 @@ export default {
       mFamilyList: [],
       mTodoDetail: {},
       mMemoList: [],
-      mUniBTodoDetailPopShowYn: false
+      mUniBTodoDetailPopShowYn: false,
+      mTargetDataList: [],
+      mOption: {
+        model: 'mankik',
+        purpose: 'To Do'
+      },
+      mTagList: [{ categoryNameMtext: 'Select', categoryKey: 'A' }, { categoryNameMtext: 'HouseWork', categoryKey: 'H' }, { categoryNameMtext: 'Work', categoryKey: 'T' }, { categoryNameMtext: 'Self-Improvement', categoryKey: 'S' }, { categoryNameMtext: 'etc', categoryKey: 'E' }],
+      mWritePopShowYn: false
     }
   },
   created () {
@@ -225,9 +237,43 @@ export default {
       this.$emit('showCloudLoading', false)
     }, 1000)
     this.mSelectDate = new Date()
-    console.log(this.mSelectDate)
   },
   methods: {
+    closeXPop(popId) {
+      var history = this.$store.getters['UB_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
+      this.$checkDeleteHistory(popId)
+    },
+    closeWritePop () {
+      this.closeXPop('writeContents')
+      this.mWritePopShowYn = false
+    },
+    async saveContents (params) {
+      params.creUserKey = this.GE_USER.userKey
+      params.creUserName = this.$changeText(this.GE_USER.userDispMtext)
+      params.jobkindId = 'TODO'
+
+      if (params.actorList) {
+        const tempList = [...params.actorList]
+        const actorList = []
+        tempList.forEach(val => {
+          const tempObj = {
+            accessKey: val.accessKey,
+            accessKind: val.accessKind
+          }
+          actorList.push(tempObj)
+        })
+        params.actorList = actorList
+      }
+      await this.$saveContents(params)
+      this.closeXPop('WriteContents', this.closeWritePop)
+    },
+    returnTag () {
+      return this.mTagList
+    },
     openUniBTodoDetail () {
       // var param = {}
       // param.targetType = 'contentsDetail'
@@ -329,6 +375,42 @@ export default {
       var resultList = await this.$getTeamList(paramMap, nonLoading)
       console.log(resultList)
     },
+    // target data를 공통 작성 화면에서 원하는 형태로 컨버팅 하는 함수
+    convertTargetData (target) {
+      if (target && target.length > 0) {
+        const tempList = []
+        target.forEach(value => {
+          const tempObj = {}
+          tempObj.accessKind = 'C'
+          tempObj.accessKey = value.cabinetKey
+          tempObj.iconPath = require('@/assets/images/editChan/icon_addressBook.svg')
+          tempObj.accessName = value.cabinetNameMtext
+          if (value.mCabUserList && value.mCabUserList.length > 0) {
+            const childTempList = []
+            value.mCabUserList.forEach(value2 => {
+              const childTempObj = {}
+              childTempObj.accessKind = 'U'
+              childTempObj.accessKey = value2.userKey
+              childTempObj.iconPath = value2.domainPath ? this.$changeUrlBackslash(value2.domainPath + value2.userProfileImg) : value2.userProfileImg
+              childTempObj.accessName = this.$changeText(value2.userDispMtext)
+              childTempList.push(childTempObj)
+            })
+            tempObj.cList = childTempList
+          } else {
+            tempObj.cList = []
+          }
+          tempList.push(tempObj)
+        })
+        this.mTargetDataList = [
+          {
+            targetList: tempList
+          }
+        ]
+      }
+    },
+    returnTargetData () {
+      return this.mTargetDataList
+    },
     async getTodoListGroupCab (loadingYn) {
       var paramMap = {}
       paramMap.userKey = this.GE_USER.userKey
@@ -339,9 +421,15 @@ export default {
         nonLoading = false
       }
       var result = await this.$getTodoListGroupCab(paramMap, nonLoading)
-      console.log(result)
       if (result.result) {
-        this.mGetTodoGroupList = result.todo
+        this.convertTargetData(result.todo)
+        const param = {
+          ownUserKey: this.GE_USER.userKey,
+          userKey: this.GE_USER.userKey,
+          jobkindId: 'TODO'
+        }
+        const myContents = await this.$getContentsList(param)
+        this.mGetTodoGroupList = myContents.content
         this.mGetTodoFamilyList = result.todo
         const getTodoGroupList = []
         this.mMyTodoYn = false
@@ -357,38 +445,33 @@ export default {
         const completeTodoList = []
         const cabinetList = {}
         for (let i = 0; i < this.mGetTodoGroupList.length; i++) {
-          if (this.mGetTodoGroupList[i].mCabTodoList.length !== 0) {
-            for (let j = 0; j < this.mGetTodoGroupList[i].mCabTodoList.length; j++) {
-              if (this.mGetTodoGroupList[i].mCabTodoList[j].status === '00' && this.mGetTodoGroupList[i].mCabTodoList[j].todoUserKey === this.GE_USER.userKey) {
-                this.mGetTodoGroupList[i].mCabTodoList[j].strikeOnOff = false
-                this.mGetTodoGroupList[i].mCabTodoList[j].sideMenuOpenYn = false
-                this.mGetTodoGroupList[i].mCabTodoList[j].cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
-                myTodoList.push(this.mGetTodoGroupList[i].mCabTodoList[j])
-                this.mMyTodoCount += 1
-                this.mMyTodoYn = true
-              }
-              if (this.mGetTodoGroupList[i].mCabTodoList[j].status === '00' && this.mGetTodoGroupList[i].mCabTodoList[j].todoUserKey !== this.GE_USER.userKey && this.mGetTodoGroupList[i].mCabTodoList[j].creUserKey === this.GE_USER.userKey && this.mGetTodoGroupList[i].mCabTodoList[j].targetKind !== 'U') {
-                this.mGetTodoGroupList[i].mCabTodoList[j].strikeOnOff = false
-                this.mGetTodoGroupList[i].mCabTodoList[j].sideMenuOpenYn = false
-                this.mGetTodoGroupList[i].mCabTodoList[j].cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
-                targetTodoList.push(this.mGetTodoGroupList[i].mCabTodoList[j])
-                this.mTargetTodoCount += 1
-                this.mTargetTodoYn = true
-              }
-              if (this.mGetTodoGroupList[i].mCabTodoList[j].status === '99') {
-                this.mGetTodoGroupList[i].mCabTodoList[j].strikeOnOff = false
-                this.mGetTodoGroupList[i].mCabTodoList[j].sideMenuOpenYn = false
-                this.mGetTodoGroupList[i].mCabTodoList[j].cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
-                completeTodoList.push(this.mGetTodoGroupList[i].mCabTodoList[j])
-                this.mCompleteTodoCount += 1
-                if (this.mGetTodoGroupList[i].mCabTodoList[j].todoUserKey === this.GE_USER.userKey) {
-                  this.mCompleteMyTodoCount += 1
-                } else if (this.mGetTodoGroupList[i].mCabTodoList[j].todoUserKey !== this.GE_USER.userKey && this.mGetTodoGroupList[i].mCabTodoList[j].creUserKey === this.GE_USER.userKey && this.mGetTodoGroupList[i].mCabTodoList[j].targetKind !== 'U') {
-                  this.mCompleteTargetTodoCount += 1
-                }
-                this.mCompleteTodoYn = true
-              }
+          if (this.mGetTodoGroupList[i].status === '00' && this.mGetTodoGroupList[i].creUserKey !== this.GE_USER.userKey) {
+            this.mGetTodoGroupList[i].strikeOnOff = false
+            this.mGetTodoGroupList[i].sideMenuOpenYn = false
+            // this.mGetTodoGroupList[i].cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
+            myTodoList.push(this.mGetTodoGroupList[i])
+            this.mMyTodoCount += 1
+            this.mMyTodoYn = true
+          } else if (this.mGetTodoGroupList[i].status === '00') {
+            this.mGetTodoGroupList[i].strikeOnOff = false
+            this.mGetTodoGroupList[i].sideMenuOpenYn = false
+            // this.mGetTodoGroupList[i].cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
+            targetTodoList.push(this.mGetTodoGroupList[i])
+            this.mTargetTodoCount += 1
+            this.mTargetTodoYn = true
+          }
+          if (this.mGetTodoGroupList[i].status === '99') {
+            this.mGetTodoGroupList[i].strikeOnOff = false
+            this.mGetTodoGroupList[i].sideMenuOpenYn = false
+            // this.mGetTodoGroupList[i].cabinetNameMtext = this.mGetTodoGroupList[i].cabinetNameMtext
+            completeTodoList.push(this.mGetTodoGroupList[i])
+            this.mCompleteTodoCount += 1
+            if (this.mGetTodoGroupList[i].todoUserKey === this.GE_USER.userKey) {
+              this.mCompleteMyTodoCount += 1
+            } else if (this.mGetTodoGroupList[i].todoUserKey !== this.GE_USER.userKey && this.mGetTodoGroupList[i].creUserKey === this.GE_USER.userKey && this.mGetTodoGroupList[i].targetKind !== 'U') {
+              this.mCompleteTargetTodoCount += 1
             }
+            this.mCompleteTodoYn = true
           }
         }
         cabinetList.myTodoList = myTodoList
@@ -396,6 +479,7 @@ export default {
         cabinetList.completeTodoList = completeTodoList
         getTodoGroupList.unshift(cabinetList)
         this.mGetTodoGroupList = getTodoGroupList
+        console.log('??')
         console.log(this.mGetTodoGroupList)
         console.log(this.mTargetTodoCount)
       }
@@ -548,7 +632,7 @@ export default {
       this.mTodoDetailShowYn = false
     },
     openAddTodoPop () {
-      this.mAddTodoPopShowYn = true
+      this.mWritePopShowYn = true
     },
     closeAddTodoPop () {
       this.mAddTodoPopShowYn = false

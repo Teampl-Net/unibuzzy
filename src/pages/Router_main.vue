@@ -102,40 +102,6 @@ export default {
     }
   },
   created () {
-    let patchTime = null
-    this.$commonAxiosFunction({
-      url: '/sUniB/tp.checkSystemSettingTime',
-      param: {}
-    }).then((result) => {
-      if (localStorage.getItem('patchTime')) {
-        const patchTimeStr = localStorage.getItem('patchTime')
-        try {
-          patchTime = JSON.parse(patchTimeStr)
-        } catch (error) {
-          localStorage.removeItem('patchTime')
-        }
-      }
-      if ((result.data.patchTime === 'none' && (patchTime === 'none' || !patchTime)) || !result.data.result) {
-        return
-      }
-      if (!patchTime || patchTime === 'none') {
-        localStorage.setItem('patchTime', JSON.stringify(result.data.patchTime))
-        localStorage.setItem('patchTime', result.data.patchTime)
-        alert(this.$t('MAIN_MSG_CHANGE'))
-        // eslint-disable-next-line no-self-assign
-        location.href = location.href
-      } else {
-        if (patchTime && result.data.patchTime) {
-          if (Number(result.data.patchTime) > Number(patchTime)) {
-            localStorage.setItem('patchTime', result.data.patchTime)
-            alert(this.$t('MAIN_MSG_CHANGE'))
-            // eslint-disable-next-line no-self-assign
-            location.href = location.href
-            // showSystemMsgPop(true)
-          }
-        }
-      }
-    })
     if (this.GE_USER.unknownYn) {
       this.$router.push({ name: 'policies' })
       return
