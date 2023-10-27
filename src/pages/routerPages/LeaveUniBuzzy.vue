@@ -17,16 +17,20 @@
 }
 </i18n>
 <template>
-<div class="pagePaddingWrap leavePageWrap">
-  <gPopHeader :pClosePop="backClick" class="headerShadow" headerTitle="Withdrawal from an account"  />
-  <leaveResultPop v-if="this.resultPopShowYn" @closeXPop="closeXPop"/>
-  <div class="leaveContentsWrap">
-    <p class="pointTitle">{{ $t('MSG_ASK_LEAVE') }}</p>
-    <p class="title">{{ $t('MSG_ASK_AGREE') }}</p>
-    <div class="guideBox">
-
-      <p class= "mtop-2" >{{ $t('TITLE_UNIBUZZY_LEAVE') }}</p>
-          <textarea class="guideTextWrap">[Terms and conditions]
+  <div class="pagePaddingWrap leavePageWrap">
+    <gPopHeader
+      :pClosePop="backClick"
+      class="headerShadow"
+      headerTitle="Withdrawal from an account"
+    />
+    <leaveResultPop v-if="this.resultPopShowYn" @closeXPop="closeXPop" />
+    <div class="leaveContentsWrap">
+      <p class="pointTitle">{{ $t('MSG_ASK_LEAVE') }}</p>
+      <p class="title">{{ $t('MSG_ASK_AGREE') }}</p>
+      <div class="guideBox">
+        <p class="mtop-2">{{ $t('TITLE_UNIBUZZY_LEAVE') }}</p>
+        <textarea class="guideTextWrap">
+[Terms and conditions]
 
 Please check the information before applying for withdrawal.
 After completing the withdrawal, you can re-enroll with the currently logged-in ID, but there is no record of use.
@@ -37,11 +41,12 @@ Even if a member withdraws, the member's personal information is kept for a cert
 - Records on the preparation and use of bulletin boards
 
 ※ For more information, please refer to the personal information handling policy on the site.
-</textarea>
-    </div>
-    <div class="guideBox">
-      <p class= "mtop-1" >{{$t('TITLE_UNIBUZZY_POLICY')}}</p>
-      <textarea class="guideTextWrap">
+</textarea
+        >
+      </div>
+      <div class="guideBox">
+        <p class="mtop-1">{{ $t('TITLE_UNIBUZZY_POLICY') }}</p>
+        <textarea class="guideTextWrap">
 Article 1 (Purpose)
 
 The purpose of this Terms and Conditions of Use (hereinafter referred to as "Company") is to specify the terms and conditions of subscription and use of the uniBuzzy service (http://www.pushmsg.net or "Service") provided by the company between TeamPl Co., Ltd. (hereinafter referred to as "Company") and customers (hereinafter referred to as "Members").
@@ -292,20 +297,35 @@ Article 21 (Trial Rights and Applicable Acts)
 Supplementary Provisions
 
 ① These Terms and Conditions shall apply from February 10, 2022.
-      </textarea>
+      </textarea
+        >
+      </div>
+      <div class="inputArea">
+        <input
+          type="checkbox"
+          name="agreeOut"
+          v-model="agreeOut"
+          id="agreeOut"
+        /><label for="agreeOut">{{ $t('MSG_AGREE') }}</label>
+      </div>
+      <gBtnSmall
+        v-on:click="requestLeave()"
+        :btnTitle="completeBtnTitle"
+        class="mtop-1 smallBtnStyle"
+      />
     </div>
-    <div class="inputArea"><input type="checkbox" name="agreeOut" v-model="agreeOut" id="agreeOut"><label  for="agreeOut">{{ $t('MSG_AGREE') }}</label></div>
-    <gBtnSmall v-on:click="requestLeave()" :btnTitle="completeBtnTitle" class="mtop-1 smallBtnStyle" />
+    <smallPop
+      v-if="smallPopYn"
+      :confirmText="confirmMsg"
+      @no="smallPopYn = false"
+    />
   </div>
-<smallPop v-if="smallPopYn" :confirmText='confirmMsg' @no="smallPopYn=false"/>
-</div>
-
 </template>
 
 <script>
 import leaveResultPop from '@/components/pageComponents/intro/popup/LeaveTheAlimResultPop'
 export default {
-  data () {
+  data() {
     return {
       completeBtnTitle: 'Completed',
       resultPopShowYn: false,
@@ -314,24 +334,23 @@ export default {
       confirmMsg: ''
     }
   },
-  mounted () {
+  mounted() {
     this.$emit('changePageHeader', 'leave')
   },
-  props: {
-  },
+  props: {},
   computed: {
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     },
-    GE_LOCALE () {
+    GE_LOCALE() {
       return this.$i18n.locale
     }
   },
   methods: {
-    backClick () {
+    backClick() {
       this.$router.go(-1)
     },
-    requestLeave () {
+    requestLeave() {
       if (this.agreeOut === true) {
         this.saveActAxiosFunc()
       } else {
@@ -339,9 +358,9 @@ export default {
         this.smallPopYn = true
       }
     },
-    async saveActAxiosFunc () {
+    async saveActAxiosFunc() {
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.deleteUser',
+        url: '/tp.deleteUser',
         param: {
           userKey: this.GE_USER.userKey
         }
@@ -349,7 +368,7 @@ export default {
       console.log(result)
       this.resultPopShowYn = true
     },
-    closeXPop () {
+    closeXPop() {
       this.resultPopShowYn = false
       this.$UBLogOut()
       this.$router.replace({ name: 'login' })
@@ -362,13 +381,13 @@ export default {
 </script>
 <style scoped>
 .leaveContentsWrap .pointTitle {
-  color: #6768A7;
+  color: #6768a7;
   font-size: 16px;
   font-weight: bold;
   text-align: center;
 }
 .leaveContentsWrap .title {
-  color: #B8B8B8;
+  color: #b8b8b8;
   font-size: 14px;
   font-weight: bold;
   text-align: center;
@@ -384,7 +403,7 @@ export default {
   text-align: left;
   height: 100vh;
   overflow: hidden scroll;
-  padding-top: 0!important;
+  padding-top: 0 !important;
   height: calc(100% - 80px);
 }
 
@@ -396,7 +415,7 @@ export default {
   width: 100%;
   min-height: 180px;
   margin-top: 0.5rem;
-  border: 1px solid #CFCFCF;
+  border: 1px solid #cfcfcf;
   padding: 0 0.7rem;
 }
 .guideBox {
@@ -405,7 +424,7 @@ export default {
   margin-top: 2rem;
 }
 .guideBox p {
-  color: #6768A7;
+  color: #6768a7;
   font-size: 15px;
   font-weight: bold;
 }
@@ -413,7 +432,7 @@ input {
   margin-right: 0.5rem;
 }
 label {
-  color: #6768A7;
+  color: #6768a7;
   font-weight: 15px;
 }
 .inputArea {

@@ -25,44 +25,145 @@
 }
 </i18n>
 <template>
-<div class="w100P h100P">
+  <div class="w100P h100P">
     <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" class="popBg"></div>
-    <unknownLoginPop :pClosePop="closeUnknownLoginPop" class="fixed" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
-    <div class="pushListArea" >
-      <gConfirmPop v-if="failPopYn" @no="failPopYn=false" confirmType="timeout" :confirmText="errorText" />
-      <div id="pageHeader" ref="pushListHeader" class="pushListHeader"  :class="scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
-        <gSelectFilter :searchYn='true' @changeSearchList="changeSearchList" :subTabList="mBoardFilterList" @openFindPop="findPopShowYn = true " :resultSearchKeyList="resultSearchKeyList" ref="activeBar" :tabList="mCommonFilterList" class="fl selectFilter" @changeTab="changeTab" @changeBoardTab="changeBoard"/>
+    <unknownLoginPop
+      :pClosePop="closeUnknownLoginPop"
+      class="fixed"
+      v-if="GE_USER.unknownYn && mUnknownLoginPopYn"
+    />
+    <div class="pushListArea">
+      <gConfirmPop
+        v-if="failPopYn"
+        @no="failPopYn = false"
+        confirmType="timeout"
+        :confirmText="errorText"
+      />
+      <div
+        id="pageHeader"
+        ref="pushListHeader"
+        class="pushListHeader"
+        :class="
+          scrolledYn ? 'pushListHeader--unpinned' : 'pushListHeader--pinned'
+        "
+        v-on="handleScroll"
+      >
+        <gSelectFilter
+          :searchYn="true"
+          @changeSearchList="changeSearchList"
+          :subTabList="mBoardFilterList"
+          @openFindPop="findPopShowYn = true"
+          :resultSearchKeyList="resultSearchKeyList"
+          ref="activeBar"
+          :tabList="mCommonFilterList"
+          class="fl selectFilter"
+          @changeTab="changeTab"
+          @changeBoardTab="changeBoard"
+        />
         <div v-on="handleScroll" class="reloadImgWrap" @click="refreshAll">
-            <img src="@/assets/images/common/commonReload.png" class="cursorP" @click="refreshAll"/>
+          <img
+            src="@/assets/images/common/commonReload.png"
+            class="cursorP"
+            @click="refreshAll"
+          />
         </div>
       </div>
       <transition name="showModal">
-        <findContentsList :tpGroupCode="viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainiTab === 'F'? 'fileBox':chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" :pClosePop="closeSearchPop" :teamKey='pChannelDetail.teamKey'/>
+        <findContentsList
+          :tpGroupCode="viewMainTab === 'A' ? 'C_STAT' : ''"
+          :contentsListTargetType="
+            viewMainiTab === 'F' ? 'fileBox' : chanAlimTargetType
+          "
+          transition="showModal"
+          @searchList="requestSearchList"
+          v-if="findPopShowYn"
+          :pClosePop="closeSearchPop"
+          :teamKey="pChannelDetail.teamKey"
+        />
       </transition>
 
-        <div id="pushListWrap" class="scrollHidden" ref="pushListWrapWrapCompo" :style="'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'">
-          <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
-          <div class="w100P fl commonListContentBox" style="height:1px;" />
-          <template v-for="(cont, index) in GE_DISP_ALL_LIST" :key="cont.contentsKey">
-            <gUBContentsBox :pOpenUnknownLoginPop="openUnknownLoginPop" @contMove="refreshAll" @contDelete="refreshAll" :index="index" :contentsIndex="index" @openImgPop="openImgPop" :imgClickYn="false" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" @fileDownload="fileDownload"/>
-            <myObserver v-if="index === GE_DISP_ALL_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
-          </template>
+      <div
+        id="pushListWrap"
+        class="scrollHidden"
+        ref="pushListWrapWrapCompo"
+        :style="
+          'padding: 0 1rem ; padding-top: calc(' + paddingTop + 'px + 1rem);'
+        "
+      >
+        <!-- 스크롤 시 첫번째 로우의 위치를 확인하기 위해 넣은 태그입니다. ( 스크롤 시 헤더 숨기게 ) -->
+        <div class="w100P fl commonListContentBox" style="height: 1px" />
+        <template
+          v-for="(cont, index) in GE_DISP_ALL_LIST"
+          :key="cont.contentsKey"
+        >
+          <gUBContentsBox
+            :pOpenUnknownLoginPop="openUnknownLoginPop"
+            @contMove="refreshAll"
+            @contDelete="refreshAll"
+            :index="index"
+            :contentsIndex="index"
+            @openImgPop="openImgPop"
+            :imgClickYn="false"
+            ref="myContentsBox"
+            :propDetailYn="false"
+            :contentsEle="cont"
+            @openPop="openPop"
+            @fileDownload="fileDownload"
+          />
+          <myObserver
+            v-if="index === GE_DISP_ALL_LIST.length - 5"
+            @triggerIntersected="loadMore"
+            id="observer"
+            class="fl w100P"
+            style=""
+          ></myObserver>
+        </template>
 
-          <template v-if="viewMainTab === 'A'">
-            <template v-if="skeletonShow">
-              <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
-            </template>
-            <gEmpty v-else-if="GE_DISP_ALL_LIST && viewMainTab === 'A' && GE_DISP_ALL_LIST.length === 0 && !skeletonShow" :tabName="currentTabName" contentName="전체" :key="mEmptyReloadKey" class="mtop-2"/>
+        <template v-if="viewMainTab === 'A'">
+          <template v-if="skeletonShow">
+            <SkeletonBox v-for="value in [0, 1, 2]" :key="value" />
           </template>
+          <gEmpty
+            v-else-if="
+              GE_DISP_ALL_LIST &&
+              viewMainTab === 'A' &&
+              GE_DISP_ALL_LIST.length === 0 &&
+              !skeletonShow
+            "
+            :tabName="currentTabName"
+            contentName="전체"
+            :key="mEmptyReloadKey"
+            class="mtop-2"
+          />
+        </template>
 
-          <template  v-for="(cont, index) in GE_FILE_LIST" :key="index">
-              <gFileBox @openImgPop="openImgPop" ref="myContentsBox" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-if="viewMainTab === 'F'"/>
-              <myObserver v-if="index === GE_FILE_LIST.length - 1" @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
-          </template>
-          <gEmpty :tabName="currentTabName" contentName="파일함" v-if="viewMainTab === 'F' && GE_FILE_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
-        </div>
+        <template v-for="(cont, index) in GE_FILE_LIST" :key="index">
+          <gFileBox
+            @openImgPop="openImgPop"
+            ref="myContentsBox"
+            :propDetailYn="false"
+            :contentsEle="cont"
+            @openPop="openPop"
+            v-if="viewMainTab === 'F'"
+          />
+          <myObserver
+            v-if="index === GE_FILE_LIST.length - 1"
+            @triggerIntersected="loadMore"
+            id="observer"
+            class="fl w100P"
+            style=""
+          ></myObserver>
+        </template>
+        <gEmpty
+          :tabName="currentTabName"
+          contentName="파일함"
+          v-if="viewMainTab === 'F' && GE_FILE_LIST.length === 0"
+          :key="mEmptyReloadKey"
+          class="mtop-2"
+        />
+      </div>
     </div>
-</div>
+  </div>
 </template>
 <script>
 import SkeletonBox from '@/components/unit/contents/ContentsSkeleton'
@@ -93,13 +194,20 @@ export default {
     },
     pBoardList: Array
   },
-  beforeUnmount () {
+  beforeUnmount() {
     this.GE_CHANNEL_DETAIL.boardList = this.pBoardList
-    this.$store.dispatch('UB_PRE_DATA/AC_PRE_DETAIL_DATA', this.GE_CHANNEL_DETAIL)
+    this.$store.dispatch(
+      'UB_PRE_DATA/AC_PRE_DETAIL_DATA',
+      this.GE_CHANNEL_DETAIL
+    )
     this.$store.dispatch('UB_PRE_DATA/AC_PRE_LIST_DATA', this.GE_DISP_ALL_LIST)
-    this.$store.dispatch('UB_PRE_DATA/AC_PRE_SCROLL_POSITION', { position: this.box.scrollTop, targetKind: 'chanMain', targetKey: this.GE_CHANNEL_DETAIL.teamKey })
+    this.$store.dispatch('UB_PRE_DATA/AC_PRE_SCROLL_POSITION', {
+      position: this.box.scrollTop,
+      targetKind: 'chanMain',
+      targetKey: this.GE_CHANNEL_DETAIL.teamKey
+    })
   },
-  created () {
+  created() {
     this.loadingYn = true
     this.$emit('changePageHeader', '알림')
     if (this.propParams && this.propParams.alimTabType) {
@@ -111,14 +219,14 @@ export default {
     this.readyFunction()
   },
 
-  updated () {
+  updated() {
     this.box = document.getElementById('pushListWrap')
     if (this.box) {
       this.box.addEventListener('scroll', this.handleScroll)
     }
     this.findPaddingTopPush()
   },
-  mounted () {
+  mounted() {
     this.box = document.getElementById('pushListWrap')
     if (this.box) {
       this.box.addEventListener('scroll', this.handleScroll)
@@ -135,27 +243,30 @@ export default {
     this.findPaddingTopPush()
     this.settingScrollUpEventListener()
   },
-  unmounted () {
-    document.removeEventListener('message', e => this.recvNoti(e))
-    window.removeEventListener('message', e => this.recvNoti(e))
+  unmounted() {
+    document.removeEventListener('message', (e) => this.recvNoti(e))
+    window.removeEventListener('message', (e) => this.recvNoti(e))
   },
   watch: {
     pBoardList: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         if (!val) return
         if (this.pBoardList && this.pBoardList.length > 0) {
           this.mBoardFilterList = []
           this.mBoardFilterList.push({ display: 'All', name: -1 })
-          this.pBoardList.forEach(item => {
-            this.mBoardFilterList.push({ display: this.$changeText(item.cabinetNameMtext), name: item.cabinetKey })
+          this.pBoardList.forEach((item) => {
+            this.mBoardFilterList.push({
+              display: this.$changeText(item.cabinetNameMtext),
+              name: item.cabinetKey
+            })
           })
         }
       },
       deep: true
     },
     GE_DEL_CONT_LIST: {
-      handler (value, old) {
+      handler(value, old) {
         if (value) {
           this.delContents(value[0])
         }
@@ -164,67 +275,89 @@ export default {
     },
     pUnknownYn: {
       immediate: true,
-      handler (value, old) {
+      handler(value, old) {
         if (value === true) {
           this.activeTabList = [{ display: '최신', name: 'N' }]
         } else {
-          this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 만든', name: 'M' }]
+          this.activeTabList = [
+            { display: '최신', name: 'N' },
+            { display: '좋아요', name: 'L' },
+            { display: '스크랩', name: 'S' },
+            { display: '내가 만든', name: 'M' }
+          ]
         }
       }
     },
     GE_NEW_MEMO_LIST: {
-      async handler (value, old) {
+      async handler(value, old) {
         var newArr = []
         if (!value || value.length === 0) return
         var content = null
         var index
         var count
-        if ((this.viewMainTab === 'P' && value[0].jobkindId === 'BOAR') || (this.viewMainTab === 'B' && value[0].jobkindId === 'ALIM')) return
-        index = this.GE_DISP_ALL_LIST.findIndex((item) => Number(item.contentsKey) === Number(value[0].targetKey))
+        if (
+          (this.viewMainTab === 'P' && value[0].jobkindId === 'BOAR') ||
+          (this.viewMainTab === 'B' && value[0].jobkindId === 'ALIM')
+        ) {
+          return
+        }
+        index = this.GE_DISP_ALL_LIST.findIndex(
+          (item) => Number(item.contentsKey) === Number(value[0].targetKey)
+        )
         if (index !== -1) {
           content = this.GE_DISP_ALL_LIST[index]
-          count = await this.$getMemoCount({ targetKey: content.contentsKey, allMemoYn: true })
+          count = await this.$getMemoCount({
+            targetKey: content.contentsKey,
+            allMemoYn: true
+          })
           this.GE_DISP_ALL_LIST[index].memoCount = count
-          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', this.GE_DISP_ALL_LIST[index])
+          this.$store.dispatch(
+            'UB_CHANNEL/AC_ADD_CONTENTS',
+            this.GE_DISP_ALL_LIST[index]
+          )
         }
         if (!content) return
 
-        var memoAleadyIdx1 = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
+        var memoAleadyIdx1 = content.D_MEMO_LIST.findIndex(
+          (item) => Number(item.memoKey) === Number(value[0].memoKey)
+        )
         if (memoAleadyIdx1 !== -1) {
           content.D_MEMO_LIST[memoAleadyIdx1] = value[0]
           newArr = content.D_MEMO_LIST
         } else {
-          newArr = [
-            value[0],
-            ...content.D_MEMO_LIST
-          ]
+          newArr = [value[0], ...content.D_MEMO_LIST]
         }
-        var idx1 = this.allContentsList.findIndex((item) => item.contentsKey === content.contentsKey)
+        var idx1 = this.allContentsList.findIndex(
+          (item) => item.contentsKey === content.contentsKey
+        )
         this.allContentsList[idx1].D_MEMO_LIST = this.replaceMemoArr(newArr)
-        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.allContentsList[idx1]])
+        this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [
+          this.allContentsList[idx1]
+        ])
       },
       deep: true
     },
 
     GE_NEW_CONT_LIST: {
-      handler (value, old) {
+      handler(value, old) {
         var newArr = []
         if (!value[0] || !value) return
         if (this.chanAlimYn) {
           if (value[0].creTeamKey !== this.pChannelDetail.teamKey) return
         }
-        newArr = [
-          value[0],
-          ...this.GE_DISP_ALL_LIST
-        ]
+        newArr = [value[0], ...this.GE_DISP_ALL_LIST]
         this.allContentsList = this.replaceArr(newArr)
       },
       deep: true
     },
     GE_RECENT_NOTI_LIST: {
-      handler  (value, old) {
+      handler(value, old) {
         if (this.chanAlimYn) {
-          if (Number(value[0].creTeamKey) !== Number(this.pChannelDetail.teamKey)) return
+          if (
+            Number(value[0].creTeamKey) !== Number(this.pChannelDetail.teamKey)
+          ) {
+            return
+          }
         }
         this.$nextTick(() => {
           setTimeout(() => {
@@ -234,51 +367,49 @@ export default {
       },
       deep: true
     },
-    routerReloadKey () {
+    routerReloadKey() {
       this.refreshList()
     },
-    pageUpdate (value, old) {
+    pageUpdate(value, old) {
       this.backClick()
     },
-    GE_RECENT_CHANGE_TEAM (value, old) {
-    },
+    GE_RECENT_CHANGE_TEAM(value, old) {},
     GE_MAIN_CHAN_LIST: {
-      handler (value, old) {
-      },
+      handler(value, old) {},
       deep: true
     }
   },
   computed: {
-    GE_FILE_LIST () {
+    GE_FILE_LIST() {
       return this.fileList
     },
-    getWindowSizeBottom () {
+    getWindowSizeBottom() {
       return {
         '--widndowHeight': window.innerHeight + 'px'
       }
     },
-    GE_DEL_CONT_LIST () {
+    GE_DEL_CONT_LIST() {
       return this.$store.getters['UB_CHANNEL/GE_DEL_CONT_LIST']
     },
-    GE_PRE_DATA () {
+    GE_PRE_DATA() {
       return this.$store.getters['UB_PRE_DATA/GE_PRE_DATA']
     },
-    GE_CHANNEL_DETAIL () {
+    GE_CHANNEL_DETAIL() {
       if (this.chanAlimYn) {
         var team = this.$getDetail('TEAM', this.pChannelDetail.teamKey)
         return team[0]
       } else return null
     },
-    GE_NEW_CONT_LIST () {
+    GE_NEW_CONT_LIST() {
       return this.$store.getters['UB_CHANNEL/GE_NEW_CONT_LIST']
     },
-    GE_RECENT_NOTI_LIST () {
+    GE_RECENT_NOTI_LIST() {
       return this.$store.getters['UB_NOTI/GE_RECENT_NOTI_LIST']
     },
-    GE_NEW_MEMO_LIST (state) {
+    GE_NEW_MEMO_LIST(state) {
       return this.$store.getters['UB_CHANNEL/GE_NEW_MEMO_LIST']
     },
-    GE_DISP_ALL_LIST () {
+    GE_DISP_ALL_LIST() {
       var idx1, idx2
       var returnAllList = []
       var chanDetail = null
@@ -286,24 +417,36 @@ export default {
       if (!this.allContentsList) return []
       var i = 0
       for (i = 0; i < this.allContentsList.length; i++) {
-        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.allContentsList[i].creTeamKey)
+        idx1 = this.GE_MAIN_CHAN_LIST.findIndex(
+          (item) => item.teamKey === this.allContentsList[i].creTeamKey
+        )
         if (idx1 === -1) {
           var this_ = this
           var jobkindId = this.allContentsList[i].jobkindId
           var teamKey = this.allContentsList[i].creTeamKey
           // eslint-disable-next-line vue/no-async-in-computed-properties
           this.$addChanList(teamKey).then(() => {
-            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === teamKey)
+            idx1 = this_.GE_MAIN_CHAN_LIST.findIndex(
+              (item) => item.teamKey === teamKey
+            )
             if (idx1 === -1) {
               returnAllList.push(this_.allContentsList[i])
             } else {
               chanDetail = this_.GE_MAIN_CHAN_LIST[idx1]
-              if (jobkindId === 'BOAR' && chanDetail && chanDetail.ELEMENTS && chanDetail.ELEMENTS.boardList) {
+              if (
+                jobkindId === 'BOAR' &&
+                chanDetail &&
+                chanDetail.ELEMENTS &&
+                chanDetail.ELEMENTS.boardList
+              ) {
                 dataList = chanDetail.ELEMENTS.boardList
               } else {
                 dataList = []
               }
-              idx2 = dataList.findIndex((item) => item.contentsKey === this_.allContentsList[i].contentsKey)
+              idx2 = dataList.findIndex(
+                (item) =>
+                  item.contentsKey === this_.allContentsList[i].contentsKey
+              )
               if (idx2 !== -1) {
                 this_.allContentsList[i] = dataList[idx2]
                 returnAllList.push(dataList[idx2])
@@ -314,12 +457,18 @@ export default {
           })
         } else {
           chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-          if (chanDetail && chanDetail.ELEMENTS && chanDetail.ELEMENTS.boardList) {
+          if (
+            chanDetail &&
+            chanDetail.ELEMENTS &&
+            chanDetail.ELEMENTS.boardList
+          ) {
             dataList = chanDetail.ELEMENTS.boardList
           } else {
             dataList = []
           }
-          idx2 = dataList.findIndex((item) => item.contentsKey === this.allContentsList[i].contentsKey)
+          idx2 = dataList.findIndex(
+            (item) => item.contentsKey === this.allContentsList[i].contentsKey
+          )
           if (idx2 !== -1) {
             // eslint-disable-next-line vue/no-side-effects-in-computed-properties
             this.allContentsList[i] = dataList[idx2]
@@ -333,27 +482,27 @@ export default {
       if (this.allContentsList.length === 0) this.emptyYn = true
       return this.replaceArr(returnAllList)
     },
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     },
-    GE_MAIN_CHAN_LIST () {
+    GE_MAIN_CHAN_LIST() {
       return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
-    GE_RECENT_CHANGE_TEAM () {
+    GE_RECENT_CHANGE_TEAM() {
       return this.$store.getters['UB_CHANNEL/GE_RECENT_CHANGE_TEAM']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     },
-    historyStack () {
+    historyStack() {
       return this.$store.getters['UB_HISTORY/hRPage']
     },
-    currentPage () {
+    currentPage() {
       return this.$store.getters['UB_HISTORY/hCPage']
     }
   },
   methods: {
-    hideSkeleton (noWaitYn) {
+    hideSkeleton(noWaitYn) {
       if (noWaitYn) {
         this.skeletonShow = false
       } else {
@@ -362,29 +511,49 @@ export default {
         }, 2000)
       }
     },
-    closeUnknownLoginPop () {
+    closeUnknownLoginPop() {
       this.mUnknownLoginPopYn = false
     },
-    openUnknownLoginPop (contDetail) { // 이 컨텐츠의 정보
+    openUnknownLoginPop(contDetail) {
+      // 이 컨텐츠의 정보
       this.mUnknownLoginPopYn = true
     },
-    addAnimation () {
+    addAnimation() {
       this.$nextTick(() => {
         setTimeout(() => {
           this.$refs.myContentsBox[0].addAnimation()
         }, 1500)
       })
     },
-    async getFileList (pageSize, offsetInput, nonLoadingYn) {
+    async getFileList(pageSize, offsetInput, nonLoadingYn) {
       const paramMap = new Map()
       if (JSON.stringify(this.findKeyList) !== '{}') {
-        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
+        if (
+          this.findKeyList.searchKey !== undefined &&
+          this.findKeyList.searchKey !== null &&
+          this.findKeyList.searchKey !== ''
+        ) {
           paramMap.set('fileName', this.findKeyList.searchKey)
-        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
+        }
+        if (
+          this.findKeyList.toCreDateStr !== undefined &&
+          this.findKeyList.toCreDateStr !== null &&
+          this.findKeyList.toCreDateStr !== ''
+        ) {
           paramMap.set('toCreDateStr', this.findKeyList.toCreDateStr)
-        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
+        }
+        if (
+          this.findKeyList.fromCreDateStr !== undefined &&
+          this.findKeyList.fromCreDateStr !== null &&
+          this.findKeyList.fromCreDateStr !== ''
+        ) {
           paramMap.set('fromCreDateStr', this.findKeyList.fromCreDateStr)
-        } if (this.findKeyList.creUserName !== undefined && this.findKeyList.creUserName !== null && this.findKeyList.creUserName !== '') {
+        }
+        if (
+          this.findKeyList.creUserName !== undefined &&
+          this.findKeyList.creUserName !== null &&
+          this.findKeyList.creUserName !== ''
+        ) {
           paramMap.set('creUserName', this.findKeyList.creUserName)
         }
       }
@@ -396,17 +565,20 @@ export default {
         paramMap.set('offsetInt', this.offsetInt)
       }
       paramMap.set('pageSize', 10)
-      var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMyFileList',
-        param: Object.fromEntries(paramMap)
-      }, nonLoadingYn)
+      var result = await this.$commonAxiosFunction(
+        {
+          url: '/tp.getMyFileList',
+          param: Object.fromEntries(paramMap)
+        },
+        nonLoadingYn
+      )
 
       return result
     },
-    openImgPop (param) {
+    openImgPop(param) {
       this.$emit('openImgPop', param)
     },
-    settingScrollUpEventListener () {
+    settingScrollUpEventListener() {
       // contentsList가 빈값이거나 별로 없을 경우 스크롤이 되지 않아 추가하였습니다.
       window.document.addEventListener('touchstart', (e) => {
         this.mScrollStartPoint = e.touches[0].pageY
@@ -429,7 +601,7 @@ export default {
         }
       })
     },
-    async initGetContentsList () {
+    async initGetContentsList() {
       var newArr = []
       var result = await this.getPushContentsList(null, null, false)
       if (!result || result === '' || !result.content) {
@@ -438,10 +610,7 @@ export default {
       }
       await this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', result.content)
       if (!this.allContentsList) this.allContentsList = []
-      newArr = [
-        ...this.allContentsList,
-        ...result.content
-      ]
+      newArr = [...this.allContentsList, ...result.content]
       this.allContentsList = this.replaceArr(newArr)
       if (this.targetCKey) {
         this.canLoadYn = true
@@ -456,7 +625,7 @@ export default {
       }
       this.hideSkeleton(true)
     },
-    async readyFunction () {
+    async readyFunction() {
       this.scrolledYn = false
       if (this.initData) {
         this.allContentsList = this.initData.content
@@ -475,62 +644,114 @@ export default {
       this.loadingYn = false
       this.$emit('closeLoading')
     },
-    delContents (cont) {
+    delContents(cont) {
       var idx = null
       if (cont.jobkindId === 'BOAR') {
-        idx = this.boardContentsList.findIndex((item) => item.mccKey === cont.mccKey)
+        idx = this.boardContentsList.findIndex(
+          (item) => item.mccKey === cont.mccKey
+        )
         if (idx !== -1) {
           this.boardContentsList.splice(idx, 1)
         }
       } else {
-        idx = this.alimContentsList.findIndex((item) => item.mccKey === cont.mccKey)
+        idx = this.alimContentsList.findIndex(
+          (item) => item.mccKey === cont.mccKey
+        )
         if (idx !== -1) {
           this.alimContentsList.splice(idx, 1)
         }
       }
     },
-    replaceMemoArr (arr) {
+    replaceMemoArr(arr) {
       var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1) {
+        if (
+          data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1
+        ) {
           data.push(current)
         }
-        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+        data = data.sort(function (a, b) {
+          // num으로 오름차순 정렬
           return b.memoKey - a.memoKey
         })
         return data
       }, [])
       return uniqueArr
     },
-    async getPushContentsList (pageSize, offsetInput, loadingYn) {
-      if (this.axiosQueue.findIndex((item) => item === 'getPushContentsList') === -1) {
+    async getPushContentsList(pageSize, offsetInput, loadingYn) {
+      if (
+        this.axiosQueue.findIndex((item) => item === 'getPushContentsList') ===
+        -1
+      ) {
         this.axiosQueue.push('getPushContentsList')
         var param = {}
-        if (this.pChannelDetail !== undefined && this.pChannelDetail !== null && this.pChannelDetail !== '') {
+        if (
+          this.pChannelDetail !== undefined &&
+          this.pChannelDetail !== null &&
+          this.pChannelDetail !== ''
+        ) {
           param.creTeamKey = this.pChannelDetail.teamKey
         }
-        if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') {
+        if (
+          offsetInput !== undefined &&
+          offsetInput !== null &&
+          offsetInput !== ''
+        ) {
           param.offsetInt = offsetInput
         } else {
           if (this.initData && this.offsetInt === 0) this.offsetInt = 1
           param.offsetInt = this.offsetInt
         }
 
-        if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = 20 }
+        if (pageSize !== undefined && pageSize !== null && pageSize !== '') {
+          param.pageSize = pageSize
+        } else {
+          param.pageSize = 20
+        }
 
         if (this.findKeyList) {
-          if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
+          if (
+            this.findKeyList.searchKey !== undefined &&
+            this.findKeyList.searchKey !== null &&
+            this.findKeyList.searchKey !== ''
+          ) {
             param.title = this.findKeyList.searchKey
-          } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
+          }
+          if (
+            this.findKeyList.creTeamNameMtext !== undefined &&
+            this.findKeyList.creTeamNameMtext !== null &&
+            this.findKeyList.creTeamNameMtext !== ''
+          ) {
             param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
-          } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
+          }
+          if (
+            this.findKeyList.toCreDateStr !== undefined &&
+            this.findKeyList.toCreDateStr !== null &&
+            this.findKeyList.toCreDateStr !== ''
+          ) {
             param.toCreDateStr = this.findKeyList.toCreDateStr
-          } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
+          }
+          if (
+            this.findKeyList.fromCreDateStr !== undefined &&
+            this.findKeyList.fromCreDateStr !== null &&
+            this.findKeyList.fromCreDateStr !== ''
+          ) {
             param.fromCreDateStr = this.findKeyList.fromCreDateStr
-          } if (this.findKeyList.workStatCodeKey !== undefined && this.findKeyList.workStatCodeKey !== null && this.findKeyList.workStatCodeKey !== '') {
+          }
+          if (
+            this.findKeyList.workStatCodeKey !== undefined &&
+            this.findKeyList.workStatCodeKey !== null &&
+            this.findKeyList.workStatCodeKey !== ''
+          ) {
             param.workStatCodeKey = this.findKeyList.workStatCodeKey
-          } if (this.findKeyList.creUserName !== undefined && this.findKeyList.creUserName !== null && this.findKeyList.creUserName !== '') {
+          }
+          if (
+            this.findKeyList.creUserName !== undefined &&
+            this.findKeyList.creUserName !== null &&
+            this.findKeyList.creUserName !== ''
+          ) {
             param.creUserName = this.findKeyList.creUserName
-          } if (this.findKeyList.selectedSticker) {
+          }
+          if (this.findKeyList.selectedSticker) {
             param.findActStickerYn = true
             param.findActYn = true
             param.stickerKey = this.findKeyList.selectedSticker.stickerKey
@@ -559,7 +780,10 @@ export default {
         if (loadingYn) {
           nonLoading = false
         }
-        const parentYn = this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey) ? 1 : 0
+        const parentYn =
+          this.GE_USER.myTeamKey === parseInt(this.$route.params.encodedTeamKey)
+            ? 1
+            : 0
         if (parentYn === 1) {
           param.creTeamKey = null
         }
@@ -573,13 +797,15 @@ export default {
           var result = await this.$getContentsList(param, nonLoading)
           resultList = result
         }
-        var queueIndex = this.axiosQueue.findIndex((item) => item === 'getPushContentsList')
+        var queueIndex = this.axiosQueue.findIndex(
+          (item) => item === 'getPushContentsList'
+        )
         this.axiosQueue.splice(queueIndex, 1)
         this.loadingYn = false
         return resultList
       }
     },
-    backClick () {
+    backClick() {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.alertPopId === hStack[hStack.length - 1]) {
@@ -590,13 +816,13 @@ export default {
         this.previewPopShowYn = false
       }
     },
-    findPaddingTopPush () {
+    findPaddingTopPush() {
       var element = document.getElementById('searchResultWrapLength')
       if (element) {
         this.paddingTop = element.clientHeight + 45
       }
     },
-    async refreshAll (propIndex) {
+    async refreshAll(propIndex) {
       if (!propIndex) {
         this.$emit('updateContentsCount', 'minus')
       }
@@ -613,7 +839,7 @@ export default {
       ScrollWrap.scrollTo({ top: 0 })
       this.changeTab('A')
     },
-    async changeMainTab (tab) {
+    async changeMainTab(tab) {
       this.paddingTop = 45
       this.$showAxiosLoading(true)
       this.$emit('changeMainTab', tab)
@@ -633,7 +859,12 @@ export default {
       if (tab === 'F') {
         this.activeTabList = [{ display: '최신', name: 'N' }]
       } else {
-        this.activeTabList = [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 만든', name: 'M' }]
+        this.activeTabList = [
+          { display: '최신', name: 'N' },
+          { display: '좋아요', name: 'L' },
+          { display: '스크랩', name: 'S' },
+          { display: '내가 만든', name: 'M' }
+        ]
       }
       this.refreshList()
       this.canLoadYn = true
@@ -642,13 +873,14 @@ export default {
         var resultFileList = result.data.content.filter((item) => {
           return item.contents
         })
-        resultFileList = resultFileList.sort(function (a, b) { // num으로 오름차순 정렬
+        resultFileList = resultFileList.sort(function (a, b) {
+          // num으로 오름차순 정렬
           return b.creDate - a.creDate
         })
         this.fileList = resultFileList
       }
     },
-    introPushPageTab () {
+    introPushPageTab() {
       if (this.viewTab === 'N') {
         this.currentTabName = '최신'
         this.imgUrl = '/resource/common/placeholder_white.png'
@@ -664,10 +896,10 @@ export default {
       }
       this.mEmptyReloadKey += 1
     },
-    getAbsoluteTop (element) {
+    getAbsoluteTop(element) {
       return window.scrollY + element.getBoundingClientRect().top
     },
-    handleScroll () {
+    handleScroll() {
       this.scrollIngYn = true
       var currentTime = new Date()
       var time = currentTime - this.scrollCheckSec
@@ -681,7 +913,11 @@ export default {
           this.scrollDirection = 'up'
           this.scrolledYn = false
         }
-        if (time / 1000 > 1 && this.box.scrollTop !== undefined && this.$diffInt(this.box.scrollTop, this.scrollPosition) > 150) {
+        if (
+          time / 1000 > 1 &&
+          this.box.scrollTop !== undefined &&
+          this.$diffInt(this.box.scrollTop, this.scrollPosition) > 150
+        ) {
           this.scrollCheckSec = currentTime
 
           if (this.firstContOffsetY < 0) {
@@ -697,7 +933,7 @@ export default {
         }
       }
     },
-    async refreshList () {
+    async refreshList() {
       var pSize = 20
       if (this.offsetInt !== 0 && this.offsetInt !== '0') {
         pSize = Number(this.offsetInt) * 20
@@ -711,14 +947,16 @@ export default {
       var tempContentDetail
       var contentDetail
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
-      newArr = [
-        ...resultList.content
-      ]
+      newArr = [...resultList.content]
       this.allContentsList = this.replaceArr(newArr)
       for (let i = 0; i < this.allContentsList.length; i++) {
         cont = this.allContentsList[i]
 
-        tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+        tempContentDetail = await this.$getContentsDetail(
+          null,
+          cont.contentsKey,
+          cont.creTeamKey
+        )
 
         if (tempContentDetail) {
           contentDetail = tempContentDetail[0]
@@ -730,22 +968,28 @@ export default {
           this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [cont])
         } else {
           // eslint-disable-next-line no-redeclare
-          var newArr = [
-            ...contentDetail.D_MEMO_LIST,
-            ...cont.memoList
-          ]
+          var newArr = [...contentDetail.D_MEMO_LIST, ...cont.memoList]
           var newList2 = this.replaceMemoArr(newArr)
           cont.D_MEMO_LIST = newList2
           this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [cont])
         }
       }
     },
-    endListSetFunc (resultList) {
+    endListSetFunc(resultList) {
       if (!this.loadMoreDESCYn) {
         return
       }
-      if (resultList === undefined || resultList === null || resultList === '') return
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+      if (
+        resultList === undefined ||
+        resultList === null ||
+        resultList === ''
+      ) {
+        return
+      }
+      if (
+        resultList.totalElements <
+        resultList.pageable.offset + resultList.pageable.pageSize
+      ) {
         this.endListYn = true
         if (this.offsetInt > 0) this.offsetInt -= 1
       } else {
@@ -753,7 +997,7 @@ export default {
         this.offsetInt += 1
       }
     },
-    async loadMore (descYn) {
+    async loadMore(descYn) {
       if (!descYn && !this.canUpLoadYn) return
       if (this.canLoadYn && this.endListYn === false) {
         this.loadMoreDESCYn = descYn
@@ -769,10 +1013,7 @@ export default {
             var resultFileList = resultList.data.content.filter((item) => {
               return item.contents
             })
-            newArr = [
-              ...this.GE_FILE_LIST,
-              ...resultFileList
-            ]
+            newArr = [...this.GE_FILE_LIST, ...resultFileList]
             this.fileList = this.replaceFileArr(newArr)
             await this.endListSetFunc(resultList.data)
           } else {
@@ -780,23 +1021,24 @@ export default {
             if (resultList === undefined || resultList === '') {
               return
             }
-            this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
+            this.$store.dispatch(
+              'UB_CHANNEL/AC_ADD_CONTENTS',
+              resultList.content
+            )
             if (descYn) {
               if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
-              newArr = [
-                ...this.GE_DISP_ALL_LIST,
-                ...resultList.content
-              ]
+              newArr = [...this.GE_DISP_ALL_LIST, ...resultList.content]
               this.allContentsList = this.replaceArr(newArr)
               await this.endListSetFunc(resultList)
             } else {
-              if (resultList.content.length < 0) { this.canUpLoadYn = false } else { this.upOffSetInt += 1 }
+              if (resultList.content.length < 0) {
+                this.canUpLoadYn = false
+              } else {
+                this.upOffSetInt += 1
+              }
 
               if (!this.GE_DISP_ALL_LIST) this.GE_DISP_ALL_LIST = []
-              newArr = [
-                ...this.GE_DISP_ALL_LIST,
-                ...resultList.content
-              ]
+              newArr = [...this.GE_DISP_ALL_LIST, ...resultList.content]
               this.allContentsList = this.replaceArr(newArr)
             }
             this.contentsList = this.replaceArr(newArr)
@@ -809,10 +1051,10 @@ export default {
         }
       }
     },
-    closeSearchPop () {
+    closeSearchPop() {
       this.findPopShowYn = false
     },
-    openPop (value) {
+    openPop(value) {
       if (value.targetType === 'contentsDetail') {
         const param = {}
         param.targetKey = value.targetKey
@@ -832,19 +1074,25 @@ export default {
         this.$emit('openPop', value)
       }
     },
-    replaceArr (arr) {
+    replaceArr(arr) {
       var this_ = this
       if (!arr || arr.length === 0) return []
       var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
+        if (
+          data.findIndex(
+            (item) => Number(item.contentsKey) === Number(current.contentsKey)
+          ) === -1
+        ) {
           data.push(current)
         }
         if (this_.viewTab === 'P') {
-          data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          data = data.sort(function (a, b) {
+            // num으로 오름차순 정렬
             return b.popPoint - a.popPoint
           })
         } else {
-          data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          data = data.sort(function (a, b) {
+            // num으로 오름차순 정렬
             return b.contentsKey - a.contentsKey
           })
         }
@@ -852,29 +1100,34 @@ export default {
       }, [])
       return uniqueArr
     },
-    replaceFileArr (arr) {
+    replaceFileArr(arr) {
       if (!arr || arr.length === 0) return []
       var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex((item) => Number(item.fileKey) === Number(current.fileKey)) === -1) {
+        if (
+          data.findIndex(
+            (item) => Number(item.fileKey) === Number(current.fileKey)
+          ) === -1
+        ) {
           data.push(current)
         }
-        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+        data = data.sort(function (a, b) {
+          // num으로 오름차순 정렬
           return b.creDate - a.creDate
         })
         return data
       }, [])
       return uniqueArr
     },
-    justChangeTabPosition (tabName) {
+    justChangeTabPosition(tabName) {
       this.targetCKey = null
       this.offsetInt = 0
       this.viewTab = tabName
     },
-    changeBoard (cabinetKey) {
+    changeBoard(cabinetKey) {
       this.mSelectedCabinetKey = cabinetKey
       this.changeTab(this.viewTab)
     },
-    async changeTab (tabName) {
+    async changeTab(tabName) {
       this.emptyYn = null
       this.targetCKey = null
       this.offsetInt = 0
@@ -889,14 +1142,16 @@ export default {
       var tempContentDetail
       var contentDetail
 
-      newArr = [
-        ...contentList
-      ]
+      newArr = [...contentList]
       this.allContentsList = this.replaceArr(newArr)
       for (let i = 0; i < this.allContentsList.length; i++) {
         cont = this.allContentsList[i]
         tempContentDetail = []
-        tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+        tempContentDetail = this.$getContentsDetail(
+          null,
+          cont.contentsKey,
+          cont.creTeamKey
+        )
         if (tempContentDetail) {
           contentDetail = tempContentDetail[0]
         } else {
@@ -917,10 +1172,7 @@ export default {
             }
           }
           // eslint-disable-next-line no-redeclare
-          var newArr = [
-            ...test,
-            ...cont.memoList
-          ]
+          var newArr = [...test, ...cont.memoList]
           // eslint-disable-next-line no-redeclare
           var newList = this.replaceMemoArr(newArr)
           cont.D_MEMO_LIST = newList
@@ -933,31 +1185,67 @@ export default {
       this.introPushPageTab()
       this.scrollMove()
     },
-    scrollMove (wich) {
+    scrollMove(wich) {
       var ScrollWrap = this.$refs.pushListWrapWrapCompo
-      if (wich === undefined || wich === null || wich === '') { wich = 0 }
+      if (wich === undefined || wich === null || wich === '') {
+        wich = 0
+      }
       ScrollWrap.scrollTo({ top: wich - 90, behavior: 'smooth' })
     },
 
     /* 검색 */
-    async requestSearchList (param) {
+    async requestSearchList(param) {
       this.offsetInt = 0
       this.targetCKey = null
       if (param) {
-        if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
+        if (
+          param.searchKey !== undefined &&
+          param.searchKey !== null &&
+          param.searchKey !== ''
+        ) {
           this.findKeyList.searchKey = param.searchKey
-        } if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
+        }
+        if (
+          param.creUserName !== undefined &&
+          param.creUserName !== null &&
+          param.creUserName !== ''
+        ) {
           this.findKeyList.creUserName = param.creUserName
-        } if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
+        }
+        if (
+          param.creTeamNameMtext !== undefined &&
+          param.creTeamNameMtext !== null &&
+          param.creTeamNameMtext !== ''
+        ) {
           this.findKeyList.creTeamNameMtext = param.creTeamNameMtext
-        } if (param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
+        }
+        if (
+          param.toCreDateStr !== undefined &&
+          param.toCreDateStr !== null &&
+          param.toCreDateStr !== ''
+        ) {
           this.findKeyList.toCreDateStr = param.toCreDateStr
-        } if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '') {
+        }
+        if (
+          param.fromCreDateStr !== undefined &&
+          param.fromCreDateStr !== null &&
+          param.fromCreDateStr !== ''
+        ) {
           this.findKeyList.fromCreDateStr = param.fromCreDateStr
-        } if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
+        }
+        if (
+          param.workStatCodeKey !== undefined &&
+          param.workStatCodeKey !== null &&
+          param.workStatCodeKey !== ''
+        ) {
           this.findKeyList.workStatCodeKey = param.workStatCodeKey
           this.findKeyList.codeNameMtext = param.codeNameMtext
-        } if (param.selectedSticker !== undefined && param.selectedSticker !== null && param.selectedSticker !== '') {
+        }
+        if (
+          param.selectedSticker !== undefined &&
+          param.selectedSticker !== null &&
+          param.selectedSticker !== ''
+        ) {
           this.findKeyList.selectedSticker = param.selectedSticker
         }
       }
@@ -968,7 +1256,8 @@ export default {
         var resultFileList = result.data.content.filter((item) => {
           return item.contents
         })
-        resultFileList = resultFileList.sort(function (a, b) { // num으로 오름차순 정렬
+        resultFileList = resultFileList.sort(function (a, b) {
+          // num으로 오름차순 정렬
           return b.creDate - a.creDate
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
@@ -992,47 +1281,73 @@ export default {
       this.scrollMove()
       this.findPopShowYn = false
     },
-    async castingSearchMap (param) {
+    async castingSearchMap(param) {
       // eslint-disable-next-line no-new-object
       var searchObj = new Object()
       var resultArray = []
-      if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
+      if (
+        param.searchKey !== undefined &&
+        param.searchKey !== null &&
+        param.searchKey !== ''
+      ) {
         searchObj.typeName = this.$t('CHAN_POST_TITLE')
         searchObj.type = 'searchKey'
         searchObj.keyword = param.searchKey
         resultArray.push(searchObj)
       }
       searchObj = {}
-      if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
+      if (
+        param.creUserName !== undefined &&
+        param.creUserName !== null &&
+        param.creUserName !== ''
+      ) {
         searchObj.typeName = this.$t('CHAN_POST_CRE_USER')
         searchObj.type = 'creUserName'
         searchObj.keyword = param.creUserName
         resultArray.push(searchObj)
       }
       searchObj = {}
-      if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
+      if (
+        param.creTeamNameMtext !== undefined &&
+        param.creTeamNameMtext !== null &&
+        param.creTeamNameMtext !== ''
+      ) {
         searchObj.typeName = this.$t('CHAN_POST_SENT')
         searchObj.type = 'creTeamNameMtext'
         searchObj.keyword = param.creTeamNameMtext
         resultArray.push(searchObj)
       }
       searchObj = {}
-      if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '' &&
-        param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
+      if (
+        param.fromCreDateStr !== undefined &&
+        param.fromCreDateStr !== null &&
+        param.fromCreDateStr !== '' &&
+        param.toCreDateStr !== undefined &&
+        param.toCreDateStr !== null &&
+        param.toCreDateStr !== ''
+      ) {
         searchObj.typeName = this.$t('CHAN_POST_DATE')
         searchObj.type = 'creDate'
         searchObj.keyword = param.fromCreDateStr + '~' + param.toCreDateStr
         resultArray.push(searchObj)
       }
       searchObj = {}
-      if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
+      if (
+        param.workStatCodeKey !== undefined &&
+        param.workStatCodeKey !== null &&
+        param.workStatCodeKey !== ''
+      ) {
         searchObj.typeName = this.$t('CHAN_POST_FILTER')
         searchObj.type = 'workStatCodeKey'
         searchObj.keyword = param.codeNameMtext
         resultArray.push(searchObj)
       }
       searchObj = {}
-      if (param.selectedSticker !== undefined && param.selectedSticker !== null && param.selectedSticker !== '') {
+      if (
+        param.selectedSticker !== undefined &&
+        param.selectedSticker !== null &&
+        param.selectedSticker !== ''
+      ) {
         searchObj.typeName = this.$t('CHAN_POST_STAT')
         searchObj.type = 'stickerKey'
         searchObj.keyword = this.$changeText(param.selectedSticker.nameMtext)
@@ -1041,12 +1356,14 @@ export default {
       this.findPopShowYn = false
       return resultArray
     },
-    async changeSearchList (type) {
+    async changeSearchList(type) {
       this.offsetInt = 0
       this.targetCKey = null
       if (type === 'searchKey') {
         delete this.findKeyList.searchKey
-      } else if (type === 'creTeamNameMtext') { delete this.findKeyList.creTeamNameMtext } else if (type === 'creDate') {
+      } else if (type === 'creTeamNameMtext') {
+        delete this.findKeyList.creTeamNameMtext
+      } else if (type === 'creDate') {
         delete this.findKeyList.toCreDateStr
         delete this.findKeyList.fromCreDateStr
       } else if (type === 'workStatCodeKey') {
@@ -1066,13 +1383,18 @@ export default {
         var resultFileList = result.data.content.filter((item) => {
           return item.contents
         })
-        resultFileList = resultFileList.sort(function (a, b) { // num으로 오름차순 정렬
+        resultFileList = resultFileList.sort(function (a, b) {
+          // num으로 오름차순 정렬
           return b.creDate - a.creDate
         })
         this.fileList = resultFileList
         this.endListSetFunc(result.data)
       } else {
-        var resultList = await this.getPushContentsList(pageSize, this.offsetInt, true)
+        var resultList = await this.getPushContentsList(
+          pageSize,
+          this.offsetInt,
+          true
+        )
       }
       if (resultList === '') {
         this.allContentsList = []
@@ -1080,27 +1402,38 @@ export default {
         this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
         var newArr = []
 
-        newArr = [
-          ...resultList.content
-        ]
+        newArr = [...resultList.content]
         this.allContentsList = this.replaceArr(newArr)
         this.endListSetFunc(resultList)
       }
       this.scrollMove()
     }
   },
-  data () {
+  data() {
     return {
       mSelectedTab: 'P', // P: Popular 인기, R : Recent 최근, S: Saved 저장된, M: My 내가 쓴
-      mChannelFilterList: { // 채널이 바뀜에 따라 매번 달라지는 필터
+      mChannelFilterList: {
+        // 채널이 바뀜에 따라 매번 달라지는 필터
         valiYn: true,
         inputType: this.$JOConst.VALUE_TAG_TYPE_SELECT,
         targetName: 'chanFilter',
         val: 'P',
-        valiBase: [{ type: this.$JOConst.VALI_CHECK_TYPE_NOT_NULL, baseVal: null }],
-        selectValueList: [{ title: 'Popular', value: 'P', onclickCallBack: this.changeTab }, { title: 'Recent', value: 'R', onclickCallBack: this.changeTab }, { title: 'Saved', value: 'S', onclickCallBack: this.changeTab }, { title: 'My', value: 'M', onclickCallBack: this.changeTab }]
+        valiBase: [
+          { type: this.$JOConst.VALI_CHECK_TYPE_NOT_NULL, baseVal: null }
+        ],
+        selectValueList: [
+          { title: 'Popular', value: 'P', onclickCallBack: this.changeTab },
+          { title: 'Recent', value: 'R', onclickCallBack: this.changeTab },
+          { title: 'Saved', value: 'S', onclickCallBack: this.changeTab },
+          { title: 'My', value: 'M', onclickCallBack: this.changeTab }
+        ]
       },
-      mCommonFilterList: [{ display: 'Recent', name: 'N' }, { display: 'Popular', name: 'P' }, { display: 'Saved', name: 'S' }, { display: 'My', name: 'M' }],
+      mCommonFilterList: [
+        { display: 'Recent', name: 'N' },
+        { display: 'Popular', name: 'P' },
+        { display: 'Saved', name: 'S' },
+        { display: 'My', name: 'M' }
+      ],
       mUnknownLoginPopYn: false,
       mEmptyReloadKey: 0,
       allContentsList: null,
@@ -1116,7 +1449,12 @@ export default {
       endListYn: false,
       scrollPosition: 0,
       findPopShowYn: false,
-      activeTabList: [{ display: '최신', name: 'N' }, { display: '좋아요', name: 'L' }, { display: '스크랩', name: 'S' }, { display: '내가 만든', name: 'M' }],
+      activeTabList: [
+        { display: '최신', name: 'N' },
+        { display: '좋아요', name: 'L' },
+        { display: '스크랩', name: 'S' },
+        { display: '내가 만든', name: 'M' }
+      ],
       viewTab: 'N',
       viewMainTab: 'A',
       findKeyList: {},
@@ -1161,7 +1499,7 @@ export default {
   z-index: 999999;
 }
 .popBg {
-  width:100%;
+  width: 100%;
   height: 100%;
   position: fixed;
   top: 0;
@@ -1169,7 +1507,7 @@ export default {
   z-index: 100;
   background: #00000050;
 }
-.popHeight{
+.popHeight {
   margin-top: 150px;
   height: calc(100% - 150px);
 }
@@ -1178,75 +1516,80 @@ export default {
   min-width: 80px;
   float: left;
   border-bottom: none;
-  background: #FFF;
+  background: #fff;
   padding: 5px 10px;
   margin-left: 10px;
 }
 .mainTabActive {
   border-bottom: none;
-  background: #F1F1FF !important;
+  background: #f1f1ff !important;
 }
 .pushListHeader {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-height: 50px;
-    position: absolute;
-    /* background-color: #FFF; */
-    top: 0;
-    left: 0;
-    will-change: transform;
-    transition: transform 0.3s linear;
-    z-index: 2;
-    min-height: 50px;
-    display: flex;
-    align-items: start;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 50px;
+  position: absolute;
+  /* background-color: #FFF; */
+  top: 0;
+  left: 0;
+  will-change: transform;
+  transition: transform 0.3s linear;
+  z-index: 2;
+  min-height: 50px;
+  display: flex;
+  align-items: start;
 }
 .pushListHeader--pinned {
-    transform: translateY(0%);
+  transform: translateY(0%);
 }
 .pushListHeader--unpinned {
-    transform: translateY(calc(-100% - 2px));
+  transform: translateY(calc(-100% - 2px));
 }
 .reload--pinned {
-    transform: translateY(0%);
-    transition: .3s;
+  transform: translateY(0%);
+  transition: 0.3s;
 }
 .reload--unpinned {
-    transform: translateY(15rem);
-    transition: .5s;
+  transform: translateY(15rem);
+  transition: 0.5s;
 }
 
-.slide-next-leave-active, .slide-next-enter-active, .slide-prev-enter-active, .slide-prev-leave-active {
-  transition: .3s;
+.slide-next-leave-active,
+.slide-next-enter-active,
+.slide-prev-enter-active,
+.slide-prev-leave-active {
+  transition: 0.3s;
 }
 
-.pushReadCheckAlimArea{
+.pushReadCheckAlimArea {
   will-change: transform;
   transition: transform 0.3s linear;
 }
 .pushReadCheckAlimArea--pinned {
-    transform: translateY(0%);
+  transform: translateY(0%);
 }
 .pushReadCheckAlimArea--unpinned {
-    transform: translateY(-50px);
+  transform: translateY(-50px);
 }
-.newRight{
-  animation-name: slideRight; animation-duration: 1s;
+.newRight {
+  animation-name: slideRight;
+  animation-duration: 1s;
   animation-fill-mode: forwards;
 }
-.newLeft{
-  animation-name: slideRight; animation-duration: 1s;
+.newLeft {
+  animation-name: slideRight;
+  animation-duration: 1s;
   animation-fill-mode: forwards;
 }
-.newCenter{
+.newCenter {
   animation-name: none;
 }
 .fixed {
   position: fixed !important;
 }
 .selectFilter {
-  width:calc(100% - 30px) !important;
+  width: calc(100% - 30px) !important;
   padding-top: 0 !important;
   margin-top: 0 !important;
 }
@@ -1294,7 +1637,7 @@ export default {
   }
 }
 
-#alimReadYn[type="checkbox"] {
+#alimReadYn[type='checkbox'] {
   -webkit-appearance: none;
   position: relative;
   width: 16px;
@@ -1303,10 +1646,10 @@ export default {
   outline: none !important;
   border: 1px solid #eeeeee;
   border-radius: 2px;
-background: #fbfbfb;
+  background: #fbfbfb;
 }
-#alimReadYn[type="checkbox"]::before {
-  content: "\2713";
+#alimReadYn[type='checkbox']::before {
+  content: '\2713';
   position: absolute;
   font-weight: bold;
   top: 50%;
@@ -1315,18 +1658,18 @@ background: #fbfbfb;
   transform: scale(0) translate(-50%, -50%);
   line-height: 1;
 }
-#alimReadYn[type="checkbox"]:checked {
+#alimReadYn[type='checkbox']:checked {
   border-color: rgba(255, 255, 255, 0.3);
   color: #6768a7 !important;
 }
-#alimReadYn[type="checkbox"]:checked::before {
+#alimReadYn[type='checkbox']:checked::before {
   border-radius: 2px;
-  transform: scale(1) translate(-50%, -50%)
+  transform: scale(1) translate(-50%, -50%);
 }
-.back{
+.back {
   background: #dcddeb !important;
 }
-.pushListMemoBoxBackground{
+.pushListMemoBoxBackground {
   width: 100% !important;
   height: 100% !important;
   background: #00000036 !important;

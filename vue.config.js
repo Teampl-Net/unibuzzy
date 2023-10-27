@@ -13,17 +13,17 @@ module.exports = {
     // 프록시 설정
     proxy: {
       // 프록시 요청을 보낼 api의 시작 부분
-      '^/sUniB': {
+      '^/tp': {
         // target: 'https://mo.d-alim.com:9443/service',
-        // target: 'https://www.unibuzzy.com',
+        target: 'https://www.unibuzzy.com/sUniB',
         // target: 'http://192.168.0.46:9090',
         // target: 'http://192.168.0.10:9443',
-        target: 'http://localhost:9090',
+        // target: 'http://localhost:9090',
         // target: 'http://192.168.219.103:19090',
         // https://mo.d-alim.com:10443
         changeOrigin: true,
         secure: false,
-        pathRewrite: { '^/sUniB': '/' },
+        pathRewrite: { '^/tp': '/tp' },
         logLevel: 'debug'
       },
       '^/boardMain/service': {

@@ -1,17 +1,37 @@
 <template>
-    <div class="modiMemoWrap">
-        <div class="newHeaderLine modiMemoHeader">
-            <p class="textLeft fl font20 fontBold commonColor">{{ $t('COMM_TITLE_COMMENT_EDIT2') }}</p>
-            <img @click="backClick" src="@/assets/images/common/popup_close.png" alt="">
-        </div>
-        <div class="modiMemoCont">
-            <pre contenteditable autofocus ref="formTextArea" id="memoModiInput" class="" ></pre>
-        </div>
-        <div class="modiMemoFooter">
-            <gBtnSmall :btnTitle="$t('COMM_BTN_EDIT2')" @click="updateMemo" class="mright-05"/>
-            <gBtnSmall btnThema="light" @click="backClick" :btnTitle="$t('COMM_BTN_CLOSE')"/>
-        </div>
+  <div class="modiMemoWrap">
+    <div class="newHeaderLine modiMemoHeader">
+      <p class="textLeft fl font20 fontBold commonColor">
+        {{ $t('COMM_TITLE_COMMENT_EDIT2') }}
+      </p>
+      <img
+        @click="backClick"
+        src="@/assets/images/common/popup_close.png"
+        alt=""
+      />
     </div>
+    <div class="modiMemoCont">
+      <pre
+        contenteditable
+        autofocus
+        ref="formTextArea"
+        id="memoModiInput"
+        class=""
+      ></pre>
+    </div>
+    <div class="modiMemoFooter">
+      <gBtnSmall
+        :btnTitle="$t('COMM_BTN_EDIT2')"
+        @click="updateMemo"
+        class="mright-05"
+      />
+      <gBtnSmall
+        btnThema="light"
+        @click="backClick"
+        :btnTitle="$t('COMM_BTN_CLOSE')"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -22,13 +42,13 @@ export default {
     pSetUpdateMemo: Function,
     pClosePop: Function
   },
-  data () {
+  data() {
     return {
       mMemoEle: this.pMemoEle ? this.pMemoEle : { bodyFullStr: '' },
       popId: null
     }
   },
-  created () {
+  created() {
     var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'modiMemoPop' + history.length
     history.push(this.popId)
@@ -45,7 +65,7 @@ export default {
     })
   },
   methods: {
-    backClick () {
+    backClick() {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.popId === hStack[hStack.length - 1]) {
@@ -55,9 +75,11 @@ export default {
         this.pClosePop()
       }
     },
-    replaceArr (arr) {
+    replaceArr(arr) {
       var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1) {
+        if (
+          data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1
+        ) {
           data.push(current)
         }
         data = data.sort(function (a, b) {
@@ -67,7 +89,7 @@ export default {
       }, [])
       return uniqueArr
     },
-    async updateMemo () {
+    async updateMemo() {
       var inputMemoArea = this.$refs.formTextArea
       if (inputMemoArea.innerText === this.pMemoEle.bodyFullStr) {
         return
@@ -89,7 +111,7 @@ export default {
           this.pSetUpdateMemo(memo)
         } else {
           var result = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.saveMemo',
+            url: '/tp.saveMemo',
             param: { memo: memo }
           })
           if (result && result.data && result.data.result) {
@@ -109,15 +131,15 @@ export default {
     }
   },
   computed: {
-    historyStack () {
+    historyStack() {
       return this.$store.getters['UB_HISTORY/hRPage']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
-    pageUpdate (value, old) {
+    pageUpdate(value, old) {
       this.backClick()
     }
   }
@@ -125,7 +147,7 @@ export default {
 </script>
 <style scoped>
 pre #parentNameCard {
-    display: none;
+  display: none;
 }
 .modiMemoWrap {
   border-radius: 0.8rem;
@@ -133,7 +155,7 @@ pre #parentNameCard {
   width: calc(100% - 40px);
   height: 350px;
   position: fixed;
-  background: #FFF;
+  background: #fff;
   z-index: 100;
   top: 50%;
   left: 20px;
@@ -161,7 +183,7 @@ pre #parentNameCard {
   padding: 10px 20px;
 }
 .modiMemoCont > pre {
-  display:inline-block;
+  display: inline-block;
   outline: none;
   width: 100%;
   border-radius: 5px;

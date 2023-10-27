@@ -233,7 +233,6 @@
           ref="complexEditor"
           @changeUploadList="changeUploadList"
           :editorType="this.editorType"
-          :propFormData="propFormData"
           @setParamInnerHtml="setParamInnerHtml"
           @setParamInnerText="setParamInnerText"
           @postToolBox="postToolBox"
@@ -556,7 +555,7 @@ export default {
     async sendAlimToMember() {
       this.mContentsParams.allRecvYn = true
       const res = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.sendContentsPush',
+        url: '/tp.sendContentsPush',
         param: this.mContentsParams
       })
       if (res.data && res.data.result) {
@@ -606,7 +605,7 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       var response = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.getCabinetListForMyShareType',
+          url: '/tp.getCabinetListForMyShareType',
           param: Object.fromEntries(paramMap)
         },
         true

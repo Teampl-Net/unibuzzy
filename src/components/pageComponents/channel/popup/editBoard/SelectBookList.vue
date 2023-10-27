@@ -15,20 +15,68 @@
 }
 </i18n>
 <template>
-<div class="selectBookListWrap">
-    <gPopHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle" :managerBtn='true' />
-    <div class="pagePaddingWrap selectBookListContents" :style="'padding-top:' + ($STATUS_HEIGHT + 60)+ 'px'" >
-      <gActiveBar ref="activeBar" :tabList="activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0;" />
+  <div class="selectBookListWrap">
+    <gPopHeader
+      @closeXPop="backClick"
+      class="headerShadow"
+      :headerTitle="receiverTitle"
+      :managerBtn="true"
+    />
+    <div
+      class="pagePaddingWrap selectBookListContents"
+      :style="'padding-top:' + ($STATUS_HEIGHT + 60) + 'px'"
+    >
+      <gActiveBar
+        ref="activeBar"
+        :tabList="activeTabList"
+        class="fl"
+        @changeTab="changeTab"
+        style="width: 100%; padding-top: 0; margin-top: 0"
+      />
       <div class="bookListStyle">
-        <gBookList :propBookList="bookList" :teamInfo="propData" :parentSelectList="pSelectedBookList" :selectPopYn="true" @changeSelectBookList="changeSelectBookList" :propData="propData" :selectBookDetail="selectBookDetail" ref="teamListRef"  @openMCabUserList='openMCabUserList' v-if="!detailOpenYn"/>
+        <gBookList
+          :propBookList="bookList"
+          :teamInfo="propData"
+          :parentSelectList="pSelectedBookList"
+          :selectPopYn="true"
+          @changeSelectBookList="changeSelectBookList"
+          :propData="propData"
+          :selectBookDetail="selectBookDetail"
+          ref="teamListRef"
+          @openMCabUserList="openMCabUserList"
+          v-if="!detailOpenYn"
+        />
         <transition name="showGroup">
-            <gBookMemberList :propMemberList="memberList" :parentSelectList="pSelectedMemberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="selectBookDetail" class="memberListStyle" transition="showGroup" ref="memberListRef" v-if="detailOpenYn" />
+          <gBookMemberList
+            :propMemberList="memberList"
+            :parentSelectList="pSelectedMemberList"
+            :selectPopYn="true"
+            @changeSelectMemberList="changeSelectMemberList"
+            :teamInfo="propData"
+            :propData="selectBookDetail"
+            class="memberListStyle"
+            transition="showGroup"
+            ref="memberListRef"
+            v-if="detailOpenYn"
+          />
         </transition>
       </div>
-      <selectedListCompo class="selectedListStyle" :selectShareTargetYn="true" @addMemberList="addMe" :currentTeamKey="propData.teamKey"  @changeSelectedList="changeSelectedList" @changeSelectBookList="changeSelectBookList" @changeSelectMemberList="changeSelectMemberList" ref="selectedListCompo" style="" transition="showGroup" :listData='selectedList'  @btnClick='sendReceivers' />
+      <selectedListCompo
+        class="selectedListStyle"
+        :selectShareTargetYn="true"
+        @addMemberList="addMe"
+        :currentTeamKey="propData.teamKey"
+        @changeSelectedList="changeSelectedList"
+        @changeSelectBookList="changeSelectBookList"
+        @changeSelectMemberList="changeSelectMemberList"
+        ref="selectedListCompo"
+        style=""
+        transition="showGroup"
+        :listData="selectedList"
+        @btnClick="sendReceivers"
+      />
     </div>
-</div>
-
+  </div>
 </template>
 
 <script>
@@ -41,7 +89,7 @@ export default {
     pSelectedList: {},
     pClosePop: Function
   },
-  data () {
+  data() {
     return {
       memberList: [],
       bookList: [],
@@ -59,7 +107,7 @@ export default {
       activeTab: 'B'
     }
   },
-  created () {
+  created() {
     console.log(this.selectedListYn)
     console.log(this.propData)
     if (this.selectedListYn) {
@@ -72,16 +120,20 @@ export default {
     this.editBookSelectedList()
     this.$addHistoryStack('modiPopReceiverSelecPop')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     this.$checkDeleteHistory('modiPopReceiverSelecPop')
   },
-  mounted () {
+  mounted() {
     if (this.pSelectedList) {
       this.selectedList = []
       this.selectedList = JSON.parse(JSON.stringify(this.pSelectedList))
 
-      this.pSelectedBookList = this.selectedList.bookList ? this.selectedList.bookList : []
-      this.pSelectedMemberList = this.selectedList.memberList ? this.selectedList.memberList : []
+      this.pSelectedBookList = this.selectedList.bookList
+        ? this.selectedList.bookList
+        : []
+      this.pSelectedMemberList = this.selectedList.memberList
+        ? this.selectedList.memberList
+        : []
       var param = {}
       if (this.selectedList.bookList) {
         var test1 = this.selectedList.bookList
@@ -101,7 +153,10 @@ export default {
       localStorage.setItem('ori', JSON.stringify(param))
       localStorage.setItem('ori', JSON.stringify(this.selectedList))
       var this_ = this
-      if (this.selectedList.bookList.length > 0 || this.selectedList.memberList.length > 0) {
+      if (
+        this.selectedList.bookList.length > 0 ||
+        this.selectedList.memberList.length > 0
+      ) {
         this.$nextTick(() => {
           this_.$refs.selectedListCompo.upDatePage()
         })
@@ -110,7 +165,7 @@ export default {
   },
   components: { selectedListCompo },
   methods: {
-    changeTab (type) {
+    changeTab(type) {
       this.activeTab = type
       this.detailOpenYn = false
       if (this.activeTab === 'B') {
@@ -119,11 +174,11 @@ export default {
         this.getMemberTypeList()
       }
     },
-    async getMemberTypeList () {
+    async getMemberTypeList() {
       var param = {}
       param.teamKey = this.propData.teamKey
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemberTypeList',
+        url: '/tp.getMemberTypeList',
         param: param
       })
       if (result.status === 200) {
@@ -134,13 +189,18 @@ export default {
         console.log(this.bookList)
       }
     },
-    async getBookList () {
+    async getBookList() {
       var paramMap = new Map()
-      paramMap.set('teamKey', this.propData.currentTeamKey || this.propData.teamKey || this.propData.targetKey)
+      paramMap.set(
+        'teamKey',
+        this.propData.currentTeamKey ||
+          this.propData.teamKey ||
+          this.propData.targetKey
+      )
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getTeamMenuList',
+        url: '/tp.getTeamMenuList',
         param: Object.fromEntries(paramMap)
       })
       this.bookList = result.data
@@ -150,19 +210,23 @@ export default {
       }
       this.editBookSelectedList()
     },
-    async getBookMemberList () {
+    async getBookMemberList() {
       var paramMap = new Map()
       paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
       paramMap.set('jobkindId', 'USER')
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMCabContentsList',
+        url: '/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       this.memberList = result.data
-      if (this.memberList) { // dispName이 없을시 userName으로 대체
+      if (this.memberList) {
+        // dispName이 없을시 userName으로 대체
         for (var i = 0; i < this.memberList.length; i++) {
-          if (this.memberList[i].userDispMtext !== undefined && this.memberList[i].userDispMtext !== null && this.memberList[i].userDispMtext !== '') {
-
+          if (
+            this.memberList[i].userDispMtext !== undefined &&
+            this.memberList[i].userDispMtext !== null &&
+            this.memberList[i].userDispMtext !== ''
+          ) {
           } else {
             this.memberList[i].userDispMtext = this.memberList[i].userNameMtext
           }
@@ -170,10 +234,10 @@ export default {
       }
       this.editMemberSelectedList()
     },
-    sendReceivers (data) {
+    sendReceivers(data) {
       this.$emit('sendReceivers', data)
     },
-    addMe (data) {
+    addMe(data) {
       if (this.selectedList.memberList) {
         this.selectedList.memberList.unshift(data)
       } else {
@@ -182,7 +246,7 @@ export default {
       }
       this.changeSelectMemberList(this.selectedList.memberList)
     },
-    changeSelectMemberList (data) {
+    changeSelectMemberList(data) {
       if (data.accessKey !== undefined) {
         for (let i = 0; i < data.length; i++) {
           this.selectedList.memberList.push(data.params.memberList[i])
@@ -196,9 +260,12 @@ export default {
       this.pSelectedMemberList = []
       this.pSelectedMemberList = this.selectedList.memberList
       this.$refs.selectedListCompo.newUpdateMember(this.selectedList.memberList)
-      this.$refs.memberListRef.deleteSelectedMember(this.selectedList.memberList, true)
+      this.$refs.memberListRef.deleteSelectedMember(
+        this.selectedList.memberList,
+        true
+      )
     },
-    changeSelectBookList (data) {
+    changeSelectBookList(data) {
       this.selectedList.bookList = []
       for (let i = 0; i < data.length; i++) {
         this.selectedList.bookList.push(data[i])
@@ -207,14 +274,20 @@ export default {
       this.pSelectedBookList = this.selectedList.bookList
       this.$refs.selectedListCompo.newUpdateBook(this.selectedList.bookList)
     },
-    changeSelectedList (selectedListData) {
+    changeSelectedList(selectedListData) {
       if (selectedListData.type === 'C') {
-        this.$refs.teamListRef.deleteSelectedBook(selectedListData.type, selectedListData.delKey)
+        this.$refs.teamListRef.deleteSelectedBook(
+          selectedListData.type,
+          selectedListData.delKey
+        )
         delete selectedListData.type
         delete selectedListData.delKey
       } else {
         if (this.$refs.memberListRef) {
-          this.$refs.memberListRef.deleteSelectedMember(selectedListData.type, selectedListData.delKey)
+          this.$refs.memberListRef.deleteSelectedMember(
+            selectedListData.type,
+            selectedListData.delKey
+          )
         }
         delete selectedListData.type
         delete selectedListData.delKey
@@ -227,7 +300,7 @@ export default {
       this.editMemberSelectedList()
       this.editBookSelectedList()
     },
-    editMemberSelectedList () {
+    editMemberSelectedList() {
       if (this.selectedList.memberList) {
         var changeList = this.selectedList.memberList
         for (var m = 0; m < this.memberList.length; m++) {
@@ -240,23 +313,28 @@ export default {
         }
       }
     },
-    editBookSelectedList () {
+    editBookSelectedList() {
       if (this.selectedList.bookList) {
         var changeList = this.selectedList.bookList
         for (var m = 0; m < this.bookList.length; m++) {
           this.bookList[m].selectedYn = false
           for (var c = 0; c < changeList.length; c++) {
-            if (((this.bookList[m].memberYn) && changeList[c].cabinetKey === this.bookList[m].cabinetKey) || ((this.bookList[m].memberYn) && changeList[c].memberTypeKey === this.bookList[m].memberTypeKey)) {
+            if (
+              (this.bookList[m].memberYn &&
+                changeList[c].cabinetKey === this.bookList[m].cabinetKey) ||
+              (this.bookList[m].memberYn &&
+                changeList[c].memberTypeKey === this.bookList[m].memberTypeKey)
+            ) {
               this.bookList[m].selectedYn = true
             }
           }
         }
       }
     },
-    addMemberList (obj) {
+    addMemberList(obj) {
       this.selectReceivers.unshift(obj)
     },
-    backClick () {
+    backClick() {
       if (this.detailOpenYn === true) {
         var removePage = this.historyStack[this.historyStack.length - 1]
         if (removePage === 'commonBookMemberList') {
@@ -270,11 +348,11 @@ export default {
         this.$emit('closeXPop')
       }
     },
-    async openMemberUserList () {
+    async openMemberUserList() {
       var paramMap = new Map()
       paramMap.set('memberTypeKey', this.selectBookDetail.memberTypeKey)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getFollowerMemberList',
+        url: '/tp.getFollowerMemberList',
         param: Object.fromEntries(paramMap)
       })
       var userList = result.data.userList
@@ -284,7 +362,7 @@ export default {
       this.memberList = userList
       console.log(userList)
     },
-    async openMCabUserList (data) {
+    async openMCabUserList(data) {
       if (!this.teamEditYn) {
         this.selectBookDetail = data
         if (data.memberYn) {
@@ -305,22 +383,22 @@ export default {
     }
   },
   computed: {
-    historyStack () {
+    historyStack() {
       return this.$store.getters['UB_HISTORY/hStack']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
-    pageUpdate () {
+    pageUpdate() {
       this.backClick()
     }
   }
 }
 </script>
 
-<style >
+<style>
 .selectBookListWrap {
   height: 100vh;
   background-color: white;
@@ -341,12 +419,12 @@ export default {
 .memberListStyle {
   position: absolute;
   top: 0;
-  overFlow: hidden scroll;
+  overflow: hidden scroll;
   background: #fff;
   padding-bottom: 60px;
 }
 .selectBookListContents {
-  position:absolute;
+  position: absolute;
   overflow: auto;
 }
 .selectedListStyle {

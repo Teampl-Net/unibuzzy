@@ -35,90 +35,173 @@
 }
 </i18n>
 <template>
-    <div id="exelUploadPop" class="excelUploadPopWrap">
-        <gConfirmPop v-if="confirmYn" @ok="saveList" @no="confirmYn = false" confirmType="two" :confirmText="confirmMsg" />
-        <div class="excelPopHeader">
-            <p class="fontBold font18">{{ $t('EXCEL_TITLE_EXCEL') }}</p>
-            <img @click="$emit('closePop')" class="cursorP closeBtnImg" src="@/assets/images/common/popup_close.png" alt="">
-        </div>
-        <div class="excelPopBody">
-            <p class="commonColor font16 fontBold textLeft">STEP.0 {{ $t('EXCEL_MSG_DOWN') }}</p>
-            <div class="step0Area">
-              <div class="step0BtnWrap" v-for="(value, index) in uploadTypeList" :key="index">
-                  <gBtnSmall class="step0Btn" @click="downLoadTemplate(value.filePath)" :btnTitle="value.text"/>
-              </div>
-            </div>
-            <div class="step1Area" v-if="activeStep >= 0">
-              <p class="commonColor font16 fontBold textLeft">STEP.1 {{ $t('EXCEL_MSG_CHECK') }}</p>
-              <div class="commonBoxStyle step1BtnWrap">
-                <div class="w100P step1BtnBox">
-                  <label for="input-file">
-                  {{ selectFile? selectFile.name:$t('COMMON_MSG_NOFILE') }}
-                    <gBtnSmall style="margin-left: 10px;" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_SELECT')" />
-                  </label>
-                  <form  @submit.prevent="formSubmit" class="excelFileForm" method="post">
-                      <input class="formImageFile excelFileInput" type="file" title ="선택" accept=".xls,.xlsx" ref="selectFile" id="input-file" @change="changeFile"/>
-                  </form>
-                  <gBtnSmall @click="checkUploadYn" :style="checkUserYn ? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_TEST')" />
-                </div>
-              </div>
-            </div>
-            <div v-if="checkUserYn" class="checkResultArea">
-              <p class="font14 fontBold font fl commonColor resultTitle">{{$t('EXCEL_TITLE_RESULT')}}</p>
-              <p class="font13 fr lightGray">{{$t('EXCEL_TITLE_FIT') + ' ' + excelFileList.length + ', ' + $t('EXCEL_TITLE_NO_FIT') + failList.length}}</p>
-              <div class="commonBoxStyle resultBox">
-                  <table class="w100P">
-                      <colgroup>
-                        <col style="width: 10%">
-                        <col style="width: 20%">
-                        <col style="width: 15%;">
-                        <col style="width: 15%">
-                        <col style="width: 15%">
-                        <col style="width: 15%;">
-                      </colgroup>
-                      <tbody>
-                        <tr>
-                          <th class="font14 whitePurpleBG" v-for="(value, index) in excelTitleRowList" :key="index">{{value}}</th>
-                        </tr>
-                      </tbody>
-                  </table>
-                  <div class="excelListWrap">
-                    <table v-if="excelFileList.length > 0 " id="contentsTable w100P">
-                        <colgroup>
-                          <col style="width: 10%">
-                          <col style="width: 20%">
-                          <col style="width: 15%;">
-                          <col style="width: 15%">
-                          <col style="width: 15%">
-                          <col style="width: 15%;">
-                        </colgroup>
-                        <tbody>
-                            <tr v-if="uploadErrorYn"><td colspan="3">{{ $t('EXCEL_MSG_FAIL') }}</td></tr>
-                            <tr v-for="(value, index) in failList" :key="index">
-                                <td v-for="(fData, fDIndex) in value" :key="fDIndex" class="font14">
-                                  <span>{{fData}}</span>
-                                </td>
-                            </tr>
-                            <tr v-for="(value, index) in excelFileList" :key="index">
-                                <td v-for="(eData, eDIndex) in value" :key="eDIndex" class="font14">
-                                  <div class="dataItem" >{{eData}}</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p v-else class="font14 commonBlack textLeft mleft-05 mtop-05 ">{{ $t('EXCEL_MSG_NO_DATA') }}</p>
-                  </div>
-              </div>
-            </div>
-            <p v-show="activeStep === 2" class="commonColor font16 fontBold fl textLeft mtop-05">STEP.3 {{ $t('EXCEL_MSG_ADD') }}</p>
-            <gBtnSmall v-show="activeStep === 2" @click="confirmSavePop" style="margin-top: 5px; " :style="!checkUserYn? 'background-color:#ccc;' : ''" :btnTitle="$t('EXCEL_BTN_UPLOAD')" />
-        </div>
+  <div id="exelUploadPop" class="excelUploadPopWrap">
+    <gConfirmPop
+      v-if="confirmYn"
+      @ok="saveList"
+      @no="confirmYn = false"
+      confirmType="two"
+      :confirmText="confirmMsg"
+    />
+    <div class="excelPopHeader">
+      <p class="fontBold font18">{{ $t('EXCEL_TITLE_EXCEL') }}</p>
+      <img
+        @click="$emit('closePop')"
+        class="cursorP closeBtnImg"
+        src="@/assets/images/common/popup_close.png"
+        alt=""
+      />
     </div>
+    <div class="excelPopBody">
+      <p class="commonColor font16 fontBold textLeft">
+        STEP.0 {{ $t('EXCEL_MSG_DOWN') }}
+      </p>
+      <div class="step0Area">
+        <div
+          class="step0BtnWrap"
+          v-for="(value, index) in uploadTypeList"
+          :key="index"
+        >
+          <gBtnSmall
+            class="step0Btn"
+            @click="downLoadTemplate(value.filePath)"
+            :btnTitle="value.text"
+          />
+        </div>
+      </div>
+      <div class="step1Area" v-if="activeStep >= 0">
+        <p class="commonColor font16 fontBold textLeft">
+          STEP.1 {{ $t('EXCEL_MSG_CHECK') }}
+        </p>
+        <div class="commonBoxStyle step1BtnWrap">
+          <div class="w100P step1BtnBox">
+            <label for="input-file">
+              {{ selectFile ? selectFile.name : $t('COMMON_MSG_NOFILE') }}
+              <gBtnSmall
+                style="margin-left: 10px"
+                :style="checkUserYn ? 'background-color:#ccc;' : ''"
+                :btnTitle="$t('EXCEL_BTN_SELECT')"
+              />
+            </label>
+            <form
+              @submit.prevent="formSubmit"
+              class="excelFileForm"
+              method="post"
+            >
+              <input
+                class="formImageFile excelFileInput"
+                type="file"
+                title="선택"
+                accept=".xls,.xlsx"
+                ref="selectFile"
+                id="input-file"
+                @change="changeFile"
+              />
+            </form>
+            <gBtnSmall
+              @click="checkUploadYn"
+              :style="checkUserYn ? 'background-color:#ccc;' : ''"
+              :btnTitle="$t('EXCEL_BTN_TEST')"
+            />
+          </div>
+        </div>
+      </div>
+      <div v-if="checkUserYn" class="checkResultArea">
+        <p class="font14 fontBold font fl commonColor resultTitle">
+          {{ $t('EXCEL_TITLE_RESULT') }}
+        </p>
+        <p class="font13 fr lightGray">
+          {{
+            $t('EXCEL_TITLE_FIT') +
+            ' ' +
+            excelFileList.length +
+            ', ' +
+            $t('EXCEL_TITLE_NO_FIT') +
+            failList.length
+          }}
+        </p>
+        <div class="commonBoxStyle resultBox">
+          <table class="w100P">
+            <colgroup>
+              <col style="width: 10%" />
+              <col style="width: 20%" />
+              <col style="width: 15%" />
+              <col style="width: 15%" />
+              <col style="width: 15%" />
+              <col style="width: 15%" />
+            </colgroup>
+            <tbody>
+              <tr>
+                <th
+                  class="font14 whitePurpleBG"
+                  v-for="(value, index) in excelTitleRowList"
+                  :key="index"
+                >
+                  {{ value }}
+                </th>
+              </tr>
+            </tbody>
+          </table>
+          <div class="excelListWrap">
+            <table v-if="excelFileList.length > 0" id="contentsTable w100P">
+              <colgroup>
+                <col style="width: 10%" />
+                <col style="width: 20%" />
+                <col style="width: 15%" />
+                <col style="width: 15%" />
+                <col style="width: 15%" />
+                <col style="width: 15%" />
+              </colgroup>
+              <tbody>
+                <tr v-if="uploadErrorYn">
+                  <td colspan="3">{{ $t('EXCEL_MSG_FAIL') }}</td>
+                </tr>
+                <tr v-for="(value, index) in failList" :key="index">
+                  <td
+                    v-for="(fData, fDIndex) in value"
+                    :key="fDIndex"
+                    class="font14"
+                  >
+                    <span>{{ fData }}</span>
+                  </td>
+                </tr>
+                <tr v-for="(value, index) in excelFileList" :key="index">
+                  <td
+                    v-for="(eData, eDIndex) in value"
+                    :key="eDIndex"
+                    class="font14"
+                  >
+                    <div class="dataItem">{{ eData }}</div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p v-else class="font14 commonBlack textLeft mleft-05 mtop-05">
+              {{ $t('EXCEL_MSG_NO_DATA') }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <p
+        v-show="activeStep === 2"
+        class="commonColor font16 fontBold fl textLeft mtop-05"
+      >
+        STEP.3 {{ $t('EXCEL_MSG_ADD') }}
+      </p>
+      <gBtnSmall
+        v-show="activeStep === 2"
+        @click="confirmSavePop"
+        style="margin-top: 5px"
+        :style="!checkUserYn ? 'background-color:#ccc;' : ''"
+        :btnTitle="$t('EXCEL_BTN_UPLOAD')"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       excelFileList: [],
       checkUserYn: false,
@@ -131,7 +214,20 @@ export default {
       excelTitleRowList: [],
       activeStep: 0,
       bookType: 'EMPL',
-      uploadTypeList: [{ text: this.$t('EXCEL_BTN_STAFF'), type: 'employee', key: 0, filePath: '/commonFile/thealim_member_upload_list_employee.xlsx' }, { text: this.$t('EXCEL_BTN_STUDENT'), type: 'student', key: 1, filePath: '/commonFile/thealim_member_upload_list_student.xlsx' }]
+      uploadTypeList: [
+        {
+          text: this.$t('EXCEL_BTN_STAFF'),
+          type: 'employee',
+          key: 0,
+          filePath: '/commonFile/thealim_member_upload_list_employee.xlsx'
+        },
+        {
+          text: this.$t('EXCEL_BTN_STUDENT'),
+          type: 'student',
+          key: 1,
+          filePath: '/commonFile/thealim_member_upload_list_student.xlsx'
+        }
+      ]
     }
   },
   props: {
@@ -139,12 +235,12 @@ export default {
     targetKey: {}
   },
   computed: {
-    GE_LOCALE () {
+    GE_LOCALE() {
       return this.$i18n.locale
     }
   },
   methods: {
-    downLoadTemplate (path) {
+    downLoadTemplate(path) {
       var iframe
       iframe = document.getElementById('hiddenExcelDownloader')
       if (iframe == null) {
@@ -156,7 +252,7 @@ export default {
       iframe.src = path
       return false
     },
-    changeFile () {
+    changeFile() {
       this.activeStep = 1
       this.checkUserYn = false
       this.uploadErrorYn = false
@@ -164,7 +260,7 @@ export default {
         this.selectFile = this.$refs.selectFile.files[0]
       }
     },
-    checkUploadYn () {
+    checkUploadYn() {
       if (this.$refs.selectFile.files.length > 0) {
         // 0 번째 파일을 가져 온다.
         var form = new FormData()
@@ -175,12 +271,12 @@ export default {
           this.isUploading = true
 
           this.$axios
-            .post('/sUniB/tp.uploadTpUserRequireListExcelFile', form, {
+            .post('/tp.uploadTpUserRequireListExcelFile', form, {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
             })
-            .then(res => {
+            .then((res) => {
               if (res.data.result === true) {
                 this.excelFileList = res.data.resultMap.dataList
                 this.failCnt = res.data.resultMap.failCnt
@@ -189,8 +285,8 @@ export default {
                 for (var i = this.excelFileList.length - 1; i > -1; i--) {
                   if (i === 0) {
                     for (var e = 0; e < this.excelFileList[0].length; e++) {
-                      this.excelTitleRowList.push((this.excelFileList[0])[e])
-                      if ((this.excelFileList[0])[e] === '학번') {
+                      this.excelTitleRowList.push(this.excelFileList[0][e])
+                      if (this.excelFileList[0][e] === '학번') {
                         this.bookType = 'STUD'
                       }
                     }
@@ -223,7 +319,7 @@ export default {
                 this.checkUserYn = true
               }
             })
-            .catch(error => {
+            .catch((error) => {
               this.response = error
             })
         }
@@ -231,11 +327,14 @@ export default {
         this.$showToastPop(this.$t('COMMON_MSG_NOFILE'))
       }
     },
-    confirmSavePop () {
+    confirmSavePop() {
       if (this.checkUserYn) {
         this.confirmMsg = ''
         if (this.GE_LOCALE === 'ko') {
-          this.confirmMsg += '총 ' + this.excelFileList.length + '명을 주소록에 추가하시겠습니까?'
+          this.confirmMsg +=
+            '총 ' +
+            this.excelFileList.length +
+            '명을 주소록에 추가하시겠습니까?'
         } else {
           this.confirmMsg += `Do you want to add a total of ${this.excelFileList.length} people to your team?`
         }
@@ -249,9 +348,9 @@ export default {
         this.confirmYn = true
       }
     },
-    async saveList () {
+    async saveList() {
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveMUserFromExcelFile',
+        url: '/tp.saveMUserFromExcelFile',
         param: {
           bookType: this.bookType,
           excelList: this.excelFileList,
@@ -294,14 +393,15 @@ export default {
   height: 50px;
   position: relative;
   padding: 13px 10px;
-  border-bottom: 2px solid #6768A7;
+  border-bottom: 2px solid #6768a7;
   float: left;
   text-align: left;
 }
 .closeBtnImg {
   position: absolute;
   right: 10px;
-  top: 15px;width: 20px;
+  top: 15px;
+  width: 20px;
 }
 .excelPopBody {
   width: 100%;
@@ -321,7 +421,7 @@ export default {
   float: left;
 }
 .step0BtnWrap {
-  background:#fff;
+  background: #fff;
   float: right;
   min-height: 30px;
   line-height: 30px;
@@ -360,10 +460,10 @@ export default {
   display: none;
 }
 .excelFileInput {
-  background-color: #A9AACD;
+  background-color: #a9aacd;
   width: 100%;
   float: left;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .checkResultArea {
   width: 100%;

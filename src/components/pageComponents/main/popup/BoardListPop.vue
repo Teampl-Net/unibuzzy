@@ -25,42 +25,121 @@
 }
 </i18n>
 <template>
-    <div class="boardListWrap">
-        <div class="font16 fontBold w100P boardListTitle">
-          <div class="boardListTitleText">
-            <img src="/resource/logo/gtLogo.png" alt="">
-            <p class="textOverdot textLeft font25">{{ pAreaInfo.bdAreaNameMtext }} Area</p>
-          </div>
-          <div class="cursorP closeBox" @click="closeXPop">
-            <img src="@/assets/images/common/popup_close.png" alt="">
-          </div>
-        </div>
-        <div class="searchBox">
-            <select class="fl" v-model="viewTab" id="contListFilter" @change="changeTab()">
-                <option v-for="(opt, index) in mCommonFilterList" :key="index" :value="opt.name">{{opt.display}}</option>
-            </select>
-            <div @click="openFindPop" class="cursorP font14 lightGray searchBtn" :style="resultSearchKeyList && resultSearchKeyList.length > 0? '':'margin-bottom: 10px;'">Click to Search</div>
-            <div v-if="resultSearchKeyList && resultSearchKeyList.length > 0" class="pagePaddingWrap fl searchItemBox">
-                <searchResult @changeSearchList="requestSearchList" :searchList="resultSearchKeyList" />
-            </div>
-        </div>
-        <div ref="pushListWrapWrapCompo" class="contentsListWrap" :style="resultSearchKeyList.length? 'height: calc(100% - 230px);':''">
-            <template v-for="(cont, index) in GE_DISP_CONTS_LIST" :key="cont.contentsKey" >
-                <gUBContentsBox  :pUnknownYn="false" ref="myContentsBox"  @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPage="goChannelMain" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
-                <myObserver v-if="GE_DISP_CONTS_LIST && GE_DISP_CONTS_LIST.length > 13 ?  index === GE_DISP_CONTS_LIST.length - 13 : index === GE_DISP_CONTS_LIST.length" @triggerIntersected="loadMore" id="observer" class="fl w100P" style="float: left;"></myObserver>
-            </template>
-            <template v-if="(!GE_DISP_CONTS_LIST || GE_DISP_CONTS_LIST.length === 0) && mShowSkeletonYn">
-                <SkeletonBox v-for="(value) in [0, 1, 2]" :key="value" />
-            </template>
-            <gListEmpty  v-else-if="!GE_DISP_CONTS_LIST || GE_DISP_CONTS_LIST.length === 0" title='Nothing Found.' subTitle='Try again.' option='SELE' :subTitleYn='true' />
-        </div>
-        <div class="goBtnWrap">
-          <gBtnSmall @click="goChannelMain(pAreaInfo)" btnTitle="Go Channel" class="fr" />
-        </div>
-        <transition name="showModal">
-            <findContentsList style="height: 100% !important;" ref="findContentRef" transition="showModal" @searchList="requestSearchList" v-if="mFindPopShowYn" @closePop="mFindPopShowYn = false" />
-        </transition>
+  <div class="boardListWrap">
+    <div class="font16 fontBold w100P boardListTitle">
+      <div class="boardListTitleText">
+        <img src="/resource/logo/gtLogo.png" alt="" />
+        <p class="textOverdot textLeft font25">
+          {{ pAreaInfo.bdAreaNameMtext }} Area
+        </p>
+      </div>
+      <div class="cursorP closeBox" @click="closeXPop">
+        <img src="@/assets/images/common/popup_close.png" alt="" />
+      </div>
     </div>
+    <div class="searchBox">
+      <select
+        class="fl"
+        v-model="viewTab"
+        id="contListFilter"
+        @change="changeTab()"
+      >
+        <option
+          v-for="(opt, index) in mCommonFilterList"
+          :key="index"
+          :value="opt.name"
+        >
+          {{ opt.display }}
+        </option>
+      </select>
+      <div
+        @click="openFindPop"
+        class="cursorP font14 lightGray searchBtn"
+        :style="
+          resultSearchKeyList && resultSearchKeyList.length > 0
+            ? ''
+            : 'margin-bottom: 10px;'
+        "
+      >
+        Click to Search
+      </div>
+      <div
+        v-if="resultSearchKeyList && resultSearchKeyList.length > 0"
+        class="pagePaddingWrap fl searchItemBox"
+      >
+        <searchResult
+          @changeSearchList="requestSearchList"
+          :searchList="resultSearchKeyList"
+        />
+      </div>
+    </div>
+    <div
+      ref="pushListWrapWrapCompo"
+      class="contentsListWrap"
+      :style="resultSearchKeyList.length ? 'height: calc(100% - 230px);' : ''"
+    >
+      <template
+        v-for="(cont, index) in GE_DISP_CONTS_LIST"
+        :key="cont.contentsKey"
+      >
+        <gUBContentsBox
+          :pUnknownYn="false"
+          ref="myContentsBox"
+          @openImgPop="openImgPop"
+          :imgClickYn="true"
+          :propDetailYn="false"
+          :contentsEle="cont"
+          @openPage="goChannelMain"
+          @openPop="openPop"
+          :propContIndex="index"
+          @contDelete="contDelete"
+        />
+        <myObserver
+          v-if="
+            GE_DISP_CONTS_LIST && GE_DISP_CONTS_LIST.length > 13
+              ? index === GE_DISP_CONTS_LIST.length - 13
+              : index === GE_DISP_CONTS_LIST.length
+          "
+          @triggerIntersected="loadMore"
+          id="observer"
+          class="fl w100P"
+          style="float: left"
+        ></myObserver>
+      </template>
+      <template
+        v-if="
+          (!GE_DISP_CONTS_LIST || GE_DISP_CONTS_LIST.length === 0) &&
+          mShowSkeletonYn
+        "
+      >
+        <SkeletonBox v-for="value in [0, 1, 2]" :key="value" />
+      </template>
+      <gListEmpty
+        v-else-if="!GE_DISP_CONTS_LIST || GE_DISP_CONTS_LIST.length === 0"
+        title="Nothing Found."
+        subTitle="Try again."
+        option="SELE"
+        :subTitleYn="true"
+      />
+    </div>
+    <div class="goBtnWrap">
+      <gBtnSmall
+        @click="goChannelMain(pAreaInfo)"
+        btnTitle="Go Channel"
+        class="fr"
+      />
+    </div>
+    <transition name="showModal">
+      <findContentsList
+        style="height: 100% !important"
+        ref="findContentRef"
+        transition="showModal"
+        @searchList="requestSearchList"
+        v-if="mFindPopShowYn"
+        @closePop="mFindPopShowYn = false"
+      />
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -78,9 +157,12 @@ export default {
     pTownTeamKey: Number,
     pAreaInfo: Object
   },
-  data () {
+  data() {
     return {
-      mCommonFilterList: [{ display: 'Popular', name: 'P' }, { display: 'Recent', name: 'N' }],
+      mCommonFilterList: [
+        { display: 'Popular', name: 'P' },
+        { display: 'Recent', name: 'N' }
+      ],
       viewTab: 'P',
       popId: 'mainBoardListPop',
       mCabKeyListStr: null,
@@ -96,7 +178,7 @@ export default {
       mShowSkeletonYn: true
     }
   },
-  created () {
+  created() {
     var history = this.$store.getters['UB_HISTORY/hStack']
     history.push(this.popId)
     this.$store.commit('UB_HISTORY/updateStack', history)
@@ -108,7 +190,7 @@ export default {
     })
   },
   methods: {
-    goChannelMain (param) {
+    goChannelMain(param) {
       const pageParam = {}
       if (param.teamKey) {
         pageParam.targetKey = param.teamKey
@@ -121,18 +203,20 @@ export default {
       pageParam.cabinetKeyListStr = this.mCabKeyListStr
       this.$emit('openPage', pageParam)
     },
-    async changeTab () {
+    async changeTab() {
       this.requestSearchList()
     },
-    openImgPop (param) {
+    openImgPop(param) {
       this.$emit('openImgPop', param)
     },
-    openPop (openPopParam) {
+    openPop(openPopParam) {
       // 컨텐츠 작성을 누를 시 바텀시트를 닫아주는 중!
-      if (this.mSeleteWriteTypePopShowYn === true) this.mSeleteWriteTypePopShowYn = false
+      if (this.mSeleteWriteTypePopShowYn === true) {
+        this.mSeleteWriteTypePopShowYn = false
+      }
       this.$emit('openPop', openPopParam)
     },
-    contDelete (contentIndex) {
+    contDelete(contentIndex) {
       this.GE_DISP_CONTS_LIST.splice(contentIndex, 1)
 
       // 삭제 후 리로드가 되지 않아 상위 div에 reload키를 넣어 다시 그려주었습니다. -- 다시 그려도 스크롤 이동하지 않았음
@@ -140,54 +224,80 @@ export default {
 
       this.changeTab()
     },
-    openFindPop () {
+    openFindPop() {
       this.mFindPopShowYn = true
     },
-    closeFindPop () {
+    closeFindPop() {
       if (this.$refs.findContentRef) {
         this.$refs.findContentRef.closeXPop()
       }
     },
-    async castingSearchMap (param) {
+    async castingSearchMap(param) {
       var searchObj = {}
       var resultArray = []
-      if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
+      if (
+        param.searchKey !== undefined &&
+        param.searchKey !== null &&
+        param.searchKey !== ''
+      ) {
         searchObj.typeName = this.$t('CHAN_POST_TITLE')
         searchObj.type = 'searchKey'
         searchObj.keyword = param.searchKey
         resultArray.push(searchObj)
       }
       searchObj = {}
-      if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
+      if (
+        param.creUserName !== undefined &&
+        param.creUserName !== null &&
+        param.creUserName !== ''
+      ) {
         searchObj.typeName = this.$t('CHAN_POST_CRE_USER')
         searchObj.type = 'creUserName'
         searchObj.keyword = param.creUserName
         resultArray.push(searchObj)
       }
       searchObj = {}
-      if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
+      if (
+        param.creTeamNameMtext !== undefined &&
+        param.creTeamNameMtext !== null &&
+        param.creTeamNameMtext !== ''
+      ) {
         searchObj.typeName = this.$t('CHAN_POST_SENT')
         searchObj.type = 'creTeamNameMtext'
         searchObj.keyword = param.creTeamNameMtext
         resultArray.push(searchObj)
       }
       searchObj = {}
-      if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '' &&
-        param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
+      if (
+        param.fromCreDateStr !== undefined &&
+        param.fromCreDateStr !== null &&
+        param.fromCreDateStr !== '' &&
+        param.toCreDateStr !== undefined &&
+        param.toCreDateStr !== null &&
+        param.toCreDateStr !== ''
+      ) {
         searchObj.typeName = this.$t('CHAN_POST_DATE')
         searchObj.type = 'creDate'
         searchObj.keyword = param.fromCreDateStr + '~' + param.toCreDateStr
         resultArray.push(searchObj)
       }
       searchObj = {}
-      if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
+      if (
+        param.workStatCodeKey !== undefined &&
+        param.workStatCodeKey !== null &&
+        param.workStatCodeKey !== ''
+      ) {
         searchObj.typeName = this.$t('CHAN_POST_FILTER')
         searchObj.type = 'workStatCodeKey'
         searchObj.keyword = param.codeNameMtext
         resultArray.push(searchObj)
       }
       searchObj = {}
-      if (param.selectedSticker !== undefined && param.selectedSticker !== null && param.selectedSticker !== '') {
+      if (
+        param.selectedSticker !== undefined &&
+        param.selectedSticker !== null &&
+        param.selectedSticker !== ''
+      ) {
         searchObj.typeName = this.$t('CHAN_POST_STAT')
         searchObj.type = 'stickerKey'
         searchObj.keyword = this.$changeText(param.selectedSticker.nameMtext)
@@ -196,7 +306,7 @@ export default {
       this.findPopShowYn = false
       return resultArray
     },
-    async requestSearchList (param) {
+    async requestSearchList(param) {
       this.mOffsetInt = 0
       this.mContsList = []
       this.mShowSkeletonYn = true
@@ -213,20 +323,54 @@ export default {
       this.resultSearchKeyList = []
       this.targetCKey = null
       if (param) {
-        if (param.searchKey !== undefined && param.searchKey !== null && param.searchKey !== '') {
+        if (
+          param.searchKey !== undefined &&
+          param.searchKey !== null &&
+          param.searchKey !== ''
+        ) {
           this.findKeyList.searchKey = param.searchKey
-        } if (param.creUserName !== undefined && param.creUserName !== null && param.creUserName !== '') {
+        }
+        if (
+          param.creUserName !== undefined &&
+          param.creUserName !== null &&
+          param.creUserName !== ''
+        ) {
           this.findKeyList.creUserName = param.creUserName
-        } if (param.creTeamNameMtext !== undefined && param.creTeamNameMtext !== null && param.creTeamNameMtext !== '') {
+        }
+        if (
+          param.creTeamNameMtext !== undefined &&
+          param.creTeamNameMtext !== null &&
+          param.creTeamNameMtext !== ''
+        ) {
           this.findKeyList.creTeamNameMtext = param.creTeamNameMtext
-        } if (param.toCreDateStr !== undefined && param.toCreDateStr !== null && param.toCreDateStr !== '') {
+        }
+        if (
+          param.toCreDateStr !== undefined &&
+          param.toCreDateStr !== null &&
+          param.toCreDateStr !== ''
+        ) {
           this.findKeyList.toCreDateStr = param.toCreDateStr
-        } if (param.fromCreDateStr !== undefined && param.fromCreDateStr !== null && param.fromCreDateStr !== '') {
+        }
+        if (
+          param.fromCreDateStr !== undefined &&
+          param.fromCreDateStr !== null &&
+          param.fromCreDateStr !== ''
+        ) {
           this.findKeyList.fromCreDateStr = param.fromCreDateStr
-        } if (param.workStatCodeKey !== undefined && param.workStatCodeKey !== null && param.workStatCodeKey !== '') {
+        }
+        if (
+          param.workStatCodeKey !== undefined &&
+          param.workStatCodeKey !== null &&
+          param.workStatCodeKey !== ''
+        ) {
           this.findKeyList.workStatCodeKey = param.workStatCodeKey
           this.findKeyList.codeNameMtext = param.codeNameMtext
-        } if (param.selectedSticker !== undefined && param.selectedSticker !== null && param.selectedSticker !== '') {
+        }
+        if (
+          param.selectedSticker !== undefined &&
+          param.selectedSticker !== null &&
+          param.selectedSticker !== ''
+        ) {
           this.findKeyList.selectedSticker = param.selectedSticker
         }
       }
@@ -235,12 +379,12 @@ export default {
       var resultList = await this.getMyContentsList(null, null, false)
       this.setContsList(resultList)
     },
-    async getTownCabinetList () {
+    async getTownCabinetList() {
       if (this.pTownTeamKey) {
         var param = {}
         param.parentTeamKey = this.pTownTeamKey
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getTownCabinetList',
+          url: '/tp.getTownCabinetList',
           param: param
         })
         if (result && result.data && result.data.result) {
@@ -248,7 +392,7 @@ export default {
         }
       }
     },
-    async setContsList (resultList) {
+    async setContsList(resultList) {
       if (!resultList) {
         this.mShowSkeletonYn = false
         return
@@ -258,17 +402,14 @@ export default {
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
       if (!this.mContsList) this.mContsList = []
       if (this.mContsList.length > 0) {
-        newArr = [
-          ...this.mContsList,
-          ...resultList.content
-        ]
+        newArr = [...this.mContsList, ...resultList.content]
       } else {
         newArr = resultList.content
       }
       this.mContsList = this.replaceArr(newArr)
       this.mShowSkeletonYn = false
     },
-    async loadMore (descYn) {
+    async loadMore(descYn) {
       if (this.mCanLoadYn && this.mEndListYn === false) {
         this.mCanLoadYn = false
         try {
@@ -278,14 +419,22 @@ export default {
           console.log(e)
         } finally {
           this.mCanLoadYn = true
-          var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList')
+          var queueIndex = this.mAxiosQueue.findIndex(
+            (item) => item === 'getPushContentsList'
+          )
           if (queueIndex !== -1) this.mAxiosQueue.splice(queueIndex, 1)
         }
       } else {
       }
     },
-    async getMyContentsList (pageSize, offsetInput, loadingYn, searchParam) {
-      if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !== -1) return
+    async getMyContentsList(pageSize, offsetInput, loadingYn, searchParam) {
+      if (
+        this.mAxiosQueue.length > 0 &&
+        this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList') !==
+          -1
+      ) {
+        return
+      }
       this.mAxiosQueue.push('getPushContentsList')
       var param = {}
       if (searchParam) {
@@ -298,24 +447,66 @@ export default {
       }
       param.myUserKey = this.GE_USER.userKey
       param.cabinetKeyListStr = this.mCabKeyListStr
-      if (offsetInput !== undefined && offsetInput !== null && offsetInput !== '') { param.offsetInt = offsetInput } else { param.offsetInt = this.mOffsetInt }
+      if (
+        offsetInput !== undefined &&
+        offsetInput !== null &&
+        offsetInput !== ''
+      ) {
+        param.offsetInt = offsetInput
+      } else {
+        param.offsetInt = this.mOffsetInt
+      }
 
-      if (pageSize !== undefined && pageSize !== null && pageSize !== '') { param.pageSize = pageSize } else { param.pageSize = this.mPageSize }
+      if (pageSize !== undefined && pageSize !== null && pageSize !== '') {
+        param.pageSize = pageSize
+      } else {
+        param.pageSize = this.mPageSize
+      }
 
       if (this.findKeyList) {
-        if (this.findKeyList.searchKey !== undefined && this.findKeyList.searchKey !== null && this.findKeyList.searchKey !== '') {
+        if (
+          this.findKeyList.searchKey !== undefined &&
+          this.findKeyList.searchKey !== null &&
+          this.findKeyList.searchKey !== ''
+        ) {
           param.title = this.findKeyList.searchKey
-        } if (this.findKeyList.creTeamNameMtext !== undefined && this.findKeyList.creTeamNameMtext !== null && this.findKeyList.creTeamNameMtext !== '') {
+        }
+        if (
+          this.findKeyList.creTeamNameMtext !== undefined &&
+          this.findKeyList.creTeamNameMtext !== null &&
+          this.findKeyList.creTeamNameMtext !== ''
+        ) {
           param.creTeamNameMtext = this.findKeyList.creTeamNameMtext
-        } if (this.findKeyList.toCreDateStr !== undefined && this.findKeyList.toCreDateStr !== null && this.findKeyList.toCreDateStr !== '') {
+        }
+        if (
+          this.findKeyList.toCreDateStr !== undefined &&
+          this.findKeyList.toCreDateStr !== null &&
+          this.findKeyList.toCreDateStr !== ''
+        ) {
           param.toCreDateStr = this.findKeyList.toCreDateStr
-        } if (this.findKeyList.fromCreDateStr !== undefined && this.findKeyList.fromCreDateStr !== null && this.findKeyList.fromCreDateStr !== '') {
+        }
+        if (
+          this.findKeyList.fromCreDateStr !== undefined &&
+          this.findKeyList.fromCreDateStr !== null &&
+          this.findKeyList.fromCreDateStr !== ''
+        ) {
           param.fromCreDateStr = this.findKeyList.fromCreDateStr
-        } if (this.findKeyList.workStatCodeKey !== undefined && this.findKeyList.workStatCodeKey !== null && this.findKeyList.workStatCodeKey !== '') {
+        }
+        if (
+          this.findKeyList.workStatCodeKey !== undefined &&
+          this.findKeyList.workStatCodeKey !== null &&
+          this.findKeyList.workStatCodeKey !== ''
+        ) {
           param.workStatCodeKey = this.findKeyList.workStatCodeKey
-        } if (this.findKeyList.creUserName !== undefined && this.findKeyList.creUserName !== null && this.findKeyList.creUserName !== '') {
+        }
+        if (
+          this.findKeyList.creUserName !== undefined &&
+          this.findKeyList.creUserName !== null &&
+          this.findKeyList.creUserName !== ''
+        ) {
           param.creUserName = this.findKeyList.creUserName
-        } if (this.findKeyList.selectedSticker) {
+        }
+        if (this.findKeyList.selectedSticker) {
           param.findActStickerYn = true
           param.findActYn = true
           param.stickerKey = this.findKeyList.selectedSticker.stickerKey
@@ -326,14 +517,25 @@ export default {
         nonLoading = false
       }
       var result = await this.$getContentsList(param, nonLoading)
-      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getPushContentsList')
+      var queueIndex = this.mAxiosQueue.findIndex(
+        (item) => item === 'getPushContentsList'
+      )
       this.mAxiosQueue.splice(queueIndex, 1)
       var resultList = result
       return resultList
     },
-    endListSetFunc (resultList) {
-      if (resultList === undefined || resultList === null || resultList === '') return
-      if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+    endListSetFunc(resultList) {
+      if (
+        resultList === undefined ||
+        resultList === null ||
+        resultList === ''
+      ) {
+        return
+      }
+      if (
+        resultList.totalElements <
+        resultList.pageable.offset + resultList.pageable.pageSize
+      ) {
         this.mEndListYn = true
         if (this.mOffsetInt > 0) this.mOffsetInt -= 1
       } else {
@@ -341,17 +543,21 @@ export default {
         this.mOffsetInt += 1
       }
     },
-    replaceArr (arr) {
+    replaceArr(arr) {
       if (!arr && arr.length === 0) return []
       var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
+        if (
+          data.findIndex(
+            (item) => Number(item.contentsKey) === Number(current.contentsKey)
+          ) === -1
+        ) {
           data.push(current)
         }
         return data
       }, [])
       return uniqueArr
     },
-    closeXPop () {
+    closeXPop() {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.popId === hStack[hStack.length - 1]) {
@@ -367,19 +573,19 @@ export default {
     }
   },
   computed: {
-    historyStack () {
+    historyStack() {
       return this.$store.getters['UB_HISTORY/hRPage']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     },
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     },
-    GE_MAIN_CHAN_LIST () {
+    GE_MAIN_CHAN_LIST() {
       return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
-    GE_DISP_CONTS_LIST () {
+    GE_DISP_CONTS_LIST() {
       try {
         var idx1, idx2
         var returnContsList = []
@@ -389,14 +595,18 @@ export default {
         if (!this.mContsList) return null
         if (!this.mContsList.length === 0) return []
         for (i = 0; i < this.mContsList.length; i++) {
-          idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === this.mContsList[i].creTeamKey)
+          idx1 = this.GE_MAIN_CHAN_LIST.findIndex(
+            (item) => item.teamKey === this.mContsList[i].creTeamKey
+          )
           if (idx1 === -1) {
             var this_ = this
             returnContsList.push(this_.mContsList[i])
           } else {
             chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
             dataList = chanDetail.ELEMENTS.boardList
-            idx2 = dataList.findIndex((item) => item.contentsKey === this.mContsList[i].contentsKey)
+            idx2 = dataList.findIndex(
+              (item) => item.contentsKey === this.mContsList[i].contentsKey
+            )
             if (idx2 !== -1) {
               returnContsList.push(dataList[idx2])
             } else {
@@ -415,7 +625,7 @@ export default {
     }
   },
   watch: {
-    pageUpdate (value, old) {
+    pageUpdate(value, old) {
       this.closeXPop()
     }
   }
@@ -425,7 +635,8 @@ export default {
 <style scoped>
 .boardListWrap {
   padding: 10px 20px;
-  background: rgb(255 255 255 / 65%);backdrop-filter: blur( 9px );
+  background: rgb(255 255 255 / 65%);
+  backdrop-filter: blur(9px);
   position: absolute;
   z-index: 9999;
   bottom: 10%;
@@ -453,7 +664,8 @@ export default {
 .boardListTitleText > p {
   width: calc(100% - 40px);
 }
-.closeBox, .closeBox > img {
+.closeBox,
+.closeBox > img {
   width: 25px;
 }
 .searchBox {
@@ -464,7 +676,7 @@ export default {
 .searchBox > select {
   height: 35px;
   width: 95px;
-  margin-right: 5px
+  margin-right: 5px;
 }
 .searchBtn {
   width: calc(100% - 100px);
@@ -472,7 +684,7 @@ export default {
   height: 35px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  background: #FFFFFF;
+  background: #ffffff;
   text-align: left;
   padding: 5px 10px;
 }
@@ -481,7 +693,7 @@ export default {
   padding-left: 0px;
   max-height: 50px;
   width: 100%;
-  float: left
+  float: left;
 }
 .contentsListWrap {
   width: 100%;

@@ -9,29 +9,74 @@
 }
 </i18n>
 <template>
-  <div v-if="GE_FILE_LIST" class="fileBoxArea" :style="contentsEle.ownUserKey === contentsEle.accessCreUserKey? 'background-color: #f8f8ff;':'background-color: #fff;'">
-      <div class="attachedFileTitle">
-        <p @click="download" class="fl cursorP textLeft textOverdot commonBlack fontBold font16 fileBoxNameWrap">
-          <img :src="$settingFileIcon(contentsEle.fileName)" alt="">
-          {{ getFileName(contentsEle.fileName) }}
-        </p>
-        <p class="fl textLeft commonBlack fontBold font16 fileBoxExtend">.{{ getFileExt(contentsEle.fileName) }}</p>
-        <p class="fr textLeft commonBlack font12 font Bold mtop-03 textOverdot">{{ $byteConvert(contentsEle.fileSizeKb) }}</p>
-        <div class="font14 textLeft fileBoxInfoWrap">
-          <div class="textOverdot w100P">
-            <img src="@/assets/images/footer/icon_people.svg" class="img-w12" alt="">
-            &nbsp;{{ $changeText(contentsEle.accessCreUserName) }}
-            <p class="font12 fr mleft-1 mtop-01 fileBoxCreDate">{{ $changeDateFormat(contentsEle.creDate) }}</p>
-          </div>
-        </div>
-        <div class="curosrP fileBoxFavBtn" @click="selectAttachedFile">
-          <img :src="myFilekey !== null? require('@/assets/images/common/colorStarIcon.svg'):require('@/assets/images/common/starIcon.svg')" alt="">
+  <div
+    v-if="GE_FILE_LIST"
+    class="fileBoxArea"
+    :style="
+      contentsEle.ownUserKey === contentsEle.accessCreUserKey
+        ? 'background-color: #f8f8ff;'
+        : 'background-color: #fff;'
+    "
+  >
+    <div class="attachedFileTitle">
+      <p
+        @click="download"
+        class="fl cursorP textLeft textOverdot commonBlack fontBold font16 fileBoxNameWrap"
+      >
+        <img :src="$settingFileIcon(contentsEle.fileName)" alt="" />
+        {{ getFileName(contentsEle.fileName) }}
+      </p>
+      <p class="fl textLeft commonBlack fontBold font16 fileBoxExtend">
+        .{{ getFileExt(contentsEle.fileName) }}
+      </p>
+      <p class="fr textLeft commonBlack font12 font Bold mtop-03 textOverdot">
+        {{ $byteConvert(contentsEle.fileSizeKb) }}
+      </p>
+      <div class="font14 textLeft fileBoxInfoWrap">
+        <div class="textOverdot w100P">
+          <img
+            src="@/assets/images/footer/icon_people.svg"
+            class="img-w12"
+            alt=""
+          />
+          &nbsp;{{ $changeText(contentsEle.accessCreUserName) }}
+          <p class="font12 fr mleft-1 mtop-01 fileBoxCreDate">
+            {{ $changeDateFormat(contentsEle.creDate) }}
+          </p>
         </div>
       </div>
-      <img v-if="contentsEle.fileType === 'I'" class="fileBoxImg" @click="openImgPop" :src="contentsEle.domainPath ? contentsEle.domainPath + contentsEle.pathMtext : contentsEle.pathMtext" alt="">
-      <div class="textLeft font12 fontBold ml-04">{{ $t('FILE_TITLE_RELA_CON') }}</div>
-      <smallContentsBox @click="goDetail" :accessKind="contentsEle.accessKind" class="cursorP paddingStyle" :contentsEle="GE_FILE_LIST"></smallContentsBox>
+      <div class="curosrP fileBoxFavBtn" @click="selectAttachedFile">
+        <img
+          :src="
+            myFilekey !== null
+              ? require('@/assets/images/common/colorStarIcon.svg')
+              : require('@/assets/images/common/starIcon.svg')
+          "
+          alt=""
+        />
+      </div>
     </div>
+    <img
+      v-if="contentsEle.fileType === 'I'"
+      class="fileBoxImg"
+      @click="openImgPop"
+      :src="
+        contentsEle.domainPath
+          ? contentsEle.domainPath + contentsEle.pathMtext
+          : contentsEle.pathMtext
+      "
+      alt=""
+    />
+    <div class="textLeft font12 fontBold ml-04">
+      {{ $t('FILE_TITLE_RELA_CON') }}
+    </div>
+    <smallContentsBox
+      @click="goDetail"
+      :accessKind="contentsEle.accessKind"
+      class="cursorP paddingStyle"
+      :contentsEle="GE_FILE_LIST"
+    ></smallContentsBox>
+  </div>
 </template>
 
 <script>
@@ -43,29 +88,33 @@ export default {
   props: {
     contentsEle: {}
   },
-  created () {
+  created() {
     this.myFilekey = this.contentsEle.myFilekey
   },
-  data () {
+  data() {
     return {
       myFilekey: null
     }
   },
   computed: {
-    GE_FILE_LIST () {
+    GE_FILE_LIST() {
       var newArr = []
-      newArr = this.$getContentsDetail(null, this.contentsEle.contents.contentsKey, this.contentsEle.contents.creTeamKey)
+      newArr = this.$getContentsDetail(
+        null,
+        this.contentsEle.contents.contentsKey,
+        this.contentsEle.contents.creTeamKey
+      )
       if (!newArr || newArr.length === 0) {
         return this.contentsEle.contents
       }
       return newArr[0]
     },
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     }
   },
   methods: {
-    async selectAttachedFile () {
+    async selectAttachedFile() {
       var file = {}
       if (this.myFilekey === null) {
         file.fileKey = this.contentsEle.fileKey
@@ -79,12 +128,12 @@ export default {
         file.addYn = false
       }
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveMyFile',
+        url: '/tp.saveMyFile',
         param: { file: file }
       })
       this.myFilekey = result.data.myFileKey
     },
-    openImgPop () {
+    openImgPop() {
       var returnImgList = []
       var imgObject = {}
       var img = new Image()
@@ -96,19 +145,15 @@ export default {
       returnImgList.push(imgObject)
       this.$emit('openImgPop', [returnImgList, 0])
     },
-    getFileName (fileFullName) {
-      var fileName = fileFullName.substring(
-        0, fileFullName.lastIndexOf('.')
-      )
+    getFileName(fileFullName) {
+      var fileName = fileFullName.substring(0, fileFullName.lastIndexOf('.'))
       return fileName
     },
-    getFileExt (fileName) {
-      var fileExt = fileName.substring(
-        fileName.lastIndexOf('.') + 1
-      )
+    getFileExt(fileName) {
+      var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1)
       return fileExt
     },
-    goDetail () {
+    goDetail() {
       var param = {}
       param.targetType = 'contentsDetail'
       param.targetKey = this.GE_FILE_LIST.contentsKey
@@ -118,19 +163,30 @@ export default {
       param.popHeaderText = this.GE_FILE_LIST.nameMtext
       if (param.jobkindId === 'BOAR') {
         param.cabinetKey = this.GE_FILE_LIST.cabinetKey
-        param.cabinetNameMtext = this.$changeText(this.GE_FILE_LIST.cabinetNameMtext)
-        if (this.GE_FILE_LIST.cabinetNameMtext) param.popHeaderText = this.GE_FILE_LIST.cabinetNameMtext
+        param.cabinetNameMtext = this.$changeText(
+          this.GE_FILE_LIST.cabinetNameMtext
+        )
+        if (this.GE_FILE_LIST.cabinetNameMtext) {
+          param.popHeaderText = this.GE_FILE_LIST.cabinetNameMtext
+        }
       } else {
         param.nameMtext = this.$changeText(param.nameMtext)
         param.teamName = this.$changeText(param.nameMtext)
-        if (this.GE_FILE_LIST.nameMtext) param.popHeaderText = this.GE_FILE_LIST.nameMtext
+        if (this.GE_FILE_LIST.nameMtext) {
+          param.popHeaderText = this.GE_FILE_LIST.nameMtext
+        }
       }
       this.$emit('openPop', param)
     },
-    async download () {
+    async download() {
       try {
-        var filePath = this.contentsEle.domainPath ? this.contentsEle.domainPath + this.contentsEle.pathMtext : this.contentsEle.pathMtext
-        var result = await this.$downloadFile(this.contentsEle.fileKey, filePath)
+        var filePath = this.contentsEle.domainPath
+          ? this.contentsEle.domainPath + this.contentsEle.pathMtext
+          : this.contentsEle.pathMtext
+        var result = await this.$downloadFile(
+          this.contentsEle.fileKey,
+          filePath
+        )
         console.log(result)
         this.$showToastPop('File saved!')
       } catch (error) {

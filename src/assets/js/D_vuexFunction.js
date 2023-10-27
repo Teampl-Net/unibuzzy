@@ -4,7 +4,10 @@
 
 import store from '../../store'
 import { mapGetters, mapActions } from 'vuex'
-import { methods, commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
+import {
+  methods,
+  commonAxiosFunction
+} from '../../../public/commonAssets/Tal_axiosFunction'
 import { commonMethods } from './common'
 
 var this_ = this
@@ -33,20 +36,31 @@ export const functions = {
   ...mapActions('D_CONTENTS', [
     'AC_MAIN_BOARD_LIST'
   ]), */
-  async getContentsMemoList (targetKey, memoKey, parentMemoKey) {
+  async getContentsMemoList(targetKey, memoKey, parentMemoKey) {
     var memo = {}
     memo.targetKind = 'C'
     memo.allMemoYn = true
     memo.targetKey = targetKey
     memo.memoKey = memoKey
-    var result = await commonAxiosFunction({
-      url: '/sUniB/tp.getMemoList',
-      param: memo
-    }, true)
+    var result = await commonAxiosFunction(
+      {
+        url: '/tp.getMemoList',
+        param: memo
+      },
+      true
+    )
     var memos = result.data.memoList[0]
     return memos
   },
-  async actionVuex (type, data, targetKey, allYn, replaceYn, creTeamKey, creCabinetKey) {
+  async actionVuex(
+    type,
+    data,
+    targetKey,
+    allYn,
+    replaceYn,
+    creTeamKey,
+    creCabinetKey
+  ) {
     var ActName
     if (type === 'T' || type === 'B' || type === 'C') {
       ActName = 'UB_CHANNEL/AC_MAIN_CHAN_LIST'
@@ -73,7 +87,9 @@ export const functions = {
           index = dataList.findIndex((item) => item.teamKey === creTeamKey)
           team = dataList[index]
           childList = team.ELEMENTS.cabinetList
-          cabIndex = childList.findIndex((item) => item.cabinetKey === targetKey)
+          cabIndex = childList.findIndex(
+            (item) => item.cabinetKey === targetKey
+          )
           childList[cabIndex] = data
           team.ELEMENTS.cabinetList = childList
           dataList = team
@@ -88,7 +104,9 @@ export const functions = {
             index = dataList.findIndex((item) => item.teamKey === creTeamKey)
             team = dataList[index]
             childList = team.ELEMENTS.boardList
-            contIndex = childList.findIndex((item) => item.contentsKey === targetKey)
+            contIndex = childList.findIndex(
+              (item) => item.contentsKey === targetKey
+            )
             childList[contIndex] = data
             team.ELEMENTS.boardList = childList
             dataList[index] = team
@@ -98,7 +116,9 @@ export const functions = {
             index = dataList.findIndex((item) => item.teamKey === creTeamKey)
             team = dataList[index]
             childList = team.ELEMENTS.alimList
-            contIndex = childList.findIndex((item) => item.contentsKey === targetKey)
+            contIndex = childList.findIndex(
+              (item) => item.contentsKey === targetKey
+            )
             childList[contIndex] = data
             team.ELEMENTS.alimList = childList
             dataList[index] = team
@@ -111,17 +131,21 @@ export const functions = {
       }
     }
   },
-  getDetail (type, targetKey) {
+  getDetail(type, targetKey) {
     var dataList
     var result
     if (type === 'TEAM') {
       dataList = store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
-      result = dataList.filter(data => data.teamKey === targetKey)
+      result = dataList.filter((data) => data.teamKey === targetKey)
       return result
     }
   },
-  async getBoardCabinetDetail (teamKey, targetKey) {
-    if (g_axiosQueue.findIndex((item) => item === 'getBoardCabinetDetail') !== -1) return
+  async getBoardCabinetDetail(teamKey, targetKey) {
+    if (
+      g_axiosQueue.findIndex((item) => item === 'getBoardCabinetDetail') !== -1
+    ) {
+      return
+    }
     g_axiosQueue.push('getBoardCabinetDetail')
     // eslint-disable-next-line no-new-object
     var param = new Object()
@@ -130,7 +154,9 @@ export const functions = {
     param.currentTeamKey = teamKey
     param.cabinetKey = targetKey
     var resultList = await this.$getCabinetDetail(param)
-    var queueIndex = g_axiosQueue.findIndex((item) => item === 'getBoardCabinetDetail')
+    var queueIndex = g_axiosQueue.findIndex(
+      (item) => item === 'getBoardCabinetDetail'
+    )
     g_axiosQueue.splice(queueIndex, 1)
     // mShareItemList가 잘 들어오면 save잘 된것
     //     this.commonListData = resultList.content
@@ -140,7 +166,7 @@ export const functions = {
       return null
     }
   },
-  getContentsDetail (teamDetail, targetKey, teamKey) {
+  getContentsDetail(teamDetail, targetKey, teamKey) {
     // if (g_axiosQueue.findIndex((item) => item === 'getContentsDetail') !== -1) return
     // g_axiosQueue.push('getContentsDetail')
     var detailData
@@ -149,7 +175,7 @@ export const functions = {
     if (!teamDetail) {
       if (teamKey) {
         var teamList = store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
-        var result = teamList.filter(data => data.teamKey === teamKey)
+        var result = teamList.filter((data) => data.teamKey === teamKey)
         if (result && result.length > 0) {
           teamDetail = result[0]
         } else {
@@ -161,9 +187,13 @@ export const functions = {
       return detailData
     } else {
       if (teamDetail && teamDetail.ELEMENTS) {
-        detailData = teamDetail.ELEMENTS.alimList.filter(cab => cab.contentsKey === Number(targetKey))
+        detailData = teamDetail.ELEMENTS.alimList.filter(
+          (cab) => cab.contentsKey === Number(targetKey)
+        )
         if (!detailData || detailData.length === 0) {
-          detailData = teamDetail.ELEMENTS.boardList.filter(cab => cab.contentsKey === Number(targetKey))
+          detailData = teamDetail.ELEMENTS.boardList.filter(
+            (cab) => cab.contentsKey === Number(targetKey)
+          )
         }
       } else {
         detailData = []
@@ -173,15 +203,17 @@ export const functions = {
       return detailData
     }
   },
-  async addChanVuex (data) {
+  async addChanVuex(data) {
     await store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', data)
   },
-  async addChanList (teamKey) {
+  async addChanList(teamKey) {
     var result = null
     if (g_axiosQueue.findIndex((item) => item === 'addChanList') !== -1) return
     g_axiosQueue.push('addChanList')
     var paramMap = new Map()
-    if (teamKey === undefined || teamKey === null) return 'teamKey정보가 누락되었습니다.'
+    if (teamKey === undefined || teamKey === null) {
+      return 'teamKey정보가 누락되었습니다.'
+    }
     paramMap.set('teamKey', teamKey)
     paramMap.set('fUserKey', store.getters['UB_USER/GE_USER'].userKey)
     console.log('############# addChanList ############')
@@ -193,7 +225,6 @@ export const functions = {
       var response = resultList.data.content[0]
       await store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [response])
     } catch (error) {
-
     } finally {
       var queueIndex = g_axiosQueue.findIndex((item) => item === 'addChanList')
       g_axiosQueue.splice(queueIndex, 1)
@@ -201,7 +232,7 @@ export const functions = {
     return response
     // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   },
-  async recvNotiFromBridge (message, mobileYn, inNotiDetail) {
+  async recvNotiFromBridge(message, mobileYn, inNotiDetail) {
     var addVueResult = false
     try {
       // 협의필요
@@ -214,9 +245,7 @@ export const functions = {
           if (isJsonString(message.data)) {
             message.data = JSON.parse(message.data)
           }
-          if (
-            message.data.noti.data
-          ) {
+          if (message.data.noti.data) {
             if (message.data.noti.data.item) {
               notiDetail = message.data.noti.data.item
             } else {
@@ -230,69 +259,98 @@ export const functions = {
 
       store.dispatch('UB_NOTI/AC_ADD_NOTI_LIST', notiDetail)
       if (JSON.parse(notiDetail.userDo).targetKind === 'C') {
-        if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {
-          addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, 'BOAR')
+        if (
+          Number(JSON.parse(notiDetail.userDo).ISub) &&
+          Number(JSON.parse(notiDetail.userDo).ISub) > 0
+        ) {
+          addVueResult = await functions.addContents(
+            JSON.parse(notiDetail.userDo).targetKey,
+            'BOAR'
+          )
         } else {
-          addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
+          addVueResult = await functions.addContents(
+            JSON.parse(notiDetail.userDo).targetKey,
+            notiDetail.jobkindId
+          )
         }
       } else if (JSON.parse(notiDetail.userDo).targetKind === 'R') {
-        var memo = await functions.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
+        var memo = await functions.getContentsMemoList(
+          Number(JSON.parse(notiDetail.userDo).targetKey),
+          Number(JSON.parse(notiDetail.userDo).ISub)
+        )
         memo.jobkindId = notiDetail.jobkindId
         memo.creTeamKey = notiDetail.creTeamKey
         await store.commit('UB_CHANNEL/MU_ADD_MEMO', memo)
-        addVueResult = await functions.addContents(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
+        addVueResult = await functions.addContents(
+          Number(JSON.parse(notiDetail.userDo).targetKey),
+          notiDetail.jobkindId
+        )
       } else if (JSON.parse(notiDetail.userDo).targetKind === 'T') {
-        addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
+        addVueResult = await functions.addChanList(
+          Number(notiDetail.creTeamKey)
+        )
       }
     } catch (err) {
       console.error('메세지를 파싱할수 없음 ' + err)
     }
     return addVueResult
   },
-  async settingCabiNoti (message) {
+  async settingCabiNoti(message) {
     await this.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
     /* if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
       return
     } */
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
-      if (message.data.arrivedYn === true || message.data.arrivedYn === 'true') {
-        ;
+      if (
+        message.data.arrivedYn === true ||
+        message.data.arrivedYn === 'true'
+      ) {
       }
     }
   },
-  async addContents (targetKey, jobkindId) {
+  async addContents(targetKey, jobkindId) {
     // eslint-disable-next-line no-new-object
     var param = new Object()
     param.contentsKey = targetKey
     param.jobkindId = jobkindId
     param.userKey = store.getters['UB_USER/GE_USER'].userKey
     var resultList = await methods.getContentsList(param, true)
-    if (!resultList || !resultList.content || resultList.content.length === 0) return false
+    if (!resultList || !resultList.content || resultList.content.length === 0) {
+      return false
+    }
     var detailData = resultList.content[0]
     store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData])
     return detailData
   },
-  async settingAlimNoti (message) {
-    await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
+  async settingAlimNoti(message) {
+    await functions.addContents(
+      JSON.parse(notiDetail.userDo).targetKey,
+      notiDetail.jobkindId
+    )
     /* if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
       return
     } */
     /* var noti = await functions.getContentsDetail(null, JSON.parse(notiDetail.userDo).targetKey, JSON.parse(notiDetail.userDo))
     store.dispatch('D_UPDATE/AC_ADD_NEW_NOTI', noti) */
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
-      if (message.data.arrivedYn === true || message.data.arrivedYn === 'true') {
-        ;
+      if (
+        message.data.arrivedYn === true ||
+        message.data.arrivedYn === 'true'
+      ) {
       } else {
       }
     } else {
-      if (message.data.arrivedYn === true || message.data.arrivedYn === 'true') {
+      if (
+        message.data.arrivedYn === true ||
+        message.data.arrivedYn === 'true'
+      ) {
         if (notiDetail.jobkindId !== 'BOAR') {
         }
       } else {
       }
     }
   },
-  async getFollowerList (teamKey, userKey, showProfileYn, managerYn) {
+  async getFollowerList(teamKey, userKey, showProfileYn, managerYn) {
     var paramMap = new Map()
     paramMap.set('teamKey', teamKey)
     paramMap.set('userKey', userKey)
@@ -304,10 +362,13 @@ export const functions = {
       }
     }
     // paramMap.set('followerType', 'M')
-    var result = await commonAxiosFunction({
-      url: '/sUniB/tp.getFollowerList',
-      param: Object.fromEntries(paramMap)
-    }, true)
+    var result = await commonAxiosFunction(
+      {
+        url: '/tp.getFollowerList',
+        param: Object.fromEntries(paramMap)
+      },
+      true
+    )
     var user = result.data.content
     return user
   },
@@ -348,14 +409,20 @@ export const functions = {
       }
     }
   }, */
-  async settingMemoNoti (message) {
-    var memo_ = await functions.getContentsMemoList(null, Number(JSON.parse(notiDetail.userDo).ISub), Number(JSON.parse(notiDetail.userDo).targetKey))
+  async settingMemoNoti(message) {
+    var memo_ = await functions.getContentsMemoList(
+      null,
+      Number(JSON.parse(notiDetail.userDo).ISub),
+      Number(JSON.parse(notiDetail.userDo).targetKey)
+    )
     memo_.jobkindId = notiDetail.jobkindId
     memo_.creTeamKey = Number(JSON.parse(notiDetail.userDo))
     await this.addContents(memo_.targetKey, notiDetail.jobkindId)
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
-      if (message.data.arrivedYn === true || message.data.arrivedYn === 'true') {
-
+      if (
+        message.data.arrivedYn === true ||
+        message.data.arrivedYn === 'true'
+      ) {
       } else {
         if (notiDetail.jobkindId === 'ALIM') {
           // this.openPop({ targetKey: JSON.parse(notiDetail.userDo), targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
@@ -367,16 +434,19 @@ export const functions = {
 }
 
 export default {
-  install (Vue) {
+  install(Vue) {
     Vue.config.globalProperties.$getMainBoard = functions.getMainBoard
     Vue.config.globalProperties.$actionVuex = functions.actionVuex
     Vue.config.globalProperties.$getDetail = functions.getDetail
-    Vue.config.globalProperties.$getBoardCabinetDetail = functions.getBoardCabinetDetail
+    Vue.config.globalProperties.$getBoardCabinetDetail =
+      functions.getBoardCabinetDetail
     Vue.config.globalProperties.$getContentsDetail = functions.getContentsDetail
     Vue.config.globalProperties.$addChanList = functions.addChanList
     Vue.config.globalProperties.$addContents = functions.addContents
-    Vue.config.globalProperties.$getContentsMemoList = functions.getContentsMemoList
-    Vue.config.globalProperties.$recvNotiFromBridge = functions.recvNotiFromBridge
+    Vue.config.globalProperties.$getContentsMemoList =
+      functions.getContentsMemoList
+    Vue.config.globalProperties.$recvNotiFromBridge =
+      functions.recvNotiFromBridge
     Vue.config.globalProperties.$addChanVuex = functions.addChanVuex
   }
 }

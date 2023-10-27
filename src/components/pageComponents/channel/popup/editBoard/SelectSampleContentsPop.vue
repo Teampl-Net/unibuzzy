@@ -23,58 +23,139 @@
 }
 </i18n>
 <template>
-    <div class="fl">
-        <div class="sampleDetailPopBg" @click="closeXPop"></div>
-        <div class="sampleDetailPopWrap">
-            <div class="headerShadow sampleDetailPopHeader">
-                <p class="font18 fontBold textLeft">{{ $t('SAMP_NAME_SAMPLE') }}</p>
-            </div>
-            <div class="sampleDetailPopBody">
-                <div class="sampleDetailPopTop">
-                    <div class="sampleDetailPopAdd">
-                        <p class="font16 fontBold commonColor textLeft ">[{{$changeText(cabinetDetail.teamNameMtext)}}] {{ $t('SAMP_TITLE_LIST') }}</p>
-                        <gBtnSmall class="sampleDetailPopAddBtn" @click="openMakeSamplePop('new')" :btnTitle="$t('COMMON_BTN_ADD')"/>
-                    </div>
-                    <div class="sampleDetailPopLeft" @click="goScroll('back')">
-                        <img src="@/assets/images/common/arrowBackIcon.svg" alt="">
-                    </div>
-                    <div ref="sampleScrollWrap" class="sampleScrollWrap">
-                        <div class="sampleDetailContentsBox" :style="'width: ' + sampleList.length * 100 + 'px;'">
-                            <p class="font15 mleft-05 grayBlack textLeft" v-if="sampleList.length === 0">{{ $t('SAMP_MSG_NOSMAPLE') }}</p>
-                            <div class="sampleDetailContentsItem" v-for="(value, index) in sampleList" @click="selectSample(value)" :key="index">
-                                <div :class="value.sampleKey === selectedSampleObj.sampleKey? 'selectedSample': ''">
-                                    <img src="@/assets/images/common/errorIcon.svg" v-if="value.sampleKey === 9" alt="">
-                                    <img src="@/assets/images/common/timeIcon.svg" v-if="value.sampleKey === 7" alt="">
-                                    <img src="@/assets/images/common/marketIcon.svg" v-if="value.sampleKey === 8" alt="">
-                                    <img :src="value.domainPath + value.pathMtext" alt="">
-                                    <p class="font14 commonBlack mtop-05 textOverdot" :class="value.sampleKey === selectedSampleObj.sampleKey? 'fontBold' : ''">{{$changeText(value.titleMtext)}}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sampleDetailPopRight" @click="goScroll('next')">
-                        <img src="@/assets/images/common/arrowNextIcon.svg" alt="">
-                    </div>
-                    <div class="sampleDetailPopPre">
-                        <p class="font16 fontBold commonColor mbottom-05 textLeft">{{ $t('SAMP_TITLE_PREVIEW') }}</p>
-                        <div class="font14 sampleDetailPopText" v-html="selectedSampleObj.bodyFullStr"></div>
-                        <div v-if="selectedSampleObj.sampleKey > 0" class="font14 mtop-05 sampleDetailPopDelete" @click="askDelSample">
-                          {{ $t('SAMP_BTN_DELETE') }}
-                        </div>
-                        <div v-if="selectedSampleObj.sampleKey > 0" class="font14 mtop-05 sampleDetailPopEdit" @click="openMakeSamplePop('modi')">
-                          {{ $t('SAMP_BTN_EDIT') }}
-                        </div>
-                    </div>
+  <div class="fl">
+    <div class="sampleDetailPopBg" @click="closeXPop"></div>
+    <div class="sampleDetailPopWrap">
+      <div class="headerShadow sampleDetailPopHeader">
+        <p class="font18 fontBold textLeft">{{ $t('SAMP_NAME_SAMPLE') }}</p>
+      </div>
+      <div class="sampleDetailPopBody">
+        <div class="sampleDetailPopTop">
+          <div class="sampleDetailPopAdd">
+            <p class="font16 fontBold commonColor textLeft">
+              [{{ $changeText(cabinetDetail.teamNameMtext) }}]
+              {{ $t('SAMP_TITLE_LIST') }}
+            </p>
+            <gBtnSmall
+              class="sampleDetailPopAddBtn"
+              @click="openMakeSamplePop('new')"
+              :btnTitle="$t('COMMON_BTN_ADD')"
+            />
+          </div>
+          <div class="sampleDetailPopLeft" @click="goScroll('back')">
+            <img src="@/assets/images/common/arrowBackIcon.svg" alt="" />
+          </div>
+          <div ref="sampleScrollWrap" class="sampleScrollWrap">
+            <div
+              class="sampleDetailContentsBox"
+              :style="'width: ' + sampleList.length * 100 + 'px;'"
+            >
+              <p
+                class="font15 mleft-05 grayBlack textLeft"
+                v-if="sampleList.length === 0"
+              >
+                {{ $t('SAMP_MSG_NOSMAPLE') }}
+              </p>
+              <div
+                class="sampleDetailContentsItem"
+                v-for="(value, index) in sampleList"
+                @click="selectSample(value)"
+                :key="index"
+              >
+                <div
+                  :class="
+                    value.sampleKey === selectedSampleObj.sampleKey
+                      ? 'selectedSample'
+                      : ''
+                  "
+                >
+                  <img
+                    src="@/assets/images/common/errorIcon.svg"
+                    v-if="value.sampleKey === 9"
+                    alt=""
+                  />
+                  <img
+                    src="@/assets/images/common/timeIcon.svg"
+                    v-if="value.sampleKey === 7"
+                    alt=""
+                  />
+                  <img
+                    src="@/assets/images/common/marketIcon.svg"
+                    v-if="value.sampleKey === 8"
+                    alt=""
+                  />
+                  <img :src="value.domainPath + value.pathMtext" alt="" />
+                  <p
+                    class="font14 commonBlack mtop-05 textOverdot"
+                    :class="
+                      value.sampleKey === selectedSampleObj.sampleKey
+                        ? 'fontBold'
+                        : ''
+                    "
+                  >
+                    {{ $changeText(value.titleMtext) }}
+                  </p>
                 </div>
+              </div>
             </div>
-            <div class="sampleDetailPopBottom">
-                <gBtnSmall @click="closeXPop" btnThema="light" :btnTitle="$t('COMM_BTN_CLOSE')" />
-                <gBtnSmall @click="okSelectSample" :btnTitle="$t('COMMON_BTN_SELECT')" class="mright-05" />
+          </div>
+          <div class="sampleDetailPopRight" @click="goScroll('next')">
+            <img src="@/assets/images/common/arrowNextIcon.svg" alt="" />
+          </div>
+          <div class="sampleDetailPopPre">
+            <p class="font16 fontBold commonColor mbottom-05 textLeft">
+              {{ $t('SAMP_TITLE_PREVIEW') }}
+            </p>
+            <div
+              class="font14 sampleDetailPopText"
+              v-html="selectedSampleObj.bodyFullStr"
+            ></div>
+            <div
+              v-if="selectedSampleObj.sampleKey > 0"
+              class="font14 mtop-05 sampleDetailPopDelete"
+              @click="askDelSample"
+            >
+              {{ $t('SAMP_BTN_DELETE') }}
             </div>
-            <gConfirmPop :confirmText='confirmText' :confirmType='confirmType' v-if="confirmPopShowYn" @ok="confirmOk" @no='confirmPopShowYn=false'  />
+            <div
+              v-if="selectedSampleObj.sampleKey > 0"
+              class="font14 mtop-05 sampleDetailPopEdit"
+              @click="openMakeSamplePop('modi')"
+            >
+              {{ $t('SAMP_BTN_EDIT') }}
+            </div>
+          </div>
         </div>
-        <makeSamplePop :makeType="makeSampleType" :selectedSample="selectedSampleObj" :propsInnerHtml="selectedSampleObj.bodyFullStr" v-if="makeSamplePopShowYn" @closeXPop="closeMakeSamplePop" :cabinetDetail="cabinetDetail"/>
+      </div>
+      <div class="sampleDetailPopBottom">
+        <gBtnSmall
+          @click="closeXPop"
+          btnThema="light"
+          :btnTitle="$t('COMM_BTN_CLOSE')"
+        />
+        <gBtnSmall
+          @click="okSelectSample"
+          :btnTitle="$t('COMMON_BTN_SELECT')"
+          class="mright-05"
+        />
+      </div>
+      <gConfirmPop
+        :confirmText="confirmText"
+        :confirmType="confirmType"
+        v-if="confirmPopShowYn"
+        @ok="confirmOk"
+        @no="confirmPopShowYn = false"
+      />
     </div>
+    <makeSamplePop
+      :makeType="makeSampleType"
+      :selectedSample="selectedSampleObj"
+      :propsInnerHtml="selectedSampleObj.bodyFullStr"
+      v-if="makeSamplePopShowYn"
+      @closeXPop="closeMakeSamplePop"
+      :cabinetDetail="cabinetDetail"
+    />
+  </div>
 </template>
 <script>
 import makeSamplePop from './WriteSamplePop.vue'
@@ -82,7 +163,7 @@ export default {
   components: {
     makeSamplePop
   },
-  data () {
+  data() {
     return {
       sampleList: [],
       selectedSampleObj: { sampleKey: 0, bodyMinStr: '', bodyFullStr: '' },
@@ -94,7 +175,7 @@ export default {
       makeSampleType: 'new'
     }
   },
-  created () {
+  created() {
     var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'selectSamplePop' + history.length
     history.push(this.popId)
@@ -105,20 +186,20 @@ export default {
     cabinetDetail: {}
   },
   computed: {
-    historyStack () {
+    historyStack() {
       return this.$store.getters['UB_HISTORY/hRPage']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
-    pageUpdate (value, old) {
+    pageUpdate(value, old) {
       this.closeXPop()
     }
   },
   methods: {
-    goScroll (to) {
+    goScroll(to) {
       var scrollTarget = this.$refs.sampleScrollWrap
       var scrollW = scrollTarget.scrollLeft
       if (to === 'back') {
@@ -131,27 +212,27 @@ export default {
         scrollTarget.scrollTo({ left: scrollW + 160, behavior: 'smooth' })
       }
     },
-    openMakeSamplePop (type) {
+    openMakeSamplePop(type) {
       this.makeSamplePopShowYn = true
       this.makeSampleType = type
     },
-    async closeMakeSamplePop (reloadYn) {
+    async closeMakeSamplePop(reloadYn) {
       this.makeSamplePopShowYn = false
       if (reloadYn === true) {
         await this.getGuideList()
         this.selectSample(this.sampleList[0])
       }
     },
-    askDelSample () {
+    askDelSample() {
       this.confirmText = this.$t('SAMP_MSG_BEFORE_DELETE')
       this.confirmPopShowYn = true
     },
-    async confirmOk () {
+    async confirmOk() {
       await this.delSample()
       this.confirmPopShowYn = false
       this.selectedSampleObj = { sampleKey: 0, bodyMinStr: '', bodyFullStr: '' }
     },
-    async delSample () {
+    async delSample() {
       var param = {}
       var sample = {}
       sample.sampleKey = this.selectedSampleObj.sampleKey
@@ -159,20 +240,20 @@ export default {
       param.sample = sample
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSample',
+        url: '/tp.saveSample',
         param: param
       })
       this.$showToastPop(this.$t('SAMP_MSG_AFTER_DELETE'))
       this.getGuideList()
     },
-    async okSelectSample () {
+    async okSelectSample() {
       await this.$emit('okSelectSample', this.selectedSampleObj)
       await this.closeXPop()
     },
-    selectSample (obj) {
+    selectSample(obj) {
       this.selectedSampleObj = obj
     },
-    closeXPop () {
+    closeXPop() {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.popId === hStack[hStack.length - 1]) {
@@ -182,12 +263,12 @@ export default {
         this.$emit('closeXPop')
       }
     },
-    async getGuideList (teamKey, userKey, showProfileYn, managerYn) {
+    async getGuideList(teamKey, userKey, showProfileYn, managerYn) {
       var param = {}
       param.targetType = 'GUIDE_'
       param.creTeamKey = this.cabinetDetail.creTeamKey
       const result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getSampleList',
+        url: '/tp.getSampleList',
         param: { sample: param }
       })
       if (result.data.result === true) {
@@ -200,7 +281,7 @@ export default {
 
 <style scoped>
 .selectedSample {
-  background: ghostwhite
+  background: ghostwhite;
 }
 .sampleDetailPopBg {
   width: 100%;
@@ -218,7 +299,7 @@ export default {
   border-radius: 0.8rem;
   height: 40%;
   position: fixed;
-  background: #FFF;
+  background: #fff;
   z-index: 99999999;
   top: 20%;
   left: 10%;
@@ -312,7 +393,7 @@ export default {
 .sampleDetailPopPre {
   width: 100%;
   height: calc(100% - 200px);
-  margin-top:10px;
+  margin-top: 10px;
   float: left;
 }
 .sampleDetailPopPre > p {
@@ -330,8 +411,8 @@ export default {
 }
 .sampleDetailPopDelete {
   cursor: pointer;
-  background: #D9D9D9;
-  color: #FFF;
+  background: #d9d9d9;
+  color: #fff;
   line-height: 30px;
   border-radius: 5px;
   min-width: 3rem;
@@ -343,8 +424,8 @@ export default {
 .sampleDetailPopEdit {
   cursor: pointer;
   margin-right: 5px;
-  background: #D9D9D9;
-  color: #FFF;
+  background: #d9d9d9;
+  color: #fff;
   line-height: 30px;
   border-radius: 5px;
   min-width: 3rem;

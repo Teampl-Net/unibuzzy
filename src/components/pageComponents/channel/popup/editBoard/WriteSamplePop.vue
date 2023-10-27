@@ -25,55 +25,106 @@
 }
 </i18n>
 <template>
-    <div class="fl">
-        <div @click="closeXPop" class="writeSamplePopBg"></div>
-        <transition name="showUp">
-            <div class="writeSamplePopWrap">
-                <div class="headerShadow writeSamplePopHeader">
-                    <p class="font18 fontBold textLeft">{{makeType === 'modi'? $t('SAMP_NAME_EDIT_SAMPLE') : $t('SAMP_NAME_ADD_SAMPLE')}}</p>
-                    <img @click="closeXPop" src="@/assets/images/common/popup_close.png" alt="">
-                </div>
-                <div class="writeSamplePopBody">
-                    <div class="writeSamplePopBox">
-                        <div class="writeBoxInputWrap">
-                            <label  for="sampleTitleMtext" class="font15 fontBold grayBlack textLeft fl">{{ $t('SAMP_TITLE_NAME') }}</label>
-                            <input id="sampleTitleMtext" type="text" class="font15 textLeft" :placeholder="$t('SAMP_MSG_NONAME')" name="" v-model="sampleTitleMtext" >
-                        </div>
-                        <p class="font15 fontBold grayBlack w100P mbottom-05 textLeft fl">
-                          {{ $t('SAMP_TITLE_ICON') }}
-                        </p>
-                        <div class="writeSampleImgWrap">
-                            <div class="writeSampleLeft" @click="goScroll('back')">
-                                <img src="@/assets/images/common/arrowBackIcon.svg" alt="">
-                            </div>
-                            <div ref="scrollIconWrap" class="writeSampleScrollWrap">
-                                <div class="h100P fl" :style="'width: +' + (60 * sampleIconList.length) + 'px;'">
-                                    <div class="writeSampleImgItem" @click="makeSampleIconFilekey = value.imageFilekey" v-for="(value, index) in sampleIconList" :style="makeSampleIconFilekey === value.imageFilekey ? 'background: #F1F1FF;' : ''" :key="index">
-                                        <img class="w100P fl" :src="value.domainPath + value.pathMtext" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="writeSampleRight" @click="goScroll('next')">
-                                <img src="@/assets/images/common/arrowNextIcon.svg" alt="">
-                            </div>
-                        </div>
-                        <p class="font15 fontBold grayBlack textLeft fl w-100P mbottom-05" >{{ $t('SAMP_TITLE_CONTENTS') }}</p>
-                        <div class="writeSamplePreWrap">
-                            <pre id="sampleInputArea" ref="sampleInputArea" class="fl editableContent"  contenteditable=true ></pre>
-                        </div>
-                    </div>
-                </div>
-                <div class="writeSampleBtnArea">
-                    <gBtnSmall @click="closeXPop" btnTitle="취소" btnThema="light"/>
-                    <gBtnSmall @click="createSample" :btnTitle="makeType === 'modi' ? $t('COMM_BTN_EDIT2') : $t('COMMON_BTN_ADD')" class="mright-05"/>
-                </div>
+  <div class="fl">
+    <div @click="closeXPop" class="writeSamplePopBg"></div>
+    <transition name="showUp">
+      <div class="writeSamplePopWrap">
+        <div class="headerShadow writeSamplePopHeader">
+          <p class="font18 fontBold textLeft">
+            {{
+              makeType === 'modi'
+                ? $t('SAMP_NAME_EDIT_SAMPLE')
+                : $t('SAMP_NAME_ADD_SAMPLE')
+            }}
+          </p>
+          <img
+            @click="closeXPop"
+            src="@/assets/images/common/popup_close.png"
+            alt=""
+          />
+        </div>
+        <div class="writeSamplePopBody">
+          <div class="writeSamplePopBox">
+            <div class="writeBoxInputWrap">
+              <label
+                for="sampleTitleMtext"
+                class="font15 fontBold grayBlack textLeft fl"
+                >{{ $t('SAMP_TITLE_NAME') }}</label
+              >
+              <input
+                id="sampleTitleMtext"
+                type="text"
+                class="font15 textLeft"
+                :placeholder="$t('SAMP_MSG_NONAME')"
+                name=""
+                v-model="sampleTitleMtext"
+              />
             </div>
-        </transition>
-    </div>
+            <p class="font15 fontBold grayBlack w100P mbottom-05 textLeft fl">
+              {{ $t('SAMP_TITLE_ICON') }}
+            </p>
+            <div class="writeSampleImgWrap">
+              <div class="writeSampleLeft" @click="goScroll('back')">
+                <img src="@/assets/images/common/arrowBackIcon.svg" alt="" />
+              </div>
+              <div ref="scrollIconWrap" class="writeSampleScrollWrap">
+                <div
+                  class="h100P fl"
+                  :style="'width: +' + 60 * sampleIconList.length + 'px;'"
+                >
+                  <div
+                    class="writeSampleImgItem"
+                    @click="makeSampleIconFilekey = value.imageFilekey"
+                    v-for="(value, index) in sampleIconList"
+                    :style="
+                      makeSampleIconFilekey === value.imageFilekey
+                        ? 'background: #F1F1FF;'
+                        : ''
+                    "
+                    :key="index"
+                  >
+                    <img
+                      class="w100P fl"
+                      :src="value.domainPath + value.pathMtext"
+                      alt=""
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="writeSampleRight" @click="goScroll('next')">
+                <img src="@/assets/images/common/arrowNextIcon.svg" alt="" />
+              </div>
+            </div>
+            <p class="font15 fontBold grayBlack textLeft fl w-100P mbottom-05">
+              {{ $t('SAMP_TITLE_CONTENTS') }}
+            </p>
+            <div class="writeSamplePreWrap">
+              <pre
+                id="sampleInputArea"
+                ref="sampleInputArea"
+                class="fl editableContent"
+                contenteditable="true"
+              ></pre>
+            </div>
+          </div>
+        </div>
+        <div class="writeSampleBtnArea">
+          <gBtnSmall @click="closeXPop" btnTitle="취소" btnThema="light" />
+          <gBtnSmall
+            @click="createSample"
+            :btnTitle="
+              makeType === 'modi' ? $t('COMM_BTN_EDIT2') : $t('COMMON_BTN_ADD')
+            "
+            class="mright-05"
+          />
+        </div>
+      </div>
+    </transition>
+  </div>
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
       sampleTitleMtext: '',
       sampleIconList: [],
@@ -87,19 +138,19 @@ export default {
     selectedSample: {}
   },
   computed: {
-    historyStack () {
+    historyStack() {
       return this.$store.getters['UB_HISTORY/hRPage']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
-    pageUpdate (value, old) {
+    pageUpdate(value, old) {
       this.closeXPop()
     }
   },
-  mounted () {
+  mounted() {
     if (this.makeType === 'modi' && this.propsInnerHtml) {
       this.$refs.sampleInputArea.innerHTML = this.propsInnerHtml
       if (this.selectedSample) {
@@ -110,7 +161,7 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     this.getCodeList()
     var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'writeSamplePop' + this.cabinetDetail.cabinetKey
@@ -118,7 +169,7 @@ export default {
     this.$store.commit('UB_HISTORY/updateStack', history)
   },
   methods: {
-    goScroll (to) {
+    goScroll(to) {
       var scrollTarget = this.$refs.scrollIconWrap
       var scrollW = scrollTarget.scrollLeft
       if (to === 'back') {
@@ -131,14 +182,14 @@ export default {
         scrollTarget.scrollTo({ left: scrollW + 160, behavior: 'smooth' })
       }
     },
-    async getCodeList () {
+    async getCodeList() {
       var resultList = null
       var param = {}
       param.groupCode = 'S_ICON'
       resultList = await this.$getCodeList(param)
       this.sampleIconList = resultList
     },
-    closeXPop (reloadYn) {
+    closeXPop(reloadYn) {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.popId === hStack[hStack.length - 1]) {
@@ -148,7 +199,7 @@ export default {
         this.$emit('closeXPop', reloadYn)
       }
     },
-    async createSample () {
+    async createSample() {
       var param = {}
       var sample = {}
       sample.titleMtext = this.cabinetDetail.teamMenuKey
@@ -174,7 +225,7 @@ export default {
       sample.creUserKey = this.$store.getters['UB_USER/GE_USER'].userKey
       param.sample = sample
       await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSample',
+        url: '/tp.saveSample',
         param: param
       })
       this.sampleTitleMtext = ''
@@ -207,7 +258,7 @@ export default {
   border-radius: 0.8rem 0.8rem 0.8rem 0.8rem;
   height: 80%;
   position: fixed;
-  background: #FFF;
+  background: #fff;
   z-index: 99999999;
   top: 10%;
   left: 10%;
@@ -236,7 +287,7 @@ export default {
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   align-items: center;
 }
 .writeBoxInputWrap {

@@ -25,49 +25,162 @@
 }
 </i18n>
 <template>
-<div v-if="mLoadYn && $route.path === `/chan/${CHANNEL_DETAIL.teamKey}`">
-  <div class="popUpBackgroundGray" @click="goNo"></div>
-  <div class="channelMenuWrap showModal-enter " :class="{'showModal-leave': mCloseEventYn === true  }">
-    <div class="menuHeader newHeaderLine" :style="'height:' + ($STATUS_HEIGHT + 50)+ 'px; top: 0; padding-top: ' + ($STATUS_HEIGHT) + 'px'" >
-      <img style="width: 1rem;" @click="goNo" class="mleft-1 cursorP"  src="@/assets/images/common/popup_close.png"/>
-      <p class="fontBold font20 fl editColor noWrap">{{ $t('CHAN_MENU_TITLE_MENU') }}</p>
-      <div />
-    </div>
-    <div class="fl w100P menuContWrap" :style="'padding-top:' + ($STATUS_HEIGHT )+ 'px'">
-      <div>
-        <div class="fl w100P mtop-2 dMenuDivide">
-          <div class="fl font14 cursorP commonColor fontBold textLeft w100P dMenuGroup" @click="boardDropDown">
-            <p class="mleft-1 fl font18 minWidth150">
-              <span class="font18 fl commonColor">{{ $t('COMMON_NAME_BOARD') }}</span>
-              <span class="fl mleft-05 commonColor font16 lineHeight26">({{BOARD_CONTENT_LIST.length}})</span>
-            </p>
-            <img v-show="BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true" src="@/assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
-            <img v-show="BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn !== true" src="@/assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
+  <div v-if="mLoadYn && $route.path === `/chan/${CHANNEL_DETAIL.teamKey}`">
+    <div class="popUpBackgroundGray" @click="goNo"></div>
+    <div
+      class="channelMenuWrap showModal-enter"
+      :class="{ 'showModal-leave': mCloseEventYn === true }"
+    >
+      <div
+        class="menuHeader newHeaderLine"
+        :style="
+          'height:' +
+          ($STATUS_HEIGHT + 50) +
+          'px; top: 0; padding-top: ' +
+          $STATUS_HEIGHT +
+          'px'
+        "
+      >
+        <img
+          style="width: 1rem"
+          @click="goNo"
+          class="mleft-1 cursorP"
+          src="@/assets/images/common/popup_close.png"
+        />
+        <p class="fontBold font20 fl editColor noWrap">
+          {{ $t('CHAN_MENU_TITLE_MENU') }}
+        </p>
+        <div />
+      </div>
+      <div
+        class="fl w100P menuContWrap"
+        :style="'padding-top:' + $STATUS_HEIGHT + 'px'"
+      >
+        <div>
+          <div class="fl w100P mtop-2 dMenuDivide">
+            <div
+              class="fl font14 cursorP commonColor fontBold textLeft w100P dMenuGroup"
+              @click="boardDropDown"
+            >
+              <p class="mleft-1 fl font18 minWidth150">
+                <span class="font18 fl commonColor">{{
+                  $t('COMMON_NAME_BOARD')
+                }}</span>
+                <span class="fl mleft-05 commonColor font16 lineHeight26"
+                  >({{ BOARD_CONTENT_LIST.length }})</span
+                >
+              </p>
+              <img
+                v-show="
+                  BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn === true
+                "
+                src="@/assets/images/common/icon_dash.svg"
+                class="fr dropdownBtn mTop05"
+              />
+              <img
+                v-show="
+                  BOARD_CONTENT_LIST.length !== 0 && mBoardDropEvenYn !== true
+                "
+                src="@/assets/images/common/icon_dropdown.svg"
+                class="fr dropdownBtn mTop05"
+              />
+            </div>
+            <div
+              class="boardBox boardBoxDown mleft-2 scrollOn w100P fl"
+              ref="boardRef"
+              :class="{
+                boardBoxUp: mBoardDropEvenYn === false,
+                boardBoxDown: mBoardDropEvenYn === true
+              }"
+            >
+              <menuBoardList
+                :propBoardList="BOARD_CONTENT_LIST"
+                @boardContentsClick="boardContentsClick"
+              />
+            </div>
           </div>
-          <div class="boardBox boardBoxDown mleft-2 scrollOn w100P fl" ref="boardRef" :class="{boardBoxUp : mBoardDropEvenYn === false, boardBoxDown: mBoardDropEvenYn === true}" >
-            <menuBoardList :propBoardList="BOARD_CONTENT_LIST" @boardContentsClick="boardContentsClick" />
-          </div>
-        </div>
-        <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ((CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))" class="fl w100P" style="border-bottom: 2px solid #6768a730" :style="(CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
-          <div class="fl font14 cursorP commonColor fontBold  textLeft w100P dMenuGroup" @click="bookDropDown">
-            <p class="mleft-1 fl font18 minWidth150">
-              <span class="font18 fl commonColor">{{ $t('CHAN_MENU_TITLE_ADDR') }}</span>
-              <span class="fl mleft-05 commonColor font16 lineHeight26">({{CABINET_LIST.length}})</span>
-            </p>
-            <img v-show="CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="@/assets/images/common/icon_dash.svg"  class="fr dropdownBtn mTop05">
-            <img v-show="CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="@/assets/images/common/icon_dropdown.svg" class="fr dropdownBtn mTop05">
-          </div>
-          <div class="boardBox boardBoxDown mleft-2 scrollOn w100P fl" ref="addressBookGroupRef" :class="{boardBoxUp : mAddressDropEvenYn === false, boardBoxDown: mAddressDropEvenYn === true}" >
-            <addressBookList :propAddressBookList="CABINET_LIST" @openBookDetail='openBookDetailPop' />
+          <div
+            v-if="
+              CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn ||
+              ((CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext ||
+                CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) &&
+                (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 ||
+                  CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 ||
+                  CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))
+            "
+            class="fl w100P"
+            style="border-bottom: 2px solid #6768a730"
+            :style="
+              (CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ||
+                CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) &&
+              (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 ||
+                CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 ||
+                CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1)
+                ? ''
+                : ''
+            "
+          >
+            <div
+              class="fl font14 cursorP commonColor fontBold textLeft w100P dMenuGroup"
+              @click="bookDropDown"
+            >
+              <p class="mleft-1 fl font18 minWidth150">
+                <span class="font18 fl commonColor">{{
+                  $t('CHAN_MENU_TITLE_ADDR')
+                }}</span>
+                <span class="fl mleft-05 commonColor font16 lineHeight26"
+                  >({{ CABINET_LIST.length }})</span
+                >
+              </p>
+              <img
+                v-show="
+                  CABINET_LIST.length !== 0 && mAddressDropEvenYn === true
+                "
+                src="@/assets/images/common/icon_dash.svg"
+                class="fr dropdownBtn mTop05"
+              />
+              <img
+                v-show="
+                  CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true
+                "
+                src="@/assets/images/common/icon_dropdown.svg"
+                class="fr dropdownBtn mTop05"
+              />
+            </div>
+            <div
+              class="boardBox boardBoxDown mleft-2 scrollOn w100P fl"
+              ref="addressBookGroupRef"
+              :class="{
+                boardBoxUp: mAddressDropEvenYn === false,
+                boardBoxDown: mAddressDropEvenYn === true
+              }"
+            >
+              <addressBookList
+                :propAddressBookList="CABINET_LIST"
+                @openBookDetail="openBookDetailPop"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="w100P textRight fontBold cursorP mngChanBtn" v-if="(CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 && ( CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) || (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)">
-      <gBtnSmall btnTitle=" Manager Settings" class="" @click="clickEditChanBtn" />
+      <div
+        class="w100P textRight fontBold cursorP mngChanBtn"
+        v-if="
+          (CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1 &&
+            (CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 ||
+              CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1)) ||
+          CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 ||
+          CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1
+        "
+      >
+        <gBtnSmall
+          btnTitle=" Manager Settings"
+          class=""
+          @click="clickEditChanBtn"
+        />
+      </div>
     </div>
   </div>
-</div>
 </template>
 <script>
 import addressBookList from '../container/chanMenu/AddressBookList.vue'
@@ -78,15 +191,17 @@ export default {
     propData: {},
     pPopId: {}
   },
-  created () {
+  created() {
     if (this.propData) {
       if (this.propData.targetKey) {
-        this.mChanAlimListTeamKey = JSON.parse(JSON.stringify(this.propData.targetKey))
+        this.mChanAlimListTeamKey = JSON.parse(
+          JSON.stringify(this.propData.targetKey)
+        )
       }
     }
     this.readyFunction()
   },
-  data () {
+  data() {
     return {
       mChanAlimListTeamKey: 0,
       mScreenHeight: 0,
@@ -103,23 +218,32 @@ export default {
     menuBoardList
   },
   methods: {
-    readyFunction () {
+    readyFunction() {
       var history = this.$store.getters['UB_HISTORY/hStack']
-      this.writePopId = this.$setParentsId(this.pPopId, 'chanMenu' + this.mChanAlimListTeamKey)
-      history.push(this.$setParentsId(this.pPopId, 'chanMenu' + this.mChanAlimListTeamKey))
+      this.writePopId = this.$setParentsId(
+        this.pPopId,
+        'chanMenu' + this.mChanAlimListTeamKey
+      )
+      history.push(
+        this.$setParentsId(this.pPopId, 'chanMenu' + this.mChanAlimListTeamKey)
+      )
       this.$store.commit('UB_HISTORY/updateStack', history)
       this.mScreenHeight = window.innerHeight
 
-      this.getTeamCabList(false).then(temp => {
-        this.getTeamMenuList().then(temp => {
+      this.getTeamCabList(false).then((temp) => {
+        this.getTeamMenuList().then((temp) => {
           this.boardListLength()
           this.bookListLength()
           this.mLoadYn = true
         })
       })
     },
-    async clickEditChanBtn () {
-      if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn) {
+    async clickEditChanBtn() {
+      if (
+        !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn &&
+        !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn &&
+        !this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn
+      ) {
         this.$showToastPop(this.$t('CHAN_MSG_NOFOLLOW'))
         var history = this.$store.getters['UB_HISTORY/hStack']
         var removePage = history[history.length - 1]
@@ -139,7 +263,7 @@ export default {
 
       this.$emit('openItem', param)
     },
-    openBookDetailPop (clickAddressBookData) {
+    openBookDetailPop(clickAddressBookData) {
       var params = {}
       params.targetType = 'editBookList'
       params.chanName = this.propData.nameMtext
@@ -152,15 +276,18 @@ export default {
       params.teamNameMtext = this.teamName()
       this.$emit('openItem', params)
     },
-    async getTeamCabList (loadingYn) {
+    async getTeamCabList(loadingYn) {
       var paramMap = new Map()
       paramMap.set('teamKey', this.mChanAlimListTeamKey)
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
-      var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getTeamMenuList',
-        param: Object.fromEntries(paramMap)
-      }, !(loadingYn === false))
+      var result = await this.$commonAxiosFunction(
+        {
+          url: '/tp.getTeamMenuList',
+          param: Object.fromEntries(paramMap)
+        },
+        !(loadingYn === false)
+      )
       var tempList = []
       tempList = result.data
       for (var i = 0; i < tempList.length; i++) {
@@ -170,7 +297,7 @@ export default {
 
       this.mAddressBookList = tempList
     },
-    async getTeamMenuList () {
+    async getTeamMenuList() {
       var paramMap = new Map()
       paramMap.set('teamKey', this.mChanAlimListTeamKey)
       paramMap.set('currentTeamKey', this.mChanAlimListTeamKey)
@@ -181,52 +308,75 @@ export default {
       this.mBoardContentsList = result
     },
     /** 화면상 게시판의 높이를 myBoardList.length를 통해 구해주는 함수 */
-    boardListLength () {
+    boardListLength() {
       if (this.mBoardContentsList) {
-        var boardListLength = this.mBoardContentsList.length === 0 ? 1 : this.mBoardContentsList.length * 45 + 10
+        var boardListLength =
+          this.mBoardContentsList.length === 0
+            ? 1
+            : this.mBoardContentsList.length * 45 + 10
         this.$nextTick(() => {
           if (this.$refs.boardRef) {
-            this.$refs.boardRef.style.setProperty('--menuHeight', (boardListLength + 'px'))
+            this.$refs.boardRef.style.setProperty(
+              '--menuHeight',
+              boardListLength + 'px'
+            )
           }
         })
       } else {
         this.$nextTick(() => {
           if (this.$refs.boardRef) {
-            this.$refs.boardRef.style.setProperty('--menuHeight', ('30px'))
+            this.$refs.boardRef.style.setProperty('--menuHeight', '30px')
           }
         })
       }
     },
-    boardDropDown () {
+    boardDropDown() {
       if (this.BOARD_CONTENT_LIST.length !== 0) {
         this.boardListLength()
-        if (this.mBoardDropEvenYn) { this.mBoardDropEvenYn = false } else { this.mBoardDropEvenYn = true }
+        if (this.mBoardDropEvenYn) {
+          this.mBoardDropEvenYn = false
+        } else {
+          this.mBoardDropEvenYn = true
+        }
       }
     },
     /** 화면상 주소록의 높이를 mAddressBookList.length를 통해 구해주는 함수 */
-    bookListLength () {
+    bookListLength() {
       if (this.mAddressBookList) {
-        var bookListHeight = this.mAddressBookList.length === 0 ? 1 : this.mAddressBookList.length * 45 + 10
+        var bookListHeight =
+          this.mAddressBookList.length === 0
+            ? 1
+            : this.mAddressBookList.length * 45 + 10
         this.$nextTick(() => {
           if (this.$refs.addressBookGroupRef) {
-            this.$refs.addressBookGroupRef.style.setProperty('--menuHeight', (bookListHeight + 'px'))
+            this.$refs.addressBookGroupRef.style.setProperty(
+              '--menuHeight',
+              bookListHeight + 'px'
+            )
           }
         })
       } else {
         this.$nextTick(() => {
           if (this.$refs.addressBookGroupRef) {
-            this.$refs.addressBookGroupRef.style.setProperty('--menuHeight', ('30px'))
+            this.$refs.addressBookGroupRef.style.setProperty(
+              '--menuHeight',
+              '30px'
+            )
           }
         })
       }
     },
-    bookDropDown () {
+    bookDropDown() {
       if (this.CABINET_LIST.length !== 0) {
         this.bookListLength()
-        if (this.mAddressDropEvenYn) { this.mAddressDropEvenYn = false } else { this.mAddressDropEvenYn = true }
+        if (this.mAddressDropEvenYn) {
+          this.mAddressDropEvenYn = false
+        } else {
+          this.mAddressDropEvenYn = true
+        }
       }
     },
-    async goNo () {
+    async goNo() {
       this.mCloseEventYn = true
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
@@ -235,7 +385,7 @@ export default {
       await this.$store.commit('UB_HISTORY/updateStack', history)
       this.$emit('closePop')
     },
-    async boardContentsClick (boardListData) {
+    async boardContentsClick(boardListData) {
       var resultMainData = await this.$getBoardMainData(boardListData)
 
       if (resultMainData.contentsListPage) {
@@ -255,11 +405,12 @@ export default {
       goBoardMainParam.chanYn = true
       this.$emit('openItem', goBoardMainParam)
     },
-    teamName () {
+    teamName() {
       var teamName
       if (this.propData) {
         if (this.propData.value) {
-          teamName = this.propData.value.nameMtext || this.propData.value.teamNameMtext
+          teamName =
+            this.propData.value.nameMtext || this.propData.value.teamNameMtext
         } else {
           if (this.propData.nameMtext) {
             teamName = this.propData.nameMtext
@@ -270,25 +421,25 @@ export default {
     }
   },
   computed: {
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     },
-    CHANNEL_DETAIL () {
+    CHANNEL_DETAIL() {
       return this.$getDetail('TEAM', this.mChanAlimListTeamKey)[0]
     },
-    historyStack () {
+    historyStack() {
       return this.$store.getters['UB_HISTORY/hRPage']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     },
-    CABINET_LIST () {
+    CABINET_LIST() {
       if (this.mAddressBookList.length === 0) {
         return this.mAddressBookList
       }
       return this.mAddressBookList
     },
-    BOARD_CONTENT_LIST () {
+    BOARD_CONTENT_LIST() {
       if (this.mBoardContentsList.length === 0) {
         return this.mBoardContentsList
       }
@@ -296,9 +447,14 @@ export default {
     }
   },
   watch: {
-    pageUpdate (value, old) {
+    pageUpdate(value, old) {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
-      if (this.$setParentsId(this.pPopId, 'chanMenu' + this.mChanAlimListTeamKey) === hStack[hStack.length - 1]) {
+      if (
+        this.$setParentsId(
+          this.pPopId,
+          'chanMenu' + this.mChanAlimListTeamKey
+        ) === hStack[hStack.length - 1]
+      ) {
         this.goNo()
       }
     }
@@ -322,7 +478,7 @@ export default {
   right: 0;
 }
 .menuHeader p {
-  color: #FFFFFF;
+  color: #ffffff;
   text-align: center;
 }
 
@@ -332,20 +488,21 @@ export default {
   text-align: left;
   height: 3.8rem;
   border-bottom: 0.5px solid rgb(255 255 255 / 26%);
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
-.channelMenuWrap{
-  background-color: white ;
-  width:80% ;
+.channelMenuWrap {
+  background-color: white;
+  width: 80%;
   max-width: 500px;
-  position: absolute; z-index: 1001;
+  position: absolute;
+  z-index: 1001;
   height: 100vh;
   top: 0;
   right: 0;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
-  }
+}
 
 .editColor {
   color: #6768a7 !important;
@@ -362,7 +519,7 @@ export default {
 }
 
 .boardBox {
-  width:100%;
+  width: 100%;
   height: 0px;
   display: block;
   position: relative;
@@ -391,12 +548,12 @@ export default {
   white-space: nowrap;
 }
 .dMenuDivide {
-  margin-top:50px;
+  margin-top: 50px;
   border-bottom: 2px solid #6768a730;
 }
 .dMenuGroup {
   white-space: nowrap;
-  padding:10px 0;
+  padding: 10px 0;
   border-bottom: 2px solid #6768a730;
 }
 .mTop05 {
@@ -414,7 +571,7 @@ export default {
   clear: left;
 }
 .conviItemWrap {
-  width:100%;
+  width: 100%;
   padding: 10px 0;
 }
 .conviItem {
@@ -438,14 +595,16 @@ export default {
 @keyframes dropdown {
   0% {
     height: 0px;
-  } 100% {
-    height: var(--menuHeight)
+  }
+  100% {
+    height: var(--menuHeight);
   }
 }
 @keyframes dropup {
   0% {
     height: var(--menuHeight);
-  } 100% {
+  }
+  100% {
     height: 0px;
   }
 }

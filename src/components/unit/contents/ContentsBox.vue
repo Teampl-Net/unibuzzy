@@ -10,137 +10,559 @@
 </i18n>
 <template>
   <div v-if="mLoadingShowYn" id="loading"><div class="spinner"></div></div>
-  <div class="profilePopBg" v-if="mProfilePopShowYn" @click="closeProfilePop"></div>
-  <userDetailPop v-if="mProfilePopShowYn" :propData="mPopParam" :pClosePop="closeProfilePop" />
-  <div class="profilePopBg" v-if="mWorkStateCodePopShowYn" @click="mWorkStateCodePopShowYn = false"></div>
-  <statCodePop @closeXPop="mWorkStateCodePopShowYn = false" :currentWorker="{workUserKey: mWorkStateCodePopProps.workUserKey, workUserName: mWorkStateCodePopProps.workUserName}" :teamKey="mWorkStateCodePopProps.creTeamKey" :alimDetail="mWorkStateCodePopProps" :contentsKey="mWorkStateCodePopProps.contentsKey" v-if="mWorkStateCodePopShowYn" :codeList="mWorkStateCodePopProps.workStatCodeList" :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey" class="fr "></statCodePop>
-  <div class="profilePopBg" v-if="mContMenuShowYn" @click="mContMenuShowYn = false"></div>
-  <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false" @report="report" @editable="editable" @bloc="bloc" :contentsInfo="CONT_DETAIL" :contentType="CONT_DETAIL.jobkindId" :contentOwner="GE_USER.userKey === CONT_DETAIL.creUserKey"/>
+  <div
+    class="profilePopBg"
+    v-if="mProfilePopShowYn"
+    @click="closeProfilePop"
+  ></div>
+  <userDetailPop
+    v-if="mProfilePopShowYn"
+    :propData="mPopParam"
+    :pClosePop="closeProfilePop"
+  />
+  <div
+    class="profilePopBg"
+    v-if="mWorkStateCodePopShowYn"
+    @click="mWorkStateCodePopShowYn = false"
+  ></div>
+  <statCodePop
+    @closeXPop="mWorkStateCodePopShowYn = false"
+    :currentWorker="{
+      workUserKey: mWorkStateCodePopProps.workUserKey,
+      workUserName: mWorkStateCodePopProps.workUserName
+    }"
+    :teamKey="mWorkStateCodePopProps.creTeamKey"
+    :alimDetail="mWorkStateCodePopProps"
+    :contentsKey="mWorkStateCodePopProps.contentsKey"
+    v-if="mWorkStateCodePopShowYn"
+    :codeList="mWorkStateCodePopProps.workStatCodeList"
+    :currentCodeKey="mWorkStateCodePopProps.workStatCodeKey"
+    class="fr"
+  ></statCodePop>
+  <div
+    class="profilePopBg"
+    v-if="mContMenuShowYn"
+    @click="mContMenuShowYn = false"
+  ></div>
+  <gReport
+    v-if="mContMenuShowYn"
+    @closePop="mContMenuShowYn = false"
+    @report="report"
+    @editable="editable"
+    @bloc="bloc"
+    :contentsInfo="CONT_DETAIL"
+    :contentType="CONT_DETAIL.jobkindId"
+    :contentOwner="GE_USER.userKey === CONT_DETAIL.creUserKey"
+  />
   <div class="profilePopBg" v-if="mFilePopYn" @click="mFilePopYn = false"></div>
-  <attachFileListPop propTargetType="C" :propFileData="mFilePopData" @clickFileDownload="clickFileDownload" v-if="mFilePopYn === true" @closePop="mFilePopYn = false"/>
-  <div :class="animationYn? 'newContentsAni':''" class="contentsWrap" @dragenter="onDragenter" @dragleave="onDragleave" @dragover="onDragover" key="animationYn" v-if="CONT_DETAIL" :style="`padding-bottom: ${$STATUS_HEIGHT}px; ${propTargetType !=='contentsDetail'? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);':''}`">
-    <div v-if="propJustShowYn" :style="propPreStickerList && propPreStickerList.length > 0? 'height: calc(100% - 50px);' : 'height: calc(100%); '" class="justSticker"></div>
+  <attachFileListPop
+    propTargetType="C"
+    :propFileData="mFilePopData"
+    @clickFileDownload="clickFileDownload"
+    v-if="mFilePopYn === true"
+    @closePop="mFilePopYn = false"
+  />
+  <div
+    :class="animationYn ? 'newContentsAni' : ''"
+    class="contentsWrap"
+    @dragenter="onDragenter"
+    @dragleave="onDragleave"
+    @dragover="onDragover"
+    key="animationYn"
+    v-if="CONT_DETAIL"
+    :style="`padding-bottom: ${$STATUS_HEIGHT}px; ${
+      propTargetType !== 'contentsDetail'
+        ? 'box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);'
+        : ''
+    }`"
+  >
+    <div
+      v-if="propJustShowYn"
+      :style="
+        propPreStickerList && propPreStickerList.length > 0
+          ? 'height: calc(100% - 50px);'
+          : 'height: calc(100%); '
+      "
+      class="justSticker"
+    ></div>
     <div class="contentsCardHeaderArea">
-      <div @click="goChannelMain" :style="GE_USER.userKey === CONT_DETAIL.creUserKey? 'border: 2px solid #5B1CFC !important; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" class="contentsCardLogoArea" >
-        <div class="chanIcon" :style="'background-image: url(' + (CONT_DETAIL.domainPath ? CONT_DETAIL.domainPath + $changeUrlBackslash(CONT_DETAIL.logoPathMtext) : CONT_DETAIL.logoPathMtext) + ');'"></div>
+      <div
+        @click="goChannelMain"
+        :style="
+          GE_USER.userKey === CONT_DETAIL.creUserKey
+            ? 'border: 2px solid #5B1CFC !important; '
+            : 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'
+        "
+        class="contentsCardLogoArea"
+      >
+        <div
+          class="chanIcon"
+          :style="
+            'background-image: url(' +
+            (CONT_DETAIL.domainPath
+              ? CONT_DETAIL.domainPath +
+                $changeUrlBackslash(CONT_DETAIL.logoPathMtext)
+              : CONT_DETAIL.logoPathMtext) +
+            ');'
+          "
+        ></div>
       </div>
-      <div class="contentsCardInfo" >
+      <div class="contentsCardInfo">
         <div class="contentsCardInfoBox">
-          <template v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== GE_USER.userKey) && CONT_DETAIL.titleBlindYn">
+          <template
+            v-if="
+              !pNoAuthYn &&
+              CONT_DETAIL.jobkindId === 'BOAR' &&
+              CONT_DETAIL.VIEW_YN === false &&
+              CONT_DETAIL.creUserKey !== GE_USER.userKey &&
+              CONT_DETAIL.titleBlindYn
+            "
+          >
             <p class="textLeft textOverdot commonBlack fontBold font16 noPerm">
               {{ $t('COMM_MSG_NOPERM') }}
             </p>
           </template>
           <template v-else>
-            <p @click="goContentsDetail()" class="cursorDragText textLeft textOverdot commonBlack fontBold font16 noPerm" :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''">
-                <img v-if="CONT_DETAIL.jobkindId === 'ALIM'" src="@/assets/images/contents/contTitle_alim.svg" class="cursorNotDrag" alt="">
-                <img v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" src="@/assets/images/contents/contTitle_board.svg" class="cursorNotDrag" alt="">
-                {{CONT_DETAIL.title}}
+            <p
+              @click="goContentsDetail()"
+              class="cursorDragText textLeft textOverdot commonBlack fontBold font16 noPerm"
+              :class="
+                CONT_DETAIL.jobkindId === 'BOAR' &&
+                CONT_DETAIL.workStatYn &&
+                CONT_DETAIL.workStatCodeKey === 46
+                  ? 'completeWork'
+                  : ''
+              "
+            >
+              <img
+                v-if="CONT_DETAIL.jobkindId === 'ALIM'"
+                src="@/assets/images/contents/contTitle_alim.svg"
+                class="cursorNotDrag"
+                alt=""
+              />
+              <img
+                v-else-if="CONT_DETAIL.jobkindId === 'BOAR'"
+                src="@/assets/images/contents/contTitle_board.svg"
+                class="cursorNotDrag"
+                alt=""
+              />
+              {{ CONT_DETAIL.title }}
             </p>
-            <img v-if="!pNoAuthYn" class="moreMenu" src="@/assets/images/contents/contents_moreBtnIcon.svg" alt="" @click="contentMenuClick">
+            <img
+              v-if="!pNoAuthYn"
+              class="moreMenu"
+              src="@/assets/images/contents/contents_moreBtnIcon.svg"
+              alt=""
+              @click="contentMenuClick"
+            />
           </template>
         </div>
         <div class="userInfoArea">
           <div class="CLDeepGrayColor font14 fl textLeft fontBold lineHeight23">
-            <p v-if="CONT_DETAIL.jobkindId === 'BOAR'" class="CLDeepGrayColor font14 fl textLeft fontBold " @click="goChannelMain()">
-              <img class="officialImg fl" src="@/assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" alt="" />
+            <p
+              v-if="CONT_DETAIL.jobkindId === 'BOAR'"
+              class="CLDeepGrayColor font14 fl textLeft fontBold"
+              @click="goChannelMain()"
+            >
+              <img
+                class="officialImg fl"
+                src="@/assets/images/channel/icon_official2.svg"
+                v-if="CONT_DETAIL.officialYn"
+                alt=""
+              />
               <span class="fl">
                 {{ $changeText(CONT_DETAIL.cabinetNameMtext) }}
               </span>
               <span class="textOverdot fl chanName">
-                ({{$changeText(CONT_DETAIL.nameMtext)}})
+                ({{ $changeText(CONT_DETAIL.nameMtext) }})
               </span>
             </p>
-            <p v-else class="CLDeepGrayColor font14 fl textLeft fontBold " @click="goChannelMain()">
-              <img class="officialImg fl" src="@/assets/images/channel/icon_official2.svg" v-if="CONT_DETAIL.officialYn" alt="" />
-              <span class="fl"> {{$changeText(CONT_DETAIL.nameMtext)}}</span>
+            <p
+              v-else
+              class="CLDeepGrayColor font14 fl textLeft fontBold"
+              @click="goChannelMain()"
+            >
+              <img
+                class="officialImg fl"
+                src="@/assets/images/channel/icon_official2.svg"
+                v-if="CONT_DETAIL.officialYn"
+                alt=""
+              />
+              <span class="fl"> {{ $changeText(CONT_DETAIL.nameMtext) }}</span>
             </p>
             <span @click="goUserProfile()" class="mleft-03 fontNomal">
-              <span class="fontNomal">|</span> {{$changeText(CONT_DETAIL.creUserName)}}
+              <span class="fontNomal">|</span>
+              {{ $changeText(CONT_DETAIL.creUserName) }}
             </span>
           </div>
-          <p class="fr CLDeepGrayColor font12 lineHeight23">{{$changeDateFormat(CONT_DETAIL.creDate)}}</p>
+          <p class="fr CLDeepGrayColor font12 lineHeight23">
+            {{ $changeDateFormat(CONT_DETAIL.creDate) }}
+          </p>
         </div>
-          <div v-if="!GE_USER.unknownYn" class="w100P fl">
-            <statCodeComponent v-if="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && !pNoAuthYn" @click="openWorkStatePop(CONT_DETAIL)" :alimDetail="CONT_DETAIL" class="fr" :contentsKey="CONT_DETAIL.contentsKey" :teamKey="CONT_DETAIL.creTeamKey" :currentCodeKey="CONT_DETAIL.workStatCodeKey" :codeList="CONT_DETAIL.workStatCodeList" />
-          </div>
+        <div v-if="!GE_USER.unknownYn" class="w100P fl">
+          <statCodeComponent
+            v-if="
+              CONT_DETAIL.jobkindId === 'BOAR' &&
+              CONT_DETAIL.workStatYn &&
+              !pNoAuthYn
+            "
+            @click="openWorkStatePop(CONT_DETAIL)"
+            :alimDetail="CONT_DETAIL"
+            class="fr"
+            :contentsKey="CONT_DETAIL.contentsKey"
+            :teamKey="CONT_DETAIL.creTeamKey"
+            :currentCodeKey="CONT_DETAIL.workStatCodeKey"
+            :codeList="CONT_DETAIL.workStatCodeList"
+          />
+        </div>
       </div>
     </div>
-    <div v-if="!propJustShowYn" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''"  @click="goContentsDetail(true)" class="contentsCardBodyArea" style="width: 100%;  float: left; min-height: 20px; position: relative;">
-      <div v-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === false && CONT_DETAIL.creUserKey !== GE_USER.userKey) && !CONT_DETAIL.titleBlindYn" class="font14 cursorP mbottom-05 bodyFullStr" style="min-height: 30px;" v-html="$notPerText()"></div>
-      <div v-else-if="!pNoAuthYn && (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== GE_USER.userKey) && CONT_DETAIL.titleBlindYn" class="" ></div>
-      <div v-else class="fl w100P contentsPreWrap" ref="contentsBoxRef" :id="'contentsBodyBoxArea'+CONT_DETAIL.contentsKey">
-        <pre :ref="'mainContRef' + CONT_DETAIL.contentsKey" @loadeddata="testLoad"  :class="CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" :id="'bodyFullStr'+CONT_DETAIL.contentsKey" class="font14 mbottom-05 mainConts cursorDragText h100P w100P fl contentsPre" v-html="$setBodyLength(CONT_DETAIL.bodyFullStr, CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)"></pre>
+    <div
+      v-if="!propJustShowYn"
+      :class="
+        CONT_DETAIL.jobkindId === 'BOAR' &&
+        CONT_DETAIL.workStatYn &&
+        CONT_DETAIL.workStatCodeKey === 46
+          ? 'opacity05'
+          : ''
+      "
+      @click="goContentsDetail(true)"
+      class="contentsCardBodyArea"
+      style="width: 100%; float: left; min-height: 20px; position: relative"
+    >
+      <div
+        v-if="
+          !pNoAuthYn &&
+          CONT_DETAIL.jobkindId === 'BOAR' &&
+          CONT_DETAIL.VIEW_YN === false &&
+          CONT_DETAIL.creUserKey !== GE_USER.userKey &&
+          !CONT_DETAIL.titleBlindYn
+        "
+        class="font14 cursorP mbottom-05 bodyFullStr"
+        style="min-height: 30px"
+        v-html="$notPerText()"
+      ></div>
+      <div
+        v-else-if="
+          !pNoAuthYn &&
+          CONT_DETAIL.jobkindId === 'BOAR' &&
+          CONT_DETAIL.VIEW_YN === false &&
+          CONT_DETAIL.creUserKey !== GE_USER.userKey &&
+          CONT_DETAIL.titleBlindYn
+        "
+        class=""
+      ></div>
+      <div
+        v-else
+        class="fl w100P contentsPreWrap"
+        ref="contentsBoxRef"
+        :id="'contentsBodyBoxArea' + CONT_DETAIL.contentsKey"
+      >
+        <pre
+          :ref="'mainContRef' + CONT_DETAIL.contentsKey"
+          @loadeddata="testLoad"
+          :class="
+            CONT_DETAIL.jobkindId === 'BOAR' &&
+            CONT_DETAIL.workStatYn &&
+            CONT_DETAIL.workStatCodeKey === 46
+              ? 'completeWork'
+              : ''
+          "
+          :id="'bodyFullStr' + CONT_DETAIL.contentsKey"
+          class="font14 mbottom-05 mainConts cursorDragText h100P w100P fl contentsPre"
+          v-html="
+            $setBodyLength(
+              CONT_DETAIL.bodyFullStr,
+              CONT_DETAIL.jobkindId === 'BOAR' &&
+                CONT_DETAIL.workStatYn &&
+                CONT_DETAIL.workStatCodeKey === 46
+            )
+          "
+        ></pre>
       </div>
-      <p v-if="!mFadeNotShowYn && !mContentMoreShowYn && !mFoldYn" @click.stop="foldContentsDetail" class="w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 cursorP"> Fold &lt; </p>
-      <div v-if="!mFadeNotShowYn && mContentMoreShowYn && mFoldYn" class="w100P fadeEffect"></div>
-      <p :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey" v-if="!mFadeNotShowYn && mContentMoreShowYn && mFoldYn" class="cursorP w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 moreBtn">{{$t('COMMON_NAME_MORE')}} > </p>
+      <p
+        v-if="!mFadeNotShowYn && !mContentMoreShowYn && !mFoldYn"
+        @click.stop="foldContentsDetail"
+        class="w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 cursorP"
+      >
+        Fold &lt;
+      </p>
+      <div
+        v-if="!mFadeNotShowYn && mContentMoreShowYn && mFoldYn"
+        class="w100P fadeEffect"
+      ></div>
+      <p
+        :ref="'bodyMoreRef' + CONT_DETAIL.contentsKey"
+        v-if="!mFadeNotShowYn && mContentMoreShowYn && mFoldYn"
+        class="cursorP w100P textRight fr font14 commonColor fontBold mtop-05 mright-1 moreBtn"
+      >
+        {{ $t('COMMON_NAME_MORE') }} >
+      </p>
     </div>
-    <template v-if="!propJustShowYn && (pNoAuthYn || (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === true) || CONT_DETAIL.jobkindId === 'ALIM' || CONT_DETAIL.creUserKey === GE_USER.userKey)" :class="(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46)? 'opacity05': ''" >
+    <template
+      v-if="
+        !propJustShowYn &&
+        (pNoAuthYn ||
+          (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === true) ||
+          CONT_DETAIL.jobkindId === 'ALIM' ||
+          CONT_DETAIL.creUserKey === GE_USER.userKey)
+      "
+      :class="
+        CONT_DETAIL.jobkindId === 'BOAR' &&
+        CONT_DETAIL.workStatYn &&
+        CONT_DETAIL.workStatCodeKey === 46
+          ? 'opacity05'
+          : ''
+      "
+    >
       <div class="contentsCardUserDoArea">
         <div class="contentsCardUserDoWrap">
-          <div class="userDoBox" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(CONT_DETAIL.D_CONT_USER_DO[1], CONT_DETAIL.contentKey)">
+          <div
+            class="userDoBox"
+            @click="
+              GE_USER.unknownYn
+                ? pOpenUnknownLoginPop(CONT_DETAIL)
+                : changeAct(
+                    CONT_DETAIL.D_CONT_USER_DO[1],
+                    CONT_DETAIL.contentKey
+                  )
+            "
+          >
             <div class="userDoItem">
-              <img v-if="CONT_DETAIL.D_CONT_USER_DO && !CONT_DETAIL.D_CONT_USER_DO[1].doKey" class="" src="@/assets/images/contents/cont_like_no.svg" alt="">
-              <img v-else src="@/assets/images/contents/cont_like.svg" alt="" class="">
+              <img
+                v-if="
+                  CONT_DETAIL.D_CONT_USER_DO &&
+                  !CONT_DETAIL.D_CONT_USER_DO[1].doKey
+                "
+                class=""
+                src="@/assets/images/contents/cont_like_no.svg"
+                alt=""
+              />
+              <img
+                v-else
+                src="@/assets/images/contents/cont_like.svg"
+                alt=""
+                class=""
+              />
             </div>
-            <p class="font12 fl fontBold w100P mtop-01  userDoColor">{{CONT_DETAIL.likeCount}}</p>
+            <p class="font12 fl fontBold w100P mtop-01 userDoColor">
+              {{ CONT_DETAIL.likeCount }}
+            </p>
           </div>
-          <div class="userDoBox" @click="GE_USER.unknownYn ? pOpenUnknownLoginPop(CONT_DETAIL) : changeAct(CONT_DETAIL.D_CONT_USER_DO[0], CONT_DETAIL.contentKey)">
+          <div
+            class="userDoBox"
+            @click="
+              GE_USER.unknownYn
+                ? pOpenUnknownLoginPop(CONT_DETAIL)
+                : changeAct(
+                    CONT_DETAIL.D_CONT_USER_DO[0],
+                    CONT_DETAIL.contentKey
+                  )
+            "
+          >
             <div class="userDoItem">
-              <img v-if="CONT_DETAIL.D_CONT_USER_DO && !CONT_DETAIL.D_CONT_USER_DO[0].doKey" class="" src="@/assets/images/contents/cont_star_no.svg" alt="">
-              <img v-else src="@/assets/images/contents/cont_star.svg" alt="" class="">
+              <img
+                v-if="
+                  CONT_DETAIL.D_CONT_USER_DO &&
+                  !CONT_DETAIL.D_CONT_USER_DO[0].doKey
+                "
+                class=""
+                src="@/assets/images/contents/cont_star_no.svg"
+                alt=""
+              />
+              <img
+                v-else
+                src="@/assets/images/contents/cont_star.svg"
+                alt=""
+                class=""
+              />
             </div>
-            <p class="font12 fontBold fl mtop-01  w100P userDoColor">{{CONT_DETAIL.starCount}}</p>
+            <p class="font12 fontBold fl mtop-01 w100P userDoColor">
+              {{ CONT_DETAIL.starCount }}
+            </p>
           </div>
           <div class="userDoBox" @click="goContentsDetail(undefined, true)">
             <div class="userDoItem">
-              <img v-if="mWriteMemoYn" src="@/assets/images/contents/cont_memo.svg" class="" alt="">
-              <img v-else src="@/assets/images/contents/cont_memo_no.svg" class="" alt="">
+              <img
+                v-if="mWriteMemoYn"
+                src="@/assets/images/contents/cont_memo.svg"
+                class=""
+                alt=""
+              />
+              <img
+                v-else
+                src="@/assets/images/contents/cont_memo_no.svg"
+                class=""
+                alt=""
+              />
             </div>
-            <p class="font12 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.memoCount}}</p>
+            <p class="font12 fontBold mtop-01 fl w100P userDoColor">
+              {{ CONT_DETAIL.memoCount }}
+            </p>
           </div>
-          <div class="userDoBox" @click="clickFileDownload()" v-if="CONT_DETAIL.attachMfilekey && CONT_DETAIL.attachMfilekey > 0 && CONT_DETAIL.fileCount > 0">
+          <div
+            class="userDoBox"
+            @click="clickFileDownload()"
+            v-if="
+              CONT_DETAIL.attachMfilekey &&
+              CONT_DETAIL.attachMfilekey > 0 &&
+              CONT_DETAIL.fileCount > 0
+            "
+          >
             <div class="userDoItem">
-              <img v-if="CONT_DETAIL.attachMfilekey && CONT_DETAIL.attachMfilekey > 0" src="@/assets/images/contents/contentsClipIcon.svg" class="" alt="">
-              <img v-else src="@/assets/images/contents/contentsClipIcon.svg" class="" alt="">
+              <img
+                v-if="
+                  CONT_DETAIL.attachMfilekey && CONT_DETAIL.attachMfilekey > 0
+                "
+                src="@/assets/images/contents/contentsClipIcon.svg"
+                class=""
+                alt=""
+              />
+              <img
+                v-else
+                src="@/assets/images/contents/contentsClipIcon.svg"
+                class=""
+                alt=""
+              />
+            </div>
+            <p class="font12 fontBold mtop-01 fl w100P userDoColor">
+              {{ CONT_DETAIL.fileCount }}
+            </p>
           </div>
-          <p class="font12 fontBold mtop-01 fl w100P userDoColor">{{CONT_DETAIL.fileCount}}</p>
         </div>
-      </div>
         <div class="contShare">
           <div class="contShareBox">
             <div>
-              <img src="@/assets/images/contents/contentsShareIcon.svg" class=" fl" alt="공유 아이콘"
-                  data-clipboard-action="copy" id="boardDetailCopyBody" @click="contentsSharePop()"
-                      :data-clipboard-text="CONT_DETAIL.copyTextStr">
+              <img
+                src="@/assets/images/contents/contentsShareIcon.svg"
+                class="fl"
+                alt="공유 아이콘"
+                data-clipboard-action="copy"
+                id="boardDetailCopyBody"
+                @click="contentsSharePop()"
+                :data-clipboard-text="CONT_DETAIL.copyTextStr"
+              />
             </div>
-            <p class="font12 fl fontBold w-100P mtop-01 userDoColor">{{$t('COMMON_NAME_SHARE')}}</p>
+            <p class="font12 fl fontBold w-100P mtop-01 userDoColor">
+              {{ $t('COMMON_NAME_SHARE') }}
+            </p>
           </div>
         </div>
       </div>
-      <div class="contentsCardMemoArea" v-if="!pNoAuthYn && CONT_DETAIL.D_MEMO_LIST && CONT_DETAIL.D_MEMO_LIST.length > 0" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
-        <p v-if="propDetailYn === false && mMemoMoreShowYn" class="fl w-100P textLeft font12 commonColor fontBold mbottom-05 mright-05" @click="goContentsDetail(undefined, true)" >{{ returnCommentText() }}</p>
-        <template v-for="(memo, mIndex) in CONT_DETAIL.D_MEMO_LIST" :key="mIndex">
-            <memoCompo @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.D_MEMO_LIST.length" @memoEmitFunc='memoEmitFunc' />
+      <div
+        class="contentsCardMemoArea"
+        v-if="
+          !pNoAuthYn &&
+          CONT_DETAIL.D_MEMO_LIST &&
+          CONT_DETAIL.D_MEMO_LIST.length > 0
+        "
+        :id="'contentsCardMemoArea' + CONT_DETAIL.contentsKey"
+      >
+        <p
+          v-if="propDetailYn === false && mMemoMoreShowYn"
+          class="fl w-100P textLeft font12 commonColor fontBold mbottom-05 mright-05"
+          @click="goContentsDetail(undefined, true)"
+        >
+          {{ returnCommentText() }}
+        </p>
+        <template
+          v-for="(memo, mIndex) in CONT_DETAIL.D_MEMO_LIST"
+          :key="mIndex"
+        >
+          <memoCompo
+            @updateMemo="updateMemo"
+            @openImgPop="openImgPop"
+            :propContDetail="CONT_DETAIL"
+            :diplayCount="-1"
+            @saveModiMemo="saveModiMemo"
+            v-if="propDetailYn || mIndex < 3"
+            :childShowYn="propDetailYn"
+            :propMemoEle="memo"
+            :propMIndex="mIndex"
+            :propMemoLength="this.CONT_DETAIL.D_MEMO_LIST.length"
+            @memoEmitFunc="memoEmitFunc"
+          />
         </template>
-        <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w100P"></myObserver>
+        <myObserver
+          v-if="propDetailYn === true"
+          @triggerIntersected="memoLoadMore"
+          id="observer"
+          class="fl w100P"
+        ></myObserver>
       </div>
-      <div class="contentsCardMemoArea" v-else-if="pNoAuthYn && CONT_DETAIL.memoList && CONT_DETAIL.memoList.length > 0" :id="'contentsCardMemoArea'+CONT_DETAIL.contentsKey">
-          <template v-for="(memo, mIndex) in CONT_DETAIL.memoList" :key="mIndex">
-              <memoCompo :pNoAuthYn="pNoAuthYn" @updateMemo="updateMemo"  @openImgPop="openImgPop" :propContDetail="CONT_DETAIL" :diplayCount="-1" @saveModiMemo="saveModiMemo" v-if="propDetailYn || mIndex < 3" :childShowYn="propDetailYn" :propMemoEle="memo" :propMIndex="mIndex" :propMemoLength="this.CONT_DETAIL.memoList.length" @memoEmitFunc='memoEmitFunc' />
-          </template>
-          <p v-if="propDetailYn === false && mMemoMoreShowYn" class="fr font14 commonColor fontBold mtop-05 mright" @click="goContentsDetail(undefined, true)" >{{ returnCommentText() }}</p>
-          <myObserver v-if="propDetailYn === true" @triggerIntersected="memoLoadMore" id="observer" class="fl w100P"></myObserver>
+      <div
+        class="contentsCardMemoArea"
+        v-else-if="
+          pNoAuthYn && CONT_DETAIL.memoList && CONT_DETAIL.memoList.length > 0
+        "
+        :id="'contentsCardMemoArea' + CONT_DETAIL.contentsKey"
+      >
+        <template v-for="(memo, mIndex) in CONT_DETAIL.memoList" :key="mIndex">
+          <memoCompo
+            :pNoAuthYn="pNoAuthYn"
+            @updateMemo="updateMemo"
+            @openImgPop="openImgPop"
+            :propContDetail="CONT_DETAIL"
+            :diplayCount="-1"
+            @saveModiMemo="saveModiMemo"
+            v-if="propDetailYn || mIndex < 3"
+            :childShowYn="propDetailYn"
+            :propMemoEle="memo"
+            :propMIndex="mIndex"
+            :propMemoLength="this.CONT_DETAIL.memoList.length"
+            @memoEmitFunc="memoEmitFunc"
+          />
+        </template>
+        <p
+          v-if="propDetailYn === false && mMemoMoreShowYn"
+          class="fr font14 commonColor fontBold mtop-05 mright"
+          @click="goContentsDetail(undefined, true)"
+        >
+          {{ returnCommentText() }}
+        </p>
+        <myObserver
+          v-if="propDetailYn === true"
+          @triggerIntersected="memoLoadMore"
+          id="observer"
+          class="fl w100P"
+        ></myObserver>
       </div>
     </template>
   </div>
   <!-- 밑에는 댓글 작성 창 -->
-  <gMemoPop style="position: absolute; bottom: 0;" :resetMemoYn="mMemoResetYn"  v-if="!pNoAuthYn && propDetailYn && !(CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN  === false && CONT_DETAIL.creUserKey !== GE_USER.userKey)" ref="gMemoRef" transition="showMemoPop" :mememo='mMememoValue'  @saveMemoText="saveMemo"  @clearMemoObj='clearMemoObj' @writeMemoScrollMove='writeMemoScrollMove' />
-  <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk" @no='mConfirmPopShowYn=false'/>
-  <div v-if="mSelectBoardPopShowYn === true" class="profilePopBg"/>
+  <gMemoPop
+    style="position: absolute; bottom: 0"
+    :resetMemoYn="mMemoResetYn"
+    v-if="
+      !pNoAuthYn &&
+      propDetailYn &&
+      !(
+        CONT_DETAIL.jobkindId === 'BOAR' &&
+        CONT_DETAIL.VIEW_YN === false &&
+        CONT_DETAIL.creUserKey !== GE_USER.userKey
+      )
+    "
+    ref="gMemoRef"
+    transition="showMemoPop"
+    :mememo="mMememoValue"
+    @saveMemoText="saveMemo"
+    @clearMemoObj="clearMemoObj"
+    @writeMemoScrollMove="writeMemoScrollMove"
+  />
+  <gConfirmPop
+    :confirmText="mConfirmText"
+    :confirmType="mConfirmType"
+    v-if="mConfirmPopShowYn"
+    @ok="confirmOk"
+    @no="mConfirmPopShowYn = false"
+  />
+  <div v-if="mSelectBoardPopShowYn === true" class="profilePopBg" />
   <div v-if="mSelectBoardPopShowYn === true" class="selectBoardWrap">
-    <gSelectBoardPop :type="mSelectBoardType" @closeXPop="closeMoveContentsPop" :boardDetail="mMoveContentsDetailValue" />
+    <gSelectBoardPop
+      :type="mSelectBoardType"
+      @closeXPop="closeMoveContentsPop"
+      :boardDetail="mMoveContentsDetailValue"
+    />
   </div>
 </template>
 <script>
@@ -171,11 +593,11 @@ export default {
     index: {},
     pNoAuthYn: {}
   },
-  created () {
+  created() {
     if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
     else this.mFadeNotShowYn = false
   },
-  data () {
+  data() {
     return {
       mMemoLeng: 0,
       mFadeNotShowYn: false,
@@ -206,7 +628,7 @@ export default {
       enterTarget: null
     }
   },
-  async mounted () {
+  async mounted() {
     var scrollWrap = document.getElementById('mainAllWrap')
     if (scrollWrap) {
       scrollWrap.addEventListener('scroll', this.handleScroll)
@@ -222,11 +644,11 @@ export default {
     }
   },
   methods: {
-    closeMoveContentsPop () {
+    closeMoveContentsPop() {
       this.mSelectBoardPopShowYn = false
       this.$emit('contMove')
     },
-    onDragenter (event) {
+    onDragenter(event) {
       // class 넣기
       const memoRef = this.$refs.gMemoRef
       if (memoRef) {
@@ -234,7 +656,7 @@ export default {
       }
       this.enterTarget = event.target
     },
-    onDragleave (event) {
+    onDragleave(event) {
       // class 삭제
       if (this.enterTarget === event.target) {
         event.stopPropagation()
@@ -245,40 +667,44 @@ export default {
         }
       }
     },
-    closeProfilePop () {
+    closeProfilePop() {
       this.mProfilePopShowYn = false
     },
-    returnCommentText () {
+    returnCommentText() {
       if (this.GE_LOCALE === 'ko') {
         return `댓글 ${this.mMemoLeng}개 모두 보기`
       } else {
         return `See all ${this.mMemoLeng} comments`
       }
     },
-    alimBigView () {
-      var contentsBodyBoxArea = window.document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
+    alimBigView() {
+      var contentsBodyBoxArea = window.document.getElementById(
+        'contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey
+      )
       contentsBodyBoxArea.style.maxHeight = '100%'
       this.mContentMoreShowYn = false
       this.mFoldYn = false
     },
-    foldContentsDetail () {
+    foldContentsDetail() {
       this.mContentMoreShowYn = true
       this.mFadeNotShowYn = false
       this.mFoldYn = true
-      var contentsBodyBoxArea = window.document.getElementById('contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey)
+      var contentsBodyBoxArea = window.document.getElementById(
+        'contentsBodyBoxArea' + this.CONT_DETAIL.contentsKey
+      )
       contentsBodyBoxArea.style.maxHeight = '300px'
     },
-    addAnimation () {
+    addAnimation() {
       this.animationYn = true
       var this_ = this
       setTimeout(() => {
         this_.animationYn = false
       }, 2000)
     },
-    openImgPop (param) {
+    openImgPop(param) {
       this.$emit('openImgPop', param)
     },
-    setMoreMemoBtn () {
+    setMoreMemoBtn() {
       if (!this.CONT_DETAIL) return
       var memoList = this.CONT_DETAIL.D_MEMO_LIST
       if (!memoList) {
@@ -286,25 +712,31 @@ export default {
       }
       var leng = memoList.length
       for (var i = 0; i < memoList.length; i++) {
-        if (memoList[i].creUserKey === this.GE_USER.userKey) this.mWriteMemoYn = true
+        if (memoList[i].creUserKey === this.GE_USER.userKey) {
+          this.mWriteMemoYn = true
+        }
         for (var c = 0; c < memoList[i].cmemoList.length; c++) {
-          if (memoList[i].cmemoList[c].creUserKey === this.GE_USER.userKey) this.mWriteMemoYn = true
+          if (memoList[i].cmemoList[c].creUserKey === this.GE_USER.userKey) {
+            this.mWriteMemoYn = true
+          }
         }
         leng += memoList[i].cmemoList.length
       }
       if (leng > 3) {
         this.mMemoMoreShowYn = true
-        if (this.CONT_DETAIL && this.CONT_DETAIL.memoCount) this.mMemoLeng = this.CONT_DETAIL.memoCount
+        if (this.CONT_DETAIL && this.CONT_DETAIL.memoCount) {
+          this.mMemoLeng = this.CONT_DETAIL.memoCount
+        }
       }
     },
-    async saveModiMemo (modiMemoObj) {
+    async saveModiMemo(modiMemoObj) {
       var memo = null
       if (modiMemoObj.param) {
         memo = modiMemoObj.param
       }
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: '/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -312,12 +744,17 @@ export default {
           this.$refs.gMemoRef.clearMemo()
           this.mMememoValue = {}
           //   this.getMemoList(true)
-          if (result.data.resultList && result.data.resultList.memoList.length > 0) {
+          if (
+            result.data.resultList &&
+            result.data.resultList.memoList.length > 0
+          ) {
             var saveMemoObj = {}
             var index
             if (memo.parentMemoKey) {
               // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 ^memo%키값을 찾음
-              index = await result.data.resultList.memoList.findIndex((item) => item.memoKey === memo.parentMemoKey)
+              index = await result.data.resultList.memoList.findIndex(
+                (item) => item.memoKey === memo.parentMemoKey
+              )
               saveMemoObj = await result.data.resultList.memoList[index]
             } else {
               saveMemoObj = await result.data.resultList.memoList[0]
@@ -345,13 +782,13 @@ export default {
         this.mLoadingShowYn = false
       }
     },
-    async clickFileDownload () {
+    async clickFileDownload() {
       await this.getContentsDetail()
       await this.settingFileList_downAtt()
       this.mFilePopData = this.mFileDownData
       this.mFilePopYn = true
     },
-    async getContentsDetail () {
+    async getContentsDetail() {
       var param = {}
       param.contentsKey = this.contentsEle.contentsKey
       param.targetKey = this.contentsEle.contentsKey
@@ -363,9 +800,13 @@ export default {
       this.mFileDownData = detailData
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
-    async settingFileList_downAtt () {
+    async settingFileList_downAtt() {
       try {
-        if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
+        if (
+          this.CONT_DETAIL &&
+          this.CONT_DETAIL.attachFileList !== undefined &&
+          this.CONT_DETAIL.attachFileList.length > 0
+        ) {
           var attachFileList = []
           var bodyImgFileList = []
           for (var a = 0; a < this.CONT_DETAIL.attachFileList.length; a++) {
@@ -388,8 +829,12 @@ export default {
         console.log(error)
       }
     },
-    async settingFileList () {
-      if (this.CONT_DETAIL && this.CONT_DETAIL.attachFileList !== undefined && this.CONT_DETAIL.attachFileList.length > 0) {
+    async settingFileList() {
+      if (
+        this.CONT_DETAIL &&
+        this.CONT_DETAIL.attachFileList !== undefined &&
+        this.CONT_DETAIL.attachFileList.length > 0
+      ) {
         var bodyImgFileList = []
         for (var a = 0; a < this.CONT_DETAIL.attachFileList.length; a++) {
           if (this.CONT_DETAIL.attachFileList[a].attachYn === false) {
@@ -399,13 +844,27 @@ export default {
         return bodyImgFileList
       }
     },
-    async setPreTagInFirstTextLine () {
+    async setPreTagInFirstTextLine() {
       // 본문 영역에 첫번째 줄이 사진이 아닐 경우 라인을 그어주기 위한 함수
       if (!this.$refs[['mainContRef' + this.contentsEle.contentsKey]]) return
-      if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
+      if (
+        this.contentsEle.jobkindId === 'BOAR' &&
+        this.$checkUserAuth(this.contentsEle.shareItem).V === false &&
+        this.contentsEle.creUserKey !== this.GE_USER.userKey
+      ) {
+        return
+      }
 
-      if (this.$refs['mainContRef' + this.contentsEle.contentsKey]) var contents = this.$refs['mainContRef' + this.contentsEle.contentsKey]
-      if (!contents || !contents.childNodes || contents.childNodes.length === 0) return
+      if (this.$refs['mainContRef' + this.contentsEle.contentsKey]) {
+        var contents = this.$refs['mainContRef' + this.contentsEle.contentsKey]
+      }
+      if (
+        !contents ||
+        !contents.childNodes ||
+        contents.childNodes.length === 0
+      ) {
+        return
+      }
       if (contents.childNodes.length > 0) {
         var i = 0
         var child = contents.childNodes[i]
@@ -417,7 +876,9 @@ export default {
         }
         if (child.id === 'formEditText') {
           // 밑에 체크를 안해주면 중복으로 줄이 생김
-          var tempCheck = window.document.getElementById('firstTextLine' + this.contentsEle.contentsKey)
+          var tempCheck = window.document.getElementById(
+            'firstTextLine' + this.contentsEle.contentsKey
+          )
           if (tempCheck === undefined || tempCheck === null) {
             var tempDiv = document.createElement('div')
             tempDiv.id = 'firstTextLine' + this.contentsEle.contentsKey
@@ -427,34 +888,36 @@ export default {
         }
       }
     },
-    async getMemoTop () {
+    async getMemoTop() {
       // contentsDetail.vue에서 스크롤 무브로 사용하고 있습니다.
       if (this.propDetailYn === false) return
       this.$nextTick(() => {
-        var memoFrist = window.document.getElementById('contentsCardMemoArea' + this.CONT_DETAIL.contentsKey)
+        var memoFrist = window.document.getElementById(
+          'contentsCardMemoArea' + this.CONT_DETAIL.contentsKey
+        )
         if (!memoFrist) return
         var memoFristTop = memoFrist.offsetTop
         return memoFristTop
       })
     },
-    memoLoadMore () {
+    memoLoadMore() {
       this.$emit('memoLoadMore')
     },
-    writeMemoScrollMove () {
+    writeMemoScrollMove() {
       this.$emit('writeMemoScrollMove')
     },
-    handleScroll () {
+    handleScroll() {
       this.mClickEndYn = true
     },
-    clearMemoObj () {
+    clearMemoObj() {
       this.mMememoValue = null
     },
-    writeMeMemo (memoObj) {
+    writeMeMemo(memoObj) {
       this.mMememoValue = {}
       this.mMememoValue = memoObj
       this.$refs.gMemoRef.setMememo(memoObj)
     },
-    memoEmitFunc (emitData) {
+    memoEmitFunc(emitData) {
       var type = emitData.targetType
       var data = emitData.value
       if (type === 'goUserProfile') {
@@ -471,7 +934,7 @@ export default {
         this.writeMeMemo(data)
       }
     },
-    confirmOk () {
+    confirmOk() {
       var toastText = ''
       this.mConfirmType = 'timeout'
       if (this.mCurrentConfirmType === 'BLOC') {
@@ -496,7 +959,7 @@ export default {
       this.mCurrentConfirmType = ''
       this.mConfirmPopShowYn = false
     },
-    editable (type, allYn) {
+    editable(type, allYn) {
       this.mContMenuShowYn = false
       if (type === 'edit') {
         if (this.contentsEle.jobkindId === 'BOAR') {
@@ -520,22 +983,26 @@ export default {
         this.textCopy()
       }
     },
-    async editBoard () {
+    async editBoard() {
       var param = {}
       param.targetKey = this.CONT_DETAIL.contentsKey
       param.targetType = 'writeContents'
       param.contentsJobkindId = 'BOAR'
       param.jobkindId = 'BOAR'
       param.creTeamKey = this.CONT_DETAIL.creTeamKey
-      if (this.CONT_DETAIL.attachMfilekey) param.attachMfilekey = this.CONT_DETAIL.attachMfilekey
-      if (this.CONT_DETAIL.attachFileList) param.attachFileList = this.CONT_DETAIL.attachFileList
+      if (this.CONT_DETAIL.attachMfilekey) {
+        param.attachMfilekey = this.CONT_DETAIL.attachMfilekey
+      }
+      if (this.CONT_DETAIL.attachFileList) {
+        param.attachFileList = this.CONT_DETAIL.attachFileList
+      }
       param.bodyFullStr = this.CONT_DETAIL.bodyFullStr
       param.modiContentsKey = this.CONT_DETAIL.contentsKey
       param.titleStr = this.CONT_DETAIL.title
       param.value = this.CONT_DETAIL
       this.$emit('openPop', param)
     },
-    deleteConfirm () {
+    deleteConfirm() {
       if (this.contentsEle.jobkindId === 'ALIM') {
         this.mConfirmText = this.$t('COMMON_MSG_DELETE_NOTI')
         this.mCurrentConfirmType = 'alimDEL'
@@ -546,7 +1013,7 @@ export default {
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true
     },
-    async deleteContents (toastText) {
+    async deleteContents(toastText) {
       var result
       var inParam = {}
       if (this.contentsEle.jobkindId === 'ALIM') {
@@ -554,7 +1021,7 @@ export default {
         inParam.mccKey = this.contentsEle.mccKey
         inParam.jobkindId = 'ALIM'
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteMCabContents',
+          url: '/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.contentsEle.jobkindId === 'BOAR') {
@@ -565,7 +1032,7 @@ export default {
         inParam.teamKey = this.contentsEle.creTeamKey
         inParam.deleteYn = true
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteContents',
+          url: '/tp.deleteContents',
           param: inParam
         })
       }
@@ -580,24 +1047,38 @@ export default {
       // @@@ 추후에 vuex에 컨텐츠 삭제를 해야함 @@@@ @@@@ @@@@ @@@@ @@@@ #추가
       // this.$store.commit('UB_CHANNEL/MU_DEL_CONT_LIST', inParam)
     },
-    hasHistory () {
+    hasHistory() {
       return window.history.length > 1
     },
-    async goBack () {
+    async goBack() {
       if (this.hasHistory()) {
         this.$router.go(-1)
       } else {
         this.$router.push('/')
       }
     },
-    moveOrCopyContent (type) {
+    moveOrCopyContent(type) {
       this.mSelectBoardType = type
       this.mMoveContentsDetailValue = this.CONT_DETAIL
       this.mSelectBoardPopShowYn = true
     },
-    async makeNewContents (type) { // writeBoard -> 알림을 게시글로 작성, writeAlim -> 게시글을 알림으로 작성
-      if (this.contentsEle.creTeamKey && type !== 'writeBoard' && (!this.CHANNEL_DETAIL.ownerYn || !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) && (!this.CHANNEL_DETAIL.memberYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn) && (this.CHANNEL_DETAIL.memberYn === 0 || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 0) && (!this.CHANNEL_DETAIL.managerKey || !this.CHANNEL_DETAIL.D_CHAN_AUTH.managerKey)) {
-        this.$showToastPop('해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.')
+    async makeNewContents(type) {
+      // writeBoard -> 알림을 게시글로 작성, writeAlim -> 게시글을 알림으로 작성
+      if (
+        this.contentsEle.creTeamKey &&
+        type !== 'writeBoard' &&
+        (!this.CHANNEL_DETAIL.ownerYn ||
+          !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) &&
+        !this.CHANNEL_DETAIL.memberYn &&
+        !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn &&
+        (this.CHANNEL_DETAIL.memberYn === 0 ||
+          this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 0) &&
+        (!this.CHANNEL_DETAIL.managerKey ||
+          !this.CHANNEL_DETAIL.D_CHAN_AUTH.managerKey)
+      ) {
+        this.$showToastPop(
+          '해당 채널에 멤버가 아닙니다. 멤버로 신청 후 이용해주세요.'
+        )
         return
       }
       var writeParam = {}
@@ -606,13 +1087,17 @@ export default {
       writeParam.teamKey = this.contentsEle.creTeamKey
       writeParam.currentTeamKey = this.contentsEle.creTeamKey
       writeParam.attachMfilekey = this.contentsEle.attachMfilekey
-      if (this.contentsEle.attachFileList) writeParam.attachFileList = this.contentsEle.attachFileList
+      if (this.contentsEle.attachFileList) {
+        writeParam.attachFileList = this.contentsEle.attachFileList
+      }
       writeParam.targetType = 'writeContents'
       if (writeParam.contentsJobkindId === 'ALIM') {
         writeParam.UseAnOtherYn = true
         writeParam.targetNameMtext = this.CHANNEL_DETAIL.nameMtext
       } else if (writeParam.contentsJobkindId === 'BOAR') {
-        var teamList = await this.$getWriteBoardData(this.contentsEle.creTeamKey)
+        var teamList = await this.$getWriteBoardData(
+          this.contentsEle.creTeamKey
+        )
         if (teamList === false) {
           this.$showToastPop(this.$t('COMM_MSG_CHAN_NONE'))
           return
@@ -626,8 +1111,11 @@ export default {
       writeParam.modiContentsKey = this.contentsEle.contentsKey
       this.$emit('openPop', writeParam)
     },
-    bloc (type) {
-      var typeText = type === 'USER' ? this.$t('COMMON_TITLE_USER') : this.$t('COMMON_TAB_POST')
+    bloc(type) {
+      var typeText =
+        type === 'USER'
+          ? this.$t('COMMON_TITLE_USER')
+          : this.$t('COMMON_TAB_POST')
       if (this.GE_LOCALE === 'ko') {
         this.mConfirmText = '해당 ' + typeText + ' 차단하시겠습니까?'
       } else {
@@ -637,7 +1125,7 @@ export default {
       this.mConfirmPopShowYn = true
       this.mCurrentConfirmType = 'BLOC'
     },
-    report (type) {
+    report(type) {
       var targetKind
       var targetKey
       var toastText
@@ -670,10 +1158,10 @@ export default {
       this.saveActAxiosFunc(param, toastText)
     },
     /** 신고, 차단, 탈퇴를 할 수 있는 axios함수 // actType, targetKind, targetKey, creUserKey 보내기 */
-    async saveActAxiosFunc (param, toastText) {
+    async saveActAxiosFunc(param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveClaimLog',
+          url: '/tp.saveClaimLog',
           param: param
         })
         if (result) {
@@ -685,10 +1173,10 @@ export default {
         this.mContMenuShowYn = false
       }
     },
-    contentMenuClick () {
+    contentMenuClick() {
       this.mContMenuShowYn = true
     },
-    textCopy () {
+    textCopy() {
       const textarea = document.createElement('textarea')
       document.body.appendChild(textarea)
 
@@ -709,7 +1197,7 @@ export default {
         this.$showToastPop(this.$t('COMMON_MSG_COPY_FAIL'))
       }
     },
-    async saveMemo (inSaveMemoObj) {
+    async saveMemo(inSaveMemoObj) {
       if (inSaveMemoObj.saveMemoHtml === undefined) return
       this.mLoadingShowYn = true
       var memo = {}
@@ -717,7 +1205,7 @@ export default {
         memo.attachFileList = inSaveMemoObj.attachFileList
       }
       memo.parentMemoKey = null
-      if (this.mMememoValue !== undefined && this.mMememoValue !== null && this.mMememoValue !== {}) {
+      if (this.mMememoValue !== undefined && this.mMememoValue !== null) {
         memo.parentMemoKey = this.mMememoValue.parentMemoKey
       }
 
@@ -733,7 +1221,7 @@ export default {
       memo.ownUserKey = this.GE_USER.userkey
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: '/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -741,13 +1229,18 @@ export default {
           this.$refs.gMemoRef.clearMemo()
           this.mMememoValue = {}
           //   this.getMemoList(true)
-          if (result.data.resultList && result.data.resultList.memoList.length > 0) {
+          if (
+            result.data.resultList &&
+            result.data.resultList.memoList.length > 0
+          ) {
             var saveMemoObj = {}
             var index
             this.$emit('scrollToMemoTop')
             if (memo.parentMemoKey) {
               // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 키값을 찾음
-              index = await result.data.resultList.memoList.findIndex((item) => item.memoKey === memo.parentMemoKey)
+              index = await result.data.resultList.memoList.findIndex(
+                (item) => item.memoKey === memo.parentMemoKey
+              )
               saveMemoObj = await result.data.resultList.memoList[index]
             } else {
               saveMemoObj = await result.data.resultList.memoList[0]
@@ -766,18 +1259,31 @@ export default {
       }
     },
     /** 컨텐츠의 크기를 비교해서 더보기> 버튼 보여주는 함수 */
-    async setContentsMoreText () {
+    async setContentsMoreText() {
       // 컨텐츠가 게시글이면서 권한이 없으면 리턴
       if (!this.$refs['mainContRef' + this.contentsEle.contentsKey]) return
-      if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
+      if (
+        this.contentsEle.jobkindId === 'BOAR' &&
+        this.$checkUserAuth(this.contentsEle.shareItem).V === false &&
+        this.contentsEle.creUserKey !== this.GE_USER.userKey
+      ) {
+        return
+      }
       try {
-        if (this.propDetailYn === true) { this.alimBigView(); return }
+        if (this.propDetailYn === true) {
+          this.alimBigView()
+          return
+        }
 
         if (this.$refs['mainContRef' + this.contentsEle.contentsKey]) {
-          var contents = this.$refs['mainContRef' + this.contentsEle.contentsKey].offsetHeight
+          var contents =
+            this.$refs['mainContRef' + this.contentsEle.contentsKey]
+              .offsetHeight
         }
         // 이미지를 불러오는 이유는 마운트 시점에 이미지의 크기를 못받오기에 추가함
-        var imgList = await window.document.querySelectorAll('#bodyFullStr' + this.contentsEle.contentsKey + ' img')
+        var imgList = await window.document.querySelectorAll(
+          '#bodyFullStr' + this.contentsEle.contentsKey + ' img'
+        )
         if (imgList && imgList.length > 0) {
           for (let i = 0; i < imgList.length; i++) {
             imgList[i].addEventListener('load', (event) => {
@@ -790,8 +1296,7 @@ export default {
                 } else {
                   this.mContentMoreShowYn = false
                 }
-              } catch (error) {
-              }
+              } catch (error) {}
             })
           }
         } else {
@@ -806,7 +1311,7 @@ export default {
         console.log(e)
       }
     },
-    async contentsSharePop () {
+    async contentsSharePop() {
       const keySet = {
         contentsKey: this.CONT_DETAIL.contentsKey,
         teamKey: this.CONT_DETAIL.creTeamKey,
@@ -816,7 +1321,12 @@ export default {
         this.$showToastPop(this.$t('COMMON_MSG_UNKWON'))
         return
       }
-      var link = await this.$makeShareLink(keySet, 'contentsDetail', this.CONT_DETAIL.bodyFullStr, this.CONT_DETAIL.title)
+      var link = await this.$makeShareLink(
+        keySet,
+        'contentsDetail',
+        this.CONT_DETAIL.bodyFullStr,
+        this.CONT_DETAIL.title
+      )
       var shareItem = { title: this.$t('COMMON_NAME_APP'), url: link }
       if (navigator.share) {
         navigator.share(shareItem)
@@ -824,13 +1334,13 @@ export default {
         onMessage('REQ', 'nativeShare', shareItem)
       }
     },
-    goChannelMain () {
+    goChannelMain() {
       var openPopParam = {}
       openPopParam.targetKey = this.CONT_DETAIL.creTeamKey
       openPopParam.targetType = 'chanDetail'
       this.$emit('openPage', openPopParam)
     },
-    async goUserProfile (targetUserKey) {
+    async goUserProfile(targetUserKey) {
       if (this.GE_USER.unknownYn) {
         this.$showToastPop(this.$t('CONF_MSG_CHECK_UNABLE'))
         return
@@ -847,10 +1357,16 @@ export default {
       this.mPopParam = openPopParam
       this.mProfilePopShowYn = true
     },
-    goContentsDetail (moreCheckYn, memoScrollYn) {
+    goContentsDetail(moreCheckYn, memoScrollYn) {
       if (this.propDetailYn) return
       // 권한이 없는 컨텐츠는 이동하지 못하게 리턴
-      if (this.contentsEle.jobkindId === 'BOAR' && this.$checkUserAuth(this.contentsEle.shareItem).V === false && this.contentsEle.creUserKey !== this.GE_USER.userKey) return
+      if (
+        this.contentsEle.jobkindId === 'BOAR' &&
+        this.$checkUserAuth(this.contentsEle.shareItem).V === false &&
+        this.contentsEle.creUserKey !== this.GE_USER.userKey
+      ) {
+        return
+      }
       if (moreCheckYn) {
         if (this.mContentMoreShowYn) {
           this.alimBigView()
@@ -882,7 +1398,7 @@ export default {
 
       this.$emit('openPop', openPopParam)
     },
-    async changeAct (act, key) {
+    async changeAct(act, key) {
       if (this.GE_USER.unknownYn) {
         this.pOpenUnknownLoginPop(this.CONT_DETAIL)
         return
@@ -893,7 +1409,11 @@ export default {
       var changeUserDoList = []
       var tempDetail = this.CONT_DETAIL
       if (!tempDetail.D_CONT_USER_DO) {
-        tempDetail.D_CONT_USER_DO = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }]
+        tempDetail.D_CONT_USER_DO = [
+          { doType: 'ST', doKey: 0 },
+          { doType: 'LI', doKey: 0 },
+          { doType: 'RE', doKey: false }
+        ]
       }
       changeUserDoList = tempDetail.D_CONT_USER_DO
       for (var i = 0; i < changeUserDoList.length; i++) {
@@ -906,7 +1426,9 @@ export default {
       }
       var param = {}
       param.targetKey = this.CONT_DETAIL.contentsKey
-      if (param.targetKey === null) { return }
+      if (param.targetKey === null) {
+        return
+      }
       param.doType = act.doType
       param.userName = this.$changeText(this.GE_USER.userDispMtext)
       if (saveYn === false) {
@@ -925,7 +1447,7 @@ export default {
         param.actYn = true
         param.targetKind = 'C'
         var this_ = this
-        this.$saveUserDo(param, 'save').then(result => {
+        this.$saveUserDo(param, 'save').then((result) => {
           for (var d = changeUserDoList.length - 1; d >= 0; d--) {
             if (changeUserDoList[d].doType === act.doType) {
               changeUserDoList[d].doKey = result.doKey
@@ -937,7 +1459,9 @@ export default {
             tempDetail.subsYn = result.subsYn = 1
           }
           tempDetail.starCount = result.starCount
-          this_.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
+          this_.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [
+            tempDetail
+          ])
         })
         for (var d = changeUserDoList.length - 1; d >= 0; d--) {
           if (changeUserDoList[d].doType === act.doType) {
@@ -950,11 +1474,13 @@ export default {
         if (act.doType === 'ST') {
           tempDetail.starCount += 1
         }
-        this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [tempDetail])
+        this.$store.dispatch('UB_CHANNEL/AC_REPLACE_CONTENTS_ONLY_USERDO', [
+          tempDetail
+        ])
         // }
       }
     },
-    async subScribeContents () {
+    async subScribeContents() {
       if (this.GE_USER.unknownYn) {
         this.pOpenUnknownLoginPop(this.CONT_DETAIL)
         return
@@ -965,7 +1491,9 @@ export default {
       var param = {}
       param.targetKey = this.CONT_DETAIL.contentsKey
       param.targetKind = 'C'
-      if (param.targetKey === null) { return }
+      if (param.targetKey === null) {
+        return
+      }
       if (subsYn !== null && subsYn !== undefined) {
         param.subsYn = !subsYn
       } else {
@@ -988,7 +1516,7 @@ export default {
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSubscribe',
+        url: '/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop(reqText)
@@ -997,23 +1525,26 @@ export default {
       // contentsDetail.subsYn = param.subsYn
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [contentsDetail])
     },
-    replaceArr (arr) {
+    replaceArr(arr) {
       var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1) {
+        if (
+          data.findIndex(({ memoKey }) => memoKey === current.memoKey) === -1
+        ) {
           data.push(current)
         }
-        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+        data = data.sort(function (a, b) {
+          // num으로 오름차순 정렬
           return b.memoKey - a.memoKey
         })
         return data
       }, [])
       return uniqueArr
     },
-    openWorkStatePop (data) {
+    openWorkStatePop(data) {
       this.mWorkStateCodePopProps = data
       this.mWorkStateCodePopShowYn = true
     },
-    async addImgEvnt () {
+    async addImgEvnt() {
       var contBody = this.$refs.contentsBoxRef
       if (!contBody) return
       this.mClickImgList = contBody.querySelectorAll('img')
@@ -1028,16 +1559,20 @@ export default {
     }
   },
   computed: {
-    GE_LOCALE () {
+    GE_LOCALE() {
       return this.$i18n.locale
     },
-    GE_STICKER_LIST () {
+    GE_STICKER_LIST() {
       return this.$store.getters['UB_CHANNEL/GE_STICKER_LIST']
     },
-    CHANNEL_DETAIL () {
+    CHANNEL_DETAIL() {
       var detail = this.$getDetail('TEAM', this.contentsEle.creTeamKey)
       if (detail && detail.length > 0) {
-        if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {
+        if (
+          !detail[0].D_CHAN_AUTH ||
+          detail[0].D_CHAN_AUTH === true ||
+          (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)
+        ) {
           return this.CHANNEL_DETAIL
         } else {
           return detail[0]
@@ -1050,16 +1585,31 @@ export default {
         }
       }
     },
-    CONT_DETAIL () {
+    CONT_DETAIL() {
       if (!this.contentsEle) return
-      var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKey)
+      var cont = this.$getContentsDetail(
+        null,
+        this.contentsEle.contentsKey,
+        this.contentsEle.creTeamKey
+      )
       if (!cont) {
         cont = [this.contentsEle]
         // this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
       }
-      if (cont[0] && cont[0].shareList && cont[0].shareList[0] && cont[0].shareList[0].length !== 0) {
+      if (
+        cont[0] &&
+        cont[0].shareList &&
+        cont[0].shareList[0] &&
+        cont[0].shareList[0].length !== 0
+      ) {
         if (cont[0].shareList[0].accessKind === 'F') {
-          if (this.CHANNEL_DETAIL && (this.CHANNEL_DETAIL.D_CHAN_AUTH === true || (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) || this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)) {
+          if (
+            this.CHANNEL_DETAIL &&
+            (this.CHANNEL_DETAIL.D_CHAN_AUTH === true ||
+              (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn &&
+                this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) ||
+              this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)
+          ) {
             cont[0].VIEW_YN = true
             return cont[0]
           } else {
@@ -1094,24 +1644,28 @@ export default {
         return content
       }
     },
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
       // return this.$store.getters['UB_USER/GE_USER']
     },
-    GE_NEW_MEMO_LIST (state) {
+    GE_NEW_MEMO_LIST(state) {
       return this.$store.getters['UB_CHANNEL/GE_NEW_MEMO_LIST']
     }
   },
   watch: {
     GE_LOCALE: {
       immediate: true,
-      handler (value) {
-        this.mActiveTabList = [{ display: this.$t('COMMON_TAB_FOLLOWING'), name: 'user' }, { display: this.$t('COMMON_TAB_ALL'), name: 'all' }, { display: this.$t('COMMON_TAB_MANAGING'), name: 'mychannel' }]
+      handler(value) {
+        this.mActiveTabList = [
+          { display: this.$t('COMMON_TAB_FOLLOWING'), name: 'user' },
+          { display: this.$t('COMMON_TAB_ALL'), name: 'all' },
+          { display: this.$t('COMMON_TAB_MANAGING'), name: 'mychannel' }
+        ]
       },
       deep: true
     },
     GE_STICKER_LIST: {
-      handler (value, old) {
+      handler(value, old) {
         if (this.GE_STICKER_LIST.length === 0) {
           this.CONT_DETAIL.D_CONT_USER_STICKER_LIST = []
           return
@@ -1119,14 +1673,24 @@ export default {
         if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST.length > 0) {
           var newArr = []
           var idx
-          for (var i = 0; i < this.CONT_DETAIL.D_CONT_USER_STICKER_LIST.length; i++) {
+          for (
+            var i = 0;
+            i < this.CONT_DETAIL.D_CONT_USER_STICKER_LIST.length;
+            i++
+          ) {
             if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker !== null) {
               idx = this.GE_STICKER_LIST.findIndex((value) => {
-                return value.stickerKey === this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker.stickerKey
+                return (
+                  value.stickerKey ===
+                  this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker
+                    .stickerKey
+                )
               })
               if (idx !== -1) {
-                this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker.picBgPath = this.GE_STICKER_LIST[idx].picBgPath
-                this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker.nameMtext = this.GE_STICKER_LIST[idx].nameMtext
+                this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker.picBgPath =
+                  this.GE_STICKER_LIST[idx].picBgPath
+                this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i].sticker.nameMtext =
+                  this.GE_STICKER_LIST[idx].nameMtext
                 newArr.push(this.CONT_DETAIL.D_CONT_USER_STICKER_LIST[i])
               }
             }
@@ -1138,12 +1702,12 @@ export default {
     },
     CONT_DETAIL: {
       immediate: true,
-      handler (value, index) {
+      handler(value, index) {
         this.setMoreMemoBtn()
       }
     },
     GE_NEW_MEMO_LIST: {
-      async handler (value, old) {
+      async handler(value, old) {
         var newArr = []
         if (!value || value.length === 0) return
         var content = null
@@ -1151,15 +1715,14 @@ export default {
         // if (this.contentsEle && (content === undefined || content === null)) content = this.contentsEle
         if (value[0].targetKey !== content.contentsKey) return
         // this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
-        var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
+        var memoAleadyIdx = content.D_MEMO_LIST.findIndex(
+          (item) => Number(item.memoKey) === Number(value[0].memoKey)
+        )
         if (memoAleadyIdx !== -1) {
           content.D_MEMO_LIST[memoAleadyIdx] = value[0]
           newArr = content.D_MEMO_LIST
         } else {
-          newArr = [
-            value[0],
-            ...content.D_MEMO_LIST
-          ]
+          newArr = [value[0], ...content.D_MEMO_LIST]
         }
         this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newArr)
         // eslint-disable-next-line vue/no-mutating-props
@@ -1175,11 +1738,11 @@ export default {
 <style scoped>
 #loading {
   display: block;
-  z-index:9999999
+  z-index: 9999999;
 }
 .contentsCard {
-  background: #FFFFFF;
-  border-bottom: 2px solid #E1E1E1;
+  background: #ffffff;
+  border-bottom: 2px solid #e1e1e1;
   display: flex;
   flex-direction: column;
 }
@@ -1190,7 +1753,7 @@ export default {
   overflow: hidden;
   float: left;
   border-radius: 100%;
-  border: 2px solid #5B1CFC;
+  border: 2px solid #5b1cfc;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1202,17 +1765,17 @@ pre div[id='formEditText'] {
   border-top: 1px solid #ccc;
 }
 .profilePopBg {
-  background-color:#00000050;
-  width:100vw;
-  height:100vh;
+  background-color: #00000050;
+  width: 100vw;
+  height: 100vh;
   position: fixed;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   z-index: 100000;
 }
 .contentsWrap {
   width: 100%;
-  background: #FFF;
+  background: #fff;
   overflow: hidden;
   min-height: 20px;
   float: left;
@@ -1237,7 +1800,7 @@ pre div[id='formEditText'] {
 }
 .chanIcon {
   width: calc(100% - 2px);
-  height:  calc(100% - 2px);
+  height: calc(100% - 2px);
   border-radius: 100%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -1330,7 +1893,11 @@ pre div[id='formEditText'] {
   position: absolute;
   bottom: 0;
   height: 100px;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9));
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0.9)
+  );
 }
 .moreBtn {
   position: absolute;
@@ -1347,7 +1914,7 @@ pre div[id='formEditText'] {
 .contentsCardUserDoArea {
   position: relative;
   width: 100%;
-  background: #F8F8FF;
+  background: #f8f8ff;
   min-height: 40px;
   float: left;
   justify-content: space-between;
@@ -1448,7 +2015,8 @@ pre div[id='formEditText'] {
 </style>
 
 <style>
-.contentsCardBodyArea .formLine, .contentsCardBodyArea .formDot {
+.contentsCardBodyArea .formLine,
+.contentsCardBodyArea .formDot {
   padding: 0 10px !important;
 }
 </style>

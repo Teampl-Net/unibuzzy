@@ -9,180 +9,237 @@
 }
 </i18n>
 <template>
-    <div v-if="CHANNEL_DETAIL && mChanInfo" class="scrollOn" id="chanMainRef" ref="chanMainRef" :style="`background-image: url(${CHANNEL_DETAIL.bgDomainPath + $changeUrlBackslash(CHANNEL_DETAIL.bgPathMtext)});height: calc(100% + ${Number($STATUS_HEIGHT)}px);  padding-top: ${Number($STATUS_HEIGHT)}px;`">
-        <div v-if="!mChanCardShowYn" class="font20 fl fontBold chanInfoCard" :style="`top: ${Number($STATUS_HEIGHT)}px; height:${ 50}px `" >
-            <p :style="CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;'">{{$changeText(CHANNEL_DETAIL.nameMtext)}}</p>
-            <img
-                class="fl"
-                src="@/assets/images/channel/icon_official.svg"
-                v-if="CHANNEL_DETAIL.officialYn"
-                alt=""
-            />
-        </div>
-        <div ref="chanCardTopArea"  :class="['fade-out-element', { 'hidden': !mChanCardShowYn }]" class="fl chanCardTop" :style="`margin-top: ${50}px`" >
-            <div class="chanIcon" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? CHANNEL_DETAIL.logoDomainPath + $changeUrlBackslash(CHANNEL_DETAIL.logoPathMtext) : CHANNEL_DETAIL.logoPathMtext) + ');'"></div>
-            <div class="chanFollowArea">
-                <div class="blankBox"></div>
-                <div class="font20 fontBold chanNameBox">
-                    <p :style="CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;'">{{$changeText(CHANNEL_DETAIL.nameMtext)}}</p>
-                    <img
-                        class="fl"
-                        src="@/assets/images/channel/icon_official.svg"
-                        v-if="CHANNEL_DETAIL.officialYn"
-                        alt=""
-                    />
-                </div>
-                <!--follow-->
-                <p @click="changeFollowYn" v-if="!ChanFollowYn && (CHANNEL_DETAIL.D_CHAN_AUTH && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)" class="cursorP fl fontBold font14 followBtn">+ Follow</p>
-                <!--following-->
-                <p @click="changeFollowYn" class="fl fontBold font14 cursorP unfollowBtn" ref="followerCancelArea" id="followerCancelArea" v-if="ChanFollowYn && (CHANNEL_DETAIL.D_CHAN_AUTH && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)">Following</p>
-            </div>
-            <div class="chanDescriptionArea">
-                <div class="chanFuncBox">
-                    <div
-                        class="cursorP favChanBox"
-                        @click="ImgClick"
-                        >
-                        <img
-                            @class="cursorP"
-                            :src="
-                            CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey
-                                ? require('@/assets/images/channel/icon_star_fill.svg')
-                                : require('@/assets/images/channel/icon_star.svg')
-                            "
-                            alt=""
-                        />
-                    </div>
-                    <div
-                        class="cursorP shareChanBox"
-                        data-clipboard-action="copy"
-                        id="copyTextBody"
-                        @click="copyText"
-                        :data-clipboard-text="CHANNEL_DETAIL.copyTextStr"
-                        >
-                        <img
-                            src="@/assets/images/contents/icon_share.png"
-                        />
-                    </div>
-                </div>
-                <div class="chanDescriptionBox">
-                    <div>
-                        <p class="fontBold fl w100P font14 textLeft">{{ $changeText(CHANNEL_DETAIL.memoMtext) }}</p>
-                        <div
-                            class="w100P fl countInfoBox"
-                            >
-                            <div
-                                @click="openFollowerPop"
-                                class="font14 followerCount"
-                            >
-                                Follower
-                                <span
-                                class="fontBold"
-                                >{{ CHANNEL_DETAIL.followerCount }}</span
-                                >
-                            </div>
-                            <div class="font14 contentsCount">
-                                Total Contents
-                                <span class="fontBold contentsCount">{{
-                                CHANNEL_DETAIL.totalContentsCount
-                                }}</span>
-                            </div>
-                        </div>
-                        <div class="w100P fl font14 textLeft">
-                        My Status
-                        <span class="fontBold contentsCount">{{
-                            $getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)
-                            ? $getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)
-                            : "-"
-                        }}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div ref="chanPushListArea" :style="`$`" class="fl"  style="width: 100%; min-height: calc(100% - 210px); border-top: 2px solid #eeeeee; background: rgb(220, 221, 235);">
-            <pushList
-                @updateContentsCount="updateContentsCount"
-                :pCabinetKeyListStr="mCabKeyListStr"
-                :pUnknownYn="mUnknownYn"
-                @openImgPop="openImgPop"
-                @goScroll="scrollOn"
-                :pBoardList="mChanInfo.boardList"
-                :propParams="mChanInfo.initData"
-                :initData="mChanInfo.initData? mChanInfo.initData.contentsList : null"
-                @cMemoEditYn="changeMemoEditYn"
-                :chanAlimYn="true"
-                :pChannelDetail="CHANNEL_DETAIL"
-                :chanAlimTargetType="mChanInfo.targetType"
-                ref="ChanAlimListPushListCompo"
-                :alimListYn="true"
-                @openPage="openPage"
-                :chanDetailKey="CHANNEL_DETAIL.teamKey"
-                @numberOfElements="numberOfElements"
-                @openLoading="$emit('openLoading')"
-                @closeLoading="$emit('closeLoading')"
-                @openPop="openWriteContentsPop"
-                @openUserProfile="openItem"
-                @changeMainTab="changeMainTab"
-                isOpen="chanAlim"
-                @memoEdit="memoEdit"
-            />
-        </div>
-        <gConfirmPop
-            :confirmText="mErrorPopBodyStr"
-            :confirmType="mErrorPopBtnType"
-            @no="mErrorPopShowYn = false"
-            v-if="mErrorPopShowYn"
-            @ok="confirmOk"
-        />
-        <writeContents
-            v-if="writeContentsYn === true"
-            ref="chanAlimListWritePushRefs"
-            :contentType="mPushListMainTab === 'P' ? 'ALIM' : 'BOAR'"
-            @closeXPop="closeWritePushPop"
-            :params="mWriteAlimData"
-            @openPop="openItem"
-            :changeMainTab="changeMainTab"
-            @toAlimFromBoard="toAlimFromBoard"
-            :propData="mWriteBoardData"
-            />
-        <div
-            v-if="writeContentsYn === true"
-            class="popBg"
-            >
-        </div>
-        <div
-        class="popBg"
-            v-if="mFollowerListPopShowYn"
-            @click="closeFollowerList"
-            >
-        </div>
-        <followerList
-            v-if="mFollowerListPopShowYn"
-            :pManagerList="mManagerList"
-            :pClosePop="closeFollowerList"
-            :pOpenProfilePop="openProfilePop"
-        />
-        <div
-          class="popBg"
-            v-if="mUserDetailPopShowYn"
-            @click="closeFollowerList"
-            >
-        </div>
-        <userDetailPop
-            v-if="mUserDetailPopShowYn"
-            :propData="mPopParam"
-            :pClosePop="closeUserDetailPop"
-        />
-        <img
-        v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn"
-        id="writeBtn"
-        src="@/assets/images/button/Icon_WriteBoardBtn.png"
-        @click="openWritePushPop"
-        alt="button for write contents"
-        class="img-78 img-w66 writeContentsBtn"
-        />
+  <div
+    v-if="CHANNEL_DETAIL && mChanInfo"
+    class="scrollOn"
+    id="chanMainRef"
+    ref="chanMainRef"
+    :style="`background-image: url(${
+      CHANNEL_DETAIL.bgDomainPath +
+      $changeUrlBackslash(CHANNEL_DETAIL.bgPathMtext)
+    });height: calc(100% + ${Number($STATUS_HEIGHT)}px);  padding-top: ${Number(
+      $STATUS_HEIGHT
+    )}px;`"
+  >
+    <div
+      v-if="!mChanCardShowYn"
+      class="font20 fl fontBold chanInfoCard"
+      :style="`top: ${Number($STATUS_HEIGHT)}px; height:${50}px `"
+    >
+      <p
+        :style="
+          CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;'
+        "
+      >
+        {{ $changeText(CHANNEL_DETAIL.nameMtext) }}
+      </p>
+      <img
+        class="fl"
+        src="@/assets/images/channel/icon_official.svg"
+        v-if="CHANNEL_DETAIL.officialYn"
+        alt=""
+      />
     </div>
+    <div
+      ref="chanCardTopArea"
+      :class="['fade-out-element', { hidden: !mChanCardShowYn }]"
+      class="fl chanCardTop"
+      :style="`margin-top: ${50}px`"
+    >
+      <div
+        class="chanIcon"
+        :style="
+          'background-image: url(' +
+          (CHANNEL_DETAIL.logoDomainPath
+            ? CHANNEL_DETAIL.logoDomainPath +
+              $changeUrlBackslash(CHANNEL_DETAIL.logoPathMtext)
+            : CHANNEL_DETAIL.logoPathMtext) +
+          ');'
+        "
+      ></div>
+      <div class="chanFollowArea">
+        <div class="blankBox"></div>
+        <div class="font20 fontBold chanNameBox">
+          <p
+            :style="
+              CHANNEL_DETAIL.blackYn === 1 ? 'color:white;' : 'color: #6768a7;'
+            "
+          >
+            {{ $changeText(CHANNEL_DETAIL.nameMtext) }}
+          </p>
+          <img
+            class="fl"
+            src="@/assets/images/channel/icon_official.svg"
+            v-if="CHANNEL_DETAIL.officialYn"
+            alt=""
+          />
+        </div>
+        <!--follow-->
+        <p
+          @click="changeFollowYn"
+          v-if="
+            !ChanFollowYn &&
+            CHANNEL_DETAIL.D_CHAN_AUTH &&
+            !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn
+          "
+          class="cursorP fl fontBold font14 followBtn"
+        >
+          + Follow
+        </p>
+        <!--following-->
+        <p
+          @click="changeFollowYn"
+          class="fl fontBold font14 cursorP unfollowBtn"
+          ref="followerCancelArea"
+          id="followerCancelArea"
+          v-if="
+            ChanFollowYn &&
+            CHANNEL_DETAIL.D_CHAN_AUTH &&
+            !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn
+          "
+        >
+          Following
+        </p>
+      </div>
+      <div class="chanDescriptionArea">
+        <div class="chanFuncBox">
+          <div class="cursorP favChanBox" @click="ImgClick">
+            <img
+              @class="cursorP"
+              :src="
+                CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey
+                  ? require('@/assets/images/channel/icon_star_fill.svg')
+                  : require('@/assets/images/channel/icon_star.svg')
+              "
+              alt=""
+            />
+          </div>
+          <div
+            class="cursorP shareChanBox"
+            data-clipboard-action="copy"
+            id="copyTextBody"
+            @click="copyText"
+            :data-clipboard-text="CHANNEL_DETAIL.copyTextStr"
+          >
+            <img src="@/assets/images/contents/icon_share.png" />
+          </div>
+        </div>
+        <div class="chanDescriptionBox">
+          <div>
+            <p class="fontBold fl w100P font14 textLeft">
+              {{ $changeText(CHANNEL_DETAIL.memoMtext) }}
+            </p>
+            <div class="w100P fl countInfoBox">
+              <div @click="openFollowerPop" class="font14 followerCount">
+                Follower
+                <span class="fontBold">{{ CHANNEL_DETAIL.followerCount }}</span>
+              </div>
+              <div class="font14 contentsCount">
+                Total Contents
+                <span class="fontBold contentsCount">{{
+                  CHANNEL_DETAIL.totalContentsCount
+                }}</span>
+              </div>
+            </div>
+            <div class="w100P fl font14 textLeft">
+              My Status
+              <span class="fontBold contentsCount">{{
+                $getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)
+                  ? $getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)
+                  : '-'
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      ref="chanPushListArea"
+      :style="`$`"
+      class="fl"
+      style="
+        width: 100%;
+        min-height: calc(100% - 210px);
+        border-top: 2px solid #eeeeee;
+        background: rgb(220, 221, 235);
+      "
+    >
+      <pushList
+        @updateContentsCount="updateContentsCount"
+        :pCabinetKeyListStr="mCabKeyListStr"
+        :pUnknownYn="mUnknownYn"
+        @openImgPop="openImgPop"
+        @goScroll="scrollOn"
+        :pBoardList="mChanInfo.boardList"
+        :propParams="mChanInfo.initData"
+        :initData="mChanInfo.initData ? mChanInfo.initData.contentsList : null"
+        @cMemoEditYn="changeMemoEditYn"
+        :chanAlimYn="true"
+        :pChannelDetail="CHANNEL_DETAIL"
+        :chanAlimTargetType="mChanInfo.targetType"
+        ref="ChanAlimListPushListCompo"
+        :alimListYn="true"
+        @openPage="openPage"
+        :chanDetailKey="CHANNEL_DETAIL.teamKey"
+        @numberOfElements="numberOfElements"
+        @openLoading="$emit('openLoading')"
+        @closeLoading="$emit('closeLoading')"
+        @openPop="openWriteContentsPop"
+        @openUserProfile="openItem"
+        @changeMainTab="changeMainTab"
+        isOpen="chanAlim"
+        @memoEdit="memoEdit"
+      />
+    </div>
+    <gConfirmPop
+      :confirmText="mErrorPopBodyStr"
+      :confirmType="mErrorPopBtnType"
+      @no="mErrorPopShowYn = false"
+      v-if="mErrorPopShowYn"
+      @ok="confirmOk"
+    />
+    <writeContents
+      v-if="writeContentsYn === true"
+      ref="chanAlimListWritePushRefs"
+      :contentType="mPushListMainTab === 'P' ? 'ALIM' : 'BOAR'"
+      @closeXPop="closeWritePushPop"
+      :params="mWriteAlimData"
+      @openPop="openItem"
+      :changeMainTab="changeMainTab"
+      @toAlimFromBoard="toAlimFromBoard"
+      :propData="mWriteBoardData"
+    />
+    <div v-if="writeContentsYn === true" class="popBg"></div>
+    <div
+      class="popBg"
+      v-if="mFollowerListPopShowYn"
+      @click="closeFollowerList"
+    ></div>
+    <followerList
+      v-if="mFollowerListPopShowYn"
+      :pManagerList="mManagerList"
+      :pClosePop="closeFollowerList"
+      :pOpenProfilePop="openProfilePop"
+    />
+    <div
+      class="popBg"
+      v-if="mUserDetailPopShowYn"
+      @click="closeFollowerList"
+    ></div>
+    <userDetailPop
+      v-if="mUserDetailPopShowYn"
+      :propData="mPopParam"
+      :pClosePop="closeUserDetailPop"
+    />
+    <img
+      v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !GE_USER.unknownYn"
+      id="writeBtn"
+      src="@/assets/images/button/Icon_WriteBoardBtn.png"
+      @click="openWritePushPop"
+      alt="button for write contents"
+      class="img-78 img-w66 writeContentsBtn"
+    />
+  </div>
 </template>
 
 <script>
@@ -193,7 +250,7 @@ import { onMessage } from '@/assets/js/webviewInterface'
 import followerList from '@/components/pageComponents/channel/popup/FollowerListPop.vue'
 import userDetailPop from '@/components/popup/UserDetailPop.vue'
 export default {
-  data () {
+  data() {
     return {
       scrollPosition: null,
       preDataYn: false,
@@ -246,7 +303,7 @@ export default {
     followerList,
     userDetailPop
   },
-  mounted () {
+  mounted() {
     const intervalHandler = setInterval(() => {
       const chanMainRef = this.$refs.chanMainRef
       if (chanMainRef) {
@@ -256,7 +313,10 @@ export default {
           chanMainRef.scrollTo({ top: 210 + 55 + Number(this.$STATUS_HEIGHT) })
           this.mChanCardShowYn = false
           const triggerPosition = chanCardTopRef.getBoundingClientRect().top
-          const opacity = Math.max(0, 1 - (chanCardTopRef.clientHeight / triggerPosition))
+          const opacity = Math.max(
+            0,
+            1 - chanCardTopRef.clientHeight / triggerPosition
+          )
           if (chanCardTopArea) {
             chanCardTopArea.style.opacity = opacity.toFixed(2)
           }
@@ -268,17 +328,17 @@ export default {
     }, 100)
   },
   methods: {
-    updateContentsCount (type) {
+    updateContentsCount(type) {
       if (type === 'minus') {
         this.CHANNEL_DETAIL.totalContentsCount--
       } else if (type === 'plus') {
         this.CHANNEL_DETAIL.totalContentsCount++
       }
     },
-    async closeWritePushPop (reloadYn) {
+    async closeWritePushPop(reloadYn) {
       this.writeContentsYn = false
     },
-    async openWritePushPop () {
+    async openWritePushPop() {
       if (
         this.propTeamKey &&
         this.mSelectedWriteType === 'ALIM' &&
@@ -306,7 +366,7 @@ export default {
       writeParam.initData = teamList
       this.$emit('openPop', writeParam)
     },
-    handleScroll () {
+    handleScroll() {
       const chanCardTopRef = this.$refs.chanPushListArea
       const chanMainRef = this.$refs.chanMainRef
       const chanCardTopArea = this.$refs.chanCardTopArea
@@ -316,17 +376,26 @@ export default {
         const scrollTop = chanMainRef.scrollTop
         if (scrollTop > this.mLastScroll) {
           // down
-          if (chanCardTopRef.getBoundingClientRect().top < (55 + Number(this.$STATUS_HEIGHT))) {
+          if (
+            chanCardTopRef.getBoundingClientRect().top <
+            55 + Number(this.$STATUS_HEIGHT)
+          ) {
             this.mChanCardShowYn = false
             const triggerPosition = chanCardTopRef.getBoundingClientRect().top
-            const opacity = Math.max(0, 1 - (chanCardTopRef.clientHeight / triggerPosition))
+            const opacity = Math.max(
+              0,
+              1 - chanCardTopRef.clientHeight / triggerPosition
+            )
             if (chanCardTopArea) {
               chanCardTopArea.style.opacity = opacity.toFixed(2)
             }
           }
         } else {
           // up
-          if (chanCardTopRef.getBoundingClientRect().top >= (49 + Number(this.$STATUS_HEIGHT))) {
+          if (
+            chanCardTopRef.getBoundingClientRect().top >=
+            49 + Number(this.$STATUS_HEIGHT)
+          ) {
             this.mChanCardShowYn = true
             const opacity = Math.max(0, 1)
             if (chanCardTopArea) {
@@ -337,7 +406,7 @@ export default {
         this.mLastScroll = scrollTop
       }
     },
-    async confirmOk () {
+    async confirmOk() {
       this.mErrorPopShowYn = false
       if (this.mSaveFollowerType === 'follow') {
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.admYn === true) {
@@ -363,7 +432,9 @@ export default {
             if (
               this.axiosQueue.findIndex((item) => item === 'changeFollower') !==
               -1
-            ) { return }
+            ) {
+              return
+            }
             this.axiosQueue.push('changeFollower')
             result = await this.$changeFollower(
               { follower: this.mSaveFollowerParam, doType: 'CR' },
@@ -399,13 +470,13 @@ export default {
         }
       }
     },
-    changeMainTab (tab) {
+    changeMainTab(tab) {
       this.mPushListMainTab = tab
     },
-    numberOfElements (num) {
+    numberOfElements(num) {
       this.myContentsCount = num
     },
-    memoEdit (editYn) {
+    memoEdit(editYn) {
       var btn = document.getElementById('writeBtn')
       if (editYn === true) {
         btn.style.display = 'none'
@@ -413,7 +484,7 @@ export default {
         btn.style.display = 'block'
       }
     },
-    async copyText () {
+    async copyText() {
       if (
         this.mChanInfo.initData.team.copyTextStr === undefined &&
         this.CHANNEL_DETAIL.copyTextStr === undefined &&
@@ -456,17 +527,19 @@ export default {
         onMessage('REQ', 'nativeShare', shareItem)
       }
     },
-    openChannelMsgPop () {
+    openChannelMsgPop() {
       this.writeBottSheetYn = false
       this.commonChanPopShowYn = true
     },
-    changeMemoEditYn (memoEditYn) {
+    changeMemoEditYn(memoEditYn) {
       this.mWriteBtnShowYn = memoEditYn
     },
-    async changeRecvAlimYn () {
+    async changeRecvAlimYn() {
       if (
         this.axiosQueue.findIndex((item) => item === 'changeRecvAlimYn') !== -1
-      ) { return }
+      ) {
+        return
+      }
       var param = {}
       param.followerKey = this.CHANNEL_DETAIL.userTeamInfo.followerKey
       var toastText = ''
@@ -489,14 +562,13 @@ export default {
         )
         this.axiosQueue.splice(queueIndex, 1)
       })
-      this.CHANNEL_DETAIL.copyTextStr =
-        this.mChanInfo.initData.team.copyTextStr
+      this.CHANNEL_DETAIL.copyTextStr = this.mChanInfo.initData.team.copyTextStr
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [this.CHANNEL_DETAIL])
       setTimeout(() => {
         this.$showToastPop(toastText)
       }, 500)
     },
-    async ImgClick () {
+    async ImgClick() {
       if (!this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn) {
         this.mErrorPopBodyStr = 'Follow this channel to enjoy more features.'
         this.mErrorPopBtnType = 'one'
@@ -514,7 +586,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           const response = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.saveUserDo',
+            url: '/tp.saveUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = response.data.doKey
@@ -532,7 +604,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           await this.$commonAxiosFunction({
-            url: '/sUniB/tp.deleteUserDo',
+            url: '/tp.deleteUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = null
@@ -546,7 +618,7 @@ export default {
 
       this.isImgChanged = !this.isImgChanged
     },
-    openProfilePop (userInfo) {
+    openProfilePop(userInfo) {
       var openPopParam = {}
       openPopParam.targetKey = userInfo.teamKey
       openPopParam.teamKey = userInfo.teamKey
@@ -559,50 +631,50 @@ export default {
       this.mFollowerListPopShowYn = false
       this.mUserDetailPopShowYn = true
     },
-    openMemberTypePop () {
+    openMemberTypePop() {
       this.mBookListPopShowYn = true
     },
-    closeFollowerList () {
+    closeFollowerList() {
       this.mFollowerListPopShowYn = false
     },
-    async openFollowerPop () {
+    async openFollowerPop() {
       await this.getFollowerList()
       this.mFollowerListPopShowYn = true
     },
-    closeUserDetailPop () {
+    closeUserDetailPop() {
       this.mUserDetailPopShowYn = false
     },
-    async getFollowerList () {
+    async getFollowerList() {
       var result = {}
       var paramMap = new Map()
       paramMap.set('teamKey', this.CHANNEL_DETAIL.teamKey)
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getFollowerList',
+        url: '/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.mManagerList = result.data.content
     },
-    closeProfilePop () {
+    closeProfilePop() {
       this.mProfilePopShowYn = false
     },
-    openWriteContentsPop (openPopParam) {
+    openWriteContentsPop(openPopParam) {
       this.writeBottSheetYn = false
       this.$emit('openPop', openPopParam)
     },
-    openPage (value) {
+    openPage(value) {
       const obj = value
       obj.channelYn = true
       this.$emit('openPage', obj)
     },
-    openImgPop (param) {
+    openImgPop(param) {
       this.$emit('openImgPop', param)
     },
-    openCertiPop (param) {
+    openCertiPop(param) {
       this.$emit('openPop', param)
     },
-    goProfile () {
+    goProfile() {
       var param = {}
       param.targetType = 'bookMemberDetail'
       param.readOnlyYn = true
@@ -610,10 +682,10 @@ export default {
       param.popHeaderText = '내 정보'
       this.$emit('openPop', param)
     },
-    setSelectedList (data) {
+    setSelectedList(data) {
       this.$refs.chanAlimListWritePushRefs.setSelectedList(data)
     },
-    async okMember () {
+    async okMember() {
       if (this.mMemberTypeList && this.selectMemberObj) {
         this.ChanFollowYn = true
         var typeParam = {}
@@ -630,7 +702,7 @@ export default {
         typeParam.userKey = this.GE_USER.userKey
         typeParam.teamKey = this.CHANNEL_DETAIL.teamKey
         await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveFollower',
+          url: '/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }
         })
         this.CHANNEL_DETAIL.memberTypeKey = this.selectMemberObj.memberTypeKey
@@ -646,7 +718,7 @@ export default {
       }
       this.$emit('closeLoading')
     },
-    openPushDetailPop (param) {
+    openPushDetailPop(param) {
       if (
         param.targetType === 'contentsDetail' ||
         param.targetType === 'createChannel'
@@ -662,27 +734,23 @@ export default {
       }
       this.$emit('openPop', param)
     },
-    backClick () {
+    backClick() {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       if (this.writeAlimPopId === hStack[hStack.length - 1]) {
-        history = history.filter(
-          (element, index) => index < history.length - 1
-        )
+        history = history.filter((element, index) => index < history.length - 1)
         this.$store.commit('UB_HISTORY/setRemovePage', removePage)
         this.$store.commit('UB_HISTORY/updateStack', history)
         this.closeWritePushPop()
       } else if (this.mWriteBoardPopId === hStack[hStack.length - 1]) {
-        history = history.filter(
-          (element, index) => index < history.length - 1
-        )
+        history = history.filter((element, index) => index < history.length - 1)
         this.$store.commit('UB_HISTORY/setRemovePage', removePage)
         this.$store.commit('UB_HISTORY/updateStack', history)
         this.closeWritePushPop()
       }
     },
-    async changeFollowYn () {
+    async changeFollowYn() {
       this.mSaveFollowerType = 'follow'
       if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn === true) {
         this.mErrorPopBodyStr = 'Do you want to unfollow this channel?'
@@ -693,13 +761,13 @@ export default {
         this.confirmOk()
       }
     },
-    setWindowSize () {
+    setWindowSize() {
       this.mwWidth = window.innerWidth
       var nowHeight = window.innerHeight
 
       if (this.mwHeight < nowHeight) this.mwHeight = nowHeight
     },
-    scrollOn () {
+    scrollOn() {
       const pushList = document.getElementById('pushListWrap')
       if (pushList) {
         if (this.mChanCardShowYn) {
@@ -725,10 +793,10 @@ export default {
         }
       }
     },
-    openItem (param) {
+    openItem(param) {
       this.$emit('openPop', param)
     },
-    async getChanMain () {
+    async getChanMain() {
       const chanMainParam = {}
       chanMainParam.targetType = 'chanDetail'
       const encodedKey = Number(this.$route.params.encodedTeamKey)
@@ -741,7 +809,7 @@ export default {
       param.userKey = this.GE_USER.userKey
       try {
         const result = await this.$getViewData(
-          { url: '/sUniB/tp.getChanMainBoard', param: param },
+          { url: '/tp.getChanMainBoard', param: param },
           false
         )
         if (!result || !result.data || result.data.result !== 'OK') {
@@ -806,16 +874,28 @@ export default {
         this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [initData.team])
         this.mMakeDeepLinkIng = false
       }
-      this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
-      if (this.mChanInfo.initData && this.mChanInfo.initData.team && this.mChanInfo.initData.team.content && this.mChanInfo.initData.team.length > 0 && this.mChanInfo.initData.team.content['0']) {
+      this.$emit('clearInfo', {
+        detail: this.mChanInfo,
+        targetType: 'chanDetail'
+      })
+      if (
+        this.mChanInfo.initData &&
+        this.mChanInfo.initData.team &&
+        this.mChanInfo.initData.team.content &&
+        this.mChanInfo.initData.team.length > 0 &&
+        this.mChanInfo.initData.team.content['0']
+      ) {
         this.mTeamDetail = this.mChanInfo.initData.team.content['0']
       }
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
       this.getMyChan(teamKey, paramMap)
     },
-    async getMyChan (teamKey, paramMap) {
-      if (this.mChanInfo.initData.cTeamList && this.mChanInfo.initData.cTeamList.length > 0) {
+    async getMyChan(teamKey, paramMap) {
+      if (
+        this.mChanInfo.initData.cTeamList &&
+        this.mChanInfo.initData.cTeamList.length > 0
+      ) {
         var result1 = await this.$getTeamList(paramMap, false)
         var followList = result1.data.content
         for (let i = 0; i < followList.length; i++) {
@@ -826,12 +906,12 @@ export default {
         this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', followList)
       }
     },
-    async getMemberTypeList () {
+    async getMemberTypeList() {
       var param = {}
       param.teamKey = Number(this.$route.params.encodedTeamKey)
       var memberTypeList = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.getMemberTypeList',
+          url: '/tp.getMemberTypeList',
           param: param
         },
         true
@@ -843,7 +923,7 @@ export default {
         }
       }
     },
-    async getTeamMenuList (teamKey) {
+    async getTeamMenuList(teamKey) {
       var paramMap = new Map()
       paramMap.set('teamKey', teamKey)
       paramMap.set('currentTeamKey', teamKey)
@@ -854,7 +934,7 @@ export default {
       this.mChanInfo.boardList = result
     }
   },
-  created () {
+  created() {
     this.$emit('enterCloudLoading', false)
     setTimeout(() => {
       this.$emit('showCloudLoading', false)
@@ -864,8 +944,8 @@ export default {
     } else {
       if (
         this.propParams &&
-      this.propParams.targetType === 'chanDetail' &&
-      this.propParams.initData
+        this.propParams.targetType === 'chanDetail' &&
+        this.propParams.initData
       ) {
         this.mChanInfo = this.propParams
         const initData = this.propParams.initData
@@ -883,7 +963,7 @@ export default {
         }
         if (
           this.mChanInfo.initData.team.D_CHAN_AUTH &&
-        this.mChanInfo.initData.team.D_CHAN_AUTH.followYn
+          this.mChanInfo.initData.team.D_CHAN_AUTH.followYn
         ) {
           this.$emit('followYn')
         }
@@ -899,27 +979,30 @@ export default {
           } else {
             if (
               this.mChanInfo.initData.team.copyTextStr === undefined &&
-            this.CHANNEL_DETAIL.copyTextStr === undefined &&
-            !this.mMakeDeepLinkIng
+              this.CHANNEL_DETAIL.copyTextStr === undefined &&
+              !this.mMakeDeepLinkIng
             ) {
               this.mMakeDeepLinkIng = true
               const title =
-              '[uniBuzzy]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+                '[uniBuzzy]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
               const message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
               const this_ = this
               // 각 타운의 부모채널인지 아닌지 확인
-              const parent = this.CHANNEL_DETAIL.teamKey === this.GE_USER.myTeamKey ? 1 : 0
+              const parent =
+                this.CHANNEL_DETAIL.teamKey === this.GE_USER.myTeamKey ? 1 : 0
               const ketSet = {
                 teamKey: this.CHANNEL_DETAIL.teamKey,
                 parentYn: parent
               }
-              this.$makeShareLink(ketSet, 'chanDetail', message, title).then(res => {
-                this.CHANNEL_DETAIL.copyTextStr = res
-                this_.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [
-                  this.CHANNEL_DETAIL
-                ])
-                this_.mMakeDeepLinkIng = false
-              })
+              this.$makeShareLink(ketSet, 'chanDetail', message, title).then(
+                (res) => {
+                  this.CHANNEL_DETAIL.copyTextStr = res
+                  this_.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [
+                    this.CHANNEL_DETAIL
+                  ])
+                  this_.mMakeDeepLinkIng = false
+                }
+              )
               this.ChanFollowYn = this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn
             }
           }
@@ -936,7 +1019,7 @@ export default {
     }
   },
   computed: {
-    CHANNEL_DETAIL () {
+    CHANNEL_DETAIL() {
       if (!this.mChanInfo && !this.mDirectTeamKey) return {}
       let teamKey
       if (this.mChanInfo) {
@@ -988,10 +1071,10 @@ export default {
         }
       }
     },
-    GE_RECENT_CHANGE_TEAM () {
+    GE_RECENT_CHANGE_TEAM() {
       return this.$store.getters['UB_CHANNEL/GE_RECENT_CHANGE_TEAM']
     },
-    settingBackground () {
+    settingBackground() {
       var imgPath =
         'url(' +
         (this.CHANNEL_DETAIL.bgDomainPath
@@ -1008,7 +1091,7 @@ export default {
         'padding-top': Number(this.$STATUS_HEIGHT) + 'px'
       }
     },
-    REQ_MEM_OBJ () {
+    REQ_MEM_OBJ() {
       if (
         this.CHANNEL_DETAIL &&
         this.CHANNEL_DETAIL.userTeamInfo &&
@@ -1022,29 +1105,41 @@ export default {
         return { reqMemberStatus: '00', reqMemberStr: null }
       }
     },
-    GE_CHANNEL_NOTI_QUEUE () {
+    GE_CHANNEL_NOTI_QUEUE() {
       return this.$store.getters['UB_CHANNEL/GE_CHANNEL_NOTI_QUEUE']
     },
-    historyStack () {
+    historyStack() {
       return this.$store.getters['UB_HISTORY/hRPage']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     },
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     },
-    GE_PRE_DATA () {
+    GE_PRE_DATA() {
       return this.$store.getters['UB_PRE_DATA/GE_PRE_DATA']
     }
   },
   watch: {
     GE_PRE_DATA: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         if (!val) return
-        if (val.scrollPosition && val.scrollPosition.position !== undefined && val.scrollPosition.position !== null && val.scrollPosition.targetKind && val.scrollPosition.targetKey && val.listData && val.listData.length > 0) {
-          if (val.scrollPosition.targetKind === 'chanMain' && val.scrollPosition.targetKey === Number(this.$route.params.encodedTeamKey)) {
+        if (
+          val.scrollPosition &&
+          val.scrollPosition.position !== undefined &&
+          val.scrollPosition.position !== null &&
+          val.scrollPosition.targetKind &&
+          val.scrollPosition.targetKey &&
+          val.listData &&
+          val.listData.length > 0
+        ) {
+          if (
+            val.scrollPosition.targetKind === 'chanMain' &&
+            val.scrollPosition.targetKey ===
+              Number(this.$route.params.encodedTeamKey)
+          ) {
             console.log('보자보자')
             console.log(val)
             this.allContentsList = val.listData
@@ -1058,12 +1153,15 @@ export default {
               this.$addChanList(this.mChanInfo.teamKey)
             }
 
-            this.$emit('clearInfo', { detail: this.mChanInfo, targetType: 'chanDetail' })
+            this.$emit('clearInfo', {
+              detail: this.mChanInfo,
+              targetType: 'chanDetail'
+            })
           }
         }
       }
     },
-    mChanCardShowYn (val, old) {
+    mChanCardShowYn(val, old) {
       const pushList = document.getElementById('pushListWrap')
       const chanMainRef = this.$refs.chanMainRef
       if (pushList) {
@@ -1082,7 +1180,7 @@ export default {
     },
     CHANNEL_DETAIL: {
       immediate: true,
-      handler (value, old) {
+      handler(value, old) {
         if (value && value.D_CHAN_AUTH && value.D_CHAN_AUTH.followYn) {
           this.$emit('followYn')
           this.ChanFollowYn = true
@@ -1104,16 +1202,16 @@ export default {
       },
       deep: true
     },
-    GE_RECENT_CHANGE_TEAM (value, old) {
+    GE_RECENT_CHANGE_TEAM(value, old) {
       // if (value === this.CHANNEL_DETAIL.teamKey) {
       // console.log('team [' + value + ']의 관련 정보가 변경되었음')
       // }
     },
-    GE_MAIN_CHAN_LIST (value, old) {},
-    pageUpdate (value, old) {
+    GE_MAIN_CHAN_LIST(value, old) {},
+    pageUpdate(value, old) {
       this.backClick()
     },
-    historyStack (value, old) {}
+    historyStack(value, old) {}
   }
 }
 </script>
@@ -1127,7 +1225,7 @@ export default {
 }
 .chanInfoCard {
   width: 100%;
-  color: #FFFFFF;
+  color: #ffffff;
   display: flex;
   position: absolute;
   align-items: center;
@@ -1160,7 +1258,7 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 .chanFollowArea {
   width: 100%;
@@ -1186,7 +1284,7 @@ export default {
   line-height: 30px;
   border-radius: 5px;
   padding: 0px 10px;
-  background-color: #062BB5;
+  background-color: #062bb5;
   color: #fff;
 }
 .unfollowBtn {
@@ -1196,13 +1294,13 @@ export default {
   border-radius: 5px;
   padding: 0px 10px;
   background-color: #ccc;
-  color: #062BB5;
+  color: #062bb5;
 }
 .chanDescriptionArea {
   width: 100%;
   height: calc(100% - 35px);
   display: flex;
-  background: #FFFFFF;
+  background: #ffffff;
 }
 .chanFuncBox {
   width: 120px;
@@ -1264,7 +1362,7 @@ export default {
 }
 .followerCount {
   float: left;
-  margin-right: 20px
+  margin-right: 20px;
 }
 .followerCount > span {
   color: black;

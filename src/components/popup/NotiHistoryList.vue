@@ -15,27 +15,47 @@
 }
 </i18n>
 <template>
-    <div class="transWhite notiPopWrap">
-        <div class="font25 fontBold w100P notiPopHeader">
-          <div class="notiPopTitle">
-            <img src="@/assets/images/footer/icon_alim_fillin.svg" alt="">
-            <p class="textOverdot textLeft mleft-05">{{ $t('RECE_TITLE_NOTI')  }}</p>
-          </div>
-          <div class="cursorP closeBox" @click="closeXPop">
-            <img class="w100P" src="@/assets/images/common/popup_close.png" alt="">
-          </div>
-        </div>
-        <div class="w100P flexCenter notiContentsWrap">
-          <template v-if="mNotiList.length">
-            <notiCompo @click="goPage(noti)" v-for="(noti, index) in mNotiList" :mNotiEle="noti" :key="index" />
-          </template>
-          <gEmpty v-else tabName="최신" contentName="전체"/>
-        </div>
-        <div class="notiPopBottom">
-          <p class="font16 mbottom-05 textLeft fr fontBold" @click="mConfirmPopShowYn = true">{{ $t('RECE_BTN_DELETE') }}</p>
-        </div>
-        <gConfirmPop :confirmText="$t('RECE_MSG_DELETE')" confirmType='two' @no='mConfirmPopShowYn = false' v-if="mConfirmPopShowYn" @ok="notiClear"/>
+  <div class="transWhite notiPopWrap">
+    <div class="font25 fontBold w100P notiPopHeader">
+      <div class="notiPopTitle">
+        <img src="@/assets/images/footer/icon_alim_fillin.svg" alt="" />
+        <p class="textOverdot textLeft mleft-05">{{ $t('RECE_TITLE_NOTI') }}</p>
+      </div>
+      <div class="cursorP closeBox" @click="closeXPop">
+        <img
+          class="w100P"
+          src="@/assets/images/common/popup_close.png"
+          alt=""
+        />
+      </div>
     </div>
+    <div class="w100P flexCenter notiContentsWrap">
+      <template v-if="mNotiList.length">
+        <notiCompo
+          @click="goPage(noti)"
+          v-for="(noti, index) in mNotiList"
+          :mNotiEle="noti"
+          :key="index"
+        />
+      </template>
+      <gEmpty v-else tabName="최신" contentName="전체" />
+    </div>
+    <div class="notiPopBottom">
+      <p
+        class="font16 mbottom-05 textLeft fr fontBold"
+        @click="mConfirmPopShowYn = true"
+      >
+        {{ $t('RECE_BTN_DELETE') }}
+      </p>
+    </div>
+    <gConfirmPop
+      :confirmText="$t('RECE_MSG_DELETE')"
+      confirmType="two"
+      @no="mConfirmPopShowYn = false"
+      v-if="mConfirmPopShowYn"
+      @ok="notiClear"
+    />
+  </div>
 </template>
 
 <script>
@@ -44,55 +64,58 @@ export default {
   props: {
     pClosePop: Function
   },
-  data () {
+  data() {
     return {
       mNotiList: [],
       mConfirmPopShowYn: false
     }
   },
-  created () {
+  created() {
     this.getNotiHistoryList()
   },
   computed: {
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     },
-    history () {
+    history() {
       return this.$store.getters['UB_HISTORY/hStack']
     }
   },
   watch: {
-    pageUpdate () {
+    pageUpdate() {
       if (this.history[this.history.length - 1] === 'notiHistoryPop') {
         this.closeXPop()
       }
     }
   },
-  mounted () {
+  mounted() {
     this.$addHistoryStack('notiHistoryPop')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     this.$checkDeleteHistory('notiHistoryPop')
   },
   methods: {
-    closeXPop (reloadYn) {
+    closeXPop(reloadYn) {
       this.$emit('closeXPop')
     },
-    async getNotiHistoryList (noti) {
+    async getNotiHistoryList(noti) {
       var param = {}
       param.userKey = this.GE_USER.userKey
       const result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getLogList',
+        url: '/tp.getLogList',
         param: param
       })
       this.mNotiList = result.data.log.content
     },
-    async goPage (notiData) {
+    async goPage(notiData) {
       if (notiData.targetKind === 'C') {
-        const vuexResultData = await this.$addContents(notiData.targetKey, 'BOAR')
+        const vuexResultData = await this.$addContents(
+          notiData.targetKey,
+          'BOAR'
+        )
         var goDetailParam = {}
         goDetailParam.creTeamKey = Number(vuexResultData.creTeamKey)
         if (goDetailParam.jobkindId === 'ALIM') {
@@ -102,16 +125,16 @@ export default {
           goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
           goDetailParam.cabinetKey = vuexResultData.cabinetKey
         }
-        this.$router.push(`/contents/${vuexResultData.contentsKey}/${vuexResultData.creTeamKey}/${vuexResultData.cabinetKey}`)
+        this.$router.push(
+          `/contents/${vuexResultData.contentsKey}/${vuexResultData.creTeamKey}/${vuexResultData.cabinetKey}`
+        )
       } else if (notiData.targetKind === 'B') {
-
       } else if (notiData.targetKind === 'T') {
         this.$router.push(`/chan/${notiData.targetKey}`)
       } else if (notiData.targetKind === 'U') {
-
       }
     },
-    notiClear () {
+    notiClear() {
       this.$store.dispatch('UB_NOTI/AC_CLEAR_NOTI_LIST')
       this.mConfirmPopShowYn = false
     }
@@ -132,7 +155,8 @@ export default {
   left: 5%;
   z-index: 10000;
   padding: 10px 10px;
-  padding-bottom: 0;float: left;
+  padding-bottom: 0;
+  float: left;
 }
 .notiPopHeader {
   height: 50px;
@@ -153,7 +177,7 @@ export default {
 }
 .notiPopTitle > p {
   width: calc(100% - 40px);
-  padding: none!important;
+  padding: none !important;
 }
 .closeBox {
   width: 25px;

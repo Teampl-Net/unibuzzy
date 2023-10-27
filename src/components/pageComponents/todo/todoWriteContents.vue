@@ -82,50 +82,175 @@
 }
 </i18n>
 <template>
-  <div class="whitePaper hhhhhh" style="cursor: default;" @drop="onDrop" @dragleave="onDragleave" @dragenter="onDragenter" @dragover="onDragover">
-      <!-- 컨텐츠 작성 헤더 영역 -->
-      <div class="w100P fl writeHeader">
-        <div class="fl w100P writeHeaderBox">
-          <p v-if="contentType === 'ALIM'" class="fontBold commonColor font20 fl">{{ $t('COMMON_TAB_NOTI' ) }} {{requestPushYn === false ? $t('FORM_BTN_WRITE') : $('FORM_BTN_APPLY') }}</p>
-          <p v-if="contentType === 'BOAR'" class="fontBold commonColor font20 fl">{{$t('COMMON_TAB_POST')}} {{modiYn? $t('COMM_BTN_EDIT2') : $t('FORM_BTN_WRITE')}}</p>
-          <p v-if="contentType === 'TODO'" class="fontBold commonColor font20 fl">Todo {{modiYn? $t('COMM_BTN_EDIT2') : $t('FORM_BTN_WRITE')}}</p>
-          <div class="fr flexAlignCenter">
-            <gBtnSmall class="writeContenBtn" v-if="contentType === 'ALIM'"   :btnTitle="contentType === 'ALIM' && requestPushYn === false ? $t('FORM_BTN_SEND') : $t('FORM_BTN_LONG_APPLY')" @click="clickPageTopBtn()"  />
-            <gBtnSmall :btnThema="mCanWriteYn? '' : 'light'" :style="!mCanWriteYn? 'background: #FFF; cursor: default;' : ''" class="writeContenBtn" v-if="contentType === 'BOAR'"   :btnTitle="contentType === 'BOAR' && modiYn === true ? $t('FORM_BTN_EDIT') : $t('FORM_BTN_POST')" @click="mCanWriteYn? boardDataCheck(): ''"   />
-            <gBtnSmall class="writeContenBtn" v-if="contentType === 'TODO'"   :btnTitle="'POST'" @click="clickPageTopBtn()"  />
-            <img style="width: 1rem;" @click="closeXPop" class="mleft-2 fr cursorP"  src="@/assets/images/common/popup_close.png"/>
-          </div>
+  <div
+    class="whitePaper hhhhhh"
+    style="cursor: default"
+    @drop="onDrop"
+    @dragleave="onDragleave"
+    @dragenter="onDragenter"
+    @dragover="onDragover"
+  >
+    <!-- 컨텐츠 작성 헤더 영역 -->
+    <div class="w100P fl writeHeader">
+      <div class="fl w100P writeHeaderBox">
+        <p v-if="contentType === 'ALIM'" class="fontBold commonColor font20 fl">
+          {{ $t('COMMON_TAB_NOTI') }}
+          {{
+            requestPushYn === false ? $t('FORM_BTN_WRITE') : $('FORM_BTN_APPLY')
+          }}
+        </p>
+        <p v-if="contentType === 'BOAR'" class="fontBold commonColor font20 fl">
+          {{ $t('COMMON_TAB_POST') }}
+          {{ modiYn ? $t('COMM_BTN_EDIT2') : $t('FORM_BTN_WRITE') }}
+        </p>
+        <p v-if="contentType === 'TODO'" class="fontBold commonColor font20 fl">
+          Todo {{ modiYn ? $t('COMM_BTN_EDIT2') : $t('FORM_BTN_WRITE') }}
+        </p>
+        <div class="fr flexAlignCenter">
+          <gBtnSmall
+            class="writeContenBtn"
+            v-if="contentType === 'ALIM'"
+            :btnTitle="
+              contentType === 'ALIM' && requestPushYn === false
+                ? $t('FORM_BTN_SEND')
+                : $t('FORM_BTN_LONG_APPLY')
+            "
+            @click="clickPageTopBtn()"
+          />
+          <gBtnSmall
+            :btnThema="mCanWriteYn ? '' : 'light'"
+            :style="!mCanWriteYn ? 'background: #FFF; cursor: default;' : ''"
+            class="writeContenBtn"
+            v-if="contentType === 'BOAR'"
+            :btnTitle="
+              contentType === 'BOAR' && modiYn === true
+                ? $t('FORM_BTN_EDIT')
+                : $t('FORM_BTN_POST')
+            "
+            @click="mCanWriteYn ? boardDataCheck() : ''"
+          />
+          <gBtnSmall
+            class="writeContenBtn"
+            v-if="contentType === 'TODO'"
+            :btnTitle="'POST'"
+            @click="clickPageTopBtn()"
+          />
+          <img
+            style="width: 1rem"
+            @click="closeXPop"
+            class="mleft-2 fr cursorP"
+            src="@/assets/images/common/popup_close.png"
+          />
         </div>
-        <div class="fl mtop-05 headerLine"></div>
       </div>
-      <div class="fl w100P h100P scrollOn" id="scrollFormArea" ref="scrollFormArea">
-        <!-- 게시판 영역 -->
-        <template v-if="contentType === 'BOAR'">
-          <div v-if="selectBoardYn === true" class="fl w100P mtop-1 checkBtnBox">
-            <p class="fontBold commonColor CDeepColor font16 fl mright-05 titleBoard">
-              {{ $t('FORM_TITLE_BOARD') }}
-              <pss class="font12 fl boardPlaceHolder" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</pss>
-            </p>
-            <div class="fl boardListWrap" :class="!isMobile? 'thinScrollBar':''" id="boardListWrap" @wheel="horizontalScroll" >
-              <div v-for="(data, index) in selectBoardList" :key="index" class="fl mleft-05 font12 fontBold boardItem" @click="selectBoard(data, index)" :style="{background: data.picBgPath}" :class="{'CDeepBorderColor selectPadding' : selectBoardIndex === index, 'noneSelectPadding' : selectBoardIndex !== index, 'mleft-0': index === 0}">
-                <div class="fl"> <img class="img-w15" v-if="selectBoardIndex === index" src="@/assets/images/common/icon_check_commonColor.svg" /></div>
-                <label class="mleft-03 font14"  :class="{'commonColor selectBoardBorder' : selectBoardIndex === index}" :for="'selectBoardCheckBox'+index">{{this.$changeText(data.cabinetNameMtext)}}</label>
+      <div class="fl mtop-05 headerLine"></div>
+    </div>
+    <div
+      class="fl w100P h100P scrollOn"
+      id="scrollFormArea"
+      ref="scrollFormArea"
+    >
+      <!-- 게시판 영역 -->
+      <template v-if="contentType === 'BOAR'">
+        <div v-if="selectBoardYn === true" class="fl w100P mtop-1 checkBtnBox">
+          <p
+            class="fontBold commonColor CDeepColor font16 fl mright-05 titleBoard"
+          >
+            {{ $t('FORM_TITLE_BOARD') }}
+            <pss
+              class="font12 fl boardPlaceHolder"
+              :style="
+                selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'
+              "
+              >{{ writeBoardPlaceHolder }}</pss
+            >
+          </p>
+          <div
+            class="fl boardListWrap"
+            :class="!isMobile ? 'thinScrollBar' : ''"
+            id="boardListWrap"
+            @wheel="horizontalScroll"
+          >
+            <div
+              v-for="(data, index) in selectBoardList"
+              :key="index"
+              class="fl mleft-05 font12 fontBold boardItem"
+              @click="selectBoard(data, index)"
+              :style="{ background: data.picBgPath }"
+              :class="{
+                'CDeepBorderColor selectPadding': selectBoardIndex === index,
+                noneSelectPadding: selectBoardIndex !== index,
+                'mleft-0': index === 0
+              }"
+            >
+              <div class="fl">
+                <img
+                  class="img-w15"
+                  v-if="selectBoardIndex === index"
+                  src="@/assets/images/common/icon_check_commonColor.svg"
+                />
               </div>
+              <label
+                class="mleft-03 font14"
+                :class="{
+                  'commonColor selectBoardBorder': selectBoardIndex === index
+                }"
+                :for="'selectBoardCheckBox' + index"
+                >{{ this.$changeText(data.cabinetNameMtext) }}</label
+              >
             </div>
           </div>
-        </template>
+        </div>
+      </template>
 
-        <!-- todo 영역 -->
-        <template v-if="contentType === 'TODO'">
-          <div class="fl w100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-            <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_TITLE_RECEIVE') }}</p>
-            <div class="fl" style="min-height: 2rem; float: left; width: calc(100% - 3.5rem);">
-              <!-- <div class="fl" style="min-height: 2rem; float: left; width: calc(100% - 3.5rem);" v-if="!params.userKey"> -->
-              <checkBtnArea class="mleft-05" :title="$t('COMMON_TAB_ALL')" :selectedYn='allRecvYn' @click="allRecvYn = true" />
-              <checkBtnArea class="mleft-05" :title="$t('COMMON_BTN_SELECTED')" :selectedYn='!allRecvYn' @click="allRecvYn = false" />
-              <p class="fr commonDarkGray font14" style="line-height: 30px;">{{allRecvYn === false ? receiverText : $t('COMMON_TAB_ALL') }}</p>
-              <div v-if="!allRecvYn" class="fl w100P textLeft mleft-05 mtop-05" @click="openPushReceiverSelect" style="border:1px solid #ccc; border-radius:8px; min-height: 30px; background: white; padding-left: 5px; display: flex; justify-content: space-between; align-items: center;">
-                <!-- <div v-if="this.receiverList.list && this.receiverList.list.length > 0" class="fl w100P">
+      <!-- todo 영역 -->
+      <template v-if="contentType === 'TODO'">
+        <div
+          class="fl w100P mtop-1"
+          style="display: flex; align-items: flex-start; padding: 0 1.5rem"
+        >
+          <p
+            class="fontBold commonColor CDeepColor font16 fl mright-1"
+            style="word-break: keep-all"
+          >
+            {{ $t('FORM_TITLE_RECEIVE') }}
+          </p>
+          <div
+            class="fl"
+            style="min-height: 2rem; float: left; width: calc(100% - 3.5rem)"
+          >
+            <!-- <div class="fl" style="min-height: 2rem; float: left; width: calc(100% - 3.5rem);" v-if="!params.userKey"> -->
+            <checkBtnArea
+              class="mleft-05"
+              :title="$t('COMMON_TAB_ALL')"
+              :selectedYn="allRecvYn"
+              @click="allRecvYn = true"
+            />
+            <checkBtnArea
+              class="mleft-05"
+              :title="$t('COMMON_BTN_SELECTED')"
+              :selectedYn="!allRecvYn"
+              @click="allRecvYn = false"
+            />
+            <p class="fr commonDarkGray font14" style="line-height: 30px">
+              {{ allRecvYn === false ? receiverText : $t('COMMON_TAB_ALL') }}
+            </p>
+            <div
+              v-if="!allRecvYn"
+              class="fl w100P textLeft mleft-05 mtop-05"
+              @click="openPushReceiverSelect"
+              style="
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                min-height: 30px;
+                background: white;
+                padding-left: 5px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+              "
+            >
+              <!-- <div v-if="this.receiverList.list && this.receiverList.list.length > 0" class="fl w100P">
                   <div v-for="(value, index) in this.receiverList.list" :key="index" class="fl mright-1" style="display: flex;">
                     <img v-if="value.type === 'BOOK' && !value.memberYn" class="img-w15 fl" src="../../assets/images/channel/channer_addressBook.svg" alt="">
                     <img v-if="value.type === 'BOOK' && value.memberYn" class="img-w15 fl" src="../../assets/images/common/memberIcon.svg" alt="">
@@ -134,25 +259,43 @@
                   </div>
                 </div>
                 <p class='font12 fl' style="color:#aaa; " v-else >{{ $t('FORM_MSG_TARGET') }}</p> -->
-                <!-- <p class='font12 fl' style="color:#aaa; " >{{ $t('FORM_MSG_TARGET') }}</p> -->
-                <!-- 이미지 임시!!! -->
-                <!-- <img class="fr img-w17 mright-05"  src="../../assets/images/push/plusIcon.svg" />
+              <!-- <p class='font12 fl' style="color:#aaa; " >{{ $t('FORM_MSG_TARGET') }}</p> -->
+              <!-- 이미지 임시!!! -->
+              <!-- <img class="fr img-w17 mright-05"  src="../../assets/images/push/plusIcon.svg" />
                 <img class="fr img-w17 mright-05"  src="../../assets/images/formEditor/icon_formEditPlus.svg" /> -->
-              </div>
             </div>
-            <!-- <p v-else class="fl w100P font16 textLeft commomBlack">
+          </div>
+          <!-- <p v-else class="fl w100P font16 textLeft commomBlack">
               <img src="../../assets/images/footer/icon_people.svg" class="fl img-w15 mtop-02 mleft-05 mright-03" alt="">
               {{params.userName}}
               </p> -->
-          </div>
+        </div>
 
-          <div class="fl w100P mtop-1 " style="display: flex; align-items: center; justify-content: center; padding: 0 1.5rem;">
-            <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all; margin-right:22px">Date</p>
-            <div class="w100P" style="min-height: 2rem; float: left; ">
-              <input class="fl w100P " type="date" v-model="selectedDate" style="min-height:30px; padding-left: 5px;">
-            </div>
+        <div
+          class="fl w100P mtop-1"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 1.5rem;
+          "
+        >
+          <p
+            class="fontBold commonColor CDeepColor font16 fl mright-1"
+            style="word-break: keep-all; margin-right: 22px"
+          >
+            Date
+          </p>
+          <div class="w100P" style="min-height: 2rem; float: left">
+            <input
+              class="fl w100P"
+              type="date"
+              v-model="selectedDate"
+              style="min-height: 30px; padding-left: 5px"
+            />
           </div>
-          <!-- <div class="fl w100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
+        </div>
+        <!-- <div class="fl w100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
             <p class="fontBold commonColor CDeepColor font16 fl mright-1" style="word-break: keep-all">{{ $t('FORM_TITLE_OPTION') }}</p>
             <div style="min-height: 2rem; float: left;">
               <checkBtnArea class="mleft-05" :title="$t('FORM_BTN_ID')" :selectedYn='showCreNameYn' @click="showCreNameYn = !showCreNameYn" />
@@ -160,40 +303,114 @@
               <checkBtnArea class="mleft-05" :title="$t('FORM_BTN_TITLE')" :selectedYn='titleShowYn' @click="titleShowYn = !titleShowYn" />
             </div>
           </div> -->
-        </template>
+      </template>
 
-        <!-- 공통 영역 -->
-        <div v-if="titleShowYn" class="fl w100P mtop-1 contentsTitleBox">
-          <p class="fontBold commonColor CDeepColor font16 fl mright-1 keepAll">{{ $t('FORM_BTN_TITLE') }}</p>
-          <input class="fl mleft-05 titlePlaceholder" type="text" v-if="titleShowYn" id="pushTitleInput" :placeholder="$t('FORM_MSG_TITLE')" v-model="writePushTitle" >
-        </div>
+      <!-- 공통 영역 -->
+      <div v-if="titleShowYn" class="fl w100P mtop-1 contentsTitleBox">
+        <p class="fontBold commonColor CDeepColor font16 fl mright-1 keepAll">
+          {{ $t('FORM_BTN_TITLE') }}
+        </p>
+        <input
+          class="fl mleft-05 titlePlaceholder"
+          type="text"
+          v-if="titleShowYn"
+          id="pushTitleInput"
+          :placeholder="$t('FORM_MSG_TITLE')"
+          v-model="writePushTitle"
+        />
+      </div>
 
-        <div v-if="fileYn" class="fl w100P mtop-1 contentsFileBox">
-          <p class="fontBold commonColor CDeepColor font16 fl mright-1 keepAll">{{ $t('FORM_BTN_FILE') }}</p>
-          <div class="fl mleft-05 fileItemBox">
-            <attachFileList ref="attachFileRef" :attachTrueAddFalseList="pAttachFileList" @delAttachFile="delAttachFile" @setSelectedAttachFileList="setSelectedAttachFileList"/>
-          </div>
+      <div v-if="fileYn" class="fl w100P mtop-1 contentsFileBox">
+        <p class="fontBold commonColor CDeepColor font16 fl mright-1 keepAll">
+          {{ $t('FORM_BTN_FILE') }}
+        </p>
+        <div class="fl mleft-05 fileItemBox">
+          <attachFileList
+            ref="attachFileRef"
+            :attachTrueAddFalseList="pAttachFileList"
+            @delAttachFile="delAttachFile"
+            @setSelectedAttachFileList="setSelectedAttachFileList"
+          />
         </div>
+      </div>
 
       <!-- 작성 창 영역 -->
-      <div id="pageMsgAreaWrap" class="pageMsgArea mtop-1 w100P fl contentsFormBox">
-        <formEditor class="fl formEditor" ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText" @postToolBox='postToolBox'/>
-        <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>
+      <div
+        id="pageMsgAreaWrap"
+        class="pageMsgArea mtop-1 w100P fl contentsFormBox"
+      >
+        <formEditor
+          class="fl formEditor"
+          ref="complexEditor"
+          @changeUploadList="changeUploadList"
+          :editorType="this.editorType"
+          :propFormData="propFormData"
+          @setParamInnerHtml="setParamInnerHtml"
+          @setParamInnerText="setParamInnerText"
+          @postToolBox="postToolBox"
+        />
+        <div
+          @click="formEditorShowYn = true"
+          v-show="previewContentsShowYn"
+          class="msgArea"
+          id="msgBox"
+        ></div>
       </div>
     </div>
-    <div v-if="mIsDraggedYn" class="flexJustiCenter dragBox">{{ this.$t('FORM_MSG_DRAG') }}</div>
+    <div v-if="mIsDraggedYn" class="flexJustiCenter dragBox">
+      {{ this.$t('FORM_MSG_DRAG') }}
+    </div>
   </div>
-  <gToolBox :propTools='mToolBoxOptions' @changeTextStyle='changeFormEditorStyle' />
-  <div v-if="mAskSendAlimPopShowYn" @click="closeAskAlimPop" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 98;"></div>
-  <gConfirmPop v-if="mAskSendAlimPopShowYn" @no="closeAskAlimPop" confirmType="two" @ok="sendAlimToMember" :confirmText="$t('FORM_MESSAGE_ASK_SEND_ALIM')" />
-  <gConfirmPop v-if="failPopYn" @no="failPopYn = false" confirmType="timeout" :confirmText="errorText" />
-  <gConfirmPop v-if="contentType === 'BOAR' && checkPopYn" :confirmText="modiYn? $t('FORM_MSG_EDIT') : $t('FORM_MSG_SAVE')" @ok='sendBoard(), checkPopYn=false' @no='confirmNo()'   />
-  <gConfirmPop @no="closeXPop()" :confirmText="contentType === 'ALIM' ? $t('FORM_MSG_SUCCESS_APPLY') : $t('FORM_MSG_SUCCESS_SAVE') " confirmType='timeout' v-if="okPopYn" />
-  <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList"/>
+  <gToolBox
+    :propTools="mToolBoxOptions"
+    @changeTextStyle="changeFormEditorStyle"
+  />
+  <div
+    v-if="mAskSendAlimPopShowYn"
+    @click="closeAskAlimPop"
+    style="
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 98;
+    "
+  ></div>
+  <gConfirmPop
+    v-if="mAskSendAlimPopShowYn"
+    @no="closeAskAlimPop"
+    confirmType="two"
+    @ok="sendAlimToMember"
+    :confirmText="$t('FORM_MESSAGE_ASK_SEND_ALIM')"
+  />
+  <gConfirmPop
+    v-if="failPopYn"
+    @no="failPopYn = false"
+    confirmType="timeout"
+    :confirmText="errorText"
+  />
+  <gConfirmPop
+    v-if="contentType === 'BOAR' && checkPopYn"
+    :confirmText="modiYn ? $t('FORM_MSG_EDIT') : $t('FORM_MSG_SAVE')"
+    @ok="sendBoard(), (checkPopYn = false)"
+    @no="confirmNo()"
+  />
+  <gConfirmPop
+    @no="closeXPop()"
+    :confirmText="
+      contentType === 'ALIM'
+        ? $t('FORM_MSG_SUCCESS_APPLY')
+        : $t('FORM_MSG_SUCCESS_SAVE')
+    "
+    confirmType="timeout"
+    v-if="okPopYn"
+  />
+  <progressBar v-if="progressShowYn" :uploadFileList="uploadFileList" />
   <div v-if="sendLoadingYn" id="loading">
     <div class="spinner"></div>
   </div>
-<!-- </div> -->
+  <!-- </div> -->
 </template>
 
 <script>
@@ -208,7 +425,7 @@ export default {
     formEditor,
     checkBtnArea
   },
-  data () {
+  data() {
     return {
       mSelectedBoard: null,
       mContentsParams: {},
@@ -261,24 +478,23 @@ export default {
   },
   watch: {
     GE_USER: {
-      handler (value, old) {
+      handler(value, old) {
         if (!value || !value.certiDate) return
         if (value.certiDate) this.mCanWriteYn = true
       },
       deep: true
     },
     uploadFileList: {
-      handler () {
+      handler() {
         if (this.uploadFileList.length > 0 && this.writePushTitle === '') {
           var fileName = this.uploadFileList[0].file.name
           this.writePushTitle = fileName.normalize('NFC')
         }
       },
       deep: true
-
     }
   },
-  created () {
+  created() {
     if (this.contentType === 'TODO') {
       this.titleShowYn = true
       this.fileYn = true
@@ -289,7 +505,10 @@ export default {
     if (this.propData && this.propData.value && this.propData.value.fileYn) {
       this.fileYn = true
     }
-    if (this.params && (this.params.bodyFullStr || this.propData.guideFullStr)) {
+    if (
+      this.params &&
+      (this.params.bodyFullStr || this.propData.guideFullStr)
+    ) {
       if (this.params.value && this.params.value.fileYn) {
         this.fileYn = true
       }
@@ -310,7 +529,7 @@ export default {
           this.writePushTitle = this.propData.titleStr
         }
         const this_ = this
-        this.getCabinetDetail(this.propData.cabinetKey).then(res => {
+        this.getCabinetDetail(this.propData.cabinetKey).then((res) => {
           this_.mBoardList = res
         })
       }
@@ -319,32 +538,36 @@ export default {
       this.allRecvYn = false
     }
   },
-  mounted () {
+  mounted() {
     if (document.querySelector('#pageMsgAreaWrap')) {
-      document.querySelector('#pageMsgAreaWrap').addEventListener('paste', (e) => {
-        var items = (e.clipboardData || e.originalEvent.clipboardData).items
+      document
+        .querySelector('#pageMsgAreaWrap')
+        .addEventListener('paste', (e) => {
+          var items = (e.clipboardData || e.originalEvent.clipboardData).items
 
-        for (const i of items) {
-          var item = i
-          if (item.type.indexOf('image') !== -1) {
-            var file = item.getAsFile()
-            this.handleImageUpload(file)
+          for (const i of items) {
+            var item = i
+            if (item.type.indexOf('image') !== -1) {
+              var file = item.getAsFile()
+              this.handleImageUpload(file)
+            }
           }
-        }
-        e.preventDefault()
-        var textData = (e.originalEvent || e).clipboardData.getData('Text')
-        document.execCommand('insertHTML', false, textData)
-      })
+          e.preventDefault()
+          var textData = (e.originalEvent || e).clipboardData.getData('Text')
+          document.execCommand('insertHTML', false, textData)
+        })
     }
 
     var textArea = document.querySelector('#textMsgBoxPush')
     if (textArea) {
       textArea.addEventListener('focus', () => {
-        document.querySelector('#alimWrap').style.height = this.screenInnerHeight
+        document.querySelector('#alimWrap').style.height =
+          this.screenInnerHeight
         document.querySelector('#alimWrap').style.width = this.screenInnerWidth
       })
       textArea.addEventListener('blur', () => {
-        document.querySelector('#alimWrap').style.height = this.screenInnerHeight
+        document.querySelector('#alimWrap').style.height =
+          this.screenInnerHeight
         document.querySelector('#alimWrap').style.width = this.screenInnerWidth
       })
     }
@@ -353,7 +576,13 @@ export default {
       this.$refs.textAreaRequestTitle.readOnly = true
     }
 
-    if (this.bodyString !== undefined && this.bodyString !== null && this.bodyString !== '') this.settingAlim()
+    if (
+      this.bodyString !== undefined &&
+      this.bodyString !== null &&
+      this.bodyString !== ''
+    ) {
+      this.settingAlim()
+    }
 
     if (this.contentType === 'BOAR') {
       var temp = document.createElement('div')
@@ -390,7 +619,8 @@ export default {
           }
           if (imgYn) {
             jsonObj.pSrc = formC[i].querySelector('img').src
-            jsonObj.pFilekey = formC[i].querySelector('img').attributes.filekey.value
+            jsonObj.pFilekey =
+              formC[i].querySelector('img').attributes.filekey.value
           }
           newArr.push(jsonObj)
         }
@@ -398,7 +628,9 @@ export default {
         this.$refs.complexEditor.setFormCard(this.propFormData)
         document.getElementById('msgBox').innerHTML = ''
         document.getElementById('msgBox').innerHTML = innerHtml
-        this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
+        this.addFalseList = document.querySelectorAll(
+          '.msgArea .formCard .addFalse'
+        )
       }
       if (this.propData && this.propData.selectBoardYn === true) {
         this.selectBoardYn = true
@@ -415,12 +647,12 @@ export default {
     }
   },
   methods: {
-    onDragenter (event) {
+    onDragenter(event) {
       // class 넣기
       this.mIsDraggedYn = true
       this.enterTarget = event.target
     },
-    onDragleave (event) {
+    onDragleave(event) {
       // class 삭제
       if (this.enterTarget === event.target) {
         event.stopPropagation()
@@ -428,11 +660,11 @@ export default {
         this.mIsDraggedYn = false
       }
     },
-    onDragover (event) {
+    onDragover(event) {
       // 드롭을 허용하도록 prevetDefault() 호출
       event.preventDefault()
     },
-    onDrop (event) {
+    onDrop(event) {
       event.preventDefault()
       this.mIsDraggedYn = false
       const files = event.dataTransfer.files
@@ -441,10 +673,10 @@ export default {
         fileRef.onDrop(files)
       }
     },
-    async sendAlimToMember () {
+    async sendAlimToMember() {
       this.mContentsParams.allRecvYn = true
       const res = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.sendContentsPush',
+        url: '/tp.sendContentsPush',
         param: this.mContentsParams
       })
       if (res.data && res.data.result) {
@@ -452,11 +684,11 @@ export default {
         this.closeXPop(true)
       }
     },
-    closeAskAlimPop () {
+    closeAskAlimPop() {
       this.mAskSendAlimPopShowYn = false
       this.closeXPop(true)
     },
-    horizontalScroll (e) {
+    horizontalScroll(e) {
       if (e.deltaY === 0) return
       e.preventDefault()
       var channelWrap = document.querySelector(`#${e.currentTarget.id}`)
@@ -464,7 +696,7 @@ export default {
         left: channelWrap.scrollLeft + e.deltaY / 10
       })
     },
-    changeFormEditorStyle (changeParam) {
+    changeFormEditorStyle(changeParam) {
       // toolbox에 기능 전부, 선택된 formEditor에 드레그 한 text로 처리를 하기에 ref로 접근해서 함수를 실행하고 있습니다.
       // bold, italic, underLine은 text만 넘겨줘도 기능이 작동하기에 따로 구분을 하지 않았습니다.
       var targetType = changeParam.type
@@ -476,15 +708,15 @@ export default {
         this.$refs.complexEditor.changeTextStyle(targetType)
       }
     },
-    postToolBox (toolBoxOption) {
+    postToolBox(toolBoxOption) {
       // toolbox에 들어간 option들을 formEditor에서 watch로 계속 넘겨받고 prop으로 넘겨주고 있습니다! -j
       this.mToolBoxOptions = toolBoxOption
     },
-    decodeContents (data) {
+    decodeContents(data) {
       var changeText = Base64.decode(data)
       return changeText
     },
-    async getCabinetDetail (cabinetKey) {
+    async getCabinetDetail(cabinetKey) {
       var paramMap = new Map()
       paramMap.set('teamKey', this.propData.currentTeamKey)
       paramMap.set('currentTeamKey', this.propData.currentTeamKey)
@@ -492,17 +724,20 @@ export default {
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', this.GE_USER.userKey)
-      var response = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getCabinetListForMyShareType',
-        param: Object.fromEntries(paramMap)
-      }, true)
+      var response = await this.$commonAxiosFunction(
+        {
+          url: '/tp.getCabinetListForMyShareType',
+          param: Object.fromEntries(paramMap)
+        },
+        true
+      )
       var mCabinet = response.data.mCabinet
       if (mCabinet) {
         this.fileYn = mCabinet.fileYn
       }
       return mCabinet
     },
-    async selectBoard (data, index) {
+    async selectBoard(data, index) {
       this.selectBoardIndex = index
       this.mCanWriteYn = true
       var mCabinet
@@ -534,16 +769,22 @@ export default {
       this.mSelectedBoard = mCabinet
       this.fileYn = this.mSelectedBoard.fileYn
       if (mCabinet.guideFullStr) {
-        this.$refs.complexEditor.addFormCard('text', this.decodeContents(mCabinet.guideFullStr))
+        this.$refs.complexEditor.addFormCard(
+          'text',
+          this.decodeContents(mCabinet.guideFullStr)
+        )
       }
       if (mCabinet.blindYn) {
         this.cabBlindYn = true
       }
     },
-    async getTeamMenuList () {
+    async getTeamMenuList() {
       var paramMap = new Map()
       paramMap.set('teamKey', this.propData.currentTeamKey)
-      paramMap.set('currentTeamKey', this.propData.currentTeamKey || this.propData.creTeamKey)
+      paramMap.set(
+        'currentTeamKey',
+        this.propData.currentTeamKey || this.propData.creTeamKey
+      )
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', this.GE_USER.userKey)
@@ -554,7 +795,7 @@ export default {
         }
       })
     },
-    setParamInnerHtml (formCard) {
+    setParamInnerHtml(formCard) {
       var innerHtml = ''
       for (var i = 0; i < formCard.length; i++) {
         innerHtml += formCard[i].outerHtml
@@ -569,7 +810,7 @@ export default {
       if (this.contentType === 'ALIM') this.clickPageTopBtn()
       if (this.contentType === 'BOAR') this.boardDataCheck()
     },
-    async clickPageTopBtn () {
+    async clickPageTopBtn() {
       // 취소를 누르거나 유효성 검사 (이 함수)에 통과하지 못하면 값을 다시 가져와야함. 그러므로 --> this.complexOkYn = false
       if (this.complexOkYn === false) {
         this.complexOkYn = true
@@ -595,7 +836,8 @@ export default {
             return
           }
         }
-        if (this.allRecvYn === true) {} else {
+        if (this.allRecvYn === true) {
+        } else {
           await this.settingRecvList()
           if (this.selectedReceiverList.length > 0) {
           } else {
@@ -611,7 +853,10 @@ export default {
         var msgData = ''
         msgData = document.getElementById('msgBox').innerText
         msgData = msgData.trim()
-        if ((msgData !== undefined && msgData !== null && msgData !== '') || (this.uploadFileList.length > 0)) {
+        if (
+          (msgData !== undefined && msgData !== null && msgData !== '') ||
+          this.uploadFileList.length > 0
+        ) {
         } else {
           this.errorText = this.$t('FORM_MSG_NOTI_NOCONT')
           this.failPopYn = true
@@ -621,7 +866,7 @@ export default {
         this.checkPopYn = true
       }
     },
-    boardDataCheck () {
+    boardDataCheck() {
       if (this.complexOkYn === false) {
         this.complexOkYn = true
         this.$refs.complexEditor.setParamInnerHtml()
@@ -638,7 +883,10 @@ export default {
         var msgData = ''
         msgData = document.getElementById('msgBox').innerText
         msgData = msgData.trim()
-        if ((msgData !== undefined && msgData !== null && msgData !== '') || this.uploadFileList.length > 0) {
+        if (
+          (msgData !== undefined && msgData !== null && msgData !== '') ||
+          this.uploadFileList.length > 0
+        ) {
         } else {
           this.errorText = this.$t('FORM_MSG_POST_NOCONT')
           this.failPopYn = true
@@ -646,14 +894,22 @@ export default {
           return
         }
         if (this.selectBoardYn === true) {
-          if (this.selectBoardIndex !== undefined && this.selectBoardIndex !== null && this.selectBoardIndex !== '') {
+          if (
+            this.selectBoardIndex !== undefined &&
+            this.selectBoardIndex !== null &&
+            this.selectBoardIndex !== ''
+          ) {
             if (this.selectBoardCabinetKey === null) {
               this.errorText = this.$t('FORM_MSG_DIFFBOARD')
               this.failPopYn = true
               this.complexOkYn = false
               return
             }
-          } else if (this.selectBoardIndex === undefined || this.selectBoardIndex === null || this.selectBoardIndex === '') {
+          } else if (
+            this.selectBoardIndex === undefined ||
+            this.selectBoardIndex === null ||
+            this.selectBoardIndex === ''
+          ) {
             this.errorText = this.$t('FORM_MSG_NOBOARD')
             this.failPopYn = true
             this.complexOkYn = false
@@ -663,17 +919,20 @@ export default {
         this.checkPopYn = true
       }
     },
-    changeUploadList (upList) {
+    changeUploadList(upList) {
       if (this.uploadFileList.length > 0) {
-        console.log(this.uploadFileList.findIndex(item => item.targetKey === upList.targetKey))
-        var index = this.uploadFileList.findIndex(item => item.targetKey === upList.targetKey)
+        console.log(
+          this.uploadFileList.findIndex(
+            (item) => item.targetKey === upList.targetKey
+          )
+        )
+        var index = this.uploadFileList.findIndex(
+          (item) => item.targetKey === upList.targetKey
+        )
         if (index === -1) {
           var temp = this.uploadFileList
           this.uploadFileList = []
-          this.uploadFileList = [
-            ...temp,
-            upList
-          ]
+          this.uploadFileList = [...temp, upList]
         } else if (index !== -1) {
           this.uploadFileList.splice(index, 1, upList)
         }
@@ -681,11 +940,11 @@ export default {
         this.uploadFileList.push(upList)
       }
     },
-    confirmNo () {
+    confirmNo() {
       this.checkPopYn = false
       this.complexOkYn = false
     },
-    setParamInnerText (innerText) {
+    setParamInnerText(innerText) {
       if (innerText !== undefined && innerText !== null && innerText !== '') {
         document.getElementById('msgBox').innerHTML = ''
         document.getElementById('msgBox').innerHTML = innerText
@@ -694,7 +953,7 @@ export default {
         this.propFormData = innerText
       }
     },
-    settingAlim () {
+    settingAlim() {
       var temp = document.createElement('div')
       temp.innerHTML = this.bodyString
       var innerHtml = ''
@@ -728,7 +987,8 @@ export default {
         }
         if (imgYn) {
           jsonObj.pSrc = formC[i].querySelector('img').src
-          jsonObj.pFilekey = formC[i].querySelector('img').attributes.filekey.value
+          jsonObj.pFilekey =
+            formC[i].querySelector('img').attributes.filekey.value
         }
         newArr.push(jsonObj)
       }
@@ -739,7 +999,8 @@ export default {
         firstSettingDiv.classList.add('formCardTextid')
         firstSettingDiv.classList.add('formCard')
         firstSettingDiv.attributes.formidx = 0
-        firstSettingDiv.attributes.creTeamKey = this.propData.currentTeamKey || this.propData.creTeamKey
+        firstSettingDiv.attributes.creTeamKey =
+          this.propData.currentTeamKey || this.propData.creTeamKey
         firstSettingDiv.id = 'formEditText'
         firstSettingDiv.attributes.contentEditable = false
         firstSettingDiv.style.padding = '0px 20px'
@@ -757,9 +1018,11 @@ export default {
       this.$refs.complexEditor.setFormCard(this.propFormData)
       document.getElementById('msgBox').innerHTML = ''
       document.getElementById('msgBox').innerHTML = innerHtml
-      this.addFalseList = document.querySelectorAll('.msgArea .formCard .addFalse')
+      this.addFalseList = document.querySelectorAll(
+        '.msgArea .formCard .addFalse'
+      )
     },
-    closeXPop (reloadYn) {
+    closeXPop(reloadYn) {
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -767,7 +1030,7 @@ export default {
       this.$store.commit('UB_HISTORY/updateStack', history)
       this.$emit('closeXPop')
     },
-    async sendBoard () {
+    async sendBoard() {
       var param = {}
       this.sendLoadingYn = true
       this.checkPopYn = false
@@ -802,8 +1065,17 @@ export default {
         }
         innerHtml = document.getElementById('msgBox').innerHTML
 
-        param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
-        if (this.mSelectedBoard && this.mSelectedBoard.shareList && this.mSelectedBoard.shareList[0] && this.mSelectedBoard.shareList[0].accessKind && this.mSelectedBoard.shareList[0].accessKind === 'F') {
+        param.bodyFullStr = innerHtml.replaceAll(
+          'width: calc(100% - 30px);',
+          'width: 100%;'
+        )
+        if (
+          this.mSelectedBoard &&
+          this.mSelectedBoard.shareList &&
+          this.mSelectedBoard.shareList[0] &&
+          this.mSelectedBoard.shareList[0].accessKind &&
+          this.mSelectedBoard.shareList[0].accessKind === 'F'
+        ) {
           param.allRecvYn = true
         }
         param.jobkindId = 'BOAR'
@@ -819,7 +1091,8 @@ export default {
         if (param.cabinetKey === this.$DALIM_MUN_CAB_KEY) {
           param.onlyManagerYn = true
         }
-        param.creTeamKey = this.propData.currentTeamKey || this.propData.creTeamKey
+        param.creTeamKey =
+          this.propData.currentTeamKey || this.propData.creTeamKey
         if (this.propData.attachMfilekey) {
           param.attachMfilekey = this.propData.attachMfilekey
         }
@@ -827,7 +1100,9 @@ export default {
           param.creUserName = this.nonMemUserName
           param.creUserKey = 0
         } else {
-          param.creUserName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
+          param.creUserName = this.$changeText(
+            this.GE_USER.userDispMtext || this.GE_USER.userNameMtext
+          )
           param.creUserKey = this.GE_USER.userKey
         }
         param.cabinetName = this.propData.cabinetNameMtext || this.cabinetName
@@ -849,8 +1124,11 @@ export default {
           var newParam = {}
           newParam.contentsKey = result.contents.contentsKey
           newParam.jobkindId = 'BOAR'
-          await this.$getContentsList(newParam).then(newReslute => {
-            this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
+          await this.$getContentsList(newParam).then((newReslute) => {
+            this.$store.dispatch(
+              'UB_CHANNEL/AC_ADD_CONTENTS',
+              newReslute.content
+            )
           })
           var detail = this.$getDetail('TEAM', this.params.targetKey)
           if (detail && detail[0] && detail[0].totalContentsCount) {
@@ -895,7 +1173,7 @@ export default {
       }
     },
     // 선택한 수신리스트를 서비스에 보내 전 데이터 전처리
-    settingRecvList () {
+    settingRecvList() {
       var shareItemBookObject = {}
       if (this.receiverList.bookList) {
         for (let i = 0; i < this.receiverList.bookList.length; i++) {
@@ -923,7 +1201,7 @@ export default {
         }
       }
     },
-    setAttachFileList () {
+    setAttachFileList() {
       var newAttachFileList = []
       var setObj = {}
       for (var i = 0; i < this.uploadFileList.length; i++) {
@@ -940,7 +1218,7 @@ export default {
       }
       return newAttachFileList
     },
-    async handleImageUpload (file) {
+    async handleImageUpload(file) {
       this.selectFile = null
       const options = {
         maxSizeMB: 1,
@@ -949,13 +1227,24 @@ export default {
       }
 
       // 0 번째 파일을 가져 온다.
-      let fileExt = file.name.substring(
-        file.name.lastIndexOf('.') + 1
-      )
+      let fileExt = file.name.substring(file.name.lastIndexOf('.') + 1)
       // 소문자로 변환
       fileExt = fileExt.toLowerCase()
       if (
-        ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
+        [
+          'jpeg',
+          'jpg',
+          'png',
+          'gif',
+          'bmp',
+          'webp',
+          'svg',
+          'tiff',
+          'tif',
+          'eps',
+          'heic',
+          'bpg'
+        ].includes(fileExt)
       ) {
         console.log('originalFile instanceof Blob', file instanceof Blob) // true
         console.log(`originalFile size ${file.size / 1024 / 1024} MB`)
@@ -964,32 +1253,53 @@ export default {
           // eslint-disable-next-line no-undef
           var compressedFile = await this.$imageCompression(file, options)
           console.log(compressedFile)
-          console.log('compressedFile instanceof Blob', compressedFile instanceof Blob) // true
+          console.log(
+            'compressedFile instanceof Blob',
+            compressedFile instanceof Blob
+          ) // true
           var src = null
           if (compressedFile instanceof Blob) {
-            src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+            src = await this.$imageCompression.getDataUrlFromFile(
+              compressedFile
+            )
             const decodImg = atob(src.split(',')[1])
             const array = []
             for (let i = 0; i < decodImg.length; i++) {
               array.push(decodImg.charCodeAt(i))
             }
-            const Bfile = new Blob([new Uint8Array(array)], { type: 'image/png' })
+            const Bfile = new Blob([new Uint8Array(array)], {
+              type: 'image/png'
+            })
             var newFile = new File([Bfile], compressedFile.name)
           } else {
-            src = await this.$imageCompression.getDataUrlFromFile(compressedFile)
+            src = await this.$imageCompression.getDataUrlFromFile(
+              compressedFile
+            )
           }
 
-          console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`) // smaller than maxSizeMB
+          console.log(
+            `compressedFile size ${compressedFile.size / 1024 / 1024} MB`
+          ) // smaller than maxSizeMB
           // console.log(`compressedFile preview url: ${src}`) // smaller than maxSizeMB
           var pasteImg = true
           this.$refs.complexEditor.addFormCard('image', src, true, pasteImg)
-          this.$refs.complexEditor.successImgPreview({ targetKey: document.querySelectorAll('#eContentsWrap .formDiv').length - 1, selectFileList: { previewImgUrl: src, addYn: true, file: newFile, targetKey: newFile.name }, originalType: 'image' })
+          this.$refs.complexEditor.successImgPreview({
+            targetKey:
+              document.querySelectorAll('#eContentsWrap .formDiv').length - 1,
+            selectFileList: {
+              previewImgUrl: src,
+              addYn: true,
+              file: newFile,
+              targetKey: newFile.name
+            },
+            originalType: 'image'
+          })
         } catch (error) {
           console.log(error)
         }
       }
     },
-    async formSubmit () {
+    async formSubmit() {
       if (this.uploadFileList.length > 0) {
         var iList = document.querySelectorAll('.formCard .addTrue')
         var form = new FormData()
@@ -997,17 +1307,18 @@ export default {
         for (var i = 0; i < this.uploadFileList.length; i++) {
           form = new FormData()
           const oldFile = thisthis.uploadFileList[i].file
-          const newFile = new File([oldFile], oldFile.name.normalize('NFC'), { type: oldFile.type })
+          const newFile = new File([oldFile], oldFile.name.normalize('NFC'), {
+            type: oldFile.type
+          })
           form.append('files[0]', newFile)
           await this.$axios
-          // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://unibuzzy.com/file/tp.uploadFile', form,
-              {
-                headers: {
-                  'Content-Type': 'multipart/form-data; charset: UTF-8;'
-                }
-              })
-            .then(res => {
+            // 파일서버 fileServer fileserver FileServer Fileserver
+            .post('https://unibuzzy.com/file/tp.uploadFile', form, {
+              headers: {
+                'Content-Type': 'multipart/form-data; charset: UTF-8;'
+              }
+            })
+            .then((res) => {
               console.log(res)
               if (res.data.length > 0) {
                 if (this.uploadFileList[i].attachYn === true) {
@@ -1021,7 +1332,7 @@ export default {
                 this.uploadFileList[i].fileKey = res.data[0].fileKey
               }
             })
-            .catch(error => {
+            .catch((error) => {
               this.response = error
               this.isUploading = false
             })
@@ -1032,7 +1343,12 @@ export default {
             var uploadFile = this.uploadFileList[s]
             if (uploadFile.successSave) {
               for (var il = 0; il < iList.length; il++) {
-                if (!uploadFile.attachYn && (iList[il].attributes.filekey === undefined || iList[il].attributes.filekey === null || iList[il].attributes.filekey === '')) {
+                if (
+                  !uploadFile.attachYn &&
+                  (iList[il].attributes.filekey === undefined ||
+                    iList[il].attributes.filekey === null ||
+                    iList[il].attributes.filekey === '')
+                ) {
                   if (iList[il].src === uploadFile.previewImgUrl) {
                     iList[il].src = uploadFile.filePath
                     // eslint-disable-next-line no-unused-vars
@@ -1054,10 +1370,13 @@ export default {
       }
       return true
     },
-    delAttachFile (dFile) {
+    delAttachFile(dFile) {
       if (dFile.addYn) {
         for (var d = 0; d < this.uploadFileList.length; d++) {
-          if (this.uploadFileList[d].attachYn === true && this.uploadFileList[d].attachKey === dFile.attachKey) {
+          if (
+            this.uploadFileList[d].attachYn === true &&
+            this.uploadFileList[d].attachKey === dFile.attachKey
+          ) {
             this.uploadFileList.splice(d, 1)
           }
         }
@@ -1065,14 +1384,14 @@ export default {
         this.delAddFalseFileList.push(dFile)
       }
     },
-    setSelectedAttachFileList (sFile) {
+    setSelectedAttachFileList(sFile) {
       if (sFile.addYn === true) {
         this.uploadFileList.push(sFile)
       }
     }
   },
   computed: {
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     }
   }
@@ -1080,7 +1399,6 @@ export default {
 </script>
 
 <style scoped>
-
 .whitePaper {
   position: absolute;
   top: 5%;
@@ -1103,12 +1421,12 @@ export default {
   background-color: white !important;
 }
 .titlePlaceholder::placeholder {
-  color: #AFAFAF
+  color: #afafaf;
 }
 .writeContenBtn {
   height: 35px;
-  font-size:14px;
-  padding :7px 20px !important;
+  font-size: 14px;
+  padding: 7px 20px !important;
   display: flex;
   align-items: center;
   border-radius: 8px !important;
@@ -1125,8 +1443,8 @@ export default {
   justify-content: space-between;
 }
 .headerLine {
-  width:100%;
-  border-bottom: 2px solid #5F61BD;
+  width: 100%;
+  border-bottom: 2px solid #5f61bd;
 }
 .alimTopArea {
   display: flex;
@@ -1139,8 +1457,8 @@ export default {
   width: calc(100% - 3.5rem);
 }
 .selectRecvUserBox {
-  border:1px solid #ccc;
-  border-radius:8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   min-height: 30px;
   background: white;
   padding-left: 5px;
@@ -1171,10 +1489,10 @@ export default {
   overflow: auto hidden;
   white-space: nowrap;
   display: flex;
-  align-items: center
+  align-items: center;
 }
 .boardItem {
-  border-radius:10px;
+  border-radius: 10px;
   display: inline-flex;
 }
 .contentsTitleBox {
@@ -1212,7 +1530,7 @@ export default {
   width: 100%;
   color: #fff;
   border-radius: 0.8rem;
-  background: rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.3);
   font-weight: bold;
   font-size: 20px;
 }

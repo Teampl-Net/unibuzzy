@@ -18,16 +18,40 @@
 </i18n>
 <template>
   <div v-if="mAddressBookList.length > 0" class="fl w100P scrollOn">
-    <draggable  ref="editableArea" class="ghostClass fl w100P" v-model="mAddressBookList" @end="changePosTeamMenu" ghost-class="ghost" style=" --webkit-tap-highlight-color: rgba(0,0,0,0);" :disabled='mDragEnabled' delay="200"    >
+    <draggable
+      ref="editableArea"
+      class="ghostClass fl w100P"
+      v-model="mAddressBookList"
+      @end="changePosTeamMenu"
+      ghost-class="ghost"
+      style="--webkit-tap-highlight-color: rgba(0, 0, 0, 0)"
+      :disabled="mDragEnabled"
+      delay="200"
+    >
       <transition-group>
-        <template  v-for="(data, index) in mAddressBookList" :key='index'>
-          <gReceiveCard :style="mAddressBookList.length - 1 === index && index !== 0? 'border-bottom: 0; padding-bottom: 100px;':''" :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'"  :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
+        <template v-for="(data, index) in mAddressBookList" :key="index">
+          <gReceiveCard
+            :style="
+              mAddressBookList.length - 1 === index && index !== 0
+                ? 'border-bottom: 0; padding-bottom: 100px;'
+                : ''
+            "
+            :propData="data"
+            :option="selectPopYn === true ? 'SELE' : 'EDIT'"
+            :compoIdx="index"
+            @receiveCardEmit="receiveCardEmit"
+          />
         </template>
       </transition-group>
     </draggable>
   </div>
 
-  <gListEmpty v-else :title="$t('EDIT_BOOK_MSG_NOBOOK')" :subTitle="$t('EDIT_BOOK_MSG_CREBOOK')" :option="selectPopYn === true ? 'SELE' : 'EDIT'" />
+  <gListEmpty
+    v-else
+    :title="$t('EDIT_BOOK_MSG_NOBOOK')"
+    :subTitle="$t('EDIT_BOOK_MSG_CREBOOK')"
+    :option="selectPopYn === true ? 'SELE' : 'EDIT'"
+  />
 </template>
 
 <script>
@@ -39,7 +63,7 @@ export default {
     parentSelectList: {},
     selectPopYn: Boolean
   },
-  data () {
+  data() {
     return {
       mAddressBookList: [],
       mPropData: {},
@@ -47,7 +71,7 @@ export default {
       mSelectedBookList: []
     }
   },
-  async mounted () {
+  async mounted() {
     this.mAddressBookList = JSON.parse(JSON.stringify(this.propBookList))
 
     this.mPropData = this.propData
@@ -57,23 +81,25 @@ export default {
         var this_ = this
         this.$nextTick(() => {
           this_.mSelectedBookList = []
-          this_.mSelectedBookList = JSON.parse(JSON.stringify(this_.parentSelectList))
+          this_.mSelectedBookList = JSON.parse(
+            JSON.stringify(this_.parentSelectList)
+          )
           this_.settingCheck()
         })
       }
     }
   },
   watch: {
-    parentSelectList () {
+    parentSelectList() {
       this.mSelectedBookList = []
       this.mSelectedBookList = JSON.parse(JSON.stringify(this.parentSelectList))
       this.settingCheck()
     },
-    propBookList () {
+    propBookList() {
       this.setAddressList()
       this.settingCheck()
     },
-    mAddressBookList () {
+    mAddressBookList() {
       this.settingCheck()
     }
   },
@@ -81,13 +107,13 @@ export default {
     draggable: VueDraggableNext
   },
   methods: {
-    setAddressList () {
+    setAddressList() {
       this.mAddressBookList = this.propBookList
       for (let i = 0; i < this.mAddressBookList.length; i++) {
         this.mAddressBookList[i].jobkindId = 'BOOK'
       }
     },
-    receiveCardEmit (param) {
+    receiveCardEmit(param) {
       var type = param.targetType
       var data = param.data
       var idx = param.index
@@ -103,24 +129,24 @@ export default {
         this.deleteCabinetClick(data, idx)
       }
     },
-    clickList (data, index) {
+    clickList(data, index) {
       this.$emit('openMCabUserList', data)
     },
-    deleteCabinetClick (data, index) {
+    deleteCabinetClick(data, index) {
       var param = {}
       param.data = data
       param.index = index
       param.targetType = 'cabinet'
       this.$emit('delAddress', param)
     },
-    async deleteCabinet (data, index) {
+    async deleteCabinet(data, index) {
       var param = {}
       param.cabinetKey = data.cabinetKey
       param.currentTeamKey = data.teamKey || data.creTeamKey
       param.menuType = data.menuType
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteCabinet',
+          url: '/tp.deleteCabinet',
           param: param
         })
         if (result.data === 'true' || result.data === true) {
@@ -131,12 +157,16 @@ export default {
         this.$showToastPop(this.$t('EDIT_BOOK_MSG_FAILED'))
       }
     },
-    settingCheck () {
+    settingCheck() {
       if (this.mSelectedBookList) {
         for (var i = 0; i < this.mAddressBookList.length; i++) {
           this.mAddressBookList[i].selectedYn = false
           for (var s = 0; s < this.mSelectedBookList.length; s++) {
-            if (this.mSelectedBookList[s].accessKey === (this.mAddressBookList[i].cabinetKey || this.mAddressBookList[i].memberTypeKey)) {
+            if (
+              this.mSelectedBookList[s].accessKey ===
+              (this.mAddressBookList[i].cabinetKey ||
+                this.mAddressBookList[i].memberTypeKey)
+            ) {
               this.mAddressBookList[i].selectedYn = true
               break
             }
@@ -144,7 +174,7 @@ export default {
         }
       }
     },
-    addSelectedList (data, index) {
+    addSelectedList(data, index) {
       if (!this.mSelectedBookList) {
         this.mSelectedBookList = []
       }
@@ -156,7 +186,9 @@ export default {
       }
       data.shareSeq = aKey
       if (!data.accessKey) data.accessKey = aKey
-      var indexOf = this.mSelectedBookList.findIndex(i => i.accessKey === aKey)
+      var indexOf = this.mSelectedBookList.findIndex(
+        (i) => i.accessKey === aKey
+      )
       if (indexOf === -1) {
         this.mSelectedBookList.push(data)
         this.mAddressBookList[index].selectedYn = true
@@ -165,14 +197,16 @@ export default {
         this.deleteSelectedBook(data)
       }
     },
-    deleteSelectedBook (data, idx) {
-      var findIdx = this.mSelectedBookList.findIndex(item => item.accessKey === data.accessKey)
+    deleteSelectedBook(data, idx) {
+      var findIdx = this.mSelectedBookList.findIndex(
+        (item) => item.accessKey === data.accessKey
+      )
       if (findIdx !== -1) {
         this.mSelectedBookList.splice(findIdx, 1)
       }
       this.$emit('changeSelectBookList', this.mSelectedBookList)
     },
-    editAddressBook (data) {
+    editAddressBook(data) {
       var param = {}
       param.targetType = 'creAddressBook'
       param.popHeaderText = this.$t('EDIT_BOOK_TITLE_EDIT')
@@ -180,7 +214,7 @@ export default {
       param.cabinet = data
       this.$emit('openPop', param)
     },
-    async changePosTeamMenu (event) {
+    async changePosTeamMenu(event) {
       var paramSet = {}
       var tempList = []
       for (var index = 0; index < this.mAddressBookList.length; index++) {
@@ -191,17 +225,14 @@ export default {
         tempList.push(temp)
       }
       paramSet.teamMenuList = [...tempList]
-      await this.$commonAxiosFunction(
-        {
-          url: '/sUniB/tp.changePosTeamMenu',
-          param: paramSet
-        }
-      )
+      await this.$commonAxiosFunction({
+        url: '/tp.changePosTeamMenu',
+        param: paramSet
+      })
 
       this.$emit('getBookList')
     }
   }
-
 }
 </script>
 
@@ -220,8 +251,9 @@ export default {
 .commonBookCard {
   width: 100%;
   cursor: pointer;
-  height:60px;
-  border-bottom:1px solid #ddd; padding: 0.7rem 0;
+  height: 60px;
+  border-bottom: 1px solid #ddd;
+  padding: 0.7rem 0;
   position: relative;
   overflow: auto;
 }
