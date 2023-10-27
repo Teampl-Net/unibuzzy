@@ -416,7 +416,7 @@ export default defineComponent({
               console.log(error)
             })
         }
-        iList = document.querySelectorAll('.msgArea .formCard .addTrue')
+        iList = document.querySelectorAll('.formCard .addTrue')
         if (iList.length > 0) {
           for (let s = 0; s < tempFileList.length; s++) {
             const uploadFile = tempFileList[s]
@@ -548,16 +548,16 @@ export default defineComponent({
       }
     }
     const setParamInnerHtml = (formCard) => {
-      console.log('=========== forCard whole body ===========', formCard)
+      // console.log('=========== forCard whole body ===========', formCard)
       let extractedInnerHtml = ''
       let extractedOuterHtml = ''
       for (let i = 0; i < formCard.length; i++) {
         extractedOuterHtml += formCard[i].outerHtml
         extractedInnerHtml += formCard[i].innerHtml
       }
-      console.log(
-        `=========== forCard Data =========== \n - inner: ${extractedInnerHtml}\n - outer: ${extractedOuterHtml}`
-      )
+      // console.log(
+      //   `=========== forCard Data =========== \n - inner: ${extractedInnerHtml}\n - outer: ${extractedOuterHtml}`
+      // )
       extractedOuterHtml.replace('contenteditable', '')
       params.bodyFullStr = extractedOuterHtml
       propFormData.length = 0

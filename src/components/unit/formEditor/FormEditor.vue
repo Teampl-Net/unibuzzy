@@ -186,7 +186,7 @@
               v-else-if="value.type === 'image'"
               :ref="'imgForm' + value.targetKey"
               :selectFileListProp="value.selectFileList"
-              :class="value.addYn ? addTrue : ''"
+              :class="value.addYn ? 'addTrue' : ''"
               :targetKey="value.targetKey"
               @success="successImgPreview"
               :pSrc="value.pSrc"
@@ -703,11 +703,11 @@ export default {
     clickForm(value, idx) {
       this.selectedCardKey = idx
       this.selectRow = idx
-      if (value.type === 'text') {
-        this.$nextTick(() => {
-          this.$refs['textForm' + idx][0].focusInput()
-        })
-      }
+      // if (value.type === 'text') {
+      //   this.$nextTick(() => {
+      //     this.$refs['textForm' + idx][0].focusInput()
+      //   })
+      // }
     },
     clickTextArea(idx) {
       this.tools.boldYn = false
