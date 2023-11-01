@@ -146,6 +146,28 @@
                 class="cursorNotDrag"
                 alt=""
               />
+              <img
+                class="cursorP"
+                v-else-if="
+                  CONT_DETAIL.jobkindId === 'TODO' &&
+                  CONT_DETAIL.contStatus === '99'
+                "
+                src="@/assets/images/todo/checkboxCheck.png"
+                width="20"
+                height="20"
+                @click.stop="completeTodo(CONT_DETAIL)"
+              />
+              <img
+                class="cursorP"
+                v-else-if="
+                  CONT_DETAIL.jobkindId === 'TODO' &&
+                  CONT_DETAIL.contStatus === '00'
+                "
+                src="@/assets/images/todo/checkboxBlank.png"
+                width="20"
+                height="20"
+                @click.stop="completeTodo(CONT_DETAIL)"
+              />
               {{ CONT_DETAIL.title }}
             </p>
             <img
@@ -198,6 +220,39 @@
           <p class="fr CLDeepGrayColor font12 lineHeight23">
             {{ $changeDateFormat(CONT_DETAIL.creDate) }}
           </p>
+        </div>
+        <div class="w100P" style="display:flex; justify-content:space-between;">
+          <span v-if="CONT_DETAIL.jobkindId === 'TODO'"
+            @click="goUserProfile()"
+            style="font-weight: normal; display:block;"
+            class="mleft-03"
+          >
+          </span>
+          <div v-if="CONT_DETAIL.jobkindId === 'TODO'"  class="tagListWrap mTop-10" style="display:flex; gap:5px; flex-wrap:wrap;">
+            <div
+              v-for="(tag, index) in CONT_DETAIL.tagList"
+              :key="index"
+              class="CDeepBgColor"
+              style="
+                color: white;
+                height: 20px;
+                line-height: 20px;
+                padding: 0px 5px;
+                border-radius: 10px;
+                font-size: 10px;
+                width: auto;
+                word-break:keep-all;
+              ">
+                {{ tag.tagText }}
+              </div>
+              <div v-if="CONT_DETAIL.jobkindId === 'TODO'" style="display:flex; flex-direction:column;">
+                <p>{{ $changeDateFormat(CONT_DETAIL.workFromDate) + '~' +$changeDateFormat(CONT_DETAIL.workToDate) }}</p>
+                <div >
+                  <img class="actorImg" v-for="(each, index) in CONT_DETAIL.actorList" :key="index" :src="each.domainPath + each.pathMtext" style="" :alt="each.userDispMtext"/>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div v-if="!GE_USER.unknownYn" class="w100P fl">
           <statCodeComponent
@@ -1739,6 +1794,15 @@ export default {
 #loading {
   display: block;
   z-index: 9999999;
+}
+
+.actorImg{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  margin-left:-10px;
+  border:2px solid #fff;
+  box-shadow:0 5px 6px 0 rgba(60, 60, 60, 0.2);
 }
 .contentsCard {
   background: #ffffff;
