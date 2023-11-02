@@ -111,7 +111,7 @@ export default {
           this.pSetUpdateMemo(memo)
         } else {
           var result = await this.$commonAxiosFunction({
-            url: '/tp.saveMemo',
+            url: '/sUniB/tp.saveMemo',
             param: { memo: memo }
           })
           if (result && result.data && result.data.result) {

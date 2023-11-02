@@ -280,8 +280,8 @@ import axios from 'axios'
 
 // components
 import SelectTargetPop from './selectTarget/SelectTargetPop.vue'
-import TalFormEditor from '../unit/formEditor/Tal_formEditor.vue'
-import TalAttachFile from '../unit/formEditor/Tal_attachFile.vue'
+import TalFormEditor from '../unit/formEditor/FormEditor.vue'
+import TalAttachFile from '../unit/formEditor/AttachFile.vue'
 import { useRoute } from 'vue-router'
 
 export default defineComponent({
@@ -960,7 +960,9 @@ export default defineComponent({
         }
 
         let msgData = ''
-        msgData = document.getElementById('msgBox')?.innerText
+        if (document.getElementById('msgBox')) {
+          msgData = document.getElementById('msgBox').innerText
+        }
         if (msgData) {
           msgData = msgData.trim()
         }
@@ -992,7 +994,9 @@ export default defineComponent({
           return
         }
         var msgData = ''
-        msgData = document.getElementById('msgBox')?.innerText
+        if (document.getElementById('msgBox')) {
+          msgData = document.getElementById('msgBox').innerText
+        }
         if (msgData) {
           msgData = msgData.trim()
         }

@@ -531,7 +531,7 @@ export default {
       }
       const result = await this.$commonAxiosFunction(
         {
-          url: '/tp.saveUser',
+          url: '/sUniB/tp.saveUser',
           param: param
         },
         true
@@ -584,7 +584,7 @@ export default {
         this.openBoardPop()
       } else {
         var result = await this.$commonAxiosFunction({
-          url: '/tp.getBdAreaDetail',
+          url: '/sUniB/tp.getBdAreaDetail',
           param: param
         })
         if (result.data) {
@@ -614,7 +614,7 @@ export default {
         this.openBoardPop()
       } else if (area.priority !== 1) {
         var result = await this.$commonAxiosFunction({
-          url: '/tp.getBdAreaDetail',
+          url: '/sUniB/tp.getBdAreaDetail',
           param: param
         })
         if (result.data) {
@@ -699,7 +699,7 @@ export default {
       paramMap.set('mobileYn', isMobile)
       paramMap.set('fUserKey', this.GE_USER.userKey)
       var response = await this.$axios.post(
-        '/tp.UB_firstLoginCheck',
+        '/sUniB/tp.UB_firstLoginCheck',
         Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex(
@@ -1143,7 +1143,7 @@ export default {
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
       const result = await this.$getViewData(
-        { url: '/tp.getTeamMenuList', param: param },
+        { url: '/sUniB/tp.getTeamMenuList', param: param },
         false
       )
       if (!result || !result.data) {

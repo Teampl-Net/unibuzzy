@@ -240,7 +240,7 @@ export default {
       param.sample = sample
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveSample',
+        url: '/sUniB/tp.saveSample',
         param: param
       })
       this.$showToastPop(this.$t('SAMP_MSG_AFTER_DELETE'))
@@ -268,7 +268,7 @@ export default {
       param.targetType = 'GUIDE_'
       param.creTeamKey = this.cabinetDetail.creTeamKey
       const result = await this.$commonAxiosFunction({
-        url: '/tp.getSampleList',
+        url: '/sUniB/tp.getSampleList',
         param: { sample: param }
       })
       if (result.data.result === true) {

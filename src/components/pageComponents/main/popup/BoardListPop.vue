@@ -384,7 +384,7 @@ export default {
         var param = {}
         param.parentTeamKey = this.pTownTeamKey
         var result = await this.$commonAxiosFunction({
-          url: '/tp.getTownCabinetList',
+          url: '/sUniB/tp.getTownCabinetList',
           param: param
         })
         if (result && result.data && result.data.result) {

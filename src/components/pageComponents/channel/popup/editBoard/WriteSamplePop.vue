@@ -225,7 +225,7 @@ export default {
       sample.creUserKey = this.$store.getters['UB_USER/GE_USER'].userKey
       param.sample = sample
       await this.$commonAxiosFunction({
-        url: '/tp.saveSample',
+        url: '/sUniB/tp.saveSample',
         param: param
       })
       this.sampleTitleMtext = ''

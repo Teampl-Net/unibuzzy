@@ -123,7 +123,7 @@ export default {
       paramMap.set('cabinetKey', key)
       paramMap.set('jobkindId', 'USER')
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMCabContentsList',
+        url: '/sUniB/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       this.memberList = {}

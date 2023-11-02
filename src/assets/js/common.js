@@ -604,7 +604,7 @@ export const commonMethods = {
 
     var result = await commonAxiosFunction(
       {
-        url: '/tp.getShortDynamicLink',
+        url: '/sUniB/tp.getShortDynamicLink',
         param: Object.fromEntries(paramMap)
       },
       true
@@ -1122,7 +1122,7 @@ export const commonMethods = {
       aTag.style.display = 'none'
       document.body.appendChild(aTag)
     }
-    aTag.href = api + '/tp.downloadFile?fileKey=' + fileKey
+    aTag.href = api + '/sUniB/tp.downloadFile?fileKey=' + fileKey
     var varUA = localStorage.getItem('systemName')
     if (varUA === 'android' || varUA === 'Android') {
       aTag.target = '_blank'
@@ -1133,7 +1133,7 @@ export const commonMethods = {
     /* aTag.click()
     document.body.removeChild(aTag)
 
-    iframe.src = api + '/tp.downloadFile?fileKey=' + fileKey
+    iframe.src = api + '/sUniB/tp.downloadFile?fileKey=' + fileKey
     console.log(iframe.src) */
     // // eslint-disable-next-line no-debugger
     // debugger

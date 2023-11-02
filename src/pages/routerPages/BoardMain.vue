@@ -664,7 +664,7 @@ export default {
       }
 
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getMemoList',
+        url: '/sUniB/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex(
@@ -701,7 +701,7 @@ export default {
       )
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex(
@@ -913,7 +913,7 @@ export default {
     async saveActAxiosFunc(param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveActLog',
+        url: '/sUniB/tp.saveActLog',
         param: param
       })
       if (result.data.result === true) {
@@ -948,7 +948,7 @@ export default {
 
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: '/tp.deleteContents',
+          url: '/sUniB/tp.deleteContents',
           param: inParam
         })
         this.refreshAll()
@@ -985,7 +985,7 @@ export default {
       memo.memoKey = param.memoKey
       this.axiosQueue.push('deleteMemo')
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteMemo',
+        url: '/sUniB/tp.deleteMemo',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex(

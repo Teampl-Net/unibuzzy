@@ -282,7 +282,7 @@ export default {
       typeParam.userKey = this.GE_USER.userKey
       typeParam.teamKey = this.chanElement.teamKey
       await this.$commonAxiosFunction({
-        url: '/tp.saveFollower',
+        url: '/sUniB/tp.saveFollower',
         param: { follower: typeParam, appType: 'UB', doType: 'CR' }
       })
       this.CHANNEL_DETAIL.memberTypeKey = this.selectMemberObj.memberTypeKey

@@ -676,7 +676,7 @@ export default {
     async sendAlimToMember() {
       this.mContentsParams.allRecvYn = true
       const res = await this.$commonAxiosFunction({
-        url: '/tp.sendContentsPush',
+        url: '/sUniB/tp.sendContentsPush',
         param: this.mContentsParams
       })
       if (res.data && res.data.result) {
@@ -726,7 +726,7 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       var response = await this.$commonAxiosFunction(
         {
-          url: '/tp.getCabinetListForMyShareType',
+          url: '/sUniB/tp.getCabinetListForMyShareType',
           param: Object.fromEntries(paramMap)
         },
         true

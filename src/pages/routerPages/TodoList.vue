@@ -38,13 +38,17 @@
     :pGetTodoListGroupCab="getTodoListGroupCab"
     style="z-index: 999"
   />
+  <!-- <transition name="show_right"> -->
   <CommonAddContentsForm
+    style="z-index: 13"
     v-if="mWritePopShowYn"
+    :pClosePop="closeWritePop"
     :pPostContentsFn="saveContents"
     :pGetReceiverList="returnTargetData"
     :pGetTagListFn="returnTag"
     :pOptions="mOption"
   />
+  <!-- </transition> -->
   <template v-if="mShowSkeletonYn" style="height: 100px">
     <SkeletonBox
       v-for="value in [0, 1, 2]"
@@ -52,7 +56,10 @@
       style="height: 100px"
     />
   </template>
-  <div class="todoBody">
+  <div
+    class="todoBody"
+    :style="`padding-top: ${this.$STATUS_HEIGHT + 50}px !important;`"
+  >
     <div
       style="
         height: 50px;
@@ -63,26 +70,26 @@
         margin: 0 5px;
       "
     >
-      <div @click="goMain" class="fl cursorP mainHeaderBack">
+      <!-- <div @click="goMain" class="fl cursorP mainHeaderBack">
         <img
           src="@/assets/images/common/icon_back.png"
           class="fl commonPopBackBtn mleft-05"
           width="12"
           height="20"
         />
-      </div>
+      </div> -->
       <div class="commonTitleText dateAreaBox">
         <div class="calBox">
           <img
             class="cursorP"
-            src="../../assets/images/todo/rightArrow.png"
+            src="../../assets/images/todo/purpleArrow.png"
             style="transform: rotateZ(180deg)"
             width="20"
             height="20"
             @click="MoveDate(-1)"
           />
           <Datepicker
-            class="cursorP fl DatePicker"
+            class="cursorP fl DatePicker contents"
             v-model:value="mSelectDate"
             :editable="false"
             type="date"
@@ -90,14 +97,18 @@
           ></Datepicker>
           <img
             class="cursorP"
-            src="../../assets/images/todo/rightArrow.png"
+            src="../../assets/images/todo/purpleArrow.png"
             width="20"
             height="20"
             @click="MoveDate(1)"
           />
         </div>
       </div>
-      <div class="todoFilter" style="position: absolute; top: 5px; right: 0">
+      <div
+        class="todoFilter"
+        style="position: absolute; right: 0"
+        :style="`top: ${this.$STATUS_HEIGHT + 55}px;`"
+      >
         <div
           class="fr fontBold cursorP addBtn CDeepBgColor"
           @click="openAddTodoPop"
@@ -126,11 +137,10 @@
           display: flex;
           justify-content: space-between;
           align-items: center;
-          border: 2px solid #acacac;
           height: 40px;
           margin: 10px;
           border-radius: 10px;
-          background-color: #ededed;
+          background-color: #fff;
         "
       >
         <div
@@ -142,8 +152,8 @@
             width: 50%;
           "
         >
-          <p style="margin-right: 10px">My</p>
-          <p>
+          <p class="fontSize" style="margin-right: 10px">My</p>
+          <p class="fontSize">
             {{
               calPercent(
                 mCompleteMyTodoCount,
@@ -166,8 +176,8 @@
             width: 50%;
           "
         >
-          <p style="margin-right: 10px">Asked</p>
-          <p>
+          <p class="fontSize" style="margin-right: 10px">Asked</p>
+          <p class="fontSize">
             {{
               calPercent(
                 mCompleteTargetTodoCount,
@@ -195,11 +205,12 @@
           justify-content: center;
           align-items: center;
           height: calc(100% - 300px);
+          color: #6768a7;
         "
       >
         There are no today's todo.
       </div>
-      <div v-else style="height: calc(100% - 160px); overflow: hidden auto">
+      <div v-else style="height: calc(100% - 150px); overflow: hidden auto;">
         <div
           v-if="mMyTodoYn"
           class="fontBold"
@@ -215,23 +226,25 @@
             width="20"
             style="margin-right: 5px"
           />
-          <p style="font-size: 18px">My Todo ({{ mMyTodoCount }})</p>
+          <p style="font-size: 18px">내 일 ({{ mMyTodoCount }})</p>
         </div>
         <template
           v-for="(group, groupIndex) in mGetTodoGroupList"
           :key="groupIndex"
         >
-          <div v-if="group.myTodoList.length !== 0" style="padding: 5px 15px">
+          <div v-if="group.myTodoList.length !== 0" style=" padding: 5px 15px">
             <div
+              class="backShadow"
               style="
                 padding: 10px;
-                border: 2px solid #acacac;
                 border-radius: 10px;
+                background: #fff;
               "
             >
               <div
                 :class="todo.strikeOnOff ? 'fade-out-box' : ''"
                 v-for="(todo, todoIndex) in group.myTodoList"
+                @click="goDetail(todo)"
                 :key="todoIndex"
                 class="w100P cursorP"
                 style="
@@ -239,7 +252,7 @@
                   display: flex;
                   align-items: center;
                   flex-direction: column;
-                  padding: 10px 10px;
+                  padding:10px;
                 "
                 :style="
                   group.myTodoList.length - 1 === todoIndex
@@ -259,49 +272,54 @@
                     style="
                       display: flex;
                       justify-content: center;
-                      align-items: center;
+                      align-items: center; ;
                     "
                   >
                     <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
-                      <div class="MKAppUserPhoto MKShadow h100P">
-                        <img
+                      <div class="MKAppUserPhoto MKShadow h100P backShadow">
+                        <div
+                          class="middleBgColor fl imgCircle profileImg "
+                          :style="`background-image: url('${
+                            todo.userDomainPath
+                              ? todo.userDomainPath + todo.userProfileImg
+                              : todo.userProfileImg
+                          }')`"
+                        ></div>
+                        <!-- <img
                           :src="todo.userDomainPath + todo.userProfileImg"
-                          style="width: 20px; height: 20px"
-                        />
+                          style="width"
+                        /> -->
                       </div>
                     </div>
+                    <div style="margin-left:5px; display:flex; flex-direction:column; align-items:start;">
                     <p
                       v-if="todo.targetKey === GE_USER.userKey"
                       class="fl todoFontSize"
                       style="margin-right: 5px"
-                      @click="openTodoDetail(todo)"
                     >
-                      {{ $changeText(todo.cabinetNameMtext) }} (본인)
+                      본인
                     </p>
-                    <p
-                      v-else
-                      class="fl todoFontSize"
-                      style="margin-right: 5px"
-                      @click="openTodoDetail(todo)"
-                    >
-                      {{ $changeText(todo.cabinetNameMtext) }} ({{
-                        todo.creUserName ? $changeText(todo.creUserName) : '나'
-                      }})
+                    <p v-else class="fl todoFontSize fontBold" style="margin-right: 5px">
+                      {{ todo.creUserName ? $changeText(todo.creUserName) : '나'}}
                     </p>
+                    </div>
                   </div>
-                  <!-- <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/> -->
+                  <div style="display:flex; flex-direction:column; align-items:end; text-align:right;">
+                    <div class="fr CLDeepGrayColor todoFontSize" style="line-height: 23px">
+                      <span>{{ getMonthDate(todo.workFromDate) + '~' + getMonthDate(todo.workToDate)}}</span>
+                    </div>
+                  </div>
                 </div>
                 <div
-                  @click="openTodoDetail(todo)"
                   style="
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
                     width: 100%;
-                    margin-top: 5px;
+                    margin-top: 10px;
                   "
                 >
-                  <div style="display: flex; align-items: center">
+                  <div style="display: flex; align-items: center; margin-left:5px;">
                     <img
                       v-if="todo.strikeOnOff"
                       src="../../assets/images/todo/checkboxCheck.png"
@@ -331,15 +349,15 @@
                       "
                     />
                     <p
-                      v-if="todo.status === '00'"
-                      class="fl fontBold commonSubTitleTextBold mLeft-05"
+                      v-if="todo.contStatus === '00'"
+                      class="fl fontBold todoFontSize mLeft-05"
                       style="position: relative; margin-left: 5px"
                     >
                       <span
                         class="strikeLine"
                         :style="
                           todo.strikeOnOff
-                            ? 'transition: all .5s; width:100%;'
+                            ? 'transition: all .3s; width:100%;'
                             : 'width:0;'
                         "
                       ></span>
@@ -347,6 +365,69 @@
                     </p>
                   </div>
                   <div>
+                    <img class="actorImg" v-for="(each, index) in todo.actorList" :key="index" :src="each.domainPath + each.pathMtext" style="" :alt="each.userDispMtext"/>
+                  </div>
+                </div>
+                <div class="w100P" style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:10px; background-color:rgb(248, 248, 255);">
+                  <div>
+                    <div
+                      style="
+                        width: 30px;
+                        height: 35px;
+                        display: flex;
+                        cursor: pointer;
+                        float: left;
+                        margin-right: 10px;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                    >
+                      <div style="width: 100%; height: 20px; float: left">
+                        <img
+                          v-if="mWriteMemoYn"
+                          :src="require(`@/assets/images/todo/memoIcon.svg`)"
+                          class=""
+                          alt=""
+                        />
+                        <img
+                          v-else
+                          :src="require(`@/assets/images/todo/memoIcon.svg`)"
+                          class=""
+                          alt=""
+                        />
+                      </div>
+                      <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
+                        {{ todo.memoList.length === 0 ? '0' : todo.memoList.length}}
+                      </p>
+                    </div>
+                    <div
+                      @click="clickFileDownload()"
+                      style="
+                        cursor: pointer;
+                        width: 30px;
+                        height: 35px;
+                        display: flex;
+                        float: left;
+                        margin-right: 10px;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                    >
+                      <div style="width: 100%; height: 20px; float: left">
+                        <img
+                          :src="require(`@/assets/images/todo/attachIcon.svg`)"
+                          class=""
+                          alt=""
+                        />
+                      </div>
+                      <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
+                        {{ todo.fileCount === 0 ? '0': todo.fileCount }}
+                      </p>
+                  </div>
+                </div>
+                  <div style="display:flex; gap:3px; flex-wrap:wrap; justify-content:end;">
                     <div
                       v-for="(tag, index) in todo.tagList"
                       :key="index"
@@ -358,28 +439,14 @@
                         padding: 0px 5px;
                         border-radius: 10px;
                         font-size: 10px;
-                        width: 40px;
+                        width: auto;
                       "
                     >
                       {{ tag.tagText }}
                     </div>
                   </div>
                 </div>
-                <div
-                  @click="openUniBTodoDetail"
-                  class="CDeepBgColor"
-                  style="
-                    color: white;
-                    height: 20px;
-                    line-height: 20px;
-                    padding: 0px 5px;
-                    border-radius: 10px;
-                    font-size: 10px;
-                    width: 40px;
-                  "
-                >
-                  {{ changeTypeToText(todo.todoType) }}
-                </div>
+                <!-- <div @click="openUniBTodoDetail" class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div> -->
               </div>
             </div>
           </div>
@@ -399,7 +466,7 @@
             width="20"
             style="margin-right: 5px"
           />
-          <p style="font-size: 18px">Asked Todo ({{ mTargetTodoCount }})</p>
+          <p style="font-size: 18px">요청받은 일  ({{ mTargetTodoCount }})</p>
         </div>
         <template
           v-for="(group, groupIndex) in mGetTodoGroupList"
@@ -410,10 +477,11 @@
             style="padding: 5px 15px"
           >
             <div
+              class="backShadow"
               style="
                 padding: 10px;
-                border: 2px solid #acacac;
                 border-radius: 10px;
+                background: #fff;
               "
             >
               <div
@@ -433,6 +501,7 @@
                     ? ''
                     : 'border-bottom:1px solid #acacac;'
                 "
+                @click="goDetail(todo)"
               >
                 <div
                   style="
@@ -446,46 +515,57 @@
                     style="
                       display: flex;
                       justify-content: center;
-                      align-items: center;
+                      align-items: center; ;
                     "
                   >
                     <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
-                      <div class="MKAppUserPhoto MKShadow h100P">
-                        <img
+                      <div class="MKAppUserPhoto MKShadow h100P backShadow">
+                        <div
+                          class="middleBgColor fl imgCircle profileImg"
+                          :style="`background-image: url('${
+                            todo.userDomainPath
+                              ? todo.userDomainPath + todo.userProfileImg
+                              : todo.userProfileImg
+                          }')`"
+                        ></div>
+                        <!-- <img
                           :src="todo.userDomainPath + todo.userProfileImg"
                           style="width: 20px; height: 20px"
-                        />
+                        /> -->
                       </div>
                     </div>
+                    <div style="margin-left:5px; display:flex; flex-direction:column; align-items:start;">
                     <p
                       v-if="todo.targetKey === GE_USER.userKey"
                       class="fl todoFontSize"
                       style="margin-right: 5px"
-                      @click="openTodoDetail(todo)"
                     >
                       {{ $changeText(todo.cabinetNameMtext) }} (본인)
                     </p>
-                    <p
-                      v-else
-                      class="fl todoFontSize"
-                      style="margin-right: 5px"
-                      @click="openTodoDetail(todo)"
-                    >
-                      {{ $changeText(todo.cabinetNameMtext) }} ({{
-                        todo.creUserName ? $changeText(todo.creUserName) : '나'
-                      }})
+                    <p v-else class="fl todoFontSize fontBold" style="margin-right: 5px">
+                        {{ todo.creUserName ? $changeText(todo.creUserName) : '나' }}
+                    </p>
+                    <!-- <span class="todoFontSize" style="display:flex; gap:5px; color:#7E7E7E;">( 담당자 :
+                      <span class="fontBold" v-for="(each, index) in todo.actorList" :key="index">
+                        {{ each.userDispMtext ? $changeText(each.userDispMtext) : '담당자' }}
+                      </span>)
+                    </span> -->
+                    </div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; align-items:end; text-align:right;">
+                    <p class="fr CLDeepGrayColor todoFontSize" style="line-height: 23px">
+                      <span>{{ getMonthDate(todo.workFromDate) + '~' + getMonthDate(todo.workToDate)}}</span>
                     </p>
                   </div>
                   <!-- <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/> -->
                 </div>
                 <div
-                  @click="openTodoDetail(todo)"
                   style="
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
                     width: 100%;
-                    margin-top: 5px;
+                    margin-top: 10px;
                   "
                 >
                   <div
@@ -497,7 +577,7 @@
                         todoIndex
                       )
                     "
-                    style="display: flex; align-items: center"
+                    style="display: flex; align-items: center; margin-left:5px;"
                   >
                     <img
                       v-if="todo.strikeOnOff"
@@ -528,46 +608,100 @@
                       "
                     />
                     <p
-                      v-if="todo.status === '00'"
-                      class="fl fontBold commonSubTitleTextBold mLeft-05"
+                      v-if="todo.contStatus === '00'"
+                      class="fl fontBold todoFontSize mLeft-05"
                       style="position: relative; margin-left: 5px"
                     >
                       <span
                         class="strikeLine"
                         :style="
                           todo.strikeOnOff
-                            ? 'transition: all .5s; width:100%;'
+                            ? 'transition: all .3s; width:100%;'
                             : 'width:0;'
                         "
                       ></span>
                       {{ todo.title }}
                     </p>
                   </div>
-                  <div
-                    style="
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-                    "
-                  >
-                    <!-- <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px; margin-right:5px">uniB_detail</div> -->
-                    <div>
-                      <div
-                        v-for="(tag, index) in todo.tagList"
-                        :key="index"
-                        class="CDeepBgColor"
-                        style="
-                          color: white;
-                          height: 20px;
-                          line-height: 20px;
-                          padding: 0px 5px;
-                          border-radius: 10px;
-                          font-size: 10px;
-                          width: 40px;
-                        "
-                      >
-                        {{ tag.tagText }}
+                  <div>
+                    <img class="actorImg" v-for="(each, index) in todo.actorList" :key="index" :src="each.domainPath + each.pathMtext" style="" :alt="each.userDispMtext"/>
+                  </div>
+                </div>
+                <div class="w100P" style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:10px; background-color:rgb(248, 248, 255);">
+                  <div>
+                    <div
+                      style="
+                        width: 30px;
+                        height: 35px;
+                        display: flex;
+                        cursor: pointer;
+                        float: left;
+                        margin-right: 10px;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                    >
+                      <div style="width: 100%; height: 20px; float: left">
+                        <img
+                          v-if="mWriteMemoYn"
+                          :src="require(`@/assets/images/todo/memoIcon.svg`)"
+                          class=""
+                          alt=""
+                        />
+                        <img
+                          v-else
+                          :src="require(`@/assets/images/todo/memoIcon.svg`)"
+                          class=""
+                          alt=""
+                        />
                       </div>
+                      <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
+                        {{ todo.memoList.length === 0 ? '0' : todo.memoList.length}}
+                      </p>
+                    </div>
+                    <div
+                      @click="clickFileDownload()"
+                      style="
+                        cursor: pointer;
+                        width: 30px;
+                        height: 35px;
+                        display: flex;
+                        float: left;
+                        margin-right: 10px;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                    >
+                      <div style="width: 100%; height: 20px; float: left">
+                        <img
+                          :src="require(`@/assets/images/todo/attachIcon.svg`)"
+                          class=""
+                          alt=""
+                        />
+                      </div>
+                      <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
+                        {{ todo.fileCount === 0 ? '0': todo.fileCount }}
+                      </p>
+                  </div>
+                </div>
+                  <div style="display:flex; gap:3px; flex-wrap:wrap; justify-content:end;">
+                    <div
+                      v-for="(tag, index) in todo.tagList"
+                      :key="index"
+                      class="CDeepBgColor"
+                      style="
+                        color: white;
+                        height: 20px;
+                        line-height: 20px;
+                        padding: 0px 5px;
+                        border-radius: 10px;
+                        font-size: 10px;
+                        width: auto;
+                      "
+                    >
+                      {{ tag.tagText }}
                     </div>
                   </div>
                 </div>
@@ -591,7 +725,7 @@
             style="margin-right: 5px"
           />
           <p style="font-size: 18px">
-            Completed Todo ({{ mCompleteTodoCount }})
+            완료된 일 ({{ mCompleteTodoCount }})
           </p>
         </div>
         <template
@@ -603,10 +737,11 @@
             style="padding: 5px 15px"
           >
             <div
+              class="backShadow"
               style="
                 padding: 10px;
-                border: 2px solid #acacac;
                 border-radius: 10px;
+                background: #fff;
               "
             >
               <div
@@ -626,6 +761,7 @@
                     ? ''
                     : 'border-bottom:1px solid #acacac;'
                 "
+                @click="goDetail(todo)"
               >
                 <div
                   style="
@@ -639,49 +775,57 @@
                     style="
                       display: flex;
                       justify-content: center;
-                      align-items: center;
+                      align-items: center; ;
                     "
                   >
                     <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
-                      <div class="MKAppUserPhoto MKShadow h100P">
-                        <img
+                      <div class="MKAppUserPhoto MKShadow h100P backShadow">
+                        <div
+                          class="middleBgColor fl imgCircle profileImg"
+                          :style="`background-image: url('${
+                            todo.userDomainPath
+                              ? todo.userDomainPath + todo.userProfileImg
+                              : todo.userProfileImg
+                          }')`"
+                        ></div>
+                        <!-- <img
                           :src="todo.userDomainPath + todo.userProfileImg"
                           style="width: 20px; height: 20px"
-                        />
+                        /> -->
                       </div>
                     </div>
+                    <div style="margin-left:5px; display:flex; flex-direction:column; align-items:start;">
                     <p
                       v-if="todo.targetKey === GE_USER.userKey"
                       class="fl todoFontSize"
                       style="margin-right: 5px"
-                      @click="openTodoDetail(todo)"
                     >
-                      {{ $changeText(todo.cabinetNameMtext) }} (본인)
+                      본인
                     </p>
-                    <p
-                      v-else
-                      class="fl todoFontSize"
-                      style="margin-right: 5px"
-                      @click="openTodoDetail(todo)"
-                    >
-                      {{ $changeText(todo.cabinetNameMtext) }} ({{
+                    <p v-else class="fl todoFontSize" style="margin-right: 5px">
+                      {{
                         todo.creUserName ? $changeText(todo.creUserName) : '나'
-                      }})
+                      }}
                     </p>
                   </div>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:end; text-align:right;">
+                  <p class="fr CLDeepGrayColor todoFontSize" style="line-height: 23px">
+                      <span>{{ getMonthDate(todo.workFromDate) + '~' + getMonthDate(todo.workToDate)}}</span>
+                  </p>
+                </div>
                   <!-- <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/> -->
                 </div>
                 <div
-                  @click="openTodoDetail(todo)"
                   style="
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
                     width: 100%;
-                    margin-top: 5px;
+                    margin-top: 10px;
                   "
                 >
-                  <div style="display: flex; align-items: center">
+                  <div style="display: flex; align-items: center; margin-left:5px;">
                     <img
                       v-if="todo.strikeOnOff"
                       src="../../assets/images/todo/checkboxBlank.png"
@@ -711,22 +855,85 @@
                       "
                     />
                     <p
-                      class="fl fontBold commonSubTitleTextBold mLeft-05"
+                      class="fl fontBold todoFontSize fontBold mLeft-05"
                       style="position: relative; margin-left: 5px"
                     >
                       <span
                         class="strikeLine"
                         :style="
                           todo.strikeOnOff
-                            ? 'transition: all .5s; width:0;'
+                            ? 'transition: all .3s; width:0;'
                             : 'width:100%;'
                         "
                       ></span>
                       {{ todo.title }}
                     </p>
                   </div>
-                  <!-- <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div> -->
                   <div>
+                    <img class="actorImg" v-for="(each, index) in todo.actorList" :key="index" :src="each.domainPath + each.pathMtext" style="" :alt="each.userDispMtext"/>
+                  </div>
+                  <!-- <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div> -->
+                </div>
+                <div class="w100P" style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:10px; background-color:rgb(248, 248, 255);">
+                  <div>
+                    <div
+                      style="
+                        width: 30px;
+                        height: 35px;
+                        display: flex;
+                        cursor: pointer;
+                        float: left;
+                        margin-right: 10px;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                    >
+                      <div style="width: 100%; height: 20px; float: left">
+                        <img
+                          v-if="mWriteMemoYn"
+                          :src="require(`@/assets/images/todo/memoIcon.svg`)"
+                          class=""
+                          alt=""
+                        />
+                        <img
+                          v-else
+                          :src="require(`@/assets/images/todo/memoIcon.svg`)"
+                          class=""
+                          alt=""
+                        />
+                      </div>
+                      <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
+                        {{ todo.memoList.length === 0 ? '0' : todo.memoList.length}}
+                      </p>
+                    </div>
+                    <div
+                      @click="clickFileDownload()"
+                      style="
+                        cursor: pointer;
+                        width: 30px;
+                        height: 35px;
+                        display: flex;
+                        float: left;
+                        margin-right: 10px;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                    >
+                      <div style="width: 100%; height: 20px; float: left">
+                        <img
+                          :src="require(`@/assets/images/todo/attachIcon.svg`)"
+                          class=""
+                          alt=""
+                        />
+                      </div>
+                      <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
+                        {{ todo.fileCount === 0 ? '0': todo.fileCount }}
+                      </p>
+                  </div>
+                </div>
+                  <div style="display:flex; gap:3px; flex-wrap:wrap; justify-content:end;">
                     <div
                       v-for="(tag, index) in todo.tagList"
                       :key="index"
@@ -738,7 +945,7 @@
                         padding: 0px 5px;
                         border-radius: 10px;
                         font-size: 10px;
-                        width: 40px;
+                        width: auto;
                       "
                     >
                       {{ tag.tagText }}
@@ -752,7 +959,8 @@
       </div>
     </div>
   </div>
-  <div class="popBg" v-if="mWritePopShowYn" @click="closeWritePop"></div>
+  <div class="popBg" v-if="mWritePopShowYn"></div>
+  <!-- <transition name="show_right"> -->
   <CommonAddContentsForm
     style="z-index: 13"
     v-if="mWritePopShowYn"
@@ -761,7 +969,9 @@
     :pGetReceiverList="returnTargetData"
     :pGetTagListFn="returnTag"
     :pOptions="mOption"
+    :pUserInfo="GE_USER"
   />
+  <!-- </transition> -->
   <div class="popBg" v-if="mOpenMenuShowYn" @click="closeSubMenu"></div>
   <div v-show="mOpenMenuShowYn" class="reportCompoArea">
     <div class="fl memoFuncArea">
@@ -799,7 +1009,7 @@ export default {
     SkeletonBox,
     CommonAddContentsForm
   },
-  data() {
+  data () {
     return {
       mSelectDate: '',
       mMyTodoYn: false,
@@ -825,7 +1035,8 @@ export default {
       mTargetDataList: [],
       mOption: {
         model: 'mankik',
-        purpose: 'To Do'
+        purpose: 'Add ToDo',
+        fileServerURL: 'https://mzoin.com/fileServer/tp.uploadFile'
       },
       mTagList: [
         { categoryNameMtext: 'Select', categoryKey: 'A' },
@@ -837,16 +1048,42 @@ export default {
       mWritePopShowYn: false
     }
   },
-  created() {
+  created () {
     this.$emit('enterCloudLoading', false)
     setTimeout(() => {
       // this.getTodoListGroupCab()
       this.$emit('showCloudLoading', false)
     }, 1000)
+    const todoObject = {
+      teamKey: 0
+    }
+    this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [todoObject])
     this.mSelectDate = new Date()
   },
   methods: {
-    closeXPop(popId) {
+    clickFileDownload () {
+      return false // 추후 수정
+    },
+    getMonthDate (date) {
+      var format = 'MM/DD'
+      return this.$dayjs(date).add(9, 'hour').format(format)
+    },
+    goDetail (value) {
+      console.log(value)
+      var param = {}
+      param.targetType = 'contentsDetail'
+      param.targetKey = value.contentsKey
+      param.popHeaderText = '오늘의 일'
+      param.teamKey = 0
+      param.creTeamKey = 0
+      param.jobkindId = value.jobkindId
+      // param.creTeamKey = value.creTeamKey
+      param.value = value
+      value.readYn = 1
+      param.readYn = value.readYn
+      this.$emit('goDetail', param)
+    },
+    closeXPop (popId) {
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -854,15 +1091,15 @@ export default {
       this.$store.commit('UB_HISTORY/updateStack', history)
       this.$checkDeleteHistory(popId)
     },
-    closeWritePop() {
+    closeWritePop () {
       this.closeXPop('writeContents')
       this.mWritePopShowYn = false
     },
-    async saveContents(params) {
+    async saveContents (params) {
       params.creUserKey = this.GE_USER.userKey
       params.creUserName = this.$changeText(this.GE_USER.userDispMtext)
       params.jobkindId = 'TODO'
-
+      console.log(params.actorList)
       if (params.actorList) {
         const tempList = [...params.actorList]
         const actorList = []
@@ -875,149 +1112,106 @@ export default {
         })
         params.actorList = actorList
       }
-      await this.$saveContents(params)
+      await this.$saveContents(params).then((res) => {
+        if (res.result) {
+          this.getTodoListGroupCab()
+        }
+      })
       this.closeWritePop('WriteContents', this.closeWritePop)
     },
-    returnTag() {
+    returnTag () {
       return this.mTagList
     },
-    openUniBTodoDetail() {
+    openUniBTodoDetail () {
       // var param = {}
       // param.targetType = 'contentsDetail'
       // param.targetKey = 1011783
       // this.$emit('openPop', param)
       this.$router.push('/todo/1011783/934/13624')
     },
-    closeUniBTodoDetail() {
+    closeUniBTodoDetail () {
       this.mUniBTodoDetailPopShowYn = false
     },
-    setCompleteTodo(value, menu, groupIndex, todoIndex) {
-      this.completeTodo(value)
-      // this.mGetTodoGroupList[groupIndex][value][todoIndex].strikeOnOff = true
-      // setTimeout(() => {
-      if (this.mGetTodoGroupList[groupIndex][menu][todoIndex].status === '00') {
-        this.mGetTodoGroupList[groupIndex][menu][todoIndex].status = '99'
-        this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
-        this.mGetTodoGroupList[groupIndex][menu][todoIndex].completeUserName =
-          this.GE_USER.userNameMtext
-        // this.completeTodo(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
-        this.mGetTodoGroupList[groupIndex].completeTodoList.unshift(
-          this.mGetTodoGroupList[groupIndex][menu][todoIndex]
-        )
-        this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
-        console.log(this.mGetTodoGroupList[groupIndex])
-        if (menu === 'myTodoList') {
-          this.mMyTodoCount -= 1
-          this.mCompleteMyTodoCount += 1
+    checkTarget (value) {
+      if (!value.actorList || value.actorList.length === 0) return 'none'
+      if (value.creUserKey !== this.GE_USER.userKey) {
+        if (value.contStatus === '00') {
+          return 'my'
+        } else {
+          return 'completedMy'
         }
-        if (menu === 'targetTodoList') {
-          this.mTargetTodoCount -= 1
-          this.mCompleteTargetTodoCount += 1
-        }
-        if (this.mMyTodoCount === 0) {
-          this.mMyTodoYn = false
-        }
-        if (this.mTargetTodoCount === 0) {
-          this.mTargetTodoYn = false
-        }
-        this.mCompleteTodoCount += 1
-        if (this.mCompleteTodoCount !== 0) {
-          this.mCompleteTodoYn = true
-        }
-      } else if (
-        this.mGetTodoGroupList[groupIndex][menu][todoIndex].status === '99'
-      ) {
-        console.log(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
-        this.mGetTodoGroupList[groupIndex][menu][todoIndex].status = '00'
-        this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
-        // this.completeTodo(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
-        for (
-          let j = 0;
-          j <
-          this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList.length;
-          j++
-        ) {
-          if (
-            this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList[0]
-              .mUserList
-          ) {
-            for (
-              let k = 0;
-              k <
-              this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList[j]
-                .mUserList.length;
-              k++
-            ) {
-              if (
-                this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList[j]
-                  .mUserList[k].userKey === this.GE_USER.userKey
-              ) {
-                this.mGetTodoGroupList[groupIndex].myTodoList.unshift(
-                  this.mGetTodoGroupList[groupIndex][menu][todoIndex]
-                )
-                this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
-                this.mMyTodoCount += 1
-                this.mCompleteMyTodoCount -= 1
-                break
-              } else if (
-                this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList[j]
-                  .mUserList[k].userKey !== this.GE_USER.userKey
-              ) {
-                this.mGetTodoGroupList[groupIndex].targetTodoList.unshift(
-                  this.mGetTodoGroupList[groupIndex][menu][todoIndex]
-                )
-                this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
-                this.mTargetTodoCount += 1
-                this.mCompleteTargetTodoCount -= 1
+      } else {
+        for (let i = 0; i < value.actorList.length; i++) {
+          if (value.actorList[i].mUserList) {
+            for (let j = 0; j < value.actorList[i].mUserList.length; j++) {
+              if (value.actorList[i].mUserList[j].accessKey === this.GE_USER.userKey) {
+                if (value.contStatus === '00') {
+                  return 'my'
+                } else {
+                  return 'completedMy'
+                }
               }
             }
           } else {
-            if (
-              this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList[j]
-                .userKey === this.GE_USER.userKey
-            ) {
-              this.mGetTodoGroupList[groupIndex].myTodoList.unshift(
-                this.mGetTodoGroupList[groupIndex][menu][todoIndex]
-              )
-              this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
-              this.mMyTodoCount += 1
-              this.mCompleteMyTodoCount -= 1
-              break
-            } else if (
-              this.mGetTodoGroupList[groupIndex][menu][todoIndex].actorList[j]
-                .userKey !== this.GE_USER.userKey
-            ) {
-              this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
-              this.mTargetTodoCount += 1
-              this.mCompleteTargetTodoCount -= 1
+            if (value.actorList[i].accessKey === this.GE_USER.userKey) {
+              return 'my'
             }
           }
         }
-        // if (this.mGetTodoGroupList[groupIndex][menu][todoIndex].todoUserKey === this.GE_USER.userKey) {
-        //   this.mGetTodoGroupList[groupIndex].myTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
-        //   this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
-        //   this.mMyTodoCount += 1
-        //   this.mCompleteMyTodoCount -= 1
-        // } else {
-        //   this.mGetTodoGroupList[groupIndex].targetTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
-        //   this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
-        //   this.mTargetTodoCount += 1
-        //   this.mCompleteTargetTodoCount -= 1
-        // }
-        if (this.mMyTodoCount !== 0) {
-          this.mMyTodoYn = true
-        }
-        if (this.mTargetTodoCount !== 0) {
-          this.mTargetTodoYn = true
-        }
-        this.mCompleteTodoCount -= 1
-        if (this.mCompleteTodoCount === 0) {
-          this.mCompleteTodoYn = false
+        if (value.contStatus === '00') {
+          return 'target'
+        } else {
+          return 'completedTarget'
         }
       }
-      // }, 3000)
     },
-    MoveDate(value) {
+    setCompleteTodo (value, menu, groupIndex, todoIndex) {
+      this.completeTodo(value)
+      this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = true
+      const todoType = this.checkTarget(value)
+      setTimeout(() => {
+        switch (todoType) {
+          case 'my':
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus = '99'
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].completeUserName = this.GE_USER.userNameMtext
+            this.mGetTodoGroupList[groupIndex].completeTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+            this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
+            this.mMyTodoCount -= 1
+            this.mCompleteMyTodoCount += 1
+            break
+          case 'target':
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus = '99'
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].completeUserName = this.GE_USER.userNameMtext
+            this.mGetTodoGroupList[groupIndex].completeTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+            this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
+            this.mTargetTodoCount -= 1
+            this.mCompleteTargetTodoCount += 1
+            break
+          case 'completedMy':
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus = '00'
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
+            this.mGetTodoGroupList[groupIndex].myTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+            this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
+            this.mMyTodoCount += 1
+            this.mCompleteMyTodoCount -= 1
+            break
+          case 'completedTarget':
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus = '00'
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
+            this.mGetTodoGroupList[groupIndex].targetTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+            this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
+            this.mTargetTodoCount += 1
+            this.mCompleteTargetTodoCount -= 1
+            break
+        }
+        this.myTodoYn = this.mGetTodoGroupList[groupIndex].myTodoList.length > 0
+        this.mTargetTodoYn = this.mGetTodoGroupList[groupIndex].targetTodoList.length > 0
+        this.mCompleteTodoYn = this.mGetTodoGroupList[groupIndex].completeTodoList.length > 0
+      }, 1000)
+    },
+    MoveDate (value) {
       this.setCountDate += value
       const setDate = this.mSelectDate.setDate(
         this.mSelectDate.getDate() + value
@@ -1025,23 +1219,24 @@ export default {
       const returnDate = new Date(setDate)
       this.mSelectDate = returnDate
     },
-    async completeTodo(value, loadingYn) {
+    async completeTodo (value, loadingYn) {
       var param = {}
-      param.mccKey = value.mccKey
+      param.contentsKey = value.contentsKey
+      param.workUserName = this.GE_USER.userDispMtext
       param.jobkindId = 'TODO'
-      if (value.status === '00') {
-        param.status = '99'
+      if (value.contStatus === '00') {
+        param.contStatus = '99'
       } else {
-        param.status = '00'
+        param.contStatus = '00'
       }
-      param.completeUserKey = this.GE_USER.userKey
+      param.workUserKey = this.GE_USER.userKey
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMCabContents',
-        param: { mCabContents: param }
+        url: '/sUniB/tp.updateTodo',
+        param: param
       })
       console.log(result)
     },
-    async getTodoList(loadingYn) {
+    async getTodoList (loadingYn) {
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
       var nonLoading = true
@@ -1052,7 +1247,7 @@ export default {
       console.log(resultList)
     },
     // target data를 공통 작성 화면에서 원하는 형태로 컨버팅 하는 함수
-    convertTargetData(target) {
+    convertTargetData (target) {
       if (target && target.length > 0) {
         const tempList = []
         target.forEach((value) => {
@@ -1060,6 +1255,8 @@ export default {
           tempObj.accessKind = 'C'
           tempObj.accessKey = value.cabinetKey
           tempObj.iconPath = require('@/assets/images/editChan/icon_addressBook.svg')
+          // targetList에 나타나는 아이콘을 원 안에 가득 채울지, 아닐지 결정하는 변수
+          tempObj.iconFullYn = false
           tempObj.accessName = value.cabinetNameMtext
           if (value.mCabUserList && value.mCabUserList.length > 0) {
             const childTempList = []
@@ -1067,6 +1264,8 @@ export default {
               const childTempObj = {}
               childTempObj.accessKind = 'U'
               childTempObj.accessKey = value2.userKey
+              childTempObj.iconFullYn = true
+
               childTempObj.iconPath = value2.domainPath
                 ? this.$changeUrlBackslash(
                   value2.domainPath + value2.userProfileImg
@@ -1088,29 +1287,26 @@ export default {
         ]
       }
     },
-    returnTargetData() {
+    returnTargetData () {
       return this.mTargetDataList
     },
-    async getTodoListGroupCab(loadingYn) {
-      // var paramMap = {}
-      // paramMap.userKey = this.GE_USER.userKey
-      // paramMap.searchDate = this.getDate(1)
-      // paramMap.sysCabinetCode = 'USER'
-      // var nonLoading = true
-      // if (loadingYn) {
-      //   nonLoading = false
-      // }
-      // var result = await this.$getTodoListGroupCab(paramMap, nonLoading)
-      // if (result.result) {
-      // this.convertTargetData(result.todo)
+    async getTodoListGroupCab (loadingYn) {
       const param = {
-        ownUserKey: this.GE_USER.userKey,
         userKey: this.GE_USER.userKey,
-        jobkindId: 'TODO'
+        jobkindId: 'TODO',
+        searchDateStr: this.getToday(this.mSelectDate),
+        pageSize: 30
       }
-      const myContents = await this.$getContentsList(param)
-      this.mGetTodoGroupList = myContents.content
-      const getTodoGroupList = []
+      const myContents = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.getMyContentsList',
+        param: param
+      })
+      for (let i = 0; i < myContents.data.content.length; i++) {
+        myContents.data.content[i].creTeamKey = 0
+      }
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', myContents.data.content)
+      // const myContents = await this.$getContentsList(param)
+      this.mGetTodoGroupList = myContents.data.content
       this.mMyTodoYn = false
       this.mTargetTodoYn = false
       this.mCompleteTodoYn = false
@@ -1123,106 +1319,58 @@ export default {
       const targetTodoList = []
       const completeTodoList = []
       const cabinetList = {}
+      console.log('============ todo group list =====', this.mGetTodoGroupList)
       for (let i = 0; i < this.mGetTodoGroupList.length; i++) {
         this.mGetTodoGroupList[i].strikeOnOff = false
         this.mGetTodoGroupList[i].sideMenuOpenYn = false
-        if (
-          this.mGetTodoGroupList[i].status === '00' &&
-          this.mGetTodoGroupList[i].creUserKey !== this.GE_USER.userKey
-        ) {
-          for (let j = 0; j < this.mGetTodoGroupList[i].actorList.length; j++) {
-            if (
-              this.mGetTodoGroupList[i].actorList[j].accesskey ===
-              this.GE_USER.userKey
-            ) {
-              myTodoList.push(this.mGetTodoGroupList[i])
-              this.mMyTodoCount += 1
-              this.mMyTodoYn = true
-            }
-          }
-        } else if (
-          this.mGetTodoGroupList[i].status === '00' &&
-          this.mGetTodoGroupList[i].creUserKey === this.GE_USER.userKey
-        ) {
-          console.log(this.mGetTodoGroupList[i])
-          for (let j = 0; j < this.mGetTodoGroupList[i].actorList.length; j++) {
-            if (this.mGetTodoGroupList[i].actorList[0].mUserList) {
-              for (
-                let k = 0;
-                k < this.mGetTodoGroupList[i].actorList[j].mUserList.length;
-                k++
-              ) {
-                if (
-                  this.mGetTodoGroupList[i].actorList[j].mUserList[k]
-                    .userKey === this.GE_USER.userKey
-                ) {
-                  myTodoList.push(this.mGetTodoGroupList[i])
-                  this.mMyTodoCount += 1
-                  this.mMyTodoYn = true
-                  break
-                } else if (
-                  this.mGetTodoGroupList[i].actorList[j].mUserList[k]
-                    .userKey !== this.GE_USER.userKey
-                ) {
-                  targetTodoList.push(this.mGetTodoGroupList[i])
-                  this.mTargetTodoCount += 1
-                  this.mTargetTodoYn = true
-                }
-              }
-            } else {
-              if (
-                this.mGetTodoGroupList[i].actorList[j].userKey ===
-                this.GE_USER.userKey
-              ) {
-                myTodoList.push(this.mGetTodoGroupList[i])
-                this.mMyTodoCount += 1
-                this.mMyTodoYn = true
-                break
-              } else if (
-                this.mGetTodoGroupList[i].actorList[j].userKey !==
-                this.GE_USER.userKey
-              ) {
-                targetTodoList.push(this.mGetTodoGroupList[i])
-                this.mTargetTodoCount += 1
-                this.mTargetTodoYn = true
-              }
-            }
-          }
-        }
-        if (this.mGetTodoGroupList[i].status === '99') {
-          if (this.mGetTodoGroupList[i].creUserKey === this.GE_USER.userKey) {
+        // 들어온 일이 내 것인이, 남의 것인지 구분해주는 함수
+        const todoType = this.checkTarget(this.mGetTodoGroupList[i])
+        switch (todoType) {
+          case 'my':
+            myTodoList.push(this.mGetTodoGroupList[i])
+            this.mMyTodoCount++
+            break
+          case 'target':
+            targetTodoList.push(this.mGetTodoGroupList[i])
+            this.mTargetTodoCount++
+            break
+          case 'completedMy':
             completeTodoList.push(this.mGetTodoGroupList[i])
-            this.mCompleteTodoCount += 1
-          }
-          this.mGetTodoGroupList[i].strikeOnOff = false
-          this.mGetTodoGroupList[i].sideMenuOpenYn = false
-          if (this.mGetTodoGroupList[i].todoUserKey === this.GE_USER.userKey) {
-            this.mCompleteMyTodoCount += 1
-          } else if (
-            this.mGetTodoGroupList[i].todoUserKey !== this.GE_USER.userKey &&
-            this.mGetTodoGroupList[i].creUserKey === this.GE_USER.userKey &&
-            this.mGetTodoGroupList[i].targetKind !== 'U'
-          ) {
-            this.mCompleteTargetTodoCount += 1
-          }
-          this.mCompleteTodoYn = true
+            this.mMyTodoCount++
+            this.mCompleteMyTodoCount++
+            this.mCompleteTodoCount++
+            break
+          case 'completedTarget':
+            completeTodoList.push(this.mGetTodoGroupList[i])
+            this.mCompleteTargetTodoCount++
+            this.mTargetTodoCount++
+            this.mCompleteTodoCount++
+            break
         }
       }
-      cabinetList.myTodoList = myTodoList
-      cabinetList.targetTodoList = targetTodoList
-      cabinetList.completeTodoList = completeTodoList
-      getTodoGroupList.unshift(cabinetList)
-      this.mGetTodoGroupList = getTodoGroupList
-      console.log('??')
-      console.log(this.mGetTodoGroupList)
+      cabinetList.myTodoList = this.replaceArr(myTodoList)
+      cabinetList.targetTodoList = this.replaceArr(targetTodoList)
+      cabinetList.completeTodoList = this.replaceArr(completeTodoList)
+      this.mMyTodoYn = cabinetList.myTodoList.length > 0
+      this.mTargetTodoYn = cabinetList.targetTodoList.length > 0
+      this.mCompleteTodoYn = cabinetList.completeTodoList.length > 0
+      this.mGetTodoGroupList = [cabinetList]
       // }
     },
-    todosideMenu(todo, value, groupIndex, todoIndex) {
+    todosideMenu (todo, value, groupIndex, todoIndex) {
       this.mSelectTodo = todo
       this.mGetTodoGroupList[groupIndex][value][todoIndex].sideMenuOpenYn =
         !this.mGetTodoGroupList[groupIndex][value][todoIndex].sideMenuOpenYn
     },
-    getDate(value) {
+    getToday (value) {
+      var date = value
+      var year = date.getFullYear()
+      var month = ('0' + (1 + date.getMonth())).slice(-2)
+      var day = ('0' + date.getDate()).slice(-2)
+
+      return year + '-' + month + '-' + day
+    },
+    getDate (value) {
       // -1:day-1, 0:day, 1:day+1
       let todayDate = ''
       // const date = new Date()
@@ -1238,7 +1386,7 @@ export default {
       todayDate = year + '-' + month + '-' + day
       return todayDate
     },
-    changeTypeToText(value) {
+    changeTypeToText (value) {
       let returnData = ''
       if (value === 'H') {
         returnData = 'HouseWork'
@@ -1251,7 +1399,7 @@ export default {
       }
       return returnData
     },
-    async deleteTodo(loadingYn) {
+    async deleteTodo (loadingYn) {
       commonMethods.showAxiosLoading(true)
       var param = {}
       param.todoKey = this.mTodoObj.todoKey
@@ -1267,7 +1415,7 @@ export default {
       }
       commonMethods.showAxiosLoading(false)
     },
-    async updateTodo(value, loadingYn) {
+    async updateTodo (value, loadingYn) {
       this.mShowSkeletonYn = true
       const param = { todo: {} }
       param.todo.title = value.title
@@ -1295,7 +1443,7 @@ export default {
         this.mShowSkeletonYn = false
       }
     },
-    openUpdatePop() {
+    openUpdatePop () {
       if (this.mTodoObj.targetKey !== this.GE_USER.userKey) {
         const cabUserList = []
         for (let i = 0; i < this.mGetTodoFamilyList.length; i++) {
@@ -1346,7 +1494,7 @@ export default {
       this.mSetPopShowYn = true
       this.mOpenMenuShowYn = false
     },
-    calPercent(total, com) {
+    calPercent (total, com) {
       let returnData = ''
       if (com === 0) {
         returnData = 0
@@ -1355,45 +1503,45 @@ export default {
       }
       return returnData + '%'
     },
-    closeUpdatePop() {
+    closeUpdatePop () {
       this.mSetPopShowYn = false
     },
-    openDeletePop() {
+    openDeletePop () {
       this.mConfirmText = 'Are you sure you want to delete it?'
       this.mDeleteConfirmShowYn = true
       this.mOpenMenuShowYn = false
     },
-    closeDeletePop() {
+    closeDeletePop () {
       this.mDeleteConfirmShowYn = false
     },
-    openSubMenu(value) {
+    openSubMenu (value) {
       this.mTodoObj = value
       console.log(value)
       this.mOpenMenuShowYn = true
     },
-    closeSubMenu() {
+    closeSubMenu () {
       this.mOpenMenuShowYn = false
     },
-    async openTodoDetail(value) {
-      const param = {}
-      param.todoKey = value.todoKey
-      var result = await this.$commonAxiosFunction(
-        { url: '/sUniB/mk.getTodoList', param: param },
-        false
-      )
-      console.log(result)
-      if (result.data.result) {
-        console.log(result)
-        this.mTodoDetail = result.data.todo[0]
-        this.mMemoList = this.mTodoDetail.memoList
-      }
-      this.mSelectTodo = value
-      this.mTodoDetailShowYn = true
-    },
-    closeTodoDetail() {
+    // async openTodoDetail (value) {
+    //   const param = {}
+    //   param.todoKey = value.todoKey
+    //   var result = await this.$commonAxiosFunction(
+    //     { url: '/sUniB/mk.getTodoList', param: param },
+    //     false
+    //   )
+    //   console.log(result)
+    //   if (result.data.result) {
+    //     console.log(result)
+    //     this.mTodoDetail = result.data.todo[0]
+    //     this.mMemoList = this.mTodoDetail.memoList
+    //   }
+    //   this.mSelectTodo = value
+    //   this.mTodoDetailShowYn = true
+    // },
+    closeTodoDetail () {
       this.mTodoDetailShowYn = false
     },
-    async openAddTodoPop() {
+    async openAddTodoPop () {
       if (this.mGetTodoFamilyList.length === 0) {
         var paramMap = {}
         paramMap.userKey = this.GE_USER.userKey
@@ -1409,34 +1557,171 @@ export default {
         this.mWritePopShowYn = true
       }
     },
-    closeAddTodoPop() {
+    replaceArr (arr) {
+      // var this_ = this
+      if (!arr && arr.length === 0) return []
+      var uniqueArr = arr.reduce(function (data, current) {
+        if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
+        /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
+          data.push(current)
+        }
+        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+          return b.contentsKey - a.contentsKey
+          // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
+        })
+        return data
+      }, [])
+      return uniqueArr
+    },
+    closeAddTodoPop () {
       this.mAddTodoPopShowYn = false
     },
-    goMain() {
+    goMain () {
       this.$router.push('/')
     }
   },
   computed: {
-    GE_USER() {
+    GE_USER () {
       return this.$store.getters['UB_USER/GE_USER']
+    },
+    GE_NEW_CONT_LIST () {
+      console.log(this.$store.getters['UB_CHANNEL/GE_NEW_CONT_LIST'])
+      return this.$store.getters['UB_CHANNEL/GE_NEW_CONT_LIST']
     }
   },
   watch: {
     mSelectDate: {
       immediate: true,
-      handler(val) {
+      handler (val) {
         if (!val) return
         this.getTodoListGroupCab()
+      },
+      deep: true
+    },
+    GE_NEW_CONT_LIST: {
+      handler (value, old) {
+        if (!value || !value[0]) return
+        console.log(value[0])
+        if (value[0].jobkindId !== 'TODO') return
+        const newTodo = value[0]
+        let oriList = []
+        newTodo.strikeOnOff = false
+        newTodo.sideMenuOpenYn = false
+
+        const todoType = this.checkTarget(newTodo)
+        switch (todoType) {
+          case 'my':
+            this.mGetTodoGroupList[0].myTodoList.unshift(newTodo)
+            oriList = this.mGetTodoGroupList[0].myTodoList
+            this.mGetTodoGroupList[0].myTodoList = this.replaceArr(oriList)
+            // this.mMyTodoCount++
+            break
+          case 'target':
+            this.mGetTodoGroupList[0].targetTodoList.unshift(newTodo)
+            oriList = this.mGetTodoGroupList[0].targetTodoList
+            this.mGetTodoGroupList[0].targetTodoList = this.replaceArr(oriList)
+            // this.mTargetTodoCount++
+            break
+          case 'completedMy':
+            this.mGetTodoGroupList[0].completeTodoList.unshift(newTodo)
+            oriList = this.mGetTodoGroupList[0].completeTodoList
+            this.mGetTodoGroupList[0].completeTodoList = this.replaceArr(oriList)
+            // this.mCompleteMyTodoCount++
+            // this.mCompleteTodoCount++
+            // this.mMyTodoCount++
+            break
+          case 'completedTarget':
+            this.mGetTodoGroupList[0].completeTodoList.unshift(newTodo)
+            oriList = this.mGetTodoGroupList[0].completeTodoList
+            this.mGetTodoGroupList[0].completeTodoList = this.replaceArr(oriList)
+            // this.mCompleteTargetTodoCount++
+            // this.mCompleteTodoCount++
+            // this.mTargetTodoCount++
+            break
+        }
+        this.myTodoYn = this.mGetTodoGroupList[0].myTodoList.length > 0
+        this.mTargetTodoYn = this.mGetTodoGroupList[0].targetTodoList.length > 0
+        this.mCompleteTodoYn = this.mGetTodoGroupList[0].completeTodoList.length > 0
       },
       deep: true
     }
   }
 }
 </script>
-<style>
+<style scoped>
+
+.fontSize {
+  font-size: 18px;
+}
+.contents .mx-input-wrapper i {
+  visibility: hidden !important;
+  display: none !important;
+}
+.mx-table-date .today {
+  color: #ff9f32 !important;
+}
+.mx-calendar-panel-date {
+  width: 100% !important;
+  border-bottom: 1px solid #ccc;
+}
+.mx-calendar-content .cell.active {
+  background-color: #6768a7 !important;
+}
+.mx-calendar-content .hover-in-range {
+  background-color: #cdceff56 !important;
+}
+.mx-datepicker input:hover {
+  border: 1px solid #8183d6;
+}
+.mx-datepicker {
+  font-size: 30px !important;
+  width: 40% !important;
+  max-width: 210px !important;
+  min-width: 120px !important;
+}
+
+.mx-datepicker-popup {
+  position: absolute;
+  top: 300px;
+  right: 2rem;
+  z-index: 999999 !important;
+}
+.mx-datepicker-range {
+  width: calc(100%) !important;
+  float: left;
+}
+
+.mx-icon-calendar {
+  top: 20px !important;
+  color: #6768a7 !important;
+  display: none !important;
+}
+.mx-icon-clear svg {
+  display: none !important;
+}
+.mx-icon-calendar svg {
+  width: 1.5em !important;
+  height: 1.5em !important;
+}
+
+.mx-input {
+  height: 40px !important;
+  border-radius: 5px !important;
+  padding: 1px 5px !important;
+  box-shadow: none !important;
+  float: left;
+  box-sizing: border-box !important;
+  border: none !important;
+  background-color: #e7edff !important;
+  text-align: Center;
+  font-weight: bold;
+  font-size: 30px;
+  color: #6768a7 !important;
+}
 .todoBody {
   width: 100%;
   height: 100%;
+  /* margin-top: 50px !important; */
 }
 .DatePicker {
   font-size: 18px;
@@ -1498,6 +1783,14 @@ export default {
   overflow: hidden;
   border-radius: 50%;
 }
+.actorImg{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  margin-left:-10px;
+  border:2px solid #fff;
+  box-shadow:0 5px 6px 0 rgba(60, 60, 60, 0.2);
+}
 .strikeLine {
   position: absolute;
   background-color: black;
@@ -1534,7 +1827,7 @@ export default {
   padding: 10px 15px;
 }
 .todoFontSize {
-  font-size: 12px;
+  font-size: 15px;
 }
 .w70 {
   width: 70px;
@@ -1547,13 +1840,19 @@ export default {
   scrollbar-width: none; /* 파이어폭스 */
 }
 .fade-out-box {
-  animation: fadeout 3s;
-  -moz-animation: fadeout 3s; /* Firefox */
-  -webkit-animation: fadeout 3s; /* Safari and Chrome */
-  -o-animation: fadeout 3s; /* Opera */
+  animation: fadeout 1s;
+  -moz-animation: fadeout 1s; /* Firefox */
+  -webkit-animation: fadeout 1s; /* Safari and Chrome */
+  -o-animation: fadeout 1s; /* Opera */
   animation-fill-mode: forwards;
 }
 @keyframes fadeout {
+  /* from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  } */
   from {
     opacity: 1;
   }
@@ -1571,6 +1870,9 @@ export default {
   }
 }
 @media screen and (max-width: 500px) {
+  .fontSize {
+    font-size: 15px !important;
+  }
   .commonSubTitleTextBold {
     font-size: 14px;
   }
@@ -1658,5 +1960,12 @@ export default {
 .MKAppUserPhoto {
   overflow: hidden;
   border-radius: 50%;
+}
+.profileImg {
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 </style>

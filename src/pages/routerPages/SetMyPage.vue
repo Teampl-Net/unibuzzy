@@ -390,7 +390,7 @@ export default {
 
       var result = null
       var response = await this.$commonAxiosFunction({
-        url: '/tp.saveUser',
+        url: '/sUniB/tp.saveUser',
         param: param
       })
       result = response

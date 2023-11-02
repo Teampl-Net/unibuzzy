@@ -94,7 +94,7 @@ export default {
       paramMap.set('teamKey', this.propData.currentTeamKey)
       paramMap.set('pageSize', 1000)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: '/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.memberList = result.data.content
@@ -186,7 +186,7 @@ export default {
         if (userKeyList && userKeyList.length > 0) {
           param.userKeyList = userKeyList
           result = await this.$commonAxiosFunction({
-            url: '/tp.saveManager',
+            url: '/sUniB/tp.saveManager',
             param: param
           })
         }
@@ -215,7 +215,7 @@ export default {
             )
             param.follower = follower
             result = await this.$commonAxiosFunction({
-              url: '/tp.saveManager',
+              url: '/sUniB/tp.saveManager',
               param: param
             })
           }

@@ -366,7 +366,7 @@ export default {
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
       const result = await this.$getViewData(
-        { url: '/tp.getChanMainBoard', param: param },
+        { url: '/sUniB/tp.getChanMainBoard', param: param },
         false
       )
       if (
@@ -414,7 +414,7 @@ export default {
         paramMap.set('subsUserKey', this.GE_USER.userKey)
         paramMap.set('userKey', this.GE_USER.userKey)
         const response = await this.$axios.post(
-          '/tp.getMyContentsList',
+          '/sUniB/tp.getMyContentsList',
           Object.fromEntries(paramMap)
         )
         if (response.data && response.data.content) {
@@ -638,7 +638,7 @@ export default {
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', this.GE_USER.userKey)
       var response = await this.$commonAxiosFunction({
-        url: '/tp.getCabinetDetail',
+        url: '/sUniB/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -675,7 +675,7 @@ export default {
           nonLoadingYn = false
         }
         const result = await this.$getViewData(
-          { url: '/tp.getChanMainBoard', param: Object.fromEntries(paramMap) },
+          { url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) },
           nonLoadingYn
         )
         if (

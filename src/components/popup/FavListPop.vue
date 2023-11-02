@@ -140,7 +140,7 @@ export default {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
       var response = await this.$axios.post(
-        '/tp.UB_firstLoginCheck',
+        '/sUniB/tp.UB_firstLoginCheck',
         Object.fromEntries(paramMap)
       )
       if (response && (response.status === 200 || response.status === '200')) {

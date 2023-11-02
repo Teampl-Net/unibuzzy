@@ -13,7 +13,7 @@
     <ActiveBar v-if="mTabList.length > 0 " ref="activeBar" :tabList="mTabList" class="activeBarStyle" @changeTab="changeTab" />
     <div class="w100P targetListBox" :style="mTabList.length === 0? 'height: 100%;':'margin-top: 40px;'">
       <gListEmpty v-if="!mNowTargetList || mNowTargetList.length === 0" :title="$t('EDIT_BOOK_MSG_NOBOOK')" :subTitle="$t('EDIT_BOOK_MSG_CREBOOK')" option="SELE" />
-      <TargetUnit v-else v-for="target in mNowTargetList" @openSelectTargetPop="openChild" @addTarget="addTarget" :key="target.accessKey" :pTargetData="target" :pSelectedYn="checkSelectedYn(target).result" pOption="SELECT" />
+      <TargetUnit v-else v-for="target in mNowTargetList" :class="{dispNone: mChildShowYn}" @openSelectTargetPop="openChild" @addTarget="addTarget" :key="target.accessKey" :pTargetData="target" :pSelectedYn="checkSelectedYn(target).result" pOption="SELECT" />
       <transition name="show_left">
         <!-- 자식을 안에 품고 있는 형태(재귀) -->
         <TargetUnitList ref="TargetUniList" :pChildYn="true" @closeXPop="closeXPop" @addTarget="addTarget" v-if="mChildShowYn" :pSelectedTargetList="pSelectedTargetList" :pSelectData="mSelectedCList" />
@@ -86,8 +86,8 @@ export default {
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
-      this.$store.commit('UB_HISTORY/updateStack', history)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
       this.$checkDeleteHistory(`targetList${this.mNowTargetList.accessKey}`)
       this.mChildShowYn = false
     },
@@ -124,6 +124,9 @@ export default {
 </script>
 
 <style scoped>
+.dispNone{
+  display:none;
+}
 .targetListBox {
   overflow: auto;
   position: absolute;
