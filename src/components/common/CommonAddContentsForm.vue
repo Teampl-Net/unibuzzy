@@ -665,7 +665,7 @@ export default defineComponent({
       showReceiverSelectList.value = !showReceiverSelectList.value
       if (
         showReceiverSelectList.value &&
-        params.actorList.accessKey === store.getters['D_USER/GE_USER'].userKey
+        params.actorList.accessKey === store.getters['UB_USER/GE_USER'].userKey
       ) {
         params.actorList = []
       }

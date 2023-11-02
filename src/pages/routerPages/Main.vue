@@ -1,5 +1,5 @@
 <template>
-  <div ref="mainRef" class="w100P h100P mainWrap" @click="getInRectImgList">
+  <div ref="mainRef" class="w100P mainWrap">
     <gConfirmPop
       v-if="mAppCloseYn"
       @ok="closeApp"
@@ -19,11 +19,7 @@
       :pClosePop="closeCreChanPop"
       :pBdAreaList="mBdAreaList"
     />
-    <div
-      v-if="mSelectSchoolPopShowYn"
-      @click="closeSchoolPop"
-      class="popBg"
-    ></div>
+    <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" class="popBg"></div>
     <transition name="showUp">
       <selectSchoolPop
         v-if="mSelectSchoolPopShowYn"
@@ -53,11 +49,7 @@
         :pMoveToChan="moveToChan"
       />
     </transition>
-    <div
-      v-if="mChanInfoPopShowYn"
-      @click="closeChanInfoBox"
-      class="popBg"
-    ></div>
+    <div v-if="mChanInfoPopShowYn" @click="closeChanInfoBox" class="popBg"></div>
     <transition name="showUp">
       <infoBox
         v-if="mChanInfoPopShowYn"
@@ -69,7 +61,14 @@
         :pChanInfo="mSelectedChanInfo"
       />
     </transition>
-    <div class="w100P mainTownArea">
+    <div
+      class="w100P mainTownArea"
+      :style="`background-image: url(${
+        mNightYn
+          ? '/resource/main/main_night_background.png'
+          : '/resource/main/town_background.png'
+      })`"
+    >
       <div class="ballon">
         <img
           src="@/assets/images/main/ballon.png"
@@ -98,143 +97,86 @@
         </div>
       </div>
       <div v-else class="w100P loginBtnWrap">
-        <gBtnSmall
-          @click="goLoginPage"
-          btnTitle="Sign In"
-          class="fr loginBtn"
+        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr loginBtn" />
+      </div>
+      <!-- <div style="position: absolute; top: 120px; left: 50%; transform: translate(-50%, -50%); width: 150px; height: 100px;">
+        <img class="w100P h100P" style="position: absolute; top: 0; left: 0;" src="/resource/main/main_nametag.png" alt="">
+        <p class="w100P textOverdot fontBold" style="position: absolute; bottom: 10px; font-style: italic; padding: 0 5px;">{{ mTownName }}</p>
+      </div> -->
+      <template v-if="mPcStyleYn">
+        <div
+          class="zoom"
+          :class="mSelectedAreaPriority === building.priority ? 'clickEvent' : ''"
+          v-for="building in mTownBuildingList"
+          :key="building.priority"
+          style="position: absolute; transform: translate(-50%, -50%)"
+          :style="{
+            width: building.pcW,
+            height: building.pcH,
+            left: building.left,
+            top: building.top,
+          }"
+        >
+          <img
+            @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])"
+            class="w100P h100P"
+            :src="mNightYn ? building.nightImgPath : building.imgPath"
+            alt=""
+          />
+          <img
+            :style="{ left: building.titleLeft, top: building.titleTop }"
+            style="position: absolute; transform: translate(-50%, -50%)"
+            :src="building.titlePah"
+            alt=""
+          />
+        </div>
+        <img
+          :src="mMountainImgPath"
+          style="
+            position: absolute;
+            left: 20%;
+            top: 55%;
+            transform: translate(-50%, -50%);
+            width: 35%;
+            height: 20%;
+          "
+          alt=""
         />
-      </div>
-      <template v-if="!mLoadingYn">
-        <template v-for="area in mBdAreaList" :key="area.bdAreaKey">
-          <div
-            v-if="
-              village.areaList[area.priority].w !== 0 &&
-              village.areaList[area.priority].h !== 0
-            "
-            class="flexCenter areaDiv"
-            :class="{ clicked: village.areaList[area.priority].clickedYn }"
-            :style="{
-              width: village.areaList[area.priority].w + 'px',
-              height: village.areaList[area.priority].h + 'px',
-              top: village.areaList[area.priority].top + 'px',
-              left: village.areaList[area.priority].left + 'px'
-            }"
-          >
-            <img
-              :src="village.areaList[area.priority].maskedImageUrl"
-              :style="village.areaList[area.priority].maskedImageStyle"
-            />
-            <div
-              v-if="area.bdAreaNameMtext"
-              class="fontBold"
-              :style="{
-                'margin-top':
-                  area.priority !== 0 && area.priority !== 1
-                    ? 15 + village.areaList[area.priority].h / 1.5 + 'px'
-                    : ''
-              }"
-            >
-              <p class="textCenter fontBold font16">
-                {{ area.bdAreaNameMtext }}
-              </p>
-            </div>
-          </div>
-          <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
-            <div
-              ref="bdRef"
-              :id="`area${area.bdAreaKey}bd${bd.bdKey}pri${bd.priority}`"
-              v-if="
-                village.areaList[area.priority].buildingList[index] &&
-                village.areaList[area.priority].buildingList[index].w !== 0 &&
-                village.areaList[area.priority].buildingList[index].h !== 0
-              "
-              class="bdDiv"
-              :class="{
-                clicked:
-                  village.areaList[area.priority].buildingList[index].clickedYn
-              }"
-              :style="[
-                `z-index: ${1000 - bd.priority};`,
-                village.areaList[area.priority].buildingList[index]
-                  .maskedImageStyle,
-                {
-                  top:
-                    village.areaList[area.priority].buildingList[index].top +
-                    'px',
-                  left:
-                    village.areaList[area.priority].buildingList[index].left +
-                    'px'
-                }
-              ]"
-            >
-              <div
-                v-if="area.priority === 0"
-                class="banner flexCenter"
-                :style="{
-                  left:
-                    -(
-                      125 -
-                      village.areaList[area.priority].buildingList[index].w / 2
-                    ) + 'px'
-                }"
-              >
-                <img src="@/assets/images/main/banner2.png" class="w100P" />
-                <!-- 여기 -->
-                <div
-                  v-html="$changeText(bd.nameMtext)"
-                  class="w100P font16 fontBold"
-                ></div>
-              </div>
-              <img
-                :src="
-                  village.areaList[area.priority].buildingList[index]
-                    .maskedImageUrl
-                "
-              />
-              <span
-                v-if="
-                  !(area.priority === 0 && index === 0) &&
-                  village.areaList[area.priority].buildingList[index]
-                    .maskedImageUrl
-                "
-                class="fontBold font12 bdName"
-                :style="[
-                  {
-                    'background-color':
-                      index === 0
-                        ? '#f1f1f1CC'
-                        : index === 1 || index === 2
-                        ? '#f1f1f199'
-                        : index === 3 || index === 4
-                        ? '#f1f1f180'
-                        : ''
-                  },
-                  {
-                    left:
-                      -40 +
-                      village.areaList[area.priority].buildingList[index].w /
-                        2 +
-                      'px'
-                  },
-                  {
-                    top:
-                      village.areaList[area.priority].buildingList[index].h +
-                      (Number(bd.priority) / 2) * 10 +
-                      'px'
-                  }
-                ]"
-                >{{
-                  $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext)
-                }}</span
-              >
-            </div>
-          </template>
-        </template>
       </template>
-      <div @click="goLab" class="laboratory cursorP">
-        <img class="w100P" src="/resource/main/ub_lab.png" alt="" />
-        <span class="fontBold">Laboratory</span>
-      </div>
+      <template v-else>
+        <div
+          class="zoom"
+          :class="mSelectedAreaPriority === building.priority ? 'clickEvent' : ''"
+          v-for="building in mTownBuildingList"
+          :key="building.priority"
+          style="position: absolute; transform: translate(-50%, -50%)"
+          :style="{ width: building.w, left: building.left, top: building.top }"
+        >
+          <img
+            class="w100P h100P"
+            @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])"
+            :src="mNightYn ? building.nightImgPath : building.imgPath"
+            alt=""
+          />
+          <img
+            :style="{ left: building.titleLeft, top: building.titleTop }"
+            style="position: absolute; transform: translate(-50%, -50%); width: 70px"
+            :src="building.titlePah"
+            alt=""
+          />
+        </div>
+        <img
+          :src="mMountainImgPath"
+          style="
+            position: absolute;
+            left: 20%;
+            top: 55%;
+            transform: translate(-50%, -50%);
+            width: 35%;
+          "
+          alt=""
+        />
+      </template>
       <div
         class="fl"
         style="
@@ -242,7 +184,7 @@
           height: 66px;
           border-radius: 100%;
           position: absolute;
-          bottom: 6rem;
+          bottom: 3rem;
           right: 50px;
           z-index: 1000;
         "
@@ -256,11 +198,7 @@
         />
       </div>
     </div>
-    <div
-      v-if="mBoardPopShowYn"
-      class="popBg"
-      @click="$refs.mainBoardRef.closeXPop"
-    ></div>
+    <div v-if="mBoardPopShowYn" class="popBg" @click="$refs.mainBoardRef.closeXPop"></div>
     <transition name="showUp">
       <mainBoardList
         @openImgPop="openImgPop"
@@ -298,6 +236,9 @@ import mainBoardList from '@/components/pageComponents/main/popup/BoardListPop.v
 import infoBox from '@/components/pageComponents/main/popup/InfoBox.vue'
 import writeBottSheet from '@/components/popup/contents/ContentsWriteBottSheet.vue'
 export default {
+  props: {
+    pChangeNightYn: Function
+  },
   data() {
     return {
       mLoadingYn: false,
@@ -311,6 +252,7 @@ export default {
       bgImg: {
         imgLink: ''
       },
+      mMountainImgPath: '',
       mAreaShowYn: false,
       village: {
         villageInfo: {
@@ -323,6 +265,114 @@ export default {
         },
         areaList: []
       },
+      mTownBuildingList: [
+        {
+          priority: 0,
+          left: '52%',
+          top: '65%',
+          w: '40%',
+          pcW: '40%',
+          pcH: '18%',
+          titleLeft: '5%',
+          titleTop: '70%',
+          imgPath: '/resource/main/main_campus.svg',
+          nightImgPath: '/resource/main/main_night_campus.svg',
+          titlePah: '/resource/main/title_campus.svg'
+        },
+        {
+          priority: 1,
+          left: '80%',
+          top: '57%',
+          w: '40%',
+          pcW: '40%',
+          pcH: '12%',
+          titleLeft: '70%',
+          titleTop: '70%',
+          imgPath: '/resource/main/main_plaza.svg',
+          nightImgPath: '/resource/main/main_night_plaza.svg',
+          titlePah: '/resource/main/title_plaza.svg'
+        },
+        {
+          priority: 2,
+          left: '75%',
+          top: '33%',
+          w: '45%',
+          pcW: '45%',
+          pcH: '15%',
+          titleLeft: '70%',
+          titleTop: '95%',
+          imgPath: '/resource/main/main_club.svg',
+          nightImgPath: '/resource/main/main_night_club.svg',
+          titlePah: '/resource/main/title_club.svg'
+        },
+        {
+          priority: 3,
+          left: '16%',
+          top: '35%',
+          w: '25%',
+          pcW: '23%',
+          pcH: '13%',
+          titleLeft: '25%',
+          titleTop: '95%',
+          imgPath: '/resource/main/main_major.svg',
+          nightImgPath: '/resource/main/main_night_major.svg',
+          titlePah: '/resource/main/title_major.svg'
+        },
+        {
+          priority: 4,
+          left: '49%',
+          top: '42%',
+          w: '55%',
+          pcW: '55%',
+          pcH: '22%',
+          titleLeft: '55%',
+          titleTop: '45%',
+          imgPath: '/resource/main/main_classin.svg',
+          nightImgPath: '/resource/main/main_night_class.svg',
+          titlePah: '/resource/main/title_class.svg'
+        },
+        {
+          priority: 5,
+          left: '83%',
+          top: '76%',
+          w: '40%',
+          pcW: '35%',
+          pcH: '15%',
+          titleLeft: '70%',
+          titleTop: '20%',
+          imgPath: '/resource/main/main_living.svg',
+          nightImgPath: '/resource/main/main_night_living.svg',
+          titlePah: '/resource/main/title_living.svg'
+        },
+        {
+          priority: 6,
+          left: '47%',
+          top: '90%',
+          w: '55%',
+          pcW: '55%',
+          pcH: '18%',
+          titleLeft: '70%',
+          titleTop: '65%',
+          imgPath: '/resource/main/main_nearby.svg',
+          nightImgPath: '/resource/main/main_night_nearby.svg',
+          titlePah: '/resource/main/title_nearby.svg'
+        },
+        {
+          priority: 7,
+          left: '20%',
+          top: '75%',
+          w: '35%',
+          pcW: '35%',
+          pcH: '18%',
+          titleLeft: '40%',
+          titleTop: '100%',
+          imgPath: '/resource/main/main_lab.svg',
+          nightImgPath: '/resource/main/main_night_lab.svg',
+          titlePah: '/resource/main/title_lab.svg'
+        }
+      ],
+      mNightYn: false,
+      mSelectedAreaPriority: -1,
       innerWidth: 0,
       innerHeight: 0,
       blankHeight: 0,
@@ -343,7 +393,9 @@ export default {
       mSelectedChanInfo: {},
       mBoardList: [],
       mSelectChanList: [],
-      mSelectWriteTypePopShowYn: false
+      mSelectWriteTypePopShowYn: false,
+      mTownName: '',
+      mPcStyleYn: false
     }
   },
   created() {
@@ -373,10 +425,35 @@ export default {
         localStorage.removeItem('deepLinkQueue')
       }
     }
+    let xmlHttpRequest
+    if (window.XMLHttpRequest) {
+      // code for Firefox, Mozilla, IE7, etc.
+      xmlHttpRequest = new XMLHttpRequest()
+    } else {
+      return
+    }
+
+    xmlHttpRequest.open('HEAD', window.location.href.toString(), false)
+    xmlHttpRequest.setRequestHeader('ContentType', 'text/html')
+    xmlHttpRequest.send('')
+
+    const serverDate = xmlHttpRequest.getResponseHeader('Date')
+    const date = new Date(serverDate)
+    const nowHours = date.getHours()
+
+    if (nowHours >= 19) {
+      this.pChangeNightYn(true)
+      this.mNightYn = true
+      this.mMountainImgPath = '/resource/main/main_night_mountain.svg'
+    } else {
+      this.pChangeNightYn(false)
+      this.mNightYn = false
+      this.mMountainImgPath = '/resource/main/main_mountain.svg'
+    }
     this.getMainBoard().then((res) => {
-      this.createMaskingAreaImg()
-      this.innerWidth = window.innerWidth
-      this.innerHeight = window.innerHeight
+      // this.createMaskingAreaImg()
+      // this.innerWidth = window.innerWidth
+      // this.innerHeight = window.innerHeight
       if (
         this.mBdAreaList &&
         this.mBdAreaList[0] &&
@@ -387,10 +464,18 @@ export default {
           'changePageHeader',
           this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext)
         )
+        this.mTownName = this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext)
       } else {
         this.$emit('changePageHeader', 'Campus')
       }
+      this.$emit('enterCloudLoading', false)
+      setTimeout(() => {
+        this.$emit('showCloudLoading', false)
+      }, 800)
     })
+  },
+  unmounted() {
+    this.pChangeNightYn(false)
   },
   methods: {
     async openSelectWriteTypePop() {
@@ -539,17 +624,11 @@ export default {
       if (result.data) {
         localStorage.setItem('user', JSON.stringify(result.data.userInfo))
         await this.$store.dispatch('UB_USER/AC_USER', result.data.userInfo)
-        localStorage.setItem(
-          'sessionUser',
-          JSON.stringify(result.data.userInfo)
-        )
+        localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
       } else {
         this.$showToastPop(this.$t('COMMON_MSG_FAILED'))
       }
       this.getMainBoard().then((res) => {
-        this.createMaskingAreaImg()
-        this.innerWidth = window.innerWidth
-        this.innerHeight = window.innerHeight
         if (
           this.mBdAreaList &&
           this.mBdAreaList[0] &&
@@ -603,6 +682,24 @@ export default {
       }
     },
     async openAreaInfoPop(area) {
+      var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      if (
+        isMobile &&
+        (localStorage.getItem('nativeYn') === true ||
+          localStorage.getItem('nativeYn') === 'false')
+      ) {
+        if (area === undefined) {
+          this.mSelectedAreaPriority = 7
+        } else {
+          this.mSelectedAreaPriority = area.priority
+        }
+        setTimeout(() => {
+          this.mSelectedAreaPriority = -1
+        }, 900)
+      }
+      if (area === undefined) {
+        this.goLab()
+      }
       if (this.mBgNotClickYn) return
       const param = {
         bdArea: {
@@ -702,9 +799,7 @@ export default {
         '/sUniB/tp.UB_firstLoginCheck',
         Object.fromEntries(paramMap)
       )
-      var queueIndex = this.mAxiosQueue.findIndex(
-        (item) => item === 'getMainBoard'
-      )
+      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       if (response && (response.status === 200 || response.status === '200')) {
         this.mBdAreaList = response.data.bdAreaList
@@ -718,8 +813,6 @@ export default {
           alimCount: this.mAlimCount
         })
         this.village.areaList = []
-        const leftList = [110, 110, -18, 235, 110, 0, 0]
-        const topList = [280, 280, 370, 370, 460, 0, 0]
         for (var i = 0; i < this.mBdAreaList.length; i++) {
           const area = this.mBdAreaList[i]
           const areaObj = {
@@ -732,10 +825,6 @@ export default {
             maskedImageUrl: '',
             maskedImageStyle: {},
             clickedYn: false,
-            left: leftList[i],
-            top: topList[i],
-            w: 0,
-            h: 0,
             buildingList: []
           }
           this.village.areaList.push(areaObj)
@@ -965,35 +1054,15 @@ export default {
             for (let i = 0; i < area.h; i++) {
               let pixelData = {}
               if (bd.rank === 1) {
-                pixelData = area.ctx.getImageData(
-                  (2 / 5) * area.w,
-                  i,
-                  1,
-                  1
-                ).data
+                pixelData = area.ctx.getImageData((2 / 5) * area.w, i, 1, 1).data
               } else if (bd.rank === 2) {
-                pixelData = area.ctx.getImageData(
-                  (1 / 5) * area.w,
-                  i,
-                  1,
-                  1
-                ).data
+                pixelData = area.ctx.getImageData((1 / 5) * area.w, i, 1, 1).data
               } else if (bd.rank === 3) {
-                pixelData = area.ctx.getImageData(
-                  (3 / 5) * area.w,
-                  i,
-                  1,
-                  1
-                ).data
+                pixelData = area.ctx.getImageData((3 / 5) * area.w, i, 1, 1).data
               } else if (bd.rank === 4) {
                 pixelData = area.ctx.getImageData(10, i, 1, 1).data
               } else if (bd.rank === 5) {
-                pixelData = area.ctx.getImageData(
-                  (4 / 5) * area.w - 10,
-                  i,
-                  1,
-                  1
-                ).data
+                pixelData = area.ctx.getImageData((4 / 5) * area.w - 10, i, 1, 1).data
               }
               if (pixelData[3] !== 0) {
                 if (window.innerWidth > 1000) {
@@ -1069,8 +1138,7 @@ export default {
               this.mBdClickedYn = true
               bd.clickedYn = true
               bd.maskedImageStyle = {
-                filter:
-                  'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)'
+                filter: 'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)'
               }
               if (bd.targetKind === 'C') {
                 this.openAreaInfoPop(this.mBdAreaList[area.key])
@@ -1164,6 +1232,15 @@ export default {
         }
       }
     },
+    setRatio() {
+      const windowWidth = window.innerWidth
+      const windowHeight = window.innerHeight
+      if (windowWidth / windowHeight > 0.54) {
+        this.mPcStyleYn = true
+      } else {
+        this.mPcStyleYn = false
+      }
+    },
     setWindowSize() {
       this.innerWidth = window.innerWidth
       const nowHeight = window.innerHeight
@@ -1203,7 +1280,8 @@ export default {
     this.$emit('showCloudLoading', true, false)
     // this.findAllDrawn()
     this.setWindowSize()
-    window.addEventListener('resize', this.createMaskingAreaImg)
+    this.setRatio()
+    window.addEventListener('resize', this.setRatio)
   },
   computed: {
     mainShowPopYn() {
@@ -1346,7 +1424,7 @@ export default {
 }
 .planeImg {
   width: 100%;
-  filter: drop-shadow(5px 5px 5px #00000036);
+  filter: drop-shadow(5px 5px #00000036);
   opacity: 0;
   transition: 0.2s;
   animation: flyingPlane 1s 2s ease-in-out both,
@@ -1419,7 +1497,7 @@ export default {
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
   border-top: 0px solid transparent;
-  content: '';
+  content: "";
   position: absolute;
   top: -5px;
   left: 100px;
@@ -1458,6 +1536,7 @@ export default {
   align-items: center;
   overflow: hidden;
   z-index: -1;
+  height: calc(100% - 60px);
 }
 .popBg {
   width: 100%;
@@ -1472,7 +1551,7 @@ export default {
   height: calc(100%);
   position: relative;
   background-repeat: no-repeat;
-  background-image: url('/resource/main/UB_mainBg.png');
+  /* background-image: url('/resource/main/main_night_background.png'); */
   background-position: center;
   background-size: 100% 100%;
   overflow: hidden;
@@ -1516,7 +1595,35 @@ export default {
     transform: scale(1);
   }
 }
-@media screen and (max-width: 500px) {
+.mainPcNone {
+  display: none;
+}
+@keyframes uniB-zoom {
+  0% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+  50% {
+    transform: scale(1.05) translate(-50%, -50%);
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+}
+.clickEvent {
+  filter: drop-shadow(0 0 10px #f6ff7b);
+  transform-origin: center;
+  animation: uniB-zoom 0.8s;
+}
+@media (hover: hover) {
+  /* when supported */
+  .zoom:hover {
+    cursor: pointer;
+    filter: drop-shadow(0 0 10px #f6ff7b);
+    transform-origin: center;
+    animation: uniB-zoom 0.8s;
+  }
+}
+@media screen and (max-width: 499px) {
   .laboratory {
     width: 25% !important;
     bottom: 70px !important;

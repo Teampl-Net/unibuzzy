@@ -54,9 +54,8 @@
     />
     <gUBHeader
       :class="{ myPageBgColor: mMyPageBgColorYn }"
-      :pContentsYn="
-        mTargetType === 'contentsDetail' || mTargetType === 'contDetail'
-      "
+      :pNightYn="mNightYn"
+      :pContentsYn="mTargetType === 'contentsDetail' || mTargetType === 'contDetail'"
       @goFavList="openPop"
       @goLogList="openPop"
       v-if="
@@ -89,9 +88,7 @@
       @enterCloudLoading="enterCloudLoading"
       @showCloudLoading="showCloudLoading"
       @openMenu="openChanMenu"
-      :chanAlimListTeamKey="
-        mChanInfo && mChanInfo.targetKey ? mChanInfo.targetKey : ''
-      "
+      :chanAlimListTeamKey="mChanInfo && mChanInfo.targetKey ? mChanInfo.targetKey : ''"
       :headerTitle="mHeaderTitle"
       :thisPopN="mPopN"
       :targetType="mTargetType"
@@ -112,11 +109,7 @@
       :propData="mPopParams"
       :contentType="mPopParams.contentsJobkindId"
     />
-    <div
-      v-if="mPopType === 'logList'"
-      class="popBg"
-      @click="closeWritePop"
-    ></div>
+    <div v-if="mPopType === 'logList'" class="popBg" @click="closeWritePop"></div>
     <transition name="showUp">
       <notiHistoryList
         @closeXPop="closeWritePop"
@@ -124,11 +117,7 @@
         v-if="mPopType === 'logList'"
       />
     </transition>
-    <div
-      v-if="mPopType === 'favList'"
-      @click="closeWritePop"
-      class="popBg"
-    ></div>
+    <div v-if="mPopType === 'favList'" @click="closeWritePop" class="popBg"></div>
     <transition name="showUp">
       <favListPop
         v-if="mPopType === 'favList'"
@@ -185,6 +174,7 @@
       <router-view
         :key="$route.fullPath"
         ref="routerView"
+        :pChangeNightYn="changeNightYn"
         @goInquiries="goInquiries"
         @openImgPop="openImgPop"
         @setMainInfo="setMainInfo"
@@ -209,10 +199,7 @@
       />
     </div>
     <gFooter
-      v-if="
-        !$route.path.includes('contents') &&
-        mPopType !== 'myChanMenuEdit'
-      "
+      v-if="!$route.path.includes('contents') && mPopType !== 'myChanMenuEdit'"
       @changeRouterPath="changeRouterPath"
       class="header_footer footerShadow footerStyle"
     />
@@ -263,7 +250,8 @@ export default {
       mAxiosQueue: [],
       mPropFirstIndex: -1,
       mPropImgList: [],
-      mGImgPopShowYn: false
+      mGImgPopShowYn: false,
+      mNightYn: false
     }
   },
   created() {
@@ -298,6 +286,9 @@ export default {
     }
   },
   methods: {
+    changeNightYn(nightYn) {
+      this.mNightYn = nightYn
+    },
     updatePChanInfo() {
       const newValue = 1
       // Create a new object instead of modifying the existing one
@@ -567,9 +558,7 @@ export default {
               result.content.cabinetNameMtext
             )
             if (result.content.cabinetNameMtext) {
-              this.changePageHeader(
-                this.$changeText(result.content.cabinetNameMtext)
-              )
+              this.changePageHeader(this.$changeText(result.content.cabinetNameMtext))
             }
           } else if (detailParam.jobkindId === 'TODO') {
             this.changePageHeader('To Do')
@@ -593,9 +582,7 @@ export default {
         this.mTargetType = 'contDetail'
 
         if (detailParam.jobkindId === 'TODO') {
-          this.$router.push(
-            `/contents/${axiosParam.contentsKey}/0/0`
-          )
+          this.$router.push(`/contents/${axiosParam.contentsKey}/0/0`)
         } else {
           this.$router.push(
             `/contents/${axiosParam.contentsKey}/${detailParam.teamKey}/${detailParam.cabinetKey}`
@@ -629,10 +616,7 @@ export default {
       }
     },
     async goOpenPage(param) {
-      if (
-        param.targetType === 'chanDetail' ||
-        param.targetType === 'boardMain'
-      ) {
+      if (param.targetType === 'chanDetail' || param.targetType === 'boardMain') {
         if (this.$route.path === '/') {
           this.showCloudLoading(true, true)
           this.enterCloudLoading(true)
@@ -705,11 +689,7 @@ export default {
           return
         }
         let teamDetail = {}
-        if (
-          result.data.team &&
-          result.data.team.content &&
-          result.data.team.content[0]
-        ) {
+        if (result.data.team && result.data.team.content && result.data.team.content[0]) {
           teamDetail = result.data.team.content[0]
         }
 
@@ -728,8 +708,7 @@ export default {
                 (item) => item.userKey === this.GE_USER.userKey
               )
               if (index !== -1) {
-                teamDetail.userTeamInfo =
-                  result.data.memberTypeList[0].muserList[index]
+                teamDetail.userTeamInfo = result.data.memberTypeList[0].muserList[index]
               }
             }
           }

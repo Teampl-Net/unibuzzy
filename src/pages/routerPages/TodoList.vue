@@ -1363,6 +1363,7 @@ export default {
     const todoObject = {
       teamKey: 0
     }
+
     this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [todoObject])
     this.mSelectDate = new Date()
   },
@@ -1641,15 +1642,19 @@ export default {
         url: '/sUniB/tp.getMyContentsList',
         param: param
       })
-      for (let i = 0; i < myContents.data.content.length; i++) {
-        myContents.data.content[i].creTeamKey = 0
+      if (myContents.data.content) {
+        for (let i = 0; i < myContents.data.content.length; i++) {
+          myContents.data.content[i].creTeamKey = 0
+          this.mGetTodoGroupList = myContents.data.content
+        }
+      } else {
+        this.mGetTodoGroupList = []
       }
       this.$store.dispatch(
         'UB_CHANNEL/AC_ADD_CONTENTS',
         myContents.data.content
       )
       // const myContents = await this.$getContentsList(param)
-      this.mGetTodoGroupList = myContents.data.content
       this.mMyTodoYn = false
       this.mTargetTodoYn = false
       this.mCompleteTodoYn = false
