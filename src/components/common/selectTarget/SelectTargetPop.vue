@@ -72,7 +72,7 @@ export default defineComponent({
   },
   watch: {
     pageUpdate (value, old) {
-      const history = this.$store.getters['D_HISTORY/hStack']
+      const history = this.$store.getters['UB_HISTORY/hStack']
       if (this.popId === history[history.length - 1]) {
         if (this.$refs.targetList) {
           this.$refs.targetList.checkClosePop()

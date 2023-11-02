@@ -101,8 +101,8 @@
           :style="
             'background-image: url(' +
             (CONT_DETAIL.userDomainPath
-              ? CONT_DETAIL.userDomainPath + CONT_DETAIL.userProfileImg
-              : CONT_DETAIL.userProfileImg) +
+              ? $changeUrlBackslash(CONT_DETAIL.userDomainPath + CONT_DETAIL.userProfileImg)
+              : $changeUrlBackslash(CONT_DETAIL.userProfileImg)) +
             ');'
           "
           style="
@@ -119,8 +119,8 @@
           :style="
             'background-image: url(' +
             (CONT_DETAIL.domainPath
-              ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext
-              : CONT_DETAIL.logoPathMtext) +
+              ? $changeUrlBackslash(CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext)
+              : $changeUrlBackslash(CONT_DETAIL.logoPathMtext)) +
             ');'
           "
           style="
@@ -278,10 +278,10 @@
               <div v-if="CONT_DETAIL.jobkindId === 'TODO'" style="display:flex; flex-direction:column; align-items:end;">
                 <p style="font-size:12px;">{{ $changeDateFormat(CONT_DETAIL.workFromDate) + '~' +$changeDateFormat(CONT_DETAIL.workToDate) }}</p>
                 <div >
-                  <teamplate v-for="(each, index) in CONT_DETAIL.actorList" :key="index">
+                  <template v-for="(each, index) in CONT_DETAIL.actorList" :key="index">
                     <img v-if="each.accessKind === 'U'" class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
                     <img v-else class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
-                  </teamplate>
+                  </template>
                 </div>
               </div>
             </div>

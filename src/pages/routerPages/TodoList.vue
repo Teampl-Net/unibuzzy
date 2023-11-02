@@ -281,8 +281,8 @@
                           class="middleBgColor fl imgCircle profileImg "
                           :style="`background-image: url('${
                             todo.userDomainPath
-                              ? todo.userDomainPath + todo.userProfileImg
-                              : todo.userProfileImg
+                              ? $changeUrlBackslash(todo.userDomainPath + todo.userProfileImg)
+                              : $changeUrlBackslash(todo.userProfileImg)
                           }')`"
                         ></div>
                         <!-- <img
@@ -530,8 +530,8 @@
                           class="middleBgColor fl imgCircle profileImg"
                           :style="`background-image: url('${
                             todo.userDomainPath
-                              ? todo.userDomainPath + todo.userProfileImg
-                              : todo.userProfileImg
+                              ? $changeUrlBackslash(todo.userDomainPath + todo.userProfileImg)
+                              : $changeUrlBackslash(todo.userProfileImg)
                           }')`"
                         ></div>
                         <!-- <img
@@ -786,8 +786,8 @@
                           class="middleBgColor fl imgCircle profileImg"
                           :style="`background-image: url('${
                             todo.userDomainPath
-                              ? todo.userDomainPath + todo.userProfileImg
-                              : todo.userProfileImg
+                              ? $changeUrlBackslash(todo.userDomainPath + todo.userProfileImg)
+                              : $changeUrlBackslash(todo.userProfileImg)
                           }')`"
                         ></div>
                         <!-- <img
