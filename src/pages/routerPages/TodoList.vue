@@ -857,8 +857,8 @@
                       "
                     />
                     <p
-                      class="fl fontBold todoFontSize fontBold mLeft-05"
-                      style="position: relative; margin-left: 5px; text-align:left;"
+                      class="fl fontBold todoFontSize fontBold mLeft-05 completeTodoTitle"
+                      style="position: relative; margin-left: 5px; text-align:left; color:#b8b5b5;"
                     >
                       <span
                         class="strikeLine"
@@ -1851,7 +1851,7 @@ export default {
 }
 .strikeLine {
   position: absolute;
-  background-color: #7e7e7e;
+  background-color: #b8b5b5;
   height: 2px;
   width: 0;
   top:50%;
@@ -1940,6 +1940,12 @@ export default {
     width:25px !important;
     height:25px !important;
     line-height:25px !important;
+  }
+  .completeTodoTitle{
+    white-space:nowrap;
+    /* width:100%; */
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
   .commonSubTitleTextBold {
     font-size: 14px;
