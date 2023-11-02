@@ -210,7 +210,14 @@
       >
         There are no today's todo.
       </div>
-      <div v-else style="height: calc(100% - 150px); overflow: hidden auto; padding-bottom: 30px;">
+      <div
+        v-else
+        style="
+          height: calc(100% - 150px);
+          overflow: hidden auto;
+          padding-bottom: 30px;
+        "
+      >
         <div
           v-if="mMyTodoYn"
           class="fontBold"
@@ -232,14 +239,10 @@
           v-for="(group, groupIndex) in mGetTodoGroupList"
           :key="groupIndex"
         >
-          <div v-if="group.myTodoList.length !== 0" style=" padding: 5px 15px">
+          <div v-if="group.myTodoList.length !== 0" style="padding: 5px 15px">
             <div
               class="backShadow"
-              style="
-                padding: 10px;
-                border-radius: 10px;
-                background: #fff;
-              "
+              style="padding: 10px; border-radius: 10px; background: #fff"
             >
               <div
                 :class="todo.strikeOnOff ? 'fade-out-box' : ''"
@@ -252,7 +255,7 @@
                   display: flex;
                   align-items: center;
                   flex-direction: column;
-                  padding:10px;
+                  padding: 10px;
                 "
                 :style="
                   group.myTodoList.length - 1 === todoIndex
@@ -272,13 +275,13 @@
                     style="
                       display: flex;
                       justify-content: center;
-                      align-items: center; ;
+                      align-items: center;
                     "
                   >
                     <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
                       <div class="MKAppUserPhoto MKShadow h100P backShadow">
                         <div
-                          class="middleBgColor fl imgCircle profileImg "
+                          class="middleBgColor fl imgCircle profileImg"
                           :style="`background-image: url('${
                             todo.userDomainPath
                               ? todo.userDomainPath + todo.userProfileImg
@@ -291,22 +294,51 @@
                         /> -->
                       </div>
                     </div>
-                    <div style="margin-left:5px; display:flex; flex-direction:column; align-items:start;">
-                    <p
-                      v-if="todo.targetKey === GE_USER.userKey"
-                      class="fl todoFontSize"
-                      style="margin-right: 5px"
+                    <div
+                      style="
+                        margin-left: 5px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: start;
+                      "
                     >
-                      본인
-                    </p>
-                    <p v-else class="fl todoFontSize fontBold" style="margin-right: 5px">
-                      {{ todo.creUserName ? $changeText(todo.creUserName) : '나'}}
-                    </p>
+                      <p
+                        v-if="todo.targetKey === GE_USER.userKey"
+                        class="fl todoFontSize"
+                        style="margin-right: 5px"
+                      >
+                        본인
+                      </p>
+                      <p
+                        v-else
+                        class="fl todoFontSize fontBold"
+                        style="margin-right: 5px"
+                      >
+                        {{
+                          todo.creUserName
+                            ? $changeText(todo.creUserName)
+                            : '나'
+                        }}
+                      </p>
                     </div>
                   </div>
-                  <div style="display:flex; flex-direction:column; align-items:end; text-align:right;">
-                    <div class="fr CLDeepGrayColor todoFontSize" style="line-height: 23px">
-                      <span>{{ getMonthDate(todo.workFromDate) + '~' + getMonthDate(todo.workToDate)}}</span>
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      align-items: end;
+                      text-align: right;
+                    "
+                  >
+                    <div
+                      class="fr CLDeepGrayColor todoFontSize"
+                      style="line-height: 23px"
+                    >
+                      <span>{{
+                        getMonthDate(todo.workFromDate) +
+                        '~' +
+                        getMonthDate(todo.workToDate)
+                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -319,7 +351,14 @@
                     margin-top: 10px;
                   "
                 >
-                  <div style="display: flex; align-items: center; margin-left:5px; width:75%;">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      margin-left: 5px;
+                      width: 75%;
+                    "
+                  >
                     <img
                       v-if="todo.strikeOnOff"
                       src="../../assets/images/todo/checkboxCheck.png"
@@ -351,7 +390,11 @@
                     <p
                       v-if="todo.contStatus === '00'"
                       class="fl fontBold todoFontSize mLeft-05"
-                      style="position: relative; margin-left: 5px; text-align:left;"
+                      style="
+                        position: relative;
+                        margin-left: 5px;
+                        text-align: left;
+                      "
                     >
                       <span
                         class="strikeLine"
@@ -364,17 +407,69 @@
                       {{ todo.title }}
                     </p>
                   </div>
-                  <div style="width:25%; display:flex; justify-content:end; align-items:center;">
-                    <div class="w100P" style="display:flex; justify-content:end; align-items:center;">
-                      <template v-for="(each, index) in todo.mNewActorList" :key="index" >
-                        <img v-if="each.accessKind === 'U'" class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
-                        <img v-else class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
-                        <div class="moreActorImg todoFontSize" style="" v-if="todo.actorList.length > 3 && index === 2">+{{ todo.actorList.length - 3 }}</div>
+                  <div
+                    style="
+                      width: 25%;
+                      display: flex;
+                      justify-content: end;
+                      align-items: center;
+                    "
+                  >
+                    <div
+                      class="w100P"
+                      style="
+                        display: flex;
+                        justify-content: end;
+                        align-items: center;
+                      "
+                    >
+                      <template
+                        v-for="(each, index) in todo.mNewActorList"
+                        :key="index"
+                      >
+                        <img
+                          v-if="each.accessKind === 'U'"
+                          class="actorImg"
+                          :src="
+                            each.domainPath
+                              ? each.domainPath + each.pathMtext
+                              : require(`@/assets/images/intro/login/uniB_logo.png`)
+                          "
+                          style=""
+                          :alt="each.userDispMtext"
+                        />
+                        <img
+                          v-else
+                          class="actorImg"
+                          :src="
+                            require(`@/assets/images/todo/channer_addressBook.svg`)
+                          "
+                          style=""
+                          :alt="each.userDispMtext"
+                        />
+                        <div
+                          class="moreActorImg todoFontSize"
+                          style=""
+                          v-if="todo.actorList.length > 3 && index === 2"
+                        >
+                          +{{ todo.actorList.length - 3 }}
+                        </div>
                       </template>
                     </div>
                   </div>
                 </div>
-                <div class="w100P" style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:10px; background-color:rgb(248, 248, 255);">
+                <div
+                  class="w100P"
+                  style="
+                    margin-top: 10px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 10px;
+                    border-radius: 10px;
+                    background-color: rgb(248, 248, 255);
+                  "
+                >
                   <div>
                     <div
                       style="
@@ -404,7 +499,11 @@
                         />
                       </div>
                       <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
-                        {{ todo.memoList.length === 0 ? '0' : todo.memoList.length}}
+                        {{
+                          todo.memoList.length === 0
+                            ? '0'
+                            : todo.memoList.length
+                        }}
                       </p>
                     </div>
                     <div
@@ -429,11 +528,18 @@
                         />
                       </div>
                       <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
-                        {{ todo.fileCount === 0 ? '0': todo.fileCount }}
+                        {{ todo.fileCount === 0 ? '0' : todo.fileCount }}
                       </p>
+                    </div>
                   </div>
-                </div>
-                  <div style="display:flex; gap:3px; flex-wrap:wrap; justify-content:end;">
+                  <div
+                    style="
+                      display: flex;
+                      gap: 3px;
+                      flex-wrap: wrap;
+                      justify-content: end;
+                    "
+                  >
                     <div
                       v-for="(tag, index) in todo.tagList"
                       :key="index"
@@ -472,7 +578,7 @@
             width="20"
             style="margin-right: 5px"
           />
-          <p style="font-size: 18px">What I Asked  ({{ mTargetTodoCount }})</p>
+          <p style="font-size: 18px">What I Asked ({{ mTargetTodoCount }})</p>
         </div>
         <template
           v-for="(group, groupIndex) in mGetTodoGroupList"
@@ -484,11 +590,7 @@
           >
             <div
               class="backShadow"
-              style="
-                padding: 10px;
-                border-radius: 10px;
-                background: #fff;
-              "
+              style="padding: 10px; border-radius: 10px; background: #fff"
             >
               <div
                 :class="todo.strikeOnOff ? 'fade-out-box' : ''"
@@ -521,7 +623,7 @@
                     style="
                       display: flex;
                       justify-content: center;
-                      align-items: center; ;
+                      align-items: center;
                     "
                   >
                     <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
@@ -540,27 +642,56 @@
                         /> -->
                       </div>
                     </div>
-                    <div style="margin-left:5px; display:flex; flex-direction:column; align-items:start;">
-                    <p
-                      v-if="todo.targetKey === GE_USER.userKey"
-                      class="fl todoFontSize"
-                      style="margin-right: 5px"
+                    <div
+                      style="
+                        margin-left: 5px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: start;
+                      "
                     >
-                      {{ $changeText(todo.cabinetNameMtext) }} (본인)
-                    </p>
-                    <p v-else class="fl todoFontSize fontBold" style="margin-right: 5px">
-                        {{ todo.creUserName ? $changeText(todo.creUserName) : '나' }}
-                    </p>
-                    <!-- <span class="todoFontSize" style="display:flex; gap:5px; color:#7E7E7E;">( 담당자 :
+                      <p
+                        v-if="todo.targetKey === GE_USER.userKey"
+                        class="fl todoFontSize"
+                        style="margin-right: 5px"
+                      >
+                        {{ $changeText(todo.cabinetNameMtext) }} (본인)
+                      </p>
+                      <p
+                        v-else
+                        class="fl todoFontSize fontBold"
+                        style="margin-right: 5px"
+                      >
+                        {{
+                          todo.creUserName
+                            ? $changeText(todo.creUserName)
+                            : '나'
+                        }}
+                      </p>
+                      <!-- <span class="todoFontSize" style="display:flex; gap:5px; color:#7E7E7E;">( 담당자 :
                       <span class="fontBold" v-for="(each, index) in todo.actorList" :key="index">
                         {{ each.userDispMtext ? $changeText(each.userDispMtext) : '담당자' }}
                       </span>)
                     </span> -->
                     </div>
                   </div>
-                  <div style="display:flex; flex-direction:column; align-items:end; text-align:right;">
-                    <p class="fr CLDeepGrayColor todoFontSize" style="line-height: 23px">
-                      <span>{{ getMonthDate(todo.workFromDate) + '~' + getMonthDate(todo.workToDate)}}</span>
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      align-items: end;
+                      text-align: right;
+                    "
+                  >
+                    <p
+                      class="fr CLDeepGrayColor todoFontSize"
+                      style="line-height: 23px"
+                    >
+                      <span>{{
+                        getMonthDate(todo.workFromDate) +
+                        '~' +
+                        getMonthDate(todo.workToDate)
+                      }}</span>
                     </p>
                   </div>
                   <!-- <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/> -->
@@ -574,7 +705,14 @@
                     margin-top: 10px;
                   "
                 >
-                  <div style="display: flex; align-items: center; margin-left:5px; width:75%;">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      margin-left: 5px;
+                      width: 75%;
+                    "
+                  >
                     <img
                       v-if="todo.strikeOnOff"
                       src="../../assets/images/todo/checkboxCheck.png"
@@ -606,7 +744,11 @@
                     <p
                       v-if="todo.contStatus === '00'"
                       class="fl fontBold todoFontSize mLeft-05"
-                      style="position: relative; margin-left: 5px; text-align:left;"
+                      style="
+                        position: relative;
+                        margin-left: 5px;
+                        text-align: left;
+                      "
                     >
                       <span
                         class="strikeLine"
@@ -619,17 +761,69 @@
                       {{ todo.title }}
                     </p>
                   </div>
-                  <div style="width:25%; display:flex; justify-content:end; align-items:center;">
-                    <div class="w100P" style="display:flex; justify-content:end; align-items:center;">
-                      <template v-for="(each, index) in todo.mNewActorList" :key="index" >
-                        <img v-if="each.accessKind === 'U'" class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
-                        <img v-else class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
-                        <div class="moreActorImg todoFontSize" style="" v-if="todo.actorList.length > 3 && index === 2">+{{ todo.actorList.length - 3 }}</div>
+                  <div
+                    style="
+                      width: 25%;
+                      display: flex;
+                      justify-content: end;
+                      align-items: center;
+                    "
+                  >
+                    <div
+                      class="w100P"
+                      style="
+                        display: flex;
+                        justify-content: end;
+                        align-items: center;
+                      "
+                    >
+                      <template
+                        v-for="(each, index) in todo.mNewActorList"
+                        :key="index"
+                      >
+                        <img
+                          v-if="each.accessKind === 'U'"
+                          class="actorImg"
+                          :src="
+                            each.domainPath
+                              ? each.domainPath + each.pathMtext
+                              : require(`@/assets/images/intro/login/uniB_logo.png`)
+                          "
+                          style=""
+                          :alt="each.userDispMtext"
+                        />
+                        <img
+                          v-else
+                          class="actorImg"
+                          :src="
+                            require(`@/assets/images/todo/channer_addressBook.svg`)
+                          "
+                          style=""
+                          :alt="each.userDispMtext"
+                        />
+                        <div
+                          class="moreActorImg todoFontSize"
+                          style=""
+                          v-if="todo.actorList.length > 3 && index === 2"
+                        >
+                          +{{ todo.actorList.length - 3 }}
+                        </div>
                       </template>
                     </div>
                   </div>
                 </div>
-                <div class="w100P" style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:10px; background-color:rgb(248, 248, 255);">
+                <div
+                  class="w100P"
+                  style="
+                    margin-top: 10px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 10px;
+                    border-radius: 10px;
+                    background-color: rgb(248, 248, 255);
+                  "
+                >
                   <div>
                     <div
                       style="
@@ -659,7 +853,11 @@
                         />
                       </div>
                       <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
-                        {{ todo.memoList.length === 0 ? '0' : todo.memoList.length}}
+                        {{
+                          todo.memoList.length === 0
+                            ? '0'
+                            : todo.memoList.length
+                        }}
                       </p>
                     </div>
                     <div
@@ -684,11 +882,18 @@
                         />
                       </div>
                       <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
-                        {{ todo.fileCount === 0 ? '0': todo.fileCount }}
+                        {{ todo.fileCount === 0 ? '0' : todo.fileCount }}
                       </p>
+                    </div>
                   </div>
-                </div>
-                  <div style="display:flex; gap:3px; flex-wrap:wrap; justify-content:end;">
+                  <div
+                    style="
+                      display: flex;
+                      gap: 3px;
+                      flex-wrap: wrap;
+                      justify-content: end;
+                    "
+                  >
                     <div
                       v-for="(tag, index) in todo.tagList"
                       :key="index"
@@ -740,11 +945,7 @@
           >
             <div
               class="backShadow"
-              style="
-                padding: 10px;
-                border-radius: 10px;
-                background: #fff;
-              "
+              style="padding: 10px; border-radius: 10px; background: #fff"
             >
               <div
                 :class="todo.strikeOnOff ? 'fade-out-box' : ''"
@@ -777,7 +978,7 @@
                     style="
                       display: flex;
                       justify-content: center;
-                      align-items: center; ;
+                      align-items: center;
                     "
                   >
                     <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
@@ -796,26 +997,53 @@
                         /> -->
                       </div>
                     </div>
-                    <div style="margin-left:5px; display:flex; flex-direction:column; align-items:start;">
-                    <p
-                      v-if="todo.targetKey === GE_USER.userKey"
-                      class="fl todoFontSize"
-                      style="margin-right: 5px"
+                    <div
+                      style="
+                        margin-left: 5px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: start;
+                      "
                     >
-                      본인
-                    </p>
-                    <p v-else class="fl todoFontSize" style="margin-right: 5px">
-                      {{
-                        todo.creUserName ? $changeText(todo.creUserName) : '나'
-                      }}
+                      <p
+                        v-if="todo.targetKey === GE_USER.userKey"
+                        class="fl todoFontSize"
+                        style="margin-right: 5px"
+                      >
+                        본인
+                      </p>
+                      <p
+                        v-else
+                        class="fl todoFontSize"
+                        style="margin-right: 5px"
+                      >
+                        {{
+                          todo.creUserName
+                            ? $changeText(todo.creUserName)
+                            : '나'
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      align-items: end;
+                      text-align: right;
+                    "
+                  >
+                    <p
+                      class="fr CLDeepGrayColor todoFontSize"
+                      style="line-height: 23px"
+                    >
+                      <span>{{
+                        getMonthDate(todo.workFromDate) +
+                        '~' +
+                        getMonthDate(todo.workToDate)
+                      }}</span>
                     </p>
                   </div>
-                </div>
-                <div style="display:flex; flex-direction:column; align-items:end; text-align:right;">
-                  <p class="fr CLDeepGrayColor todoFontSize" style="line-height: 23px">
-                      <span>{{ getMonthDate(todo.workFromDate) + '~' + getMonthDate(todo.workToDate)}}</span>
-                  </p>
-                </div>
                   <!-- <img v-if="todo.status === '00'" class="cursorP" src="../../assets/images/todo/todoMenu.png" width="4" height="15" @click="openSubMenu(todo)"/> -->
                 </div>
                 <div
@@ -827,7 +1055,14 @@
                     margin-top: 10px;
                   "
                 >
-                  <div style="display: flex; align-items: center; margin-left:5px; width:75%;">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      margin-left: 5px;
+                      width: 75%;
+                    "
+                  >
                     <img
                       v-if="todo.strikeOnOff"
                       src="../../assets/images/todo/checkboxBlank.png"
@@ -858,7 +1093,11 @@
                     />
                     <p
                       class="fl fontBold todoFontSize fontBold mLeft-05"
-                      style="position: relative; margin-left: 5px; text-align:left;"
+                      style="
+                        position: relative;
+                        margin-left: 5px;
+                        text-align: left;
+                      "
                     >
                       <span
                         class="strikeLine"
@@ -871,18 +1110,70 @@
                       {{ todo.title }}
                     </p>
                   </div>
-                  <div style="width:25%; display:flex; justify-content:end; align-items:center;">
-                    <div class="w100P" style="display:flex; justify-content:end; align-items:center;">
-                      <template v-for="(each, index) in todo.mNewActorList" :key="index" >
-                        <img v-if="each.accessKind === 'U'" class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
-                        <img v-else class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
-                        <div class="moreActorImg todoFontSize" style="" v-if="todo.actorList.length > 3 && index === 2">+{{ todo.actorList.length - 3 }}</div>
+                  <div
+                    style="
+                      width: 25%;
+                      display: flex;
+                      justify-content: end;
+                      align-items: center;
+                    "
+                  >
+                    <div
+                      class="w100P"
+                      style="
+                        display: flex;
+                        justify-content: end;
+                        align-items: center;
+                      "
+                    >
+                      <template
+                        v-for="(each, index) in todo.mNewActorList"
+                        :key="index"
+                      >
+                        <img
+                          v-if="each.accessKind === 'U'"
+                          class="actorImg"
+                          :src="
+                            each.domainPath
+                              ? each.domainPath + each.pathMtext
+                              : require(`@/assets/images/intro/login/uniB_logo.png`)
+                          "
+                          style=""
+                          :alt="each.userDispMtext"
+                        />
+                        <img
+                          v-else
+                          class="actorImg"
+                          :src="
+                            require(`@/assets/images/todo/channer_addressBook.svg`)
+                          "
+                          style=""
+                          :alt="each.userDispMtext"
+                        />
+                        <div
+                          class="moreActorImg todoFontSize"
+                          style=""
+                          v-if="todo.actorList.length > 3 && index === 2"
+                        >
+                          +{{ todo.actorList.length - 3 }}
+                        </div>
                       </template>
                     </div>
                   </div>
                   <!-- <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div> -->
                 </div>
-                <div class="w100P" style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:10px; background-color:rgb(248, 248, 255);">
+                <div
+                  class="w100P"
+                  style="
+                    margin-top: 10px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 10px;
+                    border-radius: 10px;
+                    background-color: rgb(248, 248, 255);
+                  "
+                >
                   <div>
                     <div
                       style="
@@ -912,7 +1203,11 @@
                         />
                       </div>
                       <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
-                        {{ todo.memoList.length === 0 ? '0' : todo.memoList.length}}
+                        {{
+                          todo.memoList.length === 0
+                            ? '0'
+                            : todo.memoList.length
+                        }}
                       </p>
                     </div>
                     <div
@@ -937,11 +1232,18 @@
                         />
                       </div>
                       <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
-                        {{ todo.fileCount === 0 ? '0': todo.fileCount }}
+                        {{ todo.fileCount === 0 ? '0' : todo.fileCount }}
                       </p>
+                    </div>
                   </div>
-                </div>
-                  <div style="display:flex; gap:3px; flex-wrap:wrap; justify-content:end;">
+                  <div
+                    style="
+                      display: flex;
+                      gap: 3px;
+                      flex-wrap: wrap;
+                      justify-content: end;
+                    "
+                  >
                     <div
                       v-for="(tag, index) in todo.tagList"
                       :key="index"
@@ -1017,7 +1319,7 @@ export default {
     SkeletonBox,
     CommonAddContentsForm
   },
-  data () {
+  data() {
     return {
       mSelectDate: '',
       mMyTodoYn: false,
@@ -1056,7 +1358,7 @@ export default {
       mWritePopShowYn: false
     }
   },
-  created () {
+  created() {
     this.$emit('enterCloudLoading', false)
     setTimeout(() => {
       // this.getTodoListGroupCab()
@@ -1069,21 +1371,21 @@ export default {
     this.mSelectDate = new Date()
   },
   methods: {
-    clickFileDownload () {
+    clickFileDownload() {
       return false // 추후 수정
     },
-    getMonthDate (date) {
+    getMonthDate(date) {
       var format = 'MM/DD'
       return this.$dayjs(date).add(-13, 'hour').format(format)
     },
-    goDetail (value) {
+    goDetail(value) {
       console.log(value)
       var param = {}
       param.targetType = 'contentsDetail'
       param.targetKey = value.contentsKey
       param.popHeaderText = '오늘의 일'
-      param.teamKey = 0
-      param.creTeamKey = 0
+      // param.teamKey = 0
+      // param.creTeamKey = 0
       param.jobkindId = value.jobkindId
       param.creTeamKey = value.creTeamKey
       param.value = value
@@ -1091,7 +1393,7 @@ export default {
       param.readYn = value.readYn
       this.$emit('goDetail', param)
     },
-    closeXPop (popId) {
+    closeXPop(popId) {
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -1099,11 +1401,11 @@ export default {
       this.$store.commit('UB_HISTORY/updateStack', history)
       this.$checkDeleteHistory(popId)
     },
-    closeWritePop () {
+    closeWritePop() {
       this.closeXPop('writeContents')
       this.mWritePopShowYn = false
     },
-    async saveContents (params) {
+    async saveContents(params) {
       params.creUserKey = this.GE_USER.userKey
       params.creUserName = this.$changeText(this.GE_USER.userDispMtext)
       params.jobkindId = 'TODO'
@@ -1127,20 +1429,20 @@ export default {
       })
       this.closeWritePop('WriteContents', this.closeWritePop)
     },
-    returnTag () {
+    returnTag() {
       return this.mTagList
     },
-    openUniBTodoDetail () {
+    openUniBTodoDetail() {
       // var param = {}
       // param.targetType = 'contentsDetail'
       // param.targetKey = 1011783
       // this.$emit('openPop', param)
       this.$router.push('/todo/1011783/934/13624')
     },
-    closeUniBTodoDetail () {
+    closeUniBTodoDetail() {
       this.mUniBTodoDetailPopShowYn = false
     },
-    checkTarget (value) {
+    checkTarget(value) {
       if (!value.actorList || value.actorList.length === 0) return 'none'
       if (value.creUserKey !== this.GE_USER.userKey) {
         if (value.contStatus === '00') {
@@ -1152,7 +1454,10 @@ export default {
         for (let i = 0; i < value.actorList.length; i++) {
           if (value.actorList[i].mUserList) {
             for (let j = 0; j < value.actorList[i].mUserList.length; j++) {
-              if (value.actorList[i].mUserList[j].accessKey === this.GE_USER.userKey) {
+              if (
+                value.actorList[i].mUserList[j].accessKey ===
+                this.GE_USER.userKey
+              ) {
                 if (value.contStatus === '00') {
                   return 'my'
                 } else {
@@ -1177,53 +1482,80 @@ export default {
         }
       }
     },
-    setCompleteTodo (value, menu, groupIndex, todoIndex) {
+    setCompleteTodo(value, menu, groupIndex, todoIndex) {
       this.completeTodo(value)
       this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = true
       const todoType = this.checkTarget(value)
       setTimeout(() => {
         switch (todoType) {
           case 'my':
-            this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus = '99'
-            this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
-            this.mGetTodoGroupList[groupIndex][menu][todoIndex].completeUserName = this.GE_USER.userNameMtext
-            this.mGetTodoGroupList[groupIndex].completeTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus =
+              '99'
+            this.mGetTodoGroupList[groupIndex][menu][
+              todoIndex
+            ].strikeOnOff = false
+            this.mGetTodoGroupList[groupIndex][menu][
+              todoIndex
+            ].completeUserName = this.GE_USER.userNameMtext
+            this.mGetTodoGroupList[groupIndex].completeTodoList.unshift(
+              this.mGetTodoGroupList[groupIndex][menu][todoIndex]
+            )
             this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
             // this.mMyTodoCount -= 1
             //  this.mCompleteMyTodoCount += 1
             break
           case 'target':
-            this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus = '99'
-            this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
-            this.mGetTodoGroupList[groupIndex][menu][todoIndex].completeUserName = this.GE_USER.userNameMtext
-            this.mGetTodoGroupList[groupIndex].completeTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus =
+              '99'
+            this.mGetTodoGroupList[groupIndex][menu][
+              todoIndex
+            ].strikeOnOff = false
+            this.mGetTodoGroupList[groupIndex][menu][
+              todoIndex
+            ].completeUserName = this.GE_USER.userNameMtext
+            this.mGetTodoGroupList[groupIndex].completeTodoList.unshift(
+              this.mGetTodoGroupList[groupIndex][menu][todoIndex]
+            )
             this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
             // this.mTargetTodoCount -= 1
             // this.mCompleteTargetTodoCount += 1
             break
           case 'completedMy':
-            this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus = '00'
-            this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
-            this.mGetTodoGroupList[groupIndex].myTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus =
+              '00'
+            this.mGetTodoGroupList[groupIndex][menu][
+              todoIndex
+            ].strikeOnOff = false
+            this.mGetTodoGroupList[groupIndex].myTodoList.unshift(
+              this.mGetTodoGroupList[groupIndex][menu][todoIndex]
+            )
             this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
             // this.mMyTodoCount += 1
             // this.mCompleteMyTodoCount -= 1
             break
           case 'completedTarget':
-            this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus = '00'
-            this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
-            this.mGetTodoGroupList[groupIndex].targetTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
+            this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus =
+              '00'
+            this.mGetTodoGroupList[groupIndex][menu][
+              todoIndex
+            ].strikeOnOff = false
+            this.mGetTodoGroupList[groupIndex].targetTodoList.unshift(
+              this.mGetTodoGroupList[groupIndex][menu][todoIndex]
+            )
             this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
             // this.mTargetTodoCount += 1
             // this.mCompleteTargetTodoCount -= 1
             break
         }
-        this.mMyTodoYn = this.mGetTodoGroupList[groupIndex].myTodoList.length > 0
-        this.mTargetTodoYn = this.mGetTodoGroupList[groupIndex].targetTodoList.length > 0
-        this.mCompleteTodoYn = this.mGetTodoGroupList[groupIndex].completeTodoList.length > 0
+        this.mMyTodoYn =
+          this.mGetTodoGroupList[groupIndex].myTodoList.length > 0
+        this.mTargetTodoYn =
+          this.mGetTodoGroupList[groupIndex].targetTodoList.length > 0
+        this.mCompleteTodoYn =
+          this.mGetTodoGroupList[groupIndex].completeTodoList.length > 0
       }, 1000)
     },
-    MoveDate (value) {
+    MoveDate(value) {
       this.setCountDate += value
       const setDate = this.mSelectDate.setDate(
         this.mSelectDate.getDate() + value
@@ -1231,7 +1563,7 @@ export default {
       const returnDate = new Date(setDate)
       this.mSelectDate = returnDate
     },
-    async completeTodo (value, loadingYn) {
+    async completeTodo(value, loadingYn) {
       var param = {}
       param.contentsKey = value.contentsKey
       param.workUserName = this.GE_USER.userDispMtext
@@ -1248,7 +1580,7 @@ export default {
       })
       console.log(result)
     },
-    async getTodoList (loadingYn) {
+    async getTodoList(loadingYn) {
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
       var nonLoading = true
@@ -1259,7 +1591,7 @@ export default {
       console.log(resultList)
     },
     // target data를 공통 작성 화면에서 원하는 형태로 컨버팅 하는 함수
-    convertTargetData (target) {
+    convertTargetData(target) {
       if (target && target.length > 0) {
         const tempList = []
         target.forEach((value) => {
@@ -1299,10 +1631,10 @@ export default {
         ]
       }
     },
-    returnTargetData () {
+    returnTargetData() {
       return this.mTargetDataList
     },
-    async getTodoListGroupCab (loadingYn) {
+    async getTodoListGroupCab(loadingYn) {
       const param = {
         userKey: this.GE_USER.userKey,
         jobkindId: 'TODO',
@@ -1316,7 +1648,10 @@ export default {
       for (let i = 0; i < myContents.data.content.length; i++) {
         myContents.data.content[i].creTeamKey = 0
       }
-      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', myContents.data.content)
+      this.$store.dispatch(
+        'UB_CHANNEL/AC_ADD_CONTENTS',
+        myContents.data.content
+      )
       // const myContents = await this.$getContentsList(param)
       this.mGetTodoGroupList = myContents.data.content
       this.mMyTodoYn = false
@@ -1379,12 +1714,12 @@ export default {
       this.mGetTodoGroupList = [cabinetList]
       // }
     },
-    todosideMenu (todo, value, groupIndex, todoIndex) {
+    todosideMenu(todo, value, groupIndex, todoIndex) {
       this.mSelectTodo = todo
       this.mGetTodoGroupList[groupIndex][value][todoIndex].sideMenuOpenYn =
         !this.mGetTodoGroupList[groupIndex][value][todoIndex].sideMenuOpenYn
     },
-    getToday (value) {
+    getToday(value) {
       var date = value
       var year = date.getFullYear()
       var month = ('0' + (1 + date.getMonth())).slice(-2)
@@ -1392,7 +1727,7 @@ export default {
 
       return year + '-' + month + '-' + day
     },
-    getDate (value) {
+    getDate(value) {
       // -1:day-1, 0:day, 1:day+1
       let todayDate = ''
       // const date = new Date()
@@ -1408,7 +1743,7 @@ export default {
       todayDate = year + '-' + month + '-' + day
       return todayDate
     },
-    changeTypeToText (value) {
+    changeTypeToText(value) {
       let returnData = ''
       if (value === 'H') {
         returnData = 'HouseWork'
@@ -1421,7 +1756,7 @@ export default {
       }
       return returnData
     },
-    async deleteTodo (loadingYn) {
+    async deleteTodo(loadingYn) {
       commonMethods.showAxiosLoading(true)
       var param = {}
       param.todoKey = this.mTodoObj.todoKey
@@ -1437,7 +1772,7 @@ export default {
       }
       commonMethods.showAxiosLoading(false)
     },
-    async updateTodo (value, loadingYn) {
+    async updateTodo(value, loadingYn) {
       this.mShowSkeletonYn = true
       const param = { todo: {} }
       param.todo.title = value.title
@@ -1465,7 +1800,7 @@ export default {
         this.mShowSkeletonYn = false
       }
     },
-    openUpdatePop () {
+    openUpdatePop() {
       if (this.mTodoObj.targetKey !== this.GE_USER.userKey) {
         const cabUserList = []
         for (let i = 0; i < this.mGetTodoFamilyList.length; i++) {
@@ -1516,7 +1851,7 @@ export default {
       this.mSetPopShowYn = true
       this.mOpenMenuShowYn = false
     },
-    calPercent (total, com) {
+    calPercent(total, com) {
       let returnData = ''
       if (com === 0) {
         returnData = 0
@@ -1525,23 +1860,23 @@ export default {
       }
       return returnData + '%'
     },
-    closeUpdatePop () {
+    closeUpdatePop() {
       this.mSetPopShowYn = false
     },
-    openDeletePop () {
+    openDeletePop() {
       this.mConfirmText = 'Are you sure you want to delete it?'
       this.mDeleteConfirmShowYn = true
       this.mOpenMenuShowYn = false
     },
-    closeDeletePop () {
+    closeDeletePop() {
       this.mDeleteConfirmShowYn = false
     },
-    openSubMenu (value) {
+    openSubMenu(value) {
       this.mTodoObj = value
       console.log(value)
       this.mOpenMenuShowYn = true
     },
-    closeSubMenu () {
+    closeSubMenu() {
       this.mOpenMenuShowYn = false
     },
     // async openTodoDetail (value) {
@@ -1560,10 +1895,10 @@ export default {
     //   this.mSelectTodo = value
     //   this.mTodoDetailShowYn = true
     // },
-    closeTodoDetail () {
+    closeTodoDetail() {
       this.mTodoDetailShowYn = false
     },
-    async openAddTodoPop () {
+    async openAddTodoPop() {
       if (this.mGetTodoFamilyList.length === 0) {
         var paramMap = {}
         paramMap.userKey = this.GE_USER.userKey
@@ -1579,15 +1914,20 @@ export default {
         this.mWritePopShowYn = true
       }
     },
-    replaceArr (arr) {
+    replaceArr(arr) {
       // var this_ = this
       if (!arr && arr.length === 0) return []
       var uniqueArr = arr.reduce(function (data, current) {
-        if (data.findIndex((item) => Number(item.contentsKey) === Number(current.contentsKey)) === -1) {
-        /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
+        if (
+          data.findIndex(
+            (item) => Number(item.contentsKey) === Number(current.contentsKey)
+          ) === -1
+        ) {
+          /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
         }
-        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+        data = data.sort(function (a, b) {
+          // num으로 오름차순 정렬
           return b.contentsKey - a.contentsKey
           // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
         })
@@ -1595,18 +1935,18 @@ export default {
       }, [])
       return uniqueArr
     },
-    closeAddTodoPop () {
+    closeAddTodoPop() {
       this.mAddTodoPopShowYn = false
     },
-    goMain () {
+    goMain() {
       this.$router.push('/')
     }
   },
   computed: {
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     },
-    GE_NEW_CONT_LIST () {
+    GE_NEW_CONT_LIST() {
       console.log(this.$store.getters['UB_CHANNEL/GE_NEW_CONT_LIST'])
       return this.$store.getters['UB_CHANNEL/GE_NEW_CONT_LIST']
     }
@@ -1614,7 +1954,7 @@ export default {
   watch: {
     mSelectDate: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         if (!val) return
         this.getTodoListGroupCab()
       },
@@ -1622,7 +1962,7 @@ export default {
     },
     mGetTodoGroupList: {
       immediate: true,
-      handler (val) {
+      handler(val) {
         this.mMyTodoCount = 0
         this.mTargetTodoCount = 0
         this.mCompleteMyTodoCount = 0
@@ -1642,7 +1982,10 @@ export default {
             const todo = group.completeTodoList[i]
             if (todo.completeTarget && todo.completeTarget === 'myTodo') {
               this.mCompleteMyTodoCount++
-            } else if (todo.completeTarget && todo.completeTarget === 'target') {
+            } else if (
+              todo.completeTarget &&
+              todo.completeTarget === 'target'
+            ) {
               this.mCompleteTargetTodoCount++
             }
           }
@@ -1650,7 +1993,7 @@ export default {
       }
     },
     GE_NEW_CONT_LIST: {
-      handler (value, old) {
+      handler(value, old) {
         if (!value || !value[0]) return
         console.log(value[0])
         if (value[0].jobkindId !== 'TODO') return
@@ -1675,18 +2018,21 @@ export default {
             newTodo.completeTarget = 'myTodo'
             this.mGetTodoGroupList[0].completeTodoList.unshift(newTodo)
             oriList = this.mGetTodoGroupList[0].completeTodoList
-            this.mGetTodoGroupList[0].completeTodoList = this.replaceArr(oriList)
+            this.mGetTodoGroupList[0].completeTodoList =
+              this.replaceArr(oriList)
             break
           case 'completedTarget':
             newTodo.completeTarget = 'target'
             this.mGetTodoGroupList[0].completeTodoList.unshift(newTodo)
             oriList = this.mGetTodoGroupList[0].completeTodoList
-            this.mGetTodoGroupList[0].completeTodoList = this.replaceArr(oriList)
+            this.mGetTodoGroupList[0].completeTodoList =
+              this.replaceArr(oriList)
             break
         }
         this.mMyTodoYn = this.mGetTodoGroupList[0].myTodoList.length > 0
         this.mTargetTodoYn = this.mGetTodoGroupList[0].targetTodoList.length > 0
-        this.mCompleteTodoYn = this.mGetTodoGroupList[0].completeTodoList.length > 0
+        this.mCompleteTodoYn =
+          this.mGetTodoGroupList[0].completeTodoList.length > 0
       },
       deep: true
     }
@@ -1694,7 +2040,6 @@ export default {
 }
 </script>
 <style scoped>
-
 .fontSize {
   font-size: 18px;
 }
@@ -1828,34 +2173,34 @@ export default {
   overflow: hidden;
   border-radius: 50%;
 }
-.actorImg{
-  width:35px;
-  height:35px;
-  border-radius:50%;
-  margin-left:-10px;
-  border:2px solid #fff;
-  box-shadow:0 5px 6px 0 rgba(60, 60, 60, 0.2);
-  background-color:#fff;
+.actorImg {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  margin-left: -10px;
+  border: 2px solid #fff;
+  box-shadow: 0 5px 6px 0 rgba(60, 60, 60, 0.2);
+  background-color: #fff;
 }
-.moreActorImg{
-  margin-left:-10px;
-  font-weight:bold;
-  width:35px;
-  height:35px;
-  border-radius:50%;
-  box-shadow:0 5px 6px 0 rgba(60, 60, 60, 0.2);
-  background-color:#E7EDFF!important;
-  color:#5F61BD !important;
-  line-height:35px;
-  z-index:2;
+.moreActorImg {
+  margin-left: -10px;
+  font-weight: bold;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  box-shadow: 0 5px 6px 0 rgba(60, 60, 60, 0.2);
+  background-color: #e7edff !important;
+  color: #5f61bd !important;
+  line-height: 35px;
+  z-index: 2;
 }
 .strikeLine {
   position: absolute;
   background-color: #7e7e7e;
   height: 2px;
   width: 0;
-  top:50%;
-  transform:translateY(-50%);
+  top: 50%;
+  transform: translateY(-50%);
 }
 .todoListBox {
   width: 100%;
@@ -1932,14 +2277,14 @@ export default {
   .fontSize {
     font-size: 15px !important;
   }
-  .actorImg{
-    width:25px !important;
-    height:25px !important;
+  .actorImg {
+    width: 25px !important;
+    height: 25px !important;
   }
-  .moreActorImg{
-    width:25px !important;
-    height:25px !important;
-    line-height:25px !important;
+  .moreActorImg {
+    width: 25px !important;
+    height: 25px !important;
+    line-height: 25px !important;
   }
   .commonSubTitleTextBold {
     font-size: 14px;

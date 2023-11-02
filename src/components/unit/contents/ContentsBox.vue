@@ -1,13 +1,13 @@
 <i18n>
-{
-  "ko": {
-    "CONF_MSG_CHECK_UNABLE": "멤버가 아니므로 유저 정보를 볼 수 없습니다."
-  },
-  "en": {
-    "CONF_MSG_CHECK_UNABLE": "Sorry, you are not a member, so you cannot access user information."
+  {
+    "ko": {
+      "CONF_MSG_CHECK_UNABLE": "멤버가 아니므로 유저 정보를 볼 수 없습니다."
+    },
+    "en": {
+      "CONF_MSG_CHECK_UNABLE": "Sorry, you are not a member, so you cannot access user information."
+    }
   }
-}
-</i18n>
+  </i18n>
 <template>
   <div v-if="mLoadingShowYn" id="loading"><div class="spinner"></div></div>
   <div
@@ -65,7 +65,7 @@
   <div
     :class="animationYn ? 'newContentsAni' : ''"
     class="contentsWrap"
-    style="box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);"
+    style="box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4)"
     @dragenter="onDragenter"
     @dragleave="onDragleave"
     @dragover="onDragover"
@@ -247,15 +247,31 @@
             {{ $changeDateFormat(CONT_DETAIL.creDate) }}
           </p>
         </div>
-        <div class="w100P" style="display:flex; justify-content:space-between;">
-          <span v-if="CONT_DETAIL.jobkindId === 'TODO'"
+        <div
+          class="w100P"
+          style="display: flex; justify-content: space-between"
+        >
+          <span
+            v-if="CONT_DETAIL.jobkindId === 'TODO'"
             @click="goUserProfile()"
-            style="font-weight: normal; display:block;"
+            style="font-weight: normal; display: block"
             class="mleft-03"
           >
           </span>
-          <div v-if="CONT_DETAIL.jobkindId === 'TODO'"  class="tagListWrap mTop-10 w100P" style="display:flex; gap:5px; flex-wrap:wrap; justify-content:space-between;">
-            <div class="flexAlignCenter" style="justify-content:end; align-items:start; flex-wrap:wrap;">
+          <div
+            v-if="CONT_DETAIL.jobkindId === 'TODO'"
+            class="tagListWrap mTop-10 w100P"
+            style="
+              display: flex;
+              gap: 5px;
+              flex-wrap: wrap;
+              justify-content: space-between;
+            "
+          >
+            <div
+              class="flexAlignCenter"
+              style="justify-content: end; align-items: start; flex-wrap: wrap"
+            >
               <div
                 v-for="(tag, index) in CONT_DETAIL.tagList"
                 :key="index"
@@ -268,45 +284,76 @@
                   border-radius: 10px;
                   font-size: 10px;
                   width: auto;
-                  word-break:keep-all;
-                ">
-                  {{ tag.tagText }}
-                </div>
+                  word-break: keep-all;
+                "
+              >
+                {{ tag.tagText }}
               </div>
-              <div v-if="CONT_DETAIL.jobkindId === 'TODO'" style="display:flex; flex-direction:column; align-items:end;">
-                <p style="font-size:12px;">{{ $changeDateFormat(CONT_DETAIL.workFromDate) + '~' +$changeDateFormat(CONT_DETAIL.workToDate) }}</p>
-                <div >
-                  <teamplate v-for="(each, index) in CONT_DETAIL.actorList" :key="index">
-                    <img v-if="each.accessKind === 'U'" class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
-                    <img v-else class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
-                  </teamplate>
-                </div>
+            </div>
+            <div
+              v-if="CONT_DETAIL.jobkindId === 'TODO'"
+              style="display: flex; flex-direction: column; align-items: end"
+            >
+              <p style="font-size: 12px">
+                {{
+                  $changeDateFormat(CONT_DETAIL.workFromDate) +
+                  '~' +
+                  $changeDateFormat(CONT_DETAIL.workToDate)
+                }}
+              </p>
+              <div>
+                <teamplate
+                  v-for="(each, index) in CONT_DETAIL.actorList"
+                  :key="index"
+                >
+                  <img
+                    v-if="each.accessKind === 'U'"
+                    class="actorImg"
+                    :src="
+                      each.domainPath
+                        ? each.domainPath + each.pathMtext
+                        : require(`@/assets/images/intro/login/uniB_logo.png`)
+                    "
+                    style=""
+                    :alt="each.userDispMtext"
+                  />
+                  <img
+                    v-else
+                    class="actorImg"
+                    :src="
+                      require(`@/assets/images/todo/channer_addressBook.svg`)
+                    "
+                    style=""
+                    :alt="each.userDispMtext"
+                  />
+                </teamplate>
               </div>
             </div>
           </div>
         </div>
-        <div v-if="!GE_USER.unknownYn" class="w100P fl">
-          <statCodeComponent
-            v-if="
-              CONT_DETAIL.jobkindId === 'BOAR' &&
-              CONT_DETAIL.workStatYn &&
-              !pNoAuthYn
-            "
-            @click="openWorkStatePop(CONT_DETAIL)"
-            :alimDetail="CONT_DETAIL"
-            class="fr"
-            :contentsKey="CONT_DETAIL.contentsKey"
-            :teamKey="CONT_DETAIL.creTeamKey"
-            :currentCodeKey="CONT_DETAIL.workStatCodeKey"
-            :codeList="CONT_DETAIL.workStatCodeList"
-          />
-        </div>
       </div>
+      <div v-if="!GE_USER.unknownYn" class="w100P fl">
+        <statCodeComponent
+          v-if="
+            CONT_DETAIL.jobkindId === 'BOAR' &&
+            CONT_DETAIL.workStatYn &&
+            !pNoAuthYn
+          "
+          @click="openWorkStatePop(CONT_DETAIL)"
+          :alimDetail="CONT_DETAIL"
+          class="fr"
+          :contentsKey="CONT_DETAIL.contentsKey"
+          :teamKey="CONT_DETAIL.creTeamKey"
+          :currentCodeKey="CONT_DETAIL.workStatCodeKey"
+          :codeList="CONT_DETAIL.workStatCodeList"
+        />
+      </div>
+    </div>
 
     <div
       v-if="!propJustShowYn"
       :class="
-      (CONT_DETAIL.jobkindId === 'BOAR' &&
+        (CONT_DETAIL.jobkindId === 'BOAR' &&
           CONT_DETAIL.workStatYn &&
           CONT_DETAIL.workStatCodeKey === 46) ||
         (CONT_DETAIL.jobkindId === 'TODO' && CONT_DETAIL.contStatus === '99')
@@ -388,7 +435,7 @@
     </div>
     <template
       v-if="
-       !propJustShowYn &&
+        !propJustShowYn &&
         (pNoAuthYn ||
           CONT_DETAIL.jobkindId === 'TODO' ||
           (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === true) ||
@@ -396,7 +443,7 @@
           CONT_DETAIL.creUserKey === this.GE_USER.userKey)
       "
       :class="
-      (CONT_DETAIL.jobkindId === 'BOAR' &&
+        (CONT_DETAIL.jobkindId === 'BOAR' &&
           CONT_DETAIL.workStatYn &&
           CONT_DETAIL.workStatCodeKey === 46) ||
         (CONT_DETAIL.jobkindId === 'TODO' && CONT_DETAIL.contStatus === '99')
@@ -617,46 +664,45 @@
         ></myObserver>
       </div>
     </template>
-  <!-- </div> -->
-  <!-- 밑에는 댓글 작성 창 -->
-  <gMemoPop
-    style="position: absolute; bottom: 0"
-    :resetMemoYn="mMemoResetYn"
-    v-if="
-      !pNoAuthYn &&
-      propDetailYn &&
-      !(
-        CONT_DETAIL.jobkindId === 'BOAR' &&
-        CONT_DETAIL.VIEW_YN === false &&
-        CONT_DETAIL.creUserKey !== GE_USER.userKey
-      )
-    "
-    ref="gMemoRef"
-    transition="showMemoPop"
-    :mememo="mMememoValue"
-    @saveMemoText="saveMemo"
-    @clearMemoObj="clearMemoObj"
-    @writeMemoScrollMove="writeMemoScrollMove"
-  />
-  <gConfirmPop
-    :confirmText="mConfirmText"
-    :confirmType="mConfirmType"
-    v-if="mConfirmPopShowYn"
-    @ok="confirmOk"
-    @no="mConfirmPopShowYn = false"
-  />
-  <div v-if="mSelectBoardPopShowYn === true" class="profilePopBg" />
-  <div v-if="mSelectBoardPopShowYn === true" class="selectBoardWrap">
-    <gSelectBoardPop
-      :type="mSelectBoardType"
-      @closeXPop="closeMoveContentsPop"
-      :boardDetail="mMoveContentsDetailValue"
+    <!-- </div> -->
+    <!-- 밑에는 댓글 작성 창 -->
+    <gMemoPop
+      style="position: absolute; bottom: 0"
+      :resetMemoYn="mMemoResetYn"
+      v-if="
+        !pNoAuthYn &&
+        propDetailYn &&
+        !(
+          CONT_DETAIL.jobkindId === 'BOAR' &&
+          CONT_DETAIL.VIEW_YN === false &&
+          CONT_DETAIL.creUserKey !== GE_USER.userKey
+        )
+      "
+      ref="gMemoRef"
+      transition="showMemoPop"
+      :mememo="mMememoValue"
+      @saveMemoText="saveMemo"
+      @clearMemoObj="clearMemoObj"
+      @writeMemoScrollMove="writeMemoScrollMove"
     />
+    <gConfirmPop
+      :confirmText="mConfirmText"
+      :confirmType="mConfirmType"
+      v-if="mConfirmPopShowYn"
+      @ok="confirmOk"
+      @no="mConfirmPopShowYn = false"
+    />
+    <div v-if="mSelectBoardPopShowYn === true" class="profilePopBg" />
+    <div v-if="mSelectBoardPopShowYn === true" class="selectBoardWrap">
+      <gSelectBoardPop
+        :type="mSelectBoardType"
+        @closeXPop="closeMoveContentsPop"
+        :boardDetail="mMoveContentsDetailValue"
+      />
+    </div>
   </div>
-</div>
 </template>
 <script>
-
 import memoCompo from './ContBoxMemo'
 import { onMessage } from '@/assets/js/webviewInterface'
 import statCodeComponent from './ManageStateCode'
@@ -1721,24 +1767,24 @@ export default {
       if (cont && cont.length > 0) {
         const viewAuth = this.$checkUserAuth(cont[0].shareItem).V
         /* if (cont[0].shareList) {
-          const shareList = cont[0].shareList
-          const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
-          if (index !== -1) {
-            viewAuth = true
-          }
-        } */
+            const shareList = cont[0].shareList
+            const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
+            if (index !== -1) {
+              viewAuth = true
+            }
+          } */
         cont[0].VIEW_YN = viewAuth
         return cont[0]
       } else {
         var content = this.contentsEle
         const viewAuth = this.$checkUserAuth(this.contentsEle.shareItem).V
         /* if (this.contentsEle.shareList) {
-          const shareList = this.contentsEle.shareList
-          const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
-          if (index !== -1) {
-            viewAuth = true
-          }
-        } */
+            const shareList = this.contentsEle.shareList
+            const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
+            if (index !== -1) {
+              viewAuth = true
+            }
+          } */
         content.VIEW_YN = viewAuth
         return content
       }
@@ -1840,14 +1886,14 @@ export default {
   z-index: 9999999;
 }
 
-.actorImg{
-  width:35px;
-  height:35px;
-  border-radius:50%;
-  margin-left:-10px;
-  border:2px solid #fff;
-  box-shadow:0 5px 6px 0 rgba(60, 60, 60, 0.2);
-  background-color:#fff;
+.actorImg {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  margin-left: -10px;
+  border: 2px solid #fff;
+  box-shadow: 0 5px 6px 0 rgba(60, 60, 60, 0.2);
+  background-color: #fff;
 }
 .contentsCard {
   background: #ffffff;

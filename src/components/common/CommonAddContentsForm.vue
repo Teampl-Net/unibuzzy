@@ -531,17 +531,9 @@ export default defineComponent({
         if (props.pContentsData.workFromDateStr) {
           params.workFromDateStr =
             props.pContentsData.workFromDateStr.split('T')[0]
-          const fromDateInput = document.getElementById('fromDate')
-          if (fromDateInput) {
-            fromDateInput.value = params.workFromDateStr
-          }
         }
         if (props.pContentsData.workToDateStr) {
           params.workToDateStr = props.pContentsData.workToDateStr.split('T')[0]
-          const toDateInput = document.getElementById('toDate')
-          if (toDateInput) {
-            toDateInput.value = params.workToDateStr
-          }
         }
         // 선택된 주소록(target) 데이터 연결
         for (const editingTarget of props.pContentsData.actorList) {
@@ -608,7 +600,7 @@ export default defineComponent({
     watch(
       () => [params.workFromDateStr, params.workToDateStr],
       (newP) => {
-        console.log('============== param changed check', newP)
+        // console.log('============== param changed check', newP)
         const newFromDate = newP[0]
         const newToDate = newP[1]
 
@@ -620,7 +612,7 @@ export default defineComponent({
         }
 
         // from변경시, to보다 이후면 to를 from으로 변경
-        // to변경시, to보다 이후면 to를 to으로 변경
+        // to변경시, from보다 이전이면 from을 to으로 변경
         if (newFromDate > newToDate) {
           if (changeType === 'F') {
             // alert('case From ')
@@ -655,7 +647,7 @@ export default defineComponent({
       showReceiverSelectList.value = !showReceiverSelectList.value
       if (
         showReceiverSelectList.value &&
-        params.actorList.accessKey === store.getters['UB_USER/GE_USER']
+        params.actorList.accessKey === store.getters['D_USER/GE_USER'].userKey
       ) {
         params.actorList = []
       }
