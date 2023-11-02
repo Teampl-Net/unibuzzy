@@ -254,8 +254,8 @@
             class="mleft-03"
           >
           </span>
-          <div v-if="CONT_DETAIL.jobkindId === 'TODO'"  class="tagListWrap w100P mTop-10" style="display:flex; gap:5px; flex-wrap:wrap; justify-content:space-between;">
-            <div class="flexJustiCenter" style="gap:5px;">
+          <div v-if="CONT_DETAIL.jobkindId === 'TODO'"  class="tagListWrap mTop-10 w100P" style="display:flex; gap:5px; flex-wrap:wrap; justify-content:space-between;">
+            <div class="flexAlignCenter" style="justify-content:end; align-items:start; flex-wrap:wrap;">
               <div
                 v-for="(tag, index) in CONT_DETAIL.tagList"
                 :key="index"
@@ -274,8 +274,8 @@
                 </div>
               </div>
               <div v-if="CONT_DETAIL.jobkindId === 'TODO'" style="display:flex; flex-direction:column; align-items:end;">
-                <p class="font12">{{ getMonthDate(CONT_DETAIL.workFromDate) + '~' + getMonthDate(CONT_DETAIL.workToDate) }}</p>
-                <div style="display:flex; justify-content:end; align-items:center;">
+                <p style="font-size:12px;">{{ $changeDateFormat(CONT_DETAIL.workFromDate) + '~' +$changeDateFormat(CONT_DETAIL.workToDate) }}</p>
+                <div >
                   <img class="actorImg" v-for="(each, index) in CONT_DETAIL.actorList" :key="index" :src="each.domainPath + each.pathMtext" style="" :alt="each.userDispMtext"/>
                 </div>
               </div>
@@ -732,10 +732,6 @@ export default {
     }
   },
   methods: {
-    getMonthDate(date) {
-      var format = 'MM/DD'
-      return this.$dayjs(date).add(-13, 'hour').format(format)
-    },
     closeMoveContentsPop() {
       this.mSelectBoardPopShowYn = false
       this.$emit('contMove')
@@ -1842,8 +1838,8 @@ export default {
 }
 
 .actorImg{
-  width:40px;
-  height:40px;
+  width:35px;
+  height:35px;
   border-radius:50%;
   margin-left:-10px;
   border:2px solid #fff;
