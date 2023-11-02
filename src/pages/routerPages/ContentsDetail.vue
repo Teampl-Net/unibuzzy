@@ -15,10 +15,11 @@
     @dragenter="onDragenter"
     :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 50) + 'px'"
     v-if="
-      this.CHANNEL_DETAIL &&
       this.CONT_DETAIL &&
+      CONT_DETAIL.jobkindId === 'TODO' ||
+      (this.CHANNEL_DETAIL &&
       CONT_DETAIL.jobkindId === 'BOAR' &&
-      this.CAB_DETAIL
+      this.CAB_DETAIL)
     "
     class="boardDetailWrap"
   >
@@ -142,7 +143,7 @@ export default {
     },
     // eslint-disable-next-line vue/return-in-computed-property
     CONT_DETAIL() {
-      if (!this.cDetail || !this.CHANNEL_DETAIL) return
+      if (!this.cDetail || (!this.CHANNEL_DETAIL && this.cDetail.jobkindId !== 'TODO')) return
       return this.cDetail
     },
     GE_USER() {
@@ -259,11 +260,15 @@ export default {
           Object.keys(this.propParams).length < 1 ||
           this.propParams.targetType !== 'contentsDetail'
         ) {
-          await this.getCabinetDetail(this.mCreTeamKey)
-          await this.$addChanList(this.mCreTeamKey)
+          if (this.mCreTeamKey !== '0') {
+            alert(false)
+            await this.getCabinetDetail(this.mCreTeamKey)
+            await this.$addChanList(this.mCreTeamKey)
+          }
           await this.getContentsDetail()
         } else {
-          if (!this.propParams.channelYn) {
+          if (this.mCreTeamKey !== '0') {
+            alert(true)
             await this.getCabinetDetail(this.mCreTeamKey)
             await this.$addChanList(this.mCreTeamKey)
           }
@@ -299,7 +304,11 @@ export default {
       var param = {}
       param.contentsKey = Number(this.mContentsKey)
       param.targetKey = Number(this.mContentsKey)
-      param.jobkindId = 'BOAR'
+      if (this.mCreTeamKey !== '0') {
+        param.jobkindId = 'BOAR'
+      } else {
+        param.jobkindId = 'TODO'
+      }
       param.userKey = this.GE_USER.userKey
       const resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]

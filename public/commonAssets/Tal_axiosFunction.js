@@ -411,7 +411,7 @@ export const methods = {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
-      if (!noAuthYn && store.getters['UB_USER/GE_USER']) {
+      if (!noAuthYn && store.getters['UB_USER/GE_USER'] && inputParam.jobkindId === 'BOAR') {
         paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
       }
     }

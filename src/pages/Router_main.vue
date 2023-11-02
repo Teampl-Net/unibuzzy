@@ -538,14 +538,14 @@ export default {
         var axiosParam = {}
         axiosParam.targetKey = detailValue.targetKey
         axiosParam.contentsKey = detailValue.targetKey
-        axiosParam.teamKey = detailValue.teamKey || detailValue.creTeamKey
-        axiosParam.jobkindId = detailValue.jobkindId
         if (detailValue.cabinetKey) {
           axiosParam.cabinetKey = detailValue.cabinetKey
         }
-        if (axiosParam.jobkindId) {
-          axiosParam.userKey = this.GE_USER.userKey
+        axiosParam.userKey = this.GE_USER.userKey
+        axiosParam.jobkindId = detailValue.jobkindId
+        if (axiosParam.jobkindId === 'BOAR') {
           axiosParam.ownUserKey = this.GE_USER.userKey
+          axiosParam.teamKey = detailValue.teamKey || detailValue.creTeamKey
           axiosParam.creTeamKey = axiosParam.teamKey
         }
 
@@ -584,9 +584,15 @@ export default {
         this.mChanInfo = detailParam
         this.mTargetType = 'contDetail'
 
-        this.$router.push(
-          `/contents/${axiosParam.contentsKey}/${detailParam.teamKey}/${detailParam.cabinetKey}`
-        )
+        if (detailParam.jobkindId === 'TODO') {
+          this.$router.push(
+            `/contents/${axiosParam.contentsKey}/0/0`
+          )
+        } else {
+          this.$router.push(
+            `/contents/${axiosParam.contentsKey}/${detailParam.teamKey}/${detailParam.cabinetKey}`
+          )
+        }
       }
     },
     getParamMap(urlString) {

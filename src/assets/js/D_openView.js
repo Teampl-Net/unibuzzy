@@ -58,7 +58,9 @@ export const openView = {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
-      paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
+      if (inputParam.jobkindId !== 'TODO') {
+        paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
+      }
     }
     var contentDetail = await commonAxiosFunction(
       { url: '/sUniB/tp.getMyContentsList', param: paramSet },

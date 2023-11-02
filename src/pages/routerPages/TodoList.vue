@@ -1082,10 +1082,10 @@ export default {
       param.targetType = 'contentsDetail'
       param.targetKey = value.contentsKey
       param.popHeaderText = '오늘의 일'
-      // param.teamKey = 0
-      // param.creTeamKey = 0
+      param.teamKey = 0
+      param.creTeamKey = 0
       param.jobkindId = value.jobkindId
-      // param.creTeamKey = value.creTeamKey
+      param.creTeamKey = value.creTeamKey
       param.value = value
       value.readYn = 1
       param.readYn = value.readYn
