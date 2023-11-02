@@ -67,7 +67,7 @@ export default {
       if ((this.$route.path === '/' || this.$route.path === '/unibuzzy') && page === 'main') {
         return false
       }
-      if (page === 'myPage' && this.GE_USER.unknownYn) {
+      if ((page === 'myPage' || page === 'todo') && this.GE_USER.unknownYn) {
         this.pOpenUnknownLoginPop()
         return
       }
@@ -80,6 +80,8 @@ export default {
           page = '검색'
         } else if (page === 'myPage') {
           page = '마이페이지'
+        } else if (page === 'todo') {
+          page = '오늘의일'
         }
         this.pChangePageHeader(page)
       }

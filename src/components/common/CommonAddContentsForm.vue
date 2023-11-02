@@ -307,23 +307,23 @@ export default defineComponent({
     }
   },
   created () {
-    var history = this.$store.getters['D_HISTORY/hStack']
+    var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'writeContents' + history.length
     // console.log(history)
     history.push(this.popId)
-    this.$store.commit('D_HISTORY/updateStack', history)
+    this.$store.commit('UB_HISTORY/updateStack', history)
   },
   computed: {
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
     pageUpdate (value, old) {
-      const history = this.$store.getters['D_HISTORY/hStack']
+      const history = this.$store.getters['UB_HISTORY/hStack']
       if (this.popId === history[history.length - 1]) {
         if (this.pClosePop) {
           this.pClosePop()

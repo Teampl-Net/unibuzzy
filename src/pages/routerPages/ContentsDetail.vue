@@ -306,6 +306,10 @@ export default {
         param.jobkindId = 'BOAR'
       } else {
         param.jobkindId = 'TODO'
+        const todoObject = {
+          teamKey: 0
+        }
+        await this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [todoObject])
       }
       param.userKey = this.GE_USER.userKey
       const resultList = await this.$getContentsList(param)
@@ -320,15 +324,21 @@ export default {
         detailData.D_MEMO_LIST = []
       }
       this.cDetail = detailData
-      this.mCreTeamKey = this.cDetail.creTeamKey
-      this.mCabinetKey = this.cDetail.cabinetKey
+      if (param.jobkindId === 'BOAR') {
+        this.mCreTeamKey = this.cDetail.creTeamKey
+        this.mCabinetKey = this.cDetail.cabinetKey
+      } else {
+        detailData.creTeamKey = 0
+      }
       if (this.cDetail.cabinetNameMtext) {
         this.$emit(
           'changePageHeader',
           this.$changeText(this.cDetail.cabinetNameMtext)
         ) /* 여기  */
-      } else {
+      } else if (this.cDetail.nameMtext) {
         this.$emit('changePageHeader', this.$changeText(this.cDetail.nameMtext))
+      } else if (this.cDetail.jobkindId === 'TODO') {
+        this.$emit('changePageHeader', this.$changeText('To Do'))
       }
       const openPageParam = {}
       openPageParam.targetKey = detailData.contentsKey

@@ -53,10 +53,10 @@ export default defineComponent({
     }
   },
   created () {
-    var history = this.$store.getters['D_HISTORY/hStack']
+    var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'selectTargetPop' + history.length
     history.push(this.popId)
-    this.$store.commit('D_HISTORY/updateStack', history)
+    this.$store.commit('UB_HISTORY/updateStack', history)
 
     if (this.pSelectedTargetList && this.pSelectedTargetList.length > 0) {
       this.mSelectedTargetList = [...this.pSelectedTargetList]
@@ -64,23 +64,23 @@ export default defineComponent({
   },
   computed: {
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
     pageUpdate (value, old) {
-      let history = this.$store.getters['D_HISTORY/hStack']
+      let history = this.$store.getters['UB_HISTORY/hStack']
       if (this.popId === history[history.length - 1]) {
         if (this.$refs.targetList) {
           this.$refs.targetList.checkClosePop()
         } else {
           var removePage = history[history.length - 1]
           history = history.filter((element, index) => index < history.length - 1)
-          this.$store.commit('D_HISTORY/setRemovePage', removePage)
-          this.$store.commit('D_HISTORY/updateStack', history)
+          this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+          this.$store.commit('UB_HISTORY/updateStack', history)
           this.$checkDeleteHistory('selectTargetPop')
         }
       }

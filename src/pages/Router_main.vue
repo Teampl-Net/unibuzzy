@@ -568,6 +568,8 @@ export default {
                 this.$changeText(result.content.cabinetNameMtext)
               )
             }
+          } else if (detailParam.jobkindId === 'TODO') {
+            this.changePageHeader('To Do')
           } else {
             detailParam.nameMtext = this.$changeText(result.content.nameMtext)
             detailParam.teamName = this.$changeText(result.content.nameMtext)
