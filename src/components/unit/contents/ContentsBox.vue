@@ -583,7 +583,7 @@
         ></myObserver>
       </div>
     </template>
-  </div>
+  <!-- </div> -->
   <!-- 밑에는 댓글 작성 창 -->
   <gMemoPop
     style="position: absolute; bottom: 0"

@@ -319,7 +319,7 @@
                     margin-top: 10px;
                   "
                 >
-                  <div style="display: flex; align-items: center; margin-left:5px;">
+                  <div style="display: flex; align-items: center; margin-left:5px; width:75%;">
                     <img
                       v-if="todo.strikeOnOff"
                       src="../../assets/images/todo/checkboxCheck.png"
@@ -351,7 +351,7 @@
                     <p
                       v-if="todo.contStatus === '00'"
                       class="fl fontBold todoFontSize mLeft-05"
-                      style="position: relative; margin-left: 5px"
+                      style="position: relative; margin-left: 5px; text-align:left;"
                     >
                       <span
                         class="strikeLine"
@@ -364,7 +364,7 @@
                       {{ todo.title }}
                     </p>
                   </div>
-                  <div>
+                  <div style="width:20%; display:flex; justify-content:end; flex-wrap:wrap;">
                     <img class="actorImg" v-for="(each, index) in todo.actorList" :key="index" :src="each.domainPath + each.pathMtext" style="" :alt="each.userDispMtext"/>
                   </div>
                 </div>
@@ -577,7 +577,7 @@
                         todoIndex
                       )
                     "
-                    style="display: flex; align-items: center; margin-left:5px;"
+                    style="display: flex; align-items: center; margin-left:5px; width:75%;"
                   >
                     <img
                       v-if="todo.strikeOnOff"
@@ -610,7 +610,7 @@
                     <p
                       v-if="todo.contStatus === '00'"
                       class="fl fontBold todoFontSize mLeft-05"
-                      style="position: relative; margin-left: 5px"
+                      style="position: relative; margin-left: 5px; text-align:left;"
                     >
                       <span
                         class="strikeLine"
@@ -623,7 +623,7 @@
                       {{ todo.title }}
                     </p>
                   </div>
-                  <div>
+                  <div style="width:20%; display:flex; justify-content:end; flex-wrap:wrap;">
                     <img class="actorImg" v-for="(each, index) in todo.actorList" :key="index" :src="each.domainPath + each.pathMtext" style="" :alt="each.userDispMtext"/>
                   </div>
                 </div>
@@ -825,7 +825,7 @@
                     margin-top: 10px;
                   "
                 >
-                  <div style="display: flex; align-items: center; margin-left:5px;">
+                  <div style="display: flex; align-items: center; margin-left:5px; width:75%;">
                     <img
                       v-if="todo.strikeOnOff"
                       src="../../assets/images/todo/checkboxBlank.png"
@@ -856,7 +856,7 @@
                     />
                     <p
                       class="fl fontBold todoFontSize fontBold mLeft-05"
-                      style="position: relative; margin-left: 5px"
+                      style="position: relative; margin-left: 5px; text-align:left;"
                     >
                       <span
                         class="strikeLine"
@@ -869,7 +869,7 @@
                       {{ todo.title }}
                     </p>
                   </div>
-                  <div>
+                  <div style="width:20%; display:flex; justify-content:end; flex-wrap:wrap;">
                     <img class="actorImg" v-for="(each, index) in todo.actorList" :key="index" :src="each.domainPath + each.pathMtext" style="" :alt="each.userDispMtext"/>
                   </div>
                   <!-- <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div> -->
@@ -1877,11 +1877,15 @@ export default {
   .fontSize {
     font-size: 15px !important;
   }
+  .actorImg{
+    width:30px !important;
+    height:30px !important;
+  }
   .commonSubTitleTextBold {
     font-size: 14px;
   }
   .todoFontSize {
-    font-size: 10px;
+    font-size: 13px;
   }
 }
 .titleLine {
