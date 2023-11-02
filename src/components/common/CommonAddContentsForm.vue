@@ -275,6 +275,7 @@
 <script>
 // system settings
 import { defineComponent, ref, reactive, onMounted, watch } from 'vue'
+import { Base64 } from 'js-base64'
 import { useStore } from 'vuex'
 import axios from 'axios'
 
@@ -307,23 +308,23 @@ export default defineComponent({
     }
   },
   created () {
-    var history = this.$store.getters['D_HISTORY/hStack']
+    var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'writeContents' + history.length
     // console.log(history)
     history.push(this.popId)
-    this.$store.commit('D_HISTORY/updateStack', history)
+    this.$store.commit('UB_HISTORY/updateStack', history)
   },
   computed: {
     historyStack () {
-      return this.$store.getters['D_HISTORY/hRPage']
+      return this.$store.getters['UB_HISTORY/hRPage']
     },
     pageUpdate () {
-      return this.$store.getters['D_HISTORY/hUpdate']
+      return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
     pageUpdate (value, old) {
-      const history = this.$store.getters['D_HISTORY/hStack']
+      const history = this.$store.getters['UB_HISTORY/hStack']
       if (this.popId === history[history.length - 1]) {
         if (this.pClosePop) {
           this.pClosePop()
@@ -338,7 +339,7 @@ export default defineComponent({
     const params = reactive({
       title: '',
       actorList: [],
-      workToDateStr: '',
+      workToDateStr: null,
       workFromDateStr: null,
       bodyFullStr: '',
       tagTextList: [],
@@ -347,6 +348,7 @@ export default defineComponent({
       canReplyYn: true,
       mLoadingYn: false
     })
+    console.log(props.pContentsData, 'data ================---=========---=========---===')
 
     // ------------------- 기본값 설정
     let receiverList = reactive([])
@@ -537,6 +539,7 @@ export default defineComponent({
         }
         // 선택된 주소록(target) 데이터 연결
         for (const editingTarget of props.pContentsData.actorList) {
+          params.actorList.length = 0
           params.actorList.push({
             accessKey: editingTarget.accessKey,
             accessKind: editingTarget.accessKind,

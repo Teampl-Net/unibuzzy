@@ -306,6 +306,10 @@ export default {
         param.jobkindId = 'BOAR'
       } else {
         param.jobkindId = 'TODO'
+        const todoObject = {
+          teamKey: 0
+        }
+        await this.$store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [todoObject])
       }
       param.userKey = this.GE_USER.userKey
       const resultList = await this.$getContentsList(param)

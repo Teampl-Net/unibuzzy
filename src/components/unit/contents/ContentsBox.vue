@@ -49,6 +49,7 @@
     @closePop="mContMenuShowYn = false"
     @report="report"
     @editable="editable"
+    @editTodo="toggleEditPop"
     @bloc="bloc"
     :contentsInfo="CONT_DETAIL"
     :contentType="CONT_DETAIL.jobkindId"
@@ -701,13 +702,26 @@
       />
     </div>
   </div>
+  <CommonAddContentsForm
+    v-if="showEditPopYn"
+    style="z-index: 15"
+    :pClosePop="toggleEditPop"
+    :pGetReceiverList="returnTargetData"
+    :pGetTagListFn="returnTag"
+    :pPostContentsFn="editTodo"
+    :pContentsData="this.CONT_DETAIL"
+    :pOptions="mOption"
+  />
 </template>
 <script>
-import memoCompo from './ContBoxMemo'
 import { onMessage } from '@/assets/js/webviewInterface'
+import { Base64 } from 'js-base64'
+
+import memoCompo from './ContBoxMemo'
 import statCodeComponent from './ManageStateCode'
 import statCodePop from '../../popup/ManageStateCodePop.vue'
 import attachFileListPop from '@/components/pageComponents/main/unit/CommonAttachFileListPop.vue'
+import CommonAddContentsForm from '../../common/CommonAddContentsForm.vue'
 import userDetailPop from '@/components/popup/UserDetailPop'
 
 export default {
@@ -716,6 +730,7 @@ export default {
     memoCompo,
     statCodeComponent,
     statCodePop,
+    CommonAddContentsForm,
     userDetailPop
   },
   props: {
@@ -762,7 +777,14 @@ export default {
       mProfilePopShowYn: false,
       mPopParam: {},
       mFoldYn: true,
-      enterTarget: null
+      enterTarget: null,
+      mOption: {
+        model: 'unibuzzy',
+        purpose: 'Edit ToDo',
+        fileServerURL: 'https://unibuzzy.com/file/tp.uploadFile'
+      },
+      mTargetDataList: [],
+      showEditPopYn: false
     }
   },
   async mounted() {
@@ -1119,6 +1141,114 @@ export default {
       } else if (type === 'textCopy') {
         this.textCopy()
       }
+    },
+    returnTag () {
+      return [
+        { categoryNameMtext: 'Select', categoryKey: 'A' },
+        { categoryNameMtext: 'HouseWork', categoryKey: 'H' },
+        { categoryNameMtext: 'Work', categoryKey: 'T' },
+        { categoryNameMtext: 'Self-Improvement', categoryKey: 'S' },
+        { categoryNameMtext: 'etc', categoryKey: 'E' }
+      ]
+    },
+    getDate(value) {
+      // -1:day-1, 0:day, 1:day+1
+      let todayDate = ''
+      const date = new Date()
+      const year = date.getFullYear()
+      let month = date.getMonth() + 1 + ''
+      let day = date.getDate() + value + ''
+      if (month.length === 1) {
+        month = '0' + month
+      }
+      if (day.length === 1) {
+        day = '0' + day
+      }
+      todayDate = year + '-' + month + '-' + day
+      return todayDate
+    },
+    convertTargetData(target) {
+      if (target && target.length > 0) {
+        const tempList = []
+        target.forEach((value) => {
+          const tempObj = {}
+          tempObj.accessKind = 'C'
+          tempObj.accessKey = value.cabinetKey
+          tempObj.iconPath = require('@/assets/images/editChan/icon_addressBook.svg')
+          tempObj.accessName = value.cabinetNameMtext
+          tempObj.iconFullYn = false
+          if (value.mCabUserList && value.mCabUserList.length > 0) {
+            const childTempList = []
+            value.mCabUserList.forEach((value2) => {
+              const childTempObj = {}
+              childTempObj.accessKind = 'U'
+              childTempObj.accessKey = value2.userKey
+              childTempObj.iconFullYn = true
+
+              childTempObj.iconPath = value2.domainPath
+                ? this.$changeUrlBackslash(
+                  value2.domainPath + value2.userProfileImg
+                )
+                : value2.userProfileImg
+              childTempObj.accessName = this.$changeText(value2.userDispMtext)
+              childTempList.push(childTempObj)
+            })
+            tempObj.cList = childTempList
+          } else {
+            tempObj.cList = []
+          }
+          tempList.push(tempObj)
+        })
+        this.mTargetDataList = [
+          {
+            targetList: tempList
+          }
+        ]
+      }
+    },
+    returnTargetData() {
+      return this.mTargetDataList
+    },
+    async toggleEditPop() {
+      const paramMap = {}
+      paramMap.userKey = this.GE_USER.userKey
+      paramMap.searchDate = this.getDate(1)
+      paramMap.sysCabinetCode = 'USER'
+      const result = await this.$getTodoListGroupCab(paramMap, true)
+
+      if (result.result) {
+        this.convertTargetData(result.todo)
+      }
+      this.showEditPopYn = !this.showEditPopYn
+      this.mContMenuShowYn = false
+    },
+    async editTodo(params) {
+      params.creUserKey = this.GE_USER.userKey
+      params.creUserName = this.$changeText(this.GE_USER.userDispMtext)
+      params.jobkindId = 'TODO'
+      params.contentsKey = this.CONT_DETAIL.contentsKey
+
+      if (params.actorList) {
+        const tempList = [...params.actorList]
+        const actorList = []
+        tempList.forEach((val) => {
+          const tempObj = {
+            accessKey: val.accessKey,
+            accessKind: val.accessKind
+          }
+          actorList.push(tempObj)
+        })
+        params.actorList = actorList
+      }
+      await this.$saveContents(params).then((res) => {
+        if (res.result) {
+          const result = res.contents
+          result.creTeamKey = 0
+          result.bodyFullStr = Base64.encode(result.bodyFullStr)
+          this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [result])
+        }
+      })
+      this.toggleEditPop()
     },
     async editBoard() {
       var param = {}
