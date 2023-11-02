@@ -153,9 +153,11 @@
               @click="goContentsDetail()"
               class="cursorDragText textLeft textOverdot commonBlack fontBold font16 noPerm"
               :class="
-                CONT_DETAIL.jobkindId === 'BOAR' &&
-                CONT_DETAIL.workStatYn &&
-                CONT_DETAIL.workStatCodeKey === 46
+              (CONT_DETAIL.jobkindId === 'BOAR' &&
+                  CONT_DETAIL.workStatYn &&
+                  CONT_DETAIL.workStatCodeKey === 46) ||
+                (CONT_DETAIL.jobkindId === 'TODO' &&
+                  CONT_DETAIL.contStatus === '99')
                   ? 'completeWork'
                   : ''
               "
@@ -349,11 +351,13 @@
           :ref="'mainContRef' + CONT_DETAIL.contentsKey"
           @loadeddata="testLoad"
           :class="
-            CONT_DETAIL.jobkindId === 'BOAR' &&
+          (CONT_DETAIL.jobkindId === 'BOAR' &&
             CONT_DETAIL.workStatYn &&
-            CONT_DETAIL.workStatCodeKey === 46
-              ? 'completeWork'
-              : ''
+            CONT_DETAIL.workStatCodeKey === 46) ||
+          (CONT_DETAIL.jobkindId === 'TODO' &&
+            CONT_DETAIL.contStatus === '99')
+            ? 'completeWork'
+            : ''
           "
           :id="'bodyFullStr' + CONT_DETAIL.contentsKey"
           class="font14 mbottom-05 mainConts cursorDragText h100P w100P fl contentsPre"
