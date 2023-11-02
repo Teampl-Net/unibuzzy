@@ -22,12 +22,12 @@
               <div class="btnWrap">
                 <button
                   type="button"
-                  @click="selectAllReceivers"
-                  :class="{ activeBtn: params.actorList === 'A' }"
+                  @click="selectTargetOnlyMe"
+                  :class="{ activeBtn: selectMeYn }"
                   style="font-size: 13px"
                 >
                   <img
-                    v-if="params.actorList === 'A'"
+                    v-if="selectMeYn"
                     src="../../assets/images/common/icon_check_commonColor.svg"
                     alt="check image"
                   />
@@ -40,13 +40,13 @@
                   :class="{
                     activeBtn:
                       showReceiverSelectList ||
-                      (params.actorList.length && params.actorList !== 'A')
+                      (params.actorList.length && !selectMeYn)
                   }"
                 >
                   <img
                     v-if="
                       showReceiverSelectList ||
-                      (params.actorList.length && params.actorList !== 'A')
+                      (params.actorList.length && !selectMeYn)
                     "
                     src="../../assets/images/common/icon_check_commonColor.svg"
                     alt="check image"
@@ -69,7 +69,7 @@
             <!-- 선택된 target -->
             <div
               @click="toggleReceiverSelectPop"
-              v-if="params.actorList.length && params.actorList !== 'A'"
+              v-if="params.actorList.length && !selectMeYn"
               class="selectedTargetList"
             >
               <div
@@ -633,15 +633,18 @@ export default defineComponent({
         params.actorList = []
       }
     }
+    const selectMeYn = ref(false)
     const selectTargetOnlyMe = () => {
+      params.actorList.length = 0
       params.actorList.push({
-        accessKey: store.getters['D_USER/GE_USER'],
+        accessKey: store.getters['UB_USER/GE_USER'].userKey,
         accessKind: 'U'
       })
-      showReceiverSelectList.value = false
+      selectMeYn.value = true
     }
     const setSelectedTargetList = (selectedTargetList) => {
       params.actorList = selectedTargetList
+      selectMeYn.value = false
     }
 
     // Tag(category) 선택 기능
@@ -1026,7 +1029,7 @@ export default defineComponent({
       receiverList,
       showReceiverSelectList,
       toggleReceiverSelectPop,
-      selectAllReceivers: selectTargetOnlyMe,
+      selectTargetOnlyMe,
       setSelectedTargetList,
       toggleAnonymousYn,
       toggleCommentYn,
@@ -1051,7 +1054,8 @@ export default defineComponent({
       openBtnWrap,
       openBtnWrapYn,
       propAttachFileList,
-      setTodoPageValue
+      setTodoPageValue,
+      selectMeYn
     }
   }
 })
