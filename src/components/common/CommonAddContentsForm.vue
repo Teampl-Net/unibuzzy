@@ -768,6 +768,7 @@ export default defineComponent({
         let iList = document.querySelectorAll('.formCard .addTrue')
         let form = new FormData()
         for (var i = 0; i < tempFileList.length; i++) {
+          if (tempFileList[i].fileKey) continue
           form = new FormData()
           const oldFile = tempFileList[i].file
           const newFile = new File([oldFile], oldFile.name.normalize('NFC'), {
@@ -838,6 +839,7 @@ export default defineComponent({
     const handleFileListForUpload = () => {
       const newAttachFileList = []
       for (let i = 0; i < tempFileList.length; i++) {
+        if (tempFileList[i].fileKey) continue
         const fileObj = {}
         fileObj.addYn = true
         fileObj.attachYn = tempFileList[i].attachYn
