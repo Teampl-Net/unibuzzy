@@ -545,12 +545,13 @@ export default defineComponent({
           hasTitleYn.value = true
         }
         // --- 날짜 데이터 연결
-        if (props.pContentsData.workFromDateStr) {
+        if (props.pContentsData.workFromDate) {
           params.workFromDateStr =
-            props.pContentsData.workFromDateStr.split('T')[0]
+            props.pContentsData.workFromDate
+          alert(params.workFromDateStr)
         }
-        if (props.pContentsData.workToDateStr) {
-          params.workToDateStr = props.pContentsData.workToDateStr.split('T')[0]
+        if (props.pContentsData.workToDate) {
+          params.workToDateStr = props.pContentsData.workToDate
         }
         // 선택된 주소록(target) 데이터 연결
         for (const editingTarget of props.pContentsData.actorList) {
