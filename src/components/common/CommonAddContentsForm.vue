@@ -238,7 +238,7 @@
             </div>
           </fieldset>
           <fieldset
-            v-if="pOptions.model === 'mankik' || pOptions.model === 'unibuzzy'"
+            v-if="(pOptions.model === 'mankik' || pOptions.model === 'unibuzzy') && !pContentsData"
             id="uploadFile"
           >
             <legend>파일 첨부</legend>
