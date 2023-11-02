@@ -1171,8 +1171,8 @@ export default {
             this.mGetTodoGroupList[groupIndex][menu][todoIndex].completeUserName = this.GE_USER.userNameMtext
             this.mGetTodoGroupList[groupIndex].completeTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
             this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
-            this.mMyTodoCount -= 1
-            this.mCompleteMyTodoCount += 1
+            // this.mMyTodoCount -= 1
+            //  this.mCompleteMyTodoCount += 1
             break
           case 'target':
             this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus = '99'
@@ -1180,24 +1180,24 @@ export default {
             this.mGetTodoGroupList[groupIndex][menu][todoIndex].completeUserName = this.GE_USER.userNameMtext
             this.mGetTodoGroupList[groupIndex].completeTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
             this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
-            this.mTargetTodoCount -= 1
-            this.mCompleteTargetTodoCount += 1
+            // this.mTargetTodoCount -= 1
+            // this.mCompleteTargetTodoCount += 1
             break
           case 'completedMy':
             this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus = '00'
             this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
             this.mGetTodoGroupList[groupIndex].myTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
             this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
-            this.mMyTodoCount += 1
-            this.mCompleteMyTodoCount -= 1
+            // this.mMyTodoCount += 1
+            // this.mCompleteMyTodoCount -= 1
             break
           case 'completedTarget':
             this.mGetTodoGroupList[groupIndex][menu][todoIndex].contStatus = '00'
             this.mGetTodoGroupList[groupIndex][menu][todoIndex].strikeOnOff = false
             this.mGetTodoGroupList[groupIndex].targetTodoList.unshift(this.mGetTodoGroupList[groupIndex][menu][todoIndex])
             this.mGetTodoGroupList[groupIndex][menu].splice(todoIndex, 1)
-            this.mTargetTodoCount += 1
-            this.mCompleteTargetTodoCount -= 1
+            // this.mTargetTodoCount += 1
+            // this.mCompleteTargetTodoCount -= 1
             break
         }
         this.mMyTodoYn = this.mGetTodoGroupList[groupIndex].myTodoList.length > 0
@@ -1322,23 +1322,25 @@ export default {
         switch (todoType) {
           case 'my':
             myTodoList.push(this.mGetTodoGroupList[i])
-            this.mMyTodoCount++
+            // this.mMyTodoCount++
             break
           case 'target':
             targetTodoList.push(this.mGetTodoGroupList[i])
-            this.mTargetTodoCount++
+            // this.mTargetTodoCount++
             break
           case 'completedMy':
+            this.mGetTodoGroupList[i].completeTarget = 'myTodo'
             completeTodoList.push(this.mGetTodoGroupList[i])
-            this.mMyTodoCount++
-            this.mCompleteMyTodoCount++
-            this.mCompleteTodoCount++
+            // this.mMyTodoCount++
+            // this.mCompleteMyTodoCount++
+            // this.mCompleteTodoCount++
             break
           case 'completedTarget':
+            this.mGetTodoGroupList[i].completeTarget = 'target'
             completeTodoList.push(this.mGetTodoGroupList[i])
-            this.mCompleteTargetTodoCount++
-            this.mTargetTodoCount++
-            this.mCompleteTodoCount++
+            // this.mCompleteTargetTodoCount++
+            // this.mTargetTodoCount++
+            // this.mCompleteTodoCount++
             break
         }
       }
@@ -1592,6 +1594,35 @@ export default {
       },
       deep: true
     },
+    mGetTodoGroupList: {
+      immediate: true,
+      handler (val) {
+        this.mMyTodoCount = 0
+        this.mTargetTodoCount = 0
+        this.mCompleteMyTodoCount = 0
+        this.mCompleteTargetTodoCount = 0
+        this.mCompleteTodoCount = 0
+        if (!val || !val[0]) return
+        const group = val[0]
+        if (group.myTodoList && group.myTodoList.length > 0) {
+          this.mMyTodoCount = group.myTodoList.length
+        }
+        if (group.targetTodoList && group.targetTodoList.length > 0) {
+          this.mTargetTodoCount = group.targetTodoList.length
+        }
+        if (group.completeTodoList && group.completeTodoList.length > 0) {
+          this.mCompleteTodoCount = group.completeTodoList.length
+          for (let i = 0; i < group.completeTodoList.length; i++) {
+            const todo = group.completeTodoList[i]
+            if (todo.completeTarget && todo.completeTarget === 'myTodo') {
+              this.mCompleteMyTodoCount++
+            } else if (todo.completeTarget && todo.completeTarget === 'target') {
+              this.mCompleteTargetTodoCount++
+            }
+          }
+        }
+      }
+    },
     GE_NEW_CONT_LIST: {
       handler (value, old) {
         if (!value || !value[0]) return
@@ -1608,29 +1639,23 @@ export default {
             this.mGetTodoGroupList[0].myTodoList.unshift(newTodo)
             oriList = this.mGetTodoGroupList[0].myTodoList
             this.mGetTodoGroupList[0].myTodoList = this.replaceArr(oriList)
-            // this.mMyTodoCount++
             break
           case 'target':
             this.mGetTodoGroupList[0].targetTodoList.unshift(newTodo)
             oriList = this.mGetTodoGroupList[0].targetTodoList
             this.mGetTodoGroupList[0].targetTodoList = this.replaceArr(oriList)
-            // this.mTargetTodoCount++
             break
           case 'completedMy':
+            newTodo.completeTarget = 'myTodo'
             this.mGetTodoGroupList[0].completeTodoList.unshift(newTodo)
             oriList = this.mGetTodoGroupList[0].completeTodoList
             this.mGetTodoGroupList[0].completeTodoList = this.replaceArr(oriList)
-            // this.mCompleteMyTodoCount++
-            // this.mCompleteTodoCount++
-            // this.mMyTodoCount++
             break
           case 'completedTarget':
+            newTodo.completeTarget = 'target'
             this.mGetTodoGroupList[0].completeTodoList.unshift(newTodo)
             oriList = this.mGetTodoGroupList[0].completeTodoList
             this.mGetTodoGroupList[0].completeTodoList = this.replaceArr(oriList)
-            // this.mCompleteTargetTodoCount++
-            // this.mCompleteTodoCount++
-            // this.mTargetTodoCount++
             break
         }
         this.mMyTodoYn = this.mGetTodoGroupList[0].myTodoList.length > 0

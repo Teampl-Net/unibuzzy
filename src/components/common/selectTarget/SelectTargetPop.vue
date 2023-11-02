@@ -48,13 +48,45 @@ export default defineComponent({
   },
   data () {
     return {
-      mSelectedTargetList: [] // 선택된 targetList
+      mSelectedTargetList: [], // 선택된 targetList
+      popId: null
     }
   },
   created () {
-    this.$addHistoryStack('SelectTargetPop')
+    var history = this.$store.getters['D_HISTORY/hStack']
+    this.popId = 'selectTargetPop' + history.length
+    history.push(this.popId)
+    this.$store.commit('D_HISTORY/updateStack', history)
+
     if (this.pSelectedTargetList && this.pSelectedTargetList.length > 0) {
       this.mSelectedTargetList = [...this.pSelectedTargetList]
+    }
+  },
+  computed: {
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hRPage']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      let history = this.$store.getters['D_HISTORY/hStack']
+      if (this.popId === history[history.length - 1]) {
+        if (this.$refs.targetList) {
+          this.$refs.targetList.checkClosePop()
+        } else {
+          var removePage = history[history.length - 1]
+          history = history.filter((element, index) => index < history.length - 1)
+          this.$store.commit('D_HISTORY/setRemovePage', removePage)
+          this.$store.commit('D_HISTORY/updateStack', history)
+          this.$checkDeleteHistory('selectTargetPop')
+        }
+      }
+      /* if (this.popId === hStack[hStack.length - 1]) {
+                this.closeSubPop()
+            } */
     }
   },
   methods: {
