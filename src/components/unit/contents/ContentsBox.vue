@@ -65,6 +65,7 @@
   <div
     :class="animationYn ? 'newContentsAni' : ''"
     class="contentsWrap"
+    style="box-shadow: 0px 1px 3px rgba(103, 104, 167, 0.4);"
     @dragenter="onDragenter"
     @dragleave="onDragleave"
     @dragover="onDragover"
@@ -296,7 +297,7 @@
           />
         </div>
       </div>
-    </div>
+
     <div
       v-if="!propJustShowYn"
       :class="
@@ -647,8 +648,10 @@
       :boardDetail="mMoveContentsDetailValue"
     />
   </div>
+</div>
 </template>
 <script>
+
 import memoCompo from './ContBoxMemo'
 import { onMessage } from '@/assets/js/webviewInterface'
 import statCodeComponent from './ManageStateCode'
