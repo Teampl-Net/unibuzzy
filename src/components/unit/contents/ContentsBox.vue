@@ -1803,6 +1803,7 @@ export default {
   margin-left:-10px;
   border:2px solid #fff;
   box-shadow:0 5px 6px 0 rgba(60, 60, 60, 0.2);
+  background-color:#fff;
 }
 .contentsCard {
   background: #ffffff;
