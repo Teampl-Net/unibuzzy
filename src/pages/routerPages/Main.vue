@@ -1,7 +1,24 @@
 <template>
   <div ref="mainRef" class="w100P mainWrap">
-    <gConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="mAppCloseYn=false" confirmType="two" confirmText="Do you want to exit UniBuzzy?" />
-    <createBoardChannel v-if="mCreChannelShowYn" @successCreBoard="successCreBoard" @successCreChan="successCreChan" :pAreaInfo="mAreaInfo" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
+    <gConfirmPop
+      v-if="mAppCloseYn"
+      @ok="closeApp"
+      @appClose="closeApp"
+      @no="mAppCloseYn = false"
+      confirmType="two"
+      confirmText="Do you want to exit UniBuzzy?"
+    />
+    <createBoardChannel
+      v-if="mCreChannelShowYn"
+      @successCreBoard="successCreBoard"
+      @successCreChan="successCreChan"
+      :pAreaInfo="mAreaInfo"
+      :chanDetail="{ modiYn: false }"
+      @openPage="openPage"
+      :pSelectedAreaInfo="mAreaInfo"
+      :pClosePop="closeCreChanPop"
+      :pBdAreaList="mBdAreaList"
+    />
     <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" class="popBg"></div>
     <transition name="showUp">
       <selectSchoolPop
@@ -32,11 +49,7 @@
         :pMoveToChan="moveToChan"
       />
     </transition>
-    <div
-      v-if="mChanInfoPopShowYn"
-      @click="closeChanInfoBox"
-      class="popBg"
-    ></div>
+    <div v-if="mChanInfoPopShowYn" @click="closeChanInfoBox" class="popBg"></div>
     <transition name="showUp">
       <infoBox
         v-if="mChanInfoPopShowYn"
@@ -48,7 +61,14 @@
         :pChanInfo="mSelectedChanInfo"
       />
     </transition>
-    <div class="w100P mainTownArea" :style="`background-image: url(${mNightYn? '/resource/main/main_night_background.png':'/resource/main/town_background.png'})`">
+    <div
+      class="w100P mainTownArea"
+      :style="`background-image: url(${
+        mNightYn
+          ? '/resource/main/main_night_background.png'
+          : '/resource/main/town_background.png'
+      })`"
+    >
       <div class="ballon">
         <img
           src="@/assets/images/main/ballon.png"
@@ -77,39 +97,108 @@
         </div>
       </div>
       <div v-else class="w100P loginBtnWrap">
-        <gBtnSmall
-          @click="goLoginPage"
-          btnTitle="Sign In"
-          class="fr loginBtn"
-        />
+        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr loginBtn" />
       </div>
       <!-- <div style="position: absolute; top: 120px; left: 50%; transform: translate(-50%, -50%); width: 150px; height: 100px;">
         <img class="w100P h100P" style="position: absolute; top: 0; left: 0;" src="/resource/main/main_nametag.png" alt="">
         <p class="w100P textOverdot fontBold" style="position: absolute; bottom: 10px; font-style: italic; padding: 0 5px;">{{ mTownName }}</p>
       </div> -->
       <template v-if="mPcStyleYn">
-        <div class="zoom" :class="mSelectedAreaPriority === building.priority? 'clickEvent':''" v-for="building in mTownBuildingList" :key="building.priority" style="position: absolute; transform: translate(-50%, -50%);" :style="{ width: building.pcW, height: building.pcH, left: building.left, top: building.top }">
-          <img @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])" class="w100P h100P" :src="mNightYn? building.nightImgPath:building.imgPath" alt="">
-          <img :style="{ left: building.titleLeft, top: building.titleTop }" style="position: absolute; transform: translate(-50%, -50%);" :src="building.titlePah" alt="">
+        <div
+          class="zoom"
+          :class="mSelectedAreaPriority === building.priority ? 'clickEvent' : ''"
+          v-for="building in mTownBuildingList"
+          :key="building.priority"
+          style="position: absolute; transform: translate(-50%, -50%)"
+          :style="{
+            width: building.pcW,
+            height: building.pcH,
+            left: building.left,
+            top: building.top,
+          }"
+        >
+          <img
+            @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])"
+            class="w100P h100P"
+            :src="mNightYn ? building.nightImgPath : building.imgPath"
+            alt=""
+          />
+          <img
+            :style="{ left: building.titleLeft, top: building.titleTop }"
+            style="position: absolute; transform: translate(-50%, -50%)"
+            :src="building.titlePah"
+            alt=""
+          />
         </div>
-        <img :src="mMountainImgPath" style="position: absolute; left: 20%; top: 55%; transform: translate(-50%, -50%); width: 35%; height: 20%;" alt="">
+        <img
+          :src="mMountainImgPath"
+          style="
+            position: absolute;
+            left: 20%;
+            top: 55%;
+            transform: translate(-50%, -50%);
+            width: 35%;
+            height: 20%;
+          "
+          alt=""
+        />
       </template>
       <template v-else>
-        <div class="zoom" :class="mSelectedAreaPriority === building.priority? 'clickEvent':''" v-for="building in mTownBuildingList" :key="building.priority" style="position: absolute; transform: translate(-50%, -50%);" :style="{ width: building.w, left: building.left, top: building.top }">
-          <img class="w100P h100P" @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])" :src="mNightYn? building.nightImgPath:building.imgPath" alt="">
-          <img :style="{ left: building.titleLeft, top: building.titleTop }" style="position: absolute; transform: translate(-50%, -50%); width: 70px;" :src="building.titlePah" alt="">
+        <div
+          class="zoom"
+          :class="mSelectedAreaPriority === building.priority ? 'clickEvent' : ''"
+          v-for="building in mTownBuildingList"
+          :key="building.priority"
+          style="position: absolute; transform: translate(-50%, -50%)"
+          :style="{ width: building.w, left: building.left, top: building.top }"
+        >
+          <img
+            class="w100P h100P"
+            @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])"
+            :src="mNightYn ? building.nightImgPath : building.imgPath"
+            alt=""
+          />
+          <img
+            :style="{ left: building.titleLeft, top: building.titleTop }"
+            style="position: absolute; transform: translate(-50%, -50%); width: 70px"
+            :src="building.titlePah"
+            alt=""
+          />
         </div>
-        <img :src="mMountainImgPath" style="position: absolute; left: 20%; top: 55%; transform: translate(-50%, -50%); width: 35%;" alt="">
+        <img
+          :src="mMountainImgPath"
+          style="
+            position: absolute;
+            left: 20%;
+            top: 55%;
+            transform: translate(-50%, -50%);
+            width: 35%;
+          "
+          alt=""
+        />
       </template>
-      <div class="fl" style="width: 66px; height: 66px; border-radius: 100%; position: absolute; bottom: 3rem; right: 50px; z-index:1000;">
-        <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="height: auto; cursor: pointer;">
+      <div
+        class="fl"
+        style="
+          width: 66px;
+          height: 66px;
+          border-radius: 100%;
+          position: absolute;
+          bottom: 3rem;
+          right: 50px;
+          z-index: 1000;
+        "
+      >
+        <img
+          id="writeBtn"
+          src="@/assets/images/button/Icon_WriteBoardBtn.svg"
+          @click="openSelectWriteTypePop()"
+          alt="알림 작성 버튼"
+          style="height: auto; cursor: pointer"
+        />
       </div>
     </div>
-    <div
-      v-if="mBoardPopShowYn"
-      class="popBg"
-      @click="$refs.mainBoardRef.closeXPop"
-    ></div>
+    <div v-if="mBoardPopShowYn" class="popBg" @click="$refs.mainBoardRef.closeXPop"></div>
     <transition name="showUp">
       <mainBoardList
         @openImgPop="openImgPop"
@@ -150,7 +239,7 @@ export default {
   props: {
     pChangeNightYn: Function
   },
-  data () {
+  data() {
     return {
       mLoadingYn: false,
       mTownTeamKey: null,
@@ -337,7 +426,8 @@ export default {
       }
     }
     let xmlHttpRequest
-    if (window.XMLHttpRequest) { // code for Firefox, Mozilla, IE7, etc.
+    if (window.XMLHttpRequest) {
+      // code for Firefox, Mozilla, IE7, etc.
       xmlHttpRequest = new XMLHttpRequest()
     } else {
       return
@@ -360,12 +450,20 @@ export default {
       this.mNightYn = false
       this.mMountainImgPath = '/resource/main/main_mountain.svg'
     }
-    this.getMainBoard().then(res => {
+    this.getMainBoard().then((res) => {
       // this.createMaskingAreaImg()
       // this.innerWidth = window.innerWidth
       // this.innerHeight = window.innerHeight
-      if (this.mBdAreaList && this.mBdAreaList[0] && this.mBdAreaList[0].bdList && this.mBdAreaList[0].bdList[0]) {
-        this.$emit('changePageHeader', this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext))
+      if (
+        this.mBdAreaList &&
+        this.mBdAreaList[0] &&
+        this.mBdAreaList[0].bdList &&
+        this.mBdAreaList[0].bdList[0]
+      ) {
+        this.$emit(
+          'changePageHeader',
+          this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext)
+        )
         this.mTownName = this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext)
       } else {
         this.$emit('changePageHeader', 'Campus')
@@ -376,7 +474,7 @@ export default {
       }, 800)
     })
   },
-  unmounted () {
+  unmounted() {
     this.pChangeNightYn(false)
   },
   methods: {
@@ -526,16 +624,21 @@ export default {
       if (result.data) {
         localStorage.setItem('user', JSON.stringify(result.data.userInfo))
         await this.$store.dispatch('UB_USER/AC_USER', result.data.userInfo)
-        localStorage.setItem(
-          'sessionUser',
-          JSON.stringify(result.data.userInfo)
-        )
+        localStorage.setItem('sessionUser', JSON.stringify(result.data.userInfo))
       } else {
         this.$showToastPop(this.$t('COMMON_MSG_FAILED'))
       }
-      this.getMainBoard().then(res => {
-        if (this.mBdAreaList && this.mBdAreaList[0] && this.mBdAreaList[0].bdList && this.mBdAreaList[0].bdList[0]) {
-          this.$emit('changePageHeader', this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext))
+      this.getMainBoard().then((res) => {
+        if (
+          this.mBdAreaList &&
+          this.mBdAreaList[0] &&
+          this.mBdAreaList[0].bdList &&
+          this.mBdAreaList[0].bdList[0]
+        ) {
+          this.$emit(
+            'changePageHeader',
+            this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext)
+          )
         } else {
           this.$emit('changePageHeader', 'Campus')
         }
@@ -578,9 +681,13 @@ export default {
         }
       }
     },
-    async openAreaInfoPop (area) {
+    async openAreaInfoPop(area) {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
-      if (isMobile && (localStorage.getItem('nativeYn') === true || localStorage.getItem('nativeYn') === 'false')) {
+      if (
+        isMobile &&
+        (localStorage.getItem('nativeYn') === true ||
+          localStorage.getItem('nativeYn') === 'false')
+      ) {
         if (area === undefined) {
           this.mSelectedAreaPriority = 7
         } else {
@@ -692,9 +799,7 @@ export default {
         '/sUniB/tp.UB_firstLoginCheck',
         Object.fromEntries(paramMap)
       )
-      var queueIndex = this.mAxiosQueue.findIndex(
-        (item) => item === 'getMainBoard'
-      )
+      var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       if (response && (response.status === 200 || response.status === '200')) {
         this.mBdAreaList = response.data.bdAreaList
@@ -720,8 +825,7 @@ export default {
             maskedImageUrl: '',
             maskedImageStyle: {},
             clickedYn: false,
-            buildingList: [
-            ]
+            buildingList: []
           }
           this.village.areaList.push(areaObj)
 
@@ -950,35 +1054,15 @@ export default {
             for (let i = 0; i < area.h; i++) {
               let pixelData = {}
               if (bd.rank === 1) {
-                pixelData = area.ctx.getImageData(
-                  (2 / 5) * area.w,
-                  i,
-                  1,
-                  1
-                ).data
+                pixelData = area.ctx.getImageData((2 / 5) * area.w, i, 1, 1).data
               } else if (bd.rank === 2) {
-                pixelData = area.ctx.getImageData(
-                  (1 / 5) * area.w,
-                  i,
-                  1,
-                  1
-                ).data
+                pixelData = area.ctx.getImageData((1 / 5) * area.w, i, 1, 1).data
               } else if (bd.rank === 3) {
-                pixelData = area.ctx.getImageData(
-                  (3 / 5) * area.w,
-                  i,
-                  1,
-                  1
-                ).data
+                pixelData = area.ctx.getImageData((3 / 5) * area.w, i, 1, 1).data
               } else if (bd.rank === 4) {
                 pixelData = area.ctx.getImageData(10, i, 1, 1).data
               } else if (bd.rank === 5) {
-                pixelData = area.ctx.getImageData(
-                  (4 / 5) * area.w - 10,
-                  i,
-                  1,
-                  1
-                ).data
+                pixelData = area.ctx.getImageData((4 / 5) * area.w - 10, i, 1, 1).data
               }
               if (pixelData[3] !== 0) {
                 if (window.innerWidth > 1000) {
@@ -1054,8 +1138,7 @@ export default {
               this.mBdClickedYn = true
               bd.clickedYn = true
               bd.maskedImageStyle = {
-                filter:
-                  'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)'
+                filter: 'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)'
               }
               if (bd.targetKind === 'C') {
                 this.openAreaInfoPop(this.mBdAreaList[area.key])
@@ -1149,7 +1232,7 @@ export default {
         }
       }
     },
-    setRatio () {
+    setRatio() {
       const windowWidth = window.innerWidth
       const windowHeight = window.innerHeight
       if (windowWidth / windowHeight > 0.54) {
@@ -1158,7 +1241,7 @@ export default {
         this.mPcStyleYn = false
       }
     },
-    setWindowSize () {
+    setWindowSize() {
       this.innerWidth = window.innerWidth
       const nowHeight = window.innerHeight
 
@@ -1339,8 +1422,8 @@ export default {
   top: 100px;
   opacity: 1;
 }
-.planeImg{
-  width:100%;
+.planeImg {
+  width: 100%;
   filter: drop-shadow(5px 5px #00000036);
   opacity: 0;
   transition: 0.2s;
@@ -1414,7 +1497,7 @@ export default {
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
   border-top: 0px solid transparent;
-  content: '';
+  content: "";
   position: absolute;
   top: -5px;
   left: 100px;
@@ -1517,11 +1600,13 @@ export default {
 }
 @keyframes uniB-zoom {
   0% {
-    transform: scale(1) translate(-50%, -50%)
-  } 50% {
-    transform: scale(1.05) translate(-50%, -50%)
-  } 100% {
-    transform: scale(1) translate(-50%, -50%)
+    transform: scale(1) translate(-50%, -50%);
+  }
+  50% {
+    transform: scale(1.05) translate(-50%, -50%);
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
   }
 }
 .clickEvent {
@@ -1529,7 +1614,8 @@ export default {
   transform-origin: center;
   animation: uniB-zoom 0.8s;
 }
-@media (hover: hover) { /* when supported */
+@media (hover: hover) {
+  /* when supported */
   .zoom:hover {
     cursor: pointer;
     filter: drop-shadow(0 0 10px #f6ff7b);
@@ -1537,7 +1623,7 @@ export default {
     animation: uniB-zoom 0.8s;
   }
 }
-@media screen and (max-width: 499px){
+@media screen and (max-width: 499px) {
   .laboratory {
     width: 25% !important;
     bottom: 70px !important;
