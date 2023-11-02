@@ -539,6 +539,7 @@ export default {
         axiosParam.targetKey = detailValue.targetKey
         axiosParam.contentsKey = detailValue.targetKey
         if (detailValue.cabinetKey) {
+          detailParam.cabinetKey = detailValue.cabinetKey
           axiosParam.cabinetKey = detailValue.cabinetKey
         }
         axiosParam.userKey = this.GE_USER.userKey
@@ -550,7 +551,9 @@ export default {
         }
 
         var result = await this.$getContentDetailData(axiosParam, false)
-        if (!result) return
+        if (!result) {
+          return
+        }
         if (!detailParam.jobkindId) {
           detailParam.jobkindId = result.content.jobkindId
           detailParam.teamKey = result.content.creTeamKey
@@ -571,6 +574,9 @@ export default {
           } else {
             detailParam.nameMtext = this.$changeText(result.content.nameMtext)
             detailParam.teamName = this.$changeText(result.content.nameMtext)
+            if (!detailParam.cabinetKey) {
+              detailParam.cabinetKey = detailValue.cabinetKey
+            }
             if (result.content.nameMtext) {
               this.changePageHeader(detailParam.teamName)
             }
@@ -680,7 +686,10 @@ export default {
           nonLoadingYn = false
         }
         const result = await this.$getViewData(
-          { url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) },
+          {
+            url: '/sUniB/tp.getChanMainBoard',
+            param: Object.fromEntries(paramMap)
+          },
           nonLoadingYn
         )
         if (
