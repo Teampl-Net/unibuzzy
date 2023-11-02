@@ -104,6 +104,9 @@ const D_CHANNEL = {
       if (payload.jobkindId === 'ALIM') {
         dataList = chan.ELEMENTS.alimList
         index3 = chan.ELEMENTS.alimList.findIndex((item) => item.contentsKey === Number(payload.targetKey))
+      } else if (payload.jobkindId === 'TODO') {
+        dataList = chan.ELEMENTS.todoList
+        index3 = chan.ELEMENTS.todoList.findIndex((item) => item.contentsKey === Number(payload.targetKey))
       } else {
         dataList = chan.ELEMENTS.boardList
         index3 = chan.ELEMENTS.boardList.findIndex((item) => item.contentsKey === Number(payload.targetKey))
@@ -138,6 +141,14 @@ const D_CHANNEL = {
           state.chanList[chanIndex].ELEMENTS.alimList[index3].D_MEMO_LIST[newIdx] = payload
           state.addMemoList.unshift(payload)
         }
+      } else if (dataList[index3].jobkindId === 'TODO') {
+        if (newIdx === -1) {
+          state.chanList[chanIndex].ELEMENTS.todoList[index3].D_MEMO_LIST.unshift(payload)
+          state.addMemoList.unshift(payload)
+        } else {
+          state.chanList[chanIndex].ELEMENTS.todoList[index3].D_MEMO_LIST[newIdx] = payload
+          state.addMemoList.unshift(payload)
+        }
       } else {
         if (newIdx === -1) {
           state.chanList[chanIndex].ELEMENTS.boardList[index3].D_MEMO_LIST.unshift(payload)
@@ -156,10 +167,11 @@ const D_CHANNEL = {
         if (team.ELEMENTS) {
           if (!team.ELEMENTS.alimList) { team.ELEMENTS.alimList = [] }
           if ((!team.ELEMENTS.boardList)) { team.ELEMENTS.boardList = [] }
+          if (!team.ELEMENTS.todoList) { team.ELEMENTS.todoList = [] }
           if ((!team.ELEMENTS.cabinetList)) { team.ELEMENTS.cabinetList = [] }
           if ((!team.ELEMENTS.managerList)) { team.ELEMENTS.managerList = [] }
         } else {
-          team.ELEMENTS = { alimList: [], boardList: [], cabinetList: [], managerList: [] }
+          team.ELEMENTS = { alimList: [], boardList: [], todoList: [], cabinetList: [], managerList: [] }
         }
         team.teamTypeText = commonMethods.teamTypeString(team.teamType)
         // var title = '[더알림]' + commonMethods.changeText(team.nameMtext)
@@ -269,11 +281,12 @@ const D_CHANNEL = {
             if (!team.ELEMENTS.alimList) { team.ELEMENTS.alimList = [] }
             if (!team.ELEMENTS.commonList) { team.ELEMENTS.commonList = { type: 'ALIM', list: [] } }
             if ((!team.ELEMENTS.boardList)) { team.ELEMENTS.boardList = [] }
+            if (!team.ELEMENTS.todoList) { team.ELEMENTS.todoList = [] }
             if ((!team.ELEMENTS.cabinetList)) { team.ELEMENTS.cabinetList = [] }
             if ((!team.ELEMENTS.showProfileUserList)) { team.ELEMENTS.showProfileUserList = [] }
             if ((!team.ELEMENTS.managerList)) { team.ELEMENTS.managerList = [] }
           } else {
-            team.ELEMENTS = { alimList: [], boardList: [], cabinetList: [], commonList: { type: 'ALIM', list: [] }, managerList: [], showProfileUserList: [] }
+            team.ELEMENTS = { alimList: [], boardList: [], todoList: [], cabinetList: [], commonList: { type: 'ALIM', list: [] }, managerList: [], showProfileUserList: [] }
           }
           team.teamTypeText = commonMethods.teamTypeString(team.teamType)
           // eslint-disable-next-line no-new-object
@@ -359,6 +372,8 @@ const D_CHANNEL = {
         for (var i = 0; i < payload.length; i++) {
           if (payload[i].jobkindId === 'BOAR') {
             idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
+          } else if (payload[i].jobkindId === 'TODO') {
+            idx2 = chanDetail.ELEMENTS.todoList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
           } else {
             idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
           }
@@ -366,6 +381,9 @@ const D_CHANNEL = {
             if (payload[i].jobkindId === 'BOAR') {
               chanList[idx1].ELEMENTS.boardList.push(payload[i])
               idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
+            } else if (payload[i].jobkindId === 'TODO') {
+              chanList[idx1].ELEMENTS.todoList.push(payload[i])
+              idx2 = chanDetail.ELEMENTS.todoList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
             } else {
               chanList[idx1].ELEMENTS.alimList.push(payload[i])
               idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
@@ -379,6 +397,8 @@ const D_CHANNEL = {
           var dataList = null
           if (payload[i].jobkindId === 'BOAR') {
             dataList = chanDetail.ELEMENTS.boardList[idx2]
+          } else if (payload[i].jobkindId === 'TODO') {
+            dataList = chanDetail.ELEMENTS.todoList[idx2]
           } else {
             dataList = chanDetail.ELEMENTS.alimList[idx2]
           }
@@ -406,6 +426,8 @@ const D_CHANNEL = {
             })
             if (payload[i].jobkindId === 'BOAR') {
               chanList[idx1].ELEMENTS.boardList[idx2] = payload[i]
+            } else if (payload[i].jobkindId === 'TODO') {
+              chanList[idx1].ELEMENTS.todoList[idx2] = payload[i]
             } else {
               chanList[idx1].ELEMENTS.alimList[idx2] = payload[i]
             }
@@ -439,6 +461,8 @@ const D_CHANNEL = {
             }
             if (payload[i].jobkindId === 'BOAR') {
               chanList[idx1].ELEMENTS.boardList[idx2] = payload[i]
+            } else if (payload[i].jobkindId === 'TODO') {
+              chanList[idx1].ELEMENTS.todoList[idx2] = payload[i]
             } else {
               chanList[idx1].ELEMENTS.alimList[idx2] = payload[i]
             }
@@ -456,12 +480,16 @@ const D_CHANNEL = {
       for (var i = 0; i < payload.length; i++) {
         if (payload[i].jobkindId === 'BOAR') {
           idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
+        } else if (payload[i].jobkindId === 'TODO') {
+          idx2 = chanDetail.ELEMENTS.todoList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
         } else {
           idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === payload[i].contentsKey)
         }
         if (idx2 !== -1) {
           if (payload[i].jobkindId === 'BOAR') {
             chanDetail.ELEMENTS.boardList[idx2].D_MEMO_LIST = payload[i].D_MEMO_LIST
+          } else if (payload[i].jobkindId === 'TODO') {
+            chanDetail.ELEMENTS.todoList[idx2].D_MEMO_LIST = payload[i].D_MEMO_LIST
           } else {
             chanDetail.ELEMENTS.alimList[idx2].D_MEMO_LIST = payload[i].D_MEMO_LIST
           }
@@ -483,6 +511,8 @@ const D_CHANNEL = {
           var chanDetail = chanList[idx1]
           if (addContList[i].jobkindId === 'BOAR') {
             idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
+          } else if (addContList[i].jobkindId === 'TODO') {
+            idx2 = chanDetail.ELEMENTS.todoList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
           } else {
             idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
           }
@@ -490,6 +520,9 @@ const D_CHANNEL = {
             if (addContList[i].jobkindId === 'BOAR') {
               chanList[idx1].ELEMENTS.boardList.push(addContList[i])
               idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
+            } else if (addContList[i].jobkindId === 'TODO') {
+              chanList[idx1].ELEMENTS.todoList.push(addContList[i])
+              idx2 = chanDetail.ELEMENTS.todoList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
             } else {
               chanList[idx1].ELEMENTS.alimList.push(addContList[i])
               idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.contentsKey === addContList[i].contentsKey)
@@ -503,6 +536,8 @@ const D_CHANNEL = {
           var dataList = null
           if (addContList[i].jobkindId === 'BOAR') {
             dataList = chanDetail.ELEMENTS.boardList[idx2]
+          } else if (addContList[i].jobkindId === 'TODO') {
+            dataList = chanDetail.ELEMENTS.todoList[idx2]
           } else {
             dataList = chanDetail.ELEMENTS.alimList[idx2]
           }
@@ -533,6 +568,8 @@ const D_CHANNEL = {
           addContList[i].D_MEMO_LIST = uniqueArr
           if (addContList[i].jobkindId === 'BOAR') {
             chanList[idx1].ELEMENTS.boardList[idx2] = addContList[i]
+          } else if (addContList[i].jobkindId === 'TODO') {
+            chanList[idx1].ELEMENTS.todoList[idx2] = addContList[i]
           } else {
             chanList[idx1].ELEMENTS.alimList[idx2] = addContList[i]
           }
@@ -550,11 +587,12 @@ const D_CHANNEL = {
           if (!payload.ELEMENTS.alimList) { payload.ELEMENTS.alimList = [] }
           if (!payload.ELEMENTS.commonList) { payload.ELEMENTS.commonList = { type: 'ALIM', list: [] } }
           if ((!payload.ELEMENTS.boardList)) { payload.ELEMENTS.boardList = [] }
+          if ((!payload.ELEMENTS.todoList)) { payload.ELEMENTS.todoList = [] }
           if ((!payload.ELEMENTS.cabinetList)) { payload.ELEMENTS.cabinetList = [] }
           if ((!payload.ELEMENTS.showProfileUserList)) { payload.ELEMENTS.showProfileUserList = [] }
           if ((!payload.ELEMENTS.managerList)) { payload.ELEMENTS.managerList = [] }
         } else {
-          payload.ELEMENTS = { alimList: [], boardList: [], cabinetList: [], commonList: { type: 'ALIM', list: [] }, managerList: [], showProfileUserList: [] }
+          payload.ELEMENTS = { alimList: [], boardList: [], todoList: [], cabinetList: [], commonList: { type: 'ALIM', list: [] }, managerList: [], showProfileUserList: [] }
         }
 
         if (!payload.D_CHAN_AUTH) {
@@ -589,6 +627,8 @@ const D_CHANNEL = {
       for (var i = 0; i < payload.length; i++) {
         if (payload[i].jobkindId === 'BOAR') {
           idx2 = chanDetail.ELEMENTS.boardList.findIndex((item) => item.mccKey === payload[i].mccKey)
+        } else if (payload[i].jobkindId === 'TODO') {
+          idx2 = chanDetail.ELEMENTS.todoList.findIndex((item) => item.mccKey === payload[i].mccKey)
         } else {
           idx2 = chanDetail.ELEMENTS.alimList.findIndex((item) => item.mccKey === payload[i].mccKey)
         }
@@ -596,6 +636,9 @@ const D_CHANNEL = {
           if (payload[i].jobkindId === 'BOAR') {
             chanDetail.ELEMENTS.boardList[idx2].D_CONT_USER_DO = payload[i].D_CONT_USER_DO
             chanDetail.ELEMENTS.boardList[idx2].D_CONT_USER_STICKER_LIST = payload[i].D_CONT_USER_STICKER_LIST
+          } else if (payload[i].jobkindId === 'TODO') {
+            chanDetail.ELEMENTS.todoList[idx2].D_CONT_USER_DO = payload[i].D_CONT_USER_DO
+            chanDetail.ELEMENTS.todoList[idx2].D_CONT_USER_STICKER_LIST = payload[i].D_CONT_USER_STICKER_LIST
           } else {
             chanDetail.ELEMENTS.alimList[idx2].D_CONT_USER_DO = payload[i].D_CONT_USER_DO
             chanDetail.ELEMENTS.alimList[idx2].D_CONT_USER_STICKER_LIST = payload[i].D_CONT_USER_STICKER_LIST
@@ -636,12 +679,16 @@ const D_CHANNEL = {
       for (var i = 0; i < payload.length; i++) {
         if (payload[i].jobkindId === 'BOAR') {
           idx2 = chanDetail.ELEMENTS.boardList.findIndex(item => item.contentsKey === payload[i].contentsKey)
+        } else if (payload[i].jobkindId === 'TODO') {
+          idx2 = chanDetail.ELEMENTS.todoList.findIndex(item => item.contentsKey === payload[i].contentsKey)
         } else {
           idx2 = chanDetail.ELEMENTS.alimList.findIndex(item => item.contentsKey === payload[i].contentsKey)
         }
         if (idx2 !== -1) {
           if (payload[i].jobkindId === 'BOAR') {
             chanDetail.ELEMENTS.boardList[idx2].D_MEMO_LIST = payload[i].D_MEMO_LIST
+          } else if (payload[i].jobkindId === 'TODO') {
+            chanDetail.ELEMENTS.todoList[idx2].D_MEMO_LIST = payload[i].D_MEMO_LIST
           } else {
             chanDetail.ELEMENTS.alimList[idx2].D_MEMO_LIST = payload[i].D_MEMO_LIST
           }
@@ -804,6 +851,8 @@ const D_CHANNEL = {
       for (var i = 0; i < payload.ELEMENTS.commonList.list.length; i++) {
         if (payload.ELEMENTS.commonList.type === 'ALIM') {
           dataList = payload.ELEMENTS.alimList
+        } else if (payload.ELEMENTS.commonList.type === 'TODO') {
+          dataList = payload.ELEMENTS.todoList
         } else {
           dataList = payload.ELEMENTS.boardList
         }

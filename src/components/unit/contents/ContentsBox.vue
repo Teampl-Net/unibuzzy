@@ -96,14 +96,39 @@
         class="contentsCardLogoArea"
       >
         <div
-          class="chanIcon"
+          v-if="CONT_DETAIL.jobkindId === 'TODO'"
+          :style="
+            'background-image: url(' +
+            (CONT_DETAIL.userDomainPath
+              ? CONT_DETAIL.userDomainPath + CONT_DETAIL.userProfileImg
+              : CONT_DETAIL.userProfileImg) +
+            ');'
+          "
+          style="
+            width: calc(100% - 2px);
+            height: calc(100% - 2px);
+            border-radius: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+          "
+        ></div>
+        <div
+          v-else
           :style="
             'background-image: url(' +
             (CONT_DETAIL.domainPath
-              ? CONT_DETAIL.domainPath +
-                $changeUrlBackslash(CONT_DETAIL.logoPathMtext)
+              ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext
               : CONT_DETAIL.logoPathMtext) +
             ');'
+          "
+          style="
+            width: calc(100% - 2px);
+            height: calc(100% - 2px);
+            border-radius: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
           "
         ></div>
       </div>
@@ -275,9 +300,10 @@
     <div
       v-if="!propJustShowYn"
       :class="
-        CONT_DETAIL.jobkindId === 'BOAR' &&
-        CONT_DETAIL.workStatYn &&
-        CONT_DETAIL.workStatCodeKey === 46
+      (CONT_DETAIL.jobkindId === 'BOAR' &&
+          CONT_DETAIL.workStatYn &&
+          CONT_DETAIL.workStatCodeKey === 46) ||
+        (CONT_DETAIL.jobkindId === 'TODO' && CONT_DETAIL.contStatus === '99')
           ? 'opacity05'
           : ''
       "
@@ -356,16 +382,18 @@
     </div>
     <template
       v-if="
-        !propJustShowYn &&
+       !propJustShowYn &&
         (pNoAuthYn ||
+          CONT_DETAIL.jobkindId === 'TODO' ||
           (CONT_DETAIL.jobkindId === 'BOAR' && CONT_DETAIL.VIEW_YN === true) ||
           CONT_DETAIL.jobkindId === 'ALIM' ||
-          CONT_DETAIL.creUserKey === GE_USER.userKey)
+          CONT_DETAIL.creUserKey === this.GE_USER.userKey)
       "
       :class="
-        CONT_DETAIL.jobkindId === 'BOAR' &&
-        CONT_DETAIL.workStatYn &&
-        CONT_DETAIL.workStatCodeKey === 46
+      (CONT_DETAIL.jobkindId === 'BOAR' &&
+          CONT_DETAIL.workStatYn &&
+          CONT_DETAIL.workStatCodeKey === 46) ||
+        (CONT_DETAIL.jobkindId === 'TODO' && CONT_DETAIL.contStatus === '99')
           ? 'opacity05'
           : ''
       "
@@ -1642,11 +1670,19 @@ export default {
     },
     CONT_DETAIL() {
       if (!this.contentsEle) return
+      let teamKey = -1
+      if (this.contentsEle.jobkindId === 'TODO') {
+        teamKey = 0
+      } else {
+        teamKey = this.contentsEle.creTeamKey
+      }
       var cont = this.$getContentsDetail(
         null,
         this.contentsEle.contentsKey,
-        this.contentsEle.creTeamKey
+        teamKey
       )
+      console.log('뭘까용??')
+      console.log(cont)
       if (!cont) {
         cont = [this.contentsEle]
         // this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])

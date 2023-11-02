@@ -1044,7 +1044,7 @@ export default {
       mOption: {
         model: 'mankik',
         purpose: 'Add ToDo',
-        fileServerURL: 'https://mzoin.com/fileServer/tp.uploadFile'
+        fileServerURL: 'https://unibuzzy.com/file/tp.uploadFile'
       },
       mTagList: [
         { categoryNameMtext: 'Select', categoryKey: 'A' },

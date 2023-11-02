@@ -173,7 +173,7 @@ export const functions = {
     var dataList
     if (!targetKey) return null
     if (!teamDetail) {
-      if (teamKey) {
+      if (teamKey !== undefined && teamKey !== null) {
         var teamList = store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
         var result = teamList.filter((data) => data.teamKey === teamKey)
         if (result && result.length > 0) {
@@ -194,6 +194,9 @@ export const functions = {
           detailData = teamDetail.ELEMENTS.boardList.filter(
             (cab) => cab.contentsKey === Number(targetKey)
           )
+          if (!detailData || detailData.length === 0) {
+            detailData = teamDetail.ELEMENTS.todoList.filter(cab => cab.contentsKey === Number(targetKey))
+          }
         }
       } else {
         detailData = []

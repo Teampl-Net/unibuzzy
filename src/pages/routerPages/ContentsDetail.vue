@@ -261,14 +261,12 @@ export default {
           this.propParams.targetType !== 'contentsDetail'
         ) {
           if (this.mCreTeamKey !== '0') {
-            alert(false)
             await this.getCabinetDetail(this.mCreTeamKey)
             await this.$addChanList(this.mCreTeamKey)
           }
           await this.getContentsDetail()
         } else {
           if (this.mCreTeamKey !== '0') {
-            alert(true)
             await this.getCabinetDetail(this.mCreTeamKey)
             await this.$addChanList(this.mCreTeamKey)
           }
