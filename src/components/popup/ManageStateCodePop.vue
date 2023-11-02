@@ -372,7 +372,7 @@ export default {
           param.contentsKey = this.contentsKey
           param.creTeamKey = this.teamKey
           var result = await this.$commonAxiosFunction({
-            url: '/tp.updateWorkStat',
+            url: '/sUniB/tp.updateWorkStat',
             param: param
           })
           if (result.data.result === true) {

@@ -336,7 +336,7 @@ export default {
         }
       }
       var response = await this.$commonAxiosFunction({
-        url: '/tp.UB_createBuildingAndCabinet',
+        url: '/sUniB/tp.UB_createBuildingAndCabinet',
         param: param
       })
       if (response) {

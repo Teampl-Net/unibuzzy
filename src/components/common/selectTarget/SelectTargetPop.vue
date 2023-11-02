@@ -36,7 +36,6 @@ import TargetList from './TargetList.vue'
 import SelectedTargetList from './SelectedTargetList.vue'
 
 export default defineComponent({
-  name: 'SelectTargetPop',
   components: {
     SelectedTargetList,
     TargetList,
@@ -47,28 +46,28 @@ export default defineComponent({
     pSelectedTargetList: Array,
     pSelectOnlyYn: Boolean
   },
-  data() {
+  data () {
     return {
       mSelectedTargetList: [] // 선택된 targetList
     }
   },
-  created() {
+  created () {
     this.$addHistoryStack('SelectTargetPop')
     if (this.pSelectedTargetList && this.pSelectedTargetList.length > 0) {
       this.mSelectedTargetList = [...this.pSelectedTargetList]
     }
   },
   methods: {
-    checkClosePop() {
+    checkClosePop () {
       if (this.$refs.targetList) {
         this.$refs.targetList.checkClosePop()
       }
     },
-    saveTarget() {
+    saveTarget () {
       this.$emit('saveTarget', this.mSelectedTargetList)
       this.closeXPop()
     },
-    addTarget(target) {
+    addTarget (target) {
       // 선택 여부를 판별하여 추가할지 삭제할지 선택
       const result = this.checkSelectedYn(target)
       if (result.result) {
@@ -81,7 +80,7 @@ export default defineComponent({
         }
       }
     },
-    checkSelectedYn(target) {
+    checkSelectedYn (target) {
       // 해당하는 target이 선택되었는지 아닌지를 판별해주는 함수
       const index = this.mSelectedTargetList.findIndex(
         (value) =>
@@ -94,7 +93,7 @@ export default defineComponent({
         return { result: true, index: index }
       }
     },
-    closeXPop() {
+    closeXPop () {
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)

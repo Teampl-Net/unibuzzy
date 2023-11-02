@@ -271,7 +271,7 @@ export default {
           this.isUploading = true
 
           this.$axios
-            .post('/tp.uploadTpUserRequireListExcelFile', form, {
+            .post('/sUniB/tp.uploadTpUserRequireListExcelFile', form, {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
@@ -350,7 +350,7 @@ export default {
     },
     async saveList() {
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveMUserFromExcelFile',
+        url: '/sUniB/tp.saveMUserFromExcelFile',
         param: {
           bookType: this.bookType,
           excelList: this.excelFileList,

@@ -105,7 +105,7 @@ export default {
       var param = {}
       param.userKey = this.GE_USER.userKey
       const result = await this.$commonAxiosFunction({
-        url: '/tp.getLogList',
+        url: '/sUniB/tp.getLogList',
         param: param
       })
       this.mNotiList = result.data.log.content

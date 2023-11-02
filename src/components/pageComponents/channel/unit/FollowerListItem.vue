@@ -110,7 +110,7 @@ export default {
   },
   computed: {
     GE_USER() {
-      return this.$store.getters['D_USER/GE_USER']
+      return this.$store.getters['UB_USER/GE_USER']
     },
     GE_LOCALE() {
       return this.$i18n.locale
@@ -256,7 +256,7 @@ export default {
     },
     async deleteManager(param) {
       var result = await this.$commonAxiosFunction({
-        url: '/tp.deleteManager',
+        url: '/sUniB/tp.deleteManager',
         param: param
       })
       return result

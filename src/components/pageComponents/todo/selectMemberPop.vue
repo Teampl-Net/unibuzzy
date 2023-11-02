@@ -448,7 +448,7 @@ export default {
       try {
         var result = await this.$commonAxiosFunction(
           {
-            url: '/tp.saveMemo',
+            url: '/sUniB/tp.saveMemo',
             param: { memo: value }
           },
           true
@@ -527,7 +527,7 @@ export default {
       try {
         var result = await this.$commonAxiosFunction(
           {
-            url: '/tp.saveMemo',
+            url: '/sUniB/tp.saveMemo',
             param: { memo: memo }
           },
           true
@@ -580,7 +580,7 @@ export default {
       var memo = {}
       memo.memoKey = this.mModiMemoObj.memoKey
       var result = await this.$commonAxiosFunction(
-        { url: '/tp.deleteMemo', param: memo },
+        { url: '/sUniB/tp.deleteMemo', param: memo },
         true
       )
       if (result.data.result) {

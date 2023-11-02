@@ -36,7 +36,7 @@ export const openView = {
     paramMap.set('cabinetKey', param.cabinetKey)
 
     var result = await commonAxiosFunction(
-      { url: '/tp.getCabinetMainBoard', param: Object.fromEntries(paramMap) },
+      { url: '/sUniB/tp.getCabinetMainBoard', param: Object.fromEntries(paramMap) },
       nonLoadingYn
     )
     if (
@@ -61,7 +61,7 @@ export const openView = {
       paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
     }
     var contentDetail = await commonAxiosFunction(
-      { url: '/tp.getMyContentsList', param: paramSet },
+      { url: '/sUniB/tp.getMyContentsList', param: paramSet },
       nonLoadingYn
     )
     if (!contentDetail || !contentDetail.data) {
@@ -117,7 +117,7 @@ export const openView = {
   },
   async getBoardList(paramMap) {
     var result = await commonAxiosFunction({
-      url: '/tp.getTeamMenuList',
+      url: '/sUniB/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
     })
     console.log(result)
@@ -127,7 +127,7 @@ export const openView = {
   },
   async getBookList(paramMap) {
     var result = await commonAxiosFunction({
-      url: '/tp.getTeamMenuList',
+      url: '/sUniB/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
     })
     console.log(result)
@@ -156,7 +156,7 @@ export const openView = {
     var paramMap = new Map()
     paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
     var response = await commonAxiosFunction(
-      { url: '/tp.getMainBoard', param: Object.fromEntries(paramMap) },
+      { url: '/sUniB/tp.getMainBoard', param: Object.fromEntries(paramMap) },
       false
     )
     console.log(response)
@@ -183,7 +183,7 @@ export const openView = {
   async getUnknownMainBoard() {
     var paramMap = new Map()
     var response = await axios.post(
-      '/tp.getUnknownMainBoard',
+      '/sUniB/tp.getUnknownMainBoard',
       Object.fromEntries(paramMap)
     )
     if (response.status === 200 || response.status === '200') {
@@ -201,7 +201,7 @@ export const openView = {
     paramMap.set('orderbyStr', 'followerCount DESC')
     paramMap.set('creUserKey', store.getters['UB_USER/GE_USER'].userKey)
     var response = await commonAxiosFunction(
-      { url: '/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) },
+      { url: '/sUniB/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) },
       nonLoadingYn
     )
     if (response.data.result === 'OK') {
@@ -217,7 +217,7 @@ export const openView = {
     var paramMap = new Map()
     paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
     var response = await methods.getTeamList(paramMap)
-    // var response = await commonAxiosFunction({ url: '/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, false)
+    // var response = await commonAxiosFunction({ url: '/sUniB/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, false)
     console.log(response)
     if (response.data.content) {
       // console.log(response.data)
@@ -238,7 +238,7 @@ export const openView = {
     // console.log(paramMap)
     var response = await commonAxiosFunction(
       {
-        url: '/tp.getCabinetListForMyShareType',
+        url: '/sUniB/tp.getCabinetListForMyShareType',
         param: Object.fromEntries(paramMap)
       },
       false
@@ -259,7 +259,7 @@ export const openView = {
     // paramMap.set('shareType', 'W')
     // paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
     // // console.log(paramMap)
-    // var response = await commonAxiosFunction({ url: '/tp.getTeamMenuList', param: Object.fromEntries(paramMap) }, false)
+    // var response = await commonAxiosFunction({ url: '/sUniB/tp.getTeamMenuList', param: Object.fromEntries(paramMap) }, false)
     // console.log(response)
     // if (response.status === 200 || response.statusText === 'OK') {
     //   resultData.teamList = response.data
@@ -267,8 +267,8 @@ export const openView = {
     // // console.log(paramMap)
     // response = null
     // response = await this.$commonAxiosFunction({
-    //   // url: '/tp.getCabinetDetail',
-    //   url: '/tp.getCabinetListForMyShareType',
+    //   // url: '/sUniB/tp.getCabinetDetail',
+    //   url: '/sUniB/tp.getCabinetListForMyShareType',
     //   param: Object.fromEntries(paramMap)
     // }, true)
     // console.log(response)
@@ -279,7 +279,7 @@ export const openView = {
   },
   async getFollowerList(paramMap) {
     var result = await commonAxiosFunction({
-      url: '/tp.getFollowerList',
+      url: '/sUniB/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
     })
     console.log(result)
@@ -293,7 +293,7 @@ export const openView = {
     paramMap.set('sysCabinetCode', 'USER')
     paramMap.set('adminYn', true)
     var result = await commonAxiosFunction({
-      url: '/tp.getTeamMenuList',
+      url: '/sUniB/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
     })
     console.log(result)
@@ -319,7 +319,7 @@ export const openView = {
     paramMap.set('offsetInt', 0)
     paramMap.set('pageSize', 10)
     var result = await commonAxiosFunction(
-      { url: '/tp.getUserTeamList', param: Object.fromEntries(paramMap) },
+      { url: '/sUniB/tp.getUserTeamList', param: Object.fromEntries(paramMap) },
       false
     )
     console.log(result)
@@ -336,7 +336,7 @@ export const openView = {
       paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
     }
     var result = await commonAxiosFunction(
-      { url: '/tp.getMyContentsList', param: paramSet },
+      { url: '/sUniB/tp.getMyContentsList', param: paramSet },
       false
     )
     console.log(result)

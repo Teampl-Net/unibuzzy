@@ -1,5 +1,5 @@
 <template>
-  <div id="layout">
+  <div id="layout" style="overflow: hidden">
     <header>
       <!-- Popup Title -->
       <h1>{{ pOptions.purpose }}</h1>
@@ -22,29 +22,31 @@
               <div class="btnWrap">
                 <button
                   type="button"
-                  @click="selectAllReceivers"
-                  :class="{ activeBtn: params.actorList === 'A' }"
+                  @click="selectTargetOnlyMe"
+                  :class="{ activeBtn: selectMeYn }"
+                  style="font-size: 13px"
                 >
                   <img
-                    v-if="params.actorList === 'A'"
+                    v-if="selectMeYn"
                     src="../../assets/images/common/icon_check_commonColor.svg"
                     alt="check image"
                   />
-                  All
+                  ME
                 </button>
                 <button
                   type="button"
+                  style="font-size: 13px"
                   @click="toggleReceiverSelectPop"
                   :class="{
                     activeBtn:
                       showReceiverSelectList ||
-                      (params.actorList.length && params.actorList !== 'A')
+                      (params.actorList.length && !selectMeYn)
                   }"
                 >
                   <img
                     v-if="
                       showReceiverSelectList ||
-                      (params.actorList.length && params.actorList !== 'A')
+                      (params.actorList.length && !selectMeYn)
                     "
                     src="../../assets/images/common/icon_check_commonColor.svg"
                     alt="check image"
@@ -54,41 +56,73 @@
               </div>
             </div>
             <!-- target선택 팝업 -->
-            <SelectTargetPop
-              v-if="showReceiverSelectList"
-              :pSelectData="receiverList"
-              :pSelectedTargetList="params.actorList"
-              :pSelectOnlyYn="pSelectOnlyYn"
-              @saveTarget="setSelectedTargetList"
-              @closeXPop="toggleReceiverSelectPop"
-            />
+            <transition name="show_left">
+              <SelectTargetPop
+                v-if="showReceiverSelectList"
+                :pSelectData="receiverList"
+                :pSelectedTargetList="params.actorList"
+                :pSelectOnlyYn="pSelectOnlyYn"
+                @saveTarget="setSelectedTargetList"
+                @closeXPop="toggleReceiverSelectPop"
+              />
+            </transition>
             <!-- 선택된 target -->
             <div
               @click="toggleReceiverSelectPop"
-              v-if="params.actorList.length && params.actorList !== 'A'"
+              v-if="params.actorList.length && !selectMeYn"
               class="selectedTargetList"
             >
-              <div v-for="target in params.actorList" :key="target.accessKey">
-                <img
-                  v-if="target.accessKind === 'U' || target.accessKind === 'C'"
-                  src="../../assets/images/footer/icon_people.svg"
-                  alt="person image"
-                />
-                <img
-                  v-else
-                  src="../../assets/images/channel/channer_addressBook.svg"
-                  alt="address book image"
-                />
-                {{ target.accessName }}
+              <div
+                style="
+                  width: calc(100% - 40px);
+                  max-height: 52px;
+                  overflow-y: scroll;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    display: flex;
+                    gap: 1px 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <div
+                    v-for="target in params.actorList"
+                    :key="target.accessKey"
+                    class="eachTarget"
+                    style="white-space: nowrap"
+                  >
+                    <img
+                      v-if="
+                        target.accessKind === 'U' || target.accessKind === 'C'
+                      "
+                      src="../../assets/images/footer/icon_people.svg"
+                      alt="person image"
+                    />
+                    <img
+                      v-else
+                      src="../../assets/images/channel/channer_addressBook.svg"
+                      alt="address book image"
+                    />
+                    {{ target.accessName || $changeText(target.userDispMtext) }}
+                  </div>
+                </div>
               </div>
-              <img
-                class="plusImg"
-                src="../../assets/images/formEditor/icon_formEditPlus.svg"
-                alt="plus image"
-              />
+              <div class="plusImgWrap" style="">
+                <img
+                  class="plusImg"
+                  src="../../assets/images/formEditor/icon_formEditPlus.svg"
+                  alt="plus image"
+                />
+              </div>
             </div>
           </fieldset>
-          <fieldset id="optionToggleBtnWrap">
+          <fieldset
+            id="optionToggleBtnWrap"
+            v-if="!pContentsData"
+            v-show="$route.path !== '/todo'"
+          >
             <label for="">Options</label>
             <div class="btnWrap">
               <button
@@ -129,7 +163,7 @@
               </button>
             </div>
           </fieldset>
-          <fieldset v-if="hasTitleYn" id="postTitle">
+          <fieldset v-if="$route.path === '/todo' || hasTitleYn" id="postTitle">
             <label for="">Title</label>
             <input
               id="title"
@@ -150,30 +184,57 @@
                 v-if="pOptions.model === 'mankik'"
                 id="fromDate"
                 type="date"
-                v-model="params.fromDateStr"
+                v-model="params.workFromDateStr"
               />
-              <span>TO</span>
-              <input id="toDate" type="date" v-model="params.toDateStr" />
+              <span>~</span>
+              <input id="toDate" type="date" v-model="params.workToDateStr" />
             </div>
           </fieldset>
           <fieldset v-if="pOptions.model === 'mankik'" id="categoryTag">
             <legend>카테고리 선택</legend>
             <label for="">Tag</label>
-            <div class="btnWrap">
-              <button
-                type="button"
-                @click="toggleSelectTag(tag, index)"
-                v-for="(tag, index) in tagListForDom"
-                :key="tag.categoryKey"
-                :class="{ activeBtn: tag.isSelected }"
+            <div
+              class=""
+              style="
+                width: calc(100% - 72px);
+                display: flex;
+                align-items: start;
+              "
+            >
+              <div
+                class="btnWrap tagBtnWrap"
+                :class="{ opened: openBtnWrapYn === true }"
               >
-                <img
-                  v-if="tag.isSelected"
-                  src="../../assets/images/common/icon_check_commonColor.svg"
-                  alt="check image"
-                />
-                {{ tag.categoryNameMtext }}
-              </button>
+                <button
+                  type="button"
+                  @click="toggleSelectTag(tag, index)"
+                  v-for="(tag, index) in tagListForDom"
+                  :key="tag.categoryKey"
+                  :class="{ activeBtn: tag.isSelected }"
+                  style="font-size: 13px"
+                >
+                  <img
+                    v-if="tag.isSelected"
+                    src="../../assets/images/common/icon_check_commonColor.svg"
+                    alt="check image"
+                  />
+                  {{ tag.categoryNameMtext }}
+                </button>
+              </div>
+              <div
+                v-if="openBtnWrapYn === false"
+                @click="openBtnWrap"
+                class="openBtn"
+              >
+                +
+              </div>
+              <div
+                v-if="openBtnWrapYn === true"
+                @click="openBtnWrap"
+                class="openBtn"
+              >
+                -
+              </div>
             </div>
           </fieldset>
           <fieldset
@@ -182,19 +243,15 @@
           >
             <legend>파일 첨부</legend>
             <label for="">File</label>
-            <AttachFile @setSelectedAttachFileList="setAttachedFile" />
+            <!--  @delAttachFile="delAttachFile" -->
+            <TalAttachFile
+              @setSelectedAttachFileList="setAttachedFile"
+              :attachTrueAddFalseList="propAttachFileList"
+            />
           </fieldset>
-          <fieldset>
+          <fieldset style="height: 60%">
             <legend>작성 내용</legend>
-            <!-- <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
-              placeholder="Please, enter the contents."
-              v-model="params.bodyFullStr"
-            ></textarea> -->
-            <FormEditor
+            <TalFormEditor
               ref="complexEditor"
               @changeUploadList="changeUploadList"
               @setParamInnerHtml="setParamInnerHtml"
@@ -203,41 +260,29 @@
           </fieldset>
         </fieldset>
       </form>
-      <gToolBox
-        :propTools="mToolBoxOptions"
-        @changeTextStyle="changeFormEditorStyle"
-      />
     </main>
     <footer>
       <div class="footerBtnWrap">
-        <button @click="postContents">Post</button>
+        <button @click="postContents" style="margin-right: 10px">
+          {{ pContentsData ? 'Edit' : 'Save' }}
+        </button>
         <button @click="pClosePop">Cancel</button>
       </div>
     </footer>
   </div>
-  <gConfirmPop
-    v-if="failPopYn"
-    @no="failPopYn = false"
-    confirmType="timeout"
-    :confirmText="errorText"
-  />
-  <gConfirmPop
-    v-if="contentType === 'BOAR' && checkPopYn"
-    :confirmText="modiYn ? $t('FORM_MSG_EDIT') : $t('FORM_MSG_SAVE')"
-    @ok="sendBoard(), (checkPopYn = false)"
-    @no="confirmNo()"
-  />
 </template>
 
 <script>
 // system settings
 import { defineComponent, ref, reactive, onMounted, watch } from 'vue'
+import { useStore } from 'vuex'
 import axios from 'axios'
 
 // components
 import SelectTargetPop from './selectTarget/SelectTargetPop.vue'
-import AttachFile from '../unit/formEditor/AttachFile.vue'
-import FormEditor from '../unit/formEditor/FormEditor.vue'
+import TalFormEditor from '../unit/formEditor/FormEditor.vue'
+import TalAttachFile from '../unit/formEditor/AttachFile.vue'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   props: [
@@ -247,29 +292,323 @@ export default defineComponent({
     'pGetReceiverList',
     'pPostContentsFn',
     'pSelectOnlyYn',
-    'pClosePop'
+    'pClosePop',
+    // edit mode props
+    'pContentsData'
   ],
   components: {
     SelectTargetPop,
-    AttachFile,
-    FormEditor
+    TalFormEditor,
+    TalAttachFile
   },
   created() {
     this.$addHistoryStack('writeContents')
   },
   setup(props) {
+    const store = useStore()
+
     // submit params 세팅
     const params = reactive({
       title: '',
       actorList: [],
-      toDateStr: '',
-      fromDateStr: '',
+      workToDateStr: '',
+      workFromDateStr: null,
       bodyFullStr: '',
       tagTextList: [],
       attachFileList: [],
-      showCreNameYn: true,
-      canReplyYn: true
+      showCreNameYn: false,
+      canReplyYn: true,
+      mLoadingYn: false
     })
+
+    // ------------------- 기본값 설정
+    let receiverList = reactive([])
+    if (props.pGetReceiverList) {
+      receiverList = props.pGetReceiverList()
+    }
+    let tagTextList = reactive([])
+    if (props.pGetTagListFn) {
+      tagTextList = props.pGetTagListFn()
+    }
+
+    var gOldFromDate = null
+    var gOldToDate = null
+
+    // ------------------- edit 관련 함수
+    // * 주소록(타겟) 이름 값만 추출
+    const propsTargetNameEditing = (text) => {
+      let changeTxt = ''
+      if (text) {
+        changeTxt = text
+        let indexOf = text.indexOf('KO$^$')
+
+        if (indexOf === -1) {
+          indexOf = text.indexOf('EN$^$')
+          if (indexOf === -1) {
+            return changeTxt
+          } else {
+            const returnMap = new Map()
+            const splitMtext = text.split('$#$')
+            // split if ~> $$가 없다면?
+            for (let i = 0; i < splitMtext.length; i++) {
+              const splitMtextDetail = splitMtext[i].split('$^$')
+              // split if ~> $$가 없다면?
+              returnMap.set(splitMtextDetail[0], splitMtextDetail[1])
+            }
+            changeTxt = returnMap.get('EN')
+          }
+        } else {
+          const returnMap = new Map()
+          const splitMtext = text.split('$#$')
+          // split if ~> $$가 없다면?
+          for (let i = 0; i < splitMtext.length; i++) {
+            const splitMtextDetail = splitMtext[i].split('$^$')
+            // split if ~> $$가 없다면?
+            returnMap.set(splitMtextDetail[0], splitMtextDetail[1])
+          }
+          changeTxt = returnMap.get('KO')
+        }
+      }
+      return changeTxt
+    }
+
+    // * bodyFullStr decoding 함수
+    const setBodyLength = (str, completeYn) => {
+      if (!str) return
+      // eslint-disable-next-line no-undef
+      str = Base64.decode(str)
+      str.replace('contenteditable= true', '')
+      str = str.replaceAll('<pre', '<div')
+      str = str.replaceAll('</pre', '</div')
+      if (completeYn) {
+        str = str.replaceAll(
+          'formCard formText ',
+          'formCard formText completeWork '
+        )
+      }
+      return str
+    }
+
+    // * 편집 데이터로 formCard생성하기
+    const replaceTargetInChild = (stringHTML) => {
+      const parser = new DOMParser()
+      const parsedHTML = parser.parseFromString(stringHTML, 'text/html')
+
+      // 기존 코드 활용해서 formCard삽입
+      var temp = document.createElement('div')
+      temp.innerHTML = stringHTML
+      // var innerHtml = ''
+      var newArr = []
+      var formC = temp.getElementsByClassName('formCard')
+      // eslint-disable-next-line no-new-object
+      var jsonObj = new Object()
+      var imgYn = true
+      for (var i = 0; i < formC.length; i++) {
+        // eslint-disable-next-line no-new-object
+        jsonObj = new Object()
+        imgYn = true
+        // innerHtml += formC[i].outerHTML
+        jsonObj.innerHtml = formC[i].innerHTML
+        jsonObj.type = 'image'
+        jsonObj.targetKey = i
+        for (var c = 0; c < formC[i].classList.length; c++) {
+          // // eslint-disable-next-line no-debugger
+          // debugger
+          if (formC[i].classList[c] === 'formText') {
+            // jsonObj.innerHtml = this.$findATagDelete(formC[i].innerHTML)
+            jsonObj.type = 'text'
+            imgYn = false
+            break
+          } else if (formC[i].classList[c] === 'formLine') {
+            jsonObj.type = 'line'
+            imgYn = false
+          } else if (formC[i].classList[c] === 'formDot') {
+            jsonObj.type = 'dot'
+            imgYn = false
+          } else if (formC[i].classList[c] === 'formBlock') {
+            jsonObj.type = 'block'
+            imgYn = false
+          }
+        }
+        if (imgYn) {
+          jsonObj.pSrc = formC[i].querySelector('img').src
+          jsonObj.pFilekey =
+            formC[i].querySelector('img').attributes.filekey.value
+        }
+        newArr.push(jsonObj)
+      }
+      if (formC && formC.length === 0) {
+        var firstSettingDiv = document.createElement('div')
+        firstSettingDiv.classList.add('formText')
+        firstSettingDiv.classList.add('editableContent')
+        firstSettingDiv.classList.add('formCardTextid')
+        firstSettingDiv.classList.add('formCard')
+        firstSettingDiv.attributes.formidx = 0
+        firstSettingDiv.attributes.creTeamKey = 0
+        firstSettingDiv.id = 'formEditText'
+        firstSettingDiv.attributes.contentEditable = false
+        firstSettingDiv.style.padding = '0px 20px'
+        firstSettingDiv.style.display = 'inline-block'
+        firstSettingDiv.style.width = '100%'
+        firstSettingDiv.style.borderRight = 'rgb(204, 204, 204)'
+        firstSettingDiv.style.wordBreak = 'break-all'
+        firstSettingDiv.innerHTML = parsedHTML.body
+        // jsonObj.innerHtml = this.$findATagDelete(firstSettingDiv.innerHTML)
+        jsonObj.type = 'text'
+        imgYn = false
+        newArr.push(jsonObj)
+      }
+      complexEditor.value.setFormCard(newArr)
+
+      // ************************************ [수정] 이미 있는 파일 리스트 따로 보관하고 있어야 함
+      // this.addFalseList = document.querySelectorAll('.dragCompp .formCard .addFalse')
+    }
+    // --------------------------------------------------------------
+
+    // 첨부파일 관련 리스트
+    const addFalseAttachFalseFileList = reactive([])
+    const addFalseAttachTrueFileList = reactive([])
+    const propAttachFileList = reactive([])
+    // ------------------- DOM 생성 후 실행될 로직
+    onMounted(() => {
+      // fromDate
+      const now = new Date()
+      const year = now.getFullYear()
+      const month = String(now.getMonth() + 1).padStart(2, '0')
+      const day = String(now.getDate()).padStart(2, '0')
+      const currentDate = `${year}-${month}-${day}`
+      const fromDateInput = document.getElementById('fromDate')
+      const toDateInput = document.getElementById('fromDate')
+      if (fromDateInput) {
+        params.workFromDateStr = currentDate
+      }
+      if (toDateInput) {
+        params.workToDateStr = currentDate
+      }
+      gOldFromDate = currentDate
+      gOldToDate = currentDate
+
+      const route = useRoute()
+
+      if (route.path === '/todo') {
+        hasTitleYn.value = true
+      }
+      // >---- 편집 상태일 때 세팅 ----<
+      if (props.pContentsData) {
+        // --- title 데이터 연결
+        params.title = props.pContentsData.title
+        if (params.title) {
+          hasTitleYn.value = true
+        }
+        // --- 날짜 데이터 연결
+        if (props.pContentsData.workFromDateStr) {
+          params.workFromDateStr =
+            props.pContentsData.workFromDateStr.split('T')[0]
+          const fromDateInput = document.getElementById('fromDate')
+          if (fromDateInput) {
+            fromDateInput.value = params.workFromDateStr
+          }
+        }
+        if (props.pContentsData.workToDateStr) {
+          params.workToDateStr = props.pContentsData.workToDateStr.split('T')[0]
+          const toDateInput = document.getElementById('toDate')
+          if (toDateInput) {
+            toDateInput.value = params.workToDateStr
+          }
+        }
+        // 선택된 주소록(target) 데이터 연결
+        for (const editingTarget of props.pContentsData.actorList) {
+          params.actorList.push({
+            accessKey: editingTarget.accessKey,
+            accessKind: editingTarget.accessKind,
+            contentskey: editingTarget.contentskey,
+            iconPath: editingTarget.domainPath + editingTarget.pathMtext,
+            useKey: editingTarget.userKey,
+            accessName: propsTargetNameEditing(editingTarget.userDispMtext)
+          })
+        }
+
+        // bodyFullStr 디코딩 후 formCard 생성
+        params.bodyFullStr = setBodyLength(props.pContentsData.bodyFullStr)
+        if (params.bodyFullStr) {
+          replaceTargetInChild(params.bodyFullStr) // DOM tree에서 원하는 대상 찾아 교체
+        }
+
+        // ------------------- edit상태에서 첨부 파일 관련 로직
+        if (props.pContentsData.attachFileList) {
+          for (let i = 0; i < props.pContentsData.attachFileList.length; i++) {
+            const file = props.pContentsData.attachFileList[i]
+            propAttachFileList.push(file)
+            tempFileList.push(file)
+            if (file.attachYn) {
+              addFalseAttachTrueFileList.push(file)
+            } else {
+              addFalseAttachFalseFileList.push(file)
+            }
+          }
+          console.log(propAttachFileList)
+        }
+        console.log(tempFileList)
+      }
+    })
+
+    // eslint-disable-next-line no-unused-vars
+    const setAttachFileList = () => {
+      // 계획
+      // 1. 이미 있던 사진을 삭제해서 수정(업데이트 하는경우): addYn: false // 삭제한 파일도 포함해야함
+      // 2. 이미 있던 사진을 포함해서 수정: 서버에서 중복저장 되지 않게
+      const delFileList = []
+
+      // 1. 이미 있던 사진을 삭제해서 수정(업데이트 하는경우): addYn: false // 삭제한 파일도 포함해야함
+      for (let i = tempFileList.length - 1; i > -1; i--) {
+        const tempFile = tempFileList[i]
+        for (let j = 0; propAttachFileList.length; j++) {
+          const propAttachFile = propAttachFileList[j]
+          let deleteYn = true
+          if (tempFile.fileKey && tempFile.fileKey === propAttachFile.file) {
+            deleteYn = false
+          }
+          if (deleteYn) {
+            tempFileList[i].addYn = false
+            delFileList.push(tempFileList[i])
+            tempFileList.splice(i, 1)
+          }
+        }
+      }
+    }
+
+    // 날짜 변화 체크 로직
+    watch(
+      () => [params.workFromDateStr, params.workToDateStr],
+      (newP) => {
+        console.log('============== param changed check', newP)
+        const newFromDate = newP[0]
+        const newToDate = newP[1]
+
+        let changeType = 'N'
+        if (newFromDate !== gOldFromDate) {
+          changeType = 'F'
+        } else if (newToDate !== gOldToDate) {
+          changeType = 'T'
+        }
+
+        // from변경시, to보다 이후면 to를 from으로 변경
+        // to변경시, to보다 이후면 to를 to으로 변경
+        if (newFromDate > newToDate) {
+          if (changeType === 'F') {
+            // alert('case From ')
+            params.workToDateStr = newP[0]
+          } else if (changeType === 'T') {
+            // alert('case To ')
+            params.workFromDateStr = newP[1]
+          } else {
+            // alert('case Else')
+          }
+        }
+        gOldFromDate = newP[0]
+        gOldToDate = newP[1]
+      }
+    )
 
     // 익명 & 댓글 & 제목 여부 설정
     const toggleAnonymousYn = () => {
@@ -281,31 +620,35 @@ export default defineComponent({
     const hasTitleYn = ref(false)
     const toggleTitleYn = () => {
       hasTitleYn.value = !hasTitleYn.value
-      if (hasTitleYn.value) {
-        params.title = ''
-      }
     }
 
     // Target 선택 기능
-    const receiverList = props.pGetReceiverList()
     const showReceiverSelectList = ref(false)
     const toggleReceiverSelectPop = () => {
       showReceiverSelectList.value = !showReceiverSelectList.value
-      if (showReceiverSelectList.value && params.actorList === 'A') {
+      if (
+        showReceiverSelectList.value &&
+        params.actorList.accessKey === store.getters['UB_USER/GE_USER']
+      ) {
         params.actorList = []
       }
     }
-    const selectAllReceivers = () => {
-      params.actorList = 'A'
-      showReceiverSelectList.value = false
+    const selectMeYn = ref(false)
+    const selectTargetOnlyMe = () => {
+      params.actorList.length = 0
+      params.actorList.push({
+        accessKey: store.getters['UB_USER/GE_USER'].userKey,
+        accessKind: 'U'
+      })
+      selectMeYn.value = true
     }
     const setSelectedTargetList = (selectedTargetList) => {
       params.actorList = selectedTargetList
+      selectMeYn.value = false
     }
 
     // Tag(category) 선택 기능
-    const tagTextList = props.pGetTagListFn()
-    const tagListForDom = reactive([])
+    const tagListForDom = reactive([]) // 원본 유지를 위한 복사
     if (tagTextList.length) {
       for (const tag of tagTextList) {
         tag.isSelected = false
@@ -323,24 +666,25 @@ export default defineComponent({
         params.tagTextList.push(selectedTag.categoryNameMtext)
         tagListForDom[index].isSelected = true
       }
-      console.log(tagListForDom, '456456564654654654654')
+    }
+    // 편집 상태일 때는 데이터 비교후 선택된 tag 체크
+    if (props.pContentsData) {
+      for (let i = 0; i < tagListForDom.length; i++) {
+        for (let j = 0; j < props.pContentsData.tagList.length; j++) {
+          if (
+            // eslint-disable-next-line vue/no-setup-props-destructure
+            tagListForDom[i].categoryNameMtext ===
+            props.pContentsData.tagList[j].tagText
+          ) {
+            tagListForDom[i].isSelected = true
+            toggleSelectTag(tagListForDom[i], i)
+          }
+        }
+      }
     }
 
-    // fromDate기본값 설정
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = String(now.getMonth() + 1).padStart(2, '0')
-    const day = String(now.getDate()).padStart(2, '0')
-    const currentDate = `${year}-${month}-${day}`
-    onMounted(() => {
-      const dateInput = document.getElementById('fromDate')
-      if (dateInput) {
-        dateInput.value = currentDate
-      }
-    })
-
     // attach file 설정
-    const tempFileList = []
+    const tempFileList = reactive([])
     // ------ 업로드한 파일 변수에 담기
     const setAttachedFile = (fileList) => {
       if (fileList.addYn === true) {
@@ -445,7 +789,7 @@ export default defineComponent({
           }
         }
       } else {
-        alert(this.$t('COMMON_MSG_NOFILE'))
+        // alert(this.$t('COMMON_MSG_NOFILE'))
       }
       return true
     }
@@ -466,31 +810,38 @@ export default defineComponent({
     // 최종 Submit
     const postContents = async () => {
       try {
+        if (params.mLoadingYn) return
         if (tempFileList.length > 0) {
           await fileDataUploadToServer()
         }
         params.attachFileList = handleFileListForUpload()
 
+        // formEditor 작성 내용 추출
+        boardDataCheck()
+
+        // 제목 옵션 false일 때 자동 제목 생성
         if (!hasTitleYn.value) {
-          if (params.bodyFullStr) {
-            params.title = params.bodyFullStr
-          } else if (!params.bodyFullStr && params.attachFileList.length) {
+          if (!params.title && extractedInnerHtml) {
+            params.title = extractedInnerHtml
+          } else if (
+            !params.title &&
+            !extractedInnerHtml &&
+            params.attachFileList.length
+          ) {
             params.title = params.attachFileList[0].fileName
           }
         }
-
-        // formEditor 작성 내용 추출
-        boardDataCheck()
 
         // params value 체크
         if (props.pOptions.model === 'mankik') {
           if (hasTitleYn.value && !params.title) {
             alert('제목을 작성해주세요.')
-          } else if (!params.toDateStr) {
+          } else if (!params.workToDateStr) {
             alert('목표 날짜를 지정해주세요.')
-          } else if (!params.bodyFullStr && !params.attachFileList.length) {
-            alert('공유하고자 하는 내용을 작성하거나, 파일을 첨부해주세요.')
+            // } else if (route.path !== '/todo' && (!params.bodyFullStr && !params.attachFileList.length)) {
+            //   alert('공유하고자 하는 내용을 작성하거나, 파일을 첨부해주세요.')
           } else {
+            params.mLoadingYn = true
             props.pPostContentsFn(params)
           }
         } else if (props.pOptions.model === 'unibuzzy') {
@@ -499,17 +850,19 @@ export default defineComponent({
           } else if (!params.bodyFullStr && !params.attachFileList.length) {
             alert('공유하고자 하는 내용을 작성하거나, 파일을 첨부해주세요.')
           } else {
+            params.mLoadingYn = true
             props.pPostContentsFn(params)
           }
         }
       } catch (error) {
+        params.mLoadingYn = false
         console.log('error', error)
       }
     }
-
-    watch(params, (newp) => {
-      console.log(newp.bodyFullStr, '---------------ch')
-    })
+    const openBtnWrapYn = ref(false)
+    const openBtnWrap = () => {
+      openBtnWrapYn.value = !openBtnWrapYn.value
+    }
 
     // Regacy: 기존 FormEditor 컴포넌트 사용을 위한 레거시 코드들입니다. --------- 일부는 compositionAPI에 맞춰 수정
     // ============ 변수설정 ===========
@@ -530,7 +883,7 @@ export default defineComponent({
       complexOkYn.value = false
     }
 
-    // ============ regacy 함수 ===========
+    // ============ Regacy 함수 ===========
     const postToolBox = (toolBoxOption) => {
       // Regacy comment: toolbox에 들어간 option들을 formEditor에서 watch로 계속 넘겨받고 prop으로 넘겨주고 있습니다
       mToolBoxOptions.value = toolBoxOption
@@ -547,23 +900,41 @@ export default defineComponent({
         complexEditor.value.changeTextStyle(targetType)
       }
     }
+    let extractedInnerHtml = ''
     const setParamInnerHtml = (formCard) => {
       // console.log('=========== forCard whole body ===========', formCard)
-      let extractedInnerHtml = ''
       let extractedOuterHtml = ''
       for (let i = 0; i < formCard.length; i++) {
         extractedOuterHtml += formCard[i].outerHtml
         extractedInnerHtml += formCard[i].innerHtml
       }
-      // console.log(
-      //   `=========== forCard Data =========== \n - inner: ${extractedInnerHtml}\n - outer: ${extractedOuterHtml}`
-      // )
-      extractedOuterHtml.replace('contenteditable', '')
-      params.bodyFullStr = extractedOuterHtml
+      console.log(
+        `=========== forCard Data =========== \n - inner: ${extractedInnerHtml}\n - outer: ${extractedOuterHtml}`
+      )
+
+      // 문자열을 파싱하여 DOM 요소로 만듭니다.
+      const parser = new DOMParser()
+      const doc = parser.parseFromString(extractedOuterHtml, 'text/html')
+
+      // "contenteditable" 속성을 삭제합니다.
+      const elements = doc.querySelectorAll(
+        '[contenteditable], [placeholder], [autofocus], [formidx]'
+      )
+      for (let i = 0; i < elements.length; i++) {
+        elements[i].removeAttribute('contenteditable')
+        elements[i].removeAttribute('placeholder')
+        elements[i].removeAttribute('autofocus')
+        elements[i].removeAttribute('formidx')
+      }
+
+      // 수정된 HTML 문자열을 얻습니다.
+      const modifiedHtmlString = doc.body.innerHTML
+      console.log(modifiedHtmlString)
+
+      params.bodyFullStr = modifiedHtmlString
       propFormData.length = 0
       propFormData.push(...formCard)
-      document.getElementById('msgBox').innerHTML = ''
-      document.getElementById('msgBox').innerHTML = extractedInnerHtml
+      // document.getElementById('msgBox')?.innerHTML = extractedInnerHtml
       // this.editorType = 'complex'
       complexOkYn.value = true
       if (contentType.value === 'ALIM') clickPageTopBtn()
@@ -584,44 +955,26 @@ export default defineComponent({
             titleValue !== ''
           ) {
           } else {
-            confirmPopVariable.errorText = this.$t('FORM_MSG_TITLE')
+            // confirmPopVariable.errorText = this.$t('FORM_MSG_TITLE')
             confirmPopVariable.failPopYn = true
             complexOkYn.value = false
             return
           }
         }
 
-        // if (requestPushYn.value === true) {
-        //   if (this.requestTitle.replace(' ', '') === '') {
-        //     confirmPopVariable.errorText = this.$t('FORM_MSG_REASON')
-        //     confirmPopVariable.failPopYn = true
-        //     complexOkYn.value = false
-        //     return
-        //   }
-        // }
-        // if (this.allRecvYn === true) {
-        // } else {
-        //   await this.settingRecvList()
-        //   if (this.selectedReceiverList.length > 0) {
-        //   } else {
-        //     if (!this.params.userKey) {
-        //       confirmPopVariable.errorText = this.$t('FORM_MSG_SU_TARGET')
-        //       confirmPopVariable.failPopYn = true
-        //       complexOkYn.value = false
-        //       return
-        //     }
-        //   }
-        // }
-
         let msgData = ''
-        msgData = document.getElementById('msgBox').innerText
-        msgData = msgData.trim()
+        if (document.getElementById('msgBox')) {
+          msgData = document.getElementById('msgBox').innerText
+        }
+        if (msgData) {
+          msgData = msgData.trim()
+        }
         if (
           (msgData !== undefined && msgData !== null && msgData !== '') ||
           tempFileList.length > 0
         ) {
         } else {
-          confirmPopVariable.errorText = this.$t('FORM_MSG_NOTI_NOCONT')
+          // confirmPopVariable.errorText = this.$t('FORM_MSG_NOTI_NOCONT')
           confirmPopVariable.failPopYn = true
           complexOkYn.value = false
           return
@@ -638,57 +991,45 @@ export default defineComponent({
         title = title.trim()
         if (title !== undefined && title !== null && title !== '') {
         } else {
-          confirmPopVariable.errorText = this.$t('FORM_MSG_TITLE')
+          // confirmPopVariable.errorText = this.$t('FORM_MSG_TITLE')
           confirmPopVariable.failPopYn = true
           complexOkYn.value = false
           return
         }
         var msgData = ''
-        msgData = document.getElementById('msgBox').innerText
-        msgData = msgData.trim()
+        if (document.getElementById('msgBox')) {
+          msgData = document.getElementById('msgBox').innerText
+        }
+        if (msgData) {
+          msgData = msgData.trim()
+        }
         if (
           (msgData !== undefined && msgData !== null && msgData !== '') ||
           tempFileList.length > 0
         ) {
         } else {
-          confirmPopVariable.errorText = this.$t('FORM_MSG_POST_NOCONT')
+          // confirmPopVariable.errorText = this.$t('FORM_MSG_POST_NOCONT')
           confirmPopVariable.failPopYn = true
           complexOkYn.value = false
           return
         }
-        // if (this.selectBoardYn === true) {
-        //   if (
-        //     this.selectBoardIndex !== undefined &&
-        //     this.selectBoardIndex !== null &&
-        //     this.selectBoardIndex !== ''
-        //   ) {
-        //     if (this.selectBoardCabinetKey === null) {
-        //       confirmPopVariable.errorText = this.$t('FORM_MSG_DIFFBOARD')
-        //       confirmPopVariable.failPopYn = true
-        //       complexOkYn.value = false
-        //       return
-        //     }
-        //   } else if (
-        //     this.selectBoardIndex === undefined ||
-        //     this.selectBoardIndex === null ||
-        //     this.selectBoardIndex === ''
-        //   ) {
-        //     confirmPopVariable.errorText = this.$t('FORM_MSG_NOBOARD')
-        //     confirmPopVariable.failPopYn = true
-        //     complexOkYn.value = false
-        //     return
-        //   }
-        // }
+
         confirmPopVariable.checkPopYn = true
       }
     }
+    const setTodoPageValue = () => {
+      params.showCreNameYn = true
+      params.canReplyYn = true
+      hasTitleYn.value = true
+    }
+    setTodoPageValue()
 
     return {
       params,
       receiverList,
       showReceiverSelectList,
       toggleReceiverSelectPop,
-      selectAllReceivers,
+      selectTargetOnlyMe,
       setSelectedTargetList,
       toggleAnonymousYn,
       toggleCommentYn,
@@ -708,7 +1049,13 @@ export default defineComponent({
       clickPageTopBtn,
       boardDataCheck,
       contentType,
-      confirmNo
+      confirmNo,
+      propsTargetNameEditing,
+      openBtnWrap,
+      openBtnWrapYn,
+      propAttachFileList,
+      setTodoPageValue,
+      selectMeYn
     }
   }
 })
@@ -726,22 +1073,23 @@ export default defineComponent({
   top: 50%;
   transform: translate(-50%, -50%);
 
+  z-index: 15;
   background-color: #f5f5f5;
   border-radius: 0.8rem;
 }
 button {
   min-width: 40px;
-  min-height: 30px;
+  min-height: 25px;
   padding: px 15px;
 
   color: #7a7a7a;
   word-wrap: break-word;
 
   background-color: #f1f1ff;
-  border: 1.5px solid #ccc;
+  border: 2px solid #ccc;
   border-radius: 8px;
   & + button {
-    margin-left: 8px;
+    // margin-left: 8px;
   }
   &.activeBtn {
     border: 2px solid #5f61bd;
@@ -782,9 +1130,11 @@ textarea {
 header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  align-items: center;
+  // margin-bottom: 8px;
   h1 {
     font-size: 20px;
+    margin: 0 !important;
   }
   button {
     padding: 3px;
@@ -799,7 +1149,8 @@ footer {
   .footerBtnWrap {
     padding-top: 20px;
     button {
-      font-size: 20px;
+      font-size: 16px;
+      padding: 3px 10px !important;
       font-weight: bold;
       &:first-child {
         background-color: #5f61bd;
@@ -811,16 +1162,29 @@ footer {
 
 // Form CSS
 main {
-  height: calc(100% - 120px);
+  height: calc(100% - 110px);
+  overflow-y: auto;
   margin-top: 8px;
-  padding-top: 16px;
+  // padding-top: 16px;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
-  overflow-y: auto;
 
-  fieldset > fieldset {
-    margin-top: 16px;
+  form {
+    height: 100%;
   }
+  form fieldset > fieldset {
+    margin-top: 10px;
+  }
+  form > fieldset:nth-child(3) {
+    margin-top: 10px;
+    height: 60%;
+    textarea {
+      height: 100%;
+    }
+  }
+  // fieldset > fieldset {
+  //   margin-top: 10px;
+  // }
 
   .selectReceiverBox,
   #optionToggleBtnWrap,
@@ -829,12 +1193,37 @@ main {
   #uploadFile {
     display: flex;
     justify-content: space-between;
+    .tagBtnWrap {
+      flex-wrap: wrap;
+      height: 30px;
+      overflow-y: hidden;
+      flex-wrap: wrap;
+
+      &.opened {
+        height: auto !important;
+      }
+    }
+    .openBtn {
+      height: 25px;
+      width: 25px;
+      background-color: #f1f1ff;
+      border: 2px solid #ccc;
+      color: #7a7a7a;
+      padding: 3px;
+      border-radius: 8px;
+      text-align: center;
+      line-height: 17px;
+      display: none;
+      cursor: pointer;
+    }
     .btnWrap,
     .dateBoxWrap {
       flex-grow: 1;
       display: flex;
       align-items: center;
       justify-content: flex-start;
+      width: calc(100% - 72px);
+      gap: 8px;
       input {
         min-height: 30px;
         flex: 0 1 45%;
@@ -851,7 +1240,7 @@ main {
       display: flex;
       align-items: center;
       min-height: 35px;
-      padding: 0 8px;
+      padding: 0 0 0 8px;
       margin-top: 5px;
       margin-left: 72px;
       cursor: pointer;
@@ -865,12 +1254,17 @@ main {
           width: 15px;
         }
       }
+      .plusImgWrap {
+        // position: absolute;
+        // top: 50%;
+        // right: 8px;
+        // transform: translateY(-50%);
+        width: 30px;
+        height: 100%;
+        background-color: #fff;
+        margin-right: 0;
+      }
       .plusImg {
-        position: absolute;
-        top: 50%;
-        right: 8px;
-        transform: translateY(-50%);
-
         width: 20px;
       }
     }
@@ -879,6 +1273,46 @@ main {
     display: flex;
     input {
       flex-grow: 1;
+    }
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .dateBoxWrap {
+    // justify-content: space-between !important;
+    input {
+      flex: 0 1 40% !important;
+    }
+    span {
+      flex-grow: 0.5 !important;
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .openBtn {
+    display: block !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  label {
+    font-size: 14px !important;
+  }
+  button {
+    font-size: 13px !important;
+  }
+  .dateBoxWrap {
+    gap: 0 !important;
+    flex-grow: 0 !important;
+    justify-content: space-between;
+    input {
+      flex: 0 1 44% !important;
+    }
+    span {
+      flex-grow: 0 !important;
+      font-size: 13px !important;
+      // margin:0 !important;
     }
   }
 }

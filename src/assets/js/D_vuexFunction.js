@@ -44,7 +44,7 @@ export const functions = {
     memo.memoKey = memoKey
     var result = await commonAxiosFunction(
       {
-        url: '/tp.getMemoList',
+        url: '/sUniB/tp.getMemoList',
         param: memo
       },
       true
@@ -364,7 +364,7 @@ export const functions = {
     // paramMap.set('followerType', 'M')
     var result = await commonAxiosFunction(
       {
-        url: '/tp.getFollowerList',
+        url: '/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       },
       true

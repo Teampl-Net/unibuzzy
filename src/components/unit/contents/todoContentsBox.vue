@@ -674,7 +674,7 @@ export default {
       }
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -959,7 +959,7 @@ export default {
         inParam.mccKey = this.contentsEle.mccKey
         inParam.jobkindId = 'ALIM'
         result = await this.$commonAxiosFunction({
-          url: '/tp.deleteMCabContents',
+          url: '/sUniB/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.contentsEle.jobkindId === 'BOAR') {
@@ -970,7 +970,7 @@ export default {
         inParam.teamKey = this.contentsEle.creTeamKey
         inParam.deleteYn = true
         result = await this.$commonAxiosFunction({
-          url: '/tp.deleteContents',
+          url: '/sUniB/tp.deleteContents',
           param: inParam
         })
       }
@@ -1099,7 +1099,7 @@ export default {
     async saveActAxiosFunc(param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/tp.saveClaimLog',
+          url: '/sUniB/tp.saveClaimLog',
           param: param
         })
         if (result) {
@@ -1159,7 +1159,7 @@ export default {
       memo.ownUserKey = this.GE_USER.userkey
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -1454,7 +1454,7 @@ export default {
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveSubscribe',
+        url: '/sUniB/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop(reqText)

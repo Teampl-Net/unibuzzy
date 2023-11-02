@@ -205,7 +205,7 @@ export default {
         updateYn: true
       }
       const result = await this.$commonAxiosFunction({
-        url: '/tp.saveUser',
+        url: '/sUniB/tp.saveUser',
         param: param
       })
       this.$emit('changePageHeader', this.$changeText(chanEle.nameMtext))

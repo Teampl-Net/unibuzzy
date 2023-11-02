@@ -20,7 +20,8 @@ export default defineComponent({
     return {
       options: {
         purpose: '테스트123',
-        model: 'unibuzzy'
+        model: 'unibuzzy',
+        fileServerURL: 'https://unibuzzy.com/file/tp.uploadFile'
       },
       userInfo: {
         nickname: 'user1',
