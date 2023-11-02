@@ -182,7 +182,7 @@ export default {
       paramMap.set('adminYn', true)
       paramMap.set('pageSize', 1000)
       result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: '/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.managerList = result.data.content
@@ -241,7 +241,7 @@ export default {
       }
 
       result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: '/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.managerList = result.data.content
@@ -250,7 +250,7 @@ export default {
       var param = {}
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: '/tp.saveManager',
+        url: '/sUniB/tp.saveManager',
         param: param
       })
     },

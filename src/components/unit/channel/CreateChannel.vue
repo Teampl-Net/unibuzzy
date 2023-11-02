@@ -430,7 +430,7 @@ export default {
       var param = {}
       param.cateGroupKey = 2
       var cateItemList = await this.$commonAxiosFunction({
-        url: '/tp.getCateItemList',
+        url: '/sUniB/tp.getCateItemList',
         param: param
       })
       this.mBusinessItemList = cateItemList.data.cateItemList
@@ -581,7 +581,7 @@ export default {
           this.mPageType = '삭제'
           if (gParam.teamKey) {
             var res = await this.$commonAxiosFunction({
-              url: '/tp.deleteTeam',
+              url: '/sUniB/tp.deleteTeam',
               param: { teamKey: gParam.teamKey }
             })
             if (res.data && res.data.result) {
@@ -597,7 +597,7 @@ export default {
         }
 
         var response = await this.$commonAxiosFunction({
-          url: '/tp.UB_createTeamAndBuilding',
+          url: '/sUniB/tp.UB_createTeamAndBuilding',
           param: { teamRequest: gParam }
         })
 

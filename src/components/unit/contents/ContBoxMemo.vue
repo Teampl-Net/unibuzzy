@@ -691,7 +691,7 @@ export default {
     async saveActAxiosFunc(param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/tp.saveClaimLog',
+          url: '/sUniB/tp.saveClaimLog',
           param: param
         })
         if (result) {
@@ -729,7 +729,7 @@ export default {
       memo.memoKey = this.mTempData.memoKey
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/tp.deleteMemo',
+          url: '/sUniB/tp.deleteMemo',
           param: memo
         })
         if (result.data.result === true) {

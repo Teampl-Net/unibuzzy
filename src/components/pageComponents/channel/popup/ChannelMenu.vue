@@ -283,7 +283,7 @@ export default {
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction(
         {
-          url: '/tp.getTeamMenuList',
+          url: '/sUniB/tp.getTeamMenuList',
           param: Object.fromEntries(paramMap)
         },
         !(loadingYn === false)

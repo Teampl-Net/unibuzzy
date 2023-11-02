@@ -375,7 +375,7 @@ export default {
       paramMap.set('userKey', this.propData.userKey)
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: '/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       if (result.data.content) this.mUserInfo = result.data.content[0]

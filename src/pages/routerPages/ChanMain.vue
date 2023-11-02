@@ -586,7 +586,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           const response = await this.$commonAxiosFunction({
-            url: '/tp.saveUserDo',
+            url: '/sUniB/tp.saveUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = response.data.doKey
@@ -604,7 +604,7 @@ export default {
             userName: this.$changeText(this.GE_USER.userDispMtext)
           }
           await this.$commonAxiosFunction({
-            url: '/tp.deleteUserDo',
+            url: '/sUniB/tp.deleteUserDo',
             param: param
           })
           this.CHANNEL_DETAIL.D_CHAN_AUTH.favDoKey = null
@@ -651,7 +651,7 @@ export default {
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-        url: '/tp.getFollowerList',
+        url: '/sUniB/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       })
       this.mManagerList = result.data.content
@@ -702,7 +702,7 @@ export default {
         typeParam.userKey = this.GE_USER.userKey
         typeParam.teamKey = this.CHANNEL_DETAIL.teamKey
         await this.$commonAxiosFunction({
-          url: '/tp.saveFollower',
+          url: '/sUniB/tp.saveFollower',
           param: { follower: typeParam, appType: 'UB', doType: 'CR' }
         })
         this.CHANNEL_DETAIL.memberTypeKey = this.selectMemberObj.memberTypeKey
@@ -809,7 +809,7 @@ export default {
       param.userKey = this.GE_USER.userKey
       try {
         const result = await this.$getViewData(
-          { url: '/tp.getChanMainBoard', param: param },
+          { url: '/sUniB/tp.getChanMainBoard', param: param },
           false
         )
         if (!result || !result.data || result.data.result !== 'OK') {
@@ -911,7 +911,7 @@ export default {
       param.teamKey = Number(this.$route.params.encodedTeamKey)
       var memberTypeList = await this.$commonAxiosFunction(
         {
-          url: '/tp.getMemberTypeList',
+          url: '/sUniB/tp.getMemberTypeList',
           param: param
         },
         true

@@ -418,7 +418,7 @@ export default {
       paramMap.set('offsetInt', this.offsetInt)
       var result = await this.$commonAxiosFunction(
         {
-          url: '/tp.getMyFileList',
+          url: '/sUniB/tp.getMyFileList',
           param: Object.fromEntries(paramMap)
         },
         nonLoadingYn

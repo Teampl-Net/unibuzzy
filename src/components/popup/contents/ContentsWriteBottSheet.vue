@@ -185,7 +185,7 @@ export default {
   },
   watch: {
     pageUpdate () {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       if (history[history.length - 1] === 'bottomWriteSheets') {
         this.closePop()
       }

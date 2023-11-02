@@ -16,9 +16,9 @@
 </i18n>
 <template>
   <div class="receiverItemWrap" :class="{ CWhiteGrayBgColor: (pOption === 'SELECT' && pSelectedYn === true) }" >
-    <div @click="selectTarget(false)" class="rowBaseCss">
+    <div @click="selectTarget(false)" class="rowBaseCss"  :class="{hide: $changeText(pTargetData.accessName) === '본인'}">
       <img v-if="searchYn === true" class="img-w15" src="@/assets/images/common/icon_searchGray.svg" alt="">
-      <div class="middleBgColor fl imgCircle" style="background-size: cover; background-repeat: no-repeat; background-position: center center;" :style="`background-image: url('${pTargetData.iconPath}')`"></div>
+      <div class="middleBgColor fl imgCircle" style="background-repeat: no-repeat; background-position: center center;" :style="`background-image: url('${pTargetData.iconPath}'); background-size: ${pTargetData.iconFullYn? 'cover':'50%'};`"></div>
       <div class="fl flexAlignCenter" :style="pSelectedYn === 'EDIT' ? 'width: calc(100% - 150px);' : 'width: calc(100% - 100px);'">
         <div class="textLeft fl textOverdot w100P">
           <p class="fl font16 commonDarkGray fontBold textOverdot w100P">{{$changeText(pTargetData.accessName)}}</p>
@@ -64,6 +64,9 @@ export default {
 </script>
 
 <style scoped>
+.hide {
+  display: none !important;
+}
 .cursorP {
   cursor: pointer;
 }

@@ -477,7 +477,7 @@ export default {
       }
       var result = await this.$commonAxiosFunction(
         {
-          url: '/tp.getMemoList',
+          url: '/sUniB/tp.getMemoList',
           param: memo
         },
         nonLoadingYn

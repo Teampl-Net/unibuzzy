@@ -112,7 +112,7 @@ export default {
       let result = {}
       if (pinYn) {
         result = await this.$commonAxiosFunction({
-          url: '/tp.deleteTopview ',
+          url: '/sUniB/tp.deleteTopview ',
           param: {
             tvKey: board.tvKey
           }
@@ -132,7 +132,7 @@ export default {
           }
         }
         result = await this.$commonAxiosFunction({
-          url: '/tp.saveTopview',
+          url: '/sUniB/tp.saveTopview',
           param: param
         })
         if (result && result.data && result.data.result) {

@@ -77,8 +77,8 @@
   </div>
 </template>
 <script>
-import searchResult from '../../unit/search/SearchResult.vue'
-import cSearchBox from '@/components/unit/search/CSearchBox.vue'
+import searchResult from '../../unit/search/SearchResult'
+import cSearchBox from '../../unit/search/CSearchBox'
 export default {
   components: {
     cSearchBox,
@@ -93,7 +93,7 @@ export default {
     testYn: { type: Boolean, default: false },
     channelYn: { type: Boolean, default: false }
   },
-  data() {
+  data () {
     return {
       activetab: 0,
       tabwidth: 3,
@@ -102,19 +102,19 @@ export default {
     }
   },
   methods: {
-    searchBoxClick(searchData) {
+    searchBoxClick (searchData) {
       this.$emit('searchBoxClick', searchData)
     },
-    tabTrimLength(displayName) {
+    tabTrimLength (displayName) {
       if (this.modeType === 'Basic') {
         var text = displayName.replaceAll(' ', '')
         return text.length
       }
     },
-    changeSearchList(type) {
+    changeSearchList (type) {
       this.$emit('changeSearchList', type)
     },
-    switchtab(n, tab) {
+    switchtab (n, tab) {
       this.mSelectedTab = n
       if (tab) {
         if (
@@ -133,7 +133,7 @@ export default {
         this_.activetab = Number(n)
       })
     },
-    selectTab(tab, displayName) {
+    selectTab (tab, displayName) {
       if (
         displayName !== undefined &&
         displayName !== null &&
@@ -144,7 +144,7 @@ export default {
       this.$emit('changeTab', tab)
     }
   },
-  created() {
+  created () {
     if (this.activetabProp) {
       for (var i = 0; i < this.tabList.length; i++) {
         if (this.tabList[i].name === this.activetabProp) {
@@ -168,11 +168,11 @@ export default {
     }
   },
   computed: {
-    pointer() {
+    pointer () {
       if (window.PointerEvent) return true
       else return false
     },
-    activebarWidth() {
+    activebarWidth () {
       var tabWidth = 100 / this.tabList.length
       if (this.testYn === true || this.channelYn) {
         return {
