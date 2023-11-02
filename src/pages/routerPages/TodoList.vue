@@ -1609,6 +1609,63 @@ export default {
     GE_NEW_CONT_LIST () {
       console.log(this.$store.getters['UB_CHANNEL/GE_NEW_CONT_LIST'])
       return this.$store.getters['UB_CHANNEL/GE_NEW_CONT_LIST']
+    },
+    GE_NEW_MEMO_LIST (state) {
+      return this.$store.getters['D_CHANNEL/GE_NEW_MEMO_LIST']
+    },
+    GE_MAIN_CHAN_LIST () {
+      return this.$store.getters['D_CHANNEL/GE_MAIN_CHAN_LIST']
+    },
+    GE_DISP_LIST () {
+      let idx1 = null
+      let idx2 = null
+      let j = 0
+      let chanDetail = null
+      let dataList = null
+      const returnData = { myTodoList: [], targetTodoList: [], completeTodoList: [] }
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === 0)
+      chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+      dataList = chanDetail.ELEMENTS.todoList
+      const group = this.mGetTodoGroupList[0]
+      for (j = 0; j < group.myTodoList.length; j++) {
+        const todo = group.myTodoList[j]
+        idx2 = dataList.findIndex((item) => item.contentsKey === todo.contentsKey)
+        if (idx2 !== -1) {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          returnData.myTodoList.push(dataList[idx2])
+        } else {
+          returnData.myTodoList.push(dataList[idx2])
+        }
+      }
+      this.replaceArr(returnData.myTodoList)
+      for (j = 0; j < group.targetTodoList.length; j++) {
+        const todo = group.targetTodoList[j]
+        idx2 = dataList.findIndex((item) => item.contentsKey === todo.contentsKey)
+        if (idx2 !== -1) {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          returnData.targetTodoList.push(dataList[idx2])
+        } else {
+          returnData.targetTodoList.push(dataList[idx2])
+        }
+      }
+      this.replaceArr(returnData.targetTodoList)
+      for (j = 0; j < group.completeTodoList.length; j++) {
+        const todo = group.completeTodoList[j]
+        idx2 = dataList.findIndex((item) => item.contentsKey === todo.contentsKey)
+        if (idx2 !== -1) {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          returnData.completeTodoList.push(dataList[idx2])
+        } else {
+          returnData.completeTodoList.push(dataList[idx2])
+        }
+      }
+      this.replaceArr(returnData.completeTodoList)
+
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      console.log([returnData])
+      return [returnData]
     }
   },
   watch: {
@@ -1647,7 +1704,66 @@ export default {
             }
           }
         }
-      }
+      },
+      deep: true
+    },
+    GE_NEW_MEMO_LIST: {
+      async handler (value, old) {
+        var newArr = []
+        // eslint-disable-next-line no-debugger
+        debugger
+        if (!value || value.length === 0) return
+        if (value[0].jobkindId !== 'TODO') return
+        const newTodo = value[0]
+        // var memoContents = value[0]
+        var content = null
+        let index
+        let listType = 'my' // target // completedMy // completedTarget
+
+        if ((this.mGetTodoGroupList[0].myTodoList.findIndex((todo) => todo.contentsKey === newTodo.targetKey) !== -1) ||
+         (this.mGetTodoGroupList[0].targetTodoList.findIndex((todo) => todo.contentsKey === newTodo.targetKey) !== -1)) {
+          const myIndex = this.mGetTodoGroupList[0].myTodoList.findIndex((todo) => todo.contentsKey === newTodo.targetKey)
+          const targetIndex = this.mGetTodoGroupList[0].targetTodoList.findIndex((todo) => todo.contentsKey === newTodo.targetKey)
+          if (myIndex !== -1) {
+            content = this.mGetTodoGroupList[0].myTodoList[myIndex]
+            index = myIndex
+          } else if (targetIndex !== -1) {
+            content = this.mGetTodoGroupList[0].targetTodoList[targetIndex]
+            listType = 'target'
+            index = targetIndex
+          }
+        } else if (this.mGetTodoGroupList[0].completeTodoList.findIndex((todo) => todo.contentsKey === newTodo.targetKey) !== -1) {
+          index = this.mGetTodoGroupList[0].completeTodoList.findIndex((todo) => todo.contentsKey === newTodo.targetKey)
+          if (index !== -1) {
+            content = this.mGetTodoGroupList[0].completeTodoList[index]
+            listType = 'complete'
+          }
+        }
+
+        if (!content) return
+
+        var memoAleadyIdx = content.D_MEMO_LIST.findIndex((item) => Number(item.memoKey) === Number(value[0].memoKey))
+        if (memoAleadyIdx !== -1) {
+          content.D_MEMO_LIST[memoAleadyIdx] = value[0]
+          newArr = content.D_MEMO_LIST
+        } else {
+          newArr = [
+            value[0],
+            ...content.D_MEMO_LIST
+          ]
+        }
+        if (listType === 'my') {
+          this.mGetTodoGroupList[0].myTodoList[index].D_MEMO_LIST = this.replaceMemoArr(newArr)
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.mGetTodoGroupList[0].myTodoList[index]])
+        } else if (listType === 'target') {
+          this.mGetTodoGroupList[0].targetTodoList[index].D_MEMO_LIST = this.replaceMemoArr(newArr)
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.mGetTodoGroupList[0].targetTodoList[index]])
+        } else if (listType === 'complete') {
+          this.mGetTodoGroupList[0].completeTodoList[index].D_MEMO_LIST = this.replaceMemoArr(newArr)
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.mGetTodoGroupList[0].completeTodoList[index]])
+        }
+      },
+      deep: true
     },
     GE_NEW_CONT_LIST: {
       handler (value, old) {
@@ -1658,33 +1774,67 @@ export default {
         let oriList = []
         newTodo.strikeOnOff = false
         newTodo.sideMenuOpenYn = false
-
+        // eslint-disable-next-line no-debugger
+        debugger
         const todoType = this.checkTarget(newTodo)
-        switch (todoType) {
-          case 'my':
-            this.mGetTodoGroupList[0].myTodoList.unshift(newTodo)
-            oriList = this.mGetTodoGroupList[0].myTodoList
-            this.mGetTodoGroupList[0].myTodoList = this.replaceArr(oriList)
-            break
-          case 'target':
-            this.mGetTodoGroupList[0].targetTodoList.unshift(newTodo)
-            oriList = this.mGetTodoGroupList[0].targetTodoList
-            this.mGetTodoGroupList[0].targetTodoList = this.replaceArr(oriList)
-            break
-          case 'completedMy':
-            newTodo.completeTarget = 'myTodo'
+        if ((this.mGetTodoGroupList[0].myTodoList.findIndex((todo) => todo.contentsKey === newTodo.contentsKey) !== -1) ||
+         (this.mGetTodoGroupList[0].targetTodoList.findIndex((todo) => todo.contentsKey === newTodo.contentsKey) !== -1)) {
+          const myIndex = this.mGetTodoGroupList[0].myTodoList.findIndex((todo) => todo.contentsKey === newTodo.contentsKey)
+          const targetIndex = this.mGetTodoGroupList[0].targetTodoList.findIndex((todo) => todo.contentsKey === newTodo.contentsKey)
+          if (newTodo.contStatus === '99') {
             this.mGetTodoGroupList[0].completeTodoList.unshift(newTodo)
-            oriList = this.mGetTodoGroupList[0].completeTodoList
-            this.mGetTodoGroupList[0].completeTodoList = this.replaceArr(oriList)
-            break
-          case 'completedTarget':
-            newTodo.completeTarget = 'target'
-            this.mGetTodoGroupList[0].completeTodoList.unshift(newTodo)
-            oriList = this.mGetTodoGroupList[0].completeTodoList
-            this.mGetTodoGroupList[0].completeTodoList = this.replaceArr(oriList)
-            break
+            if (myIndex !== -1) {
+              this.mGetTodoGroupList[0].myTodoList.splice(myIndex, 1)
+            } else if (targetIndex !== -1) {
+              this.mGetTodoGroupList[0].targetTodoList.splice(targetIndex, 1)
+            }
+          }
+        } else if (this.mGetTodoGroupList[0].completeTodoList.findIndex((todo) => todo.contentsKey === newTodo.contentsKey) !== -1) {
+          const index = this.mGetTodoGroupList[0].completeTodoList.findIndex((todo) => todo.contentsKey === newTodo.contentsKey)
+          if (newTodo.contStatus === '00') {
+            if (this.mGetTodoGroupList[0].completeTodoList[index].completeTarget === 'myTodo') {
+              this.mGetTodoGroupList[0].myTodoList.unshift(newTodo)
+            } else if (this.mGetTodoGroupList[0].completeTodoList[index].completeTarget === 'myTodo') {
+              this.mGetTodoGroupList[0].targetTodoList.unshift(newTodo)
+            }
+            if (index !== -1) {
+              this.mGetTodoGroupList[0].completeTodoList.splice(index, 1)
+            }
+          }
+        } else {
+          switch (todoType) {
+            case 'my':
+              this.mGetTodoGroupList[0].myTodoList.unshift(newTodo)
+              oriList = this.mGetTodoGroupList[0].myTodoList
+              this.mGetTodoGroupList[0].myTodoList = this.replaceArr(oriList)
+              // this.mMyTodoCount++
+              break
+            case 'target':
+              this.mGetTodoGroupList[0].targetTodoList.unshift(newTodo)
+              oriList = this.mGetTodoGroupList[0].targetTodoList
+              this.mGetTodoGroupList[0].targetTodoList = this.replaceArr(oriList)
+              // this.mTargetTodoCount++
+              break
+            case 'completedMy':
+              this.mGetTodoGroupList[0].completeTodoList.unshift(newTodo)
+              oriList = this.mGetTodoGroupList[0].completeTodoList
+              this.mGetTodoGroupList[0].completeTodoList = this.replaceArr(oriList)
+              // this.mCompleteMyTodoCount++
+              // this.mCompleteTodoCount++
+              // this.mMyTodoCount++
+              break
+            case 'completedTarget':
+              this.mGetTodoGroupList[0].completeTodoList.unshift(newTodo)
+              oriList = this.mGetTodoGroupList[0].completeTodoList
+              this.mGetTodoGroupList[0].completeTodoList = this.replaceArr(oriList)
+              // this.mCompleteTargetTodoCount++
+              // this.mCompleteTodoCount++
+              // this.mTargetTodoCount++
+              break
+          }
         }
-        this.mMyTodoYn = this.mGetTodoGroupList[0].myTodoList.length > 0
+
+        this.myTodoYn = this.mGetTodoGroupList[0].myTodoList.length > 0
         this.mTargetTodoYn = this.mGetTodoGroupList[0].targetTodoList.length > 0
         this.mCompleteTodoYn = this.mGetTodoGroupList[0].completeTodoList.length > 0
       },

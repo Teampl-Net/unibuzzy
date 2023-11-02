@@ -342,6 +342,7 @@ export default {
       handler(value, old) {
         var newArr = []
         if (!value[0] || !value) return
+        if (value[0].jobkindId && value[0].jobkindId === 'TODO') return
         if (this.chanAlimYn) {
           if (value[0].creTeamKey !== this.pChannelDetail.teamKey) return
         }

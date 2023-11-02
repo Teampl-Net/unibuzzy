@@ -72,21 +72,14 @@ export default defineComponent({
   },
   watch: {
     pageUpdate (value, old) {
-      let history = this.$store.getters['UB_HISTORY/hStack']
+      const history = this.$store.getters['D_HISTORY/hStack']
       if (this.popId === history[history.length - 1]) {
         if (this.$refs.targetList) {
           this.$refs.targetList.checkClosePop()
         } else {
-          var removePage = history[history.length - 1]
-          history = history.filter((element, index) => index < history.length - 1)
-          this.$store.commit('UB_HISTORY/setRemovePage', removePage)
-          this.$store.commit('UB_HISTORY/updateStack', history)
-          this.$checkDeleteHistory('selectTargetPop')
+          this.closeXPop()
         }
       }
-      /* if (this.popId === hStack[hStack.length - 1]) {
-                this.closeSubPop()
-            } */
     }
   },
   methods: {
