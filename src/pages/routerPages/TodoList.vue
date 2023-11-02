@@ -1154,7 +1154,11 @@ export default {
             }
           } else {
             if (value.actorList[i].accessKey === this.GE_USER.userKey) {
-              return 'my'
+              if (value.contStatus === '00') {
+                return 'my'
+              } else {
+                return 'completedMy'
+              }
             }
           }
         }

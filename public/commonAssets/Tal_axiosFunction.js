@@ -231,7 +231,7 @@ export const methods = {
       var user = store.getters['UB_USER/GE_USER']
       if (!user) {
         if (JSON.parse(localStorage.getItem('vuex'))) {
-          user = JSON.parse(localStorage.getItem('vuex')).D_USER.userInfo
+          user = JSON.parse(localStorage.getItem('vuex')).UB_USER.userInfo
         }
       }
       if (user === undefined || user === null || user === '') {
