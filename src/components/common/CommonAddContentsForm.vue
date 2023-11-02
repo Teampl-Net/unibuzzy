@@ -270,6 +270,10 @@
       </div>
     </footer>
   </div>
+  <gToolBox
+    :propTools="mToolBoxOptions"
+    @changeTextStyle="changeFormEditorStyle"
+  />
 </template>
 
 <script>
@@ -675,8 +679,9 @@ export default defineComponent({
       })
       selectMeYn.value = true
     }
-    selectTargetOnlyMe()
-
+    if (!props.pContentsData) {
+      selectTargetOnlyMe()
+    }
     const setSelectedTargetList = (selectedTargetList) => {
       params.actorList = selectedTargetList
       selectMeYn.value = false

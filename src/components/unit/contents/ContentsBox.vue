@@ -305,7 +305,7 @@
                 }}
               </p>
               <div>
-                <teamplate
+                <template
                   v-for="(each, index) in CONT_DETAIL.actorList"
                   :key="index"
                 >
@@ -329,7 +329,7 @@
                     style=""
                     :alt="each.userDispMtext"
                   />
-                </teamplate>
+                </template>
               </div>
             </div>
           </div>
