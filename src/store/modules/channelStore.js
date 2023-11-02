@@ -392,6 +392,13 @@ const D_CHANNEL = {
               state.addContsList.splice(0, 30)
             }
             state.addContsList.unshift(payload[i])
+          } else {
+            if (payload[i].jobkindId === 'TODO') {
+              if (state.addContsList.length > 30) {
+                state.addContsList.splice(0, 30)
+              }
+              state.addContsList.unshift(payload[i])
+            }
           }
 
           var dataList = null
