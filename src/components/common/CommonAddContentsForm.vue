@@ -642,6 +642,8 @@ export default defineComponent({
       })
       selectMeYn.value = true
     }
+    selectTargetOnlyMe()
+
     const setSelectedTargetList = (selectedTargetList) => {
       params.actorList = selectedTargetList
       selectMeYn.value = false

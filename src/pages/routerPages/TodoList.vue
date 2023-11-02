@@ -58,7 +58,7 @@
   </template>
   <div
     class="todoBody"
-    :style="`padding-top: ${this.$STATUS_HEIGHT + 50}px !important;`"
+    :style="`padding-top: ${this.$STATUS_HEIGHT}px !important;`"
   >
     <div
       style="
@@ -70,14 +70,14 @@
         margin: 0 5px;
       "
     >
-      <!-- <div @click="goMain" class="fl cursorP mainHeaderBack">
+      <div @click="goMain" class="fl cursorP mainHeaderBack">
         <img
           src="@/assets/images/common/icon_back.png"
           class="fl commonPopBackBtn mleft-05"
           width="12"
           height="20"
         />
-      </div> -->
+      </div>
       <div class="commonTitleText dateAreaBox">
         <div class="calBox">
           <img
@@ -107,7 +107,7 @@
       <div
         class="todoFilter"
         style="position: absolute; right: 0"
-        :style="`top: ${this.$STATUS_HEIGHT + 55}px;`"
+        :style="`top: ${this.$STATUS_HEIGHT + 5}px;`"
       >
         <div
           class="fr fontBold cursorP addBtn CDeepBgColor"
@@ -140,7 +140,7 @@
           height: 40px;
           margin: 10px;
           border-radius: 10px;
-          background-color: #fff;
+          background-color: #e7edff;
         "
       >
         <div
@@ -210,7 +210,7 @@
       >
         There are no today's todo.
       </div>
-      <div v-else style="height: calc(100% - 150px); overflow: hidden auto;">
+      <div v-else style="height: calc(100% - 150px); overflow: hidden auto; padding-bottom: 30px;">
         <div
           v-if="mMyTodoYn"
           class="fontBold"
@@ -226,7 +226,7 @@
             width="20"
             style="margin-right: 5px"
           />
-          <p style="font-size: 18px">내 일 ({{ mMyTodoCount }})</p>
+          <p style="font-size: 18px">My ({{ mMyTodoCount }})</p>
         </div>
         <template
           v-for="(group, groupIndex) in mGetTodoGroupList"
@@ -466,7 +466,7 @@
             width="20"
             style="margin-right: 5px"
           />
-          <p style="font-size: 18px">요청받은 일  ({{ mTargetTodoCount }})</p>
+          <p style="font-size: 18px">What I Asked  ({{ mTargetTodoCount }})</p>
         </div>
         <template
           v-for="(group, groupIndex) in mGetTodoGroupList"
@@ -568,17 +568,7 @@
                     margin-top: 10px;
                   "
                 >
-                  <div
-                    @click.stop="
-                      setCompleteTodo(
-                        todo,
-                        'targetTodoList',
-                        groupIndex,
-                        todoIndex
-                      )
-                    "
-                    style="display: flex; align-items: center; margin-left:5px;"
-                  >
+                  <div style="display: flex; align-items: center; margin-left:5px;">
                     <img
                       v-if="todo.strikeOnOff"
                       src="../../assets/images/todo/checkboxCheck.png"
@@ -725,7 +715,7 @@
             style="margin-right: 5px"
           />
           <p style="font-size: 18px">
-            완료된 일 ({{ mCompleteTodoCount }})
+            Completed ({{ mCompleteTodoCount }})
           </p>
         </div>
         <template
@@ -1074,8 +1064,8 @@ export default {
       param.targetType = 'contentsDetail'
       param.targetKey = value.contentsKey
       param.popHeaderText = '오늘의 일'
-      param.teamKey = 0
-      param.creTeamKey = 0
+      // param.teamKey = 0
+      // param.creTeamKey = 0
       param.jobkindId = value.jobkindId
       // param.creTeamKey = value.creTeamKey
       param.value = value
@@ -1210,7 +1200,7 @@ export default {
             this.mCompleteTargetTodoCount -= 1
             break
         }
-        this.myTodoYn = this.mGetTodoGroupList[groupIndex].myTodoList.length > 0
+        this.mMyTodoYn = this.mGetTodoGroupList[groupIndex].myTodoList.length > 0
         this.mTargetTodoYn = this.mGetTodoGroupList[groupIndex].targetTodoList.length > 0
         this.mCompleteTodoYn = this.mGetTodoGroupList[groupIndex].completeTodoList.length > 0
       }, 1000)
@@ -1643,7 +1633,7 @@ export default {
             // this.mTargetTodoCount++
             break
         }
-        this.myTodoYn = this.mGetTodoGroupList[0].myTodoList.length > 0
+        this.mMyTodoYn = this.mGetTodoGroupList[0].myTodoList.length > 0
         this.mTargetTodoYn = this.mGetTodoGroupList[0].targetTodoList.length > 0
         this.mCompleteTodoYn = this.mGetTodoGroupList[0].completeTodoList.length > 0
       },
@@ -1971,5 +1961,8 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
+}
+.backShadow {
+  box-shadow: 0 0 6px 0 rgba(60, 60, 60, 0.2);
 }
 </style>

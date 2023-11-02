@@ -6,6 +6,12 @@
         <p :class="this.$route.path === '/' ? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_HOME') }}</p>
       </div>
     </div>
+    <div @click="routePage('todo')" class="footerRouter" style="flex: 1 !important">
+          <div class="commonColor fontBold text-center font12" >
+            <img v-if="this.$route.path === '/todo'" :src="footerIcon[4].fullIcon"/> <img v-else :src="footerIcon[4].icon"/>
+            <p :class="this.$route.path === '/todo'? 'activeFooterMenu' : 'font12'">To Do</p>
+          </div>
+        </div>
     <div @click="routePage('chanList')" class="footerRouter flex1">
       <div class="commonColor fontBold text-center font12">
         <img v-if="this.$route.path === '/chanList'" :src="footerIcon[2].fullIcon" /> <img v-else :src="footerIcon[2].icon" />
@@ -41,7 +47,8 @@ export default {
         { fullIcon: '/resource/footer/icon_home_fillin.svg', icon: '/resource/footer/icon_home.svg' },
         { fullIcon: '/resource/footer/icon_search_fillin.svg', icon: '/resource/footer/icon_search.svg' },
         { fullIcon: '/resource/footer/icon_channel_fillin.svg', icon: '/resource/footer/icon_channel.svg' },
-        { fullIcon: '/resource/footer/icon_people_fillin.svg', icon: '/resource/footer/icon_people.svg' }
+        { fullIcon: '/resource/footer/icon_people_fillin.svg', icon: '/resource/footer/icon_people.svg' },
+        { fullIcon: '/resource/footer/icon_todo_fillin.svg', icon: '/resource/footer/icon_todo.svg' }
       ],
       activeFooter: 'main'
     }
