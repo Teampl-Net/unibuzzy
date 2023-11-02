@@ -301,8 +301,35 @@ export default defineComponent({
     TalFormEditor,
     TalAttachFile
   },
-  created() {
-    this.$addHistoryStack('writeContents')
+  data () {
+    return {
+      popId: ''
+    }
+  },
+  created () {
+    var history = this.$store.getters['D_HISTORY/hStack']
+    this.popId = 'writeContents' + history.length
+    // console.log(history)
+    history.push(this.popId)
+    this.$store.commit('D_HISTORY/updateStack', history)
+  },
+  computed: {
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hRPage']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
+    }
+  },
+  watch: {
+    pageUpdate (value, old) {
+      const history = this.$store.getters['D_HISTORY/hStack']
+      if (this.popId === history[history.length - 1]) {
+        if (this.pClosePop) {
+          this.pClosePop()
+        }
+      }
+    }
   },
   setup(props) {
     const store = useStore()
@@ -642,6 +669,8 @@ export default defineComponent({
       })
       selectMeYn.value = true
     }
+    selectTargetOnlyMe()
+
     const setSelectedTargetList = (selectedTargetList) => {
       params.actorList = selectedTargetList
       selectMeYn.value = false

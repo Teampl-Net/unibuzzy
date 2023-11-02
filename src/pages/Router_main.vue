@@ -211,8 +211,7 @@
     <gFooter
       v-if="
         !$route.path.includes('contents') &&
-        mPopType !== 'myChanMenuEdit' &&
-        $route.path !== '/todo'
+        mPopType !== 'myChanMenuEdit'
       "
       @changeRouterPath="changeRouterPath"
       class="header_footer footerShadow footerStyle"
