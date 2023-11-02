@@ -283,6 +283,9 @@ export const functions = {
         )
         memo.jobkindId = notiDetail.jobkindId
         memo.creTeamKey = notiDetail.creTeamKey
+        if (notiDetail.jobkindId === 'TODO') {
+          memo.creTeamKey = 0
+        }
         await store.commit('UB_CHANNEL/MU_ADD_MEMO', memo)
         addVueResult = await functions.addContents(
           Number(JSON.parse(notiDetail.userDo).targetKey),

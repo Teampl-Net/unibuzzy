@@ -3,7 +3,7 @@
     <header>
       <!-- Popup Title -->
       <h1>{{ pOptions.purpose }}</h1>
-      <button @click="pClosePop" type="button">
+      <button @click="closePop" type="button">
         <img
           src="../../assets/images/common/popup_close.png"
           alt="close button"
@@ -266,7 +266,7 @@
         <button @click="postContents" style="margin-right: 10px">
           {{ pContentsData ? 'Edit' : 'Save' }}
         </button>
-        <button @click="pClosePop">Cancel</button>
+        <button @click="closePop">Cancel</button>
       </div>
     </footer>
   </div>
@@ -326,9 +326,20 @@ export default defineComponent({
     pageUpdate (value, old) {
       const history = this.$store.getters['UB_HISTORY/hStack']
       if (this.popId === history[history.length - 1]) {
-        if (this.pClosePop) {
-          this.pClosePop()
-        }
+        this.closePop()
+      }
+    }
+  },
+  methods: {
+    closePop () {
+      var history = this.$store.getters['D_HISTORY/hStack']
+      var removePage = history[history.length - 1]
+      history = history.filter((element, index) => index < history.length - 1)
+      this.$store.commit('D_HISTORY/setRemovePage', removePage)
+      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$checkDeleteHistory('selectTargetPop')
+      if (this.pClosePop) {
+        this.pClosePop()
       }
     }
   },

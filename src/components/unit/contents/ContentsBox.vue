@@ -154,9 +154,11 @@
               @click="goContentsDetail()"
               class="cursorDragText textLeft textOverdot commonBlack fontBold font16 noPerm"
               :class="
-                CONT_DETAIL.jobkindId === 'BOAR' &&
-                CONT_DETAIL.workStatYn &&
-                CONT_DETAIL.workStatCodeKey === 46
+              (CONT_DETAIL.jobkindId === 'BOAR' &&
+                  CONT_DETAIL.workStatYn &&
+                  CONT_DETAIL.workStatCodeKey === 46) ||
+                (CONT_DETAIL.jobkindId === 'TODO' &&
+                  CONT_DETAIL.contStatus === '99')
                   ? 'completeWork'
                   : ''
               "
@@ -397,11 +399,13 @@
           :ref="'mainContRef' + CONT_DETAIL.contentsKey"
           @loadeddata="testLoad"
           :class="
-            CONT_DETAIL.jobkindId === 'BOAR' &&
+          (CONT_DETAIL.jobkindId === 'BOAR' &&
             CONT_DETAIL.workStatYn &&
-            CONT_DETAIL.workStatCodeKey === 46
-              ? 'completeWork'
-              : ''
+            CONT_DETAIL.workStatCodeKey === 46) ||
+          (CONT_DETAIL.jobkindId === 'TODO' &&
+            CONT_DETAIL.contStatus === '99')
+            ? 'completeWork'
+            : ''
           "
           :id="'bodyFullStr' + CONT_DETAIL.contentsKey"
           class="font14 mbottom-05 mainConts cursorDragText h100P w100P fl contentsPre"
@@ -803,6 +807,25 @@ export default {
     }
   },
   methods: {
+    async completeTodo (value, loadingYn) {
+      var param = {}
+      param.contentsKey = value.contentsKey
+      param.creUserName = this.GE_USER.userDispMtext
+      param.jobkindId = 'TODO'
+      if (value.contStatus === '00') {
+        param.contStatus = '99'
+      } else {
+        param.contStatus = '00'
+      }
+      param.workUserKey = this.GE_USER.userKey
+      await this.$commonAxiosFunction({
+        url: '/sUniB/tp.updateTodo',
+        param: param
+      })
+      this.CONT_DETAIL.contStatus = param.contStatus
+      this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
+      // this.$emit('completeTodo')
+    },
     closeMoveContentsPop() {
       this.mSelectBoardPopShowYn = false
       this.$emit('contMove')
@@ -1111,6 +1134,8 @@ export default {
       } else if (this.mCurrentConfirmType === 'boardDEL') {
         this.deleteContents(this.$t('COMMON_MSG_DELETED_POST'))
         // 여기
+      } else if (this.mCurrentConfirmType === 'todoDEL') {
+        this.deleteContents('The to do has been deleted.')
       } else if (this.mCurrentConfirmType === 'alimCancel') {
         this.alimCancle()
       }
@@ -1276,6 +1301,9 @@ export default {
       } else if (this.contentsEle.jobkindId === 'BOAR') {
         this.mConfirmText = this.$t('COMMON_MSG_DELETE_POST')
         this.mCurrentConfirmType = 'boardDEL'
+      } else if (this.contentsEle.jobkindId === 'TODO') {
+        this.mConfirmText = 'Are you sure you want to delete the to do?'
+        this.mCurrentConfirmType = 'todoDEL'
       }
       this.mConfirmType = 'two'
       this.mConfirmPopShowYn = true
@@ -1302,6 +1330,18 @@ export default {
           url: '/sUniB/tp.deleteContents',
           param: inParam
         })
+      } else if (this.contentsEle.jobkindId === 'TODO') {
+        inParam = {}
+        inParam.mccKey = this.contentsEle.mccKey
+        inParam.contentsKey = this.contentsEle.contentsKey
+        inParam.jobkindId = 'TODO'
+        // inParam.teamKey = this.contentsEle.creTeamKey
+        inParam.deleteYn = true
+        result = await this.$commonAxiosFunction({
+          url: '/sUniB/tp.deleteContents',
+          param: inParam
+        })
+        // this.$emit('completeTodo')
       }
       if (result) {
         this.$showToastPop(toastText)
