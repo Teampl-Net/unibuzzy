@@ -4,28 +4,34 @@
       <img src="@/assets/images/common/icon_back.png" class="fl commonPopBackBtn mleft-05" >
     </div>
     <div v-else v-on:click="showMenu" class="fl cursorP mainHeaderBack">
-      <img class="mainMenuIcon" @click="showMenu()" src="@/assets/images/common/icon_menu.png"/>
+      <img class="mainMenuIcon" @click="showMenu()" :src="mIconObj.menuIcon"/>
     </div>
     <div class="headerTitleBox">
-      <p class="headerFont fontBold fl w100P headerTitle">{{ pRouterHeaderInfo }}</p>
+      <p class="headerFont fontBold fl w100P headerTitle" :style="pNightYn? 'color: white;':''">{{ pRouterHeaderInfo }}</p>
     </div>
     <div @click="goLogList" class="cursorP bellIconBox">
-      <img src="@/assets/images/common/icon_bell.svg"/>
+      <img :src="mIconObj.bellIcon"/>
     </div>
     <div class="cursorP heartIconBox" @click="goFavList">
-      <img src="@/assets/images/common/likeIcon.svg" />
+      <img :src="mIconObj.likeIcon" />
     </div>
   </div>
 </template>
 <script>
 export default {
   props: {
-    pRouterHeaderInfo: String
+    pRouterHeaderInfo: String,
+    pNightYn: Boolean
   },
   data () {
     return {
       mInfoBoxShowYn: false,
-      mContentsYn: false
+      mContentsYn: false,
+      mIconObj: {
+        menuIcon: require('@/assets/images/common/icon_menu.png'),
+        bellIcon: require('@/assets/images/common/icon_bell.svg'),
+        likeIcon: require('@/assets/images/common/likeIcon.svg')
+      }
     }
   },
   created () {
@@ -83,6 +89,24 @@ export default {
           this.mContentsYn = false
         }
       }
+    },
+    pNightYn: {
+      handler (val) {
+        if (val) {
+          this.mIconObj = {
+            menuIcon: require('@/assets/images/common/icon_menu_white.png'),
+            bellIcon: require('@/assets/images/common/icon_bell_white.svg'),
+            likeIcon: require('@/assets/images/common/likeIcon_white.svg')
+          }
+        } else {
+          this.mIconObj = {
+            menuIcon: require('@/assets/images/common/icon_menu.png'),
+            bellIcon: require('@/assets/images/common/icon_bell.svg'),
+            likeIcon: require('@/assets/images/common/likeIcon.svg')
+          }
+        }
+      },
+      immediate: true
     }
   }
 }
