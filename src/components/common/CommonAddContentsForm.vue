@@ -332,11 +332,11 @@ export default defineComponent({
   },
   methods: {
     closePop () {
-      var history = this.$store.getters['D_HISTORY/hStack']
+      var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
-      this.$store.commit('D_HISTORY/setRemovePage', removePage)
-      this.$store.commit('D_HISTORY/updateStack', history)
+      this.$store.commit('UB_HISTORY/setRemovePage', removePage)
+      this.$store.commit('UB_HISTORY/updateStack', history)
       this.$checkDeleteHistory('selectTargetPop')
       if (this.pClosePop) {
         this.pClosePop()

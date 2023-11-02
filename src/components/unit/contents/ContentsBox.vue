@@ -102,8 +102,8 @@
           :style="
             'background-image: url(' +
             (CONT_DETAIL.userDomainPath
-              ? CONT_DETAIL.userDomainPath + CONT_DETAIL.userProfileImg
-              : CONT_DETAIL.userProfileImg) +
+              ? $changeUrlBackslash(CONT_DETAIL.userDomainPath + CONT_DETAIL.userProfileImg)
+              : $changeUrlBackslash(CONT_DETAIL.userProfileImg)) +
             ');'
           "
           style="
@@ -120,8 +120,8 @@
           :style="
             'background-image: url(' +
             (CONT_DETAIL.domainPath
-              ? CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext
-              : CONT_DETAIL.logoPathMtext) +
+              ? $changeUrlBackslash(CONT_DETAIL.domainPath + CONT_DETAIL.logoPathMtext)
+              : $changeUrlBackslash(CONT_DETAIL.logoPathMtext)) +
             ');'
           "
           style="
