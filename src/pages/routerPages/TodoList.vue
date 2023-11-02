@@ -1074,7 +1074,7 @@ export default {
     },
     getMonthDate (date) {
       var format = 'MM/DD'
-      return this.$dayjs(date).add(9, 'hour').format(format)
+      return this.$dayjs(date).add(-13, 'hour').format(format)
     },
     goDetail (value) {
       console.log(value)
@@ -1851,10 +1851,11 @@ export default {
 }
 .strikeLine {
   position: absolute;
-  background-color: black;
+  background-color: #7e7e7e;
   height: 2px;
   width: 0;
-  top: 15px;
+  top:50%;
+  transform:translateY(-50%);
 }
 .todoListBox {
   width: 100%;

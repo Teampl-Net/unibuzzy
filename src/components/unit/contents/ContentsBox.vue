@@ -254,26 +254,28 @@
             class="mleft-03"
           >
           </span>
-          <div v-if="CONT_DETAIL.jobkindId === 'TODO'"  class="tagListWrap mTop-10" style="display:flex; gap:5px; flex-wrap:wrap;">
-            <div
-              v-for="(tag, index) in CONT_DETAIL.tagList"
-              :key="index"
-              class="CDeepBgColor"
-              style="
-                color: white;
-                height: 20px;
-                line-height: 20px;
-                padding: 0px 5px;
-                border-radius: 10px;
-                font-size: 10px;
-                width: auto;
-                word-break:keep-all;
-              ">
-                {{ tag.tagText }}
+          <div v-if="CONT_DETAIL.jobkindId === 'TODO'"  class="tagListWrap w100P mTop-10" style="display:flex; gap:5px; flex-wrap:wrap; justify-content:space-between;">
+            <div class="flexJustiCenter" style="gap:5px;">
+              <div
+                v-for="(tag, index) in CONT_DETAIL.tagList"
+                :key="index"
+                class="CDeepBgColor"
+                style="
+                  color: white;
+                  height: 20px;
+                  line-height: 20px;
+                  padding: 0px 5px;
+                  border-radius: 10px;
+                  font-size: 10px;
+                  width: auto;
+                  word-break:keep-all;
+                ">
+                  {{ tag.tagText }}
+                </div>
               </div>
-              <div v-if="CONT_DETAIL.jobkindId === 'TODO'" style="display:flex; flex-direction:column;">
-                <p>{{ $changeDateFormat(CONT_DETAIL.workFromDate) + '~' +$changeDateFormat(CONT_DETAIL.workToDate) }}</p>
-                <div >
+              <div v-if="CONT_DETAIL.jobkindId === 'TODO'" style="display:flex; flex-direction:column; align-items:end;">
+                <p class="font12">{{ getMonthDate(CONT_DETAIL.workFromDate) + '~' + getMonthDate(CONT_DETAIL.workToDate) }}</p>
+                <div style="display:flex; justify-content:end; align-items:center;">
                   <img class="actorImg" v-for="(each, index) in CONT_DETAIL.actorList" :key="index" :src="each.domainPath + each.pathMtext" style="" :alt="each.userDispMtext"/>
                 </div>
               </div>
@@ -730,6 +732,10 @@ export default {
     }
   },
   methods: {
+    getMonthDate(date) {
+      var format = 'MM/DD'
+      return this.$dayjs(date).add(-13, 'hour').format(format)
+    },
     closeMoveContentsPop() {
       this.mSelectBoardPopShowYn = false
       this.$emit('contMove')
