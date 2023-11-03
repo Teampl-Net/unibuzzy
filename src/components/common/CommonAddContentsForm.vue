@@ -670,7 +670,7 @@ export default defineComponent({
       showReceiverSelectList.value = !showReceiverSelectList.value
       if (
         showReceiverSelectList.value &&
-        params.actorList.accessKey === store.getters['UB_USER/GE_USER'].userKey
+        params.actorList[0].accessKey === store.getters['UB_USER/GE_USER'].userKey
       ) {
         params.actorList = []
       }
@@ -689,7 +689,6 @@ export default defineComponent({
     }
     const setSelectedTargetList = (selectedTargetList) => {
       params.actorList = selectedTargetList
-      selectMeYn.value = false
     }
 
     // Tag(category) 선택 기능
