@@ -67,6 +67,9 @@ export default {
       if ((this.$route.path === '/' || this.$route.path === '/unibuzzy') && page === 'main') {
         return false
       }
+      if (this.$route.path === '/todo' && page === 'todo') {
+        return false
+      }
       if ((page === 'myPage' || page === 'todo') && this.GE_USER.unknownYn) {
         this.pOpenUnknownLoginPop()
         return

@@ -89,7 +89,6 @@
     ></div>
     <div class="contentsCardHeaderArea">
       <div
-        @click="goChannelMain"
         :style="
           GE_USER.userKey === CONT_DETAIL.creUserKey
             ? 'border: 2px solid #5B1CFC !important; '
@@ -117,6 +116,7 @@
         ></div>
         <div
           v-else
+          @click="goChannelMain"
           :style="
             'background-image: url(' +
             (CONT_DETAIL.domainPath
@@ -459,6 +459,7 @@
       <div class="contentsCardUserDoArea">
         <div class="contentsCardUserDoWrap">
           <div
+            v-if="CONT_DETAIL.jobkindId !== 'TODO'"
             class="userDoBox"
             @click="
               GE_USER.unknownYn
@@ -491,6 +492,7 @@
             </p>
           </div>
           <div
+            v-if="CONT_DETAIL.jobkindId !== 'TODO'"
             class="userDoBox"
             @click="
               GE_USER.unknownYn

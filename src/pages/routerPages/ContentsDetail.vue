@@ -16,10 +16,10 @@
     :style="'padding-top: ' + (Number(this.$STATUS_HEIGHT) + 50) + 'px'"
     v-if="
       this.CONT_DETAIL &&
-      CONT_DETAIL.jobkindId === 'TODO' ||
+      (CONT_DETAIL.jobkindId === 'TODO' ||
       (this.CHANNEL_DETAIL &&
       CONT_DETAIL.jobkindId === 'BOAR' &&
-      this.CAB_DETAIL)
+      this.CAB_DETAIL))
     "
     class="boardDetailWrap"
   >

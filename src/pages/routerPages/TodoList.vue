@@ -150,10 +150,9 @@
             justify-content: center;
             align-items: center;
             width: 50%;
-            margin-top:20px;
           "
         >
-          <p class="fontSize" style="margin-right: 10px">My</p>
+          <p class="fontSize" style="margin-right: 10px;">My</p>
           <p class="fontSize">
             {{
               calPercent(
@@ -175,7 +174,6 @@
             justify-content: center;
             align-items: center;
             width: 50%;
-            margin-top:20px;
           "
         >
           <p class="fontSize" style="margin-right: 10px">Asked</p>
@@ -235,7 +233,7 @@
             width="20"
             style="margin-right: 5px"
           />
-          <p style="font-size: 18px">My ({{ mMyTodoCount }})</p>
+          <p style="font-size: 18px; margin-top: 20px;">My ({{ mMyTodoCount }})</p>
         </div>
         <template
           v-for="(group, groupIndex) in mGetTodoGroupList"
@@ -509,6 +507,7 @@
                       </p>
                     </div>
                     <div
+                      v-if="todo.fileCount"
                       @click="clickFileDownload()"
                       style="
                         cursor: pointer;
@@ -530,7 +529,7 @@
                         />
                       </div>
                       <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
-                        {{ todo.fileCount === 0 ? '0' : todo.fileCount }}
+                        {{ todo.fileCount }}
                       </p>
                     </div>
                   </div>
@@ -580,7 +579,7 @@
             width="20"
             style="margin-right: 5px"
           />
-          <p style="font-size: 18px">What I Asked ({{ mTargetTodoCount }})</p>
+          <p style="font-size: 18px; margin-top: 20px;">What I Asked ({{ mTargetTodoCount }})</p>
         </div>
         <template
           v-for="(group, groupIndex) in mGetTodoGroupList"
@@ -863,6 +862,7 @@
                       </p>
                     </div>
                     <div
+                      v-if="todo.fileCount"
                       @click="clickFileDownload()"
                       style="
                         cursor: pointer;
@@ -884,7 +884,7 @@
                         />
                       </div>
                       <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
-                        {{ todo.fileCount === 0 ? '0' : todo.fileCount }}
+                        {{ todo.fileCount }}
                       </p>
                     </div>
                   </div>
@@ -1210,6 +1210,7 @@
                       </p>
                     </div>
                     <div
+                      v-if="todo.fileCount"
                       @click="clickFileDownload()"
                       style="
                         cursor: pointer;
@@ -1231,7 +1232,7 @@
                         />
                       </div>
                       <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
-                        {{ todo.fileCount === 0 ? '0' : todo.fileCount }}
+                        {{ todo.fileCount }}
                       </p>
                     </div>
                   </div>
