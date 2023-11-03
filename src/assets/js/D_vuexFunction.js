@@ -325,6 +325,9 @@ export const functions = {
       return false
     }
     var detailData = resultList.content[0]
+    if (param.jobkindId === 'TODO') {
+      detailData.creTeamKey = 0
+    }
     store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData])
     return detailData
   },

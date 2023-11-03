@@ -576,6 +576,21 @@ const D_CHANNEL = {
           if (addContList[i].jobkindId === 'BOAR') {
             chanList[idx1].ELEMENTS.boardList[idx2] = addContList[i]
           } else if (addContList[i].jobkindId === 'TODO') {
+            if (chanList[idx1].ELEMENTS.todoList[idx2].userDomainPath) {
+              addContList[i].userDomainPath = chanList[idx1].ELEMENTS.todoList[idx2].userDomainPath
+            }
+            if (chanList[idx1].ELEMENTS.todoList[idx2].userProfileImg) {
+              addContList[i].userProfileImg = chanList[idx1].ELEMENTS.todoList[idx2].userProfileImg
+            }
+            if (chanList[idx1].ELEMENTS.todoList[idx2].workFromDate) {
+              addContList[i].workFromDate = chanList[idx1].ELEMENTS.todoList[idx2].workFromDate
+            }
+            if (chanList[idx1].ELEMENTS.todoList[idx2].workToDate) {
+              addContList[i].workToDate = chanList[idx1].ELEMENTS.todoList[idx2].workToDate
+            }
+            if (chanList[idx1].ELEMENTS.todoList[idx2].creDate) {
+              addContList[i].creDate = chanList[idx1].ELEMENTS.todoList[idx2].creDate
+            }
             chanList[idx1].ELEMENTS.todoList[idx2] = addContList[i]
           } else {
             chanList[idx1].ELEMENTS.alimList[idx2] = addContList[i]

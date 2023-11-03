@@ -2098,12 +2098,15 @@ export default {
         }
         if (listType === 'my') {
           this.mGetTodoGroupList[0].myTodoList[index].D_MEMO_LIST = this.replaceMemoArr(newArr)
+          this.mGetTodoGroupList[0].myTodoList[index].creTeamKey = 0
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.mGetTodoGroupList[0].myTodoList[index]])
         } else if (listType === 'target') {
           this.mGetTodoGroupList[0].targetTodoList[index].D_MEMO_LIST = this.replaceMemoArr(newArr)
+          this.mGetTodoGroupList[0].targetTodoList[index].creTeamKey = 0
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.mGetTodoGroupList[0].targetTodoList[index]])
         } else if (listType === 'complete') {
           this.mGetTodoGroupList[0].completeTodoList[index].D_MEMO_LIST = this.replaceMemoArr(newArr)
+          this.mGetTodoGroupList[0].completeTodoList[index].creTeamKey = 0
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.mGetTodoGroupList[0].completeTodoList[index]])
         }
       },

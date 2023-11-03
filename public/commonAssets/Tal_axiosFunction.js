@@ -405,6 +405,9 @@ export const methods = {
     param.ownUserKey = store.getters['UB_USER/GE_USER'].userKey
     var resultList = await this.$getContentsList(param)
     if (resultList.content) var detailData = resultList.content[0]
+    if (jobkindId === 'TODO') {
+      detailData.creTeamKey = 0
+    }
     this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData])
   },
   async getContentsList(inputParam, nonLoadingYn, noAuthYn) {

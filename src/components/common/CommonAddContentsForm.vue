@@ -548,7 +548,6 @@ export default defineComponent({
         if (props.pContentsData.workFromDate) {
           params.workFromDateStr =
             props.pContentsData.workFromDate
-          alert(params.workFromDateStr)
         }
         if (props.pContentsData.workToDate) {
           params.workToDateStr = props.pContentsData.workToDate
@@ -878,9 +877,9 @@ export default defineComponent({
         // params value 체크
         if (props.pOptions.model === 'mankik') {
           if (hasTitleYn.value && !params.title) {
-            alert('제목을 작성해주세요.')
+            alert('Please fill out the title.')
           } else if (!params.workToDateStr) {
-            alert('목표 날짜를 지정해주세요.')
+            alert('Please specify a target date.')
             // } else if (route.path !== '/todo' && (!params.bodyFullStr && !params.attachFileList.length)) {
             //   alert('공유하고자 하는 내용을 작성하거나, 파일을 첨부해주세요.')
           } else {
@@ -889,9 +888,9 @@ export default defineComponent({
           }
         } else if (props.pOptions.model === 'unibuzzy') {
           if (hasTitleYn.value && !params.title) {
-            alert('제목을 작성해주세요.')
+            alert('Please fill out the title.')
           } else if (!params.bodyFullStr && !params.attachFileList.length) {
-            alert('공유하고자 하는 내용을 작성하거나, 파일을 첨부해주세요.')
+            alert('Please fill out the contents you want to share or attach a file.')
           } else {
             params.mLoadingYn = true
             props.pPostContentsFn(params)

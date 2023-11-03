@@ -185,6 +185,9 @@ export default {
           allMemoYn: true
         })
         this.CONT_DETAIL.memoCount = count
+        if (this.CONT_DETAIL.jobkindId === 'TODO') {
+          this.CONT_DETAIL.creTeamKey = 0
+        }
         this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
         var memoAleadyIdx = content.D_MEMO_LIST.findIndex(
           (item) => Number(item.memoKey) === Number(value[0].memoKey)
@@ -196,6 +199,9 @@ export default {
           newArr = [value[0], ...content.D_MEMO_LIST]
         }
         this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newArr)
+        if (this.CONT_DETAIL.jobkindId === 'TODO') {
+          this.CONT_DETAIL.creTeamKey = 0
+        }
         this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
       },
       deep: true

@@ -823,6 +823,7 @@ export default {
         param: param
       })
       this.CONT_DETAIL.contStatus = param.contStatus
+      this.CONT_DETAIL.creTeamKey = 0
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
       // this.$emit('completeTodo')
     },
@@ -980,6 +981,9 @@ export default {
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
       this.mFileDownData = detailData
+      if (this.contentsEle.jobkindId === 'TODO') {
+        detailData.creTeamKey = 0
+      }
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData])
     },
     async settingFileList_downAtt() {
@@ -2042,6 +2046,9 @@ export default {
         this.CONT_DETAIL.D_MEMO_LIST = this.replaceArr(newArr)
         // eslint-disable-next-line vue/no-mutating-props
         this.contentsEle.D_MEMO_LIST = this.replaceArr(newArr)
+        if (this.CONT_DETAIL.jobkindId === 'TODO') {
+          this.CONT_DETAIL.creTeamKey = 0
+        }
         this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
       },
       deep: true

@@ -79,6 +79,9 @@ export const openView = {
     ) {
       content.D_MEMO_LIST = []
     }
+    if (content.jobkindId === 'TODO') {
+      content.creTeamKey = 0
+    }
 
     this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [content])
     result.content = content
