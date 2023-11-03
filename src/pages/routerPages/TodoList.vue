@@ -150,6 +150,7 @@
             justify-content: center;
             align-items: center;
             width: 50%;
+            margin-top:20px;
           "
         >
           <p class="fontSize" style="margin-right: 10px">My</p>
@@ -174,6 +175,7 @@
             justify-content: center;
             align-items: center;
             width: 50%;
+            margin-top:20px;
           "
         >
           <p class="fontSize" style="margin-right: 10px">Asked</p>
@@ -924,6 +926,7 @@
             padding: 5px 15px;
             display: flex;
             align-items: center;
+            margin-top:20px;
           "
         >
           <img
