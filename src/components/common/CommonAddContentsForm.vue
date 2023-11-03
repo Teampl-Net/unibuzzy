@@ -238,7 +238,10 @@
             </div>
           </fieldset>
           <fieldset
-            v-if="(pOptions.model === 'mankik' || pOptions.model === 'unibuzzy') && !pContentsData"
+            v-if="
+              (pOptions.model === 'mankik' || pOptions.model === 'unibuzzy') &&
+              !pContentsData
+            "
             id="uploadFile"
           >
             <legend>파일 첨부</legend>
@@ -306,12 +309,12 @@ export default defineComponent({
     TalFormEditor,
     TalAttachFile
   },
-  data () {
+  data() {
     return {
       popId: ''
     }
   },
-  created () {
+  created() {
     var history = this.$store.getters['UB_HISTORY/hStack']
     this.popId = 'writeContents' + history.length
     // console.log(history)
@@ -319,15 +322,15 @@ export default defineComponent({
     this.$store.commit('UB_HISTORY/updateStack', history)
   },
   computed: {
-    historyStack () {
+    historyStack() {
       return this.$store.getters['UB_HISTORY/hRPage']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
-    pageUpdate (value, old) {
+    pageUpdate(value, old) {
       const history = this.$store.getters['UB_HISTORY/hStack']
       if (this.popId === history[history.length - 1]) {
         this.closePop()
@@ -335,7 +338,7 @@ export default defineComponent({
     }
   },
   methods: {
-    closePop () {
+    closePop() {
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -363,7 +366,10 @@ export default defineComponent({
       canReplyYn: true,
       mLoadingYn: false
     })
-    console.log(props.pContentsData, 'data ================---=========---=========---===')
+    console.log(
+      props.pContentsData,
+      'data ================---=========---=========---==='
+    )
 
     // ------------------- 기본값 설정
     let receiverList = reactive([])
@@ -546,8 +552,7 @@ export default defineComponent({
         }
         // --- 날짜 데이터 연결
         if (props.pContentsData.workFromDate) {
-          params.workFromDateStr =
-            props.pContentsData.workFromDate
+          params.workFromDateStr = props.pContentsData.workFromDate
         }
         if (props.pContentsData.workToDate) {
           params.workToDateStr = props.pContentsData.workToDate
@@ -890,7 +895,9 @@ export default defineComponent({
           if (hasTitleYn.value && !params.title) {
             alert('Please fill out the title.')
           } else if (!params.bodyFullStr && !params.attachFileList.length) {
-            alert('Please fill out the contents you want to share or attach a file.')
+            alert(
+              'Please fill out the contents you want to share or attach a file.'
+            )
           } else {
             params.mLoadingYn = true
             props.pPostContentsFn(params)
