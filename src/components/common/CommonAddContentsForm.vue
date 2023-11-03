@@ -690,6 +690,7 @@ export default defineComponent({
     }
     const setSelectedTargetList = (selectedTargetList) => {
       params.actorList = selectedTargetList
+      selectMeYn.value = false
     }
 
     // Tag(category) 선택 기능
@@ -1116,6 +1117,7 @@ export default defineComponent({
   width: 80%;
   height: calc(100% - 120px);
   padding: 16px 24px;
+  overflow: hidden auto;
 
   position: absolute;
   left: 50%;
