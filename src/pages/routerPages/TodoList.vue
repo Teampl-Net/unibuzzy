@@ -410,55 +410,19 @@
                       {{ todo.title }}
                     </p>
                   </div>
-                  <div
-                    style="
-                      width: 25%;
-                      display: flex;
-                      justify-content: end;
-                      align-items: center;
-                    "
-                  >
-                    <div
-                      class="w100P"
-                      style="
-                        display: flex;
-                        justify-content: end;
-                        align-items: center;
-                      "
-                    >
-                      <template
-                        v-for="(each, index) in todo.mNewActorList"
-                        :key="index"
-                      >
-                        <img
-                          v-if="each.accessKind === 'U'"
-                          class="actorImg"
-                          :src="
-                            each.domainPath
-                              ? each.domainPath + each.pathMtext
-                              : require(`@/assets/images/intro/login/uniB_logo.png`)
-                          "
-                          style=""
-                          :alt="each.userDispMtext"
-                        />
-                        <img
-                          v-else
-                          class="actorImg"
-                          :src="
-                            require(`@/assets/images/todo/channer_addressBook.svg`)
-                          "
-                          style=""
-                          :alt="each.userDispMtext"
-                        />
-                        <div
-                          class="moreActorImg todoFontSize"
-                          style=""
-                          v-if="todo.actorList.length > 3 && index === 2"
-                        >
-                          +{{ todo.actorList.length - 3 }}
-                        </div>
+                  <div style="width:25%; display:flex; justify-content:end; align-items:center;">
+                    <div class="w100P actorImgList ">
+                      <template v-for="(each, index) in todo.mNewActorList" :key="index" >
+                        <img v-if="each.accessKind === 'U'" class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
+                        <img v-else class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
+                        <div class="moreActorImg todoFontSize" style="" v-if="todo.actorList.length > 3 && index === 2">+{{ todo.actorList.length - 3 }}</div>
                       </template>
-                    </div>
+                      <div class="actorNameListWrap">
+                        <div class="actorNameList" style="width:auto; height:auto; display:flex; flex-direction:column">
+                          <p class="todoFontSize" v-for="(each, index) in todo.actorList" :key="index">{{ each ? $changeText(each.userDispMtext) : 'X' }}</p>
+                        </div>
+                      </div>
+                  </div>
                   </div>
                 </div>
                 <div
@@ -768,55 +732,19 @@
                       {{ todo.title }}
                     </p>
                   </div>
-                  <div
-                    style="
-                      width: 25%;
-                      display: flex;
-                      justify-content: end;
-                      align-items: center;
-                    "
-                  >
-                    <div
-                      class="w100P"
-                      style="
-                        display: flex;
-                        justify-content: end;
-                        align-items: center;
-                      "
-                    >
-                      <template
-                        v-for="(each, index) in todo.mNewActorList"
-                        :key="index"
-                      >
-                        <img
-                          v-if="each.accessKind === 'U'"
-                          class="actorImg"
-                          :src="
-                            each.domainPath
-                              ? each.domainPath + each.pathMtext
-                              : require(`@/assets/images/intro/login/uniB_logo.png`)
-                          "
-                          style=""
-                          :alt="each.userDispMtext"
-                        />
-                        <img
-                          v-else
-                          class="actorImg"
-                          :src="
-                            require(`@/assets/images/todo/channer_addressBook.svg`)
-                          "
-                          style=""
-                          :alt="each.userDispMtext"
-                        />
-                        <div
-                          class="moreActorImg todoFontSize"
-                          style=""
-                          v-if="todo.actorList.length > 3 && index === 2"
-                        >
-                          +{{ todo.actorList.length - 3 }}
-                        </div>
+                  <div style="width:25%; display:flex; justify-content:end; align-items:center;">
+                    <div class="w100P actorImgList ">
+                      <template v-for="(each, index) in todo.mNewActorList" :key="index" >
+                        <img v-if="each.accessKind === 'U'" class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
+                        <img v-else class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
+                        <div class="moreActorImg todoFontSize" style="" v-if="todo.actorList.length > 3 && index === 2">+{{ todo.actorList.length - 3 }}</div>
                       </template>
-                    </div>
+                      <div class="actorNameListWrap">
+                        <div class="actorNameList" style="width:auto; height:auto; display:flex; flex-direction:column">
+                          <p class="todoFontSize" v-for="(each, index) in todo.actorList" :key="index">{{ each ? $changeText(each.userDispMtext) : 'X' }}</p>
+                        </div>
+                      </div>
+                  </div>
                   </div>
                 </div>
                 <div
@@ -1122,55 +1050,19 @@
                       {{ todo.title }}
                     </p>
                   </div>
-                  <div
-                    style="
-                      width: 25%;
-                      display: flex;
-                      justify-content: end;
-                      align-items: center;
-                    "
-                  >
-                    <div
-                      class="w100P"
-                      style="
-                        display: flex;
-                        justify-content: end;
-                        align-items: center;
-                      "
-                    >
-                      <template
-                        v-for="(each, index) in todo.mNewActorList"
-                        :key="index"
-                      >
-                        <img
-                          v-if="each.accessKind === 'U'"
-                          class="actorImg"
-                          :src="
-                            each.domainPath
-                              ? each.domainPath + each.pathMtext
-                              : require(`@/assets/images/intro/login/uniB_logo.png`)
-                          "
-                          style=""
-                          :alt="each.userDispMtext"
-                        />
-                        <img
-                          v-else
-                          class="actorImg"
-                          :src="
-                            require(`@/assets/images/todo/channer_addressBook.svg`)
-                          "
-                          style=""
-                          :alt="each.userDispMtext"
-                        />
-                        <div
-                          class="moreActorImg todoFontSize"
-                          style=""
-                          v-if="todo.actorList.length > 3 && index === 2"
-                        >
-                          +{{ todo.actorList.length - 3 }}
-                        </div>
+                  <div style="width:25%; display:flex; justify-content:end; align-items:center;">
+                    <div class="w100P actorImgList ">
+                      <template v-for="(each, index) in todo.mNewActorList" :key="index" >
+                        <img v-if="each.accessKind === 'U'" class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
+                        <img v-else class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
+                        <div class="moreActorImg todoFontSize" style="" v-if="todo.actorList.length > 3 && index === 2">+{{ todo.actorList.length - 3 }}</div>
                       </template>
-                    </div>
+                      <div class="actorNameListWrap">
+                        <div class="actorNameList" style="width:auto; height:auto; display:flex; flex-direction:column">
+                          <p class="todoFontSize" v-for="(each, index) in todo.actorList" :key="index">{{ each ? $changeText(each.userDispMtext) : 'X' }}</p>
+                        </div>
+                      </div>
+                  </div>
                   </div>
                   <!-- <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div> -->
                 </div>
@@ -2423,6 +2315,44 @@ export default {
   color: #5f61bd !important;
   line-height: 35px;
   z-index: 2;
+}
+.actorImgList{
+  display:flex;
+  justify-content:end;
+  align-items:center;
+  position:relative;
+}
+.actorImgList:hover .actorNameListWrap{
+  display:block;
+}
+.actorNameListWrap{
+  display:none;
+  transition:all .5s;
+  position:absolute;
+  right:-10px;
+  top:130%;
+  z-index:20;
+}
+.actorNameListWrap:before{
+  content:'';
+  position: absolute;
+  top: -10px;
+  left: 15px;
+  transform:translateX(-50%);
+  border-top:0px solid transparent;
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-bottom:16px solid #E7EDFF;
+}
+.actorNameList{
+  display:flex;
+  flex-direction:column;
+  align-items:start;
+  background-color:#E7EDFF!important;
+  box-shadow: 0 5px 6px 0 rgba(60, 60, 60, 0.2);
+  border-radius:10px;
+  padding:5px 7px;
+  color:#7e7e7e;
 }
 .strikeLine {
   position: absolute;
