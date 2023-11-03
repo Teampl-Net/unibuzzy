@@ -670,7 +670,8 @@ export default defineComponent({
       showReceiverSelectList.value = !showReceiverSelectList.value
       if (
         showReceiverSelectList.value &&
-        params.actorList[0].accessKey === store.getters['UB_USER/GE_USER'].userKey
+        params.actorList[0].accessKey ===
+          store.getters['UB_USER/GE_USER'].userKey
       ) {
         params.actorList = []
       }
@@ -1121,7 +1122,7 @@ export default defineComponent({
   top: 50%;
   transform: translate(-50%, -50%);
 
-  z-index: 15;
+  z-index: 9999;
   background-color: #f5f5f5;
   border-radius: 0.8rem;
 }
