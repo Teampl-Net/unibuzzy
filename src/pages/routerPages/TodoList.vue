@@ -1284,9 +1284,10 @@ export default {
       return false // 추후 수정
     },
     openActorList(actorIndex, whichTodoIndex) {
+      this.mOpenActorListYn = false
       this.mOpenActorListIndex = actorIndex
       this.mGetWhichTodoIndex = whichTodoIndex
-      this.mOpenActorListYn = !this.mOpenActorListYn
+      this.mOpenActorListYn = true
     },
     getMonthDate(date) {
       var format = 'MM/DD'
