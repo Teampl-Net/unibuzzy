@@ -411,17 +411,17 @@
                     </p>
                   </div>
                   <div style="width:25%; display:flex; justify-content:end; align-items:center;">
-                    <div class="w100P actorImgList ">
+                    <div class="w100P actorImgList " @click.stop="openActorList(todoIndex, 0)">
                       <template v-for="(each, index) in todo.mNewActorList" :key="index" >
                         <img v-if="each.accessKind === 'U'" class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
                         <img v-else class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
                         <div class="moreActorImg todoFontSize" style="" v-if="todo.actorList.length > 3 && index === 2">+{{ todo.actorList.length - 3 }}</div>
-                      </template>
-                      <div class="actorNameListWrap">
-                        <div class="actorNameList" style="width:auto; height:auto; display:flex; flex-direction:column">
-                          <p class="todoFontSize" v-for="(each, index) in todo.actorList" :key="index">{{ each ? $changeText(each.userDispMtext) : 'X' }}</p>
+                        <div class="actorNameListWrap" v-if="mGetWhichTodoIndex === 0 && mOpenActorListIndex === todoIndex && mOpenActorListYn">
+                          <div class="actorNameList">
+                            <p class="todoFontSize" v-for="(each, index) in todo.actorList" :key="index">{{ each ? $changeText(each.userDispMtext) : 'X' }}</p>
+                          </div>
                         </div>
-                      </div>
+                      </template>
                   </div>
                   </div>
                 </div>
@@ -733,17 +733,17 @@
                     </p>
                   </div>
                   <div style="width:25%; display:flex; justify-content:end; align-items:center;">
-                    <div class="w100P actorImgList ">
+                    <div class="w100P actorImgList " @click.stop="openActorList(todoIndex, 1)">
                       <template v-for="(each, index) in todo.mNewActorList" :key="index" >
                         <img v-if="each.accessKind === 'U'" class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
                         <img v-else class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
                         <div class="moreActorImg todoFontSize" style="" v-if="todo.actorList.length > 3 && index === 2">+{{ todo.actorList.length - 3 }}</div>
-                      </template>
-                      <div class="actorNameListWrap">
-                        <div class="actorNameList" style="width:auto; height:auto; display:flex; flex-direction:column">
-                          <p class="todoFontSize" v-for="(each, index) in todo.actorList" :key="index">{{ each ? $changeText(each.userDispMtext) : 'X' }}</p>
+                        <div class="actorNameListWrap" v-if="mGetWhichTodoIndex === 1 && mOpenActorListIndex === todoIndex && mOpenActorListYn">
+                          <div class="actorNameList">
+                            <p class="todoFontSize" v-for="(each, index) in todo.actorList" :key="index">{{ each ? $changeText(each.userDispMtext) : 'X' }}</p>
+                          </div>
                         </div>
-                      </div>
+                      </template>
                   </div>
                   </div>
                 </div>
@@ -1051,17 +1051,17 @@
                     </p>
                   </div>
                   <div style="width:25%; display:flex; justify-content:end; align-items:center;">
-                    <div class="w100P actorImgList ">
+                    <div class="w100P actorImgList " @click.stop="openActorList(todoIndex, 2)">
                       <template v-for="(each, index) in todo.mNewActorList" :key="index" >
                         <img v-if="each.accessKind === 'U'" class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
                         <img v-else class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
                         <div class="moreActorImg todoFontSize" style="" v-if="todo.actorList.length > 3 && index === 2">+{{ todo.actorList.length - 3 }}</div>
-                      </template>
-                      <div class="actorNameListWrap">
-                        <div class="actorNameList" style="width:auto; height:auto; display:flex; flex-direction:column">
-                          <p class="todoFontSize" v-for="(each, index) in todo.actorList" :key="index">{{ each ? $changeText(each.userDispMtext) : 'X' }}</p>
+                        <div class="actorNameListWrap" v-if="mGetWhichTodoIndex === 2 && mOpenActorListIndex === todoIndex && mOpenActorListYn">
+                          <div class="actorNameList">
+                            <p class="todoFontSize" v-for="(each, index) in todo.actorList" :key="index">{{ each ? $changeText(each.userDispMtext) : 'X' }}</p>
+                          </div>
                         </div>
-                      </div>
+                      </template>
                   </div>
                   </div>
                   <!-- <div class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div> -->
@@ -1260,7 +1260,10 @@ export default {
         { categoryNameMtext: 'Self-Improvement', categoryKey: 'S' },
         { categoryNameMtext: 'etc', categoryKey: 'E' }
       ],
-      mWritePopShowYn: false
+      mWritePopShowYn: false,
+      mGetWhichTodoIndex: -1,
+      mOpenActorListIndex: -1,
+      mOpenActorListYn: false
     }
   },
   created() {
@@ -1279,6 +1282,11 @@ export default {
   methods: {
     clickFileDownload() {
       return false // 추후 수정
+    },
+    openActorList(actorIndex, whichTodoIndex) {
+      this.mOpenActorListIndex = actorIndex
+      this.mGetWhichTodoIndex = whichTodoIndex
+      this.mOpenActorListYn = !this.mOpenActorListYn
     },
     getMonthDate(date) {
       var format = 'MM/DD'
@@ -2322,11 +2330,7 @@ export default {
   align-items:center;
   position:relative;
 }
-.actorImgList:hover .actorNameListWrap{
-  display:block;
-}
 .actorNameListWrap{
-  display:none;
   transition:all .5s;
   position:absolute;
   right:-10px;
@@ -2353,6 +2357,8 @@ export default {
   border-radius:10px;
   padding:5px 7px;
   color:#7e7e7e;
+  width:auto;
+  height:auto;
 }
 .strikeLine {
   position: absolute;
