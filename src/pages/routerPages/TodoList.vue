@@ -39,7 +39,7 @@
     style="z-index: 999"
   />
   <!-- <transition name="show_right"> -->
-  <CommonAddContentsForm
+  <!-- <CommonAddContentsForm
     style="z-index: 13"
     v-if="mWritePopShowYn"
     :pClosePop="closeWritePop"
@@ -47,7 +47,7 @@
     :pGetReceiverList="returnTargetData"
     :pGetTagListFn="returnTag"
     :pOptions="mOption"
-  />
+  /> -->
   <!-- </transition> -->
   <template v-if="mShowSkeletonYn" style="height: 100px">
     <SkeletonBox
