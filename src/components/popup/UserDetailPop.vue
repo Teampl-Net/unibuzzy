@@ -88,7 +88,7 @@
         </div>
         <p
           class="fl whiteColor CMiddleBgColor font12 gradeBox"
-          v-if="userGrade !== ''"
+          v-if="userGrade !== '' && propData.teamKey"
         >
           {{ userGrade }}
         </p>

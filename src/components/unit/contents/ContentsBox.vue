@@ -98,6 +98,8 @@
       >
         <div
           v-if="CONT_DETAIL.jobkindId === 'TODO'"
+          @click="goUserProfile()"
+          class="cursorP"
           :style="
             'background-image: url(' +
             (CONT_DETAIL.userDomainPath
@@ -1659,8 +1661,10 @@ export default {
         return
       }
       var openPopParam = {}
-      openPopParam.targetKey = this.CONT_DETAIL.creTeamKey
-      openPopParam.teamKey = this.CONT_DETAIL.creTeamKey
+      if (this.CONT_DETAIL.creTeamKey) {
+        openPopParam.targetKey = this.CONT_DETAIL.creTeamKey
+        openPopParam.teamKey = this.CONT_DETAIL.creTeamKey
+      }
       openPopParam.targetType = 'bookMemberDetail'
       openPopParam.userKey = this.CONT_DETAIL.creUserKey
 
