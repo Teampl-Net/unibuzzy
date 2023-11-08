@@ -122,11 +122,30 @@ export default {
     pOneLineYn: {},
     targetType: {}
   },
+  watch: {
+    attachTrueAddFalseList: {
+      immediate: true,
+      handler (val) {
+        if (val && val.length > 0) {
+          if (val !== this.sFileList) {
+            this.sFileList = val
+            for (var i = 0; i < this.sFileList.length; i++) {
+              // console.log(this.sFileList)
+              // this.sFileList[i].addYn = false
+              this.sFileList[i].attachYn = true
+              this.sFileList[i].file = { name: this.sFileList[i].fileName, size: this.sFileList[i].fileSizeKb }
+            }
+          }
+        }
+      },
+      deep: true
+    }
+  },
   created() {
     if (this.attachTrueAddFalseList && this.attachTrueAddFalseList.length > 0) {
       this.sFileList = this.attachTrueAddFalseList
       for (var i = 0; i < this.sFileList.length; i++) {
-        this.sFileList[i].addYn = false
+        // this.sFileList[i].addYn = false
         this.sFileList[i].attachYn = true
         this.sFileList[i].file = {
           name: this.sFileList[i].fileName,

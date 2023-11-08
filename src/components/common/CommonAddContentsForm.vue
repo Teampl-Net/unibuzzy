@@ -239,15 +239,13 @@
           </fieldset>
           <fieldset
             v-if="
-              (pOptions.model === 'mankik' || pOptions.model === 'unibuzzy') &&
-              !pContentsData
-            "
+              (pOptions.model === 'mankik' || pOptions.model === 'unibuzzy') "
             id="uploadFile"
           >
             <legend>파일 첨부</legend>
             <label for="">File</label>
-            <!--  @delAttachFile="delAttachFile" -->
             <TalAttachFile
+              @delAttachFile="delAttachFile"
               @setSelectedAttachFileList="setAttachedFile"
               :attachTrueAddFalseList="propAttachFileList"
             />
@@ -357,6 +355,7 @@ export default defineComponent({
     const params = reactive({
       title: '',
       actorList: [],
+      attachMfilekey: '',
       workToDateStr: null,
       workFromDateStr: null,
       bodyFullStr: '',
@@ -517,7 +516,7 @@ export default defineComponent({
 
     // 첨부파일 관련 리스트
     const addFalseAttachFalseFileList = reactive([])
-    const addFalseAttachTrueFileList = reactive([])
+    const addFalseAttachTrueFileList = []
     const propAttachFileList = reactive([])
     // ------------------- DOM 생성 후 실행될 로직
     onMounted(() => {
@@ -545,6 +544,10 @@ export default defineComponent({
       }
       // >---- 편집 상태일 때 세팅 ----<
       if (props.pContentsData) {
+        // --- 수정일때, attachMfilekey 데이터 연결
+        if (props.pContentsData.attachMfilekey) {
+          params.attachMfilekey = props.pContentsData.attachMfilekey
+        }
         // --- title 데이터 연결
         params.title = props.pContentsData.title
         if (params.title) {
@@ -580,9 +583,9 @@ export default defineComponent({
         if (props.pContentsData.attachFileList) {
           for (let i = 0; i < props.pContentsData.attachFileList.length; i++) {
             const file = props.pContentsData.attachFileList[i]
-            propAttachFileList.push(file)
             tempFileList.push(file)
             if (file.attachYn) {
+              propAttachFileList.push(file)
               addFalseAttachTrueFileList.push(file)
             } else {
               addFalseAttachFalseFileList.push(file)
@@ -593,28 +596,55 @@ export default defineComponent({
         console.log(tempFileList)
       }
     })
-
+    const delAttachFile = (val) => {
+      if (tempFileList.findIndex(f => f.fileKey === val.fileKey) !== -1 || tempFileList.findIndex(f => f.attachKey === val.attachKey) !== -1) {
+        let index = tempFileList.findIndex(f => f.fileKey === val.fileKey)
+        if (index !== -1) {
+          tempFileList[index].addYn = false
+        } else {
+          index = tempFileList.findIndex(f => f.attachKey === val.attachKey)
+          if (index !== -1) {
+            tempFileList.splice(index, 1)
+          }
+        }
+      }
+      console.log(tempFileList)
+    }
     // eslint-disable-next-line no-unused-vars
     const setAttachFileList = () => {
       // 계획
       // 1. 이미 있던 사진을 삭제해서 수정(업데이트 하는경우): addYn: false // 삭제한 파일도 포함해야함
       // 2. 이미 있던 사진을 포함해서 수정: 서버에서 중복저장 되지 않게
-      const delFileList = []
-
+      // const delFileList = []
+      const iList = document.querySelectorAll('.formCard .addFalse')
+      let delYn = true
       // 1. 이미 있던 사진을 삭제해서 수정(업데이트 하는경우): addYn: false // 삭제한 파일도 포함해야함
       for (let i = tempFileList.length - 1; i > -1; i--) {
         const tempFile = tempFileList[i]
-        for (let j = 0; propAttachFileList.length; j++) {
-          const propAttachFile = propAttachFileList[j]
-          let deleteYn = true
+        for (let j = 0; addFalseAttachTrueFileList.length; j++) {
+          const propAttachFile = addFalseAttachTrueFileList[j]
+          // let deleteYn = true
+          if (!propAttachFile) break
           if (tempFile.fileKey && tempFile.fileKey === propAttachFile.file) {
-            deleteYn = false
+            // tempFileList[i].addYn = false
+            delYn = false
           }
+          /*
           if (deleteYn) {
             tempFileList[i].addYn = false
             delFileList.push(tempFileList[i])
             tempFileList.splice(i, 1)
+          } */
+        }
+        for (let s = 0; s < iList.length; s++) {
+          const img = iList[s]
+          console.log(img)
+          if (tempFile.fileKey && Number(tempFile.fileKey) === Number(img.attributes.filekey.value)) {
+            delYn = false
           }
+        }
+        if (delYn && !tempFileList[i].addYn) {
+          tempFileList[i].addYn = false
         }
       }
     }
@@ -821,6 +851,7 @@ export default defineComponent({
                 ) {
                   if (iList[il].src === uploadFile.previewImgUrl) {
                     iList[il].src = uploadFile.filePath
+                    tempFileList[s].attachYn = false
                     // eslint-disable-next-line no-unused-vars
                     iList[il].setAttribute('fileKey', uploadFile.fileKey)
                     iList[il].setAttribute('fileSizeKb', uploadFile.fileSizeKb)
@@ -844,17 +875,25 @@ export default defineComponent({
     const handleFileListForUpload = () => {
       const newAttachFileList = []
       for (let i = 0; i < tempFileList.length; i++) {
-        if (tempFileList[i].fileKey) continue
+        // if (tempFileList[i].fileKey) continue
         const fileObj = {}
         fileObj.addYn = true
-        fileObj.attachYn = tempFileList[i].attachYn
+        fileObj.attachYn = true
+        fileObj.fileName = 'dAlimImg'
+        if (tempFileList[i].addYn !== undefined && tempFileList[i].addYn !== null) {
+          fileObj.addYn = tempFileList[i].addYn
+        }
+        if (tempFileList[i].attachYn !== undefined && tempFileList[i].attachYn !== null) {
+          fileObj.attachYn = tempFileList[i].attachYn
+        }
         fileObj.fileKey = tempFileList[i].fileKey
-        fileObj.fileName = tempFileList[i].file.name.normalize('NFC')
+        if (tempFileList[i].file) {
+          fileObj.fileName = tempFileList[i].file.name.normalize('NFC')
+        }
         newAttachFileList.push(fileObj)
       }
       return newAttachFileList
     }
-
     // 최종 Submit
     const postContents = async () => {
       try {
@@ -862,6 +901,7 @@ export default defineComponent({
         if (tempFileList.length > 0) {
           await fileDataUploadToServer()
         }
+        await setAttachFileList()
         params.attachFileList = handleFileListForUpload()
 
         // formEditor 작성 내용 추출
@@ -1102,6 +1142,7 @@ export default defineComponent({
       confirmNo,
       propsTargetNameEditing,
       openBtnWrap,
+      delAttachFile,
       openBtnWrapYn,
       propAttachFileList,
       setTodoPageValue,
