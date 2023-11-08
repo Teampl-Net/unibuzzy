@@ -1294,6 +1294,9 @@ export default {
     this.mSelectDate = new Date()
   },
   methods: {
+    closeProfilePop() {
+      this.mProfilePopShowYn = false
+    },
     goToday () {
       this.mSelectDate = new Date()
     },

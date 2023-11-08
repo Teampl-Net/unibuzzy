@@ -422,30 +422,45 @@ export default {
     },
     callPhone(num) {
       if (num != undefined && num != null && num != '') {
-        if (this.systemName !== 'Android' && this.systemName !== 'android')
-          document.location.href = 'tel:' + num
-        else onMessage('REQ', 'callphone', num)
+        document.location.href = 'tel:' + num
       } else {
         alert('전화번호 정보가 없습니다')
       }
+      // if (num != undefined && num != null && num != '') {
+      //   if (this.systemName !== 'Android' && this.systemName !== 'android')
+      //     document.location.href = 'tel:' + num
+      //   else onMessage('REQ', 'callphone', num)
+      // } else {
+      //   alert('전화번호 정보가 없습니다')
+      // }
     },
     sendMail(email) {
       if (email != undefined && email != null && email != '') {
-        if (this.systemName !== 'Android' && this.systemName !== 'android')
-          document.location.href = 'mailto:' + email
-        else onMessage('REQ', 'sendMail', email)
+        window.open('mailto:' + email)
       } else {
         alert('이메일 정보가 없습니다')
       }
+      // if (email != undefined && email != null && email != '') {
+      //   if (this.systemName !== 'Android' && this.systemName !== 'android')
+      //     document.location.href = 'mailto:' + email
+      //   else onMessage('REQ', 'sendMail', email)
+      // } else {
+      //   alert('이메일 정보가 없습니다')
+      // }
     },
     sendSms(num) {
       if (num != undefined && num != null && num != '') {
-        if (this.systemName !== 'Android' && this.systemName !== 'android')
-          document.location.href = 'sms:' + num
-        else onMessage('REQ', 'sendSms', num)
+        document.location.href = 'sms:' + num
       } else {
         alert('전화번호 정보가 없습니다')
       }
+      // if (num != undefined && num != null && num != '') {
+      //   if (this.systemName !== 'Android' && this.systemName !== 'android')
+      //     document.location.href = 'sms:' + num
+      //   else onMessage('REQ', 'sendSms', num)
+      // } else {
+      //   alert('전화번호 정보가 없습니다')
+      // }
     },
     regEmail(text) {
       var regemail =
