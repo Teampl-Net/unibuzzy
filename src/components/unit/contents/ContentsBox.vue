@@ -708,9 +708,10 @@
       />
     </div>
   </div>
+  <div class="popBg" style="z-index: 21;" v-if="showEditPopYn"></div>
   <CommonAddContentsForm
     v-if="showEditPopYn"
-    style="z-index: 15"
+    style="z-index: 22;"
     :pClosePop="toggleEditPop"
     :pGetReceiverList="returnTargetData"
     :pGetTagListFn="returnTag"
@@ -2070,6 +2071,15 @@ export default {
 </script>
 
 <style scoped>
+.popBg {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background: #00000026;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+}
 #loading {
   display: block;
   z-index: 9999999;

@@ -3,12 +3,18 @@
     <header>
       <!-- Popup Title -->
       <h1>{{ pOptions.purpose }}</h1>
-      <button @click="closePop" type="button">
-        <img
-          src="../../assets/images/common/popup_close.png"
-          alt="close button"
-        />
-      </button>
+      <div class="HeaderbtnWrap">
+        <button @click="postContents" class="saveBtn" style="font-size:14px;">
+          {{ pContentsData ? 'Edit' : 'Save' }}
+        </button>
+        <!-- <button @click="closePop">Cancel</button> -->
+        <button @click="closePop" type="button" class="closeBtn">
+          <img
+            src="../../assets/images/common/popup_close.png"
+            alt="close button"
+          />
+        </button>
+      </div>
     </header>
     <main>
       <form>
@@ -262,14 +268,14 @@
         </fieldset>
       </form>
     </main>
-    <footer>
+    <!-- <footer>
       <div class="footerBtnWrap">
         <button @click="postContents" style="margin-right: 10px">
           {{ pContentsData ? 'Edit' : 'Save' }}
         </button>
         <button @click="closePop">Cancel</button>
       </div>
-    </footer>
+    </footer> -->
   </div>
   <gToolBox
     :propTools="mToolBoxOptions"
@@ -1228,12 +1234,25 @@ header {
     font-size: 20px;
     margin: 0 !important;
   }
-  button {
+  .HeaderbtnWrap{
+    .saveBtn{
+      font-size: 16px;
+      padding: 7px 20px !important;
+      margin-right:10px;
+      line-height:1;
+      border:none;
+      &:first-child {
+        background-color: #5f61bd;
+        color: #fff;
+      }
+    }
+    .closeBtn{
     padding: 3px;
     background-color: none;
     border: none;
     img {
       width: 18px;
+    }
     }
   }
 }
@@ -1254,12 +1273,12 @@ footer {
 
 // Form CSS
 main {
-  height: calc(100% - 110px);
+  height: calc(100% - 50px);
   overflow-y: auto;
   margin-top: 8px;
   // padding-top: 16px;
   border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  // border-bottom: 1px solid #ccc;
 
   form {
     height: 100%;
