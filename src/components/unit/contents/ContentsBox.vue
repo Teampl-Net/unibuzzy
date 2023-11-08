@@ -301,9 +301,7 @@
             >
               <p style="font-size: 12px">
                 {{
-                  $changeDateFormat(CONT_DETAIL.workFromDate) +
-                  '~' +
-                  $changeDateFormat(CONT_DETAIL.workToDate)
+                  compareSameDate($changeDateFormat(CONT_DETAIL.workFromDate), $changeDateFormat(CONT_DETAIL.workToDate))
                 }}
               </p>
               <div>
@@ -811,6 +809,14 @@ export default {
     }
   },
   methods: {
+    // workToDate와 workFromDate가 같으면 날짜가 하나만 표시되도록
+    compareSameDate (from, to) {
+      if (from === to) {
+        return from
+      } else {
+        return `${from} ~ ${to}`
+      }
+    },
     async completeTodo (value, loadingYn) {
       var param = {}
       param.contentsKey = value.contentsKey

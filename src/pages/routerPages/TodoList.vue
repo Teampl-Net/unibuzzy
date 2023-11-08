@@ -80,14 +80,19 @@
       </div>
       <div class="commonTitleText dateAreaBox">
         <div class="calBox">
-          <img
+          <div
             class="cursorP"
-            src="../../assets/images/todo/purpleArrow.png"
-            style="transform: rotateZ(180deg)"
-            width="20"
-            height="20"
+            style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;"
             @click="MoveDate(-1)"
-          />
+          >
+            <img
+              class="cursorP"
+              src="../../assets/images/todo/purpleArrow.png"
+              style="transform: rotateZ(180deg)"
+              width="20"
+              height="20"
+            />
+          </div>
           <Datepicker
             class="cursorP fl DatePicker contents"
             v-model:value="mSelectDate"
@@ -95,13 +100,18 @@
             type="date"
             :format="'MMM DD, YYYY'"
           ></Datepicker>
-          <img
+          <div
             class="cursorP"
-            src="../../assets/images/todo/purpleArrow.png"
-            width="20"
-            height="20"
-            @click="MoveDate(1)"
-          />
+            style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center"
+            @click="MoveDate(-1)"
+          >
+            <img
+              class="cursorP"
+              src="../../assets/images/todo/purpleArrow.png"
+              width="20"
+              height="20"
+            />
+          </div>
         </div>
       </div>
       <div
@@ -282,6 +292,7 @@
                     <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
                       <div class="MKAppUserPhoto MKShadow h100P backShadow">
                         <div
+                          @click.stop="goUserProfile(todo.creUserKey)"
                           class="middleBgColor fl imgCircle profileImg"
                           :style="`background-image: url('${
                             todo.userDomainPath
@@ -306,16 +317,9 @@
                       "
                     >
                       <p
-                        v-if="todo.targetKey === GE_USER.userKey"
-                        class="fl todoFontSize"
-                        style="margin-right: 5px"
-                      >
-                        본인
-                      </p>
-                      <p
-                        v-else
                         class="fl todoFontSize fontBold"
                         style="margin-right: 5px"
+                        @click.stop="goUserProfile(todo.creUserKey)"
                       >
                         {{
                           todo.creUserName
@@ -338,9 +342,7 @@
                       style="line-height: 23px"
                     >
                       <span>{{
-                        getMonthDate(todo.workFromDate) +
-                        '~' +
-                        getMonthDate(todo.workToDate)
+                        compareSameDate(getMonthDate(todo.workFromDate), getMonthDate(todo.workToDate))
                       }}</span>
                     </div>
                   </div>
@@ -598,6 +600,7 @@
                     <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
                       <div class="MKAppUserPhoto MKShadow h100P backShadow">
                         <div
+                          @click.stop="goUserProfile(todo.creUserKey)"
                           class="middleBgColor fl imgCircle profileImg"
                           :style="`background-image: url('${
                             todo.userDomainPath
@@ -622,15 +625,8 @@
                       "
                     >
                       <p
-                        v-if="todo.targetKey === GE_USER.userKey"
-                        class="fl todoFontSize"
-                        style="margin-right: 5px"
-                      >
-                        {{ $changeText(todo.cabinetNameMtext) }} (본인)
-                      </p>
-                      <p
-                        v-else
                         class="fl todoFontSize fontBold"
+                        @click.stop="goUserProfile(todo.creUserKey)"
                         style="margin-right: 5px"
                       >
                         {{
@@ -659,9 +655,7 @@
                       style="line-height: 23px"
                     >
                       <span>{{
-                        getMonthDate(todo.workFromDate) +
-                        '~' +
-                        getMonthDate(todo.workToDate)
+                        compareSameDate(getMonthDate(todo.workFromDate), getMonthDate(todo.workToDate))
                       }}</span>
                     </p>
                   </div>
@@ -921,6 +915,7 @@
                     <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
                       <div class="MKAppUserPhoto MKShadow h100P backShadow">
                         <div
+                          @click.stop="goUserProfile(todo.creUserKey)"
                           class="middleBgColor fl imgCircle profileImg"
                           :style="`background-image: url('${
                             todo.userDomainPath
@@ -945,15 +940,8 @@
                       "
                     >
                       <p
-                        v-if="todo.targetKey === GE_USER.userKey"
                         class="fl todoFontSize"
-                        style="margin-right: 5px"
-                      >
-                        본인
-                      </p>
-                      <p
-                        v-else
-                        class="fl todoFontSize"
+                        @click.stop="goUserProfile(todo.creUserKey)"
                         style="margin-right: 5px"
                       >
                         {{
@@ -977,9 +965,7 @@
                       style="line-height: 23px"
                     >
                       <span>{{
-                        getMonthDate(todo.workFromDate) +
-                        '~' +
-                        getMonthDate(todo.workToDate)
+                        compareSameDate(getMonthDate(todo.workFromDate), getMonthDate(todo.workToDate))
                       }}</span>
                     </p>
                   </div>
@@ -1186,6 +1172,16 @@
     :pOptions="mOption"
     :pUserInfo="GE_USER"
   />
+  <div
+    class="popBg"
+    v-if="mProfilePopShowYn"
+    @click="closeProfilePop"
+  ></div>
+  <userDetailPop
+    v-if="mProfilePopShowYn"
+    :propData="mPopParam"
+    :pClosePop="closeProfilePop"
+  />
   <!-- </transition> -->
   <div class="popBg" v-if="mOpenMenuShowYn" @click="closeSubMenu"></div>
   <div v-show="mOpenMenuShowYn" class="reportCompoArea">
@@ -1213,6 +1209,7 @@ import 'vue-datepicker-next/index.css'
 import { commonMethods } from '../../assets/js/common'
 import SkeletonBox from '@/components/unit/contents/ContentsSkeleton'
 import CommonAddContentsForm from '../../components/common/CommonAddContentsForm.vue'
+import userDetailPop from '@/components/popup/UserDetailPop'
 
 export default {
   components: {
@@ -1222,7 +1219,8 @@ export default {
     setPop,
     unibDetailPop,
     SkeletonBox,
-    CommonAddContentsForm
+    CommonAddContentsForm,
+    userDetailPop
   },
   data() {
     return {
@@ -1248,6 +1246,7 @@ export default {
       mMemoList: [],
       mUniBTodoDetailPopShowYn: false,
       mTargetDataList: [],
+      mProfilePopShowYn: false,
       mOption: {
         model: 'mankik',
         purpose: 'Add ToDo',
@@ -1263,7 +1262,8 @@ export default {
       mWritePopShowYn: false,
       mGetWhichTodoIndex: -1,
       mOpenActorListIndex: -1,
-      mOpenActorListYn: false
+      mOpenActorListYn: false,
+      mPopParam: {}
     }
   },
   created() {
@@ -1280,6 +1280,29 @@ export default {
     this.mSelectDate = new Date()
   },
   methods: {
+    async goUserProfile(targetUserKey) {
+      if (this.GE_USER.unknownYn) {
+        this.$showToastPop(this.$t('CONF_MSG_CHECK_UNABLE'))
+        return
+      }
+      var openPopParam = {}
+      openPopParam.targetType = 'bookMemberDetail'
+      openPopParam.userKey = targetUserKey
+
+      if (targetUserKey) openPopParam.userKey = targetUserKey
+      openPopParam.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
+      openPopParam.readOnlyYn = true
+      this.mPopParam = openPopParam
+      this.mProfilePopShowYn = true
+    },
+    // workToDate와 workFromDate가 같으면 날짜가 하나만 표시되도록
+    compareSameDate (from, to) {
+      if (from === to) {
+        return from
+      } else {
+        return `${from} ~ ${to}`
+      }
+    },
     clickFileDownload() {
       return false // 추후 수정
     },
