@@ -102,9 +102,16 @@
           ></Datepicker>
           <div
             class="cursorP"
-            style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center"
+            style="position: relative; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center"
             @click="MoveDate(-1)"
           >
+            <div
+              class="fr fontBold cursorP addBtn CDeepBgColor"
+              style="position: absolute; right: -50px;"
+              @click.stop="goToday"
+            >
+              Today
+            </div>
             <img
               class="cursorP"
               src="../../assets/images/todo/purpleArrow.png"
@@ -114,7 +121,7 @@
           </div>
         </div>
       </div>
-      <div
+      <!-- <div
         class="todoFilter"
         style="position: absolute; right: 0"
         :style="`top: ${this.$STATUS_HEIGHT + 5}px;`"
@@ -125,7 +132,7 @@
         >
           Add
         </div>
-      </div>
+      </div> -->
       <!-- <span class="popHeaderTitleSpan font20 h100P" style="color: #6768A7; font-weight: bold; display: flex; justify-content: center; align-items: center;">Today's Todo</span> -->
     </div>
     <div style="width: 100%; height: 100%">
@@ -1159,6 +1166,13 @@
         </template>
       </div>
     </div>
+    <img
+      id="writeBtn"
+      src="@/assets/images/button/Icon_WriteBoardBtn.png"
+      @click="openAddTodoPop"
+      alt="button for write contents"
+      class="img-78 img-w66 writeContentsBtn"
+    />
   </div>
   <div class="popBg" v-if="mWritePopShowYn"></div>
   <!-- <transition name="show_right"> -->
@@ -1280,6 +1294,9 @@ export default {
     this.mSelectDate = new Date()
   },
   methods: {
+    goToday () {
+      this.mSelectDate = new Date()
+    },
     async goUserProfile(targetUserKey) {
       if (this.GE_USER.unknownYn) {
         this.$showToastPop(this.$t('CONF_MSG_CHECK_UNABLE'))
@@ -1582,7 +1599,7 @@ export default {
       const myContents = await this.$commonAxiosFunction({
         url: '/sUniB/tp.getMyContentsList',
         param: param
-      })
+      }, true)
       if (myContents.data.content) {
         for (let i = 0; i < myContents.data.content.length; i++) {
           myContents.data.content[i].creTeamKey = 0
@@ -2194,6 +2211,13 @@ export default {
 }
 </script>
 <style scoped>
+.writeContentsBtn {
+  position: absolute;
+  bottom: 70px;
+  right: 10%;
+  z-index: 9;
+  cursor: pointer;
+}
 .fontSize {
   font-size: 18px;
 }
