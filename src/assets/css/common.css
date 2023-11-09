@@ -1302,7 +1302,7 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
   box-sizing: border-box!important;
   border: none !important;
   /* background-color: rgb(239, 239, 239) !important; */
-  font-size: 20px !important;
+  font-size: 14px !important;
   text-align: center !important;
   font-weight: bold !important;
 }
