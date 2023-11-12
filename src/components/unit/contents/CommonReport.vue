@@ -37,6 +37,13 @@
         <p class="fl font16 w100P commonColor rowText" @click="emit('move')" v-if="contentOwner && contentType === 'BOAR'" >{{ $t('COMMON_BTN_MOVE_POST') }}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('copy')" v-if="contentOwner && contentType === 'BOAR' " >{{ $t('COMMON_BTN_COPY_POST') }}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType === 'BOAR'">{{ $t('COMM_BTN_EDIT_POST') }}</p>
+        <p
+          class="fl font16 w-100P commonColor rowText"
+          @click="editTodo('edit')"
+          v-if="contentType === 'TODO'"
+        >
+          {{ $t('COMM_BTN_EDIT_POST') }}
+        </p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('delete')" v-if="contentOwner">{{ contentType === 'MEMO' ? $t('COMMON_BTN_DELETE_COMMENT') : $t('COMMON_BTN_DELETE_POST')}}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('textCopy')" >{{ $t('COMMON_BTN_COPY_CLIPBOARD') }}</p>
         <p class="fl font16 w100P menuListBase rowText" @click="report(contentType)" v-if="!GE_USER.unknownYn && !contentOwner" >{{ contentText === '게시글'? $t('COMMON_BTN_REPORT_POST'):$t('COMMON_BTN_REPORT_COMMENT') }}</p>
@@ -104,6 +111,9 @@ export default {
     this.$addHistoryStack('gRePortPop')
   },
   methods: {
+    emitFunc (emitObj) {
+      this.$emit(emitObj.type, emitObj.option)
+    },
     sendBtnClick () {
       this.emitFunc({ type: 'report', option: this.reportType })
     },
@@ -112,6 +122,9 @@ export default {
     },
     bloc (type) {
       this.emitFunc({ type: 'bloc', option: type })
+    },
+    editTodo (type) {
+      this.emitFunc({ type: 'editTodo', option: type })
     },
     report (type) {
       if (type === 'content') {
@@ -127,9 +140,6 @@ export default {
       this.reportDetailTitle = data.reportTitle
       this.reportDetailType = data.type
       this.reportPopStep += 1
-    },
-    emitFunc (emitObj) {
-      this.$emit(emitObj.type, emitObj.option)
     },
     closePop () {
       this.$emit('closePop')

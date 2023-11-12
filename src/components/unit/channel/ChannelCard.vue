@@ -8,128 +8,189 @@
     }
   }
   </i18n>
-  <template>
-  <div class="w100P pSide-1 chanCardWrap"
-  :class="{channelCardBox : $route.path === '/'}"
+<template>
+  <div
+    class="w100P pSide-1 chanCardWrap"
+    :class="{ channelCardBox: $route.path === '/' }"
   >
     <div @click="goChannelMain(chanElement)" class="w100P channelCardArea">
-        <div
-        v-if="pSelectedYn === true"
-        class="font11 selectedChannel"
-        >
-        Now
-        </div>
-        <div
+      <div v-if="pSelectedYn === true" class="font11 selectedChannel">Now</div>
+      <div
         v-if="chanElement"
         class="chanIconWrap"
-        :class="chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey? 'myChan':'normalChan'"
-        :style="
-            'background-image: url(' +
-            (chanElement.logoDomainPath !== undefind
-            ? chanElement.logoDomainPath + $changeUrlBackslash(chanElement.logoPathMtext)
-            : chanElement.logoPathMtext) +
-            ');'
+        :class="
+          chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey
+            ? 'myChan'
+            : 'normalChan'
         "
+        :style="
+          'background-image: url(' +
+          (chanElement.logoDomainPath !== undefind
+            ? chanElement.logoDomainPath +
+              $changeUrlBackslash(chanElement.logoPathMtext)
+            : chanElement.logoPathMtext) +
+          ');'
+        "
+      >
+        <div
+          v-if="
+            chanElement.ownerYn ||
+            chanElement.creUserKey === GE_USER.userKey ||
+            chanElement.managerKey
+          "
+          class="CWhiteBgColor mngChanEffect"
         >
-          <div
-              v-if="chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey || chanElement.managerKey"
-              class="CWhiteBgColor mngChanEffect"
-          >
-              <img
-              src="@/assets/images/channel/ownerChannel_crown.svg"
-              v-if="chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey"
-              alt=""
-              />
-              <img
-              src="@/assets/images/common/icon_setting_gear.svg"
-              v-else
-              alt=""
-              />
-          </div>
+          <img
+            src="@/assets/images/channel/ownerChannel_crown.svg"
+            v-if="
+              chanElement.ownerYn || chanElement.creUserKey === GE_USER.userKey
+            "
+            alt=""
+          />
+          <img
+            src="@/assets/images/common/icon_setting_gear.svg"
+            v-else
+            alt=""
+          />
         </div>
-        <div class="fl mleft-1 chanNameWrap">
-          <div class="w100P fl font16 fontBold textLeft grayBlack">
-            <img
+      </div>
+      <div class="fl mleft-1 chanNameWrap">
+        <div class="w100P fl font16 fontBold textLeft grayBlack">
+          <img
             class="fl img-w14 mtop-02 mright-02"
             v-if="chanElement.officialYn"
             src="@/assets/images/main/main_officialMark.svg"
             alt=""
-            />
-            <!-- {{$route.path === "/" ? $changeText(chanElement.nameMtext) + " Channel " : `${$changeText(chanElement.bdAreaNameMtext)} > ${$changeText(chanElement.nameMtext )}`}} -->
-            <div v-if="$route.path === '/'" class="w100P flexAlignCenter">
-              <p class="chanName textOverdot">{{ $changeText(chanElement.nameMtext) }}</p>
-              <img class="chanIcon" src="@/assets/images/footer/icon_channel_fillin.svg" alt="">
-            </div>
-            <div v-else class="dispInlineBlock">
+          />
+          <!-- {{$route.path === "/" ? $changeText(chanElement.nameMtext) + " Channel " : `${$changeText(chanElement.bdAreaNameMtext)} > ${$changeText(chanElement.nameMtext )}`}} -->
+          <div v-if="$route.path === '/'" class="w100P flexAlignCenter">
+            <p class="chanName textOverdot">
               {{ $changeText(chanElement.nameMtext) }}
-            </div>
-            <p class="fr font13 lightGray fontNomal">
-            {{
-                $t("SEAR_TAB_ACT_CAHNNEL") +
-                " " +
-                $changeDateFormat(
-                chanElement.updDate !== undefind
-                    ? chanElement.updDate
-                    : chanElement.teamUpdDate
-                )
-            }}
             </p>
-        </div>
-        <p v-if="$route.path === '/'" class="w100P fl font14 textLeft grayBlack">
+            <img
+              class="chanIcon"
+              src="@/assets/images/footer/icon_channel_fillin.svg"
+              alt=""
+            />
+          </div>
+          <div v-else class="dispInlineBlock">
+            {{ $changeText(chanElement.nameMtext) }}
+          </div>
+          <p class="fr font13 lightGray fontNomal">
             {{
-            $changeText(chanElement.memoMtext)
-                ? $changeText(chanElement.memoMtext)
-                : "channel description"
+              $t('SEAR_TAB_ACT_CAHNNEL') +
+              ' ' +
+              $changeDateFormat(
+                chanElement.updDate !== undefind
+                  ? chanElement.updDate
+                  : chanElement.teamUpdDate
+              )
             }}
+          </p>
+        </div>
+        <p
+          v-if="$route.path === '/'"
+          class="w100P fl font14 textLeft grayBlack"
+        >
+          {{
+            $changeText(chanElement.memoMtext)
+              ? $changeText(chanElement.memoMtext)
+              : 'channel description'
+          }}
         </p>
         <p
-            v-if="$route.path === '/search'"
-            class="w100P fl font14 textLeft grayBlack"
+          v-if="$route.path === '/search'"
+          class="w100P fl font14 textLeft grayBlack"
         >
-            {{
+          {{
             $changeText(chanElement.memoMtext)
-                ? $changeText(chanElement.memoMtext)
-                : ""
-            }}
+              ? $changeText(chanElement.memoMtext)
+              : ''
+          }}
         </p>
         <div class="w100P fl font14 textLeft lightGray">
-            <p class="fl font14">{{ $changeText(chanElement.bdAreaNameMtext) }}</p>
-            <img
+          <p class="fl font14">
+            {{ $changeText(chanElement.bdAreaNameMtext) }}
+          </p>
+          <img
             src="@/assets/images/editChan/icon_user_Gray.svg"
             class="img-w15 mright-01 fl mleft-03 mtop-01"
             alt=""
-            />
-            <p class="fl font14 followCount">
+          />
+          <p class="fl font14 followCount">
             {{
-                chanElement.followerCount !== undefind
+              chanElement.followerCount !== undefind
                 ? chanElement.followerCount
                 : chanElement.fCount
             }}
+          </p>
+          <div
+            v-if="
+              $route.path === '/chanList' &&
+              chanElement.creUserKey !== GE_USER.userKey
+            "
+            class="fr"
+          >
+            <p
+              v-if="
+                (chanElement &&
+                  chanElement.followerKey &&
+                  chanElement.followerKey !== null) ||
+                (chanElement &&
+                  chanElement.D_CHAN_AUTH &&
+                  chanElement.D_CHAN_AUTH.followerKey)
+              "
+              @click.stop="preventDefault"
+              class="fontBold unfollowBtn"
+            >
+              Following
             </p>
-            <div v-if="$route.path === '/chanList' && chanElement.creUserKey !== GE_USER.userKey" class="fr">
-              <p v-if="(chanElement && chanElement.followerKey && chanElement.followerKey !== null) || (chanElement && chanElement.D_CHAN_AUTH && chanElement.D_CHAN_AUTH.followerKey)" @click.stop="preventDefault" class="fontBold unfollowBtn"> Following </p>
-              <p v-else @click.stop="saveFollower" class="fontBold cursorP followBtn"> + Follow </p>
-            </div>
+            <p
+              v-else
+              @click.stop="saveFollower"
+              class="fontBold cursorP followBtn"
+            >
+              + Follow
+            </p>
+          </div>
         </div>
       </div>
     </div>
     <div
-        v-if="
+      v-if="
         $route.path === '/' &&
         chanElement.popCList &&
         chanElement.popCList.length > 0
-        "
-        class="w100P fl popularPostWrap"
+      "
+      class="w100P fl popularPostWrap"
     >
-        <p class="font15 fontBold textLeft">Popular Post</p>
-        <div class="popularContentsBox">
-            <p @click="goChannelMain(chanElement)" class="font12 fl commonColor fontBold textLeft">{{ `${$changeText(chanElement.popCList[0].cabinetNameMtext)} Board > ${chanElement.popCList[0].showCreNameYn? $changeText(chanElement.popCList[0].creUserName) : 'Anonymous'}` }}</p>
-            <p @click="goChannelMain(chanElement)" class="font12 fr lightGray textLeft">{{ `${$changeDateFormat(chanElement.popCList[0].creDate)}` }}</p>
-            <div ref="contentsBoxRef" class="fl popularContentsItem">
-                <p class="font14 textLeft fontBold" >{{ chanElement.popCList[0].title }}</p>
-            </div>
+      <p class="font15 fontBold textLeft">Popular Post</p>
+      <div class="popularContentsBox">
+        <p
+          @click="goChannelMain(chanElement)"
+          class="font12 fl commonColor fontBold textLeft"
+        >
+          {{
+            `${$changeText(chanElement.popCList[0].cabinetNameMtext)} Board > ${
+              chanElement.popCList[0].showCreNameYn
+                ? $changeText(chanElement.popCList[0].creUserName)
+                : 'Anonymous'
+            }`
+          }}
+        </p>
+        <p
+          @click="goChannelMain(chanElement)"
+          class="font12 fr lightGray textLeft"
+        >
+          {{ `${$changeDateFormat(chanElement.popCList[0].creDate)}` }}
+        </p>
+        <div ref="contentsBoxRef" class="fl popularContentsItem">
+          <p class="font14 textLeft fontBold">
+            {{ chanElement.popCList[0].title }}
+          </p>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
@@ -139,23 +200,23 @@ export default {
     chanElement: {},
     pSelectedYn: Boolean
   },
-  created () {
+  created() {
     if (this.$route.path === '/chanList') {
       this.$nextTick(() => {
         this.showFollowYn()
       })
     }
   },
-  updated () {
+  updated() {
     this.addImgEvnt()
   },
-  mounted () {
+  mounted() {
     const this_ = this
     this.$nextTick(async () => {
       this_.addImgEvnt()
     })
   },
-  data () {
+  data() {
     return {
       mDirectTeamKey: null,
       selectMemberObj: {},
@@ -163,7 +224,7 @@ export default {
     }
   },
   methods: {
-    async addImgEvnt () {
+    async addImgEvnt() {
       var contBody = this.$refs.contentsBoxRef
       if (!contBody) return
       this.mClickImgList = contBody.querySelectorAll('img')
@@ -176,12 +237,15 @@ export default {
         })
       }
     },
-    preventDefault () {
+    preventDefault() {
       return false
     },
-    showFollowYn () {
+    showFollowYn() {
       if (this.chanElement) {
-        if (this.chanElement.followerKey && this.chanElement.followerKey !== null) {
+        if (
+          this.chanElement.followerKey &&
+          this.chanElement.followerKey !== null
+        ) {
           this.mFollowYn = true
         } else if (this.chanElement.D_CHAN_AUTH) {
           if (this.chanElement.D_CHAN_AUTH.followerKey > 0) {
@@ -194,7 +258,7 @@ export default {
         }
       }
     },
-    goChannelMain (chanElement) {
+    goChannelMain(chanElement) {
       var openPopParam = {}
       openPopParam.targetKey = chanElement.teamKey
       if (!openPopParam.targetKey) {
@@ -204,7 +268,7 @@ export default {
       openPopParam.areaInfo = this.pAreaInfo
       this.$emit('openPop', openPopParam)
     },
-    async saveFollower () {
+    async saveFollower() {
       this.mFollowYn = true
       // eslint-disable-next-line no-new-object
       var typeParam = new Object()
@@ -229,10 +293,10 @@ export default {
     }
   },
   computed: {
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     },
-    CHANNEL_DETAIL () {
+    CHANNEL_DETAIL() {
       if (!this.chanElement && !this.mDirectTeamKey) return {}
       let teamKey
       if (this.chanElement) {
@@ -247,20 +311,34 @@ export default {
       if (detail && detail.length > 0) {
         if (detail[0].blackYn) this.$emit('bgcolor', detail[0].blackYn)
 
-        if (detail[0] && (detail[0].blackYn !== undefined && detail[0].blackYn !== null && detail[0].blackYn !== '')) {
+        if (
+          detail[0] &&
+          detail[0].blackYn !== undefined &&
+          detail[0].blackYn !== null &&
+          detail[0].blackYn !== ''
+        ) {
           this.$emit('bgcolor', detail[0].blackYn)
         } else {
           this.$emit('bgcolor', false)
         }
 
-        if (!detail[0].D_CHAN_AUTH || detail[0].D_CHAN_AUTH === true || (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)) {
+        if (
+          !detail[0].D_CHAN_AUTH ||
+          detail[0].D_CHAN_AUTH === true ||
+          (detail[0].D_CHAN_AUTH.followYn && !detail[0].D_CHAN_AUTH.settingYn)
+        ) {
           return this.CHANNEL_DETAIL
         } else {
           return detail[0]
         }
       } else {
         if (this.CHANNEL_DETAIL) {
-          if (this.CHANNEL_DETAIL && (this.CHANNEL_DETAIL.blackYn !== undefined && this.CHANNEL_DETAIL.blackYn !== null && this.CHANNEL_DETAIL.blackYn !== '')) {
+          if (
+            this.CHANNEL_DETAIL &&
+            this.CHANNEL_DETAIL.blackYn !== undefined &&
+            this.CHANNEL_DETAIL.blackYn !== null &&
+            this.CHANNEL_DETAIL.blackYn !== ''
+          ) {
             this.$emit('bgcolor', this.CHANNEL_DETAIL.blackYn)
           } else {
             this.$emit('bgcolor', false)
@@ -277,11 +355,12 @@ export default {
 
 <style scoped>
 .channelCardBox {
-  box-shadow: inset 0 0 5px rgba(0,0,0,0);
-  transition: all .3s;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0);
+  transition: all 0.3s;
 }
 .channelCardBox:hover {
-  box-shadow: inset 0 0 12px rgba(97, 97, 97, 0.6), 0 0 7px rgba(255,255,255,0.5);
+  box-shadow: inset 0 0 12px rgba(97, 97, 97, 0.6),
+    0 0 7px rgba(255, 255, 255, 0.5);
 }
 .chanLogoImgWrap {
   width: 40px;
@@ -310,7 +389,7 @@ export default {
   padding-top: 15px;
   padding-bottom: 15px;
   margin-top: 5px;
-  background-color: rgba(255, 255, 255 ,0.5);
+  background-color: rgba(255, 255, 255, 0.5);
   border-radius: 10px;
 }
 .selectedChannel {
@@ -366,29 +445,29 @@ export default {
   margin-top: 1px;
 }
 .unfollowBtn {
-  cursor:auto;
-  border-radius:5px;
-  padding:5px 10px;
-  background-color:#ccc;
-  color:#062BB5;
+  cursor: auto;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: #ccc;
+  color: #062bb5;
 }
 .followBtn {
-  border-radius:5px;
-  padding:5px 10px;
-  background-color: #062BB5;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background-color: #062bb5;
   color: #fff;
 }
 .popularPostWrap {
   display: flex;
   flex-direction: column;
-  padding: 10px
+  padding: 10px;
 }
 .popularContentsBox {
   width: 100%;
   min-height: 40px;
   border-radius: 5px;
   padding: 5px;
-  background: #FFFFFF98;
+  background: #ffffff98;
 }
 .popularContentsItem {
   width: 100%;
@@ -397,7 +476,7 @@ export default {
   margin-bottom: 5px;
   margin-top: 5px;
   padding-left: 5px;
-  border-left: 2px solid #CCC;
+  border-left: 2px solid #ccc;
 }
 .popularContentsItem > p {
   width: 99%;

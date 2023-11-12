@@ -9,32 +9,52 @@
 }
 </i18n>
 <template>
-    <div class="transWhite favListPopWrap">
-      <div class="font25 fontBold w100P favListPopHeader">
-        <div class="favListPopTitle">
-          <img src="@/assets/images/common/likeIcon.svg" alt="">
-          <p class="textOverdot textLeft">{{ $t('FAV_TITLE_CHANN')  }}</p>
-        </div>
-        <div class="cursorP closeBtnBox" @click="closeXPop">
-          <img class="w100P" src="@/assets/images/common/popup_close.png" alt="">
-        </div>
+  <div class="transWhite favListPopWrap">
+    <div class="font25 fontBold w100P favListPopHeader">
+      <div class="favListPopTitle">
+        <img src="@/assets/images/common/likeIcon.svg" alt="" />
+        <p class="textOverdot textLeft">{{ $t('FAV_TITLE_CHANN') }}</p>
       </div>
-      <div class="w100P favListPopContentsWrap">
-        <div v-if="!mFTeamList || (mFTeamList && mFTeamList.length === 0)" class="w100P h100P emptyBox">
-          <gEmpty tabName="즐겨찾기" contentName="채널" class="mt-header" />
-        </div>
-        <template v-else>
-          <div class="mbottom-1" v-for="town in mSortList" :key="town.townTeamKey">
-            <div class="textLeft fontBold townTitle">{{ $changeText(town.townNameMtext) }}</div>
-            <gChannelCard v-for="(chanEle, index) in town.favList" :key="index" class="moveBox chanRow mTop10" :chanElement="chanEle" @openPop="goChannelMain" @scrollMove="scrollMove" />
-          </div>
-        </template>
+      <div class="cursorP closeBtnBox" @click="closeXPop">
+        <img
+          class="w100P"
+          src="@/assets/images/common/popup_close.png"
+          alt=""
+        />
       </div>
     </div>
+    <div class="w100P favListPopContentsWrap">
+      <div
+        v-if="!mFTeamList || (mFTeamList && mFTeamList.length === 0)"
+        class="w100P h100P emptyBox"
+      >
+        <gEmpty tabName="즐겨찾기" contentName="채널" class="mt-header" />
+      </div>
+      <template v-else>
+        <div
+          class="mbottom-1"
+          v-for="town in mSortList"
+          :key="town.townTeamKey"
+        >
+          <div class="textLeft fontBold townTitle">
+            {{ $changeText(town.townNameMtext) }}
+          </div>
+          <gChannelCard
+            v-for="(chanEle, index) in town.favList"
+            :key="index"
+            class="moveBox chanRow mTop10"
+            :chanElement="chanEle"
+            @openPop="goChannelMain"
+            @scrollMove="scrollMove"
+          />
+        </div>
+      </template>
+    </div>
+  </div>
 </template>
 <script>
 export default {
-  created () {
+  created() {
     if (!this.pFTeamList || this.pFTeamList.length < 1) {
       this.loginCheck()
     } else {
@@ -43,44 +63,49 @@ export default {
     }
   },
   computed: {
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     },
-    history () {
+    history() {
       return this.$store.getters['UB_HISTORY/hStack']
     }
   },
   watch: {
-    pageUpdate () {
+    pageUpdate() {
       if (this.history[this.history.length - 1] === 'favListPop') {
         this.closeXPop()
       }
     }
   },
-  mounted () {
+  mounted() {
     this.$addHistoryStack('favListPop')
   },
-  components: {
-  },
+  components: {},
   props: {
     pFTeamList: Array
   },
-  data () {
+  data() {
     return {
       mFTeamList: [],
       mSortList: []
     }
   },
   methods: {
-    sortList () {
+    sortList() {
       const tempList = []
       for (let i = 0; i < this.mFTeamList.length; i++) {
-        const index = tempList.findIndex(item => item.townTeamKey === this.mFTeamList[i].townTeamKey)
+        const index = tempList.findIndex(
+          (item) => item.townTeamKey === this.mFTeamList[i].townTeamKey
+        )
         if (index === -1) {
-          const tempObj = { townTeamKey: this.mFTeamList[i].townTeamKey, townNameMtext: this.mFTeamList[i].townNameMtext, favList: [this.mFTeamList[i]] }
+          const tempObj = {
+            townTeamKey: this.mFTeamList[i].townTeamKey,
+            townNameMtext: this.mFTeamList[i].townNameMtext,
+            favList: [this.mFTeamList[i]]
+          }
           tempList.push(tempObj)
         } else {
           tempList[index].favList.push(this.mFTeamList[i])
@@ -88,26 +113,42 @@ export default {
       }
       this.mSortList = tempList
     },
-    async loginCheck () {
+    async loginCheck() {
       var paramMap = new Map()
       if (this.GE_USER.userKey) {
         paramMap.set('userKey', this.GE_USER.userKey)
       } else {
-        if ((localStorage.getItem('sessionUser'))) paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+        if (localStorage.getItem('sessionUser')) {
+          paramMap.set(
+            'userKey',
+            JSON.parse(localStorage.getItem('sessionUser')).userKey
+          )
+        }
       }
-      if (this.GE_USER.soAccessToken && this.GE_USER.soAccessToken !== '') { paramMap.set('soAccessToken', this.GE_USER.soAccessToken) }
-      if (this.GE_USER.fcmKey !== undefined && this.GE_USER.fcmKey !== null && this.GE_USER.fcmKey !== '') { paramMap.set('fcmKey', this.GE_USER.fcmKey) }
+      if (this.GE_USER.soAccessToken && this.GE_USER.soAccessToken !== '') {
+        paramMap.set('soAccessToken', this.GE_USER.soAccessToken)
+      }
+      if (
+        this.GE_USER.fcmKey !== undefined &&
+        this.GE_USER.fcmKey !== null &&
+        this.GE_USER.fcmKey !== ''
+      ) {
+        paramMap.set('fcmKey', this.GE_USER.fcmKey)
+      }
       paramMap.set('userEmail', this.GE_USER.userEmail)
       paramMap.set('soEmail', this.GE_USER.soEmail)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap))
+      var response = await this.$axios.post(
+        '/sUniB/tp.UB_firstLoginCheck',
+        Object.fromEntries(paramMap)
+      )
       if (response && (response.status === 200 || response.status === '200')) {
         this.mFTeamList = response.data.fTeamList
         this.sortList()
       }
     },
-    goChannelMain (param) {
+    goChannelMain(param) {
       const pageParam = {}
       if (param.teamKey) {
         pageParam.targetKey = param.teamKey
@@ -119,7 +160,7 @@ export default {
       pageParam.nameMtext = param.nameMtext
       this.$emit('openPage', pageParam)
     },
-    closeXPop () {
+    closeXPop() {
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -138,7 +179,7 @@ export default {
   height: 80%;
   position: absolute;
   top: 10%;
-  left:10%;
+  left: 10%;
   z-index: 10000;
   padding: 10px 20px;
   padding-bottom: 0;

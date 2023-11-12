@@ -17,23 +17,92 @@
 }
 </i18n>
 <template>
-    <div class="selectBoardListPopWrap">
-        <div class="selectPopHeader" >
-            <p class="font24 commonBlack fontBold fl textLeft mbottom-05">{{ mainText === '이동'? $t('COMMON_BTN_MOVE_POST'):$t('COMMON_BTN_COPY_POST') }}</p>
-            <img @click="closeXPop" class="fr closeImg" src="@/assets/images/common/popup_close.png" alt="">
-        </div>
-        <p class="font16 textLeft commonBlack fontBold mtop-05 fl mbottom-05">{{ mainText === '이동'? $t('BOAR_SELECT_MSG_MOVE'):$t('BOAR_SELECT_MSG_COPY') }}</p>
-        <div class="boardListItem" :style="boardDetail.cabinetKey === value.cabinetKey? 'background: rgb(234 233 233) !important; color: #FFF;': 'background: #FFF;'" @click="selectCabinet(value)" :class="selectedCabinet && selectedCabinet.cabinetKey === value.cabinetKey? 'activeCabinet': ''" :id="'selectBoard' + value.cabinetKey" :fileYn="value.fileYn" :cabinetKey="value.cabinetKey"  v-for="(value, index) in boardList" :key="index">
-            <div :style="'background: ' + value.picBgPath"></div>
-            <p :style="boardDetail.cabinetKey === value.cabinetKey? 'color: #9d9d9d;': 'color: #303030;'" class="font16 commonBlack fontBold fl">{{$changeText(value.cabinetNameMtext)}}</p>
-        </div>
-        <div class="boardListPopBtnWrap">
-            <gBtnSmall @click="closeXPop" style="" btnThema="light" :btnTitle="$t('COMM_BTN_CANCEL')" />
-            <gBtnSmall @click="openConfirmPop" class="mRight05" :btnTitle="mainText === '이동'? $t('BOAR_SELECT_BTN_MOVE'):$t('BOAR_SELECT_BTN_COPY')" />
-        </div>
-        <gConfirmPop :confirmText="returnConfirmText()" :confirmType="'two'" @no="confirmPopShowYn = false" @ok="confirmOk" v-if="confirmPopShowYn"/>
-        <gConfirmPop :confirmText="confirmText" :confirmType="'timeout'" @no="errorPopShowYn = false"  @ok="errorPopShowYn = false" v-if="errorPopShowYn"/>
+  <div class="selectBoardListPopWrap">
+    <div class="selectPopHeader">
+      <p class="font24 commonBlack fontBold fl textLeft mbottom-05">
+        {{
+          mainText === '이동'
+            ? $t('COMMON_BTN_MOVE_POST')
+            : $t('COMMON_BTN_COPY_POST')
+        }}
+      </p>
+      <img
+        @click="closeXPop"
+        class="fr closeImg"
+        src="@/assets/images/common/popup_close.png"
+        alt=""
+      />
     </div>
+    <p class="font16 textLeft commonBlack fontBold mtop-05 fl mbottom-05">
+      {{
+        mainText === '이동'
+          ? $t('BOAR_SELECT_MSG_MOVE')
+          : $t('BOAR_SELECT_MSG_COPY')
+      }}
+    </p>
+    <div
+      class="boardListItem"
+      :style="
+        boardDetail.cabinetKey === value.cabinetKey
+          ? 'background: rgb(234 233 233) !important; color: #FFF;'
+          : 'background: #FFF;'
+      "
+      @click="selectCabinet(value)"
+      :class="
+        selectedCabinet && selectedCabinet.cabinetKey === value.cabinetKey
+          ? 'activeCabinet'
+          : ''
+      "
+      :id="'selectBoard' + value.cabinetKey"
+      :fileYn="value.fileYn"
+      :cabinetKey="value.cabinetKey"
+      v-for="(value, index) in boardList"
+      :key="index"
+    >
+      <div :style="'background: ' + value.picBgPath"></div>
+      <p
+        :style="
+          boardDetail.cabinetKey === value.cabinetKey
+            ? 'color: #9d9d9d;'
+            : 'color: #303030;'
+        "
+        class="font16 commonBlack fontBold fl"
+      >
+        {{ $changeText(value.cabinetNameMtext) }}
+      </p>
+    </div>
+    <div class="boardListPopBtnWrap">
+      <gBtnSmall
+        @click="closeXPop"
+        style=""
+        btnThema="light"
+        :btnTitle="$t('COMM_BTN_CANCEL')"
+      />
+      <gBtnSmall
+        @click="openConfirmPop"
+        class="mRight05"
+        :btnTitle="
+          mainText === '이동'
+            ? $t('BOAR_SELECT_BTN_MOVE')
+            : $t('BOAR_SELECT_BTN_COPY')
+        "
+      />
+    </div>
+    <gConfirmPop
+      :confirmText="returnConfirmText()"
+      :confirmType="'two'"
+      @no="confirmPopShowYn = false"
+      @ok="confirmOk"
+      v-if="confirmPopShowYn"
+    />
+    <gConfirmPop
+      :confirmText="confirmText"
+      :confirmType="'timeout'"
+      @no="errorPopShowYn = false"
+      @ok="errorPopShowYn = false"
+      v-if="errorPopShowYn"
+    />
+  </div>
 </template>
 
 <script>
@@ -44,30 +113,30 @@ export default {
     type: {}
   },
   computed: {
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     },
-    history () {
+    history() {
       return this.$store.getters['UB_HISTORY/hStack']
     },
-    GE_LOCALE () {
+    GE_LOCALE() {
       return this.$i18n.locale
     }
   },
   watch: {
-    pageUpdate () {
+    pageUpdate() {
       if (this.history[this.history.length - 1] === 'selectBoardList') {
         this.closeXPop()
       }
     }
   },
-  beforeUnmount () {
+  beforeUnmount() {
     this.$checkDeleteHistory('selectBoardList')
   },
-  data () {
+  data() {
     return {
       boardList: [],
       currentTeamKey: null,
@@ -82,7 +151,7 @@ export default {
       mErrorPopShowYn: false
     }
   },
-  created () {
+  created() {
     this.$addHistoryStack('selectBoardList')
 
     if (this.type === 'move') {
@@ -93,18 +162,24 @@ export default {
     this.getTeamMenuList()
   },
   methods: {
-    returnConfirmText () {
+    returnConfirmText() {
       if (this.GE_LOCALE === 'ko') {
-        return `해당 게시글을 [${this.$changeText(this.selectedCabinet.cabinetNameMtext)}](으)로<br>${this.mainText} 하시겠습니까?`
+        return `해당 게시글을 [${this.$changeText(
+          this.selectedCabinet.cabinetNameMtext
+        )}](으)로<br>${this.mainText} 하시겠습니까?`
       } else {
         if (this.mainText === '이동') {
-          return `Are you sure you want to move this post to the [${this.$changeText(this.selectedCabinet.cabinetNameMtext)}]?`
+          return `Are you sure you want to move this post to the [${this.$changeText(
+            this.selectedCabinet.cabinetNameMtext
+          )}]?`
         } else {
-          return `Are you sure you want to copy this post to the [${this.$changeText(this.selectedCabinet.cabinetNameMtext)}]?`
+          return `Are you sure you want to copy this post to the [${this.$changeText(
+            this.selectedCabinet.cabinetNameMtext
+          )}]?`
         }
       }
     },
-    openConfirmPop () {
+    openConfirmPop() {
       if (this.selectedCabinet == null) {
         this.confirmText = this.$t('BOAR_SELECT_MSG_NOBOARD')
         this.errorPopShowYn = true
@@ -112,19 +187,19 @@ export default {
       }
       this.confirmPopShowYn = true
     },
-    confirmOk () {
+    confirmOk() {
       this.saveMCabContents()
     },
-    closeXPop (value) {
+    closeXPop(value) {
       this.$emit('closeXPop', value)
     },
-    selectCabinet (cab) {
+    selectCabinet(cab) {
       if (this.boardDetail.cabinetKey === cab.cabinetKey) {
         return
       }
       this.selectedCabinet = cab
     },
-    async getTeamMenuList () {
+    async getTeamMenuList() {
       var paramMap = new Map()
       paramMap.set('teamKey', this.boardDetail.creTeamKey)
       paramMap.set('currentTeamKey', this.boardDetail.creTeamKey)
@@ -134,7 +209,7 @@ export default {
       this.boardList = result
       this.currentTeamKey = this.boardList[0].teamKey
     },
-    async saveMCabContents () {
+    async saveMCabContents() {
       var param = {}
       param.cabinetKey = this.selectedCabinet.cabinetKey
       param.jobkindId = 'BOAR'
@@ -174,7 +249,7 @@ export default {
   width: calc(100% - 100px);
   position: absolute;
   left: 50px;
-  background:rgb(220, 221, 235);
+  background: rgb(220, 221, 235);
   min-height: 500px;
   top: 15%;
   padding: 20px;
@@ -194,7 +269,7 @@ export default {
   padding: 10px 15px;
 }
 .activeCabinet {
-  background: #6768A750 !important;
+  background: #6768a750 !important;
 }
 .closeImg {
   width: 25px;
@@ -207,7 +282,7 @@ export default {
   border: 1px solid #ccc;
   margin-bottom: 10px;
   border-radius: 8px;
-  float:left;
+  float: left;
   min-height: 30px;
 }
 .boardListItem > div {

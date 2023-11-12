@@ -2,33 +2,79 @@
   <div class="pinPopWrap">
     <div class="headerShadow font20 fontBold pinPopHeader">
       Pin a Post
-      <img @click="pClosePop" class="cursorP" src="@/assets/images/common/popup_close.png">
+      <img
+        @click="pClosePop"
+        class="cursorP"
+        src="@/assets/images/common/popup_close.png"
+      />
     </div>
-    <div class="commonBoardListWrap pinPostContentsWrap" ref="commonBoardListWrapCompo">
+    <div
+      class="commonBoardListWrap pinPostContentsWrap"
+      ref="commonBoardListWrapCompo"
+    >
       <div class="font12 CDeepColor textLeft mBottom10">
         You can pin down important posts and show them at the top.
       </div>
-      <div class="w100P fl commonBoardListContentBox contentsLine"/>
-      <template  v-if="mCabContentsList && mCabContentsList.length > 0">
-        <div class="w100P pinContentsBox" v-for="(cont) in mCabContentsList" :key="cont.contentsKey">
+      <div class="w100P fl commonBoardListContentBox contentsLine" />
+      <template v-if="mCabContentsList && mCabContentsList.length > 0">
+        <div
+          class="w100P pinContentsBox"
+          v-for="cont in mCabContentsList"
+          :key="cont.contentsKey"
+        >
           <div class="w100P flexAlignCenter">
-            <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound chanImgBox" :style="'background-image: url(' + (cont.domainPath? cont.domainPath + $changeUrlBackslash(cont.logoPathMtext) : cont.logoPathMtext) + ');'"></div>
+            <div
+              id="chanAlimListBG"
+              ref="chanAlimListBG"
+              class="chanImgRound chanImgBox"
+              :style="
+                'background-image: url(' +
+                (cont.domainPath
+                  ? cont.domainPath + $changeUrlBackslash(cont.logoPathMtext)
+                  : cont.logoPathMtext) +
+                ');'
+              "
+            ></div>
             <div class="contentsItem">
-              <p class="w100P fontBold font16 textOverdot textLeft">{{ cont.title }}</p>
+              <p class="w100P fontBold font16 textOverdot textLeft">
+                {{ cont.title }}
+              </p>
               <div class="font12 flexAlignCenter">
                 <p class="textOverdot">{{ $changeText(cont.creUserName) }}</p>
-                <p class="textLeft">{{ $changeSimpleDateFormat(cont.creDate) }}</p>
+                <p class="textLeft">
+                  {{ $changeSimpleDateFormat(cont.creDate) }}
+                </p>
               </div>
             </div>
             <div class="contentsBtnBox">
-              <gBtnSmall v-if="getPinYn(cont)" class="pinnedBtn font12" btnTitle="Pinned" @click="setPinBoard(true, cont)" />
-              <gBtnSmall v-else class="CWhiteGrayBgColor CWDeepGrayColor font12" btnTitle="Pin" @click="setPinBoard(false, cont)" />
+              <gBtnSmall
+                v-if="getPinYn(cont)"
+                class="pinnedBtn font12"
+                btnTitle="Pinned"
+                @click="setPinBoard(true, cont)"
+              />
+              <gBtnSmall
+                v-else
+                class="CWhiteGrayBgColor CWDeepGrayColor font12"
+                btnTitle="Pin"
+                @click="setPinBoard(false, cont)"
+              />
             </div>
           </div>
         </div>
-        <myObserver @triggerIntersected="loadMore" id="observer" class="fl w100P" style=""></myObserver>
+        <myObserver
+          @triggerIntersected="loadMore"
+          id="observer"
+          class="fl w100P"
+          style=""
+        ></myObserver>
       </template>
-      <gEmpty v-else-if="mCabContentsList.length === 0" tabName="최신" contentName="게시판" option='EDIT' />
+      <gEmpty
+        v-else-if="mCabContentsList.length === 0"
+        tabName="최신"
+        contentName="게시판"
+        option="EDIT"
+      />
     </div>
     <div class="w100P closeBtn">
       <gBtnSmall class="font12" btnTitle="OK" @click="pClosePop" />
@@ -38,12 +84,12 @@
 
 <script>
 export default {
-  created () {
+  created() {
     this.getContentsList().then((result) => {
       this.mCabContentsList = result.content
     })
   },
-  data () {
+  data() {
     return {
       mCabContentsList: [],
       endListYn: false,
@@ -57,12 +103,12 @@ export default {
     pUpdateTopview: Function
   },
   computed: {
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     }
   },
   methods: {
-    async setPinBoard (pinYn, board) {
+    async setPinBoard(pinYn, board) {
       let result = {}
       if (pinYn) {
         result = await this.$commonAxiosFunction({
@@ -95,11 +141,11 @@ export default {
         }
       }
     },
-    getPinYn (board) {
+    getPinYn(board) {
       if (!this.pTVList) {
         return false
       }
-      const index = this.pTVList.findIndex(item => {
+      const index = this.pTVList.findIndex((item) => {
         return item.contentsKey === board.contentsKey
       })
       if (index !== -1) {
@@ -108,7 +154,7 @@ export default {
         return false
       }
     },
-    async getContentsList (pageSize, offsetInput) {
+    async getContentsList(pageSize, offsetInput) {
       var param = {}
       this.$emit('closeLoading')
       if (!this.mPropParams) {
@@ -116,7 +162,13 @@ export default {
       } else {
         param.cabinetKey = this.mPropParams.targetKey
       }
-      if (this.offsetInt === 0 && this.mCabContentsList && this.mCabContentsList.length > 0) this.offsetInt += 1
+      if (
+        this.offsetInt === 0 &&
+        this.mCabContentsList &&
+        this.mCabContentsList.length > 0
+      ) {
+        this.offsetInt += 1
+      }
       param.offsetInt = this.offsetInt
       if (offsetInput !== undefined) {
         param.offsetInt = offsetInput
@@ -144,22 +196,28 @@ export default {
 
       return resultList
     },
-    replaceArr (arr) {
+    replaceArr(arr) {
       if (!arr || arr.length === 0) return
       var uniqueArr = arr.reduce(function (data, current) {
         if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1) {
           data.push(current)
         }
-        data = data.sort(function (a, b) { // num으로 오름차순 정렬
+        data = data.sort(function (a, b) {
+          // num으로 오름차순 정렬
           return b.mccKey - a.mccKey
         })
         return data
       }, [])
       return uniqueArr
     },
-    async loadMore (pageSize) {
+    async loadMore(pageSize) {
       if (this.endListYn === false) {
-        if (this.mCabContentsList && (!this.pBoardDetail.totalContentsCount > this.mCabContentsList.length)) return
+        if (
+          this.mCabContentsList &&
+          !this.pBoardDetail.totalContentsCount > this.mCabContentsList.length
+        ) {
+          return
+        }
 
         var resultList = await this.getContentsList()
         if (!resultList) {
@@ -168,10 +226,7 @@ export default {
         }
         this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultList.content)
 
-        const newArr = [
-          ...this.mCabContentsList,
-          ...resultList.content
-        ]
+        const newArr = [...this.mCabContentsList, ...resultList.content]
 
         var uniqueArr = this.replaceArr(newArr)
         var tempCabData = this.pBoardDetail
@@ -183,7 +238,10 @@ export default {
           this.endListYn = false
         } else {
           if (resultList.pageable) {
-            if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
+            if (
+              resultList.totalElements <
+              resultList.pageable.offset + resultList.pageable.pageSize
+            ) {
               this.endListYn = true
             } else {
               this.offsetInt += 1

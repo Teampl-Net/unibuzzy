@@ -35,67 +35,186 @@
 }
 </i18n>
 <template>
-  <gPopHeader :headerTitle="`Settings`" @closeXPop="closeXPop"/>
+  <gPopHeader :headerTitle="`Settings`" @closeXPop="closeXPop" />
   <div class="setMyPageWrap">
-    <logoutPop v-if="logOutShowYn" @goLogout="goLogout" @closePop="closeOnlyLogoutPop"/>
-    <userImgSelectCompo @closeXPop="closeImgPop" :pSelectedIconPath="GE_USER.domainPath + GE_USER.userProfileImg" :parentSelectedIconFileKey="GE_USER.picMfilekey"  @noChange="backClick" v-if="changeUserIconShowYn"/>
+    <logoutPop
+      v-if="logOutShowYn"
+      @goLogout="goLogout"
+      @closePop="closeOnlyLogoutPop"
+    />
+    <userImgSelectCompo
+      @closeXPop="closeImgPop"
+      :pSelectedIconPath="GE_USER.domainPath + GE_USER.userProfileImg"
+      :parentSelectedIconFileKey="GE_USER.picMfilekey"
+      @noChange="backClick"
+      v-if="changeUserIconShowYn"
+    />
     <div>
-       <div class="languageArea" :style="'padding-top:' + ($STATUS_HEIGHT + 5)+ 'px;'">
-         <p class="font12 fl mright-05">{{ $t('PROF_TITLE_LANGUAGE') }}</p>
-        <select class="fl mRight10 font12" @change="change18n('userLang', selectedI18nLocale)" v-model="selectedI18nLocale" name="selectLang" id="selectLang"><option value="en">English</option><option value="ko">한국어</option></select>
+      <div
+        class="languageArea"
+        :style="'padding-top:' + ($STATUS_HEIGHT + 5) + 'px;'"
+      >
+        <p class="font12 fl mright-05">{{ $t('PROF_TITLE_LANGUAGE') }}</p>
+        <select
+          class="fl mRight10 font12"
+          @change="change18n('userLang', selectedI18nLocale)"
+          v-model="selectedI18nLocale"
+          name="selectLang"
+          id="selectLang"
+        >
+          <option value="en">English</option>
+          <option value="ko">한국어</option>
+        </select>
         <p class="font12 fl mright-05">{{ $t('ROPF_TITLE_TIME') }}</p>
-        <select class="fl mRight10 font12" @change="change18n('areaKey', GE_TIME_LOCALE)" v-model="selectedLocale" name="selectLocale" id="selectLocale"><option value="US">United States</option><option value="KR">South Korea</option></select>
-       </div>
-       <div class="profileWrap ">
+        <select
+          class="fl mRight10 font12"
+          @change="change18n('areaKey', GE_TIME_LOCALE)"
+          v-model="selectedLocale"
+          name="selectLocale"
+          id="selectLocale"
+        >
+          <option value="US">United States</option>
+          <option value="KR">South Korea</option>
+        </select>
+      </div>
+      <div class="profileWrap">
         <div @click="changeUserImg()" class="cursorP imgSize">
-          <div class="roundDiv profilePicImgWrap" :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + $changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'"></div>
-          <div @click="changeUserImg()" class="font14 changeImgBtn">{{ $t('COMM_BTN_EDIT') }}</div>
+          <div
+            class="roundDiv profilePicImgWrap"
+            :style="
+              'background-image: url(' +
+              (GE_USER.domainPath
+                ? GE_USER.domainPath +
+                  $changeUrlBackslash(GE_USER.userProfileImg)
+                : GE_USER.userProfileImg) +
+              ');'
+            "
+          ></div>
+          <div @click="changeUserImg()" class="font14 changeImgBtn">
+            {{ $t('COMM_BTN_EDIT') }}
+          </div>
         </div>
-        <div class="font20 fontBold mtop-1 userNameBox" v-show="!changeYn" >
-          <span class="fl textOverdot">{{$changeText(GE_USER.userDispMtext)}}</span>
-          <img src="@/assets/images/contents/noticebox_edit.png" class="fr cursorP" @click="changeUserDispMtext()" >
+        <div class="font20 fontBold mtop-1 userNameBox" v-show="!changeYn">
+          <span class="fl textOverdot">{{
+            $changeText(GE_USER.userDispMtext)
+          }}</span>
+          <img
+            src="@/assets/images/contents/noticebox_edit.png"
+            class="fr cursorP"
+            @click="changeUserDispMtext()"
+          />
         </div>
 
         <div class="fl nameChangeWrap" v-show="changeYn">
           <div class="nameChangeBox">
-            <input class="fl font16" type="text" v-model="tempUserDispName" @keyup.enter="setDispName" />
+            <input
+              class="fl font16"
+              type="text"
+              v-model="tempUserDispName"
+              @keyup.enter="setDispName"
+            />
             <div class="fl w100P">
-              <p class="fl mleft-1 font13 lineHeight30" @click="setDispName" >{{ $t('COMMON_BTN_OK') }}</p>
-              <p class="fl mleft-1 font13 lineHeight30" @click="changeYn = false">{{ $t('COMM_BTN_CANCEL') }}</p>
+              <p class="fl mleft-1 font13 lineHeight30" @click="setDispName">
+                {{ $t('COMMON_BTN_OK') }}
+              </p>
+              <p
+                class="fl mleft-1 font13 lineHeight30"
+                @click="changeYn = false"
+              >
+                {{ $t('COMM_BTN_CANCEL') }}
+              </p>
             </div>
           </div>
         </div>
       </div>
       <div class="textLeft">
-        <userItem class="w-100P font16 mbottom-1 border05" uItem="이메일" @openPop="openPop('changeEmail', $t('PROF_BTN_EDIT_EMAIL'))" />
-        <userItem @click="goDevMode" class="w-100P font16" @openPop="openPop" uItem="휴대폰 번호" />
+        <userItem
+          class="w-100P font16 mbottom-1 border05"
+          uItem="이메일"
+          @openPop="openPop('changeEmail', $t('PROF_BTN_EDIT_EMAIL'))"
+        />
+        <userItem
+          @click="goDevMode"
+          class="w-100P font16"
+          @openPop="openPop"
+          uItem="휴대폰 번호"
+        />
       </div>
       <div class="grayLine"></div>
     </div>
     <div class="subPaddingWrap">
       <table>
-        <tr><th>{{ $t('PROF_TITLE_DOWNLOAD') }}</th><td class="textRight">{{$dayjs(GE_USER.creDate).format('YYYY/MM/DD')}}</td></tr>
-        <tr @click="openPolicyPop('privacy')"><th class="font16" colspan="2">{{ $t('PROF_BTN_POLICY') }}</th></tr>
-        <tr @click="openPolicyPop('termsOfUse')"><th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_TERMS') }}</th></tr>
+        <tr>
+          <th>{{ $t('PROF_TITLE_DOWNLOAD') }}</th>
+          <td class="textRight">
+            {{ $dayjs(GE_USER.creDate).format('YYYY/MM/DD') }}
+          </td>
+        </tr>
+        <tr @click="openPolicyPop('privacy')">
+          <th class="font16" colspan="2">{{ $t('PROF_BTN_POLICY') }}</th>
+        </tr>
+        <tr @click="openPolicyPop('termsOfUse')">
+          <th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_TERMS') }}</th>
+        </tr>
         <tr @click="checkAppVersion" v-if="isMobile">
           <th class="font16">
             {{ $t('PROF_TITLE_VERSION') }}
-            <p class="font10">{{ $t('PROF_TITLE_LATE_VERSION') }}: {{lastVersion}}</p>
+            <p class="font10">
+              {{ $t('PROF_TITLE_LATE_VERSION') }}: {{ lastVersion }}
+            </p>
           </th>
-          <td class="textRight font16">{{appVersion}}</td></tr>
-          <tr v-if="isMobile && systemName === 'android' || systemName === 'Android'" @click="reloadApp"><th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_CASH') }}</th></tr>
-          <tr v-else @click="cleanApp"><th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_CASH') }}</th></tr>
+          <td class="textRight font16">{{ appVersion }}</td>
+        </tr>
+        <tr
+          v-if="
+            (isMobile && systemName === 'android') || systemName === 'Android'
+          "
+          @click="reloadApp"
+        >
+          <th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_CASH') }}</th>
+        </tr>
+        <tr v-else @click="cleanApp">
+          <th class="font16 cursorP" colspan="2">{{ $t('PROF_BTN_CASH') }}</th>
+        </tr>
       </table>
       <div v-on:click="openLogoutPop" class="font14 cursorP logoutBtn">
         {{ $t('PROF_BTN_LOGOUT') }}
       </div>
-      <p v-if="GE_LOCALE === 'ko'" class="leaveText font14">더알림을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">여기</span>를 눌러주세요.</p>
-      <p v-else class="leaveText font14 pBottom-20 mBottom20">Click <span class="cursorP" v-on:click="goLeaveUnibuzzy">here</span> to delete your account from uniBuzzy.</p>
+      <p v-if="GE_LOCALE === 'ko'" class="leaveText font14">
+        더알림을 탈퇴하려면
+        <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')"
+          >여기</span
+        >를 눌러주세요.
+      </p>
+      <p v-else class="leaveText font14 pBottom-20 mBottom20">
+        Click <span class="cursorP" v-on:click="goLeaveUnibuzzy">here</span> to
+        delete your account from uniBuzzy.
+      </p>
     </div>
 
-    <gConfirmPop :confirmText='checkVersionText' class="" confirmType='two' @ok="goPlayStore" @no='checkVersionPopShowYn = false' v-if="checkVersionPopShowYn"/>
-    <gConfirmPop :confirmText='reloadShowText' class="" confirmType='two' @ok="reloadOk" @no='reloadShowYn = false' v-if="reloadShowYn"/>
-    <gConfirmPop :confirmText='errorBoxText' class="" confirmType='timeout' @no='errorBoxYn = false' v-if="errorBoxYn"/>
+    <gConfirmPop
+      :confirmText="checkVersionText"
+      class=""
+      confirmType="two"
+      @ok="goPlayStore"
+      @no="checkVersionPopShowYn = false"
+      v-if="checkVersionPopShowYn"
+    />
+    <gConfirmPop
+      :confirmText="reloadShowText"
+      class=""
+      confirmType="two"
+      @ok="reloadOk"
+      @no="reloadShowYn = false"
+      v-if="reloadShowYn"
+    />
+    <gConfirmPop
+      :confirmText="errorBoxText"
+      class=""
+      confirmType="timeout"
+      @no="errorBoxYn = false"
+      v-if="errorBoxYn"
+    />
   </div>
 </template>
 
@@ -113,13 +232,27 @@ export default {
     logoutPop,
     userImgSelectCompo
   },
-  data () {
+  data() {
     return {
       selectedI18nLocale: i18n.global.locale,
       selectedLocale: this.$locale,
       changeUserIconShowYn: false,
-      userEmail: { click: 'changeEmail', icon: '/resource/common/main_email.png', title: '이메일', value: localStorage.getItem('userEmail'), btnText: '변경', link: 'http://naver.com' },
-      userPhone: { click: 'changeMobile', icon: '/resource/common/main_phone.png', title: '휴대폰 번호', value: localStorage.getItem('userMobile'), btnText: '변경', link: 'http://naver.com' },
+      userEmail: {
+        click: 'changeEmail',
+        icon: '/resource/common/main_email.png',
+        title: '이메일',
+        value: localStorage.getItem('userEmail'),
+        btnText: '변경',
+        link: 'http://naver.com'
+      },
+      userPhone: {
+        click: 'changeMobile',
+        icon: '/resource/common/main_phone.png',
+        title: '휴대폰 번호',
+        value: localStorage.getItem('userMobile'),
+        btnText: '변경',
+        link: 'http://naver.com'
+      },
       appVersion: 0,
       logOutShowYn: false,
       showPolicyPopYn: false,
@@ -142,7 +275,7 @@ export default {
       devPopId: null
     }
   },
-  created () {
+  created() {
     localStorage.setItem('notiReloadPage', 'none')
     if (this.isMobile) {
       this.appInfo = JSON.parse(localStorage.getItem('appInfo'))
@@ -151,10 +284,16 @@ export default {
         this.lastVersion = this.appInfo.last
       }
     }
-    if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
+    if (
+      localStorage.getItem('systemName') !== undefined &&
+      localStorage.getItem('systemName') !== 'undefined' &&
+      localStorage.getItem('systemName') !== null
+    ) {
+      this.systemName = localStorage.getItem('systemName')
+    }
   },
   computed: {
-    GE_TIME_LOCALE () {
+    GE_TIME_LOCALE() {
       if (this.selectedLocale === 'US') {
         return 2
       } else if (this.selectedLocale === 'KR') {
@@ -163,37 +302,36 @@ export default {
         return 2
       }
     },
-    GE_LOCALE () {
+    GE_LOCALE() {
       return this.$i18n.locale
     },
-    historyStack () {
+    historyStack() {
       return this.$store.getters['UB_HISTORY/hRPage']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     },
-    history () {
+    history() {
       return this.$store.getters['UB_HISTORY/hStack']
     },
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     }
   },
   watch: {
-    pageUpdate (value, old) {
+    pageUpdate(value, old) {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
       if (this.popId === hStack[hStack.length - 1]) {
         this.closeXPop()
       }
     },
-    historyStack (value, old) {
-    }
+    historyStack(value, old) {}
   },
-  mounted () {
+  mounted() {
     this.$emit('closeLoading')
     this.$addHistoryStack('setMyPage')
   },
-  setup () {
+  setup() {
     const instance = getCurrentInstance()
     const setGlobalValue = function (val) {
       if (instance) {
@@ -203,20 +341,50 @@ export default {
     return { setGlobalValue }
   },
   methods: {
-    async goLogout (request) {
+    async goLogout(request) {
       this.logOutShowYn = false
 
       this.$UBLogOut()
     },
-    async change18n (target, type) {
+    async change18n(target, type) {
       var param = {}
       var user = {}
       var localUser = this.$store.getters['UB_USER/GE_USER']
-      if (localUser.userEmail !== undefined && localUser.userEmail !== null && localUser.userEmail !== '') { user.soEmail = localUser.userEmail }
-      if (localUser.userKey !== undefined && localUser.userKey !== null && localUser.userKey !== '') { user.userKey = localUser.userKey }
-      if (localUser.soAccessToken !== undefined && localUser.soAccessToken !== null && localUser.soAccessToken !== '') { user.soAccessToken = localUser.soAccessToken }
-      if (localUser.fcmKey !== undefined && localUser.fcmKey !== null && localUser.fcmKey !== '') { user.fcmKey = localUser.fcmKey }
-      if (localUser.deviceKey !== undefined && localUser.deviceKey !== null && localUser.deviceKey !== '') { user.deviceKey = localUser.deviceKey }
+      if (
+        localUser.userEmail !== undefined &&
+        localUser.userEmail !== null &&
+        localUser.userEmail !== ''
+      ) {
+        user.soEmail = localUser.userEmail
+      }
+      if (
+        localUser.userKey !== undefined &&
+        localUser.userKey !== null &&
+        localUser.userKey !== ''
+      ) {
+        user.userKey = localUser.userKey
+      }
+      if (
+        localUser.soAccessToken !== undefined &&
+        localUser.soAccessToken !== null &&
+        localUser.soAccessToken !== ''
+      ) {
+        user.soAccessToken = localUser.soAccessToken
+      }
+      if (
+        localUser.fcmKey !== undefined &&
+        localUser.fcmKey !== null &&
+        localUser.fcmKey !== ''
+      ) {
+        user.fcmKey = localUser.fcmKey
+      }
+      if (
+        localUser.deviceKey !== undefined &&
+        localUser.deviceKey !== null &&
+        localUser.deviceKey !== ''
+      ) {
+        user.deviceKey = localUser.deviceKey
+      }
       user[target] = type
       param.user = user
 
@@ -231,7 +399,10 @@ export default {
         try {
           localStorage.setItem('user', JSON.stringify(result.data.userMap))
           await this.$store.dispatch('UB_USER/AC_USER', result.data.userMap)
-          localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
+          localStorage.setItem(
+            'sessionUser',
+            JSON.stringify(result.data.userMap)
+          )
 
           // 다른 JS 파일에서 전역 변수 수정하기
           if (result.data.userMap.countryCode) {
@@ -246,10 +417,10 @@ export default {
       }
       return result
     },
-    closeXPop () {
+    closeXPop() {
       this.$router.push('/mypage')
     },
-    backClick () {
+    backClick() {
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -261,17 +432,17 @@ export default {
         this.devModePopShowYn = false
       }
     },
-    goLeaveUnibuzzy () {
+    goLeaveUnibuzzy() {
       this.$router.push('/cancel')
     },
-    openDevPop () {
+    openDevPop() {
       var history = this.$store.getters['UB_HISTORY/hStack']
       this.devPopId = 'devModPop' + history.length
       history.push(this.devPopId)
       this.$store.commit('UB_HISTORY/updateStack', history)
       this.devModePopShowYn = true
     },
-    closeDevPop () {
+    closeDevPop() {
       var hStack = this.$store.getters['UB_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
       if (this.popId === hStack[hStack.length - 1]) {
@@ -280,10 +451,9 @@ export default {
         this.$store.commit('UB_HISTORY/updateStack', hStack)
         this.$emit('closePop')
       } else {
-
       }
     },
-    goDevMode () {
+    goDevMode() {
       if (this.devModeClickCnt === 0) {
         this.setTimer(true)
       }
@@ -293,11 +463,13 @@ export default {
         this.setTimer(false)
       }
     },
-    setTimer (startYn) {
+    setTimer(startYn) {
       var intervalId = null
       if (startYn) {
         var this_ = this
-        intervalId = setInterval(() => { this_.devModeClickTimer = this_.devModeClickTimer + 1 }, 1000)
+        intervalId = setInterval(() => {
+          this_.devModeClickTimer = this_.devModeClickTimer + 1
+        }, 1000)
       } else {
         if (intervalId) {
           clearInterval(intervalId)
@@ -313,19 +485,21 @@ export default {
         this.devModeClickCnt = 0
       }, 2000)
     },
-    checkAppVersion () {
+    checkAppVersion() {
       if (this.systemName === 'android' || this.systemName === 'Android') {
         if (this.appInfo.current !== this.appInfo.last) {
           if (this.GE_LOCALE === 'ko') {
-            this.checkVersionText = '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
+            this.checkVersionText =
+              '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
           } else {
-            this.checkVersionText = 'An app version update is required. <br>Go to the Play Store?'
+            this.checkVersionText =
+              'An app version update is required. <br>Go to the Play Store?'
           }
           this.checkVersionPopShowYn = true
         }
       }
     },
-    goPlayStore () {
+    goPlayStore() {
       this.checkVersionPopShowYn = false
       if (
         localStorage.getItem('systemName') !== undefined &&
@@ -340,25 +514,27 @@ export default {
       }
       if (systemName === 'android' || systemName === 'Android') {
         if (appInfo.current !== appInfo.last) {
-          window.open('https://play.google.com/store/apps/details?id=com.tal_project', '_blank')
+          window.open(
+            'https://play.google.com/store/apps/details?id=com.tal_project',
+            '_blank'
+          )
         }
       }
     },
-    reloadApp () {
+    reloadApp() {
       this.reloadShowText = this.$t('PROF_MSG_RESTART')
       this.reloadShowYn = true
     },
-    reloadOk () {
+    reloadOk() {
       onMessage('REQ', 'reloadApp')
     },
-    cleanApp () {
+    cleanApp() {
       this.$store.commit('UB_CHANNEL/MU_CLEAN_CHAN_LIST')
       this.$router.push('/')
       this.$emit('closeXPop')
     },
-    changeUserImg () {
+    changeUserImg() {
       if (this.changeUserIconShowYn) {
-        ;
       } else {
         this.changeUserIconShowYn = true
         var history = this.$store.getters['UB_HISTORY/hStack']
@@ -367,10 +543,10 @@ export default {
         this.$store.commit('UB_HISTORY/updateStack', history)
       }
     },
-    closeImgPop () {
+    closeImgPop() {
       this.changeUserIconShowYn = false
     },
-    async setDispName () {
+    async setDispName() {
       var param = {}
       var user = {}
       user.userKey = this.GE_USER.userKey
@@ -390,31 +566,31 @@ export default {
         this.errorBoxYn = true
       }
     },
-    changeUserDispMtext () {
+    changeUserDispMtext() {
       this.changeYn = true
       this.tempUserDispName = this.$changeText(this.GE_USER.userDispMtext)
     },
-    openPop (target, title) {
+    openPop(target, title) {
       var params = {}
       params.targetType = target
       params.popHeaderText = title
       this.$emit('openPop', params)
     },
-    openLogoutPop () {
+    openLogoutPop() {
       this.logOutShowYn = true
     },
-    async closeLogoutPop (request) {
+    async closeLogoutPop(request) {
       this.logOutShowYn = false
 
       this.$d_AlimLogout()
     },
-    async closeOnlyLogoutPop () {
+    async closeOnlyLogoutPop() {
       this.logOutShowYn = false
     },
-    openPolicyPop (type) {
+    openPolicyPop(type) {
       this.$emit('changeRouterPath', type)
     },
-    closePolicyPop () {
+    closePolicyPop() {
       this.showPolicyPopYn = false
     }
   }
@@ -445,10 +621,10 @@ export default {
   min-height: 20px;
   border-radius: 5px;
   background: #00000070;
-  color: #FFF;
+  color: #fff;
 }
 .userNameBox {
-  width:100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   float: left;
@@ -487,12 +663,12 @@ export default {
   position: relative;
 }
 .border05 {
-  border-bottom: 0.5px solid #E4E4E4;
+  border-bottom: 0.5px solid #e4e4e4;
 }
 .logoutBtn {
-  background-color: #F5F5F9;
+  background-color: #f5f5f9;
   width: 100%;
-  color:#6768A7;
+  color: #6768a7;
   font-weight: bold;
   height: 45px;
   margin-bottom: 0;
@@ -508,7 +684,7 @@ export default {
   height: 200px;
 }
 .grayLine {
-  background-color: #F3F3F3;
+  background-color: #f3f3f3;
   height: 0.8rem;
   width: 100%;
 }
@@ -518,7 +694,7 @@ export default {
   overflow: hidden;
   border-radius: 6rem;
   padding: 8px;
-  border:2px solid #6768a7;
+  border: 2px solid #6768a7;
   background: #6768a745;
   padding-top: 16px;
   padding-bottom: 0;
@@ -530,20 +706,21 @@ table {
   text-align: left;
   width: 100%;
 }
-tr, td, th {
+tr,
+td,
+th {
   height: 4rem;
-  margin-bottom: 1rem
-
+  margin-bottom: 1rem;
 }
 td {
-  border-bottom: none !important
+  border-bottom: none !important;
 }
 tr {
-  border-bottom: 1px solid #F3F3F3;
-  line-height:4rem;
+  border-bottom: 1px solid #f3f3f3;
+  line-height: 4rem;
 }
 th {
-  color: #6768A7
+  color: #6768a7;
 }
 .imgSize {
   width: 6rem;
@@ -557,7 +734,7 @@ th {
 }
 .leaveText {
   text-align: left;
-  color: #A1A1A1;
+  color: #a1a1a1;
 }
 .leaveText span {
   text-decoration: underline;

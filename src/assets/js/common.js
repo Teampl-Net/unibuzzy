@@ -6,10 +6,13 @@ import store from '../../store'
 // eslint-disable-next-line no-unused-vars
 import router from '../../router'
 import i18n from '../i18n'
-axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
-axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
+axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Methods'] =
+  'GET,POST,PATCH,PUT,DELETE,OPTIONS'
+axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Headers'] =
+  'Origin, Content-Type, X-Auth-Token'
 axiosCommonFunction.defaults.headers.post['Content-Type'] = 'application/json;'
-axiosCommonFunction.defaults.headers.common['Content-Type'] = 'application/json;'
+axiosCommonFunction.defaults.headers.common['Content-Type'] =
+  'application/json;'
 
 axiosCommonFunction.defaults.timeout = 100000
 axiosCommonFunction.defaults.withCredentials = true
@@ -23,23 +26,25 @@ axios.defaults.headers.get.Pragma = 'no-cache' */
 // 당해: 월, 일, 시, 분
 // 그 외: 년, 월, 일, 시, 분
 export const commonMethods = {
-  async commonAx (setItem) {
+  async commonAx(setItem) {
     var result = false
-    await axiosCommonFunction.post(setItem.url, setItem.param, { withCredentials: true }
-    ).then(response => {
-      result = response
-    }).catch((error) => {
-      result = error
-      console.log(error)
-    })
+    await axiosCommonFunction
+      .post(setItem.url, setItem.param, { withCredentials: true })
+      .then((response) => {
+        result = response
+      })
+      .catch((error) => {
+        result = error
+        console.log(error)
+      })
     return result
   },
-  parseHTML (html) {
+  parseHTML(html) {
     var t = document.createElement('template')
     t.innerHTML = html
     return t.content.cloneNode(true)
   },
-  decodeHTML (str) {
+  decodeHTML(str) {
     console.log(str)
     str = str.replace('&amp;', '&')
     str = str.replace('&lt;', '<')
@@ -48,7 +53,7 @@ export const commonMethods = {
     str = str.replace('&quot;', '"')
     return str
   },
-  cancelTimer (creTime) {
+  cancelTimer(creTime) {
     // const setDate = new Date(creTime)
     // setDate.setMinutes (setDate.getMinutes()+3)
     // const now = new Date();
@@ -57,9 +62,17 @@ export const commonMethods = {
     var compareDate = new Date(creTime)
     var now = new Date()
     var text = ''
-    if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(now).format('YYYY')) {
-      if (this.$dayjs(compareDate).format('MM') === this.$dayjs(now).format('MM')) {
-        if (this.$dayjs(compareDate).format('DD') === this.$dayjs(now).format('DD')) {
+    if (
+      this.$dayjs(compareDate).format('YYYY') ===
+      this.$dayjs(now).format('YYYY')
+    ) {
+      if (
+        this.$dayjs(compareDate).format('MM') === this.$dayjs(now).format('MM')
+      ) {
+        if (
+          this.$dayjs(compareDate).format('DD') ===
+          this.$dayjs(now).format('DD')
+        ) {
           compareDate.setHours(compareDate.getHours() + 9)
           compareDate.setMinutes(compareDate.getMinutes() + 3)
           // console.log(this.$dayjs(compareDate).format('MM/DD HH:mm:ss'))
@@ -71,17 +84,21 @@ export const commonMethods = {
             // 밀리초 값이기 때문에 1000을 곱한다.
             // 1000*60 => 60초(1분)*60 => 60분(1시간)*24 = 24시간(하루)
             // 나머지 연산자(%)를 이용해서 시/분/초를 구한다.
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+            const minutes = Math.floor(
+              (distance % (1000 * 60 * 60)) / (1000 * 60)
+            )
             const seconds = Math.floor((distance % (1000 * 60)) / 1000)
             // text = '발송 취소 가능 시간까지 '
             // text += (minutes < 10 ? '0' + minutes : minutes) + '분'
             // text += (seconds < 10 ? '0' + seconds : seconds) + '초 남았습니다.'
             // var innerHTML = '<p class="CErrorColor font12 fr mleft-05" style="text-decoration: underline;" > 발송취소 </p> <p class="font12 fr textRight">' + text + '</p>'
             text = (minutes < 10 ? '0' + minutes : minutes) + ':'
-            text += (seconds < 10 ? '0' + seconds : seconds)
+            text += seconds < 10 ? '0' + seconds : seconds
             var innerHTML = '<div class="font14 fl commonColor mleft-03">'
-            innerHTML += '<p class="commonColor font14 fl" style="text-decoration: underline;"> 발송취소 </p>'
-            innerHTML += '<img src="/resource/common/icon_alarm_red.svg" class="fl img-w15 mleft-05 mright-03">'
+            innerHTML +=
+              '<p class="commonColor font14 fl" style="text-decoration: underline;"> 발송취소 </p>'
+            innerHTML +=
+              '<img src="/resource/common/icon_alarm_red.svg" class="fl img-w15 mleft-05 mright-03">'
             innerHTML += text
             innerHTML += '</div>'
             text = innerHTML
@@ -100,23 +117,34 @@ export const commonMethods = {
 
     return text
   },
-  checkTokenValidTime () {
+  checkTokenValidTime() {
     var compareDate = new Date()
     var now = new Date()
     var text = ''
-    if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(now).format('YYYY')) {
-      if (this.$dayjs(compareDate).format('MM') === this.$dayjs(now).format('MM')) {
-        if (this.$dayjs(compareDate).format('DD') === this.$dayjs(now).format('DD')) {
+    if (
+      this.$dayjs(compareDate).format('YYYY') ===
+      this.$dayjs(now).format('YYYY')
+    ) {
+      if (
+        this.$dayjs(compareDate).format('MM') === this.$dayjs(now).format('MM')
+      ) {
+        if (
+          this.$dayjs(compareDate).format('DD') ===
+          this.$dayjs(now).format('DD')
+        ) {
           compareDate.setHours(compareDate.getHours() + 9)
           compareDate.setMinutes(compareDate.getMinutes() + 5)
           const distance = compareDate.getTime() - now.getTime()
           if (distance > 0) {
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+            const minutes = Math.floor(
+              (distance % (1000 * 60 * 60)) / (1000 * 60)
+            )
             const seconds = Math.floor((distance % (1000 * 60)) / 1000)
             text = '인증 유효시간 '
             text += (minutes < 10 ? '0' + minutes : minutes) + '분'
             text += (seconds < 10 ? '0' + seconds : seconds) + '초 남았습니다.'
-            var innerHTML = ' <p class="font12 fr grayBlack textRight">' + text + '</p>'
+            var innerHTML =
+              ' <p class="font12 fr grayBlack textRight">' + text + '</p>'
             text = innerHTML
           } else {
             text = false
@@ -133,13 +161,22 @@ export const commonMethods = {
 
     return text
   },
-  changeDateMemoFormat (date) {
+  changeDateMemoFormat(date) {
     var compareDate = new Date(date)
     var toDate = new Date()
     var format = ''
-    if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(toDate).format('YYYY')) {
-      if (this.$dayjs(compareDate).format('MM') === this.$dayjs(toDate).format('MM')) {
-        if (this.$dayjs(compareDate).format('DD') === this.$dayjs(toDate).format('DD')) {
+    if (
+      this.$dayjs(compareDate).format('YYYY') ===
+      this.$dayjs(toDate).format('YYYY')
+    ) {
+      if (
+        this.$dayjs(compareDate).format('MM') ===
+        this.$dayjs(toDate).format('MM')
+      ) {
+        if (
+          this.$dayjs(compareDate).format('DD') ===
+          this.$dayjs(toDate).format('DD')
+        ) {
           format = 'HH:mm'
         } else {
           format = 'MM/DD'
@@ -159,13 +196,22 @@ export const commonMethods = {
       return this.$dayjs(compareDate).add(-13, 'hour').format(format)
     }
   },
-  changeSimpleDateFormat (date) {
+  changeSimpleDateFormat(date) {
     var compareDate = new Date(date)
     var toDate = new Date()
     var format = ''
-    if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(toDate).format('YYYY')) {
-      if (this.$dayjs(compareDate).format('MM') === this.$dayjs(toDate).format('MM')) {
-        if (this.$dayjs(compareDate).format('DD') === this.$dayjs(toDate).format('DD')) {
+    if (
+      this.$dayjs(compareDate).format('YYYY') ===
+      this.$dayjs(toDate).format('YYYY')
+    ) {
+      if (
+        this.$dayjs(compareDate).format('MM') ===
+        this.$dayjs(toDate).format('MM')
+      ) {
+        if (
+          this.$dayjs(compareDate).format('DD') ===
+          this.$dayjs(toDate).format('DD')
+        ) {
           // 년도 월 일 이 같으면 만든 시간, 분
           format = 'HH:mm'
           // format = 'HH시 mm분'
@@ -234,15 +280,24 @@ export const commonMethods = {
   // //   this.$convertDate(toDate, 'yyyyMMDD') + ' :yyyyMMDD\n' + this.$convertDate(toDate, 'MMDD') + ' :MMDD\n' + this.$convertDate(toDate, 'HHmmss') + ' :HHmmss\n' +
   // //   this.$convertDate(toDate, 'yyyyMMDDHHmmss') + ' :yyyyMMDDHHmmss\n' + this.$convertDate(toDate, 'MMDDHHmmss') + ' :MMDDHHmmss\n' + this.$convertDate(toDate, 'DDHHmmss') + ' :DDHHmmss')
   // },
-  changeDateFormat (date, mustTimeShowYn) {
+  changeDateFormat(date, mustTimeShowYn) {
     // var compareDate = new Date(Number(date))
     var compareDate = new Date(date)
     var toDate = new Date()
     var format = ''
     const diffDate = this.$dayjs(toDate).diff(compareDate, 'd')
-    if (this.$dayjs(compareDate).format('YYYY') === this.$dayjs(toDate).format('YYYY')) {
-      if (this.$dayjs(compareDate).format('MM') === this.$dayjs(toDate).format('MM')) {
-        if (this.$dayjs(compareDate).format('DD') === this.$dayjs(toDate).format('DD')) {
+    if (
+      this.$dayjs(compareDate).format('YYYY') ===
+      this.$dayjs(toDate).format('YYYY')
+    ) {
+      if (
+        this.$dayjs(compareDate).format('MM') ===
+        this.$dayjs(toDate).format('MM')
+      ) {
+        if (
+          this.$dayjs(compareDate).format('DD') ===
+          this.$dayjs(toDate).format('DD')
+        ) {
           // 년도 월 일 이 같으면 만든 시간, 분
           format = 'HH:mm'
           // format = 'HH시 mm분'
@@ -272,13 +327,17 @@ export const commonMethods = {
 
     if (this.$locale && this.$locale === 'KR') {
       if (diffDate === 1) {
-        return 'yesterday' + this.$dayjs(compareDate).add(9, 'hour').format(format)
+        return (
+          'yesterday' + this.$dayjs(compareDate).add(9, 'hour').format(format)
+        )
       } else {
         return this.$dayjs(compareDate).add(9, 'hour').format(format)
       }
     } else if (this.$locale && this.$locale === 'US') {
       if (diffDate === 1) {
-        return 'yesterday ' + this.$dayjs(compareDate).add(-4, 'hour').format(format)
+        return (
+          'yesterday ' + this.$dayjs(compareDate).add(-4, 'hour').format(format)
+        )
       } else {
         return this.$dayjs(compareDate).add(-4, 'hour').format(format)
       }
@@ -289,38 +348,58 @@ export const commonMethods = {
     //     return changeDateHM(compareDate)
     //   } else {
     //   }
-  //   this.$convertDate(toDate, 'yyyyMMDD') + ' :yyyyMMDD\n' + this.$convertDate(toDate, 'MMDD') + ' :MMDD\n' + this.$convertDate(toDate, 'HHmmss') + ' :HHmmss\n' +
-  //   this.$convertDate(toDate, 'yyyyMMDDHHmmss') + ' :yyyyMMDDHHmmss\n' + this.$convertDate(toDate, 'MMDDHHmmss') + ' :MMDDHHmmss\n' + this.$convertDate(toDate, 'DDHHmmss') + ' :DDHHmmss')
+    //   this.$convertDate(toDate, 'yyyyMMDD') + ' :yyyyMMDD\n' + this.$convertDate(toDate, 'MMDD') + ' :MMDD\n' + this.$convertDate(toDate, 'HHmmss') + ' :HHmmss\n' +
+    //   this.$convertDate(toDate, 'yyyyMMDDHHmmss') + ' :yyyyMMDDHHmmss\n' + this.$convertDate(toDate, 'MMDDHHmmss') + ' :MMDDHHmmss\n' + this.$convertDate(toDate, 'DDHHmmss') + ' :DDHHmmss')
   },
-  extractYear (date) {
+  extractYear(date) {
     return new Date(+new Date() + 3240 * 10000).toISOString().split('T')[1]
   },
 
-  convertDate (date, format) {
+  convertDate(date, format) {
     if (format === 'yyyy') {
       return new Date(+date + 3240 * 10000).toISOString().split('-')[0]
     } else if (format === 'MM') {
       return new Date(+date + 3240 * 10000).toISOString().split('-')[1]
     } else if (format === 'DD') {
-      return new Date(+date + 3240 * 10000).toISOString().split('-')[2].split('T')[0]
+      return new Date(+date + 3240 * 10000)
+        .toISOString()
+        .split('-')[2]
+        .split('T')[0]
     } else if (format === 'yyyyMMDD') {
       return new Date(+date + 3240 * 10000).toISOString().split('T')[0]
     } else if (format === 'MMDD') {
-      return new Date(+date + 3240 * 10000).toISOString().split('-')[1] + '-' +
-          new Date(+date + 3240 * 10000).toISOString().split('-')[2].split('T')[0]
+      return (
+        new Date(+date + 3240 * 10000).toISOString().split('-')[1] +
+        '-' +
+        new Date(+date + 3240 * 10000).toISOString().split('-')[2].split('T')[0]
+      )
     } else if (format === 'HHmmss') {
       return date.toTimeString().split(' ')[0]
     } else if (format === 'yyyyMMDDHHmmss') {
-      return new Date(+date + 3240 * 10000).toISOString().replace('T', ' ').replace(/\..*/, '')
+      return new Date(+date + 3240 * 10000)
+        .toISOString()
+        .replace('T', ' ')
+        .replace(/\..*/, '')
     } else if (format === 'MMDDHHmmss') {
-      return new Date(+date + 3240 * 10000).toISOString().split('-')[1] + '-' +
-      new Date(+date + 3240 * 10000).toISOString().split('-')[2].replace('T', ' ').replace(/\..*/, '')
+      return (
+        new Date(+date + 3240 * 10000).toISOString().split('-')[1] +
+        '-' +
+        new Date(+date + 3240 * 10000)
+          .toISOString()
+          .split('-')[2]
+          .replace('T', ' ')
+          .replace(/\..*/, '')
+      )
     } else if (format === 'DDHHmmss') {
-      return new Date(+date + 3240 * 10000).toISOString().split('-')[2].replace('T', ' ').replace(/\..*/, '')
+      return new Date(+date + 3240 * 10000)
+        .toISOString()
+        .split('-')[2]
+        .replace('T', ' ')
+        .replace(/\..*/, '')
     }
   },
 
-  numberToKorean (number) {
+  numberToKorean(number) {
     const koreanNumber = ['', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     const tenThousandUnit = ['', '만', '억', '조']
     const tenUnit = ['', '0', '00', '000']
@@ -330,7 +409,7 @@ export const commonMethods = {
     let division = Math.pow(unit, index)
 
     while (Math.floor(number / division) > 0) {
-      const mod = Math.floor(number % (division * unit) / division)
+      const mod = Math.floor((number % (division * unit)) / division)
       if (mod) {
         const modToArray = mod.toString().split('')
         const modLength = modToArray.length - 1
@@ -346,10 +425,15 @@ export const commonMethods = {
     return answer
   },
 
-  getUserInform () {
+  getUserInform() {
     var resultMap = '등록된 이름이 없습니다.'
     var userInfo = localStorage.getItem('sessionUser')
-    if (userInfo !== 'undefined' && userInfo !== undefined && userInfo !== null && userInfo !== '') {
+    if (
+      userInfo !== 'undefined' &&
+      userInfo !== undefined &&
+      userInfo !== null &&
+      userInfo !== ''
+    ) {
       resultMap = JSON.parse(userInfo)
       return resultMap
     } else {
@@ -359,7 +443,7 @@ export const commonMethods = {
   },
 
   // 방어루틴
-  makeMtextMap (str, lang) {
+  makeMtextMap(str, lang) {
     // string if
     var returnMap = new Map()
     if (str) {
@@ -371,14 +455,13 @@ export const commonMethods = {
           // split if ~> $$가 없다면?
           returnMap.set(splitMtextDetail[0], splitMtextDetail[1])
         }
-      } catch (error) {
-
-      }
+      } catch (error) {}
     } else {
     }
     return returnMap.get(lang)
   },
-  changeText (text) { // KO$^$'테스트$#$'EN$^$'
+  changeText(text) {
+    // KO$^$'테스트$#$'EN$^$'
     // 현재 상태가 ko en인지 확인하는 루트가 필요함
     if (text) {
       if (i18n && i18n.global.locale === 'ko') {
@@ -386,17 +469,23 @@ export const commonMethods = {
         var indexOf = text.indexOf('KO$^$')
         if (indexOf === -1) {
           changeTxt = commonMethods.makeMtextMap(text, 'EN')
-          if (changeTxt) { return changeTxt }
+          if (changeTxt) {
+            return changeTxt
+          }
           return changeTxt
         } else {
           changeTxt = commonMethods.makeMtextMap(text, 'KO')
-          if (changeTxt) { return changeTxt }
+          if (changeTxt) {
+            return changeTxt
+          }
         }
       } else if (i18n && i18n.global.locale === 'en') {
         var indexOfE = text.indexOf('EN$^$')
         if (indexOfE !== -1) {
           changeTxt = commonMethods.makeMtextMap(text, 'EN')
-          if (changeTxt) { return changeTxt }
+          if (changeTxt) {
+            return changeTxt
+          }
         } else {
           changeTxt = commonMethods.makeMtextMap(text, 'KO')
           if (changeTxt) return changeTxt
@@ -406,7 +495,9 @@ export const commonMethods = {
         const indexOfE = text.indexOf('EN$^$')
         if (indexOfE !== -1) {
           changeTxt = commonMethods.makeMtextMap(text, 'EN')
-          if (changeTxt) { return changeTxt }
+          if (changeTxt) {
+            return changeTxt
+          }
         } else {
           changeTxt = commonMethods.makeMtextMap(text, 'KO')
           if (changeTxt) return changeTxt
@@ -417,7 +508,8 @@ export const commonMethods = {
     // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
     // if (changeTxt !== undefined) { return changeTxt }
   },
-  changeText1 (text) { // KO$^$'테스트$#$'EN$^$'
+  changeText1(text) {
+    // KO$^$'테스트$#$'EN$^$'
     if (text) {
       var changeTxt = ''
       var indexOf = text.indexOf('KO$^$')
@@ -425,13 +517,15 @@ export const commonMethods = {
         return text
       } else {
         changeTxt = commonMethods.makeMtextMap(text, 'KO')
-        if (changeTxt) { return changeTxt }
+        if (changeTxt) {
+          return changeTxt
+        }
       }
     }
     // changeTxt = new Promise(this.$makeMtextMap(text, 'KO'))
     // if (changeTxt !== undefined) { return changeTxt }
   },
-  changeFollowerInfo (type, data) {
+  changeFollowerInfo(type, data) {
     if (!data) {
       // return "정보가 없음";
       return 'No Data'
@@ -469,10 +563,10 @@ export const commonMethods = {
     }
   },
 
-  diffInt (a, b) {
+  diffInt(a, b) {
     return Math.abs(a - b)
   },
-  async makeShareLink (key, type, message, title) {
+  async makeShareLink(key, type, message, title) {
     var paramMap = new Map()
     paramMap.set('pageType', type)
     if (key.contentsKey) {
@@ -489,10 +583,13 @@ export const commonMethods = {
     }
     if (message) {
       let extractMessage = commonMethods.setBodyLength(message)
-      extractMessage = extractMessage.replace(/(<([^>]+)>)/ig, '')
+      extractMessage = extractMessage.replace(/(<([^>]+)>)/gi, '')
       extractMessage = extractMessage.replace('x -->', '')
       if (extractMessage === '') {
-        paramMap.set('message', 'uniBuzzy, The easiest way to stay updated-NOTI')
+        paramMap.set(
+          'message',
+          'uniBuzzy, The easiest way to stay updated-NOTI'
+        )
       } else {
         paramMap.set('message', extractMessage)
       }
@@ -505,18 +602,21 @@ export const commonMethods = {
       paramMap.set('title', 'uniBuzzy')
     }
 
-    var result = await commonAxiosFunction({
-      url: '/sUniB/tp.getShortDynamicLink',
-      param: Object.fromEntries(paramMap)
-    }, true)
+    var result = await commonAxiosFunction(
+      {
+        url: '/sUniB/tp.getShortDynamicLink',
+        param: Object.fromEntries(paramMap)
+      },
+      true
+    )
     var response = JSON.parse(result.data.shortLink).shortLink
     return response
   },
-  addHistoryStack (openPageId) {
+  addHistoryStack(openPageId) {
     store.dispatch('UB_HISTORY/AC_ADD_POP_HISTORY_STACK', openPageId)
     store.dispatch('UB_HISTORY/AC_ADD_ALL_HISTORY_STACK', openPageId)
   },
-  removeHistoryStack () {
+  removeHistoryStack() {
     var history = store.getters['UB_HISTORY/hStack']
     var removePage = history[history.length - 1]
     history = history.filter((element, index) => index < history.length - 1)
@@ -525,7 +625,7 @@ export const commonMethods = {
     store.dispatch('UB_HISTORY/AC_REMOVE_POP_HISTORY_STACK')
     history = store.getters['UB_HISTORY/hStack']
   },
-  checkDeleteHistory (deletePage) {
+  checkDeleteHistory(deletePage) {
     var result = false
     try {
       var history = store.getters['UB_HISTORY/hStack']
@@ -541,27 +641,37 @@ export const commonMethods = {
     console.log(' history popName check delete 결과 : ' + result)
     console.log(history)
   },
-  showHistoryStack () {
+  showHistoryStack() {
     var history = store.getters['UB_HISTORY/hStack']
     console.log(history)
   },
-  isJsonString (str) {
+  isJsonString(str) {
     try {
       var json = JSON.parse(str)
-      return (typeof json === 'object')
+      return typeof json === 'object'
     } catch (e) {
       return false
     }
   },
-  settingUserAuth (team) {
+  settingUserAuth(team) {
     var D_CHAN_AUTH = {}
     D_CHAN_AUTH.notiYn = true
-    if (team.userTeamInfo !== undefined && team.userTeamInfo !== null && team.userTeamInfo !== '') {
+    if (
+      team.userTeamInfo !== undefined &&
+      team.userTeamInfo !== null &&
+      team.userTeamInfo !== ''
+    ) {
       D_CHAN_AUTH.settingYn = true
-      if (team.userTeamInfo.notiYn === false || Number(team.userTeamInfo.notiYn) === 0) {
+      if (
+        team.userTeamInfo.notiYn === false ||
+        Number(team.userTeamInfo.notiYn) === 0
+      ) {
         D_CHAN_AUTH.notiYn = team.userTeamInfo.notiYn
       }
-      if (team.userTeamInfo.memberYn === true || team.userTeamInfo.memberYn === 1) {
+      if (
+        team.userTeamInfo.memberYn === true ||
+        team.userTeamInfo.memberYn === 1
+      ) {
         D_CHAN_AUTH.memberYn = true
       }
       /* if (team.userTeamInfo.showProfileYn === 1) {
@@ -570,11 +680,18 @@ export const commonMethods = {
       } */
       D_CHAN_AUTH.followYn = true
       team.detailShowYn = false
-      if (team.userTeamInfo.managerKey !== undefined && team.userTeamInfo.managerKey !== null && team.userTeamInfo.managerKey !== '') {
+      if (
+        team.userTeamInfo.managerKey !== undefined &&
+        team.userTeamInfo.managerKey !== null &&
+        team.userTeamInfo.managerKey !== ''
+      ) {
         D_CHAN_AUTH.mngAlimYn = team.userTeamInfo.mngAlimYn
         D_CHAN_AUTH.mngTeamYn = team.userTeamInfo.mngTeamYn
         D_CHAN_AUTH.mngMemberYn = team.userTeamInfo.mngMemberYn
-        if (team.userTeamInfo.ownerYn === true || team.userTeamInfo.ownerYn === 1) {
+        if (
+          team.userTeamInfo.ownerYn === true ||
+          team.userTeamInfo.ownerYn === 1
+        ) {
           // D_CHAN_AUTH.userGrade = '(관리자)'
           D_CHAN_AUTH.ownerYn = true
           D_CHAN_AUTH.admYn = true
@@ -586,7 +703,7 @@ export const commonMethods = {
     }
     return D_CHAN_AUTH
   },
-  getFollowerType (data) {
+  getFollowerType(data) {
     var followerText = ''
     if (data.followerKey) {
       data.followYn = true
@@ -611,7 +728,11 @@ export const commonMethods = {
       } */
       if (data.ownerYn) {
         followerText = this.$t('COMM_CHANN_OWNER')
-      } else if (data.memberNameMtext && (data.managerKey && data.managerKey > 0)) {
+      } else if (
+        data.memberNameMtext &&
+        data.managerKey &&
+        data.managerKey > 0
+      ) {
         followerText = `${this.$t('COMM_CHAN_MANAGER')}`
         //   if (data.mngTeamYn === true || data.mngTeamYn === 1) {
         //     followerText = followerText + this.$t('COMMON_NAME_CHANNEL')
@@ -632,14 +753,15 @@ export const commonMethods = {
     }
     return followerText
   },
-  sortListForupdDate (list) {
-    var resultlist = list.sort(function (a, b) { // num으로 오름차순 정렬
+  sortListForupdDate(list) {
+    var resultlist = list.sort(function (a, b) {
+      // num으로 오름차순 정렬
       return b.updDate - a.updDate
       // [{num:1, name:'one'},{num:2, name:'two'},{num:3, name:'three'}]
     })
     return resultlist
   },
-  checkUserAuth (data) {
+  checkUserAuth(data) {
     var authList = { R: false, W: false, V: false }
     if (!data) return authList
     for (var i = 0; i < data.length; i++) {
@@ -653,21 +775,29 @@ export const commonMethods = {
     }
     return authList
   },
-  checkSameName (checkList, checkText) {
+  checkSameName(checkList, checkText) {
     var changedBoardName = checkText
     var addBoardNum = 0
     for (var i = 0; i < checkList.length; i++) {
       if (checkList[i].cabinetNameMtext.indexOf(checkText) !== -1) {
         if (checkList[i].cabinetNameMtext.indexOf(checkText) === 0) {
-          if (addBoardNum === 0 && changedBoardName === checkList[i].cabinetNameMtext) {
+          if (
+            addBoardNum === 0 &&
+            changedBoardName === checkList[i].cabinetNameMtext
+          ) {
             addBoardNum = 1
           } else {
-            var boardExtraText = checkList[i].cabinetNameMtext.substring(checkText.length)
+            var boardExtraText = checkList[i].cabinetNameMtext.substring(
+              checkText.length
+            )
             if (boardExtraText.substring(0, 1) === '(') {
-              if (addBoardNum > Number((boardExtraText.substring(1)).split(')')[0]) + 1) {
-
+              if (
+                addBoardNum >
+                Number(boardExtraText.substring(1).split(')')[0]) + 1
+              ) {
               } else {
-                addBoardNum = Number((boardExtraText.substring(1)).split(')')[0]) + 1 // Num이 아닐 경우 고려해야!!!
+                addBoardNum =
+                  Number(boardExtraText.substring(1).split(')')[0]) + 1 // Num이 아닐 경우 고려해야!!!
                 // 아마도 수정 필요
                 // eslint-disable-next-line use-isnan
                 if (addBoardNum === NaN) {
@@ -684,9 +814,13 @@ export const commonMethods = {
     }
     return changedBoardName
   },
-  findUrlChangeAtag (inputText) {
-    const rplcdPttrn1 = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig
-    var rplcdTxt = inputText.replace(rplcdPttrn1, '<a href="$1" target="_blank">$1</a>')
+  findUrlChangeAtag(inputText) {
+    const rplcdPttrn1 =
+      /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi
+    var rplcdTxt = inputText.replace(
+      rplcdPttrn1,
+      '<a href="$1" target="_blank">$1</a>'
+    )
     // const urlRegex = /(http:|https:)?(\/\/)?(www\.)?()\/(watch|embed)?(\?v=|\/)?(\S+)?/g
 
     // var text = 'ref="https://example.com" targ 여기 짱이야 ! '
@@ -699,10 +833,10 @@ export const commonMethods = {
     //   return '<a href="' + url + '">' + url + '</a>'
     // })
   },
-  findATagDelete (html) {
+  findATagDelete(html) {
     return html.replace(/<(\/a|a)([^>]*)>/gi, '')
   },
-  checkEmptyInnerHtml (inHtml) {
+  checkEmptyInnerHtml(inHtml) {
     // // eslint-disable-next-line no-debugger
     // debugger
     var titleText = ''
@@ -713,7 +847,10 @@ export const commonMethods = {
       titleText = titleText.trimLeft()
       if (titleText === '') valueTextIdx += 1
       if (titleText.length >= 6 && i === valueTextIdx) {
-        titleText = titleText.length > 10 ? titleText.substring(0, 10) + '..' : titleText.substring(0, 10)
+        titleText =
+          titleText.length > 10
+            ? titleText.substring(0, 10) + '..'
+            : titleText.substring(0, 10)
         break
       }
     }
@@ -725,7 +862,7 @@ export const commonMethods = {
     }
   },
 
-  cutText (text, maxLength) {
+  cutText(text, maxLength) {
     // reg = 모든 태그 제거
     const reg = /<[^>]*>?/g
     // regLn = 줄바꿈 등 글자수에 관계없는 text 제거
@@ -736,11 +873,14 @@ export const commonMethods = {
     if (cutText === '') return
 
     var maxNum = parseInt(maxLength)
-    cutText = cutText.length > maxNum ? cutText.substring(0, maxNum) + '..' : cutText.substring(0, maxNum)
+    cutText =
+      cutText.length > maxNum
+        ? cutText.substring(0, maxNum) + '..'
+        : cutText.substring(0, maxNum)
     return cutText
   },
 
-  titleToBody (inHtml) {
+  titleToBody(inHtml) {
     // // eslint-disable-next-line no-debugger
     // debugger
     var titleText = ''
@@ -751,7 +891,10 @@ export const commonMethods = {
       titleText = titleText.trimLeft()
       if (titleText === '') valueTextIdx += 1
       if (titleText.length >= 6 && i === valueTextIdx) {
-        titleText = titleText.length > 64 ? titleText.substring(0, 64) + '..' : titleText.substring(0, 64)
+        titleText =
+          titleText.length > 64
+            ? titleText.substring(0, 64) + '..'
+            : titleText.substring(0, 64)
         break
       }
       if (titleText.length > 64) {
@@ -762,13 +905,13 @@ export const commonMethods = {
     return titleText
   },
   /**
- * byte 용량을 환산하여 반환
- * 용량의 크기에 따라 MB, KB, byte 단위로 환산함
- * @param fileSize  byte 값
- * @param fixed     환산된 용량의 소수점 자릿수
- * @returns {String}
- */
-  byteConvert (size) {
+   * byte 용량을 환산하여 반환
+   * 용량의 크기에 따라 MB, KB, byte 단위로 환산함
+   * @param fileSize  byte 값
+   * @param fixed     환산된 용량의 소수점 자릿수
+   * @returns {String}
+   */
+  byteConvert(size) {
     const byteUnits = ['KB', 'MB', 'GB', 'TB']
 
     for (let i = 0; i < byteUnits.length; i++) {
@@ -777,7 +920,7 @@ export const commonMethods = {
       if (size < 1024) return size.toFixed(1) + byteUnits[i]
     }
   },
-  showToastPop (html) {
+  showToastPop(html) {
     var innerHTML = ''
     var toastDiv = ''
     if (html === '정상적으로 저장되었습니다!') {
@@ -799,7 +942,8 @@ export const commonMethods = {
       var app = document.getElementById('app')
       innerHTML = ''
       toastDiv = document.createElement('div')
-      innerHTML += '<div id="toastPop" class="font16" style="width: 80%;left: 10%;border-radius: 5px;padding: 15px 10px;text-align: left;min-height: 40px;border: 1px solid #CCC;background: #f4f4f9fa;color: #000;position: absolute;bottom: 70px;box-shadow: 0 0 16px 0px #cccccc9c;z-index: 9999999999999999999;">'
+      innerHTML +=
+        '<div id="toastPop" class="font16" style="width: 80%;left: 10%;border-radius: 5px;padding: 15px 10px;text-align: left;min-height: 40px;border: 1px solid #CCC;background: #f4f4f9fa;color: #000;position: absolute;bottom: 70px;box-shadow: 0 0 16px 0px #cccccc9c;z-index: 9999999999999999999;">'
       innerHTML += html
       innerHTML += '</div>'
       toastDiv.innerHTML = innerHTML
@@ -811,7 +955,7 @@ export const commonMethods = {
       }, 2000)
     }
   },
-  addConsole (html) {
+  addConsole(html) {
     // var consoleDiv = document.getElementById('testConsole')
     // if (!consoleDiv) {
     //   consoleDiv = document.createElement('div')
@@ -826,21 +970,30 @@ export const commonMethods = {
     // innerHTML += html
     // innerHTML += '</p>'
     // toastDiv.innerHTML = innerHTML
-
     // consoleDiv.appendChild(toastDiv)
     // consoleDiv.appendChild
-
     // var thisthis = this
   },
-  getFileExt (fileName) {
-    let fileExt = fileName.substring(
-      fileName.lastIndexOf('.') + 1
-    )
+  getFileExt(fileName) {
+    let fileExt = fileName.substring(fileName.lastIndexOf('.') + 1)
     // 소문자로 변환
     var type = null
     fileExt = fileExt.toLowerCase()
     if (
-      ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
+      [
+        'jpeg',
+        'jpg',
+        'png',
+        'gif',
+        'bmp',
+        'webp',
+        'svg',
+        'tiff',
+        'tif',
+        'eps',
+        'heic',
+        'bpg'
+      ].includes(fileExt)
     ) {
       type = 'img'
     } else if (['xlsx'].includes(fileExt)) {
@@ -853,7 +1006,19 @@ export const commonMethods = {
       type = 'pdf'
     } else if (['txt'].includes(fileExt)) {
       type = 'txt'
-    } else if (['vue', 'jsp', 'java', 'class', 'html', 'css', 'js', 'xml', 'ts'].includes(fileExt)) {
+    } else if (
+      [
+        'vue',
+        'jsp',
+        'java',
+        'class',
+        'html',
+        'css',
+        'js',
+        'xml',
+        'ts'
+      ].includes(fileExt)
+    ) {
       type = 'programming'
     } else if (['zip'].includes(fileExt)) {
       type = 'zip'
@@ -862,7 +1027,7 @@ export const commonMethods = {
     }
     return type
   },
-  getCanvasNewFile (image, file) {
+  getCanvasNewFile(image, file) {
     var previewCanvas = document.createElement('canvas')
     var width = image.width
     var height = image.height
@@ -873,12 +1038,14 @@ export const commonMethods = {
     } else if (fileSize > 3000000) {
       size = 800
     }
-    if (width > height) { // 가로모드
+    if (width > height) {
+      // 가로모드
       if (width > size) {
         height *= size / width
         width = size
       }
-    } else { // 세로모드
+    } else {
+      // 세로모드
       if (height > size) {
         width *= size / height
         height = size
@@ -898,7 +1065,7 @@ export const commonMethods = {
     var newFile = new File([Bfile], file.name)
     return { path: imgBase64, file: newFile }
   },
-  async handleImageUpload (file) {
+  async handleImageUpload(file) {
     const imageFile = file
     const options = {
       maxSizeMB: 1, // 허용하는 최대 사이즈 지정
@@ -916,11 +1083,11 @@ export const commonMethods = {
       console.log(error)
     }
   },
-  async saveFileSize (image, file) {
+  async saveFileSize(image, file) {
     var result = await commonMethods.getCanvasNewFile(image, file)
     if (result.file.size > 1000000) {
       var reader = new FileReader()
-      reader.onload = e => {
+      reader.onload = (e) => {
         var newImg = new Image()
         newImg.onload = async function () {
           result = await commonMethods.getCanvasNewFile(newImg, result.file)
@@ -934,7 +1101,7 @@ export const commonMethods = {
 
     return { path: result.path, file: result.file }
   },
-  downloadFile (fileKey, path) {
+  downloadFile(fileKey, path) {
     /* var iframe
     iframe = document.getElementById('hiddenDownloader')
     if (iframe == null) {
@@ -955,7 +1122,7 @@ export const commonMethods = {
       aTag.style.display = 'none'
       document.body.appendChild(aTag)
     }
-    aTag.href = api + '/tp.downloadFile?fileKey=' + fileKey
+    aTag.href = api + '/sUniB/tp.downloadFile?fileKey=' + fileKey
     var varUA = localStorage.getItem('systemName')
     if (varUA === 'android' || varUA === 'Android') {
       aTag.target = '_blank'
@@ -966,7 +1133,7 @@ export const commonMethods = {
     /* aTag.click()
     document.body.removeChild(aTag)
 
-    iframe.src = api + '/tp.downloadFile?fileKey=' + fileKey
+    iframe.src = api + '/sUniB/tp.downloadFile?fileKey=' + fileKey
     console.log(iframe.src) */
     // // eslint-disable-next-line no-debugger
     // debugger
@@ -986,10 +1153,17 @@ export const commonMethods = {
     } */
   },
   /** 문자열로 되어있는 전화번호 11자리를 입력해주면 -(하이픈)을 넣어서 반환해주는 함수 */
-  setPhone (string) {
-    if (string !== undefined && string !== null && string !== '') { return string.replace(/(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/, '$1-$2-$3') } else { return this.$t('COMMON_MSG_NO_PHONE') }
+  setPhone(string) {
+    if (string !== undefined && string !== null && string !== '') {
+      return string.replace(
+        /(^02.{0}|^01.{1}|[0-9]{3})([0-9]+)([0-9]{4})/,
+        '$1-$2-$3'
+      )
+    } else {
+      return this.$t('COMMON_MSG_NO_PHONE')
+    }
   },
-  teamTypeString (teamType) {
+  teamTypeString(teamType) {
     var text = ''
     teamType = teamType + ''
     if (teamType === '1') {
@@ -1010,8 +1184,8 @@ export const commonMethods = {
       text = this.$t('COMM_CATE_MALL')
     } else if (teamType === '9') {
       text = this.$t('COMM_CATE_FAM')
-    // } else if (teamType === '10') {
-    //   text = '식당'
+      // } else if (teamType === '10') {
+      //   text = '식당'
     } else if (teamType === '10') {
       text = this.$t('COMM_CATE_TEAM')
     } else if (teamType === '11') {
@@ -1029,18 +1203,29 @@ export const commonMethods = {
     }
     return text
   },
-  async previewFile (file) {
-    let fileExt = file.name.substring(
-      file.name.lastIndexOf('.') + 1
-    )
+  async previewFile(file) {
+    let fileExt = file.name.substring(file.name.lastIndexOf('.') + 1)
     // 소문자로 변환
     fileExt = fileExt.toLowerCase()
     if (
-      ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
+      [
+        'jpeg',
+        'jpg',
+        'png',
+        'gif',
+        'bmp',
+        'webp',
+        'svg',
+        'tiff',
+        'tif',
+        'eps',
+        'heic',
+        'bpg'
+      ].includes(fileExt)
     ) {
       // FileReader 를 활용하여 파일을 읽는다
       var reader = new FileReader()
-      reader.onload = async e => {
+      reader.onload = async (e) => {
         var image = new Image()
         image.onload = await function () {
           // Resize image
@@ -1054,12 +1239,14 @@ export const commonMethods = {
           } else if (fileSize > 3000000) {
             size = 800
           }
-          if (width > height) { // 가로모드
+          if (width > height) {
+            // 가로모드
             if (width > size) {
               height *= size / width
               width = size
             }
-          } else { // 세로모드
+          } else {
+            // 세로모드
             if (height > size) {
               width *= size / height
               height = size
@@ -1086,9 +1273,7 @@ export const commonMethods = {
           // return { file: newFile, path: fileUrl }
           return result
         }
-        image.onerror = function () {
-
-        }
+        image.onerror = function () {}
         image.src = e.target.result
         // this.previewImgUrl = e.target.result
       }
@@ -1100,7 +1285,7 @@ export const commonMethods = {
     } */
   },
   /** 포커스 된 태그 안에 html 삽입해주는 함수 (커서 위치 맨 뒤) */
-  pasteHtmlAtCaret (html) {
+  pasteHtmlAtCaret(html) {
     var sel, range
     if (window.getSelection) {
       // IE9 and non-IE
@@ -1136,7 +1321,7 @@ export const commonMethods = {
       document.selection.createRange().pasteHTML(html)
     }
   },
-  checkMobile () {
+  checkMobile() {
     // var varUA = navigator.userAgent.toLowerCase()
     var varUA = localStorage.getItem('systemName')
     if (varUA !== undefined || varUA !== null || varUA !== '') {
@@ -1149,12 +1334,12 @@ export const commonMethods = {
       }
     }
   },
-  changeUrlBackslash (url) {
+  changeUrlBackslash(url) {
     if (!url) return
-    var changedUrl = url.replace(/\\/ig, '/')
+    var changedUrl = url.replace(/\\/gi, '/')
     return changedUrl
   },
-  makeHistoryObj (routerYn, page, targetKey, id) {
+  makeHistoryObj(routerYn, page, targetKey, id) {
     var resultObj = null
     resultObj.routerYn = routerYn
     resultObj.pageType = page
@@ -1162,7 +1347,7 @@ export const commonMethods = {
     resultObj.id = id
     return resultObj
   },
-  countingTotalMemo (list) {
+  countingTotalMemo(list) {
     // console.log(list)
     var count = 0
     for (let i = 0; i < list.length; i++) {
@@ -1175,19 +1360,23 @@ export const commonMethods = {
     // console.log('counting Memo : ' + (count + list.length))
     return count + list.length
   },
-  dateCalc (date1, date2) {
+  dateCalc(date1, date2) {
     const dateOne = new Date(date1)
     const dateTwo = new Date(date2)
 
     var distance = dateOne.getTime() - dateTwo.getTime()
     var dateYn = distance > 0
-    console.log('두 날짜 사이는 ' + dateYn ? '첫번째 인자값이 더 최신입니다.' : '두번째 인자값이 더 최신입니다.')
+    console.log(
+      '두 날짜 사이는 ' + dateYn
+        ? '첫번째 인자값이 더 최신입니다.'
+        : '두번째 인자값이 더 최신입니다.'
+    )
     return dateYn
   },
-  setParentsId (pId, setId) {
+  setParentsId(pId, setId) {
     return pId + '|||' + setId
   },
-  showChanCommonPop (showYn) {
+  showChanCommonPop(showYn) {
     var gChanPop = document.getElementById('gChannelPopup')
     if (!gChanPop) return
     if (showYn) {
@@ -1195,7 +1384,7 @@ export const commonMethods = {
       gChanPop.style.display = 'block'
     } else gChanPop.style.display = 'none'
   },
-  showAxiosLoading (showYn) {
+  showAxiosLoading(showYn) {
     var loadingCompo = document.getElementById('axiosShadow')
     var gLoadingPop = document.querySelectorAll('.gLoadingPop')
     if (gLoadingPop.length > 0) {
@@ -1211,17 +1400,22 @@ export const commonMethods = {
       // }, 3000)
     } else loadingCompo.style.display = 'none'
   },
-  dAlertLog (String) {
+  dAlertLog(String) {
     var userKey = store.getters['UB_USER/GE_USER'].userKey
     if (userKey === 123 || userKey === 255 || userKey === 104) {
     }
   },
-  openRouterModalPop (param) {
+  openRouterModalPop(param) {
     routerMain.methods.openPop(param)
   },
-  gobackDev () {
+  gobackDev() {
     // Tal_moTheAlim.vue 파일에서 touch Event로 뒤로가기 쓰고 있어요!! (ios 뒤로가기 기능!!)
-    if (store.getters['UB_USER/GE_NET_STATE'] === false || store.getters['UB_USER/GE_NET_STATE'] === 'false') return
+    if (
+      store.getters['UB_USER/GE_NET_STATE'] === false ||
+      store.getters['UB_USER/GE_NET_STATE'] === 'false'
+    ) {
+      return
+    }
     var history = store.getters['UB_HISTORY/hStack']
     if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
       router.replace({ path: '/' })
@@ -1229,72 +1423,79 @@ export const commonMethods = {
     var current = store.getters['UB_HISTORY/hUpdate']
     store.commit('UB_HISTORY/updatePage', current + 1)
   },
-  notPerText () {
+  notPerText() {
     var html = '<div class="w100P fl textCenter commonColor font14">'
     html += this.$t('COMM_MSG_NOPERM')
     html += '</div>'
     return html
   },
-  setBodyLength (str, completeYn) {
+  setBodyLength(str, completeYn) {
     if (!str) return
     str = Base64.decode(str)
     str.replace('contenteditable= true', '')
     str = str.replaceAll('<pre', '<div')
     str = str.replaceAll('</pre', '</div')
     if (completeYn) {
-      str = str.replaceAll('formCard formText ', 'formCard formText completeWork ')
+      str = str.replaceAll(
+        'formCard formText ',
+        'formCard formText completeWork '
+      )
     }
     return str
   },
-  settingFileIcon (fileName) {
-    let fileExt = fileName.substring(
-      fileName.lastIndexOf('.') + 1
-    )
+  settingFileIcon(fileName) {
+    let fileExt = fileName.substring(fileName.lastIndexOf('.') + 1)
     var fileScr = ''
     // 소문자로 변환
     fileExt = fileExt.toLowerCase()
     if (
-      ['jpeg', 'jpg', 'png', 'gif', 'bmp', 'raw', 'svg', 'webp', 'svg', 'tiff', 'tif', 'eps', 'heic', 'bpg'].includes(fileExt)
+      [
+        'jpeg',
+        'jpg',
+        'png',
+        'gif',
+        'bmp',
+        'raw',
+        'svg',
+        'webp',
+        'svg',
+        'tiff',
+        'tif',
+        'eps',
+        'heic',
+        'bpg'
+      ].includes(fileExt)
     ) {
       fileScr = '/resource/fileIcon/fileType_img.svg'
-    } else if (
-      ['mp4', 'avi', 'mov'].includes(fileExt)
-    ) {
+    } else if (['mp4', 'avi', 'mov'].includes(fileExt)) {
       fileScr = '/resource/fileIcon/fileType_mov.svg'
-    } else if (
-      ['mp3', 'wav'].includes(fileExt)
-    ) {
+    } else if (['mp3', 'wav'].includes(fileExt)) {
       fileScr = '/resource/fileIcon/fileType_music.svg'
-    } else if (
-      ['xls'].includes(fileExt)
-    ) {
+    } else if (['xls'].includes(fileExt)) {
       fileScr = '/resource/fileIcon/fileType_excel.svg'
-    } else if (
-      ['pdf'].includes(fileExt)
-    ) {
+    } else if (['pdf'].includes(fileExt)) {
       fileScr = '/resource/fileIcon/fileType_pdf.svg'
-    } else if (
-      ['ppt'].includes(fileExt)
-    ) {
+    } else if (['ppt'].includes(fileExt)) {
       fileScr = '/resource/fileIcon/fileType_ppt.svg'
-    } else if (
-      ['doc'].includes(fileExt)
-    ) {
+    } else if (['doc'].includes(fileExt)) {
       fileScr = '/resource/fileIcon/fileType_doc.svg'
-    } else if (
-      ['zip'].includes(fileExt)
-    ) {
+    } else if (['zip'].includes(fileExt)) {
       fileScr = '/resource/fileIcon/fileType_zip.svg'
     } else {
       fileScr = '/resource/fileIcon/fileType_common.svg'
     }
     return fileScr
   },
-  settingUserDo (payload) {
+  settingUserDo(payload) {
     if (!payload || payload.length === 0) return
     for (var i = 0; i < payload.length; i++) {
       var userDo = payload[i].userDoList
-      var userDoList = [{ doType: 'ST', doKey: 0 }, { doType: 'LI', doKey: 0 }, { doType: 'RE', doKey: false }, { doType: 'SB', doKey: 0 }]
+      var userDoList = [
+        { doType: 'ST', doKey: 0 },
+        { doType: 'LI', doKey: 0 },
+        { doType: 'RE', doKey: false },
+        { doType: 'SB', doKey: 0 }
+      ]
       if (userDo) {
         var index = userDo.findIndex((item) => item.doType === 'ST')
         if (index >= 0) {
@@ -1306,8 +1507,9 @@ export const commonMethods = {
     return payload
   },
   // 지연 시킬 타임과 함수를 넣으면 해당 시간이 지난 후 그 함수를 실행합니다.
-  async delayAfterFunc (delayTime, afterFunc) {
-    const delay = (time) => new Promise((resolve) => setTimeout(() => resolve(), time))
+  async delayAfterFunc(delayTime, afterFunc) {
+    const delay = (time) =>
+      new Promise((resolve) => setTimeout(() => resolve(), time))
     await delay(delayTime)
 
     // 여기서 오류난다면 함수뒤에 ()빼세요!
@@ -1316,9 +1518,11 @@ export const commonMethods = {
 }
 
 export default {
-  install (Vue) {
-    Vue.config.globalProperties.$changeSimpleDateFormat = commonMethods.changeSimpleDateFormat
-    Vue.config.globalProperties.$changeDateFormat = commonMethods.changeDateFormat
+  install(Vue) {
+    Vue.config.globalProperties.$changeSimpleDateFormat =
+      commonMethods.changeSimpleDateFormat
+    Vue.config.globalProperties.$changeDateFormat =
+      commonMethods.changeDateFormat
     Vue.config.globalProperties.$convertDate = commonMethods.convertDate
     Vue.config.globalProperties.$extractYear = commonMethods.extractYear
     Vue.config.globalProperties.$numberToKorean = commonMethods.numberToKorean
@@ -1326,13 +1530,18 @@ export default {
     Vue.config.globalProperties.$makeMtextMap = commonMethods.makeMtextMap
     Vue.config.globalProperties.$changeText = commonMethods.changeText
     Vue.config.globalProperties.$addHistoryStack = commonMethods.addHistoryStack
-    Vue.config.globalProperties.$removeHistoryStack = commonMethods.removeHistoryStack
-    Vue.config.globalProperties.$showHistoryStack = commonMethods.showHistoryStack
-    Vue.config.globalProperties.$checkDeleteHistory = commonMethods.checkDeleteHistory
-    Vue.config.globalProperties.$removeHistoryStackForPage = commonMethods.removeHistoryStackForPage
+    Vue.config.globalProperties.$removeHistoryStack =
+      commonMethods.removeHistoryStack
+    Vue.config.globalProperties.$showHistoryStack =
+      commonMethods.showHistoryStack
+    Vue.config.globalProperties.$checkDeleteHistory =
+      commonMethods.checkDeleteHistory
+    Vue.config.globalProperties.$removeHistoryStackForPage =
+      commonMethods.removeHistoryStackForPage
     Vue.config.globalProperties.$isJsonString = commonMethods.isJsonString
 
-    Vue.config.globalProperties.$openRouterModalPop = commonMethods.openRouterModalPop
+    Vue.config.globalProperties.$openRouterModalPop =
+      commonMethods.openRouterModalPop
     // Vue.config.globalProperties.$fullToDestory = commonMethods.PullToRefreshDestroy
     Vue.config.globalProperties.$checkUserAuth = commonMethods.checkUserAuth
     Vue.config.globalProperties.$checkSameName = commonMethods.checkSameName
@@ -1346,31 +1555,43 @@ export default {
     Vue.config.globalProperties.$setPhone = commonMethods.setPhone
     Vue.config.globalProperties.$teamTypeString = commonMethods.teamTypeString
     Vue.config.globalProperties.$showToastPop = commonMethods.showToastPop
-    Vue.config.globalProperties.$changeDateMemoFormat = commonMethods.changeDateMemoFormat
+    Vue.config.globalProperties.$changeDateMemoFormat =
+      commonMethods.changeDateMemoFormat
     Vue.config.globalProperties.$previewFile = commonMethods.previewFile
     Vue.config.globalProperties.$makeShareLink = commonMethods.makeShareLink
     Vue.config.globalProperties.$cancelTimer = commonMethods.cancelTimer
-    Vue.config.globalProperties.$checkTokenValidTime = commonMethods.checkTokenValidTime
+    Vue.config.globalProperties.$checkTokenValidTime =
+      commonMethods.checkTokenValidTime
     Vue.config.globalProperties.$saveFileSize = commonMethods.saveFileSize
-    Vue.config.globalProperties.$findUrlChangeAtag = commonMethods.findUrlChangeAtag
-    Vue.config.globalProperties.$pasteHtmlAtCaret = commonMethods.pasteHtmlAtCaret
+    Vue.config.globalProperties.$findUrlChangeAtag =
+      commonMethods.findUrlChangeAtag
+    Vue.config.globalProperties.$pasteHtmlAtCaret =
+      commonMethods.pasteHtmlAtCaret
     Vue.config.globalProperties.$checkMobile = commonMethods.checkMobile
-    Vue.config.globalProperties.$changeUrlBackslash = commonMethods.changeUrlBackslash
+    Vue.config.globalProperties.$changeUrlBackslash =
+      commonMethods.changeUrlBackslash
     Vue.config.globalProperties.$findATagDelete = commonMethods.findATagDelete
     Vue.config.globalProperties.$makeHistoryObj = commonMethods.makeHistoryObj
-    Vue.config.globalProperties.$countingTotalMemo = commonMethods.countingTotalMemo
-    Vue.config.globalProperties.$handleImageUpload = commonMethods.handleImageUpload
+    Vue.config.globalProperties.$countingTotalMemo =
+      commonMethods.countingTotalMemo
+    Vue.config.globalProperties.$handleImageUpload =
+      commonMethods.handleImageUpload
     Vue.config.globalProperties.$dateCalc = commonMethods.dateCalc
     Vue.config.globalProperties.$addConsole = commonMethods.addConsole
     Vue.config.globalProperties.$setParentsId = commonMethods.setParentsId
-    Vue.config.globalProperties.$showAxiosLoading = commonMethods.showAxiosLoading
-    Vue.config.globalProperties.$showCloudLoading = commonMethods.showCloudLoading
+    Vue.config.globalProperties.$showAxiosLoading =
+      commonMethods.showAxiosLoading
+    Vue.config.globalProperties.$showCloudLoading =
+      commonMethods.showCloudLoading
     Vue.config.globalProperties.$getFollowerType = commonMethods.getFollowerType
-    Vue.config.globalProperties.$changeFollowerInfo = commonMethods.changeFollowerInfo
-    Vue.config.globalProperties.$checkEmptyInnerHtml = commonMethods.checkEmptyInnerHtml
+    Vue.config.globalProperties.$changeFollowerInfo =
+      commonMethods.changeFollowerInfo
+    Vue.config.globalProperties.$checkEmptyInnerHtml =
+      commonMethods.checkEmptyInnerHtml
     Vue.config.globalProperties.$settingUserAuth = commonMethods.settingUserAuth
     Vue.config.globalProperties.$dAlertLog = commonMethods.dAlertLog
-    Vue.config.globalProperties.$showChanCommonPop = commonMethods.showChanCommonPop
+    Vue.config.globalProperties.$showChanCommonPop =
+      commonMethods.showChanCommonPop
     Vue.config.globalProperties.$gobackDev = commonMethods.gobackDev
     Vue.config.globalProperties.$notPerText = commonMethods.notPerText
     Vue.config.globalProperties.$setBodyLength = commonMethods.setBodyLength

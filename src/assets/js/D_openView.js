@@ -5,7 +5,10 @@
 import store from '../../store'
 import { mapGetters, mapActions } from 'vuex'
 import axios from 'axios'
-import { methods, commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
+import {
+  methods,
+  commonAxiosFunction
+} from '../../../public/commonAssets/Tal_axiosFunction'
 import { commonMethods } from './common'
 var this_ = this
 // var g_user = store.getters['UB_USER/GE_USER']
@@ -21,35 +24,48 @@ export const isJsonString = (str) => {
 }
 
 export const openView = {
-  async getViewData (param, nonLoadingYn) {
+  async getViewData(param, nonLoadingYn) {
     var resultData = null
     resultData = await commonAxiosFunction(param, nonLoadingYn)
     return resultData
   },
-  async getBoardMainData (param, nonLoadingYn) {
+  async getBoardMainData(param, nonLoadingYn) {
     if (!nonLoadingYn) nonLoadingYn = false
     var paramMap = new Map()
     paramMap.set('currentTeamKey', param.teamKey)
     paramMap.set('cabinetKey', param.cabinetKey)
 
-    var result = await commonAxiosFunction({ url: '/sUniB/tp.getCabinetMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
-    if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
+    var result = await commonAxiosFunction(
+      { url: '/sUniB/tp.getCabinetMainBoard', param: Object.fromEntries(paramMap) },
+      nonLoadingYn
+    )
+    if (
+      !result ||
+      !result.data ||
+      !result.data.result ||
+      !result.data.result === 'NG'
+    ) {
       commonMethods.showToastPop('해당 게시판의 정보를 찾을 수 없습니다!')
       return
     }
     console.log(result.data)
     return result.data
   },
-  async getContentDetailData (inputParam, nonLoadingYn) {
+  async getContentDetailData(inputParam, nonLoadingYn) {
     if (!nonLoadingYn) nonLoadingYn = false
     var result = {}
     console.log(inputParam)
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
-      paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
+      if (inputParam.jobkindId !== 'TODO') {
+        paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
+      }
     }
-    var contentDetail = await commonAxiosFunction({ url: '/sUniB/tp.getMyContentsList', param: paramSet }, nonLoadingYn)
+    var contentDetail = await commonAxiosFunction(
+      { url: '/sUniB/tp.getMyContentsList', param: paramSet },
+      nonLoadingYn
+    )
     if (!contentDetail || !contentDetail.data) {
       commonMethods.showToastPop('해당 컨텐츠의 정보를 찾을 수 없습니다!')
       return
@@ -57,22 +73,33 @@ export const openView = {
     var content = contentDetail.data.content[0]
 
     content = await commonMethods.settingUserDo(content)
-    if (!content.D_MEMO_LIST && (!content.memoList || content.memoList.length === 0)) content.D_MEMO_LIST = []
+    if (
+      !content.D_MEMO_LIST &&
+      (!content.memoList || content.memoList.length === 0)
+    ) {
+      content.D_MEMO_LIST = []
+    }
+    if (content.jobkindId === 'TODO') {
+      content.creTeamKey = 0
+    }
 
     this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [content])
     result.content = content
     if (content.jobkindId === 'BOAR') {
       var cabinetInfo = content.cabinet
-      cabinetInfo.shareAuth = commonMethods.checkUserAuth(cabinetInfo.mShareItemList)
+      cabinetInfo.shareAuth = commonMethods.checkUserAuth(
+        cabinetInfo.mShareItemList
+      )
       result.contentCabinet = cabinetInfo
     }
     return result
   },
-  async getRouterViewData (page, nonLoadingYn) {
+  async getRouterViewData(page, nonLoadingYn) {
     var resultData = null
     if (page === 'main') {
       return await openView.getMainBoard()
-    } if (page === 'myPage') {
+    }
+    if (page === 'myPage') {
       return await openView.getMainBoard()
     } else if (page === 'search') {
       return await openView.getSearchMainBoard(nonLoadingYn)
@@ -81,7 +108,7 @@ export const openView = {
     }
     return resultData
   },
-  async getManagingPageData (data) {
+  async getManagingPageData(data) {
     var page = data.targetType
     var resultData = null
     if (page === 'memberManagement') {
@@ -93,7 +120,7 @@ export const openView = {
     }
     return resultData
   },
-  async getBoardList (paramMap) {
+  async getBoardList(paramMap) {
     var result = await commonAxiosFunction({
       url: '/sUniB/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
@@ -103,7 +130,7 @@ export const openView = {
       return result.data
     }
   },
-  async getBookList (paramMap) {
+  async getBookList(paramMap) {
     var result = await commonAxiosFunction({
       url: '/sUniB/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
@@ -113,7 +140,7 @@ export const openView = {
       return result.data
     }
   },
-  async getGPopData (data) {
+  async getGPopData(data) {
     var page = data.targetType
     var resultData = null
     if (page === 'selectBookList') {
@@ -121,14 +148,22 @@ export const openView = {
     }
     return resultData
   },
-  async getMainBoard () {
-    if (!(store.getters['UB_USER/GE_USER'] && store.getters['UB_USER/GE_USER'].userKey)) {
+  async getMainBoard() {
+    if (
+      !(
+        store.getters['UB_USER/GE_USER'] &&
+        store.getters['UB_USER/GE_USER'].userKey
+      )
+    ) {
       await openView.getUnknownMainBoard()
       return
     }
     var paramMap = new Map()
     paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
-    var response = await commonAxiosFunction({ url: '/sUniB/tp.getMainBoard', param: Object.fromEntries(paramMap) }, false)
+    var response = await commonAxiosFunction(
+      { url: '/sUniB/tp.getMainBoard', param: Object.fromEntries(paramMap) },
+      false
+    )
     console.log(response)
     if (response.status === 200 || response.status === '200') {
       // eslint-disable-next-line no-new-object
@@ -139,14 +174,22 @@ export const openView = {
       /* this.mMainChanList = response.data.teamList.splice(0, 5)
       this.mMainMChanList = response.data.mTeamList
       this.setContsList(response.data.alimList) */
-      await store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [...resultObject.chanList, ...resultObject.mChanList])
-      await store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', response.data.alimList.content)
+      await store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', [
+        ...resultObject.chanList,
+        ...resultObject.mChanList
+      ])
+      await store.dispatch(
+        'UB_CHANNEL/AC_ADD_CONTENTS',
+        response.data.alimList.content
+      )
       return resultObject
     }
   },
-  async getUnknownMainBoard () {
+  async getUnknownMainBoard() {
     var paramMap = new Map()
-    var response = await axios.post('/sUniB/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
+    var response = await axios.post(
+      '/sUniB/tp.getUnknownMainBoard',
+      Object.fromEntries(paramMap)
     )
     if (response.status === 200 || response.status === '200') {
       // eslint-disable-next-line no-new-object
@@ -157,19 +200,25 @@ export const openView = {
       await store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', resultObject.alimList)
     }
   },
-  async getSearchMainBoard (nonLoadingYn) {
+  async getSearchMainBoard(nonLoadingYn) {
     var paramMap = new Map()
     paramMap.set('cateGroupKey', 2)
     paramMap.set('orderbyStr', 'followerCount DESC')
     paramMap.set('creUserKey', store.getters['UB_USER/GE_USER'].userKey)
-    var response = await commonAxiosFunction({ url: '/sUniB/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
+    var response = await commonAxiosFunction(
+      { url: '/sUniB/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) },
+      nonLoadingYn
+    )
     if (response.data.result === 'OK') {
       console.log(response.data)
-      await store.dispatch('UB_CHANNEL/AC_ADD_CHANNEL', response.data.teamList.content)
+      await store.dispatch(
+        'UB_CHANNEL/AC_ADD_CHANNEL',
+        response.data.teamList.content
+      )
       return response.data
     }
   },
-  async getMainChanList () {
+  async getMainChanList() {
     var paramMap = new Map()
     paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
     var response = await methods.getTeamList(paramMap)
@@ -181,7 +230,7 @@ export const openView = {
       return response.data
     }
   },
-  async getWriteBoardData (teamKey) {
+  async getWriteBoardData(teamKey) {
     // 컨텐츠 작성 팝업을 열 때 작성 가능한 게시판를 주고있습니다.
     if (!teamKey) return
     var resultData = {}
@@ -192,7 +241,13 @@ export const openView = {
     paramMap.set('shareType', 'W')
     paramMap.set('userKey', store.getters['UB_USER/GE_USER'].userKey)
     // console.log(paramMap)
-    var response = await commonAxiosFunction({ url: '/sUniB/tp.getCabinetListForMyShareType', param: Object.fromEntries(paramMap) }, false)
+    var response = await commonAxiosFunction(
+      {
+        url: '/sUniB/tp.getCabinetListForMyShareType',
+        param: Object.fromEntries(paramMap)
+      },
+      false
+    )
     console.log(response)
     if (response.status === 200 || response.statusText === 'OK') {
       resultData = response.data
@@ -227,7 +282,7 @@ export const openView = {
     // }
     // return resultData
   },
-  async getFollowerList (paramMap) {
+  async getFollowerList(paramMap) {
     var result = await commonAxiosFunction({
       url: '/sUniB/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
@@ -239,7 +294,7 @@ export const openView = {
     // // console.log(this.managingList)
     // paramMap.set('followerType', 'M')
   },
-  async getSelectBookList (paramMap) {
+  async getSelectBookList(paramMap) {
     paramMap.set('sysCabinetCode', 'USER')
     paramMap.set('adminYn', true)
     var result = await commonAxiosFunction({
@@ -255,7 +310,7 @@ export const openView = {
     }
     // this.editBookSelectedList()
   },
-  async getOpenChannelListPopData (tabName) {
+  async getOpenChannelListPopData(tabName) {
     // 채널리스트를 메인에서 팝업으로 열 시 데이터를 미리 보내주기 위해 만듬
     var paramMap = new Map()
     if (tabName === 'user') {
@@ -268,7 +323,10 @@ export const openView = {
     }
     paramMap.set('offsetInt', 0)
     paramMap.set('pageSize', 10)
-    var result = await commonAxiosFunction({ url: '/sUniB/tp.getUserTeamList', param: Object.fromEntries(paramMap) }, false)
+    var result = await commonAxiosFunction(
+      { url: '/sUniB/tp.getUserTeamList', param: Object.fromEntries(paramMap) },
+      false
+    )
     console.log(result)
     if (result.status === 200 || result.statusText === 'OK') {
       return result.data
@@ -276,28 +334,35 @@ export const openView = {
       return false
     }
   },
-  async getOpenPushListPopData (inputParam) {
+  async getOpenPushListPopData(inputParam) {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
       paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
     }
-    var result = await commonAxiosFunction({ url: '/sUniB/tp.getMyContentsList', param: paramSet }, false)
+    var result = await commonAxiosFunction(
+      { url: '/sUniB/tp.getMyContentsList', param: paramSet },
+      false
+    )
     console.log(result)
     return result.data
   }
 }
 
 export default {
-  install (Vue) {
+  install(Vue) {
     Vue.config.globalProperties.$getViewData = openView.getViewData
     Vue.config.globalProperties.$getBoardMainData = openView.getBoardMainData
-    Vue.config.globalProperties.$getContentDetailData = openView.getContentDetailData
+    Vue.config.globalProperties.$getContentDetailData =
+      openView.getContentDetailData
     Vue.config.globalProperties.$getRouterViewData = openView.getRouterViewData
-    Vue.config.globalProperties.$getManagingPageData = openView.getManagingPageData
+    Vue.config.globalProperties.$getManagingPageData =
+      openView.getManagingPageData
     Vue.config.globalProperties.$getGPopData = openView.getGPopData
     Vue.config.globalProperties.$getWriteBoardData = openView.getWriteBoardData
-    Vue.config.globalProperties.$getOpenChannelListPopData = openView.getOpenChannelListPopData
-    Vue.config.globalProperties.$getOpenPushListPopData = openView.getOpenPushListPopData
+    Vue.config.globalProperties.$getOpenChannelListPopData =
+      openView.getOpenChannelListPopData
+    Vue.config.globalProperties.$getOpenPushListPopData =
+      openView.getOpenPushListPopData
   }
 }

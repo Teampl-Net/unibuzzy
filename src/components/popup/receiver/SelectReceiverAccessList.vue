@@ -1,17 +1,56 @@
 <template>
-<div class="accessListPop">
-    <gPopHeader @closeXPop="backClick" class="headerShadow" :headerTitle="receiverTitle"  />
-    <div class="w100P pagePaddingWrap accessPopBody" :style="'padding-top:' + ($STATUS_HEIGHT + 60)+ 'px'">
+  <div class="accessListPop">
+    <gPopHeader
+      @closeXPop="backClick"
+      class="headerShadow"
+      :headerTitle="receiverTitle"
+    />
+    <div
+      class="w100P pagePaddingWrap accessPopBody"
+      :style="'padding-top:' + ($STATUS_HEIGHT + 60) + 'px'"
+    >
       <div>
-        <selectBookNMemberList v-if="detailOpenYn === false" ref="selectBookNMemberListCompo" :simplePop="true" :itemType="itemType" @addSelectList="addSelectList" @delectClick="delectClick" :propData='propData' :selectBookNList='memberList' :selectList='selectList' @detail='detailOpen' />
+        <selectBookNMemberList
+          v-if="detailOpenYn === false"
+          ref="selectBookNMemberListCompo"
+          :simplePop="true"
+          :itemType="itemType"
+          @addSelectList="addSelectList"
+          @delectClick="delectClick"
+          :propData="propData"
+          :selectBookNList="memberList"
+          :selectList="selectList"
+          @detail="detailOpen"
+        />
         <transition name="showGroup">
-            <gBookMemberList :listData="memberList" :propMemberList="memberList" :parentSelectList="selectList.memberList" :selectPopYn="true" @changeSelectMemberList="changeSelectMemberList" :teamInfo="propData" :propData="propData" class="memberListStyle" transition="showGroup" ref="memberListCompo" v-if="detailOpenYn" />
+          <gBookMemberList
+            :listData="memberList"
+            :propMemberList="memberList"
+            :parentSelectList="selectList.memberList"
+            :selectPopYn="true"
+            @changeSelectMemberList="changeSelectMemberList"
+            :teamInfo="propData"
+            :propData="propData"
+            class="memberListStyle"
+            transition="showGroup"
+            ref="memberListCompo"
+            v-if="detailOpenYn"
+          />
         </transition>
       </div>
-      <selectedListCompo class="selectedListCompo" ref="selectedListCompo" :oneMemberCanAddYn="oneMemberCanAddYn" :itemType="itemType"  @changeSelectedList="changeSelectedItem" @changeSelectMemberList="changeSelectMemberList" transition="showGroup" :listData='setSelectedList' @btnClick="sendReceivers" />
+      <selectedListCompo
+        class="selectedListCompo"
+        ref="selectedListCompo"
+        :oneMemberCanAddYn="oneMemberCanAddYn"
+        :itemType="itemType"
+        @changeSelectedList="changeSelectedItem"
+        @changeSelectMemberList="changeSelectMemberList"
+        transition="showGroup"
+        :listData="setSelectedList"
+        @btnClick="sendReceivers"
+      />
     </div>
-</div>
-
+  </div>
 </template>
 
 <script>
@@ -28,11 +67,11 @@ export default {
     itemType: {}, // W: 작성/ V: 열람/ R: 댓글
     selectList: {} // 공유대상에서 선택한 북 & 멤버 리스트
   },
-  created () {
+  created() {
     this.memberList = this.parentList
   },
   components: { selectedListCompo, selectBookNMemberList },
-  data () {
+  data() {
     return {
       selectedYn: false,
       setSelectedList: {},
@@ -56,7 +95,7 @@ export default {
     }
   },
   methods: {
-    changeSelectMemberList (params) {
+    changeSelectMemberList(params) {
       this.setSelectedList.memberList = params
 
       if (this.$refs.selectedListCompo) {
@@ -67,7 +106,7 @@ export default {
         this.$refs.memberListCompo.deleteSelectedMember(params, true)
       }
     },
-    async detailOpen (data) {
+    async detailOpen(data) {
       var history = this.$store.getters['UB_HISTORY/hStack']
       this.selectPopId = 'selectMemeberPopup' + history.length
       this.selectPopId = this.$setParentsId(this.pPopId, this.selectPopId)
@@ -76,7 +115,7 @@ export default {
 
       await this.getBookMemberList(data.cabinetKey)
     },
-    async getBookMemberList (key) {
+    async getBookMemberList(key) {
       this.detailOpenYn = false
       var paramMap = new Map()
       var orderText = 'mcc.creDate DESC'
@@ -84,19 +123,21 @@ export default {
       paramMap.set('cabinetKey', key)
       paramMap.set('jobkindId', 'USER')
       var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getMCabContentsList',
-          param: Object.fromEntries(paramMap)
+        url: '/sUniB/tp.getMCabContentsList',
+        param: Object.fromEntries(paramMap)
       })
       this.memberList = {}
       this.memberList = result.data
       if (this.memberList) {
-          for (var i =0; i < this.memberList.length; i ++) {
-              this.memberList[i].userDispMtext = this.$changeText(this.memberList[i].userDispMtext)
-          }
-          this.detailOpenYn = true
+        for (var i = 0; i < this.memberList.length; i++) {
+          this.memberList[i].userDispMtext = this.$changeText(
+            this.memberList[i].userDispMtext
+          )
+        }
+        this.detailOpenYn = true
       }
     },
-    changeSelectedItem (data) {
+    changeSelectedItem(data) {
       if (this.itemType === 'V') {
         this.setSelectedList.V = data.itemList
       } else if (this.itemType === 'W') {
@@ -104,18 +145,21 @@ export default {
       } else if (this.itemType === 'R') {
         this.setSelectedList.R = data.itemList
       }
-      this.$refs.selectBookNMemberListCompo.delSelectList(data.delKey, data.type)
+      this.$refs.selectBookNMemberListCompo.delSelectList(
+        data.delKey,
+        data.type
+      )
     },
-    sendReceivers (data) {
-      if(data.bookList){
-        if (data.bookList.length > 0 ) {
+    sendReceivers(data) {
+      if (data.bookList) {
+        if (data.bookList.length > 0) {
           for (var i = 0; i < data.bookList.length; i++) {
             data.bookList[i].shareType = this.itemType
           }
         }
       }
-      if(data.memberList){
-        if (data.memberList.length > 0 ) {
+      if (data.memberList) {
+        if (data.memberList.length > 0) {
           for (var i = 0; i < data.memberList.length; i++) {
             data.memberList[i].shareType = this.itemType
           }
@@ -124,14 +168,14 @@ export default {
       this.$emit('sendReceivers', data)
       this.$emit('closeXPop')
     },
-    addSelectList (data) {
+    addSelectList(data) {
       this.setSelectedList = data
       this.$refs.selectedListCompo.upDatePage(data)
     },
-    delectClick (index) {
+    delectClick(index) {
       this.setSelectedList.memberList.splice(index, 1)
     },
-    backClick () {
+    backClick() {
       if (this.addPopOpenYn) {
         this.addPopOpenYn = false
       } else if (this.detailOpenYn) {
@@ -142,7 +186,8 @@ export default {
         }
 
         if (this.selectPopYn) {
-          this.titleText = 'Select target > ' + this.$changeText(this.chanInfo.value.nameMtext)
+          this.titleText =
+            'Select target > ' + this.$changeText(this.chanInfo.value.nameMtext)
         } else {
           this.titleText = 'uniBuzzy'
         }
@@ -163,9 +208,9 @@ export default {
 }
 </script>
 
-<style >
+<style>
 .longHeight {
-height: 100% !important;
+  height: 100% !important;
 }
 .selectedReceiverBox {
   height: calc(100% - 100px);
@@ -176,25 +221,25 @@ height: 100% !important;
   background-color: white;
   text-align: left;
 }
-[contenteditable=true] {
+[contenteditable='true'] {
   outline: none;
 }
-input:focus{
+input:focus {
   outline: none;
 }
 .accessListPop {
   height: 100vh;
-  background-color:white;
-  width:100%;
+  background-color: white;
+  width: 100%;
   z-index: 9999999;
   position: fixed;
   top: 0;
   left: 0;
 }
 .accessPopBody {
-  position:absolute;
+  position: absolute;
   overflow: auto;
-  padding-top:50px
+  padding-top: 50px;
 }
 .accessPopBody > div:first-child {
   width: 100%;

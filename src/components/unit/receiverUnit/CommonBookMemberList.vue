@@ -13,11 +13,21 @@
   }
 </i18n>
 <template>
-  <div class="receiverTeamMemberArea" >
-    <template v-for="(data, index) in mCommonMemberList" :key='data'>
-      <gReceiveCard :propData="data" :option="selectPopYn === true ? 'SELE' : 'EDIT'" :compoIdx='index' @receiveCardEmit="receiveCardEmit"/>
+  <div class="receiverTeamMemberArea">
+    <template v-for="(data, index) in mCommonMemberList" :key="data">
+      <gReceiveCard
+        :propData="data"
+        :option="selectPopYn === true ? 'SELE' : 'EDIT'"
+        :compoIdx="index"
+        @receiveCardEmit="receiveCardEmit"
+      />
     </template>
-    <gListEmpty v-if="mCommonMemberList.length === 0" :title="$t('SELECT_MSG_MEMBERS_NONE')" :subTitle="$t('SELECT_MSG_MEMBERS_ADD')" :option="selectPopYn === true ? 'SELE' : 'EDIT'" />
+    <gListEmpty
+      v-if="mCommonMemberList.length === 0"
+      :title="$t('SELECT_MSG_MEMBERS_NONE')"
+      :subTitle="$t('SELECT_MSG_MEMBERS_ADD')"
+      :option="selectPopYn === true ? 'SELE' : 'EDIT'"
+    />
   </div>
 </template>
 
@@ -32,7 +42,7 @@ export default {
     pSearchFilterList: {},
     pFollowerMemList: {}
   },
-  data () {
+  data() {
     return {
       mCommonMemberList: [],
       mSelectedMemberList: [],
@@ -40,13 +50,13 @@ export default {
       mFollowerMemList: []
     }
   },
-  updated () {
+  updated() {
     if (this.pSearchFilterList) {
       this.mSearchFilterList = this.pSearchFilterList
     }
     this.setMemberList()
   },
-  created () {
+  created() {
     this.mSelectedAlready()
     var this_ = this
     this.$nextTick(() => {
@@ -57,13 +67,15 @@ export default {
       }
       if (this_.parentSelectList) {
         this_.mSelectedMemberList = []
-        this_.mSelectedMemberList = JSON.parse(JSON.stringify(this_.parentSelectList))
+        this_.mSelectedMemberList = JSON.parse(
+          JSON.stringify(this_.parentSelectList)
+        )
         this_.setParentSelectList()
       }
     })
   },
   methods: {
-    mSelectedAlready () {
+    mSelectedAlready() {
       if (this.pFollowerMemList) {
         this.mFollowerMemList = this.pFollowerMemList
         for (let i = 0; i < this.mFollowerMemList.length; i++) {
@@ -71,12 +83,14 @@ export default {
         }
       }
     },
-    deleteSelectedMember (data, onlyUpdateYn) {
+    deleteSelectedMember(data, onlyUpdateYn) {
       // 실제 선택한 데이터 중 멤버를 삭제하는 작업
       if (onlyUpdateYn) {
         this.mSelectedMemberList = data
       } else {
-        var findIdx = this.mSelectedMemberList.findIndex(item => item.accessKey === data.userKey)
+        var findIdx = this.mSelectedMemberList.findIndex(
+          (item) => item.accessKey === data.userKey
+        )
         if (findIdx !== -1) {
           this.mSelectedMemberList.splice(findIdx, 1)
         }
@@ -84,7 +98,7 @@ export default {
       }
       this.setParentSelectList()
     },
-    receiveCardEmit (param) {
+    receiveCardEmit(param) {
       var type = param.targetType
       var data = param.data
       var idx = param.index
@@ -98,14 +112,14 @@ export default {
         this.deleteSelectedMember(data)
       }
     },
-    setMemberList () {
+    setMemberList() {
       if (!this.propMemberList) return
       this.mCommonMemberList = this.propMemberList
       for (let i = 0; i < this.mCommonMemberList.length; i++) {
         this.mCommonMemberList[i].jobkindId = 'USER'
       }
     },
-    setParentSelectList () {
+    setParentSelectList() {
       var tempList = this.mCommonMemberList
       this.mCommonMemberList = []
       if (this.mSelectedMemberList) {
@@ -121,14 +135,14 @@ export default {
       }
       this.mCommonMemberList = tempList
     },
-    deleteMemberClick (data, index) {
+    deleteMemberClick(data, index) {
       var param = {}
       param.data = data
       param.index = index
       param.targetType = 'member'
       this.$emit('delAddress', param)
     },
-    async deleteMember (data, index) {
+    async deleteMember(data, index) {
       // 주소록 관리에서 주소 삭제가 안되기에 주석처리 하였음.
       if (this.propData.selectMemberType === 'manager') {
         this.$emit('deleteManager', data)
@@ -147,7 +161,7 @@ export default {
         }
       }
     },
-    openProfilePop (data, index) {
+    openProfilePop(data, index) {
       data.targetType = 'bookMemberDetail'
       data.currentCabinetKey = data.cabinetKey
       data.currentTeamKey = this.teamInfo.teamKey
@@ -156,13 +170,15 @@ export default {
       data.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
       this.$emit('memberInfo', data)
     },
-    addSelectedList (data, index) {
+    addSelectedList(data, index) {
       if (!this.mSelectedMemberList) this.mSelectedMemberList = []
 
       if (!data.accessKey) data.accessKey = data.userKey
 
       data.shareSeq = data.userKey
-      var findIdx = this.mSelectedMemberList.findIndex(item => item.accessKey === data.accessKey)
+      var findIdx = this.mSelectedMemberList.findIndex(
+        (item) => item.accessKey === data.accessKey
+      )
       if (findIdx === -1) {
         this.mSelectedMemberList.push(data)
 
@@ -175,7 +191,7 @@ export default {
     }
   },
   watch: {
-    propMemberList () {
+    propMemberList() {
       this.setMemberList()
     }
   }
@@ -184,7 +200,7 @@ export default {
 
 <style scoped>
 .selectedBox {
-  background-color:#6768A720;
+  background-color: #6768a720;
 }
 .receiverTeamMemberArea {
   float: left;
@@ -202,9 +218,9 @@ export default {
   width: 50px;
   height: 50px;
   border-radius: 100%;
-  border: 1.5px solid #ECEDF5;
+  border: 1.5px solid #ecedf5;
   float: left;
-  background: #ECEDF5;
+  background: #ecedf5;
   overflow: hidden;
   display: flex;
 }

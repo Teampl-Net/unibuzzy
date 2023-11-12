@@ -969,6 +969,7 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 .opacity05 {
     opacity: 0.5;
 }
+.backShadow{box-shadow:0 5px 6px 0 rgba(60, 60, 60, 0.2);}
 
 .zoomInOutPop {
   transform: scaleY(0.01) scaleX(0);

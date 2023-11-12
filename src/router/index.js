@@ -1,9 +1,17 @@
 /* eslint-disable no-unused-vars */
-import { createRouter, createWebHistory, createWebHashHistory, createMemoryHistory } from 'vue-router'
+import {
+  createRouter,
+  createWebHistory,
+  createWebHashHistory,
+  createMemoryHistory
+} from 'vue-router'
 import { functions } from '../assets/js/D_vuexFunction'
 import axios from 'axios'
 import store from '../store'
-import { methods, commonAxiosFunction } from '../../public/commonAssets/Tal_axiosFunction'
+import {
+  methods,
+  commonAxiosFunction
+} from '../../public/commonAssets/Tal_axiosFunction'
 
 let routes = []
 const routerMain = () => import('../pages/Router_main.vue')
@@ -21,7 +29,8 @@ routes = [
         meta: {
           page: 1
         },
-        component: () => import(/* webpackChunkName: "about" */ '@/pages/routerPages/Main.vue')
+        component: () =>
+          import(/* webpackChunkName: "about" */ '@/pages/routerPages/Main.vue')
         // beforeEnter: (to, from, next) => {
         //   // 만약 로그인 상태라면
         //   var loginYn = localStorage.getItem('loginYn')
@@ -39,7 +48,10 @@ routes = [
         meta: {
           page: 1
         },
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/UniB_main.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/UniB_main.vue'
+          )
       },
       {
         path: '/contents/:contentsKey/:creTeamKey/:cabinetKey',
@@ -48,8 +60,11 @@ routes = [
         meta: {
           page: 1
         },
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/ContentsDetail.vue'),
-        beforeEnter (to, from, next) {
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/ContentsDetail.vue'
+          ),
+        beforeEnter(to, from, next) {
           if (from.name && from.name !== to.name && from.name === 'chanMain') {
             localStorage.setItem('preListTeamKey', from.params.encodedTeamKey)
           }
@@ -61,8 +76,11 @@ routes = [
         path: '/chan/:encodedTeamKey',
         name: 'chanMain',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/ChanMain.vue'),
-        beforeEnter (to, from, next) {
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/ChanMain.vue'
+          ),
+        beforeEnter(to, from, next) {
           if (from.name && from.name !== to.name && from.name === 'contents') {
             const fromTeamKey = localStorage.getItem('preListTeamKey')
             if (fromTeamKey && fromTeamKey === to.params.encodedTeamKey) {
@@ -76,7 +94,7 @@ routes = [
           next()
           // ...
         },
-        beforeRouteLeave (to, from, next) {
+        beforeRouteLeave(to, from, next) {
           // 여기에 페이지를 떠나기 전에 수행할 작업을 추가합니다.
           if (to.name !== 'contents') {
             store.commit('UB_PRE_DATA/MU_CLEAN')
@@ -94,7 +112,10 @@ routes = [
         path: '/board/:teamKey/:targetKey',
         name: 'board',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/BoardMain.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/BoardMain.vue'
+          )
       },
       {
         path: '/unknown',
@@ -107,13 +128,19 @@ routes = [
         path: '/search',
         name: 'search',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/SearchPage.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/SearchPage.vue'
+          )
       },
       {
         path: '/myPage',
         name: 'myPage',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/MyPage.vue'),
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/MyPage.vue'
+          ),
         meta: {
           page: 4
         }
@@ -122,7 +149,10 @@ routes = [
         path: '/settings',
         name: 'settings',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/SetMyPage.vue'),
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/SetMyPage.vue'
+          ),
         meta: {
           page: 4
         }
@@ -131,25 +161,37 @@ routes = [
         path: '/fileBox',
         name: 'fileBox',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/TotalFileList.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/TotalFileList.vue'
+          )
       },
       {
         path: '/saveBox',
         name: 'saveBox',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/MorePushList.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/MorePushList.vue'
+          )
       },
       {
         path: '/cancel',
         name: 'cancel',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/LeaveUniBuzzy.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/LeaveUniBuzzy.vue'
+          )
       },
       {
         path: '/chanList',
         name: 'chanList',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/ChanList.vue'),
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/ChanList.vue'
+          ),
         meta: {
           page: 3
         }
@@ -157,17 +199,40 @@ routes = [
       {
         path: '/findChan',
         name: 'findChan',
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/FindChanList.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/FindChanList.vue'
+          )
       },
       {
         path: '/developer',
         name: 'developer',
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/DeveloperPage.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/DeveloperPage.vue'
+          )
       },
       {
         path: '/todo',
         name: 'todo',
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/TodoList.vue')
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../pages/routerPages/TodoList.vue'
+          )
+      },
+      {
+        path: '/todo/:contentsKey/:creTeamKey/:cabinetKey',
+        name: 'todoContents',
+        component: () =>
+          import(
+            /* webpackChunkName: "about" */ '../components/pageComponents/todo/unibDetailPop.vue'
+          )
+      },
+      {
+        path: '/testSetup',
+        name: 'testSetup',
+        component: () =>
+          import(/* webpackChunkName: "about" */ '../pages/Test.vue')
       }
     ]
   },
@@ -181,31 +246,38 @@ routes = [
     path: '/testLoginPage',
     name: 'testLoginPage',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/TestLoginPage.vue')
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../pages/intro/TestLoginPage.vue')
   },
   {
     path: '/permissions',
     name: 'permissions',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Permissions.vue')
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../pages/intro/Permissions.vue')
   },
   {
     path: '/policy/:type',
     name: 'policy',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Policies.vue')
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../pages/intro/Policies.vue')
   },
   {
     path: '/policies',
     name: 'policies',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/AgreePolicies.vue')
+    component: () =>
+      import(/* webpackChunkName: "about" */ '../pages/intro/AgreePolicies.vue')
   },
   {
     path: '/errorPage',
     name: 'errorPage',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/ErrorPage.vue')
+    component: () =>
+      import(
+        /* webpackChunkName: "about" */ '../pages/routerPages/ErrorPage.vue'
+      )
   }
 ]
 

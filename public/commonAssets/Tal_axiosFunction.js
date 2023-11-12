@@ -27,8 +27,12 @@ axios.defaults.withCredentials = true */
 axios.defaults.headers.get.Pragma = 'no-cache' */
 var g_axiosQueue = []
 
-export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
-  console.log('####-------------------------------commonAxiosFunction.' + setItem.url + '----------------------------------------####')
+export async function commonAxiosFunction(setItem, nonLoadingYn, noAuthYn) {
+  console.log(
+    '####-------------------------------commonAxiosFunction.' +
+      setItem.url +
+      '----------------------------------------####'
+  )
   console.log('####parameter is: ')
   console.log(setItem.param)
   if (setItem.firstYn || noAuthYn !== undefined) {
@@ -52,8 +56,9 @@ export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
     url = 'https://mo.d-alim.com/' + url
   }
   try {
-    var response = await axios.post(setItem.url, setItem.param, { withCredentials: true }
-    )
+    var response = await axios.post(setItem.url, setItem.param, {
+      withCredentials: true
+    })
     result = response
     console.log('####resultData is: ')
     console.log(result)
@@ -65,25 +70,29 @@ export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
   }
 
   commonMethods.showAxiosLoading(false)
-  console.log('####-----------------------------------------------------------END----------------------------------------------------------------####')
+  console.log(
+    '####-----------------------------------------------------------END----------------------------------------------------------------####'
+  )
   return result
 }
 
-export async function checkSession () {
+export async function checkSession() {
   var result = false
-  await axios.post('/sUniB/tp.checkSession', { withCredentials: true }
-  ).then(response => {
-    result = response
-  }).catch((error) => {
-    // alert('세션이 만료되어 메인 페이지로 이동합니다.')
-    router.replace('/')
-    result = error
-    console.log(error)
-  })
+  await axios
+    .post('/sUniB/tp.checkSession', { withCredentials: true })
+    .then((response) => {
+      result = response
+    })
+    .catch((error) => {
+      // alert('세션이 만료되어 메인 페이지로 이동합니다.')
+      router.replace('/')
+      result = error
+      console.log(error)
+    })
   return result
 }
 
-export function isMobile () {
+export function isMobile() {
   var user = navigator.userAgent
   var mobileYn = false
 
@@ -94,7 +103,7 @@ export function isMobile () {
   return mobileYn
 }
 
-export async function saveUser (userProfile, loginYn) {
+export async function saveUser(userProfile, loginYn) {
   var user = {}
   // var testYn = localStorage.getItem('testYn')
   // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
@@ -102,11 +111,25 @@ export async function saveUser (userProfile, loginYn) {
   // }
   var setParam = {}
   user.soType = userProfile.soType
-  if (userProfile.email !== undefined && userProfile.email !== null && userProfile.email !== '') { user.soEmail = userProfile.email }
-  if (userProfile.name !== undefined && userProfile.name !== null && userProfile.name !== '') {
+  if (
+    userProfile.email !== undefined &&
+    userProfile.email !== null &&
+    userProfile.email !== ''
+  ) {
+    user.soEmail = userProfile.email
+  }
+  if (
+    userProfile.name !== undefined &&
+    userProfile.name !== null &&
+    userProfile.name !== ''
+  ) {
     user.soName = userProfile.name
   }
-  if (userProfile.userImg !== undefined && userProfile.userImg !== null && userProfile.userImg !== '') {
+  if (
+    userProfile.userImg !== undefined &&
+    userProfile.userImg !== null &&
+    userProfile.userImg !== ''
+  ) {
     user.soPicUrl = userProfile.userImg
     user.picMfilekey = userProfile.userImg
   }
@@ -154,7 +177,7 @@ export async function saveUser (userProfile, loginYn) {
     localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
     if (loginYn) {
       var userInfo = result.data.userMap
-      if (!userInfo.certiDate && (!(/Mobi/i.test(window.navigator.userAgent)))) {
+      if (!userInfo.certiDate && !/Mobi/i.test(window.navigator.userAgent)) {
         router.replace({ path: '/' })
         // router.replace({ path: '/savePhone' })
         return
@@ -173,7 +196,7 @@ export async function saveUser (userProfile, loginYn) {
   }
 }
 export const methods = {
-  getMobileYn () {
+  getMobileYn() {
     var user = navigator.userAgent
     var mobileYn = false
     // if (user.indexOf('iPhone') > -1 || user.indexOf('Android') > -1) {
@@ -184,15 +207,23 @@ export const methods = {
     }
     return mobileYn
   },
-  async userLoginCheck (maingoYn) {
+  async userLoginCheck(maingoYn) {
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
-    if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
-    // 수망고
-    //   paramMap.set('fcmKey', '123456789')
-    //   paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
+    if (
+      testYn !== undefined &&
+      testYn !== null &&
+      testYn !== '' &&
+      (testYn === true || testYn === 'true')
+    ) {
+      // 수망고
+      //   paramMap.set('fcmKey', '123456789')
+      //   paramMap.set('soAccessToken', 'AAAAORRo6bm4QBo7/gqrz/h6GagDmC4FkLB+DrhQ8xlErEBhIMe84G+cAS7uoe+wImtaa1M2Mkehwdx6YuVwqwjEV9k=')
       paramMap.set('fcmKey', '22222222')
-      paramMap.set('soAccessToken', 'djWQ33dQRz-mzUVjQmggEz:APA91bHLvbLuEmuvBnh9o8TAC2SgI6zSP836eC8g3zq5HqkfhZenv6zC_hcWK14MI5ZE5PoYAeV5U7FYCH-EGYMTaoXTWC-UleipjRydqG7z0r-wu0gT4TT9b6e89P4FR5l353DFK0C-')
+      paramMap.set(
+        'soAccessToken',
+        'djWQ33dQRz-mzUVjQmggEz:APA91bHLvbLuEmuvBnh9o8TAC2SgI6zSP836eC8g3zq5HqkfhZenv6zC_hcWK14MI5ZE5PoYAeV5U7FYCH-EGYMTaoXTWC-UleipjRydqG7z0r-wu0gT4TT9b6e89P4FR5l353DFK0C-'
+      )
       paramMap.set('userKey', 255)
       paramMap.set('userEmail', 'test02@teampl.net')
     } else {
@@ -200,7 +231,7 @@ export const methods = {
       var user = store.getters['UB_USER/GE_USER']
       if (!user) {
         if (JSON.parse(localStorage.getItem('vuex'))) {
-          user = JSON.parse(localStorage.getItem('vuex')).D_USER.userInfo
+          user = JSON.parse(localStorage.getItem('vuex')).UB_USER.userInfo
         }
       }
       if (user === undefined || user === null || user === '') {
@@ -220,16 +251,37 @@ export const methods = {
         return result1
       }
       paramMap.set('userKey', user.userKey)
-      if (user.soAccessToken !== undefined && user.soAccessToken !== null && user.soAccessToken !== '') { paramMap.set('soAccessToken', user.soAccessToken) }
-      if (user.fcmKey !== undefined && user.fcmKey !== null && user.fcmKey !== '') { paramMap.set('fcmKey', user.fcmKey) }
+      if (
+        user.soAccessToken !== undefined &&
+        user.soAccessToken !== null &&
+        user.soAccessToken !== ''
+      ) {
+        paramMap.set('soAccessToken', user.soAccessToken)
+      }
+      if (
+        user.fcmKey !== undefined &&
+        user.fcmKey !== null &&
+        user.fcmKey !== ''
+      ) {
+        paramMap.set('fcmKey', user.fcmKey)
+      }
       paramMap.set('userEmail', user.userEmail)
       paramMap.set('soEmail', user.soEmail)
     }
 
     paramMap.set('mobileYn', isMobile())
 
-    var result = await axios.post('/sUniB/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
-    if (result && result.data && (result.data.resultCode === 'OK' || (result.data.userMap && result.data.userMap.userKey))) {
+    var result = await axios.post(
+      '/sUniB/tp.loginCheck',
+      Object.fromEntries(paramMap),
+      { withCredentials: true }
+    )
+    if (
+      result &&
+      result.data &&
+      (result.data.resultCode === 'OK' ||
+        (result.data.userMap && result.data.userMap.userKey))
+    ) {
       if (result.data.userMap) {
         try {
           if (localStorage.getItem('user')) {
@@ -239,12 +291,20 @@ export const methods = {
           }
           localStorage.setItem('user', JSON.stringify(result.data.userMap))
           await store.dispatch('UB_USER/AC_USER', result.data.userMap)
-          localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
+          localStorage.setItem(
+            'sessionUser',
+            JSON.stringify(result.data.userMap)
+          )
           /*
           await store.dispatch('UB_USER/AC_USER', result.data.userMap)
           await localStorage.setItem('user', JSON.stringify(result.data.userMap))
           await localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap)) */
-          if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
+          if (
+            testYn !== undefined &&
+            testYn !== null &&
+            testYn !== '' &&
+            (testYn === true || testYn === 'true')
+          ) {
             // router.replace({ path: '/' })
           }
           // return
@@ -252,7 +312,7 @@ export const methods = {
           console.log(error)
         }
         if (maingoYn) {
-          if (typeof (history.pushState) !== 'undefined') {
+          if (typeof history.pushState !== 'undefined') {
             history.pushState(null, null, '')
           } else {
             // 브라우저가 지원하지 않는 경우 처리
@@ -279,7 +339,7 @@ export const methods = {
     }
     // var result = await axios.post('/sUniB/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
   },
-  async d_AlimLogout () {
+  async d_AlimLogout() {
     var result = await commonAxiosFunction({
       url: '/sUniB/tp.logout',
       firstYn: true
@@ -299,7 +359,7 @@ export const methods = {
       window.localStorage.removeItem('testYn')
     }
   },
-  async UBLogOut () {
+  async UBLogOut() {
     var result = await commonAxiosFunction({
       url: '/sUniB/tp.logout',
       firstYn: true
@@ -321,17 +381,20 @@ export const methods = {
       router.push('/')
     }
   },
-  async getTeamList (paramMap, noneLoadingYn) {
+  async getTeamList(paramMap, noneLoadingYn) {
     var resultList = null
     paramMap.set('fUserKey', store.getters['UB_USER/GE_USER'].userKey)
-    var result = await commonAxiosFunction({
-      url: '/sUniB/tp.getUserTeamList',
-      param: Object.fromEntries(paramMap)
-    }, noneLoadingYn)
+    var result = await commonAxiosFunction(
+      {
+        url: '/sUniB/tp.getUserTeamList',
+        param: Object.fromEntries(paramMap)
+      },
+      noneLoadingYn
+    )
     resultList = result
     return resultList
   },
-  async getAxiosContentsDetail (contentsKey, jobkindId) {
+  async getAxiosContentsDetail(contentsKey, jobkindId) {
     var param = {}
     // param.contentsKey = this.contentsEle.contentsKey
     param.contentsKey = contentsKey
@@ -342,25 +405,32 @@ export const methods = {
     param.ownUserKey = store.getters['UB_USER/GE_USER'].userKey
     var resultList = await this.$getContentsList(param)
     if (resultList.content) var detailData = resultList.content[0]
+    if (jobkindId === 'TODO') {
+      detailData.creTeamKey = 0
+    }
     this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData])
   },
-  async getContentsList (inputParam, nonLoadingYn, noAuthYn) {
+  async getContentsList(inputParam, nonLoadingYn, noAuthYn) {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
-      if (!noAuthYn && store.getters['UB_USER/GE_USER']) {
+      if (!noAuthYn && store.getters['UB_USER/GE_USER'] && inputParam.jobkindId === 'BOAR') {
         paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
       }
     }
     var resultList = null
-    var result = await commonAxiosFunction({
-      url: '/sUniB/tp.getMyContentsList',
-      param: paramSet
-    }, nonLoadingYn, noAuthYn)
+    var result = await commonAxiosFunction(
+      {
+        url: '/sUniB/tp.getMyContentsList',
+        param: paramSet
+      },
+      nonLoadingYn,
+      noAuthYn
+    )
     resultList = result.data
     return resultList
   },
-  async getContentsOnly (inputParam) {
+  async getContentsOnly(inputParam) {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
@@ -373,7 +443,7 @@ export const methods = {
     resultList = result.data
     return resultList
   },
-  async getFollowerList (paramMap) {
+  async getFollowerList(paramMap) {
     var result = await this.$commonAxiosFunction({
       url: '/sUniB/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
@@ -382,13 +452,17 @@ export const methods = {
     // // console.log(this.managingList)
     // paramMap.set('followerType', 'M')
   },
-  async saveUserDo (inputParam, type) {
+  async saveUserDo(inputParam, type) {
     var param = {}
     if (inputParam) {
       param = inputParam
     }
     var urlSet = null
-    if (type === 'delete') { urlSet = '/sUniB/tp.deleteUserDo' } else if (type === 'save') { urlSet = '/sUniB/tp.saveUserDo' }
+    if (type === 'delete') {
+      urlSet = '/sUniB/tp.deleteUserDo'
+    } else if (type === 'save') {
+      urlSet = '/sUniB/tp.saveUserDo'
+    }
     param.userKey = store.getters['UB_USER/GE_USER'].userKey
     var result = null
 
@@ -399,7 +473,7 @@ export const methods = {
     result = response.data
     return result
   },
-  async saveSticker (inputParam) {
+  async saveSticker(inputParam) {
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {
@@ -415,7 +489,7 @@ export const methods = {
 
     return result
   },
-  async getStickerList (inputParam) {
+  async getStickerList(inputParam) {
     if (store.getters['UB_USER/GE_USER'].unknownYn) return
     // eslint-disable-next-line no-new-object
     var param = new Object()
@@ -431,14 +505,16 @@ export const methods = {
     result = response.data
     return result
   },
-  async changeFollower (inputParam, type) {
+  async changeFollower(inputParam, type) {
     // eslint-disable-next-line no-new-object
     var paramSet = new Object()
     if (inputParam) {
       paramSet = inputParam
     }
     var urlSet = '/sUniB/tp.saveFollower'
-    if (type === 'del') { urlSet = '/sUniB/tp.deleteFollower' } else if (type === 'save') {
+    if (type === 'del') {
+      urlSet = '/sUniB/tp.deleteFollower'
+    } else if (type === 'save') {
       paramSet.followerType = 'F'
     }
     paramSet.userKey = store.getters['UB_USER/GE_USER'].userKey
@@ -450,7 +526,7 @@ export const methods = {
     result = response.data
     return result
   },
-  async requestCreChan (paramVal) {
+  async requestCreChan(paramVal) {
     var teamRequest = paramVal
     var result = false
     var response = await commonAxiosFunction({
@@ -460,7 +536,7 @@ export const methods = {
     result = response.data
     return result
   },
-  async createTeamForReq (inputParam) {
+  async createTeamForReq(inputParam) {
     // eslint-disable-next-line no-new-object
     var paramSet = new Object()
     if (inputParam) {
@@ -475,7 +551,7 @@ export const methods = {
     result = response.data
     return result
   },
-  async getTeamReqList (inputParam) {
+  async getTeamReqList(inputParam) {
     // eslint-disable-next-line no-new-object
     var paramSet = new Object()
     if (inputParam) {
@@ -490,7 +566,7 @@ export const methods = {
 
     return result
   },
-  async saveContents (inputParam) {
+  async saveContents(inputParam) {
     // eslint-disable-next-line no-new-object
     var paramSet = new Object()
     if (inputParam) {
@@ -511,7 +587,7 @@ export const methods = {
     result = response.data
     return result
   },
-  async getCodeList (inputParam) {
+  async getCodeList(inputParam) {
     // eslint-disable-next-line no-new-object
     var paramSet = new Object()
     if (inputParam) {
@@ -525,7 +601,7 @@ export const methods = {
     result = response.data
     return result
   },
-  async updateStickerList (inputParam) {
+  async updateStickerList(inputParam) {
     // eslint-disable-next-line no-new-object
     var paramSet = new Object()
     if (inputParam) {
@@ -540,7 +616,7 @@ export const methods = {
     return result
   },
 
-  async changeRecvAlimYn (inputParam) {
+  async changeRecvAlimYn(inputParam) {
     // eslint-disable-next-line no-new-object
     var paramSet = new Object()
     if (inputParam) {
@@ -554,7 +630,7 @@ export const methods = {
     result = response.data
     return result
   },
-  async saveCabinet (inputParamMap) {
+  async saveCabinet(inputParamMap) {
     var paramSet = {}
     if (inputParamMap) {
       paramSet = inputParamMap
@@ -567,7 +643,7 @@ export const methods = {
     result = response.data
     return result
   },
-  async deleteCabinet (inputParamMap) {
+  async deleteCabinet(inputParamMap) {
     var paramSet = {}
     if (inputParamMap) {
       paramSet = inputParamMap
@@ -580,20 +656,23 @@ export const methods = {
     result = response.data
     return result
   },
-  async getTeamMenuList (inputParamMap, noneLoadingYn) {
+  async getTeamMenuList(inputParamMap, noneLoadingYn) {
     var paramMap = {}
     if (inputParamMap) {
       paramMap = inputParamMap
     }
     var result = null
-    var response = await commonAxiosFunction({
-      url: '/sUniB/tp.getTeamMenuList',
-      param: Object.fromEntries(paramMap)
-    }, noneLoadingYn)
+    var response = await commonAxiosFunction(
+      {
+        url: '/sUniB/tp.getTeamMenuList',
+        param: Object.fromEntries(paramMap)
+      },
+      noneLoadingYn
+    )
     result = response.data
     return result
   },
-  async getCabinetDetail (inputParam) {
+  async getCabinetDetail(inputParam) {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
@@ -606,7 +685,7 @@ export const methods = {
     result = response.data
     return result
   },
-  async saveMCabContents (paramSet) {
+  async saveMCabContents(paramSet) {
     // var result = null
     var response = await commonAxiosFunction({
       url: '/sUniB/tp.saveMCabContents',
@@ -615,21 +694,24 @@ export const methods = {
     // result = response
     return response
   },
-  async getMemoCount (param) {
+  async getMemoCount(param) {
     // var result = null
     if (g_axiosQueue.findIndex((item) => item === 'getMemoCount') !== -1) return
     g_axiosQueue.push('getMemoCount')
     if (param.targetKey === null) return false
-    var response = await commonAxiosFunction({
-      url: '/sUniB/tp.getMemoCount',
-      param: param
-    }, true)
+    var response = await commonAxiosFunction(
+      {
+        url: '/sUniB/tp.getMemoCount',
+        param: param
+      },
+      true
+    )
     var queueIndex = g_axiosQueue.findIndex((item) => item === 'getMemoCount')
     g_axiosQueue.splice(queueIndex, 1)
     // result = response
     return response.data
   },
-  async changeDispName (inputParam) {
+  async changeDispName(inputParam) {
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {
@@ -643,16 +725,34 @@ export const methods = {
     result = response
     return result
   },
-  async saveFcmToken () {
+  async saveFcmToken() {
     // eslint-disable-next-line no-new-object
     var param = new Object()
     // eslint-disable-next-line no-new-object
     var user = new Object()
     // param.user = this.userInfo
     var localUser = store.getters['UB_USER/GE_USER']
-    if (localUser.userEmail !== undefined && localUser.userEmail !== null && localUser.userEmail !== '') { user.soEmail = localUser.userEmail }
-    if (localUser.userKey !== undefined && localUser.userKey !== null && localUser.userKey !== '') { user.userKey = localUser.userKey }
-    if (localUser.soAccessToken !== undefined && localUser.soAccessToken !== null && localUser.soAccessToken !== '') { user.soAccessToken = localUser.soAccessToken }
+    if (
+      localUser.userEmail !== undefined &&
+      localUser.userEmail !== null &&
+      localUser.userEmail !== ''
+    ) {
+      user.soEmail = localUser.userEmail
+    }
+    if (
+      localUser.userKey !== undefined &&
+      localUser.userKey !== null &&
+      localUser.userKey !== ''
+    ) {
+      user.userKey = localUser.userKey
+    }
+    if (
+      localUser.soAccessToken !== undefined &&
+      localUser.soAccessToken !== null &&
+      localUser.soAccessToken !== ''
+    ) {
+      user.soAccessToken = localUser.soAccessToken
+    }
     var localFcm = localStorage.getItem('fcmKey')
     if (localFcm) {
       user.fcmKey = localFcm
@@ -670,43 +770,62 @@ export const methods = {
     store.commit('UB_USER/MU_USER', result.data.userMap)
     return result
   },
-  async getTodoList (param, loadingYn) {
-    var response = await commonAxiosFunction({ url: '/sUniB/mk.getTodoList', param: param }, loadingYn)
+  async getTodoList(param, loadingYn) {
+    var response = await commonAxiosFunction(
+      { url: '/sUniB/mk.getTodoList', param: param },
+      loadingYn
+    )
     console.log(response)
     return response.data
   },
-  async getTodoListGroupCab (param, loadingYn) {
-    var response = await commonAxiosFunction({ url: '/sUniB/mk.getTodoListGroupCab', param: param }, loadingYn)
+  async getTodoListGroupCab(param, loadingYn) {
+    var response = await commonAxiosFunction(
+      { url: '/sUniB/tp.getTodoListGroupCab', param: param },
+      loadingYn
+    )
     console.log(response)
     return response.data
   },
-  async getMyCabinetList (param) {
-    var response = await commonAxiosFunction({ url: '/sUniB/tp.getMyCabinetList', param: param }, false)
+  async getMyCabinetList(param) {
+    var response = await commonAxiosFunction(
+      { url: '/sUniB/tp.getMyCabinetList', param: param },
+      false
+    )
     console.log(response)
     return response.data
   },
-  async saveTodo (param) {
-    var response = await commonAxiosFunction({ url: '/sUniB/mk.saveTodo', param: param }, true)
+  async saveTodo(param) {
+    var response = await commonAxiosFunction(
+      { url: '/sUniB/mk.saveTodo', param: param },
+      true
+    )
     console.log(response)
     return response.data
   },
-  async getSelectTodoDetail (param, loadingYn) {
-    var response = await commonAxiosFunction({ url: '/sUniB/mk.getSelectTodoDetail', param: param }, loadingYn)
+  async getSelectTodoDetail(param, loadingYn) {
+    var response = await commonAxiosFunction(
+      { url: '/sUniB/mk.getSelectTodoDetail', param: param },
+      loadingYn
+    )
     console.log(response)
     return response.data
   },
-  async deleteTodo (param) {
-    var response = await commonAxiosFunction({ url: '/sUniB/mk.deleteTodo', param: param }, true)
+  async deleteTodo(param) {
+    var response = await commonAxiosFunction(
+      { url: '/sUniB/mk.deleteTodo', param: param },
+      true
+    )
     console.log(response)
     return response.data
   }
 }
 
 export default {
-  install (Vue) {
+  install(Vue) {
     Vue.config.globalProperties.$saveUserDo = methods.saveUserDo
     Vue.config.globalProperties.$getContentsList = methods.getContentsList
-    Vue.config.globalProperties.$getAxiosContentsDetail = methods.getAxiosContentsDetail
+    Vue.config.globalProperties.$getAxiosContentsDetail =
+      methods.getAxiosContentsDetail
     Vue.config.globalProperties.$getTeamList = methods.getTeamList
     Vue.config.globalProperties.$userLoginCheck = methods.userLoginCheck
     Vue.config.globalProperties.$saveSticker = methods.saveSticker
@@ -734,10 +853,12 @@ export default {
     Vue.config.globalProperties.$getFollowerList = methods.getFollowerList
     Vue.config.globalProperties.$coreLoginCheck = methods.coreLoginCheck
     Vue.config.globalProperties.$getTodoList = methods.getTodoList
-    Vue.config.globalProperties.$getTodoListGroupCab = methods.getTodoListGroupCab
+    Vue.config.globalProperties.$getTodoListGroupCab =
+      methods.getTodoListGroupCab
     Vue.config.globalProperties.$getMyCabinetList = methods.getMyCabinetList
     Vue.config.globalProperties.$saveTodo = methods.saveTodo
-    Vue.config.globalProperties.$getSelectTodoDetail = methods.getSelectTodoDetail
+    Vue.config.globalProperties.$getSelectTodoDetail =
+      methods.getSelectTodoDetail
     Vue.config.globalProperties.$deleteTodo = methods.deleteTodo
   }
 }

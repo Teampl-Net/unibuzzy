@@ -1,70 +1,229 @@
 <template>
-  <div ref="mainRef" class="w100P h100P mainWrap" @click="getInRectImgList">
-    <gConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="mAppCloseYn=false" confirmType="two" confirmText="Do you want to exit UniBuzzy?" />
-    <createBoardChannel v-if="mCreChannelShowYn" @successCreBoard="successCreBoard" @successCreChan="successCreChan" :pAreaInfo="mAreaInfo" :chanDetail="{ modiYn: false }" @openPage="openPage" :pSelectedAreaInfo="mAreaInfo" :pClosePop="closeCreChanPop" :pBdAreaList="mBdAreaList" />
+  <div ref="mainRef" class="w100P mainWrap">
+    <gConfirmPop
+      v-if="mAppCloseYn"
+      @ok="closeApp"
+      @appClose="closeApp"
+      @no="mAppCloseYn = false"
+      confirmType="two"
+      confirmText="Do you want to exit UniBuzzy?"
+    />
+    <createBoardChannel
+      v-if="mCreChannelShowYn"
+      @successCreBoard="successCreBoard"
+      @successCreChan="successCreChan"
+      :pAreaInfo="mAreaInfo"
+      :chanDetail="{ modiYn: false }"
+      @openPage="openPage"
+      :pSelectedAreaInfo="mAreaInfo"
+      :pClosePop="closeCreChanPop"
+      :pBdAreaList="mBdAreaList"
+    />
     <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" class="popBg"></div>
     <transition name="showUp">
-      <selectSchoolPop v-if="mSelectSchoolPopShowYn" :pGoTown="goTown" :pSchoolList="mSchoolList" :pClosePop="closeSelectSchoolPop" />
+      <selectSchoolPop
+        v-if="mSelectSchoolPopShowYn"
+        :pGoTown="goTown"
+        :pSchoolList="mSchoolList"
+        :pClosePop="closeSelectSchoolPop"
+      />
     </transition>
-    <div v-if="mInfoBoxShowYn && !mSelectWriteTypePopShowYn" @click="closeInfoBox" class="popBg"></div>
+    <div
+      v-if="mInfoBoxShowYn && !mSelectWriteTypePopShowYn"
+      @click="closeInfoBox"
+      class="popBg"
+    ></div>
     <transition name="showUp">
-      <areaInfoPop :pBdClickedYn="mBdClickedYn" :pBoardList="mBoardList" :chanDetail="{ modiYn: false }" @openImgPop="openImgPop" :pBdAreaList="mBdAreaList" :pOpenCreChanPop="openCreChanPop" @openPage="openPage" v-if="mInfoBoxShowYn && !mSelectWriteTypePopShowYn" :pAreaDetail="mAreaDetail" :pAreaInfo="mAreaInfo" :pClosePop="closeInfoBox" :pMoveToChan="moveToChan" />
+      <areaInfoPop
+        :pBdClickedYn="mBdClickedYn"
+        :pBoardList="mBoardList"
+        :chanDetail="{ modiYn: false }"
+        @openImgPop="openImgPop"
+        :pBdAreaList="mBdAreaList"
+        :pOpenCreChanPop="openCreChanPop"
+        @openPage="openPage"
+        v-if="mInfoBoxShowYn && !mSelectWriteTypePopShowYn"
+        :pAreaDetail="mAreaDetail"
+        :pAreaInfo="mAreaInfo"
+        :pClosePop="closeInfoBox"
+        :pMoveToChan="moveToChan"
+      />
     </transition>
     <div v-if="mChanInfoPopShowYn" @click="closeChanInfoBox" class="popBg"></div>
     <transition name="showUp">
-      <infoBox v-if="mChanInfoPopShowYn" @openPop="openPop" :pClosePop="closeChanInfoBox" @openPage="openPage" :pAreaInfo="mAreaInfo" :pAreaDetail="mAreaDetail" :pChanInfo="mSelectedChanInfo" />
+      <infoBox
+        v-if="mChanInfoPopShowYn"
+        @openPop="openPop"
+        :pClosePop="closeChanInfoBox"
+        @openPage="openPage"
+        :pAreaInfo="mAreaInfo"
+        :pAreaDetail="mAreaDetail"
+        :pChanInfo="mSelectedChanInfo"
+      />
     </transition>
-    <div class="w100P mainTownArea">
+    <div
+      class="w100P mainTownArea"
+      :style="`background-image: url(${
+        mNightYn
+          ? '/resource/main/main_night_background.png'
+          : '/resource/main/town_background.png'
+      })`"
+    >
       <div class="ballon">
-        <img src="@/assets/images/main/ballon.png" alt="go to other town?" class="w100P"/>
+        <img
+          src="@/assets/images/main/ballon.png"
+          alt="go to other town?"
+          class="w100P"
+        />
       </div>
       <div class="planeBox">
-        <img @click="openSelectSchoolPop" class="cursorP planeImg" src="@/assets/images/main/icon_plane.png" style="" alt="">
+        <img
+          @click="openSelectSchoolPop"
+          class="cursorP planeImg"
+          src="@/assets/images/main/icon_plane.png"
+          style=""
+          alt=""
+        />
       </div>
-      <div @click="goUserProfile" class="profileBox" v-if="!GE_USER.unknownYn" :style="{top: $STATUS_HEIGHT + 60 + 'px'}">
+      <div
+        @click="goUserProfile"
+        class="profileBox"
+        v-if="!GE_USER.unknownYn"
+        :style="{ top: $STATUS_HEIGHT + 60 + 'px' }"
+      >
         <gProfileImg :selfYn="true" class="fl profileImg" />
-        <div class="fl font20 fontBold userName">{{ $changeText(GE_USER.userDispMtext) }}</div>
+        <div class="fl font20 fontBold userName">
+          {{ $changeText(GE_USER.userDispMtext) }}
+        </div>
       </div>
       <div v-else class="w100P loginBtnWrap">
-        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr loginBtn"/>
+        <gBtnSmall @click="goLoginPage" btnTitle="Sign In" class="fr loginBtn" />
       </div>
-      <template v-if="!mLoadingYn">
-          <template v-for="(area) in mBdAreaList" :key="area.bdAreaKey">
-            <div v-if="village.areaList[area.priority].w !== 0 && village.areaList[area.priority].h !== 0" class="flexCenter areaDiv" :class="{clicked: village.areaList[area.priority].clickedYn}" :style="{ width: village.areaList[area.priority].w + 'px', height: village.areaList[area.priority].h + 'px', top: village.areaList[area.priority].top + 'px', left: village.areaList[area.priority].left + 'px' }">
-              <img :src="village.areaList[area.priority].maskedImageUrl" :style="village.areaList[area.priority].maskedImageStyle" />
-              <div v-if="area.bdAreaNameMtext" class="fontBold" :style="{'margin-top': area.priority !== 0 && area.priority !== 1 ? 15 + (village.areaList[area.priority].h)/1.5 + 'px' : ''}">
-                  <p class="textCenter fontBold font16">{{ area.bdAreaNameMtext }}</p>
-              </div>
-            </div>
-            <template v-for="(bd, index) in area.bdList" :key="bd.targetKey">
-            <div ref="bdRef" :id="`area${area.bdAreaKey}bd${bd.bdKey}pri${bd.priority}`" v-if="village.areaList[area.priority].buildingList[index] && village.areaList[area.priority].buildingList[index].w !== 0 && village.areaList[area.priority].buildingList[index].h !== 0" class="bdDiv" :class="{clicked: village.areaList[area.priority].buildingList[index].clickedYn}"
-            :style="[`z-index: ${1000 - bd.priority};`, village.areaList[area.priority].buildingList[index].maskedImageStyle, { top: village.areaList[area.priority].buildingList[index].top + 'px', left: village.areaList[area.priority].buildingList[index].left + 'px' }]">
-                <div v-if="area.priority === 0" class="banner flexCenter" :style="{left: -(125 - village.areaList[area.priority].buildingList[index].w / 2) + 'px'}">
-                  <img src="@/assets/images/main/banner2.png" class="w100P"/> <!-- 여기 -->
-                  <div v-html="$changeText(bd.nameMtext)" class="w100P font16 fontBold"></div>
-                </div>
-                <img :src="village.areaList[area.priority].buildingList[index].maskedImageUrl"/>
-                <span v-if="!(area.priority === 0 && index === 0) && village.areaList[area.priority].buildingList[index].maskedImageUrl" class="fontBold font12 bdName"
-                :style="[{ 'background-color': index === 0 ? '#f1f1f1CC' : (index === 1 || index === 2) ? '#f1f1f199' : (index === 3 || index === 4) ? '#f1f1f180' : '' }, {left: -40 + (village.areaList[area.priority].buildingList[index].w /2 ) + 'px'}, {top: village.areaList[area.priority].buildingList[index].h + ((Number(bd.priority)) / 2 * 10) + 'px'}]" >{{ $changeText(bd.nameMtext) || $changeText(bd.cabinetNameMtext) }}</span>
-            </div>
-            </template>
-        </template>
+      <!-- <div style="position: absolute; top: 120px; left: 50%; transform: translate(-50%, -50%); width: 150px; height: 100px;">
+        <img class="w100P h100P" style="position: absolute; top: 0; left: 0;" src="/resource/main/main_nametag.png" alt="">
+        <p class="w100P textOverdot fontBold" style="position: absolute; bottom: 10px; font-style: italic; padding: 0 5px;">{{ mTownName }}</p>
+      </div> -->
+      <template v-if="mPcStyleYn">
+        <div
+          class="zoom"
+          :class="mSelectedAreaPriority === building.priority ? 'clickEvent' : ''"
+          v-for="building in mTownBuildingList"
+          :key="building.priority"
+          style="position: absolute; transform: translate(-50%, -50%)"
+          :style="{
+            width: building.pcW,
+            height: building.pcH,
+            left: building.left,
+            top: building.top,
+          }"
+        >
+          <img
+            @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])"
+            class="w100P h100P"
+            :src="mNightYn ? building.nightImgPath : building.imgPath"
+            alt=""
+          />
+          <img
+            :style="{ left: building.titleLeft, top: building.titleTop }"
+            style="position: absolute; transform: translate(-50%, -50%)"
+            :src="building.titlePah"
+            alt=""
+          />
+        </div>
+        <img
+          :src="mMountainImgPath"
+          style="
+            position: absolute;
+            left: 20%;
+            top: 55%;
+            transform: translate(-50%, -50%);
+            width: 35%;
+            height: 20%;
+          "
+          alt=""
+        />
       </template>
-      <div @click="goLab" class="laboratory cursorP">
-        <img class="w100P" src="/resource/main/ub_lab.png" alt="">
-        <span class="fontBold">Laboratory</span>
-      </div>
-      <div class="fl" style="width: 66px; height: 66px; border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index:1000;">
-        <img id='writeBtn' src="@/assets/images/button/Icon_WriteBoardBtn.svg" @click="openSelectWriteTypePop()" alt="알림 작성 버튼" style="height: auto; cursor: pointer;">
+      <template v-else>
+        <div
+          class="zoom"
+          :class="mSelectedAreaPriority === building.priority ? 'clickEvent' : ''"
+          v-for="building in mTownBuildingList"
+          :key="building.priority"
+          style="position: absolute; transform: translate(-50%, -50%)"
+          :style="{ width: building.w, left: building.left, top: building.top }"
+        >
+          <img
+            class="w100P h100P"
+            @click="this.openAreaInfoPop(this.mBdAreaList[building.priority])"
+            :src="mNightYn ? building.nightImgPath : building.imgPath"
+            alt=""
+          />
+          <img
+            :style="{ left: building.titleLeft, top: building.titleTop }"
+            style="position: absolute; transform: translate(-50%, -50%); width: 70px"
+            :src="building.titlePah"
+            alt=""
+          />
+        </div>
+        <img
+          :src="mMountainImgPath"
+          style="
+            position: absolute;
+            left: 20%;
+            top: 55%;
+            transform: translate(-50%, -50%);
+            width: 35%;
+          "
+          alt=""
+        />
+      </template>
+      <div
+        class="fl"
+        style="
+          width: 66px;
+          height: 66px;
+          border-radius: 100%;
+          position: absolute;
+          bottom: 3rem;
+          right: 50px;
+          z-index: 1000;
+        "
+      >
+        <img
+          id="writeBtn"
+          src="@/assets/images/button/Icon_WriteBoardBtn.svg"
+          @click="openSelectWriteTypePop()"
+          alt="알림 작성 버튼"
+          style="height: auto; cursor: pointer"
+        />
       </div>
     </div>
     <div v-if="mBoardPopShowYn" class="popBg" @click="$refs.mainBoardRef.closeXPop"></div>
     <transition name="showUp">
-        <mainBoardList @openImgPop="openImgPop" @openPage="openPage" @openPop="openPop" :pAreaInfo="mAreaInfo" :pTownTeamKey="mTownTeamKey" v-if="mBoardPopShowYn" ref="mainBoardRef" :pClosePop="closeBoardPop"/>
+      <mainBoardList
+        @openImgPop="openImgPop"
+        @openPage="openPage"
+        @openPop="openPop"
+        :pAreaInfo="mAreaInfo"
+        :pTownTeamKey="mTownTeamKey"
+        v-if="mBoardPopShowYn"
+        ref="mainBoardRef"
+        :pClosePop="closeBoardPop"
+      />
     </transition>
-    <div v-if="mSelectWriteTypePopShowYn" class="popBg" @click="mSelectWriteTypePopShowYn = false"></div>
+    <div
+      v-if="mSelectWriteTypePopShowYn"
+      class="popBg"
+      @click="mSelectWriteTypePopShowYn = false"
+    ></div>
     <transition name="showUp">
-      <writeBottSheet transition="showUp" v-if="mSelectWriteTypePopShowYn" @openPop="openPop" @closePop="mSelectWriteTypePopShowYn = false" :propChanList="mSelectChanList" />
+      <writeBottSheet
+        transition="showUp"
+        v-if="mSelectWriteTypePopShowYn"
+        @openPop="openPop"
+        @closePop="mSelectWriteTypePopShowYn = false"
+        :propChanList="mSelectChanList"
+      />
     </transition>
   </div>
 </template>
@@ -77,7 +236,10 @@ import mainBoardList from '@/components/pageComponents/main/popup/BoardListPop.v
 import infoBox from '@/components/pageComponents/main/popup/InfoBox.vue'
 import writeBottSheet from '@/components/popup/contents/ContentsWriteBottSheet.vue'
 export default {
-  data () {
+  props: {
+    pChangeNightYn: Function
+  },
+  data() {
     return {
       mLoadingYn: false,
       mTownTeamKey: null,
@@ -90,6 +252,7 @@ export default {
       bgImg: {
         imgLink: ''
       },
+      mMountainImgPath: '',
       mAreaShowYn: false,
       village: {
         villageInfo: {
@@ -102,6 +265,114 @@ export default {
         },
         areaList: []
       },
+      mTownBuildingList: [
+        {
+          priority: 0,
+          left: '52%',
+          top: '65%',
+          w: '40%',
+          pcW: '40%',
+          pcH: '18%',
+          titleLeft: '5%',
+          titleTop: '70%',
+          imgPath: '/resource/main/main_campus.svg',
+          nightImgPath: '/resource/main/main_night_campus.svg',
+          titlePah: '/resource/main/title_campus.svg'
+        },
+        {
+          priority: 1,
+          left: '80%',
+          top: '57%',
+          w: '40%',
+          pcW: '40%',
+          pcH: '12%',
+          titleLeft: '70%',
+          titleTop: '70%',
+          imgPath: '/resource/main/main_plaza.svg',
+          nightImgPath: '/resource/main/main_night_plaza.svg',
+          titlePah: '/resource/main/title_plaza.svg'
+        },
+        {
+          priority: 2,
+          left: '75%',
+          top: '33%',
+          w: '45%',
+          pcW: '45%',
+          pcH: '15%',
+          titleLeft: '70%',
+          titleTop: '95%',
+          imgPath: '/resource/main/main_club.svg',
+          nightImgPath: '/resource/main/main_night_club.svg',
+          titlePah: '/resource/main/title_club.svg'
+        },
+        {
+          priority: 3,
+          left: '16%',
+          top: '35%',
+          w: '25%',
+          pcW: '23%',
+          pcH: '13%',
+          titleLeft: '25%',
+          titleTop: '95%',
+          imgPath: '/resource/main/main_major.svg',
+          nightImgPath: '/resource/main/main_night_major.svg',
+          titlePah: '/resource/main/title_major.svg'
+        },
+        {
+          priority: 4,
+          left: '49%',
+          top: '42%',
+          w: '55%',
+          pcW: '55%',
+          pcH: '22%',
+          titleLeft: '55%',
+          titleTop: '45%',
+          imgPath: '/resource/main/main_classin.svg',
+          nightImgPath: '/resource/main/main_night_class.svg',
+          titlePah: '/resource/main/title_class.svg'
+        },
+        {
+          priority: 5,
+          left: '83%',
+          top: '76%',
+          w: '40%',
+          pcW: '35%',
+          pcH: '15%',
+          titleLeft: '70%',
+          titleTop: '20%',
+          imgPath: '/resource/main/main_living.svg',
+          nightImgPath: '/resource/main/main_night_living.svg',
+          titlePah: '/resource/main/title_living.svg'
+        },
+        {
+          priority: 6,
+          left: '47%',
+          top: '90%',
+          w: '55%',
+          pcW: '55%',
+          pcH: '18%',
+          titleLeft: '70%',
+          titleTop: '65%',
+          imgPath: '/resource/main/main_nearby.svg',
+          nightImgPath: '/resource/main/main_night_nearby.svg',
+          titlePah: '/resource/main/title_nearby.svg'
+        },
+        {
+          priority: 7,
+          left: '20%',
+          top: '75%',
+          w: '35%',
+          pcW: '35%',
+          pcH: '18%',
+          titleLeft: '40%',
+          titleTop: '100%',
+          imgPath: '/resource/main/main_lab.svg',
+          nightImgPath: '/resource/main/main_night_lab.svg',
+          titlePah: '/resource/main/title_lab.svg'
+        }
+      ],
+      mNightYn: false,
+      mSelectedAreaPriority: -1,
       innerWidth: 0,
       innerHeight: 0,
       blankHeight: 0,
@@ -122,10 +393,12 @@ export default {
       mSelectedChanInfo: {},
       mBoardList: [],
       mSelectChanList: [],
-      mSelectWriteTypePopShowYn: false
+      mSelectWriteTypePopShowYn: false,
+      mTownName: '',
+      mPcStyleYn: false
     }
   },
-  created () {
+  created() {
     if (this.GE_USER.myTeamKey === 836) {
       this.$router.push({ name: 'uniBmain' })
       return
@@ -141,7 +414,10 @@ export default {
       urlParam.targetKey = urlParam.targetKey.split('/')[0]
       if (urlParam.targetType) {
         if (urlParam.targetType === 'chanDetail') {
-          const param = { targetType: urlParam.targetType, targetKey: urlParam.targetKey }
+          const param = {
+            targetType: urlParam.targetType,
+            targetKey: urlParam.targetKey
+          }
           this.openPage(param)
         } else {
           this.goPage(urlParam)
@@ -149,23 +425,64 @@ export default {
         localStorage.removeItem('deepLinkQueue')
       }
     }
-    this.getMainBoard().then(res => {
-      this.createMaskingAreaImg()
-      this.innerWidth = window.innerWidth
-      this.innerHeight = window.innerHeight
-      if (this.mBdAreaList && this.mBdAreaList[0] && this.mBdAreaList[0].bdList && this.mBdAreaList[0].bdList[0]) {
-        this.$emit('changePageHeader', this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext))
+    let xmlHttpRequest
+    if (window.XMLHttpRequest) {
+      // code for Firefox, Mozilla, IE7, etc.
+      xmlHttpRequest = new XMLHttpRequest()
+    } else {
+      return
+    }
+
+    xmlHttpRequest.open('HEAD', window.location.href.toString(), false)
+    xmlHttpRequest.setRequestHeader('ContentType', 'text/html')
+    xmlHttpRequest.send('')
+
+    const serverDate = xmlHttpRequest.getResponseHeader('Date')
+    const date = new Date(serverDate)
+    const nowHours = date.getHours()
+
+    if (nowHours >= 19) {
+      this.pChangeNightYn(true)
+      this.mNightYn = true
+      this.mMountainImgPath = '/resource/main/main_night_mountain.svg'
+    } else {
+      this.pChangeNightYn(false)
+      this.mNightYn = false
+      this.mMountainImgPath = '/resource/main/main_mountain.svg'
+    }
+    this.getMainBoard().then((res) => {
+      // this.createMaskingAreaImg()
+      // this.innerWidth = window.innerWidth
+      // this.innerHeight = window.innerHeight
+      if (
+        this.mBdAreaList &&
+        this.mBdAreaList[0] &&
+        this.mBdAreaList[0].bdList &&
+        this.mBdAreaList[0].bdList[0]
+      ) {
+        this.$emit(
+          'changePageHeader',
+          this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext)
+        )
+        this.mTownName = this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext)
       } else {
         this.$emit('changePageHeader', 'Campus')
       }
+      this.$emit('enterCloudLoading', false)
+      setTimeout(() => {
+        this.$emit('showCloudLoading', false)
+      }, 800)
     })
   },
+  unmounted() {
+    this.pChangeNightYn(false)
+  },
   methods: {
-    async openSelectWriteTypePop () {
+    async openSelectWriteTypePop() {
       await this.getTeamList(true)
       this.mSelectWriteTypePopShowYn = true
     },
-    async getTeamList (loadingYn) {
+    async getTeamList(loadingYn) {
       var paramMap = new Map()
       paramMap.set('userKey', this.GE_USER.userKey)
       paramMap.set('pageSize', 100)
@@ -181,18 +498,18 @@ export default {
         this.mSelectChanList = []
       }
     },
-    goLab () {
+    goLab() {
       this.$router.push('/board/824/13905')
       this.$emit('goInquiries', 'lab')
     },
-    openImgPop (param) {
+    openImgPop(param) {
       this.$emit('openImgPop', param)
     },
-    closeApp () {
+    closeApp() {
       onMessage('closeApp', 'requestUserPermission')
       this.mAppCloseYn = false
     },
-    successCreChan (param) {
+    successCreChan(param) {
       this.closeCreChanPop()
       if (param.deleteYn) {
         return
@@ -200,12 +517,12 @@ export default {
       param.targetType = 'chanDetail'
       this.openPage(param)
     },
-    successCreBoard (param) {
+    successCreBoard(param) {
       this.closeCreChanPop()
       param.targetType = 'boardMain'
       this.openPage(param)
     },
-    closeChanInfoBox () {
+    closeChanInfoBox() {
       this.resetHistory()
       if (this.clickedArea && this.clickedArea.clickedYn) {
         this.clickedArea.clickedYn = false
@@ -215,7 +532,7 @@ export default {
       this.mChanInfoPopShowYn = false
       return false
     },
-    closeInfoBox () {
+    closeInfoBox() {
       this.resetHistory()
       if (this.clickedArea && this.clickedArea.clickedYn) {
         this.clickedArea.clickedYn = false
@@ -226,30 +543,30 @@ export default {
       this.mInfoBoxShowYn = false
       return false
     },
-    closeSchoolPop () {
+    closeSchoolPop() {
       this.resetHistory()
       this.mSelectSchoolPopShowYn = false
     },
-    openCreChanPop () {
+    openCreChanPop() {
       this.mInfoBoxShowYn = false
       this.mCreChannelShowYn = true
     },
-    closeBoardPop (shadowClickYn) {
+    closeBoardPop(shadowClickYn) {
       this.mBoardPopShowYn = false
     },
-    openBoardPop () {
+    openBoardPop() {
       this.mBoardPopShowYn = true
     },
-    closeCreChanPop () {
+    closeCreChanPop() {
       this.mCreChannelShowYn = false
     },
-    findAllDrawn () {
+    findAllDrawn() {
       this.$emit('enterCloudLoading', false)
       setTimeout(() => {
         this.$emit('showCloudLoading', false)
       }, 1000)
     },
-    async getChannelList (pageSize, offsetInput, mLoadingYn) {
+    async getChannelList(pageSize, offsetInput, mLoadingYn) {
       var paramMap = new Map()
       var userKey = this.GE_USER.userKey
       // paramMap.set('cateItemKey', 3)
@@ -264,7 +581,9 @@ export default {
       if (offsetInput !== undefined) {
         paramMap.set('offsetInt', offsetInput)
       } else {
-        if (this.mOffsetInt === 0 && this.mChannelList.length === 10) this.mOffsetInt = 1
+        if (this.mOffsetInt === 0 && this.mChannelList.length === 10) {
+          this.mOffsetInt = 1
+        }
         paramMap.set('offsetInt', this.mOffsetInt)
       }
       if (pageSize) {
@@ -277,15 +596,15 @@ export default {
       var resultList = result.data
       return resultList
     },
-    async openSelectSchoolPop () {
+    async openSelectSchoolPop() {
       this.mSchoolList = null
       this.mSelectSchoolPopShowYn = true
     },
-    closeSelectSchoolPop () {
+    closeSelectSchoolPop() {
       this.resetHistory()
       this.mSelectSchoolPopShowYn = false
     },
-    async goTown (chanEle) {
+    async goTown(chanEle) {
       this.$emit('showCloudLoading', true, true)
       this.$emit('enterCloudLoading', true)
       var param = {
@@ -295,10 +614,13 @@ export default {
         },
         updateYn: true
       }
-      const result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveUser',
-        param: param
-      }, true)
+      const result = await this.$commonAxiosFunction(
+        {
+          url: '/sUniB/tp.saveUser',
+          param: param
+        },
+        true
+      )
       if (result.data) {
         localStorage.setItem('user', JSON.stringify(result.data.userInfo))
         await this.$store.dispatch('UB_USER/AC_USER', result.data.userInfo)
@@ -306,12 +628,17 @@ export default {
       } else {
         this.$showToastPop(this.$t('COMMON_MSG_FAILED'))
       }
-      this.getMainBoard().then(res => {
-        this.createMaskingAreaImg()
-        this.innerWidth = window.innerWidth
-        this.innerHeight = window.innerHeight
-        if (this.mBdAreaList && this.mBdAreaList[0] && this.mBdAreaList[0].bdList && this.mBdAreaList[0].bdList[0]) {
-          this.$emit('changePageHeader', this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext))
+      this.getMainBoard().then((res) => {
+        if (
+          this.mBdAreaList &&
+          this.mBdAreaList[0] &&
+          this.mBdAreaList[0].bdList &&
+          this.mBdAreaList[0].bdList[0]
+        ) {
+          this.$emit(
+            'changePageHeader',
+            this.$changeText(this.mBdAreaList[0].bdList[0].nameMtext)
+          )
         } else {
           this.$emit('changePageHeader', 'Campus')
         }
@@ -325,7 +652,7 @@ export default {
         this.$router.push({ name: 'uniBmain' })
       }
     },
-    async openChanInfoPop (area, teamKey) {
+    async openChanInfoPop(area, teamKey) {
       const param = {
         bdArea: {
           bdAreaKey: area.bdAreaKey
@@ -345,14 +672,34 @@ export default {
           this.mChanInfoPopShowYn = true
           this.allClearFocus()
 
-          const index = this.mAreaDetail.bdList.findIndex(item => item.targetKey === teamKey)
+          const index = this.mAreaDetail.bdList.findIndex(
+            (item) => item.targetKey === teamKey
+          )
           if (index !== -1) {
             this.mSelectedChanInfo = this.mAreaDetail.bdList[index]
           }
         }
       }
     },
-    async openAreaInfoPop (area) {
+    async openAreaInfoPop(area) {
+      var isMobile = /Mobi/i.test(window.navigator.userAgent)
+      if (
+        isMobile &&
+        (localStorage.getItem('nativeYn') === true ||
+          localStorage.getItem('nativeYn') === 'false')
+      ) {
+        if (area === undefined) {
+          this.mSelectedAreaPriority = 7
+        } else {
+          this.mSelectedAreaPriority = area.priority
+        }
+        setTimeout(() => {
+          this.mSelectedAreaPriority = -1
+        }, 900)
+      }
+      if (area === undefined) {
+        this.goLab()
+      }
       if (this.mBgNotClickYn) return
       const param = {
         bdArea: {
@@ -383,50 +730,74 @@ export default {
         this.allClearFocus()
       }
     },
-    closePop () {
+    closePop() {
       this.mInfoBoxShowYn = false
       this.allClearFocus()
       this.mBgNotClickYn = true
     },
-    openInfoPop (value) {
+    openInfoPop(value) {
       this.mSelectedAreaInfo = value
     },
-    goUserProfile () {
+    goUserProfile() {
       this.$emit('changeRouterPath', 'myPage')
     },
-    async goLoginPage () {
+    async goLoginPage() {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
-      if (isMobile && (localStorage.getItem('nativeYn') === true || localStorage.getItem('nativeYn') === 'false')) {
+      if (
+        isMobile &&
+        (localStorage.getItem('nativeYn') === true ||
+          localStorage.getItem('nativeYn') === 'false')
+      ) {
         this.$router.push({ path: '/login' })
       } else {
         this.$router.push({ path: '/policies' })
       }
     },
-    openPage (param) {
+    openPage(param) {
       this.mInfoBoxShowYn = false
       this.mCreChannelShowYn = false
       this.$emit('openPage', param)
     },
-    openPop (openParam) {
+    openPop(openParam) {
       this.$emit('openPop', openParam)
     },
-    async getMainBoard () {
-      if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
+    async getMainBoard() {
+      if (
+        this.mAxiosQueue.length > 0 &&
+        this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1
+      ) {
+        return
+      }
       this.mAxiosQueue.push('getMainBoard')
       var paramMap = new Map()
       if (this.GE_USER.userKey) {
         paramMap.set('userKey', this.GE_USER.userKey)
       } else {
-        if ((localStorage.getItem('sessionUser'))) paramMap.set('userKey', JSON.parse(localStorage.getItem('sessionUser')).userKey)
+        if (localStorage.getItem('sessionUser')) {
+          paramMap.set(
+            'userKey',
+            JSON.parse(localStorage.getItem('sessionUser')).userKey
+          )
+        }
       }
-      if (this.GE_USER.soAccessToken && this.GE_USER.soAccessToken !== '') { paramMap.set('soAccessToken', this.GE_USER.soAccessToken) }
-      if (this.GE_USER.fcmKey !== undefined && this.GE_USER.fcmKey !== null && this.GE_USER.fcmKey !== '') { paramMap.set('fcmKey', this.GE_USER.fcmKey) }
+      if (this.GE_USER.soAccessToken && this.GE_USER.soAccessToken !== '') {
+        paramMap.set('soAccessToken', this.GE_USER.soAccessToken)
+      }
+      if (
+        this.GE_USER.fcmKey !== undefined &&
+        this.GE_USER.fcmKey !== null &&
+        this.GE_USER.fcmKey !== ''
+      ) {
+        paramMap.set('fcmKey', this.GE_USER.fcmKey)
+      }
       paramMap.set('userEmail', this.GE_USER.userEmail)
       paramMap.set('soEmail', this.GE_USER.soEmail)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
       paramMap.set('fUserKey', this.GE_USER.userKey)
-      var response = await this.$axios.post('/sUniB/tp.UB_firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post(
+        '/sUniB/tp.UB_firstLoginCheck',
+        Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
@@ -437,10 +808,11 @@ export default {
         if (this.mBdAreaList && this.mBdAreaList.length > 0) {
           this.mTownTeamKey = this.mBdAreaList[0].teamKey
         }
-        this.$emit('setMainInfo', { fTeamList: this.mFTeamList, alimCount: this.mAlimCount })
+        this.$emit('setMainInfo', {
+          fTeamList: this.mFTeamList,
+          alimCount: this.mAlimCount
+        })
         this.village.areaList = []
-        const leftList = [110, 110, -18, 235, 110, 0, 0]
-        const topList = [280, 280, 370, 370, 460, 0, 0]
         for (var i = 0; i < this.mBdAreaList.length; i++) {
           const area = this.mBdAreaList[i]
           const areaObj = {
@@ -453,12 +825,7 @@ export default {
             maskedImageUrl: '',
             maskedImageStyle: {},
             clickedYn: false,
-            left: leftList[i],
-            top: topList[i],
-            w: 0,
-            h: 0,
-            buildingList: [
-            ]
+            buildingList: []
           }
           this.village.areaList.push(areaObj)
 
@@ -494,11 +861,21 @@ export default {
         }
       }
     },
-    setNativeHeight () {
+    setNativeHeight() {
       var varUA = localStorage.getItem('systemName')
       var nativeYn = localStorage.getItem('nativeYn')
-      if ((varUA !== undefined && varUA !== null && varUA !== '') || (nativeYn !== false && nativeYn !== 'false')) {
-        if ((nativeYn === true || nativeYn === 'true') || varUA === 'android' || varUA === '"Android"' || varUA === 'ios' || varUA === '"iOS"') {
+      if (
+        (varUA !== undefined && varUA !== null && varUA !== '') ||
+        (nativeYn !== false && nativeYn !== 'false')
+      ) {
+        if (
+          nativeYn === true ||
+          nativeYn === 'true' ||
+          varUA === 'android' ||
+          varUA === '"Android"' ||
+          varUA === 'ios' ||
+          varUA === '"iOS"'
+        ) {
           this.$STATUS_HEIGHT = 35 // 35
         } else {
           this.$STATUS_HEIGHT = 35
@@ -507,16 +884,16 @@ export default {
         this.$STATUS_HEIGHT = 0
       }
     },
-    resetHistory () {
+    resetHistory() {
       this.$store.commit('UB_HISTORY/setRemovePage', '')
       this.$store.commit('UB_HISTORY/updateStack', [])
       this.$store.dispatch('UB_HISTORY/AC_CLEAR_GPOP_STACK')
     },
-    moveToChan (clickedInfo) {
+    moveToChan(clickedInfo) {
       this.closeInfoBox()
       this.$emit('chanInfo', clickedInfo)
     },
-    createMaskingAreaImg () {
+    createMaskingAreaImg() {
       const areaList = this.village.areaList
       let w = 0
       let h = 0
@@ -542,42 +919,49 @@ export default {
       if (areaList && areaList.length !== 0) {
         for (let i = 0; i < areaList.length; i++) {
           const area = areaList[i]
-          if (area.key === 0) { // campus
-            area.w = 2 / 5 * w
-            area.h = 1 / 7 * h
+          if (area.key === 0) {
+            // campus
+            area.w = (2 / 5) * w
+            area.h = (1 / 7) * h
             area.left = w / 2 - area.w / 2 + this.blankWidth
-            area.top = (h / 3 - area.h / 6) + this.blankHeight
-          } else if (area.key === 1) { // plaza
-            area.w = 2 / 5 * w
-            area.h = 1 / 6 * h
-            area.left = w / 2 - 1 / 2 * area.w + this.blankWidth
-            area.top = 1 / 2 * h - area.h / 4 + this.blankHeight
+            area.top = h / 3 - area.h / 6 + this.blankHeight
+          } else if (area.key === 1) {
+            // plaza
+            area.w = (2 / 5) * w
+            area.h = (1 / 6) * h
+            area.left = w / 2 - (1 / 2) * area.w + this.blankWidth
+            area.top = (1 / 2) * h - area.h / 4 + this.blankHeight
           } else {
-            if (area.key === 2) { // club & Startup
-              area.h = 1 / 7 * h
-              area.w = 6 / 16 * w
-              area.left = w / 2 - area.w - area.w * 3 / 8 + this.blankWidth
-              area.top = 2 / 5 * h + area.h / 12 + this.blankHeight
-            } else if (area.key === 3) { // Major
-              area.h = 1 / 7 * h
-              area.w = 6 / 16 * w
-              area.left = 5 / 8 * w + 1 / 12 * area.w + this.blankWidth
-              area.top = 2 / 5 * h + area.h / 12 + this.blankHeight
-            } else if (area.key === 4) { // Class
-              area.h = 1 / 6 * h
-              area.w = 2 / 5 * w
+            if (area.key === 2) {
+              // club & Startup
+              area.h = (1 / 7) * h
+              area.w = (6 / 16) * w
+              area.left = w / 2 - area.w - (area.w * 3) / 8 + this.blankWidth
+              area.top = (2 / 5) * h + area.h / 12 + this.blankHeight
+            } else if (area.key === 3) {
+              // Major
+              area.h = (1 / 7) * h
+              area.w = (6 / 16) * w
+              area.left = (5 / 8) * w + (1 / 12) * area.w + this.blankWidth
+              area.top = (2 / 5) * h + area.h / 12 + this.blankHeight
+            } else if (area.key === 4) {
+              // Class
+              area.h = (1 / 6) * h
+              area.w = (2 / 5) * w
               area.left = w / 2 + area.w / 12 + this.blankWidth
-              area.top = 13 / 32 * h + area.h + this.blankHeight
-            } else if (area.key === 5) { // Living
-              area.h = 1 / 6 * h
-              area.w = 2 / 5 * w
+              area.top = (13 / 32) * h + area.h + this.blankHeight
+            } else if (area.key === 5) {
+              // Living
+              area.h = (1 / 6) * h
+              area.w = (2 / 5) * w
               area.left = w / 2 - area.w - area.w / 12 + this.blankWidth
-              area.top = 13 / 32 * h + area.h + this.blankHeight
-            } else if (area.key === 6) { // Nearby
-              area.h = 1 / 6 * h
-              area.w = 1 / 2 * w
+              area.top = (13 / 32) * h + area.h + this.blankHeight
+            } else if (area.key === 6) {
+              // Nearby
+              area.h = (1 / 6) * h
+              area.w = (1 / 2) * w
               area.left = w / 2 - area.w / 2 + this.blankWidth
-              area.top = 5 / 8 * h + area.h * 5 / 12 + this.blankHeight
+              area.top = (5 / 8) * h + (area.h * 5) / 12 + this.blankHeight
             }
           }
           const _this = this
@@ -593,7 +977,9 @@ export default {
             canvas.height = newHeight
             area.w = newWidth
             area.h = newHeight
-            const context = canvas.getContext('2d', { willReadFrequently: true })
+            const context = canvas.getContext('2d', {
+              willReadFrequently: true
+            })
             // 마스킹 이미지 그리기
             context.drawImage(this, 0, 0, newWidth, newHeight)
             area.ctx = context
@@ -606,7 +992,7 @@ export default {
         }
       }
     },
-    createMaskingBuildingImg (area, lastYn) {
+    createMaskingBuildingImg(area, lastYn) {
       const bdList = area.buildingList
       if (area.key === 6) {
         area.loadYn = true
@@ -615,14 +1001,14 @@ export default {
 
       for (let j = 0; j < bdList.length; j++) {
         const bd = bdList[j]
-        bd.w = 1 / 5 * area.w
-        bd.h = 1 / 3 * area.h
+        bd.w = (1 / 5) * area.w
+        bd.h = (1 / 3) * area.h
         if (bd.rank === 1) {
           if (bd.type === 'CB') {
-            bd.w = 1 / 2 * area.w
-            bd.h = 1 / 2 * area.h
+            bd.w = (1 / 2) * area.w
+            bd.h = (1 / 2) * area.h
             if (window.innerWidth > 1000) {
-              bd.w = 1 / 3 * area.w
+              bd.w = (1 / 3) * area.w
               bd.left = area.left + area.w / 2 - bd.w / 2
               bd.top = area.top - this.village.areaList[0].h / 2 - bd.h / 2
             } else {
@@ -634,13 +1020,13 @@ export default {
             bd.left = area.left + area.w * (2 / 5) + 5
           }
         } else if (bd.rank === 2) {
-          bd.left = 1 / 5 * area.w + area.left
+          bd.left = (1 / 5) * area.w + area.left
         } else if (bd.rank === 3) {
-          bd.left = 3 / 5 * area.w + area.left
+          bd.left = (3 / 5) * area.w + area.left
         } else if (bd.rank === 4) {
           bd.left = area.left + 10
         } else if (bd.rank === 5) {
-          bd.left = 4 / 5 * area.w + area.left - 10
+          bd.left = (4 / 5) * area.w + area.left - 10
         }
         const targetImage = new Image()
         targetImage.src = bd.imgLink
@@ -651,7 +1037,7 @@ export default {
           let newHeight = bd.h
           let scaleFactor = 1
           if (bd.type !== 'CB' && window.innerWidth > 1000) {
-            scaleFactor = bd.w / this.width * 4 / 5
+            scaleFactor = ((bd.w / this.width) * 4) / 5
           } else {
             scaleFactor = bd.w / this.width
           }
@@ -668,15 +1054,15 @@ export default {
             for (let i = 0; i < area.h; i++) {
               let pixelData = {}
               if (bd.rank === 1) {
-                pixelData = area.ctx.getImageData(2 / 5 * area.w, i, 1, 1).data
+                pixelData = area.ctx.getImageData((2 / 5) * area.w, i, 1, 1).data
               } else if (bd.rank === 2) {
-                pixelData = area.ctx.getImageData(1 / 5 * area.w, i, 1, 1).data
+                pixelData = area.ctx.getImageData((1 / 5) * area.w, i, 1, 1).data
               } else if (bd.rank === 3) {
-                pixelData = area.ctx.getImageData(3 / 5 * area.w, i, 1, 1).data
+                pixelData = area.ctx.getImageData((3 / 5) * area.w, i, 1, 1).data
               } else if (bd.rank === 4) {
                 pixelData = area.ctx.getImageData(10, i, 1, 1).data
               } else if (bd.rank === 5) {
-                pixelData = area.ctx.getImageData(4 / 5 * area.w - 10, i, 1, 1).data
+                pixelData = area.ctx.getImageData((4 / 5) * area.w - 10, i, 1, 1).data
               }
               if (pixelData[3] !== 0) {
                 if (window.innerWidth > 1000) {
@@ -699,7 +1085,7 @@ export default {
         }
       }
     },
-    async getInRectImgList (event) {
+    async getInRectImgList(event) {
       if (this.mainShowPopYn) return
       // 빌딩부터 역순으로 뒤짐
       // 빌딩이 발견됨, 스타일클리어 시키고, 효과를 주고 return해버리기
@@ -709,7 +1095,9 @@ export default {
         // area width = 1000 (원래는 1500)
         blankWidth = (window.innerWidth - 1000) / 2
       }
-      if ((this.clickedBd && this.clickedBd.clickedYn && this.mInfoBoxShowYn)) return
+      if (this.clickedBd && this.clickedBd.clickedYn && this.mInfoBoxShowYn) {
+        return
+      }
       this.clickedArea = {}
       this.clickedBd = {}
       this.clickedRank = 0
@@ -723,7 +1111,12 @@ export default {
             const bd = area.buildingList[j]
             if (bd.ctx === null) continue
             findYn = false
-            if (event.clientX >= bd.left + blankWidth && event.clientX <= (bd.left + bd.w + blankWidth) && event.clientY >= bd.top && event.clientY <= (bd.top + bd.h)) {
+            if (
+              event.clientX >= bd.left + blankWidth &&
+              event.clientX <= bd.left + bd.w + blankWidth &&
+              event.clientY >= bd.top &&
+              event.clientY <= bd.top + bd.h
+            ) {
               findYn = true
               bd.onImgYn = true
               break
@@ -744,7 +1137,9 @@ export default {
               this.clickedBd = bd
               this.mBdClickedYn = true
               bd.clickedYn = true
-              bd.maskedImageStyle = { filter: 'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)' }
+              bd.maskedImageStyle = {
+                filter: 'drop-shadow(0 0 5px orange) drop-shadow(0 0 10px white)'
+              }
               if (bd.targetKind === 'C') {
                 this.openAreaInfoPop(this.mBdAreaList[area.key])
               } else if (!this.mInfoBoxShowYn) {
@@ -759,9 +1154,16 @@ export default {
       findYn = false
       for (let i = 0; i < this.village.areaList.length; i++) {
         const area = this.village.areaList[i]
-        if (area.ctx === null) { continue }
+        if (area.ctx === null) {
+          continue
+        }
         findYn = false
-        if (event.clientX >= area.left + blankWidth && event.clientX <= (area.left + area.w + blankWidth) && event.clientY >= area.top && event.clientY <= (area.top + area.h)) {
+        if (
+          event.clientX >= area.left + blankWidth &&
+          event.clientX <= area.left + area.w + blankWidth &&
+          event.clientY >= area.top &&
+          event.clientY <= area.top + area.h
+        ) {
           findYn = true
           area.onImgYn = true
           break
@@ -775,7 +1177,9 @@ export default {
       // 마우스 위치가 마스킹 영역 내부에 있는지 확인
       for (let i = this.village.areaList.length - 1; i >= 0; i--) {
         const area = this.village.areaList[i]
-        if (area.onImgYn === false) { continue }
+        if (area.onImgYn === false) {
+          continue
+        }
         const _x = event.clientX - area.left - blankWidth
         const _y = event.clientY - area.top
         const pixelData = area.ctx.getImageData(_x, _y, 1, 1).data
@@ -784,7 +1188,9 @@ export default {
           this.mBdClickedYn = false
           this.clickedRank = area.buildingList.length + 1
           area.clickedYn = true
-          area.maskedImageStyle = { filter: 'drop-shadow(0 0 5px yellow) drop-shadow(0 0 40px white)' }
+          area.maskedImageStyle = {
+            filter: 'drop-shadow(0 0 5px yellow) drop-shadow(0 0 40px white)'
+          }
           if (this.mBdAreaList[area.key].priority === 1) {
             await this.getBoardList(this.GE_USER.myTeamKey)
           }
@@ -795,7 +1201,7 @@ export default {
         }
       }
     },
-    async getBoardList (teamKey) {
+    async getBoardList(teamKey) {
       const chanMainParam = {}
       chanMainParam.targetType = 'chanDetail'
       chanMainParam.teamKey = teamKey
@@ -814,7 +1220,7 @@ export default {
         this.mBoardList = result.data
       }
     },
-    allClearFocus () {
+    allClearFocus() {
       for (let i = 0; i < this.village.areaList.length; i++) {
         const area = this.village.areaList[i]
         area.clickedYn = false
@@ -826,7 +1232,16 @@ export default {
         }
       }
     },
-    setWindowSize () {
+    setRatio() {
+      const windowWidth = window.innerWidth
+      const windowHeight = window.innerHeight
+      if (windowWidth / windowHeight > 0.54) {
+        this.mPcStyleYn = true
+      } else {
+        this.mPcStyleYn = false
+      }
+    },
+    setWindowSize() {
       this.innerWidth = window.innerWidth
       const nowHeight = window.innerHeight
 
@@ -834,7 +1249,7 @@ export default {
     }
   },
   watch: {
-    mLoadingYn (val) {
+    mLoadingYn(val) {
       if (!val) {
         this.$emit('enterCloudLoading', false)
         setTimeout(() => {
@@ -842,9 +1257,14 @@ export default {
         }, 800)
       }
     },
-    pageUpdate (value, old) {
+    pageUpdate(value, old) {
       var history = this.historyStack
-      if (history.length < 2 && (history[0] === 0 || history[0] === undefined || history[0] === 'router$#$routerMain')) {
+      if (
+        history.length < 2 &&
+        (history[0] === 0 ||
+          history[0] === undefined ||
+          history[0] === 'router$#$routerMain')
+      ) {
         if (this.$route.path === '/') {
           if (this.$checkMobile() !== 'IOS') this.mAppCloseYn = true
         }
@@ -856,37 +1276,46 @@ export default {
     //   this.mInfoBoxShowYn = true
     // }
   },
-  mounted () {
+  mounted() {
     this.$emit('showCloudLoading', true, false)
     // this.findAllDrawn()
     this.setWindowSize()
-    window.addEventListener('resize', this.createMaskingAreaImg)
+    this.setRatio()
+    window.addEventListener('resize', this.setRatio)
   },
   computed: {
-    mainShowPopYn () {
+    mainShowPopYn() {
       let showYn = false
-      if (this.mBoardPopShowYn || this.mInfoBoxShowYn || this.mShowAreaBdListYn || this.mFavListPopShowYn || this.mCreChannelShowYn) showYn = true
+      if (
+        this.mBoardPopShowYn ||
+        this.mInfoBoxShowYn ||
+        this.mShowAreaBdListYn ||
+        this.mFavListPopShowYn ||
+        this.mCreChannelShowYn
+      ) {
+        showYn = true
+      }
       return showYn
     },
-    historyStack () {
+    historyStack() {
       return this.$store.getters['UB_HISTORY/hStack']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     },
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     },
-    GE_MAIN_CHAN_LIST () {
+    GE_MAIN_CHAN_LIST() {
       return this.$store.getters['UB_CHANNEL/GE_MAIN_CHAN_LIST']
     },
-    GE_CREATE_CHAN_LIST () {
+    GE_CREATE_CHAN_LIST() {
       return this.$store.getters['UB_CHANNEL/GE_CREATE_CHAN_LIST']
     },
-    GE_REMOVE_CHAN_LIST () {
+    GE_REMOVE_CHAN_LIST() {
       return this.$store.getters['UB_CHANNEL/GE_REMOVE_CHAN_LIST']
     },
-    GE_UPDATE_CHAN_LIST () {
+    GE_UPDATE_CHAN_LIST() {
       return this.$store.getters['UB_CHANNEL/GE_UPDATE_CHAN_LIST']
     }
   },
@@ -903,13 +1332,14 @@ export default {
 <style scoped>
 @keyframes area-zoom {
   from {
-    transform: scale(1)
-  } to {
-    transform: scale(1.05)
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
   }
 }
 .areaDiv {
-  animation:areaMoving .3s 1s ease-in-out 3 alternate;
+  animation: areaMoving 0.3s 1s ease-in-out 3 alternate;
   cursor: pointer;
   position: absolute;
   z-index: 99;
@@ -920,7 +1350,8 @@ export default {
 }
 .areaDiv > div {
   background-color: rgba(245, 245, 220, 0.7) !important;
-  color: black; border-radius: 5px;
+  color: black;
+  border-radius: 5px;
   padding: 5px;
   height: 30px;
   z-index: 99;
@@ -929,12 +1360,12 @@ export default {
   height: 20px;
   line-height: 20px;
 }
-@keyframes areaMoving{
+@keyframes areaMoving {
   0% {
-    transform:scale(1);
+    transform: scale(1);
   }
   100% {
-    transform:scale(1.01);
+    transform: scale(1.01);
   }
 }
 .areaDiv.clicked {
@@ -945,7 +1376,7 @@ export default {
 }
 .bdDiv.clicked {
   z-index: 9999 !important;
-  transform: scale(1.1)
+  transform: scale(1.1);
 }
 .areaCard {
   position: fixed;
@@ -983,42 +1414,46 @@ export default {
   border-radius: 5px;
   padding: 0 5px;
 }
-.planeBox{
-  width:20%;
+.planeBox {
+  width: 20%;
   max-width: 100px;
   position: absolute;
   right: 30px;
   top: 100px;
   opacity: 1;
 }
-.planeImg{
-  width:100%;
-  filter: drop-shadow(5px 5px 5px #00000036);
+.planeImg {
+  width: 100%;
+  filter: drop-shadow(5px 5px #00000036);
   opacity: 0;
   transition: 0.2s;
-  animation: flyingPlane 1s 2s ease-in-out both, moving 3s 3s ease-in-out infinite alternate;
+  animation: flyingPlane 1s 2s ease-in-out both,
+    moving 3s 3s ease-in-out infinite alternate;
 }
 .userName {
   color: white;
   text-shadow: 1px 2px 2px black;
 }
-@keyframes flyingPlane{
+@keyframes flyingPlane {
   0% {
-    opacity: 0; transform: translate(-450px, 100px);
+    opacity: 0;
+    transform: translate(-450px, 100px);
   }
   80% {
-    opacity: 1; transform: translate(0px, 0px) scale(1.2);
+    opacity: 1;
+    transform: translate(0px, 0px) scale(1.2);
   }
   100% {
-    opacity: 1; transform: translate(0px, 0px) scale(1);
+    opacity: 1;
+    transform: translate(0px, 0px) scale(1);
   }
 }
-@keyframes moving{
+@keyframes moving {
   0% {
-    transform:translateY(0px)
+    transform: translateY(0px);
   }
   100% {
-    transform:translateY(-10px)
+    transform: translateY(-10px);
   }
 }
 .planeBox:hover {
@@ -1058,14 +1493,14 @@ export default {
 }
 
 .PostsBallon:after {
-    border-bottom: 7px solid #fce169;
-    border-left: 7px solid transparent;
-    border-right: 7px solid transparent;
-    border-top: 0px solid transparent;
-    content: "";
-    position: absolute;
-    top: -5px;
-    left: 100px;
+  border-bottom: 7px solid #fce169;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 0px solid transparent;
+  content: "";
+  position: absolute;
+  top: -5px;
+  left: 100px;
 }
 /* .st0 .slick-next::after {
   content : url('@/assets/images/main/UBTownFeed.svg');
@@ -1101,9 +1536,10 @@ export default {
   align-items: center;
   overflow: hidden;
   z-index: -1;
+  height: calc(100% - 60px);
 }
 .popBg {
-  width:100%;
+  width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
@@ -1115,7 +1551,7 @@ export default {
   height: calc(100%);
   position: relative;
   background-repeat: no-repeat;
-  background-image: url('/resource/main/UB_mainBg.png');
+  /* background-image: url('/resource/main/main_night_background.png'); */
   background-position: center;
   background-size: 100% 100%;
   overflow: hidden;
@@ -1149,17 +1585,45 @@ export default {
   width: 80% !important;
 }
 @keyframes lab {
-  0%{
-    transform: scale(1.0);
+  0% {
+    transform: scale(1);
   }
   50% {
     transform: scale(1.05);
   }
-  100%{
-    transform: scale(1.0);
+  100% {
+    transform: scale(1);
   }
 }
-@media screen and (max-width: 500px){
+.mainPcNone {
+  display: none;
+}
+@keyframes uniB-zoom {
+  0% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+  50% {
+    transform: scale(1.05) translate(-50%, -50%);
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+  }
+}
+.clickEvent {
+  filter: drop-shadow(0 0 10px #f6ff7b);
+  transform-origin: center;
+  animation: uniB-zoom 0.8s;
+}
+@media (hover: hover) {
+  /* when supported */
+  .zoom:hover {
+    cursor: pointer;
+    filter: drop-shadow(0 0 10px #f6ff7b);
+    transform-origin: center;
+    animation: uniB-zoom 0.8s;
+  }
+}
+@media screen and (max-width: 499px) {
   .laboratory {
     width: 25% !important;
     bottom: 70px !important;

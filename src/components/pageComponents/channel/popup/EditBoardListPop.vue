@@ -16,19 +16,61 @@
   <div class="w100P h100P channelMenuEditWrap pagePaddingWrap">
     <gPopHeader :headerTitle="propData.popHeaderText" :pClosePop="pClosePop" />
     <div v-if="CHANNEL_DETAIL" class="h100P boardListWrap">
-      <draggable  ref="editableArea" @end="changePosTeamMenu" class="ghostClass dragBox" :options="{ghostClass:'sortable-ghost',animation:150}" v-model="cabinetList" ghost-class="ghost" :disabled='enabled' delay="200"  >
+      <draggable
+        ref="editableArea"
+        @end="changePosTeamMenu"
+        class="ghostClass dragBox"
+        :options="{ ghostClass: 'sortable-ghost', animation: 150 }"
+        v-model="cabinetList"
+        ghost-class="ghost"
+        :disabled="enabled"
+        delay="200"
+      >
         <transition-group>
           <template v-for="(data, index) in cabinetList" :key="data.cabinetKey">
-            <gBoardCard :propData="data" @cardEmit="cardEmit" :compoIdx="index" :style="cabinetList.length - 1 === index && index !== 0? 'padding-bottom: 100px; border-bottom: 0;':''" />
+            <gBoardCard
+              :propData="data"
+              @cardEmit="cardEmit"
+              :compoIdx="index"
+              :style="
+                cabinetList.length - 1 === index && index !== 0
+                  ? 'padding-bottom: 100px; border-bottom: 0;'
+                  : ''
+              "
+            />
           </template>
         </transition-group>
       </draggable>
-      <img src="@/assets/images/button/Icon_CreBoardBtn.png" @click="addBoardRow" alt="button of create board" class="img-78 img-w66 createBoardBtn">
-      <gListEmpty v-if="cabinetList.length === 0" :title="$t('EDIT_BOARD_MSG_NOBOARD')" :subTitle="$t('EDIT_BOARD_MSG_CREBOARD')" option='EDIT' />
+      <img
+        src="@/assets/images/button/Icon_CreBoardBtn.png"
+        @click="addBoardRow"
+        alt="button of create board"
+        class="img-78 img-w66 createBoardBtn"
+      />
+      <gListEmpty
+        v-if="cabinetList.length === 0"
+        :title="$t('EDIT_BOARD_MSG_NOBOARD')"
+        :subTitle="$t('EDIT_BOARD_MSG_CREBOARD')"
+        option="EDIT"
+      />
     </div>
   </div>
-  <gConfirmPop :confirmText="errorBoxText" confirmType='two' @no="errorBoxYn = false" @ok="confirmfunc" v-if="errorBoxYn"/>
-  <modiBoardPop :chanInfo="chanInfo" :pClosePop="closeNrefresh" :modiBoardDetailProps="modiBoardDetailProps" v-if="modiBoardPopShowYn" @closePop="closeNrefresh" :chanName="teamNameText" @openPop="openPop"/>
+  <gConfirmPop
+    :confirmText="errorBoxText"
+    confirmType="two"
+    @no="errorBoxYn = false"
+    @ok="confirmfunc"
+    v-if="errorBoxYn"
+  />
+  <modiBoardPop
+    :chanInfo="chanInfo"
+    :pClosePop="closeNrefresh"
+    :modiBoardDetailProps="modiBoardDetailProps"
+    v-if="modiBoardPopShowYn"
+    @closePop="closeNrefresh"
+    :chanName="teamNameText"
+    @openPop="openPop"
+  />
 </template>
 
 <script>
@@ -40,39 +82,38 @@ export default {
     propData: {},
     pPopId: {},
     pClosePop: Function
-
   },
   computed: {
-    GE_LOCALE () {
+    GE_LOCALE() {
       return this.$i18n.locale
     },
-    CAB_DETAIL () {
+    CAB_DETAIL() {
       if (this.cabinetList.length === 0) {
         return []
       }
       return this.cabinetList
     },
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     },
-    CHANNEL_DETAIL () {
+    CHANNEL_DETAIL() {
       return this.$getDetail('TEAM', this.propData.teamKey)[0]
     },
-    history () {
+    history() {
       return this.$store.getters['UB_HISTORY/hStack']
     },
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     }
   },
   watch: {
-    pageUpdate (value, old) {
+    pageUpdate(value, old) {
       if (this.popId === this.history[this.history.length - 1]) {
         this.goNo()
       }
     }
   },
-  created () {
+  created() {
     if (this.pPopId) this.popId = JSON.parse(JSON.stringify(this.pPopId))
     this.$emit('openLoading')
     if (!this.propData.initData) {
@@ -82,7 +123,7 @@ export default {
     }
     this.$emit('closeLoading')
   },
-  data () {
+  data() {
     return {
       popId: null,
       modiBoardDetailProps: null,
@@ -102,7 +143,7 @@ export default {
     draggable: VueDraggableNext
   },
   methods: {
-    cardEmit (param) {
+    cardEmit(param) {
       var type = param.targetType
       var data = param.data
       var idx = param.index
@@ -114,7 +155,7 @@ export default {
         this.checkDelete(data, idx)
       }
     },
-    async checkDelete (data, index) {
+    async checkDelete(data, index) {
       var param = {}
       param.currentTeamKey = data.creTeamKey
       param.jobkindId = 'BOAR'
@@ -122,7 +163,7 @@ export default {
       param.offsetInt = 0
       param.pageSize = 1
       var totalElements
-      await this.$getContentsList(param, true).then(resulte => {
+      await this.$getContentsList(param, true).then((resulte) => {
         totalElements = resulte.totalElements
       })
       var temp = {}
@@ -134,7 +175,9 @@ export default {
         this.errorBoxText = this.$t('EDIT_BOARD_MSG_DELETE')
       } else {
         if (this.GE_LOCALE === 'ko') {
-          this.errorBoxText = totalElements + '개의 게시글이 있는 게시판입니다. \n 정말 삭제하시겠습니까?'
+          this.errorBoxText =
+            totalElements +
+            '개의 게시글이 있는 게시판입니다. \n 정말 삭제하시겠습니까?'
         } else {
           this.errorBoxText = `A board with ${totalElements} posts. Are you sure you want to delete it?`
         }
@@ -142,7 +185,7 @@ export default {
 
       this.errorBoxYn = true
     },
-    async confirmfunc () {
+    async confirmfunc() {
       if (this.currentConfirmType === 'delete') {
         var data = this.tempDeleteData.data
         var index = this.tempDeleteData.index
@@ -150,11 +193,11 @@ export default {
         this.errorBoxYn = false
       }
     },
-    async closeNrefresh () {
+    async closeNrefresh() {
       await this.getTeamMenuList()
       this.modiBoardPopShowYn = false
     },
-    async getTeamMenuList () {
+    async getTeamMenuList() {
       var paramMap = new Map()
       paramMap.set('teamKey', this.CHANNEL_DETAIL.teamKey)
       paramMap.set('sysCabinetCode', 'BOAR')
@@ -163,7 +206,7 @@ export default {
       var result = await this.$getTeamMenuList(paramMap, true)
       this.cabinetList = result
     },
-    goNo () {
+    goNo() {
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
       history = history.filter((element, index) => index < history.length - 1)
@@ -171,7 +214,7 @@ export default {
       this.$store.commit('UB_HISTORY/updateStack', history)
       this.$emit('closeXPop')
     },
-    async deleteCabinet (data, index) {
+    async deleteCabinet(data, index) {
       var param = {}
       param.currentTeamKey = data.creTeamKey
       param.cabinetKey = data.cabinetKey
@@ -181,12 +224,14 @@ export default {
         this.cabinetList.splice(index, 1)
       }
     },
-    openModiBoardPop (data) {
+    openModiBoardPop(data) {
       this.modiBoardDetailProps = data
-      this.modiBoardDetailProps.teamNameMtext = this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+      this.modiBoardDetailProps.teamNameMtext = this.$changeText(
+        this.CHANNEL_DETAIL.nameMtext
+      )
       this.modiBoardPopShowYn = true
     },
-    async addBoardRow () {
+    async addBoardRow() {
       var param = {}
       param.creMenuYn = true
       var cabinet = {}
@@ -201,17 +246,25 @@ export default {
       cabinet.replyYn = true // 기본설정 익명x, 파일o, 댓글o
       param.cabinet = cabinet
       var result = await this.$saveCabinet(param)
-      if (result.result === true && result.cabinetKey !== undefined && result.cabinetKey !== null && result.cabinetKey !== 0) {
+      if (
+        result.result === true &&
+        result.cabinetKey !== undefined &&
+        result.cabinetKey !== null &&
+        result.cabinetKey !== 0
+      ) {
         await this.getTeamMenuList()
       }
     },
-    anima () {
-      document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = 'rgba(186, 187, 215, 0.5)'
+    anima() {
+      document.getElementsByClassName('addNewEffect')[0].style.backgroundColor =
+        'rgba(186, 187, 215, 0.5)'
       setTimeout(() => {
-        document.getElementsByClassName('addNewEffect')[0].style.backgroundColor = ''
+        document.getElementsByClassName(
+          'addNewEffect'
+        )[0].style.backgroundColor = ''
       }, 800)
     },
-    async changePosTeamMenu () {
+    async changePosTeamMenu() {
       var paramSet = {}
 
       var tempList = []
@@ -223,16 +276,13 @@ export default {
       }
 
       paramSet.teamMenuList = [...tempList]
-      await this.$commonAxiosFunction(
-        {
-          url: '/sUniB/tp.changePosTeamMenu',
-          param: paramSet
-        }
-      )
+      await this.$commonAxiosFunction({
+        url: '/sUniB/tp.changePosTeamMenu',
+        param: paramSet
+      })
     }
   }
 }
-
 </script>
 
 <style scoped>
@@ -245,7 +295,7 @@ export default {
   left: 0;
 }
 .menuHeader p {
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 20px;
   text-align: center;
 }
@@ -255,11 +305,11 @@ export default {
   text-align: left;
   height: 3.8rem;
   border-bottom: 0.5px solid rgb(255 255 255 / 26%);
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .channelMenuEditWrap {
-  width: 100% ;
-  height: 100% ;
+  width: 100%;
+  height: 100%;
   top: 0;
   right: 0;
   position: absolute;
@@ -273,7 +323,7 @@ export default {
   height: 2rem;
 }
 .editWrap {
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
 }
 .editmenuHeader {
   border-bottom: 1.5px solid #999;
@@ -286,13 +336,12 @@ export default {
   box-sizing: border-box;
   text-align: left;
   height: 3.8rem;
-  border-bottom:
-  0.5px solid #ccc;
+  border-bottom: 0.5px solid #ccc;
 }
 .boardPlusBtn {
-  color:white;
-  font-size:20px;
-  font-weight:bold;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
 }
 .boardListCard {
   width: 100%;
@@ -300,7 +349,7 @@ export default {
   border-bottom: 1px solid #ddd;
   padding: 0.7rem 0;
   position: relative;
-   /* width: calc(100%); overflow: hidden; min-height:50px; margin-bottom:1rem; position: relative; */
+  /* width: calc(100%); overflow: hidden; min-height:50px; margin-bottom:1rem; position: relative; */
 }
 .boardListWrap {
   padding-top: 60px;
@@ -309,7 +358,7 @@ export default {
 }
 .dragBox {
   padding-top: 10px !important;
-  --webkit-tap-highlight-color: rgba(0,0,0,0) !important;
+  --webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
 }
 .createBoardBtn {
   position: absolute;

@@ -21,35 +21,83 @@
 }
 </i18n>
 <template>
-    <gConfirmPop :confirmText="confirmManagerText" :confirmType="two" @no="confirmManagerPopShowYn = false, reportYn = false" @ok="okSaveManager" v-if="confirmManagerPopShowYn"/>
-    <div class="followerCard" v-for="(member, index) in managingList" :id="'mamberCard'+member.userKey" :key="index" >
-        <div class="followerCardWrap">
-            <div class="fl mleft-01 w100P followerCardInfoArea" @click="goMemberInfo(member)">
-                <div class="followerAuth">
-                    <gProfileImg class="followerImg" :smallYn="true" :userInfo="member" />
-                    <div v-if="member.ownerYn" class="followerAuthBox">
-                        <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{ $t('Owner') }}</p>
-                    </div>
-                    <div v-else class="followerAuthBox">
-                        <p class="fr font12 cursorP fontBold lightGray"  @click="saveMemberButton" >{{ $t('Member') }}</p>
-                    </div>
-                </div>
-                <div class="followerInfoBox">
-                    <p class="fl font16 grayBlack followerName">{{$changeText(member.userDispMtext ||member.userNameMtext)}}</p>
-                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold  textLeft textOverdot w-100P">{{member.userEmail? member.userEmail: $t('No Email Info')}}</p>
-                    <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{$changeFollowerInfo('email', member.userEmail)}}</p>
-                    <p v-if="(member.memberTypeKey)" class="grayBlack font12 fontBold textLeft textOverdot">{{member.phoneEnc? member.phoneEnc: $t('No Phone Number Info')}}</p>
-                    <p v-else class="grayBlack font12 fontBold textLeft textOverdot">{{$changeFollowerInfo('phone', member.phoneEnc)}}</p>
-                    <div class="w100P fl">
-                        <p class="textLeft fl fontBold grayBlack font12" >{{$changeText(member.memberNameMtext)}}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="fr  memberItemBox" >
-                <div @click="clickManagerBox('CHAN', member, index, member.mngTeamYn)" :class="{activeMChan: member.mngTeamYn === 1}" class="font12 cursorP memMngBtn">{{ $t('COMM_CHAN_MANAGER') }}</div>
-            </div>
+  <gConfirmPop
+    :confirmText="confirmManagerText"
+    :confirmType="two"
+    @no=";(confirmManagerPopShowYn = false), (reportYn = false)"
+    @ok="okSaveManager"
+    v-if="confirmManagerPopShowYn"
+  />
+  <div
+    class="followerCard"
+    v-for="(member, index) in managingList"
+    :id="'mamberCard' + member.userKey"
+    :key="index"
+  >
+    <div class="followerCardWrap">
+      <div
+        class="fl mleft-01 w100P followerCardInfoArea"
+        @click="goMemberInfo(member)"
+      >
+        <div class="followerAuth">
+          <gProfileImg class="followerImg" :smallYn="true" :userInfo="member" />
+          <div v-if="member.ownerYn" class="followerAuthBox">
+            <p
+              class="fr font12 cursorP fontBold lightGray"
+              @click="saveMemberButton"
+            >
+              {{ $t('Owner') }}
+            </p>
+          </div>
+          <div v-else class="followerAuthBox">
+            <p
+              class="fr font12 cursorP fontBold lightGray"
+              @click="saveMemberButton"
+            >
+              {{ $t('Member') }}
+            </p>
+          </div>
         </div>
+        <div class="followerInfoBox">
+          <p class="fl font16 grayBlack followerName">
+            {{ $changeText(member.userDispMtext || member.userNameMtext) }}
+          </p>
+          <p
+            v-if="member.memberTypeKey"
+            class="grayBlack font12 fontBold textLeft textOverdot w-100P"
+          >
+            {{ member.userEmail ? member.userEmail : $t('No Email Info') }}
+          </p>
+          <p v-else class="grayBlack font12 fontBold textLeft textOverdot">
+            {{ $changeFollowerInfo('email', member.userEmail) }}
+          </p>
+          <p
+            v-if="member.memberTypeKey"
+            class="grayBlack font12 fontBold textLeft textOverdot"
+          >
+            {{ member.phoneEnc ? member.phoneEnc : $t('No Phone Number Info') }}
+          </p>
+          <p v-else class="grayBlack font12 fontBold textLeft textOverdot">
+            {{ $changeFollowerInfo('phone', member.phoneEnc) }}
+          </p>
+          <div class="w100P fl">
+            <p class="textLeft fl fontBold grayBlack font12">
+              {{ $changeText(member.memberNameMtext) }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="fr memberItemBox">
+        <div
+          @click="clickManagerBox('CHAN', member, index, member.mngTeamYn)"
+          :class="{ activeMChan: member.mngTeamYn === 1 }"
+          class="font12 cursorP memMngBtn"
+        >
+          {{ $t('COMM_CHAN_MANAGER') }}
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -61,17 +109,19 @@ export default {
     memberYn: {}
   },
   computed: {
-    GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+    GE_USER() {
+      return this.$store.getters['UB_USER/GE_USER']
     },
-    GE_LOCALE () {
+    GE_LOCALE() {
       return this.$i18n.locale
     }
   },
-  data () {
+  data() {
     return {
       systemName: localStorage.getItem('systemName'),
-      interfaceBtnList: [{ text: this.$t('COMM_BTN_SEND_NOTI'), event: 'sendPush' }],
+      interfaceBtnList: [
+        { text: this.$t('COMM_BTN_SEND_NOTI'), event: 'sendPush' }
+      ],
       openCommonAlertPopShowYn: false,
       selectedMember: null,
       confirmManagerText: '',
@@ -79,18 +129,31 @@ export default {
       selectedUserParamObj: {}
     }
   },
-  created () {
+  created() {
     if (this.managingList) {
       this.disp_list = this.managingList
     }
   },
   methods: {
-    clickManagerBox (manType, member, index, status) {
-      this.selectedUserParamObj = { manType: manType, member: member, index: index }
+    clickManagerBox(manType, member, index, status) {
+      this.selectedUserParamObj = {
+        manType: manType,
+        member: member,
+        index: index
+      }
       var typeText = null
-      if (manType === 'CHAN') typeText = this.$t('COMMON_NAME_CHANNEL') + ' ' + this.$t('FOLLOW_NAME_MANAGE')
-      if (manType === 'MEMBER') typeText = this.$t('FOLLOW_NAME_MEMBER') + ' ' + this.$t('FOLLOW_NAME_MANAGE')
-      if (manType === 'ALIM') typeText = this.$t('COMMON_TAB_NOTI') + ' ' + this.$t('FOLLOW_NAME_MANAGE')
+      if (manType === 'CHAN') {
+        typeText =
+          this.$t('COMMON_NAME_CHANNEL') + ' ' + this.$t('FOLLOW_NAME_MANAGE')
+      }
+      if (manType === 'MEMBER') {
+        typeText =
+          this.$t('FOLLOW_NAME_MEMBER') + ' ' + this.$t('FOLLOW_NAME_MANAGE')
+      }
+      if (manType === 'ALIM') {
+        typeText =
+          this.$t('COMMON_TAB_NOTI') + ' ' + this.$t('FOLLOW_NAME_MANAGE')
+      }
       var actText = null
       if (status || status === 1) {
         actText = '에서 제외시키겠습니까?'
@@ -98,20 +161,27 @@ export default {
         actText = '로 지정하시겠습니까?'
       }
       if (this.GE_LOCALE === 'ko') {
-        this.confirmManagerText = this.$changeText(member.userDispMtext) + '을(를)<br>' + typeText + actText
+        this.confirmManagerText =
+          this.$changeText(member.userDispMtext) +
+          '을(를)<br>' +
+          typeText +
+          actText
       } else {
-        this.confirmManagerText = `Are you sure you want to revoke ${this.$changeText(member.userDispMtext)}'s ${typeText} authority?`
+        this.confirmManagerText = `Are you sure you want to revoke ${this.$changeText(
+          member.userDispMtext
+        )}'s ${typeText} authority?`
       }
       this.confirmManagerPopShowYn = true
     },
-    okSaveManager () {
+    okSaveManager() {
       var manType = this.selectedUserParamObj.manType
       var member = this.selectedUserParamObj.member
       var index = this.selectedUserParamObj.index
       this.setManager(manType, member, index)
       this.confirmManagerPopShowYn = false
     },
-    async setManager (manType, member, index) { // index 1: 관리자 제외 / 0: 관리자로 지정
+    async setManager(manType, member, index) {
+      // index 1: 관리자 제외 / 0: 관리자로 지정
       var param = {}
       if (member.managerKey) {
         param.managerKey = member.managerKey
@@ -174,53 +244,66 @@ export default {
           localStatusObj.mngTeamYn = false
         }
       }
-      if (localStatusObj.mngAlimYn === false && localStatusObj.mngMemberYn === false && localStatusObj.mngTeamYn === false) {
+      if (
+        localStatusObj.mngAlimYn === false &&
+        localStatusObj.mngMemberYn === false &&
+        localStatusObj.mngTeamYn === false
+      ) {
         await this.deleteManager(param)
       } else {
         this.$emit('saveManager', param)
       }
     },
-    async deleteManager (param) {
+    async deleteManager(param) {
       var result = await this.$commonAxiosFunction({
         url: '/sUniB/tp.deleteManager',
         param: param
       })
       return result
     },
-    openCommonAlertPop (member) {
+    openCommonAlertPop(member) {
       this.selectedMember = member
       this.openCommonAlertPopShowYn = true
     },
-    closeCommonAlertPop () {
+    closeCommonAlertPop() {
       this.openCommonAlertPopShowYn = false
     },
-    clickAlertPopBtn (eventType) {
-      if (eventType === 'sendPush') this.openPop('writePush', this.selectedMember)
-      else if (eventType === 'sendEmail') this.sendMail()
+    clickAlertPopBtn(eventType) {
+      if (eventType === 'sendPush') {
+        this.openPop('writePush', this.selectedMember)
+      } else if (eventType === 'sendEmail') this.sendMail()
       else if (eventType === 'callPhone') this.callPhone()
       else if (eventType === 'sendSms') this.sendSms()
       this.closeCommonAlertPop()
     },
-    openPop (targetType, member) {
+    openPop(targetType, member) {
       var param = {}
       param.targetType = targetType
       param.teamKey = member.teamKey
       param.userKey = member.userKey
-      if (member.userDispMtext) { param.userDispMtext = member.userDispMtext } else { param.userNameMtext = member.userNameMtext }
+      if (member.userDispMtext) {
+        param.userDispMtext = member.userDispMtext
+      } else {
+        param.userNameMtext = member.userNameMtext
+      }
 
       if (targetType === 'writePush') {
         // param.targetKey = this.detailVal.value.creTeamKey
         param.targetKey = member.teamKey
         param.replyPopYn = true
         // param.creUserName = this.alimDetail[0].creUserName
-        if (member.userDispMtext) { param.creUserName = member.userDispMtext } else { param.creUserName = member.userNameMtext }
+        if (member.userDispMtext) {
+          param.creUserName = member.userDispMtext
+        } else {
+          param.creUserName = member.userNameMtext
+        }
 
         param.creUserKey = member.userKey
         // this.$emit('openPop', params)
       }
       this.$emit('openPop', param)
     },
-    goMemberInfo (member) {
+    goMemberInfo(member) {
       // if (member.memberYn || member.ownerYn || member.managerKey > 0) {
       this.$emit('memberInfo', member)
       // } else {
@@ -248,31 +331,31 @@ export default {
   border-bottom: 0.8px solid #ccc;
   float: left;
   background-color: white;
-  transition : background-color 0.5s ease-in;
-  animation-name: fadein; animation-duration: 0.3s;
+  transition: background-color 0.5s ease-in;
+  animation-name: fadein;
+  animation-duration: 0.3s;
   white-space: nowrap;
   /* transition : height 0.5s ease-in; */
 }
 .adminTag {
   width: 30px;
-  background-color:#CCC;
-  border-radius:0.5rem;
+  background-color: #ccc;
+  border-radius: 0.5rem;
   position: absolute;
-  bottom:-0.4rem;
+  bottom: -0.4rem;
   animation-name: fadein;
   animation-duration: 0.3s;
   animation-fill-mode: forwards;
 }
-.nonTag{
+.nonTag {
   animation-name: fadeout;
   animation-duration: 0.3s;
   animation-fill-mode: forwards;
 }
-.noneCard{
+.noneCard {
   animation-name: listout;
   animation-duration: 0.2s;
   animation-fill-mode: forwards;
-
 }
 @keyframes listout {
   0% {
@@ -289,7 +372,7 @@ export default {
   width: 30px;
   height: 30px;
   border-radius: 100%;
-  border:1.5px solid #6768a7;
+  border: 1.5px solid #6768a7;
   float: left;
   background: #6768a745;
   overflow: hidden;
@@ -300,22 +383,22 @@ export default {
 }
 
 .activeMAlim {
-  background: #DFF7FF!important;
-  color: #2D75B7;
+  background: #dff7ff !important;
+  color: #2d75b7;
   font-weight: bold;
-  box-shadow: 0 0 4px 1px #00000025!important;
+  box-shadow: 0 0 4px 1px #00000025 !important;
 }
-.activeMMember{
-  background: #D0FBE8!important;
-  color: #2DB77D;
+.activeMMember {
+  background: #d0fbe8 !important;
+  color: #2db77d;
   font-weight: bold;
-  box-shadow: 0 0 4px 1px #00000025!important;
+  box-shadow: 0 0 4px 1px #00000025 !important;
 }
 .activeMChan {
-  background: #FBF6D0!important;
-  color: #B7902D;
+  background: #fbf6d0 !important;
+  color: #b7902d;
   font-weight: bold;
-  box-shadow: 0 0 4px 1px #00000025!important;
+  box-shadow: 0 0 4px 1px #00000025 !important;
 }
 .followerCardWrap {
   width: 100%;
@@ -331,7 +414,7 @@ export default {
   display: flex;
   min-height: 40px;
   height: 100%;
-  width: calc(100% - 130px)
+  width: calc(100% - 130px);
 }
 .followerAuth {
   float: left;
@@ -353,10 +436,10 @@ export default {
   border-radius: 8px;
   line-height: 18px;
   height: 23px;
-  background-color:rgb(254 224 224);
+  background-color: rgb(254 224 224);
 }
 .followerBg {
-  background-color:#F5F5F9;
+  background-color: #f5f5f9;
 }
 .followerInfoBox {
   width: calc(100% - 50px);

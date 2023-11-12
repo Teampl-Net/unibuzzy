@@ -13,98 +13,402 @@
 }
 </i18n>
 <template>
-    <div v-if="mModiMemoPopShowYn" class="modiMemoPopBg" @click="closeModiMemoPop"></div>
-    <modiMemoPop :propContDetail="propContDetail" ref="modiMemoPop" :pClosePop="closeModiMemoPop" :pMemoEle="mModiMemoObj" v-if="mModiMemoPopShowYn" />
-    <div class="modiMemoPopBg" v-if="mContMenuShowYn" @click="mContMenuShowYn = false"></div>
-    <gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="propMemoEle" contentType="MEMO" :contentOwner="GE_USER.userKey === propMemoEle.creUserKey"/>
-    <div class="noChildMemoWrap" v-if="!childShowYn">
-        <div class="noChildUserNameBox" @click="clickMemoEvnt({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
-            <p class="commonBlack textLeft font14 fontBold textOverdot">{{$changeText(propMemoEle.userDispMtext)}}</p>
-        </div>
-        <img v-if="propMemoEle.attachMfilekey" src="../../../assets/images/contents/icon_clip.png" class="attachFileIcon" alt="">
-        <div class="contBoxMemoArea mbottom-05 noChildMemoCont" :style="propMemoEle.attachMfilekey? 'width: calc(100% - 180px);' : 'width: calc(100% - 160px);'" @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
-            <div v-if="mMemoFadeShowYn" class="w100P fl textLeft memoFade">...</div>
-            <pre ref="mainMemoRef" class="commonBlack textLeft font14" v-html="$decodeHTML(propMemoEle.bodyFullStr)"></pre>
-        </div>
-        <p class="fl commonGray textLeft mleft-05 font12 fontNomal">{{$changeDateMemoFormat(propMemoEle.creDate)}}</p>
+  <div
+    v-if="mModiMemoPopShowYn"
+    class="modiMemoPopBg"
+    @click="closeModiMemoPop"
+  ></div>
+  <modiMemoPop
+    :propContDetail="propContDetail"
+    ref="modiMemoPop"
+    :pClosePop="closeModiMemoPop"
+    :pMemoEle="mModiMemoObj"
+    v-if="mModiMemoPopShowYn"
+  />
+  <div
+    class="modiMemoPopBg"
+    v-if="mContMenuShowYn"
+    @click="mContMenuShowYn = false"
+  ></div>
+  <gReport
+    v-if="mContMenuShowYn"
+    @closePop="mContMenuShowYn = false"
+    @report="report"
+    @editable="editable"
+    @bloc="bloc"
+    :contentsInfo="propMemoEle"
+    contentType="MEMO"
+    :contentOwner="GE_USER.userKey === propMemoEle.creUserKey"
+  />
+  <div class="noChildMemoWrap" v-if="!childShowYn">
+    <div
+      class="noChildUserNameBox"
+      @click="
+        clickMemoEvnt({ targetType: 'goUserProfile', value: propMemoEle })
+      "
+    >
+      <p class="commonBlack textLeft font14 fontBold textOverdot">
+        {{ $changeText(propMemoEle.userDispMtext) }}
+      </p>
     </div>
-    <div v-else-if="propMemoEle" ref="fullMemoWrap" class="fullMemoWrap" :style="propMIndex !== (propMemoLength - 1)? 'border-bottom: 1px solid #cccccc50;':''">
-        <div class="parentMemoBox">
-            <div class="parentMemoTop">
-                <img class="parentMemoMore" v-if="!pNoAuthYn" src="../../../assets/images/contents/contents_moreBtnIcon.svg" alt="" @click="contMenuClick(propMemoEle)">
-                <gProfileImg class="memoUserProfile" @click="clickMemoEvnt({ targetType: 'goUserProfile', value: propMemoEle })" :selfYn="propMemoEle.creUserKey === GE_USER.userKey ? true: false" :userInfo="propMemoEle" />
-                <div class="memoUserInfo">
-                    <p class="fl commonBlack mright-05 textLeft font14 fontBold" @click="clickMemoEvnt({ targetType: 'goUserProfile', value: propMemoEle })">{{$changeText(propMemoEle.userDispMtext)}}</p>
-                    <p class="fl commonGray textLeft font12 fontNomal" @click=click>{{$changeDateMemoFormat(propMemoEle.creDate)}}</p>
-                </div>
-            </div>
-            <div class="parentMemoContWrap">
-                <div class="parentMemoContBox">
-                    <div @wheel="horizontalScroll" :class="mobileYn? '':'thinScrollBar'" id="memoImgWrap" class="parentMemoImgWrap" v-if="getAttachFalseFile(propMemoEle.attachFileList).length > 0" :style="'height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'">
-                        <div class="parentMemoImg" id="memoBodyImgWrap" :style="'width:' + getImgListWidthSize(propMemoEle.attachFileList) + 'px'">
-                            <img @click="openImgPop(getAttachFalseFile(propMemoEle.attachFileList), index)" :style="'max-height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'" :fileKey="img.fileKey" v-for="(img, index) in getAttachFalseFile(propMemoEle.attachFileList)" :key="index" :src="img.domainPath + img.pathMtext" alt="">
-                        </div>
-                    </div>
-                    <pre v-if="!mChangeMemoYn" class="commonBlack w100P textLeft fl font14 cursorDragText cursorText" v-html="$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></pre>
-                    <pre v-else ref="modiMemoInput" :id="'memoFullStr'+propMemoEle.memoKey" class="editableContent w100P textLeft font14 cursorDragText parentMemoFullStr" contenteditable=true v-html="mModiMemoInput"></pre>
-                </div>
-                <div class="parentMemoFuncArea">
-                    <p @click="mChangeMemoYn = false" v-if="GE_USER.userKey === propMemoEle.creUserKey && mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">{{ $t('COMM_BTN_CLOSE') }}</p>
-                    <p class="commonGray textLeft font12 fr cursorP" v-if="!mChangeMemoYn && !pNoAuthYn" @click="writeMeMemo(propMemoEle)">{{ $t('COMM_BTN_REPLY_COMM') }}</p>
-                    <p class="commonGray textLeft font12 mright-05 cursorP fr " @blur="testFunction" @click="openModiMemoPop(propMemoEle)" v-if="GE_USER.userKey === propMemoEle.creUserKey && !mChangeMemoYn">{{ $t('COMM_BTN_EDIT2') }}</p>
-                </div>
-                <div class="cursorP parentMemoAttachFile" v-if="getAttachTrueFile(propMemoEle.attachFileList).length > 0">
-                  <div class="downloadFileBtn" @click="showFileDownloadPop(propMemoEle)">
-                    <img class=" mright-05 memoAttachFileIcon" src="../../../assets/images/contents/attachFileIcon.png" alt="">
-                    <p v-if="getAttachTrueFile(propMemoEle.attachFileList).length === 1" class="textLeft font12 fontBold commonColor attachFileName">{{getFileName(getAttachTrueFile(propMemoEle.attachFileList)[0].fileName)}}</p>
-                    <p v-if="getAttachTrueFile(propMemoEle.attachFileList).length === 1" class="textLeft font12 mright-1 fontBold commonColor">.{{getFileExt(getAttachTrueFile(propMemoEle.attachFileList)[0].fileName)}}</p>
-                    <p v-else class="textLeft font12 mright-1 fontBold commonColor">{{getAttachTrueFile(propMemoEle.attachFileList).length + " " + $t('MEMO_TITLE_FILES')}}</p>
-                  </div>
-                </div>
-            </div>
-        </div>
-        <div class="childMemoWrap">
-            <div class="childMemoItem" v-for="(cmemo, cIndex) in propMemoEle.cmemoList" :key="cIndex">
-                <div class="childUserInfo">
-                    <img src="../../../assets/images/contents/contents_moreBtnIcon.svg" class="parentMemoMore" alt="" @click="contMenuClick(cmemo)">
-                    <gProfileImg :selfYn="cmemo.creUserKey === GE_USER.userKey ? true: false" :userInfo="cmemo" class="memoUserProfile mTop-0" />
-                    <div class="memoUserInfo mTop-2">
-                        <p class="fl commonBlack mright-05 textLeft font14 fontBold" @click="clickMemoEvnt({ targetType: 'goUserProfile', value: cmemo })">{{$changeText(cmemo.userDispMtext)}}</p>
-                        <p class="fl commonGray textLeft font12 fontNomal">{{$changeDateMemoFormat(cmemo.creDate)}}</p>
-                    </div>
-                </div>
-                <div class="parentMemoContWrap mTop-0">
-                    <div class="childImgWrap" v-if="cmemo.attachMfilekey && cmemo.attachFileList && cmemo.attachFileList.length > 0">
-                        <div @wheel="horizontalScroll" :class="mobileYn? '':'thinScrollBar'" id="childMemoImgWrap" class="childImgBox" v-if="getAttachFalseFile(cmemo.attachFileList).length > 0" :style="'height: ' + getMaxHeight(cmemo.attachFileList) + 'px'">
-                            <div id="mememoBodyImgWrap" class="fl h100P" :style="'width:' + getImgListWidthSize(cmemo.attachFileList) + 'px'">
-                                <template v-for="(cImg, cIndex) in cmemo.attachFileList" :key="cIndex"  >
-                                    <img class="childImg" @click="openImgPop(cmemo.attachFileList, cIndex)" :style="'max-height: ' + getMaxHeight(cmemo.attachFileList) + 'px'" :fileKey="cImg.fileKey" v-if="!cImg.attachYn" :src="cImg.domainPath + cImg.pathMtext" alt="">
-                                </template>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="childBodyStr">
-                        <pre class="commonBlack textLeft font14" v-html="$decodeHTML(cmemo.bodyFullStr)" :id="'memoFullStr'+cmemo.memoKey" ></pre>
-                    </div>
-                    <div class="childMemoFuncArea">
-                        <p class="commonGray textLeft font12 fr"  @click="writeMeMemo(cmemo)">{{ $t('COMM_BTN_REPLY_COMM') }}</p>
-                        <p class="commonGray textLeft font12 fr cursorP mright-1" @click="openModiMemoPop(cmemo)" v-if="GE_USER.userKey === cmemo.creUserKey">{{ $t('COMM_BTN_EDIT2') }}</p>
-                    </div>
-                </div>
-                <div class="cursorP parentMemoAttachFile" v-if="cmemo.attachFileList && cmemo.attachFileList.length > 0 && getAttachTrueFile(cmemo.attachFileList).length > 0">
-                  <div class="downloadFileBtn" @click="showFileDownloadPop(cmemo)">
-                    <img class=" mright-05 memoAttachFileIcon" src="../../../assets/images/contents/attachFileIcon.png" alt="">
-                    <p v-if="getAttachTrueFile(cmemo.attachFileList).length === 1" class="textLeft font12 fontBold commonColor attachFileName">{{getFileName(getAttachTrueFile(propMemoEle.attachFileList)[0].fileName)}}</p>
-                    <p v-if="getAttachTrueFile(cmemo.attachFileList).length === 1" class="textLeft font12 mright-1 fontBold commonColor">.{{getFileExt(getAttachTrueFile(propMemoEle.attachFileList)[0].fileName)}}</p>
-                    <p v-else class="textLeft font12 mright-1 fontBold commonColor">{{getAttachTrueFile(cmemo.attachFileList).length + " " + $t('MEMO_TITLE_FILES')}}</p>
-                  </div>
-                </div>
-            </div>
-        </div>
-        <div class="modiMemoPopBg" v-if="mFilePopShowYn" @click="mFilePopShowYn = false"></div>
-        <attachFileListPop @updateMemo="updateMemo" propTargetType="R" :propFileData="mResultParam" v-if="mFilePopShowYn === true" @closePop="mFilePopShowYn = false"/>
-        <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk()" @no='mConfirmPopShowYn=false'/>
+    <img
+      v-if="propMemoEle.attachMfilekey"
+      src="../../../assets/images/contents/icon_clip.png"
+      class="attachFileIcon"
+      alt=""
+    />
+    <div
+      class="contBoxMemoArea mbottom-05 noChildMemoCont"
+      :style="
+        propMemoEle.attachMfilekey
+          ? 'width: calc(100% - 180px);'
+          : 'width: calc(100% - 160px);'
+      "
+      @click="
+        clickMemoEvnt({ targetType: 'goContentsDetail', value: propMemoEle })
+      "
+    >
+      <div v-if="mMemoFadeShowYn" class="w100P fl textLeft memoFade">...</div>
+      <pre
+        ref="mainMemoRef"
+        class="commonBlack textLeft font14"
+        v-html="$decodeHTML(propMemoEle.bodyFullStr)"
+      ></pre>
     </div>
+    <p class="fl commonGray textLeft mleft-05 font12 fontNomal">
+      {{ $changeDateMemoFormat(propMemoEle.creDate) }}
+    </p>
+  </div>
+  <div
+    v-else-if="propMemoEle"
+    ref="fullMemoWrap"
+    class="fullMemoWrap"
+    :style="
+      propMIndex !== propMemoLength - 1
+        ? 'border-bottom: 1px solid #cccccc50;'
+        : ''
+    "
+  >
+    <div class="parentMemoBox">
+      <div class="parentMemoTop">
+        <img
+          class="parentMemoMore"
+          v-if="!pNoAuthYn"
+          src="../../../assets/images/contents/contents_moreBtnIcon.svg"
+          alt=""
+          @click="contMenuClick(propMemoEle)"
+        />
+        <gProfileImg
+          class="memoUserProfile"
+          @click="
+            clickMemoEvnt({ targetType: 'goUserProfile', value: propMemoEle })
+          "
+          :selfYn="propMemoEle.creUserKey === GE_USER.userKey ? true : false"
+          :userInfo="propMemoEle"
+        />
+        <div class="memoUserInfo">
+          <p
+            class="fl commonBlack mright-05 textLeft font14 fontBold"
+            @click="
+              clickMemoEvnt({ targetType: 'goUserProfile', value: propMemoEle })
+            "
+          >
+            {{ $changeText(propMemoEle.userDispMtext) }}
+          </p>
+          <p class="fl commonGray textLeft font12 fontNomal" @click="click">
+            {{ $changeDateMemoFormat(propMemoEle.creDate) }}
+          </p>
+        </div>
+      </div>
+      <div class="parentMemoContWrap">
+        <div class="parentMemoContBox">
+          <div
+            @wheel="horizontalScroll"
+            :class="mobileYn ? '' : 'thinScrollBar'"
+            id="memoImgWrap"
+            class="parentMemoImgWrap"
+            v-if="getAttachFalseFile(propMemoEle.attachFileList).length > 0"
+            :style="
+              'height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'
+            "
+          >
+            <div
+              class="parentMemoImg"
+              id="memoBodyImgWrap"
+              :style="
+                'width:' +
+                getImgListWidthSize(propMemoEle.attachFileList) +
+                'px'
+              "
+            >
+              <img
+                @click="
+                  openImgPop(
+                    getAttachFalseFile(propMemoEle.attachFileList),
+                    index
+                  )
+                "
+                :style="
+                  'max-height: ' +
+                  getMaxHeight(propMemoEle.attachFileList) +
+                  'px'
+                "
+                :fileKey="img.fileKey"
+                v-for="(img, index) in getAttachFalseFile(
+                  propMemoEle.attachFileList
+                )"
+                :key="index"
+                :src="img.domainPath + img.pathMtext"
+                alt=""
+              />
+            </div>
+          </div>
+          <pre
+            v-if="!mChangeMemoYn"
+            class="commonBlack w100P textLeft fl font14 cursorDragText cursorText"
+            v-html="$decodeHTML(propMemoEle.bodyFullStr)"
+            :id="'memoFullStr' + propMemoEle.memoKey"
+          ></pre>
+          <pre
+            v-else
+            ref="modiMemoInput"
+            :id="'memoFullStr' + propMemoEle.memoKey"
+            class="editableContent w100P textLeft font14 cursorDragText parentMemoFullStr"
+            contenteditable="true"
+            v-html="mModiMemoInput"
+          ></pre>
+        </div>
+        <div class="parentMemoFuncArea">
+          <p
+            @click="mChangeMemoYn = false"
+            v-if="GE_USER.userKey === propMemoEle.creUserKey && mChangeMemoYn"
+            class="commonGray mleft-1 textLeft font12 fr"
+          >
+            {{ $t('COMM_BTN_CLOSE') }}
+          </p>
+          <p
+            class="commonGray textLeft font12 fr cursorP"
+            v-if="!mChangeMemoYn && !pNoAuthYn"
+            @click="writeMeMemo(propMemoEle)"
+          >
+            {{ $t('COMM_BTN_REPLY_COMM') }}
+          </p>
+          <p
+            class="commonGray textLeft font12 mright-05 cursorP fr"
+            @blur="testFunction"
+            @click="openModiMemoPop(propMemoEle)"
+            v-if="GE_USER.userKey === propMemoEle.creUserKey && !mChangeMemoYn"
+          >
+            {{ $t('COMM_BTN_EDIT2') }}
+          </p>
+        </div>
+        <div
+          class="cursorP parentMemoAttachFile"
+          v-if="getAttachTrueFile(propMemoEle.attachFileList).length > 0"
+        >
+          <div
+            class="downloadFileBtn"
+            @click="showFileDownloadPop(propMemoEle)"
+          >
+            <img
+              class="mright-05 memoAttachFileIcon"
+              src="../../../assets/images/contents/attachFileIcon.png"
+              alt=""
+            />
+            <p
+              v-if="getAttachTrueFile(propMemoEle.attachFileList).length === 1"
+              class="textLeft font12 fontBold commonColor attachFileName"
+            >
+              {{
+                getFileName(
+                  getAttachTrueFile(propMemoEle.attachFileList)[0].fileName
+                )
+              }}
+            </p>
+            <p
+              v-if="getAttachTrueFile(propMemoEle.attachFileList).length === 1"
+              class="textLeft font12 mright-1 fontBold commonColor"
+            >
+              .{{
+                getFileExt(
+                  getAttachTrueFile(propMemoEle.attachFileList)[0].fileName
+                )
+              }}
+            </p>
+            <p v-else class="textLeft font12 mright-1 fontBold commonColor">
+              {{
+                getAttachTrueFile(propMemoEle.attachFileList).length +
+                ' ' +
+                $t('MEMO_TITLE_FILES')
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="childMemoWrap">
+      <div
+        class="childMemoItem"
+        v-for="(cmemo, cIndex) in propMemoEle.cmemoList"
+        :key="cIndex"
+      >
+        <div class="childUserInfo">
+          <img
+            src="../../../assets/images/contents/contents_moreBtnIcon.svg"
+            class="parentMemoMore"
+            alt=""
+            @click="contMenuClick(cmemo)"
+          />
+          <gProfileImg
+            :selfYn="cmemo.creUserKey === GE_USER.userKey ? true : false"
+            :userInfo="cmemo"
+            class="memoUserProfile mTop-0"
+          />
+          <div class="memoUserInfo mTop-2">
+            <p
+              class="fl commonBlack mright-05 textLeft font14 fontBold"
+              @click="
+                clickMemoEvnt({ targetType: 'goUserProfile', value: cmemo })
+              "
+            >
+              {{ $changeText(cmemo.userDispMtext) }}
+            </p>
+            <p class="fl commonGray textLeft font12 fontNomal">
+              {{ $changeDateMemoFormat(cmemo.creDate) }}
+            </p>
+          </div>
+        </div>
+        <div class="parentMemoContWrap mTop-0">
+          <div
+            class="childImgWrap"
+            v-if="
+              cmemo.attachMfilekey &&
+              cmemo.attachFileList &&
+              cmemo.attachFileList.length > 0
+            "
+          >
+            <div
+              @wheel="horizontalScroll"
+              :class="mobileYn ? '' : 'thinScrollBar'"
+              id="childMemoImgWrap"
+              class="childImgBox"
+              v-if="getAttachFalseFile(cmemo.attachFileList).length > 0"
+              :style="'height: ' + getMaxHeight(cmemo.attachFileList) + 'px'"
+            >
+              <div
+                id="mememoBodyImgWrap"
+                class="fl h100P"
+                :style="
+                  'width:' + getImgListWidthSize(cmemo.attachFileList) + 'px'
+                "
+              >
+                <template
+                  v-for="(cImg, cIndex) in cmemo.attachFileList"
+                  :key="cIndex"
+                >
+                  <img
+                    class="childImg"
+                    @click="openImgPop(cmemo.attachFileList, cIndex)"
+                    :style="
+                      'max-height: ' + getMaxHeight(cmemo.attachFileList) + 'px'
+                    "
+                    :fileKey="cImg.fileKey"
+                    v-if="!cImg.attachYn"
+                    :src="cImg.domainPath + cImg.pathMtext"
+                    alt=""
+                  />
+                </template>
+              </div>
+            </div>
+          </div>
+          <div class="childBodyStr">
+            <pre
+              class="commonBlack textLeft font14"
+              v-html="$decodeHTML(cmemo.bodyFullStr)"
+              :id="'memoFullStr' + cmemo.memoKey"
+            ></pre>
+          </div>
+          <div class="childMemoFuncArea">
+            <p
+              class="commonGray textLeft font12 fr"
+              @click="writeMeMemo(cmemo)"
+            >
+              {{ $t('COMM_BTN_REPLY_COMM') }}
+            </p>
+            <p
+              class="commonGray textLeft font12 fr cursorP mright-1"
+              @click="openModiMemoPop(cmemo)"
+              v-if="GE_USER.userKey === cmemo.creUserKey"
+            >
+              {{ $t('COMM_BTN_EDIT2') }}
+            </p>
+          </div>
+        </div>
+        <div
+          class="cursorP parentMemoAttachFile"
+          v-if="
+            cmemo.attachFileList &&
+            cmemo.attachFileList.length > 0 &&
+            getAttachTrueFile(cmemo.attachFileList).length > 0
+          "
+        >
+          <div class="downloadFileBtn" @click="showFileDownloadPop(cmemo)">
+            <img
+              class="mright-05 memoAttachFileIcon"
+              src="../../../assets/images/contents/attachFileIcon.png"
+              alt=""
+            />
+            <p
+              v-if="getAttachTrueFile(cmemo.attachFileList).length === 1"
+              class="textLeft font12 fontBold commonColor attachFileName"
+            >
+              {{
+                getFileName(
+                  getAttachTrueFile(propMemoEle.attachFileList)[0].fileName
+                )
+              }}
+            </p>
+            <p
+              v-if="getAttachTrueFile(cmemo.attachFileList).length === 1"
+              class="textLeft font12 mright-1 fontBold commonColor"
+            >
+              .{{
+                getFileExt(
+                  getAttachTrueFile(propMemoEle.attachFileList)[0].fileName
+                )
+              }}
+            </p>
+            <p v-else class="textLeft font12 mright-1 fontBold commonColor">
+              {{
+                getAttachTrueFile(cmemo.attachFileList).length +
+                ' ' +
+                $t('MEMO_TITLE_FILES')
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modiMemoPopBg"
+      v-if="mFilePopShowYn"
+      @click="mFilePopShowYn = false"
+    ></div>
+    <attachFileListPop
+      @updateMemo="updateMemo"
+      propTargetType="R"
+      :propFileData="mResultParam"
+      v-if="mFilePopShowYn === true"
+      @closePop="mFilePopShowYn = false"
+    />
+    <gConfirmPop
+      :confirmText="mConfirmText"
+      :confirmType="mConfirmType"
+      v-if="mConfirmPopShowYn"
+      @ok="confirmOk()"
+      @no="mConfirmPopShowYn = false"
+    />
+  </div>
 </template>
 
 <script>
@@ -124,11 +428,11 @@ export default {
     modiMemoPop
   },
   computed: {
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     }
   },
-  data () {
+  data() {
     return {
       mMemoFadeShowYn: false,
       mConfirmText: '',
@@ -151,15 +455,19 @@ export default {
       mobileYn: this.$getMobileYn()
     }
   },
-  mounted () {
+  mounted() {
     this.showMemoMore()
   },
-  created () {
+  created() {
     if (this.propMemoEle.bodyFullStr) {
       this.mModiMemoInput = this.propMemoEle.bodyFullStr
     }
     console.log(this.propMemoEle)
-    if (this.propMemoEle.attachMfilekey && this.propMemoEle.attachFileList && this.propMemoEle.attachFileList.length > 0) {
+    if (
+      this.propMemoEle.attachMfilekey &&
+      this.propMemoEle.attachFileList &&
+      this.propMemoEle.attachFileList.length > 0
+    ) {
       for (var i = 0; i < this.propMemoEle.attachFileList.length; i++) {
         if (this.propMemoEle.attachFileList[i].attachYn) {
           this.attachTrueFileList.push(this.propMemoEle.attachFileList[i])
@@ -170,7 +478,7 @@ export default {
     }
   },
   methods: {
-    showMemoMore () {
+    showMemoMore() {
       const a = this.$refs.mainMemoRef
       if (a) {
         const memoHeight = a.offsetHeight
@@ -181,29 +489,29 @@ export default {
         }
       }
     },
-    getFileName (fileFullName) {
-      var fileName = fileFullName.substring(
-        0, fileFullName.lastIndexOf('.')
-      )
+    getFileName(fileFullName) {
+      var fileName = fileFullName.substring(0, fileFullName.lastIndexOf('.'))
       return fileName
     },
-    getFileExt (fileName) {
-      var fileExt = fileName.substring(
-        fileName.lastIndexOf('.') + 1
-      )
+    getFileExt(fileName) {
+      var fileExt = fileName.substring(fileName.lastIndexOf('.') + 1)
       return fileExt
     },
-    openModiMemoPop (memo) {
+    openModiMemoPop(memo) {
       this.mModiMemoObj = memo
       this.mModiMemoPopShowYn = true
     },
-    closeModiMemoPop () {
+    closeModiMemoPop() {
       this.mModiMemoPopShowYn = false
     },
-    updateMemo (param) {
-      this.$emit('updateMemo', [param, this.targetMemo.memoKey, this.targetMemo.parentMemoKey])
+    updateMemo(param) {
+      this.$emit('updateMemo', [
+        param,
+        this.targetMemo.memoKey,
+        this.targetMemo.parentMemoKey
+      ])
     },
-    getAttachTrueFile (list) {
+    getAttachTrueFile(list) {
       if (!list) return []
       var resultList = []
       for (var i = 0; i < list.length; i++) {
@@ -213,7 +521,7 @@ export default {
       }
       return resultList
     },
-    getAttachFalseFile (list) {
+    getAttachFalseFile(list) {
       if (!list) return []
       var resultList = []
       for (var i = 0; i < list.length; i++) {
@@ -223,7 +531,7 @@ export default {
       }
       return resultList
     },
-    getMaxHeight (imgList) {
+    getMaxHeight(imgList) {
       var maxHeight = 0
       for (var i = 0; i < imgList.length; i++) {
         if (imgList[i].attachYn) {
@@ -239,7 +547,7 @@ export default {
       }
       return maxHeight
     },
-    getImgListWidthSize (imgList) {
+    getImgListWidthSize(imgList) {
       var imgWidth = 0
       for (var i = 0; i < imgList.length; i++) {
         if (imgList[i].attachYn) {
@@ -251,12 +559,12 @@ export default {
         if (img.height && img.height > 300) {
           imgW = img.width * (300 / img.height)
         }
-        if (imgW) imgWidth += (imgW + 12)
+        if (imgW) imgWidth += imgW + 12
         else imgWidth += 300
       }
       return imgWidth
     },
-    openImgPop (imgList, index) {
+    openImgPop(imgList, index) {
       var value = imgList
       var returnImgList = []
       for (var i = 0; i < value.length; i++) {
@@ -271,28 +579,39 @@ export default {
       }
       this.$emit('openImgPop', [returnImgList, index])
     },
-    showFileDownloadPop (fileObj) {
+    showFileDownloadPop(fileObj) {
       this.mAttachFileList.D_ATTACH_FILE_LIST = []
       this.mAttachFileList.D_BODY_IMG_FILE_LIST = []
-      if (fileObj.attachMfilekey && fileObj.attachFileList && fileObj.attachFileList.length > 0) {
+      if (
+        fileObj.attachMfilekey &&
+        fileObj.attachFileList &&
+        fileObj.attachFileList.length > 0
+      ) {
         for (var i = 0; i < fileObj.attachFileList.length; i++) {
           if (fileObj.attachFileList[i].attachYn) {
-            this.mAttachFileList.D_ATTACH_FILE_LIST.push(fileObj.attachFileList[i])
+            this.mAttachFileList.D_ATTACH_FILE_LIST.push(
+              fileObj.attachFileList[i]
+            )
           } else if (!fileObj.attachFileList[i].attachYn) {
-            this.mAttachFileList.D_BODY_IMG_FILE_LIST.push(fileObj.attachFileList[i])
+            this.mAttachFileList.D_BODY_IMG_FILE_LIST.push(
+              fileObj.attachFileList[i]
+            )
           }
         }
       }
       var resultObj = {}
       resultObj.contentsKey = this.propMemoEle.targetKey
       resultObj.creUserKey = this.propMemoEle.creUserKey
-      resultObj = { D_ATTACH_FILE_LIST: this.mAttachFileList.D_ATTACH_FILE_LIST, ...resultObj }
+      resultObj = {
+        D_ATTACH_FILE_LIST: this.mAttachFileList.D_ATTACH_FILE_LIST,
+        ...resultObj
+      }
 
       this.mResultParam = resultObj
       this.mFilePopShowYn = true
       this.targetMemo = fileObj
     },
-    saveModiMemo (oriMemo) {
+    saveModiMemo(oriMemo) {
       this.mChangeMemoYn = false
       // eslint-disable-next-line no-new-object
       var param = new Object()
@@ -304,11 +623,11 @@ export default {
 
       this.$emit('saveModiMemo', { oriMemo: oriMemo, param: param })
     },
-    contMenuClick (memoContents) {
+    contMenuClick(memoContents) {
       this.mTempData = memoContents
       this.mContMenuShowYn = true
     },
-    editable (type, allYn) {
+    editable(type, allYn) {
       this.mContMenuShowYn = false
       if (type === 'edit') {
         // 댓글 수정
@@ -319,7 +638,7 @@ export default {
         this.textCopy()
       }
     },
-    confirmOk () {
+    confirmOk() {
       var toastText = ''
       this.mConfirmType = 'timeout'
       if (this.mCurrentConfirmType === 'BLOC') {
@@ -337,7 +656,7 @@ export default {
       this.mCurrentConfirmType = ''
       this.mConfirmPopShowYn = false
     },
-    bloc (type) {
+    bloc(type) {
       if (type === 'USER') {
         this.mConfirmText = this.$t('COMMON_MSG_BLOCK')
       } else {
@@ -347,7 +666,7 @@ export default {
       this.mConfirmPopShowYn = true
       this.mCurrentConfirmType = 'BLOC'
     },
-    report (type) {
+    report(type) {
       var targetKind
       var targetKey
       var toastText
@@ -369,7 +688,7 @@ export default {
       this.saveActAxiosFunc(param, toastText)
     },
     /** 신고, 차단, 탈퇴를 할 수 있는 axios함수 // actType, targetKind, targetKey, creUserKey 보내기 */
-    async saveActAxiosFunc (param, toastText) {
+    async saveActAxiosFunc(param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
           url: '/sUniB/tp.saveClaimLog',
@@ -384,13 +703,15 @@ export default {
         this.mContMenuShowYn = false
       }
     },
-    clickMemoEvnt (emitData) {
+    clickMemoEvnt(emitData) {
       this.$emit('memoEmitFunc', emitData)
     },
-    textCopy () {
+    textCopy() {
       const textarea = document.createElement('textarea')
       document.body.appendChild(textarea)
-      var content = document.getElementById('memoFullStr' + this.mTempData.memoKey).innerText
+      var content = document.getElementById(
+        'memoFullStr' + this.mTempData.memoKey
+      ).innerText
       try {
         textarea.value = content
         textarea.select()
@@ -402,7 +723,7 @@ export default {
         this.$showToastPop(this.$t('COMMON_MSG_COPY_FAIL'))
       }
     },
-    async deleteMemo () {
+    async deleteMemo() {
       var memo = {}
 
       memo.memoKey = this.mTempData.memoKey
@@ -416,15 +737,21 @@ export default {
           var index, cmemoListIdx
           if (this.mTempData.parentMemoKey) {
             // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 키값을 찾음
-            index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === this.mTempData.parentMemoKey)
+            index = cont.D_MEMO_LIST.findIndex(
+              (item) => item.memoKey === this.mTempData.parentMemoKey
+            )
 
             // 컨텐츠의 댓글 중 부모키값의 인덱스에 자식 댓글리스트 중 삭제한 대댓글의 키를 찾음
-            cmemoListIdx = cont.D_MEMO_LIST[index].cmemoList.findIndex(i => i.memoKey === this.mTempData.memoKey)
+            cmemoListIdx = cont.D_MEMO_LIST[index].cmemoList.findIndex(
+              (i) => i.memoKey === this.mTempData.memoKey
+            )
 
             // 찾은 대댓글의 키를 리스트에서 삭제함
             cont.D_MEMO_LIST[index].cmemoList.splice(cmemoListIdx, 1)
           } else {
-            index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === this.mTempData.memoKey)
+            index = cont.D_MEMO_LIST.findIndex(
+              (item) => item.memoKey === this.mTempData.memoKey
+            )
             cont.D_MEMO_LIST.splice(index, 1)
           }
           cont.memoCount -= 1
@@ -438,7 +765,7 @@ export default {
         console.log(error)
       }
     },
-    horizontalScroll (e) {
+    horizontalScroll(e) {
       if (e.deltaY === 0) return
       e.preventDefault()
       var channelWrap = document.querySelector(`#${e.currentTarget.id}`)
@@ -446,13 +773,21 @@ export default {
         left: channelWrap.scrollLeft + e.deltaY / 10
       })
     },
-    writeMeMemo (memo) {
+    writeMeMemo(memo) {
       this.mCurrentMemoObj = memo
       console.log(this.propContDetail)
-      if ((this.propContDetail.jobkindId === 'BOAR' && this.$checkUserAuth(this.propContDetail.shareItem).R === true) || this.propContDetail.todoKey) {
+      if (
+        (this.propContDetail.jobkindId === 'BOAR' &&
+          this.$checkUserAuth(this.propContDetail.shareItem).R === true) ||
+        this.propContDetail.todoKey
+      ) {
         var data = {}
         data.parentMemoKey = this.mCurrentMemoObj.memoKey // 대댓글때 사용하는것임
-        if (this.mCurrentMemoObj.parentMemoKey !== undefined && this.mCurrentMemoObj.parentMemoKey !== null && this.mCurrentMemoObj.parentMemoKey !== '') {
+        if (
+          this.mCurrentMemoObj.parentMemoKey !== undefined &&
+          this.mCurrentMemoObj.parentMemoKey !== null &&
+          this.mCurrentMemoObj.parentMemoKey !== ''
+        ) {
           data.parentMemoKey = this.mCurrentMemoObj.parentMemoKey
         }
         data.memo = this.mCurrentMemoObj
@@ -570,7 +905,7 @@ export default {
 .parentMemoImg {
   float: left;
   height: 100%;
-  display:flex;
+  display: flex;
   align-items: center;
 }
 .parentMemoImg > img {

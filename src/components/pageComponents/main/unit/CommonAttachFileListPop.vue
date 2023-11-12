@@ -2,17 +2,59 @@
   <!-- <div class="attachFilePopBg" @click="closePop()"/> -->
   <div class="attachFilePopWrap">
     <div class="attachFilePopArea">
-      <p class="textLeft font16 fontBold mbottom-1">{{ $t('COMM_TITLE_FILE_DOWNL') }}</p>
-      <img @click="closePop()" src="../../../../assets/images/common/grayXIcon.svg" class="cursorP closeBtnImg" alt="">
+      <p class="textLeft font16 fontBold mbottom-1">
+        {{ $t('COMM_TITLE_FILE_DOWNL') }}
+      </p>
+      <img
+        @click="closePop()"
+        src="../../../../assets/images/common/grayXIcon.svg"
+        class="cursorP closeBtnImg"
+        alt=""
+      />
       <div class="fl w100P thinScrollBar attachFileListWrap">
-        <p class="fl font14 fontBold w100P textLeft" v-if="mAttachFileList.D_ATTACH_FILE_LIST && mAttachFileList.D_ATTACH_FILE_LIST.length > 0">{{ $t('COMM_NAME_CONT_FILE') }}</p>
-        <templete v-for="(value, index) in mAttachFileList.D_ATTACH_FILE_LIST" :key="index">
+        <p
+          class="fl font14 fontBold w100P textLeft"
+          v-if="
+            mAttachFileList.D_ATTACH_FILE_LIST &&
+            mAttachFileList.D_ATTACH_FILE_LIST.length > 0
+          "
+        >
+          {{ $t('COMM_NAME_CONT_FILE') }}
+        </p>
+        <templete
+          v-for="(value, index) in mAttachFileList.D_ATTACH_FILE_LIST"
+          :key="index"
+        >
           <div class="attachFileItem">
-            <img :src="$settingFileIcon(value.fileName)" alt="">
-            <a  :fileKey="value.fileKey" @click="$downloadFile(value.fileKey, value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  :filePath="value.domainPath? value.domainPath + value.pathMtext : value.pathMtext" class="font12 fl commonDarkGray textOverdot cursorP"  >
-            {{value.fileName}}
+            <img :src="$settingFileIcon(value.fileName)" alt="" />
+            <a
+              :fileKey="value.fileKey"
+              @click="
+                $downloadFile(
+                  value.fileKey,
+                  value.domainPath
+                    ? value.domainPath + value.pathMtext
+                    : value.pathMtext
+                )
+              "
+              :filePath="
+                value.domainPath
+                  ? value.domainPath + value.pathMtext
+                  : value.pathMtext
+              "
+              class="font12 fl commonDarkGray textOverdot cursorP"
+            >
+              {{ value.fileName }}
             </a>
-            <img @click="selectAttachedFile(value.myFilekey, value, index, 'F')" :src="value.myFilekey? require('../../../../assets/images/common/colorStarIcon.svg'):require('../../../../assets/images/common/starIcon.svg')" alt="">
+            <img
+              @click="selectAttachedFile(value.myFilekey, value, index, 'F')"
+              :src="
+                value.myFilekey
+                  ? require('../../../../assets/images/common/colorStarIcon.svg')
+                  : require('../../../../assets/images/common/starIcon.svg')
+              "
+              alt=""
+            />
           </div>
         </templete>
       </div>
@@ -22,7 +64,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       mAttachFileList: {}
     }
@@ -31,18 +73,20 @@ export default {
     propFileData: {},
     propTargetType: {}
   },
-  created () {
-    if (this.propFileData) this.mAttachFileList = JSON.parse(JSON.stringify(this.propFileData))
+  created() {
+    if (this.propFileData) {
+      this.mAttachFileList = JSON.parse(JSON.stringify(this.propFileData))
+    }
     this.$addHistoryStack('gAttachFileList')
   },
-  beforeUnmount () {
+  beforeUnmount() {
     this.$checkDeleteHistory('gAttachFileList')
   },
   methods: {
-    closePop () {
+    closePop() {
       this.$emit('closePop')
     },
-    async selectAttachedFile (myFilekey, value, index, fileType) {
+    async selectAttachedFile(myFilekey, value, index, fileType) {
       // eslint-disable-next-line no-new-object
       var file = new Object()
       if (myFilekey === null) {
@@ -61,28 +105,30 @@ export default {
         param: { file: file }
       })
       if (fileType === 'F') {
-        this.mAttachFileList.D_ATTACH_FILE_LIST[index].myFilekey = result.data.myFileKey
+        this.mAttachFileList.D_ATTACH_FILE_LIST[index].myFilekey =
+          result.data.myFileKey
       } else if (fileType === 'I') {
-        this.mAttachFileList.D_BODY_IMG_FILE_LIST[index].myFilekey = result.data.myFileKey
+        this.mAttachFileList.D_BODY_IMG_FILE_LIST[index].myFilekey =
+          result.data.myFileKey
       }
       this.$emit('updateMemo', this.mAttachFileList.D_ATTACH_FILE_LIST)
     }
   },
   watch: {
-    pageUpdate () {
+    pageUpdate() {
       if (this.history[this.history.length - 1] === 'gAttachFileList') {
         this.closePop()
       }
     }
   },
   computed: {
-    pageUpdate () {
+    pageUpdate() {
       return this.$store.getters['UB_HISTORY/hUpdate']
     },
-    history () {
+    history() {
       return this.$store.getters['UB_HISTORY/hStack']
     },
-    GE_USER () {
+    GE_USER() {
       return this.$store.getters['UB_USER/GE_USER']
     }
   }
@@ -97,7 +143,7 @@ export default {
   background: #00000010;
   z-index: 20;
   top: 0;
-  left: 0
+  left: 0;
 }
 .attachFilePopWrap {
   width: 80%;
@@ -106,7 +152,7 @@ export default {
   border-radius: 6px 6px 6px 6px;
   left: 10%;
   top: 50%;
-  transform:translateY(-50%);
+  transform: translateY(-50%);
   background: #fff;
   z-index: 100000;
   position: fixed;
@@ -123,7 +169,7 @@ export default {
   top: 0px;
 }
 .attachFileListWrap {
-  padding-left:0.5rem;
+  padding-left: 0.5rem;
   min-height: 150px;
   max-height: 250px;
   height: 35%;
@@ -135,7 +181,7 @@ export default {
   width: 100%;
   word-break: break-all;
   min-height: 30px;
-  padding-left:0.3rem;
+  padding-left: 0.3rem;
 }
 .attachFileItem > a {
   width: calc(100% - 45px);
