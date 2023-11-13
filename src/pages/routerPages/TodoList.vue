@@ -103,7 +103,7 @@
           <div
             class="cursorP"
             style="position: relative; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center"
-            @click="MoveDate(-1)"
+            @click="MoveDate(1)"
           >
             <div
               class="fr fontBold cursorP addBtn CDeepBgColor"

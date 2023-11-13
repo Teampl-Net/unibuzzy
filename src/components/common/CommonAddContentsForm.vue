@@ -276,6 +276,12 @@
         <button @click="closePop">Cancel</button>
       </div>
     </footer> -->
+    <gConfirmPop
+    v-if="failPopYn"
+    @no="failPopYn = false"
+    confirmType="timeout"
+    :confirmText="errorText"
+    />
   </div>
   <gToolBox
     :propTools="mToolBoxOptions"
@@ -356,6 +362,9 @@ export default defineComponent({
   },
   setup(props) {
     const store = useStore()
+
+    const failPopYn = ref(false)
+    const errorText = ref('')
 
     // submit params 세팅
     const params = reactive({
@@ -900,6 +909,30 @@ export default defineComponent({
       }
       return newAttachFileList
     }
+
+    // 제목이 없을 경우 내용을 제목으로 넣어주는 함수
+    const titleToBody = (inHtml) => {
+    // eslint-disable-next-line no-debugger
+      debugger
+      var titleText = ''
+      var childNodes = inHtml.childNodes
+      var valueTextIdx = 0
+      for (var i = 0; i < childNodes.length; i++) {
+        titleText += childNodes[i].textContent + ' '
+        titleText = titleText.trimLeft()
+        if (titleText === '') valueTextIdx += 1
+        if (titleText.length >= 6 && i === valueTextIdx) {
+          titleText = titleText.length > 64 ? titleText.substring(0, 64) + '..' : titleText.substring(0, 64)
+          break
+        }
+        if (titleText.length > 64) {
+          titleText = titleText.substring(0, 64) + '..'
+          break
+        }
+      }
+      return titleText
+    }
+
     // 최종 Submit
     const postContents = async () => {
       try {
@@ -928,26 +961,51 @@ export default defineComponent({
 
         // params value 체크
         if (props.pOptions.model === 'mankik') {
-          if (hasTitleYn.value && !params.title) {
-            alert('Please fill out the title.')
-          } else if (!params.workToDateStr) {
-            alert('Please specify a target date.')
+          if (!params.workToDateStr) {
+            failPopYn.value = true
+            errorText.value = 'Please specify a target date.'
             // } else if (route.path !== '/todo' && (!params.bodyFullStr && !params.attachFileList.length)) {
             //   alert('공유하고자 하는 내용을 작성하거나, 파일을 첨부해주세요.')
           } else {
-            params.mLoadingYn = true
-            props.pPostContentsFn(params)
+            const parser = new DOMParser()
+            const doc = parser.parseFromString(params.bodyFullStr, 'text/html')
+            const tempTitle = titleToBody(doc)
+            if (hasTitleYn.value && !params.title) {
+              if (tempTitle) {
+                params.title = titleToBody(doc)
+                params.mLoadingYn = true
+                props.pPostContentsFn(params)
+              } else {
+                failPopYn.value = true
+                errorText.value = 'Fill out the title.'
+              }
+            } else {
+              // 제목은 있고, 내용이 없을 경우에는 저장됨
+              params.mLoadingYn = true
+              props.pPostContentsFn(params)
+            }
           }
         } else if (props.pOptions.model === 'unibuzzy') {
-          if (hasTitleYn.value && !params.title) {
-            alert('Please fill out the title.')
-          } else if (!params.bodyFullStr && !params.attachFileList.length) {
-            alert(
-              'Please fill out the contents you want to share or attach a file.'
-            )
+          const parser = new DOMParser()
+          const doc = parser.parseFromString(params.bodyFullStr, 'text/html')
+          const tempText = titleToBody(doc)
+          if (!tempText && !params.attachFileList.length) {
+            failPopYn.value = true
+            errorText.value = 'Please fill out the contents you want to share or attach a file.'
           } else {
-            params.mLoadingYn = true
-            props.pPostContentsFn(params)
+            if (hasTitleYn.value && !params.title) {
+              if (params.bodyFullStr) {
+                params.title = titleToBody(doc)
+                params.mLoadingYn = true
+                props.pPostContentsFn(params)
+              } else {
+                failPopYn.value = true
+                errorText.value = 'Fill out the title.'
+              }
+            } else {
+              params.mLoadingYn = true
+              props.pPostContentsFn(params)
+            }
           }
         }
       } catch (error) {
@@ -1152,7 +1210,9 @@ export default defineComponent({
       openBtnWrapYn,
       propAttachFileList,
       setTodoPageValue,
-      selectMeYn
+      selectMeYn,
+      errorText,
+      failPopYn
     }
   }
 })

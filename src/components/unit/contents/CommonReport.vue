@@ -38,9 +38,9 @@
         <p class="fl font16 w100P commonColor rowText" @click="emit('copy')" v-if="contentOwner && contentType === 'BOAR' " >{{ $t('COMMON_BTN_COPY_POST') }}</p>
         <p class="fl font16 w100P commonColor rowText" @click="emit('edit')" v-if="contentOwner && contentType === 'BOAR'">{{ $t('COMM_BTN_EDIT_POST') }}</p>
         <p
-          class="fl font16 w-100P commonColor rowText"
+          class="fl font16 w100P commonColor rowText"
           @click="editTodo('edit')"
-          v-if="contentType === 'TODO'"
+          v-if="contentOwner && contentType === 'TODO' && contentsInfo.contStatus !== '99'"
         >
           {{ $t('COMM_BTN_EDIT_POST') }}
         </p>
