@@ -130,7 +130,7 @@
             alt=""
           />
         </div>
-        <img
+        <!-- <img
           :src="mMountainImgPath"
           style="
             position: absolute;
@@ -141,7 +141,7 @@
             height: 20%;
           "
           alt=""
-        />
+        /> -->
       </template>
       <template v-else>
         <div
@@ -165,7 +165,7 @@
             alt=""
           />
         </div>
-        <img
+        <!-- <img
           :src="mMountainImgPath"
           style="
             position: absolute;
@@ -175,7 +175,7 @@
             width: 35%;
           "
           alt=""
-        />
+        /> -->
       </template>
       <div
         class="fl"
@@ -292,32 +292,32 @@ export default {
           nightImgPath: '/resource/main/main_night_plaza.svg',
           titlePah: '/resource/main/title_plaza.svg'
         },
-        {
-          priority: 2,
-          left: '75%',
-          top: '33%',
-          w: '45%',
-          pcW: '45%',
-          pcH: '15%',
-          titleLeft: '70%',
-          titleTop: '95%',
-          imgPath: '/resource/main/main_club.svg',
-          nightImgPath: '/resource/main/main_night_club.svg',
-          titlePah: '/resource/main/title_club.svg'
-        },
-        {
-          priority: 3,
-          left: '16%',
-          top: '35%',
-          w: '25%',
-          pcW: '23%',
-          pcH: '13%',
-          titleLeft: '25%',
-          titleTop: '95%',
-          imgPath: '/resource/main/main_major.svg',
-          nightImgPath: '/resource/main/main_night_major.svg',
-          titlePah: '/resource/main/title_major.svg'
-        },
+        // {
+        //   priority: 2,
+        //   left: '75%',
+        //   top: '33%',
+        //   w: '45%',
+        //   pcW: '45%',
+        //   pcH: '15%',
+        //   titleLeft: '70%',
+        //   titleTop: '95%',
+        //   imgPath: '/resource/main/main_club.svg',
+        //   nightImgPath: '/resource/main/main_night_club.svg',
+        //   titlePah: '/resource/main/title_club.svg'
+        // },
+        // {
+        //   priority: 3,
+        //   left: '16%',
+        //   top: '35%',
+        //   w: '25%',
+        //   pcW: '23%',
+        //   pcH: '13%',
+        //   titleLeft: '25%',
+        //   titleTop: '95%',
+        //   imgPath: '/resource/main/main_major.svg',
+        //   nightImgPath: '/resource/main/main_night_major.svg',
+        //   titlePah: '/resource/main/title_major.svg'
+        // },
         {
           priority: 4,
           left: '49%',
