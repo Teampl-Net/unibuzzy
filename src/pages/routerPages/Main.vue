@@ -8,6 +8,9 @@
       confirmType="two"
       confirmText="Do you want to exit UniBuzzy?"
     />
+    <transition name="showUp">
+      <PreparingPop v-if="preparingPopOpenYn" :pAreaInfo="mAreaInfo" :pClosePop="closePreparingPop"/>
+    </transition>
     <createBoardChannel
       v-if="mCreChannelShowYn"
       @successCreBoard="successCreBoard"
@@ -19,7 +22,7 @@
       :pClosePop="closeCreChanPop"
       :pBdAreaList="mBdAreaList"
     />
-    <div v-if="mSelectSchoolPopShowYn" @click="closeSchoolPop" class="popBg"></div>
+    <div v-if="mSelectSchoolPopShowYn"  @click="closeSchoolPop" class="popBg"></div>
     <transition name="showUp">
       <selectSchoolPop
         v-if="mSelectSchoolPopShowYn"
@@ -229,6 +232,7 @@
 </template>
 <script>
 import areaInfoPop from '@/components/pageComponents/main/popup/AreaInfoPop.vue'
+import PreparingPop from '../../components/popup/contents/PreparingPop.vue'
 import selectSchoolPop from '@/components/pageComponents/main/popup/SelectSchoolPop.vue'
 import { onMessage } from '@/assets/js/webviewInterface'
 import createBoardChannel from '@/components/popup/CreateBoardChannel.vue'
@@ -241,6 +245,7 @@ export default {
   },
   data() {
     return {
+      preparingPopOpenYn: false,
       mLoadingYn: false,
       mTownTeamKey: null,
       mBoardPopShowYn: false,
@@ -277,7 +282,8 @@ export default {
           titleTop: '70%',
           imgPath: '/resource/main/main_campus.svg',
           nightImgPath: '/resource/main/main_night_campus.svg',
-          titlePah: '/resource/main/title_campus.svg'
+          titlePah: '/resource/main/title_myday.png'
+          // titlePah: '/resource/main/title_campus.svg'
         },
         {
           priority: 1,
@@ -290,7 +296,8 @@ export default {
           titleTop: '70%',
           imgPath: '/resource/main/main_plaza.svg',
           nightImgPath: '/resource/main/main_night_plaza.svg',
-          titlePah: '/resource/main/title_plaza.svg'
+          titlePah: '/resource/main/title_invite.png'
+          // titlePah: '/resource/main/title_plaza.svg'
         },
         // {
         //   priority: 2,
@@ -329,7 +336,8 @@ export default {
           titleTop: '45%',
           imgPath: '/resource/main/main_classin.svg',
           nightImgPath: '/resource/main/main_night_class.svg',
-          titlePah: '/resource/main/title_class.svg'
+          titlePah: '/resource/main/title_message.png'
+          // titlePah: '/resource/main/title_class.svg'
         },
         {
           priority: 5,
@@ -342,7 +350,8 @@ export default {
           titleTop: '20%',
           imgPath: '/resource/main/main_living.svg',
           nightImgPath: '/resource/main/main_night_living.svg',
-          titlePah: '/resource/main/title_living.svg'
+          titlePah: '/resource/main/title_friends.png'
+          // titlePah: '/resource/main/title_living.svg'
         },
         {
           priority: 6,
@@ -497,6 +506,12 @@ export default {
       } else {
         this.mSelectChanList = []
       }
+    },
+    openPreparingPop() {
+      this.preparingPopOpenYn = true
+    },
+    closePreparingPop() {
+      this.preparingPopOpenYn = false
     },
     goLab() {
       this.$router.push('/board/824/13905')
@@ -682,52 +697,58 @@ export default {
       }
     },
     async openAreaInfoPop(area) {
-      var isMobile = /Mobi/i.test(window.navigator.userAgent)
-      if (
-        isMobile &&
-        (localStorage.getItem('nativeYn') === true ||
-          localStorage.getItem('nativeYn') === 'false')
-      ) {
-        if (area === undefined) {
-          this.mSelectedAreaPriority = 7
-        } else {
-          this.mSelectedAreaPriority = area.priority
-        }
-        setTimeout(() => {
-          this.mSelectedAreaPriority = -1
-        }, 900)
-      }
-      if (area === undefined) {
-        this.goLab()
-      }
-      if (this.mBgNotClickYn) return
-      const param = {
-        bdArea: {
-          bdAreaKey: area.bdAreaKey
-        }
-      }
-      if (area.priority === 0) {
+      console.log('확인확인', area.priority)
+      if (area.priority === 0 || area.priority === 1 || area.priority === 4 || area.priority === 5) {
         this.mAreaInfo = area
-        this.openBoardPop()
-      } else if (area.priority !== 1) {
-        var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getBdAreaDetail',
-          param: param
-        })
-        if (result.data) {
-          this.mAreaDetail = await result.data
-          this.mAreaInfo = await area
+        this.openPreparingPop()
+      } else {
+        var isMobile = /Mobi/i.test(window.navigator.userAgent)
+        if (
+          isMobile &&
+          (localStorage.getItem('nativeYn') === true ||
+            localStorage.getItem('nativeYn') === 'false')
+        ) {
+          if (area === undefined) {
+            this.mSelectedAreaPriority = 7
+          } else {
+            this.mSelectedAreaPriority = area.priority
+          }
+          setTimeout(() => {
+            this.mSelectedAreaPriority = -1
+          }, 900)
+        }
+        if (area === undefined) {
+          this.goLab()
+        }
+        if (this.mBgNotClickYn) return
+        const param = {
+          bdArea: {
+            bdAreaKey: area.bdAreaKey
+          }
+        }
+        if (area.priority === 0) {
+          this.mAreaInfo = area
+          this.openBoardPop()
+        } else if (area.priority !== 1) {
+          var result = await this.$commonAxiosFunction({
+            url: '/sUniB/tp.getBdAreaDetail',
+            param: param
+          })
+          if (result.data) {
+            this.mAreaDetail = await result.data
+            this.mAreaInfo = await area
+            this.mInfoBoxShowYn = true
+            this.allClearFocus()
+          }
+        } else {
+          this.mAreaInfo = area
+          this.mAreaDetail = {
+            bdArea: this.mAreaInfo,
+            bdList: null
+          }
           this.mInfoBoxShowYn = true
           this.allClearFocus()
         }
-      } else {
-        this.mAreaInfo = area
-        this.mAreaDetail = {
-          bdArea: this.mAreaInfo,
-          bdList: null
-        }
-        this.mInfoBoxShowYn = true
-        this.allClearFocus()
       }
     },
     closePop() {
@@ -1320,6 +1341,7 @@ export default {
     }
   },
   components: {
+    PreparingPop,
     mainBoardList,
     selectSchoolPop,
     areaInfoPop,

@@ -251,251 +251,295 @@
             width="20"
             style="margin-right: 5px"
           />
+          <p style="font-size: 18px">My ({{ mMyTodoCount }})</p>
         </div>
-        <!-- <template
+        <template
           v-for="(group, groupIndex) in mGetTodoGroupList"
           :key="groupIndex"
-        > -->
-        <div style="padding: 5px 10px">
+        >
+          <div v-if="group.myTodoList.length !== 0" style="padding: 5px 15px">
             <div
               class="backShadow"
-              style="
-                padding: 10px;
-                background: #fff;
-                border-radius: 10px;
-                border-left: 10px solid rgb(196, 196, 196);
-              "
+              style="padding: 10px; border-radius: 10px; background: #fff"
             >
-              <template v-for="(todo, todoIndex) in group.list.content" >
+              <div
+                :class="todo.strikeOnOff ? 'fade-out-box' : ''"
+                v-for="(todo, todoIndex) in group.myTodoList"
+                @click="goDetail(todo)"
+                :key="todoIndex"
+                class="w100P cursorP"
+                style="
+                  background-color: white;
+                  display: flex;
+                  align-items: center;
+                  flex-direction: column;
+                  padding: 10px;
+                "
+                :style="
+                  group.myTodoList.length - 1 === todoIndex
+                    ? ''
+                    : 'border-bottom:1px solid #acacac;'
+                "
+              >
                 <div
-                  :class="todo.strikeOnOff ? 'fade-out-box' : ''"
-                  v-if="(group.listName === '완료된' && todo.contStatus === '99') || (group.listName !== '완료된' && todo.contStatus !== '99')"
-                  @click="goDetail(todo)"
-                  :key="todoIndex"
-                  class="w100P cursorP"
                   style="
-                    background-color: white;
+                    width: 100%;
                     display: flex;
                     align-items: center;
-                    flex-direction: column;
-                    padding: 10px 10px 10px 0px;
-                  "
-                  :style="
-                    group.list.content.length - 1 === todoIndex
-                      ? ''
-                      : 'border-bottom:1px solid #acacac;'
+                    justify-content: space-between;
                   "
                 >
                   <div
                     style="
-                      width: 100%;
-                      height: 100%;
                       display: flex;
-                      align-items: start;
-                      justify-content: space-between;
+                      justify-content: center;
+                      align-items: center;
+                    "
+                  >
+                    <div class="MKAppUserPhotoBack flexCenter p-05 fontNavy fl">
+                      <div class="MKAppUserPhoto MKShadow h100P backShadow">
+                        <div
+                          @click.stop="goUserProfile(todo.creUserKey)"
+                          class="middleBgColor fl imgCircle profileImg"
+                          :style="`background-image: url('${
+                            todo.userDomainPath
+                              ? $changeUrlBackslash(
+                                  todo.userDomainPath + todo.userProfileImg
+                                )
+                              : $changeUrlBackslash(todo.userProfileImg)
+                          }')`"
+                        ></div>
+                        <!-- <img
+                          :src="todo.userDomainPath + todo.userProfileImg"
+                          style="width"
+                        /> -->
+                      </div>
+                    </div>
+                    <div
+                      style="
+                        margin-left: 5px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: start;
+                      "
+                    >
+                      <p
+                        class="fl todoFontSize fontBold"
+                        style="margin-right: 5px"
+                        @click.stop="goUserProfile(todo.creUserKey)"
+                      >
+                        {{
+                          todo.creUserName
+                            ? $changeText(todo.creUserName)
+                            : '나'
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      flex-direction: column;
+                      align-items: end;
+                      text-align: right;
                     "
                   >
                     <div
-                      style="width: 45px; text-align: left"
-                      @click.stop="
-                        setCompleteTodo(todo, 'myTodoList', groupIndex, todoIndex)
-                      "
+                      class="fr CLDeepGrayColor todoFontSize"
+                      style="line-height: 23px"
                     >
-                      <img
-                        v-if="todo.contStatus === '99'"
-                        src="../../assets/images/todo/checkboxCheck.png"
-                        width="30"
-                        height="30"
-                        style="margin-top: -0.3rem; opacity: 0.6"
-                      />
-                      <img
-                        v-else
-                        src="../../assets/images/todo/checkboxBlank.png"
-                        width="30"
-                        height="30"
-                        style="margin-top: -0.3rem; opacity: 0.6"
-                      />
-                    </div>
-                    <div style="width: 100%">
-                      <!-- 제목, 태그 1-->
-                      <div style="width: 100%">
-                        <div
-                          class="todoImportantInfo"
-                          style="display: flex; align-items: center"
-                        >
-                          <div
-                            style="text-align: left; white-space: wrap"
-                          >
-                            <div
-                              class="todoImportantInfoTitle fontBold todoTitleFontSize CTodoTitleColor"
-                              style=""
-                            >
-                              <span class="realTitle mright-03" :style="todo.contStatus === '99'? 'text-decoration: line-through;' : ''">{{
-                                todo.title
-                              }}</span>
-                              <span
-                                v-if="todo.D_MEMO_LIST && todo.D_MEMO_LIST.length > 0"
-                                class="todoImportantInfoMemo CTodoTitleColor"
-                              >
-                                ({{
-                                  todo.D_MEMO_LIST.length === 0
-                                    ? "0"
-                                    : todo.D_MEMO_LIST.length
-                                }})
-                              </span>
-                              <span
-                                v-if="todo.tagList.length > 0"
-                                class="todoTag mright-03"
-                                :class="{
-                                  todoTagM : todo.tagList[0].tagText === 'Memo', todoTagW: todo.tagList[0].tagText === 'Work', todoTagI : todo.tagList[0].tagText === 'Idea', todoTagS : todo.tagList[0].tagText !== 'Memo' && todo.tagList[0].tagText !== 'work' && todo.tagList[0].tagText !== 'Idea'
-                                }"
-                              >
-                                {{ todo.tagList[0].tagText }}
-                              </span>
-                              <div
-                                v-if="todo.fileCount"
-                                style="display: inline-block"
-                              >
-                                <img
-                                  :src="
-                                    require(`@/assets/images/todo/attachIcon.svg`)
-                                  "
-                                  style="width: 15px; opacity: 0.7"
-                                  alt="attached file"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <!--//-->
-                      <!-- 이력, 담당자-->
-                      <div class="todoOtherInfos mtop-01">
-                        <!-- 내 일 -이력 -->
-                        <div class="todoOtherInfosDueDate">
-                          <div
-                            class="CLDeepGrayColor todoFontSize"
-                            style="line-height: 23px"
-                          >
-                            <span
-                              v-if="todo.priority"
-                              class="todoPriority mright-03 fontBold"
-                              :class="{
-                                todoPriorityHigh: todo.priority === '00',
-                                todoPriorityMiddle: todo.priority === '01',
-                                todoPriorityLow: todo.priority === '02',
-                              }"
-                            >
-                              {{
-                                todo.priority === "00"
-                                  ? "High"
-                                  : todo.priority === "01"
-                                  ? "Middle"
-                                  : "Low"
-                              }}
-                            </span>
-                            <div
-                              class="middleBgColor imgCircle profileImg mright-03"
-                              style="
-                                display: inline-block;
-                                vertical-align: middle;
-                              "
-                              :style="`background-image: url('${
-                                todo.userDomainPath
-                                  ? todo.userDomainPath + todo.userProfileImg
-                                  : todo.userProfileImg
-                              }')`"
-                            ></div>
-                            <span
-                              :class="{
-                                delayedTodo:
-                                  new Date(todo.workToDate) < new Date() &&
-                                  getHowLate(todo.workToDate) > 0,
-                              }"
-                              >{{
-                                compareSameDate(
-                                  getMonthDate(todo.workFromDate),
-                                  getMonthDate(todo.workToDate)
-                                )
-                              }}</span
-                            >
-                            <!-- <span v-if="new Date(todo.workToDate) < new Date() && getHowLate(todo.workToDate) > 0"> ({{ getHowLate(todo.workToDate) }}일 지연됨)</span> -->
-                          </div>
-                        </div>
-                        <!--//-->
-                        <!-- 내 일 - 담당자 -->
-                        <div class="todoOtherInfosAsignee">
-                          <div
-                            class="w100P actorImgList"
-                            @click.stop="openActorList(todoIndex, 0)"
-                          >
-                            <template
-                              v-for="(each, index) in todo.actorList"
-                              :key="index"
-                            >
-                              <div v-if="index < 3" style="display: flex">
-                                <img
-                                  v-if="each.accessKind === 'U'"
-                                  class="actorImg"
-                                  :src="
-                                    each.domainPath
-                                      ? each.domainPath + each.pathMtext
-                                      : require(`@/assets/images/intro/login/uniB_logo.png`)
-                                  "
-                                  style=""
-                                  :alt="each.userDispMtext"
-                                />
-                                <img
-                                  v-else
-                                  class="actorImg"
-                                  :src="
-                                    require(`@/assets/images/todo/channer_addressBook.svg`)
-                                  "
-                                  style=""
-                                  :alt="each.userDispMtext"
-                                />
-                                <div
-                                  class="moreActorImg"
-                                  style=""
-                                  v-if="todo.actorList.length > 3 && index === 2"
-                                >
-                                  <span>+{{ todo.actorList.length - 3 }}</span>
-                                </div>
-                              </div>
-                              <div
-                                class="actorNameListWrap"
-                                v-if="
-                                  mGetWhichTodoIndex === 0 &&
-                                  mOpenActorListIndex === todoIndex &&
-                                  mOpenActorListYn
-                                "
-                              >
-                                <div class="actorNameList">
-                                  <p
-                                    class="todoFontSize"
-                                    v-for="(each, index) in todo.actorList"
-                                    :key="index"
-                                  >
-                                    {{
-                                      each ? $changeText(each.userDispMtext) : "X"
-                                    }}
-                                  </p>
-                                </div>
-                              </div>
-                            </template>
-                          </div>
-                        </div>
-                      </div>
-                      <!--//-->
+                      <span>{{
+                        compareSameDate(getMonthDate(todo.workFromDate), getMonthDate(todo.workToDate))
+                      }}</span>
                     </div>
                   </div>
                 </div>
-              </template>
-              <!-- 한 박스-->
-              <!-- // -->
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    margin-top: 10px;
+                  "
+                >
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      margin-left: 5px;
+                      width: 75%;
+                    "
+                  >
+                    <img
+                      v-if="todo.strikeOnOff"
+                      src="../../assets/images/todo/checkboxCheck.png"
+                      width="20"
+                      height="20"
+                      @click.stop="
+                        setCompleteTodo(
+                          todo,
+                          'myTodoList',
+                          groupIndex,
+                          todoIndex
+                        )
+                      "
+                    />
+                    <img
+                      v-else
+                      src="../../assets/images/todo/checkboxBlank.png"
+                      width="20"
+                      height="20"
+                      @click.stop="
+                        setCompleteTodo(
+                          todo,
+                          'myTodoList',
+                          groupIndex,
+                          todoIndex
+                        )
+                      "
+                    />
+                    <p
+                      v-if="todo.contStatus === '00'"
+                      class="fl fontBold todoFontSize mLeft-05"
+                      style="
+                        position: relative;
+                        margin-left: 5px;
+                        text-align: left;
+                      "
+                    >
+                      <span
+                        class="strikeLine"
+                        :style="
+                          todo.strikeOnOff
+                            ? 'transition: all .3s; width:100%;'
+                            : 'width:0;'
+                        "
+                      ></span>
+                      {{ todo.title }}
+                    </p>
+                  </div>
+                  <div style="width:25%; display:flex; justify-content:end; align-items:center;">
+                    <div class="w100P actorImgList " @click.stop="openActorList(todoIndex, 0)">
+                      <template v-for="(each, index) in todo.mNewActorList" :key="index" >
+                        <img v-if="each.accessKind === 'U'" class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
+                        <img v-else class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
+                        <div class="moreActorImg todoFontSize" style="" v-if="todo.actorList.length > 3 && index === 2">+{{ todo.actorList.length - 3 }}</div>
+                        <div class="actorNameListWrap" v-if="mGetWhichTodoIndex === 0 && mOpenActorListIndex === todoIndex && mOpenActorListYn">
+                          <div class="actorNameList">
+                            <p class="todoFontSize" v-for="(each, index) in todo.actorList" :key="index">{{ each ? $changeText(each.userDispMtext) : 'X' }}</p>
+                          </div>
+                        </div>
+                      </template>
+                  </div>
+                  </div>
+                </div>
+                <div
+                  class="w100P"
+                  style="
+                    margin-top: 10px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 10px;
+                    border-radius: 10px;
+                    background-color: rgb(248, 248, 255);
+                  "
+                >
+                  <div>
+                    <div
+                      style="
+                        width: 30px;
+                        height: 35px;
+                        display: flex;
+                        cursor: pointer;
+                        float: left;
+                        margin-right: 10px;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                    >
+                      <div style="width: 100%; height: 20px; float: left">
+                        <img
+                          v-if="mWriteMemoYn"
+                          :src="require(`@/assets/images/todo/memoIcon.svg`)"
+                          class=""
+                          alt=""
+                        />
+                        <img
+                          v-else
+                          :src="require(`@/assets/images/todo/memoIcon.svg`)"
+                          class=""
+                          alt=""
+                        />
+                      </div>
+                      <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
+                        {{
+                          todo.memoList.length === 0
+                            ? '0'
+                            : todo.memoList.length
+                        }}
+                      </p>
+                    </div>
+                    <div
+                      v-if="todo.fileCount"
+                      @click="clickFileDownload()"
+                      style="
+                        cursor: pointer;
+                        width: 30px;
+                        height: 35px;
+                        display: flex;
+                        float: left;
+                        margin-right: 10px;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                      "
+                    >
+                      <div style="width: 100%; height: 20px; float: left">
+                        <img
+                          :src="require(`@/assets/images/todo/attachIcon.svg`)"
+                          class=""
+                          alt=""
+                        />
+                      </div>
+                      <p class="font12 fontBold mtop-01 fl w-100P userDoColor">
+                        {{ todo.fileCount }}
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      gap: 3px;
+                      flex-wrap: wrap;
+                      justify-content: end;
+                    "
+                  >
+                    <div
+                      v-for="(tag, index) in todo.tagList"
+                      :key="index"
+                      class="CDeepBgColor"
+                      style="
+                        color: white;
+                        height: 20px;
+                        line-height: 20px;
+                        padding: 0px 5px;
+                        border-radius: 10px;
+                        font-size: 10px;
+                        width: auto;
+                      "
+                    >
+                      {{ tag.tagText }}
+                    </div>
+                  </div>
+                </div>
+                <!-- <div @click="openUniBTodoDetail" class="CDeepBgColor" style="color:white; height:20px; line-height:20px; padding: 0px 5px; border-radius: 10px; font-size: 10px; width:40px">{{ changeTypeToText(todo.todoType) }}</div> -->
+              </div>
             </div>
           </div>
-        <!-- </template> -->
+        </template>
         <div
           v-if="mTargetTodoYn"
           class="fontBold"
