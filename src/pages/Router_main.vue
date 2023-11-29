@@ -61,8 +61,7 @@
       v-if="
         (mRouterHeaderInfo !== 'leave' &&
           mTargetType !== 'chanDetail' &&
-          mTargetType !== 'boardMain' &&
-          $route.path !== '/todo') ||
+          mTargetType !== 'boardMain') ||
         $route.path === '/chanList'
       "
       @showMenu="showMenu"
@@ -356,7 +355,7 @@ export default {
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
       const result = await this.$getViewData(
-        { url: '/sUniB/tp.getChanMainBoard', param: param },
+        { url: 'https://www.unibuzzy.com/sUniB/tp.getChanMainBoard', param: param },
         false
       )
       if (
@@ -404,7 +403,7 @@ export default {
         paramMap.set('subsUserKey', this.GE_USER.userKey)
         paramMap.set('userKey', this.GE_USER.userKey)
         const response = await this.$axios.post(
-          '/sUniB/tp.getMyContentsList',
+          'https://www.unibuzzy.com/sUniB/tp.getMyContentsList',
           Object.fromEntries(paramMap)
         )
         if (response.data && response.data.content) {
@@ -635,7 +634,7 @@ export default {
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', this.GE_USER.userKey)
       var response = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getCabinetDetail',
+        url: 'https://www.unibuzzy.com/sUniB/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -673,7 +672,7 @@ export default {
         }
         const result = await this.$getViewData(
           {
-            url: '/sUniB/tp.getChanMainBoard',
+            url: 'https://www.unibuzzy.com/sUniB/tp.getChanMainBoard',
             param: Object.fromEntries(paramMap)
           },
           nonLoadingYn

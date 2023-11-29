@@ -53,6 +53,17 @@
     "COMMON_TAB_MANAGING": "Managing",
     "COMMON_TAB_CONTENTS": "Contents",
 
+    "COMMON_TODO_TODAY": "Today",
+    "COMMON_TODO_CAL" : "Calendar",
+    "COMMON_TODO_MYTODO" : "My ToDo",
+    "COMMON_TODO_ASKED" : "I Asked",
+    "COMMON_TODO_COMPLETED" : "Completed",
+    "COMMON_TODO_HIGH" : "High",
+    "COMMON_TODO_MID" : "Middle",
+    "COMMON_TODO_LOW" : "Low",
+    "COMMON_TODO_ALL" : "All",
+    "COMMON_TODO_COMMENT" : "Comment",
+
     "COMM_BTN_EDIT": "Edit",
     "COMMON_BTN_OK": "OK",
     "COMM_BTN_CANCEL": "Cancel",

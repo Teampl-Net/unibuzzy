@@ -698,9 +698,11 @@ export default {
     },
     async openAreaInfoPop(area) {
       console.log('확인확인', area.priority)
-      if (area.priority === 0 || area.priority === 1 || area.priority === 4 || area.priority === 5) {
+      if (area.priority === 1 || area.priority === 4 || area.priority === 5) {
         this.mAreaInfo = area
         this.openPreparingPop()
+      } else if (area.priority === 0) {
+        this.$router.push({ path: '/todo' })
       } else {
         var isMobile = /Mobi/i.test(window.navigator.userAgent)
         if (

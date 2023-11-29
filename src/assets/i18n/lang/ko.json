@@ -53,6 +53,17 @@
     "COMMON_TAB_MANAGING": "관리중인",
     "COMMON_TAB_CONTENTS": "콘텐츠",
 
+    "COMMON_TODO_TODAY": "오늘",
+    "COMMON_TODO_CAL" : "달력",
+    "COMMON_TODO_MYTODO" : "내할일",
+    "COMMON_TODO_ASKED" : "요청한",
+    "COMMON_TODO_COMPLETED" : "완료된",
+    "COMMON_TODO_HIGH" : "높음",
+    "COMMON_TODO_MID" : "보통",
+    "COMMON_TODO_LOW" : "낮음",
+    "COMMON_TODO_ALL" : "전체",
+    "COMMON_TODO_COMMENT" : "댓글",
+
     "COMM_VOCA_THIS": "해당",
     "COMM_BTN_EDIT": "변경",
     "COMMON_BTN_OK": "확인",
