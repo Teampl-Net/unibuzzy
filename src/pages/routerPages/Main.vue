@@ -115,7 +115,7 @@
           :class="{'clickEvent' : mSelectedAreaPriority === building.priority && building.priority !== 0, 'zoomtwo' : building.priority !== 0, hotBalloon: building.priority === 0}"
           v-for="building in mTownBuildingList"
           :key="building.priority"
-          style="position: absolute; transform: translate(-50%, -50%)"
+          style="position: absolute; transform: translate(-50%, -50%); z-index:2;"
           :style="{
             width: building.pcW,
             height: building.pcH,
@@ -302,6 +302,19 @@ export default {
           titlePah: '/resource/main/title_invitation.png'
           // titlePah: '/resource/main/title_plaza.svg'`
         },
+        {
+          priority: 2,
+          left: '52%',
+          top: '65%',
+          w: '40%',
+          pcW: '40%',
+          pcH: '18%',
+          titleLeft: '5%',
+          titleTop: '70%',
+          imgPath: '/resource/main/main_campus.svg',
+          nightImgPath: '/resource/main/main_night_campus.svg',
+          titlePah: '/resource/main/title_myday.png'
+        },
         // {
         //   priority: 2,
         //   left: '75%',
@@ -381,19 +394,6 @@ export default {
           imgPath: '/resource/main/main_lab.svg',
           nightImgPath: '/resource/main/main_night_lab.svg',
           titlePah: '/resource/main/title_lab.svg'
-        },
-        {
-          priority: 8,
-          left: '52%',
-          top: '65%',
-          w: '40%',
-          pcW: '40%',
-          pcH: '18%',
-          titleLeft: '5%',
-          titleTop: '70%',
-          imgPath: '/resource/main/main_campus.svg',
-          nightImgPath: '/resource/main/main_night_campus.svg',
-          titlePah: '/resource/main/title_myday.png'
         }
       ],
       mNightYn: false,
@@ -714,11 +714,11 @@ export default {
       }
     },
     async openAreaInfoPop(area) {
-      console.log('확인확인', area.priority)
+      console.log('확인확인', area)
       if (area.priority === 1 || area.priority === 5) {
         this.mAreaInfo = area
         this.openPreparingPop()
-      } else if (area.priority === 8) {
+      } else if (area.priority === 2) {
         this.$emit('changeRouterPath', 'todo')
       } else if (area.priority === 4) {
         this.$emit('changeRouterPath', 'chanList')
