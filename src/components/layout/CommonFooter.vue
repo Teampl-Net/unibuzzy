@@ -64,6 +64,7 @@ export default {
   },
   methods: {
     async routePage (page) {
+      console.log('page', page)
       if ((this.$route.path === '/' || this.$route.path === '/unibuzzy') && page === 'main') {
         return false
       }

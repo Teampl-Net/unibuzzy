@@ -7,10 +7,10 @@
     <div class="font16 fontBold w100P infoPopHeaderBox">
       <div class="headerBox">
         <img src="/resource/logo/gtLogo.png" alt=""> <!--여기-->
-        <p class="textOverdot textLeft font25" v-if="pAreaInfo.bdAreaNameMtext === 'Class'"> {{  'Message' }} Area</p>
+        <p class="textOverdot textLeft font25" v-if="pAreaInfo.bdAreaNameMtext === 'Class'"> {{  'Community' }} Area</p>
         <p class="textOverdot textLeft font25" v-else-if="pAreaInfo.bdAreaNameMtext==='Campus'"> {{  'My Day' }} Area</p>
         <p class="textOverdot textLeft font25" v-else-if="pAreaInfo.bdAreaNameMtext==='Living'"> {{  'Friends' }} Area</p>
-        <p class="textOverdot textLeft font25" v-else-if="pAreaInfo.bdAreaNameMtext==='Plaza'"> {{  'Invite' }} Area</p>
+        <p class="textOverdot textLeft font25" v-else-if="pAreaInfo.bdAreaNameMtext==='Plaza'"> {{  'Invitation' }} Area</p>
         <p class="textOverdot textLeft font25" v-else> {{  pAreaInfo.bdAreaNameMtext }} Area</p>
       </div>
       <div class="cursorP closeIconBox" @click="pClosePop">
@@ -19,7 +19,7 @@
     </div>
     <div class="w100P font25 fontBold" style="padding:20% 0 0 0;">
         This is
-        {{ pAreaInfo.bdAreaNameMtext === 'Class' ? 'Message' : pAreaInfo.bdAreaNameMtext === 'Campus' ? 'My Day' : pAreaInfo.bdAreaNameMtext === 'Living' ? 'Friends' : pAreaInfo.bdAreaNameMtext === 'Plaza' ? 'Invite' : '' }} Area.
+        {{ pAreaInfo.bdAreaNameMtext === 'Class' ? 'Community' : pAreaInfo.bdAreaNameMtext === 'Campus' ? 'My Day' : pAreaInfo.bdAreaNameMtext === 'Living' ? 'Friends' : pAreaInfo.bdAreaNameMtext === 'Plaza' ? 'Invitation' : '' }} Area.
         <br>
         It's not ready yet.
     </div>

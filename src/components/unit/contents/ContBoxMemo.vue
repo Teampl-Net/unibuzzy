@@ -91,13 +91,13 @@
   >
     <div class="parentMemoBox">
       <div class="parentMemoTop">
-        <img
+        <!-- <img
           class="parentMemoMore"
           v-if="!pNoAuthYn"
           src="../../../assets/images/contents/contents_moreBtnIcon.svg"
           alt=""
           @click="contMenuClick(propMemoEle)"
-        />
+        /> -->
         <gProfileImg
           class="memoUserProfile"
           @click="
@@ -253,12 +253,12 @@
         :key="cIndex"
       >
         <div class="childUserInfo">
-          <img
+          <!-- <img
             src="../../../assets/images/contents/contents_moreBtnIcon.svg"
             class="parentMemoMore"
             alt=""
             @click="contMenuClick(cmemo)"
-          />
+          /> -->
           <gProfileImg
             :selfYn="cmemo.creUserKey === GE_USER.userKey ? true : false"
             :userInfo="cmemo"

@@ -1249,6 +1249,26 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
   }
 }
 
+/* todo */
+.todoPriority{
+  color: white;
+  height: 18px;
+  line-height: 18px;
+  border-radius:20px;
+  font-size: 12px;
+  width: auto;
+  padding:1px 9px;
+}
+.todoPriorityHigh{
+  background-color:rgb(15, 47, 135);
+}
+.todoPriorityMiddle{
+  background-color:rgb(59, 107, 240);
+}
+.todoPriorityLow{
+  background-color:rgb(232, 238, 254);
+  color:#000 !important;
+}
 
 .showUp-enter {animation: showUp-dialog-fade-in 0.2s ease;}
 .showUp-leave {animation: showUp-dialog-fade-out 0.2s ease forwards;}

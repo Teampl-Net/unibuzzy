@@ -3,7 +3,7 @@
     <div v-on:click="closeXPop" class="cursorP closeIconBox">
       <img src="@/assets/images/common/icon_back.png" class="commonPopBackBtn" >
     </div>
-    <span class="popHeaderTitleSpan" :class="{colorBlack : (headerTitle === '게시판 작성')|| targetType === 'contentsDetail'}" :style="bgblack === true ? 'color:white;':'' + 'top:' + ($STATUS_HEIGHT + 35) + 'px;'">
+    <span v-if="headerTitle.includes('일정')" class="popHeaderTitleSpan" :class="{colorBlack : (headerTitle === '게시판 작성')|| targetType === 'contentsDetail'}" :style="bgblack === true ? 'color:white;':'' + 'top:' + ($STATUS_HEIGHT + 35) + 'px;'">
       {{$changeText(headerTitle)}}
     </span>
     <div v-if="targetType === 'chanDetail' && chanAlimListTeamKey" class="chanMenubar cursorP" @click="openMenu">

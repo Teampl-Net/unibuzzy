@@ -22,8 +22,10 @@
       this.CAB_DETAIL))
     "
     class="boardDetailWrap"
+    :class="{paddingTopZ : CONT_DETAIL.jobkindId === 'TODO'}"
   >
     <gUBContentsBox
+      @closeXPop="closeXPop"
       :pFadeNotShowYn="true"
       @openImgPop="openImgPop"
       @scrollToMemoTop="scrollToMemoTop"
@@ -208,6 +210,10 @@ export default {
     }
   },
   methods: {
+    closeXPop () {
+      console.log('뒤로뿅')
+      this.$emit('closeXPop')
+    },
     onDragenter() {
       const contRef = this.$refs.myContentsBox
       if (contRef) {
@@ -344,7 +350,7 @@ export default {
       } else if (this.cDetail.nameMtext) {
         this.$emit('changePageHeader', this.$changeText(this.cDetail.nameMtext))
       } else if (this.cDetail.jobkindId === 'TODO') {
-        this.$emit('changePageHeader', this.$changeText('To Do'))
+        // this.$emit('changePageHeader', this.$changeText('To Do'))
       }
       const openPageParam = {}
       openPageParam.targetKey = detailData.contentsKey
@@ -537,6 +543,10 @@ export default {
 }
 </script>
 <style scoped>
+
+.paddingTopZ{
+  /* padding-top:0 !important; */
+}
 .pagePaddingWrap {
   box-sizing: border-box;
   width: 100%;

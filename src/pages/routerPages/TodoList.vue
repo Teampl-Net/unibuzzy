@@ -462,8 +462,8 @@
                       <!--  my todo - date -->
                       <div class="todoOtherInfosDueDate">
                         <div class="CLDeepGrayColor todoFontSize" style="line-height: 23px">
-                          <span v-if="todo.priority" class="todoPriority mright-03 fontBold" :class="{todoPriorityHigh : todo.priority === '00', todoPriorityMiddle : todo.priority === '01', todoPriorityLow : todo.priority === '02'  }">
-                            {{ todo.priority === '00' ? `${$t('COMMON_TODO_HIGH')}` : todo.priority === '01' ? `${$t('COMMON_TODO_MID')}` : `${$t('COMMON_TODO_LOW')}` }}
+                          <span class="todoPriority mright-03 fontBold" :class="{todoPriorityHigh : todo.priority === '00', todoPriorityMiddle : todo.priority === '01' || !todo.priority , todoPriorityLow : todo.priority === '02'  }">
+                            {{ todo.priority === '00' ? `${$t('COMMON_TODO_HIGH')}` : todo.priority === '01' || !todo.priority ? `${$t('COMMON_TODO_MID')}` : `${$t('COMMON_TODO_LOW')}` }}
                           </span>
                             <div
                             class="middleBgColor imgCircle profileImg mright-03" style="display:inline-block; vertical-align:middle;"
@@ -606,8 +606,8 @@
                     <!-- asked - date -->
                     <div class="todoOtherInfosDueDate">
                       <div class="CLDeepGrayColor todoFontSize" style="line-height: 23px">
-                        <span v-if="todo.priority" class="todoPriority mright-03 fontBold" :class="{todoPriorityHigh : todo.priority === '00', todoPriorityMiddle : todo.priority === '01', todoPriorityLow : todo.priority === '02'  }">
-                          {{ todo.priority === '00' ? `${$t('COMMON_TODO_HIGH')}` : todo.priority === '01' ? `${$t('COMMON_TODO_MID')}` : `${$t('COMMON_TODO_LOW')}` }}
+                        <span class="todoPriority mright-03 fontBold" :class="{todoPriorityHigh : todo.priority === '00', todoPriorityMiddle : todo.priority === '01' || !todo.priority , todoPriorityLow : todo.priority === '02'  }">
+                            {{ todo.priority === '00' ? `${$t('COMMON_TODO_HIGH')}` : todo.priority === '01' || !todo.priority ? `${$t('COMMON_TODO_MID')}` : `${$t('COMMON_TODO_LOW')}` }}
                         </span>
                         <div
                             class="middleBgColor imgCircle profileImg mright-03" style=""
@@ -751,8 +751,8 @@
                     <!-- completed - date -->
                     <div class="todoOtherInfosDueDate">
                       <div class="CLDeepGrayColor todoFontSize" style="line-height: 23px">
-                        <span v-if="todo.priority" class="todoPriority mright-03 fontBold" :class="{todoPriorityHigh : todo.priority === '00', todoPriorityMiddle : todo.priority === '01', todoPriorityLow : todo.priority === '02'  }">
-                          {{ todo.priority === '00' ? `${$t('COMMON_TODO_HIGH')}` : todo.priority === '01' ? `${$t('COMMON_TODO_MID')}` : `${$t('COMMON_TODO_LOW')}` }}
+                        <span class="todoPriority mright-03 fontBold" :class="{todoPriorityHigh : todo.priority === '00', todoPriorityMiddle : todo.priority === '01' || !todo.priority , todoPriorityLow : todo.priority === '02'  }">
+                            {{ todo.priority === '00' ? `${$t('COMMON_TODO_HIGH')}` : todo.priority === '01' || !todo.priority ? `${$t('COMMON_TODO_MID')}` : `${$t('COMMON_TODO_LOW')}` }}
                         </span>
                         <div
                             class="middleBgColor imgCircle profileImg mright-03" style="display:inline-block; vertical-align:middle;"
@@ -1036,7 +1036,7 @@ export default {
       return this.$dayjs(date).add(-13, 'hour').format(format)
     },
     goDetail(value) {
-      console.log(value)
+      console.log('value', value)
       var param = {}
       param.targetType = 'contentsDetail'
       param.targetKey = value.contentsKey

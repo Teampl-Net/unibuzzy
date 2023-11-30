@@ -124,6 +124,114 @@
               </div>
             </div>
           </fieldset>
+          <fieldset id="postRefs" v-if="mSelfAddTagShowYn"> <!-- 서비스 업데이트 시 수정-->
+            <div class="selectReceiverBox">
+              <legend>Receiver</legend>
+              <label for="">Private</label>
+              <div class="btnWrap">
+                <button
+                  type="button"
+                  @click="selectNoRefs"
+                  :class="{ activeBtn: !selectRefsYn }"
+                  style="font-size: 13px"
+                >
+                  <img
+                    v-if="!selectRefsYn"
+                    src="../../assets/images/common/icon_check_commonColor.svg"
+                    alt="check image"
+                    class="checkImg"
+                  />
+                  Private
+                </button>
+                <button
+                  type="button"
+                  style="font-size: 13px"
+                  @click="toggleRefsSelectPop"
+                  :class="{
+                    activeBtn:
+                    showRefsSelectList ||
+                      (params.refList && params.refList.length && selectRefsYn)
+                  }"
+                >
+                  <img
+                    v-if="
+                      showRefsSelectList ||
+                      (params.refList && params.refList.length && selectRefsYn)
+                    "
+                    src="../../assets/images/common/icon_check_commonColor.svg"
+                    alt="check image"
+                    class="checkImg"
+                  />
+                  Public
+                </button>
+              </div>
+            </div>
+            <!-- target선택 팝업 -->
+            <transition name="show_left">
+              <SelectTargetPop
+                v-if="showRefsSelectList"
+                :pSelectData="receiverList"
+                :pSelectedTargetList="params.refList"
+                :pSelectOnlyYn="pSelectOnlyYn"
+                @saveTarget="setSelectedRefList"
+                @closeXPop="toggleRefsSelectPop"
+              />
+            </transition>
+            <!-- 선택된 target -->
+            <div
+              @click="toggleRefsSelectPop"
+              v-if="params.refList && params.refList.length && selectRefsYn"
+              class="selectedTargetList"
+            >
+              <div
+                style="
+                  width: calc(100% - 40px);
+                  max-height: 52px;
+                  overflow-y: scroll;
+                "
+              >
+                <div
+                  style="
+                    width: 100%;
+                    display: flex;
+                    gap: 1px 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <div
+                    v-for="target in params.refList"
+                    :key="target.accessKey"
+                    class="eachTarget"
+                    style="white-space: nowrap"
+                  >
+                    <img
+                      v-if="
+                        target.accessKind === 'U' || target.accessKind === 'C'
+                      "
+                      src="../../assets/images/footer/icon_people.svg"
+                      alt="person image"
+                    />
+                    <img
+                      v-else
+                      src="../../assets/images/channel/channer_addressBook.svg"
+                      alt="address book image"
+                    />
+                    {{
+                      $changeText(target.accessName) ||
+                      $changeText(target.userDispMtext)
+                    }}
+                  </div>
+                </div>
+              </div>
+              <div class="plusImgWrap" style="">
+                <img
+                  class="plusImg"
+                  src="../../assets/images/formEditor/icon_formEditPlus.svg"
+                  alt="plus image"
+                />
+              </div>
+            </div>
+          </fieldset>
           <fieldset
             id="optionToggleBtnWrap"
             v-if="!pContentsData"
@@ -141,7 +249,7 @@
                   src="../../assets/images/common/icon_check_commonColor.svg"
                   alt="check image"
                 />
-                익명
+                Unknown
               </button>
               <button
                 type="button"
@@ -153,7 +261,7 @@
                   src="../../assets/images/common/icon_check_commonColor.svg"
                   alt="check image"
                 />
-                댓글
+                Comment
               </button>
               <button
                 type="button"
@@ -165,25 +273,26 @@
                   src="../../assets/images/common/icon_check_commonColor.svg"
                   alt="check image"
                 />
-                제목
+                Title
               </button>
             </div>
           </fieldset>
           <fieldset v-if="$route.path === '/todo' || hasTitleYn" id="postTitle">
             <label for="">Title</label>
-            <input
+            <textarea
               id="title"
               type="text"
               placeholder="Please, enter the title."
-              v-model="params.title"
+              style="height:45px !important; max-height:80px; overflow-y:scroll; white-space:wrap; padding:10px 15px 15px;"
+              v-model="params.title" @input="countLines"
             />
           </fieldset>
         </fieldset>
         <!-- optional post values -->
         <fieldset id="optionalOptions">
-          <legend>선택정 정보 설정</legend>
+          <legend>Optional infos</legend>
           <fieldset v-if="pOptions.model === 'mankik'" id="dateSelect">
-            <legend>날짜 선택</legend>
+            <legend>Date</legend>
             <label for="">Date</label>
             <div class="dateBoxWrap">
               <input
@@ -197,7 +306,7 @@
             </div>
           </fieldset>
           <fieldset v-if="pOptions.model === 'mankik'" id="categoryTag">
-            <legend>카테고리 선택</legend>
+            <legend>Tag</legend>
             <label for="">Tag</label>
             <div
               class=""
@@ -207,40 +316,41 @@
                 align-items: start;
               "
             >
-              <div
-                class="btnWrap tagBtnWrap"
-                :class="{ opened: openBtnWrapYn === true }"
-              >
-                <button
-                  type="button"
-                  @click="toggleSelectTag(tag, index)"
-                  v-for="(tag, index) in tagListForDom"
-                  :key="tag.categoryKey"
-                  :class="{ activeBtn: tag.isSelected }"
-                  style="font-size: 13px"
+            <div :class="{selfTagOpenFlex : mSelfAddTagShowYn}" class="w100P" style=" width: calc(100% - 25px); display: flex; align-items: start; flex-wrap:wrap;">
+              <div v-if="mSelfAddTagShowYn" class="w100P" style="display:flex; align-items:center;">
+                    <input type="text" v-model="selfAddTag" class="" >
+                    <div class="selfAddSaveBtn mleft-03" @click="addSelfTag(selfAddTag)">
+                      Save
+                    </div>
+                  </div>
+                <div
+                  class="btnWrap tagBtnWrap"
+                  style="width:auto; height:auto;"
                 >
-                  <img
-                    v-if="tag.isSelected"
-                    src="../../assets/images/common/icon_check_commonColor.svg"
-                    alt="check image"
-                  />
-                  {{ tag.categoryNameMtext }}
-                </button>
+                  <button
+                    type="button"
+                    @click="toggleSelectTag(tag, index)"
+                    v-for="(tag, index) in tagListForDom"
+                    :key="tag.categoryKey"
+                    :class="{ activeBtn: tag.isSelected }"
+                    style="font-size: 13px"
+                  >
+                    <img
+                      v-if="tag.isSelected"
+                      src="../../assets/images/common/icon_check_commonColor.svg"
+                      alt="check image"
+                    />
+                    {{ tag.categoryNameMtext }}
+                  </button>
+                </div>
               </div>
-              <div
-                v-if="openBtnWrapYn === false"
-                @click="openBtnWrap"
-                class="openBtn"
+              <!-- <div
+                @click="openSelfAddTag"
+                class="openSelfAddTagBtn cursorP mleft-03"
+                style=""
               >
-                +
-              </div>
-              <div
-                v-if="openBtnWrapYn === true"
-                @click="openBtnWrap"
-                class="openBtn"
-              >
-                -
-              </div>
+              {{ mSelfAddTagShowYn===true ? '-' : '+' }}
+              </div> -->
             </div>
           </fieldset>
           <fieldset
@@ -248,7 +358,7 @@
               (pOptions.model === 'mankik' || pOptions.model === 'unibuzzy') "
             id="uploadFile"
           >
-            <legend>파일 첨부</legend>
+            <legend>File</legend>
             <label for="">File</label>
             <TalAttachFile
               @delAttachFile="delAttachFile"
@@ -257,7 +367,7 @@
             />
           </fieldset>
           <fieldset style="height: 60%">
-            <legend>작성 내용</legend>
+            <legend>Contents</legend>
             <TalFormEditor
               ref="complexEditor"
               @changeUploadList="changeUploadList"
@@ -321,7 +431,8 @@ export default defineComponent({
   },
   data() {
     return {
-      popId: ''
+      popId: '',
+      mSelfAddTagShowYn: false
     }
   },
   created() {
@@ -348,6 +459,9 @@ export default defineComponent({
     }
   },
   methods: {
+    openSelfAddTag () {
+      this.mSelfAddTagShowYn = !this.mSelfAddTagShowYn
+    },
     closePop() {
       var history = this.$store.getters['UB_HISTORY/hStack']
       var removePage = history[history.length - 1]
@@ -378,12 +492,21 @@ export default defineComponent({
       attachFileList: [],
       showCreNameYn: false,
       canReplyYn: true,
-      mLoadingYn: false
+      mLoadingYn: false,
+      mSelfTag: '',
+      lineCount: 0
     })
     console.log(
       props.pContentsData,
       'data ================---=========---=========---==='
     )
+
+    // 제목 입력 란 높이 수정
+    const countLines = () => {
+      const textarea = document.querySelector('textarea')
+      textarea.style.height = textarea.scrollHeight + 'px'
+      // textarea.style.maxHeight = '90px'
+    }
 
     // ------------------- 기본값 설정
     let receiverList = reactive([])
@@ -570,10 +693,19 @@ export default defineComponent({
         }
         // --- 날짜 데이터 연결
         if (props.pContentsData.workFromDate) {
-          params.workFromDateStr = props.pContentsData.workFromDate
+          params.workFromDateStr =
+            props.pContentsData.workFromDate.split('T')[0]
+          const fromDateInput = document.getElementById('fromDate')
+          if (fromDateInput) {
+            fromDateInput.value = params.workFromDateStr
+          }
         }
         if (props.pContentsData.workToDate) {
-          params.workToDateStr = props.pContentsData.workToDate
+          params.workToDateStr = props.pContentsData.workToDate.split('T')[0]
+          const toDateInput = document.getElementById('toDate')
+          if (toDateInput) {
+            toDateInput.value = params.workToDateStr
+          }
         }
         // 선택된 주소록(target) 데이터 연결
         for (const editingTarget of props.pContentsData.actorList) {
@@ -721,6 +853,27 @@ export default defineComponent({
         params.actorList = []
       }
     }
+
+    // 참조자 선택 기능
+    const showRefsSelectList = ref(false)
+    const toggleRefsSelectPop = () => {
+      showRefsSelectList.value = !showRefsSelectList.value
+    }
+
+    const selectRefsYn = ref(false)
+    const selectNoRefs = () => {
+      selectRefsYn.value = false
+    }
+    selectNoRefs()
+
+    const setSelectedRefList = (selectedTargetList) => {
+      for (let i = 0; i < selectedTargetList.length; i++) {
+        selectedTargetList[i].actType = 'RF'
+      }
+      params.refList = selectedTargetList
+      selectRefsYn.value = true
+    }
+
     const selectMeYn = ref(false)
     const selectTargetOnlyMe = () => {
       params.actorList.length = 0
@@ -758,6 +911,45 @@ export default defineComponent({
         tagListForDom[index].isSelected = true
       }
     }
+    // Tag(category) 선택 기능 - 스티커
+    // const tagListForDom = reactive([]) // 원본 유지를 위한 복사
+    // if (stickerList.length) {
+    //   alert(stickerList.length)
+    //   stickerList.forEach((sticker, index) => {
+    //     if (tagListForDom.length === 4 && index === 0) {
+    //       sticker.isSelected = true
+    //       params.stickerList.push(sticker)
+    //     } else {
+    //       sticker.isSelected = false
+    //     }
+    //     tagListForDom.push(sticker)
+    //   })
+    // }
+    // const selfAddTag = ref('')
+    // const addSelfTag = (selfAddTag) => {
+    //   if (selfAddTag.value.trim() !== '') {
+    //     tagListForDom.unshift({ naemMtext: 'KO$^$' + selfAddTag, stickerKey: null, picBgPath: '#CCC', creUserKey: store.getters['D_USER/GE_USER'].userKey, isSelected: true })
+    //     removeSelfTag()
+    //   }
+    //   params.stickerList.unshift({ naemMtext: 'KO$^$' + selfAddTag, stickerKey: null, picBgPath: '#CCC', creUserKey: store.getters['D_USER/GE_USER'].userKey, isSelected: true })
+    //   console.log('params.stickerList', params.stickerList)
+    // }
+    // const removeSelfTag = () => {
+    //   selfAddTag.value = ''
+    // }
+
+    // const toggleSelectTag = (selectedTag, index) => {
+    //   const indexToRemove = params.stickerList.findIndex((st) => st.nameMtext === selectedTag.nameMtext)
+
+    //   if (indexToRemove !== -1) {
+    //     params.stickerList.splice(indexToRemove, 1)
+    //     tagListForDom[index].isSelected = false
+    //   } else {
+    //     params.stickerList.push(selectedTag.nameMtext)
+    //     tagListForDom[index].isSelected = true
+    //   }
+    // }
+
     // 편집 상태일 때는 데이터 비교후 선택된 tag 체크
     if (props.pContentsData) {
       for (let i = 0; i < tagListForDom.length; i++) {
@@ -1183,13 +1375,17 @@ export default defineComponent({
       receiverList,
       showReceiverSelectList,
       toggleReceiverSelectPop,
-      selectTargetOnlyMe,
+      toggleRefsSelectPop,
+      setSelectedRefList,
+      selectNoRefs,
+      selectAllReceivers: selectTargetOnlyMe,
       setSelectedTargetList,
       toggleAnonymousYn,
       toggleCommentYn,
       hasTitleYn,
+      showRefsSelectList,
       toggleTitleYn,
-      tagTextList,
+      // stickerList,
       toggleSelectTag,
       tagListForDom,
       setAttachedFile,
@@ -1211,8 +1407,14 @@ export default defineComponent({
       propAttachFileList,
       setTodoPageValue,
       selectMeYn,
+      selectRefsYn,
       errorText,
-      failPopYn
+      failPopYn,
+      // priorityList,
+      // changePriority,
+      // addSelfTag,
+      // selfAddTag,
+      countLines
     }
   }
 })
@@ -1221,7 +1423,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 // Common CSS
 #layout {
-  width: 80%;
+  width: 90%;
   height: calc(100% - 120px);
   padding: 16px 24px;
   overflow: hidden auto;
@@ -1234,6 +1436,35 @@ export default defineComponent({
   z-index: 9999;
   background-color: #f5f5f5;
   border-radius: 0.8rem;
+}
+.openSelfAddTagBtn{
+  color:#7a7a7a;
+  background-color:#f1f1ff;
+  border-radius:8px;
+  border:2px solid #ccc;
+  padding:0;
+  text-align:center;
+  height:25px;
+  min-width:20px;
+  line-height:20px;
+}
+.selfAddSaveBtn{
+  word-break:keep-all;
+  min-width:45px;
+  height:25px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#7a7a7a;
+  background-color:#f1f1ff;
+  font-size:11px;
+  border-radius:8px;
+  border:2px solid #ccc;
+}
+.selfTagOpenFlex{
+  flex-direction:column !important;
+  align-items:start !important;
+  gap:0.3rem;
 }
 button {
   min-width: 40px;

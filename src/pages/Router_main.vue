@@ -355,7 +355,7 @@ export default {
       param.fUserKey = this.GE_USER.userKey
       param.userKey = this.GE_USER.userKey
       const result = await this.$getViewData(
-        { url: 'https://www.unibuzzy.com/sUniB/tp.getChanMainBoard', param: param },
+        { url: '/sUniB/tp.getChanMainBoard', param: param },
         false
       )
       if (
@@ -403,7 +403,7 @@ export default {
         paramMap.set('subsUserKey', this.GE_USER.userKey)
         paramMap.set('userKey', this.GE_USER.userKey)
         const response = await this.$axios.post(
-          'https://www.unibuzzy.com/sUniB/tp.getMyContentsList',
+          '/sUniB/tp.getMyContentsList',
           Object.fromEntries(paramMap)
         )
         if (response.data && response.data.content) {
@@ -560,7 +560,7 @@ export default {
               this.changePageHeader(this.$changeText(result.content.cabinetNameMtext))
             }
           } else if (detailParam.jobkindId === 'TODO') {
-            this.changePageHeader('To Do')
+            // this.changePageHeader('To Do')
           } else {
             detailParam.nameMtext = this.$changeText(result.content.nameMtext)
             detailParam.teamName = this.$changeText(result.content.nameMtext)
@@ -634,7 +634,7 @@ export default {
       paramMap.set('sysCabinetCode', 'BOAR')
       paramMap.set('userKey', this.GE_USER.userKey)
       var response = await this.$commonAxiosFunction({
-        url: 'https://www.unibuzzy.com/sUniB/tp.getCabinetDetail',
+        url: '/sUniB/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -672,7 +672,7 @@ export default {
         }
         const result = await this.$getViewData(
           {
-            url: 'https://www.unibuzzy.com/sUniB/tp.getChanMainBoard',
+            url: '/sUniB/tp.getChanMainBoard',
             param: Object.fromEntries(paramMap)
           },
           nonLoadingYn

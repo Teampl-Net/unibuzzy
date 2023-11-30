@@ -1,5 +1,5 @@
 <template>
-    <div class="commonProfileWrap" :style="(smallYn? 'padding: 0!important;' : 'padding: 2px; ' ) + (selfYn || GE_USER.userKey === GE_USER_INFO.userKey?'border:2.5px solid #5B1CFC;' : 'border:2.5px solid #CCC;')">
+    <div class="commonProfileWrap" :style="(smallYn? 'padding: 0!important;' : 'padding: 2px; ' )" style="border:2.5px solid #CCC;">
         <div v-if="GE_USER_INFO && GE_USER_INFO.userProfileImg" class="picImgWrap picWrapReal" ref="mainImgAreaRef" :style="'background-image: url('+ (GE_USER_INFO.domainPath ? GE_USER_INFO.domainPath + $changeUrlBackslash(GE_USER_INFO.userProfileImg) : GE_USER_INFO.userProfileImg) +');'">
             <img v-if="GE_USER_INFO.certiDate" :style="smallYn? 'right: -10px;bottom: -3px;' : ' right: -5px;bottom: 0px;'" src="../../assets/images/common/userCertiIcon.svg" alt="">
         </div>

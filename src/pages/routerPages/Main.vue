@@ -8,9 +8,6 @@
       confirmType="two"
       confirmText="Do you want to exit UniBuzzy?"
     />
-    <transition name="showUp">
-      <PreparingPop v-if="preparingPopOpenYn" :pAreaInfo="mAreaInfo" :pClosePop="closePreparingPop"/>
-    </transition>
     <createBoardChannel
       v-if="mCreChannelShowYn"
       @successCreBoard="successCreBoard"
@@ -32,10 +29,13 @@
       />
     </transition>
     <div
-      v-if="mInfoBoxShowYn && !mSelectWriteTypePopShowYn"
+      v-if="preparingPopOpenYn || mInfoBoxShowYn && !mSelectWriteTypePopShowYn "
       @click="closeInfoBox"
       class="popBg"
     ></div>
+    <transition name="showUp">
+      <PreparingPop v-if="preparingPopOpenYn" :pAreaInfo="mAreaInfo" :pClosePop="closePreparingPop"/>
+    </transition>
     <transition name="showUp">
       <areaInfoPop
         :pBdClickedYn="mBdClickedYn"
@@ -107,9 +107,12 @@
         <p class="w100P textOverdot fontBold" style="position: absolute; bottom: 10px; font-style: italic; padding: 0 5px;">{{ mTownName }}</p>
       </div> -->
       <template v-if="mPcStyleYn">
+        <!-- <div @click="openBallonPop" class="hotBallon cursorP" style="position:absolute; height:auto; top:80px; left:300px;">
+          <img src="@/assets/images/main/hotBalloon.png" style="width:80px; filter:drop-shadow(5px 5px #00000036);"/>
+        </div> -->
         <div
           class="zoom"
-          :class="mSelectedAreaPriority === building.priority ? 'clickEvent' : ''"
+          :class="{'clickEvent' : mSelectedAreaPriority === building.priority && building.priority !== 0, 'zoomtwo' : building.priority !== 0, hotBalloon: building.priority === 0}"
           v-for="building in mTownBuildingList"
           :key="building.priority"
           style="position: absolute; transform: translate(-50%, -50%)"
@@ -133,7 +136,7 @@
             alt=""
           />
         </div>
-        <!-- <img
+        <img
           :src="mMountainImgPath"
           style="
             position: absolute;
@@ -144,12 +147,12 @@
             height: 20%;
           "
           alt=""
-        /> -->
+        />
       </template>
       <template v-else>
         <div
           class="zoom"
-          :class="mSelectedAreaPriority === building.priority ? 'clickEvent' : ''"
+          :class="{'clickEvent' : mSelectedAreaPriority === building.priority && building.priority !== 0, 'zoomtwo' : building.priority !== 0, hotBalloon: building.priority === 0}"
           v-for="building in mTownBuildingList"
           :key="building.priority"
           style="position: absolute; transform: translate(-50%, -50%)"
@@ -168,7 +171,7 @@
             alt=""
           />
         </div>
-        <!-- <img
+        <img
           :src="mMountainImgPath"
           style="
             position: absolute;
@@ -178,7 +181,7 @@
             width: 35%;
           "
           alt=""
-        /> -->
+        />
       </template>
       <div
         class="fl"
@@ -273,16 +276,16 @@ export default {
       mTownBuildingList: [
         {
           priority: 0,
-          left: '52%',
-          top: '65%',
-          w: '40%',
-          pcW: '40%',
-          pcH: '18%',
+          left: '10%',
+          top: '20%',
+          w: '80px',
+          pcW: '80px',
+          pcH: 'auto',
           titleLeft: '5%',
           titleTop: '70%',
-          imgPath: '/resource/main/main_campus.svg',
-          nightImgPath: '/resource/main/main_night_campus.svg',
-          titlePah: '/resource/main/title_myday.png'
+          imgPath: '/resource/main/hotBalloon.png',
+          nightImgPath: '/resource/main/hotBalloon.png',
+          titlePah: ''
           // titlePah: '/resource/main/title_campus.svg'
         },
         {
@@ -296,8 +299,8 @@ export default {
           titleTop: '70%',
           imgPath: '/resource/main/main_plaza.svg',
           nightImgPath: '/resource/main/main_night_plaza.svg',
-          titlePah: '/resource/main/title_invite.png'
-          // titlePah: '/resource/main/title_plaza.svg'
+          titlePah: '/resource/main/title_invitation.png'
+          // titlePah: '/resource/main/title_plaza.svg'`
         },
         // {
         //   priority: 2,
@@ -336,7 +339,7 @@ export default {
           titleTop: '45%',
           imgPath: '/resource/main/main_classin.svg',
           nightImgPath: '/resource/main/main_night_class.svg',
-          titlePah: '/resource/main/title_message.png'
+          titlePah: '/resource/main/title_community.png'
           // titlePah: '/resource/main/title_class.svg'
         },
         {
@@ -378,6 +381,19 @@ export default {
           imgPath: '/resource/main/main_lab.svg',
           nightImgPath: '/resource/main/main_night_lab.svg',
           titlePah: '/resource/main/title_lab.svg'
+        },
+        {
+          priority: 8,
+          left: '52%',
+          top: '65%',
+          w: '40%',
+          pcW: '40%',
+          pcH: '18%',
+          titleLeft: '5%',
+          titleTop: '70%',
+          imgPath: '/resource/main/main_campus.svg',
+          nightImgPath: '/resource/main/main_night_campus.svg',
+          titlePah: '/resource/main/title_myday.png'
         }
       ],
       mNightYn: false,
@@ -453,11 +469,11 @@ export default {
     if (nowHours >= 19) {
       this.pChangeNightYn(true)
       this.mNightYn = true
-      this.mMountainImgPath = '/resource/main/main_night_mountain.svg'
+      this.mMountainImgPath = '/resource/main/main_mountain.png'
     } else {
       this.pChangeNightYn(false)
       this.mNightYn = false
-      this.mMountainImgPath = '/resource/main/main_mountain.svg'
+      this.mMountainImgPath = '/resource/main/main_mountain.png'
     }
     this.getMainBoard().then((res) => {
       // this.createMaskingAreaImg()
@@ -556,6 +572,7 @@ export default {
       }
       this.mBoardList = []
       this.mInfoBoxShowYn = false
+      this.closePreparingPop()
       return false
     },
     closeSchoolPop() {
@@ -698,11 +715,13 @@ export default {
     },
     async openAreaInfoPop(area) {
       console.log('확인확인', area.priority)
-      if (area.priority === 1 || area.priority === 4 || area.priority === 5) {
+      if (area.priority === 1 || area.priority === 5) {
         this.mAreaInfo = area
         this.openPreparingPop()
-      } else if (area.priority === 0) {
-        this.$router.push({ path: '/todo' })
+      } else if (area.priority === 8) {
+        this.$emit('changeRouterPath', 'todo')
+      } else if (area.priority === 4) {
+        this.$emit('changeRouterPath', 'chanList')
       } else {
         var isMobile = /Mobi/i.test(window.navigator.userAgent)
         if (
@@ -1354,6 +1373,7 @@ export default {
 }
 </script>
 <style scoped>
+
 @keyframes area-zoom {
   from {
     transform: scale(1);
@@ -1362,6 +1382,11 @@ export default {
     transform: scale(1.05);
   }
 }
+.hotBalloon{
+  animation: moving 2s 0s ease-in-out infinite alternate;
+  filter:drop-shadow(5px 5px #00000036);
+}
+
 .areaDiv {
   animation: areaMoving 0.3s 1s ease-in-out 3 alternate;
   cursor: pointer;
@@ -1643,6 +1668,9 @@ export default {
   .zoom:hover {
     cursor: pointer;
     filter: drop-shadow(0 0 10px #f6ff7b);
+
+  }
+  .zoomtwo:hover{
     transform-origin: center;
     animation: uniB-zoom 0.8s;
   }

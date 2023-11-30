@@ -87,8 +87,59 @@
       "
       class="justSticker"
     ></div>
+    <!--new header <div v-if="propDetailYn===true && CONT_DETAIL.jobkindId === 'TODO'" class="w100P" style="margin-top:-5px;position:relative; box-shadow:0 0 3px 4px rgba(60,60,60,0.1); padding:0 25px 0 20px; height:55px; display:flex; align-items:center; justify-content:space-between;">
+        <img v-on:click="closeXPop" src="@/assets/images/common/icon_back.png" class="cursorP" style="width: 0.8rem;margin-left: 0.5rem;" alt="뒤로가기"/>
+        <div style="width:100px; display:flex; align-items:center; justify-content:end;">
+          <p class="font20 CLDeepGrayColor" style=" font-weight:bold; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);">
+            {{ CONT_DETAIL.jobkindId==='TODO' ? 'To Do Detail' : CONT_DETAIL.jobkindId==='BOAR' ? 'Board Detail' : 'Message Detail' }}
+          </p>
+          <div
+            style="
+              width: 30px;
+              height: 35px;
+              display: flex;
+              flex-direction: column;
+              cursor: pointer;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            <div
+              style="
+                width: 100%;
+                height: 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <img
+                src="../../../assets/images/contents/contentsShareIcon.svg"
+                class="fl"
+                alt="공유 아이콘"
+                data-clipboard-action="copy"
+                id="boardDetailCopyBody"
+                @click="contentsSharePop()"
+                :data-clipboard-text="CONT_DETAIL.copyTextStr"
+              />
+            </div>
+          </div>
+          <div style="width:34px;">
+            <img
+              v-if="!pNoAuthYn"
+              src="../../../assets/images/contents/contents_moreBtnIcon.svg"
+              alt=""
+              @click="contentMenuClick"
+            />
+          </div>
+        </div>
+      </div> -->
+
+      <div v-if="CONT_DETAIL.contStatus === '99'" class="w100P fontBold completedTodoText " style="padding:10px 10px 10px 20px;text-align:left; height:auto; background-color:#aaaaaa">
+        {{ `Work completed at ${getMonthDate(CONT_DETAIL.workEndDate)}.` }}
+      </div>
     <div class="contentsCardHeaderArea">
-      <div
+      <!-- <div
         :style="
           GE_USER.userKey === CONT_DETAIL.creUserKey
             ? 'border: 2px solid #5B1CFC !important; '
@@ -135,9 +186,23 @@
             background-position: center;
           "
         ></div>
-      </div>
-      <div class="contentsCardInfo">
-        <div class="contentsCardInfoBox">
+      </div> -->
+      <div class="w100P h100P" style="padding:0 10px 0px 0;">
+        <div style="
+            width: calc(100% - 10px);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+          ">
+      <div style="padding-top:20px;" :style="{'border-left' : CONT_DETAIL.jobkindId === 'BOAR' ? '7px solid rgba(120, 175, 135, 0.6)' : CONT_DETAIL.jobkindId === 'ALIM' ? '7px solid pink' : ''}">
+        <div style="
+              width: 100%;
+              position: relative;
+              height: 50%;
+              min-height: 26px;
+              position: relative;
+              margin-left:20px;
+            ">
           <template
             v-if="
               !pNoAuthYn &&
@@ -147,115 +212,287 @@
               CONT_DETAIL.titleBlindYn
             "
           >
-            <p class="textLeft textOverdot commonBlack fontBold font16 noPerm">
+            <p class="textLeft textOverdot commonBlack fontBold font16 noPerm"
+              style="width: calc(100% - 35px)">
               {{ $t('COMM_MSG_NOPERM') }}
             </p>
           </template>
           <template v-else>
-            <p
-              @click="goContentsDetail()"
-              class="cursorDragText textLeft textOverdot commonBlack fontBold font16 noPerm"
-              :class="
-              (CONT_DETAIL.jobkindId === 'BOAR' &&
-                  CONT_DETAIL.workStatYn &&
-                  CONT_DETAIL.workStatCodeKey === 46) ||
-                (CONT_DETAIL.jobkindId === 'TODO' &&
-                  CONT_DETAIL.contStatus === '99')
-                  ? 'completeWork'
-                  : ''
-              "
-            >
-              <img
-                v-if="CONT_DETAIL.jobkindId === 'ALIM'"
-                src="@/assets/images/contents/contTitle_alim.svg"
-                class="cursorNotDrag"
-                alt=""
-              />
-              <img
-                v-else-if="CONT_DETAIL.jobkindId === 'BOAR'"
-                src="@/assets/images/contents/contTitle_board.svg"
-                class="cursorNotDrag"
-                alt=""
-              />
-              <img
-                class="cursorP"
-                v-else-if="
-                  CONT_DETAIL.jobkindId === 'TODO' &&
-                  CONT_DETAIL.contStatus === '99'
-                "
-                src="@/assets/images/todo/checkboxCheck.png"
-                width="20"
-                height="20"
-                @click.stop="completeTodo(CONT_DETAIL)"
-              />
-              <img
-                class="cursorP"
-                v-else-if="
-                  CONT_DETAIL.jobkindId === 'TODO' &&
-                  CONT_DETAIL.contStatus === '00'
-                "
-                src="@/assets/images/todo/checkboxBlank.png"
-                width="20"
-                height="20"
-                @click.stop="completeTodo(CONT_DETAIL)"
-              />
-              {{ CONT_DETAIL.title }}
-            </p>
-            <img
-              v-if="!pNoAuthYn"
-              class="moreMenu"
-              src="@/assets/images/contents/contents_moreBtnIcon.svg"
-              alt=""
-              @click="contentMenuClick"
-            />
+                <div class="w100P" style="display:flex; align-items:center;">
+                  <!-- <div class="w100P" style="display:flex; align-items:start;"> -->
+                  <div style="width:calc(100% - 34px); display:flex; align-items:start;">
+                    <img
+                      class="cursorP"
+                      v-if="
+                        CONT_DETAIL.jobkindId === 'TODO' &&
+                        CONT_DETAIL.contStatus === '99'
+                      "
+                      src="@/assets/images/todo/checkboxCheck.png"
+                      width="30"
+                      height="30"
+                      style="margin-top:-0.3rem; opacity:0.6;"
+                      @click.stop="completeTodo(CONT_DETAIL)"
+                    />
+                    <img
+                      class="cursorP"
+                      v-else-if="
+                        CONT_DETAIL.jobkindId === 'TODO' &&
+                        CONT_DETAIL.contStatus === '00'
+                      "
+                      src="@/assets/images/todo/checkboxBlank.png"
+                      width="30"
+                      height="30"
+                      style="margin-top:-0.3rem; opacity:0.6;"
+                      @click.stop="completeTodo(CONT_DETAIL)"
+                    />
+                      <div style="width:calc(100% - 30px);">
+                        <p
+                          @click="goContentsDetail()"
+                          style="line-height:1.2;"
+                          :style="{'margin-left' : CONT_DETAIL.jobkindId === 'TODO' ? '5px' : ''}"
+                          class="cursorDragText textLeft commonBlack fontBold todoTitleFontSize"
+                          :class="
+                            `${(CONT_DETAIL.jobkindId === 'BOAR' &&
+                              CONT_DETAIL.workStatYn &&
+                              CONT_DETAIL.workStatCodeKey === 46) ||
+                            (CONT_DETAIL.jobkindId === 'TODO' &&
+                              CONT_DETAIL.contStatus === '99')
+                              ? 'completeWork'
+                              : ''} ${
+                                propDetailYn?
+                                '':'textOverdot'
+                              }`
+                          "
+                        >
+                          {{ CONT_DETAIL.title }}
+                          <span :style="{color : CONT_DETAIL.contStatus === '99' ? '#7b7878' : '' }" class="todoImportantInfoMemo mleft-03" style="line-height:1.8; font-weight:normal; line-height:1;" v-if="CONT_DETAIL.memoCount > 0">
+                            ({{ CONT_DETAIL.memoCount }})
+                          </span>
+                          <!-- <span v-if="CONT_DETAIL.stickerList.length > 0" class="todoTag mright-03" :style="`background: ${CONT_DETAIL.stickerList[0].picBgPath}`">
+                            {{ $changeText(CONT_DETAIL.stickerList[0].nameMtext) }}
+                          </span> -->
+                        </p>
+                      </div>
+                      <div style="width:34px; transform:translateY(-15px);">
+                      <img
+                        v-if="!pNoAuthYn"
+                        src="../../../assets/images/contents/contents_moreBtnIcon.svg"
+                        alt=""
+                        @click="contentMenuClick"
+                      />
+                    </div>
+                  </div>
+              </div>
           </template>
         </div>
-        <div class="userInfoArea">
-          <div class="CLDeepGrayColor font14 fl textLeft fontBold lineHeight23">
-            <p
-              v-if="CONT_DETAIL.jobkindId === 'BOAR'"
-              class="CLDeepGrayColor font14 fl textLeft fontBold"
-              @click="goChannelMain()"
-            >
-              <img
-                class="officialImg fl"
-                src="@/assets/images/channel/icon_official2.svg"
-                v-if="CONT_DETAIL.officialYn"
-                alt=""
-              />
-              <span class="fl">
-                {{ $changeText(CONT_DETAIL.cabinetNameMtext) }}
+        <div :class="{headerInfoWrap : CONT_DETAIL.jobkindId !== 'TODO'}" :style="{'padding-left': CONT_DETAIL.jobkindId === 'TODO' ? '30px' : ''}" style="width:calc(100% - 20px); margin-left:20px; display:flex; align-items:center; justify-content:space-between;">
+          <div class="w100P " style="text-align:left; ">
+            <span v-if="CONT_DETAIL.jobkindId !== 'BOAR'" style="min-width:39px;" class="todoPriority mright-03" :class="{todoPriorityHigh : CONT_DETAIL.priority === '00', todoPriorityMiddle: CONT_DETAIL.priority === '01' || !CONT_DETAIL.priority, todoPriorityLow : CONT_DETAIL.priority === '02'  }">
+                {{ CONT_DETAIL.priority === '00' ? `${$t('COMMON_TODO_HIGH')}` : CONT_DETAIL.priority === '01' || !CONT_DETAIL.priority ? `${$t('COMMON_TODO_MID')}` : `${$t('COMMON_TODO_LOW')}` }}
               </span>
-              <span class="textOverdot fl chanName">
-                ({{ $changeText(CONT_DETAIL.nameMtext) }})
-              </span>
-            </p>
-            <p
-              v-else
-              class="CLDeepGrayColor font14 fl textLeft fontBold"
-              @click="goChannelMain()"
-            >
-              <img
-                class="officialImg fl"
-                src="@/assets/images/channel/icon_official2.svg"
-                v-if="CONT_DETAIL.officialYn"
-                alt=""
-              />
-              <span class="fl"> {{ $changeText(CONT_DETAIL.nameMtext) }}</span>
-            </p>
-            <span @click="goUserProfile()" class="mleft-03 fontNomal">
-              <span class="fontNomal">|</span>
-              {{ $changeText(CONT_DETAIL.creUserName) }}
-            </span>
+              <p
+                v-if="CONT_DETAIL.jobkindId === 'TODO'"
+                class="CLDeepGrayColor font15"
+                style="line-height: 23px; display:inline-block;"
+              >
+                <span :class="{delayedTodo : new Date(CONT_DETAIL.workToDate) < new Date() && getHowLate(CONT_DETAIL.workToDate) > 0}">
+                  {{
+                    getMonthDate(CONT_DETAIL.workFromDate) +
+                    '~' +
+                    getMonthDate(CONT_DETAIL.workToDate)
+                  }}</span
+                >
+              </p>
+              <p v-else class="CLDeepGrayColor font15" style="display:inline-block; text-align:left;">
+                  <img
+                  v-if="CONT_DETAIL.jobkindId === 'ALIM'"
+                  src="../../../assets/images/contents/contTitle_alim.svg"
+                  class="cursorNotDrag mright-03"
+                  style="
+                    width: 20px;
+                  "
+                  alt=""
+                />
+                <img
+                  v-if="CONT_DETAIL.jobkindId === 'BOAR'"
+                  src="../../../assets/images/contents/contTitle_board.svg"
+                  class="cursorNotDrag mright-03"
+                  style="
+                    width: 20px;
+                  "
+                  alt=""
+                />
+                <span>{{ this.$changeText(CONT_DETAIL.nameMtext) }}</span>
+                <span v-if="CONT_DETAIL.jobkindId === 'BOAR'"> > </span>
+                <span v-if="CONT_DETAIL.jobkindId === 'BOAR'"> {{ CONT_DETAIL ? this.$changeText(CONT_DETAIL.cabinetNameMtext) : '' }}</span>
+                <span> | </span>
+                <span >
+                  <img class="profileImg"
+                  :src="CONT_DETAIL.userDomainPath ? CONT_DETAIL.userDomainPath + CONT_DETAIL.userProfileImg : CONT_DETAIL.userProfileImg" :alt="CONT_DETAIL.creUserName"/>
+                  {{ this.$changeText(CONT_DETAIL.creUserName) }}
+                </span>
+              </p>
           </div>
-          <p class="fr CLDeepGrayColor font12 lineHeight23">
-            {{ $changeDateFormat(CONT_DETAIL.creDate) }}
-          </p>
+          <div v-if="CONT_DETAIL.jobkindId === 'TODO'" class="todoOtherInfosAsignee">
+            <div class="w100P actorImgList" @click.stop="openActorList()">
+              <template v-for="(each, index) in CONT_DETAIL.actorList" :key="index">
+                <img v-if="each.accessKind === 'U' && index < 3 " class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/intro/login/uniB_logo.png`)" style="" :alt="each.userDispMtext"/>
+                <img v-else-if="index < 3" class="actorImg" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" style="" :alt="each.userDispMtext"/>
+                <div class="moreActorImg" style="" v-if="CONT_DETAIL.actorList.length > 3 && index === 2">
+                  <span>+{{ CONT_DETAIL.actorList.length - 3 }}</span>
+                </div>
+                <div class="actorNameListWrap" v-if="mOpenActorListYn">
+                  <div class="actorNameList">
+                    <p class="todoFontSize" v-for="(each, index) in CONT_DETAIL.actorList" :key="index">{{ each ? $changeText(each.userDispMtext) : 'X' }}</p>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+          <statCodeComponent
+            v-if="
+              CONT_DETAIL.jobkindId === 'BOAR' &&
+              CONT_DETAIL.workStatYn &&
+              !pNoAuthYn
+            "
+            @click="openWorkStatePop(CONT_DETAIL)"
+            :alimDetail="CONT_DETAIL"
+            class="fr statCodeCompo"
+            :contentsKey="CONT_DETAIL.contentsKey"
+            :teamKey="CONT_DETAIL.creTeamKey"
+            :currentCodeKey="CONT_DETAIL.workStatCodeKey"
+            :codeList="CONT_DETAIL.workStatCodeList"
+          />
+          <div v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="display:flex; align-items:center; gap:0.2rem;">
+            <div v-if="!GE_USER.unknownYn" style="width: 100%;">
+          <!-- <p class="fr font12 lightGray mright-03" @click="CONT_DETAIL.rUserCount !== -1? this.openRecvListPop(): ''" v-if="CONT_DETAIL.jobkindId === 'ALIM'" style="border: 1px solid rgb(204, 204, 204); padding: 0px 5px; border-radius: 8px; display: flex; align-items: center;" > -->
+          <!-- <p
+            class="fl commonColor font12 fl textLeft fontBold cursorP"
+            v-if="
+              !pNoAuthYn &&
+              CONT_DETAIL.creUserKey !== GE_USER.userKey &&
+              CONT_DETAIL.showCreNameYn === 1 &&
+              CONT_DETAIL.jobkindId === 'ALIM'
+            "
+            style="padding-left:30px; margin-top: 2px"
+            @click="sendReply"
+          >
+            답장하기
+          </p> -->
+          <div
+            v-if="cancelTimerShowCheck(CONT_DETAIL)"
+            class="fl"
+            :id="'timerArea' + CONT_DETAIL.contentsKey"
+            @click="cancelConfirm(CONT_DETAIL)"
+          >
+            <p
+              :id="'timerText' + CONT_DETAIL.contentsKey"
+              class="font12 fl textRight w-100P"
+            >
+              {{
+                setIntervalTimer(CONT_DETAIL.creDate, CONT_DETAIL.contentsKey)
+              }}
+            </p>
+          </div>
+            </div>
+            <div
+            @click="
+              openRecvActorListPop(CONT_DETAIL.rUserCount === -1 ? true : '')
+            "
+            class="fr cursorP font12 commonGrayBG CDeepColor fontBold"
+            v-if="CONT_DETAIL.jobkindId === 'ALIM'"
+            :style="
+              CONT_DETAIL.rUserCount !== -1 &&
+              CONT_DETAIL.creUserKey === GE_USER.userKey
+                ? 'background: rgb(221 229 251)!important;'
+                : ''
+            "
+            style="
+              padding: 0px 8px;
+              border-radius: 8px;
+              height: 18px;
+              display: flex;
+              align-items: center;
+              width:50px;
+              text-align:right;
+            "
+          >
+            <!-- <p  class="font12 fl lightGray">수신</p>
+                          <span class="font12 mSide-02">{{'|'}}</span> -->
+            <template v-if="CONT_DETAIL.rUserCount === -1"> 전체 </template>
+            <template v-else-if="CONT_DETAIL.rUserCount !== -1">
+              <img
+                src="../../../assets/images/contents/userIcon.svg"
+                class="img-w13 mright-01 fl"
+                style=""
+                alt=""
+              />
+              <p
+                class="font12 fl mleft-01 CDeepColor"
+                style="line-height: 1; margin-top: 1px"
+              >
+                {{ CONT_DETAIL.rUserCount }}
+              </p>
+            </template>
+            </div>
+          </div>
         </div>
-        <div
-          class="w100P"
-          style="display: flex; justify-content: space-between"
+        <div class="mtop-03" style="margin-left:20px; border-bottom:1px solid rgba(204, 204, 204, 0.314);"></div> <!-- 구분선 -->
+        <div :style="{'padding-left' : CONT_DETAIL.jobkindId === 'TODO' ? '50px' : '20px'}" class="font15 mtop-03" style="display:flex; align-items:center; justify-content:space-between; color:#636363; font-size:15px;">
+            <div v-if="CONT_DETAIL.jobkindId === 'TODO'" class="font15" @click="goUserProfile()" style="display:flex; align-items:center; ">
+              <img class="profileImg" :src="CONT_DETAIL.userDomainPath ? CONT_DETAIL.userDomainPath + CONT_DETAIL.userProfileImg : CONT_DETAIL.userProfileImg" :alt="CONT_DETAIL.creUserName"/>
+              <span class="mleft-03 mright-03"> {{ this.$changeText(CONT_DETAIL.creUserName) }}</span>
+              <span>{{ this.$changeDateFormat(CONT_DETAIL.creDate) }}</span>
+            </div>
+            <span v-else>{{ this.$changeDateFormat(CONT_DETAIL.creDate) }}</span>
+            <div @click="clickFileDownload()" v-if="CONT_DETAIL.fileCount" class="cursorP">
+              <img src="@/assets/images/contents/contentsClipIcon.svg" style="width:15px;" class="" alt=""/>
+              <span class="font15 mleft-03"> {{ CONT_DETAIL.fileCount }}개</span>
+            </div>
+        </div>
+      </div>
+      <div
+          style="line-height: 23px"
+          class="CLDeepGrayColor font14 fl textLeft fontBold"
         >
+          <!-- <p
+            v-if="CONT_DETAIL.jobkindId === 'BOAR'"
+            class="CLDeepGrayColor font14 fl textLeft fontBold"
+            @click="goChannelMain()"
+          >
+            <img
+              src="../../../assets/images/channel/icon_official2.svg"
+              v-if="CONT_DETAIL.officialYn"
+              style="height: 21px; padding: 3px"
+              class="fl"
+              alt=""
+            />
+            <span class="fl">
+              {{ this.$changeText(CONT_DETAIL.cabinetNameMtext) }}
+            </span>
+            <span
+              class="teverdot fl"
+              style="display: block; max-width: 70px"
+            >
+              ({{ this.$changeText(CONT_DETAIL.nameMtext) }})
+            </span>
+          </p>
+          <p
+            v-else
+            class="CLDeepGrayColor font14 fl textLeft fontBold"
+            @click="goChannelMain()"
+          >
+            <img
+              src="../../../assets/images/channel/icon_official2.svg"
+              v-if="CONT_DETAIL.officialYn"
+              style="height: 21px; padding: 3px"
+              class="fl"
+              alt=""
+            />
+            <span class="fl">
+              {{ this.$changeText(CONT_DETAIL.nameMtext) }}</span
+            >
+          </p> -->
           <span
             v-if="CONT_DETAIL.jobkindId === 'TODO'"
             @click="goUserProfile()"
@@ -263,95 +500,11 @@
             class="mleft-03"
           >
           </span>
-          <div
-            v-if="CONT_DETAIL.jobkindId === 'TODO'"
-            class="tagListWrap mTop-10 w100P"
-            style="
-              display: flex;
-              gap: 5px;
-              flex-wrap: wrap;
-              justify-content: space-between;
-            "
-          >
-            <div
-              class="flexAlignCenter"
-              style="justify-content: end; align-items: start; flex-wrap: wrap"
-            >
-              <div
-                v-for="(tag, index) in CONT_DETAIL.tagList"
-                :key="index"
-                class="CDeepBgColor"
-                style="
-                  color: white;
-                  height: 20px;
-                  line-height: 20px;
-                  padding: 0px 5px;
-                  border-radius: 10px;
-                  font-size: 10px;
-                  width: auto;
-                  word-break: keep-all;
-                "
-              >
-                {{ tag.tagText }}
-              </div>
-            </div>
-            <div
-              v-if="CONT_DETAIL.jobkindId === 'TODO'"
-              style="display: flex; flex-direction: column; align-items: end"
-            >
-              <p style="font-size: 12px">
-                {{
-                  compareSameDate($changeDateFormat(CONT_DETAIL.workFromDate), $changeDateFormat(CONT_DETAIL.workToDate))
-                }}
-              </p>
-              <div>
-                <template
-                  v-for="(each, index) in CONT_DETAIL.actorList"
-                  :key="index"
-                >
-                  <img
-                    v-if="each.accessKind === 'U'"
-                    class="actorImg"
-                    :src="
-                      each.domainPath
-                        ? each.domainPath + each.pathMtext
-                        : require(`@/assets/images/intro/login/uniB_logo.png`)
-                    "
-                    style=""
-                    :alt="each.userDispMtext"
-                  />
-                  <img
-                    v-else
-                    class="actorImg"
-                    :src="
-                      require(`@/assets/images/todo/channer_addressBook.svg`)
-                    "
-                    style=""
-                    :alt="each.userDispMtext"
-                  />
-                </template>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-      <div v-if="!GE_USER.unknownYn" class="w100P fl">
-        <statCodeComponent
-          v-if="
-            CONT_DETAIL.jobkindId === 'BOAR' &&
-            CONT_DETAIL.workStatYn &&
-            !pNoAuthYn
-          "
-          @click="openWorkStatePop(CONT_DETAIL)"
-          :alimDetail="CONT_DETAIL"
-          class="fr"
-          :contentsKey="CONT_DETAIL.contentsKey"
-          :teamKey="CONT_DETAIL.creTeamKey"
-          :currentCodeKey="CONT_DETAIL.workStatCodeKey"
-          :codeList="CONT_DETAIL.workStatCodeList"
-        />
-      </div>
     </div>
+    </div>
+    <!-- //header -->
 
     <div
       v-if="!propJustShowYn"
@@ -456,10 +609,19 @@
           : ''
       "
     >
-      <div class="contentsCardUserDoArea">
-        <div class="contentsCardUserDoWrap">
+      <div v-if="!pNoAuthYn"
+        class="contentsCardUserDoArea"
+        style="position: relative;
+          width: 100%;
+          background: #f8f8ff;
+          min-height: 40px;
+          float: left;
+          justify-content: space-between;
+          display: flex;
+          margin-top: 10px;
+          padding: 10px 20px;
+      ">
           <div
-            v-if="CONT_DETAIL.jobkindId !== 'TODO'"
             class="userDoBox"
             @click="
               GE_USER.unknownYn
@@ -470,7 +632,7 @@
                   )
             "
           >
-            <div class="userDoItem">
+        <!-- <div class="userDoItem">
               <img
                 v-if="
                   CONT_DETAIL.D_CONT_USER_DO &&
@@ -523,73 +685,203 @@
             <p class="font12 fontBold fl mtop-01 w100P userDoColor">
               {{ CONT_DETAIL.starCount }}
             </p>
-          </div>
-          <div class="userDoBox" @click="goContentsDetail(undefined, true)">
-            <div class="userDoItem">
-              <img
-                v-if="mWriteMemoYn"
-                src="@/assets/images/contents/cont_memo.svg"
-                class=""
-                alt=""
-              />
-              <img
-                v-else
-                src="@/assets/images/contents/cont_memo_no.svg"
-                class=""
-                alt=""
-              />
-            </div>
-            <p class="font12 fontBold mtop-01 fl w100P userDoColor">
-              {{ CONT_DETAIL.memoCount }}
-            </p>
-          </div>
+          </div> -->
           <div
-            class="userDoBox"
-            @click="clickFileDownload()"
-            v-if="
-              CONT_DETAIL.attachMfilekey &&
-              CONT_DETAIL.attachMfilekey > 0 &&
-              CONT_DETAIL.fileCount > 0
-            "
-          >
-            <div class="userDoItem">
-              <img
-                v-if="
-                  CONT_DETAIL.attachMfilekey && CONT_DETAIL.attachMfilekey > 0
-                "
-                src="@/assets/images/contents/contentsClipIcon.svg"
-                class=""
-                alt=""
-              />
-              <img
-                v-else
-                src="@/assets/images/contents/contentsClipIcon.svg"
-                class=""
-                alt=""
-              />
-            </div>
-            <p class="font12 fontBold mtop-01 fl w100P userDoColor">
-              {{ CONT_DETAIL.fileCount }}
-            </p>
+              @click="this.goContentsDetail(undefined, true)"
+              style="
+                width: auto;
+                height: 35px;
+                display: flex;
+                cursor: pointer;
+                margin-right: 10px;
+                align-items: center;
+                justify-content:start;
+                gap:0.3rem;
+              "
+            >
+            <!-- <div v-if="propDetailYn === true">
+              <p class="showHistoryBtn font14 fontBold" style="white-space:nowrap;">
+                <span :class="{selectedHistoryTab : mSelectedHistoryTabIdx === index, 'pleft-1' : index===1 }" @click="selectHistory(index)" v-for="(tab, index) in mShowHistoryTab" :key="index" style="">
+                {{ tab.title }}
+                <span style="color:#7e7e7e;" v-if=" index===0 " class="pleft-08">|</span>
+              </span>
+              </p>
+            </div> -->
           </div>
         </div>
-        <div class="contShare">
-          <div class="contShareBox">
-            <div>
-              <img
-                src="@/assets/images/contents/contentsShareIcon.svg"
-                class="fl"
-                alt="공유 아이콘"
-                data-clipboard-action="copy"
-                id="boardDetailCopyBody"
-                @click="contentsSharePop()"
-                :data-clipboard-text="CONT_DETAIL.copyTextStr"
-              />
+        <div style="width: 140px; height: 100%; display:flex; align-items:center; justify-content:end;">
+            <div style=" width: 30px; height: 35px; display: flex; cursor: pointer; margin-right: 10px; flex-direction: column; justify-content: center; align-items: center;">
+              <div @click="fixedAtTop" style="width: 20px; height: 20px; display: flex; justify-content: center;">
+                <img
+                  src="../../../assets/images/contents/icon_pin2.png"
+                  class="w100P" style="opacity:0.6;" :style="{opacity: this.fixedTop === true ? '1' : '0.6'}"
+                  alt="핀"
+                />
+              </div>
             </div>
-            <p class="font12 fl fontBold w-100P mtop-01 userDoColor">
-              {{ $t('COMMON_NAME_SHARE') }}
-            </p>
-          </div>
+            <div
+              @click="
+                GE_USER.unknownYn
+                  ? pOpenUnknownLoginPop(CONT_DETAIL)
+                  : subScribeContents()
+              "
+              style="
+                width: 30px;
+                height: 35px;
+                display: flex;
+                cursor: pointer;
+                margin-right: 10px;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <div
+                style="
+                  width: 100%;
+                  height: 20px;
+                  display: flex;
+                  margin-top:-0.2rem;
+                  justify-content: center;
+                "
+              >
+                <img
+                  v-if="
+                    this.CONT_DETAIL.subsYn === 1 ||
+                    this.CONT_DETAIL.subsYn === true
+                  "
+                  src="../../../assets/images/contents/contentsBellIcon_on.svg"
+                  class=" "
+                  alt=""
+                />
+                <img
+                  v-else
+                  src="../../../assets/images/contents/contentsBellIcon.svg"
+                  class=""
+                  alt=""
+                />
+              </div>
+              <!-- <p class="font12 fontBold fl mtop-01 w-100P userDoColor">
+                {{ $t('COMMON_NAME_INTEREST') }}
+              </p> -->
+            </div>
+            <!-- <div
+              v-if="CONT_DETAIL.jobkindId !== 'TODO'"
+              @click="
+                GE_USER.unknownYn
+                  ? pOpenUnknownLoginPop(CONT_DETAIL)
+                  : openStickerPop()
+              "
+              style="
+                cursor: pointer;
+                width: 30px;
+                height: 35px;
+                display: flex;
+                float: right;
+                margin-right: 10px;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <div
+                style="
+                  width: 100%;
+                  height: 20px;
+                  float: left;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <img
+                  src="../../../assets/images/push/stickerIcon.svg"
+                  class="img-w20"
+                  alt=""
+                />
+              </div>
+              <p class="font12 fl fontBold w-100P mtop-01 userDoColor">
+                {{ $t('COMMON_NAME_LABEL') }}
+              </p>
+            </div> -->
+              <div
+              @click="
+                GE_USER.unknownYn || (this.CONT_DETAIL && !this.CONT_DETAIL.D_CONT_USER_DO)
+                  ? pOpenUnknownLoginPop(CONT_DETAIL)
+                  : changeAct(
+                      this.CONT_DETAIL.D_CONT_USER_DO[1],
+                      this.CONT_DETAIL.contentKey
+                    )
+              "
+              style="
+                cursor: pointer;
+                width: 30px;
+                height: 35px;
+                display: flex;
+                margin-right: 10px;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <div style="width: 100%; height: 20px;">
+                <img
+                  v-if="
+                    !this.CONT_DETAIL.D_CONT_USER_DO || !this.CONT_DETAIL.D_CONT_USER_DO[1].doKey ||
+                    this.CONT_DETAIL.D_CONT_USER_DO[1].doKey === 0
+                  "
+                  class=""
+                  style="vertical-align:top !important; width:21px; opacity:0.85;"
+                  src="../../../assets/images/contents/icon_heart_blue.png"
+                  alt=""
+                />
+                <img
+                  v-else
+                  style="vertical-align:top !important;"
+                  src="../../../assets/images/contents/cont_like.svg"
+                  alt=""
+                  class=""
+                />
+              </div>
+              <!-- <p class="font12 fl fontBold w-100P mtop-01 userDoColor">
+                {{ CONT_DETAIL.likeCount ? CONT_DETAIL.likeCount : '0'}}
+              </p> -->
+            </div>
+            <!-- <div
+              style="
+                width: 30px;
+                height: 35px;
+                display: flex;
+                margin-right: 10px;
+                flex-direction: column;
+                cursor: pointer;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              <div
+                style="
+                  width: 100%;
+                  height: 20px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <img
+                  src="../../../assets/images/push/contentsShareIcon.svg"
+                  class="fl"
+                  alt="공유 아이콘"
+                  data-clipboard-action="copy"
+                  id="boardDetailCopyBody"
+                  @click="contentsSharePop()"
+                  :data-clipboard-text="CONT_DETAIL.copyTextStr"
+                />
+              </div>
+              <p class="font12 fl fontBold w-100P mtop-01 userDoColor">
+                {{ $t('COMMON_NAME_SHARE') }}
+              </p>
+            </div> -->
         </div>
       </div>
       <div
@@ -791,7 +1083,11 @@ export default {
         fileServerURL: 'https://unibuzzy.com/file/tp.uploadFile'
       },
       mTargetDataList: [],
-      showEditPopYn: false
+      showEditPopYn: false,
+      mOpenActorListYn: false,
+      mSelectedHistoryTabIdx: 0,
+      mSelectedHistoryTabName: '전체',
+      mShowHistoryTab: [{ id: 1, title: '전체', val: 'AllHistory' }, { id: 2, title: '댓글', val: 'comment' }]
     }
   },
   async mounted() {
@@ -810,6 +1106,10 @@ export default {
     }
   },
   methods: {
+    closeXPop () {
+      console.log('뒤로뿅')
+      this.$emit('closeXPop')
+    },
     // workToDate와 workFromDate가 같으면 날짜가 하나만 표시되도록
     compareSameDate (from, to) {
       if (from === to) {
@@ -817,6 +1117,20 @@ export default {
       } else {
         return `${from} ~ ${to}`
       }
+    },
+    getMonthDate(date) {
+      var format = 'MM/DD'
+      return this.$dayjs(date).add(-13, 'hour').format(format)
+    },
+    getHowLate (toDate, endDate = new Date()) {
+      const howLate = new Date(endDate).getTime()
+      const toDateNew = new Date(toDate).getTime()
+      const timeDifference = howLate - toDateNew
+      const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24))
+      return daysDifference
+    },
+    openActorList () {
+      this.mOpenActorListYn = !this.mOpenActorListYn
     },
     async completeTodo (value, loadingYn) {
       var param = {}
@@ -837,6 +1151,13 @@ export default {
       this.CONT_DETAIL.creTeamKey = 0
       this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [this.CONT_DETAIL])
       // this.$emit('completeTodo')
+    },
+    selectHistory (index) {
+      // this.mSelectedHistoryTabName = this.mSelectedHistoryTabName === '전체'
+      //   ? this.mShowHistoryTab[1].title
+      //   : this.mShowHistoryTab[0].title
+      // console.log('Selected Tab:', this.selectedTab.val)
+      this.mSelectedHistoryTabIdx = index
     },
     closeMoveContentsPop() {
       this.mSelectBoardPopShowYn = false
@@ -1043,11 +1364,13 @@ export default {
     },
     async setPreTagInFirstTextLine() {
       // 본문 영역에 첫번째 줄이 사진이 아닐 경우 라인을 그어주기 위한 함수
+      // if (!window.document.getElementById('bodyFullStr' + this.contentsEle.contentsKey)) return
+      // if (!this.$refs.mainContRef) return
       if (!this.$refs[['mainContRef' + this.contentsEle.contentsKey]]) return
       if (
         this.contentsEle.jobkindId === 'BOAR' &&
-        this.$checkUserAuth(this.contentsEle.shareItem).V === false &&
-        this.contentsEle.creUserKey !== this.GE_USER.userKey
+          this.$checkUserAuth(this.contentsEle.shareItem).V === false &&
+          this.contentsEle.creUserKey !== this.GE_USER.userKey
       ) {
         return
       }
@@ -1079,7 +1402,7 @@ export default {
           if (tempCheck === undefined || tempCheck === null) {
             var tempDiv = document.createElement('div')
             tempDiv.id = 'firstTextLine' + this.contentsEle.contentsKey
-            tempDiv.classList.add('firstTextLine')
+            // tempDiv.classList.add('firstTextLine')
             child.prepend(tempDiv)
           }
         }
@@ -2071,6 +2394,55 @@ export default {
 </script>
 
 <style scoped>
+.delayedTodo{
+  color:red !important;
+}
+.showHistoryBtn{
+    height:auto;
+    /* background-color:gray; */
+    /* color:#fff; */
+    font-weight:bold;
+    border-radius:5px;
+    padding:1px 10px;
+    margin-left:0.3rem;
+    border-radius:10px;
+    text-align:center;
+    font-size:14px;
+  }
+  .historyEachBtn{
+    position:absolute;
+    bottom:-90px;
+    right:-110px;
+    width:100px;
+    height:auto;
+    border:1px solid #b9b9b9;
+    border-radius:20px;
+    background-color:#fff;
+    z-index:2;
+    box-shadow:0 10px 8px 0 #3c3c3c1a;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    align-items:center;
+    color:#636363;
+  }
+  .historyEachBtn > span{
+    width:100%;
+    padding:7px 0;
+  }
+  .historyEachBtn > span.selectedTab{
+    font-weight:bold !important;
+  }
+.profileImg {
+    width: 26px;
+    height: 26px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    display:inline-block;
+    border-radius:50%;
+    border:2px solid #E7EDFF;
+  }
 .popBg {
   width: 100%;
   height: 100%;
@@ -2086,20 +2458,77 @@ export default {
 }
 
 .actorImg {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  margin-left: -10px;
-  border: 2px solid #fff;
-  box-shadow: 0 5px 6px 0 rgba(60, 60, 60, 0.2);
-  background-color: #fff;
-}
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    margin-left:-10px;
+    border:2px solid #E7EDFF;
+    box-shadow:0 5px 6px 0 rgba(255,255,255, 0.6);
+    background-color:#fff;
+    overflow:hidden;
+  }
 .contentsCard {
   background: #ffffff;
   border-bottom: 2px solid #e1e1e1;
   display: flex;
   flex-direction: column;
 }
+.moreActorImg{
+    margin-left:-10px;
+    font-weight:bold;
+    width:27px;
+    height:27px;
+    border-radius:50%;
+    /* box-shadow:0 5px 6px 0 rgba(60, 60, 60, 0.2); */
+    background-color:#E7EDFF !important;
+    color:#5F61BD !important;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    line-height:1;
+    font-size:13px;
+  }
+
+  .actorImgList{
+    display:flex;
+    justify-content:end;
+    align-items:center;
+    position:relative;
+  }
+  .actorNameListWrap{
+    transition:all .5s;
+    position:absolute;
+    right:-10px;
+    top:130%;
+    z-index:20;
+  }
+  .actorNameListWrap.wrapOpen{
+    display:block !important;;
+  }
+  .actorNameListWrap:before{
+    content:'';
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    transform:translateX(-50%);
+    border-top:0px solid transparent;
+    border-left:8px solid transparent;
+    border-right:8px solid transparent;
+    border-bottom:16px solid #E7EDFF;
+  }
+  .actorNameList{
+    display:flex;
+    flex-direction:column;
+    align-items:start;
+    background-color:#E7EDFF!important;
+    box-shadow: 0 5px 8px 0 #3c3c3c1a;
+    border-radius:10px;
+    padding:5px 7px;
+    color:#7e7e7e;
+    width:auto;
+    height:auto;
+  }
 
 .contentsCardLogoArea {
   width: 45px;
@@ -2150,7 +2579,7 @@ pre div[id='formEditText'] {
   width: 100%;
   min-height: 20px;
   float: left;
-  padding: 10px 20px;
+  /* padding: 10px 20px; */
 }
 .chanIcon {
   width: calc(100% - 2px);
@@ -2282,15 +2711,14 @@ pre div[id='formEditText'] {
   height: 100%;
 }
 .userDoBox {
-  cursor: pointer;
-  width: 30px;
+  width: auto;
   height: 35px;
   display: flex;
-  float: left;
+  cursor: pointer;
   margin-right: 10px;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content:start;
+  gap:0.3rem;
 }
 .userDoItem {
   width: 100%;
