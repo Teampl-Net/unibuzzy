@@ -84,6 +84,9 @@ self.addEventListener('push', event => {
   } else if (userDo.targetKind === 'R') {
     targetKey = userDo.targetKey
     push_url = 'https://mo.d-alim.com?source=pwa&targetType=contentsDetail&targetKey=' + targetKey + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
+  } else if (userDo.targetKind === 'U') {
+    targetKey = userDo.targetKey
+    push_url = 'https://mo.d-alim.com?source=pwa&targetType=followList'
   } /* else if (userDo.targetKind === 'B') {
     targetKey = userDo.targetKey
     push_url = 'https://mo.d-alim.com?targetType=contentsDetail&targetKey=' + userDo.ISub + '&creTeamKey=' + Number(push_data.data.creTeamKey) + '&jobkindId=' + push_data.data.jobkindId
@@ -164,7 +167,6 @@ self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open(CACHE_STATIC_NAME)
       .then(function (cache) {
-        console.log(cache)
         console.log('[Service Worker] Precaching App Shell')
         cache.addAll(FILES_TO_CACHE)
           .then((result) => {

@@ -9,7 +9,7 @@ import { register } from 'register-service-worker'
       )
     },
     registered () {
-      console.log('Service worker has been registered.')
+      console.log('service worker has been registered.')
     },
     cached () {
       console.log('Content has been cached for offline use.')
@@ -29,9 +29,13 @@ import { register } from 'register-service-worker'
   })
 } */
 var isMobile = /Mobi/i.test(window.navigator.userAgent)
-isMobile = true
+const appType = localStorage.getItem('appType')
+let firebaseSw = 'firebase-messaging-sw.js'
+if (appType && appType === 'UB') {
+  firebaseSw = 'UB.firebase-messaging-sw.js'
+}
 if (!isMobile) {
-  register(`${process.env.BASE_URL}firebase-messaging-sw.js`, {
+  register(`${process.env.BASE_URL}${firebaseSw}`, {
     ready () {
       console.log(
         'App is being served from cache by a service worker.\n' +
@@ -39,7 +43,7 @@ if (!isMobile) {
       )
     },
     registered () {
-      console.log('Service worker has been registered.')
+      console.log('service worker has been registered.')
     },
     cached () {
       console.log('Content has been cached for offline use.')

@@ -3,7 +3,8 @@ import router from '../../router'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 import store from '../../store'
 import { onMessage } from '../../assets/js/webviewInterface'
-import { functions } from './D_vuexFunction'
+import { functions } from '../../assets/js/D_vuexFunction'
+import routerMain from '../../pages/Tal_router_main.vue'
 const isJsonString = (str) => {
   try {
     JSON.parse(str)
@@ -110,25 +111,18 @@ const isJsonString = (str) => {
           }
         } else if (message.type === 'CheckUserPermission') {
           router.replace({ name: 'permissions' })
-        } else if (message.type === 'appType') {
-          localStorage.setItem('mobileYn', 'true')
-          localStorage.setItem('nativeYn', 'true')
         } else if (message.type === 'returnImpData') {
-          store.dispatch('UB_USER/AC_SET_CERTI', message.certi)
+          store.dispatch('D_USER/AC_SET_CERTI', message.certi)
         } else if (message.type === 'certiInfo') {
-          store.dispatch('UB_USER/AC_SET_CERTI', message.certiInfo)
+          store.dispatch('D_USER/AC_SET_CERTI', message.certiInfo)
         } else if (message.type === 'requestUserPermission') {
           router.replace({ path: '/' })
         } else if (message.type === 'deviceSystemName') {
           localStorage.setItem('nativeYn', true)
-          if (message.systemNameData) {
-            localStorage.setItem('systemName', message.systemNameData)
-          } else if (message.data) {
-            localStorage.setItem('systemName', message.data)
-          }
+          localStorage.setItem('systemName', message.systemNameData)
         } else if (message.type === 'deepLinkUrl') {
           localStorage.setItem('nativeYn', true)
-          store.commit('UB_HISTORY/changeDeepLinkQueue', message.url)
+          store.commit('D_HISTORY/changeDeepLinkQueue', message.url)
           var urlString = message.url.toString()
           const params = new URLSearchParams(
             urlString.replace('https://mo.d-alim.com', '')
@@ -140,78 +134,71 @@ const isJsonString = (str) => {
             queList.push({ targetKind: param[0], targetKey: param[1] })
           }
 
-          store.commit('UB_HISTORY/changeDeepLinkQueue', queList)
+          store.commit('D_HISTORY/changeDeepLinkQueue', queList)
         } else if (message.type === 'goback') {
           if (
-            store.getters['UB_USER/GE_NET_STATE'] === false ||
-            store.getters['UB_USER/GE_NET_STATE'] === 'false'
+            store.getters['D_USER/GE_NET_STATE'] === false ||
+            store.getters['D_USER/GE_NET_STATE'] === 'false'
           ) { return }
-          var hStack = store.getters['UB_HISTORY/hStack']
-          var removePage = hStack[hStack.length - 1]
-          if (removePage && removePage.includes('router$#$')) {
-            hStack = hStack.filter((element, index) => index < hStack.length - 1)
-            store.commit('UB_HISTORY/setRemovePage', removePage)
-            store.commit('UB_HISTORY/updateStack', hStack)
-            router.go(-1)
-            return
-          }
+          var history = store.getters['D_HISTORY/hStack']
+          var removePage = history[history.length - 1]
           if (
             history.length < 2 &&
             (history[0] === 0 || history[0] === undefined)
           ) {
             router.replace({ path: '/' })
           }
-          var current = store.getters['UB_HISTORY/hUpdate']
-          store.commit('UB_HISTORY/updatePage', current + 1)
+          var current = store.getters['D_HISTORY/hUpdate']
+          store.commit('D_HISTORY/updatePage', current + 1)
         } else if (message.type === 'pushmsg') {
-          console.log(message)
           var isMobile = /Mobi/i.test(window.navigator.userAgent)
           var notiDetailObj = null
-          if (isJsonString(message.data)) {
-            message.data = JSON.parse(message.data)
-          }
-          var appActiveYn = message.data.noti.arrivedYn
+          var appActiveYn = JSON.parse(message.pushMessage).arrivedYn
 
           if (!isMobile) {
             notiDetailObj = message
           } else {
-            if (message.data) {
-              notiDetailObj = message.data.noti.data
-              // alert(JSON.stringify(JSON.parse(message.data).noti.data))
-              if (message.data.noti.data.item) {
-                notiDetailObj = message.data.noti.data.item
-              } else if (message.data.noti.data) {
-                notiDetailObj = message.data.noti.data
+            if (
+              JSON.parse(message.pushMessage).noti.data !== undefined &&
+                JSON.parse(message.pushMessage).noti.data !== undefined &&
+                JSON.parse(message.pushMessage).noti.data !== null &&
+                JSON.parse(message.pushMessage).noti.data !== ''
+            ) {
+              notiDetailObj = JSON.parse(message.pushMessage).noti.data
+              if (JSON.parse(message.pushMessage).noti.data.item) {
+                notiDetailObj = JSON.parse(message.pushMessage).noti.data.item
               }
             } else {
-              notiDetailObj = message.data.noti
+              notiDetailObj = JSON.parse(message.pushMessage).noti
             }
           }
 
+          // alert(JSON.stringify(notiDetailObj))
           var addVueResult = await functions.recvNotiFromBridge(
             message,
             isMobile,
             notiDetailObj
           )
+          // alert(JSON.stringify(addVueResult))
           if (appActiveYn !== true && appActiveYn !== 'true') {
             if (
               JSON.parse(notiDetailObj.userDo).userKey ===
-              store.getters['UB_USER/GE_USER'].userKey
+              store.getters['D_USER/GE_USER'].userKey
             ) {
               return
             }
             if (addVueResult === false) {
               alert(
-                'The content could not be found.\nPlease try again later'
+                '해당 컨텐츠를 찾을 수 없습니다.\n나중에 다시 시도해주세요'
               )
               return
             }
-            var popHistory = store.getters['UB_HISTORY/GE_GPOP_STACK']
+            var popHistory = store.getters['D_HISTORY/GE_GPOP_STACK']
             var currentPage = 0
             if (popHistory && popHistory.length > 0) {
               currentPage = popHistory[popHistory.length - 1]
             }
-            store.dispatch('UB_NOTI/AC_ADD_NEW_NOTI', {
+            store.dispatch('D_NOTI/AC_ADD_NEW_NOTI', {
               notiDetailObj: notiDetailObj,
               currentPage: currentPage,
               addVueResult: addVueResult
@@ -239,7 +226,7 @@ const isJsonString = (str) => {
             // window.open(appInfo.playStoreUrl, '_blank')
           } */
         } else if (message.type === 'netStateYn') {
-          store.dispatch('UB_USER/AC_NET_STATE', message.netStateYn)
+          store.dispatch('D_USER/AC_NET_STATE', message.netStateYn)
           // localStorage.setItem('netStateYn', message.netStateYn)
           // var appInfo = JSON.parse(message.appInfo)
           // alert(localStorage.getItem('netStateYn') + '!!!!')
@@ -261,10 +248,10 @@ const isJsonString = (str) => {
               // window.open(appInfo.playStoreUrl, '_blank')
             } */
         } else if (message.type === 'activeApp') {
-          // store.dispatch('UB_USER/AC_NET_STATE', message.activeYn)
+          // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
         } else if (message.type === 'addConsole') {
           // this.$addConsole(message.log)
-          // store.dispatch('UB_USER/AC_NET_STATE', message.activeYn)
+          // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
         }
       } catch (err) {
         console.error('메세지를 파싱할수 없음 ' + err)

@@ -1,0 +1,52 @@
+<i18n>
+{
+  "ko": {
+    "MY_TITLE_RECE_NOTI": "최근 알림",
+    "MY_TITLE_RECE_ALIM": "최근 컨텐츠",
+    "MY_TITLE_TOP5_CHAN": "채널 TOP5"
+  },
+  "en": {
+    "MY_TITLE_RECE_NOTI": "Recent Notification",
+    "MY_TITLE_RECE_ALIM": "Recent Contents",
+    "MY_TITLE_TOP5_CHAN": "Top 5 Channels"
+  }
+}
+</i18n>
+<template>
+  <div class="top5TitleWrap textLeft">
+    <img style="width: 1.2rem; margin-top: 0.4rem;" v-if="propListTitle === 'noti'" class="mright-03 fl"  src="../../assets/images/main/pushIcon.svg"/>
+    <img style="width: 1.2rem; " v-else-if="propListTitle === 'contents'" class="mright-03 mtop-05 fl" src="../../assets/images/main/boardIcon.svg"/>
+    <p class="commonColor mtop-03 fl fontBold font18" v-if="propListTitle === 'noti'"> {{ $t('MY_TITLE_RECE_NOTI') }}</p>
+    <p class="commonColor mtop-03 fl fontBold font18" v-else-if="propListTitle === 'contents'"> {{ $t('MY_TITLE_RECE_ALIM') }}</p>
+    <p class="commonColor mtop-03 fl fontBold font18" v-else>{{ $t('MY_TITLE_TOP5_CHAN') }}</p>
+   <!--  <gBtnSmall :btnThema="'light'" class="mtop-05" style="height: 25px; line-height: 25px;" :btnTitle="$t('COMMON_NAME_MORE')" v-on:click="openPop(propMoreLink)" /> -->
+  </div>
+</template>
+<script>
+export default {
+  props: {
+    propListTitle: String,
+    propMoreLink: {},
+    propViewTab: {}
+  },
+  emits: ['openPop'],
+  methods: {
+    openPop (moreLink) {
+      // eslint-disable-next-line no-new-object
+      var params = new Object()
+      if (moreLink === 'push') {
+        params.targetType = 'pushList'
+        params.popHeaderText = '알림'
+      } else if (moreLink === 'subs') {
+        params.targetType = 'chanList'
+        params.popHeaderText = '채널'
+      }
+      this.$emit('openPop', params)
+    }
+  }
+}
+</script>
+<style scoped>
+
+ .top5TitleWrap{margin-top: 0rem; /* border-bottom: 1px solid #6768A7; */ min-height: 20px; margin-bottom: 10px}
+</style>

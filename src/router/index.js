@@ -1,14 +1,37 @@
 /* eslint-disable no-unused-vars */
 import { createRouter, createWebHistory, createWebHashHistory, createMemoryHistory } from 'vue-router'
+// import { useStore } from 'vuex'
 import { functions } from '../assets/js/D_vuexFunction'
 import axios from 'axios'
-import store from '../store'
+// import jisuTest from '../jisuTest.vue'
 import { methods, commonAxiosFunction } from '../../public/commonAssets/Tal_axiosFunction'
+import routerMain from '../pages/Tal_router_main.vue'
+import search from '../pages/routerPages/D_searchPage.vue'
+import login from '../pages/intro/Tal_login.vue'
+import UBlogin from '../pages/intro/UB_login.vue'
 
-let routes = []
-const routerMain = () => import('../pages/Router_main.vue')
-const login = () => import('../pages/intro/Login.vue')
-routes = [
+// import myChanList from '../components/popup/del_Tal_managerChanList.vue'
+// import store from '../store/index'
+/* import admRouterMain from '../pages/routerPages/admPages/TalAdm_main.vue'
+import admChanMain from '../pages/routerPages/admPages/TalAdm_chanMain.vue'
+import admSendPushList from '../pages/routerPages/admPages/TalAdm_SendPushList.vue'
+import admManageRecvList from '../pages/routerPages/admPages/TalAdm_ManageRecvList.vue'
+import admManageChannel from '../pages/routerPages/admPages/TalAdm_manageChannel.vue' */
+
+/* import naverCallback from '../pages/intro/Tal_naverLoginCallback.vue' */
+
+const routes = [
+  // {
+  //   path: '/jisuTest',
+  //   name: 'jisuTest',
+  //   component: jisuTest
+  // },
+  {
+    path: '/PARTNER',
+    name: 'D_PARTNER',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../pages/D_coreProxy.vue')
+  },
   {
     path: '/',
     name: 'routerMain',
@@ -21,199 +44,200 @@ routes = [
         meta: {
           page: 1
         },
-        component: () => import(/* webpackChunkName: "about" */ '@/pages/routerPages/Main.vue')
-        // beforeEnter: (to, from, next) => {
-        //   // 만약 로그인 상태라면
-        //   var loginYn = localStorage.getItem('loginYn')
-        //   if (loginYn !== 'false' || loginYn !== false) {
-        //     return next()
-        //   } else if (loginYn === false || loginYn === 'false') {
-        //     return next('/policies')
-        //   }
-        // }
-      },
-      {
-        path: '/unibuzzy',
-        name: 'uniBmain',
-        props: true,
-        meta: {
-          page: 1
-        },
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/UniB_main.vue')
-      },
-      {
-        path: '/contents/:contentsKey/:creTeamKey/:cabinetKey',
-        name: 'contents',
-        props: true,
-        meta: {
-          page: 1
-        },
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/ContentsDetail.vue'),
-        beforeEnter (to, from, next) {
-          if (from.name && from.name !== to.name && from.name === 'chanMain') {
-            localStorage.setItem('preListTeamKey', from.params.encodedTeamKey)
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_main.vue')
+        /* ,
+        beforeEnter: (to, from, next) => {
+          // 만약 로그인 상태라면
+          var loginYn = localStorage.getItem('loginYn')
+          if (loginYn !== false) {
+            return next()
+          } else if (loginYn === false) {
+            next('/policies')
           }
-          next()
-          // ...
-        }
-      },
-      {
-        path: '/chan/:encodedTeamKey',
-        name: 'chanMain',
-        props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/ChanMain.vue'),
-        beforeEnter (to, from, next) {
-          if (from.name && from.name !== to.name && from.name === 'contents') {
-            const fromTeamKey = localStorage.getItem('preListTeamKey')
-            if (fromTeamKey && fromTeamKey === to.params.encodedTeamKey) {
-              localStorage.setItem('preDataYn', 'true')
-            }
-          } else {
-            store.commit('UB_PRE_DATA/MU_CLEAN')
-            localStorage.removeItem('preDataYn')
-            localStorage.removeItem('preListTeamKey')
-          }
-          next()
-          // ...
-        },
-        beforeRouteLeave (to, from, next) {
-          // 여기에 페이지를 떠나기 전에 수행할 작업을 추가합니다.
-          if (to.name !== 'contents') {
-            store.commit('UB_PRE_DATA/MU_CLEAN')
-            localStorage.removeItem('preDataYn')
-            localStorage.removeItem('preListTeamKey')
-          }
-          // 예시: 페이지를 떠나기 전에 어떤 동작 수행
-          console.log('상세 페이지를 떠나기 전에 수행할 작업입니다.')
-
-          // 다음 페이지로 이동하려면 next()를 호출합니다.
-          next()
-        }
-      },
-      {
-        path: '/board/:teamKey/:targetKey',
-        name: 'board',
-        props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/BoardMain.vue')
+        } */
       },
       {
         path: '/unknown',
         name: 'unknown',
         props: true,
-        // component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_main.vue')
-        component: login
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_main.vue')
+      },
+      {
+        path: '/imgmain',
+        name: 'imagemain',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_ImageMain.vue')
+      },
+      {
+        path: '/comList',
+        name: 'imagemain',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_communityList.vue')
       },
       {
         path: '/search',
         name: 'search',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/SearchPage.vue')
+        component: search
+      },
+      {
+        path: '/todo',
+        name: 'todo',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/TodoList.vue')
       },
       {
         path: '/myPage',
         name: 'myPage',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/MyPage.vue'),
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_myPage.vue'),
         meta: {
           page: 4
         }
       },
-      {
-        path: '/settings',
-        name: 'settings',
+      /* {
+        path: '/',
+        name: 'pushList',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/SetMyPage.vue'),
+        component: pushList,
         meta: {
-          page: 4
+          page: 2
         }
-      },
-      {
-        path: '/fileBox',
-        name: 'fileBox',
-        props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/TotalFileList.vue')
-      },
-      {
-        path: '/saveBox',
-        name: 'saveBox',
-        props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/MorePushList.vue')
-      },
-      {
-        path: '/cancel',
-        name: 'cancel',
-        props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/LeaveUniBuzzy.vue')
-      },
+      }, */
       {
         path: '/chanList',
         name: 'chanList',
         props: true,
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/ChanList.vue'),
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_chanList.vue'),
         meta: {
           page: 3
         }
       },
       {
-        path: '/findChan',
-        name: 'findChan',
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/FindChanList.vue')
-      },
-      {
-        path: '/developer',
-        name: 'developer',
-        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/DeveloperPage.vue')
+        path: '/logList',
+        name: 'logList',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/Tal_logList.vue'),
+        beforeEnter: (to, from, next) => {
+          // 만약 로그인 상태라면
+          if (localStorage.getItem('loginYn') !== true) { return next() } else next({ name: 'policies' })
+        }
       }
     ]
   },
   {
-    path: '/login',
-    name: 'login',
+    path: '/developer',
+    name: 'developer',
     props: true,
-    component: login
+    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_developerPage.vue')
+  },
+  {
+    path: '/naverCallback',
+    name: 'naverCallback',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback.vue')
+  },
+  {
+    path: '/naverCallbackTest',
+    name: 'naverCallbackTest',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback copy.vue')
   },
   {
     path: '/testLoginPage',
     name: 'testLoginPage',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/TestLoginPage.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/testLoginPage.vue')
+  },
+  {
+    path: '/nonMemInquiryBoard',
+    name: 'nonMemInquiryBoard',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_nonMemberInquiryBoard.vue')
+  },
+  // {
+  //   path: '/login',
+  //   name: 'login',
+  //   props: true,
+  //   component: login
+  // },
+  {
+    path: '/login',
+    name: 'UBlogin',
+    props: true,
+    component: UBlogin
   },
   {
     path: '/permissions',
     name: 'permissions',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Permissions.vue')
-  },
-  {
-    path: '/policy/:type',
-    name: 'policy',
-    props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Policies.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_permissions.vue')
   },
   {
     path: '/policies',
     name: 'policies',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/AgreePolicies.vue')
+    component: () => localStorage.getItem('appType') && localStorage.getItem('appType') === 'D' ? import(/* webpackChunkName: "about" */ '../pages/intro/Tal_policies.vue') : import(/* webpackChunkName: "about" */ '../pages/intro/UB_AgreePolicies.vue')
+  },
+  {
+    path: '/savePhone',
+    name: 'savePhone',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/Tal_savePhone.vue')
+  },
+  {
+    path: '/saveName',
+    name: 'saveName',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/Tal_saveName.vue')
+  },
+  {
+    path: '/certiPhone',
+    name: 'certiPhone',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../components/pageComponents/intro/D_certi_phone.vue')
+  },
+  {
+    path: '/certiPhoneReturn',
+    name: 'certiPhoneReturn',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../components/pageComponents/intro/D_certi_phone_return.vue')
+  },
+  {
+    path: '/test',
+    name: 'test',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/suminTest.vue')
+  },
+  // {
+  //   path: '/ssoLogin',
+  //   name: 'ssoLogin',
+  //   props: true,
+  //   component: () => import(/* webpackChunkName: "about" */ '../pages/backuplogin.vue')
+  // },
+  {
+    path: '/contDetail',
+    name: 'contDetail',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_contentsDetail.vue')
   },
   {
     path: '/errorPage',
     name: 'errorPage',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/ErrorPage.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_errorPage.vue')
+  },
+  {
+    path: '/boardDetail',
+    name: 'boardDetail',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../components/board/D_boardMain.vue')
   }
 ]
 
 const router = createRouter({
-  mode: 'history',
   history: createWebHashHistory(process.env.BASE_URL),
   routes
 })
-router.afterEach((to, from) => {
-  console.log(to)
-  var history = store.getters['UB_HISTORY/hStack']
-  console.log(history)
-  history.push('router$#$' + to.name)
-  store.commit('UB_HISTORY/updateStack', history)
-})
+
 export default router

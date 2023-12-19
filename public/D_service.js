@@ -57,7 +57,7 @@ const dService = {
       contentsParam.actorList = []
       param.contents = contentsParam
       // eslint-disable-next-line no-undef
-      fetch('service/tp.savePartnerContents', {
+      fetch('/sUniB/tp.savePartnerContents', {
         method: 'POST',
         body: JSON.stringify(param),
         headers: { 'Content-type': 'application/json' }
@@ -72,7 +72,8 @@ const dService = {
             }
           }
         })
-      /* const result = await axios.post('https://mo.d-alim.com:9443/service/tp.savePartnerContents', this.mRecvParams)
+      /* const result = await axios.post('/sUniB/tp.savePartnerContents', this.mRecvParams)
+      /* const result = await axios.post('/sUniB/tp.savePartnerContents', this.mRecvParams)
       console.log(result)
       if (result.result === true) {
         console.log(result)
@@ -122,7 +123,7 @@ const dService = {
     var setParam = {}
     setParam.user = param
     setParam.partner = coreParam
-    var result = await fetch('service/tp.saveUserAndAccess', {
+    var result = await fetch('/sUniB/tp.saveUserAndAccess', {
       method: 'POST',
       body: JSON.stringify(setParam),
       headers: { 'Content-type': 'application/json' }
@@ -141,7 +142,7 @@ const dService = {
             }
             /* returnData.partnerToken = json.data.accessUser.partnerToken
             returnData.uAccessToken = json.data.accessUser.uaccessToken
-            this.$store.commit('UB_USER/MU_USER_ACCESS', returnData) */
+            this.$store.commit('D_USER/MU_USER_ACCESS', returnData) */
             console.log(document.referrer)
             /* if (g_pOpener) {
               g_pOpener.postMessage(JSON.stringify({ resultMsg: 'saveUserInfo', result: true, userInfo: returnData }), document.referrer)
