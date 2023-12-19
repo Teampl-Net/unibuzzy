@@ -1,0 +1,585 @@
+<template>
+<div id="addTeamMemberArea" class="addTeamMemberArea" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'">
+<userImgSelectCompo @closeXPop="closeXPop" :pSelectedIconPath="this.mUserInfo.domainPath + mUserInfo.userProfileImg" :parentSelectedIconFileKey="mUserInfo.picMfilekey"  @no="backClick" v-if="changeUserIconShowYn"/>
+    <!-- <div class="menuHeader" style="box-shadow: 0px 7px 9px -9px #00000036; position: relative; box-sizing: border-box; white-space: nowrap;" >
+        <img v-on:click="backClick" class="mtop-05 mleft-1 fl" src="../../../assets/images/common/icon_back.png"/>
+        <p style="text-align:left; margin-left:3rem; font-weight:bold;">{{receiverTitle}}</p>
+    </div> -->
+    <div class="w-100P fl mbottom-1" style="display: flex; flex-direction: row; justify-content: center; margin-top:1.5rem;">
+
+        <div style=" display: flex; align-items: center; justify-content: center;" :style="'width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;'">
+            <div :style="'background-image: url(' + (this.mUserInfo.domainPath ? this.mUserInfo.domainPath + this.mUserInfo.userProfileImg : this.mUserInfo.userProfileImg) + '); width: ' + popSize*0.3 + 'px; height: ' + popSize*0.3 + 'px;' " style="background-size: cover; background-repeat: no-repeat; background-position: center; position: relative;" class="userProfileImgWrap">
+            <!--  <img :src="this.domainPath + userProfileImg" /> -->
+                <img v-if="this.GE_USER.certiDate" class="img-w38" style="position: absolute; bottom: 5px; right: 10px;" src="../../../assets/images/common/userCertiIcon.svg" alt="">
+            </div>
+        </div>
+        <div v-if="selfYn" @click="changeUserImg()" class="font14" style="padding: 0 8px; float: left; position: absolute; bottom: 0; left: 60%; transform: translateX(-50%); z-index: 9999; min-height: 20px; border-radius: 5px; background: #00000070; color: #FFF;">변경</div>
+        <!-- <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="  float: left; " /> -->
+    </div>
+    <div class="addMemberTextArea fl">
+
+      <div class="fl w-100P" style='display: contents;'>
+        <p class="fl commonBlack creChanInput w-100P font16 fontBold" v-if="readOnlyYn && !changeYn" >{{memName}}</p>
+        <p class="fl commonGray creChanInput w-100P font14 " v-if="readOnlyYn && !changeYn && this.GE_USER.certiDate" >{{this.$changeText(this.mUserInfo.userDispMtext)}}</p>
+        <img v-if="readOnlyYn && !changeYn && selfYn" src="../../../assets/images/push/noticebox_edit.png" style="width: 20px; height: 20px; margin-left: 10px; margin-top: 2px;" class="fr cursorP" @click="changeUserDispMtext()" >
+        <div v-show="changeYn" class="fl creChanInput" style="">
+            <input class="fl font16" type="text" v-model="memName" style="width:calc(100% - 100px); outline: none; border: 1px solid #ccc;" @keyup.enter="setDispName" />
+            <div class="fl" style="width: 100px">
+                <p class="fl mleft-1 font13" style="line-height:30px" @click="setDispName" >확인</p>
+                <p class="fl mleft-1 font13" style="line-height:30px" @click="changeYn = false">취소</p>
+            </div>
+        </div>
+        <gBtnSmall @click="followUser(false)" btnTitle="Following" v-if="mUserInfo.userKey !== GE_USER.userKey && mUserInfo.followingYn && (mUserInfo.followingYn === 1)" btnThema="light" class="font16 mright-05"/>
+        <gBtnSmall @click="followUser(true)" btnTitle="Follow" v-else-if="mUserInfo.userKey !== GE_USER.userKey && (!mUserInfo.followingYn || mUserInfo.followingYn !== 1)"  class="font16 mright-05"/>
+        <!-- <p class="fl whiteColor CMiddleBgColor font12" style="padding: 2px 6px; border-radius:10px; " v-if="userGrade !== '' && $route.fullPath !== '/todo'" >{{userGrade}}</p> -->
+      </div>
+      <div class="mtop-1 fl w-100P"  style="display: flex;padding-left:15%; " v-if="!readOnlyYn && !selfYn">
+        <img src="/resource/footer/icon_people.svg"  class="img-w20 fl mright-05" alt="">
+
+        <input  type="text" placeholder="이름을 입력하세요" class="creChanInput fr"  v-model="memName" >
+      </div>
+
+      <div class="mtop-1 fl w-100P"  style="display: flex;padding-left:15%; ">
+        <img src="../../../assets/images/editChan/icon_letter.svg"  class="img-w20 fl mright-05" alt="">
+        <p class="fl font16 commonDarkGray creChanInput " style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memEmail ? memEmail : '등록된 이메일이 없습니다.'}}</p>
+        <input v-else type="text" placeholder="이메일을 입력하세요" class="creChanInput fr"  v-model="memEmail" >
+      </div>
+      <div class="mtop-1 fl w-100P"  style="display: flex; padding-left:15%;">
+        <img src="../../../assets/images/editChan/icon_phoneSolid.svg" class="img-w20 fl mright-05" alt="">
+        <p class="fl font16 commonDarkGray creChanInput"  style="line-height: 30px; text-align: left;" v-if="readOnlyYn" >{{memPhone ? memPhone : '등록된 번호가 없습니다.'}}</p>
+        <input v-else type="text" placeholder="전화번호를 입력하세요" class="creChanInput fr" @keyup.enter="addDirectAddMemList" v-model="memPhone" >
+      </div>
+
+      <gBtnSmall v-if="excelPopYn" btnTitle="추가" class="fl" style="position:absolute; bottom:0; right: 3rem;" @click="addDirectAddMemList" />
+      <div v-if="readOnlyYn" class="fl w-100P mtop-3" style=" min-height: 70px; display: flex; flex-direction: row; justify-content: space-around;">
+        <div v-for="(value, index) in profileFunc" :key="index" @click="profileFuncEvent(value.type)" class="fl" style="display: flex; flex-direction: row; align-items: center; justify-content: center">
+          <div style="display: flex; flex-direction: column; align-items: center;">
+            <div class="nativeServiceBtnWrap">
+              <img v-if="value.type === 'ALIM'" src="../../../assets/images/editChan/icon_bellSolid.svg" class="img-w20" alt="">
+              <img v-if="value.type === 'MAIL'" src="../../../assets/images/editChan/icon_letter.svg"  class="img-w20" alt="">
+              <img v-if="value.type === 'PHON'" src="../../../assets/images/editChan/icon_phoneSolid.svg" class="img-w20" alt="">
+              <img v-if="value.type === 'TEXT'" src="../../../assets/images/editChan/icon_textSolid.svg"  class="img-w20" alt="">
+            </div>
+            <p class="font14 fl textLeft commonBlack" style="line-height: 30px;">{{value.funcTitle}}</p>
+          </div>
+          <div class="mleft-05 mright-05" style="color: #BDBDBD" v-if="index !== (profileFunc.length - 1)">|</div>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="excelPopYn" style="width: 100%; height: calc(65%-50px); padding: 0 2rem;">
+        <p class="font20 fontBold" style="width: 100%; height: 40px; margin-bottom: 25px; text-align: left; color: black; border-bottom: 1px solid #ccc;">추가된 구성원</p>
+        <div style="width:100%; max-height: 200px; overflow-y: scroll; overflow-x: hidden; ">
+            <table class="memberTable" style="width:100% ; border-collapse: collapse;">
+                <colgroup>
+                    <col width="20%">
+                    <col width="40%">
+                    <col width="32%">
+                    <col width="10px">
+                </colgroup>
+                <tr style = "background-color:#ccc;">
+                    <th class="font15" style="height: 100%; text-align: center;">이름</th>
+                    <th class="font15" style="height: 100%; text-align: center;">이메일</th>
+                    <th class="font15" style="height: 100%; text-align: center;">전화번호</th>
+                    <th class="font15" style="height: 100%; text-align: center;"></th>
+                </tr>
+                <tr v-for="(data, index) in memberList" :key='index' style="height:50px;">
+                    <td class="font12 memList">{{data.name}}</td>
+                    <td class="font12 memList">{{data.email}}</td>
+                    <td class="font12 memList">{{data.phoneNum}}</td>
+                    <td class="font16 memList fontBold" @click="deleteMem(data,index)">X</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    <gBtnSmall v-if="!readOnlyYn" btnTitle="적용" style="position:absolute; bottom:2rem; right: 3rem;" @click="addDirectAddMemList" />
+    <!-- <gBtnSmall v-if="propData.managerKey" btnTitle="삭제" class="fl" style="position:absolute; bottom:2rem; right: 3rem; background-color:#ff0000; font-weight:bold;" @click="deleteManager" /> -->
+</div>
+</template>
+
+<script>
+/* eslint-disable */
+// eslint-disable-next-line
+import popUp from '../confirmPop/Tal_commonConfirmPop.vue'
+import { onMessage } from '../../../assets/js/webviewInterface'
+import userImgSelectCompo from '../../../components/pageComponents/myPage/Tal_changeUserIcon.vue'
+export default {
+    data () {
+        return {
+            memName: '',
+            memEmail: '',
+            memPhone: '',
+            memberList:[],
+            addMemYn: false,
+            confirmPopShowYn: false,
+            tempIndex: null,
+            confirmText: '',
+            readOnlyYn:false,
+            userProfileImg : undefined,
+            domainPath : '',
+            systemName: 'iOS',
+            // mobileYn: this.$getMobileYn(),
+            popSize: 0,
+            changeUserIconShowYn: false,
+            changeUserIconPop: null,
+            picMfilekey: null,
+            selfYn: false,
+            changeYn: false,
+            tempUserDispName: '',
+            thisUserKey: null,
+            profileFunc: [{ funcTitle: '알림작성', type: 'ALIM' }, { funcTitle: '메일쓰기', type: 'MAIL' }, { funcTitle: '전화걸기', type: 'PHON' }, { funcTitle: '문자쓰기', type: 'TEXT' }],
+            userGrade: '',
+            mUserInfo: {}
+        }
+    },
+    components: {
+        popUp,
+        userImgSelectCompo
+    },
+    props:{
+        propData: {},
+        setEditMember:{},
+        excelPopYn:{}
+    },
+    mounted () {
+        this.popSize = document.getElementById('addTeamMemberArea').scrollWidth
+    },
+    computed: {
+        GE_USER () {
+            return this.$store.getters['D_USER/GE_USER']
+        },
+        CHANNEL_DETAIL () {
+            return this.$getDetail('TEAM', this.propData.teamKey)[0]
+        }
+    },
+    async created(){
+        console.log(this.propData)
+        this.$emit('openLoading')
+        if(this.propData.readOnlyYn){this.readOnlyYn = true}
+
+        if(this.propData !== null && this.propData !== undefined && this.propData !== ''){
+            if (this.propData.selfYn) {
+                this.selfYn = this.propData.selfYn
+                this.mUserInfo = this.GE_USER
+            } else {
+                await this.getMemberListGetUserInfo()
+            }
+            if (this.mUserInfo.userEmail)
+                this.memEmail = this.mUserInfo.userEmail
+            else{ this.memEmail= '등록된 이메일이 없습니다.'}
+            if (this.mUserInfo.userDispMtext)
+                this.memName = this.$changeText(this.mUserInfo.userDispMtext)
+            if (this.mUserInfo.phoneEnc)
+                this.memPhone = this.mUserInfo.phoneEnc
+            else{ this.memPhone= '등록된 번호가 없습니다.' }
+            this.setUserGrade(this.mUserInfo)
+            /*
+            // debugger
+            if(this.propData.userProfileImg){
+                this.userProfileImg = this.propData.domainPath + this.propData.userProfileImg
+            }
+            if(this.propData.readOnlyYn){this.readOnlyYn = true}
+
+                if(this.propData.userDispMtext){
+                    this.memName = this.$changeText(this.propData.userDispMtext)
+                }else{
+                    this.memName = this.$changeText(this.propData.userNameMtext)
+                }
+            if(this.readOnlyYn){
+                if(this.propData.userEmail){ this.memEmail= this.propData.userEmail }else{ this.memEmail= '등록된 이메일이 없습니다.'}
+                if(this.propData.phoneEnc){ this.memPhone= this.propData.phoneEnc }else{ this.memPhone= '등록된 번호가 없습니다.' }
+                if (this.propData.selfYn) {
+                    this.selfYn = this.propData.selfYn
+
+                    if(this.GE_USER.userProfileImg){
+                        this.userProfileImg = this.GE_USER.userProfileImg
+                        this.domainPath = this.GE_USER.domainPath || ''
+                        this.picMfilekey = this.GE_USER.picMfilekey
+                    }
+                    if (this.GE_USER.userEmail)
+                        this.memEmail = this.GE_USER.userEmail
+                    else{ this.memEmail= '등록된 이메일이 없습니다.'}
+                    if (this.GE_USER.userDispMtext)
+                        this.memName = this.$changeText(this.GE_USER.userDispMtext)
+                    if (this.GE_USER.phoneEnc)
+                        this.memPhone = this.GE_USER.phoneEnc
+                    else{ this.memPhone= '등록된 번호가 없습니다.' }
+                } else if (this.propData.userKey) {
+                    var userKey = this.propData.userKey
+                    await this.getMemberListGetUserInfo()
+
+                    // var param = {}
+                    // param.userKey
+                    // var response = await this.$commonAxiosFunction({
+                    // url: '/sUniB/tp.getUserList',
+                    // param: param
+                    // })
+                    // // console.log(response)
+
+                    // var list = await result.data.content
+                    // // console.log(list)
+                }
+            } */
+        }
+        if (localStorage.getItem('systemName') !== undefined && localStorage.getItem('systemName') !== 'undefined' && localStorage.getItem('systemName') !== null) { this.systemName = localStorage.getItem('systemName') }
+        // this.readOnlyYn = false
+        // this.getAnotherUserTeamInfo()
+        this.$emit('closeLoading')
+    },
+    methods:{
+        async followUser (fYn) {
+            const mSaveFollowerParam = {}
+            const targetKeyList = []
+            mSaveFollowerParam.targetKey = this.mUserInfo.userKey
+            mSaveFollowerParam.targetKind = 'U'
+            mSaveFollowerParam.userKey = this.GE_USER.userKey
+            mSaveFollowerParam.userName = this.$changeText(this.GE_USER.userDispMtext)
+            let result = null
+            if (fYn) {
+                result = await this.$changeFollower({ follower: mSaveFollowerParam, doType: 'FL' }, 'save')
+            } else {
+                result = await this.$changeFollower({ follower: mSaveFollowerParam, doType: 'FL' }, 'del')
+            }
+            console.log(result)
+            if (result) {
+                this.getMemberListGetUserInfo()
+                if (this.propData.callbackFn) {
+                    this.propData.callbackFn()
+                }
+            }
+        },
+        profileFuncEvent (type) {
+            if (type === 'ALIM') {
+                this.sendPushAlim()
+            } else if (type === 'MAIL') {
+                this.sendMail(this.memEmail)
+            } else if (type === 'PHON') {
+                this.callPhone(this.memPhone)
+            } else if (type === 'TEXT') {
+                this.sendSms(this.memPhone)
+            }
+        },
+        async getMemberListGetUserInfo () {
+            var paramMap = new Map()
+            paramMap.set('teamKey', this.propData.teamKey)
+            paramMap.set('ownUserKey', this.GE_USER.userKey)
+            paramMap.set('userKey', this.propData.userKey)
+            paramMap.set('adminYn', true)
+            var result = await this.$commonAxiosFunction({
+                url: '/sUniB/tp.getFollowerList',
+                param: Object.fromEntries(paramMap)
+            })
+            if (result.data.content) this.mUserInfo = result.data.content[0]
+        },
+        async setUserGrade (anotherAuth) {
+        if (anotherAuth) {
+            console.log(anotherAuth)
+            var grade = this.$getFollowerType(anotherAuth)
+            console.log('##########################################')
+            console.log(grade)
+            this.userGrade = grade
+        }
+        },
+        sendPushAlim () {
+            var param = {}
+            param.targetType = 'writeContents'
+            param.contentsJobkindId = 'ALIM'
+            param.teamKey =  this.propData.teamKey
+            param.targetKey =  this.propData.teamKey
+            param.currentTeamKey =  this.propData.teamKey
+            param.userKey = this.propData.userKey
+            param.userName = this.memName
+            param.targetUserKey = this.thisUserKey
+            if (this.propData.userDispMtext) { param.userDispMtext = this.propData.userDispMtext } else { param.userNameMtext = this.propData.userNameMtext }
+            param.replyPopYn = true
+            if (this.propData.userDispMtext) { param.creUserName = this.propData.userDispMtext } else { param.creUserName = this.propData.userNameMtext }
+            param.creUserKey = this.propData.userKey
+            this.$emit('openPop', param)
+        },
+        async setDispName () {
+            // KO$^$수망고$#$EN$^$sumango
+            var param = {}
+            var user = {}
+            user.userKey = this.GE_USER.userKey
+            user.userDispMtext = 'KO$^$' + this.memName
+            param.user = user
+            param.updateYn = true
+            var result = await this.$changeDispName(param)
+            // console.log(result)
+            if (result.data) {
+                this.$store.commit('D_USER/MU_USER', result.data.userInfo)
+                localStorage.setItem('sessionUser', JSON.stringify(result.data))
+                this.changeYn = false
+                this.$emit('closeXPop', true)
+                // this.userInfo.userDispMtext = await this.$changeText(param.user.userDispMtext)
+            }
+        },
+        changeUserDispMtext () {
+            this.changeYn = true
+            this.tempUserDispName = this.memName
+        },
+        closeXPop () {
+            this.$emit('closeXPop', true)
+        },
+        changeUserImg () {
+            if(this.changeUserIconShowYn) {
+                ;
+            } else {
+                this.changeUserIconShowYn = true
+                this.changeUserIconPop = 'changeUserIconPop' + history.length
+
+                var history = this.$store.getters['D_HISTORY/hStack']
+                // console.log(history)
+                history.push(this.changeUserIconPop)
+                this.$store.commit('D_HISTORY/updateStack', history)
+                // console.log(this.$store.getters['D_HISTORY/hStack'])
+            }
+        },
+        backClick () {
+            var hStack = this.$store.getters['D_HISTORY/hStack']
+            var removePage = hStack[hStack.length - 1]
+            if (this.changeUserIconPop === hStack[hStack.length - 1]) {
+                hStack = hStack.filter((element, index) => index < hStack.length - 1)
+                this.$store.commit('D_HISTORY/setRemovePage', removePage)
+                this.$store.commit('D_HISTORY/updateStack', hStack)
+                this.changeUserIconShowYn = false
+            } else {
+
+            }
+        },
+        callPhone (num) {
+          if (num != undefined && num != null && num != '') {
+              document.location.href='tel:' + num
+          } else {
+              this.$showToastPop('전화번호 정보가 없습니다.')
+          }
+          // if (num != undefined && num != null && num != '') {
+          //     if(this.systemName !== 'Android' && this.systemName !== 'android')
+          //         document.location.href='tel:' + num
+          //     else
+          //         onMessage('REQ', 'callphone', num)
+          // } else {
+          //     alert('전화번호 정보가 없습니다')
+          // }
+        },
+        sendMail(email) {
+            if (email != undefined && email != null && email != '') {
+              window.open("mailto:" + email)
+                // window.location.href = "mailto:" + email;
+            } else {
+              this.$showToastPop('이메일 정보가 없습니다.')
+            }
+            // if (email != undefined && email != null && email != '') {
+            //     if(this.systemName !== 'Android' && this.systemName !== 'android')
+            //         document.location.href='mailto:' + email
+            //     else
+            //         onMessage('REQ', 'sendMail', email)
+            // } else {
+            //     alert('이메일 정보가 없습니다')
+            // }
+        },
+        sendSms (num) {
+          if (num != undefined && num != null && num != '') {
+                document.location.href='sms:' + num
+            } else {
+              this.$showToastPop('전화번호 정보가 없습니다.')
+            }
+            // if (num != undefined && num != null && num != '') {
+            //     if(this.systemName !== 'Android' && this.systemName !== 'android')
+            //         document.location.href='sms:' + num
+            //     else
+            //         onMessage('REQ', 'sendSms', num)
+            // } else {
+            //     alert('전화번호 정보가 없습니다')
+            // }
+        },
+        async deleteManager () {
+
+            var result = await this.$commonAxiosFunction({
+                url: '/sUniB/tp.deleteManager',
+                param: this.propData
+            })
+            if(result.data === true){this.$emit('deleteManager')}
+
+        },
+        testInput(){
+            this.memName = '11111wwww'
+            this.memEmail = '11111@naver.com'
+            this.memPhone = '01011111111'
+        },
+        regEmail(text) {
+            var regemail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+            if (regemail.test(text) === true) {
+                return true
+            } else {
+                return false
+            }
+        },
+        regPhoneNumber(text) {
+            var regPhone = /^(?:(010-\d{4})|(01[0|1|6|7|8|9]-\d{3,4}))-(\d{4})$/
+            var regPhone1 = /^(?:(010\d{4})|(01[0|1|6|7|8|9]\d{3,4}))(\d{4})$/
+            if (regPhone.test(text) === true || regPhone1.test(text) === true) {
+                return true
+            } else {
+                return false
+            }
+        },
+        deleteMem(data,index) {
+            this.memberList.splice(index, 1);
+        },
+        ok(){
+            this.confirmPopShowYn = false
+        },
+        async addDirectAddMemList () {
+            var checkYn = await this.checkParam()
+            if(checkYn) {
+                if(this.propData.mccKey) {
+
+                } else {
+                    var param = new Object()
+
+
+                    param.inUserName = this.memName
+                    param.userName =  this.memName
+                    param.userDispMtext = "KO$^$"+this.memName
+                    param.userNameMtext = "KO$^$"+this.memName
+
+                    param.userEmail = this.memEmail
+                    param.userPhone = this.memPhone
+
+                    param.cabinetKey = this.propData.currentCabinetKey
+                    param.teamKey = this.propData.currentTeamKey
+                    this.$emit('addDirectAddMemList', param)
+                }
+
+            }
+        },
+        checkParam(){
+            var result = false
+            if (this.memName === '' || this.memName === null || this.memName === undefined) {
+                this.confirmText = '이름을 입력하세요.'
+                this.confirmPopShowYn = true
+            } else if (this.memName !== '' && this.memPhone !== '' && this.memEmail !== '') {
+                if(!this.regEmail(this.memEmail.trim())) {
+                    this.confirmText = '이메일 형식이 유효하지 않습니다.'
+                    this.confirmPopShowYn = true
+                } else if(!this.regPhoneNumber(this.memPhone.trim())) {
+                    this.confirmText = '전화번호 형식이 유효하지 않습니다.'
+                    this.confirmPopShowYn = true
+                } else {
+                    result = true
+                }
+            }  else if (this.memEmail === '') {
+                this.confirmText = '이메일을 입력하세요.'
+                this.confirmPopShowYn = true
+            } else {
+                this.confirmText = '전화번호를 입력하세요.'
+                this.confirmPopShowYn = true
+            }
+            return result
+        },
+        async getUserInform () {
+            var test = await this.$getUserInform()
+            debugger
+            return this.userInfo
+        }
+    }
+}
+</script>
+
+<style >
+table {
+    table-layout: fixed;
+    word-break: break-all;
+}
+.memberTable td {
+    border-bottom: 1px solid #ccc !important;
+}
+.memList {
+    text-align: center;
+    padding: 5px 10px;
+}
+.addMemberTextArea{
+    /* font-size:14px; width: 100%; min-height: 100px; background: #FFF; padding: 0 3rem; opacity:0.9; */
+
+    font-size:14px; width: 100%; background: #FFF; padding: 0 10%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start
+}
+.memberItemRow{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+}
+
+
+.memberLogoArea{
+border:1px solid #ccc; width: 120px; height: 120px; border-radius: 120px; margin: 0 auto;  background: #ffffff66; position: relative;display:flex; flex-direction: column; justify-content: center; align-items: center;
+margin-top: 3rem;
+margin-bottom: 2rem;
+}
+
+.memberLogoLabel{
+    color: white; padding: 0.25rem 0.5rem;background-color:black; opacity: 0.8; font-size:14px;white-space: nowrap;
+}
+
+.creChanInput{
+    /* width:calc(100% - 130px); */
+    min-width: 140px;
+    border : none;
+    /* border-bottom: 1px solid #ccc; */
+    white-space: nowrap;
+    overflow: scroll hidden;
+}
+
+.addTeamMemberArea{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 50px);
+  background-color: white;
+}
+
+
+.tB{
+    font-weight: bold;
+}
+
+.creMemberBigBtn{
+    height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
+  /* width: 100%;  */
+
+  /* add Jeong */
+    width: 90%;
+    position: absolute;
+    bottom: 10px;
+    left: 5%;
+}
+
+.userProfileImgWrap { border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745;
+    max-width: 200px;
+    max-height: 200px;
+    min-width: 125px;
+    min-height: 125px;
+    }
+.userProfileImgWrap img {width: 100%;}
+.nativeServiceBtnWrap{padding: 0 10px; width: 45px; min-height: 25px; float: left; }
+
+.detailLabelText {width:10%; min-width: 130px; line-height: 30px;}
+.nativeServiceBtn { float: left; width: calc(100% / 4 - 5px); height: 100%; margin-right: 5px; align-items: center; justify-content: center; padding: 5px; display: flex; flex-direction: column;}
+@media screen and (max-width: 300px) {
+  .detailLabelText {
+    width:8%!important;
+    min-width: 60px!important;
+  }
+  .creChanInput {
+    width: calc(100% - 60px);
+  }
+}
+</style>

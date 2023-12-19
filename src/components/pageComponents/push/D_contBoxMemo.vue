@@ -1,0 +1,554 @@
+
+<template>
+    <div v-if="mModiMemoPopShowYn" @click="this.$refs.modiMemoPop.backClick()" style="width: 100%; height: 100%; position: fixed; background: #00000026; z-index: 10; top: 0; left: 0;"></div>
+    <modiMemoPop :propContDetail="propContDetail" @closeXPop="this.mModiMemoPopShowYn = false" ref="modiMemoPop" :pMemoEle="mModiMemoObj" v-if="mModiMemoPopShowYn" />
+    <div v-if="!childShowYn" style="width: 100%; min-height: 20px; display: flex; margin-bottom: 5px; overflow: hidden;">
+        <div style="width: 95px; margin-right: 10px; min-height: 20px;" @click="clickMemoEvnt({ 'targetType': 'goUserProfile', 'value': propMemoEle })">
+            <p class="commonBlack textLeft font14 fontBold" style="white-space:nowrap;">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
+        </div>
+        <img v-if="propMemoEle.attachMfilekey" src="../../../assets/images/contents/icon_clip.png" class="" style="width: 14px; height: 16px; margin-top: 1px; margin-right: 5px;" alt="">
+        <!-- <div class="contBoxMemoArea" :style="propMemoEle.attachMfilekey? 'width: calc(100% - 170px);' : 'width: calc(100% - 150px);'" style=" min-height: 20px; overflow: hidden; position: relative; max-height: 80px; padding-bottom: 30px;" @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })"> -->
+        <div class="contBoxMemoArea mbottom-05" :style="propMemoEle.attachMfilekey? 'width: calc(100% - 180px);' : 'width: calc(100% - 160px);'" style="position: relative; min-height: 20px; max-height: 45px; overflow: hidden; " @click="clickMemoEvnt({ 'targetType': 'goContentsDetail', 'value': propMemoEle })">
+            <!-- <p class="commonBlack textLeft font14" v-html="$cutText($decodeHTML(propMemoEle.bodyFullStr), 80)"></p> -->
+            <div v-if="mMemoFadeShowYn" class="w-100P fl textLeft" style="position: absolute; bottom: -6px;">...</div>
+            <pre ref="mainMemoRef" class="commonBlack textLeft font14" v-html="$decodeHTML(propMemoEle.bodyFullStr)"></pre>
+            <!-- <div v-if="mMemoFadeShowYn" class="w-100P fl textRight" style="position: absolute; bottom: 0px; height: 20px; background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7));"></div> -->
+            <!-- <div v-if="mMemoFadeShowYn" style="position: absolute; bottom: 0; height: 15px; line-height: 15px;" class="fl w-100P textRight font12 commonGray fontBold" >더보기</div> -->
+        </div>
+        <p class="fl commonGray textLeft mleft-05 font12"  style="font-weight:normal; white-space:nowrap;">{{this.$changeSimpleDateFormat(propMemoEle.creDate)}}</p>
+    </div>
+    <div v-else-if="propMemoEle" style="width: 100%; float: left; min-height: 20px; margin-bottom: 5px;" :style="propMIndex !== (propMemoLength - 1)? 'border-bottom: 1px solid #cccccc50;':''">
+        <div style="width: 100%; min-height: 20px; display: flex; flex-direction: column; margin-bottom: 5px;float: left; position: relative;">
+            <div style="width: 100%; min-height: 40px; display: flex;">
+                <!-- <img v-if="!pNoAuthYn" src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(propMemoEle)"> -->
+                <!-- <div :style="this.GE_USER.userKey === propMemoEle.creUserKey? 'border: 2px solid #5B1CFC; ': 'border: 2px solid rgba(0, 0, 0, 0.1)!important;'" style="width: 40px; display: flex; justify-content: center; align-items: center; border-radius: 100%; margin-right: 10px; height: 40px;">
+                    <div :style="'background-image: url(' + propMemoEle.domainPath + propMemoEle.userProfileImg + ');'" style="height: 36px; width: 36px; border-radius: 100%;  background-repeat: no-repeat; background-position: center; background-size: cover;"></div>
+                </div> -->
+                <gProfileImg @click="clickMemoEvnt({ targetType: 'goUserProfile', value: propMemoEle })" :selfYn="propMemoEle.creUserKey === this.GE_USER.userKey ? true: false" :userInfo="propMemoEle" style="width: 40px; height: 40px; margin-right: 5px; margin-top: 3px; margin-bottom: 5px;"></gProfileImg>
+                <div style="float: left; display: flex; flex-direction: column; margin-right: 10px; min-height: 20px; margin-top: 5px;">
+                    <p style="white-space:nowrap;" class="commonBlack mright-05 textLeft font14 fontBold" @click="clickMemoEvnt({ targetType: 'goUserProfile', value: propMemoEle })">{{this.$changeText(propMemoEle.userDispMtext)}}</p>
+                    <p class="fl commonGray textLeft font12"  style="font-weight:normal; white-space:nowrap;" @click=click>{{this.$changeDateMemoFormat(propMemoEle.creDate)}}</p>
+                </div>
+                <div style="min-height: 20px; margin-top: 10px;  width: 100%; padding-right: 10px; min-height: 20px;">
+                    <!-- <p @click="deleteConfirm(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">삭제</p> -->
+                    <p @click="this.mChangeMemoYn = false" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn" class="commonGray mleft-1 textLeft font12 fr">닫기</p>
+                    <p class="commonGray textLeft font13 fr" v-if="!this.mChangeMemoYn && !pNoAuthYn" @click="writeMeMemo(propMemoEle)">{{$t('COMM_BTN_REPLY_COMM')}}</p>
+                    <template v-if="this.GE_USER.userKey === propMemoEle.creUserKey && !this.mChangeMemoYn">
+                      <p class="commonGray textLeft font13 mright-05 cursorP fr " @blur="testFunction" @click="deleteConfirm(propMemoEle)">{{$t('COMMON_BTN_DELETE')}}</p>
+                      <p class="commonGray textLeft font13 mright-05 cursorP fr " @blur="testFunction" @click="openModiMemoPop(propMemoEle)">{{$t('COMM_BTN_EDIT2')}}</p>
+                    </template>
+                    <!-- <p class="commonGray textLeft font12 cursorP fr " @click="saveModiMemo(propMemoEle)" v-if="this.GE_USER.userKey === propMemoEle.creUserKey && this.mChangeMemoYn">저장</p> -->
+                </div>
+            </div>
+            <div style="width: calc(100%); padding-left: 10px; min-height: 40px; display: flex; flex-direction: column; margin-top: 10px;">
+                <div style="min-height: 20px; width: 100%;">
+                    <div v-if="getAttachFalseFile(propMemoEle.attachFileList).length > 0" :style="'height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'" style="float: left; max-width: 100%; background: rgb(238 238 238); float: left; border: 1px solid #aaa; padding-left: 10px ; margin: 10px 0; overflow: scroll hidden;">
+                        <div id="memoBodyImgWrap" style="float: left; height: 100%; display:flex; align-items: center;" :style="'width:' + getImgListWidthSize(propMemoEle.attachFileList) + 'px'">
+                            <img @click="this.openImgPop(getAttachFalseFile(propMemoEle.attachFileList), index)" :style="'max-height: ' + getMaxHeight(propMemoEle.attachFileList) + 'px'" style="border-right: 0px solid #aaa; border-left: 1px solid #aaa; margin-right: 10px; float: left; min-width: 70px" :fileKey="img.fileKey" v-for="(img, index) in getAttachFalseFile(propMemoEle.attachFileList)" :key="index" :src="img.domainPath + img.pathMtext" alt="">
+                        </div>
+                    </div>
+                    <pre v-if="!this.mChangeMemoYn" class="commonBlack w-100P textLeft fl font14 cursorDragText" style="cursor: text;" v-html="this.$decodeHTML(propMemoEle.bodyFullStr)" :id="'memoFullStr'+propMemoEle.memoKey"></pre>
+                    <pre v-else ref="modiMemoInput" :id="'memoFullStr'+propMemoEle.memoKey" class="editableContent  w-100P textLeft font14 cursorDragText" contenteditable=true style="margin-left: 5px; width: 100%;float: left; height: 100%; min-height: 30px; border-radius: 5px; padding: 0 5px; border: 1px solid #ccc; word-break: break-word;" v-html="mModiMemoInput"></pre>
+                </div>
+                <div class="cursorP" style="width: 100%; display: flex; justify-content: flex-end; margin-top: 3px;" v-if="getAttachTrueFile(propMemoEle.attachFileList).length > 0">
+                  <div style="width: 140px; display: flex; justify-content: flex-end;" @click="showFileDownloadPop(propMemoEle)">
+                    <img style="width: auto; height: 18px;" class=" mright-05" src="../../../assets/images/push/attachFileIcon.png" alt="">
+                    <p v-if="getAttachTrueFile(propMemoEle.attachFileList).length === 1" style="max-width: 100px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;" class="textLeft font12 fontBold commonColor">{{getFileName(getAttachTrueFile(propMemoEle.attachFileList)[0].fileName)}}</p>
+                    <p v-if="getAttachTrueFile(propMemoEle.attachFileList).length === 1" class="textLeft font12 mright-1 fontBold commonColor">.{{getFileExt(getAttachTrueFile(propMemoEle.attachFileList)[0].fileName)}}</p>
+                    <p v-else class="textLeft font12 mright-1 fontBold commonColor">{{getAttachTrueFile(propMemoEle.attachFileList).length}}개의 파일</p>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 100%; float: left; padding-left: 40px; min-height: 20px;">
+            <div v-for="(cmemo, cIndex) in propMemoEle.cmemoList" :key="cIndex" style="width: 100%; min-height: 20px; display: flex; flex-direction: column; margin-bottom: 5px;float: left; position: relative;">
+                <div style="width: 100%; min-height: 40px; display: flex;">
+                    <!-- <img src="../../../assets/images/push/contents_moreBtnIcon.svg" style="position: absolute; right: 5px; top: 0;" alt="" @click="contMenuClick(cmemo)"> -->
+                    <gProfileImg :selfYn="cmemo.creUserKey === this.GE_USER.userKey ? true: false" :userInfo="cmemo" style="width: 40px; height: 40px; margin-right: 5px; margin-bottom: 5px;" />
+                    <div style="float: left; display: flex; flex-direction: column; margin-top: 2px; margin-right: 10px; min-height: 20px;">
+                        <p style="white-space:nowrap;" class="fl commonBlack mright-05 textLeft font14 fontBold" @click="clickMemoEvnt({ targetType: 'goUserProfile', value: cmemo })">{{this.$changeText(cmemo.userDispMtext)}}</p>
+                        <p class="fl commonGray textLeft font12"  style="white-space:nowrap; font-weight:normal;">{{this.$changeDateMemoFormat(cmemo.creDate)}}</p>
+                    </div>
+                    <div style="min-height: 20px; width: 100%; margin-top: 5px; padding-right: 10px; min-height: 20px;">
+                        <!-- <p @click="deleteConfirm(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey" class="commonGray mleft-1 textLeft font12 fr">삭제</p> -->
+                        <p class="commonGray textLeft font13 fr"  @click="writeMeMemo(cmemo)">{{ $t('COMM_BTN_REPLY_COMM') }}</p>
+                        <p class="commonGray textLeft font12 fr cursorP mright-1" @click="openModiMemoPop(cmemo)" v-if="this.GE_USER.userKey === cmemo.creUserKey">{{$t('COMM_BTN_EDIT2')}}</p>
+                    </div>
+                </div>
+                <div style="width: calc(100%); padding-left: 10px; min-height: 40px; display: flex; flex-direction: column;">
+                    <div style="width: 100%; float: left; min-height: 20px;" v-if="cmemo.attachMfilekey && cmemo.attachFileList && cmemo.attachFileList.length > 0">
+                        <div style="width: 100%; float: left;" v-if="cmemo.attachFileList && cmemo.attachFileList.length > 0 && getAttachTrueFile(cmemo.attachFileList).length > 0">
+                            <p @click="showFileDownloadPop(cmemo)" class="textLeft cursorP fr font12 mright-1 fontBold commonColor">첨부파일({{getAttachTrueFile(cmemo.attachFileList).length}})</p>
+                        </div>
+                        <div v-if="getAttachFalseFile(cmemo.attachFileList).length > 0" :style="'height: ' + getMaxHeight(cmemo.attachFileList) + 'px'" style="margin-top: 10px; max-width: 100%; float: left; background: rgb(238 238 238); float: left; border: 1px solid #aaa; padding-left: 10px ; float: left;  overflow: scroll hidden;">
+                            <div id="mememoBodyImgWrap" style="float: left; height: 100%;" :style="'width:' + getImgListWidthSize(cmemo.attachFileList) + 'px'">
+                                <template v-for="(cImg, cIndex) in cmemo.attachFileList" :key="cIndex"  >
+                                    <img  @click="openImgPop(cmemo.attachFileList, cIndex)" :style="'max-height: ' + getMaxHeight(cmemo.attachFileList) + 'px'" style="border-right: 1px solid #aaa; border-left: 1px solid #aaa; margin-right: 10px; float: left; min-width: 70px;" :fileKey="cImg.fileKey" v-if="!cImg.attachYn" :src="cImg.domainPath + cImg.pathMtext" alt="">
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="min-height: 20px; width: 100%; min-height: 20px; margin-top: 5px;">
+                        <pre class="commonBlack textLeft font14" v-html="this.$decodeHTML(cmemo.bodyFullStr)" :id="'memoFullStr'+cmemo.memoKey" ></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <attachFileListPop @updateMemo="updateMemo" propTargetType="R" :propFileData="this.mResultParam" v-if="mFilePopShowYn === true" @closePop="mFilePopShowYn = false"/>
+        <imgLongClickPop @closePop="this.mImgDetailAlertShowYn = false" @clickBtn="longClickAlertClick" v-if="mImgDetailAlertShowYn" />
+        <imgPreviewPop :startIndex="startIndex" :mFileKey="selectedImgPopObj.attachMfilekey"  @closePop="this.mPreviewPopShowYn = false " v-if="selectedImgPopObj && mPreviewPopShowYn && selectedImgPopObj.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :creUserName="selectedImgPopObj.userDispMtext"  />
+        <gConfirmPop :confirmText='mConfirmText' :confirmType='mConfirmType' v-if="mConfirmPopShowYn" @ok="confirmOk()" @no='mConfirmPopShowYn=false'/>
+    </div>
+<gReport v-if="mContMenuShowYn" @closePop="mContMenuShowYn = false"  @report="report" @editable="editable" @bloc="bloc" :contentsInfo="propMemoEle" contentType="MEMO" :contentOwner="this.GE_USER.userKey === propMemoEle.creUserKey"/>
+</template>
+
+<script>
+import { onMessage } from '../../../assets/js/webviewInterface'
+import modiMemoPop from './D_modiMemoPop.vue'
+import imgPreviewPop from '@/components/popup/file/Tal_imgPreviewPop.vue'
+import attachFileListPop from '../main/unit/D_commonAttachFileListPop.vue'
+export default {
+  props: {
+    propMemoLength: {},
+    propMIndex: {},
+    propMemoEle: {},
+    diplayCount: {},
+    childShowYn: {},
+    propContDetail: {},
+    pNoAuthYn: {}
+  },
+  components: {
+    attachFileListPop,
+    imgPreviewPop,
+    modiMemoPop
+  },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
+  },
+  data () {
+    return {
+      mMemoFadeShowYn: false,
+      mImgDetailAlertShowYn: false,
+      mPreviewPopShowYn: false,
+      mChildrenPreviewPopShowYn: false,
+      mConfirmText: '',
+      mConfirmType: 'one',
+      mConfirmPopShowYn: false,
+      mCurrentConfirmType: '',
+      mTempData: null,
+      mCurrentMemoObj: {},
+      mContMenuShowYn: false,
+      mChangeMemoYn: false,
+      mModiMemoInput: '',
+      attachTrueFileList: [],
+      attachFalseFileList: [],
+      mFilePopShowYn: false,
+      mAttachFileList: { D_ATTACH_FILE_LIST: [], D_BODY_IMG_FILE_LIST: [] },
+      selectedImgPopObj: null,
+      startIndex: 0,
+      mResultParam: {},
+      targetMemo: {},
+      memoModiPopShowYn: false,
+      mModiMemoPopShowYn: false,
+      mModiMemoObj: null
+    }
+  },
+  mounted () {
+    // this.addImgEvnt()
+    this.showMemoMore()
+  },
+  created () {
+    console.log('this.propMemoEle!!!!!!!!!!', this.propMemoEle)
+    if (this.propMemoEle.bodyFullStr) {
+      this.mModiMemoInput = this.propMemoEle.bodyFullStr
+    }
+    if (this.propMemoEle.attachMfilekey && this.propMemoEle.attachFileList && this.propMemoEle.attachFileList.length > 0) {
+      for (var i = 0; i < this.propMemoEle.attachFileList.length; i++) {
+        if (this.propMemoEle.attachFileList[i].attachYn) {
+          this.attachTrueFileList.push(this.propMemoEle.attachFileList[i])
+        } else if (!this.propMemoEle.attachFileList[i].attachYn) {
+          this.attachFalseFileList.push(this.propMemoEle.attachFileList[i])
+        }
+      }
+    }
+  },
+  updated () {
+    /* try {
+      if (this.propMemoEle.attachMfilekey && this.propMemoEle.attachFileList && this.propMemoEle.attachFileList.length > 0) {
+        this.attachTrueFileList = []
+        this.attachFalseFileList = []
+        for (var i = 0; i < this.propMemoEle.attachFileList.length; i++) {
+          if (this.propMemoEle.attachFileList[i].attachYn) {
+            this.attachTrueFileList.push(this.propMemoEle.attachFileList[i])
+          } else if (!this.propMemoEle.attachFileList[i].attachYn) {
+            this.attachFalseFileList.push(this.propMemoEle.attachFileList[i])
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    } */
+  },
+  methods: {
+    showMemoMore () {
+      const a = this.$refs.mainMemoRef
+      if (a) {
+        const memoHeight = a.offsetHeight
+        if (memoHeight > 45) {
+          this.mMemoFadeShowYn = true
+        } else {
+          this.mMemoFadeShowYn = false
+        }
+      }
+    },
+    getFileName (fileFullName) {
+      var fileName = fileFullName.substring(
+        0, fileFullName.lastIndexOf('.')
+      )
+      return fileName
+    },
+    getFileExt (fileName) {
+      var fileExt = fileName.substring(
+        fileName.lastIndexOf('.') + 1
+      )
+      return fileExt
+    },
+    click () {
+      console.log(this.mResultParam)
+    },
+    openModiMemoPop (memo) {
+      this.mModiMemoObj = memo
+      this.mModiMemoPopShowYn = true
+    },
+    updateMemo (param) {
+      this.$emit('updateMemo', [param, this.targetMemo.memoKey, this.targetMemo.parentMemoKey])
+    },
+    getAttachTrueFile (list) {
+      if (!list) return []
+      var resultList = []
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].attachYn) {
+          resultList.push(list[i])
+        }
+      }
+      return resultList
+    },
+    getAttachFalseFile (list) {
+      if (!list) return []
+      var resultList = []
+      for (var i = 0; i < list.length; i++) {
+        if (!list[i].attachYn) {
+          resultList.push(list[i])
+        }
+      }
+      return resultList
+    },
+    getMaxHeight (imgList) {
+      var maxHeight = 0
+      for (var i = 0; i < imgList.length; i++) {
+        if (imgList[i].attachYn) {
+          continue
+        }
+        var img = new Image()
+        img.src = imgList[i].domainPath + imgList[i].pathMtext
+        var imgH = img.height
+        if (maxHeight < imgH && imgH <= 300) {
+          maxHeight = imgH
+        }
+        if (maxHeight === 0) maxHeight = 300
+      }
+      return maxHeight
+    },
+    getImgListWidthSize (imgList) {
+      var imgWidth = 0
+      for (var i = 0; i < imgList.length; i++) {
+        if (imgList[i].attachYn) {
+          continue
+        }
+        var img = new Image()
+        img.src = imgList[i].domainPath + imgList[i].pathMtext
+        var imgW = img.width
+        if (img.height && img.height > 300) {
+          imgW = img.width * (300 / img.height)
+        }
+        if (imgW) imgWidth += (imgW + 12)
+        else imgWidth += 300
+      }
+      return imgWidth
+    },
+    openImgPop (imgList, index) {
+      var value = imgList
+      var returnImgList = []
+      for (var i = 0; i < value.length; i++) {
+        var imgObject = {}
+        var img = new Image()
+        // img.src = this.propImgList[i].domainPath + this.propImgList[i].pathMtext
+        img.src = value[i].domainPath + value[i].pathMtext
+        imgObject.src = img.src
+        imgObject.fileKey = Number(value[i].fileKey)
+        imgObject.width = img.width
+        imgObject.height = img.height
+        returnImgList.push(imgObject)
+      }
+      this.$emit('openImgPop', [returnImgList, index])
+    },
+    async imgDownload () {
+      // eslint-disable-next-line no-debugger
+      debugger
+      try {
+        if (this.$getMobileYn()) {
+          onMessage('REQ', 'saveCameraRoll', this.mSelectImgObject.path)
+        } else {
+          // eslint-disable-next-line no-unused-vars
+          var result = await this.$downloadFile(this.mSelectImgObject.fileKey, this.mSelectImgObject.path)
+        }
+        this.$showToastPop(this.$t('COMM_MSG_AFTER_SAVE'))
+        this.mImgDetailAlertShowYn = false
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    showFileDownloadPop (fileObj) {
+      this.mAttachFileList.D_ATTACH_FILE_LIST = []
+      this.mAttachFileList.D_BODY_IMG_FILE_LIST = []
+      if (fileObj.attachMfilekey && fileObj.attachFileList && fileObj.attachFileList.length > 0) {
+        for (var i = 0; i < fileObj.attachFileList.length; i++) {
+          if (fileObj.attachFileList[i].attachYn) {
+            this.mAttachFileList.D_ATTACH_FILE_LIST.push(fileObj.attachFileList[i])
+          } else if (!fileObj.attachFileList[i].attachYn) {
+            this.mAttachFileList.D_BODY_IMG_FILE_LIST.push(fileObj.attachFileList[i])
+          }
+        }
+      }
+      var resultObj = {}
+      resultObj.contentsKey = this.propMemoEle.targetKey
+      resultObj.creUserKey = this.propMemoEle.creUserKey
+      resultObj = { D_ATTACH_FILE_LIST: this.mAttachFileList.D_ATTACH_FILE_LIST, ...resultObj }
+
+      this.mResultParam = resultObj
+      this.mFilePopShowYn = true
+      this.targetMemo = fileObj
+      // console.log(this.$getContentsMemoList(this.propMemoEle.targetKey, ))
+    },
+    saveModiMemo (oriMemo) {
+      this.mChangeMemoYn = false
+      // eslint-disable-next-line no-new-object
+      var param = new Object()
+      param.memoKey = oriMemo.memoKey
+      param.bodyFullStr = this.$refs.modiMemoInput.innerHTML
+      param.bodyMinStr = this.$refs.modiMemoInput.innerHTML
+      param.targetType = oriMemo.targetType
+      param.targetKey = oriMemo.targetKey
+
+      this.$emit('saveModiMemo', { oriMemo: oriMemo, param: param })
+    },
+    modiMemo (memo) {
+      this.mChangeMemoYn = true
+    },
+    contMenuClick (memoContents) {
+      this.mTempData = memoContents
+      this.mContMenuShowYn = true
+    },
+    editable (type, allYn) {
+      this.mContMenuShowYn = false
+      // tempData는 어떤 컨텐츠가 올지, 어떤 Function이 올지 몰라 해당 컨텐츠의 데이터를 일단 받아주는 변수입니다..!
+      if (type === 'edit') {
+        // 댓글 수정
+        // this.$refs.commonPushListMemoRefs[0].editMemoClick(this.tempData, this.tempData.index, this.tempData.cIndex)
+      } else if (type === 'delete') {
+        // 댓글 삭제
+        // this.deleteConfirm('memo')
+        this.deleteMemo()
+      } else if (type === 'textCopy') {
+        this.textCopy()
+      }
+    },
+    confirmOk () {
+      var toastText = ''
+      this.mConfirmType = 'timeout'
+      if (this.mCurrentConfirmType === 'BLOC') {
+        var param = {}
+        param.claimType = 'BLOC'
+        param.targetKind = 'U'
+        param.targetKey = this.mTempData.creUserKey
+        // if (this.CONT_DETAIL.contentsKey) {
+        //   param.targetKind = 'C'
+        //   param.targetKey = this.CONT_DETAIL.contentsKey
+        // } else return false
+        param.creUserKey = this.GE_USER.userKey
+        toastText = this.$t('COMMON_MSG_BLOCKED')
+        console.log(toastText)
+        this.saveActAxiosFunc(param, toastText)
+      } else if (this.mCurrentConfirmType === 'memoDEL') {
+        this.deleteMemo()
+      }
+
+      this.mCurrentConfirmType = ''
+      this.mConfirmPopShowYn = false
+    },
+    bloc (type) {
+      var typeText = type
+      if (typeText === 'USER') {
+        this.mConfirmText = this.$t('COMMON_MSG_BLOCK')
+      } else {
+        this.mConfirmText = this.$t('COMMON_MSG_BLOCK_BOAR')
+      }
+      this.mConfirmType = 'two'
+      this.mConfirmPopShowYn = true
+      this.mCurrentConfirmType = 'BLOC'
+    },
+    report (type) {
+      var targetKind
+      var targetKey
+      var toastText
+
+      if (type === 'MEMO') {
+        targetKind = 'C'
+        targetKey = this.propMemoEle.memoKey
+        toastText = this.$t('COMMON_MSG_REPORT_COMMENT')
+      } else if (type === 'CHANNEL') {
+        /* targetKind = 'T'
+        targetKey = this.CONT_DETAIL.creTeamKey
+        toastText = '해당 채널이 신고되었습니다.' */
+      } else if (type === 'USER') {
+        targetKind = 'U'
+        targetKey = this.propMemoEle.creUserKey
+        toastText = this.$t('COMMON_MSG_REPORT_USER')
+      }
+      var param = {}
+      param.claimType = 'REPO'
+      param.targetKind = targetKind
+      param.targetKey = parseInt(targetKey)
+      param.creUserKey = this.GE_USER.userKey
+      this.saveActAxiosFunc(param, toastText)
+    },
+    /** 신고, 차단, 탈퇴를 할 수 있는 axios함수 // actType, targetKind, targetKey, creUserKey 보내기 */
+    async saveActAxiosFunc (param, toastText) {
+      try {
+        var result = await this.$commonAxiosFunction({
+          url: '/sUniB/tp.saveClaimLog',
+          param: param
+        })
+        console.log(result)
+        if (result) {
+          this.$showToastPop(toastText)
+        }
+      } catch (e) {
+        console.error(e)
+      } finally {
+        this.mContMenuShowYn = false
+      }
+    },
+    clickMemoEvnt (emitData) {
+      this.$emit('memoEmitFunc', emitData)
+    },
+    deleteConfirm (data) {
+      // eslint-disable-next-line no-debugger
+      debugger
+      if ((data !== undefined && data !== null && data !== '') && (data !== 'alim' && data !== 'memo' && data !== 'board')) {
+        this.mTempData = data
+      }
+
+      if (this.mTempData.parentMemoKey) {
+        this.mConfirmText = this.$t('COMMON_MSG_DELETE_REPLY')
+      } else if (this.mTempData.memoKey) {
+        this.mConfirmText = this.$t('COMMON_MSG_DELETE_COMMENT')
+      }
+      this.mCurrentConfirmType = 'memoDEL'
+      this.mConfirmType = 'two'
+      this.mConfirmPopShowYn = true
+    },
+    textCopy () {
+      const textarea = document.createElement('textarea')
+      document.body.appendChild(textarea)
+      var content = document.getElementById('memoFullStr' + this.mTempData.memoKey).innerText
+      try {
+        textarea.value = content
+        textarea.select()
+        // 복사 후 textarea 지우기
+        document.execCommand('copy')
+        document.body.removeChild(textarea)
+        this.$showToastPop(this.$t('COMMON_MSG_COPY_SUCCESS'))
+      } catch (error) {
+        this.$showToastPop(this.$t('COMMON_MSG_COPY_FAIL'))
+      }
+    },
+    async deleteMemo () {
+      var memo = {}
+
+      memo.memoKey = this.mTempData.memoKey
+      try {
+        var result = await this.$commonAxiosFunction({
+          url: '/sUniB/tp.deleteMemo',
+          param: memo
+        })
+        if (result.data.result === true) {
+          // var cont = this.currentMemoObj
+          var cont = this.propContDetail
+          var index, cmemoListIdx
+          if (this.mTempData.parentMemoKey) {
+            // 댓글의 부모키값이 있으면 컨텐츠의 댓글 중 부모의 키값을 찾음
+            index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === this.mTempData.parentMemoKey)
+
+            // 컨텐츠의 댓글 중 부모키값의 인덱스에 자식 댓글리스트 중 삭제한 대댓글의 키를 찾음
+            cmemoListIdx = cont.D_MEMO_LIST[index].cmemoList.findIndex(i => i.memoKey === this.mTempData.memoKey)
+
+            // 찾은 대댓글의 키를 리스트에서 삭제함
+            cont.D_MEMO_LIST[index].cmemoList.splice(cmemoListIdx, 1)
+          } else {
+            index = cont.D_MEMO_LIST.findIndex((item) => item.memoKey === this.mTempData.memoKey)
+            cont.D_MEMO_LIST.splice(index, 1)
+          }
+          cont.memoCount -= 1
+          this.$store.dispatch('D_CHANNEL/AC_DEL_MEMO_REPLACE_CONTENT', [cont])
+          // this.$store.dispatch('D_CHANNEL/AC_REPLACE_CONTENTS', [cont])
+        }
+        this.$showToastPop(this.$t('COMMON_MSG_DELETED_COMMENT'))
+        this.mConfirmPopShowYn = false
+      } catch (error) {
+        this.$showToastPop(this.$t('COMMON_MSG_FAILED'))
+        this.mConfirmPopShowYn = false
+        console.log(error)
+      }
+    },
+    writeMeMemo (memo) {
+      /* if (this.mCurrentMemoObj.memoKey !== memo.memoKey) {
+        // this.$emit('clearMemo')
+        this.clearMemo()
+      } */
+      // var memoObj = JSON.parse(JSON.stringify(memo))
+
+      // this.mCurrentMemoObj = JSON.parse(JSON.stringify(memo)) 20221230: 수민삭제
+      this.mCurrentMemoObj = memo
+      if (this.propContDetail.jobkindId === 'TODO' || (this.propContDetail.jobkindId === 'ALIM' && this.propContDetail.canReplyYn === 1) || (this.propContDetail.jobkindId === 'BOAR' && this.$checkUserAuth(this.propContDetail.shareItem).R === true)) {
+        var data = {}
+        data.parentMemoKey = this.mCurrentMemoObj.memoKey // 대댓글때 사용하는것임
+        if (this.mCurrentMemoObj.parentMemoKey !== undefined && this.mCurrentMemoObj.parentMemoKey !== null && this.mCurrentMemoObj.parentMemoKey !== '') {
+          data.parentMemoKey = this.mCurrentMemoObj.parentMemoKey
+        }
+        data.memo = this.mCurrentMemoObj
+
+        this.clickMemoEvnt({ targetType: 'writeMeMemo', value: data })
+      } else {
+        this.confirmText = this.$t('COMMON_MSG_COMM_NOPERM')
+        this.confirmPopShowYn = true
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+/* .contBoxMemoArea::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 30px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
+} */
+</style>

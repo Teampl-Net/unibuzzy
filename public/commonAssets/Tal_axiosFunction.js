@@ -5,7 +5,7 @@ import axios from 'axios'
 import router from '../../src/router'
 import { params } from 'vue-router'
 import { coreMethods } from './D_coreService'
-import { commonMethods } from '../../src/assets/js/common'
+import { commonMethods } from '../../src/assets/js/Tal_common'
 import store from '../../src/store'
 import { mapGetters, mapActions } from 'vuex'
 /* axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
@@ -34,7 +34,7 @@ export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
   if (setItem.firstYn || noAuthYn !== undefined) {
     console.log('pass')
   } else {
-    var user = store.getters['UB_USER/GE_USER']
+    var user = store.getters['D_USER/GE_USER']
     if (!user.unknownYn) {
       await methods.userLoginCheck()
     }
@@ -95,6 +95,7 @@ export function isMobile () {
 }
 
 export async function saveUser (userProfile, loginYn) {
+  console.log(userProfile)
   var user = {}
   // var testYn = localStorage.getItem('testYn')
   // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
@@ -150,13 +151,16 @@ export async function saveUser (userProfile, loginYn) {
       result.data.userMap.partnerToken = localUser.partnerToken
     }
     localStorage.setItem('user', JSON.stringify(result.data.userMap))
-    await store.dispatch('UB_USER/AC_USER', result.data.userMap)
+    await store.dispatch('D_USER/AC_USER', result.data.userMap)
     localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
     if (loginYn) {
       var userInfo = result.data.userMap
       if (!userInfo.certiDate && (!(/Mobi/i.test(window.navigator.userAgent)))) {
-        router.replace({ path: '/' })
-        // router.replace({ path: '/savePhone' })
+        // router.replace({ path: '/' })
+        if (localStorage.getItem('appType') && localStorage.getItem('appType') === 'UB') {
+        } else {
+          router.replace({ path: '/savePhone' })
+        }
         return
       }
     }
@@ -164,11 +168,11 @@ export async function saveUser (userProfile, loginYn) {
     location.href = '/'
   } else if (result.data.message === 'NG') {
     if (store !== undefined && store !== null) {
-      store.commit('UB_USER/MU_CLEAN_USER')
+      store.commit('D_USER/MU_CLEAN_USER')
     }
     localStorage.setItem('user', '')
-    alert('Login failed. Please try it again later.')
-    router.replace({ name: 'login' })
+    alert('로그인에 실패하였으니, 다른방식으로 재로그인 해주세요.')
+    router.replace({ name: 'unknown' })
     // router.replace({ name: 'policies' })
   }
 }
@@ -176,10 +180,7 @@ export const methods = {
   getMobileYn () {
     var user = navigator.userAgent
     var mobileYn = false
-    // if (user.indexOf('iPhone') > -1 || user.indexOf('Android') > -1) {
-    //   mobileYn = true
-    // }
-    if (this.$mobileYn) {
+    if (user.indexOf('iPhone') > -1 || user.indexOf('Android') > -1) {
       mobileYn = true
     }
     return mobileYn
@@ -194,10 +195,9 @@ export const methods = {
       paramMap.set('fcmKey', '22222222')
       paramMap.set('soAccessToken', 'djWQ33dQRz-mzUVjQmggEz:APA91bHLvbLuEmuvBnh9o8TAC2SgI6zSP836eC8g3zq5HqkfhZenv6zC_hcWK14MI5ZE5PoYAeV5U7FYCH-EGYMTaoXTWC-UleipjRydqG7z0r-wu0gT4TT9b6e89P4FR5l353DFK0C-')
       paramMap.set('userKey', 255)
-      paramMap.set('userEmail', 'test02@teampl.net')
     } else {
       localStorage.setItem('testYn', false)
-      var user = store.getters['UB_USER/GE_USER']
+      var user = store.getters['D_USER/GE_USER']
       if (!user) {
         if (JSON.parse(localStorage.getItem('vuex'))) {
           user = JSON.parse(localStorage.getItem('vuex')).D_USER.userInfo
@@ -206,7 +206,7 @@ export const methods = {
       if (user === undefined || user === null || user === '') {
         localStorage.setItem('sessionUser', '')
         localStorage.setItem('user', '')
-        router.replace({ name: 'login' })
+        router.replace({ name: 'unknown' })
         // router.replace({ name: 'policies' })
         return
       }
@@ -227,27 +227,16 @@ export const methods = {
     }
 
     paramMap.set('mobileYn', isMobile())
-
+    var checkParam = {}
+    checkParam.userKey = Number(user.userKey)
+    checkParam.fcmKey = user.fcmKey
     var result = await axios.post('/sUniB/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
-    if (result && result.data && (result.data.resultCode === 'OK' || (result.data.userMap && result.data.userMap.userKey))) {
+    if (result.data && (result.data.resultCode === 'OK' || (result.data.userMap && result.data.userMap.userKey))) {
       if (result.data.userMap) {
         try {
-          if (localStorage.getItem('user')) {
-            var localUser = JSON.parse(localStorage.getItem('user'))
-            result.data.userMap.uAccessToken = localUser.uAccessToken
-            result.data.userMap.partnerToken = localUser.partnerToken
-          }
+          store.dispatch('D_USER/AC_USER', result.data.userMap)
           localStorage.setItem('user', JSON.stringify(result.data.userMap))
-          await store.dispatch('UB_USER/AC_USER', result.data.userMap)
           localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
-          /*
-          await store.dispatch('UB_USER/AC_USER', result.data.userMap)
-          await localStorage.setItem('user', JSON.stringify(result.data.userMap))
-          await localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap)) */
-          if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
-            // router.replace({ path: '/' })
-          }
-          // return
         } catch (error) {
           console.log(error)
         }
@@ -263,16 +252,16 @@ export const methods = {
     } else {
       // commonMethods.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
       // router.replace({ name: 'policies' })
-      router.replace({ name: 'login' })
+      router.replace({ name: 'unknown' })
       if (store !== undefined && store !== null) {
-        store.commit('UB_USER/MU_CLEAN_USER')
+        store.commit('D_USER/MU_CLEAN_USER')
       }
       localStorage.setItem('sessionUser', '')
       localStorage.setItem('user', '')
     }
     if (!user) {
       if (store !== undefined && store !== null) {
-        store.commit('UB_USER/MU_CLEAN_USER')
+        store.commit('D_USER/MU_CLEAN_USER')
       }
       window.localStorage.removeItem('testYn')
       localStorage.setItem('loginYn', false)
@@ -287,43 +276,21 @@ export const methods = {
     console.log(result)
     if (result) {
       await router.replace({ name: 'login' })
-      store.commit('UB_CHANNEL/MU_CLEAN_CHAN_LIST')
-      await store.dispatch('UB_USER/AC_USER', '')
+      store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
+      await store.dispatch('D_USER/AC_USER', '')
       if (store !== undefined && store !== null) {
-        store.commit('UB_USER/MU_CLEAN_USER')
+        store.commit('D_USER/MU_CLEAN_USER')
       }
 
       window.localStorage.setItem('loginYn', false)
       window.localStorage.removeItem('vuex')
       window.localStorage.removeItem('loginType')
       window.localStorage.removeItem('testYn')
-    }
-  },
-  async UBLogOut () {
-    var result = await commonAxiosFunction({
-      url: '/sUniB/tp.logout',
-      firstYn: true
-    })
-    console.log(result)
-    if (result) {
-      await router.replace({ name: 'login' })
-      store.commit('UB_CHANNEL/MU_CLEAN_CHAN_LIST')
-      await store.dispatch('UB_USER/AC_USER', '')
-      if (store !== undefined && store !== null) {
-        store.commit('UB_USER/MU_CLEAN_USER')
-      }
-
-      window.localStorage.setItem('loginYn', false)
-      window.localStorage.removeItem('vuex')
-      window.localStorage.removeItem('loginType')
-      window.localStorage.removeItem('testYn')
-
-      router.push('/')
     }
   },
   async getTeamList (paramMap, noneLoadingYn) {
     var resultList = null
-    paramMap.set('fUserKey', store.getters['UB_USER/GE_USER'].userKey)
+    paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
     var result = await commonAxiosFunction({
       url: '/sUniB/tp.getUserTeamList',
       param: Object.fromEntries(paramMap)
@@ -332,24 +299,33 @@ export const methods = {
     return resultList
   },
   async getAxiosContentsDetail (contentsKey, jobkindId) {
+    // eslint-disable-next-line no-debugger
+    debugger
     var param = {}
     // param.contentsKey = this.contentsEle.contentsKey
     param.contentsKey = contentsKey
     param.targetKey = contentsKey
     // param.jobkindId = this.contentsEle.jobkindId
     param.jobkindId = jobkindId
-    param.userKey = store.getters['UB_USER/GE_USER'].userKey
-    param.ownUserKey = store.getters['UB_USER/GE_USER'].userKey
+    param.userKey = store.getters['D_USER/GE_USER'].userKey
+    param.ownUserKey = store.getters['D_USER/GE_USER'].userKey
     var resultList = await this.$getContentsList(param)
     if (resultList.content) var detailData = resultList.content[0]
-    this.$store.dispatch('UB_CHANNEL/AC_ADD_CONTENTS', [detailData])
+    if (detailData.jobkindId === 'TODO') {
+      detailData.creTeamKey = 0
+    }
+    this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
   },
   async getContentsList (inputParam, nonLoadingYn, noAuthYn) {
     var paramSet = {}
     if (inputParam) {
       paramSet = inputParam
-      if (!noAuthYn && store.getters['UB_USER/GE_USER']) {
-        paramSet.subsUserKey = store.getters['UB_USER/GE_USER'].userKey
+      if (!noAuthYn && store.getters['D_USER/GE_USER'] && inputParam.jobkindId !== 'TODO') {
+        paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
+      }
+      if (paramSet.jobkindId === 'TODO' || (paramSet.creTeamKey && Number(paramSet.creTeamKey) === 0) || (paramSet.teamKey && Number(paramSet.teamKey) === 0)) {
+        delete paramSet.creTeamKey
+        delete paramSet.teamKey
       }
     }
     var resultList = null
@@ -373,6 +349,15 @@ export const methods = {
     resultList = result.data
     return resultList
   },
+  async getOnlyFollowerList (paramMap) {
+    var result = await this.$commonAxiosFunction({
+      url: '/sUniB/tp.getOnlyFollowerList',
+      param: Object.fromEntries(paramMap)
+    })
+    return result.data
+    // // console.log(this.managingList)
+    // paramMap.set('followerType', 'M')
+  },
   async getFollowerList (paramMap) {
     var result = await this.$commonAxiosFunction({
       url: '/sUniB/tp.getFollowerList',
@@ -389,13 +374,13 @@ export const methods = {
     }
     var urlSet = null
     if (type === 'delete') { urlSet = '/sUniB/tp.deleteUserDo' } else if (type === 'save') { urlSet = '/sUniB/tp.saveUserDo' }
-    param.userKey = store.getters['UB_USER/GE_USER'].userKey
+    param.userKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
 
     var response = await commonAxiosFunction({
       url: urlSet,
       param: param
-    })
+    }, true)
     result = response.data
     return result
   },
@@ -405,7 +390,7 @@ export const methods = {
     if (inputParam) {
       param = inputParam
     }
-    param.creUserKey = store.getters['UB_USER/GE_USER'].userKey
+    param.creUserKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
       url: '/sUniB/tp.saveSticker',
@@ -416,13 +401,13 @@ export const methods = {
     return result
   },
   async getStickerList (inputParam) {
-    if (store.getters['UB_USER/GE_USER'].unknownYn) return
+    if (store.getters['D_USER/GE_USER'].unknownYn) return
     // eslint-disable-next-line no-new-object
     var param = new Object()
     if (inputParam) {
       param = inputParam
     }
-    param.creUserKey = store.getters['UB_USER/GE_USER'].userKey
+    param.creUserKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
       url: '/sUniB/tp.getStickerList',
@@ -441,7 +426,7 @@ export const methods = {
     if (type === 'del') { urlSet = '/sUniB/tp.deleteFollower' } else if (type === 'save') {
       paramSet.followerType = 'F'
     }
-    paramSet.userKey = store.getters['UB_USER/GE_USER'].userKey
+    paramSet.userKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
       url: urlSet,
@@ -508,7 +493,11 @@ export const methods = {
       url: '/sUniB/tp.saveContents',
       param: paramSet
     })
-    result = response.data
+    if (result && result.data) {
+      result = response.data
+    } else {
+      result = response
+    }
     return result
   },
   async getCodeList (inputParam) {
@@ -555,7 +544,8 @@ export const methods = {
     return result
   },
   async saveCabinet (inputParamMap) {
-    var paramSet = {}
+    // eslint-disable-next-line no-new-object
+    var paramSet = new Object()
     if (inputParamMap) {
       paramSet = inputParamMap
     }
@@ -568,7 +558,8 @@ export const methods = {
     return result
   },
   async deleteCabinet (inputParamMap) {
-    var paramSet = {}
+    // eslint-disable-next-line no-new-object
+    var paramSet = new Object()
     if (inputParamMap) {
       paramSet = inputParamMap
     }
@@ -581,7 +572,8 @@ export const methods = {
     return result
   },
   async getTeamMenuList (inputParamMap, noneLoadingYn) {
-    var paramMap = {}
+    // eslint-disable-next-line no-new-object
+    var paramMap = new Map()
     if (inputParamMap) {
       paramMap = inputParamMap
     }
@@ -594,7 +586,8 @@ export const methods = {
     return result
   },
   async getCabinetDetail (inputParam) {
-    var paramSet = {}
+    // eslint-disable-next-line no-new-object
+    var paramSet = new Object()
     if (inputParam) {
       paramSet = inputParam
     }
@@ -649,7 +642,7 @@ export const methods = {
     // eslint-disable-next-line no-new-object
     var user = new Object()
     // param.user = this.userInfo
-    var localUser = store.getters['UB_USER/GE_USER']
+    var localUser = store.getters['D_USER/GE_USER']
     if (localUser.userEmail !== undefined && localUser.userEmail !== null && localUser.userEmail !== '') { user.soEmail = localUser.userEmail }
     if (localUser.userKey !== undefined && localUser.userKey !== null && localUser.userKey !== '') { user.userKey = localUser.userKey }
     if (localUser.soAccessToken !== undefined && localUser.soAccessToken !== null && localUser.soAccessToken !== '') { user.soAccessToken = localUser.soAccessToken }
@@ -667,8 +660,18 @@ export const methods = {
       param: param
     })
     result = response
-    store.commit('UB_USER/MU_USER', result.data.userMap)
+    store.commit('D_USER/MU_USER', result.data.userMap)
     return result
+  },
+  async getTodoListGroupCab (param, loadingYn) {
+    var response = await commonAxiosFunction({ url: '/sUniB/tp.getTodoListGroupCab', param: param }, loadingYn)
+    console.log(response)
+    return response.data
+  },
+  async getUserCabinetList (param, loadingYn) {
+    var response = await commonAxiosFunction({ url: '/sUniB/tp.getUserCabinetList', param: param }, loadingYn)
+    console.log(response)
+    return response.data
   }
 }
 
@@ -700,8 +703,10 @@ export default {
     Vue.config.globalProperties.$getMemoCount = methods.getMemoCount
     Vue.config.globalProperties.$saveFcmToken = methods.saveFcmToken
     Vue.config.globalProperties.$d_AlimLogout = methods.d_AlimLogout
-    Vue.config.globalProperties.$UBLogOut = methods.UBLogOut
     Vue.config.globalProperties.$getFollowerList = methods.getFollowerList
     Vue.config.globalProperties.$coreLoginCheck = methods.coreLoginCheck
+    Vue.config.globalProperties.$getTodoListGroupCab = methods.getTodoListGroupCab
+    Vue.config.globalProperties.$gGetUserCabinetList = methods.getUserCabinetList
+    Vue.config.globalProperties.$gGetOnlyFollowerList = methods.getOnlyFollowerList
   }
 }
