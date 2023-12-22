@@ -407,7 +407,7 @@
               :style="(group.listName === this.$t('COMMON_TODO_MYTODO') ? 'border-left: 10px solid rgb(247 161 120);' : ';') + (group.listName === this.$t('COMMON_TODO_CHECK')? 'border-left: 10px solid rgb(99 203 223);' : ';') + (group.listName === this.$t('COMMON_TODO_PUBLIC')? 'border-left: 10px solid rgb(198, 106, 106);' : ';')"
             >
               <template v-for="(todo, todoIndex) in group.list.content" :key="todo.contentsKey" >
-                <todoContentsBox :pTodoElement="todo" :pTodoIndex="todoIndex" :pClickSticker="clickSticker" :pOpenDetail="goDetail" :pGroupIndex="groupIndex" :pSetCompleteTodo="completeTodo" :pClickPriority="clickPriority" :pOpenActorList="openActorList" :pGroup="group" :pGoUserProfile="goUserProfile" />
+                <todoContentsBox :pTodoElement="todo" :pTodoIndex="todoIndex" :pClickSticker="clickSticker" :pOpenDetail="goDetail" :pGroupIndex="groupIndex" :pSetCompleteTodo="reqCompleteTodo" :pClickPriority="clickPriority" :pOpenActorList="openActorList" :pGroup="group" :pGoUserProfile="goUserProfile" />
               </template>
               <!-- 한 박스-->
               <!-- // -->
@@ -437,6 +437,8 @@
     :pMemoYn="memoYn"
     @openPop="openPop"
   />
+  <div v-if="mCommentPopShowYn" class="backgroundShadow" @click="$refs.memoCommentTag.backClick()" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 98;"></div>
+  <completeTodoPop :pCompleteTodo="setCompleteTodo" :pCloseCompletePop="closeCompletePop" ref="memoCommentTag"  v-if="mCommentPopShowYn && reqCompleteTodoTarget" :pTodoElement="reqCompleteTodoTarget"/>
   <!-- </transition> -->
   <div class="popBg" v-if="mOpenMenuShowYn" @click="closeSubMenu"></div>
   <div v-show="mOpenMenuShowYn" class="reportCompoArea">
@@ -468,6 +470,7 @@ import todoContentsBox from './D_todoContentsBox.vue'
 import { commonMethods } from '../../assets/js/Tal_common'
 import SkeletonBox from '../../components/pageComponents/push/D_contentsSkeleton.vue'
 import CommonAddContentsForm from '../../components/write/CommonAddContentsForm.vue'
+import completeTodoPop from './D_completeTodoPop.vue'
 
 export default {
   components: {
@@ -480,6 +483,7 @@ export default {
     commonFilterPop,
     commonStickyBox,
     todoContentsBox,
+    completeTodoPop,
     CommonAddContentsForm
   },
   props: {
@@ -487,6 +491,8 @@ export default {
   },
   data () {
     return {
+      mCommentPopShowYn: false,
+      reqCompleteTodoTarget: null,
       showMemoYn: false,
       mFilterPopShowYn: false,
       mPopupType: 'TODO',
@@ -579,6 +585,22 @@ export default {
     window.addEventListener('resize', this.setTitleThreeLine)
   },
   methods: {
+    closeCompletePop (updateYn) {
+      if (updateYn) {
+
+      } else {
+      }
+      this.mCommentPopShowYn = !this.mCommentPopShowYn
+      this.reqCompleteTodoTarget = null
+    },
+    reqCompleteTodo (data) {
+      if (data.contStatus === '00') {
+        this.reqCompleteTodoTarget = data
+        this.mCommentPopShowYn = !this.mCommentPopShowYn
+      } else {
+        this.completeTodo(data)
+      }
+    },
     openWriteMemoPop () {
       this.memoYn = true
       this.mPopupType = 'MEMO'
@@ -911,8 +933,11 @@ export default {
         }
       }
     },
-    setCompleteTodo (value, menu, groupIndex, todoIndex) {
-      this.completeTodo(value)
+    async setCompleteTodo (value, memoComment) {
+      await this.completeTodo(value, memoComment)
+      if (this.$refs.memoCommentTag) {
+        this.$refs.memoCommentTag.backClick()
+      }
       // const tab = this.mShowTab[this.mSelectedMainTabIdx]
       // let target = tab.tabVal
       // if (tab.tabVal === 'A') {
@@ -962,13 +987,41 @@ export default {
       const returnDate = new Date(setDate)
       this.mSelectDate = returnDate
     },
-    async completeTodo (value, loadingYn) {
+    async completeTodo (value, memoComment) {
       var param = {}
       param.contentsKey = value.contentsKey
+      if (memoComment) {
+        param.memoHeaderStr = '[완료메세지]\n'
+        param.memoBodyStr = memoComment
+      }
       param.workUserName = this.GE_USER.userDispMtext
       param.creUserName = this.GE_USER.userDispMtext
       param.jobkindId = 'TODO'
       param.actorList = value.actorList
+      if (param.actorList) {
+        const tempList = [...param.actorList]
+        const actorList = []
+        tempList.forEach((val) => {
+          if (val.accessKind === 'F') {
+            if (val.cList) {
+              val.cList.forEach(val2 => {
+                actorList.push({
+                  accessKey: val2.accessKey,
+                  accessKind: val2.accessKind,
+                  actType: val.actType
+                })
+              })
+            }
+          } else {
+            actorList.push({
+              accessKey: val.accessKey,
+              accessKind: val.accessKind,
+              actType: val.actType
+            })
+          }
+        })
+        param.actorList = actorList
+      }
       if (value.contStatus === '00') {
         param.contStatus = '99'
       } else {
@@ -1736,8 +1789,53 @@ export default {
       this.$router.push('/')
     },
     getReplaceList (data) {
-      if (!data || !data.content) return data
-      data.content = this.replaceArr(data.content)
+      let idx1, idx2
+      const returnAlimList = []
+      let chanDetail = null
+      let dataList = null
+      const contList = data.content
+      if (!contList) return data
+      var i = 0
+      for (i = 0; i < contList.length; i++) {
+        if (contList[i].jobkindId === 'TODO') contList[i].creTeamKey = 0
+        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === contList[i].creTeamKey)
+        chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+        dataList = chanDetail.ELEMENTS.todoList
+        idx2 = dataList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
+        if (idx2 !== -1) {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          contList[i] = dataList[idx2]
+          returnAlimList.push(dataList[idx2])
+        } else {
+          returnAlimList.push(contList[i])
+        }
+      }
+      data.content = this.replaceArr(returnAlimList)
+      return data
+    },
+    getVuexList (data) {
+      let idx1, idx2
+      const returnAlimList = []
+      let chanDetail = null
+      let dataList = null
+      const contList = data.content
+      if (!contList) return data
+      var i = 0
+      for (i = 0; i < contList.length; i++) {
+        if (contList[i].jobkindId === 'TODO') contList[i].creTeamKey = 0
+        idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === contList[i].creTeamKey)
+        chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
+        dataList = chanDetail.ELEMENTS.todoList
+        idx2 = dataList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
+        if (idx2 !== -1) {
+          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+          contList[i] = dataList[idx2]
+          returnAlimList.push(dataList[idx2])
+        } else {
+          returnAlimList.push(contList[i])
+        }
+      }
+      data.content = this.replaceArr(returnAlimList)
       return data
     },
     /* getVuexMemoList (data) {
@@ -2284,6 +2382,7 @@ export default {
     GE_NEW_CONT_LIST: {
       handler (value, old) {
         if (!value || !value[0]) return
+        console.log(value)
         if (value[0].jobkindId !== 'TODO') return
         const newTodo = value[0]
         // let oriList = []
