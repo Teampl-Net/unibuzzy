@@ -1,0 +1,12 @@
+diff --git a/dist/core-base.cjs b/dist/core-base.cjs
+index f80d10c1521a1f676af410985e8778e06ef4a87c..2e170f6e53fc819d90c20694b741f43caf96929e 100644
+--- a/dist/core-base.cjs
++++ b/dist/core-base.cjs
+@@ -1331,7 +1331,7 @@ function getCompileContext(context, locale, key, source, warnHtmlMessage, onErro
+ function getSourceForCodeFrame(source) {
+     if (shared.isString(source)) ;
+     else {
++        if (source.loc && source.loc.source) {
+             return source.loc.source;
+         }
+     }

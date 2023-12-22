@@ -1,0 +1,84 @@
+name: Bug Report
+description: Create a report to help us improve
+title: "[Bug]: what bug is?"
+labels: ["bug"]
+projects: []
+assignees: 
+  - ''
+
+body:
+# ===============================================================
+  - type: markdown
+    attributes:
+      value: "## Thank you for your Reporting!"
+  - type: dropdown
+    id: env
+    attributes:
+      label: Environment
+      description: Select the environment in which the bug occurs.
+      options:
+        - "Android"
+        - "iOS"
+        - "Web"
+        - "Etc."
+      multiple: true
+    validations:
+      required: true
+  - type: dropdown
+    id: bug-category
+    attributes:
+      label: Bug category
+      description: Select what bug category is.
+      options:
+        - "Code Error"
+        - "Network Error"
+        - "Layout Error (CSS)"
+        - "Etc."
+      multiple: true
+    validations:
+      required: true
+  - type: input
+    id: bug-category-inperson
+    attributes:
+      label: ETC. bug category
+      description: only write when you choose Etc. category.
+      placeholder: If you already select another category, move to next step.
+    validations:
+      required: false
+  - type: textarea
+    id: bug-desc
+    attributes:
+      label: Bug situation
+      description: Describe about bug details.
+      placeholder: "* Required Info.: file location / bug description"
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: If there is any bug, How is this work?
+      placeholder: Tell me the behavior you want
+    validations:
+      required: false
+      
+# ===============================================================
+  - type: markdown
+    attributes:
+      value: "## Additional Info."
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Reference
+      description: Upload additional pic. or video for description.
+      placeholder: When you drag&drop image, click this textarea at first.
+    validations:
+      required: false
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional context
+      description: If you have another info. to share, write here.
+      placeholder: Anything to write down or refer to is fine
+    validations:
+      required: false

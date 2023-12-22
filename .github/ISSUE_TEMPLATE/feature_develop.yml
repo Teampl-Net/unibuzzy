@@ -1,0 +1,44 @@
+name: Feature develop
+description: Suggest an idea or plan for this project
+labels: ["enhancement"]
+
+body:
+  - type: textarea
+    attributes:
+      label: Is there a motivation or problem with the development?
+      description: A clear and concise description of what the motivation or problem is.
+      placeholder: Ex. I don't like this design that [...]
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: The solution I'd like
+      description: A clear and concise description of what you want to happen.
+      placeholder: Tell us what your plan!
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Screenshots or video
+      description: It is helpful to attach screenshots or video similar to the desired features.
+      placeholder: When you drag&drop image, click this textarea at first
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Alternatives I've considered
+      description: A clear and concise description of any alternative solutions or features you've considered.
+      placeholder: It would be great if you have a relevant image or link
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: If you have another info. to share, write here.
+      placeholder: Anything to write down or refer to is fine
+    validations:
+      required: false

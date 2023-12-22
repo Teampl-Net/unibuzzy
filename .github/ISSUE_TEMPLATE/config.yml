@@ -1,0 +1,9 @@
+# https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#configuring-the-template-chooser
+
+contact_links:
+  - name: Development Q&A
+    url: https://github.com/Teampl-Net/unibuzzy/discussions/new?category=q-a
+    about: If you are facing difficulties in developing or have any questions, feel free to ask for assistance.
+  - name: Security report
+    url: https://github.com/Teampl-Net/unibuzzy/security/advisories
+    about: If you find a security threat, please report it here.
