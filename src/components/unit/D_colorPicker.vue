@@ -15,8 +15,8 @@
           </div>
         </div> -->
         <template v-if="isTag === true">
-          <div v-for="(value, index) in vividColorList" :key="index" class="mright-03" @click="pickColor(value)" :style="'background:' + value" style="line-height:25px; min-width:30px; width:40px; max-height: 25px; min-height: 25px; border-radius:25px; display: flex; justify-content: center; align-items: center;">
-            <p class="fontBold font12" style="color:#fff;">Tag</p>
+          <div v-for="(value, index) in vividColorList" :key="index" class="mright-03" @click="pickColor(value, index)" :style="'background:' + value" style="line-height:25px; min-width:30px; width:40px; max-height: 25px; min-height: 25px; border-radius:25px; display: flex; justify-content: center; align-items: center;">
+            <p class="fontBold font12" :style="{color : index === 3 || index ===4 || index ===8 || index ===9|| index ===13 || index ===14 || index ===18 || index ===19 || index ===23 || index ===24 ? '#222' : '#fff'}">Tag</p>
           </div>
         </template>
         <template v-else>
@@ -62,7 +62,9 @@ export default {
       ],
       vividColorList: [
         '#00388B', '#0061F2', '#408DFF', '#91BDFF', '#C2DAFF', '#5F2E00', '#964800', '#FF7A00', '#FFC58F', '#FFE0C4', '#086600', '#0DA500', '#11D800', '#A8FFA1', '#CDFFC9', '#3B0076', '#6A00D4', '#942AFF', '#DAB5FF', '#EAD5FF', '#003D50', '#00698B', '#00B6DE', '#95E6FF', '#C8F5FF', '#7F0045', '#C30069', '#FF1794', '#FF96CF', '#FFC3E4', '#222222', '#717171', '#A6A6A6', '#CCCCCC', '#E3E3E3'
-      ]
+      ],
+      mselectedColorIdx: 0,
+      mBlackYn: false
     }
   },
   methods: {
@@ -74,9 +76,13 @@ export default {
         left: channelWrap.scrollLeft + e.deltaY / 10
       })
     },
-    pickColor (color) {
+    pickColor (color, index) {
       this.selectedColor = color
-      this.$emit('choiceColor', this.selectedColor)
+      this.mselectedColorIdx = index
+      if (index === 3 || index === 4 || index === 8 || index === 9 || index === 13 || index === 14 || index === 18 || index === 19 || index === 23 || index === 24) {
+        this.mBlackYn = true
+      }
+      this.$emit('choiceColor', this.selectedColor, this.mBlackYn)
     },
     selectColor () {
       this.$emit('closePop', this.selectedColor)

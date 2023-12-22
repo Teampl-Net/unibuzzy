@@ -43,7 +43,7 @@
                 </div>
                 <div style="width:70%; display:flex; align-items:center; justify-content:center;">
                   <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD;">{{ $t('COMM_PREVIEW') }}</p>
-                  <div class="previewTag" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray' }">
+                  <div class="previewTag" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray', color : mBlackTrue ? '#222' : '#fff' }">
                   {{ stickerNameVal }}
                   </div>
                 </div>
@@ -117,7 +117,9 @@ export default {
       mConfirmType: 'two',
       stickerNameVal: '',
       selectedSticker: { nameMtext: '', stickerKey: null, picBgPath: '#CCC' },
-      addTagShowYn: false
+      addTagShowYn: false,
+      mSelectedColorIdx: 0,
+      mBlackTrue: false
     }
   },
   methods: {
@@ -139,9 +141,9 @@ export default {
       this.selectedSticker = sticker
       this.stickerNameVal = sticker.nameMtext
     },
-    changeTagColor (color) {
+    changeTagColor (color, blackYn) {
       this.selectedSticker.picBgPath = color
-      console.log('color', color)
+      this.mBlackTrue = blackYn
       this.toggleAddTagShowYn()
     },
     toggleAddTagShowYn () {
@@ -256,7 +258,6 @@ export default {
   border-radius:25px;
   text-align:center;
   padding:0 8px;
-  color:#fff;
   font-weight:bold;
   line-height:25px;
   font-size:13px;
