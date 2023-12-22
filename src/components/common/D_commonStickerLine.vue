@@ -40,6 +40,7 @@ export default {
 .thinLineStyle {
     float: left; min-width: 30px; height: 25px; padding: 0 10px; display: flex; align-items: center; text-align: center; border-radius: 5px;
     position: relative;
+    border-radius:25px;
 }
 .normalHeight {
     min-height: 20px;
