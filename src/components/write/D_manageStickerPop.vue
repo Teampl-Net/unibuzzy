@@ -15,21 +15,23 @@
     }
   </i18n>
 <template>
-    <div style="width: calc(100% - 40px); height: 300px; position: fixed; padding: 10px 20px; top: 30%; left: 20px; background: #FFF; border-radius: 10px; box-shadow: 0 0 4px 4px #00000030; z-index: 99">
-        <div style="display: flex; justify-content: space-between; border-bottom: 1.5px solid #ccc; align-items: flex-start;">
+    <div style="width: calc(100% - 40px); height: 330px; position: fixed; top: 30%; left: 20px; background: #FFF; border-radius: 10px; box-shadow: 0 0 4px 4px #00000030; z-index: 99">
+        <div style="padding:12px 20px; display: flex; justify-content: space-between; border-bottom: 1.5px solid #ccc; align-items: flex-start;">
             <p class="commonColor font18 fontBold textLeft">{{$t('COMM_MAN_STICKER_POP_TITLE')}}</p>
-            <img src="@/assets/images/common/grayXIcon.svg" @click="backClick" class="mtop-02 cursorP" alt="">
+            <img src="../../assets/images/common/popup_close.png" @click="backClick" class="mtop-02 cursorP" alt="" style="width:20px;">
         </div>
-        <div style="width: 100%; height: calc(100% - 55px); padding: 10px 10px; overflow: hidden;">
-            <div style="width:calc(100%); display:flex; align-items:center; margin-bottom: 0; padding-top: 10px;">
-                <input type="text" v-model="stickerNameVal" style="width: calc(100% - 150px)" class="" >
-                <div @click="toggleAddTagShowYn" style="width: 25px; height: 25px; margin-left: 5px;  border-radius: 100%; " class="fl" :style="`background-color: ${selectedSticker.picBgPath}`"></div>
+        <div style="width: 100%; height: calc(100% - 75px); padding: 10px 20px; overflow: hidden;">
+            <div style="width:calc(100%); display:flex; align-items:center; margin-bottom: 0; padding-top: 10px; justify-content:space-around;">
+                <div @click="toggleAddTagShowYn" style="width: 25px; height: 25px; border-radius: 100%; " :style="`background-color: ${selectedSticker.picBgPath}`"></div>
+                <input type="text" class="tagInput" v-model="stickerNameVal" style="width: calc(100% - 150px)">
                 <gBtnSmall class="mleft-05" @click="saveSticker()" style="height: 25px; background: #5F61BD; line-height: 25px; padding: 0 5px;" :btnTitle="selectedSticker.stickerKey? $t('COMM_BTN_EDIT2'): $t('COMMON_BTN_SAVE')"/>
-                <gBtnSmall class="mleft-05" @click="reqDelSticker()" btnThema="light" style="height: 25px; line-height: 25px; padding: 0 5px;" :btnTitle="$t('COMMON_BTN_DELETE')" />
+                <div class="mleft-05" @click="reqDelSticker()"  style="width:25px; height: 25px;" >
+                  <img :src="require(`@/assets/images/button/Remove_duotone.png`)" class="w100P"/>
+                </div>
                 </div>
 
-                <div v-if="addTagShowYn" class="fr" style="width: calc(100%); height: 40px; border-radius: 5px; border: 1px solid #ccc; ">
-                    <gColorPicker :colorPick="selectedSticker.picBgPath" @closePop="toggleAddTagShowYn" @choiceColor='changeTagColor' ref="colorPicker" />
+                <div v-if="addTagShowYn" class="fr mtop-03" style="width: calc(100%); height: 40px; border-radius: 5px; border: 1px solid #ccc; ">
+                    <gColorPicker :colorPick="selectedSticker.picBgPath" @closePop="toggleAddTagShowYn" @choiceColor='changeTagColor' ref="colorPicker" :isTag="true"/>
                 </div>
                 <div class="mbottom-05 mtop-1 fl" style="display: flex; align-items: center;">
                     <p class="fl textLeft font16 commonGray fontBold ">{{ $t('COMMON_MY_TAG_TILTE') }}</p>
@@ -61,9 +63,9 @@
                     </button>
                 </div>
         </div>
-        <div style="width: 100%; height: 35px; float: left; display: flex; justify-content: center; align-items: center;">
+        <!-- <div style="width: 100%; height: 35px; float: left; display: flex; justify-content: center; align-items: center;">
             <gBtnSmall class="mleft-05" @click="backClick" btnThema="light" style="height: 25px; line-height: 25px;" :btnTitle="$t('COMM_BTN_CLOSE')"/>
-        </div>
+        </div> -->
         <gConfirmPop
         :confirmText="mConfirmText"
         :confirmType="mConfirmType"
@@ -217,6 +219,13 @@ export default {
 </script>
 
 <style scoped>
+
+.tagInput{
+  border:none !important;
+  border-bottom:2px solid rgba(192, 191, 249, 0.6) !important;
+  border-radius:0px !important;
+  margin-left:1rem;
+}
 button {
   min-width: 40px;
   height: 25px;
@@ -242,5 +251,8 @@ button {
 .tagButton {
     margin-left: 5px;
     margin-top: 5px;
+}
+.tagButton:first-child{
+  margin-left:0;
 }
 </style>

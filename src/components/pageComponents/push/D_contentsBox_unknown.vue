@@ -2292,7 +2292,8 @@ export default {
       var cont = this.$getContentsDetail(
         null,
         this.contentsEle.contentsKey,
-        this.contentsEle.creTeamKey
+        this.contentsEle.creTeamKey,
+        this.contentsEle.jobkindId
       )
       if (!cont) {
         cont = [this.contentsEle]

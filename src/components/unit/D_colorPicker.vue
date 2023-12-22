@@ -14,9 +14,16 @@
             </div>
           </div>
         </div> -->
-      <div v-for="(value, index) in colorList" :key="index" class="mright-03" @click="pickColor(value)" :style="'background:' + value" style="min-width:30px; max-width:30px; max-height: 30px; min-height: 30px; border-radius:100%; display: flex; justify-content: center; align-items: center;">
-        <img src="../../assets/images/common/icon_check_white.svg" class="fl img-w20" v-show="selectedColor === value" alt="">
-      </div>
+        <template v-if="isTag === true">
+          <div v-for="(value, index) in vividColorList" :key="index" class="mright-03" @click="pickColor(value)" :style="'background:' + value" style="min-width:25px; max-width:25px; max-height: 25px; min-height: 25px; border-radius:100%; display: flex; justify-content: center; align-items: center;">
+            <img src="../../assets/images/common/icon_check_white.svg" class="fl img-w20" v-show="selectedColor === value" alt="">
+          </div>
+        </template>
+        <template v-else>
+          <div v-for="(value, index) in colorList" :key="index" class="mright-03" @click="pickColor(value)" :style="'background:' + value" style="min-width:30px; max-width:30px; max-height: 30px; min-height: 30px; border-radius:100%; display: flex; justify-content: center; align-items: center;">
+            <img src="../../assets/images/common/icon_check_white.svg" class="fl img-w20" v-show="selectedColor === value" alt="">
+          </div>
+        </template>
     </div>
     <div v-else class="" style="background-color: #ECECF570; min-height: 50px; height: 100%; padding: 5px 10px; border-radius: 8px; white-space: nowrap; flex-direction: row; align-items: center;">
         <!-- <div :style="'background-color:' + this.selectedColor" style=" width: calc(100% - 100px); margin-left: 10px; float: left; height: 50px; margin-bottom: 20px;">{{this.selectedColor}}</div>
@@ -31,9 +38,10 @@
             </div>
           </div>
         </div> -->
-      <div v-for="(value, index) in colorList" :key="index" class="mright-03" @click="pickColor(value)" :style="'background:' + value" style="min-width:30px; max-width:30px; max-height: 30px; min-height: 30px; float: left; border-radius:100%; display: flex; justify-content: center; align-items: center; margin-bottom: 5px;">
-        <img src="../../assets/images/common/icon_check_white.svg" class="fl img-w20" v-show="selectedColor === value" alt="">
-      </div>
+
+          <div v-for="(value, index) in colorList" :key="index" class="mright-03" @click="pickColor(value)" :style="'background:' + value" style="min-width:30px; max-width:30px; max-height: 30px; min-height: 30px; float: left; border-radius:100%; display: flex; justify-content: center; align-items: center; margin-bottom: 5px;">
+            <img src="../../assets/images/common/icon_check_white.svg" class="fl img-w20" v-show="selectedColor === value" alt="">
+          </div>
     </div>
 </template>
 <script>
@@ -63,6 +71,9 @@ export default {
       //   ['#81C784', '#C8E6C9'],
       //   ['#4DB6AC', '#B2DFDB']
       // ]]
+      ],
+      vividColorList: [
+        '#0B266B', '#7B00F7', '#7986CB', '#456EFF', '#64B5F6', '#00CABE', 'rgb(108, 161, 27)', '#04CC00', 'rgb(45, 203, 137)', '#7A3D3D', '#AE1A1A', '#FF5656', '#E57373', '#F06292', '#DA45FF', '#FF8228', 'rgb(255, 158, 31)', '#FFC700', '#A2A2A2'
       ]
     }
   },
@@ -92,9 +103,11 @@ export default {
   props: {
     colorPick: {},
     inLineYn: {},
-    deepYn: {}
+    deepYn: {},
+    isTag: Boolean
   },
   created () {
+    console.log('isTag', this.isTag)
     this.selectedColor = this.colorPick
     if (this.deepYn) {
       this.colorList = ['#c98276', '#E57373', '#ff5252', '#BA68C8', '#9575CD', '#7986CB', '#6497b1', '#005b96', '#6e7f80', '#36454f', '#000000', '#011f4b', '#a70000', '#ff0000', '#ff4d00', '#ff9a00', '#4DB6AC']

@@ -137,7 +137,8 @@ export default defineComponent({
       const index = this.mSelectedTargetList.findIndex(
         (value) =>
           value.accessKey === target.accessKey &&
-          value.accessKind === target.accessKind
+          value.accessKind === target.accessKind &&
+          value.actType === target.actType
       )
       if (index === -1) {
         return { result: false }

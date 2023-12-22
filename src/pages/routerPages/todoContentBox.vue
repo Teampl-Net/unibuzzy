@@ -242,7 +242,8 @@ export default {
       var cont = this.$getContentsDetail(
         null,
         this.pContents.contentsKey,
-        teamKey
+        teamKey,
+        this.pContents.jobkindId
       )
       if (!cont) {
         cont = [this.pContents]

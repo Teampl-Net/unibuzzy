@@ -140,9 +140,12 @@ export const functions = {
       return null
     }
   },
-  getContentsDetail (teamDetail, targetKey, teamKey) {
+  getContentsDetail (teamDetail, targetKey, teamKey, jobkindId) {
     // if (g_axiosQueue.findIndex((item) => item === 'getContentsDetail') !== -1) return
     // g_axiosQueue.push('getContentsDetail')
+    if (((jobkindId && jobkindId === 'TODO') || (jobkindId && jobkindId === 'MEMO')) || (jobkindId === 'ALIM' && !teamKey)) {
+      return null
+    }
     var detailData
     var dataList
     if (!targetKey) return null
@@ -208,6 +211,7 @@ export const functions = {
     // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   },
   async recvNotiFromBridge (message, mobileYn, inNotiDetail) {
+    console.log('====message=====', message)
     debugger
     var addVueResult = false
     try {
@@ -233,6 +237,7 @@ export const functions = {
           }
         }
       }
+      console.log('===notiDetail===', notiDetail)
       debugger
       store.dispatch('D_NOTI/AC_ADD_NOTI_LIST', notiDetail)
       if (JSON.parse(notiDetail.userDo).targetKind === 'C') {
@@ -253,6 +258,8 @@ export const functions = {
       } else if (JSON.parse(notiDetail.userDo).targetKind === 'T') {
         // alert(true)
         addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
+      } else if (!notiDetail.userDo) {
+        console.log('여기?')
       }
     } catch (err) {
       console.error('메세지를 파싱할수 없음 ' + err)

@@ -223,7 +223,7 @@
                   style="margin-left: -0.2rem; color: #5f61bd"
                   v-if="tab.tabIdx === 2"
                   >{{ mCompleteMyTodoCount }}/{{
-                    mMyTodoList?.totalElements
+                    mMyTodoList.totalElements
                   }}</span
                 >
                 <span
@@ -231,7 +231,7 @@
                   style="margin-left: -0.2rem; color: #5f61bd"
                   v-if="tab.tabIdx === 3"
                   >{{ mCompleteTargetTodoCount }}/{{
-                    mReqTodoList?.totalElements
+                    mReqTodoList.totalElements
                   }}</span
                 >
               </li>
@@ -1603,7 +1603,8 @@ export default {
       var cont = this.$getContentsDetail(
         null,
         this.contentsEle.contentsKey,
-        teamKey
+        teamKey,
+        this.contentsEle.jobkindId
       )
       if (!cont) {
         cont = [this.contentsEle]

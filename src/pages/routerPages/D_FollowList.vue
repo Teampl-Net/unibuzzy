@@ -215,6 +215,8 @@ export default {
         const tempList = this.convertTargetData(result.user)
         const frList = this.convertTargetData(result.follower)
         const fList = this.convertTargetData(result.follow, true)
+        // eslint-disable-next-line no-debugger
+        debugger
         let fDispText = ''
         if (fList && fList.length > 0) {
           fList.forEach((element, index) => {

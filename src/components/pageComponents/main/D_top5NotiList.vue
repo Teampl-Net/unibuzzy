@@ -8,7 +8,7 @@
         <!-- <gBtnSmall hidden btnTitle="이력보기"  style="position: absolute;right: 5px;top: -2px;height: 25px;line-height: 25px;"/> -->
       </div>
       <div class="pushListWrap fl">
-      <contentsList :propContentsList="propAlimList" @goChanDetail="openPop" />
+      <contentsList :isAlim="true" :propContentsList="propAlimList" @goChanDetail="openPop" @openPop="openPop" />
       </div>
     </div>
   </div>
@@ -73,7 +73,7 @@ export default {
     },
     openPop (value) {
       value.alimTabType = this.mViewTab
-      // console.log(value)
+      console.log('value', value)
       this.$emit('openPop', value)
     },
     async changeTab (tabName) {

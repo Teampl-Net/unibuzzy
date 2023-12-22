@@ -27,7 +27,7 @@
           <span v-if="pTargetData.accessDispComment" class="fl commonDarkGray font14">{{pTargetData.accessDispComment}}</span>
           <template v-else-if="!pTargetData.accessDispComment && pTargetData.accessKind !== 'F' && pTargetData.cList && pTargetData.cList.length > 0">
             <div class="w100P textOverdot" style="height: 20px;">
-              <span v-for="target, index in pTargetData.cList" :key="target.accessKey" class="font14 commonDarkGray">{{target.accessName}}{{ pTargetData.cList.length - 1 === index? '':', ' }} </span>
+              <span v-for="target, index in pTargetData.cList" :key="target.accessKey" class="font14 commonDarkGray">{{$changeText(target.accessName)}}{{ pTargetData.cList.length - 1 === index? '':', ' }} </span>
             </div>
           </template>
           <span v-else-if="!pTargetData.accessDispComment && pTargetData.accessKind !== 'F' && pTargetData.cList && pTargetData.cList.length === 0" class="fl commonDarkGray font14">빈주소록</span>
@@ -76,6 +76,58 @@ export default {
     }
   },
   methods: {
+    convertTargetData (target) {
+      console.log(target)
+      if (target && target.length > 0) {
+        const tempList = []
+        target.forEach((value) => {
+          const tempObj = {}
+          if ((!value.cabinetKey && value.userKey) || (value.accessKind && value.accessKind === 'U')) {
+            tempList.push(value)
+          } else if (value.teamKey && value.nameMtext) {
+            tempList.push({
+              accessKind: 'T',
+              accessKey: value.teamKey,
+              accessName: value.nameMtext,
+              iconFullYn: true,
+              iconPath: value.logoDomainPath
+                ? this.$changeUrlBackslash(
+                  value.logoDomainPath + value.logoPathMtext
+                )
+                : value.logoPathMtext
+            })
+          } else {
+            tempObj.accessKind = 'C'
+            tempObj.accessKey = value.cabinetKey
+            tempObj.iconPath = require('@/assets/images/editChan/icon_addressBook.svg')
+            // targetList에 나타나는 아이콘을 원 안에 가득 채울지, 아닐지 결정하는 변수
+            tempObj.iconFullYn = false
+            tempObj.accessName = value.cabinetNameMtext
+            if (value.mCabUserList && value.mCabUserList.length > 0) {
+              const childTempList = []
+              value.mCabUserList.forEach((value2) => {
+                const childTempObj = {}
+                childTempObj.accessKind = 'U'
+                childTempObj.accessKey = value2.userKey
+                childTempObj.iconFullYn = true
+                childTempObj.iconPath = value2.domainPath
+                  ? this.$changeUrlBackslash(
+                    value2.domainPath + value2.userProfileImg
+                  )
+                  : value2.userProfileImg
+                childTempObj.accessName = this.$changeText(value2.userDispMtext)
+                childTempList.push(childTempObj)
+              })
+              tempObj.cList = childTempList
+            } else {
+              tempObj.cList = []
+            }
+            tempList.push(tempObj)
+          }
+        })
+        return tempList
+      }
+    },
     sendPushAlim () {
       var param = {}
       param.targetType = 'writeContents'
@@ -152,31 +204,46 @@ export default {
             this.$emit('openSelectTargetPop', returnData)
           }
         } else {
-          param.set('targetKind', 'T')
-          param.set('targetKey', this.pTargetData.accessKey)
-          param.set('pageSize', 1000)
-
-          result = await this.$getFollowerList(param)
+          const paramObj = {}
+          paramObj.targetKind = 'T'
+          paramObj.targetKey = this.pTargetData.accessKey
+          result = await this.$gGetMyCabinetList(paramObj)
           if (!result) {
             this.$showToastPop('오류가 발생하였습니다. 다시 시도해주세요.')
           } else {
             const resultData = result
-            const tempList = resultData.map(value => {
-              console.log(value.userKey)
-              return {
-                accessKey: value.userKey,
-                accessKind: 'U',
-                accessType: this.pTargetData.accessKey,
-                accessName: this.$changeText(value.userDispMtext),
-                iconPath: value.domainPath ? this.$changeUrlBackslash(value.domainPath + value.userProfileImg) : value.userProfileImg,
-                iconFullYn: true
-              }
-            })
+            const tempList = this.convertTargetData(resultData)
 
             const returnData = this.pTargetData
             returnData.cList = tempList
             this.$emit('openSelectTargetPop', returnData)
           }
+
+          // param.set('targetKind', 'T')
+          // param.set('targetKey', this.pTargetData.accessKey)
+          // param.set('pageSize', 1000)
+
+          // result = await this.$getFollowerList(param)
+          // if (!result) {
+          //   this.$showToastPop('오류가 발생하였습니다. 다시 시도해주세요.')
+          // } else {
+          //   const resultData = result
+          //   const tempList = resultData.map(value => {
+          //     console.log(value.userKey)
+          //     return {
+          //       accessKey: value.userKey,
+          //       accessKind: 'U',
+          //       accessType: this.pTargetData.accessKey,
+          //       accessName: this.$changeText(value.userDispMtext),
+          //       iconPath: value.domainPath ? this.$changeUrlBackslash(value.domainPath + value.userProfileImg) : value.userProfileImg,
+          //       iconFullYn: true
+          //     }
+          //   })
+
+          //   const returnData = this.pTargetData
+          //   returnData.cList = tempList
+          //   this.$emit('openSelectTargetPop', returnData)
+          // }
         }
       } else {
         console.log(this.pTargetData)

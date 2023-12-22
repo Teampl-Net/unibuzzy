@@ -41,6 +41,7 @@ export default {
     }
   },
   created () {
+    console.log('mRouterHeaderText', this.mRouterHeaderText)
     if (this.ROUTER_PATH.includes('contents')) {
       this.mContentsYn = true
     } else {
@@ -108,7 +109,7 @@ export default {
         } else if (val === '커뮤니티' || val === 'Community') {
           this.mDispTitle = this.$t('COMMON_NAME_COMMUNITY')
         } else {
-          this.mDispTitle = val
+          this.mDispTitle = this.$t('COMMON_NAME_APP')
         }
       }
     },

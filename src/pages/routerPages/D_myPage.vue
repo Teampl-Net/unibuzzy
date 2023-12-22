@@ -202,29 +202,49 @@ export default {
 
       for (let i = 0; i < this.mChangedNoti.length; i++) {
         if (this.mChangedNoti[i].logItemListStr) {
-          this.mChangedNoti[i].logItemListStr = this.mChangedNoti[i].logItemListStr.slice(10)
+          // this.mChangedNoti[i].logItemListStr = this.mChangedNoti[i].logItemListStr.slice(10)
 
-          if (this.mChangedNoti[i].logItemListStr.includes('$')) {
-            this.mChangedNoti[i].logItemListStr = this.mChangedNoti[i].logItemListStr.replace('$#$C__BODY$^$', '').replace('$#$B__NAME$^$', '')
+          this.mChangedNoti[i].logItemListStr = this.mChangedNoti[i].logItemListStr.replaceAll('$^$', '').replaceAll('$#$', '')
+          const logItemStr = this.mChangedNoti[i].logItemListStr
+          var names
+          var bodys
+          var comments
+
+          // 작성자 교체
+          if (logItemStr.includes('U__SEND') && logItemStr.includes('C__BODY')) {
+            names = logItemStr.replace(/U__SEND([\s\S]*)/, this.mChangedNoti[i].fUserText)
+          } else if (logItemStr.includes('U__SEND') && logItemStr.includes('M__BODY')) {
+            names = logItemStr.replace(/U__SEND\s*(.*?)M__BODY/, this.mChangedNoti[i].fUserText)
+          } else if (logItemStr.includes('U__SEND') && !logItemStr.includes('C__BODY') && !logItemStr.includes('M__BODY')) {
+            names = logItemStr.replace('U__SEND', '')
           }
-          var newLogItemListStr = this.mChangedNoti[i].logItemListStr
-        }
-        if (this.mChangedNoti[i].fUserText) {
-          this.mChangedNoti[i].fUserText = this.$changeText(this.mChangedNoti[i].fUserText)
-          var newFUserText = this.mChangedNoti[i].fUserText
-        }
 
-        if (this.mChangedNoti[i].dispText.includes('${' + 'C__BODY' + '}')) {
-          this.mChangedNoti[i].dispText = this.mChangedNoti[i].dispText.replace('${' + 'C__BODY' + '}', newLogItemListStr).replace('${' + 'U__SEND' + '}', newFUserText)
-        }
-        if (this.mChangedNoti[i].dispText.includes('${' + 'B__NAME' + '}')) {
-          this.mChangedNoti[i].dispText = this.mChangedNoti[i].dispText.replace('${' + 'B__NAME' + '}', '새 쪽지').replace('${' + 'C__BODY' + '}', newLogItemListStr).replace('${' + 'U__SEND' + '}', this.mChangedNoti[i].fUserText)
-        }
-        if (this.mChangedNoti[i].dispText.includes('${' + 'U__SEND' + '}')) {
-          this.mChangedNoti[i].dispText = this.mChangedNoti[i].dispText.replace('${' + 'U__SEND' + '}', this.mChangedNoti[i].fUserText)
+          // 내용 교체
+          var matches
+          if (logItemStr.includes('C__BODY') && logItemStr.includes('M__BODY')) {
+            matches = logItemStr.match(/C__BODY([\s\S]*?)M__BODY/)
+            bodys = matches ? matches[1] : null
+            matches = logItemStr.match(/M__BODY([\s\S]*)/)
+            comments = matches ? matches[1] : null
+          } else if (logItemStr.includes('C__BODY') && !logItemStr.includes('M__BODY')) {
+            matches = logItemStr.match(/C__BODY([\s\S]*)/)
+            bodys = matches ? matches[1] : null
+          }
+          // 교체한 내용 넣어주기
+          if (this.mChangedNoti[i].dispText.includes('${' + 'U__SEND' + '}')) {
+            this.mChangedNoti[i].dispText = this.mChangedNoti[i].dispText.replace('${' + 'U__SEND' + '}', names)
+          }
+          if (this.mChangedNoti[i].dispText.includes('${' + 'C__BODY' + '}')) {
+            this.mChangedNoti[i].dispText = this.mChangedNoti[i].dispText.replace('${' + 'C__BODY' + '}', bodys)
+          }
+          if (this.mChangedNoti[i].dispText.includes('${' + 'M__BODY' + '}')) {
+            this.mChangedNoti[i].dispText = this.mChangedNoti[i].dispText.replace('${' + 'M__BODY' + '}', comments)
+          }
+          if (this.mChangedNoti[i].dispText.includes('${' + 'B__NAME' + '}')) {
+            this.mChangedNoti[i].dispText = this.mChangedNoti[i].dispText.replace('${' + 'B__NAME' + '}', '새 쪽지')
+          }
         }
       }
-
       return this.mChangedNoti
     },
     /* async getMyContentsList (pageSize, offsetInput, loadingYn) {

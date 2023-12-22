@@ -155,9 +155,12 @@ export async function saveUser (userProfile, loginYn) {
     localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
     if (loginYn) {
       var userInfo = result.data.userMap
-      if (!(localStorage.getItem('appType') && localStorage.getItem('appType') === 'UB') && !userInfo.certiDate && (!(/Mobi/i.test(window.navigator.userAgent)))) {
+      if (!userInfo.certiDate && (!(/Mobi/i.test(window.navigator.userAgent)))) {
         // router.replace({ path: '/' })
-        router.replace({ path: '/savePhone' })
+        if (localStorage.getItem('appType') && localStorage.getItem('appType') === 'UB') {
+        } else {
+          router.replace({ path: '/savePhone' })
+        }
         return
       }
     }
@@ -490,7 +493,7 @@ export const methods = {
       url: '/sUniB/tp.saveContents',
       param: paramSet
     })
-    if (result && result.data) {
+    if (response && response.data) {
       result = response.data
     } else {
       result = response
@@ -669,6 +672,11 @@ export const methods = {
     var response = await commonAxiosFunction({ url: '/sUniB/tp.getUserCabinetList', param: param }, loadingYn)
     console.log(response)
     return response.data
+  },
+  async getMyCabinetList (param, loadingYn) {
+    var response = await commonAxiosFunction({ url: '/sUniB/tp.getMyCabinetList', param: param }, loadingYn)
+    console.log(response)
+    return response.data
   }
 }
 
@@ -705,5 +713,6 @@ export default {
     Vue.config.globalProperties.$getTodoListGroupCab = methods.getTodoListGroupCab
     Vue.config.globalProperties.$gGetUserCabinetList = methods.getUserCabinetList
     Vue.config.globalProperties.$gGetOnlyFollowerList = methods.getOnlyFollowerList
+    Vue.config.globalProperties.$gGetMyCabinetList = methods.getMyCabinetList
   }
 }

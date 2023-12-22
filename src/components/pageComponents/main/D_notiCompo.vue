@@ -1,33 +1,39 @@
 <template>
+  <div style="display:flex; algin-items:start;">
   <!-- <p class="fl w-100P font12 commonBlack">{{mNotiEle.largeIcon}}</p> -->
-  <div @click="this.$emit('clickNoti', mNotiEle)" v-if="mNotiEle.title" class="notiEle" style="">
-      <div style="width: 45px; height: 45px; margin-right: 10px; border-radius: 100%; overflow: hidden;" >
-          <img :src="mNotiEle.domainPath + mNotiEle.userProfileImg" style="width: 100%; float: left;  height: 100%;" alt="">
+  <div @click="clickNoti" v-if="mNotiEle.title" class="notiEle" style="">
+      <div style="width: 45px; height: 45px; margin-right: 10px; border-radius: 100%; overflow: hidden;" class="backShadow" >
+          <img :src="mNotiEle.domainPath ? mNotiEle.domainPath + mNotiEle.userProfileImg : require(`@/assets/images/todo/defaultImg.png`)" style="width: 100%; float: left;  height: 100%;" alt="">
       </div>
       <!-- {{mNotiEle.largeIcon}} -->
       <div style="width: calc(100% - 55px);">
         <!-- <p class="fr font12 fontBold lightGray mbottom-05 textLeft">{{$dayjs(parseCreDate).format('YYYY-MM-DD hh:mm')}}</p> -->
           <p class="fr font12 fontBold lightGray mbottom-05 textLeft">{{$changeDateFormat(mNotiEle.creDate)}}</p>
           <p class="font14 commonBlack fontBold textLeft">{{mNotiEle.title}}</p>
-          <p v-if="GE_LOCALE === 'ko'" class="font14 commonBlack textLeft">{{mNotiEle.message}}</p>
-          <p v-if="GE_LOCALE === 'en'" class="font14 commonBlack textLeft">{{mNotiEle.message}}</p>
+          <p class="w100P font14 commonBlack textLeft" style="word-break:break-all;">{{mNotiEle.message}}</p>
+          <p>{{ index }}</p>
       </div>
   </div>
+  <div class="mleft-03" @click="notiClear(mNotiEle.mLogKey)"><p>X</p></div>
   <!-- <div class="fl w-100P" style="overflow:auto">
     {{this.mNotiEle.creDate}}
     {{parseCreDate}}
   </div> -->
+  </div>
 </template>
 
 <script>
 export default {
   props: {
-    mNotiEle: {}
+    mNotiEle: {},
+    pClosePop: Function,
+    notiClear: Function
   },
   data () {
     return {
       parseUserDo: {},
-      parseCreDate: {}
+      parseCreDate: {},
+      mSelectedNotiIndex: 0
     }
   },
   computed: {
@@ -35,8 +41,19 @@ export default {
       return this.$i18n.locale
     }
   },
+  methods: {
+    clickNoti () {
+      this.$emit('clickNoti', this.mNotiEle)
+      this.pClosePop()
+    },
+    checkNoti (index) {
+      console.log('index', index)
+      this.mSelectedNotiIndex = index
+      this.$emit('checkedNoti', this.mSelectedNotiIndex)
+    }
+  },
   created () {
-    console.log('mNotiEle', this.mNotiEle)
+    // console.log('mNotiEle', this.mNotiEle)
     // if (this.mNotiEle.userDo) {
     //   var notiDate = JSON.parse(this.mNotiEle.creDate)
     //   var date = new Date()
@@ -65,7 +82,8 @@ export default {
   border-radius: 0.8rem;
   padding: 10px 10px;
   display: flex;
-  padding-bottom: 5px;
+  padding-bottom: 20px;
+  align-items:center;
 }
 .chanImgBox {
   width: 45px;
@@ -77,7 +95,7 @@ export default {
   border: 1px solid #ccc;
 }
 .contentsWrap {
-  width: calc(100% - 55px);
+  width: calc(100% - 75px);
   height: 100%;
 }
 </style>

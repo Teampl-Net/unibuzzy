@@ -174,7 +174,7 @@ export default {
     },
     // eslint-disable-next-line vue/return-in-computed-property
     CONT_DETAIL () {
-      if (!this.cDetail || (!this.CHANNEL_DETAIL && this.cDetail.jobkindId !== 'TODO' && this.cDetail.jobkindId !== 'MEMO')) return
+      if (!this.cDetail || (!this.CHANNEL_DETAIL && this.cDetail.jobkindId !== 'ALIM' && this.cDetail.jobkindId !== 'TODO' && this.cDetail.jobkindId !== 'MEMO')) return
       // var cont = this.$getContentsDetail(null, this.cDetail.contentsKey, this.CHANNEL_DETAIL.teamKey)
       // if (!cont) {
       //   this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.cDetail])

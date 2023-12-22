@@ -19,9 +19,9 @@
         <tr v-if="index < 5" class="commonListTr textLeft " :style="index === propContentsList.length - 1 ? 'border: none!important;' : ''" >
             <td style="padding: 5px 5px; width: 50px;" :class="{top5MyPushColor: this.GE_USER.userKey === value.creUserKey}">
             <div v-if="value.logoPathMtext" class="top5PushChanLogoImgWrap fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.logoPathMtext ? value.domainPath + value.logoPathMtext : value.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;"></div>
-            <div v-else-if="value.userProfileImg" class="top5PushChanLogoImgWrap fl" @click="goChanDetail(value)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.userProfileImg : value.userDomainPath + value.userProfileImg) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;"></div>
+            <div v-else-if="value.userProfileImg" class="top5PushChanLogoImgWrap fl" @click="goUserProfile(value.userKey)"  :style="'background-image: url(' + (value.domainPath ? value.domainPath + value.userProfileImg : value.userDomainPath + value.userProfileImg) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center; position: relative;"></div>
             </td>
-            <td v-on:click="goChanDetail(value)" :class="{top5MyPushColor:  this.GE_USER.userKey === value.creUserKey}">
+            <td @click="goChanDetail(value)" :class="{top5MyPushColor:  this.GE_USER.userKey === value.creUserKey}">
             <div style="width:100%; float: left; padding: 2px 0 ; min-height: 25px;">
                 <div v-if="value.jobkindId === 'ALIM'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{$t('COMMON_TAB_NOTI')}}</div>
                 <div v-else-if="value.jobkindId === 'BOAR'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMMON_TAB_POST')}}</div>
@@ -48,7 +48,8 @@
 <script>
 export default {
   props: {
-    propContentsList: []
+    propContentsList: [],
+    isAlim: Boolean
   },
   data () {
     return {
@@ -61,16 +62,40 @@ export default {
     // console.log('propContentsListpropContentsListpropContentsList', this.propContentsList)
   },
   methods: {
+    async goUserProfile (targetUserKey) {
+      if (this.GE_USER.unknownYn) {
+        this.$showToastPop(this.$t('COMM_MSG_MEMB_NEED'))
+        return
+      }
+      var openPopParam = {}
+      openPopParam.targetType = 'bookMemberDetail'
+      openPopParam.userKey = targetUserKey
+      openPopParam.popHeaderText = this.$t('COMMON_TITLE_PROFILE')
+      openPopParam.readOnlyYn = true
 
+      console.log('openPopParam', openPopParam)
+      this.$emit('openPop', openPopParam)
+    },
     goChanDetail (data) {
+      console.log('data', data)
       var param = {}
-      param.targetType = 'contentsDetail'
-      param.targetKey = data.contentsKey
-      param.nameMtext = data.nameMtext
-      param.teamKey = data.creTeamKey
-      param.chanName = data.nameMtext
-      // param.targetContentsKey = data.contentsKey
-      param.jobkindId = data.jobkindId
+      if (data && data.bundleCode && data.bundleCode === 'ADD_FOLL' && data.targetKind === 'U') {
+        console.log('????')
+        param.targetType = 'followList'
+        param.popHeaderText = this.$t('COMMON_NAME_MY_ADDERSS')
+      } else if (data && data.bundleCode && data.bundleCode === 'ADD_FOLL' && data.targetKind === 'T') {
+        param.targetType = 'chanDetail'
+        param.teamKey = data.targetKey
+        param.chanName = data.title
+      } else if (data && data.targetKind === 'C') {
+        param.targetType = 'contentsDetail'
+        param.targetKey = data.contentsKey | data.targetKey
+        param.nameMtext = data.nameMtext
+        param.teamKey = data.creTeamKey
+        param.chanName = data.nameMtext
+        // param.targetContentsKey = data.contentsKey
+        param.jobkindId = data.jobkindId
+      }
       this.$emit('goChanDetail', param)
     },
     resizeText (text, name) {

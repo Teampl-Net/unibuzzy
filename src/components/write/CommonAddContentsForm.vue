@@ -127,7 +127,7 @@
         </fieldset>
         <div class="w100P mtop-05" style="border-bottom:1px solid #EBEBEB;"></div>
         <!-- Select Board -->
-        <fieldset v-if="contentType === 'BOAR' && params.modiYn === false" id="postTitle">
+        <fieldset v-if="contentType === 'BOAR' && (!propParams || (propParams && !propParams.nonMemYn)) && params.modiYn === false" id="postTitle">
           <legend>게시판 선택</legend>
             <label for="" style="line-height:30px;">{{$t('COMMON_NAME_BOARD')}}</label>
           <div class="w100P" style="overflow: auto hidden;  height: 100%;">
@@ -138,7 +138,7 @@
             </div>
           </div>
         </fieldset>
-        <div v-if="contentType === 'BOAR' && params.modiYn === false" class="w100P mtop-05" style="border-bottom:1px solid #EBEBEB;"></div>
+        <div v-if="contentType === 'BOAR' && (!propParams || (propParams && !propParams.nonMemYn)) && params.modiYn === false" class="w100P mtop-05" style="border-bottom:1px solid #EBEBEB;"></div>
         <!-- DATE -->
         <fieldset v-if="pOptions.model === 'mankik' && contentType === 'TODO'" id="dateSelect">
             <legend>날짜 선택</legend>
@@ -162,23 +162,21 @@
               <label v-if="contentType === 'TODO'" for="" style="line-height:30px;">{{ $t('COMMON_TODO_RECEIVER') }}</label>
               <label v-else for="" style="line-height:30px;">{{ $t('FORM_TITLE_RECEIVE') }}</label>
               <div class="selectInput">
-                <div @click="toggleReceiverSelectPop" class="cursorP" :style="{width : contentType === 'TODO' ? '90%' : '95%'}" style="display:flex; align-items:center; gap:0.2rem; overflow-x:auto; height:30px; border-bottom:1px solid #C0BFF9;">
+                <div @click="toggleReceiverSelectPop" class="cursorP" :style="{width : contentType === 'TODO' ? '90%' : '95%'}" style="display:flex; align-items:center; overflow-x:auto; height:30px; border-bottom:1px solid #C0BFF9;">
                    <!-- 선택된 target -->
-                   <template v-for="target in params.actorList" :key="target.accessKey">
-                    <template v-if="contentType === 'TODO'">
-                      <div v-if="target.accessKey === GE_USER.userKey" style="white-space:nowrap">{{ $t('COMM_ME') }}{{ params.actorList.length > 1 ? ', ' : '' }}</div>
-                      <div v-else style="white-space:nowrap;">
-                        {{ !target.accessName ? '나, ' : $changeText(target.accessName) + ', '}}
-                      </div>
-                    </template>
-                    <template v-else-if="contentType !== 'TODO'">
+                   <template v-for="(target, idx) in params.actorList" :key="target.accessKey">
+                    <div v-if="target.accessKey === GE_USER.userKey" style="white-space:nowrap">{{ $t('COMM_ME')}}</div>
+                    <div v-else style="white-space:nowrap;">
+                      {{idx !== 0? ', ' : ''}}{{ !target.accessName ? '나' : $changeText(target.accessName) }}
+                    </div>
+                    <!-- <template v-else-if="contentType !== 'TODO'">
                       <div v-if="params.actorList.length === 1" style="white-space:nowrap;">
                         {{ propParams ? $changeText(propParams.targetNameMtext) + ' 전체' : '-'}}
                       </div>
                       <div v-else-if="target.accessName" style="white-space:nowrap;">
                         {{ target.accessName ? target.accessName + ', ' : '-' }}
                       </div>
-                    </template>
+                    </template> -->
                   </template>
                 </div>
                 <div v-if="contentType === 'TODO'" @click="toggleTargetsArea" class="h100P cursorP" style="width:40px;">
@@ -208,7 +206,7 @@
                   <div @click="toggleCheckSelectPop" class="cursorP" style="display:flex; align-items:center; gap:0.2rem; overflow-x:auto; width:90%; height:30px; border-bottom:1px solid #C0BFF9;">
                     <!-- 선택된 target -->
                     <template v-for="target in params.checkList" :key="target.accessKey" >
-                      <div v-if="target.actType === 'CK'" style="white-space:nowrap;">
+                      <div style="white-space:nowrap;">
                         {{ !target.accessName ? '나' + ', ' : $changeText(target.accessName) + ', '}}
                       </div>
                     </template>
@@ -241,7 +239,7 @@
                   <div @click="toggleRefsSelectPop" class="cursorP" style="display:flex; align-items:center; gap:0.2rem; overflow-x:auto; width:90%; height:30px; border-bottom:1px solid #C0BFF9;">
                     <!-- 선택된 target -->
                     <template v-for="target in params.refList" :key="target.accessKey" >
-                      <div v-if="target.actType === 'RF'" style="white-space:nowrap;">
+                      <div style="white-space:nowrap;">
                         {{ !target.accessName ? '나' + ', ' : $changeText(target.accessName) + ', '}}
                       </div>
                     </template>
@@ -332,7 +330,7 @@
         <fieldset id="optionalOptions">
           <legend>선택정 정보 설정</legend>
 
-          <fieldset v-if="pOptions.model === 'mankik'" id="categoryTag" style=" overflow: hidden;">
+          <fieldset v-if="pOptions.model === 'mankik' && (!propParams || (propParams && !propParams.nonMemYn))" id="categoryTag" style=" overflow: hidden;">
             <legend>태그 선택</legend>
             <label for="">{{ $t('COMMON_TODO_TAG') }}</label>
             <!-- :class="{selfTagOpenFlex : mSelfAddTagShowYn}"  -->
@@ -373,7 +371,7 @@
 
             </div>
           </fieldset>
-          <div class="w100P mtop-05" style="border-bottom:1px solid #EBEBEB;"></div>
+          <div class="w100P mtop-05" v-if="(!propParams || (propParams && !propParams.nonMemYn))" style="border-bottom:1px solid #EBEBEB;"></div>
 
           <fieldset v-if="contentType !== 'MEMO' && pOptions.model === 'mankik'" id="categoryTag" style="height:70px;">
             <legend>중요도 선택</legend>
@@ -399,6 +397,7 @@
             <legend>작성 내용</legend>
             <TalFormEditor
               ref="complexEditor"
+
               @changeUploadList="changeUploadList"
               @setParamInnerHtml="setParamInnerHtml"
               @postToolBox="postToolBox"
@@ -420,6 +419,7 @@
     <commonConfirmPop v-if="failPopYn" @no="failPopYn = false" confirmType="timeout" :confirmText="errorText" />
   </div>
   <gToolBox
+    :pMemoYn="pMemoYn"
     :propTools="mToolBoxOptions"
     @changeTextStyle="changeFormEditorStyle"
     style="z-index: 15 !important"
@@ -460,6 +460,7 @@ export default defineComponent({
     'propData',
     'propParams',
     'contentTypeAB',
+    'pMemoYn',
     'popUpType'
   ],
   components: {
@@ -503,8 +504,6 @@ export default defineComponent({
   },
   created () {
     console.log('props.propData / props.propParams', this.propData, this.propParams)
-    console.log('allRecvYnallRecvYn', this.params.allRecvYn)
-    console.log('params.actorList', this.params.actorList)
     if (!this.popUpType) {
       this.contentType = 'TODO'
     } else if (this.popUpType) {
@@ -518,13 +517,17 @@ export default defineComponent({
     history.push(this.popId)
     this.$store.commit('D_HISTORY/updateStack', history)
 
-    if (this.contentType === 'BOAR') this.titleShowYn = true
+    if (this.contentType === 'BOAR') {
+      this.titleShowYn = true
+      if (this.propData.cabinetKey) {
+        this.params.selectBoardCabinetKey = this.propData.cabinetKey
+      }
+    }
     this.screenInnerHeight = window.innerHeight
     this.screenInnerWidth = window.innerWidth
     if (this.contentType === 'ALIM') {
       // 생성 시점에 selectedList가 있음 ==> 전체 수신이 아님 / 수정임
       if (this.propParams && this.propParams.selectedList && this.propParams.selectedList.length > 1) {
-        this.params.allRecvYn = false
         this.setSelectedList(this.propParams.selectedList)
       }
     }
@@ -565,23 +568,21 @@ export default defineComponent({
           this.writePushTitle = this.propData.titleStr
         }
         // 첨부파일
-        if (this.propData.attachFileList) {
-          for (let i = 0; i < this.propData.attachFileList.length; i++) {
-            const file = this.propData.attachFileList[i]
-            this.tempFileList.push(file)
-            if (file.attachYn) {
-              this.propAttachFileList.push(file)
-              this.addFalseAttachTrueFileList.push(file)
-            } else {
-              this.addFalseAttachFalseFileList.push(file)
-            }
-          }
-        }
+        // if (this.propData.attachFileList) {
+        //   console.log('tempFileList', this.tempFileList)
+        //   for (let i = 0; i < this.propData.attachFileList.length; i++) {
+        //     const file = this.propData.attachFileList[i]
+        //     this.tempFileList.push(file)
+        //     if (file.attachYn) {
+        //       this.propAttachFileList.push(file)
+        //       this.addFalseAttachTrueFileList.push(file)
+        //     } else {
+        //       this.addFalseAttachFalseFileList.push(file)
+        //     }
+        //   }
+        // }
         this.getCabinetDetail(this.propData.cabinetKey)
       }
-    }
-    if (this.propParams && this.propParams.userKey) {
-      this.params.allRecvYn = false
     }
   },
   mounted () {
@@ -1134,7 +1135,7 @@ export default defineComponent({
       mSelfTag: '',
       lineCount: 0,
       selectBoardCabinetKey: 0,
-      allRecvYn: true,
+      allRecvYn: false,
       cabBlindYn: false,
       modiYn: false
     })
@@ -1150,6 +1151,7 @@ export default defineComponent({
     var writeBoardPlaceHolder = reactive('')
     var gCertiPopShowYn = reactive(false)
     var cabinetName = reactive('')
+    // var chanList = reactive([])
 
     const decodeContents = (data) => {
       console.log('decode 실행되었습니다.')
@@ -1157,6 +1159,8 @@ export default defineComponent({
       var changeText = Base64.decode(data)
       return changeText
     }
+
+    // 채널 불러오기
 
     // 게시판 선택하기
     const selectBoard = async (data, index) => {
@@ -1262,9 +1266,6 @@ export default defineComponent({
           targetList: tempList
         })
         console.log('2차 receiverList', receiverList)
-      }
-      if (receiverList && receiverList.length > 0) {
-        params.allRecvYn = false
       }
     }
 
@@ -1747,9 +1748,9 @@ export default defineComponent({
     selectNoCheck()
 
     const setSelectedCheckList = (selectedTargetList) => {
-      for (let i = 0; i < selectedTargetList.length; i++) {
-        selectedTargetList[i].actType = 'CK'
-      }
+      // for (let i = 0; i < selectedTargetList.length; i++) {
+      //   selectedTargetList[i].actType = 'CK'
+      // }
       params.checkList = selectedTargetList
       selectCheckYn.value = true
     }
@@ -1767,10 +1768,11 @@ export default defineComponent({
     selectNoRefs()
 
     const setSelectedRefList = (selectedTargetList) => {
-      for (let i = 0; i < selectedTargetList.length; i++) {
-        selectedTargetList[i].actType = 'RF'
-      }
+      // for (let i = 0; i < selectedTargetList.length; i++) {
+      //   selectedTargetList[i].actType = 'RF'
+      // }
       params.refList = selectedTargetList
+      console.log(params.refList)
       selectRefsYn.value = true
     }
     const replaceStickerArr = (arr) => {
@@ -1799,11 +1801,12 @@ export default defineComponent({
       var uniqueArr = arr.reduce(function (data, current) {
         if (
           data.findIndex(
-            (item) => item.accessKind === current.accessKind && item.accessKey === current.accessKey && item.actType === current.actType
+            (item) => (item.accessKind === current.accessKind && item.accessKey === current.accessKey && item.actType === current.actType)
           ) === -1
         ) {
           /* if (data.findIndex(({ mccKey }) => mccKey === current.mccKey) === -1 && ((this_.viewMainTab === 'P' && current.jobkindId === 'ALIM') || (this_.viewMainTab === 'B' && current.jobkindId === 'BOAR'))) { */
           data.push(current)
+          console.log(data)
         }
         // data = data.sort(function (a, b) {
         //   return b.contentsKey - a.contentsKey
@@ -1814,18 +1817,26 @@ export default defineComponent({
     }
     const selectMeYn = ref(false)
     const selectTargetOnlyMe = () => {
-      params.actorList.length = 0
-      params.actorList.push({
-        accessKey: store.getters['D_USER/GE_USER'].userKey,
-        accessKind: 'U'
-      })
-      selectMeYn.value = true
+      if (!(props.popUpType && props.popUpType === 'ALIM')) {
+        params.actorList.length = 0
+        params.actorList.push({
+          accessKey: store.getters['D_USER/GE_USER'].userKey,
+          accessName: store.getters['D_USER/GE_USER'].userDispMtext,
+          iconPath: store.getters['D_USER/GE_USER'].domainPath
+            ? commonMethods.changeUrlBackslash(
+              store.getters['D_USER/GE_USER'].domainPath + store.getters['D_USER/GE_USER'].userProfileImg
+            )
+            : store.getters['D_USER/GE_USER'].userProfileImg,
+          accessKind: 'U'
+        })
+        selectMeYn.value = true
+      }
     }
-    selectTargetOnlyMe()
+    if (!props.popUpType || (props.popUpType && (props.popUpType === 'TODO' || props.popUpType === 'ALIM'))) selectTargetOnlyMe()
 
     const setSelectedTargetList = (selectedTargetList) => {
       params.actorList = selectedTargetList
-      console.log('params.actorList', params.actorList)
+      console.log(params.actorList)
       selectMeYn.value = false
     }
 
@@ -1964,7 +1975,7 @@ export default defineComponent({
         tempFileList.push(upList)
       }
     }
-    // ------ 파일 서버에 업로드j
+    // ------ 파일 서버에 업로드
     const fileDataUploadToServer = async () => {
       if (tempFileList.length > 0) {
         let iList = document.querySelectorAll('.formCard .addTrue')
@@ -2117,50 +2128,52 @@ export default defineComponent({
           if (!props.popUpType || (props.popUpType && props.popUpType === 'TODO')) {
             // 참조자 처리 추가
             if (params.refList) {
-              if (!params.actorList)params.actorList = []
-              params.actorList = [
-                ...params.actorList,
-                ...params.refList
-              ]
+              // params.actorList = [
+              //   ...params.actorList,
+              //   ...params.refList
+              // ]
+              // delete params.refList
             }
             // 검토자 처리 추가
             if (params.checkList) {
-              if (!params.actorList)params.actorList = []
-              params.actorList = [
-                ...params.actorList,
-                ...params.checkList
-              ]
+              // params.actorList = [
+              //   ...params.actorList,
+              //   ...params.checkList
+              // ]
+              // delete params.checkList
             }
-
-            params.actorList = replaceActorArr(params.actorList)
+            // params.actorList = replaceActorArr(params.actorList)
             console.log('postContents', params.actorList)
             // 나는 무조건 검토자로 추가
-            if (params.actorList.findIndex((check) => (check.accessKey === store.getters['D_USER/GE_USER'].userKey && check.accessKind === 'U' && check.actType === 'CK')) === -1) {
-              params.actorList.push({
+            if (params.checkList.findIndex((check) => (check.accessKey === store.getters['D_USER/GE_USER'].userKey && check.accessKind === 'U' && check.actType === 'CK')) === -1) {
+              params.checkList.push({
                 accessKey: store.getters['D_USER/GE_USER'].userKey,
                 accessKind: 'U',
-                actType: 'CK',
                 accessName: store.getters['D_USER/GE_USER'].userDispMtext
               })
             }
           }
-
-          delete params.refList
-          delete params.checkList
           if (params.stickerList) {
             params.stickerList = replaceStickerArr(params.stickerList)
           }
+          console.log(params)
           // params value 체크
           if (props.pOptions.model === 'mankik') {
             if (!props.popUpType || (props.popUpType && props.popUpType === 'TODO')) {
               if (params.actorList.length === 0 && selectMeYn) {
                 params.actorList.push({
                   accessKind: 'U',
+                  accessName: store.getters['D_USER/GE_USER'].userDispMtext,
+                  iconPath: store.getters['D_USER/GE_USER'].domainPath
+                    ? commonMethods.changeUrlBackslash(
+                      store.getters['D_USER/GE_USER'].domainPath + store.getters['D_USER/GE_USER'].userProfileImg
+                    )
+                    : store.getters['D_USER/GE_USER'].userProfileImg,
                   accessKey: store.getters['D_USER/GE_USER'].userKey
                 })
               }
             }
-            if (!props.popUpType || (props.popUpType && props.popUpType === 'TODO' && !params.workToDateStr)) {
+            if ((!props.popUpType || (props.popUpType && props.popUpType === 'TODO')) && !params.workToDateStr) {
               failPopYn.value = true
               errorText.value = this.$t('COMM_ERR_DATE')
               // } else if (route.path !== '/todo' && (!params.bodyFullStr && !params.attachFileList.length)) {
@@ -2245,11 +2258,13 @@ export default defineComponent({
 
         params.bodyHtmlYn = true // 기본알림또한 html형식으로 들어감
         params.bodyHtmlYn = true
-        params.teamName = props.propParams.targetNameMtext
-        params.creTeamKey = props.propParams.targetKey
-        if (props.propParams.currentTeamKey || props.propParams.creTeamKey) {
-          params.creTeamKey = props.propParams.currentTeamKey || props.propParams.creTeamKey
+        if (params.actorList && params.actorList.length > 0 && params.actorList[0].accessKind === 'T') {
+          params.teamName = params.actorList[0].accessName
+          params.creTeamKey = params.actorList[0].accessKey
         }
+        /* if (props.propParams.currentTeamKey || props.propParams.creTeamKey) {
+          params.creTeamKey = props.propParams.currentTeamKey || props.propParams.creTeamKey
+        } */
 
         // params.showCreNameYn = true
         // params.canReplyYn = true
@@ -2267,37 +2282,31 @@ export default defineComponent({
             params.title = params.attachFileList[0].fileName
           }
         }
-
-        // 나는 무조건 actorLIist에
-        if (props.propParams.userKey) {
-          params.actorList = [{ accessKind: 'U', accessKey: props.propParams.userKey }]
-        }
-
-        // 수신자가 없으면 수신자 처리 함수 실행
-        // if (params.actorList.length === 0) {
-        //   await settingRecvList()
-        //   params.actorList = selectedReceiverList.value
-        // }
         // 참조자 처리 추가
         if (params.refList) {
-          if (!params.actorList)params.actorList = []
-          params.actorList = [
-            ...params.actorList,
-            ...params.refList
-          ]
-          delete params.refList
+
         }
         // 검토자 처리 추가
         if (params.checkList) {
-          if (!params.actorList)params.actorList = []
-          params.actorList = [
-            ...params.actorList,
-            ...params.checkList
-          ]
-          delete params.checkList
-        }
 
+        }
+        console.log('postContents', params.actorList)
+
+        // 나는 무조건 검토자로 추가
+        // if (params.checkList.findIndex((check) => (check.accessKey === store.getters['D_USER/GE_USER'].userKey && check.accessKind === 'U' && check.actType === 'CK')) === -1) {
+        //   params.checkList.push({
+        //     accessKey: store.getters['D_USER/GE_USER'].userKey,
+        //     accessKind: 'U',
+        //     accessName: store.getters['D_USER/GE_USER'].userDispMtext
+        //   })
+        // }
         params.actorList = replaceActorArr(params.actorList)
+        if (params.actorList && params.actorList.length > 0) {
+          if (params.actorList[0].accessKind === 'T') {
+            params.allRecvYn = true
+            params.actorList = []
+          }
+        }
         console.log('sendLetter params.actorList', params.actorList)
 
         // 스티커
@@ -2311,7 +2320,7 @@ export default defineComponent({
 
         // params value 체크
         if (props.pOptions.model === 'mankik') {
-          if (params.actorList.length === 0 && selectMeYn) {
+          if (params.actorList.length === 0 && selectMeYn && !params.allRecvYn) {
             params.actorList.push({
               accessKind: 'U',
               accessKey: store.getters['D_USER/GE_USER'].userKey
@@ -2410,7 +2419,7 @@ export default defineComponent({
         }
 
         if (props.propParams.nonMemYn) {
-          params.creUserName = 'nonMemUserName'
+          params.creUserName = '비회원유저'
           params.creUserKey = 0
         } else {
           params.creUserName = store.getters['D_USER/GE_USER'].userDispMtext || store.getters['D_USER/GE_USER'].userNameMtext
@@ -2441,30 +2450,23 @@ export default defineComponent({
           }
         }
 
-        // 나는 무조건 actorLIist에
-        if (props.propParams.userKey) {
-          params.actorList = [{ accessKind: 'U', accessKey: props.propParams.userKey }]
-        }
-
         // 참조자 처리 추가
         if (params.refList) {
-          if (!params.actorList)params.actorList = []
-          params.actorList = [
-            ...params.actorList,
-            ...params.refList
-          ]
-          delete params.refList
         }
         // 검토자 처리 추가
         if (params.checkList) {
-          if (!params.actorList)params.actorList = []
-          params.actorList = [
-            ...params.actorList,
-            ...params.checkList
-          ]
-          delete params.checkList
+
         }
-        params.actorList = replaceActorArr(params.actorList)
+        console.log('postContents', params.actorList)
+
+        // 나는 무조건 검토자로 추가
+        // if (params.checkList.findIndex((check) => (check.accessKey === store.getters['D_USER/GE_USER'].userKey && check.accessKind === 'U' && check.actType === 'CK')) === -1) {
+        //   params.checkList.push({
+        //     accessKey: store.getters['D_USER/GE_USER'].userKey,
+        //     accessKind: 'U',
+        //     accessName: store.getters['D_USER/GE_USER'].userDispMtext
+        //   })
+        // }
 
         // 스티커
         if (params.stickerList) {
@@ -2477,12 +2479,12 @@ export default defineComponent({
 
         // params value 체크
         if (props.pOptions.model === 'mankik') {
-          if (params.actorList.length === 0 && selectMeYn) {
-            params.actorList.push({
-              accessKind: 'U',
-              accessKey: store.getters['D_USER/GE_USER'].userKey
-            })
-          }
+          // if (params.actorList.length === 0 && selectMeYn) {
+          //   params.actorList.push({
+          //     accessKind: 'U',
+          //     accessKey: store.getters['D_USER/GE_USER'].userKey
+          //   })
+          // }
 
           // eslint-disable-next-line no-unreachable
           const parser = new DOMParser()
@@ -2650,7 +2652,7 @@ export default defineComponent({
       params.bodyFullStr = modifiedHtmlString
       propFormData.length = 0
       propFormData.push(...formCard)
-      // document.getElementById('msgBox')?.innerHTML = extractedInnerHtml
+      // document.getElementById('msgBox').innerHTML = extractedInnerHtml
       // this.editorType = 'complex'
       complexOkYn.value = true
       if (contentType.value === 'ALIM') clickPageTopBtn()
@@ -2679,9 +2681,7 @@ export default defineComponent({
         }
 
         let msgData = ''
-        if (document.getElementById('msgBox') && document.getElementById('msgBox').innerText) {
-          msgData = document.getElementById('msgBox').innerText
-        }
+        msgData = document.getElementById('msgBox').innerText
         if (msgData) {
           msgData = msgData.trim()
         }
@@ -2713,9 +2713,7 @@ export default defineComponent({
           return
         }
         var msgData = ''
-        if (document.getElementById('msgBox') && document.getElementById('msgBox').innerText) {
-          msgData = document.getElementById('msgBox').innerText
-        }
+        msgData = document.getElementById('msgBox').innerText
         if (msgData) {
           msgData = msgData.trim()
         }

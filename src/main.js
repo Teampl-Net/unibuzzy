@@ -92,7 +92,7 @@ const i18n = createI18n({
   fallbackLocale: 'en',
   messages: messages
 })
-localStorage.setItem('currentScreen', 'Imain')
+if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Imain') // unib
 
 const app = createApp(moTheAlim).use(router).use(store).use(i18n)/* .use(VueI18n) */
 /* export const i18n = new VueI18n({
@@ -254,10 +254,9 @@ if (domainName.includes('d-alim')) {
   document.title = 'unibuzzy'
   if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Imain')
 } else {
-  i18n.locale = 'en'
-  localStorage.setItem('appType', 'UB')
-  document.title = 'unibuzzy'
-  if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Imain')
+  localStorage.setItem('appType', 'D')
+  document.title = '더알림'
+  if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Smain')
 }
 localStorage.setItem('loginYn', false)
 

@@ -4,7 +4,7 @@
       <myObserver v-if="targetContentsKey" @triggerIntersected="loadUpMore" class="fl w-100P" style=""></myObserver>
       <div class="fl w-100P" ref="commonListCompo" style="margin-top: 10px;">
         <!-- eslint-disable-next-line vue/no-useless-template-attributes -->
-        <template v-for="(alim, index0) in this.commonListData" :key="index0" >
+        <template v-for="(alim, index0) in commonListData" :key="index0" >
           <div :id="'memoCard'+ alim.contentsKey" :class="this.GE_USER.userKey === alim.creUserKey ? 'creatorListContentBox': ''" class="cursorP commonListContentBox pushMbox" >
             <!-- <div v-if="alim.readYn === 0" class="readYnArea"></div> -->
               <div class="commonPushListTopArea" :style="(alim.jobkindId === 'BOAR' && this.$checkUserAuth(alim.shareItem).V === false && alim.creUserKey !== this.GE_USER.userKey) && alim.titleBlindYn? 'border-bottom: none; margin-bottom: 0;' : ''">
@@ -175,6 +175,7 @@ export default {
     statCodeComponent
   },
   created () {
+    console.log(this.commonListData)
     if (!this.emptyYn) {
       this.loadingRefShow()
     }

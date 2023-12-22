@@ -48,7 +48,7 @@
         margin-bottom: 10px;
         position: relative;
         border-radius: 8px;
-        height:100%;
+
       "
     >
       <div
@@ -249,10 +249,8 @@
                             (CONT_DETAIL.jobkindId === 'TODO' &&
                               CONT_DETAIL.contStatus === '99')
                               ? 'completeWork'
-                              : ''} ${
-                                propDetailYn?
-                                '':'textOverdot'
-                              }`
+                              : ''}`
+                              //  ${propDetailYn?'':'textOverdot'}
                           "
                         >
                           {{ CONT_DETAIL.title }}
@@ -277,8 +275,8 @@
               </template>
             </div>
             <div :class="{headerInfoWrap : CONT_DETAIL.jobkindId !== 'TODO'}" :style="{'padding-left': CONT_DETAIL.jobkindId === 'TODO' ? '30px' : ''}" style="width:calc(100% - 20px); margin-left:20px; display:flex; align-items:center; justify-content:space-between;">
-              <div class="w100P " style="text-align:left; ">
-                <span v-if="CONT_DETAIL.jobkindId !== 'BOAR'" style="min-width:39px;" class="todoPriority mright-03" :class="{todoPriorityHigh : CONT_DETAIL.priority === '00', todoPriorityMiddle: CONT_DETAIL.priority === '01', todoPriorityLow : CONT_DETAIL.priority === '02'  }">
+              <div class="w100P " style="text-align:left; line-height:23px;">
+                <span v-if="CONT_DETAIL.jobkindId !== 'BOAR'" style="min-width:39px;" class="todoPriority mright-03 fontBold" :class="{todoPriorityHigh : CONT_DETAIL.priority === '00', todoPriorityMiddle: CONT_DETAIL.priority === '01', todoPriorityLow : CONT_DETAIL.priority === '02'  }">
                     {{ CONT_DETAIL.priority === '00' ? $t('COMMON_TODO_HIGH') : CONT_DETAIL.priority === '01' ? $t('COMMON_TODO_MID') : $t('COMMON_TODO_LOW') }}
                   </span>
                   <p
@@ -1417,6 +1415,8 @@ export default {
       var param = {}
       param.contentsKey = value.contentsKey
       param.workUserName = this.GE_USER.userDispMtext
+      param.creUserName = this.GE_USER.userDispMtext
+      param.actorList = value.actorList
       param.jobkindId = 'TODO'
       if (value.contStatus === '00') {
         param.contStatus = '99'
@@ -2998,7 +2998,8 @@ export default {
       var cont = this.$getContentsDetail(
         null,
         this.contentsEle.contentsKey,
-        teamKey
+        teamKey,
+        this.contentsEle.jobkindId
       )
       if (!cont) {
         cont = [this.contentsEle]
@@ -3236,26 +3237,28 @@ export default {
     font-size:18px;
     font-weight:normal !important;
   }
-  .todoPriority{
-    color: white;
-    height: 21px;
-    line-height: 20px;
-    border-radius:20px;
-    font-size: 12px;
-    width: auto;
-    padding:1px 9px;
-    font-weight:bold;
-  }
-  .todoPriorityHigh{
-    background-color:rgb(15, 47, 135);
-  }
-  .todoPriorityMiddle{
-    background-color:rgb(59, 107, 240);
-  }
-  .todoPriorityLow{
-    background-color:rgb(232, 238, 254);
-    color:#000 !important;
-  }
+  .todoPriority {
+  border-radius: 20px;
+  font-size: 12px;
+  width: auto;
+  padding: 0px 9px;
+}
+.todoPriorityHigh {
+  border:1px solid #FF0000;
+  color:#FF0000;
+}
+.todoPriorityMiddle {
+  border:1px solid #0066FF;
+  color:#0066FF;
+}
+.todoPriorityLow {
+  border:1px solid #FFA800;
+  color:#FFA800;
+}
+.todoPriorityLowMore {
+  background-color: rgb(250, 251, 254);
+  color: #000 !important;
+}
   .todoTag{
     color: white;
     height:19px;
@@ -3267,21 +3270,6 @@ export default {
     display:inline-block;
     vertical-align:middle;
     margin-top:-0.1rem;
-  }
-  .todoTagS{
-    background-color:#a5a6e6;
-  }
-  .todoTagM{
-    background-color:rgb(45, 203, 137);
-  }
-  .todoTagW{
-    background-color:rgb(108, 161, 27);
-  }
-  .todoTagI{
-    background-color:rgb(255, 158, 31);
-  }
-  .todoTagE{
-    background-color:rgb(198, 106, 106);
   }
   .completedTodoText{
     font-size:15px;

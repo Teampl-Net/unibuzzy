@@ -3540,7 +3540,7 @@ export default defineComponent({
         params.actorList = props.propData.actorList
 
         params.onlyManagerYn = false
-        if (params.cabinetKey === this.$DALIM_MUN_CAB_KEY) {
+        if (params.cabinetKey === 11188) {
           params.onlyManagerYn = true
         }
 
@@ -3550,7 +3550,7 @@ export default defineComponent({
         }
 
         if (props.propData.nonMemYn) {
-          params.creUserName = 'nonMemUserName'
+          params.creUserName = '비회원유저'
           params.creUserKey = 0
         } else {
           params.creUserName = store.getters['D_USER/GE_USER'].userDispMtext || store.getters['D_USER/GE_USER'].userNameMtext
@@ -3930,7 +3930,7 @@ export default defineComponent({
       params.bodyFullStr = modifiedHtmlString
       propFormData.length = 0
       propFormData.push(...formCard)
-      // document.getElementById('msgBox')?.innerHTML = extractedInnerHtml
+      // document.getElementById('msgBox').innerHTML = extractedInnerHtml
       // this.editorType = 'complex'
       complexOkYn.value = true
       if (contentType.value === 'ALIM') clickPageTopBtn()
@@ -3959,7 +3959,7 @@ export default defineComponent({
         }
 
         let msgData = ''
-        msgData = document.getElementById('msgBox')?.innerText
+        msgData = document.getElementById('msgBox').innerText
         if (msgData) {
           msgData = msgData.trim()
         }
@@ -3991,7 +3991,7 @@ export default defineComponent({
           return
         }
         var msgData = ''
-        msgData = document.getElementById('msgBox')?.innerText
+        msgData = document.getElementById('msgBox').innerText
         if (msgData) {
           msgData = msgData.trim()
         }

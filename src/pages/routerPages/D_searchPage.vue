@@ -490,7 +490,7 @@ export default {
         this.mAlimContentsList = this.replaceContentListArr(newArr)
         for (let i = 0; i < this.mAlimContentsList.length; i++) {
           cont = this.mAlimContentsList[i]
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey, cont.jobkindId)
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
           } else {
@@ -501,8 +501,8 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
-            var test = []
-            if (contentDetail & contentDetail.D_MEMO_LIST) {
+            var test
+            if (contentDetail && contentDetail.D_MEMO_LIST) {
               test = contentDetail.D_MEMO_LIST
             }
             if (!test) {
@@ -531,7 +531,7 @@ export default {
         for (let i = 0; i < this.mBoardContentsList.length; i++) {
           cont = this.mBoardContentsList[i]
           tempContentDetail = []
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey, cont.jobkindId)
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
           } else {
@@ -543,7 +543,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
-            var test = []
+            var test
             if (contentDetail && contentDetail.D_MEMO_LIST) {
               test = contentDetail.D_MEMO_LIST
             }
@@ -573,7 +573,7 @@ export default {
         for (let i = 0; i < this.mAllContentsList.length; i++) {
           cont = this.mAllContentsList[i]
           tempContentDetail = []
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey, cont.jobkindId)
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
           } else {
@@ -585,7 +585,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
-            var test = []
+            var test
             if (contentDetail && contentDetail.D_MEMO_LIST) {
               test = contentDetail.D_MEMO_LIST
             }

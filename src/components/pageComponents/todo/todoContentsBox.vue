@@ -1056,7 +1056,7 @@ export default {
     },
     CONT_DETAIL () {
       if (!this.contentsEle) return
-      var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKey)
+      var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKeyy, this.contentsEle.jobkindId)
       if (!cont) {
         cont = [this.contentsEle]
         // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])

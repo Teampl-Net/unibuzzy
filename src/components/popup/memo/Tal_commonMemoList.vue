@@ -296,9 +296,7 @@ export default {
       this.$emit('mememoMemo', mememo)
     },
     scrollMove (key) {
-      if (document.getElementById(key) && document.getElementById(key).offsetTop) {
-        var location = document.getElementById(key).offsetTop
-      }
+      var location = document.getElementById(key).offsetTop
       if (location !== undefined && location !== null && location !== '') {
         this.$emit('scrollMove', location)
         this.anima(key)

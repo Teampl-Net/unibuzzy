@@ -264,6 +264,8 @@
   "COMM_MSG_SUCC_POST" : "글을 성공적으로 게시하였습니다.",
   "COMM_MSG_FAIL_LETTER" : "쪽지를 전송하지 못했습니다.",
   "COMM_MSG_FAIL_POST" : "글을 게시하지 못했습니다.",
+  "COMM_MSG_DELETED_MEMO" : "메모를 삭제하였습니다.",
+  "COMM_MSG_DELETED_MEMO_FAIL" : "메모를 삭제하지 못했습니다.",
 
   "COMM_BTN_SOCAIL_LOGIN" : "소셜 로그인 하러 가기",
 

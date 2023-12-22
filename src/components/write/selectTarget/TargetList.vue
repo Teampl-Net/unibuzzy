@@ -161,7 +161,7 @@ export default {
     },
     // 해당하는 target이 선택되었는지 아닌지를 판별해주는 함수
     checkSelectedYn (target) {
-      const index = this.pSelectedTargetList.findIndex(value => value.accessKey === target.accessKey && value.accessKind === target.accessKind)
+      const index = this.pSelectedTargetList.findIndex(value => value.accessKey === target.accessKey && value.accessKind === target.accessKind && value.actType === target.actType)
       if (index === -1) {
         return { result: false }
       } else {
@@ -181,6 +181,13 @@ export default {
     },
     addTarget (target) {
       console.log(target)
+      if (this.pSelectedTargetList && this.pSelectedTargetList.length > 0 && this.pSelectedTargetList[0].accessKind === 'T') {
+        alert('채널은 단독으로만 선택가능합니다.')
+        return
+      } else if (this.pSelectedTargetList && this.pSelectedTargetList.length > 0 && target && target.accessKind === 'T') {
+        alert('채널은 단독으로만 선택가능합니다.')
+        return
+      }
       this.$emit('addTarget', target)
     },
     // emit 종류에 따라 처리 하는 분기점

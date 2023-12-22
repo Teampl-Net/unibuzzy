@@ -95,7 +95,7 @@ export default {
       if (myContents.data) {
         this.calDataList = this.getCalenderData(myContents.data)
         if (this.iframeDom && this.iframeDom.contentWindow && this.iframeDom.contentWindow.postMessage) {
-          this.iframeDom.contentWindow.postMessage(JSON.stringify({ sender: 'D', type: 'initData', data: this.calDataList }), '*')
+          this.iframeDom.contentWindow.postMessage(JSON.stringify({ sender: 'D', type: 'initData', listViewUrl: 'https://mo.d-alim.com/#/view/:date/TODO', data: this.calDataList }), '*')
         }
       }
     },

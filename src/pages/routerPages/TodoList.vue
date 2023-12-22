@@ -166,7 +166,7 @@
       </div> -->
       <!-- <span class="popHeaderTitleSpan font20 h100P" style="color: #6768A7; font-weight: bold; display: flex; justify-content: center; align-items: center;">Today's Todo</span> -->
     </div>
-    <div style="width: 100%; height: 100%; overflow: hidden;">
+    <div style="width: 100%; height:calc(100vh - 100px); overflow: hidden auto;">
     <!-- <div style="width: 100%; height: 100%; overflow: hidden auto;"> 메모할떄 살려라-->
       <!-- <div class="dateArea" style="position: relative; ">
       <div class="commonTitleText dateAreaBox " >
@@ -187,15 +187,16 @@
               {{'메모'}}
             </p> -->
             <div class="okScrollBar" v-if=" GE_DISP_MEMO_LIST.content" style="width: calc(100% - 30px); overflow: auto hidden; padding-bottom: 5px;height: 100%;">
-              <div :style="`width: ${GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0 ? 50 + GE_DISP_MEMO_LIST.content.length * 110 + 'px' : '100%'};`" style="height: 100%;">
+              <!-- <div :style="`width: ${GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0 ? 50 + GE_DISP_MEMO_LIST.content.length * 110 + 'px' : '100%'};`" style="height: 100%; overflow:auto hidden;"> -->
+              <div class="w100P h100P" style="overflow:auto hidden;">
                 <template v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" >
-                  <commonStickyBox  class="fl mright-05 cursorP" style="width: 100px; " :style="showMemoYn? 'min-height: 80px;' : 'height: 30px;'" @click="goDetail(memo)" :pContentEle="memo" />
+                  <commonStickyBox  class="fl mright-05 cursorP" style="width: 30%; " :style="showMemoYn? 'height: 110px;' : 'height: 30px;'" @click="goDetail(memo)" :pContentEle="memo" :pShowMemoYn="showMemoYn"/>
                 </template>
                 <img v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt="">
                 <p v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" class="fontBold fl h100P mright-05" style="line-height: 30px;font-size: 18px; color: #060505 !important">
                   {{'메모'}}
                 </p>
-                <div  @click="openWriteMemoPop" :style="showMemoYn? 'min-height: 80px;' : 'height: 30px;'"  class="fl mright-05 cursorP" style="width: 30px; float: left; border-radius: 10px; background: rgb(197 198 255); justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div>
+                <div v-if="showMemoYn || (GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0)" @click="openWriteMemoPop" :style="showMemoYn? 'height:110px' : 'height: 30px;'"  class="fl mright-05 cursorP" style="width: 30px; float: left; border-radius: 10px; background: rgb(197 198 255); justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div>
               </div>
             </div>
             <img v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" @click.stop="showMemoYn = !showMemoYn" :src="require(`@/assets/images/button/Icon_showMore.png`)" style="width: 30px;" class="cursorP fr" :style="showMemoYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/>
@@ -371,7 +372,7 @@
       >
         등록된 일이 없습니다.
       </div> -->
-      <div v-else class="contentsBody" style=" padding-bottom: 60px; float: left; width: 100%;">
+      <div v-else class="contentsBody">
         <template v-for="(group, groupIndex) in GE_DISP_LIST" :key="groupIndex">
         <template v-if="group.list.content.length > 0 && (groupIndex === 3 || (groupIndex === 2 && mRefTodoCount !== 0) || (groupIndex === 0 && mMyTodoCount !== 0) || ((groupIndex === 1 && mCheckTodoCount !== 0)))">
           <div
@@ -391,7 +392,7 @@
               style="margin-right: 5px"
             />
             <p style="font-size: 18px; color: #060505 !important">
-              {{group.listName}}<!--  ({{ group.list.totalElements }}) -->
+              {{group.listName}} ({{ group.list? group.list.content.length : ''}})
             </p>
           </div>
           <div style="padding: 5px 10px;">
@@ -405,257 +406,8 @@
               "
               :style="(group.listName === this.$t('COMMON_TODO_MYTODO') ? 'border-left: 10px solid rgb(247 161 120);' : ';') + (group.listName === this.$t('COMMON_TODO_CHECK')? 'border-left: 10px solid rgb(99 203 223);' : ';') + (group.listName === this.$t('COMMON_TODO_PUBLIC')? 'border-left: 10px solid rgb(198, 106, 106);' : ';')"
             >
-              <template v-for="(todo, todoIndex) in group.list.content" >
-                <div
-                  @click="goDetail(todo)"
-                  :class="todo.strikeOnOff ? 'fade-out-box' : ''"
-                  v-if="(group.listName === this.$t('COMMON_TODO_COMPLETED') && todo.contStatus === '99') || (group.listName !== this.$t('COMMON_TODO_COMPLETED') && todo.contStatus !== '99')"
-                  :key="todoIndex"
-                  class="w100P cursorP DTodoBox"
-                  style="
-                    background-color: white;
-                    display: flex;
-                    align-items: center;
-                    flex-direction: column;
-                    padding: 10px 10px 10px 0px;
-                  "
-                  :style="
-                    group.list.content.length - 1 === todoIndex
-                      ? ''
-                      : 'border-bottom:1px solid #acacac;'
-                  "
-                >
-                  <div
-                    style="
-                      width: 100%;
-                      height: 100%;
-                      display: flex;
-                      align-items: start;
-                      justify-content: space-between;
-                    "
-                  >
-                    <div
-                      style="width: 45px; height: 30px;display: flex; justify-content: center; align-items: center; text-align: left"
-                      @click.stop="
-                        groupIndex !== 2 ? setCompleteTodo(todo, 'myTodoList', groupIndex, todoIndex) : ''
-                      "
-                    >
-                      <img
-                        v-if="todo.contTarget === 'myRef'"
-                        src="../../assets/images/todo/checkboxRef.svg"
-                        width="28"
-                        height="28"
-                        style="margin-top: -0.3rem; opacity: 0.6"
-                      />
-                      <img
-                        v-else-if="todo.contStatus === '99'"
-                        src="../../assets/images/todo/checkboxCheck.png"
-                        width="28"
-                        height="28"
-                        style="margin-top: -0.3rem; opacity: 0.6"
-                      />
-                      <img
-                        v-else
-                        src="../../assets/images/todo/checkboxBlank.png"
-                        width="28"
-                        height="28"
-                        style="margin-top: -0.3rem; opacity: 0.6"
-                      />
-                    </div>
-                    <div style="width: 100%">
-                      <!-- 제목, 태그 1-->
-                      <div style="width: 100%" >
-                        <div
-                          class="todoImportantInfo"
-                          style="display: flex; align-items: center"
-                        >
-                          <div
-                            style="text-align: left; white-space: wrap"
-                          >
-                            <div
-                              class="todoImportantInfoTitle fontBold todoTitleFontSize CTodoTitleColor"
-                              style="display: flex; justify-content: center; align-items: center;"
-                              :style="{'color' : todo.contStatus === '99' ? 'gray !important' : '#060505 !important'}"
-                            >
-                              <span class="realTitle mright-03" :style="todo.contStatus === '99'? 'text-decoration: line-through;' : ''">{{
-                                todo.title
-                              }}</span>
-                              <span
-                                v-if="todo.D_MEMO_LIST && todo.D_MEMO_LIST.length > 0"
-                                class="todoImportantInfoMemo CTodoTitleColor"
-                              >
-                                ({{
-                                  todo.D_MEMO_LIST.length === 0
-                                    ? "0"
-                                    : todo.D_MEMO_LIST.length
-                                }})
-                              </span>
-                              <!-- v-if="index === 0 || sticker.showAllStickerYn" -->
-                              <template v-for="(sticker, index) in todo.stickerList" :key="index">
-                                <span @click="(event) => { event.stopPropagation(); clickSticker(sticker);}"
-                                  class="todoTag mright-03"
-                                  :style="`background: ${sticker.picBgPath}`"
-                                >
-                                  {{ $changeText(sticker.nameMtext) }}
-                                </span>
-                              </template>
-                              <!-- <span class="todoTag mright-03" @click="todo.showAllStickerYn = !todo.showAllStickerYn" style="background: #5f61bd !important;" v-if="todo.stickerList && todo.stickerList.length > 1">
-                                {{ `(+${todo.stickerList.length - 1})` }}
-                              </span> -->
-                              <div
-                                v-if="todo.fileCount"
-                                style="display: inline-block"
-                              >
-                                <img
-                                  :src="
-                                    require(`@/assets/images/todo/attachIcon.svg`)
-                                  "
-                                  style="width: 15px; opacity: 0.7"
-                                  alt="attached file"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <!--//-->
-                      <!-- 이력, 담당자-->
-                      <div class="todoOtherInfos mtop-01">
-                        <!-- 내 일 -이력 -->
-                        <div class="todoOtherInfosDueDate">
-                          <div
-                            class="CLDeepGrayColor todoFontSize"
-                            style="line-height: 23px"
-                          >
-                            <span
-                            @click="(event) => { event.stopPropagation(); clickPriority(todo.priority);}"
-                              v-if="todo.priority"
-                              class="todoPriority mright-03 fontBold"
-                              :class="{
-                                todoPriorityHigh: todo.priority === '00',
-                                todoPriorityMiddle: todo.priority === '01',
-                                todoPriorityLow: todo.priority === '02',
-                              }"
-                            >
-                              {{
-                                todo.priority === "00"
-                                  ? $t('COMMON_TODO_HIGH')
-                                  : todo.priority === "01"
-                                  ? $t('COMMON_TODO_MID')
-                                  : $t('COMMON_TODO_LOW')
-                              }}
-                            </span>
-                            <div
-                              class="middleBgColor imgCircle profileImg mright-03"
-                              style="
-                                display: inline-block;
-                                vertical-align: middle;
-                              "
-                              :style="`background-image: url('${
-                                todo.userDomainPath
-                                  ? todo.userDomainPath + todo.userProfileImg
-                                  : require(`@/assets/images/channel/chanImg.png`)
-                              }')`"
-                            ></div>
-                            <span
-                              :class="{
-                                delayedTodo:
-                                  new Date(todo.workToDate) < new Date() &&
-                                  getHowLate(todo.workToDate) > 0,
-                              }"
-                              >{{
-                                compareSameDate(
-                                  getMonthDate(todo.workFromDate),
-                                  getMonthDate(todo.workToDate)
-                                )
-                              }}</span
-                            >
-                            <!-- <span v-if="new Date(todo.workToDate) < new Date() && getHowLate(todo.workToDate) > 0"> ({{ getHowLate(todo.workToDate) }}일 지연됨)</span> -->
-                          </div>
-                        </div>
-                        <!--//-->
-                        <!-- 내 일 - 담당자 -->
-                        <div class="todoOtherInfosAsignee">
-                          <div
-                            class="w100P actorImgList"
-                            @click.stop="openActorList(todoIndex, 0)"
-                          >
-                            <template
-                              v-for="(each, index) in todo.actorList"
-                              :key="index"
-                            >
-                              <div v-if="index < 3" style="display: flex">
-                                <img
-                                  v-if="each.accessKind === 'U' && each.actType === 'RV'"
-                                  class="actorImg"
-                                  :src="
-                                    each.domainPath
-                                      ? each.domainPath + each.pathMtext
-                                      : require(`@/assets/images/todo/defaultImg.png`)
-                                  "
-                                  style=""
-                                  :alt="each.userDispMtext"
-                                />
-                                <img
-                                  v-else-if="each.accessKind === 'C' && each.actType === 'RV'"
-                                  class="actorImg"
-                                  :src="
-                                    require(`@/assets/images/todo/channer_addressBook.svg`)
-                                  "
-                                  style=""
-                                  :alt="each.userDispMtext"
-                                />
-                                <div
-                                  class="moreActorImg"
-                                  style=""
-                                  v-if="todo.actorList.length > 0 && index === 2"
-                                >
-                                  <span>+{{ todo.actorList.length }}</span>
-                                </div>
-                                <div
-                                  class="moreActorImg"
-                                  style=""
-                                  v-else-if="(todo.actorList.length === 1 && todo.actorList[0].actType === 'CK') || (todo.actorList.length === 2 && todo.actorList[1].actType === 'CK') && index === 1"
-                                >
-                                  <span>+{{ todo.actorList.length }}</span>
-                                </div>
-                              </div>
-                              <div
-                                class="actorNameListWrap"
-                                v-if="
-                                  mGetWhichTodoIndex === 0 &&
-                                  mOpenActorListIndex === todoIndex &&
-                                  mOpenActorListYn
-                                "
-                              >
-                                <div class="actorNameList">
-                                  <p
-                                    @click="goUserProfile(each.accessKey)"
-                                    class="todoFontSize" style="white-space:nowrap; display:flex; align-items:center;"
-                                    v-for="(each, index) in todo.actorList"
-                                    :key="index"
-                                  >
-                                  <template v-if="each">
-                                    <img v-if="each.accessKind === 'U'" class="moreActorImg" style="border:2px solid #e7edff;" :src="each.domainPath + each.pathMtext" />
-                                    <img v-if="each.accessKind === 'C'" class="moreActorImg" style="border:2px solid #e7edff;" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" />
-                                  </template>
-                                    {{
-                                      each.userDispMtext ? $changeText(each.userDispMtext) : $changeText(each.cabinetNameMtext)
-                                    }}
-                                  {{
-                                    each.actType === 'CK'? '(검토) ' : each.actType === 'RV'? '(담당) ' : each.actType === 'RF'? '(공개) ' : ''
-                                  }}
-                                  </p>
-                                </div>
-                              </div>
-                            </template>
-                          </div>
-                        </div>
-                      </div>
-                      <!--//-->
-                    </div>
-                  </div>
-                </div>
+              <template v-for="(todo, todoIndex) in group.list.content" :key="todo.contentsKey" >
+                <todoContentsBox :pTodoElement="todo" :pTodoIndex="todoIndex" :pClickSticker="clickSticker" :pOpenDetail="goDetail" :pGroupIndex="groupIndex" :pSetCompleteTodo="completeTodo" :pClickPriority="clickPriority" :pOpenActorList="openActorList" :pGroup="group" :pGoUserProfile="goUserProfile" />
               </template>
               <!-- 한 박스-->
               <!-- // -->
@@ -682,6 +434,7 @@
     :pOptions="mOption"
     :pUserInfo="GE_USER"
     :popUpType="mPopupType"
+    :pMemoYn="memoYn"
     @openPop="openPop"
   />
   <!-- </transition> -->
@@ -711,6 +464,7 @@ import detailPop from '../../components/pageComponents/todo/detailPop.vue'
 import setPop from '../../components/pageComponents/todo/setPop.vue'
 import Datepicker from 'vue-datepicker-next'
 import 'vue-datepicker-next/index.css'
+import todoContentsBox from './D_todoContentsBox.vue'
 import { commonMethods } from '../../assets/js/Tal_common'
 import SkeletonBox from '../../components/pageComponents/push/D_contentsSkeleton.vue'
 import CommonAddContentsForm from '../../components/write/CommonAddContentsForm.vue'
@@ -725,6 +479,7 @@ export default {
     SkeletonBox,
     commonFilterPop,
     commonStickyBox,
+    todoContentsBox,
     CommonAddContentsForm
   },
   props: {
@@ -794,6 +549,7 @@ export default {
       searchAreaYn: false,
       mWhichType: '',
       searchValue: '',
+      firstYn: true,
       mArrangeTab: [
         { tabIdx: 1, tabVal: 'PH', tabName: '우선순위↑' },
         { tabIdx: 2, tabVal: 'PL', tabName: '우선순위↓' },
@@ -802,7 +558,8 @@ export default {
         { tabIdx: 5, tabVal: 'TG', tabName: '태그별' }
       ],
       mArrangeTabIdx: 0,
-      mSortOrder: 0
+      mSortOrder: 0,
+      memoYn: false
       // geDispList: []
     }
   },
@@ -812,7 +569,6 @@ export default {
       this.$router.push('/')
     }
     this.$emit('changePageHeader', this.$t('COMMON_NAME_TODOLIST'))
-    this.getHowLate()
     const todoObject = {
       teamKey: 0
     }
@@ -824,6 +580,7 @@ export default {
   },
   methods: {
     openWriteMemoPop () {
+      this.memoYn = true
       this.mPopupType = 'MEMO'
       this.mOption.purpose = 'Add Memo'
       this.mWritePopShowYn = true
@@ -852,18 +609,18 @@ export default {
       // let geDispList = JSON.parse(JSON.stringify(this.GE_DISP_LIST))
       if (index === 0 || index === 1) {
         // 우선순위 순
-        // orderbyStr = 'sk.nameMtext, c.contStatus, c.priority, c.workToDate DESC'
+        // orderbyStr = 'r.recentKey IS NOT NULL DESC, sk.nameMtext DESC, c.contStatus, c.priority, c.workToDate DESC'
         if (index === 0) {
-          orderbyStr = ' c.priority, sk.nameMtext, c.contStatus, c.workToDate DESC'
+          orderbyStr = ' c.priority, r.recentKey IS NOT NULL DESC, sk.nameMtext DESC, c.contStatus, c.workToDate DESC'
         } else if (index === 1) {
-          orderbyStr = ' c.priority DESC, sk.nameMtext, c.contStatus, c.workToDate DESC'
+          orderbyStr = ' c.priority DESC, r.recentKey IS NOT NULL DESC, sk.nameMtext DESC, c.contStatus, c.workToDate DESC'
         }
       } else if (index === 2 || index === 3) {
         // 최신순 or 오래된 순
         if (index === 2) {
-          orderbyStr = 'c.workToDate DESC, sk.nameMtext, c.contStatus, c.priority '
+          orderbyStr = 'c.workToDate DESC, r.recentKey IS NOT NULL DESC, sk.nameMtext DESC, c.contStatus, c.priority '
         } else if (index === 3) {
-          orderbyStr = 'c.workToDate, sk.nameMtext, c.contStatus, c.priority '
+          orderbyStr = 'c.workToDate, r.recentKey IS NOT NULL DESC, sk.nameMtext DESC, c.contStatus, c.priority '
         }
         /* const sortedLists = geDispList.map(item => {
           const geDisList = item.list.content
@@ -874,7 +631,7 @@ export default {
         })
         geDispList = sortedLists */
       } else {
-        orderbyStr = 'sk.nameMtext, c.contStatus, c.priority, c.workToDate DESC'
+        orderbyStr = 'r.recentKey IS NOT NULL DESC, sk.nameMtext DESC, c.contStatus, c.priority, c.workToDate DESC'
       }
       this.getMyTodoList(orderbyStr)
       /* const sortedLists = geDispList.map(item => {
@@ -998,13 +755,6 @@ export default {
     goToday () {
       this.mSelectDate = new Date()
     },
-    compareSameDate (from, to) {
-      if (from === to) {
-        return from
-      } else {
-        return `${from} ~ ${to}`
-      }
-    },
     async goUserProfile (targetUserKey) {
       console.log('targetUserKey', targetUserKey)
       if (this.GE_USER.unknownYn) {
@@ -1031,10 +781,6 @@ export default {
     },
     closeActorList () {
       this.mOpenActorListYn = false
-    },
-    getMonthDate (date) {
-      var format = 'MM/DD'
-      return this.$dayjs(date).add(9, 'hour').format(format)
     },
     getHowLate (toDate, endDate = new Date()) {
       const howLate = new Date(endDate).getTime()
@@ -1220,7 +966,9 @@ export default {
       var param = {}
       param.contentsKey = value.contentsKey
       param.workUserName = this.GE_USER.userDispMtext
+      param.creUserName = this.GE_USER.userDispMtext
       param.jobkindId = 'TODO'
+      param.actorList = value.actorList
       if (value.contStatus === '00') {
         param.contStatus = '99'
       } else {
@@ -1285,23 +1033,25 @@ export default {
             } else {
               tempList.push(value)
             }
-          } else {
-            tempObj.accessKind = 'C'
-            tempObj.accessKey = value.cabinetKey
-            tempObj.accessName = value.cabinetNameMtext
-            tempObj.iconPath = require('@/assets/images/editChan/icon_addressBook.svg')
-            // targetList에 나타나는 아이콘을 원 안에 가득 채울지, 아닐지 결정하는 변수
-            tempObj.iconFullYn = false
-            if (value.nameMtext) {
-              tempObj.accessName = `[${this.$changeText(value.nameMtext)}] ` + this.$changeText(value.cabinetNameMtext)
-              tempObj.iconPath = value.logoDomainPath
+          } else if (value.teamKey && value.nameMtext) {
+            tempList.push({
+              accessKind: 'T',
+              accessKey: value.teamKey,
+              accessName: value.nameMtext,
+              iconFullYn: true,
+              iconPath: value.logoDomainPath
                 ? this.$changeUrlBackslash(
                   value.logoDomainPath + value.logoPathMtext
                 )
                 : value.logoPathMtext
-              tempObj.iconFullYn = true
-            }
-
+            })
+          } else {
+            tempObj.accessKind = 'C'
+            tempObj.accessKey = value.cabinetKey
+            tempObj.iconPath = require('@/assets/images/editChan/icon_addressBook.svg')
+            // targetList에 나타나는 아이콘을 원 안에 가득 채울지, 아닐지 결정하는 변수
+            tempObj.iconFullYn = false
+            tempObj.accessName = value.cabinetNameMtext
             if (value.mCabUserList && value.mCabUserList.length > 0) {
               const childTempList = []
               value.mCabUserList.forEach((value2) => {
@@ -1415,7 +1165,7 @@ export default {
         searchFromDateStr: this.getToday(this.mSelectDate),
         searchToDateStr: this.getToday(this.mSelectDate),
         nowDateStr: this.getToday(new Date()),
-        orderbyStr: 'sk.nameMtext, c.contStatus, c.priority, c.workToDate DESC',
+        orderbyStr: 'r.recentKey IS NOT NULL DESC, sk.nameMtext DESC, c.contStatus, c.priority, c.workToDate DESC',
         pageSize: 50,
         stickerKeyList: this.mParamStickerList
       }
@@ -1564,6 +1314,7 @@ export default {
       // }
     },
     getAllActorList (dataList) {
+      if (!this.firstYn) return
       this.mAllActorList = []
       const resultList = []
       const allCabinetList = []
@@ -1602,8 +1353,10 @@ export default {
         })
       }
       const replaceArr = this.replaceActorArr(resultList)
+      console.log('actor리스트')
       console.log(replaceArr)
       this.mAllActorList = replaceArr
+      this.firstYn = false
     },
     convertActorList (cont) {
       if (!cont.actorList || cont.actorList.length === 0) return []
@@ -1788,6 +1541,7 @@ export default {
       this.mTodoDetailShowYn = false
     },
     async openAddTodoPop () {
+      this.memoYn = false
       this.mPopupType = 'TODO'
       this.mOption.purpose = 'Add Todo'
 
@@ -1799,12 +1553,12 @@ export default {
       // paramMap.pageSize = 30
       var result = await this.$getTodoListGroupCab(paramMap, true)
       if (result.result) {
-        let tempList = this.convertTargetData(result.team)
+        let tempList = this.convertTargetData(result.userTeam)
         this.mTargetDataList.push(
           {
             tabIndex: 0,
             tabType: 'TEAM',
-            tabName: '채널주소록',
+            tabName: '채널',
             targetList: tempList
           }
         )
@@ -1981,38 +1735,12 @@ export default {
     goMain () {
       this.$router.push('/')
     },
-    getVuexList (data) {
-      let idx1 = -1
-      let idx2 = -1
-      const returnAlimList = []
-      let chanDetail = null
-      let dataList = null
-      const contList = data.content
-      if (!contList) return data
-      var i = 0
-      idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === 0)
-      if (idx1 === -1) return data
-      chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-      if (chanDetail && chanDetail.ELEMENTS && chanDetail.ELEMENTS.todoList) {
-        dataList = chanDetail.ELEMENTS.todoList
-      }
-      if (!dataList || dataList.length === 0) {
-        return data
-      }
-      for (i = 0; i < contList.length; i++) {
-        idx2 = dataList.findIndex((item) => item.contentsKey === contList[i].contentsKey)
-        if (idx2 !== -1) {
-          // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-          contList[i] = dataList[idx2]
-          returnAlimList.push(dataList[idx2])
-        } else {
-          returnAlimList.push(contList[i])
-        }
-      }
-      data.content = this.replaceArr(returnAlimList)
+    getReplaceList (data) {
+      if (!data || !data.content) return data
+      data.content = this.replaceArr(data.content)
       return data
     },
-    getVuexMemoList (data) {
+    /* getVuexMemoList (data) {
       let idx1 = -1
       let idx2 = -1
       const returnAlimList = []
@@ -2024,9 +1752,7 @@ export default {
       idx1 = this.GE_MAIN_CHAN_LIST.findIndex((item) => item.teamKey === -1)
       if (idx1 === -1) return data
       chanDetail = this.GE_MAIN_CHAN_LIST[idx1]
-      if (chanDetail && chanDetail.ELEMENTS.memoList && chanDetail.ELEMENTS.memoList) {
-        dataList = chanDetail.ELEMENTS.memoList
-      }
+      dataList = chanDetail.ELEMENTS.memoList
       if (!dataList || dataList.length === 0) {
         return data
       }
@@ -2042,7 +1768,7 @@ export default {
       }
       data.content = this.replaceArr(returnAlimList)
       return data
-    },
+    }, */
     replaceMemoArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
         if (
@@ -2137,11 +1863,11 @@ export default {
       const tab = this.mShowTab[this.mSelectedMainTabIdx]
       if (tab.tabVal === 'A') {
         console.log(this.mCheckTodoList)
-        return [{ listName: this.$t('COMMON_TODO_MYTODO'), list: this.getVuexList(this.mMyTodoList) }, { listName: this.$t('COMMON_TODO_CHECK'), list: this.getVuexList(this.mCheckTodoList) }, { listName: this.$t('COMMON_TODO_PUBLIC'), list: this.getVuexList(this.mRefTodoList) }, { listName: this.$t('COMMON_TODO_COMPLETED'), list: this.getVuexList(this.mCompTodoList) }]
+        return [{ listName: this.$t('COMMON_TODO_MYTODO'), list: this.getReplaceList(this.mMyTodoList) }, { listName: this.$t('COMMON_TODO_CHECK'), list: this.getReplaceList(this.mCheckTodoList) }, { listName: this.$t('COMMON_TODO_PUBLIC'), list: this.getReplaceList(this.mRefTodoList) }, { listName: this.$t('COMMON_TODO_COMPLETED'), list: this.getReplaceList(this.mCompTodoList) }]
       } else if (tab.tabVal === 'M') {
-        return [{ listName: this.$t('COMMON_TODO_MYTODO'), list: this.getVuexList(this.mMyTodoList) }, { listName: this.$t('COMMON_TODO_CHECK'), list: this.getVuexList(this.mCheckTodoList) }, { listName: this.$t('COMMON_TODO_PUBLIC'), list: this.getVuexList(this.mRefTodoList) }]
+        return [{ listName: this.$t('COMMON_TODO_MYTODO'), list: this.getReplaceList(this.mMyTodoList) }, { listName: this.$t('COMMON_TODO_CHECK'), list: this.getReplaceList(this.mCheckTodoList) }, { listName: this.$t('COMMON_TODO_PUBLIC'), list: this.getReplaceList(this.mRefTodoList) }]
       } else if (tab.tabVal === 'C') {
-        return [{ listName: this.$t('COMMON_TODO_COMPLETED'), list: this.getVuexList(this.mCompTodoList) }]
+        return [{ listName: this.$t('COMMON_TODO_COMPLETED'), list: this.getReplaceList(this.mCompTodoList) }]
       } else {
         return []
       }/* else if (tab.tabVal === 'R') {
@@ -2226,7 +1952,8 @@ export default {
       var cont = this.$getContentsDetail(
         null,
         this.contentsEle.contentsKey,
-        teamKey
+        teamKey,
+        this.contentsEle.jobkindId
       )
       if (!cont) {
         cont = [this.contentsEle]
@@ -2562,16 +2289,15 @@ export default {
         // let oriList = []
         newTodo.strikeOnOff = false
         newTodo.sideMenuOpenYn = false
-        if (
-          this.mMyTodoList.content.findIndex(
-            (todo) => todo.contentsKey === newTodo.contentsKey
-          ) !== -1 ||
+        if (this.mMyTodoList && this.mCheckTodoList && this.mRefTodoList && (this.mMyTodoList.content.findIndex(
+          (todo) => todo.contentsKey === newTodo.contentsKey
+        ) !== -1 ||
           this.mCheckTodoList.content.findIndex(
             (todo) => todo.contentsKey === newTodo.contentsKey
           ) !== -1 ||
           this.mRefTodoList.content.findIndex(
             (todo) => todo.contentsKey === newTodo.targetKey
-          ) !== -1
+          ) !== -1)
         ) {
           if (newTodo.contStatus === '99') {
             this.mCompTodoList.content.unshift(newTodo)
@@ -2657,7 +2383,22 @@ export default {
   }
 }
 </script>
-<style scoped>
+
+<style>
+
+.todoTag {
+  color: white;
+  height: 19px;
+  margin-bottom: 3px;
+  line-height: 19px;
+  padding: 0px 5px;
+  border-radius: 5px;
+  font-size: 11px;
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
+  white-space:nowrap;
+}
 svg > path {
   fill: rgba(96, 97, 190);
 }
@@ -2666,63 +2407,6 @@ svg > path {
 }
 .delayedTodo {
   color: red !important;
-}
-.fontSize {
-  font-size: 18px;
-}
-.todoTag {
-  color: white;
-  height: 19px;
-  margin-bottom: 5px;
-  line-height: 19px;
-  padding: 0px 5px;
-  border-radius: 5px;
-  font-size: 12px;
-  width: auto;
-  display: inline-block;
-  vertical-align: middle;
-  white-space:nowrap;
-}
-.todoTagS {
-  background-color: #a5a6e6;
-}
-.todoTagM {
-  background-color: rgb(45, 203, 137);
-}
-.todoTagW {
-  background-color: rgb(108, 161, 27);
-}
-.todoTagI {
-  background-color: rgb(255, 158, 31);
-}
-.todoTagE {
-  background-color: rgb(198, 106, 106);
-}
-.todoPriority {
-  color: white;
-  height: 18px;
-  line-height: 18px;
-  border-radius: 20px;
-  font-size: 12px;
-  width: auto;
-  padding: 1px 9px;
-}
-.todoPriorityHigh {
-  background-color: rgb(15, 47, 135);
-}
-.todoPriorityMiddle {
-  background-color: rgb(59, 107, 240);
-}
-.todoPriorityLow {
-  background-color: rgb(232, 238, 254);
-  color: #000 !important;
-}
-.todoPriorityLowMore {
-  background-color: rgb(250, 251, 254);
-  color: #000 !important;
-}
-.todoTitleFontSize {
-  font-size: 17px;
 }
 .mainTodoTab {
   padding: 0.5rem 0;
@@ -2776,7 +2460,7 @@ svg > path {
   min-height: 40px;
   float: left;
   padding: 0 0.6rem;
-  margin-top:10px;
+  margin-bottom:10px;
 }
 .contents .mx-input-wrapper i {
   visibility: hidden !important;
@@ -2894,8 +2578,12 @@ svg > path {
   background-color: white;
 }
 .contentsBody {
-  height: calc(100% - 100px);
-  overflow: hidden auto;
+  /* height: calc(100% - 110px); */
+  /* overflow: hidden auto; */
+   padding-bottom: 120px;
+   height:auto;
+   float: left;
+   width: 100%;
 }
 .cabiName {
   padding: 10px 15px;
@@ -2910,83 +2598,6 @@ svg > path {
 .appUserPhoto {
   overflow: hidden;
   border-radius: 50%;
-}
-.actorImg {
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  margin-left: -10px;
-  border: 2px solid #e7edff;
-  box-shadow: 0 5px 6px 0 rgba(255, 255, 255, 0.6);
-  background-color: #fff;
-}
-
-.moreActorImg {
-  margin-left: -10px;
-  font-size: 13px !important;
-  font-weight: bold;
-  width: 27px;
-  height: 27px;
-  border-radius: 50%;
-  /* box-shadow:0 5px 6px 0 rgba(60, 60, 60, 0.2); */
-  background-color: #e7edff !important;
-  color: #5f61bd !important;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-.actorImgList {
-  display: flex;
-  justify-content: end;
-  align-items: center;
-  position: relative;
-}
-.actorNameListWrap{
-  transition:all .5s;
-  position:absolute;
-  right:-10px;
-  top:130%;
-  z-index:13;
-}
-.actorNameListWrap.wrapOpen {
-  display: block !important;
-}
-.actorNameListWrap:before {
-  content: "";
-  position: absolute;
-  top: -10px;
-  right: 10px;
-  transform: translateX(-50%);
-  border-top: 0px solid transparent;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 16px solid #e7edff;
-}
-.actorNameList {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap:0.2rem;
-  background-color: #e7edff !important;
-  box-shadow: 0 5px 8px 0 rgba(133, 133, 133, 0.102);
-  border-radius: 10px;
-  padding: 5px 17px;
-  color: #7e7e7e;
-  width: auto;
-  height: auto;
-}
-
-.profileImg {
-  width: 25px;
-  height: 25px;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  display: inline-block;
-  vertical-align: middle;
-  border: 2px solid #e7edff;
 }
 .strikeLine {
   position: absolute;
@@ -3021,22 +2632,6 @@ svg > path {
 .countTodo {
   font-size: 14px;
 }
-.todoImportantInfoTitle {
-  line-height: 1;
-}
-.infoTitle {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  white-space: normal;
-}
-.todoImportantInfoMemo {
-  font-size: 18px;
-  font-weight: normal !important;
-  margin-top: -4px;
-}
 .todoOtherInfos {
   display: flex;
   align-items: center;
@@ -3070,9 +2665,6 @@ svg > path {
 .cabiName {
   padding: 10px 15px;
 }
-.todoFontSize {
-  font-size: 15px;
-}
 .w70 {
   width: 70px;
 }
@@ -3091,12 +2683,6 @@ svg > path {
   animation-fill-mode: forwards;
 }
 @keyframes fadeout {
-  /* from {
-    transform: translateX(0%);
-  }
-  to {
-    transform: translateX(-100%);
-  } */
   from {
     opacity: 1;
   }
@@ -3111,17 +2697,6 @@ svg > path {
   }
   to {
     opacity: 0;
-  }
-}
-
-@media screen and (max-width: 650px) {
-  .todoImportantInfoTitle {
-    line-height: 1.2 !important;
-    /* margin-top:0.2rem !important; */
-    margin-bottom: 0.3rem !important;
-  }
-  .todoImportantInfoMemo {
-    font-size: 14px;
   }
 }
 @media screen and (max-width: 500px) {
@@ -3139,46 +2714,9 @@ svg > path {
   .countTodo {
     font-size: 12px !important;
   }
-  .fontSize {
-    font-size: 14px !important;
-  }
-  .actorImg {
-    width: 25px !important;
-    height: 25px !important;
-  }
-  .moreActorImg {
-    width: 25px !important;
-    height: 25px !important;
-    font-size: 11px !important;
-  }
-  .profileImg {
-    width: 25px !important;
-    height: 25px !important;
-  }
   .commonSubTitleTextBold {
     font-size: 14px;
   }
-  .todoFontSize {
-    font-size: 13px;
-  }
-}
-.titleLine {
-  display: flex;
-  flex-basis: 100%;
-  align-items: center;
-  color: black;
-  font-size: 12px;
-  margin: 8px 0px;
-}
-.titleLine::before,
-.titleLine::after {
-  content: "";
-  flex-grow: 1;
-  background: black;
-  height: 1px;
-  font-size: 0px;
-  line-height: 0px;
-  margin: 0px 16px;
 }
 .commonSubTitleTextBold {
   font-size: 20px;
@@ -3219,14 +2757,14 @@ svg > path {
   align-items: center;
   left: 1rem;
 }
-.picImgWrap {
+/* .picImgWrap {
   width: 100%;
   height: 100%;
   border-radius: 100%;
   overflow: hidden;
   display: flex;
   background-color: #fff;
-}
+} */
 /* .picWrapReal {
   background-position: center;
   background-size: cover;

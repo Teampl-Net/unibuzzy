@@ -95,15 +95,15 @@ const routes = [
           page: 4
         }
       },
-      /* {
-        path: '/',
-        name: 'pushList',
+      {
+        path: '/view/:date/:jobkindId',
+        name: 'frameView',
         props: true,
-        component: pushList,
+        component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_frameView.vue'),
         meta: {
           page: 2
         }
-      }, */
+      },
       {
         path: '/chanList',
         name: 'chanList',
@@ -143,12 +143,12 @@ const routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback copy.vue')
   },
-  /* {
+  {
     path: '/testLoginPage',
     name: 'testLoginPage',
     props: true,
-    component: () => import( '../pages/intro/testLoginPage.vue')
-  }, */
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/testLoginPage.vue')
+  },
   {
     path: '/nonMemInquiryBoard',
     name: 'nonMemInquiryBoard',
@@ -173,11 +173,17 @@ const routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_permissions.vue')
   },
+  // {
+  //   path: '/policies',
+  //   name: 'policies',
+  //   props: true,
+  //   component: () => localStorage.getItem('appType') && localStorage.getItem('appType') === 'D' ? import(/* webpackChunkName: "about" */ '../pages/intro/Tal_policies.vue') : import(/* webpackChunkName: "about" */ '../pages/intro/UB_AgreePolicies.vue')
+  // },
   {
     path: '/policies',
-    name: 'policies',
+    name: 'UBpolicies',
     props: true,
-    component: () => localStorage.getItem('appType') && localStorage.getItem('appType') === 'D' ? import(/* webpackChunkName: "about" */ '../pages/intro/Tal_policies.vue') : import(/* webpackChunkName: "about" */ '../pages/intro/UB_AgreePolicies.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/UB_AgreePolicies.vue')
   },
   {
     path: '/savePhone',

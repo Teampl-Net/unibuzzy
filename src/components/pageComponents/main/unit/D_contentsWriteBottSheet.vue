@@ -32,7 +32,9 @@
     :pGetReceiverList="returnTargetData"
     :pGetTagListFn="returnTag"
     :pOptions="mOption"
+    :popUpType="mSelectedWriteType"
     :pUserInfo="GE_USER"
+    :pSelectChanList="mSelectChanList"
   />
 <div style="width: 100%; min-height: 320px; left:0; background: #FFF; border-radius: 25px 25px 0px 0px; display: flex; flex-direction: column;padding: 20px 20px; position: absolute; bottom: 0; z-index: 11;">
   <div style="position: relative; width: 100%; min-height: 40px; margin-bottom: 10px; float: left;">
@@ -59,7 +61,7 @@
           </div>
       </div>
   </div>
-  <div style="width: 100%; margin-top: 20px; min-height: 30px;" v-if="!propTeamKey && this.mSelectedWriteType !== 'TODO'">
+  <div style="width: 100%; margin-top: 20px; min-height: 30px;" v-if="!propTeamKey && this.mSelectedWriteType === 'BOAR'">
       <p class="font20 fontBold textLeft">{{ $t('BOMMOM_MSG_LETTER') }}</p>
       <div class="lightGray cursorP font16 fontBold okScrollBar" style="border: 3px solid #F4F4F4!important; width: 100%; height: 160px!important; border-radius: 8px; overflow: hidden scroll; padding :15px 20px;" name="" id="">
           <div style="width: 100%; height: 30px; padding: 0 5px; float: left;">
@@ -70,7 +72,7 @@
           </div>
       </div>
   </div>
-  <gBtnLarge v-if="mSelectChanList.length > 0" :style="this.mSelectedChan === 0? 'background: #F4F4F4!important; color: #AAAAAA!important;': ''" class="mtop-2 fontBold" @click="this.mSelectedChan === 0? '' : openWritePushPop()" :btnTitle="$t('COMM_BTN_WRITE')" />
+  <gBtnLarge v-if="mSelectChanList.length > 0" :style="this.mSelectedChan === 0? 'background: #F4F4F4!important; color: #AAAAAA!important;': ''" class="mtop-2 fontBold" @click="this.mSelectedWriteType === 'BOAR' && this.mSelectedChan === 0? '' : openWritePushPop()" :btnTitle="$t('COMM_BTN_WRITE')" />
   <gBtnLarge  v-else style="background: #F4F4F4!important; color: #AAAAAA!important;" class="mtop-2 fontBold" :btnTitle="$t('BOTTOM_MSG_NOCHAN')" />
 </div>
 </template>
@@ -142,7 +144,8 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       paramMap.set('pageSize', 100)
       if (this.mSelectedWriteType === 'ALIM') {
-        paramMap.set('canSendAlim', true)
+        return
+        // paramMap.set('canSendAlim', true)
       }
       var nonLoading = true
       if (loadingYn) {
@@ -164,7 +167,7 @@ export default {
       // 알림의 권한이 없으면 바꿀 수 없게
       if (this.mAlimClickYn === false) return
       this.mSelectedWriteType = jobkindId
-      if (!this.propTeamKey) {
+      if (!this.propTeamKey && jobkindId === 'BOAR') {
         this.mSelectedChan = 0
         this.mSelectChanList = []
         this.getTeamList(false)
@@ -174,7 +177,7 @@ export default {
       this.mWritePopShowYn = false
     },
     async openWritePushPop () {
-      if (this.mSelectedWriteType === 'TODO') {
+      if (this.mSelectedWriteType === 'TODO' || this.mSelectedWriteType === 'ALIM') {
         this.openAddTodoPop()
       } else if (this.mSelectedWriteType !== 'TODO') {
         if (this.propTeamKey && this.mSelectedWriteType === 'ALIM' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
@@ -193,6 +196,11 @@ export default {
           var index = this.mSelectChanList.findIndex((item) => item.teamKey === this.mSelectedChan)
           if (index !== -1) {
             writeParam.targetNameMtext = this.mSelectChanList[index].nameMtext
+            writeParam.targetIconPath = this.mSelectChanList[index].logoDomainPath
+              ? this.$changeUrlBackslash(
+                this.mSelectChanList[index].logoDomainPath + this.mSelectChanList[index].logoPathMtext
+              )
+              : this.mSelectChanList[index].logoPathMtext
           }
         } else if (this.mSelectedWriteType === 'BOAR') {
           var teamList = await this.$getWriteBoardData(this.mSelectedChan)
@@ -203,6 +211,7 @@ export default {
           writeParam.selectBoardYn = true
           writeParam.initData = teamList
         }
+        writeParam.pSelectChanList = this.mSelectChanList
         this.openPop(writeParam)
       }
     },
@@ -329,7 +338,7 @@ export default {
     async saveContents (params) {
       params.creUserKey = this.GE_USER.userKey
       params.creUserName = this.$changeText(this.GE_USER.userDispMtext)
-      params.jobkindId = 'TODO'
+      params.jobkindId = this.mSelectedWriteType
       if (params.actorList) {
         const tempList = [...params.actorList]
         const actorList = []
@@ -355,8 +364,10 @@ export default {
         params.actorList = actorList
       }
       const res = await this.$saveContents(params)
+      console.log(res)
       if (res.result) {
-        this.$showToastPop(this.$t('COMM_MSG_ADD_TODO'))
+        if (params.jobkindId === 'TODO') this.$showToastPop(this.$t('COMM_MSG_ADD_TODO'))
+        if (params.jobkindId === 'ALIM') this.$showToastPop(this.$t('COMM_MSG_SUCC_LETTER'))
         params = {}
         params.contentsKey = res.contents.contentsKey
         params.jobkindId = res.contents.jobkindId
@@ -367,10 +378,11 @@ export default {
           await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', res.sticker)
         }
         this.closePop()
+      } else {
+        if (params.jobkindId === 'TODO') this.$showToastPop(this.$t('COMM_MSG_ADD_TODO_FAIL'))
+        if (params.jobkindId === 'ALIM') this.$showToastPop(this.$t('COMM_MSG_FAIL_LETTER'))
       }
-      if (!res.result) {
-        this.$showToastPop(this.$t('COMM_MSG_ADD_TODO_FAIL'))
-      }
+
       this.$checkDeleteHistory('bottomWriteSheets')
       this.closeWritePop('WriteContents', this.closeWritePop)
     },
@@ -387,6 +399,7 @@ export default {
     },
     // target data를 공통 작성 화면에서 원하는 형태로 컨버팅 하는 함수
     convertTargetData (target, followYn, recentYn) {
+      console.log(target)
       if (target && target.length > 0) {
         const tempList = []
         target.forEach((value) => {
@@ -408,7 +421,7 @@ export default {
             }
             delete value.targetKey
           }
-          if (!value.cabinetKey && value.userKey) {
+          if ((!value.cabinetKey && value.userKey) || (value.accessKind && value.accessKind === 'U')) {
             if (followYn) {
               tempList.push({
                 accessKind: 'U',
@@ -424,22 +437,25 @@ export default {
             } else {
               tempList.push(value)
             }
-          } else {
-            tempObj.accessKind = 'C'
-            tempObj.accessKey = value.cabinetKey
-            tempObj.accessName = value.cabinetNameMtext
-            tempObj.iconPath = require('@/assets/images/editChan/icon_addressBook.svg')
-            // targetList에 나타나는 아이콘을 원 안에 가득 채울지, 아닐지 결정하는 변수
-            tempObj.iconFullYn = false
-            if (value.nameMtext) {
-              tempObj.accessName = `[${this.$changeText(value.nameMtext)}] ` + this.$changeText(value.cabinetNameMtext)
-              tempObj.iconPath = value.logoDomainPath
+          } else if (value.teamKey && value.nameMtext) {
+            tempList.push({
+              accessKind: 'T',
+              accessKey: value.teamKey,
+              accessName: value.nameMtext,
+              iconFullYn: true,
+              iconPath: value.logoDomainPath
                 ? this.$changeUrlBackslash(
                   value.logoDomainPath + value.logoPathMtext
                 )
                 : value.logoPathMtext
-              tempObj.iconFullYn = true
-            }
+            })
+          } else {
+            tempObj.accessKind = 'C'
+            tempObj.accessKey = value.cabinetKey
+            tempObj.iconPath = require('@/assets/images/editChan/icon_addressBook.svg')
+            // targetList에 나타나는 아이콘을 원 안에 가득 채울지, 아닐지 결정하는 변수
+            tempObj.iconFullYn = false
+            tempObj.accessName = value.cabinetNameMtext
             if (value.mCabUserList && value.mCabUserList.length > 0) {
               const childTempList = []
               value.mCabUserList.forEach((value2) => {
@@ -447,7 +463,6 @@ export default {
                 childTempObj.accessKind = 'U'
                 childTempObj.accessKey = value2.userKey
                 childTempObj.iconFullYn = true
-
                 childTempObj.iconPath = value2.domainPath
                   ? this.$changeUrlBackslash(
                     value2.domainPath + value2.userProfileImg
@@ -597,12 +612,12 @@ export default {
         paramMap.sysCabinetCode = 'USER'
         var result = await this.$getTodoListGroupCab(paramMap, true)
         if (result.result) {
-          let tempList = this.convertTargetData(result.team)
+          let tempList = this.convertTargetData(result.userTeam)
           this.mTargetDataList.push(
             {
               tabIndex: 0,
               tabType: 'TEAM',
-              tabName: '채널주소록',
+              tabName: '채널',
               targetList: tempList
             }
           )

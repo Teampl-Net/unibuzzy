@@ -46,7 +46,7 @@ export default {
   computed: {
     GE_FILE_LIST () {
       var newArr = []
-      newArr = this.$getContentsDetail(null, this.contentsEle.contents.contentsKey, this.contentsEle.contents.creTeamKey)
+      newArr = this.$getContentsDetail(null, this.contentsEle.contents.contentsKey, this.contentsEle.contents.creTeamKey, this.contentsEle.contents.jobkindId)
       if (!newArr || newArr.length === 0) {
         return this.contentsEle.contents
       }

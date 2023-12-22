@@ -1,6 +1,6 @@
 <template>
   <div class="pagePaddingWrap nonMemBoardWrap">
-    <popHeader :helpYn="true" @clickHelp="clickHelp" @closeXPop="this.$router.replace({name: 'login'})" class="commonPopHeader" headerTitle="비회원 문의 게시판" />
+    <popHeader  :style="`padding-top: ${$STATUS_HEIGHT}px`"  :helpYn="true" @clickHelp="clickHelp" @closeXPop="this.$router.replace({name: 'login'})" class="commonPopHeader" headerTitle="비회원 문의 게시판" />
     <div v-if="infoShowYn" style="width: 100%; height: 100vh; position: absolute; top:0; left: 0; background: #00000050; z-index: 9999;" @click="this.infoShowYn = false"></div>
     <div v-if="infoShowYn" class="zoomInOutPop" style="width: 80%; padding: 10px 20px; margin: 0 auto; height: 80%; max-height: 550px; min-height: 300px; background: #ffff; position: absolute; top: 10%; left: 10%; border-radius: 15px; z-index: 9999;">
       <div class="subPopHeader">
@@ -22,7 +22,7 @@
       <p class="font11 mbottom-05 lightGray textLeft">비회원 문의하기의 경우, 추후에 내가 쓴 글을 확인하기 어려울 수 있으며<br> 키워드 검색을 통해 관련 문의를 찾을 수 있습니다.</p>
 
     </div>
-    <div id="boardListWrap" class="boardListWrap" style="width: 100%; margin-top: 60px; padding: 0 10px; overflow: hidden; position: relative; height: 100%; background: #fff; border-radius: 10px 10px 0 0;">
+    <div id="boardListWrap" class="boardListWrap" :style="`margin-top: ${$STATUS_HEIGHT + 60}px;`" style="width: 100%; padding: 0 10px; overflow: hidden; position: relative; height: 100%; background: #fff; border-radius: 10px 10px 0 0;">
       <transition name="showModal">
         <findContentsList :contentsListTargetType="'boardMain'" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="this.findPopShowYn = false"/>
       </transition>
@@ -30,7 +30,8 @@
         <gSearchBox @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" />
       </div>
       <div :style="calcBoardPaddingTop" style="padding-top: calc(100px + var(--paddingTopLength)) ; width: 100%; height: calc(100%); overflow: hidden scroll;" class="commonBoardListWrap" ref="commonBoardListWrapCompo">
-        <boardList :nonMemYn="true" ref="boardListCompo" @moreList="loadMore" @goDetail="goDetail" :commonBoardListData="this.mCabContentsList"  style=" margin-top: 5px; float: left;"  @refresh='refresh' />
+        <gContentsBox @contDelete="refreshAll" @openImgPop="openImgPop" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" v-for="(cont) in mCabContentsList" :key="cont.contentsKey"/>
+        <myObserver @triggerIntersected="loadMore" id="observer" class="fl w-100P" style=""></myObserver>
       </div>
     </div>
     <div class="btnPlus" @click="openWriteBoard" ><p style="font-size:40px;">+</p></div>
@@ -41,7 +42,6 @@
 
 import findContentsList from '../../components/popup/common/D_findContentsList.vue'
 // import boardList from '../../components/list/del_Tal_commonBoardList.vue'
-import boardList from '@/components/list/D_commonList.vue'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: '',
@@ -64,10 +64,10 @@ export default {
     }
   },
   components: {
-    boardList,
     findContentsList
   },
-  async created () {
+  created () {
+    this.openWriteBoard()
     // var resultList = await this.getContentsList()
     // this.mCabContentsList = resultList.content
 
@@ -92,7 +92,9 @@ export default {
     endListSetFunc (resultList) {
       if (resultList.totalElements < (resultList.pageable.offset + resultList.pageable.pageSize)) {
         this.endListYn = true
-        this.offsetInt -= 1
+        if (this.offsetInt > 0) {
+          this.offsetInt -= 1
+        }
       } else {
         this.endListYn = false
         this.offsetInt += 1
@@ -231,9 +233,14 @@ export default {
       }
       return resultArray
     },
+    async writeCallbackFn () {
+      const resultList = await this.getContentsList()
+      this.mCabContentsList = resultList.content
+
+      this.endListSetFunc(resultList)
+    },
     openWriteBoard () {
-      // eslint-disable-next-line no-new-object
-      var params = new Object()
+      var params = {}
       params.targetType = 'writeContents'
       params.contentsJobkindId = 'BOAR'
       params.targetNameMtext = 'KO$^$더알림'
@@ -241,6 +248,7 @@ export default {
       params.cabinetNameMtext = '비회원 문의게시판'
       params.cabinetKey = this.$DALIM_MUN_CAB_KEY
       params.nonMemYn = true
+      params.callbackFn = this.writeCallbackFn
       this.$emit('openPop', params)
     },
     findPaddingTopBoard () {
@@ -319,13 +327,13 @@ export default {
 </script>
 
 <style scoped>
-.nonMemBoardWrap{height: 100vh;background-color: #6768A7; display: flex; flex-direction: column; padding-top: 10%; }
+.nonMemBoardWrap{height: 100vh;background-color: #5F61BD; display: flex; flex-direction: column; padding-top: 10%; }
 .btnPlus {
     bottom: 30px;
 }
 .boardListHeader {
   width: calc(100% - 20px);
-  min-height: 90px;
+  min-height: 50px;
   position: absolute;
   background-color: #FFF;
   top: 0;

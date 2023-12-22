@@ -23,7 +23,7 @@
   }
   </i18n>
   <template>
-    <imageMain v-if="mSocialMainYn !== undefined && (mSocialMainYn === false)" @changeRouterPath="changeRouterPath" :pPortalMainData="mPortalMainTeam" :pChangeNightYn="pChangeNightYn"  @openSelectChannelPop="openSelectChannelPop"/>
+    <imageMain v-if="mSocialMainYn !== undefined && (mSocialMainYn === false)" @changeRouterPath="changeRouterPath" :mRouterHeaderText="mRouterHeaderText" :pPortalMainData="mPortalMainTeam" :pChangeNightYn="pChangeNightYn"  @openSelectChannelPop="openSelectChannelPop"/>
     <div v-if="(mSocialMainYn === undefined || (mSocialMainYn && mSocialMainYn === true)) && this.GE_USER && this.GE_MAIN_CHAN_LIST" id="mainAllWrap" class="" ref="mainScrollWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'" style="height: 100%; overflow: hidden scroll;">
           <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
           <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
@@ -45,7 +45,10 @@
                           </div>
                       </div>
                   </div>
-                  <img v-if="!GE_USER.unknownYn" src="../../assets/images/contents/icon_bell.png" class=" img-w22 mright-1" alt="" @click="openNotiHistoryPop">
+                  <div v-if="!GE_USER.unknownYn" style="width:22px;" class="cursorP mright-1 notiHistoryIcon" @click="openNotiHistoryPop">
+                    <img src="../../assets/images/contents/icon_bell.png" class="w100P" alt="">
+                    <div v-if="newNoti" class="newNoti">1</div>
+                  </div>
                   <gProfileImg v-if="!GE_USER.unknownYn" :selfYn="true" class="fr" @click="goUserProfile" />
                   <gBtnSmall v-else @click="goLoginPage" :btnTitle="$t('COMMON_BTN_SIGN_IN')" class="fr"/>
               </div>
@@ -165,7 +168,8 @@ export default {
   },
   props: {
     pChangeNightYn: Function,
-    pSetRouterData: Function
+    pSetRouterData: Function,
+    mRouterHeaderText: {}
   },
   components: {
     // initModal,
@@ -637,6 +641,28 @@ export default {
   <style scoped>
 
   /* main */
+
+  .notiHistoryIcon{
+    position:relative;
+  }
+  .newNoti{
+    content:'';
+    display:block;
+    width:15px;
+    height: 15px;
+    line-height:15px;
+    border-radius:50%;
+    background-color:red;
+    position:absolute;
+    top:0;
+    right:-5px;
+    color:#fff;
+    font-weight:bold;
+    font-size:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
   .userProfileWrap{ display:flex; align-items: center; justify-content: space-between; margin-top: 0; height: 50px;float: left;width: 100%; border-radius: 0.8rem; padding: 0 1.5rem;}
     .userProfileTextWrap{width: calc(100% - 85px); text-align: left; position: relative;}
     .userProfileTextWrap >p{margin-bottom: 0.2rem;}

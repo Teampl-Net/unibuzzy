@@ -20,7 +20,7 @@
       <TalMenu transition="show_view" @hideMenu="hideMenu" @openPop="openPop" @goPage="changeRouterPath" class="TalmenuStyle " v-if="mMenuShowYn" />
     </transition>
     <transition name="showUp">
-      <DNotiHistory transition="showUp" v-if="mHistoryListYn" :pClosePop="closeHistoryList" />
+      <DNotiHistory transition="showUp" v-if="mHistoryListYn" @goChanDetail="openPop" :pClosePop="closeHistoryList" />
     </transition>
     <transition name="showUp">
       <selectChannelPop transition="showUp" v-if="mSelectChannelYn" @openPop="openPop" :initData="sendInitData" :pGoTown="goTown" :pClosePop="closeSelectChannelPop" />
@@ -30,14 +30,14 @@
     <gConfirmPop confirmText="네트워크의 연결이 끊어져<br>실행 할 수 없습니다" confirmType='no' @no='mNetReturnPopShowYn = false'  style="z-index: 999999999999999999999999;" v-if="mNetReturnPopShowYn"/>
     <div v-if="mShadowScreenShowYn" @click="changeNetStatePop" style="width:100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 99999999999999;"></div>
     <fullModal @updateChanList="updateChanList" @completeTodo="completeTodo" @openPop="openPop" @openImgPop="openImgPop" @successWrite="successWriteBoard" ref="mainGPopWrap" @reloadPop ="reloadPop" transition="showModal" :style="GE_WINDOW_SIZE"  @closePop="closePop" v-if="mGPopShowYn" parentPopN="0" :propParams="mPopParams" @closeNewPop='closeNewPop' @parentClose='parentClose' />
-    <TalHeader v-if="mSocialMainYn" @click="test" @showMenu="showMenu" ref="mainHeaderWrap" class="header_footer " :mRouterHeaderText="mRouterHeaderText" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
-    <TalImgHeader v-else @click="test" @goLogList="historyList" @showMenu="showMenu" ref="mainHeaderWrap" class="header_footer " :mRouterHeaderText="mRouterHeaderText" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
-    <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }"  class="" style="height:calc(100% - 60px); overflow: hidden; width:100%;">
+    <TalHeader v-if="$route.name !== 'frameView' && mSocialMainYn" @click="test" @showMenu="showMenu" ref="mainHeaderWrap" class="header_footer " :mRouterHeaderText="mRouterHeaderText" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
+    <TalImgHeader v-else-if="$route.name !== 'frameView'" @click="test" @goLogList="historyList" @showMenu="showMenu" ref="mainHeaderWrap" class="header_footer " :mRouterHeaderText="mRouterHeaderText" :style="'height: ' + (this.$STATUS_HEIGHT + 50) + 'px; padding-top: ' + (this.$STATUS_HEIGHT + 10) + 'px;'" style="position: absolute; top: 0; left:-1px; z-index: 9"/>
+    <div :class="{ myPageBgColor : this.mRouterHeaderText === '마이페이지' }" :style="$route.name !== 'frameView'? 'height:calc(100% - 60px);' : 'height: 100%;'"  class="" style=" overflow: hidden; width:100%;">
       <router-view v-slot="{Component}" :pChangeNightYn="changeNightYn" :pSetRouterData="getRouterData">
-        <component :is="Component" @changeRouterPath="changeRouterPath" @openImgPop="openImgPop" @openNotiHistoryPop="historyList"  ref="routerViewCompo" :initData="sendInitData" @goSearchDirect="goSearchDirect" @openSelectChannelPop="openSelectChannelPop" @scrollEvnt="scrollEvnt" :popYn="false" style="margin-bottom: 100px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" ></component>
+        <component :is="Component" @changeRouterPath="changeRouterPath" @openImgPop="openImgPop" :mRouterHeaderText="mRouterHeaderText" @openNotiHistoryPop="historyList" ref="routerViewCompo" :initData="sendInitData" @goSearchDirect="goSearchDirect" @openSelectChannelPop="openSelectChannelPop" @scrollEvnt="scrollEvnt" :popYn="false" style="margin-bottom: 100px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" ></component>
       </router-view>
     </div>
-    <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
+    <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name !== 'frameView' && $route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
     <!-- <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div> -->
   </div>
 </template>
@@ -299,7 +299,7 @@ export default {
       }
     },
     getRouterData (data) {
-      console.log(data)
+      console.log('data', data)
       this.sendInitData = { routerData: data }
       this.mRouterHeaderText = this.$changeText(data.nameMtext)
     },
@@ -420,6 +420,7 @@ export default {
       this.mPopParams = params
       this.mGPopShowYn = true
       // this.popList.push(params)
+      this.mHistoryListYn = false
       this.hideMenu()
     },
     async goPushListPop (params) {

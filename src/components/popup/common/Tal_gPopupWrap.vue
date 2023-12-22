@@ -342,7 +342,6 @@ export default {
         params.actorList = actorList
       }
       const res = await this.$saveContents(params)
-      console.log('resresres', res)
       var param = {}
       if (res && res.data) {
         param.contentsKey = res.data.contents.contentsKey
@@ -354,6 +353,9 @@ export default {
       var resultList = await this.$getContentsList(param)
       var detailData = resultList.content[0]
       this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
+      if (this.propParams.callbackFn) {
+        this.propParams.callbackFn()
+      }
       if (res.sticker) {
         await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', res.sticker)
       }

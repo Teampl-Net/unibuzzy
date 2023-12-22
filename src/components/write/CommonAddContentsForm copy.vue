@@ -1407,7 +1407,7 @@ export default defineComponent({
       params.bodyFullStr = modifiedHtmlString
       propFormData.length = 0
       propFormData.push(...formCard)
-      // document.getElementById('msgBox')?.innerHTML = extractedInnerHtml
+      // document.getElementById('msgBox').innerHTML = extractedInnerHtml
       // this.editorType = 'complex'
       complexOkYn.value = true
       if (contentType.value === 'ALIM') clickPageTopBtn()
@@ -1436,7 +1436,7 @@ export default defineComponent({
         }
 
         let msgData = ''
-        msgData = document.getElementById('msgBox')?.innerText
+        msgData = document.getElementById('msgBox').innerText
         if (msgData) {
           msgData = msgData.trim()
         }
@@ -1468,7 +1468,7 @@ export default defineComponent({
           return
         }
         var msgData = ''
-        msgData = document.getElementById('msgBox')?.innerText
+        msgData = document.getElementById('msgBox').innerText
         if (msgData) {
           msgData = msgData.trim()
         }

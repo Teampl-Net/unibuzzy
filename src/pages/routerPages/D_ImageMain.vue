@@ -36,6 +36,7 @@
           style=""
           alt=""
         />
+        <p>{{ mDispTitle }}</p>
       </div>
         <!-- <div class="ballon">
         <img
@@ -60,7 +61,7 @@
       >
         <gProfileImg :selfYn="true" class="fl profileImg" />
         <div v-if="GE_USER.unknownYn" class="fl font20 fontBold userName">
-          HI, GEUST
+          HI, GUEST
         </div>
         <div v-else class="fl font20 fontBold userName">
           {{ $changeText(GE_USER.userDispMtext) }}
@@ -155,7 +156,8 @@ export default {
   },
   props: {
     pPortalMainData: {},
-    pChangeNightYn: Function
+    pChangeNightYn: Function,
+    mRouterHeaderText: {}
   },
   data () {
     return {
@@ -250,10 +252,12 @@ export default {
       mMyCabinetKeyList: {},
       mPortalMainTeam: {},
       mCommingSoon: false,
-      pClickedInfo: ''
+      pClickedInfo: '',
+      mDispTitle: ''
     }
   },
   created () {
+    console.log('mRouterHeaderText', this.mRouterHeaderText)
     this.setNativeHeight()
     // 아침, 밤 구분
     let xmlHttpRequest
@@ -365,6 +369,15 @@ export default {
     CHANNEL_DETAIL () {
       return this.$getDetail('TEAM', this.GE_USER.myTeamKey)
     }
+  },
+  watch: {
+    mRouterHeaderText: {
+      immediate: true,
+      handler (val) {
+        if (!val) return
+        this.mDispTitle = val
+      }
+    }
   }
 }
 
@@ -406,8 +419,8 @@ export default {
   margin-right: 10px !important;
 }
 .plane{
-  width:70%;
-  max-width:330px;
+  width:90%;
+  max-width:550px;
   height:auto;
   position:absolute;
   top:20%;
@@ -416,6 +429,15 @@ export default {
   filter: drop-shadow(5px 5px #00000036);
   transition: 0.2s;
   animation: moving 3s 0s ease-in-out infinite alternate;
+  position:relative;
+}
+.plane p{
+  position:absolute;
+  top:50%;
+  right:50%;
+  transform:translate(70%, -50%);
+  font-weight:bold;
+  color:#062bb5;
 }
 
 @keyframes area-zoom {

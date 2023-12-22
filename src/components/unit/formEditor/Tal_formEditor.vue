@@ -22,7 +22,7 @@
           <div @mousedown="changeFontSize(12)" style="font-size: 12px; height: 30px; color: #6768A7;" value="12">{{ $t('FORM_BTN_SMALL') }}</div>
         </div>
       </div>
-      <div   class="fl" style="display: flex; width: 45%;height: 100%; align-ite ms: center; justify-content: space-around; around; align-items: center;">
+      <div class="fl" style="display: flex; width: 45%;height: 100%; align-ite ms: center; justify-content: space-around; around; align-items: center;">
         <div @click="toolBoxShowYn? changeTextStyle('bold'):''" :class="this.tools.boldYn === true ? 'selectedStyle': ''" class="fl" style=" width: 25px; text-align: center;cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/boldIcon.svg" alt=""></div>
         <div @click="toolBoxShowYn? changeTextStyle('italic'):''" :class="this.tools.italicYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/italicIcon.svg" alt=""></div>
         <div @click="toolBoxShowYn? changeTextStyle('underLine'):''" :class="this.tools.underLineYn === true ? 'selectedStyle': ''" class="fl" style="width: 25px; text-align: center; cursor: pointer;"><img class="w-100P" src="../../../assets/images/formEditor/underlineIcon.svg" alt=""></div>

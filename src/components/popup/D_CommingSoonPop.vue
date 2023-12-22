@@ -13,7 +13,7 @@
     </div>
     <div style="padding-top:50px;">
     <p class="fontBold">
-    Comming Soon! 💘
+    Coming Soon! 💘
     </p>
     </div>
     </div>

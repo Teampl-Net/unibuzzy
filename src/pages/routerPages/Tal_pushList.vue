@@ -20,7 +20,7 @@
         <gActiveBar :searchYn='true' @changeSearchList="changeSearchList" @openFindPop="this.findPopShowYn = true " :resultSearchKeyList="this.resultSearchKeyList" ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%; padding-top: 0; margin-top: 0; " />
       </div>
       <transition name="showModal">
-        <findContentsList :tpGroupCode="this.viewMainTab === 'B' || this.viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop" :teamKey="this.pChannelDetail ? this.pChannelDetail.teamKey : ''"/>
+        <findContentsList :tpGroupCode="this.viewMainTab === 'B' || this.viewMainTab === 'A'? 'C_STAT' : ''" :contentsListTargetType="viewMainTab === 'F'? 'fileBox':this.chanAlimTargetType" transition="showModal" @searchList="requestSearchList" v-if="findPopShowYn" @closePop="closeSearchPop" :teamKey='this.pChannelDetail.teamKey'/>
       </transition>
 
       <!-- <div id="pushListWrap" class="pushListWrapWrap" ref="pushListWrapWrapCompo" :style="calcPaddingTop" style="position: relative; float: left; width: 100%; padding-top: calc(125px + var(--paddingTopLength)); overflow: hidden scroll; height: calc(100%); "> -->
@@ -752,7 +752,7 @@ export default {
           this_.alimContentsList = this.replaceArr(newArr)
           for (let i = 0; i < this_.alimContentsList.length; i++) {
             cont = this_.alimContentsList[i]
-            tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+            tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey, cont.jobkindId)
             if (tempContentDetail) {
               contentDetail = tempContentDetail[0]
             } else {
@@ -781,7 +781,7 @@ export default {
           for (let i = 0; i < this_.boardContentsList.length; i++) {
             cont = this_.boardContentsList[i]
             tempContentDetail = []
-            tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+            tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey, cont.jobkindId)
             if (tempContentDetail) {
               contentDetail = tempContentDetail[0]
             } else {
@@ -1516,7 +1516,7 @@ export default {
         for (let i = 0; i < this.alimContentsList.length; i++) {
           cont = this.alimContentsList[i]
 
-          tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey, cont.jobkindId)
 
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
@@ -1547,7 +1547,7 @@ export default {
         for (let i = 0; i < this.boardContentsList.length; i++) {
           cont = this.boardContentsList[i]
 
-          tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey, cont.jobkindId)
 
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
@@ -1578,7 +1578,7 @@ export default {
         for (let i = 0; i < this.allContentsList.length; i++) {
           cont = this.allContentsList[i]
 
-          tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          tempContentDetail = await this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey, cont.jobkindId)
 
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
@@ -1786,7 +1786,7 @@ export default {
         this.alimContentsList = this.replaceArr(newArr)
         for (let i = 0; i < this.alimContentsList.length; i++) {
           cont = this.alimContentsList[i]
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey, cont.jobkindId)
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
           } else {
@@ -1797,8 +1797,9 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
+            var test
             if (contentDetail && contentDetail.D_MEMO_LIST) {
-              var test = contentDetail.D_MEMO_LIST
+              test = contentDetail.D_MEMO_LIST
             }
             if (!test) {
               if (!contentDetail) {
@@ -1827,7 +1828,7 @@ export default {
         for (let i = 0; i < this.boardContentsList.length; i++) {
           cont = this.boardContentsList[i]
           tempContentDetail = []
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey, cont.jobkindId)
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
           } else {
@@ -1839,7 +1840,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
-            var test = []
+            var test
             if (contentDetail && contentDetail.D_MEMO_LIST) {
               test = contentDetail.D_MEMO_LIST
             }
@@ -1870,7 +1871,7 @@ export default {
         for (let i = 0; i < this.allContentsList.length; i++) {
           cont = this.allContentsList[i]
           tempContentDetail = []
-          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey)
+          tempContentDetail = this.$getContentsDetail(null, cont.contentsKey, cont.creTeamKey, cont.jobkindId)
           if (tempContentDetail) {
             contentDetail = tempContentDetail[0]
           } else {
@@ -1882,7 +1883,7 @@ export default {
             this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [cont])
           } else {
             // eslint-disable-next-line no-redeclare
-            var test = []
+            var test
             if (contentDetail && contentDetail.D_MEMO_LIST) {
               test = contentDetail.D_MEMO_LIST
             }
