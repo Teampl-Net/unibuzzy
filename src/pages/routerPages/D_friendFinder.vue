@@ -10,13 +10,16 @@
     <div class="w100P fl" style="height: calc(100% - 350px);">
       <div class="w100P fl textLeft font18" style="height: 30px; padding-left: 20px;">Other matches for you</div>
       <div class="w100P fl textLeft font18" style="height: 30px; padding-left: 20px;">Filter By:</div>
-      <div class="w100P fl" style="height: calc(100% - 60px); background: #6FE0EF;"></div>
+      <div class="w100P fl" style="height: calc(100% - 60px); background: #6FE0EF; overflow: hidden auto; display: flex; flex-direction: column; flex-wrap: nowrap; padding: 10px;">
+        <recomProfile v-for="(recom, i) in mMatchRecommendList" :pRecom="recom" :key="i" class="fl w100P" style="margin-bottom: 20px; height: 180px; flex: 0 0 auto; border-radius: 10px;" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import matchProfile from './FFmatchProfile.vue'
+import matchProfile from '../../components/friendFinder/D_matchProfile.vue'
+import recomProfile from '../../components/friendFinder/D_recomProfile.vue'
 export default {
   data () {
     return {
@@ -26,6 +29,13 @@ export default {
         { name: 'Emma Watson', pronoun: '(they/them)', year: '1st', major: 'CS', class: "CO 24'" },
         { name: 'Emma Watson', pronoun: '(they/them)', year: '1st', major: 'CS', class: "CO 24'" },
         { name: 'Emma Watson', pronoun: '(they/them)', year: '1st', major: 'CS', class: "CO 24'" }
+      ],
+      mMatchRecommendList: [
+        { name: 'Selena Do', pronoun: '(she/her)', year: '2nd', major: 'CM', class: "CO 23'", purpose: 'Study Buddy', location: 'Price Gilbert' },
+        { name: 'Jeremy Parson', pronoun: '(he/him)', year: '3rd', major: 'BME', class: "CO 25'", purpose: 'Study Buddy', location: 'Crosland' },
+        { name: 'Emma Watson', pronoun: '(they/them)', year: '1st', major: 'CS', class: "CO 24'", purpose: 'Gym Buddy', location: 'CRC' },
+        { name: 'Emma Watson', pronoun: '(they/them)', year: '1st', major: 'CS', class: "CO 24'", purpose: 'Study Buddy', location: 'Culc' },
+        { name: 'Emma Watson', pronoun: '(they/them)', year: '1st', major: 'CS', class: "CO 24'", purpose: 'Lunch Buddy', location: 'West Village' }
       ]
     }
   },
@@ -38,7 +48,8 @@ export default {
 
   },
   components: {
-    matchProfile
+    matchProfile,
+    recomProfile
   }
 }
 </script>

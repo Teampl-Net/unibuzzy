@@ -403,6 +403,7 @@ input, select {
 p{margin-bottom: 0; font-size: 1.5rem;}
 .fl{float: left;}
 .fr{float: right;}
+.flexCenter{display: flex; align-items: center; justify-content: center;}
 
 .font45{font-size: 45px}
 .font35{font-size: 35px}

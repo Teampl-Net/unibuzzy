@@ -237,7 +237,7 @@ const routes = [
     path: '/friendfind',
     name: 'FriendFinder',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../components/friendFinder/FFmain.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../pages/routerPages/D_friendFinder.vue')
   }
 ]
 
