@@ -14,16 +14,16 @@
                 <p v-html="mRecvParams.loginText" class="font18 mbottom-5 commonColor fontBold fontBold"></p>
             </div>
             <polCompo @closeXPop="closeXPop" :pGoLoginPage="goLoginPage" :pPartnerLoginYn="true" v-else-if="mRecvParams && mRecvParams.loginText && mShowTarget === 'policies'" />
-            <!-- <loginCompo @closeXPop="closeXPop" :pPartnerLoginYn="true" :pPartnerLoginText="mRecvParams.loginText" :pSetUserItem="saveUserAndAccess"  v-else-if="mRecvParams && mRecvParams.loginText && mShowTarget === 'login'" @openPop="openPop"/> -->
-            <UBloginCompo @closeXPop="closeXPop" :pPartnerLoginYn="true" :pPartnerLoginText="mRecvParams.loginText" :pSetUserItem="saveUserAndAccess"  v-else-if="mRecvParams && mRecvParams.loginText && mShowTarget === 'login'" @openPop="openPop"/>
+            <loginCompo @closeXPop="closeXPop" :pPartnerLoginYn="true" :pPartnerLoginText="mRecvParams.loginText" :pSetUserItem="saveUserAndAccess"  v-else-if="mRecvParams && mRecvParams.loginText && mShowTarget === 'login'" @openPop="openPop"/>
+            <!-- <UBloginCompo @closeXPop="closeXPop" :pPartnerLoginYn="true" :pPartnerLoginText="mRecvParams.loginText" :pSetUserItem="saveUserAndAccess"  v-else-if="mRecvParams && mRecvParams.loginText && mShowTarget === 'login'" @openPop="openPop"/> -->
             <boardMain @openImgPop="openImgPop" :pOnlyMineYn="true"  ref="boardMainPop" :propData="mPropParams" :chanAlimListTeamKey="mPropParams.targetKey" v-else-if="mPropParams &&  mShowTarget === 'boardMain'" @openPop='openPop' @closeXPop="closeXPop"/>
         </transition>
     <div></div>
 </template>
 <script>
 import boardMain from '@/components/board/D_boardMain.vue'
-// import loginCompo from '../pages/intro/Tal_login.vue'
-import UBloginCompo from '../pages/intro/UB_login.vue'
+import loginCompo from '../pages/intro/Tal_login.vue'
+// import UBloginCompo from '../pages/intro/UB_login.vue'
 import polCompo from '../pages/intro/Tal_policies.vue'
 import { coreMethods } from '../../public/commonAssets/D_coreService'
 /* eslint-disable camelcase */
@@ -31,8 +31,8 @@ import { coreMethods } from '../../public/commonAssets/D_coreService'
 let g_pOpener = null
 export default {
   components: {
-    // loginCompo,
-    UBloginCompo,
+    loginCompo,
+    // UBloginCompo,
     polCompo,
     boardMain
   },
