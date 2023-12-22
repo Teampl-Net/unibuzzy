@@ -254,9 +254,10 @@ if (domainName.includes('d-alim')) {
   document.title = 'unibuzzy'
   if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Imain')
 } else {
-  localStorage.setItem('appType', 'D')
-  document.title = '더알림'
-  if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Smain')
+  i18n.locale = 'en'
+  localStorage.setItem('appType', 'UB')
+  document.title = 'unibuzzy'
+  if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Imain')
 }
 localStorage.setItem('loginYn', false)
 

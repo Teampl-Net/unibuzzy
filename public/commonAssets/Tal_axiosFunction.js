@@ -155,12 +155,9 @@ export async function saveUser (userProfile, loginYn) {
     localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
     if (loginYn) {
       var userInfo = result.data.userMap
-      if (!userInfo.certiDate && (!(/Mobi/i.test(window.navigator.userAgent)))) {
+      if (!(localStorage.getItem('appType') && localStorage.getItem('appType') === 'UB') && !userInfo.certiDate && (!(/Mobi/i.test(window.navigator.userAgent)))) {
         // router.replace({ path: '/' })
-        if (localStorage.getItem('appType') && localStorage.getItem('appType') === 'UB') {
-        } else {
-          router.replace({ path: '/savePhone' })
-        }
+        router.replace({ path: '/savePhone' })
         return
       }
     }

@@ -143,12 +143,12 @@ const routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../pages/intro/Tal_naverLoginCallback copy.vue')
   },
-  {
+  /* {
     path: '/testLoginPage',
     name: 'testLoginPage',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../pages/intro/testLoginPage.vue')
-  },
+    component: () => import( '../pages/intro/testLoginPage.vue')
+  }, */
   {
     path: '/nonMemInquiryBoard',
     name: 'nonMemInquiryBoard',
