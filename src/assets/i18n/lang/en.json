@@ -115,9 +115,11 @@
   "COMMON_TODO_REVIEW" : "Do",
   "COMMON_TODO_NOT_REVIEW" : "Do Not",
   "COMMON_TODO_COMPLETEDAT" : " completed this work.",
-  "COMMON_TODO_RECEIVER" : "Receiver",
+  "COMMON_TODO_RECEIVER" : "Receive",
   "COMMON_TODO_ME" : "Me",
   "COMMON_TODO_GOAL_DATE" : "Target Date",
+  "COMMON_TITLE_MEMO" : "Memo",
+
 
   "COMM_BTN_EDIT": "Edit",
   "COMMON_BTN_OK": "OK",
@@ -242,6 +244,7 @@
   "COMM_MSG_NO_PERMISSION" : "You do not have permission to post on this board. Please select a different board.",
   "COMM_MSG_ADD_TODO" : "Added new tasks.",
   "COMM_MSG_ADD_TODO_FAIL" : "Failed to add new task",
+  "COMM_MSG_SELECT_TAG" : "Select the tag you want to edit.",
 
   "COMMON_MSG_NO_EMAIL": "There is no registered phone E-mail.",
   "COMMON_MSG_NO_PHONE": "There is no registered phone number.",

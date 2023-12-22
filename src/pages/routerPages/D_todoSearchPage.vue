@@ -688,10 +688,10 @@ export default {
       mIsSameDay: 0,
       mSelectedMainTabIdx: 0,
       mShowTab: [
-        { tabIdx: 1, tabVal: 'A', tabName: '전체', todoList: [this.mMyTodoList, this.mReqTodoList, this.mCompTodoList] },
-        { tabIdx: 2, tabVal: 'M', tabName: '내할일', todoList: [this.mMyTodoList] },
-        { tabIdx: 3, tabVal: 'R', tabName: '요청한', todoList: [this.mReqTodoList] },
-        { tabIdx: 4, tabVal: 'C', tabName: '완료된', todoList: [this.mCompTodoList] }
+        { tabIdx: 1, tabVal: 'A', tabName: this.$t('COMMON_TODO_ALL'), todoList: [this.mMyTodoList, this.mReqTodoList, this.mCompTodoList] },
+        { tabIdx: 2, tabVal: 'M', tabName: this.$t('COMMON_TODO_MYTODO'), todoList: [this.mMyTodoList] },
+        { tabIdx: 3, tabVal: 'R', tabName: this.$t('COMMON_TODO_ASKED'), todoList: [this.mReqTodoList] },
+        { tabIdx: 4, tabVal: 'C', tabName: this.$t('COMMON_TODO_COMPLETED'), todoList: [this.mCompTodoList] }
       ],
       innerWidth: window.innerWidth,
       mSkeletonShowYn: true

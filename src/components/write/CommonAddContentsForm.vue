@@ -337,7 +337,7 @@
             <div class="w100P" style="width:calc(100% - 62px); min-height: 2rem; float: left; display:flex; align-items:start; justify-content:space-between;">
               <div class="w100P" style="display: flex; align-items: start; gap:0.3rem; flex-wrap:wrap; justify-content:space-between;">
                 <div
-                class="openSelfAddTagBtn cursorP"
+                class="openSelfAddTagBtn cursorP w100P"
                 :style="{width: mSelfAddTagShowYn ? '20px;' : '100%;'}"
                 style="text-align:left; display: flex;"
                 >
@@ -350,16 +350,20 @@
                         @click="toggleSelectTag(sticker, index)"
                         v-for="(sticker, index) in tagListForDom"
                         :key="sticker.stickerKey"
-                        :style=" sticker.picBgPath && !sticker.isSelected? `border: 2px solid ${sticker.picBgPath};`: sticker.picBgPath && sticker.isSelected? `background: ${sticker.picBgPath}; color: #FFF;` : ''"
+                        :style=" sticker.picBgPath && !sticker.isSelected? `border: 2px solid #9C9C9C;`: sticker.picBgPath && sticker.isSelected? `background: ${sticker.picBgPath}; color: #FFF; border: 2px solid ${sticker.picBgPath};` : ''"
                         :class="{ activeBtn: sticker.isSelected }"
-                        style="margin-bottom: 5px;margin-right: 5px; font-size: 13px;"
+                        style="margin-bottom: 5px;margin-right: 5px; font-size: 13px; height:25px; border-radius:25px; "
                         class="tagButton "
                       >
                         <!-- <img v-if="sticker.isSelected" src="../../assets/images/common/icon_check_commonColor.svg" alt="check image" class="checkImg" /> -->
                         {{ $changeText(sticker.nameMtext) }}
                       </button>
                     </div>
-                    <gBtnSmall v-if="openTagsYn" @click="openSelfAddTag" :btnTitle="this.$t('COMMON_BTN_MANAGE')" class="fl mright-05 mtop-03 " style="height: 22px; float: left; background: #8f90cc; padding: 0 5px; font-size: 12px; line-height: 22px; font-weight:bold;"/>
+                    <div class="w100P" style="height:auto; display:flex; align-items:center; justify-content:center;">
+                      <div v-if="openTagsYn" @click="openSelfAddTag" style="width:22px;">
+                        <img :src="require(`@/assets/images/button/Icon_AddTag.png`)" class="w100P"/>
+                      </div>
+                    </div>
                   </div>
                   <!-- @click="$refs.manageStickerPop.backClick" -->
                     <!-- <img :src="require(`@/assets/images/button/Icon_AddTag.png`)" style="width:20px;"/> -->

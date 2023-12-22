@@ -472,13 +472,14 @@ export default {
   height: 19px;
   margin-bottom: 3px;
   line-height: 19px;
-  padding: 0px 5px;
+  padding: 0px 8px;
   border-radius: 5px;
   font-size: 11px;
   width: auto;
   display: inline-block;
   vertical-align: middle;
   white-space:nowrap;
+  border-radius:19px;
 }
 .todoPriority {
   /* height: 18px; */

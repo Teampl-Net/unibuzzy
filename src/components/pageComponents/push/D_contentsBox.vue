@@ -3263,13 +3263,14 @@ export default {
     color: white;
     height:19px;
     line-height:19px;
-    padding: 0px 5px;
+    padding: 0px 8px;
     border-radius: 5px;
     font-size: 12px;
     width: auto;
     display:inline-block;
     vertical-align:middle;
     margin-top:-0.1rem;
+    border-radius:19px;
   }
   .completedTodoText{
     font-size:15px;

@@ -194,7 +194,7 @@
                 </template>
                 <img v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt="">
                 <p v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" class="fontBold fl h100P mright-05" style="line-height: 30px;font-size: 18px; color: #060505 !important">
-                  {{'메모'}}
+                  {{$t('COMMON_TITLE_MEMO')}}
                 </p>
                 <div v-if="showMemoYn || (GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0)" @click="openWriteMemoPop" :style="showMemoYn? 'height:110px' : 'height: 30px;'"  class="fl mright-05 cursorP" style="width: 30px; float: left; border-radius: 10px; background: rgb(197 198 255); justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div>
               </div>

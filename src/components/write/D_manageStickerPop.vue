@@ -5,37 +5,58 @@
         "COMMON_MY_TAG_TILTE": "내 태그",
         "COMM_MSG_DELETE_TAG" : "태그를 삭제하시겠습니까?",
         "COMM_MSG_REQ_SELECT_TAG" : "태그를 선택해주세요",
+        "COMM_CHOSE_COLOR":"색상 선택",
+        "COMM_PREVIEW":"미리 보기",
       },
       "en": {
         "COMM_MAN_STICKER_POP_TITLE" : "Tag Management",
         "COMMON_MY_TAG_TILTE": "My Tag",
         "COMM_MSG_DELETE_TAG" : "Are you sure you want to delete a tag?",
         "COMM_MSG_REQ_SELECT_TAG" : "Please select a tag",
+        "COMM_CHOSE_COLOR":"Color",
+        "COMM_PREVIEW":"Preview",
+
       }
     }
   </i18n>
 <template>
-    <div style="width: calc(100% - 40px); height: 330px; position: fixed; top: 30%; left: 20px; background: #FFF; border-radius: 10px; box-shadow: 0 0 4px 4px #00000030; z-index: 99">
+    <div style="height: 500px; width: 98%; position: fixed; top: 30%; left: 1%; background: #FFF; border-radius: 10px; box-shadow: 0 0 4px 4px #00000030; z-index: 99">
         <div style="padding:12px 20px; display: flex; justify-content: space-between; border-bottom: 1.5px solid #ccc; align-items: flex-start;">
             <p class="commonColor font18 fontBold textLeft">{{$t('COMM_MAN_STICKER_POP_TITLE')}}</p>
             <img src="../../assets/images/common/popup_close.png" @click="backClick" class="mtop-02 cursorP" alt="" style="width:20px;">
         </div>
-        <div style="width: 100%; height: calc(100% - 75px); padding: 10px 20px; overflow: hidden;">
-            <div style="width:calc(100%); display:flex; align-items:center; margin-bottom: 0; padding-top: 10px; justify-content:space-around;">
-                <div @click="toggleAddTagShowYn" style="width: 25px; height: 25px; border-radius: 100%; " :style="`background-color: ${selectedSticker.picBgPath}`"></div>
-                <input type="text" class="tagInput" v-model="stickerNameVal" style="width: calc(100% - 150px)">
-                <gBtnSmall class="mleft-05" @click="saveSticker()" style="height: 25px; background: #5F61BD; line-height: 25px; padding: 0 5px;" :btnTitle="selectedSticker.stickerKey? $t('COMM_BTN_EDIT2'): $t('COMMON_BTN_SAVE')"/>
-                <div class="mleft-05" @click="reqDelSticker()"  style="width:25px; height: 25px;" >
-                  <img :src="require(`@/assets/images/button/Remove_duotone.png`)" class="w100P"/>
+        <div style="width: 100%; height: calc(100% - 75px); padding: 10px 30px; overflow: hidden;">
+              <div style="width:calc(100%); display:flex; align-items:center; margin-bottom: 0; padding-top: 10px; justify-content:space-between;">
+                <input type="text" class="tagInput w100P" v-model="stickerNameVal">
+                <div style="display:flex; align-items:center;">
+                  <gBtnSmall class="mleft-05" @click="saveSticker()" style="height: 25px; background: #5F61BD; line-height: 25px; padding: 0 5px;" :btnTitle="selectedSticker.stickerKey? $t('COMM_BTN_EDIT2'): $t('COMMON_BTN_SAVE')"/>
+                  <div class="mleft-05" @click="reqDelSticker()"  style="width:25px; height: 25px;" >
+                    <img :src="require(`@/assets/images/button/Remove_duotone.png`)" class="w100P"/>
+                  </div>
                 </div>
-                </div>
+              </div>
 
-                <div v-if="addTagShowYn" class="fr mtop-03" style="width: calc(100%); height: 40px; border-radius: 5px; border: 1px solid #ccc; ">
-                    <gColorPicker :colorPick="selectedSticker.picBgPath" @closePop="toggleAddTagShowYn" @choiceColor='changeTagColor' ref="colorPicker" :isTag="true"/>
+              <div class="w100P mtop-2" style="display:flex; align-items:center; justify-content:center;">
+                <div style="width:30%; display:flex; align-items:center; justify-content:center;">
+                  <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD;">{{ $t('COMM_CHOSE_COLOR') }}</p>
+                  <div @click="toggleAddTagShowYn" style="width: 25px; height: 25px; border-radius: 100%; " :style="`background-color: ${selectedSticker.picBgPath}`"></div>
                 </div>
-                <div class="mbottom-05 mtop-1 fl" style="display: flex; align-items: center;">
-                    <p class="fl textLeft font16 commonGray fontBold ">{{ $t('COMMON_MY_TAG_TILTE') }}</p>
-                    <gBtnSmall class="mleft-05 fl"  @click="toggleSelectTag({ nameMtext: '', stickerKey: null, picBgPath: '#CCC' }); stickerNameVal = ''" style="height: 25px; min-width: 30px; background: #5F61BD; line-height: 25px; padding: 0 5px;" btnTitle="+"/>
+                <div style="width:70%; display:flex; align-items:center; justify-content:center;">
+                  <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD;">{{ $t('COMM_PREVIEW') }}</p>
+                  <div class="previewTag" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray' }">
+                  {{ stickerNameVal }}
+                  </div>
+                </div>
+              </div>
+
+                <div v-if="addTagShowYn" class="fr mtop-03" style="width: calc(100%); height: 40px; border-radius: 5px; position:absolute; z-index:3; left:1%;">
+                    <img :src="require(`@/assets/images/button/Polygon.png`)" style="width:16px; position:absolute; top:-10px; left:14%;"/>
+                    <gColorPicker :colorPick="selectedSticker.picBgPath" @closePop="toggleAddTagShowYn" @choiceColor='changeTagColor' ref="colorPicker" :isTag="true" style="z-index:3;"/>
+                </div>
+                <div class="mbottom-05 mtop-1 fl" style="display: flex; align-items: end;">
+                    <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD; white-space:nowrap;">{{ $t('COMMON_MY_TAG_TILTE') }}</p>
+                    <span style="font-size:13px; color:#A9A7F6;">{{ $t('COMM_MSG_SELECT_TAG') }}</span>
+                    <!-- <gBtnSmall class="mleft-05 fl"  @click="toggleSelectTag({ nameMtext: '', stickerKey: null, picBgPath: '#CCC' }); stickerNameVal = ''" style="height: 25px; min-width: 30px; background: #5F61BD; line-height: 25px; padding: 0 5px;" btnTitle="+"/> -->
                 </div>
                 <div style="width:100%; overflow: hidden auto; height: calc(100% - 90px); " class="thinScrollBar">
                     <!-- <button
@@ -53,9 +74,9 @@
                     @click="toggleSelectTag(sticker)"
                     v-for="(sticker) in GE_STICKER_LIST"
                     :key="sticker.stickerKey"
-                    :style=" sticker.picBgPath && !(sticker.stickerKey === selectedSticker.stickerKey)? `border: 2px solid ${sticker.picBgPath};`: sticker.picBgPath && (sticker.stickerKey === selectedSticker.stickerKey)? `background: ${sticker.picBgPath}; color: #FFF;` : ''"
+                    :style="{ 'font-weight' :sticker.picBgPath && !(sticker.stickerKey === selectedSticker.stickerKey)? 'normal' : 'bold', 'background-color' : sticker.picBgPath}"
                     :class="{ activeBtn: (sticker.stickerKey === selectedSticker.stickerKey) }"
-                    style="font-size: 13px;"
+                    style="font-size: 13px; color:#fff;"
                     class="tagButton"
                     >
                     <!-- <img v-if="sticker.isSelected" src="../../assets/images/common/icon_check_commonColor.svg" alt="check image" class="checkImg" /> -->
@@ -120,6 +141,7 @@ export default {
     },
     changeTagColor (color) {
       this.selectedSticker.picBgPath = color
+      console.log('color', color)
       this.toggleAddTagShowYn()
     },
     toggleAddTagShowYn () {
@@ -154,6 +176,7 @@ export default {
         param: param
       })
       if (result.data.result) {
+        this.stickerNameVal = ''
         var idx = this.GE_STICKER_LIST.findIndex((item) => Number(item.stickerKey) === Number(this.selectedSticker.stickerKey))
         if (idx !== -1) {
           this.GE_STICKER_LIST.splice(idx, 1)
@@ -177,6 +200,7 @@ export default {
         param: param
       })
       if (result.data.result) {
+        this.stickerNameVal = ''
         if (result.data.stickerKey) {
           param.stickerKey = result.data.stickerKey
           this.selectedSticker = param
@@ -224,7 +248,18 @@ export default {
   border:none !important;
   border-bottom:2px solid rgba(192, 191, 249, 0.6) !important;
   border-radius:0px !important;
-  margin-left:1rem;
+}
+.previewTag{
+  width:auto;
+  min-width:60px;
+  height: 25px;
+  border-radius:25px;
+  text-align:center;
+  padding:0 8px;
+  color:#fff;
+  font-weight:bold;
+  line-height:25px;
+  font-size:13px;
 }
 button {
   min-width: 40px;
@@ -251,6 +286,8 @@ button {
 .tagButton {
     margin-left: 5px;
     margin-top: 5px;
+    height:25px;
+    border-radius:25px;
 }
 .tagButton:first-child{
   margin-left:0;

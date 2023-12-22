@@ -118,6 +118,7 @@
   "COMMON_TODO_RECEIVER" : "담당",
   "COMMON_TODO_ME" : "나", 
   "COMMON_TODO_GOAL_DATE" : "목표일",
+  "COMMON_TITLE_MEMO" : "메모",
 
   "COMM_VOCA_THIS": "해당",
   "COMM_BTN_EDIT": "변경",
@@ -242,6 +243,7 @@
   "COMM_MSG_NO_PERMISSION" : "해당 게시판에 작성 권한이 없습니다. 다른 게시판을 선택해주세요.",
   "COMM_MSG_ADD_TODO" : "새로운 할 일을 추가했습니다.",
   "COMM_MSG_ADD_TODO_FAIL" : "새로운 할 일을 추가하지 못했습니다.",
+  "COMM_MSG_SELECT_TAG" : "수정할 태그를 선택해주세요.",
 
   "COMMON_MSG_NO_EMAIL": "등록된 이메일이 없습니다.",
   "COMMON_MSG_NO_PHONE": "등록된 전화번호가 없습니다",

@@ -1,7 +1,7 @@
 <template>
 
 <!-- box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; max-height:50px; -->
-    <div v-if="inLineYn !== false" class="" id="colorPickerWrap" style="background-color: #ECECF570; padding: 5px 10px; border-radius: 8px; overflow: auto; white-space: nowrap;     display: flex; flex-direction: row; align-items: center;" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
+    <div v-if="inLineYn !== false" class="colorPickerBox" id="colorPickerWrap" :style="isTag === true ? 'background-color : #E7EDFF; border:none; white-space:wrap; margin-top:0.3rem; flex-wrap:wrap; gap: 0.6rem; padding:20px 10px; min-width: 290px; max-width:310px; justify-content:center;' : 'background-color : #ECECF570; white-space:nowrap; padding: 5px 10px;'" style="border-radius: 8px; overflow: auto; display: flex; flex-direction: row; align-items: center;" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
         <!-- <div :style="'background-color:' + this.selectedColor" style=" width: calc(100% - 100px); margin-left: 10px; float: left; height: 50px; margin-bottom: 20px;">{{this.selectedColor}}</div>
         <gBtnSmall @click="selectColor" style="float: left; height: 23px; margin-bottom: 5px; line-height: 23px;margin-left: 10px" btnTitle="선택"/>
         <gBtnSmall @click="closePop" style="float: left; height: 23px; color: #A9AACD; border: 1px solid #A9AACD; line-height: 23px; background: #FFFFFF; margin-left: 10px" btnTitle="닫기"/> -->
@@ -15,8 +15,8 @@
           </div>
         </div> -->
         <template v-if="isTag === true">
-          <div v-for="(value, index) in vividColorList" :key="index" class="mright-03" @click="pickColor(value)" :style="'background:' + value" style="min-width:25px; max-width:25px; max-height: 25px; min-height: 25px; border-radius:100%; display: flex; justify-content: center; align-items: center;">
-            <img src="../../assets/images/common/icon_check_white.svg" class="fl img-w20" v-show="selectedColor === value" alt="">
+          <div v-for="(value, index) in vividColorList" :key="index" class="mright-03" @click="pickColor(value)" :style="'background:' + value" style="line-height:25px; min-width:30px; width:40px; max-height: 25px; min-height: 25px; border-radius:25px; display: flex; justify-content: center; align-items: center;">
+            <p class="fontBold font12" style="color:#fff;">Tag</p>
           </div>
         </template>
         <template v-else>
@@ -26,18 +26,6 @@
         </template>
     </div>
     <div v-else class="" style="background-color: #ECECF570; min-height: 50px; height: 100%; padding: 5px 10px; border-radius: 8px; white-space: nowrap; flex-direction: row; align-items: center;">
-        <!-- <div :style="'background-color:' + this.selectedColor" style=" width: calc(100% - 100px); margin-left: 10px; float: left; height: 50px; margin-bottom: 20px;">{{this.selectedColor}}</div>
-        <gBtnSmall @click="selectColor" style="float: left; height: 23px; margin-bottom: 5px; line-height: 23px;margin-left: 10px" btnTitle="선택"/>
-        <gBtnSmall @click="closePop" style="float: left; height: 23px; color: #A9AACD; border: 1px solid #A9AACD; line-height: 23px; background: #FFFFFF; margin-left: 10px" btnTitle="닫기"/> -->
-        <!-- <div style="width: 100%; height:calc(100% - 50px); overflow-y: auto; overflow-x: hidden;">
-          <div v-for="(value, index) in colorList" :key="index" style="width: 100%;">
-            <div style="width: 50%; float: left; ">
-              <div style="width: 100%; height: 50px; display: flex; justify-content: center;" v-for="(color1, index) in value" :key="index" >
-                <div style="width: calc(100% - 30px); margin-right: 10px; height: 40px; float: left; margin-bottom: 7px;" @click="pickColor(color1[1])"  :style="'background:' + color1[1]"></div>
-              </div>
-            </div>
-          </div>
-        </div> -->
 
           <div v-for="(value, index) in colorList" :key="index" class="mright-03" @click="pickColor(value)" :style="'background:' + value" style="min-width:30px; max-width:30px; max-height: 30px; min-height: 30px; float: left; border-radius:100%; display: flex; justify-content: center; align-items: center; margin-bottom: 5px;">
             <img src="../../assets/images/common/icon_check_white.svg" class="fl img-w20" v-show="selectedColor === value" alt="">
@@ -73,7 +61,7 @@ export default {
       // ]]
       ],
       vividColorList: [
-        '#0B266B', '#7B00F7', '#7986CB', '#456EFF', '#64B5F6', '#00CABE', 'rgb(108, 161, 27)', '#04CC00', 'rgb(45, 203, 137)', '#7A3D3D', '#AE1A1A', '#FF5656', '#E57373', '#F06292', '#DA45FF', '#FF8228', 'rgb(255, 158, 31)', '#FFC700', '#A2A2A2'
+        '#00388B', '#0061F2', '#408DFF', '#91BDFF', '#C2DAFF', '#5F2E00', '#964800', '#FF7A00', '#FFC58F', '#FFE0C4', '#086600', '#0DA500', '#11D800', '#A8FFA1', '#CDFFC9', '#3B0076', '#6A00D4', '#942AFF', '#DAB5FF', '#EAD5FF', '#003D50', '#00698B', '#00B6DE', '#95E6FF', '#C8F5FF', '#7F0045', '#C30069', '#FF1794', '#FF96CF', '#FFC3E4', '#222222', '#717171', '#A6A6A6', '#CCCCCC', '#E3E3E3'
       ]
     }
   },
@@ -127,5 +115,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
