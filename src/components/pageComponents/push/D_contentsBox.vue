@@ -222,7 +222,7 @@
                       width="30"
                       height="30"
                       style="margin-top:-0.3rem; opacity:0.6;"
-                      @click.stop="completeTodo(CONT_DETAIL)"
+                      @click.stop="reqCompleteTodo(CONT_DETAIL)"
                     />
                     <img
                       class="cursorP"
@@ -234,7 +234,7 @@
                       width="30"
                       height="30"
                       style="margin-top:-0.3rem; opacity:0.6;"
-                      @click.stop="completeTodo(CONT_DETAIL)"
+                      @click.stop="reqCompleteTodo(CONT_DETAIL)"
                     />
                       <div style="width:calc(100% - 30px);">
                         <p
@@ -1223,6 +1223,8 @@
       :pContentsData="this.CONT_DETAIL"
       :pOptions="mOption"
     />
+    <div v-if="mCommentPopShowYn" class="backgroundShadow" @click="$refs.memoCommentTag.backClick()" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 98;"></div>
+    <completeTodoPop :pCompleteTodo="setCompleteTodo" :pCloseCompletePop="closeCompletePop" ref="memoCommentTag"  v-if="mCommentPopShowYn" :pTodoElement="CONT_DETAIL"/>
   </template>
 <script>
 import { onMessage } from '../../../assets/js/webviewInterface'
@@ -1230,6 +1232,7 @@ import { onMessage } from '../../../assets/js/webviewInterface'
 // components
 import stickerListSetting from '../../popup/common/D_stickerListSetting.vue'
 import memoCompo from './D_contBoxMemo.vue'
+import completeTodoPop from '@/pages/routerPages/D_completeTodoPop.vue'
 import statCodeComponent from '@/components/board/D_manageStateCode.vue'
 import CommonAddContentsForm from '../../write/CommonAddContentsForm.vue'
 
@@ -1243,6 +1246,7 @@ export default {
     stickerListSetting,
     attachFileListPop,
     memoCompo,
+    completeTodoPop,
     statCodeComponent,
     statCodePop,
     imgPreviewPop,
@@ -1283,6 +1287,7 @@ export default {
   },
   data () {
     return {
+      mCommentPopShowYn: false,
       mMemoLeng: 0,
       mFadeNotShowYn: false,
       mContentMoreShowYn: true,
@@ -1369,6 +1374,26 @@ export default {
     }
   },
   methods: {
+    async setCompleteTodo (value, memoComment) {
+      await this.completeTodo(value, memoComment)
+      if (this.$refs.memoCommentTag) {
+        this.$refs.memoCommentTag.backClick()
+      }
+    },
+    closeCompletePop (updateYn) {
+      if (updateYn) {
+
+      } else {
+      }
+      this.mCommentPopShowYn = !this.mCommentPopShowYn
+    },
+    reqCompleteTodo () {
+      if (this.CONT_DETAIL.contStatus === '00') {
+        this.mCommentPopShowYn = !this.mCommentPopShowYn
+      } else {
+        this.completeTodo(this.CONT_DETAIL)
+      }
+    },
     closeXPop () {
       this.$emit('closeXPop')
     },
@@ -1411,12 +1436,40 @@ export default {
     closeActorList () {
       this.mOpenActorListYn = false
     },
-    async completeTodo (value, loadingYn) {
+    async completeTodo (value, memoComment) {
       var param = {}
+      if (memoComment) {
+        param.memoHeaderStr = '[완료메세지]\n'
+        param.memoBodyStr = memoComment
+      }
       param.contentsKey = value.contentsKey
       param.workUserName = this.GE_USER.userDispMtext
       param.creUserName = this.GE_USER.userDispMtext
       param.actorList = value.actorList
+      if (param.actorList) {
+        const tempList = [...param.actorList]
+        const actorList = []
+        tempList.forEach((val) => {
+          if (val.accessKind === 'F') {
+            if (val.cList) {
+              val.cList.forEach(val2 => {
+                actorList.push({
+                  accessKey: val2.accessKey,
+                  accessKind: val2.accessKind,
+                  actType: val.actType
+                })
+              })
+            }
+          } else {
+            actorList.push({
+              accessKey: val.accessKey,
+              accessKind: val.accessKind,
+              actType: val.actType
+            })
+          }
+        })
+        param.actorList = actorList
+      }
       param.jobkindId = 'TODO'
       if (value.contStatus === '00') {
         param.contStatus = '99'
@@ -1440,7 +1493,7 @@ export default {
       } catch (error) {
         console.log(error)
       }
-      // this.$emit('completeTodo')
+      this.$emit('completeTodo')
     },
     returnTag () {
       return this.GE_STICKER_LIST
