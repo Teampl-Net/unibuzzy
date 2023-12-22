@@ -1,5 +1,6 @@
 <template>
   <div class="w100P h100P fl" style="overflow: hidden; z-index: 99;" :style="'margin-top:' + (this.$STATUS_HEIGHT + 50)+ 'px; padding-bottom: 80px;'">
+  <creFriendFinder style="width: 80%; height: 80%; position: absolute; left: 10%; top: 10%;" v-if="mCreFriendFinderShowYn" :pCloseCreFriendFinder="closeCreFriendFinder" />
     <div class="w100P fl font20 fontBold" style="height: 100px; line-height: 100px;">Find a uniBuddy Today!</div>
     <div class="w100P fl" style="height: 250px;">
       <div class="w100P fl textLeft font18" style="height: 30px; padding-left: 20px;">Your match requests</div>
@@ -14,15 +15,18 @@
         <recomProfile v-for="(recom, i) in mMatchRecommendList" :pRecom="recom" :key="i" class="fl w100P" style="margin-bottom: 20px; height: 180px; flex: 0 0 auto; border-radius: 10px;" />
       </div>
     </div>
+    <img @click="openCreFriendFinder" src="../../assets/images/button/Icon_CreChanBtn.png" style="position: absolute; cursor: pointer; right: 10%;" :style="'bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'" class="img-78 img-w66">
   </div>
 </template>
 
 <script>
 import matchProfile from '../../components/friendFinder/D_matchProfile.vue'
 import recomProfile from '../../components/friendFinder/D_recomProfile.vue'
+import creFriendFinder from '../../components/friendFinder/D_creFriendFinder.vue'
 export default {
   data () {
     return {
+      mCreFriendFinderShowYn: false,
       mMatchRequestList: [
         { name: 'Selena Do', pronoun: '(she/her)', year: '2nd', major: 'CM', class: "CO 23'" },
         { name: 'Jeremy Parson', pronoun: '(he/him)', year: '3rd', major: 'BME', class: "CO 25'" },
@@ -43,13 +47,18 @@ export default {
   mounted () {
 
   },
-
   methods: {
-
+    openCreFriendFinder () {
+      this.mCreFriendFinderShowYn = true
+    },
+    closeCreFriendFinder () {
+      this.mCreFriendFinderShowYn = false
+    }
   },
   components: {
     matchProfile,
-    recomProfile
+    recomProfile,
+    creFriendFinder
   }
 }
 </script>
