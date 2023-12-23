@@ -1,6 +1,6 @@
 <template>
   <div class="w100P h100P fl" style="overflow: hidden; z-index: 99;" :style="'margin-top:' + (this.$STATUS_HEIGHT + 50)+ 'px; padding-bottom: 80px;'">
-  <creFriendFinder style="width: 80%; height: 80%; position: absolute; left: 10%; top: 10%;" v-if="mCreFriendFinderShowYn" :pCloseCreFriendFinder="closeCreFriendFinder" />
+  <creFriendFinder style="width: 90%; height: 90%; position: absolute; left: 5%; top: 5%;" v-if="mCreFriendFinderShowYn" :pClosePop="closeCreFriendFinder" />
     <div class="w100P fl font20 fontBold" style="height: 100px; line-height: 100px;">Find a uniBuddy Today!</div>
     <div class="w100P fl" style="height: 250px;">
       <div class="w100P fl textLeft font18" style="height: 30px; padding-left: 20px;">Your match requests</div>
@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import matchProfile from '../../components/friendFinder/D_matchProfile.vue'
-import recomProfile from '../../components/friendFinder/D_recomProfile.vue'
-import creFriendFinder from '../../components/friendFinder/D_creFriendFinder.vue'
+import matchProfile from '../../components/friendFinder/D_FFmatchProfile.vue'
+import recomProfile from '../../components/friendFinder/D_FFrecomProfile.vue'
+import creFriendFinder from '../../components/friendFinder/D_FFcreateNew.vue'
 export default {
   data () {
     return {
