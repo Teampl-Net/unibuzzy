@@ -88,7 +88,7 @@
         <p
           class="fl font16 w-100P commonColor rowText"
           @click="editTodo('edit')"
-          v-if="contentType === 'TODO' && contentOwner && contStatus !== '99'"
+          v-if="contentType === 'TODO' && (contentOwner || mCheckerYn) && contStatus !== '99'"
         >
           {{ $t('COMM_BTN_EDIT_POST') }}
         </p>
@@ -131,7 +131,7 @@
           class="fl font16 w-100P commonColor rowText"
           @click="emit('textCopy')"
         >
-          {{ $t('COMMON_BTN_COPY_CLIPBOARD') }}
+          {{ $t('COMMON_BTN_COPY_CLIPBOARD')}}
         </p>
         <!-- <p class="fl font16 w-100P commonColor rowText" @click="emit('subScribe')" >이 {{contentText}}에 대한 푸쉬알림 {{contentsInfo.subsYn? '끄기' : '켜기'}}</p> -->
         <!-- <p class="fl font16 w-100P commonColor " style="min-height:50px; line-height:50px; border-top: 1px solid #eee;" @click="emit('alimBloc')" v-if="contentOwner && contentType === 'ALIM'" >{{contentText}} 삭제</p> -->
@@ -302,10 +302,26 @@ export default {
       reportPopStep: 0,
       reportType: '',
       reportDetailType: '',
-      reportDetailTitle: ''
+      reportDetailTitle: '',
+      mCheckerYn: false
     }
   },
   mounted () {
+    if (this.contentsInfo && this.contentsInfo.actorList) {
+      console.log('111')
+      for (let i = 0; i < this.contentsInfo.actorList.length; i++) {
+        console.log('222')
+        if (this.contentsInfo.actorList[i].actType === 'CK') {
+          console.log('333')
+          if (this.contentsInfo.actorList[i].accessKey === this.GE_USER.userKey) {
+            console.log('444')
+            this.mCheckerYn = true
+            console.log('this.mCheckerYn', this.mCheckerYn)
+          }
+        }
+      }
+    }
+    console.log('this.contentsInfo', this.contentsInfo)
     if (this.contentType === 'ALIM') {
       this.contentText = '알림'
     } else if (this.contentType === 'BOAR') {

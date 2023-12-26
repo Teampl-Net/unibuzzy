@@ -516,6 +516,14 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   align-items: center;
 }
 
+.pswp__button, .pswp__button--arrow--next .pswp__icn, .pswp__button--arrow .pswp__icn{
+  filter:drop-shadow(0px 0px 3px #fff);
+}
+.pswp__icn-shadow, .pswp__button--arrow--next .pswp__icn, .pswp__button--arrow .pswp__icn{
+  stroke: #fff;
+  stroke-width:2px;
+}
+
 .CDeepColor{ color: #5F61BD !important; }
 .CLightBgColor{ background-color: #a2a3e1 !important;}
 .CDeepBgColor{ background-color: #5F61BD !important;}

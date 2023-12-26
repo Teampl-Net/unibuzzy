@@ -167,7 +167,7 @@
               </div>
               <!--//-->
               <!-- 내 일 - 담당자 -->
-              <div class="todoOtherInfosAsignee">
+              <div class="todoOtherInfosAsignee" v-if="!(CONT_DETAIL && CONT_DETAIL.actorList.length === 2 && CONT_DETAIL.actorList[0].accessKey === pGeUser.userKey && CONT_DETAIL.actorList[1].accessKey === pGeUser.userKey)">
                 <div
                 class="w100P actorImgList"
                 @click.stop="openActorList(pTodoIndex)"
@@ -214,11 +214,7 @@
                     </div>
                     <div
                     class="actorNameListWrap"
-                    v-if="
-                        mGetWhichTodoIndex === pTodoIndex &&
-                        mOpenActorListYn
-                    "
-                    >
+                    v-if=" mGetWhichTodoIndex === pTodoIndex && mOpenActorListYn ">
                       <div class="actorNameList">
                         <p
                         @click="goUserProfile(each)"
@@ -260,13 +256,17 @@ export default {
     pClickSticker: {},
     pClickPriority: {},
     pOpenActorList: {},
-    pGoUserProfile: {}
+    pGoUserProfile: {},
+    pGeUser: []
   },
   data () {
     return {
       mOpenActorListYn: false,
       mGetWhichTodoIndex: -1
     }
+  },
+  created () {
+    console.log('pGeUserpGeUser', this.pGeUser)
   },
   methods: {
     openActorList (index) {

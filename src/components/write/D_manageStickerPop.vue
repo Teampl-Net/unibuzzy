@@ -20,10 +20,11 @@
     }
   </i18n>
 <template>
-    <div style="height: 500px; width: 98%; position: fixed; top: 30%; left: 1%; background: #FFF; border-radius: 10px; box-shadow: 0 0 4px 4px #00000030; z-index: 99">
-        <div style="padding:12px 20px; display: flex; justify-content: space-between; border-bottom: 1.5px solid #ccc; align-items: flex-start;">
+    <div style="height: 500px; width: 98%; position: fixed; top: 20%; left: 1%; background: #FFF; border-radius: 10px; box-shadow: 0 0 4px 4px #00000030; z-index: 99">
+        <div style="padding:16px 24px; display: flex; justify-content: space-between; border-bottom:1px solid #EBEBEB; align-items: flex-start;">
             <img src="../../assets/images/common/popup_close.png" @click="backClick" class="mtop-02 cursorP" alt="" style="width:20px;">
             <p class="commonColor font18 fontBold textLeft">{{$t('COMM_MAN_STICKER_POP_TITLE')}}</p>
+            <div></div>
         </div>
         <div style="width: 100%; height: calc(100% - 75px); padding: 10px 30px; overflow: hidden;">
               <div style="width:calc(100%); display:flex; align-items:center; margin-bottom: 0; padding-top: 10px; justify-content:space-between;">
@@ -43,7 +44,7 @@
                 </div>
                 <div style="width:70%; display:flex; align-items:center; justify-content:start;">
                   <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD;">{{ $t('COMM_PREVIEW') }}</p>
-                  <div class="previewTag" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray', color : mBlackTrue ? '#222' : '#fff' }">
+                  <div class="previewTag" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray', color : mBlackTrue===true ? '#222' : '#fff' }">
                   {{ stickerNameVal }}
                   </div>
                 </div>
@@ -74,9 +75,9 @@
                     @click="toggleSelectTag(sticker)"
                     v-for="(sticker) in GE_STICKER_LIST"
                     :key="sticker.stickerKey"
-                    :style="{ 'font-weight' :sticker.picBgPath && !(sticker.stickerKey === selectedSticker.stickerKey)? 'normal' : 'bold', 'background-color' : sticker.picBgPath}"
+                    :style="{ 'font-weight' :sticker.picBgPath && !(sticker.stickerKey === selectedSticker.stickerKey)? 'normal' : 'bold', 'background-color' : sticker.picBgPath, color : mBlackTrue===true ? '#222' : '#fff' }"
                     :class="{ activeBtn: (sticker.stickerKey === selectedSticker.stickerKey) }"
-                    style="font-size: 13px; color:#fff;"
+                    style="font-size: 13px;"
                     class="tagButton"
                     >
                     <!-- <img v-if="sticker.isSelected" src="../../assets/images/common/icon_check_commonColor.svg" alt="check image" class="checkImg" /> -->
@@ -142,6 +143,7 @@ export default {
       this.stickerNameVal = sticker.nameMtext
     },
     changeTagColor (color, blackYn) {
+      console.log('color:::', color, blackYn)
       this.selectedSticker.picBgPath = color
       this.mBlackTrue = blackYn
       this.toggleAddTagShowYn()
@@ -197,6 +199,8 @@ export default {
       param.nameMtext = 'KO$^$' + this.stickerNameVal
       param.picBgPath = this.selectedSticker.picBgPath
       param.creUserKey = this.GE_USER.userKey
+      param.blackYn = this.mBlackTrue
+      console.log('saveSticker param', param)
       var result = await this.$commonAxiosFunction({
         url: '/sUniB/tp.saveSticker',
         param: param

@@ -198,14 +198,17 @@
                       <div style="width:100%; overflow-x:scroll; white-space:nowrap;">
                         <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" @click="selectMemo(mIndex)" :class="{mSelectedMemo : mSelectedMemoIdx === mIndex}">
                           {{memo.title}}
-                          <span @click="goDetail(memo)" >zz</span>
+                          <!-- <span @click="goDetail(memo)" >z</span> -->
                         </div>
                       </div>
                     </div>
-                    <div v-if="showMemoYn" class="memoBody">
-                      <textarea v-model="mMemoBody" @input="memoAutoSave" class="w100P" style="border:none; height:auto; outline:none;">
-                      </textarea>
+                    <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])">
+                      {{ decodeContents(mMemoBody.bodyFullStr) }}
                     </div>
+                    <!-- <div v-if="showMemoYn" class="memoBody">
+                      <textarea v-model="mMemoBody" @input="memoAutoSave(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])" class="w100P" style="border:none; height:auto; outline:none;">
+                      </textarea>
+                    </div> -->
                   </div>
                 </template>
                 <img v-else-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt="">
@@ -424,7 +427,7 @@
               :style="(group.listName === this.$t('COMMON_TODO_MYTODO') ? 'border-left: 10px solid rgb(247 161 120);' : ';') + (group.listName === this.$t('COMMON_TODO_CHECK')? 'border-left: 10px solid rgb(99 203 223);' : ';') + (group.listName === this.$t('COMMON_TODO_PUBLIC')? 'border-left: 10px solid rgb(198, 106, 106);' : ';')"
             >
               <template v-for="(todo, todoIndex) in group.list.content" :key="todo.contentsKey" >
-                <todoContentsBox :pTodoElement="todo" :pTodoIndex="todoIndex" :pClickSticker="clickSticker" :pOpenDetail="goDetail" :pGroupIndex="groupIndex" :pSetCompleteTodo="reqCompleteTodo" :pClickPriority="clickPriority" :pOpenActorList="openActorList" :pGroup="group" :pGoUserProfile="goUserProfile" />
+                <todoContentsBox :pGeUser="GE_USER" :pTodoElement="todo" :pTodoIndex="todoIndex" :pClickSticker="clickSticker" :pOpenDetail="goDetail" :pGroupIndex="groupIndex" :pSetCompleteTodo="reqCompleteTodo" :pClickPriority="clickPriority" :pOpenActorList="openActorList" :pGroup="group" :pGoUserProfile="goUserProfile" />
               </template>
               <!-- 한 박스-->
               <!-- // -->
@@ -443,6 +446,7 @@
   <CommonAddContentsForm
     style="z-index: 13"
     v-if="mWritePopShowYn"
+    :pMemoData="mMemoParams"
     :pClosePop="closeWritePop"
     :pPostContentsFn="saveContents"
     :pGetReceiverList="returnTargetData"
@@ -452,6 +456,7 @@
     :pUserInfo="GE_USER"
     :popUpType="mPopupType"
     :pMemoYn="memoYn"
+    @deleteMemo="deleteMemo"
     @openPop="openPop"
   />
   <div v-if="mCommentPopShowYn" class="backgroundShadow" @click="$refs.memoCommentTag.backClick()" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 98;"></div>
@@ -584,7 +589,10 @@ export default {
       mSortOrder: 0,
       memoYn: false,
       mSelectedMemoIdx: -1,
-      mMemoBody: ''
+      mMemoBody: '',
+      autoSaveTimer: null,
+      mMemoParams: [],
+      mCheckerYn: Boolean
       // geDispList: []
     }
   },
@@ -604,16 +612,48 @@ export default {
     window.addEventListener('resize', this.setTitleThreeLine)
   },
   methods: {
-    memoAutoSave () {
-      if (this.mPopupType !== 'MEMO') return
-      setTimeout(() => {
-        this.saveContents()
-        console.log('저장됨')
-      }, 2000)
+    memoAutoSave (memo) {
+      console.log('memo data', memo)
+      this.mPopupType = 'MEMO'
+      var params = {}
+      params.jobkindId = 'MEMO'
+      params.creUserKey = this.GE_USER.userKey
+      params.creUserName = this.$changeText(this.GE_USER.userDispMtext)
+      params.contentsKey = memo.contentsKey
+      console.log('params')
+
+      if (this.autoSaveTimer) {
+        clearTimeout(this.autoSaveTimer)
+      }
+      this.autoSaveTimer = setTimeout(() => {
+        console.log('저장됨.')
+        // this.saveContents(params)
+      }, 1000)
+    },
+    async deleteMemo (data) {
+      var inParam = {}
+      inParam.mccKey = data.mccKey
+      inParam.contentsKey = data.contentsKey
+      inParam.jobkindId = 'MEMO'
+      inParam.deleteYn = true
+      var result = await this.$commonAxiosFunction({
+        url: '/sUniB/tp.deleteContents',
+        param: inParam
+      })
+      if (result) {
+        this.$showToastPop(`${this.$t('COMMON_MSG_DELETED_MEMO')}`)
+        this.mWritePopShowYn = false
+        this.getMyTodoList()
+      } else {
+        this.$showToastPop(`${this.$t('COMMON_MSG_FAILED')}`)
+      }
     },
     selectMemo (index) {
       this.mSelectedMemoIdx = index
-      this.mMemoBody = this.decodeContents(this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bodyFullStr)
+      if (this.mSelectedMemoIdx > -1) {
+        this.showMemoYn = true
+        this.mMemoBody = this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx]
+      }
     },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
@@ -629,7 +669,11 @@ export default {
     },
     openMemoShow () {
       this.showMemoYn = !this.showMemoYn
-      this.selectMemo(0)
+      if (this.showMemoYn === true) {
+        this.selectMemo(0)
+      } else if (this.showMemoYn === false) {
+        this.selectMemo(-1)
+      }
     },
     closeCompletePop (updateYn) {
       if (updateYn) {
@@ -647,10 +691,15 @@ export default {
         this.completeTodo(data)
       }
     },
-    openWriteMemoPop () {
+    openWriteMemoPop (data) {
+      if (data) {
+        this.mMemoParams = data
+        this.mOption.purpose = 'Manage Memo'
+      } else {
+        this.mOption.purpose = 'Add Memo'
+      }
       this.memoYn = true
       this.mPopupType = 'MEMO'
-      this.mOption.purpose = 'Add Memo'
       this.mWritePopShowYn = true
     },
     openPop (params) {
@@ -885,7 +934,7 @@ export default {
       this.mWritePopShowYn = false
     },
     async saveContents (params) {
-      console.log(params)
+      console.log('save Contents params', params)
       if (this.mPopupType === 'MEMO') {
         params.jobkindId = 'MEMO'
       } else {
@@ -2136,6 +2185,19 @@ export default {
     }
   },
   watch: {
+    GE_DISP_MEMO_LIST: {
+      handler (val, old) {
+        if (val !== old) {
+          if (val.content && val.content.length > 0) {
+            this.mMemoBody = val.content[this.mSelectedMemoIdx]
+          }
+        }
+        if (val.content && val.content.length === 0) {
+          this.showMemoYn = false
+        }
+      },
+      deep: true
+    },
     GE_DISP_SEARCH_LIST: {
       handler (val) {
         if (!val) return

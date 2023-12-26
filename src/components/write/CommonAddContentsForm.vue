@@ -96,13 +96,19 @@
   <div id="layout">
     <header>
       <!-- Popup Title -->
-      <button @click="closeXPop" type="button" class="closeBtn">
+      <button @click="closeXPop" type="button" class="closeBtn" v-if="contentType !== 'MEMO' || (pMemoData && !pMemoData.creUserName)">
           <img
             src="../../assets/images/common/popup_close.png"
             alt="close button"
             style="width:20px;"
           />
         </button>
+        <div class="HeaderbtnWrap" v-if="contentType === 'MEMO' && pMemoData && pMemoData.creUserName">
+          <div @click="deleteMemo(pMemoData)" class="saveBtn fontBold">
+            {{ $t('COMMON_BTN_DELETE') }}
+          </div>
+        <!-- <button @click="closePop">Cancel</button> -->
+        </div>
       <p class="commonColor fontBold" style="font-size:20px; line-height: 30px;">{{ pOptions.purpose }}</p>
       <div class="HeaderbtnWrap">
         <div @click="postContents" class="saveBtn fontBold">
@@ -148,9 +154,9 @@
                 v-if="pOptions.model === 'mankik'" type="date"
                 id="fromDate"
                 v-model="params.workFromDateStr"
-                style="min-height:20px;"
+                style="min-height:20px; background-color:#F1F1FF !important;"
               />
-              <input id="toDate" type="date" v-model="params.workToDateStr" style="min-height:20px;"/>
+              <input id="toDate" type="date" v-model="params.workToDateStr" style="min-height:20px; background-color:#F1F1FF !important;"/>
             </div>
           </fieldset>
         <div v-if="pOptions.model === 'mankik' && contentType === 'TODO'" class="w100P mtop-05" style="border-bottom:1px solid #EBEBEB;"></div>
@@ -179,8 +185,8 @@
                     </template> -->
                   </template>
                 </div>
-                <div v-if="contentType === 'TODO'" @click="toggleTargetsArea" class="h100P cursorP" style="width:40px;">
-                  <img :src="require(`@/assets/images/button/Icon_showMore.png`)" class="w100P " :style="openTargetsYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/>
+                <div v-if="contentType === 'TODO'" @click="toggleTargetsArea" class="h100P cursorP" style="width:30px;">
+                  <img :src="require(`@/assets/images/button/Expand_down.png`)" class="w100P " :style="openTargetsYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/>
                 </div>
               </div>
             </div>
@@ -330,7 +336,7 @@
         <fieldset id="optionalOptions">
           <legend>선택정 정보 설정</legend>
 
-          <fieldset v-if="pOptions.model === 'mankik' && (!propParams || (propParams && !propParams.nonMemYn))" id="categoryTag" style=" overflow: hidden;">
+          <fieldset v-if="pOptions.model === 'mankik' && contentType !== 'MEMO' && (!propParams || (propParams && !propParams.nonMemYn))" id="categoryTag" style=" overflow: hidden;">
             <legend>태그 선택</legend>
             <label for="">{{ $t('COMMON_TODO_TAG') }}</label>
             <!-- :class="{selfTagOpenFlex : mSelfAddTagShowYn}"  -->
@@ -359,23 +365,24 @@
                         {{ $changeText(sticker.nameMtext) }}
                       </button>
                     </div>
-                    <div class="w100P" style="height:auto; display:flex; align-items:center; justify-content:center;">
-                      <div v-if="openTagsYn" @click="openSelfAddTag" style="width:22px;">
-                        <img :src="require(`@/assets/images/button/Icon_AddTag.png`)" class="w100P"/>
-                      </div>
+                    <div class="w100P" style="height:auto; display:flex; align-items:center; justify-content:center;padding-top:0.5rem;">
+                        <span v-if="openTagsYn" @click="openSelfAddTag"  class="fontBold textCenter" style="width:auto; background-color:#5F61BD; color:#fff; white-space:nowrap; font-size:13px; border-radius:5px; line-height:25px; padding:0 8px;">
+                          {{ $t('COMMON_BTN_MANAGE') }}
+                        </span>
+                        <!-- <img :src="require(`@/assets/images/button/Icon_AddTag.png`)" class="w100P"/> -->
                     </div>
                   </div>
                   <!-- @click="$refs.manageStickerPop.backClick" -->
-                    <!-- <img :src="require(`@/assets/images/button/Icon_AddTag.png`)" style="width:20px;"/> -->
+                    <!-- <img :src="require(`@/assets/images/button/sIcon_AddTag.png`)" style="width:20px;"/> -->
                     <div @click="openTagsYn = !openTagsYn" class="h100P fr cursorP" style="width:30px;">
-                      <img :src="require(`@/assets/images/button/Icon_showMore.png`)" class="w100P " :style="openTagsYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/>
+                      <img :src="require(`@/assets/images/button/Expand_down.png`)" class="w100P " :style="openTagsYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/>
                     </div>
                 </div>
               </div>
 
             </div>
           </fieldset>
-          <div class="w100P mtop-05" v-if="(!propParams || (propParams && !propParams.nonMemYn))" style="border-bottom:1px solid #EBEBEB;"></div>
+          <div class="w100P mtop-05" v-if="(!propParams || (propParams && !propParams.nonMemYn)) && contentType !== 'MEMO' " style="border-bottom:1px solid #EBEBEB;"></div>
 
           <fieldset v-if="contentType !== 'MEMO' && pOptions.model === 'mankik'" id="categoryTag" style="height:70px;">
             <legend>중요도 선택</legend>
@@ -465,7 +472,8 @@ export default defineComponent({
     'propParams',
     'contentTypeAB',
     'pMemoYn',
-    'popUpType'
+    'popUpType',
+    'pMemoData'
   ],
   components: {
     SelectTargetPop,
@@ -507,6 +515,7 @@ export default defineComponent({
     }
   },
   created () {
+    console.log('pMemoData', this.pMemoData)
     console.log('props.propData / props.propParams', this.propData, this.propParams)
     if (!this.popUpType) {
       this.contentType = 'TODO'
@@ -1164,7 +1173,10 @@ export default defineComponent({
       return changeText
     }
 
-    // 채널 불러오기
+    // 메모 삭제하기
+    const deleteMemo = async (data) => {
+      context.emit('deleteMemo', data)
+    }
 
     // 게시판 선택하기
     const selectBoard = async (data, index) => {
@@ -1468,9 +1480,23 @@ export default defineComponent({
       if (route.path === '/todo') {
         hasTitleYn.value = true
       }
+      // >---- 편집 상태일 때 세팅 MEMO----<
+      if (props.pMemoData && props.pMemoData.jobkindId === 'MEMO') {
+        params.modiYn = true
+        params.contentsKey = props.pMemoData.contentsKey
+        params.title = props.pMemoData.title
+        if (params.title) {
+          hasTitleYn.value = true
+        }
+        params.bodyFullStr = setBodyLength(props.pMemoData.bodyFullStr)
+        if (params.bodyFullStr) {
+          replaceTargetInChild(params.bodyFullStr) // DOM tree에서 원하는 대상 찾아 교체
+        }
+      }
       // >---- 편집 상태일 때 세팅 TODO----<
-      if (props.pContentsData) {
+      if (props.pContentsData && props.pContentsData.jobkindId !== 'MEMO') {
         console.log('TODO 수정하기 - 들어왔음.', props.pContentsData)
+
         // --- 수정일때, attachMfilekey 데이터 연결
         if (props.pContentsData && props.pContentsData.attachMfilekey) {
           params.attachMfilekey = props.pContentsData.attachMfilekey
@@ -2160,7 +2186,6 @@ export default defineComponent({
           if (params.stickerList) {
             params.stickerList = replaceStickerArr(params.stickerList)
           }
-          console.log(params)
           // params value 체크
           if (props.pOptions.model === 'mankik') {
             if (!props.popUpType || (props.popUpType && props.popUpType === 'TODO')) {
@@ -2435,7 +2460,6 @@ export default defineComponent({
           params.showCreNameYn = false
         }
         if (params.modiYn) {
-          console.log('=_=?')
           params.contentsKey = props.propParams.modiContentsKey
         } else {
           params.workStatCodeKey = 40
@@ -2805,7 +2829,8 @@ export default defineComponent({
       cabinetName,
       getTeamMenuList,
       openPushReceiverSelect,
-      decodeContents
+      decodeContents,
+      deleteMemo
     }
   }
 })
@@ -2836,6 +2861,7 @@ export default defineComponent({
   background-color:#F1F1FF !important;
   border-radius:5px !important;
   border:none !important;
+  font-size:13px !important;
 }
 .selfTagOpenFlex{
   flex-direction:column !important;
@@ -2865,8 +2891,8 @@ export default defineComponent({
 
   position: absolute;
   left: 50%;
-  top: 5%;
-  transform: translateX(-50%);
+  top: 50%;
+  transform: translate(-50%, -50%);
 
   z-index: 15;
   /* background-color: #f5f5f5; */

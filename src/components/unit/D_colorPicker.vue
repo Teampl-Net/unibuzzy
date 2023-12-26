@@ -16,7 +16,7 @@
         </div> -->
         <template v-if="isTag === true">
           <div v-for="(value, index) in vividColorList" :key="index" class="mright-03" @click="pickColor(value, index)" :style="'background:' + value" style="line-height:25px; min-width:30px; width:40px; max-height: 25px; min-height: 25px; border-radius:25px; display: flex; justify-content: center; align-items: center;">
-            <p class="fontBold font12" :style="{color : index === 3 || index ===4 || index ===8 || index ===9|| index ===13 || index ===14 || index ===18 || index ===19 || index ===23 || index ===24 ? '#222' : '#fff'}">Tag</p>
+            <p class="fontBold font12" :style="{color : index === 3 || index ===4 || index ===8 || index ===9|| index ===13 || index ===14 || index ===18 || index ===19 || index ===23 || index ===24 || index === 28 || index === 29 || index === 33 || index === 34 ? '#222' : '#fff'}">Tag</p>
           </div>
         </template>
         <template v-else>
@@ -79,7 +79,7 @@ export default {
     pickColor (color, index) {
       this.selectedColor = color
       this.mselectedColorIdx = index
-      if (index === 3 || index === 4 || index === 8 || index === 9 || index === 13 || index === 14 || index === 18 || index === 19 || index === 23 || index === 24) {
+      if (index === 3 || index === 4 || index === 8 || index === 9 || index === 13 || index === 14 || index === 18 || index === 19 || index === 23 || index === 24 || index === 28 || index === 29 || index === 33 || index === 34) {
         this.mBlackYn = true
       }
       this.$emit('choiceColor', this.selectedColor, this.mBlackYn)

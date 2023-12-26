@@ -797,6 +797,15 @@
                 </span>
                 </p>
               </div>
+              <template v-else>
+                <div style="width:20px; position:relative;">
+                  <img v-if="this.CONT_DETAIL && this.CONT_DETAIL.memoCount === 0" :src="require(`@/assets/images/contents/icon_memo_blue.png`)" class="w100P"/>
+                  <img v-else :src="require(`@/assets/images/contents/icon_memo_blue_on.png`)" class="w100P"/>
+                  <span class="fontBold" :style="{color: this.CONT_DETAIL.memoCount === 0 ? '#5F61BD' : '#ff'}" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:10px;">
+                    {{ this.CONT_DETAIL ? this.CONT_DETAIL.memoCount : '0' }}
+                  </span>
+                </div>
+              </template>
             </div>
           </div>
           <div v-if="CONT_DETAIL.jobkindId && CONT_DETAIL.jobkindId !== 'MEMO'" style="width: 140px; height: 100%; display:flex; align-items:center; justify-content:end;">
