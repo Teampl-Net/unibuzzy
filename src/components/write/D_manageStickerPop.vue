@@ -5,7 +5,7 @@
         "COMMON_MY_TAG_TILTE": "내 태그",
         "COMM_MSG_DELETE_TAG" : "태그를 삭제하시겠습니까?",
         "COMM_MSG_REQ_SELECT_TAG" : "태그를 선택해주세요",
-        "COMM_CHOSE_COLOR":"색상 선택",
+        "COMM_CHOSE_COLOR":"색상",
         "COMM_PREVIEW":"미리 보기",
       },
       "en": {
@@ -22,8 +22,8 @@
 <template>
     <div style="height: 500px; width: 98%; position: fixed; top: 30%; left: 1%; background: #FFF; border-radius: 10px; box-shadow: 0 0 4px 4px #00000030; z-index: 99">
         <div style="padding:12px 20px; display: flex; justify-content: space-between; border-bottom: 1.5px solid #ccc; align-items: flex-start;">
-            <p class="commonColor font18 fontBold textLeft">{{$t('COMM_MAN_STICKER_POP_TITLE')}}</p>
             <img src="../../assets/images/common/popup_close.png" @click="backClick" class="mtop-02 cursorP" alt="" style="width:20px;">
+            <p class="commonColor font18 fontBold textLeft">{{$t('COMM_MAN_STICKER_POP_TITLE')}}</p>
         </div>
         <div style="width: 100%; height: calc(100% - 75px); padding: 10px 30px; overflow: hidden;">
               <div style="width:calc(100%); display:flex; align-items:center; margin-bottom: 0; padding-top: 10px; justify-content:space-between;">
@@ -37,11 +37,11 @@
               </div>
 
               <div class="w100P mtop-2" style="display:flex; align-items:center; justify-content:center;">
-                <div style="width:30%; display:flex; align-items:center; justify-content:center;">
+                <div style="width:30%; display:flex; align-items:center; justify-content:start;">
                   <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD;">{{ $t('COMM_CHOSE_COLOR') }}</p>
                   <div @click="toggleAddTagShowYn" style="width: 25px; height: 25px; border-radius: 100%; " :style="`background-color: ${selectedSticker.picBgPath}`"></div>
                 </div>
-                <div style="width:70%; display:flex; align-items:center; justify-content:center;">
+                <div style="width:70%; display:flex; align-items:center; justify-content:start;">
                   <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD;">{{ $t('COMM_PREVIEW') }}</p>
                   <div class="previewTag" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray', color : mBlackTrue ? '#222' : '#fff' }">
                   {{ stickerNameVal }}

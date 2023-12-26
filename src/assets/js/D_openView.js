@@ -143,7 +143,7 @@ export const openView = {
     const mSocialMainYn = localStorage.getItem('currentScreen') === 'Smain'
     var param = {}
     param.userKey = store.getters['D_USER/GE_USER'].userKey
-    param.codeLang = 'en'
+    param.codeLang = 'ko'
     var response = await commonAxiosFunction({ url: '/sUniB/tp.getMyPageBoard', param: param }, false)
     // eslint-disable-next-line no-debugger
     debugger

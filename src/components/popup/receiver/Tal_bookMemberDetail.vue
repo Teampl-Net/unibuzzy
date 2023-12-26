@@ -174,6 +174,7 @@ export default {
                 this.memPhone = this.mUserInfo.phoneEnc
             else{ this.memPhone= '등록된 번호가 없습니다.' }
             this.setUserGrade(this.mUserInfo)
+            console.log('this.mUserInfo', this.mUserInfo)
             /*
             // debugger
             if(this.propData.userProfileImg){

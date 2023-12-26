@@ -221,7 +221,7 @@
                     >
                       <div class="actorNameList">
                         <p
-                        @click="goUserProfile(each.accessKey)"
+                        @click="goUserProfile(each)"
                         class="todoFontSize" style="white-space:nowrap; display:flex; align-items:center;"
                         v-for="(each, index) in CONT_DETAIL.actorList"
                         :key="index"

@@ -86,13 +86,21 @@ import { createI18n } from 'vue-i18n'
 // eslint-disable-next-line camelcase
 import messages from '@/assets/i18n/index'
 
+// 더알림
 const i18n = createI18n({
   leagacy: false,
-  locale: 'en',
-  fallbackLocale: 'en',
+  locale: 'ko',
+  fallbackLocale: 'ko',
   messages: messages
 })
-if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Imain') // unib
+// uniB
+// const i18n = createI18n({
+//   leagacy: false,
+//   locale: 'en',
+//   fallbackLocale: 'en',
+//   messages: messages
+// })
+// if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Imain') // unib
 
 const app = createApp(moTheAlim).use(router).use(store).use(i18n)/* .use(VueI18n) */
 /* export const i18n = new VueI18n({
