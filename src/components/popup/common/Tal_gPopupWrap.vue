@@ -15,7 +15,7 @@
 }
 </i18n>
 <template>
-    <div id="gPopup" v-if="reloadYn === false && popId" :style="targetType === 'writeContents' || targetType === 'stickerPop' || targetType === 'stickerDetail' || targetType === 'openUnknownLoginPop' ? 'background: transparent' : '' + mobileYn && (targetType !== 'chanDetail' && targetType !== 'boardMain')? 'padding-top: ' + $STATUS_HEIGHT + 'px':''" class="commonPopWrap">
+    <div :id="popId" v-if="reloadYn === false && popId" :style="targetType === 'writeContents' || targetType === 'stickerPop' || targetType === 'stickerDetail' || targetType === 'openUnknownLoginPop' ? 'background: transparent' : '' + mobileYn && (targetType !== 'chanDetail' && targetType !== 'boardMain')? 'padding-top: ' + $STATUS_HEIGHT + 'px':''" class="commonPopWrap">
       <div v-if="GE_USER.unknownYn && popId && targetType === 'openUnknownLoginPop'" style="width: 100%; height: 100%; left: 0; top: 0; position: absolute; z-index: 8; background: #00000050;"></div>
       <unknownLoginPop @closeXPop="closeXPop" :pPopId="popId" style="position: absolute;" v-if="GE_USER.unknownYn && popId && targetType === 'openUnknownLoginPop'" />
       <loadingCompo style="z-index: 999!important; position:absolute; top:0; left:0;" v-if="loadingYn" />
