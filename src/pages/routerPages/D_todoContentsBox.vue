@@ -29,7 +29,7 @@
         <div
             style="width: 45px; height: 30px;display: flex; justify-content: center; align-items: center; text-align: left"
             @click.stop="
-            pGroupIndex && pGroupIndex !== 2 ? setCompleteTodo(CONT_DETAIL, 'myTodoList', pGroupIndex, todoIndex) : ''
+            pGroupIndex !== undefined && pGroupIndex !== 2 ? setCompleteTodo(CONT_DETAIL, 'myTodoList', pGroupIndex, todoIndex) : ''
             "
         >
             <img
