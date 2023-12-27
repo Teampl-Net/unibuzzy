@@ -135,12 +135,10 @@
             if (!chanYn) {
                 const splited = urlString.replace('?', '').split(/[=?&]/)
                 const param = {}
-                console.log(splited)
-                param.targetType  = splited[0]
-                param.targetKey = splited[1]
-                if (splited[2]) {
-                  param.jobkindId = splited[3]
+                for (let i = 0; i < splited.length; i++) {
+                  param[splited[i]] = splited[++i]
                 }
+                
                 // for (let i = 0; i < splited.length; i++) {
                 //     param[splited[i]] = splited[++i]
                 // }
