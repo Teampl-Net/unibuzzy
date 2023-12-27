@@ -194,7 +194,7 @@
                   <commonStickyBox  class="fl mright-05 cursorP" style="width: 30%; " :style="showMemoYn? 'height: 110px;' : 'height: 30px;'" @click="goDetail(memo)" :pContentEle="memo" :pShowMemoYn="showMemoYn"/>
                 </template> -->
                 <template v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" >
-                  <div style="width:calc(100% - 40px); padding-left:0; margin-bottom:0; margin-right:10px; text-align:left;">
+                  <div style="width:calc(100%); padding-left:0; margin-bottom:0; margin-right:10px; text-align:left;">
                     <div class="memoTabWrap w100P" style="display:flex; align-items:center;">
                       <div style="width:100%; overflow-x:scroll; white-space:nowrap;">
                         <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" @click="selectMemo(mIndex)" :class="{mSelectedMemo : mSelectedMemoIdx === mIndex}">
@@ -220,7 +220,7 @@
                   {{$t('COMMON_TITLE_MEMO')}}
                 </p>
 
-                <!-- <div v-if="showMemoYn || (GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0)" @click="openMemoManagePop" :style="showMemoYn? 'height:110px' : 'height: 30px;'"  class="fl cursorP" style="width: 30px; float: left; border-radius: 10px; background: rgb(197 198 255); justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div> -->
+                <div v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" @click="openMemoManagePop" :style="showMemoYn? 'height:110px' : 'height: 30px;'"  class="fl cursorP" style="width: 30px; float: left; border-radius: 10px; background: rgb(197 198 255); justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div>
               </div>
             </div>
             <img v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" @click.stop="openMemoShow" :src="require(`@/assets/images/button/Icon_showMore.png`)" style="width: 30px;" class="cursorP fr" :style="showMemoYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/>
@@ -629,24 +629,6 @@ export default {
     closeMemoManagePop () {
       this.memoManagePop = false
     },
-    memoAutoSave (memo) {
-      console.log('memo data', memo)
-      this.mPopupType = 'MEMO'
-      var params = {}
-      params.jobkindId = 'MEMO'
-      params.creUserKey = this.GE_USER.userKey
-      params.creUserName = this.$changeText(this.GE_USER.userDispMtext)
-      params.contentsKey = memo.contentsKey
-      console.log('params')
-
-      if (this.autoSaveTimer) {
-        clearTimeout(this.autoSaveTimer)
-      }
-      this.autoSaveTimer = setTimeout(() => {
-        console.log('저장됨.')
-        // this.saveContents(params)
-      }, 1000)
-    },
     async deleteMemo (data) {
       console.log('delete memo data', data)
       var inParam = {}
@@ -665,7 +647,6 @@ export default {
       } else {
         this.$showToastPop(`${this.$t('COMMON_MSG_FAILED')}`)
       }
-      this.closeMemoManagePop()
     },
     selectMemo (index) {
       this.mSelectedMemoIdx = index
@@ -996,6 +977,7 @@ export default {
         }
       }
       this.closeWritePop('WriteContents', this.closeWritePop)
+      this.closeMemoManagePop()
     },
     returnTag () {
       return this.GE_STICKER_LIST

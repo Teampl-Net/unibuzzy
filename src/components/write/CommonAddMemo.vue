@@ -2,16 +2,16 @@
   <div id="layout">
     <header>
       <!-- Popup Title -->
-      <button @click="pClosePop" type="button" class="closeBtn">
+      <button @click="saveMemo" type="button" class="closeBtn">
           <img
             src="../../assets/images/common/popup_close.png"
             alt="close button"
             style="width:20px;"
           />
         </button>
-      <p @click="saveMemo" class="commonColor fontBold" style="font-size:20px; line-height: 30px;">{{ $t('COMMON_TITLE_MEMODETAIL') }}</p>
-      <div @click="deleteMemo(pMemoList.content[mSelectedMemoIdx])" class="HeaderbtnWrap cursorP" style="width:30px; height:100%;">
-        <p>h</p>
+      <p class="commonColor fontBold" style="font-size:20px; line-height: 30px;">메모 관리</p>
+      <div class="HeaderbtnWrap cursorP" style="width:30px; height:100%;">
+        <!-- <p>h</p> -->
         <!-- <div @click="postContents" class="saveBtn fontBold">
           {{ pContentsData ? $t('COMM_BTN_EDIT2') : $t('COMMON_BTN_SAVE') }}
         </div> -->
@@ -23,7 +23,10 @@
         <div class="memoTabWrap w100P" style="display:flex; align-items:center;">
           <div style="width:100%; overflow-x:scroll; white-space:nowrap; text-align:left;">
             <div v-for="(memo, mIndex) in pMemoList.content" :key="mIndex" class="memoTab" @click="selectMemo(mIndex)" :class="{mSelectedMemo : mSelectedMemoIdx === mIndex}">
-              {{memo.title}}
+              <div class="w100P" style="display:flex; align-items:center; justify-content:space-between;">
+                <span class="memoTitle" style="width:clac(100% - 22px);">{{memo.title}}</span>
+                <span style="font-size:10px; width:22px;" class="cursorP" @click="deleteMemo(pMemoList.content[mSelectedMemoIdx])" >삭제</span>
+              </div>
               <!-- <span @click="goDetail(memo)" >z</span> -->
             </div>
             <div @click="newMemo" id="newMemoTab" class="memoTab">+</div>
@@ -63,59 +66,61 @@ export default {
   created () {
     console.log('pMemoList', this.pMemoList)
     console.log('pMemoIdx', this.pMemoIdx)
-    if (this.pMemoIdx === 0) {
-      this.selectMemo(0)
-    }
   },
   data () {
     return {
-      memoTitle: '',
-      memoBody: '',
-      mSelectedMemoIdx: 0,
+      memoTitle: null,
+      memoBody: null,
+      mSelectedMemoIdx: -1,
       extractedOuterHtml: '',
       extractedInnerHtml: '',
-      formData: {}
+      formData: {},
+      selectedMemo: [],
+      mIsEditing: false
     }
   },
   methods: {
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
-      console.log('changeText', changeText)
       return changeText
     },
     selectMemo (index) {
       this.mSelectedMemoIdx = index
-      console.log('선택된 memo???', this.mSelectedMemoIdx, this.pMemoList.content[this.mSelectedMemoIdx])
       this.memoTitle = this.pMemoList.content[this.mSelectedMemoIdx].title
-      var memoList = this.pMemoList.content[index].bodyFullStr
-      console.log('memoListmemoList', memoList)
-      this.memoBody = this.decodeContents(memoList)
+      this.selectedMemo = this.pMemoList.content[index]
+      this.memoBody = this.decodeContents(this.selectedMemo.bodyFullStr)
     },
     newMemo () {
-      this.memoTitle = ''
-      this.memoBody = ''
+      this.memoTitle = null
+      this.memoBody = null
       // console.log('element', document.getElementsById('newMemoTab'))
       // document.getElementsById('newMemoTab').classList.add('newMemo')
     },
     saveMemo () {
-      var params = {}
-      params.actorList = null
-      params.attachFileList = null
-      params.workToDateStr = null
-      params.workFromDateStr = null
-      params.stickerList = null
-
-      params.jobkindId = 'MEMO'
-      params.workStatCreUserName = this.GE_USER.userDispMtext
-      params.bodyFullStr = this.memoBody
-
-      if (this.memoTitle === null || this.memoTitle === '') {
-        params.title = this.memoBody
+      console.log('??????????', this.memoTitle === null, this.memoBody === null, this.mIsEditing === false)
+      if (this.memoTitle === null && this.memoBody === null && this.mIsEditing === false) {
+        console.log('여기여기여김')
+        this.pClosePop()
       } else {
-        params.title = this.memoTitle
+        var params = {}
+        params.actorList = null
+        params.attachFileList = null
+        params.workToDateStr = null
+        params.workFromDateStr = null
+        params.stickerList = null
+        if (this.selectedMemo.contentsKey) {
+          params.contentsKey = this.selectedMemo.contentsKey
+        }
+        params.jobkindId = 'MEMO'
+        params.workStatCreUserName = this.GE_USER.userDispMtext
+        params.bodyFullStr = this.memoBody
+        console.log('params,', params)
+        if (this.memoTitle === null || this.memoTitle === '') {
+          params.title = this.memoBody
+        }
+        // this.$emit('saveMemos', params)
       }
-      this.$emit('saveMemos', params)
     },
     deleteMemo (data) {
       console.log('pMemoList[mSelectedMemoIdx]', this.pMemoList.content[this.mSelectedMemoIdx])
@@ -124,6 +129,15 @@ export default {
     }
   },
   watch: {
+    memoBody: {
+      handler (value, old) {
+        if (value !== old) {
+          this.mIsEditing = true
+          console.log('this.mIsEditing', this.mIsEditing)
+        }
+      },
+      deep: true
+    }
   },
   computed: {
 
@@ -147,7 +161,6 @@ export default {
   transform: translate(-50%, -50%);
 
   z-index: 15;
-  /* background-color: #f5f5f5; */
   background-color:#fff;
   border-radius: 0.8rem;
 }
@@ -167,7 +180,6 @@ button {
   color: #7a7a7a;
   word-wrap: normal;
   border: none;
-  /* background-color: #f1f1ff; */
   background-color:#fff;
   border-radius: 5px;
   line-height: 22px;
@@ -182,20 +194,25 @@ button {
     background-color: none;
   }
 .memoTab{
-  width:25%;
+  width:33%;
   height:35px;
   line-height:33px;
   border-radius:20px 20px 0 0;
-  background-color:#E7EDFF;
-  border:2px solid #E7EDFF;
+  background-color:#F1F1FF;
+  border:2px solid #F1F1FF;
   color:#5f61bd !important;
   font-weight:bold;
   display:inline-block;
   text-align:center;
   white-space:nowrap;
+
+  padding:0 10px;
+}
+.memoTitle{
+  width:calc(100% - 10px);
   overflow:hidden;
   text-overflow:ellipsis;
-  padding:0 10px;
+  overflow:hidden;
 }
 .mSelectedMemo{
   background-color:#fff !important;

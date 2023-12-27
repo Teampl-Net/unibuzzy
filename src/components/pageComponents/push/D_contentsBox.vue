@@ -583,7 +583,7 @@
             "
             :id="'bodyFullStr' + CONT_DETAIL.contentsKey"
             class="font14 mbottom-05  cursorDragText h-100P w-100P fl"
-            style="word-break: break-all; overflow: hidden auto"
+            style="word-break: break-all; overflow: hidden auto; font-size:16px !important;"
             v-html="
               $setBodyLength(
                 CONT_DETAIL.bodyFullStr,
@@ -801,7 +801,7 @@
                 <div style="width:20px; position:relative;">
                   <img v-if="this.CONT_DETAIL && this.CONT_DETAIL.memoCount === 0" :src="require(`@/assets/images/contents/icon_memo_blue.png`)" class="w100P"/>
                   <img v-else :src="require(`@/assets/images/contents/icon_memo_blue_on.png`)" class="w100P"/>
-                  <span class="fontBold" :style="{color: this.CONT_DETAIL.memoCount === 0 ? '#5F61BD' : '#ff'}" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:10px;">
+                  <span class="fontBold" :style="{color: this.CONT_DETAIL.memoCount === 0 ? '#5F61BD' : '#fff'}" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:10px;">
                     {{ this.CONT_DETAIL ? this.CONT_DETAIL.memoCount : '0' }}
                   </span>
                 </div>
