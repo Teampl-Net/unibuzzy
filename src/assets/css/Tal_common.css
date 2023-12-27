@@ -524,6 +524,15 @@ p{margin-bottom: 0; font-size: 1.5rem;}
   stroke-width:2px;
 }
 
+.pswp {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99!important;
+}
+
 .CDeepColor{ color: #5F61BD !important; }
 .CLightBgColor{ background-color: #a2a3e1 !important;}
 .CDeepBgColor{ background-color: #5F61BD !important;}
@@ -1197,8 +1206,6 @@ input, .mainRefreshBtn, .mainMenuIcon, .footerRouter, .roundTab, .searchIcon, .m
 }
 
 
-.mainConts .formText{ padding: 30px 25px 40px 25px !important; text-align: left !important;}
-.mainConts img {padding: 0!important}
 
 /* .mainConts .cursorDragText { padding: 0 20px !important; text-align: left !important; } */
 

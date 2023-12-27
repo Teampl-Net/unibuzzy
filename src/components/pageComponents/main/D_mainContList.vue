@@ -1,7 +1,8 @@
 <template>
   <div style="width: 100%; min-height: 100px; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 40px; " :key="mReloadKey" >
-        <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="cont.contentsKey" >
-            <gContentsBox :pOpenUnknownLoginPop="pOpenUnknownLoginPop" :pUnknownYn="pUnknownYn" class="mBottom-05" ref="myContentsBox" @requestSearchSticker="requestSearchSticker" @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
+        <template v-for="(cont, index) in this.GE_DISP_CONTS_LIST" :key="cont.contentsKey" > <!-- :propJustShowYn="cont.jobkindId === 'TODO'" -->
+          <gContentsBox v-if="cont.jobkindId" :pOpenUnknownLoginPop="pOpenUnknownLoginPop" :pUnknownYn="pUnknownYn" class="mBottom-05" ref="myContentsBox" @requestSearchSticker="requestSearchSticker" @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :contentsEle="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
+          <todoContentsBox v-else :pOpenUnknownLoginPop="pOpenUnknownLoginPop" :pUnknownYn="pUnknownYn" class="mBottom-05" ref="myContentsBox" @requestSearchSticker="requestSearchSticker" @openImgPop="openImgPop" :imgClickYn="true" :propDetailYn="false" :pTodoElement="cont" @openPop="openPop" :propContIndex='index' @contDelete='contDelete' />
             <div style="width: 100%; height: 10px;"></div>
             <myObserver v-if="this.GE_DISP_CONTS_LIST && this.GE_DISP_CONTS_LIST.length > 9 ?  index === this.GE_DISP_CONTS_LIST.length - 15 : index === this.GE_DISP_CONTS_LIST.length - 5" @triggerIntersected="loadMore" id="observer" class="fl w-100P" style="float: left;"></myObserver>
         </template>
@@ -23,10 +24,12 @@
 // import attachFileListPop from './unit/D_commonAttachFileListPop.vue'
 import writeBottSheet from './unit/D_contentsWriteBottSheet.vue'
 import findContentsList from '@/components/popup/common/D_findContentsList.vue'
+import todoContentsBox from '@/pages/routerPages/D_todoContentsBox.vue'
 export default {
   components: {
     // attachFileListPop,
     writeBottSheet,
+    todoContentsBox,
     findContentsList
   },
   data () {
@@ -435,7 +438,6 @@ export default {
 </script>
 
 <style scoped>
-
 option {
     min-height: 25px;
 }

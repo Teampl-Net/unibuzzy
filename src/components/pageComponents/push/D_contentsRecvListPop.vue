@@ -2,12 +2,12 @@
     <div style="width: calc(100% - 40px); display: flex; flex-direction: column; height: 400px; position: fixed; border-radius: 0.8rem; z-index: 11; top: 20%; left: 20px; background: #fff;">
         <div style="width: 100%; height: 50px; float: left; padding: 5px 10px; display: flex; align-items: center; position: relative;" class="headerShadow">
             <p class="font22 fontBold textLeft commonColor">{{ $t('COMMON_TODO_RECEIVER') }}</p>
-            <img @click="closeXPop(false)"  src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute; right: 15px; top: 13px; cursor: pointer;" alt="">
+            <img @click.stop="closeXPop(false)"  src="../../../assets/images/common/popup_close.png" style="width: 25px; position: absolute; right: 15px; top: 13px; cursor: pointer;" alt="">
         </div>
         <div style="width: 100%; height: calc(100% - 100px); overflow: hidden scroll; " class="okScrollBar">
             <div v-for="(actor, index) in this.mActorList" style="width: calc(100% - 40px); height: 100%; display: flex; border-bottom: 1px solid #ccc; height: 80px; align-items: center; margin: 10px 20px;" :key="index">
                 <template v-if="actor.accessKind === 'C'">
-                    <div class="imgCircle middleBgColor fl" @click="clickEvntToParents('open')" >
+                    <div class="imgCircle middleBgColor fl" @click.stop="clickEvntToParents('open')" >
                         <img src="../../../assets/images/board/icon_book.svg" class="fl content img-w25"/>
                     </div>
                     <div class="fl mleft-05" style="display: flex; align-items: center; width: calc(100% - 100px); ">
@@ -19,10 +19,10 @@
                 </template>
 
                 <template v-else-if="actor.accessKind === 'M'">
-                    <div class="imgCircle middleBgColor fl" @click="clickEvntToParents('open')" >
+                    <div class="imgCircle middleBgColor fl" @click.stop="clickEvntToParents('open')" >
                         <img src="../../../assets/images/common/memberIcon.svg" class="content img-w30"/>
                     </div>
-                    <div class="fl mleft-05" style="display: flex; align-items: center; width: calc(100% - 100px);" @click="clickEvntToParents('open')">
+                    <div class="fl mleft-05" style="display: flex; align-items: center; width: calc(100% - 100px);" @click.stop="clickEvntToParents('open')">
                         <div class="textLeft fl textOverdot w-100P" style="" >
                             <p class="fl font16 commonDarkGray fontBold textOverdot w-100P">{{this.$changeText(actor.memberTypeNameMtext)}}</p>
                             <!-- <p class="fl font14 commonDarkGray textOverdot" style="width: calc(100%)" >{{cabinetNames}}</p> -->
@@ -32,13 +32,13 @@
 
                 <!-- 유저 영역 -->
                 <template v-else-if="actor.accessKind === 'U'">
-                    <div class="imgCircle middleBgColor fl" @click="clickEvntToParents('open')" >
+                    <div class="imgCircle middleBgColor fl" @click.stop="clickEvntToParents('open')" >
                         <div v-if="actor.domainPath || actor.userProfileImg" :style="'background-image: url(' + (actor.domainPath? actor.domainPath + (actor.userProfileImg ? actor.userProfileImg : actor.pathMtext ) : actor.userProfileImg ) + ');'" style="background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
                         </div>
                         <div v-else style="background-image: url('/resource/userCommonIcon/userImg01.svg');background-size: cover; background-repeat: no-repeat; background-position: center;"  class="memberPicImgWrap">
                         </div>
                     </div>
-                    <div class="fl w-100P mleft-05" style="display: flex; align-items: center; " @click="clickEvntToParents('open')">
+                    <div class="fl w-100P mleft-05" style="display: flex; align-items: center; " @click.stop="clickEvntToParents('open')">
                         <div class="textLeft fl w-100P " style="" >
                             <p class="fl font16 commonDarkGray fontBold w-100P"><img v-if="actor.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../assets/images/editChan/icon_self.svg">{{this.$changeText(actor.userDispMtext)}}</p>
                             <p class="fl font14 commonDarkGray " style="" >{{actor.userEmail ? changeDot('email', actor.userEmail) : $t('COMMON_MSG_NO_EMAIL')}}</p>
@@ -49,9 +49,9 @@
                 </template>
             </div>
         </div>
-        <div style="display: flex; width: 100%; justify-content: center; height: 50px;">
-            <gBtnSmall @click="sendMsgToRecvList" class="mright-05" :btnTitle="$t('COMM_BTN_SEND_NOTI_AGAIN')"/>
-            <gBtnSmall @click="closeXPop(false)" btnThema="light" :btnTitle="$t('COMM_BTN_CLOSE')"/>
+        <div v-if="initData && initData.jobkindId !== 'TODO'" style="display: flex; width: 100%; justify-content: center; height: 50px;">
+            <gBtnSmall @click.stop="sendMsgToRecvList" class="mright-05" :btnTitle="$t('COMM_BTN_SEND_NOTI_AGAIN')"/>
+            <gBtnSmall @click.stop="closeXPop(false)" btnThema="light" :btnTitle="$t('COMM_BTN_CLOSE')"/>
         </div>
     </div>
 </template>

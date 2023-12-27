@@ -81,7 +81,7 @@
       <memberFormPreView :pPopId="popId" v-if=" popId &&  targetType === 'mQPreview'" :propData="propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <errorPage :pPopId="popId" v-if=" popId &&  targetType === 'errorPage'" :propData="propParams" @openPop="openPop" />
       <creAddressBook :pPopId="popId" v-if="targetType === 'creAddressBook'" :propData="propParams" @openPop="openPop" @closePop="closePop" @closeXPop="closeXPop" @saveCabinet="saveCabinet" />
-      <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 999999999;"/>
+      <gConfirmPop :confirmText="errorText" confirmType='one' @no='failPopYn = false' v-if="failPopYn" style="z-index: 999999;"/>
       <editMemberTypePop ref="editMemberTypePop" :pPopId="popId" v-if="popId && targetType === 'editMemberTypePop'" :propData="propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <memInfoCreEditPop :pPopId="popId" v-if="popId && targetType === 'memInfoCreEditPop'" :propData="propParams" @openPop="openPop" @closeXPop="closeXPop" />
       <notiHitstory :pPopId="popId" v-if="popId && targetType === 'notiHitstory'" :propData="propParams" @openPop="openPop" @closeXPop="closeXPop" />
@@ -936,7 +936,7 @@ export default {
 <style scoped>
 
 /* .commonPopWrap{position: absolute;width: 100%;height: 100%;top: 0;z-index: 9999; background: #FFFFFF;} */
-.commonPopWrap{position: absolute;width: 100%;height: 100%;top: 0;z-index: 99; background: #FFFFFF; overflow: hidden;}
+.commonPopWrap{position: fixed;width: 100%;height: 100%;top: 0;z-index: 99; background: #FFFFFF; overflow: hidden;}
 .commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;}
 /* .commonPopPushDetail{box-sizing: border-box;height: 100%;width: 100%;padding-top: 50px;} */
 

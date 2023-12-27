@@ -285,6 +285,7 @@ export default {
       if (!memoList) {
         memoList = this.CONT_DETAIL.memoList
       }
+      if (!memoList) return
       var leng = memoList.length
       for (var i = 0; i < memoList.length; i++) {
         if (memoList[i].creUserKey === this.GE_USER.userKey) this.mWriteMemoYn = true
@@ -1056,25 +1057,25 @@ export default {
     },
     CONT_DETAIL () {
       if (!this.contentsEle) return
-      var cont = this.$getContentsDetail(null, this.contentsEle.contentsKey, this.contentsEle.creTeamKeyy, this.contentsEle.jobkindId)
+      var cont = this.$getContentsDetail(this.CHANNEL_DETAIL, this.contentsEle.contentsKey, this.contentsEle.creTeamKeyy, this.contentsEle.jobkindId)
       if (!cont) {
         cont = [this.contentsEle]
         // this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [this.contentsEle])
       }
-      if (cont[0] && cont[0].shareList && cont[0].shareList[0] && cont[0].shareList[0].length !== 0) {
-        if (cont[0].shareList[0].accessKind === 'F') {
-          if (this.CHANNEL_DETAIL && (this.CHANNEL_DETAIL.D_CHAN_AUTH === true || (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) || this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)) {
-            cont[0].VIEW_YN = true
-            return cont[0]
-          } else {
-            cont[0].VIEW_YN = false
-            return cont[0]
-          }
-          // const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
-        }
-      }
+      // if (cont[0] && cont[0].shareList && cont[0].shareList[0] && cont[0].shareList[0].length !== 0) {
+      //   if (cont[0].shareList[0].accessKind === 'F') {
+      //     if (this.CHANNEL_DETAIL && (this.CHANNEL_DETAIL.D_CHAN_AUTH === true || (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && this.CHANNEL_DETAIL.D_CHAN_AUTH.settingYn) || this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn)) {
+      //       cont[0].VIEW_YN = true
+      //       return cont[0]
+      //     } else {
+      //       cont[0].VIEW_YN = false
+      //       return cont[0]
+      //     }
+      //     // const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
+      //   }
+      // }
       if (cont && cont.length > 0) {
-        const viewAuth = this.$checkUserAuth(cont[0].shareItem).V
+        // const viewAuth = this.$checkUserAuth(cont[0].shareItem).V
         /* if (cont[0].shareList) {
           const shareList = cont[0].shareList
           const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
@@ -1082,11 +1083,11 @@ export default {
             viewAuth = true
           }
         } */
-        cont[0].VIEW_YN = viewAuth
+        // cont[0].VIEW_YN = viewAuth
         return cont[0]
       } else {
         var content = this.contentsEle
-        const viewAuth = this.$checkUserAuth(this.contentsEle.shareItem).V
+        // const viewAuth = this.$checkUserAuth(this.contentsEle.shareItem).V
         /* if (this.contentsEle.shareList) {
           const shareList = this.contentsEle.shareList
           const index = shareList.findIndex((item) => (item.accessKind === 'T' || item.accessKind === 'F'))
@@ -1094,7 +1095,7 @@ export default {
             viewAuth = true
           }
         } */
-        content.VIEW_YN = viewAuth
+        // content.VIEW_YN = viewAuth
         return content
       }
     },

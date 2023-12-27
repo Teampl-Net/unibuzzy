@@ -143,7 +143,7 @@ export const functions = {
   getContentsDetail (teamDetail, targetKey, teamKey, jobkindId) {
     // if (g_axiosQueue.findIndex((item) => item === 'getContentsDetail') !== -1) return
     // g_axiosQueue.push('getContentsDetail')
-    if (((jobkindId && jobkindId === 'TODO') || (jobkindId && jobkindId === 'MEMO')) || (jobkindId === 'ALIM' && !teamKey)) {
+    if ((jobkindId === 'ALIM' && !teamKey)) {
       return null
     }
     var detailData
@@ -163,15 +163,14 @@ export const functions = {
     if (detailData && detailData.length !== 0) {
       return detailData
     } else {
-      detailData = teamDetail.ELEMENTS.alimList.filter(cab => cab.contentsKey === Number(targetKey))
-      if (!detailData || detailData.length === 0) {
+      if (jobkindId === 'ALIM') {
+        detailData = teamDetail.ELEMENTS.alimList.filter(cab => cab.contentsKey === Number(targetKey))
+      } else if (jobkindId === 'BOAR') {
         detailData = teamDetail.ELEMENTS.boardList.filter(cab => cab.contentsKey === Number(targetKey))
-        if (!detailData || detailData.length === 0) {
-          detailData = teamDetail.ELEMENTS.todoList.filter(cab => cab.contentsKey === Number(targetKey))
-        }
-        if (!detailData || detailData.length === 0) {
-          detailData = teamDetail.ELEMENTS.memoList.filter(cab => cab.contentsKey === Number(targetKey))
-        }
+      } else if (jobkindId === 'TODO') {
+        detailData = teamDetail.ELEMENTS.todoList.filter(cab => cab.contentsKey === Number(targetKey))
+      } else {
+        detailData = teamDetail.ELEMENTS.memoList.filter(cab => cab.contentsKey === Number(targetKey))
       }
       // var queueIndex = g_axiosQueue.findIndex((item) => item === 'getContentsDetail')
       // g_axiosQueue.splice(queueIndex, 1)

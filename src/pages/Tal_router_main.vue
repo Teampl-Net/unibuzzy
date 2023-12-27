@@ -625,7 +625,7 @@ export default {
     async recvNotiFormBridge (notiDetail, currentPage, vuexResultData) {
       try {
         var notiUserDo = JSON.parse(notiDetail.userDo)
-        if ((currentPage === 0 || currentPage === undefined)) {
+        if ((currentPage === 0 || currentPage === undefined || (currentPage === 'bottomWriteSheets' || currentPage.includes('writeContents')))) {
           // eslint-disable-next-line no-new-object
           var goDetailParam = new Object()
           goDetailParam.notiYn = true
