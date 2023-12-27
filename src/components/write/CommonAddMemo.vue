@@ -1,3 +1,13 @@
+<i18n>
+  {
+    "ko": {
+      "COMM_DEL_MEMO": "메모를 삭제하시겠습니까?",
+    },
+    "en": {
+      "COMM_DEL_MEMO": "Do you want to delete this memo?",
+    }
+  }
+  </i18n>
 <template>
   <div id="layout">
     <header>
@@ -25,7 +35,7 @@
             <div v-for="(memo, mIndex) in pMemoList.content" :key="mIndex" class="memoTab" @click="selectMemo(mIndex)" :class="{mSelectedMemo : mSelectedMemoIdx === mIndex}">
               <div class="w100P" style="display:flex; align-items:center; justify-content:space-between;">
                 <span class="memoTitle" style="width:clac(100% - 22px);">{{memo.title}}</span>
-                <span style="font-size:10px; width:22px;" class="cursorP" @click="deleteMemo(pMemoList.content[mSelectedMemoIdx])" >삭제</span>
+                <span style="font-size:10px; width:22px;" class="cursorP" @click="mConfirmPopShowYn = true" >삭제</span>
               </div>
               <!-- <span @click="goDetail(memo)" >z</span> -->
             </div>
@@ -53,6 +63,13 @@
       </div>
     </div>
   </div>
+  <gConfirmPop
+      :confirmText="$t('COMM_DEL_MEMO')"
+      confirmType="two"
+      @no="mConfirmPopShowYn = false"
+      v-if="mConfirmPopShowYn"
+      @ok="deleteMemo(pMemoList.content[mSelectedMemoIdx])"
+    />
 
 </template>
 <script>
@@ -69,14 +86,15 @@ export default {
   },
   data () {
     return {
-      memoTitle: null,
+      memoTitle: '새 메모',
       memoBody: null,
       mSelectedMemoIdx: -1,
       extractedOuterHtml: '',
       extractedInnerHtml: '',
       formData: {},
       selectedMemo: [],
-      mIsEditing: false
+      mIsEditing: false,
+      mConfirmPopShowYn: false
     }
   },
   methods: {
@@ -98,8 +116,7 @@ export default {
       // document.getElementsById('newMemoTab').classList.add('newMemo')
     },
     saveMemo () {
-      console.log('??????????', this.memoTitle === null, this.memoBody === null, this.mIsEditing === false)
-      if (this.memoTitle === null && this.memoBody === null && this.mIsEditing === false) {
+      if (this.memoTitle === '새 메모' && this.memoBody === null && this.mIsEditing === false) {
         console.log('여기여기여김')
         this.pClosePop()
       } else {
@@ -114,17 +131,16 @@ export default {
         }
         params.jobkindId = 'MEMO'
         params.workStatCreUserName = this.GE_USER.userDispMtext
+        params.title = this.memoTitle
         params.bodyFullStr = this.memoBody
         console.log('params,', params)
-        if (this.memoTitle === null || this.memoTitle === '') {
-          params.title = this.memoBody
-        }
-        // this.$emit('saveMemos', params)
+        this.$emit('saveMemos', params)
       }
     },
     deleteMemo (data) {
-      console.log('pMemoList[mSelectedMemoIdx]', this.pMemoList.content[this.mSelectedMemoIdx])
-      console.log('data', data)
+      this.mConfirmPopShowYn = false
+      this.memoTitle = '새 메모'
+      this.memoBody = null
       this.$emit('deleteMemo', data)
     }
   },

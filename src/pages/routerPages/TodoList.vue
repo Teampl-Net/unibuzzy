@@ -607,7 +607,6 @@ export default {
   },
   created () {
     console.log('setTagFontColor', this.setTagFontColor)
-    console.log('GE_DISP_LISTGE_DISP_LIST', this.GE_DISP_LIST)
     if (this.GE_USER.unknownYn) {
       this.$router.push('/')
     }
@@ -967,10 +966,15 @@ export default {
       if (res.result) {
         const newParam = {}
         newParam.contentsKey = res.contents.contentsKey
-        newParam.jobkindId = 'TODO'
+        if (this.mPopupType === 'MEMO') {
+          newParam.jobkindId = 'MEMO'
+        } else {
+          newParam.jobkindId = 'TODO'
+        }
 
         await this.$getContentsList(newParam).then(newReslute => {
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
+          console.log('newReslutenewReslute', newReslute)
         })
         if (res.sticker) {
           await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', res.sticker)
@@ -2066,7 +2070,7 @@ export default {
     GE_DISP_LIST () {
       const tab = this.mShowTab[this.mSelectedMainTabIdx]
       if (tab.tabVal === 'A') {
-        console.log(this.mCheckTodoList)
+        // console.log(this.mCheckTodoList)
         return [{ listName: this.$t('COMMON_TODO_MYTODO'), list: this.getReplaceList(this.mMyTodoList) }, { listName: this.$t('COMMON_TODO_CHECK'), list: this.getReplaceList(this.mCheckTodoList) }, { listName: this.$t('COMMON_TODO_PUBLIC'), list: this.getReplaceList(this.mRefTodoList) }, { listName: this.$t('COMMON_TODO_COMPLETED'), list: this.getReplaceList(this.mCompTodoList) }]
       } else if (tab.tabVal === 'M') {
         return [{ listName: this.$t('COMMON_TODO_MYTODO'), list: this.getReplaceList(this.mMyTodoList) }, { listName: this.$t('COMMON_TODO_CHECK'), list: this.getReplaceList(this.mCheckTodoList) }, { listName: this.$t('COMMON_TODO_PUBLIC'), list: this.getReplaceList(this.mRefTodoList) }]
@@ -2503,73 +2507,77 @@ export default {
       handler (value, old) {
         if (!value || !value[0]) return
         console.log(value)
-        if (value[0].jobkindId !== 'TODO') return
+        if (value[0].jobkindId !== 'TODO' && value[0].jobkindId !== 'MEMO') return
         const newTodo = value[0]
         // let oriList = []
-        newTodo.strikeOnOff = false
-        newTodo.sideMenuOpenYn = false
-        if (this.mMyTodoList && this.mMyTodoList.content && this.mCheckTodoList && this.mCheckTodoList.content && this.mRefTodoList && this.mRefTodoList.content && (this.mMyTodoList.content.findIndex(
-          (todo) => todo.contentsKey === newTodo.contentsKey
-        ) !== -1 ||
-          this.mCheckTodoList.content.findIndex(
+        if (value[0].jobkindId === 'TODO') {
+          newTodo.strikeOnOff = false
+          newTodo.sideMenuOpenYn = false
+          if (this.mMyTodoList && this.mMyTodoList.content && this.mCheckTodoList && this.mCheckTodoList.content && this.mRefTodoList && this.mRefTodoList.content && (this.mMyTodoList.content.findIndex(
             (todo) => todo.contentsKey === newTodo.contentsKey
           ) !== -1 ||
-          this.mRefTodoList.content.findIndex(
-            (todo) => todo.contentsKey === newTodo.targetKey
-          ) !== -1)
-        ) {
-          if (newTodo.contStatus === '99') {
-            this.mCompTodoList.content.unshift(newTodo)
+            this.mCheckTodoList.content.findIndex(
+              (todo) => todo.contentsKey === newTodo.contentsKey
+            ) !== -1 ||
+            this.mRefTodoList.content.findIndex(
+              (todo) => todo.contentsKey === newTodo.targetKey
+            ) !== -1)
+          ) {
+            if (newTodo.contStatus === '99') {
+              this.mCompTodoList.content.unshift(newTodo)
+            }
+            const returnList = this.splitList([...this.mMyTodoList.content, ...this.mCheckTodoList.content, ...this.mRefTodoList.content])
+            if (returnList) {
+              if (returnList.my) {
+                this.mMyTodoList = { content: returnList.my }
+              }
+              if (returnList.check) {
+                this.mCheckTodoList = { content: returnList.check }
+              }
+              if (returnList.ref) {
+                this.mRefTodoList = { content: returnList.ref }
+              }
+            }
+            // const myIndex = this.mMyTodoList.content.findIndex(
+            //   (todo) => todo.contentsKey === newTodo.contentsKey
+            // )
+            // const targetIndex =
+            //   this.mReqTodoList.content.findIndex(
+            //     (todo) => todo.contentsKey === newTodo.contentsKey
+            //   )
+            // const refIndex =
+            // this.mRefTodoList.content.findIndex(
+            //   (todo) => todo.contentsKey === newTodo.targetKey
+            // )
+            // if (newTodo.contStatus === '99') {
+            //   if (this.mCompTodoList.content.findIndex(
+            //     (todo) => todo.contentsKey === newTodo.contentsKey
+            //   ) === -1
+            //   ) { this.mCompTodoList.content.unshift(newTodo) }
+            //   if (refIndex !== -1) {
+            //     this.mRefTodoList.content.splice(myIndex, 1)
+            //   } else if (myIndex !== -1) {
+            //     this.mMyTodoList.content.splice(myIndex, 1)
+            //   } else if (targetIndex !== -1) {
+            //     this.mReqTodoList.content.splice(targetIndex, 1)
+            //   }
+            // }
+          } else {
+            const returnList = this.splitList([newTodo, ...this.mMyTodoList.content, ...this.mCheckTodoList.content, ...this.mRefTodoList.content])
+            if (returnList) {
+              if (returnList.my) {
+                this.mMyTodoList = { content: returnList.my }
+              }
+              if (returnList.check) {
+                this.mCheckTodoList = { content: returnList.check }
+              }
+              if (returnList.ref) {
+                this.mRefTodoList = { content: returnList.ref }
+              }
+            }
           }
-          const returnList = this.splitList([...this.mMyTodoList.content, ...this.mCheckTodoList.content, ...this.mRefTodoList.content])
-          if (returnList) {
-            if (returnList.my) {
-              this.mMyTodoList = { content: returnList.my }
-            }
-            if (returnList.check) {
-              this.mCheckTodoList = { content: returnList.check }
-            }
-            if (returnList.ref) {
-              this.mRefTodoList = { content: returnList.ref }
-            }
-          }
-          // const myIndex = this.mMyTodoList.content.findIndex(
-          //   (todo) => todo.contentsKey === newTodo.contentsKey
-          // )
-          // const targetIndex =
-          //   this.mReqTodoList.content.findIndex(
-          //     (todo) => todo.contentsKey === newTodo.contentsKey
-          //   )
-          // const refIndex =
-          // this.mRefTodoList.content.findIndex(
-          //   (todo) => todo.contentsKey === newTodo.targetKey
-          // )
-          // if (newTodo.contStatus === '99') {
-          //   if (this.mCompTodoList.content.findIndex(
-          //     (todo) => todo.contentsKey === newTodo.contentsKey
-          //   ) === -1
-          //   ) { this.mCompTodoList.content.unshift(newTodo) }
-          //   if (refIndex !== -1) {
-          //     this.mRefTodoList.content.splice(myIndex, 1)
-          //   } else if (myIndex !== -1) {
-          //     this.mMyTodoList.content.splice(myIndex, 1)
-          //   } else if (targetIndex !== -1) {
-          //     this.mReqTodoList.content.splice(targetIndex, 1)
-          //   }
-          // }
-        } else {
-          const returnList = this.splitList([newTodo, ...this.mMyTodoList.content, ...this.mCheckTodoList.content, ...this.mRefTodoList.content])
-          if (returnList) {
-            if (returnList.my) {
-              this.mMyTodoList = { content: returnList.my }
-            }
-            if (returnList.check) {
-              this.mCheckTodoList = { content: returnList.check }
-            }
-            if (returnList.ref) {
-              this.mRefTodoList = { content: returnList.ref }
-            }
-          }
+        } else if (value[0].jobkindId === 'MEMO') {
+          this.mMyMemoList.content.unshift(newTodo)
         }
         /*  else if (
           this.mCompTodoList.content.findIndex(

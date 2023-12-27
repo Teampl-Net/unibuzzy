@@ -264,12 +264,10 @@ export default {
     }
   },
   created () {
-    console.log('pGeUserpGeUser', this.pGeUser)
     if (this.CONT_DETAIL && this.CONT_DETAIL.stickerList && this.CONT_DETAIL.stickerList.length > 0) {
       if (this.CONT_DETAIL.stickerList.picBgPath === '#91BDFF' || this.CONT_DETAIL.stickerList.picBgPath === '#C2DAFF' || this.CONT_DETAIL.stickerList.picBgPath === '#FFC58F' || this.CONT_DETAIL.stickerList.picBgPath === '#FFE0C4' || this.CONT_DETAIL.stickerList.picBgPath === '#A8FFA1' || this.CONT_DETAIL.stickerList.picBgPath === '#CDFFC9' || this.CONT_DETAIL.stickerList.picBgPath === '#DAB5FF' || this.CONT_DETAIL.stickerList.picBgPath === '#EAD5FF' || this.CONT_DETAIL.stickerList.picBgPath === '#95E6FF' || this.CONT_DETAIL.stickerList.picBgPath === '#C8F5FF' || this.CONT_DETAIL.stickerList.picBgPath === '#FF86CF' || this.CONT_DETAIL.stickerList.picBgPath === '#FFC3E4' || this.CONT_DETAIL.stickerList.picBgPath === '#CCCCCC' || this.CONT_DETAIL.stickerList.picBgPath === '#E3E3E3') {
         this.CONT_DETAIL.stickerList.push({ blackYn: true })
       }
-      console.log('cont11111111', this.CONT_DETAIL.stickerList)
     }
   },
   methods: {
@@ -353,14 +351,14 @@ export default {
     },
     CONT_DETAIL () {
       if (!this.pTodoElement) return
-      console.log(this.CHANNEL_DETAIL)
+      // console.log(this.CHANNEL_DETAIL)
       var cont = this.$getContentsDetail(
         null,
         this.pTodoElement.contentsKey,
         0,
         this.pTodoElement.jobkindId
       )
-      console.log(cont)
+      // console.log(cont)
       if (!cont) {
         cont = [this.pTodoElement]
       }
