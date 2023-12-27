@@ -96,28 +96,39 @@
   <div id="layout">
     <header>
       <!-- Popup Title -->
-      <button @click="closeXPop" type="button" class="closeBtn" v-if="contentType !== 'MEMO' || (pMemoData && !pMemoData.creUserName)">
+      <button @click="closeXPop" type="button" class="closeBtn">
           <img
             src="../../assets/images/common/popup_close.png"
             alt="close button"
             style="width:20px;"
           />
         </button>
-        <div class="HeaderbtnWrap" v-if="contentType === 'MEMO' && pMemoData && pMemoData.creUserName">
+        <!-- <div class="HeaderbtnWrap" v-if="contentType === 'MEMO' && pMemoData && pMemoData.creUserName">
           <div @click="deleteMemo(pMemoData)" class="saveBtn fontBold">
             {{ $t('COMMON_BTN_DELETE') }}
           </div>
-        <!-- <button @click="closePop">Cancel</button> -->
-        </div>
+        </div> -->
       <p class="commonColor fontBold" style="font-size:20px; line-height: 30px;">{{ pOptions.purpose }}</p>
-      <div class="HeaderbtnWrap">
-        <div @click="postContents" class="saveBtn fontBold">
+      <div class="HeaderbtnWrap" :style="{width: contentType === 'MEMO' ? '40px' : 'auto'}">
+        <div @click="postContents" class="saveBtn fontBold" v-if="contentType !== 'MEMO'">
           {{ pContentsData ? $t('COMM_BTN_EDIT2') : $t('COMMON_BTN_SAVE') }}
         </div>
         <!-- <button @click="closePop">Cancel</button> -->
       </div>
     </header>
     <main>
+
+      <!-- <div v-if="contentType === 'MEMO'" class="w100P mbottom-03" style="min-height:30px;">
+        <div class="memoTabWrap w100P" style="display:flex; align-items:center;">
+          <div style="width:100%; overflow-x:scroll; white-space:nowrap; text-align:left;">
+            <div v-for="(memo, mIndex) in pMemoList.content" :key="mIndex" class="memoTab" @click="selectMemo(mIndex)" :class="{mSelectedMemo : mSelectedMemoIdx === mIndex}">
+              {{ mSelectedMemoIdx === mIndex }}
+            </div>
+            <div class="memoTab">+</div>
+          </div>
+        </div>
+      </div> -->
+
       <form>
         <!-- neccessary post values -->
         <!-- TITLE -->
@@ -349,15 +360,15 @@
                 >
                   <div style="width: calc(100% - 30px); flaot: left; padding-top: 5px;" :style="openTagsYn? 'min-height: 25px;' : 'height: 25px;'">
                     <div v-if="mSelfAddTagShowYn" class="backgroundShadow"  style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 98;"></div>
-                    <manageStickerPop ref="manageStickerPop" v-if="mSelfAddTagShowYn" :pCloseStickerPop="openSelfAddTag" />
+                    <manageStickerPop ref="manageStickerPop" v-if="mSelfAddTagShowYn" @newSticker="setNewSticker" :pCloseStickerPop="openSelfAddTag" />
                     <div style="width:100%;">
                       <button
                         type="button"
                         @click="toggleSelectTag(sticker, index)"
                         v-for="(sticker, index) in tagListForDom"
                         :key="sticker.stickerKey"
-                        :style=" sticker.picBgPath && !sticker.isSelected? `border: 2px solid #9C9C9C;`: sticker.picBgPath && sticker.isSelected? `background: ${sticker.picBgPath}; color: #FFF; border: 2px solid ${sticker.picBgPath};` : ''"
-                        :class="{ activeBtn: sticker.isSelected }"
+                        :style=" sticker.picBgPath && !sticker.isSelected? `border: 2px solid #9C9C9C;`: sticker.picBgPath && sticker.isSelected? `background: ${sticker.picBgPath}; border: 2px solid ${sticker.picBgPath};` : ''"
+                        :class="{ activeBtn: sticker.isSelected, tagColorWhite: sticker.picBgPath && sticker.isSelected && sticker.blackYn === false}"
                         style="margin-bottom: 5px;margin-right: 5px; font-size: 13px; height:25px; border-radius:25px; "
                         class="tagButton "
                       >
@@ -472,8 +483,7 @@ export default defineComponent({
     'propParams',
     'contentTypeAB',
     'pMemoYn',
-    'popUpType',
-    'pMemoData'
+    'popUpType'
   ],
   components: {
     SelectTargetPop,
@@ -511,11 +521,24 @@ export default defineComponent({
       mIsDraggedYn: false,
       enterTarget: null,
       mSelectedTagList: [],
-      mTagListForDom: []
+      mTagListForDom: [],
+      mBlackYn: false,
+      bgColor: 'ccc',
+      textLight: '#fff',
+      textDark: '#000'
     }
   },
   created () {
-    console.log('pMemoData', this.pMemoData)
+    this.setTagColor()
+    if (this.params.stickerList) {
+      for (let i = 0; i < this.params.stickerList.length; i++) {
+        var sticker = this.params.stickerList[i]
+        if (sticker.picBgPath === '#91BDFF' || sticker.picBgPath === '#c2DAFF' || sticker.picBgPath === '#FFC58F' || sticker.picBgPath === '#FFE0C4' || sticker.picBgPath === '#A8FFA1' || sticker.picBgPath === '#CDFFC9' || sticker.picBgPath === '#DAB5FF' || sticker.picBgPath === '#EAD5FF' || sticker.picBgPath === '#95E6FF' || sticker.picBgPath === '#C8F5FF' || sticker.picBgPath === '#FF86CF' || sticker.picBgPath === '#FFC3E4' || sticker.picBgPath === '#CCCCCC' || sticker.picBgPath === '#E3E3E3') {
+          this.params.stickerList[i].blackYn = true
+        }
+      }
+      console.log('this.params.stickerList', this.params.stickerList)
+    }
     console.log('props.propData / props.propParams', this.propData, this.propParams)
     if (!this.popUpType) {
       this.contentType = 'TODO'
@@ -750,6 +773,18 @@ export default defineComponent({
     }
   },
   methods: {
+    setNewSticker (name, color, key) {
+      if (this.params.stickerList) {
+        for (let i = 0; i < this.params.stickerList.length; i++) {
+          if (this.params.stickerList[i].stickerKey === key) {
+            console.log('전', this.params.stickerList[i])
+            this.params.stickerList[i].nameMtext = name
+            this.params.stickerList[i].picBgPath = color
+            console.log('후', this.params.stickerList[i])
+          }
+        }
+      }
+    },
     findUrlChangeAtag (inputText) {
       const rplcdPttrn1 = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig
       var rplcdTxt = inputText.replace(rplcdPttrn1, '<a href="$1" target="_blank">$1</a>')
@@ -1165,17 +1200,13 @@ export default defineComponent({
     var gCertiPopShowYn = reactive(false)
     var cabinetName = reactive('')
     // var chanList = reactive([])
+    var newMemoData = reactive({})
 
     const decodeContents = (data) => {
       console.log('decode 실행되었습니다.')
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
       return changeText
-    }
-
-    // 메모 삭제하기
-    const deleteMemo = async (data) => {
-      context.emit('deleteMemo', data)
     }
 
     // 게시판 선택하기
@@ -1458,6 +1489,7 @@ export default defineComponent({
     const propAttachFileList = reactive([])
     // ------------------- DOM 생성 후 실행될 로직
     onMounted(() => {
+      console.log('props.pMemoDataprops.pMemoDataprops.pMemoDataprops.pMemoData', props.pMemoData)
       // fromDate
       const now = new Date()
       const year = now.getFullYear()
@@ -1480,19 +1512,22 @@ export default defineComponent({
       if (route.path === '/todo') {
         hasTitleYn.value = true
       }
-      // >---- 편집 상태일 때 세팅 MEMO----<
-      if (props.pMemoData && props.pMemoData.jobkindId === 'MEMO') {
+
+      // // >---- 편집 상태일 때 세팅 MEMO----<
+      if (props.pMemoList && props.pMemoList.content.length > 0) {
+        newMemoData = props.pMemoList.content[0]
         params.modiYn = true
-        params.contentsKey = props.pMemoData.contentsKey
-        params.title = props.pMemoData.title
+        params.contentsKey = newMemoData.contentsKey
+        params.title = newMemoData.title
         if (params.title) {
           hasTitleYn.value = true
         }
-        params.bodyFullStr = setBodyLength(props.pMemoData.bodyFullStr)
+        params.bodyFullStr = setBodyLength(newMemoData.bodyFullStr)
         if (params.bodyFullStr) {
           replaceTargetInChild(params.bodyFullStr) // DOM tree에서 원하는 대상 찾아 교체
         }
       }
+
       // >---- 편집 상태일 때 세팅 TODO----<
       if (props.pContentsData && props.pContentsData.jobkindId !== 'MEMO') {
         console.log('TODO 수정하기 - 들어왔음.', props.pContentsData)
@@ -1711,6 +1746,27 @@ export default defineComponent({
       }
     )
 
+    // 메모 데이터 변경 체크
+    watch(() => newMemoData, (newValue, oldValue) => {
+      console.log('watch newMemoData', newMemoData)
+      if (newValue && newValue !== null && newValue !== oldValue) {
+        console.log('newMemoData 변함', newValue)
+        params.modiYn = true
+        params.contentsKey = newValue.contentsKey
+        params.title = newValue.title
+
+        if (params.title) {
+          hasTitleYn.value = true
+        }
+
+        params.bodyFullStr = setBodyLength(newValue.bodyFullStr)
+
+        if (params.bodyFullStr) {
+          replaceTargetInChild(params.bodyFullStr) // DOM tree에서 원하는 대상 찾아 교체
+        }
+      }
+    }, { deep: true })
+
     // 익명 & 댓글 & 제목 여부 설정
     const toggleAnonymousYn = () => {
       params.showCreNameYn = !params.showCreNameYn
@@ -1879,6 +1935,7 @@ export default defineComponent({
 
     // Tag(category) 선택 기능
     const tagListForDom = reactive([]) // 원본 유지를 위한 복사
+
     watch(
       () => tagListForDom.value,
       (val) => {
@@ -1890,7 +1947,11 @@ export default defineComponent({
             const stickerObj = {
               stickerKey: sticker.stickerKey,
               nameMtext: sticker.nameMtext,
-              picBgPath: sticker.picBgPath
+              picBgPath: sticker.picBgPath,
+              blackYn: false
+            }
+            if (sticker.picBgPath === '#91BDFF' || sticker.picBgPath === '#C2DAFF' || sticker.picBgPath === '#FFC58F' || sticker.picBgPath === '#FFE0C4' || sticker.picBgPath === '#A8FFA1' || sticker.picBgPath === '#CDFFC9' || sticker.picBgPath === '#DAB5FF' || sticker.picBgPath === '#EAD5FF' || sticker.picBgPath === '#95E6FF' || sticker.picBgPath === '#C8F5FF' || sticker.picBgPath === '#FF86CF' || sticker.picBgPath === '#FFC3E4' || sticker.picBgPath === '#CCCCCC' || sticker.picBgPath === '#E3E3E3') {
+              stickerObj.blackYn = true
             }
             const index = currentData.findIndex((item) => item.stickerKey === sticker.stickerKey)
             if (index !== -1) {
@@ -1918,6 +1979,16 @@ export default defineComponent({
           stickerObj.isSelected = false
         } */
         tagListForDom.push(stickerObj)
+        // if (tagListForDom) {
+        //   console.log('tagListForDom', tagListForDom)
+        //   for (let i = 0; i < tagListForDom.length; i++) {
+        //     tagListForDom[i].blackYn = false
+        //     if (sticker.picBgPath === '#91BDFF' || sticker.picBgPath === '#C2DAFF' || sticker.picBgPath === '#FFC58F' || sticker.picBgPath === '#FFE0C4' || sticker.picBgPath === '#A8FFA1' || sticker.picBgPath === '#CDFFC9' || sticker.picBgPath === '#DAB5FF' || sticker.picBgPath === '#EAD5FF' || sticker.picBgPath === '#95E6FF' || sticker.picBgPath === '#C8F5FF' || sticker.picBgPath === '#FF86CF' || sticker.picBgPath === '#FFC3E4' || sticker.picBgPath === '#CCCCCC' || sticker.picBgPath === '#E3E3E3') {
+        //       tagListForDom[i].blackYn = true
+        //     }
+        //   }
+        //   return tagListForDom
+        // }
       })
     }
     const selfAddTag = ref('')
@@ -1962,6 +2033,10 @@ export default defineComponent({
         tagListForDom[index].isSelected = true
       }
       params.stickerList = replaceStickerArr(params.stickerList)
+    }
+
+    // 태그 폰트 색 바꾸기
+    const setTagColor = () => {
     }
 
     // attach file 설정
@@ -2184,6 +2259,7 @@ export default defineComponent({
             }
           }
           if (params.stickerList) {
+            console.log('params.stickerList', params.stickerList)
             params.stickerList = replaceStickerArr(params.stickerList)
           }
           // params value 체크
@@ -2830,13 +2906,42 @@ export default defineComponent({
       getTeamMenuList,
       openPushReceiverSelect,
       decodeContents,
-      deleteMemo
+      setTagColor,
+      newMemoData
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
+
+.tagColorWhite{
+  color:#fff !important;
+}
+
+.memoTab{
+  width:25%;
+  height:35px;
+  line-height:33px;
+  border-radius:20px 20px 0 0;
+  background-color:#E7EDFF;
+  border:2px solid #E7EDFF;
+  color:#5f61bd !important;
+  font-weight:bold;
+  display:inline-block;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  padding:0 10px;
+}
+.mSelectedMemo{
+  background-color:#fff !important;
+  border:2px solid #fff !important;
+  border-top:2px solid #5f61bd !important;
+  border-left:2px solid #5f61bd !important;
+  border-right:2px solid #5f61bd !important;
+}
 
 .titleInput{
   overflow-y:scroll; white-space:wrap;

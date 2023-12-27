@@ -264,7 +264,7 @@
                             <span @click="(event) => { event.stopPropagation(); clickSticker(sticker);}"
                               class="todoTag mright-03"
                               :style="`background: ${sticker.picBgPath}`"
-                            >
+                              :class="{tagColorBlack : sticker.picBgPath === '#91BDFF' || sticker.picBgPath === '#C2DAFF' || sticker.picBgPath === '#FFC58F' || sticker.picBgPath === '#FFE0C4' || sticker.picBgPath === '#A8FFA1' || sticker.picBgPath === '#CDFFC9' || sticker.picBgPath === '#DAB5FF' || sticker.picBgPath === '#EAD5FF' || sticker.picBgPath === '#95E6FF' || sticker.picBgPath === '#C8F5FF' || sticker.picBgPath === '#FF86CF' || sticker.picBgPath === '#FFC3E4' || sticker.picBgPath === '#CCCCCC' || sticker.picBgPath === '#E3E3E3'}">
                               {{ $changeText(sticker.nameMtext) }}
                             </span>
                           </template>
@@ -3214,6 +3214,9 @@ export default {
 </script>
 
   <style scoped>
+  .tagColorBlack{
+    color:#222 !important;
+  }
 
   .selectedHistoryTab{
     color:#000 !important;

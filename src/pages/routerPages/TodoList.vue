@@ -38,6 +38,7 @@
     :pGetTodoListGroupCab="getMyTodoList"
     style="z-index: 999"
   />
+  <CommonAddMemo v-if="memoManagePop" @saveMemos="saveContents" @deleteMemo="deleteMemo" :pMemoIdx="mMemoParams" :pClosePop="closeMemoManagePop" :pMemoList="GE_DISP_MEMO_LIST"/>
   <gReport
     v-if="mContMenuShowYn"
     @closePop="mContMenuShowYn = false"
@@ -200,9 +201,12 @@
                           {{memo.title}}
                           <!-- <span @click="goDetail(memo)" >z</span> -->
                         </div>
+                        <div class="memoTab" @click="openMemoManagePop()">+</div>
                       </div>
                     </div>
-                    <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])">
+                    <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])"> -->
+                    <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(mSelectedMemoIdx)">/ -->
+                    <div v-if="showMemoYn" class="memoBody" @click="openMemoManagePop">
                       {{ decodeContents(mMemoBody.bodyFullStr) }}
                     </div>
                     <!-- <div v-if="showMemoYn" class="memoBody">
@@ -216,13 +220,13 @@
                   {{$t('COMMON_TITLE_MEMO')}}
                 </p>
 
-                <div v-if="showMemoYn || (GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0)" @click="openWriteMemoPop" :style="showMemoYn? 'height:110px' : 'height: 30px;'"  class="fl cursorP" style="width: 30px; float: left; border-radius: 10px; background: rgb(197 198 255); justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div>
+                <!-- <div v-if="showMemoYn || (GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0)" @click="openMemoManagePop" :style="showMemoYn? 'height:110px' : 'height: 30px;'"  class="fl cursorP" style="width: 30px; float: left; border-radius: 10px; background: rgb(197 198 255); justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div> -->
               </div>
             </div>
             <img v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" @click.stop="openMemoShow" :src="require(`@/assets/images/button/Icon_showMore.png`)" style="width: 30px;" class="cursorP fr" :style="showMemoYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/>
         </div>
-
       </div>
+
       <div class="topWrap w100P" style="position:relative;">
         <div class="w100P" style="display:flex; flex-direction:column;">
           <div class="w100P" style="display:flex; align-items:center;">
@@ -441,12 +445,11 @@
       <img id='writeBtn' src="../../assets/images/button/Icon_WriteTodo.png" @click="openAddTodoPop" alt="게시글 작성 버튼" style="width:66px; height:66px; cursor: pointer;">
     </div>
   </div>
-  <div class="popBg" v-if="mWritePopShowYn"></div>
+  <div class="popBg" v-if="mWritePopShowYn || memoManagePop"></div>
   <!-- <transition name="show_right"> -->
   <CommonAddContentsForm
     style="z-index: 13"
     v-if="mWritePopShowYn"
-    :pMemoData="mMemoParams"
     :pClosePop="closeWritePop"
     :pPostContentsFn="saveContents"
     :pGetReceiverList="returnTargetData"
@@ -493,6 +496,7 @@ import { commonMethods } from '../../assets/js/Tal_common'
 import SkeletonBox from '../../components/pageComponents/push/D_contentsSkeleton.vue'
 import CommonAddContentsForm from '../../components/write/CommonAddContentsForm.vue'
 import completeTodoPop from './D_completeTodoPop.vue'
+import CommonAddMemo from '../../components/write/CommonAddMemo.vue'
 
 export default {
   components: {
@@ -506,10 +510,12 @@ export default {
     // commonStickyBox,
     todoContentsBox,
     completeTodoPop,
-    CommonAddContentsForm
+    CommonAddContentsForm,
+    CommonAddMemo
   },
   props: {
-    pNoAuthYn: {}
+    pNoAuthYn: {},
+    setTagFontColor: Function
   },
   data () {
     return {
@@ -591,12 +597,14 @@ export default {
       mSelectedMemoIdx: -1,
       mMemoBody: '',
       autoSaveTimer: null,
-      mMemoParams: [],
-      mCheckerYn: Boolean
+      mMemoParams: 0,
+      mCheckerYn: Boolean,
+      memoManagePop: false
       // geDispList: []
     }
   },
   created () {
+    console.log('setTagFontColor', this.setTagFontColor)
     console.log('GE_DISP_LISTGE_DISP_LIST', this.GE_DISP_LIST)
     if (this.GE_USER.unknownYn) {
       this.$router.push('/')
@@ -612,6 +620,13 @@ export default {
     window.addEventListener('resize', this.setTitleThreeLine)
   },
   methods: {
+    openMemoManagePop () {
+      this.memoManagePop = true
+      this.mPopupType = 'MEMO'
+    },
+    closeMemoManagePop () {
+      this.memoManagePop = false
+    },
     memoAutoSave (memo) {
       console.log('memo data', memo)
       this.mPopupType = 'MEMO'
@@ -631,6 +646,7 @@ export default {
       }, 1000)
     },
     async deleteMemo (data) {
+      console.log('delete memo data', data)
       var inParam = {}
       inParam.mccKey = data.mccKey
       inParam.contentsKey = data.contentsKey
@@ -647,6 +663,7 @@ export default {
       } else {
         this.$showToastPop(`${this.$t('COMMON_MSG_FAILED')}`)
       }
+      this.closeMemoManagePop()
     },
     selectMemo (index) {
       this.mSelectedMemoIdx = index
@@ -658,13 +675,7 @@ export default {
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
-      if (changeText !== null) {
-        var regex = /">(.*?)<\/pre>/
-        const match = changeText.match(regex)
-        const extractedText = match ? match[1] : null
-        console.log(extractedText)
-        changeText = extractedText
-      }
+      console.log('changeText', changeText)
       return changeText
     },
     openMemoShow () {
@@ -1981,6 +1992,7 @@ export default {
     }
   },
   computed: {
+
     GE_DISP_SEARCH_LIST () {
       const returnList = []
       console.log(this.mTodoFilterList)
@@ -2607,8 +2619,6 @@ export default {
   display: inline-block;
   vertical-align: middle;
   white-space:nowrap;
-}
-.memoTabWrap{
 }
 .memoTab{
   width:33.3%;

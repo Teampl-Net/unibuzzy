@@ -44,7 +44,7 @@
                 </div>
                 <div style="width:70%; display:flex; align-items:center; justify-content:start;">
                   <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD;">{{ $t('COMM_PREVIEW') }}</p>
-                  <div class="previewTag" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray', color : mBlackTrue===true ? '#222' : '#fff' }">
+                  <div class="previewTag" style="color:#fff;" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray'}" :class="{tagColorBlack : this.selectedSticker.picBgPath === '#91BDFF' || this.selectedSticker.picBgPath === '#C2DAFF' || this.selectedSticker.picBgPath === '#FFC58F' || this.selectedSticker.picBgPath === '#FFE0C4' || this.selectedSticker.picBgPath === '#A8FFA1' || this.selectedSticker.picBgPath === '#CDFFC9' || this.selectedSticker.picBgPath === '#DAB5FF' || this.selectedSticker.picBgPath === '#EAD5FF' || this.selectedSticker.picBgPath === '#95E6FF' || this.selectedSticker.picBgPath === '#C8F5FF' || this.selectedSticker.picBgPath === '#FF86CF' || this.selectedSticker.picBgPath === '#FFC3E4' || this.selectedSticker.picBgPath === '#CCCCCC' || this.selectedSticker.picBgPath === '#E3E3E3' }">
                   {{ stickerNameVal }}
                   </div>
                 </div>
@@ -75,9 +75,9 @@
                     @click="toggleSelectTag(sticker)"
                     v-for="(sticker) in GE_STICKER_LIST"
                     :key="sticker.stickerKey"
-                    :style="{ 'font-weight' :sticker.picBgPath && !(sticker.stickerKey === selectedSticker.stickerKey)? 'normal' : 'bold', 'background-color' : sticker.picBgPath, color : mBlackTrue===true ? '#222' : '#fff' }"
-                    :class="{ activeBtn: (sticker.stickerKey === selectedSticker.stickerKey) }"
-                    style="font-size: 13px;"
+                    :style="{ 'font-weight' :sticker.picBgPath && !(sticker.stickerKey === selectedSticker.stickerKey)? 'normal' : 'bold', 'background-color' : sticker.picBgPath}"
+                    :class="{ activeBtn: (sticker.stickerKey === selectedSticker.stickerKey), tagColorBlack : sticker.picBgPath === '#91BDFF' || sticker.picBgPath === '#C2DAFF' || sticker.picBgPath === '#FFC58F' || sticker.picBgPath === '#FFE0C4' || sticker.picBgPath === '#A8FFA1' || sticker.picBgPath === '#CDFFC9' || sticker.picBgPath === '#DAB5FF' || sticker.picBgPath === '#EAD5FF' || sticker.picBgPath === '#95E6FF' || sticker.picBgPath === '#C8F5FF' || sticker.picBgPath === '#FF86CF' || sticker.picBgPath === '#FFC3E4' || sticker.picBgPath === '#CCCCCC' || sticker.picBgPath === '#E3E3E3' }"
+                    style="font-size: 13px; color:#fff;"
                     class="tagButton"
                     >
                     <!-- <img v-if="sticker.isSelected" src="../../assets/images/common/icon_check_commonColor.svg" alt="check image" class="checkImg" /> -->
@@ -135,7 +135,6 @@ export default {
           this.pCloseStickerPop()
         }
       } else {
-
       }
     },
     toggleSelectTag (sticker) {
@@ -201,6 +200,7 @@ export default {
       param.creUserKey = this.GE_USER.userKey
       param.blackYn = this.mBlackTrue
       console.log('saveSticker param', param)
+      this.$emit('newSticker', param.nameMtext, param.picBgPath, param.stickerKey)
       var result = await this.$commonAxiosFunction({
         url: '/sUniB/tp.saveSticker',
         param: param
@@ -249,6 +249,10 @@ export default {
 </script>
 
 <style scoped>
+
+.tagColorBlack{
+    color:#222 !important;
+  }
 
 .tagInput{
   border:none !important;
