@@ -325,7 +325,7 @@
                     </span>
                   </p>
               </div>
-              <div v-if="CONT_DETAIL.jobkindId === 'TODO'" class="todoOtherInfosAsignee">
+              <div v-if="CONT_DETAIL.jobkindId === 'TODO' && !(CONT_DETAIL && CONT_DETAIL.actorList.length === 2 && CONT_DETAIL.actorList[0].accessKey === GE_USER.userKey && CONT_DETAIL.actorList[1].accessKey === GE_USER.userKey)" class="todoOtherInfosAsignee">
                 <div class="w100P actorImgList cursorP" @click.stop=" openRecvActorListPop()">
                   <template v-for="(each, index) in CONT_DETAIL.actorList" :key="index">
                     <img v-if="each.actType === 'RV' && each.accessKind === 'U' && index < 3 " class="actorImg" :src="each.domainPath ? each.domainPath + each.pathMtext : require(`@/assets/images/todo/defaultImg.png`)" style="" :alt="each.userDispMtext"/>
