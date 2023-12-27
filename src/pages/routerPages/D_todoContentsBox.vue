@@ -2,7 +2,7 @@
     <div
         @click="goDetail(CONT_DETAIL)"
         :class="CONT_DETAIL.strikeOnOff ? 'fade-out-box' : ''"
-        v-if="(CONT_DETAIL && pGroup.listName === this.$t('COMMON_TODO_COMPLETED') && CONT_DETAIL.contStatus === '99') || (pGroup.listName !== this.$t('COMMON_TODO_COMPLETED') && CONT_DETAIL.contStatus !== '99')"
+        v-if="!pGroup || (CONT_DETAIL && pGroup.listName === this.$t('COMMON_TODO_COMPLETED') && CONT_DETAIL.contStatus === '99') || (pGroup.listName !== this.$t('COMMON_TODO_COMPLETED') && CONT_DETAIL.contStatus !== '99')"
         class="w100P cursorP DTodoBox"
         style="
         background-color: white;
@@ -12,7 +12,7 @@
         padding: 10px 10px 10px 0px;
         "
         :style="
-        pGroup.list.content.length - 1 === todoIndex
+        pGroup && pGroup.list.content.length - 1 === todoIndex
             ? ''
             : 'border-bottom:1px solid #acacac;'
         "
@@ -29,7 +29,7 @@
         <div
             style="width: 45px; height: 30px;display: flex; justify-content: center; align-items: center; text-align: left"
             @click.stop="
-            pGroupIndex !== 2 ? setCompleteTodo(CONT_DETAIL, 'myTodoList', pGroupIndex, todoIndex) : ''
+            pGroupIndex && pGroupIndex !== 2 ? setCompleteTodo(CONT_DETAIL, 'myTodoList', pGroupIndex, todoIndex) : ''
             "
         >
             <img
@@ -73,13 +73,11 @@
                     CONT_DETAIL.title
                     }}</span>
                     <span
-                    v-if="CONT_DETAIL.D_MEMO_LIST && CONT_DETAIL.D_MEMO_LIST.length > 0"
+                    v-if="CONT_DETAIL.memoCount"
                     class="todoImportantInfoMemo mright-03" style="color:gray; font-size:14px;"
                     >
                     ({{
-                        CONT_DETAIL.D_MEMO_LIST.length === 0
-                        ? "0"
-                        : CONT_DETAIL.D_MEMO_LIST.length
+                        CONT_DETAIL.memoCount
                     }})
                     </span>
                     <!-- v-if="index === 0 || sticker.showAllStickerYn" -->
@@ -167,7 +165,7 @@
               </div>
               <!--//-->
               <!-- 내 일 - 담당자 -->
-              <div class="todoOtherInfosAsignee" v-if="!(CONT_DETAIL && CONT_DETAIL.actorList.length === 2 && CONT_DETAIL.actorList[0].accessKey === pGeUser.userKey && CONT_DETAIL.actorList[1].accessKey === pGeUser.userKey)">
+              <div class="todoOtherInfosAsignee" v-if="!(CONT_DETAIL && CONT_DETAIL.actorList.length === 2 && CONT_DETAIL.actorList[0].accessKey === GE_USER.userKey && CONT_DETAIL.actorList[1].accessKey === GE_USER.userKey)">
                 <div
                 class="w100P actorImgList"
                 @click.stop="openActorList(pTodoIndex)"
@@ -256,8 +254,7 @@ export default {
     pClickSticker: {},
     pClickPriority: {},
     pOpenActorList: {},
-    pGoUserProfile: {},
-    pGeUser: []
+    pGoUserProfile: {}
   },
   data () {
     return {
@@ -266,7 +263,6 @@ export default {
     }
   },
   created () {
-    console.log('pGeUserpGeUser', this.pGeUser)
   },
   methods: {
     openActorList (index) {
@@ -324,6 +320,9 @@ export default {
     }
   },
   computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    },
     CHANNEL_DETAIL () {
       var detail = this.$getDetail('TEAM', 0)
       if (detail && detail.length > 0) {
@@ -346,12 +345,14 @@ export default {
     },
     CONT_DETAIL () {
       if (!this.pTodoElement) return
+      console.log(this.CHANNEL_DETAIL)
       var cont = this.$getContentsDetail(
         null,
         this.pTodoElement.contentsKey,
         0,
         this.pTodoElement.jobkindId
       )
+      console.log(cont)
       if (!cont) {
         cont = [this.pTodoElement]
       }
