@@ -579,7 +579,7 @@
               CONT_DETAIL.workStatYn &&
               CONT_DETAIL.workStatCodeKey === 46
                 ? 'completeWork'
-                : '') + (CONT_DETAIL.jobkindId !== 'TODO'? 'mainConts' : '')
+                : '') + (CONT_DETAIL.jobkindId !== 'TODO'? 'mainConts' : 'todoConts')
             "
             :id="'bodyFullStr' + CONT_DETAIL.contentsKey"
             class="font14 mbottom-05  cursorDragText h-100P w-100P fl"
@@ -3482,6 +3482,8 @@ export default {
 
   <style>
   .mainConts .formText{ padding: 15px 25px 20px 25px !important; text-align: left !important;}
+  .todoConts .formText{ padding: 10px 25px 10px 25px !important; text-align: left !important;}
+
   .mainConts img {padding: 0!important}
 
   .contentsCardBodyArea .formLine,
