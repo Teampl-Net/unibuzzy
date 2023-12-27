@@ -451,6 +451,7 @@ export default {
       this.openPop(param)
     },
     async goPage (data) {
+      var detailParam = data
       if (data && data.targetType && data.targetKey) {
         var detailValue = await this.$addContents(Number(data.targetKey), data.jobkindId)
         if (detailValue !== false) {
@@ -459,7 +460,6 @@ export default {
             data.creTeamKey = Number(data.creTeamKey)
             data.teamKey = Number(data.creTeamKey)
           }
-          var detailParam = data
           detailParam.targetType = data.targetType
           if (detailValue.jobkindId === 'BOAR') {
             detailParam.cabinetKey = detailValue.cabinetKey

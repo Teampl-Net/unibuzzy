@@ -9,11 +9,11 @@
 }
 </i18n>
 <template>
-  <div class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden"  > <!-- v-if="notiDetailShowYn" -->
+  <div id="routerRef" class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden"  > <!-- v-if="notiDetailShowYn" -->
     <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
     <unknownLoginPop :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
     <commonConfirmPop v-if="mAppUpdatePopShwoYn" @no="goAppStore" confirmType="one" confirmText="버전 업데이트가 필요합니다.<br>앱스토어로 이동합니다." />
-    <gImgPop @closeXPop="closeXPop" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" />
+    <gImgPop @closeXPop="closeXPop" ref="imgPopRef" v-if="mGImgPopShowYn" :propImgList="mPropImgList" :propFirstIndex="mPropFirstIndex" />
     <!-- <pushPop @closePushPop="closePushPop" @goDetail="goDetail" v-if="notiDetailShowYn" :detailVal="notiDetail"  /> -->
     <div style="background-color:#00000050; width:100%; height:100vh; position:absolute; top:0; left:0; z-index:999;" v-if="mMenuShowYn" @click="hideMenu"/>
     <transition name="show_view">
@@ -182,6 +182,9 @@ export default {
           var notiDetailObj = value.notiDetailObj
           var currentPage = value.currentPage
           var addVueResult = value.addVueResult
+          if (this.mGImgPopShowYn && this.$refs.imgPopRef) {
+            if (this.$refs.imgPopRef.closePhotoSwipeLightbox) this.$refs.imgPopRef.closePhotoSwipeLightbox()
+          }
           this.recvNotiFormBridge(notiDetailObj, currentPage, addVueResult)
         }
       },
@@ -312,6 +315,9 @@ export default {
       this.mGImgPopShowYn = false
     },
     openImgPop (param) {
+      if (this.mGImgPopShowYn && this.$refs.imgPopRef) {
+        if (this.$refs.imgPopRef.closePhotoSwipeLightbox) this.$refs.imgPopRef.closePhotoSwipeLightbox()
+      }
       if (param) {
         this.mPropFirstIndex = param[1]
         this.mPropImgList = param[0]

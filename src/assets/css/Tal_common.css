@@ -525,12 +525,12 @@ p{margin-bottom: 0; font-size: 1.5rem;}
 }
 
 .pswp {
-  position: fixed;
+  position: absolute!important;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 99!important;
+  z-index: 98!important;
 }
 
 .CDeepColor{ color: #5F61BD !important; }

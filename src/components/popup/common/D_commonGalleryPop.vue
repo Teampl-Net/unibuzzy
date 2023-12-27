@@ -19,7 +19,7 @@ export default {
   },
   watch: {
     pageUpdate (value, old) {
-      this.backClick()
+      this.closePhotoSwipeLightbox()
     },
     GE_IMG_LIST: {
       immediate: true,
@@ -37,6 +37,15 @@ export default {
     this.popId = 'previewImgPop' + history.length
     history.push(this.popId)
     this.$store.commit('D_HISTORY/updateStack', history)
+
+    var popHistory = this.$store.getters['D_HISTORY/GE_GPOP_STACK']
+    let currentPage = 0
+    if (popHistory && popHistory.length > 0) {
+      currentPage = popHistory[popHistory.length - 1]
+    }
+    if (currentPage !== 0) {
+      if (document.getElementById(currentPage)) this.options.appendToEl = document.getElementById(currentPage)
+    }
   },
   data () {
     return {
@@ -48,7 +57,9 @@ export default {
         dataSource: [
         ], // 이미지에 대한 내용을 넘겨받음
         allowPanToNext: false,
-        arrowPrevSVG: '<svg aria-hidden="true" class="pswp__icn" viewBox="0 0 100 125" width="100" height="125"><path d="M5,50L50,5l3,3L11,50l42,42l-3,3L5,50z M92,95l3-3L53,50L95,8l-3-3L47,50L92,95z"/></svg>',
+        close: true,
+        appendToEl: document.getElementById('routerRef'),
+        arrowPrevSVG: '<svg aria-hidden="true" class="pswp__icn " viewBox="0 0 100 125" width="100" height="125"><path d="M5,50L50,5l3,3L11,50l42,42l-3,3L5,50z M92,95l3-3L53,50L95,8l-3-3L47,50L92,95z"/></svg>',
         arrowNextSVG: '<svg aria-hidden="true" class="pswp__icn" viewBox="0 0 100 125" width="100" height="125"><path d="M5,50L50,5l3,3L11,50l42,42l-3,3L5,50z M92,95l3-3L53,50L95,8l-3-3L47,50L92,95z"/></svg>',
         mainClass: 'pswp--custom-icon-colors',
         bgOpacity: 1,
@@ -85,6 +96,12 @@ export default {
     }
   },
   methods: {
+    closePhotoSwipeLightbox () {
+      if (this.lightbox) {
+        const backBtn = document.getElementsByClassName('pswp__button pswp__button--close')
+        if (backBtn && backBtn.length > 0) backBtn[0].click()
+      }
+    },
     popupGallery (index) {
       this.lightbox.loadAndOpen(index) // 갤러리를 화면에 띄우는 메소드(인자로 몇 번째 사진을 띄울지에 대한 인덱스를 넘겨 받음)
     },
@@ -96,6 +113,7 @@ export default {
         this.$store.commit('D_HISTORY/setRemovePage', removePage)
         this.$store.commit('D_HISTORY/updateStack', hStack)
         this.$emit('closeXPop')
+        // this.lightbox.close()
       } else {
 
       }
@@ -150,6 +168,7 @@ export default {
         })
       })
       this.lightbox.on('close', () => {
+        console.log('test')
         this_.backClick()
       })
 
@@ -159,7 +178,7 @@ export default {
   },
   unmounted () {
     if (this.lightbox) {
-      this.$emit('closeXPop')
+      this.closePhotoSwipeLightbox()
       // this.lightbox.destroy()
       // this.lightbox = null
     }

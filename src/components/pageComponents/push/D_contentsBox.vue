@@ -2981,9 +2981,10 @@ export default {
       this.mClickImgList = contBody.querySelectorAll('img')
       for (let m = 0; m < this.mClickImgList.length; m++) {
         var this_ = this
-        this_.mClickImgList[m].addEventListener('click', () => {
+        this_.mClickImgList[m].addEventListener('click', (event) => {
           if (!this_.mContentMoreShowYn) {
             this_.$emit('openImgPop', [this_.mClickImgList, m])
+            event.stopPropagation()
           }
         })
       }
