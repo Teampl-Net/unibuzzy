@@ -329,10 +329,10 @@
           </div>
         <div v-if="searchAreaYn" class="w100P" style="padding:0 ; justify-content:space-between; display:flex; align-items:center; background-color:#E7EDFF; height:50px;">
           <template v-if="mWhichType === 'arrange'">
-            <div class="w100P">
+            <div class="w100P mtop-05">
               <div style="display:flex; align-items:center; padding:0 ; height:50px;">
                 <ul class="w100P cursorP" style="border-radius:10px; height:80%; background-color:#fff; margin-bottom:0; display:flex; align-items:center; justify-content:space-around; padding:0 !important;">
-                  <li @click="arrayChange(index)" v-for="(tab, index) in mArrangeTab" :key="index" :class="{selected :mArrangeTabIdx === index }" class="arrangeBtn font13" >{{ tab.tabName }}</li>
+                  <li @click="arrayChange(index)" v-for="(tab, index) in mArrangeTab" :key="index" :class="{selected :mArrangeTabIdx === index }" class="arrangeBtn font13" >{{ tab.tabName }}{{ (index === 0 && !mPriorityDescYn) || (index === 1 && !mSearchDateDescYn) ? '↑' : (index === 0 && mPriorityDescYn) || (index === 1 && mSearchDateDescYn)?  '↓' : ''}}</li>
                 </ul>
               </div>
             </div>
@@ -524,6 +524,8 @@ export default {
         { title: '우선순위', searchType: 'PR', type: 'S', value: null, selectList: [{ accessKey: '02', accessName: '낮음', accessColor: 'rgb(232, 238, 254)' }, { accessKey: '01', accessName: '보통', accessColor: 'rgb(59, 107, 240)' }, { accessKey: '00', accessName: '높음', accessColor: 'rgb(15, 47, 135)' }] },
         { title: '상태', searchType: 'ST', type: 'S', value: null, selectList: [{ accessKey: '00', accessName: '진행' }, { accessKey: '99', accessName: '완료' }] }
       ],
+      mPriorityDescYn: false,
+      mSearchDateDescYn: true,
       mAllActorList: [], // {accessName, accessKey, accessKind, iconPath, }
       mShowStickerListYn: false,
       mDispStickerList: [],
@@ -579,10 +581,10 @@ export default {
       searchValue: '',
       firstYn: true,
       mArrangeTab: [
-        { tabIdx: 1, tabVal: 'PH', tabName: '우선순위↑' },
-        { tabIdx: 2, tabVal: 'PL', tabName: '우선순위↓' },
-        { tabIdx: 3, tabVal: 'RE', tabName: '목표일↑' },
-        { tabIdx: 4, tabVal: 'OL', tabName: '목표일↓' },
+        { tabIdx: 1, tabVal: 'PH', tabName: '우선순위' },
+        /*  { tabIdx: 2, tabVal: 'PL', tabName: '우선순위' }, */
+        { tabIdx: 3, tabVal: 'RE', tabName: '목표일' },
+        /* { tabIdx: 4, tabVal: 'OL', tabName: '목표일↓' }, */
         { tabIdx: 5, tabVal: 'TG', tabName: '태그별' }
       ],
       mArrangeTabIdx: 0,
@@ -724,20 +726,22 @@ export default {
       this.mArrangeTabIdx = index
       let orderbyStr = ''
       // let geDispList = JSON.parse(JSON.stringify(this.GE_DISP_LIST))
-      if (index === 0 || index === 1) {
+      if (index === 0) {
+        this.mPriorityDescYn = !this.mPriorityDescYn
         // 우선순위 순
         // orderbyStr = 'r.recentKey IS NOT NULL DESC, sk.nameMtext DESC, c.contStatus, c.priority, c.workToDate DESC'
-        if (index === 0) {
-          orderbyStr = ' c.priority, r.recentKey IS NOT NULL DESC, sk.nameMtext DESC, c.contStatus, c.workToDate DESC'
-        } else if (index === 1) {
-          orderbyStr = ' c.priority DESC, r.recentKey IS NOT NULL DESC, sk.nameMtext DESC, c.contStatus, c.workToDate DESC'
+        if (!this.mPriorityDescYn) {
+          orderbyStr = ' c.priority, sk.nameMtext DESC, c.contStatus, c.workToDate DESC'
+        } else if (this.mPriorityDescYn) {
+          orderbyStr = ' c.priority DESC, sk.nameMtext DESC, c.contStatus, c.workToDate DESC'
         }
-      } else if (index === 2 || index === 3) {
+      } else if (index === 1) {
+        this.mSearchDateDescYn = !this.mSearchDateDescYn
         // 최신순 or 오래된 순
-        if (index === 2) {
-          orderbyStr = 'c.workToDate DESC, r.recentKey IS NOT NULL DESC, sk.nameMtext DESC, c.contStatus, c.priority '
-        } else if (index === 3) {
-          orderbyStr = 'c.workToDate, r.recentKey IS NOT NULL DESC, sk.nameMtext DESC, c.contStatus, c.priority '
+        if (!this.mSearchDateDescYn) {
+          orderbyStr = 'c.workToDate DESC, sk.nameMtext DESC, c.contStatus, c.priority '
+        } else if (this.mSearchDateDescYn) {
+          orderbyStr = 'c.workToDate, sk.nameMtext DESC, c.contStatus, c.priority '
         }
         /* const sortedLists = geDispList.map(item => {
           const geDisList = item.list.content
@@ -969,10 +973,16 @@ export default {
 
       const res = await this.$saveContents(params)
       if (res.result) {
+        const newParam = {}
+        newParam.contentsKey = res.contents.contentsKey
+        newParam.jobkindId = 'TODO'
+
+        await this.$getContentsList(newParam).then(newReslute => {
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
+        })
         if (res.sticker) {
           await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', res.sticker)
         }
-        this.getMyTodoList()
       }
       this.closeWritePop('WriteContents', this.closeWritePop)
     },
@@ -1592,8 +1602,14 @@ export default {
       var nonLoading = true
       var result = await this.$saveTodo(param, nonLoading)
       if (result.resultMsg === 'OK') {
-        if (this.getMyTodoList) {
-          await this.getMyTodoList(false)
+        const newParam = {}
+        newParam.contentsKey = result.contents.contentsKey
+        newParam.jobkindId = 'TODO'
+        await this.$getContentsList(newParam).then(newReslute => {
+          this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
+        })
+        if (result.sticker) {
+          await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', result.sticker)
         }
         await this.closeUpdatePop()
         this.mShowSkeletonYn = false
@@ -2498,7 +2514,7 @@ export default {
         // let oriList = []
         newTodo.strikeOnOff = false
         newTodo.sideMenuOpenYn = false
-        if (this.mMyTodoList && this.mCheckTodoList && this.mRefTodoList && (this.mMyTodoList.content.findIndex(
+        if (this.mMyTodoList && this.mMyTodoList.content && this.mCheckTodoList && this.mCheckTodoList.content && this.mRefTodoList && this.mRefTodoList.content && (this.mMyTodoList.content.findIndex(
           (todo) => todo.contentsKey === newTodo.contentsKey
         ) !== -1 ||
           this.mCheckTodoList.content.findIndex(

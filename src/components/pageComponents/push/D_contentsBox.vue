@@ -32,6 +32,7 @@
     <!-- <button @click="downloadPdf">다운로드</button> -->
     <!-- <vue3-simple-html2pdf ref="vue3SimpleHtml2pdf" :options="pdfOptions" :filename="exportFilename" style="width: 100%;"> -->
     <div
+      class="cursorP"
       :class="animationYn ? 'newContentsAni' : ''"
       @click.stop="handleParentClick"
       @dragenter="onDragenter"
@@ -171,7 +172,7 @@
             flex-direction: column;
           "
         >
-          <div style="padding-top:20px;" :style="{'border-left' : CONT_DETAIL.jobkindId === 'BOAR' ? '7px solid rgba(120, 175, 135, 0.6)' : CONT_DETAIL.jobkindId === 'ALIM' ? '7px solid pink' : ''}">
+          <div style="padding-top:20px;" :style="{'border-left' : CONT_DETAIL.jobkindId === 'TODO' ? '7px solid rgb(137 120 175 / 60%)' : CONT_DETAIL.jobkindId === 'BOAR' ? '7px solid rgba(120, 175, 135, 0.6)' :  CONT_DETAIL.jobkindId === 'ALIM' ? '7px solid pink' : ''}">
             <div
             style="
               width: 100%;
@@ -1183,7 +1184,7 @@
         position: absolute;
         top: 0px;
         left: 0%;
-        z-index: 999999;
+        z-index: 99;
         padding: 20px 0;
         background: #000000;
       "
