@@ -84,7 +84,7 @@
                     <template v-for="(sticker, index) in CONT_DETAIL.stickerList" :key="index">
                     <span @click.stop="clickSticker(sticker)"
                         class="todoTag mright-03 fontBold"
-                        :class="{tagColorBlack : sticker.picBgPath === '#91BDFF' || sticker.picBgPath === '#C2DAFF' || sticker.picBgPath === '#FFC58F' || sticker.picBgPath === '#FFE0C4' || sticker.picBgPath === '#A8FFA1' || sticker.picBgPath === '#CDFFC9' || sticker.picBgPath === '#DAB5FF' || sticker.picBgPath === '#EAD5FF' || sticker.picBgPath === '#95E6FF' || sticker.picBgPath === '#C8F5FF' || sticker.picBgPath === '#FF86CF' || sticker.picBgPath === '#FFC3E4' || sticker.picBgPath === '#CCCCCC' || sticker.picBgPath === '#E3E3E3'}"
+                        :class="{tagColorBlack : sticker.picBgPath === '#91BDFF' || sticker.picBgPath === '#C2DAFF' || sticker.picBgPath === '#FFC58F' || sticker.picBgPath === '#FFE0C4' || sticker.picBgPath === '#A8FFA1' || sticker.picBgPath === '#CDFFC9' || sticker.picBgPath === '#DAB5FF' || sticker.picBgPath === '#EAD5FF' || sticker.picBgPath === '#95E6FF' || sticker.picBgPath === '#C8F5FF' || sticker.picBgPath === '#FF96CF' || sticker.picBgPath === '#FFC3E4' || sticker.picBgPath === '#CCCCCC' || sticker.picBgPath === '#E3E3E3'}"
                         :style="`background: ${sticker.picBgPath}`"
                     >
                         {{ $changeText(sticker.nameMtext) }}
@@ -265,7 +265,7 @@ export default {
   },
   created () {
     if (this.CONT_DETAIL && this.CONT_DETAIL.stickerList && this.CONT_DETAIL.stickerList.length > 0) {
-      if (this.CONT_DETAIL.stickerList.picBgPath === '#91BDFF' || this.CONT_DETAIL.stickerList.picBgPath === '#C2DAFF' || this.CONT_DETAIL.stickerList.picBgPath === '#FFC58F' || this.CONT_DETAIL.stickerList.picBgPath === '#FFE0C4' || this.CONT_DETAIL.stickerList.picBgPath === '#A8FFA1' || this.CONT_DETAIL.stickerList.picBgPath === '#CDFFC9' || this.CONT_DETAIL.stickerList.picBgPath === '#DAB5FF' || this.CONT_DETAIL.stickerList.picBgPath === '#EAD5FF' || this.CONT_DETAIL.stickerList.picBgPath === '#95E6FF' || this.CONT_DETAIL.stickerList.picBgPath === '#C8F5FF' || this.CONT_DETAIL.stickerList.picBgPath === '#FF86CF' || this.CONT_DETAIL.stickerList.picBgPath === '#FFC3E4' || this.CONT_DETAIL.stickerList.picBgPath === '#CCCCCC' || this.CONT_DETAIL.stickerList.picBgPath === '#E3E3E3') {
+      if (this.CONT_DETAIL.stickerList.picBgPath === '#91BDFF' || this.CONT_DETAIL.stickerList.picBgPath === '#C2DAFF' || this.CONT_DETAIL.stickerList.picBgPath === '#FFC58F' || this.CONT_DETAIL.stickerList.picBgPath === '#FFE0C4' || this.CONT_DETAIL.stickerList.picBgPath === '#A8FFA1' || this.CONT_DETAIL.stickerList.picBgPath === '#CDFFC9' || this.CONT_DETAIL.stickerList.picBgPath === '#DAB5FF' || this.CONT_DETAIL.stickerList.picBgPath === '#EAD5FF' || this.CONT_DETAIL.stickerList.picBgPath === '#95E6FF' || this.CONT_DETAIL.stickerList.picBgPath === '#C8F5FF' || this.CONT_DETAIL.stickerList.picBgPath === '#FF96CF' || this.CONT_DETAIL.stickerList.picBgPath === '#FFC3E4' || this.CONT_DETAIL.stickerList.picBgPath === '#CCCCCC' || this.CONT_DETAIL.stickerList.picBgPath === '#E3E3E3') {
         this.CONT_DETAIL.stickerList.push({ blackYn: true })
       }
     }

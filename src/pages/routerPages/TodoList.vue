@@ -187,7 +187,7 @@
             <p class="fontBold fl h100P" style="line-height: 30px;font-size: 18px; color: #060505 !important">
               {{'메모'}}
             </p> -->
-            <div class="okScrollBar" v-if="GE_DISP_MEMO_LIST.content" style="width: calc(100% - 30px); overflow: auto hidden; padding-bottom: 5px; padding-top:5px; height: 100%;">
+            <div class="okScrollBar" v-if="GE_DISP_MEMO_LIST.content" style="width: calc(100%); overflow: auto hidden; padding-bottom: 5px; padding-top:5px; height: 100%;">
               <!-- <div :style="`width: ${GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0 ? 50 + GE_DISP_MEMO_LIST.content.length * 110 + 'px' : '100%'};`" style="height: 100%; overflow:auto hidden;"> -->
               <div class="w100P h100P" style="overflow:auto hidden; display:flex; align-items:start;">
                 <!-- <template >
@@ -223,7 +223,7 @@
                 <div v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" @click="openMemoManagePop" :style="showMemoYn? 'height:110px' : 'height: 30px;'"  class="fl cursorP" style="width: 30px; float: left; border-radius: 10px; background: rgb(197 198 255); justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div>
               </div>
             </div>
-            <img v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" @click.stop="openMemoShow" :src="require(`@/assets/images/button/Icon_showMore.png`)" style="width: 30px;" class="cursorP fr" :style="showMemoYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/>
+            <!-- <img v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" @click.stop="openMemoShow" :src="require(`@/assets/images/button/Icon_showMore.png`)" style="width: 30px;" class="cursorP fr" :style="showMemoYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/> -->
         </div>
       </div>
 

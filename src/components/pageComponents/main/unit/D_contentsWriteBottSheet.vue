@@ -55,7 +55,7 @@
               <p :class="{lightGray: this.mSelectedWriteType !== 'BOAR'}" class="font14 fontBold mtop-03 commonColor">{{ $t('COMMON_TAB_POST') }}</p>
           </div>
           <div @click="selectWriteType('TODO')" class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'TODO' ? 'border: 3px solid #7678E2!important; ' : ''" v-if="!propTeamKey">
-              <img style="width: 36px;" src="../../../../assets/images/main/main_contentsBellIcon2.png" alt="">
+              <img style="width: 29px;" src="../../../../assets/images/main/addTodo.png" alt="">
               <img v-if="this.mSelectedWriteType === 'TODO'" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
               <p :class="{lightGray: this.mSelectedWriteType !== 'TODO' }" class="font14 fontBold mtop-05 commonColor">{{$t('COMMON_NAME_TODOLIST')}}</p>
           </div>
