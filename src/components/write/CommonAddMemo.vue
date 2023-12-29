@@ -12,7 +12,7 @@
   <div id="layout">
     <header>
       <!-- Popup Title -->
-      <button @click="saveMemo" type="button" class="closeBtn">
+      <button @click="saveMemo(false)" type="button" class="closeBtn">
           <img
             src="../../assets/images/common/popup_close.png"
             alt="close button"
@@ -39,7 +39,7 @@
               </div>
               <!-- <span @click="goDetail(memo)" >z</span> -->
             </div>
-            <div @click="newMemo" id="newMemoTab" class="memoTab">+</div>
+            <div @click="newMemo " :class="{mSelectedMemo : mSelectedMemoIdx === null}" id="newMemoTab" class="memoTab">+</div>
           </div>
         </div>
       </div>
@@ -83,16 +83,24 @@ export default {
   created () {
     console.log('pMemoList', this.pMemoList)
     console.log('pMemoIdx', this.pMemoIdx)
+    var history = this.$store.getters['D_HISTORY/hStack']
+    // console.log(history)
+    history.push(this.popId)
+    this.$store.commit('D_HISTORY/updateStack', history)
+    if (this.pMemoIdx !== undefined) {
+      this.selectMemo(this.pMemoIdx, true)
+    }
   },
   data () {
     return {
       memoTitle: '새 메모',
       memoBody: null,
-      mSelectedMemoIdx: -1,
+      mSelectedMemoIdx: null,
       extractedOuterHtml: '',
       extractedInnerHtml: '',
       formData: {},
       selectedMemo: [],
+      popId: 'addMemoPop',
       mIsEditing: false,
       mConfirmPopShowYn: false
     }
@@ -103,22 +111,26 @@ export default {
       var changeText = Base64.decode(data)
       return changeText
     },
-    selectMemo (index) {
+    selectMemo (index, initYn) {
+      if (!index) return
+      if (!initYn) { this.saveMemo(true) }
+      console.log(index)
       this.mSelectedMemoIdx = index
       this.memoTitle = this.pMemoList.content[this.mSelectedMemoIdx].title
       this.selectedMemo = this.pMemoList.content[index]
-      this.memoBody = this.decodeContents(this.selectedMemo.bodyFullStr)
+      this.memoBody = this.decodeContents(this.pMemoList.content[index].bodyFullStr)
     },
     newMemo () {
       this.memoTitle = null
       this.memoBody = null
+      this.mSelectedMemoIdx = null
       // console.log('element', document.getElementsById('newMemoTab'))
       // document.getElementsById('newMemoTab').classList.add('newMemo')
     },
-    saveMemo () {
+    async saveMemo (tabYn) {
       if (this.memoTitle === '새 메모' && this.memoBody === null && this.mIsEditing === false) {
         console.log('여기여기여김')
-        this.pClosePop()
+        this.backClick()
       } else {
         var params = {}
         params.actorList = null
@@ -134,7 +146,8 @@ export default {
         params.title = this.memoTitle
         params.bodyFullStr = this.memoBody
         console.log('params,', params)
-        this.$emit('saveMemos', params)
+        await this.$emit('saveMemos', params)
+        if (!tabYn) this.backClick()
       }
     },
     deleteMemo (data) {
@@ -142,9 +155,33 @@ export default {
       this.memoTitle = '새 메모'
       this.memoBody = null
       this.$emit('deleteMemo', data)
+    },
+    backClick () {
+      var hStack = this.$store.getters['D_HISTORY/hStack']
+      var removePage = hStack[hStack.length - 1]
+      if (this.popId === hStack[hStack.length - 1]) {
+        hStack = hStack.filter((element, index) => index < hStack.length - 1)
+        this.$store.commit('D_HISTORY/setRemovePage', removePage)
+        this.$store.commit('D_HISTORY/updateStack', hStack)
+        if (this.pClosePop) {
+          this.pClosePop()
+        }
+      }
     }
   },
   watch: {
+    pMemoList: {
+      immediate: true,
+      handler (value, old) {
+        if (value && value.length > 0) {
+          if (value[0].content && value[0].content.length > 0 && value[0].content[this.mSelectedMemoIdx] && value[0].content[this.mSelectedMemoIdx].bodyFullStr) {
+            this.memoBody = value[0].content[this.mSelectedMemoIdx].bodyFullStr
+          }
+          console.log('this.memoBody', this.memoBody)
+        }
+      },
+      deep: true
+    },
     memoBody: {
       handler (value, old) {
         if (value !== old) {
@@ -153,12 +190,24 @@ export default {
         }
       },
       deep: true
+    },
+    pageUpdate (value, old) {
+      this.backClick()
+      /* if (this.popId === hStack[hStack.length - 1]) {
+                this.closeSubPop()
+            } */
     }
   },
   computed: {
 
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
+    },
+    historyStack () {
+      return this.$store.getters['D_HISTORY/hRPage']
+    },
+    pageUpdate () {
+      return this.$store.getters['D_HISTORY/hUpdate']
     }
   }
 }

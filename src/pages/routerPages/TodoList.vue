@@ -38,7 +38,7 @@
     :pGetTodoListGroupCab="getMyTodoList"
     style="z-index: 999"
   />
-  <CommonAddMemo v-if="memoManagePop" @saveMemos="saveContents" @deleteMemo="deleteMemo" :pMemoIdx="mMemoParams" :pClosePop="closeMemoManagePop" :pMemoList="GE_DISP_MEMO_LIST"/>
+  <CommonAddMemo v-if="memoManagePop" @saveMemos="saveContents" @deleteMemo="deleteMemo" :pMemoIdx="mSelectedMemoIdx" :pClosePop="closeMemoManagePop" :pMemoList="GE_DISP_MEMO_LIST"/>
   <gReport
     v-if="mContMenuShowYn"
     @closePop="mContMenuShowYn = false"
@@ -197,17 +197,16 @@
                   <div style="width:calc(100%); padding-left:0; margin-bottom:0; margin-right:10px; text-align:left;">
                     <div class="memoTabWrap w100P" style="display:flex; align-items:center;">
                       <div style="width:100%; overflow-x:scroll; white-space:nowrap;">
-                        <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" @click="selectMemo(mIndex)" :class="{mSelectedMemo : mSelectedMemoIdx === mIndex}">
+                        <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" @click.stop="selectMemo(mIndex)" :class="{mSelectedMemo : mSelectedMemoIdx !== mIndex}">
                           {{memo.title}}
                           <!-- <span @click="goDetail(memo)" >z</span> -->
                         </div>
-                        <div class="memoTab" @click="openMemoManagePop()">+</div>
+                        <div class="memoTab mSelectedMemo" @click="openMemoManagePop()">+</div>
                       </div>
                     </div>
                     <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])"> -->
                     <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(mSelectedMemoIdx)">/ -->
-                    <div v-if="showMemoYn" class="memoBody" @click="openMemoManagePop">
-                      {{ decodeContents(mMemoBody.bodyFullStr) }}
+                    <div v-if="showMemoYn && this.mSelectedMemoIdx !== null" v-html="decodeContents(this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bodyFullStr)" class="memoBody" @click="openMemoManagePop(mSelectedMemoIdx)">
                     </div>
                     <!-- <div v-if="showMemoYn" class="memoBody">
                       <textarea v-model="mMemoBody" @input="memoAutoSave(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])" class="w100P" style="border:none; height:auto; outline:none;">
@@ -596,8 +595,8 @@ export default {
       mArrangeTabIdx: 0,
       mSortOrder: 0,
       memoYn: false,
-      mSelectedMemoIdx: -1,
-      mMemoBody: '',
+      mSelectedMemoIdx: null,
+      // mMemoBody: '',
       autoSaveTimer: null,
       mMemoParams: 0,
       mCheckerYn: Boolean,
@@ -621,7 +620,9 @@ export default {
     window.addEventListener('resize', this.setTitleThreeLine)
   },
   methods: {
-    openMemoManagePop () {
+    openMemoManagePop (index) {
+      if (index !== undefined) this.mSelectedMemoIdx = index
+      else this.mSelectedMemoIdx = null
       this.memoManagePop = true
       this.mPopupType = 'MEMO'
     },
@@ -649,9 +650,9 @@ export default {
     },
     selectMemo (index) {
       this.mSelectedMemoIdx = index
-      if (this.mSelectedMemoIdx > -1) {
+      if (this.mSelectedMemoIdx != null) {
         this.showMemoYn = true
-        this.mMemoBody = this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx]
+        // this.mMemoBody = this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx]
       }
     },
     decodeContents (data) {
@@ -965,14 +966,16 @@ export default {
       const res = await this.$saveContents(params)
       if (res.result) {
         const newParam = {}
+        let nonLoadingYn = false
         newParam.contentsKey = res.contents.contentsKey
         if (this.mPopupType === 'MEMO') {
           newParam.jobkindId = 'MEMO'
+          nonLoadingYn = true
         } else {
           newParam.jobkindId = 'TODO'
         }
 
-        await this.$getContentsList(newParam).then(newReslute => {
+        await this.$getContentsList(newParam, nonLoadingYn).then(newReslute => {
           this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', newReslute.content)
           console.log('newReslutenewReslute', newReslute)
         })
@@ -981,7 +984,7 @@ export default {
         }
       }
       this.closeWritePop('WriteContents', this.closeWritePop)
-      this.closeMemoManagePop()
+      // this.closeMemoManagePop()
     },
     returnTag () {
       return this.GE_STICKER_LIST
@@ -1353,13 +1356,15 @@ export default {
       // if (this.mParamPriority !== '') {
       //   param.priority = this.mParamPriority
       // }
+      let nonLoadingYn = false
+      if (param.jobkindId === 'MEMO') { nonLoadingYn = true }
       this.mCompleteTodoCount = 0
       const myContents = await this.$commonAxiosFunction(
         {
           url: '/sUniB/tp.getMyTodoList',
           param: param
         },
-        false
+        nonLoadingYn
       )
       this.mListEmptyYn = true
       this.mMyMemoList = { totalElements: 0, content: [] }
@@ -1947,7 +1952,7 @@ export default {
       data.content = this.replaceArr(returnAlimList)
       return data
     },
-    /* getVuexMemoList (data) {
+    getVuexMemoList (data) {
       let idx1 = -1
       let idx2 = -1
       const returnAlimList = []
@@ -1975,7 +1980,7 @@ export default {
       }
       data.content = this.replaceArr(returnAlimList)
       return data
-    }, */
+    },
     replaceMemoArr (arr) {
       var uniqueArr = arr.reduce(function (data, current) {
         if (
@@ -2085,8 +2090,8 @@ export default {
     GE_DISP_MEMO_LIST () {
       // console.log('ㅁ[머!!]')
       // console.log(this.getVuexMemoList(this.mMyMemoList))
-      console.log('GE_DISP_MEMO_LIST', this.mMyMemoList)
-      return this.mMyMemoList
+      console.log('GE_DISP_MEMO_LIST', this.getVuexMemoList(this.mMyMemoList))
+      return this.getVuexMemoList(this.mMyMemoList)
     },
     /* GE_DISP_LIST () {
       let idx1 = null
@@ -2199,7 +2204,7 @@ export default {
     }
   },
   watch: {
-    GE_DISP_MEMO_LIST: {
+    /* GE_DISP_MEMO_LIST: {
       handler (val, old) {
         if (val !== old) {
           if (val.content && val.content.length > 0) {
@@ -2211,7 +2216,7 @@ export default {
         }
       },
       deep: true
-    },
+    }, */
     GE_DISP_SEARCH_LIST: {
       handler (val) {
         if (!val) return
@@ -2577,7 +2582,10 @@ export default {
             }
           }
         } else if (value[0].jobkindId === 'MEMO') {
-          this.mMyMemoList.content.unshift(newTodo)
+          const memIndex = this.mMyMemoList.content.findIndex(
+            (memo) => memo.contentsKey === newTodo.contentsKey
+          )
+          if (memIndex === -1) { this.mMyMemoList.content.unshift(newTodo) } else this.mMyMemoList.content[memIndex] = newTodo
         }
         /*  else if (
           this.mCompTodoList.content.findIndex(

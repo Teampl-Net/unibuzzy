@@ -489,10 +489,14 @@ export const methods = {
     } */
     // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
+    let loadingYn = false
+    if (paramSet.jobkindId === 'MEMO') {
+      loadingYn = true
+    }
     var response = await commonAxiosFunction({
       url: '/sUniB/tp.saveContents',
       param: paramSet
-    })
+    }, loadingYn)
     if (response && response.data) {
       result = response.data
     } else {
