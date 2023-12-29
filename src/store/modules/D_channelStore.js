@@ -546,7 +546,7 @@ const D_CHANNEL = {
             }
             state.addContsList.unshift(addContList[i])
           } else {
-            if (addContList[i].jobkindId === 'TODO') {
+            if (addContList[i].jobkindId === 'TODO' || addContList[i].jobkindId === 'MEMO') {
               if (state.addContsList.length > 30) {
                 state.addContsList.splice(0, 30)
               }
