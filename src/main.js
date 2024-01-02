@@ -212,24 +212,30 @@ app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', false)
 localStorage.setItem('testYn', false)
 localStorage.setItem('setItem', '')
-const jsonFilePath = '/MZ_appInitailizer.json'
+const mzoinInitalizer = '/MZ_appInitailizer.json'
+const appConfig = '/D_service.json'
 
 app.config.globalProperties.$DEV_YN = true
-fetch(jsonFilePath)
+fetch(appConfig)
   .then(response => response.json())
-  .then(initData => {
-    const data = initData.D
-    app.config.globalProperties.$APP_CONFIG = data
-    // app.config.globalProperties.$APP_TYPE = data.appType
-    // app.config.globalProperties.$APP_NAME = data.appName
-    // app.config.globalProperties.$APP_DOMAIN = data.appDomain
-    // app.config.globalProperties.$FIREBASE_CONFIG = data.firebaseConfig
-    store.dispatch('D_USER/AC_USER_CONFIG', data.firebaseConfig)
-    app.config.globalProperties.$API_PATH = data.apiPath
-    i18n.locale = data.defaultLang
-    localStorage.setItem('currentScreen', data.mainUI)
+  .then(myApp => {
+    fetch(mzoinInitalizer).then(response => response.json())
+      .then(initData => {
+        console.log(myApp.used)
+        const data = findValueByKey(initData.app, myApp.used)
+        console.log(data)
+        app.config.globalProperties.$APP_CONFIG = data
+        // app.config.globalProperties.$APP_TYPE = data.appType
+        // app.config.globalProperties.$APP_NAME = data.appName
+        // app.config.globalProperties.$APP_DOMAIN = data.appDomain
+        // app.config.globalProperties.$FIREBASE_CONFIG = data.firebaseConfig
+        store.dispatch('D_USER/AC_USER_CONFIG', data.firebaseConfig)
+        app.config.globalProperties.$API_PATH = data.apiPath
+        i18n.locale = data.defaultLang
+        localStorage.setItem('currentScreen', data.mainUI)
 
-    console.log(data) // JSON 데이터 출력 또는 원하는 처리 수행
+        console.log(data) // JSON 데이터 출력 또는 원하는 처리 수행
+      })
   })
   .catch(error => console.error('Error fetching JSON:', error))
 
@@ -237,6 +243,22 @@ fetch(jsonFilePath)
 app.mount('#app')
 window.app = app
 
+// === find init JSON object value ===
+function findValueByKey (jsonObj, keyToFind) {
+  if (jsonObj && typeof jsonObj === 'object') {
+    for (const key in jsonObj) {
+      if (key === keyToFind) {
+        return jsonObj[key]
+      } else if (typeof jsonObj[key] === 'object') {
+        const result = findValueByKey(jsonObj[key], keyToFind)
+        if (result) {
+          return result
+        }
+      }
+    }
+  }
+  return null // 해당 key를 찾지 못한 경우
+}
 // var originalRequest = error.config
 // if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1 && !originalRequest._retry) {
 //   originalRequest._retry = true
