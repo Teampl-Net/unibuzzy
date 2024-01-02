@@ -23,7 +23,7 @@ module.exports = {
         // https://mo.d-alim.com:10443
         changeOrigin: true,
         secure: false,
-        pathRewrite: { '^/sUniB': '/sUniB' },
+        pathRewrite: { '^/sUniB': '' },
         logLevel: 'debug'
       },
       '^/boardMain/service': {

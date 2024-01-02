@@ -45,8 +45,8 @@
                 <div style="width:70%; display:flex; align-items:center; justify-content:start;">
                   <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD;">{{ $t('COMM_PREVIEW') }}</p>
                   <!-- <div class="previewTag" style="color:#fff;" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray'}" :class="{tagColorBlack : this.selectedSticker.picBgPath === '#91BDFF' || this.selectedSticker.picBgPath === '#C2DAFF' || this.selectedSticker.picBgPath === '#FFC58F' || this.selectedSticker.picBgPath === '#FFE0C4' || this.selectedSticker.picBgPath === '#A8FFA1' || this.selectedSticker.picBgPath === '#CDFFC9' || this.selectedSticker.picBgPath === '#DAB5FF' || this.selectedSticker.picBgPath === '#EAD5FF' || this.selectedSticker.picBgPath === '#95E6FF' || this.selectedSticker.picBgPath === '#C8F5FF' || this.selectedSticker.picBgPath === '#FF96CF' || this.selectedSticker.picBgPath === '#FFC3E4' || this.selectedSticker.picBgPath === '#CCCCCC' || this.selectedSticker.picBgPath === '#E3E3E3' }"> -->
-                  <div ref="parentDiv" class="previewTag" style="color:#fff;" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray'}">
-                    <span ref="childText">{{ stickerNameVal }}</span>
+                  <div class="previewTag" style="color:#fff;" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray'}">
+                    <span :style="{color:getLightOrDark(this.selectedSticker.picBgPath)}">{{ stickerNameVal }}</span>
                   </div>
                 </div>
               </div>
@@ -76,13 +76,13 @@
                     @click="toggleSelectTag(sticker)"
                     v-for="(sticker) in GE_STICKER_LIST"
                     :key="sticker.stickerKey"
-                    :style="{ 'font-weight' :sticker.picBgPath && !(sticker.stickerKey === selectedSticker.stickerKey)? 'normal' : 'bold', 'background-color' : sticker.picBgPath}"
-                    :class="{ activeBtn: (sticker.stickerKey === selectedSticker.stickerKey), tagColorBlack : sticker.picBgPath === '#91BDFF' || sticker.picBgPath === '#C2DAFF' || sticker.picBgPath === '#FFC58F' || sticker.picBgPath === '#FFE0C4' || sticker.picBgPath === '#A8FFA1' || sticker.picBgPath === '#CDFFC9' || sticker.picBgPath === '#DAB5FF' || sticker.picBgPath === '#EAD5FF' || sticker.picBgPath === '#95E6FF' || sticker.picBgPath === '#C8F5FF' || sticker.picBgPath === '#FF96CF' || sticker.picBgPath === '#FFC3E4' || sticker.picBgPath === '#CCCCCC' || sticker.picBgPath === '#E3E3E3' }"
-                    style="font-size: 13px; color:#fff;"
-                    class="tagButton"
+                    :style="{ 'background-color' : sticker.picBgPath}"
+                    :class="{ activeBtn: sticker.stickerKey === selectedSticker.stickerKey, backShadow: sticker.stickerKey === selectedSticker.stickerKey}"
+                    style="font-size: 13px;"
+                    class="tagButton fontBold"
                     >
                     <!-- <img v-if="sticker.isSelected" src="../../assets/images/common/icon_check_commonColor.svg" alt="check image" class="checkImg" /> -->
-                    {{ $changeText(sticker.nameMtext) }}
+                    <span :style="{color: getLightOrDark(sticker.picBgPath) }">{{ $changeText(sticker.nameMtext) }}</span>
                     </button>
                 </div>
         </div>
@@ -127,49 +127,92 @@ export default {
   mounted () {
   },
   methods: {
-    getLightOrDark (color) {
-      console.log('== getLightOrDark 실행됨')
-
-      const childText = this.$refs.childText
-      if (childText) {
+    getLightOrDark (colors) {
+      if (colors && colors.length > 0) {
+        console.log('colors', colors)
         // Variables for red, green, blue values
         var r, g, b, hsp
 
         // Check the format of the color, HEX or RGB?
-        if (color.match(/^rgb/)) {
+        console.log('colors???', colors)
+        if (colors.match(/^rgb/)) {
           // If RGB --> store the red, green, blue values in separate variables
-          color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/)
+          colors = colors.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/)
 
-          r = color[1]
-          g = color[2]
-          b = color[3]
+          r = colors[1]
+          g = colors[2]
+          b = colors[3]
         } else {
           // If hex --> Convert it to RGB: http://gist.github.com/983661
-          color = +('0x' + color.slice(1).replace(
-            color.length < 5 && /./g, '$&$&'))
+          colors = +('0x' + colors.slice(1).replace(
+            colors.length < 5 && /./g, '$&$&'))
 
-          r = color >> 16
-          g = color >> 8 & 255
-          b = color & 255
+          r = colors >> 16
+          g = colors >> 8 & 255
+          b = colors & 255
         }
-        console.log('== color??', color)
+
+        console.log('최종 colors', colors)
 
         // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
         hsp = Math.sqrt(
           0.299 * (r * r) +
-          0.587 * (g * g) +
-          0.114 * (b * b)
+              0.587 * (g * g) +
+              0.114 * (b * b)
         )
+        console.log('hsp', hsp)
 
-        console.log('== hsp??', hsp)
         // Using the HSP value, determine whether the color is light or dark
         if (hsp > 141) {
-          childText.style.color = '#222'
+          return '#222'
         } else {
-          childText.style.color = '#fff'
+          return '#fff'
         }
       }
     },
+    // getLightOrDark (color) {
+    //   console.log('== getLightOrDark 실행됨')
+
+    //   const childText = this.$refs.childText
+    //   if (childText) {
+    //     // Variables for red, green, blue values
+    //     var r, g, b, hsp
+
+    //     // Check the format of the color, HEX or RGB?
+    //     if (color.match(/^rgb/)) {
+    //       // If RGB --> store the red, green, blue values in separate variables
+    //       color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/)
+
+    //       r = color[1]
+    //       g = color[2]
+    //       b = color[3]
+    //     } else {
+    //       // If hex --> Convert it to RGB: http://gist.github.com/983661
+    //       color = +('0x' + color.slice(1).replace(
+    //         color.length < 5 && /./g, '$&$&'))
+
+    //       r = color >> 16
+    //       g = color >> 8 & 255
+    //       b = color & 255
+    //     }
+    //     console.log('== color??', color)
+
+    //     // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+    //     hsp = Math.sqrt(
+    //       0.299 * (r * r) +
+    //       0.587 * (g * g) +
+    //       0.114 * (b * b)
+    //     )
+
+    //     console.log('== hsp??', hsp)
+    //     // Using the HSP value, determine whether the color is light or dark
+    //     if (hsp > 141) {
+    //       childText.style.color = '#222'
+    //     } else {
+    //       childText.style.color = '#fff'
+    //     }
+    //   }
+    // },
     backClick () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]

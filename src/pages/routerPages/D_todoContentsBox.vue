@@ -87,7 +87,7 @@
                         :class="{/* tagColorBlack : sticker.picBgPath === '#91BDFF' || sticker.picBgPath === '#C2DAFF' || sticker.picBgPath === '#FFC58F' || sticker.picBgPath === '#FFE0C4' || sticker.picBgPath === '#A8FFA1' || sticker.picBgPath === '#CDFFC9' || sticker.picBgPath === '#DAB5FF' || sticker.picBgPath === '#EAD5FF' || sticker.picBgPath === '#95E6FF' || sticker.picBgPath === '#C8F5FF' || sticker.picBgPath === '#FF96CF' || sticker.picBgPath === '#FFC3E4' || sticker.picBgPath === '#CCCCCC' || sticker.picBgPath === '#E3E3E3'*/}"
                         :style="`background: ${sticker.picBgPath}`"
                     >
-                        <span class="tagTetxt" :style="{ color: tagTextColor }">{{ $changeText(sticker.nameMtext) }}</span>
+                        <span class="tagTetxt" :style="{ color: getLightOrDark(sticker.picBgPath) }">{{ $changeText(sticker.nameMtext) }}</span>
                     </div>
                     </template>
                     <!-- <span class="todoTag mright-03" @click="todo.showAllStickerYn = !todo.showAllStickerYn" style="background: #5f61bd !important;" v-if="todo.stickerList && todo.stickerList.length > 1">
@@ -272,9 +272,6 @@ export default {
     }
   },
   mounted () {
-    setTimeout(() => {
-      this.getLightOrDark(this.CONT_DETAIL)
-    }, 500)
   },
   methods: {
     getLightOrDark (colors) {

@@ -368,12 +368,12 @@
                         v-for="(sticker, index) in tagListForDom"
                         :key="sticker.stickerKey"
                         :style=" sticker.picBgPath && !sticker.isSelected? `border: 2px solid #9C9C9C;`: sticker.picBgPath && sticker.isSelected? `background: ${sticker.picBgPath}; border: 2px solid ${sticker.picBgPath};` : ''"
-                        :class="{ activeBtn: sticker.isSelected, tagColorWhite: sticker.picBgPath && sticker.isSelected && sticker.blackYn === false}"
+                        :class="{ activeBtn: sticker.isSelected}"
                         style="margin-bottom: 5px;margin-right: 5px; font-size: 13px; height:25px; border-radius:25px; "
                         class="tagButton "
                       >
                         <!-- <img v-if="sticker.isSelected" src="../../assets/images/common/icon_check_commonColor.svg" alt="check image" class="checkImg" /> -->
-                        {{ $changeText(sticker.nameMtext) }}
+                        <span :style="{ color: sticker.isSelected ? getLightOrDark(sticker.picBgPath) : ''}">{{ $changeText(sticker.nameMtext) }}</span>
                       </button>
                     </div>
                     <div class="w100P" style="height:auto; display:flex; align-items:center; justify-content:center;padding-top:0.5rem;">
@@ -773,6 +773,49 @@ export default defineComponent({
     }
   },
   methods: {
+    getLightOrDark (colors) {
+      if (colors && colors.length > 0) {
+        console.log('colors', colors)
+        // Variables for red, green, blue values
+        var r, g, b, hsp
+
+        // Check the format of the color, HEX or RGB?
+        console.log('colors???', colors)
+        if (colors.match(/^rgb/)) {
+          // If RGB --> store the red, green, blue values in separate variables
+          colors = colors.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/)
+
+          r = colors[1]
+          g = colors[2]
+          b = colors[3]
+        } else {
+          // If hex --> Convert it to RGB: http://gist.github.com/983661
+          colors = +('0x' + colors.slice(1).replace(
+            colors.length < 5 && /./g, '$&$&'))
+
+          r = colors >> 16
+          g = colors >> 8 & 255
+          b = colors & 255
+        }
+
+        console.log('최종 colors', colors)
+
+        // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+        hsp = Math.sqrt(
+          0.299 * (r * r) +
+              0.587 * (g * g) +
+              0.114 * (b * b)
+        )
+        console.log('hsp', hsp)
+
+        // Using the HSP value, determine whether the color is light or dark
+        if (hsp > 141) {
+          return '#222'
+        } else {
+          return '#fff'
+        }
+      }
+    },
     setNewSticker (name, color, key) {
       if (this.params.stickerList) {
         for (let i = 0; i < this.params.stickerList.length; i++) {

@@ -261,12 +261,12 @@
                             {{ $changeText(CONT_DETAIL.D_CONT_USER_STICKER_LIST.nameMtext) }}
                           </span> -->
                           <template v-for="(sticker, index) in CONT_DETAIL.stickerList" :key="index">
-                            <span @click.stop="clickSticker(sticker)"
+                            <div @click.stop="clickSticker(sticker)"
                               class="todoTag mright-03"
                               :style="`background: ${sticker.picBgPath}`"
                               :class="{tagColorBlack : sticker.picBgPath === '#91BDFF' || sticker.picBgPath === '#C2DAFF' || sticker.picBgPath === '#FFC58F' || sticker.picBgPath === '#FFE0C4' || sticker.picBgPath === '#A8FFA1' || sticker.picBgPath === '#CDFFC9' || sticker.picBgPath === '#DAB5FF' || sticker.picBgPath === '#EAD5FF' || sticker.picBgPath === '#95E6FF' || sticker.picBgPath === '#C8F5FF' || sticker.picBgPath === '#FF96CF' || sticker.picBgPath === '#FFC3E4' || sticker.picBgPath === '#CCCCCC' || sticker.picBgPath === '#E3E3E3'}">
-                              {{ $changeText(sticker.nameMtext) }}
-                            </span>
+                              <span :style="{color:getLightOrDark(sticker.picBgPath)}">{{ $changeText(sticker.nameMtext) }}</span>
+                            </div>
                           </template>
                         </p>
                       </div>
@@ -1383,6 +1383,49 @@ export default {
     }
   },
   methods: {
+    getLightOrDark (colors) {
+      if (colors && colors.length > 0) {
+        console.log('colors', colors)
+        // Variables for red, green, blue values
+        var r, g, b, hsp
+
+        // Check the format of the color, HEX or RGB?
+        console.log('colors???', colors)
+        if (colors.match(/^rgb/)) {
+          // If RGB --> store the red, green, blue values in separate variables
+          colors = colors.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/)
+
+          r = colors[1]
+          g = colors[2]
+          b = colors[3]
+        } else {
+          // If hex --> Convert it to RGB: http://gist.github.com/983661
+          colors = +('0x' + colors.slice(1).replace(
+            colors.length < 5 && /./g, '$&$&'))
+
+          r = colors >> 16
+          g = colors >> 8 & 255
+          b = colors & 255
+        }
+
+        console.log('최종 colors', colors)
+
+        // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+        hsp = Math.sqrt(
+          0.299 * (r * r) +
+              0.587 * (g * g) +
+              0.114 * (b * b)
+        )
+        console.log('hsp', hsp)
+
+        // Using the HSP value, determine whether the color is light or dark
+        if (hsp > 141) {
+          return '#222'
+        } else {
+          return '#fff'
+        }
+      }
+    },
     async setCompleteTodo (value, memoComment) {
       await this.completeTodo(value, memoComment)
       if (this.$refs.memoCommentTag) {
@@ -1488,7 +1531,7 @@ export default {
       }
       param.workUserKey = this.GE_USER.userKey
       const res = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.updateTodo',
+        url: '/sUniB/tp.updateTodo',
         param: param
       })
       this.CONT_DETAIL.contStatus = param.contStatus
@@ -1607,7 +1650,7 @@ export default {
         if (this.GE_USER.unknownYn) return
         param.creUserKey = this.GE_USER.userKey
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.getStickerList',
+          url: '/sUniB/tp.getStickerList',
           param: param
         })
         this.mStickerList = result.data
@@ -1729,7 +1772,7 @@ export default {
         paramMap.set('teamKey', this.contentsEle.creTeamKey)
         try {
           var result = await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com:9443/service/tp.getContentsActorList',
+            url: '/sUniB/tp.getContentsActorList',
             param: Object.fromEntries(paramMap)
           })
           if (result && result.data && result.data.length > 0) {
@@ -1755,7 +1798,7 @@ export default {
       }
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -2096,7 +2139,7 @@ export default {
           var param = {}
           param = this.contentsEle
           var result = await this.$commonAxiosFunction({
-            url: 'https://mo.d-alim.com:9443/service/tp.deleteContents',
+            url: '/sUniB/tp.deleteContents',
             param: param
           })
           if (result) {
@@ -2392,7 +2435,7 @@ export default {
         inParam.mccKey = this.contentsEle.mccKey
         inParam.jobkindId = 'ALIM'
         result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.deleteMCabContents',
+          url: '/sUniB/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.contentsEle.jobkindId === 'BOAR') {
@@ -2403,7 +2446,7 @@ export default {
         inParam.teamKey = this.contentsEle.creTeamKey
         inParam.deleteYn = true
         result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.deleteContents',
+          url: '/sUniB/tp.deleteContents',
           param: inParam
         })
       } else if (this.contentsEle.jobkindId === 'TODO' || this.contentsEle.jobkindId === 'MEMO') {
@@ -2414,7 +2457,7 @@ export default {
         // inParam.teamKey = this.contentsEle.creTeamKey
         inParam.deleteYn = true
         result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.deleteContents',
+          url: '/sUniB/tp.deleteContents',
           param: inParam
         })
         this.$emit('completeTodo', true)
@@ -2561,7 +2604,7 @@ export default {
     async saveActAxiosFunc (param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.saveClaimLog',
+          url: '/sUniB/tp.saveClaimLog',
           param: param
         })
         if (result) {
@@ -2623,7 +2666,7 @@ export default {
       memo.ownUserKey = this.GE_USER.userkey
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -2937,7 +2980,7 @@ export default {
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.saveSubscribe',
+        url: '/sUniB/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop(this.$t('COMM_MSG_NOTIIS') + reqText)
