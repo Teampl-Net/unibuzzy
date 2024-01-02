@@ -277,54 +277,46 @@ export default {
     }, 500)
   },
   methods: {
-    getLightOrDark (color) {
-      console.log('== getLightOrDark 실행됨')
-      color = color.stickerList
+    getLightOrDark (colors) {
+      if (colors && colors.length > 0) {
+        console.log('colors', colors)
+        // Variables for red, green, blue values
+        var r, g, b, hsp
 
-      if (color && color.length > 0) {
-        for (let i = 0; i < color.length; i++) {
-          var colors = color[i].picBgPath
-          console.log('colors', colors)
-          // Variables for red, green, blue values
-          var r, g, b, hsp
+        // Check the format of the color, HEX or RGB?
+        console.log('colors???', colors)
+        if (colors.match(/^rgb/)) {
+          // If RGB --> store the red, green, blue values in separate variables
+          colors = colors.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/)
 
-          // Check the format of the color, HEX or RGB?
-          console.log('colors???', colors)
-          if (colors.match(/^rgb/)) {
-            // If RGB --> store the red, green, blue values in separate variables
-            colors = colors.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/)
+          r = colors[1]
+          g = colors[2]
+          b = colors[3]
+        } else {
+          // If hex --> Convert it to RGB: http://gist.github.com/983661
+          colors = +('0x' + colors.slice(1).replace(
+            colors.length < 5 && /./g, '$&$&'))
 
-            r = colors[1]
-            g = colors[2]
-            b = colors[3]
-          } else {
-            // If hex --> Convert it to RGB: http://gist.github.com/983661
-            colors = +('0x' + colors.slice(1).replace(
-              colors.length < 5 && /./g, '$&$&'))
+          r = colors >> 16
+          g = colors >> 8 & 255
+          b = colors & 255
+        }
 
-            r = colors >> 16
-            g = colors >> 8 & 255
-            b = colors & 255
-          }
+        console.log('최종 colors', colors)
 
-          console.log('최종 colors', colors)
-
-          // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
-          hsp = Math.sqrt(
-            0.299 * (r * r) +
+        // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+        hsp = Math.sqrt(
+          0.299 * (r * r) +
               0.587 * (g * g) +
               0.114 * (b * b)
-          )
-          console.log('hsp', hsp)
+        )
+        console.log('hsp', hsp)
 
-          // Using the HSP value, determine whether the color is light or dark
-          if (hsp > 127.5) {
-            console.log('hsp > 127.5', i, hsp > 141)
-            this.tagTextColor = '#222'
-          } else {
-            console.log('hsp > 127.5', i, hsp > 141)
-            this.tagTextColor = '#fff'
-          }
+        // Using the HSP value, determine whether the color is light or dark
+        if (hsp > 141) {
+          return '#222'
+        } else {
+          return '#fff'
         }
       }
     },
