@@ -135,7 +135,7 @@ export default {
       var param = {}
       param.teamKey = this.propData.teamKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getMemberTypeList',
+        url: '/sUniB/tp.getMemberTypeList',
         param: param
       })
       if (result.status === 200) {
@@ -153,7 +153,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getTeamMenuList',
+        url: '/sUniB/tp.getTeamMenuList',
         param: Object.fromEntries(paramMap)
       })
       this.bookList = result.data
@@ -168,7 +168,7 @@ export default {
       paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
       paramMap.set('jobkindId', 'USER')
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getMCabContentsList',
+        url: '/sUniB/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       this.memberList = result.data
@@ -303,7 +303,7 @@ export default {
       var paramMap = new Map()
       paramMap.set('memberTypeKey', this.selectBookDetail.memberTypeKey)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getFollowerMemberList',
+        url: '/sUniB/tp.getFollowerMemberList',
         param: Object.fromEntries(paramMap)
       })
       var userList = result.data.userList

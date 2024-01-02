@@ -219,7 +219,7 @@ export default {
     async deleteDispArray (type) {
       if (type === 'U') {
         const result = await this.$commonAxiosFunction({
-          url: 'https://mo.d-alim.com:9443/service/tp.deleteMCabContents',
+          url: '/sUniB/tp.deleteMCabContents',
           param: this.mEmitParams
         })
         console.log(result)

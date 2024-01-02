@@ -38,7 +38,7 @@ export default {
       param.patchTime = getCurrentDate
       param.password = this.mPassword
       const result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.saveSystemSettingTime',
+        url: '/sUniB/tp.saveSystemSettingTime',
         param: param
       })
       if (result.data.result) this.mPatchTime = getCurrentDate

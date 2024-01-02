@@ -223,7 +223,7 @@ export default {
       param.stickerKey = this.selectedSticker.stickerKey
       param.deleteYn = true
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.saveSticker',
+        url: '/sUniB/tp.saveSticker',
         param: param
       })
       if (result.data.result) {
@@ -250,7 +250,7 @@ export default {
       console.log('saveSticker param', param)
       this.$emit('newSticker', param.nameMtext, param.picBgPath, param.stickerKey)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.saveSticker',
+        url: '/sUniB/tp.saveSticker',
         param: param
       })
       if (result.data.result) {

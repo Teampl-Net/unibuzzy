@@ -189,7 +189,7 @@ export default {
           /* ['soAccessToken', 'a1234'] */
         ]
       )
-      this.$axios.post('https://mo.d-alim.com:9443/service/tp.getMyContentsList', Object.fromEntries(paramMap)
+      this.$axios.post('/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap)
       ).then(response => {
         this.pushList = response.data
       }).catch((error) => {

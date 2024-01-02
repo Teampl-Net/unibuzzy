@@ -178,7 +178,7 @@ export default {
       }
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getTeamCommunityList',
+        url: '/sUniB/tp.getTeamCommunityList',
         param: params
       })
 

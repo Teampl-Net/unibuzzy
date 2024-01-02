@@ -387,7 +387,7 @@ export default {
       if (this.mSocialMainYn !== undefined && this.mSocialMainYn === false) {
         paramMap.set('portalYn', true)
       }
-      var response = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('/sUniB/tp.firstLoginCheck', Object.fromEntries(paramMap)
       )
       this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
@@ -429,7 +429,7 @@ export default {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')
       var paramMap = new Map()
-      var response = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('/sUniB/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
