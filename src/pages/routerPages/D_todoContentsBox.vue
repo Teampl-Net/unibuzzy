@@ -318,7 +318,7 @@ export default {
           console.log('hsp', hsp)
 
           // Using the HSP value, determine whether the color is light or dark
-          if (hsp > 141) {
+          if (hsp > 127.5) {
             console.log('hsp > 127.5', i, hsp > 141)
             this.tagTextColor = '#222'
           } else {

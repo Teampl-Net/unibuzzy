@@ -163,7 +163,7 @@ export default {
 
         console.log('== hsp??', hsp)
         // Using the HSP value, determine whether the color is light or dark
-        if (hsp > 127.5) {
+        if (hsp > 141) {
           childText.style.color = '#222'
         } else {
           childText.style.color = '#fff'
