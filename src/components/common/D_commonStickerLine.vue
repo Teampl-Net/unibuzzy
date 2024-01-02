@@ -25,7 +25,7 @@ export default {
     // pTextShowYn: {}
   },
     created() {
-      console.log('pSticker', this.pSticker)
+      // console.log('pSticker', this.pSticker)
       // console.log( )
     }
 }

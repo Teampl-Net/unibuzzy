@@ -160,7 +160,7 @@ export default {
     this.showMemoMore()
   },
   created () {
-    console.log('this.propMemoEle!!!!!!!!!!', this.propMemoEle)
+    // console.log('this.propMemoEle!!!!!!!!!!', this.propMemoEle)
     if (this.propMemoEle.bodyFullStr) {
       this.mModiMemoInput = this.propMemoEle.bodyFullStr
     }

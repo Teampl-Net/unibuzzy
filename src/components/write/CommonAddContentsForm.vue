@@ -775,12 +775,10 @@ export default defineComponent({
   methods: {
     getLightOrDark (colors) {
       if (colors && colors.length > 0) {
-        console.log('colors', colors)
         // Variables for red, green, blue values
         var r, g, b, hsp
 
         // Check the format of the color, HEX or RGB?
-        console.log('colors???', colors)
         if (colors.match(/^rgb/)) {
           // If RGB --> store the red, green, blue values in separate variables
           colors = colors.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/)
@@ -798,15 +796,12 @@ export default defineComponent({
           b = colors & 255
         }
 
-        console.log('최종 colors', colors)
-
         // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
         hsp = Math.sqrt(
           0.299 * (r * r) +
               0.587 * (g * g) +
               0.114 * (b * b)
         )
-        console.log('hsp', hsp)
 
         // Using the HSP value, determine whether the color is light or dark
         if (hsp > 141) {

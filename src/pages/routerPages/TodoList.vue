@@ -367,7 +367,7 @@
         <p class="font14 fl mright-05 fontBold h100P" style="white-space:nowrap;">검색: </p>
         <div style="min-width: calc(100% - 30px); display:flex; align-items:center; gap:0.2rem; flex-wrap:wrap;" :style="`width: ${GE_DISP_SEARCH_LIST.length * 70}px`">
           <template v-for="(search) in GE_DISP_SEARCH_LIST" :key="search.value">
-            <div @click="changeSearchList(search)" class="fl todoTag cursorP" style="margin-bottom:0;" :style="search.value.accessColor? `background: ${search.value.accessColor}` : 'background: #5f61bd '">{{ $changeText(search.title)}}: {{ $changeText(search.value.accessName)}} x</div>
+            <div @click="changeSearchList(search)" class="fl todoTag cursorP" style="margin-bottom:0;" :style="{ background : search.value.accessColor? search.value.accessColor : '#5f61bd', color:getLightOrDark(search.value.accessColor)}">{{ $changeText(search.title)}}: {{ $changeText(search.value.accessName)}} x</div>
           </template>
         </div>
       </div>
@@ -620,6 +620,44 @@ export default {
     window.addEventListener('resize', this.setTitleThreeLine)
   },
   methods: {
+    getLightOrDark (colors) {
+      if (colors && colors.length > 0) {
+        // Variables for red, green, blue values
+        var r, g, b, hsp
+
+        // Check the format of the color, HEX or RGB?
+        if (colors.match(/^rgb/)) {
+          // If RGB --> store the red, green, blue values in separate variables
+          colors = colors.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/)
+
+          r = colors[1]
+          g = colors[2]
+          b = colors[3]
+        } else {
+          // If hex --> Convert it to RGB: http://gist.github.com/983661
+          colors = +('0x' + colors.slice(1).replace(
+            colors.length < 5 && /./g, '$&$&'))
+
+          r = colors >> 16
+          g = colors >> 8 & 255
+          b = colors & 255
+        }
+
+        // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+        hsp = Math.sqrt(
+          0.299 * (r * r) +
+              0.587 * (g * g) +
+              0.114 * (b * b)
+        )
+
+        // Using the HSP value, determine whether the color is light or dark
+        if (hsp > 141) {
+          return '#222'
+        } else {
+          return '#fff'
+        }
+      }
+    },
     openMemoManagePop (index) {
       if (index !== undefined) this.mSelectedMemoIdx = index
       else this.mSelectedMemoIdx = null
@@ -649,16 +687,19 @@ export default {
       }
     },
     selectMemo (index) {
-      this.mSelectedMemoIdx = index
-      if (this.mSelectedMemoIdx != null) {
-        this.showMemoYn = !this.showMemoYn
-        // this.mMemoBody = this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx]
+      if (this.mSelectedMemoIdx === index) {
+        this.showMemoYn = false
+      } else {
+        this.mSelectedMemoIdx = index
+        if (this.mSelectedMemoIdx != null) {
+          this.showMemoYn = true
+          // this.mMemoBody = this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx]
+        }
       }
     },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
-      console.log('changeText', changeText)
       return changeText
     },
     openMemoShow () {
