@@ -1371,16 +1371,17 @@ export default defineComponent({
     }
     const getRefreshList = () => {
       receiverList.splice(0, receiverList.length)
-      props.pReloadList().then(() => {
-        const test = props.pGetReceiverList()
-        console.log(test)
-        test.forEach(recv => {
-          receiverList.push(recv)
+      if (props.pReloadList) {
+        props.pReloadList().then(() => {
+          const test = props.pGetReceiverList()
+          console.log(test)
+          test.forEach(recv => {
+            receiverList.push(recv)
+          })
+          console.log(receiverList)
         })
-        console.log(receiverList)
-      })
+      }
     }
-    console.log('props.pGetReceiverList', props.pGetReceiverList)
 
     let stickerList = reactive([])
     if (props.pGetTagListFn) {

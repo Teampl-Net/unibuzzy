@@ -16,6 +16,9 @@ const D_USER = {
     deviceInfo: null,
     netStateYn: null,
     statusBarHeight: '30px',
+    config: {
+
+    },
     userCerti: { certiYn: null, certi: {}, saveYn: false }
   },
   getters: {
@@ -92,6 +95,9 @@ const D_USER = {
             fcmKey: state.fcmKey,
             deviceId: state.deviceId
           } */
+    },
+    GE_USER_CONFIG (state) {
+      return state.config
     }
   },
   mutations: {
@@ -160,6 +166,9 @@ const D_USER = {
     },
     MU_STATUS_BAR_HEIGHT (state, payload) {
       state.statusBarHeight = payload
+    },
+    MU_USER_CONFIG (state, payload) {
+      state.config = payload
     }
   },
   actions: {
@@ -171,6 +180,9 @@ const D_USER = {
     },
     AC_SET_CERTI ({ commit }, payload) {
       commit('MU_SET_CERTI', payload)
+    },
+    AC_USER_CONFIG ({ commit }, payload) {
+      commit('MU_USER_CONFIG', payload)
     }
   }
 }

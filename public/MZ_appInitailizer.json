@@ -1,0 +1,47 @@
+{
+  "D": 
+    {
+      "appType": "D",
+      "appName": "더알림",
+      "appDomain": "https://mo.d-alim.com",
+      "defaultLang": "ko",
+      "mainUI": "Smain",
+      "deepLink": {
+        "login": "https://thealim.page.link/LOGIN"
+      },
+      "apiPath": "https://mo.d-alim.com:9443/service",
+      "firebaseConfig": {
+        "apiKey": "AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg",
+        "authDomain": "thealim-2602c.firebaseapp.com",
+        "projectId": "thealim-2602c",
+        "storageBucket": "thealim-2602c.appspot.com",
+        "messagingSenderId": "777053173385",
+        "appId": "1:777053173385:web:0de7347501346c761d3858",
+        "measurementId": "G-0BYBFKL8TS"
+      }
+      
+    },
+  "UB": 
+    {
+      "appType": "UB",
+      "appName": "Unibuzzy",
+      "appDomain": "https://unibuzzy.com",
+      "defaultLang": "en",
+      "mainUI": "Imain",
+      "apiPath": "https://unibuzzy.com/sUniB",
+      "deepLink": {
+        "login": "https://unibuzzy.page.link/LOGIN"
+      },
+      "firebaseConfig": {
+        "apiKey": "AIzaSyBXkAC70q-Y226eQICl5h9Txu55moSSAwQ",
+        "authDomain": "unibuzzy.firebaseapp.com",
+        "projectId": "unibuzzy",
+        "storageBucket": "unibuzzy.appspot.com",
+        "messagingSenderId": "947851330767",
+        "appId": "1:947851330767:web:de8bc42cf920be3ae563ba"
+      }
+      
+    }
+
+}
+  

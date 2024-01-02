@@ -7,15 +7,23 @@ import { initializeApp } from 'firebase/app'
 import { methods } from '../../../../public/commonAssets/Tal_axiosFunction'
 import store from '../../../store'
 import { functions } from '../D_vuexFunction'
+import { app } from '@/main' // main.js에서 생성한 Vue 인스턴스 가져오기
+console.log('app')
+
+const config = store.getters['D_USER/GE_USER_CONFIG']
+// app.config.globalProperties.myGlobalVariable에 접근
+// const FIREBASE_CONFIG = Vue.config.globalProperties.$FIREBASE_CONFIG
+
+console.log(config)
 // eslint-disable-next-line camelcase
 const firebaseConfig = {
-  apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
-  authDomain: 'thealim-2602c.firebaseapp.com',
-  projectId: 'thealim-2602c',
-  storageBucket: 'thealim-2602c.appspot.com',
-  messagingSenderId: '777053173385',
-  appId: '1:777053173385:web:0de7347501346c761d3858',
-  measurementId: 'G-0BYBFKL8TS'
+  apiKey: config.apiKey,
+  authDomain: config.authDomain,
+  projectId: config.projectId,
+  storageBucket: config.storageBucket,
+  messagingSenderId: config.messagingSenderId,
+  appId: config.appId,
+  measurementId: config.measurementId
 }
 
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
@@ -109,4 +117,9 @@ if (!isMobile && (appYn === 'false' || appYn === false)) {
 
     // alert(payload.data.title + '\n' + payload.data.body)
   })
+}
+export default {
+  install (Vue) {
+    console.log(Vue.config.globalProperties)
+  }
 }
