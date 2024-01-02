@@ -974,7 +974,7 @@ export default {
       }
       param.workUserKey = this.GE_USER.userKey
       await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.updateTodo',
+        url: '/sUniB/tp.updateTodo',
         param: param
       })
       value.contStatus = param.contStatus
@@ -1064,7 +1064,7 @@ export default {
       this.mCompleteTodoCount = 0
       const myContents = await this.$commonAxiosFunction(
         {
-          url: 'https://mo.d-alim.com:9443/service/tp.getMyTodoList',
+          url: '/sUniB/tp.getMyTodoList',
           param: param
         },
         true

@@ -32,7 +32,7 @@
       <div class="w100P" style="min-height: 30px;">
         <div class="memoTabWrap w100P" style="display:flex; align-items:center;">
           <div style="width:100%; overflow-x:scroll; white-space:nowrap; text-align:left;">
-            <div v-for="(memo, mIndex) in pMemoList.content" :key="mIndex" class="memoTab" @click="selectMemo(mIndex)" :class="{mSelectedMemo : mSelectedMemoIdx === mIndex}">
+            <div v-for="(memo, mIndex) in pMemoList.content" :key="mIndex" class="memoTab crusorP" @click="selectMemo(mIndex)" :class="{mSelectedMemo : mSelectedMemoIdx === mIndex}">
               <div class="w100P" style="display:flex; align-items:center; justify-content:space-between;">
                 <span class="memoTitle" style="width:clac(100% - 22px);">{{memo.title}}</span>
                 <span style="font-size:10px; width:22px;" class="cursorP" @click="mConfirmPopShowYn = true" >삭제</span>
@@ -112,7 +112,7 @@ export default {
       return changeText
     },
     selectMemo (index, initYn) {
-      if (!index) return
+      if (index === undefined || index === null) return
       if (!initYn) { this.saveMemo(true) }
       console.log(index)
       this.mSelectedMemoIdx = index
@@ -146,8 +146,8 @@ export default {
         params.title = this.memoTitle
         params.bodyFullStr = this.memoBody
         console.log('params,', params)
-        await this.$emit('saveMemos', params)
-        if (!tabYn) this.backClick()
+        this.$emit('saveMemos', params)
+        if (!tabYn || tabYn === false) this.backClick()
       }
     },
     deleteMemo (data) {

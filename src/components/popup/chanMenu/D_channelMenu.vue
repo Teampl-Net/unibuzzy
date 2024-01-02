@@ -217,7 +217,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getTeamMenuList',
+        url: '/sUniB/tp.getTeamMenuList',
         param: Object.fromEntries(paramMap)
       }, !(loadingYn === false))
       var tempList = []

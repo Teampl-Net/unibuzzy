@@ -637,7 +637,7 @@ export default {
       inParam.jobkindId = 'MEMO'
       inParam.deleteYn = true
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.deleteContents',
+        url: '/sUniB/tp.deleteContents',
         param: inParam
       })
       if (result) {
@@ -983,7 +983,7 @@ export default {
           await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', res.sticker)
         }
       }
-      this.closeWritePop('WriteContents', this.closeWritePop)
+      if (params.jobkindId && params.jobkindId !== 'MEMO') this.closeWritePop('WriteContents', this.closeWritePop)
       // this.closeMemoManagePop()
     },
     returnTag () {
@@ -1135,7 +1135,7 @@ export default {
       }
       param.workUserKey = this.GE_USER.userKey
       await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.updateTodo',
+        url: '/sUniB/tp.updateTodo',
         param: param
       })
       value.contStatus = param.contStatus
@@ -1361,7 +1361,7 @@ export default {
       this.mCompleteTodoCount = 0
       const myContents = await this.$commonAxiosFunction(
         {
-          url: 'https://mo.d-alim.com:9443/service/tp.getMyTodoList',
+          url: '/sUniB/tp.getMyTodoList',
           param: param
         },
         nonLoadingYn

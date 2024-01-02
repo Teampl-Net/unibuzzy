@@ -117,7 +117,7 @@ export default {
       console.log(this.GE_LOCALE)
       param.codeLang = this.GE_LOCALE
       const result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getLogList',
+        url: '/sUniB/tp.getLogList',
         param: param
       })
       this.mNotiList = result.data.log.content
@@ -131,7 +131,7 @@ export default {
         param.mlogKey = this.mgetLogKey
       }
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.deleteLogUser',
+        url: '/sUniB/tp.deleteLogUser',
         param: param
       })
       console.log('result', result)

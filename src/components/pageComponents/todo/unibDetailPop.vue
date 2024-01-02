@@ -402,7 +402,7 @@ export default {
         nonLoadingYn = true
       }
       var result = await this.$commonAxiosFunction({
-        url: 'https://mo.d-alim.com:9443/service/tp.getMemoList',
+        url: '/sUniB/tp.getMemoList',
         param: memo
       }, nonLoadingYn)
       console.log(result)
