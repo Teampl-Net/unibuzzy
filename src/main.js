@@ -1,15 +1,30 @@
+// === Main Vue App ===
 import { createApp } from 'vue'
 import moTheAlim from './Tal_moTheAlim.vue'
+
+// === Vue Router ===
 import router from './router'
+
+// === Vuex ===
 import Vuex from 'vuex'
 import store from './store'
+
+// === HTTP Library ===
 import axios from 'axios'
+
+// === UI Library ===
 import BootstrapVue3 from 'bootstrap-vue-3'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css'
-import dayjs from 'dayjs'
-// import { onMessage } from './assets/js/webviewInterface'
+import Datepicker from 'vue-datepicker-next'
+import 'vue-datepicker-next/index.css'
+import VueCropper from 'vue-cropperjs'
+import 'cropperjs/dist/cropper.css'
 
+// === Date Library ===
+import dayjs from 'dayjs'
+
+// === Custom Components ===
 import gActiveBar from './components/unit/Tal_gActiveBar.vue'
 import gWhiteSelect from './components/unit/selectBox/cAd_gWhiteSelect.vue'
 import gButtonS from './components/button/Tal_gButtonS.vue'
@@ -36,11 +51,7 @@ import commonSharejs from './assets/js/Tal_commonShare'
 import axiosFunction, { commonAxiosFunction } from '../public/commonAssets/Tal_axiosFunction'
 import coreService from '../public/commonAssets/D_coreService'
 import uploadFile from './assets/js/Tal_uploadFile'
-import Datepicker from 'vue-datepicker-next'
-import 'vue-datepicker-next/index.css'
-// import VueEasyLightbox from 'vue-easy-lightbox'
 import gChannelPop from './components/popup/common/D_commonChanPop.vue'
-/* import { onMessage } from './assets/js/webviewInterface' */
 import gPreLoader from './components/unit/Tal_preloader.vue'
 import gLoadingS from './components/Tal_smallLoading.vue'
 import gAxiosLoading from './components/D_axiosLoadingSpinner.vue'
@@ -51,58 +62,38 @@ import gEmpty from './components/unit/Tal_commonEmpty.vue'
 import gReport from './components/unit/Tal_commonReport.vue'
 import gStepProgress from './components/unit/Tal_stepProgressBar.vue'
 import imgLongClickPop from './components/popup/Tal_imgLongClickPop.vue'
-
 import gAlertPop from './components/popup/Tal_commonAlertPop.vue'
 import gProfileImg from './components/common/D_commonProfile.vue'
-import VueCropper from 'vue-cropperjs'
-import 'cropperjs/dist/cropper.css'
 import gSelectBoardPop from './components/popup/common/Tal_commonSelectBoardListPop.vue'
 import imageCompression from 'browser-image-compression'
-
 import gListEmpty from './components/popup/receiver/receiverUnit/D_commonListEmpty.vue'
 import gCheckBtn from './components/popup/writeContentUnit/D_commonCheckBtn.vue'
 import gInputSmallPop from './components/popup/memberInfo/memberUnit/D_commonSmallInput.vue'
 import gInput from '@/components/unit/CommonInput.vue'
-
 import gContentsBox from './components/pageComponents/push/D_contentsBox.vue'
-
 import gImgPop from './components/popup/common/D_commonGalleryPop.vue'
-
 import gMainTab from './components/popup/memberInfo/memberUnit/D_commonMainTabCompo.vue'
-
 import channelCard from './components/list/D_channelCard.vue'
-
 import gToolBox from './components/popup/writeContentUnit/D_commonToolBox.vue'
-// import Vue3SimpleHtml2pdf from 'vue3-simple-html2pdf'
-
 import webViewBridge from './assets/js/webViewBridge'
-// import attachFileListPop from './components/pageComponents/main/unit/D_commonAttachFileListPop.vue'
-import './registerServiceWorker'
 import gFileBox from './components/unit/D_fileBox.vue'
 import gSticker from './components/common/D_commonSticker.vue'
 import gSelectStickerPop from './components/popup/sticker/D_myStickerListPop.vue'
 import gStickerLine from './components/common/D_commonStickerLine.vue'
+
+// === Vue I18n ===
 import { createI18n } from 'vue-i18n'
-// eslint-disable-next-line camelcase
 import messages from '@/assets/i18n/index'
 
-// 더알림
+// === Main App Instance Creation ===
 const i18n = createI18n({
   leagacy: false,
   locale: 'ko',
   fallbackLocale: 'ko',
   messages: messages
 })
-// uniB
-// const i18n = createI18n({
-//   leagacy: false,
-//   locale: 'en',
-//   fallbackLocale: 'en',
-//   messages: messages
-// })
-// if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Imain') // unib
 
-const app = createApp(moTheAlim).use(router).use(store).use(i18n)/* .use(VueI18n) */
+export const app = createApp(moTheAlim).use(router).use(store).use(i18n)/* .use(VueI18n) */
 /* export const i18n = new VueI18n({
   locale: 'en', // set locale
   fallbackLocale: 'en'
@@ -168,18 +159,10 @@ app.component('gImgPop', gImgPop)
 app.component('gFileBox', gFileBox)
 app.component('gSelectStickerPop', gSelectStickerPop)
 
-// app.component('attachFileListPop', attachFileListPop)
-
 app.use(webViewBridge)
 app.use(axiosFunction)
 app.use(coreService)
 app.use(uploadFile)
-
-/* axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
-axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
-axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
-axios.defaults.headers.common['Access-Control-Allow-Credentials'] = true
-axios.defaults.headers.common['Content-Type'] = 'application/json;' */
 axios.defaults.timeout = 20000
 axios.defaults.withCredentials = true
 axios.interceptors.request.use(function (config) {
@@ -199,26 +182,6 @@ axios.interceptors.response.use(function (response) {
   return response
 }, function (error) {
   console.log(error)
-  // var originalRequest = error.config
-  // if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1 && !originalRequest._retry) {
-  //   originalRequest._retry = true
-  //   console.log(error.code)
-  //   console.log(error.message.indexOf('timeout'))
-
-  //   var app = document.getElementById('app')
-  //   var innerHTML = ''
-  //   var toastDiv = document.createElement('div')
-  //   innerHTML += '<div id="toastPop" class="font16" style="width: 80%;left: 10%;border-radius: 5px;padding: 15px 10px;text-align: left;min-height: 40px;border: 1px solid #CCC;background: #f4f4f9fa;color: #000;position: absolute;bottom: 70px;box-shadow: 0 0 16px 0px #cccccc9c;z-index: 999999999999;">'
-  //   innerHTML += ' 네트워크 상태가 불안정 합니다. 잠시후 다시 시도해주세요.'
-  //   innerHTML += '</div>'
-  //   toastDiv.innerHTML = innerHTML
-  //   app.appendChild(toastDiv)
-  //   setTimeout(() => {
-  //     document.getElementById('toastPop').remove()
-  //   }, 2000)
-  //   router.replace('/')
-  //   return axios.request(originalRequest)
-  // }
 })
 localStorage.setItem('nativeYn', false)
 var varUA = localStorage.getItem('systemName')
@@ -231,9 +194,6 @@ if (varUA !== undefined && varUA !== null && varUA !== '') {
 } else {
   app.config.globalProperties.$STATUS_HEIGHT = 0
 }
-app.config.globalProperties.$DALIM_TEAM_KEY = 377
-app.config.globalProperties.$DALIM_MUN_CAB_KEY = 11188
-app.config.globalProperties.$DALIM_ORYU_CAB_KEY = 12006
 app.config.silent = true
 app.config.globalProperties.$axios = axios
 app.config.globalProperties.$Vuex = Vuex
@@ -242,51 +202,58 @@ app.config.globalProperties.$commonAxiosFunction = commonAxiosFunction
 app.config.globalProperties.$store = store
 app.config.globalProperties.$i18n = i18n
 
+app.config.globalProperties.$DALIM_TEAM_KEY = 377
+app.config.globalProperties.$DALIM_MUN_CAB_KEY = 11188
+app.config.globalProperties.$DALIM_ORYU_CAB_KEY = 12006
+
 app.config.globalProperties.$dayjs = dayjs
+
+// === Local Storage Initialization ===
 localStorage.setItem('loginYn', false)
 localStorage.setItem('testYn', false)
 localStorage.setItem('setItem', '')
+const jsonFilePath = '/MZ_appInitailizer.json'
 
+app.config.globalProperties.$DEV_YN = true
+fetch(jsonFilePath)
+  .then(response => response.json())
+  .then(initData => {
+    const data = initData.D
+    app.config.globalProperties.$APP_CONFIG = data
+    // app.config.globalProperties.$APP_TYPE = data.appType
+    // app.config.globalProperties.$APP_NAME = data.appName
+    // app.config.globalProperties.$APP_DOMAIN = data.appDomain
+    // app.config.globalProperties.$FIREBASE_CONFIG = data.firebaseConfig
+    store.dispatch('D_USER/AC_USER_CONFIG', data.firebaseConfig)
+    app.config.globalProperties.$API_PATH = data.apiPath
+    i18n.locale = data.defaultLang
+    localStorage.setItem('currentScreen', data.mainUI)
+
+    console.log(data) // JSON 데이터 출력 또는 원하는 처리 수행
+  })
+  .catch(error => console.error('Error fetching JSON:', error))
+
+// === App Configuration and Mounting ===
 app.mount('#app')
 window.app = app
 
-const domainName = window.location.hostname
-if (domainName.includes('d-alim')) {
-  i18n.locale = 'ko'
-  localStorage.setItem('appType', 'D')
-  document.title = '더알림'
-  if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Smain')
-} else if (domainName.includes('unibuzzy')) {
-  i18n.locale = 'en'
-  localStorage.setItem('appType', 'UB')
-  document.title = 'unibuzzy'
-  if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Imain')
-} else {
-  localStorage.setItem('appType', 'D')
-  document.title = '더알림'
-  if (!localStorage.getItem('currentScreen')) localStorage.setItem('currentScreen', 'Smain')
-}
-localStorage.setItem('loginYn', false)
+// var originalRequest = error.config
+// if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1 && !originalRequest._retry) {
+//   originalRequest._retry = true
+//   console.log(error.code)
+//   console.log(error.message.indexOf('timeout'))
 
-// const newScreen = currentScreen === 'Smain' ? 'Imain' : 'Smain'
-/* if (navigator.serviceWorker) {
-  navigator.serviceWorker.register('./firebase-messaging-sw.js')
-    .then(function (reg) {
-      console.log('서비스워커 등록성공 :', reg)
-      reg.addEventListener('message', evnt => {
-        console.log(evnt)
-      })
-      reg.addEventListener('push', evnt => {
-        console.log(evnt)
-      })
-    })
-    .catch(function (error) { console.log('서비스워커 등록실패 :', error) })
-  navigator.serviceWorker.addEventListener('message', (event) => {
-    // event is a MessageEvent object
-    console.log(event)
-  })
-  navigator.serviceWorker.addEventListener('swMessageCome', (event) => {
-    // event is a MessageEvent object
-    console.log(event)
-  })
-} */
+//   var app = document.getElementById('app')
+//   var innerHTML = ''
+//   var toastDiv = document.createElement('div')
+//   innerHTML += '<div id="toastPop" class="font16" style="width: 80%;left: 10%;border-radius: 5px;padding: 15px 10px;text-align: left;min-height: 40px;border: 1px solid #CCC;background: #f4f4f9fa;color: #000;position: absolute;bottom: 70px;box-shadow: 0 0 16px 0px #cccccc9c;z-index: 999999999999;">'
+//   innerHTML += ' 네트워크 상태가 불안정 합니다. 잠시후 다시 시도해주세요.'
+//   innerHTML += '</div>'
+//   toastDiv.innerHTML = innerHTML
+//   app.appendChild(toastDiv)
+//   setTimeout(() => {
+//     document.getElementById('toastPop').remove()
+//   }, 2000)
+//   router.replace('/')
+//   return axios.request(originalRequest)
+// }
