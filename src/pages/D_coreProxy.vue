@@ -72,11 +72,11 @@ export default {
       if (this.mAxiosYn) return
       this.mAxiosYn = true
       console.log(this.mRecvParams)
-      const result = await this.$axios.post('/sUniB/tp.getDirectBoardInfo', this.mRecvParams)
+      const result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.getDirectBoardInfo', this.mRecvParams)
       console.log(result)
       this.mAxiosYn = false
       /* var result = await commonAxiosFunction({
-          url: '/sUniB/tp.goDirectBoard',
+          url: 'https://mo.d-alim.com:9443/service/tp.goDirectBoard',
           param: Object.fromEntries(paramMap)
         }) */
       const resultMainData = result.data.cabinet
@@ -133,7 +133,7 @@ export default {
       this.mRecvParams.keepInfo = JSON.stringify(this.mRecvParams.keepInfo)
       setParam.partner = this.mRecvParams
       console.log(this.mRecvParams)
-      var result = await this.$axios.post('/sUniB/tp.saveUserAccess', setParam)
+      var result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.saveUserAccess', setParam)
       this.mAxiosYn = false
       if (result.data.result) {
         return 'OK'
@@ -153,7 +153,7 @@ export default {
 
       dService.saveUserAndAccess(setParam, this.mRecvParams, this.successSaveUserAccess)
 
-      // var result = await this.$axios.post('/sUniB/tp.saveUserAccess', setParam)
+      // var result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.saveUserAccess', setParam)
     }, */
     async saveUserAndAccess (userProfile) {
       if (this.mAxiosYn) return
@@ -189,7 +189,7 @@ export default {
       } */
       coreMethods.saveUserAndAccess(userProfile, this.mRecvParams, this.successSaveUserAccess)
 
-      // var result = await this.$axios.post('/sUniB/tp.saveUserAndAccess', setParam)
+      // var result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.saveUserAndAccess', setParam)
       // this.mAxiosYn = false
     },
     async receiveMessage (event, callback) {
@@ -254,7 +254,7 @@ export default {
       if (this.mRecvParams.userName === null || this.mRecvParams.encPhone === null) return
       setParam.partner = this.mRecvParams
       console.log(this.mRecvParams)
-      var result = await this.$axios.post('/sUniB/tp.saveUserAccess', setParam)
+      var result = await this.$axios.post('https://mo.d-alim.com:9443/service/tp.saveUserAccess', setParam)
       this.mAxiosYn = false
       if (result.data.result) {
         console.log(result.data)

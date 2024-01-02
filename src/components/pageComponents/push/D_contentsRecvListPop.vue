@@ -40,7 +40,7 @@
                     </div>
                     <div class="fl w-100P mleft-05" style="display: flex; align-items: center; " @click.stop="clickEvntToParents('open')">
                         <div class="textLeft fl w-100P " style="" >
-                            <p class="fl font16 commonDarkGray fontBold w-100P"><img v-if="actor.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../assets/images/editChan/icon_self.svg">{{this.$changeText(actor.userDispMtext)}}</p>
+                            <p class="fl font16 commonDarkGray fontBold w-100P"><img v-if="actor.userKey === GE_USER.userKey" class="img-w20 mright-03" src="../../../assets/images/editChan/icon_self.svg">{{this.$changeText(actor.userDispMtext)}} ({{ actor.actType === 'RV' ? '담당' : actor.actType === 'CK' ? '검토' : '공개' }})</p>
                             <p class="fl font14 commonDarkGray " style="" >{{actor.userEmail ? changeDot('email', actor.userEmail) : $t('COMMON_MSG_NO_EMAIL')}}</p>
                             <p class="fl font14 commonDarkGray" style="margin: 0 0.3rem">|</p>
                             <p class="fl font14 commonDarkGray " style="" >{{actor.phoneEnc ? changeDot('phone', actor.phoneEnc) : $t('COMMON_MSG_NO_PHONE')}}</p>

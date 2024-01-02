@@ -188,7 +188,7 @@ export default {
       paramMap.set('cabinetKey', this.parentData.accessKey)
       paramMap.set('jobkindId', 'USER')
       const result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMCabContentsList',
+        url: 'https://mo.d-alim.com:9443/service/tp.getMCabContentsList',
         param: Object.fromEntries(paramMap)
       })
       const returnList = []
@@ -343,7 +343,7 @@ export default {
         pageSize: 1000
       }
       const result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getUserTeamList',
+        url: 'https://mo.d-alim.com:9443/service/tp.getUserTeamList',
         param: param
       })
 

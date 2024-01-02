@@ -72,7 +72,7 @@ export default {
         file.addYn = false
       }
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveMyFile',
+        url: 'https://mo.d-alim.com:9443/service/tp.saveMyFile',
         param: { file: file }
       })
       this.myFilekey = result.data.myFileKey

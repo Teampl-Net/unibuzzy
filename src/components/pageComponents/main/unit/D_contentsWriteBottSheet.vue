@@ -27,6 +27,7 @@
     <CommonAddContentsForm
     style="z-index: 13"
     v-if="mWritePopShowYn"
+    @openPop="openPop"
     :pClosePop="closeAddTodoPop"
     :pPostContentsFn="saveContents"
     :pGetReceiverList="returnTargetData"

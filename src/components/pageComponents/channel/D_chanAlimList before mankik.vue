@@ -686,7 +686,7 @@ export default {
 
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveFollower',
+        url: 'https://mo.d-alim.com:9443/service/tp.saveFollower',
         param: params
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')

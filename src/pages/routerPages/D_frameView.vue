@@ -113,7 +113,7 @@ export default {
       }
       const myContents = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.getMyTodoList',
+          url: 'https://mo.d-alim.com:9443/service/tp.getMyTodoList',
           param: param
         },
         false

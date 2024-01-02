@@ -278,7 +278,7 @@ export default {
       paramMap.set('teamKey', teamKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getFollowerList',
+        url: 'https://mo.d-alim.com:9443/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       }, true)
       // console.log(result)
@@ -520,7 +520,7 @@ export default {
       var paramMap = new Map()
       paramMap.set('teamKey', detailValue.targetKey)
       paramMap.set('fUserKey', this.GE_USER.userKey)
-      var result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+      var result = await this.$getViewData({ url: 'https://mo.d-alim.com:9443/service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
       if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
         this.$showToastPop('채널을 찾을 수 없습니다!')
         return
@@ -603,7 +603,7 @@ export default {
       memo.allMemoYn = true
       memo.memoKey = memoKey
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getMemoList',
+        url: 'https://mo.d-alim.com:9443/service/tp.getMemoList',
         param: memo
       }, true)
       var memos = result.data.memoList[0]
@@ -635,7 +635,7 @@ export default {
       }
       // paramMap.set('followerType', 'M')
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getFollowerList',
+        url: 'https://mo.d-alim.com:9443/service/tp.getFollowerList',
         param: Object.fromEntries(paramMap)
       }, true)
       var index = this.axiosQueue.findIndex((item) => item === 'getFollowerList')

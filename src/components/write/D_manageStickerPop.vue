@@ -44,8 +44,9 @@
                 </div>
                 <div style="width:70%; display:flex; align-items:center; justify-content:start;">
                   <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD;">{{ $t('COMM_PREVIEW') }}</p>
-                  <div class="previewTag" style="color:#fff;" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray'}" :class="{tagColorBlack : this.selectedSticker.picBgPath === '#91BDFF' || this.selectedSticker.picBgPath === '#C2DAFF' || this.selectedSticker.picBgPath === '#FFC58F' || this.selectedSticker.picBgPath === '#FFE0C4' || this.selectedSticker.picBgPath === '#A8FFA1' || this.selectedSticker.picBgPath === '#CDFFC9' || this.selectedSticker.picBgPath === '#DAB5FF' || this.selectedSticker.picBgPath === '#EAD5FF' || this.selectedSticker.picBgPath === '#95E6FF' || this.selectedSticker.picBgPath === '#C8F5FF' || this.selectedSticker.picBgPath === '#FF96CF' || this.selectedSticker.picBgPath === '#FFC3E4' || this.selectedSticker.picBgPath === '#CCCCCC' || this.selectedSticker.picBgPath === '#E3E3E3' }">
-                  {{ stickerNameVal }}
+                  <!-- <div class="previewTag" style="color:#fff;" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray'}" :class="{tagColorBlack : this.selectedSticker.picBgPath === '#91BDFF' || this.selectedSticker.picBgPath === '#C2DAFF' || this.selectedSticker.picBgPath === '#FFC58F' || this.selectedSticker.picBgPath === '#FFE0C4' || this.selectedSticker.picBgPath === '#A8FFA1' || this.selectedSticker.picBgPath === '#CDFFC9' || this.selectedSticker.picBgPath === '#DAB5FF' || this.selectedSticker.picBgPath === '#EAD5FF' || this.selectedSticker.picBgPath === '#95E6FF' || this.selectedSticker.picBgPath === '#C8F5FF' || this.selectedSticker.picBgPath === '#FF96CF' || this.selectedSticker.picBgPath === '#FFC3E4' || this.selectedSticker.picBgPath === '#CCCCCC' || this.selectedSticker.picBgPath === '#E3E3E3' }"> -->
+                  <div ref="parentDiv" class="previewTag" style="color:#fff;" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray'}">
+                    <span ref="childText">{{ stickerNameVal }}</span>
                   </div>
                 </div>
               </div>
@@ -123,7 +124,52 @@ export default {
       mBlackTrue: false
     }
   },
+  mounted () {
+  },
   methods: {
+    getLightOrDark (color) {
+      console.log('== getLightOrDark 실행됨')
+
+      const childText = this.$refs.childText
+      if (childText) {
+        // Variables for red, green, blue values
+        var r, g, b, hsp
+
+        // Check the format of the color, HEX or RGB?
+        if (color.match(/^rgb/)) {
+          // If RGB --> store the red, green, blue values in separate variables
+          color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/)
+
+          r = color[1]
+          g = color[2]
+          b = color[3]
+        } else {
+          // If hex --> Convert it to RGB: http://gist.github.com/983661
+          color = +('0x' + color.slice(1).replace(
+            color.length < 5 && /./g, '$&$&'))
+
+          r = color >> 16
+          g = color >> 8 & 255
+          b = color & 255
+        }
+        console.log('== color??', color)
+
+        // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
+        hsp = Math.sqrt(
+          0.299 * (r * r) +
+          0.587 * (g * g) +
+          0.114 * (b * b)
+        )
+
+        console.log('== hsp??', hsp)
+        // Using the HSP value, determine whether the color is light or dark
+        if (hsp > 127.5) {
+          childText.style.color = '#222'
+        } else {
+          childText.style.color = '#fff'
+        }
+      }
+    },
     backClick () {
       var hStack = this.$store.getters['D_HISTORY/hStack']
       var removePage = hStack[hStack.length - 1]
@@ -145,6 +191,8 @@ export default {
       console.log('color:::', color, blackYn)
       this.selectedSticker.picBgPath = color
       this.mBlackTrue = blackYn
+      // this.changeTextColor()
+      this.getLightOrDark(color)
       this.toggleAddTagShowYn()
     },
     toggleAddTagShowYn () {
@@ -175,7 +223,7 @@ export default {
       param.stickerKey = this.selectedSticker.stickerKey
       param.deleteYn = true
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSticker',
+        url: 'https://mo.d-alim.com:9443/service/tp.saveSticker',
         param: param
       })
       if (result.data.result) {
@@ -202,7 +250,7 @@ export default {
       console.log('saveSticker param', param)
       this.$emit('newSticker', param.nameMtext, param.picBgPath, param.stickerKey)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSticker',
+        url: 'https://mo.d-alim.com:9443/service/tp.saveSticker',
         param: param
       })
       if (result.data.result) {
@@ -243,6 +291,13 @@ export default {
   watch: {
     pageUpdate (value, old) {
       this.backClick()
+    },
+    selectedSticker: {
+      immediate: true,
+      handler (value) {
+        console.log('바뀜')
+      },
+      deep: true
     }
   }
 }

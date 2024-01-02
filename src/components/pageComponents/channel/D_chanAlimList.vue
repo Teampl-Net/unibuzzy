@@ -297,7 +297,7 @@ export default {
         console.log(this.CHANNEL_DETAIL.teamId)
       } else {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getAndSaveTeamAESToken',
+          url: 'https://mo.d-alim.com:9443/service/tp.getAndSaveTeamAESToken',
           param: { teamKey: this.CHANNEL_DETAIL.teamKey }
         })
         console.log(result.data)
@@ -826,7 +826,7 @@ export default {
 
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveFollower',
+        url: 'https://mo.d-alim.com:9443/service/tp.saveFollower',
         param: params
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')

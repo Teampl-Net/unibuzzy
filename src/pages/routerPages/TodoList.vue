@@ -637,7 +637,7 @@ export default {
       inParam.jobkindId = 'MEMO'
       inParam.deleteYn = true
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.deleteContents',
+        url: 'https://mo.d-alim.com:9443/service/tp.deleteContents',
         param: inParam
       })
       if (result) {
@@ -651,7 +651,7 @@ export default {
     selectMemo (index) {
       this.mSelectedMemoIdx = index
       if (this.mSelectedMemoIdx != null) {
-        this.showMemoYn = true
+        this.showMemoYn = !this.showMemoYn
         // this.mMemoBody = this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx]
       }
     },
@@ -1135,7 +1135,7 @@ export default {
       }
       param.workUserKey = this.GE_USER.userKey
       await this.$commonAxiosFunction({
-        url: '/sUniB/tp.updateTodo',
+        url: 'https://mo.d-alim.com:9443/service/tp.updateTodo',
         param: param
       })
       value.contStatus = param.contStatus
@@ -1361,7 +1361,7 @@ export default {
       this.mCompleteTodoCount = 0
       const myContents = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.getMyTodoList',
+          url: 'https://mo.d-alim.com:9443/service/tp.getMyTodoList',
           param: param
         },
         nonLoadingYn
@@ -2622,7 +2622,7 @@ export default {
 <style>
 
 .todoTag {
-  color: white;
+  /* color: white; */
   height: 19px;
   margin-bottom: 3px;
   line-height: 19px;
