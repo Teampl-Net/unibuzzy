@@ -87,7 +87,7 @@
                         :class="{/* tagColorBlack : sticker.picBgPath === '#91BDFF' || sticker.picBgPath === '#C2DAFF' || sticker.picBgPath === '#FFC58F' || sticker.picBgPath === '#FFE0C4' || sticker.picBgPath === '#A8FFA1' || sticker.picBgPath === '#CDFFC9' || sticker.picBgPath === '#DAB5FF' || sticker.picBgPath === '#EAD5FF' || sticker.picBgPath === '#95E6FF' || sticker.picBgPath === '#C8F5FF' || sticker.picBgPath === '#FF96CF' || sticker.picBgPath === '#FFC3E4' || sticker.picBgPath === '#CCCCCC' || sticker.picBgPath === '#E3E3E3'*/}"
                         :style="`background: ${sticker.picBgPath}`"
                     >
-                        <span class="tagTetxt" :style="{ color: textColor }">{{ $changeText(sticker.nameMtext) }}</span>
+                        <span class="tagTetxt" :style="{ color: tagTextColor }">{{ $changeText(sticker.nameMtext) }}</span>
                     </div>
                     </template>
                     <!-- <span class="todoTag mright-03" @click="todo.showAllStickerYn = !todo.showAllStickerYn" style="background: #5f61bd !important;" v-if="todo.stickerList && todo.stickerList.length > 1">
@@ -280,19 +280,17 @@ export default {
     getLightOrDark (color) {
       console.log('== getLightOrDark 실행됨')
       color = color.stickerList
-      // const childText = this.$refs.childText
-      // console.log('== childText', childText)
 
       if (color && color.length > 0) {
         for (let i = 0; i < color.length; i++) {
           var colors = color[i].picBgPath
+          console.log('colors', colors)
           // Variables for red, green, blue values
           var r, g, b, hsp
 
           // Check the format of the color, HEX or RGB?
           console.log('colors???', colors)
           if (colors.match(/^rgb/)) {
-            console.log('1111')
             // If RGB --> store the red, green, blue values in separate variables
             colors = colors.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/)
 
@@ -300,7 +298,6 @@ export default {
             g = colors[2]
             b = colors[3]
           } else {
-            console.log('2222')
             // If hex --> Convert it to RGB: http://gist.github.com/983661
             colors = +('0x' + colors.slice(1).replace(
               colors.length < 5 && /./g, '$&$&'))
@@ -309,7 +306,8 @@ export default {
             g = colors >> 8 & 255
             b = colors & 255
           }
-          console.log('== colors??', colors)
+
+          console.log('최종 colors', colors)
 
           // HSP (Highly Sensitive Poo) equation from http://alienryderflex.com/hsp.html
           hsp = Math.sqrt(
@@ -317,14 +315,14 @@ export default {
               0.587 * (g * g) +
               0.114 * (b * b)
           )
+          console.log('hsp', hsp)
 
-          console.log('== hsp??', hsp)
           // Using the HSP value, determine whether the color is light or dark
-          if (hsp < 127.5) {
-            console.log('hsp > 127.5', hsp > 127.5)
+          if (hsp > 141) {
+            console.log('hsp > 127.5', i, hsp > 141)
             this.tagTextColor = '#222'
           } else {
-            console.log('hsp > 127.5', hsp > 127.5)
+            console.log('hsp > 127.5', i, hsp > 141)
             this.tagTextColor = '#fff'
           }
         }
