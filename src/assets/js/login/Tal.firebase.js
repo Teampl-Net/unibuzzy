@@ -7,7 +7,6 @@ import { initializeApp } from 'firebase/app'
 import { methods } from '../../../../public/commonAssets/Tal_axiosFunction'
 import store from '../../../store'
 import { functions } from '../D_vuexFunction'
-import { app } from '@/main' // main.js에서 생성한 Vue 인스턴스 가져오기
 console.log('app')
 
 const config = store.getters['D_USER/GE_USER_CONFIG']
@@ -29,7 +28,7 @@ const firebaseConfig = {
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
 
 export const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
-console.log(firebaseApp)
+console.log('firebaseApp', firebaseApp)
 var isMobile = /Mobi/i.test(window.navigator.userAgent)
 var appYn = localStorage.getItem('nativeYn')
 // isMobile = /Mobi/i.test(window.navigator.userAgent)

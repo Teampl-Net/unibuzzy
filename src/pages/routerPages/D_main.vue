@@ -260,21 +260,13 @@ export default {
       if (this.mSocialMainYn !== undefined && this.mSocialMainYn === false) {
         //
       } else {
-        if (localStorage.getItem('appType') && localStorage.getItem('appType') === 'UB') {
-          this.$emit('changePageHeader', 'unibuzzy')
-        } else {
-          this.$emit('changePageHeader', '더알림')
-        }
+        if (this.$APP_CONFIG && this.$APP_CONFIG.appName) this.$emit('changePageHeader', this.$APP_CONFIG.appName)
       }
     },
     goLoginPage () {
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       if (isMobile && (localStorage.getItem('nativeYn') === false || localStorage.getItem('nativeYn') === 'false')) {
-        if (localStorage.getItem('appType') && localStorage.getItem('appType') === 'UB') {
-          window.location.href = 'https://unibuzzy.page.link/LOGIN'
-        } else {
-          window.location.href = 'https://thealim.page.link/LOGIN'
-        }
+        if (this.$APP_CONFIG && this.$APP_CONFIG.deepLink && this.$APP_CONFIG.deepLink.login) window.location.href = this.$APP_CONFIG.deepLink.login
       } else {
         this.$router.push({ path: '/policies' })
       }

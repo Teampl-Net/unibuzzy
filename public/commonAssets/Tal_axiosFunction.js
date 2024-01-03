@@ -2,11 +2,10 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
-import router from '../../src/router'
 import { params } from 'vue-router'
 import { coreMethods } from './D_coreService'
 import { commonMethods } from '../../src/assets/js/Tal_common'
-import store from '../../src/store'
+import store from '@/store'
 import { mapGetters, mapActions } from 'vuex'
 /* axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
@@ -58,6 +57,7 @@ export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
     console.log('####resultData is: ')
     console.log(result)
   } catch (error) {
+    const router = require('../../src/router')
     router.replace('/')
     result = error
     console.log('####error is: ')
@@ -76,6 +76,7 @@ export async function checkSession () {
     result = response
   }).catch((error) => {
     // alert('세션이 만료되어 메인 페이지로 이동합니다.')
+    const router = require('../../src/router')
     router.replace('/')
     result = error
     console.log(error)
@@ -96,6 +97,7 @@ export function isMobile () {
 
 export async function saveUser (userProfile, loginYn) {
   console.log(userProfile)
+  const router = require('../../src/router')
   var user = {}
   // var testYn = localStorage.getItem('testYn')
   // if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
@@ -153,15 +155,12 @@ export async function saveUser (userProfile, loginYn) {
     localStorage.setItem('user', JSON.stringify(result.data.userMap))
     await store.dispatch('D_USER/AC_USER', result.data.userMap)
     localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
+    var appInfo = store.getters['D_USER/AC_USER_APP']
     if (loginYn) {
       var userInfo = result.data.userMap
       if (!userInfo.certiDate && (!(/Mobi/i.test(window.navigator.userAgent)))) {
         // router.replace({ path: '/' })
-        if (localStorage.getItem('appType') && localStorage.getItem('appType') === 'UB') {
-        } else {
-          router.replace({ path: '/savePhone' })
-        }
-        return
+        if (appInfo && appInfo.savePhone === true) router.replace({ path: '/savePhone' })
       }
     }
     router.replace({ path: '/' })
@@ -186,6 +185,7 @@ export const methods = {
     return mobileYn
   },
   async userLoginCheck (maingoYn) {
+    const router = require('../../src/router')
     var paramMap = new Map()
     var testYn = localStorage.getItem('testYn')
     if (testYn !== undefined && testYn !== null && testYn !== '' && (testYn === true || testYn === 'true')) {
@@ -274,6 +274,7 @@ export const methods = {
       firstYn: true
     })
     console.log(result)
+    const router = require('../../src/router')
     if (result) {
       await router.replace({ name: 'login' })
       store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')

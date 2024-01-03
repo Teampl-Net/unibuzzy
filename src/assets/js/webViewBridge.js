@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-import router from '../../router'
 import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
 import store from '../../store'
 import { onMessage } from '../../assets/js/webviewInterface'
 import { functions } from '../../assets/js/D_vuexFunction'
 import routerMain from '../../pages/Tal_router_main.vue'
+const router = require('@/router')
 const isJsonString = (str) => {
   try {
     JSON.parse(str)
@@ -84,6 +84,7 @@ const isJsonString = (str) => {
     async function listenerFromNative (e) {
       var message
 
+      const router = require('@/router')
       try {
         if (isJsonString(e.data) === true) {
           message = JSON.parse(e.data)
