@@ -186,7 +186,7 @@ const D_CHANNEL = {
           team.ELEMENTS = { alimList: [], boardList: [], todoList: [], memoList: [], cabinetList: [], managerList: [] }
         }
         team.teamTypeText = commonMethods.teamTypeString(team.teamType)
-        // var title = '[더알림]' + commonMethods.changeText(team.nameMtext)
+        // var title = '[모두조인]' + commonMethods.changeText(team.nameMtext)
         // var message = commonMethods.changeText(team.memoMtext)
         // team.copyTextStr = await commonMethods.makeShareLink(team.teamKey, 'chanDetail', message, title)
 

@@ -11,13 +11,13 @@
       "LOG_BTN_NAVER": "Naver Sign In",
       "LOG_BTN_APPLE": "Apple Sign In",
       "LOG_BTN_NO_LOGIN": "Just Look Around",
-      "LOG_BTN_UNIB": "uniBuzzy Sign In"
+      "LOG_BTN_UNIB": "ModuZoin Sign In"
     }
   }
   </i18n>
 <template>
   <div class="pagePaddingWrap loginContentsWrap">
-    <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
+    <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="모두조인을 종료하시겠습니까?" />
     <div v-if="!pPartnerLoginYn" class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; margin-top: 125px; margin-bottom: 80px;">
       <img src="../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
     </div>
@@ -53,12 +53,12 @@
       </div>
       <div v-if="pPartnerLoginYn" class="fl" style="width: 100%; height: 80px; display: flex; margin-top: 50px;align-items: center; justify-content: center;">
         <img style="width: 70px; border-radius: 3px; float: left;" src="../../assets/images/common//DAlimMainQrCode.jpg">
-        <p class="font16 fontBold textLeft mleft-1 fl" style="color: #D6D6E7;">더알림 앱을 휴대폰에 설치하면<br>편하게 실시간으로 알림을 받을 수 있습니다!</p>
+        <p class="font16 fontBold textLeft mleft-1 fl" style="color: #D6D6E7;">모두조인 앱을 휴대폰에 설치하면<br>편하게 실시간으로 알림을 받을 수 있습니다!</p>
       </div>
       <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
       <!--
       <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
-        더알림계정으로 로그인
+        모두조인계정으로 로그인
       </div> -->
   </div>
 </template>

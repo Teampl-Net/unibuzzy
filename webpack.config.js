@@ -37,7 +37,7 @@ module.exports = {
 
   plugins: [
     new HtmlwebpackPlugin({
-      title: '더알림!',
+      title: '모두조인!',
       template: 'src/index.html'
     }),
     new webpack.ProvidePlugin({

@@ -5,7 +5,7 @@
     <!-- <div class="zoomInOutPop certiPopWrap" style="left: 5%;"> -->
         <!-- <div class="confirmPopHeader" >
             <img src="../../../assets/images/common/thealim_header_logo.png" class="fl" >
-            <p class="font24 headerFont commonColor fl" style="line-height: 2.2rem;" >더알림</p>
+            <p class="font24 headerFont commonColor fl" style="line-height: 2.2rem;" >모두조인</p>
             <p class="font15 headerFont commonColor fl" style="line-height: 2.6rem; margin-left: 0.3rem" >가장 편리한 구독-알림</p>
         </div> -->
         <div style="width: 100%; float: left; margin-bottom: 12px;">

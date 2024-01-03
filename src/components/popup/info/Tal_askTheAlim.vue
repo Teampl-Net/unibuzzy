@@ -405,12 +405,12 @@ export default {
         param.bodyFullStr = innerHtml.replaceAll('width: calc(100% - 30px);', 'width: 100%;')
 
         param.jobkindId = 'BOAR'
-        param.creTeamKey = this.$DALIM_TEAM_KEY // 더알림 공식 채널 teamKey
+        param.creTeamKey = this.$DALIM_TEAM_KEY // 모두조인 공식 채널 teamKey
 
         param.workStatCodeKey = 40
-        // param.cabinetKey = 12006 // 더알림 공식 채널의 오류 게시판 키
+        // param.cabinetKey = 12006 // 모두조인 공식 채널의 오류 게시판 키
         if (this.propData.jobkindId === 'ERRO') param.cabinetKey = this.$DALIM_ORYU_CAB_KEY
-        // param.cabinetKey = 11188 // 더알림 공식 채널의 문의 게시판 키
+        // param.cabinetKey = 11188 // 모두조인 공식 채널의 문의 게시판 키
         if (this.propData.jobkindId === 'QUES') param.cabinetKey = this.$DALIM_MUN_CAB_KEY
 
         param.onlyManagerYn = true

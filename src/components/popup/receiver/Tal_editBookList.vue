@@ -433,7 +433,7 @@ export default {
 
                 this.excelUploadShowYn = true
             } else {
-                this.confirmText = '엑셀업로드 기능은<br>더알림 PC버전에서만 가능합니다'
+                this.confirmText = '엑셀업로드 기능은<br>모두조인 PC버전에서만 가능합니다'
                 this.confirmType = 'timeout'
                 this.confirmPopShowYn = true
             }

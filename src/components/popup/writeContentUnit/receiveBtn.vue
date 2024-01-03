@@ -32,10 +32,10 @@ export default {
     width: 8%;
     height: 4%;
 
-/* 더알림5 */
+/* 모두조인5 */
 
     background: #F1F1FF;
-/* 더알림1 */
+/* 모두조인1 */
 
     border: 1.5px solid #5F61BD;
     border-radius: 8px;

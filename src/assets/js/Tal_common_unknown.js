@@ -367,12 +367,12 @@ export const commonMethods = {
     if (message) {
       paramMap.set('message', message)
     } else {
-      paramMap.set('message', '더알림, 구독형 알림')
+      paramMap.set('message', '모두조인, 구독형 알림')
     }
     if (title) {
       paramMap.set('title', title)
     } else {
-      paramMap.set('title', '더알림')
+      paramMap.set('title', '모두조인')
     }
 
     var result = await commonAxiosFunction({

@@ -1,7 +1,7 @@
 <i18n>
 {
   "ko": {
-    "MENU_BTN_INTRO": "더알림 소개",
+    "MENU_BTN_INTRO": "모두조인 소개",
     "MENU_BTN_FAQ": "자주 찾는 질문",
     "MENU_BTN_REQ": "문의하기",
     "MENU_BTN_REPO_ERROR": "오류접수",
@@ -9,7 +9,7 @@
     "LANG_INTO_ENG": "영어"
   },
   "en": {
-    "MENU_BTN_INTRO": "Introducing uniBuzzy",
+    "MENU_BTN_INTRO": "Introducing ModuZoin",
     "MENU_BTN_FAQ": "FAQ",
     "MENU_BTN_REQ": "Request",
     "MENU_BTN_REPO_ERROR": "Report Errors",

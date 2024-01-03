@@ -1,6 +1,6 @@
 <template>
   <div v-if="loginYn" class="pagePaddingWrap loginContentsWrap">
-    <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
+    <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="모두조인을 종료하시겠습니까?" />
     <div class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; margin-top: 125px; margin-bottom: 80px;">
       <img src="@/assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
     </div>
@@ -31,7 +31,7 @@
       </div>
       <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
       <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
-        더알림계정으로 로그인
+        모두조인계정으로 로그인
       </div>
   </div>
 </template>

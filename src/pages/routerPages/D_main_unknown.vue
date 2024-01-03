@@ -1,13 +1,13 @@
 <template>
   <div v-if="this.GE_USER && this.GE_MAIN_CHAN_LIST" id="mainAllWrap" class="" ref="mainScrollWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'" style="height: 100%; overflow: hidden scroll;">
     <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
-    <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
+    <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="모두조인을 종료하시겠습니까?" />
 
     <div style="width: 100%; float: left;">
         <div class="userProfileWrap" style=" border-radius: 0.8rem; padding: 0 1.5rem;" >
             <div style="width: calc(100% - 42px); float: left; height: 100%;">
                 <!-- <a href="web+test://pwa">Americano</a> -->
-                <p @click="test" class="commonLightColor font16 textLeft fl" style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
+                <p @click="test" class="commonLightColor font16 textLeft fl" style="font-weight: 600;">모두조인에 오신 것을 환영해요!</p>
                 <!-- @click="this.$router.push({path: '/certiPhone'})"  -->
                 <div class="fr" style="position:relative;">
                   <!-- <redDot style="width: 12px; height: 12px; border-radius: 100%; border: 2px solid #F4F7FF; background: #ED4956; position: absolute; right: 15px; top: 0px; z-index:1"></redDot> -->
@@ -196,7 +196,7 @@ export default {
     this.$store.commit('D_HISTORY/setRemovePage', '')
     this.$store.commit('D_HISTORY/updateStack', [])
     this.$store.dispatch('D_HISTORY/AC_CLEAR_GPOP_STACK')
-    this.$emit('changePageHeader', '더알림')
+    this.$emit('changePageHeader', '모두조인')
   },
   /* updated () {
     this.getMainBoard()

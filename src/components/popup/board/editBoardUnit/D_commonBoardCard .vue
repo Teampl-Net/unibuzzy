@@ -136,10 +136,10 @@ height: 20px;
 left: 330px;
 top: 25px;
 
-/* 더알림1 */
+/* 모두조인1 */
 
 background: #5F61BD;
-/* 더알림1 */
+/* 모두조인1 */
 
 border: 1.5px solid #5F61BD;
 

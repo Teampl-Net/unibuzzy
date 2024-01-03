@@ -1,7 +1,7 @@
 <i18n>
 {
     "ko": {
-    "MAIN_MESSAGE_WELCOME": "더알림에 오신 것을 환영해요!",
+    "MAIN_MESSAGE_WELCOME": "모두조인에 오신 것을 환영해요!",
     "MAIN_TITLE_MANAGING_CHANNEL": "내 관리 채널",
     "MAIN_TITLE_FOLLOWING_CHANNEL": "구독중인 채널",
     "MAIN_TITLE_POPULAR_CHANNEL": "인기있는 채널",
