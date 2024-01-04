@@ -15,6 +15,12 @@ export const routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../../pages/D_coreProxy.vue')
   },
+  // {
+  //   path: '/',
+  //   name: 'firstLoading',
+  //   props: true,
+  //   component: () => import(/* webpackChunkName: "about" */ '../../pages/routerPages/D_firstLoading.vue')
+  // },
   {
     path: '/',
     name: 'routerMain',

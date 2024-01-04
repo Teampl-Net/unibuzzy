@@ -5,10 +5,12 @@
       <fullModal transition="showModal"  @successWrite="successWriteBoard" id="commonWrap" :propParams="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
     </transition>
     <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
-    <router-view ref="routerMainWrap" @openPop="openPop" />
+    <firstLoading v-if="isLoadingYn" />
+    <router-view v-else ref="routerMainWrap" @openPop="openPop" />
   </div>
 </template>
 <script>
+import firstLoading from '@/pages/routerPages/D_firstLoading.vue'
 
 export default {
   name: 'moTheAlimWrap',
@@ -22,6 +24,9 @@ export default {
   //   window.document.removeEventListener('touchstart')
   //   window.document.removeEventListener('touchend')
   // },
+  components: {
+    firstLoading
+  },
   mounted () {
     // window.document.addEventListener('wheel', (e) => {
     //   var test = e.deltaY < 0 ? 'down' : 'up'
@@ -58,8 +63,8 @@ export default {
       chanList: [],
       modalParam: {},
       fullScreenYn: false,
-      screenWidth: '1000px'
-
+      screenWidth: '1000px',
+      isLoadingYn: false
     }
   },
   methods: {
