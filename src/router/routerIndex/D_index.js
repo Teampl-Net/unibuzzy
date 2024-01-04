@@ -22,12 +22,12 @@ export const routes = [
   //   component: () => import(/* webpackChunkName: "about" */ '../../pages/routerPages/D_firstLoading.vue')
   // },
   {
-    path: '/routermain',
+    path: '/',
     name: 'routerMain',
     component: routerMain,
     children: [
       {
-        path: '/main',
+        path: '/',
         name: 'main',
         props: true,
         meta: {

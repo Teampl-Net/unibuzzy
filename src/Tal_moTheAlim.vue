@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-import firstLoading from '@/pages/routePages/D_firstLoading.vue'
+import firstLoading from '@/pages/routerPages/D_firstLoading.vue'
 
 export default {
   name: 'moTheAlimWrap',
