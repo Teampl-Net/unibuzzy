@@ -1,7 +1,7 @@
 <i18n>
   {
     "ko": {
-      "MAIN_MESSAGE_WELCOME": "모두조인에 오신 것을 환영해요!",
+      "MAIN_MESSAGE_WELCOME": "하이브릭에 오신 것을 환영해요!",
       "MAIN_TITLE_MANAGING_CHANNEL": "내 관리 채널",
       "MAIN_TITLE_FOLLOWING_CHANNEL": "구독중인 채널",
       "MAIN_TITLE_POPULAR_CHANNEL": "인기있는 채널",
@@ -26,7 +26,7 @@
     <imageMain v-if="mSocialMainYn !== undefined && (mSocialMainYn === false)" @changeRouterPath="changeRouterPath" :mRouterHeaderText="mRouterHeaderText" :pPortalMainData="mPortalMainTeam" :pChangeNightYn="pChangeNightYn"  @openSelectChannelPop="openSelectChannelPop"/>
     <div v-if="(mSocialMainYn === undefined || (mSocialMainYn && mSocialMainYn === true)) && this.GE_USER && this.GE_MAIN_CHAN_LIST" id="mainAllWrap" class="" ref="mainScrollWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'" style="height: 100%; overflow: hidden scroll;">
           <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
-          <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="모두조인을 종료하시겠습니까?" />
+          <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="하이브릭을 종료하시겠습니까?" />
           <div v-if="GE_USER.unknownYn && mUnknownLoginPopYn" style="width:100%; height: 100%; position: absolute;top: 0; left: 0; z-index: 100; background: #00000050;"></div>
           <unknownLoginPop :pContDetail="mUnknownContDetail" :pClosePop="closeUnknownLoginPop" style="position: absolute;" v-if="GE_USER.unknownYn && mUnknownLoginPopYn" />
           <div class="w-100P fl">

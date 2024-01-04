@@ -37,7 +37,7 @@ module.exports = {
 
   plugins: [
     new HtmlwebpackPlugin({
-      title: '모두조인!',
+      title: '하이브릭!',
       template: 'src/index.html'
     }),
     new webpack.ProvidePlugin({

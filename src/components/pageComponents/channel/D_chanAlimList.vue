@@ -770,7 +770,7 @@ export default {
 
         // document.getElementById('chanInfoSummary').classList.add('displayNIm')
 
-        // 모두조인 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
+        // 하이브릭 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) document.getElementById('followerCancelArea').classList.add('displayNIm')
 
         if (document.getElementById('ownerChannelEditArea')) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')

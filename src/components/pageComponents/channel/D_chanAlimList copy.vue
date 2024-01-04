@@ -337,9 +337,9 @@ export default {
       }
     },
     async copyText () {
-      var shareItem = { title: '[모두조인] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: this.CHANNEL_DETAIL.copyTextStr, url: this.CHANNEL_DETAIL.copyTextStr }
+      var shareItem = { title: '[하이브릭] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: this.CHANNEL_DETAIL.copyTextStr, url: this.CHANNEL_DETAIL.copyTextStr }
       if (this.$checkMobile() === 'IOS') {
-        shareItem = { title: '[모두조인] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: '[모두조인] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), url: this.CHANNEL_DETAIL.copyTextStr }
+        shareItem = { title: '[하이브릭] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: '[하이브릭] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), url: this.CHANNEL_DETAIL.copyTextStr }
       }
       if (navigator.share) {
         navigator.share(shareItem)
@@ -514,7 +514,7 @@ export default {
       var detail = this.$getDetail('TEAM', this.chanDetail.targetKey)
       if (detail && detail.length > 0) {
         if (!detail[0].copyTextStr) {
-          var title = '[모두조인]' + this.$changeText(detail[0].nameMtext)
+          var title = '[하이브릭]' + this.$changeText(detail[0].nameMtext)
           var message = this.$changeText(detail[0].memoMtext)
           var this_ = this
           this.$makeShareLink(detail[0].teamKey, 'chanDetail', message, title).then(res => {

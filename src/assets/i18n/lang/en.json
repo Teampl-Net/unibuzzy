@@ -1,5 +1,5 @@
 {
-  "COMMON_NAME_APP": "ModuZoin",
+  "COMMON_NAME_APP": "Hybric",
   "COMMON_BTN_SIGN_IN": "Sign in",
   "COMMON_BTN_LOG_OUT": "Log out",
   "COMMON_BTN_OKAY": "Okay",
@@ -238,7 +238,7 @@
   "COMM_MSG_RECEIVER_CHECK" : "You can only check the recipients of notifications you sent!",
   "COMM_MSG_DELETE_SCHEDULE" : "Are you sure you want to delete the event?",
   "COMM_MSG_DELETED_SCHEDULE" : "The schedule has been deleted.",
-  "RECE_TITLE_NOTI": "Do you want to receive notifications from ModuZoin\n and easily find important notifications?",
+  "RECE_TITLE_NOTI": "Do you want to receive notifications from Hybric\n and easily find important notifications?",
   "COMM_MSG_PUT_TITLE" : "Please enter title.",
   "COMM_MSG_PUT_BOARD" : "Please enter post.",
   "COMM_MSG_SEL_BOARD" : "Please select the board where you want to write a post.",

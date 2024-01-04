@@ -4,13 +4,13 @@
         "LOG_BTN_GOOGLE": "구글 로그인",
         "LOG_BTN_APPLE": "애플 로그인",
         "LOG_BTN_NO_LOGIN": "그냥 둘러보기",
-        "LOG_BTN_UNIB": "ModuZoin 로그인"
+        "LOG_BTN_UNIB": "Hybric 로그인"
       },
       "en": {
         "LOG_BTN_GOOGLE": "Google Sign In",
         "LOG_BTN_APPLE": "Apple Sign In",
         "LOG_BTN_NO_LOGIN": "Just Look Around",
-        "LOG_BTN_UNIB": "ModuZoin Sign In"
+        "LOG_BTN_UNIB": "Hybric Sign In"
       }
     }
     </i18n>
@@ -19,10 +19,10 @@
       <div v-if="GE_USER.unknownYn" class="videoArea">
         <div v-show="showStartBtnYn" class="fade-in fontBold textLeft loginTitle">
           <p class="w100P fl textCenter font18">Everything for campus life, </p>
-          <p class="w100P fl fontBold textCenter font50">ModuZoin</p>
+          <p class="w100P fl fontBold textCenter font50">Hybric</p>
         </div>
       </div>
-      <gConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="Are you sure to quit ModuZoin?" />
+      <gConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="Are you sure to quit Hybric?" />
       <transition name="showUp" class="duration">
         <div class="py-3 px-4 uniBLogo" v-show="showStartBtnYn">
           <img src="@/assets/images/intro/login/uniB_logo.png" class="" >

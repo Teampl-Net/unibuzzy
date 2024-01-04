@@ -14,7 +14,7 @@
     <!-- <div style="width:100%;  margin-bottom: 10px;">
       <div class="fl" style="">
         <img src="../../assets/images/common/thealim_header_logo.png"  width="40" height="40" class="fl"/>
-        <p class="fl font25 headerFont commonColor" style="margin-left: 5px; line-height: 40px;">모두조인</p>
+        <p class="fl font25 headerFont commonColor" style="margin-left: 5px; line-height: 40px;">하이브릭</p>
       </div>
       <div class="fl">
         <gProfileImg :smallYn="true" :selfYn="true" style="width: 35px; margin-right: 10px; height: 35px;" class="fl"/>

@@ -379,7 +379,7 @@ export default {
       var pageData = await this.$getRouterViewData(page)
       this.sendInitData = pageData
       /* if (page === 'main') {
-        this.mRouterHeaderText = '모두조인'
+        this.mRouterHeaderText = '하이브릭'
       } else if (page === 'chanList') {
         this.mRouterHeaderText = '채널'
       } else if (page === 'search') {
@@ -568,7 +568,7 @@ export default {
       }
       /* if (teamKey === 377) {
         if (this.$checkMobile() === 'IOS') {
-          this.$showToastPop('죄송합니다! 현재 모두조인 채널을 정비하고 있습니다!!')
+          this.$showToastPop('죄송합니다! 현재 하이브릭 채널을 정비하고 있습니다!!')
           return
         }
       } */

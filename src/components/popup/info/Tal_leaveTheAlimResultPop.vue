@@ -4,7 +4,7 @@
       <div class="leaveContentsArea">
         <img src="../../../assets/images/common/message_logo.png" alt="종모양 아이콘">
         <p class="leaveComplete-1">회원 탈퇴가 완료되었습니다.</p>
-        <p class="leaveComplete-2">모두조인을 이용해주시고 사랑해주셔서 감사합니다.<br>더욱 더 노력하고 발전하는 모두조인이 되겠습니다.</p>
+        <p class="leaveComplete-2">하이브릭을 이용해주시고 사랑해주셔서 감사합니다.<br>더욱 더 노력하고 발전하는 하이브릭이 되겠습니다.</p>
       </div>
       <gBtnLarge v-on:click="closePop" :btnTitle="'확인'" />
     </div>

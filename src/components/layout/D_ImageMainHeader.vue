@@ -96,7 +96,7 @@ export default {
       immediate: true,
       handler (val) {
         if (!val) return
-        if (val === '모두조인' || val === 'The Alim') {
+        if (val === '하이브릭' || val === 'The Alim') {
           this.mDispTitle = this.$t('COMMON_NAME_APP')
         } else if (val === '채널' || val === 'Channel') {
           this.mDispTitle = this.$t('COMMON_NAME_CHANNEL')
@@ -116,7 +116,7 @@ export default {
     GE_LOCALE: {
       immediate: true,
       handler (val) {
-        if (this.mRouterHeaderText === '모두조인' || this.mRouterHeaderText === 'The Alim') {
+        if (this.mRouterHeaderText === '하이브릭' || this.mRouterHeaderText === 'The Alim') {
           this.mDispTitle = this.$t('COMMON_NAME_APP')
         } else if (this.mRouterHeaderText === '채널' || this.mRouterHeaderText === 'Channel') {
           this.mDispTitle = this.$t('COMMON_NAME_CHANNEL')

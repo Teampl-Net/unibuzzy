@@ -13,7 +13,7 @@
             <option value="en" class="h-100P">English</option>
         </select> -->
         <!-- <div class=" policyHeader fl ms-2 text-start " style="margin-top: 5px; line-height: 20px">
-            <p class="font25 headerFont commonColor fl">모두조인</p>
+            <p class="font25 headerFont commonColor fl">하이브릭</p>
         </div> -->
     </div>
 </template>
@@ -53,7 +53,7 @@ export default {
       immediate: true,
       handler (val) {
         if (!val) return
-        if (val === '모두조인' || val === 'The Alim') {
+        if (val === '하이브릭' || val === 'The Alim') {
           this.mDispTitle = this.$t('COMMON_NAME_APP')
         } else if (val === '채널' || val === 'Channel') {
           this.mDispTitle = this.$t('COMMON_NAME_CHANNEL')
@@ -69,7 +69,7 @@ export default {
     GE_LOCALE: {
       immediate: true,
       handler (val) {
-        if (this.mRouterHeaderText === '모두조인' || this.mRouterHeaderText === 'The Alim') {
+        if (this.mRouterHeaderText === '하이브릭' || this.mRouterHeaderText === 'The Alim') {
           this.mDispTitle = this.$t('COMMON_NAME_APP')
         } else if (this.mRouterHeaderText === '채널' || this.mRouterHeaderText === 'Channel') {
           this.mDispTitle = this.$t('COMMON_NAME_CHANNEL')

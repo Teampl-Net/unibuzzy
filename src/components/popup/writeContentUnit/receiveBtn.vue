@@ -32,10 +32,10 @@ export default {
     width: 8%;
     height: 4%;
 
-/* 모두조인5 */
+/* 하이브릭5 */
 
     background: #F1F1FF;
-/* 모두조인1 */
+/* 하이브릭1 */
 
     border: 1.5px solid #5F61BD;
     border-radius: 8px;

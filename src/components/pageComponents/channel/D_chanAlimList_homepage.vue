@@ -14,7 +14,7 @@
       <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{officialTitle: CHANNEL_DETAIL.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" /> <p class="font20 fontBold textOverdot"  :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: #6768a7' " v-if="scrolledYn">{{changeText(CHANNEL_DETAIL.nameMtext)}}</p></div>
       <!-- <div @click="goDAlimMain" style="width: 105px; position:absolute; left: 10px; top: 5px; display: flex; align-items: center;">
         <img @click="goDAlimMain"  src="../../../assets/images/common/thealim_header_logo.png" style="width: 25px; " class="cursorP fl mainHeaderLogo" >
-        <p @click="goDAlimMain" v-if="!scrolledYn" class="font25 cursorP headerFont commonColor fl" v-html="'모두조인'" style="width: calc(100% - 25px); "></p>
+        <p @click="goDAlimMain" v-if="!scrolledYn" class="font25 cursorP headerFont commonColor fl" v-html="'하이브릭'" style="width: calc(100% - 25px); "></p>
       </div> -->
       <div id="summaryWrap" v-if="!this.mChanInfoPopShowYn" class="summaryWrap mtop-05" >
           <!-- <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
@@ -399,7 +399,7 @@ export default {
             console.log(this.chanDetail.initData.team.copyTextStr === undefined)
             if ((this.chanDetail.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
               this.mMakeDeepLinkIng = true
-              var title = '[모두조인]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+              var title = '[하이브릭]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
               var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
               var this_ = this
               this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
@@ -531,7 +531,7 @@ export default {
       if ((this.chanDetail.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.mMakeDeepLinkIng = true
-        var title = '[모두조인]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+        var title = '[하이브릭]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
         var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
         var this_ = this
         this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
@@ -540,9 +540,9 @@ export default {
           this_.mMakeDeepLinkIng = false
         })
       }
-      var shareItem = { title: '[모두조인] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: this.CHANNEL_DETAIL.copyTextStr, url: this.CHANNEL_DETAIL.copyTextStr }
+      var shareItem = { title: '[하이브릭] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: this.CHANNEL_DETAIL.copyTextStr, url: this.CHANNEL_DETAIL.copyTextStr }
       if (this.$checkMobile() === 'IOS') {
-        shareItem = { title: '[모두조인] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: '[모두조인] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), url: this.CHANNEL_DETAIL.copyTextStr }
+        shareItem = { title: '[하이브릭] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: '[하이브릭] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), url: this.CHANNEL_DETAIL.copyTextStr }
       }
       if (navigator.share) {
         navigator.share(shareItem)
@@ -704,7 +704,7 @@ export default {
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
         this.scrolledYn = true
 
-        // 모두조인 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
+        // 하이브릭 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
         if (document.getElementById('followerCancelArea') && this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) document.getElementById('followerCancelArea').classList.add('displayNIm')
 
         // if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')

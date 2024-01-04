@@ -381,12 +381,12 @@ export const commonMethods = {
       extractMessage = extractMessage.replace('x -->', '')
       paramMap.set('message', extractMessage)
     } else {
-      paramMap.set('message', '모두조인, 구독형 알림')
+      paramMap.set('message', '하이브릭, 구독형 알림')
     }
     if (title) {
       paramMap.set('title', title)
     } else {
-      paramMap.set('title', '모두조인')
+      paramMap.set('title', '하이브릭')
     }
 
     var result = await commonAxiosFunction({

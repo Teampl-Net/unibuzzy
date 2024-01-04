@@ -1,8 +1,8 @@
 <template>
   <div class="pagePaddingWrap admLoginContentsWrap">
-    <!-- <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="모두조인을 종료하시겠습니까?" /> -->
+    <!-- <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="하이브릭을 종료하시겠습니까?" /> -->
 
-    <h2 class="fontBold fl" style="color:white; margin-top:60px">모두조인 관리자 로그인</h2>
+    <h2 class="fontBold fl" style="color:white; margin-top:60px">하이브릭 관리자 로그인</h2>
 
     <div class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; margin-top: 65px; margin-bottom: 80px;">
       <img src="../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
@@ -10,7 +10,7 @@
 
       <!-- <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn font20" >비회원 문의하기</div> -->
       <div class="admLoginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
-        모두조인계정으로 로그인
+        하이브릭계정으로 로그인
       </div>
 
       <!-- <div class="loginBtn font20" v-on:click="KakaoLoginBtn">

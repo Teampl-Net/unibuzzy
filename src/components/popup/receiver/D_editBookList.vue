@@ -17,7 +17,7 @@
     "EDIT_BOOK_NAME_JOB": "직무",
     "EDIT_BOOK_NAME_POSITION": "직급",
     "EDIT_BOOK_NAME_ADDUSER": "유저 추가",
-    "EDIT_BOOK_MSG_EXCEL": "엑셀업로드 기능은<br>모두조인 PC버전에서만 가능합니다."
+    "EDIT_BOOK_MSG_EXCEL": "엑셀업로드 기능은<br>하이브릭 PC버전에서만 가능합니다."
   },
   "en": {
     "EDIT_BOOK_TITLE_FILTER": "More Filters",

@@ -331,7 +331,7 @@ export default {
             console.log(this.chanDetail.initData.team.copyTextStr === undefined)
             if ((this.chanDetail.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
               this.mMakeDeepLinkIng = true
-              var title = '[모두조인]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+              var title = '[하이브릭]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
               var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
               var this_ = this
               this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
@@ -458,7 +458,7 @@ export default {
       if ((this.chanDetail.initData.team.copyTextStr === undefined && this.CHANNEL_DETAIL.copyTextStr === undefined) && !this.mMakeDeepLinkIng) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.mMakeDeepLinkIng = true
-        var title = '[모두조인]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
+        var title = '[하이브릭]' + this.$changeText(this.CHANNEL_DETAIL.nameMtext)
         var message = this.$changeText(this.CHANNEL_DETAIL.memoMtext)
         var this_ = this
         this.$makeShareLink(this.CHANNEL_DETAIL.teamKey, 'chanDetail', message, title).then(res => {
@@ -467,9 +467,9 @@ export default {
           this_.mMakeDeepLinkIng = false
         })
       }
-      var shareItem = { title: '[모두조인] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: this.CHANNEL_DETAIL.copyTextStr, url: this.CHANNEL_DETAIL.copyTextStr }
+      var shareItem = { title: '[하이브릭] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: this.CHANNEL_DETAIL.copyTextStr, url: this.CHANNEL_DETAIL.copyTextStr }
       if (this.$checkMobile() === 'IOS') {
-        shareItem = { title: '[모두조인] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: '[모두조인] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), url: this.CHANNEL_DETAIL.copyTextStr }
+        shareItem = { title: '[하이브릭] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), text: '[하이브릭] ' + this.$changeText(this.CHANNEL_DETAIL.nameMtext), url: this.CHANNEL_DETAIL.copyTextStr }
       }
       if (navigator.share) {
         navigator.share(shareItem)
@@ -630,7 +630,7 @@ export default {
 
         document.getElementById('chanInfoSummary').classList.add('displayNIm')
 
-        // 모두조인 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
+        // 하이브릭 채널은 구독취소버튼이 없으므로 아래의 클래스가 v-if에 의해 생성되지 않으므로 에러가 나기에 추가함
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && this.CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY) document.getElementById('followerCancelArea').classList.add('displayNIm')
 
         if (this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn) document.getElementById('ownerChannelEditArea').classList.add('displayNIm')

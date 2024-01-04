@@ -136,10 +136,10 @@ height: 20px;
 left: 330px;
 top: 25px;
 
-/* 모두조인1 */
+/* 하이브릭1 */
 
 background: #5F61BD;
-/* 모두조인1 */
+/* 하이브릭1 */
 
 border: 1.5px solid #5F61BD;
 

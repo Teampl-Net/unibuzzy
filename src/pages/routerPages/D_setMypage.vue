@@ -6,8 +6,8 @@
     "PROF_BTN_TERMS": "이용약관",
     "PROF_BTN_CASH": "캐시정보 삭제",
     "PROF_TITLE_VERSION": "버전정보",
-    "PROF_BTN_LOGOUT": "모두조인 로그아웃",
-    "PROF_BTN_DELETE": "모두조인을 탈퇴하려면 여기를 눌러주세요",
+    "PROF_BTN_LOGOUT": "하이브릭 로그아웃",
+    "PROF_BTN_DELETE": "하이브릭을 탈퇴하려면 여기를 눌러주세요",
     "PROF_BTN_EDIT_EMAIL": "이메일 변경",
     "PROF_TITLE_LATE_VERSION": "최신버전"
   },
@@ -17,8 +17,8 @@
     "PROF_BTN_TERMS": "Terms of Use",
     "PROF_BTN_CASH": "Delete cash",
     "PROF_TITLE_VERSION": "Version",
-    "PROF_BTN_LOGOUT": "Logout ModuZoin",
-    "PROF_BTN_DELETE": "Click here to delete your account from ModuZoin",
+    "PROF_BTN_LOGOUT": "Logout Hybric",
+    "PROF_BTN_DELETE": "Click here to delete your account from Hybric",
     "PROF_BTN_EDIT_EMAIL": "Edit Email",
     "PROF_TITLE_LATE_VERSION": "Latest"
   }
@@ -84,8 +84,8 @@
       <div v-on:click="openLogoutPop" class="font14 cursorP" style="background-color: #F5F5F9; width: 100%; color:#6768A7; font-weight: bold; height: 45px; margin-bottom: 2rem;border-radius: 5px; padding: 0.6rem;">
         {{ $t('PROF_BTN_LOGOUT') }}
       </div>
-      <p v-if="GE_LOCALE === 'ko'" class="leaveText font14">모두조인을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">여기</span>를 눌러주세요.</p>
-      <p v-else class="leaveText font14">Click <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">here</span> to delete your account from ModuZoin.</p>
+      <p v-if="GE_LOCALE === 'ko'" class="leaveText font14">하이브릭을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">여기</span>를 눌러주세요.</p>
+      <p v-else class="leaveText font14">Click <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">here</span> to delete your account from Hybric.</p>
     </div>
 
     <gConfirmPop :confirmText='checkVersionText' class="" confirmType='two' @ok="goPlayStore" @no='checkVersionPopShowYn = false' v-if="checkVersionPopShowYn"/>

@@ -10,7 +10,7 @@
           <p class="font20 mbottom-05 fontBold">환영합니다!</p>
         </div>
         <div class="mtop-05 introText" style="height: 40px;">
-            <p>모두조인서비스 아이디와 패스워드를 입력해주세요</p>
+            <p>하이브릭서비스 아이디와 패스워드를 입력해주세요</p>
         </div>
        <!--  <div class="textLeft">]
           <select>
