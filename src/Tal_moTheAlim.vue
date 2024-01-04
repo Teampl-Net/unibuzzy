@@ -5,7 +5,7 @@
       <fullModal transition="showModal"  @successWrite="successWriteBoard" id="commonWrap" :propParams="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
     </transition>
     <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
-    <router-view ref="routerMainWrap" @openPop="openPop" />
+    <router-view ref="routerMainWrap" @openPop="openPop" /> <!-- 안뜬 상태로? 뜬 상태로? onload가 언제로 인식되는지 확인하기-->
   </div>
 </template>
 <script>

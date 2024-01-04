@@ -1,5 +1,6 @@
 
 import routerMain from '../../pages/Tal_router_main.vue'
+import testPage from '@/pages/routerPages/D_testPage.vue'
 import search from '../../pages/routerPages/D_searchPage.vue'
 import login from '../../pages/intro/Tal_login.vue'
 
@@ -17,11 +18,17 @@ export const routes = [
   },
   {
     path: '/',
+    name: 'testPage',
+    props: true,
+    component: testPage
+  },
+  {
+    path: '/routermain',
     name: 'routerMain',
     component: routerMain,
     children: [
       {
-        path: '/',
+        path: '/main',
         name: 'main',
         props: true,
         meta: {
