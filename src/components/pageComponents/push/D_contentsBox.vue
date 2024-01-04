@@ -442,7 +442,7 @@
             </div>
             </div>
             <div class="mtop-03" style="margin-left:20px; border-bottom:1px solid rgba(204, 204, 204, 0.314);"></div> <!-- 구분선 -->
-            <div :style="{'padding-left' : CONT_DETAIL.jobkindId === 'TODO' ? '50px' : '20px'}" class="font15 mtop-03" style="display:flex; align-items:center; justify-content:space-between; color:#636363; font-size:15px;">
+            <div :style="{'padding-left' : CONT_DETAIL.jobkindId === 'TODO' ? '50px' : '20px'}" class="font15 mtop-03" style="display:flex; align-items:center; justify-content:end; color:#636363; font-size:15px;">
             <!-- <div v-if="CONT_DETAIL.jobkindId === 'TODO'" class="font15" @click.stop="goUserProfile()" style="display:flex; align-items:center; ">
               <img class="profileImg" :src="CONT_DETAIL.userDomainPath ? CONT_DETAIL.userDomainPath + CONT_DETAIL.userProfileImg : CONT_DETAIL.userProfileImg" :alt="CONT_DETAIL.creUserName"/>
               <span class="mleft-03 mright-03"> {{ this.$changeText(CONT_DETAIL.creUserName) }}</span>
