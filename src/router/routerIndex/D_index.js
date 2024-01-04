@@ -1,6 +1,5 @@
 
 import routerMain from '../../pages/Tal_router_main.vue'
-import testPage from '@/pages/routerPages/D_testPage.vue'
 import search from '../../pages/routerPages/D_searchPage.vue'
 import login from '../../pages/intro/Tal_login.vue'
 
@@ -16,12 +15,12 @@ export const routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../../pages/D_coreProxy.vue')
   },
-  {
-    path: '/',
-    name: 'testPage',
-    props: true,
-    component: testPage
-  },
+  // {
+  //   path: '/',
+  //   name: 'testPage',
+  //   props: true,
+  //   component: () => import(/* webpackChunkName: "about" */ '../../pages/routerPages/D_firstLoading.vue')
+  // },
   {
     path: '/routermain',
     name: 'routerMain',
