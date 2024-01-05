@@ -10,6 +10,7 @@ var this_ = this
 // var g_user = store.getters['D_USER/GE_USER']
 var g_axiosQueue = []
 var notiDetail
+let userDo
 export const isJsonString = (str) => {
   try {
     JSON.parse(str)
@@ -209,52 +210,32 @@ export const functions = {
     return response
     // await functions.actionVuex('TEAM', response, response.teamKey, false, true)
   },
-  async recvNotiFromBridge (message, mobileYn, inNotiDetail) {
-    console.log('====message=====', message)
-    debugger
+  async recvNotiFromBridge (inNotiDetail, mobileYn) {
     var addVueResult = false
     try {
       // 협의필요
       if (inNotiDetail) {
         notiDetail = inNotiDetail
-      } else {
-        if (!mobileYn) {
-          notiDetail = message
-        } else {
-          if (
-            JSON.parse(message.pushMessage).noti.data !== undefined &&
-                    JSON.parse(message.pushMessage).noti.data !== undefined &&
-                    JSON.parse(message.pushMessage).noti.data !== null &&
-                    JSON.parse(message.pushMessage).noti.data !== ''
-          ) {
-            notiDetail = JSON.parse(message.pushMessage).noti.data
-            if (JSON.parse(message.pushMessage).noti.data.item) {
-              notiDetail = JSON.parse(message.pushMessage).noti.data.item
-            }
-          } else {
-            notiDetail = JSON.parse(message.pushMessage).noti
-          }
-        }
       }
-      console.log('===notiDetail===', notiDetail)
-      debugger
+      if (!notiDetail) return false
+      userDo = JSON.parse(notiDetail.userDo)
       store.dispatch('D_NOTI/AC_ADD_NOTI_LIST', notiDetail)
-      if (JSON.parse(notiDetail.userDo).targetKind === 'C') {
-        if (Number(JSON.parse(notiDetail.userDo).ISub) && Number(JSON.parse(notiDetail.userDo).ISub) > 0) {
-          addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, 'BOAR')
+      if (userDo.targetKind === 'C') {
+        if (Number(userDo.ISub) && Number(userDo.ISub) > 0) {
+          addVueResult = await functions.addContents(userDo.targetKey, 'BOAR')
         } else {
-          addVueResult = await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
+          addVueResult = await functions.addContents(userDo.targetKey, notiDetail.jobkindId)
         }
-      } else if (JSON.parse(notiDetail.userDo).targetKind === 'R') {
-        var memo = await functions.getContentsMemoList(Number(JSON.parse(notiDetail.userDo).targetKey), Number(JSON.parse(notiDetail.userDo).ISub))
+      } else if (userDo.targetKind === 'R') {
+        var memo = await functions.getContentsMemoList(Number(userDo.targetKey), Number(userDo.ISub))
         memo.jobkindId = notiDetail.jobkindId
         memo.creTeamKey = notiDetail.creTeamKey
         if (notiDetail.jobkindId === 'TODO') {
           memo.creTeamKey = 0
         }
         await store.commit('D_CHANNEL/MU_ADD_MEMO', memo)
-        addVueResult = await functions.addContents(Number(JSON.parse(notiDetail.userDo).targetKey), notiDetail.jobkindId)
-      } else if (JSON.parse(notiDetail.userDo).targetKind === 'T') {
+        addVueResult = await functions.addContents(Number(userDo.targetKey), notiDetail.jobkindId)
+      } else if (userDo.targetKind === 'T') {
         // alert(true)
         addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
       } else if (!notiDetail.userDo) {
@@ -266,8 +247,8 @@ export const functions = {
     return addVueResult
   },
   async settingCabiNoti (message) {
-    await this.addContents(JSON.parse(notiDetail.userDo).ISub, 'BOAR')
-    /* if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
+    await this.addContents(userDo.ISub, 'BOAR')
+    /* if (Number(userDo.userKey) === Number(g_user.userKey)) {
       return
     } */
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
@@ -292,16 +273,15 @@ export const functions = {
     if (detailData.jobkindId === 'TODO') {
       detailData.creTeamKey = 0
     }
-    debugger
     store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', [detailData])
     return detailData
   },
   async settingAlimNoti (message) {
-    await functions.addContents(JSON.parse(notiDetail.userDo).targetKey, notiDetail.jobkindId)
-    /* if (Number(JSON.parse(notiDetail.userDo).userKey) === Number(g_user.userKey)) {
+    await functions.addContents(userDo.targetKey, notiDetail.jobkindId)
+    /* if (Number(userDo.userKey) === Number(g_user.userKey)) {
       return
     } */
-    /* var noti = await functions.getContentsDetail(null, JSON.parse(notiDetail.userDo).targetKey, JSON.parse(notiDetail.userDo))
+    /* var noti = await functions.getContentsDetail(null, userDo.targetKey, userDo)
     store.dispatch('D_UPDATE/AC_ADD_NEW_NOTI', noti) */
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
       if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
@@ -337,19 +317,19 @@ export const functions = {
   },
   /* async settingChanNoti (message) {
     if (notiDetail.actType === 'FM' || notiDetail.actType === 'FL' || this.notiDetail.actType === 'RQ' || this.notiDetail.actType === 'AP' || notiDetail.actType === 'RM' || notiDetail.actType === 'MA' || notiDetail.actType === 'CR') {
-      await functions.addChanList(Number(JSON.parse(notiDetail.userDo)))
+      await functions.addChanList(Number(userDo))
     }
 
     if (((notiDetail.actType === 'ME' || notiDetail.actType === 'FM') || notiDetail.actType === 'RM' || (notiDetail.actType === 'MA'))) {
-      var channelL = functions.getDetail('TEAM', Number(JSON.parse(notiDetail.userDo).targetKey))
+      var channelL = functions.getDetail('TEAM', Number(userDo.targetKey))
       if (channelL) {
         var user = null
         if (notiDetail.actType === 'ME' || notiDetail.actType === 'FM') {
-          user = await functions.getFollowerList(channelL[0].teamKey, Number(JSON.parse(notiDetail.userDo).userKey))
+          user = await functions.getFollowerList(channelL[0].teamKey, Number(userDo.userKey))
           if (user.length === 1) this.$store.commit('D_CHANNEL/MU_REPLACE_SHOW_PROFILE_USER', [user[0]])
         } else if (notiDetail.actType === 'MA') {
-          user = await functions.getFollowerList(channelL[0].teamKey, Number(JSON.parse(notiDetail.userDo).userKey))
-          if (Number(JSON.parse(notiDetail.userDo).userKey) === store.getters['D_USER/GE_USER'].userKey) {
+          user = await functions.getFollowerList(channelL[0].teamKey, Number(userDo.userKey))
+          if (Number(userDo.userKey) === store.getters['D_USER/GE_USER'].userKey) {
             if (user.memberYn === 1 || user.memberYn === true) {
             } else {
               store.dispatch('D_CHANNEL/AC_CHANNEL_NOTI_QUEUE', notiDetail)
@@ -364,25 +344,25 @@ export const functions = {
     } else {
       // this.$router.replace({ path: '/' })
       if (notiDetail.actType === 'FL') {
-        // this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
+        // this.openPop({ targetKey: userDo.targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
       } else if (notiDetail.actType === 'ME' || notiDetail.actType === 'FM') {
-        // this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
+        // this.openPop({ targetKey: userDo.targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
       } else if (notiDetail.actType === 'MA') {
-        // this.openPop({ targetKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
+        // this.openPop({ targetKey: userDo.targetKey, targetType: 'chanDetail', value: notiDetail, pushOpenYn: true })
       }
     }
   }, */
   async settingMemoNoti (message) {
-    var memo_ = await functions.getContentsMemoList(null, Number(JSON.parse(notiDetail.userDo).ISub), Number(JSON.parse(notiDetail.userDo).targetKey))
+    var memo_ = await functions.getContentsMemoList(null, Number(userDo.ISub), Number(userDo.targetKey))
     memo_.jobkindId = notiDetail.jobkindId
-    memo_.creTeamKey = Number(JSON.parse(notiDetail.userDo))
+    memo_.creTeamKey = Number(userDo)
     await this.addContents(memo_.targetKey, notiDetail.jobkindId)
     if (notiDetail.actYn === true || notiDetail.actYn === 'true') {
       if (JSON.parse(message.pushMessage).arrivedYn === true || JSON.parse(message.pushMessage).arrivedYn === 'true') {
 
       } else {
         if (notiDetail.jobkindId === 'ALIM') {
-          // this.openPop({ targetKey: JSON.parse(notiDetail.userDo), targetContentsKey: JSON.parse(notiDetail.userDo).targetKey, targetType: 'chanDetail', value: notiDetail })
+          // this.openPop({ targetKey: userDo, targetContentsKey: userDo.targetKey, targetType: 'chanDetail', value: notiDetail })
         } else if (notiDetail.jobkindId === 'BOAR') {
         }
       }

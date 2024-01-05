@@ -93,7 +93,36 @@ const i18n = createI18n({
   messages: messages
 })
 
-export const app = createApp(moTheAlim).use(router).use(store).use(i18n)/* .use(VueI18n) */
+export const app = createApp(moTheAlim)
+
+const mzoinInitalizer = '/MZ_appInitailizer.json'
+const appConfig = '/D_service.json'
+app.config.globalProperties.$DEV_YN = true
+fetch(appConfig)
+  .then(response => response.json())
+  .then(myApp => {
+    fetch(mzoinInitalizer).then(response => response.json())
+      .then(initData => {
+        console.log(myApp.used)
+        const data = findValueByKey(initData.app, myApp.used)
+        console.log('data', data)
+        app.config.globalProperties.$APP_CONFIG = data
+        // app.config.globalProperties.$APP_TYPE = data.appType
+        // app.config.globalProperties.$APP_NAME = data.appName
+        // app.config.globalProperties.$APP_DOMAIN = data.appDomain
+        // app.config.globalProperties.$FIREBASE_CONFIG = data.firebaseConfig
+        store.dispatch('D_USER/AC_USER_APP', data)
+        store.dispatch('D_USER/AC_USER_CONFIG', data.firebaseConfig)
+        app.config.globalProperties.$API_PATH = data.apiPath
+        i18n.locale = data.defaultLang
+        localStorage.setItem('currentScreen', data.mainUI)
+
+        console.log(data) // JSON 데이터 출력 또는 원하는 처리 수행
+      })
+  })
+  .catch(error => console.error('Error fetching JSON:', error))
+
+app.use(router).use(store).use(i18n)/* .use(VueI18n) */
 /* export const i18n = new VueI18n({
   locale: 'en', // set locale
   fallbackLocale: 'en'
@@ -212,32 +241,6 @@ app.config.globalProperties.$dayjs = dayjs
 localStorage.setItem('loginYn', false)
 localStorage.setItem('testYn', false)
 localStorage.setItem('setItem', '')
-const mzoinInitalizer = '/MZ_appInitailizer.json'
-const appConfig = '/D_service.json'
-
-app.config.globalProperties.$DEV_YN = true
-fetch(appConfig)
-  .then(response => response.json())
-  .then(myApp => {
-    fetch(mzoinInitalizer).then(response => response.json())
-      .then(initData => {
-        console.log(myApp.used)
-        const data = findValueByKey(initData.app, myApp.used)
-        console.log(data)
-        app.config.globalProperties.$APP_CONFIG = data
-        // app.config.globalProperties.$APP_TYPE = data.appType
-        // app.config.globalProperties.$APP_NAME = data.appName
-        // app.config.globalProperties.$APP_DOMAIN = data.appDomain
-        // app.config.globalProperties.$FIREBASE_CONFIG = data.firebaseConfig
-        store.dispatch('D_USER/AC_USER_CONFIG', data.firebaseConfig)
-        app.config.globalProperties.$API_PATH = data.apiPath
-        i18n.locale = data.defaultLang
-        localStorage.setItem('currentScreen', data.mainUI)
-
-        console.log(data) // JSON 데이터 출력 또는 원하는 처리 수행
-      })
-  })
-  .catch(error => console.error('Error fetching JSON:', error))
 
 // === App Configuration and Mounting ===
 app.mount('#app')

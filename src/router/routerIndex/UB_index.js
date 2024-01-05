@@ -2,6 +2,7 @@
 import routerMain from '../../pages/Tal_router_main.vue'
 import search from '../../pages/routerPages/D_searchPage.vue'
 import UBlogin from '../../pages/intro/UB_login.vue'
+import store from '@/store'
 
 export const routes = [
   // {
@@ -160,7 +161,14 @@ export const routes = [
     path: '/policies',
     name: 'policies',
     props: true,
-    component: () => localStorage.getItem('appType') && localStorage.getItem('appType') === 'D' ? import(/* webpackChunkName: "about" */ '../../pages/intro/Tal_policies.vue') : import(/* webpackChunkName: "about" */ '../../pages/intro/UB_AgreePolicies.vue')
+    component: () => {
+      const appInfo = store.getters['D_USER/AC_USER_APP']
+      if (appInfo && appInfo.appType === 'D') {
+        return import(/* webpackChunkName: "about" */ '../../pages/intro/Tal_policies.vue')
+      } else {
+        return import(/* webpackChunkName: "about" */ '../../pages/intro/UB_AgreePolicies.vue')
+      }
+    }
   },
   // {
   //   path: '/policies',

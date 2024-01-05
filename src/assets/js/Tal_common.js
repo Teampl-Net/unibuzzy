@@ -3,7 +3,6 @@ import routerMain from '../../pages/Tal_router_main.vue'
 import { commonAxiosFunction } from '../../../public/commonAssets/Tal_axiosFunction'
 import store from '../../store'
 // eslint-disable-next-line no-unused-vars
-import router from '../../router'
 axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
 axiosCommonFunction.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
 axiosCommonFunction.defaults.headers.post['Content-Type'] = 'application/json;'
@@ -282,6 +281,7 @@ export const commonMethods = {
       return resultMap
     } else {
       // this.$router.replace('policies')
+      const router = require('@/router')
       router.replace({ name: 'unknown' })
     }
   },
@@ -1095,6 +1095,7 @@ export const commonMethods = {
     if (store.getters['D_USER/GE_NET_STATE'] === false || store.getters['D_USER/GE_NET_STATE'] === 'false') return
     var history = store.getters['D_HISTORY/hStack']
     if (history.length < 2 && (history[0] === 0 || history[0] === undefined)) {
+      const router = require('@/router')
       router.replace({ path: '/' })
     }
     var current = store.getters['D_HISTORY/hUpdate']

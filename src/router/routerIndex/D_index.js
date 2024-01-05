@@ -15,6 +15,12 @@ export const routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../../pages/D_coreProxy.vue')
   },
+  // {
+  //   path: '/',
+  //   name: 'firstLoading',
+  //   props: true,
+  //   component: () => import(/* webpackChunkName: "about" */ '../../pages/routerPages/D_firstLoading.vue')
+  // },
   {
     path: '/',
     name: 'routerMain',
@@ -160,7 +166,7 @@ export const routes = [
     path: '/policies',
     name: 'policies',
     props: true,
-    component: () => localStorage.getItem('appType') && localStorage.getItem('appType') === 'D' ? import(/* webpackChunkName: "about" */ '../../pages/intro/Tal_policies.vue') : import(/* webpackChunkName: "about" */ '../../pages/intro/UB_AgreePolicies.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/intro/Tal_policies.vue')
   },
   // {
   //   path: '/policies',

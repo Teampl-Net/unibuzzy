@@ -19,6 +19,9 @@ const D_USER = {
     config: {
 
     },
+    app: {
+
+    },
     userCerti: { certiYn: null, certi: {}, saveYn: false }
   },
   getters: {
@@ -98,6 +101,9 @@ const D_USER = {
     },
     GE_USER_CONFIG (state) {
       return state.config
+    },
+    GE_USER_APP (state) {
+      return state
     }
   },
   mutations: {
@@ -169,6 +175,9 @@ const D_USER = {
     },
     MU_USER_CONFIG (state, payload) {
       state.config = payload
+    },
+    MU_USER_APP (state, payload) {
+      state.app = payload
     }
   },
   actions: {
@@ -183,6 +192,9 @@ const D_USER = {
     },
     AC_USER_CONFIG ({ commit }, payload) {
       commit('MU_USER_CONFIG', payload)
+    },
+    AC_USER_APP ({ commit }, payload) {
+      commit('MU_USER_APP', payload)
     }
   }
 }

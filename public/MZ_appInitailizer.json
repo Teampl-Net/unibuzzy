@@ -9,6 +9,7 @@
       "appName": "더알림",
       "appDomain": "https://mo.d-alim.com",
       "defaultLang": "ko",
+      "savePhone": true,
       "mainUI": "Smain",
       "deepLink": {
         "login": "https://thealim.page.link/LOGIN"
@@ -32,6 +33,7 @@
       "appName": "Unibuzzy",
       "appDomain": "https://unibuzzy.com",
       "defaultLang": "en",
+      "savePhone": false,
       "mainUI": "Imain",
       "apiPath": "https://unibuzzy.com/sUniB",
       "deepLink": {

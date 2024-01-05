@@ -1,4 +1,5 @@
 import { register } from 'register-service-worker'
+import store from '@/store'
 
 /* if (process.env.NODE_ENV === 'production') {
   register(`${process.env.BASE_URL}service-worker.js`, {
@@ -29,9 +30,10 @@ import { register } from 'register-service-worker'
   })
 } */
 var isMobile = /Mobi/i.test(window.navigator.userAgent)
-const appType = localStorage.getItem('appType')
+// const appType = localStorage.getItem('appType')
+var appInfo = store.getters['D_USER/AC_USER_APP']
 let firebaseSw = 'firebase-messaging-sw.js'
-if (appType && appType === 'UB') {
+if (appInfo & appInfo.appType === 'UB') {
   firebaseSw = 'UB.firebase-messaging-sw.js'
 }
 if (!isMobile) {

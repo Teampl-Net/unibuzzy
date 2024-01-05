@@ -1,4 +1,4 @@
-/* eslint-disable */ 
+/* eslint-disable */
 import { createStore } from 'vuex'
 
 // 작성한 모듈을 가져옵니다.
@@ -25,6 +25,6 @@ const store = createStore({
     D_NOTI: D_NOTI
   },
   plugins: [storageState]
-})
+}, {devtools: false})
 
 export default store
