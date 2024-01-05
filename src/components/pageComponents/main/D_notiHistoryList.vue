@@ -8,7 +8,7 @@
   },
   "en": {
     "RECE_TITLE_NOTI": "Recent Notifications",
-    "RECE_MSG_NOTIDESC": "Recent Activities shows notifications you received after you install uniBuzzy app, so if you delete an app or data, it disappears.",
+    "RECE_MSG_NOTIDESC": "Recent Activities shows notifications you received after you install Hybric app, so if you delete an app or data, it disappears.",
     "RECE_BTN_DELETE": "Delete All",
     "RECE_MSG_DELETE": "Are you sure you want to delete all received history?"
   }

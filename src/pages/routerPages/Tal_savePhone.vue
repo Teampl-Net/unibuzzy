@@ -74,7 +74,7 @@ export default {
     if (this.GE_USER) {
       this.tempUser = this.GE_USER
       if (this.routerYn) {
-        this.mCertiMessage += '더알림에 함께하게 된 것을 환영합니다!<br>'
+        this.mCertiMessage += '하이브릭에 함께하게 된 것을 환영합니다!<br>'
       } else {
         this.mCertiMessage += '실명인증을 통해 더 활발하게 활동해봐요!'
       }

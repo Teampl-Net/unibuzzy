@@ -49,11 +49,11 @@
             <td>
               <div class="w-30P fl textLeft commonColor font16 fontBold " @click="kakaoLink" > 링크공유 </div>
               <div class="w-70P fl textLeft">
-                <!-- <input type="text" style="width: 0px; height: 0px; border: none;" id="copyTextBody" name="" :value="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?chanDetail=' + this.chanDetail.teamKey + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"> -->
+                <!-- <input type="text" style="width: 0px; height: 0px; border: none;" id="copyTextBody" name="" :value="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?chanDetail=' + this.chanDetail.teamKey + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=하이브릭&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"> -->
                 <!-- <img @click="sendkakao" src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"  class="plusMarginBtn" style="float: right; margin-right: 5px; width: 35px;" alt="카카오톡 공유하기"> -->
                 <div data-clipboard-action="copy" id="copyTextBody" @click="copyText"
                     :data-clipboard-text="'https://thealim.page.link/?link=https://mo.d-alim.com:9443?chanDetail=' + this.chanDetail.teamKey
-                      + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
+                      + '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=하이브릭&sd=더편한구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'"
                       class="copyTextIcon">
                   <img src="../../../assets/images/common/copyLink.svg" style="width: 100%" alt="">
                 </div>
@@ -272,7 +272,7 @@ export default {
       '?link=' + 'http// mo.d-alim.com:18080?chanDetail=' + this.chanDetail.teamKey +
             '&apn=' + 'com.tal_project' +
             '&ibn=' + 'name' +
-            '&st=' + '더알림' +
+            '&st=' + '하이브릭' +
             '&sd=' + '더편한구독알림' +
             '&si=' + 'http://pushmsg.net/img/homepage03_1_1.427f4b7c.png' */
       // eslint-disable-next-line no-undef
@@ -304,7 +304,7 @@ export default {
         dynamicLinkInfo: {
           dynamicLinkDomain: 'thealim.page.link',
           link: 'https://mo.d-alim.com?chanDetail=' + this.chanDetail.teamKey +
-                        '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=더알림&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
+                        '&apn=com.tal_project&amv=1.1.0&ibi=com.pushmsg.project&isi=1620854215&st=하이브릭&sd=더 편한 구독알림&si=http://pushmsg.net/img/homepage03_1_1.427f4b7c.png'
         },
         suffix: { option: 'SHORT' }
       }

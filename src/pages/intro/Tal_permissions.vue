@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="text-start py-3 px-4 permissionTitleText">
-                <p class="font20 deepColor" >더알림 앱 이용에 필요한 <br>접근 권한의 허용이 필요합니다.</p>
+                <p class="font20 deepColor" >하이브릭 앱 이용에 필요한 <br>접근 권한의 허용이 필요합니다.</p>
                 <div class="my-3 permissionLine"></div>
                 <p class="font15">접근 권한은 더 나은 서비스를 제공하기 위해 사용됩니다. 원할한 이용을 위해서는 알림 / 기기 및 앱 기록 필수 권한입니다.</p>
             </div>

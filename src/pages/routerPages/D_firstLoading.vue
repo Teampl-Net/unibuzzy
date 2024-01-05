@@ -1,5 +1,5 @@
 <template>
-  <div>Hi, it's a test loading page.</div>
+  <div style="width:100%; height:100%;">Hi, it's a test loading page.</div>
 </template>
 
 <script>

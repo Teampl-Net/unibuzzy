@@ -7,8 +7,8 @@
     "COMM_QUESTION_FOUR" : "개인정보는 안전하게 보호되나요?",
     "COMM_ANSWER_ONE": "네 맞아요. 구독한 채널의 알림만 받으실 수 있어요!",
     "COMM_ANSWER_TWO" : "우선 구독자가 되면 채널에서 다양한 형태의 소통을 할 수 있게되는데요.<br>채널의 일원으로서 더 많은 권한을 얻고 활동을 하기 원하면 멤버신청을 통해 멤버가 될 수 있답니다.",
-    "COMM_ANSWER_THREE": "더알림 하단 메뉴 우측 내정보 > 프로필 카드를 클릭하면 나오는 설정페이지에서 자유롭게 정보를 수정해봐요!",
-    "COMM_ANSWER_FOUR" : "더알림은 소셜로그인을 통해 들어오게 되기 때문에 개인 정보는 더알림이 아닌 해당 소셜의 정책에 따라 보호받게 됩니다.",
+    "COMM_ANSWER_THREE": "하이브릭 하단 메뉴 우측 내정보 > 프로필 카드를 클릭하면 나오는 설정페이지에서 자유롭게 정보를 수정해봐요!",
+    "COMM_ANSWER_FOUR" : "하이브릭은 소셜로그인을 통해 들어오게 되기 때문에 개인 정보는 하이브릭이 아닌 해당 소셜의 정책에 따라 보호받게 됩니다.",
     "COMM_BTN_MOVE": "바로가기",
   },
   "en": {
@@ -29,7 +29,7 @@
   <div class="qPageWrap">
     <div class="qPageHeaderTextWrap ">
       <p class="font18 fontBold commonColor fl w-100P" style="height: 30px; line-height: 30px;">도움이 필요하신가요?</p>
-      <p class="font16 fontBold grayBlack fl w-100P commonBlack" style="height: 30px; line-height: 30px;">더알림 채널으로 이동하여 편하게 질문하고 소통해보세요!</p>
+      <p class="font16 fontBold grayBlack fl w-100P commonBlack" style="height: 30px; line-height: 30px;">하이브릭 채널으로 이동하여 편하게 질문하고 소통해보세요!</p>
     </div>
     <gBtnSmall v-on:click="openAskPop" class="askBtn" :btnTitle="this.btnTitle" />
   </div>
@@ -78,7 +78,7 @@ export default {
       params.targetType = 'chanDetail'
       params.targetKey = this.$DALIM_TEAM_KEY
       params.teamKey = this.$DALIM_TEAM_KEY
-      // params.nameMtext = 'KO$^$더알림'
+      // params.nameMtext = 'KO$^$하이브릭'
       this.$emit('openPop', params)
     }
   }
