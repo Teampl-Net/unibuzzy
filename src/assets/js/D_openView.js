@@ -62,6 +62,7 @@ export const openView = {
       delete paramSet.teamKey
     }
     var contentDetail = await commonAxiosFunction({ url: '/sUniB/tp.getMyContentsList', param: paramSet }, nonLoadingYn)
+    console.log(contentDetail)
     if (!contentDetail || !contentDetail.data) {
       commonMethods.showToastPop('해당 컨텐츠의 정보를 찾을 수 없습니다!')
       return
