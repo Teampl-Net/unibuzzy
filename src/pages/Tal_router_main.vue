@@ -482,7 +482,7 @@ export default {
       this.mMenuShowYn = false
       this.$router.replace({ path: '/' + page })
     },
-    async goDetail (detailValue) {
+    async goDetail (detailValue, vuexData) {
       if (detailValue.chanYn) {
         this.goChanDetail(detailValue)
       } else {
@@ -508,8 +508,12 @@ export default {
           axiosParam.creTeamKey = detailParam.teamKey
           axiosParam.cabinetKey = detailParam.cabinetKey
         }
-
-        var result = await this.$getContentDetailData(axiosParam, false)
+        var result = {}
+        if (vuexData) {
+          result.content = vuexData
+        } else {
+          result = await this.$getContentDetailData(axiosParam, false)
+        }
         if (!result) return
         if (!detailParam.jobkindId) {
           detailParam.jobkindId = result.content.jobkindId
@@ -631,6 +635,8 @@ export default {
     async recvNotiFormBridge (notiDetail, currentPage, vuexResultData) {
       try {
         var notiUserDo = JSON.parse(notiDetail.userDo)
+        // eslint-disable-next-line no-debugger
+        debugger
         if ((currentPage === 0 || currentPage === undefined || (currentPage === 'bottomWriteSheets' || currentPage.includes('writeContents')))) {
           // eslint-disable-next-line no-new-object
           var goDetailParam = new Object()
@@ -651,7 +657,7 @@ export default {
               goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
               goDetailParam.cabinetKey = vuexResultData.cabinetKey
             }
-            this.goDetail(goDetailParam)
+            this.goDetail(goDetailParam, vuexResultData)
           } if (notiUserDo.targetKind === 'R') {
             goDetailParam.contentsKey = notiUserDo.targetKey
             goDetailParam.targetKey = notiUserDo.targetKey
@@ -663,7 +669,7 @@ export default {
               goDetailParam.cabinetNameMtext = vuexResultData.cabinetNameMtext
               goDetailParam.cabinetKey = vuexResultData.cabinetKey
             }
-            this.goDetail(goDetailParam)
+            this.goDetail(goDetailParam, vuexResultData)
           } else if (notiUserDo.targetKind === 'T' || notiUserDo.targetKind === 'M' || notiUserDo.targetKind === 'N') {
             this.$router.replace({ path: '/' })
             goDetailParam.chanYn = true

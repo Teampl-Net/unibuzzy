@@ -28,6 +28,11 @@ export default {
     firstLoading
   },
   mounted () {
+    // 페이지가 완전히 로드된 후에 isLoadingYn을 false로 변경
+    window.addEventListener('load', () => {
+      console.log('로딩이 끝났음.')
+      // this.isLoadingYn = false
+    })
     // window.document.addEventListener('wheel', (e) => {
     //   var test = e.deltaY < 0 ? 'down' : 'up'
     //   console.log(test)
@@ -65,7 +70,6 @@ export default {
       fullScreenYn: false,
       screenWidth: '1000px',
       isLoadingYn: false
-
     }
   },
   methods: {

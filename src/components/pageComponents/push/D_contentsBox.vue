@@ -442,7 +442,7 @@
             </div>
             </div>
             <div class="mtop-03" style="margin-left:20px; border-bottom:1px solid rgba(204, 204, 204, 0.314);"></div> <!-- 구분선 -->
-            <div :style="{'padding-left' : CONT_DETAIL.jobkindId === 'TODO' ? '50px' : '20px'}" class="font15 mtop-03" style="display:flex; align-items:center; justify-content:space-between; color:#636363; font-size:15px;">
+            <div :style="{'padding-left' : CONT_DETAIL.jobkindId === 'TODO' ? '50px' : '20px'}" class="font15 mtop-03" style="display:flex; align-items:center; justify-content:end; color:#636363; font-size:15px;">
             <!-- <div v-if="CONT_DETAIL.jobkindId === 'TODO'" class="font15" @click.stop="goUserProfile()" style="display:flex; align-items:center; ">
               <img class="profileImg" :src="CONT_DETAIL.userDomainPath ? CONT_DETAIL.userDomainPath + CONT_DETAIL.userProfileImg : CONT_DETAIL.userProfileImg" :alt="CONT_DETAIL.creUserName"/>
               <span class="mleft-03 mright-03"> {{ this.$changeText(CONT_DETAIL.creUserName) }}</span>
@@ -1280,6 +1280,7 @@ export default {
     if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
     else this.mFadeNotShowYn = false
     if (this.CONT_DETAIL) {
+      console.log('CONT_DETAIL************', this.CONT_DETAIL)
       if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST) {
         var stickerList = []
         for (
@@ -1675,6 +1676,7 @@ export default {
       this.$emit('requestSearchSticker', { selectedSticker: val })
     },
     updateMemo (param) {
+      console.log('새 댓글*****', param)
       var idx
       var idx2
       if (param[2] !== null) {
@@ -2637,6 +2639,7 @@ export default {
       }
     },
     async saveMemo (inSaveMemoObj) {
+      console.log('새 메모메모', inSaveMemoObj)
       if (inSaveMemoObj.saveMemoHtml === undefined) return
       this.mLoadingShowYn = true
       var memo = {}
@@ -3199,6 +3202,7 @@ export default {
       immediate: true,
       deep: true,
       handler (value, index) {
+        console.log('value*******', value)
         this.setMoreMemoBtn()
         /* if (this.CONT_DETAIL.stickerList.length > 0) {
           var newArr = []
@@ -3225,6 +3229,7 @@ export default {
     },
     GE_NEW_MEMO_LIST: {
       async handler (value, old) {
+        console.log('GE_NEW_MEMO_LIST', value)
         var newArr = []
         if (!value || value.length === 0) return
         var content = null

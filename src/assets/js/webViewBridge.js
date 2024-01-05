@@ -155,7 +155,6 @@ const isJsonString = (str) => {
           var isMobile = /Mobi/i.test(window.navigator.userAgent)
           var notiDetailObj = null
           var appActiveYn = JSON.parse(message.pushMessage).arrivedYn
-
           if (!isMobile) {
             notiDetailObj = message
           } else {
@@ -173,14 +172,10 @@ const isJsonString = (str) => {
               notiDetailObj = JSON.parse(message.pushMessage).noti
             }
           }
-
-          // alert(JSON.stringify(notiDetailObj))
           var addVueResult = await functions.recvNotiFromBridge(
-            message,
-            isMobile,
-            notiDetailObj
+            notiDetailObj,
+            isMobile
           )
-          // alert(JSON.stringify(addVueResult))
           if (appActiveYn !== true && appActiveYn !== 'true') {
             if (
               JSON.parse(notiDetailObj.userDo).userKey ===

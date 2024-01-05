@@ -1,41 +1,15 @@
 <template>
     <div class="py-3 px-4 TalFooterWrap">
-        <div @click="routePage('main')" class="footerRouter" style="flex: 1 !important">
-          <div class="commonColor fontBold text-center font12" >
-            <img v-if="this.$route.path === '/'" :src="footerIcon[0].fullIcon"/> <img v-else :src="footerIcon[0].icon"/>
-            <p :class="this.$route.path === '/'? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_HOME') }}</p>
-          </div>
+      <div class="w100P h100P" style="display:flex; flex-align:center; justify-content:center">
+        <div v-for="(btn, index) in mFooterBtns" :key="index" @click="routerPage(btn.path, index)" class="cursorP commonColor fontBold text-center font12" style="width:25%; display:flex; align-items:center; justify-content:center; flex-direction:column;">
+          <div style="width:22.4px; height:24px;">
+            <img v-if="btn.path === 'main' && this.$route.path === '/'" :src="btn.fullIcon" class="w100P" style="height:100%;"/>
+            <img v-else-if="this.$route.path === `/${btn.path}`" :src="btn.fullIcon" class="w100P" style="height:100%;"/>
+            <img v-else :src="btn.icon" class="w100P" style="height:100%;"/>
         </div>
-        <div @click="routePage('todo')" class="footerRouter" style="flex: 1 !important">
-          <div class="commonColor fontBold text-center font12" >
-            <img v-if="this.$route.path === '/todo'" :src="footerIcon[4].fullIcon"/> <img v-else :src="footerIcon[4].icon"/>
-            <p :class="this.$route.path === '/todo'? 'activeFooterMenu' : 'font12'">{{$t('COMMON_NAME_TODOLIST')}}</p>
-          </div>
+          <p :class="{activeFooterMenu : mSelectedFooterIdx === index}" class="font12">{{ btn.title }}</p>
         </div>
-        <!-- <div @click="routePage('/pushList')" class="footerRouter col-3">
-          <div class="commonColor fontBold text-center font12">
-            <img v-if="this.$route.path === '/pushList'" :src="footerIcon[1].fullIcon"/> <img v-else :src="footerIcon[1].icon"/>
-            <p :class="this.$route.path === '/pushList'? 'activeFooterMenu' : 'font12'">알림</p>
-          </div>
-        </div> -->
-        <div @click="routePage('chanList')" class="footerRouter" style="flex: 1 !important">
-          <div class="commonColor fontBold text-center font12">
-            <img v-if="this.$route.path === '/chanList'" :src="footerIcon[2].fullIcon" /> <img v-else :src="footerIcon[2].icon"/>
-            <p :class="this.$route.path === '/chanList'? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_CHANNEL') }}</p>
-          </div>
-        </div>
-        <!-- <div @click="routePage('search')" class="footerRouter" style="flex: 1 !important">
-          <div class="commonColor fontBold text-center font12">
-            <img v-if="this.$route.path === '/search'" :src="footerIcon[1].fullIcon" /> <img v-else :src="footerIcon[1].icon"/>
-            <p :class="this.$route.path === '/search'? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_SEARCH') }}</p>
-          </div>
-        </div> -->
-        <div @click="routePage('myPage')" class="footerRouter" style="flex: 1 !important">
-          <div class="commonColor fontBold text-center font12">
-            <img v-if="this.$route.path === '/myPage'" :src="footerIcon[3].fullIcon"/> <img v-else :src="footerIcon[3].icon"/>
-            <p :class="this.$route.path === '/myPage'? 'activeFooterMenu' : 'font12'">{{ $t('COMMON_NAME_MY_INFO') }}</p>
-          </div>
-        </div>
+      </div>
     </div>
 </template>
 <script>
@@ -43,20 +17,23 @@ export default {
   name: 'TalFooter',
   data () {
     return {
-      footerIcon: [
-        { fullIcon: '/resource/footer/icon_home_fillin.svg', icon: '/resource/footer/icon_home.svg' },
-        // { fullIcon: '/resource/footer/icon_alim_fillin.svg', icon: '/resource/footer/icon_alim.svg' },
-        { fullIcon: '/resource/footer/icon_search_fillin.svg', icon: '/resource/footer/icon_search.svg' },
-        { fullIcon: '/resource/footer/icon_channel_fillin.svg', icon: '/resource/footer/icon_channel.svg' },
-        { fullIcon: '/resource/footer/icon_people_fillin.svg', icon: '/resource/footer/icon_people.svg' },
-        { fullIcon: '/resource/footer/icon_todo_fillin.svg', icon: '/resource/footer/icon_todo.svg' }
-      ],
-      activeFooter: 'main'
+      // activeFooter: 'main',
+      mFooterBtns: [],
+      mSelectedFooterIdx: 0,
+      mNewFooter: [
+        { fullIcon: '/resource/footer/icon_home_fillin.svg', icon: '/resource/footer/icon_home.svg', title: '홈', path: 'main', onClick: '' },
+        { fullIcon: '/resource/footer/icon_todo_fillin.svg', icon: '/resource/footer/icon_todo.svg', title: '오늘의일', path: 'todo', onClick: '' },
+        { fullIcon: '/resource/footer/icon_channel_fillin.svg', icon: '/resource/footer/icon_channel.svg', title: '채널', path: 'chanList', onClick: '' },
+        { fullIcon: '/resource/footer/icon_people_fillin.svg', icon: '/resource/footer/icon_people.svg', title: '마이페이지', path: 'myPage', onClick: '' }
+      ]
     }
   },
   props: {
     pOpenUnknownLoginPop: Function,
     pChangePageHeader: Function
+  },
+  mounted () {
+    this.setFooter()
   },
   computed: {
     GE_USER () {
@@ -64,41 +41,37 @@ export default {
     }
   },
   methods: {
-    async routePage (page) {
-      /* if ('/' + page === this.$router.currentRoute._rawValue.path) {
-        return
-      } */
-      if ((page === 'myPage' || page === 'todo') && this.GE_USER.unknownYn) {
+    setFooter () {
+      this.mFooterBtns = this.mNewFooter
+
+      if (this.mFooterBtns) {
+        // var setPage = 'main'
+        // for (let i = 0; i < this.mFooterBtns.length; i++) {
+        //   if (this.mFooterBtns[i].path === 'H') {
+        //     setPage = 'main'
+        //   } else if (this.mFooterBtns[i].path === 'T') {
+        //     setPage = 'todo'
+        //   } else if (this.mFooterBtns[i].path === 'C') {
+        //     setPage = 'chanList'
+        //   } else if (this.mFooterBtns[i].path === 'M') {
+        //     setPage = 'myPage'
+        //   }
+        //   this.mFooterBtns[i].onClick = setPage
+        // }
+      }
+    },
+    async routerPage (page, index) {
+      this.mSelectedFooterIdx = index
+      if ((page === '마이페이지' || page === '오늘의일') && this.GE_USER.unknownYn) {
         // this.$showToastPop('로그인 후 이용해주세요')
         this.pOpenUnknownLoginPop()
-        return/*
-        this.activeFooter = 'unknownMypage'
-        // await this.$router.push(page)
-        this.$emit('changeRouterPath', 'unknownMypage')
-        return */
+        return
       }
-      this.activeFooter = page
-      if (this.pChangePageHeader) {
-        let page = null
-        if (page === 'chanList') {
-          page = '채널'
-        } else if (page === 'search') {
-          page = '검색'
-        } else if (page === 'myPage') {
-          page = '마이페이지'
-        } else if (page === 'todo') {
-          page = '오늘의일'
-        }
-        if (page) this.pChangePageHeader(page)
+      if (page && this.GE_USER.userKey) {
+        this.$emit('changeRouterPath', page)
+        this.pChangePageHeader(page)
       }
-      // await this.$router.push(page)
-      this.$emit('changeRouterPath', page)
-
-      /*  var history = 'page' + localStorage.getItem('popHistoryStack').split('$#$').length
-      this.$addHistoryStack(history) */
-      /* this.$emit('openLoading') */
     }
-
   }
 }
 
@@ -109,5 +82,5 @@ export default {
 .footerRouter {text-decoration-line: none; }
 .footerRouter img{width: 1.4rem}
 p{margin-bottom: 0; color: #7E7E7E;}
-.activeFooterMenu{ font-weight: bolder; font-size: 13px; color: #6768A7 !important;}
+.activeFooterMenu{ font-weight: bolder; color: #6768A7 !important;}
 </style>

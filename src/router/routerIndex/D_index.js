@@ -17,7 +17,6 @@ export const routes = [
   },
   // {
   //   path: '/',
-  //   name: 'testPage',
   //   props: true,
   //   component: () => import(/* webpackChunkName: "about" */ '../../pages/routerPages/D_firstLoading.vue')
   // },

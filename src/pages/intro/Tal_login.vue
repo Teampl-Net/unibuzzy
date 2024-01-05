@@ -165,7 +165,7 @@ export default {
       this.$router.replace('/testLoginPage')
     },
     GoogleLoginBtn () {
-      if (this.mobileYn) {
+      if (window.ReactNativeWebView) {
         window.ReactNativeWebView.postMessage(
           JSON.stringify({
             type: 'REQ',
