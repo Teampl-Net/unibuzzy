@@ -51,7 +51,7 @@
         <div class="w100P" :style="{display: pIsFocused===true ? 'block' : 'flex', 'align-items' : pIsFocused===true ? 'center':'center' }" style="transition:height .5s; height:auto; text-align:left; resize: none; border-radius: 20px; border: 1px solid #a7a7a7">
           <div v-if="pIsFocused" class="w100P" style=" border-bottom: 1px solid #eee;display:flex; justify-content:end; align-items:center; padding:0.5rem 1rem 0.5rem;">
             <div class="extraBtnsWrap" style="width:50%; display:flex; align-items:center; justify-content:end;">
-              <div class="font16 commonColor" style="margin-top:2px; border-right: 1px solid #eee; width:25%; text-align:center; white-space:nowrap;">@ 언급</div>
+              <!-- <div class="font16 commonColor" style="margin-top:2px; border-right: 1px solid #eee; width:25%; text-align:center; white-space:nowrap;">@ 언급</div> -->
               <div class="font16 commonColor" @click.stop="addImgFile" style="margin-top:2px; white-space:nowrap;display: flex; align-items: center; justify-content: center; font-weight: 500; cursor: pointer; width: 25%; border-right: 1px solid #eee;">
                 <img src="../../../assets/images/common/fileType_img.svg" alt="" style="margin-right: 8px; width: 12px;">
                 사진
@@ -513,6 +513,7 @@ export default {
         }
         this.$showAxiosLoading(true)
         inputMemoArea.classList.remove('memoTextPadding')
+        var memoBody = this.$refs.memoTextTag
         var html = inputMemoArea.innerHTML
         html = this.$findUrlChangeAtag(html)
         var param = {}
@@ -535,6 +536,7 @@ export default {
         // html = this.$deleteEmoji(html)
         this.$emit('saveMemoText', param)
         inputMemoArea.classList.add('memoTextPadding')
+        memoBody.innerText = ''
       } else {
         this.$showToastPop('댓글의 내용을 입력해주세요.')
       }

@@ -180,7 +180,13 @@ export default {
     async openWritePushPop () {
       if (this.mSelectedWriteType === 'TODO' || this.mSelectedWriteType === 'ALIM') {
         this.openAddTodoPop()
+        if (this.mSelectedWriteType === 'ALIM') {
+          this.mOption.purpose = 'Send Letter'
+        }
       } else if (this.mSelectedWriteType !== 'TODO') {
+        if (this.mSelectedWriteType === 'BOAR') {
+          this.mOption.purpose = 'Send Board'
+        }
         if (this.propTeamKey && this.mSelectedWriteType === 'ALIM' && !this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && !this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) {
           this.$showToastPop(this.$t('BOTTOM_MSG_NOFOLLOW'))
           this.$checkDeleteHistory('bottomWriteSheets')

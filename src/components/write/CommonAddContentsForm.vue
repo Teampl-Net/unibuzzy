@@ -93,7 +93,7 @@
   }
 </i18n>
 <template>
-  <div id="layout">
+  <div id="layout" @drop="onDrop" @dragenter="onDragenter" @dragleave="onDragleave" @dragover="onDragover">
     <header>
       <!-- Popup Title -->
       <button @click="closeXPop" type="button" class="closeBtn">
@@ -111,7 +111,7 @@
       <p class="commonColor fontBold" style="font-size:20px; line-height: 30px;">{{ pOptions.purpose }}</p>
       <div class="HeaderbtnWrap" :style="{width: contentType === 'MEMO' ? '40px' : 'auto'}">
         <div @click="postContents" class="saveBtn fontBold" v-if="contentType !== 'MEMO'">
-          {{ pContentsData ? $t('COMM_BTN_EDIT2') : $t('COMMON_BTN_SAVE') }}
+          {{ pContentsData ? $t('COMM_BTN_EDIT2') : contentType === 'ALIM' ? $t('COMMON_BTN_SEND'): $t('COMMON_BTN_SAVE') }}
         </div>
         <!-- <button @click="closePop">Cancel</button> -->
       </div>
@@ -406,13 +406,15 @@
                   <option value="02">{{ $t('COMMON_TODO_LOW') }}</option>
                 </select>
               </div>
-            <div class="w100P" style="position:absolute; top:0; right:0;">
-              <TalAttachFile
-                @delAttachFile="delAttachFile"
-                @setSelectedAttachFileList="setAttachedFile"
-                :attachTrueAddFalseList="propAttachFileList"
-              />
-            </div>
+              <div class="w100P" style="position:absolute; top:0; right:0;">
+                <TalAttachFile
+                  ref="attachFileRef"
+                  @delAttachFile="delAttachFile"
+                  @setSelectedAttachFileList="setAttachedFile"
+                  :attachTrueAddFalseList="propAttachFileList"
+                />
+                <p v-if="tempFileList && tempFileList.length === 0" style="line-height:40px; font-size:12px;">{{ $t('FORM_MSG_DRAG') }}</p>
+              </div>
             </div>
           </fieldset>
           <fieldset style="height: 60%">
@@ -2892,6 +2894,7 @@ export default defineComponent({
       receiverList,
       showReceiverSelectList,
       toggleReceiverSelectPop,
+      tempFileList,
       toggleRefsSelectPop,
       setSelectedRefList,
       selectNoRefs,

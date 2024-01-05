@@ -223,6 +223,7 @@ export default {
       this.mModiMemoPopShowYn = true
     },
     updateMemo (param) {
+      console.log('새 댓글 **', param)
       this.$emit('updateMemo', [param, this.targetMemo.memoKey, this.targetMemo.parentMemoKey])
     },
     getAttachTrueFile (list) {

@@ -1280,6 +1280,7 @@ export default {
     if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
     else this.mFadeNotShowYn = false
     if (this.CONT_DETAIL) {
+      console.log('CONT_DETAIL************', this.CONT_DETAIL)
       if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST) {
         var stickerList = []
         for (
@@ -1675,6 +1676,7 @@ export default {
       this.$emit('requestSearchSticker', { selectedSticker: val })
     },
     updateMemo (param) {
+      console.log('새 댓글*****', param)
       var idx
       var idx2
       if (param[2] !== null) {
@@ -2637,6 +2639,7 @@ export default {
       }
     },
     async saveMemo (inSaveMemoObj) {
+      console.log('새 메모메모', inSaveMemoObj)
       if (inSaveMemoObj.saveMemoHtml === undefined) return
       this.mLoadingShowYn = true
       var memo = {}
@@ -3199,6 +3202,7 @@ export default {
       immediate: true,
       deep: true,
       handler (value, index) {
+        console.log('value*******', value)
         this.setMoreMemoBtn()
         /* if (this.CONT_DETAIL.stickerList.length > 0) {
           var newArr = []
@@ -3225,6 +3229,7 @@ export default {
     },
     GE_NEW_MEMO_LIST: {
       async handler (value, old) {
+        console.log('GE_NEW_MEMO_LIST', value)
         var newArr = []
         if (!value || value.length === 0) return
         var content = null

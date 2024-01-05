@@ -93,7 +93,7 @@ export default {
       }
       // await this.$router.push(page)
       console.log('page, page', page)
-      // this.$emit('changeRouterPath', page)
+      this.$emit('changeRouterPath', page)
 
       /*  var history = 'page' + localStorage.getItem('popHistoryStack').split('$#$').length
       this.$addHistoryStack(history) */

@@ -150,9 +150,9 @@ export default {
       if (this.propParams.contentsJobkindId === 'TODO') {
         this.mOption.purpose = 'Add Todo'
       } else if (this.propParams.contentsJobkindId === 'ALIM') {
-        this.mOption.purpose = 'Add Letter'
+        this.mOption.purpose = 'Send Letter'
       } else if (this.propParams.contentsJobkindId === 'BOAR') {
-        this.mOption.purpose = 'Add Board'
+        this.mOption.purpose = 'Send Board'
       }
     }
     if (this.propParams.targetType === 'chanDetail' && Number(this.propParams.targetKey) === 735) {
