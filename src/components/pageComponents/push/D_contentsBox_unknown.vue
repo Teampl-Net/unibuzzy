@@ -2004,7 +2004,7 @@ export default {
         onMessage('REQ', 'nativeShare', shareItem)
       }
       /*  if (window.navigator.share) {
-        window.navigator.share({ title: '더알림', text: this.CONT_DETAIL.title, url: this.CONT_DETAIL.copyTextStr })
+        window.navigator.share({ title: '하이브릭', text: this.CONT_DETAIL.title, url: this.CONT_DETAIL.copyTextStr })
       } else {
         this.$showToastPop('지원하지 않는 브라우저입니다.')
       } */

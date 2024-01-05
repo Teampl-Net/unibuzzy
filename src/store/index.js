@@ -25,6 +25,6 @@ const store = createStore({
     D_NOTI: D_NOTI
   },
   plugins: [storageState]
-})
+}, {devtools: false})
 
 export default store

@@ -3,7 +3,7 @@
   <div class="fl headerBottom" style="z-index: 101; position: relative; height: 250px; width: 350px; left: calc(50% - 175px); top: calc(50% - 125px); background: white; box-shadow: 0px 7px 9px 9px #00000036; border-radius: 5px;">
     <div class="fl fontBold font14" style="color: white; height: 30px; top: -30px; position: absolute; width: 100%; display: flex; align-items: center; justify-content: center;">
       <!-- <span class="commonLightColor textOverdot fontBold fl" style="max-width: 120px;" >{{ this.$changeText(pContDetail.nameMtext) }}</span> -->
-      <!-- <span style="text-shadow: 2px 2px 9px black;" class="fl fontBold w-100P">더알림을 더 돌아다녀보고 싶으시면 로그인하세요!</span> -->
+      <!-- <span style="text-shadow: 2px 2px 9px black;" class="fl fontBold w-100P">하이브릭을 더 돌아다녀보고 싶으시면 로그인하세요!</span> -->
     </div>
     <div class="popHeader fl textRight w-100P" style="height: 40px; line-height: 50px; padding: 10px;">
       <img style="width: 15px;" class="fr cursorP" src="../../../assets/images/common/popup_close.png" @click="pClosePop ? pClosePop() : backClick" />
@@ -24,7 +24,7 @@
       </div>
     </div>
     <!-- <div class="fl w-100P textCenter" style="height: 100px; border-top: 1px solid #ccc; padding: 10px; display: flex; justify-content: center; flex-direction: column; align-items: center;">
-      <span class="w-100P fl fontBold" style="height: 30px; line-height: 30px;">더알림 계정이 아직 없다면?</span>
+      <span class="w-100P fl fontBold" style="height: 30px; line-height: 30px;">하이브릭 계정이 아직 없다면?</span>
       <span class="w-100P fl" style="height: 30px; line-height: 30px;">소셜 계정으로 쉽고 빠르게 <span class="fontBold commonColor">Sign up</span></span>
     </div> -->
   </div>

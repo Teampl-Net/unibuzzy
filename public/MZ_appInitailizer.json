@@ -6,7 +6,7 @@
       "appToken": "ABC",
       "appKey": 0,
       "lastUpdate": "2023-01-02",
-      "appName": "더알림",
+      "appName": "하이브릭",
       "appDomain": "https://mo.d-alim.com",
       "defaultLang": "ko",
       "savePhone": true,
@@ -25,7 +25,7 @@
         "measurementId": "G-0BYBFKL8TS"
       }
     },
-  "UB": 
+  "UB":
     {
       "appType": "UB",
       "appKey": 1,

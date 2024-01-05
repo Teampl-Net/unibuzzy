@@ -7,16 +7,16 @@
         <img src="../../assets/images/main/main_logo.png" style="width: 100px;" class="fl" >
         <p class="font13 headerFont commonColor fl" style="line-height: 2.6rem; margin-top: 2px; margin-left: 0.3rem" >가장 편리한 구독-알림</p>
       </div>
-      <p class="font18 mbottom-05 fontBold textLeft">더알림 비회원 문의 안내</p>
-      <p class="font15 fontBold commonBlack textLeft">1. 더알림 계정이 있으신가요?</p>
-      <p class="font14 mbottom-05 mleft-1 textLeft commonBlack">1) 더알림 채널 > 문의게시판 <br>2) 메뉴 > 문의하기를 통해 문의해주세요!</p>
+      <p class="font18 mbottom-05 fontBold textLeft">하이브릭 비회원 문의 안내</p>
+      <p class="font15 fontBold commonBlack textLeft">1. 하이브릭 계정이 있으신가요?</p>
+      <p class="font14 mbottom-05 mleft-1 textLeft commonBlack">1) 하이브릭 채널 > 문의게시판 <br>2) 메뉴 > 문의하기를 통해 문의해주세요!</p>
       <gBtnSmall btnTitle="로그인하러가기"  @click="this.$router.replace({name: 'login'})" class="w-100P mbottom-2 mtop-05" style="height: 35px; width: 100%;"/>
       <p class="font15 fontBold commonBlack textLeft mtop-3">2. 어떤 도움이 필요하나요?</p>
       <p class="font14 commonBlack mleft-1 textLeft">
         1) [오류]시스템 문제로 앱 사용이 어려운경우
-        <br> 2) [문의]더알림에 대해 궁금한점이 있는 경우
-        <br> 3) [개선]더알림팀에게 개선점을 제시하고 싶은 경우
-        <br> 4) [메세지]더알림팀에게 응원/후기 등을 전달하고 싶은경우
+        <br> 2) [문의]하이브릭에 대해 궁금한점이 있는 경우
+        <br> 3) [개선]하이브릭팀에게 개선점을 제시하고 싶은 경우
+        <br> 4) [메세지]하이브릭팀에게 응원/후기 등을 전달하고 싶은경우
       </p>
       <gBtnSmall btnTitle="비회원 문의하기" @click="openWritePop" class="w-100P mbottom-05 mtop-05" style="height: 35px; width: 100%;"/>
       <p class="font11 mbottom-05 lightGray textLeft">비회원 문의하기의 경우, 추후에 내가 쓴 글을 확인하기 어려울 수 있으며<br> 키워드 검색을 통해 관련 문의를 찾을 수 있습니다.</p>
@@ -243,7 +243,7 @@ export default {
       var params = {}
       params.targetType = 'writeContents'
       params.contentsJobkindId = 'BOAR'
-      params.targetNameMtext = 'KO$^$더알림'
+      params.targetNameMtext = 'KO$^$하이브릭'
       params.currentTeamKey = this.$DALIM_TEAM_KEY
       params.cabinetNameMtext = '비회원 문의게시판'
       params.cabinetKey = this.$DALIM_MUN_CAB_KEY
@@ -296,7 +296,7 @@ export default {
       value.nonMemYn = true
       // eslint-disable-next-line no-new-object
       var params = new Object()
-      params.targetNameMtext = 'KO$^$더알림'
+      params.targetNameMtext = 'KO$^$하이브릭'
       params.currentTeamKey = this.$DALIM_TEAM_KEY
       params.cabinetNameMtext = '비회원 문의게시판'
       params.cabinetKey = this.$DALIM_MUN_CAB_KEY

@@ -2,14 +2,14 @@
 <div class="pagePaddingWrap" style="overflow: hidden scroll !important;">
   <div class="alimInfoPage-1 mtop-1">
     <div class="goHomePageWrap fl w-100P h-100P ">
-      <p class="font14 fontBold commonBlack fl " style="width: 100%; height: 30px; line-height: 30px;" >더알림 홈페이지</p>
+      <p class="font14 fontBold commonBlack fl " style="width: 100%; height: 30px; line-height: 30px;" >하이브릭 홈페이지</p>
       <p class="font14 commonBlack fl" style="width: 100%; height: 20px; line-height: 20px;">www.pushmsg.net</p>
     </div>
   </div>
     <gBtnSmall v-on:click="openTeamplHome" class="goBtn" :btnTitle="this.btnTitle" />
   <img class="infoPageImg fl w-100P mtop-1" src="../../../assets/images/common/infoTheAlim.png" style="">
   <div class="infoLogoWrap fl">
-    <!-- <p class="serviceName font25 commonColor fl w-100P">더알림</p>
+    <!-- <p class="serviceName font25 commonColor fl w-100P">하이브릭</p>
     <p class="serviceDist font15 commonColor fl w-100P">나에게 꼭 필요한 알림만 선택해서 구독!<br>보기 좋게 잘 정리된 알림목록</p> -->
 
     <div style="width: 100%; height: 1px; background: #ccc; float: left;" class="mtop-05 mbottom-1"></div>

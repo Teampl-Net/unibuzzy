@@ -1,13 +1,13 @@
 <template>
   <div id="mainAllWrap" class="" ref="mainScrollWrap" :style="'padding-top:' + (this.$STATUS_HEIGHT + 60)+ 'px'" style="height: 100%; overflow: hidden scroll;">
     <loadingCompo style="z-index: 999999999;" v-if="mLoadingYn"/>
-    <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="더알림을 종료하시겠습니까?" />
+    <commonConfirmPop v-if="mAppCloseYn" @ok="closeApp" @appClose='closeApp' @no="this.mAppCloseYn=false" confirmType="two" confirmText="하이브릭을 종료하시겠습니까?" />
 
     <div style="width: 100%; float: left;">
         <div class="userProfileWrap" style=" border-radius: 0.8rem; padding: 0 1.5rem;" >
             <div style="width: calc(100% - 80px); float: left; height: 100%;">
                 <!-- <a href="web+test://pwa">Americano</a> -->
-                <p class="commonLightColor font16 textLeft " style="font-weight: 600;">더알림에 오신 것을 환영해요!</p>
+                <p class="commonLightColor font16 textLeft " style="font-weight: 600;">하이브릭에 오신 것을 환영해요!</p>
                 <p class="commonLightColor font16 textLeft fl" style="font-weight: 600;">로그인을 하고 채널을 구독해보세요</p>
             </div>
             <gBtnSmall btnTitle="로그인" class="fr"/>

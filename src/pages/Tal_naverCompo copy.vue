@@ -10,7 +10,7 @@ export default {
     clientId: {
       type: String,
       required: true,
-      default: 'BbUrvFqJkUbcMb6ISALy'// 더알림 공식
+      default: 'BbUrvFqJkUbcMb6ISALy'// 하이브릭 공식
       // default: 'jR5bRjvCeurlPVOkCKEg'
 
     },
