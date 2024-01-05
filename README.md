@@ -21,7 +21,7 @@ We continuosly updates to perfectly meet users' needs. now, become the King and 
 |:---|---:|:---:|:---:|
 
 ### ✨Link✨
-[<img src="https://img.shields.io/badge/ModuZoin-5f61bd?style=for-the-badge">](https://ModuZoin.page.link/app)  
+[<img src="https://img.shields.io/badge/ModuZoin-5f61bd?style=for-the-badge">](https://thealim.page.link/app)  
 [<img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white">](https://www.instagram.com/ModuZoin/)
 
 ---
