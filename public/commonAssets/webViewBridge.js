@@ -4,8 +4,8 @@ import store from '../../store'
 import { onMessage } from '../../assets/js/webviewInterface'
 import { functions } from '../../assets/js/D_vuexFunction'
 import routerMain from '../../pages/Tal_router_main.vue'
-
-const router = require('../../src/router')
+import router from '@/router'
+// const router = require('../../src/router')
 const isJsonString = (str) => {
   try {
     JSON.parse(str)

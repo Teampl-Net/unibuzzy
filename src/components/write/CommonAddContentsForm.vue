@@ -825,11 +825,6 @@ export default defineComponent({
         }
       }
     },
-    findUrlChangeAtag (inputText) {
-      const rplcdPttrn1 = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig
-      var rplcdTxt = inputText.replace(rplcdPttrn1, '<a href="$1" target="_blank">$1</a>')
-      return rplcdTxt
-    },
     onDragenter (event) {
       // class 넣기
       this.mIsDraggedYn = true
@@ -2736,23 +2731,37 @@ export default defineComponent({
         complexEditor.value.changeTextStyle(targetType)
       }
     }
+
+    // const findUrlChangeAtag = (inputText) => {
+    //   console.log('11111 inputText', inputText)
+    //   const rplcdPttrn1 = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/ig
+    //   console.log('222222 rplcdPttrn1', rplcdPttrn1)
+    //   var rplcdTxt = inputText.replace(rplcdPttrn1, '<a href="$1" target="_blank">$1</a>')
+    //   console.log('22222 rplcdTxt', rplcdPttrn1)
+    //   return rplcdTxt
+    // }
+
     let extractedInnerHtml = ''
     const setParamInnerHtml = (formCard) => {
       console.log('1 formCard', formCard)
 
       if (contentType.value === 'ALIM' || contentType.value === 'BOAR') {
+        console.log('contentType???', contentType.value)
         for (var f = 0; f < formCard.length; f++) {
           formCard[f].contentEditable = false
           // formlist중 Text component만 찾아서 http로 시작하는 url에 a태그 넣어주기
-          if (formCard[f].id === 'formEditText') {
-            if (formCard[f].innerText === '') {
-              formCard[f].remove()
-            } else {
-              formCard[f].classList.remove('formEditorTextPadding')
-              var innerHtml = formCard[f].innerHTML
-              formCard[f].innerHTML = this.findUrlChangeAtag(innerHtml)
-            }
+          // if (formCard[f].id === 'formEditText') {
+          if (formCard[f].innerText === '') {
+            formCard[f].remove()
+          } else {
+            console.log('aaa태그 있음')
+            // formCard[f].classList.remove('formEditorTextPadding')
+            var innerHtml = formCard[f].innerHtml
+            console.log('innerHtml', innerHtml)
+            formCard[f].outerHtml = formCard[f].outerHtml.replace(formCard[f].innerHtml, commonMethods.findUrlChangeAtag(innerHtml))
+            formCard[f].innerHtml = commonMethods.findUrlChangeAtag(innerHtml)
           }
+          // }
         }
         params.getBodyHtmlYn = true
       }
@@ -2779,6 +2788,7 @@ export default defineComponent({
       // 문자열을 파싱하여 DOM 요소로 만듭니다.
       const parser = new DOMParser()
       const doc = parser.parseFromString(extractedOuterHtml, 'text/html')
+      console.log('4 doc', doc.body)
 
       // "contenteditable" 속성을 삭제합니다.
       const elements = doc.querySelectorAll(
@@ -2793,7 +2803,7 @@ export default defineComponent({
 
       // 수정된 HTML 문자열을 얻습니다.
       const modifiedHtmlString = doc.body.innerHTML
-      console.log(modifiedHtmlString)
+      console.log('5 modifiedHtmlStrin', modifiedHtmlString)
 
       params.bodyFullStr = modifiedHtmlString
       propFormData.length = 0

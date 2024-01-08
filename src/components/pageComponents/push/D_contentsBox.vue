@@ -1280,7 +1280,7 @@ export default {
     if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
     else this.mFadeNotShowYn = false
     if (this.CONT_DETAIL) {
-      console.log('CONT_DETAIL************', this.CONT_DETAIL)
+      // console.log('CONT_DETAIL************', this.CONT_DETAIL)
       if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST) {
         var stickerList = []
         for (
@@ -3202,7 +3202,7 @@ export default {
       immediate: true,
       deep: true,
       handler (value, index) {
-        console.log('value*******', value)
+        // console.log('value*******', value)
         this.setMoreMemoBtn()
         /* if (this.CONT_DETAIL.stickerList.length > 0) {
           var newArr = []
