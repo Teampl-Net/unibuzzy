@@ -1,5 +1,5 @@
 
-import routerMain from '@/components/admPages/Adm_router_main.vue'
+import routerMain from '../../components/admPages/Adm_router_main.vue'
 // import search from '../../pages/routerPages/D_searchPage.vue'
 // import login from '../../pages/intro/Tal_login.vue'
 
@@ -16,7 +16,7 @@ export const routes = [
         meta: {
           page: 1
         },
-        component: () => import(/* webpackChunkName: "about" */ '@/components/admPages/Adm_main.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/Adm_main.vue')
       }
     ]
   }
