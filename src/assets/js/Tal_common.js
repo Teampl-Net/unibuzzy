@@ -280,8 +280,8 @@ export const commonMethods = {
       resultMap = JSON.parse(userInfo)
       return resultMap
     } else {
-      // this.$router.replace('policies')
       const router = require('@/router')
+      // router.replace('policies')
       router.replace({ name: 'unknown' })
     }
   },
@@ -390,7 +390,7 @@ export const commonMethods = {
     }
 
     var result = await commonAxiosFunction({
-      url: '/sUniB/tp.getShortDynamicLink',
+      url: 'https://www.hybric.net:9443/service/tp.getShortDynamicLink',
       param: Object.fromEntries(paramMap)
     }, true)
     var response = JSON.parse(result.data.shortLink).shortLink

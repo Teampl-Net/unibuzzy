@@ -675,7 +675,7 @@ export default {
       inParam.jobkindId = 'MEMO'
       inParam.deleteYn = true
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.deleteContents',
+        url: 'https://www.hybric.net:9443/service/tp.deleteContents',
         param: inParam
       })
       if (result) {
@@ -1176,7 +1176,7 @@ export default {
       }
       param.workUserKey = this.GE_USER.userKey
       await this.$commonAxiosFunction({
-        url: '/sUniB/tp.updateTodo',
+        url: 'https://www.hybric.net:9443/service/tp.updateTodo',
         param: param
       })
       value.contStatus = param.contStatus
@@ -1402,7 +1402,7 @@ export default {
       this.mCompleteTodoCount = 0
       const myContents = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.getMyTodoList',
+          url: 'https://www.hybric.net:9443/service/tp.getMyTodoList',
           param: param
         },
         nonLoadingYn

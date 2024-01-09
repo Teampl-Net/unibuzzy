@@ -113,7 +113,7 @@ export default {
       }
       const myContents = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.getMyTodoList',
+          url: 'https://www.hybric.net:9443/service/tp.getMyTodoList',
           param: param
         },
         false

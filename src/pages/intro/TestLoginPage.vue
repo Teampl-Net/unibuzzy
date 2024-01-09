@@ -63,8 +63,8 @@ export default {
       }
       this.testLoginCount = 0
 
-      this.userId = 'teampl'
-      this.userPw = 'teampl123'
+      this.userId = 'test01'
+      this.userPw = 'susoft1'
       this.saveUser()
     },
     back () {

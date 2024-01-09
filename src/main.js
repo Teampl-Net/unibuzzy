@@ -26,7 +26,6 @@ import dayjs from 'dayjs'
 
 // === Custom Components ===
 import gActiveBar from './components/unit/Tal_gActiveBar.vue'
-import gWhiteSelect from './components/unit/selectBox/cAd_gWhiteSelect.vue'
 import gButtonS from './components/button/Tal_gButtonS.vue'
 import gButtonL from './components/button/Tal_gButtonL.vue'
 import fullModal from './components/popup/common/Tal_gPopupWrap.vue'
@@ -54,7 +53,6 @@ import uploadFile from './assets/js/Tal_uploadFile'
 import gChannelPop from './components/popup/common/D_commonChanPop.vue'
 import gPreLoader from './components/unit/Tal_preloader.vue'
 import gLoadingS from './components/Tal_smallLoading.vue'
-import gAxiosLoading from './components/D_axiosLoadingSpinner.vue'
 import gToggle from './components/pageComponents/myPage/Tal_commonToggle.vue'
 import gSvg from './components/Tal_svgCollection.vue'
 import Iconwink from './components/Tal_winkAlimLogo.vue'
@@ -161,7 +159,6 @@ app.component('gChannelList', gChannelList)
 app.component('gConfirmPop', gConfirmPop)
 app.component('smallPop', smallPop)
 app.component('myObserver', myObserver)
-app.component('gWhiteSelect', gWhiteSelect)
 app.component('gMemoPop', gMemoPop)
 app.component('gMemoList', gMemoList)
 app.component('gPreLoader', gPreLoader)
@@ -175,7 +172,6 @@ app.component('gStepProgress', gStepProgress)
 app.component('imgLongClickPop', imgLongClickPop)
 app.component(VueCropper)
 app.component('gSelectBoardPop', gSelectBoardPop)
-app.component('gAxiosLoading', gAxiosLoading)
 app.component('gListEmpty', gListEmpty)
 app.component('gCheckBtn', gCheckBtn)
 app.component('gInputPop', gInputSmallPop)

@@ -1526,7 +1526,7 @@ export default {
       }
       param.workUserKey = this.GE_USER.userKey
       const res = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.updateTodo',
+        url: 'https://www.hybric.net:9443/service/tp.updateTodo',
         param: param
       })
       this.CONT_DETAIL.contStatus = param.contStatus
@@ -1645,7 +1645,7 @@ export default {
         if (this.GE_USER.unknownYn) return
         param.creUserKey = this.GE_USER.userKey
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getStickerList',
+          url: 'https://www.hybric.net:9443/service/tp.getStickerList',
           param: param
         })
         this.mStickerList = result.data
@@ -1768,7 +1768,7 @@ export default {
         paramMap.set('teamKey', this.contentsEle.creTeamKey)
         try {
           var result = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.getContentsActorList',
+            url: 'https://www.hybric.net:9443/service/tp.getContentsActorList',
             param: Object.fromEntries(paramMap)
           })
           if (result && result.data && result.data.length > 0) {
@@ -1794,7 +1794,7 @@ export default {
       }
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -2135,7 +2135,7 @@ export default {
           var param = {}
           param = this.contentsEle
           var result = await this.$commonAxiosFunction({
-            url: '/sUniB/tp.deleteContents',
+            url: 'https://www.hybric.net:9443/service/tp.deleteContents',
             param: param
           })
           if (result) {
@@ -2431,7 +2431,7 @@ export default {
         inParam.mccKey = this.contentsEle.mccKey
         inParam.jobkindId = 'ALIM'
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteMCabContents',
+          url: 'https://www.hybric.net:9443/service/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.contentsEle.jobkindId === 'BOAR') {
@@ -2442,7 +2442,7 @@ export default {
         inParam.teamKey = this.contentsEle.creTeamKey
         inParam.deleteYn = true
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteContents',
+          url: 'https://www.hybric.net:9443/service/tp.deleteContents',
           param: inParam
         })
       } else if (this.contentsEle.jobkindId === 'TODO' || this.contentsEle.jobkindId === 'MEMO') {
@@ -2453,7 +2453,7 @@ export default {
         // inParam.teamKey = this.contentsEle.creTeamKey
         inParam.deleteYn = true
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.deleteContents',
+          url: 'https://www.hybric.net:9443/service/tp.deleteContents',
           param: inParam
         })
         this.$emit('completeTodo', true)
@@ -2600,7 +2600,7 @@ export default {
     async saveActAxiosFunc (param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveClaimLog',
+          url: 'https://www.hybric.net:9443/service/tp.saveClaimLog',
           param: param
         })
         if (result) {
@@ -2663,7 +2663,7 @@ export default {
       memo.ownUserKey = this.GE_USER.userkey
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -2977,7 +2977,7 @@ export default {
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSubscribe',
+        url: 'https://www.hybric.net:9443/service/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop(this.$t('COMM_MSG_NOTIIS') + reqText)

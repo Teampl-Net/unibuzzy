@@ -130,7 +130,7 @@ export default {
         paramMap.set('teamKey', this.propData.teamKey)
         paramMap.set('pageSize', 100)
         result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getFollowerList',
+          url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
         })
         this.showUserList = result.data.content
@@ -141,7 +141,7 @@ export default {
       //   paramMap.set('teamKey', this.propData.teamKey)
       //   paramMap.set('pageSize', 100)
       //   result = await this.$commonAxiosFunction({
-      //     url: '/sUniB/tp.getFollowerList',
+      //     url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
       //     param: Object.fromEntries(paramMap)
       //   })
       //   this.managingList = result.data.content
@@ -151,7 +151,7 @@ export default {
         param.targetKey = this.propData.teamKey
         param.pageSize = 100
         result = await this.$commonAxiosFunction({
-          url : '/sUniB/tp.getManagerList',
+          url : 'https://www.hybric.net:9443/service/tp.getManagerList',
           param: param
         })
 
@@ -181,7 +181,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.deleteManager',
+        url: 'https://www.hybric.net:9443/service/tp.deleteManager',
         param: param
       })
 
@@ -190,7 +190,7 @@ export default {
       var param = {}
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveManager',
+        url: 'https://www.hybric.net:9443/service/tp.saveManager',
         param: param
       })
     },
@@ -211,7 +211,7 @@ export default {
 
 
       var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveManager',
+          url: 'https://www.hybric.net:9443/service/tp.saveManager',
           param: param
       })
 

@@ -270,7 +270,7 @@ export default {
       memo.deleteYn = false
       // console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveMemo',
+        url: 'https://www.hybric.net:9443/service/tp.saveMemo',
         param: { memo: memo }
       })
       // console.log(result)

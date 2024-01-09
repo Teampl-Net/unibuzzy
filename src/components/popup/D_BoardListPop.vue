@@ -395,7 +395,7 @@ export default {
         var param = {}
         param.parentTeamKey = this.pTownTeamKey
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.getTownCabinetList',
+          url: 'https://www.hybric.net:9443/service/tp.getTownCabinetList',
           param: param
         })
         if (result && result.data && result.data.result) {

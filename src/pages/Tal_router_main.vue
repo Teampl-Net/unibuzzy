@@ -44,11 +44,6 @@
 
 <script>
 /* import pushPop from '../components/popup/push/Tal_pushDetailPopup.vue' */
-import TalMenu from '../components/popup/common/Tal_menu.vue'
-import commonConfirmPop from '../components/popup/confirmPop/Tal_commonConfirmPop.vue'
-import unknownLoginPop from '../components/pageComponents/channel/D_unknownLoginPop.vue'
-import DNotiHistory from '@/components/popup/common/D_notiHistoryList.vue'
-import selectChannelPop from '@/components/popup/common/D_selectChannelPop.vue'
 
 export default {
   data () {
@@ -83,11 +78,11 @@ export default {
   props: {},
   name: 'mainRouter',
   components: {
-    unknownLoginPop,
-    TalMenu,
-    commonConfirmPop,
-    DNotiHistory,
-    selectChannelPop
+    unknownLoginPop: require('../components/pageComponents/channel/D_unknownLoginPop.vue'),
+    TalMenu: require('../components/popup/common/Tal_menu.vue'),
+    commonConfirmPop: require('../components/popup/confirmPop/Tal_commonConfirmPop.vue'),
+    DNotiHistory: require('@/components/popup/common/D_notiHistoryList.vue'),
+    selectChannelPop: require('@/components/popup/common/D_selectChannelPop.vue')
     /* pushPop */
   },
   beforeCreate () {
@@ -121,10 +116,11 @@ export default {
     if (appInfo) {
       appInfo = JSON.parse(appInfo)
     }
-
-    if (this.systemName && (this.systemName === 'android' || this.systemName === 'Android' || this.systemName === 'ios' || this.systemName === 'iOS')) {
-      if (appInfo.current !== appInfo.last) {
-        this.mAppUpdatePopShwoYn = true
+    if (appInfo) {
+      if (this.systemName && (this.systemName === 'android' || this.systemName === 'Android' || this.systemName === 'ios' || this.systemName === 'iOS')) {
+        if (appInfo.current !== appInfo.last) {
+          this.mAppUpdatePopShwoYn = true
+        }
       }
     }
   },
@@ -251,7 +247,7 @@ export default {
       }
       const result = await this.$commonAxiosFunction(
         {
-          url: '/sUniB/tp.saveUser',
+          url: 'https://www.hybric.net:9443/service/tp.saveUser',
           param: param
         },
         true
@@ -595,7 +591,7 @@ export default {
       paramMap.set('fUserKey', this.GE_USER.userKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       try {
-        var result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+        var result = await this.$getViewData({ url: 'https://www.hybric.net:9443/service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.$showToastPop('채널을 찾을 수 없습니다!')
           return
@@ -688,7 +684,6 @@ export default {
     }
   },
   created () {
-    console.log('header???', this.mWhichmain)
     if (localStorage.getItem('backBtnShowYn') !== undefined && localStorage.getItem('backBtnShowYn') !== 'undefined') {
       localStorage.setItem('backBtnShowYn', 'false')
     }
@@ -698,7 +693,7 @@ export default {
     // this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST') // 앱 시작 vuex 초기화
     var urlString = location.search
     var param = this.getParamMap(urlString)
-    if (param.fcmKey && param.dcmKey) {
+    if (urlString && param.fcmKey && param.dcmKey) {
       var checkParam = {}
       checkParam.userKey = Number(param.dcmKey)
       checkParam.fcmKey = param.fcmKey

@@ -211,9 +211,9 @@ export default {
         localStorage.removeItem('deepLinkQueue')
       }
     }
-    if (!this.GE_USER) {
-      this.$router.replace({ name: 'unknown' })
-      // this.$router.push({ name: 'policies' })
+    if (!this.GE_USER || !this.GE_USER.userKey) {
+      // this.$router.replace({ name: 'unknown' })
+      this.$router.push({ name: 'policies' })
       return
     }
     this.getMainBoard().then(res => {
@@ -379,12 +379,12 @@ export default {
       if (this.mSocialMainYn !== undefined && this.mSocialMainYn === false) {
         paramMap.set('portalYn', true)
       }
-      var response = await this.$axios.post('/sUniB/tp.firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('https://www.hybric.net:9443/service/tp.firstLoginCheck', Object.fromEntries(paramMap)
       )
       this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
-      if (response.status === 200 || response.status === '200') {
+      if (response && response.status && (response.status === 200 || response.status === '200')) {
         if (response.data) {
           if (this.mSocialMainYn !== undefined && this.mSocialMainYn === false) {
             if (response.data.mainTeam) {
@@ -421,12 +421,12 @@ export default {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')
       var paramMap = new Map()
-      var response = await this.$axios.post('/sUniB/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('https://www.hybric.net:9443/service/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
       console.log(response.data)
-      if (response.status === 200 || response.status === '200') {
+      if (response && response.status && (response.status === 200 || response.status === '200')) {
         if (response.data) {
           this.mMainChanList = response.data.teamList.content
           this.mMainAlimList = response.data.alimList.content
