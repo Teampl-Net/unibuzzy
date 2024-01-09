@@ -120,7 +120,7 @@ export default {
       saveParam.memberTypeItemList = saveList
       console.log(saveParam)
       await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveMemberType',
+        url: 'https://www.hybric.net:9443/service/tp.saveMemberType',
         param: { member: saveParam }
       })
       this.$emit('reloadPage')

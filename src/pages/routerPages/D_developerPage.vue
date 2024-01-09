@@ -38,7 +38,7 @@ export default {
       param.patchTime = getCurrentDate
       param.password = this.mPassword
       const result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSystemSettingTime',
+        url: 'https://www.hybric.net:9443/service/tp.saveSystemSettingTime',
         param: param
       })
       if (result.data.result) this.mPatchTime = getCurrentDate

@@ -18,8 +18,9 @@
 <template>
   <div class="pagePaddingWrap loginContentsWrap">
     <commonConfirmPop v-if="appCloseYn" @ok="closeApp" @no="this.appCloseYn=false" confirmType="two" confirmText="하이브릭을 종료하시겠습니까?" />
-    <div v-if="!pPartnerLoginYn" class="py-3 px-4" style="box-sizing: border-box; width: 100%; height: 60px; margin-top: 125px; margin-bottom: 80px;">
-      <img src="../../assets/images/intro/login/login_logo1.png" style="width: 200px;" class="" >
+    <div v-if="!pPartnerLoginYn" class="py-3 px-4" style="box-sizing: border-box; display:flex; justify-content: center; align-items: center; width: 100%; height: 60px; margin-top: 125px; margin-bottom: 80px;">
+      <img src="../../assets/images/common/thealim_header_logo.png" class="fl" >
+      <p class=" headerFont font27  fl" style="color: #fff;" v-html="mDispTitle? mDispTitle : $t('COMMON_NAME_APP')"></p>
     </div>
     <div v-else class="py-3 px-4" style="box-sizing: border-box; width: 100%; min-height: 50px; margin-top: 125px; ">
       <!-- <img  src="../../assets/images/main/login_Wlogo.png" style="width: 50px;" class="fl" > -->
@@ -56,10 +57,9 @@
         <p class="font16 fontBold textLeft mleft-1 fl" style="color: #D6D6E7;">하이브릭 앱을 휴대폰에 설치하면<br>편하게 실시간으로 알림을 받을 수 있습니다!</p>
       </div>
       <div @click="this.$router.push('/nonMemInquiryBoard')" class="inquiryBtn cursorP font20" >비회원 문의하기</div>
-      <!--
       <div class="loginBtn font20" style="margin-bottom: 2rem;" v-on:click="openTestLoginPage">
         하이브릭계정으로 로그인
-      </div> -->
+      </div>
   </div>
 </template>
 

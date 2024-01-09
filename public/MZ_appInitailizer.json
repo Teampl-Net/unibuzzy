@@ -6,7 +6,7 @@
       "appToken": "ABC",
       "appKey": 0,
       "lastUpdate": "2023-01-02",
-      "appName": "하이브릭",
+      "appName": "더알림",
       "appDomain": "https://mo.d-alim.com",
       "defaultLang": "ko",
       "savePhone": true,
@@ -23,6 +23,31 @@
         "messagingSenderId": "777053173385",
         "appId": "1:777053173385:web:0de7347501346c761d3858",
         "measurementId": "G-0BYBFKL8TS"
+      }
+    },
+    "HB": 
+    {
+      "appType": "HB",
+      "appToken": "ABC",
+      "appKey": 0,
+      "lastUpdate": "2023-01-02",
+      "appName": "하이브릭",
+      "appDomain": "https://www.hybric.com",
+      "defaultLang": "ko",
+      "savePhone": true,
+      "mainUI": "Smain",
+      "deepLink": {
+        "login": "https://hybric.page.link/LOGIN"
+      },
+      "apiPath": "https://www.hybric.net:9443/service",
+      "firebaseConfig": {
+        "apiKey": "AIzaSyD-q9VEB5WHCd1OUDzuqSSWt-yRWMAtfNk",
+        "authDomain": "hybric-aac41.firebaseapp.com",
+        "projectId": "hybric-aac41",
+        "storageBucket": "hybric-aac41.appspot.com",
+        "messagingSenderId": "308909007086",
+        "appId": "1:308909007086:web:908518f565e14ada83d3ff",
+        "measurementId": "G-DGWTXWVL7Z"
       }
     },
   "UB":

@@ -255,7 +255,7 @@ export default {
       param.sample = sample
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.saveSample',
+        url: 'https://www.hybric.net:9443/service/tp.saveSample',
         param: param
       })
       this.sampleTitleMtext = ''

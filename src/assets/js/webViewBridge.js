@@ -4,7 +4,7 @@ import store from '../../store'
 import { onMessage } from '../../assets/js/webviewInterface'
 import { functions } from '../../assets/js/D_vuexFunction'
 import routerMain from '../../pages/Tal_router_main.vue'
-const router = require('@/router')
+import router from '../../router'
 const isJsonString = (str) => {
   try {
     JSON.parse(str)
@@ -84,7 +84,6 @@ const isJsonString = (str) => {
     async function listenerFromNative (e) {
       var message
 
-      const router = require('@/router')
       try {
         if (isJsonString(e.data) === true) {
           message = JSON.parse(e.data)
@@ -98,6 +97,7 @@ const isJsonString = (str) => {
               const userProfile = JSON.parse(message.userInfo)
               localStorage.setItem('loginYn', true)
               await saveUser(userProfile, true) // 서버에 save요청
+              console.log(router)
               router.replace({ path: '/' })
             }
           } else if (message.data) {

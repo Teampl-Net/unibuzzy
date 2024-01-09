@@ -1,12 +1,12 @@
 <template>
   <div id="moTheAlimWrap" style="height: 100%; width: 100%;">
-    <gAxiosLoading />
+    <axiosLoading />
     <transition name="showModal">
       <fullModal transition="showModal"  @successWrite="successWriteBoard" id="commonWrap" :propParams="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
     </transition>
     <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
-    <firstLoading v-if="isLoadingYn"/>
-    <router-view v-else ref="routerMainWrap" @openPop="openPop" /> <!-- 안뜬 상태로? 뜬 상태로? onload가 언제로 인식되는지 확인하기-->
+    <firstLoading style="width: 100vw; height: 100vh; position: fixed; z-index: -1; top: 0; left: 0;"/>
+    <router-view v-if="!isLoadingYn" ref="routerMainWrap" @openPop="openPop" /> <!-- 안뜬 상태로? 뜬 상태로? onload가 언제로 인식되는지 확인하기-->
   </div>
 </template>
 <script>
@@ -25,7 +25,8 @@ export default {
   //   window.document.removeEventListener('touchend')
   // },
   components: {
-    firstLoading
+    firstLoading,
+    axiosLoading: require('@/components/D_axiosLoadingSpinner.vue')
   },
   mounted () {
     // 페이지가 완전히 로드된 후에 isLoadingYn을 false로 변경

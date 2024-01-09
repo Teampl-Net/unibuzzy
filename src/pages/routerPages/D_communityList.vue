@@ -178,7 +178,7 @@ export default {
       }
 
       var result = await this.$commonAxiosFunction({
-        url: '/sUniB/tp.getTeamCommunityList',
+        url: 'https://www.hybric.net:9443/service/tp.getTeamCommunityList',
         param: params
       })
 

@@ -318,11 +318,11 @@ export default {
       paramMap.set('soEmail', this.GE_USER.soEmail)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('/sUniB/tp.firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('https://www.hybric.net:9443/service/tp.firstLoginCheck', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
-      if (response.status === 200 || response.status === '200') {
+      if (response && response.status &&  (response.status === 200 || response.status === '200')) {
         this.mMainChanList = response.data.teamList
         this.mMainMChanList = response.data.mTeamList
         this.mMainAlimList = response.data.alimList.content

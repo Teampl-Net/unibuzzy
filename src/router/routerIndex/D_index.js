@@ -131,12 +131,12 @@ export const routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../../pages/intro/Tal_naverLoginCallback copy.vue')
   },
-  /* {
-      path: '/testLoginPage',
-      name: 'testLoginPage',
-      props: true,
-      component: () => import('../../pages/intro/testLoginPage.vue')
-    }, */
+  {
+    path: '/testLoginPage',
+    name: 'testLoginPage',
+    props: true,
+    component: () => import('../../pages/intro/TestLoginPage.vue')
+  },
   {
     path: '/nonMemInquiryBoard',
     name: 'nonMemInquiryBoard',

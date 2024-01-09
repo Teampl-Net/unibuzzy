@@ -262,7 +262,7 @@ export default {
       params.cabinetKey = this.pTargetData.accessKey
       params.accessKey = this.pTargetData.accessKey
       params.emitType = 'DELETEBOOK'
-      params.axiosUrl = '/sUniB/tp.deleteCabinet'
+      params.axiosUrl = 'https://www.hybric.net:9443/service/tp.deleteCabinet'
       this.$emit('targetEmitFunction', params)
     },
     deleteUser () {
@@ -270,7 +270,7 @@ export default {
       params.jobkindId = 'USER'
       params.mccKey = this.pTargetData.mccKey
       params.accessKey = this.pTargetData.accessKey
-      params.axiosUrl = '/sUniB/tp.deleteMCabContents'
+      params.axiosUrl = 'https://www.hybric.net:9443/service/tp.deleteMCabContents'
       params.emitType = 'DELETEUSER'
       this.$emit('targetEmitFunction', params)
     }

@@ -248,7 +248,7 @@ export default {
     async setUpdateMemo (value) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
           param: { memo: value }
         }, true)
         if (result.data && result.data.result) {
@@ -317,7 +317,7 @@ export default {
       memo.todoYn = true
       try {
         var result = await this.$commonAxiosFunction({
-          url: '/sUniB/tp.saveMemo',
+          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -363,7 +363,7 @@ export default {
     async deleteMemo () {
       var memo = {}
       memo.memoKey = this.mModiMemoObj.memoKey
-      var result = await this.$commonAxiosFunction({ url: '/sUniB/tp.deleteMemo', param: memo }, true)
+      var result = await this.$commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.deleteMemo', param: memo }, true)
       if (result.data.result) {
         this.closeDeletePop()
         this.getTodoDetail()
