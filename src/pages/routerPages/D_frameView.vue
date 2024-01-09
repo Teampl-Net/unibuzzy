@@ -53,6 +53,7 @@ export default {
     return {
       mJobkindId: '',
       mSearchDate: '',
+      mUserKey: '',
       setYn: false,
       /* jobkindId === TODO */
       mTodoTargetGroup: {},
@@ -99,7 +100,7 @@ export default {
     async getMyTodoList (orderbyStr) {
       this.mSkeletonShowYn = true
       const param = {
-        userKey: this.GE_USER.userKey,
+        userKey: this.mUserKey,
         jobkindId: 'TODO',
         todoType: 'A',
         searchFromDateStr: this.mSearchDate,
@@ -182,7 +183,7 @@ export default {
           for (let i = 0; i < todo.actorList.length; i++) {
             const actor = todo.actorList[i]
 
-            if (actor.accessKind === 'U' && actor.accessKey === this.GE_USER.userKey) {
+            if (actor.accessKind === 'U' && actor.accessKey === this.mUserKey) {
               if (actor.actType === 'RV') {
                 myTodoYn = true
                 break
@@ -195,7 +196,7 @@ export default {
               let haveYn = false
               if (actor.mUserList) {
                 actor.mUserList.forEach(user => {
-                  if (user.userKey === this.GE_USER.userKey) {
+                  if (user.userKey === this.mUserKey) {
                     haveYn = true
                   }
                 })
@@ -274,6 +275,7 @@ export default {
       handler (val) {
         if (!val) return
         this.mJobkindId = val.params.jobkindId
+        this.mUserKey = val.params.userKey
         this.mSearchDate = val.params.date
         this.viewPage()
       }

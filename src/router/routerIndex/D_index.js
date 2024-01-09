@@ -85,7 +85,7 @@ export const routes = [
         }
       },
       {
-        path: '/view/:date/:jobkindId',
+        path: '/view/:date/:jobkindId/:userKey',
         name: 'frameView',
         props: true,
         component: () => import(/* webpackChunkName: "about" */ '../../pages/routerPages/D_frameView.vue'),
