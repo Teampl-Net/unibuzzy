@@ -73,8 +73,8 @@ export default {
       }
     },
     goDetail (data) {
-      if (window.opener) {
-        window.opener.postMessage({ req: 'OPEN_CONT_DETAIL', content: data }, '*')
+      if (window.parent) {
+        window.parent.postMessage({ req: 'OPEN_CONT_DETAIL', content: data }, '*')
       }
     },
     replaceArr (arr) {
