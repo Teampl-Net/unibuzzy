@@ -6,7 +6,7 @@
       "appToken": "ABC",
       "appKey": 0,
       "lastUpdate": "2023-01-02",
-      "appName": "하이브릭",
+      "appName": "더알림",
       "appDomain": "https://mo.d-alim.com",
       "defaultLang": "ko",
       "savePhone": true,
@@ -25,7 +25,7 @@
         "measurementId": "G-0BYBFKL8TS"
       }
     },
-  "UB":
+  "UB": 
     {
       "appType": "UB",
       "appKey": 1,
@@ -39,7 +39,7 @@
       "deepLink": {
         "login": "https://unibuzzy.page.link/LOGIN"
       },
-      "firebaseConfig": {
+      "firebaseConfig": { 
         "apiKey": "AIzaSyBXkAC70q-Y226eQICl5h9Txu55moSSAwQ",
         "authDomain": "unibuzzy.firebaseapp.com",
         "projectId": "unibuzzy",
@@ -47,8 +47,28 @@
         "messagingSenderId": "947851330767",
         "appId": "1:947851330767:web:de8bc42cf920be3ae563ba"
       }
+    },
+  "H": 
+    {
+      "appType": "H",
+      "appKey": 2,
+      "lastUpdate": "2023-01-02",
+      "appName": "하이브릭",
+      "appDomain": "https://mo.d-alim.com",
+      "defaultLang": "ko",
+      "savePhone": true,
+      "mainUI": "Smain",
+      "apiPath": "https://mo.d-alim.com:9443/service",
+      "firebaseConfig": {
+        "apiKey": "AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg",
+        "authDomain": "thealim-2602c.firebaseapp.com",
+        "projectId": "thealim-2602c",
+        "storageBucket": "thealim-2602c.appspot.com",
+        "messagingSenderId": "777053173385",
+        "appId": "1:777053173385:web:0de7347501346c761d3858",
+        "measurementId": "G-0BYBFKL8TS"
+      }
     }
   }
-
 }
   

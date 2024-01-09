@@ -96,7 +96,8 @@ const i18n = createI18n({
 export const app = createApp(moTheAlim)
 
 const mzoinInitalizer = '/MZ_appInitailizer.json'
-const appConfig = '/D_service.json'
+// const appConfig = '/D_service.json'
+const appConfig = '/H_service.json'
 app.config.globalProperties.$DEV_YN = true
 fetch(appConfig)
   .then(response => response.json())
