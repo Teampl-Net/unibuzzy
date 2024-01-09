@@ -275,7 +275,7 @@ export default {
       handler (val) {
         if (!val) return
         this.mJobkindId = val.params.jobkindId
-        this.mUserKey = val.params.userKey
+        this.mUserKey = Number(val.params.userKey)
         this.mSearchDate = val.params.date
         this.viewPage()
       }
