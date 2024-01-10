@@ -1,7 +1,9 @@
 <template>
   <div id="routerRef" class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden"  >
+  <gAdmPopWrap v-if="popUpShow" :pClosePop="closePop"/>
+  <gAdmPageWrap v-if="pageShow" :pMyApps="myApps" :pMyBranches="myBranches" :pPageData="pageData" :pClosePage="closePage"/>
   <commonHeader />
-  <router-view style="padding:60px 20px 0;"></router-view>
+  <router-view style="padding:60px 20px 0;" @openPage="openPage" @openPop="openPop"></router-view>
   <commonFooter v-if="footer" />
   </div>
 </template>
@@ -15,13 +17,33 @@ export default {
     commonFooter
   },
   data () {
-    return {}
+    return {
+      popUpShow: false,
+      pageShow: false,
+      pageData: {},
+      myBranches: [],
+      myApps: {}
+    }
   },
   created () {
 
   },
   methods: {
-
+    openPop () {
+      this.popUpShow = true
+    },
+    closePop () {
+      this.popUpShow = false
+    },
+    openPage (param, myBranches, myApps) {
+      this.pageData = param
+      this.myBranches = myBranches
+      this.myApps = myApps
+      this.pageShow = true
+    },
+    closePage () {
+      this.pageShow = false
+    }
   }
 }
 </script>

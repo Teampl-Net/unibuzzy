@@ -80,6 +80,8 @@ import gFileBox from './components/unit/D_fileBox.vue'
 import gSticker from './components/common/D_commonSticker.vue'
 import gSelectStickerPop from './components/popup/sticker/D_myStickerListPop.vue'
 import gStickerLine from './components/common/D_commonStickerLine.vue'
+import gAdmPopWrap from '@/components/admPages/commonCompo/Adm_commonPopUp.vue'
+import gAdmPageWrap from '@/components/admPages/commonCompo/Adm_commonPage.vue'
 
 // === Vue I18n ===
 import { createI18n } from 'vue-i18n'
@@ -188,6 +190,8 @@ app.component('gToolBox', gToolBox)
 app.component('gImgPop', gImgPop)
 app.component('gFileBox', gFileBox)
 app.component('gSelectStickerPop', gSelectStickerPop)
+app.component('gAdmPopWrap', gAdmPopWrap)
+app.component('gAdmPageWrap', gAdmPageWrap)
 
 app.use(webViewBridge)
 app.use(axiosFunction)

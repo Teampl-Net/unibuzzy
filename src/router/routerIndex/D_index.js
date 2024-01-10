@@ -16,7 +16,7 @@ export const routes = [
         meta: {
           page: 1
         },
-        component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/Adm_main.vue')
+        component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/adm_main.vue')
       }
     ]
   }
