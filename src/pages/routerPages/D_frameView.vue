@@ -337,14 +337,16 @@ svg > path {
   padding: 1px 9px;
 }
 .todoPriorityHigh {
-  background-color: rgb(15, 47, 135);
+  border:1px solid #FF0000;
+  color:#FF0000;
 }
 .todoPriorityMiddle {
-  background-color: rgb(59, 107, 240);
+  border:1px solid #0066FF;
+  color:#0066FF;
 }
 .todoPriorityLow {
-  background-color: rgb(232, 238, 254);
-  color: #000 !important;
+  border:1px solid #FFA800;
+  color:#FFA800;
 }
 .todoPriorityLowMore {
   background-color: rgb(250, 251, 254);
