@@ -75,7 +75,7 @@ export default {
     },
     goDetail (data) {
       if (window.parent) {
-        window.parent.postMessage({ req: 'OPEN_CONT_DETAIL', content: data }, '*')
+        window.parent.postMessage(JSON.stringify({ req: 'OPEN_CONT_DETAIL', content: data }), '*')
       }
     },
     replaceArr (arr) {
