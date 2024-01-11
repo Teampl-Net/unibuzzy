@@ -9,12 +9,27 @@
     </thead>
 
     <tbody>
-        <tr v-for="(manage, index) in pPageData.manage" :key="index">
+        <tr v-for="(manage, index) in pSelectedApp.manage" :key="index">
             <td>
               <input type="checkbox" />
             </td>
-            <td>{{ index }}</td>
-            <td>{{ manage.name ? manage.name : ''}} ({{ manage.count ? manage.count + '명': '0명' }})</td>
+            <td>{{ index + 1 }}</td>
+            <td @click="openUserInfo(manage.name)">{{ manage.name ? manage.name : ''}} ({{ manage.count ? manage.count + '명': '0명' }})</td>
+            <td>
+              <input type="checkbox" checked/>
+            </td>
+            <td>
+              <input type="checkbox" />
+            </td>
+        </tr>
+        <tr v-if="pAddManagerTypeYn === true">
+            <td>
+              <p @click="pCloseAddManage">X</p>
+            </td>
+            <td>{{ pSelectedApp.manage.length + 1 }}</td>
+            <td>
+              <input type="text" />
+            </td>
             <td>
               <input type="checkbox" />
             </td>
@@ -29,15 +44,22 @@
 <script>
 export default {
   props: {
-    pPageData: {}
+    pPageData: {},
+    pSelectedApp: {},
+    pAddManagerTypeYn: Boolean,
+    pCloseAddManage: Function
   },
   created () {
-    console.log('pPageData', this.pPageData)
+    console.log('jojikManageTable pPageData', this.pPageData)
+    console.log('jojikManageTable pSelectedApp', this.pSelectedApp)
   },
   data () {
 
   },
   methods: {
+    openUserInfo (param) {
+      this.$emit('openUserInfo', param)
+    }
 
   }
 }

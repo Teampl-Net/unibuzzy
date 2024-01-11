@@ -8,7 +8,10 @@
         <p class="font13">{{ pBranch.code }}</p>
       </div>
     </div>
-    <div>정보</div>
+    <div>
+      <p class="font14">{{ pBranch.type }}</p>
+      <p class="font13">🙍🏻‍♂️{{ pBranch.allCount }}</p>
+   </div>
   </div>
 </template>
 
@@ -39,12 +42,14 @@ export default {
   align-items:center;
   justify-content:space-between;
   border:1px solid rgb(199, 199, 199);
+  background-color: #fff;
 }
 .imgInfo{
   width:60px;
   height:60px;
   border-radius:50%;
   border:1px solid gray;
+  background-color:#ebebeb;
 }
 .textInfo{
   text-align:left;

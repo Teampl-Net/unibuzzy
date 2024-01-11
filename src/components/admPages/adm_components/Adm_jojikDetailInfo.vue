@@ -1,5 +1,5 @@
 <template>
-  <p class="font13" style="text-align:right; margin-top:30px;"> 최종 업데이트 : {{ pSelectedApp.upDated ? pSelectedApp.upDated : '오늘' }}</p>
+  <p class="font13" style="text-align:right;"> 최종 업데이트 : {{ pSelectedApp.upDated ? pSelectedApp.upDated : '오늘' }}</p>
 
   <!-- 조직 기본 데이터들 -->
   <div class="jojikInfoWrap w100P">
@@ -11,22 +11,26 @@
           <p class="font13">{{ pSelectedApp.code }}</p>
         </div>
       </div>
-      <div>30</div>
+      <div>
+        <p class="font14">{{ pSelectedApp.type }}</p>
+        <p class="font13">🙍🏻‍♂️{{ pSelectedApp.allCount }}</p>
+      </div>
     </div>
 
     <div class="w100P detailInfos">
       <div class="w100P" style="padding-bottom:10px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #ccc;">
         <p class="font15" style="width:calc(100% - 20px)' text-align:left;">{{ pSelectedApp.desc ? pSelectedApp.desc : '안녕하세요, 우리 조직을 소개합니다.' }}</p>
-        <div @click="showMore" style="width:20px;">➕</div>
+        <div v-if="moreOpen===false" @click="showMore" style="width:20px;">➕</div>
+        <div v-if="moreOpen===true" @click="showMore" style="width:20px;">➖</div>
       </div>
       <div v-if="moreOpen" class="w100P" style="padding-top:10px;">
-        <div style="text-align:left;">
-          <p class="font14">{{ pSelectedApp.address ? pSelectedApp.address : pSelectedApp.name + '의 주소입니다.' }}</p>
-          <p class="font14">***-***-****</p>
+        <div style="display:flex; align-items:center; justify-content:space-between; text-align:left;">
+          <p class="font14">📫{{ pSelectedApp.address ? pSelectedApp.address : pSelectedApp.name + '의 주소입니다.' }}</p>
+          <p class="font14">👜***-***-****</p>
         </div>
         <div class="w100P" style="display:flex; align-items:center; justify-content:space-between; text-align:left;">
-          <p class="font14" style="calc(100% - 20px);">{{ pSelectedApp.founder ? pSelectedApp.founder : '대표명 (010-1111-1111)' }}</p>
-          <p class="font14" style="width:20px;">⚙️</p>
+          <p class="font14" style="calc(100% - 20px);">🤵🏻‍♂️{{ pSelectedApp.founder ? pSelectedApp.founder : '대표명 (010-1111-1111)' }}</p>
+          <p @click="openPop" class="font16 cursorP" style="width:20px;">⚙️</p>
         </div>
       </div>
     </div>
@@ -42,14 +46,16 @@
             <span class="cursorP">⬇️</span>
           </div>
           <div>
+            <span v-if="addManagerTypeYn === false" @click="addManage" class="btnAdd cursorP">추가</span>
+            <span v-if="addManagerTypeYn === true" @click="saveManage" class="btnAdd cursorP">저장</span>
             <span class="btnDel cursorP">삭제</span>
-            <span @click=addManage class="btnAdd cursorP">추가</span>
+            <span class="btnEdit cursorP">수정</span>
           </div>
         </div>
       </div>
 
       <div class="w100P manageTable">
-        <jojikManageTable :pPageData="pPageData" :pCloseAddManage="closeAddManage"/>
+        <jojikManageTable :pPageData="pPageData" @openUserInfo="openUserInfo" :pSelectedApp="pSelectedApp" :pCloseAddManage="closeAddManage" :pAddManagerTypeYn="addManagerTypeYn"/>
       </div>
 
     </div>
@@ -62,20 +68,37 @@ export default {
     jojikManageTable
   },
   props: {
-    pSelectedApp: {},
+    pSelectedApp: Object,
     pPageData: {}
   },
   created () {
-
+    console.log('jojikDetailInfo pSelectedApp', this.pSelectedApp)
   },
   data () {
     return {
-      moreOpen: false
+      moreOpen: false,
+      addManagerTypeYn: false
     }
   },
   methods: {
     addManage () {
-      this.mAddManageYn = true
+      this.addManagerTypeYn = true
+    },
+    closeAddManage () {
+      this.addManagerTypeYn = false
+    },
+    saveManage () {
+      return false
+    },
+    showMore () {
+      this.moreOpen = !this.moreOpen
+    },
+    openPop () {
+      this.$emit('openPop')
+    },
+    openUserInfo (param) {
+      console.log('jojnikDetailInfo emit param', param)
+      this.$emit('openUserInfo', param)
     }
   }
 
@@ -98,6 +121,7 @@ export default {
   height:70px;
   border-radius:50%;
   border:1px solid gray;
+  background-color:#ebebeb;
 }
 .textInfo{
   text-align:left;
@@ -130,14 +154,15 @@ export default {
   justify-content:center;
   gap:1rem;
 }
-.btnDel, .btnAdd{
+.btnDel, .btnAdd, .btnEdit{
   padding:5px 10px;
   border:1px solid #ccc;
   background-color:#fff;
+  margin-right:0.3rem;
+
 }
 .btnDel{
   background-color:#eee !important;
-  margin-right:10px;
 }
 
 .manageTable{

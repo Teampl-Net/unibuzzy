@@ -11,66 +11,50 @@
 
     <tbody>
         <tr v-for="(user, index) in pFilteredPageData" :key="index">
-            <!-- 세로 첫 열에 사용자 이름을 표시합니다. -->
-            <td>
-              <input type="checkbox"/>
-            </td>
-            <td>{{ index + 1 }}</td>
-            <td>{{ user.name }}</td>
-            <td style="text-align:left;">{{ user.mail }}<br/>{{ user.tel }}</td>
-            <td>{{ user.info ? user.info : '특징: 귀여움' }}</td>
-            <td>{{ user.manage ? user.manage : '일반' }}</td>
-        </tr>
-        <tr v-if="pAddUser === true">
-          <td>
-              <p @click="pCloseAddUser">X</p>
-            </td>
-            <td>
-              {{ pFilteredPageData.length + 1 }}
-            </td>
-            <td>
-              <input type="text"/>
-            </td>
-            <td style="text-align:left;">
-              <input type="text"/>
-              <input type="text"/>
-            </td>
-            <td>
-              <input type="text"/>
-            </td>
-            <td>
-              <select>
-                <option>일반</option>
-                <option>매니저</option>
-                <option>관리자</option>
-              </select>
-            </td>
+            <jojikManagerOption :pUser="user" :pIndex="index" :pFilteredPageData="pFilteredPageData" :pSelectedApp="pSelectedApp"/>
         </tr>
     </tbody>
   </table>
 </template>
 
 <script>
+import jojikManagerOption from '@/components/admPages/adm_components/Adm_jojikManagerOption.vue'
 export default {
+  components: {
+    jojikManagerOption
+  },
   props: {
+    pSelectedApp: Object,
     pFilteredPageData: {},
     pAddUser: Boolean,
-    pCloseAddUser: Function
+    pCloseAddUser: Function,
+    pFromWhere: String,
+    pFilterBySelectedManage: {}
   },
   created () {
     console.log('pFilteredPageData', this.pFilteredPageData)
+    console.log('pSelectedApp', this.pSelectedApp)
   },
   data () {
-    return {}
+    return {
+      mSelectedManage: {}
+    }
   },
   methods: {
-
+  },
+  mounted () {
   },
   watch: {
     pAddUser: {
       immediate: true,
       handler (value) {
         console.log('pAddUser', value)
+      }
+    },
+    pFilteredPageData: {
+      immediate: true,
+      handler (value) {
+        console.log('pFilteredPageData changed value', value)
       }
     }
   }

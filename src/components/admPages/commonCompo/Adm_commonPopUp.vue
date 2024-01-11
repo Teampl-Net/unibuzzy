@@ -5,7 +5,8 @@
 <script>
 export default {
   props: {
-    pClosePop: Function
+    pClosePop: Function,
+    pPropParams: {}
   }
 
 }
