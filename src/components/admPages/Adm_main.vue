@@ -3,7 +3,7 @@
     <div class="topArea w100P">
       <div class="myInfoArea">
         <p class="font30" style="padding-right:10px;">내 조직 IN </p>
-        <select v-model="mSelectedApp" @change="setSelectedApp">
+        <select v-model="mSelectedApp" @change="setSelectedApp" style="height:30px;">
           <option v-for="(apps, index) in pMyAppList" :key="index" :value="apps" :selected="index === mSelectedAppIdx">{{ apps.title }}</option>
         </select>
       </div>

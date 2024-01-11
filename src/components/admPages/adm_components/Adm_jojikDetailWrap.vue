@@ -5,7 +5,7 @@
         <img :src="require(`@/assets/images/common/icon_back.png`)" :alt="뒤로가기"/>
       </div>
       <div class="myInfoArea">
-        <select v-model="mSelectedBranch" @change="changeSelectedBranch(event)">
+        <select v-model="mSelectedBranch" @change="changeSelectedBranch(event)" style="height:30px;">
           <option v-for="(branch, index) in pPropParams.branch" :key="index" :value="branch">{{ branch.name }}</option>
         </select>
         <p class="font30" style="padding-left:10px;">IN {{ pPropParams ? pPropParams.myApps.title : '' }}</p>
