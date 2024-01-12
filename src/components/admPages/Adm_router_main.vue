@@ -27,7 +27,7 @@ export default {
       propParams: {},
       myAppList: [],
       defaultAppList: [
-        { appKey: 0, title: '더알림', branch: [{ name: '새움소프트 공식', code: 'ABC10', type: '🏢회사', allCount: 80, manage: [{ name: '일반', count: '30' }, { name: '매니저', count: 5 }, { name: '직원', count: 22 }], user: [{ name: '김보리', tel: '010-0104-0104', mail: 'bori11004@cute.cute', manage: '매니저' }, { name: '황설탕', tel: '010-1101-1101', mail: 'sugar@cute.cute', manage: '직원' }] }, { name: '유니버지 공식', code: 'ABC10', type: '🏫학교', allCount: 130 }] },
+        { appKey: 0, title: '더알림', branch: [{ name: '새움소프트 공식', code: 'ABC10', type: '🏢회사', allCount: 80, manage: [{ name: '일반', count: 50 }, { name: '매니저', count: 25 }, { name: '관리자', count: 5 }], user: [{ name: '김보리', tel: '010-0104-0104', mail: 'bori11004@cute.cute', manage: '매니저' }, { name: '황설탕', tel: '010-1101-1101', mail: 'sugar@cute.cute', manage: '관리자' }] }, { name: '유니버지 공식', code: 'ABC10', type: '🏫학교', allCount: 130 }] },
         { appKey: 1, title: '아파트123', type: '아파트', allCount: '132', branch: [{ name: '개나리 아파트', code: 'ABC10' }] },
         { appKey: 2, title: '컴퍼니톡', branch: [{ name: '새움소프트', code: 'ABC10' }, { name: '헌움소프트', code: 'ABC10' }, { name: '중간움소프트', code: 'ABC10' }] }
       ]
