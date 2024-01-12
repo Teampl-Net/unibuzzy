@@ -12,7 +12,8 @@
   <div id="layout">
     <header>
       <!-- Popup Title -->
-      <button @click="saveMemo(false)" type="button" class="closeBtn">
+      <!-- <button @click="saveMemo(false)" type="button" class="closeBtn"> -->
+      <button @click="backClick" type="button" class="closeBtn">
           <img
             src="../../assets/images/common/popup_close.png"
             alt="close button"
@@ -20,16 +21,15 @@
           />
         </button>
       <p class="commonColor fontBold" style="font-size:20px; line-height: 30px;">메모 관리</p>
-      <div class="HeaderbtnWrap cursorP" style="width:30px; height:100%;">
-        <!-- <p>h</p> -->
-        <!-- <div @click="postContents" class="saveBtn fontBold">
-          {{ pContentsData ? $t('COMM_BTN_EDIT2') : $t('COMMON_BTN_SAVE') }}
-        </div> -->
+      <div class="HeaderbtnWrap cursorP" style="width:70px; height:100%;">
+        <div @click="deleteMemo()" class="delBtn fontBold">
+          {{ $t('COMMON_BTN_DELETE') }}
+        </div>
       </div>
     </header>
 
     <div class="w100P" style="padding:10px 20px;">
-      <div class="w100P" style="min-height: 30px;">
+      <!-- <div class="w100P" style="min-height: 30px;">
         <div class="memoTabWrap w100P" style="display:flex; align-items:center;">
           <div style="width:100%; overflow-x:scroll; white-space:nowrap; text-align:left;">
             <div v-for="(memo, mIndex) in pMemoList.content" :key="mIndex" class="memoTab crusorP" @click="selectMemo(mIndex)" :class="{mSelectedMemo : mSelectedMemoIdx === mIndex}">
@@ -37,14 +37,13 @@
                 <span class="memoTitle" style="width:clac(100% - 22px);">{{memo.title}}</span>
                 <span style="font-size:10px; width:22px;" class="cursorP" @click="mConfirmPopShowYn = true" >삭제</span>
               </div>
-              <!-- <span @click="goDetail(memo)" >z</span> -->
             </div>
-            <div @click="newMemo " :class="{mSelectedMemo : mSelectedMemoIdx === null}" id="newMemoTab" class="memoTab">+</div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="w100P mtop-1" style="">
+        <p class="font13" style="padding-bottom:0.5rem; text-align:left; color:#ccc;">{{ memoDate ? memoDate : '' }}</p>
         <textarea
           id="title"
           type="text"
@@ -83,13 +82,19 @@ export default {
   created () {
     console.log('pMemoList', this.pMemoList)
     console.log('pMemoIdx', this.pMemoIdx)
+    if (this.pMemoIdx !== null) {
+      this.memoTitle = this.pMemoList.content[this.pMemoIdx].title
+      this.memoBody = this.decodeContents(this.pMemoList.content[this.pMemoIdx].bodyFullStr)
+      this.memoDate = this.getDates(this.pMemoList.content[this.pMemoIdx].creDate)
+    }
+    console.log('클릭된메모내용', this.pMemoList.content[this.pMemoIdx])
     var history = this.$store.getters['D_HISTORY/hStack']
     // console.log(history)
     history.push(this.popId)
     this.$store.commit('D_HISTORY/updateStack', history)
-    if (this.pMemoIdx !== undefined) {
-      this.selectMemo(this.pMemoIdx, true)
-    }
+    // if (this.pMemoIdx !== undefined) {
+    //   this.selectMemo(this.pMemoIdx, true)
+    // }
   },
   data () {
     return {
@@ -102,24 +107,38 @@ export default {
       selectedMemo: [],
       popId: 'addMemoPop',
       mIsEditing: false,
-      mConfirmPopShowYn: false
+      mConfirmPopShowYn: false,
+      mSetMemo: {},
+      memoDate: new Date()
     }
   },
   methods: {
+    getDates (value) {
+      // value는 2023-12-27T10:01:37 형식의 문자열이라고 가정합니다.
+
+      const date = new Date(value) // 문자열을 Date 객체로 변환합니다.
+
+      const year = date.getFullYear()
+      const month = (date.getMonth() + 1).toString().padStart(2, '0') // 월은 0부터 시작하므로 +1을 해주고, 두 자릿수로 만듭니다.
+      const day = date.getDate().toString().padStart(2, '0') // 일도 두 자릿수로 만듭니다.
+
+      const formattedDate = `${year}/${month}/${day}`
+      return formattedDate
+    },
     decodeContents (data) {
       // eslint-disable-next-line no-undef
       var changeText = Base64.decode(data)
       return changeText
     },
-    selectMemo (index, initYn) {
-      if (index === undefined || index === null) return
-      if (!initYn) { this.saveMemo(true) }
-      console.log(index)
-      this.mSelectedMemoIdx = index
-      this.memoTitle = this.pMemoList.content[this.mSelectedMemoIdx].title
-      this.selectedMemo = this.pMemoList.content[index]
-      this.memoBody = this.decodeContents(this.pMemoList.content[index].bodyFullStr)
-    },
+    // selectMemo (index, initYn) {
+    //   if (index === undefined || index === null) return
+    //   if (!initYn) { this.saveMemo(true) }
+    //   console.log(index)
+    //   this.mSelectedMemoIdx = index
+    //   this.memoTitle = this.pMemoList.content[this.mSelectedMemoIdx].title
+    //   this.selectedMemo = this.pMemoList.content[index]
+    //   this.memoBody = this.decodeContents(this.pMemoList.content[index].bodyFullStr)
+    // },
     newMemo () {
       this.memoTitle = null
       this.memoBody = null
@@ -152,8 +171,8 @@ export default {
     },
     deleteMemo (data) {
       this.mConfirmPopShowYn = false
-      this.memoTitle = '새 메모'
-      this.memoBody = null
+      // this.memoTitle = '새 메모'
+      // this.memoBody = null
       this.$emit('deleteMemo', data)
     },
     backClick () {
@@ -257,6 +276,16 @@ button {
   .closeBtn {
     border: none;
     background-color: none;
+  }
+  .delBtn {
+    width:auto;
+    height:35px;
+    line-height:35px;
+    border-radius:10px;
+    background-color:#F1F1FF;
+    color:#5F61BD;
+    font-weight:bold;
+    padding:0 20px;
   }
 .memoTab{
   width:33%;

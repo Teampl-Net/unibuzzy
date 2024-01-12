@@ -50,10 +50,60 @@
     :contentType="CONT_DETAIL.jobkindId"
     :contentOwner="this.GE_USER.userKey === CONT_DETAIL.creUserKey"
   />
+
   <div
     class="todoBody" @click="closeActorList()"
     :style="`padding-top: ${this.$STATUS_HEIGHT + 50}px !important;`"
   >
+
+  <!-- 메모 -->
+      <div style="width: 100%; min-height: 30px; padding: 10px 10px; background-color:#DBDBF3;">
+        <div style="width: 100%; min-height: 30px; margin-bottom: 5px; display: flex; align-items: flex-start; ">
+          <!-- <img src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt="">
+            <p class="fontBold fl h100P" style="line-height: 30px;font-size: 18px; color: #060505 !important">
+              {{'메모'}}
+            </p> -->
+            <div class="okScrollBar" v-if="GE_DISP_MEMO_LIST.content" style="width: calc(100%); overflow: auto hidden; padding-bottom: 5px; padding-top:5px; height: 100%;">
+              <!-- <div :style="`width: ${GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0 ? 50 + GE_DISP_MEMO_LIST.content.length * 110 + 'px' : '100%'};`" style="height: 100%; overflow:auto hidden;"> -->
+              <div class="w100P h100P" style="overflow:auto hidden; display:flex; align-items:start;">
+                <!-- <template >
+                  <commonStickyBox  class="fl mright-05 cursorP" style="width: 30%; " :style="showMemoYn? 'height: 110px;' : 'height: 30px;'" @click="goDetail(memo)" :pContentEle="memo" :pShowMemoYn="showMemoYn"/>
+                </template> -->
+                <template v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" >
+                  <div class="w100P" style="display:flex; align-items:start; justify-content:space-between;">
+                    <div style="width:calc(100% - 60px); padding-left:0; margin-bottom:0; margin-right:10px; text-align:left;">
+                      <div class="memoTabWrap w100P" style="overflow-x:scroll;">
+                        <div :style="{ width: (GE_DISP_MEMO_LIST.content.length * 27) + '%' }" style="display:flex; align-items:start; flex-wrap:nowrap;">
+                          <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab">
+                            <div @click.stop="selectMemo(mIndex)" class="font14" style="height:25px; line-height:25px;">{{memo.title}}</div>
+                            <div @click="openMemoManagePop(mSelectedMemoIdx)" class="memoBody font13" style="12px; height:75px; font-weight:normal;" v-if="showMemoYn && this.mSelectedMemoIdx !== null && this.mSelectedMemoIdx === mIndex" v-html="decodeContents(memo.bodyFullStr)"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])"> -->
+                      <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(mSelectedMemoIdx)">/ -->
+                      <!-- <div v-if="showMemoYn && this.mSelectedMemoIdx !== null" v-html="decodeContents(this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bodyFullStr)" class="memoBody" @click="openMemoManagePop(mSelectedMemoIdx)">
+                      </div> -->
+                      <!-- <div v-if="showMemoYn" class="memoBody">
+                        <textarea v-model="mMemoBody" @input="memoAutoSave(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])" class="w100P" style="border:none; height:auto; outline:none;">
+                        </textarea>
+                      </div> -->
+                    </div>
+                    <div @click="openMemoManagePop()" class="p-10 cursorP fontBold textCenter" style="font-size:13px; width:60px; height:29px; border-radius:10px; line-height:29px; background-color:#5F61BD; color:#fff; ">+메모</div>
+                  </div>
+                </template>
+                <img v-else-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt="">
+                <p v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" class="fontBold fl h100P mright-05" style="text-align:left; line-height: 30px;font-size: 18px; color: #060505 !important">
+                  {{$t('COMMON_TITLE_MEMO')}}
+                </p>
+
+                <div v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" @click="openMemoManagePop" :style="showMemoYn? 'height:110px' : 'height: 30px;'"  class="fl cursorP" style="width: 30px; float: left; border-radius: 10px; background: rgb(197 198 255); justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div>
+              </div>
+            </div>
+            <!-- <img v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" @click.stop="openMemoShow" :src="require(`@/assets/images/button/Icon_showMore.png`)" style="width: 30px;" class="cursorP fr" :style="showMemoYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/> -->
+        </div>
+      </div>
+
     <div
       style="
         height: 50px;
@@ -167,7 +217,7 @@
       </div> -->
       <!-- <span class="popHeaderTitleSpan font20 h100P" style="color: #6768A7; font-weight: bold; display: flex; justify-content: center; align-items: center;">Today's Todo</span> -->
     </div>
-    <div style="width: 100%; height:calc(100vh - 100px); overflow: hidden auto;">
+    <div style="width: 100%; height:calc(100vh - 150px); overflow: hidden auto;">
     <!-- <div style="width: 100%; height: 100%; overflow: hidden auto;"> 메모할떄 살려라-->
       <!-- <div class="dateArea" style="position: relative; ">
       <div class="commonTitleText dateAreaBox " >
@@ -181,52 +231,8 @@
         <div class="fr fontBold cursorP addBtn CDeepBgColor" @click="openAddTodoPop">Add</div>
       </div>
     </div> -->
-      <div style="width: 100%; min-height: 30px; float: left; padding: 10px 10px;">
-        <div style="width: 100%; min-height: 30px; margin-bottom: 5px; display: flex; align-items: flex-start; ">
-          <!-- <img src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt="">
-            <p class="fontBold fl h100P" style="line-height: 30px;font-size: 18px; color: #060505 !important">
-              {{'메모'}}
-            </p> -->
-            <div class="okScrollBar" v-if="GE_DISP_MEMO_LIST.content" style="width: calc(100%); overflow: auto hidden; padding-bottom: 5px; padding-top:5px; height: 100%;">
-              <!-- <div :style="`width: ${GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0 ? 50 + GE_DISP_MEMO_LIST.content.length * 110 + 'px' : '100%'};`" style="height: 100%; overflow:auto hidden;"> -->
-              <div class="w100P h100P" style="overflow:auto hidden; display:flex; align-items:start;">
-                <!-- <template >
-                  <commonStickyBox  class="fl mright-05 cursorP" style="width: 30%; " :style="showMemoYn? 'height: 110px;' : 'height: 30px;'" @click="goDetail(memo)" :pContentEle="memo" :pShowMemoYn="showMemoYn"/>
-                </template> -->
-                <template v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" >
-                  <div style="width:calc(100%); padding-left:0; margin-bottom:0; margin-right:10px; text-align:left;">
-                    <div class="memoTabWrap w100P" style="display:flex; align-items:center;">
-                      <div style="width:100%; overflow-x:scroll; white-space:nowrap;">
-                        <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" @click.stop="selectMemo(mIndex)" :class="{mSelectedMemo : mSelectedMemoIdx !== mIndex}">
-                          {{memo.title}}
-                          <!-- <span @click="goDetail(memo)" >z</span> -->
-                        </div>
-                        <div class="memoTab mSelectedMemo" @click="openMemoManagePop()">+</div>
-                      </div>
-                    </div>
-                    <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])"> -->
-                    <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(mSelectedMemoIdx)">/ -->
-                    <div v-if="showMemoYn && this.mSelectedMemoIdx !== null" v-html="decodeContents(this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bodyFullStr)" class="memoBody" @click="openMemoManagePop(mSelectedMemoIdx)">
-                    </div>
-                    <!-- <div v-if="showMemoYn" class="memoBody">
-                      <textarea v-model="mMemoBody" @input="memoAutoSave(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])" class="w100P" style="border:none; height:auto; outline:none;">
-                      </textarea>
-                    </div> -->
-                  </div>
-                </template>
-                <img v-else-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt="">
-                <p v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" class="fontBold fl h100P mright-05" style="text-align:left; line-height: 30px;font-size: 18px; color: #060505 !important">
-                  {{$t('COMMON_TITLE_MEMO')}}
-                </p>
 
-                <div v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" @click="openMemoManagePop" :style="showMemoYn? 'height:110px' : 'height: 30px;'"  class="fl cursorP" style="width: 30px; float: left; border-radius: 10px; background: rgb(197 198 255); justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div>
-              </div>
-            </div>
-            <!-- <img v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" @click.stop="openMemoShow" :src="require(`@/assets/images/button/Icon_showMore.png`)" style="width: 30px;" class="cursorP fr" :style="showMemoYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/> -->
-        </div>
-      </div>
-
-      <div class="topWrap w100P" style="position:relative;">
+      <div class="topWrap w100P" style="position:relative; margin-top:20px;">
         <div class="w100P" style="display:flex; flex-direction:column;">
           <div class="w100P" style="display:flex; align-items:center;">
             <div style="width: 70%">
@@ -688,7 +694,11 @@ export default {
     },
     selectMemo (index) {
       if (this.mSelectedMemoIdx === index) {
-        this.showMemoYn = false
+        if (this.showMemoYn === false) {
+          this.showMemoYn = true
+        } else {
+          this.showMemoYn = false
+        }
       } else {
         this.mSelectedMemoIdx = index
         if (this.mSelectedMemoIdx != null) {
@@ -2676,13 +2686,11 @@ export default {
   white-space:nowrap;
 }
 .memoTab{
-  width:33.3%;
-  height:35px;
-  line-height:33px;
-  border-radius:20px 20px 0 0;
+  width:26%;
+  height:auto;
   background-color:#fff;
   border:2px solid #fff;
-  color:#5f61bd !important;
+  color:#222 !important;
   font-weight:bold;
   display:inline-block;
   text-align:center;
@@ -2690,17 +2698,15 @@ export default {
   overflow:hidden;
   text-overflow:ellipsis;
   padding:0 10px;
+  margin-right:0.5rem;
 }
 .mSelectedMemo{
-  background-color:#5f61bd !important;
-  color:#fff !important;
+  height:100px !important;
 }
 .memoBody{
   background-color:#fff;
-  padding:10px 20px;
-  width:99.9%;
-  height:75px;
-  margin-top:-10px;
+  height:30px;
+  white-space:wrap;
 }
 
 svg > path {
