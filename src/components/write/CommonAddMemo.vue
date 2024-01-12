@@ -22,9 +22,9 @@
         </button>
       <p class="commonColor fontBold" style="font-size:20px; line-height: 30px;">메모 관리</p>
       <div class="HeaderbtnWrap cursorP" style="width:70px; height:100%;">
-        <div @click="deleteMemo()" class="delBtn fontBold">
-          {{ $t('COMMON_BTN_DELETE') }}
-        </div>
+        <div v-if="btnTextChange === $t('COMMON_BTN_DELETE')" @click="mConfirmPopShowYn = true" class="delBtn fontBold"> {{ btnTextChange }}</div>
+        <div v-if="btnTextChange === $t('COMM_BTN_EDIT2')" @click="saveMemo(false)" class="delBtn fontBold"> {{ btnTextChange }}</div>
+        <div v-if="btnTextChange === $t('COMMON_BTN_SAVE')" @click="saveMemo(false)" class="delBtn fontBold"> {{ btnTextChange }}</div>
       </div>
     </header>
 
@@ -43,7 +43,7 @@
       </div> -->
 
       <div class="w100P mtop-1" style="">
-        <p class="font13" style="padding-bottom:0.5rem; text-align:left; color:#ccc;">{{ memoDate ? memoDate : '' }}</p>
+        <p class="font13" style="padding-bottom:0.5rem; text-align:left; color:#ccc;">{{ memoDate ? memoDate : getDates(new Date()) }}</p>
         <textarea
           id="title"
           type="text"
@@ -56,7 +56,7 @@
       <div class="w100P mtop-05" style="border-bottom:1px solid #EBEBEB;"></div>
 
       <div class="w100P0">
-        <textarea class="w100P memoBodyArea mtop-1" v-model="memoBody" style="padding:20px; min-height:300px;">
+        <textarea class="w100P memoBodyArea mtop-1" @click="changeBtn" v-model="memoBody" style="padding:20px; min-height:300px;">
         </textarea>
 
       </div>
@@ -67,7 +67,7 @@
       confirmType="two"
       @no="mConfirmPopShowYn = false"
       v-if="mConfirmPopShowYn"
-      @ok="deleteMemo(pMemoList.content[mSelectedMemoIdx])"
+      @ok="deleteMemo(pMemoList.content[pMemoIdx])"
     />
 
 </template>
@@ -86,7 +86,7 @@ export default {
       this.memoTitle = this.pMemoList.content[this.pMemoIdx].title
       this.memoBody = this.decodeContents(this.pMemoList.content[this.pMemoIdx].bodyFullStr)
       this.memoDate = this.getDates(this.pMemoList.content[this.pMemoIdx].creDate)
-    }
+    } else { this.newMemo() }
     console.log('클릭된메모내용', this.pMemoList.content[this.pMemoIdx])
     var history = this.$store.getters['D_HISTORY/hStack']
     // console.log(history)
@@ -109,7 +109,8 @@ export default {
       mIsEditing: false,
       mConfirmPopShowYn: false,
       mSetMemo: {},
-      memoDate: new Date()
+      memoDate: '',
+      btnTextChange: this.$t('COMMON_BTN_DELETE')
     }
   },
   methods: {
@@ -139,17 +140,23 @@ export default {
     //   this.selectedMemo = this.pMemoList.content[index]
     //   this.memoBody = this.decodeContents(this.pMemoList.content[index].bodyFullStr)
     // },
+    changeBtn () {
+      if (this.pMemoIdx !== null) {
+        this.btnTextChange = this.$t('COMM_BTN_EDIT2')
+      }
+    },
     newMemo () {
-      this.memoTitle = null
+      this.memoTitle = '새 메모'
       this.memoBody = null
       this.mSelectedMemoIdx = null
+      this.btnTextChange = this.$t('COMMON_BTN_SAVE')
       // console.log('element', document.getElementsById('newMemoTab'))
       // document.getElementsById('newMemoTab').classList.add('newMemo')
     },
-    async saveMemo (tabYn) {
+    async saveMemo () {
       if (this.memoTitle === '새 메모' && this.memoBody === null && this.mIsEditing === false) {
-        console.log('여기여기여김')
-        this.backClick()
+        console.log('here??')
+        this.$showToastPop(this.$t('COMM_MSG_CLICK'))
       } else {
         var params = {}
         params.actorList = null
@@ -157,8 +164,8 @@ export default {
         params.workToDateStr = null
         params.workFromDateStr = null
         params.stickerList = null
-        if (this.selectedMemo.contentsKey) {
-          params.contentsKey = this.selectedMemo.contentsKey
+        if (this.pMemoIdx !== null) { // 새 메모가 아니면
+          params.contentsKey = this.pMemoList.content[this.pMemoIdx].contentsKey
         }
         params.jobkindId = 'MEMO'
         params.workStatCreUserName = this.GE_USER.userDispMtext
@@ -166,13 +173,19 @@ export default {
         params.bodyFullStr = this.memoBody
         console.log('params,', params)
         this.$emit('saveMemos', params)
-        if (!tabYn || tabYn === false) this.backClick()
+        if (this.pMemoIdx !== null) {
+          this.$showToastPop(this.$t('COMMON_MSG_EDIT_MEMO'))
+        } else {
+          this.$showToastPop(this.$t('COMMON_MSG_SAVE_MEMO'))
+        }
+        this.backClick()
       }
     },
     deleteMemo (data) {
       this.mConfirmPopShowYn = false
       // this.memoTitle = '새 메모'
       // this.memoBody = null
+      this.backClick()
       this.$emit('deleteMemo', data)
     },
     backClick () {

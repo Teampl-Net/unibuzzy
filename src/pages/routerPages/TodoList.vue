@@ -58,7 +58,7 @@
 
   <!-- 메모 -->
       <div style="width: 100%; min-height: 30px; padding: 10px 10px; background-color:#DBDBF3;">
-        <div style="width: 100%; min-height: 30px; margin-bottom: 5px; display: flex; align-items: flex-start; ">
+        <div style="width: 100%; min-height: 30px; display: flex; align-items: flex-start; ">
           <!-- <img src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt="">
             <p class="fontBold fl h100P" style="line-height: 30px;font-size: 18px; color: #060505 !important">
               {{'메모'}}
@@ -73,10 +73,11 @@
                   <div class="w100P" style="display:flex; align-items:start; justify-content:space-between;">
                     <div style="width:calc(100% - 60px); padding-left:0; margin-bottom:0; margin-right:10px; text-align:left;">
                       <div class="memoTabWrap w100P" style="overflow-x:scroll;">
-                        <div :style="{ width: (GE_DISP_MEMO_LIST.content.length * 27) + '%' }" style="display:flex; align-items:start; flex-wrap:nowrap;">
+                        <div :style="{ width: (GE_DISP_MEMO_LIST.content.length * 33) + '%' }" style="display:flex; align-items:start; flex-wrap:nowrap;">
+                          <!-- <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" :style="{background: showMemoYn && this.mSelectedMemoIdx !== null && this.mSelectedMemoIdx === mIndex ? `url(${require('@/assets/images/todo/memo_opened.png')}) no-repeat left top / 100% 100%` : `url(${require('@/assets/images/todo/memo_folded.png')}) no-repeat left top / 100% 100%`}"> -->
                           <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab">
-                            <div @click.stop="selectMemo(mIndex)" class="font14" style="height:25px; line-height:25px;">{{memo.title}}</div>
-                            <div @click="openMemoManagePop(mSelectedMemoIdx)" class="memoBody font13" style="12px; height:75px; font-weight:normal;" v-if="showMemoYn && this.mSelectedMemoIdx !== null && this.mSelectedMemoIdx === mIndex" v-html="decodeContents(memo.bodyFullStr)"></div>
+                            <p @click.stop="selectMemo(mIndex)" class="memoTitle font13 w100P" style="height:25px; line-height:25px;">{{memo.title}}</p>
+                            <div @click="openMemoManagePop(mSelectedMemoIdx)" class="memoBody font13" v-if="showMemoYn && this.mSelectedMemoIdx !== null && this.mSelectedMemoIdx === mIndex" v-html="decodeContents(memo.bodyFullStr)"></div>
                           </div>
                         </div>
                       </div>
@@ -89,7 +90,7 @@
                         </textarea>
                       </div> -->
                     </div>
-                    <div @click="openMemoManagePop()" class="p-10 cursorP fontBold textCenter" style="font-size:13px; width:60px; height:29px; border-radius:10px; line-height:29px; background-color:#5F61BD; color:#fff; ">+메모</div>
+                    <div @click="openMemoManagePop()" class="p-10 cursorP fontBold textCenter" style="font-size:13px; width:50px; height:29px; border-radius:10px; line-height:29px; background-color:#5F61BD; color:#fff; ">+메모</div>
                   </div>
                 </template>
                 <img v-else-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt="">
@@ -122,7 +123,7 @@
           height="20"
         />
       </div> -->
-      <div class="commonTitleText dateAreaBox" style="padding: 0.5rem 0.6rem">
+      <div class="commonTitleText dateAreaBox" style="padding:10px 5px">
         <div class="calBox">
           <div
             class="cursorP"
@@ -192,7 +193,7 @@
           <div
             class="fr fontBold cursorP addBtn CDeepBgColor"
             style="
-              width: auto;
+              width: 50px;
               padding:0 5px;
               border-radius: 10px;
               color: white;
@@ -232,16 +233,17 @@
       </div>
     </div> -->
 
-      <div class="topWrap w100P" style="position:relative; margin-top:20px;">
+      <div class="topWrap w100P" style="position:relative; margin-top:10px;">
         <div class="w100P" style="display:flex; flex-direction:column;">
-          <div class="w100P" style="display:flex; align-items:center;">
-            <div style="width: 70%">
+          <div class="w100P" style="height:40px; display:flex; align-items:center; justify-content:space-between;">
+            <div style="width: 60%; max-width:480px;">
           <div class="w100P h100P">
             <ul
               class="mainTabWrap w100P"
               style="
                 padding: 0;
                 background-color: #fff;
+                border:4px solid #fff;
                 display: flex;
                 align-items: center;
                 border-radius: 10px;
@@ -260,25 +262,25 @@
                 {{ tab.tabName }}
                 <span
                   class="countTodo"
-                  style="margin-left: -0.2rem; color: #5f61bd"
+                  style="margin-left: -0.2rem;"
                   v-if="tab.tabIdx === 1"
                   > {{ mMyTodoCount + mCompleteMyTodoCount + mCheckTodoCount + mCompleteTargetTodoCount + mCompleteRefTodoCount + mRefTodoCount }}</span
                 >
                 <span
                   class="countTodo"
-                  style="margin-left: -0.2rem; color: #5f61bd"
+                  style="margin-left: -0.2rem;"
                   v-if="tab.tabIdx === 2"
                   > {{ mMyTodoCount + mCheckTodoCount + mRefTodoCount }}</span
                 >
                 <span
                   class="countTodo"
-                  style="margin-left: -0.2rem; color: #5f61bd"
+                  style="margin-left: -0.2rem;"
                   v-if="tab.tabIdx === 4"
                   > {{ mCompleteMyTodoCount + mCompleteTargetTodoCount + mCompleteRefTodoCount }}</span
                 >
                 <span
                   class="countTodo"
-                  style="margin-left: -0.2rem; color: #5f61bd"
+                  style="margin-left: -0.2rem;"
                   v-if="tab.tabIdx === 3"
                   >{{ mCompleteTargetTodoCount }}/{{
                     /* mReqTodoList.content? mReqTodoList.content.length + mCompleteTargetTodoCount : 0 */
@@ -290,63 +292,38 @@
           </div>
             </div>
             <div
-          class="functionIcons h100P"
-          style="
-            width: 30%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          "
-        >
-          <div class="todoArrange cursorP "  @click="openSearchArea('arrange')" style="width:40%;display:flex; flex-direction: column; justify-content: center; align-items: center;">
-            <svg
-              style="width: 25px; height: 30px"
-              viewBox="0 0 30 25"
-              fill="rgb(96, 97, 190);"
-            >
-              <path
-                d="M11.7,9.7c-0.2,0.2-0.4,0.3-0.6,0.3H8v9c0,0.6-0.4,1-1,1s-1-0.4-1-1v-9H2.9C2.4,10,2,9.6,2,9.1c0-0.2,0.1-0.5,0.3-0.6l4.1-4.1C6.7,4,7.3,4,7.6,4.3l0,0l4.1,4.1C12.1,8.8,12.1,9.4,11.7,9.7z M21.7,14.3c-0.2-0.2-0.4-0.3-0.6-0.3H18V5c0-0.6-0.4-1-1-1s-1,0.4-1,1v9h-3.1c-0.5,0-0.9,0.4-0.9,0.9c0,0.2,0.1,0.5,0.3,0.6l4.1,4.1c0.4,0.4,0.9,0.4,1.3,0l0,0l4.1-4.1C22.1,15.2,22.1,14.6,21.7,14.3z"
-              ></path>
-            </svg>
+              class="functionIcons h100P"
+              style="
+                width: 20%;
+                display: flex;
+                align-items: center;
+                justify-content: end;
+                gap:0.5rem;
+              "
+          >
+          <div class="todoArrange cursorP " @click="openSearchArea('arrange')" style="position:relative; width:40%;display:flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div v-if="searchAreaYn === true"  style="position:absolute; box-shadow:1px 0px 3px rgba(0,0,0,0.1); background-color:#fff; width:40px; height:50px; top:-20px; border-radius:10px 10px 0 0;"></div>
+            <img :src="require(`@/assets/images/todo/todo_array.png`)" style="position:absolute; width:25px;"/>
             <!-- <span class="font12 fl">{{ mArrangeTab[mArrangeTabIdx].tabName }}</span> -->
-          </div>
-          <div style="width:50%;" class="cursorP"  @click="mFilterPopShowYn = true">
-            <svg
-              style="width: 25px; height: 25px"
-              viewBox="0 0 35 35"
-              fill="rgb(96, 97, 190);"
-            >
-              <path
-                d="M25,4c-2.4,0-4.4,1.7-4.9,4H4C3.4,8,3,8.4,3,9s0.4,1,1,1h16.1c0.5,2.3,2.5,4,4.9,4c2.8,0,5-2.2,5-5S27.8,4,25,4z M25,12c-1.7,0-3-1.3-3-3s1.3-3,3-3s3,1.3,3,3S26.7,12,25,12z M27,20H11.9c-0.5-2.3-2.5-4-4.9-4c-2.8,0-5,2.2-5,5s2.2,5,5,5c2.4,0,4.4-1.7,4.9-4H27c0.6,0,1-0.4,1-1S27.6,20,27,20z M7,24c-1.7,0-3-1.3-3-3s1.3-3,3-3s3,1.3,3,3S8.7,24,7,24z"
-              ></path>
-            </svg>
           </div>
           <div v-if="mFilterPopShowYn" class="backgroundShadow" @click="$refs.filterPop.backClick()" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 98;"></div>
           <commonFilterPop :pRequestSearch="reqSearchList" v-if="mFilterPopShowYn" :pCloseFilterPop="closeFilterPop" ref="filterPop" :pFilterList="mTodoFilterList" id="todoFilter" style="position: fixed; z-index: 99; top: 30%;right: calc(50% - 130px);"/>
-          <!-- <div class="todoSearch cursorP" @click="openSearchArea('search')" style="width:40%;">
-            <svg
-              style="width: 25px; height: 25px"
-              viewBox="0 0 40 40"
-              fill="rgb(96, 97, 190);"
-            >
-              <path
-                d="M29.707,28.293l-8.256-8.256C23.042,18.13,24,15.677,24,13c0-6.075-4.925-11-11-11S2,6.925,2,13s4.925,11,11,11c2.677,0,5.13-0.958,7.037-2.549l8.256,8.256L29.707,28.293z M4,13c0-4.963,4.037-9,9-9c4.963,0,9,4.037,9,9s-4.037,9-9,9C8.037,22,4,17.963,4,13z"
-              ></path>
-            </svg>
-          </div> -->
+          <div class="todoSearch cursorP" @click="mFilterPopShowYn = true" style="width:40%;">
+            <img :src="require(`@/assets/images/todo/todo_filter.png`)" style="width:25px;"/>
+          </div>
             </div>
           </div>
-        <div v-if="searchAreaYn" class="w100P" style="padding:0 ; justify-content:space-between; display:flex; align-items:center; background-color:#E7EDFF; height:50px;">
+        <div v-if="searchAreaYn" class="w100P arraySelectTab">
           <template v-if="mWhichType === 'arrange'">
             <div class="w100P mtop-05">
               <div style="display:flex; align-items:center; padding:0 ; height:50px;">
-                <ul class="w100P cursorP" style="border-radius:10px; height:80%; background-color:#fff; margin-bottom:0; display:flex; align-items:center; justify-content:space-around; padding:0 !important;">
+                <ul class="w100P cursorP" style=" box-shadow:1px 0px 3px rgba(0,0,0,0.1); border-radius:10px; height:80%; background-color:#fff; margin-bottom:0; display:flex; align-items:center; justify-content:space-around; padding:0 !important;">
                   <li @click="arrayChange(index)" v-for="(tab, index) in mArrangeTab" :key="index" :class="{selected :mArrangeTabIdx === index }" class="arrangeBtn font13" >{{ tab.tabName }}{{ (index === 0 && !mPriorityDescYn) || (index === 1 && !mSearchDateDescYn) ? '↑' : (index === 0 && mPriorityDescYn) || (index === 1 && mSearchDateDescYn)?  '↓' : ''}}</li>
                 </ul>
               </div>
             </div>
           </template>
-          <template v-if="mWhichType === 'search'">
+          <!-- <template v-if="mWhichType === 'search'">
             <input type="text" v-model="searchValue" style="width:calc(100% - 40px); cursor:auto;" />
             <div class="cursorP" style="" @click="getSearchResult(searchValue)">
               <svg
@@ -359,7 +336,7 @@
                 ></path>
               </svg>
             </div>
-        </template>
+        </template> -->
         </div>
         </div>
       </div>
@@ -691,6 +668,8 @@ export default {
       } else {
         this.$showToastPop(`${this.$t('COMMON_MSG_FAILED')}`)
       }
+      this.closeMemoManagePop()
+      this.mSelectedMemoIdx = -1
     },
     selectMemo (index) {
       if (this.mSelectedMemoIdx === index) {
@@ -2672,6 +2651,15 @@ export default {
 
 <style>
 
+.arraySelectTab{
+  padding:0 ;
+  justify-content:space-between;
+  display:flex;
+  align-items:center;
+  background-color:#E7EDFF;
+  height:50px;
+}
+
 .todoTag {
   /* color: white; */
   height: 19px;
@@ -2686,27 +2674,50 @@ export default {
   white-space:nowrap;
 }
 .memoTab{
-  width:26%;
+  width:33%;
   height:auto;
   background-color:#fff;
-  border:2px solid #fff;
-  color:#222 !important;
   font-weight:bold;
   display:inline-block;
   text-align:center;
+  margin-right:0.5rem;
+  padding:0 10px;
+  position:relative;
+  border-radius:5px 0 5px 5px;
+  overflow:hidden;
+  text-align:left;
+}
+.memoTitle{
+  width:100%;
+  color:#222 !important;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-  padding:0 10px;
-  margin-right:0.5rem;
+}
+.memoTab::before{
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 8.5%;
+  max-width:20px;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  background: linear-gradient(45deg, #C0BFF9 50%, rgb(219, 219, 243) 50%);
 }
 .mSelectedMemo{
   height:100px !important;
 }
 .memoBody{
-  background-color:#fff;
-  height:30px;
+  font-weight:normal !important;
+  height:80px;
   white-space:wrap;
+  overflow: hidden; /* 넘치는 텍스트 숨기기 */
+  text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시 */
+  white-space: normal; /* 텍스트 줄바꿈 허용 */
+  display: -webkit-box; /* for Webkit browsers like Chrome and Safari */
+  -webkit-line-clamp: 4; /* 표시할 줄 수 */
+  -webkit-box-orient: vertical; /* 세로 방향으로 박스 내용 정렬 */
 }
 
 svg > path {
@@ -2724,9 +2735,9 @@ svg > path {
   text-align: center;
   height: 100%;
   white-space: nowrap;
-  border-right: 1px solid rgba(94, 96, 189, 0.3);
   font-weight: bold;
-  line-height:24px
+  line-height:11px;
+  color:#7F7F7F;
 }
 .mainTodoTab:last-child {
   border-right: none;
@@ -2738,23 +2749,16 @@ svg > path {
   border-radius: 0 10px 10px 0;
 }
 .mainTodoTabSelected {
-  background-color: #5f61bd !important;
+  background-color: #E7EDFF !important;
   font-weight: bold !important;
-  color: #fff !important;
-}
-.mainTodoTabSelected > span {
-  color: #fff !important;
+  color: #5F61BD !important;
+  border-radius:10px !important;
+  box-shadow:0 0 0 1px rgba(0,0,0,0.1);
 }
 
 .arrangeBtn{
   width:25%;
   list-style-type: none;
-}
-.arrangeBtn:first-child{
-  border-radius:10px 0 0 10px;
-}
-.arrangeBtn:last-child{
-  border-radius:0 10px 10px 0;
 }
 .arrangeBtn.selected {
   font-weight:bold;
@@ -2875,9 +2879,9 @@ svg > path {
 }
 .addBtn {
   width: 50px;
-  height: 30px;
+  height: 28px;
   font-size: 12px;
-  line-height: 30px;
+  line-height: 28px;
   text-align: center;
   border-radius: 20px;
 }
@@ -3019,7 +3023,6 @@ svg > path {
   }
   .mainTodoTab {
     font-size: 15px !important;
-    line-height: 17px;
   }
   .countTodo {
     font-size: 12px !important;

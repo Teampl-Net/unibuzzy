@@ -208,6 +208,8 @@
   "COMMON_MSG_FAILED": "Failed. Please contact manager.",
   "COMMON_MSG_NOTFOUND": "The content could not be found.\nPlease try again later.",
   "COMMON_MSG_NOFILE": "Select Files.",
+  "COMMON_MSG_SAVE_MEMO": "Memo has been saved.",
+  "COMMON_MSG_EDIT_MEMO": "Memo has been edited..",
   "COMMON_MSG_DELETE_MEMO": "Are you sure you want to delete a memo?",
   "COMMON_MSG_DELETED_MEMO": "A memo have been deleted.",
   "COMMON_MSG_DELETE_COMMENT": "Are you sure you want to delete a comment?",
