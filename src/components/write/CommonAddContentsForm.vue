@@ -1740,10 +1740,11 @@ export default defineComponent({
             tempFileList.splice(i, 1)
           } */
         }
+        console.log('iList', iList)
         for (let s = 0; s < iList.length; s++) {
           const img = iList[s]
           console.log(img)
-          if (tempFile.fileKey && Number(tempFile.fileKey) === Number(img.attributes.filekey.value)) {
+          if (tempFile && img.attributes.filekey && tempFile.fileKey && Number(tempFile.fileKey) === Number(img.attributes.filekey.value)) {
             delYn = false
           }
         }
@@ -2119,6 +2120,7 @@ export default defineComponent({
     }
     // ------ 파일 서버에 업로드
     const fileDataUploadToServer = async () => {
+      console.log('??')
       if (tempFileList.length > 0) {
         let iList = document.querySelectorAll('.formCard .addTrue')
         let form = new FormData()
@@ -2386,6 +2388,7 @@ export default defineComponent({
         if (params.mLoadingYn) return
 
         if (tempFileList.length > 0) {
+          console.log('첨부파일있음있음')
           await fileDataUploadToServer()
         }
         await setAttachFileList()
@@ -2758,8 +2761,11 @@ export default defineComponent({
             // formCard[f].classList.remove('formEditorTextPadding')
             var innerHtml = formCard[f].innerHtml
             console.log('innerHtml', innerHtml)
-            formCard[f].outerHtml = formCard[f].outerHtml.replace(formCard[f].innerHtml, commonMethods.findUrlChangeAtag(innerHtml))
-            formCard[f].innerHtml = commonMethods.findUrlChangeAtag(innerHtml)
+            if (formCard[f] && formCard[f].outerHtml.includes('img')) {
+            } else {
+              formCard[f].outerHtml = formCard[f].outerHtml.replace(formCard[f].innerHtml, commonMethods.findUrlChangeAtag(innerHtml))
+              formCard[f].innerHtml = commonMethods.findUrlChangeAtag(innerHtml)
+            }
           }
           // }
         }
