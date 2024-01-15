@@ -75,22 +75,22 @@
                       <div class="memoTabWrap w100P" style="overflow-x:scroll;">
                         <div :style="{ width: (GE_DISP_MEMO_LIST.content.length * 33) + '%' }" style="display:flex; align-items:start; flex-wrap:nowrap;">
                           <!-- <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" :style="{background: showMemoYn && this.mSelectedMemoIdx !== null && this.mSelectedMemoIdx === mIndex ? `url(${require('@/assets/images/todo/memo_opened.png')}) no-repeat left top / 100% 100%` : `url(${require('@/assets/images/todo/memo_folded.png')}) no-repeat left top / 100% 100%`}"> -->
-                          <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab">
+                          <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" :style="mSelectedMemoIdx !== mIndex ? 'border-bottom:1.5px solid rgb(219, 219, 243)' : 'border-bottom:1.5px solid #fff'">
                             <p @click.stop="selectMemo(mIndex)" class="memoTitle font13 w100P" style="height:25px; line-height:25px;">{{memo.title}}</p>
-                            <div @click="openMemoManagePop(mSelectedMemoIdx)" class="memoBody font13" v-if="showMemoYn && this.mSelectedMemoIdx !== null && this.mSelectedMemoIdx === mIndex" v-html="decodeContents(memo.bodyFullStr)"></div>
+                            <!-- <div @click="openMemoManagePop(mSelectedMemoIdx)" class="memoBody font13" v-if="showMemoYn && this.mSelectedMemoIdx !== null && this.mSelectedMemoIdx === mIndex" v-html="decodeContents(memo.bodyFullStr)"></div> -->
                           </div>
                         </div>
                       </div>
+                      <div v-if="showMemoYn && this.mSelectedMemoIdx !== null" class="memoBody" @click="openMemoManagePop(mSelectedMemoIdx)">
+                        <p class="font13" style="font-weight:normal;">{{decodeContents(this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bodyFullStr)}}</p>
+                        <p class="w100P font13 showMoreBtn fontBold cursorP" style="">{{ $t('COMMON_NAME_MORE') + '👉🏻'}}</p>
+                      </div>
                       <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])"> -->
                       <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(mSelectedMemoIdx)">/ -->
-                      <!-- <div v-if="showMemoYn && this.mSelectedMemoIdx !== null" v-html="decodeContents(this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bodyFullStr)" class="memoBody" @click="openMemoManagePop(mSelectedMemoIdx)">
-                      </div> -->
-                      <!-- <div v-if="showMemoYn" class="memoBody">
-                        <textarea v-model="mMemoBody" @input="memoAutoSave(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])" class="w100P" style="border:none; height:auto; outline:none;">
-                        </textarea>
-                      </div> -->
                     </div>
-                    <div @click="openMemoManagePop()" class="p-10 cursorP fontBold textCenter" style="font-size:13px; width:50px; height:29px; border-radius:10px; line-height:29px; background-color:#5F61BD; color:#fff; ">+메모</div>
+                    <div class="h100P" style="width:60px; display:flex; flex-align:center; flex-direction:column; justify-content:end;">
+                      <div @click="openMemoManagePop()" class="p-10 cursorP fontBold textCenter" style="font-size:13px; width:50px; height:29px; border-radius:10px; line-height:29px; background-color:#5F61BD; color:#fff; ">{{ '+' + $t('COMMON_TITLE_MEMO') }}</div>
+                    </div>
                   </div>
                 </template>
                 <img v-else-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt="">
@@ -218,7 +218,7 @@
       </div> -->
       <!-- <span class="popHeaderTitleSpan font20 h100P" style="color: #6768A7; font-weight: bold; display: flex; justify-content: center; align-items: center;">Today's Todo</span> -->
     </div>
-    <div style="width: 100%; height:calc(100vh - 150px); overflow: hidden auto;">
+    <div :style="{height: showMemoYn === true ? 'calc(100vh - 200px)' : 'calc(100vh - 150px)'}" style="width: 100%; overflow: hidden auto;">
     <!-- <div style="width: 100%; height: 100%; overflow: hidden auto;"> 메모할떄 살려라-->
       <!-- <div class="dateArea" style="position: relative; ">
       <div class="commonTitleText dateAreaBox " >
@@ -302,20 +302,21 @@
               "
           >
           <div class="todoArrange cursorP " @click="openSearchArea('arrange')" style="position:relative; width:40%;display:flex; flex-direction: column; justify-content: center; align-items: center;">
-            <div v-if="searchAreaYn === true"  style="position:absolute; box-shadow:1px 0px 3px rgba(0,0,0,0.1); background-color:#fff; width:40px; height:50px; top:-20px; border-radius:10px 10px 0 0;"></div>
+            <div class="selectedBox" v-if="searchAreaYn === true" style="border-radius:10px 10px 0 0;"></div>
             <img :src="require(`@/assets/images/todo/todo_array.png`)" style="position:absolute; width:25px;"/>
             <!-- <span class="font12 fl">{{ mArrangeTab[mArrangeTabIdx].tabName }}</span> -->
           </div>
           <div v-if="mFilterPopShowYn" class="backgroundShadow" @click="$refs.filterPop.backClick()" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 98;"></div>
           <commonFilterPop :pRequestSearch="reqSearchList" v-if="mFilterPopShowYn" :pCloseFilterPop="closeFilterPop" ref="filterPop" :pFilterList="mTodoFilterList" id="todoFilter" style="position: fixed; z-index: 99; top: 30%;right: calc(50% - 130px);"/>
-          <div class="todoSearch cursorP" @click="mFilterPopShowYn = true" style="width:40%;">
-            <img :src="require(`@/assets/images/todo/todo_filter.png`)" style="width:25px;"/>
+          <div class="todoSearch cursorP" @click="mFilterPopShowYn = true" style="width:40%; position:relative;display:flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div class="selectedBox" v-if="GE_DISP_SEARCH_LIST && GE_DISP_SEARCH_LIST.length > 0" ></div>
+            <img :src="require(`@/assets/images/todo/todo_filter.png`)" style="position:absolute; width:25px;"/>
           </div>
             </div>
           </div>
         <div v-if="searchAreaYn" class="w100P arraySelectTab">
           <template v-if="mWhichType === 'arrange'">
-            <div class="w100P mtop-05">
+            <div class="w100P">
               <div style="display:flex; align-items:center; padding:0 ; height:50px;">
                 <ul class="w100P cursorP" style=" box-shadow:1px 0px 3px rgba(0,0,0,0.1); border-radius:10px; height:80%; background-color:#fff; margin-bottom:0; display:flex; align-items:center; justify-content:space-around; padding:0 !important;">
                   <li @click="arrayChange(index)" v-for="(tab, index) in mArrangeTab" :key="index" :class="{selected :mArrangeTabIdx === index }" class="arrangeBtn font13" >{{ tab.tabName }}{{ (index === 0 && !mPriorityDescYn) || (index === 1 && !mSearchDateDescYn) ? '↑' : (index === 0 && mPriorityDescYn) || (index === 1 && mSearchDateDescYn)?  '↓' : ''}}</li>
@@ -2659,7 +2660,17 @@ export default {
   background-color:#E7EDFF;
   height:50px;
 }
-
+.selectedBox{
+  position:absolute;
+  box-shadow:1px 0px 3px rgba(0,0,0,0.1);
+  background-color:#fff;
+  width:40px;
+  height:45px;
+  top:-20px;
+  border-radius:10px;
+  left:50%;
+  transform:translateX(-50%);
+}
 .todoTag {
   /* color: white; */
   height: 19px;
@@ -2681,7 +2692,7 @@ export default {
   display:inline-block;
   text-align:center;
   margin-right:0.5rem;
-  padding:0 10px;
+  padding:0 0 0 5px;
   position:relative;
   border-radius:5px 0 5px 5px;
   overflow:hidden;
@@ -2709,15 +2720,27 @@ export default {
   height:100px !important;
 }
 .memoBody{
+  background-color:#fff;
+  padding:10px;
+  border-radius:0 0 5px 5px;
   font-weight:normal !important;
   height:80px;
+  position:relative;
   white-space:wrap;
   overflow: hidden; /* 넘치는 텍스트 숨기기 */
   text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시 */
   white-space: normal; /* 텍스트 줄바꿈 허용 */
   display: -webkit-box; /* for Webkit browsers like Chrome and Safari */
-  -webkit-line-clamp: 4; /* 표시할 줄 수 */
+  -webkit-line-clamp: 3; /* 표시할 줄 수 */
   -webkit-box-orient: vertical; /* 세로 방향으로 박스 내용 정렬 */
+}
+.showMoreBtn{
+  position:absolute;
+  left:0;
+  bottom:0px;
+  padding:10px 5px 5px 5px;
+  text-align:right;
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.6), #ffffff);
 }
 
 svg > path {

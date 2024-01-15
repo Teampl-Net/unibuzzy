@@ -42,8 +42,8 @@
         </div>
       </div> -->
 
-      <div class="w100P mtop-1" style="">
-        <p class="font13" style="padding-bottom:0.5rem; text-align:left; color:#ccc;">{{ memoDate ? memoDate : getDates(new Date()) }}</p>
+      <div class="w100P" style="">
+        <p class="font13" style="padding-bottom:0.3rem; padding-left:0.1rem; text-align:left; color:#ccc;">{{ memoDate ? memoDate : getDates(new Date()) }}</p>
         <textarea
           id="title"
           type="text"
@@ -53,10 +53,10 @@
           :style="{}"
         />
       </div>
-      <div class="w100P mtop-05" style="border-bottom:1px solid #EBEBEB;"></div>
+      <!-- <div class="w100P mtop-05" style="border-bottom:1px solid #EBEBEB;"></div> -->
 
       <div class="w100P0">
-        <textarea class="w100P memoBodyArea mtop-1" @click="changeBtn" v-model="memoBody" style="padding:20px; min-height:300px;">
+        <textarea class="w100P memoBodyArea mtop-05" @click="changeBtn" v-model="memoBody" style="padding:20px; min-height:300px;">
         </textarea>
 
       </div>
@@ -98,7 +98,7 @@ export default {
   },
   data () {
     return {
-      memoTitle: '새 메모',
+      memoTitle: this.$t('COMMON_TITLE_NEWMEMO'),
       memoBody: null,
       mSelectedMemoIdx: null,
       extractedOuterHtml: '',
@@ -146,7 +146,7 @@ export default {
       }
     },
     newMemo () {
-      this.memoTitle = '새 메모'
+      this.memoTitle = this.$t('COMMON_TITLE_NEWMEMO')
       this.memoBody = null
       this.mSelectedMemoIdx = null
       this.btnTextChange = this.$t('COMMON_BTN_SAVE')
@@ -154,7 +154,7 @@ export default {
       // document.getElementsById('newMemoTab').classList.add('newMemo')
     },
     async saveMemo () {
-      if (this.memoTitle === '새 메모' && this.memoBody === null && this.mIsEditing === false) {
+      if (this.memoTitle === this.$t('COMMON_TITLE_NEWMEMO') && this.memoBody === null && this.mIsEditing === false) {
         console.log('here??')
         this.$showToastPop(this.$t('COMM_MSG_CLICK'))
       } else {
@@ -247,8 +247,8 @@ export default {
 
 <style scoped>
 #layout {
-  width: 90%;
-  height: calc(100% - 120px);
+  width: 85%;
+  height: calc(100% - 400px);
   overflow: hidden;
   min-height:500px;
 
@@ -259,20 +259,33 @@ export default {
 
   z-index: 15;
   background-color:#fff;
-  border-radius: 0.8rem;
+  /* border-radius: 0.8rem; */
+  border-radius: 5px;
+  box-shadow:1px 4px 5px rgba(0,0,0,0.3);
 }
+/* #layout::before{
+  content:'';
+  display:block;
+  position:absolute;
+  right:0;
+  bottom:0;
+  background-color:#dcdce6;
+  border-width:0 0 30px 50px;
+  border-style:solid;
+  border-color:transparent transparent rgba(0,0,0,0.1);
+} */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding:1rem 1.5rem 1rem;
-  border-bottom:1px solid #EBEBEB;
+  padding:1rem 1rem 0.7rem;
+  /* border-bottom:1px solid #EBEBEB; */
 }
 
 button {
   min-width: 40px;
   height: 25px;
-  padding: 0px 10px;
+  /* padding: 0px 10px; */
   float: left;
   color: #7a7a7a;
   word-wrap: normal;
@@ -280,6 +293,7 @@ button {
   background-color:#fff;
   border-radius: 5px;
   line-height: 22px;
+  text-align:left;
   }
   .activeBtn {
     font-weight:bold !important;
@@ -298,7 +312,7 @@ button {
     background-color:#F1F1FF;
     color:#5F61BD;
     font-weight:bold;
-    padding:0 20px;
+    /* padding:0 20px; */
   }
 .memoTab{
   width:33%;
