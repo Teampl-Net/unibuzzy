@@ -414,7 +414,7 @@
       </template>
       </div>
     </div>
-    <div data-v-fa123200="" class="fl" style="width: 40px; height: 40px; border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index: 14;">
+    <div data-v-fa123200="" class="fl" v-if="!memoManagePop" style="width: 40px; height: 40px; border-radius: 100%; position: absolute; bottom: 6rem; right: 50px; z-index: 14;">
       <img id='writeBtn' src="../../assets/images/button/Icon_WriteTodo.png" @click="openAddTodoPop" alt="게시글 작성 버튼" style="width:66px; height:66px; cursor: pointer;">
     </div>
   </div>

@@ -48,7 +48,7 @@
           />
         </div>
           <div class="w100P" style="height:calc(100% - 40px); padding-top:20px;">
-            <p class="font13 mTop-05" style="padding:0 5px; text-align:left; color:gray;">{{ memoDate ? memoDate : getDates(new Date()) }}</p>
+            <p class="font13 mTop-05" style="padding:0 8px; text-align:left; color:gray;">{{ memoDate ? memoDate : getDates(new Date()) }}</p>
             <textarea class="w100P memoBodyArea mtop-05" @click="changeBtn" v-model="memoBody" style="min-height:300px;">
             </textarea>
           </div>
@@ -173,7 +173,7 @@ export default {
         params.workToDateStr = null
         params.workFromDateStr = null
         params.stickerList = null
-        if (this.pMemoList && this.pMemoList.content.length > 0 && this.pMemoIdx && this.pMemoIdx !== null) { // 새 메모가 아니면
+        if (this.pMemoList && this.pMemoList.content.length > 0 && this.pMemoIdx !== null) { // 새 메모가 아니면
           params.contentsKey = this.pMemoList.content[this.pMemoIdx].contentsKey
         }
         params.jobkindId = 'MEMO'
@@ -182,7 +182,7 @@ export default {
         params.bodyFullStr = this.memoBody
         console.log('params,', params)
         this.$emit('saveMemos', params)
-        if (this.pMemoList && this.pMemoList.content.length > 0 && this.pMemoIdx && this.pMemoIdx !== null) {
+        if (this.pMemoList && this.pMemoList.content.length > 0 && this.pMemoIdx !== null) {
           this.$showToastPop(this.$t('COMMON_MSG_EDIT_MEMO'))
         } else {
           this.$showToastPop(this.$t('COMMON_MSG_SAVE_MEMO'))
@@ -361,7 +361,6 @@ button {
   width:90%;
   background-color:transparent;
   overflow-y:scroll; white-space:wrap;
-  padding:0px 15px 0px 5px;
   border:none;
   outline:none;
   outline:none;
@@ -377,7 +376,7 @@ button {
   cursor: pointer;
   text-align: left;
   /* box-shadow: 0px 0px 3px 0px #ccc; */
-  border:1px solid rgba(192, 191, 249, 0) !important;
+  border:none !important;
   border-radius:10px;
   outline:none;
 }
