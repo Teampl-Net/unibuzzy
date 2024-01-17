@@ -449,9 +449,9 @@
               <span>{{ this.$changeDateFormat(CONT_DETAIL.creDate) }}</span>
             </div> -->
             <span v-if="CONT_DETAIL.jobkindId !== 'TODO'">{{ this.$changeDateFormat(CONT_DETAIL.creDate) }}</span>
-            <div @click.stop="clickFileDownload()" v-if="CONT_DETAIL.fileCount" class="cursorP">
+            <div @click.stop="clickFileDownload()" v-if="CONT_DETAIL.fileCount" class="cursorP" style="margin-left:0.6rem;">
               <img src="../../../assets/images/push/contentsClipIcon.svg" style="width:15px;" class="" alt=""/>
-              <span class="font15 mleft-03"> {{ CONT_DETAIL.fileCount }} file</span>
+              <span class="font15" style="margin-left:0.1rem;"> {{ CONT_DETAIL.fileCount }} file</span>
             </div>
             </div>
           </div>

@@ -59,46 +59,37 @@
   <!-- 메모 -->
       <div style="width: 100%; min-height: 30px; padding: 10px 10px; background-color:#DBDBF3;">
         <div style="width: 100%; min-height: 30px; display: flex; align-items: flex-start; ">
-          <!-- <img src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt="">
-            <p class="fontBold fl h100P" style="line-height: 30px;font-size: 18px; color: #060505 !important">
-              {{'메모'}}
-            </p> -->
             <div class="okScrollBar" v-if="GE_DISP_MEMO_LIST.content" style="width: calc(100%); overflow: auto hidden; padding-bottom: 5px; padding-top:5px; height: 100%;">
               <!-- <div :style="`width: ${GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0 ? 50 + GE_DISP_MEMO_LIST.content.length * 110 + 'px' : '100%'};`" style="height: 100%; overflow:auto hidden;"> -->
-              <div class="w100P h100P" style="overflow:auto hidden; display:flex; align-items:start;">
+              <div class="w100P h100P" style="overflow:auto hidden; display:flex; align-items:start; justify-content:space-between;">
                 <!-- <template >
                   <commonStickyBox  class="fl mright-05 cursorP" style="width: 30%; " :style="showMemoYn? 'height: 110px;' : 'height: 30px;'" @click="goDetail(memo)" :pContentEle="memo" :pShowMemoYn="showMemoYn"/>
                 </template> -->
                 <template v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" >
-                  <div class="w100P" style="display:flex; align-items:start; justify-content:space-between;">
-                    <div style="width:calc(100% - 60px); padding-left:0; margin-bottom:0; margin-right:10px; text-align:left;">
+                  <div style="width:calc(100% - 60px); ">
+                    <div style="padding-left:0; margin-bottom:0; margin-right:10px; text-align:left;">
                       <div class="memoTabWrap w100P" style="overflow-x:scroll;">
                         <div :style="{ width: (GE_DISP_MEMO_LIST.content.length * 33) + '%' }" style="display:flex; align-items:start; flex-wrap:nowrap;">
                           <!-- <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" :style="{background: showMemoYn && this.mSelectedMemoIdx !== null && this.mSelectedMemoIdx === mIndex ? `url(${require('@/assets/images/todo/memo_opened.png')}) no-repeat left top / 100% 100%` : `url(${require('@/assets/images/todo/memo_folded.png')}) no-repeat left top / 100% 100%`}"> -->
-                          <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" :style="mSelectedMemoIdx !== mIndex ? 'border-bottom:1.5px solid rgb(219, 219, 243)' : 'border-bottom:1.5px solid #fff'">
+                          <div v-for="(memo, mIndex) in GE_DISP_MEMO_LIST.content" :key="mIndex" class="memoTab" :class="{selected : mSelectedMemoIdx === mIndex}" :style="mSelectedMemoIdx !== mIndex ? 'border-bottom: 1.5px solid rgb(219, 219, 243);' : ''">
                             <p @click.stop="selectMemo(mIndex)" class="memoTitle font13 w100P" style="height:25px; line-height:25px;">{{memo.title}}</p>
-                            <!-- <div @click="openMemoManagePop(mSelectedMemoIdx)" class="memoBody font13" v-if="showMemoYn && this.mSelectedMemoIdx !== null && this.mSelectedMemoIdx === mIndex" v-html="decodeContents(memo.bodyFullStr)"></div> -->
                           </div>
                         </div>
                       </div>
-                      <div v-if="showMemoYn && this.mSelectedMemoIdx !== null" class="memoBody" @click="openMemoManagePop(mSelectedMemoIdx)">
-                        <p class="font13" style="font-weight:normal;">{{decodeContents(this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bodyFullStr)}}</p>
-                        <p class="w100P font13 showMoreBtn fontBold cursorP" style="">{{ $t('COMMON_NAME_MORE') + '👉🏻'}}</p>
+                      <div v-if="showMemoYn && this.mSelectedMemoIdx !== null" class="memoBody" @click="openMemoManagePop(mSelectedMemoIdx)" :style="{'background-color' : mMemoColor}">
+                        <p class="font13" style="font-weight:normal;">{{this.GE_DISP_MEMO_LIST.content && this.mSelectedMemoIdx >= 0 ? decodeContents(this.GE_DISP_MEMO_LIST.content[this.mSelectedMemoIdx].bodyFullStr) : ''}}</p>
+                        <p class="w100P font13 showMoreBtn fontBold cursorP" style="opacity:80%;" :style="{'background-image': `linear-gradient(to bottom, ${mMemoColor}, ${mMemoColor})`}">{{ $t('COMMON_NAME_MORE') + '👉🏻'}}</p>
                       </div>
                       <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(GE_DISP_MEMO_LIST.content[mSelectedMemoIdx])"> -->
                       <!-- <div v-if="showMemoYn" class="memoBody" @click="openWriteMemoPop(mSelectedMemoIdx)">/ -->
                     </div>
-                    <div class="h100P" style="width:60px; display:flex; flex-align:center; flex-direction:column; justify-content:end;">
-                      <div @click="openMemoManagePop()" class="p-10 cursorP fontBold textCenter" style="font-size:13px; width:50px; height:29px; border-radius:10px; line-height:29px; background-color:#5F61BD; color:#fff; ">{{ '+' + $t('COMMON_TITLE_MEMO') }}</div>
-                    </div>
                   </div>
                 </template>
-                <img v-else-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt="">
-                <p v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" class="fontBold fl h100P mright-05" style="text-align:left; line-height: 30px;font-size: 18px; color: #060505 !important">
-                  {{$t('COMMON_TITLE_MEMO')}}
-                </p>
+                <div class="h100P" style="width:60px; display:flex; flex-align:center; justify-content:end;">
+                  <div @click="openMemoManagePop()" class="p-10 cursorP fontBold textCenter" style="font-size:13px; width:50px; height:29px; border-radius:10px; line-height:29px; background-color:#5F61BD; color:#fff; ">{{ '+' + $t('COMMON_TITLE_MEMO') }}</div>
+                </div>
+                <!-- <img v-else-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" src="@/assets/images/common/DStickyIcon.svg" width="30" class="fl"  style="margin-right: 5px" alt=""> -->
 
-                <div v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" @click="openMemoManagePop" :style="showMemoYn? 'height:110px' : 'height: 30px;'"  class="fl cursorP" style="width: 30px; float: left; border-radius: 10px; background: rgb(197 198 255); justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div>
               </div>
             </div>
             <!-- <img v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" @click.stop="openMemoShow" :src="require(`@/assets/images/button/Icon_showMore.png`)" style="width: 30px;" class="cursorP fr" :style="showMemoYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/> -->
@@ -191,16 +182,15 @@
           style="display:flex; gap:0.5rem;s"
         >
           <div
-            class="fr fontBold cursorP addBtn CDeepBgColor"
+            class="fr fontBold cursorP addBtn"
             style="
               width: 50px;
               padding:0 5px;
               border-radius: 10px;
               color: white;
-              background-color: #3d9aff;
             "
           >
-          {{ $t('COMMON_TODO_CAL') }}
+            <img :src="require(`@/assets/images/todo/todo_cal_p.png`)" alt="calendar" style="width:25px;"/>
           </div>
         </div>
       </div>
@@ -584,7 +574,8 @@ export default {
       autoSaveTimer: null,
       mMemoParams: 0,
       mCheckerYn: Boolean,
-      memoManagePop: false
+      memoManagePop: false,
+      mMemoColor: '#FCF5AD'
       // geDispList: []
     }
   },
@@ -602,6 +593,7 @@ export default {
   },
   mounted () {
     window.addEventListener('resize', this.setTitleThreeLine)
+    // window.addEventListener('resize', this.handleResize)
   },
   methods: {
     getLightOrDark (colors) {
@@ -653,6 +645,8 @@ export default {
     },
     async deleteMemo (data) {
       console.log('delete memo data', data)
+      this.closeMemoManagePop()
+      this.mSelectedMemoIdx = 0
       var inParam = {}
       inParam.mccKey = data.mccKey
       inParam.contentsKey = data.contentsKey
@@ -664,13 +658,12 @@ export default {
       })
       if (result) {
         this.$showToastPop(`${this.$t('COMMON_MSG_DELETED_MEMO')}`)
-        this.mWritePopShowYn = false
         this.getMyTodoList()
+        this.memoManagePop = false
       } else {
+        this.memoManagePop = false
         this.$showToastPop(`${this.$t('COMMON_MSG_FAILED')}`)
       }
-      this.closeMemoManagePop()
-      this.mSelectedMemoIdx = -1
     },
     selectMemo (index) {
       if (this.mSelectedMemoIdx === index) {
@@ -2685,9 +2678,9 @@ export default {
   white-space:nowrap;
 }
 .memoTab{
-  width:33%;
+  width:32%;
+  min-width:110px;
   height:auto;
-  background-color:#fff;
   font-weight:bold;
   display:inline-block;
   text-align:center;
@@ -2697,6 +2690,24 @@ export default {
   border-radius:5px 0 5px 5px;
   overflow:hidden;
   text-align:left;
+  position:relative;
+  background: linear-gradient(-135deg, transparent 11px, #FCF5AD 0);
+}
+.memoTab.selected{
+  border-radius:5px 0 0px 0px !important;
+  border-bottom:1.5px solid #FCF5AD;
+}
+.memoTab::after{
+  content:'';
+  display:block;
+  width:18px;
+  height:18px;
+  background-color:#fff;
+  position:absolute;
+  top:0;
+  right:0;
+  background: linear-gradient(-135deg, transparent 11px, #ccc685 0);
+  box-shadow:-3px 0px 3px rgba(0,0,0,0.1);
 }
 .memoTitle{
   width:100%;
@@ -2705,22 +2716,10 @@ export default {
   overflow:hidden;
   text-overflow:ellipsis;
 }
-.memoTab::before{
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 8.5%;
-  max-width:20px;
-  height: auto;
-  aspect-ratio: 1 / 1;
-  background: linear-gradient(45deg, #C0BFF9 50%, rgb(219, 219, 243) 50%);
-}
 .mSelectedMemo{
   height:100px !important;
 }
 .memoBody{
-  background-color:#fff;
   padding:10px;
   border-radius:0 0 5px 5px;
   font-weight:normal !important;
@@ -2740,7 +2739,6 @@ export default {
   bottom:0px;
   padding:10px 5px 5px 5px;
   text-align:right;
-  background-image: linear-gradient(to bottom, rgba(255,255,255,0.6), #ffffff);
 }
 
 svg > path {

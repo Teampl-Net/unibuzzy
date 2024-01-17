@@ -9,56 +9,51 @@
   }
   </i18n>
 <template>
-  <div id="layout">
+  <!-- <div id="layout" :style="{'background-color' : mMemoColor, 'background-image': `linear-gradient(-135deg, transparent 36px, ${mMemoColor} 0)` }"> -->
+  <div id="layout" >
     <header>
       <!-- Popup Title -->
       <!-- <button @click="saveMemo(false)" type="button" class="closeBtn"> -->
-      <button @click="backClick" type="button" class="closeBtn">
-          <img
-            src="../../assets/images/common/popup_close.png"
-            alt="close button"
-            style="width:20px;"
-          />
-        </button>
-      <p class="commonColor fontBold" style="font-size:20px; line-height: 30px;">메모 관리</p>
-      <div class="HeaderbtnWrap cursorP" style="width:70px; height:100%;">
-        <div v-if="btnTextChange === $t('COMMON_BTN_DELETE')" @click="mConfirmPopShowYn = true" class="delBtn fontBold"> {{ btnTextChange }}</div>
-        <div v-if="btnTextChange === $t('COMM_BTN_EDIT2')" @click="saveMemo(false)" class="delBtn fontBold"> {{ btnTextChange }}</div>
-        <div v-if="btnTextChange === $t('COMMON_BTN_SAVE')" @click="saveMemo(false)" class="delBtn fontBold"> {{ btnTextChange }}</div>
-      </div>
-    </header>
-
-    <div class="w100P" style="padding:10px 20px;">
-      <!-- <div class="w100P" style="min-height: 30px;">
-        <div class="memoTabWrap w100P" style="display:flex; align-items:center;">
-          <div style="width:100%; overflow-x:scroll; white-space:nowrap; text-align:left;">
-            <div v-for="(memo, mIndex) in pMemoList.content" :key="mIndex" class="memoTab crusorP" @click="selectMemo(mIndex)" :class="{mSelectedMemo : mSelectedMemoIdx === mIndex}">
-              <div class="w100P" style="display:flex; align-items:center; justify-content:space-between;">
-                <span class="memoTitle" style="width:clac(100% - 22px);">{{memo.title}}</span>
-                <span style="font-size:10px; width:22px;" class="cursorP" @click="mConfirmPopShowYn = true" >삭제</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> -->
-
-      <div class="w100P" style="">
-        <p class="font13" style="padding-bottom:0.3rem; padding-left:0.1rem; text-align:left; color:#ccc;">{{ memoDate ? memoDate : getDates(new Date()) }}</p>
-        <textarea
-          id="title"
-          type="text"
-          :placeholder="this.$t('COMM_MSG_PUT_TITLE')"
-          v-model="memoTitle"
-          class="titleInput w100P"
-          :style="{}"
+      <div @click="saveMemo(false)" class="closeBtn">
+        <img
+          src="../../assets/images/todo/close_white.png"
+          alt="close button"
+          class="w100P"
         />
       </div>
-      <!-- <div class="w100P mtop-05" style="border-bottom:1px solid #EBEBEB;"></div> -->
+      <div style="width:calc(100% -40px); display:flex; algin-items:center; gap:0.5rem;">
+        <div style="width:auto; display:flex; align-items:center; gap:0.3rem;">
+          <div v-for="(color, index) in mMemoColors" :key="index" @click="changeMemoColor(index)" class="cursorP" style="position:relative;">
+            <img v-if="mSelectedMemoColorIdx === index" :src="require(`@/assets/images/todo/selected.png`)" alt="selected Memo Color" style="width:13px; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);"/>
+            <img :src="color.image" style="width:30px;"/>
+          </div>
+        </div>
+        <button class="delBtn" @click="mConfirmPopShowYn = true">삭제</button>
+      </div>
 
-      <div class="w100P0">
-        <textarea class="w100P memoBodyArea mtop-05" @click="changeBtn" v-model="memoBody" style="padding:20px; min-height:300px;">
-        </textarea>
+    </header>
+    <!-- <div class="devider"></div> -->
 
+    <div class="memoPopBody" :style="{background : `linear-gradient(-135deg, transparent 36px, ${mMemoColor} 0)`}">
+      <div class="foldedDeco" :style="{background : `linear-gradient(-135deg, transparent 36px, ${mMemoFolded} 0)`}"></div>
+      <div class="w100P" style="height:calc(100% - 60px); display:flex; flex-direction:column; align-items:center; justify-content:space-between;">
+        <div class="w100P" style="height:30px; display:flex; algin-items:center;">
+          <textarea
+            id="title"
+            type="text"
+            :placeholder="this.$t('COMM_MSG_PUT_TITLE')"
+            v-model="memoTitle"
+            class="titleInput w100P"
+            :style="{}"
+          />
+        </div>
+          <div class="w100P" style="height:calc(100% - 40px); padding-top:20px;">
+            <p class="font13 mTop-05" style="padding:0 5px; text-align:left; color:gray;">{{ memoDate ? memoDate : getDates(new Date()) }}</p>
+            <textarea class="w100P memoBodyArea mtop-05" @click="changeBtn" v-model="memoBody" style="min-height:300px;">
+            </textarea>
+          </div>
+        <div class="HeaderbtnWrap cursorP w100P" style="text-align:center; height:50px; display:flex; align-items:center; justify-content:center;">
+        </div>
       </div>
     </div>
   </div>
@@ -82,7 +77,7 @@ export default {
   created () {
     console.log('pMemoList', this.pMemoList)
     console.log('pMemoIdx', this.pMemoIdx)
-    if (this.pMemoIdx !== null) {
+    if (this.pMemoList && this.pMemoList.content.length > 0 && this.pMemoIdx !== null) { // 새 메모가 아니면
       this.memoTitle = this.pMemoList.content[this.pMemoIdx].title
       this.memoBody = this.decodeContents(this.pMemoList.content[this.pMemoIdx].bodyFullStr)
       this.memoDate = this.getDates(this.pMemoList.content[this.pMemoIdx].creDate)
@@ -110,10 +105,24 @@ export default {
       mConfirmPopShowYn: false,
       mSetMemo: {},
       memoDate: '',
-      btnTextChange: this.$t('COMMON_BTN_DELETE')
+      btnTextChange: this.$t('COMMON_BTN_DELETE'),
+      mMemoColor: '#FCF5AD',
+      mMemoFolded: '#DAD59B',
+      mMemoColors: [
+        { image: require('@/assets/images/todo/memo_yellow.png'), color: '#FCF5AD', folded: '#DAD59B' },
+        { image: require('@/assets/images/todo/memo_pink.png'), color: '#FAD5E6', folded: '#D7B7C6' },
+        { image: require('@/assets/images/todo/memo_green.png'), color: '#DEEAE0', folded: '#B3CCC0' },
+        { image: require('@/assets/images/todo/memo_blue.png'), color: '#C8DAEE', folded: '#ACB8C4' }
+      ],
+      mSelectedMemoColorIdx: 0
     }
   },
   methods: {
+    changeMemoColor (index) {
+      this.mSelectedMemoColorIdx = index
+      this.mMemoColor = this.mMemoColors[index].color
+      this.mMemoFolded = this.mMemoColors[index].folded
+    },
     getDates (value) {
       // value는 2023-12-27T10:01:37 형식의 문자열이라고 가정합니다.
 
@@ -141,22 +150,22 @@ export default {
     //   this.memoBody = this.decodeContents(this.pMemoList.content[index].bodyFullStr)
     // },
     changeBtn () {
-      if (this.pMemoIdx !== null) {
+      if (this.pMemoList && this.pMemoList.content.length > 0 && this.pMemoIdx !== null) {
         this.btnTextChange = this.$t('COMM_BTN_EDIT2')
       }
     },
     newMemo () {
       this.memoTitle = this.$t('COMMON_TITLE_NEWMEMO')
       this.memoBody = null
-      this.mSelectedMemoIdx = null
       this.btnTextChange = this.$t('COMMON_BTN_SAVE')
+      this.changeMemoColor(0)
       // console.log('element', document.getElementsById('newMemoTab'))
       // document.getElementsById('newMemoTab').classList.add('newMemo')
     },
     async saveMemo () {
       if (this.memoTitle === this.$t('COMMON_TITLE_NEWMEMO') && this.memoBody === null && this.mIsEditing === false) {
-        console.log('here??')
-        this.$showToastPop(this.$t('COMM_MSG_CLICK'))
+        console.log('새 메모 저장 안하고 끄기')
+        this.backClick()
       } else {
         var params = {}
         params.actorList = null
@@ -164,7 +173,7 @@ export default {
         params.workToDateStr = null
         params.workFromDateStr = null
         params.stickerList = null
-        if (this.pMemoIdx !== null) { // 새 메모가 아니면
+        if (this.pMemoList && this.pMemoList.content.length > 0 && this.pMemoIdx && this.pMemoIdx !== null) { // 새 메모가 아니면
           params.contentsKey = this.pMemoList.content[this.pMemoIdx].contentsKey
         }
         params.jobkindId = 'MEMO'
@@ -173,7 +182,7 @@ export default {
         params.bodyFullStr = this.memoBody
         console.log('params,', params)
         this.$emit('saveMemos', params)
-        if (this.pMemoIdx !== null) {
+        if (this.pMemoList && this.pMemoList.content.length > 0 && this.pMemoIdx && this.pMemoIdx !== null) {
           this.$showToastPop(this.$t('COMMON_MSG_EDIT_MEMO'))
         } else {
           this.$showToastPop(this.$t('COMMON_MSG_SAVE_MEMO'))
@@ -183,8 +192,6 @@ export default {
     },
     deleteMemo (data) {
       this.mConfirmPopShowYn = false
-      // this.memoTitle = '새 메모'
-      // this.memoBody = null
       this.backClick()
       this.$emit('deleteMemo', data)
     },
@@ -199,6 +206,14 @@ export default {
           this.pClosePop()
         }
       }
+    },
+    handleKeyboardShow () {
+      var layout = document.querySelector('#layout')
+      layout.classList.add('maxHeight')
+    },
+    handleKeyboardHide () {
+      var layout = document.querySelector('#layout')
+      layout.classList.remove('maxHeight')
     }
   },
   watch: {
@@ -206,8 +221,8 @@ export default {
       immediate: true,
       handler (value, old) {
         if (value && value.length > 0) {
-          if (value[0].content && value[0].content.length > 0 && value[0].content[this.mSelectedMemoIdx] && value[0].content[this.mSelectedMemoIdx].bodyFullStr) {
-            this.memoBody = value[0].content[this.mSelectedMemoIdx].bodyFullStr
+          if (value[0].content && value[0].content.length > 0 && value[0].content[this.pMemoIdx] && value[0].content[this.pMemoIdx].bodyFullStr) {
+            this.memoBody = value[0].content[this.pMemoIdx].bodyFullStr
           }
           console.log('this.memoBody', this.memoBody)
         }
@@ -231,7 +246,6 @@ export default {
     }
   },
   computed: {
-
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     },
@@ -241,6 +255,10 @@ export default {
     pageUpdate () {
       return this.$store.getters['D_HISTORY/hUpdate']
     }
+  },
+  mounted () {
+    window.addEventListener('keyboardDidShow', this.handleKeyboardShow)
+    window.addEventListener('keyboardDidHide', this.handleKeyboardHide)
   }
 }
 </script>
@@ -252,49 +270,50 @@ export default {
   overflow: hidden;
   min-height:500px;
 
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 
   z-index: 15;
-  background-color:#fff;
   /* border-radius: 0.8rem; */
-  border-radius: 5px;
-  box-shadow:1px 4px 5px rgba(0,0,0,0.3);
 }
-/* #layout::before{
-  content:'';
-  display:block;
-  position:absolute;
-  right:0;
-  bottom:0;
-  background-color:#dcdce6;
-  border-width:0 0 30px 50px;
-  border-style:solid;
-  border-color:transparent transparent rgba(0,0,0,0.1);
-} */
+.maxHeight{
+  margin-top:1rem;
+  max-height:500px;
+}
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding:1rem 1rem 0.7rem;
-  /* border-bottom:1px solid #EBEBEB; */
+  padding:1rem 0rem 0rem;
+}
+.memoPopBody{
+  padding:20px;
+  border-radius: 10px;
+  box-shadow:-1px 12px 5px rgba(0,0,0,0.1);
+  position:relative;
+}
+.foldedDeco{
+  width:50px;
+  height:50px;
+  background-color:#fff;
+  position:absolute;
+  top:0;
+  right:0;
+  box-shadow:-3px 0px 3px rgba(0,0,0,0.1);
 }
 
 button {
-  min-width: 40px;
-  height: 25px;
   /* padding: 0px 10px; */
   float: left;
   color: #7a7a7a;
   word-wrap: normal;
   border: none;
-  background-color:#fff;
   border-radius: 5px;
   line-height: 22px;
   text-align:left;
-  }
+}
   .activeBtn {
     font-weight:bold !important;
     height:25px;
@@ -302,17 +321,20 @@ button {
   }
   .closeBtn {
     border: none;
-    background-color: none;
+    background-color: rgba(0,0,0,0);
+    width:40px;
   }
   .delBtn {
     width:auto;
+    min-width:48px;
     height:35px;
     line-height:35px;
     border-radius:10px;
-    background-color:#F1F1FF;
+    /* background-color:#5F61BD; */
+    background-color:#fbfbfd;
     color:#5F61BD;
     font-weight:bold;
-    /* padding:0 20px; */
+    text-align:center;
   }
 .memoTab{
   width:33%;
@@ -335,32 +357,34 @@ button {
   text-overflow:ellipsis;
   overflow:hidden;
 }
-.mSelectedMemo{
-  background-color:#fff !important;
-  border:2px solid #fff !important;
-  border-top:2px solid #5f61bd !important;
-  border-left:2px solid #5f61bd !important;
-  border-right:2px solid #5f61bd !important;
-}
 .titleInput{
+  width:90%;
+  background-color:transparent;
   overflow-y:scroll; white-space:wrap;
-  padding:10px 15px 15px;
+  padding:0px 15px 0px 5px;
   border:none;
   outline:none;
-  background-color:#F1F1FF;
   outline:none;
   font-size:19px;
-  height:45px;
-  border-radius:10px;
+  height:100%;
+  font-weight:bold;
+  /* border-radius:10px; */
 }
 .memoBodyArea{
-  width: 99%;
-  min-height: 70px; background: #fff;
+  width: 100%;
+  min-height: 70px;
+  background: transparent;
   cursor: pointer;
   text-align: left;
-  box-shadow: 0px 0px 3px 0px #ccc;
-  border:1px solid rgb(192, 191, 249) !important;
+  /* box-shadow: 0px 0px 3px 0px #ccc; */
+  border:1px solid rgba(192, 191, 249, 0) !important;
   border-radius:10px;
   outline:none;
+}
+.backColorBtn{
+  border:1px solid #C0BFF9;
+  border-radius:10px;
+  padding:5px 10px;
+  color:#5F61BD;
 }
 </style>

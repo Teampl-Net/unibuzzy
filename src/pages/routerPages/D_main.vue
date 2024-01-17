@@ -513,6 +513,7 @@ export default {
   },
   computed: {
     mSocialMainYn () {
+      console.log('--mSocialMainYn--')
       console.log(localStorage.getItem('currentScreen'))
       console.log(localStorage.getItem('currentScreen') === 'Smain')
       return localStorage.getItem('currentScreen') === 'Smain'

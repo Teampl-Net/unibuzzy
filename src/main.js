@@ -97,6 +97,9 @@ export const app = createApp(moTheAlim)
 
 const mzoinInitalizer = '/MZ_appInitailizer.json'
 const appConfig = '/D_service.json'
+if (localStorage.getItem('currentScreen') === null || localStorage.getItem('currentScreen') === undefined) {
+  localStorage.setItem('currentScreen', 'Smain') // 나중에 유니버지일 경우는 어떻게 할지 추가해야 함.
+}
 app.config.globalProperties.$DEV_YN = true
 fetch(appConfig)
   .then(response => response.json())
@@ -115,7 +118,10 @@ fetch(appConfig)
         store.dispatch('D_USER/AC_USER_CONFIG', data.firebaseConfig)
         app.config.globalProperties.$API_PATH = data.apiPath
         i18n.locale = data.defaultLang
-        localStorage.setItem('currentScreen', data.mainUI)
+        if (localStorage.getItem('currentScreen') === null || localStorage.getItem('currentScreen') === undefined) {
+          localStorage.setItem('currentScreen', data.mainUI)
+        }
+        console.log('data.mainUI', data.mainUI)
 
         console.log(data) // JSON 데이터 출력 또는 원하는 처리 수행
       })

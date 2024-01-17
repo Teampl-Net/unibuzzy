@@ -96,7 +96,7 @@
   <div id="layout" @drop="onDrop" @dragenter="onDragenter" @dragleave="onDragleave" @dragover="onDragover">
     <header>
       <!-- Popup Title -->
-      <button @click="closeXPop" type="button" class="closeBtn">
+      <button @click="closeXPop" type="button" class="closeBtn cursorP">
           <img
             src="../../assets/images/common/popup_close.png"
             alt="close button"
@@ -110,7 +110,7 @@
         </div> -->
       <p class="commonColor fontBold" style="font-size:20px; line-height: 30px;">{{ pOptions.purpose }}</p>
       <div class="HeaderbtnWrap" :style="{width: contentType === 'MEMO' ? '40px' : 'auto'}">
-        <div @click="postContents" class="saveBtn fontBold" v-if="contentType !== 'MEMO'">
+        <div @click="postContents" class="saveBtn fontBold cursorP" v-if="contentType !== 'MEMO'">
           {{ pContentsData ? $t('COMM_BTN_EDIT2') : contentType === 'ALIM' ? $t('COMMON_BTN_SEND'): $t('COMMON_BTN_SAVE') }}
         </div>
         <!-- <button @click="closePop">Cancel</button> -->
@@ -140,6 +140,7 @@
               v-model="params.title" @input="countLines"
               class="titleInput"
               :style="{}"
+              autofocus
             />
         </fieldset>
         <div class="w100P mtop-05" style="border-bottom:1px solid #EBEBEB;"></div>
@@ -358,7 +359,7 @@
                 :style="{width: mSelfAddTagShowYn ? '20px;' : '100%;'}"
                 style="text-align:left; display: flex;"
                 >
-                  <div style="width: calc(100% - 30px); flaot: left; padding-top: 5px;" :style="openTagsYn? 'min-height: 25px;' : 'height: 25px;'">
+                  <div style="width: calc(100% - 30px); padding-top: 5px;" :style="openTagsYn? 'min-height: 25px;' : 'height: 25px;'">
                     <div v-if="mSelfAddTagShowYn" class="backgroundShadow"  style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 98;"></div>
                     <manageStickerPop ref="manageStickerPop" v-if="mSelfAddTagShowYn" @newSticker="setNewSticker" :pCloseStickerPop="openSelfAddTag" />
                     <div style="width:100%;">
@@ -400,7 +401,7 @@
             <label for="">{{$t('COMMON_TODO_PRIORITY')}}</label>
             <div class="" style=" width: calc(100% - 62px); text-align:left; position:relative;">
               <div class="tagBtnWrap" style="position:absolute; z-index:3;">
-                <select class="selectPriority" id="prioritySelect" v-model="selectedPriority">
+                <select class="selectPriority cursorP" id="prioritySelect" v-model="selectedPriority">
                   <option value="01">{{ $t('COMMON_TODO_MID') }}</option>
                   <option value="00">{{ $t('COMMON_TODO_HIGH') }}</option>
                   <option value="02">{{ $t('COMMON_TODO_LOW') }}</option>
@@ -624,6 +625,8 @@ export default defineComponent({
     }
   },
   mounted () {
+    window.addEventListener('keyboardDidShow', this.handleKeyboardShow)
+    window.addEventListener('keyboardDidHide', this.handleKeyboardHide)
     if (this.bodyString !== undefined && this.bodyString !== null && this.bodyString !== '') this.settingAlim()
     // this.settingAlim()
 
@@ -775,6 +778,14 @@ export default defineComponent({
     }
   },
   methods: {
+    handleKeyboardShow () {
+      var layout = document.querySelector('#layout')
+      layout.classList.add('maxHeight')
+    },
+    handleKeyboardHide () {
+      var layout = document.querySelector('#layout')
+      layout.classList.remove('maxHeight')
+    },
     getLightOrDark (colors) {
       if (colors && colors.length > 0) {
         // Variables for red, green, blue values
@@ -3050,10 +3061,10 @@ export default defineComponent({
   width: 90%;
   height: calc(100% - 120px);
   // padding: 16px 24px;
-  overflow: hidden;
-  min-height:500px;
+  overflow: hidden scroll;
+  min-height:400px;
 
-  position: absolute;
+  position: fixed;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -3062,6 +3073,10 @@ export default defineComponent({
   /* background-color: #f5f5f5; */
   background-color:#fff;
   border-radius: 0.8rem;
+}
+.maxHeight{
+  margin-top:1rem;
+  max-height:500px;
 }
 button {
   min-width: 40px;
@@ -3120,7 +3135,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding:1rem 1.5rem 1rem;
+  padding:0.7rem 0.5rem 0.5rem;
   border-bottom:1px solid #EBEBEB;
   .HeaderbtnWrap{
     .saveBtn{

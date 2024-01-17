@@ -459,9 +459,9 @@ export default {
       this.selectedCardKey = idx
       this.selectRow = idx
       if (value.type === 'text') {
-        this.$nextTick(() => {
-          this.$refs['textForm' + idx][0].focusInput()
-        })
+        // this.$nextTick(() => {
+        //   this.$refs['textForm' + idx][0].focusInput()
+        // })
       } /* else if (value.type === 'image') {
         var form = document.querySelector('#formCard' + idx)
         form.classList.add('ghost')

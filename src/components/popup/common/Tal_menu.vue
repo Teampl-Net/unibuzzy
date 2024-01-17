@@ -86,6 +86,8 @@ export default {
       const currentScreen = localStorage.getItem('currentScreen') || 'Smain'
       const newScreen = currentScreen === 'Smain' ? 'Imain' : 'Smain'
       localStorage.setItem('currentScreen', newScreen)
+      // window.location.href = 'https://mo.d-alim.com'
+      // window.location.href = 'http://localhost:8080/'
       this.$router.go(0)
       // console.log('currentScreen + newScreen', currentScreen, newScreen)
       // this.$emit('screenToggled', newScreen)
@@ -135,6 +137,13 @@ export default {
     },
     locale (lang) {
       this.$i18n.locale = lang
+    },
+    mLocalStorage: {
+      immediate: true,
+      handler (value) {
+        console.log(value, value, value)
+      },
+      deep: true
     }
   },
   computed: {

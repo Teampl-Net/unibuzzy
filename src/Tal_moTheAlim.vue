@@ -28,6 +28,8 @@ export default {
     firstLoading
   },
   mounted () {
+    window.addEventListener('keyboardDidShow', this.handleKeyboardShow)
+    // window.addEventListener('keyboardDidHide', this.handleKeyboardHide)
     // 페이지가 완전히 로드된 후에 isLoadingYn을 false로 변경
     window.addEventListener('load', () => {
       console.log('로딩이 끝났음.')
@@ -73,6 +75,9 @@ export default {
     }
   },
   methods: {
+    handleKeyboardShow () {
+      window.scrollTo(0, 0)
+    },
     openPop (params) {
       this.popShowYn = true
       this.modalParam = params
@@ -145,9 +150,10 @@ export default {
   color: #2c3e50;
   overflow-x: hidden;
   box-sizing: border-box;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   position: absolute;
+  top:0;
   left: 50%;
   transform: translateX(-50%);
   max-width: 1000px ;

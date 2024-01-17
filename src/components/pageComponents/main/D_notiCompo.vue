@@ -10,11 +10,11 @@
         <!-- <p class="fr font12 fontBold lightGray mbottom-05 textLeft">{{$dayjs(parseCreDate).format('YYYY-MM-DD hh:mm')}}</p> -->
           <p class="fr font12 fontBold lightGray mbottom-05 textLeft">{{$changeDateFormat(mNotiEle.creDate)}}</p>
           <p class="font14 commonBlack fontBold textLeft">{{mNotiEle.title}}</p>
-          <p class="w100P font14 commonBlack textLeft" style="word-break:break-all;">{{mNotiEle.message}}</p>
+          <p class="w100P font14 commonBlack textLeft" style="word-break:break-all;">{{decodeContents(mNotiEle.message)}}</p>
           <p>{{ index }}</p>
       </div>
   </div>
-  <div class="mleft-03" @click="notiClear(mNotiEle.mLogKey)"><p>X</p></div>
+  <div class="mleft-03" @click="notiClear(mNotiEle.mLogKey)"><p class="font12" style="padding-top:0.3rem;">✖️</p></div>
   <!-- <div class="fl w-100P" style="overflow:auto">
     {{this.mNotiEle.creDate}}
     {{parseCreDate}}
@@ -50,6 +50,14 @@ export default {
       console.log('index', index)
       this.mSelectedNotiIndex = index
       this.$emit('checkedNoti', this.mSelectedNotiIndex)
+    },
+    decodeContents (data, completeYn) {
+      // eslint-disable-next-line no-undef
+      var changeText = Base64.decode(data)
+      if (completeYn) {
+        changeText = changeText.replaceAll('formCard', 'formCard completeWork')
+      }
+      return changeText
     }
   },
   created () {

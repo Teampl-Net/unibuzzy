@@ -106,11 +106,11 @@ export default {
     test () {
       this.$emit('showToolBox', { tools: this.tools })
     },
-    focusInput () {
-      this.$nextTick(() => {
-        this.$refs.formTextArea.focus()
-      })
-    },
+    // focusInput () {
+    //   this.$nextTick(() => {
+    //     this.$refs.formTextArea.focus()
+    //   })
+    // },
     init () {
       // this.resize()
     },

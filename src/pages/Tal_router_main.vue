@@ -166,8 +166,11 @@ export default {
     }
   },
   watch: {
-    mWhichmain (value, old) {
-      console.log('value???', value, old)
+    mWhichmain: {
+      handler (value) {
+        console.log('value???', value)
+      },
+      deep: true
     },
     pageUpdate (value, old) {
       var history = this.historyStack
