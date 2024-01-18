@@ -1,8 +1,11 @@
 <template>
-  <div id="layout" class="w100P alignCenter" style="flex-direction:column; gap:1rem;">
+  <seleciconBgPopup v-if="mIconBgSelectPopYn=='iconPop' || mIconBgSelectPopYn=='bgPop'" :isAdmTrue="true" :selectIcon="this.mSelectedIcon" :selectBg="this.mSelectedBg" @no='mIconBgSelectPopYn=false' @makeParam='setIconOrBGData' :opentype="mIconBgSelectPopYn" />
 
-      <div class="profileImg cursorP">
-        <p class="font13">photo here</p>
+  <div id="layout" class="w100P alignCenter" style="flex-direction:column; gap:1rem; justify-content:space-between;">
+
+    <div class="w100P alignCenter" style="flex-direction:column;">
+      <div @click="mIconBgSelectPopYn='bgPop'" :style="'background: url(' + mSelectedBg.selectPath + ');'" class="w100P" style="height:230px; background-repeat: no-repeat;background-size: cover;"></div>
+      <div :style="'background-image: url(' + mSelectedIcon.selectPath + ')'" class="profileImg cursorP" @click="mIconBgSelectPopYn='iconPop'" style="background-size: cover; background-position: center; background-repeat: no-repeat;">
       </div>
 
       <div class="w100P infoFillArea">
@@ -13,8 +16,8 @@
           </div>
           <div class="infoType" style="width:25%;">
             <p>조직타입</p>
-            <select :value="mTypeOption[0].name" @change="changeTypeOption">
-              <option v-for="(type, index) in mTypeOption" :key="index">{{type.name}}</option>
+            <select v-model="selectedOption" @change="changeTypeOption">
+              <option v-for="(type, index) in mTypeOption" :key="index" :value="type.value">{{type.name}}</option>
             </select>
           </div>
         </div>
@@ -23,43 +26,96 @@
           <textarea class="inputs descInput" v-model="infoGroupDesc" :placeholder=mDescPlaceHolder ></textarea>
         </div>
       </div>
+    </div>
 
-      <div v-if="infoGroupType === '학교'">ㅋㅋ</div>
-        <div class="w100P"> <!-- 나중에 없어짐. 닫기 버튼은 위로 갈 것임 -->
-          <button type="button" @click="pClosePop">닫기</button>
+        <div class="w100P">
+        <button type="button" @click="saveGroup" class="admBtn saveBtn">저장</button>
+          <button type="button" @click="pClosePop" class="admBtn">닫기</button>
         </div>
       </div>
 </template>
 
 <script>
+import axios from 'axios'
+import seleciconBgPopup from '@/components/popup/creChannel/Tal_selectChaniconBgPopup.vue'
+
 export default {
+  components: {
+    seleciconBgPopup
+  },
   props: {
-    pClosePop: Function
+    pClosePop: Function,
+    pSelectedOrg: {},
+    pGetOrgList: Function
   },
   created () {
-
+    if (this.pSelectedOrg) {
+      this.mSelectedIcon = this.pSelectedOrg.iconPath
+    }
   },
   data () {
     return {
+      isAdmTrue: true,
+      mIconBgSelectPopYn: '',
+      mSelectedIcon: { selectedId: '1', selectPath: '/resource/channeliconbg/CHAR01.png' },
+      mSelectedBg: { selectedId: '11', selectPath: '/resource/channeliconbg/BG01.jpg' },
       infoGroupName: '',
       infoGroupDesc: '',
-      infoGroupType: {},
+      infoGroupType: '',
       mNamePlaceHolder: '조직명을 입력하세요.',
       mDescPlaceHolder: '조직 설명을 입력하세요.',
+      selectedOption: 'none',
       mTypeOption: [
-        { idx: 1, name: '아파트' },
-        { idx: 2, name: '회사' },
-        { idx: 3, name: '학교' }
+        { idx: 0, name: '선택하세요.', value: 'none' },
+        { idx: 1, name: '아파트', value: 'A' },
+        { idx: 2, name: '회사', value: 'C' },
+        { idx: 3, name: '학교', value: 'S' }
       ]
     }
   },
   methods: {
     changeTypeOption (value) {
-      this.infoGroupType = value.target._value
+      this.infoGroupType = this.selectedOption
       console.log('this.infoGroupType', this.infoGroupType)
+    },
+    async saveGroup () {
+      var paramSet = {}
+      paramSet.orgName = this.infoGroupName
+      paramSet.orgDesc = this.infoGroupDesc
+      paramSet.orgType = this.infoGroupType
+      paramSet.creUserKey = this.GE_USER.userKey
+      paramSet.orgImgFilekey = this.mSelectedIcon.selectedId
+      paramSet.orgBgFilekey = this.mSelectedBg.selectedId
+      paramSet.appToken = 'eyJhbGciOiJIUzI1NiJ9.eyJjcmVVc2VyS2V5IjoxOTIsImNyZURhdGUiOjE3MDUyODQzODUwMDAsImFwcE5hbWUiOiLrjZTslYzrprwiLCJhcHBUb2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUo5LmV5SmpjbVZWYzJWeVMyVjVJam94T1RJc0ltTnlaVVJoZEdVaU9qRTNNRFV5T0RRek9EVXdNREFzSW1Gd2NFNWhiV1VpT2lMcmpaVHNsWXpycHJ3aUxDSmhjSEJVYjJ0bGJpSTZJbVY1U21oaVIyTnBUMmxLU1ZWNlNURk9hVW81TG1WNVNtcGpiVlpXWXpKV2VWTXlWalZKYW05NFQxUkpjMGx0VG5sYVZWSm9aRWRWYVU5cVJUTk5SRlY1VDBSUmVrOUVWWGROUkVGelNXMUdkMk5GTldoaVYxVnBUMmxNY21wYVZITnNXWHB5Y0hKM2FVeERTbXBhV0Vvd1lWWkNiMkl5Tld4WFZ6UnBUMnBGYzBsdFJuZGpSWFJzWlZOSk5rMVRkMmxaTWxaNVpFZHNSbUpYUm5CaVJteDFTV3B2ZUV4RFNtdGFWM2hzWkVkV1dtSnBTVFpOUTNkcFdsaG9kMGxxYjNsTlJFbDNUbXBWTlU1cVZUVk1RMHAxWWpJMWFscFRTVFpKYlVrMVdXMVZNVnBFYkd0TVZFRXpXa1JaZEU1RVpHMU5VekExVDBSSk1VeFVhM2xPYW1NMFRsZFJkMDFVVlhoYVEwbHpTVzFHZFZwSVNuWmhWMUpLV2tOSk5rbHRUblppVXpVd1dWZDRabU5JU25aaGJWWnFaRU5LT1M1UVdIbFdYMUIwZFVkUlowSmZjMHRNVDNadE9XeDNPV2hvYmxoblJsQXhla2M1V0dGdFIxaFVVVGhWSWl3aVkyVnlkR2xRYUc5dVpWbHVJam94TENKaGNIQkxaWGtpT2pFc0ltTmxjblJwUlcxaGFXeFpiaUk2TVN3aVpHVnNaWFJsV1c0aU9qQXNJbVY0Y0NJNk1qQXlNRGt3TWpZM01Dd2libTl1WTJVaU9pSTVNVEprTTJabE1DMHhabVZrTFRRMllqa3RPREV3WkMwMU5qYzROVGN3TWpjMVpETWlMQ0poYm1SeWIybGtTV1FpT2lKamIyMHVkR0ZzWDNCeWIycGxZM1FpZlEuMUFGMkpoQzd6VG1wVTV2aHdvN0wxN2RSVlVSRzl0MFBzQ09rVFNGR1dHMCIsImNlcnRpUGhvbmVZbiI6MSwiYXBwS2V5IjoxLCJjZXJ0aUVtYWlsWW4iOjEsImRlbGV0ZVluIjowLCJleHAiOjIwMjA5MDI3NzQsIm5vbmNlIjoiNTlmMDYxMDItY2VhMS00NmE2LWEwMmYtNGUwODRhZWFlZjI1IiwiYW5kcm9pZElkIjoiY29tLnRhbF9wcm9qZWN0In0.irKKhHVeVbE5pvXAM69ytw0SCxYA6SMgXRPEDA_eCU8'
+
+      this.$emit('saveGroup', paramSet)
+    },
+    async getOrgList () {
+      console.log('getOrgList 실행됨 - add Group Pop')
+      var paramSet = {}
+      paramSet.creUserKey = this.GE_USER.userKey
+      paramSet.appToken = 'eyJhbGciOiJIUzI1NiJ9.eyJjcmVVc2VyS2V5IjoxOTIsImNyZURhdGUiOjE3MDUyODQzODUwMDAsImFwcE5hbWUiOiLrjZTslYzrprwiLCJhcHBUb2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUo5LmV5SmpjbVZWYzJWeVMyVjVJam94T1RJc0ltTnlaVVJoZEdVaU9qRTNNRFV5T0RRek9EVXdNREFzSW1Gd2NFNWhiV1VpT2lMcmpaVHNsWXpycHJ3aUxDSmhjSEJVYjJ0bGJpSTZJbVY1U21oaVIyTnBUMmxLU1ZWNlNURk9hVW81TG1WNVNtcGpiVlpXWXpKV2VWTXlWalZKYW05NFQxUkpjMGx0VG5sYVZWSm9aRWRWYVU5cVJUTk5SRlY1VDBSUmVrOUVWWGROUkVGelNXMUdkMk5GTldoaVYxVnBUMmxNY21wYVZITnNXWHB5Y0hKM2FVeERTbXBhV0Vvd1lWWkNiMkl5Tld4WFZ6UnBUMnBGYzBsdFJuZGpSWFJzWlZOSk5rMVRkMmxaTWxaNVpFZHNSbUpYUm5CaVJteDFTV3B2ZUV4RFNtdGFWM2hzWkVkV1dtSnBTVFpOUTNkcFdsaG9kMGxxYjNsTlJFbDNUbXBWTlU1cVZUVk1RMHAxWWpJMWFscFRTVFpKYlVrMVdXMVZNVnBFYkd0TVZFRXpXa1JaZEU1RVpHMU5VekExVDBSSk1VeFVhM2xPYW1NMFRsZFJkMDFVVlhoYVEwbHpTVzFHZFZwSVNuWmhWMUpLV2tOSk5rbHRUblppVXpVd1dWZDRabU5JU25aaGJWWnFaRU5LT1M1UVdIbFdYMUIwZFVkUlowSmZjMHRNVDNadE9XeDNPV2hvYmxoblJsQXhla2M1V0dGdFIxaFVVVGhWSWl3aVkyVnlkR2xRYUc5dVpWbHVJam94TENKaGNIQkxaWGtpT2pFc0ltTmxjblJwUlcxaGFXeFpiaUk2TVN3aVpHVnNaWFJsV1c0aU9qQXNJbVY0Y0NJNk1qQXlNRGt3TWpZM01Dd2libTl1WTJVaU9pSTVNVEprTTJabE1DMHhabVZrTFRRMllqa3RPREV3WkMwMU5qYzROVGN3TWpjMVpETWlMQ0poYm1SeWIybGtTV1FpT2lKamIyMHVkR0ZzWDNCeWIycGxZM1FpZlEuMUFGMkpoQzd6VG1wVTV2aHdvN0wxN2RSVlVSRzl0MFBzQ09rVFNGR1dHMCIsImNlcnRpUGhvbmVZbiI6MSwiYXBwS2V5IjoxLCJjZXJ0aUVtYWlsWW4iOjEsImRlbGV0ZVluIjowLCJleHAiOjIwMjA5MDI3NzQsIm5vbmNlIjoiNTlmMDYxMDItY2VhMS00NmE2LWEwMmYtNGUwODRhZWFlZjI1IiwiYW5kcm9pZElkIjoiY29tLnRhbF9wcm9qZWN0In0.irKKhHVeVbE5pvXAM69ytw0SCxYA6SMgXRPEDA_eCU8'
+      var result = await axios.post('/sUniB/tp.getOrgList', paramSet, { withCredentials: true, headers: { DemoYn: true } })
+      console.log('result', result)
+      if (result && result.data) {
+        console.log('result', result.data)
+      }
+    },
+    setIconOrBGData (param) {
+      console.log('addGroupPop param', param)
+      if (this.mIconBgSelectPopYn === 'iconPop') {
+        this.mSelectedIcon = param
+      } else if (this.mIconBgSelectPopYn === 'bgPop') {
+        this.mSelectedBg = param
+      }
+      this.mIconBgSelectPopYn = false
+    }
+  },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
     }
   }
-
 }
 </script>
 
@@ -68,17 +124,18 @@ export default {
 #layout{
   width:100%;
   height:100%;
-  padding:60px 20px 0;
+  padding:60px 30px 50px;
 }
 .profileImg{
-  width:100px;
-  height:100px;
+  width:150px;
+  height:150px;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  background-color:#fff;
   box-shadow:0 0 3px 1px rgba(0,0,0,0.1);
+  margin-top:-80px;
+  background-color:#fff;
 }
 .infoFillArea{
   display:flex;
@@ -106,5 +163,10 @@ export default {
 }
 .inputs:focus{
   outline:none !important;
+}
+.saveBtn{
+  background-color:#5F61BD;
+  color:#fff;
+  margin-right:1rem;
 }
 </style>

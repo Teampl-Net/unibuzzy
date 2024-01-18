@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <div @click="setParam" class="creChanBigBtn font18 fl mtop-2 mbottom-05">선택완료</div>
+        <div @click="setParam" class="creChanBigBtn font18 fl mtop-2 mbottom-05 cursorP">선택완료</div>
 
     </div>
   </div>
@@ -53,7 +53,8 @@ export default {
   props: {
     opentype: {},
     selectIcon: {},
-    selectBg: {}
+    selectBg: {},
+    isAdmTrue: Boolean
   },
   mounted () {
     if (document.getElementById('chanIconBox').scrollHeight > 0) {
@@ -70,6 +71,13 @@ export default {
       this.$refs.activeBar.selectTab('icon')
     } else {
       this.$refs.activeBar.switchtab(1)
+      this.$refs.activeBar.selectTab('img')
+    }
+    if (this.isAdmTrue === true) {
+      this.activeTabList = [{ display: '직접추가', name: 'img' }]
+      this.$refs.activeBar.selectTab('img')
+    } else {
+      this.activeTabList = [{ display: '아이콘', name: 'icon' }, { display: '직접추가', name: 'img' }]
       this.$refs.activeBar.selectTab('img')
     }
     this.$addHistoryStack('channelImgChangePop')
@@ -207,6 +215,7 @@ export default {
           param.selectedId = this.selectedId
           param.selectPath = this.selectPath
           param.iconType = this.viewTab
+          console.log('selectChaniconBgPop setParam', param)
           this.$emit('makeParam', param)
         } else {
         }

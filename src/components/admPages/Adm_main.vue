@@ -4,7 +4,7 @@
       <div class="myInfoArea">
         <p class="font30" style="padding-right:10px;">내 조직 IN </p>
         <select v-model="mSelectedApp" @change="setSelectedApp" style="height:30px;">
-          <option v-for="(apps, index) in pMyAppList" :key="index" :value="apps" :selected="index === mSelectedAppIdx">{{ apps.title }}</option>
+          <option v-for="(apps, index) in mGetOrgList" :key="index" :value="apps" :selected="index === mSelectedAppIdx">{{ apps.title }}</option>
         </select>
       </div>
       <div class="searchArea">
@@ -18,7 +18,7 @@
         <jojikCompo @click="openPage(branch)" :pBranch="branch" class="cursorP"/>
       </template>
       <div class="jojikAddBtn cursorP" @click="openPop('addGroup')">
-        <div style="width:50px; height:50px; border-radius:50%; border:1px solid gray; font-size:30px; line-height:50px;">+</div>
+        <div style="width:50px; height:50px; border-radius:50%; background-color:#ebebeb; font-size:30px; line-height:50px;">+</div>
         <p class="font15" style="margin-left:0.5rem;">조직 추가</p>
       </div>
     </div>
@@ -27,9 +27,10 @@
 
 <script>
 import jojikCompo from '@/components/admPages/adm_components/Adm_jojikCompo.vue'
+import axios from 'axios'
 export default {
   props: {
-    pMyAppList: []
+    pMyOrgList: []
   },
   components: {
     jojikCompo
@@ -41,11 +42,17 @@ export default {
       mSelectedAppIdx: 0,
       myUerKey: 0,
       mBranchList: [],
-      propParams: {}
+      propParams: {},
+      mGetOrgList: []
     }
   },
   created () {
-    console.log('pMyAppList', this.pMyAppList)
+    console.log('main pMyOrgList', this.pMyOrgList)
+    if (this.pMyOrgList && this.pMyOrgList.length > 0) {
+      this.mGetOrgList = this.pMyOrgList
+    } else {
+      this.getOrgList()
+    }
   },
   methods: {
     openPop (popType) {
@@ -54,25 +61,36 @@ export default {
     },
     openPage (branch) {
       this.propParams.selBranch = branch
-      this.propParams.branch = this.pMyAppList[this.mSelectedAppIdx].branch
-      this.propParams.myApps = this.pMyAppList[this.mSelectedAppIdx]
+      this.propParams.branch = this.pMyOrgList[this.mSelectedAppIdx].branch
+      this.propParams.myApps = this.pMyOrgList[this.mSelectedAppIdx]
       this.propParams.pageType = 'jojikDetail'
       this.$emit('openPage', this.propParams)
     },
     setSelectedApp () {
       // mSelectedApp의 인덱스를 찾습니다.
-      this.mSelectedAppIdx = this.pMyAppList.findIndex(app => app === this.mSelectedApp)
+      this.mSelectedAppIdx = this.pMyOrgList.findIndex(app => app === this.mSelectedApp)
+      console.log('this.mSelectedAppIdx', this.mSelectedAppIdx)
       // 인덱스를 기반으로 mBranchList를 설정합니다.
       if (this.mSelectedAppIdx !== -1) {
-        this.mBranchList = this.pMyAppList[this.mSelectedAppIdx].branch || []
+        this.mBranchList = this.pMyOrgList[this.mSelectedAppIdx].branch || []
         console.log('mBranchList:', this.mBranchList)
       } else {
         console.log('App not found')
       }
+    },
+    async getOrgList () {
+      console.log('getOrgList 실행됨 - main')
+      var paramSet = {}
+      paramSet.creUserKey = this.GE_USER.userKey
+      paramSet.appToken = 'eyJhbGciOiJIUzI1NiJ9.eyJjcmVVc2VyS2V5IjoxOTIsImNyZURhdGUiOjE3MDUyODQzODUwMDAsImFwcE5hbWUiOiLrjZTslYzrprwiLCJhcHBUb2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUo5LmV5SmpjbVZWYzJWeVMyVjVJam94T1RJc0ltTnlaVVJoZEdVaU9qRTNNRFV5T0RRek9EVXdNREFzSW1Gd2NFNWhiV1VpT2lMcmpaVHNsWXpycHJ3aUxDSmhjSEJVYjJ0bGJpSTZJbVY1U21oaVIyTnBUMmxLU1ZWNlNURk9hVW81TG1WNVNtcGpiVlpXWXpKV2VWTXlWalZKYW05NFQxUkpjMGx0VG5sYVZWSm9aRWRWYVU5cVJUTk5SRlY1VDBSUmVrOUVWWGROUkVGelNXMUdkMk5GTldoaVYxVnBUMmxNY21wYVZITnNXWHB5Y0hKM2FVeERTbXBhV0Vvd1lWWkNiMkl5Tld4WFZ6UnBUMnBGYzBsdFJuZGpSWFJzWlZOSk5rMVRkMmxaTWxaNVpFZHNSbUpYUm5CaVJteDFTV3B2ZUV4RFNtdGFWM2hzWkVkV1dtSnBTVFpOUTNkcFdsaG9kMGxxYjNsTlJFbDNUbXBWTlU1cVZUVk1RMHAxWWpJMWFscFRTVFpKYlVrMVdXMVZNVnBFYkd0TVZFRXpXa1JaZEU1RVpHMU5VekExVDBSSk1VeFVhM2xPYW1NMFRsZFJkMDFVVlhoYVEwbHpTVzFHZFZwSVNuWmhWMUpLV2tOSk5rbHRUblppVXpVd1dWZDRabU5JU25aaGJWWnFaRU5LT1M1UVdIbFdYMUIwZFVkUlowSmZjMHRNVDNadE9XeDNPV2hvYmxoblJsQXhla2M1V0dGdFIxaFVVVGhWSWl3aVkyVnlkR2xRYUc5dVpWbHVJam94TENKaGNIQkxaWGtpT2pFc0ltTmxjblJwUlcxaGFXeFpiaUk2TVN3aVpHVnNaWFJsV1c0aU9qQXNJbVY0Y0NJNk1qQXlNRGt3TWpZM01Dd2libTl1WTJVaU9pSTVNVEprTTJabE1DMHhabVZrTFRRMllqa3RPREV3WkMwMU5qYzROVGN3TWpjMVpETWlMQ0poYm1SeWIybGtTV1FpT2lKamIyMHVkR0ZzWDNCeWIycGxZM1FpZlEuMUFGMkpoQzd6VG1wVTV2aHdvN0wxN2RSVlVSRzl0MFBzQ09rVFNGR1dHMCIsImNlcnRpUGhvbmVZbiI6MSwiYXBwS2V5IjoxLCJjZXJ0aUVtYWlsWW4iOjEsImRlbGV0ZVluIjowLCJleHAiOjIwMjA5MDI3NzQsIm5vbmNlIjoiNTlmMDYxMDItY2VhMS00NmE2LWEwMmYtNGUwODRhZWFlZjI1IiwiYW5kcm9pZElkIjoiY29tLnRhbF9wcm9qZWN0In0.irKKhHVeVbE5pvXAM69ytw0SCxYA6SMgXRPEDA_eCU8'
+      var result = await axios.post('/sUniB/tp.getOrgList', paramSet, { withCredentials: true, headers: { DemoYn: true } })
+      if (result && result.data) {
+        this.mGetOrgList = result.data.org
+      }
     }
   },
   mounted () {
-    this.mSelectedApp = this.pMyAppList[0]
+    this.mSelectedApp = this.pMyOrgList[0]
     this.setSelectedApp()
   },
   watch: {
@@ -113,10 +131,11 @@ export default {
 .jojikAddBtn{
   width:100%;
   height:100px;
-  border:1px solid rgb(199, 199, 199);
   display:flex;
   align-items:center;
   padding:10px 20px;
   background-color: #fff;
+  border-radius:10px;
+  box-shadow:0 0 3px 1px rgba(0,0,0,0.1);
 }
 </style>

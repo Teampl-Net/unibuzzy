@@ -1,30 +1,51 @@
 <template>
-    <div v-if="popType !== 'addGroup'" class="backDark"></div>
+    <!-- <div v-if="popType !== 'addGroup' && popType !== 'addMember' " class="backDark"></div> -->
 
     <div class="commonPopWrap">
-      <addGroupPop v-if="popType === 'addGroup'" :pClosePop="pClosePop"/>
+      <addGroupPop v-if="popType === 'addGroup'" @saveGroup="saveGroup" :pClosePop="pClosePop" :pGetOrgList="pGetOrgList"/>
+      <addMemberPop v-if="popType === 'addMember'" :pClosePop="pClosePop" :pOrgList="pOrgList" :pPropParams="pPropParams"/>
     </div>
 </template>
 
 <script>
 import addGroupPop from '@/components/admPages/popUP/Adm_addGroupPop.vue'
+import addMemberPop from '@/components/admPages/popUP/Adm_addMemberPop.vue'
+import axios from 'axios'
 
 export default {
 
   components: {
-    addGroupPop
+    addGroupPop,
+    addMemberPop
   },
   props: {
     pClosePop: Function,
-    pPropParams: {}
+    pPropParams: {},
+    pOrgList: [],
+    pGetOrgList: Function
   },
   created () {
     this.popType = this.pPropParams.popType
-    console.log(this.pPropParams)
+    console.log('commonpPopup this.pPropParams', this.pPropParams)
   },
   data () {
     return {
       popType: {}
+    }
+  },
+  methods: {
+    async saveGroup (param) {
+      var paramSet = {}
+      paramSet = param
+
+      var result = await axios.post('/sUniB/tp.saveOrg', { org: paramSet }, { withCredentials: true, headers: { DemoYn: true } })
+      console.log('result', result)
+      this.pClosePop()
+    }
+  },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
     }
   }
 

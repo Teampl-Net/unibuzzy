@@ -27,8 +27,8 @@ export default {
   mounted () {
   },
   methods: {
-    openPop () {
-      this.$emit('openPop')
+    openPop (params) {
+      this.$emit('openPop', params)
     },
     changeBranch () {
       this.$emit('changeBranch')
@@ -44,6 +44,6 @@ export default {
   width:100%;
   height:100%;
   z-index:3;
-  padding:80px 20px 0;
+  padding:80px 30px 0;
 }
 </style>

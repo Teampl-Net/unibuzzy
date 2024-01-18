@@ -1,15 +1,16 @@
 <template>
   <div class="jojikCompo">
-    <div style="display:flex; align-items:center;">
+    <div style="display:flex; align-items:center; gap:0.5rem;">
+      <!-- <div class="imgInfo" :style="{'background': pBranch.domainPath !== '' ?  `url('${pBranch.domainPath}')` : '#fbfbfd;'}"> -->
       <div class="imgInfo">
       </div>
       <div class="textInfo">
-        <p class="font15">{{ pBranch.name }}</p>
-        <p class="font13">{{ pBranch.code }}</p>
+        <p class="font15 fontBold">{{ pBranch.orgName ? pBranch.orgName : pBranch.name }}</p>
+        <p class="font13">{{ pBranch.orgKey ? pBranch.orgKey : pBranch.code }}</p>
       </div>
     </div>
     <div>
-      <p class="font14">{{ pBranch.type }}</p>
+      <p class="font14">{{ pBranch.orgType ? pBranch.orgType : pBranch.type }}</p>
       <p class="font13">🙍🏻‍♂️{{ pBranch.allCount }}</p>
    </div>
   </div>
@@ -21,7 +22,7 @@ export default {
     pBranch: {}
   },
   created () {
-
+    console.log('jojikCompo pBranch', this.pBranch)
   },
   data () {
     return {
@@ -41,15 +42,15 @@ export default {
   display:flex;
   align-items:center;
   justify-content:space-between;
-  border:1px solid rgb(199, 199, 199);
   background-color: #fff;
+  border-radius:10px;
+  box-shadow:0 0 3px 1px rgba(0,0,0,0.1);
 }
 .imgInfo{
   width:60px;
   height:60px;
   border-radius:50%;
-  border:1px solid gray;
-  background-color:#ebebeb;
+  background-color:pink;
 }
 .textInfo{
   text-align:left;

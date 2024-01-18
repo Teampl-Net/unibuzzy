@@ -55,6 +55,7 @@ export default {
     pSelectedIconPath: {}
   },
   created () {
+    console.log('pSelectedIconPath', this.pSelectedIconPath)
     if (this.parentSelectedIconFileKey !== undefined && this.parentSelectedIconFileKey !== null && this.parentSelectedIconFileKey !== '') {
       this.selectedIconFileKey = this.parentSelectedIconFileKey
     }
