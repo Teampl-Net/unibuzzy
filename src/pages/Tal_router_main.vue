@@ -751,11 +751,11 @@ export default {
     } else {
       // this.$userLoginCheck(true)
     }
-    /* if (!this.GE_USER) {
-      // this.$router.push({ name: 'policies' })
+    if (!this.GE_USER) {
+      this.$router.push({ name: 'policies' })
       this.$router.replace({ name: 'unknown' })
       return null
-    } */
+    }
     /* this.getMainBoard().then(res => {
       this.mLoadingYn = false
     }) */

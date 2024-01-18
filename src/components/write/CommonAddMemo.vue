@@ -10,34 +10,11 @@
   </i18n>
 <template>
   <!-- <div id="layout" :style="{'background-color' : mMemoColor, 'background-image': `linear-gradient(-135deg, transparent 36px, ${mMemoColor} 0)` }"> -->
-  <div id="layout" >
-    <header>
-      <!-- Popup Title -->
-      <!-- <button @click="saveMemo(false)" type="button" class="closeBtn"> -->
-      <div @click="saveMemo(false)" class="closeBtn">
-        <img
-          src="../../assets/images/todo/close_white.png"
-          alt="close button"
-          class="w100P"
-        />
-      </div>
-      <div style="width:calc(100% -40px); display:flex; algin-items:center; gap:0.5rem;">
-        <div style="width:auto; display:flex; align-items:center; gap:0.3rem;">
-          <div v-for="(color, index) in mMemoColors" :key="index" @click="changeMemoColor(index)" class="cursorP" style="position:relative;">
-            <img v-if="mSelectedMemoColorIdx === index" :src="require(`@/assets/images/todo/selected.png`)" alt="selected Memo Color" style="width:13px; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);"/>
-            <img :src="color.image" style="width:30px;"/>
-          </div>
-        </div>
-        <button class="delBtn" @click="mConfirmPopShowYn = true">삭제</button>
-      </div>
-
-    </header>
-    <!-- <div class="devider"></div> -->
-
-    <div class="memoPopBody" :style="{background : `linear-gradient(-135deg, transparent 36px, ${mMemoColor} 0)`}">
-      <div class="foldedDeco" :style="{background : `linear-gradient(-135deg, transparent 36px, ${mMemoFolded} 0)`}"></div>
-      <div class="w100P" style="height:calc(100% - 60px); display:flex; flex-direction:column; align-items:center; justify-content:space-between;">
-        <div class="w100P" style="height:30px; display:flex; algin-items:center;">
+  <div id="layout" :style="{background : `linear-gradient(-405deg, transparent 36px, ${mMemoColor} 0)`}">
+    <div class="foldedDeco" :style="{background : `linear-gradient(-405deg, transparent 36px, ${mMemoFolded} 0)`}"></div>
+    <div class="w100P" style="height:calc(100% - 60px); display:flex; flex-direction:column; align-items:center; justify-content:space-between;">
+      <div class="w100P" style="height:30px; display:flex; align-items:center; justify-content:space-between;">
+        <div class="w100P" style="height:30px;">
           <textarea
             id="title"
             type="text"
@@ -47,14 +24,31 @@
             :style="{}"
           />
         </div>
-          <div class="w100P" style="height:calc(100% - 40px); padding-top:20px;">
-            <p class="font13 mTop-05" style="padding:0 8px; text-align:left; color:gray;">{{ memoDate ? memoDate : getDates(new Date()) }}</p>
-            <textarea class="w100P memoBodyArea mtop-05" @click="changeBtn" v-model="memoBody" style="min-height:300px;">
-            </textarea>
-          </div>
-        <div class="HeaderbtnWrap cursorP w100P" style="text-align:center; height:50px; display:flex; align-items:center; justify-content:center;">
+        <div @click="saveMemo(false)" class="closeBtn">
+          <img
+            src="../../assets/images/todo/close_gray.png"
+            alt="close button"
+            class="w100P"
+          />
         </div>
       </div>
+        <div class="w100P" style="height:calc(100% - 40px); padding-top:20px;">
+          <textarea class="w100P memoBodyArea mtop-05" @click="changeBtn" v-model="memoBody" style="min-height:270px;">
+          </textarea>
+          <p class="font13 mTop-05" style="padding:0 8px; text-align:left; color:gray;">{{ memoDate ? memoDate : getDates(new Date()) }}</p>
+        </div>
+      <div class="HeaderbtnWrap cursorP w100P" style="text-align:center; height:20px; display:flex; align-items:center; justify-content:center;">
+      </div>
+    </div>
+    <div style="width:calc(100% - 45px); display:flex; algin-items:center; justify-content:end; gap:0.3rem;">
+      <div v-if="memoColorChoice" class="colorPal">
+        <div v-for="(color, index) in mMemoColors" :key="index" @click="changeMemoColor(index)" class="cursorP" style="position:relative;">
+          <img v-if="mSelectedMemoColorIdx === index" :src="require(`@/assets/images/todo/selected.png`)" alt="selected Memo Color" style="width:13px; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);"/>
+          <img :src="color.image" style="width:30px;"/>
+        </div>
+      </div>
+      <button class="colorBtn" @click="openColorSelect"><p style="width:25px; height:25px; border-radius:50%;" :style="{'background-color' : mMemoColor}"></p></button>
+      <button class="delBtn" @click="mConfirmPopShowYn = true">삭제</button>
     </div>
   </div>
   <gConfirmPop
@@ -114,7 +108,8 @@ export default {
         { image: require('@/assets/images/todo/memo_green.png'), color: '#DEEAE0', folded: '#B3CCC0' },
         { image: require('@/assets/images/todo/memo_blue.png'), color: '#C8DAEE', folded: '#ACB8C4' }
       ],
-      mSelectedMemoColorIdx: 0
+      mSelectedMemoColorIdx: 0,
+      memoColorChoice: false
     }
   },
   methods: {
@@ -122,6 +117,9 @@ export default {
       this.mSelectedMemoColorIdx = index
       this.mMemoColor = this.mMemoColors[index].color
       this.mMemoFolded = this.mMemoColors[index].folded
+    },
+    openColorSelect () {
+      this.memoColorChoice = !this.memoColorChoice
     },
     getDates (value) {
       // value는 2023-12-27T10:01:37 형식의 문자열이라고 가정합니다.
@@ -266,9 +264,10 @@ export default {
 <style scoped>
 #layout {
   width: 85%;
-  height: calc(100% - 400px);
+  /* height: calc(100% - 400px); */
+  height: auto;
   overflow: hidden;
-  min-height:500px;
+  min-height:450px;
 
   position: fixed;
   left: 50%;
@@ -276,6 +275,10 @@ export default {
   transform: translate(-50%, -50%);
 
   z-index: 15;
+
+  padding:20px;
+  border-radius: 10px;
+  box-shadow:-1px 12px 5px rgba(0,0,0,0.1);
   /* border-radius: 0.8rem; */
 }
 .maxHeight{
@@ -288,20 +291,25 @@ header {
   align-items: center;
   padding:1rem 0rem 0rem;
 }
-.memoPopBody{
-  padding:20px;
-  border-radius: 10px;
-  box-shadow:-1px 12px 5px rgba(0,0,0,0.1);
-  position:relative;
-}
 .foldedDeco{
   width:50px;
   height:50px;
   background-color:#fff;
   position:absolute;
-  top:0;
+  bottom:0;
   right:0;
   box-shadow:-3px 0px 3px rgba(0,0,0,0.1);
+}
+.colorPal{
+  width:auto;
+  display:flex;
+  align-items:center;
+  gap:0.2rem;
+  background-color:#fff;
+  border-radius:10px;
+  box-shadow:0 0 3px rgba(0,0,0,0.1);
+  padding:0 10px;
+  margin-right:0.2rem;
 }
 
 button {
@@ -331,10 +339,14 @@ button {
     line-height:35px;
     border-radius:10px;
     /* background-color:#5F61BD; */
-    background-color:#fbfbfd;
-    color:#5F61BD;
+    /* background-color:transparent; */
+    /* color:#5F61BD; */
     font-weight:bold;
     text-align:center;
+  }
+  .colorBtn{
+    background-color:#fff;
+    border-radius:10px;
   }
 .memoTab{
   width:33%;
@@ -358,7 +370,7 @@ button {
   overflow:hidden;
 }
 .titleInput{
-  width:90%;
+  width:100%;
   background-color:transparent;
   overflow-y:scroll; white-space:wrap;
   border:none;
