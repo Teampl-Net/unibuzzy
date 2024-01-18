@@ -17,7 +17,7 @@
       <template v-for="(branch, index) in mBranchList" :key="index">
         <jojikCompo @click="openPage(branch)" :pBranch="branch" class="cursorP"/>
       </template>
-      <div class="jojikAddBtn cursorP" @click="openPop">
+      <div class="jojikAddBtn cursorP" @click="openPop('addGroup')">
         <div style="width:50px; height:50px; border-radius:50%; border:1px solid gray; font-size:30px; line-height:50px;">+</div>
         <p class="font15" style="margin-left:0.5rem;">조직 추가</p>
       </div>
@@ -46,11 +46,11 @@ export default {
   },
   created () {
     console.log('pMyAppList', this.pMyAppList)
-    // this.setMyApps()
   },
   methods: {
-    openPop () {
-      this.$emit('openPop')
+    openPop (popType) {
+      this.propParams.popType = popType
+      this.$emit('openPop', this.propParams)
     },
     openPage (branch) {
       this.propParams.selBranch = branch

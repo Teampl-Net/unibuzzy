@@ -191,6 +191,10 @@ input, select {
   }
 }
 
+.alignCenter{
+  display:flex;
+  align-items:center;
+}
 
 
 @media screen and (max-width: 300px) {

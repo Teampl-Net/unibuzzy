@@ -1,5 +1,4 @@
 <template>
-  <div class="commonPageWrap">
     <div class="w100P topArea">
       <div class="backBtn mRight-1 cursorP" @click="pClosePage">
         <img :src="require(`@/assets/images/common/icon_back.png`)" :alt="뒤로가기"/>
@@ -40,9 +39,8 @@
         <jojikDetailInfo v-if="mSelectedJojikTabIdx === 0" @openPop="openPop" @openUserInfo="openUserInfo" :pPageData="pPageData" :pSelectedApp="mSelectedBranch"/>
         <jojikUesrInfo v-if="mSelectedJojikTabIdx === 1" :pSelectedApp="mSelectedBranch" :pFilteredPageData="filteredPageData" :pAddUser="addUserYn" :pCloseAddUser="closeAddUser"/>
       </div>
-
     </div>
-  </div>
+
 </template>
 
 <script>
@@ -132,19 +130,13 @@ export default {
 </script>
 
 <style scoped>
-.commonPageWrap{
-  width:100%;
-  height:100%;
-  z-index:3;
-  padding:60px 20px 0;
-}
 .topArea{
   display:flex;
   align-items:center;
   justify-content:start;
   gap:1rem;
   height:auto;
-  padding:20px 0;
+  padding:0px 0 20px;
 }
 .myInfoArea{
   display:flex;

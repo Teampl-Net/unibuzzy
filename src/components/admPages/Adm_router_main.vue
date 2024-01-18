@@ -1,6 +1,5 @@
 <template>
   <div id="routerRef" class="w-100P h-100P mainBackgroundColor listRefresh" style="overflow:hidden"  >
-  <div v-if="popUpShow" class="backDark"></div>
   <gAdmPopWrap v-if="popUpShow" :pPropParams="propParams" :pClosePop="closePop"/>
   <gAdmPageWrap v-if="pageShow" @changeBranch="changeBranch" @openPop="openPop" :pPropParams="propParams" :pPageData="pageData" :pClosePage="closePage"/>
   <commonHeader />
@@ -50,8 +49,12 @@ export default {
       this.popUpShow = false
     },
     openPage (propParams) {
-      this.propParams = propParams
-      this.pageData = propParams.selBranch
+      if (propParams) {
+        this.propParams = propParams
+        if (propParams.pageType === 'jojikDetail') {
+          this.pageData = propParams.selBranch
+        }
+      }
       this.pageShow = true
     },
     closePage () {
@@ -68,13 +71,4 @@ export default {
 
 <style scoped>
 
-.backDark{
-  position:fixed;
-  top:0;
-  left:0;
-  height:100%;
-  width:100%;
-  background-color:rgba(0,0,0,0.3);
-  z-index:2;
-}
 </style>
