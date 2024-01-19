@@ -4,10 +4,11 @@
         <img :src="require(`@/assets/images/common/icon_back.png`)" :alt="뒤로가기"/>
       </div>
       <div class="myInfoArea">
-        <select v-model="mSelectedBranch" @change="changeSelectedBranch(event)" style="height:30px;">
-          <option v-for="(branch, index) in pPropParams.branch" :key="index" :value="branch">{{ branch.name }}</option>
+        <select v-model="mSelectedBranch" @change="changeSelectedBranch" style="height:30px;">
+          <option v-for="(branch, index) in pPropParams.branch" :key="index" :value="branch">{{ branch.orgName }}</option>
         </select>
-        <p class="font30" style="padding-left:10px;">IN {{ pPropParams ? pPropParams.myApps.title : '' }}</p>
+        <!-- <p class="font30" style="padding-left:10px;">IN {{ pPropParams.myApps ? pPropParams.myApps.title : '' }}</p> -->
+        <p class="font30" style="padding-left:10px;">관리자 페이지</p>
       </div>
     </div>
 
@@ -66,7 +67,7 @@ export default {
   },
   data () {
     return {
-      mSelectedBranch: {},
+      mSelectedBranch: '',
       mSelectedBranchIdx: 0,
       selectedAppName: '',
       mSelectedJojikTabIdx: 0,
@@ -77,7 +78,7 @@ export default {
       mSearchData: '',
       selectedManage: '전체',
       addUserYn: false,
-      changedBranch: {},
+      changedBranch: '',
       fromWhere: {},
       propParams: {},
       mMOrgUserList: []
@@ -99,9 +100,8 @@ export default {
       this.propParams.orgKey = this.pPageData.orgKey
       this.$emit('openPop', this.propParams)
     },
-    changeSelectedBranch (event) {
-      this.changedBranch = event
-      this.$emit('changeBranch', this.changedBranch)
+    changeSelectedBranch () {
+      console.log('this.mSelectedBranch', this.mSelectedBranch)
     },
     openUserInfo (param) {
       console.log('jojikDetailWrap emit param', param)

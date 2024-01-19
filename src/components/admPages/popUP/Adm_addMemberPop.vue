@@ -1,9 +1,9 @@
 <template>
-  <userImgSelectCompo v-if="changeImageYn" :pSelectedIconPath="mDomainPath + mUserProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey"  @no="closeChangeImg"/>
+  <userImgSelectCompo v-if="changeImageYn" :pSelectedIconPath="mDomainPath + mUserProfileImg" :parentSelectedIconFileKey="this.GE_USER.picMfilekey" :isAdmTrue="true" @no="closeChangeImg"/>
 
   <div id="layout" class="w100P alignCenter" style="flex-direction:column; gap:1rem; justify-content:space-between;">
     <div class="w100P alignCenter" style="flex-direction:column;">
-      <div v-if="infoMemberName === ''" @click="openChangImg" class="profileImg cursorP" style="background-color:#fff;">click to add photo</div>
+      <div v-if="infoMemberName === ''" @click="openChangImg" class="profileImg cursorP" :style="'background-image: url(' + mUserProfileImg + ');'"></div>
       <div v-else @click="openChangImg" class="profileImg cursorP"  :style="'background-image: url('+ (GE_USER.domainPath ? GE_USER.domainPath + this.$changeUrlBackslash(GE_USER.userProfileImg) : GE_USER.userProfileImg) +');'">
       </div>
 
@@ -63,6 +63,7 @@ export default {
   },
   data () {
     return {
+      isAdmTrue: true,
       infoMemberName: '',
       infoMemberNumber: '',
       infoMemberMail: '',
@@ -79,7 +80,7 @@ export default {
       ],
       changeImageYn: false,
       mDomainPath: '',
-      mUserProfileImg: ''
+      mUserProfileImg: '/resource/channeliconbg/CHAR01.png'
     }
   },
   methods: {
