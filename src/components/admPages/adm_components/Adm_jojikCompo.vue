@@ -22,7 +22,7 @@ export default {
     pBranch: {}
   },
   created () {
-    console.log('jojikCompo pBranch', this.pBranch)
+    // console.log('jojikCompo pBranch', this.pBranch)
   },
   data () {
     return {

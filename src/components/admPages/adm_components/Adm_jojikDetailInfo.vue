@@ -30,7 +30,7 @@
         </div>
         <div class="w100P" style="display:flex; align-items:center; justify-content:space-between; text-align:left;">
           <p class="font14" style="calc(100% - 20px);">🤵🏻‍♂️{{ pSelectedApp.founder ? pSelectedApp.founder : '대표명 (010-1111-1111)' }}</p>
-          <p @click="openPop" class="font16 cursorP" style="width:20px;">⚙️</p>
+          <p @click="openPop('editGroup')" class="font16 cursorP" style="width:20px;">⚙️</p>
         </div>
       </div>
     </div>
@@ -77,7 +77,8 @@ export default {
   data () {
     return {
       moreOpen: false,
-      addManagerTypeYn: false
+      addManagerTypeYn: false,
+      propParams: {}
     }
   },
   methods: {
@@ -93,8 +94,10 @@ export default {
     showMore () {
       this.moreOpen = !this.moreOpen
     },
-    openPop () {
-      this.$emit('openPop')
+    openPop (popType) {
+      this.propParams = this.pSelectedApp
+      this.propParams.popType = popType
+      this.$emit('openPop', this.propParams)
     },
     openUserInfo (param) {
       console.log('jojnikDetailInfo emit param', param)
@@ -120,8 +123,7 @@ export default {
   width:70px;
   height:70px;
   border-radius:50%;
-  border:1px solid gray;
-  background-color:#ebebeb;
+  background-color:pink;
 }
 .textInfo{
   text-align:left;

@@ -2,7 +2,7 @@
     <!-- <div v-if="popType !== 'addGroup' && popType !== 'addMember' " class="backDark"></div> -->
 
     <div class="commonPopWrap">
-      <addGroupPop v-if="popType === 'addGroup'" @saveGroup="saveGroup" :pClosePop="pClosePop" :pGetOrgList="pGetOrgList"/>
+      <addGroupPop v-if="popType === 'addGroup' || popType === 'editGroup'" @saveGroup="saveGroup" :pPropParams="pPropParams" :pClosePop="pClosePop" :pGetOrgList="pGetOrgList"/>
       <addMemberPop v-if="popType === 'addMember'" :pClosePop="pClosePop" :pOrgList="pOrgList" :pPropParams="pPropParams"/>
     </div>
 </template>

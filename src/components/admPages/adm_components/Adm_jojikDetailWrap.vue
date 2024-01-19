@@ -5,7 +5,7 @@
       </div>
       <div class="myInfoArea">
         <select v-model="mSelectedBranch" @change="changeSelectedBranch" style="height:30px;">
-          <option v-for="(branch, index) in pPropParams.branch" :key="index" :value="branch">{{ branch.orgName }}</option>
+          <option v-for="(branch, index) in mBranchList" :key="index" :value="branch">{{ branch.orgName }}</option>
         </select>
         <!-- <p class="font30" style="padding-left:10px;">IN {{ pPropParams.myApps ? pPropParams.myApps.title : '' }}</p> -->
         <p class="font30" style="padding-left:10px;">관리자 페이지</p>
@@ -62,8 +62,9 @@ export default {
   },
   created () {
     console.log('jojikDetailWrap pPageData', this.pPageData)
-    console.log('pPropParams', this.pPropParams)
+    console.log('jojikDetailWrap pPropParams', this.pPropParams)
     this.mSelectedBranch = this.pPageData
+    this.mBranchList = this.pPropParams.branch
   },
   data () {
     return {
@@ -81,7 +82,8 @@ export default {
       changedBranch: '',
       fromWhere: {},
       propParams: {},
-      mMOrgUserList: []
+      mMOrgUserList: [],
+      mBranchList: []
       // filteredPageData: {}
     }
   },
@@ -89,8 +91,8 @@ export default {
     this.getMOrgMemberList()
   },
   methods: {
-    openPop () {
-      this.$emit('openPop')
+    openPop (param) {
+      this.$emit('openPop', param)
     },
     changeJojikTab (index) {
       this.mSelectedJojikTabIdx = index
@@ -144,6 +146,9 @@ export default {
     GE_USER () {
       return this.$store.getters['D_USER/GE_USER']
     }
+  },
+  watch: {
+
   }
 }
 </script>
@@ -173,11 +178,12 @@ export default {
   border-radius:20px 20px 0 0;
   background-color:#fff;
   border-bottom:2px solid #5F61BD;
-  margin-bottom:-2px;
+  margin-bottom:-1px;
 }
 .jojikTab.selected{
   border-bottom:2px solid #fff;
   font-weight:bold;
+  background-color:#fff;
 }
 .managerBtns{
   width:auto;
