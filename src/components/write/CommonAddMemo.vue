@@ -10,7 +10,7 @@
   </i18n>
 <template>
   <!-- <div id="layout" :style="{'background-color' : mMemoColor, 'background-image': `linear-gradient(-135deg, transparent 36px, ${mMemoColor} 0)` }"> -->
-  <div id="layout" :style="{background : `linear-gradient(-405deg, transparent 36px, ${mMemoColor} 0)`}">
+  <div id="layout" @click.stop="memoColorChoice = false" :style="{background : `linear-gradient(-405deg, transparent 36px, ${mMemoColor} 0)`}">
     <div class="foldedDeco" :style="{background : `linear-gradient(-405deg, transparent 36px, ${mMemoFolded} 0)`}"></div>
     <div class="w100P" style="height:calc(100% - 60px); display:flex; flex-direction:column; align-items:center; justify-content:space-between;">
       <div class="w100P" style="height:30px; display:flex; align-items:center; justify-content:space-between;">
@@ -33,24 +33,27 @@
         </div>
       </div>
         <div class="w100P" style="height:calc(100% - 40px); padding-top:20px;">
-          <textarea class="w100P memoBodyArea mtop-05" @click="changeBtn" v-model="memoBody" style="min-height:270px;">
+          <textarea class="w100P memoBodyArea mtop-05" @click="changeBtn" v-model="memoBody" style="min-height:300px;">
           </textarea>
-          <p class="font13 mTop-05" style="padding:0 8px; text-align:left; color:gray;">{{ memoDate ? memoDate : getDates(new Date()) }}</p>
         </div>
-      <div class="HeaderbtnWrap cursorP w100P" style="text-align:center; height:20px; display:flex; align-items:center; justify-content:center;">
-      </div>
     </div>
     <div style="width:calc(100% - 45px); display:flex; algin-items:center; justify-content:space-between; gap:0.3rem;">
-      <div style="display:flex; align-items:center; gap:0.3rem; position:relative;">
-        <button class="colorBtn" @click="openColorSelect" :class="{hasShadow : memoColorChoice}"><p style="min-width:23px; min-height:23px; border-radius:50%;" :style="{'background-color' : mMemoColor}"></p></button>
-        <div v-if="memoColorChoice" class="colorPal hasShadow">
-          <div v-for="(color, index) in mMemoColors" :key="index" @click="changeMemoColor(index)" class="cursorP" style="position:relative;">
-            <img v-if="mSelectedMemoColorIdx === index" :src="require(`@/assets/images/todo/selected.png`)" alt="selected Memo Color" style="width:13px; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);"/>
-            <img :src="color.image" style="width:30px;"/>
+      <p class="font13 mTop-05" style="padding:0 8px; text-align:left; color:gray;">{{ memoDate ? memoDate : getDates(new Date()) }}</p>
+      <div class="" style="display:flex; align-items:center;">
+        <div style="display:flex; align-items:center; gap:0.3rem; position:relative;">
+          <button class="colorBtn hasShadow" @click.stop="openColorSelect">
+            <!-- <p style="min-width:23px; min-height:23px; border-radius:50%;" :style="{'background-color' : mMemoColor}"></p> -->
+            <img style="width:25px;" :src="mMemoColors[mSelectedMemoColorIdx].image" />
+            </button>
+          <div v-if="memoColorChoice" class="colorPal hasShadow">
+            <div v-for="(color, index) in mMemoColors" :key="index" @click.stop="changeMemoColor(index)" class="cursorP" style="position:relative;">
+              <img v-if="mSelectedMemoColorIdx === index" :src="require(`@/assets/images/todo/selected.png`)" alt="selected Memo Color" style="width:13px; position:absolute; top:50%; left:50%; transform:translate(-50%, -50%);"/>
+              <img :src="color.image" style="width:30px;"/>
+            </div>
           </div>
         </div>
+        <button class="delBtn font14" @click="mConfirmPopShowYn = true"><img style="height:25px;" :src="require(`@/assets/images/todo/trash_gray.png`)"/></button>
       </div>
-      <button class="delBtn font14" @click="mConfirmPopShowYn = true">삭제</button>
     </div>
   </div>
   <gConfirmPop
@@ -280,6 +283,9 @@ export default {
 
   padding:20px;
   border-radius: 10px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
   /* box-shadow:-1px 12px 5px rgba(0,0,0,0.1); */
   /* border-radius: 0.8rem; */
 }
@@ -313,7 +319,7 @@ header {
   padding:0 10px;
   position:absolute;
   top:-40px;
-  left:0;
+  right:0;
 }
 .hasShadow{
   box-shadow:0 0 3px rgba(0,0,0,0.1);
@@ -341,7 +347,7 @@ button {
   }
   .delBtn {
     width:auto;
-    width:48px;
+    width:40px;
     height:35px;
     line-height:35px;
     border-radius:10px;
@@ -356,8 +362,8 @@ button {
   .colorBtn{
     background-color:#fff;
     border-radius:10px;
-    width:35px;
-    height:35px;
+    width:45px;
+    height:30px;
     display:flex;
     align-items:center;
     justify-content:center;
