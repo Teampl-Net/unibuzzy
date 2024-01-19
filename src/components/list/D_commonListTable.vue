@@ -23,10 +23,10 @@
             </td>
             <td @click="goChanDetail(value)" :class="{top5MyPushColor:  this.GE_USER.userKey === value.creUserKey}">
             <div style="width:100%; float: left; padding: 2px 0 ; min-height: 25px;">
-                <div v-if="value.jobkindId === 'ALIM'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{$t('COMMON_TAB_NOTI')}}</div>
-                <div v-else-if="value.jobkindId === 'BOAR'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMMON_TAB_POST')}}</div>
-                <div v-else-if="value.jobkindId === 'TODO'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMMON_TAB_TODO')}}</div>
-                <div v-else class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMM_TITLE_ELSE')}}</div>
+                <div v-if="value.jobkindId === 'ALIM'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#879dc9; color: #FFF; ">{{$t('COMMON_TAB_NOTI')}}</div>
+                <div v-else-if="value.jobkindId === 'BOAR'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #879dc9; font-weight: bold; border: 1px solid #879dc9  ">{{$t('COMMON_TAB_POST')}}</div>
+                <div v-else-if="value.jobkindId === 'TODO'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #879dc9; font-weight: bold; border: 1px solid #879dc9  ">{{$t('COMMON_TAB_TODO')}}</div>
+                <div v-else class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #879dc9; font-weight: bold; border: 1px solid #879dc9  ">{{$t('COMM_TITLE_ELSE')}}</div>
 
                 <p v-if="value.jobkindId === 'BOAR' && !(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey === this.GE_USER.userKey ) && (value.titleBlindYn === true || value.titleBlindYn === 1)" :v-html="$t('LIST_MSG_ACCESS')" class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 75px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;" />
                 <p v-else class="commonBlack textOverdot font15 fontBold" style="width: calc(100% - 75px); display: inline-block; white-space: nowrap; text-overflow: ellipsis;overflow: hidden;">
@@ -126,7 +126,7 @@ export default {
 </script>
 <style scoped>
 /* .top5PushListRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4;} */
-.top5MyPushColor { background-color: #6768a712;}
+.top5MyPushColor { background-color: #879dc912;}
 .top5PushChanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative;}
 .top5PushChanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
 .commonListTr{

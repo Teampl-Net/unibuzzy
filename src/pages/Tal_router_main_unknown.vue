@@ -17,7 +17,7 @@
         <router-view @openImgPop="openImgPop" ref="routerViewCompo"  :initData="sendInitData" @goSearchDirect="goSearchDirect" @scrollEvnt="this.scrollEvnt" :popYn="false" class="" style="margin-bottom: 100px" @openPop="openPop" @changePageHeader="changePageHeader" @goDetail="goDetail" @openUserProfile="openPop" />
     </div>
     <TalFooter v-if="$route.name!== 'contDetail'" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
-    <!-- <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div> -->
+    <!-- <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background-color: #879dc9; position: fixed; bottom: 90px; left: 20px; z-index: 999999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div> -->
   </div>
 </template>
 
@@ -466,7 +466,7 @@ export default {
       paramMap.set('fUserKey', this.GE_USER.userKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       try {
-        var result = await this.$getViewData({ url: 'https://www.hybric.net:9443/service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+        var result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.$showToastPop('채널을 찾을 수 없습니다!')
           return
@@ -641,7 +641,7 @@ export default {
   position: absolute;
   top: 30px;
 }
-.myPageBgColor {background-color: #dcddeb;}
+.myPageBgColor {background-color: #d1e1f2;}
 .test {
   display: flex;
   justify-content: center;
@@ -665,9 +665,9 @@ export default {
   box-sizing: border-box;
   width: 65%;
   max-width: 400px;
-  /* background-color: #6768a7; */
+  /* #879dc9; */
   background-color: white;
-  color: #5F61BD;
+  color: rgb(74 102 158);
   z-index: 1000;
   right: 0;
 }

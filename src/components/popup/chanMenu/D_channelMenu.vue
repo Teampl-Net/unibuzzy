@@ -35,8 +35,8 @@
     </div>
 
     <div class="fl w-100P h-100P" :style="'padding-top:' + (this.$STATUS_HEIGHT )+ 'px'"  style="overflow: hidden scroll;">
-      <div class="fl w-100P mtop-2" style="margin-top:50px; border-bottom: 2px solid #6768a730" >
-        <div class="fl font14 cursorP commonColor fontBold textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730" @click="boardDropDown">
+      <div class="fl w-100P mtop-2" style="margin-top:50px; border-bottom: 2px solid rgb(74 102 158)30" >
+        <div class="fl font14 cursorP commonColor fontBold textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid rgb(74 102 158)30" @click="boardDropDown">
           <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">{{ $t('COMMON_NAME_BOARD') }}</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.BOARD_CONTENT_LIST.length}})</span></p>
           <!-- <span class="fl mLeft-1"></span> -->
           <!-- ({{this.BOARD_CONTENT_LIST.length}}) -->
@@ -47,8 +47,8 @@
           <menuBoardList :propBoardList="this.BOARD_CONTENT_LIST" @boardContentsClick="boardContentsClick" />
         </div>
       </div>
-      <div v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ((this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))" class="fl w-100P" style="border-bottom: 2px solid #6768a730" :style="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
-        <div class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="bookDropDown">
+      <div v-if="this.CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || ((this.CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1))" class="fl w-100P" style="border-bottom: 2px solid rgb(74 102 158)30" :style="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
+        <div class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid rgb(74 102 158)30"  @click="bookDropDown">
           <p class="mleft-1 fl font18" style="min-width: 150px;"><span class="font18 fl commonColor">{{ $t('COMMON_NAME_ADDRBOOK') }}</span><span class="fl mleft-05 commonColor font16" style="line-height: 26px;">({{this.CABINET_LIST.length}})</span></p>
           <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn" style=" margin-top : 0.5rem;" >
           <img v-show="this.CABINET_LIST.length !== 0 && mAddressDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
@@ -59,7 +59,7 @@
       </div>
 
       <div v-if="!GE_USER.unknownYn" class="fl w-100P" style="">
-        <div class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="convenienceFuncDropdown">
+        <div class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid rgb(74 102 158)30"  @click="convenienceFuncDropdown">
           <p class="mleft-1 fl font18 commonColor" >{{ $t('CHAN_MENU_QUICK') }}</p>
           <img v-show="mConvDropEvenYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn " style=" margin-top : 0.5rem;" >
           <img v-show="mConvDropEvenYn !== true" src="../../../assets/images/common/icon_dropdown.svg" class="fr dropdownBtn " style="margin-top : 0.5rem;" >
@@ -217,7 +217,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getTeamMenuList',
+        url: '/sUniB/tp.getTeamMenuList',
         param: Object.fromEntries(paramMap)
       }, !(loadingYn === false))
       var tempList = []
@@ -475,7 +475,7 @@ export default {
   border-bottom-left-radius: 10px;
   }
 
-.editColor{ color: #6768a7 !important; }
+.editColor{ color: rgb(74 102 158) !important; }
 .editWhiteColor{ color: #fff; }
 .editRow{ padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid #ccc; }
 

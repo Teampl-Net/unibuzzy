@@ -192,7 +192,7 @@ export default {
   overflow:hidden;
   white-space:nowrap;
   text-overflow:ellipsis;
-  color: #062bb5;
+  color: rgb(74 102 158);
 }
 .bellIconBox {
   height: 44px;

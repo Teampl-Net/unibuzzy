@@ -1,6 +1,6 @@
 <template>
   <div v-if="propReqData" id="resultReqMemberPop" style="width: 90%; min-height: 300px; max-height: 800px; position: absolute; z-index: 110; top: 18%; left: 5%; background: #FFF; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem; ">
-    <div style="width: 100%; position: relative; height: 50px; border-bottom: 1px solid #6768A7; float: left; padding: 10px 20px;">
+    <div style="width: 100%; position: relative; height: 50px; border-bottom: 1px solid rgb(74 102 158); float: left; padding: 10px 20px;">
         <p class="font20 fontBold commonColor textLeft">멤버신청 결과</p>
     </div>
     <div  style="width: 100%; height: 200px; overflow: hidden auto; padding: 10px 20px; float: left;">
@@ -56,7 +56,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.propMemberData.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMemberTypeItemList',
+        url: '/sUniB/tp.getMemberTypeItemList',
         param: param
       })
       console.log(memberTypeItemList)
@@ -70,7 +70,7 @@ export default {
           }
           typeParam.memberTypeKey = this.propMemberData.memberTypeKey
           await this.$commonAxiosFunction({
-            url: 'https://www.hybric.net:9443/service/tp.saveFollower',
+            url: '/sUniB/tp.saveFollower',
             param: { follower: typeParam }
           })
           this.closeXPop(true)
@@ -108,7 +108,7 @@ export default {
       param.memberInfoList = ansList
       console.log(param.memberInfoList)
       var memberResult = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveFollowerMemberInfo',
+        url: '/sUniB/tp.saveFollowerMemberInfo',
         param: param
       })
       console.log(memberResult)

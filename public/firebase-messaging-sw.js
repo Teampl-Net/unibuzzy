@@ -8,8 +8,8 @@
 // Note that you can only use Firebase Messaging here, other Firebase libraries
 // are not available in the service worker.
 /* import { publicFunction } from './commonAssets/D_publicFunction' */
-importScripts('https://www.gstatic.com/firebasejs/7.20.0/firebase.js')
-importScripts('https://www.gstatic.com/firebasejs/7.20.0/firebase-messaging.js')
+// importScripts('https://www.gstatic.com/firebasejs/7.20.0/firebase.js')
+// importScripts('https://www.gstatic.com/firebasejs/7.20.0/firebase-messaging.js')
 // Initialize the Firebase app in the service worker by passing in the
 // messagingSenderId.
 
@@ -47,9 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
 }
 
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app() */
-importScripts('https://www.gstatic.com/firebasejs/8.4.3/firebase-app.js')
-importScripts('https://www.gstatic.com/firebasejs/8.4.3/firebase-messaging.js')
-
 var firebaseConfig = {
   apiKey: 'AIzaSyCNLjqHR8F9kQKma056lThVIu5v2JsfSAg',
   authDomain: 'thealim-2602c.firebaseapp.com',
@@ -59,9 +56,11 @@ var firebaseConfig = {
   appId: '1:777053173385:web:46b92863d81076f61d3858',
   measurementId: 'G-NHD2EKJML0'
 }
-firebase.initializeApp(firebaseConfig)
-firebase.messaging()
-const messaging = firebase.messaging()
+if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
+  firebase.initializeApp(firebaseConfig)
+  const messaging = firebase.messaging()
+  firebase.messaging()
+}
 var push_url
 
 self.addEventListener('push', event => {

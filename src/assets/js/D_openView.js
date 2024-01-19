@@ -35,7 +35,7 @@ export const openView = {
     paramMap.set('currentTeamKey', param.teamKey)
     paramMap.set('cabinetKey', param.cabinetKey)
 
-    var result = await commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.getCabinetMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
+    var result = await commonAxiosFunction({ url: '/sUniB/tp.getCabinetMainBoard', param: Object.fromEntries(paramMap) }, nonLoadingYn)
     if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
       commonMethods.showToastPop('해당 게시판의 정보를 찾을 수 없습니다!')
       return
@@ -61,7 +61,7 @@ export const openView = {
       delete paramSet.creTeamKey
       delete paramSet.teamKey
     }
-    var contentDetail = await commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.getMyContentsList', param: paramSet }, nonLoadingYn)
+    var contentDetail = await commonAxiosFunction({ url: '/sUniB/tp.getMyContentsList', param: paramSet }, nonLoadingYn)
     console.log(contentDetail)
     if (!contentDetail || !contentDetail.data) {
       commonMethods.showToastPop('해당 컨텐츠의 정보를 찾을 수 없습니다!')
@@ -110,7 +110,7 @@ export const openView = {
   },
   async getBoardList (paramMap) {
     var result = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getTeamMenuList',
+      url: '/sUniB/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
     })
     console.log(result)
@@ -120,7 +120,7 @@ export const openView = {
   },
   async getBookList (paramMap) {
     var result = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getTeamMenuList',
+      url: '/sUniB/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
     })
     console.log(result)
@@ -145,7 +145,7 @@ export const openView = {
     var param = {}
     param.userKey = store.getters['D_USER/GE_USER'].userKey
     param.codeLang = 'ko'
-    var response = await commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.getMyPageBoard', param: param }, false)
+    var response = await commonAxiosFunction({ url: '/sUniB/tp.getMyPageBoard', param: param }, false)
     // eslint-disable-next-line no-debugger
     debugger
     // eslint-disable-next-line no-new-object
@@ -166,7 +166,7 @@ export const openView = {
     if (this.mSocialMainYn !== undefined && this.mSocialMainYn === false) {
       paramMap.set('portalYn', true)
     }
-    var response = await commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.getMainBoard', param: Object.fromEntries(paramMap) }, false)
+    var response = await commonAxiosFunction({ url: '/sUniB/tp.getMainBoard', param: Object.fromEntries(paramMap) }, false)
     // eslint-disable-next-line no-debugger
     debugger
     console.log('getMainBoard', response)
@@ -193,7 +193,7 @@ export const openView = {
   async getUnknownMainBoard () {
     var paramMap = new Map()
     paramMap.set('ownUserKey', store.getters['D_USER/GE_USER'].userKey)
-    var response = await axios.post('https://www.hybric.net:9443/service/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
+    var response = await axios.post('/sUniB/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
     )
     if (response && response.status && (response.status === 200 || response.status === '200')) {
       // eslint-disable-next-line no-new-object
@@ -209,7 +209,7 @@ export const openView = {
     paramMap.set('cateGroupKey', 2)
     paramMap.set('orderbyStr', 'followerCount DESC')
     paramMap.set('creUserKey', store.getters['D_USER/GE_USER'].userKey)
-    var response = await commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, false)
+    var response = await commonAxiosFunction({ url: '/sUniB/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, false)
     // eslint-disable-next-line no-debugger
     debugger
     if (response.data.result === 'OK') {
@@ -222,7 +222,7 @@ export const openView = {
     var paramMap = new Map()
     paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
     var response = await methods.getTeamList(paramMap)
-    // var response = await commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, false)
+    // var response = await commonAxiosFunction({ url: '/sUniB/tp.getSearchMainBoard', param: Object.fromEntries(paramMap) }, false)
     // eslint-disable-next-line no-debugger
     debugger
     console.log(response)
@@ -243,7 +243,7 @@ export const openView = {
     paramMap.set('shareType', 'W')
     paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
     // console.log(paramMap)
-    var response = await commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.getCabinetListForMyShareType', param: Object.fromEntries(paramMap) }, false)
+    var response = await commonAxiosFunction({ url: '/sUniB/tp.getCabinetListForMyShareType', param: Object.fromEntries(paramMap) }, false)
     console.log(response)
     if (response && response.status && (response.status === 200 || response.statusText === 'OK')) {
       resultData = response.data
@@ -260,7 +260,7 @@ export const openView = {
     // paramMap.set('shareType', 'W')
     // paramMap.set('userKey', store.getters['D_USER/GE_USER'].userKey)
     // // console.log(paramMap)
-    // var response = await commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.getTeamMenuList', param: Object.fromEntries(paramMap) }, false)
+    // var response = await commonAxiosFunction({ url: '/sUniB/tp.getTeamMenuList', param: Object.fromEntries(paramMap) }, false)
     // console.log(response)
     // if (response && response.status &&  (response.status === 200 || response.statusText === 'OK')) {
     //   resultData.teamList = response.data
@@ -268,8 +268,8 @@ export const openView = {
     // // console.log(paramMap)
     // response = null
     // response = await this.$commonAxiosFunction({
-    //   // url: 'https://www.hybric.net:9443/service/tp.getCabinetDetail',
-    //   url: 'https://www.hybric.net:9443/service/tp.getCabinetListForMyShareType',
+    //   // url: '/sUniB/tp.getCabinetDetail',
+    //   url: '/sUniB/tp.getCabinetListForMyShareType',
     //   param: Object.fromEntries(paramMap)
     // }, true)
     // console.log(response)
@@ -280,7 +280,7 @@ export const openView = {
   },
   async getFollowerList (paramMap) {
     var result = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
+      url: '/sUniB/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
     })
     debugger
@@ -295,7 +295,7 @@ export const openView = {
     paramMap.set('sysCabinetCode', 'USER')
     paramMap.set('adminYn', true)
     var result = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getTeamMenuList',
+      url: '/sUniB/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
     })
     console.log(result)
@@ -320,7 +320,7 @@ export const openView = {
     }
     paramMap.set('offsetInt', 0)
     paramMap.set('pageSize', 10)
-    var result = await commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.getUserTeamList', param: Object.fromEntries(paramMap) }, false)
+    var result = await commonAxiosFunction({ url: '/sUniB/tp.getUserTeamList', param: Object.fromEntries(paramMap) }, false)
     console.log(result)
     if (result.status === 200 || result.statusText === 'OK') {
       return result.data
@@ -334,7 +334,7 @@ export const openView = {
       paramSet = inputParam
       paramSet.subsUserKey = store.getters['D_USER/GE_USER'].userKey
     }
-    var result = await commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.getMyContentsList', param: paramSet }, false)
+    var result = await commonAxiosFunction({ url: '/sUniB/tp.getMyContentsList', param: paramSet }, false)
     console.log(result)
     return result.data
   }

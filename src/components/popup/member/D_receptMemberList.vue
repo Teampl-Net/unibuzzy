@@ -250,6 +250,6 @@ export default {
   }
 }
 
-.reqPicImgWrap {width: 28px; height: 28px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex; margin-right: 5px}
+.reqPicImgWrap {width: 28px; height: 28px; border-radius: 100%; border:1.5px solid rgb(74 102 158); float: left; background-color: #879dc945; overflow: hidden; display: flex; margin-right: 5px}
 .reqPicImgWrap img {width: 100%;}
 </style>

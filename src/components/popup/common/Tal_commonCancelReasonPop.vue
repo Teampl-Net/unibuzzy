@@ -47,7 +47,7 @@ export default {
 </script>
 
 <style>
-.reasonPopHeader{height: 45px; width: 100%; float: left; border-bottom: 1px solid #6768A7; padding: 5px 15px;}
+.reasonPopHeader{height: 45px; width: 100%; float: left; border-bottom: 1px solid rgb(74 102 158); padding: 5px 15px;}
 .reasonPopHeader img {
     width: 28px;
     margin-right: 10px;

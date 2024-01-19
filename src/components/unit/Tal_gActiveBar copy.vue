@@ -1,13 +1,13 @@
 <template>
 <!-- :class="{ssss: tabList.length > 3}" -->
     <div style="float: left; width: 100%;margin-top: 0;" :style="this.modeType === 'write' ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
-        <div ref="tabbar" class="pagePaddingWrap" style="padding-top: 10px; background: #FFF; border-bottom: 0.5px solid #6768A78A; height: 40px; float: left; position: relative; width: 100%;" :style="this.modeType === 'write' ? 'background: transparent' : ''" >
+        <div ref="tabbar" class="pagePaddingWrap" style="padding-top: 10px; background: #FFF; border-bottom: 0.5px solid rgb(74 102 158)8A; height: 40px; float: left; position: relative; width: 100%;" :style="this.modeType === 'write' ? 'background: transparent' : ''" >
             <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;">
                 <!-- <p :style="activebarWidth" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p> -->
                 <p :style="activebarWidth" :class="{mWidth : tabTrimLength(tab.display) > 3}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
             </div>
-            <!-- <div class="activeBar"  ref="activeBar" :style="activebarWidth" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div> -->
-            <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
+            <!-- <div class="activeBar"  ref="activeBar" :style="activebarWidth" style="position: absolute; background-color: #879dc9;  height: 3px; border-radius: 3px;"></div> -->
+            <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background-color: #879dc9;  height: 3px; border-radius: 3px;"></div>
             <div style="float: left; width: 100%; min-height: 6px;" v-if="searchYn">
                 <div class="fr" style="position: absolute; height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
                 <!-- <div class="activeSearchInput fl" @click="this.$emit('openFindPop')" ref="alimSearchKey" /> -->

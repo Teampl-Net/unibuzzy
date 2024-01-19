@@ -42,7 +42,7 @@ export default {
   padding: 10px;
   border-radius: 10px;
   background-color: #fff;
-  box-shadow: 0 0 7px 3px #6768a740;
+  box-shadow: 0 0 7px 3px rgb(74 102 158)40;
   z-index: 99999;
   margin-left: 10%;
   margin-right: 10%;

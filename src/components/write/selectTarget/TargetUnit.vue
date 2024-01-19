@@ -262,7 +262,7 @@ export default {
       params.cabinetKey = this.pTargetData.accessKey
       params.accessKey = this.pTargetData.accessKey
       params.emitType = 'DELETEBOOK'
-      params.axiosUrl = 'https://www.hybric.net:9443/service/tp.deleteCabinet'
+      params.axiosUrl = '/sUniB/tp.deleteCabinet'
       this.$emit('targetEmitFunction', params)
     },
     deleteUser () {
@@ -270,7 +270,7 @@ export default {
       params.jobkindId = 'USER'
       params.mccKey = this.pTargetData.mccKey
       params.accessKey = this.pTargetData.accessKey
-      params.axiosUrl = 'https://www.hybric.net:9443/service/tp.deleteMCabContents'
+      params.axiosUrl = '/sUniB/tp.deleteMCabContents'
       params.emitType = 'DELETEUSER'
       this.$emit('targetEmitFunction', params)
     }
@@ -319,8 +319,8 @@ export default {
   height: 20px;
   left: 330px;
   top: 25px;
-  background: #5F61BD;
-  border: 1.5px solid #5F61BD;
+  background-color: #879dc9;
+  border: 1.5px solid rgb(74 102 158);
   border-radius: 50%;
 }
 .rowBaseCss {
@@ -370,7 +370,7 @@ export default {
   width: 20px;
   height: 20px;
   border-radius: 100%;
-  border: 1px solid #5F61BD;
+  border: 1px solid rgb(74 102 158);
   display: flex;
   justify-content: center;
   align-items: center;

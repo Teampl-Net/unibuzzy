@@ -31,9 +31,9 @@
                         </div>
                         <div v-if="this.searchFilterList.length > 0" style="width: calc(100% - 30px); margin-bottom: 2px; min-height: 25px; display: flex; margin-top: 5px; justify-content: space-around; align-items: center; float: right;">
                           <div class="filterWrap font12"><div  class="filterTagBox">{{ data.sSub1?  '#' + data.sSub1 : ''}}</div></div>
-                          <div style="width: 1px; height: 20px; background: #6768a745;"></div>
+                          <div style="width: 1px; height: 20px; background-color: #879dc945;"></div>
                           <div class="filterWrap font12"><div  class="filterTagBox" style="  ">{{data.sSub2? '#' + data.sSub2 : ''}} </div></div>
-                          <div style="width: 1px; height: 20px; background: #6768a745;"></div>
+                          <div style="width: 1px; height: 20px; background-color: #879dc945;"></div>
                           <div class="filterWrap font12"><div   class="filterTagBox" style="  ">{{data.sSub3? '#' + data.sSub3 : ''}}</div></div>
                         </div> <!-- :style="data.sSub3 ? 'background:ghostWhite;': ''" -->
                     </div>
@@ -189,7 +189,7 @@ export default {
         param.mccKey = data.mccKey
         param.jobkindId = data.jobkindId
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteMCabContents',
+          url: '/sUniB/tp.deleteMCabContents',
           param: param
         })
         if (result.data === 'true' || result.data === true) {
@@ -252,7 +252,7 @@ export default {
 </script>
 
 <style >
-.selectedBox{background-color:#6768A720;}
+.selectedBox{background-color:rgb(74 102 158)20;}
 .receiverTeamMemberArea{float: left;  width: 100%;}
 /* .receiverTeamMemberCard{display: flex; flex-direction: row; align-items: center; justify-content: space-between; border-bottom:1px solid #eee;  padding: 0.7rem 0} */
 
@@ -269,9 +269,9 @@ export default {
 
 }
 
-.memberPicImgWrap {width: 30px; margin-top: 5px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex;}
+.memberPicImgWrap {width: 30px; margin-top: 5px; height: 30px; border-radius: 100%; border:1.5px solid rgb(74 102 158); float: left; background-color: #879dc945; overflow: hidden; display: flex;}
 .memberPicImgWrap img {width: 100%;}
 .receiverTeamMemberCard {border-bottom:1px solid #ddd; cursor: pointer; padding: 10px 10px; padding-bottom: 0;}
-.filterTagBox {/* border: 1px solid #6768a745;  */padding: 0 10px; min-height: 20px; line-height: 20px; min-width: 80px; float: left; border-radius: 15px;}
+.filterTagBox {/* border: 1px solid rgb(74 102 158)45;  */padding: 0 10px; min-height: 20px; line-height: 20px; min-width: 80px; float: left; border-radius: 15px;}
 .filterWrap{width: 33.3%; display: flex; justify-content: center;}
 </style>

@@ -48,7 +48,7 @@ export default {
       // param.formKey = this.propData.formKey
       // param.teamKey = this.propData.teamKey
       // var result = await this.$commonAxiosFunction({
-      //   url : 'https://www.hybric.net:9443/service/tp.getMQuestion',
+      //   url : '/sUniB/tp.getMQuestion',
       //   param: param
       // })
       // this.mQuestList = result

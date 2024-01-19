@@ -263,9 +263,9 @@ button {
   height:35px;
   line-height:33px;
   border-radius:20px 20px 0 0;
-  background-color:#F1F1FF;
+  background-color: #879dc92b;
   border:2px solid #F1F1FF;
-  color:#5f61bd !important;
+  color:rgb(74 102 158) !important;
   font-weight:bold;
   display:inline-block;
   text-align:center;
@@ -282,16 +282,16 @@ button {
 .mSelectedMemo{
   background-color:#fff !important;
   border:2px solid #fff !important;
-  border-top:2px solid #5f61bd !important;
-  border-left:2px solid #5f61bd !important;
-  border-right:2px solid #5f61bd !important;
+  border-top:2px solid rgb(74 102 158) !important;
+  border-left:2px solid rgb(74 102 158) !important;
+  border-right:2px solid rgb(74 102 158) !important;
 }
 .titleInput{
   overflow-y:scroll; white-space:wrap;
   padding:10px 15px 15px;
   border:none;
   outline:none;
-  background-color:#F1F1FF;
+  background-color: #879dc92b;
   outline:none;
   font-size:19px;
   height:45px;

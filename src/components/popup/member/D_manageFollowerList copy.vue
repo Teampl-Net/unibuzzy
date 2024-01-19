@@ -22,7 +22,7 @@
     <div v-if="receptListPopShowYn" style="width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000050; z-index: 999999;" > </div>
     <div v-if="receptListPopShowYn" style="width: calc(100% - 40px); height: 90%; position: absolute; left: 20px; bottom: 0px; background: #fff; border-radius: 0.8rem 0.8rem 0 0; z-index: 99999999;">
         <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
-            <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">멤버관리</p>
+            <p class="textLeft font20 commonColor fontBold" style="color: rgb(74 102 158)!important">멤버관리</p>
             <img @click="closeRecMemberPop" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
         <div style="width: 100%; height: calc(100% - 60px); float: left; padding: 10px 20px;">
@@ -149,7 +149,7 @@ export default {
       param.reqMemberStatus = '99'
       params = { follower: param, doType: 'AP' }
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveFollower',
+        url: '/sUniB/tp.saveFollower',
         param: params
       })
       console.log('params')
@@ -174,7 +174,7 @@ export default {
       }
 
       result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
+          url: '/sUniB/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
         debugger
@@ -191,7 +191,7 @@ export default {
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
+          url: '/sUniB/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
         debugger
@@ -217,7 +217,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.deleteManager',
+        url: '/sUniB/tp.deleteManager',
         param: param
       })
 
@@ -226,7 +226,7 @@ export default {
       var param = {}
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveManager',
+        url: '/sUniB/tp.saveManager',
         param: param
       })
     },
@@ -248,7 +248,7 @@ export default {
 
 
       var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.saveManager',
+          url: '/sUniB/tp.saveManager',
           param: param
       })
 

@@ -47,7 +47,7 @@
                   <img  src="../../../assets/images/common/icon-turn-right.svg" style="float: left; margin-left: 10px; margin-right: 5px; margin-top: 15px;max-width:20px;" class=" " alt="">
                   <div class="MemoBorder" style="width: calc(100% - 50px);"></div>
                   <div :id="cMemo.memoKey" style="width: calc(100% - 40px); padding: 10px; padding-right: 0; padding-bottom: 0; border-radius: 10px; min-height: 20px; float: left; margin: 10px 0;">
-                      <div @click="memoUserNameClick({userKey :cMemo.creUserKey, contentsKey : cMemo.targetKey })" :style="'background-image: url(' + (cMemo.domainPath? cMemo.domainPath + cMemo.userProfileImg : cMemo.userProfileImg) + ')'" v-if="cMemo.userProfileImg"  class="" style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; overflow: hidden; float: left;  border: 1.5px solid #6768a7;   background-size: cover; background-position: center; "></div>
+                      <div @click="memoUserNameClick({userKey :cMemo.creUserKey, contentsKey : cMemo.targetKey })" :style="'background-image: url(' + (cMemo.domainPath? cMemo.domainPath + cMemo.userProfileImg : cMemo.userProfileImg) + ')'" v-if="cMemo.userProfileImg"  class="" style="width: 25px; height: 25px; margin-right: 10px; border-radius: 100%; overflow: hidden; float: left;  border: 1.5px solid rgb(74 102 158);   background-size: cover; background-position: center; "></div>
                       <img v-else src="../../../../public/resource/userCommonIcon/userImg01.png" style="min-height: 30px; width: 30px; float: left;  margin-right: 10px;" />
                       <div style="width: 100%; min-height: 25px; margin-bottom: 10px; line-height: 25px;">
                           <img class="fr mright-05 mtop-03" style="width:4.5px;" @click="contentMenuClick('memo', cMemo.creUserKey == this.GE_USER.userKey, cMemo, index, cIndex)" src="../../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
@@ -183,7 +183,7 @@ export default {
       var findMemoCard = window.document.getElementById('rowMemoCard' + memoKey)
       if (findMemoCard) {
         // setTimeout(() => {
-        findMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
+        findMemoCard.style.boxShadow = '0 0 15px 4px rgb(74 102 158)5c'
         findMemoCard.style.transition = 'box-shadow 0.7s ease-in-out'
         setTimeout(() => {
           findMemoCard.style.boxShadow = 'none'
@@ -270,7 +270,7 @@ export default {
       memo.deleteYn = false
       // console.log(memo)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveMemo',
+        url: '/sUniB/tp.saveMemo',
         param: { memo: memo }
       })
       // console.log(result)
@@ -339,7 +339,7 @@ float: right; width: 40px; height: 100%; text-align: center;
   width: calc(100% - 30px) !important;
   float: right !important;
 }
-.memoPicImgWrap {width: 30px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex; margin-right: 10px}
+.memoPicImgWrap {width: 30px; height: 30px; border-radius: 100%; border:1.5px solid rgb(74 102 158); float: left; background-color: #879dc945; overflow: hidden; display: flex; margin-right: 10px}
 .memoPicImgWrap img {width: 100%;}
 
 .MemoBorder{

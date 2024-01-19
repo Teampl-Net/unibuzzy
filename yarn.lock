@@ -2081,17 +2081,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@intlify/core-base@npm:9.8.0":
-  version: 9.8.0
-  resolution: "@intlify/core-base@npm:9.8.0"
+"@intlify/core-base@npm:9.9.0":
+  version: 9.9.0
+  resolution: "@intlify/core-base@npm:9.9.0"
   dependencies:
-    "@intlify/message-compiler": 9.8.0
-    "@intlify/shared": 9.8.0
-  checksum: 3e34ef70d378d45c8e579b930f57af8f9b55d4c81e1ae9c2626f720930c785905a35f5ef415d70aa3aa0a899270bf27fec880909bf54f2dc3555bcbdc0448c6a
+    "@intlify/message-compiler": 9.9.0
+    "@intlify/shared": 9.9.0
+  checksum: 4d48588720ec736db80d9bef8ef7ebcc3ba1d7b8da0995eafa22b4e3be82166ceb97aefcdc0fd9bf17d56e8dd818237c1ad1082bf35fb042bff3cd378e068bd3
   languageName: node
   linkType: hard
 
-"@intlify/message-compiler@npm:9.8.0, @intlify/message-compiler@npm:^9.1.0":
+"@intlify/message-compiler@npm:9.9.0":
+  version: 9.9.0
+  resolution: "@intlify/message-compiler@npm:9.9.0"
+  dependencies:
+    "@intlify/shared": 9.9.0
+    source-map-js: ^1.0.2
+  checksum: fff5fe017e7785a468f1e9c69f6f0350a4d39db91353cf119326f151aee00b1ac09991f915de119265a7733b3a63bbc80634c5fe2f3a3631a0f7c9771ae05c1e
+  languageName: node
+  linkType: hard
+
+"@intlify/message-compiler@npm:^9.1.0":
   version: 9.8.0
   resolution: "@intlify/message-compiler@npm:9.8.0"
   dependencies:
@@ -2105,6 +2115,13 @@ __metadata:
   version: 9.8.0
   resolution: "@intlify/shared@npm:9.8.0"
   checksum: d1b061594ece1c429335b92b25a0db1a8ab51dd26ca85dae9f09eb520541244cdf77e4997e6cfded386836b24c061b0dffc315879227d3f72749802e25a81b7e
+  languageName: node
+  linkType: hard
+
+"@intlify/shared@npm:9.9.0":
+  version: 9.9.0
+  resolution: "@intlify/shared@npm:9.9.0"
+  checksum: fbe68f8267a372791f36e2af4899e05e9d9dbd70d73b006e00eec043b213e1641df59743db4c9407f078326261bdb3c7a902a6de3f1b6d57578e8511ae3ec86d
   languageName: node
   linkType: hard
 
@@ -15717,11 +15734,14 @@ __metadata:
     vue-cropperjs: ^5.0.0
     vue-datepicker-next: ^1.0.3
     vue-draggable-next: ^2.1.1
+    vue-easy-lightbox: ^1.17.0
     vue-fetch: ^2.0.0
-    vue-i18n: ^9.8.0
+    vue-google-oauth2: ^1.5.10
+    vue-i18n: ^9.9.0
     vue-loader-v16: ^16.0.0-beta.5.4
     vue-long-click: 0.1.0
     vue-router: ^4.0.0-0
+    vue3-google-login: ^2.0.25
     vue3-simple-html2pdf: 0.0.7
     vuex: ^4.0.2
     vuex-persistedstate: ^4.1.0
@@ -16755,6 +16775,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-easy-lightbox@npm:^1.17.0":
+  version: 1.17.0
+  resolution: "vue-easy-lightbox@npm:1.17.0"
+  peerDependencies:
+    vue: ^3.0.0
+  checksum: 1d7dd175e185fa247676e0c9203b65c8d529182ff43d746ed06001d02011ec1a61872acb3ff157271a147f6f76341399e704d218eabb6fb2ae2e6950cec7c4d0
+  languageName: node
+  linkType: hard
+
 "vue-eslint-parser@npm:^7.10.0":
   version: 7.11.0
   resolution: "vue-eslint-parser@npm:7.11.0"
@@ -16786,6 +16815,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-google-oauth2@npm:^1.5.10":
+  version: 1.5.10
+  resolution: "vue-google-oauth2@npm:1.5.10"
+  checksum: 2ab8e2ae6a5d3ffe84b26a82e1d17f84693a71bc217a620b7cbbab8a337efe8faaeb2009f7bd6faf92f4e53a8427ff47a1222605b27a584ef4fe2f34952607d5
+  languageName: node
+  linkType: hard
+
 "vue-hot-reload-api@npm:^2.3.0":
   version: 2.3.4
   resolution: "vue-hot-reload-api@npm:2.3.4"
@@ -16793,16 +16829,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-i18n@npm:^9.8.0":
-  version: 9.8.0
-  resolution: "vue-i18n@npm:9.8.0"
+"vue-i18n@npm:^9.9.0":
+  version: 9.9.0
+  resolution: "vue-i18n@npm:9.9.0"
   dependencies:
-    "@intlify/core-base": 9.8.0
-    "@intlify/shared": 9.8.0
+    "@intlify/core-base": 9.9.0
+    "@intlify/shared": 9.9.0
     "@vue/devtools-api": ^6.5.0
   peerDependencies:
     vue: ^3.0.0
-  checksum: 507d683268ac6a2a11640065c9e7fbec66f15e514f6ae412b65f3bea9ae1b65afc43e9c1832f2c7a5ac14b23117415de4849f3a2ea0b79cbcfa6a5871c8793cf
+  checksum: 037c141a9edcf3656cf5a4b85574ce446f03fa925cecc83bbd55d3b8f9499c75e9a2df401b2de54734b51dc663dc01fa42b3bf1b8e164102c75638630e4ba15a
   languageName: node
   linkType: hard
 
@@ -16890,6 +16926,15 @@ __metadata:
   version: 1.9.1
   resolution: "vue-template-es2015-compiler@npm:1.9.1"
   checksum: ad1e85662783be3ee262c323b05d12e6a5036fca24f16dc0f7ab92736b675919cb4fa4b79b28753eac73119b709d1b36789bf60e8ae423f50c4db35de9370e8b
+  languageName: node
+  linkType: hard
+
+"vue3-google-login@npm:^2.0.25":
+  version: 2.0.25
+  resolution: "vue3-google-login@npm:2.0.25"
+  peerDependencies:
+    vue: ^3.0.3
+  checksum: 274d8191efb28d735cb09c91468cb7477327760397de25851b4b95542d9ede18e6b14de5f308f48e7f856295cb86f1eb576202ec741a82cab60cdf3482889116
   languageName: node
   linkType: hard
 

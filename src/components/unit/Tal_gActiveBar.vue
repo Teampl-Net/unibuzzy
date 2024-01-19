@@ -4,7 +4,7 @@
         <div class="fl tabTitleBox textLeft " v-for="(tab, index) in tabList" @click="switchtab(index, tab)" :key="index === activetab" ref="tab" style="white-space: nowrap; flex:1">
           <p :style="activebarWidth" class="tabItem font16 fontBold" :class="{commonColor: index === activetab, lightGray: index !== activetab}" style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
         </div>
-        <div class="activeBar fl "  ref="activeBar" :style="activebarWidth" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px; left:0"></div>
+        <div class="activeBar fl "  ref="activeBar" :style="activebarWidth" style="position: absolute; background-color: #879dc9;  height: 3px; border-radius: 3px; left:0"></div>
       </div>
       <div class="fl w-100P" style="min-height: 6px;" v-if="searchYn">
         <div class="fl mtop-03" v-if="propSearchList">
@@ -20,11 +20,11 @@
     </div>
 
     <div v-else style="float: left; width: 100%;margin-top: 0;" :style="(this.modeType === 'write' || this.channelYn) ? 'background: transparent' : 'background: rgb(220, 221, 235);' ">
-      <div ref="tabbar" :class="{pagePaddingWrap : !channelYn && $route.path !== '/myPage'}" style="padding-top: 10px; background: #FFF; border-bottom: 0.5px solid #6768A78A; height: 40px; float: left; position: relative; width: 100%;" :style="{color: this.modeType === 'write' ? 'background: transparent' : '', display: channelYn? 'flex':''}" >
+      <div ref="tabbar" :class="{pagePaddingWrap : !channelYn && $route.path !== '/myPage'}" style="padding-top: 10px; background: #FFF; border-bottom: 0.5px solid rgb(74 102 158)8A; height: 40px; float: left; position: relative; width: 100%;" :style="{color: this.modeType === 'write' ? 'background: transparent' : '', display: channelYn? 'flex':''}" >
         <div class="fl tabTitleBox textLeft" :class="index === activetab ? 'active' : ''" v-for="(tab, index) in tabList"  @click="switchtab(index)" :key="index" ref="tab" style="white-space: nowrap;" :style="channelYn? 'flex: 1 1 0%':''">
           <p :style="!channelYn? activebarWidth:''" :class="{mWidth : tabTrimLength(tab.display) > 3, commonColor: index === activetab && channelYn, lightGray: index !== activetab && channelYn}" class="tabItem font16 fontBold commonColor"  style="margin: 0 auto; white-space: nowrap;" v-html="tab.display" v-on:click="selectTab(tab.name, tab.display)"></p>
         </div>
-        <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background: #6768A7;  height: 3px; border-radius: 3px;"></div>
+        <div class="activeBar fl"  ref="activeBar" :style="activebarWidth" :class="{mWidth : tabTrimLength(this.selectedTabName) > 3, }" style="position: absolute; background-color: #879dc9;  height: 3px; border-radius: 3px;"></div>
         <div style="float: left; width: 100%; min-height: 6px;" v-if="searchYn && !channelYn">
           <div class="fr" style="position: absolute; height: 40px; right:1.5rem; bottom:0; display: flex; flex-direction: row; align-items: center;">
           <img class="fl cursorP img-w20" style="line-height:40px" @click="this.$emit('openFindPop')" src="../../assets/images/common/iocn_search.png" alt="검색버튼">

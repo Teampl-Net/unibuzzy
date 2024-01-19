@@ -15,7 +15,7 @@
     <div style="position: relative; width: 60px; height: 60px; float: left; border-radius: 100%; background-repeat: no-repeat; background-size: cover; background-position: center; background:#F4F7FF; display: flex; border-radius: 100%; justify-content: center; align-items: center;">
       <img src="../../../../assets/images/common/icon_plus.svg" class="img-w20">
     </div>
-    <p class=" font14 w-100P textOverdot fontBold" style="color: #5F61BD">{{ $t('CRE_BTN_CREATE') }}</p>
+    <p class=" font14 w-100P textOverdot fontBold" style="color: rgb(74 102 158)">{{ $t('CRE_BTN_CREATE') }}</p>
   </div>
 </template>
 <script>

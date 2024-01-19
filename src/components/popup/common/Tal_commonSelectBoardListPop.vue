@@ -144,7 +144,7 @@ export default {
         param.targetKey = this.boardDetail.contentsKey
       }
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveMCabContents',
+        url: '/sUniB/tp.saveMCabContents',
         param: { mCabContents: param }
       })
       // console.log(result)
@@ -174,5 +174,5 @@ export default {
 .selectPopHeader {
     width: calc(100% + 40px); background: #fff; margin-left: -20px; height: 50px; float:left; border-bottom: 1px solid #ccc; padding: 10px 15px;
 }
-.activeCabinet {background: #6768A750!important;}
+.activeCabinet {background-color: #879dc950!important;}
 </style>

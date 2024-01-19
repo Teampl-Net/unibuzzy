@@ -87,7 +87,7 @@ export default {
       }
       const myContents = await this.$commonAxiosFunction(
         {
-          url: 'https://www.hybric.net:9443/service/tp.getMyTodoList',
+          url: '/sUniB/tp.getMyTodoList',
           param: param
         },
         false
@@ -95,7 +95,7 @@ export default {
       if (myContents.data) {
         this.calDataList = this.getCalenderData(myContents.data)
         if (this.iframeDom && this.iframeDom.contentWindow && this.iframeDom.contentWindow.postMessage) {
-          this.iframeDom.contentWindow.postMessage(JSON.stringify({ sender: 'D', type: 'initData', listViewUrl: 'https://mo.d-alim.com/#/view/:date/TODO', data: this.calDataList }), '*')
+          this.iframeDom.contentWindow.postMessage(JSON.stringify({ sender: 'D', type: 'initData', listViewUrl: `${this.$APP_CONFIG.appDomain}/#/view/:date/TODO`, data: this.calDataList }), '*')
         }
       }
     },

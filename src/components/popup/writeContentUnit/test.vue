@@ -103,10 +103,10 @@ top: 25px;
 
 /* 하이브릭1 */
 
-background: #5F61BD;
+background-color: #879dc9;
 /* 하이브릭1 */
 
-border: 1.5px solid #5F61BD;
+border: 1.5px solid rgb(74 102 158);
 
 border-radius: 50%;
 }

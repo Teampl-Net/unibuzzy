@@ -90,7 +90,7 @@
                         <span class="tagTetxt" :style="{ color: getLightOrDark(sticker.picBgPath) }">{{ $changeText(sticker.nameMtext) }}</span>
                     </div>
                     </template>
-                    <!-- <span class="todoTag mright-03" @click="todo.showAllStickerYn = !todo.showAllStickerYn" style="background: #5f61bd !important;" v-if="todo.stickerList && todo.stickerList.length > 1">
+                    <!-- <span class="todoTag mright-03" @click="todo.showAllStickerYn = !todo.showAllStickerYn" style="background-color: #879dc9 !important;" v-if="todo.stickerList && todo.stickerList.length > 1">
                     {{ `(+${todo.stickerList.length - 1})` }}
                     </span> -->
                     <div
@@ -222,7 +222,7 @@
                         :key="index"
                         >
                         <template v-if="each">
-                        <img class="moreActorImg" style="border:2px solid #e7edff;" :src="each.domainPath + each.pathMtext" />
+                        <img class="moreActorImg" style="border:2px solid #d1e1f2;" :src="each.domainPath + each.pathMtext" />
                         </template>
                         {{
                             each.userDispMtext ? $changeText(each.userDispMtext) : $changeText(each.cabinetNameMtext)
@@ -430,7 +430,7 @@ export default {
   background-position: center center;
   display: inline-block;
   vertical-align: middle;
-  border: 2px solid #e7edff;
+  border: 2px solid #d1e1f2;
 }
 
 .actorImg {
@@ -438,7 +438,7 @@ export default {
   height: 23px;
   border-radius: 50%;
   margin-left: -7px;
-  border: 2px solid #e7edff;
+  border: 2px solid #d1e1f2;
   box-shadow: 0 5px 6px 0 rgba(255, 255, 255, 0.6);
   background-color: #fff;
 }
@@ -450,8 +450,8 @@ export default {
   width: 23px;
   height: 23px;
   border-radius: 50%;
-  background-color: #e7edff !important;
-  color: #5f61bd !important;
+  background-color: #d1e1f2 !important;
+  color: rgb(74 102 158) !important;
   z-index: 2;
   display: flex;
   align-items: center;
@@ -483,14 +483,14 @@ export default {
   border-top: 0px solid transparent;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 16px solid #e7edff;
+  border-bottom: 16px solid #d1e1f2;
 }
 .actorNameList {
   display: flex;
   flex-direction: column;
   align-items: start;
   gap:0.2rem;
-  background-color: #e7edff !important;
+  background-color: #d1e1f2 !important;
   box-shadow: 0 5px 8px 0 #3c3c3c1a;
   border-radius: 10px;
   padding: 5px 17px;

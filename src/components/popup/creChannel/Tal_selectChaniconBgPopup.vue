@@ -530,14 +530,14 @@ export default {
 .creChanIntroTextWrap{padding: 10px 0; float: left;}
 
 .creChanBigBtn{
-  height: 50px; line-height: 50px; background: #6768a7; color: #fff; border-radius: 8px;
+  height: 50px; line-height: 50px; background-color: #879dc9; color: #fff; border-radius: 8px;
   width: 100%;
 
   margin-top: 10px;
   /* bottom: 10px;
   left: 5%; */
 }
-/* .activeTypeBox{background: #6768a7; color: #fff; opacity: 0.5;}*/
+/* .activeTypeBox{background-color: #879dc9; color: #fff; opacity: 0.5;}*/
 .activeTypeBox{ color: black; opacity: 0.4;}
 .activeTypeBox p {color: black;}
 

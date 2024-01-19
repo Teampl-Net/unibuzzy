@@ -65,7 +65,7 @@
     <transition name="showUp">
         <div v-if="receptListPopShowYn" style="width: calc(100% - 40px); height: 90%; position: absolute; left: 20px; bottom: 0px; background: #fff; border-radius: 0.8rem 0.8rem 0 0; z-index: 99999999;">
             <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
-                <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">{{ $t('FOLLOW_BTN_MANA_MEM') }}</p>
+                <p class="textLeft font20 commonColor fontBold" style="color: rgb(74 102 158)!important">{{ $t('FOLLOW_BTN_MANA_MEM') }}</p>
                 <img @click="closeRecMemberPop" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
             </div>
             <div style="width: 100%; height: calc(100% - 60px); float: left; padding: 10px 20px;">
@@ -164,7 +164,7 @@ export default {
       paramMap.set('adminYn', true)
       paramMap.set('pageSize', 1000)
       result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
+          url: '/sUniB/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
       })
       this.managerList = result.data.content
@@ -181,7 +181,7 @@ export default {
       param.teamKey = this.propData.teamKey
       var resultList = null
       var memberTypeList = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMemberTypeList',
+        url: '/sUniB/tp.getMemberTypeList',
         param: param
       }, true)
       if (memberTypeList.data.result) {
@@ -192,7 +192,7 @@ export default {
             var itemParam = new Object()
             itemParam.memberTypeKey = resultList[0].memberTypeKey
             var memberTypeItemList = await this.$commonAxiosFunction({
-                url: 'https://www.hybric.net:9443/service/tp.getMemberTypeItemList',
+                url: '/sUniB/tp.getMemberTypeItemList',
                 param: itemParam
             }, true)
             itemList = memberTypeItemList.data.memberTypeItemList
@@ -278,7 +278,7 @@ export default {
       param.reqMemberStatus = '99'
       params = { follower: param, doType: 'AP' }
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveFollower',
+        url: '/sUniB/tp.saveFollower',
         param: params
       })
       console.log('params')
@@ -327,7 +327,7 @@ export default {
       } */
 
       result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
+          url: '/sUniB/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
         debugger
@@ -344,7 +344,7 @@ export default {
       paramMap.set('pageSize', 100)
 
       result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
+          url: '/sUniB/tp.getFollowerList',
           param: Object.fromEntries(paramMap)
     })
         debugger
@@ -369,7 +369,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.deleteManager',
+        url: '/sUniB/tp.deleteManager',
         param: param
       })
 
@@ -379,7 +379,7 @@ export default {
       debugger
       param.follower = follower
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveManager',
+        url: '/sUniB/tp.saveManager',
         param: param
       })
       console.log(result)
@@ -510,7 +510,7 @@ export default {
 .tableTopArea{width: calc(100% - 30px); min-height: 30px; display: flex; justify-content: center; align-items: center;}
 
 .modalBackStyle{width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: #00000050; z-index: 999999;}
-.pageTopAreaStyle {width: 100%; float: left; position: relative; min-height: 30px; border-bottom: 1px solid #6768a7;}
+.pageTopAreaStyle {width: 100%; float: left; position: relative; min-height: 30px; border-bottom: 1px solid rgb(74 102 158);}
 /* .receptListBtnStyle {position: absolute; right: 20px; top: 0px; height: 25px; z-index: 999999; line-height: 25px;} */
 .receptListBtnStyle {right: 10px; top: -5px; z-index: 9;}
 </style>

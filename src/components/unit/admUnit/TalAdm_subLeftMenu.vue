@@ -4,7 +4,7 @@
         <!--<img src="../assets/images/icon_folder.png" style="margin-right: 0.5rem; float: left;" alt=""> -->
         <!--<p style="color:#3A3A3A; cursor:pointer; font-size: 15px; font-weight: bold; margin-bottom: 1.5rem; color: rgb(103, 104, 167);">{{this.title}}</p> -->
         <p class=" textLeft mbottom-1" style="color: #3A3A3A; font-size: 16px; font-weight: bold;">수신자 목록</p>
-        <div class="listRow" style="color: #6768A7;">
+        <div class="listRow" style="color: rgb(74 102 158);">
             <!-- <img src="../assets/images/icon_folder.png" style="" alt=""> -->
             <!-- <img src="../../assets/images/allGroupIcon.svg" class="groupIcon" style="width: 0.9rem; margin-right: 0.3rem" alt=""> -->
             <span class="allSelected" @click="selectMenuTab('all')" :class="this.selectedTab === 'all' ? 'selectedMenu': ''">전체</span>
@@ -17,7 +17,7 @@
         </div>
         <!-- eslint-disable-next-line vue/no-use-v-if-with-v-for -->
         <div class="listRow"  v-if="this.listMode === 'show'" v-for="(value, index) in recvGroupList" :key="index"  @click="selectMenuTab(value.groupKey)">
-          <div style="border-bottom: 1px solid #6768A7; float: left; width: 8px; margin-top: 0.8rem; margin-right: 0.4rem;"></div>
+          <div style="border-bottom: 1px solid rgb(74 102 158); float: left; width: 8px; margin-top: 0.8rem; margin-right: 0.4rem;"></div>
             <!--<img src="../assets/images/groupFolderIcon.svg" class="fl groupIcon" alt=""> -->
             <span :class="this.selectedTab === value.groupKey ? 'selectedMenu': ''" style="cursor:pointer;">{{value.groupName}}</span>
         </div>
@@ -89,6 +89,6 @@ export default {
 .listRow span{float: left; font-size: 14px; color: #3A3A3A; line-height: 25px; cursor: pointer;}
 .allSelected{cursor:pointer;}
 .customBtn{height: 25px!important; min-height: 25px!important; line-height: 15px!important;}
-.selectedMenu{color:#6768A7!important; font-weight: bold;}
+.selectedMenu{color:rgb(74 102 158)!important; font-weight: bold;}
 .groupIcon{width: 1rem; margin-top: 0.35rem;}
 </style>

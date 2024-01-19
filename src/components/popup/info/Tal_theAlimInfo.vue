@@ -68,6 +68,6 @@ export default {
 .alimInfoPage-1 .goBtn{float: right; margin-top: 1.5rem}
 /* .infoPageImg{width: calc(100% - 30px)} */
 .infoLogoWrap{margin-top: 2rem;}
-.serviceName{color: #6768A7; font-size: 25px; font-weight: bold; text-align: left;}
+.serviceName{color: rgb(74 102 158); font-size: 25px; font-weight: bold; text-align: left;}
 .serviceDist{color: #303030; font-size: 15px; text-align: left; margin-top: 0.5rem;}
 </style>

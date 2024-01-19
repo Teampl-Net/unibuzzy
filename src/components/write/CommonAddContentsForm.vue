@@ -149,7 +149,7 @@
             <label for="" style="line-height:30px;">{{$t('COMMON_NAME_BOARD')}}</label>
           <div class="w100P" style="overflow: auto hidden;  height: 100%;">
             <div style="height: 100%; display: flex; gap:0.5; width:auto;">
-              <div v-for="(board, index) in propParams.initData" :key="index" @click="selectBoard(board, index)" class="cursorP"  style=" border-radius:10px; padding:0px 10px;" :style="{background: board.picBgPath, border: selectBoardIndex === index ? '2px solid #7678E2' : `2px solid ${board.picBgPath}`}">
+              <div v-for="(board, index) in propParams.initData" :key="index" @click="selectBoard(board, index)" class="cursorP"  style=" border-radius:10px; padding:0px 10px;" :style="{background: board.picBgPath, border: selectBoardIndex === index ? '2px solid rgb(74 102 158)' : `2px solid ${board.picBgPath}`}">
                 <label class="font14" style="white-space:nowrap;"  :class="{'commonColor selectBoardBorder' : selectBoardIndex === index}" :for="'selectBoardCheckBox'+index">{{this.$changeText(board.cabinetNameMtext)}}</label>
               </div>
             </div>
@@ -165,9 +165,9 @@
                 v-if="pOptions.model === 'mankik'" type="date"
                 id="fromDate"
                 v-model="params.workFromDateStr"
-                style="min-height:20px; background-color:#F1F1FF !important;"
+                style="min-height:20px; background-color: #879dc92b !important;"
               />
-              <input id="toDate" type="date" v-model="params.workToDateStr" style="min-height:20px; background-color:#F1F1FF !important;"/>
+              <input id="toDate" type="date" v-model="params.workToDateStr" style="min-height:20px; background-color: #879dc92b !important;"/>
             </div>
           </fieldset>
         <div v-if="pOptions.model === 'mankik' && contentType === 'TODO'" class="w100P mtop-05" style="border-bottom:1px solid #EBEBEB;"></div>
@@ -377,7 +377,7 @@
                       </button>
                     </div>
                     <div class="w100P" style="height:auto; display:flex; align-items:center; justify-content:center;padding-top:0.5rem;">
-                        <span v-if="openTagsYn" @click="openSelfAddTag"  class="fontBold textCenter" style="width:auto; background-color:#5F61BD; color:#fff; white-space:nowrap; font-size:13px; border-radius:5px; line-height:25px; padding:0 8px;">
+                        <span v-if="openTagsYn" @click="openSelfAddTag"  class="fontBold textCenter" style="width:auto; background-color:rgb(74 102 158); color:#fff; white-space:nowrap; font-size:13px; border-radius:5px; line-height:25px; padding:0 8px;">
                           {{ $t('COMMON_BTN_MANAGE') }}
                         </span>
                         <!-- <img :src="require(`@/assets/images/button/Icon_AddTag.png`)" class="w100P"/> -->
@@ -881,8 +881,8 @@ export default defineComponent({
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', this.GE_USER.userKey)
       var response = await this.$commonAxiosFunction({
-        // url: 'https://www.hybric.net:9443/service/tp.getCabinetDetail',
-        url: 'https://www.hybric.net:9443/service/tp.getCabinetListForMyShareType',
+        // url: '/sUniB/tp.getCabinetDetail',
+        url: '/sUniB/tp.getCabinetListForMyShareType',
         param: Object.fromEntries(paramMap)
       }, true)
       var mCabinet = response.data.mCabinet
@@ -1846,7 +1846,6 @@ export default defineComponent({
       ) {
         // params.actorList = []
         /* if (params.checkList.findIndex((check) => (check.accessKey = store.getters['D_USER/GE_USER'].userKey && check.accessKind === 'U')) !== -1) {
-          alert(true)
           const index = params.checkList.findIndex((check) => (check.accessKey = store.getters['D_USER/GE_USER'].userKey && check.accessKind === 'U'))
           params.checkList.splice(index, 1)
         } */
@@ -2192,7 +2191,6 @@ export default defineComponent({
           }
         }
       } else {
-        // alert(this.$t('COMMON_MSG_NOFILE'))
       }
       return true
     }
@@ -2967,9 +2965,9 @@ export default defineComponent({
   height:35px;
   line-height:33px;
   border-radius:20px 20px 0 0;
-  background-color:#E7EDFF;
-  border:2px solid #E7EDFF;
-  color:#5f61bd !important;
+  background-color:#d1e1f2;
+  border:2px solid #d1e1f2;
+  color:rgb(74 102 158) !important;
   font-weight:bold;
   display:inline-block;
   text-align:center;
@@ -2981,9 +2979,9 @@ export default defineComponent({
 .mSelectedMemo{
   background-color:#fff !important;
   border:2px solid #fff !important;
-  border-top:2px solid #5f61bd !important;
-  border-left:2px solid #5f61bd !important;
-  border-right:2px solid #5f61bd !important;
+  border-top:2px solid rgb(74 102 158) !important;
+  border-left:2px solid rgb(74 102 158) !important;
+  border-right:2px solid rgb(74 102 158) !important;
 }
 
 .titleInput{
@@ -2991,7 +2989,7 @@ export default defineComponent({
   padding:10px 15px 15px;
   border:none;
   outline:none;
-  background-color:#F1F1FF;
+  background-color: #879dc92b;
   outline:none;
   font-size:19px;
   height:45px;
@@ -3024,7 +3022,7 @@ export default defineComponent({
   align-items:center;
   justify-content:center;
   color:#7a7a7a;
-  background-color:#f1f1ff;
+  background-color: #879dc92b;
   font-size:11px;
   border-radius:8px;
   border:2px solid #ccc;
@@ -3077,7 +3075,7 @@ h1,
 label {
   min-width: 62px;
   line-height: 30px;
-  color: #5f61bd;
+  color: rgb(74 102 158);
   font-weight: bold;
   text-align: start;
 }
@@ -3114,9 +3112,9 @@ header {
       line-height:1;
       border:none;
       &:first-child {
-        /* background-color: #5f61bd; */
+        /* #879dc9; */
         background-color:#fff;
-        color: #5F61BD;
+        color: rgb(74 102 158);
         font-size:21px;
       }
     }
@@ -3142,7 +3140,7 @@ footer {
       padding: 3px 10px !important;
       font-weight: bold;
       &:first-child {
-        background-color: #5f61bd;
+        background-color: #879dc9;
         color: #fff;
       }
     }
@@ -3213,7 +3211,7 @@ main {
       input {
         min-height: 30px;
         width:48%;
-        background-color:#F8F8FF !important;
+        background-color: #879dc92b !important;
         border:none !important;
         padding:5px 10px !important;
         border-radius:5px !important;

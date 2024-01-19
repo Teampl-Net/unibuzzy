@@ -34,7 +34,7 @@
 <template>
   <div @click="backClick" style="width: 100%; height: 100%; background: #00000026;top: 0; left: 0; z-index: 99; position: fixed;"></div>
   <div class=" fl" style="width: calc(100% - 40px); height: 500px; position: fixed; left: 20px; box-shadow: 0 0 4px 4px rgb(0 0 0 / 5%) 0px 0px 4px 4px; border-radius: 0.8rem; top: 20%; z-index: 99; background: #FFF;">
-    <div style="width: 100%; height: 50px; position: relative; padding: 10px 20px; float: left; border-bottom: 2px solid #6768a7;">
+    <div style="width: 100%; height: 50px; position: relative; padding: 10px 20px; float: left; border-bottom: 2px solid rgb(74 102 158);">
         <p class="fontLeft fl fontBold font18 commonColor">{{ $t('MEM_DETAIL_NAME_EDIT') }}</p>
         <img class="cursorP" src="../../../assets/images/common/popup_close.png" @click="backClick" style="position: absolute; top: 15px; right: 20px; width: 20px;" alt="">
     </div>
@@ -92,10 +92,10 @@
                             <input class="fl" type="text" style="min-height:30px; width: calc(100% - 90px); max-width:300px; " v-model="list.answerName">
 
                             <div class="fl mleft-05" style="width:60px; height: 30px; align-items: center; display:flex; ">
-                                <div style="margin-right: 5px; width: 20px; margin-left: 5px; height: 20px; border: 1px solid #5F61BD; border-radius: 100%; display: flex; justify-content: center; align-items: center;">
+                                <div style="margin-right: 5px; width: 20px; margin-left: 5px; height: 20px; border: 1px solid rgb(74 102 158); border-radius: 100%; display: flex; justify-content: center; align-items: center;">
                                     <p class="fl img-w20 commonColor cursorP" style="height: 20px; margin-bottom: 12px;"  @click="addInfo(index)">+</p>
                                 </div>
-                                <div style="margin-right: 10px; width: 20px; margin-left: 5px; height: 20px; border: 1px solid #5F61BD; border-radius: 100%; display: flex; justify-content: center; align-items: center;">
+                                <div style="margin-right: 10px; width: 20px; margin-left: 5px; height: 20px; border: 1px solid rgb(74 102 158); border-radius: 100%; display: flex; justify-content: center; align-items: center;">
                                     <p class="fl img-w20 commonColor cursorP" style="height: 20px; margin-bottom: 12px;"  @click="deleteInfoQue(index)">-</p>
                                 </div>
                                 <div class="f movePoint cursorP" style="width: 30px; margin-left: 8px; height: 100%; display: flex; align-items: center; background: rgba(255, 255, 255, 0.75); ">
@@ -252,7 +252,7 @@ export default {
       }
       this.$emit('changeMemberItem', param)
       /* var saveItem = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveMemberTypeItem',
+        url: '/sUniB/tp.saveMemberTypeItem',
         param: { member: param }
       }) */
       // console.log(saveItem)

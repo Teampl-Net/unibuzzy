@@ -213,7 +213,7 @@ export default {
                     // var param = {}
                     // param.userKey
                     // var response = await this.$commonAxiosFunction({
-                    // url: 'https://www.hybric.net:9443/service/tp.getUserList',
+                    // url: '/sUniB/tp.getUserList',
                     // param: param
                     // })
                     // // console.log(response)
@@ -268,7 +268,7 @@ export default {
             paramMap.set('userKey', this.propData.userKey)
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
+                url: '/sUniB/tp.getFollowerList',
                 param: Object.fromEntries(paramMap)
             })
             if (result.data.content) this.mUserInfo = result.data.content[0]
@@ -398,7 +398,7 @@ export default {
         async deleteManager () {
 
             var result = await this.$commonAxiosFunction({
-                url: 'https://www.hybric.net:9443/service/tp.deleteManager',
+                url: '/sUniB/tp.deleteManager',
                 param: this.propData
             })
             if(result.data === true){this.$emit('deleteManager')}
@@ -553,7 +553,7 @@ margin-bottom: 2rem;
 }
 
 .creMemberBigBtn{
-    height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
+    height: 50px; line-height: 50px; font-size: 18px; background-color: #879dc9; color: #fff; border-radius: 8px;
   /* width: 100%;  */
 
   /* add Jeong */
@@ -563,7 +563,7 @@ margin-bottom: 2rem;
     left: 5%;
 }
 
-.userProfileImgWrap { border-radius: 100%; border:1.5px solid #6768a7; background: #6768a745;
+.userProfileImgWrap { border-radius: 100%; border:1.5px solid rgb(74 102 158); background-color: #879dc945;
     max-width: 200px;
     max-height: 200px;
     min-width: 125px;

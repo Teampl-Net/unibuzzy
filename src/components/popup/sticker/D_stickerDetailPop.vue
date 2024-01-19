@@ -133,7 +133,7 @@ export default {
       param.picBgPath = this.mStickerObj.picBgPath
       param.creUserKey = this.GE_USER.userKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveSticker',
+        url: '/sUniB/tp.saveSticker',
         param: param
       })
       if (result.data.result) {
@@ -178,7 +178,7 @@ export default {
       param.stickerKey = this.mStickerObj.stickerKey
       param.deleteYn = true
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveSticker',
+        url: '/sUniB/tp.saveSticker',
         param: param
       })
       if (result.data.result) {
@@ -244,7 +244,7 @@ export default {
 .contrastBtn {
   color: #fff;
   line-height: 24px;
-  background: #5F61BD;
+  background-color: #879dc9;
   border-radius: 6px;
   width: 35px;
   height: 24px;

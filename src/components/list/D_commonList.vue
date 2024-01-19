@@ -14,8 +14,8 @@
                 </div>
                 <div class="pushDetailHeaderTextArea ">
                   <div @click="clickCard(alim)" :class="alim.jobkindId === 'BOAR' && alim.workStatYn && alim.workStatCodeKey === 46? 'completeWork': ''"  style="width: calc(100% - 30px); word-wrap:break-word;" class="font16 fl fontBold commonBlack cursorDragText">
-                    <p v-if="alim.jobkindId === 'ALIM'" class="font14 mtop-03 fl contentTypeTextArea fontNomal" style="background:#6768A7; margin-top: 3px; color: #FFF;">{{$t('COMMON_TAB_NOTI')}}</p>
-                    <p v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl mtop-03 contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMM_BTN_PUBLISH')}}</p>
+                    <p v-if="alim.jobkindId === 'ALIM'" class="font14 mtop-03 fl contentTypeTextArea fontNomal" style="background:rgb(74 102 158); margin-top: 3px; color: #FFF;">{{$t('COMMON_TAB_NOTI')}}</p>
+                    <p v-else-if="alim.jobkindId === 'BOAR'" class="font14 fl mtop-03 contentTypeTextArea" style="background:#FFF; color: rgb(74 102 158); font-weight: bold; border: 1px solid rgb(74 102 158)  ">{{$t('COMM_BTN_PUBLISH')}}</p>
                     <!-- <img src="../../assets/images/board/readFalse.png" v-if="alim.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
                     <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
                     {{(alim.jobkindId === 'BOAR' && (this.$checkUserAuth(alim.shareItem).V === false && alim.titleBlindYn) && alim.creUserKey !== this.GE_USER.userKey)? $t('COMM_MSG_NOPERM') : resizeText(alim.title, alim.nameMtext)}}
@@ -97,7 +97,7 @@
                       <!-- <img style="width:20px;" @click="memoClick" src="../../assets/images/common/icon_comment.svg" alt=""> -->
                       {{ $t('COMMON_TODO_COMMENT') }} {{alim.memoCount}}
                     </p>
-                    <gBtnSmall :btnTitle="this.$t('COMM_BTN_WRITE_CMNT')" class="fr mleft-05" style="color:#6768a7; font-weight:bold;" :btnThema="this.GE_USER.userKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey, alim.creTeamKey)"/>
+                    <gBtnSmall :btnTitle="this.$t('COMM_BTN_WRITE_CMNT')" class="fr mleft-05" style="color:rgb(74 102 158); font-weight:bold;" :btnThema="this.GE_USER.userKey === alim.creUserKey ? 'deepLightColor' : 'light' " @click="writeMemo(alim.contentsKey, alim.creTeamKey)"/>
                   </div>
 
                 </div>
@@ -324,7 +324,7 @@ export default {
         inParam.mccKey = this.tempData.mccKey
         inParam.jobkindId = 'ALIM'
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteMCabContents',
+          url: '/sUniB/tp.deleteMCabContents',
           param: inParam
         })
 
@@ -337,7 +337,7 @@ export default {
         inParam.teamKey = this.tempData.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteContents',
+          url: '/sUniB/tp.deleteContents',
           param: inParam
         })
       }
@@ -454,7 +454,7 @@ export default {
       }
       var this_ = this
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveSubscribe',
+        url: '/sUniB/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop(reqText)
@@ -556,7 +556,7 @@ export default {
       // console.log(param)
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveActLog',
+        url: '/sUniB/tp.saveActLog',
         param: param
       })
       // console.log(result.data.result)
@@ -661,7 +661,7 @@ export default {
     //   var memo = {}
     //   memo.memoKey = param.memoKey
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'https://www.hybric.net:9443/service/tp.deleteMemo',
+    //     url: '/sUniB/tp.deleteMemo',
     //     param: memo
     //   })
     //   if (result.data.result === true) {
@@ -711,7 +711,7 @@ export default {
     //   var findMemoCard = document.getElementById('rowMemoCard'+memoKey)
     //   if (findMemoCard) {
     //     setTimeout(() => {
-    //         findMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
+    //         findMemoCard.style.boxShadow = '0 0 15px 4px rgb(74 102 158)5c'
     //         findMemoCard.style.transition = 'box-shadow 0.7s ease-in-out'
     //         setTimeout(() => {
     //           findMemoCard.style.boxShadow = 'none'
@@ -723,7 +723,7 @@ export default {
       var firstMemoCard = document.querySelectorAll('#memoCard' + this.currentContentsKey + ' #' + memoKey)[0]
       if (firstMemoCard) {
         // setTimeout(() => {
-            firstMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
+            firstMemoCard.style.boxShadow = '0 0 15px 4px rgb(74 102 158)5c'
             firstMemoCard.style.transition = 'box-shadow 0.7s ease-in-out'
             setTimeout(() => {
               firstMemoCard.style.boxShadow = 'none'
@@ -751,7 +751,7 @@ export default {
           param = this.tempData
           // console.log(param)
           await this.$commonAxiosFunction({
-            url: 'https://www.hybric.net:9443/service/tp.deleteContents',
+            url: '/sUniB/tp.deleteContents',
             param: param
           })
           this.$store.commit('D_CHANNEL/MU_DEL_CONT_LIST', this.tempData)
@@ -784,7 +784,7 @@ export default {
 
     //   try{
     //     var result = await this.$commonAxiosFunction({
-    //       url: 'https://www.hybric.net:9443/service/tp.saveMemo',
+    //       url: '/sUniB/tp.saveMemo',
     //       param: { memo: memo }
     //     })
 
@@ -987,7 +987,7 @@ export default {
     //   // }
 
     //   var result = await this.$commonAxiosFunction({
-    //     url: 'https://www.hybric.net:9443/service/tp.getMemoList',
+    //     url: '/sUniB/tp.getMemoList',
     //     param: memo
     //   })
 
@@ -1366,9 +1366,9 @@ export default {
 
     }
 .creatorListContentBox{
-    /* background-color: #6768a712 !important; */
+    /* #879dc912 !important; */
     background-color: #f5f5ff !important;
-    box-shadow: 0 0 7px 3px #6768a740 !important;
+    box-shadow: 0 0 7px 3px rgb(74 102 158)40 !important;
     }
 
 .alimListMemoBorder{

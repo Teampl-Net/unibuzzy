@@ -81,7 +81,7 @@
           </tr> -->
 
       </table>
-      <div v-on:click="openLogoutPop" class="font14 cursorP" style="background-color: #F5F5F9; width: 100%; color:#6768A7; font-weight: bold; height: 45px; margin-bottom: 2rem;border-radius: 5px; padding: 0.6rem;">
+      <div v-on:click="openLogoutPop" class="font14 cursorP" style="background-color: #F5F5F9; width: 100%; color:rgb(74 102 158); font-weight: bold; height: 45px; margin-bottom: 2rem;border-radius: 5px; padding: 0.6rem;">
         {{ $t('PROF_BTN_LOGOUT') }}
       </div>
       <p v-if="GE_LOCALE === 'ko'" class="leaveText font14">하이브릭을 탈퇴하려면 <span class="cursorP" v-on:click="openPop('leaveTheAlim', '탈퇴')">여기</span>를 눌러주세요.</p>
@@ -402,7 +402,7 @@ export default {
 <style scoped>
 .profileWrap{display: flex; flex-direction: column;justify-content: center; align-items: center; width: 100%; height: 200px; }
 .grayLine{background-color: #F3F3F3; height: 0.8rem; width: 100%;}
-.roundDiv{position: relative; box-sizing: border-box; overflow: hidden; border-radius: 6rem; padding: 8px; border:2px solid #6768a7; background: #6768a745; padding-top: 16px; padding-bottom: 0; margin-bottom: 0.5rem; width: 6rem; height: 6rem;}
+.roundDiv{position: relative; box-sizing: border-box; overflow: hidden; border-radius: 6rem; padding: 8px; border:2px solid rgb(74 102 158); background-color: #879dc945; padding-top: 16px; padding-bottom: 0; margin-bottom: 0.5rem; width: 6rem; height: 6rem;}
 table{text-align: left; width: 100%;}
 tr, td, th {
   height: 4rem;
@@ -413,12 +413,12 @@ td {
   border-bottom: none !important
 }
 tr{border-bottom: 1px solid #F3F3F3}
-th {color: #6768A7}
+th {color: rgb(74 102 158)}
 .imgSize {width: 6rem; height: 6rem; position: relative;}
 .subPaddingWrap{padding: 0.7rem 0 ; box-sizing: border-box; width: 100%; }
 .leaveText{text-align: left; color: #A1A1A1;}
 .leaveText span {text-decoration: underline;}
-/* .picImgWrap {position: relative; border-radius: 80px; border:2.5px solid #6768a7; background: #6768a745;padding: 5px; padding-top: 10px; padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem;
+/* .picImgWrap {position: relative; border-radius: 80px; border:2.5px solid rgb(74 102 158); background-color: #879dc945;padding: 5px; padding-top: 10px; padding-bottom: 0;overflow: hidden; display: flex; margin-right: 1rem;
 }
 .picImgWrap img {width: 100%; position: absolute; top: 0; left: 0;} */
 </style>

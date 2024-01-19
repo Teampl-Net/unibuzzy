@@ -1174,7 +1174,6 @@ export default defineComponent({
           }
         }
       } else {
-        // alert(this.$t('COMMON_MSG_NOFILE'))
       }
       return true
     }
@@ -1557,14 +1556,14 @@ export default defineComponent({
   align-items:center;
   justify-content:center;
   color:#7a7a7a;
-  background-color:#f1f1ff;
+  background-color: #879dc92b;
   font-size:11px;
   border-radius:8px;
   border:2px solid #ccc;
 }
 .openSelfAddTagBtn{
   color:#7a7a7a;
-  background-color:#f1f1ff;
+  background-color: #879dc92b;
   border-radius:8px;
   border:2px solid #ccc;
   padding:0;
@@ -1604,8 +1603,8 @@ button {
   // margin-left: 8px;
   // }
   &.activeBtn {
-    border: 2.5px solid #5f61bd;
-    color: #5f61bd;
+    border: 2.5px solid rgb(74 102 158);
+    color: rgb(74 102 158);
     font-weight:bold !important;
     height:25px;
     line-height:20px;
@@ -1618,7 +1617,7 @@ button {
 h1,
 label {
   min-width: 72px;
-  color: #5f61bd;
+  color: rgb(74 102 158);
   font-weight: bold;
   text-align: start;
 }
@@ -1655,7 +1654,7 @@ header {
       line-height:1;
       border:none;
       &:first-child {
-        background-color: #5f61bd;
+        #879dc9;
         color: #fff;
       }
     }
@@ -1684,7 +1683,7 @@ footer {
       padding: 3px 10px !important;
       font-weight: bold;
       &:first-child {
-        background-color: #5f61bd;
+        #879dc9;
         color: #fff;
       }
     }

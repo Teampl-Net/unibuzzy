@@ -1,7 +1,7 @@
 <template>
     <div class="gTitleWrap" :class="this.pageType === 'manageChan' ? 'mbottomNoneIm': ''">
       <img src="../../../assets/images/main/icon_channer.png" style="float: left; margin-top: 0.3rem;width: 1rem; margin-right: 0.5rem" alt="">
-      <span style="line-height: 30px;">{{titleText}}</span><span style="background: #6768A7; width: 2px; margin-top: 0.45rem; height: 15px; margin-right: 0.3rem"></span><span style="line-height: 30px;"> {{this.selectedChan}}</span>
+      <span style="line-height: 30px;">{{titleText}}</span><span style="background-color: #879dc9; width: 2px; margin-top: 0.45rem; height: 15px; margin-right: 0.3rem"></span><span style="line-height: 30px;"> {{this.selectedChan}}</span>
       <div v-if="this.pageType === 'writePush'" style="width: 100%; height: 4rem; float: none;">
           <gWhiteButton btnName="발송하기" v-on:click="clickE('sendPushMsg')" class="mright-05"/>
           <gWhiteButton btnName="임시저장" v-on:click="clickE('requestTS')" />
@@ -51,7 +51,7 @@ export default {
 </script>
 <style scoped>
 .gTitleWrap{width: 100%; height: 2.7rem; float: left; border-bottom: 1px solid #E1E1E1; background: #FFF; padding: 9px 0; padding-bottom: 1rem;}
-.gTitleWrap >span{color: #6768A7; font-size: 17px; font-weight: bold; float: left; margin-right: 1rem;}
+.gTitleWrap >span{color: rgb(74 102 158); font-size: 17px; font-weight: bold; float: left; margin-right: 1rem;}
 .mainBigTitleBtn{margin-top: -0.3rem;}
 .mbottomNoneIm{margin-bottom: 0!important;}
 </style>

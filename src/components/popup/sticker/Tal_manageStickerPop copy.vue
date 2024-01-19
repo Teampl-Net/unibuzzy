@@ -9,8 +9,8 @@
                 </div>
             </div>
             <div style="display: none; position: absolute; width: 100%; height: 100vh; top: 0; left: 0; z-index: 999; background:rgb(0 0 0 / 17%);<!--  display: flex; --> justify-content: center; align-items: center;">
-                <div style="width: 80%; min-height: 150px; background:#FFFFFF; position: absolute; margin-bottom: 100px; border-radius: 20px;<!-- border: 1px solid #6768A7; -->">
-                    <div style="width: 100%; padding: 0.3rem 1rem; height: 33px; border-bottom: 2px solid #6768A7;">
+                <div style="width: 80%; min-height: 150px; background:#FFFFFF; position: absolute; margin-bottom: 100px; border-radius: 20px;<!-- border: 1px solid rgb(74 102 158); -->">
+                    <div style="width: 100%; padding: 0.3rem 1rem; height: 33px; border-bottom: 2px solid rgb(74 102 158);">
                         <p class="font16 fontBold textLeft">스티커 추가</p>
                     </div>
                     <div class="popBody" style="padding: 1rem;">
@@ -25,12 +25,12 @@
                     </div>
                     <div class="popFooter" style="padding: 1rem; float: right; padding-top: 0;">
                         <gBtnSmall btnTitle="추가" style="float: left; margin-right: 0.5rem;" class="fl" />
-                        <gBtnSmall btnTitle="취소" style="float: left; background: #FFFFFF; color: #6768A7; border: 1px solid #6768A7;" class="fr" />
+                        <gBtnSmall btnTitle="취소" style="float: left; background: #FFFFFF; color: rgb(74 102 158); border: 1px solid rgb(74 102 158);" class="fr" />
                     </div>
                 </div>
             </div>
             <p class="font15 fl textLeft fontBold mbottom-05">내 스티커</p>
-            <gBtnSmall btnTitle="생성" style="height: 20px; line-height: 14px; background: #FFFFFF; color: #6768A7; padding-right: 0; <!-- border: 1px solid #6768A7; -->" class="fr" />
+            <gBtnSmall btnTitle="생성" style="height: 20px; line-height: 14px; background: #FFFFFF; color: rgb(74 102 158); padding-right: 0; <!-- border: 1px solid rgb(74 102 158); -->" class="fr" />
             <gSearchBox class="fl w-100P" />
             <div style="width: 100%; float: left; height: calc(100vh - 350px); margin-top: 10px; overflow-y: auto;">
                 <div class="stickerDiv" :style="'background-color:' + value.stickerColor" v-for="(value, index) in myStickerList " :key="index" style=" margin-bottom: 5px; min-width: 60px; margin-right: 5px; height: 25px; border-radius: 20px; float: left; padding: 0 10px;">

@@ -320,7 +320,7 @@ export default {
       paramSet.teamMenuList = [...tempList]
       var result = await this.$commonAxiosFunction(
         {
-          url: 'https://www.hybric.net:9443/service/tp.changePosTeamMenu',
+          url: '/sUniB/tp.changePosTeamMenu',
           param: paramSet
         }
       )
@@ -382,7 +382,7 @@ export default {
 border-bottom: 1.5px solid #999;
 }
 .editColor{
-  color: #6768a7 !important;
+  color: rgb(74 102 158) !important;
 }
 
 .editRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid #ccc; }

@@ -11,8 +11,8 @@
     </div>
     <div v-if="true" class="fl w-100P h-100P" style="overflow: hidden scroll;">
 
-      <div class="fl w-100P mtop-2" style="margin-top:50px; border-bottom: 2px solid #6768a730" >
-        <p class="fl font14 cursorP commonColor fontBold textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730" @click="boardDropDown">
+      <div class="fl w-100P mtop-2" style="margin-top:50px; border-bottom: 2px solid rgb(74 102 158)30" >
+        <p class="fl font14 cursorP commonColor fontBold textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid rgb(74 102 158)30" @click="boardDropDown">
           <!-- <img class="fl cursorP img-w18 mright-05 " alt="게시판 이미지"  src="../../../assets/images/channel/channer_board_color.png"> -->
           <p class="mleft-1">게시판</p>
           ({{this.BOARD_CONTENT_LIST.length}})
@@ -25,9 +25,9 @@
         </div>
       </div>
 
-      <!-- <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div> -->
-      <div v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1)" class="fl w-100P" style="border-bottom: 2px solid #6768a730" :style="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
-        <p class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="bookDropDown">
+      <!-- <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn || CHANNEL_DETAIL.D_CHAN_AUTH.adminYn" class="fl w-100P mtop-1" style="border-bottom: 2px solid rgb(74 102 158)30;"></div> -->
+      <div v-if="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1)" class="fl w-100P" style="border-bottom: 2px solid rgb(74 102 158)30" :style="(this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn || this.CHANNEL_DETAIL.D_CHAN_AUTH.memberYn === 1) && (this.CHANNEL_DETAIL.D_CHAN_AUTH.mngTeamYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngMemberYn === 1 || this.CHANNEL_DETAIL.D_CHAN_AUTH.mngAlimYn === 1) ? '' : ''"  >
+        <p class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid rgb(74 102 158)30"  @click="bookDropDown">
           <!-- <img class="fl cursorP img-w18 mright-05" alt="주소록 이미지"  src="../../../assets/images/channel/channer_addressBook.svg">  -->
           <p class="mleft-1">주소록</p>
           ({{this.CABINET_LIST.length}})
@@ -39,10 +39,10 @@
           <addressBookList :noIcon="true" :chanAlimListTeamKey="chanAlimListTeamKey" :listData="CABINET_LIST" @openDetail='openTeamDetailPop' />
         </div>
       </div>
-      <!-- <div class="fl w-100P mtop-1" style="border-bottom: 2px solid #6768a730;"></div> -->
+      <!-- <div class="fl w-100P mtop-1" style="border-bottom: 2px solid rgb(74 102 158)30;"></div> -->
 
       <div class="fl w-100P" style="">
-        <p class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid #6768a730"  @click="convenienceFuncDropdown">
+        <p class="fl font14 cursorP commonColor fontBold  textLeft w-100P" style="white-space: nowrap; padding:10px 0; border-bottom: 2px solid rgb(74 102 158)30"  @click="convenienceFuncDropdown">
           <!-- <img class="fl cursorP img-w18 mright-05 " alt="이미지"  src="../../../assets/images/channel/channer_board_color.png"> -->
           <p class="mleft-1">편리기능</p>
           <img v-show="convenienceFuncYn === true" src="../../../assets/images/common/icon_dash.svg"  class="fr dropdownBtn " style=" margin-top : 0.5rem;" >
@@ -281,7 +281,7 @@ export default {
       params.userKey = this.GE_USER.userKey
       params.teamKey = this.propData.teamKey || this.propData.targetKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
+        url: '/sUniB/tp.getFollowerList',
         param: params
       }, true)
       // console.log(result.data.content[0])
@@ -378,7 +378,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.getTeamMenuList',
+          url: '/sUniB/tp.getTeamMenuList',
           param: Object.fromEntries(paramMap)
       }, true)
       var tempList = []
@@ -620,7 +620,7 @@ export default {
 .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%); color: #FFFFFF; }
 
 .channelMenuWrap{
-  background-color:#6768a7 ;
+  background-color:rgb(74 102 158) ;
   /* background-color: white; */
   width:80% ;
   max-width: 500px;
@@ -644,7 +644,7 @@ export default {
 
 }
 .editColor{
-  color: #6768a7 !important;
+  color: rgb(74 102 158) !important;
 }
 .editWhiteColor{
   color: #fff;

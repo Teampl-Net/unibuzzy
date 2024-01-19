@@ -340,8 +340,8 @@
                       <div class="actorNameList">
                         <p @click.stop="goUserProfile(each.accessKey)" class="todoFontSize" style="white-space:nowrap; display:flex; align-items:center;" v-for="(each, index) in CONT_DETAIL.actorList" :key="index">
                           <template v-if="each">
-                            <img v-if="each.accessKind === 'U'"  class="moreActorImg" style="border:2px solid #e7edff;" :src="each.domainPath + each.pathMtext" />
-                            <img v-if="each.accessKind === 'C'" class="moreActorImg" style="border:2px solid #e7edff;" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" />
+                            <img v-if="each.accessKind === 'U'"  class="moreActorImg" style="border:2px solid #d1e1f2;" :src="each.domainPath + each.pathMtext" />
+                            <img v-if="each.accessKind === 'C'" class="moreActorImg" style="border:2px solid #d1e1f2;" :src="require(`@/assets/images/todo/channer_addressBook.svg`)" />
                           </template>
                           {{ each.userDispMtext ? $changeText(each.userDispMtext) : each.userDispMtext ? $changeText(each.userDispMtext) : $changeText(each.cabinetNameMtext) }}
                           {{each.actType === 'CK'? '(' + this.$t('COMMON_TODO_REVIEWER') + ')' : each.actType === 'RV'? '(' + this.$t('COMMON_TODO_RECEIVER') + ')' : each.actType === 'RF'? '(' + this.$t('COMMON_TODO_PUBLIC') + ')' : ''}}
@@ -801,7 +801,7 @@
                 <div style="width:20px; position:relative;">
                   <img v-if="this.CONT_DETAIL && this.CONT_DETAIL.memoCount === 0" :src="require(`@/assets/images/contents/icon_memo_blue.png`)" class="w100P"/>
                   <img v-else :src="require(`@/assets/images/contents/icon_memo_blue_on.png`)" class="w100P"/>
-                  <span class="fontBold" :style="{color: this.CONT_DETAIL.memoCount === 0 ? '#5F61BD' : '#fff'}" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:10px;">
+                  <span class="fontBold" :style="{color: this.CONT_DETAIL.memoCount === 0 ? 'rgb(74 102 158)' : '#fff'}" style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); font-size:10px;">
                     {{ this.CONT_DETAIL ? this.CONT_DETAIL.memoCount : '0' }}
                   </span>
                 </div>
@@ -1280,7 +1280,6 @@ export default {
     if (this.pFadeNotShowYn) this.mFadeNotShowYn = true
     else this.mFadeNotShowYn = false
     if (this.CONT_DETAIL) {
-      console.log('CONT_DETAIL************', this.CONT_DETAIL)
       if (this.CONT_DETAIL.D_CONT_USER_STICKER_LIST) {
         var stickerList = []
         for (
@@ -1526,7 +1525,7 @@ export default {
       }
       param.workUserKey = this.GE_USER.userKey
       const res = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.updateTodo',
+        url: '/sUniB/tp.updateTodo',
         param: param
       })
       this.CONT_DETAIL.contStatus = param.contStatus
@@ -1645,7 +1644,7 @@ export default {
         if (this.GE_USER.unknownYn) return
         param.creUserKey = this.GE_USER.userKey
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.getStickerList',
+          url: '/sUniB/tp.getStickerList',
           param: param
         })
         this.mStickerList = result.data
@@ -1768,7 +1767,7 @@ export default {
         paramMap.set('teamKey', this.contentsEle.creTeamKey)
         try {
           var result = await this.$commonAxiosFunction({
-            url: 'https://www.hybric.net:9443/service/tp.getContentsActorList',
+            url: '/sUniB/tp.getContentsActorList',
             param: Object.fromEntries(paramMap)
           })
           if (result && result.data && result.data.length > 0) {
@@ -1794,7 +1793,7 @@ export default {
       }
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -2135,7 +2134,7 @@ export default {
           var param = {}
           param = this.contentsEle
           var result = await this.$commonAxiosFunction({
-            url: 'https://www.hybric.net:9443/service/tp.deleteContents',
+            url: '/sUniB/tp.deleteContents',
             param: param
           })
           if (result) {
@@ -2431,7 +2430,7 @@ export default {
         inParam.mccKey = this.contentsEle.mccKey
         inParam.jobkindId = 'ALIM'
         result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteMCabContents',
+          url: '/sUniB/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.contentsEle.jobkindId === 'BOAR') {
@@ -2442,7 +2441,7 @@ export default {
         inParam.teamKey = this.contentsEle.creTeamKey
         inParam.deleteYn = true
         result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteContents',
+          url: '/sUniB/tp.deleteContents',
           param: inParam
         })
       } else if (this.contentsEle.jobkindId === 'TODO' || this.contentsEle.jobkindId === 'MEMO') {
@@ -2453,7 +2452,7 @@ export default {
         // inParam.teamKey = this.contentsEle.creTeamKey
         inParam.deleteYn = true
         result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteContents',
+          url: '/sUniB/tp.deleteContents',
           param: inParam
         })
         this.$emit('completeTodo', true)
@@ -2600,7 +2599,7 @@ export default {
     async saveActAxiosFunc (param, toastText) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.saveClaimLog',
+          url: '/sUniB/tp.saveClaimLog',
           param: param
         })
         if (result) {
@@ -2663,7 +2662,7 @@ export default {
       memo.ownUserKey = this.GE_USER.userkey
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -2977,7 +2976,7 @@ export default {
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveSubscribe',
+        url: '/sUniB/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop(this.$t('COMM_MSG_NOTIIS') + reqText)
@@ -3202,7 +3201,6 @@ export default {
       immediate: true,
       deep: true,
       handler (value, index) {
-        console.log('value*******', value)
         this.setMoreMemoBtn()
         /* if (this.CONT_DETAIL.stickerList.length > 0) {
           var newArr = []
@@ -3281,7 +3279,7 @@ export default {
     height:26px;
     border-radius:50%;
     margin-left:-10px;
-    border:2px solid #E7EDFF;
+    border:2px solid #d1e1f2;
     box-shadow:0 5px 6px 0 rgba(255,255,255, 0.6);
     background-color:#fff;
     overflow:hidden;
@@ -3294,8 +3292,8 @@ export default {
     height:27px;
     border-radius:50%;
     /* box-shadow:0 5px 6px 0 rgba(60, 60, 60, 0.2); */
-    background-color:#E7EDFF !important;
-    color:#5F61BD !important;
+    background-color:#d1e1f2 !important;
+    color:rgb(74 102 158) !important;
     z-index:2;
     display:flex;
     align-items:center;
@@ -3329,14 +3327,14 @@ export default {
     border-top:0px solid transparent;
     border-left:8px solid transparent;
     border-right:8px solid transparent;
-    border-bottom:16px solid #E7EDFF;
+    border-bottom:16px solid #d1e1f2;
   }
   .actorNameList {
   display: flex;
   flex-direction: column;
   align-items: start;
   gap:0.2rem;
-  background-color: #e7edff !important;
+  background-color: #d1e1f2 !important;
   box-shadow: 0 5px 8px 0 rgba(133, 133, 133, 0.102);
   border-radius: 10px;
   padding: 5px 17px;
@@ -3407,7 +3405,7 @@ export default {
     background-position: center center;
     display:inline-block;
     border-radius:50%;
-    border:2px solid #E7EDFF;
+    border:2px solid #d1e1f2;
   }
   .contentsCard {
     background: #ffffff;

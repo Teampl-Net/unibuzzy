@@ -167,7 +167,7 @@ export default {
 </script>
 
 <style scoped>
-.top5MyChanColor { background-color: #6768a712;}
+.top5MyChanColor { #879dc912;}
 .top5ChannelRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4; animation-name: fadein; animation-duration: 0.3s; position: relative;}
 .chanTop5Wrap{width: 100%; padding-top: 0.5rem; padding-bottom: 0.5rem; min-height: 200px;}
 .top5ChanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; min-width: 45px; min-height:45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc;}

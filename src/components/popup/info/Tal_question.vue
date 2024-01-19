@@ -93,6 +93,6 @@ export default {
 .aWrap{width: 100%; min-height: 40px; text-align: left;}
 .qnaSet{width: 100%; float: left; min-height: 120px; padding: 1rem 0; border-bottom: 1px solid #E4E4E4;}
 .qnaSet > div {width: 100%; min-height: 35px; text-align: left;}
-.qnaSet .Icon {color: #6768A7; font-size: 17px; font-weight: bold; float: left; width: 25px; height: 100%;}
+.qnaSet .Icon {color: rgb(74 102 158); font-size: 17px; font-weight: bold; float: left; width: 25px; height: 100%;}
 .qnaSet .text{color: #303030; font-size: 15px; float: left; width: calc(100% - 25px)}
 </style>

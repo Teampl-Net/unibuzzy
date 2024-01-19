@@ -38,6 +38,6 @@ export default {
 </script>
 <style scoped>
 .progress-bar {
-    background-color: #6768A7!important;
+    #879dc9!important;
 }
 </style>

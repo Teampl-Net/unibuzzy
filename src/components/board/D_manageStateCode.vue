@@ -191,7 +191,7 @@ export default {
           param.contentsKey = this.contentsKey
           param.creTeamKey = this.teamKey
           var result = await this.$commonAxiosFunction({
-            url: 'https://www.hybric.net:9443/service/tp.updateWorkStat',
+            url: '/sUniB/tp.updateWorkStat',
             param: param
           })
           // eslint-disable-next-line no-debugger
@@ -305,6 +305,6 @@ export default {
 }
 </script>
 <style scoped>
-.selectedCode {border: 2px solid #5F61BD!important; margin: 5px 5px!important;}
+.selectedCode {border: 2px solid rgb(74 102 158)!important; margin: 5px 5px!important;}
 .activeInput {background: #cccccc1c;}
 </style>

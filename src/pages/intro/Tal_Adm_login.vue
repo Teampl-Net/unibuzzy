@@ -136,11 +136,11 @@ export default {
 
 <style scoped>
 p{margin-bottom: 0;}
-.admLoginBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px; }
+.admLoginBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; #879dc9; padding: 10px; box-sizing: border-box; border-radius: 10px; }
 .admLoginBtn img {width: 1.5rem; margin-bottom: 5px; margin-right: 20px}
-.admLoginContentsWrap{height: 100vh;background-color: #6768A7; display: flex; flex-direction: column; padding-top: 10%; }
+.admLoginContentsWrap{height: 100vh;#879dc9; display: flex; flex-direction: column; padding-top: 10%; }
 
-.admInquiryBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; background-color: #acade0; margin-top: 20px; padding: 10px; box-sizing: border-box; border-radius: 10px; }
+.admInquiryBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; background-color: #ecf8ff; margin-top: 20px; padding: 10px; box-sizing: border-box; border-radius: 10px; }
 @media screen and (max-width: 300px) {
   .admLoginBtn, .admInquiryBtn {
     height: 40px;

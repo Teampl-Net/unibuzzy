@@ -32,7 +32,7 @@
 
           <div v-if="!member.ownerYn && !member.followerKey" style="margin: 0 0.6rem;" class="fl" @click="this.$emit('match')">
             <!-- <p class="commonBlack font10">팔로우</p> -->
-            <match :color="'#6768a7'" size='5px' style="width:10px;" />
+            <match :color="'rgb(74 102 158)'" size='5px' style="width:10px;" />
             <p class="commonBlack font10">대기중</p>
           </div>
         </div>
@@ -197,6 +197,6 @@ export default {
   }
 }
 
-.managerPicImgWrap {width: 30px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex; margin-right: 10px}
+.managerPicImgWrap {width: 30px; height: 30px; border-radius: 100%; border:1.5px solid rgb(74 102 158); float: left; background-color: #879dc945; overflow: hidden; display: flex; margin-right: 10px}
 .managerPicImgWrap img {width: 100%;}
 </style>

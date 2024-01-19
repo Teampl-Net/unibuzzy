@@ -276,7 +276,7 @@ export default {
       toolWidth: 500,
       // toolShowYn: false,
       selectedTab: 0,
-      colorList: ['#6768A7', '#BFBFDA', '#00000029', '#C8C8C8A3', '#E1E1E1', '#BFBFDA', '#EFEFF6', '#6768A7', '#A9AACD', '#A1A1A1', '#0000002E'],
+      colorList: ['rgb(74 102 158)', '#BFBFDA', '#00000029', '#C8C8C8A3', '#E1E1E1', '#BFBFDA', '#EFEFF6', 'rgb(74 102 158)', '#A9AACD', '#A1A1A1', '#0000002E'],
       selectedC: 0,
       pushDetailPopShowYn: true,
       progressShowYn: false,
@@ -442,7 +442,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = this.GE_USER.userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: 'https://www.hybric.net:9443/service/tp.승인 처리',
+        //   url: '/sUniB/tp.승인 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -462,7 +462,7 @@ export default {
         param.creTeamKey = this.params.targetKey
         param.creUserKey = this.GE_USER.userKey
         // var response = await this.$commonAxiosFunction({
-        //   url: 'https://www.hybric.net:9443/service/tp.거절 처리',
+        //   url: '/sUniB/tp.거절 처리',
         //   param: param
         // })
         // if (response.data === true){
@@ -1083,7 +1083,7 @@ export default {
 <style scoped>
 
 .receiverClickColor {
-  background-color: #6768A7 !important;
+  #879dc9 !important;
   color: white !important;
 }
 .toggleInputWrap {
@@ -1164,8 +1164,8 @@ export default {
 .editorOption{display: flex; flex-direction: column; border-right: 1px solid #BFBFDA; width: 100px;}
 .editorOption > div {height: 50px; text-align: center; padding: 0.5rem; cursor: pointer;}
 .activeColor{background: #EFEFF6;}
-.activeColor p{color: #6768A7!important;}
-.editorOption p{color: #6768A7; color: #BFBFDA; font-size: 11px;}
+.activeColor p{color: rgb(74 102 158)!important;}
+.editorOption p{color: rgb(74 102 158); color: #BFBFDA; font-size: 11px;}
 
 .writeArea{padding: 2rem 0; width: 100%; float: left;min-height: 650px; height: 100%; margin-top: 0rem; float: left; background:#0000005e; padding-top: 0; overflow: hidden; position: relative;}
 /* .writeArea{padding: 2rem 0; width: calc(100% - var(--width)); float: left; height: calc(100% - 2rem); margin-top: 0rem; float: left; background:#F9F9F9; padding-top: 0;} */
@@ -1183,14 +1183,14 @@ export default {
 .attachFileBtn p{color: #FFFFFF; font-size: 10px; margin-top: 0.5rem;}
 
 .toolBtnArea{justify-content: flex-end; position: absolute; right: 0; top: 0rem}
-.toolLeftTab{color: #6768A7; font-weight: bold; font-size: 16px;margin-bottom: 1rem;}
+.toolLeftTab{color: rgb(74 102 158); font-weight: bold; font-size: 16px;margin-bottom: 1rem;}
 
 .toolSearchBox{border: 1px solid #BFBFDA!important; border-radius: 5px!important;}
 .toolPushCard{box-shadow: none !important; border: 1px solid #E1E1E1 !important;}
 .selectPaperWrap{width: 100%; height: 100%; float: left; margin-top: 1rem;}
 
 .formText {padding: 0;}
-.editableContent{ padding: 7px;  overflow: hidden scroll; width: 100%; min-height: 300px; height:100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; }
+.editableContent{ padding: 7px;  overflow: hidden scroll; width: 100%; min-height: 300px; height:100%; border-radius: 5px; border: 1px solid rgb(74 102 158)45; text-align: left; background: #fff; }
 .msgArea span {padding: 0;}
 .titleAddArea{
   width: 100px; margin-left: 5px; height: 25px; margin-left: 5px; float: right; right: -20px; position: absolute; margin-top: 7px;

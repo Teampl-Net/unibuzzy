@@ -92,7 +92,7 @@
             <img style="width: 1rem;" @click="closeXPop" class="mleft-2 fr cursorP"  src="../../assets/images/common/popup_close.png"/>
           </div>
         </div>
-        <div class="fl mtop-05" style="width:100%; border-bottom: 2px solid #5F61BD;"></div>
+        <div class="fl mtop-05" style="width:100%; border-bottom: 2px solid rgb(74 102 158);"></div>
       </div>
       <div class="fl w-100P h-100P" id="scrollFormArea" ref="scrollFormArea" style="overflow: hidden auto">
         <!-- 알림 영역 -->
@@ -193,8 +193,8 @@
         <!-- 게시판 영역 -->
         <template v-if="contentType === 'BOAR'">
           <div v-if="selectBoardYn === true" class="fl w-100P mtop-1 " style="display: flex; align-items: flex-start; padding: 0 1.5rem;">
-            <p class="fontBold commonColor CDeepColor font16 fl mright-05" style="word-break: keep-all; position: relative;">{{ $t('FORM_TITLE_BOARD') }}<pss class="font12 fl" style="position: absolute; left: 0; bottom: -1rem;" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</pss></p>
-            <!-- <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p> -->
+            <p class="fontBold commonColor CDeepColor font16 fl mright-05" style="word-break: keep-all; position: relative;">{{ $t('FORM_TITLE_BOARD') }}<pss class="font12 fl" style="position: absolute; left: 0; bottom: -1rem;" :style="selectBoardCabinetKey !== null ? 'color:rgb(74 102 158)' : 'color:red'">{{writeBoardPlaceHolder}}</pss></p>
+            <!-- <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:rgb(74 102 158)' : 'color:red'">{{writeBoardPlaceHolder}}</p> -->
             <div class="fl" :class="!isMobile? 'thinScrollBar':''" id="boardListWrap" style=" width: calc(100% - 3.5rem); height: 2.2rem; overflow: auto hidden; white-space: nowrap; display: flex; align-items: center" @wheel="horizontalScroll" >
               <div v-for="(data, index) in selectBoardList" :key="index" class="fl mleft-05 font12 fontBold" @click="selectBoard(data, index)" style=" border-radius:10px; display: inline-flex;" :style="{background: data.picBgPath}" :class="{'CDeepBorderColor selectPadding' : selectBoardIndex === index, 'noneSelectPadding' : selectBoardIndex !== index, 'mleft-0': index === 0}">
                 <div class="fl"> <img class="img-w15" v-if="selectBoardIndex === index" src="../../assets/images/common/icon_check_commonColor.svg" /></div>
@@ -664,8 +664,8 @@ export default {
       paramMap.set('shareType', 'W')
       paramMap.set('userKey', this.GE_USER.userKey)
       var response = await this.$commonAxiosFunction({
-        // url: 'https://www.hybric.net:9443/service/tp.getCabinetDetail',
-        url: 'https://www.hybric.net:9443/service/tp.getCabinetListForMyShareType',
+        // url: '/sUniB/tp.getCabinetDetail',
+        url: '/sUniB/tp.getCabinetListForMyShareType',
         param: Object.fromEntries(paramMap)
       }, true)
       var mCabinet = response.data.mCabinet
@@ -1572,7 +1572,7 @@ export default {
   width:15px !important;
 }
 .selectedVal{
-  border:2.5px solid #5F61BD !important;
+  border:2.5px solid rgb(74 102 158) !important;
   font-weight:bold !important;
 }
 .selfTagOpenFlex{
@@ -1592,8 +1592,8 @@ button {
   border: 2px solid #ccc;
   border-radius: 8px;
   &.activeBtn {
-    border: 2px solid #5f61bd;
-    color: #5f61bd;
+    border: 2px solid rgb(74 102 158);
+    color: rgb(74 102 158);
   }
   &.closeBtn {
     border: none;

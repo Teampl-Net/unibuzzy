@@ -19,7 +19,7 @@
               <div style="width: 100%; height: calc(100% - 39px); float: left; padding-top:1.5rem; overflow: hidden auto; ">
                 <div v-if="selectBoardYn === true" class="w-100P fl " >
                   <p class="fontBold font15 fl ">{{ $t('COMM_MSG_SEL_BOARD') }}</p>
-                  <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:#6768a7' : 'color:red'">{{writeBoardPlaceHolder}}</p>
+                  <p class="font12 fl mleft-05 fontBold" :style="selectBoardCabinetKey !== null ? 'color:rgb(74 102 158)' : 'color:red'">{{writeBoardPlaceHolder}}</p>
                   <div class="w-100P fl" style="margin:0.5rem 0; overflow: auto; white-space: nowrap;">
                     <div v-for="(data, index) in selectBoardList" :key="index" class=" mleft-05 font12 fontBold" @click="selectBoard(data, index)" style="padding:5px; border-radius:10px; display: inline-flex;" :style="'background:'+data.picBgPath" :class="{selectBoard : selectBoardIndex === index}">
                       <!-- <img class="img-w20" v-if="selectBoardIndex === index" src="../../assets/images/common/icon_check_commonColor.svg" alt=""> -->
@@ -43,7 +43,7 @@
                 <gActiveBar modeType="write" :tabList="this.activeTabList" ref="activeBar" style="" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" />
                 <div id="pageMsgBoardAreaWrap" class="pageMsgArea" style="">
                   <!-- <p class="">내용</p> -->
-                  <pre id="textMsgBox" class="editableContent"  v-show="viewTab === 'text'" style="padding:7px; word-break: break-all; min-height: 300px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></pre>
+                  <pre id="textMsgBox" class="editableContent"  v-show="viewTab === 'text'" style="padding:7px; word-break: break-all; min-height: 300px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid rgb(74 102 158)45; text-align: left; background: #fff; " contenteditable=true></pre>
                   <formEditor ref="complexEditor" @changeUploadList="changeUploadList" v-show="viewTab === 'complex'" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" />
                   <div id="msgBox" @click="formEditorShowYn = true" v-show="previewContentsShowYn"  class="msgArea font15" style="padding:7px; overflow: hidden scroll;" >{{$t('COMM_MSG_CLICK')}}</div>
 
@@ -55,7 +55,7 @@
 
           </div>
           <gBtnSmall class="mright-05 font20 writePushBtn " style="position: absolute; bottom:2%; left:50%; transform: translateX(-50%); border: 4px solid #D6D6E7;" :style="viewTab === 'complex' ? 'bottom: 7.5%;' : ''" :btnTitle="modiYn === true ? $t('COMM_BTN_EDIT2') : $t('COMMON_BTN_SAVE')" @click="clickPageTopBtn()" />
-          <!-- <gBtnSmall class="mright-05 font20 writePushBtn commonColor whitePurpleBG" style="color:#6768a7; font-weight:bold; " btnTitle='발송하기' @click="clickPageTopBtn()" /> -->
+          <!-- <gBtnSmall class="mright-05 font20 writePushBtn commonColor whitePurpleBG" style="color:rgb(74 102 158); font-weight:bold; " btnTitle='발송하기' @click="clickPageTopBtn()" /> -->
       </div>
     </div>
       <!--<div id="toolBox" :style="toolBoxWidth"  v-if="this.toolShowYn" style="padding: 1rem; float: left; width: var(--width); height: 100%; background: #FFFFFF;"> -->
@@ -195,7 +195,7 @@ export default {
       toolWidth: 500,
       // toolShowYn: false,
       selectedTab: 0,
-      colorList: ['#6768A7', '#BFBFDA', '#00000029', '#C8C8C8A3', '#E1E1E1', '#BFBFDA', '#EFEFF6', '#6768A7', '#A9AACD', '#A1A1A1', '#0000002E'],
+      colorList: ['rgb(74 102 158)', '#BFBFDA', '#00000029', '#C8C8C8A3', '#E1E1E1', '#BFBFDA', '#EFEFF6', 'rgb(74 102 158)', '#A9AACD', '#A1A1A1', '#0000002E'],
       selectedC: 0,
       pushDetailPopShowYn: true,
       progressShowYn: false,
@@ -262,7 +262,7 @@ export default {
       paramMap.set('userKey', this.GE_USER.userKey)
       // console.log(paramMap)
       var response = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getCabinetDetail',
+        url: '/sUniB/tp.getCabinetDetail',
         param: Object.fromEntries(paramMap)
       })
       var mCabinet = response.data.mCabinet
@@ -282,7 +282,7 @@ export default {
       // paramMap.set('userKey', this.GE_USER.userKey)
       // // console.log(paramMap)
       // var response = await this.$commonAxiosFunction({
-      //   url: 'https://www.hybric.net:9443/service/tp.getCabinetDetail',
+      //   url: '/sUniB/tp.getCabinetDetail',
       //   param: Object.fromEntries(paramMap)
       // })
       var mCabinet = await this.getCabinetDetail(data.cabinetKey)
@@ -903,7 +903,7 @@ export default {
 }
 
 input[name="selectBoardCheckBox"] {
-  accent-color: #6768a7;
+  accent-color: rgb(74 102 158);
 }
 
 @keyframes spinner {
@@ -922,8 +922,8 @@ input[name="selectBoardCheckBox"] {
   margin-left: -32px;
   border-radius: 50%;
   border: 8px solid transparent;
-  border-top-color: #6768A7;
-  border-bottom-color: #6768A7;
+  border-top-color: rgb(74 102 158);
+  border-bottom-color: rgb(74 102 158);
   animation: spinner .8s ease infinite;
 }
 

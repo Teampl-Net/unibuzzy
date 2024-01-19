@@ -16,7 +16,8 @@ class AuthServcie {
     const provider = this.getProvider(providerName)
     if (providerName === 'Google') {
       provider.setCustomParameters({
-        prompt: 'select_account'
+        prompt: 'select_account',
+        redirect_uri: 'https://hybricnet.page.link/loginCallback/google'
       })
     }
     return await firebase.auth().signInWithPopup(provider)

@@ -18,7 +18,7 @@
         <div v-if="memberTypeItemList && memberTypeItemList.length === 0">
             <p class="font15 fontBold grayBlack textCenter mtop-1">{{ $t('MEM_DETAIL_MGS_NOSET') }}</p>
             <div @click="addQuestion(0)" style="width: 100%; float: left; display: flex; align-items: center; justify-content: center;" class="mtop-1 cursorP">
-                <div style="width: 40px; height: 40px; border-radius: 100%; border: 1px solid #5F61BD; font-size: 25px" class="commonColor"> + </div>
+                <div style="width: 40px; height: 40px; border-radius: 100%; border: 1px solid rgb(74 102 158); font-size: 25px" class="commonColor"> + </div>
             </div>
         </div>
         <template v-else>
@@ -32,7 +32,7 @@
         </template>
 
         <!-- <div class="w-100P cursorP fl" style="display:flex; margin: 0 auto; align-items: center; justify-content: center; margin-top: 30px;">
-            <div @click="addQuestion"  class="commonColor font30" style="width: 40px; height: 40px;line-height: 39px; border-radius: 100%; border: 2px solid #5F61BD;"> + </div>
+            <div @click="addQuestion"  class="commonColor font30" style="width: 40px; height: 40px;line-height: 39px; border-radius: 100%; border: 2px solid rgb(74 102 158);"> + </div>
         </div> -->
         <memInfoCreEditPop @changeMemberItem="changeMemberItem" v-if="mEditMemInfoPopShowYn"  :propData="this.mMemInfoData" @openPop="openPop" @closeXPop="closeMemInfoPop" />
     </div>
@@ -129,7 +129,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.propMemberTypeObj.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMemberTypeItemList',
+        url: '/sUniB/tp.getMemberTypeItemList',
         param: param
       })
       console.log(memberTypeItemList)
@@ -168,7 +168,7 @@ export default {
         var deleteParam = {}
         deleteParam.itemKey = parseInt(deleteData.data.itemKey)
         await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deteteMemberTypeItem',
+          url: '/sUniB/tp.deteteMemberTypeItem',
           param: deleteParam
         })
         this.getMemberTypeItemList()

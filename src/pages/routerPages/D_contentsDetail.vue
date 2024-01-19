@@ -605,7 +605,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteContents',
+          url: '/sUniB/tp.deleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -691,7 +691,7 @@ export default {
       memo.memoKey = param.memoKey
       // // console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.deleteMemo',
+        url: '/sUniB/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -775,7 +775,7 @@ export default {
         nonLoadingYn = true
       }
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMemoList',
+        url: '/sUniB/tp.getMemoList',
         param: memo
       }, nonLoadingYn, true)
       if (result.data.memoList) {
@@ -811,7 +811,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getUserDoListPage',
+        url: '/sUniB/tp.getUserDoListPage',
         param: param
       })
     }, */
@@ -966,7 +966,7 @@ export default {
     pointAni () {
       var firstMemoCard = document.querySelectorAll('#memoWrap .memoCard')[0]
       if (firstMemoCard) {
-        firstMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
+        firstMemoCard.style.boxShadow = '0 0 15px 4px rgb(74 102 158)5c'
         firstMemoCard.style.transition = 'box-shadow 0.7s ease-in-out'
         setTimeout(() => {
           firstMemoCard.style.boxShadow = 'none'
@@ -1055,6 +1055,6 @@ export default {
     100% {bottom: -100px;}
 }
 .memoBoxBackground{width: 100%; height: 100vh; background: #00000036; position: absolute; top: 0; left: 0;}
-/* .copyTextWrap{background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;} */
+/* .copyTextWrap{background-color: #879dc9; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;} */
 .boardDetailChanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}
 </style>

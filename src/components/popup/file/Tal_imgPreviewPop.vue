@@ -141,7 +141,7 @@ export default {
       param.attachYn = false
       this.imgs = []
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMMFileList',
+        url: '/sUniB/tp.getMMFileList',
         param: param
       })
       // console.log(result)

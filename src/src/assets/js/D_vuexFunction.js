@@ -39,7 +39,7 @@ export const functions = {
     memo.targetKey = targetKey
     memo.memoKey = memoKey
     var result = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getMemoList',
+      url: '/sUniB/tp.getMemoList',
       param: memo
     }, true)
     var memos = result.data.memoList[0]
@@ -48,7 +48,6 @@ export const functions = {
   async actionVuex (type, data, targetKey, allYn, replaceYn, creTeamKey, creCabinetKey) {
     var ActName
     if (type === 'TEAM' || type === 'CABI' || type === 'CONT') {
-      alert('ttt')
       ActName = 'D_CHANNEL/AC_MAIN_CHAN_LIST'
     } else if (type === 'COMMONCONT') {
       ActName = 'D_CHANNEL/AC_SET_CHAN_CONT_LIST'
@@ -282,7 +281,7 @@ export const functions = {
     }
     // paramMap.set('followerType', 'M')
     var result = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
+      url: '/sUniB/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
     }, true)
     var user = result.data.content

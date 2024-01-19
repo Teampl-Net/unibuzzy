@@ -46,7 +46,7 @@
                   </template>
               </div>
               <img src="../../assets/images/button/Icon_CreChanBtn.png" @click="clickCreateChannel" alt="채널 만들기 버튼" style="position: absolute; cursor: pointer; right: 10%;" :style="'bottom:' + (this.$STATUS_HEIGHT + 60)+ 'px'" class="img-78 img-w66">
-              <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px;  right: calc(10% + 7px);" :style="'bottom:' + (this.$STATUS_HEIGHT + 150)+ 'px'"  @click="getContentsList">
+              <div style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: #879dc9d1; padding: 10px;  right: calc(10% + 7px);" :style="'bottom:' + (this.$STATUS_HEIGHT + 150)+ 'px'"  @click="getContentsList">
                   <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;">
               </div>
           </div>
@@ -178,7 +178,7 @@ export default {
       }
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getTeamCommunityList',
+        url: '/sUniB/tp.getTeamCommunityList',
         param: params
       })
 

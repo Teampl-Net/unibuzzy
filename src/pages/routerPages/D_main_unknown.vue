@@ -89,7 +89,7 @@
             </div>
         </div> -->
         <div style="border-radius: 30px 30px 0px 0px; width: 100%; float: left;">
-          <div  style="width:100%; background-color: #E7EDFF; float:left;">
+          <div  style="width:100%; background-color: #d1e1f2; float:left;">
             <div style="width: 100%; display: flex; align-items: center; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; position: relative; border-bottom: 2px; solid #F4F7FF!important; margin-top: 15px;">
               <img src="../../assets/images/main/main_contentsBellIcon2.png" style="float: left; margin-right: 8px;" class="img-w24" alt="">
               <p @click="goContentListPop()" class="font20 fontBold deepBorderColor fl textLeft cursorP CDeepColor" style="line-height: 26px;">받은 알림, 게시글 ></p>
@@ -99,7 +99,7 @@
                     <input @focus="this.mInputFocusYn = true" @blur="inputBlur()" class="searchPageInputAera font14 fontBold" @click="searchClear()" ref="channelSearchKey" @keyup.enter="findData()" v-model="mInputText" placeholder="검색키워드를 입력해주세요" />
                     <img src="../../assets/images/common/grayXIcon.svg" v-if="mFindText !== ''" @click="searchClear()" class="fr img-w10 mtop-03" style="position: absolute; top:0.6rem; right: 10px;" alt="">
                 </div> -->
-                <div style="position: absolute; top:15px; right:25px; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshMainList">
+                <div style="position: absolute; top:15px; right:25px; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: #879dc9d1; display: flex; align-items: center; justify-content: center; " @click="refreshMainList">
                     <img src="../../assets/images/common/reload_button.svg" class="cursorP img-w20" />
                 </div>
             </div>
@@ -318,7 +318,7 @@ export default {
       paramMap.set('soEmail', this.GE_USER.soEmail)
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
       paramMap.set('mobileYn', isMobile)
-      var response = await this.$axios.post('https://www.hybric.net:9443/service/tp.firstLoginCheck', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('/sUniB/tp.firstLoginCheck', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)

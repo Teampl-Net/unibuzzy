@@ -15,7 +15,7 @@
 <template>
   <div class="w100P h100P">
     <ActiveBar v-if="mTabList.length > 1 " ref="activeBar" :tabList="mTabList" class="activeBarStyle" @changeTab="changeTab" />
-    <div @click.stop="goManageTarget" v-if="!mChildShowYn && mSelectedTabIndex !== undefined && mTabList[mSelectedTabIndex] && mTabList[mSelectedTabIndex].name === '내주소록'" style="min-width: 50px; float: right; position: absolute; color: #FFF; font-weight: bold; border-radius: 8px; font-size: 14px; line-height: 28px; height: 28px; right: 0; top: 5px; padding: 0 5px; background: #5F61BD">관리</div>
+    <div @click.stop="goManageTarget" v-if="!mChildShowYn && mSelectedTabIndex !== undefined && mTabList[mSelectedTabIndex] && mTabList[mSelectedTabIndex].name === '내주소록'" style="min-width: 50px; float: right; position: absolute; color: #FFF; font-weight: bold; border-radius: 8px; font-size: 14px; line-height: 28px; height: 28px; right: 0; top: 5px; padding: 0 5px; background-color: #879dc9">관리</div>
     <div class="targetListBox" :style="mTabList.length <= 1? 'height: 100%;':'margin-top: 40px;'">
       <gListEmpty v-if="!mNowTargetList || mNowTargetList.length === 0" :title="$t('EDIT_BOOK_MSG_NOBOOK')" :subTitle="$t('EDIT_BOOK_MSG_CREBOOK')" option="SELE" />
       <TargetUnit v-else v-for="target in mNowTargetList" :pReloadList="pReloadList" :class="{dispNone: mChildShowYn}" :pSubOption="pSubOption" @openPop="openPop" @targetEmitFunction="targetEmitFunction" @openSelectTargetPop="openChild" @addTarget="addTarget" :key="target.accessKey" :pTargetData="target" :pSelectedYn="checkSelectedYn(target).result" :pOption="pOption" />
@@ -219,7 +219,7 @@ export default {
     async deleteDispArray (type) {
       if (type === 'U') {
         const result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteMCabContents',
+          url: '/sUniB/tp.deleteMCabContents',
           param: this.mEmitParams
         })
         console.log(result)

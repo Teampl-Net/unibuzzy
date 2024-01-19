@@ -354,6 +354,6 @@ export default {
 .chanDetailWrap table{width: 85vw; max-width: 400px; }
 .chanDetailWrap table img{width: 1.3rem}
 .iconTd{display: flex; align-items: flex-start; padding-top: 1.2rem!important;}
-.copyTextIcon{background: #6768a7; width: 30px; height: 30px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;}
+.copyTextIcon{background-color: #879dc9; width: 30px; height: 30px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;}
 /* .plusMarginBtn{margin-top: 0.6rem; line-height: 1.5;} */
 </style>

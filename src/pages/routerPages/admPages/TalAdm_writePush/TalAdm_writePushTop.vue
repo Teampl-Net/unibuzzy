@@ -2,7 +2,7 @@
     <div class="gTitleWrap" >
       <!-- <img src="" style="float: left; margin-top: 0.3rem;width: 1rem; margin-right: 0.5rem" alt=""> -->
       <span style=" margin-left:10px;">{{titleText}}</span>
-      <span style="background: #6768A7; width: 2px; margin-top: 0.3rem; height: 15px; margin-right: 0.3rem"></span>
+      <span style="background-color: #879dc9; width: 2px; margin-top: 0.3rem; height: 15px; margin-right: 0.3rem"></span>
       <span style="line-height: 30px;"> {{this.selectedChan}}</span>
       <div v-if="this.pageType === 'writePush'" style="width: 100%; height: 4rem; float: none;">
           <gBtnSmall class="mright-05" btnTitle='발송하기' @click="clickE('sendPushMsg')" />
@@ -42,6 +42,6 @@ export default {
 
 <style >
 .gTitleWrap{width: 100%; height: 2.7rem; float: left; border-top: 1px solid #E1E1E1; border-bottom: 1px solid #E1E1E1; background: #FFF; padding: 9px 0; padding-bottom: 1rem;}
-.gTitleWrap >span{color: #6768A7; font-size: 17px; font-weight: bold; float: left; margin-right: 1rem;}
+.gTitleWrap >span{color: rgb(74 102 158); font-size: 17px; font-weight: bold; float: left; margin-right: 1rem;}
 
 </style>

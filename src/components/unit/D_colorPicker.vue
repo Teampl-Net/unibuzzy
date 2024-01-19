@@ -1,7 +1,7 @@
 <template>
 
 <!-- box-shadow: rgb(64 64 64 / 16%) 0px 0px 7px 4px; border-radius: 15px; max-height:50px; -->
-    <div v-if="inLineYn !== false" class="colorPickerBox" id="colorPickerWrap" :style="isTag === true ? 'background-color : #E7EDFF; border:none; white-space:wrap; margin-top:0.3rem; flex-wrap:wrap; gap: 0.6rem; padding:20px 10px; min-width: 290px; max-width:310px; justify-content:center;' : 'background-color : #ECECF570; white-space:nowrap; padding: 5px 10px;'" style="border-radius: 8px; overflow: auto; display: flex; flex-direction: row; align-items: center;" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
+    <div v-if="inLineYn !== false" class="colorPickerBox" id="colorPickerWrap" :style="isTag === true ? 'background-color : #d1e1f2; border:none; white-space:wrap; margin-top:0.3rem; flex-wrap:wrap; gap: 0.6rem; padding:20px 10px; min-width: 290px; max-width:310px; justify-content:center;' : 'background-color : #ECECF570; white-space:nowrap; padding: 5px 10px;'" style="border-radius: 8px; overflow: auto; display: flex; flex-direction: row; align-items: center;" :class="!isMobile? 'thinScrollBar':''" @wheel="horizontalScroll">
         <!-- <div :style="'background-color:' + this.selectedColor" style=" width: calc(100% - 100px); margin-left: 10px; float: left; height: 50px; margin-bottom: 20px;">{{this.selectedColor}}</div>
         <gBtnSmall @click="selectColor" style="float: left; height: 23px; margin-bottom: 5px; line-height: 23px;margin-left: 10px" btnTitle="선택"/>
         <gBtnSmall @click="closePop" style="float: left; height: 23px; color: #A9AACD; border: 1px solid #A9AACD; line-height: 23px; background: #FFFFFF; margin-left: 10px" btnTitle="닫기"/> -->

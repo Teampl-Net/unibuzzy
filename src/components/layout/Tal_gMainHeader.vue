@@ -104,7 +104,7 @@ export default {
 .grayscale{
   filter: grayscale(1)
 }
-.mainHeaderWrap{box-sizing: border-box; display: list-item; background: #E7EDFF!important; padding: 0.5rem 0.7rem; padding-right: 1rem; text-align: left; width: calc(100% + 1px); }
+.mainHeaderWrap{box-sizing: border-box; display: list-item; background: #d1e1f2!important; padding: 0.5rem 0.7rem; padding-right: 1rem; text-align: left; width: calc(100% + 1px); }
 .menuBtn{float: right;}
 .mainMenuIcon{width: 1.8rem; margin-top: 5px; -webkit-user-drag: none;}
 .mainHeaderLogo{width: 1.7rem; margin: 0 0.4rem; -webkit-user-drag: none;}

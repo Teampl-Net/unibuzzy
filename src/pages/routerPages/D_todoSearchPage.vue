@@ -65,7 +65,7 @@
     <div
       style="
         height: 50px;
-        border-bottom: 2px solid #6768a7;
+        border-bottom: 2px solid rgb(74 102 158);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -133,7 +133,7 @@
                 margin-right: -0.5rem;
                 border-radius: 10px;
                 width: 45px;
-                color: #5f61bd;
+                color: rgb(74 102 158);
                 background-color: #fbfbfd;
               "
               @click.stop="goToday"
@@ -172,7 +172,7 @@
           Add
         </div>
       </div> -->
-      <!-- <span class="popHeaderTitleSpan font20 h100P" style="color: #6768A7; font-weight: bold; display: flex; justify-content: center; align-items: center;">Today's Todo</span> -->
+      <!-- <span class="popHeaderTitleSpan font20 h100P" style="color: rgb(74 102 158); font-weight: bold; display: flex; justify-content: center; align-items: center;">Today's Todo</span> -->
     </div>
     <div style="width: 100%; height: 100%">
       <!-- <div class="dateArea" style="position: relative; ">
@@ -220,7 +220,7 @@
                 {{ tab.tabName }}
                 <span
                   class="countTodo"
-                  style="margin-left: -0.2rem; color: #5f61bd"
+                  style="margin-left: -0.2rem; color: rgb(74 102 158)"
                   v-if="tab.tabIdx === 2"
                   >{{ mCompleteMyTodoCount }}/{{
                     mMyTodoList.totalElements
@@ -228,7 +228,7 @@
                 >
                 <span
                   class="countTodo"
-                  style="margin-left: -0.2rem; color: #5f61bd"
+                  style="margin-left: -0.2rem; color: rgb(74 102 158)"
                   v-if="tab.tabIdx === 3"
                   >{{ mCompleteTargetTodoCount }}/{{
                     mReqTodoList.totalElements
@@ -284,8 +284,8 @@
       </div>
       <!-- <div v-if="mDispStickerList && mShowStickerListYn" style="overflow-x: auto; overflow-y: hidden; width: 100%; height: 30px; padding: 5px 10px;">
         <div style="min-width: 100%; " :style="`width: ${mDispStickerList.length * 50}px`">
-          <div class="fl mright-05 todoTag" :style="` margin-top: 0px;background: #5F61BD;border: 2.5px solid  #5F61BD;`" :key="index">전체</div>
-          <div v-for="(sticker, index) in mDispStickerList" class="fl mright-05 todoTag" :style="(sticker.selectedYn? 'border: 2.5px solid  #5F61BD;' : '') + `line-height: 17px; margin-top: 0px;background: ${sticker.picBgPath}`" :key="index">{{ $changeText(sticker.nameMtext) }}</div>
+          <div class="fl mright-05 todoTag" :style="` margin-top: 0px;background-color: #879dc9;border: 2.5px solid  rgb(74 102 158);`" :key="index">전체</div>
+          <div v-for="(sticker, index) in mDispStickerList" class="fl mright-05 todoTag" :style="(sticker.selectedYn? 'border: 2.5px solid  rgb(74 102 158);' : '') + `line-height: 17px; margin-top: 0px;background: ${sticker.picBgPath}`" :key="index">{{ $changeText(sticker.nameMtext) }}</div>
         </div>
       </div> -->
       <div v-if="mParamStickerList && mParamStickerList.length > 0" style="border-bottom: 1px solid rgb(103 104 167); overflow-x: auto; overflow-y: hidden; width: calc(100% - 20px); height: 30px; margin: 5px 10px;">
@@ -314,7 +314,7 @@
           justify-content: center;
           align-items: center;
           height: calc(100% - 300px);
-          color: #6768a7;
+          color: rgb(74 102 158);
         "
       >
         등록된 일이 없습니다.
@@ -438,7 +438,7 @@
                                   {{ $changeText(sticker.nameMtext) }}
                                 </span>
                               </template>
-                              <span class="todoTag mright-03" @click="todo.showAllStickerYn = !todo.showAllStickerYn" style="background: #5f61bd !important;" v-if="todo.stickerList && todo.stickerList.length > 1">
+                              <span class="todoTag mright-03" @click="todo.showAllStickerYn = !todo.showAllStickerYn" style="background-color: #879dc9 !important;" v-if="todo.stickerList && todo.stickerList.length > 1">
                                 {{ `(+${todo.stickerList.length - 1})` }}
                               </span>
                               <div
@@ -974,7 +974,7 @@ export default {
       }
       param.workUserKey = this.GE_USER.userKey
       await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.updateTodo',
+        url: '/sUniB/tp.updateTodo',
         param: param
       })
       value.contStatus = param.contStatus
@@ -1064,7 +1064,7 @@ export default {
       this.mCompleteTodoCount = 0
       const myContents = await this.$commonAxiosFunction(
         {
-          url: 'https://www.hybric.net:9443/service/tp.getMyTodoList',
+          url: '/sUniB/tp.getMyTodoList',
           param: param
         },
         true
@@ -1661,7 +1661,6 @@ export default {
       immediate: true,
       handler (val) {
         if (!val) return
-        // alert(false)
         this.getTodoListGroupCab()
       },
       deep: true
@@ -1952,7 +1951,7 @@ svg > path {
   border-radius: 0 10px 10px 0;
 }
 .mainTodoTabSelected {
-  background-color: #5f61bd !important;
+  #879dc9 !important;
   font-weight: bold !important;
   color: #fff !important;
 }
@@ -1983,7 +1982,7 @@ svg > path {
   border-bottom: 1px solid #ccc;
 }
 .mx-calendar-content .cell.active {
-  background-color: #6768a7 !important;
+  #879dc9 !important;
 }
 .mx-calendar-content .hover-in-range {
   background-color: #cdceff56 !important;
@@ -2011,7 +2010,7 @@ svg > path {
 
 .mx-icon-calendar {
   top: 20px !important;
-  color: #6768a7 !important;
+  color: rgb(74 102 158) !important;
   display: none !important;
 }
 .mx-icon-clear svg {
@@ -2030,11 +2029,11 @@ svg > path {
   float: left;
   box-sizing: border-box !important;
   border: none !important;
-  background-color: #e7edff !important;
+  background-color: #d1e1f2 !important;
   text-align: Center;
   font-weight: bold;
   font-size: 30px;
-  color: #6768a7 !important;
+  color: rgb(74 102 158) !important;
 }
 .todoBody {
   width: 100%;
@@ -2109,7 +2108,7 @@ svg > path {
   height: 25px;
   border-radius: 50%;
   margin-left: -10px;
-  border: 2px solid #e7edff;
+  border: 2px solid #d1e1f2;
   box-shadow: 0 5px 6px 0 rgba(255, 255, 255, 0.6);
   background-color: #fff;
 }
@@ -2122,8 +2121,8 @@ svg > path {
   height: 27px;
   border-radius: 50%;
   /* box-shadow:0 5px 6px 0 rgba(60, 60, 60, 0.2); */
-  background-color: #e7edff !important;
-  color: #5f61bd !important;
+  background-color: #d1e1f2 !important;
+  color: rgb(74 102 158) !important;
   z-index: 2;
   display: flex;
   align-items: center;
@@ -2155,13 +2154,13 @@ svg > path {
   border-top: 0px solid transparent;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 16px solid #e7edff;
+  border-bottom: 16px solid #d1e1f2;
 }
 .actorNameList {
   display: flex;
   flex-direction: column;
   align-items: start;
-  background-color: #e7edff !important;
+  background-color: #d1e1f2 !important;
   box-shadow: 0 5px 8px 0 #3c3c3c1a;
   border-radius: 10px;
   padding: 5px 7px;
@@ -2178,7 +2177,7 @@ svg > path {
   background-position: center center;
   display: inline-block;
   vertical-align: middle;
-  border: 2px solid #e7edff;
+  border: 2px solid #d1e1f2;
 }
 .strikeLine {
   position: absolute;

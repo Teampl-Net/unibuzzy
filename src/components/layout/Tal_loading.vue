@@ -247,7 +247,7 @@ export default {
   animation-delay: 2s;
   box-shadow: none!important;
 }
-.waitingText{position: absolute;bottom: -80px; color: #6768A7; left: -10px; font-weight: bold;}
+.waitingText{position: absolute;bottom: -80px; color: rgb(74 102 158); left: -10px; font-weight: bold;}
 
 @media screen and (max-width: 300px) {
   .loadingcontainer {

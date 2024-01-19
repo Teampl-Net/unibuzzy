@@ -10,7 +10,6 @@ LOGIN_PROXY_URL.set('url', 'http://192.168.0.100:18080/service/li.loginProxy')
 // eslint-disable-next-line no-unused-vars
 var sso = {
   login (callbackF, addLogF) {
-    // alert('come')
     if (addLogF) {
       var logText = '<span class="font16 fontBold commonBlack textLeft">li.sso.js: 로그인 팝업 호출</span>'
       logText += '<br> 호출 url: ' + LOGIN_CEHCK_URL.get('url')
@@ -32,10 +31,8 @@ var sso = {
       windowRef = location.replace(uri, id, 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
       if (windowRef != null) {
       } else {
-        alert('window.open fail!!!!')
       }
     } catch (error) {
-      alert(error)
     }
 
     // 2.  새로 띄운 윈도우 팝업창으로 부터 수신 메세지 이벤트 처리

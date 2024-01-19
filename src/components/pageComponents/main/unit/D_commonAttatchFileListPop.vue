@@ -68,7 +68,7 @@ export default {
         file.addYn = false
       }
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveMyFile',
+        url: '/sUniB/tp.saveMyFile',
         param: { file: file }
       })
       if (fileType === 'F') {

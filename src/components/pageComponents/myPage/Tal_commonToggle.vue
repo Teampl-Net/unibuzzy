@@ -54,7 +54,7 @@ export default ({
   min-width: 33px;
   min-height: 18px;
   border-radius: 30px;
-  background-color: #6768a7;
+  background-color: #879dc9;
   line-height: 27px;
   text-align: center;
 }
@@ -69,7 +69,7 @@ export default ({
   min-height: 15px; */
   min-width: 20px;
   min-height: 20px;
-  /* border: 1px solid #6768a7; */
+  /* border: 1px solid rgb(74 102 158); */
   border: 1px solid #cccccc ;
   margin: 6px;
   border-radius:100%;
@@ -95,7 +95,7 @@ export default ({
 .toggle-switch input[type=checkbox]:checked + label .toggle-track:before{
   /* content:'On'; */
   left: 10px;
-  border: 1px solid #6768a7;
+  border: 1px solid rgb(74 102 158);
   background: white ;
 
 }

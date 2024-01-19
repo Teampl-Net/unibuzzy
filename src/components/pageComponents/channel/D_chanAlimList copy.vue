@@ -5,7 +5,7 @@
       <welcomePopUp type="follow" v-if="mOpenWelcomePopShowYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="mOpenWelcomePopShowYn = false" @closePop="okMember" @applyMember="openReqMemPop" />
       <div v-if="mReceptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999" ></div>
       <recMemberPop :chanDetail="this.CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" />
-      <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{officialTitle: CHANNEL_DETAIL.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" /> <p class="font20 fontBold textOverdot"  :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: #6768a7' ">{{changeText(CHANNEL_DETAIL.nameMtext)}}</p></div>
+      <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{officialTitle: CHANNEL_DETAIL.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" /> <p class="font20 fontBold textOverdot"  :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: rgb(74 102 158)' ">{{changeText(CHANNEL_DETAIL.nameMtext)}}</p></div>
       <div id="summaryWrap" v-if="!this.mChanInfoPopShowYn" class="summaryWrap mtop-05" style="padding: 0 1rem;" >
           <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox ">
               <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (this.CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;" ></div>
@@ -23,7 +23,7 @@
                       </p>
                   </div>
                   <div class="fl font15  w-100P " style="box-sizing:boborder-box; word-break:break-all; " >
-                      <p class="font13 commonColor textLeft fl fontBold " style="color:#6768a7; white-space: nowrap;"> 개설일</p>
+                      <p class="font13 commonColor textLeft fl fontBold " style="color:rgb(74 102 158); white-space: nowrap;"> 개설일</p>
                       <p class="font14 textLeft fl mleft-1" style="word-break:break-all" >{{this.$dayjs(CHANNEL_DETAIL.creDate).format('YYYY-MM-DD')}}</p>
                   </div>
               </div>
@@ -39,7 +39,7 @@
           </div>
           <div id="userCardWrap" class="fl w-100P" :class="chanBgBlackYn===true ? 'blackTextBox': 'whiteTextBox'" style="padding:0.5rem 1rem; flex-direction: row; justify-content: space-between;">
               <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; align-items: center;">
-                  <div @click="goProfile" :style="'background-image: url(' + (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.GE_USER.userProfileImg : this.GE_USER.userProfileImg) + ');'" style=" background-size: cover; background-repeat: no-repeat; background-position: center; width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden;"></div>
+                  <div @click="goProfile" :style="'background-image: url(' + (this.GE_USER.domainPath ? this.GE_USER.domainPath + this.GE_USER.userProfileImg : this.GE_USER.userProfileImg) + ');'" style=" background-size: cover; background-repeat: no-repeat; background-position: center; width:30px; height:30px; border-radius: 100%; border:1.5px solid rgb(74 102 158); overflow: hidden;"></div>
                   <div class="mleft-05" style="display:flex; flex-direction: column;">
                       <p @click="goProfile" class="font16 textLeft">{{this.$changeText(this.GE_USER.userDispMtext)}}</p>
                       <div>
@@ -48,10 +48,10 @@
                   </div>
               </div>
               <div v-if="(!CHANNEL_DETAIL.D_CHAN_AUTH === true || CHANNEL_DETAIL.D_CHAN_AUTH.followYn === undefined)" class="fl w-100P">
-                  <match :color="'#6768a7'"/>
+                  <match :color="'rgb(74 102 158)'"/>
               </div>
               <div v-else-if="CHANNEL_DETAIL.D_CHAN_AUTH && CHANNEL_DETAIL.D_CHAN_AUTH.followYn" class="fl" style="display: flex; width: 40%; justify-content: space-around; align-items: center;">
-                  <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'background-color:#6768a7' : 'background-color:#eee' " >
+                  <div style="padding: 3px 10px; border-radius: 10px; border: 1px solid #ccc;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'background-color:rgb(74 102 158)' : 'background-color:#eee' " >
                       <p class="fl font14 cursorP fontBold" v-if="this.REQ_MEM_OBJ.reqMemberStatus === '00' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  @click="this.openReqMemPop()" :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버신청</p>
                       <p class="fl font14 cursorP fontBold" v-else-if="this.REQ_MEM_OBJ.reqMemberStatus === '01' && CHANNEL_DETAIL.userTeamInfo.memberYn !== 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버대기중</p>
                       <p class="fl font14 cursorP fontBold" v-else-if="this.REQ_MEM_OBJ.reqMemberStatus === '99' || CHANNEL_DETAIL.userTeamInfo.memberYn === 1"  :style="CHANNEL_DETAIL.D_CHAN_AUTH.memberYn ? 'color:white' : '' " >멤버</p>

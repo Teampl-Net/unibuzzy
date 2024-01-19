@@ -98,7 +98,6 @@ export default {
       sso.loginCheck(param, this.alertTest)
     },
     alertTest () {
-      alert(true)
     },
     clickAppleLoginInWeb () {
       document.querySelector('#appleid-signin').click()

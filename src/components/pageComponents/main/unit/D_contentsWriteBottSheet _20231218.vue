@@ -42,18 +42,18 @@
   </div>
   <div style="width: 100%; min-height: 100px;">
       <div style="width: 100%; min-height: 100px; display: flex;  float: left; justify-content: space-between;">
-          <div @click="selectWriteType('ALIM')"  class="writeTypeBtnStyle" :class="{widthChange : propTeamKey}" :style="this.mSelectedWriteType === 'ALIM' ? 'border: 3px solid #7678E2!important; ' : ''">
+          <div @click="selectWriteType('ALIM')"  class="writeTypeBtnStyle" :class="{widthChange : propTeamKey}" :style="this.mSelectedWriteType === 'ALIM' ? 'border: 3px solid rgb(74 102 158)!important; ' : ''">
             <div v-if="mAlimClickYn === false" class="noneClickCSS fl wh-100P"></div>
               <img style="width: 36px;" src="../../../../assets/images/main/main_contentsBellIcon2.png" alt="">
               <img v-if="this.mSelectedWriteType === 'ALIM'" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
               <p :class="{lightGray: this.mSelectedWriteType !== 'ALIM' }" class="font14 fontBold mtop-05 commonColor">{{mAlimClickYn === true ? $t('COMMON_TAB_NOTI') : $t('BOTTOM_MSG_NOPERM')}}</p>
           </div>
-          <div @click="selectWriteType('BOAR')" class="writeTypeBtnStyle" :class="{widthChange : propTeamKey}" :style="this.mSelectedWriteType === 'BOAR' ? 'border: 3px solid #7678E2!important; ' : ''">
+          <div @click="selectWriteType('BOAR')" class="writeTypeBtnStyle" :class="{widthChange : propTeamKey}" :style="this.mSelectedWriteType === 'BOAR' ? 'border: 3px solid rgb(74 102 158)!important; ' : ''">
               <img class="img-w30" src="../../../../assets/images/main/boardIcon.svg" alt="">
               <img v-if="this.mSelectedWriteType === 'BOAR'" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
               <p :class="{lightGray: this.mSelectedWriteType !== 'BOAR'}" class="font14 fontBold mtop-03 commonColor">{{ $t('COMMON_TAB_POST') }}</p>
           </div>
-          <div @click="selectWriteType('TODO')" class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'TODO' ? 'border: 3px solid #7678E2!important; ' : ''" v-if="!propTeamKey">
+          <div @click="selectWriteType('TODO')" class="writeTypeBtnStyle" :style="this.mSelectedWriteType === 'TODO' ? 'border: 3px solid rgb(74 102 158)!important; ' : ''" v-if="!propTeamKey">
               <img style="width: 36px;" src="../../../../assets/images/main/main_contentsBellIcon2.png" alt="">
               <img v-if="this.mSelectedWriteType === 'TODO'" src="../../../../assets/images/common/selectCheckIcon.svg" style="position: absolute; left: -15px; top: -10px;" alt="">
               <p :class="{lightGray: this.mSelectedWriteType !== 'TODO' }" class="font14 fontBold mtop-05 commonColor">{{$t('COMMON_NAME_TODOLIST')}}</p>

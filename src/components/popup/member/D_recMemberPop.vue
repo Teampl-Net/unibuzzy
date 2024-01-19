@@ -19,11 +19,11 @@
 <template>
     <div style="width: calc(100% - 40px);min-height: 500px; height: 90%; z-index: 99999999999999999999999; position: fixed; left: 20px; bottom: 0; background: #fff; border-radius: 0.8rem 0.8rem 0 0;">
         <div style="width: 100%; position: relative; padding: 10px 20px; min-height: 50px; float: left;" class="headerShadow">
-            <p class="textLeft font20 commonColor fontBold" style="color: #6768A7!important">{{ $t('REQ_MEM_NAME_REQ') }}</p>
+            <p class="textLeft font20 commonColor fontBold" style="color: rgb(74 102 158)!important">{{ $t('REQ_MEM_NAME_REQ') }}</p>
             <img @click="successSendForm(false)" class="" style="width: 25px; position: absolute; top: 15px; right: 20px;" src="../../../assets/images/common/popup_close.png" alt="">
         </div>
         <div style="width: 100%; height: calc(100% - 120px); float: left; padding: 10px 20px;">
-            <p class="font18 fontBold textLeft" style="color: #6768A7!important; margin: 10px 0;">{{ $t('REQ_MEM_TITLE_CONT') }}</p>
+            <p class="font18 fontBold textLeft" style="color: rgb(74 102 158)!important; margin: 10px 0;">{{ $t('REQ_MEM_TITLE_CONT') }}</p>
             <div id="receptStrArea" :contenteditable='true' class="font16 editableContent" style="width: 100%; min-height: 100px; padding: 10px; text-align: left; height: 80%; border: 1px solid #ccc;"></div>
         </div>
         <div style="width: 100%; height: 50px; margin-bottom: 10px; display: flex; justify-content: center; align-items: center;">
@@ -124,7 +124,7 @@ export default {
       params = { follower: param, doType: 'RQ' }
       console.log(params)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveFollower',
+        url: '/sUniB/tp.saveFollower',
         param: params
       })
       if (result.data.result === true) {

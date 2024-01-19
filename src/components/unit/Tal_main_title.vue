@@ -48,5 +48,5 @@ export default {
 </script>
 <style scoped>
 
- .top5TitleWrap{margin-top: 0rem; /* border-bottom: 1px solid #6768A7; */ min-height: 20px; margin-bottom: 10px}
+ .top5TitleWrap{margin-top: 0rem; /* border-bottom: 1px solid rgb(74 102 158); */ min-height: 20px; margin-bottom: 10px}
 </style>

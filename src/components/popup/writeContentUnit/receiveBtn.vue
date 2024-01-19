@@ -37,7 +37,7 @@ export default {
     background: #F1F1FF;
 /* 하이브릭1 */
 
-    border: 1.5px solid #5F61BD;
+    border: 1.5px solid rgb(74 102 158);
     border-radius: 8px;
 
 /* Inside auto layout */

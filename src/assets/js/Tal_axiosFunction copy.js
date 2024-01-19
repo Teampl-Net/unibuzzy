@@ -61,7 +61,7 @@ export async function userLoginCheck () {
 
 export async function getTeamList (paramMap) {
   var resultList = null
-  await this.$axios.post('https://www.hybric.net:9443/service/tp.getUserTeamList', Object.fromEntries(paramMap)
+  await this.$axios.post('/sUniB/tp.getUserTeamList', Object.fromEntries(paramMap)
   ).then(response => {
     resultList = response.data
   }).catch((error) => {
@@ -76,7 +76,7 @@ export async function getContentsList (inputMap) {
     paramMap = inputMap
   }
   var result = null
-  await this.$axios.post('https://www.hybric.net:9443/service/tp.getContentsList', Object.fromEntries(paramMap)
+  await this.$axios.post('/sUniB/tp.getContentsList', Object.fromEntries(paramMap)
   ).then(response => {
     result = response.data
   }).catch((error) => {
@@ -93,7 +93,7 @@ export async function getContentsList (inputParam) {
   }
   param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
   var result = null
-  await this.$axios.post('https://www.hybric.net:9443/service/tp.getContentsList', param
+  await this.$axios.post('/sUniB/tp.getContentsList', param
   ).then(response => {
     result = response.data
   }).catch((error) => {
@@ -135,7 +135,7 @@ export async function saveUser (userProfile) {
   user.countryCode = deviceInfo.contry
   user.areaName = deviceInfo.timeZome
   param.user = user
-  await axios.post('https://www.hybric.net:9443/service/tp.saveUser', param
+  await axios.post('/sUniB/tp.saveUser', param
   ).then(response => {
     if (response.data === 'OK') {
       localStorage.setItem('user', JSON.stringify(user))
@@ -153,7 +153,7 @@ export async function saveUserDo (inputParam) {
   }
   param.ownUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
   var result = null
-  await this.$axios.post('https://www.hybric.net:9443/service/tp.saveUserDo', param
+  await this.$axios.post('/sUniB/tp.saveUserDo', param
   ).then(response => {
     result = response.data
   }).catch((error) => {

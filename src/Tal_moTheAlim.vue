@@ -5,7 +5,9 @@
       <fullModal transition="showModal"  @successWrite="successWriteBoard" id="commonWrap" :propParams="modalParam" ref="commonWrap" :headerTitle="this.headerTitle" @closePop="closePop" v-if="this.popShowYn" :parentPopN="this.parentPopN" />
     </transition>
     <!-- <div id="FullModalWrap" ref="FullModalWrap1" style="position: absolute; top: 0; left: 0;"></div> -->
-    <firstLoading style="width: 100vw; height: 100vh; position: fixed; z-index: -1; top: 0; left: 0;"/>
+    <transition name="showModal">
+      <firstLoading transition="showModal" style="position: fixed;  top: 0; left: 0;"/>
+    </transition>
     <router-view v-if="!isLoadingYn" ref="routerMainWrap" @openPop="openPop" /> <!-- 안뜬 상태로? 뜬 상태로? onload가 언제로 인식되는지 확인하기-->
   </div>
 </template>
@@ -31,8 +33,7 @@ export default {
   mounted () {
     // 페이지가 완전히 로드된 후에 isLoadingYn을 false로 변경
     window.addEventListener('load', () => {
-      console.log('로딩이 끝났음.')
-      // this.isLoadingYn = false
+      // this.$gGetUserProfile(this.$USER_TOKEN)
     })
     // window.document.addEventListener('wheel', (e) => {
     //   var test = e.deltaY < 0 ? 'down' : 'up'
@@ -57,7 +58,6 @@ export default {
   },
   data () {
     return {
-      mobileYn: this.$getMobileYn(),
       startPoint: 0,
       endPoint: 0,
       headerTitle: '아이디어스',
@@ -70,7 +70,8 @@ export default {
       modalParam: {},
       fullScreenYn: false,
       screenWidth: '1000px',
-      isLoadingYn: false
+      isLoadingYn: true,
+      isShowLoading: true
     }
   },
   methods: {
@@ -88,7 +89,7 @@ export default {
       var toastDiv = document.createElement('div')
 
       toastDiv.id = 'FullScreenToggle'
-      toastDiv.style.cssText = 'position: fixed; right:1%; bottom:10px; cursor: pointer; width: fit-content; line-height: 30px; border-radius: 5px; min-width: 3rem; float: right; height: 30px; padding: 0 20px; text-align: center; background-color: #6768a7; color: #FFFFFF; white-space: nowrap;'
+      toastDiv.style.cssText = 'position: fixed; right:1%; bottom:10px; cursor: pointer; width: fit-content; line-height: 30px; border-radius: 5px; min-width: 3rem; float: right; height: 30px; padding: 0 20px; text-align: center; #879dc9; color: #FFFFFF; white-space: nowrap;'
       toastDiv.onclick = function () {
         var toggle = false
         if (toggle === true) {
@@ -121,6 +122,32 @@ export default {
     }
   },
   watch: {
+    $INIT_YN: {
+      immediate: true,
+      async handler (val) {
+        console.log(this.$USER_TOKEN)
+        if (val !== undefined && val === true) {
+          if (!this.$route.path.includes('login') && !this.$route.path.includes('Login')) {
+            if (!this.$USER_TOKEN) {
+              // this.$router.push('/login')
+              // await this.$gGetUserProfile(this.$USER_TOKEN)
+            } else {
+            }
+          }
+          this.isLoadingYn = false
+        }
+      }
+    },
+    isLoadingYn: {
+      immediate: true,
+      handler (val) {
+        if (val !== undefined && val === false) {
+          setTimeout(() => {
+            this.isShowLoading = false
+          }, 1000)
+        }
+      }
+    },
     screenWidth () {
       var toggle = document.getElementById('FullScreenToggle')
       if (this.screenWidth < 1250 && (toggle !== undefined && toggle !== null && toggle !== '')) {

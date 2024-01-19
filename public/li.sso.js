@@ -10,7 +10,6 @@ LOGIN_PROXY_URL.set('url', 'http://192.168.0.10:8083/tpp.loginProxy')
 // eslint-disable-next-line no-unused-vars
 const sso = {
   login (callbackF, addLogF) {
-    // alert('come')
     if (addLogF) {
       let logText = '<span class="font16 fontBold commonBlack textLeft">tpp.sso.js: 로그인 팝업 호출</span>'
       logText += '<br> 호출 url: ' + LOGIN_CEHCK_URL.get('url')
@@ -33,10 +32,8 @@ const sso = {
       // eslint-disable-next-line no-empty
       if (windowRef != null) {
       } else {
-        alert('window.open fail!!!!')
       }
     } catch (error) {
-      alert(error)
     }
 
     // 2.  새로 띄운 윈도우 팝업창으로 부터 수신 메세지 이벤트 처리
@@ -88,21 +85,16 @@ const sso = {
         aTag.style.display = 'none'
         document.body.appendChild(aTag)
       }
-      alert(aTag)
-      alert(uri)
       aTag.href = uri
       // aTag.href = appInfo.playStoreUrl
       aTag.target = id
 
       aTag.click()
       var windowRef = document.getElementById('testAtag')
-      alert(windowRef)
       document.body.removeChild(aTag)
       // var windowRef = window.open(uri, id, 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
     } catch (error) {
-      alert(error)
     }
-    // alert(windowRef)
 
     // 2.  새로 띄운 윈도우 팝업창으로 부터 수신 메세지 이벤트 처리
     if (window.addEventListener) {
@@ -130,7 +122,6 @@ const sso = {
           // window.open(LOGIN_CHECK_URL, 'loginPop', 'width=500, height=700, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
         }
         if (callbackF) {
-          alert(resultData.result)
           callbackF()
           // location.replace(callbackF + '?loginResult=' + resultData.result)
         }

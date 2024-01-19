@@ -437,7 +437,7 @@ export default {
   right:50%;
   transform:translate(70%, -50%);
   font-weight:bold;
-  color:#062bb5;
+  color:rgb(74 102 158);
 }
 
 @keyframes area-zoom {

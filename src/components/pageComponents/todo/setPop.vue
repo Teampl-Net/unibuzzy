@@ -2,8 +2,8 @@
   <!-- <selectBookList v-if="selectBookListShowYn" :chanInfo="CHANNEL_DETAIL" :propData="mPropData" :pClosePop="closeSelectPop" @closeXPop="selectBookListShowYn = false" :selectPopYn="true" @sendReceivers='setSelectedList' :pSelectedList="selectedList" /> -->
     <div class="chanInfoBoxWrap">
       <div class="w100P " style="height: calc( 100% - 40px );">
-        <div style="height:40px; border-bottom: 2px solid #6768a7;">
-          <span class="popHeaderTitleSpan font20 h100P" style="line-height: 40px; color: #6768A7; font-weight: bold;">{{ pUpdateTodo? 'Edit':'Set'}}</span>
+        <div style="height:40px; border-bottom: 2px solid rgb(74 102 158);">
+          <span class="popHeaderTitleSpan font20 h100P" style="line-height: 40px; color: rgb(74 102 158); font-weight: bold;">{{ pUpdateTodo? 'Edit':'Set'}}</span>
           <div class="chanMenubar cursorP" @click="openMenu" style="top:8px">
             <img src="../../../assets/images/todo/MKCloseBtn.svg" width="20" @click="pClosePop"/>
           </div>
@@ -43,8 +43,8 @@
           </div>
         </div>
       </div>
-      <div style="border-top:2px solid #6768a7; height:40px; display: flex; align-items: center; justify-content: center;">
-        <div v-for="btn, index in mBtnList" :key="index" class="cursorP fontBold" style="margin: 0 5px; background-color: #6768a7; color:white; width: 50px; border-radius: 5px; font-size: 12px; height: 25px; line-height: 25px;" @click="btn.click">{{ btn.btnTitle }}</div>
+      <div style="border-top:2px solid rgb(74 102 158); height:40px; display: flex; align-items: center; justify-content: center;">
+        <div v-for="btn, index in mBtnList" :key="index" class="cursorP fontBold" style="margin: 0 5px; #879dc9; color:white; width: 50px; border-radius: 5px; font-size: 12px; height: 25px; line-height: 25px;" @click="btn.click">{{ btn.btnTitle }}</div>
       </div>
     </div>
 </template>

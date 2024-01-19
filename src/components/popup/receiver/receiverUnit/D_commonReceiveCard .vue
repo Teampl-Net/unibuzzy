@@ -52,7 +52,7 @@
       </div>
 
       <div v-if="option === 'SELE'" class="fr cursorP" style="display: flex; align-items: center;" @click="clickEvntToParents('editList')">
-        <div class="fl mright-03" style="width:20px; height:20px; border-radius:100%; border:1px solid #5F61BD; display: flex; justify-content: center; align-items: center;" :class="{ 'CDeepBgColor' : propData.selectedYn === true }">
+        <div class="fl mright-03" style="width:20px; height:20px; border-radius:100%; border:1px solid rgb(74 102 158); display: flex; justify-content: center; align-items: center;" :class="{ 'CDeepBgColor' : propData.selectedYn === true }">
           <!-- <img v-if="propData.selectedYn === true" class="fl img-w13" src="../../../../assets/images/common/icon_check_white.svg" alt="선택 아이콘"> -->
           <img class="fl img-w13" src="../../../../assets/images/common/icon_check_white.svg" alt="선택 아이콘">
         </div>
@@ -157,8 +157,8 @@ export default {
   height: 20px;
   left: 330px;
   top: 25px;
-  background: #5F61BD;
-  border: 1.5px solid #5F61BD;
+  background-color: #879dc9;
+  border: 1.5px solid rgb(74 102 158);
   border-radius: 50%;
 }
 </style>

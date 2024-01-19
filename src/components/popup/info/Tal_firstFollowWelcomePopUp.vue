@@ -8,8 +8,8 @@
         <!-- <p>채널 종류를 선택해주시면<br>필요한 서류를 알려드릴게요!</p> -->
     </div>
     <div style="width: 100%; margin-top: 20px; float: left; padding: 10px;">
-      <div @click="goChanMain" class="fl" style="width: 100%; background-color: #6768A7; color: white; padding: 10px; border-radius: 10px; margin-bottom: 50px;">채널 메인 바로 가기</div>
-      <div @click="applyMember" class="fl" style="width: 100%; background-color: #6768A7; color: white; padding: 10px; border-radius: 10px; ">내정보 공개 하기</div>
+      <div @click="goChanMain" class="fl" style="width: 100%; #879dc9; color: white; padding: 10px; border-radius: 10px; margin-bottom: 50px;">채널 메인 바로 가기</div>
+      <div @click="applyMember" class="fl" style="width: 100%; #879dc9; color: white; padding: 10px; border-radius: 10px; ">내정보 공개 하기</div>
     </div>
   </div>
 

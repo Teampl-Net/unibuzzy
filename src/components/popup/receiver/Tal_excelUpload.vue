@@ -1,7 +1,7 @@
 <template>
     <div id="exelUploadPop" style="width: 80%; max-width: 500px; z-index: 99999999; height: 500px; border-radius: 10px; position: absolute; top: 15%; left: 10%; background: #fff; border: 1px solid #ccc;">
         <commonConfirmPop v-if="confirmYn" @ok="saveList" @no="this.confirmYn = false" confirmType="two" :confirmText="confirmMsg" />
-        <div style="width: 100%; height: 50px; position: relative; padding: 13px 10px; border-bottom: 2px solid #6768A7; float: left; text-align: left;">
+        <div style="width: 100%; height: 50px; position: relative; padding: 13px 10px; border-bottom: 2px solid rgb(74 102 158); float: left; text-align: left;">
             <p class="fontBold font18">엑셀업로드</p>
             <img @click="this.$emit('closePop')" class="cursorP" src="../../../assets/images/common/popup_close.png" style="position: absolute; right: 10px; top: 15px; width: 20px;" alt="">
         </div>
@@ -131,7 +131,7 @@ export default {
     },
     async test () {
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.uploadTpUserRequireListExcelFile',
+        url: '/sUniB/tp.uploadTpUserRequireListExcelFile',
         // eslint-disable-next-line no-new-object
         param: new Object()
       })
@@ -156,7 +156,7 @@ export default {
           this.isUploading = true
 
           this.$axios
-            .post('https://www.hybric.net:9443/service/tp.uploadTpUserRequireListExcelFile', form, {
+            .post('/sUniB/tp.uploadTpUserRequireListExcelFile', form, {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
@@ -226,7 +226,7 @@ export default {
     },
     async saveList () {
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveMUserFromExcelFile',
+        url: '/sUniB/tp.saveMUserFromExcelFile',
         param: {
           /* cabientType:  */
           bookType: this.bookType,
