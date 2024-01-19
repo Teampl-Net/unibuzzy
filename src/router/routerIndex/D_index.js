@@ -10,7 +10,7 @@ export const routes = [
     component: routerMain,
     children: [
       {
-        path: '/',
+        path: '/admPage',
         name: 'main',
         props: true,
         meta: {
