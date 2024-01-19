@@ -3,7 +3,7 @@
 
     <div class="commonPopWrap">
       <addGroupPop v-if="popType === 'addGroup' || popType === 'editGroup'" @saveGroup="saveGroup" :pPropParams="pPropParams" :pClosePop="pClosePop" :pGetOrgList="pGetOrgList"/>
-      <addMemberPop v-if="popType === 'addMember'" :pClosePop="pClosePop" :pOrgList="pOrgList" :pPropParams="pPropParams"/>
+      <addMemberPop v-if="popType === 'addMember'" :pClosePop="pClosePop" @saveMember="saveMember" :pOrgList="pOrgList" :pPropParams="pPropParams"/>
     </div>
 </template>
 
@@ -39,6 +39,14 @@ export default {
       paramSet = param
 
       var result = await axios.post('/sUniB/tp.saveOrg', { org: paramSet }, { withCredentials: true, headers: { DemoYn: true } })
+      console.log('result', result)
+      this.pClosePop()
+    },
+    async saveMember (param) {
+      var paramSet = {}
+      paramSet = param
+
+      var result = await axios.post('/sUniB/tp.saveMOrgUser', { mOrgUser: paramSet }, { withCredentials: true, headers: { DemoYn: true } })
       console.log('result', result)
       this.pClosePop()
     }
