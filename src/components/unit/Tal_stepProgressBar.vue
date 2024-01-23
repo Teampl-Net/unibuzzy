@@ -48,13 +48,13 @@ export default {
   counter-increment: step;
   width: 30px;
   height: 30px;
-  border: 2px solid #6768a7;
+  border: 2px solid rgb(74 102 158);
   display: block;
   margin: 0 auto 10px auto;
   border-radius: 50%;
   line-height: 27px;
   background: rgb(219 220 255);
-  color: #6768a7;
+  color: rgb(74 102 158);
   text-align: center;
   font-weight: bold;
 }
@@ -69,19 +69,19 @@ export default {
   z-index: -1;
 }
 .progressbar li.active:before{
- border-color: #6768a7;
- background: #6768a7;
+ border-color: rgb(74 102 158);
+ background-color: #879dc9;
  color: white
 }
 .progressbar li.active:after{
- background: #6768a7;
+ background-color: #879dc9;
 }
 .progressbar li.active /* - li */:after{
- background: #6768a7;
+ background-color: #879dc9;
 }
 .progressbar li.active /* - li */:before{
-border-color: #6768a7;
-background: #6768a7;
+border-color: rgb(74 102 158);
+background-color: #879dc9;
 color: white
 }
 .progressbar li:first-child:after{

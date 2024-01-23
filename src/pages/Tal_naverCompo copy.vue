@@ -89,12 +89,12 @@ export default {
     height: 50px;
     color: #fff;
     margin-bottom: 15px;
-    background-color: #3E3F6A !;
+    #879dc9 !;
     padding: 10px;
     box-sizing: border-box;
     border-radius: 10px;
 }
 
-.loginBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px; }
+.loginBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; #879dc9; padding: 10px; box-sizing: border-box; border-radius: 10px; }
 
 </style>

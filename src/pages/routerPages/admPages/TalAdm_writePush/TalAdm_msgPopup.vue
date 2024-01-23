@@ -53,9 +53,9 @@ export default {
 
 
 <style >
-.admMsgPopHeader{height: 50px; width: 100%; border-bottom: 1px solid #6768A7; padding: 0.6rem 0.5rem;}
+.admMsgPopHeader{height: 50px; width: 100%; border-bottom: 1px solid rgb(74 102 158); padding: 0.6rem 0.5rem;}
 .admMsgPopWrap{width: 450px; position: absolute; z-index: 999; top: 30%; border-radius: 10px; background: #FFFFFF;}
 .admMsgPopBody{width: 100%; padding: 1em 0; background-color: #f9f9f9;}
-.admMsgTextarea{ resize: none; width:90%; height:250px; border:1px solid #6768A7 }
+.admMsgTextarea{ resize: none; width:90%; height:250px; border:1px solid rgb(74 102 158) }
 .admMsgBtnArea{display: flex; height: 20px; justify-content:center;}
 </style>

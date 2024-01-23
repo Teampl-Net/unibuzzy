@@ -47,7 +47,7 @@
 
     <!-- <div class="fl CDeepBorderColor" style="min-height:2.5rem; width: 100%; border-radius: 10px; position: relative;"> -->
       <div @dragenter="onDragenter" @dragover="onDragover" @dragleave="onDragleave" style="width: 100%; display: flex; align-items: center; float: left; flex-wrap: wrap;">
-        <!-- <div @click="toggleAttachMenu" style="position: relative; width: 40px; height: 40px; margin-right: 8px; border-radius: 5px; background: #dcddeb; float: left; font-size: 30px;color: #FFF; font-weight: bold">+</div> -->
+        <!-- <div @click="toggleAttachMenu" style="position: relative; width: 40px; height: 40px; margin-right: 8px; border-radius: 5px; background: #d1e1f2; float: left; font-size: 30px;color: #FFF; font-weight: bold">+</div> -->
         <div class="w100P" :style="{display: pIsFocused===true ? 'block' : 'flex', 'align-items' : pIsFocused===true ? 'center':'center' }" style="transition:height .5s; height:auto; text-align:left; resize: none; border-radius: 20px; border: 1px solid #a7a7a7">
           <div v-if="pIsFocused" class="w100P" style=" border-bottom: 1px solid #eee;display:flex; justify-content:end; align-items:center; padding:0.5rem 1rem 0.5rem;">
             <div class="extraBtnsWrap" style="width:50%; display:flex; align-items:center; justify-content:end;">

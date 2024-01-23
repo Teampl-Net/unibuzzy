@@ -31,9 +31,9 @@ import store from '@/store'
 } */
 var isMobile = /Mobi/i.test(window.navigator.userAgent)
 // const appType = localStorage.getItem('appType')
-var appInfo = store.getters['D_USER/AC_USER_APP']
+var appInfo = store.getters['D_USER/GE_USER_APP']
 let firebaseSw = 'firebase-messaging-sw.js'
-if (appInfo & appInfo.appType === 'UB') {
+if (appInfo & appInfo.app.appType === 'UB') {
   firebaseSw = 'UB.firebase-messaging-sw.js'
 }
 if (!isMobile) {

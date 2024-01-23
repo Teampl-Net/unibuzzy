@@ -150,7 +150,7 @@ export default {
 
 <style scoped>
 .menuHeader {padding:0.5rem 0;position: absolute; left: 0; width: 100%; height: 50px; border-bottom: 2px solid #6768A8;}
-.menuHeader p{color: #5F61BD; text-align: center; font-weight: bold;}
+.menuHeader p{color: rgb(74 102 158); text-align: center; font-weight: bold;}
 /* .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; border-bottom: 0.5px solid rgb(255 255 255 / 26%) } */
 .menuRow{padding: 1rem; box-sizing: border-box; text-align: left; height: 3.8rem; width: 100%;}
 </style>

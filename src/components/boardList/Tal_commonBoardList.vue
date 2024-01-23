@@ -22,8 +22,8 @@
             <p @click="goDetail(board)" class="fl cursorP font15 fontBold commonBlack" style="width:calc(100% - (0.3rem + 0.3rem + 4.5px + 48px)); float: left;">
               <!-- <img src="../../assets/images/board/readFalse.png" v-if="board.readYn === 0" class="fl mright-05" style="width: 20px;" alt="">
               <img src="../../assets/images/board/readTrue.svg" v-else class="fl mright-05" style="width: 20px;" alt=""> -->
-              <p v-if="board.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{$t('COMMON_NAME_MESSAGE')}}</p>
-              <p v-else-if="board.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{$t('COMM_BTN_PUBLISH')}}</p>
+              <p v-if="board.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:rgb(74 102 158); color: #FFF;">{{$t('COMMON_NAME_MESSAGE')}}</p>
+              <p v-else-if="board.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea" style="background:#FFF; color: rgb(74 102 158); font-weight: bold; border: 1px solid rgb(74 102 158)  ">{{$t('COMM_BTN_PUBLISH')}}</p>
               {{resizeText(board.title)}}
             </p>
           <!-- <p class="font18 fontBold commonColor">{{this.$makeMtextMap(alimDetail.userDispMtext).get('KO').chanName}}</p> -->
@@ -71,7 +71,7 @@
       </div>
       <!-- <gLoadingS ref="sLoadingBoard" class="fl"/> -->
 
-    <!-- <div :class="this.scrolledYn || !this.reloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 4.5rem; right: calc(50% - 25px);" @click="refreshAll">
+    <!-- <div :class="this.scrolledYn || !this.reloadShowYn ? 'reload--unpinned': 'reload--pinned'" v-on="handleScroll" style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: #879dc9d1; padding: 10px; bottom: 4.5rem; right: calc(50% - 25px);" @click="refreshAll">
       <img src="../../assets/images/common/reload_button.svg" style="width: 30px; height: 30px;">
     </div> -->
   <!-- </div> -->
@@ -412,8 +412,8 @@ async changeAct (act, contentsKey, idx) {
 </script>
 <style scoped>
 .creatorBoardContentBox {
-  background-color: #6768a712 !important;
-  box-shadow: 0 0 7px 3px #6768a740 !important;
+  #879dc912 !important;
+  box-shadow: 0 0 7px 3px rgb(74 102 158)40 !important;
 }
 .reload--pinned {
     transform: translateY(0%);

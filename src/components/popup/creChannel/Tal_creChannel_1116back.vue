@@ -31,7 +31,7 @@
               <p class="textLeft font20 fl fontBold w-100P" style="line-height: 30px;">채널명</p>
               <input v-model="inputChannelName" type="text" placeholder="채널명을 20자 이내로 입력해주세요" class="creChanInput"  id="channelName" >
             </div>
-            <!-- <input style="text-align:center ;font-size: 20px !important; color: #6768a7 !important; font-weight: bold; border: none !important; background: none !important; border-bottom: 1px solid #cccccc !important; border-radius: 0 !important;" v-model="inputChannelName" type="text" placeholder="채널이름" class="creChanInput"  id="channelName" >
+            <!-- <input style="text-align:center ;font-size: 20px !important; color: rgb(74 102 158) !important; font-weight: bold; border: none !important; background: none !important; border-bottom: 1px solid #cccccc !important; border-radius: 0 !important;" v-model="inputChannelName" type="text" placeholder="채널이름" class="creChanInput"  id="channelName" >
             <img class="cursorP" src="../../../assets/images/push/noticebox_edit.png" style="" alt=""> -->
 
             <div style="width:100%;" class="mtop-1 fl ">
@@ -52,7 +52,7 @@
               </div>
               <div v-if="preViewYn === true" class="fl w-100P" :style="'background: url(' + selectBg.selectPath + ');'" style=" height: 50px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; overflow: hidden; background-repeat: no-repeat;background-size: cover;">
                 <img v-if="btnColor === false" src="../../../assets/images/common/icon_back.png" class="img-w15 fl mleft-05" alt=""> <img v-else-if="btnColor === true" src="../../../assets/images/common/icon_back_white.png" class="img-w15 fl mleft-05" alt="">
-                <p :style="btnColor === false ? 'color: #6768a7;' : 'color:white;' " class="fl font20 fontBold">{{inputChannelName}}</p>
+                <p :style="btnColor === false ? 'color: rgb(74 102 158);' : 'color:white;' " class="fl font20 fontBold">{{inputChannelName}}</p>
                 <img v-if="btnColor === false"  src="../../../assets/images/common/icon_menu.png" class="img-w25 fr mright-05" alt=""> <img v-else-if="btnColor === true" src="../../../assets/images/common/icon_menu_white.png" class="img-w25 fr mright-05" alt="">
                 <!-- <img src="../../../assets/images/common/icon_back_white.png" class="img-w15 fl" alt=""> -->
               </div>
@@ -440,13 +440,13 @@ border:1px solid #ccc; width: 120px; overflow: hidden; height: 120px; border-rad
 .creChanIntroTextWrap p{font-size: 18px; }
 
 .creChanBigBtn{
-  height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
+  height: 50px; line-height: 50px; font-size: 18px; background-color: #879dc9; color: #fff; border-radius: 8px;
   /* width: 100%;  */
 
   /* add Jeong */
   width: calc(100% - 30px);
 }
-.activeTypeBox{background: #6768a7 !important; color: #fff;}
+.activeTypeBox{background-color: #879dc9 !important; color: #fff;}
 .activeTypeBox p {color: #fff;}
 .categoryBox{min-width: 40px; margin-right: 5px; height: 30px;float: left; border-radius: 5px;padding-left: 5px;}
 

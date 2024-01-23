@@ -96,7 +96,7 @@
                   </div>
               </div>
               <div class="mainContentsWrap">
-                <div class="w-100P fl" style=" background-color: #E7EDFF; ">
+                <div class="w-100P fl" style=" background-color: #d1e1f2; ">
                   <div class="mainContHeaderWrap">
                   <img src="../../assets/images/main/main_contentsBellIcon2.png" style="margin-right: 8px;" class="fl img-w24" alt="">
                   <p @click="!GE_USER.unknownYn? goContentListPop() : ''" class="font20 fontBold deepBorderColor fl textLeft cursorP CDeepColor" style="line-height: 26px;">{{!GE_USER.unknownYn? $t('MAIN_TITLE_RECV_CONTENTS') : $t('MAIN_TITLE_RECENT_POSTS')}} ></p>
@@ -379,40 +379,37 @@ export default {
       if (this.mSocialMainYn !== undefined && this.mSocialMainYn === false) {
         paramMap.set('portalYn', true)
       }
-      var response = await this.$axios.post('https://www.hybric.net:9443/service/tp.firstLoginCheck', Object.fromEntries(paramMap)
-      )
+      var response = await this.$gGetUserAllInfo(this.$USER_TOKEN)
       this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST')
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
-      if (response && response.status && (response.status === 200 || response.status === '200')) {
-        if (response.data) {
-          if (this.mSocialMainYn !== undefined && this.mSocialMainYn === false) {
-            if (response.data.mainTeam) {
-              this.mPortalMainTeam = response.data.mainTeam
-              this.mStickerList = response.data.stickerList
-              this.$emit('chanePageHeader', this.$changeText(this.mPortalMainTeam.namtMtext))
-              if (this.pSetRouterData) {
-                this.pSetRouterData(this.mPortalMainTeam)
-              }
-              console.log([response.data.mainTeam])
-              await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [{ teamKey: -1 }, ...response.data.mainTeam])
-              await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', this.mStickerList)
+      if (response.mainBoard) {
+        const mainData = response.mainBoard
+        if (this.mSocialMainYn !== undefined && this.mSocialMainYn === false) {
+          if (mainData.mainTeam) {
+            this.mPortalMainTeam = mainData.mainTeam
+            this.mStickerList = mainData.stickerList
+            this.$emit('chanePageHeader', this.$changeText(this.mPortalMainTeam.namtMtext))
+            if (this.pSetRouterData) {
+              this.pSetRouterData(this.mPortalMainTeam)
             }
-          } else {
-            this.mMainChanList = response.data.teamList
-            this.mMainMChanList = response.data.mTeamList
-            this.mMainAlimList = response.data.alimList.content
-            this.mStickerList = response.data.stickerList
-            this.mMyCabinetKeyListStr = response.data.cabinetKeyListStr
-            const todoObject = {
-              teamKey: 0
-            }
+            console.log([mainData.mainTeam])
+            await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [{ teamKey: -1 }, ...mainData.mainTeam])
             await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', this.mStickerList)
-            await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [{ teamKey: -1 }, todoObject, ...this.mMainChanList, ...this.mMainMChanList])
-            await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
           }
+        } else {
+          this.mMainChanList = mainData.teamList
+          this.mMainMChanList = mainData.mTeamList
+          this.mMainAlimList = mainData.alimList.content
+          this.mStickerList = mainData.stickerList
+          this.mMyCabinetKeyListStr = mainData.cabinetKeyListStr
+          const todoObject = {
+            teamKey: 0
+          }
+          await this.$store.dispatch('D_CHANNEL/AC_STICKER_LIST', this.mStickerList)
+          await this.$store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', [{ teamKey: -1 }, todoObject, ...this.mMainChanList, ...this.mMainMChanList])
+          await this.$store.dispatch('D_CHANNEL/AC_ADD_CONTENTS', this.mMainAlimList)
         }
-        // To Do 저장을 위한 기본 저장소
       }
     },
     async getUnknownMainBoard () {
@@ -421,7 +418,7 @@ export default {
       if (this.mAxiosQueue.length > 0 && this.mAxiosQueue.findIndex((item) => item === 'getMainBoard') !== -1) return
       this.mAxiosQueue.push('getMainBoard')
       var paramMap = new Map()
-      var response = await this.$axios.post('https://www.hybric.net:9443/service/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
+      var response = await this.$axios.post('/sUniB/tp.getUnknownMainBoard', Object.fromEntries(paramMap)
       )
       var queueIndex = this.mAxiosQueue.findIndex((item) => item === 'getMainBoard')
       this.mAxiosQueue.splice(queueIndex, 1)
@@ -502,6 +499,7 @@ export default {
     },
     openNotiHistoryPop () {
       console.log('hhh?')
+      // this.$commonAxiosFunction({ url: '/sUniB/tp.getAppList', param: {} })
       this.$emit('openNotiHistoryPop')
       // if (!(this.GE_USER.userKey === 255 || this.GE_USER.userKey === 123 || this.GE_USER.userKey === 104 || this.GE_USER.userKey === 192 || this.GE_USER.userKey === 228 || this.GE_USER.userKey === 1)) return
       // // eslint-disable-next-line no-new-object
@@ -705,7 +703,7 @@ export default {
       border-radius: 30px 30px 0px 0px; width: 100%; float: left;
   }
   .mainContReload {
-      position: absolute; top:15px; right:25px; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center;
+      position: absolute; top:15px; right:25px; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: #879dc9d1; display: flex; align-items: center; justify-content: center;
   }
   .mainContHeaderWrap {width: 100%; display: flex; align-items: center; background: #FFF; height: 60px; float: left; padding: 17px 20px; border-radius: 30px 30px 0px 0px; position: relative; /* border-bottom: 2px solid #F4F7FF!important;  */margin-top: 15px;}
 

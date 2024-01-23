@@ -16,44 +16,42 @@ const firebaseConfig = {
   messagingSenderId: '947851330767',
   appId: '1:947851330767:web:de8bc42cf920be3ae563ba'
 }
-
-!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
-
-export const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
-console.log(firebaseApp)
-var isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent)
-var appYn = localStorage.getItem('nativeYn')
-// isMobile = /Mobi/i.test(window.navigator.userAgent)
-if (!isMobile && (appYn === 'false' || appYn === false)) {
-  const messaging = firebase.messaging()
-  // messaging.usePublicVapidKey('BD3_tmx3J9zVyU3-Bfbxe5sJ0HZVgECvcs1i4A9gnCbv_ZHRn_nX41BCT4uGY9EVwewwzG6XblQrTLa49dRYNYg')
-  // token값 알아내기
-  messaging.requestPermission()
-    .then(function () {
-      console.log('Have permission')
-      return messaging.getToken()
-    })
-    .then(function (token) {
-      localStorage.setItem('fcmKey', token)
-      // eslint-disable-next-line no-debugger
-      debugger
-      var user = store.getters['UB_USER/GE_USER']
-      if (user && user.fcmKey) {
-        if (user.fcmKey) {
-          if (token === user.fcmKey) {
-            return
+let fApp
+if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
+  fApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
+  const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
+  console.log(firebaseApp)
+  var isMobile = /iPhone|iPad|iPod|Android/i.test(window.navigator.userAgent)
+  var appYn = localStorage.getItem('nativeYn')
+  // isMobile = /Mobi/i.test(window.navigator.userAgent)
+  if (!isMobile && (appYn === 'false' || appYn === false)) {
+    const messaging = firebase.messaging()
+    // messaging.usePublicVapidKey('BD3_tmx3J9zVyU3-Bfbxe5sJ0HZVgECvcs1i4A9gnCbv_ZHRn_nX41BCT4uGY9EVwewwzG6XblQrTLa49dRYNYg')
+    // token값 알아내기
+    messaging.requestPermission()
+      .then(function () {
+        console.log('Have permission')
+        return messaging.getToken()
+      })
+      .then(function (token) {
+        localStorage.setItem('fcmKey', token)
+        var user = store.getters['UB_USER/GE_USER']
+        if (user && user.fcmKey) {
+          if (user.fcmKey) {
+            if (token === user.fcmKey) {
+              return
+            }
           }
+          user.fcmKey = token
+          store.dispatch('UB_USER/AC_USER', user)
+          methods.saveFcmToken()
         }
-        user.fcmKey = token
-        store.dispatch('UB_USER/AC_USER', user)
-        methods.saveFcmToken()
-      }
-      console.log('token: ' + token)
-    })
-    .catch(function (arr) {
-      console.log('Error Occured')
-    })
-  messaging.onMessage(function (payload) {
+        console.log('token: ' + token)
+      })
+      .catch(function (arr) {
+        console.log('Error Occured')
+      })
+    messaging.onMessage(function (payload) {
     /* console.log('onMessage: ', payload)
     var message = payload.data
     functions.recvNotiFromBridge(message, false)
@@ -85,7 +83,7 @@ if (!isMobile && (appYn === 'false' || appYn === false)) {
       // image: icon
       }
     } */
-    /* var title = payload.data.title
+      /* var title = payload.data.title
     var options = {
       body: payload.data.body,
       data: payload.data,
@@ -106,5 +104,6 @@ if (!isMobile && (appYn === 'false' || appYn === false)) {
       console.log(registration)
     }) */
 
-  })
+    })
+  }
 }

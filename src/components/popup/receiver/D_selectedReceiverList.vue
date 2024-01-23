@@ -66,13 +66,13 @@
       <!-- <div v-for="(team, index) in teamList.bookList" :key='index' class=" fl"  style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem" >
         <img src="../../../assets/images/channel/channer_addressBook.svg" class="fl mright-05" style="width:20px" alt="">
         <p class="fl font15 commonBlack">{{this.$changeText(team.cabinetNameMtext)}}</p>
-        <span class="fr commonColor" @click="removeSelectedYn('book',index, team.cabinetKey)" style="border-radius: 100%; border: 1px solid #6768A7; background-color:white; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
+        <span class="fr commonColor" @click="removeSelectedYn('book',index, team.cabinetKey)" style="border-radius: 100%; border: 1px solid rgb(74 102 158); background-color:white; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
       </div>
 
       <div v-for="(member, index) in teamList.memberList" :key='index' class=" fl"   style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem"  >
         <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; " />
         <p class="fl font15 commonBlack">{{this.$changeText(member.userDispMtext || member.userNameMtext) }}</p>
-        <span class="fr commonColor" @click="removeSelectedYn('member',index, member.userKey)" style="border-radius: 100%; border: 1px solid #6768A7; background-color:white; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
+        <span class="fr commonColor" @click="removeSelectedYn('member',index, member.userKey)" style="border-radius: 100%; border: 1px solid rgb(74 102 158); background-color:white; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
       </div> -->
 
     </div>

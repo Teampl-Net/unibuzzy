@@ -133,7 +133,7 @@ export default {
       param.address = this.infoValue
       this.holdingEmail = this.infoValue
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.sendMail',
+        url: '/sUniB/tp.sendMail',
         param: param
       })
       debugger
@@ -224,7 +224,7 @@ export default {
         param.token = this.token
         param.address = this.holdingEmail
         var result = await this.$commonAxiosFunction({
-            url: 'https://www.hybric.net:9443/service/tp.checkValidation',
+            url: '/sUniB/tp.checkValidation',
             param: param
         })
 
@@ -249,9 +249,9 @@ export default {
 </script>
 <style scoped>
 .introText{width: 100%; min-height: 50px; margin-top: 10px;}
-.introText p{text-align: left; font-weight: bold; color: #6768A7;}
+.introText p{text-align: left; font-weight: bold; color: rgb(74 102 158);}
 .changeInfoWrap{height: 100vh; width: 100%;}
-input{width: 100%; box-sizing: border-box; border:none; padding-right: 80px; height: 40px; line-height: 40px; font-size: 15px; border-bottom: 1px solid #6768A7;}
+input{width: 100%; box-sizing: border-box; border:none; padding-right: 80px; height: 40px; line-height: 40px; font-size: 15px; border-bottom: 1px solid rgb(74 102 158);}
 .inputWrap{margin-top: 0.5rem; float: left; min-height: 50px; width: 100%; position: relative;}
 select{height: 40px; width: 160px; border: none;}
 .inputBtn{position: absolute; right: 0.1rem; top: 0.3rem;}

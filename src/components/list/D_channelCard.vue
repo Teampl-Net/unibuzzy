@@ -168,14 +168,14 @@ export default {
   border-radius: 5px;
   padding: 5px 10px;
   background-color: #ccc;
-  color: #062bb5;
+  color: rgb(74 102 158);
   font-size:13px;
   margin-top:0.3rem;
 }
 .followBtn {
   border-radius: 5px;
   padding: 5px 10px;
-  background-color: #062bb5;
+  background-color: #879dc9;
   color: #fff;
   font-size:13px;
   margin-top:0.3rem;

@@ -34,7 +34,7 @@
                             <img style="width: 0.8rem; margin-right: 0.2rem;" src="../../assets/images/main/main_subscriber.png"/>
                             <span class="commonColo font12" >{{value.followerCount}}</span>
                         </div>
-                        <div style="padding: 3px 8px; border-radius: 8px; line-height: 18px; height: 23px;" :style="value.followerKey || value.followYn ? 'background-color:#6768a7' : 'background-color:#eee; border: 1px solid #ccc;' " >
+                        <div style="padding: 3px 8px; border-radius: 8px; line-height: 18px; height: 23px;" :style="value.followerKey || value.followYn ? 'background-color:rgb(74 102 158)' : 'background-color:#eee; border: 1px solid #ccc;' " >
                             <p class="fl font12 cursorP fontBold"  @click="saveMemberButton" :style="value.followerKey || value.followYn ? 'color:white' : '' " >{{value.followerKey || value.followYn ? '구독중' : '구독 +'}}</p>
                         </div>
                     </div> -->
@@ -157,8 +157,8 @@ td {
 .chanItem{padding: 0.8rem 0.4rem}
 .chanMsg{line-height: 18px; width: 100%; float: left;}
 .ownerChannelRow {position: relative;}
-.ownerChannelRowColor {background-color: #6768a712}
-.channelRow{/* display: flex;  */align-items: center; padding: 10px 5px; min-height: 50px; margin-bottom : 15px; box-shadow: 0 0 7px 3px #6768a740 !important; }
+.ownerChannelRowColor {background-color: #879dc912}
+.channelRow{/* display: flex;  */align-items: center; padding: 10px 5px; min-height: 50px; margin-bottom : 15px; box-shadow: 0 0 7px 3px rgb(74 102 158)40 !important; }
 .chanTop5Wrap{width: 100%; padding-top: 0.2rem; padding-bottom: 0.5rem;}
 .gChanPageChanLogoImgWrap {width: 40px; height:40px; padding: 5px; border-radius: 100%; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative; flex-shrink: 0}
 .gChanPageChanLogoImgWrap img{width: 80%; margin-right: 0.05rem;}

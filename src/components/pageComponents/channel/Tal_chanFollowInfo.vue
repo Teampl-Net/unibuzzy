@@ -88,7 +88,7 @@ export default {
 </script>
 <style>
 .greetingApplyMemberBtn {font-weight: bold !important; float: left !important; height: 40px !important; line-height: 40px !important; width: 100% !important; margin-right: 5px;}
-.greetingCopyTextIcon{background: #6768a7; width: 30px; height: 30px; float: left; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px; margin-left: 10px;}
+.greetingCopyTextIcon{background-color: #879dc9; width: 30px; height: 30px; float: left; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px; margin-left: 10px;}
 .chanGreetingArea{
   width:80vw; max-width:700px; min-width:230px; height: 60vh; max-height:800px; background-color:white; position: absolute; top:50%; left:50%; transform: translate(-50%,-50%); z-index:9; border-radius:20px;  box-shadow: 0px 0px 6px 1px #ccc; overflow:hidden;padding: 0.5rem;
 }

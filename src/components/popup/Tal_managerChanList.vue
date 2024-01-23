@@ -109,7 +109,7 @@ export default {
   height: 50px;
   line-height: 50px;
   font-size: 18px;
-  background: #6768a7;
+  background-color: #879dc9;
   color: #fff;
   border-radius: 8px;
 }

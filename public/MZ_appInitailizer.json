@@ -1,9 +1,10 @@
 {
   "app": {
-    "D": 
+    "com.tal_project": 
     {
       "appType": "D",
-      "appToken": "ABC",
+      "appToken": "eyJhbGciOiJIUzI1NiJ9.eyJjcmVVc2VyS2V5IjoxOTIsImNyZURhdGUiOjE3MDUyODQzODUwMDAsImFwcE5hbWUiOiLrjZTslYzrprwiLCJjZXJ0aVBob25lWW4iOjEsImFwcEtleSI6MSwiY2VydGlFbWFpbFluIjoxLCJkZWxldGVZbiI6MCwiZXhwIjoyMDIwNjU5NjU5LCJub25jZSI6ImI5YmU1ZDlkLTA3ZDYtNDdmMS05ODI1LTkyNjc4NWQwMTUxZCIsImFuZHJvaWRJZCI6ImNvbS50YWxfcHJvamVjdCJ9.PXyV_PtuGQgB_sKLOvm9lw9hhnXgFP1zG9XamGXTQ8U",
+      "packageName": "com.tal_project",
       "appKey": 0,
       "lastUpdate": "2023-01-02",
       "appName": "더알림",
@@ -25,9 +26,10 @@
         "measurementId": "G-0BYBFKL8TS"
       }
     },
-    "HB": 
+    "com.hybric": 
     {
       "appType": "HB",
+      "packageName": "com.hybric",
       "appToken": "ABC",
       "appKey": 0,
       "lastUpdate": "2023-01-02",
@@ -50,10 +52,37 @@
         "measurementId": "G-DGWTXWVL7Z"
       }
     },
-  "UB":
+    "com.todo": 
+    {
+      "appType": "TD",
+      "appToken": "eyJhbGciOiJIUzI1NiJ9.eyJjcmVVc2VyS2V5IjoxOTIsImNyZURhdGUiOjE3MDUyODQ0MjcwMDAsImFwcE5hbWUiOiLsmKTripjsnZgg7J28IiwiY2VydGlQaG9uZVluIjowLCJhcHBLZXkiOjIsImNlcnRpRW1haWxZbiI6MCwiZGVsZXRlWW4iOjAsImV4cCI6MjAyMDY1OTY2MCwibm9uY2UiOiIwMTA3NmY3YS05ODU3LTRiNGUtYWI0ZC1iMDYxYTkyODcyNjYiLCJhbmRyb2lkSWQiOiJjb20udG9kbyJ9.C_ykhe4S30PPthQTx2dqTB9a9riv_ThGIi8RTrCDUuA",
+      "packageName": "com.todo",
+      "appKey": 4,
+      "lastUpdate": "2023-01-02",
+      "appName": "오늘의 일",
+      "appDomain": "https://todo.hybric.com",
+      "defaultLang": "ko",
+      "savePhone": true,
+      "mainUI": "Smain",
+      "deepLink": {
+        "login": "https://todo.page.link/LOGIN"
+      },
+      "apiPath": "https://todo.hybric.net:9443/service",
+      "firebaseConfig": {
+        "apiKey": "AIzaSyCxHCK5mt6BxtxRpdLYqInmrBxVkpok3lM",
+        "authDomain": "todo-f94fb.firebaseapp.com",
+        "projectId": "todo-f94fb",
+        "storageBucket": "todo-f94fb.appspot.com",
+        "messagingSenderId": "1092208958585",
+        "appId": "1:1092208958585:web:985537ad7419ecc4d348a8",
+        "measurementId": "G-5YF0BYD9DP"
+      }
+    },
+  "com.unibuzzy":
     {
       "appType": "UB",
       "appKey": 1,
+      "packageName": "com.unibuzzy",
       "lastUpdate": "2023-01-02",
       "appName": "Unibuzzy",
       "appDomain": "https://unibuzzy.com",

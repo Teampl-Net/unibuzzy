@@ -147,7 +147,7 @@ computed: {
 
 }
 .addChanH {padding:0.5rem 0;position: absolute; top: 0rem; left: 0; width: 100%; height: 50px; border-bottom: 1.5px solid #999; background-color: white;}
-.addChanH p{color: #6768a7; font-size: 20px; text-align: center; font-weight: bold;}
+.addChanH p{color: rgb(74 102 158); font-size: 20px; text-align: center; font-weight: bold;}
 
 .listArea{
     margin-top: 50px;
@@ -185,7 +185,7 @@ computed: {
 
 .channelItemExplain{
     min-height:40%;
-    background-color:#6768a735;
+    background-color:rgb(74 102 158)35;
     margin: 0 1rem;
     text-align: left;
     padding: 1rem
@@ -200,10 +200,10 @@ computed: {
 }
 
 .selectItem{
-    color: #6768a7 !important;
+    color: rgb(74 102 158) !important;
     /* color: black !important; */
     font-weight: bold;
-    background-color: #6768a710;
+    #879dc910;
 }
 .noneSelected{
   background-color:#cccccc80

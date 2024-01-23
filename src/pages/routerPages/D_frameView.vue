@@ -74,7 +74,7 @@ export default {
     },
     goDetail (data) {
       if (window.opener) {
-        window.opener.postMessage({ req: 'OPEN_CONT_DETAIL', content: data }, '*')
+        window.opener.postMessage(JSON.stringify({ req: 'OPEN_CONT_DETAIL', content: data }), '*')
       }
     },
     replaceArr (arr) {
@@ -113,7 +113,7 @@ export default {
       }
       const myContents = await this.$commonAxiosFunction(
         {
-          url: 'https://www.hybric.net:9443/service/tp.getMyTodoList',
+          url: '/sUniB/tp.getMyTodoList',
           param: param
         },
         false
@@ -371,7 +371,7 @@ svg > path {
   border-radius: 0 10px 10px 0;
 }
 .mainTodoTabSelected {
-  background-color: #5f61bd !important;
+  background-color: #879dc9 !important;
   font-weight: bold !important;
   color: #fff !important;
 }
@@ -417,7 +417,7 @@ svg > path {
   border-bottom: 1px solid #ccc;
 }
 .mx-calendar-content .cell.active {
-  background-color: #6768a7 !important;
+  background-color: #879dc9 !important;
 }
 .mx-calendar-content .hover-in-range {
   background-color: #cdceff56 !important;
@@ -445,7 +445,7 @@ svg > path {
 
 .mx-icon-calendar {
   top: 20px !important;
-  color: #6768a7 !important;
+  color: rgb(74 102 158) !important;
   display: none !important;
 }
 .mx-icon-clear svg {
@@ -464,11 +464,11 @@ svg > path {
   float: left;
   box-sizing: border-box !important;
   border: none !important;
-  background-color: #e7edff !important;
+  background-color: #d1e1f2 !important;
   text-align: Center;
   font-weight: bold;
   font-size: 30px;
-  color: #6768a7 !important;
+  color: rgb(74 102 158) !important;
 }
 .todoBody {
   width: 100%;
@@ -543,7 +543,7 @@ svg > path {
   height: 25px;
   border-radius: 50%;
   margin-left: -10px;
-  border: 2px solid #e7edff;
+  border: 2px solid #d1e1f2;
   box-shadow: 0 5px 6px 0 rgba(255, 255, 255, 0.6);
   background-color: #fff;
 }
@@ -556,8 +556,8 @@ svg > path {
   height: 27px;
   border-radius: 50%;
   /* box-shadow:0 5px 6px 0 rgba(60, 60, 60, 0.2); */
-  background-color: #e7edff !important;
-  color: #5f61bd !important;
+  background-color: #d1e1f2 !important;
+  color: rgb(74 102 158) !important;
   z-index: 2;
   display: flex;
   align-items: center;
@@ -589,14 +589,14 @@ svg > path {
   border-top: 0px solid transparent;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 16px solid #e7edff;
+  border-bottom: 16px solid #d1e1f2;
 }
 .actorNameList {
   display: flex;
   flex-direction: column;
   align-items: start;
   gap:0.2rem;
-  background-color: #e7edff !important;
+  background-color: #d1e1f2 !important;
   box-shadow: 0 5px 8px 0 #3c3c3c1a;
   border-radius: 10px;
   padding: 5px 17px;
@@ -613,7 +613,7 @@ svg > path {
   background-position: center center;
   display: inline-block;
   vertical-align: middle;
-  border: 2px solid #e7edff;
+  border: 2px solid #d1e1f2;
 }
 .strikeLine {
   position: absolute;

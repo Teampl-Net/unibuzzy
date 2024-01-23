@@ -112,10 +112,10 @@ export default {
   /* .policyWrap p{font-size: 35px} */
   .policyHeaderWrap{box-sizing: border-box; width: 100%; height: 60px;}
   .policyHeader {margin-top: 14px; line-height: 27px}
-  .policyHeader p{ color: #6768A7; font-weight: bold;}
+  .policyHeader p{ color: rgb(74 102 158); font-weight: bold;}
   .policyContentsWrap{padding: 20px; height: calc(100vh - 60px); box-sizing: border-box; text-align: left;}
   .policyHeader .headerFont{line-height: 32px}
-  .startBigBtn{background-color: #6768A7; margin-top: 10px; color:#ffff; height: 40px; box-sizing: border-box; padding: 5px 10px; width: 100%; border-radius: 5px; text-align: center; }
+  .startBigBtn{background-color: #879dc9; margin-top: 10px; color:#ffff; height: 40px; box-sizing: border-box; padding: 5px 10px; width: 100%; border-radius: 5px; text-align: center; }
   .startBigBtn p{color:#ffff; text-decoration: none;}
   .checkboxDiv{display: flex; align-items: center; margin-top: 5px;}
   .policyBodyBox{height: calc(100% - 70px); overflow-y: scroll; border: 1px solid #ccc; padding: 10px 10px}

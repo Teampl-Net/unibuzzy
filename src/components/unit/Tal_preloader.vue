@@ -18,7 +18,7 @@ export default {
   props: {
     color: {
       type: String,
-      default: '#6768A7',
+      default: 'rgb(74 102 158)',
     },
     scale: {
       type: Number,

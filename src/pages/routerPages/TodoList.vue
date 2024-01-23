@@ -57,7 +57,7 @@
     <div
       style="
         height: 50px;
-        border-bottom: 2px solid #6768a7;
+        border-bottom: 2px solid rgb(74 102 158);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -125,7 +125,7 @@
                 margin-right: -0.5rem;
                 border-radius: 10px;
                 width: 45px;
-                color: #5f61bd;
+                color: rgb(74 102 158);
                 background-color: #fbfbfd;
               "
               @click.stop="goToday"
@@ -165,7 +165,7 @@
           Add
         </div>
       </div> -->
-      <!-- <span class="popHeaderTitleSpan font20 h100P" style="color: #6768A7; font-weight: bold; display: flex; justify-content: center; align-items: center;">Today's Todo</span> -->
+      <!-- <span class="popHeaderTitleSpan font20 h100P" style="color: rgb(74 102 158); font-weight: bold; display: flex; justify-content: center; align-items: center;">Today's Todo</span> -->
     </div>
     <div style="width: 100%; height:calc(100vh - 100px); overflow: hidden auto;">
     <!-- <div style="width: 100%; height: 100%; overflow: hidden auto;"> 메모할떄 살려라-->
@@ -219,7 +219,7 @@
                   {{$t('COMMON_TITLE_MEMO')}}
                 </p>
 
-                <div v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" @click="openMemoManagePop" :style="showMemoYn? 'height:110px' : 'height: 30px;'"  class="fl cursorP" style="width: 30px; float: left; border-radius: 10px; background: rgb(197 198 255); justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div>
+                <div v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length === 0" @click="openMemoManagePop" :style="showMemoYn? 'height:110px' : 'height: 30px;'"  class="fl cursorP" style="width: 30px; float: left; border-radius: 10px; background: #879dc9 ; justify-content: center; font-size: 24px; font-weight: bold; display: flex; align-items: center;">+</div>
               </div>
             </div>
             <!-- <img v-if="GE_DISP_MEMO_LIST.content && GE_DISP_MEMO_LIST.content.length > 0" @click.stop="openMemoShow" :src="require(`@/assets/images/button/Icon_showMore.png`)" style="width: 30px;" class="cursorP fr" :style="showMemoYn?'transition: all ease 0.5s; transform: rotate( 180deg );' : ''"/> -->
@@ -254,25 +254,25 @@
                 {{ tab.tabName }}
                 <span
                   class="countTodo"
-                  style="margin-left: -0.2rem; color: #5f61bd"
+                  style="margin-left: -0.2rem; color: rgb(74 102 158)"
                   v-if="tab.tabIdx === 1"
                   > {{ mMyTodoCount + mCompleteMyTodoCount + mCheckTodoCount + mCompleteTargetTodoCount + mCompleteRefTodoCount + mRefTodoCount }}</span
                 >
                 <span
                   class="countTodo"
-                  style="margin-left: -0.2rem; color: #5f61bd"
+                  style="margin-left: -0.2rem; color: rgb(74 102 158)"
                   v-if="tab.tabIdx === 2"
                   > {{ mMyTodoCount + mCheckTodoCount + mRefTodoCount }}</span
                 >
                 <span
                   class="countTodo"
-                  style="margin-left: -0.2rem; color: #5f61bd"
+                  style="margin-left: -0.2rem; color: rgb(74 102 158)"
                   v-if="tab.tabIdx === 4"
                   > {{ mCompleteMyTodoCount + mCompleteTargetTodoCount + mCompleteRefTodoCount }}</span
                 >
                 <span
                   class="countTodo"
-                  style="margin-left: -0.2rem; color: #5f61bd"
+                  style="margin-left: -0.2rem; color: rgb(74 102 158)"
                   v-if="tab.tabIdx === 3"
                   >{{ mCompleteTargetTodoCount }}/{{
                     /* mReqTodoList.content? mReqTodoList.content.length + mCompleteTargetTodoCount : 0 */
@@ -330,7 +330,7 @@
           </div> -->
             </div>
           </div>
-        <div v-if="searchAreaYn" class="w100P" style="padding:0 ; justify-content:space-between; display:flex; align-items:center; background-color:#E7EDFF; height:50px;">
+        <div v-if="searchAreaYn" class="w100P" style="padding:0 ; justify-content:space-between; display:flex; align-items:center; background-color:#d1e1f2; height:50px;">
           <template v-if="mWhichType === 'arrange'">
             <div class="w100P mtop-05">
               <div style="display:flex; align-items:center; padding:0 ; height:50px;">
@@ -359,15 +359,15 @@
       </div>
       <!-- <div v-if="mDispStickerList && mShowStickerListYn" style="overflow-x: auto; overflow-y: hidden; width: 100%; height: 30px; padding: 5px 10px;">
         <div style="min-width: 100%; " :style="`width: ${mDispStickerList.length * 50}px`">
-          <div class="fl mright-05 todoTag" :style="` margin-top: 0px;background: #5F61BD;border: 2.5px solid  #5F61BD;`" :key="index">전체</div>
-          <div v-for="(sticker, index) in mDispStickerList" class="fl mright-05 todoTag" :style="(sticker.selectedYn? 'border: 2.5px solid  #5F61BD;' : '') + `line-height: 17px; margin-top: 0px;background: ${sticker.picBgPath}`" :key="index">{{ $changeText(sticker.nameMtext) }}</div>
+          <div class="fl mright-05 todoTag" :style="` margin-top: 0px;background-color: #879dc9;border: 2.5px solid  rgb(74 102 158);`" :key="index">전체</div>
+          <div v-for="(sticker, index) in mDispStickerList" class="fl mright-05 todoTag" :style="(sticker.selectedYn? 'border: 2.5px solid  rgb(74 102 158);' : '') + `line-height: 17px; margin-top: 0px;background: ${sticker.picBgPath}`" :key="index">{{ $changeText(sticker.nameMtext) }}</div>
         </div>
       </div> -->
       <div v-if="GE_DISP_SEARCH_LIST && GE_DISP_SEARCH_LIST.length > 0" style="padding:8px 0; border-bottom: 1px solid rgb(103 104 167); overflow-x: auto; overflow-y: hidden; width: calc(100% - 20px); min-height: 30px; margin: 5px 10px; display:flex; align-items:top;">
         <p class="font14 fl mright-05 fontBold h100P" style="white-space:nowrap;">검색: </p>
         <div style="min-width: calc(100% - 30px); display:flex; align-items:center; gap:0.2rem; flex-wrap:wrap;" :style="`width: ${GE_DISP_SEARCH_LIST.length * 70}px`">
           <template v-for="(search) in GE_DISP_SEARCH_LIST" :key="search.value">
-            <div @click="changeSearchList(search)" class="fl todoTag cursorP" style="margin-bottom:0;" :style="{ background : search.value.accessColor? search.value.accessColor : '#5f61bd', color:getLightOrDark(search.value.accessColor)}">{{ $changeText(search.title)}}: {{ $changeText(search.value.accessName)}} x</div>
+            <div @click="changeSearchList(search)" class="fl todoTag cursorP" style="margin-bottom:0;" :style="{ background : search.value.accessColor? search.value.accessColor : 'rgb(74 102 158)', color:getLightOrDark(search.value.accessColor)}">{{ $changeText(search.title)}}: {{ $changeText(search.value.accessName)}} x</div>
           </template>
         </div>
       </div>
@@ -390,7 +390,7 @@
           justify-content: center;
           align-items: center;
           height: calc(100% - 300px);
-          color: #6768a7;
+          color: rgb(74 102 158);
         "
       >
         등록된 일이 없습니다.
@@ -675,7 +675,7 @@ export default {
       inParam.jobkindId = 'MEMO'
       inParam.deleteYn = true
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.deleteContents',
+        url: '/sUniB/tp.deleteContents',
         param: inParam
       })
       if (result) {
@@ -1176,7 +1176,7 @@ export default {
       }
       param.workUserKey = this.GE_USER.userKey
       await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.updateTodo',
+        url: '/sUniB/tp.updateTodo',
         param: param
       })
       value.contStatus = param.contStatus
@@ -1402,7 +1402,7 @@ export default {
       this.mCompleteTodoCount = 0
       const myContents = await this.$commonAxiosFunction(
         {
-          url: 'https://www.hybric.net:9443/service/tp.getMyTodoList',
+          url: '/sUniB/tp.getMyTodoList',
           param: param
         },
         nonLoadingYn
@@ -2344,7 +2344,6 @@ export default {
       immediate: true,
       handler (val) {
         if (!val) return
-        // alert(false)
         this.getMyTodoList()
       },
       deep: true
@@ -2682,7 +2681,7 @@ export default {
   border-radius:20px 20px 0 0;
   background-color:#fff;
   border:2px solid #fff;
-  color:#5f61bd !important;
+  color:rgb(74 102 158) !important;
   font-weight:bold;
   display:inline-block;
   text-align:center;
@@ -2692,7 +2691,7 @@ export default {
   padding:0 10px;
 }
 .mSelectedMemo{
-  background-color:#5f61bd !important;
+  background-color:rgb(74 102 158) !important;
   color:#fff !important;
 }
 .memoBody{
@@ -2732,7 +2731,7 @@ svg > path {
   border-radius: 0 10px 10px 0;
 }
 .mainTodoTabSelected {
-  background-color: #5f61bd !important;
+  background-color: #879dc9 !important;
   font-weight: bold !important;
   color: #fff !important;
 }
@@ -2778,7 +2777,7 @@ svg > path {
   border-bottom: 1px solid #ccc;
 }
 .mx-calendar-content .cell.active {
-  background-color: #6768a7 !important;
+  background-color: #879dc9 !important;
 }
 .mx-calendar-content .hover-in-range {
   background-color: #cdceff56 !important;
@@ -2806,7 +2805,7 @@ svg > path {
 
 .mx-icon-calendar {
   top: 20px !important;
-  color: #6768a7 !important;
+  color: rgb(74 102 158) !important;
   display: none !important;
 }
 .mx-icon-clear svg {
@@ -2825,11 +2824,11 @@ svg > path {
   float: left;
   box-sizing: border-box !important;
   border: none !important;
-  background-color: #e7edff !important;
+  background-color: #d1e1f2 !important;
   text-align: Center;
   font-weight: bold;
   font-size: 30px;
-  color: #6768a7 !important;
+  color: rgb(74 102 158) !important;
 }
 .todoBody {
   width: 100%;

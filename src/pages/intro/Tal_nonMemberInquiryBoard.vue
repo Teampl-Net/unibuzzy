@@ -327,7 +327,7 @@ export default {
 </script>
 
 <style scoped>
-.nonMemBoardWrap{height: 100vh;background-color: #5F61BD; display: flex; flex-direction: column; padding-top: 10%; }
+.nonMemBoardWrap{height: 100vh;background-color: #879dc9; display: flex; flex-direction: column; padding-top: 10%; }
 .btnPlus {
     bottom: 30px;
 }
@@ -349,5 +349,5 @@ export default {
     transform: translateY(-100%);
 }
 
-.subPopHeader{height: 55px; width: 100%; border-bottom: 1px solid #6768A7; margin-bottom: 10px;padding: 0.8rem 0.5rem;}
+.subPopHeader{height: 55px; width: 100%; border-bottom: 1px solid rgb(74 102 158); margin-bottom: 10px;padding: 0.8rem 0.5rem;}
 </style>

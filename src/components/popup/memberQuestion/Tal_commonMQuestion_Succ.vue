@@ -2,7 +2,7 @@
 <div style="width: 100%; float: left;">
   <div style="width:100%; height:100%; background:#00000090; position: absolute; top:0; left:0; z-index:999;" @click="emit('closePop')"/>
   <div style="width:90%; height:200px; background:white; position: absolute; top:30%; left:5%; z-index:999; border-radius:10px;" class="fl">
-    <div style="width:100%; height:50px; border-bottom:1px solid #6768a7;">
+    <div style="width:100%; height:50px; border-bottom:1px solid rgb(74 102 158);">
       <p class="font20 fontBold " style="line-height:50px" >공개신청서 저장 완료</p>
     </div>
     <div style="padding:1rem; width:100%; height: calc(100% - 3rem - 1px); position: relative;" class="fl">

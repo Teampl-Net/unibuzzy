@@ -55,13 +55,13 @@
             <div class="chanTextBox fl mleft-05;" style=" width:100%; margin-left: 0.5rem;">
               <div class="fl font16  w-100P">
                 <div style="width:50px;" >
-                  <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> {{ this.$t('CHAN_NAME') }} </p>
+                  <p class="font15 commonColor textLeft fl mleft-05" style="color:rgb(74 102 158); white-space: nowrap;"> {{ this.$t('CHAN_NAME') }} </p>
                 </div>
                 <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeText(CHANNEL_DETAIL.nameMtext) }}</p>
               </div>
               <div class="fl font16  w-100P">
                 <div style="width:50px;" >
-                  <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7; white-space: nowrap;"> {{this.$t('CHAN_CREDATE')}} </p>
+                  <p class="font15 commonColor textLeft fl mleft-05" style="color:rgb(74 102 158); white-space: nowrap;"> {{this.$t('CHAN_CREDATE')}} </p>
                 </div>
                 <p class="font14 textLeft fl mleft-1 commonBlack">{{this.$changeDateFormat(CAB_DETAIL.creDate)}}</p>
               </div>
@@ -69,7 +69,7 @@
               <div class="fl font15  w-100P mtop-05 " style="box-sizing:boborder-box; word-break:break-all; " >
                 <div class="fl font15  w-100P">
                   <div style="width:100%" class="fl" >
-                    <p class="font15 commonColor textLeft fl mleft-05" style="color:#6768a7;  white-space: nowrap;">{{ this.$t('CHAN_BOARD_FUNCTION') }} </p>
+                    <p class="font15 commonColor textLeft fl mleft-05" style="color:rgb(74 102 158);  white-space: nowrap;">{{ this.$t('CHAN_BOARD_FUNCTION') }} </p>
                   </div>
                   <p class="mleft-05 fl font12 commonBlack" >{{CAB_DETAIL.replyYn === 1? $t('COMMON_TITLE_COMMENT')+'O': $t('COMMON_TITLE_COMMENT')+'X'}}</p>
                   <p class="fl font12 commonBlack" >/{{CAB_DETAIL.fileYn === 1? $t('COMM_NAME_CONT_FILE')+'O':$t('COMM_NAME_CONT_FILE'+'X')}}</p>
@@ -85,7 +85,7 @@
 
           <div v-if="GE_USER" class="fl w-100P boardCard mtop-05" style="display: flex; flex-direction: row; justify-content: space-between;">
             <div style="display:flex; align-items: center;">
-              <div @click="goProfile" :style="'background-image: url(' +  (GE_USER.domainPath? GE_USER.domainPath + GE_USER.userProfileImg : GE_USER.userProfileImg)  + ')'" style="width:30px; height:30px; border-radius: 100%; border:1.5px solid #6768a7; overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
+              <div @click="goProfile" :style="'background-image: url(' +  (GE_USER.domainPath? GE_USER.domainPath + GE_USER.userProfileImg : GE_USER.userProfileImg)  + ')'" style="width:30px; height:30px; border-radius: 100%; border:1.5px solid rgb(74 102 158); overflow: hidden; background-size: cover; background-position: center; background-repeat: no-repeat;">
               <!--  <img :src="currentUserInfo.userProfileImg" style="width: 30px;" class="fl "/> -->
               </div>
               <div class="mleft-05" style="display:flex; flex-direction: column;">
@@ -148,7 +148,7 @@
       </div>
       <div :class="(this.scrolledYn || !this.reloadShowYn) ? 'reload--unpinned': 'reload--pinned'"
       v-on="handleScroll"
-      style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; bottom: 2rem; right: calc(50% - 25px);"
+      style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: #879dc9d1; padding: 10px; bottom: 2rem; right: calc(50% - 25px);"
       @click="refreshAll" >
         <img src="../../assets/images/common/reload_button.svg" class="cursorP" style="width: 30px; height: 30px;" />
       </div>
@@ -404,7 +404,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMemoList',
+        url: '/sUniB/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -436,7 +436,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -644,7 +644,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveActLog',
+        url: '/sUniB/tp.saveActLog',
         param: param
       })
       // console.log(result.data.result)
@@ -682,7 +682,7 @@ export default {
 
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteContents',
+          url: '/sUniB/tp.deleteContents',
           param: inParam
         })
         this.refreshAll()
@@ -714,7 +714,7 @@ export default {
       memo.memoKey = param.memoKey
       this.axiosQueue.push('deleteMemo')
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.deleteMemo',
+        url: '/sUniB/tp.deleteMemo',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -1717,7 +1717,7 @@ background: #fbfbfb;
 }
 #boardReadYn[type="checkbox"]:checked {
   border-color: rgba(255, 255, 255, 0.3);
-  color: #6768a7 !important;
+  color: rgb(74 102 158) !important;
 }
 #boardReadYn[type="checkbox"]:checked::before {
   border-radius: 2px;

@@ -15,7 +15,7 @@
             <div style="width: 30%; float: left;">
                 <div style="min-width: 290px; height: 66px; float: left;">
                     <p class="textRight font14 fontBold" style="color: #3A3A3A;">안녕하세요.</p>
-                    <p class="textRight font20 fontBold" style="color: #6768A7;">{{this.managerTeam}}의 {{this.userName}}님!</p>
+                    <p class="textRight font20 fontBold" style="color: rgb(74 102 158);">{{this.managerTeam}}의 {{this.userName}}님!</p>
                 </div>
                 <div class="roundBtn font16 mtop-1 mleft-1" style="">Logout</div>
             </div>
@@ -45,6 +45,6 @@ export default {
 </script>
 <style scoped>
 .headerWrap{height: 90px;z-index: 2; background-color: #FFFFFF; width: 100%; position: absolute; left: 0; top:0; box-sizing: border-box; padding: 1.5rem  0 ; box-shadow: 0px 7px 9px -7px #c8c8c8a3;}
-.menuText{color: #6768A7; font-weight: bold; margin-right: 2rem; float: left;}
-.roundBtn{height: 30px; background-color: #6768A7; border-radius: 38px; color: #FFFFFF; padding: 0.2rem 1rem; float: left; box-sizing: border-box; font-weight: bold;}
+.menuText{color: rgb(74 102 158); font-weight: bold; margin-right: 2rem; float: left;}
+.roundBtn{height: 30px; #879dc9; border-radius: 38px; color: #FFFFFF; padding: 0.2rem 1rem; float: left; box-sizing: border-box; font-weight: bold;}
 </style>

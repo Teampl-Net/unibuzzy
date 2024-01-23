@@ -1,7 +1,7 @@
 <template>
 <div class="w-100P fl mainTabArea" style="min-height:36px">
   <div class="fl w-100P" style="position: absolute; ">
-    <div v-for="(data, index) in activeTabList" :key="index" @click="emit('click', data)" class="fl mainTabBox mright-03" :style="activeTab === data.name ? 'border: 1px solid #6768a7; ;border-bottom: 2px solid #ffffff; background:#fff !important;' : 'border: 1px solid #6768a7;'">
+    <div v-for="(data, index) in activeTabList" :key="index" @click="emit('click', data)" class="fl mainTabBox mright-03" :style="activeTab === data.name ? 'border: 1px solid rgb(74 102 158); ;border-bottom: 2px solid #ffffff; background:#fff !important;' : 'border: 1px solid rgb(74 102 158);'">
       <p class="font16 fontBold fl">{{data.display}}</p>
     </div>
   </div>
@@ -30,7 +30,7 @@ export default {
 }
 .mainTabArea {
   position: relative;
-  border-bottom : 1px solid #6768a7
+  border-bottom : 1px solid rgb(74 102 158)
 }
 /* .mainTabArea::before {
   box-shadow: none !important;
@@ -40,6 +40,6 @@ export default {
   height  : 1px;
   width   : 80%;
   right: 0;
-  border-bottom : 1px solid #6768a7
+  border-bottom : 1px solid rgb(74 102 158)
 } */
 </style>

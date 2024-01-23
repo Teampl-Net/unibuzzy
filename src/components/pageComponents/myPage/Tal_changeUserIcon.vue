@@ -5,7 +5,7 @@
           <p class="fl textLeft commonColor font18 fontBold mleft-05 mbottom-05">프로필 이미지 변경</p>
           <gActiveBar  ref="activeBar" :tabList="this.activeTabList" class="fl" @changeTab= "changeTab" style="width: 100%;" />
           <div v-if="viewTab === 'icon'" style="width: 100%;height: calc(100% - 120px); float: left; overflow: hidden auto;">
-            <div @click="selectIcon(value.imageFilekey)" :class="selectedIconFileKey === value.imageFilekey ? 'selectedColor' : ''" style="float: left; overflow: hidden; background: #6768a745; border-radius: 100%; width: 100px; height: 100px; margin: 10px 5px; padding: 10px; padding-top: 20px; padding-bottom: 0; " v-for="(value, index) in teamImgList" :key="index">
+            <div @click="selectIcon(value.imageFilekey)" :class="selectedIconFileKey === value.imageFilekey ? 'selectedColor' : ''" style="float: left; overflow: hidden; background-color: #879dc945; border-radius: 100%; width: 100px; height: 100px; margin: 10px 5px; padding: 10px; padding-top: 20px; padding-bottom: 0; " v-for="(value, index) in teamImgList" :key="index">
               <img style="width: 100%;" :src="(value.domainPath? value.domainPath + value.pathMtext : value.pathMtext)"  alt="">
             </div>
           </div>
@@ -354,7 +354,7 @@ export default {
 </script>
 
 <style scoped>
-.selectedColor {border: 2px solid #6768a7}
+.selectedColor {border: 2px solid rgb(74 102 158)}
 
 .hidden{
   display:none

@@ -11,7 +11,6 @@ LOGIN_PROXY_URL.set('url', 'http://localhost:8083/tpp.loginProxy')
 // eslint-disable-next-line no-unused-vars
 var sso = {
   login (callbackF, addLogF) {
-    // alert('come')
     if (addLogF) {
       var logText = '<span class="font16 fontBold commonBlack textLeft">li.sso.js: 로그인 팝업 호출</span>'
       logText += '<br> 호출 url: ' + LOGIN_CHECK_URL.get('url')
@@ -46,9 +45,7 @@ var sso = {
       document.body.removeChild(aTag)
       // var windowRef = window.open(uri, id, 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
     } catch (error) {
-      alert(error)
     }
-    // alert(windowRef)
 
     // 2.  새로 띄운 윈도우 팝업창으로 부터 수신 메세지 이벤트 처리
     if (window.addEventListener) {
@@ -76,7 +73,6 @@ var sso = {
           // window.open(LOGIN_CHECK_URL, 'loginPop', 'width=500, height=700, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
         }
         if (callbackF) {
-          alert(resultData.result)
           callbackF()
           // location.replace(callbackF + '?loginResult=' + resultData.result)
         }
@@ -95,7 +91,6 @@ var sso = {
       if (devForm) devForm.remove()
       var windowRef = location.replace(uri, id, 'width=500, height=550, top=100, left=100, fullscreen=no, menubar=no, status=no, toolbar=no, titlebar=yes, location=no, scrollbar=no')
     } catch (error) {
-      alert(error)
     }
 
     // 2.  새로 띄운 윈도우 팝업창으로 부터 수신 메세지 이벤트 처리
@@ -186,7 +181,6 @@ var sso = {
       },
       error: function (er) { // 실패 시 실행
         console.log(er)
-        alert('실패 원인 : ' + er)
       }
       //                 })
     })

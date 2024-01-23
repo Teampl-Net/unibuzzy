@@ -15,14 +15,14 @@
                 <p class="fl font15 commonBlack">{{this.$changeText(team.cabinetNameMtext)}}</p>
                 <!-- <p class="fl font15 commonBlack">{{'그룹: ' + team.cabinetNameMtext}}</p> -->
                 <!-- <span class="fr" @click="removeSelectedYn('book',index)">x</span> -->
-                <span class="fr commonColor" @click="removeSelectedYn('book',index, team.cabinetKey)" style="border-radius: 100%; border: 1px solid #6768A7; background-color:white; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
+                <span class="fr commonColor" @click="removeSelectedYn('book',index, team.cabinetKey)" style="border-radius: 100%; border: 1px solid rgb(74 102 158); background-color:white; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
             </div>
             <div v-for="(member, index) in teamList.memberList" :key='index' class=" fl"   style="padding: 5px 10px; margin-right: 1.5rem; margin-bottom: 5px; background: #fff;  border-radius: 5px; position:relative; margin-bottom:1.3rem"  >
                 <!-- <p class="fl font15 commonBlack">{{'개인: ' + this.$changeText(member.userDispMtext || member.userNameMtext) }}</p> -->
 
                 <img src="../../../assets/images/main/main_subscriber.png" style="float: left; width: 20px; " />
                 <p class="fl font15 commonBlack">{{this.$changeText(member.userDispMtext || member.userNameMtext) }}</p>
-                <span class="fr commonColor" @click="removeSelectedYn('member',index, member.userKey)" style="border-radius: 100%; border: 1px solid #6768A7; background-color:white; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
+                <span class="fr commonColor" @click="removeSelectedYn('member',index, member.userKey)" style="border-radius: 100%; border: 1px solid rgb(74 102 158); background-color:white; width:20px; height:20px; line-height:18px; position:absolute; right: -10px; top:-10px;">x</span>
             </div>
         </div>
         <gConfirmPop  confirmText='이미 선택되었습니다' confirmType='timeout' v-if="showErrorPopYn" @no='this.showErrorPopYn = false' />
@@ -175,7 +175,7 @@ export default {
 .fontBold{font-weight: bold;}
 .trans90{transform:rotate(270deg)}
 .selecteItemdArea{
-    width:100%; background-color:#6768A720; height:calc(100% - 3rem); padding:15px; overflow: hidden auto;
+    width:100%; background-color:rgb(74 102 158)20; height:calc(100% - 3rem); padding:15px; overflow: hidden auto;
 }
 /* .movePointerArea{
     transform: scaleY(1.7);

@@ -75,7 +75,7 @@
         </div>
 
         <div class="fl findPopMainSearchArea mtop-05" style="min-height:50px;" v-if="teamKey && false">
-          <div class="fl w-100P " style="border-bottom: 2px solid #6768a7; padding-bottom: 5px; ">
+          <div class="fl w-100P " style="border-bottom: 2px solid rgb(74 102 158); padding-bottom: 5px; ">
             <div class="fl font16 fontBold textLeft " style="line-height:30px;" @click="receiveSearchClick">수신대상 검색 <p class="font14">▼</p></div>
             <select class="fr commonDarkGray mleft-1" v-model="selectOption" @change="changeReceiveSearch" v-if="receivSearchYn" style="border: 1px solid #ccc; min-height:30px; width:calc(100% - 130px); min-width:50px; max-width:200px" >
               <option v-for="(value, index) in receivList" :value="index" :key="index" class="fl w-100P" style="display: flex; align-items: center; padding-bottom:0.5rem">
@@ -218,7 +218,7 @@ export default {
       param.creUserKey = this.GE_USER.userKey
       if (this.GE_USER.unknownYn) return
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getStickerList',
+        url: '/sUniB/tp.getStickerList',
         param: param
       })
       this.mStickerList = result.data
@@ -255,7 +255,7 @@ export default {
       // var param = {}
       // param.teamKey = this.teamKey
       // await this.$commonAxiosFunction({
-      //   url: 'https://www.hybric.net:9443/service/tp.getMemberInfo',
+      //   url: '/sUniB/tp.getMemberInfo',
       //   param: param
       // }).then((result)=>{
       //   console.log(result)

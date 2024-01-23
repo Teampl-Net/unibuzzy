@@ -8,7 +8,7 @@
             <div lass="w-100P" style="height: 2rem">
                 <span class="font18 fontBold commonColor fl">최근ss 검색</span>
                 <span class="font15 commonColor fr">| 자동저장 켜기</span>
-                <span class="font15 commonColor fr" style="color: #6768A782">전체삭제</span>
+                <span class="font15 commonColor fr" style="color: rgb(74 102 158)82">전체삭제</span>
             </div>
             <div  class="w-100P">
                 <div v-if="newestSearchYn">

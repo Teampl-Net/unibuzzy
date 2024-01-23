@@ -132,7 +132,7 @@ export default {
     async getCateItemList () {
       if (!this.propBusinessItemList) {
         var cateItemList = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.getCateItemList',
+          url: '/sUniB/tp.getCateItemList',
           param: { cateGroupKey: 2 }
         })
         this.mBusinessItemList = cateItemList.data.cateItemList
@@ -147,7 +147,7 @@ export default {
 
 <style>
 .businessSelected{
-  border: 3px solid #7678E2!important;
-  color: #7678E2!important
+  border: 3px solid rgb(74 102 158)!important;
+  color: rgb(74 102 158)!important
 }
 </style>

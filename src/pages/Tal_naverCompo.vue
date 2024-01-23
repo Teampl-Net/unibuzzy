@@ -10,14 +10,14 @@ export default {
     clientId: {
       type: String,
       required: true,
-      default: 'BbUrvFqJkUbcMb6ISALy'// 하이브릭 공식
+      default: 'IUSyLNfGmOkZCGg55awj'// 하이브릭 공식
       // default: 'jR5bRjvCeurlPVOkCKEg'
 
     },
     callbackUrl: {
       required: true,
       // default: 'https://mo.d-alim.com/naverCallback'
-      default: 'https://mo.d-alim.com/#/naverCallback'
+      default: 'https://thealim.page.link/naverCallback'
     },
     callbackFunction: {
       required: true
@@ -89,12 +89,12 @@ export default {
     height: 50px;
     color: #fff;
     margin-bottom: 15px;
-    background-color: #3E3F6A !;
+    #879dc9 !;
     padding: 10px;
     box-sizing: border-box;
     border-radius: 10px;
 }
 
-.loginBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px; }
+.loginBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; #879dc9; padding: 10px; box-sizing: border-box; border-radius: 10px; }
 
 </style>

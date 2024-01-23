@@ -10,6 +10,48 @@ export const routes = [
   //   component: jisuTest
   // },
   {
+    path: '/reqLogin',
+    name: 'reqLogin',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_reqLogin.vue')
+  },
+  {
+    path: '/testSample',
+    name: 'testSample',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/test.vue')
+  },
+  {
+    path: '/ssoCallback',
+    name: 'ssoCallback',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLoginCallback.vue')
+  },
+  {
+    path: '/ssoLogin',
+    name: 'ssoLogin',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLogin.vue')
+  },
+  {
+    path: '/loginCallBack/naver',
+    name: 'ssoLoginNaver',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLogin_naver.vue')
+  },
+  {
+    path: '/loginCallBack/kakao',
+    name: 'ssoLoginKaKao',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLogin_kakao.vue')
+  },
+  {
+    path: '/loginCallBack/google',
+    name: 'ssoLoginGoogle',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLogin_google.vue')
+  },
+  {
     path: '/PARTNER',
     name: 'D_PARTNER',
     props: true,

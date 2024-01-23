@@ -11,7 +11,7 @@
       <welcomePopUp type="follow" v-if="mOpenWelcomePopShowYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="mOpenWelcomePopShowYn = false" @applyMember="openReqMemPop" />
       <div v-if="mReceptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999" ></div>
       <recMemberPop :chanDetail="this.CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" />
-      <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{officialTitle: CHANNEL_DETAIL.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" /> <p class="font20 fontBold textOverdot"  :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: #6768a7' " v-if="scrolledYn">{{changeText(CHANNEL_DETAIL.nameMtext)}}</p></div>
+      <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{officialTitle: CHANNEL_DETAIL.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" /> <p class="font20 fontBold textOverdot"  :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: rgb(74 102 158)' " v-if="scrolledYn">{{changeText(CHANNEL_DETAIL.nameMtext)}}</p></div>
       <!-- <div @click="goDAlimMain" style="width: 105px; position:absolute; left: 10px; top: 5px; display: flex; align-items: center;">
         <img @click="goDAlimMain"  src="../../../assets/images/common/thealim_header_logo.png" style="width: 25px; " class="cursorP fl mainHeaderLogo" >
         <p @click="goDAlimMain" v-if="!scrolledYn" class="font25 cursorP headerFont commonColor fl" v-html="'하이브릭'" style="width: calc(100% - 25px); "></p>
@@ -33,7 +33,7 @@
                 </p>
               </div>
               <div class="fl font15  w-100P " style="box-sizing:boborder-box; word-break:break-all; " >
-                <p class="font13 commonColor textLeft fl fontBold " style="color:#6768a7; white-space: nowrap;"> 개설일</p>
+                <p class="font13 commonColor textLeft fl fontBold " style="color:rgb(74 102 158); white-space: nowrap;"> 개설일</p>
                 <p class="font14 textLeft fl mleft-1" style="word-break:break-all" >{{this.$dayjs(CHANNEL_DETAIL.creDate).format('YYYY-MM-DD')}}</p>
               </div>
             </div>
@@ -115,9 +115,9 @@
                   </div>
                   <div style=" width:100%; height:30px">
                     <div v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" style="float: left; margin-right:10px; " class="commonColor font14 fontBold">구독중</div>
-                    <div @click="changeFollowYn"  v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn" style="float: left; margin-right:10px; background: #5F61BD; color: #FFFFFF; border-radius: 5px; padding: 2px 10px;" class=" font14 fontBold">구독하기</div>
+                    <div @click="changeFollowYn"  v-if="!CHANNEL_DETAIL.D_CHAN_AUTH.followYn" style="float: left; margin-right:10px; background-color: #879dc9; color: #FFFFFF; border-radius: 5px; padding: 2px 10px;" class=" font14 fontBold">구독하기</div>
                     <div class="font14  fontBold" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn" style="float: left;">{{this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)}}</div>
-                    <div v-if="(CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn" class="font14 fontBold cursorP mleft-05 fl " style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 60px; height: 25px;border: 2px solid #7678E2; border-radius: 10px; color: #6768A8; font-size: 12px;" @click="this.openReqMemPop()">
+                    <div v-if="(CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.memberNameMtext) && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn" class="font14 fontBold cursorP mleft-05 fl " style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 60px; height: 25px;border: 2px solid rgb(74 102 158); border-radius: 10px; color: #6768A8; font-size: 12px;" @click="this.openReqMemPop()">
                       멤버신청
                     </div>
                     <div id="followerCancelArea" v-if="CHANNEL_DETAIL.D_CHAN_AUTH.followYn && !CHANNEL_DETAIL.D_CHAN_AUTH.ownerYn && CHANNEL_DETAIL.teamKey !== this.$DALIM_TEAM_KEY" class="fl mleft-05" style="padding: 5px 10px; border-radius: 10px; border: 1px solid #ccc; height: 25px; display: flex; align-items: center;" :style="CHANNEL_DETAIL.D_CHAN_AUTH.followYn ? 'background-color:#DC143C' : 'background-color:#eee' " >
@@ -761,7 +761,7 @@ export default {
 
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveFollower',
+        url: '/sUniB/tp.saveFollower',
         param: params
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')

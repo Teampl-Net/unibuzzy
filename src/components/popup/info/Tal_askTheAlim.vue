@@ -38,7 +38,7 @@
     <p class="fontBold commonColor font16 mtop-1 mbottom-05">{{ $t('ASK_TITLE_CONTENTS') }}</p>
     <!-- <gActiveBar :tabList="this.activeTabList" style="" ref="activeBar" class="mbottom-05 fl mtop-1" @changeTab= "changeTab" /> -->
     <div id="textMsgAskBox" class="pageMsgArea" style="">
-      <!-- <pre id="textMsgBox" class="editableContent"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid #6768a745; text-align: left; background: #fff; " contenteditable=true></pre> -->
+      <!-- <pre id="textMsgBox" class="editableContent"  v-if="viewTab === 'text'" style="padding:7px; overflow: hidden scroll; width: 100%; height: 100%; border-radius: 5px; border: 1px solid rgb(74 102 158)45; text-align: left; background: #fff; " contenteditable=true></pre> -->
       <!-- <div @click="formEditorShowYn = true" v-else-if="viewTab === 'complex'" class="msgArea" style="padding:7px; overflow: hidden scroll;" id="msgBox">클릭하여 내용을 작성해주세요</div> -->
       <formEditor ref="complexEditor" @changeUploadList="changeUploadList" :editorType="this.editorType" :propFormData="propFormData" @setParamInnerHtml="setParamInnerHtml" @setParamInnerText="setParamInnerText" @postToolBox='postToolBox'/>
       <div @click="formEditorShowYn = true" v-show="previewContentsShowYn" class="msgArea" id="msgBox"></div>

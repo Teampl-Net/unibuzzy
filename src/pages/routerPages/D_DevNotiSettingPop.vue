@@ -146,7 +146,7 @@ export default {
       pushParam.allRecvYn = false
       setTimeout(() => {
         this_.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.sendDevPush',
+          url: '/sUniB/tp.sendDevPush',
           param: pushParam
         }, true)
       }, this.mParamObj.time * 1000)
@@ -186,10 +186,10 @@ export default {
   left: .2rem;
   transform: translateY(-50%);
   border-radius: 50%;
-  background: #6768A7;
+  background-color: #879dc9;
 }
 #backBtnToggle:checked ~ .toggleSwitch {
-  background: #6768A7;
+  background-color: #879dc9;
 }
 
 #backBtnToggle:checked ~ .toggleSwitch .toggleButton {

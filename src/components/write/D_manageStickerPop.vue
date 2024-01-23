@@ -30,7 +30,7 @@
               <div style="width:calc(100%); display:flex; align-items:center; margin-bottom: 0; padding-top: 10px; justify-content:space-between;">
                 <input type="text" class="tagInput w100P" v-model="stickerNameVal">
                 <div style="display:flex; align-items:center;">
-                  <gBtnSmall class="mleft-05" @click="saveSticker()" style="height: 25px; background: #5F61BD; line-height: 25px; padding: 0 5px;" :btnTitle="selectedSticker.stickerKey? $t('COMM_BTN_EDIT2'): $t('COMMON_BTN_SAVE')"/>
+                  <gBtnSmall class="mleft-05" @click="saveSticker()" style="height: 25px; background-color: #879dc9; line-height: 25px; padding: 0 5px;" :btnTitle="selectedSticker.stickerKey? $t('COMM_BTN_EDIT2'): $t('COMMON_BTN_SAVE')"/>
                   <div class="mleft-05" @click="reqDelSticker()"  style="width:25px; height: 25px;" >
                     <img :src="require(`@/assets/images/button/Remove_duotone.png`)" class="w100P"/>
                   </div>
@@ -39,11 +39,11 @@
 
               <div class="w100P mtop-2" style="display:flex; align-items:center; justify-content:center;">
                 <div style="width:30%; display:flex; align-items:center; justify-content:start;">
-                  <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD;">{{ $t('COMM_CHOSE_COLOR') }}</p>
+                  <p class="mright-05 textLeft font16  fontBold" style="color:rgb(74 102 158);">{{ $t('COMM_CHOSE_COLOR') }}</p>
                   <div @click="toggleAddTagShowYn" style="width: 25px; height: 25px; border-radius: 100%; " :style="`background-color: ${selectedSticker.picBgPath}`"></div>
                 </div>
                 <div style="width:70%; display:flex; align-items:center; justify-content:start;">
-                  <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD;">{{ $t('COMM_PREVIEW') }}</p>
+                  <p class="mright-05 textLeft font16  fontBold" style="color:rgb(74 102 158);">{{ $t('COMM_PREVIEW') }}</p>
                   <!-- <div class="previewTag" style="color:#fff;" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray'}" :class="{tagColorBlack : this.selectedSticker.picBgPath === '#91BDFF' || this.selectedSticker.picBgPath === '#C2DAFF' || this.selectedSticker.picBgPath === '#FFC58F' || this.selectedSticker.picBgPath === '#FFE0C4' || this.selectedSticker.picBgPath === '#A8FFA1' || this.selectedSticker.picBgPath === '#CDFFC9' || this.selectedSticker.picBgPath === '#DAB5FF' || this.selectedSticker.picBgPath === '#EAD5FF' || this.selectedSticker.picBgPath === '#95E6FF' || this.selectedSticker.picBgPath === '#C8F5FF' || this.selectedSticker.picBgPath === '#FF96CF' || this.selectedSticker.picBgPath === '#FFC3E4' || this.selectedSticker.picBgPath === '#CCCCCC' || this.selectedSticker.picBgPath === '#E3E3E3' }"> -->
                   <div class="previewTag" style="color:#fff;" :style="{'background-color': this.selectedSticker ? this.selectedSticker.picBgPath : 'gray'}">
                     <span :style="{color:getLightOrDark(this.selectedSticker.picBgPath)}">{{ stickerNameVal }}</span>
@@ -56,9 +56,9 @@
                     <gColorPicker :colorPick="selectedSticker.picBgPath" @closePop="toggleAddTagShowYn" @choiceColor='changeTagColor' ref="colorPicker" :isTag="true" style="z-index:3;"/>
                 </div>
                 <div class="mbottom-05 mtop-1 fl" style="display: flex; align-items: end;">
-                    <p class="mright-05 textLeft font16  fontBold" style="color:#5F61BD; white-space:nowrap;">{{ $t('COMMON_MY_TAG_TILTE') }}</p>
+                    <p class="mright-05 textLeft font16  fontBold" style="color:rgb(74 102 158); white-space:nowrap;">{{ $t('COMMON_MY_TAG_TILTE') }}</p>
                     <span style="font-size:13px; color:#A9A7F6;">{{ $t('COMM_MSG_SELECT_TAG') }}</span>
-                    <!-- <gBtnSmall class="mleft-05 fl"  @click="toggleSelectTag({ nameMtext: '', stickerKey: null, picBgPath: '#CCC' }); stickerNameVal = ''" style="height: 25px; min-width: 30px; background: #5F61BD; line-height: 25px; padding: 0 5px;" btnTitle="+"/> -->
+                    <!-- <gBtnSmall class="mleft-05 fl"  @click="toggleSelectTag({ nameMtext: '', stickerKey: null, picBgPath: '#CCC' }); stickerNameVal = ''" style="height: 25px; min-width: 30px; background-color: #879dc9; line-height: 25px; padding: 0 5px;" btnTitle="+"/> -->
                 </div>
                 <div style="width:100%; overflow: hidden auto; display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; padding-bottom:10px;" class="thinScrollBar">
                     <!-- <button
@@ -261,7 +261,7 @@ export default {
       param.stickerKey = this.selectedSticker.stickerKey
       param.deleteYn = true
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveSticker',
+        url: '/sUniB/tp.saveSticker',
         param: param
       })
       if (result.data.result) {
@@ -288,7 +288,7 @@ export default {
       console.log('saveSticker param', param)
       this.$emit('newSticker', param.nameMtext, param.picBgPath, param.stickerKey)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveSticker',
+        url: '/sUniB/tp.saveSticker',
         param: param
       })
       if (result.data.result) {

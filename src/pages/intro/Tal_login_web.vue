@@ -108,7 +108,7 @@ export default {
 
 <style scoped>
 p{margin-bottom: 0;}
-.loginBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; font-size: 20px; background-color: #3E3F6A; padding: 10px; box-sizing: border-box; border-radius: 10px; }
+.loginBtn{width: 100%; height: 50px; color: #fff; margin-bottom: 15px; font-size: 20px; #879dc9; padding: 10px; box-sizing: border-box; border-radius: 10px; }
 .loginBtn img {width: 1.5rem; margin-bottom: 5px; margin-right: 20px}
-.loginContentsWrap{height: 100vh;background-color: #6768A7; display: flex; flex-direction: column; padding-top: 10%; }
+.loginContentsWrap{height: 100vh;#879dc9; display: flex; flex-direction: column; padding-top: 10%; }
 </style>

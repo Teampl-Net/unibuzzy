@@ -1,5 +1,5 @@
 <template>
-    <div v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" :style="(CONT_DETAIL.jobkindId === 'BOAR' && CAB_DETAIL.picBgPath) ? 'background: ' + CAB_DETAIL.picBgPath + ';' : 'background: #6768A7;'">
+    <div v-if="this.CHANNEL_DETAIL && this.CONT_DETAIL && (CONT_DETAIL.jobkindId === 'ALIM' || (CONT_DETAIL.jobkindId === 'BOAR' && this.CAB_DETAIL))" class="boardDetailWrap" :style="(CONT_DETAIL.jobkindId === 'BOAR' && CAB_DETAIL.picBgPath) ? 'background: ' + CAB_DETAIL.picBgPath + ';' : 'background-color: #879dc9;'">
         <div v-if="saveMemoLoadingYn" id="loading" style="display: block; z-index:9999999"><div class="spinner"></div></div>
         <loadingCompo class="fl" style="z-index: 999999999 !important; position:absolute; top:0; left:0; width:100%; height:100%;" v-if="loadingYn" />
         <imgPreviewPop :mFileKey="CONT_DETAIL.attachMfilekey" :startIndex="selectImgIndex" @closePop="this.backClick()" v-if="previewPopShowYn && CONT_DETAIL.attachMfilekey" style="width: 100%; height: calc(100%); position: absolute; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="CONT_DETAIL.title" :creUserName="CONT_DETAIL.creUserName" :creDate="CONT_DETAIL.dateText"  :imgList="this.clickImgList" />
@@ -9,8 +9,8 @@
                     <div @click="goChanDetail(CHANNEL_DETAIL.teamKey)" class="boardDetailChanLogoImgWrap fl" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath !== undefind ? CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext : CHANNEL_DETAIL.logoPathMtext) + ');'" style="background-repeat: no-repeat; background-size: cover; background-position: center;"></div>
                     <div class="pushDetailHeaderTextArea">
                         <p :class="CONT_DETAIL.workStatYn && CONT_DETAIL.workStatCodeKey === 46? 'completeWork': ''" class=" font18 fontBold commonBlack cursorDragText" style="word-break: break-word;">
-                            <p v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:#6768A7; color: #FFF;">{{ $t('COMMON_NAME_MESSAGE') }}</p>
-                            <p v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea commonColor" style="background:#FFF; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</p>
+                            <p v-if="CONT_DETAIL.jobkindId === 'ALIM'" class="font14 fl contentTypeTextArea fontNomal" style="background:rgb(74 102 158); color: #FFF;">{{ $t('COMMON_NAME_MESSAGE') }}</p>
+                            <p v-else-if="CONT_DETAIL.jobkindId === 'BOAR'" class="font14 fl contentTypeTextArea commonColor" style="background:#FFF; font-weight: bold; border: 1px solid rgb(74 102 158)  ">{{'게시'}}</p>
                             <img class="fr mright-03" style="width:4.5px;" @click="contentMenuClick({type: CONT_DETAIL.jobkindId === 'ALIM' ? 'alim' : 'board', ownerYn: GE_USER.userKey === CONT_DETAIL.creUserKey || (!propParams.nonMemYn && CONT_DETAIL.creUserKey === 0), tempData: CONT_DETAIL})" src="../../assets/images/common/icon_menu_round_vertical.svg"  alt="">
                             {{CONT_DETAIL.title}}
                         </p>
@@ -642,7 +642,7 @@ export default {
         // inParam.teamKey = this.tempData.creTeamKey
 
         await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteMCabContents',
+          url: '/sUniB/tp.deleteMCabContents',
           param: inParam
         })
       } else if (this.CONT_DETAIL.jobkindId === 'BOAR') {
@@ -653,7 +653,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteContents',
+          url: '/sUniB/tp.deleteContents',
           param: inParam
         })
       }
@@ -696,7 +696,7 @@ export default {
     async saveActAxiosFunc (param) {
       this.reportYn = false
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveActLog',
+        url: '/sUniB/tp.saveActLog',
         param: param
       })
       // // console.log(result.data.result)
@@ -846,7 +846,7 @@ export default {
         inParam.teamKey = this.CONT_DETAIL.creTeamKey
         inParam.deleteYn = true
         await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteContents',
+          url: '/sUniB/tp.deleteContents',
           param: inParam
         })
         this.$emit('closeXPop', true)
@@ -994,7 +994,7 @@ export default {
       }
       // eslint-disable-next-line no-redeclare
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveSubscribe',
+        url: '/sUniB/tp.saveSubscribe',
         param: { subscribe: param }
       })
       this.$showToastPop(this.$t('COMM_MSG_NOTIIS' + '') + reqText)
@@ -1009,7 +1009,7 @@ export default {
       memo.memoKey = param.memoKey
       // // console.log(param)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.deleteMemo',
+        url: '/sUniB/tp.deleteMemo',
         param: memo
       })
       if (result.data.result === true) {
@@ -1071,7 +1071,7 @@ export default {
       memo.offsetInt = 0
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMemoList',
+        url: '/sUniB/tp.getMemoList',
         param: memo
       })
 
@@ -1119,7 +1119,7 @@ export default {
       param.doType = 'LI'
       // eslint-disable-next-line no-unused-vars
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getUserDoListPage',
+        url: '/sUniB/tp.getUserDoListPage',
         param: param
       })
     }, */
@@ -1148,7 +1148,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -1332,7 +1332,7 @@ export default {
     pointAni () {
       var firstMemoCard = document.querySelectorAll('#memoWrap .memoCard')[0]
       if (firstMemoCard) {
-        firstMemoCard.style.boxShadow = '0 0 15px 4px #6768a75c'
+        firstMemoCard.style.boxShadow = '0 0 15px 4px rgb(74 102 158)5c'
         firstMemoCard.style.transition = 'box-shadow 0.7s ease-in-out'
         setTimeout(() => {
           firstMemoCard.style.boxShadow = 'none'
@@ -1421,6 +1421,6 @@ export default {
     100% {bottom: -100px;}
 }
 .memoBoxBackground{width: 100%; height: 100vh; background: #00000036; position: absolute; top: 0; left: 0;}
-/* .copyTextWrap{background: #6768a7; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;} */
+/* .copyTextWrap{background-color: #879dc9; width: 35px; height: 35px; float: right; border-radius: 5px; padding: 0 0 0 1px; margin-right: 10px;} */
 .boardDetailChanLogoImgWrap {width: 40px; float: left; display: flex; align-items: center; justify-content: center; height: 40px; border-radius: 40px; margin-right: 0.5rem; border: 2px solid #ccc; position: relative;;}
 </style>

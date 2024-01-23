@@ -233,7 +233,6 @@ export default {
     // mContentsEle = {}
   },
   created () {
-    alert(true)
   },
   computed: {
     CONT_DETAIL () {

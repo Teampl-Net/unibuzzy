@@ -100,7 +100,7 @@ export default {
   position: absolute;
   bottom:0;
   right: 0;
-  background-color: #6768a7;
+  #879dc9;
   animation: progres 0.3s linear forwards;
 }
 .under-bar{

@@ -15,9 +15,9 @@
 	    }
 		],
     "start_url": "/",
-    "background_color": "#5F61BD",
+    "background_color": "#d1e1f2",
     "display": "fullscreen",
-    "theme_color": "#5F61BD",
+    "theme_color": "#d1e1f2",
     "prefer_related_applications": true,
     "scope": "/",
     "protocol_handlers": [

@@ -86,11 +86,11 @@ module.exports = {
         /* pathRewrite: { '^/fileServer': '/fileServer' }, */
         logLevel: 'debug'
       },
-      '^/firebase': {
-        target: 'https://firebasedynamiclinks.googleapis.com',
+      '^/fb.': {
+        target: 'https://oauth2.googleapis.com',
         changeOrigin: true,
         secure: false,
-        pathRewrite: { '^/firebase': '/' },
+        pathRewrite: { '^/fb.': '/' },
         logLevel: 'debug'
       },
       '^/iamport': {

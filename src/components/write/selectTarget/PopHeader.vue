@@ -85,7 +85,7 @@ export default {
   position: absolute;
   top:50%;
   transform: translateY(-50%);
-  color: #6768A7;
+  color: rgb(74 102 158);
   font-weight: bold;
   width:70%;
   text-overflow: ellipsis;

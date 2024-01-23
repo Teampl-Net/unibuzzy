@@ -40,7 +40,7 @@ export const functions = {
     memo.targetKey = targetKey
     memo.memoKey = memoKey
     var result = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getMemoList',
+      url: '/sUniB/tp.getMemoList',
       param: memo
     }, true)
     var memos = result.data.memoList[0]
@@ -49,7 +49,6 @@ export const functions = {
   async actionVuex (type, data, targetKey, allYn, replaceYn, creTeamKey, creCabinetKey) {
     var ActName
     if (type === 'T' || type === 'B' || type === 'C') {
-      alert('들어오지마')
       ActName = 'D_CHANNEL/AC_MAIN_CHAN_LIST'
     } else if (type === 'COMMONCONT') {
       ActName = 'D_CHANNEL/AC_SET_CHAN_CONT_LIST'
@@ -182,7 +181,6 @@ export const functions = {
     await store.dispatch('D_CHANNEL/AC_ADD_CHANNEL', data)
   },
   async addChanList (teamKey) {
-    // alert(teamKey)
     var result = null
     debugger
     console.log('과연????')
@@ -236,7 +234,6 @@ export const functions = {
         await store.commit('D_CHANNEL/MU_ADD_MEMO', memo)
         addVueResult = await functions.addContents(Number(userDo.targetKey), notiDetail.jobkindId)
       } else if (userDo.targetKind === 'T') {
-        // alert(true)
         addVueResult = await functions.addChanList(Number(notiDetail.creTeamKey))
       } else if (!notiDetail.userDo) {
         console.log('여기?')
@@ -309,7 +306,7 @@ export const functions = {
     }
     // paramMap.set('followerType', 'M')
     var result = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
+      url: '/sUniB/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
     }, true)
     var user = result.data.content

@@ -10,7 +10,7 @@ var g_axiosQueue = []
 
 export const coreMethods = {
   async coreLoginCheck (paramMap) {
-    var result = await axios.post('https://www.hybric.net:9443/service/tp.coreLoginCheck', Object.fromEntries(paramMap))
+    var result = await axios.post('/sUniB/tp.coreLoginCheck', Object.fromEntries(paramMap))
     return result
   },
   async commonCoreAxios (setItem, nonLoadingYn, noAuthYn) {
@@ -78,7 +78,7 @@ export const coreMethods = {
     var setParam = {}
     setParam.user = param
     setParam.partner = coreParam
-    var result = await axios.post('https://www.hybric.net:9443/service/tp.saveUserAndAccess', setParam)
+    var result = await axios.post('/sUniB/tp.saveUserAndAccess', setParam)
     console.log(result)
     if (result.data.result) {
       if (callbackF) {

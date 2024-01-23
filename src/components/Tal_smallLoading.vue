@@ -45,7 +45,7 @@ export default {
     bottom: 0;
     left: calc( 50% - 20px); /* 크기 만큼 빼줘야 가운데 정렬  */
     border: 5px solid #f3f3f3; /* Light grey */
-    border-top: 5px solid #6768A7;
+    border-top: 5px solid rgb(74 102 158);
     border-radius: 50%;
     width: 40px;
     height: 40px;

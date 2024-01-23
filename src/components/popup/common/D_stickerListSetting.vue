@@ -10,7 +10,7 @@
 </i18n>
 <template>
   <div ref="layerPopUp" v-if="this.openStickerPopYn" @click="saveUserDoStickerList" @wheel="saveUserDoStickerList" class="w-100P h-100P layerPopUp"></div>
-    <div v-if="this.openStickerPopYn" style="width: 70%; max-height: 140px; right: 0; right: 10px; bottom: 20px; background: #fff; border: 2px solid #5F61BD; border-radius: 25px; padding: 10px 20px; position: absolute; z-index: 8;">
+    <div v-if="this.openStickerPopYn" style="width: 70%; max-height: 140px; right: 0; right: 10px; bottom: 20px; background: #fff; border: 2px solid rgb(74 102 158); border-radius: 25px; padding: 10px 20px; position: absolute; z-index: 8;">
       <div class="fl w-100P mbottom-05" style="height: 35px; display: flex; align-items: center;overflow: scroll hidden; border-bottom: 2px solid #ccc;" @wheel="horizontalScroll" id="stickerContList">
         <!-- <template style="" v-for="(value, index) in this.contDetail.D_CONT_USER_STICKER_LIST" :key="index"> -->
         <p v-if="this.mContStickerList.length === 0" class="font14 textLeft fontBold">{{ $t('STICK_MSG_ADD_LABEL') }}</p>
@@ -19,7 +19,7 @@
         </template>
       </div>
       <div class="fl w-100P mbottom-05" :class="!isMobile? 'thinScrollBar':''" style="height: 35px; display: flex; align-items: center;overflow: auto hidden;" @wheel="horizontalScroll" id="stickerMList">
-        <div @click="openStickerDetailPop(mAddStickerObj)" class="cursorP mright-05 fontBold" style="width: 25px; height: 25px; flex-shrink: 0; line-height: 25px; background: #5F61BD; color: #fff; border-radius: 5px;">+</div>
+        <div @click="openStickerDetailPop(mAddStickerObj)" class="cursorP mright-05 fontBold" style="width: 25px; height: 25px; flex-shrink: 0; line-height: 25px; background-color: #879dc9; color: #fff; border-radius: 5px;">+</div>
         <template style="float: left; height: 35px; width: calc(100% - 20px);" v-for="(value, index) in this.GE_NON_SELECTED_STICKER_LIST" :key="index" >
           <!-- <gStickerLine v-if="value" :pSmallYn="true" style="float: left; margin-right: 5px; min-width: 30px;" :pSticker="value.sticker" /> -->
           <gStickerLine class="stickerIcon" v-if="value" style="float: left; margin-right: 10px; min-width: 30px; margin-bottom: 0 !important;" :pSticker="value" @click="selectSticker(value)"/>
@@ -95,7 +95,7 @@ export default {
     // var param = {}
     // param.creUserKey = this.GE_USER.userKey
     // var result = await this.$commonAxiosFunction({
-    //   url: 'https://www.hybric.net:9443/service/tp.getStickerList',
+    //   url: '/sUniB/tp.getStickerList',
     //   param: param
     // })
     // this.mStickerList = result.data
@@ -139,7 +139,7 @@ export default {
       if (this.GE_USER.unknownYn) return
       param.creUserKey = this.GE_USER.userKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getStickerList',
+        url: '/sUniB/tp.getStickerList',
         param: param
       })
       this.mStickerList = result.data
@@ -197,7 +197,7 @@ export default {
       param.targetKey = this.contDetail.contentsKey
       param.creUserKey = this.GE_USER.userKey
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveUserDoList',
+        url: '/sUniB/tp.saveUserDoList',
         param: param
       })
       if (result.data.result) {

@@ -91,7 +91,6 @@ const isJsonString = (str) => {
           message = e.data
         }
         if (message.type === 'userInfo' || message.type === 'successLogin') {
-          //  alert(message.type)
           if (message.loginYn === true) {
             var userProfile = JSON.parse(message.userInfo)
 
@@ -164,13 +163,11 @@ const isJsonString = (str) => {
             }
           }
 
-          // alert(JSON.stringify(notiDetailObj))
           var addVueResult = await functions.recvNotiFromBridge(
             message,
             isMobile,
             notiDetailObj
           )
-          // alert(JSON.stringify(addVueResult))
           if (appActiveYn !== true && appActiveYn !== 'true') {
             if (
               JSON.parse(notiDetailObj.userDo).userKey ===
@@ -200,7 +197,6 @@ const isJsonString = (str) => {
           var appInfo = JSON.parse(message.appInfo)
           localStorage.setItem('appInfo', message.appInfo)
           /* if (appInfo.current !== appInfo.last) {
-            // alert('최신버전으로 업데이트 해주세요')
             var aTag
             aTag = document.getElementById('updateAppPage')
             if (aTag == null) {
@@ -220,10 +216,8 @@ const isJsonString = (str) => {
           store.dispatch('D_USER/AC_NET_STATE', message.netStateYn)
           // localStorage.setItem('netStateYn', message.netStateYn)
           // var appInfo = JSON.parse(message.appInfo)
-          // alert(localStorage.getItem('netStateYn') + '!!!!')
           // localStorage.setItem('appInfo', message.appInfo)
           /* if (appInfo.current !== appInfo.last) {
-              // alert('최신버전으로 업데이트 해주세요')
               var aTag
               aTag = document.getElementById('updateAppPage')
               if (aTag == null) {

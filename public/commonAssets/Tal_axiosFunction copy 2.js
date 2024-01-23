@@ -64,7 +64,7 @@ export async function commonAxiosFunction (setItem, nonLoadingYn) {
 
 export async function checkSession () {
   var result = false
-  await axios.post('https://www.hybric.net:9443/service/tp.checkSession', { withCredentials: true }
+  await axios.post('/sUniB/tp.checkSession', { withCredentials: true }
   ).then(response => {
     result = response
   }).catch((error) => {
@@ -133,7 +133,7 @@ export async function saveUser (userProfile, loginYn) {
   }
   setParam.user = user
   var result = await commonAxiosFunction({
-    url: 'https://www.hybric.net:9443/service/tp.saveUser',
+    url: '/sUniB/tp.saveUser',
     param: setParam,
     firstYn: true
   })
@@ -267,11 +267,11 @@ export const methods = {
         localStorage.setItem('loginYn', false)
       }
     }) */
-    // var result = await axios.post('https://www.hybric.net:9443/service/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
+    // var result = await axios.post('/sUniB/tp.loginCheck', Object.fromEntries(paramMap), { withCredentials: true })
   },
   async d_AlimLogout () {
     var result = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.logout',
+      url: '/sUniB/tp.logout',
       firstYn: true
     })
     console.log(result)
@@ -292,7 +292,7 @@ export const methods = {
     var resultList = null
     paramMap.set('fUserKey', store.getters['D_USER/GE_USER'].userKey)
     var result = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getUserTeamList',
+      url: '/sUniB/tp.getUserTeamList',
       param: Object.fromEntries(paramMap)
     }, noneLoadingYn)
     resultList = result
@@ -306,7 +306,7 @@ export const methods = {
     }
     var resultList = null
     var result = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getMyContentsList',
+      url: '/sUniB/tp.getMyContentsList',
       param: paramSet
     }, nonLoadingYn)
     resultList = result.data
@@ -319,7 +319,7 @@ export const methods = {
     }
     var resultList = null
     var result = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getContents',
+      url: '/sUniB/tp.getContents',
       param: paramSet
     })
     resultList = result.data
@@ -327,7 +327,7 @@ export const methods = {
   },
   async getFollowerList (paramMap) {
     var result = await this.$commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
+      url: '/sUniB/tp.getFollowerList',
       param: Object.fromEntries(paramMap)
     })
     return result.data.content
@@ -340,7 +340,7 @@ export const methods = {
       param = inputParam
     }
     var urlSet = null
-    if (type === 'delete') { urlSet = 'https://www.hybric.net:9443/service/tp.deleteUserDo' } else if (type === 'save') { urlSet = 'https://www.hybric.net:9443/service/tp.saveUserDo' }
+    if (type === 'delete') { urlSet = '/sUniB/tp.deleteUserDo' } else if (type === 'save') { urlSet = '/sUniB/tp.saveUserDo' }
     param.userKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
 
@@ -360,7 +360,7 @@ export const methods = {
     param.creUserKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.saveSticker',
+      url: '/sUniB/tp.saveSticker',
       param: param
     })
     result = response.data
@@ -376,7 +376,7 @@ export const methods = {
     param.creUserKey = store.getters['D_USER/GE_USER'].userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getStickerList',
+      url: '/sUniB/tp.getStickerList',
       param: param
     })
     result = response.data
@@ -388,8 +388,8 @@ export const methods = {
     if (inputParam) {
       paramSet = inputParam
     }
-    var urlSet = 'https://www.hybric.net:9443/service/tp.saveFollower'
-    if (type === 'del') { urlSet = 'https://www.hybric.net:9443/service/tp.deleteFollower' } else if (type === 'save') {
+    var urlSet = '/sUniB/tp.saveFollower'
+    if (type === 'del') { urlSet = '/sUniB/tp.deleteFollower' } else if (type === 'save') {
       paramSet.followerType = 'F'
     }
     paramSet.userKey = store.getters['D_USER/GE_USER'].userKey
@@ -405,7 +405,7 @@ export const methods = {
     var teamRequest = paramVal
     var result = false
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.saveTeamRequest',
+      url: '/sUniB/tp.saveTeamRequest',
       param: { teamRequest: teamRequest }
     })
     result = response.data
@@ -420,7 +420,7 @@ export const methods = {
     // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.createTeamForReq',
+      url: '/sUniB/tp.createTeamForReq',
       param: paramSet
     })
     result = response.data
@@ -434,7 +434,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getTeamReqList',
+      url: '/sUniB/tp.getTeamReqList',
       param: paramSet
     })
     result = response.data
@@ -456,7 +456,7 @@ export const methods = {
     // param.creUserKey = JSON.parse(localStorage.getItem('sessionUser')).userKey
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.saveContents',
+      url: '/sUniB/tp.saveContents',
       param: paramSet
     })
     result = response.data
@@ -470,7 +470,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getCodeList',
+      url: '/sUniB/tp.getCodeList',
       param: paramSet
     })
     result = response.data
@@ -499,7 +499,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.saveFollower',
+      url: '/sUniB/tp.saveFollower',
       param: paramSet
     })
     result = response.data
@@ -513,7 +513,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.saveCabinet',
+      url: '/sUniB/tp.saveCabinet',
       param: paramSet
     })
     result = response.data
@@ -527,7 +527,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.deleteCabinet',
+      url: '/sUniB/tp.deleteCabinet',
       param: paramSet
     })
     result = response.data
@@ -541,7 +541,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getTeamMenuList',
+      url: '/sUniB/tp.getTeamMenuList',
       param: Object.fromEntries(paramMap)
     }, noneLoadingYn)
     result = response.data
@@ -555,7 +555,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getCabinetDetail',
+      url: '/sUniB/tp.getCabinetDetail',
       param: paramSet
     })
     result = response.data
@@ -566,7 +566,7 @@ export const methods = {
   async saveMCabContents (paramSet) {
     // var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.saveMCabContents',
+      url: '/sUniB/tp.saveMCabContents',
       param: paramSet
     })
     // result = response
@@ -578,7 +578,7 @@ export const methods = {
     g_axiosQueue.push('getMemoCount')
     if (param.targetKey === null) return false
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.getMemoCount',
+      url: '/sUniB/tp.getMemoCount',
       param: param
     }, true)
     var queueIndex = g_axiosQueue.findIndex((item) => item === 'getMemoCount')
@@ -594,7 +594,7 @@ export const methods = {
     }
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.saveUser',
+      url: '/sUniB/tp.saveUser',
       param: param
     })
     result = response
@@ -620,7 +620,7 @@ export const methods = {
     // param.updateYn = true
     var result = null
     var response = await commonAxiosFunction({
-      url: 'https://www.hybric.net:9443/service/tp.saveUser',
+      url: '/sUniB/tp.saveUser',
       param: param
     })
     result = response

@@ -37,12 +37,12 @@ export default {
 </script>
 
 <style scoped>
-    p{color: #6768A7; font-weight: bold;}
+    p{color: rgb(74 102 158); font-weight: bold;}
   .test{ display:flex; justify-content: center; align-items: center; height:100vh; }
-  /* .permissionHeaderTextWrap {border-bottom: 2px solid #6768A7;} */
-  .permissionHeaderWrap{width: 100%; padding-top: 0.7rem; border-bottom: 2px solid #6768A7; min-height: 50px; height: 20%;  box-sizing: border-box}
+  /* .permissionHeaderTextWrap {border-bottom: 2px solid rgb(74 102 158);} */
+  .permissionHeaderWrap{width: 100%; padding-top: 0.7rem; border-bottom: 2px solid rgb(74 102 158); min-height: 50px; height: 20%;  box-sizing: border-box}
   .permissionHeaderTextWrap {height: 100%;}
-  .permissionHeaderTextWrap p{font-size: 12px; color: #6768A7; line-height: 13px; font-weight: bold;}
+  .permissionHeaderTextWrap p{font-size: 12px; color: rgb(74 102 158); line-height: 13px; font-weight: bold;}
   .permissionHeaderTextWrap> p{line-height: 52px; font-size: 24px}
   .permissionTitleText {height: 80%; width: 100%;  box-sizing: border-box}
   .headerFont {font-size: 19px;}

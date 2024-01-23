@@ -109,5 +109,5 @@ export default {
 
 .categoryBox{min-width: 100px; padding: 0 10px; margin-right: 5px; height: 25px;float: left; border-radius: 5px;}
 
-.creChanBigBtn{width: 100%; height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;}
+.creChanBigBtn{width: 100%; height: 50px; line-height: 50px; font-size: 18px; background-color: #879dc9; color: #fff; border-radius: 8px;}
 </style>

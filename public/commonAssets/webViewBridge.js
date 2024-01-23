@@ -75,7 +75,6 @@ const isJsonString = (str) => {
           message = e.data
         }
         if (message.type === 'userInfo' || message.type === 'successLogin') {
-          //  alert(message.type)
           if (message.loginYn === true) {
             if (message.userInfo) {
               const userProfile = JSON.parse(message.userInfo)
@@ -84,7 +83,6 @@ const isJsonString = (str) => {
               router.replace({ path: '/' })
             }
           } else if (message.data) {
-            // alert(message.data)
             const userProfile = message.data
             localStorage.setItem('loginYn', true)
             await saveUser(userProfile, true) // 서버에 save요청
@@ -111,6 +109,9 @@ const isJsonString = (str) => {
           }
 
           store.commit('D_HISTORY/changeDeepLinkQueue', queList)
+        } else if (message.type === 'loginCallback') {
+          const urlString = message.url.toString()
+          window.replace(message.url)
         } else if (message.type === 'goback') {
           if (store.getters['D_USER/GE_NET_STATE'] === false || store.getters['D_USER/GE_NET_STATE'] === 'false') return
           var history = store.getters['D_HISTORY/hStack']
@@ -158,7 +159,6 @@ const isJsonString = (str) => {
 
           if (systemName === 'android' || systemName === 'Android') {
             if (appInfo.current !== appInfo.last) {
-              /* alert('앱을 최신 버전으로 업데이트 해주세요.')
               // this.checkVersionText = '앱 버전 업데이트가 필요합니다. <br>플레이스토어로 이동할까요?'
               // this.checkVersionPopShowYn = true
               // window.open(appInfo.playStoreUrl, '_blank')
@@ -200,10 +200,8 @@ const isJsonString = (str) => {
           store.dispatch('D_USER/AC_NET_STATE', message.netStateYn)
           // localStorage.setItem('netStateYn', message.netStateYn)
           // var appInfo = JSON.parse(message.appInfo)
-          // alert(localStorage.getItem('netStateYn') + '!!!!')
           // localStorage.setItem('appInfo', message.appInfo)
           /* if (appInfo.current !== appInfo.last) {
-              // alert('최신버전으로 업데이트 해주세요')
               var aTag
               aTag = document.getElementById('updateAppPage')
               if (aTag == null) {

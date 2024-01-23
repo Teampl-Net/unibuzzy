@@ -55,10 +55,10 @@
     <!-- <div style="width: 20px; margin-left: 10px; height: 18px; border: 1.5px solid #DC143C; border-radius: 100%; display: flex; justify-content: center; align-items: center;">
         <p class="fl img-w20 cursorP commonRed" style="height: 20px; margin-bottom: 12px;"  @click="modiItemDetail('deleteQue')">-</p>
     </div> -->
-    <div style="margin-right: 5px; width: 20px; margin-left: 5px; height: 20px; border: 1px solid #5F61BD; border-radius: 100%; display: flex; justify-content: center; align-items: center;">
+    <div style="margin-right: 5px; width: 20px; margin-left: 5px; height: 20px; border: 1px solid rgb(74 102 158); border-radius: 100%; display: flex; justify-content: center; align-items: center;">
         <p class="fl img-w20 commonColor cursorP" style="height: 20px; margin-bottom: 12px;"  @click="modiItemDetail('add')">+</p>
     </div>
-    <div style="margin-right: 10px; width: 20px; margin-left: 5px; height: 20px; border: 1px solid #5F61BD; border-radius: 100%; display: flex; justify-content: center; align-items: center;">
+    <div style="margin-right: 10px; width: 20px; margin-left: 5px; height: 20px; border: 1px solid rgb(74 102 158); border-radius: 100%; display: flex; justify-content: center; align-items: center;">
         <p class="fl img-w20 commonColor cursorP" style="height: 20px; margin-bottom: 12px;"  @click="modiItemDetail('delete')">-</p>
     </div>
     <div class="f itemMovePoint cursorP" style="width: 30px; margin-left: 5px; height: 100%; display: flex; align-items: center; background: rgba(255, 255, 255, 0.75); ">

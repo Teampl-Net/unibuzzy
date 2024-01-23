@@ -139,7 +139,7 @@ export default {
             height: auto;
             aspect-ratio: 1/1;
             transform:rotate(90deg);
-            background-color:#E7EDFF!important;
+            background-color:#d1e1f2!important;
        }
 
        .memoBody{

@@ -79,7 +79,7 @@
             </div>
             <div v-if="mTopColorPreviewYn === true" class="fl w-100P" :style="'background: url(' + mSelectedBg.selectPath + ');'" style=" height: 50px; display: flex; flex-direction: row; justify-content: space-between; align-items: center; overflow: hidden; background-repeat: no-repeat;background-size: cover;">
               <img v-if="mBtnColor === false" src="../../../assets/images/common/icon_back.png" class="img-w15 fl mleft-05" alt=""> <img v-else-if="mBtnColor === true" src="../../../assets/images/common/icon_back_white.png" class="img-w15 fl mleft-05" alt="">
-              <p :style="mBtnColor === false ? 'color: #6768a7;' : 'color:white;' " class="fl font20 fontBold">{{mInputChannelName}}</p>
+              <p :style="mBtnColor === false ? 'color: rgb(74 102 158);' : 'color:white;' " class="fl font20 fontBold">{{mInputChannelName}}</p>
               <img v-if="mBtnColor === false"  src="../../../assets/images/common/icon_menu.png" class="img-w25 fr mright-05" alt=""> <img v-else-if="mBtnColor === true" src="../../../assets/images/common/icon_menu_white.png" class="img-w25 fr mright-05" alt="">
             </div>
           </div>
@@ -237,7 +237,7 @@ export default {
       var param = new Object()
       param.cateGroupKey = 2
       var cateItemList = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getCateItemList',
+        url: '/sUniB/tp.getCateItemList',
         param: param
       })
       console.log('#################')
@@ -508,10 +508,10 @@ border:1px solid #ccc; width: 120px; overflow: hidden; height: 120px; border-rad
 .creChanIntroTextWrap p{font-size: 18px; }
 
 .creChanBigBtn{
-  height: 50px; line-height: 50px; font-size: 18px; background: #6768a7; color: #fff; border-radius: 8px;
+  height: 50px; line-height: 50px; font-size: 18px; background-color: #879dc9; color: #fff; border-radius: 8px;
   width: calc(100% - 30px);
 }
-.activeTypeBox{background: #6768a7 !important; color: #fff;}
+.activeTypeBox{background-color: #879dc9 !important; color: #fff;}
 .activeTypeBox p {color: #fff;}
 .categoryBox{min-width: 40px; margin-right: 5px; height: 30px;float: left; border-radius: 5px;padding-left: 5px;}
 

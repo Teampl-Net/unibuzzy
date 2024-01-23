@@ -38,7 +38,7 @@
       </router-view>
     </div>
     <TalFooter :pChangePageHeader="changePageHeader" v-if="$route.name !== 'frameView' && $route.name!== 'contDetail'" :pOpenUnknownLoginPop="openUnknownLoginPop" @changeRouterPath="changeRouterPath" class="header_footer footerShadow" style="position: absolute; bottom: 0; z-index: 9" />
-    <!-- <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background: #5F61BD; position: fixed; bottom: 90px; left: 20px; z-index: 999999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div> -->
+    <!-- <div v-if="!mBackBtnShowYn" @click="this.$gobackDev()" style="width: 60px; height: 60px; border-radius: 100%; background-color: #879dc9; position: fixed; bottom: 90px; left: 20px; z-index: 999999; display: flex; justify-content:center; align-items: center; border: 3px solid #FFF; box-shadow: rgb(0 0 0 / 22%) 0px 0px 9px 4px;"><p class="font16 fontBold" style="color: #FFF;">back</p></div> -->
   </div>
 </template>
 
@@ -247,7 +247,7 @@ export default {
       }
       const result = await this.$commonAxiosFunction(
         {
-          url: 'https://www.hybric.net:9443/service/tp.saveUser',
+          url: '/sUniB/tp.saveUser',
           param: param
         },
         true
@@ -400,7 +400,7 @@ export default {
       this.notiDetailShowYn = false
     }, */
     showMenu () {
-      this.$addHistoryStack('mainPage')
+      // this.$addHistoryStack('mainPage')
       this.$addHistoryStack('mainMenu')
       this.mMenuShowYn = true
       this.$showHistoryStack()
@@ -591,7 +591,7 @@ export default {
       paramMap.set('fUserKey', this.GE_USER.userKey)
       paramMap.set('userKey', this.GE_USER.userKey)
       try {
-        var result = await this.$getViewData({ url: 'https://www.hybric.net:9443/service/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
+        var result = await this.$getViewData({ url: '/sUniB/tp.getChanMainBoard', param: Object.fromEntries(paramMap) }, false)
         if (!result || !result.data || !result.data.result || !result.data.result === 'NG') {
           this.$showToastPop('채널을 찾을 수 없습니다!')
           return
@@ -690,67 +690,6 @@ export default {
     if (localStorage.getItem('backBtnShowYn') !== undefined && localStorage.getItem('backBtnShowYn') !== 'undefined') {
       this.mBackBtnShowYn = JSON.parse(localStorage.getItem('backBtnShowYn'))
     }
-    // this.$store.commit('D_CHANNEL/MU_CLEAN_CHAN_LIST') // 앱 시작 vuex 초기화
-    var urlString = location.search
-    var param = this.getParamMap(urlString)
-    if (urlString && param.fcmKey && param.dcmKey) {
-      var checkParam = {}
-      checkParam.userKey = Number(param.dcmKey)
-      checkParam.fcmKey = param.fcmKey
-      var this_ = this
-      // eslint-disable-next-line no-undef
-      sso.loginCheck2(checkParam, this.callbackFunc).then(result => {
-        // var store = require('../../src/store')
-        if (result.result === true) {
-          if (result.userMap) {
-            try {
-              if (localStorage.getItem('user')) {
-                var localUser = JSON.parse(localStorage.getItem('user'))
-                result.data.userMap.uAccessToken = localUser.uAccessToken
-                result.data.userMap.partnerToken = localUser.partnerToken
-              }
-              localStorage.setItem('user', JSON.stringify(result.userMap))
-              this_.$store.dispatch('D_USER/AC_USER', result.userMap)
-              localStorage.setItem('sessionUser', JSON.stringify(result.userMap))
-            } catch (error) {
-              console.log(error)
-            }
-          }
-
-          if (typeof (history.pushState) !== 'undefined') {
-            history.pushState(null, null, '')
-            this_.$router.replace('/')
-          } else {
-            // 브라우저가 지원하지 않는 경우 처리
-          }
-          history.pushState(null, null, '')
-          this_.$router.replace({ name: 'main', params: { testYn: true } })
-        } else {
-          this_.$.showToastPop('회원정보가 일치하지 않아 로그아웃 됩니다.\n재 로그인해주세요')
-          this_.$router.replace({ name: 'unknown' })
-          // this_.$router.replace({ name: 'policies' })
-          if (this_.$store !== undefined && this_.$store !== null) {
-            this_.$store.commmit('D_USER/MU_CLEAN_USER')
-          }
-          localStorage.setItem('sessionUser', '')
-          localStorage.setItem('user', '')
-          this_.$router.replace({ name: 'unknown' })
-          /* this_.$router.replace({ name: 'policies' }) */
-          window.localStorage.removeItem('testYn')
-          localStorage.setItem('loginYn', false)
-        }
-      })
-    } else {
-      // this.$userLoginCheck(true)
-    }
-    /* if (!this.GE_USER) {
-      // this.$router.push({ name: 'policies' })
-      this.$router.replace({ name: 'unknown' })
-      return null
-    } */
-    /* this.getMainBoard().then(res => {
-      this.mLoadingYn = false
-    }) */
   }
 }
 </script>
@@ -769,7 +708,7 @@ export default {
   position: absolute;
   top: 30px;
 }
-.myPageBgColor {background-color: #dcddeb;}
+.myPageBgColor {background-color: #d1e1f2;}
 .test {
   display: flex;
   justify-content: center;
@@ -793,9 +732,9 @@ export default {
   box-sizing: border-box;
   width: 65%;
   max-width: 400px;
-  /* background-color: #6768a7; */
+  /* #879dc9; */
   background-color: white;
-  color: #5F61BD;
+  color: rgb(74 102 158);
   z-index: 1000;
   right: 0;
 }

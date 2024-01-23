@@ -60,7 +60,7 @@ export default {
 <style scoped>
 .creChanIntroTextWrap{padding: 10px 0; float: left; border-bottom: 1px solid #ccc;}
 
-.creChanBigBtn{width: 100%; height: 50px; line-height: 50px; background: #6768a7; color: #fff; border-radius: 8px;}
-.activeTypeBox{background: #6768a7; color: #fff;}
+.creChanBigBtn{width: 100%; height: 50px; line-height: 50px; background-color: #879dc9; color: #fff; border-radius: 8px;}
+.activeTypeBox{background-color: #879dc9; color: #fff;}
 .activeTypeBox p {color: #fff;}
 </style>

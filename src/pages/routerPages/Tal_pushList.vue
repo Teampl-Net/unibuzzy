@@ -10,7 +10,7 @@
     <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left;" >
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
-        <!-- <div :style="!popYn ? ' padding-top: 20px;' : ''" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; "> -->
+        <!-- <div :style="!popYn ? ' padding-top: 20px;' : ''" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid rgb(74 102 158); margin-bottom: 1px; display: flex; align-items: flex-end; "> -->
         <div style=" width: 100%; min-height: 40px; float: left; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ; padding-right: 50px; overflow: auto hidden;">
             <div @click="changeMainTab('A')" :class="viewMainTab === 'A'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">{{this.$t('COMMON_TAB_ALL')}}</div>
             <div v-if="!pUnknownYn" @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="cursorP mainTabStyle commonColor fontBold">{{$t('COMMON_TAB_NOTI')}}</div>
@@ -51,7 +51,7 @@
           <gEmpty :tabName="currentTabName" :contentName="$t('COMMON_TAB_FILE_DRIVE')" v-if="this.viewMainTab === 'F' && GE_FILE_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
         </div>
 
-        <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
+        <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: #879dc9d1; padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
         <div v-if="pUnknownYn"  v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:8; width: 30px; height: 30px; border-radius: 100%; display: flex; align-items: center; justify-content: center; " @click="refreshAll">
           <img src="../../assets/images/common/commonReload.png" class="cursorP" width="30" height="30" @click="refreshAll"/>
         </div>
@@ -571,7 +571,7 @@ export default {
       }
       paramMap.set('pageSize', 20)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMyFileList',
+        url: '/sUniB/tp.getMyFileList',
         param: Object.fromEntries(paramMap)
       }, nonLoadingYn)
 
@@ -896,7 +896,7 @@ export default {
 
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteMemo',
+          url: '/sUniB/tp.deleteMemo',
           param: memo
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -1068,7 +1068,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -1199,7 +1199,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMemoList',
+        url: '/sUniB/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -1353,7 +1353,7 @@ export default {
         paramMap.set('ownUserKey', this.GE_USER.userKey)
         paramMap.set('jobkindId', 'ALIM')
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.getMCabContentsList',
+          url: '/sUniB/tp.getMCabContentsList',
           param: Object.fromEntries(paramMap)
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')
@@ -2322,14 +2322,14 @@ background: #fbfbfb;
 }
 #alimReadYn[type="checkbox"]:checked {
   border-color: rgba(255, 255, 255, 0.3);
-  color: #6768a7 !important;
+  color: rgb(74 102 158) !important;
 }
 #alimReadYn[type="checkbox"]:checked::before {
   border-radius: 2px;
   transform: scale(1) translate(-50%, -50%)
 }
 .back{
-  background: #dcddeb !important;
+  background: #d1e1f2 !important;
 }
 .pushListMemoBoxBackground{
 width: 100% !important; height: 100% !important; background: #00000036 !important; position: fixed !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;

@@ -13,19 +13,19 @@
         <div style="display: flex; align-items: center; justify-content: center;">
           <img v-if="mTodoDetail.status === '99'" src="../../../assets/images/todo/checkboxCheck.png" @click="completeTodo" width="30" height="30" class="cursorP" style="margin-right: 5px;"/>
           <img v-else src="../../../assets/images/todo/checkboxBlank.png" width="30" height="30" @click="completeTodo" class="cursorP" style="margin-right: 5px;"/>
-          <!-- <p v-if="mTodoDetail.status === '00'" class="fl fontBold" style=" font-size: 12px; height:30px; width:60px; background-color: #6768a7; color: white; text-align: center; line-height: 30px; margin-right: 5px; border-radius: 20px;">Progress</p>
-          <p v-else-if="mTodoDetail.status === '99'" class="fl fontBold" style="border:2px solid #6768a7; font-size: 12px; height:30px; width:70px; background-color: #6768a7; color: white; text-align: center; margin-right: 5px; border-radius: 20px; display:flex; align-items: center; justify-content: center;">Completed</p>
+          <!-- <p v-if="mTodoDetail.status === '00'" class="fl fontBold" style=" font-size: 12px; height:30px; width:60px; #879dc9; color: white; text-align: center; line-height: 30px; margin-right: 5px; border-radius: 20px;">Progress</p>
+          <p v-else-if="mTodoDetail.status === '99'" class="fl fontBold" style="border:2px solid rgb(74 102 158); font-size: 12px; height:30px; width:70px; #879dc9; color: white; text-align: center; margin-right: 5px; border-radius: 20px; display:flex; align-items: center; justify-content: center;">Completed</p>
           <p v-else-if="mTodoDetail.status === '98'" class="fl" style="border:2px solid #acacac; font-size: 12px; height:30px; width:40px; background-color: #acacac; color: white; text-align: center; margin-right: 5px; border-radius: 20px; display:flex; align-items: center; justify-content: center;">종료</p> -->
           <!-- <p v-if="mTodoDetail.writeYn" class="fl" style=" font-size: 12px; height:30px; width:30px; background-color: #3d9aff; color: white; text-align: center; line-height: 30px; margin-right: 5px;">작성</p> -->
           <p v-if="mTodoDetail.status === '00'" class="fl fontBold commonSubTitleTextBold mLeft-05">{{ mTodoDetail.title }}</p>
           <p v-else-if="mTodoDetail.status === '99' || mTodoDetail.status === '98'" class="fl commonSubTitleTextBold mLeft-05" style="text-decoration: line-through;">{{ mTodoDetail.title }}</p>
         </div>
         <div style="display: flex; justify-content: center; align-items: center;">
-          <!-- <div v-if="mTodoDetail.status === '00'" class="cursorP fontBold" @click="openComplelePop" style=" height:30px; line-height: 30px; padding: 0 10px; background-color:#6768a7; color: white; border-radius: 10px; margin-right: 10px; font-size: 12px;">Complete</div> -->
+          <!-- <div v-if="mTodoDetail.status === '00'" class="cursorP fontBold" @click="openComplelePop" style=" height:30px; line-height: 30px; padding: 0 10px; background-color:rgb(74 102 158); color: white; border-radius: 10px; margin-right: 10px; font-size: 12px;">Complete</div> -->
           <img v-if="mTodoDetail.status === '00'" class="cursorP " src="../../../assets/images/todo/todoMenu.png" width="5" height="20" @click="openSubMenu('todo',mTodoDetail)"/>
         </div>
       </div>
-      <div class="w100P commonGrayText" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #6768a7;padding: 5px; font-size: 12px; height: 30px;">
+      <div class="w100P commonGrayText" style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgb(74 102 158);padding: 5px; font-size: 12px; height: 30px;">
         <div style="display: flex; align-items: center; height: 30px;">
           <p class="detailFont" >{{ changeTypeToText(mTodoDetail.todoType) }}({{ mTodoDetail.todoUserName? $changeText(mTodoDetail.todoUserName):'본인'}})</p>
         </div>
@@ -248,7 +248,7 @@ export default {
     async setUpdateMemo (value) {
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: value }
         }, true)
         if (result.data && result.data.result) {
@@ -317,7 +317,7 @@ export default {
       memo.todoYn = true
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         // if (result.data.result === true || result.data.result === 'true') {
@@ -363,7 +363,7 @@ export default {
     async deleteMemo () {
       var memo = {}
       memo.memoKey = this.mModiMemoObj.memoKey
-      var result = await this.$commonAxiosFunction({ url: 'https://www.hybric.net:9443/service/tp.deleteMemo', param: memo }, true)
+      var result = await this.$commonAxiosFunction({ url: '/sUniB/tp.deleteMemo', param: memo }, true)
       if (result.data.result) {
         this.closeDeletePop()
         this.getTodoDetail()

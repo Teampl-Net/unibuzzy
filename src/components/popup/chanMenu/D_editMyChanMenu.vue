@@ -248,7 +248,7 @@ export default {
 .editMyChanMenuWrap tr, .editMyChanMenuWrap td, .editMyChanMenuWrap th { height: 4rem; margin-bottom: 1rem; }
 .editMyChanMenuWrap td { border-bottom: none !important; padding-right: 1rem; }
 .editMyChanMenuWrap tr { border-bottom: 1px solid #F3F3F3; }
-.editMyChanMenuWrap th { color: #6768A7; padding-left: 1rem; font-weight: normal; min-height: 70px;}
+.editMyChanMenuWrap th { color: rgb(74 102 158); padding-left: 1rem; font-weight: normal; min-height: 70px;}
 .myChanMenuImgArea{
   width: 30px;
   float: left;

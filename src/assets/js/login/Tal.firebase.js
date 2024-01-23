@@ -5,117 +5,83 @@
 import { initializeApp } from 'firebase/app'
 // eslint-disable-next-line camelcase
 import { methods } from '../../../../public/commonAssets/Tal_axiosFunction'
+import { findValueByKey } from '../../../main'
 import store from '../../../store'
 import { functions } from '../D_vuexFunction'
 console.log('app')
-
-const config = store.getters['D_USER/GE_USER_CONFIG']
-// app.config.globalProperties.myGlobalVariable에 접근
-// const FIREBASE_CONFIG = Vue.config.globalProperties.$FIREBASE_CONFIG
-
-console.log(config)
-// eslint-disable-next-line camelcase
-const firebaseConfig = {
-  apiKey: config.apiKey,
-  authDomain: config.authDomain,
-  projectId: config.projectId,
-  storageBucket: config.storageBucket,
-  messagingSenderId: config.messagingSenderId,
-  appId: config.appId,
-  measurementId: config.measurementId
-}
-
-!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
-
-export const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
-console.log('firebaseApp', firebaseApp)
-var isMobile = /Mobi/i.test(window.navigator.userAgent)
-var appYn = localStorage.getItem('nativeYn')
-// isMobile = /Mobi/i.test(window.navigator.userAgent)
-if (!isMobile && (appYn === 'false' || appYn === false)) {
-  const messaging = firebase.messaging()
-  messaging.usePublicVapidKey('BKz1oF6HiJg6kscmJ2I0hil9fAsP68N0OrkQN7Vgo_DBQYPmnswNcIK7P71CFvKrdvwLRlemD-DfAppHIZfQ46g')
-  // token값 알아내기
-  messaging.requestPermission()
-    .then(function () {
-      console.log('Have permission')
-      return messaging.getToken()
+try {
+  // const config = store.getters['D_USER/GE_USER_CONFIG']
+  // app.config.globalProperties.myGlobalVariable에 접근
+  // const FIREBASE_CONFIG = Vue.config.globalProperties.$FIREBASE_CONFIG
+  const appInfo = { packageName: 'com.tal_project' }
+  let config = null
+  const mzoinInitalizer = '/MZ_appInitailizer.json'
+  const appConfig = '/D_service.json'
+  fetch(appConfig)
+    .then(response => {
+      response.json()
     })
-    .then(function (token) {
-      localStorage.setItem('fcmKey', token)
-      // eslint-disable-next-line no-debugger
-      debugger
-      var user = store.getters['D_USER/GE_USER']
-      if (user && user.fcmKey) {
-        if (user.fcmKey) {
-          if (token === user.fcmKey) {
-            return
+    .then(myApp => {
+      fetch(mzoinInitalizer).then(response => response.json())
+        .then(initData => {
+          const data = findValueByKey(initData.app, appInfo.packageName)
+          config = data.firebaseConfig
+          console.log(data) // JSON 데이터 출력 또는 원하는 처리 수행
+          const firebaseConfig = {
+            apiKey: config.apiKey,
+            authDomain: config.authDomain,
+            projectId: config.projectId,
+            storageBucket: config.storageBucket,
+            messagingSenderId: config.messagingSenderId,
+            appId: config.appId,
+            measurementId: config.measurementId
           }
-        }
-        user.fcmKey = token
-        store.dispatch('D_USER/AC_USER', user)
-        methods.saveFcmToken()
-      }
-      console.log('token: ' + token)
+          if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
+            !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
+            const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
+            console.log('firebaseApp', firebaseApp)
+            var isMobile = /Mobi/i.test(window.navigator.userAgent)
+            var appYn = localStorage.getItem('nativeYn')
+            // isMobile = /Mobi/i.test(window.navigator.userAgent)
+            if (!isMobile && (appYn === 'false' || appYn === false)) {
+              const messaging = firebase.messaging()
+              /* 'BDr8D7pvx12j-FjPNKIzjsZoBEtRBiJ9D_NjfpBbH4vUOKGcD-QiseuxG6wRC6avRhy6zemDmqWFNirupFoANoE' */
+              messaging.usePublicVapidKey('BKz1oF6HiJg6kscmJ2I0hil9fAsP68N0OrkQN7Vgo_DBQYPmnswNcIK7P71CFvKrdvwLRlemD')
+              // token값 알아내기
+              messaging.requestPermission()
+                .then(function () {
+                  console.log('Have permission')
+                  return messaging.getToken()
+                })
+                .then(function (token) {
+                  localStorage.setItem('fcmKey', token)
+                  var user = store.getters['D_USER/GE_USER']
+                  if (user && user.fcmKey) {
+                    if (user.fcmKey) {
+                      if (token === user.fcmKey) {
+                        return
+                      }
+                    }
+                    user.fcmKey = token
+                    store.dispatch('D_USER/AC_USER', user)
+                    methods.saveFcmToken()
+                  }
+                  console.log('token: ' + token)
+                })
+                .catch(function (arr) {
+                  console.log('Error Occured')
+                })
+              messaging.onMessage(function (payload) {
+              })
+            }
+          }
+        })
     })
-    .catch(function (arr) {
-      console.log('Error Occured')
-    })
-  messaging.onMessage(function (payload) {
-    /* console.log('onMessage: ', payload)
-    var message = payload.data
-    functions.recvNotiFromBridge(message, false)
-    var userDo = JSON.parse(payload.data.userDo)
-    var title = payload.data.title
-    var options = null
-    var icon = './resource/common/thealim_header_logo_back.png'
-    if (payload.data.largeIcon) {
-      icon = payload.data.largeIcon
-    }
-    if (userDo.targetKind === 'C' || userDo.targetKind === 'B') {
-      options = {
-        body: payload.data.body,
-        icon: icon,
-        // image: icon,
-        actions: [{
-          title: '화면보기',
-          action: 'goTab'
-        },
-        {
-          title: '닫기',
-          action: 'close'
-        }]
-      }
-    } else {
-      options = {
-        body: payload.data.body,
-        icon: icon
-      // image: icon
-      }
-    } */
-    /* var title = payload.data.title
-    var options = {
-      body: payload.data.body,
-      data: payload.data,
-      icon: './resource/common/thealim_header_logo_back.png',
-      actions: [{
-        title: '11',
-        action: 'goTab'
-      },
-      {
-        title: '닫기',
-        action: 'close'
-      }]
-    }
-    // eslint-disable-next-line no-unused-vars
-    navigator.serviceWorker.ready.then(function (registration) {
-      // eslint-disable-next-line no-unused-vars
-      var notiAlarm = registration.showNotification(title, options)
-      console.log(registration)
-    }) */
-
-    // alert(payload.data.title + '\n' + payload.data.body)
-  })
+    .catch(error => console.error('Error fetching JSON:', error))
+  console.log(config)
+  // eslint-disable-next-line camelcase
+} catch (error) {
+  console.log(error)
 }
 export default {
   install (Vue) {

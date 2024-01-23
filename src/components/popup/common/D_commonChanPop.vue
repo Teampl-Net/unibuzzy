@@ -30,10 +30,10 @@
     <div v-if="CHANNEL_DETAIL"  :style="popupStyle" style="width: calc(100% - 40px); position: absolute; z-index: 9;  background: #FFF; overflow: auto; left: 20px; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem; min-height: 500px;">
         <div style="width: 100%; height: 100px; float: left; display: flex; align-items: center; padding-bottom: 0;" class="commonChanPopPadding" >
         <!-- box-shadow: 0 4px 10px -4px #ccc -->
-            <div :style="'background-image: url(' + CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext + '); background-position: center;  background-size: cover; background-repeat: no-repeat'" style="width: 60px; height: 60px; display: flex; justify-content: center; border-radius: 100%; border: 2px solid #5F61BD ; center; align-items: center;"></div>
+            <div :style="'background-image: url(' + CHANNEL_DETAIL.logoDomainPath + CHANNEL_DETAIL.logoPathMtext + '); background-position: center;  background-size: cover; background-repeat: no-repeat'" style="width: 60px; height: 60px; display: flex; justify-content: center; border-radius: 100%; border: 2px solid rgb(74 102 158) ; center; align-items: center;"></div>
             <div style="width: calc(100% - 60px);height: 100%; display: flex; flex-direction: column; justify-content: center;">
                 <p class="textLeft font18 fontBold commonColor " style="margin-left: 15px; line-height: 20px; ">{{this.$changeText(CHANNEL_DETAIL.nameMtext)}}</p>
-                <div style="width: 100%; float: left; height: 1px; border-bottom: 2px solid #5F61BD ; margin: 3px 0; "></div>
+                <div style="width: 100%; float: left; height: 1px; border-bottom: 2px solid rgb(74 102 158) ; margin: 3px 0; "></div>
                 <p class="textLeft font18 fontBold commonColor " style="margin-left: 15px; ">{{popTitle}}</p>
             </div>
         </div>
@@ -111,7 +111,7 @@ export default {
       param.teamKey = this.propTeamKey
       // param.cateItemKey = this.propCateItemKey
       var memberTypeList = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMemberTypeList',
+        url: '/sUniB/tp.getMemberTypeList',
         param: param
       })
       console.log(memberTypeList)
@@ -139,7 +139,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.selectMemberObj.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMemberTypeItemList',
+        url: '/sUniB/tp.getMemberTypeItemList',
         param: param
       })
       console.log('--------------------------')
@@ -156,7 +156,7 @@ export default {
           // eslint-disable-next-line no-debugger
           debugger
           this.$commonAxiosFunction({
-            url: 'https://www.hybric.net:9443/service/tp.saveFollower',
+            url: '/sUniB/tp.saveFollower',
             param: { follower: typeParam }
           }).then(() => {
             // eslint-disable-next-line no-debugger

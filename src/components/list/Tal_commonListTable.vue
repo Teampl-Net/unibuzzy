@@ -26,8 +26,8 @@
             <!-- </td> -->
             <td v-on:click="goChanDetail(value)" :class="{top5MyPushColor:  sessionUserKey === value.creUserKey}">
                 <div style="width:100%; float: left; padding: 2px 0 ; min-height: 25px;">
-                    <div v-if="value.jobkindId === 'ALIM'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#6768A7; color: #FFF; ">{{$t('COMMON_NAME_MESSAGE')}}</div>
-                    <div v-else-if="value.jobkindId === 'BOAR'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: #6768A7; font-weight: bold; border: 1px solid #6768A7  ">{{'게시'}}</div>
+                    <div v-if="value.jobkindId === 'ALIM'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:rgb(74 102 158); color: #FFF; ">{{$t('COMMON_NAME_MESSAGE')}}</div>
+                    <div v-else-if="value.jobkindId === 'BOAR'" class="font14 fl" style="margin-top: 0.5px; min-width: 30px; padding: 0 5px; min-height: 20px;  margin-right: 5px; border-radius: 10px; background:#FFF; color: rgb(74 102 158); font-weight: bold; border: 1px solid rgb(74 102 158)  ">{{'게시'}}</div>
                     <!-- <img v-if="(value.jobkindId === 'BOAR' && this.$checkUserAuth(value.shareItem).V === false && value.creUserKey !== sessionUserKey)" style="width: 20px; float: right;" src="../../assets/images/board/securityDoc.svg" alt=""> -->
                     <!-- {{(this.$checkUserAuth(value.shareItem).V === true || value.creUserKey !== this.GE_USER.userKey) && (value.titleBlindYn === true || value.titleBlindYn === 1)}}
                     {{value.titleBlindYn}} -->
@@ -136,7 +136,7 @@ export default {
 </script>
 <style scoped>
 /* .top5PushListRow{display: flex; align-items: center; padding: 5px 10px; min-height: 60px;  border-bottom: 1px solid #E4E4E4;} */
-.top5MyPushColor { background-color: #6768a712;}
+.top5MyPushColor { #879dc912;}
 .top5PushChanLogoImgWrap {width: 45px; height:45px; border-radius: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid #ccc; position: relative;}
 .top5PushChanLogoImgWrap img{width: 1.7rem; margin-right: 0.05rem;}
 .commonListTr{

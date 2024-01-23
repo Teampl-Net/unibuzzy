@@ -18,13 +18,13 @@
                     <div style="height: 100%; float: right; width: calc(100% - 60px); max-width: calc(100% - 60px);">
                         <div  v-for="(value, index) in this.searchFilterList" style="width: 20%; min-width: 90px; padding: 0 3px; height: 30px; float: right; " :key="index">
                         <!-- @click="getMCabGroupList(index)"  -->
-                            <select :style="''"  v-model="value.selectGroup" @change="searchFilter()"  name="" class="font14" style="    background: #fff !important; border: none!important;border-right: #6768a745!important; width: calc(100% ); height: 30px; float: left; text-align:center;" id="">
+                            <select :style="''"  v-model="value.selectGroup" @change="searchFilter()"  name="" class="font14" style="    background: #fff !important; border: none!important;border-right: rgb(74 102 158)45!important; width: calc(100% ); height: 30px; float: left; text-align:center;" id="">
                                 <option value="all" @click="changeValue('all')">{{value.text + '전체'}}</option>
                                 <option :value="option" @click="changeValue(option)" v-for="(option, oIdx) in value.groupList" :key="oIdx">{{option}}</option>
                             </select>
-                        <!-- <div style="width: 1px; margin-left: 10px; height: 20px; background: #6768a745; float: left;" v-if="index < 2"> </div> -->
+                        <!-- <div style="width: 1px; margin-left: 10px; height: 20px; background-color: #879dc945; float: left;" v-if="index < 2"> </div> -->
                         <!-- {{value.selectGroup}} -->
-                        <!-- <div style="width: 1px; margin-left: 10px; height: 20px; background: #6768a745; float: left;"></div> -->
+                        <!-- <div style="width: 1px; margin-left: 10px; height: 20px; background-color: #879dc945; float: left;"></div> -->
                         </div>
                     </div>
                 </div>
@@ -188,7 +188,7 @@ export default {
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('searchKeyStr', 'sSub' + (index + 1))
             var result = await this.$commonAxiosFunction({
-            url: 'https://www.hybric.net:9443/service/tp.getMCabUserGroupList',
+            url: '/sUniB/tp.getMCabUserGroupList',
             param: Object.fromEntries(paramMap)
         })
         if (result.data.length > 0) {
@@ -217,7 +217,7 @@ export default {
             paramMap.set('sysCabinetCode', 'USER')
             paramMap.set('adminYn', true)
             var result = await this.$commonAxiosFunction({
-                url: 'https://www.hybric.net:9443/service/tp.getTeamMenuList',
+                url: '/sUniB/tp.getTeamMenuList',
                 param: Object.fromEntries(paramMap)
             })
             this.bookList = result.data
@@ -300,7 +300,7 @@ export default {
             paramMap.set('cabinetKey', this.selectBookDetail.cabinetKey)
             paramMap.set('jobkindId', 'USER')
             var result = await this.$commonAxiosFunction({
-                url: 'https://www.hybric.net:9443/service/tp.getMCabContentsList',
+                url: '/sUniB/tp.getMCabContentsList',
                 param: Object.fromEntries(paramMap)
             })
             this.memberList = result.data
@@ -444,7 +444,7 @@ export default {
             params.teamKey = this.CHANNEL_DETAIL.teamKey
             params.showProfileYn = true
             var result = await this.$commonAxiosFunction({
-                url: 'https://www.hybric.net:9443/service/tp.getFollowerList',
+                url: '/sUniB/tp.getFollowerList',
                 param: params
             })
 

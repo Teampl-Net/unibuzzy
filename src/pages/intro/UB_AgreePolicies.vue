@@ -109,7 +109,7 @@ export default {
     line-height: 27px
   }
   .policyHeader p {
-    color: #6768A7;
+    color: rgb(74 102 158);
     font-weight: bold;
   }
   .policyContentsWrap {
@@ -122,7 +122,7 @@ export default {
     line-height: 32px
   }
   .startBigBtn {
-    background-color: #6768A7;
+    #879dc9;
     margin-top: 10px;
     color:#ffff;
     height: 40px;

@@ -287,7 +287,7 @@ export default {
 }
 .tActiveBarBottom {
   position: absolute;
-  background: #6768a7;
+  background-color: #879dc9;
   height: 3px;
   border-radius: 3px;
   left: 0;
@@ -321,7 +321,7 @@ export default {
 .activeBarArea {
   padding-top: 10px;
   background: #fff;
-  border-bottom: 0.5px solid #6768a78a;
+  border-bottom: 0.5px solid rgb(74 102 158)8a;
   height: 40px;
   float: left;
   position: relative;

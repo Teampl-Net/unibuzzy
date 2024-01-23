@@ -7,7 +7,7 @@
       </div>
       <div v-if="this.mMainChanList.length > 0" id="fileChannelWrap" :class="!isMobile? 'thinScrollBar':''" style="width: 100%; height: 85px; float: left; overflow: scroll hidden;" @wheel="horizontalScroll">
         <div style="height: 100%; min-width: 100%; display:flex;">
-          <div class="cursorP" :style="selectedChannelIdx === 0? 'border: 2px solid #5F61BD;':'border: 0.5px solid rgba(0, 0, 0, 0.1);'" style="flex-shrink: 0; box-sizing: border-box; width: 65px; height: 65px; border-radius: 100%; float: left; margin-right: 10px; text-align: center; line-height: 65px; background-color: #fff;" @click="selectTeam(null, 0)">
+          <div class="cursorP" :style="selectedChannelIdx === 0? 'border: 2px solid rgb(74 102 158);':'border: 0.5px solid rgba(0, 0, 0, 0.1);'" style="flex-shrink: 0; box-sizing: border-box; width: 65px; height: 65px; border-radius: 100%; float: left; margin-right: 10px; text-align: center; line-height: 65px; background-color: #fff;" @click="selectTeam(null, 0)">
             전체
           </div>
           <chanRoundIcon :chanElement="chan" v-for="(chan, index) in this.mMainChanList" :selectedYn="selectedChannelIdx === index + 1? true:false" :key="index" @click="selectTeam(chan.teamKey, index+1)"/>
@@ -263,7 +263,7 @@ export default {
       paramMap.set('pageSize', 10)
       paramMap.set('offsetInt', this.offsetInt)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMyFileList',
+        url: '/sUniB/tp.getMyFileList',
         param: Object.fromEntries(paramMap)
       }, nonLoadingYn)
       console.log(result)
@@ -393,6 +393,6 @@ export default {
     box-shadow: rgba(103, 104, 167, 0.4) 0px 1px 3px;
   }
   .selectedIcon {
-    border: 1.5px solid #5F61BD;
+    border: 1.5px solid rgb(74 102 158);
   }
 </style>

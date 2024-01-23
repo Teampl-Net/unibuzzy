@@ -118,7 +118,7 @@ export default {
         param.mccKey = data.mccKey
         param.jobkindId = data.jobkindId
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteMCabContents',
+          url: '/sUniB/tp.deleteMCabContents',
           param: param
         })
         if (result.data === 'true' || result.data === true) {
@@ -175,7 +175,7 @@ export default {
 </script>
 
 <style >
-.selectedBox{background-color:#6768A720;}
+.selectedBox{background-color:rgb(74 102 158)20;}
 .receiverTeamMemberArea{float: left;  width: 100%; height: 100%;}
 .cBlack{
     color: black;
@@ -187,6 +187,6 @@ export default {
 .memberPicImgWrap {width: 50px; height: 50px; border-radius: 100%; border:1.5px solid #ECEDF5; float: left; background: #ECEDF5; overflow: hidden; display: flex;}
 .memberPicImgWrap img {width: 100%;}
 .receiverTeamMemberCard {border-bottom:1px solid #ddd; cursor: pointer; padding: 10px 10px; padding-bottom: 0;}
-.filterTagBox {/* border: 1px solid #6768a745;  */padding: 0 10px; min-height: 20px; line-height: 20px; min-width: 80px; float: left; border-radius: 15px;}
+.filterTagBox {/* border: 1px solid rgb(74 102 158)45;  */padding: 0 10px; min-height: 20px; line-height: 20px; min-width: 80px; float: left; border-radius: 15px;}
 .filterWrap{width: 33.3%; display: flex; justify-content: center;}
 </style>

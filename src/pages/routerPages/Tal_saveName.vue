@@ -65,9 +65,9 @@ export default {
 </script>
 <style scoped>
 .introText{width: 100%; height: 4rem;}
-.introText p{text-align: left; font-weight: bold; color: #6768A7; font-size: 18px;}
+.introText p{text-align: left; font-weight: bold; color: rgb(74 102 158); font-size: 18px;}
 .changeInfoWrap{height: 100vh; width: 100%;}
-input{width: 100%; box-sizing: border-box; border:none; padding-right: 80px; height: 40px; line-height: 40px; font-size: 15px; border-bottom: 1px solid #6768A7;}
+input{width: 100%; box-sizing: border-box; border:none; padding-right: 80px; height: 40px; line-height: 40px; font-size: 15px; border-bottom: 1px solid rgb(74 102 158);}
 .inputWrap{margin-top: 0.5rem; width: 100%; position: relative;}
 select{height: 40px; width: 160px; border: none;}
 .inputBtn{position: absolute; right: 0.1rem; top: 0.3rem;}

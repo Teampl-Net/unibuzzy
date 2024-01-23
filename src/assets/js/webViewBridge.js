@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { saveUser } from '../../../public/commonAssets/Tal_axiosFunction.js'
+import { saveUser1 } from '../../../public/commonAssets/Tal_axiosFunction.js'
 import store from '../../store'
 import { onMessage } from '../../assets/js/webviewInterface'
 import { functions } from '../../assets/js/D_vuexFunction'
 import routerMain from '../../pages/Tal_router_main.vue'
 import router from '../../router'
+import i18n from '@/assets/i18n'
+import { app } from '@/main'
 const isJsonString = (str) => {
   try {
     JSON.parse(str)
@@ -91,20 +93,18 @@ const isJsonString = (str) => {
           message = e.data
         }
         if (message.type === 'userInfo' || message.type === 'successLogin') {
-          //  alert(message.type)
           if (message.loginYn === true) {
             if (message.userInfo) {
               const userProfile = JSON.parse(message.userInfo)
               localStorage.setItem('loginYn', true)
-              await saveUser(userProfile, true) // 서버에 save요청
+              await saveUser1(userProfile, true) // 서버에 save요청
               console.log(router)
               router.replace({ path: '/' })
             }
           } else if (message.data) {
-            // alert(message.data)
             const userProfile = message.data
             localStorage.setItem('loginYn', true)
-            await saveUser(userProfile, true) // 서버에 save요청
+            await saveUser1(userProfile, true) // 서버에 save요청
             router.replace({ name: 'main' })
           } else {
             // router.replace({ path: 'policies' })
@@ -112,21 +112,19 @@ const isJsonString = (str) => {
           }
         } else if (message.type === 'CheckUserPermission') {
           router.replace({ name: 'permissions' })
-        } else if (message.type === 'returnImpData') {
-          store.dispatch('D_USER/AC_SET_CERTI', message.certi)
         } else if (message.type === 'certiInfo') {
-          store.dispatch('D_USER/AC_SET_CERTI', message.certiInfo)
+          store.dispatch('D_USER/AC_SET_CERTI', message.data)
         } else if (message.type === 'requestUserPermission') {
           router.replace({ path: '/' })
         } else if (message.type === 'deviceSystemName') {
           localStorage.setItem('nativeYn', true)
-          localStorage.setItem('systemName', message.systemNameData)
+          localStorage.setItem('systemName', message.data)
         } else if (message.type === 'deepLinkUrl') {
           localStorage.setItem('nativeYn', true)
-          store.commit('D_HISTORY/changeDeepLinkQueue', message.url)
+          store.commit('D_HISTORY/changeDeepLinkQueue', message.data)
           var urlString = message.url.toString()
           const params = new URLSearchParams(
-            urlString.replace('https://mo.d-alim.com', '')
+            urlString.replace(app.config.globalProperties.$APP_CONFIG.appDomain, '')
           )
           var queList = []
           for (const param of params) {
@@ -136,6 +134,9 @@ const isJsonString = (str) => {
           }
 
           store.commit('D_HISTORY/changeDeepLinkQueue', queList)
+        } else if (message.type === 'loginCallback') {
+          const urlString = message.data.toString()
+          window.replace(message.data)
         } else if (message.type === 'goback') {
           if (
             store.getters['D_USER/GE_NET_STATE'] === false ||
@@ -201,11 +202,56 @@ const isJsonString = (str) => {
             })
             /* routerMain.methods.recvNotiFormBridge(notiDetailObj, currentPage, addVueResult) */
           }
+        } else if (message.type === 'deviceInfo') {
+          var deviceInfo = JSON.parse(message)
+          localStorage.setItem('deviceInfo', message.data)
         } else if (message.type === 'appInfo') {
-          var appInfo = JSON.parse(message.appInfo)
-          localStorage.setItem('appInfo', message.appInfo)
+          console.log(message.data)
+          var appInfo = JSON.parse(message.data)
+          localStorage.setItem('appInfo', message.data)
+          if (appInfo.packageName && !app.config.globalProperties.$INIT_YN) { // 앱 버전체크도 해야함
+            const mzoinInitalizer = '/MZ_appInitailizer.json'
+            const appConfig = '/D_service.json'
+            app.config.globalProperties.$DEV_YN = true
+            fetch(appConfig)
+              .then(response => {
+                console.log(response)
+                response.json()
+              })
+              .then(myApp => {
+                fetch(mzoinInitalizer).then(response => response.json())
+                  .then(initData => {
+                    const data = findValueByKey(initData.app, appInfo.packageName)
+                    console.log('data', data)
+                    app.config.globalProperties.$APP_CONFIG = data
+                    // app.config.globalProperties.$APP_TYPE = data.appType
+                    // app.config.globalProperties.$APP_NAME = data.appName
+                    // app.config.globalProperties.$APP_DOMAIN = data.appDomain
+                    // app.config.globalProperties.$FIREBASE_CONFIG = data.firebaseConfig
+                    store.dispatch('D_USER/AC_USER_APP', data)
+                    store.dispatch('D_USER/AC_USER_CONFIG', data.firebaseConfig)
+                    app.config.globalProperties.$API_PATH = data.apiPath
+                    i18n.global.locale = data.defaultLang
+                    app.config.globalProperties.$DEFAULT_LANG = data.apiPath
+                    localStorage.setItem('currentScreen', data.mainUI)
+                    require('@/proxyMain')
+                    console.log(data) // JSON 데이터 출력 또는 원하는 처리 수행
+                  })
+              })
+              .catch(error => console.error('Error fetching JSON:', error))
+
+            app.use(router).use(store)/* .use(VueI18n) */
+          }
+
+          /* export const i18n = new VueI18n({
+  locale: 'en', // set locale
+  fallbackLocale: 'en'
+  // messages // set locale messages
+}) */
+
+          // === find init JSON object value ===
+
           /* if (appInfo.current !== appInfo.last) {
-            // alert('최신버전으로 업데이트 해주세요')
             var aTag
             aTag = document.getElementById('updateAppPage')
             if (aTag == null) {
@@ -221,28 +267,6 @@ const isJsonString = (str) => {
             document.body.removeChild(aTag)
             // window.open(appInfo.playStoreUrl, '_blank')
           } */
-        } else if (message.type === 'netStateYn') {
-          store.dispatch('D_USER/AC_NET_STATE', message.netStateYn)
-          // localStorage.setItem('netStateYn', message.netStateYn)
-          // var appInfo = JSON.parse(message.appInfo)
-          // alert(localStorage.getItem('netStateYn') + '!!!!')
-          // localStorage.setItem('appInfo', message.appInfo)
-          /* if (appInfo.current !== appInfo.last) {
-              // alert('최신버전으로 업데이트 해주세요')
-              var aTag
-              aTag = document.getElementById('updateAppPage')
-              if (aTag == null) {
-                aTag = document.createElement('a')
-                aTag.id = 'hiddenDownloaderForAndroid'
-                aTag.style.display = 'none'
-                document.body.appendChild(aTag)
-              }
-              aTag.href = appInfo.playStoreUrl
-              // aTag.target = '_blank'
-              aTag.click()
-              document.body.removeChild(aTag)
-              // window.open(appInfo.playStoreUrl, '_blank')
-            } */
         } else if (message.type === 'activeApp') {
           // store.dispatch('D_USER/AC_NET_STATE', message.activeYn)
         } else if (message.type === 'addConsole') {
@@ -267,3 +291,19 @@ const isJsonString = (str) => {
   }
   init()
 })()
+
+function findValueByKey (jsonObj, keyToFind) {
+  if (jsonObj && typeof jsonObj === 'object') {
+    for (const key in jsonObj) {
+      if (key === keyToFind) {
+        return jsonObj[key]
+      } else if (typeof jsonObj[key] === 'object') {
+        const result = findValueByKey(jsonObj[key], keyToFind)
+        if (result) {
+          return result
+        }
+      }
+    }
+  }
+  return null // 해당 key를 찾지 못한 경우
+}

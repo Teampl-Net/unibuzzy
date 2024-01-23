@@ -10,7 +10,7 @@ var appInfo = store.getters['D_USER/AC_USER_APP']
 // const routes = rList.routes
 console.log(routes)
 export const router = createRouter({
-  history: createWebHashHistory(process.env.BASE_URL),
+  history: createWebHistory(process.env.BASE_URL),
   routes
 })
 

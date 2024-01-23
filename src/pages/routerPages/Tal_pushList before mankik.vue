@@ -8,8 +8,8 @@
     <div style="width: 100%; height: 100%; padding-top: 0; position: relative; overflow: hidden; float: left;" >
       <commonConfirmPop v-if="failPopYn" @no="this.failPopYn=false" confirmType="timeout" :confirmText="errorText" />
       <div id="pageHeader" ref="pushListHeader" style="" class="pushListHeader"  :class="this.scrolledYn? 'pushListHeader--unpinned': 'pushListHeader--pinned'" v-on="handleScroll" >
-        <!-- <div :style="!popYn ? ' padding-top: 20px;' : ''" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; "> -->
-        <div v-if="!pUnknownYn" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid #6768A7; margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ; padding-right: 50px; overflow: auto hidden;">
+        <!-- <div :style="!popYn ? ' padding-top: 20px;' : ''" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid rgb(74 102 158); margin-bottom: 1px; display: flex; align-items: flex-end; "> -->
+        <div v-if="!pUnknownYn" style=" width: 100%; min-height: 40px; float: left; border-bottom: 1px solid rgb(74 102 158); margin-bottom: 1px; display: flex; align-items: flex-end; padding: 0 1rem ; padding-right: 50px; overflow: auto hidden;">
             <div @click="changeMainTab('A')" :class="viewMainTab === 'A'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">전체</div>
             <div @click="changeMainTab('P')" :class="viewMainTab === 'P'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">알림</div>
             <div @click="changeMainTab('B')" :class="viewMainTab === 'B'? 'mainTabActive' : ''" class="mainTabStyle commonColor fontBold">게시글</div>
@@ -49,8 +49,8 @@
           <gEmpty :tabName="currentTabName" contentName="파일함" v-if="this.viewMainTab === 'F' && GE_FILE_LIST.length === 0" :key="mEmptyReloadKey" class="mtop-2"/>
         </div>
 
-        <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
-        <div v-if="!pUnknownYn"  v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: rgba(103, 104, 167, 0.5); display: flex; align-items: center; justify-content: center; " @click="refreshAll">
+        <!-- <div v-on="handleScroll" :style="alimListYn ? 'bottom: 7rem;' : 'bottom: 2rem;' " style="position: absolute; width: 50px; height: 50px; border-radius: 100%; background: #879dc9d1; padding: 10px; right: calc(10% + 7px);" @click="refreshAll"> -->
+        <div v-if="!pUnknownYn"  v-on="handleScroll" style="position: absolute; top:5px; right:1rem; z-index:8; width: 30px; height: 30px; border-radius: 100%; background: #879dc9d1; display: flex; align-items: center; justify-content: center; " @click="refreshAll">
           <img src="../../assets/images/common/reload_button.svg" class="cursorP img-w20" />
         </div>
         <!-- <imgPreviewPop :mFileKey="this.selectImgParam.mfileKey" :startIndex="selectImgParam.imgIndex" @closePop="this.backClick()" v-if="previewPopShowYn" style="width: 100%; height: calc(100%); position: fixed; top: 0px; left: 0%; z-index: 999999; padding: 20px 0; background: #000000;" :contentsTitle="selectImgParam.title" :creUserName="selectImgParam.creUserName" :creDate="selectImgParam.creDate"  /> -->
@@ -558,7 +558,7 @@ export default {
       }
       paramMap.set('pageSize', 10)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMyFileList',
+        url: '/sUniB/tp.getMyFileList',
         param: Object.fromEntries(paramMap)
       }, nonLoadingYn)
 
@@ -883,7 +883,7 @@ export default {
 
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteMemo',
+          url: '/sUniB/tp.deleteMemo',
           param: memo
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'deleteMemo')
@@ -1055,7 +1055,7 @@ export default {
       memo.userName = this.$changeText(this.GE_USER.userDispMtext || this.GE_USER.userNameMtext)
       try {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.saveMemo',
+          url: '/sUniB/tp.saveMemo',
           param: { memo: memo }
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemo')
@@ -1186,7 +1186,7 @@ export default {
       else memo.offsetInt = this.offsetInt
 
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMemoList',
+        url: '/sUniB/tp.getMemoList',
         param: memo
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'getContentsMemoList')
@@ -1331,7 +1331,7 @@ export default {
         paramMap.set('ownUserKey', this.GE_USER.userKey)
         paramMap.set('jobkindId', 'ALIM')
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.getMCabContentsList',
+          url: '/sUniB/tp.getMCabContentsList',
           param: Object.fromEntries(paramMap)
         })
         var queueIndex = this.axiosQueue.findIndex((item) => item === 'getMCabContYn')
@@ -2204,7 +2204,7 @@ export default {
   margin-top: 150px;
   height: calc(100% - 150px);
 }
-.mainTabStyle {border-radius: 10px 10px 0 0; min-width: 80px; margin-bottom: -1px; float: left; border: 1px solid #6768A7;  border-bottom: none; background: rgba(186, 187, 215, 0.5); padding: 5px 10px; margin-left: 10px;}
+.mainTabStyle {border-radius: 10px 10px 0 0; min-width: 80px; margin-bottom: -1px; float: left; border: 1px solid rgb(74 102 158);  border-bottom: none; background: rgba(186, 187, 215, 0.5); padding: 5px 10px; margin-left: 10px;}
 .mainTabActive {background: #FFF!important; border-bottom: none;}
 .pushListHeader {
     width: 100%;
@@ -2298,14 +2298,14 @@ background: #fbfbfb;
 }
 #alimReadYn[type="checkbox"]:checked {
   border-color: rgba(255, 255, 255, 0.3);
-  color: #6768a7 !important;
+  color: rgb(74 102 158) !important;
 }
 #alimReadYn[type="checkbox"]:checked::before {
   border-radius: 2px;
   transform: scale(1) translate(-50%, -50%)
 }
 .back{
-  background: #dcddeb !important;
+  background: #d1e1f2 !important;
 }
 .pushListMemoBoxBackground{
 width: 100% !important; height: 100% !important; background: #00000036 !important; position: fixed !important; top: 0 !important; left: 0 !important; z-index: 999999 !important;

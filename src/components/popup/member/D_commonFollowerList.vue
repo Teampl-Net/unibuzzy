@@ -220,7 +220,7 @@ export default {
     },
     async deleteManager (param) {
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.deleteManager',
+        url: '/sUniB/tp.deleteManager',
         param: param
       })
       return result
@@ -310,7 +310,7 @@ export default {
   }
 }
 
-.managerPicImgWrap {width: 30px; height: 30px; border-radius: 100%; border:1.5px solid #6768a7; float: left; background: #6768a745; overflow: hidden; display: flex; }
+.managerPicImgWrap {width: 30px; height: 30px; border-radius: 100%; border:1.5px solid rgb(74 102 158); float: left; background-color: #879dc945; overflow: hidden; display: flex; }
 .managerPicImgWrap img {width: 100%;}
 
 .activeMAlim {

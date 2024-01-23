@@ -189,7 +189,7 @@ export default {
           /* ['soAccessToken', 'a1234'] */
         ]
       )
-      this.$axios.post('https://www.hybric.net:9443/service/tp.getMyContentsList', Object.fromEntries(paramMap)
+      this.$axios.post('/sUniB/tp.getMyContentsList', Object.fromEntries(paramMap)
       ).then(response => {
         this.pushList = response.data
       }).catch((error) => {
@@ -202,7 +202,7 @@ export default {
 </script>
 
 <style scoped>
-.alimeListTr{border-bottom: 0.5px solid #6768A73D}
+.alimeListTr{border-bottom: 0.5px solid rgb(74 102 158)3D}
 .alimeListTr :last-child{border-bottom: none}
 .pushListWrap{width: 100%; padding-top: 0.5rem; padding-bottom: 0.5rem; min-height: 200px;}
 </style>

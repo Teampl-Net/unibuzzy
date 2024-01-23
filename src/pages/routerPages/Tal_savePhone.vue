@@ -150,7 +150,7 @@ export default {
         paramMap.set('inName', this.inName)
         paramMap.set('imp_secret', 'wTNFKJQlzH6slVXAQbbUQ92zEtEojkbbeJ9yqznuSDfcz3jzSJZE2ImNO6tZeS1AqclulDxikkYNaAq9')
         const getToken = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.getUserCertiInfo',
+          url: '/sUniB/tp.getUserCertiInfo',
           param: Object.fromEntries(paramMap)
         })
         console.log(getToken)
@@ -267,15 +267,15 @@ export default {
 </script>
 <style scoped>
 .introText{width: 100%; min-height: 4rem;}
-.introText p{text-align: left; color: #6768A7;}
+.introText p{text-align: left; color: #879dc9;}
 .changeInfoWrap{height: 100vh; width: 100%;}
-input{width: 100%; box-sizing: border-box; border:none; padding-right: 80px; height: 40px; line-height: 40px; font-size: 15px; border-bottom: 1px solid #6768A7;}
+input{width: 100%; box-sizing: border-box; border:none; padding-right: 80px; height: 40px; line-height: 40px; font-size: 15px; border-bottom: 1px solid #879dc9;}
 .inputWrap{margin-top: 0.5rem; width: 100%; position: relative;}
 select{height: 40px; width: 160px; border: none;}
 .inputBtn{position: absolute; right: 0.1rem; top: 0.3rem;}
 
   .savePhoneHeader {margin-top: 14px; line-height: 27px}
-  .savePhoneHeader p{ color: #6768A7; font-weight: bold;}
+  .savePhoneHeader p{ color: #879dc9; font-weight: bold;}
   .savePhoneHeader .headerFont{line-height: 32px}
 
 .noSavePhone{color: #b60707;}

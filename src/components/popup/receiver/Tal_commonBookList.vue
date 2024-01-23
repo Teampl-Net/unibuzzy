@@ -203,7 +203,7 @@ export default {
       paramMap.set('sysCabinetCode', 'USER')
       paramMap.set('adminYn', true)
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getTeamMenuList',
+        url: '/sUniB/tp.getTeamMenuList',
         param: Object.fromEntries(paramMap)
       })
       this.cabinetList = result.data
@@ -232,7 +232,7 @@ export default {
       try {
         // this.cabinetList.splice(index, 1)
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.deleteCabinet',
+          url: '/sUniB/tp.deleteCabinet',
           param: param
         })
         if (result.data === 'true' || result.data === true) {
@@ -337,7 +337,7 @@ export default {
 
       // let result = null
       await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveCabinet',
+        url: '/sUniB/tp.saveCabinet',
         param: paramSet
       })
       // result = response.data
@@ -395,7 +395,7 @@ export default {
       paramSet.teamMenuList = [...tempList]
       var result = await this.$commonAxiosFunction(
         {
-          url: 'https://www.hybric.net:9443/service/tp.changePosTeamMenu',
+          url: '/sUniB/tp.changePosTeamMenu',
           param: paramSet
         }
       )

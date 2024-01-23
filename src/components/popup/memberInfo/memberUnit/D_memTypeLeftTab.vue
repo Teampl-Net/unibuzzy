@@ -13,7 +13,7 @@
 <template>
   <div class="leftTabBase fl " style='background: #eeeeee50;' >
     <div class="w-100P pSide-1" style="position: relative;border-bottom:1px solid #ccc; min-height: 30px; padding: 0 10px; height: 40px; padding-right: 0; padding-top: 0.5rem;">
-      <div style="width: 2.5px; height: 15px; background: #5F61BD; margin-top: 3px; margin-right: 4px;" class="fl" > </div>
+      <div style="width: 2.5px; height: 15px; background-color: #879dc9; margin-top: 3px; margin-right: 4px;" class="fl" > </div>
       <p class="fl textLeft font16 commonColor fontBold">{{ $t('MEM_DETAIL_TITLE_LIST') }}</p>
       <gBtnSmall :btnTitle="$t('COMMON_BTN_ADD')" @click="addInputPopYn = true" style="position: absolute; top: 7px; padding: 0 5px; right: 5px; height: 25px; line-height: 25px;"/>
       <!-- <p class=' fr font16 commonBlack textRight' style="" @click='closePop' >{{tempBackImg}}</p> -->

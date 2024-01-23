@@ -60,9 +60,9 @@ export default {
         typeParam.memberTypeKey = this.propMemberData.memberTypeKey
         this.$commonAxiosFunction({
 <<<<<<< .mine
-          url: 'https://www.hybric.net:9443/service/tp.saveFollower',
+          url: '/sUniB/tp.saveFollower',
 =======
-          url: 'https://www.hybric.net:9443/service/tp.saveFollower',
+          url: '/sUniB/tp.saveFollower',
 >>>>>>> .r1564
           param: { follower: typeParam }
         }).then(() => {
@@ -92,7 +92,7 @@ export default {
       var param = new Object()
       param.memberTypeKey = this.propMemberData.memberTypeKey
       var memberTypeItemList = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.getMemberTypeItemList',
+        url: '/sUniB/tp.getMemberTypeItemList',
         param: param
       })
       if (memberTypeItemList.data.result) {
@@ -105,7 +105,7 @@ export default {
           }
           typeParam.memberTypeKey = this.propMemberData.memberTypeKey
           await this.$commonAxiosFunction({
-            url: 'https://www.hybric.net:9443/service/tp.saveFollower',
+            url: '/sUniB/tp.saveFollower',
             param: { follower: typeParam }
           })
           this.closeXPop(true)
@@ -147,7 +147,7 @@ export default {
       }
       param.memberInfoList = ansList
       var memberResult = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveFollowerMemberInfo',
+        url: '/sUniB/tp.saveFollowerMemberInfo',
         param: param
       })
       if (memberResult.data.result) {
@@ -182,7 +182,7 @@ export default {
     width: 90%; height: 60%; max-height: 800px; position: absolute; z-index: 10; top: 15%; left: 5%; background: #FFF; box-shadow: 0 0 4px 4px #00000025; border-radius: 0.8rem; min-height: 500px;
 }
 .dReqMemberPopHeader {
-    width: 100%; position: relative; height: 50px; border-bottom: 1px solid #6768A7; float: left; padding: 10px 20px;
+    width: 100%; position: relative; height: 50px; border-bottom: 1px solid rgb(74 102 158); float: left; padding: 10px 20px;
 }
 .dReqMemberPopBody {
     width: 100%; height: calc(100% - 110px); padding: 10px 20px; float: left;

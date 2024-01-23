@@ -31,5 +31,5 @@ export default {
 </script>
 <style>
 .roundTab {display: inline-block; text-align: center; width: 70px; height: 30px; line-height: 30px; border: 1px solid #ccc; border-radius: 0.8rem; margin-right: 3px; background-color: #fff; color: #303030;}
-.activeTab {background-color: #6768A7; color: #fff; border: none; font-weight: bold;}
+.activeTab {background-color: #879dc9; color: #fff; border: none; font-weight: bold;}
 </style>

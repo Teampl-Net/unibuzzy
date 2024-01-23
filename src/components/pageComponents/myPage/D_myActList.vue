@@ -290,7 +290,7 @@ export default {
 .myActContentsWrap {float: left; width: 100%; padding: 10px; padding-top: 0; background-color: #f8f8ff; border-radius: 0.8rem;}
 .mMyPageTabList {width: 100%; height: 40px; line-height: 45px; float: left;}
 .myPageTab {border-radius: 0.8rem 0.8rem 0 0; border-bottom: 0 !important; min-width: 70px; padding: 0 15px; height: 100%; float: left; color: #303030; background-color: rgba(186, 187, 215); margin-right: 5px;}
-.activeMyPageTabList {background-color: #fff !important; min-width: 90px !important; font-weight: bold; color: #6768A7;}
+.activeMyPageTabList {background-color: #fff !important; min-width: 90px !important; font-weight: bold; color: rgb(74 102 158);}
 .myPageContentsWrap {border-radius: 0 0.8rem 0 0; padding: 5px 10px 0 10px; width: 100%; height: calc(100% - 133px); background-color: #fff; display: inline-block; }
 
 /* .myActTab {width: 50px; height: 40px; line-height: 40px; border-radius: 0.8rem; margin-right: 3px; float: left; background-color: #f8f8ff; color: #303030;} */

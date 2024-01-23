@@ -6,7 +6,7 @@
           <router-view @openPop="openPushDetailPop"/>
         </div>
     </div>
-    <div @click="openWritePushPage" style="position: absolute; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 60px; background: #6768a7; box-shadow: rgb(183 183 183) 2px 2px 7px 1px">
+    <div @click="openWritePushPage" style="position: absolute; bottom: 20px; right: 20px; width: 60px; height: 60px; border-radius: 60px; background-color: #879dc9; box-shadow: rgb(183 183 183) 2px 2px 7px 1px">
       <img src="../../../assets/images/common/plusoutline.svg" alt="">
     </div>
 </template>

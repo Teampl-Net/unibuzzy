@@ -140,7 +140,7 @@ export default {
     height: 100%;
     font-size: 14px;
     line-height: 28px;
-    background-color: #e7edff;
+    background-color: #d1e1f2;
 }
 .selectOption:hover {
     background-color: #fffbe2;

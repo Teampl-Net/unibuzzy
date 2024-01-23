@@ -28,6 +28,6 @@ export default {
 .leaveContainer{width: 80%; max-width: 670px; background-color: #FFFFFF !important; height: 600px; border-radius: 10px; padding: 1rem;}
 .leaveContentsArea{height: 90%;display: flex; justify-content: center; align-items: center; flex-direction: column;}
 .leaveContentsArea img {width: 6rem;}
-.leaveComplete-1{color: #6768A7; font-size: 15px; font-weight: bold; margin-top: 2rem;}
-.leaveComplete-2{color: #6768A7; font-size: 12px; margin-top: 0.5rem;}
+.leaveComplete-1{color: rgb(74 102 158); font-size: 15px; font-weight: bold; margin-top: 2rem;}
+.leaveComplete-2{color: rgb(74 102 158); font-size: 12px; margin-top: 0.5rem;}
 </style>

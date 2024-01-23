@@ -50,7 +50,7 @@
       <welcomePopUp type="follow" v-if="mOpenWelcomePopShowYn" :chanInfo="CHANNEL_DETAIL" @copyText="copyText" @goChanMain="mOpenWelcomePopShowYn = false" @applyMember="openReqMemPop" />
       <div v-if="mReceptMemPopShowYn" @click="closeReqMemPop" style="position: absolute; width: 100%; height: 100vh; top: 0; left: 0; background: #00000050; z-index: 99999" ></div>
       <recMemberPop :chanDetail="CHANNEL_DETAIL" v-if="mReceptMemPopShowYn" @closeXPop="closeReqMemPop" />
-      <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{officialTitle: CHANNEL_DETAIL.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" /> <p class="font20 fontBold textOverdot"  :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: #6768a7' ">{{changeText(CHANNEL_DETAIL.nameMtext)}}</p></div>
+      <div class="font20 fontBold" :style="mChanNameLongYn ? 'font-size: 15px !important;': '' " style="color:white; line-height: 50px; position:absolute; left: 50%; transform: translateX(-50%); display:flex; max-width: calc(100% - 120px);" :class="{officialTitle: CHANNEL_DETAIL.officialYn}" > <img class="fl" src="../../../assets/images/channel/icon_official.svg" v-if="CHANNEL_DETAIL.officialYn" style="width:30px;" alt="" /> <p class="font20 fontBold textOverdot"  :style="CHANNEL_DETAIL.blackYn === 1 || CHANNEL_DETAIL.blackYn === true ? 'color:white' : 'color: rgb(74 102 158)' ">{{changeText(CHANNEL_DETAIL.nameMtext)}}</p></div>
       <div id="summaryWrap" v-if="!mChanInfoPopShowYn" class="summaryWrap" style="" >
           <div id="chanInfoSummary" ref="chanImg"  class="mt-header chanWhiteBox w100P" style="margin-bottom:0.2rem;">
             <div id="chanAlimListBG" ref="chanAlimListBG" class="chanImgRound" :style="'background-image: url(' + (CHANNEL_DETAIL.logoDomainPath ? this.CHANNEL_DETAIL.logoDomainPath + this.CHANNEL_DETAIL.logoPathMtext : this.CHANNEL_DETAIL.logoPathMtext) + ');'" style="position:absolute; left:10px;background-repeat: no-repeat; background-size: cover; background-position: center; background-color:#fff;"></div>
@@ -94,7 +94,7 @@
                         </p>
                       </div>
                       <div class="fl font14" style="width:auto; white-space:nowrap; box-sizing:boborder-box; word-break:break-all; " >
-                        <p class="font14 commonColor textLeft fl fontBold " style="margin-right:0.5rem; color:#6768a7; white-space: nowrap;">{{ $t('CHAN_TITLE_CREDATE') }}</p>
+                        <p class="font14 commonColor textLeft fl fontBold " style="margin-right:0.5rem; color:rgb(74 102 158); white-space: nowrap;">{{ $t('CHAN_TITLE_CREDATE') }}</p>
                         <p class="font14 textLeft" style="width:auto; color:#000; word-break:break-all" >{{$dayjs(CHANNEL_DETAIL.creDate).format('YYYY-MM-DD')}}</p>
                       </div>
                     </div>
@@ -168,7 +168,7 @@
                   <div style=" width:100%; height:30px">
                     <div style="float: left; margin-right:10px; color: #2D7BEF;">구독 중</div>
                     <div style="float: left;">{{this.$getFollowerType(CHANNEL_DETAIL.D_CHAN_AUTH)}}</div>
-                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 60px; height: 25px;border: 2px solid #7678E2; border-radius: 10px; color: #6768A8; font-size: 12px;" @click="this.openReqMemPop()">
+                    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 60px; height: 25px;border: 2px solid rgb(74 102 158); border-radius: 10px; color: #6768A8; font-size: 12px;" @click="this.openReqMemPop()">
                       멤버신청
                     </div>
                   </div>
@@ -297,7 +297,7 @@ export default {
         console.log(this.CHANNEL_DETAIL.teamId)
       } else {
         var result = await this.$commonAxiosFunction({
-          url: 'https://www.hybric.net:9443/service/tp.getAndSaveTeamAESToken',
+          url: '/sUniB/tp.getAndSaveTeamAESToken',
           param: { teamKey: this.CHANNEL_DETAIL.teamKey }
         })
         console.log(result.data)
@@ -826,7 +826,7 @@ export default {
 
       this.axiosQueue.push('saveMemberButton')
       var result = await this.$commonAxiosFunction({
-        url: 'https://www.hybric.net:9443/service/tp.saveFollower',
+        url: '/sUniB/tp.saveFollower',
         param: params
       })
       var queueIndex = this.axiosQueue.findIndex((item) => item === 'saveMemberButton')
