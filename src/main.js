@@ -76,10 +76,10 @@ app.config.globalProperties.$Vuex = Vuex
 app.config.globalProperties.$store = store
 app.config.globalProperties.$i18n = i18n
 if (!localStorage.getItem('nativeYn') || localStorage.getItem('nativeYn') === 'false' || localStorage.getItem('nativeYn') === false) {
-  const appInfo = { packageName: 'com.tal_project' }
+  const appInfo = { packageName: 'com.hybric' }
   if (appInfo.packageName && !app.config.globalProperties.$INIT_YN) { // 앱 버전체크도 해야함
     const mzoinInitalizer = '/MZ_appInitailizer.json'
-    const appConfig = '/D_service.json'
+    const appConfig = '/H_service.json'
     app.config.globalProperties.$DEV_YN = true
     fetch(appConfig)
       .then(response => {

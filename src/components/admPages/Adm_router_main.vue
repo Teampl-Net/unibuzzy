@@ -37,6 +37,7 @@ export default {
   },
   created () {
     this.getOrgList()
+    console.log('GE_USER', this.GE_USER)
   },
   methods: {
     async getOrgList () {
