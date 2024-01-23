@@ -52,9 +52,11 @@ export default {
   },
   props: {
     parentSelectedIconFileKey: {},
-    pSelectedIconPath: {}
+    pSelectedIconPath: {},
+    isAdmTrue: Boolean
   },
   created () {
+    console.log('pSelectedIconPath', this.pSelectedIconPath)
     if (this.parentSelectedIconFileKey !== undefined && this.parentSelectedIconFileKey !== null && this.parentSelectedIconFileKey !== '') {
       this.selectedIconFileKey = this.parentSelectedIconFileKey
     }
@@ -66,6 +68,15 @@ export default {
     }
   },
   mounted () {
+    if (this.isAdmTrue === true) {
+      this.activeTabList = [{ display: '직접추가', name: 'img' }]
+      this.$refs.activeBar.switchtab(0)
+      this.$refs.activeBar.selectTab('img')
+      this.previewImgUrl = this.pSelectedIconPath
+      this.selectedImgPath = this.pSelectedIconPath
+    } else {
+      this.activeTabList = [{ display: '아이콘', name: 'icon' }, { display: '직접추가', name: 'img' }]
+    }
     if (this.parentSelectedIconFileKey !== undefined && this.parentSelectedIconFileKey !== null && this.parentSelectedIconFileKey !== '') {
       if (this.parentSelectedIconFileKey > 100) {
         this.viewTab = 'img'

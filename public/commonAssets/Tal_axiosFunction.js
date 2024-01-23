@@ -52,7 +52,7 @@ export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
     // url = 'https://mo.d-alim.com/' + url
   }
   try {
-    var response = await axios.post(setItem.url, setItem.param, { withCredentials: true }
+    var response = await axios.post(setItem.url, setItem.param, { withCredentials: true, headers: { DemoYn: true } }
     )
     result = response
     console.log('####resultData is: ')

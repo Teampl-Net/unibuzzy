@@ -16,9 +16,9 @@ module.exports = {
       '^/sUniB': {
         // target: 'https://mo.d-alim.com:9443/service', // 개발
         // target: 'https://www.unibuzzy.com/sUniB', // 패치
-        // target: 'http://192.168.0.46:9090',
+        target: 'http://192.168.0.78:9443',
         // target: 'http://192.168.0.10:9443',
-        target: 'http://localhost:9443',
+        // target: 'http://localhost:9443',
         // target: 'http://192.168.219.103:19090',
         // https://mo.d-alim.com:10443
         changeOrigin: true,
