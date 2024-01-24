@@ -69,7 +69,6 @@ export const routes = [
     children: [
       {
         path: '/',
-        path: '/admPage',
         name: 'main',
         props: true,
         meta: {
@@ -270,4 +269,20 @@ export const routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../../components/board/D_boardMain.vue')
   }
+  // {
+  //   path: '/admPages',
+  //   name: 'routerMain',
+  //   component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/Adm_router_main.vue'),
+  //   children: [
+  //     {
+  //       path: '/',
+  //       name: 'main',
+  //       props: true,
+  //       meta: {
+  //         page: 1
+  //       },
+  //       component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/adm_main.vue')
+  //     }
+  //   ]
+  // }
 ]
