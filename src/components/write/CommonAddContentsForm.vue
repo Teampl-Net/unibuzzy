@@ -1759,7 +1759,8 @@ export default defineComponent({
             delYn = false
           }
         }
-        if (delYn && !tempFileList[i].addYn) {
+        if (delYn === false && !tempFileList[i].addYn) {
+          console.log('여기????드러감??')
           tempFileList[i].addYn = false
         }
       }
@@ -2257,6 +2258,8 @@ export default defineComponent({
         try {
           if (params.mLoadingYn) return
           if (tempFileList.length > 0) {
+            // if (tempFileList.length === pro)
+            console.log('첨부파일 있음있음')
             await fileDataUploadToServer()
           }
           await setAttachFileList()
@@ -2283,19 +2286,9 @@ export default defineComponent({
           if (!props.popUpType || (props.popUpType && props.popUpType === 'TODO')) {
             // 참조자 처리 추가
             if (params.refList) {
-              // params.actorList = [
-              //   ...params.actorList,
-              //   ...params.refList
-              // ]
-              // delete params.refList
             }
             // 검토자 처리 추가
             if (params.checkList) {
-              // params.actorList = [
-              //   ...params.actorList,
-              //   ...params.checkList
-              // ]
-              // delete params.checkList
             }
             // params.actorList = replaceActorArr(params.actorList)
             console.log('postContents', params.actorList)
