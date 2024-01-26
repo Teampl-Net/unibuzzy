@@ -7,7 +7,8 @@ var g_appInfo = null
 // eslint-disable-next-line no-undef, no-use-before-define
 
 const HB_SSO = {
-  registerFb: function (config, messageKey) {
+  registerFb: function (user, config) {
+    const basedUrl = 'http://192.168.0.78:9443'
     const firebaseConfig = {
       apiKey: config.apiKey,
       authDomain: config.authDomain,
@@ -17,38 +18,58 @@ const HB_SSO = {
       appId: config.appId,
       measurementId: config.measurementId
     }
-    if (typeof window !== 'undefined' && typeof window.navigator !== 'undefined') {
+    if (firebase.messaging.isSupported()) {
       !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app()
       var isMobile = /Mobi/i.test(window.navigator.userAgent)
-      if (!isMobile && (appYn === 'false' || appYn === false) && messageKey) {
-        const messaging = firebase.messaging()
-        messaging.usePublicVapidKey(messageKey)
+      if (!isMobile) {
+        Notification.requestPermission(function (result) {
+          // 권한 거절
+          if (result === 'denied') {
+            Notification.requestPermission()
+            console.log('알림을 차단하셨습니다.\n브라우저의 사이트 설정에서 변경하실 수 있습니다.')
+            return false
+          } else if (result === 'granted') {
+            console.log('알림을 허용하셨습니다.')
+          }
+        })
         // token값 알아내기
+        // if (!config.fcmKey) {
+        const messaging = firebase.messaging()
+
         messaging.requestPermission()
           .then(function () {
             console.log('Have permission')
-            return messaging.getToken()
-          })
-          .then(function (token) {
-            localStorage.setItem('fcmKey', token)
-            var user = store.getters['D_USER/GE_USER']
-            if (user && user.fcmKey) {
-              if (user.fcmKey) {
-                if (token === user.fcmKey) {
-                  return
+            return messaging
+              .getToken(messaging, {
+                vapidKey: config.messageKey
+              })
+              .then((token) => {
+                if (token) {
+                  console.log(token)
+                  console.log('토큰: ' + token)
+                  localStorage.setItem('fcmKey', token)
+                  console.log(token)
+                  user.user.fcmKey = token
+                  sendAjax(`${basedUrl}/sso/tp.saveUser`, user)
+                  console.log('token: ' + token)
+                  return token
+                // 토큰을 서버에 전달...
+                } else {
+                // Show permission request UI
+                  console.log(
+                    'No registration token available. Request permission to generate one.'
+                  )
                 }
-              }
-              user.fcmKey = token
-              store.dispatch('D_USER/AC_USER', user)
-              methods.saveFcmToken()
-            }
-            console.log('token: ' + token)
-          })
-          .catch(function (arr) {
-            console.log('Error Occured')
+              })
+              .catch((err) => {
+                console.log('An error occurred while retrieving token. ', err)
+              // ...
+              })
           })
         messaging.onMessage(function (payload) {
+          console.log(payload)
         })
+        // }
       }
     }
   },
@@ -66,6 +87,21 @@ const HB_SSO = {
     }
 
     sendAjax(`${basedUrl}/tpCore/tc.appUserLoginCheck`, param, callback, redirectUrl)
+  },
+  sendPush: async function (push, config) {
+    const param = {}
+    const basedUrl = 'http://192.168.0.78:9443'
+    param.app = appInfo
+    param.user = userInfo
+    let callback = null
+    let redirectUrl = null
+    if (config.popYn) {
+      callback = config.callback
+    } else {
+      redirectUrl = config.redirectUrl
+    }
+
+    sendAjax(`${basedUrl}/tp.sendPushBar`, param, callback, redirectUrl)
   },
 
   reqLoginPage: function (data, config) {
@@ -225,7 +261,9 @@ function sendAjax (url, param, callback) {
     data: JSON.stringify(param),
     success: function (result) {
       if (result) {
-        callback(result)
+        if (callback) {
+          callback(result)
+        }
       } else {
         alert('불러오기 실패')
       }

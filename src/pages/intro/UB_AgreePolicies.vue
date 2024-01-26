@@ -122,7 +122,7 @@ export default {
     line-height: 32px
   }
   .startBigBtn {
-    #879dc9;
+    background-color: #879dc9;
     margin-top: 10px;
     color:#ffff;
     height: 40px;

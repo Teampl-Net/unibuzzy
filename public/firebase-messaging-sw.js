@@ -159,6 +159,7 @@ const FILES_TO_CACHE = [
 ]
 
 self.addEventListener('message', function (event) {
+  console.log('test')
   console.log('message', event)
 })
 self.addEventListener('install', function (event) {

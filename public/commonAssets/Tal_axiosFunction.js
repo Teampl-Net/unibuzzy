@@ -7,6 +7,7 @@ import { coreMethods } from './D_coreService'
 import { commonMethods } from '../../src/assets/js/Tal_common'
 import store from '@/store'
 import router from '@/router'
+import { app } from '@/main'
 import { mapGetters, mapActions } from 'vuex'
 /* axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS'
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Content-Type, X-Auth-Token'
@@ -52,7 +53,7 @@ export async function commonAxiosFunction (setItem, nonLoadingYn, noAuthYn) {
     // url = 'https://mo.d-alim.com/' + url
   }
   try {
-    var response = await axios.post(setItem.url, setItem.param, { withCredentials: true, headers: { DemoYn: true } }
+    var response = await axios.post(setItem.url, setItem.param, { withCredentials: true, headers: { UserAuthorization: store.getters['D_USER/GE_USER'].userToken, Authorization: app.config.globalProperties.$APP_CONFIG.appToken } }
     )
     result = response
     console.log('####resultData is: ')
@@ -134,22 +135,22 @@ export async function saveUser (userProfile, loginYn) {
     firstYn: true
   })
   if (result.data.message === 'OK') {
-    if (localStorage.getItem('user')) {
-      var localUser = JSON.parse(localStorage.getItem('user'))
-      result.data.userMap.uAccessToken = localUser.uAccessToken
-      result.data.userMap.partnerToken = localUser.partnerToken
-    }
+    // if (localStorage.getItem('user')) {
+    //   var localUser = JSON.parse(localStorage.getItem('user'))
+    //   result.data.userMap.uAccessToken = localUser.uAccessToken
+    //   result.data.userMap.partnerToken = localUser.partnerToken
+    // }
     localStorage.setItem('user', JSON.stringify(result.data.userMap))
     await store.dispatch('D_USER/AC_USER', result.data.userMap)
     localStorage.setItem('sessionUser', JSON.stringify(result.data.userMap))
     var appInfo = store.getters['D_USER/AC_USER_APP']
-    if (loginYn) {
-      var userInfo = result.data.userMap
-      if (!userInfo.certiDate && (!(/Mobi/i.test(window.navigator.userAgent)))) {
-        // router.replace({ path: '/' })
-        // if (appInfo && appInfo.savePhone === true) router.replace({ path: '/savePhone' })
-      }
-    }
+    // if (loginYn) {
+    //   var userInfo = result.data.userMap
+    //   if (!userInfo.certiDate && (!(/Mobi/i.test(window.navigator.userAgent)))) {
+    //     // router.replace({ path: '/' })
+    //     // if (appInfo && appInfo.savePhone === true) router.replace({ path: '/savePhone' })
+    //   }
+    // }
     if (result.data.refreshToken) {
       return result.data.refreshToken
     } else {

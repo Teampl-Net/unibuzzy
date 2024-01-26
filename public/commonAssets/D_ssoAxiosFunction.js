@@ -21,11 +21,13 @@ export const ssoMethods = {
       const response = await commonAxiosFunction({ url: `${BASE_URL}/sso/tp.getUserProfile`, param: { userToken: userToken, refreshToken: refreshToken, appToken: this.$APP_CONFIG.appToken } })
       const result = response.data
       console.log(result)
-      localStorage.setItem('user', JSON.stringify(result.userMap))
-      await store.dispatch('D_USER/AC_USER', result.userMap)
-      app.config.globalProperties.$USER_TOKEN = result.userMap.userToken
+      // eslint-disable-next-line no-debugger
+      debugger
+      localStorage.setItem('user', JSON.stringify(result.user))
+      await store.dispatch('D_USER/AC_USER', result.user)
+      app.config.globalProperties.$USER_TOKEN = result.user.userToken
       app.config.globalProperties.$APP_CONFIG.appToken = result.app.appToken
-      localStorage.setItem('sessionUser', JSON.stringify(result.userMap))
+      localStorage.setItem('sessionUser', JSON.stringify(result.user))
       // eslint-disable-next-line no-debugger
       debugger
     } catch (error) {

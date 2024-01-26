@@ -1,4 +1,6 @@
 
+import admRouterMain from '../../components/admPages/Adm_router_main.vue'
+
 import routerMain from '../../pages/Tal_router_main.vue'
 import search from '../../pages/routerPages/D_searchPage.vue'
 import login from '../../pages/intro/Tal_login.vue'
@@ -10,58 +12,26 @@ export const routes = [
   //   component: jisuTest
   // },
   {
-    path: '/reqLogin',
-    name: 'reqLogin',
-    props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_reqLogin.vue')
-  },
-  {
-    path: '/testSample',
-    name: 'testSample',
-    props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../../pages/test.vue')
-  },
-  {
-    path: '/ssoCallback',
-    name: 'ssoCallback',
-    props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLoginCallback.vue')
-  },
-  {
-    path: '/ssoLogin',
-    name: 'ssoLogin',
-    props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLogin.vue')
-  },
-  {
-    path: '/loginCallBack/naver',
-    name: 'ssoLoginNaver',
-    props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLogin_naver.vue')
-  },
-  {
-    path: '/loginCallBack/kakao',
-    name: 'ssoLoginKaKao',
-    props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLogin_kakao.vue')
-  },
-  {
-    path: '/loginCallBack/google',
-    name: 'ssoLoginGoogle',
-    props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLogin_google.vue')
-  },
-  {
     path: '/PARTNER',
     name: 'D_PARTNER',
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../../pages/D_coreProxy.vue')
   },
-  // {
-  //   path: '/',
-  //   props: true,
-  //   component: () => import(/* webpackChunkName: "about" */ '../../pages/routerPages/D_firstLoading.vue')
-  // },
+  {
+    path: '/admRouterMain',
+    name: 'admRouterMain',
+    component: admRouterMain,
+    children: [
+      {
+        path: '/admMain',
+        name: 'admMain',
+        props: true,
+        meta: {
+          page: 1
+        }
+      }
+    ]
+  },
   {
     path: '/',
     name: 'routerMain',
@@ -69,7 +39,6 @@ export const routes = [
     children: [
       {
         path: '/',
-        path: '/admPage',
         name: 'main',
         props: true,
         meta: {
@@ -86,6 +55,15 @@ export const routes = [
               next('/policies')
             }
           } */
+      },
+      {
+        path: '/admPage',
+        name: 'admPage',
+        props: true,
+        meta: {
+          page: 1
+        },
+        component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/adm_main.vue')
       },
       {
         path: '/unknown',
@@ -174,12 +152,12 @@ export const routes = [
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../../pages/intro/Tal_naverLoginCallback copy.vue')
   },
-  {
-    path: '/testLoginPage',
-    name: 'testLoginPage',
-    props: true,
-    component: () => import('../../pages/intro/TestLoginPage.vue')
-  },
+  /* {
+      path: '/testLoginPage',
+      name: 'testLoginPage',
+      props: true,
+      component: () => import('../../pages/intro/testLoginPage.vue')
+    }, */
   {
     path: '/nonMemInquiryBoard',
     name: 'nonMemInquiryBoard',
@@ -208,7 +186,7 @@ export const routes = [
     path: '/policies',
     name: 'policies',
     props: true,
-    component: () => import(/* webpackChunkName: "about" */ '../../pages/intro/Tal_policies.vue')
+    component: () => localStorage.getItem('appType') && localStorage.getItem('appType') === 'D' ? import(/* webpackChunkName: "about" */ '../../pages/intro/Tal_policies.vue') : import(/* webpackChunkName: "about" */ '../../pages/intro/UB_AgreePolicies.vue')
   },
   // {
   //   path: '/policies',
@@ -269,5 +247,47 @@ export const routes = [
     name: 'boardDetail',
     props: true,
     component: () => import(/* webpackChunkName: "about" */ '../../components/board/D_boardMain.vue')
+  },
+  {
+    path: '/reqLogin',
+    name: 'reqLogin',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_reqLogin.vue')
+  },
+  {
+    path: '/testSample',
+    name: 'testSample',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/test.vue')
+  },
+  {
+    path: '/ssoCallback',
+    name: 'ssoCallback',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLoginCallback.vue')
+  },
+  {
+    path: '/ssoLogin',
+    name: 'ssoLogin',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLogin.vue')
+  },
+  {
+    path: '/loginCallBack/naver',
+    name: 'ssoLoginNaver',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLogin_naver.vue')
+  },
+  {
+    path: '/loginCallBack/kakao',
+    name: 'ssoLoginKaKao',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLogin_kakao.vue')
+  },
+  {
+    path: '/loginCallBack/google',
+    name: 'ssoLoginGoogle',
+    props: true,
+    component: () => import(/* webpackChunkName: "about" */ '../../pages/HB_ssoLogin_google.vue')
   }
 ]
