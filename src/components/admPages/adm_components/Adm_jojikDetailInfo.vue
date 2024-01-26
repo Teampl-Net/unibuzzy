@@ -1,12 +1,12 @@
 <template>
-  <p class="font13" style="text-align:right;"> 최종 업데이트 : {{ pSelectedApp.upDated ? pSelectedApp.upDated : '오늘' }}</p>
+  <p class="font13" style="text-align:right;"> 최종 업데이트 : {{ pSelectedOrg.upDated ? pSelectedOrg.upDated : '오늘' }}</p>
 
   <!-- 조직 기본 데이터들 -->
-  <jojikCard :pSelectedApp="pSelectedApp"/>
+  <jojikCard :pSelectedOrg="pSelectedOrg"/>
 
   <!-- 조직 권한 설정 -->
   <div class="w100P manageTable">
-    <jojikManageTable :pPageData="pPageData" @openUserInfo="openUserInfo" :pSelectedApp="pSelectedApp" :pCloseAddManage="closeAddManage" :pAddManagerTypeYn="addManagerTypeYn"/>
+    <jojikManageTable :pPageData="pPageData" @openUserInfo="openUserInfo" :pSelectedOrg="pSelectedOrg" :pCloseAddManage="closeAddManage" :pAddManagerTypeYn="addManagerTypeYn"/>
   </div>
 
 </template>
@@ -20,11 +20,11 @@ export default {
     jojikCard
   },
   props: {
-    pSelectedApp: Object,
+    pSelectedOrg: Object,
     pPageData: {}
   },
   created () {
-    console.log('jojikDetailInfo pSelectedApp', this.pSelectedApp)
+    console.log('jojikDetailInfo pSelectedOrg', this.pSelectedOrg)
   },
   data () {
     return {
@@ -37,7 +37,7 @@ export default {
       return false
     },
     openPop (popType) {
-      this.propParams = this.pSelectedApp
+      this.propParams = this.pSelectedOrg
       this.propParams.popType = popType
       this.$emit('openPop', this.propParams)
     },

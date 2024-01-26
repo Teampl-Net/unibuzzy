@@ -26,7 +26,7 @@
     </thead>
 
     <tbody>
-        <tr v-for="(auth, index) in pSelectedApp.authList" :key="index">
+        <tr v-for="(auth, index) in pSelectedOrg.authList" :key="index">
             <td>
               <input type="checkbox" />
             </td>
@@ -43,7 +43,7 @@
             <td>
               <p @click="pCloseAddManage">X</p>
             </td>
-            <td>{{ pSelectedApp.authList.length + 1 }}</td>
+            <td>{{ pSelectedOrg.authList.length + 1 }}</td>
             <td>
               <input type="text" v-model="newAuthName"/>
             </td>
@@ -65,12 +65,12 @@ import axios from 'axios'
 export default {
   props: {
     pPageData: {},
-    pSelectedApp: {},
+    pSelectedOrg: {},
     pCloseAddManage: Function
   },
   created () {
     console.log('jojikManageTable pPageData', this.pPageData)
-    console.log('jojikManageTable pSelectedApp', this.pSelectedApp)
+    console.log('jojikManageTable pSelectedOrg', this.pSelectedOrg)
   },
   data () {
     return {
@@ -105,7 +105,7 @@ export default {
       const paramSet = {}
       if (!auth && !type) { // 새 조직
         if (this.newAuthName === '') return
-        paramSet.orgKey = this.pSelectedApp.orgKey
+        paramSet.orgKey = this.pSelectedOrg.orgKey
         paramSet.authName = this.newAuthName
         paramSet.authDispName = this.dispName
         paramSet.mngOrgYn = this.mNewMngOrg
@@ -115,7 +115,7 @@ export default {
         if (auth.authKey) { // 수정이면
           paramSet.authKey = auth.authKey
         }
-        paramSet.orgKey = this.pSelectedApp.orgKey
+        paramSet.orgKey = this.pSelectedOrg.orgKey
         paramSet.authName = auth.authName
         paramSet.authDispName = this.dispName
         paramSet.creUserKey = this.GE_USER.userKey

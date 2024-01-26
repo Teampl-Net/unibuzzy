@@ -3,12 +3,12 @@
     <input type="checkbox"/>
   </td>
   <td>{{ pIndex + 1 }}</td>
-  <td>{{ pUser.name }}</td>
-  <td style="text-align:left;">{{ pUser.mail }}<br/>{{ pUser.tel }}</td>
+  <td>{{ pUser.userNameMtext ? $changeText(pUser.userNameMtext) : '이름' }}</td>
+  <td style="text-align:left;">{{ pUser.userEmail ? pUser.userEmail : '이메일' }}<br/>{{ pUser.phoneNoEnc ? pUser.phoneNoEnc : '000-0000-0000' }}</td>
   <td>{{ pUser.info ? pUser.info : '특징: 귀여움' }}</td>
   <td>
     <select v-model="mSelectedManage">
-      <option v-for="(data, index) in pSelectedApp.manage" :key="index">{{ data.name }}</option>
+      <option v-for="(auth, index) in pSelectedOrg.authList" :key="index">{{ auth.authName ? auth.authName : '권한' }}</option>
     </select>
   </td>
 </template>
@@ -17,9 +17,13 @@
 export default {
   props: {
     pFilteredPageData: {},
-    pSelectedApp: {},
+    pSelectedOrg: {},
     pUser: {},
-    pIndex: Number
+    pIndex: Number,
+    pMOrgUserList: {}
+  },
+  created () {
+
   },
   data () {
     return {
@@ -28,6 +32,9 @@ export default {
   },
   mounted () {
     console.log('pFilteredPageData', this.pFilteredPageData)
+    console.log('pSelectedOrg', this.pSelectedOrg)
+    console.log('pMOrgUserList', this.pMOrgUserList)
+    console.log('pUser', this.pUser)
   },
   watch: {
     mSelectedManage: {
@@ -36,7 +43,7 @@ export default {
     },
     pUser: {
       handler (value) {
-        this.mSelectedManage = this.pUser.manage
+        this.mSelectedManage = this.pUser.authKey // findIndex 써서 이름 추출하기
       }
     }
   }

@@ -37,16 +37,16 @@
 <script>
 export default {
   props: {
-    pSelectedApp: Object,
+    pSelectedOrg: Object,
     pMyOrgList: [],
     appKey: Number,
     orgKey: Number
   },
   created () {
-    if (this.pSelectedApp) {
-      this.mSelectedBranch = this.pSelectedApp
+    if (this.pSelectedOrg) {
+      this.mSelectedBranch = this.pSelectedOrg
     } else {
-      console.log('jojikCard Props', this.pSelectedApp, this.pMyOrgList, this.appKey, this.orgKey)
+      console.log('jojikCard Props', this.pSelectedOrg, this.pMyOrgList, this.appKey, this.orgKey)
       if (this.appKey && this.orgKey && this.pMyOrgList) {
         this.orgDetails = this.pMyOrgList.filter(app => app.appKey === Number(this.appKey))
         console.log('this.orgDetails', this.orgDetails)

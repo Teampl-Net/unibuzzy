@@ -38,19 +38,25 @@ export const routes = [
         component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/popUP/Adm_addGroupPop.vue')
       },
       {
-        path: '/addMember',
+        path: '/memberList/:orgKey',
+        name: 'memberList',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '@/components/admPages/adm_components/Adm_jojikUserInfo.vue')
+      },
+      {
+        path: '/addMember/:orgKey',
         name: 'addMember',
         props: true,
         component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/popUP/Adm_addMemberPop.vue')
       },
       {
-        path: '/orgDetail/:appKey/:orgKey',
+        path: '/orgDetail/:orgKey',
         name: 'orgDetail',
         props: true,
         component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/adm_components/Adm_jojikDetailWrap.vue')
       },
       {
-        path: '/orgCard/:appKey/:orgKey',
+        path: '/orgCard/:orgKey',
         name: 'orgCard',
         props: true,
         component: () => import(/* webpackChunkName: "about" */ '@/components/admPages/adm_components/Adm_jojikCard.vue')

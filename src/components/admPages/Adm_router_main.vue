@@ -3,7 +3,7 @@
   <gAdmPopWrap v-if="popUpShow" @dataUpdated="dataUpdated" :pPropParams="propParams" :pClosePop="closePop" :pOrgList="myOrgList"/>
   <gAdmPageWrap v-if="pageShow" @changeBranch="changeBranch" @openPop="openPop" :pPropParams="propParams" :pPageData="pageData" :pClosePage="closePage" :pOrgList="myOrgList"/>
   <commonHeader />
-  <router-view v-if="dataLoaded" style="overflow:hidden auto;" @openPage="openPage" @openPop="openPop" :pSelectedApp="mSelectedApp" :pMyOrgList="myAppList"></router-view>
+  <router-view v-if="dataLoaded" style="overflow:hidden auto;" @openPage="openPage" @openPop="openPop" :pSelectedOrg="mSelectedApp" :pMyOrgList="myAppList"></router-view>
   <commonFooter v-if="footer" />
   </div>
 </template>
@@ -56,9 +56,9 @@ export default {
         this.dataLoaded = true
       }
       this.myOrgList = result.data.org
-      this.myAppList = this.defaultAppList
-      this.myAppList[0].branch = this.myOrgList
-      console.log(this.myAppList[0])
+      this.myAppList = this.myOrgList
+      // this.myAppList[0].branch = this.myOrgList
+      // console.log(this.myAppList[0])
     },
     openPop (params) {
       console.log('router-main openPop params', params)

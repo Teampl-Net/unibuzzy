@@ -3,10 +3,10 @@
     <div class="topArea w100P">
       <div class="myInfoArea">
 
-        <p class="font30" style="padding-right:10px;">내 조직 IN </p>
+        <!-- <p class="font30" style="padding-right:10px;">내 조직 IN </p>
         <select v-model="mSelectedApp" @change="setSelectedApp" style="height:30px;">
           <option v-for="(apps, index) in mGetOrgList" :key="index" :value="apps" :selected="index === mSelectedAppIdx">{{ apps.title }}</option>
-        </select>
+        </select> -->
       </div>
       <div class="searchArea">
         <input type="text" style="width:150px; cursor:auto;"/>
@@ -15,8 +15,7 @@
     </div>
 
     <div class="w100P jojikCompoWrap">
-      <template v-for="(branch, index) in mBranchList" :key="index">
-        <p class="cursorP" @click="gotoOrgCard(branch)">조직 카드 가기</p>
+      <template v-for="(branch, index) in pMyOrgList" :key="index">
         <jojikCompo @click="gotoOrgDetail(branch)" :pBranch="branch" class="cursorP"/>
       </template>
       <div class="jojikAddBtn cursorP" @click="gotoAddOrg">
@@ -55,43 +54,44 @@ export default {
     } else {
       this.getOrgList()
     }
+    console.log('mGetOrgList', this.mGetOrgList)
   },
   methods: {
     gotoOrgCard (branch) {
-      this.$router.push(`/orgCard/${this.pMyOrgList[this.mSelectedAppIdx].appKey}/${branch.orgKey}`)
+      this.$router.push(`/orgCard/${branch.orgKey}`)
     },
     gotoAddOrg () {
       this.$router.push('/addOrg')
     },
     gotoOrgDetail (branch) {
       // console.log('branch', branch)
-      this.$router.push(`/orgDetail/${this.pMyOrgList[this.mSelectedAppIdx].appKey}/${branch.orgKey}`)
+      this.$router.push(`/orgDetail/${branch.orgKey}`)
     },
     openPop (popType) {
       this.propParams.popType = popType
       this.$emit('openPop', this.propParams)
     },
-    openPage (branch) {
-      this.propParams.selBranch = branch
-      this.propParams.branch = this.pMyOrgList[this.mSelectedAppIdx].branch
-      this.propParams.myApps = this.pMyOrgList[this.mSelectedAppIdx]
-      this.propParams.pageType = 'jojikDetail'
-      this.$emit('openPage', this.propParams)
-    },
-    setSelectedApp () {
-      // mSelectedApp의 인덱스를 찾습니다.
-      if (this.pMyOrgList) {
-        this.mSelectedAppIdx = this.pMyOrgList.findIndex(app => app === this.mSelectedApp)
-        console.log('this.mSelectedAppIdx', this.mSelectedAppIdx)
-        // 인덱스를 기반으로 mBranchList를 설정합니다.
-        if (this.mSelectedAppIdx !== -1) {
-          this.mBranchList = this.pMyOrgList[this.mSelectedAppIdx].branch || []
-          console.log('mBranchList:', this.mBranchList)
-        } else {
-          console.log('App not found')
-        }
-      }
-    },
+    // openPage (branch) {
+    //   this.propParams.selBranch = branch
+    //   this.propParams.branch = this.pMyOrgList[this.mSelectedAppIdx].branch
+    //   this.propParams.myApps = this.pMyOrgList[this.mSelectedAppIdx]
+    //   this.propParams.pageType = 'jojikDetail'
+    //   this.$emit('openPage', this.propParams)
+    // },
+    // setSelectedApp () {
+    //   // mSelectedApp의 인덱스를 찾습니다.
+    //   if (this.pMyOrgList) {
+    //     this.mSelectedAppIdx = this.pMyOrgList.findIndex(app => app === this.mSelectedApp)
+    //     console.log('this.mSelectedAppIdx', this.mSelectedAppIdx)
+    //     // 인덱스를 기반으로 mBranchList를 설정합니다.
+    //     if (this.mSelectedAppIdx !== -1) {
+    //       this.mBranchList = this.pMyOrgList[this.mSelectedAppIdx].branch || []
+    //       console.log('mBranchList:', this.mBranchList)
+    //     } else {
+    //       console.log('App not found')
+    //     }
+    //   }
+    // },
     async getOrgList () {
       var paramSet = {}
       paramSet.creUserKey = this.GE_USER.userKey
@@ -104,7 +104,7 @@ export default {
   },
   mounted () {
     this.mSelectedApp = this.pMyOrgList ? this.pMyOrgList[0] : null
-    this.setSelectedApp()
+    // this.setSelectedApp()
   },
   computed: {
     GE_USER () {

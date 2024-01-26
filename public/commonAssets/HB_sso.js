@@ -108,9 +108,9 @@ const HB_SSO = {
     g_appInfo = data.appInfo
     if (config) {
       if (config.calllback) {
-        HB_SSO.createTargetIframe('HbSsoLogin', 'http://192.168.0.78:8080/ssoLogin', null, data, config.callback)
+        HB_SSO.createTargetIframe('HbSsoLogin', 'http://192.168.0.14:8080/ssoLogin', null, data, config.callback)
       } else if (config.redirectUrl) {
-        window.location = encodeURI('http://192.168.0.78:8080/ssoLogin?redirect=' + config.redirectUrl + '?appInfo=' + JSON.stringify(data.appInfo))
+        window.location = encodeURI('http://192.168.0.14:8080/ssoLogin?redirect=' + config.redirectUrl + '?appInfo=' + JSON.stringify(data.appInfo))
       }
     }
   },
