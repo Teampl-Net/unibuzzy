@@ -2,41 +2,9 @@
   <p class="font13" style="text-align:right;"> 최종 업데이트 : {{ pSelectedApp.upDated ? pSelectedApp.upDated : '오늘' }}</p>
 
   <!-- 조직 기본 데이터들 -->
-  <div class="jojikInfoWrap w100P">
-    <div class="defaultInfos w100P">
-      <div style="display:flex; align-items:center;">
-        <div class="imgInfo"></div>
-        <div class="textInfo">
-          <p class="font15">{{ pSelectedApp.orgName ? pSelectedApp.orgName : '"조직명"' }}</p>
-          <p class="font13">{{ pSelectedApp.orgKey ? pSelectedApp.orgKey : '00' }}</p>
-        </div>
-      </div>
-      <div>
-        <p class="font14">{{ pSelectedApp.orgType && pSelectedApp.orgType === 'C' ? '회사' : pSelectedApp.orgType === 'A' ? '아파트' : '학교' }}</p>
-        <p class="font13">🙍🏻‍♂️{{ pSelectedApp.allCount ? pSelectedApp.allCount : '미측정' }}</p>
-      </div>
-    </div>
+  <jojikCard :pSelectedApp="pSelectedApp"/>
 
-    <div class="w100P detailInfos">
-      <div class="w100P" style="padding-bottom:10px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #ccc;">
-        <p class="font15" style="width:calc(100% - 20px)' text-align:left;">{{ pSelectedApp.orgDesc ? pSelectedApp.orgDesc : '안녕하세요, 우리 조직을 소개합니다.' }}</p>
-        <div v-if="moreOpen===false" @click="showMore" style="width:20px;">➕</div>
-        <div v-if="moreOpen===true" @click="showMore" style="width:20px;">➖</div>
-      </div>
-      <div v-if="moreOpen" class="w100P" style="padding-top:10px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; text-align:left;">
-          <p class="font14">📫{{ pSelectedApp.address ? pSelectedApp.address : pSelectedApp.orgName + '의 주소입니다.' }}</p>
-          <p class="font14">👜***-***-****</p>
-        </div>
-        <div class="w100P" style="display:flex; align-items:center; justify-content:space-between; text-align:left;">
-          <p class="font14" style="calc(100% - 20px);">🤵🏻‍♂️{{ pSelectedApp.founder ? pSelectedApp.founder : '대표명 (010-1111-1111)' }}</p>
-          <p @click="openPop('editGroup')" class="font16 cursorP" style="width:20px;">⚙️</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <!-- 조직 권한 설정 -->
+  <!-- 조직 권한 설정 -->
   <div class="w100P manageTable">
     <jojikManageTable :pPageData="pPageData" @openUserInfo="openUserInfo" :pSelectedApp="pSelectedApp" :pCloseAddManage="closeAddManage" :pAddManagerTypeYn="addManagerTypeYn"/>
   </div>
@@ -44,10 +12,12 @@
 </template>
 
 <script>
+import jojikCard from '@/components/admPages/adm_components/Adm_jojikCard.vue'
 import jojikManageTable from '@/components/admPages/adm_components/Adm_jojikManageTable.vue'
 export default {
   components: {
-    jojikManageTable
+    jojikManageTable,
+    jojikCard
   },
   props: {
     pSelectedApp: Object,
@@ -65,9 +35,6 @@ export default {
   methods: {
     saveManage () {
       return false
-    },
-    showMore () {
-      this.moreOpen = !this.moreOpen
     },
     openPop (popType) {
       this.propParams = this.pSelectedApp

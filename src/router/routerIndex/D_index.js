@@ -48,6 +48,12 @@ export const routes = [
         name: 'orgDetail',
         props: true,
         component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/adm_components/Adm_jojikDetailWrap.vue')
+      },
+      {
+        path: '/orgCard/:appKey/:orgKey',
+        name: 'orgCard',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '@/components/admPages/adm_components/Adm_jojikCard.vue')
       }
     ]
   },

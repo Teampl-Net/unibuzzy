@@ -2,6 +2,7 @@
   <div class="w100P h100P admPageMain" id="admLayout">
     <div class="topArea w100P">
       <div class="myInfoArea">
+
         <p class="font30" style="padding-right:10px;">내 조직 IN </p>
         <select v-model="mSelectedApp" @change="setSelectedApp" style="height:30px;">
           <option v-for="(apps, index) in mGetOrgList" :key="index" :value="apps" :selected="index === mSelectedAppIdx">{{ apps.title }}</option>
@@ -15,6 +16,7 @@
 
     <div class="w100P jojikCompoWrap">
       <template v-for="(branch, index) in mBranchList" :key="index">
+        <p class="cursorP" @click="gotoOrgCard(branch)">조직 카드 가기</p>
         <jojikCompo @click="gotoOrgDetail(branch)" :pBranch="branch" class="cursorP"/>
       </template>
       <div class="jojikAddBtn cursorP" @click="gotoAddOrg">
@@ -55,6 +57,9 @@ export default {
     }
   },
   methods: {
+    gotoOrgCard (branch) {
+      this.$router.push(`/orgCard/${this.pMyOrgList[this.mSelectedAppIdx].appKey}/${branch.orgKey}`)
+    },
     gotoAddOrg () {
       this.$router.push('/addOrg')
     },
