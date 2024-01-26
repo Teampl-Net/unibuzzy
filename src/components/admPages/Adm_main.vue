@@ -15,7 +15,7 @@
 
     <div class="w100P jojikCompoWrap">
       <template v-for="(branch, index) in mBranchList" :key="index">
-        <jojikCompo @click="openPage(branch)" :pBranch="branch" class="cursorP"/>
+        <jojikCompo @click="gotoOrgDetail(branch)" :pBranch="branch" class="cursorP"/>
       </template>
       <div class="jojikAddBtn cursorP" @click="gotoAddOrg">
         <div style="width:50px; height:50px; border-radius:50%; background-color:#ebebeb; font-size:30px; line-height:50px;">+</div>
@@ -57,6 +57,10 @@ export default {
   methods: {
     gotoAddOrg () {
       this.$router.push('/addOrg')
+    },
+    gotoOrgDetail (branch) {
+      // console.log('branch', branch)
+      this.$router.push(`/orgDetail/${this.pMyOrgList[this.mSelectedAppIdx].appKey}/${branch.orgKey}`)
     },
     openPop (popType) {
       this.propParams.popType = popType

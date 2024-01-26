@@ -23,7 +23,7 @@ export const routes = [
     component: admRouterMain,
     children: [
       {
-        path: '/admPages',
+        path: '/admMain',
         name: 'admPageMain',
         props: true,
         meta: {
@@ -42,6 +42,12 @@ export const routes = [
         name: 'addMember',
         props: true,
         component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/popUP/Adm_addMemberPop.vue')
+      },
+      {
+        path: '/orgDetail/:appKey/:orgKey',
+        name: 'orgDetail',
+        props: true,
+        component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/adm_components/Adm_jojikDetailWrap.vue')
       }
     ]
   },

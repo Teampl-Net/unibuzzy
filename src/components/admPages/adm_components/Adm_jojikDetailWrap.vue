@@ -1,11 +1,12 @@
 <template>
+  <div id="admLayout">
     <div class="w100P topArea">
-      <div class="backBtn mRight-1 cursorP" @click="pClosePage">
+      <div class="backBtn mRight-1 cursorP" @click="gotoBack">
         <img :src="require(`@/assets/images/common/icon_back.png`)" :alt="뒤로가기"/>
       </div>
       <div class="myInfoArea">
         <select v-model="mSelectedBranch" @change="changeSelectedBranch" style="height:30px;">
-          <option v-for="(branch, index) in mBranchList" :key="index" :value="branch">{{ branch.orgName }}</option>
+          <option v-for="(branch, index) in mAppDetail.branch" :key="index" :value="branch">{{ branch.orgName }}</option>
         </select>
         <!-- <p class="font30" style="padding-left:10px;">IN {{ pPropParams.myApps ? pPropParams.myApps.title : '' }}</p> -->
         <p class="font30" style="padding-left:10px;">관리자 페이지</p>
@@ -41,7 +42,7 @@
         <jojikUesrInfo v-if="mSelectedJojikTabIdx === 1" :pSelectedApp="mSelectedBranch" :pFilteredPageData="filteredPageData" :pAddUser="addUserYn" :pCloseAddUser="closeAddUser"/>
       </div>
     </div>
-
+  </div>
 </template>
 
 <script>
@@ -58,13 +59,22 @@ export default {
     pPageData: {},
     pMyBranches: [],
     pMyApps: {},
-    pClosePage: Function
+    pClosePage: Function,
+    appKey: Number,
+    orgKey: Number,
+    pMyOrgList: []
   },
   created () {
-    console.log('jojikDetailWrap pPageData', this.pPageData)
-    console.log('jojikDetailWrap pPropParams', this.pPropParams)
-    this.mSelectedBranch = this.pPageData
-    this.mBranchList = this.pPropParams.branch
+    // console.log('jojikDetailWrap pPageData', this.pPageData)
+    // console.log('jojikDetailWrap pPropParams', this.pPropParams)
+    // this.mSelectedBranch = this.pPageData
+    // this.mBranchList = this.pPropParams.branch
+    console.log('jojikDetailWrap appKey, orgKey', this.appKey, this.orgKey)
+    console.log('jojikDetailWrap pMyOrgList', this.pMyOrgList)
+    if (this.appKey && this.orgKey && this.pMyOrgList) {
+      this.mAppDetail = this.pMyOrgList.filter(app => app.appKey === Number(this.appKey))
+      console.log('this.mAppDetail', this.mAppDetail)
+    }
   },
   data () {
     return {
@@ -83,7 +93,8 @@ export default {
       fromWhere: {},
       propParams: {},
       mMOrgUserList: [],
-      mBranchList: []
+      mBranchList: [],
+      mAppDetail: {}
       // filteredPageData: {}
     }
   },
@@ -91,6 +102,9 @@ export default {
     this.getMOrgMemberList()
   },
   methods: {
+    gotoBack () {
+      this.$router.push('/admMain')
+    },
     openPop (param) {
       this.$emit('openPop', param)
     },
@@ -115,7 +129,7 @@ export default {
       paramSet.creUserKey = this.GE_USER.userKey
       paramSet.orgKey = this.pPageData.orgKey
       paramSet.appToken = 'eyJhbGciOiJIUzI1NiJ9.eyJjcmVVc2VyS2V5IjoxOTIsImNyZURhdGUiOjE3MDUyODQzODUwMDAsImFwcE5hbWUiOiLrjZTslYzrprwiLCJhcHBUb2tlbiI6ImV5SmhiR2NpT2lKSVV6STFOaUo5LmV5SmpjbVZWYzJWeVMyVjVJam94T1RJc0ltTnlaVVJoZEdVaU9qRTNNRFV5T0RRek9EVXdNREFzSW1Gd2NFNWhiV1VpT2lMcmpaVHNsWXpycHJ3aUxDSmhjSEJVYjJ0bGJpSTZJbVY1U21oaVIyTnBUMmxLU1ZWNlNURk9hVW81TG1WNVNtcGpiVlpXWXpKV2VWTXlWalZKYW05NFQxUkpjMGx0VG5sYVZWSm9aRWRWYVU5cVJUTk5SRlY1VDBSUmVrOUVWWGROUkVGelNXMUdkMk5GTldoaVYxVnBUMmxNY21wYVZITnNXWHB5Y0hKM2FVeERTbXBhV0Vvd1lWWkNiMkl5Tld4WFZ6UnBUMnBGYzBsdFJuZGpSWFJzWlZOSk5rMVRkMmxaTWxaNVpFZHNSbUpYUm5CaVJteDFTV3B2ZUV4RFNtdGFWM2hzWkVkV1dtSnBTVFpOUTNkcFdsaG9kMGxxYjNsTlJFbDNUbXBWTlU1cVZUVk1RMHAxWWpJMWFscFRTVFpKYlVrMVdXMVZNVnBFYkd0TVZFRXpXa1JaZEU1RVpHMU5VekExVDBSSk1VeFVhM2xPYW1NMFRsZFJkMDFVVlhoYVEwbHpTVzFHZFZwSVNuWmhWMUpLV2tOSk5rbHRUblppVXpVd1dWZDRabU5JU25aaGJWWnFaRU5LT1M1UVdIbFdYMUIwZFVkUlowSmZjMHRNVDNadE9XeDNPV2hvYmxoblJsQXhla2M1V0dGdFIxaFVVVGhWSWl3aVkyVnlkR2xRYUc5dVpWbHVJam94TENKaGNIQkxaWGtpT2pFc0ltTmxjblJwUlcxaGFXeFpiaUk2TVN3aVpHVnNaWFJsV1c0aU9qQXNJbVY0Y0NJNk1qQXlNRGt3TWpZM01Dd2libTl1WTJVaU9pSTVNVEprTTJabE1DMHhabVZrTFRRMllqa3RPREV3WkMwMU5qYzROVGN3TWpjMVpETWlMQ0poYm1SeWIybGtTV1FpT2lKamIyMHVkR0ZzWDNCeWIycGxZM1FpZlEuMUFGMkpoQzd6VG1wVTV2aHdvN0wxN2RSVlVSRzl0MFBzQ09rVFNGR1dHMCIsImNlcnRpUGhvbmVZbiI6MSwiYXBwS2V5IjoxLCJjZXJ0aUVtYWlsWW4iOjEsImRlbGV0ZVluIjowLCJleHAiOjIwMjA5MDI3NzQsIm5vbmNlIjoiNTlmMDYxMDItY2VhMS00NmE2LWEwMmYtNGUwODRhZWFlZjI1IiwiYW5kcm9pZElkIjoiY29tLnRhbF9wcm9qZWN0In0.irKKhHVeVbE5pvXAM69ytw0SCxYA6SMgXRPEDA_eCU8'
-      var result = await axios.post('/sUniB/tp.getMOrgUserList', paramSet,  { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      var result = await axios.post('/sUniB/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
       if (result && result.data) {
         this.mMOrgUserList = result.data
       }
