@@ -5,7 +5,7 @@
       <div class="imgInfo">
       </div>
       <div class="textInfo">
-        <p class="font15 fontBold">{{ pBranch.orgName ? pBranch.orgName : pBranch.name }}</p>
+        <p class="font15 fontBold">{{ pBranch.orgName ? pBranch.orgName : '새 조직' }}</p>
         <p class="font13">{{ pBranch.orgKey ? pBranch.orgKey : pBranch.code }}</p>
       </div>
     </div>

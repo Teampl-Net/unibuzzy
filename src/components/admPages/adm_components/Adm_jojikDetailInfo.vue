@@ -37,28 +37,10 @@
   </div>
 
     <!-- 조직 권한 설정 -->
-    <div class="w100P manageInfos">
-      <div class="w100P manageAreaTitle">
-        <p class="font20 fontBold">권한 관리</p>
-        <div class="managerBtns">
-          <div class="font25">
-            <span class="cursorP">⬆️</span>
-            <span class="cursorP">⬇️</span>
-          </div>
-          <div>
-            <span v-if="addManagerTypeYn === false" @click="addManage" class="btnAdd cursorP">추가</span>
-            <span v-if="addManagerTypeYn === true" @click="saveManage" class="btnAdd cursorP">저장</span>
-            <span class="btnDel cursorP">삭제</span>
-            <span class="btnEdit cursorP">수정</span>
-          </div>
-        </div>
-      </div>
+  <div class="w100P manageTable">
+    <jojikManageTable :pPageData="pPageData" @openUserInfo="openUserInfo" :pSelectedApp="pSelectedApp" :pCloseAddManage="closeAddManage" :pAddManagerTypeYn="addManagerTypeYn"/>
+  </div>
 
-      <div class="w100P manageTable">
-        <jojikManageTable :pPageData="pPageData" @openUserInfo="openUserInfo" :pSelectedApp="pSelectedApp" :pCloseAddManage="closeAddManage" :pAddManagerTypeYn="addManagerTypeYn"/>
-      </div>
-
-    </div>
 </template>
 
 <script>
@@ -77,17 +59,10 @@ export default {
   data () {
     return {
       moreOpen: false,
-      addManagerTypeYn: false,
       propParams: {}
     }
   },
   methods: {
-    addManage () {
-      this.addManagerTypeYn = true
-    },
-    closeAddManage () {
-      this.addManagerTypeYn = false
-    },
     saveManage () {
       return false
     },
@@ -138,36 +113,8 @@ export default {
   padding-top:30px;
 }
 
-.manageInfos{
-  padding-top:30px;
-  height:auto;
-}
-.manageAreaTitle{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding-bottom:5px;
-  border-bottom:1px solid #ccc;
-}
-.managerBtns{
-  width:auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:1rem;
-}
-.btnDel, .btnAdd, .btnEdit{
-  padding:5px 10px;
-  border:1px solid #ccc;
-  background-color:#fff;
-  margin-right:0.3rem;
-
-}
-.btnDel{
-  background-color:#eee !important;
-}
-
 .manageTable{
   height:auto;
 }
+
 </style>

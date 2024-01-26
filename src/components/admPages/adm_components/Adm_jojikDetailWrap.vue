@@ -6,7 +6,7 @@
       </div>
       <div class="myInfoArea">
         <select v-model="mSelectedBranch" @change="changeSelectedBranch" style="height:30px;">
-          <option v-for="(branch, index) in mAppDetail.branch" :key="index" :value="branch">{{ branch.orgName }}</option>
+          <option v-for="(branch, index) in mAppDetail[0].branch" :key="index" :value="branch">{{ branch.orgName ? branch.orgName : '새 조직' }}</option>
         </select>
         <!-- <p class="font30" style="padding-left:10px;">IN {{ pPropParams.myApps ? pPropParams.myApps.title : '' }}</p> -->
         <p class="font30" style="padding-left:10px;">관리자 페이지</p>
@@ -15,7 +15,7 @@
 
     <div class="bottomArea w100P">
       <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:2px solid #5F61BD; ">
-        <ul style="display:flex; align-items:center; justify-content:start; gap:1rem; margin-bottom:0;">
+        <ul style="display:flex; align-items:center; justify-content:start; gap:1rem; margin-bottom:-1px;">
           <li class="jojikTab cursorP" v-for="(tab, index) in jojikTabs" :key="index" :class="{selected : mSelectedJojikTabIdx === index}" @click="changeJojikTab(index)">
             {{ tab.tabName }}
           </li>
@@ -75,6 +75,9 @@ export default {
       this.mAppDetail = this.pMyOrgList.filter(app => app.appKey === Number(this.appKey))
       console.log('this.mAppDetail', this.mAppDetail)
     }
+    this.mSelectedBranch = this.mAppDetail[0].branch.filter(branch => branch.orgKey === Number(this.orgKey))
+    this.mSelectedBranch = this.mSelectedBranch[0]
+    console.log('this.mSelectedBranch', this.mSelectedBranch)
   },
   data () {
     return {

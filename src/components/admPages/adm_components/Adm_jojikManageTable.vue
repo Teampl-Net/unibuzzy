@@ -1,4 +1,21 @@
 <template>
+    <div class="w100P manageInfos">
+      <div class="w100P manageAreaTitle">
+        <p class="font20 fontBold">권한 관리</p>
+        <div class="managerBtns">
+          <div class="font25">
+            <span class="cursorP">⬆️</span>
+            <span class="cursorP">⬇️</span>
+          </div>
+          <div>
+            <span v-if="addManagerTypeYn === false" @click="addManage" class="btnAdd cursorP">추가</span>
+            <span v-if="addManagerTypeYn === true" @click="saveAuths(null, null)" class="btnAdd cursorP">저장</span>
+            <span class="btnDel cursorP">삭제</span>
+            <span class="btnEdit cursorP">수정</span>
+          </div>
+        </div>
+      </div>
+
   <table class="w100P manageTable">
     <thead>
       <th style="width:50px;">선택</th>
@@ -9,44 +26,46 @@
     </thead>
 
     <tbody>
-        <tr v-for="(manage, index) in pSelectedApp.manage" :key="index">
+        <tr v-for="(auth, index) in pSelectedApp.authList" :key="index">
             <td>
               <input type="checkbox" />
             </td>
             <td>{{ index + 1 }}</td>
-            <td @click="openUserInfo(manage.name)">{{ manage.name ? manage.name : ''}} ({{ manage.count ? manage.count + '명': '0명' }})</td>
+            <td @click="openUserInfo(auth.authName)">{{ auth.authName ? auth.authName : ''}} ({{ auth.count ? auth.count + '명': '0명' }})</td>
             <td>
-              <input type="checkbox" checked/>
+              <input type="checkbox" class="mngUser" @click="saveAuths(auth, 'user')" :checked="auth.mngUserYn"/>
             </td>
             <td>
-              <input type="checkbox" />
+              <input type="checkbox" class="mngOrg" @click="saveAuths(auth, 'org')" :checked="auth.mngOrgYn"/>
             </td>
         </tr>
-        <tr v-if="pAddManagerTypeYn === true">
+        <tr v-if="addManagerTypeYn === true">
             <td>
               <p @click="pCloseAddManage">X</p>
             </td>
-            <td>{{ pSelectedApp.manage.length + 1 }}</td>
+            <td>{{ pSelectedApp.authList.length + 1 }}</td>
             <td>
-              <input type="text" />
+              <input type="text" v-model="newAuthName"/>
             </td>
             <td>
-              <input type="checkbox" />
+              <input type="checkbox" v-model="mNewMngOrg"/>
             </td>
             <td>
-              <input type="checkbox" />
+              <input type="checkbox" v-model="mNewMngUser"/>
             </td>
         </tr>
     </tbody>
   </table>
+
+  </div>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   props: {
     pPageData: {},
     pSelectedApp: {},
-    pAddManagerTypeYn: Boolean,
     pCloseAddManage: Function
   },
   created () {
@@ -54,20 +73,125 @@ export default {
     console.log('jojikManageTable pSelectedApp', this.pSelectedApp)
   },
   data () {
-
+    return {
+      addManagerTypeYn: false,
+      mMngOrg: false,
+      mMngUser: false,
+      mNewMngOrg: false,
+      mNewMngUser: false,
+      dispName: '회원님',
+      newAuthName: ''
+    }
   },
   methods: {
+    setMngOrg (authKey) {
+      console.log('authKey', authKey)
+      this.mMngOrg = !this.mMngOrg
+    },
+    setMngUser (authKey) {
+      console.log('authKey', authKey)
+      this.mMngUser = !this.mMngUser
+    },
+    addManage () {
+      this.addManagerTypeYn = true
+    },
+    closeAddManage () {
+      this.addManagerTypeYn = false
+    },
     openUserInfo (param) {
       this.$emit('openUserInfo', param)
-    }
+    },
+    async saveAuths (auth, type) {
+      const paramSet = {}
+      if (!auth && !type) { // 새 조직
+        if (this.newAuthName === '') return
+        paramSet.orgKey = this.pSelectedApp.orgKey
+        paramSet.authName = this.newAuthName
+        paramSet.authDispName = this.dispName
+        paramSet.mngOrgYn = this.mNewMngOrg
+        paramSet.mngUserYn = this.mNewMngUser
+        paramSet.creUserKey = this.GE_USER.userKey
+      } else if (auth && type) {
+        if (auth.authKey) { // 수정이면
+          paramSet.authKey = auth.authKey
+        }
+        paramSet.orgKey = this.pSelectedApp.orgKey
+        paramSet.authName = auth.authName
+        paramSet.authDispName = this.dispName
+        paramSet.creUserKey = this.GE_USER.userKey
+        if (auth && type === 'user') { // 유저 권한 수정
+          if (auth.mngUserYn === true || auth.mngUserYn === 1) {
+            paramSet.mngUserYn = false
+          } else if (auth.mngUserYn === false || auth.mngUserYn === 0) {
+            paramSet.mngUserYn = true
+          }
+        } else if (auth && type === 'org') { // 조직 권한 수정
+          paramSet.mngOrgYn = !auth.mngOrgY
+          if (auth.mngOrgYn === true || auth.mngOrgYn === 1) {
+            paramSet.mngOrgYn = false
+          } else if (auth.mngOrgYn === false || auth.mngOrgYn === 0) {
+            paramSet.mngOrgYn = true
+          }
+        }
+      }
+      console.log('paramSet', paramSet)
 
+      const result = await axios.post('/sUniB/tp.saveOrgAuth', { orgAuth: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      console.log('result', result)
+      if (!auth && !type) {
+        location.reload()
+      }
+    }
+  },
+  watch: {
+    mMngOrg: {
+      handler (value) {
+        console.log('mMngOrg', value)
+      }
+    },
+    mMngUser: {
+      handler (value) {
+        console.log('mMngUser', value)
+      }
+    }
+  },
+  computed: {
+    GE_USER () {
+      return this.$store.getters['D_USER/GE_USER']
+    }
   }
 }
 </script>
 
 <style scoped>
-.manageTable{
+
+.manageInfos{
+  padding-top:30px;
   height:auto;
+}
+.manageAreaTitle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:5px;
+  border-bottom:1px solid #ccc;
+}
+.managerBtns{
+  width:auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:1rem;
+}
+.btnDel, .btnAdd, .btnEdit{
+  padding:5px 10px;
+  border:1px solid #ccc;
+  background-color:#fff;
+  margin-right:0.3rem;
+
+}
+.btnDel{
+  background-color:#eee !important;
 }
 
 thead th{
