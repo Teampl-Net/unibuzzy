@@ -26,6 +26,17 @@ module.exports = {
         pathRewrite: { '^/sUniB': '/' },
         logLevel: 'debug'
       },
+      '^/fileServer': {
+        // http://m.passtory.net:7443/
+        // target: 'http://192.168.0.100:9091',
+        // target: 'http://192.168.0.100:9091',
+        target: 'http://192.168.0.78:9443',
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { '^/fileServer': '/' },
+        /* pathRewrite: { '^/fileServer': '/fileServer' }, */
+        logLevel: 'debug'
+      },
       '^/boardMain/service': {
         target: 'https://mo.d-alim.com',
         // target: 'http://192.168.0.10:9090',
@@ -73,17 +84,6 @@ module.exports = {
         changeOrigin: true,
         secure: false,
         pathRewrite: { '^/apt123': '/apt123' },
-        logLevel: 'debug'
-      },
-      '^/fileServer': {
-        // http://m.passtory.net:7443/
-        // target: 'http://192.168.0.100:9091',
-        // target: 'http://192.168.0.100:9091',
-        target: 'https://m.passtory.net:7443',
-        changeOrigin: true,
-        secure: false,
-        pathRewrite: { '^/fileServer': '/fileServer' },
-        /* pathRewrite: { '^/fileServer': '/fileServer' }, */
         logLevel: 'debug'
       },
       '^/fb.': {

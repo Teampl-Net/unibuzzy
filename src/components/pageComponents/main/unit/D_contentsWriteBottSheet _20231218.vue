@@ -97,7 +97,7 @@ export default {
       mOption: {
         model: 'mankik',
         purpose: 'Add ToDo',
-        fileServerURL: 'https://mzoin.com/fileServer/tp.uploadFile'
+        fileServerURL: '/fileServer/tp.uploadFile'
       },
       mTargetDataList: [],
       mGetTodoFamilyList: []

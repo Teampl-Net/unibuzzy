@@ -1,5 +1,5 @@
 <template>
-  <div class="jojikInfoWrap w100P">
+  <div v-if="mSelectedBranch" class="jojikInfoWrap w100P">
     <div class="defaultInfos w100P">
       <div style="display:flex; align-items:center;">
         <div class="imgInfo"></div>
@@ -9,7 +9,7 @@
         </div>
       </div>
       <div>
-        <p class="font14">{{ mSelectedBranch.orgType && mSelectedBranch.orgType === 'C' ? '회사' : mSelectedBranch.orgType === 'A' ? '아파트' : '학교' }}</p>
+        <p class="font14">{{ mSelectedBranch.orgType && mSelectedBranch.orgType === 'T' ? '채널' : mSelectedBranch.orgType === 'B' ? '주소록' : '채널' }}</p>
         <p class="font13">🙍🏻‍♂️{{ mSelectedBranch.allCount ? mSelectedBranch.allCount : '미측정' }}</p>
       </div>
     </div>
@@ -43,6 +43,7 @@ export default {
     orgKey: Number
   },
   created () {
+    window.addEventListener('message', (e) => this.receiveMessage(e), false)
     if (this.pSelectedOrg) {
       this.mSelectedBranch = this.pSelectedOrg
     } else {
@@ -51,21 +52,79 @@ export default {
         this.orgDetails = this.pMyOrgList.filter(app => app.appKey === Number(this.appKey))
         console.log('this.orgDetails', this.orgDetails)
       }
-      this.mSelectedBranch = this.orgDetails[0].branch.filter(branch => branch.orgKey === Number(this.orgKey))
-      this.mSelectedBranch = this.mSelectedBranch[0]
-      console.log('this.mSelectedBranch', this.mSelectedBranch)
+      if (this.orgDetails && this.orgDetails.length > 0) {
+        this.mSelectedBranch = this.orgDetails[0].branch.filter(branch => branch.orgKey === Number(this.orgKey))
+        this.mSelectedBranch = this.mSelectedBranch[0]
+        console.log('this.mSelectedBranch', this.mSelectedBranch)
+      }
+      if (location.search) {
+        const urlParam = this.getParamMap(location.search)
+        console.log(urlParam)
+        if (urlParam.appToken) {
+          this.$APP_CONFIG.appToken = urlParam.appToken
+          if (this.$route.params.orgKey) {
+            this.getOrgList(Number(this.$route.params.orgKey))
+          }
+        }
+      }
     }
   },
   data () {
     return {
       moreOpen: false,
       orgDetails: {},
-      mSelectedBranch: {}
+      mSelectedBranch: null,
+      mOtherAppUserInfo: null
+    }
+  },
+  computed: {
+    GE_USER () {
+      if (this.mOtherAppUserInfo !== null && this.mOtherAppUserInfo.userKey !== null) {
+        return this.mOtherAppUserInfo
+      } else {
+        return this.$store.getters['D_USER/GE_USER']
+      }
     }
   },
   methods: {
+    getParamMap (urlString) {
+      const splited = urlString.replace('?', '').split(/[=?&]/)
+      const param = {}
+      for (let i = 0; i < splited.length; i++) {
+        param[splited[i]] = splited[++i]
+      }
+      return param
+    },
     showMore () {
       this.moreOpen = !this.moreOpen
+    },
+    async getOrgList (orgKey) {
+      var paramSet = { orgKey: orgKey }
+      var result = await this.$axios.post('/sUniB/tp.getOrgList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
+      if (result && result.data) {
+        this.mSelectedBranch = result.data.org[0]
+      }
+    },
+    receiveMessage (event, callback) {
+      const basedUrl = 'http://192.168.0.78:9443'
+      if (event.origin.includes('mankik') || event.origin.includes('localhost') || event.origin.includes('192.168') || event.origin.includes('hybric') || event.origin.includes(basedUrl)) {
+        try {
+          if (event.data && !event.data.type) {
+            const result = JSON.parse(event.data)
+            if (result.data) {
+              this.mOtherAppUserInfo = result.data
+              // this.$APP_CONFIG.appToken = result.data.appToken
+              // this.getOrgList(this.mOtherAppUserInfo.orgKey)
+            }
+            if (callback) {
+              callback(result)
+            }
+          }
+          console.log(event)
+        } catch (error) {
+          console.log(error)
+        }
+      }
     }
   }
 
@@ -74,7 +133,6 @@ export default {
 
 <style scoped>
 .jojikInfoWrap{
-  border:1px solid gray;
   padding:20px;
   background-color:#fff;
 }

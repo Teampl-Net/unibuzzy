@@ -74,53 +74,62 @@ app.config.globalProperties.$axios = axios
 app.config.globalProperties.$Vuex = Vuex
 app.config.globalProperties.$store = store
 app.config.globalProperties.$i18n = i18n
-if (!localStorage.getItem('nativeYn') || localStorage.getItem('nativeYn') === 'false' || localStorage.getItem('nativeYn') === false) {
-  const appInfo = { packageName: 'com.hybric' }
-  if (appInfo.packageName && !app.config.globalProperties.$INIT_YN) { // 앱 버전체크도 해야함
-    const mzoinInitalizer = '/MZ_appInitailizer.json'
-    const appConfig = '/H_service.json'
-    app.config.globalProperties.$DEV_YN = true
-    fetch(appConfig)
-      .then(response => {
-        console.log(response)
-        response.json()
-      })
-      .then(myApp => {
-        fetch(mzoinInitalizer).then(response => response.json())
-          .then(initData => {
-            const data = findValueByKey(initData.app, appInfo.packageName)
-            console.log('data', data)
-            app.config.globalProperties.$APP_CONFIG = data
-            // app.config.globalProperties.$APP_TYPE = data.appType
-            // app.config.globalProperties.$APP_NAME = data.appName
-            // app.config.globalProperties.$APP_DOMAIN = data.appDomain
-            // app.config.globalProperties.$FIREBASE_CONFIG = data.firebaseConfig
-            store.dispatch('D_USER/AC_USER_APP', data)
-            store.dispatch('D_USER/AC_USER_CONFIG', data.firebaseConfig)
-            localStorage.setItem('appConfig', data)
-            app.config.globalProperties.$API_PATH = data.apiPath
-            i18n.global.locale = data.defaultLang
-            app.config.globalProperties.$DEFAULT_LANG = data.apiPath
-            localStorage.setItem('currentScreen', data.mainUI)
-            console.log('여기다잉') // JSON 데이터 출력 또는 원하는 처리 수행
-
-            require('./proxyMain')
-            require('./registerServiceWorker')
-            app.mount('#app')
-          })
-      })
-      .catch(error => console.error('Error fetching JSON:', error))
-    app.use(router).use(store)/* .use(VueI18n) */
-  }
-} else {
-  if (localStorage.getItem('initYn')) {
-    require('./proxyMain')
-    require('./registerServiceWorker')
-  } else {
-    app.config.globalProperties.$INIT_YN = false
-  }
+if (window.self !== window.top) {
+  // 현재 문서가 iframe 안에 있음
+  console.log('현재 문서는 iframe 안에 있습니다.')
+  app.config.globalProperties.$APP_CONFIG = {}
+  require('./proxyMain')
   app.mount('#app')
+} else {
+  if (!localStorage.getItem('nativeYn') || localStorage.getItem('nativeYn') === 'false' || localStorage.getItem('nativeYn') === false) {
+    const appInfo = { packageName: 'com.hybric' }
+    if (appInfo.packageName && !app.config.globalProperties.$INIT_YN) { // 앱 버전체크도 해야함
+      const mzoinInitalizer = '/MZ_appInitailizer.json'
+      const appConfig = '/H_service.json'
+      app.config.globalProperties.$DEV_YN = true
+      fetch(appConfig)
+        .then(response => {
+          console.log(response)
+          response.json()
+        })
+        .then(myApp => {
+          fetch(mzoinInitalizer).then(response => response.json())
+            .then(initData => {
+              // 현재 문서가 iframe 밖에 있음
+              const data = findValueByKey(initData.app, appInfo.packageName)
+              console.log('data', data)
+              app.config.globalProperties.$APP_CONFIG = data
+              // app.config.globalProperties.$APP_TYPE = data.appType
+              // app.config.globalProperties.$APP_NAME = data.appName
+              // app.config.globalProperties.$APP_DOMAIN = data.appDomain
+              // app.config.globalProperties.$FIREBASE_CONFIG = data.firebaseConfig
+              store.dispatch('D_USER/AC_USER_APP', data)
+              store.dispatch('D_USER/AC_USER_CONFIG', data.firebaseConfig)
+              localStorage.setItem('appConfig', data)
+              app.config.globalProperties.$API_PATH = data.apiPath
+              i18n.global.locale = data.defaultLang
+              app.config.globalProperties.$DEFAULT_LANG = data.apiPath
+              localStorage.setItem('currentScreen', data.mainUI)
+              console.log('여기다잉') // JSON 데이터 출력 또는 원하는 처리 수행
+              require('./proxyMain')
+              require('./registerServiceWorker')
+              app.mount('#app')
+            })
+        })
+        .catch(error => console.error('Error fetching JSON:', error))
+      app.use(router).use(store)/* .use(VueI18n) */
+    }
+  } else {
+    if (localStorage.getItem('initYn')) {
+      require('./proxyMain')
+      require('./registerServiceWorker')
+    } else {
+      app.config.globalProperties.$INIT_YN = false
+    }
+    app.mount('#app')
+  }
 }
+
 window.app = app
 export function findValueByKey (jsonObj, keyToFind) {
   if (jsonObj && typeof jsonObj === 'object') {

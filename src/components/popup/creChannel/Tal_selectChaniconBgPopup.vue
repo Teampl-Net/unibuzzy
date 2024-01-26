@@ -471,7 +471,7 @@ export default {
 
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://mzoin.com/fileServer/tp.uploadFile', form,
+            .post('/fileServer/tp.uploadFile', form,
               {
                 headers: {
                   'Content-Type': 'multipart/form-data; charset: UTF-8;'

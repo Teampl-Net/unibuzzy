@@ -1,10 +1,10 @@
 <template>
-  <div id="admLayout">
-    <div class="w100P topArea">
+  <div v-if="mSelectedBranch" id="admLayout">
+    <div v-if="!mIframeYn" class="w100P topArea">
       <div class="backBtn mRight-1 cursorP" @click="gotoBack">
         <img :src="require(`@/assets/images/common/icon_back.png`)" :alt="뒤로가기"/>
       </div>
-      <div class="myInfoArea">
+      <div v-if="mAppDetail && mAppDetail.length > 0" class="myInfoArea">
         <select v-model="mSelectedBranch" @change="changeSelectedBranch" style="height:30px;">
           <option v-for="(branch, index) in mSelectedBranch" :key="index" :value="branch">{{ branch.orgName ? branch.orgName : '새 조직' }}</option>
         </select>
@@ -64,22 +64,33 @@ export default {
     pMyOrgList: []
   },
   created () {
-    // console.log('jojikDetailWrap pPageData', this.pPageData)
-    // console.log('jojikDetailWrap pPropParams', this.pPropParams)
-    // this.mSelectedBranch = this.pPageData
-    // this.mBranchList = this.pPropParams.branch
-    console.log('jojikDetailWrap orgKey', this.orgKey)
-    console.log('jojikDetailWrap pMyOrgList', this.pMyOrgList)
-    if (this.orgKey && this.pMyOrgList) {
-      this.mAppDetail = this.pMyOrgList.filter(org => org.orgKey === Number(this.orgKey))
-      console.log('this.mAppDetail', this.mAppDetail)
+    window.addEventListener('message', (e) => this.receiveMessage(e), false)
+    if (this.pSelectedApp) {
+      this.mSelectedBranch = this.pSelectedApp
+    } else {
+      if (this.orgKey && this.pMyOrgList) {
+        this.mAppDetail = this.pMyOrgList.filter(org => org.orgKey === Number(this.orgKey))
+        console.log('this.mAppDetail', this.mAppDetail)
+        this.mSelectedBranch = this.mAppDetail[0]
+        console.log('this.mSelectedBranch', this.mSelectedBranch)
+      }
+      if (location.search) {
+        const urlParam = this.getParamMap(location.search)
+        console.log(urlParam)
+        if (urlParam.appToken) {
+          this.$APP_CONFIG.appToken = urlParam.appToken
+          if (this.$route.params.orgKey) {
+            this.getOrgList(Number(this.$route.params.orgKey))
+          }
+        }
+      }
     }
-    this.mSelectedBranch = this.mAppDetail[0]
-    console.log('this.mSelectedBranch', this.mSelectedBranch)
   },
   data () {
     return {
-      mSelectedBranch: '',
+      mSelectedBranch: null,
+      mOtherAppUserInfo: null,
+      mIframeYn: window.self !== window.top,
       mSelectedBranchIdx: 0,
       selectedAppName: '',
       mSelectedJojikTabIdx: 0,
@@ -102,8 +113,44 @@ export default {
   mounted () {
   },
   methods: {
+    receiveMessage (event, callback) {
+      const basedUrl = 'http://192.168.0.78:9443'
+      if (event.origin.includes('mankik') || event.origin.includes('localhost') || event.origin.includes('192.168') || event.origin.includes('hybric') || event.origin.includes(basedUrl)) {
+        try {
+          if (event.data && !event.data.type) {
+            const result = JSON.parse(event.data)
+            if (result.data) {
+              this.mOtherAppUserInfo = result.data
+              // this.$APP_CONFIG.appToken = result.data.appToken
+              // this.getOrgList(this.mOtherAppUserInfo.orgKey)
+            }
+            if (callback) {
+              callback(result)
+            }
+          }
+          console.log(event)
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    },
     gotoAddMember () {
       this.$router.push(`/addMember/${this.orgKey}`)
+    },
+    getParamMap (urlString) {
+      const splited = urlString.replace('?', '').split(/[=?&]/)
+      const param = {}
+      for (let i = 0; i < splited.length; i++) {
+        param[splited[i]] = splited[++i]
+      }
+      return param
+    },
+    async getOrgList (orgKey) {
+      var paramSet = { orgKey: orgKey }
+      var result = await this.$axios.post('/sUniB/tp.getOrgList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
+      if (result && result.data) {
+        this.mSelectedBranch = result.data.org[0]
+      }
     },
     gotoBack () {
       this.$router.push('/admMain')
@@ -131,33 +178,52 @@ export default {
       // this.filteredPageData(param)
       this.mSelectedJojikTabIdx = 1
     },
-    computed: {
-      uniqueManages () {
-        const manages = new Set()
-        this.mSelectedBranch.user.forEach(user => manages.add(user.manage))
-        console.log('new Array', Array.from(manages))
-        return Array.from(manages)
-      },
-      filteredPageData () {
-        let filteredList = this.mSelectedBranch.user
+    async getMOrgMemberList () {
+      var paramSet = {}
+      paramSet.creUserKey = this.GE_USER.userKey
+      paramSet.orgKey = this.mSelectedBranch.orgKey
+      var result = await this.$axios.post('/sUniB/tp.getMOrgUserList', paramSet, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      if (result && result.data) {
+        this.mMOrgUserList = result.data
+      }
+    }
+  },
+  computed: {
+    uniqueManages () {
+      const manages = new Set()
+      this.mSelectedBranch.user.forEach(user => manages.add(user.manage))
+      console.log('new Array', Array.from(manages))
+      return Array.from(manages)
+    },
+    filteredPageData () {
+      let filteredList = this.mSelectedBranch.user
 
-        if (!this.selectedManage || this.selectedManage === '전체') {
-          filteredList = this.mSelectedBranch.user
-        } else {
-          filteredList = this.mSelectedBranch.user.filter(user => user.manage === this.selectedManage)
-        }
-        if (this.mSearchData) {
-          filteredList = filteredList.filter(user => user.name.includes(this.mSearchData))
-        }
+      if (!this.selectedManage || this.selectedManage === '전체') {
+        filteredList = this.mSelectedBranch.user
+      } else {
+        filteredList = this.mSelectedBranch.user.filter(user => user.manage === this.selectedManage)
+      }
+      if (this.mSearchData) {
+        filteredList = filteredList.filter(user => user.name.includes(this.mSearchData))
+      }
 
-        return filteredList
-      },
-      GE_USER () {
+      return filteredList
+    },
+    GE_USER () {
+      if (this.mOtherAppUserInfo !== null && this.mOtherAppUserInfo.userKey !== null) {
+        return this.mOtherAppUserInfo
+      } else {
         return this.$store.getters['D_USER/GE_USER']
       }
-    },
-    watch: {
-
+    }
+  },
+  watch: {
+    mSelectedBranch: {
+      handler (val, old) {
+        if (!old && val) {
+          this.getMOrgMemberList()
+        }
+      }
     }
   }
 }

@@ -87,7 +87,7 @@ export default {
       appCloseYn: false,
       appYn: false,
       mobileYn: this.$getMobileYn(),
-      naverLoginURL: 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=IUSyLNfGmOkZCGg55awj&redirect_uri=http://192.168.0.14:8080/loginCallBack/naver&state=123'
+      naverLoginURL: 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=IUSyLNfGmOkZCGg55awj&redirect_uri=http://192.168.0.78:8080/loginCallBack/naver&state=123'
     }
   },
   props: {
@@ -194,7 +194,7 @@ export default {
       window.Kakao.init('1a8058b4a7c97f32bbc70a3508fd9f48')
       window.Kakao.Auth.login({
         scope: 'profile_image, account_email',
-        redirectUri: 'http://192.168.0.14:8080/loginCallBack/kakao',
+        redirectUri: 'http://192.168.0.78:8080/loginCallBack/kakao',
         success: this.getKakaoAccount
       })
     },
@@ -245,7 +245,7 @@ export default {
     },
     loginWithKakao2 () {
       const params = {
-        redirectUri: 'http://192.168.0.14:8080/loginCallBack/kakao'
+        redirectUri: 'http://192.168.0.78:8080/loginCallBack/kakao'
         /* redirectUri: 'http://192.168.0.6:8080/login/auth/kakao' */
       }
       window.Kakao.Auth.authorize(params)

@@ -1342,7 +1342,7 @@ export default {
       mOption: {
         model: 'mankik',
         purpose: 'Edit ToDo',
-        fileServerURL: 'https://mzoin.com/fileServer/tp.uploadFile'
+        fileServerURL: '/fileServer/tp.uploadFile'
       },
       mTargetDataList: [],
       mOpenActorListYn: false,

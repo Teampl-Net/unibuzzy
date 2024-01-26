@@ -336,7 +336,7 @@ export default {
           form.append('files[0]', (this.mUploadFileList[i]).file)
           await this.$axios
           // 파일서버 fileServer fileserver FileServer Fileserver
-            .post('https://mzoin.com/fileServer/tp.uploadFile', form,
+            .post('/fileServer/tp.uploadFile', form,
               /* {
                 onUploadProgress: (progressEvent) => {
                   var percentage = (progressEvent.loaded * 100) / progressEvent.total

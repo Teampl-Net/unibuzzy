@@ -32,7 +32,7 @@ export const routes = [
         component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/adm_main.vue')
       },
       {
-        path: '/addOrg',
+        path: '/addOrg/:orgKey',
         name: 'addOrg',
         props: true,
         component: () => import(/* webpackChunkName: "about" */ '../../components/admPages/popUP/Adm_addGroupPop.vue')

@@ -61,7 +61,7 @@ export default {
       this.$router.push(`/orgCard/${branch.orgKey}`)
     },
     gotoAddOrg () {
-      this.$router.push('/addOrg')
+      this.$router.push('/addOrg/0')
     },
     gotoOrgDetail (branch) {
       // console.log('branch', branch)
