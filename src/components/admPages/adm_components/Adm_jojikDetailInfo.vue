@@ -6,7 +6,7 @@
 
   <!-- 조직 권한 설정 -->
   <div class="w100P manageTable">
-    <jojikManageTable :pPageData="pPageData" @openUserInfo="openUserInfo" :pSelectedOrg="pSelectedOrg" :pCloseAddManage="closeAddManage" :pAddManagerTypeYn="addManagerTypeYn"/>
+    <jojikManageTable :pGE_USER="pGE_USER" :pPageData="pPageData" @openUserInfo="openUserInfo" :pSelectedOrg="pSelectedOrg" :pCloseAddManage="closeAddManage" :pAddManagerTypeYn="addManagerTypeYn"/>
   </div>
 
 </template>
@@ -21,6 +21,7 @@ export default {
   },
   props: {
     pSelectedOrg: Object,
+    pGE_USER: {},
     pPageData: {}
   },
   created () {

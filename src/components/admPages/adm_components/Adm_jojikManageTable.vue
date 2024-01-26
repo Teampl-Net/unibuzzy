@@ -66,6 +66,7 @@ export default {
   props: {
     pPageData: {},
     pSelectedOrg: {},
+    pGE_USER: {},
     pCloseAddManage: Function
   },
   created () {
@@ -136,7 +137,7 @@ export default {
       }
       console.log('paramSet', paramSet)
 
-      const result = await axios.post('/sUniB/tp.saveOrgAuth', { orgAuth: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.$store.getters['D_USER/GE_USER'].userToken, Authorization: this.$APP_CONFIG.appToken } })
+      const result = await axios.post('/sUniB/tp.saveOrgAuth', { orgAuth: paramSet }, { withCredentials: true, headers: { UserAuthorization: this.GE_USER.userToken, Authorization: this.$APP_CONFIG.appToken } })
       console.log('result', result)
       if (!auth && !type) {
         location.reload()
@@ -157,7 +158,11 @@ export default {
   },
   computed: {
     GE_USER () {
-      return this.$store.getters['D_USER/GE_USER']
+      if (this.pGE_USER) {
+        return this.pGE_USER
+      } else {
+        return this.$store.getters['D_USER/GE_USER']
+      }
     }
   }
 }

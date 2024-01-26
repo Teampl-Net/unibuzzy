@@ -38,7 +38,7 @@
       </div>
 
       <div class="detailInfos w100P">
-        <jojikDetailInfo v-if="mSelectedJojikTabIdx === 0" :orgKey="orgKey" @openPop="openPop" @openUserInfo="openUserInfo" :pPageData="pPageData" :pSelectedOrg="mSelectedBranch"/>
+        <jojikDetailInfo v-if="mSelectedJojikTabIdx === 0" :orgKey="orgKey" @openPop="openPop" :pGE_USER="GE_USER" @openUserInfo="openUserInfo" :pPageData="pPageData" :pSelectedOrg="mSelectedBranch"/>
         <jojikUesrInfo v-if="mSelectedJojikTabIdx === 1" :orgKey="orgKey" :pSelectedOrg="mSelectedBranch" :pFilteredPageData="filteredPageData" :pAddUser="addUserYn" :pCloseAddUser="closeAddUser"/>
       </div>
     </div>
@@ -80,7 +80,7 @@ export default {
         if (urlParam.appToken) {
           this.$APP_CONFIG.appToken = urlParam.appToken
           if (this.$route.params.orgKey) {
-            this.getOrgList(Number(this.$route.params.orgKey))
+            // this.getOrgList(Number(this.$route.params.orgKey))
           }
         }
       }
@@ -122,7 +122,7 @@ export default {
             if (result.data) {
               this.mOtherAppUserInfo = result.data
               // this.$APP_CONFIG.appToken = result.data.appToken
-              // this.getOrgList(this.mOtherAppUserInfo.orgKey)
+              this.getOrgList(Number(this.$route.params.orgKey))
             }
             if (callback) {
               callback(result)

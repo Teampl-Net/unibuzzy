@@ -114,7 +114,7 @@ export default {
             if (result.data) {
               this.mOtherAppUserInfo = result.data
               this.$APP_CONFIG.appToken = result.data.appToken
-              this.getOrgList(this.$route.params.orgKey)
+              this.getOrgList(Number(this.$route.params.orgKey))
             }
             if (callback) {
               callback(result)
