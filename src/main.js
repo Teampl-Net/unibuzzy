@@ -35,7 +35,6 @@ const i18n = createI18n({
 })
 app.use(router).use(i18n)
 app.use(webViewBridge)
-app.use(router)
 app.use(Vuex)
 app.use(store)
 app.use(BootstrapVue3)

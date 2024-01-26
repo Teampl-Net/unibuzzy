@@ -10,12 +10,10 @@ export default {
     for (let i = 0; i < splited.length; i++) {
       param[splited[i]] = splited[++i]
     }
-    this.mReturnData = decodeURI(param.accessToken)
+    const userToken = decodeURI(param.accessToken)
     const refreshToken = decodeURI(param.refreshToken)
-    if (this.mReturnData) {
-      this.getUserProfile(this.mReturnData, refreshToken)
-      this.$USER_TOKEN = this.mReturnData
-      // eslint-disable-next-line no-debugger
+    if (userToken && refreshToken) {
+      this.getUserProfile(userToken, refreshToken)
     }
   },
   data () {

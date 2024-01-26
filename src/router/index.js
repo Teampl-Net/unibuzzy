@@ -6,9 +6,6 @@ import { routes } from './routerIndex/D_index'
 // let rList = require('./routerIndex/D_index')
 var appInfo = store.getters['D_USER/AC_USER_APP']
 
-// if (appInfo && appInfo.appType) rList = require(`./routerIndex/${appInfo.appType}_index`)
-// const routes = rList.routes
-// console.log(routes)
 export const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes

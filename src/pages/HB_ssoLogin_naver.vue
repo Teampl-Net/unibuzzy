@@ -50,6 +50,8 @@ export default defineComponent({
       saveUser(user, true).then((res) => {
         console.log(res)
         if (res) {
+          // eslint-disable-next-line no-debugger
+          debugger
           console.log(res)
           const refreshToken = res
           if (this.redirectUrl) {
